@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <Platforms>AnyCPU;x64</Platforms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\DataStructuresLib\DataStructuresLib\DataStructuresLib.csproj" />
+    <ProjectReference Include="..\..\EuclideanGeometryLib\EuclideanGeometryLib\EuclideanGeometryLib.csproj" />
+    <ProjectReference Include="..\..\TextComposerLib\TextComposerLib\TextComposerLib.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Implementations\Float64\" />
+    <Folder Include="Outermorphisms\Stored\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MathNet.Numerics" Version="4.15.0" />
+  </ItemGroup>
+
+</Project>

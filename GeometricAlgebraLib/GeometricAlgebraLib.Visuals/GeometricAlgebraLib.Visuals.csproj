@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <Platforms>AnyCPU;ARM32;x86;x64</Platforms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Graphics\" />
+    <Folder Include="TestScenes\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\DataStructuresLib\DataStructuresLib\DataStructuresLib.csproj" />
+    <ProjectReference Include="..\GeometricAlgebraLib\GeometricAlgebraLib.csproj" />
+  </ItemGroup>
+
+</Project>

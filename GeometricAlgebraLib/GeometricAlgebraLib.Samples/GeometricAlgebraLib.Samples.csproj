@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+    <Platforms>AnyCPU;x64</Platforms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MathNet.Numerics" Version="4.15.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\DataStructuresLib\DataStructuresLib\DataStructuresLib.csproj" />
+    <ProjectReference Include="..\..\GAPoTNumLib\GAPoTNumLib\GAPoTNumLib.csproj" />
+    <ProjectReference Include="..\..\TextComposerLib\TextComposerLib\TextComposerLib.csproj" />
+    <ProjectReference Include="..\GeometricAlgebraLib.Symbolic\GeometricAlgebraLib.Symbolic.csproj" />
+    <ProjectReference Include="..\GeometricAlgebraLib\GeometricAlgebraLib.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Wolfram.NETLink">
+      <HintPath>C:\Program Files\Wolfram Research\Mathematica\12.1\SystemFiles\Links\NETLink\Wolfram.NETLink.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
