@@ -73,7 +73,7 @@ namespace GeometricAlgebraLib.Implementations.NamedScalars
                 ? "    Used" 
                 : "Not Used";
 
-            return $"{isUsedText} Parameter    {ScalarName}<{FinalScalarName}>";
+            return $"{isUsedText} Parameter    \"{FinalScalarName}\": {ScalarName}";
         }
     }
 }

@@ -73,7 +73,7 @@ namespace GeometricAlgebraLib.Implementations.NamedScalars
                 ? "    Used" 
                 : "Not Used";
 
-            return $"{isUsedText} Constant     {ScalarName}";
+            return $"{isUsedText} Constant     : {ScalarName}";
         }
     }
 }

@@ -90,10 +90,11 @@ namespace GeometricAlgebraLib.Implementations.NamedScalars
             return new StringBuilder()
                 .Append(isUsedText)
                 .Append(IsOutput ? " Output       " : " Intermediate ")
+                .Append($"\"{FinalScalarName}\": ")
                 .Append(ScalarName)
-                .Append($"<{FinalScalarName}>(")
+                .Append('(')
                 .Append(dependsOnScalarsText)
-                .Append(") := ")
+                .Append(") = ")
                 .Append(SymbolicScalarProcessor.ToText(RhsScalarValue))
                 .ToString();
         }
