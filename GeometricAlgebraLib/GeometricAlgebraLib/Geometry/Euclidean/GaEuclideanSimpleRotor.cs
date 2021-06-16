@@ -61,7 +61,12 @@ namespace GeometricAlgebraLib.Geometry.Euclidean
             var rotationBladeScalar =
                 scalarProcessor.Divide(
                     sinHalfAngle,
-                    scalarProcessor.SqrtOfAbs(rotationBlade.EGpSquared().GetTermScalar(0))
+                    scalarProcessor.Sqrt(
+                        scalarProcessor.Negative(
+                            rotationBlade.EGpSquared().GetTermScalar(0)
+                        )
+                    )
+                    //scalarProcessor.SqrtOfAbs(rotationBlade.EGpSquared().GetTermScalar(0))
                 );
 
             var rotorStorage = cosHalfAngle.Subtract(

@@ -1080,6 +1080,20 @@ namespace GeometricAlgebraLib.Storage
             );
         }
 
+        public IEnumerable<Tuple<ulong, ulong, TScalar>> GetBasisVectorsIndexScalarTuples()
+        {
+            return IndexScalarDictionary.Select(
+                pair =>
+                {
+                    var (index, scalar) = pair;
+                    var (index1, index2) = 
+                        BinaryCombinationsUtilsUInt64.IndexToCombinadic(index);
+
+                    return new Tuple<ulong, ulong, TScalar>(index1, index2, scalar);
+                }
+            );
+        }
+
         public IGaBivectorStorage<TScalar> Add(IGaBivectorStorage<TScalar> mv2)
         {
             var composer = new GaBivectorStorageComposer<TScalar>(ScalarProcessor);

@@ -2,9 +2,9 @@
 using System.Diagnostics;
 using System.Linq;
 using GeometricAlgebraLib.Geometry.Euclidean;
+using GeometricAlgebraLib.Implementations.Float64;
 using GeometricAlgebraLib.Processors.Matrices;
 using GeometricAlgebraLib.Processors.Multivectors;
-using GeometricAlgebraLib.Processors.Scalars;
 using GeometricAlgebraLib.Storage;
 using GeometricAlgebraLib.Storage.Composers;
 using GeometricAlgebraLib.Symbolic.Applications.GaPoT;

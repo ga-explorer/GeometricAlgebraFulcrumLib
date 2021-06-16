@@ -1,5 +1,5 @@
 ﻿using System;
-using GeometricAlgebraLib.Processors.Scalars;
+using GeometricAlgebraLib.Implementations.Float64;
 
 namespace GeometricAlgebraLib.Text
 {

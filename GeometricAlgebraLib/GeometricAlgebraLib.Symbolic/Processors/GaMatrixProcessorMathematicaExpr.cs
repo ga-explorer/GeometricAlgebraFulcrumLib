@@ -81,6 +81,68 @@ namespace GeometricAlgebraLib.Symbolic.Processors
             return Mfs.ListExpr(rowExprArray).Simplify();
         }
 
+        public Expr CreateRowVectorMatrix(Expr[] array)
+        {
+            var rowExprArray = new Expr[1];
+            var scalarExprArray = new Expr[array.Length];
+            
+            for (var j = 0; j < array.Length; j++)
+                scalarExprArray[j] = 
+                    array[j] ?? ScalarProcessor.ZeroScalar;
+
+            rowExprArray[0] = Mfs.ListExpr(scalarExprArray);
+
+            return Mfs.ListExpr(rowExprArray).Simplify();
+        }
+
+        public Expr CreateRowVectorMatrix(Expr[,] array, int rowIndex)
+        {
+            var count = array.GetLength(1);
+            var rowExprArray = new Expr[1];
+            var scalarExprArray = new Expr[count];
+            
+            for (var j = 0; j < count; j++)
+                scalarExprArray[j] = 
+                    array[rowIndex, j] ?? ScalarProcessor.ZeroScalar;
+
+            rowExprArray[0] = Mfs.ListExpr(scalarExprArray);
+
+            return Mfs.ListExpr(rowExprArray).Simplify();
+        }
+
+        public Expr CreateColumnVectorMatrix(Expr[] array)
+        {
+            var rowExprArray = new Expr[array.Length];
+            for (var i = 0; i < array.Length; i++)
+            {
+                var scalarExprArray = new Expr[1];
+                
+                scalarExprArray[0] = 
+                    array[i] ?? ScalarProcessor.ZeroScalar;
+
+                rowExprArray[i] = Mfs.ListExpr(scalarExprArray);
+            }
+
+            return Mfs.ListExpr(rowExprArray).Simplify();
+        }
+
+        public Expr CreateColumnVectorMatrix(Expr[,] array, int columnIndex)
+        {
+            var count = array.GetLength(0);
+            var rowExprArray = new Expr[count];
+            for (var i = 0; i < count; i++)
+            {
+                var scalarExprArray = new Expr[1];
+                
+                scalarExprArray[0] = 
+                    array[i, columnIndex] ?? ScalarProcessor.ZeroScalar;
+
+                rowExprArray[i] = Mfs.ListExpr(scalarExprArray);
+            }
+
+            return Mfs.ListExpr(rowExprArray).Simplify();
+        }
+
         public Expr CreateZeroMatrix(int size)
         {
             var sizeExpr = size.ToExpr();

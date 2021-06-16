@@ -2,99 +2,107 @@
 
 namespace GeometricAlgebraLib.Processors.Scalars
 {
-    public interface IGaScalarProcessor<T> 
+    public interface IGaScalarProcessor<TScalar> 
     {
-        T ZeroScalar { get; }
+        TScalar ZeroScalar { get; }
         
-        T OneScalar { get; }
+        TScalar OneScalar { get; }
         
-        T MinusOneScalar { get; }
+        TScalar MinusOneScalar { get; }
         
-        T PiScalar { get; }
+        TScalar PiScalar { get; }
 
-        T Add(T scalar1, T scalar2);
+        TScalar Add(TScalar scalar1, TScalar scalar2);
 
-        T Add(params T[] scalarsList);
+        TScalar Add(params TScalar[] scalarsList);
 
-        T Add(IEnumerable<T> scalarsList);
+        TScalar Add(IEnumerable<TScalar> scalarsList);
         
-        T Subtract(T scalar1, T scalar2);
+        TScalar Subtract(TScalar scalar1, TScalar scalar2);
 
-        T Times(T scalar1, T scalar2);
+        TScalar Times(TScalar scalar1, TScalar scalar2);
         
-        T Times(params T[] scalarsList);
+        TScalar Times(params TScalar[] scalarsList);
 
-        T Times(IEnumerable<T> scalarsList);
+        TScalar Times(IEnumerable<TScalar> scalarsList);
 
-        T NegativeTimes(T scalar1, T scalar2);
+        TScalar NegativeTimes(TScalar scalar1, TScalar scalar2);
         
-        T NegativeTimes(params T[] scalarsList);
+        TScalar NegativeTimes(params TScalar[] scalarsList);
 
-        T NegativeTimes(IEnumerable<T> scalarsList);
+        TScalar NegativeTimes(IEnumerable<TScalar> scalarsList);
 
-        T Divide(T scalar1, T scalar2);
+        TScalar Divide(TScalar scalar1, TScalar scalar2);
 
-        T NegativeDivide(T scalar1, T scalar2);
+        TScalar NegativeDivide(TScalar scalar1, TScalar scalar2);
 
         /// <summary>
         /// Get same value of given scalar
         /// </summary>
         /// <param name="scalar"></param>
         /// <returns></returns>
-        T Positive(T scalar);
+        TScalar Positive(TScalar scalar);
         
         /// <summary>
         /// Get negative value of given scalar
         /// </summary>
         /// <param name="scalar"></param>
         /// <returns></returns>
-        T Negative(T scalar);
+        TScalar Negative(TScalar scalar);
 
-        T Inverse(T scalar);
+        TScalar Inverse(TScalar scalar);
 
-        T Abs(T scalar);
+        TScalar Abs(TScalar scalar);
 
         /// <summary>
         /// The square root of the given scalar
         /// </summary>
         /// <param name="scalar"></param>
         /// <returns></returns>
-        T Sqrt(T scalar);
+        TScalar Sqrt(TScalar scalar);
 
-        T SqrtOfAbs(T scalar);
+        TScalar SqrtOfAbs(TScalar scalar);
 
-        T Exp(T scalar);
+        TScalar Exp(TScalar scalar);
 
-        T Log(T scalar);
+        TScalar Log(TScalar scalar);
 
-        T Log2(T scalar);
+        TScalar Log2(TScalar scalar);
 
-        T Log10(T scalar);
+        TScalar Log10(TScalar scalar);
 
-        T Log(T scalar, T baseScalar);
+        TScalar Log(TScalar scalar, TScalar baseScalar);
 
-        T Cos(T scalar);
+        TScalar Cos(TScalar scalar);
 
-        T Sin(T scalar);
+        TScalar Sin(TScalar scalar);
 
-        T Tan(T scalar);
+        TScalar Tan(TScalar scalar);
 
-        T ArcCos(T scalar);
+        TScalar ArcCos(TScalar scalar);
 
-        T ArcSin(T scalar);
+        TScalar ArcSin(TScalar scalar);
 
-        T ArcTan(T scalar);
+        TScalar ArcTan(TScalar scalar);
 
-        T ArcTan2(T scalarX, T scalarY);
+        TScalar ArcTan2(TScalar scalarX, TScalar scalarY);
 
-        bool IsValid(T scalar);
+        bool IsValid(TScalar scalar);
 
-        bool IsZero(T scalar);
+        bool IsZero(TScalar scalar);
 
-        bool IsZero(T scalar, bool nearZeroFlag);
+        bool IsZero(TScalar scalar, bool nearZeroFlag);
 
-        bool IsNearZero(T scalar);
+        bool IsNearZero(TScalar scalar);
+
+        TScalar TextToScalar(string text);
+
+        TScalar IntegerToScalar(int value);
         
-        T IntegerToScalar(int value);
+        TScalar Float64ToScalar(double value);
+
+        TScalar GetRandomScalar(System.Random randomGenerator, double minValue, double maxValue);
+
+        string ToText(TScalar scalar);
     }
 }

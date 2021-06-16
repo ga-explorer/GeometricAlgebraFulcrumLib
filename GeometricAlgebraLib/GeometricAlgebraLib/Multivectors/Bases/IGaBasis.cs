@@ -22,6 +22,8 @@ namespace GeometricAlgebraLib.Multivectors.Bases
 
         Tuple<ulong, int, ulong> GetIdGradeIndex();
 
+        IReadOnlyList<ulong> GetBasisVectorIndices();
+
         void GetGradeIndex(out int grade, out ulong index);
 
         void GetIdGradeIndex(out ulong id, out int grade, out ulong index);

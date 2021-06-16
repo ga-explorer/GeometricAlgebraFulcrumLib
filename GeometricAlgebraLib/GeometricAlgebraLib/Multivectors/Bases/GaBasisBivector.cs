@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
+using DataStructuresLib.Collections.Lists;
 using DataStructuresLib.Combinations;
 using GeometricAlgebraLib.Multivectors.Terms;
 
@@ -10,25 +11,17 @@ namespace GeometricAlgebraLib.Multivectors.Bases
     public readonly struct GaBasisBivector 
         : IGaBasis
     {
-        public int BasisVectorIndex1 { get; }
+        public ulong BasisVectorIndex1 { get; }
 
-        public int BasisVectorIndex2 { get; }
+        public ulong BasisVectorIndex2 { get; }
 
         public ulong Id 
-            => (1UL << BasisVectorIndex1) | (1UL << BasisVectorIndex2);
+            => (1UL << (int) BasisVectorIndex1) | (1UL << (int) BasisVectorIndex2);
 
         public int Grade => 2;
 
-        public ulong Index
-        {
-            get
-            {
-                var n1 = (ulong) BasisVectorIndex1;
-                var n2 = (ulong) BasisVectorIndex2;
-
-                return n1 + ((n2 * (n2 - 1UL)) >> 1);
-            }
-        }
+        public ulong Index 
+            => BasisVectorIndex1 + ((BasisVectorIndex2 * (BasisVectorIndex2 - 1UL)) >> 1);
 
         public bool IsUniform 
             => false;
@@ -44,24 +37,24 @@ namespace GeometricAlgebraLib.Multivectors.Bases
         {
             Debug.Assert(basisVectorIndex1 >= 0 && basisVectorIndex1 < basisVectorIndex2);
 
-            BasisVectorIndex1 = basisVectorIndex1;
-            BasisVectorIndex2 = basisVectorIndex2;
+            BasisVectorIndex1 = (ulong) basisVectorIndex1;
+            BasisVectorIndex2 = (ulong) basisVectorIndex2;
         }
 
         internal GaBasisBivector(ulong basisVectorIndex1, ulong basisVectorIndex2)
         {
             Debug.Assert(basisVectorIndex1 < basisVectorIndex2);
 
-            BasisVectorIndex1 = (int) basisVectorIndex1;
-            BasisVectorIndex2 = (int) basisVectorIndex2;
+            BasisVectorIndex1 = basisVectorIndex1;
+            BasisVectorIndex2 = basisVectorIndex2;
         }
 
         internal GaBasisBivector(ulong index)
         {
             var (n1, n2) = BinaryCombinationsUtilsUInt64.IndexToCombinadic(index);
 
-            BasisVectorIndex1 = (int) n1;
-            BasisVectorIndex2 = (int) n2;
+            BasisVectorIndex1 = n1;
+            BasisVectorIndex2 = n2;
         }
         
 
@@ -76,7 +69,15 @@ namespace GeometricAlgebraLib.Multivectors.Bases
             return new(Id, 2, Index);
         }
 
-        
+        public IReadOnlyList<ulong> GetBasisVectorIndices()
+        {
+            return new ItemsPairAsReadOnlyList<ulong>(
+                BasisVectorIndex1, 
+                BasisVectorIndex2
+            );
+        }
+
+
         public void GetGradeIndex(out int grade, out ulong index)
         {
             grade = 2;
@@ -108,8 +109,8 @@ namespace GeometricAlgebraLib.Multivectors.Bases
 
         public IEnumerable<ulong> GetBasisVectorsIndices()
         {
-            yield return (ulong) BasisVectorIndex1;
-            yield return (ulong) BasisVectorIndex2;
+            yield return BasisVectorIndex1;
+            yield return BasisVectorIndex2;
         }
 
         public GaTerm<T> CreateTerm<T>(T scalar)

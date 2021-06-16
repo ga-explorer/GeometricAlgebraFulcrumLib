@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using GeometricAlgebraLib.Processors.Scalars;
 
-namespace GeometricAlgebraLib.Processors.Scalars
+namespace GeometricAlgebraLib.Implementations.Float64
 {
     public sealed class GaScalarProcessorFloat64 
         : IGaScalarProcessor<double>
@@ -207,10 +208,30 @@ namespace GeometricAlgebraLib.Processors.Scalars
         {
             return scalar > -ZeroEpsilon && scalar < ZeroEpsilon;
         }
-        
+
+        public double TextToScalar(string text)
+        {
+            return double.Parse(text);
+        }
+
         public double IntegerToScalar(int value)
         {
             return value;
+        }
+
+        public double Float64ToScalar(double value)
+        {
+            return value;
+        }
+
+        public double GetRandomScalar(System.Random randomGenerator, double minValue, double maxValue)
+        {
+            return minValue + (maxValue - minValue) * randomGenerator.NextDouble();
+        }
+
+        public string ToText(double scalar)
+        {
+            return scalar.ToString("G");
         }
     }
 }

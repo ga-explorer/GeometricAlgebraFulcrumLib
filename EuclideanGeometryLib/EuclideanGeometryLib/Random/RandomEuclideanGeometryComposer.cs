@@ -14,41 +14,21 @@ using EuclideanGeometryLib.Borders.Space3D;
 
 namespace EuclideanGeometryLib.Random
 {
-    public class RandomGeometryGenerator : UniformRandomGenerator
+    public class RandomEuclideanGeometryComposer : 
+        RandomComposer
     {
-        public RandomGeometryGenerator()
+        public RandomEuclideanGeometryComposer()
         {
         }
 
-        public RandomGeometryGenerator(int seed)
+        public RandomEuclideanGeometryComposer(int seed)
             : base(seed)
         {
         }
 
-
-        public double GetAngle()
+        public RandomEuclideanGeometryComposer(System.Random randomGenerator)
+            : base(randomGenerator)
         {
-            return GetNumber(MathNet.Numerics.Constants.Pi2);
-        }
-
-        public double GetAngle(double maxAngle)
-        {
-            return GetNumber(maxAngle.ClampAngle());
-        }
-
-        public double GetAngle(double minAngle, double maxAngle)
-        {
-            minAngle = minAngle.ClampAngle();
-            maxAngle = maxAngle.ClampAngle();
-
-            if (maxAngle < minAngle)
-            {
-                var s = minAngle;
-                minAngle = maxAngle;
-                maxAngle = s;
-            }
-
-            return GetNumber(minAngle, maxAngle);
         }
 
 
@@ -156,8 +136,8 @@ namespace EuclideanGeometryLib.Random
         public Tuple2D GetPointInside(IBoundingBox2D limitsBoundingBox)
         {
             return new Tuple2D(
-                GetNumber(limitsBoundingBox.MinX, limitsBoundingBox.MaxX),
-                GetNumber(limitsBoundingBox.MinY, limitsBoundingBox.MaxY)
+                GetLinearMappedNumber(limitsBoundingBox.MinX, limitsBoundingBox.MaxX),
+                GetLinearMappedNumber(limitsBoundingBox.MinY, limitsBoundingBox.MaxY)
             );
         }
 
@@ -179,9 +159,9 @@ namespace EuclideanGeometryLib.Random
         public Tuple3D GetPointInside(IBoundingBox3D limitsBoundingBox)
         {
             return new Tuple3D(
-                GetNumber(limitsBoundingBox.MinX, limitsBoundingBox.MaxX),
-                GetNumber(limitsBoundingBox.MinY, limitsBoundingBox.MaxY),
-                GetNumber(limitsBoundingBox.MinZ, limitsBoundingBox.MaxZ)
+                GetLinearMappedNumber(limitsBoundingBox.MinX, limitsBoundingBox.MaxX),
+                GetLinearMappedNumber(limitsBoundingBox.MinY, limitsBoundingBox.MaxY),
+                GetLinearMappedNumber(limitsBoundingBox.MinZ, limitsBoundingBox.MaxZ)
             );
         }
 
@@ -195,14 +175,14 @@ namespace EuclideanGeometryLib.Random
 
         public Tuple2D GetUnitVector2D()
         {
-            var a = GetNumber(MathNet.Numerics.Constants.Pi2);
+            var angle = this.GetAngle();
 
-            return new Tuple2D(Math.Cos(a), Math.Sin(a));
+            return new Tuple2D(Math.Cos(angle), Math.Sin(angle));
         }
 
         public Tuple3D GetUnitVector3D()
         {
-            var phi = GetNumber() * 2 * Math.PI;
+            var phi = GetNumber() * 2d * Math.PI;
             var theta = GetNumber() * Math.PI;
 
             return new UnitSphericalPosition3D(theta, phi).ToTuple3D();
@@ -212,22 +192,22 @@ namespace EuclideanGeometryLib.Random
         public LineSegment2D GetLineSegmentInside(IBoundingBox2D limitsBoundingBox)
         {
             return new LineSegment2D(
-                GetNumber(limitsBoundingBox.MinX, limitsBoundingBox.MaxX),
-                GetNumber(limitsBoundingBox.MinY, limitsBoundingBox.MaxY),
-                GetNumber(limitsBoundingBox.MinX, limitsBoundingBox.MaxX),
-                GetNumber(limitsBoundingBox.MinY, limitsBoundingBox.MaxY)
+                GetLinearMappedNumber(limitsBoundingBox.MinX, limitsBoundingBox.MaxX),
+                GetLinearMappedNumber(limitsBoundingBox.MinY, limitsBoundingBox.MaxY),
+                GetLinearMappedNumber(limitsBoundingBox.MinX, limitsBoundingBox.MaxX),
+                GetLinearMappedNumber(limitsBoundingBox.MinY, limitsBoundingBox.MaxY)
             );
         }
 
         public Triangle2D GetTriangleInside(IBoundingBox2D limitsBoundingBox)
         {
             return new Triangle2D(
-                GetNumber(limitsBoundingBox.MinX, limitsBoundingBox.MaxX),
-                GetNumber(limitsBoundingBox.MinY, limitsBoundingBox.MaxY),
-                GetNumber(limitsBoundingBox.MinX, limitsBoundingBox.MaxX),
-                GetNumber(limitsBoundingBox.MinY, limitsBoundingBox.MaxY),
-                GetNumber(limitsBoundingBox.MinX, limitsBoundingBox.MaxX),
-                GetNumber(limitsBoundingBox.MinY, limitsBoundingBox.MaxY)
+                GetLinearMappedNumber(limitsBoundingBox.MinX, limitsBoundingBox.MaxX),
+                GetLinearMappedNumber(limitsBoundingBox.MinY, limitsBoundingBox.MaxY),
+                GetLinearMappedNumber(limitsBoundingBox.MinX, limitsBoundingBox.MaxX),
+                GetLinearMappedNumber(limitsBoundingBox.MinY, limitsBoundingBox.MaxY),
+                GetLinearMappedNumber(limitsBoundingBox.MinX, limitsBoundingBox.MaxX),
+                GetLinearMappedNumber(limitsBoundingBox.MinY, limitsBoundingBox.MaxY)
             );
         }
 
@@ -238,12 +218,12 @@ namespace EuclideanGeometryLib.Random
             for (var i = 0; i < trianglesCount; i++)
                 result.Add(
                     new Triangle2D(
-                        GetNumber(limitsBoundingBox.MinX, limitsBoundingBox.MaxX),
-                        GetNumber(limitsBoundingBox.MinY, limitsBoundingBox.MaxY),
-                        GetNumber(limitsBoundingBox.MinX, limitsBoundingBox.MaxX),
-                        GetNumber(limitsBoundingBox.MinY, limitsBoundingBox.MaxY),
-                        GetNumber(limitsBoundingBox.MinX, limitsBoundingBox.MaxX),
-                        GetNumber(limitsBoundingBox.MinY, limitsBoundingBox.MaxY)
+                        GetLinearMappedNumber(limitsBoundingBox.MinX, limitsBoundingBox.MaxX),
+                        GetLinearMappedNumber(limitsBoundingBox.MinY, limitsBoundingBox.MaxY),
+                        GetLinearMappedNumber(limitsBoundingBox.MinX, limitsBoundingBox.MaxX),
+                        GetLinearMappedNumber(limitsBoundingBox.MinY, limitsBoundingBox.MaxY),
+                        GetLinearMappedNumber(limitsBoundingBox.MinX, limitsBoundingBox.MaxX),
+                        GetLinearMappedNumber(limitsBoundingBox.MinY, limitsBoundingBox.MaxY)
                     )
                 );
 

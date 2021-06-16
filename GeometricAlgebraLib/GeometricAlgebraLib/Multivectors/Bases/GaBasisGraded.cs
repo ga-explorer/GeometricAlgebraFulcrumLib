@@ -73,7 +73,12 @@ namespace GeometricAlgebraLib.Multivectors.Bases
             return new(Id, Grade, Index);
         }
 
-        
+        public IReadOnlyList<ulong> GetBasisVectorIndices()
+        {
+            return Id.BasisVectorIDsInside().ToArray();
+        }
+
+
         public void GetGradeIndex(out int grade, out ulong index)
         {
             grade = Grade;

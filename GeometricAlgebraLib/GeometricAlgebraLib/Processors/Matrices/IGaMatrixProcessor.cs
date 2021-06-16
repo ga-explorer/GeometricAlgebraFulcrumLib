@@ -24,6 +24,14 @@ namespace GeometricAlgebraLib.Processors.Matrices
 
         TMatrix CreateMatrix(TScalar[,] array);
 
+        TMatrix CreateRowVectorMatrix(TScalar[] array);
+
+        TMatrix CreateRowVectorMatrix(TScalar[,] array, int rowIndex);
+
+        TMatrix CreateColumnVectorMatrix(TScalar[] array);
+
+        TMatrix CreateColumnVectorMatrix(TScalar[,] array, int columnIndex);
+
         TMatrix CreateZeroMatrix(int size);
 
         TMatrix CreateZeroMatrix(int rowsCount, int columnsCount);

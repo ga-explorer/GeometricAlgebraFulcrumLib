@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using GeometricAlgebraLib.Implementations.Float64;
 using GeometricAlgebraLib.Processors.Scalars;
 using MathNet.Numerics.LinearAlgebra.Double;
 

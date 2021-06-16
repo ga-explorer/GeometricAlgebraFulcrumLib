@@ -1,6 +1,5 @@
 ﻿using System;
-using GeometricAlgebraLib.Samples.GAPoT;
-using GeometricAlgebraLib.Samples.UnitTests;
+using GeometricAlgebraLib.Samples.NamedScalars;
 
 namespace GeometricAlgebraLib.Samples
 {
@@ -12,7 +11,7 @@ namespace GeometricAlgebraLib.Samples
             //testClass.ClassInit();
             //testClass.AssertCorrectBinaryOperations("egp");
             
-            BasicOperationsSymbolicSample.Execute();
+            Sample1.Execute();
 
             Console.WriteLine();
             Console.WriteLine("Press any key to exit..");

@@ -7,7 +7,8 @@ namespace EuclideanGeometryLib.Random
     /// A factory for generating randomly 2D\3D vectors using polar\spherical coordinates with 
     /// parametric angles uniformly distributed
     /// </summary>
-    public class RandomVectorsGenerator : RandomGeometryGenerator
+    public class RandomEuclideanVectorsComposer : 
+        RandomEuclideanGeometryComposer
     {
         //TODO: Create a BoundingSphericalBox class to hold this information
         public double RMin { get; set; } 
@@ -38,11 +39,12 @@ namespace EuclideanGeometryLib.Random
             => PhiMax - PhiMin;
 
 
-        public RandomVectorsGenerator() 
+        public RandomEuclideanVectorsComposer() 
         {
         }
 
-        public RandomVectorsGenerator(int seed) : base(seed)
+        public RandomEuclideanVectorsComposer(int seed) 
+            : base(seed)
         {
         }
 

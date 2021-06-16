@@ -11,7 +11,7 @@ using Wolfram.NETLink;
 namespace GeometricAlgebraLib.Symbolic.Processors
 {
     public sealed class GaScalarProcessorMathematicaExpr
-        : IGaScalarProcessor<Expr>
+        : IGaSymbolicScalarProcessor<Expr>
     {
         public static GaScalarProcessorMathematicaExpr DefaultProcessor { get; }
             = new();
@@ -44,7 +44,7 @@ namespace GeometricAlgebraLib.Symbolic.Processors
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Expr PostProcessScalar([NotNull] Expr scalar)
         {
-            return scalar.FullSimplify();
+            return scalar.Simplify();
             //return Mfs.Round[Mfs.N[scalar], ZeroEpsilon.ToExpr()].Simplify();
         }
         
@@ -309,10 +309,37 @@ namespace GeometricAlgebraLib.Symbolic.Processors
 
             return number > -ZeroEpsilon && number < ZeroEpsilon;
         }
-        
+
+        public Expr TextToScalar(string text)
+        {
+            return text.ToExpr();
+        }
+
         public Expr IntegerToScalar(int value)
         {
             return value.ToExpr();
+        }
+
+        public Expr Float64ToScalar(double value)
+        {
+            return value.ToExpr();
+        }
+
+        public Expr GetRandomScalar(Random randomGenerator, double minValue, double maxValue)
+        {
+            var value = minValue + (maxValue - minValue) * randomGenerator.NextDouble();
+
+            return value.ToExpr(); 
+        }
+
+        public string ToText(Expr scalar)
+        {
+            return scalar.ToString();
+        }
+
+        public Expr GetSymbol(string symbolNameText)
+        {
+            return symbolNameText.ToSymbolExpr();
         }
     }
 }

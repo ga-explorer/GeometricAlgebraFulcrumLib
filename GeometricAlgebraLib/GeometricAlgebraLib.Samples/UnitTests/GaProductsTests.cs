@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using GAPoTNumLib.GAPoT;
 using GeometricAlgebraLib.Frames;
+using GeometricAlgebraLib.Implementations.Float64;
 using GeometricAlgebraLib.Processors.Multivectors;
 using GeometricAlgebraLib.Processors.Scalars;
 using GeometricAlgebraLib.Storage;

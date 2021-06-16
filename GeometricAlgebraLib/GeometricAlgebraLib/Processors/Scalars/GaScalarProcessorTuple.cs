@@ -216,13 +216,39 @@ namespace GeometricAlgebraLib.Processors.Scalars
         {
             return scalar.IsNearZero();
         }
-        
+
+        public IGaTuple<T> TextToScalar(string text)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public IGaTuple<T> IntegerToScalar(int value)
         {
             return GaConstantTuple<T>.Create(
                 ItemsScalarsDomain, 
                 ItemsScalarsDomain.IntegerToScalar(value)
             );
+        }
+
+        public IGaTuple<T> Float64ToScalar(double value)
+        {
+            return GaConstantTuple<T>.Create(
+                ItemsScalarsDomain, 
+                ItemsScalarsDomain.Float64ToScalar(value)
+            );
+        }
+
+        public IGaTuple<T> GetRandomScalar(System.Random randomGenerator, double minValue, double maxValue)
+        {
+            return GaConstantTuple<T>.Create(
+                ItemsScalarsDomain, 
+                ItemsScalarsDomain.GetRandomScalar(randomGenerator, minValue, maxValue)
+            );
+        }
+
+        public string ToText(IGaTuple<T> scalar)
+        {
+            return scalar.ToString();
         }
     }
 }

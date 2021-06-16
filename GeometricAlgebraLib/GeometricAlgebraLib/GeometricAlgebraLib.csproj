@@ -12,7 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Implementations\Float64\" />
     <Folder Include="Outermorphisms\Stored\" />
   </ItemGroup>
 

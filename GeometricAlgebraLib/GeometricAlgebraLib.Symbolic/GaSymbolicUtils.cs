@@ -1,5 +1,9 @@
 ﻿using System;
 using System.Linq;
+using GeometricAlgebraLib.Geometry;
+using GeometricAlgebraLib.Geometry.Euclidean;
+using GeometricAlgebraLib.Implementations.Float64;
+using GeometricAlgebraLib.Processors.Multivectors;
 using GeometricAlgebraLib.Processors.Scalars;
 using GeometricAlgebraLib.Storage;
 using GeometricAlgebraLib.Symbolic.Mathematica;
@@ -13,6 +17,19 @@ namespace GeometricAlgebraLib.Symbolic
 {
     public static class GaSymbolicUtils
     {
+        public static GaScalarProcessorMathematicaExpr ScalarProcessor
+            => GaScalarProcessorMathematicaExpr.DefaultProcessor;
+
+        public static GaMatrixProcessorMathematicaExpr MatrixProcessor
+            => GaMatrixProcessorMathematicaExpr.DefaultProcessor;
+
+        public static GaLaTeXComposerMathematicaExpr LaTeXComposer
+            => GaLaTeXComposerMathematicaExpr.DefaultComposer;
+
+        public static GaTextComposerMathematicaExpr TextComposer
+            => GaTextComposerMathematicaExpr.DefaultComposer;
+
+
         public static MathematicaInterface Cas => MathematicaInterface.DefaultCas;
 
         public static MathematicaEvaluator Evaluator => Cas.Evaluator;
@@ -762,17 +779,7 @@ namespace GeometricAlgebraLib.Symbolic
         //    return mv;
         //}
 
-        public static GaScalarProcessorMathematicaExpr ScalarProcessor
-            => GaScalarProcessorMathematicaExpr.DefaultProcessor;
-
-        public static GaLaTeXComposerMathematicaExpr LaTeXComposer
-            => GaLaTeXComposerMathematicaExpr.DefaultComposer;
-
-        public static GaTextComposerMathematicaExpr TextComposer
-            => GaTextComposerMathematicaExpr.DefaultComposer;
-
-
-        public static GaVectorStorage<Expr> CreateVector(params Expr[] scalarArray)
+        public static IGaVectorStorage<Expr> CreateVector(params Expr[] scalarArray)
         {
             return GaVectorStorage<Expr>.Create(
                 ScalarProcessor,
@@ -780,12 +787,125 @@ namespace GeometricAlgebraLib.Symbolic
             );
         }
 
-        public static GaVectorStorage<Expr> CreateVector(params string[] scalarTextArray)
+        public static IGaVectorStorage<Expr> CreateVector(params string[] scalarTextArray)
         {
             return GaVectorStorage<Expr>.Create(
                 ScalarProcessor,
                 scalarTextArray.Select(t => t.ToExpr()).ToArray()
             );
+        }
+
+        public static IGaVectorStorage<Expr> CreateBasisVector(int index)
+        {
+            return GaVectorTermStorage<Expr>.CreateBasisVector(
+                ScalarProcessor,
+                index
+            );
+        }
+
+        public static GaVectorsLinearMap<Expr> CreateVectorsLinearMap(int basisVectorsCount, Func<IGaVectorStorage<Expr>, IGaVectorStorage<Expr>> basisVectorMapFunc)
+        {
+            return GaVectorsLinearMap<Expr>.Create(
+                ScalarProcessor,
+                basisVectorsCount,
+                basisVectorMapFunc
+            );
+        }
+
+
+        public static Expr VectorToRowVectorMatrix(this IGaVectorStorage<Expr> vectorStorage, int vSpaceDimension)
+        {
+            return MatrixProcessor.CreateRowVectorMatrix(
+                vectorStorage.VectorToArray(vSpaceDimension)
+            );
+        }
+
+        public static Expr VectorToColumnVectorMatrix(this IGaVectorStorage<Expr> vectorStorage, int vSpaceDimension)
+        {
+            return MatrixProcessor.CreateColumnVectorMatrix(
+                vectorStorage.VectorToArray(vSpaceDimension)
+            );
+        }
+
+        public static Expr BivectorToRowVectorMatrix(this IGaBivectorStorage<Expr> bivectorStorage, int vSpaceDimension)
+        {
+            return MatrixProcessor.CreateRowVectorMatrix(
+                bivectorStorage.BivectorToArray(vSpaceDimension)
+            );
+        }
+
+        public static Expr BivectorToColumnVectorMatrix(this IGaBivectorStorage<Expr> bivectorStorage, int vSpaceDimension)
+        {
+            return MatrixProcessor.CreateColumnVectorMatrix(
+                bivectorStorage.BivectorToArray(vSpaceDimension)
+            );
+        }
+
+        public static Expr BivectorToMatrix(this IGaBivectorStorage<Expr> bivectorStorage, int vSpaceDimension)
+        {
+            return MatrixProcessor.CreateMatrix(
+                bivectorStorage.BivectorToArray2D(vSpaceDimension)
+            );
+        }
+
+        public static Expr ScalarPlusBivectorToMatrix(this IGaMultivectorStorage<Expr> multivectorStorage, int vSpaceDimension)
+        {
+            return MatrixProcessor.CreateMatrix(
+                multivectorStorage.ScalarPlusBivectorToArray2D(vSpaceDimension)
+            );
+        }
+
+        public static Expr KVectorToRowVectorMatrix(this IGaVectorStorage<Expr> kVectorStorage, int vSpaceDimension)
+        {
+            return MatrixProcessor.CreateRowVectorMatrix(
+                kVectorStorage.KVectorToArray(vSpaceDimension)
+            );
+        }
+
+        public static Expr KVectorToColumnVectorMatrix(this IGaVectorStorage<Expr> kVectorStorage, int vSpaceDimension)
+        {
+            return MatrixProcessor.CreateColumnVectorMatrix(
+                kVectorStorage.KVectorToArray(vSpaceDimension)
+            );
+        }
+
+        public static Expr MultivectorToRowVectorMatrix(this IGaMultivectorStorage<Expr> multivectorStorage, int vSpaceDimension)
+        {
+            return MatrixProcessor.CreateRowVectorMatrix(
+                multivectorStorage.MultivectorToArray(vSpaceDimension)
+            );
+        }
+
+        public static Expr MultivectorToColumnVectorMatrix(this IGaMultivectorStorage<Expr> multivectorStorage, int vSpaceDimension)
+        {
+            return MatrixProcessor.CreateColumnVectorMatrix(
+                multivectorStorage.MultivectorToArray(vSpaceDimension)
+            );
+        }
+
+        public static Expr ArrayToMatrix(this Expr[,] array)
+        {
+            return MatrixProcessor.CreateMatrix(array);
+        }
+
+
+        public static Expr GetMatrix(this IGaVectorsLinearMap<Expr> linearMap, int rowsCount, int columnsCount)
+        {
+            return MatrixProcessor.CreateMatrix(
+                linearMap.GetArray(rowsCount, columnsCount)
+            );
+        }
+
+
+        public static Expr MatrixProduct(this Expr matrix1, Expr matrix2)
+        {
+            return MatrixProcessor.MatrixProduct(matrix1, matrix2);
+        }
+
+
+        public static string GetText(this Expr[,] array)
+        {
+            return TextComposer.GetArrayText(array);
         }
 
         public static string GetText(this IGaMultivectorStorage<Expr> mv)

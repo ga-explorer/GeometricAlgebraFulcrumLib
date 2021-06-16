@@ -42,7 +42,12 @@ namespace GeometricAlgebraLib.Multivectors.Bases
             return new(0, 0, 0);
         }
 
-        
+        public IReadOnlyList<ulong> GetBasisVectorIndices()
+        {
+            return new ulong[0];
+        }
+
+
         public void GetGradeIndex(out int grade, out ulong index)
         {
             grade = 0;

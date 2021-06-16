@@ -197,7 +197,7 @@ namespace GeometricAlgebraLib.Text
             return composer.ToString();
         }
 
-        public string GetArrayText(T[,] array)
+        public virtual string GetArrayText(T[,] array)
         {
             var composer = new StringBuilder();
 

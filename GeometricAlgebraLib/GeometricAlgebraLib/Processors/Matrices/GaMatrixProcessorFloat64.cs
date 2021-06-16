@@ -1,4 +1,5 @@
 ﻿using System;
+using GeometricAlgebraLib.Implementations.Float64;
 using GeometricAlgebraLib.Processors.Scalars;
 using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.LinearAlgebra.Double;
@@ -42,6 +43,54 @@ namespace GeometricAlgebraLib.Processors.Matrices
         public Matrix CreateMatrix(double[,] array)
         {
             return (Matrix) Matrix.Build.DenseOfArray(array);
+        }
+
+        public Matrix CreateRowVectorMatrix(double[] array)
+        {
+            return (Matrix) Matrix.Build.DenseOfRowMajor(
+                1,
+                array.Length,
+                array
+            );
+        }
+
+        public Matrix CreateRowVectorMatrix(double[,] array, int rowIndex)
+        {
+            var columnsCount = array.GetLength(1);
+            var rowArray = new double[columnsCount];
+
+            for (var i = 0; i < columnsCount; i++)
+                rowArray[i] = array[rowIndex, i];
+
+            return (Matrix) Matrix.Build.DenseOfRowMajor(
+                1,
+                columnsCount,
+                rowArray
+            );
+        }
+
+        public Matrix CreateColumnVectorMatrix(double[] array)
+        {
+            return (Matrix) Matrix.Build.DenseOfColumnMajor(
+                array.Length,
+                1,
+                array
+            );
+        }
+
+        public Matrix CreateColumnVectorMatrix(double[,] array, int columnIndex)
+        {
+            var rowsCount = array.GetLength(1);
+            var columnArray = new double[rowsCount];
+
+            for (var i = 0; i < rowsCount; i++)
+                columnArray[i] = array[i, columnIndex];
+
+            return (Matrix) Matrix.Build.DenseOfRowMajor(
+                rowsCount,
+                1,
+                columnArray
+            );
         }
 
         public Matrix CreateZeroMatrix(int size)

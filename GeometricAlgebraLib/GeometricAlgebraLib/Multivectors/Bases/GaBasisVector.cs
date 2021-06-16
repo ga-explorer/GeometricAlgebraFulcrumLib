@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
+using DataStructuresLib.Collections.Lists;
 using GeometricAlgebraLib.Multivectors.Terms;
 
 namespace GeometricAlgebraLib.Multivectors.Bases
@@ -48,7 +49,12 @@ namespace GeometricAlgebraLib.Multivectors.Bases
             return new(1UL << (int) Index, 1, Index);
         }
 
-        
+        public IReadOnlyList<ulong> GetBasisVectorIndices()
+        {
+            return new ItemAsReadOnlyList<ulong>(Index);
+        }
+
+
         public void GetGradeIndex(out int grade, out ulong index)
         {
             grade = 1;

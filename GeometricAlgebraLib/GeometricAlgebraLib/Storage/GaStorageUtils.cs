@@ -645,5 +645,136 @@ namespace GeometricAlgebraLib.Storage
                 //.Where(t => !t.Scalar.IsZero())
                 .OrderBy(t => t.BasisBlade.Id);
         }
+
+
+        public static T[] VectorToArray<T>(this IGaVectorStorage<T> vectorStorage, int vSpaceDimension)
+        {
+            var scalarProcessor = vectorStorage.ScalarProcessor;
+
+            var array = new T[vSpaceDimension];
+
+            for (var index = 0; index < vSpaceDimension; index++)
+                array[index] = scalarProcessor.ZeroScalar;
+
+            foreach (var (index, scalar) in vectorStorage.GetIndexScalarPairs()) 
+                array[index] = scalar;
+
+            return array;
+        }
+
+        public static T[] BivectorToArray<T>(this IGaBivectorStorage<T> bivectorStorage, int vSpaceDimension)
+        {
+            var scalarProcessor = bivectorStorage.ScalarProcessor;
+
+            var arrayLength = (int) GaFrameUtils.KvSpaceDimension(
+                vSpaceDimension, 
+                2
+            );
+
+            var array = new T[arrayLength];
+
+            for (var index = 0; index < arrayLength; index++)
+                array[index] = scalarProcessor.ZeroScalar;
+
+            foreach (var (index, scalar) in bivectorStorage.GetIndexScalarPairs()) 
+                array[index] = scalar;
+
+            return array;
+        }
+
+        public static T[,] BivectorToArray2D<T>(this IGaBivectorStorage<T> bivectorStorage, int vSpaceDimension)
+        {
+            var scalarProcessor = bivectorStorage.ScalarProcessor;
+
+            var array = new T[vSpaceDimension, vSpaceDimension];
+
+            for (var i = 0; i < vSpaceDimension; i++)
+            for (var j = 0; j < vSpaceDimension; j++)
+                array[i, j] = scalarProcessor.ZeroScalar;
+
+            foreach (var (index1, index2, scalar) in bivectorStorage.GetBasisVectorsIndexScalarTuples())
+            {
+                array[index1, index2] = scalar;
+                array[index2, index1] = scalarProcessor.Negative(scalar);
+            }
+
+            return array;
+        }
+
+        public static T[,] ScalarPlusBivectorToArray2D<T>(this IGaMultivectorStorage<T> storage, int vSpaceDimension)
+        {
+            var scalarProcessor = storage.ScalarProcessor;
+
+            var array = new T[vSpaceDimension, vSpaceDimension];
+
+            var scalar = storage.GetTermScalar(0);
+
+            for (var i = 0; i < vSpaceDimension; i++)
+            {
+                array[i, i] = scalar;
+
+                for (var j = i + 1; j < vSpaceDimension; j++)
+                {
+                    array[i, j] = scalarProcessor.ZeroScalar;
+                    array[j, i] = scalarProcessor.ZeroScalar;
+                }
+            }
+
+            var bivectorTerms = storage
+                .GetTerms()
+                .Where(term => term.BasisBlade.Grade == 2);
+
+            foreach (var term in bivectorTerms)
+            {
+                var bivectorScalar = term.Scalar;
+                var basisVectorIndices = 
+                    term.BasisBlade.GetBasisVectorIndices();
+
+                var index1 = basisVectorIndices[0];
+                var index2 = basisVectorIndices[1];
+
+                array[index1, index2] = bivectorScalar;
+                array[index2, index1] = scalarProcessor.Negative(bivectorScalar);
+            }
+
+            return array;
+        }
+
+        public static T[] KVectorToArray<T>(this IGaKVectorStorage<T> kVectorStorage, int vSpaceDimension)
+        {
+            var scalarProcessor = kVectorStorage.ScalarProcessor;
+
+            var arrayLength = (int) GaFrameUtils.KvSpaceDimension(
+                vSpaceDimension, 
+                kVectorStorage.Grade
+            );
+
+            var array = new T[arrayLength];
+
+            for (var index = 0; index < arrayLength; index++)
+                array[index] = scalarProcessor.ZeroScalar;
+
+            foreach (var (index, scalar) in kVectorStorage.GetIndexScalarPairs()) 
+                array[index] = scalar;
+
+            return array;
+        }
+
+        public static T[] MultivectorToArray<T>(this IGaMultivectorStorage<T> multivectorStorage, int vSpaceDimension)
+        {
+            var scalarProcessor = multivectorStorage.ScalarProcessor;
+
+            var arrayLength = (int) vSpaceDimension.ToGaSpaceDimension();
+
+            var array = new T[arrayLength];
+
+            for (var index = 0; index < arrayLength; index++)
+                array[index] = scalarProcessor.ZeroScalar;
+
+            foreach (var (index, scalar) in multivectorStorage.GetIdScalarPairs()) 
+                array[index] = scalar;
+
+            return array;
+        }
     }
 }

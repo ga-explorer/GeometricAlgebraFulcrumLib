@@ -89,6 +89,7 @@ namespace GeometricAlgebraLib.Symbolic.Mathematica.ExprFactory
         public static Mfs Expand { get; } = new Mfs("Expand");
         public static Mfs FullSimplify { get; } = new Mfs("FullSimplify");
         public static Mfs TrigReduce { get; } = new Mfs("TrigReduce");
+        public static Mfs PowerExpand { get; } = new Mfs("PowerExpand");
         public static Mfs ToRadicals { get; } = new Mfs("ToRadicals");
         public static Mfs ReplaceAll { get; } = new Mfs("ReplaceAll");
 

@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Text;
 using EuclideanGeometryLib.BasicMath.Tuples;
+using GeometricAlgebraLib.Implementations.Float64;
 using GeometricAlgebraLib.Processors.Scalars;
 
 namespace GeometricAlgebraLib.Geometry.Euclidean.Space2D

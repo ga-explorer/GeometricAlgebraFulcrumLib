@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using GeometricAlgebraLib.Frames;
+using GeometricAlgebraLib.Implementations.Float64;
 using GeometricAlgebraLib.Processors.Multivectors;
 using GeometricAlgebraLib.Processors.Scalars;
 using GeometricAlgebraLib.Storage;
-using MathNet.Numerics;
 using NUnit.Framework;
 
 namespace GeometricAlgebraLib.UnitTests.Storages
@@ -13,73 +11,41 @@ namespace GeometricAlgebraLib.UnitTests.Storages
     [TestFixture]
     public sealed class GaBladeRelationsTests
     {
-        private static readonly Random RandomGenerator 
-            = new Random(10);
+        private readonly GaRandomComposerFloat64 _randomGenerator;
 
-        private readonly IGaScalarProcessor<double> _scalarsDomain
-            = GaScalarProcessorFloat64.DefaultProcessor;
+        private readonly List<IGaKVectorStorage<double>> _bladesList;
 
-        private readonly List<GaVectorStorage<double>> _vectorsList
-            = new List<GaVectorStorage<double>>();
-
-        private readonly List<IGaKVectorStorage<double>> _bladesList
-            = new List<IGaKVectorStorage<double>>();
-
-        private readonly double _scalar
-            = RandomGenerator.NextDouble();
+        private readonly double _scalar;
 
         private GaScalarTermStorage<double> _scalarStorage;
 
 
-        public int VSpaceDimension { get; }
-            = 8;
+        public GaScalarProcessorFloat64 ScalarProcessor
+            => GaScalarProcessorFloat64.DefaultProcessor;
+
+        public int VSpaceDimension 
+            => 8;
 
         public ulong GaSpaceDimension
             => VSpaceDimension.ToGaSpaceDimension();
 
 
-        private Dictionary<ulong, double> GetRandomKVectorDictionary(int grade)
+        public GaBladeRelationsTests()
         {
-            return Enumerable
-                .Range(0, (int)GaFrameUtils.KvSpaceDimension(VSpaceDimension, grade))
-                .ToDictionary(
-                    index => (ulong)index, 
-                    _ => RandomGenerator.NextDouble()
-                );
+            _randomGenerator = new GaRandomComposerFloat64(VSpaceDimension,10);
+            _scalar = _randomGenerator.GetScalar();
+            _bladesList = new List<IGaKVectorStorage<double>>();
         }
 
-        private IGaKVectorStorage<double> GetRandomBlade(int grade)
-        {
-            if (grade == 0)
-                return GaScalarTermStorage<double>.Create(
-                    _scalarsDomain, 
-                    RandomGenerator.NextDouble()
-                );
-
-            var vectors =
-                _vectorsList
-                    .SelectPermutation(RandomGenerator)
-                    .Take(grade);
-
-            return _scalarsDomain.Op(vectors);
-        }
-
+        
         [OneTimeSetUp]
         public void ClassInit()
         {
-            for (var i = 0; i < 20; i++)
-                _vectorsList.Add(
-                    GaVectorStorage<double>.Create(
-                        _scalarsDomain, 
-                        GetRandomKVectorDictionary(1)
-                    )
-                );
-
             for (var grade = 0; grade <= VSpaceDimension; grade++)
-                _bladesList.Add(GetRandomBlade(grade));
+                _bladesList.Add(_randomGenerator.GetBlade(grade));
 
             _scalarStorage
-                = GaScalarTermStorage<double>.Create(_scalarsDomain, _scalar);
+                = GaScalarTermStorage<double>.Create(ScalarProcessor, _scalar);
         }
 
         [Test]

@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Linq;
 using DataStructuresLib.Extensions;
 using GeometricAlgebraLib.Geometry.Euclidean;
-using GeometricAlgebraLib.Processors.Matrices;
 using GeometricAlgebraLib.Processors.Multivectors;
 using GeometricAlgebraLib.Storage;
 using GeometricAlgebraLib.Storage.Composers;

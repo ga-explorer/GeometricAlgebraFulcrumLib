@@ -450,6 +450,15 @@ namespace GeometricAlgebraLib.Storage
             );
         }
 
+        public IEnumerable<Tuple<ulong, ulong, TScalar>> GetBasisVectorsIndexScalarTuples()
+        {
+            yield return new Tuple<ulong, ulong, TScalar>(
+                BasisBivector.BasisVectorIndex1, 
+                BasisBivector.BasisVectorIndex2, 
+                Scalar
+            );
+        }
+
         public IGaBivectorStorage<TScalar> Add(IGaBivectorStorage<TScalar> mv2)
         {
             var composer = new GaBivectorStorageComposer<TScalar>(ScalarProcessor);

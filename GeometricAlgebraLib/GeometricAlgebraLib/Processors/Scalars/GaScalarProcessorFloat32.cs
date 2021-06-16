@@ -203,10 +203,30 @@ namespace GeometricAlgebraLib.Processors.Scalars
         {
             return scalar > -ZeroEpsilon && scalar < ZeroEpsilon;
         }
-        
+
+        public float TextToScalar(string text)
+        {
+            return float.Parse(text);
+        }
+
         public float IntegerToScalar(int value)
         {
             return value;
+        }
+
+        public float Float64ToScalar(double value)
+        {
+            return (float) value;
+        }
+
+        public float GetRandomScalar(System.Random randomGenerator, double minValue, double maxValue)
+        {
+            return (float) (minValue + (maxValue - minValue) * randomGenerator.NextDouble());
+        }
+
+        public string ToText(float scalar)
+        {
+            return scalar.ToString("G");
         }
     }
 }

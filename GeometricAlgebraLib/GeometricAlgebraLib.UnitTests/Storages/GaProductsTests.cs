@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using GAPoTNumLib.GAPoT;
 using GeometricAlgebraLib.Frames;
+using GeometricAlgebraLib.Implementations.Float64;
 using GeometricAlgebraLib.Processors.Multivectors;
 using GeometricAlgebraLib.Processors.Scalars;
 using GeometricAlgebraLib.Storage;
@@ -13,39 +13,34 @@ namespace GeometricAlgebraLib.UnitTests.Storages
     [TestFixture]
     public sealed class GaProductsTests
     {
-        private static readonly Random RandomGenerator 
-            = new Random(10);
+        private readonly GaRandomComposerFloat64 _randomGenerator;
 
-        private readonly IGaScalarProcessor<double> _scalarsDomain
-            = GaScalarProcessorFloat64.DefaultProcessor;
+        private readonly List<IGaMultivectorStorage<double>> _mvList1;
 
-        private readonly List<IGaMultivectorStorage<double>> _mvList1
-            = new List<IGaMultivectorStorage<double>>();
+        private readonly List<GaPoTNumMultivector> _mvList2;
 
-        private readonly List<GaPoTNumMultivector> _mvList2
-            = new List<GaPoTNumMultivector>();
-
-        private readonly double _scalar
-            = RandomGenerator.NextDouble();
+        private readonly double _scalar;
 
 
-        public int VSpaceDimension { get; }
-            = 5;
+        public IGaScalarProcessor<double> ScalarProcessor
+            => GaScalarProcessorFloat64.DefaultProcessor;
+
+        public int VSpaceDimension 
+            => 5;
 
         public ulong GaSpaceDimension
             => VSpaceDimension.ToGaSpaceDimension();
 
 
-        private Dictionary<ulong, double> 
-            GetRandomKVectorDictionary(int grade)
+        public GaProductsTests()
         {
-            return Enumerable
-                .Range(0, (int)GaFrameUtils.KvSpaceDimension(VSpaceDimension, grade))
-                .ToDictionary(
-                    index => (ulong)index, 
-                    _ => RandomGenerator.NextDouble()
-                );
+            _randomGenerator = new GaRandomComposerFloat64(VSpaceDimension, 10);
+            _mvList1 = new List<IGaMultivectorStorage<double>>();
+            _mvList2 = new List<GaPoTNumMultivector>();
+            _scalar = _randomGenerator.GetScalar();
         }
+
+
 
         private GaPoTNumMultivector 
             CreateGaPoTMultivector(IGaMultivectorStorage<double> mvStorage)
@@ -236,101 +231,52 @@ namespace GeometricAlgebraLib.UnitTests.Storages
         {
             //Create a scalar storage
             _mvList1.Add(
-                GaScalarTermStorage<double>.Create(
-                    _scalarsDomain,
-                    RandomGenerator.NextDouble()
-                )
+                _randomGenerator.GetScalarTerm()
             );
 
             //Create a set of vector terms storages
-            for (var index = 0UL; index < (ulong) VSpaceDimension; index++)
+            for (var index = 0; index < VSpaceDimension; index++)
                 _mvList1.Add(
-                    GaVectorTermStorage<double>.Create(
-                        _scalarsDomain,
-                        index,
-                        RandomGenerator.NextDouble()
-                    )
+                    _randomGenerator.GetVectorTermByIndex((ulong) index)
                 );
 
             //Create a set of bivector terms storages
             var kvSpaceDimension2 = GaFrameUtils.KvSpaceDimension(VSpaceDimension, 2);
             for (var index = 0UL; index < kvSpaceDimension2; index++)
                 _mvList1.Add(
-                    GaBivectorTermStorage<double>.Create(
-                        _scalarsDomain,
-                        index,
-                        RandomGenerator.NextDouble()
-                    )
+                    _randomGenerator.GetBivectorTermByIndex(index)
                 );
 
             //Create a set of blade terms storages
             for (var id = 0UL; id < GaSpaceDimension; id++)
                 _mvList1.Add(
-                    GaKVectorTermStorage<double>.Create(
-                        _scalarsDomain,
-                        id,
-                        RandomGenerator.NextDouble()
-                    )
+                    _randomGenerator.GetKVectorTermById(id)
                 );
 
             //Create a vector storage
             _mvList1.Add(
-                GaVectorStorage<double>.Create(
-                    _scalarsDomain, 
-                    GetRandomKVectorDictionary(1)
-                )
+                _randomGenerator.GetVector()
             );
 
             //Create a bivector storage
             _mvList1.Add(
-                GaBivectorStorage<double>.Create(
-                    _scalarsDomain, 
-                    GetRandomKVectorDictionary(2)
-                )
+                _randomGenerator.GetBivector()
             );
 
             //Create k-vector storages
             for (var grade = 0; grade <= VSpaceDimension; grade++)
                 _mvList1.Add(
-                    GaKVectorStorage<double>.Create(
-                        _scalarsDomain, 
-                        grade,
-                        GetRandomKVectorDictionary(grade)
-                    )
+                    _randomGenerator.GetKVectorOfGrade(grade)
                 );
 
             //Create graded multivector storage
-            var gradeIndexScalarDictionary = 
-                new Dictionary<int, Dictionary<ulong, double>>();
-
-            for (var grade = 0; grade <= VSpaceDimension; grade++)
-                gradeIndexScalarDictionary.Add(
-                    grade, 
-                    GetRandomKVectorDictionary(grade)
-                );
-
             _mvList1.Add(
-                GaMultivectorGradedStorage<double>.Create(
-                    _scalarsDomain, 
-                    gradeIndexScalarDictionary
-                )
+                _randomGenerator.GetGradedMultivector()
             );
 
             //Create terms multivector storage
-            var idScalarDictionary = 
-                new Dictionary<ulong, double>();
-
-            for (var id = 0UL; id < GaSpaceDimension; id++)
-                idScalarDictionary.Add(
-                    id, 
-                    RandomGenerator.NextDouble()
-                );
-
             _mvList1.Add(
-                GaMultivectorTermsStorage<double>.Create(
-                    _scalarsDomain, 
-                    idScalarDictionary
-                )
+                _randomGenerator.GetMultivector()
             );
 
             //Convert all storages into multivector terms storages
@@ -407,7 +353,7 @@ namespace GeometricAlgebraLib.UnitTests.Storages
                     var result2 = testedFunction2(termsStorage1, termsStorage2);
 
                     var storageDiff = GaScalarTermStorage<double>.Create(
-                        _scalarsDomain, 
+                        ScalarProcessor, 
                         result1 - result2
                     );
 
@@ -461,7 +407,7 @@ namespace GeometricAlgebraLib.UnitTests.Storages
                 var result2 = testedFunction2(termsStorage1);
 
                 var storageDiff = GaScalarTermStorage<double>.Create(
-                    _scalarsDomain,
+                    ScalarProcessor,
                     result1 - result2
                 );
 

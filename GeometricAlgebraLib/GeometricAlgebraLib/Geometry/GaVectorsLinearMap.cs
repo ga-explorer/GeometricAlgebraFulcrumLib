@@ -16,6 +16,33 @@ namespace GeometricAlgebraLib.Geometry
 {
     public sealed class GaVectorsLinearMap<T> : IGaVectorsLinearMap<T>
     {
+        public static GaVectorsLinearMap<T> Create(IGaScalarProcessor<T> scalarProcessor, int basisVectorsCount, Func<IGaVectorStorage<T>, IGaVectorStorage<T>> basisVectorMappingFunc)
+        {
+            var basisVectorImagesDictionary = 
+                new Dictionary<ulong, IGaVectorStorage<T>>();
+
+            for (var index = 0; index < basisVectorsCount; index++)
+            {
+                var basisVector = GaVectorTermStorage<T>.CreateBasisVector(
+                    scalarProcessor, 
+                    index
+                );
+
+                var mappedBasisVector = 
+                    basisVectorMappingFunc(basisVector);
+
+                basisVectorImagesDictionary.Add(
+                    (ulong) index, 
+                    mappedBasisVector
+                );
+            }
+
+            return new GaVectorsLinearMap<T>(
+                scalarProcessor,
+                basisVectorImagesDictionary
+            );
+        }
+
         public static GaVectorsLinearMap<T> Create(IGaScalarProcessor<T> scalarProcessor, Dictionary<ulong, IGaVectorStorage<T>> basisVectorImagesDictionary)
         {
             return new GaVectorsLinearMap<T>(

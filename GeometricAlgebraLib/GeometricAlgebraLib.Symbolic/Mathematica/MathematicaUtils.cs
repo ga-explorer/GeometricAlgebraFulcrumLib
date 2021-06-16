@@ -284,6 +284,13 @@ namespace GeometricAlgebraLib.Symbolic.Mathematica
                 : MathematicaInterface.DefaultCas[Mfs.Simplify[expr]];
         }
 
+        public static Expr Simplify(this Expr expr, Expr assumeExpr)
+        {
+            return MathematicaInterface.DefaultCas[
+                Mfs.Simplify[expr, assumeExpr]
+            ];
+        }
+
         public static Expr Simplify(this Expr expr, MathematicaInterface casInterface)
         {
             return expr.AtomQ() 
@@ -322,6 +329,13 @@ namespace GeometricAlgebraLib.Symbolic.Mathematica
             return expr.AtomQ() 
                 ? expr 
                 : MathematicaInterface.DefaultCas[Mfs.FullSimplify[expr]];
+        }
+
+        public static Expr FullSimplify(this Expr expr, Expr assumptionsExpr)
+        {
+            return MathematicaInterface.DefaultCas[
+                Mfs.FullSimplify[expr, assumptionsExpr]
+            ];
         }
 
         public static Expr FullSimplify(this Expr expr, MathematicaInterface casInterface)

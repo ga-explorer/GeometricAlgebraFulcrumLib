@@ -220,10 +220,36 @@ namespace GeometricAlgebraLib.Processors.Scalars
             return scalar.Real > -ZeroEpsilon && scalar.Real < ZeroEpsilon &&
                    scalar.Imaginary > -ZeroEpsilon && scalar.Imaginary < ZeroEpsilon;
         }
-        
+
+        public Complex TextToScalar(string text)
+        {
+            throw new NotImplementedException();
+        }
+
         public Complex IntegerToScalar(int value)
         {
             return new(value, 0);
+        }
+
+        public Complex Float64ToScalar(double value)
+        {
+            return new Complex(value, 0d);
+        }
+
+        public Complex GetRandomScalar(System.Random randomGenerator, double minValue, double maxValue)
+        {
+            var realPart = 
+                minValue + (maxValue - minValue) * randomGenerator.NextDouble();
+
+            return new Complex(
+                randomGenerator.NextDouble(),
+                randomGenerator.NextDouble()
+            );
+        }
+
+        public string ToText(Complex scalar)
+        {
+            return scalar.ToString("G");
         }
     }
 }

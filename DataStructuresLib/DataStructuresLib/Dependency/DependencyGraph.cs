@@ -18,10 +18,8 @@ namespace DataStructuresLib.Dependency
         /// <summary>
         /// Returns all dependency information for all items in this graph
         /// </summary>
-        public IEnumerable<DependencyInfo<TItem>> Items
-        {
-            get { return _dependencies.Values; }
-        }
+        public IEnumerable<DependencyInfo<TItem>> Items 
+            => _dependencies.Values;
 
         /// <summary>
         /// Returns all dependency information for items having no user items in this graph
@@ -92,10 +90,7 @@ namespace DataStructuresLib.Dependency
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        public DependencyInfo<TItem> this[TKey key]
-        {
-            get { return _dependencies[key]; }
-        }
+        public DependencyInfo<TItem> this[TKey key] => _dependencies[key];
 
         /// <summary>
         /// Remove all dependency information in this graph

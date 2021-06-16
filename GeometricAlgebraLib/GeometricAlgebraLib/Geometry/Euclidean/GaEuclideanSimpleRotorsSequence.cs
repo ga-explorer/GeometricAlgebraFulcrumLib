@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using GeometricAlgebraLib.Implementations.Float64;
 using GeometricAlgebraLib.Processors.Multivectors;
 using GeometricAlgebraLib.Processors.Scalars;
 using GeometricAlgebraLib.Storage;
