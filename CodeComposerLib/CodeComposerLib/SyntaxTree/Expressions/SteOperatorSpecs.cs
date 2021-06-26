@@ -2,7 +2,7 @@
 {
     public enum SteOperatorPosition { Infix = 0, Prefix = 1, Suffix = 2 }
 
-    public enum SteOperatorAssociation { None = 0, Left = 1, Right = 2 }
+    public enum SteOperatorAssociation { None = 0, Left = 1, Right = 2, LeftRight = 3 }
 
 
     public class SteOperatorSpecs : ISteCompositeHeadSpecs

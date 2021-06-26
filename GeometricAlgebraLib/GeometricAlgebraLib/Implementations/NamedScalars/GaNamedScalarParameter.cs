@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using GeometricAlgebraLib.Processors.Scalars;
+﻿using GeometricAlgebraLib.Processors.Scalars;
 
 namespace GeometricAlgebraLib.Implementations.NamedScalars
 {
     public sealed class GaNamedScalarParameter<TScalar> :
-        IGaNamedScalar<TScalar>
+        IGaInputNamedScalar<TScalar>
     {
         public GaNamedScalarsCollection<TScalar> NamedScalarsCollection { get; }
 
@@ -20,7 +18,7 @@ namespace GeometricAlgebraLib.Implementations.NamedScalars
         public string ScalarName { get; }
 
         private string _finalScalarName = string.Empty;
-        public string FinalScalarName
+        public string ExternalName
         {
             get => string.IsNullOrEmpty(_finalScalarName) ? ScalarName : _finalScalarName;
             set => _finalScalarName = value ?? string.Empty;
@@ -34,13 +32,18 @@ namespace GeometricAlgebraLib.Implementations.NamedScalars
         public string RhsScalarValueText 
             => ScalarName;
 
+        public TScalar FinalRhsScalarValue { get; set; }
+
+        public string FinalRhsScalarValueText 
+            => SymbolicScalarProcessor.ToText(FinalRhsScalarValue);
+
         public bool IsConstant 
             => false;
 
         public bool IsParameter 
             => true;
 
-        public bool IsInput 
+        public bool IsIndependent 
             => true;
 
         public bool IsIntermediate 
@@ -49,23 +52,26 @@ namespace GeometricAlgebraLib.Implementations.NamedScalars
         public bool IsOutput 
             => false;
 
-        public bool IsVariable 
+        public bool IsDependent 
             => false;
 
         public bool IsUsedForOutputVariables { get; set; }
 
-        public IEnumerable<IGaNamedScalar<TScalar>> DependsOnScalars 
-            => Enumerable.Empty<IGaNamedScalar<TScalar>>();
 
-
-        internal GaNamedScalarParameter(GaNamedScalarsCollection<TScalar> baseCollection, int scalarId, string scalarName)
+        internal GaNamedScalarParameter(GaNamedScalarsCollection<TScalar> baseCollection, string scalarName)
         {
             NamedScalarsCollection = baseCollection;
-            ScalarId = scalarId;
+            ScalarId = baseCollection.GetNextNamedScalarId();
             ScalarName = scalarName;
             LhsScalarValue = SymbolicScalarProcessor.TextToScalar(scalarName);
+            FinalRhsScalarValue = SymbolicScalarProcessor.ZeroScalar;
         }
         
+
+        public TScalar GetScalarValue(bool useRhsScalarValue)
+        {
+            return LhsScalarValue;
+        }
 
         public override string ToString()
         {
@@ -73,7 +79,7 @@ namespace GeometricAlgebraLib.Implementations.NamedScalars
                 ? "    Used" 
                 : "Not Used";
 
-            return $"{isUsedText} Parameter    \"{FinalScalarName}\": {ScalarName}";
+            return $"{isUsedText} Parameter    \"{ExternalName}\": {ScalarName}";
         }
     }
 }

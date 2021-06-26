@@ -90,7 +90,7 @@ namespace CodeComposerLib
 
 
         /// <summary>
-        /// Initialize peremetric text templates used for code generation. This method is called every time
+        /// Initialize parametric text templates used for code generation. This method is called every time
         /// the Initialize() method is called and TemplatesReady = false. The new value for TemplatesReady is
         /// set in the Initialize() method using the returned value from InitializeTemplates()
         /// </summary>

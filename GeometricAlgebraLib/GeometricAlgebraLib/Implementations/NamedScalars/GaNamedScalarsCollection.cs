@@ -14,16 +14,18 @@ namespace GeometricAlgebraLib.Implementations.NamedScalars
 
         private int _namedScalarId = -1;
 
+        private int _computationOrder = -1;
+
         private readonly Dictionary<string, IGaNamedScalar<TScalar>> _rhsScalarValueTextDictionary
             = new Dictionary<string, IGaNamedScalar<TScalar>>();
 
-        private readonly Dictionary<string, GaNamedScalarConstant<TScalar>> _constantNamedScalarsDictionary
+        private readonly Dictionary<string, GaNamedScalarConstant<TScalar>> _constantsDictionary
             = new Dictionary<string, GaNamedScalarConstant<TScalar>>();
 
-        private readonly Dictionary<string, GaNamedScalarParameter<TScalar>> _parameterNamedScalarsDictionary
+        private readonly Dictionary<string, GaNamedScalarParameter<TScalar>> _parametersDictionary
             = new Dictionary<string, GaNamedScalarParameter<TScalar>>();
 
-        private readonly Dictionary<string, GaNamedScalarVariable<TScalar>> _variableNamedScalarsDictionary
+        private readonly Dictionary<string, GaNamedScalarVariable<TScalar>> _variablesDictionary
             = new Dictionary<string, GaNamedScalarVariable<TScalar>>();
 
 
@@ -39,41 +41,51 @@ namespace GeometricAlgebraLib.Implementations.NamedScalars
 
         public string DefaultSymbolName { get; }
 
-        public IEnumerable<GaNamedScalarConstant<TScalar>> ConstantNamedScalars
-            => _constantNamedScalarsDictionary
+        public bool MergeScalars { get; set; }
+
+        public IEnumerable<GaNamedScalarConstant<TScalar>> Constants
+            => _constantsDictionary
                 .Values
                 .OrderBy(scalar => scalar.ScalarId);
 
-        public IEnumerable<GaNamedScalarParameter<TScalar>> ParameterNamedScalars
-            => _parameterNamedScalarsDictionary
+        public IEnumerable<GaNamedScalarParameter<TScalar>> Parameters
+            => _parametersDictionary
                 .Values
                 .OrderBy(scalar => scalar.ScalarId);
 
-        public IEnumerable<GaNamedScalarVariable<TScalar>> VariableNamedScalars
-            => _variableNamedScalarsDictionary.Values.OrderBy(scalar => scalar.ScalarId);
+        public IEnumerable<IGaInputNamedScalar<TScalar>> Inputs
+            => _constantsDictionary
+                .Values
+                .Cast<IGaInputNamedScalar<TScalar>>()
+                .Concat(_parametersDictionary.Values)
+                .OrderBy(scalar => scalar.ScalarId);
 
-        public IEnumerable<GaNamedScalarVariable<TScalar>> IntermediateVariableNamedScalars
-            => _variableNamedScalarsDictionary
+        public IEnumerable<GaNamedScalarVariable<TScalar>> Variables
+            => _variablesDictionary.Values.OrderBy(scalar => scalar.ScalarId);
+
+        public IEnumerable<GaNamedScalarVariable<TScalar>> IntermediateVariables
+            => _variablesDictionary
                 .Values
                 .Where(s => !s.IsOutput)
                 .OrderBy(scalar => scalar.ScalarId);
 
-        public IEnumerable<GaNamedScalarVariable<TScalar>> OutputVariableNamedScalars
-            => _variableNamedScalarsDictionary
+        public IEnumerable<GaNamedScalarVariable<TScalar>> OutputVariables
+            => _variablesDictionary
                 .Values
                 .Where(s => s.IsOutput)
                 .OrderBy(scalar => scalar.ScalarId);
 
         public IEnumerable<IGaNamedScalar<TScalar>> NamedScalars
-            => _constantNamedScalarsDictionary
+            => _constantsDictionary
                 .Values
                 .Cast<IGaNamedScalar<TScalar>>()
-                .Concat(_parameterNamedScalarsDictionary.Values)
-                .Concat(_variableNamedScalarsDictionary.Values)
+                .Concat(_parametersDictionary.Values)
+                .Concat(_variablesDictionary.Values)
                 .OrderBy(scalar => scalar.ScalarId);
 
 
-        public GaNamedScalarsCollection([NotNull] IGaSymbolicScalarProcessor<TScalar> symbolicScalarProcessor, [NotNull] string defaultSymbolName)
+        public GaNamedScalarsCollection([NotNull] IGaSymbolicScalarProcessor<TScalar> symbolicScalarProcessor,
+            [NotNull] string defaultSymbolName)
         {
             NamedScalarProcessor = new GaScalarProcessorNamedScalar<TScalar>(this);
             SymbolicScalarProcessor = symbolicScalarProcessor;
@@ -92,22 +104,68 @@ namespace GeometricAlgebraLib.Implementations.NamedScalars
             return $"{DefaultSymbolName}{_tempNamesIndex}";
         }
 
-        private int GetNamedScalarId()
+        internal int GetNextNamedScalarId()
         {
             _namedScalarId++;
 
             return _namedScalarId;
         }
 
+        internal int GetNextComputationOrder()
+        {
+            _computationOrder++;
+
+            return _computationOrder;
+        }
+
+        public bool IsValid()
+        {
+            return true;
+        }
+
+        public bool TryGetNamedScalarByName(string scalarName, out IGaNamedScalar<TScalar> namedScalar)
+        {
+            if (_constantsDictionary.TryGetValue(scalarName, out var constantNamedScalar))
+            {
+                namedScalar = constantNamedScalar;
+                return true;
+            }
+
+            if (_parametersDictionary.TryGetValue(scalarName, out var parameterNamedScalar))
+            {
+                namedScalar = parameterNamedScalar;
+                return true;
+            }
+
+            if (_variablesDictionary.TryGetValue(scalarName, out var computedNamedScalar))
+            {
+                namedScalar = computedNamedScalar;
+                return true;
+            }
+
+            namedScalar = null;
+            return false;
+        }
+
+        public bool TryGetNamedScalarByValueText(string rhsScalarValueText, out IGaNamedScalar<TScalar> namedScalar)
+        {
+            return _rhsScalarValueTextDictionary.TryGetValue(rhsScalarValueText, out namedScalar);
+        }
+
+        public bool TryGetParameterByName(string scalarName, out GaNamedScalarParameter<TScalar> namedScalar)
+        {
+            return _parametersDictionary.TryGetValue(scalarName, out namedScalar);
+        }
+
         public IGaNamedScalar<TScalar> GetNamedScalarByName(string scalarName)
         {
-            if (_constantNamedScalarsDictionary.TryGetValue(scalarName, out var constantNamedScalar))
+            if (_constantsDictionary.TryGetValue(scalarName, out var constantNamedScalar))
                 return constantNamedScalar;
 
-            if (_parameterNamedScalarsDictionary.TryGetValue(scalarName, out var parameterNamedScalar))
+            if (_parametersDictionary.TryGetValue(scalarName, out var parameterNamedScalar))
                 return parameterNamedScalar;
 
-            if (_variableNamedScalarsDictionary.TryGetValue(scalarName, out var computedNamedScalar))
+            if (_variablesDictionary.TryGetValue(scalarName, out var computedNamedScalar))
                 return computedNamedScalar;
 
             throw new KeyNotFoundException(scalarName);
@@ -121,18 +179,17 @@ namespace GeometricAlgebraLib.Implementations.NamedScalars
             throw new KeyNotFoundException(rhsScalarValueText);
         }
 
-        public GaNamedScalarParameter<TScalar> GetParameterNamedScalar(string scalarName)
+        public GaNamedScalarParameter<TScalar> GetParameterByName(string scalarName)
         {
-            if (_parameterNamedScalarsDictionary.TryGetValue(scalarName, out var namedScalar))
+            if (_parametersDictionary.TryGetValue(scalarName, out var namedScalar))
                 return namedScalar;
 
             namedScalar = new GaNamedScalarParameter<TScalar>(
                 this, 
-                GetNamedScalarId(),
                 scalarName
             );
 
-            _parameterNamedScalarsDictionary.Add(
+            _parametersDictionary.Add(
                 scalarName,
                 namedScalar
             );
@@ -145,20 +202,19 @@ namespace GeometricAlgebraLib.Implementations.NamedScalars
             return namedScalar;
         }
 
-        public GaNamedScalarConstant<TScalar> GetConstantNamedScalar(TScalar scalar)
+        public GaNamedScalarConstant<TScalar> GetOrDefineConstant(TScalar scalar)
         {
             var scalarName = SymbolicScalarProcessor.ToText(scalar);
 
-            if (_constantNamedScalarsDictionary.TryGetValue(scalarName, out var namedScalar))
+            if (_constantsDictionary.TryGetValue(scalarName, out var namedScalar))
                 return namedScalar;
 
             namedScalar = new GaNamedScalarConstant<TScalar>(
                 this, 
-                GetNamedScalarId(),
                 scalar
             );
 
-            _constantNamedScalarsDictionary.Add(
+            _constantsDictionary.Add(
                 scalarName, 
                 namedScalar
             );
@@ -171,66 +227,66 @@ namespace GeometricAlgebraLib.Implementations.NamedScalars
             return namedScalar;
         }
 
-        public GaNamedScalarVariable<TScalar> GetVariableNamedScalar(Func<TScalar, TScalar> computingFunc, IGaNamedScalar<TScalar> namedScalar)
+        public GaNamedScalarVariable<TScalar> GetOrDefineVariable(Func<TScalar, TScalar> computingFunc, IGaNamedScalar<TScalar> dependsOnNamedScalar)
         {
-            var scalar = computingFunc(
-                namedScalar.LhsScalarValue
+            var rhsScalarValue = computingFunc(
+                dependsOnNamedScalar.GetScalarValue(MergeScalars)
             );
 
-            return GetVariableNamedScalar(
-                scalar,
-                namedScalar
+            return GetOrDefineVariable(
+                rhsScalarValue,
+                dependsOnNamedScalar
             );
         }
 
-        public GaNamedScalarVariable<TScalar> GetVariableNamedScalar(Func<TScalar, TScalar, TScalar> computingFunc, IGaNamedScalar<TScalar> namedScalar1, IGaNamedScalar<TScalar> namedScalar2)
+        public GaNamedScalarVariable<TScalar> GetOrDefineVariable(Func<TScalar, TScalar, TScalar> computingFunc, IGaNamedScalar<TScalar> dependsOnNamedScalar1, IGaNamedScalar<TScalar> dependsOnNamedScalar2)
         {
-            var scalar = computingFunc(
-                namedScalar1.LhsScalarValue,
-                namedScalar2.LhsScalarValue
+            var rhsScalarValue = computingFunc(
+                dependsOnNamedScalar1.GetScalarValue(MergeScalars),
+                dependsOnNamedScalar2.GetScalarValue(MergeScalars)
             );
 
-            return GetVariableNamedScalar(
-                scalar,
-                namedScalar1,
-                namedScalar2
+            return GetOrDefineVariable(
+                rhsScalarValue,
+                dependsOnNamedScalar1,
+                dependsOnNamedScalar2
             );
         }
 
-        public GaNamedScalarVariable<TScalar> GetVariableNamedScalar(Func<TScalar, TScalar, TScalar, TScalar> computingFunc, IGaNamedScalar<TScalar> namedScalar1, IGaNamedScalar<TScalar> namedScalar2, IGaNamedScalar<TScalar> namedScalar3)
+        public GaNamedScalarVariable<TScalar> GetOrDefineVariable(Func<TScalar, TScalar, TScalar, TScalar> computingFunc, IGaNamedScalar<TScalar> dependsOnNamedScalar1, IGaNamedScalar<TScalar> dependsOnNamedScalar2, IGaNamedScalar<TScalar> dependsOnNamedScalar3)
         {
-            var scalar = computingFunc(
-                namedScalar1.LhsScalarValue,
-                namedScalar2.LhsScalarValue,
-                namedScalar3.LhsScalarValue
+            var rhsScalarValue = computingFunc(
+                dependsOnNamedScalar1.GetScalarValue(MergeScalars),
+                dependsOnNamedScalar2.GetScalarValue(MergeScalars),
+                dependsOnNamedScalar3.GetScalarValue(MergeScalars)
             );
 
-            return GetVariableNamedScalar(
-                scalar,
-                namedScalar1,
-                namedScalar2,
-                namedScalar3
+            return GetOrDefineVariable(
+                rhsScalarValue,
+                dependsOnNamedScalar1,
+                dependsOnNamedScalar2,
+                dependsOnNamedScalar3
             );
         }
 
-        public GaNamedScalarVariable<TScalar> GetVariableNamedScalar(Func<IEnumerable<TScalar>, TScalar> computingFunc, IEnumerable<IGaNamedScalar<TScalar>> namedScalarsList)
+        public GaNamedScalarVariable<TScalar> GetOrDefineVariable(Func<IEnumerable<TScalar>, TScalar> computingFunc, IEnumerable<IGaNamedScalar<TScalar>> dependsOnNamedScalars)
         {
             var namedScalarsArray = 
-                namedScalarsList.ToArray();
+                dependsOnNamedScalars.ToArray();
 
-            var scalar = computingFunc(
-                namedScalarsArray.Select(namedScalar => namedScalar.LhsScalarValue)
+            var rhsScalarValue = computingFunc(
+                namedScalarsArray.Select(namedScalar => namedScalar.GetScalarValue(MergeScalars))
             );
 
-            return GetVariableNamedScalar(
-                scalar,
+            return GetOrDefineVariable(
+                rhsScalarValue,
                 namedScalarsArray
             );
         }
 
-        public GaNamedScalarVariable<TScalar> GetVariableNamedScalar(TScalar scalar, IGaNamedScalar<TScalar> dependsOnScalar)
+        public GaNamedScalarVariable<TScalar> GetOrDefineVariable(TScalar scalarValue, IGaNamedScalar<TScalar> dependsOnNamedScalar)
         {
-            var scalarText = SymbolicScalarProcessor.ToText(scalar);
+            var scalarText = SymbolicScalarProcessor.ToText(scalarValue);
 
             if (_rhsScalarValueTextDictionary.TryGetValue(scalarText, out var namedScalar) && namedScalar is GaNamedScalarVariable<TScalar> variableNamedScalar)
                 return variableNamedScalar;
@@ -239,13 +295,12 @@ namespace GeometricAlgebraLib.Implementations.NamedScalars
 
             variableNamedScalar = new GaNamedScalarVariable<TScalar>(
                 this,
-                GetNamedScalarId(),
                 scalarName,
-                scalar,
-                new []{dependsOnScalar}
+                scalarValue,
+                new []{dependsOnNamedScalar}
             );
 
-            _variableNamedScalarsDictionary.Add(
+            _variablesDictionary.Add(
                 scalarName, 
                 variableNamedScalar
             );
@@ -258,9 +313,9 @@ namespace GeometricAlgebraLib.Implementations.NamedScalars
             return variableNamedScalar;
         }
 
-        public GaNamedScalarVariable<TScalar> GetVariableNamedScalar(TScalar scalar, IGaNamedScalar<TScalar> dependsOnScalar1, IGaNamedScalar<TScalar> dependsOnScalar2)
+        public GaNamedScalarVariable<TScalar> GetOrDefineVariable(TScalar scalarValue, IGaNamedScalar<TScalar> dependsOnNamedScalar1, IGaNamedScalar<TScalar> dependsOnNamedScalar2)
         {
-            var scalarText = SymbolicScalarProcessor.ToText(scalar);
+            var scalarText = SymbolicScalarProcessor.ToText(scalarValue);
 
             if (_rhsScalarValueTextDictionary.TryGetValue(scalarText, out var namedScalar) && namedScalar is GaNamedScalarVariable<TScalar> variableNamedScalar)
                 return variableNamedScalar;
@@ -269,13 +324,12 @@ namespace GeometricAlgebraLib.Implementations.NamedScalars
 
             variableNamedScalar = new GaNamedScalarVariable<TScalar>(
                 this,
-                GetNamedScalarId(),
                 scalarName,
-                scalar,
-                new []{dependsOnScalar1, dependsOnScalar2}
+                scalarValue,
+                new []{dependsOnNamedScalar1, dependsOnNamedScalar2}
             );
 
-            _variableNamedScalarsDictionary.Add(
+            _variablesDictionary.Add(
                 scalarName, 
                 variableNamedScalar
             );
@@ -288,9 +342,9 @@ namespace GeometricAlgebraLib.Implementations.NamedScalars
             return variableNamedScalar;
         }
 
-        public GaNamedScalarVariable<TScalar> GetVariableNamedScalar(TScalar scalar, IGaNamedScalar<TScalar> dependsOnScalar1, IGaNamedScalar<TScalar> dependsOnScalar2, IGaNamedScalar<TScalar> dependsOnScalar3)
+        public GaNamedScalarVariable<TScalar> GetOrDefineVariable(TScalar scalarValue, IGaNamedScalar<TScalar> dependsOnNamedScalar1, IGaNamedScalar<TScalar> dependsOnNamedScalar2, IGaNamedScalar<TScalar> dependsOnNamedScalar3)
         {
-            var scalarText = SymbolicScalarProcessor.ToText(scalar);
+            var scalarText = SymbolicScalarProcessor.ToText(scalarValue);
 
             if (_rhsScalarValueTextDictionary.TryGetValue(scalarText, out var namedScalar) && namedScalar is GaNamedScalarVariable<TScalar> variableNamedScalar)
                 return variableNamedScalar;
@@ -299,13 +353,12 @@ namespace GeometricAlgebraLib.Implementations.NamedScalars
 
             variableNamedScalar = new GaNamedScalarVariable<TScalar>(
                 this,
-                GetNamedScalarId(),
                 scalarName,
-                scalar,
-                new []{dependsOnScalar1, dependsOnScalar2, dependsOnScalar3}
+                scalarValue,
+                new []{dependsOnNamedScalar1, dependsOnNamedScalar2, dependsOnNamedScalar3}
             );
 
-            _variableNamedScalarsDictionary.Add(
+            _variablesDictionary.Add(
                 scalarName, 
                 variableNamedScalar
             );
@@ -318,9 +371,9 @@ namespace GeometricAlgebraLib.Implementations.NamedScalars
             return variableNamedScalar;
         }
 
-        public GaNamedScalarVariable<TScalar> GetVariableNamedScalar(TScalar scalar, params IGaNamedScalar<TScalar>[] dependsOnScalars)
+        public GaNamedScalarVariable<TScalar> GetOrDefineVariable(TScalar scalarValue, params IGaNamedScalar<TScalar>[] dependsOnNamedScalars)
         {
-            var scalarText = SymbolicScalarProcessor.ToText(scalar);
+            var scalarText = SymbolicScalarProcessor.ToText(scalarValue);
 
             if (_rhsScalarValueTextDictionary.TryGetValue(scalarText, out var namedScalar) && namedScalar is GaNamedScalarVariable<TScalar> variableNamedScalar)
                 return variableNamedScalar;
@@ -329,13 +382,12 @@ namespace GeometricAlgebraLib.Implementations.NamedScalars
 
             variableNamedScalar = new GaNamedScalarVariable<TScalar>(
                 this,
-                GetNamedScalarId(),
                 scalarName,
-                scalar,
-                dependsOnScalars
+                scalarValue,
+                dependsOnNamedScalars
             );
 
-            _variableNamedScalarsDictionary.Add(
+            _variablesDictionary.Add(
                 scalarName, 
                 variableNamedScalar
             );
@@ -348,9 +400,9 @@ namespace GeometricAlgebraLib.Implementations.NamedScalars
             return variableNamedScalar;
         }
 
-        public GaNamedScalarVariable<TScalar> GetVariableNamedScalar(TScalar scalar, IEnumerable<IGaNamedScalar<TScalar>> dependsOnScalars)
+        public GaNamedScalarVariable<TScalar> GetOrDefineVariable(TScalar scalarValue, IEnumerable<IGaNamedScalar<TScalar>> dependsOnNamedScalars)
         {
-            var scalarText = SymbolicScalarProcessor.ToText(scalar);
+            var scalarText = SymbolicScalarProcessor.ToText(scalarValue);
 
             if (_rhsScalarValueTextDictionary.TryGetValue(scalarText, out var namedScalar) && namedScalar is GaNamedScalarVariable<TScalar> variableNamedScalar)
                 return variableNamedScalar;
@@ -359,13 +411,12 @@ namespace GeometricAlgebraLib.Implementations.NamedScalars
 
             variableNamedScalar = new GaNamedScalarVariable<TScalar>(
                 this,
-                GetNamedScalarId(),
                 scalarName,
-                scalar,
-                dependsOnScalars
+                scalarValue,
+                dependsOnNamedScalars
             );
 
-            _variableNamedScalarsDictionary.Add(
+            _variablesDictionary.Add(
                 scalarName, 
                 variableNamedScalar
             );
@@ -389,33 +440,36 @@ namespace GeometricAlgebraLib.Implementations.NamedScalars
                 if (!namedScalar.IsUsedForOutputVariables) 
                     continue;
 
-                foreach (var rhsNamedScalar in namedScalar.DependsOnScalars)
+                if (namedScalar is not GaNamedScalarVariable<TScalar> variableNamedScalar) 
+                    continue;
+
+                foreach (var rhsNamedScalar in variableNamedScalar.RhsNamedScalars)
                     rhsNamedScalar.IsUsedForOutputVariables = true;
             }
 
-            _constantNamedScalarsDictionary.Remove(
-                _constantNamedScalarsDictionary
+            _constantsDictionary.Remove(
+                _constantsDictionary
                     .Values
                     .Where(scalar => !scalar.IsUsedForOutputVariables)
                     .Select(scalar => scalar.ScalarName)
             );
 
-            _parameterNamedScalarsDictionary.Remove(
-                _parameterNamedScalarsDictionary
+            _parametersDictionary.Remove(
+                _parametersDictionary
                     .Values
                     .Where(scalar => !scalar.IsUsedForOutputVariables)
                     .Select(scalar => scalar.ScalarName)
             );
 
-            _variableNamedScalarsDictionary.Remove(
-                _variableNamedScalarsDictionary
+            _variablesDictionary.Remove(
+                _variablesDictionary
                     .Values
                     .Where(scalar => scalar.IsIntermediate && !scalar.IsUsedForOutputVariables)
                     .Select(scalar => scalar.ScalarName)
             );
 
-            _variableNamedScalarsDictionary.Remove(
-                _variableNamedScalarsDictionary
+            _variablesDictionary.Remove(
+                _variablesDictionary
                     .Values
                     .Where(scalar => !scalar.IsUsedForOutputVariables)
                     .Select(scalar => scalar.RhsScalarValueText)

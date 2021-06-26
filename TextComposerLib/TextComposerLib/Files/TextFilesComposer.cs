@@ -842,16 +842,11 @@ namespace TextComposerLib.Files
             foreach (var fileComposer in Files)
                 if (!fileComposer.IsFinalized) fileComposer.FinalizeText();
 
-            var s = new StringBuilder();
-
-            foreach (var pair in _fileComposersDictionary)
-                s.AppendLine($"File <{pair.Key}>:")
-                    .AppendLine(pair.Value.GetFinalContents(RootFolder, FilesEncoding))
-                    .AppendLine();
+            var text = ToString();
 
             try
             {
-                File.WriteAllText(filePath, s.ToString(), FilesEncoding);
+                File.WriteAllText(filePath, text, FilesEncoding);
             }
             catch (Exception e)
             {
@@ -1005,12 +1000,14 @@ namespace TextComposerLib.Files
 
         public override string ToString()
         {
-            var s = new StringBuilder();
+            var composer = new StringBuilder();
 
-            foreach (var pair in _fileComposersDictionary)
-                s.AppendLine(pair.Key);
+            foreach (var (fileName, textFileComposer) in _fileComposersDictionary)
+                composer.AppendLine($"File <{fileName}>:")
+                    .AppendLine(textFileComposer.GetFinalContents(RootFolder, FilesEncoding))
+                    .AppendLine();
 
-            return s.ToString();
+            return composer.ToString();
         }
     }
 }

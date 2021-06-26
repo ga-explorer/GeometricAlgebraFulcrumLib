@@ -3,14 +3,15 @@ using System.Linq;
 using GeometricAlgebraLib.Geometry;
 using GeometricAlgebraLib.Geometry.Euclidean;
 using GeometricAlgebraLib.Implementations.Float64;
-using GeometricAlgebraLib.Processors.Multivectors;
-using GeometricAlgebraLib.Processors.Scalars;
 using GeometricAlgebraLib.Storage;
 using GeometricAlgebraLib.Symbolic.Mathematica;
 using GeometricAlgebraLib.Symbolic.Mathematica.Expression;
 using GeometricAlgebraLib.Symbolic.Mathematica.ExprFactory;
 using GeometricAlgebraLib.Symbolic.Processors;
+using GeometricAlgebraLib.Symbolic.SymbolicExpressions;
 using GeometricAlgebraLib.Symbolic.Text;
+using GeometricAlgebraLib.SymbolicExpressions;
+using GeometricAlgebraLib.SymbolicExpressions.Context;
 using Wolfram.NETLink;
 
 namespace GeometricAlgebraLib.Symbolic
@@ -916,6 +917,13 @@ namespace GeometricAlgebraLib.Symbolic
         public static string GetLaTeX(this IGaMultivectorStorage<Expr> mv)
         {
             return LaTeXComposer.GetMultivectorText(mv);
+        }
+
+
+        public static void AttachMathematicaExprSimplifier(this SymbolicContext context)
+        {
+            context.ExpressionSimplifier = 
+                new SymbolicExpressionMathematicaExprSimplifier(context);
         }
     }
 }

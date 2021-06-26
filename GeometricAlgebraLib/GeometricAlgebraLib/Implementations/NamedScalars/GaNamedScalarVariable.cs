@@ -10,7 +10,7 @@ namespace GeometricAlgebraLib.Implementations.NamedScalars
     public sealed class GaNamedScalarVariable<TScalar> :
         IGaNamedScalar<TScalar>
     {
-        private readonly IReadOnlyList<IGaNamedScalar<TScalar>> _dependsOnScalars;
+        private readonly List<IGaNamedScalar<TScalar>> _rhsNamedScalars;
 
 
         public GaNamedScalarsCollection<TScalar> NamedScalarsCollection { get; }
@@ -25,11 +25,11 @@ namespace GeometricAlgebraLib.Implementations.NamedScalars
 
         public string ScalarName { get; }
         
-        private string _finalScalarName = string.Empty;
-        public string FinalScalarName
+        private string _externalName = string.Empty;
+        public string ExternalName
         {
-            get => string.IsNullOrEmpty(_finalScalarName) ? ScalarName : _finalScalarName;
-            set => _finalScalarName = value ?? string.Empty;
+            get => string.IsNullOrEmpty(_externalName) ? ScalarName : _externalName;
+            set => _externalName = value ?? string.Empty;
         }
 
         public TScalar LhsScalarValue { get; }
@@ -38,13 +38,20 @@ namespace GeometricAlgebraLib.Implementations.NamedScalars
 
         public string RhsScalarValueText { get; }
 
+        public TScalar FinalRhsScalarValue { get; set; }
+
+        public string FinalRhsScalarValueText 
+            => SymbolicScalarProcessor.ToText(FinalRhsScalarValue);
+
+        public int ComputationOrder { get; set; }
+
         public bool IsConstant 
             => false;
 
         public bool IsParameter 
             => false;
 
-        public bool IsInput 
+        public bool IsIndependent 
             => false;
 
         public bool IsIntermediate
@@ -55,26 +62,61 @@ namespace GeometricAlgebraLib.Implementations.NamedScalars
 
         public bool IsOutput { get; set; }
 
-        public bool IsVariable 
+        public bool IsDependent 
             => true;
 
         public bool IsUsedForOutputVariables { get; set; }
 
-        public IEnumerable<IGaNamedScalar<TScalar>> DependsOnScalars 
-            => _dependsOnScalars;
+        public IEnumerable<IGaNamedScalar<TScalar>> RhsNamedScalars 
+            => _rhsNamedScalars;
+
+        public IEnumerable<IGaNamedScalar<TScalar>> RhsInputs 
+            => _rhsNamedScalars.Where(scalar => scalar.IsIndependent);
+
+        public IEnumerable<GaNamedScalarConstant<TScalar>> RhsConstants 
+            => _rhsNamedScalars
+                .Select(scalar => scalar as GaNamedScalarConstant<TScalar>)
+                .Where(scalar => scalar is not null);
+
+        public IEnumerable<GaNamedScalarParameter<TScalar>> RhsParameters 
+            => _rhsNamedScalars
+                .Select(scalar => scalar as GaNamedScalarParameter<TScalar>)
+                .Where(scalar => scalar is not null);
+
+        public IEnumerable<GaNamedScalarVariable<TScalar>> RhsVariables 
+            => _rhsNamedScalars
+                .Select(scalar => scalar as GaNamedScalarVariable<TScalar>)
+                .Where(scalar => scalar is not null);
+
+        public IEnumerable<GaNamedScalarVariable<TScalar>> RhsIntermediateVariables 
+            => _rhsNamedScalars
+                .Select(scalar => scalar as GaNamedScalarVariable<TScalar>)
+                .Where(scalar => scalar is not null && scalar.IsIntermediate);
+
+        public IEnumerable<GaNamedScalarVariable<TScalar>> RhsOutputVariables 
+            => _rhsNamedScalars
+                .Select(scalar => scalar as GaNamedScalarVariable<TScalar>)
+                .Where(scalar => scalar is not null && scalar.IsOutput);
 
 
-        internal GaNamedScalarVariable([NotNull] GaNamedScalarsCollection<TScalar> baseCollection, int scalarId, [NotNull] string scalarName, [NotNull] TScalar scalar, [NotNull] IEnumerable<IGaNamedScalar<TScalar>> dependsOnScalars)
+        internal GaNamedScalarVariable([NotNull] GaNamedScalarsCollection<TScalar> baseCollection, [NotNull] string scalarName, [NotNull] TScalar rhsScalarValue, [NotNull] IEnumerable<IGaNamedScalar<TScalar>> rhsNamedScalars)
         {
             NamedScalarsCollection = baseCollection;
-            RhsScalarValue = scalar;
-            RhsScalarValueText = SymbolicScalarProcessor.ToText(scalar);
+            RhsScalarValue = rhsScalarValue;
+            RhsScalarValueText = SymbolicScalarProcessor.ToText(rhsScalarValue);
+            FinalRhsScalarValue = SymbolicScalarProcessor.ZeroScalar;
             LhsScalarValue = SymbolicScalarProcessor.GetSymbol(scalarName);
-            ScalarId = scalarId;
+            ScalarId = baseCollection.GetNextNamedScalarId();
             ScalarName = scalarName;
-            _dependsOnScalars = dependsOnScalars.Distinct().ToArray();
+            ComputationOrder = baseCollection.GetNextComputationOrder();
+            _rhsNamedScalars = rhsNamedScalars.Distinct().ToList();
         }
         
+
+        public TScalar GetScalarValue(bool useRhsScalarValue)
+        {
+            return useRhsScalarValue ? RhsScalarValue : LhsScalarValue;
+        }
 
         public override string ToString()
         {
@@ -83,14 +125,14 @@ namespace GeometricAlgebraLib.Implementations.NamedScalars
                 : "Not Used";
 
             var dependsOnScalarsText =
-                _dependsOnScalars
+                _rhsNamedScalars
                     .Select(scalar => scalar.ScalarName)
                     .Concatenate(", ");
 
             return new StringBuilder()
                 .Append(isUsedText)
                 .Append(IsOutput ? " Output       " : " Intermediate ")
-                .Append($"\"{FinalScalarName}\": ")
+                .Append($"\"{ExternalName}\": ")
                 .Append(ScalarName)
                 .Append('(')
                 .Append(dependsOnScalarsText)

@@ -6,6 +6,8 @@ using System.Runtime.CompilerServices;
 using GeometricAlgebraLib.Processors.Scalars;
 using GeometricAlgebraLib.Symbolic.Mathematica;
 using GeometricAlgebraLib.Symbolic.Mathematica.ExprFactory;
+using GeometricAlgebraLib.SymbolicExpressions;
+using GeometricAlgebraLib.SymbolicExpressions.Context;
 using Wolfram.NETLink;
 
 namespace GeometricAlgebraLib.Symbolic.Processors
@@ -337,9 +339,24 @@ namespace GeometricAlgebraLib.Symbolic.Processors
             return scalar.ToString();
         }
 
+        public Expr Simplify(Expr scalar)
+        {
+            return scalar.Simplify();
+        }
+
         public Expr GetSymbol(string symbolNameText)
         {
             return symbolNameText.ToSymbolExpr();
+        }
+
+        public Expr SymbolicExpressionToScalar(ISymbolicExpression expression)
+        {
+            return expression.ToString().ToExpr();
+        }
+
+        public ISymbolicExpression ScalarToSymbolicExpression(SymbolicContext context, Expr scalar)
+        {
+            return context.ToSymbolicExpression(scalar);
         }
     }
 }

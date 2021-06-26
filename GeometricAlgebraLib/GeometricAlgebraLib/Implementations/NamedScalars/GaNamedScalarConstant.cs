@@ -1,12 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
+﻿using System.Diagnostics.CodeAnalysis;
 using GeometricAlgebraLib.Processors.Scalars;
 
 namespace GeometricAlgebraLib.Implementations.NamedScalars
 {
     public sealed class GaNamedScalarConstant<TScalar> :
-        IGaNamedScalar<TScalar>
+        IGaInputNamedScalar<TScalar>
     {
         public GaNamedScalarsCollection<TScalar> NamedScalarsCollection { get; }
 
@@ -20,7 +18,7 @@ namespace GeometricAlgebraLib.Implementations.NamedScalars
 
         public string ScalarName { get; }
 
-        public string FinalScalarName
+        public string ExternalName
         {
             get => ScalarName; 
             set {}
@@ -34,13 +32,19 @@ namespace GeometricAlgebraLib.Implementations.NamedScalars
         public string RhsScalarValueText 
             => ScalarName;
 
+        public TScalar FinalRhsScalarValue 
+            => RhsScalarValue;
+
+        public string FinalRhsScalarValueText 
+            => ScalarName;
+
         public bool IsConstant 
             => true;
 
         public bool IsParameter 
             => true;
 
-        public bool IsInput 
+        public bool IsIndependent 
             => true;
 
         public bool IsIntermediate 
@@ -49,23 +53,25 @@ namespace GeometricAlgebraLib.Implementations.NamedScalars
         public bool IsOutput 
             => false;
 
-        public bool IsVariable 
+        public bool IsDependent 
             => false;
 
         public bool IsUsedForOutputVariables { get; set; }
 
-        public IEnumerable<IGaNamedScalar<TScalar>> DependsOnScalars 
-            => Enumerable.Empty<IGaNamedScalar<TScalar>>();
 
-
-        internal GaNamedScalarConstant([NotNull] GaNamedScalarsCollection<TScalar> baseCollection, int scalarId, [NotNull] TScalar expression) 
+        internal GaNamedScalarConstant([NotNull] GaNamedScalarsCollection<TScalar> baseCollection, [NotNull] TScalar rhsScalarValue) 
         {
             NamedScalarsCollection = baseCollection;
-            ScalarId = scalarId;
-            RhsScalarValue = expression;
+            ScalarId = baseCollection.GetNextNamedScalarId();
+            RhsScalarValue = rhsScalarValue;
             ScalarName = SymbolicScalarProcessor.ToText(RhsScalarValue);
         }
 
+
+        public TScalar GetScalarValue(bool useRhsScalarValue)
+        {
+            return RhsScalarValue;
+        }
 
         public override string ToString()
         {

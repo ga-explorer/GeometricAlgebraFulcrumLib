@@ -1,4 +1,4 @@
-﻿namespace GeometricAlgebraLib.Geometry.Euclidean
+﻿namespace GeometricAlgebraLib.Geometry
 {
     public interface IGaVersor<T> : IGaVectorsLinearMap<T>
     {

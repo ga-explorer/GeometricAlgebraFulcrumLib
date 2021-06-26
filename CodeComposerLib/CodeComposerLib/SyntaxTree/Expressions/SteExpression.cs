@@ -6,10 +6,224 @@ using System.Text;
 namespace CodeComposerLib.SyntaxTree.Expressions
 {
     /// <summary>
-    /// This class represents a universal expression tree
+    /// This class represents a universal text-based symbolic expression tree
     /// </summary>
-    public sealed class SteExpression : ISyntaxTreeElement
+    public sealed class SteExpression : 
+        ISyntaxTreeElement
     {
+        /// <summary>
+        /// Create an expression from a variable name
+        /// </summary>
+        /// <param name="varName"></param>
+        /// <returns></returns>
+        public static SteExpression CreateVariable(string varName)
+        {
+            if (string.IsNullOrEmpty(varName))
+                throw new ArgumentNullException(nameof(varName), @"Variable name not initialized");
+
+            return new SteExpression(new SteVariableHeadSpecs(varName));
+        }
+
+        /// <summary>
+        /// Create a symbolic number like "Pi" and "e".
+        /// </summary>
+        /// <param name="numberText"></param>
+        /// <returns></returns>
+        public static SteExpression CreateSymbolicNumber(string numberText)
+        {
+            if (string.IsNullOrEmpty(numberText))
+                throw new ArgumentNullException(nameof(numberText), @"Number not initialized");
+
+            return new SteExpression(new SteNumberHeadSpecs(numberText, true));
+        }
+
+        /// <summary>
+        /// Create a literal number expression like "2", "-1.7" and "3.56e-4"
+        /// </summary>
+        /// <param name="number"></param>
+        /// <returns></returns>
+        public static SteExpression CreateLiteralNumber(int number)
+        {
+            return new SteExpression(new SteNumberHeadSpecs(number));
+        }
+
+        /// <summary>
+        /// Create a literal number expression like "2", "-1.7" and "3.56e-4"
+        /// </summary>
+        /// <param name="number"></param>
+        /// <returns></returns>
+        public static SteExpression CreateLiteralNumber(double number)
+        {
+            return new SteExpression(new SteNumberHeadSpecs(number));
+        }
+
+        /// <summary>
+        /// Create a literal number expression like "2", "-1.7" and "3.56e-4"
+        /// </summary>
+        /// <param name="number"></param>
+        /// <returns></returns>
+        public static SteExpression CreateLiteralNumber(float number)
+        {
+            return new SteExpression(new SteNumberHeadSpecs(number));
+        }
+
+        /// <summary>
+        /// Create a literal number expression like "2", "-1.7" and "3.56e-4"
+        /// </summary>
+        /// <param name="numberText"></param>
+        /// <returns></returns>
+        public static SteExpression CreateLiteralNumber(string numberText)
+        {
+            if (string.IsNullOrEmpty(numberText))
+                throw new ArgumentNullException(nameof(numberText), @"Number not initialized");
+
+            return new SteExpression(new SteNumberHeadSpecs(numberText, false));
+        }
+
+        /// <summary>
+        /// Create a function expression with no arguments
+        /// </summary>
+        /// <param name="funcName"></param>
+        /// <returns></returns>
+        public static SteExpression CreateFunction(string funcName)
+        {
+            if (string.IsNullOrEmpty(funcName))
+                throw new ArgumentNullException(nameof(funcName), @"Function name not initialized");
+
+            return new SteExpression(new SteFunctionHeadSpecs(funcName), Enumerable.Empty<SteExpression>());
+        }
+
+        /// <summary>
+        /// Create a function expression with some arguments
+        /// </summary>
+        /// <param name="funcName"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        public static SteExpression CreateFunction(string funcName, params SteExpression[] args)
+        {
+            if (string.IsNullOrEmpty(funcName))
+                throw new ArgumentNullException(nameof(funcName), @"Function name not initialized");
+
+            var funcHeadSpecs = new SteFunctionHeadSpecs(funcName);
+
+            return args == null
+                ? new SteExpression(funcHeadSpecs, Enumerable.Empty<SteExpression>())
+                : new SteExpression(funcHeadSpecs, args);
+        }
+
+        /// <summary>
+        /// Create a function expression with some arguments
+        /// </summary>
+        /// <param name="funcName"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        public static SteExpression CreateFunction(string funcName, IEnumerable<SteExpression> args)
+        {
+            if (string.IsNullOrEmpty(funcName))
+                throw new ArgumentNullException(nameof(funcName), @"Function name not initialized");
+
+            var funcHeadSpecs = new SteFunctionHeadSpecs(funcName);
+
+            return args == null
+                ? new SteExpression(funcHeadSpecs, Enumerable.Empty<SteExpression>())
+                : new SteExpression(funcHeadSpecs, args);
+        }
+
+        /// <summary>
+        /// Create a function expression with no arguments
+        /// </summary>
+        /// <param name="arrayName"></param>
+        /// <returns></returns>
+        public static SteExpression CreateArrayAccess(string arrayName)
+        {
+            if (string.IsNullOrEmpty(arrayName))
+                throw new ArgumentNullException(nameof(arrayName), @"Array name not initialized");
+
+            return new SteExpression(new SteArrayAccessHeadSpecs(arrayName), Enumerable.Empty<SteExpression>());
+        }
+
+        /// <summary>
+        /// Create a function expression with some arguments
+        /// </summary>
+        /// <param name="arrayName"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        public static SteExpression CreateArrayAccess(string arrayName, params SteExpression[] args)
+        {
+            if (string.IsNullOrEmpty(arrayName))
+                throw new ArgumentNullException(nameof(arrayName), @"Array name not initialized");
+
+            var funcHeadSpecs = new SteArrayAccessHeadSpecs(arrayName);
+
+            return args == null
+                ? new SteExpression(funcHeadSpecs, Enumerable.Empty<SteExpression>())
+                : new SteExpression(funcHeadSpecs, args);
+        }
+
+        /// <summary>
+        /// Create a function expression with some arguments
+        /// </summary>
+        /// <param name="arrayName"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        public static SteExpression CreateArrayAccess(string arrayName, IEnumerable<SteExpression> args)
+        {
+            if (string.IsNullOrEmpty(arrayName))
+                throw new ArgumentNullException(nameof(arrayName), @"Array name not initialized");
+
+            var funcHeadSpecs = new SteArrayAccessHeadSpecs(arrayName);
+
+            return args == null
+                ? new SteExpression(funcHeadSpecs, Enumerable.Empty<SteExpression>())
+                : new SteExpression(funcHeadSpecs, args);
+        }
+
+        /// <summary>
+        /// Create an operator expression without any arguments
+        /// </summary>
+        /// <param name="opHeadSpecs"></param>
+        /// <returns></returns>
+        public static SteExpression CreateOperator(SteOperatorSpecs opHeadSpecs)
+        {
+            if (ReferenceEquals(opHeadSpecs, null))
+                throw new ArgumentNullException(nameof(opHeadSpecs), @"Expression head not initialized");
+
+            return new SteExpression(opHeadSpecs, Enumerable.Empty<SteExpression>());
+        }
+
+        /// <summary>
+        /// Create an operator expression from a head and a set of expressions as its arguments
+        /// </summary>
+        /// <param name="opHeadSpecs"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        public static SteExpression CreateOperator(SteOperatorSpecs opHeadSpecs, params SteExpression[] args)
+        {
+            if (ReferenceEquals(opHeadSpecs, null))
+                throw new ArgumentNullException(nameof(opHeadSpecs), @"Expression head not initialized");
+
+            return args == null
+                ? new SteExpression(opHeadSpecs, Enumerable.Empty<SteExpression>())
+                : new SteExpression(opHeadSpecs, args);
+        }
+
+        /// <summary>
+        /// Create an operator expression from a head and a set of expressions as its arguments
+        /// </summary>
+        /// <param name="opHeadSpecs"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        public static SteExpression CreateOperator(SteOperatorSpecs opHeadSpecs, IEnumerable<SteExpression> args)
+        {
+            if (ReferenceEquals(opHeadSpecs, null))
+                throw new ArgumentNullException(nameof(opHeadSpecs), @"Expression head not initialized");
+
+            return args == null
+                ? new SteExpression(opHeadSpecs, Enumerable.Empty<SteExpression>())
+                : new SteExpression(opHeadSpecs, args);
+        }
+
+
         /// <summary>
         /// The arguments of the symbolic expression (can be null).
         /// </summary>
@@ -387,7 +601,7 @@ namespace CodeComposerLib.SyntaxTree.Expressions
         /// Constructor for atomic expressions
         /// </summary>
         /// <param name="headSpecs"></param>
-        public SteExpression(ISteAtomicHeadSpecs headSpecs)
+        private SteExpression(ISteAtomicHeadSpecs headSpecs)
         {
             HeadSpecs = headSpecs;
             _argsList = null;
@@ -397,7 +611,7 @@ namespace CodeComposerLib.SyntaxTree.Expressions
         /// Constructor for composite expressions
         /// </summary>
         /// <param name="headSpecs"></param>
-        public SteExpression(ISteCompositeHeadSpecs headSpecs)
+        private SteExpression(ISteCompositeHeadSpecs headSpecs)
         {
             HeadSpecs = headSpecs;
             _argsList = new List<SteExpression>();
@@ -408,7 +622,7 @@ namespace CodeComposerLib.SyntaxTree.Expressions
         /// </summary>
         /// <param name="headSpecs"></param>
         /// <param name="args"></param>
-        public SteExpression(ISteCompositeHeadSpecs headSpecs, IEnumerable<SteExpression> args)
+        private SteExpression(ISteCompositeHeadSpecs headSpecs, IEnumerable<SteExpression> args)
         {
             HeadSpecs = headSpecs;
             _argsList = new List<SteExpression>(args);
@@ -802,7 +1016,7 @@ namespace CodeComposerLib.SyntaxTree.Expressions
         /// <returns></returns>
         public SteExpression ReplaceAllInPlace(SteExpression oldExpr, SteExpression newExpr)
         {
-            if (SyntaxTreeUtils.Equals(this, oldExpr))
+            if (SteExpressionUtils.Equals(this, oldExpr))
             {
                 ResetAsCopy(newExpr);
 
@@ -870,7 +1084,7 @@ namespace CodeComposerLib.SyntaxTree.Expressions
 
         public override bool Equals(object obj)
         {
-            return !ReferenceEquals(obj, null) && SyntaxTreeUtils.Equals(this, obj as SteExpression);
+            return !ReferenceEquals(obj, null) && SteExpressionUtils.Equals(this, obj as SteExpression);
         }
 
         public override string ToString()

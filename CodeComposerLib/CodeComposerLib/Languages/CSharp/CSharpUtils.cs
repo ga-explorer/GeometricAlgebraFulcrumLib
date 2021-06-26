@@ -9,95 +9,95 @@ namespace CodeComposerLib.Languages.CSharp
         /// </summary>
         public static class Operators
         {
-            public static SteOperatorSpecs MemberAccess { get; private set; }
+            public static SteOperatorSpecs MemberAccess { get; }
 
-            public static SteOperatorSpecs ReadThenIncrement { get; private set; }
+            public static SteOperatorSpecs ReadThenIncrement { get; }
 
-            public static SteOperatorSpecs ReadThenDecrement { get; private set; }
+            public static SteOperatorSpecs ReadThenDecrement { get; }
 
-            public static SteOperatorSpecs UnaryPlus { get; private set; }
+            public static SteOperatorSpecs UnaryPlus { get; }
 
-            public static SteOperatorSpecs UnaryMinus { get; private set; }
+            public static SteOperatorSpecs UnaryMinus { get; }
 
-            public static SteOperatorSpecs IncrementThenRead { get; private set; }
+            public static SteOperatorSpecs IncrementThenRead { get; }
 
-            public static SteOperatorSpecs DecrementThenRead { get; private set; }
+            public static SteOperatorSpecs DecrementThenRead { get; }
 
-            public static SteOperatorSpecs BitwiseNot { get; private set; }
+            public static SteOperatorSpecs BitwiseNot { get; }
 
-            public static SteOperatorSpecs LogicalNot { get; private set; }
+            public static SteOperatorSpecs LogicalNot { get; }
 
-            public static SteOperatorSpecs Multiply { get; private set; }
+            public static SteOperatorSpecs Multiply { get; }
 
-            public static SteOperatorSpecs Divide { get; private set; }
+            public static SteOperatorSpecs Divide { get; }
 
-            public static SteOperatorSpecs Remainder { get; private set; }
+            public static SteOperatorSpecs Remainder { get; }
 
-            public static SteOperatorSpecs Add { get; private set; }
+            public static SteOperatorSpecs Add { get; }
 
-            public static SteOperatorSpecs Subtract { get; private set; }
+            public static SteOperatorSpecs Subtract { get; }
 
-            public static SteOperatorSpecs ShiftLeft { get; private set; }
+            public static SteOperatorSpecs ShiftLeft { get; }
 
-            public static SteOperatorSpecs ShiftRight { get; private set; }
+            public static SteOperatorSpecs ShiftRight { get; }
 
-            public static SteOperatorSpecs Less { get; private set; }
+            public static SteOperatorSpecs Less { get; }
 
-            public static SteOperatorSpecs More { get; private set; }
+            public static SteOperatorSpecs More { get; }
 
-            public static SteOperatorSpecs LessOrEqual { get; private set; }
+            public static SteOperatorSpecs LessOrEqual { get; }
 
-            public static SteOperatorSpecs MoreOrEqual { get; private set; }
+            public static SteOperatorSpecs MoreOrEqual { get; }
 
-            public static SteOperatorSpecs IsOfType { get; private set; }
+            public static SteOperatorSpecs IsOfType { get; }
 
-            public static SteOperatorSpecs AsType { get; private set; }
+            public static SteOperatorSpecs AsType { get; }
 
-            public static SteOperatorSpecs Equal { get; private set; }
+            public static SteOperatorSpecs Equal { get; }
 
-            public static SteOperatorSpecs NotEqual { get; private set; }
+            public static SteOperatorSpecs NotEqual { get; }
 
-            public static SteOperatorSpecs BitwiseAnd { get; private set; }
+            public static SteOperatorSpecs BitwiseAnd { get; }
 
-            public static SteOperatorSpecs LogicalAnd { get; private set; }
+            public static SteOperatorSpecs LogicalAnd { get; }
 
-            public static SteOperatorSpecs BitwiseXor { get; private set; }
+            public static SteOperatorSpecs BitwiseXor { get; }
 
-            public static SteOperatorSpecs LogicalXor { get; private set; }
+            public static SteOperatorSpecs LogicalXor { get; }
 
-            public static SteOperatorSpecs BitwiseOr { get; private set; }
+            public static SteOperatorSpecs BitwiseOr { get; }
 
-            public static SteOperatorSpecs LogicalOr { get; private set; }
+            public static SteOperatorSpecs LogicalOr { get; }
 
-            public static SteOperatorSpecs ConditionalAnd { get; private set; }
+            public static SteOperatorSpecs ConditionalAnd { get; }
 
-            public static SteOperatorSpecs ConditionalOr { get; private set; }
+            public static SteOperatorSpecs ConditionalOr { get; }
 
-            public static SteOperatorSpecs NullCoalescing { get; private set; }
+            public static SteOperatorSpecs NullCoalescing { get; }
 
-            public static SteOperatorSpecs Conditional { get; private set; }
+            public static SteOperatorSpecs Conditional { get; }
 
-            public static SteOperatorSpecs Assign { get; private set; }
+            public static SteOperatorSpecs Assign { get; }
 
-            public static SteOperatorSpecs AddThenAssign { get; private set; }
+            public static SteOperatorSpecs AddThenAssign { get; }
 
-            public static SteOperatorSpecs SubtractThenAssign { get; private set; }
+            public static SteOperatorSpecs SubtractThenAssign { get; }
 
-            public static SteOperatorSpecs MultiplyThenAssign { get; private set; }
+            public static SteOperatorSpecs MultiplyThenAssign { get; }
 
-            public static SteOperatorSpecs DivideThenAssign { get; private set; }
+            public static SteOperatorSpecs DivideThenAssign { get; }
 
-            public static SteOperatorSpecs RemainderThenAssign { get; private set; }
+            public static SteOperatorSpecs RemainderThenAssign { get; }
 
-            public static SteOperatorSpecs BitwiseAndThenAssign { get; private set; }
+            public static SteOperatorSpecs BitwiseAndThenAssign { get; }
 
-            public static SteOperatorSpecs BitwiseXorThenAssign { get; private set; }
+            public static SteOperatorSpecs BitwiseXorThenAssign { get; }
 
-            public static SteOperatorSpecs BitwiseOrThenAssign { get; private set; }
+            public static SteOperatorSpecs BitwiseOrThenAssign { get; }
 
-            public static SteOperatorSpecs ShiftLeftThenAssign { get; private set; }
+            public static SteOperatorSpecs ShiftLeftThenAssign { get; }
 
-            public static SteOperatorSpecs ShiftRightThenAssign { get; private set; }
+            public static SteOperatorSpecs ShiftRightThenAssign { get; }
 
 
             static Operators()
@@ -228,7 +228,7 @@ namespace CodeComposerLib.Languages.CSharp
         }
 
         
-        public static LanguageInfo CSharp4Info { get; private set; }
+        public static LanguageInfo CSharp4Info { get; }
 
 
         static CSharpUtils()

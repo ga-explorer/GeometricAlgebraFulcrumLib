@@ -5,6 +5,9 @@ using System.Text;
 using CodeComposerLib.SyntaxTree.Expressions;
 using GeometricAlgebraLib.Symbolic.Mathematica.Expression;
 using GeometricAlgebraLib.Symbolic.Mathematica.ExprFactory;
+using GeometricAlgebraLib.SymbolicExpressions;
+using GeometricAlgebraLib.SymbolicExpressions.Composite;
+using GeometricAlgebraLib.SymbolicExpressions.Context;
 using Wolfram.NETLink;
 
 namespace GeometricAlgebraLib.Symbolic.Mathematica
@@ -610,7 +613,7 @@ namespace GeometricAlgebraLib.Symbolic.Mathematica
         /// </summary>
         /// <param name="expr"></param>
         /// <returns></returns>
-        public static SteExpression ToSymbolicTextExpression(this Expr expr)
+        public static SteExpression ToSimpleTextExpression(this Expr expr)
         {
             var isNumber = expr.NumberQ();
             var isSymbol = expr.SymbolQ();
@@ -618,24 +621,76 @@ namespace GeometricAlgebraLib.Symbolic.Mathematica
             if (isNumber)
             {
                 return isSymbol
-                    ? SteExpressionUtils.CreateSymbolicNumber(expr.ToString())
-                    : SteExpressionUtils.CreateLiteralNumber(expr.ToString());
+                    ? SteExpression.CreateSymbolicNumber(expr.ToString())
+                    : SteExpression.CreateLiteralNumber(expr.ToString());
             }
 
             if (isSymbol)
-                return SteExpressionUtils.CreateVariable(expr.ToString());
+                return SteExpression.CreateVariable(expr.ToString());
 
             if (expr.Args.Length == 0)
-                return SteExpressionUtils.CreateFunction(expr.ToString());
+                return SteExpression.CreateFunction(expr.ToString());
 
             var args = new SteExpression[expr.Args.Length];
 
             for (var i = 0; i < expr.Args.Length; i++)
-                args[i] = ToSymbolicTextExpression(expr.Args[i]);
+                args[i] = ToSimpleTextExpression(expr.Args[i]);
 
-            return SteExpressionUtils.CreateFunction(expr.Head.ToString(), args);
+            return SteExpression.CreateFunction(expr.Head.ToString(), args);
         }
 
+        public static ISymbolicExpression ToSymbolicExpression(this Expr expr, SymbolicContext context)
+        {
+            var isNumber = expr.NumberQ();
+            var isSymbol = expr.SymbolQ();
+
+            if (isNumber)
+                return context.GetOrDefineSymbolicNumber(
+                    expr.ToString(), 
+                    expr.ToNumber()
+                );
+
+            if (isSymbol)
+                return context.GetVariable(expr.ToString());
+
+            if (expr.Args.Length == 0)
+                return SymbolicFunction.CreateNonAssociative(
+                    context, 
+                    expr.Head.ToString()
+                );
+
+            var args = expr.Args.Select(
+                argExpr => ToSymbolicExpression(argExpr, context)
+            );
+            
+            var functionName = expr.Head.ToString();
+            return functionName switch
+            {
+                "Minus" => context.FunctionHeadSpecsFactory.Negative.CreateFunction(args),
+
+                "Plus" => context.FunctionHeadSpecsFactory.Plus.CreateFunction(args),
+                "Subtract" => context.FunctionHeadSpecsFactory.Subtract.CreateFunction(args),
+                "Times" => context.FunctionHeadSpecsFactory.Times.CreateFunction(args),
+                "Divide" => context.FunctionHeadSpecsFactory.Divide.CreateFunction(args),
+                
+                _ => SymbolicFunction.CreateNonAssociative(context, functionName, args)
+            };
+        }
+
+        public static ISymbolicExpression ToSymbolicExpression(this SymbolicContext context, Expr expr)
+        {
+            return ToSymbolicExpression(expr, context);
+        }
+
+        /// <summary>
+        /// Convert this symbolic expression into a Mathematica expression object
+        /// </summary>
+        /// <param name="symbolicExpr"></param>
+        /// <returns></returns>
+        public static Expr ToExpr(this SteExpression symbolicExpr)
+        {
+            return MathematicaInterface.DefaultCas[symbolicExpr.ToString()];
+        }
 
         /// <summary>
         /// Convert this symbolic expression into a Mathematica expression object

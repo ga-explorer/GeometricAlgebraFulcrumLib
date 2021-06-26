@@ -87,7 +87,7 @@ namespace GeometricAlgebraLib.Symbolic.Mathematica.Expression
 
         public SteExpression ToSymbolicTextExpression()
         {
-            return Expression.ToSymbolicTextExpression();
+            return Expression.ToSimpleTextExpression();
         }
 
 

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using GeometricAlgebraLib.Processors.Scalars;
+﻿using GeometricAlgebraLib.Processors.Scalars;
 
 namespace GeometricAlgebraLib.Implementations.NamedScalars
 {
@@ -15,7 +14,7 @@ namespace GeometricAlgebraLib.Implementations.NamedScalars
 
         string ScalarName { get; }
 
-        string FinalScalarName { get; set; }
+        string ExternalName { get; set; }
 
         TScalar LhsScalarValue { get; }
 
@@ -23,20 +22,24 @@ namespace GeometricAlgebraLib.Implementations.NamedScalars
 
         string RhsScalarValueText { get; }
 
+        TScalar FinalRhsScalarValue { get; }
+
+        string FinalRhsScalarValueText { get; }
+
         bool IsConstant { get; }
 
         bool IsParameter { get; }
-
-        bool IsInput { get; }
 
         bool IsIntermediate { get; }
 
         bool IsOutput { get; }
 
-        bool IsVariable { get; }
+        bool IsDependent { get; }
+
+        bool IsIndependent { get; }
 
         bool IsUsedForOutputVariables { get; set; }
 
-        IEnumerable<IGaNamedScalar<TScalar>> DependsOnScalars { get; }
+        TScalar GetScalarValue(bool useRhsScalarValue);
     }
 }

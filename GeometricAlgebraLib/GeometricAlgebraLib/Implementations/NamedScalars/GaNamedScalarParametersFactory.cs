@@ -15,7 +15,7 @@ namespace GeometricAlgebraLib.Implementations.NamedScalars
         public GaScalarTermStorage<IGaNamedScalar<TScalar>> CreateScalarTerm(string scalarName)
         {
             var namedScalar = 
-                NamedScalarsCollection.GetParameterNamedScalar(scalarName);
+                NamedScalarsCollection.GetParameterByName(scalarName);
 
             return GaScalarTermStorage<IGaNamedScalar<TScalar>>.Create(
                 NamedScalarProcessor,
@@ -28,7 +28,7 @@ namespace GeometricAlgebraLib.Implementations.NamedScalars
             return GaVectorStorage<IGaNamedScalar<TScalar>>.Create(
                 NamedScalarProcessor,
                 scalarNames
-                    .Select(NamedScalarsCollection.GetParameterNamedScalar)
+                    .Select(NamedScalarsCollection.GetParameterByName)
                     .Cast<IGaNamedScalar<TScalar>>()
                     .ToArray()
             );
@@ -37,7 +37,7 @@ namespace GeometricAlgebraLib.Implementations.NamedScalars
         public GaVectorTermStorage<IGaNamedScalar<TScalar>> CreateVectorTerm(ulong index, string scalarName)
         {
             var namedScalar = 
-                NamedScalarsCollection.GetParameterNamedScalar(scalarName);
+                NamedScalarsCollection.GetParameterByName(scalarName);
 
             return GaVectorTermStorage<IGaNamedScalar<TScalar>>.Create(
                 NamedScalarProcessor,

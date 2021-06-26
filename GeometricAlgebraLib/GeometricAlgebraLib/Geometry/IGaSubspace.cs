@@ -1,6 +1,6 @@
 ﻿using GeometricAlgebraLib.Storage;
 
-namespace GeometricAlgebraLib.Geometry.Euclidean
+namespace GeometricAlgebraLib.Geometry
 {
     public interface IGaSubspace<T> : IGaGeometricElement<T>
     {

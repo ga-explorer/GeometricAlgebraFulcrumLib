@@ -7,12 +7,19 @@ namespace GeometricAlgebraLib.Implementations.NamedScalars
 {
     public static class GaNamedScalarsUtils
     {
+        public static bool IsNullOrInvalid<TScalar>(this GaNamedScalarsCollection<TScalar> namedScalarsCollection)
+        {
+            return 
+                ReferenceEquals(namedScalarsCollection, null) || 
+                !namedScalarsCollection.IsValid();
+        }
+
         public static void SetIsOutput<TScalar>(this IGaMultivectorStorage<IGaNamedScalar<TScalar>> multivector, bool isOutput)
         {
             var namedScalarsList = 
                 multivector
                     .GetScalars()
-                    .Where(s => s.IsVariable)
+                    .Where(s => s.IsDependent)
                     .Select(s => (GaNamedScalarVariable<TScalar>) s);
 
             foreach (var namedScalar in namedScalarsList)
@@ -27,7 +34,7 @@ namespace GeometricAlgebraLib.Implementations.NamedScalars
                     .Where(s => !s.Value.IsConstant);
 
             foreach (var (id, scalar) in idScalarPairs)
-                scalar.FinalScalarName = namingFunc(id);
+                scalar.ExternalName = namingFunc(id);
         }
 
         public static void SetFinalScalarNamesByGradeIndex<TScalar>(this IGaMultivectorStorage<IGaNamedScalar<TScalar>> multivector, Func<int, ulong, string> namingFunc)
@@ -38,7 +45,7 @@ namespace GeometricAlgebraLib.Implementations.NamedScalars
                     .Where(s => !s.Item3.IsConstant);
 
             foreach (var (grade, index, scalar) in indexScalarTuples) 
-                scalar.FinalScalarName = namingFunc(grade, index);
+                scalar.ExternalName = namingFunc(grade, index);
         }
         
         public static void SetFinalScalarNamesByIndex<TScalar>(this IGaKVectorStorage<IGaNamedScalar<TScalar>> kVector, Func<ulong, string> namingFunc)
@@ -49,7 +56,7 @@ namespace GeometricAlgebraLib.Implementations.NamedScalars
                     .Where(s => !s.Value.IsConstant);
 
             foreach (var (index, scalar) in indexScalarPairs)
-                scalar.FinalScalarName = namingFunc(index);
+                scalar.ExternalName = namingFunc(index);
         }
         
         public static void SetFinalScalarNamesByOrder<TScalar>(this IEnumerable<IGaNamedScalar<TScalar>> namedScalars, Func<int, string> namingFunc)
@@ -60,7 +67,7 @@ namespace GeometricAlgebraLib.Implementations.NamedScalars
             var index = 0;
             foreach (var namedScalar in namedScalarsList)
             {
-                namedScalar.FinalScalarName = namingFunc(index);
+                namedScalar.ExternalName = namingFunc(index);
 
                 index++;
             }
@@ -69,12 +76,12 @@ namespace GeometricAlgebraLib.Implementations.NamedScalars
         public static void SetIntermediateFinalScalarNamesByOrder<TScalar>(this GaNamedScalarsCollection<TScalar> namedScalarsCollection, Func<int, string> namingFunc)
         {
             var namedScalarsList = 
-                namedScalarsCollection.IntermediateVariableNamedScalars;
+                namedScalarsCollection.IntermediateVariables;
 
             var index = 0;
             foreach (var namedScalar in namedScalarsList)
             {
-                namedScalar.FinalScalarName = namingFunc(index);
+                namedScalar.ExternalName = namingFunc(index);
 
                 index++;
             }

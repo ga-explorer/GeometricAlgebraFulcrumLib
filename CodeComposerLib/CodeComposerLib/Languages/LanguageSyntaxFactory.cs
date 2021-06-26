@@ -164,6 +164,18 @@ namespace CodeComposerLib.Languages
             };
         }
 
+        public SteDeclareDataStore DeclareLocalVariable(string varType, string varName, SteExpression varValue)
+        {
+            return new SteDeclareDataStore()
+            {
+                LocalDataStore = true,
+                DataStoreKind = DeclarationKinds.VariableDeclaration,
+                DataStoreType = varType,
+                DataStoreName = varName,
+                InitialValue = varValue
+            };
+        }
+
         public SteDeclareFixedSizeArray DeclareLocalArray(string arrayItemType, string arrayVarName, string arraySize)
         {
             return new SteDeclareFixedSizeArray()
@@ -476,7 +488,7 @@ namespace CodeComposerLib.Languages
         /// <returns></returns>
         public SteExpression Variable(string varName)
         {
-            return SteExpressionUtils.CreateVariable(varName);
+            return SteExpression.CreateVariable(varName);
         }
 
         /// <summary>
@@ -486,7 +498,7 @@ namespace CodeComposerLib.Languages
         /// <returns></returns>
         public SteExpression SymbolicNumber(string numberText)
         {
-            return SteExpressionUtils.CreateSymbolicNumber(numberText);
+            return SteExpression.CreateSymbolicNumber(numberText);
         }
 
         /// <summary>
@@ -496,7 +508,7 @@ namespace CodeComposerLib.Languages
         /// <returns></returns>
         public SteExpression LiteralNumber(int number)
         {
-            return SteExpressionUtils.CreateLiteralNumber(number);
+            return SteExpression.CreateLiteralNumber(number);
         }
 
         /// <summary>
@@ -506,7 +518,7 @@ namespace CodeComposerLib.Languages
         /// <returns></returns>
         public SteExpression LiteralNumber(double number)
         {
-            return SteExpressionUtils.CreateLiteralNumber(number);
+            return SteExpression.CreateLiteralNumber(number);
         }
 
         /// <summary>
@@ -516,7 +528,7 @@ namespace CodeComposerLib.Languages
         /// <returns></returns>
         public SteExpression LiteralNumber(float number)
         {
-            return SteExpressionUtils.CreateLiteralNumber(number);
+            return SteExpression.CreateLiteralNumber(number);
         }
 
         /// <summary>
@@ -526,7 +538,7 @@ namespace CodeComposerLib.Languages
         /// <returns></returns>
         public SteExpression LiteralNumber(string numberText)
         {
-            return SteExpressionUtils.CreateLiteralNumber(numberText);
+            return SteExpression.CreateLiteralNumber(numberText);
         }
 
         /// <summary>
@@ -536,7 +548,7 @@ namespace CodeComposerLib.Languages
         /// <returns></returns>
         public SteExpression Function(string head)
         {
-            return SteExpressionUtils.CreateFunction(head);
+            return SteExpression.CreateFunction(head);
         }
 
         /// <summary>
@@ -547,7 +559,7 @@ namespace CodeComposerLib.Languages
         /// <returns></returns>
         public SteExpression Function(string head, params SteExpression[] args)
         {
-            return SteExpressionUtils.CreateFunction(head, args);
+            return SteExpression.CreateFunction(head, args);
         }
 
         /// <summary>
@@ -558,7 +570,7 @@ namespace CodeComposerLib.Languages
         /// <returns></returns>
         public SteExpression Function(string head, IEnumerable<SteExpression> args)
         {
-            return SteExpressionUtils.CreateFunction(head, args);
+            return SteExpression.CreateFunction(head, args);
         }
 
         /// <summary>
@@ -568,7 +580,7 @@ namespace CodeComposerLib.Languages
         /// <returns></returns>
         public SteExpression Operator(SteOperatorSpecs head)
         {
-            return SteExpressionUtils.CreateOperator(head);
+            return SteExpression.CreateOperator(head);
         }
 
         /// <summary>
@@ -579,7 +591,7 @@ namespace CodeComposerLib.Languages
         /// <returns></returns>
         public SteExpression Operator(SteOperatorSpecs head, params SteExpression[] args)
         {
-            return SteExpressionUtils.CreateOperator(head, args);
+            return SteExpression.CreateOperator(head, args);
         }
 
         /// <summary>
@@ -590,7 +602,7 @@ namespace CodeComposerLib.Languages
         /// <returns></returns>
         public SteExpression Operator(SteOperatorSpecs head, IEnumerable<SteExpression> args)
         {
-            return SteExpressionUtils.CreateOperator(head, args);
+            return SteExpression.CreateOperator(head, args);
         }
 
         /// <summary>

@@ -25,6 +25,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeometricAlgebraLib.Visuals
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EuclideanGeometryLib", "..\EuclideanGeometryLib\EuclideanGeometryLib\EuclideanGeometryLib.csproj", "{FB13C74E-B236-4C15-96BF-9A505D674C16}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeometricAlgebraLib.CodeComposer", "GeometricAlgebraLib.CodeComposer\GeometricAlgebraLib.CodeComposer.csproj", "{C62DEB9B-1803-4CC8-9497-62C9E98339F9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -121,6 +123,14 @@ Global
 		{FB13C74E-B236-4C15-96BF-9A505D674C16}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FB13C74E-B236-4C15-96BF-9A505D674C16}.Release|x64.ActiveCfg = Release|x64
 		{FB13C74E-B236-4C15-96BF-9A505D674C16}.Release|x64.Build.0 = Release|x64
+		{C62DEB9B-1803-4CC8-9497-62C9E98339F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C62DEB9B-1803-4CC8-9497-62C9E98339F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C62DEB9B-1803-4CC8-9497-62C9E98339F9}.Debug|x64.ActiveCfg = Debug|x64
+		{C62DEB9B-1803-4CC8-9497-62C9E98339F9}.Debug|x64.Build.0 = Debug|x64
+		{C62DEB9B-1803-4CC8-9497-62C9E98339F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C62DEB9B-1803-4CC8-9497-62C9E98339F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C62DEB9B-1803-4CC8-9497-62C9E98339F9}.Release|x64.ActiveCfg = Release|x64
+		{C62DEB9B-1803-4CC8-9497-62C9E98339F9}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
