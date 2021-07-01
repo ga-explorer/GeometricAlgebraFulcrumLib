@@ -6,7 +6,7 @@ using CodeComposerLib.Irony.Semantic.Expression.Value;
 using CodeComposerLib.Irony.Semantic.Expression.ValueAccess;
 using CodeComposerLib.Irony.Semantic.Scope;
 using CodeComposerLib.Irony.Semantic.Symbol;
-using TextComposerLib.Logs.Progress;
+using TextComposerLib.Loggers.Progress;
 
 namespace CodeComposerLib.Irony.DSLInterpreter
 {

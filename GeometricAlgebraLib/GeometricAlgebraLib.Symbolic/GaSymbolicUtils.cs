@@ -156,6 +156,68 @@ namespace GeometricAlgebraLib.Symbolic
             );
         }
 
+        public static Expr DifferentiateScalar(this Expr scalar, string variableName)
+        {
+            var variableExpr = variableName.ToExpr();
+
+            return Mfs
+                .D[scalar, variableExpr]
+                .FullSimplify();
+        }
+
+        public static IGaMultivectorStorage<Expr> DifferentiateScalars(this IGaMultivectorStorage<Expr> storage, string variableName)
+        {
+            var variableExpr = variableName.ToExpr();
+
+            return storage.GetStorageCopy(
+                scalar => Mfs.D[scalar, variableExpr].FullSimplify()
+            );
+        }
+
+        public static Expr HilbertTransformScalar(this Expr scalar, string timeVariableName, string freqVariableName)
+        {
+            var timeVariableExpr = timeVariableName.ToExpr();
+            var freqVariableExpr = freqVariableName.ToExpr();
+
+            return Mfs
+                .HilbertTransform[scalar, timeVariableExpr, timeVariableExpr]
+                .FullSimplify(Mfs.Greater[freqVariableExpr, Expr.INT_ZERO]);
+        }
+
+        public static IGaVectorStorage<Expr> DifferentiateScalars(this IGaVectorStorage<Expr> storage, string variableName)
+        {
+            var variableExpr = variableName.ToExpr();
+
+            return storage.GetVectorPart(
+                scalar => Mfs.D[scalar, variableExpr].FullSimplify()
+            );
+        }
+
+        public static IGaMultivectorStorage<Expr> HilbertTransformScalars(this IGaMultivectorStorage<Expr> storage, string timeVariableName, string freqVariableName)
+        {
+            var timeVariableExpr = timeVariableName.ToExpr();
+            var freqVariableExpr = freqVariableName.ToExpr();
+
+            return storage.GetStorageCopy(
+                scalar => 
+                    Mfs
+                        .HilbertTransform[scalar, timeVariableExpr, timeVariableExpr]
+                        .FullSimplify(Mfs.Greater[freqVariableExpr, Expr.INT_ZERO])
+            );
+        }
+        
+        public static IGaVectorStorage<Expr> HilbertTransformScalars(this IGaVectorStorage<Expr> storage, string timeVariableName, string freqVariableName)
+        {
+            var timeVariableExpr = timeVariableName.ToExpr();
+            var freqVariableExpr = freqVariableName.ToExpr();
+
+            return storage.GetVectorPart(
+                scalar => 
+                    Mfs
+                        .HilbertTransform[scalar, timeVariableExpr, timeVariableExpr]
+                        .FullSimplify(Mfs.Greater[freqVariableExpr, Expr.INT_ZERO])
+            );
+        }
 
         //public static Expr GetScalarExpr(this GaRandomGenerator randomGenerator)
         //{

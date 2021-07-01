@@ -237,9 +237,9 @@ namespace CodeComposerLib.Languages.CSharp
         }
 
 
-        public static CSharpCodeGenerator CSharp4CodeGenerator()
+        public static CSharpCodeComposer CSharp4CodeComposer()
         {
-            return new CSharpCodeGenerator();
+            return new CSharpCodeComposer();
         }
 
         public static CSharpSyntaxFactory CSharp4SyntaxFactory()

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using DataStructuresLib;
-using GeometricAlgebraLib.Frames;
+using GeometricAlgebraLib.Multivectors.Basis;
 using GeometricAlgebraLib.Processors.Scalars;
 using GeometricAlgebraLib.Storage;
 using GeometricAlgebraLib.Storage.Composers;
@@ -82,7 +82,7 @@ namespace GeometricAlgebraLib.Outermorphisms.Computed
 
         public IGaKVectorStorage<T> MapBasisBlade(int grade, ulong index)
         {
-            var id = GaFrameUtils.BasisBladeId(grade, index);
+            var id = GaBasisUtils.BasisBladeId(grade, index);
 
             var scalar = ScalarProcessor.Times(
                 DiagonalScalars.PickItemsUsingPattern(id)
@@ -114,7 +114,7 @@ namespace GeometricAlgebraLib.Outermorphisms.Computed
 
             foreach (var (index, scalar) in kVector.GetIndexScalarPairs())
             {
-                var id = GaFrameUtils.BasisBladeId(kVector.Grade, index);
+                var id = GaBasisUtils.BasisBladeId(kVector.Grade, index);
 
                 var newScalar = ScalarProcessor.Times(
                     scalar,

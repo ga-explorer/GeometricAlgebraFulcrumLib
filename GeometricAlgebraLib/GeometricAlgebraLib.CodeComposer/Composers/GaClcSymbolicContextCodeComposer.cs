@@ -6,7 +6,7 @@ using CodeComposerLib.SyntaxTree;
 using GeometricAlgebraLib.CodeComposer.LanguageServers;
 using GeometricAlgebraLib.SymbolicExpressions.Context;
 using GeometricAlgebraLib.SymbolicExpressions.Variables;
-using TextComposerLib.Logs.Progress;
+using TextComposerLib.Loggers.Progress;
 
 namespace GeometricAlgebraLib.CodeComposer.Composers
 {
@@ -14,10 +14,10 @@ namespace GeometricAlgebraLib.CodeComposer.Composers
     /// This abstract class can be used to implement a sub-process of macro-based computational code generation 
     /// using the main code library generator components and a macro binding component
     /// </summary>
-    public class GaClcSymbolicContextCodeComposer : 
+    public sealed class GaClcSymbolicContextCodeComposer : 
         GaClcCodeStringComposerBase
     {
-        private static void GenerateDeclareTempsCode(GaClcSymbolicContextCodeComposer contextCodeComposer)
+        private static void GenerateDeclareIntermediateVariablesCode(GaClcSymbolicContextCodeComposer contextCodeComposer)
         {
             var tempVarNames =
                 contextCodeComposer
@@ -118,39 +118,16 @@ namespace GeometricAlgebraLib.CodeComposer.Composers
         {
             DefaultGenerateCommentsAfterComputations(contextCodeComposer);
         }
-
-        //public static void DefaultActionSetSymbolicContextParametersBindings(GaClcSymbolicContextBinding macroBinding)
-        //{
-        //    var lowLevelParams =
-        //        macroBinding
-        //        .BaseSymbolicContext
-        //        .ParameterNamedScalars
-        //        .SelectMany(p => p.DatastoreValueAccess.ExpandAll());
-
-        //    foreach (var macroParam in lowLevelParams)
-        //        macroBinding.BindToVariables(macroParam);
-        //}
-
-        //public static void DefaultActionSetTargetVariablesNames(GaClcTargetVariablesNaming targetNaming)
-        //{
-        //    targetNaming.SetInputVariables(v => v.ValueAccessName);
-
-        //    targetNaming.SetOutputVariables(v => v.ValueAccessName);
-
-        //    //targetNaming.SetTempVariables(v => v.InternalName);
-        //    targetNaming.SetTempVariables(v => "tmp" + v.NameIndex);
-        //}
-
+        
 
         /// <summary>
         /// The expression converter object used in this class
         /// </summary>
-        protected GaClcLanguageExpressionConverter ExpressionConverter 
+        public GaClcLanguageExpressionConverter ExpressionConverter 
             => LibraryComposer.GaClcLanguage.ExpressionConverter;
 
-
         public override string ProgressSourceId 
-            => "SymbolicContext Code Generator";
+            => "SymbolicContext Code Composer";
 
         /// <summary>
         /// The text composer object where all generated macro code is written
@@ -173,12 +150,6 @@ namespace GeometricAlgebraLib.CodeComposer.Composers
         /// </summary>
         public bool AllowGenerateComputationComments { get; set; } = false;
 
-
-        /// <summary>
-        /// This is executed before code generation to set the abstract macro parameters bindings to 
-        /// constants and variables as desired.
-        /// </summary>
-        public Action<SymbolicContextOptions> ActionSetSymbolicContextParametersBindings { get; set; }
         
         /// <summary>
         /// This is executed before generating computation code. It can be used to add comments, declare temp 
@@ -229,7 +200,7 @@ namespace GeometricAlgebraLib.CodeComposer.Composers
         /// Generate the code for a single computation
         /// </summary>
         /// <param name="codeInfo"></param>
-        protected virtual void GenerateSingleComputationCode(GaClcComputationCodeInfo codeInfo)
+        public void GenerateSingleComputationCode(GaClcComputationCodeInfo codeInfo)
         {
             //Generate comment to show symbolic form for this computation
             if (AllowGenerateComputationComments)
@@ -345,7 +316,8 @@ namespace GeometricAlgebraLib.CodeComposer.Composers
             ExpressionConverter.ActiveContext = null;
 
             //Un-parse the SyntaxList into the final code
-            var codeText = CodeGenerator.GenerateCode(SyntaxList);
+            var codeText = 
+                CodeComposer.GenerateCode(SyntaxList);
 
             this.ReportFinish(progressId, codeText);
 

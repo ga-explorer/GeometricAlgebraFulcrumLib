@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using DataStructuresLib.Random;
-using GeometricAlgebraLib.Frames;
 using GeometricAlgebraLib.Geometry.Euclidean;
+using GeometricAlgebraLib.Multivectors.Basis;
 using GeometricAlgebraLib.Processors.Multivectors;
 using GeometricAlgebraLib.Processors.Scalars;
 using GeometricAlgebraLib.Storage;
@@ -83,7 +83,7 @@ namespace GeometricAlgebraLib.Processors.Random
 
         public ulong GetBasisBivectorId()
         {
-            return GaFrameUtils.BasisBladeId(
+            return GaBasisUtils.BasisBladeId(
                 2, 
                 GetBasisBivectorIndex()
             );
@@ -96,7 +96,7 @@ namespace GeometricAlgebraLib.Processors.Random
 
         public ulong GetBasisBladeId(int grade)
         {
-            return GaFrameUtils.BasisBladeId(
+            return GaBasisUtils.BasisBladeId(
                 grade, 
                 GetBasisBladeIndex(grade)
             );
@@ -119,7 +119,7 @@ namespace GeometricAlgebraLib.Processors.Random
 
         public ulong GetBasisBladeIndex(int grade)
         {
-            var kvSpaceDimension = GaFrameUtils.KvSpaceDimension(VSpaceDimension, grade);
+            var kvSpaceDimension = GaBasisUtils.KvSpaceDimension(VSpaceDimension, grade);
 
             return (ulong) RandomGenerator.Next((int) kvSpaceDimension);
         }
@@ -127,7 +127,7 @@ namespace GeometricAlgebraLib.Processors.Random
         public Dictionary<ulong, TScalar> GetKVectorIndexScalarDictionary(int grade)
         {
             var kvSpaceDimension = 
-                (int) GaFrameUtils.KvSpaceDimension(VSpaceDimension, grade);
+                (int) GaBasisUtils.KvSpaceDimension(VSpaceDimension, grade);
 
             return Enumerable
                 .Range(0, kvSpaceDimension)
@@ -140,7 +140,7 @@ namespace GeometricAlgebraLib.Processors.Random
         public Dictionary<ulong, TScalar> GetKVectorIndexScalarDictionary(int grade, double minValue, double maxValue)
         {
             var kvSpaceDimension = 
-                (int) GaFrameUtils.KvSpaceDimension(VSpaceDimension, grade);
+                (int) GaBasisUtils.KvSpaceDimension(VSpaceDimension, grade);
 
             return Enumerable
                 .Range(0, kvSpaceDimension)
@@ -417,7 +417,7 @@ namespace GeometricAlgebraLib.Processors.Random
         public GaBivectorStorage<TScalar> GetBivector()
         {
             var kvSpaceDimension = 
-                GaFrameUtils.KvSpaceDimension(VSpaceDimension, 2);
+                GaBasisUtils.KvSpaceDimension(VSpaceDimension, 2);
 
             var indexScalarDictionary =
                 Enumerable
@@ -436,7 +436,7 @@ namespace GeometricAlgebraLib.Processors.Random
         public GaBivectorStorage<TScalar> GetBivector(double minValue, double maxValue)
         {
             var kvSpaceDimension = 
-                GaFrameUtils.KvSpaceDimension(VSpaceDimension, 2);
+                GaBasisUtils.KvSpaceDimension(VSpaceDimension, 2);
 
             var indexScalarDictionary =
                 Enumerable
@@ -455,7 +455,7 @@ namespace GeometricAlgebraLib.Processors.Random
         public GaBivectorStorage<TScalar> GetSparseBivector(int termsCount)
         {
             var kvSpaceDimension = 
-                (int) GaFrameUtils.KvSpaceDimension(VSpaceDimension, 2);
+                (int) GaBasisUtils.KvSpaceDimension(VSpaceDimension, 2);
 
             if (termsCount > kvSpaceDimension)
                 throw new ArgumentOutOfRangeException(nameof(termsCount));
@@ -479,7 +479,7 @@ namespace GeometricAlgebraLib.Processors.Random
         public GaBivectorStorage<TScalar> GetSparseBivector(int termsCount, double minValue, double maxValue)
         {
             var kvSpaceDimension = 
-                (int) GaFrameUtils.KvSpaceDimension(VSpaceDimension, 2);
+                (int) GaBasisUtils.KvSpaceDimension(VSpaceDimension, 2);
 
             if (termsCount > kvSpaceDimension)
                 throw new ArgumentOutOfRangeException(nameof(termsCount));
@@ -519,7 +519,7 @@ namespace GeometricAlgebraLib.Processors.Random
         public GaKVectorStorage<TScalar> GetKVectorOfGrade(int grade)
         {
             var kvSpaceDimension = 
-                GaFrameUtils.KvSpaceDimension(VSpaceDimension, grade);
+                GaBasisUtils.KvSpaceDimension(VSpaceDimension, grade);
 
             var indexScalarDictionary =
                 Enumerable
@@ -539,7 +539,7 @@ namespace GeometricAlgebraLib.Processors.Random
         public GaKVectorStorage<TScalar> GetKVectorOfGrade(int grade, double minValue, double maxValue)
         {
             var kvSpaceDimension = 
-                GaFrameUtils.KvSpaceDimension(VSpaceDimension, grade);
+                GaBasisUtils.KvSpaceDimension(VSpaceDimension, grade);
 
             var indexScalarDictionary =
                 Enumerable
@@ -559,7 +559,7 @@ namespace GeometricAlgebraLib.Processors.Random
         public GaKVectorStorage<TScalar> GetSparseKVectorOfGrade(int grade, int termsCount)
         {
             var kvSpaceDimension = 
-                (int) GaFrameUtils.KvSpaceDimension(VSpaceDimension, grade);
+                (int) GaBasisUtils.KvSpaceDimension(VSpaceDimension, grade);
 
             if (termsCount > kvSpaceDimension)
                 throw new ArgumentOutOfRangeException(nameof(termsCount));
@@ -584,7 +584,7 @@ namespace GeometricAlgebraLib.Processors.Random
         public GaKVectorStorage<TScalar> GetSparseKVectorOfGrade(int grade, int termsCount, double minValue, double maxValue)
         {
             var kvSpaceDimension = 
-                (int) GaFrameUtils.KvSpaceDimension(VSpaceDimension, grade);
+                (int) GaBasisUtils.KvSpaceDimension(VSpaceDimension, grade);
 
             if (termsCount > kvSpaceDimension)
                 throw new ArgumentOutOfRangeException(nameof(termsCount));

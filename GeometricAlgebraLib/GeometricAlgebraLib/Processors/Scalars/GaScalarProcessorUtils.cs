@@ -7,6 +7,14 @@ namespace GeometricAlgebraLib.Processors.Scalars
 {
     public static class GaScalarProcessorUtils
     {
+        public static bool IsOne<T>(this IGaScalarProcessor<T> scalarProcessor, T scalar)
+        {
+            return scalarProcessor.IsZero(
+                scalarProcessor.Subtract(scalar, scalarProcessor.OneScalar)
+            );
+        }
+
+
         public static T PiRatio<T>(this IGaScalarProcessor<T> scalarProcessor, int numerator, int denominator)
         {
             return scalarProcessor.Divide(
@@ -232,6 +240,20 @@ namespace GeometricAlgebraLib.Processors.Scalars
                 scalarProcessor.IntegerToScalar(scalar1),
                 scalar2
             );
+        }
+
+        public static T Times<T>(this IGaScalarProcessor<T> scalarProcessor, int intScalar, T scalar1, T scalar2)
+        {
+            return intScalar switch
+            {
+                0 => scalarProcessor.ZeroScalar,
+                1 => scalarProcessor.Times(scalar1, scalar2),
+                -1 => scalarProcessor.NegativeTimes(scalar1, scalar2),
+                _ => scalarProcessor.Times(
+                        scalarProcessor.IntegerToScalar(intScalar),
+                        scalarProcessor.Times(scalar1, scalar2)
+                    )
+            };
         }
 
         public static T NegativeTimes<T>(this IGaScalarProcessor<T> scalarProcessor, int scalar1, int scalar2)

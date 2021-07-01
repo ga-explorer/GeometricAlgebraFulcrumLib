@@ -4,14 +4,14 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using DataStructuresLib;
 using DataStructuresLib.Extensions;
-using GeometricAlgebraLib.Frames;
-using GeometricAlgebraLib.Multivectors.Bases;
+using GeometricAlgebraLib.Multivectors.Basis;
 using GeometricAlgebraLib.Multivectors.Terms;
 using GeometricAlgebraLib.Processors.Scalars;
 using GeometricAlgebraLib.Storage.Composers;
 using GeometricAlgebraLib.Storage.GuidedBinaryTraversal.Multivectors;
 using GeometricAlgebraLib.Storage.GuidedBinaryTraversal.Products;
 using GeometricAlgebraLib.Storage.Trees;
+using GaBasisUtils = GeometricAlgebraLib.Multivectors.Basis.GaBasisUtils;
 
 namespace GeometricAlgebraLib.Storage
 {
@@ -253,7 +253,7 @@ namespace GeometricAlgebraLib.Storage
             return IndexScalarDictionary.Keys.Select(index => new Tuple<int, ulong>(Grade, index));
         }
 
-        public abstract IEnumerable<IGaBasis> GetBasisBlades();
+        public abstract IEnumerable<IGaBasisBlade> GetBasisBlades();
 
         public IEnumerable<TScalar> GetScalars()
         {
@@ -470,7 +470,7 @@ namespace GeometricAlgebraLib.Storage
                 _ => GaMultivectorTermsStorage<TScalar>.Create(
                     ScalarProcessor, 
                     IndexScalarDictionary.ToDictionary(
-                        pair => GaFrameUtils.BasisBladeId(Grade, pair.Key),
+                        pair => GaBasisUtils.BasisBladeId(Grade, pair.Key),
                         pair => pair.Value
                     )
                 )
@@ -628,15 +628,15 @@ namespace GeometricAlgebraLib.Storage
 
             foreach (var (index1, scalar1) in IndexScalarDictionary)
             {
-                var id1 = GaFrameUtils.BasisBladeId(grade1, index1);
+                var id1 = GaBasisUtils.BasisBladeId(grade1, index1);
 
                 foreach (var (id2, scalar2) in idScalarDictionary2)
                 {
-                    if (!GaFrameUtils.IsNonZeroOp(id1, id2))
+                    if (!GaBasisUtils.IsNonZeroOp(id1, id2))
                         continue;
 
                     var id = id1 ^ id2;
-                    var scalar = GaFrameUtils.IsNegativeEGp(id1, id2)
+                    var scalar = GaBasisUtils.IsNegativeEGp(id1, id2)
                         ? ScalarProcessor.NegativeTimes(scalar1, scalar2)
                         : ScalarProcessor.Times(scalar1, scalar2);
 

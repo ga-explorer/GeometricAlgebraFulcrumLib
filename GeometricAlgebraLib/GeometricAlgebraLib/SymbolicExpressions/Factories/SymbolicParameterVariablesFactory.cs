@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using GeometricAlgebraLib.Multivectors.Basis;
 using GeometricAlgebraLib.Storage;
 using GeometricAlgebraLib.SymbolicExpressions.Context;
 using GeometricAlgebraLib.SymbolicExpressions.Variables;
@@ -70,6 +72,36 @@ namespace GeometricAlgebraLib.SymbolicExpressions.Factories
                 namedScalar
             );
         }
+        
+        public GaKVectorStorage<ISymbolicExpressionAtomic> CreateDenseKVector(int vSpaceDimensions, int grade, Func<ulong, string> namingFunction)
+        {
+            Debug.Assert(grade >= 0 && grade <= vSpaceDimensions);
+            
+            var kvSpaceDimension = 
+                GaBasisUtils.KvSpaceDimension(vSpaceDimensions, grade);
+
+            var parametersList =
+                Enumerable
+                    .Range(0, 1 << (int) kvSpaceDimension)
+                    .Select(index => 
+                        new KeyValuePair<ulong, ISymbolicExpressionAtomic>(
+                            (ulong) index, 
+                            Context.GetOrDefineParameterVariable(
+                                namingFunction((ulong) index)
+                            )
+                        )
+                    )
+                    .ToDictionary(
+                        pair => pair.Key,
+                        pair => pair.Value
+                    );
+
+            return GaKVectorStorage<ISymbolicExpressionAtomic>.Create(
+                Context,
+                grade,
+                parametersList
+            );
+        }
 
         public GaMultivectorTermsStorage<ISymbolicExpressionAtomic> CreateDenseMultivector(int vSpaceDimensions, Func<int, string> namingFunction)
         {
@@ -79,7 +111,9 @@ namespace GeometricAlgebraLib.SymbolicExpressions.Factories
                     .Select(id => 
                         new KeyValuePair<ulong, ISymbolicExpressionAtomic>(
                             (ulong) id, 
-                            Context.GetOrDefineParameterVariable(namingFunction(id))
+                            Context.GetOrDefineParameterVariable(
+                                namingFunction(id)
+                            )
                         )
                     )
                     .ToDictionary(

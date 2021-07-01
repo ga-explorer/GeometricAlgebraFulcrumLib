@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using GeometricAlgebraLib.Frames;
 using GeometricAlgebraLib.Multivectors;
+using GeometricAlgebraLib.Multivectors.Basis;
 using GeometricAlgebraLib.Processors.Scalars;
 using GeometricAlgebraLib.Storage;
 using GeometricAlgebraLib.Storage.Composers;
@@ -150,7 +150,7 @@ namespace GeometricAlgebraLib.Processors.Multivectors
                 foreach (var (id2, scalar2) in idScalarDictionary2)
                 {
                     var id = id1 ^ id2;
-                    var scalar = GaFrameUtils.IsNegativeEGp(id1, id2)
+                    var scalar = GaBasisUtils.IsNegativeEGp(id1, id2)
                         ? scalarProcessor.NegativeTimes(scalar1, scalar2)
                         : scalarProcessor.Times(scalar1, scalar2);
 
@@ -202,7 +202,7 @@ namespace GeometricAlgebraLib.Processors.Multivectors
             );
         }
 
-        public static GaMultivector<T> Gp<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2, GaMultivectorsProcessor<T> processor)
+        public static GaMultivector<T> Gp<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2, GaMultivectorsProcessorBase<T> processor)
         {
             return new(
                 processor.Gp(mv1.Storage, mv2.Storage)
@@ -235,7 +235,7 @@ namespace GeometricAlgebraLib.Processors.Multivectors
                 foreach (var (id2, scalar2) in idScalarDictionary1)
                 {
                     var id = id1 ^ id2;
-                    var scalar = GaFrameUtils.IsNegativeEGp(id1, id2)
+                    var scalar = GaBasisUtils.IsNegativeEGp(id1, id2)
                         ? scalarProcessor.NegativeTimes(scalar1, scalar2)
                         : scalarProcessor.Times(scalar1, scalar2);
 
@@ -267,7 +267,7 @@ namespace GeometricAlgebraLib.Processors.Multivectors
             );
         }
 
-        public static GaMultivector<T> GpSquared<T>(this GaMultivector<T> mv1, GaMultivectorsProcessor<T> processor)
+        public static GaMultivector<T> GpSquared<T>(this GaMultivector<T> mv1, GaMultivectorsProcessorBase<T> processor)
         {
             return new(
                 processor.GpSquared(mv1.Storage)
@@ -284,7 +284,7 @@ namespace GeometricAlgebraLib.Processors.Multivectors
                 foreach (var (id2, scalar2) in idScalarDictionary1)
                 {
                     var id = id1 ^ id2;
-                    var scalar = GaFrameUtils.IsNegativeEGp(id1, id2)
+                    var scalar = GaBasisUtils.IsNegativeEGp(id1, id2)
                         ? scalarProcessor.NegativeTimes(scalar1, scalar2)
                         : scalarProcessor.Times(scalar1, scalar2);
 
@@ -319,7 +319,7 @@ namespace GeometricAlgebraLib.Processors.Multivectors
             );
         }
 
-        public static GaMultivector<T> GpReverse<T>(this GaMultivector<T> mv1, GaMultivectorsProcessor<T> processor)
+        public static GaMultivector<T> GpReverse<T>(this GaMultivector<T> mv1, GaMultivectorsProcessorBase<T> processor)
         {
             return new(
                 processor.GpReverse(mv1.Storage)
@@ -459,7 +459,7 @@ namespace GeometricAlgebraLib.Processors.Multivectors
             return ESp(mv1.Storage, mv2.Storage);
         }
 
-        public static T Sp<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2, GaMultivectorsProcessor<T> processor)
+        public static T Sp<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2, GaMultivectorsProcessorBase<T> processor)
         {
             return processor.Sp(mv1.Storage, mv2.Storage);
         }
@@ -483,7 +483,7 @@ namespace GeometricAlgebraLib.Processors.Multivectors
             {
                 var scalar = scalarProcessor.Times(scalar1, scalar1);
 
-                if (GaFrameUtils.IsNegativeEGp(id1, id1))
+                if (GaBasisUtils.IsNegativeEGp(id1, id1))
                     composer.SubtractScalar(scalar);
                 else
                     composer.AddScalar(scalar);
@@ -509,7 +509,7 @@ namespace GeometricAlgebraLib.Processors.Multivectors
             return ESpSquared(mv1.Storage);
         }
 
-        public static T SpSquared<T>(this GaMultivector<T> mv1, GaMultivectorsProcessor<T> processor)
+        public static T SpSquared<T>(this GaMultivector<T> mv1, GaMultivectorsProcessorBase<T> processor)
         {
             return processor.SpSquared(mv1.Storage);
         }
@@ -523,7 +523,7 @@ namespace GeometricAlgebraLib.Processors.Multivectors
             {
                 var scalar = scalarProcessor.Times(scalar1, scalar1);
 
-                if (id1.BasisBladeIdHasNegativeReverse() == GaFrameUtils.IsNegativeEGp(id1, id1))
+                if (id1.BasisBladeIdHasNegativeReverse() == GaBasisUtils.IsNegativeEGp(id1, id1))
                     composer.AddScalar(scalar);
                 else
                     composer.SubtractScalar(scalar);
@@ -549,7 +549,7 @@ namespace GeometricAlgebraLib.Processors.Multivectors
             return ESpReverse(mv1.Storage);
         }
 
-        public static T SpReverse<T>(this GaMultivector<T> mv1, GaMultivectorsProcessor<T> processor)
+        public static T SpReverse<T>(this GaMultivector<T> mv1, GaMultivectorsProcessorBase<T> processor)
         {
             return processor.SpReverse(mv1.Storage);
         }
@@ -563,21 +563,21 @@ namespace GeometricAlgebraLib.Processors.Multivectors
             var composer = new GaKVectorStorageComposer<T>(scalarProcessor, grade2 - grade1);
 
             var idScalarDictionary2 = indexScalarPairs2.ToDictionary(
-                pair => GaFrameUtils.BasisBladeId(grade2, pair.Key),
+                pair => GaBasisUtils.BasisBladeId(grade2, pair.Key),
                 pair => pair.Value
             );
 
             foreach (var (index1, scalar1) in indexScalarPairs1)
             {
-                var id1 = GaFrameUtils.BasisBladeId(grade1, index1);
+                var id1 = GaBasisUtils.BasisBladeId(grade1, index1);
 
                 foreach (var (id2, scalar2) in idScalarDictionary2)
                 {
-                    if (!GaFrameUtils.IsNonZeroELcp(id1, id2))
+                    if (!GaBasisUtils.IsNonZeroELcp(id1, id2))
                         continue;
 
                     var id = id1 ^ id2;
-                    var scalar = GaFrameUtils.IsNegativeEGp(id1, id2)
+                    var scalar = GaBasisUtils.IsNegativeEGp(id1, id2)
                         ? scalarProcessor.NegativeTimes(scalar1, scalar2)
                         : scalarProcessor.Times(scalar1, scalar2);
 
@@ -646,21 +646,21 @@ namespace GeometricAlgebraLib.Processors.Multivectors
             var composer = new GaKVectorStorageComposer<T>(scalarProcessor, grade1 - grade2);
 
             var idScalarDictionary2 = indexScalarPairs2.ToDictionary(
-                pair => GaFrameUtils.BasisBladeId(grade2, pair.Key),
+                pair => GaBasisUtils.BasisBladeId(grade2, pair.Key),
                 pair => pair.Value
             );
 
             foreach (var (index1, scalar1) in indexScalarPairs1)
             {
-                var id1 = GaFrameUtils.BasisBladeId(grade1, index1);
+                var id1 = GaBasisUtils.BasisBladeId(grade1, index1);
 
                 foreach (var (id2, scalar2) in idScalarDictionary2)
                 {
-                    if (!GaFrameUtils.IsNonZeroERcp(id1, id2))
+                    if (!GaBasisUtils.IsNonZeroERcp(id1, id2))
                         continue;
 
                     var id = id1 ^ id2;
-                    var scalar = GaFrameUtils.IsNegativeEGp(id1, id2)
+                    var scalar = GaBasisUtils.IsNegativeEGp(id1, id2)
                         ? scalarProcessor.NegativeTimes(scalar1, scalar2)
                         : scalarProcessor.Times(scalar1, scalar2);
 
@@ -732,21 +732,21 @@ namespace GeometricAlgebraLib.Processors.Multivectors
             );
 
             var idScalarDictionary2 = indexScalarPairs2.ToDictionary(
-                pair => GaFrameUtils.BasisBladeId(grade2, pair.Key),
+                pair => GaBasisUtils.BasisBladeId(grade2, pair.Key),
                 pair => pair.Value
             );
 
             foreach (var (index1, scalar1) in indexScalarPairs1)
             {
-                var id1 = GaFrameUtils.BasisBladeId(grade1, index1);
+                var id1 = GaBasisUtils.BasisBladeId(grade1, index1);
 
                 foreach (var (id2, scalar2) in idScalarDictionary2)
                 {
-                    if (!GaFrameUtils.IsNonZeroEHip(id1, id2))
+                    if (!GaBasisUtils.IsNonZeroEHip(id1, id2))
                         continue;
 
                     var id = id1 ^ id2;
-                    var scalar = GaFrameUtils.IsNegativeEGp(id1, id2)
+                    var scalar = GaBasisUtils.IsNegativeEGp(id1, id2)
                         ? scalarProcessor.NegativeTimes(scalar1, scalar2)
                         : scalarProcessor.Times(scalar1, scalar2);
 
@@ -815,21 +815,21 @@ namespace GeometricAlgebraLib.Processors.Multivectors
             );
 
             var idScalarDictionary2 = indexScalarPairs2.ToDictionary(
-                pair => GaFrameUtils.BasisBladeId(grade2, pair.Key),
+                pair => GaBasisUtils.BasisBladeId(grade2, pair.Key),
                 pair => pair.Value
             );
 
             foreach (var (index1, scalar1) in indexScalarPairs1)
             {
-                var id1 = GaFrameUtils.BasisBladeId(grade1, index1);
+                var id1 = GaBasisUtils.BasisBladeId(grade1, index1);
 
                 foreach (var (id2, scalar2) in idScalarDictionary2)
                 {
-                    if (!GaFrameUtils.IsNonZeroEFdp(id1, id2))
+                    if (!GaBasisUtils.IsNonZeroEFdp(id1, id2))
                         continue;
 
                     var id = id1 ^ id2;
-                    var scalar = GaFrameUtils.IsNegativeEGp(id1, id2)
+                    var scalar = GaBasisUtils.IsNegativeEGp(id1, id2)
                         ? scalarProcessor.NegativeTimes(scalar1, scalar2)
                         : scalarProcessor.Times(scalar1, scalar2);
 
@@ -903,11 +903,11 @@ namespace GeometricAlgebraLib.Processors.Multivectors
             {
                 foreach (var (id2, scalar2) in idScalarDictionary2)
                 {
-                    if (!GaFrameUtils.IsNonZeroEAcp(id1, id2))
+                    if (!GaBasisUtils.IsNonZeroEAcp(id1, id2))
                         continue;
 
                     var id = id1 ^ id2;
-                    var scalar = GaFrameUtils.IsNegativeEGp(id1, id2)
+                    var scalar = GaBasisUtils.IsNegativeEGp(id1, id2)
                         ? scalarProcessor.NegativeTimes(scalar1, scalar2)
                         : scalarProcessor.Times(scalar1, scalar2);
 
@@ -938,7 +938,7 @@ namespace GeometricAlgebraLib.Processors.Multivectors
             );
         }
 
-        public static GaMultivector<T> Acp<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2, GaMultivectorsProcessor<T> processor)
+        public static GaMultivector<T> Acp<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2, GaMultivectorsProcessorBase<T> processor)
         {
             return new(
                 processor.Acp(mv1.Storage, mv2.Storage)
@@ -959,11 +959,11 @@ namespace GeometricAlgebraLib.Processors.Multivectors
             {
                 foreach (var (id2, scalar2) in idScalarDictionary2)
                 {
-                    if (!GaFrameUtils.IsNonZeroECp(id1, id2))
+                    if (!GaBasisUtils.IsNonZeroECp(id1, id2))
                         continue;
 
                     var id = id1 ^ id2;
-                    var scalar = GaFrameUtils.IsNegativeEGp(id1, id2)
+                    var scalar = GaBasisUtils.IsNegativeEGp(id1, id2)
                         ? scalarProcessor.NegativeTimes(scalar1, scalar2)
                         : scalarProcessor.Times(scalar1, scalar2);
 
@@ -999,7 +999,7 @@ namespace GeometricAlgebraLib.Processors.Multivectors
             );
         }
 
-        public static GaMultivector<T> Cp<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2, GaMultivectorsProcessor<T> processor)
+        public static GaMultivector<T> Cp<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2, GaMultivectorsProcessorBase<T> processor)
         {
             return new(
                 processor.Cp(mv1.Storage, mv2.Storage)
@@ -1026,9 +1026,9 @@ namespace GeometricAlgebraLib.Processors.Multivectors
 
             foreach (var (index1, scalar1) in indexScalarPairs1)
             {
-                var id1 = GaFrameUtils.BasisBladeId(grade1, index1);
+                var id1 = GaBasisUtils.BasisBladeId(grade1, index1);
 
-                var scalar = gradeHasNegativeReverse ^ GaFrameUtils.IsNegativeEGp(id1, id1)
+                var scalar = gradeHasNegativeReverse ^ GaBasisUtils.IsNegativeEGp(id1, id1)
                     ? scalarProcessor.Times(scalar1, scalar1)
                     : scalarProcessor.NegativeTimes(scalar1, scalar1);
 
@@ -1048,9 +1048,9 @@ namespace GeometricAlgebraLib.Processors.Multivectors
 
                 foreach (var (index1, scalar1) in indexScalarPairs1)
                 {
-                    var id1 = GaFrameUtils.BasisBladeId(grade1, index1);
+                    var id1 = GaBasisUtils.BasisBladeId(grade1, index1);
 
-                    var scalar = gradeHasNegativeReverse ^ GaFrameUtils.IsNegativeEGp(id1, id1)
+                    var scalar = gradeHasNegativeReverse ^ GaBasisUtils.IsNegativeEGp(id1, id1)
                         ? scalarProcessor.Times(scalar1, scalar1)
                         : scalarProcessor.NegativeTimes(scalar1, scalar1);
 
@@ -1067,7 +1067,7 @@ namespace GeometricAlgebraLib.Processors.Multivectors
 
             foreach (var (id1, scalar1) in idScalarPairs1)
             {
-                var scalar = id1.BasisBladeIdHasNegativeReverse() ^ GaFrameUtils.IsNegativeEGp(id1, id1)
+                var scalar = id1.BasisBladeIdHasNegativeReverse() ^ GaBasisUtils.IsNegativeEGp(id1, id1)
                     ? scalarProcessor.Times(scalar1, scalar1)
                     : scalarProcessor.NegativeTimes(scalar1, scalar1);
 
@@ -1096,7 +1096,7 @@ namespace GeometricAlgebraLib.Processors.Multivectors
             return ENormSquared(mv1.Storage);
         }
         
-        public static T NormSquared<T>(this GaMultivector<T> mv1, GaMultivectorsProcessor<T> processor)
+        public static T NormSquared<T>(this GaMultivector<T> mv1, GaMultivectorsProcessorBase<T> processor)
         {
             return processor.NormSquared(mv1.Storage);
         }
@@ -1130,7 +1130,7 @@ namespace GeometricAlgebraLib.Processors.Multivectors
             );
         }
 
-        public static GaMultivector<T> VersorInverse<T>(this GaMultivector<T> mv1, GaMultivectorsProcessor<T> processor)
+        public static GaMultivector<T> VersorInverse<T>(this GaMultivector<T> mv1, GaMultivectorsProcessorBase<T> processor)
         {
             return new(
                 processor.VersorInverse(mv1.Storage)
@@ -1153,7 +1153,7 @@ namespace GeometricAlgebraLib.Processors.Multivectors
             );
         }
 
-        public static GaMultivector<T> BladeInverse<T>(this GaMultivector<T> mv1, GaMultivectorsProcessor<T> processor)
+        public static GaMultivector<T> BladeInverse<T>(this GaMultivector<T> mv1, GaMultivectorsProcessorBase<T> processor)
         {
             return new(
                 processor.BladeInverse(mv1.Storage)

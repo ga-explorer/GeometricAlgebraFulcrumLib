@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using GeometricAlgebraLib.Multivectors.Bases;
+using GeometricAlgebraLib.Multivectors.Basis;
 using GeometricAlgebraLib.Multivectors.Terms;
 using GeometricAlgebraLib.Processors.Scalars;
 using GeometricAlgebraLib.Storage.Composers;
@@ -118,7 +118,7 @@ namespace GeometricAlgebraLib.Storage
 
         public abstract IEnumerable<Tuple<int, ulong>> GetGradeIndexTuples();
 
-        public abstract IEnumerable<IGaBasis> GetBasisBlades();
+        public abstract IEnumerable<IGaBasisBlade> GetBasisBlades();
 
         public abstract IEnumerable<TScalar> GetScalars();
 

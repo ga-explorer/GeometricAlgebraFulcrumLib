@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using DataStructuresLib;
 using DataStructuresLib.Extensions;
-using GeometricAlgebraLib.Frames;
-using GeometricAlgebraLib.Multivectors.Bases;
+using GeometricAlgebraLib.Multivectors.Basis;
 using GeometricAlgebraLib.Multivectors.Terms;
 using GeometricAlgebraLib.Processors.Scalars;
 using GeometricAlgebraLib.Storage.Composers;
 using GeometricAlgebraLib.Storage.GuidedBinaryTraversal.Multivectors;
 using GeometricAlgebraLib.Storage.Trees;
+using GaBasisUtils = GeometricAlgebraLib.Multivectors.Basis.GaBasisUtils;
 
 namespace GeometricAlgebraLib.Storage
 {
@@ -79,8 +79,8 @@ namespace GeometricAlgebraLib.Storage
 
         public override TScalar this[int grade, ulong index]
         {
-            get => IdScalarTree[GaFrameUtils.BasisBladeId(grade, index)];
-            set => IdScalarTree[GaFrameUtils.BasisBladeId(grade, index)] = value;
+            get => IdScalarTree[GaBasisUtils.BasisBladeId(grade, index)];
+            set => IdScalarTree[GaBasisUtils.BasisBladeId(grade, index)] = value;
         }
 
 
@@ -190,7 +190,7 @@ namespace GeometricAlgebraLib.Storage
 
         public override bool ContainsTerm(int grade, ulong index)
         {
-            var id = GaFrameUtils.BasisBladeId(grade, index);
+            var id = GaBasisUtils.BasisBladeId(grade, index);
 
             return IdScalarTree.ContainsKey(id);
         }
@@ -205,7 +205,7 @@ namespace GeometricAlgebraLib.Storage
 
         public override TScalar GetTermScalar(int grade, ulong index)
         {
-            var id = GaFrameUtils.BasisBladeId(grade, index);
+            var id = GaBasisUtils.BasisBladeId(grade, index);
 
             return IdScalarTree.TryGetValue(id, out var scalar) 
                 ? scalar 
@@ -223,7 +223,7 @@ namespace GeometricAlgebraLib.Storage
 
         public override bool TryGetTermScalar(int grade, ulong index, out TScalar value)
         {
-            var id = GaFrameUtils.BasisBladeId(grade, index);
+            var id = GaBasisUtils.BasisBladeId(grade, index);
 
             if (IdScalarTree.TryGetValue(id, out value))
                 return true;
@@ -240,7 +240,7 @@ namespace GeometricAlgebraLib.Storage
 
         public override GaTerm<TScalar> GetTerm(int grade, ulong index)
         {
-            var id = GaFrameUtils.BasisBladeId(grade, index);
+            var id = GaBasisUtils.BasisBladeId(grade, index);
 
             return GaTerm<TScalar>.CreateUniform(id, this[id]);
         }
@@ -259,7 +259,7 @@ namespace GeometricAlgebraLib.Storage
 
         public override bool TryGetTerm(int grade, ulong index, out GaTerm<TScalar> term)
         {
-            var id = GaFrameUtils.BasisBladeId(grade, index);
+            var id = GaBasisUtils.BasisBladeId(grade, index);
 
             if (TryGetValue(id, out var value))
             {
@@ -407,10 +407,10 @@ namespace GeometricAlgebraLib.Storage
             return IdScalarTree.Keys.Select(id => id.BasisBladeGradeIndex());
         }
 
-        public override IEnumerable<IGaBasis> GetBasisBlades()
+        public override IEnumerable<IGaBasisBlade> GetBasisBlades()
         {
             return IdScalarTree.GetLeafNodeIDs().Select(id => 
-                (IGaBasis)new GaBasisUniform(id)
+                (IGaBasisBlade)new GaBasisUniform(id)
             );
         }
 

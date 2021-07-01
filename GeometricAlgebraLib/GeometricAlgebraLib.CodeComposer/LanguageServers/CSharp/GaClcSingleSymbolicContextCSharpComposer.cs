@@ -7,7 +7,7 @@ namespace GeometricAlgebraLib.CodeComposer.LanguageServers.CSharp
         GaClcSingleSymbolicContextCodeComposerBase
     {
         public GaClcSingleSymbolicContextCSharpComposer(SymbolicContext context, GaClcLanguageExpressionConverter expressionConverter)
-            : base(context, GaClcLanguageServer.CSharp4(expressionConverter))
+            : base(context, GaClcLanguageServer.CSharp(expressionConverter))
         {
         }
 
@@ -63,10 +63,10 @@ namespace GeometricAlgebraLib.CodeComposer.LanguageServers.CSharp
 
             if (AllowGenerateSymbolicContextCode)
             {
-                var macroGenerator = InitSymbolicContextCodeGenerator();
+                var macroComposer = InitSymbolicContextCodeComposer();
 
                 ActiveFileTextComposer.AppendLineAtNewLine(
-                    macroGenerator.Generate()
+                    macroComposer.Generate()
                     );
             }
 
@@ -78,7 +78,7 @@ namespace GeometricAlgebraLib.CodeComposer.LanguageServers.CSharp
         }
 
 
-        public override GaCodeLibraryComposerBase CreateEmptyGenerator()
+        public override GaCodeLibraryComposerBase CreateEmptyComposer()
         {
             return new GaClcSingleSymbolicContextCSharpComposer(
                 Context,

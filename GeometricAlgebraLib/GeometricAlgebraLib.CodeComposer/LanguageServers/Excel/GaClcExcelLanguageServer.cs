@@ -8,8 +8,8 @@ namespace GeometricAlgebraLib.CodeComposer.LanguageServers.Excel
     {
         public override string DefaultFileExtension => "xlsx";
 
-        internal GaClcExcelLanguageServer(ExcelCodeGenerator codeGenerator, ExcelSyntaxFactory syntaxFactory, GaClcLanguageExpressionConverter expressionConverter)
-            : base(codeGenerator, syntaxFactory, expressionConverter)
+        internal GaClcExcelLanguageServer(ExcelCodeComposer codeComposer, ExcelSyntaxFactory syntaxFactory, GaClcLanguageExpressionConverter expressionConverter)
+            : base(codeComposer, syntaxFactory, expressionConverter)
         {
         }
 
@@ -22,7 +22,7 @@ namespace GeometricAlgebraLib.CodeComposer.LanguageServers.Excel
                 return "int";
 
             if (itemType.IsScalar())
-                return CodeGenerator.ScalarTypeName;
+                return CodeComposer.ScalarTypeName;
 
             return @"/*<Unknown type>*/";
         }

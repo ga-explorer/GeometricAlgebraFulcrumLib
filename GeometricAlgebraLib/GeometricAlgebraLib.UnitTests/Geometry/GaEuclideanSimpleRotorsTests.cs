@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using GAPoTNumLib.GAPoT;
-using GeometricAlgebraLib.Frames;
 using GeometricAlgebraLib.Geometry.Euclidean;
 using GeometricAlgebraLib.Implementations.Float64;
+using GeometricAlgebraLib.Multivectors.Basis;
 using GeometricAlgebraLib.Processors.Multivectors;
 using GeometricAlgebraLib.Processors.Scalars;
 using GeometricAlgebraLib.Storage;

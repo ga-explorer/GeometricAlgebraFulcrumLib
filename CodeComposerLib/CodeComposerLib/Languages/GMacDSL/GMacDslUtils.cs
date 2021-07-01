@@ -11,7 +11,7 @@
         }
 
 
-        public static GMacDslCodeGenerator GMacDslCodeGenerator()
+        public static GMacDslCodeGenerator GMacDslCodeComposer()
         {
             return new GMacDslCodeGenerator();
         }

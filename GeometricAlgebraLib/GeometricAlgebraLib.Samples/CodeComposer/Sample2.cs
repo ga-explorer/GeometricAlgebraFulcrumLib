@@ -8,7 +8,7 @@ namespace GeometricAlgebraLib.Samples.CodeComposer
         public static void Execute()
         {
             var code = 
-                GaDenseMultivectorsLibraryComposer.GenerateCode(4);
+                GaLibraryComposer.GenerateCode(4);
 
             Console.WriteLine(code);
         }

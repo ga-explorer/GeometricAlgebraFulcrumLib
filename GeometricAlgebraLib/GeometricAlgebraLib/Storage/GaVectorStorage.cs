@@ -4,11 +4,11 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using DataStructuresLib.Extensions;
-using GeometricAlgebraLib.Frames;
-using GeometricAlgebraLib.Multivectors.Bases;
+using GeometricAlgebraLib.Multivectors.Basis;
 using GeometricAlgebraLib.Multivectors.Terms;
 using GeometricAlgebraLib.Processors.Scalars;
 using GeometricAlgebraLib.Storage.Composers;
+using GaBasisUtils = GeometricAlgebraLib.Multivectors.Basis.GaBasisUtils;
 
 namespace GeometricAlgebraLib.Storage
 {
@@ -380,7 +380,7 @@ namespace GeometricAlgebraLib.Storage
                 IndexScalarDictionary.ToDictionary(
                     pair => pair.Key, 
                     pair => idScalarMapping(
-                        GaFrameUtils.BasisBladeId(Grade, pair.Key), 
+                        GaBasisUtils.BasisBladeId(Grade, pair.Key), 
                         pair.Value
                     )
                 ),
@@ -597,7 +597,7 @@ namespace GeometricAlgebraLib.Storage
             return GaVectorStorage<TScalar>.Create(
                 ScalarProcessor,
                 IndexScalarDictionary
-                    .Where(pair => idScalarSelection(GaFrameUtils.BasisBladeId(1, pair.Key), pair.Value))
+                    .Where(pair => idScalarSelection(GaBasisUtils.BasisBladeId(1, pair.Key), pair.Value))
                     .CopyToDictionary()
             );
         }
@@ -689,10 +689,10 @@ namespace GeometricAlgebraLib.Storage
             return IndexScalarDictionary.Keys.Select(index => 1UL << (int)index);
         }
 
-        public override IEnumerable<IGaBasis> GetBasisBlades()
+        public override IEnumerable<IGaBasisBlade> GetBasisBlades()
         {
             return IndexScalarDictionary.Keys.Select(index => 
-                (IGaBasis)new GaBasisVector(index)
+                (IGaBasisBlade)new GaBasisVector(index)
             );
         }
 

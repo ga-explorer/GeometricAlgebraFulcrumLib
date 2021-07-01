@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using GAPoTNumLib.GAPoT;
-using GeometricAlgebraLib.Frames;
 using GeometricAlgebraLib.Implementations.Float64;
+using GeometricAlgebraLib.Multivectors.Basis;
 using GeometricAlgebraLib.Processors.Multivectors;
 using GeometricAlgebraLib.Processors.Scalars;
 using GeometricAlgebraLib.Storage;
@@ -241,7 +241,7 @@ namespace GeometricAlgebraLib.UnitTests.Storages
                 );
 
             //Create a set of bivector terms storages
-            var kvSpaceDimension2 = GaFrameUtils.KvSpaceDimension(VSpaceDimension, 2);
+            var kvSpaceDimension2 = GaBasisUtils.KvSpaceDimension(VSpaceDimension, 2);
             for (var index = 0UL; index < kvSpaceDimension2; index++)
                 _mvList1.Add(
                     _randomGenerator.GetBivectorTermByIndex(index)

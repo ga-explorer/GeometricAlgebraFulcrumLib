@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using GeometricAlgebraLib.Frames;
+using GeometricAlgebraLib.Multivectors.Signatures;
 using GeometricAlgebraLib.Processors.Scalars;
 using GeometricAlgebraLib.Storage;
 
@@ -35,22 +35,22 @@ namespace GeometricAlgebraLib.Products
         IEnumerable<KeyValuePair<ulong, T>> GetEAcpIdScalarPairs();
 
 
-        IEnumerable<KeyValuePair<ulong, T>> GetGpIdScalarPairs(GaOrthonormalBasesSignature basesSignature);
+        IEnumerable<KeyValuePair<ulong, T>> GetGpIdScalarPairs(GaSignature basesSignature);
 
-        IEnumerable<KeyValuePair<ulong, T>> GetSpIdScalarPairs(GaOrthonormalBasesSignature basesSignature);
+        IEnumerable<KeyValuePair<ulong, T>> GetSpIdScalarPairs(GaSignature basesSignature);
 
-        IEnumerable<T> GetSpScalars(GaOrthonormalBasesSignature basesSignature);
+        IEnumerable<T> GetSpScalars(GaSignature basesSignature);
 
-        IEnumerable<KeyValuePair<ulong, T>> GetLcpIdScalarPairs(GaOrthonormalBasesSignature basesSignature);
+        IEnumerable<KeyValuePair<ulong, T>> GetLcpIdScalarPairs(GaSignature basesSignature);
 
-        IEnumerable<KeyValuePair<ulong, T>> GetRcpIdScalarPairs(GaOrthonormalBasesSignature basesSignature);
+        IEnumerable<KeyValuePair<ulong, T>> GetRcpIdScalarPairs(GaSignature basesSignature);
 
-        IEnumerable<KeyValuePair<ulong, T>> GetHipIdScalarPairs(GaOrthonormalBasesSignature basesSignature);
+        IEnumerable<KeyValuePair<ulong, T>> GetHipIdScalarPairs(GaSignature basesSignature);
 
-        IEnumerable<KeyValuePair<ulong, T>> GetFdpIdScalarPairs(GaOrthonormalBasesSignature basesSignature);
+        IEnumerable<KeyValuePair<ulong, T>> GetFdpIdScalarPairs(GaSignature basesSignature);
 
-        IEnumerable<KeyValuePair<ulong, T>> GetCpIdScalarPairs(GaOrthonormalBasesSignature basesSignature);
+        IEnumerable<KeyValuePair<ulong, T>> GetCpIdScalarPairs(GaSignature basesSignature);
 
-        IEnumerable<KeyValuePair<ulong, T>> GetAcpIdScalarPairs(GaOrthonormalBasesSignature basesSignature);
+        IEnumerable<KeyValuePair<ulong, T>> GetAcpIdScalarPairs(GaSignature basesSignature);
     }
 }

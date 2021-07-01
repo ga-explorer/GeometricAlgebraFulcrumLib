@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-namespace EGA4D
+namespace GeometricAlgebraLib.CodeComposer.Applications.CSharp.DenseMultivectorsLib.SampleCode
 {
     public sealed class Multivector
         : IReadOnlyList<double>

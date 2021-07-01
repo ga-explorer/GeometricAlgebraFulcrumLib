@@ -1,6 +1,6 @@
 ﻿using CodeComposerLib.Languages;
 using GeometricAlgebraLib.CodeComposer.LanguageServers;
-using TextComposerLib.Logs.Progress;
+using TextComposerLib.Loggers.Progress;
 using TextComposerLib.Text.Parametric;
 
 namespace GeometricAlgebraLib.CodeComposer.Composers
@@ -26,8 +26,8 @@ namespace GeometricAlgebraLib.CodeComposer.Composers
         public GaClcLanguageServer GaClcLanguage 
             => LibraryComposer.GaClcLanguage;
 
-        public LanguageCodeGenerator CodeGenerator 
-            => LibraryComposer.GaClcLanguage.CodeGenerator;
+        public LanguageCodeComposer CodeComposer 
+            => LibraryComposer.GaClcLanguage.CodeComposer;
 
         public LanguageSyntaxFactory SyntaxFactory 
             => LibraryComposer.GaClcLanguage.SyntaxFactory;

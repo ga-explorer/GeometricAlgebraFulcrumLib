@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using GeometricAlgebraLib.SymbolicExpressions.Context.Evaluation;
 using GeometricAlgebraLib.SymbolicExpressions.Variables;
-using TextComposerLib.Logs.Progress;
+using TextComposerLib.Loggers.Progress;
 
 namespace GeometricAlgebraLib.SymbolicExpressions.Context.Optimizer
 {

@@ -3,7 +3,7 @@ using CodeComposerLib.Irony.Semantic;
 using CodeComposerLib.Languages;
 using GeometricAlgebraLib.CodeComposer.LanguageServers;
 using GeometricAlgebraLib.SymbolicExpressions.Context;
-using TextComposerLib.Logs.Progress;
+using TextComposerLib.Loggers.Progress;
 
 namespace GeometricAlgebraLib.CodeComposer.Composers
 {
@@ -25,6 +25,7 @@ namespace GeometricAlgebraLib.CodeComposer.Composers
         /// </summary>
         public GaClcLanguageServer GaClcLanguage { get; }
 
+        public bool AllowGenerateContextComposerCode { get; set; } = true;
 
         /// <summary>
         /// All derived classes must take a single AstRoot parameter for uniform operation purposes
@@ -40,7 +41,7 @@ namespace GeometricAlgebraLib.CodeComposer.Composers
         /// Create an un-initialized copy of this library generator
         /// </summary>
         /// <returns></returns>
-        public abstract GaCodeLibraryComposerBase CreateEmptyGenerator();
+        public abstract GaCodeLibraryComposerBase CreateEmptyComposer();
 
         /// <summary>
         /// Create a macro code generator based on this library
@@ -59,10 +60,10 @@ namespace GeometricAlgebraLib.CodeComposer.Composers
         public void GenerateComment(string commentText)
         {
             ActiveFileTextComposer.AppendLineAtNewLine(
-                CodeGenerator.GenerateCode(
+                GaClcLanguage.CodeComposer.GenerateCode(
                     SyntaxFactory.Comment(commentText)
-                    )
-                );
+                )
+            );
         }
 
         /// <summary>

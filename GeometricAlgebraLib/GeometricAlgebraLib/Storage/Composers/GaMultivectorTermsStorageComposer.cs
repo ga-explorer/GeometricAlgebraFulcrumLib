@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using DataStructuresLib.Extensions;
-using GeometricAlgebraLib.Frames;
+using GeometricAlgebraLib.Multivectors.Basis;
 using GeometricAlgebraLib.Multivectors.Terms;
 using GeometricAlgebraLib.Processors.Scalars;
 
@@ -36,7 +36,7 @@ namespace GeometricAlgebraLib.Storage.Composers
         {
             get
             {
-                var id = GaFrameUtils.BasisBladeId(grade, index);
+                var id = GaBasisUtils.BasisBladeId(grade, index);
 
                 return IdScalarsDictionary.TryGetValue(id, out var scalar)
                     ? scalar
@@ -45,7 +45,7 @@ namespace GeometricAlgebraLib.Storage.Composers
 
             set
             {
-                var id = GaFrameUtils.BasisBladeId(grade, index);
+                var id = GaBasisUtils.BasisBladeId(grade, index);
 
                 if (IdScalarsDictionary.ContainsKey(id))
                     IdScalarsDictionary[id] = value;
@@ -290,7 +290,7 @@ namespace GeometricAlgebraLib.Storage.Composers
         {
             foreach (var (grade, index) in indicesList)
             {
-                var id = GaFrameUtils.BasisBladeId(grade, index);
+                var id = GaBasisUtils.BasisBladeId(grade, index);
 
                 if (IdScalarsDictionary.TryGetValue(id, out var scalar))
                     IdScalarsDictionary[id] = ScalarProcessor.Negative(scalar);
@@ -312,7 +312,7 @@ namespace GeometricAlgebraLib.Storage.Composers
         {
             foreach (var (grade, index) in idsList)
             {
-                var id = GaFrameUtils.BasisBladeId(grade, index);
+                var id = GaBasisUtils.BasisBladeId(grade, index);
 
                 this[id] = mappingFunc(id);
             }
@@ -336,7 +336,7 @@ namespace GeometricAlgebraLib.Storage.Composers
         {
             foreach (var (grade, index) in idsList)
             {
-                var id = GaFrameUtils.BasisBladeId(grade, index);
+                var id = GaBasisUtils.BasisBladeId(grade, index);
 
                 this[id] = mappingFunc(grade, index);
             }
@@ -360,7 +360,7 @@ namespace GeometricAlgebraLib.Storage.Composers
         {
             foreach (var (grade, index) in idsList)
             {
-                var id = GaFrameUtils.BasisBladeId(grade, index);
+                var id = GaBasisUtils.BasisBladeId(grade, index);
                 var scalar = this[id];
 
                 this[id] = mappingFunc(id, scalar);
@@ -386,7 +386,7 @@ namespace GeometricAlgebraLib.Storage.Composers
         {
             foreach (var (grade, index) in idsList)
             {
-                var id = GaFrameUtils.BasisBladeId(grade, index);
+                var id = GaBasisUtils.BasisBladeId(grade, index);
                 var scalar = this[id];
 
                 this[id] = mappingFunc(grade, index, scalar);
@@ -416,7 +416,7 @@ namespace GeometricAlgebraLib.Storage.Composers
         {
             foreach (var (grade, index) in indexList)
             {
-                var id = GaFrameUtils.BasisBladeId(grade, index);
+                var id = GaBasisUtils.BasisBladeId(grade, index);
                 var scalar = this[id];
 
                 SetTerm(id, ScalarProcessor.Times(scalingFactor, scalar));
@@ -445,7 +445,7 @@ namespace GeometricAlgebraLib.Storage.Composers
         {
             foreach (var (grade, index) in indexList)
             {
-                var id = GaFrameUtils.BasisBladeId(grade, index);
+                var id = GaBasisUtils.BasisBladeId(grade, index);
                 var scalar = this[id];
 
                 SetTerm(id, ScalarProcessor.Times(scalar, scalingFactor));
@@ -488,7 +488,7 @@ namespace GeometricAlgebraLib.Storage.Composers
 
         public override GaMultivectorStorageComposerBase<TScalar> AddTerm(int grade, ulong index, TScalar scalar)
         {
-            var id = GaFrameUtils.BasisBladeId(grade, index);
+            var id = GaBasisUtils.BasisBladeId(grade, index);
 
             if (IdScalarsDictionary.TryGetValue(id, out var oldValue))
             {
@@ -532,7 +532,7 @@ namespace GeometricAlgebraLib.Storage.Composers
         {
             foreach (var (grade, index) in indexList)
             {
-                var id = GaFrameUtils.BasisBladeId(grade, index);
+                var id = GaBasisUtils.BasisBladeId(grade, index);
 
                 AddTerm(id, mappingFunc(id));
             }
@@ -556,7 +556,7 @@ namespace GeometricAlgebraLib.Storage.Composers
         {
             foreach (var (grade, index) in indexList)
             {
-                var id = GaFrameUtils.BasisBladeId(grade, index);
+                var id = GaBasisUtils.BasisBladeId(grade, index);
 
                 AddTerm(id, mappingFunc(grade, index));
             }
@@ -580,7 +580,7 @@ namespace GeometricAlgebraLib.Storage.Composers
         {
             foreach (var (grade, index) in indexList)
             {
-                var id = GaFrameUtils.BasisBladeId(grade, index);
+                var id = GaBasisUtils.BasisBladeId(grade, index);
                 var scalar = this[id];
 
                 AddTerm(id, mappingFunc(id, scalar));
@@ -606,7 +606,7 @@ namespace GeometricAlgebraLib.Storage.Composers
         {
             foreach (var (grade, index) in indexList)
             {
-                var id = GaFrameUtils.BasisBladeId(grade, index);
+                var id = GaBasisUtils.BasisBladeId(grade, index);
                 var scalar = this[id];
 
                 AddTerm(id, mappingFunc(grade, index, scalar));
@@ -649,7 +649,7 @@ namespace GeometricAlgebraLib.Storage.Composers
 
         public override GaMultivectorStorageComposerBase<TScalar> SubtractTerm(int grade, ulong index, TScalar scalar)
         {
-            var id = GaFrameUtils.BasisBladeId(grade, index);
+            var id = GaBasisUtils.BasisBladeId(grade, index);
 
             if (IdScalarsDictionary.TryGetValue(id, out var oldValue))
             {
@@ -693,7 +693,7 @@ namespace GeometricAlgebraLib.Storage.Composers
         {
             foreach (var (grade, index) in indexList)
             {
-                var id = GaFrameUtils.BasisBladeId(grade, index);
+                var id = GaBasisUtils.BasisBladeId(grade, index);
 
                 SubtractTerm(id, mappingFunc(id));
             }
@@ -717,7 +717,7 @@ namespace GeometricAlgebraLib.Storage.Composers
         {
             foreach (var (grade, index) in indexList)
             {
-                var id = GaFrameUtils.BasisBladeId(grade, index);
+                var id = GaBasisUtils.BasisBladeId(grade, index);
 
                 SubtractTerm(id, mappingFunc(grade, index));
             }
@@ -741,7 +741,7 @@ namespace GeometricAlgebraLib.Storage.Composers
         {
             foreach (var (grade, index) in indexList)
             {
-                var id = GaFrameUtils.BasisBladeId(grade, index);
+                var id = GaBasisUtils.BasisBladeId(grade, index);
                 var scalar = this[id];
 
                 SubtractTerm(id, mappingFunc(id, scalar));
@@ -767,7 +767,7 @@ namespace GeometricAlgebraLib.Storage.Composers
         {
             foreach (var (grade, index) in indexList)
             {
-                var id = GaFrameUtils.BasisBladeId(grade, index);
+                var id = GaBasisUtils.BasisBladeId(grade, index);
                 var scalar = this[id];
 
                 SubtractTerm(id, mappingFunc(grade, index, scalar));
@@ -801,7 +801,7 @@ namespace GeometricAlgebraLib.Storage.Composers
 
         public override bool RemoveTerm(int grade, ulong index)
         {
-            var id = GaFrameUtils.BasisBladeId(grade, index);
+            var id = GaBasisUtils.BasisBladeId(grade, index);
 
             return IdScalarsDictionary.Remove(id);
         }

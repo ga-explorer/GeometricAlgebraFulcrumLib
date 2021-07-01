@@ -12,54 +12,45 @@ namespace GeometricAlgebraLib.CodeComposer.Composers
     public abstract class GaClcSymbolicContextCodeFileComposerBase : 
         GaClcCodeFileComposerBase
     {
-        public GaClcSymbolicContextCodeComposer SymbolicContextCodeComposer { get; set; }
-
-        public SymbolicContext Context 
-            => SymbolicContextCodeComposer.Context;
-
-
-        protected GaClcSymbolicContextCodeFileComposerBase(GaCodeLibraryComposerBase codeLibraryComposer, SymbolicContext baseSymbolicContext = null)
+        protected GaClcSymbolicContextCodeFileComposerBase(GaCodeLibraryComposerBase codeLibraryComposer)
             : base(codeLibraryComposer)
         {
-            SymbolicContextCodeComposer = new GaClcSymbolicContextCodeComposer(codeLibraryComposer, baseSymbolicContext);
+        }
+        
+
+        protected abstract void DefineContextParameters(SymbolicContext context);
+
+        protected abstract void DefineContextComputations(SymbolicContext context);
+
+        protected abstract void DefineContextExternalNames(SymbolicContext context);
+
+        protected virtual void InitializeContextCodeComposer(GaClcSymbolicContextCodeComposer symbolicContextCodeComposer)
+        {
+            symbolicContextCodeComposer.AllowGenerateCode =
+                LibraryComposer.AllowGenerateContextComposerCode;
+
+            symbolicContextCodeComposer.AllowGenerateComputationComments = true;
         }
 
-        //protected GaClcSymbolicContextCodeFileComposer(GaClcSymbolicContextCodeComposerDefaults defaults, SymbolicExpressionsContext baseSymbolicContext = null)
-        //    : base(defaults.LibraryComposer)
-        //{
-        //    SymbolicContextCodeComposer = new GaClcSymbolicContextCodeComposer(defaults, baseSymbolicContext);
-        //}
 
-        protected GaClcSymbolicContextCodeFileComposerBase(GaClcSymbolicContextCodeComposer contextCodeComposer)
-            : base(contextCodeComposer.LibraryComposer)
+        protected string GenerateCode()
         {
-            SymbolicContextCodeComposer = contextCodeComposer;
-        }
+            var context = new SymbolicContext();
 
+            DefineContextParameters(context);
 
-        protected virtual void InitializeGenerator(GaClcSymbolicContextCodeComposer contextCodeComposer)
-        {
-        }
+            DefineContextComputations(context);
 
-        protected abstract void SetSymbolicContextParametersBindings(SymbolicContextOptions macroBinding);
+            context.OptimizeContext();
 
-        //protected abstract void SetTargetVariablesNames(GaClcTargetVariablesNaming targetNaming);
+            DefineContextExternalNames(context);
 
+            var symbolicContextCodeComposer = 
+                new GaClcSymbolicContextCodeComposer(LibraryComposer, context);
 
-        protected void SetBaseSymbolicContext(SymbolicContext baseSymbolicContext)
-        {
-            SymbolicContextCodeComposer.SetContext(baseSymbolicContext);
-        }
+            InitializeContextCodeComposer(symbolicContextCodeComposer);
 
-        protected string GenerateComputationsCode()
-        {
-            //SymbolicContextCodeGenerator.ActionSetSymbolicContextParametersBindings = SetSymbolicContextParametersBindings;
-
-            //SymbolicContextCodeGenerator.ActionSetTargetVariablesNames = SetTargetVariablesNames;
-
-            InitializeGenerator(SymbolicContextCodeComposer);
-
-            return SymbolicContextCodeComposer.Generate();
+            return symbolicContextCodeComposer.Generate();
         }
     }
 }

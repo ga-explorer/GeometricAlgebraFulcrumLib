@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using DataStructuresLib.Extensions;
-using GeometricAlgebraLib.Frames;
+using GeometricAlgebraLib.Multivectors.Basis;
 using GeometricAlgebraLib.Multivectors.Terms;
 using GeometricAlgebraLib.Processors.Scalars;
 
@@ -921,7 +921,7 @@ namespace GeometricAlgebraLib.Storage.Composers
         public GaMultivectorTermsStorage<TScalar> GetMultivectorTermsStorageCopy()
         {
             var idScalarsDictionary = IndexScalarsDictionary.ToDictionary(
-                pair => GaFrameUtils.BasisBladeId(Grade, pair.Key),
+                pair => GaBasisUtils.BasisBladeId(Grade, pair.Key),
                 pair => pair.Value
             );
 
@@ -934,7 +934,7 @@ namespace GeometricAlgebraLib.Storage.Composers
         public GaMultivectorTreeStorage<TScalar> GetMultivectorTreeStorageCopy()
         {
             var idScalarsDictionary = IndexScalarsDictionary.ToDictionary(
-                pair => GaFrameUtils.BasisBladeId(Grade, pair.Key),
+                pair => GaBasisUtils.BasisBladeId(Grade, pair.Key),
                 pair => pair.Value
             );
 

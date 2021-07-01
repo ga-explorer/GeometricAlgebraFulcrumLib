@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Irony.Parsing;
-using TextComposerLib.Logs.Progress;
+using TextComposerLib.Loggers.Progress;
 
 namespace CodeComposerLib.Irony.SourceCode
 {

@@ -1,5 +1,5 @@
 ﻿using System;
-using TextComposerLib.Logs.Progress;
+using TextComposerLib.Loggers.Progress;
 
 namespace TextComposerLib.Samples.Samples
 {

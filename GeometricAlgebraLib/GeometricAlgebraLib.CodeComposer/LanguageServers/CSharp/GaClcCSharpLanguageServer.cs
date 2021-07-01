@@ -8,8 +8,8 @@ namespace GeometricAlgebraLib.CodeComposer.LanguageServers.CSharp
     {
         public override string DefaultFileExtension => "cs";
 
-        internal GaClcCSharpLanguageServer(CSharpCodeGenerator codeGenerator, CSharpSyntaxFactory syntaxFactory, GaClcLanguageExpressionConverter expressionConverter)
-            : base(codeGenerator, syntaxFactory, expressionConverter)
+        internal GaClcCSharpLanguageServer(CSharpCodeComposer codeComposer, CSharpSyntaxFactory syntaxFactory, GaClcLanguageExpressionConverter expressionConverter)
+            : base(codeComposer, syntaxFactory, expressionConverter)
         {
         }
 
@@ -22,7 +22,7 @@ namespace GeometricAlgebraLib.CodeComposer.LanguageServers.CSharp
                 return "int";
 
             if (itemType.IsScalar())
-                return CodeGenerator.ScalarTypeName;
+                return CodeComposer.ScalarTypeName;
 
             return @"/*<Unknown type>*/";
         }

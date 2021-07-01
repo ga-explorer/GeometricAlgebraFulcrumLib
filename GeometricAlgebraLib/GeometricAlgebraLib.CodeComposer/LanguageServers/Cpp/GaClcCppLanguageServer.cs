@@ -8,8 +8,8 @@ namespace GeometricAlgebraLib.CodeComposer.LanguageServers.Cpp
     {
         public override string DefaultFileExtension => "cpp";
 
-        internal GaClcCppLanguageServer(CppCodeGenerator codeGenerator, CppSyntaxFactory syntaxFactory, GaClcLanguageExpressionConverter expressionConverter)
-            : base(codeGenerator, syntaxFactory, expressionConverter)
+        internal GaClcCppLanguageServer(CppCodeComposer codeComposer, CppSyntaxFactory syntaxFactory, GaClcLanguageExpressionConverter expressionConverter)
+            : base(codeComposer, syntaxFactory, expressionConverter)
         {
         }
 
@@ -22,7 +22,7 @@ namespace GeometricAlgebraLib.CodeComposer.LanguageServers.Cpp
                 return "int";
 
             if (itemType.IsScalar())
-                return CodeGenerator.ScalarTypeName;
+                return CodeComposer.ScalarTypeName;
 
             return @"/*<Unknown type>*/";
         }

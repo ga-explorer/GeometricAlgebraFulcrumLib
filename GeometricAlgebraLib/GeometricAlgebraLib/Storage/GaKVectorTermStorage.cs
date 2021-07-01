@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using GeometricAlgebraLib.Frames;
-using GeometricAlgebraLib.Multivectors.Bases;
+using GeometricAlgebraLib.Multivectors.Basis;
 using GeometricAlgebraLib.Processors.Scalars;
 
 namespace GeometricAlgebraLib.Storage
@@ -67,7 +66,7 @@ namespace GeometricAlgebraLib.Storage
             );
         }
 
-        public static GaKVectorTermStorage<TScalar> Create(IGaScalarProcessor<TScalar> scalarProcessor, IGaBasis basisBlade, TScalar scalar)
+        public static GaKVectorTermStorage<TScalar> Create(IGaScalarProcessor<TScalar> scalarProcessor, IGaBasisBlade basisBlade, TScalar scalar)
         {
             return new(
                 scalarProcessor,
@@ -115,10 +114,10 @@ namespace GeometricAlgebraLib.Storage
         public override ulong Index 
             => BasisBlade.Index;
 
-        public override IGaBasis BasisBlade { get; }
+        public override IGaBasisBlade BasisBlade { get; }
         
 
-        private GaKVectorTermStorage(IGaScalarProcessor<TScalar> scalarProcessor, IGaBasis basisBlade, TScalar scalar)
+        private GaKVectorTermStorage(IGaScalarProcessor<TScalar> scalarProcessor, IGaBasisBlade basisBlade, TScalar scalar)
             : base(scalarProcessor, scalar)
         {
             BasisBlade = basisBlade;

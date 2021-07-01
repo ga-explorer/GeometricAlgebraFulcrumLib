@@ -11,7 +11,7 @@ namespace GeometricAlgebraLib.CodeComposer.Composers
         public SymbolicContext Context { get; protected set; }
 
         public override string Name 
-            => "Single SymbolicContext Generator";
+            => "Single SymbolicContext Composer";
 
         public override string Description 
             => "Generates code for a single GaClc macro.";
@@ -86,11 +86,11 @@ namespace GeometricAlgebraLib.CodeComposer.Composers
                     .ToString();
         }
 
-        protected GaClcSymbolicContextCodeComposer InitSymbolicContextCodeGenerator()
+        protected GaClcSymbolicContextCodeComposer InitSymbolicContextCodeComposer()
         {
-            var macroGenerator = CreateSymbolicContextCodeComposer(Context);
+            var macroComposer = CreateSymbolicContextCodeComposer(Context);
 
-            //macroGenerator.ActionSetSymbolicContextParametersBindings =
+            //macroComposer.ActionSetSymbolicContextParametersBindings =
             //    macroGenBinding =>
             //    {
             //        foreach (var paramBinding in macroBinding.Bindings)
@@ -106,10 +106,10 @@ namespace GeometricAlgebraLib.CodeComposer.Composers
             //                );
             //    };
 
-            //macroGenerator.ActionSetTargetVariablesNames = 
+            //macroComposer.ActionSetTargetVariablesNames = 
             //    SetTargetNaming;
 
-            return macroGenerator;
+            return macroComposer;
         }
 
         protected abstract void GenerateSymbolicContextCode();

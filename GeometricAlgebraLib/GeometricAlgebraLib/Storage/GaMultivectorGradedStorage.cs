@@ -4,12 +4,12 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using DataStructuresLib;
 using DataStructuresLib.Extensions;
-using GeometricAlgebraLib.Frames;
-using GeometricAlgebraLib.Multivectors.Bases;
+using GeometricAlgebraLib.Multivectors.Basis;
 using GeometricAlgebraLib.Multivectors.Terms;
 using GeometricAlgebraLib.Processors.Scalars;
 using GeometricAlgebraLib.Storage.GuidedBinaryTraversal.Multivectors;
 using GeometricAlgebraLib.Storage.Trees;
+using GaBasisUtils = GeometricAlgebraLib.Multivectors.Basis.GaBasisUtils;
 
 namespace GeometricAlgebraLib.Storage
 {
@@ -42,7 +42,7 @@ namespace GeometricAlgebraLib.Storage
             );
         }
 
-        public static GaMultivectorGradedStorage<TScalar> CreateTerm(IGaScalarProcessor<TScalar> scalarProcessor, IGaBasis basisBlade, TScalar scalar)
+        public static GaMultivectorGradedStorage<TScalar> CreateTerm(IGaScalarProcessor<TScalar> scalarProcessor, IGaBasisBlade basisBlade, TScalar scalar)
         {
             var gradeIndexScalarDictionary =
                 new Dictionary<int, Dictionary<ulong, TScalar>>()
@@ -415,7 +415,7 @@ namespace GeometricAlgebraLib.Storage
                 .SelectMany(storage => 
                     storage.Value.Select(pair => 
                         new KeyValuePair<ulong, TScalar>(
-                            GaFrameUtils.BasisBladeId(storage.Key, pair.Key), 
+                            GaBasisUtils.BasisBladeId(storage.Key, pair.Key), 
                             pair.Value
                         )
                     )
@@ -545,7 +545,7 @@ namespace GeometricAlgebraLib.Storage
             return GradeIndexScalarDictionary
                 .SelectMany(pair => 
                     pair.Value.Keys.Select(
-                        index => GaFrameUtils.BasisBladeId(pair.Key, index)
+                        index => GaBasisUtils.BasisBladeId(pair.Key, index)
                     )
                 );
         }
@@ -557,12 +557,12 @@ namespace GeometricAlgebraLib.Storage
                 yield return new Tuple<int, ulong>(grade, index);
         }
 
-        public override IEnumerable<IGaBasis> GetBasisBlades()
+        public override IEnumerable<IGaBasisBlade> GetBasisBlades()
         {
             return GradeIndexScalarDictionary
                 .SelectMany(storage => 
                     storage.Value.Select(pair => 
-                        (IGaBasis)new GaBasisGraded(storage.Key, pair.Key)
+                        (IGaBasisBlade)new GaBasisGraded(storage.Key, pair.Key)
                     )
                 );
         }
@@ -635,7 +635,7 @@ namespace GeometricAlgebraLib.Storage
                 .SelectMany(storage => 
                     storage.Value.Select(pair => 
                         new KeyValuePair<ulong, TScalar>(
-                            GaFrameUtils.BasisBladeId(storage.Key, pair.Key), 
+                            GaBasisUtils.BasisBladeId(storage.Key, pair.Key), 
                             pair.Value
                         )
                     )
@@ -648,7 +648,7 @@ namespace GeometricAlgebraLib.Storage
                 .SelectMany(storage => 
                     storage.Value.Select(pair => 
                         new Tuple<ulong, TScalar>(
-                            GaFrameUtils.BasisBladeId(storage.Key, pair.Key), 
+                            GaBasisUtils.BasisBladeId(storage.Key, pair.Key), 
                             pair.Value
                         )
                     )
@@ -742,7 +742,7 @@ namespace GeometricAlgebraLib.Storage
                     pair => pair.Value.ToDictionary(
                         indexScalarPair => indexScalarPair.Key,
                         indexScalarPair => idScalarMapping(
-                            GaFrameUtils.BasisBladeId(pair.Key, indexScalarPair.Key), 
+                            GaBasisUtils.BasisBladeId(pair.Key, indexScalarPair.Key), 
                             indexScalarPair.Value
                         )
                     )

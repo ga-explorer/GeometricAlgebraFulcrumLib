@@ -64,10 +64,10 @@ namespace GeometricAlgebraLib.CodeComposer.LanguageServers.Cpp
 
             if (AllowGenerateSymbolicContextCode)
             {
-                var macroGenerator = InitSymbolicContextCodeGenerator();
+                var macroComposer = InitSymbolicContextCodeComposer();
 
                 ActiveFileTextComposer.AppendLineAtNewLine(
-                    macroGenerator.Generate()
+                    macroComposer.Generate()
                 );
             }
 
@@ -79,7 +79,7 @@ namespace GeometricAlgebraLib.CodeComposer.LanguageServers.Cpp
         }
 
 
-        public override GaCodeLibraryComposerBase CreateEmptyGenerator()
+        public override GaCodeLibraryComposerBase CreateEmptyComposer()
         {
             return new GaClcSingleSymbolicContextCppComposer(
                 Context, 

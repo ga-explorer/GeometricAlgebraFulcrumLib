@@ -136,7 +136,9 @@ namespace GeometricAlgebraLib.Geometry.Euclidean
                 rotorsSequence.AppendRotor(rotor);
 
                 pseudoScalarSubspace = 
-                    pseudoScalarSubspace.GetOrthogonalComplementSubspace(targetVector);
+                    pseudoScalarSubspace
+                        .Complement(targetVector)
+                        .CreateEuclideanSubspace();
 
                 for (var j = i + 1; j < sourceFrame.Count; j++)
                 {

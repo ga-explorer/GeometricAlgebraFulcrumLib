@@ -4,7 +4,7 @@ using DataStructuresLib;
 namespace CodeComposerLib.Languages.GMacDSL
 {
     //TODO: Complete this for GMacDSL
-    public class GMacDslCodeGenerator : LanguageCodeGenerator
+    public class GMacDslCodeGenerator : LanguageCodeComposer
     {
         internal GMacDslCodeGenerator()
         {

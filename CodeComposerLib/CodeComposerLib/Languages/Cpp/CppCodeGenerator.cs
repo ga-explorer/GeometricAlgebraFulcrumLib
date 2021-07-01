@@ -5,12 +5,12 @@ using TextComposerLib.Text;
 
 namespace CodeComposerLib.Languages.Cpp
 {
-    public class CppCodeGenerator :
-        LanguageCodeGenerator,
-        IImperativeCodeGenerator,
-        IObjectOrientedCodeGenerator
+    public class CppCodeComposer :
+        LanguageCodeComposer,
+        IImperativeCodeComposer,
+        IObjectOrientedCodeComposer
     {
-        internal CppCodeGenerator()
+        internal CppCodeComposer()
         {
             LanguageInfo = CppUtils.Cpp11Info;
 

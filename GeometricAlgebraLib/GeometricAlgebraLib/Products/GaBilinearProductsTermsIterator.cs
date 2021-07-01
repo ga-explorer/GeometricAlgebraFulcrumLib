@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using GeometricAlgebraLib.Frames;
 using GeometricAlgebraLib.Multivectors;
+using GeometricAlgebraLib.Multivectors.Basis;
+using GeometricAlgebraLib.Multivectors.Signatures;
 using GeometricAlgebraLib.Processors.Scalars;
 using GeometricAlgebraLib.Storage;
 
@@ -43,37 +44,37 @@ namespace GeometricAlgebraLib.Products
 
         private IEnumerable<KeyValuePair<ulong, T>> GetOpIdScalarPairs2(ulong id1)
         {
-            return Storage2.GetIdScalarPairs().Where(pair => GaFrameUtils.IsNonZeroOp(id1, pair.Key));
+            return Storage2.GetIdScalarPairs().Where(pair => GaBasisUtils.IsNonZeroOp(id1, pair.Key));
         }
 
         private IEnumerable<KeyValuePair<ulong, T>> GetELcpIdScalarPairs2(ulong id1)
         {
-            return Storage2.GetIdScalarPairs().Where(pair => GaFrameUtils.IsNonZeroELcp(id1, pair.Key));
+            return Storage2.GetIdScalarPairs().Where(pair => GaBasisUtils.IsNonZeroELcp(id1, pair.Key));
         }
 
         private IEnumerable<KeyValuePair<ulong, T>> GetERcpIdScalarPairs2(ulong id1)
         {
-            return Storage2.GetIdScalarPairs().Where(pair => GaFrameUtils.IsNonZeroERcp(id1, pair.Key));
+            return Storage2.GetIdScalarPairs().Where(pair => GaBasisUtils.IsNonZeroERcp(id1, pair.Key));
         }
 
         private IEnumerable<KeyValuePair<ulong, T>> GetEHipIdScalarPairs2(ulong id1)
         {
-            return Storage2.GetIdScalarPairs().Where(pair => GaFrameUtils.IsNonZeroEHip(id1, pair.Key));
+            return Storage2.GetIdScalarPairs().Where(pair => GaBasisUtils.IsNonZeroEHip(id1, pair.Key));
         }
 
         private IEnumerable<KeyValuePair<ulong, T>> GetEFdpIdScalarPairs2(ulong id1)
         {
-            return Storage2.GetIdScalarPairs().Where(pair => GaFrameUtils.IsNonZeroEFdp(id1, pair.Key));
+            return Storage2.GetIdScalarPairs().Where(pair => GaBasisUtils.IsNonZeroEFdp(id1, pair.Key));
         }
 
         private IEnumerable<KeyValuePair<ulong, T>> GetECpIdScalarPairs2(ulong id1)
         {
-            return Storage2.GetIdScalarPairs().Where(pair => GaFrameUtils.IsNonZeroECp(id1, pair.Key));
+            return Storage2.GetIdScalarPairs().Where(pair => GaBasisUtils.IsNonZeroECp(id1, pair.Key));
         }
 
         private IEnumerable<KeyValuePair<ulong, T>> GetEAcpIdScalarPairs2(ulong id1)
         {
-            return Storage2.GetIdScalarPairs().Where(pair => GaFrameUtils.IsNonZeroEAcp(id1, pair.Key));
+            return Storage2.GetIdScalarPairs().Where(pair => GaBasisUtils.IsNonZeroEAcp(id1, pair.Key));
         }
 
 
@@ -84,7 +85,7 @@ namespace GeometricAlgebraLib.Products
                 foreach (var (id2, scalar2) in GetOpIdScalarPairs2(id1))
                 {
                     var id = id1 ^ id2;
-                    var scalar = GaFrameUtils.IsNegativeEGp(id1, id2)
+                    var scalar = GaBasisUtils.IsNegativeEGp(id1, id2)
                         ? ScalarProcessor.NegativeTimes(scalar1, scalar2)
                         : ScalarProcessor.Times(scalar1, scalar2);
 
@@ -100,7 +101,7 @@ namespace GeometricAlgebraLib.Products
                 foreach (var (id2, scalar2) in Storage2.GetIdScalarPairs())
                 {
                     var id = id1 ^ id2;
-                    var scalar = GaFrameUtils.IsNegativeEGp(id1, id2)
+                    var scalar = GaBasisUtils.IsNegativeEGp(id1, id2)
                         ? ScalarProcessor.NegativeTimes(scalar1, scalar2)
                         : ScalarProcessor.Times(scalar1, scalar2);
 
@@ -116,7 +117,7 @@ namespace GeometricAlgebraLib.Products
                 if (!Storage2.TryGetTermScalar(id, out var scalar2)) 
                     continue;
 
-                var scalar = GaFrameUtils.IsNegativeEGp(id)
+                var scalar = GaBasisUtils.IsNegativeEGp(id)
                     ? ScalarProcessor.NegativeTimes(scalar1, scalar2)
                     : ScalarProcessor.Times(scalar1, scalar2);
 
@@ -131,7 +132,7 @@ namespace GeometricAlgebraLib.Products
                 if (!Storage2.TryGetTermScalar(id, out var scalar2)) 
                     continue;
 
-                var scalar = GaFrameUtils.IsNegativeEGp(id)
+                var scalar = GaBasisUtils.IsNegativeEGp(id)
                     ? ScalarProcessor.NegativeTimes(scalar1, scalar2)
                     : ScalarProcessor.Times(scalar1, scalar2);
 
@@ -146,7 +147,7 @@ namespace GeometricAlgebraLib.Products
                 foreach (var (id2, scalar2) in GetELcpIdScalarPairs2(id1))
                 {
                     var id = id1 ^ id2;
-                    var scalar = GaFrameUtils.IsNegativeEGp(id1, id2)
+                    var scalar = GaBasisUtils.IsNegativeEGp(id1, id2)
                         ? ScalarProcessor.NegativeTimes(scalar1, scalar2)
                         : ScalarProcessor.Times(scalar1, scalar2);
 
@@ -162,7 +163,7 @@ namespace GeometricAlgebraLib.Products
                 foreach (var (id2, scalar2) in GetERcpIdScalarPairs2(id1))
                 {
                     var id = id1 ^ id2;
-                    var scalar = GaFrameUtils.IsNegativeEGp(id1, id2)
+                    var scalar = GaBasisUtils.IsNegativeEGp(id1, id2)
                         ? ScalarProcessor.NegativeTimes(scalar1, scalar2)
                         : ScalarProcessor.Times(scalar1, scalar2);
 
@@ -178,7 +179,7 @@ namespace GeometricAlgebraLib.Products
                 foreach (var (id2, scalar2) in GetEHipIdScalarPairs2(id1))
                 {
                     var id = id1 ^ id2;
-                    var scalar = GaFrameUtils.IsNegativeEGp(id1, id2)
+                    var scalar = GaBasisUtils.IsNegativeEGp(id1, id2)
                         ? ScalarProcessor.NegativeTimes(scalar1, scalar2)
                         : ScalarProcessor.Times(scalar1, scalar2);
 
@@ -194,7 +195,7 @@ namespace GeometricAlgebraLib.Products
                 foreach (var (id2, scalar2) in GetEFdpIdScalarPairs2(id1))
                 {
                     var id = id1 ^ id2;
-                    var scalar = GaFrameUtils.IsNegativeEGp(id1, id2)
+                    var scalar = GaBasisUtils.IsNegativeEGp(id1, id2)
                         ? ScalarProcessor.NegativeTimes(scalar1, scalar2)
                         : ScalarProcessor.Times(scalar1, scalar2);
 
@@ -210,7 +211,7 @@ namespace GeometricAlgebraLib.Products
                 foreach (var (id2, scalar2) in GetECpIdScalarPairs2(id1))
                 {
                     var id = id1 ^ id2;
-                    var scalar = GaFrameUtils.IsNegativeEGp(id1, id2)
+                    var scalar = GaBasisUtils.IsNegativeEGp(id1, id2)
                         ? ScalarProcessor.NegativeTimes(scalar1, scalar2)
                         : ScalarProcessor.Times(scalar1, scalar2);
 
@@ -226,7 +227,7 @@ namespace GeometricAlgebraLib.Products
                 foreach (var (id2, scalar2) in GetEAcpIdScalarPairs2(id1))
                 {
                     var id = id1 ^ id2;
-                    var scalar = GaFrameUtils.IsNegativeEGp(id1, id2)
+                    var scalar = GaBasisUtils.IsNegativeEGp(id1, id2)
                         ? ScalarProcessor.NegativeTimes(scalar1, scalar2)
                         : ScalarProcessor.Times(scalar1, scalar2);
 
@@ -236,14 +237,14 @@ namespace GeometricAlgebraLib.Products
         }
 
 
-        public IEnumerable<KeyValuePair<ulong, T>> GetGpIdScalarPairs(GaOrthonormalBasesSignature basesSignature)
+        public IEnumerable<KeyValuePair<ulong, T>> GetGpIdScalarPairs(GaSignature basesSignature)
         {
             foreach (var (id1, scalar1) in Storage1.GetIdScalarPairs())
             {
                 foreach (var (id2, scalar2) in Storage2.GetIdScalarPairs())
                 {
                     var basisSignature = 
-                        basesSignature.GeometricProductSignature(id1, id2);
+                        basesSignature.GpSignature(id1, id2);
 
                     if (basisSignature == 0)
                         continue;
@@ -258,12 +259,12 @@ namespace GeometricAlgebraLib.Products
             }
         }
 
-        public IEnumerable<KeyValuePair<ulong, T>> GetSpIdScalarPairs(GaOrthonormalBasesSignature basesSignature)
+        public IEnumerable<KeyValuePair<ulong, T>> GetSpIdScalarPairs(GaSignature basesSignature)
         {
             foreach (var (id, scalar1) in Storage1.GetIdScalarPairs())
             {
                 var basisSignature = 
-                    basesSignature.GeometricProductSignature(id);
+                    basesSignature.GetBasisBladeSignature(id);
 
                 if (basisSignature == 0)
                     continue;
@@ -279,12 +280,12 @@ namespace GeometricAlgebraLib.Products
             }
         }
 
-        public IEnumerable<T> GetSpScalars(GaOrthonormalBasesSignature basesSignature)
+        public IEnumerable<T> GetSpScalars(GaSignature basesSignature)
         {
             foreach (var (id, scalar1) in Storage1.GetIdScalarPairs())
             {
                 var basisSignature = 
-                    basesSignature.GeometricProductSignature(id);
+                    basesSignature.GetBasisBladeSignature(id);
 
                 if (basisSignature == 0)
                     continue;
@@ -300,14 +301,14 @@ namespace GeometricAlgebraLib.Products
             }
         }
 
-        public IEnumerable<KeyValuePair<ulong, T>> GetLcpIdScalarPairs(GaOrthonormalBasesSignature basesSignature)
+        public IEnumerable<KeyValuePair<ulong, T>> GetLcpIdScalarPairs(GaSignature basesSignature)
         {
             foreach (var (id1, scalar1) in Storage1.GetIdScalarPairs())
             {
                 foreach (var (id2, scalar2) in GetELcpIdScalarPairs2(id1))
                 {
                     var basisSignature = 
-                        basesSignature.GeometricProductSignature(id1, id2);
+                        basesSignature.GpSignature(id1, id2);
 
                     if (basisSignature == 0)
                         continue;
@@ -322,14 +323,14 @@ namespace GeometricAlgebraLib.Products
             }
         }
 
-        public IEnumerable<KeyValuePair<ulong, T>> GetRcpIdScalarPairs(GaOrthonormalBasesSignature basesSignature)
+        public IEnumerable<KeyValuePair<ulong, T>> GetRcpIdScalarPairs(GaSignature basesSignature)
         {
             foreach (var (id1, scalar1) in Storage1.GetIdScalarPairs())
             {
                 foreach (var (id2, scalar2) in GetERcpIdScalarPairs2(id1))
                 {
                     var basisSignature = 
-                        basesSignature.GeometricProductSignature(id1, id2);
+                        basesSignature.GpSignature(id1, id2);
 
                     if (basisSignature == 0)
                         continue;
@@ -344,14 +345,14 @@ namespace GeometricAlgebraLib.Products
             }
         }
 
-        public IEnumerable<KeyValuePair<ulong, T>> GetHipIdScalarPairs(GaOrthonormalBasesSignature basesSignature)
+        public IEnumerable<KeyValuePair<ulong, T>> GetHipIdScalarPairs(GaSignature basesSignature)
         {
             foreach (var (id1, scalar1) in Storage1.GetIdScalarPairs())
             {
                 foreach (var (id2, scalar2) in GetEHipIdScalarPairs2(id1))
                 {
                     var basisSignature = 
-                        basesSignature.GeometricProductSignature(id1, id2);
+                        basesSignature.GpSignature(id1, id2);
 
                     if (basisSignature == 0)
                         continue;
@@ -366,14 +367,14 @@ namespace GeometricAlgebraLib.Products
             }
         }
 
-        public IEnumerable<KeyValuePair<ulong, T>> GetFdpIdScalarPairs(GaOrthonormalBasesSignature basesSignature)
+        public IEnumerable<KeyValuePair<ulong, T>> GetFdpIdScalarPairs(GaSignature basesSignature)
         {
             foreach (var (id1, scalar1) in Storage1.GetIdScalarPairs())
             {
                 foreach (var (id2, scalar2) in GetEFdpIdScalarPairs2(id1))
                 {
                     var basisSignature = 
-                        basesSignature.GeometricProductSignature(id1, id2);
+                        basesSignature.GpSignature(id1, id2);
 
                     if (basisSignature == 0)
                         continue;
@@ -388,14 +389,14 @@ namespace GeometricAlgebraLib.Products
             }
         }
 
-        public IEnumerable<KeyValuePair<ulong, T>> GetCpIdScalarPairs(GaOrthonormalBasesSignature basesSignature)
+        public IEnumerable<KeyValuePair<ulong, T>> GetCpIdScalarPairs(GaSignature basesSignature)
         {
             foreach (var (id1, scalar1) in Storage1.GetIdScalarPairs())
             {
                 foreach (var (id2, scalar2) in GetECpIdScalarPairs2(id1))
                 {
                     var basisSignature = 
-                        basesSignature.GeometricProductSignature(id1, id2);
+                        basesSignature.GpSignature(id1, id2);
 
                     if (basisSignature == 0)
                         continue;
@@ -410,14 +411,14 @@ namespace GeometricAlgebraLib.Products
             }
         }
 
-        public IEnumerable<KeyValuePair<ulong, T>> GetAcpIdScalarPairs(GaOrthonormalBasesSignature basesSignature)
+        public IEnumerable<KeyValuePair<ulong, T>> GetAcpIdScalarPairs(GaSignature basesSignature)
         {
             foreach (var (id1, scalar1) in Storage1.GetIdScalarPairs())
             {
                 foreach (var (id2, scalar2) in GetEAcpIdScalarPairs2(id1))
                 {
                     var basisSignature = 
-                        basesSignature.GeometricProductSignature(id1, id2);
+                        basesSignature.GpSignature(id1, id2);
 
                     if (basisSignature == 0)
                         continue;

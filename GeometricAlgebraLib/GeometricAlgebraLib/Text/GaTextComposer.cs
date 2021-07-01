@@ -5,8 +5,7 @@ using System.Linq;
 using System.Text;
 using DataStructuresLib;
 using DataStructuresLib.Combinations;
-using GeometricAlgebraLib.Frames;
-using GeometricAlgebraLib.Multivectors.Bases;
+using GeometricAlgebraLib.Multivectors.Basis;
 using GeometricAlgebraLib.Multivectors.Terms;
 using GeometricAlgebraLib.Processors.Scalars;
 using GeometricAlgebraLib.Storage;
@@ -47,7 +46,7 @@ namespace GeometricAlgebraLib.Text
             );
         }
 
-        public string GetBasisBladeText(IGaBasis basisBlade)
+        public string GetBasisBladeText(IGaBasisBlade basisBlade)
         {
             return GetBasisBladeText(basisBlade.Id);
         }
@@ -122,7 +121,7 @@ namespace GeometricAlgebraLib.Text
             );
         }
 
-        public string GetTermText(IGaBasis basisBlade, T scalar)
+        public string GetTermText(IGaBasisBlade basisBlade, T scalar)
         {
             return GetTermText(
                 basisBlade.Id,

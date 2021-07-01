@@ -4,7 +4,8 @@ using System.Collections.Generic;
 
 namespace DataStructuresLib.Collections
 {
-    public sealed class SingleItemReadOnlyList<T> : IReadOnlyList<T>
+    public sealed class SingleItemReadOnlyList<T> : 
+        IReadOnlyList<T>
     {
         public T ItemValue { get; }
 

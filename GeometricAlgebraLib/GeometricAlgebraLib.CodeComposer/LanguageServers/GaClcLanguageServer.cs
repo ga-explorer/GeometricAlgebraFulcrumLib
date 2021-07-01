@@ -18,19 +18,28 @@ namespace GeometricAlgebraLib.CodeComposer.LanguageServers
     public abstract class GaClcLanguageServer : 
         LanguageServer
     {
-        public static GaClcCSharpLanguageServer CSharp4(GaClcLanguageExpressionConverter expressionConverter)
+        public static GaClcCSharpLanguageServer CSharp(GaClcLanguageExpressionConverter expressionConverter)
         {
             return new GaClcCSharpLanguageServer(
-                CSharpUtils.CSharp4CodeGenerator(), 
+                CSharpUtils.CSharp4CodeComposer(), 
                 CSharpUtils.CSharp4SyntaxFactory(),
                 expressionConverter
+            );
+        }
+
+        public static GaClcCSharpLanguageServer CSharpWithMathematica()
+        {
+            return new GaClcCSharpLanguageServer(
+                CSharpUtils.CSharp4CodeComposer(), 
+                CSharpUtils.CSharp4SyntaxFactory(),
+                new GaClcMathematicaExprToCSharpConverter()
             );
         }
 
         public static GaClcExcelLanguageServer Excel2007(GaClcLanguageExpressionConverter expressionConverter)
         {
             return new GaClcExcelLanguageServer(
-                ExcelUtils.ExcelCodeGenerator(),
+                ExcelUtils.ExcelCodeComposer(),
                 ExcelUtils.ExcelSyntaxFactory(),
                 expressionConverter
             );
@@ -39,7 +48,7 @@ namespace GeometricAlgebraLib.CodeComposer.LanguageServers
         public static GaClcCppLanguageServer Cpp11(GaClcLanguageExpressionConverter expressionConverter)
         {
             return new GaClcCppLanguageServer(
-                CppUtils.Cpp11CodeGenerator(), 
+                CppUtils.Cpp11CodeComposer(), 
                 CppUtils.Cpp11SyntaxFactory(),
                 expressionConverter
             );
@@ -52,8 +61,8 @@ namespace GeometricAlgebraLib.CodeComposer.LanguageServers
         public GaClcLanguageExpressionConverter ExpressionConverter { get; }
 
 
-        protected GaClcLanguageServer(LanguageCodeGenerator codeGenerator, LanguageSyntaxFactory syntaxFactory, GaClcLanguageExpressionConverter expressionConverter)
-            : base(codeGenerator, syntaxFactory)
+        protected GaClcLanguageServer(LanguageCodeComposer codeComposer, LanguageSyntaxFactory syntaxFactory, GaClcLanguageExpressionConverter expressionConverter)
+            : base(codeComposer, syntaxFactory)
         {
             ExpressionConverter = expressionConverter;
         }
@@ -81,7 +90,7 @@ namespace GeometricAlgebraLib.CodeComposer.LanguageServers
             
             var targetExprTextTree = ExpressionConverter.Convert(symbolicTextExpr);
 
-            return CodeGenerator.GenerateCode(targetExprTextTree);
+            return CodeComposer.GenerateCode(targetExprTextTree);
         }
     }
 }

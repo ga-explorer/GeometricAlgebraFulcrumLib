@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using GeometricAlgebraLib.Multivectors.Bases;
+using GeometricAlgebraLib.Multivectors.Basis;
 using GeometricAlgebraLib.Multivectors.Terms;
 using GeometricAlgebraLib.Processors.Scalars;
 using GeometricAlgebraLib.Storage;
@@ -17,7 +17,7 @@ namespace GeometricAlgebraLib.Text
 
         string GetBasisBladeText(int grade, ulong index);
 
-        string GetBasisBladeText(IGaBasis basisBlade);
+        string GetBasisBladeText(IGaBasisBlade basisBlade);
 
         string GetBasisBladeText(IEnumerable<ulong> indexList);
 
@@ -35,7 +35,7 @@ namespace GeometricAlgebraLib.Text
 
         string GetTermText(Tuple<int, ulong, T> idScalarPair);
 
-        string GetTermText(IGaBasis basisBlade, T scalar);
+        string GetTermText(IGaBasisBlade basisBlade, T scalar);
 
         string GetTermText(GaTerm<T> term);
 

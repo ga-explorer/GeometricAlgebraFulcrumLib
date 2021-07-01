@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using GeometricAlgebraLib.Frames;
 using GeometricAlgebraLib.Multivectors;
+using GeometricAlgebraLib.Multivectors.Basis;
+using GeometricAlgebraLib.Multivectors.Signatures;
 using GeometricAlgebraLib.Processors.Scalars;
 using GeometricAlgebraLib.Storage;
 using GeometricAlgebraLib.Storage.Composers;
@@ -54,7 +55,7 @@ namespace GeometricAlgebraLib.Products
         private IEnumerable<IGaKVectorStorage<T>> GetOpKVectors2(int grade1)
         {
             return StoragesDictionary2.Values.Where(storage => 
-                grade1 + storage.Grade <= GaFrameUtils.MaxVSpaceDimension
+                grade1 + storage.Grade <= GaBasisUtils.MaxVSpaceDimension
             );
         }
 
@@ -83,7 +84,7 @@ namespace GeometricAlgebraLib.Products
         {
             var grade = storage1.Grade + storage2.Grade;
 
-            if (grade > GaFrameUtils.MaxVSpaceDimension)
+            if (grade > GaBasisUtils.MaxVSpaceDimension)
                 return GaScalarTermStorage<T>.CreateZero(ScalarProcessor);
 
             var storage = new GaKVectorStorageComposer<T>(ScalarProcessor, grade);
@@ -181,7 +182,7 @@ namespace GeometricAlgebraLib.Products
         }
 
 
-        public T GetSpScalar(IGaKVectorStorage<T> storage1, IGaKVectorStorage<T> storage2, GaOrthonormalBasesSignature basesSignature)
+        public T GetSpScalar(IGaKVectorStorage<T> storage1, IGaKVectorStorage<T> storage2, GaSignature basesSignature)
         {
             _termsIterator.Storage1 = storage1;
             _termsIterator.Storage2 = storage2;
@@ -191,7 +192,7 @@ namespace GeometricAlgebraLib.Products
             );
         }
 
-        public IGaKVectorStorage<T> GetLcpKVector(IGaKVectorStorage<T> storage1, IGaKVectorStorage<T> storage2, GaOrthonormalBasesSignature basesSignature)
+        public IGaKVectorStorage<T> GetLcpKVector(IGaKVectorStorage<T> storage1, IGaKVectorStorage<T> storage2, GaSignature basesSignature)
         {
             var grade = storage2.Grade - storage1.Grade;
             
@@ -210,7 +211,7 @@ namespace GeometricAlgebraLib.Products
             return storage.GetKVectorStorage();
         }
 
-        public IGaKVectorStorage<T> GetRcpKVector(IGaKVectorStorage<T> storage1, IGaKVectorStorage<T> storage2, GaOrthonormalBasesSignature basesSignature)
+        public IGaKVectorStorage<T> GetRcpKVector(IGaKVectorStorage<T> storage1, IGaKVectorStorage<T> storage2, GaSignature basesSignature)
         {
             var grade = storage1.Grade - storage2.Grade;
             
@@ -229,7 +230,7 @@ namespace GeometricAlgebraLib.Products
             return storage.GetKVectorStorage();
         }
 
-        public IGaKVectorStorage<T> GetHipKVector(IGaKVectorStorage<T> storage1, IGaKVectorStorage<T> storage2, GaOrthonormalBasesSignature basesSignature)
+        public IGaKVectorStorage<T> GetHipKVector(IGaKVectorStorage<T> storage1, IGaKVectorStorage<T> storage2, GaSignature basesSignature)
         {
             if (storage1.Grade < 1 || storage2.Grade < 1)
                 return GaScalarTermStorage<T>.CreateZero(ScalarProcessor);
@@ -248,7 +249,7 @@ namespace GeometricAlgebraLib.Products
             return storage.GetKVectorStorage();
         }
 
-        public IGaKVectorStorage<T> GetFdpKVector(IGaKVectorStorage<T> storage1, IGaKVectorStorage<T> storage2, GaOrthonormalBasesSignature basesSignature)
+        public IGaKVectorStorage<T> GetFdpKVector(IGaKVectorStorage<T> storage1, IGaKVectorStorage<T> storage2, GaSignature basesSignature)
         {
             var grade = Math.Abs(storage1.Grade - storage2.Grade);
             var storage = new GaKVectorStorageComposer<T>(ScalarProcessor, grade);
@@ -323,7 +324,7 @@ namespace GeometricAlgebraLib.Products
         }
 
 
-        public IEnumerable<IGaKVectorStorage<T>> GetELcpKVectors(GaOrthonormalBasesSignature basesSignature)
+        public IEnumerable<IGaKVectorStorage<T>> GetELcpKVectors(GaSignature basesSignature)
         {
             foreach (var storage1 in StoragesDictionary1.Values)
             {
@@ -334,7 +335,7 @@ namespace GeometricAlgebraLib.Products
             }
         }
 
-        public IEnumerable<IGaKVectorStorage<T>> GetERcpKVectors(GaOrthonormalBasesSignature basesSignature)
+        public IEnumerable<IGaKVectorStorage<T>> GetERcpKVectors(GaSignature basesSignature)
         {
             foreach (var storage1 in StoragesDictionary1.Values)
             {
@@ -345,14 +346,14 @@ namespace GeometricAlgebraLib.Products
             }
         }
 
-        public IEnumerable<IGaKVectorStorage<T>> GetEHipKVectors(GaOrthonormalBasesSignature basesSignature)
+        public IEnumerable<IGaKVectorStorage<T>> GetEHipKVectors(GaSignature basesSignature)
         {
             foreach (var storage1 in StoragesDictionary1.Values.Where(s => s.Grade > 0))
             foreach (var storage2 in StoragesDictionary2.Values.Where(s => s.Grade > 0))
                 yield return GetHipKVector(storage1, storage2, basesSignature);
         }
 
-        public IEnumerable<IGaKVectorStorage<T>> GetEFdpKVectors(GaOrthonormalBasesSignature basesSignature)
+        public IEnumerable<IGaKVectorStorage<T>> GetEFdpKVectors(GaSignature basesSignature)
         {
             foreach (var storage1 in StoragesDictionary1.Values)
             foreach (var storage2 in StoragesDictionary2.Values)

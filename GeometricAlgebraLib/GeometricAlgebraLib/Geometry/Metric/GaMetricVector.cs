@@ -9,7 +9,7 @@ namespace GeometricAlgebraLib.Geometry.Metric
     public sealed class GaMetricVector<T>
         : IGaMetricGeometry<T>
     {
-        public GaMultivectorsProcessor<T> Processor { get; }
+        public IGaMultivectorsProcessor<T> MultivectorProcessor { get; }
 
         public IGaScalarProcessor<T> ScalarProcessor 
             => Storage.ScalarProcessor;
@@ -17,11 +17,11 @@ namespace GeometricAlgebraLib.Geometry.Metric
         public IGaVectorStorage<T> Storage { get; }
 
 
-        internal GaMetricVector([NotNull] GaMultivectorsProcessor<T> processor, IGaVectorStorage<T> storage)
+        internal GaMetricVector([NotNull] IGaMultivectorsProcessor<T> processor, IGaVectorStorage<T> storage)
         {
             Storage = storage;
 
-            Processor = processor;
+            MultivectorProcessor = processor;
         }
 
 
@@ -34,16 +34,16 @@ namespace GeometricAlgebraLib.Geometry.Metric
 
         public GaMetricVector<T> GetRotatedVector(GaEuclideanRotor<T> rotor)
         {
-            return new(
-                Processor,
+            return new GaMetricVector<T>(
+                MultivectorProcessor,
                 rotor.MapVector(Storage).GetVectorPart()
             );
         }
 
         public GaMetricVector<T> GetProjectedVector(GaMetricSubspace<T> subspace)
         {
-            return new(
-                Processor,
+            return new GaMetricVector<T>(
+                MultivectorProcessor,
                 subspace.Project(Storage).GetVectorPart()
             );
         }

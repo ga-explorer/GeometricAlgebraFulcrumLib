@@ -53,7 +53,8 @@ namespace GeometricAlgebraLib.Symbolic.Mathematica
         /// <summary>
         /// The constant expressions collection object
         /// </summary>
-        public MathematicaConstants Constants => _constants ?? (_constants = new MathematicaConstants(this));
+        public MathematicaConstants Constants 
+            => _constants ??= new MathematicaConstants(this);
 
 
         /// <summary>
@@ -61,14 +62,16 @@ namespace GeometricAlgebraLib.Symbolic.Mathematica
         /// </summary>
         /// <param name="e"></param>
         /// <returns></returns>
-        public Expr this[Expr e] => Connection.EvaluateToExpr(e);
+        public Expr this[Expr e] 
+            => Connection.EvaluateToExpr(e);
 
         /// <summary>
         /// Evaluates the given text expression using the internal evaluator and return the evaluated expression object
         /// </summary>
         /// <param name="e"></param>
         /// <returns></returns>
-        public Expr this[string e] => Connection.EvaluateToExpr(e);
+        public Expr this[string e] 
+            => Connection.EvaluateToExpr(e);
 
 
         private MathematicaInterface()
@@ -76,6 +79,17 @@ namespace GeometricAlgebraLib.Symbolic.Mathematica
             Connection = new MathematicaConnection(this);
 
             Evaluator = new MathematicaEvaluator(this);
+
+            //Define some useful functions
+            var hilbertTransformText = @"
+HilbertTransform[f_,u_,t_] := Module[{fp = FourierParameters -> {1, -1}, x},
+    -InverseFourierTransform[
+      -I (2 HeavisideTheta[x] - 1) FourierTransform[f, u, x, fp],
+      x, t, fp
+    ]
+]
+";
+            Connection.EvaluateToExpr(hilbertTransformText);
         }
     }
 }

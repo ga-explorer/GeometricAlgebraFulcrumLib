@@ -7,7 +7,7 @@
         /// <summary>
         /// The code generator for this language
         /// </summary>
-        public LanguageCodeGenerator CodeGenerator { get; }
+        public LanguageCodeComposer CodeComposer { get; }
 
         /// <summary>
         /// The syntax factory for this language
@@ -17,15 +17,15 @@
         /// <summary>
         /// The main information of the target language
         /// </summary>
-        public LanguageInfo LanguageInfo => CodeGenerator.LanguageInfo;
+        public LanguageInfo LanguageInfo => CodeComposer.LanguageInfo;
 
         /// <summary>
         /// The scalar (i.e. real) type name of this language
         /// </summary>
         public string ScalarTypeName
         {
-            get { return CodeGenerator.ScalarTypeName; }
-            set { CodeGenerator.ScalarTypeName = value; }
+            get { return CodeComposer.ScalarTypeName; }
+            set { CodeComposer.ScalarTypeName = value; }
         }
 
         /// <summary>
@@ -33,14 +33,14 @@
         /// </summary>
         public string ScalarZero
         {
-            get { return CodeGenerator.ScalarZero; }
-            set { CodeGenerator.ScalarZero = value; }
+            get { return CodeComposer.ScalarZero; }
+            set { CodeComposer.ScalarZero = value; }
         }
 
 
-        protected LanguageServer(LanguageCodeGenerator codeGenerator, LanguageSyntaxFactory syntaxFactory)
+        protected LanguageServer(LanguageCodeComposer codeComposer, LanguageSyntaxFactory syntaxFactory)
         {
-            CodeGenerator = codeGenerator;
+            CodeComposer = codeComposer;
             SyntaxFactory = syntaxFactory;
         }
     }

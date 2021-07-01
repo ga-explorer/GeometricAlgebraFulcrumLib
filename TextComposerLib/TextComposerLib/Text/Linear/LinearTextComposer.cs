@@ -414,19 +414,19 @@ namespace TextComposerLib.Text.Linear
             return Append(text);
         }
 
-        /// <summary>
-        /// If the log line buffer is empty this function just appends the text to the buffer.
-        /// If the log line buffer is not empty this function first adds the buffer to the log lines then appends the text
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="text"></param>
-        /// <returns></returns>
-        public LinearTextComposer AppendAtNewLine<T>(T text)
-        {
-            if (ReferenceEquals(text, null)) return AppendAtNewLine();
+        ///// <summary>
+        ///// If the log line buffer is empty this function just appends the text to the buffer.
+        ///// If the log line buffer is not empty this function first adds the buffer to the log lines then appends the text
+        ///// </summary>
+        ///// <typeparam name="T"></typeparam>
+        ///// <param name="text"></param>
+        ///// <returns></returns>
+        //public LinearTextComposer AppendAtNewLine<T>(T text)
+        //{
+        //    if (ReferenceEquals(text, null)) return AppendAtNewLine();
 
-            return AppendAtNewLine(text.ToString());
-        }
+        //    return AppendAtNewLine(text.ToString());
+        //}
 
         /// <summary>
         /// If the log line buffer is empty this function just appends the text to the buffer.
@@ -441,19 +441,19 @@ namespace TextComposerLib.Text.Linear
             return Append(text);
         }
 
-        /// <summary>
-        /// If the log line buffer is empty this function just appends the text to the buffer as a full new line.
-        /// If the log line buffer is not empty this function first adds the buffer to the log lines then appends the text as a full new line.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="text"></param>
-        /// <returns></returns>
-        public LinearTextComposer AppendLineAtNewLine<T>(T text)
-        {
-            if (ReferenceEquals(text, null)) return AppendLineAtNewLine();
+        ///// <summary>
+        ///// If the log line buffer is empty this function just appends the text to the buffer as a full new line.
+        ///// If the log line buffer is not empty this function first adds the buffer to the log lines then appends the text as a full new line.
+        ///// </summary>
+        ///// <typeparam name="T"></typeparam>
+        ///// <param name="text"></param>
+        ///// <returns></returns>
+        //public LinearTextComposer AppendLineAtNewLine<T>(T text)
+        //{
+        //    if (ReferenceEquals(text, null)) return AppendLineAtNewLine();
 
-            return AppendLineAtNewLine(text.ToString());
-        }
+        //    return AppendLineAtNewLine(text.ToString());
+        //}
 
         /// <summary>
         /// If the log line buffer is empty this function just appends the text to the buffer as a full new line.

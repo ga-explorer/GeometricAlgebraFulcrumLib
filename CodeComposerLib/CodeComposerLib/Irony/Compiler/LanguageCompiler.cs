@@ -1,7 +1,7 @@
 ﻿using CodeComposerLib.Irony.Semantic;
 using CodeComposerLib.Irony.Semantic.Translator;
 using CodeComposerLib.Irony.SourceCode;
-using TextComposerLib.Logs.Progress;
+using TextComposerLib.Loggers.Progress;
 
 namespace CodeComposerLib.Irony.Compiler
 {

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using GAPoTNumLib.GAPoT;
-using GeometricAlgebraLib.Frames;
 using GeometricAlgebraLib.Implementations.Float64;
+using GeometricAlgebraLib.Multivectors.Basis;
 using GeometricAlgebraLib.Processors.Multivectors;
 using GeometricAlgebraLib.Processors.Scalars;
 using GeometricAlgebraLib.Storage;
@@ -40,7 +40,7 @@ namespace GeometricAlgebraLib.Samples.UnitTests
             GetRandomKVectorDictionary(int grade)
         {
             return Enumerable
-                .Range(0, (int)GaFrameUtils.KvSpaceDimension(VSpaceDimension, grade))
+                .Range(0, (int)GaBasisUtils.KvSpaceDimension(VSpaceDimension, grade))
                 .ToDictionary(
                     index => (ulong)index, 
                     _ => RandomGenerator.NextDouble()
@@ -252,7 +252,7 @@ namespace GeometricAlgebraLib.Samples.UnitTests
                 );
 
             //Create a set of bivector terms storages
-            var kvSpaceDimension2 = GaFrameUtils.KvSpaceDimension(VSpaceDimension, 2);
+            var kvSpaceDimension2 = GaBasisUtils.KvSpaceDimension(VSpaceDimension, 2);
             for (var index = 0UL; index < kvSpaceDimension2; index++)
                 _mvList1.Add(
                     GaBivectorTermStorage<double>.Create(

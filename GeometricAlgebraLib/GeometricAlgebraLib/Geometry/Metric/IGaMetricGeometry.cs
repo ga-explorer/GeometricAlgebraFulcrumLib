@@ -2,8 +2,9 @@
 
 namespace GeometricAlgebraLib.Geometry.Metric
 {
-    public interface IGaMetricGeometry<T> : IGaGeometricElement<T>
+    public interface IGaMetricGeometry<T> : 
+        IGaGeometricElement<T>
     {
-        GaMultivectorsProcessor<T> Processor { get; }
+        IGaMultivectorsProcessor<T> MultivectorProcessor { get; }
     }
 }

@@ -118,9 +118,9 @@ namespace CodeComposerLib.Languages.Excel
         }
 
 
-        public static ExcelCodeGenerator ExcelCodeGenerator()
+        public static ExcelCodeComposer ExcelCodeComposer()
         {
-            return new ExcelCodeGenerator();
+            return new ExcelCodeComposer();
         }
 
         public static ExcelSyntaxFactory ExcelSyntaxFactory()

@@ -333,7 +333,7 @@ namespace GeometricAlgebraLib.Symbolic.Mathematica.Expression
 
             vectors = Create(CasInterface, vectorsExpr);
 
-            //TODO: Test if the eigen sytem is OK
+            //TODO: Test if the eigen system is OK
             return true;
         }
 
@@ -367,7 +367,7 @@ namespace GeometricAlgebraLib.Symbolic.Mathematica.Expression
 
             vectors = Create(CasInterface, vectorsExpr);
 
-            //TODO: Test if the eigen sytem is OK
+            //TODO: Test if the eigen system is OK
             return true;
         }
 

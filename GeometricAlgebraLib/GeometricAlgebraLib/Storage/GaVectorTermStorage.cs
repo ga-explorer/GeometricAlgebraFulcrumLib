@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using GeometricAlgebraLib.Multivectors.Bases;
+using GeometricAlgebraLib.Multivectors.Basis;
 using GeometricAlgebraLib.Processors.Scalars;
 using GeometricAlgebraLib.Storage.Composers;
 
@@ -86,7 +86,7 @@ namespace GeometricAlgebraLib.Storage
         public override ulong Index 
             => BasisVector.Index;
 
-        public override IGaBasis BasisBlade 
+        public override IGaBasisBlade BasisBlade 
             => BasisVector;
 
 

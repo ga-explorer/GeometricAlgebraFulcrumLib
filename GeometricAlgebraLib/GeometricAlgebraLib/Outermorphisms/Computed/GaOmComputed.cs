@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using DataStructuresLib;
-using GeometricAlgebraLib.Frames;
+using GeometricAlgebraLib.Multivectors.Basis;
 using GeometricAlgebraLib.Processors.Multivectors;
 using GeometricAlgebraLib.Processors.Scalars;
 using GeometricAlgebraLib.Storage;
@@ -82,7 +82,7 @@ namespace GeometricAlgebraLib.Outermorphisms.Computed
             if (grade == 1)
                 return MappedBasisVectors[(int)index];
 
-            var id = GaFrameUtils.BasisBladeId(grade, index);
+            var id = GaBasisUtils.BasisBladeId(grade, index);
 
             var kVectorStorageList = 
                 MappedBasisVectors.PickItemsUsingPattern(id);

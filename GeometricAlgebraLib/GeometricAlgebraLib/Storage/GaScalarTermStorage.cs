@@ -1,5 +1,5 @@
 ﻿using System;
-using GeometricAlgebraLib.Multivectors.Bases;
+using GeometricAlgebraLib.Multivectors.Basis;
 using GeometricAlgebraLib.Processors.Scalars;
 
 namespace GeometricAlgebraLib.Storage
@@ -40,7 +40,7 @@ namespace GeometricAlgebraLib.Storage
         public GaBasisScalar ScalarBasisBlade 
             => GaBasisScalar.ScalarBasis;
 
-        public override IGaBasis BasisBlade 
+        public override IGaBasisBlade BasisBlade 
             => GaBasisScalar.ScalarBasis;
 
 

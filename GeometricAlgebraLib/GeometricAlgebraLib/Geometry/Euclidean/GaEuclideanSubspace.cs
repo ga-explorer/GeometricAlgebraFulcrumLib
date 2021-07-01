@@ -1,4 +1,7 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
+using DataStructuresLib;
 using GeometricAlgebraLib.Processors.Multivectors;
 using GeometricAlgebraLib.Processors.Scalars;
 using GeometricAlgebraLib.Storage;
@@ -54,13 +57,31 @@ namespace GeometricAlgebraLib.Geometry.Euclidean
             );
         }
 
-        public GaEuclideanSubspace<T> GetOrthogonalComplementSubspace(IGaVectorStorage<T> vectorStorage)
+        public IGaMultivectorStorage<T> Reflect(IGaMultivectorStorage<T> storage)
         {
-            return new(
-                vectorStorage
-                    .ELcp(BladeStorage.EBladeInverse())
-                    .GetKVectorPart(BladeStorage.Grade - 1)
-            );
+            throw new NotImplementedException();
+        }
+
+        public IGaMultivectorStorage<T> Rotate([NotNull] IGaMultivectorStorage<T> storage)
+        {
+            if (BladeStorage.Grade.IsOdd())
+                throw new InvalidOperationException();
+
+            Debug.Assert(ScalarProcessor.IsOne(BladeNormSquared));
+
+            return BladeStorage.EGp(storage).EGp(BladeStorage.GetReverse());
+        }
+
+        public IGaMultivectorStorage<T> VersorProduct(IGaMultivectorStorage<T> storage)
+        {
+            throw new NotImplementedException();
+        }
+        
+        public IGaKVectorStorage<T> Complement(IGaKVectorStorage<T> storage)
+        {
+            return storage
+                .ELcp(BladeStorage.EBladeInverse())
+                .GetKVectorPart(BladeStorage.Grade - storage.Grade);
         }
     }
 }

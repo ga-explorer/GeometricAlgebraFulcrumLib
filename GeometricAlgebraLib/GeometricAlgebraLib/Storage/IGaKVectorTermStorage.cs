@@ -1,4 +1,4 @@
-﻿using GeometricAlgebraLib.Multivectors.Bases;
+﻿using GeometricAlgebraLib.Multivectors.Basis;
 
 namespace GeometricAlgebraLib.Storage
 {
@@ -9,7 +9,7 @@ namespace GeometricAlgebraLib.Storage
 
         ulong Index { get; }
 
-        IGaBasis BasisBlade { get; }
+        IGaBasisBlade BasisBlade { get; }
 
         TScalar Scalar { get; set; }
 

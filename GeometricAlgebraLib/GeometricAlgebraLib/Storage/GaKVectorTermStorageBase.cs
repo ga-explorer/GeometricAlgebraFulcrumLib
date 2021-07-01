@@ -2,20 +2,20 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using DataStructuresLib;
-using GeometricAlgebraLib.Frames;
-using GeometricAlgebraLib.Multivectors.Bases;
+using GeometricAlgebraLib.Multivectors.Basis;
 using GeometricAlgebraLib.Multivectors.Terms;
 using GeometricAlgebraLib.Processors.Scalars;
 using GeometricAlgebraLib.Storage.Composers;
 using GeometricAlgebraLib.Storage.GuidedBinaryTraversal.Multivectors;
 using GeometricAlgebraLib.Storage.Trees;
+using GaBasisUtils = GeometricAlgebraLib.Multivectors.Basis.GaBasisUtils;
 
 namespace GeometricAlgebraLib.Storage
 {
     public abstract class GaKVectorTermStorageBase<TScalar>
         : IGaKVectorTermStorage<TScalar>
     {
-        public static IGaKVectorTermStorage<TScalar> CreateKVector(IGaScalarProcessor<TScalar> scalarProcessor, IGaBasis basisBlade, TScalar scalar)
+        public static IGaKVectorTermStorage<TScalar> CreateKVector(IGaScalarProcessor<TScalar> scalarProcessor, IGaBasisBlade basisBlade, TScalar scalar)
         {
             var (grade, index) = basisBlade.GetGradeIndex();
 
@@ -127,7 +127,7 @@ namespace GeometricAlgebraLib.Storage
 
         public abstract ulong Index { get; }
 
-        public abstract IGaBasis BasisBlade { get; }
+        public abstract IGaBasisBlade BasisBlade { get; }
 
         public TScalar Scalar { get; set; }
 
@@ -289,7 +289,7 @@ namespace GeometricAlgebraLib.Storage
             yield return BasisBlade.GetGradeIndex();
         }
 
-        public IEnumerable<IGaBasis> GetBasisBlades()
+        public IEnumerable<IGaBasisBlade> GetBasisBlades()
         {
             yield return BasisBlade;
         }
@@ -828,11 +828,11 @@ namespace GeometricAlgebraLib.Storage
             var id1 = BasisBlade.Id;
             var id2 = mv2.BasisBlade.Id;
 
-            if (!GaFrameUtils.IsNonZeroOp(id1, id2))
+            if (!GaBasisUtils.IsNonZeroOp(id1, id2))
                 return GaScalarTermStorage<TScalar>.CreateZero(ScalarProcessor);
 
             var id = id1 ^ id2;
-            var scalar = GaFrameUtils.IsNegativeEGp(id1, id2)
+            var scalar = GaBasisUtils.IsNegativeEGp(id1, id2)
                 ? ScalarProcessor.NegativeTimes(Scalar, mv2.Scalar)
                 : ScalarProcessor.Times(Scalar, mv2.Scalar);
 
@@ -853,13 +853,13 @@ namespace GeometricAlgebraLib.Storage
 
             foreach (var (id2, scalar2) in mv2.GetIdScalarPairs())
             {
-                if (!GaFrameUtils.IsNonZeroOp(id1, id2))
+                if (!GaBasisUtils.IsNonZeroOp(id1, id2))
                     continue;
 
                 var id = id1 ^ id2;
                 var scalar = ScalarProcessor.Times(scalar1, scalar2);
 
-                if (GaFrameUtils.IsNegativeEGp(id1, id2))
+                if (GaBasisUtils.IsNegativeEGp(id1, id2))
                     composer.SubtractTerm(id.BasisBladeIndex(), scalar);
                 else
                     composer.AddTerm(id.BasisBladeIndex(), scalar);
@@ -880,13 +880,13 @@ namespace GeometricAlgebraLib.Storage
 
             foreach (var (id2, scalar2) in mv2.GetIdScalarPairs())
             {
-                if (!GaFrameUtils.IsNonZeroOp(id1, id2))
+                if (!GaBasisUtils.IsNonZeroOp(id1, id2))
                     continue;
 
                 var id = id1 ^ id2;
                 var scalar = ScalarProcessor.Times(scalar1, scalar2);
 
-                if (GaFrameUtils.IsNegativeEGp(id1, id2))
+                if (GaBasisUtils.IsNegativeEGp(id1, id2))
                     composer.SubtractTerm(id, scalar);
                 else
                     composer.AddTerm(id, scalar);

@@ -28,9 +28,9 @@ namespace TextComposerLib.Samples.Samples
                 );
 
             //Generate C# code from the syntax tree
-            var codeGenerator = CSharpUtils.CSharp4CodeGenerator();
+            var codeComposer = CSharpUtils.CSharp4CodeComposer();
 
-            return codeGenerator.GenerateCode(mainCode);
+            return codeComposer.GenerateCode(mainCode);
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using GeometricAlgebraLib.Frames;
 using GeometricAlgebraLib.Implementations.Float64;
+using GeometricAlgebraLib.Multivectors.Basis;
 using GeometricAlgebraLib.Processors.Multivectors;
 using GeometricAlgebraLib.Processors.Scalars;
 using GeometricAlgebraLib.Storage;

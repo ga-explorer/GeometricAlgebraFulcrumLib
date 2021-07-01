@@ -3,36 +3,36 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using DataStructuresLib;
-using GeometricAlgebraLib.Frames;
-using GeometricAlgebraLib.Multivectors.Bases;
+using GeometricAlgebraLib.Multivectors.Basis;
 using GeometricAlgebraLib.Multivectors.Terms;
 using GeometricAlgebraLib.Processors.Scalars;
 using GeometricAlgebraLib.Storage.Composers;
+using GaBasisUtils = GeometricAlgebraLib.Multivectors.Basis.GaBasisUtils;
 
 namespace GeometricAlgebraLib.Storage
 {
     public static class GaStorageUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<ulong> GetIds(this IEnumerable<IGaBasis> basisBladesList)
+        public static IEnumerable<ulong> GetIds(this IEnumerable<IGaBasisBlade> basisBladesList)
         {
             return basisBladesList.Select(basisBlade => basisBlade.Id);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<int> GetGrades(this IEnumerable<IGaBasis> basisBladesList)
+        public static IEnumerable<int> GetGrades(this IEnumerable<IGaBasisBlade> basisBladesList)
         {
             return basisBladesList.Select(basisBlade => basisBlade.Grade).Distinct();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<ulong> GetIndices(this IEnumerable<IGaBasis> basisBladesList)
+        public static IEnumerable<ulong> GetIndices(this IEnumerable<IGaBasisBlade> basisBladesList)
         {
             return basisBladesList.Select(basisBlade => basisBlade.Index);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<Tuple<int, ulong>> GetGradeIndexTuples(this IEnumerable<IGaBasis> basisBladesList)
+        public static IEnumerable<Tuple<int, ulong>> GetGradeIndexTuples(this IEnumerable<IGaBasisBlade> basisBladesList)
         {
             return basisBladesList.Select(basisBlade =>
             {
@@ -71,7 +71,7 @@ namespace GeometricAlgebraLib.Storage
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<IGaBasis> GetBasisBlades<T>(this IEnumerable<GaTerm<T>> termsList)
+        public static IEnumerable<IGaBasisBlade> GetBasisBlades<T>(this IEnumerable<GaTerm<T>> termsList)
         {
             return termsList.Select(term => term.BasisBlade);
         }
@@ -593,7 +593,7 @@ namespace GeometricAlgebraLib.Storage
 
             var bitsCount = termsArray
                 .Max(t => 
-                    GaFrameUtils.BasisBladeId(t.Item1, t.Item2)
+                    GaBasisUtils.BasisBladeId(t.Item1, t.Item2)
                 )
                 .LastOneBitPosition() + 1;
 
@@ -604,7 +604,7 @@ namespace GeometricAlgebraLib.Storage
                 //.Where(t => !t.Scalar.IsZero())
                 .OrderBy(t => t.Item1)
                 .ThenByDescending(t => 
-                    GaFrameUtils
+                    GaBasisUtils
                         .BasisBladeId(t.Item1, t.Item2)
                         .ReverseBits(bitsCount)
                 );
@@ -615,7 +615,7 @@ namespace GeometricAlgebraLib.Storage
             return gradeIndexScalarTuples
                 //.Where(t => !t.Scalar.IsZero())
                 .OrderBy(t => 
-                    GaFrameUtils.BasisBladeId(t.Item1, t.Item2)
+                    GaBasisUtils.BasisBladeId(t.Item1, t.Item2)
                 );
         }
 
@@ -666,7 +666,7 @@ namespace GeometricAlgebraLib.Storage
         {
             var scalarProcessor = bivectorStorage.ScalarProcessor;
 
-            var arrayLength = (int) GaFrameUtils.KvSpaceDimension(
+            var arrayLength = (int) GaBasisUtils.KvSpaceDimension(
                 vSpaceDimension, 
                 2
             );
@@ -744,7 +744,7 @@ namespace GeometricAlgebraLib.Storage
         {
             var scalarProcessor = kVectorStorage.ScalarProcessor;
 
-            var arrayLength = (int) GaFrameUtils.KvSpaceDimension(
+            var arrayLength = (int) GaBasisUtils.KvSpaceDimension(
                 vSpaceDimension, 
                 kVectorStorage.Grade
             );

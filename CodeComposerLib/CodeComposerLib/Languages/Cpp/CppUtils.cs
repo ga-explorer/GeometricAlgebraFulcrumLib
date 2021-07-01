@@ -236,9 +236,9 @@ namespace CodeComposerLib.Languages.Cpp
         }
 
 
-        public static CppCodeGenerator Cpp11CodeGenerator()
+        public static CppCodeComposer Cpp11CodeComposer()
         {
-            return new CppCodeGenerator();
+            return new CppCodeComposer();
         }
 
         public static CppSyntaxFactory Cpp11SyntaxFactory()

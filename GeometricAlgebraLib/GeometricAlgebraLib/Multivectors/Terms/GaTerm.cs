@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using GeometricAlgebraLib.Multivectors.Bases;
+using GeometricAlgebraLib.Multivectors.Basis;
 
 namespace GeometricAlgebraLib.Multivectors.Terms
 {
@@ -102,7 +102,7 @@ namespace GeometricAlgebraLib.Multivectors.Terms
             );
         }
 
-        public static GaTerm<T> Create(IGaBasis basisBlade, T scalar)
+        public static GaTerm<T> Create(IGaBasisBlade basisBlade, T scalar)
         {
             return new(
                 basisBlade,
@@ -111,12 +111,12 @@ namespace GeometricAlgebraLib.Multivectors.Terms
         }
 
 
-        public IGaBasis BasisBlade { get; }
+        public IGaBasisBlade BasisBlade { get; }
 
         public T Scalar { get; }
 
 
-        internal GaTerm(IGaBasis basisBlade, T scalar)
+        internal GaTerm(IGaBasisBlade basisBlade, T scalar)
         {
             BasisBlade = basisBlade;
             Scalar = scalar;

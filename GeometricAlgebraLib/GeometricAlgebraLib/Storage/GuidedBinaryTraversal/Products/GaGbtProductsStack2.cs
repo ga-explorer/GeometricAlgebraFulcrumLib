@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using DataStructuresLib;
 using DataStructuresLib.Stacks;
-using GeometricAlgebraLib.Frames;
 using GeometricAlgebraLib.Multivectors;
+using GeometricAlgebraLib.Multivectors.Basis;
+using GeometricAlgebraLib.Multivectors.Signatures;
 using GeometricAlgebraLib.Processors.Scalars;
 using GeometricAlgebraLib.Products;
 using GeometricAlgebraLib.Storage.GuidedBinaryTraversal.Multivectors;
@@ -68,28 +69,28 @@ namespace GeometricAlgebraLib.Storage.GuidedBinaryTraversal.Products
             => MultivectorStack2.TosScalar;
 
         public bool TosIsNonZeroOp
-            => GaFrameUtils.IsNonZeroOp(TosId1, TosId2);
+            => GaBasisUtils.IsNonZeroOp(TosId1, TosId2);
 
         public bool TosIsNonZeroESp
-            => GaFrameUtils.IsNonZeroESp(TosId1, TosId2);
+            => GaBasisUtils.IsNonZeroESp(TosId1, TosId2);
 
         public bool TosIsNonZeroELcp
-            => GaFrameUtils.IsNonZeroELcp(TosId1, TosId2);
+            => GaBasisUtils.IsNonZeroELcp(TosId1, TosId2);
 
         public bool TosIsNonZeroERcp
-            => GaFrameUtils.IsNonZeroERcp(TosId1, TosId2);
+            => GaBasisUtils.IsNonZeroERcp(TosId1, TosId2);
 
         public bool TosIsNonZeroEFdp
-            => GaFrameUtils.IsNonZeroEFdp(TosId1, TosId2);
+            => GaBasisUtils.IsNonZeroEFdp(TosId1, TosId2);
 
         public bool TosIsNonZeroEHip
-            => GaFrameUtils.IsNonZeroEHip(TosId1, TosId2);
+            => GaBasisUtils.IsNonZeroEHip(TosId1, TosId2);
 
         public bool TosIsNonZeroEAcp
-            => GaFrameUtils.IsNonZeroEAcp(TosId1, TosId2);
+            => GaBasisUtils.IsNonZeroEAcp(TosId1, TosId2);
 
         public bool TosIsNonZeroECp
-            => GaFrameUtils.IsNonZeroECp(TosId1, TosId2);
+            => GaBasisUtils.IsNonZeroECp(TosId1, TosId2);
 
         public ulong TosChildIdXor00
             => Stack1.TosChildId0 ^ Stack2.TosChildId0;
@@ -145,7 +146,7 @@ namespace GeometricAlgebraLib.Storage.GuidedBinaryTraversal.Products
             var id2 = TosId2;
 
             var id = id1 ^ id2;
-            var scalar = GaFrameUtils.IsNegativeEGp(id1, id2)
+            var scalar = GaBasisUtils.IsNegativeEGp(id1, id2)
                 ? ScalarProcessor.NegativeTimes(TosValue1, TosValue2)
                 : ScalarProcessor.Times(TosValue1, TosValue2);
 
@@ -162,7 +163,7 @@ namespace GeometricAlgebraLib.Storage.GuidedBinaryTraversal.Products
             var id2 = TosId2;
 
             var id = id1 ^ id2;
-            var scalar = GaFrameUtils.IsNegativeGp(basisBladeSignature, id1, id2)
+            var scalar = GaBasisUtils.IsNegativeGp(basisBladeSignature, id1, id2)
                 ? ScalarProcessor.NegativeTimes(TosValue1, TosValue2)
                 : ScalarProcessor.Times(TosValue1, TosValue2);
 
@@ -171,7 +172,7 @@ namespace GeometricAlgebraLib.Storage.GuidedBinaryTraversal.Products
 
         private T TosGetEGpScalar()
         {
-            var scalar = GaFrameUtils.IsNegativeEGp(TosId1, TosId2)
+            var scalar = GaBasisUtils.IsNegativeEGp(TosId1, TosId2)
                 ? ScalarProcessor.NegativeTimes(TosValue1, TosValue2)
                 : ScalarProcessor.Times(TosValue1, TosValue2);
 
@@ -185,7 +186,7 @@ namespace GeometricAlgebraLib.Storage.GuidedBinaryTraversal.Products
             var id1 = TosId1;
             var id2 = TosId2;
 
-            var scalar = GaFrameUtils.IsNegativeGp(basisBladeSignature, id1, id2)
+            var scalar = GaBasisUtils.IsNegativeGp(basisBladeSignature, id1, id2)
                 ? ScalarProcessor.NegativeTimes(TosValue1, TosValue2)
                 : ScalarProcessor.Times(TosValue1, TosValue2);
 
@@ -531,7 +532,7 @@ namespace GeometricAlgebraLib.Storage.GuidedBinaryTraversal.Products
         }
 
 
-        public IEnumerable<KeyValuePair<ulong, T>> GetGpIdScalarPairs(GaOrthonormalBasesSignature metric)
+        public IEnumerable<KeyValuePair<ulong, T>> GetGpIdScalarPairs(GaSignature metric)
         {
             PushRootData();
 
@@ -595,7 +596,7 @@ namespace GeometricAlgebraLib.Storage.GuidedBinaryTraversal.Products
             }
         }
 
-        public IEnumerable<KeyValuePair<ulong, T>> GetSpIdScalarPairs(GaOrthonormalBasesSignature metric)
+        public IEnumerable<KeyValuePair<ulong, T>> GetSpIdScalarPairs(GaSignature metric)
         {
             PushRootData();
 
@@ -647,7 +648,7 @@ namespace GeometricAlgebraLib.Storage.GuidedBinaryTraversal.Products
             }
         }
 
-        public IEnumerable<T> GetSpScalars(GaOrthonormalBasesSignature metric)
+        public IEnumerable<T> GetSpScalars(GaSignature metric)
         {
             PushRootData();
 
@@ -699,7 +700,7 @@ namespace GeometricAlgebraLib.Storage.GuidedBinaryTraversal.Products
             }
         }
 
-        public IEnumerable<KeyValuePair<ulong, T>> GetLcpIdScalarPairs(GaOrthonormalBasesSignature metric)
+        public IEnumerable<KeyValuePair<ulong, T>> GetLcpIdScalarPairs(GaSignature metric)
         {
             PushRootData();
 
@@ -757,7 +758,7 @@ namespace GeometricAlgebraLib.Storage.GuidedBinaryTraversal.Products
             }
         }
 
-        public IEnumerable<KeyValuePair<ulong, T>> GetRcpIdScalarPairs(GaOrthonormalBasesSignature metric)
+        public IEnumerable<KeyValuePair<ulong, T>> GetRcpIdScalarPairs(GaSignature metric)
         {
             PushRootData();
 
@@ -815,7 +816,7 @@ namespace GeometricAlgebraLib.Storage.GuidedBinaryTraversal.Products
             }
         }
 
-        public IEnumerable<KeyValuePair<ulong, T>> GetFdpIdScalarPairs(GaOrthonormalBasesSignature metric)
+        public IEnumerable<KeyValuePair<ulong, T>> GetFdpIdScalarPairs(GaSignature metric)
         {
             PushRootData();
 
@@ -880,7 +881,7 @@ namespace GeometricAlgebraLib.Storage.GuidedBinaryTraversal.Products
             }
         }
 
-        public IEnumerable<KeyValuePair<ulong, T>> GetHipIdScalarPairs(GaOrthonormalBasesSignature metric)
+        public IEnumerable<KeyValuePair<ulong, T>> GetHipIdScalarPairs(GaSignature metric)
         {
             PushRootData();
 
@@ -945,7 +946,7 @@ namespace GeometricAlgebraLib.Storage.GuidedBinaryTraversal.Products
             }
         }
 
-        public IEnumerable<KeyValuePair<ulong, T>> GetAcpIdScalarPairs(GaOrthonormalBasesSignature metric)
+        public IEnumerable<KeyValuePair<ulong, T>> GetAcpIdScalarPairs(GaSignature metric)
         {
             PushRootData();
 
@@ -1010,7 +1011,7 @@ namespace GeometricAlgebraLib.Storage.GuidedBinaryTraversal.Products
             }
         }
 
-        public IEnumerable<KeyValuePair<ulong, T>> GetCpIdScalarPairs(GaOrthonormalBasesSignature metric)
+        public IEnumerable<KeyValuePair<ulong, T>> GetCpIdScalarPairs(GaSignature metric)
         {
             PushRootData();
 

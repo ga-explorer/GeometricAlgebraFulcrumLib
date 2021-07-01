@@ -2,7 +2,7 @@
 using System.Text;
 using CodeComposerLib.Languages;
 using TextComposerLib.Files;
-using TextComposerLib.Logs.Progress;
+using TextComposerLib.Loggers.Progress;
 using TextComposerLib.Text.Linear;
 using TextComposerLib.Text.Parametric;
 
@@ -11,7 +11,8 @@ namespace CodeComposerLib
     /// <summary>
     /// A base class for structured text code generation process into source code files
     /// </summary>
-    public abstract class CodeLibraryComposer : IProgressReportSource
+    public abstract class CodeLibraryComposer : 
+        IProgressReportSource
     {
         /// <summary>
         /// The name of this code library composer
@@ -41,7 +42,7 @@ namespace CodeComposerLib
         /// <summary>
         /// The target language code generator of this library composer
         /// </summary>
-        public LanguageCodeGenerator CodeGenerator => Language.CodeGenerator;
+        public LanguageCodeComposer CodeGenerator => Language.CodeComposer;
 
         /// <summary>
         /// The language syntax elements factory for this code library composer

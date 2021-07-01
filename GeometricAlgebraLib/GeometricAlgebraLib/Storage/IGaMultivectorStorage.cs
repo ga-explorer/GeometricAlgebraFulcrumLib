@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using GeometricAlgebraLib.Multivectors.Bases;
+using GeometricAlgebraLib.Multivectors.Basis;
 using GeometricAlgebraLib.Multivectors.Terms;
 using GeometricAlgebraLib.Processors.Scalars;
 using GeometricAlgebraLib.Storage.GuidedBinaryTraversal.Multivectors;
@@ -52,7 +52,7 @@ namespace GeometricAlgebraLib.Storage
 
         IEnumerable<Tuple<int, ulong>> GetGradeIndexTuples();
 
-        IEnumerable<IGaBasis> GetBasisBlades();
+        IEnumerable<IGaBasisBlade> GetBasisBlades();
     }
 
     public interface IGaMultivectorStorage<TScalar> 

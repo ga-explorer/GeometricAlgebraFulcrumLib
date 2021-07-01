@@ -100,6 +100,8 @@ namespace GeometricAlgebraLib.Symbolic.Mathematica.ExprFactory
         public static Mfs CForm { get; } = new Mfs("CForm");
         public static Mfs EToString { get; } = new Mfs("ToString");
 
+        public static Mfs HilbertTransform { get; } = new Mfs("HilbertTransform");
+
 
         public static Expr ProductExpr(params Expr[] argsList)
         {

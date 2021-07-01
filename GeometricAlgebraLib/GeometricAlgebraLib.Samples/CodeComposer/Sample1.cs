@@ -36,16 +36,16 @@ namespace GeometricAlgebraLib.Samples.CodeComposer
             
             rotor.Storage.SetIsOutput(true);
 
-            rotor.Storage.SetExternalNamesByGradeIndex(
+            rotor.Storage.SetExternalNamesByTermGradeIndex(
                 (grade, index) => $"C[{grade}][{index}]"
             );
 
             //Define external names for parameters
-            v.SetExternalNamesByIndex(index => $"v[{index}]");
-            u.SetExternalNamesByIndex(index => $"u[{index}]");
+            v.SetExternalNamesByTermIndex(index => $"v[{index}]");
+            u.SetExternalNamesByTermIndex(index => $"u[{index}]");
             
             //Define external names for outputs
-            rotor.Storage.SetExternalNamesById(id => $"rotor.Scalar{id}");
+            rotor.Storage.SetExternalNamesByTermId(id => $"rotor.Scalar{id}");
 
             //Optimize sequence computations inside context
             context.ContextOptions.ReduceLowLevelRhsSubExpressions = true;

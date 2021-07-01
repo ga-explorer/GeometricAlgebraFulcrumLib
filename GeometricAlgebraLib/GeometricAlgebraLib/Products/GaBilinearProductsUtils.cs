@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using GeometricAlgebraLib.Frames;
 using GeometricAlgebraLib.Multivectors;
+using GeometricAlgebraLib.Multivectors.Signatures;
 using GeometricAlgebraLib.Multivectors.Terms;
 using GeometricAlgebraLib.Storage;
 using GeometricAlgebraLib.Storage.GuidedBinaryTraversal.Outermorphisms;
@@ -205,7 +205,7 @@ namespace GeometricAlgebraLib.Products
         /// <param name="mv1"></param>
         /// <param name="mv2"></param>
         /// <returns></returns>
-        public static IEnumerable<KeyValuePair<ulong, T>> GetGbtGpIdScalarPairs<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2, GaOrthonormalBasesSignature metric)
+        public static IEnumerable<KeyValuePair<ulong, T>> GetGbtGpIdScalarPairs<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2, GaSignature metric)
         {
             var stack = GaGbtProductsStack2<T>.Create(mv1, mv2);
 
@@ -219,7 +219,7 @@ namespace GeometricAlgebraLib.Products
         /// <param name="mv1"></param>
         /// <param name="mv2"></param>
         /// <returns></returns>
-        public static IEnumerable<KeyValuePair<ulong, T>> GetGbtLcpIdScalarPairs<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2, GaOrthonormalBasesSignature metric)
+        public static IEnumerable<KeyValuePair<ulong, T>> GetGbtLcpIdScalarPairs<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2, GaSignature metric)
         {
             var stack = GaGbtProductsStack2<T>.Create(mv1, mv2);
 
@@ -233,7 +233,7 @@ namespace GeometricAlgebraLib.Products
         /// <param name="mv1"></param>
         /// <param name="mv2"></param>
         /// <returns></returns>
-        public static IEnumerable<KeyValuePair<ulong, T>> GetGbtRcpIdScalarPairs<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2, GaOrthonormalBasesSignature metric)
+        public static IEnumerable<KeyValuePair<ulong, T>> GetGbtRcpIdScalarPairs<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2, GaSignature metric)
         {
             var stack = GaGbtProductsStack2<T>.Create(mv1, mv2);
 
@@ -247,7 +247,7 @@ namespace GeometricAlgebraLib.Products
         /// <param name="mv1"></param>
         /// <param name="mv2"></param>
         /// <returns></returns>
-        public static IEnumerable<KeyValuePair<ulong, T>> GetGbtSpIdScalarPairs<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2, GaOrthonormalBasesSignature metric)
+        public static IEnumerable<KeyValuePair<ulong, T>> GetGbtSpIdScalarPairs<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2, GaSignature metric)
         {
             var stack = GaGbtProductsStack2<T>.Create(mv1, mv2);
 
@@ -261,7 +261,7 @@ namespace GeometricAlgebraLib.Products
         /// <param name="mv1"></param>
         /// <param name="mv2"></param>
         /// <returns></returns>
-        public static IEnumerable<KeyValuePair<ulong, T>> GetGbtFdpIdScalarPairs<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2, GaOrthonormalBasesSignature metric)
+        public static IEnumerable<KeyValuePair<ulong, T>> GetGbtFdpIdScalarPairs<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2, GaSignature metric)
         {
             var stack = GaGbtProductsStack2<T>.Create(mv1, mv2);
 
@@ -275,7 +275,7 @@ namespace GeometricAlgebraLib.Products
         /// <param name="mv1"></param>
         /// <param name="mv2"></param>
         /// <returns></returns>
-        public static IEnumerable<KeyValuePair<ulong, T>> GetGbtHipIdScalarPairs<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2, GaOrthonormalBasesSignature metric)
+        public static IEnumerable<KeyValuePair<ulong, T>> GetGbtHipIdScalarPairs<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2, GaSignature metric)
         {
             var stack = GaGbtProductsStack2<T>.Create(mv1, mv2);
 
@@ -289,7 +289,7 @@ namespace GeometricAlgebraLib.Products
         /// <param name="mv1"></param>
         /// <param name="mv2"></param>
         /// <returns></returns>
-        public static IEnumerable<KeyValuePair<ulong, T>> GetGbtAcpIdScalarPairs<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2, GaOrthonormalBasesSignature metric)
+        public static IEnumerable<KeyValuePair<ulong, T>> GetGbtAcpIdScalarPairs<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2, GaSignature metric)
         {
             var stack = GaGbtProductsStack2<T>.Create(mv1, mv2);
 
@@ -303,28 +303,28 @@ namespace GeometricAlgebraLib.Products
         /// <param name="mv1"></param>
         /// <param name="mv2"></param>
         /// <returns></returns>
-        public static IEnumerable<KeyValuePair<ulong, T>> GetGbtCpIdScalarPairs<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2, GaOrthonormalBasesSignature metric)
+        public static IEnumerable<KeyValuePair<ulong, T>> GetGbtCpIdScalarPairs<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2, GaSignature metric)
         {
             var stack = GaGbtProductsStack2<T>.Create(mv1, mv2);
 
             return stack.GetCpIdScalarPairs(metric);
         }
 
-        public static IEnumerable<KeyValuePair<ulong, T>> GetGbtNorm2IdScalarPairs<T>(this GaMultivector<T> mv, GaOrthonormalBasesSignature metric)
+        public static IEnumerable<KeyValuePair<ulong, T>> GetGbtNorm2IdScalarPairs<T>(this GaMultivector<T> mv, GaSignature metric)
         {
             var stack = GaGbtProductsStack2<T>.Create(mv, mv.Reverse());
 
             return stack.GetSpIdScalarPairs(metric);
         }
 
-        public static T Norm2<T>(this GaMultivector<T> mv, GaOrthonormalBasesSignature metric)
+        public static T Norm2<T>(this GaMultivector<T> mv, GaSignature metric)
         {
             return mv.ScalarProcessor.Add(
                 mv.GetGbtNorm2IdScalarPairs(metric).Select(t => t.Value)
             );
         }
 
-        public static T Norm<T>(this GaMultivector<T> mv, GaOrthonormalBasesSignature metric)
+        public static T Norm<T>(this GaMultivector<T> mv, GaSignature metric)
         {
             var scalarProcessor = mv.ScalarProcessor;
 
@@ -333,7 +333,7 @@ namespace GeometricAlgebraLib.Products
             ));
         }
 
-        public static IEnumerable<GaTerm<T>> GetGptInverseIdScalarPairs<T>(this GaMultivector<T> mv, GaOrthonormalBasesSignature metric)
+        public static IEnumerable<GaTerm<T>> GetGptInverseIdScalarPairs<T>(this GaMultivector<T> mv, GaSignature metric)
         {
             var mvReverse = mv.Reverse();
 
