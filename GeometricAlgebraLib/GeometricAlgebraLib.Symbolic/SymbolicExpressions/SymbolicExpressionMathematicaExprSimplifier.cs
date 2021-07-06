@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using GeometricAlgebraLib.Processing.SymbolicExpressions;
+using GeometricAlgebraLib.Processing.SymbolicExpressions.Context;
 using GeometricAlgebraLib.Symbolic.Mathematica;
-using GeometricAlgebraLib.SymbolicExpressions;
-using GeometricAlgebraLib.SymbolicExpressions.Context;
 
 namespace GeometricAlgebraLib.Symbolic.SymbolicExpressions
 {

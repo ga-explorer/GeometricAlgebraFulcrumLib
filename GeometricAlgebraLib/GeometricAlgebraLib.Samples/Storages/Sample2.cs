@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using GeometricAlgebraLib.Implementations.Float64;
-using GeometricAlgebraLib.Multivectors.Basis;
-using GeometricAlgebraLib.Processors.Multivectors;
-using GeometricAlgebraLib.Processors.Scalars;
+using GeometricAlgebraLib.Algebra.Basis;
+using GeometricAlgebraLib.Algebra.Signatures;
+using GeometricAlgebraLib.Processing.Implementations.Float64;
+using GeometricAlgebraLib.Processing.Scalars;
 using GeometricAlgebraLib.Storage;
 
 namespace GeometricAlgebraLib.Samples.Storages
@@ -129,13 +129,13 @@ namespace GeometricAlgebraLib.Samples.Storages
                 "add" => (mv1, mv2) => mv1.Add(mv2),
                 "subtract" => (mv1, mv2) => mv1.Subtract(mv2),
                 "op" => (mv1, mv2) => mv1.Op(mv2),
-                "egp" => GaMultivectorsProcessorUtils.EGp,
-                "elcp" => GaMultivectorsProcessorUtils.ELcp,
-                "ercp" => GaMultivectorsProcessorUtils.ERcp,
-                "efdp" => GaMultivectorsProcessorUtils.EFdp,
-                "ehip" => GaMultivectorsProcessorUtils.EHip,
-                "ecp" => GaMultivectorsProcessorUtils.ECp,
-                "eacp" => GaMultivectorsProcessorUtils.EAcp,
+                "egp" => GaSignatureUtils.EGp,
+                "elcp" => GaSignatureUtils.ELcp,
+                "ercp" => GaSignatureUtils.ERcp,
+                "efdp" => GaSignatureUtils.EFdp,
+                "ehip" => GaSignatureUtils.EHip,
+                "ecp" => GaSignatureUtils.ECp,
+                "eacp" => GaSignatureUtils.EAcp,
                 _ => null
             };
         }
@@ -176,8 +176,8 @@ namespace GeometricAlgebraLib.Samples.Storages
                     var storage2 = StoragesList1[j];
                     var termsStorage2 = StoragesList2[j];
 
-                    var result1 = GaMultivectorsProcessorUtils.ESp(storage1, storage2);
-                    var result2 = GaMultivectorsProcessorUtils.ESp(termsStorage1, termsStorage2);
+                    var result1 = storage1.ESp(storage2);
+                    var result2 = termsStorage1.ESp(termsStorage2);
 
                     var storageDiff = result1 - result2;
 

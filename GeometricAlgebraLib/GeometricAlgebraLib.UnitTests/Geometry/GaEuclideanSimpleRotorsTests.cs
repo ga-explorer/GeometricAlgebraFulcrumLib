@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using GAPoTNumLib.GAPoT;
+using GeometricAlgebraLib.Algebra.Basis;
+using GeometricAlgebraLib.Algebra.Signatures;
 using GeometricAlgebraLib.Geometry.Euclidean;
-using GeometricAlgebraLib.Implementations.Float64;
-using GeometricAlgebraLib.Multivectors.Basis;
-using GeometricAlgebraLib.Processors.Multivectors;
-using GeometricAlgebraLib.Processors.Scalars;
+using GeometricAlgebraLib.Processing.Implementations.Float64;
 using GeometricAlgebraLib.Storage;
 using NUnit.Framework;
 

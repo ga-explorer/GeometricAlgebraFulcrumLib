@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using GeometricAlgebraLib.Processors.Scalars;
+using GeometricAlgebraLib.Processing.Scalars;
 
 namespace GeometricAlgebraLib.Storage.Composers
 {

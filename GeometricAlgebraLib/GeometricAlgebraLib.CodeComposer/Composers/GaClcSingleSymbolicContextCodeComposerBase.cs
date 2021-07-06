@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using GeometricAlgebraLib.CodeComposer.LanguageServers;
-using GeometricAlgebraLib.SymbolicExpressions.Context;
+using GeometricAlgebraLib.Processing.SymbolicExpressions.Context;
 
 namespace GeometricAlgebraLib.CodeComposer.Composers
 {
@@ -67,11 +67,11 @@ namespace GeometricAlgebraLib.CodeComposer.Composers
             return true;
         }
 
-        protected override void InitializeOtherComponents()
+        protected override void InitializeSubComponents()
         {
         }
 
-        protected override void FinalizeOtherComponents()
+        protected override void FinalizeSubComponents()
         {
         }
 

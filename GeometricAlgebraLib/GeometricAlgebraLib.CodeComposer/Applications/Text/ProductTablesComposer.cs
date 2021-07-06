@@ -6,9 +6,9 @@ using CodeComposerLib.MathML.Elements;
 using CodeComposerLib.MathML.Elements.Layout.Elementary;
 using CodeComposerLib.MathML.Elements.Layout.Tabular;
 using CodeComposerLib.MathML.Elements.Tokens;
-using DataStructuresLib;
-using GeometricAlgebraLib.Multivectors.Basis;
-using GeometricAlgebraLib.Multivectors.Signatures;
+using DataStructuresLib.BitManipulation;
+using GeometricAlgebraLib.Algebra.Basis;
+using GeometricAlgebraLib.Algebra.Signatures;
 using GeometricAlgebraLib.Storage;
 using TextComposerLib.Text.Linear;
 

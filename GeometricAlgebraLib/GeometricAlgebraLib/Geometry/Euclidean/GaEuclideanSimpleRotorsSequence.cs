@@ -4,9 +4,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using GeometricAlgebraLib.Implementations.Float64;
-using GeometricAlgebraLib.Processors.Multivectors;
-using GeometricAlgebraLib.Processors.Scalars;
+using GeometricAlgebraLib.Algebra.Signatures;
+using GeometricAlgebraLib.Processing.Implementations.Float64;
+using GeometricAlgebraLib.Processing.Multivectors;
+using GeometricAlgebraLib.Processing.Scalars;
 using GeometricAlgebraLib.Storage;
 using MathNet.Numerics.LinearAlgebra;
 
@@ -138,6 +139,7 @@ namespace GeometricAlgebraLib.Geometry.Euclidean
                 pseudoScalarSubspace = 
                     pseudoScalarSubspace
                         .Complement(targetVector)
+                        .GetKVectorPart(baseSpaceDimensions - i - 1)
                         .CreateEuclideanSubspace();
 
                 for (var j = i + 1; j < sourceFrame.Count; j++)

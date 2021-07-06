@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using GeometricAlgebraLib.Geometry.Euclidean;
-using GeometricAlgebraLib.Processors.Multivectors;
-using GeometricAlgebraLib.Processors.Scalars;
+using GeometricAlgebraLib.Processing.Multivectors;
+using GeometricAlgebraLib.Processing.Scalars;
 using GeometricAlgebraLib.Storage;
 
 namespace GeometricAlgebraLib.Geometry.Metric
@@ -9,7 +9,7 @@ namespace GeometricAlgebraLib.Geometry.Metric
     public sealed class GaMetricVector<T>
         : IGaMetricGeometry<T>
     {
-        public IGaMultivectorsProcessor<T> MultivectorProcessor { get; }
+        public IGaMultivectorProcessor<T> MultivectorProcessor { get; }
 
         public IGaScalarProcessor<T> ScalarProcessor 
             => Storage.ScalarProcessor;
@@ -17,7 +17,7 @@ namespace GeometricAlgebraLib.Geometry.Metric
         public IGaVectorStorage<T> Storage { get; }
 
 
-        internal GaMetricVector([NotNull] IGaMultivectorsProcessor<T> processor, IGaVectorStorage<T> storage)
+        internal GaMetricVector([NotNull] IGaMultivectorProcessor<T> processor, IGaVectorStorage<T> storage)
         {
             Storage = storage;
 

@@ -25,7 +25,7 @@ namespace TextComposerLib.Samples.Samples
 
             mainCode.Add(
                 syntaxFactory.SetNamespace("MyNamespace", classCode)
-                );
+            );
 
             //Generate C# code from the syntax tree
             var codeComposer = CSharpUtils.CSharp4CodeComposer();

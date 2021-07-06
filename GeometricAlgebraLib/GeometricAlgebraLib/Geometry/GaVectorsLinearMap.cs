@@ -5,10 +5,10 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using DataStructuresLib.Combinations;
 using DataStructuresLib.Extensions;
-using GeometricAlgebraLib.Multivectors.Basis;
-using GeometricAlgebraLib.Processors.Matrices;
-using GeometricAlgebraLib.Processors.Multivectors;
-using GeometricAlgebraLib.Processors.Scalars;
+using GeometricAlgebraLib.Algebra.Basis;
+using GeometricAlgebraLib.Processing.Matrices;
+using GeometricAlgebraLib.Processing.Multivectors;
+using GeometricAlgebraLib.Processing.Scalars;
 using GeometricAlgebraLib.Storage;
 using GeometricAlgebraLib.Storage.Composers;
 

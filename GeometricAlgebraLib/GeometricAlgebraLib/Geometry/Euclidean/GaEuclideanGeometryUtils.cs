@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using DataStructuresLib.Extensions;
-using GeometricAlgebraLib.Processors.Multivectors;
+using GeometricAlgebraLib.Algebra.Signatures;
 using GeometricAlgebraLib.Storage;
 using GeometricAlgebraLib.Storage.Composers;
 
@@ -61,7 +61,7 @@ namespace GeometricAlgebraLib.Geometry.Euclidean
 
                     var differenceLengthSquared = basisVectorImage.Subtract(
                         GaVectorTermStorage<double>.Create(scalarProcessor, basisVectorIndex, basisVectorImageNorm)
-                    ).ESpSquared();
+                    ).ESp();
 
                     if (differenceLengthSquared < bestDifferenceLengthSquared) 
                         continue;

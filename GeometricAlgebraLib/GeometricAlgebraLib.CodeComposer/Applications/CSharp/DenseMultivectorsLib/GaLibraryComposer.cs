@@ -1,12 +1,12 @@
 ﻿using System;
+using GeometricAlgebraLib.Algebra.Signatures;
 using GeometricAlgebraLib.CodeComposer.Composers;
 using GeometricAlgebraLib.CodeComposer.LanguageServers;
 using GeometricAlgebraLib.CodeComposer.LanguageServers.CSharp;
-using GeometricAlgebraLib.Processors.Multivectors;
+using GeometricAlgebraLib.Processing.SymbolicExpressions;
+using GeometricAlgebraLib.Processing.SymbolicExpressions.Context;
 using GeometricAlgebraLib.Storage;
 using GeometricAlgebraLib.Symbolic;
-using GeometricAlgebraLib.SymbolicExpressions;
-using GeometricAlgebraLib.SymbolicExpressions.Context;
 using TextComposerLib.Text.Parametric;
 
 namespace GeometricAlgebraLib.CodeComposer.Applications.CSharp.DenseMultivectorsLib
@@ -205,7 +205,7 @@ namespace EGA#vSpaceDimensions#D
             return true;
         }
 
-        protected override void InitializeOtherComponents()
+        protected override void InitializeSubComponents()
         {
             
         }
@@ -356,7 +356,7 @@ namespace EGA#vSpaceDimensions#D
             CodeFilesComposer.FinalizeActiveFile();
         }
 
-        protected override void FinalizeOtherComponents()
+        protected override void FinalizeSubComponents()
         {
             
         }

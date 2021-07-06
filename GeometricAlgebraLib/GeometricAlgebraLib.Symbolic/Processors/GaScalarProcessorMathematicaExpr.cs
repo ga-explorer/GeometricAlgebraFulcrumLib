@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraLib.Processors.Scalars;
+using GeometricAlgebraLib.Processing.Scalars;
+using GeometricAlgebraLib.Processing.SymbolicExpressions;
+using GeometricAlgebraLib.Processing.SymbolicExpressions.Context;
 using GeometricAlgebraLib.Symbolic.Mathematica;
 using GeometricAlgebraLib.Symbolic.Mathematica.ExprFactory;
-using GeometricAlgebraLib.SymbolicExpressions;
-using GeometricAlgebraLib.SymbolicExpressions.Context;
 using Wolfram.NETLink;
 
 namespace GeometricAlgebraLib.Symbolic.Processors

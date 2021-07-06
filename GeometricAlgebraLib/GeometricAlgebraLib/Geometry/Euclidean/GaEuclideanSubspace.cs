@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using DataStructuresLib;
-using GeometricAlgebraLib.Processors.Multivectors;
-using GeometricAlgebraLib.Processors.Scalars;
+using DataStructuresLib.BitManipulation;
+using GeometricAlgebraLib.Algebra.Signatures;
+using GeometricAlgebraLib.Processing.Scalars;
 using GeometricAlgebraLib.Storage;
 
 namespace GeometricAlgebraLib.Geometry.Euclidean
@@ -29,7 +28,7 @@ namespace GeometricAlgebraLib.Geometry.Euclidean
 
         public IGaKVectorStorage<T> BladeStorage { get; }
 
-        public T BladeNormSquared { get; }
+        public T BladeScalarProductSquared { get; }
 
         public bool IsValid
             => true;
@@ -41,13 +40,13 @@ namespace GeometricAlgebraLib.Geometry.Euclidean
         private GaEuclideanSubspace([NotNull] IGaKVectorStorage<T> storage)
         {
             BladeStorage = storage;
-            BladeNormSquared = storage.ENormSquared();
+            BladeScalarProductSquared = storage.ENormSquared();
         }
 
 
         public IGaMultivectorStorage<T> Project(IGaMultivectorStorage<T> storage)
         {
-            return storage.ELcp(BladeStorage).ELcp(BladeStorage).Divide(BladeNormSquared);
+            return storage.ELcp(BladeStorage).ELcp(BladeStorage).Divide(BladeScalarProductSquared);
         }
 
         public GaEuclideanVector<T> Project(GaEuclideanVector<T> vector)
@@ -59,7 +58,7 @@ namespace GeometricAlgebraLib.Geometry.Euclidean
 
         public IGaMultivectorStorage<T> Reflect(IGaMultivectorStorage<T> storage)
         {
-            throw new NotImplementedException();
+            return BladeStorage.EGp(storage.GetGradeInvolution()).EGp(BladeStorage.EBladeInverse());
         }
 
         public IGaMultivectorStorage<T> Rotate([NotNull] IGaMultivectorStorage<T> storage)
@@ -67,21 +66,19 @@ namespace GeometricAlgebraLib.Geometry.Euclidean
             if (BladeStorage.Grade.IsOdd())
                 throw new InvalidOperationException();
 
-            Debug.Assert(ScalarProcessor.IsOne(BladeNormSquared));
+            //Debug.Assert(ScalarProcessor.IsOne(BladeScalarProductSquared));
 
             return BladeStorage.EGp(storage).EGp(BladeStorage.GetReverse());
         }
 
         public IGaMultivectorStorage<T> VersorProduct(IGaMultivectorStorage<T> storage)
         {
-            throw new NotImplementedException();
+            return BladeStorage.EGp(storage).EGp(BladeStorage.EBladeInverse());
         }
         
-        public IGaKVectorStorage<T> Complement(IGaKVectorStorage<T> storage)
+        public IGaMultivectorStorage<T> Complement(IGaMultivectorStorage<T> storage)
         {
-            return storage
-                .ELcp(BladeStorage.EBladeInverse())
-                .GetKVectorPart(BladeStorage.Grade - storage.Grade);
+            return storage.ELcp(BladeStorage.EBladeInverse());
         }
     }
 }

@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using CodeComposerLib.SyntaxTree;
 using GeometricAlgebraLib.CodeComposer.LanguageServers;
-using GeometricAlgebraLib.SymbolicExpressions.Context;
-using GeometricAlgebraLib.SymbolicExpressions.Variables;
+using GeometricAlgebraLib.Processing.SymbolicExpressions.Context;
+using GeometricAlgebraLib.Processing.SymbolicExpressions.Variables;
 using TextComposerLib.Loggers.Progress;
 
 namespace GeometricAlgebraLib.CodeComposer.Composers
@@ -139,42 +139,10 @@ namespace GeometricAlgebraLib.CodeComposer.Composers
         /// </summary>
         public SymbolicContext Context { get; private set; }
 
-        /// <summary>
-        /// If false, no code is actually generated from this macro code generator
-        /// The default is true
-        /// </summary>
-        public bool AllowGenerateCode { get; set; } = true;
 
-        /// <summary>
-        /// If false, the comments before each computational line are not generated
-        /// </summary>
-        public bool AllowGenerateComputationComments { get; set; } = false;
+        public GaClcSymbolicContextCodeComposerOptions ComposerOptions { get; }
+            = new GaClcSymbolicContextCodeComposerOptions();
 
-        
-        /// <summary>
-        /// This is executed before generating computation code. It can be used to add comments, declare temp 
-        /// variables in the target code or any other similar purpose.
-        /// </summary>
-        public Func<GaClcSymbolicContextCodeComposer, bool> ActionBeforeGenerateComputations { get; set; }
-
-        /// <summary>
-        /// This is executed after generating computation code. It can be used to add comments, destruct temp
-        /// variables in the target code or or any other similar purpose.
-        /// </summary>
-        public Action<GaClcSymbolicContextCodeComposer> ActionAfterGenerateComputations { get; set; }
-
-        /// <summary>
-        /// This is executed each time before a computation code is generated. It can be used to inject code
-        /// in the final generated code or to prevent code generation of this line by returning false
-        /// </summary>
-        public Action<SteSyntaxElementsList, GaClcComputationCodeInfo> ActionBeforeGenerateSingleComputation { get; set; }
-
-        /// <summary>
-        /// This is executed each time after a computation code is generated. It can be used to inject code
-        /// in the final generated code
-        /// </summary>
-        public Action<SteSyntaxElementsList, GaClcComputationCodeInfo> ActionAfterGenerateSingleComputation { get; set; }
-        
 
         public GaClcSymbolicContextCodeComposer([NotNull] GaCodeLibraryComposerBase codeLibraryComposer, [NotNull] SymbolicContext context)
             : base(codeLibraryComposer)
@@ -182,6 +150,12 @@ namespace GeometricAlgebraLib.CodeComposer.Composers
             SyntaxList = new SteSyntaxElementsList();
 
             Context = context;
+        }
+
+        public GaClcSymbolicContextCodeComposer([NotNull] GaCodeLibraryComposerBase codeLibraryComposer, [NotNull] SymbolicContext context, [NotNull] GaClcSymbolicContextCodeComposerOptions options)
+            : this(codeLibraryComposer, context)
+        {
+            ComposerOptions.SetOptions(options);
         }
 
 
@@ -203,7 +177,7 @@ namespace GeometricAlgebraLib.CodeComposer.Composers
         public void GenerateSingleComputationCode(GaClcComputationCodeInfo codeInfo)
         {
             //Generate comment to show symbolic form for this computation
-            if (AllowGenerateComputationComments)
+            if (ComposerOptions.AllowGenerateComputationComments)
                 SyntaxList.Add(
                     GaClcLanguage
                         .SyntaxFactory
@@ -223,7 +197,7 @@ namespace GeometricAlgebraLib.CodeComposer.Composers
             SyntaxList.Add(code);
 
             //Add an empty line
-            if (AllowGenerateComputationComments || codeInfo.ComputedVariable.IsOutputVariable)
+            if (ComposerOptions.AllowGenerateComputationComments || codeInfo.ComputedVariable.IsOutputVariable)
                 SyntaxList.Add(GaClcLanguage.SyntaxFactory.EmptyLine());
         }
 
@@ -254,14 +228,14 @@ namespace GeometricAlgebraLib.CodeComposer.Composers
 
                 //Generate the assignment target code based on the codeInfo object
                 //Execute this action before generating computation code
-                ActionBeforeGenerateSingleComputation?.Invoke(SyntaxList, codeInfo);
+                ComposerOptions.ActionBeforeGenerateSingleComputation?.Invoke(SyntaxList, codeInfo);
 
                 //If the action prevented generation of code don't generating computation code
                 if (codeInfo.EnableCodeGeneration)
                     GenerateSingleComputationCode(codeInfo);
 
                 //Execute this action after generating computation code
-                ActionAfterGenerateSingleComputation?.Invoke(SyntaxList, codeInfo);
+                ComposerOptions.ActionAfterGenerateSingleComputation?.Invoke(SyntaxList, codeInfo);
             }
 
             //SyntaxList.AddEmptyLine();
@@ -276,7 +250,7 @@ namespace GeometricAlgebraLib.CodeComposer.Composers
             //Initialize components of macro code generator
             SyntaxList.Clear();
 
-            if (AllowGenerateCode == false) 
+            if (Context.ContextOptions.AllowGenerateCode == false) 
                 return string.Empty;
 
             LibraryComposer.CheckProgressRequestStop();
@@ -294,7 +268,7 @@ namespace GeometricAlgebraLib.CodeComposer.Composers
                 
                 //Generate code before computations for comments, temp declarations, and the like
                 var result =
-                    ActionBeforeGenerateComputations?.Invoke(this) 
+                    ComposerOptions.ActionBeforeGenerateComputations?.Invoke(this) 
                     ?? DefaultActionBeforeGenerateComputations(this);
 
                 //Generate computations code if allowed by last action result
@@ -302,10 +276,10 @@ namespace GeometricAlgebraLib.CodeComposer.Composers
                     GenerateProcessingCode();
 
                 //Generate code after computations for comments, temp destruction, and the like
-                if (ActionAfterGenerateComputations == null)
+                if (ComposerOptions.ActionAfterGenerateComputations == null)
                     DefaultActionAfterGenerateComputations(this);
                 else
-                    ActionAfterGenerateComputations(this);
+                    ComposerOptions.ActionAfterGenerateComputations(this);
             }
             catch (Exception e)
             {

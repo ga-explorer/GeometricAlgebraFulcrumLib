@@ -1,5 +1,5 @@
 ﻿using System;
-using GeometricAlgebraLib.Processors.Scalars;
+using GeometricAlgebraLib.Processing.Scalars;
 
 namespace GeometricAlgebraLib.Storage.Composers
 {

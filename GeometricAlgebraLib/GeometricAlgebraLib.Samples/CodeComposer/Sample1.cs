@@ -1,6 +1,6 @@
 ﻿using System;
-using GeometricAlgebraLib.SymbolicExpressions;
-using GeometricAlgebraLib.SymbolicExpressions.Context;
+using GeometricAlgebraLib.Processing.SymbolicExpressions;
+using GeometricAlgebraLib.Processing.SymbolicExpressions.Context;
 
 namespace GeometricAlgebraLib.Samples.CodeComposer
 {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using GeometricAlgebraLib.Multivectors.Basis;
-using GeometricAlgebraLib.Processors.Scalars;
+using GeometricAlgebraLib.Algebra.Basis;
+using GeometricAlgebraLib.Processing.Scalars;
 
 namespace GeometricAlgebraLib.Storage
 {

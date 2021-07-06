@@ -4,13 +4,14 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using DataStructuresLib;
+using DataStructuresLib.BitManipulation;
 using DataStructuresLib.Combinations;
-using GeometricAlgebraLib.Multivectors.Basis;
-using GeometricAlgebraLib.Multivectors.Terms;
-using GeometricAlgebraLib.Processors.Scalars;
+using GeometricAlgebraLib.Algebra.Basis;
+using GeometricAlgebraLib.Algebra.Multivectors.Terms;
+using GeometricAlgebraLib.Processing.Scalars;
 using GeometricAlgebraLib.Storage;
 using TextComposerLib.Text;
-using GaBasisUtils = GeometricAlgebraLib.Multivectors.Basis.GaBasisUtils;
+using GaBasisUtils = GeometricAlgebraLib.Algebra.Basis.GaBasisUtils;
 
 namespace GeometricAlgebraLib.Text
 {

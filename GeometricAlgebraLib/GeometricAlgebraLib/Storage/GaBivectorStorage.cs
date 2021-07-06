@@ -5,11 +5,11 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using DataStructuresLib.Combinations;
 using DataStructuresLib.Extensions;
-using GeometricAlgebraLib.Multivectors.Basis;
-using GeometricAlgebraLib.Multivectors.Terms;
-using GeometricAlgebraLib.Processors.Scalars;
+using GeometricAlgebraLib.Algebra.Basis;
+using GeometricAlgebraLib.Algebra.Multivectors.Terms;
+using GeometricAlgebraLib.Processing.Scalars;
 using GeometricAlgebraLib.Storage.Composers;
-using GaBasisUtils = GeometricAlgebraLib.Multivectors.Basis.GaBasisUtils;
+using GaBasisUtils = GeometricAlgebraLib.Algebra.Basis.GaBasisUtils;
 
 namespace GeometricAlgebraLib.Storage
 {

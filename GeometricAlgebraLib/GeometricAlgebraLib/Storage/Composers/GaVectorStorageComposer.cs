@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using GeometricAlgebraLib.Processors.Scalars;
+using GeometricAlgebraLib.Processing.Scalars;
 
 namespace GeometricAlgebraLib.Storage.Composers
 {

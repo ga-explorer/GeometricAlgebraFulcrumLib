@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using GeometricAlgebraLib.Implementations.Float64;
+using GeometricAlgebraLib.Processing.Implementations.Float64;
 using GeometricAlgebraLib.Storage;
 using GeometricAlgebraLib.Storage.GuidedBinaryTraversal.Products;
 using GeometricAlgebraLib.Text;

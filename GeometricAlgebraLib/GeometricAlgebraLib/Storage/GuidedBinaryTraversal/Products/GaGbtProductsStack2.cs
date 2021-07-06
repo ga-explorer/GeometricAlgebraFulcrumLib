@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using DataStructuresLib;
+using DataStructuresLib.BitManipulation;
 using DataStructuresLib.Stacks;
-using GeometricAlgebraLib.Multivectors;
-using GeometricAlgebraLib.Multivectors.Basis;
-using GeometricAlgebraLib.Multivectors.Signatures;
-using GeometricAlgebraLib.Processors.Scalars;
-using GeometricAlgebraLib.Products;
+using GeometricAlgebraLib.Algebra.Basis;
+using GeometricAlgebraLib.Algebra.Multivectors;
+using GeometricAlgebraLib.Algebra.Signatures;
+using GeometricAlgebraLib.Processing.Products;
+using GeometricAlgebraLib.Processing.Scalars;
 using GeometricAlgebraLib.Storage.GuidedBinaryTraversal.Multivectors;
 
 namespace GeometricAlgebraLib.Storage.GuidedBinaryTraversal.Products

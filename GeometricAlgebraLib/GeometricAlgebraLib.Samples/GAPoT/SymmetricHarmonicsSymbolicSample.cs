@@ -2,8 +2,8 @@
 using System.Diagnostics;
 using System.Linq;
 using DataStructuresLib.Extensions;
+using GeometricAlgebraLib.Algebra.Signatures;
 using GeometricAlgebraLib.Geometry.Euclidean;
-using GeometricAlgebraLib.Processors.Multivectors;
 using GeometricAlgebraLib.Storage;
 using GeometricAlgebraLib.Storage.Composers;
 using GeometricAlgebraLib.Symbolic;

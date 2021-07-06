@@ -1,6 +1,6 @@
 ﻿using System;
-using GeometricAlgebraLib.Processors.Matrices;
-using GeometricAlgebraLib.Processors.Scalars;
+using GeometricAlgebraLib.Processing.Matrices;
+using GeometricAlgebraLib.Processing.Scalars;
 using GeometricAlgebraLib.Symbolic.Mathematica;
 using GeometricAlgebraLib.Symbolic.Mathematica.ExprFactory;
 using Wolfram.NETLink;

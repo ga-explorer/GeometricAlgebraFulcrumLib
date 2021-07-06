@@ -102,7 +102,7 @@ namespace CodeComposerLib
         /// Initializes any other components of a generator sub-class inherited from this one.
         /// This method is called automatically by the Initialize() method
         /// </summary>
-        protected abstract void InitializeOtherComponents();
+        protected abstract void InitializeSubComponents();
 
         /// <summary>
         /// This method verifies that the code generator is ready to start code generation process.
@@ -122,7 +122,7 @@ namespace CodeComposerLib
         /// Finalizes any other components of a generator sub-class inherited from this one.
         /// This method is called automatically by the Finalize() method
         /// </summary>
-        protected abstract void FinalizeOtherComponents();
+        protected abstract void FinalizeSubComponents();
 
 
         /// <summary>
@@ -143,7 +143,7 @@ namespace CodeComposerLib
             CodeFilesComposer.Clear();
 
             //Initialize any other components of a generator sub-class inherited from this one
-            InitializeOtherComponents();
+            InitializeSubComponents();
         }
 
         /// <summary>
@@ -153,7 +153,7 @@ namespace CodeComposerLib
         protected void FinalizeGenerator()
         {
             //Finalize any other components of a generator sub-class inherited from this one
-            FinalizeOtherComponents();
+            FinalizeSubComponents();
         }
 
         /// <summary>
@@ -172,7 +172,7 @@ namespace CodeComposerLib
         /// <param name="composeTextFilesAction"></param>
         public void Generate(Action composeTextFilesAction)
         {
-            if (this.SetProgressRunning() == false) return;
+            //if (this.SetProgressRunning() == false) return;
 
             if (VerifyReadyToGenerate() == false)
             {

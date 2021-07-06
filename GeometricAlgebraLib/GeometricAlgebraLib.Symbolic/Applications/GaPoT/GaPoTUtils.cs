@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using GeometricAlgebraLib.Geometry;
 using GeometricAlgebraLib.Geometry.Euclidean;
-using GeometricAlgebraLib.Processors.Matrices;
-using GeometricAlgebraLib.Processors.Scalars;
+using GeometricAlgebraLib.Processing.Matrices;
+using GeometricAlgebraLib.Processing.Scalars;
 using GeometricAlgebraLib.Storage;
 
 namespace GeometricAlgebraLib.Symbolic.Applications.GaPoT

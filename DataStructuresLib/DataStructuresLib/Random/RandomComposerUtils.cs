@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DataStructuresLib.Random
+﻿namespace DataStructuresLib.Random
 {
     public static class RandomComposerUtils
     {

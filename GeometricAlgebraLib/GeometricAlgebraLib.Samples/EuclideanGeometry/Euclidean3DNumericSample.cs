@@ -1,7 +1,7 @@
 ﻿using System;
+using GeometricAlgebraLib.Algebra.Signatures;
 using GeometricAlgebraLib.Geometry.Euclidean;
-using GeometricAlgebraLib.Implementations.Float64;
-using GeometricAlgebraLib.Processors.Multivectors;
+using GeometricAlgebraLib.Processing.Implementations.Float64;
 using GeometricAlgebraLib.Storage;
 
 namespace GeometricAlgebraLib.Samples.EuclideanGeometry

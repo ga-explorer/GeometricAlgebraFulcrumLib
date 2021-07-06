@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Text;
-using EuclideanGeometryLib.BasicMath.Tuples.Immutable;
 
 namespace EuclideanGeometryLib.BasicMath.Tuples.Mutable
 {

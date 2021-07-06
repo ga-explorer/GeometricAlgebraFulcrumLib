@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using DataStructuresLib.Combinations;
-using GeometricAlgebraLib.Processors.Scalars;
+using GeometricAlgebraLib.Processing.Scalars;
 
 namespace GeometricAlgebraLib.Storage.Composers
 {

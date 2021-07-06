@@ -2,7 +2,7 @@
 using CodeComposerLib.Irony.Semantic;
 using CodeComposerLib.Languages;
 using GeometricAlgebraLib.CodeComposer.LanguageServers;
-using GeometricAlgebraLib.SymbolicExpressions.Context;
+using GeometricAlgebraLib.Processing.SymbolicExpressions.Context;
 using TextComposerLib.Loggers.Progress;
 
 namespace GeometricAlgebraLib.CodeComposer.Composers
@@ -14,18 +14,25 @@ namespace GeometricAlgebraLib.CodeComposer.Composers
     public abstract class GaCodeLibraryComposerBase : 
         CodeLibraryComposer
     {
-        public override string ProgressSourceId => Name;
+        public override string ProgressSourceId 
+            => Name;
 
-        public override ProgressComposer Progress => null;
+        public override ProgressComposer Progress 
+            => null;
 
-        public override LanguageServer Language => GaClcLanguage;
+        public override LanguageServer Language 
+            => GaClcLanguage;
 
         /// <summary>
         /// The GaClc target language of this generator
         /// </summary>
         public GaClcLanguageServer GaClcLanguage { get; }
 
-        public bool AllowGenerateContextComposerCode { get; set; } = true;
+        public SymbolicContextOptions DefaultContextOptions { get; }
+            = new SymbolicContextOptions();
+
+        public GaClcSymbolicContextCodeComposerOptions DefaultContextCodeComposerOptions { get; }
+            = new GaClcSymbolicContextCodeComposerOptions();
 
         /// <summary>
         /// All derived classes must take a single AstRoot parameter for uniform operation purposes
@@ -75,7 +82,5 @@ namespace GeometricAlgebraLib.CodeComposer.Composers
         {
             return astObject.ObjectName + astObject.ObjectId.ToString("X4");
         }
-
-
     }
 }

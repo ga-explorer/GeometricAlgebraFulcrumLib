@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using GeometricAlgebraLib.Implementations.Float64;
-using GeometricAlgebraLib.Multivectors.Signatures;
-using GeometricAlgebraLib.Processors.Scalars;
+using GeometricAlgebraLib.Algebra.Basis;
+using GeometricAlgebraLib.Algebra.Signatures;
+using GeometricAlgebraLib.Processing.Implementations.Float64;
+using GeometricAlgebraLib.Processing.Scalars;
 
 namespace GeometricAlgebraLib.Storage.Composers
 {
@@ -11,7 +13,8 @@ namespace GeometricAlgebraLib.Storage.Composers
     /// This composer can efficiently handle up to 12 dimensions, for more dimensions
     /// use the generic composer instead
     /// </summary>
-    public sealed class GaMultivectorStorageFloat64Composer
+    public sealed class GaMultivectorStorageFloat64Composer :
+        IReadOnlyDictionary<ulong, double>
     {
         private readonly Dictionary<ulong, double> _idScalarDictionary
             = new Dictionary<ulong, double>();
@@ -20,6 +23,20 @@ namespace GeometricAlgebraLib.Storage.Composers
             => GaScalarProcessorFloat64.DefaultProcessor;
 
         public GaSignatureLookup Signature { get; }
+
+        public int Count 
+            => _idScalarDictionary.Count;
+
+        public IEnumerable<ulong> Keys 
+            => _idScalarDictionary.Keys;
+
+        public IEnumerable<double> Values 
+            => _idScalarDictionary.Values;
+
+        public double this[ulong id]
+            => _idScalarDictionary.TryGetValue(id, out var value)
+                ? value
+                : 0d;
 
 
         public GaMultivectorStorageFloat64Composer([NotNull] GaSignatureLookup signature)
@@ -38,6 +55,16 @@ namespace GeometricAlgebraLib.Storage.Composers
             return _idScalarDictionary.Count == 0;
         }
 
+        public bool ContainsKey(ulong id)
+        {
+            return _idScalarDictionary.ContainsKey(id);
+        }
+
+        public bool TryGetValue(ulong id, out double value)
+        {
+            return _idScalarDictionary.TryGetValue(id, out value);
+        }
+
         public void AddTerm(ulong id, double scalar)
         {
             if (_idScalarDictionary.TryGetValue(id, out var oldScalar))
@@ -50,6 +77,29 @@ namespace GeometricAlgebraLib.Storage.Composers
         {
             var signature = 
                 Signature.GpSignature(id1, id2);
+
+            if (signature == 0)
+                return;
+
+            var id = id1 ^ id2;
+            var scalar = scalar1 * scalar2;
+            
+            if (signature < 0)
+                scalar = -scalar;
+
+            if (_idScalarDictionary.TryGetValue(id, out var oldScalar))
+                _idScalarDictionary[id] = oldScalar + scalar;
+            else
+                _idScalarDictionary.Add(id, scalar);
+        }
+
+        public void AddGpReverseTerm(ulong id1, ulong id2, double scalar1, double scalar2)
+        {
+            var signature = 
+                Signature.GpSignature(id1, id2);
+
+            if (id2.BasisBladeIdHasNegativeReverse())
+                signature = -signature;
 
             if (signature == 0)
                 return;
@@ -84,6 +134,25 @@ namespace GeometricAlgebraLib.Storage.Composers
                 _idScalarDictionary[id] = oldScalar + scalar;
             else
                 _idScalarDictionary.Add(id, scalar);
+        }
+
+        public void AddSpTerm(ulong id, double scalar1, double scalar2)
+        {
+            var signature = 
+                Signature.SpSignature(id);
+
+            if (signature == 0)
+                return;
+
+            var scalar = scalar1 * scalar2;
+            
+            if (signature < 0)
+                scalar = -scalar;
+
+            if (_idScalarDictionary.TryGetValue(0, out var oldScalar))
+                _idScalarDictionary[0] = oldScalar + scalar;
+            else
+                _idScalarDictionary.Add(0, scalar);
         }
 
         public void AddSpTerm(ulong id1, ulong id2, double scalar1, double scalar2)
@@ -291,5 +360,14 @@ namespace GeometricAlgebraLib.Storage.Composers
             );
         }
 
+        public IEnumerator<KeyValuePair<ulong, double>> GetEnumerator()
+        {
+            return _idScalarDictionary.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
     }
 }

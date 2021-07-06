@@ -1,6 +1,6 @@
 ﻿using System;
 using GeometricAlgebraLib.Geometry.Euclidean;
-using GeometricAlgebraLib.Implementations.Float64;
+using GeometricAlgebraLib.Processing.Implementations.Float64;
 using GeometricAlgebraLib.Symbolic.Applications.GaPoT;
 using GeometricAlgebraLib.Text;
 

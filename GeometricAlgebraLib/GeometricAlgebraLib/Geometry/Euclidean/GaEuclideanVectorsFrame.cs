@@ -5,8 +5,9 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using DataStructuresLib.Permutations;
-using GeometricAlgebraLib.Processors.Multivectors;
-using GeometricAlgebraLib.Processors.Scalars;
+using GeometricAlgebraLib.Algebra.Signatures;
+using GeometricAlgebraLib.Processing.Multivectors;
+using GeometricAlgebraLib.Processing.Scalars;
 using GeometricAlgebraLib.Storage;
 
 namespace GeometricAlgebraLib.Geometry.Euclidean
@@ -214,7 +215,7 @@ namespace GeometricAlgebraLib.Geometry.Euclidean
                 var v1 = _vectorStoragesList[i];
 
                 var dii = ScalarProcessor.Subtract(
-                    v1.ESpSquared(), 
+                    v1.ESp(), 
                     ScalarProcessor.OneScalar
                 );
 
@@ -315,7 +316,7 @@ namespace GeometricAlgebraLib.Geometry.Euclidean
                     ScalarProcessor.Divide(
                         v1.ESp(v2),
                         ScalarProcessor.Sqrt(
-                            ScalarProcessor.Times(v1.ESpSquared(), v2.ESpSquared())
+                            ScalarProcessor.Times(v1.ESp(), v2.ESp())
                         )
                     )
                 );

@@ -1,6 +1,6 @@
 ﻿using CodeComposerLib.SyntaxTree.Expressions;
 using GeometricAlgebraLib.CodeComposer.LanguageServers;
-using GeometricAlgebraLib.SymbolicExpressions.Variables;
+using GeometricAlgebraLib.Processing.SymbolicExpressions.Variables;
 
 namespace GeometricAlgebraLib.CodeComposer.Composers
 {
@@ -15,6 +15,6 @@ namespace GeometricAlgebraLib.CodeComposer.Composers
 
         public GaClcLanguageServer LanguageServer { get; internal init; }
 
-        public bool EnableCodeGeneration { get; init; }
+        public bool EnableCodeGeneration { get; set; }
     }
 }

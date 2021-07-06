@@ -1,7 +1,7 @@
 ﻿using GeometricAlgebraLib.Geometry.Euclidean;
 using GeometricAlgebraLib.Geometry.Metric;
-using GeometricAlgebraLib.Processors.Multivectors;
-using GeometricAlgebraLib.Processors.Scalars;
+using GeometricAlgebraLib.Processing.Multivectors;
+using GeometricAlgebraLib.Processing.Scalars;
 using GeometricAlgebraLib.Storage;
 
 namespace GeometricAlgebraLib.Geometry
@@ -14,7 +14,7 @@ namespace GeometricAlgebraLib.Geometry
             return GaEuclideanSubspace<T>.Create(storage);
         }
 
-        public static GaMetricSubspace<T> CreateMetricSubspace<T>(this IGaKVectorStorage<T> storage, IGaMultivectorsProcessor<T> processor)
+        public static GaMetricSubspace<T> CreateMetricSubspace<T>(this IGaKVectorStorage<T> storage, IGaMultivectorProcessor<T> processor)
         {
             return GaMetricSubspace<T>.Create(processor, storage);
         }

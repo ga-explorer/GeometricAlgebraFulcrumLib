@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using GeometricAlgebraLib.Multivectors.Terms;
+using GeometricAlgebraLib.Algebra.Multivectors.Terms;
 
 namespace GeometricAlgebraLib.Storage
 {

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using GeometricAlgebraLib.Multivectors.Basis;
-using GeometricAlgebraLib.Processors.Scalars;
+using GeometricAlgebraLib.Algebra.Basis;
+using GeometricAlgebraLib.Processing.Scalars;
 using GeometricAlgebraLib.Storage.Composers;
 
 namespace GeometricAlgebraLib.Storage

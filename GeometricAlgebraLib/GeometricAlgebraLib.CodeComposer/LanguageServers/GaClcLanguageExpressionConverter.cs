@@ -1,5 +1,5 @@
 ﻿using CodeComposerLib.Languages;
-using GeometricAlgebraLib.SymbolicExpressions.Context;
+using GeometricAlgebraLib.Processing.SymbolicExpressions.Context;
 
 namespace GeometricAlgebraLib.CodeComposer.LanguageServers
 {

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using GeometricAlgebraLib.Algebra.Signatures;
 using GeometricAlgebraLib.Geometry.Euclidean;
-using GeometricAlgebraLib.Implementations.Float64;
-using GeometricAlgebraLib.Processors.Matrices;
-using GeometricAlgebraLib.Processors.Multivectors;
+using GeometricAlgebraLib.Processing.Implementations.Float64;
+using GeometricAlgebraLib.Processing.Matrices;
 using GeometricAlgebraLib.Storage;
 using GeometricAlgebraLib.Storage.Composers;
 using GeometricAlgebraLib.Symbolic.Applications.GaPoT;

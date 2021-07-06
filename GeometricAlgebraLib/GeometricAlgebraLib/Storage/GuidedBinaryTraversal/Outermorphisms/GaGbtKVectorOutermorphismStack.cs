@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using GeometricAlgebraLib.Multivectors;
-using GeometricAlgebraLib.Processors.Scalars;
+using GeometricAlgebraLib.Algebra.Multivectors;
+using GeometricAlgebraLib.Processing.Scalars;
 using GeometricAlgebraLib.Storage.GuidedBinaryTraversal.Multivectors;
 
 namespace GeometricAlgebraLib.Storage.GuidedBinaryTraversal.Outermorphisms

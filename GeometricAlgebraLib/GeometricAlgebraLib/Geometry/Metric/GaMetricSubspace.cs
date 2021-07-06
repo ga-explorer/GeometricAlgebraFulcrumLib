@@ -1,6 +1,8 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using GeometricAlgebraLib.Processors.Multivectors;
-using GeometricAlgebraLib.Processors.Scalars;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
+using DataStructuresLib.BitManipulation;
+using GeometricAlgebraLib.Processing.Multivectors;
+using GeometricAlgebraLib.Processing.Scalars;
 using GeometricAlgebraLib.Storage;
 
 namespace GeometricAlgebraLib.Geometry.Metric
@@ -8,24 +10,24 @@ namespace GeometricAlgebraLib.Geometry.Metric
     public sealed class GaMetricSubspace<T> 
         : IGaMetricGeometry<T>, IGaSubspace<T>
     {
-        public static GaMetricSubspace<T> Create(IGaMultivectorsProcessor<T> processor, IGaKVectorStorage<T> storage)
+        public static GaMetricSubspace<T> Create(IGaMultivectorProcessor<T> processor, IGaKVectorStorage<T> storage)
         {
             return new GaMetricSubspace<T>(processor, storage);
         }
 
-        public static GaMetricSubspace<T> CreateFromPseudoScalar(IGaMultivectorsProcessor<T> processor, IGaScalarProcessor<T> scalarProcessor, int vSpaceDimension)
+        public static GaMetricSubspace<T> CreateFromPseudoScalar(IGaMultivectorProcessor<T> processor)
         {
             return new GaMetricSubspace<T>(
                 processor,
                 GaKVectorTermStorage<T>.CreatePseudoScalar(
                     processor.ScalarProcessor, 
-                    vSpaceDimension
+                    processor.BasisSet.VSpaceDimension
                 )
             );
         }
 
 
-        public IGaMultivectorsProcessor<T> MultivectorProcessor { get; }
+        public IGaMultivectorProcessor<T> MultivectorProcessor { get; }
 
         public bool IsValid 
             => true;
@@ -38,13 +40,13 @@ namespace GeometricAlgebraLib.Geometry.Metric
 
         public IGaKVectorStorage<T> BladeStorage { get; }
 
-        public T BladeNormSquared { get; }
+        public T BladeScalarProductSquared { get; }
 
 
-        private GaMetricSubspace([NotNull] IGaMultivectorsProcessor<T> processor, [NotNull] IGaKVectorStorage<T> storage)
+        private GaMetricSubspace([NotNull] IGaMultivectorProcessor<T> processor, [NotNull] IGaKVectorStorage<T> storage)
         {
             BladeStorage = storage;
-            BladeNormSquared = processor.NormSquared(storage);
+            BladeScalarProductSquared = processor.Sp(storage);
             MultivectorProcessor = processor;
         }
 
@@ -54,27 +56,45 @@ namespace GeometricAlgebraLib.Geometry.Metric
             return MultivectorProcessor.Lcp(
                 MultivectorProcessor.Lcp(storage, BladeStorage),
                 BladeStorage
-            ).Divide(BladeNormSquared);
+            ).Divide(BladeScalarProductSquared);
         }
 
+        //TODO: Implement all cases in table 7.1 page 201 in "Geometric Algebra for Computer Science"
         public IGaMultivectorStorage<T> Reflect(IGaMultivectorStorage<T> storage)
         {
-            throw new System.NotImplementedException();
+            return MultivectorProcessor.Gp(
+                BladeStorage,
+                storage.GetGradeInvolution(),
+                BladeStorage
+            ).Divide(BladeScalarProductSquared);
         }
 
         public IGaMultivectorStorage<T> Rotate(IGaMultivectorStorage<T> storage)
         {
-            throw new System.NotImplementedException();
+            if (BladeStorage.Grade.IsOdd())
+                throw new InvalidOperationException();
+
+            //Debug.Assert(ScalarProcessor.IsOne(BladeScalarProductSquared));
+
+            return MultivectorProcessor.Gp(
+                BladeStorage,
+                storage,
+                BladeStorage.GetReverse()
+            );
         }
 
         public IGaMultivectorStorage<T> VersorProduct(IGaMultivectorStorage<T> storage)
         {
-            throw new System.NotImplementedException();
+            return MultivectorProcessor.Gp(
+                BladeStorage,
+                storage,
+                BladeStorage
+            ).Divide(BladeScalarProductSquared);
         }
 
-        public IGaKVectorStorage<T> Complement(IGaKVectorStorage<T> vectorStorage)
+        public IGaMultivectorStorage<T> Complement(IGaMultivectorStorage<T> storage)
         {
-            throw new System.NotImplementedException();
+            return MultivectorProcessor.Lcp(storage, BladeStorage);
         }
     }
 }

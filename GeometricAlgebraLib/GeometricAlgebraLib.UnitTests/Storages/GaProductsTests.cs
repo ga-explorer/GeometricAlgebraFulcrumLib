@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using GAPoTNumLib.GAPoT;
-using GeometricAlgebraLib.Implementations.Float64;
-using GeometricAlgebraLib.Multivectors.Basis;
-using GeometricAlgebraLib.Processors.Multivectors;
-using GeometricAlgebraLib.Processors.Scalars;
+using GeometricAlgebraLib.Algebra.Basis;
+using GeometricAlgebraLib.Algebra.Signatures;
+using GeometricAlgebraLib.Processing.Implementations.Float64;
+using GeometricAlgebraLib.Processing.Multivectors;
+using GeometricAlgebraLib.Processing.Scalars;
 using GeometricAlgebraLib.Storage;
 using NUnit.Framework;
 
@@ -124,7 +125,7 @@ namespace GeometricAlgebraLib.UnitTests.Storages
         {
             return funcName switch
             {
-                "esp" => GaMultivectorsProcessorUtils.ESp,
+                "esp" => GaSignatureUtils.ESp,
                 _ => null
             };
         }
@@ -183,8 +184,8 @@ namespace GeometricAlgebraLib.UnitTests.Storages
                 "leftTimesScalar" => LeftTimesScalar,
                 "rightTimesScalar" => RightTimesScalar,
                 "divideByScalar" => DivideByScalar,
-                "egpSquared" => GaMultivectorsProcessorUtils.EGpSquared,
-                "egpReverse" => GaMultivectorsProcessorUtils.EGpReverse,
+                "egpSquared" => GaSignatureUtils.EGp,
+                "egpReverse" => GaSignatureUtils.EGpReverse,
                 _ => null
             };
         }
@@ -208,8 +209,8 @@ namespace GeometricAlgebraLib.UnitTests.Storages
         {
             return funcName switch
             {
-                "espSquared" => GaMultivectorsProcessorUtils.ESpSquared,
-                "espReverse" => GaMultivectorsProcessorUtils.ESpReverse,
+                "espSquared" => GaSignatureUtils.ESp,
+                "espReverse" => GaSignatureUtils.ENormSquared,
                 _ => null
             };
         }

@@ -1,4 +1,4 @@
-﻿using GeometricAlgebraLib.SymbolicExpressions.Context;
+﻿using GeometricAlgebraLib.Processing.SymbolicExpressions.Context;
 
 namespace GeometricAlgebraLib.CodeComposer.Composers
 {
@@ -16,7 +16,11 @@ namespace GeometricAlgebraLib.CodeComposer.Composers
             : base(codeLibraryComposer)
         {
         }
-        
+
+
+        protected virtual void SetContextOptions(SymbolicContextOptions options)
+        {
+        }
 
         protected abstract void DefineContextParameters(SymbolicContext context);
 
@@ -24,18 +28,19 @@ namespace GeometricAlgebraLib.CodeComposer.Composers
 
         protected abstract void DefineContextExternalNames(SymbolicContext context);
 
-        protected virtual void InitializeContextCodeComposer(GaClcSymbolicContextCodeComposer symbolicContextCodeComposer)
+        protected virtual void SetContextCodeComposerOptions(GaClcSymbolicContextCodeComposerOptions options)
         {
-            symbolicContextCodeComposer.AllowGenerateCode =
-                LibraryComposer.AllowGenerateContextComposerCode;
-
-            symbolicContextCodeComposer.AllowGenerateComputationComments = true;
         }
 
 
         protected string GenerateCode()
         {
-            var context = new SymbolicContext();
+            var context = 
+                new SymbolicContext(
+                    LibraryComposer.DefaultContextOptions
+                );
+
+            SetContextOptions(context.ContextOptions);
 
             DefineContextParameters(context);
 
@@ -46,9 +51,13 @@ namespace GeometricAlgebraLib.CodeComposer.Composers
             DefineContextExternalNames(context);
 
             var symbolicContextCodeComposer = 
-                new GaClcSymbolicContextCodeComposer(LibraryComposer, context);
+                new GaClcSymbolicContextCodeComposer(
+                    LibraryComposer, 
+                    context, 
+                    LibraryComposer.DefaultContextCodeComposerOptions
+                );
 
-            InitializeContextCodeComposer(symbolicContextCodeComposer);
+            SetContextCodeComposerOptions(symbolicContextCodeComposer.ComposerOptions);
 
             return symbolicContextCodeComposer.Generate();
         }

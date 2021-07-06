@@ -1,4 +1,4 @@
-﻿using GeometricAlgebraLib.Multivectors.Basis;
+﻿using GeometricAlgebraLib.Algebra.Basis;
 
 namespace GeometricAlgebraLib.Storage
 {

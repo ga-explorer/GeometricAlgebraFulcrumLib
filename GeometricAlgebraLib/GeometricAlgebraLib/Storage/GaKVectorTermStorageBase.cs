@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using DataStructuresLib;
-using GeometricAlgebraLib.Multivectors.Basis;
-using GeometricAlgebraLib.Multivectors.Terms;
-using GeometricAlgebraLib.Processors.Scalars;
+using DataStructuresLib.BitManipulation;
+using GeometricAlgebraLib.Algebra.Basis;
+using GeometricAlgebraLib.Algebra.Multivectors.Terms;
+using GeometricAlgebraLib.Processing.Scalars;
 using GeometricAlgebraLib.Storage.Composers;
 using GeometricAlgebraLib.Storage.GuidedBinaryTraversal.Multivectors;
 using GeometricAlgebraLib.Storage.Trees;
-using GaBasisUtils = GeometricAlgebraLib.Multivectors.Basis.GaBasisUtils;
+using GaBasisUtils = GeometricAlgebraLib.Algebra.Basis.GaBasisUtils;
 
 namespace GeometricAlgebraLib.Storage
 {

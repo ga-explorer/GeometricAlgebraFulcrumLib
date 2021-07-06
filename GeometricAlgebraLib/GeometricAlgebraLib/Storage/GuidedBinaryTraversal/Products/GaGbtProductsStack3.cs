@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using DataStructuresLib;
-using GeometricAlgebraLib.Multivectors;
-using GeometricAlgebraLib.Multivectors.Basis;
-using GeometricAlgebraLib.Multivectors.Terms;
-using GeometricAlgebraLib.Processors.Scalars;
+using DataStructuresLib.BitManipulation;
+using GeometricAlgebraLib.Algebra.Basis;
+using GeometricAlgebraLib.Algebra.Multivectors;
+using GeometricAlgebraLib.Algebra.Multivectors.Terms;
+using GeometricAlgebraLib.Processing.Scalars;
 using GeometricAlgebraLib.Storage.GuidedBinaryTraversal.Multivectors;
 
 namespace GeometricAlgebraLib.Storage.GuidedBinaryTraversal.Products

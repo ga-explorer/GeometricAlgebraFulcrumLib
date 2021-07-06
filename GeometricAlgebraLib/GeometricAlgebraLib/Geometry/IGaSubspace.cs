@@ -1,5 +1,4 @@
-﻿using GeometricAlgebraLib.Geometry.Euclidean;
-using GeometricAlgebraLib.Storage;
+﻿using GeometricAlgebraLib.Storage;
 
 namespace GeometricAlgebraLib.Geometry
 {
@@ -7,7 +6,7 @@ namespace GeometricAlgebraLib.Geometry
     {
         IGaKVectorStorage<T> BladeStorage { get; }
 
-        T BladeNormSquared { get; }
+        T BladeScalarProductSquared { get; }
 
         IGaMultivectorStorage<T> Project(IGaMultivectorStorage<T> storage);
 
@@ -17,6 +16,6 @@ namespace GeometricAlgebraLib.Geometry
 
         IGaMultivectorStorage<T> VersorProduct(IGaMultivectorStorage<T> storage);
 
-        IGaKVectorStorage<T> Complement(IGaKVectorStorage<T> vectorStorage);
+        IGaMultivectorStorage<T> Complement(IGaMultivectorStorage<T> vectorStorage);
     }
 }

@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using GeometricAlgebraLib.Processors.Multivectors;
-using GeometricAlgebraLib.Processors.Scalars;
+using GeometricAlgebraLib.Algebra.Signatures;
+using GeometricAlgebraLib.Processing.Multivectors;
+using GeometricAlgebraLib.Processing.Scalars;
 using GeometricAlgebraLib.Storage;
 using GeometricAlgebraLib.Storage.Composers;
 
@@ -63,7 +64,7 @@ namespace GeometricAlgebraLib.Geometry.Euclidean
                     sinHalfAngle,
                     scalarProcessor.Sqrt(
                         scalarProcessor.Negative(
-                            rotationBlade.EGpSquared().GetTermScalar(0)
+                            rotationBlade.EGp().GetTermScalar(0)
                         )
                     )
                     //scalarProcessor.SqrtOfAbs(rotationBlade.EGpSquared().GetTermScalar(0))
@@ -98,7 +99,7 @@ namespace GeometricAlgebraLib.Geometry.Euclidean
             var rotationBladeScalar =
                 scalarProcessor.Divide(
                     sinHalfAngle,
-                    scalarProcessor.SqrtOfAbs(rotationBlade.EGpSquared().GetTermScalar(0))
+                    scalarProcessor.SqrtOfAbs(rotationBlade.EGp().GetTermScalar(0))
                 );
 
             var rotorStorage = cosHalfAngle.Add(

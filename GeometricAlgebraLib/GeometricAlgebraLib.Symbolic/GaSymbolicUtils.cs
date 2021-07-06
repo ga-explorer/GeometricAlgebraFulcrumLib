@@ -2,7 +2,8 @@
 using System.Linq;
 using GeometricAlgebraLib.Geometry;
 using GeometricAlgebraLib.Geometry.Euclidean;
-using GeometricAlgebraLib.Implementations.Float64;
+using GeometricAlgebraLib.Processing.Implementations.Float64;
+using GeometricAlgebraLib.Processing.SymbolicExpressions.Context;
 using GeometricAlgebraLib.Storage;
 using GeometricAlgebraLib.Symbolic.Mathematica;
 using GeometricAlgebraLib.Symbolic.Mathematica.Expression;
@@ -10,8 +11,6 @@ using GeometricAlgebraLib.Symbolic.Mathematica.ExprFactory;
 using GeometricAlgebraLib.Symbolic.Processors;
 using GeometricAlgebraLib.Symbolic.SymbolicExpressions;
 using GeometricAlgebraLib.Symbolic.Text;
-using GeometricAlgebraLib.SymbolicExpressions;
-using GeometricAlgebraLib.SymbolicExpressions.Context;
 using Wolfram.NETLink;
 
 namespace GeometricAlgebraLib.Symbolic

@@ -1,5 +1,5 @@
 ﻿using EuclideanGeometryLib.BasicMath;
-using GeometricAlgebraLib.Processors.Scalars;
+using GeometricAlgebraLib.Processing.Scalars;
 
 namespace GeometricAlgebraLib.Geometry
 {

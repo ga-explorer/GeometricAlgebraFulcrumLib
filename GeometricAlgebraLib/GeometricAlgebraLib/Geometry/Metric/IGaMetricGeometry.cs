@@ -1,10 +1,10 @@
-﻿using GeometricAlgebraLib.Processors.Multivectors;
+﻿using GeometricAlgebraLib.Processing.Multivectors;
 
 namespace GeometricAlgebraLib.Geometry.Metric
 {
     public interface IGaMetricGeometry<T> : 
         IGaGeometricElement<T>
     {
-        IGaMultivectorsProcessor<T> MultivectorProcessor { get; }
+        IGaMultivectorProcessor<T> MultivectorProcessor { get; }
     }
 }

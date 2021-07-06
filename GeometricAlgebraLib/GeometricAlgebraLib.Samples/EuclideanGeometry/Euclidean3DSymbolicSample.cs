@@ -1,6 +1,6 @@
 ﻿using System;
+using GeometricAlgebraLib.Algebra.Signatures;
 using GeometricAlgebraLib.Geometry.Euclidean;
-using GeometricAlgebraLib.Processors.Multivectors;
 using GeometricAlgebraLib.Symbolic;
 using GeometricAlgebraLib.Symbolic.Mathematica;
 using GeometricAlgebraLib.Symbolic.Mathematica.ExprFactory;

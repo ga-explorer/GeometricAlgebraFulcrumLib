@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using CodeComposerLib.SyntaxTree.Expressions;
+using GeometricAlgebraLib.Processing.SymbolicExpressions;
+using GeometricAlgebraLib.Processing.SymbolicExpressions.Composite;
+using GeometricAlgebraLib.Processing.SymbolicExpressions.Context;
 using GeometricAlgebraLib.Symbolic.Mathematica.Expression;
 using GeometricAlgebraLib.Symbolic.Mathematica.ExprFactory;
-using GeometricAlgebraLib.SymbolicExpressions;
-using GeometricAlgebraLib.SymbolicExpressions.Composite;
-using GeometricAlgebraLib.SymbolicExpressions.Context;
 using Wolfram.NETLink;
 
 namespace GeometricAlgebraLib.Symbolic.Mathematica
