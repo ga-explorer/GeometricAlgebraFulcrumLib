@@ -1,9 +1,11 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Algebra.Signatures;
 using GeometricAlgebraFulcrumLib.Geometry.Euclidean;
+using GeometricAlgebraFulcrumLib.Processing.Generic;
+using GeometricAlgebraFulcrumLib.Processing.Products.Euclidean;
 using GeometricAlgebraFulcrumLib.Symbolic;
 using GeometricAlgebraFulcrumLib.Symbolic.Mathematica;
 using GeometricAlgebraFulcrumLib.Symbolic.Mathematica.ExprFactory;
+using GeometricAlgebraFulcrumLib.Symbolic.Processors;
 using Wolfram.NETLink;
 
 namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
@@ -12,7 +14,11 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
     {
         public static void Execute()
         {
-            var n = 3;
+            var n = 3U;
+            var processor = GaProcessorGenericOrthonormal<Expr>.CreateEuclidean(
+                GaScalarProcessorMathematicaExpr.DefaultProcessor, 
+                n
+            );
 
             var v = GaSymbolicUtils.CreateVector(
                 "Subscript[v,1]", "Subscript[v,2]", "Subscript[v,3]"
@@ -24,10 +30,10 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
 
 
             var rotor = 
-                GaEuclideanSimpleRotor<Expr>.Create(v, u);
+                GaEuclideanSimpleRotor<Expr>.Create(processor, v, u);
 
-            var rotorMv = rotor.Storage;
-            var rotorMvReverse = rotor.Storage.GetReverse();
+            var rotorMv = rotor.Rotor;
+            var rotorMvReverse = rotor.Rotor.GetReverse();
 
             var unitLengthAssumptionExpr =
                 Mfs.And[
@@ -37,25 +43,25 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
 
             var rotorMatrix =
                 rotor
-                    .GetMatrix(n, n)
+                    .GetMatrix((int) n, (int) n)
                     .Simplify(unitLengthAssumptionExpr);
 
             var rotorMatrix1 =
                 GaSymbolicUtils.CreateVectorsLinearMap(
-                        n,
+                        (int) n,
                         basisVector =>
                             rotorMv.EGp(basisVector).GetVectorPart()
                     )
-                    .GetMatrix(n, n)
+                    .GetMatrix((int) n, (int) n)
                     .Simplify(unitLengthAssumptionExpr);
 
             var rotorMatrix2 =
                 GaSymbolicUtils.CreateVectorsLinearMap(
-                        n,
+                        (int) n,
                         basisVector =>
                             basisVector.EGp(rotorMvReverse).GetVectorPart()
                     )
-                    .GetMatrix(n, n)
+                    .GetMatrix((int) n, (int) n)
                     .Simplify(unitLengthAssumptionExpr);
 
             var rotorMatrix21 = 

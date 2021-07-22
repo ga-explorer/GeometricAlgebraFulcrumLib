@@ -11,7 +11,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Signatures
 
         public ulong Id { get; }
 
-        public int Grade 
+        public uint Grade 
             => Id.BasisBladeGrade();
 
         public ulong Index 
@@ -30,11 +30,9 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Signatures
         }
 
 
-        public GaKVectorTermStorage<double> GetBasisBladeTermFloat64()
+        public IGasKVectorTerm<double> GetBasisBladeTermFloat64()
         {
-            return GaKVectorTermStorage<double>.Create(
-                GaScalarProcessorFloat64.DefaultProcessor, 
-                Id,
+            return GaScalarProcessorFloat64.DefaultProcessor.CreateKVector(Id,
                 Signature
             );
         }

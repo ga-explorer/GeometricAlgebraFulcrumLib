@@ -4,24 +4,24 @@ using System.Diagnostics;
 using DataStructuresLib.BitManipulation;
 using DataStructuresLib.Stacks;
 using GeometricAlgebraFulcrumLib.Algebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.Signatures;
-using GeometricAlgebraFulcrumLib.Processing.Products;
+using GeometricAlgebraFulcrumLib.Geometry.Multivectors;
+using GeometricAlgebraFulcrumLib.Processing.Products.Iterators;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
 using GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Multivectors;
 
 namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
 {
     public sealed class GaGbtProductsStack2<T>
-        : GaGbtStack2, IGaBilinearProductsTermsIterator<T>
+        : GaGbtStack2, IGaProductTermsIterator<T>
     {
-        public static GaGbtProductsStack2<T> Create(IGaMultivector<T> mv1, IGaMultivector<T> mv2)
+        public static GaGbtProductsStack2<T> Create(GaMultivector<T> mv1, GaMultivector<T> mv2)
         {
             //TODO: Generalize to case where one is larger than the other
             //Debug.Assert(mv1.Storage.VSpaceDimension == mv2.Storage.VSpaceDimension);
 
             var treeDepth = 
-                Math.Max(1, Math.Max(mv1.Storage.VSpaceDimension, mv2.Storage.VSpaceDimension));
+                (int) Math.Max(1, Math.Max(mv1.Storage.VSpaceDimension, mv2.Storage.VSpaceDimension));
 
             var capacity = (treeDepth + 1) * (treeDepth + 1);
             
@@ -31,13 +31,13 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
             return new GaGbtProductsStack2<T>(stack1, stack2);
         }
 
-        public static GaGbtProductsStack2<T> Create(IGaMultivectorStorage<T> mv1, IGaMultivectorStorage<T> mv2)
+        public static GaGbtProductsStack2<T> Create(IGasMultivector<T> mv1, IGasMultivector<T> mv2)
         {
             //TODO: Generalize to case where one is larger than the other
             //Debug.Assert(mv1.VSpaceDimension == mv2.VSpaceDimension);
 
             var treeDepth = 
-                Math.Max(1, Math.Max(mv1.VSpaceDimension, mv2.VSpaceDimension));
+                (int) Math.Max(1, Math.Max(mv1.VSpaceDimension, mv2.VSpaceDimension));
 
             var capacity = (treeDepth + 1) * (treeDepth + 1);
             
@@ -56,10 +56,10 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
         public IGaScalarProcessor<T> ScalarProcessor 
             => Storage1.ScalarProcessor;
 
-        public IGaMultivectorStorage<T> Storage1 
+        public IGasMultivector<T> Storage1 
             => MultivectorStack1.Storage;
 
-        public IGaMultivectorStorage<T> Storage2 
+        public IGasMultivector<T> Storage2 
             => MultivectorStack2.Storage;
 
         public T TosValue1 
@@ -132,7 +132,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
                 (TosTreeDepth == 1 && childGrade == 1);
         }
 
-        public bool TosChildMayContainGrade(int childGrade, int grade)
+        public bool TosChildMayContainGrade(int childGrade, uint grade)
         {
             return
                 (TosTreeDepth > 1 && childGrade <= grade) ||

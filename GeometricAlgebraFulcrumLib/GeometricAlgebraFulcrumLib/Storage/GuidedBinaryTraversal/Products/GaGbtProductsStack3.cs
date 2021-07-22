@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using DataStructuresLib.BitManipulation;
 using GeometricAlgebraFulcrumLib.Algebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Terms;
+using GeometricAlgebraFulcrumLib.Algebra.Terms;
+using GeometricAlgebraFulcrumLib.Geometry.Multivectors;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
 using GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Multivectors;
 
@@ -21,7 +21,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
             );
 
             var treeDepth = 
-                Math.Max(
+                (int) Math.Max(
                     1, 
                     Math.Max(
                         mv1.Storage.VSpaceDimension,
@@ -52,13 +52,13 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
         public IGaScalarProcessor<T> ScalarProcessor 
             => Storage1.ScalarProcessor;
 
-        public IGaMultivectorStorage<T> Storage1 
+        public IGasMultivector<T> Storage1 
             => MultivectorStack1.Storage;
 
-        public IGaMultivectorStorage<T> Storage2 
+        public IGasMultivector<T> Storage2 
             => MultivectorStack2.Storage;
 
-        public IGaMultivectorStorage<T> Storage3 
+        public IGasMultivector<T> Storage3 
             => MultivectorStack3.Storage;
 
         public T TosValue1 
@@ -159,7 +159,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
                 (TosTreeDepth == 1 && childGrade == 1);
         }
 
-        public bool TosChildMayContainGrade(int childGrade, int grade)
+        public bool TosChildMayContainGrade(int childGrade, uint grade)
         {
             return
                 (TosTreeDepth > 1 && childGrade <= grade) ||

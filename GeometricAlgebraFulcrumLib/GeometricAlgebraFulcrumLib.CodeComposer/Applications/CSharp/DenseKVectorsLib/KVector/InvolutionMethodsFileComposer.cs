@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using DataStructuresLib.BitManipulation;
+using GeometricAlgebraFulcrumLib.Algebra;
 using GeometricAlgebraFulcrumLib.Algebra.Basis;
 using TextComposerLib.Text.Linear;
 using TextComposerLib.Text.Structured;
@@ -32,19 +34,19 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             );
         }
 
-        private void GenerateMainInvolutionFunction(GaClcOperationSpecs opSpecs, Func<int, bool> useNegative)
+        private void GenerateMainInvolutionFunction(GaClcOperationSpecs opSpecs, Func<uint, bool> useNegative)
         {
             var caseTemplate1 = Templates["main_negative_case"];
             var caseTemplate2 = Templates["main_negative_case2"];
 
             var casesText = new ListTextComposer(Environment.NewLine);
 
-            foreach (var grade in MultivectorProcessor.BasisSet.Grades)
+            foreach (var grade in Processor.Grades)
                 if (useNegative(grade))
                     casesText.Add(caseTemplate1,
-                        "frame", CurrentNamespace,
+                        "signature", CurrentNamespace,
                         "grade", grade,
-                        "num", MultivectorProcessor.BasisSet.KvSpaceDimension(grade)
+                        "num", this.KvSpaceDimension(grade)
                     );
                 else
                     casesText.Add(caseTemplate2,
@@ -53,7 +55,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
 
             TextComposer.AppendAtNewLine(
                 Templates["main_involution"],
-                "frame", CurrentNamespace,
+                "signature", CurrentNamespace,
                 "name", opSpecs.GetName(),
                 "cases", casesText
             );
@@ -64,9 +66,9 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             GenerateKVectorFileStartCode();
 
             var kvSpaceDimList =
-                Enumerable
-                    .Range(0, VSpaceDimension)
-                    .Select(grade => MultivectorProcessor.BasisSet.KvSpaceDimension(grade))
+                VSpaceDimension
+                    .GetRange()
+                    .Select(grade => Processor.KvSpaceDimension(grade))
                     .Distinct();
 
             foreach (var kvSpaceDim in kvSpaceDimList)
@@ -74,7 +76,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
 
             GenerateMainInvolutionFunction(
                 GaClcOperationKind.UnaryNegative.CreateEuclideanOperationSpecs(), 
-                grade => true
+                _ => true
             );
 
             GenerateMainInvolutionFunction(

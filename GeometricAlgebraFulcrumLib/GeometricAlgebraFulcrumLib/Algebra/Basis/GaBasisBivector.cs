@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using DataStructuresLib.Collections.Lists;
-using DataStructuresLib.Combinations;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Terms;
+using GeometricAlgebraFulcrumLib.Algebra.Terms;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.Basis
 {
@@ -18,7 +17,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Basis
         public ulong Id 
             => (1UL << (int) BasisVectorIndex1) | (1UL << (int) BasisVectorIndex2);
 
-        public int Grade => 2;
+        public uint Grade => 2;
 
         public ulong Index 
             => BasisVectorIndex1 + ((BasisVectorIndex2 * (BasisVectorIndex2 - 1UL)) >> 1);
@@ -33,14 +32,6 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Basis
             => false;
 
 
-        internal GaBasisBivector(int basisVectorIndex1, int basisVectorIndex2)
-        {
-            Debug.Assert(basisVectorIndex1 >= 0 && basisVectorIndex1 < basisVectorIndex2);
-
-            BasisVectorIndex1 = (ulong) basisVectorIndex1;
-            BasisVectorIndex2 = (ulong) basisVectorIndex2;
-        }
-
         internal GaBasisBivector(ulong basisVectorIndex1, ulong basisVectorIndex2)
         {
             Debug.Assert(basisVectorIndex1 < basisVectorIndex2);
@@ -49,22 +40,13 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Basis
             BasisVectorIndex2 = basisVectorIndex2;
         }
 
-        internal GaBasisBivector(ulong index)
-        {
-            var (n1, n2) = BinaryCombinationsUtilsUInt64.IndexToCombinadic(index);
 
-            BasisVectorIndex1 = n1;
-            BasisVectorIndex2 = n2;
-        }
-        
-
-
-        public Tuple<int, ulong> GetGradeIndex()
+        public Tuple<uint, ulong> GetGradeIndex()
         {
             return new(2, Index);
         }
 
-        public Tuple<ulong, int, ulong> GetIdGradeIndex()
+        public Tuple<ulong, uint, ulong> GetIdGradeIndex()
         {
             return new(Id, 2, Index);
         }
@@ -78,34 +60,19 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Basis
         }
 
 
-        public void GetGradeIndex(out int grade, out ulong index)
+        public void GetGradeIndex(out uint grade, out ulong index)
         {
             grade = 2;
             index = Index;
         }
 
-        public void GetIdGradeIndex(out ulong id, out int grade, out ulong index)
+        public void GetIdGradeIndex(out ulong id, out uint grade, out ulong index)
         {
             id = Id;
             grade = 2;
             index = Index;
         }
-
-        public GaBasisUniform ToUniformBasisBlade()
-        {
-            return new(Id);
-        }
-
-        public GaBasisGraded ToGradedBasisBlade()
-        {
-            return new(2, Index);
-        }
-
-        public GaBasisFull ToFullBasisBlade()
-        {
-            return new(this);
-        }
-
+        
 
         public IEnumerable<ulong> GetBasisVectorsIndices()
         {

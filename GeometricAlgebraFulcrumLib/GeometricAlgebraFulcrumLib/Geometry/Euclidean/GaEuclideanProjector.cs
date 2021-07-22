@@ -1,16 +1,34 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.Signatures;
+﻿using System.Collections.Generic;
+using GeometricAlgebraFulcrumLib.Algebra.Outermorphisms;
+using GeometricAlgebraFulcrumLib.Processing;
+using GeometricAlgebraFulcrumLib.Processing.Products.Euclidean;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
 using GeometricAlgebraFulcrumLib.Storage;
 
 namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean
 {
-    public sealed class GaEuclideanProjector<T>
-        : IGaProjector<T>, IGaEuclideanGeometry<T>
+    public sealed class GaProjector<T>
+        : IGaProjector<T>
     {
-        public IGaScalarProcessor<T> ScalarProcessor 
-            => UnitBladeStorage.ScalarProcessor;
+        public uint VSpaceDimension 
+            => Processor.VSpaceDimension;
 
-        public IGaKVectorStorage<T> UnitBladeStorage { get; }
+        public ulong GaSpaceDimension
+            => Processor.GaSpaceDimension;
+
+        public ulong MaxBasisBladeId { get; }
+
+        public uint GradesCount { get; }
+        
+        public IEnumerable<uint> Grades { get; }
+
+        public IGaProcessor<T> Processor { get; }
+
+        public IGasKVector<T> UnitBladeStorage { get; }
+
+        public IGaScalarProcessor<T> ScalarProcessor { get; }
+
+        public IGasKVector<T> MappedPseudoScalar { get; }
 
         public bool IsValid
             => true;
@@ -19,77 +37,82 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean
             => false;
 
 
-        public IGaVectorsLinearMap<T> GetAdjoint()
+        public IGaOutermorphism<T> GetAdjoint()
         {
             throw new System.NotImplementedException();
         }
 
-        public IGaVectorStorage<T> MapBasisVector(int index)
+        public IGasVector<T> MapBasisVector(int index)
         {
             throw new System.NotImplementedException();
         }
 
-        public IGaVectorStorage<T> MapBasisVector(ulong index)
+        public IReadOnlyList<IGasVector<T>> GetMappedBasisVectors()
         {
             throw new System.NotImplementedException();
         }
 
-        public IGaBivectorStorage<T> MapBasisBivector(int index1, int index2)
+        public IGasVector<T> MapBasisVector(ulong index)
         {
             throw new System.NotImplementedException();
         }
 
-        public IGaBivectorStorage<T> MapBasisBivector(ulong index1, ulong index2)
+        public IGasBivector<T> MapBasisBivector(int index1, int index2)
         {
             throw new System.NotImplementedException();
         }
 
-        public IGaKVectorStorage<T> MapBasisBlade(ulong id)
+        public IGasBivector<T> MapBasisBivector(ulong index1, ulong index2)
         {
             throw new System.NotImplementedException();
         }
 
-        public IGaKVectorStorage<T> MapBasisBlade(int grade, ulong index)
+        public IGasKVector<T> MapBasisBlade(ulong id)
         {
             throw new System.NotImplementedException();
         }
 
-        public IGaScalarStorage<T> MapScalar(IGaScalarStorage<T> storage)
+        public IGasKVector<T> MapBasisBlade(uint grade, ulong index)
         {
             throw new System.NotImplementedException();
         }
 
-        public IGaKVectorStorage<T> MapTerm(IGaKVectorTermStorage<T> storage)
+        public IGasScalar<T> MapScalar(IGasScalar<T> storage)
         {
             throw new System.NotImplementedException();
         }
 
-        public IGaVectorStorage<T> MapVector(IGaVectorStorage<T> storage)
+        public IGasKVector<T> MapTerm(IGasKVectorTerm<T> storage)
         {
             throw new System.NotImplementedException();
         }
 
-        public IGaBivectorStorage<T> MapBivector(IGaBivectorStorage<T> storage)
+        public IGasVector<T> MapVector(IGasVector<T> storage)
         {
             throw new System.NotImplementedException();
         }
 
-        public IGaKVectorStorage<T> MapKVector(IGaKVectorStorage<T> storage)
+        public IGasBivector<T> MapBivector(IGasBivector<T> storage)
         {
             throw new System.NotImplementedException();
         }
 
-        public IGaMultivectorStorage<T> MapMultivector(IGaMultivectorGradedStorage<T> storage)
+        public IGasKVector<T> MapKVector(IGasKVector<T> storage)
         {
             throw new System.NotImplementedException();
         }
 
-        public IGaMultivectorStorage<T> MapMultivector(IGaMultivectorTermsStorage<T> storage)
+        public IGasMultivector<T> MapMultivector(IGasGradedMultivector<T> storage)
         {
             throw new System.NotImplementedException();
         }
 
-        public IGaMultivectorStorage<T> MapMultivector(IGaMultivectorStorage<T> storage)
+        public IGasMultivector<T> MapMultivector(IGasTermsMultivector<T> storage)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public IGasMultivector<T> MapMultivector(IGasMultivector<T> storage)
         {
             return storage.ELcp(UnitBladeStorage).ELcp(UnitBladeStorage);
         }

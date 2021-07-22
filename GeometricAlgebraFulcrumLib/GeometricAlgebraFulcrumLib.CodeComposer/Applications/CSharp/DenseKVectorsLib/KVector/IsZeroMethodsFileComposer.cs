@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using DataStructuresLib.BitManipulation;
+using GeometricAlgebraFulcrumLib.Algebra;
 using TextComposerLib.Text.Linear;
 using TextComposerLib.Text.Structured;
 
@@ -47,22 +49,22 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             var iszeroCasesText = new ListTextComposer(Environment.NewLine);
             var trimcoefsCasesText = new ListTextComposer(Environment.NewLine);
 
-            foreach (var grade in MultivectorProcessor.BasisSet.Grades)
+            foreach (var grade in this.Grades)
             {
                 iszeroCasesText.Add(t2,
                     "grade", grade,
-                    "num", MultivectorProcessor.BasisSet.KvSpaceDimension(grade)
+                    "num", this.KvSpaceDimension(grade)
                     );
 
                 trimcoefsCasesText.Add(t3,
-                    "frame", CurrentNamespace,
+                    "signature", CurrentNamespace,
                     "grade", grade,
-                    "num", MultivectorProcessor.BasisSet.KvSpaceDimension(grade)
+                    "num", this.KvSpaceDimension(grade)
                     );
             }
 
             TextComposer.AppendAtNewLine(t1,
-                "frame", CurrentNamespace,
+                "signature", CurrentNamespace,
                 "main_iszero_case", iszeroCasesText,
                 "main_trimscalars_case", trimcoefsCasesText
                 );
@@ -73,10 +75,10 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             GenerateKVectorFileStartCode();
 
             var kvSpaceDimList =
-                Enumerable
-                .Range(0, VSpaceDimension)
-                .Select(grade => MultivectorProcessor.BasisSet.KvSpaceDimension(grade))
-                .Distinct();
+                VSpaceDimension
+                    .GetRange()
+                    .Select(grade => Processor.KvSpaceDimension(grade))
+                    .Distinct();
 
             foreach (var kvSpaceDim in kvSpaceDimList)
                 GenerateIsZeroFunction(kvSpaceDim);

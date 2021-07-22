@@ -239,7 +239,7 @@ namespace EuclideanGeometryLib.BasicMath
             return
                 Enumerable
                     .Range(firstSampleIndex, samplesCount)
-                    .Select(i => (double)i / (double)newSamplesCount)
+                    .Select(i => i / (double)newSamplesCount)
                     .Select(t => (1.0d - t) * firstValue + t * lastValue);
         }
 

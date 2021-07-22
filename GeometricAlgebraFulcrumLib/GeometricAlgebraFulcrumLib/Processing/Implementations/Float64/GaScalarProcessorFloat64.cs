@@ -9,7 +9,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Implementations.Float64
         : IGaScalarProcessor<double>
     {
         public static GaScalarProcessorFloat64 DefaultProcessor { get; }
-            = new();
+            = new GaScalarProcessorFloat64();
 
         public double ZeroEpsilon { get; set; }
             = 1e-13d;

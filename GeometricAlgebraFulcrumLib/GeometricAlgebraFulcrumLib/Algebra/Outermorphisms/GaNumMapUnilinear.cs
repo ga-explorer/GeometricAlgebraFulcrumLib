@@ -29,9 +29,9 @@
     //    }
 
 
-    //    public virtual GaMultivector<TItem> MapPseudoScalar(int vSpaceDimension)
+    //    public virtual GaMultivector<TItem> MapPseudoScalar(uint vSpaceDimension)
     //    {
-    //        return this[(1UL << vSpaceDimension) - 1];
+    //        return this[(1UL << (int) vSpaceDimension) - 1];
     //    }
 
     //    public virtual TArray GetMappingMatrix()

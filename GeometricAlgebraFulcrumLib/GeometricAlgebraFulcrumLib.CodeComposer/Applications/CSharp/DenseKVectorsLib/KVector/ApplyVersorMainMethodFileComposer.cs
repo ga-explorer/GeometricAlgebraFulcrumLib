@@ -25,13 +25,13 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
 
             var casesText = new ListTextComposer(Environment.NewLine);
 
-            foreach (var inGrade1 in MultivectorProcessor.BasisSet.Grades)
+            foreach (var inGrade1 in Processor.Grades)
             {
-                foreach (var inGrade2 in MultivectorProcessor.BasisSet.Grades)
+                foreach (var inGrade2 in Processor.Grades)
                 {
                     var outGrade = inGrade2;
 
-                    var id = inGrade1 + inGrade2 * MultivectorProcessor.BasisSet.GradesCount;
+                    var id = inGrade1 + inGrade2 * Processor.GradesCount;
 
                     var name = OperationSpecs.GetName(
                         inGrade1, inGrade2, outGrade
@@ -43,7 +43,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
                         "g1", inGrade1,
                         "g2", inGrade2,
                         "grade", outGrade,
-                        "frame", CurrentNamespace
+                        "signature", CurrentNamespace
                     );
                 }
             }
@@ -51,7 +51,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             TextComposer.AppendAtNewLine(
                 Templates["applyversor_main"],
                 "name", OperationSpecs.GetName(),
-                "frame", CurrentNamespace,
+                "signature", CurrentNamespace,
                 "cases", casesText
             );
 

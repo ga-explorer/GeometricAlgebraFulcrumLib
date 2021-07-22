@@ -6,7 +6,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Multivectors
     public sealed class GaGbtMultivectorStorageUniformStack1<T>
         : GaGbtStack1, IGaGbtMultivectorStorageStack1<T>
     {
-        public static GaGbtMultivectorStorageUniformStack1<T> Create(int capacity, int treeDepth, IGaMultivectorStorage<T> multivectorStorage)
+        public static GaGbtMultivectorStorageUniformStack1<T> Create(int capacity, int treeDepth, IGasMultivector<T> multivectorStorage)
         {
             return new(capacity, treeDepth, multivectorStorage);
         }
@@ -15,7 +15,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Multivectors
         private int[] BinaryTreeNodeIndexArray { get; }
 
 
-        public IGaMultivectorStorage<T> Storage { get; }
+        public IGasMultivector<T> Storage { get; }
 
         public Tuple<int, int> TosBinaryTreeNode { get; private set; }
 
@@ -24,7 +24,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Multivectors
         public GaBinaryTree<T> BinaryTree { get; }
 
 
-        private GaGbtMultivectorStorageUniformStack1(int capacity, int treeDepth, IGaMultivectorStorage<T> multivectorStorage)
+        private GaGbtMultivectorStorageUniformStack1(int capacity, int treeDepth, IGasMultivector<T> multivectorStorage)
             : base(capacity, treeDepth, 0ul)
         {
             BinaryTreeNodeIndexArray = new int[capacity];

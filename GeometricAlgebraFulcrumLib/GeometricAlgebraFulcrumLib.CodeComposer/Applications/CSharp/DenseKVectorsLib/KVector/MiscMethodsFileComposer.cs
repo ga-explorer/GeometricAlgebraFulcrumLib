@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Linq;
 using CodeComposerLib.SyntaxTree;
+using DataStructuresLib.BitManipulation;
+using GeometricAlgebraFulcrumLib.Algebra;
 using GeometricAlgebraFulcrumLib.Algebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.Signatures;
 using GeometricAlgebraFulcrumLib.CodeComposer.Composers;
+using GeometricAlgebraFulcrumLib.Processing.Products.Euclidean;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
 using TextComposerLib.Text.Linear;
@@ -33,7 +35,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         //    return new GaClcInfoSymbolicContext(gmacSymbolicContext);
         //}
 
-        private void GenerateEuclideanDualFunction(int inGrade)
+        private void GenerateEuclideanDualFunction(uint inGrade)
         {
             var outGrade = VSpaceDimension - inGrade;
 
@@ -86,7 +88,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
                 Templates["edual"],
                 "double", GaClcLanguage.ScalarTypeName,
                 "grade", inGrade,
-                "num", MultivectorProcessor.BasisSet.KvSpaceDimension(inGrade),
+                "num", Processor.KvSpaceDimension(inGrade),
                 "computations", computationsText
             );
         }
@@ -158,14 +160,14 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             textBuilder.AddEmptyLines(2);
         }
 
-        private void GenerateSelfDpGradeFunction(int inGrade)
+        private void GenerateSelfDpGradeFunction(uint inGrade)
         {
             var context = new SymbolicContext(
                 DenseKVectorsLibraryComposer.DefaultContextOptions
             );
 
             //var outGradesList =
-            //    MultivectorProcessor
+            //    Processor
             //        .BasisSet
             //        .GradesOfEGp(inGrade, inGrade)
             //        .Where(grade => grade > 0)
@@ -249,7 +251,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
 
             TextComposer.Append(
                 Templates["main_self_dp_grade"],
-                "frame", CurrentNamespace,
+                "signature", CurrentNamespace,
                 "main_self_dp_grade_cases", selfDpGradeCasesText.ToString()
             );
         }
@@ -277,12 +279,12 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
 
             miscCasesText.SetSeparator(Environment.NewLine);
 
-            foreach (var grade in MultivectorProcessor.BasisSet.Grades)
+            foreach (var grade in Processor.Grades)
             {
                 miscCasesText.AddTextItems(miscCasesTemplates,
-                    "frame", CurrentNamespace,
+                    "signature", CurrentNamespace,
                     "grade", grade,
-                    "num", MultivectorProcessor.BasisSet.KvSpaceDimension(grade),
+                    "num", Processor.KvSpaceDimension(grade),
                     "sign", grade.GradeHasNegativeReverse() ? "-" : "",
                     "invgrade", VSpaceDimension - grade
                     );
@@ -294,7 +296,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
 
             TextComposer.Append(
                 mainFuncsTemplate,
-                "frame", CurrentNamespace,
+                "signature", CurrentNamespace,
                 "double", GaClcLanguage.ScalarTypeName,
                 "norm2_opname", GaClcOperationKind.UnaryNormSquared.GetName(false),
                 "emag2_opname", GaClcOperationKind.UnaryNormSquared.GetName(true)
@@ -308,18 +310,18 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             GenerateKVectorFileStartCode();
 
             var kvSpaceDimList =
-                Enumerable
-                .Range(0, VSpaceDimension)
-                .Select(grade => MultivectorProcessor.BasisSet.KvSpaceDimension(grade))
-                .Distinct();
+                VSpaceDimension
+                    .GetRange()
+                    .Select(grade => Processor.KvSpaceDimension(grade))
+                    .Distinct();
 
             foreach (var kvSpaceDim in kvSpaceDimList)
                 GenerateMiscFunctions(kvSpaceDim);
 
-            foreach (var inGrade in MultivectorProcessor.BasisSet.Grades)
+            foreach (var inGrade in Processor.Grades)
                 GenerateEuclideanDualFunction(inGrade);
 
-            for (var inGrade = 2; inGrade < VSpaceDimension - 1; inGrade++)
+            for (var inGrade = 2U; inGrade < VSpaceDimension - 1; inGrade++)
                 GenerateSelfDpGradeFunction(inGrade);
 
             GenerateMainMiscFunctions();

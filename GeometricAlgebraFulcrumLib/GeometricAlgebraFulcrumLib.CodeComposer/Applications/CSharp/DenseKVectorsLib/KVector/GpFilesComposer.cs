@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using GeometricAlgebraFulcrumLib.Algebra;
 using TextComposerLib.Text.Structured;
 
 namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVectorsLib.KVector
@@ -20,17 +21,16 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         }
 
 
-        private void GenerateMethods(int inGrade1, int inGrade2)
+        private void GenerateMethods(uint inGrade1, uint inGrade2)
         {
             var gpCaseText = new ListTextComposer("," + Environment.NewLine);
 
             var gradesList = 
                 _dualFlag
-                    ? MultivectorProcessor
-                        .BasisSet
+                    ? this
                         .GradesOfEGp(inGrade1, inGrade2)
                         .Select(grade => VSpaceDimension - grade)
-                    : MultivectorProcessor.BasisSet.GradesOfEGp(inGrade1, inGrade2);
+                    : this.GradesOfEGp(inGrade1, inGrade2);
 
             foreach (var outGrade in gradesList)
             {
@@ -46,7 +46,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
                 );
 
                 gpCaseText.Add(Templates["gp_case"],
-                    "frame", CurrentNamespace,
+                    "signature", CurrentNamespace,
                     "grade", outGrade,
                     "name", funcName
                 );
@@ -74,8 +74,8 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
 
             DenseKVectorsLibraryComposer.CodeFilesComposer.UnselectActiveFile();
 
-            foreach (var grade1 in MultivectorProcessor.BasisSet.Grades)
-                foreach (var grade2 in MultivectorProcessor.BasisSet.Grades)
+            foreach (var grade1 in Processor.Grades)
+                foreach (var grade2 in Processor.Grades)
                     GenerateMethods(grade1, grade2);
 
             _mainFileComposer.GenerateMainMethod();

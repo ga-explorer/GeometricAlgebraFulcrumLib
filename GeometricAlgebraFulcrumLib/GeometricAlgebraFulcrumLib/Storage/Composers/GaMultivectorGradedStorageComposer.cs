@@ -2,19 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using GeometricAlgebraFulcrumLib.Algebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Terms;
+using GeometricAlgebraFulcrumLib.Algebra.Terms;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
 
 namespace GeometricAlgebraFulcrumLib.Storage.Composers
 {
-    public sealed class GaMultivectorGradedStorageComposer<TScalar> 
-        : GaMultivectorStorageComposerBase<TScalar>
+    public sealed class GaMultivectorGradedStorageComposer<T> 
+        : GaMultivectorStorageComposerBase<T>
     {
-        public Dictionary<int, GaKVectorStorageComposer<TScalar>> GradeKVectorStorageComposerDictionary { get; }
+        public Dictionary<uint, GaKVectorStorageComposer<T>> GradeKVectorStorageComposerDictionary { get; }
             = new();
 
 
-        public override TScalar this[ulong id]
+        public override T this[ulong id]
         {
             get
             {
@@ -34,7 +34,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             }
         }
 
-        public override TScalar this[int grade, ulong index]
+        public override T this[uint grade, ulong index]
         {
             get => GradeKVectorStorageComposerDictionary.TryGetValue(grade, out var kVectorStorage) 
                 ? kVectorStorage[index] 
@@ -48,18 +48,18 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         }
 
 
-        internal GaMultivectorGradedStorageComposer(IGaScalarProcessor<TScalar> scalarProcessor)
+        internal GaMultivectorGradedStorageComposer(IGaScalarProcessor<T> scalarProcessor)
             : base(scalarProcessor)
         {
         }
 
 
-        private GaKVectorStorageComposer<TScalar> GetOrCreateKVectorStorageComposer(int grade)
+        private GaKVectorStorageComposer<T> GetOrCreateKVectorStorageComposer(uint grade)
         {
             if (GradeKVectorStorageComposerDictionary.TryGetValue(grade, out var storage))
                 return storage;
 
-            storage = new GaKVectorStorageComposer<TScalar>(ScalarProcessor, grade);
+            storage = new GaKVectorStorageComposer<T>(ScalarProcessor, grade);
 
             GradeKVectorStorageComposerDictionary.Add(grade, storage);
 
@@ -73,7 +73,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
                    GradeKVectorStorageComposerDictionary.Values.All(d => d.IsEmpty());
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> Clear()
+        public override GaMultivectorStorageComposerBase<T> Clear()
         {
             foreach (var storage in GradeKVectorStorageComposerDictionary.Values)
                 storage.Clear();
@@ -82,7 +82,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         }
 
 
-        public GaMultivectorGradedStorageComposer<TScalar> SetKVectorComposer(GaKVectorStorageComposer<TScalar> composer)
+        public GaMultivectorGradedStorageComposer<T> SetKVectorComposer(GaKVectorStorageComposer<T> composer)
         {
             var grade = composer.Grade;
 
@@ -95,7 +95,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         }
 
 
-        public GaMultivectorGradedStorageComposer<TScalar> AddKVector(int grade, IEnumerable<KeyValuePair<ulong, TScalar>> indexScalarPairs)
+        public GaMultivectorGradedStorageComposer<T> AddKVector(uint grade, IEnumerable<KeyValuePair<ulong, T>> indexScalarPairs)
         {
             var kVectorStorage = GetOrCreateKVectorStorageComposer(grade);
 
@@ -104,7 +104,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public GaMultivectorGradedStorageComposer<TScalar> AddKVector(int grade, IEnumerable<Tuple<ulong, TScalar>> indexScalarPairs)
+        public GaMultivectorGradedStorageComposer<T> AddKVector(uint grade, IEnumerable<Tuple<ulong, T>> indexScalarPairs)
         {
             var kVectorStorage = GetOrCreateKVectorStorageComposer(grade);
 
@@ -113,7 +113,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public GaMultivectorGradedStorageComposer<TScalar> AddKVector(IGaKVectorStorage<TScalar> storage)
+        public GaMultivectorGradedStorageComposer<T> AddKVector(IGasKVector<T> storage)
         {
             var kVectorStorage = GetOrCreateKVectorStorageComposer(storage.Grade);
 
@@ -122,7 +122,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public GaMultivectorGradedStorageComposer<TScalar> AddKVectors(IEnumerable<KeyValuePair<int, Dictionary<ulong, TScalar>>> storagesList)
+        public GaMultivectorGradedStorageComposer<T> AddKVectors(IEnumerable<KeyValuePair<uint, Dictionary<ulong, T>>> storagesList)
         {
             foreach (var (grade, storage) in storagesList)
                 AddKVector(grade, storage);
@@ -130,7 +130,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public GaMultivectorGradedStorageComposer<TScalar> AddKVectors(IEnumerable<IGaKVectorStorage<TScalar>> storagesList)
+        public GaMultivectorGradedStorageComposer<T> AddKVectors(IEnumerable<IGasKVector<T>> storagesList)
         {
             foreach (var storage in storagesList)
                 AddKVector(storage);
@@ -138,7 +138,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public GaMultivectorGradedStorageComposer<TScalar> AddLeftScaledKVector(TScalar scalingFactor, int grade, IEnumerable<KeyValuePair<ulong, TScalar>> indexScalarPairs)
+        public GaMultivectorGradedStorageComposer<T> AddLeftScaledKVector(T scalingFactor, uint grade, IEnumerable<KeyValuePair<ulong, T>> indexScalarPairs)
         {
             var kVectorStorage = GetOrCreateKVectorStorageComposer(grade);
 
@@ -147,7 +147,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public GaMultivectorGradedStorageComposer<TScalar> AddLeftScaledKVector(TScalar scalingFactor, int grade, IEnumerable<Tuple<ulong, TScalar>> indexScalarPairs)
+        public GaMultivectorGradedStorageComposer<T> AddLeftScaledKVector(T scalingFactor, uint grade, IEnumerable<Tuple<ulong, T>> indexScalarPairs)
         {
             var kVectorStorage = GetOrCreateKVectorStorageComposer(grade);
 
@@ -156,7 +156,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public GaMultivectorGradedStorageComposer<TScalar> AddLeftScaledKVector(TScalar scalingFactor, GaKVectorStorageBase<TScalar> storage)
+        public GaMultivectorGradedStorageComposer<T> AddLeftScaledKVector(T scalingFactor, GasKVectorBase<T> storage)
         {
             var kVectorStorage = GetOrCreateKVectorStorageComposer(storage.Grade);
 
@@ -165,7 +165,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public GaMultivectorGradedStorageComposer<TScalar> AddRightScaledKVector(TScalar scalingFactor, int grade, IEnumerable<KeyValuePair<ulong, TScalar>> indexScalarPairs)
+        public GaMultivectorGradedStorageComposer<T> AddRightScaledKVector(T scalingFactor, uint grade, IEnumerable<KeyValuePair<ulong, T>> indexScalarPairs)
         {
             var kVectorStorage = GetOrCreateKVectorStorageComposer(grade);
 
@@ -174,7 +174,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public GaMultivectorGradedStorageComposer<TScalar> AddRightScaledKVector(TScalar scalingFactor, int grade, IEnumerable<Tuple<ulong, TScalar>> indexScalarPairs)
+        public GaMultivectorGradedStorageComposer<T> AddRightScaledKVector(T scalingFactor, uint grade, IEnumerable<Tuple<ulong, T>> indexScalarPairs)
         {
             var kVectorStorage = GetOrCreateKVectorStorageComposer(grade);
 
@@ -183,7 +183,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public GaMultivectorGradedStorageComposer<TScalar> AddRightScaledKVector(TScalar scalingFactor, GaKVectorStorageBase<TScalar> storage)
+        public GaMultivectorGradedStorageComposer<T> AddRightScaledKVector(T scalingFactor, GasKVectorBase<T> storage)
         {
             var kVectorStorage = GetOrCreateKVectorStorageComposer(storage.Grade);
 
@@ -193,7 +193,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         }
 
 
-        public GaMultivectorGradedStorageComposer<TScalar> SubtractKVector(int grade, IEnumerable<KeyValuePair<ulong, TScalar>> indexScalarPairs)
+        public GaMultivectorGradedStorageComposer<T> SubtractKVector(uint grade, IEnumerable<KeyValuePair<ulong, T>> indexScalarPairs)
         {
             var kVectorStorage = GetOrCreateKVectorStorageComposer(grade);
 
@@ -202,7 +202,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public GaMultivectorGradedStorageComposer<TScalar> SubtractKVector(int grade, IEnumerable<Tuple<ulong, TScalar>> indexScalarPairs)
+        public GaMultivectorGradedStorageComposer<T> SubtractKVector(uint grade, IEnumerable<Tuple<ulong, T>> indexScalarPairs)
         {
             var kVectorStorage = GetOrCreateKVectorStorageComposer(grade);
 
@@ -211,7 +211,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public GaMultivectorGradedStorageComposer<TScalar> SubtractKVector(GaKVectorStorageBase<TScalar> storage)
+        public GaMultivectorGradedStorageComposer<T> SubtractKVector(GasKVectorBase<T> storage)
         {
             var kVectorStorage = GetOrCreateKVectorStorageComposer(storage.Grade);
 
@@ -220,7 +220,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public GaMultivectorGradedStorageComposer<TScalar> SubtractLeftScaledKVector(TScalar scalingFactor, int grade, IEnumerable<KeyValuePair<ulong, TScalar>> indexScalarPairs)
+        public GaMultivectorGradedStorageComposer<T> SubtractLeftScaledKVector(T scalingFactor, uint grade, IEnumerable<KeyValuePair<ulong, T>> indexScalarPairs)
         {
             var kVectorStorage = GetOrCreateKVectorStorageComposer(grade);
 
@@ -229,7 +229,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public GaMultivectorGradedStorageComposer<TScalar> SubtractLeftScaledKVector(TScalar scalingFactor, int grade, IEnumerable<Tuple<ulong, TScalar>> indexScalarPairs)
+        public GaMultivectorGradedStorageComposer<T> SubtractLeftScaledKVector(T scalingFactor, uint grade, IEnumerable<Tuple<ulong, T>> indexScalarPairs)
         {
             var kVectorStorage = GetOrCreateKVectorStorageComposer(grade);
 
@@ -238,7 +238,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public GaMultivectorGradedStorageComposer<TScalar> SubtractLeftScaledKVector(TScalar scalingFactor, GaKVectorStorageBase<TScalar> storage)
+        public GaMultivectorGradedStorageComposer<T> SubtractLeftScaledKVector(T scalingFactor, GasKVectorBase<T> storage)
         {
             var kVectorStorage = GetOrCreateKVectorStorageComposer(storage.Grade);
 
@@ -247,7 +247,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public GaMultivectorGradedStorageComposer<TScalar> SubtractRightScaledKVector(TScalar scalingFactor, int grade, IEnumerable<KeyValuePair<ulong, TScalar>> indexScalarPairs)
+        public GaMultivectorGradedStorageComposer<T> SubtractRightScaledKVector(T scalingFactor, uint grade, IEnumerable<KeyValuePair<ulong, T>> indexScalarPairs)
         {
             var kVectorStorage = GetOrCreateKVectorStorageComposer(grade);
 
@@ -256,7 +256,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public GaMultivectorGradedStorageComposer<TScalar> SubtractRightScaledKVector(TScalar scalingFactor, int grade, IEnumerable<Tuple<ulong, TScalar>> indexScalarPairs)
+        public GaMultivectorGradedStorageComposer<T> SubtractRightScaledKVector(T scalingFactor, uint grade, IEnumerable<Tuple<ulong, T>> indexScalarPairs)
         {
             var kVectorStorage = GetOrCreateKVectorStorageComposer(grade);
 
@@ -265,7 +265,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public GaMultivectorGradedStorageComposer<TScalar> SubtractRightScaledKVector(TScalar scalingFactor, GaKVectorStorageBase<TScalar> storage)
+        public GaMultivectorGradedStorageComposer<T> SubtractRightScaledKVector(T scalingFactor, GasKVectorBase<T> storage)
         {
             var kVectorStorage = GetOrCreateKVectorStorageComposer(storage.Grade);
 
@@ -275,7 +275,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         }
 
 
-        public override GaMultivectorStorageComposerBase<TScalar> SetTerm(GaTerm<TScalar> term)
+        public override GaMultivectorStorageComposerBase<T> SetTerm(GaTerm<T> term)
         {
             term.BasisBlade.GetGradeIndex(out var grade, out var index);
 
@@ -285,7 +285,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         }
 
 
-        public override GaMultivectorStorageComposerBase<TScalar> SetTerms(IEnumerable<GaTerm<TScalar>> termsList)
+        public override GaMultivectorStorageComposerBase<T> SetTerms(IEnumerable<GaTerm<T>> termsList)
         {
             foreach (var term in termsList)
             {
@@ -298,7 +298,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         }
 
 
-        public override GaMultivectorStorageComposerBase<TScalar> SetTermsToNegative()
+        public override GaMultivectorStorageComposerBase<T> SetTermsToNegative()
         {
             foreach (var storage in GradeKVectorStorageComposerDictionary.Values)
                 storage.SetTermsToNegative();
@@ -306,7 +306,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> SetTermsToNegative(IEnumerable<ulong> idsList)
+        public override GaMultivectorStorageComposerBase<T> SetTermsToNegative(IEnumerable<ulong> idsList)
         {
             foreach (var id in idsList)
             {
@@ -324,7 +324,8 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> SetTermsToNegative(IEnumerable<Tuple<int, ulong>> indicesList)
+        public override GaMultivectorStorageComposerBase<T> SetTermsToNegative(
+            IEnumerable<Tuple<uint, ulong>> indicesList)
         {
             foreach (var (grade, index) in indicesList)
             {
@@ -339,7 +340,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         }
 
 
-        public override GaMultivectorStorageComposerBase<TScalar> SetComputedTerms(IEnumerable<ulong> idsList, Func<ulong, TScalar> mappingFunc)
+        public override GaMultivectorStorageComposerBase<T> SetComputedTerms(IEnumerable<ulong> idsList, Func<ulong, T> mappingFunc)
         {
             foreach (var id in idsList)
             {
@@ -351,7 +352,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> SetComputedTerms(IEnumerable<Tuple<int, ulong>> idsList, Func<ulong, TScalar> mappingFunc)
+        public override GaMultivectorStorageComposerBase<T> SetComputedTerms(IEnumerable<Tuple<uint, ulong>> idsList, Func<ulong, T> mappingFunc)
         {
             foreach (var (grade, index) in idsList)
             {
@@ -363,7 +364,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> SetComputedTerms(IEnumerable<ulong> idsList, Func<int, ulong, TScalar> mappingFunc)
+        public override GaMultivectorStorageComposerBase<T> SetComputedTerms(IEnumerable<ulong> idsList, Func<uint, ulong, T> mappingFunc)
         {
             foreach (var id in idsList)
             {
@@ -375,7 +376,8 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> SetComputedTerms(IEnumerable<Tuple<int, ulong>> idsList, Func<int, ulong, TScalar> mappingFunc)
+        public override GaMultivectorStorageComposerBase<T> SetComputedTerms(
+            IEnumerable<Tuple<uint, ulong>> idsList, Func<uint, ulong, T> mappingFunc)
         {
             foreach (var (grade, index) in idsList) 
                 this[grade, index] = mappingFunc(grade, index);
@@ -383,7 +385,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> SetComputedTerms(IEnumerable<ulong> idsList, Func<ulong, TScalar, TScalar> mappingFunc)
+        public override GaMultivectorStorageComposerBase<T> SetComputedTerms(IEnumerable<ulong> idsList, Func<ulong, T, T> mappingFunc)
         {
             foreach (var id in idsList)
             {
@@ -396,7 +398,8 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> SetComputedTerms(IEnumerable<Tuple<int, ulong>> idsList, Func<ulong, TScalar, TScalar> mappingFunc)
+        public override GaMultivectorStorageComposerBase<T> SetComputedTerms(
+            IEnumerable<Tuple<uint, ulong>> idsList, Func<ulong, T, T> mappingFunc)
         {
             foreach (var (grade, index) in idsList)
             {
@@ -409,7 +412,8 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> SetComputedTerms(IEnumerable<ulong> idsList, Func<int, ulong, TScalar, TScalar> mappingFunc)
+        public override GaMultivectorStorageComposerBase<T> SetComputedTerms(IEnumerable<ulong> idsList,
+            Func<uint, ulong, T, T> mappingFunc)
         {
             foreach (var id in idsList)
             {
@@ -422,7 +426,8 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> SetComputedTerms(IEnumerable<Tuple<int, ulong>> idsList, Func<int, ulong, TScalar, TScalar> mappingFunc)
+        public override GaMultivectorStorageComposerBase<T> SetComputedTerms(
+            IEnumerable<Tuple<uint, ulong>> idsList, Func<uint, ulong, T, T> mappingFunc)
         {
             foreach (var (grade, index) in idsList)
             {
@@ -435,7 +440,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         }
 
 
-        public override GaMultivectorStorageComposerBase<TScalar> LeftScaleTerms(TScalar scalingFactor)
+        public override GaMultivectorStorageComposerBase<T> LeftScaleTerms(T scalingFactor)
         {
             foreach (var storage in GradeKVectorStorageComposerDictionary.Values)
                 storage.LeftScaleTerms(scalingFactor);
@@ -443,7 +448,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> LeftScaleTerms(IEnumerable<ulong> indexList, TScalar scalingFactor)
+        public override GaMultivectorStorageComposerBase<T> LeftScaleTerms(IEnumerable<ulong> indexList, T scalingFactor)
         {
             foreach (var id in indexList)
             {
@@ -456,7 +461,8 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> LeftScaleTerms(IEnumerable<Tuple<int, ulong>> indexList, TScalar scalingFactor)
+        public override GaMultivectorStorageComposerBase<T> LeftScaleTerms(
+            IEnumerable<Tuple<uint, ulong>> indexList, T scalingFactor)
         {
             foreach (var (grade, index) in indexList)
             {
@@ -468,7 +474,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> RightScaleTerms(TScalar scalingFactor)
+        public override GaMultivectorStorageComposerBase<T> RightScaleTerms(T scalingFactor)
         {
             foreach (var storage in GradeKVectorStorageComposerDictionary.Values)
                 storage.RightScaleTerms(scalingFactor);
@@ -476,7 +482,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> RightScaleTerms(IEnumerable<ulong> indexList, TScalar scalingFactor)
+        public override GaMultivectorStorageComposerBase<T> RightScaleTerms(IEnumerable<ulong> indexList, T scalingFactor)
         {
             foreach (var id in indexList)
             {
@@ -489,7 +495,8 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> RightScaleTerms(IEnumerable<Tuple<int, ulong>> indexList, TScalar scalingFactor)
+        public override GaMultivectorStorageComposerBase<T> RightScaleTerms(
+            IEnumerable<Tuple<uint, ulong>> indexList, T scalingFactor)
         {
             foreach (var (grade, index) in indexList)
             {
@@ -502,7 +509,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         }
 
 
-        public override GaMultivectorStorageComposerBase<TScalar> SetLeftScaledTerms(TScalar scalingFactor, IEnumerable<GaTerm<TScalar>> termsList)
+        public override GaMultivectorStorageComposerBase<T> SetLeftScaledTerms(T scalingFactor, IEnumerable<GaTerm<T>> termsList)
         {
             foreach (var term in termsList)
             {
@@ -515,7 +522,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         }
 
 
-        public override GaMultivectorStorageComposerBase<TScalar> SetRightScaledTerms(TScalar scalingFactor, IEnumerable<GaTerm<TScalar>> termsList)
+        public override GaMultivectorStorageComposerBase<T> SetRightScaledTerms(T scalingFactor, IEnumerable<GaTerm<T>> termsList)
         {
             foreach (var term in termsList)
             {
@@ -527,7 +534,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> AddTerm(ulong id, TScalar scalar)
+        public override GaMultivectorStorageComposerBase<T> AddTerm(ulong id, T scalar)
         {
             id.BasisBladeGradeIndex(out var grade, out var index);
 
@@ -543,7 +550,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> AddTerm(int grade, ulong index, TScalar scalar)
+        public override GaMultivectorStorageComposerBase<T> AddTerm(uint grade, ulong index, T scalar)
         {
             if (GradeKVectorStorageComposerDictionary.TryGetValue(grade, out var storage))
             {
@@ -557,7 +564,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> AddTerm(GaTerm<TScalar> term)
+        public override GaMultivectorStorageComposerBase<T> AddTerm(GaTerm<T> term)
         {
             term.BasisBlade.GetGradeIndex(out var grade, out var index);
 
@@ -574,7 +581,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         }
 
 
-        public override GaMultivectorStorageComposerBase<TScalar> AddComputedTerms(IEnumerable<ulong> indexList, Func<ulong, TScalar> mappingFunc)
+        public override GaMultivectorStorageComposerBase<T> AddComputedTerms(IEnumerable<ulong> indexList, Func<ulong, T> mappingFunc)
         {
             foreach (var id in indexList)
             {
@@ -586,7 +593,8 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> AddComputedTerms(IEnumerable<Tuple<int, ulong>> indexList, Func<ulong, TScalar> mappingFunc)
+        public override GaMultivectorStorageComposerBase<T> AddComputedTerms(
+            IEnumerable<Tuple<uint, ulong>> indexList, Func<ulong, T> mappingFunc)
         {
             foreach (var (grade, index) in indexList)
             {
@@ -598,7 +606,8 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> AddComputedTerms(IEnumerable<ulong> indexList, Func<int, ulong, TScalar> mappingFunc)
+        public override GaMultivectorStorageComposerBase<T> AddComputedTerms(IEnumerable<ulong> indexList,
+            Func<uint, ulong, T> mappingFunc)
         {
             foreach (var id in indexList)
             {
@@ -610,7 +619,8 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> AddComputedTerms(IEnumerable<Tuple<int, ulong>> indexList, Func<int, ulong, TScalar> mappingFunc)
+        public override GaMultivectorStorageComposerBase<T> AddComputedTerms(
+            IEnumerable<Tuple<uint, ulong>> indexList, Func<uint, ulong, T> mappingFunc)
         {
             foreach (var (grade, index) in indexList)
                 AddTerm(grade, index, mappingFunc(grade, index));
@@ -618,7 +628,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> AddComputedTerms(IEnumerable<ulong> indexList, Func<ulong, TScalar, TScalar> mappingFunc)
+        public override GaMultivectorStorageComposerBase<T> AddComputedTerms(IEnumerable<ulong> indexList, Func<ulong, T, T> mappingFunc)
         {
             foreach (var id in indexList)
             {
@@ -631,7 +641,8 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> AddComputedTerms(IEnumerable<Tuple<int, ulong>> indexList, Func<ulong, TScalar, TScalar> mappingFunc)
+        public override GaMultivectorStorageComposerBase<T> AddComputedTerms(
+            IEnumerable<Tuple<uint, ulong>> indexList, Func<ulong, T, T> mappingFunc)
         {
             foreach (var (grade, index) in indexList)
             {
@@ -644,7 +655,8 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> AddComputedTerms(IEnumerable<ulong> indexList, Func<int, ulong, TScalar, TScalar> mappingFunc)
+        public override GaMultivectorStorageComposerBase<T> AddComputedTerms(IEnumerable<ulong> indexList,
+            Func<uint, ulong, T, T> mappingFunc)
         {
             foreach (var id in indexList)
             {
@@ -657,7 +669,8 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> AddComputedTerms(IEnumerable<Tuple<int, ulong>> indexList, Func<int, ulong, TScalar, TScalar> mappingFunc)
+        public override GaMultivectorStorageComposerBase<T> AddComputedTerms(
+            IEnumerable<Tuple<uint, ulong>> indexList, Func<uint, ulong, T, T> mappingFunc)
         {
             foreach (var (grade, index) in indexList)
             {
@@ -670,7 +683,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         }
 
 
-        public override GaMultivectorStorageComposerBase<TScalar> AddLeftScaledTerms(TScalar scalingFactor, IEnumerable<GaTerm<TScalar>> termsList)
+        public override GaMultivectorStorageComposerBase<T> AddLeftScaledTerms(T scalingFactor, IEnumerable<GaTerm<T>> termsList)
         {
             foreach (var term in termsList)
             {
@@ -683,7 +696,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         }
         
 
-        public override GaMultivectorStorageComposerBase<TScalar> AddRightScaledTerms(TScalar scalingFactor, IEnumerable<GaTerm<TScalar>> termsList)
+        public override GaMultivectorStorageComposerBase<T> AddRightScaledTerms(T scalingFactor, IEnumerable<GaTerm<T>> termsList)
         {
             foreach (var term in termsList)
             {
@@ -696,7 +709,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         }
 
 
-        public override GaMultivectorStorageComposerBase<TScalar> SubtractTerm(ulong id, TScalar scalar)
+        public override GaMultivectorStorageComposerBase<T> SubtractTerm(ulong id, T scalar)
         {
             id.BasisBladeGradeIndex(out var grade, out var index);
 
@@ -712,7 +725,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> SubtractTerm(int grade, ulong index, TScalar scalar)
+        public override GaMultivectorStorageComposerBase<T> SubtractTerm(uint grade, ulong index, T scalar)
         {
             if (GradeKVectorStorageComposerDictionary.TryGetValue(grade, out var storage))
             {
@@ -726,7 +739,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> SubtractTerm(GaTerm<TScalar> term)
+        public override GaMultivectorStorageComposerBase<T> SubtractTerm(GaTerm<T> term)
         {
             term.BasisBlade.GetGradeIndex(out var grade, out var index);
 
@@ -743,7 +756,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         }
 
 
-        public override GaMultivectorStorageComposerBase<TScalar> SubtractComputedTerms(IEnumerable<ulong> indexList, Func<ulong, TScalar> mappingFunc)
+        public override GaMultivectorStorageComposerBase<T> SubtractComputedTerms(IEnumerable<ulong> indexList, Func<ulong, T> mappingFunc)
         {
             foreach (var id in indexList)
             {
@@ -755,7 +768,8 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> SubtractComputedTerms(IEnumerable<Tuple<int, ulong>> indexList, Func<ulong, TScalar> mappingFunc)
+        public override GaMultivectorStorageComposerBase<T> SubtractComputedTerms(
+            IEnumerable<Tuple<uint, ulong>> indexList, Func<ulong, T> mappingFunc)
         {
             foreach (var (grade, index) in indexList)
             {
@@ -767,7 +781,8 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> SubtractComputedTerms(IEnumerable<ulong> indexList, Func<int, ulong, TScalar> mappingFunc)
+        public override GaMultivectorStorageComposerBase<T> SubtractComputedTerms(IEnumerable<ulong> indexList,
+            Func<uint, ulong, T> mappingFunc)
         {
             foreach (var id in indexList)
             {
@@ -779,7 +794,8 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> SubtractComputedTerms(IEnumerable<Tuple<int, ulong>> indexList, Func<int, ulong, TScalar> mappingFunc)
+        public override GaMultivectorStorageComposerBase<T> SubtractComputedTerms(
+            IEnumerable<Tuple<uint, ulong>> indexList, Func<uint, ulong, T> mappingFunc)
         {
             foreach (var (grade, index) in indexList)
                 SubtractTerm(grade, index, mappingFunc(grade, index));
@@ -787,7 +803,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> SubtractComputedTerms(IEnumerable<ulong> indexList, Func<ulong, TScalar, TScalar> mappingFunc)
+        public override GaMultivectorStorageComposerBase<T> SubtractComputedTerms(IEnumerable<ulong> indexList, Func<ulong, T, T> mappingFunc)
         {
             foreach (var id in indexList)
             {
@@ -800,7 +816,8 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> SubtractComputedTerms(IEnumerable<Tuple<int, ulong>> indexList, Func<ulong, TScalar, TScalar> mappingFunc)
+        public override GaMultivectorStorageComposerBase<T> SubtractComputedTerms(
+            IEnumerable<Tuple<uint, ulong>> indexList, Func<ulong, T, T> mappingFunc)
         {
             foreach (var (grade, index) in indexList)
             {
@@ -813,7 +830,8 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> SubtractComputedTerms(IEnumerable<ulong> indexList, Func<int, ulong, TScalar, TScalar> mappingFunc)
+        public override GaMultivectorStorageComposerBase<T> SubtractComputedTerms(IEnumerable<ulong> indexList,
+            Func<uint, ulong, T, T> mappingFunc)
         {
             foreach (var id in indexList)
             {
@@ -826,7 +844,8 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> SubtractComputedTerms(IEnumerable<Tuple<int, ulong>> indexList, Func<int, ulong, TScalar, TScalar> mappingFunc)
+        public override GaMultivectorStorageComposerBase<T> SubtractComputedTerms(
+            IEnumerable<Tuple<uint, ulong>> indexList, Func<uint, ulong, T, T> mappingFunc)
         {
             foreach (var (grade, index) in indexList)
             {
@@ -839,7 +858,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         }
 
 
-        public override GaMultivectorStorageComposerBase<TScalar> SubtractLeftScaledTerms(TScalar scalingFactor, IEnumerable<GaTerm<TScalar>> termsList)
+        public override GaMultivectorStorageComposerBase<T> SubtractLeftScaledTerms(T scalingFactor, IEnumerable<GaTerm<T>> termsList)
         {
             foreach (var term in termsList)
             {
@@ -852,7 +871,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         }
         
 
-        public override GaMultivectorStorageComposerBase<TScalar> SubtractRightScaledTerms(TScalar scalingFactor, IEnumerable<GaTerm<TScalar>> termsList)
+        public override GaMultivectorStorageComposerBase<T> SubtractRightScaledTerms(T scalingFactor, IEnumerable<GaTerm<T>> termsList)
         {
             foreach (var term in termsList)
             {
@@ -880,7 +899,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return flag;
         }
 
-        public override bool RemoveTerm(int grade, ulong index)
+        public override bool RemoveTerm(uint grade, ulong index)
         {
             if (!GradeKVectorStorageComposerDictionary.TryGetValue(grade, out var storage))
                 return false;
@@ -893,7 +912,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return flag;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> RemoveTerms(params ulong[] indexList)
+        public override GaMultivectorStorageComposerBase<T> RemoveTerms(params ulong[] indexList)
         {
             foreach (var id in indexList)
             {
@@ -915,7 +934,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> RemoveZeroTerms()
+        public override GaMultivectorStorageComposerBase<T> RemoveZeroTerms()
         {
             foreach (var kVectorsStorage in GradeKVectorStorageComposerDictionary.Values) 
                 kVectorsStorage.RemoveZeroTerms();
@@ -932,7 +951,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> RemoveNearZeroTerms()
+        public override GaMultivectorStorageComposerBase<T> RemoveNearZeroTerms()
         {
             foreach (var kVectorsStorage in GradeKVectorStorageComposerDictionary.Values) 
                 kVectorsStorage.RemoveNearZeroTerms();
@@ -949,7 +968,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public GaMultivectorGradedStorageComposer<TScalar> RemoveKVector(int grade)
+        public GaMultivectorGradedStorageComposer<T> RemoveKVector(uint grade)
         {
             GradeKVectorStorageComposerDictionary.Remove(grade);
 
@@ -963,9 +982,23 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         /// <param name="grade"></param>
         /// <param name="scalarValuesList"></param>
         /// <returns></returns>
-        public void SetKVector(int grade, IReadOnlyList<TScalar> scalarValuesList)
+        public void SetKVector(uint grade, IReadOnlyList<T> scalarValuesList)
         {
-            throw new NotImplementedException();
+            if (!GradeKVectorStorageComposerDictionary.TryGetValue(grade, out var storage))
+            {
+                storage = new GaKVectorStorageComposer<T>(ScalarProcessor, grade);
+
+                GradeKVectorStorageComposerDictionary.Add(grade, storage);
+            }
+
+            for (var index = 0; index < scalarValuesList.Count; index++)
+                storage.SetTerm(
+                    (ulong)index, 
+                    scalarValuesList[index]
+                );
+
+            if (storage.IsEmpty())
+                GradeKVectorStorageComposerDictionary.Remove(grade);
         }
 
         /// <summary>
@@ -975,11 +1008,11 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         /// <param name="scalingFactor"></param>
         /// <param name="scalarValuesList"></param>
         /// <returns></returns>
-        public void SetKVector(int grade, TScalar scalingFactor, IReadOnlyList<TScalar> scalarValuesList)
+        public void SetKVector(uint grade, T scalingFactor, IReadOnlyList<T> scalarValuesList)
         {
             if (!GradeKVectorStorageComposerDictionary.TryGetValue(grade, out var storage))
             {
-                storage = new GaKVectorStorageComposer<TScalar>(ScalarProcessor, grade);
+                storage = new GaKVectorStorageComposer<T>(ScalarProcessor, grade);
 
                 GradeKVectorStorageComposerDictionary.Add(grade, storage);
             }
@@ -1000,11 +1033,11 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         /// <param name="grade"></param>
         /// <param name="indexScalarPairs"></param>
         /// <returns></returns>
-        public void SetKVector(int grade, IEnumerable<KeyValuePair<ulong, TScalar>> indexScalarPairs)
+        public void SetKVector(uint grade, IEnumerable<KeyValuePair<ulong, T>> indexScalarPairs)
         {
             if (!GradeKVectorStorageComposerDictionary.TryGetValue(grade, out var storage))
             {
-                storage = new GaKVectorStorageComposer<TScalar>(ScalarProcessor, grade);
+                storage = new GaKVectorStorageComposer<T>(ScalarProcessor, grade);
 
                 GradeKVectorStorageComposerDictionary.Add(grade, storage);
             }
@@ -1022,11 +1055,11 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         /// <param name="scalingFactor"></param>
         /// <param name="indexScalarPairs"></param>
         /// <returns></returns>
-        public void SetKVector(int grade, TScalar scalingFactor, IEnumerable<KeyValuePair<ulong, TScalar>> indexScalarPairs)
+        public void SetKVector(uint grade, T scalingFactor, IEnumerable<KeyValuePair<ulong, T>> indexScalarPairs)
         {
             if (!GradeKVectorStorageComposerDictionary.TryGetValue(grade, out var storage))
             {
-                storage = new GaKVectorStorageComposer<TScalar>(ScalarProcessor, grade);
+                storage = new GaKVectorStorageComposer<T>(ScalarProcessor, grade);
 
                 GradeKVectorStorageComposerDictionary.Add(grade, storage);
             }
@@ -1040,11 +1073,23 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         /// <summary>
         /// Set some terms using the given k-vector data
         /// </summary>
-        /// <param name="storage"></param>
+        /// <param name="kVector"></param>
         /// <returns></returns>
-        public void SetKVector(IGaKVectorStorage<TScalar> storage)
+        public void SetKVector(IGasKVector<T> kVector)
         {
-            throw new NotImplementedException();
+            var grade = kVector.Grade;
+
+            if (!GradeKVectorStorageComposerDictionary.TryGetValue(grade, out var storage))
+            {
+                storage = new GaKVectorStorageComposer<T>(ScalarProcessor, grade);
+
+                GradeKVectorStorageComposerDictionary.Add(grade, storage);
+            }
+
+            storage.SetTerms(kVector.GetIndexScalarPairs());
+
+            if (storage.IsEmpty())
+                GradeKVectorStorageComposerDictionary.Remove(grade);
         }
 
         /// <summary>
@@ -1053,13 +1098,13 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         /// <param name="grade"></param>
         /// <param name="indexScalarsDictionary"></param>
         /// <returns></returns>
-        public void SetKVectorStorage(int grade, Dictionary<ulong, TScalar> indexScalarsDictionary)
+        public void SetKVectorStorage(uint grade, Dictionary<ulong, T> indexScalarsDictionary)
         {
             if (GradeKVectorStorageComposerDictionary.ContainsKey(grade))
                 GradeKVectorStorageComposerDictionary[grade].SetStorage(indexScalarsDictionary);
             else
             {
-                var composer = new GaKVectorStorageComposer<TScalar>(ScalarProcessor, grade, indexScalarsDictionary);
+                var composer = new GaKVectorStorageComposer<T>(ScalarProcessor, grade, indexScalarsDictionary);
 
                 GradeKVectorStorageComposerDictionary.Add(grade, composer);
             }
@@ -1071,13 +1116,28 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         /// <param name="scalingFactor"></param>
         /// <param name="kVector"></param>
         /// <returns></returns>
-        public void SetKVector(TScalar scalingFactor, GaKVectorStorage<TScalar> kVector)
+        public void SetKVector(T scalingFactor, IGasKVector<T> kVector)
         {
-            throw new NotImplementedException();
+            var grade = kVector.Grade;
+
+            if (!GradeKVectorStorageComposerDictionary.TryGetValue(grade, out var storage))
+            {
+                storage = new GaKVectorStorageComposer<T>(ScalarProcessor, grade);
+
+                GradeKVectorStorageComposerDictionary.Add(grade, storage);
+            }
+
+            storage.SetLeftScaledTerms(
+                scalingFactor, 
+                kVector.GetIndexScalarPairs()
+            );
+
+            if (storage.IsEmpty())
+                GradeKVectorStorageComposerDictionary.Remove(grade);
         }
 
 
-        public GaMultivectorGradedStorageComposer<TScalar> SetKVectors(IEnumerable<KeyValuePair<int, Dictionary<ulong, TScalar>>> storagesList)
+        public GaMultivectorGradedStorageComposer<T> SetKVectors(IEnumerable<KeyValuePair<uint, Dictionary<ulong, T>>> storagesList)
         {
             foreach (var (grade, storage) in storagesList)
                 SetKVector(grade, storage);
@@ -1090,7 +1150,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         /// </summary>
         /// <param name="kVectorsList"></param>
         /// <returns></returns>
-        public void SetKVectors(IEnumerable<IGaKVectorStorage<TScalar>> kVectorsList)
+        public void SetKVectors(IEnumerable<IGasKVector<T>> kVectorsList)
         {
             foreach (var storage in kVectorsList)
                 SetKVector(storage);
@@ -1101,9 +1161,10 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         /// </summary>
         /// <param name="scaledKVectorsList"></param>
         /// <returns></returns>
-        public void SetKVectors(IEnumerable<Tuple<TScalar, GaKVectorStorage<TScalar>>> scaledKVectorsList)
+        public void SetKVectors(IEnumerable<Tuple<T, IGasKVector<T>>> scaledKVectorsList)
         {
-            throw new NotImplementedException();
+            foreach (var (scalingFactor, kVector) in scaledKVectorsList)
+                SetKVector(scalingFactor, kVector);
         }
 
 
@@ -1114,9 +1175,15 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         /// <param name="grade"></param>
         /// <param name="scalarValuesList"></param>
         /// <returns></returns>
-        public void AddKVector(int grade, IReadOnlyList<TScalar> scalarValuesList)
+        public void AddKVector(uint grade, IReadOnlyList<T> scalarValuesList)
         {
-            throw new NotImplementedException();
+            if (!GradeKVectorStorageComposerDictionary.TryGetValue(grade, out var storage))
+            {
+                storage = new GaKVectorStorageComposer<T>(ScalarProcessor, grade);
+                GradeKVectorStorageComposerDictionary.Add(grade, storage);
+            }
+
+            storage.AddTerms(scalarValuesList);
         }
 
         /// <summary>
@@ -1126,9 +1193,15 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         /// <param name="scalingFactor"></param>
         /// <param name="scalarValuesList"></param>
         /// <returns></returns>
-        public void AddKVector(int grade, TScalar scalingFactor, IReadOnlyList<TScalar> scalarValuesList)
+        public void AddKVector(uint grade, T scalingFactor, IReadOnlyList<T> scalarValuesList)
         {
-            throw new NotImplementedException();
+            if (!GradeKVectorStorageComposerDictionary.TryGetValue(grade, out var storage))
+            {
+                storage = new GaKVectorStorageComposer<T>(ScalarProcessor, grade);
+                GradeKVectorStorageComposerDictionary.Add(grade, storage);
+            }
+
+            storage.AddLeftScaledTerms(scalingFactor, scalarValuesList);
         }
 
         /// <summary>
@@ -1138,11 +1211,11 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         /// <param name="scalingFactor"></param>
         /// <param name="indexScalarPairs"></param>
         /// <returns></returns>
-        public void AddLeftScaledKVector(int grade, TScalar scalingFactor, IEnumerable<KeyValuePair<ulong, TScalar>> indexScalarPairs)
+        public void AddLeftScaledKVector(uint grade, T scalingFactor, IEnumerable<KeyValuePair<ulong, T>> indexScalarPairs)
         {
             if (!GradeKVectorStorageComposerDictionary.TryGetValue(grade, out var storage))
             {
-                storage = new GaKVectorStorageComposer<TScalar>(ScalarProcessor, grade);
+                storage = new GaKVectorStorageComposer<T>(ScalarProcessor, grade);
                 GradeKVectorStorageComposerDictionary.Add(grade, storage);
             }
 
@@ -1155,9 +1228,20 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         /// <param name="scalingFactor"></param>
         /// <param name="kVector"></param>
         /// <returns></returns>
-        public void AddKVector(TScalar scalingFactor, IGaKVectorStorage<TScalar> kVector)
+        public void AddKVector(T scalingFactor, IGasKVector<T> kVector)
         {
-            throw new NotImplementedException();
+            var grade = kVector.Grade;
+
+            if (!GradeKVectorStorageComposerDictionary.TryGetValue(grade, out var storage))
+            {
+                storage = new GaKVectorStorageComposer<T>(ScalarProcessor, grade);
+                GradeKVectorStorageComposerDictionary.Add(grade, storage);
+            }
+
+            storage.AddLeftScaledTerms(
+                scalingFactor, 
+                kVector.GetIndexScalarPairs()
+            );
         }
 
         /// <summary>
@@ -1165,7 +1249,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         /// </summary>
         /// <param name="scaledKVectorsList"></param>
         /// <returns></returns>
-        public void AddLeftScaledKVectors(IEnumerable<Tuple<TScalar, IGaKVectorStorage<TScalar>>> scaledKVectorsList)
+        public void AddLeftScaledKVectors(IEnumerable<Tuple<T, IGasKVector<T>>> scaledKVectorsList)
         {
             foreach (var (scalingFactor, storage) in scaledKVectorsList)
                 AddLeftScaledKVector(storage.Grade, scalingFactor, storage.GetIndexScalarPairs());
@@ -1178,9 +1262,15 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         /// <param name="grade"></param>
         /// <param name="scalarValuesList"></param>
         /// <returns></returns>
-        public void SubtractKVector(int grade, IReadOnlyList<TScalar> scalarValuesList)
+        public void SubtractKVector(uint grade, IReadOnlyList<T> scalarValuesList)
         {
-            throw new NotImplementedException();
+            if (!GradeKVectorStorageComposerDictionary.TryGetValue(grade, out var storage))
+            {
+                storage = new GaKVectorStorageComposer<T>(ScalarProcessor, grade);
+                GradeKVectorStorageComposerDictionary.Add(grade, storage);
+            }
+
+            storage.SubtractTerms(scalarValuesList);
         }
 
         /// <summary>
@@ -1190,9 +1280,15 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         /// <param name="scalingFactor"></param>
         /// <param name="scalarValuesList"></param>
         /// <returns></returns>
-        public void SubtractKVector(int grade, TScalar scalingFactor, IReadOnlyList<TScalar> scalarValuesList)
+        public void SubtractKVector(uint grade, T scalingFactor, IReadOnlyList<T> scalarValuesList)
         {
-            throw new NotImplementedException();
+            if (!GradeKVectorStorageComposerDictionary.TryGetValue(grade, out var storage))
+            {
+                storage = new GaKVectorStorageComposer<T>(ScalarProcessor, grade);
+                GradeKVectorStorageComposerDictionary.Add(grade, storage);
+            }
+
+            storage.SubtractLeftScaledTerms(scalingFactor, scalarValuesList);
         }
 
         /// <summary>
@@ -1202,11 +1298,11 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         /// <param name="scalingFactor"></param>
         /// <param name="indexScalarPairs"></param>
         /// <returns></returns>
-        public void SubtractLeftScaledKVector(int grade, TScalar scalingFactor, IEnumerable<KeyValuePair<ulong, TScalar>> indexScalarPairs)
+        public void SubtractLeftScaledKVector(uint grade, T scalingFactor, IEnumerable<KeyValuePair<ulong, T>> indexScalarPairs)
         {
             if (!GradeKVectorStorageComposerDictionary.TryGetValue(grade, out var storage))
             {
-                storage = new GaKVectorStorageComposer<TScalar>(ScalarProcessor, grade);
+                storage = new GaKVectorStorageComposer<T>(ScalarProcessor, grade);
                 GradeKVectorStorageComposerDictionary.Add(grade, storage);
             }
 
@@ -1218,9 +1314,17 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         /// </summary>
         /// <param name="kVector"></param>
         /// <returns></returns>
-        public void SubtractKVector(IGaKVectorStorage<TScalar> kVector)
+        public void SubtractKVector(IGasKVector<T> kVector)
         {
-            throw new NotImplementedException();
+            var grade = kVector.Grade;
+
+            if (!GradeKVectorStorageComposerDictionary.TryGetValue(grade, out var storage))
+            {
+                storage = new GaKVectorStorageComposer<T>(ScalarProcessor, grade);
+                GradeKVectorStorageComposerDictionary.Add(grade, storage);
+            }
+
+            storage.SubtractTerms(kVector.GetIndexScalarPairs());
         }
 
         /// <summary>
@@ -1229,13 +1333,21 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         /// <param name="scalingFactor"></param>
         /// <param name="kVector"></param>
         /// <returns></returns>
-        public void SubtractKVector(TScalar scalingFactor, IGaKVectorStorage<TScalar> kVector)
+        public void SubtractKVector(T scalingFactor, IGasKVector<T> kVector)
         {
-            throw new NotImplementedException();
+            var grade = kVector.Grade;
+
+            if (!GradeKVectorStorageComposerDictionary.TryGetValue(grade, out var storage))
+            {
+                storage = new GaKVectorStorageComposer<T>(ScalarProcessor, grade);
+                GradeKVectorStorageComposerDictionary.Add(grade, storage);
+            }
+
+            storage.SubtractLeftScaledTerms(scalingFactor, kVector.GetIndexScalarPairs());
         }
 
 
-        public GaMultivectorGradedStorageComposer<TScalar> SubtractKVectors(IEnumerable<KeyValuePair<int, Dictionary<ulong, TScalar>>> storagesList)
+        public GaMultivectorGradedStorageComposer<T> SubtractKVectors(IEnumerable<KeyValuePair<uint, Dictionary<ulong, T>>> storagesList)
         {
             foreach (var (grade, storage) in storagesList)
                 SubtractKVector(grade, storage);
@@ -1248,9 +1360,10 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         /// </summary>
         /// <param name="kVectorsList"></param>
         /// <returns></returns>
-        public void SubtractKVectors(IEnumerable<IGaKVectorStorage<TScalar>> kVectorsList)
+        public void SubtractKVectors(IEnumerable<IGasKVector<T>> kVectorsList)
         {
-            throw new NotImplementedException();
+            foreach (var kVector in kVectorsList)
+                SubtractKVector(kVector);
         }
 
         /// <summary>
@@ -1258,7 +1371,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         /// </summary>
         /// <param name="scaledKVectorsList"></param>
         /// <returns></returns>
-        public void SubtractLeftScaledKVectors(IEnumerable<Tuple<TScalar, IGaKVectorStorage<TScalar>>> scaledKVectorsList)
+        public void SubtractLeftScaledKVectors(IEnumerable<Tuple<T, IGasKVector<T>>> scaledKVectorsList)
         {
             foreach (var (scalingFactor, storage) in scaledKVectorsList)
                 SubtractLeftScaledKVector(storage.Grade, scalingFactor, storage.GetIndexScalarPairs());
@@ -1271,7 +1384,8 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         /// <param name="idsList"></param>
         public void RemoveTerms(IEnumerable<ulong> idsList)
         {
-            throw new NotImplementedException();
+            foreach (var id in idsList)
+                RemoveTerm(id);
         }
 
         /// <summary>
@@ -1279,18 +1393,22 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         /// </summary>
         /// <param name="grade"></param>
         /// <param name="indexList"></param>
-        public void RemoveTerms(int grade, IEnumerable<ulong> indexList)
+        public void RemoveTerms(uint grade, IEnumerable<ulong> indexList)
         {
-            throw new NotImplementedException();
+            if (!GradeKVectorStorageComposerDictionary.TryGetValue(grade, out var composer))
+                return;
+
+            composer.RemoveTerms(indexList);
         }
         
         /// <summary>
         /// Remove the given terms if possible, else set to zero
         /// </summary>
         /// <param name="grade"></param>
-        public void RemoveTermsOfGrade(int grade)
+        public void RemoveTermsOfGrade(uint grade)
         {
-            throw new NotImplementedException();
+            if (GradeKVectorStorageComposerDictionary.ContainsKey(grade))
+                GradeKVectorStorageComposerDictionary.Remove(grade);
         }
 
 
@@ -1302,7 +1420,12 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         /// <returns></returns>
         public void RemoveTermIfZero(ulong id, bool nearZeroFlag = false)
         {
-            throw new NotImplementedException();
+            var (grade, index) = id.BasisBladeGradeIndex();
+
+            if (!GradeKVectorStorageComposerDictionary.TryGetValue(grade, out var composer))
+                return;
+
+            composer.RemoveTermIfZero(index, nearZeroFlag);
         }
 
         /// <summary>
@@ -1312,113 +1435,140 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         /// <param name="index"></param>
         /// <param name="nearZeroFlag"></param>
         /// <returns></returns>
-        public void RemoveTermIfZero(int grade, ulong index, bool nearZeroFlag = false)
+        public void RemoveTermIfZero(uint grade, ulong index, bool nearZeroFlag = false)
         {
-            throw new NotImplementedException();
+            if (!GradeKVectorStorageComposerDictionary.TryGetValue(grade, out var composer))
+                return;
+
+            composer.RemoveTermIfZero(index, nearZeroFlag);
         }
         
         /// <summary>
         /// Remove all terms from storage where their scalar values is near zero
         /// </summary>
-        public void RemoveZeroTermsOfGrade(int grade, bool nearZeroFlag = false)
+        public void RemoveZeroTermsOfGrade(uint grade, bool nearZeroFlag = false)
         {
-            throw new NotImplementedException();
+            if (!GradeKVectorStorageComposerDictionary.TryGetValue(grade, out var composer))
+                return;
+
+            composer.RemoveZeroTerms(nearZeroFlag);
         }
 
 
-        public override IGaMultivectorStorage<TScalar> GetCompactStorage()
+        public override IGasMultivector<T> GetCompactMultivector()
         {
-            var gradesCount = GradeKVectorStorageComposerDictionary.Count;
+            var gradesCount = 
+                GradeKVectorStorageComposerDictionary.Count;
 
             if (gradesCount == 0)
-                return GaScalarTermStorage<TScalar>.CreateZero(ScalarProcessor);
+                return ScalarProcessor.CreateZeroScalar();
 
             if (gradesCount == 1)
-                GradeKVectorStorageComposerDictionary.First().Value.GetCompactStorage();
+                GradeKVectorStorageComposerDictionary.First().Value.GetCompactMultivector();
 
             return CreateMultivectorGradedStorage();
         }
 
-        public override IGaMultivectorGradedStorage<TScalar> GetCompactGradedStorage()
+        public override IGasTermsMultivector<T> GetCompactTermsStorage()
+        {
+            var idScalarDictionary = new Dictionary<ulong, T>();
+
+            foreach (var (grade, composer) in GradeKVectorStorageComposerDictionary)
+            {
+                var indexScalarDictionary = composer.IndexScalarsDictionary;
+
+                foreach (var (index, scalar) in indexScalarDictionary)
+                {
+                    var id = GaBasisUtils.BasisBladeId(grade, index);
+
+                    idScalarDictionary.Add(id, scalar);
+                }
+            }
+
+            var termsCount = 
+                idScalarDictionary.Count;
+
+            if (termsCount == 0)
+                return ScalarProcessor.CreateZeroScalar();
+
+            if (termsCount > 1) 
+                return ScalarProcessor.CreateTermsMultivector(idScalarDictionary);
+
+            var (termId, termScalar) = 
+                idScalarDictionary.First();
+
+            return termId == 0UL
+                ? ScalarProcessor.CreateScalar(termScalar)
+                : ScalarProcessor.CreateKVector(termId, termScalar);
+        }
+
+        public override IGasGradedMultivector<T> GetCompactGradedMultivector()
         {
             var gradesCount = GradeKVectorStorageComposerDictionary.Count;
 
             if (gradesCount == 0)
-                return GaScalarTermStorage<TScalar>.CreateZero(ScalarProcessor);
+                return ScalarProcessor.CreateZeroScalar();
 
             if (gradesCount == 1)
-                GradeKVectorStorageComposerDictionary.First().Value.GetCompactStorage();
+                GradeKVectorStorageComposerDictionary.First().Value.GetCompactMultivector();
 
             return CreateMultivectorGradedStorage();
         }
 
-        public override GaMultivectorStorageBase<TScalar> GetMultivectorStorage()
+        public override IGasMultivector<T> GetMultivectorStorage()
         {
             return CreateMultivectorGradedStorage();
         }
         
-        public GaMultivectorGradedStorage<TScalar> CreateMultivectorGradedStorage()
+        public IGasGradedMultivector<T> CreateMultivectorGradedStorage()
         {
-            var kVectorsDictionary = new Dictionary<int, Dictionary<ulong, TScalar>>();
+            var kVectorsDictionary = new Dictionary<uint, Dictionary<ulong, T>>();
 
             foreach (var (grade, composer) in GradeKVectorStorageComposerDictionary)
                 kVectorsDictionary.Add(grade, composer.IndexScalarsDictionary);
 
-            return GaMultivectorGradedStorage<TScalar>.Create(
-                ScalarProcessor, 
-                kVectorsDictionary
-            );
+            return ScalarProcessor.CreateGradedMultivector(kVectorsDictionary);
         }
 
-        public GaVectorStorage<TScalar> CreateVectorStorage()
+        public IGasVector<T> CreateVectorStorage()
         {
             var indexScalarsDictionary =
                 GradeKVectorStorageComposerDictionary.TryGetValue(1, out var composer)
                     ? composer.IndexScalarsDictionary
-                    : new Dictionary<ulong, TScalar>();
+                    : new Dictionary<ulong, T>();
 
-            return GaVectorStorage<TScalar>.Create(
-                ScalarProcessor, 
-                indexScalarsDictionary
-            );
+            return ScalarProcessor.CreateVector(indexScalarsDictionary);
         }
 
-        public GaBivectorStorage<TScalar> CreateBivectorStorage()
+        public IGasBivector<T> CreateBivectorStorage()
         {
             var indexScalarsDictionary =
                 GradeKVectorStorageComposerDictionary.TryGetValue(1, out var composer)
                     ? composer.IndexScalarsDictionary
-                    : new Dictionary<ulong, TScalar>();
+                    : new Dictionary<ulong, T>();
 
-            return GaBivectorStorage<TScalar>.Create(
-                ScalarProcessor, 
-                indexScalarsDictionary
-            );
+            return ScalarProcessor.CreateBivector(indexScalarsDictionary);
         }
 
-        public GaKVectorStorage<TScalar> CreateKVectorStorage(int grade)
+        public IGasKVector<T> CreateKVectorStorage(uint grade)
         {
             var indexScalarsDictionary =
                 GradeKVectorStorageComposerDictionary.TryGetValue(grade, out var composer)
                     ? composer.IndexScalarsDictionary
-                    : new Dictionary<ulong, TScalar>();
+                    : new Dictionary<ulong, T>();
 
-            return GaKVectorStorage<TScalar>.Create(
-                ScalarProcessor, 
-                grade, 
-                indexScalarsDictionary
-            );
+            return ScalarProcessor.CreateKVector(grade, indexScalarsDictionary);
         }
 
         
-        public override IGaMultivectorStorage<TScalar> GetStorageCopy()
+        public override IGasMultivector<T> GetMultivectorCopy()
         {
-            return GetMultivectorGradedStorageCopy();
+            return GetGradedMultivectorCopy();
         }
 
-        public override IGaMultivectorStorage<TScalar> GetStorageCopy(Func<TScalar, TScalar> scalarMapping)
+        public override IGasMultivector<T> GetMultivectorCopy(Func<T, T> scalarMapping)
         {
-            var kVectorsDictionary = new Dictionary<int, Dictionary<ulong, TScalar>>();
+            var kVectorsDictionary = new Dictionary<uint, Dictionary<ulong, T>>();
 
             foreach (var (grade, composer) in GradeKVectorStorageComposerDictionary)
             {
@@ -1430,15 +1580,13 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
                 kVectorsDictionary.Add(grade, indexScalarDictionary);
             }
 
-            return GaMultivectorGradedStorage<TScalar>.Create(
-                ScalarProcessor, 
-                kVectorsDictionary
+            return ScalarProcessor.CreateGradedMultivector(kVectorsDictionary
             );
         }
 
-        public override GaMultivectorGradedStorage<TScalar> GetMultivectorGradedStorageCopy()
+        public override IGasGradedMultivector<T> GetGradedMultivectorCopy()
         {
-            var kVectorsDictionary = new Dictionary<int, Dictionary<ulong, TScalar>>();
+            var kVectorsDictionary = new Dictionary<uint, Dictionary<ulong, T>>();
 
             foreach (var (grade, composer) in GradeKVectorStorageComposerDictionary)
             {
@@ -1450,15 +1598,13 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
                 kVectorsDictionary.Add(grade, indexScalarDictionary);
             }
 
-            return GaMultivectorGradedStorage<TScalar>.Create(
-                ScalarProcessor, 
-                kVectorsDictionary
+            return ScalarProcessor.CreateGradedMultivector(kVectorsDictionary
             );
         }
 
-        public override GaMultivectorTermsStorage<TScalar> GetMultivectorTermsStorageCopy()
+        public override IGasTermsMultivector<T> GetTermsMultivectorCopy()
         {
-            var idScalarDictionary = new Dictionary<ulong, TScalar>();
+            var idScalarDictionary = new Dictionary<ulong, T>();
 
             foreach (var (grade, composer) in GradeKVectorStorageComposerDictionary)
             {
@@ -1472,15 +1618,12 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
                 }
             }
 
-            return GaMultivectorTermsStorage<TScalar>.Create(
-                ScalarProcessor, 
-                idScalarDictionary
-            );
+            return ScalarProcessor.CreateTermsMultivector(idScalarDictionary);
         }
 
-        public override GaMultivectorTreeStorage<TScalar> GetMultivectorTreeStorageCopy()
+        public override GasTreeMultivector<T> GetTreeMultivectorCopy()
         {
-            var idScalarDictionary = new Dictionary<ulong, TScalar>();
+            var idScalarDictionary = new Dictionary<ulong, T>();
 
             foreach (var (grade, composer) in GradeKVectorStorageComposerDictionary)
             {
@@ -1494,18 +1637,18 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
                 }
             }
 
-            return GaMultivectorTreeStorage<TScalar>.Create(
+            return GaStorageFactory.CreateTreeMultivector(
                 ScalarProcessor, 
                 idScalarDictionary
             );
         }
 
-        public override GaScalarTermStorage<TScalar> GetScalarStorage()
+        public override IGasScalar<T> GetScalarStorage()
         {
-            return GaScalarTermStorage<TScalar>.Create(ScalarProcessor, this[0, 0]);
+            return ScalarProcessor.CreateScalar(this[0, 0]);
         }
 
-        public override GaVectorStorage<TScalar> GetVectorStorageCopy()
+        public override IGasVector<T> GetVectorStorageCopy()
         {
             var indexScalarsDictionary =
                 GradeKVectorStorageComposerDictionary.TryGetValue(1, out var composer)
@@ -1513,15 +1656,12 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
                         pair => pair.Key, 
                         pair => pair.Value
                     )
-                    : new Dictionary<ulong, TScalar>();
+                    : new Dictionary<ulong, T>();
 
-            return GaVectorStorage<TScalar>.Create(
-                ScalarProcessor, 
-                indexScalarsDictionary
-            );
+            return ScalarProcessor.CreateVector(indexScalarsDictionary);
         }
 
-        public override GaBivectorStorage<TScalar> GetBivectorStorageCopy(int grade)
+        public override IGasBivector<T> GetBivectorStorageCopy(uint grade)
         {
             var indexScalarsDictionary =
                 GradeKVectorStorageComposerDictionary.TryGetValue(2, out var composer)
@@ -1529,15 +1669,12 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
                         pair => pair.Key, 
                         pair => pair.Value
                     )
-                    : new Dictionary<ulong, TScalar>();
+                    : new Dictionary<ulong, T>();
 
-            return GaBivectorStorage<TScalar>.Create(
-                ScalarProcessor, 
-                indexScalarsDictionary
-            );
+            return ScalarProcessor.CreateBivector(indexScalarsDictionary);
         }
 
-        public override GaKVectorStorage<TScalar> GetKVectorStorageCopy(int grade)
+        public override IGasKVector<T> GetKVectorStorageCopy(uint grade)
         {
             var indexScalarsDictionary =
                 GradeKVectorStorageComposerDictionary.TryGetValue(grade, out var composer)
@@ -1545,11 +1682,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
                         pair => pair.Key, 
                         pair => pair.Value
                     )
-                    : new Dictionary<ulong, TScalar>();
+                    : new Dictionary<ulong, T>();
 
-            return GaKVectorStorage<TScalar>.Create(
-                ScalarProcessor, 
-                grade, 
+            return ScalarProcessor.CreateKVector(grade, 
                 indexScalarsDictionary
             );
         }

@@ -54,14 +54,14 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer
             };
         }
         
-        public static string GetName(this GaClcOperationKind operationKind, bool isEuclidean, int grade)
+        public static string GetName(this GaClcOperationKind operationKind, bool isEuclidean, uint grade)
         {
             return operationKind.GetName(isEuclidean) + 
                    "_" + 
                    grade.ToString("X1");
         }
 
-        public static string GetName(this GaClcOperationKind operationKind, bool isEuclidean, params int[] gradesList)
+        public static string GetName(this GaClcOperationKind operationKind, bool isEuclidean, params uint[] gradesList)
         {
             return operationKind.GetName(isEuclidean) + 
                    "_" +
@@ -70,7 +70,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer
                        .Concatenate("_");
         }
 
-        public static string GetName(this GaClcOperationKind operationKind, bool isEuclidean, IEnumerable<int> gradesList)
+        public static string GetName(this GaClcOperationKind operationKind, bool isEuclidean, IEnumerable<uint> gradesList)
         {
             return operationKind.GetName(isEuclidean) + 
                    "_" +
@@ -79,13 +79,13 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer
                        .Concatenate("_");
         }
 
-        public static int GetKVectorsBilinearProductGrade(this GaClcOperationKind operationKind, int vSpaceDimension, int inGrade1, int inGrade2)
+        public static Tuple<bool, uint> GetKVectorsBilinearProductGrade(this GaClcOperationKind operationKind, uint vSpaceDimension, uint inGrade1, uint inGrade2)
         {
-            if (inGrade1 < 0 || inGrade1 > vSpaceDimension)
-                return -1;
+            if (inGrade1 > vSpaceDimension)
+                return new Tuple<bool, uint>(false, 0);
 
-            if (inGrade2 < 0 || inGrade2 > vSpaceDimension)
-                return -1;
+            if (inGrade2 > vSpaceDimension)
+                return new Tuple<bool, uint>(false, 0);
 
             var outGrade = operationKind switch
             {
@@ -111,9 +111,9 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer
             };
 
             if (outGrade < 0 || outGrade > vSpaceDimension)
-                return -1;
+                return new Tuple<bool, uint>(false, 0);
 
-            return outGrade;
+            return new Tuple<bool, uint>(true, (uint) outGrade);
         }
 
         public static GaClcOperationSpecs CreateEuclideanOperationSpecs(this GaClcOperationKind operationKind)
@@ -133,7 +133,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer
 
 
         ///// <summary>
-        ///// Names of default frame macros for computing general linear transforms on multivectors
+        ///// Names of default signature macros for computing general linear transforms on multivectors
         ///// </summary>
         //public static class LinearTransform
         //{
@@ -153,7 +153,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer
         //}
 
         ///// <summary>
-        ///// Names of default frame macros for computing general outer-morphisms on multivectors
+        ///// Names of default signature macros for computing general outer-morphisms on multivectors
         ///// </summary>
         //public static class Outermorphism
         //{

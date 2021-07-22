@@ -1,38 +1,36 @@
-﻿using GeometricAlgebraFulcrumLib.Storage;
-
-namespace GeometricAlgebraFulcrumLib.Geometry
+﻿namespace GeometricAlgebraFulcrumLib.Geometry
 {
-    public interface IGaVectorsLinearMap<T> 
-        : IGaGeometricElement<T>
-    {
-        IGaVectorsLinearMap<T> GetAdjoint();
+    //public interface IGaOutermorphism<T> 
+    //    : IGaGeometry<T>
+    //{
+    //    IGaOutermorphism<T> GetAdjoint();
 
-        IGaVectorStorage<T> MapBasisVector(int index);
+    //    IGasVector<T> MapBasisVector(int index);
 
-        IGaVectorStorage<T> MapBasisVector(ulong index);
+    //    IGasVector<T> MapBasisVector(ulong index);
 
-        IGaBivectorStorage<T> MapBasisBivector(int index1, int index2);
+    //    IGasBivector<T> MapBasisBivector(int index1, int index2);
 
-        IGaBivectorStorage<T> MapBasisBivector(ulong index1, ulong index2);
+    //    IGasBivector<T> MapBasisBivector(ulong index1, ulong index2);
 
-        IGaKVectorStorage<T> MapBasisBlade(ulong id);
+    //    IGasKVector<T> MapBasisBlade(ulong id);
 
-        IGaKVectorStorage<T> MapBasisBlade(int grade, ulong index);
+    //    IGasKVector<T> MapBasisBlade(uint grade, ulong index);
 
-        IGaScalarStorage<T> MapScalar(IGaScalarStorage<T> storage);
+    //    IGasScalar<T> MapScalar(IGasScalar<T> storage);
 
-        IGaKVectorStorage<T> MapTerm(IGaKVectorTermStorage<T> storage);
+    //    IGasKVector<T> MapTerm(IGasKVectorTerm<T> storage);
 
-        IGaVectorStorage<T> MapVector(IGaVectorStorage<T> storage);
+    //    IGasVector<T> MapVector(IGasVector<T> storage);
 
-        IGaBivectorStorage<T> MapBivector(IGaBivectorStorage<T> storage);
+    //    IGasBivector<T> MapBivector(IGasBivector<T> storage);
 
-        IGaKVectorStorage<T> MapKVector(IGaKVectorStorage<T> storage);
+    //    IGasKVector<T> MapKVector(IGasKVector<T> storage);
 
-        IGaMultivectorStorage<T> MapMultivector(IGaMultivectorGradedStorage<T> storage);
+    //    IGasMultivector<T> MapMultivector(IGasGradedMultivector<T> storage);
 
-        IGaMultivectorStorage<T> MapMultivector(IGaMultivectorTermsStorage<T> storage);
+    //    IGasMultivector<T> MapMultivector(IGasTermsMultivector<T> storage);
 
-        IGaMultivectorStorage<T> MapMultivector(IGaMultivectorStorage<T> storage);
-    }
+    //    IGasMultivector<T> MapMultivector(IGasMultivector<T> storage);
+    //}
 }

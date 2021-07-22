@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace DataStructuresLib.BitManipulation
 {
@@ -81,12 +82,38 @@ namespace DataStructuresLib.BitManipulation
         /// </summary>
         public static int MaxBitPatternSize => 31;
 
+        
+        /// <summary>
+        /// Generate some patterns containing 1, 2, and 3 bits to test functions
+        /// of this class
+        /// </summary>
+        /// <returns></returns>
+        public static IEnumerable<int> GetInt32TestPatterns()
+        {
+            for (var i = 0; i < MaxBitPatternSize; i++)
+            {
+                var pattern1 = 1 << i;
+
+                for (var j = 0; j < MaxBitPatternSize; j++)
+                {
+                    var pattern2 = 1 << j;
+
+                    for (var k = 0; k < MaxBitPatternSize; k++)
+                    {
+                        var pattern3 = 1 << k;
+
+                        yield return (pattern1 | pattern2 | pattern3);
+                    }
+                }
+            }
+        }
 
         /// <summary>
         /// Tests if bitPattern is an odd integer
         /// </summary>
         /// <param name="bitPattern"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsOdd(this int bitPattern)
         {
             return (bitPattern & 1) != 0;
@@ -97,6 +124,7 @@ namespace DataStructuresLib.BitManipulation
         /// </summary>
         /// <param name="bitPattern"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsEven(this int bitPattern)
         {
             return (bitPattern & 1) == 0;
@@ -107,6 +135,7 @@ namespace DataStructuresLib.BitManipulation
         /// </summary>
         /// <param name="bitPattern"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsBasicPattern(this int bitPattern)
         {
             return bitPattern != 0 && (bitPattern & (bitPattern - 1)) == 0;
@@ -117,6 +146,7 @@ namespace DataStructuresLib.BitManipulation
         /// </summary>
         /// <param name="bitPattern"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsZeroOrBasicPattern(this int bitPattern)
         {
             return (bitPattern & (bitPattern - 1)) == 0;
@@ -128,6 +158,7 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="bitPattern"></param>
         /// <param name="bitPosition"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsOneAt(this int bitPattern, int bitPosition)
         {
             return ((1 << bitPosition) & bitPattern) != 0;
@@ -139,6 +170,7 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="bitPattern"></param>
         /// <param name="bitPosition"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsZeroAt(this int bitPattern, int bitPosition)
         {
             return ((1 << bitPosition) & bitPattern) == 0;
@@ -468,6 +500,7 @@ namespace DataStructuresLib.BitManipulation
         /// </summary>
         /// <param name="bitPattern"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int Power2LowerLimit(this int bitPattern)
         {
             if (bitPattern == 0) 
@@ -496,6 +529,7 @@ namespace DataStructuresLib.BitManipulation
         /// </summary>
         /// <param name="bitPattern"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int Power2UpperLimit(this int bitPattern)
         {
             if (bitPattern == 0)
@@ -517,6 +551,7 @@ namespace DataStructuresLib.BitManipulation
         /// </summary>
         /// <param name="bitPattern"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int PatternToMask(this int bitPattern)
         {
             if (bitPattern == 0)
@@ -534,6 +569,7 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="bitPattern"></param>
         /// <param name="bitPosition"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int SetBitToZeroAt(this int bitPattern, int bitPosition)
         {
             return bitPattern & ~(1 << bitPosition);
@@ -545,6 +581,7 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="bitPattern"></param>
         /// <param name="bitPositions"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int SetBitsToZeroAt(this int bitPattern, IEnumerable<int> bitPositions)
         {
             var bitMask = bitPositions.Aggregate(
@@ -561,6 +598,7 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="bitPattern"></param>
         /// <param name="bitPositions"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int SetBitsToZeroAt(this int bitPattern, params int[] bitPositions)
         {
             var bitMask = bitPositions.Aggregate(
@@ -577,6 +615,7 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="bitPattern"></param>
         /// <param name="bitPosition"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int SetBitToOneAt(this int bitPattern, int bitPosition)
         {
             return bitPattern | (1 << bitPosition);
@@ -588,6 +627,7 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="bitPattern"></param>
         /// <param name="bitPositions"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int SetBitsToOneAt(this int bitPattern, IEnumerable<int> bitPositions)
         {
             var bitMask = bitPositions.Aggregate(
@@ -604,6 +644,7 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="bitPattern"></param>
         /// <param name="bitPositions"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int SetBitsToOneAt(this int bitPattern, params int[] bitPositions)
         {
             var bitMask = bitPositions.Aggregate(
@@ -621,6 +662,7 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="bitPosition"></param>
         /// <param name="value"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int SetBitAt(this int bitPattern, int bitPosition, bool value)
         {
             return
@@ -635,6 +677,7 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="bitPattern"></param>
         /// <param name="bitPosition"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int InvertBitAt(this int bitPattern, int bitPosition)
         {
             return bitPattern ^ (1 << bitPosition);
@@ -646,6 +689,7 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="bitPattern"></param>
         /// <param name="bitPositions"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int InvertBitsAt(this int bitPattern, IEnumerable<int> bitPositions)
         {
             return
@@ -661,6 +705,7 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="bitPattern"></param>
         /// <param name="bitPositions"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int InvertBitsAt(this int bitPattern, params int[] bitPositions)
         {
             return
@@ -677,6 +722,7 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="bitPattern"></param>
         /// <param name="bitPosition"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool BitToBoolean(this int bitPattern, int bitPosition)
         {
             return ((1 << bitPosition) & bitPattern) != 0;
@@ -717,6 +763,7 @@ namespace DataStructuresLib.BitManipulation
         /// </summary>
         /// <param name="bitsCount"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int CreateMask(int bitsCount)
         {
             return (int) ((1u << bitsCount) - 1);
@@ -728,6 +775,7 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="bitPosition1"></param>
         /// <param name="bitPosition2"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int CreateMask(int bitPosition1, int bitPosition2)
         {
             var bitsCount = bitPosition2 - bitPosition1;
@@ -744,6 +792,7 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="bitPattern2"></param>
         /// <param name="size"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int AppendPattern(this int bitPattern1, int size, int bitPattern2)
         {
             return bitPattern2 | (bitPattern1 << size);
@@ -757,6 +806,7 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="bitMask"></param>
         /// <param name="bitPattern2"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int MergeWithPattern(this int bitPattern1, int bitMask, int bitPattern2)
         {
             return bitPattern1 ^ ((bitPattern1 ^ bitPattern2) & bitMask);
@@ -790,6 +840,7 @@ namespace DataStructuresLib.BitManipulation
         /// </summary>
         /// <param name="bitPattern"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int NextPermutation(this int bitPattern)
         {
             var tempPattern = (bitPattern | (bitPattern - 1)) + 1;
@@ -965,6 +1016,7 @@ namespace DataStructuresLib.BitManipulation
         /// </summary>
         /// <param name="bitPattern"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string PatternToString(this int bitPattern)
         {
             return Convert.ToString(bitPattern, 2);
@@ -977,6 +1029,7 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="bitPattern"></param>
         /// <param name="bitsCount"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string PatternToString(this int bitPattern, int bitsCount)
         {
             return Convert.ToString(bitPattern, 2).PadLeft(bitsCount, '0');
@@ -990,6 +1043,7 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="items"></param>
         /// <param name="bitPattern"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<T> PickUsingPattern<T>(this IEnumerable<T> items, int bitPattern)
         {
             var bitPosition = 0;
@@ -1007,6 +1061,7 @@ namespace DataStructuresLib.BitManipulation
         /// </summary>
         /// <param name="boolsSeq"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int BooleansToPattern(this IEnumerable<bool> boolsSeq)
         {
             var bitPosistion = 0;
@@ -1036,6 +1091,7 @@ namespace DataStructuresLib.BitManipulation
         /// </summary>
         /// <param name="boolsSeq"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int BooleansToPattern(params bool[] boolsSeq)
         {
             var bitPosistion = 0;
@@ -1064,6 +1120,7 @@ namespace DataStructuresLib.BitManipulation
         /// </summary>
         /// <param name="bitPositions"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int PositionsToPattern(this IEnumerable<int> bitPositions)
         {
             return
@@ -1078,6 +1135,7 @@ namespace DataStructuresLib.BitManipulation
         /// </summary>
         /// <param name="bitPositions"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int PositionsToPattern(params int[] bitPositions)
         {
             return
@@ -1142,6 +1200,7 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="bitPattern"></param>
         /// <param name="superPattern"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsSubPatternOf(this int bitPattern, int superPattern)
         {
             return (superPattern | bitPattern) == superPattern;
@@ -1153,6 +1212,7 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="bitPattern"></param>
         /// <param name="superPattern"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsProperSubPatternOf(this int bitPattern, int superPattern)
         {
             return
@@ -1167,6 +1227,7 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="bitPattern"></param>
         /// <param name="subPattern"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsSuperPatternOf(this int bitPattern, int subPattern)
         {
             return (subPattern | bitPattern) == bitPattern;
@@ -1178,6 +1239,7 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="bitPattern"></param>
         /// <param name="subPattern"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsProperSuperPatternOf(this int bitPattern, int subPattern)
         {
             return
@@ -1262,6 +1324,7 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="bitPattern"></param>
         /// <param name="bitsCount"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<int> GetSuperPatterns(this int bitPattern, int bitsCount)
         {
             var superPattern = CreateMask(bitsCount);
@@ -1279,6 +1342,7 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="bitPattern"></param>
         /// <param name="bitsCount"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<int> GetProperSuperPatterns(this int bitPattern, int bitsCount)
         {
             var superPattern = CreateMask(bitsCount);
@@ -1296,6 +1360,7 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="bitPattern"></param>
         /// <param name="superPattern"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<int> GetSuperPatternsInside(this int bitPattern, int superPattern)
         {
             //Make sure bitPattern is a sub-pattern of superPattern
@@ -1311,6 +1376,7 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="bitPattern"></param>
         /// <param name="superPattern"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<int> GetProperSuperPatternsInside(this int bitPattern, int superPattern)
         {
             //Make sure bitPattern is a sub-pattern of superPattern
@@ -1327,6 +1393,7 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="bitPattern"></param>
         /// <param name="basicPattern"></param>
         /// <param name="subPattern"></param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void SplitBySmallestBasicPattern(this int bitPattern, out int basicPattern, out int subPattern)
         {
             if (bitPattern == 0)
@@ -1347,6 +1414,7 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="bitPattern"></param>
         /// <param name="basicPattern"></param>
         /// <param name="subPattern"></param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void SplitByLargestBasicPattern(this int bitPattern, out int basicPattern, out int subPattern)
         {
             if (bitPattern == 0)
@@ -1366,6 +1434,7 @@ namespace DataStructuresLib.BitManipulation
         /// </summary>
         /// <param name="s"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsValidBitPattern(this string s)
         {
             return s.Length <= MaxBitPatternSize && s.All(c => c == '1' || c == '0');
@@ -1378,6 +1447,7 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="s"></param>
         /// <param name="bitsCount"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsValidBitPattern(this string s, int bitsCount)
         {
             return bitsCount <= MaxBitPatternSize && s.Length == bitsCount && s.All(c => c == '1' || c == '0');
@@ -1390,8 +1460,7 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="bitPattern"></param>
         /// <param name="zeroElement"></param>
         /// <returns></returns>
-        public static string ConcatenateUsingPattern(this IEnumerable<string> stringsList, int bitPattern,
-            string zeroElement)
+        public static string ConcatenateUsingPattern(this IEnumerable<string> stringsList, int bitPattern, string zeroElement)
         {
             return
                 bitPattern == 0
@@ -1406,8 +1475,7 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="bitPatternsList"></param>
         /// <param name="zeroElement"></param>
         /// <returns></returns>
-        public static IEnumerable<string> ConcatenateUsingPatterns(this IEnumerable<string> stringsList,
-            IEnumerable<int> bitPatternsList, string zeroElement)
+        public static IEnumerable<string> ConcatenateUsingPatterns(this IEnumerable<string> stringsList, IEnumerable<int> bitPatternsList, string zeroElement)
         {
             return bitPatternsList.Select(
                 bitPattern =>
@@ -1423,8 +1491,7 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="separator"></param>
         /// <param name="zeroElement"></param>
         /// <returns></returns>
-        public static string ConcatenateUsingPattern(this IEnumerable<string> stringsList, int bitPattern,
-            string zeroElement, string separator)
+        public static string ConcatenateUsingPattern(this IEnumerable<string> stringsList, int bitPattern, string zeroElement, string separator)
         {
             return
                 bitPattern == 0
@@ -1442,8 +1509,7 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="finalPrefix"></param>
         /// <param name="finalSuffix"></param>
         /// <returns></returns>
-        public static string ConcatenateUsingPattern(this IEnumerable<string> stringsList, int bitPattern,
-            string zeroElement, string separator, string finalPrefix, string finalSuffix)
+        public static string ConcatenateUsingPattern(this IEnumerable<string> stringsList, int bitPattern, string zeroElement, string separator, string finalPrefix, string finalSuffix)
         {
             return
                 bitPattern == 0
@@ -1463,9 +1529,7 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="itemPrefix"></param>
         /// <param name="itemSuffix"></param>
         /// <returns></returns>
-        public static string ConcatenateUsingPattern(this IEnumerable<string> stringsList, int bitPattern,
-            string zeroElement, string separator, string finalPrefix, string finalSuffix, string itemPrefix,
-            string itemSuffix)
+        public static string ConcatenateUsingPattern(this IEnumerable<string> stringsList, int bitPattern, string zeroElement, string separator, string finalPrefix, string finalSuffix, string itemPrefix, string itemSuffix)
         {
             return
                 bitPattern == 0
@@ -1473,5 +1537,21 @@ namespace DataStructuresLib.BitManipulation
                     : PickUsingPattern(stringsList, bitPattern)
                         .ConcatenateText(separator, finalPrefix, finalSuffix, itemPrefix, itemSuffix);
         }
-    }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<int> GetRange(this int count)
+        {
+            return Enumerable.Range(0, count);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Dictionary<int, T> RangeToDictionary<T>(this int count, Func<int, T> keyValueFunc)
+        {
+            return Enumerable
+                .Range(0, count)
+                .ToDictionary(
+                    i => i, 
+                    keyValueFunc
+                );
+        }    }
 }

@@ -7,14 +7,14 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal
     public sealed class GaGbtBinaryTreeStack1<T> 
         : GaGbtStack1, IGaGbtStack1<T>
     {
-        public static GaGbtBinaryTreeStack1<T> Create(GaMultivectorStorageBase<T> mv)
+        public static GaGbtBinaryTreeStack1<T> Create(GasMultivectorBase<T> mv)
         {
             var vSpaceDimension = 
                 Math.Max(1, mv.VSpaceDimension);
 
             var stack = new GaGbtBinaryTreeStack1<T>(
-                vSpaceDimension + 1,
-                mv.GetBinaryTree(vSpaceDimension)
+                (int) vSpaceDimension + 1,
+                mv.GetBinaryTree((int) vSpaceDimension)
             );
 
             stack.PushRootData();
@@ -22,14 +22,14 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal
             return stack;
         }
 
-        public static GaGbtBinaryTreeStack1<T> Create(int capacity, GaMultivectorStorageBase<T> mv)
+        public static GaGbtBinaryTreeStack1<T> Create(int capacity, GasMultivectorBase<T> mv)
         {
             var vSpaceDimension = 
                 Math.Max(1, mv.VSpaceDimension);
 
             var stack = new GaGbtBinaryTreeStack1<T>(
                 capacity,
-                mv.GetBinaryTree(vSpaceDimension)
+                mv.GetBinaryTree((int) vSpaceDimension)
             );
 
             stack.PushRootData();

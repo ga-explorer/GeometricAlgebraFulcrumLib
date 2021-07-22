@@ -1,8 +1,8 @@
 ﻿namespace GeometricAlgebraFulcrumLib.Storage.Composers
 {
-    public interface IGaScalarStorageComposer<TScalar>
-        : IGaKVectorStorageComposer<TScalar>
+    public interface IGaScalarStorageComposer<T>
+        : IGaKVectorStorageComposer<T>
     {
-        IGaScalarStorage<TScalar> GetScalarStorage();
+        IGasScalar<T> GetScalarStorage();
     }
 }

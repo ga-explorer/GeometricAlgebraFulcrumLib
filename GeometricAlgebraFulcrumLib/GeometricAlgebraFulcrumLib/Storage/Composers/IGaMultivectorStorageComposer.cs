@@ -3,24 +3,24 @@ using GeometricAlgebraFulcrumLib.Processing.Scalars;
 
 namespace GeometricAlgebraFulcrumLib.Storage.Composers
 {
-    public interface IGaMultivectorStorageComposer<TScalar>
+    public interface IGaMultivectorStorageComposer<T>
     {
-        IGaScalarProcessor<TScalar> ScalarProcessor { get; }
+        IGaScalarProcessor<T> ScalarProcessor { get; }
 
         bool IsEmpty();
 
-        IGaMultivectorStorage<TScalar> GetCompactStorage();
+        IGasMultivector<T> GetCompactMultivector();
 
-        IGaMultivectorGradedStorage<TScalar> GetCompactGradedStorage();
+        IGasGradedMultivector<T> GetCompactGradedMultivector();
 
-        IGaMultivectorStorage<TScalar> GetStorageCopy();
+        IGasMultivector<T> GetMultivectorCopy();
         
-        IGaMultivectorStorage<TScalar> GetStorageCopy(Func<TScalar, TScalar> scalarMapping);
+        IGasMultivector<T> GetMultivectorCopy(Func<T, T> scalarMapping);
 
-        GaMultivectorGradedStorage<TScalar> GetMultivectorGradedStorageCopy();
+        IGasGradedMultivector<T> GetGradedMultivectorCopy();
 
-        GaMultivectorTermsStorage<TScalar> GetMultivectorTermsStorageCopy();
+        IGasTermsMultivector<T> GetTermsMultivectorCopy();
 
-        GaMultivectorTreeStorage<TScalar> GetMultivectorTreeStorageCopy();
+        GasTreeMultivector<T> GetTreeMultivectorCopy();
     }
 }

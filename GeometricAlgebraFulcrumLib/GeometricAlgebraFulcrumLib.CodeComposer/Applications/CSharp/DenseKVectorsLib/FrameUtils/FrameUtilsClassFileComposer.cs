@@ -15,7 +15,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         {
             TextComposer.Append(
                 Templates["frame_utils"],
-                "frame", CurrentNamespace,
+                "signature", CurrentNamespace,
                 "vspacedim", VSpaceDimension
             );
 

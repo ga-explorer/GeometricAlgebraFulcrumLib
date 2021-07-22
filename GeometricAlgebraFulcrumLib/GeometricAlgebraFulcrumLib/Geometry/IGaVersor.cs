@@ -1,6 +1,9 @@
-﻿namespace GeometricAlgebraFulcrumLib.Geometry
+﻿using GeometricAlgebraFulcrumLib.Algebra.Outermorphisms;
+
+namespace GeometricAlgebraFulcrumLib.Geometry
 {
-    public interface IGaVersor<T> : IGaVectorsLinearMap<T>
+    public interface IGaVersor<T> : 
+        IGaAutomorphism<T>
     {
 
     }

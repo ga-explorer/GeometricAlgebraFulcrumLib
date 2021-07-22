@@ -1,22 +1,36 @@
-﻿using GeometricAlgebraFulcrumLib.CodeComposer.Composers;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors;
-using GeometricAlgebraFulcrumLib.Processing.Scalars;
+﻿using System.Collections.Generic;
+using DataStructuresLib.BitManipulation;
+using GeometricAlgebraFulcrumLib.Algebra;
+using GeometricAlgebraFulcrumLib.CodeComposer.Composers;
+using GeometricAlgebraFulcrumLib.Processing;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions;
 using TextComposerLib.Text.Linear;
 
 namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVectorsLib
 {
     public abstract class GaLibrarySymbolicContextFileComposerBase
-        : GaClcSymbolicContextCodeFileComposerBase
+        : GaClcSymbolicContextCodeFileComposerBase, IGaSpace
     {
-        internal IGaScalarProcessor<ISymbolicExpressionAtomic> ScalarProcessor
-            => DenseKVectorsLibraryComposer.MultivectorProcessor.ScalarProcessor;
+        internal IGaProcessor<ISymbolicExpressionAtomic> Processor
+            => DenseKVectorsLibraryComposer.Processor;
 
-        internal IGaMultivectorProcessor<ISymbolicExpressionAtomic> MultivectorProcessor
-            => DenseKVectorsLibraryComposer.MultivectorProcessor;
+        internal IGaProcessor<ISymbolicExpressionAtomic> EuclideanProcessor 
+            => DenseKVectorsLibraryComposer.EuclideanProcessor;
 
-        internal int VSpaceDimension 
-            => MultivectorProcessor.BasisSet.VSpaceDimension;
+        public uint VSpaceDimension 
+            => Processor.VSpaceDimension;
+
+        public ulong GaSpaceDimension 
+            => 1UL << (int) VSpaceDimension;
+
+        public ulong MaxBasisBladeId 
+            => (1UL << (int) VSpaceDimension) - 1UL;
+
+        public uint GradesCount 
+            => VSpaceDimension + 1;
+
+        public IEnumerable<uint> Grades 
+            => GradesCount.GetRange();
 
         internal string CurrentNamespace 
             => DenseKVectorsLibraryComposer.CurrentNamespace;
@@ -54,7 +68,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         {
             TextComposer.AppendLine(
                 Templates["om_file_start"],
-                "frame", CurrentNamespace,
+                "signature", CurrentNamespace,
                 "grade", VSpaceDimension
             );
 

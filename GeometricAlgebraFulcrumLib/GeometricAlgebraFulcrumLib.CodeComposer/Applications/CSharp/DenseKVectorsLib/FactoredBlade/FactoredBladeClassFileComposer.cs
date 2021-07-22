@@ -15,7 +15,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         {
             TextComposer.Append(
                 Templates["factored_blade"],
-                "frame", CurrentNamespace,
+                "signature", CurrentNamespace,
                 "double", GaClcLanguage.ScalarTypeName
             );
 

@@ -40,12 +40,12 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
 
             var basisVectorsCoefsText = new ListTextComposer(", ");
 
-            for (var idx = 1; idx <= VSpaceDimension; idx++)
+            for (var idx = 1U; idx <= VSpaceDimension; idx++)
             {
                 basisVectorsCoefsText.Clear();
                 basisVectorsCoefsText.AddRange(
-                    (1 << (idx - 1)).PatternToSequence(VSpaceDimension, "0.0D", "1.0D")
-                    );
+                    (1 << (int) (idx - 1)).PatternToSequence((int) VSpaceDimension, "0.0D", "1.0D")
+                );
 
                 textCollection["basis_vectors"].Add("new " + CurrentNamespace + "Vector(" + basisVectorsCoefsText + ")");
                 textCollection["members_declare"].Add("public double C" + idx + " { get; set; }");
@@ -60,9 +60,9 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             Templates["vector"].SetParametersValues(textCollection);
 
             TextComposer.Append(Templates["vector"],
-                "frame", CurrentNamespace,
+                "signature", CurrentNamespace,
                 "double", GaClcLanguage.ScalarTypeName,
-                "norm2", textCollection["enorm2"].ToString() //TODO: This must be computed from the frame
+                "norm2", textCollection["enorm2"].ToString() //TODO: This must be computed from the signature
             );
 
             FileComposer.FinalizeText();

@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using DataStructuresLib.BitManipulation;
+using GeometricAlgebraFulcrumLib.Algebra;
 using GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVectorsLib.FactoredBlade;
 using GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVectorsLib.FrameUtils;
 using GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVectorsLib.KVector;
@@ -8,8 +10,8 @@ using GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVectorsL
 using GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVectorsLib.Outermorphism;
 using GeometricAlgebraFulcrumLib.CodeComposer.Composers;
 using GeometricAlgebraFulcrumLib.CodeComposer.LanguageServers;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors;
-using GeometricAlgebraFulcrumLib.Processing.Scalars;
+using GeometricAlgebraFulcrumLib.Processing;
+using GeometricAlgebraFulcrumLib.Processing.Generic;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
 using GeometricAlgebraFulcrumLib.Storage;
@@ -19,21 +21,21 @@ using TextComposerLib.Text.Parametric;
 namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVectorsLib
 {
     public sealed partial class GaLibraryComposer 
-        : GaCodeLibraryComposerBase
+        : GaCodeLibraryComposerBase, IGaSpace
     {
         /// <summary>
-        /// Generate for a single frame
+        /// Generate for a single signature
         /// </summary>
         /// <param name="rootNamespace"></param>
-        /// <param name="multivectorsProcessor"></param>
+        /// <param name="processor"></param>
         /// <param name="generateSymbolicContextCode"></param>
         /// <returns></returns>
-        public static GaLibraryComposer Generate(string rootNamespace, IGaMultivectorProcessor<ISymbolicExpressionAtomic> multivectorsProcessor, bool generateSymbolicContextCode = true)
+        public static GaLibraryComposer Generate(string rootNamespace, IGaProcessor<ISymbolicExpressionAtomic> processor, bool generateSymbolicContextCode = true)
         {
             var libGen =
                 new GaLibraryComposer(
                     rootNamespace, 
-                    multivectorsProcessor
+                    processor
                 );
 
             libGen.DefaultContextOptions.AllowGenerateCode = 
@@ -48,15 +50,24 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         internal int MaxTargetLocalVars 
             => 1024;
 
-        internal UniqueNameComposer UniqueNameComposer { get; }
+        internal IGaProcessor<ISymbolicExpressionAtomic> Processor { get; }
 
-        internal IGaMultivectorProcessor<ISymbolicExpressionAtomic> MultivectorProcessor { get; }
+        internal IGaProcessor<ISymbolicExpressionAtomic> EuclideanProcessor { get; }
 
-        internal IGaScalarProcessor<ISymbolicExpressionAtomic> ScalarProcessor
-            => MultivectorProcessor.ScalarProcessor;
+        public uint VSpaceDimension 
+            => Processor.VSpaceDimension;
 
-        internal int VSpaceDimension 
-            => MultivectorProcessor.BasisSet.VSpaceDimension;
+        public ulong GaSpaceDimension 
+            => 1UL << (int) VSpaceDimension;
+
+        public ulong MaxBasisBladeId 
+            => (1UL << (int) VSpaceDimension) - 1UL;
+
+        public uint GradesCount 
+            => VSpaceDimension + 1;
+
+        public IEnumerable<uint> Grades 
+            => GradesCount.GetRange();
 
         internal string RootNamespace { get; }
 
@@ -67,19 +78,25 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             => "Graded Multivectors Library Composer";
 
         public override string Description 
-            => "Generate multiple files holding a library for processing multivectors of a given GA frame. A Multivector is represented using zero or more non-zero k-vectors";
+            => "Generate multiple files holding a library for processing multivectors of a given GA signature. A Multivector is represented using zero or more non-zero k-vectors";
 
 
-        private GaLibraryComposer(string rootNamespace, IGaMultivectorProcessor<ISymbolicExpressionAtomic> multivectorsProcessor)
+        private GaLibraryComposer(string rootNamespace, IGaProcessor<ISymbolicExpressionAtomic> processor)
             : base(GaClcLanguageServer.CSharpWithMathematica())
         {
             RootNamespace = rootNamespace;
-            MultivectorProcessor = multivectorsProcessor;
-            UniqueNameComposer = new UniqueNameComposer() { IndexFormatString = "X4" };
+            Processor = processor;
+            EuclideanProcessor =
+                processor.IsOrthonormal && processor.Signature.IsEuclidean
+                    ? processor
+                    : GaProcessorGenericOrthonormal<ISymbolicExpressionAtomic>.CreateEuclidean(
+                        processor,
+                        processor.VSpaceDimension
+                    );
         }
 
         
-        internal void SetBasisBladeToArrayNaming(SymbolicContext context, IGaKVectorStorage<ISymbolicExpressionAtomic> kVector, string arrayVarName)
+        internal void SetBasisBladeToArrayNaming(SymbolicContext context, IGasKVector<ISymbolicExpressionAtomic> kVector, string arrayVarName)
         {
             context.SetExternalNamesByTermIndex(
                 kVector,
@@ -161,9 +178,9 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
 
 //        private void GenerateKVectorSdfMethodsFile()
 //        {
-//            //Make sure the PointToMultivector3D macro is defined inside the frame
+//            //Make sure the PointToMultivector3D macro is defined inside the signature
 //            var pointToMultivectorSymbolicContext =
-//                MultivectorProcessor.SymbolicContexts.FirstOrDefault(
+//                Processor.SymbolicContexts.FirstOrDefault(
 //                    m => m.Name == "PointToMultivector3D"
 //                );
 
@@ -179,22 +196,22 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
 //            );
 
 //            var sdfOpnsSymbolicContextCode = @"
-//macro #frame#.SdfOpns(mv : Multivector, x : scalar, y : scalar, z : scalar) : scalar
+//macro #signature#.SdfOpns(mv : Multivector, x : scalar, y : scalar, z : scalar) : scalar
 //begin
 //    let mv1 = PointToMultivector3D(x, y, z) op mv
     
 //    return mv1 sp reverse(mv1)
 //end
-//".Replace("#frame#", CurrentNamespace);
+//".Replace("#signature#", CurrentNamespace);
 
 //            var sdfIpnsSymbolicContextCode = @"
-//macro #frame#.SdfIpns(mv : Multivector, x : scalar, y : scalar, z : scalar) : scalar
+//macro #signature#.SdfIpns(mv : Multivector, x : scalar, y : scalar, z : scalar) : scalar
 //begin
 //    let mv1 = PointToMultivector3D(x, y, z) lcp mv
     
 //    return mv1 sp reverse(mv1)
 //end
-//".Replace("#frame#", CurrentNamespace);
+//".Replace("#signature#", CurrentNamespace);
 
 //            CodeFilesComposer.InitalizeFile("ScalarDistanceFunctions.cs");
 
@@ -217,16 +234,18 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         }
         
 
-        internal void GenerateBilinearProductMethodFile(GaClcOperationSpecs opSpecs, int inGrade1, int inGrade2, int outGrade = -1)
+        internal void GenerateBilinearProductMethodFile(GaClcOperationSpecs opSpecs, uint inGrade1, uint inGrade2)
         {
             CodeFilesComposer.DownFolder(opSpecs.GetName());
 
-            if (outGrade < 0)
-                outGrade = opSpecs.GetKVectorsBilinearProductGrade(
+            var (isValid, outGrade) = opSpecs.GetKVectorsBilinearProductGrade(
                     VSpaceDimension,
                     inGrade1,
                     inGrade2
                 );
+
+            if (!isValid)
+                throw new InvalidOperationException();
 
             var methodName = opSpecs.GetName(
                 inGrade1, inGrade2, outGrade
@@ -250,8 +269,33 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             CodeFilesComposer.UpFolder();
         }
 
-        
-        internal void GenerateScalarProductMethodFile(GaClcOperationSpecs opSpecs, int inGrade)
+        internal void GenerateBilinearProductMethodFile(GaClcOperationSpecs opSpecs, uint inGrade1, uint inGrade2, uint outGrade)
+        {
+            CodeFilesComposer.DownFolder(opSpecs.GetName());
+
+            var methodName = opSpecs.GetName(
+                inGrade1, inGrade2, outGrade
+            );
+
+            CodeFilesComposer.InitalizeFile(methodName + ".cs");
+
+            var fileGen =
+                new BilinearProductMethodFileComposer(
+                    this,
+                    opSpecs,
+                    inGrade1,
+                    inGrade2,
+                    outGrade
+                );
+
+            fileGen.Generate();
+
+            CodeFilesComposer.UnselectActiveFile();
+
+            CodeFilesComposer.UpFolder();
+        }
+
+        internal void GenerateScalarProductMethodFile(GaClcOperationSpecs opSpecs, uint inGrade)
         {
             CodeFilesComposer.DownFolder(opSpecs.GetName());
             
@@ -275,7 +319,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             CodeFilesComposer.UpFolder();
         }
 
-        private void GenerateBilinearProductMainMethodFile(GaClcOperationSpecs opSpecs, string zeroCondition, Func<int, int, int> getFinalGrade, Func<int, int, bool> isLegalGrade)
+        private void GenerateBilinearProductMainMethodFile(GaClcOperationSpecs opSpecs, string zeroCondition, Func<uint, uint, uint> getFinalGrade, Func<uint, uint, bool> isLegalGrade)
         {
             CodeFilesComposer.InitalizeFile(opSpecs.GetName() + ".cs");
 
@@ -326,17 +370,17 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
 
             foreach (var opSpecs in opSpecsArray)
             {
-                foreach (var inGrade1 in MultivectorProcessor.BasisSet.Grades)
+                foreach (var inGrade1 in Processor.Grades)
                 {
-                    foreach (var inGrade2 in MultivectorProcessor.BasisSet.Grades)
+                    foreach (var inGrade2 in Processor.Grades)
                     {
-                        var outGrade = opSpecs.GetKVectorsBilinearProductGrade(
+                        var (isValid, outGrade) = opSpecs.GetKVectorsBilinearProductGrade(
                             VSpaceDimension,
                             inGrade1,
                             inGrade2
                         );
 
-                        if (MultivectorProcessor.BasisSet.IsValidGrade(outGrade) == false)
+                        if (!isValid)
                             continue;
 
                         GenerateBilinearProductMethodFile(
@@ -388,28 +432,28 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             GenerateBilinearProductMainMethodFile(
                 opSpecsArray[5],
                 "Grade != blade2.Grade",
-                (g1, g2) => Math.Abs(g1 - g2),
+                (g1, g2) => (uint) Math.Abs(g1 - g2),
                 (g1, g2) => g1 != g2
             );
             
             GenerateBilinearProductMainMethodFile(
                 opSpecsArray[6],
                 "Grade != blade2.Grade",
-                (g1, g2) => Math.Abs(g1 - g2),
+                (g1, g2) => (uint) Math.Abs(g1 - g2),
                 (g1, g2) => g1 != g2
             );
             
             GenerateBilinearProductMainMethodFile(
                 opSpecsArray[7],
                 "Grade != blade2.Grade && Grade != 0 && blade2.Grade != 0",
-                (g1, g2) => Math.Abs(g1 - g2),
+                (g1, g2) => (uint) Math.Abs(g1 - g2),
                 (g1, g2) => g1 != g2 && g1 != 0 && g2 != 0
             );
             
             GenerateBilinearProductMainMethodFile(
                 opSpecsArray[8],
                 "Grade != blade2.Grade && Grade != 0 && blade2.Grade != 0",
-                (g1, g2) => Math.Abs(g1 - g2),
+                (g1, g2) => (uint) Math.Abs(g1 - g2),
                 (g1, g2) => g1 != g2 && g1 != 0 && g2 != 0
             );
         }
@@ -424,7 +468,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
 
             foreach (var opSpecs in opSpecsArray)
             {
-                foreach (var inGrade in MultivectorProcessor.BasisSet.Grades)
+                foreach (var inGrade in Processor.Grades)
                 {
                     GenerateScalarProductMethodFile(
                         opSpecs,
@@ -552,12 +596,12 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
 
             foreach (var opSpecs in opSpecsArray)
             {
-                foreach (var inGrade1 in MultivectorProcessor.BasisSet.Grades)
+                foreach (var inGrade1 in Processor.Grades)
                 {
                     if (inGrade1.IsOdd() && opSpecs.OperationKind == GaClcOperationKind.BinaryRotate)
                         continue;
 
-                    foreach (var inGrade2 in MultivectorProcessor.BasisSet.Grades)
+                    foreach (var inGrade2 in Processor.Grades)
                     {
                         var methodName =
                             opSpecs.GetName(inGrade1, inGrade2, inGrade2);
@@ -585,7 +629,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             }
         }
 
-        private void GenerateFactorMethod(int inGrade, ulong inId)
+        private void GenerateFactorMethod(uint inGrade, ulong inId)
         {
             CodeFilesComposer.DownFolder("Factor");
 
@@ -610,14 +654,14 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
 
             CodeFilesComposer.UnselectActiveFile();
 
-            for (var inGrade = 2; inGrade <= VSpaceDimension; inGrade++)
+            for (var inGrade = 2U; inGrade <= VSpaceDimension; inGrade++)
             {
                 var kvSpaceDimension = 
-                    MultivectorProcessor.BasisSet.KvSpaceDimension(inGrade);
+                    Processor.KvSpaceDimension(inGrade);
 
                 for (var inIndex = 0UL; inIndex < kvSpaceDimension; inIndex++)
                 {
-                    var inId = MultivectorProcessor.BasisSet.BasisBladeId(inGrade, inIndex);
+                    var inId = Processor.BasisBladeId(inGrade, inIndex);
 
                     GenerateFactorMethod(inGrade, inId);
                 }
@@ -843,7 +887,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             CodeFilesComposer.UnselectActiveFile();
         }
 
-        private void GenerateOutermorphismApplyMethodFile(int inGrade)
+        private void GenerateOutermorphismApplyMethodFile(uint inGrade)
         {
             CodeFilesComposer.InitalizeFile("Map_" + inGrade + ".cs");
 
@@ -866,7 +910,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
 
             CodeFilesComposer.DownFolder("Map");
 
-            for (var inGrade = 1; inGrade <= VSpaceDimension; inGrade++)
+            for (var inGrade = 1U; inGrade <= VSpaceDimension; inGrade++)
                 GenerateOutermorphismApplyMethodFile(inGrade);
 
             CodeFilesComposer.UpFolder();
@@ -1030,7 +1074,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         {
             var libGen = new GaLibraryComposer(
                 RootNamespace, 
-                MultivectorProcessor
+                Processor
             );
 
             libGen.DefaultContextOptions.SetOptions(DefaultContextOptions);

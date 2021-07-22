@@ -1,4 +1,5 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.Outermorphisms.Computed;
+﻿using GeometricAlgebraFulcrumLib.Algebra;
+using GeometricAlgebraFulcrumLib.Algebra.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
 using GeometricAlgebraFulcrumLib.Storage;
@@ -9,13 +10,13 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
     internal class MapMethodFileComposer : 
         GaLibrarySymbolicContextFileComposerBase
     {
-        private readonly int _inputGrade;
+        private readonly uint _inputGrade;
         private ISymbolicExpressionAtomic[,] _linearMapArray;
-        private IGaKVectorStorage<ISymbolicExpressionAtomic> _inputKVector;
-        private IGaKVectorStorage<ISymbolicExpressionAtomic> _outputKVector;
+        private IGasKVector<ISymbolicExpressionAtomic> _inputKVector;
+        private IGasKVector<ISymbolicExpressionAtomic> _outputKVector;
 
 
-        internal MapMethodFileComposer(GaLibraryComposer libGen, int inGrade)
+        internal MapMethodFileComposer(GaLibraryComposer libGen, uint inGrade)
             : base(libGen)
         {
             _inputGrade = inGrade;
@@ -25,8 +26,8 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         protected override void DefineContextParameters(SymbolicContext context)
         {
             _linearMapArray = context.ParameterVariablesFactory.CreateDenseArray(
-                VSpaceDimension,
-                VSpaceDimension,
+                (int) VSpaceDimension,
+                (int) VSpaceDimension,
                 (row, col) => $"omScalarR{row}C{col}"
             );
 
@@ -40,10 +41,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         protected override void DefineContextComputations(SymbolicContext context)
         {
             var outermorphism =
-                GaOmComputed<ISymbolicExpressionAtomic>.Create(
-                    MultivectorProcessor, 
-                    _linearMapArray
-                );
+                Processor.CreateComputedOutermorphism(_linearMapArray);
 
             _outputKVector = outermorphism.MapKVector(_inputKVector);
 
@@ -77,7 +75,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
                 Templates["om_apply"],
                 "double", GaClcLanguage.ScalarTypeName,
                 "grade", _inputGrade,
-                "num", MultivectorProcessor.BasisSet.KvSpaceDimension(_inputGrade),
+                "num", this.KvSpaceDimension(_inputGrade),
                 "computations", computationsText
             );
 

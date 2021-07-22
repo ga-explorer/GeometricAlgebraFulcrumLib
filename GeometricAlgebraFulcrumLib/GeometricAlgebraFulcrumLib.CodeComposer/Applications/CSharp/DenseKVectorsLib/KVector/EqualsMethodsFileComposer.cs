@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using DataStructuresLib.BitManipulation;
+using GeometricAlgebraFulcrumLib.Algebra;
 using TextComposerLib.Text.Linear;
 using TextComposerLib.Text.Structured;
 
@@ -37,15 +39,15 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
 
             var casesText = new ListTextComposer(Environment.NewLine);
 
-            foreach (var grade in MultivectorProcessor.BasisSet.Grades)
+            foreach (var grade in Processor.Grades)
                 casesText.Add(caseTemplate,
                     "grade", grade,
-                    "num", MultivectorProcessor.BasisSet.KvSpaceDimension(grade)
+                    "num", this.KvSpaceDimension(grade)
                 );
 
             TextComposer.AppendAtNewLine(
                 Templates["main_equals"],
-                "frame", CurrentNamespace,
+                "signature", CurrentNamespace,
                 "cases", casesText
             );
         }
@@ -55,9 +57,9 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             GenerateKVectorFileStartCode();
 
             var kvSpaceDimList =
-                Enumerable
-                .Range(0, VSpaceDimension)
-                .Select(grade => MultivectorProcessor.BasisSet.KvSpaceDimension(grade))
+                VSpaceDimension
+                .GetRange()
+                .Select(grade => Processor.KvSpaceDimension(grade))
                 .Distinct();
 
             foreach (var kvSpaceDim in kvSpaceDimList)

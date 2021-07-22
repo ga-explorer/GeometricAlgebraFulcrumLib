@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Text;
 using EuclideanGeometryLib.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.Processing;
 using GeometricAlgebraFulcrumLib.Processing.Implementations.Float64;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
 
@@ -70,6 +71,15 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean.Space2D
             return !v1.Equals(v2);
         }
 
+
+        public uint VSpaceDimension 
+            => 2;
+
+        public ulong GaSpaceDimension
+            => 4;
+
+        public IGaProcessor<double> Processor 
+            => GaEuclideanSpace2DUtils.MultivectorProcessor;
 
         public IGaScalarProcessor<double> ScalarProcessor 
             => GaScalarProcessorFloat64.DefaultProcessor;

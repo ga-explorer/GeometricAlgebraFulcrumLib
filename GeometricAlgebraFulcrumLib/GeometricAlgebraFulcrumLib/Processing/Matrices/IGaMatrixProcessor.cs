@@ -6,13 +6,13 @@ namespace GeometricAlgebraFulcrumLib.Processing.Matrices
     /// <summary>
     /// This processor class provides basic operations on matrices.
     /// The matrix is represented in a single object of generic type TMatrix.
-    /// A scalar element of the matrix is represented using the type TScalar.
+    /// A scalar element of the matrix is represented using the type T.
     /// </summary>
     /// <typeparam name="TMatrix">The type of matrix objects</typeparam>
-    /// <typeparam name="TScalar">The type of matrix scalars</typeparam>
-    public interface IGaMatrixProcessor<TMatrix, TScalar>
+    /// <typeparam name="T">The type of matrix scalars</typeparam>
+    public interface IGaMatrixProcessor<TMatrix, T>
     {
-        IGaScalarProcessor<TScalar> ScalarProcessor { get; }
+        IGaScalarProcessor<T> ScalarProcessor { get; }
 
         int GetRowsCount(TMatrix matrix);
 
@@ -20,17 +20,17 @@ namespace GeometricAlgebraFulcrumLib.Processing.Matrices
 
         Tuple<int, int> GetSize(TMatrix matrix);
 
-        TScalar[,] GetArray(TMatrix matrix);
+        T[,] GetArray(TMatrix matrix);
 
-        TMatrix CreateMatrix(TScalar[,] array);
+        TMatrix CreateMatrix(T[,] array);
 
-        TMatrix CreateRowVectorMatrix(TScalar[] array);
+        TMatrix CreateRowVectorMatrix(T[] array);
 
-        TMatrix CreateRowVectorMatrix(TScalar[,] array, int rowIndex);
+        TMatrix CreateRowVectorMatrix(T[,] array, int rowIndex);
 
-        TMatrix CreateColumnVectorMatrix(TScalar[] array);
+        TMatrix CreateColumnVectorMatrix(T[] array);
 
-        TMatrix CreateColumnVectorMatrix(TScalar[,] array, int columnIndex);
+        TMatrix CreateColumnVectorMatrix(T[,] array, int columnIndex);
 
         TMatrix CreateZeroMatrix(int size);
 
@@ -38,35 +38,35 @@ namespace GeometricAlgebraFulcrumLib.Processing.Matrices
 
         TMatrix CreateUnityMatrix(int size);
 
-        TMatrix AddMatrixScalar(TMatrix matrix, TScalar scalar);
+        TMatrix AddMatrixScalar(TMatrix matrix, T scalar);
 
-        TMatrix AddScalarMatrix(TScalar scalar, TMatrix matrix);
+        TMatrix AddScalarMatrix(T scalar, TMatrix matrix);
 
         TMatrix AddMatrices(TMatrix matrix1, TMatrix matrix2);
 
-        TMatrix SubtractMatrixScalar(TMatrix matrix, TScalar scalar);
+        TMatrix SubtractMatrixScalar(TMatrix matrix, T scalar);
 
-        TMatrix SubtractScalarMatrix(TScalar scalar, TMatrix matrix);
+        TMatrix SubtractScalarMatrix(T scalar, TMatrix matrix);
 
         TMatrix SubtractMatrices(TMatrix matrix1, TMatrix matrix2);
 
-        TMatrix ScalarMatrixProduct(TScalar scalar, TMatrix matrix);
+        TMatrix ScalarMatrixProduct(T scalar, TMatrix matrix);
 
-        TMatrix MatrixScalarProduct(TMatrix matrix, TScalar scalar);
+        TMatrix MatrixScalarProduct(TMatrix matrix, T scalar);
 
         TMatrix TimesScalars(TMatrix matrix1, TMatrix matrix2);
 
         TMatrix DivideScalars(TMatrix matrix1, TMatrix matrix2);
 
-        TMatrix DivideMatrixScalar(TMatrix matrix, TScalar scalar);
+        TMatrix DivideMatrixScalar(TMatrix matrix, T scalar);
 
-        TMatrix DivideScalarMatrix(TScalar scalar, TMatrix matrix);
+        TMatrix DivideScalarMatrix(T scalar, TMatrix matrix);
 
         TMatrix MatrixProduct(TMatrix matrix1, TMatrix matrix2);
 
-        TMatrix MapScalars(TMatrix matrix1, TMatrix matrix2, Func<TScalar, TScalar, TScalar> mappingFunc);
+        TMatrix MapScalars(TMatrix matrix1, TMatrix matrix2, Func<T, T, T> mappingFunc);
 
-        TMatrix MapScalars(TMatrix matrix, Func<TScalar, TScalar> mappingFunc);
+        TMatrix MapScalars(TMatrix matrix, Func<T, T> mappingFunc);
 
         TMatrix Negative(TMatrix matrix);
 
@@ -76,10 +76,10 @@ namespace GeometricAlgebraFulcrumLib.Processing.Matrices
 
         TMatrix InverseAdjoint(TMatrix matrix);
 
-        int EigenDecomposition(TMatrix matrix, out Tuple<TScalar, TScalar[]>[] realPairs, out Tuple<TScalar, TScalar[]>[] imagPairs);
+        int EigenDecomposition(TMatrix matrix, out Tuple<T, T[]>[] realPairs, out Tuple<T, T[]>[] imagPairs);
 
-        Tuple<TScalar, TScalar>[] EigenValues(TMatrix matrix);
+        Tuple<T, T>[] EigenValues(TMatrix matrix);
 
-        Tuple<TScalar[], TScalar[]>[] EigenVectors(TMatrix matrix);
+        Tuple<T[], T[]>[] EigenVectors(TMatrix matrix);
     }
 }

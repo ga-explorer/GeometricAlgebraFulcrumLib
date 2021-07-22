@@ -2,13 +2,13 @@
 
 namespace GeometricAlgebraFulcrumLib.Storage.Composers
 {
-    public interface IGaBivectorStorageComposer<TScalar>
-        : IGaKVectorStorageComposer<TScalar>
+    public interface IGaBivectorStorageComposer<T>
+        : IGaKVectorStorageComposer<T>
     {
-        IGaBivectorStorage<TScalar> GetBivectorStorage();
+        IGasBivector<T> GetBivectorStorage();
 
-        IGaBivectorStorage<TScalar> GetBivectorStorageCopy();
+        IGasBivector<T> GetBivectorStorageCopy();
         
-        IGaBivectorStorage<TScalar> GetBivectorStorageCopy(Func<TScalar, TScalar> scalarMapping);
+        IGasBivector<T> GetBivectorStorageCopy(Func<T, T> scalarMapping);
     }
 }

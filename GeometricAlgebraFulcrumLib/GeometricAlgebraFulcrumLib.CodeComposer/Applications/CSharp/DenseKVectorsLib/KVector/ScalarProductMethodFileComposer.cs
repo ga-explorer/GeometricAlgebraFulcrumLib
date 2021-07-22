@@ -1,5 +1,7 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Algebra.Signatures;
+using GeometricAlgebraFulcrumLib.Algebra;
+using GeometricAlgebraFulcrumLib.Processing.Products;
+using GeometricAlgebraFulcrumLib.Processing.Products.Euclidean;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Variables;
@@ -11,23 +13,19 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
     internal sealed class ScalarProductMethodFileComposer : 
         GaLibrarySymbolicContextFileComposerBase
     {
-        private IGaKVectorStorage<ISymbolicExpressionAtomic> _inputKVector1;
-        private IGaKVectorStorage<ISymbolicExpressionAtomic> _inputKVector2;
+        private readonly GaClcOperationSpecs _operationSpecs;
+        private readonly uint _inputGrade;
+        private readonly uint _outputGrade = 0U;
+        private IGasKVector<ISymbolicExpressionAtomic> _inputKVector1;
+        private IGasKVector<ISymbolicExpressionAtomic> _inputKVector2;
         private SymbolicVariableComputed _outputScalar;
 
 
-        internal GaClcOperationSpecs OperationSpecs { get; }
-
-        internal int InputGrade { get; }
-
-        internal int OutputGrade => 0;
-
-
-        internal ScalarProductMethodFileComposer(GaLibraryComposer libGen, GaClcOperationSpecs opSpecs, int inGrade)
+        internal ScalarProductMethodFileComposer(GaLibraryComposer libGen, GaClcOperationSpecs opSpecs, uint inGrade)
             : base(libGen)
         {
-            OperationSpecs = opSpecs;
-            InputGrade = inGrade;
+            _operationSpecs = opSpecs;
+            _inputGrade = inGrade;
         }
 
 
@@ -35,25 +33,25 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         {
             _inputKVector1 = context.ParameterVariablesFactory.CreateDenseKVector(
                 VSpaceDimension,
-                InputGrade,
+                _inputGrade,
                 index => $"kVector1Scalar{index}"
             );
 
             _inputKVector2 = context.ParameterVariablesFactory.CreateDenseKVector(
                 VSpaceDimension,
-                InputGrade,
+                _inputGrade,
                 index => $"kVector2Scalar{index}"
             );
         }
 
         protected override void DefineContextComputations(SymbolicContext context)
         {
-            var outputScalar = OperationSpecs.OperationKind switch
+            var outputScalar = _operationSpecs.OperationKind switch
             {
                 GaClcOperationKind.BinaryScalarProduct =>
-                    OperationSpecs.IsEuclidean
+                    _operationSpecs.IsEuclidean
                         ? _inputKVector1.ESp(_inputKVector2)
-                        : MultivectorProcessor.Sp(_inputKVector1, _inputKVector2),
+                        : Processor.Sp(_inputKVector1, _inputKVector2),
 
                 _ => throw new InvalidOperationException()
             };
@@ -92,10 +90,10 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
                 GenerateCode();
 
             var kvSpaceDimension = 
-                MultivectorProcessor.BasisSet.KvSpaceDimension(OutputGrade);
+                this.KvSpaceDimension(_outputGrade);
 
             var methodName =
-                OperationSpecs.GetName(InputGrade, InputGrade);
+                _operationSpecs.GetName(_inputGrade, _inputGrade);
 
             TextComposer.AppendAtNewLine(
                 Templates["bilinearproduct"],

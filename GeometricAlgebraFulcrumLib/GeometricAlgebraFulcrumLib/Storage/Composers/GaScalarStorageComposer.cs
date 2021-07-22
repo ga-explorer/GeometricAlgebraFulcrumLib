@@ -5,22 +5,22 @@ using GeometricAlgebraFulcrumLib.Processing.Scalars;
 
 namespace GeometricAlgebraFulcrumLib.Storage.Composers
 {
-    public sealed class GaScalarStorageComposer<TScalar>
-        : IGaScalarStorageComposer<TScalar>
+    public sealed class GaScalarStorageComposer<T>
+        : IGaScalarStorageComposer<T>
     {
-        public IGaScalarProcessor<TScalar> ScalarProcessor { get; }
+        public IGaScalarProcessor<T> ScalarProcessor { get; }
 
-        public TScalar Scalar { get; private set; }
+        public T Scalar { get; private set; }
 
 
-        public GaScalarStorageComposer([NotNull] IGaScalarProcessor<TScalar> scalarProcessor)
+        public GaScalarStorageComposer([NotNull] IGaScalarProcessor<T> scalarProcessor)
         {
             ScalarProcessor = scalarProcessor;
 
             Scalar = scalarProcessor.ZeroScalar;
         }
 
-        public GaScalarStorageComposer([NotNull] IGaScalarProcessor<TScalar> scalarProcessor, [NotNull] TScalar scalar)
+        public GaScalarStorageComposer([NotNull] IGaScalarProcessor<T> scalarProcessor, [NotNull] T scalar)
         {
             ScalarProcessor = scalarProcessor;
 
@@ -33,7 +33,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return false;
         }
 
-        public GaScalarStorageComposer<TScalar> Clear()
+        public GaScalarStorageComposer<T> Clear()
         {
             Scalar = ScalarProcessor.ZeroScalar;
 
@@ -41,56 +41,56 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         }
 
 
-        public GaScalarStorageComposer<TScalar> SetScalar([NotNull] TScalar scalar)
+        public GaScalarStorageComposer<T> SetScalar([NotNull] T scalar)
         {
             Scalar = scalar;
 
             return this;
         }
 
-        public GaScalarStorageComposer<TScalar> SetScalarToNegative()
+        public GaScalarStorageComposer<T> SetScalarToNegative()
         {
             Scalar = ScalarProcessor.Negative(Scalar);
 
             return this;
         }
 
-        public GaScalarStorageComposer<TScalar> AddScalar([NotNull] TScalar scalar)
+        public GaScalarStorageComposer<T> AddScalar([NotNull] T scalar)
         {
             Scalar = ScalarProcessor.Add(Scalar, scalar);
 
             return this;
         }
 
-        public GaScalarStorageComposer<TScalar> SubtractScalar([NotNull] TScalar scalar)
+        public GaScalarStorageComposer<T> SubtractScalar([NotNull] T scalar)
         {
             Scalar = ScalarProcessor.Subtract(Scalar, scalar);
 
             return this;
         }
 
-        public GaScalarStorageComposer<TScalar> AddScalars(IEnumerable<TScalar> scalarsArray)
+        public GaScalarStorageComposer<T> AddScalars(IEnumerable<T> scalarsArray)
         {
             Scalar = ScalarProcessor.Add(Scalar, ScalarProcessor.Add(scalarsArray));
 
             return this;
         }
 
-        public GaScalarStorageComposer<TScalar> AddScalars(params TScalar[] scalarsArray)
+        public GaScalarStorageComposer<T> AddScalars(params T[] scalarsArray)
         {
             Scalar = ScalarProcessor.Add(Scalar, ScalarProcessor.Add(scalarsArray));
 
             return this;
         }
 
-        public GaScalarStorageComposer<TScalar> SubtractScalars(IEnumerable<TScalar> scalarsArray)
+        public GaScalarStorageComposer<T> SubtractScalars(IEnumerable<T> scalarsArray)
         {
             Scalar = ScalarProcessor.Subtract(Scalar, ScalarProcessor.Add(scalarsArray));
 
             return this;
         }
 
-        public GaScalarStorageComposer<TScalar> SubtractScalars(params TScalar[] scalarsArray)
+        public GaScalarStorageComposer<T> SubtractScalars(params T[] scalarsArray)
         {
             Scalar = ScalarProcessor.Subtract(Scalar, ScalarProcessor.Add(scalarsArray));
 
@@ -98,93 +98,83 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         }
 
 
-        public IGaMultivectorStorage<TScalar> GetCompactStorage()
+        public IGasMultivector<T> GetCompactMultivector()
         {
-            return GaScalarTermStorage<TScalar>.Create(
-                ScalarProcessor,
-                Scalar
-            );
+            return ScalarProcessor.CreateScalar(Scalar);
         }
 
-        public IGaMultivectorGradedStorage<TScalar> GetCompactGradedStorage()
+        public IGasGradedMultivector<T> GetCompactGradedMultivector()
         {
-            return GaScalarTermStorage<TScalar>.Create(
-                ScalarProcessor,
-                Scalar
-            );
+            return ScalarProcessor.CreateScalar(Scalar);
         }
 
 
-        public IGaMultivectorStorage<TScalar> GetStorageCopy()
+        public IGasMultivector<T> GetMultivectorCopy()
         {
-            return GaScalarTermStorage<TScalar>.Create(
-                ScalarProcessor,
-                Scalar
+            return ScalarProcessor.CreateScalar(Scalar);
+        }
+
+        public IGasMultivector<T> GetMultivectorCopy(Func<T, T> scalarMapping)
+        {
+            return ScalarProcessor.CreateScalar(scalarMapping(Scalar));
+        }
+
+        public IGasGradedMultivector<T> GetGradedMultivectorCopy()
+        {
+            var gradeIndexScalarDictionary = new Dictionary<uint, Dictionary<ulong, T>>()
+            {
+                {0, new Dictionary<ulong, T>() {{0, Scalar}}}
+            };
+
+            return new GasGradedMultivector<T>(
+                ScalarProcessor, 
+                gradeIndexScalarDictionary,
+                0UL
             );
         }
 
-        public IGaMultivectorStorage<TScalar> GetStorageCopy(Func<TScalar, TScalar> scalarMapping)
+        public IGasTermsMultivector<T> GetTermsMultivectorCopy()
         {
-            return GaScalarTermStorage<TScalar>.Create(
-                ScalarProcessor,
+            var idScalarDictionary = new Dictionary<ulong, T>() {{0, Scalar}};
+
+            return new GasTermsMultivector<T>(
+                ScalarProcessor, 
+                idScalarDictionary,
+                0UL
+            );
+        }
+
+        public GasTreeMultivector<T> GetTreeMultivectorCopy()
+        {
+            var idScalarDictionary = new Dictionary<ulong, T>() {{0, Scalar}};
+
+            return new GasTreeMultivector<T>(
+                ScalarProcessor, 
+                idScalarDictionary,
+                0UL
+            );
+        }
+
+        public IGasKVector<T> GetKVectorStorageCopy()
+        {
+            return ScalarProcessor.CreateScalar(Scalar);
+        }
+
+        public IGasKVector<T> GetKVectorStorageCopy(Func<T, T> scalarMapping)
+        {
+            return ScalarProcessor.CreateScalar(
                 scalarMapping(Scalar)
             );
         }
 
-        public GaMultivectorGradedStorage<TScalar> GetMultivectorGradedStorageCopy()
+        public IGasScalar<T> GetScalarStorage()
         {
-            return GaMultivectorGradedStorage<TScalar>.CreateScalar(
-                ScalarProcessor, 
-                Scalar
-            );
+            return ScalarProcessor.CreateScalar(Scalar);
         }
 
-        public GaMultivectorTermsStorage<TScalar> GetMultivectorTermsStorageCopy()
+        public IGasKVector<T> GetKVectorStorage()
         {
-            return GaMultivectorTermsStorage<TScalar>.CreateScalar(
-                ScalarProcessor, 
-                Scalar
-            );
-        }
-
-        public GaMultivectorTreeStorage<TScalar> GetMultivectorTreeStorageCopy()
-        {
-            return GaMultivectorTreeStorage<TScalar>.CreateScalar(
-                ScalarProcessor, 
-                Scalar
-            );
-        }
-
-        public IGaKVectorStorage<TScalar> GetKVectorStorageCopy()
-        {
-            return GaScalarTermStorage<TScalar>.Create(
-                ScalarProcessor, 
-                Scalar
-            );
-        }
-
-        public IGaKVectorStorage<TScalar> GetKVectorStorageCopy(Func<TScalar, TScalar> scalarMapping)
-        {
-            return GaScalarTermStorage<TScalar>.Create(
-                ScalarProcessor, 
-                scalarMapping(Scalar)
-            );
-        }
-
-        public IGaScalarStorage<TScalar> GetScalarStorage()
-        {
-            return GaScalarTermStorage<TScalar>.Create(
-                ScalarProcessor, 
-                Scalar
-            );
-        }
-
-        public IGaKVectorStorage<TScalar> GetKVectorStorage()
-        {
-            return GaScalarTermStorage<TScalar>.Create(
-                ScalarProcessor, 
-                Scalar
-            );
+            return ScalarProcessor.CreateScalar(Scalar);
         }
     }
 }

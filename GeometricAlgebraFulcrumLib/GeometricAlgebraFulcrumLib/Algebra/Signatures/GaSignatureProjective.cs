@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using DataStructuresLib.BitManipulation;
 using GeometricAlgebraFulcrumLib.Algebra.Basis;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.Signatures
@@ -8,58 +10,68 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Signatures
     /// Represents the signature of a PGA basis (p,0,1)
     /// </summary>
     public readonly struct GaSignatureProjective :
-        IGaSignature
+        IGaSignatureComputed
     {
-        public static GaSignatureProjective Create(int euclideanVSpaceDimension)
-        {
-            return new GaSignatureProjective(euclideanVSpaceDimension);
-        }
+        public uint VSpaceDimension { get; }
 
+        public ulong GaSpaceDimension 
+            => 1UL << (int) VSpaceDimension;
 
-        public GaBasisSet BasisSet { get; }
+        public ulong MaxBasisBladeId 
+            => (1UL << (int) VSpaceDimension) - 1UL;
 
-        public int SignatureId { get; }
+        public uint GradesCount 
+            => VSpaceDimension + 1;
 
-        public int VSpaceDimension 
-            => BasisSet.VSpaceDimension;
+        public IEnumerable<uint> Grades 
+            => GradesCount.GetRange();
 
-        public int PositiveCount 
-            => BasisSet.VSpaceDimension - 1;
+        public uint SignatureId 
+            => (VSpaceDimension - 1) | (1u << 12);
 
-        public int NegativeCount 
+        public uint PositiveCount 
+            => VSpaceDimension - 1;
+
+        public uint NegativeCount 
             => 0;
 
-        public int ZeroCount 
+        public uint ZeroCount 
             => 1;
         
         public bool IsEuclidean 
             => false;
 
-        public int EuclideanVSpaceDimension 
-            => BasisSet.VSpaceDimension - 1;
+        public bool IsProjective 
+            => true;
+
+        public bool IsConformal 
+            => false;
+
+        public bool IsMotherAlgebra 
+            => false;
+
+        public uint EuclideanVSpaceDimension 
+            => VSpaceDimension - 1;
 
         public ulong ZeroBasisVectorIndex 
-            => (ulong) BasisSet.VSpaceDimension - 2;
+            => (ulong) VSpaceDimension - 2;
 
         public ulong ZeroBasisVectorId 
-            => 1UL << (BasisSet.VSpaceDimension - 2);
+            => 1UL << (int) (VSpaceDimension - 2);
 
 
-        private GaSignatureProjective(int euclideanVSpaceDimension)
+        internal GaSignatureProjective(uint vSpaceDimension)
         {
-            var vSpaceDimension = euclideanVSpaceDimension + 1;
+            if (vSpaceDimension > GaSpaceUtils.MaxVSpaceDimension)
+                throw new ArgumentOutOfRangeException(nameof(vSpaceDimension));
 
-            if (vSpaceDimension < 2 || vSpaceDimension > GaBasisUtils.MaxVSpaceDimension)
-                throw new ArgumentOutOfRangeException(nameof(euclideanVSpaceDimension));
-
-            BasisSet = new GaBasisSet(vSpaceDimension);
-            SignatureId = (vSpaceDimension - 1) | (1 << 12);
+            VSpaceDimension = vSpaceDimension;
         }
 
 
         public int GetBasisVectorSignature(int index)
         {
-            Debug.Assert(index >= 0 && index < BasisSet.VSpaceDimension);
+            Debug.Assert(index >= 0 && index < VSpaceDimension);
 
             return (ulong) index == ZeroBasisVectorIndex 
                 ? 0 : 1;
@@ -67,7 +79,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Signatures
 
         public int GetBasisVectorSignature(ulong index)
         {
-            Debug.Assert(index < (ulong) BasisSet.VSpaceDimension);
+            Debug.Assert(index < VSpaceDimension);
 
             return index == ZeroBasisVectorIndex 
                 ? 0 : 1;
@@ -75,8 +87,8 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Signatures
 
         public int GetBasisBivectorSignature(int index1, int index2)
         {
-            Debug.Assert(index1 >= 0 && index1 < BasisSet.VSpaceDimension);
-            Debug.Assert(index2 >= 0 && index2 < BasisSet.VSpaceDimension);
+            Debug.Assert(index1 >= 0 && index1 < VSpaceDimension);
+            Debug.Assert(index2 >= 0 && index2 < VSpaceDimension);
 
             if ((ulong) index1 == ZeroBasisVectorIndex || (ulong) index2 == ZeroBasisVectorIndex)
                 return 0;
@@ -87,8 +99,8 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Signatures
 
         public int GetBasisBivectorSignature(ulong index1, ulong index2)
         {
-            Debug.Assert(index1 < (ulong) BasisSet.VSpaceDimension);
-            Debug.Assert(index2 < (ulong) BasisSet.VSpaceDimension);
+            Debug.Assert(index1 < VSpaceDimension);
+            Debug.Assert(index2 < VSpaceDimension);
 
             if (index1 == ZeroBasisVectorIndex || index2 == ZeroBasisVectorIndex)
                 return 0;
@@ -97,11 +109,11 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Signatures
                 ? 1 : -1;
         }
 
-        public int GetBasisBladeSignature(int grade, ulong index)
+        public int GetBasisBladeSignature(uint grade, ulong index)
         {
             var id = GaBasisUtils.BasisBladeId(grade, index);
 
-            Debug.Assert(id < BasisSet.GaSpaceDimension);
+            Debug.Assert(id < GaSpaceDimension);
 
             return (id & ZeroBasisVectorId) == 0 
                 ? GaBasisUtils.EGpSignature(id, id) 
@@ -110,7 +122,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Signatures
 
         public int GetBasisBladeSignature(ulong id)
         {
-            Debug.Assert(id < BasisSet.GaSpaceDimension);
+            Debug.Assert(id < GaSpaceDimension);
 
             return (id & ZeroBasisVectorId) == 0 
                 ? GaBasisUtils.EGpSignature(id, id) 
@@ -121,7 +133,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Signatures
         {
             var id = basisBlade.Id;
 
-            Debug.Assert(id < BasisSet.GaSpaceDimension);
+            Debug.Assert(id < GaSpaceDimension);
 
             return (id & ZeroBasisVectorId) == 0 
                 ? GaBasisUtils.EGpSignature(id, id) 
@@ -130,7 +142,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Signatures
 
         public int GpSignature(ulong id)
         {
-            Debug.Assert(id < BasisSet.GaSpaceDimension);
+            Debug.Assert(id < GaSpaceDimension);
 
             return (id & ZeroBasisVectorId) == 0 
                 ? GaBasisUtils.EGpSignature(id) 
@@ -139,8 +151,8 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Signatures
 
         public int GpSignature(ulong id1, ulong id2)
         {
-            Debug.Assert(id1 < BasisSet.GaSpaceDimension);
-            Debug.Assert(id2 < BasisSet.GaSpaceDimension);
+            Debug.Assert(id1 < GaSpaceDimension);
+            Debug.Assert(id2 < GaSpaceDimension);
 
             return (id1 & id2 & ZeroBasisVectorId) == 0 
                 ? GaBasisUtils.EGpSignature(id1, id2) 
@@ -149,8 +161,8 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Signatures
 
         public int GpReverseSignature(ulong id1, ulong id2)
         {
-            Debug.Assert(id1 < BasisSet.GaSpaceDimension);
-            Debug.Assert(id2 < BasisSet.GaSpaceDimension);
+            Debug.Assert(id1 < GaSpaceDimension);
+            Debug.Assert(id2 < GaSpaceDimension);
 
             return (id1 & id2 & ZeroBasisVectorId) == 0 
                 ? GaBasisUtils.EGpReverseSignature(id1, id2) 
@@ -159,15 +171,15 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Signatures
 
         public int OpSignature(ulong id1, ulong id2)
         {
-            Debug.Assert(id1 < BasisSet.GaSpaceDimension);
-            Debug.Assert(id2 < BasisSet.GaSpaceDimension);
+            Debug.Assert(id1 < GaSpaceDimension);
+            Debug.Assert(id2 < GaSpaceDimension);
 
             return GaBasisUtils.OpSignature(id1, id2);
         }
 
         public int SpSignature(ulong id)
         {
-            Debug.Assert(id < BasisSet.GaSpaceDimension);
+            Debug.Assert(id < GaSpaceDimension);
 
             return (id & ZeroBasisVectorId) == 0 
                 ? GaBasisUtils.EGpSignature(id) 
@@ -176,8 +188,8 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Signatures
 
         public int SpSignature(ulong id1, ulong id2)
         {
-            Debug.Assert(id1 < BasisSet.GaSpaceDimension);
-            Debug.Assert(id2 < BasisSet.GaSpaceDimension);
+            Debug.Assert(id1 < GaSpaceDimension);
+            Debug.Assert(id2 < GaSpaceDimension);
 
             if (id1 == id2)
             {
@@ -191,7 +203,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Signatures
 
         public int NormSquaredSignature(ulong id)
         {
-            Debug.Assert(id < BasisSet.GaSpaceDimension);
+            Debug.Assert(id < GaSpaceDimension);
 
             return (id & ZeroBasisVectorId) == 0 
                 ? GaBasisUtils.ENormSquaredSignature(id) 
@@ -200,8 +212,8 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Signatures
 
         public int LcpSignature(ulong id1, ulong id2)
         {
-            Debug.Assert(id1 < BasisSet.GaSpaceDimension);
-            Debug.Assert(id2 < BasisSet.GaSpaceDimension);
+            Debug.Assert(id1 < GaSpaceDimension);
+            Debug.Assert(id2 < GaSpaceDimension);
 
             if ((id1 & ~id2) == 0)
             {
@@ -215,8 +227,8 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Signatures
 
         public int RcpSignature(ulong id1, ulong id2)
         {
-            Debug.Assert(id1 < BasisSet.GaSpaceDimension);
-            Debug.Assert(id2 < BasisSet.GaSpaceDimension);
+            Debug.Assert(id1 < GaSpaceDimension);
+            Debug.Assert(id2 < GaSpaceDimension);
 
             if ((id2 & ~id1) == 0)
             {
@@ -230,8 +242,8 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Signatures
 
         public int FdpSignature(ulong id1, ulong id2)
         {
-            Debug.Assert(id1 < BasisSet.GaSpaceDimension);
-            Debug.Assert(id2 < BasisSet.GaSpaceDimension);
+            Debug.Assert(id1 < GaSpaceDimension);
+            Debug.Assert(id2 < GaSpaceDimension);
 
             if ((id1 & ~id2) == 0 || (id2 & ~id1) == 0)
             {
@@ -245,8 +257,8 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Signatures
 
         public int HipSignature(ulong id1, ulong id2)
         {
-            Debug.Assert(id1 < BasisSet.GaSpaceDimension);
-            Debug.Assert(id2 < BasisSet.GaSpaceDimension);
+            Debug.Assert(id1 < GaSpaceDimension);
+            Debug.Assert(id2 < GaSpaceDimension);
 
             if (id1 != 0 && id2 != 0 && ((id1 & ~id2) == 0 || (id2 & ~id1) == 0))
             {
@@ -260,8 +272,8 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Signatures
 
         public int AcpSignature(ulong id1, ulong id2)
         {
-            Debug.Assert(id1 < BasisSet.GaSpaceDimension);
-            Debug.Assert(id2 < BasisSet.GaSpaceDimension);
+            Debug.Assert(id1 < GaSpaceDimension);
+            Debug.Assert(id2 < GaSpaceDimension);
 
             //A acp B = (AB + BA) / 2
             if (GaBasisUtils.IsNegativeEGp(id1, id2) == GaBasisUtils.IsNegativeEGp(id2, id1))
@@ -276,8 +288,8 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Signatures
 
         public int CpSignature(ulong id1, ulong id2)
         {
-            Debug.Assert(id1 < BasisSet.GaSpaceDimension);
-            Debug.Assert(id2 < BasisSet.GaSpaceDimension);
+            Debug.Assert(id1 < GaSpaceDimension);
+            Debug.Assert(id2 < GaSpaceDimension);
 
             //A cp B = (AB - BA) / 2
             if (GaBasisUtils.IsNegativeEGp(id1, id2) != GaBasisUtils.IsNegativeEGp(id2, id1))

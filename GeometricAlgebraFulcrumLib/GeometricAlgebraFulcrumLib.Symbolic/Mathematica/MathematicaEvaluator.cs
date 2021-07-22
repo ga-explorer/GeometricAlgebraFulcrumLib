@@ -159,7 +159,7 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Mathematica
             throw new NotImplementedException();
         }
 
-        public bool IsFullVectror(Expr expr, Expr ruleExpr = null)
+        public bool IsFullVector(Expr expr, Expr ruleExpr = null)
         {
             throw new NotImplementedException();
         }

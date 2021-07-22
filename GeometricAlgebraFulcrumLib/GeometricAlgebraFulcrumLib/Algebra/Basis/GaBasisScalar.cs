@@ -1,21 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Terms;
+using GeometricAlgebraFulcrumLib.Algebra.Terms;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.Basis
 {
     public readonly struct GaBasisScalar
         : IGaBasisBlade
     {
-        public static GaBasisScalar ScalarBasis { get; }
-            = new GaBasisScalar();
-
-
         public ulong Id 
             => 0;
 
-        public int Grade 
+        public uint Grade 
             => 0;
 
         public ulong Index 
@@ -31,13 +27,12 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Basis
             => true;
 
 
-
-        public Tuple<int, ulong> GetGradeIndex()
+        public Tuple<uint, ulong> GetGradeIndex()
         {
             return new(0, 0);
         }
 
-        public Tuple<ulong, int, ulong> GetIdGradeIndex()
+        public Tuple<ulong, uint, ulong> GetIdGradeIndex()
         {
             return new(0, 0, 0);
         }
@@ -48,35 +43,19 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Basis
         }
 
 
-        public void GetGradeIndex(out int grade, out ulong index)
+        public void GetGradeIndex(out uint grade, out ulong index)
         {
             grade = 0;
             index = 0;
         }
 
-        public void GetIdGradeIndex(out ulong id, out int grade, out ulong index)
+        public void GetIdGradeIndex(out ulong id, out uint grade, out ulong index)
         {
             id = 0;
             grade = 0;
             index = 0;
         }
-
-
-        public GaBasisUniform ToUniformBasisBlade()
-        {
-            return new(0);
-        }
-
-        public GaBasisGraded ToGradedBasisBlade()
-        {
-            return new(0, 0);
-        }
-
-        public GaBasisFull ToFullBasisBlade()
-        {
-            return new(this);
-        }
-
+        
 
         public IEnumerable<ulong> GetBasisVectorsIndices()
         {

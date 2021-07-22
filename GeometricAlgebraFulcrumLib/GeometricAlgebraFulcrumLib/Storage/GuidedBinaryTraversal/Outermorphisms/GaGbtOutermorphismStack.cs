@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using GeometricAlgebraFulcrumLib.Algebra.Basis;
+using GeometricAlgebraFulcrumLib.Processing.Products;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
 
 namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Outermorphisms
@@ -8,11 +8,11 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Outermorphism
     public sealed class GaGbtOutermorphismStack<T>
         : GaGbtStack1
     {
-        public static GaGbtOutermorphismStack<T> Create(IReadOnlyList<IGaVectorStorage<T>> basisVectorsMappingsList)
+        public static GaGbtOutermorphismStack<T> Create(IReadOnlyList<IGasVector<T>> basisVectorsMappingsList)
         {
-            var domainVSpaceDim = basisVectorsMappingsList.Count;
+            var domainVSpaceDim = (uint) basisVectorsMappingsList.Count;
             var targetVSpaceDim = basisVectorsMappingsList[0].VSpaceDimension;
-            var capacity = domainVSpaceDim + 1;
+            var capacity = (int) domainVSpaceDim + 1;
 
             return new GaGbtOutermorphismStack<T>(
                 capacity,
@@ -23,48 +23,48 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Outermorphism
         }
 
 
-        private IGaKVectorStorage<T>[] KVectorArray { get; }
+        private IGasKVector<T>[] KVectorArray { get; }
 
 
-        public int DomainVSpaceDimension { get; }
+        public uint DomainVSpaceDimension { get; }
 
-        public int TargetVSpaceDimension { get; }
+        public uint TargetVSpaceDimension { get; }
 
         public ulong DomainGaSpaceDimension 
-            => DomainVSpaceDimension.ToGaSpaceDimension();
+            => 1UL << (int) DomainVSpaceDimension;
 
         public ulong TargetGaSpaceDimension 
-            => TargetVSpaceDimension.ToGaSpaceDimension();
+            => 1UL << (int) TargetVSpaceDimension;
 
-        public IReadOnlyList<IGaVectorStorage<T>> BasisVectorsMappingsList { get; }
+        public IReadOnlyList<IGasVector<T>> BasisVectorsMappingsList { get; }
 
         public IGaScalarProcessor<T> ScalarProcessor 
             => BasisVectorsMappingsList[0].ScalarProcessor;
 
-        public IGaKVectorStorage<T> TosKVector { get; private set; }
+        public IGasKVector<T> TosKVector { get; private set; }
 
-        public IGaKVectorStorage<T> RootKVector { get; }
+        public IGasKVector<T> RootKVector { get; }
 
 
-        private GaGbtOutermorphismStack(int capacity, int domainVSpaceDim, int targetVSpaceDim, IReadOnlyList<IGaVectorStorage<T>> basisVectorsMappingsList)
-            : base(capacity, Math.Max(1, domainVSpaceDim), 0ul)
+        private GaGbtOutermorphismStack(int capacity, uint domainVSpaceDim, uint targetVSpaceDim, IReadOnlyList<IGasVector<T>> basisVectorsMappingsList)
+            : base(capacity, (int) Math.Max(1U, domainVSpaceDim), 0ul)
         {
-            KVectorArray = new IGaKVectorStorage<T>[Capacity];
+            KVectorArray = new IGasKVector<T>[Capacity];
 
             DomainVSpaceDimension = domainVSpaceDim;
             TargetVSpaceDimension = targetVSpaceDim;
             BasisVectorsMappingsList = basisVectorsMappingsList;
 
-            RootKVector = GaScalarTermStorage<T>.CreateBasisScalar(ScalarProcessor);
+            RootKVector = ScalarProcessor.CreateBasisScalar();
         }
 
 
-        public IGaKVectorStorage<T> GetTosChildKVector0()
+        public IGasKVector<T> GetTosChildKVector0()
         {
             return TosKVector;
         }
 
-        public IGaKVectorStorage<T> GetTosChildKVector1()
+        public IGasKVector<T> GetTosChildKVector1()
         {
             var basisVector = BasisVectorsMappingsList[TosTreeDepth - 1];
 
@@ -143,7 +143,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Outermorphism
         //    KVectorArray[TosIndex] = GetTosChildKVector1();
         //}
 
-        public IEnumerable<Tuple<ulong, IGaKVectorStorage<T>>> Traverse()
+        public IEnumerable<Tuple<ulong, IGasKVector<T>>> Traverse()
         {
             //GaNumVectorKVectorOpUtils.SetActiveVSpaceDimension(TargetVSpaceDimension);
 
@@ -155,7 +155,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Outermorphism
 
                 if (TosIsLeaf)
                 {
-                    yield return new Tuple<ulong, IGaKVectorStorage<T>>(TosId, TosKVector);
+                    yield return new Tuple<ulong, IGasKVector<T>>(TosId, TosKVector);
 
                     continue;
                 }

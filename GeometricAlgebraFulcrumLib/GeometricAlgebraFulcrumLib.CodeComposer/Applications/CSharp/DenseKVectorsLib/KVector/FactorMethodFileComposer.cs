@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using GeometricAlgebraFulcrumLib.Algebra.Basis;
+using GeometricAlgebraFulcrumLib.Processing.Products;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
 using GeometricAlgebraFulcrumLib.Storage;
@@ -12,20 +13,18 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
     internal sealed class FactorMethodFileComposer : 
         GaLibrarySymbolicContextFileComposerBase
     {
-        private IGaKVectorStorage<ISymbolicExpressionAtomic> _inputBlade;
-        private IGaVectorTermStorage<ISymbolicExpressionAtomic>[] _inputBasisVectorsArray;
-        private IGaVectorStorage<ISymbolicExpressionAtomic>[] _outputVectorsArray;
-
-        internal int InputGrade { get; }
-
-        internal ulong InputId { get; }
+        private readonly uint _inputGrade;
+        private readonly ulong _inputId;
+        private IGasKVector<ISymbolicExpressionAtomic> _inputBlade;
+        private IGasVectorTerm<ISymbolicExpressionAtomic>[] _inputBasisVectorsArray;
+        private IGasVector<ISymbolicExpressionAtomic>[] _outputVectorsArray;
 
 
-        internal FactorMethodFileComposer(GaLibraryComposer libGen, int inGrade, ulong inId)
+        internal FactorMethodFileComposer(GaLibraryComposer libGen, uint inGrade, ulong inId)
             : base(libGen)
         {
-            InputGrade = inGrade;
-            InputId = inId;
+            _inputGrade = inGrade;
+            _inputId = inId;
         }
 
         
@@ -36,19 +35,19 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
                     .ParameterVariablesFactory
                     .CreateDenseKVector(
                         VSpaceDimension,
-                        InputGrade,
+                        _inputGrade,
                         index => $"bladeScalar{index}"
                     );
 
             _inputBasisVectorsArray = 
-                InputId
+                _inputId
                     .BasisVectorIndexesInside()
                     .Select(index => 
                         context
                             .NumbersFactory
                             .CreateBasisVector(index)
                     )
-                    .Cast<IGaVectorTermStorage<ISymbolicExpressionAtomic>>()
+                    .Cast<IGasVectorTerm<ISymbolicExpressionAtomic>>()
                     .ToArray();
         }
 
@@ -58,15 +57,15 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
                 _inputBasisVectorsArray.Length;
 
             _outputVectorsArray = 
-                new IGaVectorStorage<ISymbolicExpressionAtomic>[vectorsCount];
+                new IGasVector<ISymbolicExpressionAtomic>[vectorsCount];
 
-            var grade = InputGrade;
+            var grade = _inputGrade;
             var inputBlade = _inputBlade;
             for (var index = 0; index < vectorsCount - 1; index++)
             {
                 _outputVectorsArray[index] =
-                    MultivectorProcessor.Lcp(
-                        MultivectorProcessor.Lcp(
+                    Processor.Lcp(
+                        Processor.Lcp(
                             _inputBasisVectorsArray[index], 
                             inputBlade
                         ), 
@@ -75,7 +74,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
 
                 grade--;
 
-                inputBlade = MultivectorProcessor.Lcp(
+                inputBlade = Processor.Lcp(
                     _outputVectorsArray[index],
                     inputBlade
                 ).GetKVectorPart(grade);
@@ -119,13 +118,13 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
 
             var newVectorsText = new ListTextComposer("," + Environment.NewLine);
 
-            for (var i = 0; i < InputGrade; i++)
+            for (var i = 0; i < _inputGrade; i++)
                 newVectorsText.Add("new " + CurrentNamespace + "Vector()");
 
             TextComposer.AppendAtNewLine(
                 Templates["factor"],
-                "frame", CurrentNamespace,
-                "id", InputId,
+                "signature", CurrentNamespace,
+                "id", _inputId,
                 "double", GaClcLanguage.ScalarTypeName,
                 "newvectors", newVectorsText,
                 "computations", computationsText

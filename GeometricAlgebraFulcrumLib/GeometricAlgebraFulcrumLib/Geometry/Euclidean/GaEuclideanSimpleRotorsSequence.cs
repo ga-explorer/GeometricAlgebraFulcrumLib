@@ -4,9 +4,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using GeometricAlgebraFulcrumLib.Algebra.Signatures;
+using GeometricAlgebraFulcrumLib.Algebra.Outermorphisms;
+using GeometricAlgebraFulcrumLib.Geometry.Multivectors;
+using GeometricAlgebraFulcrumLib.Processing;
+using GeometricAlgebraFulcrumLib.Processing.Generic;
 using GeometricAlgebraFulcrumLib.Processing.Implementations.Float64;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors;
+using GeometricAlgebraFulcrumLib.Processing.Products.Euclidean;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
 using GeometricAlgebraFulcrumLib.Storage;
 using MathNet.Numerics.LinearAlgebra;
@@ -16,30 +19,30 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean
     public sealed class GaEuclideanSimpleRotorsSequence<T>
         : IGaEuclideanGeometry<T>, IGaRotor<T>, IReadOnlyList<GaEuclideanSimpleRotor<T>>
     {
-        public static GaEuclideanSimpleRotorsSequence<T> CreateIdentity(IGaScalarProcessor<T> scalarProcessor)
+        public static GaEuclideanSimpleRotorsSequence<T> CreateIdentity(IGaProcessor<T> processor)
         {
-            return new(scalarProcessor);
+            return new GaEuclideanSimpleRotorsSequence<T>(processor);
         }
 
-        public static GaEuclideanSimpleRotorsSequence<T> Create(params GaEuclideanSimpleRotor<T>[] rotorsList)
+        public static GaEuclideanSimpleRotorsSequence<T> Create(IGaProcessor<T> processor, params GaEuclideanSimpleRotor<T>[] rotorsList)
         {
-            return new(rotorsList[0].ScalarProcessor, rotorsList);
+            return new GaEuclideanSimpleRotorsSequence<T>(processor, rotorsList);
         }
 
-        public static GaEuclideanSimpleRotorsSequence<T> Create(IGaScalarProcessor<T> scalarProcessor, IEnumerable<GaEuclideanSimpleRotor<T>> rotorsList)
+        public static GaEuclideanSimpleRotorsSequence<T> Create(IGaProcessor<T> processor, IEnumerable<GaEuclideanSimpleRotor<T>> rotorsList)
         {
-            return new(scalarProcessor, rotorsList);
+            return new GaEuclideanSimpleRotorsSequence<T>(processor, rotorsList);
         }
 
-        public static GaEuclideanSimpleRotorsSequence<T> CreateFromOrthonormalFrames(GaEuclideanVectorsFrame<T> sourceFrame, GaEuclideanVectorsFrame<T> targetFrame, bool fullRotorsFlag = false)
+        public static GaEuclideanSimpleRotorsSequence<T> CreateFromOrthonormalFrames(GaVectorsFrame<T> sourceFrame, GaVectorsFrame<T> targetFrame, bool fullRotorsFlag = false)
         {
             Debug.Assert(targetFrame.Count == sourceFrame.Count);
             Debug.Assert(sourceFrame.IsOrthonormal() && targetFrame.IsOrthonormal());
             Debug.Assert(sourceFrame.HasSameHandedness(targetFrame));
 
-            var scalarProcessor = sourceFrame.ScalarProcessor;
+            var processor = sourceFrame.Processor;
 
-            var rotorsSequence = new GaEuclideanSimpleRotorsSequence<T>(scalarProcessor);
+            var rotorsSequence = new GaEuclideanSimpleRotorsSequence<T>(processor);
 
             var sourceFrameVectors = sourceFrame.ToArray();
 
@@ -53,7 +56,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean
                 var targetVector = targetFrame[i];
 
                 var rotor = 
-                    GaEuclideanSimpleRotor<T>.Create(sourceVector, targetVector);
+                    GaEuclideanSimpleRotor<T>.Create(processor, sourceVector, targetVector);
 
                 rotorsSequence.AppendRotor(rotor);
 
@@ -64,7 +67,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean
             return rotorsSequence;
         }
 
-        public static GaEuclideanSimpleRotorsSequence<T> CreateFromOrthonormalFrames(GaEuclideanVectorsFrame<T> sourceFrame, GaEuclideanVectorsFrame<T> targetFrame, int[] sequenceArray)
+        public static GaEuclideanSimpleRotorsSequence<T> CreateFromOrthonormalFrames(GaVectorsFrame<T> sourceFrame, GaVectorsFrame<T> targetFrame, int[] sequenceArray)
         {
             Debug.Assert(targetFrame.Count == sourceFrame.Count);
             Debug.Assert(sourceFrame.IsOrthonormal() && targetFrame.IsOrthonormal());
@@ -75,9 +78,9 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean
             Debug.Assert(sequenceArray.Max() < sourceFrame.Count);
             Debug.Assert(sequenceArray.Distinct().Count() == sourceFrame.Count - 1);
 
-            var scalarProcessor = sourceFrame.ScalarProcessor;
+            var processor = sourceFrame.Processor;
 
-            var rotorsSequence = new GaEuclideanSimpleRotorsSequence<T>(scalarProcessor);
+            var rotorsSequence = new GaEuclideanSimpleRotorsSequence<T>(processor);
 
             var sourceFrameVectors = sourceFrame.ToArray();
             
@@ -89,6 +92,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean
                 var targetVector = targetFrame[vectorIndex];
 
                 var rotor = GaEuclideanSimpleRotor<T>.Create(
+                    processor,
                     sourceVector, 
                     targetVector
                 );
@@ -103,22 +107,22 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean
             return rotorsSequence;
         }
 
-        public static GaEuclideanSimpleRotorsSequence<T> CreateFromFrames(int baseSpaceDimensions, GaEuclideanVectorsFrame<T> sourceFrame, GaEuclideanVectorsFrame<T> targetFrame)
+        public static GaEuclideanSimpleRotorsSequence<T> CreateFromFrames(uint baseSpaceDimensions, GaVectorsFrame<T> sourceFrame, GaVectorsFrame<T> targetFrame)
         {
             Debug.Assert(targetFrame.Count == sourceFrame.Count);
             //Debug.Assert(IsOrthonormal() && targetFrame.IsOrthonormal());
             Debug.Assert(sourceFrame.HasSameHandedness(targetFrame));
 
-            var scalarProcessor = sourceFrame.ScalarProcessor;
+            var processor = sourceFrame.Processor;
 
             var rotorsSequence = 
-                new GaEuclideanSimpleRotorsSequence<T>(scalarProcessor);
+                new GaEuclideanSimpleRotorsSequence<T>(processor);
 
             var pseudoScalarSubspace = 
-                GaEuclideanSubspace<T>.CreateFromPseudoScalar(scalarProcessor, baseSpaceDimensions);
+                GaSubspace<T>.CreateFromPseudoScalar(processor, baseSpaceDimensions);
 
-            var sourceFrameVectors = new IGaVectorStorage<T>[sourceFrame.Count];
-            var targetFrameVectors = new IGaVectorStorage<T>[targetFrame.Count];
+            var sourceFrameVectors = new IGasVector<T>[sourceFrame.Count];
+            var targetFrameVectors = new IGasVector<T>[targetFrame.Count];
 
             for (var i = 0; i < sourceFrame.Count; i++)
             {
@@ -126,21 +130,22 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean
                 targetFrameVectors[i] = targetFrame[i];
             }
             
-            for (var i = 0; i < sourceFrame.Count - 1; i++)
+            for (var i = 0U; i < sourceFrame.Count - 1; i++)
             {
                 var sourceVector = sourceFrameVectors[i];
                 var targetVector = targetFrameVectors[i];
 
                 var rotor = 
-                    GaEuclideanSimpleRotor<T>.Create(sourceVector, targetVector);
+                    GaEuclideanSimpleRotor<T>.Create(processor, sourceVector, targetVector);
 
                 rotorsSequence.AppendRotor(rotor);
 
                 pseudoScalarSubspace = 
-                    pseudoScalarSubspace
-                        .Complement(targetVector)
-                        .GetKVectorPart(baseSpaceDimensions - i - 1)
-                        .CreateEuclideanSubspace();
+                    processor.CreateSubspace(
+                        pseudoScalarSubspace
+                            .Complement(targetVector)
+                            .GetKVectorPart(baseSpaceDimensions - i - 1)
+                    );
 
                 for (var j = i + 1; j < sourceFrame.Count; j++)
                 {
@@ -170,8 +175,10 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean
             //TODO: Complete this
 
             return new GaEuclideanSimpleRotorsSequence<double>(
-                GaScalarProcessorFloat64.DefaultProcessor
-
+                GaProcessorGenericOrthonormal<double>.CreateEuclidean(
+                    GaScalarProcessorFloat64.DefaultProcessor,
+                    63
+                )
             );
         }
 
@@ -183,11 +190,27 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean
         public int Count 
             => _rotorsList.Count;
 
+        public uint VSpaceDimension 
+            => Processor.VSpaceDimension;
+
+        public ulong GaSpaceDimension
+            => Processor.GaSpaceDimension;
+
+        public ulong MaxBasisBladeId { get; }
+
+        public uint GradesCount { get; }
+        
+        public IEnumerable<uint> Grades { get; }
+
         public IGaScalarProcessor<T> ScalarProcessor { get; }
+        
+        public IGasKVector<T> MappedPseudoScalar { get; }
 
-        public IGaMultivectorStorage<T> Storage { get; }
+        public IGaProcessor<T> Processor { get; }
 
-        public IGaMultivectorStorage<T> StorageReverse { get; }
+        public IGasMultivector<T> Rotor { get; }
+
+        public IGasMultivector<T> RotorReverse { get; }
         
         public GaEuclideanSimpleRotor<T> this[int index]
         {
@@ -204,20 +227,20 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean
             => !IsValid;
 
 
-        private GaEuclideanSimpleRotorsSequence([NotNull] IGaScalarProcessor<T> scalarProcessor)
+        private GaEuclideanSimpleRotorsSequence([NotNull] IGaProcessor<T> processor)
         {
-            ScalarProcessor = scalarProcessor;
+            Processor = processor;
         }
 
-        private GaEuclideanSimpleRotorsSequence([NotNull] IGaScalarProcessor<T> scalarProcessor, IEnumerable<GaEuclideanSimpleRotor<T>> rotorsList)
+        private GaEuclideanSimpleRotorsSequence([NotNull] IGaProcessor<T> processor, IEnumerable<GaEuclideanSimpleRotor<T>> rotorsList)
         {
-            ScalarProcessor = scalarProcessor;
+            Processor = processor;
 
             _rotorsList.AddRange(rotorsList);
         }
 
 
-        public bool ValidateRotation(GaEuclideanVectorsFrame<T> sourceFrame, GaEuclideanVectorsFrame<T> targetFrame)
+        public bool ValidateRotation(GaVectorsFrame<T> sourceFrame, GaVectorsFrame<T> targetFrame)
         {
             if (sourceFrame.Count != targetFrame.Count)
                 return false;
@@ -231,12 +254,12 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean
 
         public bool IsRotorsSequence()
         {
-            return _rotorsList.All(r => r.Storage.IsEuclideanRotor());
+            return _rotorsList.All(r => r.Rotor.IsEuclideanRotor());
         }
 
         public bool IsSimpleRotorsSequence()
         {
-            return _rotorsList.All(r => r.Storage.IsSimpleEuclideanRotor());
+            return _rotorsList.All(r => r.Rotor.IsSimpleEuclideanRotor());
         }
 
         public GaEuclideanSimpleRotor<T> GetRotor(int index)
@@ -267,13 +290,13 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean
 
         public GaEuclideanSimpleRotorsSequence<T> GetSubSequence(int startIndex, int count)
         {
-            return new(
-                ScalarProcessor,
+            return new GaEuclideanSimpleRotorsSequence<T>(
+                Processor,
                 _rotorsList.Skip(startIndex).Take(count)
             );
         }
 
-        public IEnumerable<IGaMultivectorStorage<T>> GetRotations(IGaMultivectorStorage<T> storage)
+        public IEnumerable<IGasMultivector<T>> GetRotations(IGasMultivector<T> storage)
         {
             var v = storage;
 
@@ -287,7 +310,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean
             }
         }
 
-        public IEnumerable<GaEuclideanVector<T>> GetRotations(GaEuclideanVector<T> vector)
+        public IEnumerable<GaVector<T>> GetRotations(GaVector<T> vector)
         {
             var v = vector;
 
@@ -301,7 +324,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean
             }
         }
 
-        public IEnumerable<GaEuclideanVectorsFrame<T>> GetRotations(GaEuclideanVectorsFrame<T> frame)
+        public IEnumerable<GaVectorsFrame<T>> GetRotations(GaVectorsFrame<T> frame)
         {
             var f = frame;
 
@@ -318,7 +341,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean
         public IEnumerable<T[,]> GetRotationMatrices(int rowsCount)
         {
             var f = 
-                GaEuclideanVectorsFrame<T>.CreateBasisFrame(ScalarProcessor, rowsCount);
+                GaVectorsFrame<T>.CreateBasisFrame(Processor, (uint) rowsCount);
 
             yield return f.GetMatrix(rowsCount);
 
@@ -326,90 +349,96 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean
                 yield return f.GetRotatedFrame(rotor).GetMatrix(rowsCount);
         }
 
-        public GaEuclideanVector<T> Map(GaEuclideanVector<T> vector)
+        public GaVector<T> Map(GaVector<T> vector)
         {
-            return GaEuclideanVector<T>.Create(
+            return GaVector<T>.Create(
+                Processor,
                 MapVector(vector.Storage)
             );
         }
         
 
-        public IGaVectorsLinearMap<T> GetAdjoint()
+        public IGaOutermorphism<T> GetAdjoint()
         {
             return new GaEuclideanSimpleRotorsSequence<T>(
-                ScalarProcessor,
+                Processor,
                 _rotorsList
                     .Select(r => r.GetReverseRotor())
                     .Reverse()
             );
         }
 
-        public IGaVectorStorage<T> MapBasisVector(int index)
+        public IGasVector<T> MapBasisVector(int index)
         {
             throw new NotImplementedException();
         }
 
-        public IGaVectorStorage<T> MapBasisVector(ulong index)
+        public IReadOnlyList<IGasVector<T>> GetMappedBasisVectors()
         {
             throw new NotImplementedException();
         }
 
-        public IGaBivectorStorage<T> MapBasisBivector(int index1, int index2)
+        public IGasVector<T> MapBasisVector(ulong index)
         {
             throw new NotImplementedException();
         }
 
-        public IGaBivectorStorage<T> MapBasisBivector(ulong index1, ulong index2)
+        public IGasBivector<T> MapBasisBivector(int index1, int index2)
         {
             throw new NotImplementedException();
         }
 
-        public IGaKVectorStorage<T> MapBasisBlade(ulong id)
+        public IGasBivector<T> MapBasisBivector(ulong index1, ulong index2)
         {
             throw new NotImplementedException();
         }
 
-        public IGaKVectorStorage<T> MapBasisBlade(int grade, ulong index)
+        public IGasKVector<T> MapBasisBlade(ulong id)
         {
             throw new NotImplementedException();
         }
 
-        public IGaScalarStorage<T> MapScalar(IGaScalarStorage<T> storage)
+        public IGasKVector<T> MapBasisBlade(uint grade, ulong index)
         {
             throw new NotImplementedException();
         }
 
-        public IGaKVectorStorage<T> MapTerm(IGaKVectorTermStorage<T> storage)
+        public IGasScalar<T> MapScalar(IGasScalar<T> storage)
         {
             throw new NotImplementedException();
         }
 
-        public IGaVectorStorage<T> MapVector(IGaVectorStorage<T> storage)
+        public IGasKVector<T> MapTerm(IGasKVectorTerm<T> storage)
         {
             throw new NotImplementedException();
         }
 
-        public IGaBivectorStorage<T> MapBivector(IGaBivectorStorage<T> storage)
+        public IGasVector<T> MapVector(IGasVector<T> storage)
         {
             throw new NotImplementedException();
         }
 
-        public IGaKVectorStorage<T> MapKVector(IGaKVectorStorage<T> storage)
+        public IGasBivector<T> MapBivector(IGasBivector<T> storage)
         {
             throw new NotImplementedException();
         }
 
-        public IGaMultivectorStorage<T> MapMultivector(IGaMultivectorGradedStorage<T> storage)
+        public IGasKVector<T> MapKVector(IGasKVector<T> storage)
         {
             throw new NotImplementedException();
         }
 
-        public IGaMultivectorStorage<T> MapMultivector(IGaMultivectorTermsStorage<T> storage)
+        public IGasMultivector<T> MapMultivector(IGasGradedMultivector<T> storage)
         {
             throw new NotImplementedException();
         }
 
-        public IGaMultivectorStorage<T> MapMultivector(IGaMultivectorStorage<T> storage)
+        public IGasMultivector<T> MapMultivector(IGasTermsMultivector<T> storage)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IGasMultivector<T> MapMultivector(IGasMultivector<T> storage)
         {
             return _rotorsList
                 .Aggregate(
@@ -418,7 +447,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean
                 );
         }
 
-        public GaEuclideanVectorsFrame<T> Rotate(GaEuclideanVectorsFrame<T> frame)
+        public GaVectorsFrame<T> Rotate(GaVectorsFrame<T> frame)
         {
             return _rotorsList
                 .Aggregate(
@@ -427,29 +456,29 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean
                 );
         }
 
-        public GaEuclideanRotor<T> GetFinalRotor()
+        public GaRotor<T> GetFinalRotor()
         {
             var storage = _rotorsList
                 .Skip(1)
-                .Select(r => r.Storage)
+                .Select(r => r.Rotor)
                 .Aggregate(
-                    _rotorsList[0].Storage, 
+                    _rotorsList[0].Rotor, 
                     (current, rotor) => rotor.EGp(current)
                 );
 
-            return GaEuclideanRotor<T>.Create(storage);
+            return GaRotor<T>.Create(Processor, storage);
         }
 
         public T[,] GetFinalMatrix(int rowsCount)
         {
             return Rotate(
-                GaEuclideanVectorsFrame<T>.CreateBasisFrame(ScalarProcessor, rowsCount)
+                GaVectorsFrame<T>.CreateBasisFrame(Processor, (uint) rowsCount)
             ).GetMatrix(rowsCount);
         }
 
         public GaEuclideanSimpleRotorsSequence<T> Reverse()
         {
-            var rotorsSequence = new GaEuclideanSimpleRotorsSequence<T>(ScalarProcessor);
+            var rotorsSequence = new GaEuclideanSimpleRotorsSequence<T>(Processor);
 
             foreach (var rotor in _rotorsList)
                 rotorsSequence.PrependRotor(rotor.GetReverseRotor());

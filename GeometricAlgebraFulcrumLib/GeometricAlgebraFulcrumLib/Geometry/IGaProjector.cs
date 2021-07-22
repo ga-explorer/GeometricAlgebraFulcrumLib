@@ -1,9 +1,11 @@
-﻿using GeometricAlgebraFulcrumLib.Storage;
+﻿using GeometricAlgebraFulcrumLib.Algebra.Outermorphisms;
+using GeometricAlgebraFulcrumLib.Storage;
 
 namespace GeometricAlgebraFulcrumLib.Geometry
 {
-    public interface IGaProjector<T> : IGaVectorsLinearMap<T>
+    public interface IGaProjector<T> : 
+        IGaOutermorphism<T>
     {
-        IGaKVectorStorage<T> UnitBladeStorage { get; }
+        IGasKVector<T> UnitBladeStorage { get; }
     }
 }

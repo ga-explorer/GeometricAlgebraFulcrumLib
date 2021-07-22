@@ -55,7 +55,7 @@ namespace DataStructuresLib.Combinations
 
                 var row = new ushort[rowSize];
 
-                row[0] = (ushort)1;
+                row[0] = 1;
                 row[1] = (ushort)i;
 
                 var value1 = (ushort)(i - 1);

@@ -1,5 +1,5 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Algebra.Outermorphisms.Computed;
+using GeometricAlgebraFulcrumLib.Algebra.Outermorphisms;
 using GeometricAlgebraFulcrumLib.CodeComposer.Composers;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
@@ -37,19 +37,16 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
                 new SymbolicContext(DenseKVectorsLibraryComposer.DefaultContextOptions);
 
             var linearMapArray = context.ParameterVariablesFactory.CreateDenseArray(
-                VSpaceDimension,
-                VSpaceDimension,
+                (int) VSpaceDimension,
+                (int) VSpaceDimension,
                 (row, col) => $"omScalarR{row}C{col}"
             );
             
             var outermorphism = 
-                GaOmComputed<ISymbolicExpressionAtomic>.Create(
-                    MultivectorProcessor, 
-                    linearMapArray
-                );
+                Processor.CreateComputedOutermorphism(linearMapArray);
 
             var determinant = 
-                (SymbolicVariableComputed) outermorphism.GetDeterminant();
+                (SymbolicVariableComputed) outermorphism.GetDeterminant(Processor);
 
             determinant.IsOutputVariable = true;
 
@@ -183,7 +180,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
                 codeText.Add(
                     Templates["om_apply_code_case"],
                     "grade", inGrade,
-                    "frame", CurrentNamespace
+                    "signature", CurrentNamespace
                     );
 
             return codeText.ToString();
@@ -222,7 +219,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
 
             TextComposer.Append(
                 Templates["outermorphism"],
-                "frame", CurrentNamespace,
+                "signature", CurrentNamespace,
                 "double", GaClcLanguage.ScalarTypeName,
                 "transpose_code", omTransposeCode,
                 "metric_det_code", omDeterminantCode,

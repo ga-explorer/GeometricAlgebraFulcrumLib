@@ -1,19 +1,39 @@
-﻿using GeometricAlgebraFulcrumLib.CodeComposer.Composers;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors;
+﻿using System.Collections.Generic;
+using DataStructuresLib.BitManipulation;
+using GeometricAlgebraFulcrumLib.Algebra;
+using GeometricAlgebraFulcrumLib.CodeComposer.Composers;
+using GeometricAlgebraFulcrumLib.Processing;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions;
 using TextComposerLib.Text.Linear;
 
 namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVectorsLib
 {
     public abstract class GaLibraryFileComposerBase : 
-        GaClcCodeFileComposerBase
+        GaClcCodeFileComposerBase, IGaSpace
     {
-        internal IGaMultivectorProcessor<ISymbolicExpressionAtomic> MultivectorProcessor { get; }
+        internal IGaProcessor<ISymbolicExpressionAtomic> Processor 
+            => DenseKVectorsLibraryComposer.Processor;
 
-        internal int VSpaceDimension 
-            => MultivectorProcessor.BasisSet.VSpaceDimension;
+        internal IGaProcessor<ISymbolicExpressionAtomic> EuclideanProcessor 
+            => DenseKVectorsLibraryComposer.EuclideanProcessor;
 
-        internal string CurrentNamespace { get; }
+        public uint VSpaceDimension 
+            => Processor.VSpaceDimension;
+
+        public ulong GaSpaceDimension 
+            => 1UL << (int) VSpaceDimension;
+
+        public ulong MaxBasisBladeId 
+            => (1UL << (int) VSpaceDimension) - 1UL;
+
+        public uint GradesCount 
+            => VSpaceDimension + 1;
+
+        public IEnumerable<uint> Grades 
+            => GradesCount.GetRange();
+
+        internal string CurrentNamespace 
+            => DenseKVectorsLibraryComposer.CurrentNamespace;
 
         internal GaLibraryComposer DenseKVectorsLibraryComposer 
             => (GaLibraryComposer) LibraryComposer;
@@ -22,8 +42,6 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         internal GaLibraryFileComposerBase(GaLibraryComposer libGen)
             : base(libGen)
         {
-            MultivectorProcessor = libGen.MultivectorProcessor;
-            CurrentNamespace = libGen.CurrentNamespace;
         }
 
 
@@ -50,7 +68,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         {
             TextComposer.AppendLine(
                 Templates["om_file_start"],
-                "frame", CurrentNamespace,
+                "signature", CurrentNamespace,
                 "grade", VSpaceDimension
                 );
 

@@ -1,5 +1,6 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra;
+using GeometricAlgebraFulcrumLib.Processing.Products;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
 using GeometricAlgebraFulcrumLib.Storage;
@@ -15,9 +16,9 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
     internal sealed class VectorsOpMethodsFileComposer : 
         GaLibrarySymbolicContextFileComposerBase
     {
-        private int _outGrade;
-        private IGaVectorStorage<ISymbolicExpressionAtomic>[] _inputVectorsArray;
-        private IGaKVectorStorage<ISymbolicExpressionAtomic> _outputKVector;
+        private uint _outGrade;
+        private IGasVector<ISymbolicExpressionAtomic>[] _inputVectorsArray;
+        private IGasKVector<ISymbolicExpressionAtomic> _outputKVector;
 
 
         internal VectorsOpMethodsFileComposer(GaLibraryComposer libGen)
@@ -29,7 +30,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         protected override void DefineContextParameters(SymbolicContext context)
         {
             _inputVectorsArray = 
-                new IGaVectorStorage<ISymbolicExpressionAtomic>[_outGrade];
+                new IGasVector<ISymbolicExpressionAtomic>[_outGrade];
 
             for (var g = 0; g < _outGrade; g++)
             {
@@ -45,7 +46,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
 
         protected override void DefineContextComputations(SymbolicContext context)
         {
-            _outputKVector = ScalarProcessor.Op(_inputVectorsArray);
+            _outputKVector = Processor.Op(_inputVectorsArray);
 
             _outputKVector.SetIsOutput(true);
         }
@@ -80,10 +81,10 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
 
             TextComposer.Append(
                 Templates["op_vectors"],
-                "frame", CurrentNamespace,
+                "signature", CurrentNamespace,
                 "double", GaClcLanguage.ScalarTypeName,
                 "grade", _outGrade,
-                "num", MultivectorProcessor.BasisSet.KvSpaceDimension(_outGrade),
+                "num", this.KvSpaceDimension(_outGrade),
                 "computations", computationsText
             );
         }
@@ -94,7 +95,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
 
             var casesText = new ListTextComposer(Environment.NewLine);
 
-            for (var grade = 2; grade <= VSpaceDimension; grade++)
+            for (var grade = 2U; grade <= VSpaceDimension; grade++)
             {
                 _outGrade = grade;
 
@@ -107,7 +108,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
 
             TextComposer.Append(
                 Templates["op_vectors_main"],
-                "frame", CurrentNamespace,
+                "signature", CurrentNamespace,
                 "op_vectors_main_case", casesText
             );
 

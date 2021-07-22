@@ -57,6 +57,22 @@ namespace CodeComposerLib.MathML
             };
         }
 
+        public static MathMlNumber ToMathMlNumber(this uint value)
+        {
+            return new MathMlNumber()
+            {
+                Text = value.ToString()
+            };
+        }
+
+        public static MathMlNumber ToMathMlNumber(this ulong value)
+        {
+            return new MathMlNumber()
+            {
+                Text = value.ToString()
+            };
+        }
+
         public static MathMlNumber ToMathMlNumber(this float value)
         {
             return new MathMlNumber()

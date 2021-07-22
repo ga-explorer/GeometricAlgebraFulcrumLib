@@ -13,9 +13,10 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Factories
         }
 
 
-        public GaEuclideanSimpleRotor<ISymbolicExpressionAtomic> CreateEuclideanSimpleRotor(IGaVectorStorage<ISymbolicExpressionAtomic> sourceVector, IGaVectorStorage<ISymbolicExpressionAtomic> targetVector)
+        public GaEuclideanSimpleRotor<ISymbolicExpressionAtomic> CreateEuclideanSimpleRotor(IGaProcessor<ISymbolicExpressionAtomic> processor, IGasVector<ISymbolicExpressionAtomic> sourceVector, IGasVector<ISymbolicExpressionAtomic> targetVector)
         {
             return GaEuclideanSimpleRotor<ISymbolicExpressionAtomic>.Create(
+                processor,
                 sourceVector,
                 targetVector
             );

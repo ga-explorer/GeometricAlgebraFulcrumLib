@@ -2,21 +2,24 @@
 
 namespace GeometricAlgebraFulcrumLib.Algebra.Signatures
 {
-    public interface IGaSignature
+    public interface IGaSignature : 
+        IGaSpace
     {
-        int SignatureId { get; }
+        uint SignatureId { get; }
 
-        GaBasisSet BasisSet { get; }
+        uint PositiveCount { get; }
 
-        int VSpaceDimension { get; }
+        uint NegativeCount { get; }
 
-        int PositiveCount { get; }
-
-        int NegativeCount { get; }
-
-        int ZeroCount { get; }
+        uint ZeroCount { get; }
 
         bool IsEuclidean { get; }
+
+        bool IsProjective { get; }
+
+        bool IsConformal { get; }
+
+        bool IsMotherAlgebra { get; }
 
         int GetBasisVectorSignature(int index);
 
@@ -26,7 +29,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Signatures
 
         int GetBasisBivectorSignature(ulong index1, ulong index2);
 
-        int GetBasisBladeSignature(int grade, ulong index);
+        int GetBasisBladeSignature(uint grade, ulong index);
 
         int GetBasisBladeSignature(ulong id);
 

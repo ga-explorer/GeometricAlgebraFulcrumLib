@@ -7,8 +7,10 @@ using CodeComposerLib.MathML.Elements.Layout.Elementary;
 using CodeComposerLib.MathML.Elements.Layout.Tabular;
 using CodeComposerLib.MathML.Elements.Tokens;
 using DataStructuresLib.BitManipulation;
+using GeometricAlgebraFulcrumLib.Algebra;
 using GeometricAlgebraFulcrumLib.Algebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.Signatures;
+using GeometricAlgebraFulcrumLib.Processing.Products.Euclidean;
 using GeometricAlgebraFulcrumLib.Storage;
 using TextComposerLib.Text.Linear;
 
@@ -18,7 +20,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.Text
     {
         public static IMathMlElement[] CreateBasisBladeNames(params string[] basisVectorSubscripts)
         {
-            var gaSpaceDim = basisVectorSubscripts.Length.ToGaSpaceDimension();
+            var gaSpaceDim = 1UL << basisVectorSubscripts.Length;
 
             var result = basisVectorSubscripts
                 .ConcatenateUsingPatterns(
@@ -35,15 +37,16 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.Text
 
         public static string ComposeHga4D()
         {
-            var frame = GaSignatureEuclidean.Create(4);
+            var signature = 
+                GaSignatureFactory.CreateEuclidean(4);
 
             var basisBladeNames = CreateBasisBladeNames("x", "y", "z", "w");
 
-            return ComposeMathMlTableColumns(frame, id => basisBladeNames[id]);
+            return ComposeMathMlTableColumns(signature, id => basisBladeNames[id]);
         }
 
 
-        private static MathMlRow ToMathMlRow(IGaMultivectorStorage<double> mv, Func<ulong, IMathMlElement> getBasisBladeNameFunc)
+        private static MathMlRow ToMathMlRow(IGasMultivector<double> mv, Func<ulong, IMathMlElement> getBasisBladeNameFunc)
         {
             var rowElement = MathMlRow.Create();
 
@@ -109,9 +112,9 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.Text
             return rowElement;
         }
 
-        public static MathMlTable ComposeMathMlTable(IGaSignature frame, Func<ulong, IMathMlElement> getBasisBladeNameFunc)
+        public static MathMlTable ComposeMathMlTable(IGaSignature signature, Func<ulong, IMathMlElement> getBasisBladeNameFunc)
         {
-            var idsList = frame.BasisSet.BasisBladeIDsSortedByGrade().ToArray();
+            var idsList = signature.BasisBladeIDsSortedByGrade().ToArray();
             var gaDim = idsList.Length;
 
             var table = MathMlTable.Create(
@@ -136,7 +139,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.Text
                     var id2 = idsList[j];
 
                     var mv = 
-                        frame.Gp(id1, id2).GetBasisBladeTermFloat64();
+                        signature.Gp(id1, id2).GetBasisBladeTermFloat64();
 
                     table[i + 2, j + 2].Append(
                         ToMathMlRow(mv, getBasisBladeNameFunc)
@@ -147,11 +150,11 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.Text
             return table;
         }
 
-        public static string ComposeMathMlTableColumns(IGaSignature frame, Func<ulong, IMathMlElement> getBasisBladeNameFunc)
+        public static string ComposeMathMlTableColumns(IGaSignature signature, Func<ulong, IMathMlElement> getBasisBladeNameFunc)
         {
             var textComposer = new LinearTextComposer();
 
-            var idsList = frame.BasisSet.BasisBladeIDsSortedByGrade().ToArray();
+            var idsList = signature.BasisBladeIDsSortedByGrade().ToArray();
             var gaDim = idsList.Length;
 
             for (var i = 0; i < gaDim; i++)
@@ -177,7 +180,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.Text
                     var id2 = idsList[j];
 
                     var mv = 
-                        frame.Gp(id1, id2).GetBasisBladeTermFloat64();
+                        signature.Gp(id1, id2).GetBasisBladeTermFloat64();
 
                     var mvName = 
                         ToMathMlRow(mv, getBasisBladeNameFunc);

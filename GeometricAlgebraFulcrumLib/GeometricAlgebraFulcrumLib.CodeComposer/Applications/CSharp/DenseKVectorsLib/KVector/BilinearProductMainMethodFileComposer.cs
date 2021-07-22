@@ -11,12 +11,12 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
 
         internal string ZeroCondition { get; }
 
-        internal Func<int, int, int> GetFinalGrade { get; }
+        internal Func<uint, uint, uint> GetFinalGrade { get; }
 
-        internal Func<int, int, bool> IsLegalGrade { get; }
+        internal Func<uint, uint, bool> IsLegalGrade { get; }
 
 
-        internal BilinearProductMainMethodFileComposer(GaLibraryComposer libGen, GaClcOperationSpecs opSpecs, string zeroCondition, Func<int, int, int> getFinalGrade, Func<int, int, bool> isLegalGrade)
+        internal BilinearProductMainMethodFileComposer(GaLibraryComposer libGen, GaClcOperationSpecs opSpecs, string zeroCondition, Func<uint, uint, uint> getFinalGrade, Func<uint, uint, bool> isLegalGrade)
             : base(libGen)
         {
             OperationSpecs = opSpecs;
@@ -35,8 +35,8 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
 
             var casesText = new ListTextComposer(Environment.NewLine);
 
-            foreach (var grade1 in MultivectorProcessor.BasisSet.Grades)
-                foreach (var grade2 in MultivectorProcessor.BasisSet.Grades)
+            foreach (var grade1 in Processor.Grades)
+                foreach (var grade2 in Processor.Grades)
                 {
                     if (IsLegalGrade(grade1, grade2) == false)
                         continue;
@@ -45,7 +45,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
                         GetFinalGrade(grade1, grade2);
 
                     var id = 
-                        grade1 + grade2 * MultivectorProcessor.BasisSet.GradesCount;
+                        grade1 + grade2 * Processor.GradesCount;
 
                     var name = OperationSpecs.GetName(
                         grade1, grade2, grade
@@ -57,7 +57,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
                         "g1", grade1,
                         "g2", grade2,
                         "grade", grade,
-                        "frame", CurrentNamespace
+                        "signature", CurrentNamespace
                     );
                 }
 
@@ -73,7 +73,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             TextComposer.AppendAtNewLine(
                 Templates["bilinearproduct_main"],
                 "name", OperationSpecs,
-                "frame", CurrentNamespace,
+                "signature", CurrentNamespace,
                 "zerocond", ZeroCondition,
                 "cases", casesText
             );

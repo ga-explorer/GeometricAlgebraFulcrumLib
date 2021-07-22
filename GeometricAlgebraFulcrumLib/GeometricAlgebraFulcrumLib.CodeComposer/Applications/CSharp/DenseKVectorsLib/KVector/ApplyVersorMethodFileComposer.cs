@@ -1,4 +1,5 @@
 ﻿using System;
+using GeometricAlgebraFulcrumLib.Algebra;
 using GeometricAlgebraFulcrumLib.Geometry;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
@@ -11,14 +12,14 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         GaLibrarySymbolicContextFileComposerBase
     {
         private IGaSubspace<ISymbolicExpressionAtomic> _subspace;
-        private IGaKVectorStorage<ISymbolicExpressionAtomic> _inputKVector;
-        private IGaKVectorStorage<ISymbolicExpressionAtomic> _outputKVector;
+        private IGasKVector<ISymbolicExpressionAtomic> _inputKVector;
+        private IGasKVector<ISymbolicExpressionAtomic> _outputKVector;
         private readonly GaClcOperationSpecs _operationSpecs;
-        private readonly int _inputGrade1;
-        private readonly int _inputGrade2;
+        private readonly uint _inputGrade1;
+        private readonly uint _inputGrade2;
 
 
-        internal ApplyVersorMethodFileComposer(GaLibraryComposer libGen, GaClcOperationSpecs opSpecs, int inGrade1, int inGrade2)
+        internal ApplyVersorMethodFileComposer(GaLibraryComposer libGen, GaClcOperationSpecs opSpecs, uint inGrade1, uint inGrade2)
             : base(libGen)
         {
             _operationSpecs = opSpecs;
@@ -36,8 +37,8 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             );
 
             _subspace = _operationSpecs.IsEuclidean
-                ? subspaceKVector.CreateMetricSubspace(MultivectorProcessor)
-                : subspaceKVector.CreateEuclideanSubspace();
+                ? Processor.CreateSubspace(subspaceKVector)
+                : EuclideanProcessor.CreateSubspace(subspaceKVector);
 
             _inputKVector = context.ParameterVariablesFactory.CreateDenseKVector(
                 VSpaceDimension,
@@ -71,7 +72,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         protected override void DefineContextExternalNames(SymbolicContext context)
         {
             context.SetExternalNamesByTermIndex(
-                _subspace.BladeStorage,
+                _subspace.Blade,
                 index => $"scalars1[{index}]"
             );
 
@@ -100,7 +101,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
                 GenerateCode();
 
             var kvSpaceDimension = 
-                MultivectorProcessor.BasisSet.KvSpaceDimension(_inputGrade2);
+                this.KvSpaceDimension(_inputGrade2);
 
             var methodName =
                 _operationSpecs.GetName(_inputGrade1, _inputGrade2, _inputGrade2);

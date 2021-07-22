@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using GeometricAlgebraFulcrumLib.Algebra.Signatures;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.Outermorphisms;
+using GeometricAlgebraFulcrumLib.Geometry.Multivectors;
+using GeometricAlgebraFulcrumLib.Processing;
+using GeometricAlgebraFulcrumLib.Processing.Products;
+using GeometricAlgebraFulcrumLib.Processing.Products.Euclidean;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
 using GeometricAlgebraFulcrumLib.Storage;
 using GeometricAlgebraFulcrumLib.Storage.Composers;
@@ -12,47 +16,46 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean
     public sealed class GaEuclideanSimpleRotor<T>
         : IGaEuclideanGeometry<T>, IGaRotor<T>
     {
-        public static GaEuclideanSimpleRotor<T> CreateIdentity(IGaScalarProcessor<T> scalarProcessor)
+        public static GaEuclideanSimpleRotor<T> CreateIdentity(IGaProcessor<T> processor)
         {
             return new GaEuclideanSimpleRotor<T>(
-                GaScalarTermStorage<T>.CreateBasisScalar(scalarProcessor)
+                processor,
+                processor.CreateBasisScalar()
             );
         }
         
-        public static GaEuclideanSimpleRotor<T> Create(IGaMultivectorStorage<T> storage)
+        public static GaEuclideanSimpleRotor<T> Create(IGaProcessor<T> processor, IGasMultivector<T> storage)
         {
-            return new GaEuclideanSimpleRotor<T>(storage);
+            return new GaEuclideanSimpleRotor<T>(processor, storage);
         }
 
-        public static GaEuclideanSimpleRotor<T> Create(IGaVectorStorage<T> sourceVector, IGaVectorStorage<T> targetVector)
+        public static GaEuclideanSimpleRotor<T> Create(IGaProcessor<T> processor, IGasVector<T> sourceVector, IGasVector<T> targetVector)
         {
-            var scalarProcessor = sourceVector.ScalarProcessor;
-
             var norm1 = sourceVector.ENorm();
             var norm2 = targetVector.ENorm();
-            var cosAngle = scalarProcessor.Divide(
+            var cosAngle = processor.Divide(
                 sourceVector.ESp(targetVector), 
-                scalarProcessor.Times(norm1, norm2)
+                processor.Times(norm1, norm2)
             );
 
-            if (scalarProcessor.IsZero(scalarProcessor.Subtract(cosAngle, scalarProcessor.OneScalar)))
-                return CreateIdentity(scalarProcessor);
+            if (processor.IsZero(processor.Subtract(cosAngle, processor.OneScalar)))
+                return CreateIdentity(processor);
             
             //TODO: Handle the case for cosAngle == -1
 
             var cosHalfAngle = 
-                scalarProcessor.Sqrt(
-                    scalarProcessor.Divide(
-                        scalarProcessor.Add(scalarProcessor.OneScalar, cosAngle),
-                        scalarProcessor.IntegerToScalar(2)
+                processor.Sqrt(
+                    processor.Divide(
+                        processor.Add(processor.OneScalar, cosAngle),
+                        processor.IntegerToScalar(2)
                     )
                 );
 
             var sinHalfAngle = 
-                scalarProcessor.Sqrt(
-                    scalarProcessor.Divide(
-                        scalarProcessor.Subtract(scalarProcessor.OneScalar, cosAngle),
-                        scalarProcessor.IntegerToScalar(2)
+                processor.Sqrt(
+                    processor.Divide(
+                        processor.Subtract(processor.OneScalar, cosAngle),
+                        processor.IntegerToScalar(2)
                     )
                 );
             
@@ -60,14 +63,14 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean
                 sourceVector.Op(targetVector);
 
             var rotationBladeScalar =
-                scalarProcessor.Divide(
+                processor.Divide(
                     sinHalfAngle,
-                    scalarProcessor.Sqrt(
-                        scalarProcessor.Negative(
+                    processor.Sqrt(
+                        processor.Negative(
                             rotationBlade.EGp().GetTermScalar(0)
                         )
                     )
-                    //scalarProcessor.SqrtOfAbs(rotationBlade.EGpSquared().GetTermScalar(0))
+                    //processor.SqrtOfAbs(rotationBlade.EGpSquared().GetTermScalar(0))
                 );
 
             var rotorStorage = cosHalfAngle.Subtract(
@@ -76,30 +79,29 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean
             
             //rotor.IsSimpleRotor();
 
-            return new GaEuclideanSimpleRotor<T>(rotorStorage);
+            return new GaEuclideanSimpleRotor<T>(processor, rotorStorage);
         }
 
         /// <summary>
         /// Create a simple rotor from an angle and a blade
         /// </summary>
+        /// <param name="processor"></param>
         /// <param name="rotationAngle"></param>
         /// <param name="rotationBlade"></param>
         /// <returns></returns>
-        public static GaEuclideanSimpleRotor<T> Create(T rotationAngle, IGaKVectorStorage<T> rotationBlade)
+        public static GaEuclideanSimpleRotor<T> Create(IGaProcessor<T> processor, T rotationAngle, IGasKVector<T> rotationBlade)
         {
             if (rotationBlade.Grade != 2)
                 throw new InvalidOperationException();
 
-            var scalarProcessor = rotationBlade.ScalarProcessor;
-
-            var halfRotationAngle = scalarProcessor.Divide(rotationAngle, scalarProcessor.IntegerToScalar(2));
-            var cosHalfAngle = scalarProcessor.Cos(halfRotationAngle);
-            var sinHalfAngle = scalarProcessor.Sin(halfRotationAngle);
+            var halfRotationAngle = processor.Divide(rotationAngle, processor.IntegerToScalar(2));
+            var cosHalfAngle = processor.Cos(halfRotationAngle);
+            var sinHalfAngle = processor.Sin(halfRotationAngle);
 
             var rotationBladeScalar =
-                scalarProcessor.Divide(
+                processor.Divide(
                     sinHalfAngle,
-                    scalarProcessor.SqrtOfAbs(rotationBlade.EGp().GetTermScalar(0))
+                    processor.SqrtOfAbs(rotationBlade.EGp().GetTermScalar(0))
                 );
 
             var rotorStorage = cosHalfAngle.Add(
@@ -108,21 +110,19 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean
 
             //rotor.IsSimpleRotor();
 
-            return new GaEuclideanSimpleRotor<T>(rotorStorage);
+            return new GaEuclideanSimpleRotor<T>(processor, rotorStorage);
         }
 
-        public static GaEuclideanSimpleRotor<T> Create(IGaVectorStorage<T> inputVector1, IGaVectorStorage<T> inputVector2, IGaVectorStorage<T> rotatedVector1, IGaVectorStorage<T> rotatedVector2)
+        public static GaEuclideanSimpleRotor<T> Create(IGaProcessor<T> processor, IGasVector<T> inputVector1, IGasVector<T> inputVector2, IGasVector<T> rotatedVector1, IGasVector<T> rotatedVector2)
         {
-            var scalarProcessor = inputVector1.ScalarProcessor;
-
             var inputFrame = 
-                GaEuclideanVectorsFrame<T>.Create(
-                    scalarProcessor, 
+                GaVectorsFrame<T>.Create(
+                    processor, 
                     inputVector1, inputVector2
                 );
 
-            var rotatedFrame = GaEuclideanVectorsFrame<T>.Create(
-                scalarProcessor, 
+            var rotatedFrame = GaVectorsFrame<T>.Create(
+                processor, 
                 rotatedVector1, rotatedVector2
             );
 
@@ -133,22 +133,21 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean
             ).GetFinalRotor();
 
             return new GaEuclideanSimpleRotor<T>(
-                rotor.Storage, 
-                rotor.StorageReverse
+                processor, 
+                rotor.Rotor, 
+                rotor.RotorReverse
             );
         }
         
-        public static GaEuclideanSimpleRotor<T> Create(int baseSpaceDimensions, IGaVectorStorage<T> inputVector1, IGaVectorStorage<T> inputVector2, IGaVectorStorage<T> rotatedVector1, IGaVectorStorage<T> rotatedVector2)
+        public static GaEuclideanSimpleRotor<T> Create(IGaProcessor<T> processor, uint baseSpaceDimensions, IGasVector<T> inputVector1, IGasVector<T> inputVector2, IGasVector<T> rotatedVector1, IGasVector<T> rotatedVector2)
         {
-            var scalarProcessor = inputVector1.ScalarProcessor;
-
-            var inputFrame = GaEuclideanVectorsFrame<T>.Create(
-                scalarProcessor,
+            var inputFrame = GaVectorsFrame<T>.Create(
+                processor,
                 inputVector1, inputVector2
             );
 
-            var rotatedFrame = GaEuclideanVectorsFrame<T>.Create(
-                scalarProcessor,
+            var rotatedFrame = GaVectorsFrame<T>.Create(
+                processor,
                 rotatedVector1, rotatedVector2
             );
 
@@ -159,8 +158,9 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean
             ).GetFinalRotor();
 
             return new GaEuclideanSimpleRotor<T>(
-                rotor.Storage,
-                rotor.StorageReverse
+                processor,
+                rotor.Rotor,
+                rotor.RotorReverse
             );
         }
 
@@ -168,64 +168,80 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean
         /// Construct a rotor in the e_i-e_j plane with the given angle where i is less than j
         /// See: Computational Methods in Engineering by S.P. Venkateshan and Prasanna Swaminathan
         /// </summary>
-        /// <param name="scalarProcessor"></param>
+        /// <param name="processor"></param>
         /// <param name="i"></param>
         /// <param name="j"></param>
         /// <param name="rotationAngle"></param>
         /// <returns></returns>
-        public static GaEuclideanSimpleRotor<T> CreateGivensRotor(IGaScalarProcessor<T> scalarProcessor, int i, int j, T rotationAngle)
+        public static GaEuclideanSimpleRotor<T> CreateGivensRotor(IGaProcessor<T> processor, int i, int j, T rotationAngle)
         {
             Debug.Assert(i >= 0 && j > i);
 
-            var halfRotationAngle = scalarProcessor.Divide(rotationAngle, scalarProcessor.IntegerToScalar(2));
-            var cosHalfAngle = scalarProcessor.Cos(halfRotationAngle);
-            var sinHalfAngle = scalarProcessor.Sin(halfRotationAngle);
+            var halfRotationAngle = processor.Divide(rotationAngle, processor.IntegerToScalar(2));
+            var cosHalfAngle = processor.Cos(halfRotationAngle);
+            var sinHalfAngle = processor.Sin(halfRotationAngle);
 
             var bladeId = (1UL << i) | (1UL << j);
 
-            var composer = new GaMultivectorTermsStorageComposer<T>(scalarProcessor);
+            var composer = new GaMultivectorTermsStorageComposer<T>(processor);
 
             composer.SetTerm(0, cosHalfAngle);
             composer.SetTerm(bladeId, sinHalfAngle);
 
             return new GaEuclideanSimpleRotor<T>(
-                composer.GetCompactStorage()
+                processor,
+                composer.GetCompactMultivector()
             );
         }
 
 
-        public IGaScalarProcessor<T> ScalarProcessor 
-            => Storage.ScalarProcessor;
+        public uint VSpaceDimension 
+            => Processor.VSpaceDimension;
 
-        public IGaMultivectorStorage<T> Storage { get; }
+        public ulong GaSpaceDimension
+            => Processor.GaSpaceDimension;
 
-        public IGaMultivectorStorage<T> StorageReverse { get; }
+        public ulong MaxBasisBladeId { get; }
+
+        public uint GradesCount { get; }
+        
+        public IEnumerable<uint> Grades { get; }
+
+        public IGaScalarProcessor<T> ScalarProcessor { get; }
+
+        public IGasKVector<T> MappedPseudoScalar { get; }
+
+        public IGaProcessor<T> Processor { get; }
+
+        public IGasMultivector<T> Rotor { get; }
+
+        public IGasMultivector<T> RotorReverse { get; }
 
         public bool IsValid
         {
             get
             {
                 // Make sure the storage and its reverse are correct
-                if (!Storage.GetReverse().Subtract(StorageReverse).IsNearZero())
+                if (!Rotor.GetReverse().Subtract(RotorReverse).IsNearZero())
                     return false;
 
                 // Make sure storage contains only terms of grades 0,2
-                if ((Storage.GetStoredGradesBitPattern() | 5UL) != 5UL)
+                if ((Rotor.GetStoredGradesBitPattern() | 5UL) != 5UL)
                     return false;
 
                 // Make sure storage gp reverse(storage) == 1
-                var gp = Storage.EGp(StorageReverse);
+                var gp = Rotor.EGp(RotorReverse);
 
                 if (!gp.IsScalar())
                     return false;
 
                 var diff =
-                    ScalarProcessor.Subtract(
+                    Processor.Subtract(
                         gp.GetTermScalar(0),
-                        ScalarProcessor.OneScalar
+                        Processor.OneScalar
                     );
 
-                if (!ScalarProcessor.IsNearZero(diff))
+                if (!Processor.IsNearZero(diff))
                     return false;
 
                 return true;
@@ -236,22 +252,25 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean
             => !IsValid;
 
 
-        private GaEuclideanSimpleRotor([NotNull] IGaMultivectorStorage<T> storage)
+        private GaEuclideanSimpleRotor([NotNull] IGaProcessor<T> processor, [NotNull] IGasMultivector<T> storage)
         {
-            Storage = storage;
-            StorageReverse = Storage.GetReverse();
+            Processor = processor;
+            Rotor = storage;
+            RotorReverse = Rotor.GetReverse();
         }
 
-        private GaEuclideanSimpleRotor([NotNull] IGaMultivectorStorage<T> storage, [NotNull] IGaMultivectorStorage<T> storageReverse)
+        private GaEuclideanSimpleRotor([NotNull] IGaProcessor<T> processor, [NotNull] IGasMultivector<T> rotor, [NotNull] IGasMultivector<T> rotorReverse)
         {
-            Storage = storage;
-            StorageReverse = storageReverse;
+            Processor = processor;
+            Rotor = rotor;
+            RotorReverse = rotorReverse;
         }
 
 
-        public GaEuclideanVector<T> Map(GaEuclideanVector<T> vector)
+        public GaVector<T> Map(GaVector<T> vector)
         {
-            return GaEuclideanVector<T>.Create(
+            return GaVector<T>.Create(
+                Processor,
                 MapVector(vector.Storage)
             );
         }
@@ -259,130 +278,124 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean
         public GaEuclideanSimpleRotor<T> GetReverseRotor()
         {
             return new GaEuclideanSimpleRotor<T>(
-                StorageReverse, 
-                Storage
+                Processor, 
+                RotorReverse, 
+                Rotor
             );
         }
         
 
-        public IGaVectorsLinearMap<T> GetAdjoint()
+        public IGaOutermorphism<T> GetAdjoint()
         {
             return new GaEuclideanSimpleRotor<T>(
-                StorageReverse, 
-                Storage
+                Processor,
+                RotorReverse, 
+                Rotor
             );
         }
 
-        public IGaVectorStorage<T> MapBasisVector(int index)
+        public IGasVector<T> MapBasisVector(int index)
         {
             return MapVector(
-                GaVectorTermStorage<T>.Create(
-                    ScalarProcessor, 
-                    index, 
-                    ScalarProcessor.OneScalar
+                Processor.CreateVector(index, 
+                    Processor.OneScalar
                 )
             );
         }
 
-        public IGaVectorStorage<T> MapBasisVector(ulong index)
+        public IReadOnlyList<IGasVector<T>> GetMappedBasisVectors()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IGasVector<T> MapBasisVector(ulong index)
         {
             return MapVector(
-                GaVectorTermStorage<T>.Create(
-                    ScalarProcessor, 
-                    index, 
-                    ScalarProcessor.OneScalar
+                Processor.CreateVector(index, 
+                    Processor.OneScalar
                 )
             );
         }
 
-        public IGaBivectorStorage<T> MapBasisBivector(int index1, int index2)
+        public IGasBivector<T> MapBasisBivector(int index1, int index2)
         {
             return MapBivector(
-                GaBivectorTermStorage<T>.Create(
-                    ScalarProcessor, 
-                    index1, 
+                Processor.CreateBivector(index1, 
                     index2,
-                    ScalarProcessor.OneScalar
+                    Processor.OneScalar
                 )
             );
         }
 
-        public IGaBivectorStorage<T> MapBasisBivector(ulong index1, ulong index2)
+        public IGasBivector<T> MapBasisBivector(ulong index1, ulong index2)
         {
             return MapBivector(
-                GaBivectorTermStorage<T>.Create(
-                    ScalarProcessor, 
-                    index1, 
+                Processor.CreateBivector(index1, 
                     index2,
-                    ScalarProcessor.OneScalar
+                    Processor.OneScalar
                 )
             );
         }
 
-        public IGaKVectorStorage<T> MapBasisBlade(ulong id)
+        public IGasKVector<T> MapBasisBlade(ulong id)
         {
             return MapTerm(
-                GaKVectorTermStorage<T>.Create(
-                    ScalarProcessor, 
-                    id, 
-                    ScalarProcessor.OneScalar
+                Processor.CreateKVector(id, 
+                    Processor.OneScalar
                 )
             );
         }
 
-        public IGaKVectorStorage<T> MapBasisBlade(int grade, ulong index)
+        public IGasKVector<T> MapBasisBlade(uint grade, ulong index)
         {
             return MapTerm(
-                GaKVectorTermStorage<T>.Create(
-                    ScalarProcessor, 
-                    grade,
+                Processor.CreateKVector(grade,
                     index, 
-                    ScalarProcessor.OneScalar
+                    Processor.OneScalar
                 )
             );
         }
 
-        public IGaScalarStorage<T> MapScalar(IGaScalarStorage<T> storage)
+        public IGasScalar<T> MapScalar(IGasScalar<T> storage)
         {
-            return GaScalarTermStorage<T>.Create(
-                ScalarProcessor,
+            return Processor.CreateScalar(
                 storage.Scalar
             );
         }
 
-        public IGaKVectorStorage<T> MapTerm(IGaKVectorTermStorage<T> storage)
+        public IGasKVector<T> MapTerm(IGasKVectorTerm<T> storage)
         {
-            return Storage.EGp(storage).EGp(StorageReverse).GetKVectorPart(storage.Grade);
+            return Rotor.EGp(storage).EGp(RotorReverse).GetKVectorPart(storage.Grade);
         }
 
-        public IGaVectorStorage<T> MapVector(IGaVectorStorage<T> storage)
+        public IGasVector<T> MapVector(IGasVector<T> storage)
         {
-            return Storage.EGp(storage).EGp(StorageReverse).GetVectorPart();
+            return Rotor.EGp(storage).EGp(RotorReverse).GetVectorPart();
         }
 
-        public IGaBivectorStorage<T> MapBivector(IGaBivectorStorage<T> storage)
+        public IGasBivector<T> MapBivector(IGasBivector<T> storage)
         {
-            return Storage.EGp(storage).EGp(StorageReverse).GetBivectorPart();
+            return Rotor.EGp(storage).EGp(RotorReverse).GetBivectorPart();
         }
 
-        public IGaKVectorStorage<T> MapKVector(IGaKVectorStorage<T> storage)
+        public IGasKVector<T> MapKVector(IGasKVector<T> storage)
         {
-            return Storage.EGp(storage).EGp(StorageReverse).GetKVectorPart(storage.Grade);
+            return Rotor.EGp(storage).EGp(RotorReverse).GetKVectorPart(storage.Grade);
         }
 
-        public IGaMultivectorStorage<T> MapMultivector(IGaMultivectorGradedStorage<T> storage)
+        public IGasMultivector<T> MapMultivector(IGasGradedMultivector<T> storage)
         {
-            return Storage.EGp(storage).EGp(StorageReverse);
+            return Rotor.EGp(storage).EGp(RotorReverse);
         }
 
-        public IGaMultivectorStorage<T> MapMultivector(IGaMultivectorTermsStorage<T> storage)
+        public IGasMultivector<T> MapMultivector(IGasTermsMultivector<T> storage)
         {
-            return Storage.EGp(storage).EGp(StorageReverse);
+            return Rotor.EGp(storage).EGp(RotorReverse);
         }
 
-        public IGaMultivectorStorage<T> MapMultivector(IGaMultivectorStorage<T> storage)
+        public IGasMultivector<T> MapMultivector(IGasMultivector<T> storage)
         {
-            return Storage.EGp(storage).EGp(StorageReverse);
+            return Rotor.EGp(storage).EGp(RotorReverse);
         }
     }
 }

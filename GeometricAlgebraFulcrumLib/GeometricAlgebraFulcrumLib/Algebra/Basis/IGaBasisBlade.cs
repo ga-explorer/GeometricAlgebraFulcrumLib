@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Terms;
+using GeometricAlgebraFulcrumLib.Algebra.Terms;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.Basis
 {
@@ -9,7 +9,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Basis
     {
         ulong Id { get; }
 
-        int Grade { get; }
+        uint Grade { get; }
 
         ulong Index { get; }
         
@@ -19,22 +19,16 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Basis
 
         bool IsFull { get; }
 
-        Tuple<int, ulong> GetGradeIndex();
+        Tuple<uint, ulong> GetGradeIndex();
 
-        Tuple<ulong, int, ulong> GetIdGradeIndex();
+        Tuple<ulong, uint, ulong> GetIdGradeIndex();
 
         IReadOnlyList<ulong> GetBasisVectorIndices();
 
-        void GetGradeIndex(out int grade, out ulong index);
+        void GetGradeIndex(out uint grade, out ulong index);
 
-        void GetIdGradeIndex(out ulong id, out int grade, out ulong index);
-
-        GaBasisUniform ToUniformBasisBlade();
-
-        GaBasisGraded ToGradedBasisBlade();
-
-        GaBasisFull ToFullBasisBlade();
-
+        void GetIdGradeIndex(out ulong id, out uint grade, out ulong index);
+        
         IEnumerable<ulong> GetBasisVectorsIndices();
 
         GaTerm<T> CreateTerm<T>(T scalar);

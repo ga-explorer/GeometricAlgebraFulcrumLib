@@ -1,13 +1,21 @@
 ﻿using System;
+using GeometricAlgebraFulcrumLib.Algebra.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Geometry.Euclidean;
+using GeometricAlgebraFulcrumLib.Processing.Generic;
 using GeometricAlgebraFulcrumLib.Processing.Implementations.Float64;
 using GeometricAlgebraFulcrumLib.Symbolic.Applications.GaPoT;
-using GeometricAlgebraFulcrumLib.Text;
+using GeometricAlgebraFulcrumLib.TextComposers;
 
 namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
 {
     public static class ClarkeTransformationNumericSample
     {
+        public static GaProcessorGenericOrthonormal<double> Processor { get; }
+            = GaProcessorGenericOrthonormal<double>.CreateEuclidean(
+                GaScalarProcessorFloat64.DefaultProcessor,
+                63
+            );
+
         public static GaScalarProcessorFloat64 ScalarProcessor { get; }
             = GaScalarProcessorFloat64.DefaultProcessor;
             
@@ -27,11 +35,10 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
 
                 var clarkeMap =
                     //ScalarProcessor.CreateSimpleKirchhoffRotor(n);
-                    ScalarProcessor.CreateClarkeMap(n);
+                    Processor.CreateClarkeMap(n);
 
                 var clarkeArray = 
-                    clarkeMap
-                        .GetArray(n, n);
+                    clarkeMap.GetVectorsMappingArray(n, n);
                 
                 Console.WriteLine("Generated Clarke Matrix:");
                 Console.WriteLine(
@@ -40,7 +47,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
                 Console.WriteLine();
 
                 var (linearMapQ, linearMapR) = 
-                    clarkeMap.GetHouseholderQRDecomposition(n);
+                    Processor.GetHouseholderQRDecomposition(clarkeMap, n);
 
                 Console.WriteLine("Q Map Vectors:");
                 for (var i = 0; i < linearMapQ.UnitVectorStorages.Count; i++)
@@ -54,8 +61,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
                 }
 
                 var linearMapQArray = 
-                    linearMapQ
-                        .GetArray(n, n);
+                    linearMapQ.GetVectorsMappingArray(n, n);
                 
                 Console.WriteLine("Q Matrix:");
                 Console.WriteLine(
@@ -64,8 +70,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
                 Console.WriteLine();
 
                 var linearMapRArray = 
-                    linearMapR
-                        .GetArray(n, n);
+                    linearMapR.GetVectorsMappingArray(n, n);
                 
                 Console.WriteLine("R Matrix:");
                 Console.WriteLine(
@@ -78,7 +83,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
                 Console.WriteLine("Q Map Rotors:");
                 for (var i = 0; i < rotorsSequence.Count; i++)
                 {
-                    var rotor = rotorsSequence[i].Storage;
+                    var rotor = rotorsSequence[i].Rotor;
 
                     Console.WriteLine(
                         TextComposer.GetMultivectorText(rotor)

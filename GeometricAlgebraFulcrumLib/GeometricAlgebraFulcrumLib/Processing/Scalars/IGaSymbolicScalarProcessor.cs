@@ -3,15 +3,15 @@ using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
 
 namespace GeometricAlgebraFulcrumLib.Processing.Scalars
 {
-    public interface IGaSymbolicScalarProcessor<TScalar> :
-        IGaScalarProcessor<TScalar>
+    public interface IGaSymbolicScalarProcessor<T> :
+        IGaScalarProcessor<T>
     {
-        TScalar Simplify(TScalar scalar);
+        T Simplify(T scalar);
 
-        TScalar GetSymbol(string symbolNameText);
+        T GetSymbol(string symbolNameText);
 
-        TScalar SymbolicExpressionToScalar(ISymbolicExpression expression);
+        T SymbolicExpressionToScalar(ISymbolicExpression expression);
 
-        ISymbolicExpression ScalarToSymbolicExpression(SymbolicContext context, TScalar scalar);
+        ISymbolicExpression ScalarToSymbolicExpression(SymbolicContext context, T scalar);
     }
 }

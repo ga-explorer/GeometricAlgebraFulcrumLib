@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using DataStructuresLib.BitManipulation;
 using GeometricAlgebraFulcrumLib.Algebra.Basis;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Variables;
@@ -39,15 +40,12 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Factories
             }
         }
 
-        public GaScalarTermStorage<ISymbolicExpressionAtomic> CreateScalarTerm(string scalarName)
+        public GasScalar<ISymbolicExpressionAtomic> CreateScalarTerm(string scalarName)
         {
             var namedScalar = 
                 Context.GetOrDefineParameterVariable(scalarName);
 
-            return GaScalarTermStorage<ISymbolicExpressionAtomic>.Create(
-                Context,
-                namedScalar
-            );
+            return Context.CreateScalar(namedScalar);
         }
 
         public ISymbolicExpressionAtomic[,] CreateDenseArray(int rowsCount, int colsCount, Func<int, int, string> namingFunction)
@@ -61,39 +59,33 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Factories
             return array;
         }
 
-        public GaVectorStorage<ISymbolicExpressionAtomic> CreateVector(params string[] scalarNames)
+        public IGasVector<ISymbolicExpressionAtomic> CreateVector(params string[] scalarNames)
         {
-            return GaVectorStorage<ISymbolicExpressionAtomic>.Create(
-                Context,
-                scalarNames
+            return Context.CreateVector(scalarNames
                     .Select(Context.GetOrDefineParameterVariable)
                     .Cast<ISymbolicExpressionAtomic>()
                     .ToArray()
             );
         }
 
-        public GaVectorTermStorage<ISymbolicExpressionAtomic> CreateVectorTerm(ulong index, string scalarName)
+        public GasVectorTerm<ISymbolicExpressionAtomic> CreateVectorTerm(ulong index, string scalarName)
         {
             var namedScalar = 
                 Context.GetOrDefineParameterVariable(scalarName);
 
-            return GaVectorTermStorage<ISymbolicExpressionAtomic>.Create(
-                Context,
-                index,
-                namedScalar
-            );
+            return Context.CreateVector(index, namedScalar);
         }
         
-        public GaVectorStorage<ISymbolicExpressionAtomic> CreateDenseVector(int vSpaceDimension, Func<ulong, string> namingFunction)
+        public IGasVector<ISymbolicExpressionAtomic> CreateDenseVector(uint vSpaceDimension, Func<ulong, string> namingFunction)
         {
             var parametersList =
-                Enumerable
-                    .Range(0, vSpaceDimension)
+                vSpaceDimension
+                    .GetRange()
                     .Select(index => 
                         new KeyValuePair<ulong, ISymbolicExpressionAtomic>(
-                            (ulong) index, 
+                            index, 
                             Context.GetOrDefineParameterVariable(
-                                namingFunction((ulong) index)
+                                namingFunction(index)
                             )
                         )
                     )
@@ -102,15 +94,12 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Factories
                         pair => pair.Value
                     );
 
-            return GaVectorStorage<ISymbolicExpressionAtomic>.Create(
-                Context,
-                parametersList
-            );
+            return Context.CreateVector(parametersList);
         }
 
-        public GaKVectorStorage<ISymbolicExpressionAtomic> CreateDenseKVector(int vSpaceDimensions, int grade, Func<ulong, string> namingFunction)
+        public IGasKVector<ISymbolicExpressionAtomic> CreateDenseKVector(uint vSpaceDimensions, uint grade, Func<ulong, string> namingFunction)
         {
-            Debug.Assert(grade >= 0 && grade <= vSpaceDimensions);
+            Debug.Assert(grade <= vSpaceDimensions);
             
             var kvSpaceDimension = 
                 GaBasisUtils.KvSpaceDimension(vSpaceDimensions, grade);
@@ -131,21 +120,17 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Factories
                         pair => pair.Value
                     );
 
-            return GaKVectorStorage<ISymbolicExpressionAtomic>.Create(
-                Context,
-                grade,
-                parametersList
-            );
+            return Context.CreateKVector(grade, parametersList);
         }
 
-        public GaMultivectorTermsStorage<ISymbolicExpressionAtomic> CreateDenseMultivector(int vSpaceDimensions, Func<int, string> namingFunction)
+        public IGasTermsMultivector<ISymbolicExpressionAtomic> CreateDenseMultivector(uint vSpaceDimensions, Func<ulong, string> namingFunction)
         {
             var parametersList =
-                Enumerable
-                    .Range(0, 1 << vSpaceDimensions)
+                (1UL << (int) vSpaceDimensions)
+                    .GetRange()
                     .Select(id => 
                         new KeyValuePair<ulong, ISymbolicExpressionAtomic>(
-                            (ulong) id, 
+                            id, 
                             Context.GetOrDefineParameterVariable(
                                 namingFunction(id)
                             )
@@ -156,10 +141,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Factories
                         pair => pair.Value
                     );
 
-            return GaMultivectorTermsStorage<ISymbolicExpressionAtomic>.Create(
-                Context,
-                parametersList
-            );
+            return Context.CreateTermsMultivector(parametersList);
         }
 
         //TODO: Add more functions for constructing multivectors

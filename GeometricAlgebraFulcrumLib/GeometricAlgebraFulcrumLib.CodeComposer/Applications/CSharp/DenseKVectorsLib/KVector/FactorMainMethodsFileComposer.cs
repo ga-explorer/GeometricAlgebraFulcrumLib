@@ -1,4 +1,5 @@
 ﻿using System;
+using GeometricAlgebraFulcrumLib.Algebra;
 using TextComposerLib.Text.Linear;
 using TextComposerLib.Text.Structured;
 
@@ -13,44 +14,44 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         }
 
 
-        private void GenerateMaxCoefIdFunction(int grade)
+        private void GenerateMaxCoefIdFunction(uint grade)
         {
             var casesText = new ListTextComposer(Environment.NewLine);
 
-            var maxIndex = MultivectorProcessor.BasisSet.KvSpaceDimension(grade) - 1;
+            var maxIndex = this.KvSpaceDimension(grade) - 1;
 
             for (var index = 1UL; index < maxIndex; index++)
                 casesText.Add(
                     Templates["maxcoefid_case"],
                     "index", index,
-                    "id", MultivectorProcessor.BasisSet.BasisBladeId(grade, index)
+                    "id", Processor.BasisBladeId(grade, index)
                 );
 
             TextComposer.Append(
                 Templates["maxcoefid"],
                 "grade", grade,
                 "double", GaClcLanguage.ScalarTypeName,
-                "initid", MultivectorProcessor.BasisSet.BasisBladeId(grade, 0),
+                "initid", Processor.BasisBladeId(grade, 0),
                 "maxindex", maxIndex,
-                "maxid", MultivectorProcessor.BasisSet.BasisBladeId(grade, maxIndex),
+                "maxid", Processor.BasisBladeId(grade, maxIndex),
                 "maxcoefid_case", casesText
             );
         }
 
-        private void GenerateFactorGradeFunction(int grade)
+        private void GenerateFactorGradeFunction(uint grade)
         {
             var casesText = new ListTextComposer(Environment.NewLine);
 
-            for (var index = 1UL; index < MultivectorProcessor.BasisSet.KvSpaceDimension(grade); index++)
+            for (var index = 1UL; index < Processor.KvSpaceDimension(grade); index++)
                 casesText.Add(
                     Templates["factorgrade_case"].GenerateUsing(
-                        MultivectorProcessor.BasisSet.BasisBladeId(grade, index)
+                        Processor.BasisBladeId(grade, index)
                         )
                     );
 
             TextComposer.Append(
                 Templates["factorgrade"],
-                "frame", CurrentNamespace,
+                "signature", CurrentNamespace,
                 "grade", grade,
                 "double", GaClcLanguage.ScalarTypeName,
                 "factorgrade_case", casesText
@@ -70,15 +71,15 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
                     Templates["factor_main_case"],
                     "name", methodName,
                     "grade", grade,
-                    "frame", CurrentNamespace
+                    "signature", CurrentNamespace
                 );
             }
 
             TextComposer.Append(
                 Templates["factor_main"],
-                "frame", CurrentNamespace,
+                "signature", CurrentNamespace,
                 "maxgrade", VSpaceDimension,
-                "maxid", MultivectorProcessor.BasisSet.MaxBasisBladeId,
+                "maxid", Processor.MaxBasisBladeId,
                 "factor_main_case", casesText
             );
         }
@@ -87,7 +88,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         {
             GenerateKVectorFileStartCode();
 
-            for (var grade = 2; grade < VSpaceDimension; grade++)
+            for (var grade = 2U; grade < VSpaceDimension; grade++)
             {
                 GenerateMaxCoefIdFunction(grade);
 

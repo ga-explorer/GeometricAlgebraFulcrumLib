@@ -1,8 +1,10 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Algebra.Signatures;
 using GeometricAlgebraFulcrumLib.CodeComposer.Composers;
 using GeometricAlgebraFulcrumLib.CodeComposer.LanguageServers;
 using GeometricAlgebraFulcrumLib.CodeComposer.LanguageServers.CSharp;
+using GeometricAlgebraFulcrumLib.Processing;
+using GeometricAlgebraFulcrumLib.Processing.Products;
+using GeometricAlgebraFulcrumLib.Processing.Products.Euclidean;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
 using GeometricAlgebraFulcrumLib.Storage;
@@ -14,7 +16,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseMulti
     public sealed class GaLibraryComposer :
         GaCodeLibraryComposerBase
     {
-        public static string GenerateCode(int vSpaceDimensions)
+        public static string GenerateCode(uint vSpaceDimensions)
         {
             var codeLibraryComposer = new GaLibraryComposer(vSpaceDimensions);
 
@@ -39,10 +41,10 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseMulti
         public override string Description 
             => "C# Dense Multivector code library composer";
 
-        public int VSpaceDimensions { get; }
+        public uint VSpaceDimensions { get; }
 
         public ulong GaSpaceDimensions 
-            => 1UL << VSpaceDimensions;
+            => 1UL << (int) VSpaceDimensions;
 
         public string RootNamespace 
             => $"EGA{VSpaceDimensions}D";
@@ -51,7 +53,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseMulti
             => Templates["multivectorClass"];
 
 
-        public GaLibraryComposer(int vSpaceDimensions) : 
+        public GaLibraryComposer(uint vSpaceDimensions) : 
             base(GaClcLanguageServer.CSharp(new GaClcMathematicaExprToCSharpConverter()))
         {
             if (vSpaceDimensions < 2)
@@ -216,7 +218,7 @@ namespace EGA#vSpaceDimensions#D
         }
 
 
-        private string GetMultivectorBinaryOperationCode(Func<IGaMultivectorStorage<ISymbolicExpressionAtomic>, IGaMultivectorStorage<ISymbolicExpressionAtomic>, IGaMultivectorStorage<ISymbolicExpressionAtomic>> binaryOperationFunc, Func<ulong, string> namingFunc1, Func<ulong, string> namingFunc2, Func<ulong, string> namingFunc3)
+        private string GetMultivectorBinaryOperationCode(Func<IGasMultivector<ISymbolicExpressionAtomic>, IGasMultivector<ISymbolicExpressionAtomic>, IGasMultivector<ISymbolicExpressionAtomic>> binaryOperationFunc, Func<ulong, string> namingFunc1, Func<ulong, string> namingFunc2, Func<ulong, string> namingFunc3)
         {
             var context = new SymbolicContext();
 

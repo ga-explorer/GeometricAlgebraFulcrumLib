@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace DataStructuresLib.BitManipulation
@@ -119,6 +120,7 @@ namespace DataStructuresLib.BitManipulation
         /// </summary>
         /// <param name="bitPattern"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsOdd(this ulong bitPattern)
         {
             return (bitPattern & 1ul) != 0ul;
@@ -129,6 +131,7 @@ namespace DataStructuresLib.BitManipulation
         /// </summary>
         /// <param name="bitPattern"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsEven(this ulong bitPattern)
         {
             return (bitPattern & 1ul) == 0ul;
@@ -166,15 +169,15 @@ namespace DataStructuresLib.BitManipulation
         /// <returns></returns>
         public static IEnumerable<ulong> GetUInt64TestPatterns()
         {
-            for (var i = 0; i < 64; i++)
+            for (var i = 0; i < MaxBitPatternSize; i++)
             {
                 var pattern1 = 1UL << i;
 
-                for (var j = 0; j < 64; j++)
+                for (var j = 0; j < MaxBitPatternSize; j++)
                 {
                     var pattern2 = 1UL << j;
 
-                    for (var k = 0; k < 64; k++)
+                    for (var k = 0; k < MaxBitPatternSize; k++)
                     {
                         var pattern3 = 1UL << k;
 
@@ -189,6 +192,7 @@ namespace DataStructuresLib.BitManipulation
         /// </summary>
         /// <param name="bitPattern"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsBasicPattern(this ulong bitPattern)
         {
             return bitPattern != 0ul && (bitPattern & (bitPattern - 1ul)) == 0ul;
@@ -199,6 +203,7 @@ namespace DataStructuresLib.BitManipulation
         /// </summary>
         /// <param name="bitPattern"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsZeroOrBasicPattern(this ulong bitPattern)
         {
             return (bitPattern & (bitPattern - 1ul)) == 0ul;
@@ -210,6 +215,7 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="bitPattern"></param>
         /// <param name="bitPosition"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsOneAt(this ulong bitPattern, int bitPosition)
         {
             return ((1ul << bitPosition) & bitPattern) != 0ul;
@@ -221,6 +227,7 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="bitPattern"></param>
         /// <param name="bitPosition"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsZeroAt(this ulong bitPattern, int bitPosition)
         {
             return ((1ul << bitPosition) & bitPattern) == 0ul;
@@ -774,6 +781,7 @@ namespace DataStructuresLib.BitManipulation
         /// </summary>
         /// <param name="bitPattern"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ulong Power2LowerLimit(this ulong bitPattern)
         {
             if (bitPattern == 0ul) 
@@ -803,6 +811,7 @@ namespace DataStructuresLib.BitManipulation
         /// </summary>
         /// <param name="bitPattern"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ulong Power2UpperLimit(this ulong bitPattern)
         {
             if (bitPattern == 0)
@@ -825,6 +834,7 @@ namespace DataStructuresLib.BitManipulation
         /// </summary>
         /// <param name="bitPattern"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ulong PatternToMask(this ulong bitPattern)
         {
             if (bitPattern == 0)
@@ -842,6 +852,7 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="bitPattern"></param>
         /// <param name="bitPosition"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ulong SetBitToZeroAt(this ulong bitPattern, int bitPosition)
         {
             return bitPattern & ~(1ul << bitPosition);
@@ -853,6 +864,7 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="bitPattern"></param>
         /// <param name="bitPositions"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ulong SetBitsToZeroAt(this ulong bitPattern, IEnumerable<int> bitPositions)
         {
             var bitMask = bitPositions.Aggregate(
@@ -869,6 +881,7 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="bitPattern"></param>
         /// <param name="bitPositions"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ulong SetBitsToZeroAt(this ulong bitPattern, params int[] bitPositions)
         {
             var bitMask = bitPositions.Aggregate(
@@ -885,6 +898,7 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="bitPattern"></param>
         /// <param name="bitPosition"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ulong SetBitToOneAt(this ulong bitPattern, int bitPosition)
         {
             return bitPattern | (1ul << bitPosition);
@@ -896,6 +910,7 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="bitPattern"></param>
         /// <param name="bitPositions"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ulong SetBitsToOneAt(this ulong bitPattern, IEnumerable<int> bitPositions)
         {
             var bitMask = bitPositions.Aggregate(
@@ -912,6 +927,7 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="bitPattern"></param>
         /// <param name="bitPositions"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ulong SetBitsToOneAt(this ulong bitPattern, params int[] bitPositions)
         {
             var bitMask = bitPositions.Aggregate(
@@ -929,12 +945,12 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="bitPosition"></param>
         /// <param name="value"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ulong SetBitAt(this ulong bitPattern, int bitPosition, bool value)
         {
-            return 
-                value
-                    ? bitPattern | (1ul << bitPosition) 
-                    : bitPattern & ~(1ul << bitPosition);
+            return value
+                ? bitPattern | (1ul << bitPosition) 
+                : bitPattern & ~(1ul << bitPosition);
         }
 
         /// <summary>
@@ -943,6 +959,7 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="bitPattern"></param>
         /// <param name="bitPosition"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ulong InvertBitAt(this ulong bitPattern, int bitPosition)
         {
             return bitPattern ^ (1ul << bitPosition);
@@ -954,13 +971,13 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="bitPattern"></param>
         /// <param name="bitPositions"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ulong InvertBitsAt(this ulong bitPattern, IEnumerable<int> bitPositions)
         {
-            return 
-                bitPositions.Aggregate(
-                    bitPattern, 
-                    (current, bitPosition) => current ^ (1ul << bitPosition)
-                );
+            return bitPositions.Aggregate(
+                bitPattern, 
+                (current, bitPosition) => current ^ (1ul << bitPosition)
+            );
         }
 
         /// <summary>
@@ -969,13 +986,13 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="bitPattern"></param>
         /// <param name="bitPositions"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ulong InvertBitsAt(this ulong bitPattern, params int[] bitPositions)
         {
-            return
-                bitPositions.Aggregate(
-                    bitPattern,
-                    (current, bitPosition) => current ^ (1ul << bitPosition)
-                );
+            return bitPositions.Aggregate(
+                bitPattern,
+                (current, bitPosition) => current ^ (1ul << bitPosition)
+            );
         }
 
 
@@ -985,6 +1002,7 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="bitPattern"></param>
         /// <param name="bitPosition"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool BitToBoolean(this ulong bitPattern, int bitPosition)
         {
             return ((1ul << bitPosition) & bitPattern) != 0ul;
@@ -1025,6 +1043,7 @@ namespace DataStructuresLib.BitManipulation
         /// </summary>
         /// <param name="bitsCount"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ulong CreateMask(int bitsCount)
         {
             return (1ul << bitsCount) - 1ul;
@@ -1036,6 +1055,7 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="bitPosition1"></param>
         /// <param name="bitPosition2"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ulong CreateMask(int bitPosition1, int bitPosition2)
         {
             var bitsCount = bitPosition2 - bitPosition1;
@@ -1054,6 +1074,7 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="bitPattern2"></param>
         /// <param name="size"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ulong AppendPattern(this ulong bitPattern1, int size, ulong bitPattern2)
         {
             return bitPattern2 | (bitPattern1 << size);
@@ -1067,6 +1088,7 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="bitMask"></param>
         /// <param name="bitPattern2"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ulong MergeWithPattern(this ulong bitPattern1, ulong bitMask, ulong bitPattern2)
         {
             return bitPattern1 ^ ((bitPattern1 ^ bitPattern2) & bitMask);
@@ -1100,6 +1122,7 @@ namespace DataStructuresLib.BitManipulation
         /// </summary>
         /// <param name="bitPattern"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ulong NextPermutation(this ulong bitPattern)
         {
             var tempPattern = (bitPattern | (bitPattern - 1UL)) + 1UL;
@@ -1363,10 +1386,9 @@ namespace DataStructuresLib.BitManipulation
         {
             var bitPosition = 0;
 
-            return
-                items
-                    .Take(MaxBitPosition)
-                    .Where(item => ((1ul << (bitPosition++)) & bitPattern) != 0ul);
+            return items
+                .Take(MaxBitPosition)
+                .Where(item => ((1ul << (bitPosition++)) & bitPattern) != 0ul);
         }
 
         /// <summary>
@@ -1381,11 +1403,10 @@ namespace DataStructuresLib.BitManipulation
         {
             var bitPosition = 0;
 
-            return
-                items
-                    .Take(MaxBitPosition)
-                    .Select((item, index) => new KeyValuePair<ulong, T>((ulong)index, item))
-                    .Where(item => ((1ul << (bitPosition++)) & bitPattern) != 0ul);
+            return items
+                .Take(MaxBitPosition)
+                .Select((item, index) => new KeyValuePair<ulong, T>((ulong)index, item))
+                .Where(item => ((1ul << (bitPosition++)) & bitPattern) != 0ul);
         }
 
 
@@ -1399,23 +1420,22 @@ namespace DataStructuresLib.BitManipulation
         {
             var bitPosition = 0;
 
-            return
-                boolsSeq
-                    .Take(MaxBitPosition)
-                    .Aggregate(
-                        0ul,
-                        (currentBitPattern, item) =>
-                        {
-                            var newPattern = 
-                                item 
-                                    ? ((1ul << bitPosition) | currentBitPattern) 
-                                    : currentBitPattern;
+            return boolsSeq
+                .Take(MaxBitPosition)
+                .Aggregate(
+                    0ul,
+                    (currentBitPattern, item) =>
+                    {
+                        var newPattern = 
+                            item 
+                                ? ((1ul << bitPosition) | currentBitPattern) 
+                                : currentBitPattern;
 
-                            bitPosition++;
+                        bitPosition++;
 
-                            return newPattern;
-                        }
-                    );
+                        return newPattern;
+                    }
+                );
         }
 
         /// <summary>
@@ -1428,23 +1448,22 @@ namespace DataStructuresLib.BitManipulation
         {
             var bitPosition = 0;
 
-            return
-                boolsSeq
-                    .Take(MaxBitPosition)
-                    .Aggregate(
-                        0ul,
-                        (currentBitPattern, item) =>
-                        {
-                            var newPattern =
-                                item
-                                    ? ((1ul << bitPosition) | currentBitPattern)
-                                    : currentBitPattern;
+            return boolsSeq
+                .Take(MaxBitPosition)
+                .Aggregate(
+                    0ul,
+                    (currentBitPattern, item) =>
+                    {
+                        var newPattern =
+                            item
+                                ? ((1ul << bitPosition) | currentBitPattern)
+                                : currentBitPattern;
 
-                            bitPosition++;
+                        bitPosition++;
 
-                            return newPattern;
-                        }
-                    );
+                        return newPattern;
+                    }
+                );
         }
 
         /// <summary>
@@ -1452,13 +1471,13 @@ namespace DataStructuresLib.BitManipulation
         /// </summary>
         /// <param name="bitPositions"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ulong PositionsToPattern(this IEnumerable<int> bitPositions)
         {
-            return 
-                bitPositions.Aggregate(
-                    0ul, 
-                    (currentBitPattern, bitPosition) => currentBitPattern | (1ul << bitPosition)
-                );
+            return bitPositions.Aggregate(
+                0ul, 
+                (currentBitPattern, bitPosition) => currentBitPattern | (1ul << bitPosition)
+            );
         }
 
         /// <summary>
@@ -1466,13 +1485,13 @@ namespace DataStructuresLib.BitManipulation
         /// </summary>
         /// <param name="bitPositions"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ulong PositionsToPattern(params int[] bitPositions)
         {
-            return
-                bitPositions.Aggregate(
-                    0ul,
-                    (currentBitPattern, bitPosition) => currentBitPattern | (1ul << bitPosition)
-                );
+            return bitPositions.Aggregate(
+                0ul,
+                (currentBitPattern, bitPosition) => currentBitPattern | (1ul << bitPosition)
+            );
         }
 
         /// <summary>
@@ -1532,6 +1551,7 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="bitPattern"></param>
         /// <param name="superPattern"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsSubPatternOf(this ulong bitPattern, ulong superPattern)
         {
             return (superPattern | bitPattern) == superPattern;
@@ -1543,6 +1563,7 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="bitPattern"></param>
         /// <param name="superPattern"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsProperSubPatternOf(this ulong bitPattern, ulong superPattern)
         {
             return
@@ -1557,6 +1578,7 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="bitPattern"></param>
         /// <param name="subPattern"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsSuperPatternOf(this ulong bitPattern, ulong subPattern)
         {
             return (subPattern | bitPattern) == bitPattern;
@@ -1568,6 +1590,7 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="bitPattern"></param>
         /// <param name="subPattern"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsProperSuperPatternOf(this ulong bitPattern, ulong subPattern)
         {
             return
@@ -1652,6 +1675,7 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="bitPattern"></param>
         /// <param name="bitsCount"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<ulong> GetSuperPatterns(this ulong bitPattern, int bitsCount)
         {
             var superPattern = CreateMask(bitsCount);
@@ -1669,6 +1693,7 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="bitPattern"></param>
         /// <param name="bitsCount"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<ulong> GetProperSuperPatterns(this ulong bitPattern, int bitsCount)
         {
             var superPattern = CreateMask(bitsCount);
@@ -1686,6 +1711,7 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="bitPattern"></param>
         /// <param name="superPattern"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<ulong> GetSuperPatternsInside(this ulong bitPattern, ulong superPattern)
         {
             //Make sure bitPattern is a sub-pattern of superPattern
@@ -1701,6 +1727,7 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="bitPattern"></param>
         /// <param name="superPattern"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<ulong> GetProperSuperPatternsInside(this ulong bitPattern, ulong superPattern)
         {
             //Make sure bitPattern is a sub-pattern of superPattern
@@ -1717,6 +1744,7 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="bitPattern"></param>
         /// <param name="basicPattern"></param>
         /// <param name="subPattern"></param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void SplitBySmallestBasicPattern(this ulong bitPattern, out ulong basicPattern, out ulong subPattern)
         {
             if (bitPattern == 0ul)
@@ -1737,6 +1765,7 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="bitPattern"></param>
         /// <param name="basicPattern"></param>
         /// <param name="subPattern"></param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void SplitByLargestBasicPattern(this ulong bitPattern, out ulong basicPattern, out ulong subPattern)
         {
             if (bitPattern == 0ul)
@@ -1756,6 +1785,7 @@ namespace DataStructuresLib.BitManipulation
         /// </summary>
         /// <param name="s"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsValidBitPattern(this string s)
         {
             return s.Length <= MaxBitPatternSize && s.All(c => c == '1' || c == '0');
@@ -1768,6 +1798,7 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="s"></param>
         /// <param name="bitsCount"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsValidBitPattern(this string s, int bitsCount)
         {
             return bitsCount <= MaxBitPatternSize && s.Length == bitsCount && s.All(c => c == '1' || c == '0');
@@ -1780,6 +1811,7 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="bitPattern"></param>
         /// <param name="zeroElement"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string ConcatenateUsingPattern(this IEnumerable<string> stringsList, ulong bitPattern, string zeroElement)
         {
             return
@@ -1795,6 +1827,7 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="bitPatternsList"></param>
         /// <param name="zeroElement"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<string> ConcatenateUsingPatterns(this IEnumerable<string> stringsList, IEnumerable<ulong> bitPatternsList, string zeroElement)
         {
             return bitPatternsList.Select(
@@ -1811,6 +1844,7 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="separator"></param>
         /// <param name="zeroElement"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string ConcatenateUsingPattern(this IEnumerable<string> stringsList, ulong bitPattern, string zeroElement, string separator)
         {
             return 
@@ -1829,6 +1863,7 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="finalPrefix"></param>
         /// <param name="finalSuffix"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string ConcatenateUsingPattern(this IEnumerable<string> stringsList, ulong bitPattern, string zeroElement, string separator, string finalPrefix, string finalSuffix)
         {
             return
@@ -1849,12 +1884,32 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="itemPrefix"></param>
         /// <param name="itemSuffix"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string ConcatenateUsingPattern(this IEnumerable<string> stringsList, ulong bitPattern, string zeroElement, string separator, string finalPrefix, string finalSuffix, string itemPrefix, string itemSuffix)
         {
             return
                 bitPattern == 0ul
                     ? zeroElement
                     : PickItemsUsingPattern(stringsList, bitPattern).ConcatenateText(separator, finalPrefix, finalSuffix, itemPrefix, itemSuffix);
+        }
+ 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<ulong> GetRange(this ulong count)
+        {
+            return Enumerable
+                .Range(0, (int) count)
+                .Select(i => (ulong) i);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Dictionary<ulong, T> RangeToDictionary<T>(this ulong count, Func<ulong, T> keyValueFunc)
+        {
+            return Enumerable
+                .Range(0, (int) count)
+                .ToDictionary(
+                    i => (ulong) i, 
+                    i => keyValueFunc((ulong) i)
+                );
         }
     }
 }

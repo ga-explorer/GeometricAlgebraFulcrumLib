@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using GeometricAlgebraFulcrumLib.Algebra.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Geometry;
 using GeometricAlgebraFulcrumLib.Geometry.Euclidean;
+using GeometricAlgebraFulcrumLib.Processing;
 using GeometricAlgebraFulcrumLib.Processing.Matrices;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
 using GeometricAlgebraFulcrumLib.Storage;
@@ -9,136 +11,136 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Applications.GaPoT
 {
     public static class GaPoTUtils
     {
-        public static T[,] CreateClarkeArray3D<T>(IGaScalarProcessor<T> scalarProcessor)
+        public static T[,] CreateClarkeArray3D<T>(IGaScalarProcessor<T> processor)
         {
             var clarkeArray = new T[3, 3];
 
-            clarkeArray[0, 0] = scalarProcessor.OneScalar;
-            clarkeArray[0, 1] = scalarProcessor.Divide(-1, 2);
-            clarkeArray[0, 2] = scalarProcessor.Divide(-1, 2);
+            clarkeArray[0, 0] = processor.OneScalar;
+            clarkeArray[0, 1] = processor.Divide(-1, 2);
+            clarkeArray[0, 2] = processor.Divide(-1, 2);
 
-            clarkeArray[1, 0] = scalarProcessor.ZeroScalar;
-            clarkeArray[1, 1] = scalarProcessor.Divide(scalarProcessor.Sqrt(3), 2);
-            clarkeArray[1, 2] = scalarProcessor.Divide(scalarProcessor.Sqrt(3), -2);
+            clarkeArray[1, 0] = processor.ZeroScalar;
+            clarkeArray[1, 1] = processor.Divide(processor.Sqrt(3), 2);
+            clarkeArray[1, 2] = processor.Divide(processor.Sqrt(3), -2);
 
-            clarkeArray[2, 0] = scalarProcessor.Divide(1, scalarProcessor.Sqrt(2));
-            clarkeArray[2, 1] = scalarProcessor.Divide(1, scalarProcessor.Sqrt(2));
-            clarkeArray[2, 2] = scalarProcessor.Divide(1, scalarProcessor.Sqrt(2));
+            clarkeArray[2, 0] = processor.Divide(1, processor.Sqrt(2));
+            clarkeArray[2, 1] = processor.Divide(1, processor.Sqrt(2));
+            clarkeArray[2, 2] = processor.Divide(1, processor.Sqrt(2));
 
-            var scalar = scalarProcessor.Sqrt(
-                scalarProcessor.Divide(2, 3)
+            var scalar = processor.Sqrt(
+                processor.Divide(2, 3)
             );
 
-            return scalarProcessor.Times(scalar, clarkeArray);
+            return processor.Times(scalar, clarkeArray);
         }
 
-        public static T[,] CreateClarkeArray5D<T>(IGaScalarProcessor<T> scalarProcessor)
+        public static T[,] CreateClarkeArray5D<T>(IGaScalarProcessor<T> processor)
         {
             var clarkeArray = new T[5, 5];
 
-            clarkeArray[0, 0] = scalarProcessor.OneScalar;
-            clarkeArray[0, 1] = scalarProcessor.CosPiRatio(2, 5);
-            clarkeArray[0, 2] = scalarProcessor.CosPiRatio(4, 5);
-            clarkeArray[0, 3] = scalarProcessor.CosPiRatio(6, 5);
-            clarkeArray[0, 4] = scalarProcessor.CosPiRatio(8, 5);
+            clarkeArray[0, 0] = processor.OneScalar;
+            clarkeArray[0, 1] = processor.CosPiRatio(2, 5);
+            clarkeArray[0, 2] = processor.CosPiRatio(4, 5);
+            clarkeArray[0, 3] = processor.CosPiRatio(6, 5);
+            clarkeArray[0, 4] = processor.CosPiRatio(8, 5);
 
-            clarkeArray[1, 0] = scalarProcessor.ZeroScalar;
-            clarkeArray[1, 1] = scalarProcessor.SinPiRatio(2, 5);
-            clarkeArray[1, 2] = scalarProcessor.SinPiRatio(4, 5);
-            clarkeArray[1, 3] = scalarProcessor.SinPiRatio(6, 5);
-            clarkeArray[1, 4] = scalarProcessor.SinPiRatio(8, 5);
+            clarkeArray[1, 0] = processor.ZeroScalar;
+            clarkeArray[1, 1] = processor.SinPiRatio(2, 5);
+            clarkeArray[1, 2] = processor.SinPiRatio(4, 5);
+            clarkeArray[1, 3] = processor.SinPiRatio(6, 5);
+            clarkeArray[1, 4] = processor.SinPiRatio(8, 5);
 
-            clarkeArray[2, 0] = scalarProcessor.OneScalar;
-            clarkeArray[2, 1] = scalarProcessor.CosPiRatio(4, 5);
-            clarkeArray[2, 2] = scalarProcessor.CosPiRatio(8, 5);
-            clarkeArray[2, 3] = scalarProcessor.CosPiRatio(12, 5);
-            clarkeArray[2, 4] = scalarProcessor.CosPiRatio(16, 5);
+            clarkeArray[2, 0] = processor.OneScalar;
+            clarkeArray[2, 1] = processor.CosPiRatio(4, 5);
+            clarkeArray[2, 2] = processor.CosPiRatio(8, 5);
+            clarkeArray[2, 3] = processor.CosPiRatio(12, 5);
+            clarkeArray[2, 4] = processor.CosPiRatio(16, 5);
 
-            clarkeArray[3, 0] = scalarProcessor.ZeroScalar;
-            clarkeArray[3, 1] = scalarProcessor.SinPiRatio(4, 5);
-            clarkeArray[3, 2] = scalarProcessor.SinPiRatio(8, 5);
-            clarkeArray[3, 3] = scalarProcessor.SinPiRatio(12, 5);
-            clarkeArray[3, 4] = scalarProcessor.SinPiRatio(16, 5);
+            clarkeArray[3, 0] = processor.ZeroScalar;
+            clarkeArray[3, 1] = processor.SinPiRatio(4, 5);
+            clarkeArray[3, 2] = processor.SinPiRatio(8, 5);
+            clarkeArray[3, 3] = processor.SinPiRatio(12, 5);
+            clarkeArray[3, 4] = processor.SinPiRatio(16, 5);
 
-            clarkeArray[4, 0] = scalarProcessor.Divide(1, scalarProcessor.Sqrt(2));
-            clarkeArray[4, 1] = scalarProcessor.Divide(1, scalarProcessor.Sqrt(2));
-            clarkeArray[4, 2] = scalarProcessor.Divide(1, scalarProcessor.Sqrt(2));
-            clarkeArray[4, 3] = scalarProcessor.Divide(1, scalarProcessor.Sqrt(2));
-            clarkeArray[4, 4] = scalarProcessor.Divide(1, scalarProcessor.Sqrt(2));
+            clarkeArray[4, 0] = processor.Divide(1, processor.Sqrt(2));
+            clarkeArray[4, 1] = processor.Divide(1, processor.Sqrt(2));
+            clarkeArray[4, 2] = processor.Divide(1, processor.Sqrt(2));
+            clarkeArray[4, 3] = processor.Divide(1, processor.Sqrt(2));
+            clarkeArray[4, 4] = processor.Divide(1, processor.Sqrt(2));
 
-            var scalar = scalarProcessor.Sqrt(
-                scalarProcessor.Divide(2, 5)
+            var scalar = processor.Sqrt(
+                processor.Divide(2, 5)
             );
 
-            return scalarProcessor.Times(scalar, clarkeArray);
+            return processor.Times(scalar, clarkeArray);
         }
 
-        public static T[,] CreateClarkeArray6D<T>(IGaScalarProcessor<T> scalarProcessor)
+        public static T[,] CreateClarkeArray6D<T>(IGaScalarProcessor<T> processor)
         {
             var clarkeArray = new T[6, 6];
 
-            clarkeArray[0, 0] = scalarProcessor.OneScalar;
-            clarkeArray[0, 1] = scalarProcessor.Rational(-1, 2);
-            clarkeArray[0, 2] = scalarProcessor.Rational(-1, 2);
-            clarkeArray[0, 3] = scalarProcessor.Rational(1, 2);
-            clarkeArray[0, 4] = scalarProcessor.MinusOneScalar;
-            clarkeArray[0, 5] = scalarProcessor.Rational(1, 2);
+            clarkeArray[0, 0] = processor.OneScalar;
+            clarkeArray[0, 1] = processor.Rational(-1, 2);
+            clarkeArray[0, 2] = processor.Rational(-1, 2);
+            clarkeArray[0, 3] = processor.Rational(1, 2);
+            clarkeArray[0, 4] = processor.MinusOneScalar;
+            clarkeArray[0, 5] = processor.Rational(1, 2);
 
-            clarkeArray[1, 0] = scalarProcessor.ZeroScalar;
-            clarkeArray[1, 1] = scalarProcessor.Divide(scalarProcessor.Sqrt(3), 2);
-            clarkeArray[1, 2] = scalarProcessor.NegativeDivide(scalarProcessor.Sqrt(3), 2);
-            clarkeArray[1, 3] = scalarProcessor.Divide(scalarProcessor.Sqrt(3), 2);
-            clarkeArray[1, 4] = scalarProcessor.ZeroScalar;
-            clarkeArray[1, 5] = scalarProcessor.NegativeDivide(scalarProcessor.Sqrt(3), 2);
+            clarkeArray[1, 0] = processor.ZeroScalar;
+            clarkeArray[1, 1] = processor.Divide(processor.Sqrt(3), 2);
+            clarkeArray[1, 2] = processor.NegativeDivide(processor.Sqrt(3), 2);
+            clarkeArray[1, 3] = processor.Divide(processor.Sqrt(3), 2);
+            clarkeArray[1, 4] = processor.ZeroScalar;
+            clarkeArray[1, 5] = processor.NegativeDivide(processor.Sqrt(3), 2);
 
-            clarkeArray[2, 0] = scalarProcessor.OneScalar;
-            clarkeArray[2, 1] = scalarProcessor.Rational(-1, 2);
-            clarkeArray[2, 2] = scalarProcessor.Rational(-1, 2);
-            clarkeArray[2, 3] = scalarProcessor.Rational(-1, 2);
-            clarkeArray[2, 4] = scalarProcessor.OneScalar;
-            clarkeArray[2, 5] = scalarProcessor.Rational(-1, 2);
+            clarkeArray[2, 0] = processor.OneScalar;
+            clarkeArray[2, 1] = processor.Rational(-1, 2);
+            clarkeArray[2, 2] = processor.Rational(-1, 2);
+            clarkeArray[2, 3] = processor.Rational(-1, 2);
+            clarkeArray[2, 4] = processor.OneScalar;
+            clarkeArray[2, 5] = processor.Rational(-1, 2);
 
-            clarkeArray[3, 0] = scalarProcessor.ZeroScalar;
-            clarkeArray[3, 1] = scalarProcessor.NegativeDivide(scalarProcessor.Sqrt(3), 2);
-            clarkeArray[3, 2] = scalarProcessor.Divide(scalarProcessor.Sqrt(3), 2);
-            clarkeArray[3, 3] = scalarProcessor.Divide(scalarProcessor.Sqrt(3), 2);
-            clarkeArray[3, 4] = scalarProcessor.ZeroScalar;
-            clarkeArray[3, 5] = scalarProcessor.NegativeDivide(scalarProcessor.Sqrt(3), 2);
+            clarkeArray[3, 0] = processor.ZeroScalar;
+            clarkeArray[3, 1] = processor.NegativeDivide(processor.Sqrt(3), 2);
+            clarkeArray[3, 2] = processor.Divide(processor.Sqrt(3), 2);
+            clarkeArray[3, 3] = processor.Divide(processor.Sqrt(3), 2);
+            clarkeArray[3, 4] = processor.ZeroScalar;
+            clarkeArray[3, 5] = processor.NegativeDivide(processor.Sqrt(3), 2);
 
-            clarkeArray[4, 0] = scalarProcessor.SqrtRational(1, 2);
-            clarkeArray[4, 1] = scalarProcessor.SqrtRational(1, 2);
-            clarkeArray[4, 2] = scalarProcessor.SqrtRational(1, 2);
-            clarkeArray[4, 3] = scalarProcessor.SqrtRational(1, 2);
-            clarkeArray[4, 4] = scalarProcessor.SqrtRational(1, 2);
-            clarkeArray[4, 5] = scalarProcessor.SqrtRational(1, 2);
+            clarkeArray[4, 0] = processor.SqrtRational(1, 2);
+            clarkeArray[4, 1] = processor.SqrtRational(1, 2);
+            clarkeArray[4, 2] = processor.SqrtRational(1, 2);
+            clarkeArray[4, 3] = processor.SqrtRational(1, 2);
+            clarkeArray[4, 4] = processor.SqrtRational(1, 2);
+            clarkeArray[4, 5] = processor.SqrtRational(1, 2);
 
-            clarkeArray[5, 0] = scalarProcessor.SqrtRational(1, 2);
-            clarkeArray[5, 1] = scalarProcessor.SqrtRational(1, 2);
-            clarkeArray[5, 2] = scalarProcessor.SqrtRational(1, 2);
-            clarkeArray[5, 3] = scalarProcessor.Negative(scalarProcessor.SqrtRational(1, 2));
-            clarkeArray[5, 4] = scalarProcessor.Negative(scalarProcessor.SqrtRational(1, 2));
-            clarkeArray[5, 5] = scalarProcessor.Negative(scalarProcessor.SqrtRational(1, 2));
+            clarkeArray[5, 0] = processor.SqrtRational(1, 2);
+            clarkeArray[5, 1] = processor.SqrtRational(1, 2);
+            clarkeArray[5, 2] = processor.SqrtRational(1, 2);
+            clarkeArray[5, 3] = processor.Negative(processor.SqrtRational(1, 2));
+            clarkeArray[5, 4] = processor.Negative(processor.SqrtRational(1, 2));
+            clarkeArray[5, 5] = processor.Negative(processor.SqrtRational(1, 2));
 
-            var scalar = scalarProcessor.SqrtRational(2,6);
+            var scalar = processor.SqrtRational(2,6);
 
-            return scalarProcessor.Times(scalar, clarkeArray);
+            return processor.Times(scalar, clarkeArray);
         }
 
         /// <summary>
         /// See the paper "Generalized Clarke Components for Polyphase Networks", 1969
         /// </summary>
-        /// <param name="scalarProcessor"></param>
+        /// <param name="processor"></param>
         /// <param name="vectorsCount"></param>
         /// <returns></returns>
-        private static T[,] CreateClarkeArrayOdd<T>(IGaScalarProcessor<T> scalarProcessor, int vectorsCount)
+        private static T[,] CreateClarkeArrayOdd<T>(IGaProcessor<T> processor, int vectorsCount)
         {
             var clarkeArray = new T[vectorsCount, vectorsCount];
 
             var m = vectorsCount;
-            var s = scalarProcessor.Sqrt(
-                scalarProcessor.Divide(
-                    scalarProcessor.IntegerToScalar(2),
-                    scalarProcessor.IntegerToScalar(m)
+            var s = processor.Sqrt(
+                processor.Divide(
+                    processor.IntegerToScalar(2),
+                    processor.IntegerToScalar(m)
                 )
             ); //$"Sqrt[2 / {m}]";
 
@@ -150,24 +152,24 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Applications.GaPoT
                 var rowIndex2 = 2 * k + 1;
 
                 clarkeArray[rowIndex1, 0] = s;
-                clarkeArray[rowIndex2, 0] = scalarProcessor.ZeroScalar;
+                clarkeArray[rowIndex2, 0] = processor.ZeroScalar;
                 
                 for (var colIndex = 1; colIndex < m; colIndex++)
                 {
                     var angle =
-                        scalarProcessor.PiRatio(
+                        processor.PiRatio(
                             2 * (k + 1) * colIndex, 
                             m
                         ); // $"2 * Pi * {k + 1} * {i} / {m}";
 
-                    var cosAngle = scalarProcessor.Times(
+                    var cosAngle = processor.Times(
                         s,
-                        scalarProcessor.Cos(angle)
+                        processor.Cos(angle)
                     ); // $"{s} * Cos[{angle}]";
                     
-                    var sinAngle = scalarProcessor.Times(
+                    var sinAngle = processor.Times(
                         s,
-                        scalarProcessor.Sin(angle)
+                        processor.Sin(angle)
                     ); // $"{s} * Sin[{angle}]";
                     
                     clarkeArray[rowIndex1, colIndex] = cosAngle;
@@ -176,9 +178,9 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Applications.GaPoT
             }
 
             //Fill the last column
-            var v = scalarProcessor.Divide(
-                scalarProcessor.OneScalar,
-                scalarProcessor.Sqrt(m)
+            var v = processor.Divide(
+                processor.OneScalar,
+                processor.Sqrt(m)
             ); // $"1 / Sqrt[{m}]";
 
             for (var colIndex = 0; colIndex < m; colIndex++) 
@@ -190,15 +192,15 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Applications.GaPoT
         /// <summary>
         /// See the paper "Generalized Clarke Components for Polyphase Networks", 1969
         /// </summary>
-        /// <param name="scalarProcessor"></param>
+        /// <param name="processor"></param>
         /// <param name="vectorsCount"></param>
         /// <returns></returns>
-        private static T[,] CreateClarkeArrayEven<T>(IGaScalarProcessor<T> scalarProcessor, int vectorsCount)
+        private static T[,] CreateClarkeArrayEven<T>(IGaProcessor<T> processor, int vectorsCount)
         {
             var clarkeArray = new T[vectorsCount, vectorsCount];
 
             var m = vectorsCount;
-            var s = scalarProcessor.SqrtRational(2,m); //$"Sqrt[2 / {m}]";
+            var s = processor.SqrtRational(2,m); //$"Sqrt[2 / {m}]";
 
             //m is even, fill all rows except the last two
             var n = (m - 1) / 2;
@@ -208,24 +210,24 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Applications.GaPoT
                 var rowIndex2 = 2 * k + 1;
                 
                 clarkeArray[rowIndex1, 0] = s;
-                clarkeArray[rowIndex2, 0] = scalarProcessor.ZeroScalar;
+                clarkeArray[rowIndex2, 0] = processor.ZeroScalar;
                 
                 for (var colIndex = 1; colIndex < m; colIndex++)
                 {
                     var angle =
-                        scalarProcessor.PiRatio(
+                        processor.PiRatio(
                             2 * (k + 1) * colIndex, 
                             m
                         ); // $"2 * Pi * {k + 1} * {i} / {m}";
 
-                    var cosAngle = scalarProcessor.Times(
+                    var cosAngle = processor.Times(
                         s,
-                        scalarProcessor.Cos(angle)
+                        processor.Cos(angle)
                     ); // $"{s} * Cos[{angle}]";
                     
-                    var sinAngle = scalarProcessor.Times(
+                    var sinAngle = processor.Times(
                         s,
-                        scalarProcessor.Sin(angle)
+                        processor.Sin(angle)
                     ); // $"{s} * Sin[{angle}]";
                     
                     clarkeArray[rowIndex1, colIndex] = cosAngle;
@@ -234,14 +236,14 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Applications.GaPoT
             }
 
             //Fill the last two rows
-            var v0 = scalarProcessor.Divide(
-                scalarProcessor.OneScalar,
-                scalarProcessor.Sqrt(m)
+            var v0 = processor.Divide(
+                processor.OneScalar,
+                processor.Sqrt(m)
             ); // $"1 / Sqrt[{m}]";
 
-            var v1 = scalarProcessor.Divide(
-                scalarProcessor.MinusOneScalar,
-                scalarProcessor.Sqrt(m)
+            var v1 = processor.Divide(
+                processor.MinusOneScalar,
+                processor.Sqrt(m)
             ); // $"-1 / Sqrt[{m}]";
 
             for (var colIndex = 0; colIndex < m; colIndex++)
@@ -253,64 +255,64 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Applications.GaPoT
             return clarkeArray;
         }
 
-        public static T[,] CreateClarkeArray<T>(this IGaScalarProcessor<T> scalarProcessor, int vectorsCount)
+        public static T[,] CreateClarkeArray<T>(this IGaProcessor<T> processor, int vectorsCount)
         {
             return vectorsCount % 2 == 0 
-                ? CreateClarkeArrayEven(scalarProcessor, vectorsCount) 
-                : CreateClarkeArrayOdd(scalarProcessor, vectorsCount);
+                ? CreateClarkeArrayEven(processor, vectorsCount) 
+                : CreateClarkeArrayOdd(processor, vectorsCount);
         }
 
         /// <summary>
         /// See the paper "Generalized Clarke Components for Polyphase Networks", 1969
         /// </summary>
-        /// <param name="scalarProcessor"></param>
+        /// <param name="processor"></param>
         /// <param name="vectorsCount"></param>
         /// <returns></returns>
-        public static GaEuclideanVectorsFrame<T> CreateClarkeFrame<T>(this IGaScalarProcessor<T> scalarProcessor, int vectorsCount)
+        public static GaVectorsFrame<T> CreateClarkeFrame<T>(this IGaProcessor<T> processor, int vectorsCount)
         {
             var clarkeMapArray =
-                CreateClarkeArray(scalarProcessor, vectorsCount);
+                CreateClarkeArray(processor, vectorsCount);
 
-            return GaEuclideanVectorsFrame<T>.Create(
-                scalarProcessor, 
-                clarkeMapArray.ColumnsToVectorStoragesArray(scalarProcessor)
+            return GaVectorsFrame<T>.Create(
+                processor, 
+                clarkeMapArray.ColumnsToVectorStoragesArray(processor)
             );
         }
 
-        public static GaVectorsLinearMap<T> CreateClarkeMap<T>(this IGaScalarProcessor<T> scalarProcessor, int vectorsCount)
+        public static IGaOutermorphism<T> CreateClarkeMap<T>(this IGaProcessor<T> processor, int vectorsCount)
         {
             var clarkeMapArray =
-                CreateClarkeArray(scalarProcessor, vectorsCount);
+                CreateClarkeArray(processor, vectorsCount);
 
             var basisVectorImagesDictionary = 
-                new Dictionary<ulong, IGaVectorStorage<T>>();
+                new Dictionary<ulong, IGasVector<T>>();
 
             for (var i = 0; i < vectorsCount; i++)
                 basisVectorImagesDictionary.Add(
                     (ulong) i, 
-                    clarkeMapArray.ColumnToVectorStorage(i, scalarProcessor)
+                    clarkeMapArray.ColumnToVectorStorage(i, processor)
                 );
 
-            return GaVectorsLinearMap<T>.Create(
-                scalarProcessor,
+            return processor.CreateComputedOutermorphism(
+                (uint) vectorsCount,
                 basisVectorImagesDictionary
             );
         }
 
-        public static GaEuclideanSimpleRotor<T> CreateSimpleKirchhoffRotor<T>(this IGaScalarProcessor<T> scalarProcessor, int vSpaceDimension)
+        public static GaEuclideanSimpleRotor<T> CreateSimpleKirchhoffRotor<T>(this IGaProcessor<T> processor, uint vSpaceDimension)
         {
-            var v1 = GaVectorStorage<T>.CreateUnitOnesVector(
-                scalarProcessor, 
-                vSpaceDimension
+            var v1 = GaStorageFactory.CreateUnitOnesVector(
+                processor, 
+                (int) vSpaceDimension
             );
 
-            var v2 = GaVectorTermStorage<T>.Create(
-                scalarProcessor, 
+            var v2 = GaStorageFactory.CreateVector(
+                processor, 
                 vSpaceDimension - 1,
-                scalarProcessor.OneScalar
+                processor.OneScalar
             );
 
-            return GaEuclideanSimpleRotor<T>.Create(v2, v1);
+            return GaEuclideanSimpleRotor<T>.Create(processor, v2, v1);
         }
     }
 }

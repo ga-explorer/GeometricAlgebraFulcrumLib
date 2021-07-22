@@ -2,8 +2,12 @@
 using System.Diagnostics;
 using System.Linq;
 using DataStructuresLib.Extensions;
-using GeometricAlgebraFulcrumLib.Algebra.Signatures;
+using GeometricAlgebraFulcrumLib.Algebra.Outermorphisms;
+using GeometricAlgebraFulcrumLib.Geometry;
 using GeometricAlgebraFulcrumLib.Geometry.Euclidean;
+using GeometricAlgebraFulcrumLib.Processing;
+using GeometricAlgebraFulcrumLib.Processing.Generic;
+using GeometricAlgebraFulcrumLib.Processing.Products.Euclidean;
 using GeometricAlgebraFulcrumLib.Storage;
 using GeometricAlgebraFulcrumLib.Storage.Composers;
 using GeometricAlgebraFulcrumLib.Symbolic;
@@ -24,6 +28,9 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
         public static GaScalarProcessorMathematicaExpr ScalarProcessor { get; }
             = GaScalarProcessorMathematicaExpr.DefaultProcessor;
             
+        public static GaProcessorGenericOrthonormal<Expr> MultivectorProcessor { get; }
+            = GaProcessorGenericOrthonormal<Expr>.CreateEuclidean(ScalarProcessor,63);
+            
         public static GaTextComposerMathematicaExpr TextComposer { get; }
             = GaTextComposerMathematicaExpr.DefaultComposer;
             
@@ -31,7 +38,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
             = GaLaTeXComposerMathematicaExpr.DefaultComposer;
 
 
-        public static void ValidatePhasor(int k, int n, IGaVectorStorage<Expr> phasor2)
+        public static void ValidatePhasor(int k, int n, IGasVector<Expr> phasor2)
         {
             var composer = new GaKVectorStorageComposer<Expr>(ScalarProcessor, 1);
 
@@ -47,7 +54,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
             var phasor1 = 
                 composer
                     .GetVectorStorage()
-                    .GetStorageCopy(
+                    .GetCopy(
                         scalar => Mfs.FullSimplify[scalar].Evaluate()
                     )
                     .GetVectorPart();
@@ -55,7 +62,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
             var phasorDiff = 
                 phasor1
                     .Subtract(phasor2)
-                    .GetStorageCopy(
+                    .GetCopy(
                         scalar => Mfs.FullSimplify[scalar].Evaluate()
                     )
                     .GetNotZeroTerms();
@@ -75,17 +82,16 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
             Console.WriteLine();
         }
 
-        public static Tuple<IGaVectorStorage<Expr>, IGaVectorStorage<Expr>> GetPhasorsTuple(int i, int k, int n)
+        public static Tuple<IGasVector<Expr>, IGasVector<Expr>> GetPhasorsTuple(int i, int k, int n)
         {
             Debug.Assert(n >= 2 && i >= 0 && i < n);
 
             var muStorage =
-                GaVectorTermStorage<Expr>.Create(
-                    ScalarProcessor, i, Expr.INT_ONE
+                ScalarProcessor.CreateVector(i, Expr.INT_ONE
                 );
 
             var muSubspace = 
-                GaEuclideanSubspace<Expr>.Create(muStorage);
+                GaSubspace<Expr>.Create(MultivectorProcessor, muStorage);
 
             //var muVector =
             //    GaEuclideanVector<Expr>.Create(muStorage);
@@ -95,7 +101,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
                 : $@"{k}*(\[Theta] - 2*Pi*{i}/{n})".ToExpr();
 
             var rotor = GaEuclideanSimpleRotor<Expr>.CreateGivensRotor(
-                ScalarProcessor, i, n, angle
+                MultivectorProcessor, i, n, angle
             );
 
             var phasor1 =
@@ -120,13 +126,13 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
             //);
             //Console.WriteLine();
 
-            return new Tuple<IGaVectorStorage<Expr>, IGaVectorStorage<Expr>>(
+            return new Tuple<IGasVector<Expr>, IGasVector<Expr>>(
                 phasor1,
                 phasor2
             );
         }
 
-        public static Tuple<IGaVectorStorage<Expr>, IGaVectorStorage<Expr>> GetPhasorsTuple(int k, int n)
+        public static Tuple<IGasVector<Expr>, IGasVector<Expr>> GetPhasorsTuple(int k, int n)
         {
             var phasorTuples =
                 Enumerable
@@ -138,10 +144,10 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
                 phasorTuples
                     .Select(t => t.Item1)
                     .Aggregate(
-                        (IGaMultivectorStorage<Expr>) GaVectorTermStorage<Expr>.CreateZero(ScalarProcessor),
+                        (IGasMultivector<Expr>) ScalarProcessor.CreateZeroVector(),
                         (current, vector) => current.Add(vector)
                     )
-                    .GetStorageCopy(scalar => 
+                    .GetCopy(scalar => 
                         Mfs.TrigReduce[Mfs.FullSimplify[scalar]].Evaluate()
                     )
                     .GetVectorPart();
@@ -150,10 +156,10 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
                 phasorTuples
                     .Select(t => t.Item2)
                     .Aggregate(
-                        (IGaMultivectorStorage<Expr>) GaVectorTermStorage<Expr>.CreateZero(ScalarProcessor),
+                        (IGasMultivector<Expr>) ScalarProcessor.CreateZeroVector(),
                         (current, vector) => current.Add(vector)
                     )
-                    .GetStorageCopy(scalar => 
+                    .GetCopy(scalar => 
                         Mfs.TrigReduce[Mfs.FullSimplify[scalar]].Evaluate()
                     )
                     .GetVectorPart();
@@ -170,7 +176,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
             );
             Console.WriteLine();
 
-            return new Tuple<IGaVectorStorage<Expr>, IGaVectorStorage<Expr>>(
+            return new Tuple<IGasVector<Expr>, IGasVector<Expr>>(
                 phasor1,
                 phasor2
             );
@@ -184,18 +190,18 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
                 Console.WriteLine();
 
                 var unitKirchhoffVector = 
-                    GaVectorStorage<Expr>.CreateUnitOnesVector(ScalarProcessor, n);
+                    ScalarProcessor.CreateUnitOnesVector(n);
 
                 var (_, inputPhasor) = GetPhasorsTuple(1, n);
 
                 var e1 = 
-                    GaVectorTermStorage<Expr>.CreateBasisVector(ScalarProcessor, 0);
+                    ScalarProcessor.CreateBasisVector(0);
 
                 var e2 = 
-                    GaVectorTermStorage<Expr>.CreateBasisVector(ScalarProcessor, 1);
+                    ScalarProcessor.CreateBasisVector(1);
 
                 var mv1 = 
-                    inputPhasor.GetStorageCopy(scalar => 
+                    inputPhasor.GetCopy(scalar => 
                         scalar.ReplaceAll(@"\[Theta]", "0")
                 ).GetVectorPart();
 
@@ -208,12 +214,12 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
                 Console.WriteLine();
 
                 var mv2 = 
-                    inputPhasor.GetStorageCopy(scalar => 
+                    inputPhasor.GetCopy(scalar => 
                         scalar.ReplaceAll(@"\[Theta]", "Pi/2")
                     );
                 
                 var v2 = 
-                    mv2.Divide(mv2.ENorm()).FullSimplifyScalars().GetVectorPart();
+                    mv2.Divide(mv2.ENorm()).FullSimplifyScalars();
 
                 Console.WriteLine(
                     TextComposer.GetMultivectorText(v2)
@@ -223,11 +229,11 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
                 var clarkeMap =
                     //GaEuclideanSimpleRotor<Expr>.Create(v1, v2, e1, e2);
                     //ScalarProcessor.CreateSimpleKirchhoffRotor(n);
-                    ScalarProcessor.CreateClarkeMap(n);
+                    MultivectorProcessor.CreateClarkeMap(n);
 
                 var clarkeArray = 
                     clarkeMap
-                        .GetArray(n, n)
+                        .GetVectorsMappingArray(n, n)
                         .MapItems(scalar => 
                             Mfs.TrigReduce[Mfs.FullSimplify[scalar]].Evaluate()
                             //Mfs.N[scalar].Simplify()

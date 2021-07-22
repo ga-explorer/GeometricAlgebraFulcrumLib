@@ -139,57 +139,57 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
 
         public Complex Exp(Complex scalar)
         {
-            throw new NotImplementedException();
+            return Complex.Exp(scalar);
         }
 
         public Complex Log(Complex scalar)
         {
-            throw new NotImplementedException();
+            return Complex.Log(scalar);
         }
 
         public Complex Log2(Complex scalar)
         {
-            throw new NotImplementedException();
+            return Complex.Log(scalar, 2d);
         }
 
         public Complex Log10(Complex scalar)
         {
-            throw new NotImplementedException();
+            return Complex.Log10(scalar);
         }
 
         public Complex Log(Complex scalar, Complex baseScalar)
         {
-            throw new NotImplementedException();
+            return Complex.Log(scalar, baseScalar.Real);
         }
 
         public Complex Cos(Complex scalar)
         {
-            throw new NotImplementedException();
+            return Complex.Cos(scalar);
         }
 
         public Complex Sin(Complex scalar)
         {
-            throw new NotImplementedException();
+            return Complex.Sin(scalar);
         }
 
         public Complex Tan(Complex scalar)
         {
-            throw new NotImplementedException();
+            return Complex.Tan(scalar);
         }
 
         public Complex ArcCos(Complex scalar)
         {
-            throw new NotImplementedException();
+            return Complex.Acos(scalar);
         }
 
         public Complex ArcSin(Complex scalar)
         {
-            throw new NotImplementedException();
+            return Complex.Asin(scalar);
         }
 
         public Complex ArcTan(Complex scalar)
         {
-            throw new NotImplementedException();
+            return Complex.Atan(scalar);
         }
 
         public Complex ArcTan2(Complex scalarX, Complex scalarY)
@@ -238,13 +238,13 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
 
         public Complex GetRandomScalar(System.Random randomGenerator, double minValue, double maxValue)
         {
-            var realPart = 
+            var magnitude = 
                 minValue + (maxValue - minValue) * randomGenerator.NextDouble();
 
-            return new Complex(
-                randomGenerator.NextDouble(),
-                randomGenerator.NextDouble()
-            );
+            var angle = 
+                2d * Math.PI * randomGenerator.NextDouble();
+
+            return Complex.FromPolarCoordinates(magnitude, angle);
         }
 
         public string ToText(Complex scalar)

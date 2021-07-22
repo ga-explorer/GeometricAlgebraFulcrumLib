@@ -1,7 +1,10 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Algebra.Signatures;
+using GeometricAlgebraFulcrumLib.Algebra.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Geometry.Euclidean;
+using GeometricAlgebraFulcrumLib.Processing;
+using GeometricAlgebraFulcrumLib.Processing.Generic;
 using GeometricAlgebraFulcrumLib.Processing.Implementations.Float64;
+using GeometricAlgebraFulcrumLib.Processing.Products.Euclidean;
 using GeometricAlgebraFulcrumLib.Storage;
 
 namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
@@ -10,10 +13,14 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
     {
         public static void Execute()
         {
-            var n = 3;
+            var n = 3U;
             var randGen = new Random();
+            var processor = GaProcessorGenericOrthonormal<double>.CreateEuclidean(
+                GaScalarProcessorFloat64.DefaultProcessor, 
+                n
+            );
 
-            IGaVectorStorage<double> v = GaFloat64Utils.CreateVector(
+            IGasVector<double> v = GaFloat64Utils.CreateVector(
                 randGen.NextDouble(), 
                 randGen.NextDouble(),
                 randGen.NextDouble()
@@ -21,7 +28,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
 
             v = v.Divide(v.ENorm()).GetVectorPart();
 
-            IGaVectorStorage<double> u = GaFloat64Utils.CreateVector(
+            IGasVector<double> u = GaFloat64Utils.CreateVector(
                 randGen.NextDouble(), 
                 randGen.NextDouble(),
                 randGen.NextDouble()
@@ -31,30 +38,28 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
 
 
             var rotor = 
-                GaEuclideanSimpleRotor<double>.Create(v, u);
+                GaEuclideanSimpleRotor<double>.Create(processor, v, u);
 
-            var rotorMv = rotor.Storage;
-            var rotorMvReverse = rotor.Storage.GetReverse();
+            var rotorMv = rotor.Rotor;
+            var rotorMvReverse = rotor.Rotor.GetReverse();
 
             var rotorMatrix =
                 rotor.GetMatrix(3, 3);
 
             
             var rotorMatrix1 =
-                GaFloat64Utils.CreateVectorsLinearMap(
-                        n,
+                processor.CreateComputedOutermorphism((int) n,
                         basisVector =>
                             rotorMv.EGp(basisVector).GetVectorPart()
                     )
-                    .GetMatrix(n, n);
+                    .GetMatrix((int) n, (int) n);
 
             var rotorMatrix2 =
-                GaFloat64Utils.CreateVectorsLinearMap(
-                        n,
+                processor.CreateComputedOutermorphism((int) n,
                         basisVector =>
                             basisVector.EGp(rotorMvReverse).GetVectorPart()
                     )
-                    .GetMatrix(n, n);
+                    .GetMatrix((int) n, (int) n);
 
             var rotorMatrix21 = 
                 rotorMatrix2 * rotorMatrix1;

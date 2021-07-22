@@ -5,31 +5,31 @@ using GeometricAlgebraFulcrumLib.Processing.Scalars;
 
 namespace GeometricAlgebraFulcrumLib.Storage.Composers
 {
-    public class GaBivectorStorageComposer<TScalar>
-        : GaKVectorStorageComposer<TScalar>
+    public class GaBivectorStorageComposer<T>
+        : GaKVectorStorageComposer<T>
     {
-        public GaBivectorStorageComposer(IGaScalarProcessor<TScalar> scalarProcessor)
+        public GaBivectorStorageComposer(IGaScalarProcessor<T> scalarProcessor)
             : base(scalarProcessor, 2)
         {
         }
 
-        public GaBivectorStorageComposer(IGaScalarProcessor<TScalar> scalarProcessor, Dictionary<ulong, TScalar> indexScalarsDictionary)
+        public GaBivectorStorageComposer(IGaScalarProcessor<T> scalarProcessor, Dictionary<ulong, T> indexScalarsDictionary)
             : base(scalarProcessor, 2, indexScalarsDictionary)
         {
         }
 
-        public GaBivectorStorageComposer(IGaScalarProcessor<TScalar> scalarProcessor, IEnumerable<KeyValuePair<ulong, TScalar>> indexScalarPairs)
+        public GaBivectorStorageComposer(IGaScalarProcessor<T> scalarProcessor, IEnumerable<KeyValuePair<ulong, T>> indexScalarPairs)
             : base(scalarProcessor, 2, indexScalarPairs)
         {
         }
 
-        public GaBivectorStorageComposer(IGaScalarProcessor<TScalar> scalarProcessor, IEnumerable<Tuple<ulong, TScalar>> indexScalarTuples)
+        public GaBivectorStorageComposer(IGaScalarProcessor<T> scalarProcessor, IEnumerable<Tuple<ulong, T>> indexScalarTuples)
             : base(scalarProcessor, 2, indexScalarTuples)
         {
         }
 
 
-        public GaBivectorStorageComposer<TScalar> SetTerm(int basisVectorIndex1, int basisVectorIndex2, TScalar scalar)
+        public GaBivectorStorageComposer<T> SetTerm(int basisVectorIndex1, int basisVectorIndex2, T scalar)
         {
             if (basisVectorIndex1 > basisVectorIndex2)
             {
@@ -49,7 +49,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public GaBivectorStorageComposer<TScalar> SetTerm(ulong basisVectorIndex1, ulong basisVectorIndex2, TScalar scalar)
+        public GaBivectorStorageComposer<T> SetTerm(ulong basisVectorIndex1, ulong basisVectorIndex2, T scalar)
         {
             if (basisVectorIndex1 > basisVectorIndex2)
             {
@@ -70,7 +70,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         }
 
 
-        public GaBivectorStorageComposer<TScalar> SetTerms(IEnumerable<Tuple<int, int, TScalar>> termsList)
+        public GaBivectorStorageComposer<T> SetTerms(IEnumerable<Tuple<int, int, T>> termsList)
         {
             foreach (var (index1, index2, scalar) in termsList)
                 SetTerm(index1, index2, scalar);
@@ -78,7 +78,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public GaBivectorStorageComposer<TScalar> SetTerms(IEnumerable<Tuple<ulong, ulong, TScalar>> termsList)
+        public GaBivectorStorageComposer<T> SetTerms(IEnumerable<Tuple<ulong, ulong, T>> termsList)
         {
             foreach (var (index1, index2, scalar) in termsList)
                 SetTerm(index1, index2, scalar);
@@ -86,7 +86,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public GaBivectorStorageComposer<TScalar> SetTermsToNegative(IEnumerable<Tuple<int, int>> indicesList)
+        public GaBivectorStorageComposer<T> SetTermsToNegative(IEnumerable<Tuple<int, int>> indicesList)
         {
             foreach (var (index1, index2) in indicesList)
             {
@@ -102,7 +102,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public GaBivectorStorageComposer<TScalar> SetTermsToNegative(IEnumerable<Tuple<ulong, ulong>> indicesList)
+        public GaBivectorStorageComposer<T> SetTermsToNegative(IEnumerable<Tuple<ulong, ulong>> indicesList)
         {
             foreach (var (index1, index2) in indicesList)
             {
@@ -118,7 +118,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public GaBivectorStorageComposer<TScalar> SetLeftScaledTerms(TScalar scalingFactor, IEnumerable<Tuple<int, int, TScalar>> termsList)
+        public GaBivectorStorageComposer<T> SetLeftScaledTerms(T scalingFactor, IEnumerable<Tuple<int, int, T>> termsList)
         {
             foreach (var (index1, index2, scalar) in termsList)
                 SetTerm(index1, index2, ScalarProcessor.Times(scalingFactor, scalar));
@@ -126,7 +126,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public GaBivectorStorageComposer<TScalar> SetLeftScaledTerms(TScalar scalingFactor, IEnumerable<Tuple<ulong, ulong, TScalar>> termsList)
+        public GaBivectorStorageComposer<T> SetLeftScaledTerms(T scalingFactor, IEnumerable<Tuple<ulong, ulong, T>> termsList)
         {
             foreach (var (index1, index2, scalar) in termsList)
                 SetTerm(index1, index2, ScalarProcessor.Times(scalingFactor, scalar));
@@ -134,7 +134,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public GaBivectorStorageComposer<TScalar> SetRightScaledTerms(TScalar scalingFactor, IEnumerable<Tuple<int, int, TScalar>> termsList)
+        public GaBivectorStorageComposer<T> SetRightScaledTerms(T scalingFactor, IEnumerable<Tuple<int, int, T>> termsList)
         {
             foreach (var (index1, index2, scalar) in termsList)
                 SetTerm(index1, index2, ScalarProcessor.Times(scalar, scalingFactor));
@@ -142,7 +142,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public GaBivectorStorageComposer<TScalar> SetRightScaledTerms(TScalar scalingFactor, IEnumerable<Tuple<ulong, ulong, TScalar>> termsList)
+        public GaBivectorStorageComposer<T> SetRightScaledTerms(T scalingFactor, IEnumerable<Tuple<ulong, ulong, T>> termsList)
         {
             foreach (var (index1, index2, scalar) in termsList)
                 SetTerm(index1, index2, ScalarProcessor.Times(scalar, scalingFactor));
@@ -151,7 +151,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         }
         
 
-        public GaBivectorStorageComposer<TScalar> AddTerm(int basisVectorIndex1, int basisVectorIndex2, TScalar scalar)
+        public GaBivectorStorageComposer<T> AddTerm(int basisVectorIndex1, int basisVectorIndex2, T scalar)
         {
             if (basisVectorIndex1 > basisVectorIndex2)
             {
@@ -185,7 +185,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public GaBivectorStorageComposer<TScalar> AddTerm(ulong basisVectorIndex1, ulong basisVectorIndex2, TScalar scalar)
+        public GaBivectorStorageComposer<T> AddTerm(ulong basisVectorIndex1, ulong basisVectorIndex2, T scalar)
         {
             if (basisVectorIndex1 > basisVectorIndex2)
             {
@@ -220,7 +220,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         }
 
 
-        public GaBivectorStorageComposer<TScalar> AddTerms(IEnumerable<Tuple<int, int, TScalar>> termsList)
+        public GaBivectorStorageComposer<T> AddTerms(IEnumerable<Tuple<int, int, T>> termsList)
         {
             foreach (var (index1, index2, scalar) in termsList)
                 AddTerm(index1, index2, scalar);
@@ -228,7 +228,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public GaBivectorStorageComposer<TScalar> AddTerms(IEnumerable<Tuple<ulong, ulong, TScalar>> termsList)
+        public GaBivectorStorageComposer<T> AddTerms(IEnumerable<Tuple<ulong, ulong, T>> termsList)
         {
             foreach (var (index1, index2, scalar) in termsList)
                 AddTerm(index1, index2, scalar);
@@ -237,7 +237,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         }
 
 
-        public GaBivectorStorageComposer<TScalar> AddLeftScaledTerms(TScalar scalingFactor, IEnumerable<Tuple<int, int, TScalar>> termsList)
+        public GaBivectorStorageComposer<T> AddLeftScaledTerms(T scalingFactor, IEnumerable<Tuple<int, int, T>> termsList)
         {
             foreach (var (index1, index2, scalar) in termsList)
                 AddTerm(
@@ -249,7 +249,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public GaBivectorStorageComposer<TScalar> AddLeftScaledTerms(TScalar scalingFactor, IEnumerable<Tuple<ulong, ulong, TScalar>> termsList)
+        public GaBivectorStorageComposer<T> AddLeftScaledTerms(T scalingFactor, IEnumerable<Tuple<ulong, ulong, T>> termsList)
         {
             foreach (var (index1, index2, scalar) in termsList)
                 AddTerm(
@@ -262,7 +262,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         }
 
 
-        public GaBivectorStorageComposer<TScalar> SubtractTerm(int basisVectorIndex1, int basisVectorIndex2, TScalar scalar)
+        public GaBivectorStorageComposer<T> SubtractTerm(int basisVectorIndex1, int basisVectorIndex2, T scalar)
         {
             if (basisVectorIndex1 > basisVectorIndex2)
             {
@@ -296,7 +296,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public GaBivectorStorageComposer<TScalar> SubtractTerm(ulong basisVectorIndex1, ulong basisVectorIndex2, TScalar scalar)
+        public GaBivectorStorageComposer<T> SubtractTerm(ulong basisVectorIndex1, ulong basisVectorIndex2, T scalar)
         {
             if (basisVectorIndex1 > basisVectorIndex2)
             {
@@ -331,7 +331,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         }
 
 
-        public GaBivectorStorageComposer<TScalar> SubtractTerms(IEnumerable<Tuple<int, int, TScalar>> termsList)
+        public GaBivectorStorageComposer<T> SubtractTerms(IEnumerable<Tuple<int, int, T>> termsList)
         {
             foreach (var (index1, index2, scalar) in termsList)
                 SubtractTerm(index1, index2, scalar);
@@ -339,7 +339,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public GaBivectorStorageComposer<TScalar> SubtractTerms(IEnumerable<Tuple<ulong, ulong, TScalar>> termsList)
+        public GaBivectorStorageComposer<T> SubtractTerms(IEnumerable<Tuple<ulong, ulong, T>> termsList)
         {
             foreach (var (index1, index2, scalar) in termsList)
                 SubtractTerm(index1, index2, scalar);
@@ -348,7 +348,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         }
 
 
-        public GaBivectorStorageComposer<TScalar> SubtractLeftScaledTerms(TScalar scalingFactor, IEnumerable<Tuple<int, int, TScalar>> termsList)
+        public GaBivectorStorageComposer<T> SubtractLeftScaledTerms(T scalingFactor, IEnumerable<Tuple<int, int, T>> termsList)
         {
             foreach (var (index1, index2, scalar) in termsList)
                 SubtractTerm(
@@ -360,7 +360,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public GaBivectorStorageComposer<TScalar> SubtractLeftScaledTerms(TScalar scalingFactor, IEnumerable<Tuple<ulong, ulong, TScalar>> termsList)
+        public GaBivectorStorageComposer<T> SubtractLeftScaledTerms(T scalingFactor, IEnumerable<Tuple<ulong, ulong, T>> termsList)
         {
             foreach (var (index1, index2, scalar) in termsList)
                 SubtractTerm(
@@ -391,7 +391,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return IndexScalarsDictionary.Remove(index);
         }
 
-        public GaBivectorStorageComposer<TScalar> RemoveTerms(params Tuple<int, int>[] indexList)
+        public GaBivectorStorageComposer<T> RemoveTerms(params Tuple<int, int>[] indexList)
         {
             foreach (var (basisVectorIndex1, basisVectorIndex2) in indexList)
             {
@@ -405,7 +405,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public GaBivectorStorageComposer<TScalar> RemoveTerms(params Tuple<ulong, ulong>[] indexList)
+        public GaBivectorStorageComposer<T> RemoveTerms(params Tuple<ulong, ulong>[] indexList)
         {
             foreach (var (basisVectorIndex1, basisVectorIndex2) in indexList)
             {

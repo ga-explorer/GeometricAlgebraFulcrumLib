@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using DataStructuresLib.Extensions;
-using GeometricAlgebraFulcrumLib.Algebra.Signatures;
+using GeometricAlgebraFulcrumLib.Algebra.Outermorphisms;
+using GeometricAlgebraFulcrumLib.Processing;
+using GeometricAlgebraFulcrumLib.Processing.Products.Euclidean;
 using GeometricAlgebraFulcrumLib.Storage;
 using GeometricAlgebraFulcrumLib.Storage.Composers;
 
@@ -11,39 +13,22 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean
     public static class GaEuclideanGeometryUtils
     {
         
-        public static T[,] GetArray<T>(this IGaVectorsLinearMap<T> linearMap, int rowsCount, int colsCount)
+        
+
+        public static Tuple<GaFactoredVersor<double>, IGaOutermorphism<double>> GetHouseholderQRDecomposition(this IGaProcessor<double> processor, IGaOutermorphism<double> linearMap, int count)
         {
-            var scalarProcessor = linearMap.ScalarProcessor;
-            var array = new T[rowsCount, colsCount];
-
-            for (var j = 0; j < colsCount; j++)
-            {
-                var mappedBasisVector = linearMap.MapBasisVector(j);
-
-                for (var i = 0; i < rowsCount; i++)
-                    array[i, j] = mappedBasisVector.TryGetTermScalarByIndex((ulong) i, out var scalar)
-                        ? scalar
-                        : scalarProcessor.ZeroScalar;
-            }
-
-            return array;
-        }
-
-        public static Tuple<GaEuclideanFactoredVersor<double>, GaVectorsLinearMap<double>> GetHouseholderQRDecomposition(this IGaVectorsLinearMap<double> linearMap, int count)
-        {
-            var scalarProcessor = linearMap.ScalarProcessor;
-            var unitVectorsList = new List<IGaVectorStorage<double>>(count);
+            var unitVectorsList = new List<IGasVector<double>>(count);
             var mappedBasisVectors =
                 Enumerable
                     .Range(0, count)
-                    .Select(linearMap.MapBasisVector)
+                    .Select(i => linearMap.MapBasisVector((uint) i))
                     .ToArray();
 
             //Vector composers to construct r vectors
             var vectorComposersArray = new GaKVectorStorageComposer<double>[count];
             for (var i = 0; i < count; i++)
                 vectorComposersArray[i] = 
-                    new GaKVectorStorageComposer<double>(scalarProcessor, 1);
+                    new GaKVectorStorageComposer<double>(processor, 1);
 
             var basisVectorIndicesList = 
                 Enumerable.Range(0, count).ToList();
@@ -60,7 +45,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean
                     var basisVectorImageNorm = basisVectorImage.ENorm();
 
                     var differenceLengthSquared = basisVectorImage.Subtract(
-                        GaVectorTermStorage<double>.Create(scalarProcessor, basisVectorIndex, basisVectorImageNorm)
+                        processor.CreateVector(basisVectorIndex, basisVectorImageNorm)
                     ).ESp();
 
                     if (differenceLengthSquared < bestDifferenceLengthSquared) 
@@ -74,7 +59,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean
                 var bestBasisVectorImageNorm = bestBasisVectorImage.ENorm();
 
                 var unitVector = bestBasisVectorImage.Subtract(
-                    GaVectorTermStorage<double>.Create(scalarProcessor, bestBasisVectorIndex, bestBasisVectorImageNorm)
+                    processor.CreateVector(bestBasisVectorIndex, bestBasisVectorImageNorm)
                 ).GetVectorPart();
 
                 var reflectionVectorFound = !unitVector.IsZero();
@@ -90,7 +75,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean
                         ? unitVector
                             .EGp(mappedBasisVectors[basisVectorIndex])
                             .EGp(unitVector)
-                            .GetVectorPart(scalarProcessor.Negative)
+                            .GetVectorPart(processor.Negative)
                         : mappedBasisVectors[basisVectorIndex];
 
                     var bestBasisVectorIndexULong = (ulong) bestBasisVectorIndex;
@@ -101,9 +86,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean
                     if (basisVectorIndex == bestBasisVectorIndex)
                         continue;
 
-                    mappedBasisVectors[basisVectorIndex] = GaVectorStorage<double>.Create(
-                        scalarProcessor,
-                        reflectedVector
+                    mappedBasisVectors[basisVectorIndex] = processor.CreateVector(reflectedVector
                             .GetIndexScalarPairs()
                             .Where(pair => pair.Key != bestBasisVectorIndexULong)
                             .CopyToDictionary()
@@ -113,7 +96,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean
                 basisVectorIndicesList.Remove(bestBasisVectorIndex);
             }
 
-            var linearMapRVectorsDictionary = new Dictionary<ulong, IGaVectorStorage<double>>();
+            var linearMapRVectorsDictionary = new Dictionary<ulong, IGasVector<double>>();
             for (var i = 0; i < vectorComposersArray.Length; i++)
             {
                 var composer = vectorComposersArray[i];
@@ -125,33 +108,38 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean
             }
 
             var linearMapR =
-                GaVectorsLinearMap<double>.Create(scalarProcessor, linearMapRVectorsDictionary);
+                processor.CreateComputedOutermorphism(
+                    (uint) count,
+                    linearMapRVectorsDictionary
+                );
 
             unitVectorsList.Reverse();
             var linearMapQ = 
-                GaEuclideanFactoredVersor<double>.Create(unitVectorsList);
+                GaFactoredVersor<double>.Create(
+                    processor, 
+                    unitVectorsList
+                );
 
-            return new Tuple<GaEuclideanFactoredVersor<double>, GaVectorsLinearMap<double>>(
+            return new Tuple<GaFactoredVersor<double>, IGaOutermorphism<double>>(
                 linearMapQ,
                 linearMapR
             );
         }
 
-        public static Tuple<GaEuclideanFactoredVersor<T>, GaVectorsLinearMap<T>> GetHouseholderQRDecomposition<T>(this IGaVectorsLinearMap<T> linearMap, int count)
+        public static Tuple<GaFactoredVersor<T>, IGaOutermorphism<T>> GetHouseholderQRDecomposition<T>(this IGaProcessor<T> processor, IGaOutermorphism<T> linearMap, int count)
         {
-            var scalarProcessor = linearMap.ScalarProcessor;
-            var unitVectorsList = new List<IGaVectorStorage<T>>(count);
+            var unitVectorsList = new List<IGasVector<T>>(count);
             var mappedBasisVectors =
                 Enumerable
                     .Range(0, count)
-                    .Select(linearMap.MapBasisVector)
+                    .Select(i => linearMap.MapBasisVector((uint) i))
                     .ToArray();
 
             //Vector composers to construct r vectors
             var vectorComposersArray = new GaKVectorStorageComposer<T>[count];
             for (var i = 0; i < count; i++)
                 vectorComposersArray[i] = 
-                    new GaKVectorStorageComposer<T>(scalarProcessor, 1);
+                    new GaKVectorStorageComposer<T>(processor, 1);
 
             //TODO: Select the order of basis vectors according to the largest
             //unit vector norm for higher numerical stability
@@ -161,7 +149,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean
                 var xNorm = x.ENorm();
 
                 var unitVector = x.Subtract(
-                    GaVectorTermStorage<T>.Create(scalarProcessor, i, xNorm)
+                    processor.CreateVector(i, xNorm)
                 ).GetVectorPart();
 
                 var reflectionVectorFound = !unitVector.IsZero();
@@ -177,7 +165,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean
                         ? unitVector
                             .EGp(mappedBasisVectors[j])
                             .EGp(unitVector)
-                            .GetVectorPart(scalarProcessor.Negative)
+                            .GetVectorPart(processor.Negative)
                         : mappedBasisVectors[j];
 
                     var basisVectorIndex = (ulong) i;
@@ -192,7 +180,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean
                 }
             }
 
-            var linearMapRVectorsDictionary = new Dictionary<ulong, IGaVectorStorage<T>>();
+            var linearMapRVectorsDictionary = new Dictionary<ulong, IGasVector<T>>();
             for (var i = 0; i < vectorComposersArray.Length; i++)
             {
                 var composer = vectorComposersArray[i];
@@ -204,13 +192,19 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean
             }
 
             var linearMapR =
-                GaVectorsLinearMap<T>.Create(scalarProcessor, linearMapRVectorsDictionary);
+                processor.CreateComputedOutermorphism(
+                    (uint) count, 
+                    linearMapRVectorsDictionary
+                );
 
             unitVectorsList.Reverse();
             var linearMapQ = 
-                GaEuclideanFactoredVersor<T>.Create(unitVectorsList);
+                GaFactoredVersor<T>.Create(
+                    processor, 
+                    unitVectorsList
+                );
 
-            return new Tuple<GaEuclideanFactoredVersor<T>, GaVectorsLinearMap<T>>(
+            return new Tuple<GaFactoredVersor<T>, IGaOutermorphism<T>>(
                 linearMapQ,
                 linearMapR
             );

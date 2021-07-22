@@ -13,7 +13,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Signatures
 
         public ulong Id { get; }
 
-        public int Grade => 
+        public uint Grade => 
             Id.BasisBladeGrade();
 
         public ulong Index => 

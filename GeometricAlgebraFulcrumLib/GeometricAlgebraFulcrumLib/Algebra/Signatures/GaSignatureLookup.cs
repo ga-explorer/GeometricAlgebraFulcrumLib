@@ -1,69 +1,70 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using DataStructuresLib.BitManipulation;
 using GeometricAlgebraFulcrumLib.Algebra.Basis;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.Signatures
 {
     public sealed class GaSignatureLookup :
-        IGaSignature
+        IGaSignatureLookup
     {
-        private static Dictionary<int, GaSignatureLookup> SignatureCache { get; }
-            = new Dictionary<int, GaSignatureLookup>();
-
-        public static GaSignatureLookup Create(IGaSignature baseSignature)
-        {
-            if (SignatureCache.TryGetValue(baseSignature.SignatureId, out var lookupSignature))
-                return lookupSignature;
-
-            lookupSignature = new GaSignatureLookup(baseSignature);
-
-            SignatureCache.Add(baseSignature.SignatureId, lookupSignature);
-
-            return lookupSignature;
-        }
+        public static int MaxVSpaceDimension 
+            => 10;
 
 
         private readonly SortedDictionary<int, int> _dataDictionary
             = new SortedDictionary<int, int>();
 
 
-        public int SignatureId 
+        public uint VSpaceDimension { get; }
+
+        public ulong GaSpaceDimension 
+            => 1UL << (int) VSpaceDimension;
+
+        public ulong MaxBasisBladeId 
+            => (1UL << (int) VSpaceDimension) - 1UL;
+
+        public uint GradesCount 
+            => VSpaceDimension + 1;
+
+        public IEnumerable<uint> Grades 
+            => GradesCount.GetRange();
+
+        public uint SignatureId 
             => BaseSignature.SignatureId;
         
-        public IGaSignature BaseSignature { get; }
-
-        public GaBasisSet BasisSet 
-            => BaseSignature.BasisSet;
+        public IGaSignatureComputed BaseSignature { get; }
         
-        public int PositiveCount 
+        public uint PositiveCount 
             => BaseSignature.PositiveCount;
 
-        public int NegativeCount 
+        public uint NegativeCount 
             => BaseSignature.NegativeCount;
 
-        public int ZeroCount 
+        public uint ZeroCount 
             => BaseSignature.ZeroCount;
 
         public bool IsEuclidean { get; }
 
-        public int VSpaceDimension { get; }
+        public bool IsProjective { get; }
+        
+        public bool IsConformal { get; }
 
-        public ulong GaSpaceDimension { get; }
+        public bool IsMotherAlgebra { get; }
 
 
-        private GaSignatureLookup([NotNull] IGaSignature baseSignature)
+        internal GaSignatureLookup([NotNull] IGaSignatureComputed baseSignature)
         {
-            if (baseSignature.BasisSet.VSpaceDimension > 12)
+            if (baseSignature.VSpaceDimension > MaxVSpaceDimension)
                 throw new ArgumentOutOfRangeException();
 
-            if (baseSignature is GaSignatureLookup)
-                throw new ArgumentException();
-
-            IsEuclidean = BaseSignature.IsEuclidean;
             BaseSignature = baseSignature;
-            VSpaceDimension = baseSignature.BasisSet.VSpaceDimension;
-            GaSpaceDimension = 1UL << VSpaceDimension;
+            IsEuclidean = baseSignature.IsEuclidean;
+            IsProjective = baseSignature.IsProjective;
+            IsConformal = baseSignature.IsConformal;
+            IsMotherAlgebra = baseSignature.IsMotherAlgebra;
+            VSpaceDimension = baseSignature.VSpaceDimension;
 
             Initialize(baseSignature);
         }
@@ -104,7 +105,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Signatures
                     signature |= 
                         (GaBasisUtils.IsNonZeroECp(id1, id2) ? gpSignature : 1) << 16;
 
-                    var key = (int) (id1 | (id2 << VSpaceDimension));
+                    var key = (int) (id1 | (id2 << (int) VSpaceDimension));
 
                     _dataDictionary.Add(key, signature);
                 }
@@ -115,7 +116,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Signatures
         public int GetBasisVectorSignature(int index)
         {
             var id = 1 << index;
-            var key = id | (id << VSpaceDimension);
+            var key = id | (id << (int) VSpaceDimension);
 
             return (_dataDictionary[key] & 3) - 1;
         }
@@ -123,7 +124,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Signatures
         public int GetBasisVectorSignature(ulong index)
         {
             var id = 1 << (int) index;
-            var key = id | (id << VSpaceDimension);
+            var key = id | (id << (int) VSpaceDimension);
 
             return (_dataDictionary[key] & 3) - 1;
         }
@@ -131,7 +132,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Signatures
         public int GetBasisBivectorSignature(int index1, int index2)
         {
             var id = (1 << index1) ^ (1 << index2);
-            var key = id | (id << VSpaceDimension);
+            var key = id | (id << (int) VSpaceDimension);
 
             return (_dataDictionary[key] & 3) - 1;
             //return BaseSignature.GetBasisBivectorSignature(index1, index2);
@@ -140,23 +141,23 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Signatures
         public int GetBasisBivectorSignature(ulong index1, ulong index2)
         {
             var id = (1 << (int) index1) ^ (1 << (int) index2);
-            var key = id | (id << VSpaceDimension);
+            var key = id | (id << (int) VSpaceDimension);
 
             return (_dataDictionary[key] & 3) - 1;
             //return BaseSignature.GetBasisBivectorSignature(index1, index2);
         }
 
-        public int GetBasisBladeSignature(int grade, ulong index)
+        public int GetBasisBladeSignature(uint grade, ulong index)
         {
             var id = GaBasisUtils.BasisBladeId(grade, index);
-            var key = (int) (id | (id << VSpaceDimension));
+            var key = (int) (id | (id << (int) VSpaceDimension));
 
             return (_dataDictionary[key] & 3) - 1;
         }
 
         public int GetBasisBladeSignature(ulong id)
         {
-            var key = (int) (id | (id << VSpaceDimension));
+            var key = (int) (id | (id << (int) VSpaceDimension));
 
             return (_dataDictionary[key] & 3) - 1;
         }
@@ -164,14 +165,14 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Signatures
         public int GetBasisBladeSignature(IGaBasisBlade basisBlade)
         {
             var id = basisBlade.Id;
-            var key = (int) (id | (id << VSpaceDimension));
+            var key = (int) (id | (id << (int) VSpaceDimension));
 
             return (_dataDictionary[key] & 3) - 1;
         }
 
         public int GpSignature(ulong id)
         {
-            var key = (int) (id | (id << VSpaceDimension));
+            var key = (int) (id | (id << (int) VSpaceDimension));
 
             return (_dataDictionary[key] & 3) - 1;
         }
@@ -179,14 +180,14 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Signatures
 
         public int GpSignature(ulong id1, ulong id2)
         {
-            var key = (int) (id1 | (id2 << VSpaceDimension));
+            var key = (int) (id1 | (id2 << (int) VSpaceDimension));
 
             return (_dataDictionary[key] & 3) - 1;
         }
 
         public int GpReverseSignature(ulong id1, ulong id2)
         {
-            var key = (int) (id1 | (id2 << VSpaceDimension));
+            var key = (int) (id1 | (id2 << (int) VSpaceDimension));
 
             var signature = (_dataDictionary[key] & 3) - 1;
 
@@ -197,28 +198,28 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Signatures
 
         public int OpSignature(ulong id1, ulong id2)
         {
-            var key = (int) (id1 | (id2 << VSpaceDimension));
+            var key = (int) (id1 | (id2 << (int) VSpaceDimension));
 
             return ((_dataDictionary[key] >> 2) & 3) - 1;
         }
 
         public int SpSignature(ulong id)
         {
-            var key = (int) (id | (id << VSpaceDimension));
+            var key = (int) (id | (id << (int) VSpaceDimension));
 
             return ((_dataDictionary[key] >> 4) & 3) - 1;
         }
 
         public int SpSignature(ulong id1, ulong id2)
         {
-            var key = (int) (id1 | (id2 << VSpaceDimension));
+            var key = (int) (id1 | (id2 << (int) VSpaceDimension));
 
             return ((_dataDictionary[key] >> 4) & 3) - 1;
         }
 
         public int NormSquaredSignature(ulong id)
         {
-            var key = (int) (id | (id << VSpaceDimension));
+            var key = (int) (id | (id << (int) VSpaceDimension));
 
             var signature = ((_dataDictionary[key] >> 4) & 3) - 1;
 
@@ -229,42 +230,42 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Signatures
 
         public int LcpSignature(ulong id1, ulong id2)
         {
-            var key = (int) (id1 | (id2 << VSpaceDimension));
+            var key = (int) (id1 | (id2 << (int) VSpaceDimension));
 
             return ((_dataDictionary[key] >> 6) & 3) - 1;
         }
 
         public int RcpSignature(ulong id1, ulong id2)
         {
-            var key = (int) (id1 | (id2 << VSpaceDimension));
+            var key = (int) (id1 | (id2 << (int) VSpaceDimension));
 
             return ((_dataDictionary[key] >> 8) & 3) - 1;
         }
 
         public int FdpSignature(ulong id1, ulong id2)
         {
-            var key = (int) (id1 | (id2 << VSpaceDimension));
+            var key = (int) (id1 | (id2 << (int) VSpaceDimension));
 
             return ((_dataDictionary[key] >> 10) & 3) - 1;
         }
 
         public int HipSignature(ulong id1, ulong id2)
         {
-            var key = (int) (id1 | (id2 << VSpaceDimension));
+            var key = (int) (id1 | (id2 << (int) VSpaceDimension));
 
             return ((_dataDictionary[key] >> 12) & 3) - 1;
         }
 
         public int AcpSignature(ulong id1, ulong id2)
         {
-            var key = (int) (id1 | (id2 << VSpaceDimension));
+            var key = (int) (id1 | (id2 << (int) VSpaceDimension));
 
             return ((_dataDictionary[key] >> 14) & 3) - 1;
         }
 
         public int CpSignature(ulong id1, ulong id2)
         {
-            var key = (int) (id1 | (id2 << VSpaceDimension));
+            var key = (int) (id1 | (id2 << (int) VSpaceDimension));
 
             return ((_dataDictionary[key] >> 16) & 3) - 1;
         }

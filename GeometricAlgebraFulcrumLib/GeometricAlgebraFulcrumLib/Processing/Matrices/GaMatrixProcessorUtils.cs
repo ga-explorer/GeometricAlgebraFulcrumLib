@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using GeometricAlgebraFulcrumLib.Geometry.Euclidean;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors;
+using GeometricAlgebraFulcrumLib.Processing.Products;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
 using GeometricAlgebraFulcrumLib.Storage;
 using GeometricAlgebraFulcrumLib.Storage.Composers;
@@ -321,7 +321,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Matrices
         }
 
         
-        public static IGaVectorStorage<T> ColumnToVectorStorage<T>(this T[,] scalarsArray, int colIndex, IGaScalarProcessor<T> scalarProcessor)
+        public static IGasVector<T> ColumnToVectorStorage<T>(this T[,] scalarsArray, int colIndex, IGaScalarProcessor<T> scalarProcessor)
         {
             var rowsCount = scalarsArray.GetLength(0);
 
@@ -338,7 +338,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Matrices
             return composer.GetVectorStorage();
         }
 
-        public static IGaVectorStorage<T> RowToVectorStorage<T>(this T[,] scalarsArray, int rowIndex, IGaScalarProcessor<T> scalarProcessor)
+        public static IGasVector<T> RowToVectorStorage<T>(this T[,] scalarsArray, int rowIndex, IGaScalarProcessor<T> scalarProcessor)
         {
             var colsCount = scalarsArray.GetLength(1);
 
@@ -355,13 +355,13 @@ namespace GeometricAlgebraFulcrumLib.Processing.Matrices
             return composer.GetVectorStorage();
         }
 
-        public static Dictionary<ulong, IGaVectorStorage<T>> ColumnsToVectorStoragesDictionary<T>(this T[,] scalarsArray, IGaScalarProcessor<T> scalarProcessor)
+        public static Dictionary<ulong, IGasVector<T>> ColumnsToVectorStoragesDictionary<T>(this T[,] scalarsArray, IGaScalarProcessor<T> scalarProcessor)
         {
             var rowsCount = scalarsArray.GetLength(0);
             var colsCount = scalarsArray.GetLength(1);
 
             var vectorsDictionary = 
-                new Dictionary<ulong, IGaVectorStorage<T>>();
+                new Dictionary<ulong, IGasVector<T>>();
 
             for (var j = 0; j < colsCount; j++)
             {
@@ -381,13 +381,13 @@ namespace GeometricAlgebraFulcrumLib.Processing.Matrices
             return vectorsDictionary;
         }
 
-        public static IGaVectorStorage<T>[] ColumnsToVectorStoragesArray<T>(this T[,] scalarsArray, IGaScalarProcessor<T> scalarProcessor)
+        public static IGasVector<T>[] ColumnsToVectorStoragesArray<T>(this T[,] scalarsArray, IGaScalarProcessor<T> scalarProcessor)
         {
             var rowsCount = scalarsArray.GetLength(0);
             var colsCount = scalarsArray.GetLength(1);
 
             var vectorsArray = 
-                new IGaVectorStorage<T>[colsCount];
+                new IGasVector<T>[colsCount];
 
             for (var j = 0; j < colsCount; j++)
             {
@@ -408,24 +408,24 @@ namespace GeometricAlgebraFulcrumLib.Processing.Matrices
         }
 
 
-        public static GaEuclideanSimpleRotor<T> ComplexEigenPairToEuclideanSimpleRotor<T>(this IGaScalarProcessor<T> scalarProcessor, T realValue, T imagValue, T[] realVector, T[] imagVector)
+        public static GaEuclideanSimpleRotor<T> ComplexEigenPairToEuclideanSimpleRotor<T>(this IGaProcessor<T> processor, T realValue, T imagValue, T[] realVector, T[] imagVector)
         {
             //var scalar = scalarProcessor.Add(
             //    scalarProcessor.Times(realValue, realValue),
             //    scalarProcessor.Times(imagValue, imagValue)
             //);
 
-            var angle = scalarProcessor.ArcTan2(
+            var angle = processor.ArcTan2(
                 realValue, 
                 imagValue
             );
 
-            var blade = scalarProcessor.VectorsOp(
+            var blade = processor.VectorsOp(
                 realVector, 
                 imagVector
             );
 
-            return GaEuclideanSimpleRotor<T>.Create(angle, blade);
+            return GaEuclideanSimpleRotor<T>.Create(processor, angle, blade);
 
             //Console.WriteLine($"Eigen value real part: {realValue.GetLaTeXDisplayEquation()}");
             //Console.WriteLine();

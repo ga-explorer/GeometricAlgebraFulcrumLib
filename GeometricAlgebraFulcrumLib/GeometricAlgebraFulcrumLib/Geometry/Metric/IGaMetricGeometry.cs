@@ -1,10 +1,7 @@
-﻿using GeometricAlgebraFulcrumLib.Processing.Multivectors;
-
-namespace GeometricAlgebraFulcrumLib.Geometry.Metric
+﻿namespace GeometricAlgebraFulcrumLib.Geometry.Metric
 {
     public interface IGaMetricGeometry<T> : 
-        IGaGeometricElement<T>
+        IGaGeometry<T>
     {
-        IGaMultivectorProcessor<T> MultivectorProcessor { get; }
     }
 }

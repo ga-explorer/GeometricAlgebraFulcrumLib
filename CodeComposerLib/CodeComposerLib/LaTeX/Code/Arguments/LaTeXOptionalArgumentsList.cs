@@ -51,7 +51,7 @@ namespace CodeComposerLib.LaTeX.Code.Arguments
             => _argumentsList.Count > 0;
 
         public IEnumerable<LaTeXArgument> Arguments
-            => _argumentsList.Select(c => LaTeXCodeUtils.ToLaTeXOptionalArgument((ILaTeXCodeElement) c));
+            => _argumentsList.Select(c => LaTeXCodeUtils.ToLaTeXOptionalArgument(c));
 
         public IEnumerable<LaTeXArgument> RequiredArguments
             => Enumerable.Empty<LaTeXArgument>();

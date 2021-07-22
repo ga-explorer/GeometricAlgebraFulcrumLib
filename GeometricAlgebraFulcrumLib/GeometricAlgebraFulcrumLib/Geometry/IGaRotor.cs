@@ -1,11 +1,13 @@
-﻿using GeometricAlgebraFulcrumLib.Storage;
+﻿using GeometricAlgebraFulcrumLib.Algebra.Outermorphisms;
+using GeometricAlgebraFulcrumLib.Storage;
 
 namespace GeometricAlgebraFulcrumLib.Geometry
 {
-    public interface IGaRotor<T> : IGaVectorsLinearMap<T>
+    public interface IGaRotor<T> : 
+        IGaAutomorphism<T>
     {
-        IGaMultivectorStorage<T> Storage { get; }
+        IGasMultivector<T> Rotor { get; }
 
-        IGaMultivectorStorage<T> StorageReverse { get; }
+        IGasMultivector<T> RotorReverse { get; }
     }
 }

@@ -1,55 +1,50 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using GAPoTNumLib.GAPoT;
 using GeometricAlgebraFulcrumLib.Algebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.Signatures;
+using GeometricAlgebraFulcrumLib.Processing;
+using GeometricAlgebraFulcrumLib.Processing.Generic;
 using GeometricAlgebraFulcrumLib.Processing.Implementations.Float64;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors;
-using GeometricAlgebraFulcrumLib.Processing.Scalars;
+using GeometricAlgebraFulcrumLib.Processing.Products;
+using GeometricAlgebraFulcrumLib.Processing.Products.Euclidean;
 using GeometricAlgebraFulcrumLib.Storage;
 
 namespace GeometricAlgebraFulcrumLib.Samples.UnitTests
 {
     public sealed class GaProductsTests
     {
-        private static readonly Random RandomGenerator 
-            = new Random(10);
-
-        private readonly IGaScalarProcessor<double> _scalarsDomain
-            = GaScalarProcessorFloat64.DefaultProcessor;
-
-        private readonly List<IGaMultivectorStorage<double>> _mvList1
-            = new List<IGaMultivectorStorage<double>>();
-
-        private readonly List<GaPoTNumMultivector> _mvList2
-            = new List<GaPoTNumMultivector>();
-
-        private readonly double _scalar
-            = RandomGenerator.NextDouble();
+        private readonly GaRandomComposerFloat64 _randomGenerator;
+        private readonly List<IGasMultivector<double>> _mvList1;
+        private readonly List<GaPoTNumMultivector> _mvList2;
+        private readonly double _scalar;
 
 
-        public int VSpaceDimension { get; }
-            = 5;
+        public IGaProcessor<double> Processor { get; }
+            = GaProcessorGenericOrthonormal<double>.CreateEuclidean(
+                GaScalarProcessorFloat64.DefaultProcessor, 
+                5
+            );
+
+        public uint VSpaceDimension 
+            => Processor.VSpaceDimension;
 
         public ulong GaSpaceDimension
             => VSpaceDimension.ToGaSpaceDimension();
 
 
-        private Dictionary<ulong, double> 
-            GetRandomKVectorDictionary(int grade)
+        public GaProductsTests()
         {
-            return Enumerable
-                .Range(0, (int)GaBasisUtils.KvSpaceDimension(VSpaceDimension, grade))
-                .ToDictionary(
-                    index => (ulong)index, 
-                    _ => RandomGenerator.NextDouble()
-                );
+            _randomGenerator = new GaRandomComposerFloat64(VSpaceDimension, 10);
+            _mvList1 = new List<IGasMultivector<double>>();
+            _mvList2 = new List<GaPoTNumMultivector>();
+            _scalar = _randomGenerator.GetScalar();
         }
 
+
+
         private GaPoTNumMultivector 
-            CreateGaPoTMultivector(IGaMultivectorStorage<double> mvStorage)
+            CreateGaPoTMultivector(IGasMultivector<double> mvStorage)
         {
             var gapotMv = GaPoTNumMultivector.CreateZero();
 
@@ -60,7 +55,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.UnitTests
         }
 
         private GaPoTNumMultivector 
-            Subtract(IGaMultivectorStorage<double> mv1, GaPoTNumMultivector mv2)
+            Subtract(IGasMultivector<double> mv1, GaPoTNumMultivector mv2)
         {
             var mvDiff = GaPoTNumMultivector.CreateZero();
 
@@ -74,7 +69,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.UnitTests
         }
 
         private GaPoTNumMultivector 
-            Subtract(GaPoTNumMultivector mv1, IGaMultivectorStorage<double> mv2)
+            Subtract(GaPoTNumMultivector mv1, IGasMultivector<double> mv2)
         {
             var mvDiff = GaPoTNumMultivector.CreateZero();
 
@@ -87,21 +82,21 @@ namespace GeometricAlgebraFulcrumLib.Samples.UnitTests
             return mvDiff;
         }
         
-        private Func<IGaMultivectorStorage<double>, IGaMultivectorStorage<double>, IGaMultivectorStorage<double>> 
+        private Func<IGasMultivector<double>, IGasMultivector<double>, IGasMultivector<double>> 
             GetBinaryOperationFunction1(string funcName)
         {
             return funcName switch
             {
-                "add" => (mv1, mv2) => mv1.Add(mv2),
-                "subtract" => (mv1, mv2) => mv1.Subtract(mv2),
-                "op" => (mv1, mv2) => mv1.Op(mv2),
-                "egp" => (mv1, mv2) => mv1.EGp(mv2),
-                "elcp" => (mv1, mv2) => mv1.ELcp(mv2),
-                "ercp" => (mv1, mv2) => mv1.ERcp(mv2),
-                "efdp" => (mv1, mv2) => mv1.EFdp(mv2),
-                "ehip" => (mv1, mv2) => mv1.EHip(mv2),
-                "ecp" => (mv1, mv2) => mv1.ECp(mv2),
-                "eacp" => (mv1, mv2) => mv1.EAcp(mv2),
+                "add" => GaProcessorAddUtils.Add,
+                "subtract" => GaProcessorSubtractUtils.Subtract,
+                "op" => GaProductOpUtils.Op,
+                "egp" => (mv1, mv2) => Processor.Gp(mv1, mv2),
+                "elcp" => (mv1, mv2) => Processor.Lcp(mv1, mv2),
+                "ercp" => (mv1, mv2) => Processor.Rcp(mv1, mv2),
+                "efdp" => (mv1, mv2) => Processor.Fdp(mv1, mv2),
+                "ehip" => (mv1, mv2) => Processor.Hip(mv1, mv2),
+                "ecp" => (mv1, mv2) => Processor.Cp(mv1, mv2),
+                "eacp" => (mv1, mv2) => Processor.Acp(mv1, mv2),
                 _ => null
             };
         }
@@ -125,12 +120,12 @@ namespace GeometricAlgebraFulcrumLib.Samples.UnitTests
             };
         }
 
-        private Func<IGaMultivectorStorage<double>, IGaMultivectorStorage<double>, double> 
+        private Func<IGasMultivector<double>, IGasMultivector<double>, double> 
             GetBinaryOperationFunctionWithScalarOutput1(string funcName)
         {
             return funcName switch
             {
-                "esp" => GaSignatureUtils.ESp,
+                "esp" => (mv1, mv2) => Processor.Sp(mv1, mv2),
                 _ => null
             };
         }
@@ -145,8 +140,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.UnitTests
             };
         }
 
-        private IGaMultivectorStorage<double> 
-            LeftTimesScalar(IGaMultivectorStorage<double> storage)
+        private IGasMultivector<double> 
+            LeftTimesScalar(IGasMultivector<double> storage)
         {
             return storage.Times(_scalar);
         }
@@ -157,8 +152,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.UnitTests
             return storage.ScaleBy(_scalar);
         }
 
-        private IGaMultivectorStorage<double> 
-            RightTimesScalar(IGaMultivectorStorage<double> storage)
+        private IGasMultivector<double> 
+            RightTimesScalar(IGasMultivector<double> storage)
         {
             return _scalar.Times(storage);
         }
@@ -169,8 +164,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.UnitTests
             return storage.ScaleBy(_scalar);
         }
 
-        private IGaMultivectorStorage<double> 
-            DivideByScalar(IGaMultivectorStorage<double> storage)
+        private IGasMultivector<double> 
+            DivideByScalar(IGasMultivector<double> storage)
         {
             return storage.Divide(_scalar);
         }
@@ -181,7 +176,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.UnitTests
             return storage.ScaleBy(1d / _scalar);
         }
 
-        private Func<IGaMultivectorStorage<double>, IGaMultivectorStorage<double>> 
+        private Func<IGasMultivector<double>, IGasMultivector<double>> 
             GetUnaryOperationFunction1(string funcName)
         {
             return funcName switch
@@ -189,8 +184,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.UnitTests
                 "leftTimesScalar" => LeftTimesScalar,
                 "rightTimesScalar" => RightTimesScalar,
                 "divideByScalar" => DivideByScalar,
-                "egpSquared" => GaSignatureUtils.EGp,
-                "egpReverse" => GaSignatureUtils.EGpReverse,
+                "egpSquared" => GaProductEucGpUtils.EGp,
+                "egpReverse" => GaProductEucGpUtils.EGpReverse,
                 _ => null
             };
         }
@@ -209,13 +204,13 @@ namespace GeometricAlgebraFulcrumLib.Samples.UnitTests
             };
         }
 
-        private Func<IGaMultivectorStorage<double>, double> 
+        private Func<IGasMultivector<double>, double> 
             GetUnaryOperationFunctionWithScalarOutput1(string funcName)
         {
             return funcName switch
             {
-                "espSquared" => GaSignatureUtils.ESp,
-                "espReverse" => GaSignatureUtils.ENormSquared,
+                "espSquared" => GaProductEucSpUtils.ESp,
+                "espReverse" => GaProductEucNormUtils.ENormSquared,
                 _ => null
             };
         }
@@ -236,101 +231,52 @@ namespace GeometricAlgebraFulcrumLib.Samples.UnitTests
         {
             //Create a scalar storage
             _mvList1.Add(
-                GaScalarTermStorage<double>.Create(
-                    _scalarsDomain,
-                    RandomGenerator.NextDouble()
-                )
+                _randomGenerator.GetScalarTerm()
             );
 
             //Create a set of vector terms storages
-            for (var index = 0UL; index < (ulong) VSpaceDimension; index++)
+            for (var index = 0; index < VSpaceDimension; index++)
                 _mvList1.Add(
-                    GaVectorTermStorage<double>.Create(
-                        _scalarsDomain,
-                        index,
-                        RandomGenerator.NextDouble()
-                    )
+                    _randomGenerator.GetVectorTermByIndex((ulong) index)
                 );
 
             //Create a set of bivector terms storages
             var kvSpaceDimension2 = GaBasisUtils.KvSpaceDimension(VSpaceDimension, 2);
             for (var index = 0UL; index < kvSpaceDimension2; index++)
                 _mvList1.Add(
-                    GaBivectorTermStorage<double>.Create(
-                        _scalarsDomain,
-                        index,
-                        RandomGenerator.NextDouble()
-                    )
+                    _randomGenerator.GetBivectorTermByIndex(index)
                 );
 
             //Create a set of blade terms storages
             for (var id = 0UL; id < GaSpaceDimension; id++)
                 _mvList1.Add(
-                    GaKVectorTermStorage<double>.Create(
-                        _scalarsDomain,
-                        id,
-                        RandomGenerator.NextDouble()
-                    )
+                    _randomGenerator.GetKVectorTermById(id)
                 );
 
             //Create a vector storage
             _mvList1.Add(
-                GaVectorStorage<double>.Create(
-                    _scalarsDomain, 
-                    GetRandomKVectorDictionary(1)
-                )
+                _randomGenerator.GetVector()
             );
 
             //Create a bivector storage
             _mvList1.Add(
-                GaBivectorStorage<double>.Create(
-                    _scalarsDomain, 
-                    GetRandomKVectorDictionary(2)
-                )
+                _randomGenerator.GetBivector()
             );
 
             //Create k-vector storages
-            for (var grade = 0; grade <= VSpaceDimension; grade++)
+            for (var grade = 0U; grade <= VSpaceDimension; grade++)
                 _mvList1.Add(
-                    GaKVectorStorage<double>.Create(
-                        _scalarsDomain, 
-                        grade,
-                        GetRandomKVectorDictionary(grade)
-                    )
+                    _randomGenerator.GetKVectorOfGrade(grade)
                 );
 
             //Create graded multivector storage
-            var gradeIndexScalarDictionary = 
-                new Dictionary<int, Dictionary<ulong, double>>();
-
-            for (var grade = 0; grade <= VSpaceDimension; grade++)
-                gradeIndexScalarDictionary.Add(
-                    grade, 
-                    GetRandomKVectorDictionary(grade)
-                );
-
             _mvList1.Add(
-                GaMultivectorGradedStorage<double>.Create(
-                    _scalarsDomain, 
-                    gradeIndexScalarDictionary
-                )
+                _randomGenerator.GetGradedMultivector()
             );
 
             //Create terms multivector storage
-            var idScalarDictionary = 
-                new Dictionary<ulong, double>();
-
-            for (var id = 0UL; id < GaSpaceDimension; id++)
-                idScalarDictionary.Add(
-                    id, 
-                    RandomGenerator.NextDouble()
-                );
-
             _mvList1.Add(
-                GaMultivectorTermsStorage<double>.Create(
-                    _scalarsDomain, 
-                    idScalarDictionary
-                )
+                _randomGenerator.GetTermsMultivector()
             );
 
             //Convert all storages into multivector terms storages
@@ -399,8 +345,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.UnitTests
                     var result1 = testedFunction1(storage1, storage2);
                     var result2 = testedFunction2(termsStorage1, termsStorage2);
 
-                    var storageDiff = GaScalarTermStorage<double>.Create(
-                        _scalarsDomain, 
+                    var storageDiff = Processor.CreateScalar(
                         result1 - result2
                     );
 
@@ -447,8 +392,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.UnitTests
                 var result1 = testedFunction1(storage1);
                 var result2 = testedFunction2(termsStorage1);
 
-                var storageDiff = GaScalarTermStorage<double>.Create(
-                    _scalarsDomain,
+                var storageDiff = Processor.CreateScalar(
                     result1 - result2
                 );
 

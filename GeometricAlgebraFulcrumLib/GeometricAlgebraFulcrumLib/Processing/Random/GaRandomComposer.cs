@@ -2,50 +2,64 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using DataStructuresLib.BitManipulation;
 using DataStructuresLib.Random;
+using GeometricAlgebraFulcrumLib.Algebra;
 using GeometricAlgebraFulcrumLib.Algebra.Basis;
 using GeometricAlgebraFulcrumLib.Geometry.Euclidean;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors;
+using GeometricAlgebraFulcrumLib.Processing.Products;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
 using GeometricAlgebraFulcrumLib.Storage;
 using GeometricAlgebraFulcrumLib.Storage.Composers;
 
 namespace GeometricAlgebraFulcrumLib.Processing.Random
 {
-    public class GaRandomComposer<TScalar> :
-        RandomComposer
+    public class GaRandomComposer<T> :
+        RandomComposer, IGaSpace
     {
-        public IGaScalarProcessor<TScalar> ScalarProcessor { get; }
+        //public IGaMultivectorProcessor<T> MultivectorProcessor { get; }
 
-        public int VSpaceDimension { get; }
+        public IGaScalarProcessor<T> ScalarProcessor { get; }
+            //=> MultivectorProcessor.ScalarProcessor;
+
+        public uint VSpaceDimension { get; }
 
         public ulong GaSpaceDimension 
-            => 1UL << VSpaceDimension;
+            => 1UL << (int) VSpaceDimension;
+
+        public ulong MaxBasisBladeId 
+            => (1UL << (int) VSpaceDimension) - 1UL;
+
+        public uint GradesCount 
+            => VSpaceDimension + 1;
+
+        public IEnumerable<uint> Grades 
+            => GradesCount.GetRange();
 
 
-        public GaRandomComposer([NotNull] IGaScalarProcessor<TScalar> scalarProcessor, int vSpaceDimension)
+        public GaRandomComposer([NotNull] IGaScalarProcessor<T> scalarProcessor, uint vSpaceDimension)
         {
-            if (vSpaceDimension is < 2 or > 63)
+            if (vSpaceDimension < 2 || vSpaceDimension > GaSpaceUtils.MaxVSpaceDimension)
                 throw new ArgumentOutOfRangeException(nameof(vSpaceDimension));
 
             ScalarProcessor = scalarProcessor;
             VSpaceDimension = vSpaceDimension;
         }
 
-        public GaRandomComposer([NotNull] IGaScalarProcessor<TScalar> scalarProcessor, int vSpaceDimension, int seed)
+        public GaRandomComposer([NotNull] IGaScalarProcessor<T> scalarProcessor, uint vSpaceDimension, int seed)
             : base(seed)
         {
-            if (vSpaceDimension is < 2 or > 63)
+            if (vSpaceDimension < 2 || vSpaceDimension > GaSpaceUtils.MaxVSpaceDimension)
                 throw new ArgumentOutOfRangeException(nameof(vSpaceDimension));
 
             ScalarProcessor = scalarProcessor;
             VSpaceDimension = vSpaceDimension;
         }
 
-        public GaRandomComposer([NotNull] IGaScalarProcessor<TScalar> scalarProcessor, int vSpaceDimension, System.Random randomGenerator)
+        public GaRandomComposer([NotNull] IGaScalarProcessor<T> scalarProcessor, uint vSpaceDimension, System.Random randomGenerator)
             : base(randomGenerator)
         {
-            if (vSpaceDimension is < 2 or > 63)
+            if (vSpaceDimension < 2 || vSpaceDimension > GaSpaceUtils.MaxVSpaceDimension)
                 throw new ArgumentOutOfRangeException(nameof(vSpaceDimension));
             
             ScalarProcessor = scalarProcessor;
@@ -53,7 +67,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Random
         }
 
 
-        public TScalar GetScalar()
+        public T GetScalar()
         {
             return ScalarProcessor.GetRandomScalar(
                 RandomGenerator, 
@@ -62,7 +76,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Random
             );
         }
 
-        public TScalar GetScalar(double minValue, double maxValue)
+        public T GetScalar(double minValue, double maxValue)
         {
             return ScalarProcessor.GetRandomScalar(
                 RandomGenerator, 
@@ -71,14 +85,14 @@ namespace GeometricAlgebraFulcrumLib.Processing.Random
             );
         }
 
-        public int GetGrade()
+        public uint GetGrade()
         {
-            return RandomGenerator.Next(VSpaceDimension + 1);
+            return (uint) RandomGenerator.Next((int) VSpaceDimension + 1);
         }
 
         public ulong GetBasisVectorId()
         {
-            return 1UL << RandomGenerator.Next(VSpaceDimension);
+            return 1UL << RandomGenerator.Next((int) VSpaceDimension);
         }
 
         public ulong GetBasisBivectorId()
@@ -94,7 +108,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Random
             return (ulong) RandomGenerator.Next((int) GaSpaceDimension);
         }
 
-        public ulong GetBasisBladeId(int grade)
+        public ulong GetBasisBladeId(uint grade)
         {
             return GaBasisUtils.BasisBladeId(
                 grade, 
@@ -102,14 +116,14 @@ namespace GeometricAlgebraFulcrumLib.Processing.Random
             );
         }
 
-        public Tuple<int, ulong> GetBasisBladeGradeIndex()
+        public Tuple<uint, ulong> GetBasisBladeGradeIndex()
         {
             return GetBasisBladeId().BasisBladeGradeIndex();
         }
 
         public ulong GetBasisVectorIndex()
         {
-            return (ulong) RandomGenerator.Next(VSpaceDimension);
+            return (ulong) RandomGenerator.Next((int) VSpaceDimension);
         }
 
         public ulong GetBasisBivectorIndex()
@@ -117,14 +131,14 @@ namespace GeometricAlgebraFulcrumLib.Processing.Random
             return GetBasisBladeIndex(2);
         }
 
-        public ulong GetBasisBladeIndex(int grade)
+        public ulong GetBasisBladeIndex(uint grade)
         {
             var kvSpaceDimension = GaBasisUtils.KvSpaceDimension(VSpaceDimension, grade);
 
             return (ulong) RandomGenerator.Next((int) kvSpaceDimension);
         }
 
-        public Dictionary<ulong, TScalar> GetKVectorIndexScalarDictionary(int grade)
+        public Dictionary<ulong, T> GetKVectorIndexScalarDictionary(uint grade)
         {
             var kvSpaceDimension = 
                 (int) GaBasisUtils.KvSpaceDimension(VSpaceDimension, grade);
@@ -137,7 +151,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Random
                 );
         }
 
-        public Dictionary<ulong, TScalar> GetKVectorIndexScalarDictionary(int grade, double minValue, double maxValue)
+        public Dictionary<ulong, T> GetKVectorIndexScalarDictionary(uint grade, double minValue, double maxValue)
         {
             var kvSpaceDimension = 
                 (int) GaBasisUtils.KvSpaceDimension(VSpaceDimension, grade);
@@ -150,271 +164,233 @@ namespace GeometricAlgebraFulcrumLib.Processing.Random
                 );
         }
 
-        public GaScalarTermStorage<TScalar> GetScalarTerm()
+        public GasScalar<T> GetScalarTerm()
         {
-            return GaScalarTermStorage<TScalar>.Create(
-                ScalarProcessor,
-                GetScalar()
-            );
+            return ScalarProcessor.CreateScalar(GetScalar());
         }
 
-        public GaScalarTermStorage<TScalar> GetScalarTerm(double minValue, double maxValue)
+        public GasScalar<T> GetScalarTerm(double minValue, double maxValue)
         {
-            return GaScalarTermStorage<TScalar>.Create(
-                ScalarProcessor,
+            return ScalarProcessor.CreateScalar(
                 GetScalar(minValue, maxValue)
             );
         }
 
-        public GaVectorTermStorage<TScalar> GetVectorTerm()
+        public GasVectorTerm<T> GetVectorTerm()
         {
             var index = GetBasisVectorIndex();
             var scalar = GetScalar();
 
-            return GaVectorTermStorage<TScalar>.Create(
-                ScalarProcessor,
-                index,
-                scalar
-            );
+            return ScalarProcessor.CreateVector(index, scalar);
         }
 
-        public GaVectorTermStorage<TScalar> GetVectorTerm(double minValue, double maxValue)
+        public GasVectorTerm<T> GetVectorTerm(double minValue, double maxValue)
         {
             var index = GetBasisVectorIndex();
             var scalar = GetScalar(minValue, maxValue);
 
-            return GaVectorTermStorage<TScalar>.Create(
-                ScalarProcessor,
-                index,
-                scalar
-            );
+            return ScalarProcessor.CreateVector(index, scalar);
         }
 
-        public GaVectorTermStorage<TScalar> GetVectorTermByIndex(ulong index)
+        public GasVectorTerm<T> GetVectorTermByIndex(ulong index)
         {
-            return GaVectorTermStorage<TScalar>.Create(
-                ScalarProcessor,
+            return ScalarProcessor.CreateVector(
                 index,
                 GetScalar()
             );
         }
 
-        public GaVectorTermStorage<TScalar> GetVectorTermByIndex(ulong index, double minValue, double maxValue)
+        public GasVectorTerm<T> GetVectorTermByIndex(ulong index, double minValue, double maxValue)
         {
-            return GaVectorTermStorage<TScalar>.Create(
-                ScalarProcessor,
-                index,
+            return ScalarProcessor.CreateVector(index,
                 GetScalar(minValue, maxValue)
             );
         }
 
-        public GaBivectorTermStorage<TScalar> GetBivectorTerm()
+        public GasBivectorTerm<T> GetBivectorTerm()
         {
             var index = GetBasisBivectorIndex();
             var scalar = GetScalar();
 
-            return GaBivectorTermStorage<TScalar>.Create(
-                ScalarProcessor,
+            return ScalarProcessor.CreateBivector(
                 index,
                 scalar
             );
         }
 
-        public GaBivectorTermStorage<TScalar> GetBivectorTerm(double minValue, double maxValue)
+        public GasBivectorTerm<T> GetBivectorTerm(double minValue, double maxValue)
         {
             var index = GetBasisBivectorIndex();
             var scalar = GetScalar(minValue, maxValue);
 
-            return GaBivectorTermStorage<TScalar>.Create(
-                ScalarProcessor,
+            return ScalarProcessor.CreateBivector(
                 index,
                 scalar
             );
         }
 
-        public GaBivectorTermStorage<TScalar> GetBivectorTermByIndex(ulong index)
+        public GasBivectorTerm<T> GetBivectorTermByIndex(ulong index)
         {
-            return GaBivectorTermStorage<TScalar>.Create(
-                ScalarProcessor,
+            return ScalarProcessor.CreateBivector(
                 index,
                 GetScalar()
             );
         }
 
-        public GaBivectorTermStorage<TScalar> GetBivectorTermByIndex(ulong index, double minValue, double maxValue)
+        public GasBivectorTerm<T> GetBivectorTermByIndex(ulong index, double minValue, double maxValue)
         {
-            return GaBivectorTermStorage<TScalar>.Create(
-                ScalarProcessor,
-                index,
+            return ScalarProcessor.CreateBivector(index,
                 GetScalar(minValue, maxValue)
             );
         }
 
-        public GaKVectorTermStorage<TScalar> GetKVectorTerm()
+        public IGasKVectorTerm<T> GetKVectorTerm()
         {
             var (grade, index) = GetBasisBladeGradeIndex();
             var scalar = GetScalar();
 
-            return GaKVectorTermStorage<TScalar>.Create(
-                ScalarProcessor,
+            return ScalarProcessor.CreateKVector(
                 grade,
                 index,
                 scalar
             );
         }
 
-        public GaKVectorTermStorage<TScalar> GetKVectorTerm(double minValue, double maxValue)
+        public IGasKVectorTerm<T> GetKVectorTerm(double minValue, double maxValue)
         {
             var (grade, index) = GetBasisBladeGradeIndex();
             var scalar = GetScalar(minValue, maxValue);
 
-            return GaKVectorTermStorage<TScalar>.Create(
-                ScalarProcessor,
+            return ScalarProcessor.CreateKVector(
                 grade,
                 index,
                 scalar
             );
         }
 
-        public GaKVectorTermStorage<TScalar> GetKVectorTermOfGrade(int grade)
+        public IGasKVectorTerm<T> GetKVectorTermOfGrade(uint grade)
         {
             var index = GetBasisBladeIndex(grade);
             var scalar = GetScalar();
 
-            return GaKVectorTermStorage<TScalar>.Create(
-                ScalarProcessor,
+            return ScalarProcessor.CreateKVector(
                 grade,
                 index,
                 scalar
             );
         }
 
-        public GaKVectorTermStorage<TScalar> GetKVectorTermOfGrade(int grade, double minValue, double maxValue)
+        public IGasKVectorTerm<T> GetKVectorTermOfGrade(uint grade, double minValue, double maxValue)
         {
             var index = GetBasisBladeIndex(grade);
             var scalar = GetScalar(minValue, maxValue);
 
-            return GaKVectorTermStorage<TScalar>.Create(
-                ScalarProcessor,
+            return ScalarProcessor.CreateKVector(
                 grade,
                 index,
                 scalar
             );
         }
 
-        public GaKVectorTermStorage<TScalar> GetKVectorTermById(ulong id)
+        public IGasKVectorTerm<T> GetKVectorTermById(ulong id)
         {
-            return GaKVectorTermStorage<TScalar>.Create(
-                ScalarProcessor,
+            return ScalarProcessor.CreateKVector(
                 id,
                 GetScalar()
             );
         }
 
-        public GaKVectorTermStorage<TScalar> GetKVectorTermById(ulong id, double minValue, double maxValue)
+        public IGasKVectorTerm<T> GetKVectorTermById(ulong id, double minValue, double maxValue)
         {
-            return GaKVectorTermStorage<TScalar>.Create(
-                ScalarProcessor,
+            return ScalarProcessor.CreateKVector(
                 id,
                 GetScalar(minValue, maxValue)
             );
         }
 
-        public GaKVectorTermStorage<TScalar> GetKVectorTermByGradeIndex(int grade, ulong index)
+        public IGasKVectorTerm<T> GetKVectorTermByGradeIndex(uint grade, ulong index)
         {
-            return GaKVectorTermStorage<TScalar>.Create(
-                ScalarProcessor,
+            return ScalarProcessor.CreateKVector(
                 grade,
                 index,
                 GetScalar()
             );
         }
 
-        public GaKVectorTermStorage<TScalar> GetKVectorTermByGradeIndex(int grade, ulong index, double minValue, double maxValue)
+        public IGasKVectorTerm<T> GetKVectorTermByGradeIndex(uint grade, ulong index, double minValue, double maxValue)
         {
             var scalar = GetScalar(minValue, maxValue);
 
-            return GaKVectorTermStorage<TScalar>.Create(
-                ScalarProcessor,
+            return ScalarProcessor.CreateKVector(
                 grade,
                 index,
                 scalar
             );
         }
 
-        public GaVectorStorage<TScalar> GetVector()
+        public IGasVector<T> GetVector()
         {
             var indexScalarDictionary =
-                Enumerable
-                    .Range(0, VSpaceDimension)
+                VSpaceDimension
+                    .GetRange()
                     .ToDictionary(
                         index => (ulong) index,
                         _ => GetScalar()
                     );
 
-            return GaVectorStorage<TScalar>.Create(
-                ScalarProcessor,
-                indexScalarDictionary
-            );
+            return ScalarProcessor.CreateVector(indexScalarDictionary);
         }
 
-        public GaVectorStorage<TScalar> GetVector(double minValue, double maxValue)
+        public IGasVector<T> GetVector(double minValue, double maxValue)
         {
             var indexScalarDictionary =
-                Enumerable
-                    .Range(0, VSpaceDimension)
+                VSpaceDimension
+                    .GetRange()
                     .ToDictionary(
                         index => (ulong) index,
                         _ => GetScalar(minValue, maxValue)
                     );
 
-            return GaVectorStorage<TScalar>.Create(
-                ScalarProcessor,
-                indexScalarDictionary
-            );
+            return ScalarProcessor.CreateVector(indexScalarDictionary);
         }
 
-        public GaVectorStorage<TScalar> GetSparseVector(int termsCount)
+        public IGasVector<T> GetSparseVector(int termsCount)
         {
             if (termsCount > VSpaceDimension)
                 throw new ArgumentOutOfRangeException(nameof(termsCount));
 
-            var indexScalarDictionary = Enumerable
-                .Range(0, VSpaceDimension)
-                .Shuffled(RandomGenerator)
-                .Take(termsCount)
-                .ToDictionary(
-                    index => (ulong) index,
-                    _ => GetScalar()
-                );
+            var indexScalarDictionary = 
+                VSpaceDimension
+                    .GetRange()
+                    .Shuffled(RandomGenerator)
+                    .Take(termsCount)
+                    .ToDictionary(
+                        index => (ulong) index,
+                        _ => GetScalar()
+                    );
             
-            return GaVectorStorage<TScalar>.Create(
-                ScalarProcessor,
-                indexScalarDictionary
-            );
+            return ScalarProcessor.CreateVector(indexScalarDictionary);
         }
 
-        public GaVectorStorage<TScalar> GetSparseVector(int termsCount, double minValue, double maxValue)
+        public IGasVector<T> GetSparseVector(int termsCount, double minValue, double maxValue)
         {
             if (termsCount > VSpaceDimension)
                 throw new ArgumentOutOfRangeException(nameof(termsCount));
 
-            var indexScalarDictionary = Enumerable
-                .Range(0, VSpaceDimension)
-                .Shuffled(RandomGenerator)
-                .Take(termsCount)
-                .ToDictionary(
-                    index => (ulong) index,
-                    _ => GetScalar(minValue, maxValue)
-                );
+            var indexScalarDictionary = 
+                VSpaceDimension
+                    .GetRange()
+                    .Shuffled(RandomGenerator)
+                    .Take(termsCount)
+                    .ToDictionary(
+                        index => (ulong) index,
+                        _ => GetScalar(minValue, maxValue)
+                    );
             
-            return GaVectorStorage<TScalar>.Create(
-                ScalarProcessor,
-                indexScalarDictionary
-            );
+            return ScalarProcessor.CreateVector(indexScalarDictionary);
         }
 
-        public GaBivectorStorage<TScalar> GetBivector()
+        public IGasBivector<T> GetBivector()
         {
             var kvSpaceDimension = 
                 GaBasisUtils.KvSpaceDimension(VSpaceDimension, 2);
@@ -427,13 +403,10 @@ namespace GeometricAlgebraFulcrumLib.Processing.Random
                         _ => GetScalar()
                     );
 
-            return GaBivectorStorage<TScalar>.Create(
-                ScalarProcessor,
-                indexScalarDictionary
-            );
+            return ScalarProcessor.CreateBivector(indexScalarDictionary);
         }
 
-        public GaBivectorStorage<TScalar> GetBivector(double minValue, double maxValue)
+        public IGasBivector<T> GetBivector(double minValue, double maxValue)
         {
             var kvSpaceDimension = 
                 GaBasisUtils.KvSpaceDimension(VSpaceDimension, 2);
@@ -446,13 +419,10 @@ namespace GeometricAlgebraFulcrumLib.Processing.Random
                         _ => GetScalar(minValue, maxValue)
                     );
 
-            return GaBivectorStorage<TScalar>.Create(
-                ScalarProcessor,
-                indexScalarDictionary
-            );
+            return ScalarProcessor.CreateBivector(indexScalarDictionary);
         }
 
-        public GaBivectorStorage<TScalar> GetSparseBivector(int termsCount)
+        public IGasBivector<T> GetSparseBivector(int termsCount)
         {
             var kvSpaceDimension = 
                 (int) GaBasisUtils.KvSpaceDimension(VSpaceDimension, 2);
@@ -470,13 +440,10 @@ namespace GeometricAlgebraFulcrumLib.Processing.Random
                         _ => GetScalar()
                     );
 
-            return GaBivectorStorage<TScalar>.Create(
-                ScalarProcessor,
-                indexScalarDictionary
-            );
+            return ScalarProcessor.CreateBivector(indexScalarDictionary);
         }
 
-        public GaBivectorStorage<TScalar> GetSparseBivector(int termsCount, double minValue, double maxValue)
+        public IGasBivector<T> GetSparseBivector(int termsCount, double minValue, double maxValue)
         {
             var kvSpaceDimension = 
                 (int) GaBasisUtils.KvSpaceDimension(VSpaceDimension, 2);
@@ -494,20 +461,15 @@ namespace GeometricAlgebraFulcrumLib.Processing.Random
                         _ => GetScalar(minValue, maxValue)
                     );
 
-            return GaBivectorStorage<TScalar>.Create(
-                ScalarProcessor,
-                indexScalarDictionary
-            );
+            return ScalarProcessor.CreateBivector(indexScalarDictionary);
         }
 
-        public GaKVectorStorage<TScalar> GetKVector()
+        public IGasKVector<T> GetKVector()
         {
-            return GetKVectorOfGrade(
-                GetGrade()
-            );
+            return GetKVectorOfGrade(GetGrade());
         }
 
-        public GaKVectorStorage<TScalar> GetKVector(double minValue, double maxValue)
+        public IGasKVector<T> GetKVector(double minValue, double maxValue)
         {
             return GetKVectorOfGrade(
                 GetGrade(),
@@ -516,7 +478,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Random
             );
         }
 
-        public GaKVectorStorage<TScalar> GetKVectorOfGrade(int grade)
+        public IGasKVector<T> GetKVectorOfGrade(uint grade)
         {
             var kvSpaceDimension = 
                 GaBasisUtils.KvSpaceDimension(VSpaceDimension, grade);
@@ -529,14 +491,10 @@ namespace GeometricAlgebraFulcrumLib.Processing.Random
                         _ => GetScalar()
                     );
 
-            return GaKVectorStorage<TScalar>.Create(
-                ScalarProcessor,
-                grade,
-                indexScalarDictionary
-            );
+            return ScalarProcessor.CreateKVector(grade, indexScalarDictionary);
         }
 
-        public GaKVectorStorage<TScalar> GetKVectorOfGrade(int grade, double minValue, double maxValue)
+        public IGasKVector<T> GetKVectorOfGrade(uint grade, double minValue, double maxValue)
         {
             var kvSpaceDimension = 
                 GaBasisUtils.KvSpaceDimension(VSpaceDimension, grade);
@@ -549,14 +507,10 @@ namespace GeometricAlgebraFulcrumLib.Processing.Random
                         _ => GetScalar(minValue, maxValue)
                     );
 
-            return GaKVectorStorage<TScalar>.Create(
-                ScalarProcessor,
-                grade,
-                indexScalarDictionary
-            );
+            return ScalarProcessor.CreateKVector(grade, indexScalarDictionary);
         }
 
-        public GaKVectorStorage<TScalar> GetSparseKVectorOfGrade(int grade, int termsCount)
+        public IGasKVector<T> GetSparseKVectorOfGrade(uint grade, int termsCount)
         {
             var kvSpaceDimension = 
                 (int) GaBasisUtils.KvSpaceDimension(VSpaceDimension, grade);
@@ -574,14 +528,10 @@ namespace GeometricAlgebraFulcrumLib.Processing.Random
                         _ => GetScalar()
                     );
 
-            return GaKVectorStorage<TScalar>.Create(
-                ScalarProcessor,
-                grade,
-                indexScalarDictionary
-            );
+            return ScalarProcessor.CreateKVector(grade, indexScalarDictionary);
         }
 
-        public GaKVectorStorage<TScalar> GetSparseKVectorOfGrade(int grade, int termsCount, double minValue, double maxValue)
+        public IGasKVector<T> GetSparseKVectorOfGrade(uint grade, int termsCount, double minValue, double maxValue)
         {
             var kvSpaceDimension = 
                 (int) GaBasisUtils.KvSpaceDimension(VSpaceDimension, grade);
@@ -599,14 +549,10 @@ namespace GeometricAlgebraFulcrumLib.Processing.Random
                         _ => GetScalar(minValue, maxValue)
                     );
 
-            return GaKVectorStorage<TScalar>.Create(
-                ScalarProcessor,
-                grade,
-                indexScalarDictionary
-            );
+            return ScalarProcessor.CreateKVector(grade, indexScalarDictionary);
         }
 
-        public GaMultivectorTermsStorage<TScalar> GetMultivector()
+        public IGasTermsMultivector<T> GetTermsMultivector()
         {
             var gaSpaceDimension = (int) GaSpaceDimension;
 
@@ -618,13 +564,10 @@ namespace GeometricAlgebraFulcrumLib.Processing.Random
                         _ => GetScalar()
                     );
 
-            return GaMultivectorTermsStorage<TScalar>.Create(
-                ScalarProcessor,
-                idScalarDictionary
-            );
+            return ScalarProcessor.CreateTermsMultivector(idScalarDictionary);
         }
         
-        public GaMultivectorTermsStorage<TScalar> GetMultivector(double minValue, double maxValue)
+        public IGasTermsMultivector<T> GetTermsMultivector(double minValue, double maxValue)
         {
             var gaSpaceDimension = (int) GaSpaceDimension;
 
@@ -636,13 +579,10 @@ namespace GeometricAlgebraFulcrumLib.Processing.Random
                         _ => GetScalar(minValue, maxValue)
                     );
 
-            return GaMultivectorTermsStorage<TScalar>.Create(
-                ScalarProcessor,
-                idScalarDictionary
-            );
+            return ScalarProcessor.CreateTermsMultivector(idScalarDictionary);
         }
         
-        public GaMultivectorTermsStorage<TScalar> GetSparseMultivector(int termsCount)
+        public IGasTermsMultivector<T> GetTermsMultivector(int termsCount)
         {
             var gaSpaceDimension = (int) GaSpaceDimension;
 
@@ -659,13 +599,10 @@ namespace GeometricAlgebraFulcrumLib.Processing.Random
                         _ => GetScalar()
                     );
 
-            return GaMultivectorTermsStorage<TScalar>.Create(
-                ScalarProcessor,
-                idScalarDictionary
-            );
+            return ScalarProcessor.CreateTermsMultivector(idScalarDictionary);
         }
         
-        public GaMultivectorTermsStorage<TScalar> GetSparseMultivector(int termsCount, double minValue, double maxValue)
+        public IGasTermsMultivector<T> GetTermsMultivector(int termsCount, double minValue, double maxValue)
         {
             var gaSpaceDimension = (int) GaSpaceDimension;
 
@@ -682,54 +619,45 @@ namespace GeometricAlgebraFulcrumLib.Processing.Random
                         _ => GetScalar(minValue, maxValue)
                     );
 
-            return GaMultivectorTermsStorage<TScalar>.Create(
-                ScalarProcessor,
-                idScalarDictionary
-            );
+            return ScalarProcessor.CreateTermsMultivector(idScalarDictionary);
         }
 
-        public GaMultivectorGradedStorage<TScalar> GetGradedMultivector()
+        public IGasGradedMultivector<T> GetGradedMultivector()
         {
             var gradeIndexScalarDictionary = 
-                new Dictionary<int, Dictionary<ulong, TScalar>>();
+                new Dictionary<uint, Dictionary<ulong, T>>();
 
-            for (var grade = 0; grade <= VSpaceDimension; grade++)
+            for (var grade = 0U; grade <= VSpaceDimension; grade++)
                 gradeIndexScalarDictionary.Add(
                     grade, 
                     GetKVectorIndexScalarDictionary(grade)
                 );
 
-            return GaMultivectorGradedStorage<TScalar>.Create(
-                ScalarProcessor,
-                gradeIndexScalarDictionary
-            );
+            return ScalarProcessor.CreateGradedMultivector(gradeIndexScalarDictionary);
         }
 
-        public GaMultivectorGradedStorage<TScalar> GetGradedMultivector(double minValue, double maxValue)
+        public IGasGradedMultivector<T> GetGradedMultivector(double minValue, double maxValue)
         {
             var gradeIndexScalarDictionary = 
-                new Dictionary<int, Dictionary<ulong, TScalar>>();
+                new Dictionary<uint, Dictionary<ulong, T>>();
 
-            for (var grade = 0; grade <= VSpaceDimension; grade++)
+            for (var grade = 0U; grade <= VSpaceDimension; grade++)
                 gradeIndexScalarDictionary.Add(
                     grade, 
                     GetKVectorIndexScalarDictionary(grade, minValue, maxValue)
                 );
 
-            return GaMultivectorGradedStorage<TScalar>.Create(
-                ScalarProcessor,
-                gradeIndexScalarDictionary
-            );
+            return ScalarProcessor.CreateGradedMultivector(gradeIndexScalarDictionary);
         }
 
-        public GaMultivectorGradedStorage<TScalar> GetSparseGradedMultivector(int termsCount)
+        public IGasGradedMultivector<T> GetGradedMultivector(int termsCount)
         {
             var gaSpaceDimension = (int) GaSpaceDimension;
 
             if (termsCount > gaSpaceDimension)
                 throw new ArgumentOutOfRangeException(nameof(termsCount));
 
-            var composer = new GaMultivectorGradedStorageComposer<TScalar>(ScalarProcessor);
+            var composer = new GaMultivectorGradedStorageComposer<T>(ScalarProcessor);
 
             var idList =
                 Enumerable
@@ -743,14 +671,14 @@ namespace GeometricAlgebraFulcrumLib.Processing.Random
             return composer.CreateMultivectorGradedStorage();
         }
 
-        public GaMultivectorGradedStorage<TScalar> GetSparseGradedMultivector(int termsCount, double minValue, double maxValue)
+        public IGasGradedMultivector<T> GetGradedMultivector(int termsCount, double minValue, double maxValue)
         {
             var gaSpaceDimension = (int) GaSpaceDimension;
 
             if (termsCount > gaSpaceDimension)
                 throw new ArgumentOutOfRangeException(nameof(termsCount));
 
-            var composer = new GaMultivectorGradedStorageComposer<TScalar>(ScalarProcessor);
+            var composer = new GaMultivectorGradedStorageComposer<T>(ScalarProcessor);
 
             var idList =
                 Enumerable
@@ -764,7 +692,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Random
             return composer.CreateMultivectorGradedStorage();
         }
 
-        public IEnumerable<GaVectorStorage<TScalar>> GetVectors(int count)
+        public IEnumerable<IGasVector<T>> GetVectors(int count)
         {
             while (count > 0)
             {
@@ -773,38 +701,39 @@ namespace GeometricAlgebraFulcrumLib.Processing.Random
             }
         }
 
-        public IGaKVectorStorage<TScalar> GetBlade(int grade)
+        public IGasKVector<T> GetBlade(uint grade)
         {
-            if (grade == 0)
+            if (grade == 0U)
                 return GetScalarTerm();
 
-            if (grade == 1)
+            if (grade == 1U)
                 return GetVector();
 
             if (grade == VSpaceDimension)
                 return GetKVectorTermByGradeIndex(grade, 0);
 
-            return ScalarProcessor.Op(GetVectors(grade));
+            return ScalarProcessor.Op(GetVectors((int) grade));
         }
 
-        public GaEuclideanSimpleRotor<TScalar> GetEuclideanSimpleRotor()
+        public GaEuclideanSimpleRotor<T> GetEuclideanSimpleRotor(IGaProcessor<T> processor)
         {
-            return GaEuclideanSimpleRotor<TScalar>.Create(
+            return GaEuclideanSimpleRotor<T>.Create(
+                processor,
                 GetVector(),
                 GetVector()
             );
         }
 
-        public IEnumerable<TScalar> GetScalars(int count)
+        public IEnumerable<T> GetScalars(int count)
         {
             return Enumerable
                 .Range(0, count)
                 .Select(_ => GetScalar());
         }
 
-        public TScalar[,] GetArray(int rowsCount, int columnsCount)
+        public T[,] GetArray(int rowsCount, int columnsCount)
         {
-            var array = new TScalar[rowsCount, columnsCount];
+            var array = new T[rowsCount, columnsCount];
 
             for (var i = 0; i < rowsCount; i++)
             for (var j = 0; j < columnsCount; j++)
@@ -813,9 +742,9 @@ namespace GeometricAlgebraFulcrumLib.Processing.Random
             return array;
         }
 
-        public TScalar[,] GetPermutationArray(int size)
+        public T[,] GetPermutationArray(int size)
         {
-            var array = new TScalar[size, size];
+            var array = new T[size, size];
 
             var indexList = Enumerable
                 .Range(0, size)

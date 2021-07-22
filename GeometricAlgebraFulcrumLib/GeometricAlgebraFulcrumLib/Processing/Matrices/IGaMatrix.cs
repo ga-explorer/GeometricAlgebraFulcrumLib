@@ -3,9 +3,9 @@ using GeometricAlgebraFulcrumLib.Processing.Scalars;
 
 namespace GeometricAlgebraFulcrumLib.Processing.Matrices
 {
-    public interface IGaMatrix<TScalar>
+    public interface IGaMatrix<T>
     {
-        IGaScalarProcessor<TScalar> ScalarProcessor { get; }
+        IGaScalarProcessor<T> ScalarProcessor { get; }
 
         int RowsCount { get; }
 
@@ -13,32 +13,32 @@ namespace GeometricAlgebraFulcrumLib.Processing.Matrices
 
         Tuple<int, int> GetSize();
 
-        TScalar this[int i, int j] { get; }
+        T this[int i, int j] { get; }
         
-        IGaMatrix<TScalar> Add(IGaMatrix<TScalar> array2);
+        IGaMatrix<T> Add(IGaMatrix<T> array2);
 
-        IGaMatrix<TScalar> Subtract(IGaMatrix<TScalar> array2);
+        IGaMatrix<T> Subtract(IGaMatrix<T> array2);
 
-        IGaMatrix<TScalar> LeftScale(TScalar scalar);
+        IGaMatrix<T> LeftScale(T scalar);
 
-        IGaMatrix<TScalar> RightScale(TScalar scalar);
+        IGaMatrix<T> RightScale(T scalar);
 
-        IGaMatrix<TScalar> Times(IGaMatrix<TScalar> array2);
+        IGaMatrix<T> Times(IGaMatrix<T> array2);
 
-        IGaMatrix<TScalar> Divide(TScalar scalar);
+        IGaMatrix<T> Divide(T scalar);
 
-        IGaMatrix<TScalar> MatrixProduct(IGaMatrix<TScalar> array2);
+        IGaMatrix<T> MatrixProduct(IGaMatrix<T> array2);
 
-        IGaMatrix<TScalar> GetCopy(Func<TScalar, TScalar> mappingFunc);
+        IGaMatrix<T> GetCopy(Func<T, T> mappingFunc);
 
-        IGaMatrix<TScalar> GetCopy(Func<int, int, TScalar, TScalar> mappingFunc);
+        IGaMatrix<T> GetCopy(Func<int, int, T, T> mappingFunc);
 
-        IGaMatrix<TScalar> GetNegative();
+        IGaMatrix<T> GetNegative();
 
-        IGaMatrix<TScalar> GetAdjoint();
+        IGaMatrix<T> GetAdjoint();
 
-        IGaMatrix<TScalar> GetInverse();
+        IGaMatrix<T> GetInverse();
 
-        IGaMatrix<TScalar> GetInverseAdjoint();
+        IGaMatrix<T> GetInverseAdjoint();
     }
 }

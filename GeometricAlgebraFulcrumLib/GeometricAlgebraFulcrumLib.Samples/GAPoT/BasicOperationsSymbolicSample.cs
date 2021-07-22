@@ -1,4 +1,5 @@
 ﻿using System;
+using GeometricAlgebraFulcrumLib.Processing.Products;
 using GeometricAlgebraFulcrumLib.Symbolic;
 
 namespace GeometricAlgebraFulcrumLib.Samples.GAPoT

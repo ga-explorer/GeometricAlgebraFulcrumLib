@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Text;
 using DataStructuresLib.Collections.Lists;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Terms;
+using GeometricAlgebraFulcrumLib.Algebra.Terms;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.Basis
 {
@@ -12,7 +11,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Basis
     {
         public ulong Id => 1UL << (int) Index;
 
-        public int Grade => 1;
+        public uint Grade => 1;
 
         public ulong Index { get; }
 
@@ -26,25 +25,18 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Basis
             => false;
 
 
-        public GaBasisVector(int index)
-        {
-            Debug.Assert(index >= 0);
-
-            Index = (ulong) index;
-        }
-
-        public GaBasisVector(ulong index)
+        internal GaBasisVector(ulong index)
         {
             Index = index;
         }
 
 
-        public Tuple<int, ulong> GetGradeIndex()
+        public Tuple<uint, ulong> GetGradeIndex()
         {
             return new(1, Index);
         }
 
-        public Tuple<ulong, int, ulong> GetIdGradeIndex()
+        public Tuple<ulong, uint, ulong> GetIdGradeIndex()
         {
             return new(1UL << (int) Index, 1, Index);
         }
@@ -55,33 +47,17 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Basis
         }
 
 
-        public void GetGradeIndex(out int grade, out ulong index)
+        public void GetGradeIndex(out uint grade, out ulong index)
         {
             grade = 1;
             index = Index;
         }
 
-        public void GetIdGradeIndex(out ulong id, out int grade, out ulong index)
+        public void GetIdGradeIndex(out ulong id, out uint grade, out ulong index)
         {
             id = 1UL << (int) Index;
             grade = 1;
             index = Index;
-        }
-
-
-        public GaBasisUniform ToUniformBasisBlade()
-        {
-            return new(1UL << (int) Index);
-        }
-
-        public GaBasisGraded ToGradedBasisBlade()
-        {
-            return new(1, Index);
-        }
-
-        public GaBasisFull ToFullBasisBlade()
-        {
-            return new(this);
         }
 
 

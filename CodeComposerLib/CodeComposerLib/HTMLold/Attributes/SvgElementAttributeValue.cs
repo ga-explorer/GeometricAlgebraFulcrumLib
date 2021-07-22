@@ -95,7 +95,7 @@ namespace CodeComposerLib.HTMLold.Attributes
 
         public override string ToString()
         {
-            return new StringBuilder().Append((string) AttributeInfo.Name)
+            return new StringBuilder().Append(AttributeInfo.Name)
                 .Append("=")
                 .Append(ValueText.ToHtmlSafeLiteral())
                 .ToString();

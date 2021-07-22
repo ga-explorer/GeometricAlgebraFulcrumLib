@@ -4,7 +4,7 @@
     public sealed class GaGbtMultivectorStorageGradedStack1<T>
         : GaGbtStack1, IGaGbtMultivectorStorageStack1<T>
     {
-        public static GaGbtMultivectorStorageGradedStack1<T> Create(int capacity, int treeDepth, IGaMultivectorStorage<T> multivectorStorage)
+        public static GaGbtMultivectorStorageGradedStack1<T> Create(int capacity, int treeDepth, IGasMultivector<T> multivectorStorage)
         {
             return new(capacity, treeDepth, multivectorStorage);
         }
@@ -14,7 +14,7 @@
 
         private ulong[] ActiveGradesBitMask1Array { get; }
 
-        public IGaMultivectorStorage<T> Storage { get; }
+        public IGasMultivector<T> Storage { get; }
 
         public T TosScalar { get; private set; }
 
@@ -39,7 +39,7 @@
         public ulong RootActiveGradesBitMask1 { get; }
 
 
-        private GaGbtMultivectorStorageGradedStack1(int capacity, int treeDepth, IGaMultivectorStorage<T> multivectorStorage)
+        private GaGbtMultivectorStorageGradedStack1(int capacity, int treeDepth, IGasMultivector<T> multivectorStorage)
             : base(capacity, treeDepth, 0ul)
         {
             Storage = multivectorStorage;
@@ -50,7 +50,7 @@
 
             RootActiveGradesBitMask0 = 
                 RootActiveGradesBitMask1 = 
-                    (1ul << (multivectorStorage.VSpaceDimension + 2)) - 1;
+                    (1ul << (int) (multivectorStorage.VSpaceDimension + 2)) - 1;
         }
         
 

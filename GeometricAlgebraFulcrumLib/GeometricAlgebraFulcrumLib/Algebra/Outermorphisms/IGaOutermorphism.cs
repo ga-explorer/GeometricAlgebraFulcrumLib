@@ -1,40 +1,36 @@
 ﻿using System.Collections.Generic;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
 using GeometricAlgebraFulcrumLib.Storage;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.Outermorphisms
 {
-    public interface IGaOutermorphism<T>
+    public interface IGaOutermorphism<T> 
+        : IGaSpace
     {
-        int DomainVSpaceDimension { get; }
-
-        ulong DomainGaSpaceDimension { get; }
-
-        IGaMultivectorProcessor<T> MultivectorProcessor { get; }
-
         IGaScalarProcessor<T> ScalarProcessor { get; }
-
-        IReadOnlyList<IGaVectorStorage<T>> GetMappedBasisVectors();
 
         /// <summary>
         /// det(T) = T[I] lcp BladeInverse(I), where I is the space pseudo-scalar
         /// </summary>
         /// <returns></returns>
-        T GetDeterminant();
+        IGasKVector<T> MappedPseudoScalar { get; }
 
-        IGaVectorStorage<T> MapBasisVector(int index);
+        IReadOnlyList<IGasVector<T>> GetMappedBasisVectors();
 
-        IGaVectorStorage<T> MapBasisVector(ulong index);
+        IGasVector<T> MapBasisVector(ulong index);
 
-        IGaKVectorStorage<T> MapBasisBlade(ulong id);
+        IGasBivector<T> MapBasisBivector(ulong index1, ulong index2);
 
-        IGaKVectorStorage<T> MapBasisBlade(int grade, ulong index);
+        IGasKVector<T> MapBasisBlade(ulong id);
 
-        IGaVectorStorage<T> MapVector(IGaVectorStorage<T> vector);
+        IGasKVector<T> MapBasisBlade(uint grade, ulong index);
 
-        IGaKVectorStorage<T> MapKVector(IGaKVectorStorage<T> kVector);
+        IGasVector<T> MapVector(IGasVector<T> vector);
 
-        IGaMultivectorStorage<T> MapMultivector(IGaMultivectorStorage<T> mv);
+        IGasBivector<T> MapBivector(IGasBivector<T> bivector);
+
+        IGasKVector<T> MapKVector(IGasKVector<T> kVector);
+
+        IGasMultivector<T> MapMultivector(IGasMultivector<T> mv);
     }
 }

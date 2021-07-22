@@ -2,20 +2,25 @@
 
 namespace GeometricAlgebraFulcrumLib.Geometry
 {
-    public interface IGaSubspace<T> : IGaGeometricElement<T>
+    public interface IGaSubspace<T> : 
+        IGaGeometry<T>
     {
-        IGaKVectorStorage<T> BladeStorage { get; }
+        uint SubspaceDimension { get; }
+
+        IGasKVector<T> Blade { get; }
+
+        IGasKVector<T> BladeInverse { get; }
 
         T BladeScalarProductSquared { get; }
 
-        IGaMultivectorStorage<T> Project(IGaMultivectorStorage<T> storage);
+        IGasMultivector<T> Project(IGasMultivector<T> mv);
 
-        IGaMultivectorStorage<T> Reflect(IGaMultivectorStorage<T> storage);
+        IGasMultivector<T> Reflect(IGasMultivector<T> mv);
 
-        IGaMultivectorStorage<T> Rotate(IGaMultivectorStorage<T> storage);
+        IGasMultivector<T> Rotate(IGasMultivector<T> mv);
 
-        IGaMultivectorStorage<T> VersorProduct(IGaMultivectorStorage<T> storage);
+        IGasMultivector<T> VersorProduct(IGasMultivector<T> mv);
 
-        IGaMultivectorStorage<T> Complement(IGaMultivectorStorage<T> vectorStorage);
+        IGasMultivector<T> Complement(IGasMultivector<T> mv);
     }
 }

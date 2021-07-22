@@ -9,16 +9,19 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Basis
 {
     public static class GaLookupTables
     {
-        internal static int MaxVSpaceDimension { get; } = 13;
+        internal static uint MaxVSpaceDimension { get; } 
+            = 13;
 
-        internal static int MaxGaSpaceDimension { get; } = 1 << MaxVSpaceDimension;
+        internal static uint MaxGaSpaceDimension { get; } 
+            = 1U << (int) MaxVSpaceDimension;
 
-        internal static int MaxBasisBladeId { get; } = (1 << MaxVSpaceDimension) - 1;
+        internal static uint MaxBasisBladeId { get; } 
+            = (1U << (int) MaxVSpaceDimension) - 1;
 
         /// <summary>
         /// ID to grade lookup table
         /// </summary>
-        internal static int[] IdToGradeTable;
+        internal static uint[] IdToGradeTable;
 
         /// <summary>
         /// ID to index lookup table
@@ -48,7 +51,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Basis
         /// <summary>
         /// (grade, index) to largest one-bit position ID lookup table
         /// </summary>
-        internal static List<int[]> GradeIndexToMaxBasisVectorIndexTable;
+        internal static List<uint[]> GradeIndexToMaxBasisVectorIndexTable;
 
         /// <summary>
         /// Is basis blades EGP Negative lookup tables
@@ -84,13 +87,13 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Basis
 
             for (var id1 = 0; id1 < MaxGaSpaceDimension; id1++)
             {
-                var bitArray = new BitArray(MaxGaSpaceDimension);
+                var bitArray = new BitArray((int) MaxGaSpaceDimension);
 
                 var n = (ulong)id1;
                 Parallel.For(
                     0, 
                     MaxGaSpaceDimension, 
-                    id2 => { bitArray[id2] = GaBasisUtils.ComputeIsNegativeEGp(n, (ulong)id2); }
+                    id2 => { bitArray[(int) id2] = GaBasisUtils.ComputeIsNegativeEGp(n, (ulong)id2); }
                 );
 
                 IsNegativeEgpLookupTables[id1] = bitArray;
@@ -103,13 +106,13 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Basis
 
             for (var index1 = 0; index1 < MaxVSpaceDimension; index1++)
             {
-                var bitArray = new BitArray(MaxGaSpaceDimension);
+                var bitArray = new BitArray((int) MaxGaSpaceDimension);
 
                 var id1 = 1UL << index1;
                 Parallel.For(
                     0,
                     MaxGaSpaceDimension,
-                    id2 => { bitArray[id2] = GaBasisUtils.ComputeIsNegativeEGp(id1, (ulong)id2); }
+                    id2 => { bitArray[(int) id2] = GaBasisUtils.ComputeIsNegativeEGp(id1, (ulong)id2); }
                 );
 
                 IsNegativeVectorEgpLookupTables[index1] = bitArray;
@@ -121,17 +124,17 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Basis
             var gradeCount = new ulong[MaxVSpaceDimension + 1];
 
             //Initialize all tables
-            IdToGradeTable = new int[MaxGaSpaceDimension];
+            IdToGradeTable = new uint[MaxGaSpaceDimension];
             IdToIndexTable = new ulong[MaxGaSpaceDimension];
-            IsNegativeReverseTable = new BitArray(MaxGaSpaceDimension);
-            IsNegativeGradeInvTable = new BitArray(MaxGaSpaceDimension);
-            IsNegativeCliffConjTable = new BitArray(MaxGaSpaceDimension);
-            GradeIndexToIdTable = new List<ulong[]>(MaxVSpaceDimension);
-            GradeIndexToMaxBasisVectorIndexTable = new List<int[]>(MaxVSpaceDimension);
+            IsNegativeReverseTable = new BitArray((int) MaxGaSpaceDimension);
+            IsNegativeGradeInvTable = new BitArray((int) MaxGaSpaceDimension);
+            IsNegativeCliffConjTable = new BitArray((int) MaxGaSpaceDimension);
+            GradeIndexToIdTable = new List<ulong[]>((int) MaxVSpaceDimension);
+            GradeIndexToMaxBasisVectorIndexTable = new List<uint[]>((int) MaxVSpaceDimension);
             
             for (var id = 0; id <= MaxBasisBladeId; id++)
             {
-                var grade = id.CountOnes();
+                var grade = (uint) id.CountOnes();
 
                 IdToGradeTable[id] = grade;
 
@@ -170,39 +173,39 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Basis
                     );
 
                     GradeIndexToMaxBasisVectorIndexTable.Add(
-                        new int[MaxVSpaceDimension.GetBinomialCoefficient(grade)]
+                        new uint[MaxVSpaceDimension.GetBinomialCoefficient(grade)]
                     );
                 }
 
-                GradeIndexToIdTable[grade][index] = (ulong)id;
-                GradeIndexToMaxBasisVectorIndexTable[grade][index] = id.LastOneBitPosition();
+                GradeIndexToIdTable[(int) grade][index] = (ulong)id;
+                GradeIndexToMaxBasisVectorIndexTable[(int) grade][index] = (uint) id.LastOneBitPosition();
             }
         }
 
         private static void ComputeVectorKVectorOpIndexLookupTables()
         {
-            const int maxDim = 15;
-            const int minVSpaceDim = 12;
+            const uint maxDim = 15U;
+            const uint minVSpaceDim = 12U;
 
             var maxVSpaceDim =
-                GaBasisUtils.MaxVSpaceDimension < maxDim
-                    ? GaBasisUtils.MaxVSpaceDimension
+                GaSpaceUtils.MaxVSpaceDimension < maxDim
+                    ? GaSpaceUtils.MaxVSpaceDimension
                     : maxDim;
 
             //var maxGaSpaceDim = (1 << maxVSpaceDim);
 
             VectorKVectorOpIndexLookupTables = new int[maxVSpaceDim - minVSpaceDim + 1][][][];
 
-            for (var vSpaceDim = minVSpaceDim; vSpaceDim <= maxVSpaceDim; vSpaceDim++)
+            for (var vSpaceDimension = minVSpaceDim; vSpaceDimension <= maxVSpaceDim; vSpaceDimension++)
             {
-                var vectorKVectorOpIndexLookupTable = new int[vSpaceDim - 1][][];
+                var vectorKVectorOpIndexLookupTable = new int[vSpaceDimension - 1][][];
 
-                for (var grade = 1; grade < vSpaceDim; grade++)
+                for (var grade = 1U; grade < vSpaceDimension; grade++)
                 {
-                    var lookupTable = new int[vSpaceDim.GetBinomialCoefficient(grade + 1)][];
+                    var lookupTable = new int[vSpaceDimension.GetBinomialCoefficient(grade + 1)][];
 
                     var resultIdsList =
-                        GaBasisUtils.BasisBladeIDsOfGrade(vSpaceDim, grade + 1);
+                        GaBasisUtils.BasisBladeIDsOfGrade(vSpaceDimension, grade + 1);
 
                     var lookupTableIndex = 0;
                     foreach (var id in resultIdsList)
@@ -228,7 +231,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Basis
                     vectorKVectorOpIndexLookupTable[grade - 1] = lookupTable;
                 }
 
-                VectorKVectorOpIndexLookupTables[vSpaceDim - minVSpaceDim] = vectorKVectorOpIndexLookupTable;
+                VectorKVectorOpIndexLookupTables[vSpaceDimension - minVSpaceDim] = vectorKVectorOpIndexLookupTable;
             }
         }
     }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors;
+using GeometricAlgebraFulcrumLib.Geometry.Multivectors;
+using GeometricAlgebraFulcrumLib.Processing.Products;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
 using GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Multivectors;
 
@@ -9,9 +10,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Outermorphism
     public sealed class GaGbtKVectorOutermorphismStack<T>
         : GaGbtStack1
     {
-        public static GaGbtKVectorOutermorphismStack<T> Create(IReadOnlyList<IGaVectorStorage<T>> basisVectorsMappingsList, GaMultivector<T> mv)
+        public static GaGbtKVectorOutermorphismStack<T> Create(IReadOnlyList<IGasVector<T>> basisVectorsMappingsList, GaMultivector<T> mv)
         {
-            var treeDepth = Math.Max(1, mv.Storage.VSpaceDimension);
+            var treeDepth = (int) Math.Max(1, mv.Storage.VSpaceDimension);
             var capacity = treeDepth + 1;
 
             return new GaGbtKVectorOutermorphismStack<T>(
@@ -20,9 +21,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Outermorphism
             );
         }
 
-        public static GaGbtKVectorOutermorphismStack<T> Create(IReadOnlyList<IGaVectorStorage<T>> basisVectorsMappingsList, IGaMultivectorStorage<T> mv)
+        public static GaGbtKVectorOutermorphismStack<T> Create(IReadOnlyList<IGasVector<T>> basisVectorsMappingsList, IGasMultivector<T> mv)
         {
-            var treeDepth = Math.Max(1, mv.VSpaceDimension);
+            var treeDepth = (int) Math.Max(1, mv.VSpaceDimension);
             var capacity = treeDepth + 1;
 
             return new GaGbtKVectorOutermorphismStack<T>(
@@ -32,49 +33,49 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Outermorphism
         }
 
 
-        private IGaKVectorStorage<T>[] KVectorArray { get; }
+        private IGasKVector<T>[] KVectorArray { get; }
 
         private IGaGbtMultivectorStorageStack1<T> MultivectorStack { get; }
 
         public IGaScalarProcessor<T> ScalarProcessor 
             => MultivectorStack.Storage.ScalarProcessor;
 
-        public IReadOnlyList<IGaVectorStorage<T>> BasisVectorsMappingsList { get; }
+        public IReadOnlyList<IGasVector<T>> BasisVectorsMappingsList { get; }
 
-        public IGaMultivectorStorage<T> Storage 
+        public IGasMultivector<T> Storage 
             => MultivectorStack.Storage;
 
-        public IGaKVectorStorage<T> TosKVector { get; private set; }
+        public IGasKVector<T> TosKVector { get; private set; }
 
         public T TosValue 
             => MultivectorStack.TosScalar;
 
-        public IGaKVectorStorage<T> RootKVector { get; }
+        public IGasKVector<T> RootKVector { get; }
 
 
-        private GaGbtKVectorOutermorphismStack(IReadOnlyList<IGaVectorStorage<T>> basisVectorsMappingsList, IGaGbtMultivectorStorageStack1<T> multivectorStack)
+        private GaGbtKVectorOutermorphismStack(IReadOnlyList<IGasVector<T>> basisVectorsMappingsList, IGaGbtMultivectorStorageStack1<T> multivectorStack)
             : base(multivectorStack.Capacity, multivectorStack.RootTreeDepth, multivectorStack.RootId)
         {
-            KVectorArray = new IGaKVectorStorage<T>[Capacity];
+            KVectorArray = new IGasKVector<T>[Capacity];
 
             BasisVectorsMappingsList = basisVectorsMappingsList;
             MultivectorStack = multivectorStack;
 
-            RootKVector = GaScalarTermStorage<T>.CreateBasisScalar(ScalarProcessor);
+            RootKVector = ScalarProcessor.CreateBasisScalar();
         }
 
 
-        public IGaKVectorStorage<T> GetTosChildKVector0()
+        public IGasKVector<T> GetTosChildKVector0()
         {
             return TosKVector;
         }
 
-        public IGaKVectorStorage<T> GetTosChildKVector1()
+        public IGasKVector<T> GetTosChildKVector1()
         {
             var basisVector = BasisVectorsMappingsList[TosTreeDepth - 1];
 
             var storage = TosKVector.Grade == 0
-                ? (IGaKVectorStorage<T>)basisVector
+                ? basisVector
                 : basisVector.Op(TosKVector);
 
             return storage;
@@ -170,7 +171,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Outermorphism
         //    KVectorArray[TosIndex] = GetTosChildKVector1();
         //}
 
-        public IEnumerable<Tuple<T, IGaKVectorStorage<T>>> TraverseForScaledKVectors()
+        public IEnumerable<Tuple<T, IGasKVector<T>>> TraverseForScaledKVectors()
         {
             //GaNumVectorKVectorOpUtils.SetActiveVSpaceDimension(Multivector.VSpaceDimension);
 
@@ -187,7 +188,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Outermorphism
                 if (TosIsLeaf)
                 {
                     if (!ScalarProcessor.IsZero(TosValue))
-                        yield return new Tuple<T, IGaKVectorStorage<T>>(TosValue, TosKVector);
+                        yield return new Tuple<T, IGasKVector<T>>(TosValue, TosKVector);
 
                     continue;
                 }
@@ -206,7 +207,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Outermorphism
             //Console.WriteLine(@"Max Stack Size: " + maxStackSizeCounter.ToString("###,###,###,###,###,##0"));        }
         }
 
-        public IEnumerable<Tuple<ulong, IGaKVectorStorage<T>>> TraverseForIdKVectors()
+        public IEnumerable<Tuple<ulong, IGasKVector<T>>> TraverseForIdKVectors()
         {
             //GaNumVectorKVectorOpUtils.SetActiveVSpaceDimension(Multivector.VSpaceDimension);
 
@@ -218,7 +219,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Outermorphism
 
                 if (TosIsLeaf)
                 {
-                    yield return new Tuple<ulong, IGaKVectorStorage<T>>(TosId, TosKVector);
+                    yield return new Tuple<ulong, IGasKVector<T>>(TosId, TosKVector);
 
                     continue;
                 }

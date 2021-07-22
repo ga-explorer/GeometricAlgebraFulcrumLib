@@ -1,10 +1,12 @@
-﻿using GeometricAlgebraFulcrumLib.Storage;
+﻿using GeometricAlgebraFulcrumLib.Algebra.Outermorphisms;
+using GeometricAlgebraFulcrumLib.Storage;
 
 namespace GeometricAlgebraFulcrumLib.Geometry
 {
-    public interface IGaReflector<T> : IGaVectorsLinearMap<T>
+    public interface IGaReflector<T> : 
+        IGaOutermorphism<T>
     {
-        IGaKVectorStorage<T> BladeStorage { get; }
+        IGasKVector<T> BladeStorage { get; }
 
         T BladeNormSquared { get; }
     }

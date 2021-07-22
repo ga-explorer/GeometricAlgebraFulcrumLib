@@ -1,6 +1,6 @@
 ﻿using GeometricAlgebraFulcrumLib.Symbolic.Mathematica.ExprFactory;
 using GeometricAlgebraFulcrumLib.Symbolic.Processors;
-using GeometricAlgebraFulcrumLib.Text;
+using GeometricAlgebraFulcrumLib.TextComposers;
 using Wolfram.NETLink;
 
 namespace GeometricAlgebraFulcrumLib.Symbolic.Text

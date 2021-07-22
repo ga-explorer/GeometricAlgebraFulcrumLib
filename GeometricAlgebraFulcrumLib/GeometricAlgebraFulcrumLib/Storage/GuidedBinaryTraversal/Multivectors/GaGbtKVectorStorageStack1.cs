@@ -7,7 +7,7 @@
     public sealed class GaGbtKVectorStorageStack1<T>
         : GaGbtStack1, IGaGbtMultivectorStorageStack1<T>
     {
-        public static GaGbtKVectorStorageStack1<T> Create(int capacity, int treeDepth, IGaKVectorStorage<T> multivectorStorage)
+        public static GaGbtKVectorStorageStack1<T> Create(int capacity, int treeDepth, IGasKVector<T> multivectorStorage)
         {
             return new(capacity, treeDepth, multivectorStorage);
         }
@@ -18,9 +18,9 @@
         private ulong[] ActiveGradesBitMask1Array { get; }
 
 
-        public IGaKVectorStorage<T> KVectorStorage { get; }
+        public IGasKVector<T> KVectorStorage { get; }
 
-        public IGaMultivectorStorage<T> Storage 
+        public IGasMultivector<T> Storage 
             => KVectorStorage;
 
         public T TosScalar { get; private set; }
@@ -47,18 +47,18 @@
         public ulong RootActiveGradesBitMask1 { get; }
 
 
-        private GaGbtKVectorStorageStack1(int capacity, int treeDepth, IGaKVectorStorage<T> multivectorStorage)
+        private GaGbtKVectorStorageStack1(int capacity, int treeDepth, IGasKVector<T> multivectorStorage)
             : base(capacity, treeDepth, 0ul)
         {
             KVectorStorage = multivectorStorage;
-            ActiveGradesBitPattern = 1UL << multivectorStorage.Grade;
+            ActiveGradesBitPattern = 1UL << (int) multivectorStorage.Grade;
 
             ActiveGradesBitMask0Array = new ulong[capacity];
             ActiveGradesBitMask1Array = new ulong[capacity];
 
             RootActiveGradesBitMask0 = 
                 RootActiveGradesBitMask1 = 
-                    (1ul << (multivectorStorage.VSpaceDimension + 2)) - 1;
+                    (1ul << (int) (multivectorStorage.VSpaceDimension + 2)) - 1;
         }
         
 

@@ -4,20 +4,20 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using DataStructuresLib.Extensions;
 using GeometricAlgebraFulcrumLib.Algebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Terms;
+using GeometricAlgebraFulcrumLib.Algebra.Terms;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
 
 namespace GeometricAlgebraFulcrumLib.Storage.Composers
 {
-    public sealed class GaMultivectorTermsStorageComposer<TScalar>
-        : GaMultivectorStorageComposerBase<TScalar>
+    public sealed class GaMultivectorTermsStorageComposer<T>
+        : GaMultivectorStorageComposerBase<T>
     {
-        public Dictionary<ulong, TScalar> IdScalarsDictionary { get; private set; }
+        public Dictionary<ulong, T> IdScalarsDictionary { get; private set; }
 
         public int Count 
             => IdScalarsDictionary.Count;
 
-        public override TScalar this[ulong id]
+        public override T this[ulong id]
         {
             get => IdScalarsDictionary.TryGetValue(id, out var scalar)
                 ? scalar 
@@ -32,7 +32,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             }
         }
 
-        public override TScalar this[int grade, ulong index]
+        public override T this[uint grade, ulong index]
         {
             get
             {
@@ -55,13 +55,13 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         }
 
 
-        internal GaMultivectorTermsStorageComposer([NotNull] IGaScalarProcessor<TScalar> scalarProcessor)
+        internal GaMultivectorTermsStorageComposer([NotNull] IGaScalarProcessor<T> scalarProcessor)
             : base(scalarProcessor)
         {
-            IdScalarsDictionary = new Dictionary<ulong, TScalar>();
+            IdScalarsDictionary = new Dictionary<ulong, T>();
         }
 
-        internal GaMultivectorTermsStorageComposer([NotNull] IGaScalarProcessor<TScalar> scalarProcessor, [NotNull] Dictionary<ulong, TScalar> idScalarDictionary)
+        internal GaMultivectorTermsStorageComposer([NotNull] IGaScalarProcessor<T> scalarProcessor, [NotNull] Dictionary<ulong, T> idScalarDictionary)
             : base(scalarProcessor)
         {
             IdScalarsDictionary = idScalarDictionary;
@@ -73,7 +73,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return IdScalarsDictionary.Count == 0;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> Clear()
+        public override GaMultivectorStorageComposerBase<T> Clear()
         {
             IdScalarsDictionary.Clear();
 
@@ -85,13 +85,13 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return IdScalarsDictionary.ContainsKey(id);
         }
 
-        public bool TryGetScalar(ulong id, out TScalar scalar)
+        public bool TryGetScalar(ulong id, out T scalar)
         {
             return IdScalarsDictionary.TryGetValue(id, out scalar);
         }
 
 
-        public GaMultivectorTermsStorageComposer<TScalar> AddKVectorTerms(int grade, IEnumerable<KeyValuePair<ulong, TScalar>> indexScalarPairs)
+        public GaMultivectorTermsStorageComposer<T> AddKVectorTerms(uint grade, IEnumerable<KeyValuePair<ulong, T>> indexScalarPairs)
         {
             foreach (var (index, scalar) in indexScalarPairs)
                 AddTerm(grade, index, scalar);
@@ -99,7 +99,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public GaMultivectorTermsStorageComposer<TScalar> AddKVectorTerms(int grade, IEnumerable<Tuple<ulong, TScalar>> indexScalarTuples)
+        public GaMultivectorTermsStorageComposer<T> AddKVectorTerms(uint grade, IEnumerable<Tuple<ulong, T>> indexScalarTuples)
         {
             foreach (var (index, scalar) in indexScalarTuples)
                 AddTerm(grade, index, scalar);
@@ -108,7 +108,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         }
 
 
-        public GaMultivectorTermsStorageComposer<TScalar> SubtractKVectorTerms(int grade, IEnumerable<KeyValuePair<ulong, TScalar>> indexScalarPairs)
+        public GaMultivectorTermsStorageComposer<T> SubtractKVectorTerms(uint grade, IEnumerable<KeyValuePair<ulong, T>> indexScalarPairs)
         {
             foreach (var (index, scalar) in indexScalarPairs)
                 SubtractTerm(grade, index, scalar);
@@ -116,7 +116,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public GaMultivectorTermsStorageComposer<TScalar> SubtractKVectorTerms(int grade, IEnumerable<Tuple<ulong, TScalar>> indexScalarTuples)
+        public GaMultivectorTermsStorageComposer<T> SubtractKVectorTerms(uint grade, IEnumerable<Tuple<ulong, T>> indexScalarTuples)
         {
             foreach (var (index, scalar) in indexScalarTuples)
                 SubtractTerm(grade, index, scalar);
@@ -125,90 +125,90 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         }
 
 
-        public override IGaMultivectorStorage<TScalar> GetCompactStorage()
+        public override IGasMultivector<T> GetCompactMultivector()
         {
-            var termsCount = IdScalarsDictionary.Count;
+            return GetCompactTermsStorage();
+        }
+
+        public override IGasTermsMultivector<T> GetCompactTermsStorage()
+        {
+            var termsCount = 
+                IdScalarsDictionary.Count;
 
             if (termsCount == 0)
-                return GaScalarTermStorage<TScalar>.CreateZero(ScalarProcessor);
+                return ScalarProcessor.CreateZeroScalar();
 
             if (termsCount > 1) 
                 return CreateMultivectorTermsStorage();
 
-            var (id, scalar) = IdScalarsDictionary.First();
+            var (id, scalar) = 
+                IdScalarsDictionary.First();
 
             return id == 0UL
-                ? GaScalarTermStorage<TScalar>.Create(ScalarProcessor, scalar)
-                : GaKVectorTermStorage<TScalar>.Create(ScalarProcessor, id, scalar);
+                ? ScalarProcessor.CreateScalar(scalar)
+                : ScalarProcessor.CreateKVector(id, scalar);
         }
 
-        public override IGaMultivectorGradedStorage<TScalar> GetCompactGradedStorage()
+        public override IGasGradedMultivector<T> GetCompactGradedMultivector()
         {
-            var composer = new GaMultivectorGradedStorageComposer<TScalar>(ScalarProcessor);
+            var composer = new GaMultivectorGradedStorageComposer<T>(ScalarProcessor);
 
             composer.SetTerms(IdScalarsDictionary);
 
-            return composer.GetCompactGradedStorage();
+            return composer.GetCompactGradedMultivector();
         }
 
-        public override GaMultivectorStorageBase<TScalar> GetMultivectorStorage()
+        public override IGasMultivector<T> GetMultivectorStorage()
         {
             return CreateMultivectorTermsStorage();
         }
 
-        public GaMultivectorTermsStorage<TScalar> CreateMultivectorTermsStorage()
+        public IGasTermsMultivector<T> CreateMultivectorTermsStorage()
         {
-            return GaMultivectorTermsStorage<TScalar>.Create(
-                ScalarProcessor, 
-                IdScalarsDictionary
+            return ScalarProcessor.CreateTermsMultivector(IdScalarsDictionary);
+        }
+
+
+        public override IGasMultivector<T> GetMultivectorCopy()
+        {
+            return GetTermsMultivectorCopy();
+        }
+
+        public override IGasMultivector<T> GetMultivectorCopy(Func<T, T> scalarMapping)
+        {
+            return ScalarProcessor.CreateTermsMultivector(IdScalarsDictionary.CopyToDictionary(scalarMapping)
             );
         }
 
-
-        public override IGaMultivectorStorage<TScalar> GetStorageCopy()
+        public override IGasGradedMultivector<T> GetGradedMultivectorCopy()
         {
-            return GetMultivectorTermsStorageCopy();
-        }
-
-        public override IGaMultivectorStorage<TScalar> GetStorageCopy(Func<TScalar, TScalar> scalarMapping)
-        {
-            return GaMultivectorTermsStorage<TScalar>.Create(
-                ScalarProcessor, 
-                IdScalarsDictionary.CopyToDictionary(scalarMapping)
-            );
-        }
-
-        public override GaMultivectorGradedStorage<TScalar> GetMultivectorGradedStorageCopy()
-        {
-            var composer = new GaMultivectorGradedStorageComposer<TScalar>(ScalarProcessor);
+            var composer = new GaMultivectorGradedStorageComposer<T>(ScalarProcessor);
 
             composer.SetTerms(IdScalarsDictionary);
 
             return composer.CreateMultivectorGradedStorage();
         }
 
-        public override GaMultivectorTermsStorage<TScalar> GetMultivectorTermsStorageCopy()
+        public override IGasTermsMultivector<T> GetTermsMultivectorCopy()
         {
-            return GaMultivectorTermsStorage<TScalar>.Create(
+            return ScalarProcessor.CreateTermsMultivector(IdScalarsDictionary.CopyToDictionary()
+            );
+        }
+
+        public override GasTreeMultivector<T> GetTreeMultivectorCopy()
+        {
+            return GaStorageFactory.CreateTreeMultivector(
                 ScalarProcessor, 
                 IdScalarsDictionary.CopyToDictionary()
             );
         }
 
-        public override GaMultivectorTreeStorage<TScalar> GetMultivectorTreeStorageCopy()
+        public override IGasScalar<T> GetScalarStorage()
         {
-            return GaMultivectorTreeStorage<TScalar>.Create(
-                ScalarProcessor, 
-                IdScalarsDictionary.CopyToDictionary()
-            );
+            return ScalarProcessor.CreateScalar(this[0]);
         }
 
-        public override GaScalarTermStorage<TScalar> GetScalarStorage()
-        {
-            return GaScalarTermStorage<TScalar>.Create(ScalarProcessor, this[0]);
-        }
-
-        public override GaVectorStorage<TScalar> GetVectorStorageCopy()
+        public override IGasVector<T> GetVectorStorageCopy()
         {
             var indexScalarsDictionary =
                 IdScalarsDictionary
@@ -218,10 +218,10 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
                         pair => pair.Value
                     );
 
-            return GaVectorStorage<TScalar>.Create(ScalarProcessor, indexScalarsDictionary);
+            return ScalarProcessor.CreateVector(indexScalarsDictionary);
         }
 
-        public override GaBivectorStorage<TScalar> GetBivectorStorageCopy(int grade)
+        public override IGasBivector<T> GetBivectorStorageCopy(uint grade)
         {
             var indexScalarsDictionary =
                 IdScalarsDictionary
@@ -231,10 +231,10 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
                         pair => pair.Value
                     );
 
-            return GaBivectorStorage<TScalar>.Create(ScalarProcessor, indexScalarsDictionary);
+            return ScalarProcessor.CreateBivector(indexScalarsDictionary);
         }
 
-        public override GaKVectorStorage<TScalar> GetKVectorStorageCopy(int grade)
+        public override IGasKVector<T> GetKVectorStorageCopy(uint grade)
         {
             var indexScalarsDictionary =
                 IdScalarsDictionary
@@ -244,15 +244,13 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
                         pair => pair.Value
                     );
 
-            return GaKVectorStorage<TScalar>.Create(
-                ScalarProcessor, 
-                grade, 
+            return ScalarProcessor.CreateKVector(grade, 
                 indexScalarsDictionary
             );
         }
 
 
-        public override GaMultivectorStorageComposerBase<TScalar> SetTerm(GaTerm<TScalar> term)
+        public override GaMultivectorStorageComposerBase<T> SetTerm(GaTerm<T> term)
         {
             this[term.BasisBlade.Id] = term.Scalar;
 
@@ -260,7 +258,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         }
 
 
-        public override GaMultivectorStorageComposerBase<TScalar> SetTerms(IEnumerable<GaTerm<TScalar>> termsList)
+        public override GaMultivectorStorageComposerBase<T> SetTerms(IEnumerable<GaTerm<T>> termsList)
         {
             foreach (var term in termsList)
                 this[term.BasisBlade.Id] = term.Scalar;
@@ -269,7 +267,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         }
 
 
-        public override GaMultivectorStorageComposerBase<TScalar> SetTermsToNegative()
+        public override GaMultivectorStorageComposerBase<T> SetTermsToNegative()
         {
             foreach (var (id, scalar) in IdScalarsDictionary)
                 IdScalarsDictionary[id] = ScalarProcessor.Negative(scalar);
@@ -277,7 +275,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> SetTermsToNegative(IEnumerable<ulong> idsList)
+        public override GaMultivectorStorageComposerBase<T> SetTermsToNegative(IEnumerable<ulong> idsList)
         {
             foreach (var id in idsList)
                 if (IdScalarsDictionary.TryGetValue(id, out var scalar))
@@ -286,7 +284,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> SetTermsToNegative(IEnumerable<Tuple<int, ulong>> indicesList)
+        public override GaMultivectorStorageComposerBase<T> SetTermsToNegative(IEnumerable<Tuple<uint, ulong>> indicesList)
         {
             foreach (var (grade, index) in indicesList)
             {
@@ -300,7 +298,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         }
 
 
-        public override GaMultivectorStorageComposerBase<TScalar> SetComputedTerms(IEnumerable<ulong> idsList, Func<ulong, TScalar> mappingFunc)
+        public override GaMultivectorStorageComposerBase<T> SetComputedTerms(IEnumerable<ulong> idsList, Func<ulong, T> mappingFunc)
         {
             foreach (var id in idsList)
                 this[id] = mappingFunc(id);
@@ -308,7 +306,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> SetComputedTerms(IEnumerable<Tuple<int, ulong>> idsList, Func<ulong, TScalar> mappingFunc)
+        public override GaMultivectorStorageComposerBase<T> SetComputedTerms(IEnumerable<Tuple<uint, ulong>> idsList, Func<ulong, T> mappingFunc)
         {
             foreach (var (grade, index) in idsList)
             {
@@ -320,7 +318,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> SetComputedTerms(IEnumerable<ulong> idsList, Func<int, ulong, TScalar> mappingFunc)
+        public override GaMultivectorStorageComposerBase<T> SetComputedTerms(IEnumerable<ulong> idsList, Func<uint, ulong, T> mappingFunc)
         {
             foreach (var id in idsList)
             {
@@ -332,7 +330,8 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> SetComputedTerms(IEnumerable<Tuple<int, ulong>> idsList, Func<int, ulong, TScalar> mappingFunc)
+        public override GaMultivectorStorageComposerBase<T> SetComputedTerms(
+            IEnumerable<Tuple<uint, ulong>> idsList, Func<uint, ulong, T> mappingFunc)
         {
             foreach (var (grade, index) in idsList)
             {
@@ -344,7 +343,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> SetComputedTerms(IEnumerable<ulong> idsList, Func<ulong, TScalar, TScalar> mappingFunc)
+        public override GaMultivectorStorageComposerBase<T> SetComputedTerms(IEnumerable<ulong> idsList, Func<ulong, T, T> mappingFunc)
         {
             foreach (var id in idsList)
             {
@@ -356,7 +355,8 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> SetComputedTerms(IEnumerable<Tuple<int, ulong>> idsList, Func<ulong, TScalar, TScalar> mappingFunc)
+        public override GaMultivectorStorageComposerBase<T> SetComputedTerms(
+            IEnumerable<Tuple<uint, ulong>> idsList, Func<ulong, T, T> mappingFunc)
         {
             foreach (var (grade, index) in idsList)
             {
@@ -369,7 +369,8 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> SetComputedTerms(IEnumerable<ulong> idsList, Func<int, ulong, TScalar, TScalar> mappingFunc)
+        public override GaMultivectorStorageComposerBase<T> SetComputedTerms(IEnumerable<ulong> idsList,
+            Func<uint, ulong, T, T> mappingFunc)
         {
             foreach (var id in idsList)
             {
@@ -382,7 +383,8 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> SetComputedTerms(IEnumerable<Tuple<int, ulong>> idsList, Func<int, ulong, TScalar, TScalar> mappingFunc)
+        public override GaMultivectorStorageComposerBase<T> SetComputedTerms(
+            IEnumerable<Tuple<uint, ulong>> idsList, Func<uint, ulong, T, T> mappingFunc)
         {
             foreach (var (grade, index) in idsList)
             {
@@ -396,7 +398,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         }
 
 
-        public override GaMultivectorStorageComposerBase<TScalar> LeftScaleTerms(TScalar scalingFactor)
+        public override GaMultivectorStorageComposerBase<T> LeftScaleTerms(T scalingFactor)
         {
             foreach (var (id, scalar) in IdScalarsDictionary)
                 SetTerm(id, ScalarProcessor.Times(scalingFactor, scalar));
@@ -404,7 +406,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> LeftScaleTerms(IEnumerable<ulong> indexList, TScalar scalingFactor)
+        public override GaMultivectorStorageComposerBase<T> LeftScaleTerms(IEnumerable<ulong> indexList, T scalingFactor)
         {
             foreach (var id in indexList)
                 SetTerm(id, ScalarProcessor.Times(scalingFactor, this[id]));
@@ -412,7 +414,8 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> LeftScaleTerms(IEnumerable<Tuple<int, ulong>> indexList, TScalar scalingFactor)
+        public override GaMultivectorStorageComposerBase<T> LeftScaleTerms(
+            IEnumerable<Tuple<uint, ulong>> indexList, T scalingFactor)
         {
             foreach (var (grade, index) in indexList)
             {
@@ -425,7 +428,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> RightScaleTerms(TScalar scalingFactor)
+        public override GaMultivectorStorageComposerBase<T> RightScaleTerms(T scalingFactor)
         {
             foreach (var (id, scalar) in IdScalarsDictionary)
                 SetTerm(id, ScalarProcessor.Times(scalar, scalingFactor));
@@ -433,7 +436,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> RightScaleTerms(IEnumerable<ulong> indexList, TScalar scalingFactor)
+        public override GaMultivectorStorageComposerBase<T> RightScaleTerms(IEnumerable<ulong> indexList, T scalingFactor)
         {
             foreach (var id in indexList)
                 SetTerm(id, ScalarProcessor.Times(this[id], scalingFactor));
@@ -441,7 +444,8 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> RightScaleTerms(IEnumerable<Tuple<int, ulong>> indexList, TScalar scalingFactor)
+        public override GaMultivectorStorageComposerBase<T> RightScaleTerms(
+            IEnumerable<Tuple<uint, ulong>> indexList, T scalingFactor)
         {
             foreach (var (grade, index) in indexList)
             {
@@ -455,7 +459,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         }
 
 
-        public override GaMultivectorStorageComposerBase<TScalar> SetLeftScaledTerms(TScalar scalingFactor, IEnumerable<GaTerm<TScalar>> termsList)
+        public override GaMultivectorStorageComposerBase<T> SetLeftScaledTerms(T scalingFactor, IEnumerable<GaTerm<T>> termsList)
         {
             foreach (var term in termsList)
                 this[term.BasisBlade.Id] = ScalarProcessor.Times(scalingFactor, term.Scalar);
@@ -463,7 +467,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> SetRightScaledTerms(TScalar scalingFactor, IEnumerable<GaTerm<TScalar>> termsList)
+        public override GaMultivectorStorageComposerBase<T> SetRightScaledTerms(T scalingFactor, IEnumerable<GaTerm<T>> termsList)
         {
             foreach (var term in termsList)
                 this[term.BasisBlade.Id] = ScalarProcessor.Times(term.Scalar, scalingFactor);
@@ -472,7 +476,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         }
 
 
-        public override GaMultivectorStorageComposerBase<TScalar> AddTerm(ulong id, TScalar scalar)
+        public override GaMultivectorStorageComposerBase<T> AddTerm(ulong id, T scalar)
         {
             if (IdScalarsDictionary.TryGetValue(id, out var oldValue))
             {
@@ -486,7 +490,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> AddTerm(int grade, ulong index, TScalar scalar)
+        public override GaMultivectorStorageComposerBase<T> AddTerm(uint grade, ulong index, T scalar)
         {
             var id = GaBasisUtils.BasisBladeId(grade, index);
 
@@ -502,7 +506,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> AddTerm(GaTerm<TScalar> term)
+        public override GaMultivectorStorageComposerBase<T> AddTerm(GaTerm<T> term)
         {
             var id = term.BasisBlade.Id;
             var scalar = term.Scalar;
@@ -520,7 +524,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         }
 
 
-        public override GaMultivectorStorageComposerBase<TScalar> AddComputedTerms(IEnumerable<ulong> indexList, Func<ulong, TScalar> mappingFunc)
+        public override GaMultivectorStorageComposerBase<T> AddComputedTerms(IEnumerable<ulong> indexList, Func<ulong, T> mappingFunc)
         {
             foreach (var id in indexList)
                 AddTerm(id, mappingFunc(id));
@@ -528,7 +532,8 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> AddComputedTerms(IEnumerable<Tuple<int, ulong>> indexList, Func<ulong, TScalar> mappingFunc)
+        public override GaMultivectorStorageComposerBase<T> AddComputedTerms(
+            IEnumerable<Tuple<uint, ulong>> indexList, Func<ulong, T> mappingFunc)
         {
             foreach (var (grade, index) in indexList)
             {
@@ -540,7 +545,8 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> AddComputedTerms(IEnumerable<ulong> indexList, Func<int, ulong, TScalar> mappingFunc)
+        public override GaMultivectorStorageComposerBase<T> AddComputedTerms(IEnumerable<ulong> indexList,
+            Func<uint, ulong, T> mappingFunc)
         {
             foreach (var id in indexList)
             {
@@ -552,7 +558,8 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> AddComputedTerms(IEnumerable<Tuple<int, ulong>> indexList, Func<int, ulong, TScalar> mappingFunc)
+        public override GaMultivectorStorageComposerBase<T> AddComputedTerms(
+            IEnumerable<Tuple<uint, ulong>> indexList, Func<uint, ulong, T> mappingFunc)
         {
             foreach (var (grade, index) in indexList)
             {
@@ -564,7 +571,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> AddComputedTerms(IEnumerable<ulong> indexList, Func<ulong, TScalar, TScalar> mappingFunc)
+        public override GaMultivectorStorageComposerBase<T> AddComputedTerms(IEnumerable<ulong> indexList, Func<ulong, T, T> mappingFunc)
         {
             foreach (var id in indexList)
             {
@@ -576,7 +583,8 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> AddComputedTerms(IEnumerable<Tuple<int, ulong>> indexList, Func<ulong, TScalar, TScalar> mappingFunc)
+        public override GaMultivectorStorageComposerBase<T> AddComputedTerms(
+            IEnumerable<Tuple<uint, ulong>> indexList, Func<ulong, T, T> mappingFunc)
         {
             foreach (var (grade, index) in indexList)
             {
@@ -589,7 +597,8 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> AddComputedTerms(IEnumerable<ulong> indexList, Func<int, ulong, TScalar, TScalar> mappingFunc)
+        public override GaMultivectorStorageComposerBase<T> AddComputedTerms(IEnumerable<ulong> indexList,
+            Func<uint, ulong, T, T> mappingFunc)
         {
             foreach (var id in indexList)
             {
@@ -602,7 +611,8 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> AddComputedTerms(IEnumerable<Tuple<int, ulong>> indexList, Func<int, ulong, TScalar, TScalar> mappingFunc)
+        public override GaMultivectorStorageComposerBase<T> AddComputedTerms(
+            IEnumerable<Tuple<uint, ulong>> indexList, Func<uint, ulong, T, T> mappingFunc)
         {
             foreach (var (grade, index) in indexList)
             {
@@ -616,7 +626,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         }
 
 
-        public override GaMultivectorStorageComposerBase<TScalar> AddLeftScaledTerms(TScalar scalingFactor, IEnumerable<GaTerm<TScalar>> termsList)
+        public override GaMultivectorStorageComposerBase<T> AddLeftScaledTerms(T scalingFactor, IEnumerable<GaTerm<T>> termsList)
         {
             foreach (var term in termsList) 
                 AddTerm(term.BasisBlade.Id, ScalarProcessor.Times(scalingFactor, term.Scalar));
@@ -624,7 +634,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> AddRightScaledTerms(TScalar scalingFactor, IEnumerable<GaTerm<TScalar>> termsList)
+        public override GaMultivectorStorageComposerBase<T> AddRightScaledTerms(T scalingFactor, IEnumerable<GaTerm<T>> termsList)
         {
             foreach (var term in termsList) 
                 AddTerm(term.BasisBlade.Id, ScalarProcessor.Times(term.Scalar, scalingFactor));
@@ -633,7 +643,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         }
 
 
-        public override GaMultivectorStorageComposerBase<TScalar> SubtractTerm(ulong id, TScalar scalar)
+        public override GaMultivectorStorageComposerBase<T> SubtractTerm(ulong id, T scalar)
         {
             if (IdScalarsDictionary.TryGetValue(id, out var oldValue))
             {
@@ -647,7 +657,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> SubtractTerm(int grade, ulong index, TScalar scalar)
+        public override GaMultivectorStorageComposerBase<T> SubtractTerm(uint grade, ulong index, T scalar)
         {
             var id = GaBasisUtils.BasisBladeId(grade, index);
 
@@ -663,7 +673,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
         
-        public override GaMultivectorStorageComposerBase<TScalar> SubtractTerm(GaTerm<TScalar> term)
+        public override GaMultivectorStorageComposerBase<T> SubtractTerm(GaTerm<T> term)
         {
             var id = term.BasisBlade.Id;
             var scalar = term.Scalar;
@@ -681,7 +691,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         }
 
 
-        public override GaMultivectorStorageComposerBase<TScalar> SubtractComputedTerms(IEnumerable<ulong> indexList, Func<ulong, TScalar> mappingFunc)
+        public override GaMultivectorStorageComposerBase<T> SubtractComputedTerms(IEnumerable<ulong> indexList, Func<ulong, T> mappingFunc)
         {
             foreach (var id in indexList)
                 SubtractTerm(id, mappingFunc(id));
@@ -689,7 +699,8 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> SubtractComputedTerms(IEnumerable<Tuple<int, ulong>> indexList, Func<ulong, TScalar> mappingFunc)
+        public override GaMultivectorStorageComposerBase<T> SubtractComputedTerms(
+            IEnumerable<Tuple<uint, ulong>> indexList, Func<ulong, T> mappingFunc)
         {
             foreach (var (grade, index) in indexList)
             {
@@ -701,7 +712,8 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> SubtractComputedTerms(IEnumerable<ulong> indexList, Func<int, ulong, TScalar> mappingFunc)
+        public override GaMultivectorStorageComposerBase<T> SubtractComputedTerms(IEnumerable<ulong> indexList,
+            Func<uint, ulong, T> mappingFunc)
         {
             foreach (var id in indexList)
             {
@@ -713,7 +725,8 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> SubtractComputedTerms(IEnumerable<Tuple<int, ulong>> indexList, Func<int, ulong, TScalar> mappingFunc)
+        public override GaMultivectorStorageComposerBase<T> SubtractComputedTerms(
+            IEnumerable<Tuple<uint, ulong>> indexList, Func<uint, ulong, T> mappingFunc)
         {
             foreach (var (grade, index) in indexList)
             {
@@ -725,7 +738,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> SubtractComputedTerms(IEnumerable<ulong> indexList, Func<ulong, TScalar, TScalar> mappingFunc)
+        public override GaMultivectorStorageComposerBase<T> SubtractComputedTerms(IEnumerable<ulong> indexList, Func<ulong, T, T> mappingFunc)
         {
             foreach (var id in indexList)
             {
@@ -737,7 +750,8 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> SubtractComputedTerms(IEnumerable<Tuple<int, ulong>> indexList, Func<ulong, TScalar, TScalar> mappingFunc)
+        public override GaMultivectorStorageComposerBase<T> SubtractComputedTerms(
+            IEnumerable<Tuple<uint, ulong>> indexList, Func<ulong, T, T> mappingFunc)
         {
             foreach (var (grade, index) in indexList)
             {
@@ -750,7 +764,8 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> SubtractComputedTerms(IEnumerable<ulong> indexList, Func<int, ulong, TScalar, TScalar> mappingFunc)
+        public override GaMultivectorStorageComposerBase<T> SubtractComputedTerms(IEnumerable<ulong> indexList,
+            Func<uint, ulong, T, T> mappingFunc)
         {
             foreach (var id in indexList)
             {
@@ -763,7 +778,8 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> SubtractComputedTerms(IEnumerable<Tuple<int, ulong>> indexList, Func<int, ulong, TScalar, TScalar> mappingFunc)
+        public override GaMultivectorStorageComposerBase<T> SubtractComputedTerms(
+            IEnumerable<Tuple<uint, ulong>> indexList, Func<uint, ulong, T, T> mappingFunc)
         {
             foreach (var (grade, index) in indexList)
             {
@@ -777,7 +793,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         }
 
 
-        public override GaMultivectorStorageComposerBase<TScalar> SubtractLeftScaledTerms(TScalar scalingFactor, IEnumerable<GaTerm<TScalar>> termsList)
+        public override GaMultivectorStorageComposerBase<T> SubtractLeftScaledTerms(T scalingFactor, IEnumerable<GaTerm<T>> termsList)
         {
             foreach (var term in termsList) 
                 SubtractTerm(term.BasisBlade.Id, ScalarProcessor.Times(scalingFactor, term.Scalar));
@@ -785,7 +801,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> SubtractRightScaledTerms(TScalar scalingFactor, IEnumerable<GaTerm<TScalar>> termsList)
+        public override GaMultivectorStorageComposerBase<T> SubtractRightScaledTerms(T scalingFactor, IEnumerable<GaTerm<T>> termsList)
         {
             foreach (var term in termsList) 
                 SubtractTerm(term.BasisBlade.Id, ScalarProcessor.Times(term.Scalar, scalingFactor));
@@ -799,14 +815,14 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return IdScalarsDictionary.Remove(id);
         }
 
-        public override bool RemoveTerm(int grade, ulong index)
+        public override bool RemoveTerm(uint grade, ulong index)
         {
             var id = GaBasisUtils.BasisBladeId(grade, index);
 
             return IdScalarsDictionary.Remove(id);
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> RemoveTerms(params ulong[] indexList)
+        public override GaMultivectorStorageComposerBase<T> RemoveTerms(params ulong[] indexList)
         {
             foreach (var key in indexList)
                 IdScalarsDictionary.Remove(key);
@@ -814,7 +830,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return this;
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> RemoveZeroTerms()
+        public override GaMultivectorStorageComposerBase<T> RemoveZeroTerms()
         {
             var idsArray = IdScalarsDictionary
                 .Where(pair => ScalarProcessor.IsZero(pair.Value))
@@ -824,7 +840,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             return RemoveTerms(idsArray);
         }
 
-        public override GaMultivectorStorageComposerBase<TScalar> RemoveNearZeroTerms()
+        public override GaMultivectorStorageComposerBase<T> RemoveNearZeroTerms()
         {
             var idsArray = IdScalarsDictionary
                 .Where(pair => ScalarProcessor.IsNearZero(pair.Value))

@@ -39,29 +39,23 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Factories
         }
 
         
-        public GaVectorTermStorage<ISymbolicExpressionAtomic> CreateBasisVector(ulong index)
+        public GasVectorTerm<ISymbolicExpressionAtomic> CreateBasisVector(ulong index)
         {
-            return GaVectorTermStorage<ISymbolicExpressionAtomic>.Create(
-                Context,
-                index,
+            return Context.CreateVector(index,
                 Context.GetOrDefineLiteralNumber(1)
             );
         }
         
-        public GaKVectorTermStorage<ISymbolicExpressionAtomic> CreateBasisBlade(ulong id)
+        public IGasKVectorTerm<ISymbolicExpressionAtomic> CreateBasisBlade(ulong id)
         {
-            return GaKVectorTermStorage<ISymbolicExpressionAtomic>.Create(
-                Context,
-                id,
+            return Context.CreateKVector(id,
                 Context.GetOrDefineLiteralNumber(1)
             );
         }
         
-        public GaKVectorTermStorage<ISymbolicExpressionAtomic> CreateBasisBlade(int grade, ulong index)
+        public IGasKVectorTerm<ISymbolicExpressionAtomic> CreateBasisBlade(uint grade, ulong index)
         {
-            return GaKVectorTermStorage<ISymbolicExpressionAtomic>.Create(
-                Context,
-                grade,
+            return Context.CreateKVector(grade,
                 index,
                 Context.GetOrDefineLiteralNumber(1)
             );

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace GeometricAlgebraFulcrumLib.CodeComposer
 {
@@ -16,7 +17,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer
         }
 
 
-        public int GetKVectorsBilinearProductGrade(int vSpaceDimension, int inGrade1, int inGrade2)
+        public Tuple<bool, uint> GetKVectorsBilinearProductGrade(uint vSpaceDimension, uint inGrade1, uint inGrade2)
         {
             return OperationKind.GetKVectorsBilinearProductGrade(
                 vSpaceDimension,
@@ -30,17 +31,17 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer
             return OperationKind.GetName(IsEuclidean);
         }
 
-        public string GetName(int grade)
+        public string GetName(uint grade)
         {
             return OperationKind.GetName(IsEuclidean, grade);
         }
 
-        public string GetName(params int[] gradesList)
+        public string GetName(params uint[] gradesList)
         {
             return OperationKind.GetName(IsEuclidean, gradesList);
         }
 
-        public string GetName(IEnumerable<int> gradesList)
+        public string GetName(IEnumerable<uint> gradesList)
         {
             return OperationKind.GetName(IsEuclidean, gradesList);
         }

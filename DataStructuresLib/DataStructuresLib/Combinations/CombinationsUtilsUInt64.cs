@@ -180,6 +180,15 @@ namespace DataStructuresLib.Combinations
             return ans;
         }
 
+        public static ulong GetBinomialCoefficient(this uint setSize, uint subsetSize)
+        {
+            if (setSize < subsetSize) return 0UL;
+
+            return setSize > MaxSetSize 
+                ? ComputeBinomialCoefficient((int) setSize, (int) subsetSize) 
+                : PascalTriangleArray[(int) setSize, (int) subsetSize];
+        }
+
         public static ulong GetBinomialCoefficient(this int setSize, int subsetSize)
         {
             if (setSize < 0 || subsetSize < 0)

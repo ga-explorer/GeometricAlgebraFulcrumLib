@@ -135,12 +135,12 @@ end sdf_normal_macro
 //
 //begin main_case3
 //case #caseid#:
-//    return new #frame#kVector(#grade#, #name##num#(Scalars));
+//    return new #signature#kVector(#grade#, #name##num#(Scalars));
 //end main_case3
 //
 //begin main_case4
 //case #caseid#:
-//    return new #frame#kVector(#grade#, #name##num#(Scalars, #arg2#));
+//    return new #signature#kVector(#grade#, #name##num#(Scalars, #arg2#));
 //end main_case4
 //";
 //        #endregion
@@ -152,9 +152,9 @@ end sdf_normal_macro
 delimiters #
 
 begin frame_utils
-namespace #frame#
+namespace #signature#
 {
-    public static partial class #frame#Utils
+    public static partial class #signature#Utils
     {
         private static int[][] ChooseList { get; } 
             =
@@ -204,7 +204,7 @@ namespace #frame#
         internal static int[] KVectorSizesLookupTable { get; }
 
 
-        static #frame#Utils()
+        static #signature#Utils()
         {
             VectorSpaceDimensions = #vspacedim#;
             MaxGradesPerMultivector = 1 + VectorSpaceDimensions;
@@ -295,15 +295,15 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 
-namespace #frame#
+namespace #signature#
 {
     /// <summary>
-    /// This class represents a k-vector in the #frame# frame with arbitrary grade 
+    /// This class represents a k-vector in the #signature# signature with arbitrary grade 
     /// (i.e. grade is determined at runtime) based on additive representation of 
     /// the k-vector as a linear combination of basis blades of the same grade.
     /// </summary>
-    public sealed partial class #frame#kVector
-        : I#frame#Multivector
+    public sealed partial class #signature#kVector
+        : I#signature#Multivector
     {
 end kvector_file_start
 
@@ -355,7 +355,7 @@ public IEnumerable<int> KVectorGrades
 	get { yield return Grade; }
 }
 
-public IEnumerable<#frame#kVector> KVectors
+public IEnumerable<#signature#kVector> KVectors
 {
 	get { yield return this; }
 }
@@ -370,23 +370,23 @@ public #double# this[int id]
 {
 	get
 	{
-		var grade = #frame#Utils.GradeLookupTable[id];
+		var grade = #signature#Utils.GradeLookupTable[id];
 
 		if (grade != Grade) 
 			return 0;
 
-		var index = #frame#Utils.IndexLookupTable[id];
+		var index = #signature#Utils.IndexLookupTable[id];
 
 		return Scalars[index];
 	}
 	set
 	{
-		var grade = #frame#Utils.GradeLookupTable[id];
+		var grade = #signature#Utils.GradeLookupTable[id];
 
 		if (grade != Grade)
 			throw new IndexOutOfRangeException();
 
-		var index = #frame#Utils.IndexLookupTable[id];
+		var index = #signature#Utils.IndexLookupTable[id];
 
 		Scalars[index] = value;
 	}
@@ -412,10 +412,10 @@ public bool IsVector
 	=> IsZero || Grade == 1;
 
 public bool IsPseudoVector 
-	=> IsZero || Grade == #frame#Utils.VectorSpaceDimensions - 1;
+	=> IsZero || Grade == #signature#Utils.VectorSpaceDimensions - 1;
 
 public bool IsPseudoScalar 
-	=> IsZero || Grade == #frame#Utils.VectorSpaceDimensions;
+	=> IsZero || Grade == #signature#Utils.VectorSpaceDimensions;
 
 public string[] BasisBladesNames 
 	=> BasisBladesNamesArray[Grade];
@@ -435,18 +435,18 @@ public bool IsNonBlade
 /// <summary>
 /// Create a k-vector and initialize its coefficients to zero.
 /// </summary>
-internal #frame#kVector(int grade)
+internal #signature#kVector(int grade)
 {
 	Grade = grade;
-	Scalars = new #double#[#frame#Utils.KVectorSizesLookupTable[grade]];
+	Scalars = new #double#[#signature#Utils.KVectorSizesLookupTable[grade]];
 }
 
 /// <summary>
 /// Create a k-vector and initialize its coefficients by the given array. 
 /// </summary>
-internal #frame#kVector(int grade, #double#[] scalars)
+internal #signature#kVector(int grade, #double#[] scalars)
 {
-	if (scalars.Length != #frame#Utils.KVectorSizesLookupTable[grade])
+	if (scalars.Length != #signature#Utils.KVectorSizesLookupTable[grade])
 		throw new ArgumentException(@""The given array has the wrong number of items for this grade"", nameof(scalars));
 
 	Grade = grade;
@@ -459,10 +459,10 @@ internal #frame#kVector(int grade, #double#[] scalars)
 /// <param name=""grade""></param>
 /// <param name=""index""></param>
 /// <param name=""scalar""></param>
-public #frame#kVector(int grade, int index, #double# scalar)
+public #signature#kVector(int grade, int index, #double# scalar)
 {
 	Grade = grade;
-	Scalars = new #double#[#frame#Utils.KVectorSizesLookupTable[grade]];
+	Scalars = new #double#[#signature#Utils.KVectorSizesLookupTable[grade]];
 	Scalars[index] = scalar;
 }
 
@@ -471,19 +471,19 @@ public #frame#kVector(int grade, int index, #double# scalar)
 /// </summary>
 /// <param name=""id""></param>
 /// <param name=""scalar""></param>
-public #frame#kVector(int id, #double# scalar)
+public #signature#kVector(int id, #double# scalar)
 {
-	Grade = #frame#Utils.GradeLookupTable[id];
-	Scalars = new #double#[#frame#Utils.KVectorSizesLookupTable[Grade]];
+	Grade = #signature#Utils.GradeLookupTable[id];
+	Scalars = new #double#[#signature#Utils.KVectorSizesLookupTable[Grade]];
 
-	var index = #frame#Utils.IndexLookupTable[id];
+	var index = #signature#Utils.IndexLookupTable[id];
 	Scalars[index] = scalar;
 }
 
 /// <summary>
 /// Create a scalar blade (a 0-blade)
 /// </summary>
-public #frame#kVector(#double# scalar)
+public #signature#kVector(#double# scalar)
 {
 	Grade = 0;
 	Scalars = new [] { scalar };
@@ -492,7 +492,7 @@ public #frame#kVector(#double# scalar)
 /// <summary>
 /// Create a zero k-vector
 /// </summary>
-internal #frame#kVector()
+internal #signature#kVector()
 {
 	Grade = 0;
 	Scalars = new #double#[0];
@@ -501,7 +501,7 @@ internal #frame#kVector()
 
 public IEnumerable<Tuple<int, #double#>> GetStoredTermsById()
 {
-	var idTable = #frame#Utils.IdLookupTable[Grade];
+	var idTable = #signature#Utils.IdLookupTable[Grade];
 	for (var index = 0; index <= StoredTermsCount; index++)
 	{
 		var scalar = Scalars[index];
@@ -523,7 +523,7 @@ public IEnumerable<Tuple<int, int, #double#>> GetStoredTermsByGradeIndex()
 
 public IEnumerable<Tuple<int, #double#>> GetNonZeroTermsById()
 {
-	var idTable = #frame#Utils.IdLookupTable[Grade];
+	var idTable = #signature#Utils.IdLookupTable[Grade];
 	for (var index = 0; index <= StoredTermsCount; index++)
 	{
 		var scalar = Scalars[index];
@@ -547,12 +547,12 @@ public IEnumerable<Tuple<int, int, #double#>> GetNonZeroTermsByGradeIndex()
 	}
 }
 
-public #frame#kVector GetKVector(int grade)
+public #signature#kVector GetKVector(int grade)
 {
 	if (grade == Grade)
 		return this;
 
-	return new #frame#kVector(grade);
+	return new #signature#kVector(grade);
 }
 
 /// <summary>
@@ -560,26 +560,26 @@ public #frame#kVector GetKVector(int grade)
 /// </summary>
 public bool IsOfGrade(int grade)
 {
-	return Grade == grade || (grade >= 0 && grade <= #frame#Utils.VectorSpaceDimensions && IsZero);
+	return Grade == grade || (grade >= 0 && grade <= #signature#Utils.VectorSpaceDimensions && IsZero);
 }
 
 /// <summary>
 /// If this blade is of grade 1 convert it to a vector
 /// </summary>
 /// <returns></returns>
-public #frame#Vector ToVector()
+public #signature#Vector ToVector()
 {
 	if (Grade == 1)
-		return new #frame#Vector(Scalars);
+		return new #signature#Vector(Scalars);
 
 	if (IsZero)
-		return new #frame#Vector();
+		return new #signature#Vector();
 
 	throw new InvalidDataException(""Internal error. Grade not acceptable!"");
 }
 
 
-public #frame#kVector Meet(#frame#kVector bladeB)
+public #signature#kVector Meet(#signature#kVector bladeB)
 {
 	//blade A1 is the part of A not in B
 	var bladeA1 = DPDual(bladeB).DP(this);
@@ -587,7 +587,7 @@ public #frame#kVector Meet(#frame#kVector bladeB)
 	return bladeA1.ELCP(bladeB);
 }
 
-public #frame#kVector Join(#frame#kVector bladeB)
+public #signature#kVector Join(#signature#kVector bladeB)
 {
 	//blade A1 is the part of A not in B
 	var bladeA1 = DPDual(bladeB).DP(this);
@@ -595,7 +595,7 @@ public #frame#kVector Join(#frame#kVector bladeB)
 	return bladeA1.OP(bladeB);
 }
 
-public void MeetJoin(#frame#kVector bladeB, out #frame#kVector bladeMeet, out #frame#kVector bladeJoin)
+public void MeetJoin(#signature#kVector bladeB, out #signature#kVector bladeMeet, out #signature#kVector bladeJoin)
 {
 	//blade A1 is the part of A not in B
 	var bladeA1 = DPDual(bladeB).DP(this);
@@ -604,7 +604,7 @@ public void MeetJoin(#frame#kVector bladeB, out #frame#kVector bladeMeet, out #f
 	bladeJoin = bladeA1.OP(bladeB);
 }
 
-public void Meet(#frame#kVector bladeB, out #frame#kVector bladeA1, out #frame#kVector bladeB1, out #frame#kVector bladeMeet)
+public void Meet(#signature#kVector bladeB, out #signature#kVector bladeA1, out #signature#kVector bladeB1, out #signature#kVector bladeMeet)
 {
 	//blade A1 is the part of A not in B
 	bladeA1 = DPDual(bladeB).DP(this);
@@ -613,7 +613,7 @@ public void Meet(#frame#kVector bladeB, out #frame#kVector bladeA1, out #frame#k
 	bladeB1 = bladeMeet.ELCP(bladeB);
 }
 
-public void MeetJoin(#frame#kVector bladeB, out #frame#kVector bladeA1, out #frame#kVector bladeB1, out #frame#kVector bladeMeet, out #frame#kVector bladeJoin)
+public void MeetJoin(#signature#kVector bladeB, out #signature#kVector bladeA1, out #signature#kVector bladeB1, out #signature#kVector bladeMeet, out #signature#kVector bladeJoin)
 {
 	//blade A1 is the part of A not in B
 	bladeA1 = DPDual(bladeB).DP(this);
@@ -626,7 +626,7 @@ public void MeetJoin(#frame#kVector bladeB, out #frame#kVector bladeA1, out #fra
 
 public override bool Equals(object obj)
 {
-	return !ReferenceEquals(obj, null) && Equals(obj as #frame#kVector);
+	return !ReferenceEquals(obj, null) && Equals(obj as #signature#kVector);
 }
 
 public override int GetHashCode()
@@ -671,12 +671,12 @@ new [] { #names# }
 end static_basisblade_name
 
 begin static_basisblade_declare
-public static #frame#kVector E#id# { get; } = new #frame#kVector(#grade#, new[] { #scalars# });
+public static #signature#kVector E#id# { get; } = new #signature#kVector(#grade#, new[] { #scalars# });
 end static_basisblade_declare
 
 begin static
 /// <summary>
-/// An array of arrays containing basis blades names for this frame grouped by grade
+/// An array of arrays containing basis blades names for this signature grouped by grade
 /// </summary>
 private static string[][] BasisBladesNamesArray { get; } 
     = 
@@ -700,12 +700,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace #frame#
+namespace #signature#
 {
     /// <summary>
-    /// This interface represents a multivector in the #frame# frame.
+    /// This interface represents a multivector in the #signature# signature.
     /// </summary>
-    public interface I#frame#Multivector
+    public interface I#signature#Multivector
     {
         /// <summary>
         /// The number of current terms stored in this multivectors
@@ -741,7 +741,7 @@ namespace #frame#
         /// <summary>
         /// Get the k-vectors stored in this multivector 
         /// </summary>
-        IEnumerable<#frame#kVector> KVectors { get; }
+        IEnumerable<#signature#kVector> KVectors { get; }
 
         /// <summary>
         /// Get all (id, scalar) terms stored in this multivector
@@ -772,20 +772,20 @@ namespace #frame#
         /// </summary>
         /// <param name=""grade""></param>
         /// <returns></returns>
-        #frame#kVector GetKVector(int grade);
+        #signature#kVector GetKVector(int grade);
     }
 
     /// <summary>
-    /// This class represents a multivector in the #frame# frame. A multivector
+    /// This class represents a multivector in the #signature# signature. A multivector
     /// contains an array of n+1 k-vectors of grades 0 to n. If a k-vector is not
     /// needed, a null is stored in the internal KVectorsArray instead to save
     /// memory.
     /// </summary>
-    public sealed partial class #frame#Multivector 
-        : I#frame#Multivector
+    public sealed partial class #signature#Multivector 
+        : I#signature#Multivector
     {
-        public static #frame#kVector Zero { get; }
-            = new #frame#kVector();
+        public static #signature#kVector Zero { get; }
+            = new #signature#kVector();
 
         #static_multivector_members#
 
@@ -793,8 +793,8 @@ namespace #frame#
         /// <summary>
         /// The internal array holding k-vectors of this multivector
         /// </summary>
-        internal #frame#kVector[] KVectorsArray { get; }
-	        = new #frame#kVector[6];
+        internal #signature#kVector[] KVectorsArray { get; }
+	        = new #signature#kVector[6];
 
         public int StoredTermsCount 
             => KVectors.Sum(v => v.StoredTermsCount);
@@ -819,7 +819,7 @@ namespace #frame#
 			        if (value == 0) 
 				        return;
 
-			        kVector = new #frame#kVector(grade);
+			        kVector = new #signature#kVector(grade);
 
 			        KVectorsArray[grade] = kVector;
 		        }
@@ -832,15 +832,15 @@ namespace #frame#
         {
 	        get
 	        {
-		        var grade = #frame#Utils.GradeLookupTable[id];
-		        var index = #frame#Utils.IndexLookupTable[id];
+		        var grade = #signature#Utils.GradeLookupTable[id];
+		        var index = #signature#Utils.IndexLookupTable[id];
 
 		        return this[grade, index];
 	        }
 	        set
 	        {
-		        var grade = #frame#Utils.GradeLookupTable[id];
-		        var index = #frame#Utils.IndexLookupTable[id];
+		        var grade = #signature#Utils.GradeLookupTable[id];
+		        var index = #signature#Utils.IndexLookupTable[id];
 
 		        this[grade, index] = value;
 	        }
@@ -855,7 +855,7 @@ namespace #frame#
 		        .Where(v => !ReferenceEquals(v, null))
 		        .Select(v => v.Grade);
 
-        public IEnumerable<#frame#kVector> KVectors
+        public IEnumerable<#signature#kVector> KVectors
 	        => KVectorsArray
 		        .Where(v => !ReferenceEquals(v, null));
 
@@ -863,7 +863,7 @@ namespace #frame#
         /// <summary>
         /// Create a zero multivector
         /// </summary>
-        public #frame#Multivector()
+        public #signature#Multivector()
         {
         }
 
@@ -871,16 +871,16 @@ namespace #frame#
         /// Create a scalar multivector
         /// </summary>
         /// <param name=""scalar""></param>
-        public #frame#Multivector(#double# scalar)
+        public #signature#Multivector(#double# scalar)
         {
-	        KVectorsArray[0] = new #frame#kVector(scalar);
+	        KVectorsArray[0] = new #signature#kVector(scalar);
         }
 
         /// <summary>
         /// Create a multivector containing a single k-vector
         /// </summary>
         /// <param name=""kVector""></param>
-        public #frame#Multivector(#frame#kVector kVector)
+        public #signature#Multivector(#signature#kVector kVector)
         {
 	        KVectorsArray[kVector.Grade] = kVector;
         }
@@ -890,7 +890,7 @@ namespace #frame#
         /// (grade, index, scalar) tuples
         /// </summary>
         /// <param name=""terms""></param>
-        public #frame#Multivector(IEnumerable<Tuple<int, int, #double#>> terms)
+        public #signature#Multivector(IEnumerable<Tuple<int, int, #double#>> terms)
         {
             foreach (var (grade, index, scalar) in terms)
                 this[grade, index] = scalar;
@@ -901,7 +901,7 @@ namespace #frame#
         /// (id, scalar) tuples
         /// </summary>
         /// <param name=""terms""></param>
-        public #frame#Multivector(IEnumerable<Tuple<int, #double#>> terms)
+        public #signature#Multivector(IEnumerable<Tuple<int, #double#>> terms)
         {
             foreach (var (id, scalar) in terms)
                 this[id] = scalar;
@@ -916,7 +916,7 @@ namespace #frame#
                 if (ReferenceEquals(kVector, null)) 
                     continue;
 
-                var idTable = #frame#Utils.IdLookupTable[grade];
+                var idTable = #signature#Utils.IdLookupTable[grade];
                 for (var index = 0; index < kVector.StoredTermsCount; index++)
                     yield return new Tuple<int, #double#>(
                         idTable[index], kVector[index]
@@ -947,7 +947,7 @@ namespace #frame#
                 if (ReferenceEquals(kVector, null)) 
                     continue;
 
-                var idTable = #frame#Utils.IdLookupTable[grade];
+                var idTable = #signature#Utils.IdLookupTable[grade];
                 for (var index = 0; index < kVector.StoredTermsCount; index++)
                 {
                     var scalar = kVector[index];
@@ -982,10 +982,10 @@ namespace #frame#
             }
         }
 
-        public #frame#kVector GetKVector(int grade)
+        public #signature#kVector GetKVector(int grade)
         {
 	        return KVectorsArray[grade] 
-		           ?? new #frame#kVector(grade);
+		           ?? new #signature#kVector(grade);
         }
 
         /// <summary>
@@ -994,7 +994,7 @@ namespace #frame#
         /// <param name=""grade""></param>
         /// <param name=""kVector""></param>
         /// <returns></returns>
-        public #frame#Multivector SetKVector(int grade, #frame#kVector kVector)
+        public #signature#Multivector SetKVector(int grade, #signature#kVector kVector)
         {
 	        KVectorsArray[grade] = kVector;
 	        return this;
@@ -1005,7 +1005,7 @@ namespace #frame#
         /// </summary>
         /// <param name=""grade""></param>
         /// <returns></returns>
-        public #frame#Multivector RemoveKVector(int grade)
+        public #signature#Multivector RemoveKVector(int grade)
         {
 	        KVectorsArray[grade] = null;
 	        return this;
@@ -1017,9 +1017,9 @@ namespace #frame#
         /// <param name=""grade""></param>
         /// <param name=""scalars""></param>
         /// <returns></returns>
-        internal #frame#kVector SetKVector(int grade, #double#[] scalars)
+        internal #signature#kVector SetKVector(int grade, #double#[] scalars)
         {
-	        var kVector = new #frame#kVector(grade, scalars);
+	        var kVector = new #signature#kVector(grade, scalars);
 
 	        KVectorsArray[grade] = kVector;
 
@@ -1042,14 +1042,14 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 
-namespace #frame#
+namespace #signature#
 {
     /// <summary>
-    /// This class represents a mutable vector in the #frame# frame
+    /// This class represents a mutable vector in the #signature# signature
     /// </summary>
-    public sealed class #frame#Vector
+    public sealed class #signature#Vector
     {
-        public static #frame#Vector[] BasisVectors()
+        public static #signature#Vector[] BasisVectors()
         {
             return new[]
             {
@@ -1076,16 +1076,16 @@ namespace #frame#
         }
 
 
-        public #frame#Vector()
+        public #signature#Vector()
         {
         }
 
-        public #frame#Vector(#init_inputs#)
+        public #signature#Vector(#init_inputs#)
         {
             #init_assign#
         }
 
-        public #frame#Vector(#double#[] c)
+        public #signature#Vector(#double#[] c)
         {
             #init_assign_array#
         }
@@ -1109,9 +1109,9 @@ namespace #frame#
             return new[] { #members_list# };
         }
 
-        public #frame#kVector ToBlade()
+        public #signature#kVector ToBlade()
         {
-            return new #frame#kVector(1, new[] { #members_list# });
+            return new #signature#kVector(1, new[] { #members_list# });
         }
     }
 }
@@ -1124,34 +1124,34 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace #frame#
+namespace #signature#
 {
     /// <summary>
     /// Represents a factored blade in Euclidean space
     /// </summary>
-    public sealed class #frame#FactoredBlade
+    public sealed class #signature#FactoredBlade
     {
         public #double# Norm { get; private set; }
 
-        public #frame#Vector[] Vectors { get; private set; }
+        public #signature#Vector[] Vectors { get; private set; }
 
 
         public int Grade { get { return Vectors.Length; } }
 
 
-        internal #frame#FactoredBlade(#double# norm)
+        internal #signature#FactoredBlade(#double# norm)
         {
             Norm = norm;
-            Vectors = new #frame#Vector[0];
+            Vectors = new #signature#Vector[0];
         }
 
-        internal #frame#FactoredBlade(#double# norm, #frame#Vector vector)
+        internal #signature#FactoredBlade(#double# norm, #signature#Vector vector)
         {
             Norm = norm;
             Vectors = new [] { vector };
         }
 
-        internal #frame#FactoredBlade(#double# norm, #frame#Vector[] vectors)
+        internal #signature#FactoredBlade(#double# norm, #signature#Vector[] vectors)
         {
             Norm = norm;
             Vectors = vectors;
@@ -1162,7 +1162,7 @@ namespace #frame#
         /// the squared norms to the NormSquared member
         /// </summary>
         /// <returns></returns>
-        public #frame#FactoredBlade Normalize()
+        public #signature#FactoredBlade Normalize()
         {
             for (var idx = 0; idx < Vectors.Length; idx++)
                 Norm *= Vectors[idx].Normalize();
@@ -1170,9 +1170,9 @@ namespace #frame#
             return this;
         }
 
-        public #frame#kVector ToBlade()
+        public #signature#kVector ToBlade()
         {
-            return #frame#kVector.OP(Vectors).Times(Norm);
+            return #signature#kVector.OP(Vectors).Times(Norm);
         }
     }
 }
@@ -1191,13 +1191,13 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 
-namespace #frame#
+namespace #signature#
 {
     /// <summary>
-    /// This class represents a mutable outermorphism in the #frame# frame by only storing a #grade# by #grade#
+    /// This class represents a mutable outermorphism in the #signature# signature by only storing a #grade# by #grade#
     /// matrix of the original vector linear transform and computing the other k-vectors matrices as needed
     /// </summary>
-    public sealed partial class #frame#Outermorphism
+    public sealed partial class #signature#Outermorphism
     {
 end om_file_start
 
@@ -1215,37 +1215,37 @@ end om_apply
 
 begin om_apply_code_case
 case #grade#:
-    return new #frame#kVector(#grade#, Map_#grade#(Scalars, blade.Scalars));
+    return new #signature#kVector(#grade#, Map_#grade#(Scalars, blade.Scalars));
 end om_apply_code_case
 
 begin outermorphism
 public #double#[,] Scalars { get; private set; }
 
 
-public #frame#Outermorphism()
+public #signature#Outermorphism()
 {
     Scalars = new #double#[
-        #frame#Utils.VectorSpaceDimensions, 
-        #frame#Utils.VectorSpaceDimensions
+        #signature#Utils.VectorSpaceDimensions, 
+        #signature#Utils.VectorSpaceDimensions
     ];
 }
 
-private #frame#Outermorphism(#double#[,] scalars)
+private #signature#Outermorphism(#double#[,] scalars)
 {
     Scalars = scalars;
 }
 
 
-public #frame#Outermorphism Transpose()
+public #signature#Outermorphism Transpose()
 {
     var scalars = new #double#[
-        #frame#Utils.VectorSpaceDimensions,
-        #frame#Utils.VectorSpaceDimensions
+        #signature#Utils.VectorSpaceDimensions,
+        #signature#Utils.VectorSpaceDimensions
     ];
 
     #transpose_code#
 
-    return new #frame#Outermorphism(scalars);
+    return new #signature#Outermorphism(scalars);
 }
 
 public #double# MetricDeterminant()
@@ -1257,10 +1257,10 @@ public #double# MetricDeterminant()
     return det;
 }
 
-public #frame#kVector Map(#frame#kVector blade)
+public #signature#kVector Map(#signature#kVector blade)
 {
     if (blade.IsZero)
-        return #frame#Multivector.Zero;
+        return #signature#Multivector.Zero;
 
     switch (blade.Grade)
     {
@@ -1273,88 +1273,88 @@ public #frame#kVector Map(#frame#kVector blade)
 }
 
 
-public static #frame#Outermorphism operator +(#frame#Outermorphism om1, #frame#Outermorphism om2)
+public static #signature#Outermorphism operator +(#signature#Outermorphism om1, #signature#Outermorphism om2)
 {
     var scalars = new #double#[
-        #frame#Utils.VectorSpaceDimensions, 
-        #frame#Utils.VectorSpaceDimensions
+        #signature#Utils.VectorSpaceDimensions, 
+        #signature#Utils.VectorSpaceDimensions
     ];
 
     #plus_code#
 
-    return new #frame#Outermorphism(scalars);
+    return new #signature#Outermorphism(scalars);
 }
 
-public static #frame#Outermorphism operator -(#frame#Outermorphism om1, #frame#Outermorphism om2)
+public static #signature#Outermorphism operator -(#signature#Outermorphism om1, #signature#Outermorphism om2)
 {
     var scalars = new #double#[
-        #frame#Utils.VectorSpaceDimensions, 
-        #frame#Utils.VectorSpaceDimensions
+        #signature#Utils.VectorSpaceDimensions, 
+        #signature#Utils.VectorSpaceDimensions
     ];
 
     #subt_code#
 
-    return new #frame#Outermorphism(scalars);
+    return new #signature#Outermorphism(scalars);
 }
 
-public static #frame#Outermorphism operator *(#frame#Outermorphism om1, #frame#Outermorphism om2)
+public static #signature#Outermorphism operator *(#signature#Outermorphism om1, #signature#Outermorphism om2)
 {
     var scalars = new #double#[
-        #frame#Utils.VectorSpaceDimensions, 
-        #frame#Utils.VectorSpaceDimensions
+        #signature#Utils.VectorSpaceDimensions, 
+        #signature#Utils.VectorSpaceDimensions
     ];
 
     #compose_code#
 
-    return new #frame#Outermorphism(scalars);
+    return new #signature#Outermorphism(scalars);
 }
 
-public static #frame#Outermorphism operator *(#double# scalar, #frame#Outermorphism om)
+public static #signature#Outermorphism operator *(#double# scalar, #signature#Outermorphism om)
 {
     var scalars = new #double#[
-        #frame#Utils.VectorSpaceDimensions, 
-        #frame#Utils.VectorSpaceDimensions
+        #signature#Utils.VectorSpaceDimensions, 
+        #signature#Utils.VectorSpaceDimensions
     ];
 
     #times_code#
 
-    return new #frame#Outermorphism(scalars);
+    return new #signature#Outermorphism(scalars);
 }
 
-public static #frame#Outermorphism operator *(#frame#Outermorphism om, #double# scalar)
+public static #signature#Outermorphism operator *(#signature#Outermorphism om, #double# scalar)
 {
     var scalars = new #double#[
-        #frame#Utils.VectorSpaceDimensions, 
-        #frame#Utils.VectorSpaceDimensions
+        #signature#Utils.VectorSpaceDimensions, 
+        #signature#Utils.VectorSpaceDimensions
     ];
 
     #times_code#
 
-    return new #frame#Outermorphism(scalars);
+    return new #signature#Outermorphism(scalars);
 }
 
-public static #frame#Outermorphism operator /(#frame#Outermorphism om, #double# scalar)
+public static #signature#Outermorphism operator /(#signature#Outermorphism om, #double# scalar)
 {
     var scalars = new #double#[
-        #frame#Utils.VectorSpaceDimensions, 
-        #frame#Utils.VectorSpaceDimensions
+        #signature#Utils.VectorSpaceDimensions, 
+        #signature#Utils.VectorSpaceDimensions
     ];
 
     #divide_code#
 
-    return new #frame#Outermorphism(scalars);
+    return new #signature#Outermorphism(scalars);
 }
 
-public static #frame#Outermorphism operator -(#frame#Outermorphism om)
+public static #signature#Outermorphism operator -(#signature#Outermorphism om)
 {
     var scalars = new #double#[
-        #frame#Utils.VectorSpaceDimensions, 
-        #frame#Utils.VectorSpaceDimensions
+        #signature#Utils.VectorSpaceDimensions, 
+        #signature#Utils.VectorSpaceDimensions
     ];
 
     #negative_code#
 
-    return new #frame#Outermorphism(scalars);
+    return new #signature#Outermorphism(scalars);
 }
 
 end outermorphism
@@ -1390,7 +1390,7 @@ case #grade#:
 end main_equals_case
 
 begin main_equals
-public bool Equals(#frame#kVector blade2)
+public bool Equals(#signature#kVector blade2)
 {
     if ((object)blade2 == null) 
         return false;
@@ -1457,7 +1457,7 @@ end main_iszero_case
 
 begin main_trimscalars_case
 case #grade#:
-    return new #frame#kVector(#grade#, TrimNearZero#num#(Scalars));
+    return new #signature#kVector(#grade#, TrimNearZero#num#(Scalars));
 end main_trimscalars_case
 
 begin main_iszero
@@ -1480,12 +1480,12 @@ public bool IsNearZero
 /// <summary>
 /// Set all near-zero coefficients to zero. If all coefficients are near zero a Zero Multivector is returned
 /// </summary>
-public #frame#kVector TrimNearZero
+public #signature#kVector TrimNearZero
 {
     get
     {
         if (IsZero)
-            return #frame#Multivector.Zero;
+            return #signature#Multivector.Zero;
 
         switch (Grade)
         {
@@ -1521,7 +1521,7 @@ end negative
 
 begin main_negative_case
 case #grade#:
-    return new #frame#kVector(#grade#, Negative#num#(Scalars));
+    return new #signature#kVector(#grade#, Negative#num#(Scalars));
 
 end main_negative_case
 
@@ -1532,7 +1532,7 @@ case #grade#:
 end main_negative_case2
 
 begin main_involution
-public #frame#kVector #name#
+public #signature#kVector #name#
 {
     get
     {
@@ -1684,32 +1684,32 @@ end self_dp_grade
 
 begin main_add_case
 case #grade#:
-    return new #frame#kVector(#grade#, Add#num#(Scalars, blade2.Scalars));
+    return new #signature#kVector(#grade#, Add#num#(Scalars, blade2.Scalars));
 end main_add_case
 
 begin main_subt_case
 case #grade#:
-    return new #frame#kVector(#grade#, Subtract#num#(Scalars, blade2.Scalars));
+    return new #signature#kVector(#grade#, Subtract#num#(Scalars, blade2.Scalars));
 end main_subt_case
 
 begin main_times_case
 case #grade#:
-    return new #frame#kVector(#grade#, Times#num#(Scalars, scalar));
+    return new #signature#kVector(#grade#, Times#num#(Scalars, scalar));
 end main_times_case
 
 begin main_divide_case
 case #grade#:
-    return new #frame#kVector(#grade#, Times#num#(Scalars, 1.0D / scalar));
+    return new #signature#kVector(#grade#, Times#num#(Scalars, 1.0D / scalar));
 end main_divide_case
 
 begin main_inverse_case
 case #grade#:
-    return new #frame#kVector(#grade#, Times#num#(Scalars, #sign#1.0D / scalar));
+    return new #signature#kVector(#grade#, Times#num#(Scalars, #sign#1.0D / scalar));
 end main_inverse_case
 
 begin main_edual_case
 case #grade#:
-    return new #frame#kVector(#invgrade#, EuclideanDual#grade#(Scalars));
+    return new #signature#kVector(#invgrade#, EuclideanDual#grade#(Scalars));
 end main_edual_case
 
 begin main_self_dp_grade_case
@@ -1726,7 +1726,7 @@ begin main_self_dp_grade
 /// <returns></returns>
 public int SelfDPGrade()
 {
-    if (Grade <= 1 || Grade >= #frame#Utils.VectorSpaceDimensions - 1 || IsZero)
+    if (Grade <= 1 || Grade >= #signature#Utils.VectorSpaceDimensions - 1 || IsZero)
         return 0;
 
     switch (Grade)
@@ -1740,7 +1740,7 @@ public int SelfDPGrade()
 end main_self_dp_grade
 
 begin misc_main
-public #frame#kVector Add(#frame#kVector blade2)
+public #signature#kVector Add(#signature#kVector blade2)
 {
     if (blade2.IsZero)
         return this;
@@ -1759,7 +1759,7 @@ public #frame#kVector Add(#frame#kVector blade2)
     throw new InvalidDataException(""Internal error. Blade grade not acceptable!"");
 }
 
-public #frame#kVector Subtract(#frame#kVector blade2)
+public #signature#kVector Subtract(#signature#kVector blade2)
 {
     if (blade2.IsZero)
         return this;
@@ -1778,7 +1778,7 @@ public #frame#kVector Subtract(#frame#kVector blade2)
     throw new InvalidDataException(""Internal error. Blade grade not acceptable!"");
 }
 
-public #frame#kVector Times(#double# scalar)
+public #signature#kVector Times(#double# scalar)
 {
     switch (Grade)
     {
@@ -1788,7 +1788,7 @@ public #frame#kVector Times(#double# scalar)
     throw new InvalidDataException(""Internal error. Blade grade not acceptable!"");
 }
 
-public #frame#kVector Divide(#double# scalar)
+public #signature#kVector Divide(#double# scalar)
 {
     switch (Grade)
     {
@@ -1798,7 +1798,7 @@ public #frame#kVector Divide(#double# scalar)
     throw new InvalidDataException(""Internal error. Blade grade not acceptable!"");
 }
 
-public #frame#kVector Inverse
+public #signature#kVector Inverse
 {
     get
     {
@@ -1816,7 +1816,7 @@ public #frame#kVector Inverse
     }
 }
 
-public #frame#kVector EuclideanInverse
+public #signature#kVector EuclideanInverse
 {
     get
     {
@@ -1834,12 +1834,12 @@ public #frame#kVector EuclideanInverse
     }
 }
 
-public #frame#kVector EuclideanDual
+public #signature#kVector EuclideanDual
 {
     get
     {
         if (IsZero)
-            return #frame#Multivector.Zero;
+            return #signature#Multivector.Zero;
 
         switch (Grade)
         {
@@ -1874,17 +1874,17 @@ end bilinearproduct
 begin bilinearproduct_main_case
 //grade1: #g1#, grade2: #g2#
 case #id#:
-    return new #frame#kVector(#grade#, #name#(Scalars, blade2.Scalars));
+    return new #signature#kVector(#grade#, #name#(Scalars, blade2.Scalars));
 
 end bilinearproduct_main_case
 
 begin bilinearproduct_main
-public #frame#kVector #name#(#frame#kVector blade2)
+public #signature#kVector #name#(#signature#kVector blade2)
 {
     if (IsZero || blade2.IsZero || #zerocond#)
-        return #frame#Multivector.Zero;
+        return #signature#Multivector.Zero;
 
-    var id = Grade + blade2.Grade * (#frame#Utils.VectorSpaceDimensions + 1);
+    var id = Grade + blade2.Grade * (#signature#Utils.VectorSpaceDimensions + 1);
 
     switch (id)
     {
@@ -1897,11 +1897,11 @@ public #frame#kVector #name#(#frame#kVector blade2)
 end bilinearproduct_main
 
 begin gp_case
-new #frame#kVector(#grade#, #name#(scalars1, scalars2))
+new #signature#kVector(#grade#, #name#(scalars1, scalars2))
 end gp_case
 
 begin gp
-private static #frame#kVector[] #name#(#double#[] scalars1, #double#[] scalars2)
+private static #signature#kVector[] #name#(#double#[] scalars1, #double#[] scalars2)
 {
     return new[]
     {
@@ -1918,12 +1918,12 @@ case #id#:
 end gp_main_case
 
 begin gp_main
-public #frame#kVector[] #name#(#frame#kVector blade2)
+public #signature#kVector[] #name#(#signature#kVector blade2)
 {
     if (IsZero || blade2.IsZero)
-        return new #frame#kVector[0];
+        return new #signature#kVector[0];
 
-    var id = Grade + blade2.Grade * (#frame#Utils.VectorSpaceDimensions + 1);
+    var id = Grade + blade2.Grade * (#signature#Utils.VectorSpaceDimensions + 1);
 
     switch (id)
     {
@@ -1948,11 +1948,11 @@ private static #double#[] #name#(#double#[] scalars)
 end self_bilinearproduct
 
 begin selfgp_case
-new #frame#kVector(#grade#, #name#(scalars))
+new #signature#kVector(#grade#, #name#(scalars))
 end selfgp_case
 
 begin selfgp
-private static #frame#kVector[] #name#(#double#[] scalars)
+private static #signature#kVector[] #name#(#double#[] scalars)
 {
     return new[]
     {
@@ -1969,10 +1969,10 @@ case #grade#:
 end selfgp_main_case
 
 begin selfgp_main
-public #frame#kVector[] #name#()
+public #signature#kVector[] #name#()
 {
     if (IsZero)
-        return new #frame#kVector[0];
+        return new #signature#kVector[0];
 
     switch (Grade)
     {
@@ -1988,13 +1988,13 @@ end selfgp_main
 begin dp_case
 scalars = #name#(scalars1, scalars2);
 if (IsNearZero#num#(scalars) == false)
-    return new #frame#kVector(#grade#, scalars);
+    return new #signature#kVector(#grade#, scalars);
 
 
 end dp_case
 
 begin dp
-private static #frame#kVector #name#(#double#[] scalars1, #double#[] scalars2)
+private static #signature#kVector #name#(#double#[] scalars1, #double#[] scalars2)
 {
     //Try all Euclidean geometric products for these two input grades starting from largest to smallest
     //output grade
@@ -2002,7 +2002,7 @@ private static #frame#kVector #name#(#double#[] scalars1, #double#[] scalars2)
     #double#[] scalars;
 
     #dp_case#
-    return #frame#Multivector.Zero;
+    return #signature#Multivector.Zero;
 }
 
 
@@ -2015,12 +2015,12 @@ case #id#:
 end dp_main_case
 
 begin dp_main
-public #frame#kVector #name#(#frame#kVector blade2)
+public #signature#kVector #name#(#signature#kVector blade2)
 {
     if (IsZero || blade2.IsZero)
-        return #frame#Multivector.Zero;
+        return #signature#Multivector.Zero;
 
-    var id = Grade + blade2.Grade * (#frame#Utils.VectorSpaceDimensions + 1);
+    var id = Grade + blade2.Grade * (#signature#Utils.VectorSpaceDimensions + 1);
 
     switch (id)
     {
@@ -2034,16 +2034,16 @@ end dp_main
 begin applyversor_main_case
 //grade1: #g1#, grade2: #g2#
 case #id#:
-    return new #frame#kVector(#grade#, #name#(Scalars, blade2.Scalars));
+    return new #signature#kVector(#grade#, #name#(Scalars, blade2.Scalars));
 end applyversor_main_case
 
 begin applyversor_main
-public #frame#kVector #name#(#frame#kVector blade2)
+public #signature#kVector #name#(#signature#kVector blade2)
 {
     if (blade2.IsZero)
-        return #frame#Multivector.Zero;
+        return #signature#Multivector.Zero;
 
-    var id = Grade + blade2.Grade * (#frame#Utils.VectorSpaceDimensions + 1);
+    var id = Grade + blade2.Grade * (#signature#Utils.VectorSpaceDimensions + 1);
 
     switch (id)
     {
@@ -2056,12 +2056,12 @@ public #frame#kVector #name#(#frame#kVector blade2)
 end applyversor_main
 
 begin op_vectors
-private static #frame#kVector OP#grade#(#frame#Vector[] vectors)
+private static #signature#kVector OP#grade#(#signature#Vector[] vectors)
 {
     var scalars = new #double#[#num#];
 
     #computations#
-    return new #frame#kVector(#grade#, scalars);
+    return new #signature#kVector(#grade#, scalars);
 }
 
 
@@ -2073,12 +2073,12 @@ case #grade#:
 end op_vectors_main_case
 
 begin op_vectors_main
-public static #frame#kVector OP(#frame#Vector[] vectors)
+public static #signature#kVector OP(#signature#Vector[] vectors)
 {
     switch (vectors.Length)
     {
         case 0:
-            return #frame#Multivector.Zero;
+            return #signature#Multivector.Zero;
         case 1:
             return vectors[0].ToBlade();
         #op_vectors_main_case#
@@ -2099,7 +2099,7 @@ end op_vectors_main
 delimiters #
 
 begin factor
-private static #frame#Vector[] Factor#id#(#double#[] scalars)
+private static #signature#Vector[] Factor#id#(#double#[] scalars)
 {
     var vectors = new[] 
     {
@@ -2148,7 +2148,7 @@ case #id#:
 end factorgrade_case
 
 begin factorgrade
-private static #frame#Vector[] FactorGrade#grade#(#double#[] scalars)
+private static #signature#Vector[] FactorGrade#grade#(#double#[] scalars)
 {
     var maxCoefId = MaxCoefId#grade#(scalars);
 
@@ -2165,29 +2165,29 @@ end factorgrade
 
 begin factor_main_case
 case #grade#:
-    return new #frame#FactoredBlade(#name#_#grade#(Scalars), FactorGrade#grade#(Scalars));
+    return new #signature#FactoredBlade(#name#_#grade#(Scalars), FactorGrade#grade#(Scalars));
 
 end factor_main_case
 
 begin factor_main
-public #frame#FactoredBlade Factor()
+public #signature#FactoredBlade Factor()
 {
     if (IsZero)
-        return new #frame#FactoredBlade(0.0D);
+        return new #signature#FactoredBlade(0.0D);
 
     switch (Grade)
     {
         case 0:
-            return new #frame#FactoredBlade(Scalars[0]);
+            return new #signature#FactoredBlade(Scalars[0]);
 
         case 1:
             var vector = ToVector();
             var norm = vector.Normalize();
-            return new #frame#FactoredBlade(norm, vector);
+            return new #signature#FactoredBlade(norm, vector);
 
         #factor_main_case#
         case #maxgrade#:
-            return new #frame#FactoredBlade(Scalars[0],  #frame#Vector.BasisVectors());
+            return new #signature#FactoredBlade(Scalars[0],  #signature#Vector.BasisVectors());
     }
 
     throw new InvalidDataException(""Internal error. Blade grade not acceptable!"");

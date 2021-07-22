@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
-using GeometricAlgebraFulcrumLib.Algebra.Signatures;
+using GeometricAlgebraFulcrumLib.Algebra.Outermorphisms;
+using GeometricAlgebraFulcrumLib.Geometry;
 using GeometricAlgebraFulcrumLib.Geometry.Euclidean;
+using GeometricAlgebraFulcrumLib.Processing;
+using GeometricAlgebraFulcrumLib.Processing.Generic;
 using GeometricAlgebraFulcrumLib.Processing.Implementations.Float64;
 using GeometricAlgebraFulcrumLib.Processing.Matrices;
+using GeometricAlgebraFulcrumLib.Processing.Products.Euclidean;
 using GeometricAlgebraFulcrumLib.Storage;
 using GeometricAlgebraFulcrumLib.Storage.Composers;
 using GeometricAlgebraFulcrumLib.Symbolic.Applications.GaPoT;
-using GeometricAlgebraFulcrumLib.Text;
+using GeometricAlgebraFulcrumLib.TextComposers;
 
 namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
 {
@@ -23,6 +27,9 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
         public static GaScalarProcessorFloat64 ScalarProcessor { get; }
             = GaScalarProcessorFloat64.DefaultProcessor;
             
+        public static GaProcessorGenericOrthonormal<double> MultivectorProcessor { get; }
+            = GaProcessorGenericOrthonormal<double>.CreateEuclidean(ScalarProcessor,63);
+
         public static GaTextComposerFloat64 TextComposer { get; }
             = GaTextComposerFloat64.DefaultComposer;
             
@@ -30,7 +37,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
             = GaLaTeXComposerFloat64.DefaultComposer;
 
 
-        public static void ValidatePhasor(int k, int n, IGaVectorStorage<double> phasor2, double theta)
+        public static void ValidatePhasor(int k, int n, IGasVector<double> phasor2, double theta)
         {
             var composer = new GaKVectorStorageComposer<double>(ScalarProcessor, 1);
 
@@ -67,17 +74,16 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
             Console.WriteLine();
         }
 
-        public static Tuple<IGaVectorStorage<double>, IGaVectorStorage<double>> GetComponentPhasorsTuple(int i, int k, int n, double theta)
+        public static Tuple<IGasVector<double>, IGasVector<double>> GetComponentPhasorsTuple(int i, int k, int n, double theta)
         {
             Debug.Assert(n >= 2 && i >= 0 && i < n);
 
             var muStorage =
-                GaVectorTermStorage<double>.Create(
-                    ScalarProcessor, i, 1
+                ScalarProcessor.CreateVector(i, 1
                 );
 
             var muSubspace = 
-                GaEuclideanSubspace<double>.Create(muStorage);
+                GaSubspace<double>.Create(MultivectorProcessor, muStorage);
 
             //var muVector =
             //    GaEuclideanVector<double>.Create(muStorage);
@@ -87,7 +93,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
                 : Math.Cos(k * theta - 2d * Math.PI * i / n);
 
             var rotor = GaEuclideanSimpleRotor<double>.CreateGivensRotor(
-                ScalarProcessor, i, n, angle
+                MultivectorProcessor, i, n, angle
             );
 
             var phasor1 =
@@ -112,13 +118,13 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
             //);
             //Console.WriteLine();
 
-            return new Tuple<IGaVectorStorage<double>, IGaVectorStorage<double>>(
+            return new Tuple<IGasVector<double>, IGasVector<double>>(
                 phasor1,
                 phasor2
             );
         }
 
-        public static Tuple<IGaVectorStorage<double>, IGaVectorStorage<double>> GetPhasorsTuple(int k, int n, double theta)
+        public static Tuple<IGasVector<double>, IGasVector<double>> GetPhasorsTuple(int k, int n, double theta)
         {
             var phasorTuples =
                 Enumerable
@@ -130,7 +136,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
                 phasorTuples
                     .Select(t => t.Item1)
                     .Aggregate(
-                        (IGaMultivectorStorage<double>) GaVectorTermStorage<double>.CreateZero(ScalarProcessor),
+                        (IGasMultivector<double>) ScalarProcessor.CreateZeroVector(),
                         (current, vector) => current.Add(vector)
                     )
                     .GetVectorPart();
@@ -139,7 +145,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
                 phasorTuples
                     .Select(t => t.Item2)
                     .Aggregate(
-                        (IGaMultivectorStorage<double>) GaVectorTermStorage<double>.CreateZero(ScalarProcessor),
+                        (IGasMultivector<double>) ScalarProcessor.CreateZeroVector(),
                         (current, vector) => current.Add(vector)
                     )
                     .GetVectorPart();
@@ -156,7 +162,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
             );
             Console.WriteLine();
 
-            return new Tuple<IGaVectorStorage<double>, IGaVectorStorage<double>>(
+            return new Tuple<IGasVector<double>, IGasVector<double>>(
                 phasor1,
                 phasor2
             );
@@ -170,7 +176,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
                 Console.WriteLine();
 
                 var unitKirchhoffVector = 
-                    GaVectorStorage<double>.CreateUnitOnesVector(ScalarProcessor, n);
+                    ScalarProcessor.CreateUnitOnesVector(n);
 
                 var theta = 
                     RandomGenerator.NextDouble() * 2d * Math.PI;
@@ -178,10 +184,10 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
                 var (_, inputPhasor) = GetPhasorsTuple(1, n, theta);
 
                 var e1 = 
-                    GaVectorTermStorage<double>.CreateBasisVector(ScalarProcessor, 0);
+                    ScalarProcessor.CreateBasisVector(0);
 
                 var e2 = 
-                    GaVectorTermStorage<double>.CreateBasisVector(ScalarProcessor, 1);
+                    ScalarProcessor.CreateBasisVector(1);
 
                 var (_, mv1) = GetPhasorsTuple(1, n, 0);
 
@@ -206,10 +212,10 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
                 var clarkeMap =
                     //GaEuclideanSimpleRotor<double>.Create(v1, v2, e1, e2);
                     //ScalarProcessor.CreateSimpleKirchhoffRotor(n);
-                    ScalarProcessor.CreateClarkeMap(n);
+                    MultivectorProcessor.CreateClarkeMap(n);
 
                 var clarkeArray = 
-                    clarkeMap.GetArray(n, n);
+                    clarkeMap.GetVectorsMappingArray(n, n);
                 
                 Console.WriteLine("Generated Clarke Matrix:");
                 Console.WriteLine(
@@ -253,7 +259,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
                     var i = j; //2 * j;
 
                     rotorsArray[j] =
-                        ScalarProcessor.ComplexEigenPairToEuclideanSimpleRotor(
+                        MultivectorProcessor.ComplexEigenPairToEuclideanSimpleRotor(
                             realPairs[i].Item1,
                             imagPairs[i].Item1,
                             realPairs[i].Item2,
@@ -262,17 +268,17 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
 
                     Console.WriteLine($"Rotor {j+1}");
                     Console.WriteLine(
-                        TextComposer.GetMultivectorText(rotorsArray[j].Storage)
+                        TextComposer.GetMultivectorText(rotorsArray[j].Rotor)
                     );
                     Console.WriteLine();
                 }
 
                 var rotorsSequence = 
-                    GaEuclideanSimpleRotorsSequence<double>.Create(rotorsArray);
+                    GaEuclideanSimpleRotorsSequence<double>.Create(MultivectorProcessor, rotorsArray);
                 
                 Console.WriteLine($"Final Rotor");
                 Console.WriteLine(
-                    TextComposer.GetMultivectorText(rotorsSequence.GetFinalRotor().Storage)
+                    TextComposer.GetMultivectorText(rotorsSequence.GetFinalRotor().Rotor)
                 );
                 Console.WriteLine();
                 

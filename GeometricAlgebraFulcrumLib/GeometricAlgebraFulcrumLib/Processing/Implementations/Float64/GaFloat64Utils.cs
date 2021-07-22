@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Linq;
-using GeometricAlgebraFulcrumLib.Geometry;
-using GeometricAlgebraFulcrumLib.Geometry.Euclidean;
+using GeometricAlgebraFulcrumLib.Algebra;
+using GeometricAlgebraFulcrumLib.Algebra.Outermorphisms;
+using GeometricAlgebraFulcrumLib.Processing.Generic;
 using GeometricAlgebraFulcrumLib.Processing.Matrices;
 using GeometricAlgebraFulcrumLib.Storage;
-using GeometricAlgebraFulcrumLib.Text;
+using GeometricAlgebraFulcrumLib.TextComposers;
 using MathNet.Numerics.LinearAlgebra.Double;
 
 namespace GeometricAlgebraFulcrumLib.Processing.Implementations.Float64
@@ -13,6 +14,12 @@ namespace GeometricAlgebraFulcrumLib.Processing.Implementations.Float64
     {
         public static GaScalarProcessorFloat64 ScalarProcessor
             => GaScalarProcessorFloat64.DefaultProcessor;
+
+        public static GaProcessorGenericEuclidean<double> EuclideanProcessor { get; }
+            = GaProcessorGenericEuclidean<double>.Create(
+                GaScalarProcessorFloat64.DefaultProcessor,
+                GaSpaceUtils.MaxVSpaceDimension
+            );
 
         public static GaMatrixProcessorFloat64 MatrixProcessor
             => GaMatrixProcessorFloat64.DefaultProcessor;
@@ -24,36 +31,20 @@ namespace GeometricAlgebraFulcrumLib.Processing.Implementations.Float64
             => GaTextComposerFloat64.DefaultComposer;
 
 
-        public static GaVectorStorage<double> CreateVector(params double[] scalarArray)
+        public static IGasVector<double> CreateVector(params double[] scalarArray)
         {
-            return GaVectorStorage<double>.Create(
-                ScalarProcessor,
-                scalarArray
-            );
+            return ScalarProcessor.CreateVector(scalarArray);
         }
 
-        public static IGaVectorStorage<double> CreateBasisVector(int index)
+        public static IGasVector<double> CreateBasisVector(int index)
         {
-            return GaVectorTermStorage<double>.CreateBasisVector(
-                ScalarProcessor,
-                index
-            );
+            return ScalarProcessor.CreateBasisVector(index);
         }
 
-        public static GaVectorsLinearMap<double> CreateVectorsLinearMap(int basisVectorsCount, Func<IGaVectorStorage<double>, IGaVectorStorage<double>> basisVectorMapFunc)
-        {
-            return GaVectorsLinearMap<double>.Create(
-                ScalarProcessor,
-                basisVectorsCount,
-                basisVectorMapFunc
-            );
-        }
-
-
-        public static Matrix GetMatrix(this IGaVectorsLinearMap<double> linearMap, int rowsCount, int columnsCount)
+        public static Matrix GetMatrix(this IGaOutermorphism<double> linearMap, int rowsCount, int columnsCount)
         {
             return MatrixProcessor.CreateMatrix(
-                linearMap.GetArray(rowsCount, columnsCount)
+                linearMap.GetVectorsMappingArray(rowsCount, columnsCount)
             );
         }
 
@@ -63,14 +54,14 @@ namespace GeometricAlgebraFulcrumLib.Processing.Implementations.Float64
             return (DenseMatrix) DenseMatrix.Build.DenseOfArray(array);
         }
 
-        public static Matrix VectorToRowVectorMatrix(this IGaVectorStorage<double> vector, int vSpaceDimension)
+        public static Matrix VectorToRowVectorMatrix(this IGasVector<double> vector, uint vSpaceDimension)
         {
             return MatrixProcessor.CreateRowVectorMatrix(
                 vector.VectorToArray(vSpaceDimension)
             );
         }
 
-        public static Matrix VectorToColumnVectorMatrix(this IGaVectorStorage<double> vector, int vSpaceDimension)
+        public static Matrix VectorToColumnVectorMatrix(this IGasVector<double> vector, uint vSpaceDimension)
         {
             return MatrixProcessor.CreateColumnVectorMatrix(
                 vector.VectorToArray(vSpaceDimension)
@@ -89,66 +80,66 @@ namespace GeometricAlgebraFulcrumLib.Processing.Implementations.Float64
             //);
         }
 
-        public static Matrix BivectorToRowVectorMatrix(this IGaBivectorStorage<double> bivector, int vSpaceDimension)
+        public static Matrix BivectorToRowVectorMatrix(this IGasBivector<double> bivector, uint vSpaceDimension)
         {
             return MatrixProcessor.CreateRowVectorMatrix(
                 bivector.BivectorToArray(vSpaceDimension)
             );
         }
 
-        public static Matrix BivectorToColumnVectorMatrix(this IGaBivectorStorage<double> bivector, int vSpaceDimension)
+        public static Matrix BivectorToColumnVectorMatrix(this IGasBivector<double> bivector, uint vSpaceDimension)
         {
             return MatrixProcessor.CreateColumnVectorMatrix(
                 bivector.BivectorToArray(vSpaceDimension)
             );
         }
 
-        public static Matrix BivectorToMatrix(this IGaBivectorStorage<double> bivector, int vSpaceDimension)
+        public static Matrix BivectorToMatrix(this IGasBivector<double> bivector, uint vSpaceDimension)
         {
             return MatrixProcessor.CreateMatrix(
                 bivector.BivectorToArray2D(vSpaceDimension)
             );
         }
 
-        public static Matrix ScalarPlusBivectorToMatrix(this IGaMultivectorStorage<double> multivector, int vSpaceDimension)
+        public static Matrix ScalarPlusBivectorToMatrix(this IGasMultivector<double> multivector, uint vSpaceDimension)
         {
             return MatrixProcessor.CreateMatrix(
                 multivector.ScalarPlusBivectorToArray2D(vSpaceDimension)
             );
         }
 
-        public static Matrix KVectorToRowVectorMatrix(this IGaVectorStorage<double> vector, int vSpaceDimension)
+        public static Matrix KVectorToRowVectorMatrix(this IGasVector<double> vector, uint vSpaceDimension)
         {
             return MatrixProcessor.CreateRowVectorMatrix(
                 vector.KVectorToArray(vSpaceDimension)
             );
         }
 
-        public static Matrix KVectorToColumnVectorMatrix(this IGaVectorStorage<double> vector, int vSpaceDimension)
+        public static Matrix KVectorToColumnVectorMatrix(this IGasVector<double> vector, uint vSpaceDimension)
         {
             return MatrixProcessor.CreateColumnVectorMatrix(
                 vector.KVectorToArray(vSpaceDimension)
             );
         }
 
-        public static Matrix MultivectorToRowVectorMatrix(this IGaMultivectorStorage<double> multivector, int vSpaceDimension)
+        public static Matrix MultivectorToRowVectorMatrix(this IGasMultivector<double> multivector, uint vSpaceDimension)
         {
             return MatrixProcessor.CreateRowVectorMatrix(
                 multivector.MultivectorToArray(vSpaceDimension)
             );
         }
 
-        public static Matrix MultivectorToColumnVectorMatrix(this IGaMultivectorStorage<double> multivector, int vSpaceDimension)
+        public static Matrix MultivectorToColumnVectorMatrix(this IGasMultivector<double> multivector, uint vSpaceDimension)
         {
             return MatrixProcessor.CreateColumnVectorMatrix(
                 multivector.MultivectorToArray(vSpaceDimension)
             );
         }
 
-        public static SparseMatrix VectorToSparseColumnVectorMatrix(this IGaVectorStorage<double> vector, int vSpaceDimension)
+        public static SparseMatrix VectorToSparseColumnVectorMatrix(this IGasVector<double> vector, uint vSpaceDimension)
         {
             return (SparseMatrix) SparseMatrix.Build.SparseOfIndexed(
-                vSpaceDimension,
+                (int) vSpaceDimension,
                 1,
                 vector
                     .GetIndexScalarPairs()
@@ -161,7 +152,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Implementations.Float64
         }
 
 
-        public static string GetText(this IGaMultivectorStorage<double> mv)
+        public static string GetText(this IGasMultivector<double> mv)
         {
             return TextComposer.GetMultivectorText(mv);
         }
@@ -171,7 +162,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Implementations.Float64
             return TextComposer.GetArrayText(array);
         }
 
-        public static string GetLaTeX(this IGaMultivectorStorage<double> mv)
+        public static string GetLaTeX(this IGasMultivector<double> mv)
         {
             return LaTeXComposer.GetMultivectorText(mv);
         }
