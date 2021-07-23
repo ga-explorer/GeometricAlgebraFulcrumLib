@@ -15,7 +15,11 @@ GA-FuL is intended to:
 
 ## Examples
 
-### Numerical Geometric Algebra
+Typically, GA-FuL requires selecting a *processor* when making computations on multivectors. A processor is a special object capable of performing basic operations on scalars such as addition, subtraction, multiplication, division, negation, in addition to basic functions (sin, cos, exp, log, etc.). In GA-FuL, all processors implement the generic interface `IGaScalarProcessor<T>` under the `GeometricAlgebraFulcrumLib.Processing.Scalars` namespace, where `T` is the type of scalar used. Common operations on multivectors (for example the geometric and other products, the reverse, and grade involution) are all defined in terms of the methods of interface `IGaScalarProcessor<T>`. A processor can also be used for constructing multivectors of various kinds (scalars, vectors, bivectors, k-vectors, and general multivectors). Each kind of scalars has its own processor, and you can define your own processor for any new kind of scalars by properly implementing the `IGaScalarProcessor<T>` interface. 
+
+### Numerical Geometric Algebra Computations
+
+The following example shows how to use simplest of processors: the 64-bits floating point scalar processor. More examples can be found under the `GeometricAlgebraFulcrumLib.Samples.Numeric` namespace.
 
 ```csharp
 using System;
@@ -77,7 +81,9 @@ u op v = '3.18'<1, 2>, '-0.105'<1, 3>, '-3.225'<2, 3>
 \boldsymbol{u}\wedge\boldsymbol{v} = \left( 3.18 \right) \boldsymbol{e}_{1,2} + \left( -0.105 \right) \boldsymbol{e}_{1,3} + \left( -3.225 \right) \boldsymbol{e}_{2,3}
 ```
 
-### Symbolic Geometric Algebra
+### Symbolic Geometric Algebra Computations
+
+The following example shows how to use the pre-defined symbolic processors. This processor depends on <a href="https://www.wolfram.com/mathematica/" target="_blank">Wolfram Mathematica</a> and its <a href="https://reference.wolfram.com/language/NETLink/ref/net/Wolfram.NETLink.Expr.html" target="_blank">Expr object</a> for manipulating general scalar symbolic expressions. More examples can be found under the `GeometricAlgebraFulcrumLib.Samples.Symbolic` namespace. Note that the code is almost identical to the numeric example above.
 
 ```csharp
 using System;
@@ -93,16 +99,16 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic
     {
         public static void Execute()
         {
-            // This is a pre-defined scalar processor for the standard
-            // 64-bit floating point scalars
+            // This is a pre-defined scalar processor for the symbolic
+            // Wolfram Mathematica scalars using Expr objects
             var processor = GaScalarProcessorMathematicaExpr.DefaultProcessor;
 
             // This is a pre-defined text generator for displaying multivectors
-            // with 64-bit floating point scalars
+            // with symbolic Wolfram Mathematica scalars using Expr objects
             var textComposer = GaTextComposerMathematicaExpr.DefaultComposer;
 
             // This is a pre-defined LaTeX generator for displaying multivectors
-            // with 64-bit floating point scalars
+            // with symbolic Wolfram Mathematica scalars using Expr objects
             var latexComposer = GaLaTeXComposerMathematicaExpr.DefaultComposer;
 
             // Create two vectors each having 3 components (a 3-dimensional GA)
@@ -113,9 +119,9 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic
             var bv = u.Op(v);
 
             // Display a text representation of the vectors and their outer product
-            Console.WriteLine($@"v1 = {textComposer.GetMultivectorText(u)}");
-            Console.WriteLine($@"v2 = {textComposer.GetMultivectorText(v)}");
-            Console.WriteLine($@"v1 op v2 = {textComposer.GetMultivectorText(bv)}");
+            Console.WriteLine($@"u = {textComposer.GetMultivectorText(u)}");
+            Console.WriteLine($@"v = {textComposer.GetMultivectorText(v)}");
+            Console.WriteLine($@"u op v = {textComposer.GetMultivectorText(bv)}");
             Console.WriteLine();
 
             // Display a LaTeX representation of the vectors and their outer product
@@ -141,6 +147,8 @@ v1 op v2 = 'Plus[Times[-1,Subscript[u,2],Subscript[v,1]],Times[Subscript[u,1],Su
 ```
 
 ### Code Generation using Geometric Algebra
+
+The code generation capabilities of GA-FuL are comprehensive and sophisticated. They range from generating code for a single operation on multivectors to generating a full software library with nested folder\file structure and proper software architecture. The following example illustrates the bare minimum for generating an internal code representation for the outer product of two vectors in 3-dimensions. The differences between this code and the previous numeric and symbolic examples is mainly due to the special requirements imposed by code generation. These are not related to GA and its multivectors, but rather to concepts of <a href="https://en.wikipedia.org/wiki/Automatic_programming" target="_blank">Automatic Programming</a>.
 
 ```csharp
 using System;
