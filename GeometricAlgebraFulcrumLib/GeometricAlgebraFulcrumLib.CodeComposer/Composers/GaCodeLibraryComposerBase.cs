@@ -1,18 +1,14 @@
 ﻿using CodeComposerLib;
 using CodeComposerLib.Irony.Semantic;
 using CodeComposerLib.Languages;
-using GeometricAlgebraFulcrumLib.CodeComposer.LanguageServers;
+using GeometricAlgebraFulcrumLib.CodeComposer.Languages;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
 using TextComposerLib.Loggers.Progress;
 
 namespace GeometricAlgebraFulcrumLib.CodeComposer.Composers
 {
-    /// <summary>
-    /// This class represents a text generator that can access information from a GaClcAST to generate text into
-    /// code files in a base output folder. This class should be the base for all GaClc-based code generation processes
-    /// </summary>
     public abstract class GaCodeLibraryComposerBase : 
-        CodeLibraryComposer
+        CclCodeLibraryComposerBase, IGaCodeComposer
     {
         public override string ProgressSourceId 
             => Name;
@@ -20,27 +16,28 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Composers
         public override ProgressComposer Progress 
             => null;
 
-        public override LanguageServer Language 
-            => GaClcLanguage;
+        public override CclLanguageServerBase Language 
+            => GaLanguage;
 
         /// <summary>
         /// The GaClc target language of this generator
         /// </summary>
-        public GaClcLanguageServer GaClcLanguage { get; }
+        public GaLanguageServer GaLanguage { get; }
 
         public SymbolicContextOptions DefaultContextOptions { get; }
             = new SymbolicContextOptions();
 
-        public GaClcSymbolicContextCodeComposerOptions DefaultContextCodeComposerOptions { get; }
-            = new GaClcSymbolicContextCodeComposerOptions();
+        public GaSymbolicContextCodeComposerOptions DefaultContextCodeComposerOptions { get; }
+            = new GaSymbolicContextCodeComposerOptions();
+
 
         /// <summary>
         /// All derived classes must take a single AstRoot parameter for uniform operation purposes
         /// </summary>
         /// <param name="targetLanguage"></param>
-        protected GaCodeLibraryComposerBase(GaClcLanguageServer targetLanguage)
+        protected GaCodeLibraryComposerBase(GaLanguageServer targetLanguage)
         {
-            GaClcLanguage = targetLanguage;
+            GaLanguage = targetLanguage;
         }
 
 
@@ -55,9 +52,9 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Composers
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        public virtual GaClcSymbolicContextCodeComposer CreateSymbolicContextCodeComposer(SymbolicContext context)
+        public virtual GaSymbolicContextCodeComposer CreateSymbolicContextCodeComposer(SymbolicContext context)
         {
-            return new GaClcSymbolicContextCodeComposer(this, context);
+            return new GaSymbolicContextCodeComposer(GaLanguage, context);
         }
 
         /// <summary>
@@ -67,7 +64,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Composers
         public void GenerateComment(string commentText)
         {
             ActiveFileTextComposer.AppendLineAtNewLine(
-                GaClcLanguage.CodeComposer.GenerateCode(
+                GaLanguage.CodeGenerator.GenerateCode(
                     SyntaxFactory.Comment(commentText)
                 )
             );

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using GeometricAlgebraFulcrumLib.Algebra;
+using GeometricAlgebraFulcrumLib.CodeComposer.Languages;
 using TextComposerLib.Text.Linear;
 using TextComposerLib.Text.Structured;
 
@@ -9,10 +10,10 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
     internal sealed class DpDualMethodsFileComposer : 
         GaLibraryFileComposerBase 
     {
-        internal GaClcOperationSpecs OperationSpecs { get; }
+        internal GaLanguageOperationSpecs OperationSpecs { get; }
 
 
-        internal DpDualMethodsFileComposer(GaLibraryComposer libGen, GaClcOperationSpecs opSpecs)
+        internal DpDualMethodsFileComposer(GaLibraryComposer libGen, GaLanguageOperationSpecs opSpecs)
             : base(libGen)
         {
             OperationSpecs = opSpecs;
@@ -33,7 +34,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
                     VSpaceDimension - outGrade;
 
                 var funcName = 
-                    GaClcOperationKind
+                    GaLanguageOperationKind
                         .BinaryGeometricProductDual
                         .CreateEuclideanOperationSpecs()
                         .GetName(inGrade1, inGrade2, invGrade);
@@ -50,7 +51,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
                 Templates["dp"],
                 "signature", CurrentNamespace,
                 "name", OperationSpecs.GetName(inGrade1, inGrade2),
-                "double", GaClcLanguage.ScalarTypeName,
+                "double", GaLanguage.ScalarTypeName,
                 "dp_case", gpCaseText
             );
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using GeometricAlgebraFulcrumLib.Algebra.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Geometry.Euclidean;
+using GeometricAlgebraFulcrumLib.Processing;
 using GeometricAlgebraFulcrumLib.Processing.Generic;
 using GeometricAlgebraFulcrumLib.Processing.Implementations.Float64;
 using GeometricAlgebraFulcrumLib.Symbolic.Applications.GaPoT;
@@ -10,11 +11,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
 {
     public static class ClarkeTransformationNumericSample
     {
-        public static GaProcessorGenericOrthonormal<double> Processor { get; }
-            = GaProcessorGenericOrthonormal<double>.CreateEuclidean(
-                GaScalarProcessorFloat64.DefaultProcessor,
-                63
-            );
+        public static GaProcessorGenericEuclidean<double> Processor { get; }
+            = GaScalarProcessorFloat64.DefaultProcessor.CreateEuclideanProcessor(63);
 
         public static GaScalarProcessorFloat64 ScalarProcessor { get; }
             = GaScalarProcessorFloat64.DefaultProcessor;

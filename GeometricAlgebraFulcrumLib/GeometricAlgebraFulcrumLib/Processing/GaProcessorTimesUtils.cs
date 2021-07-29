@@ -23,6 +23,14 @@ namespace GeometricAlgebraFulcrumLib.Processing
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IGasScalar<T> Times<T>(this IGasScalar<T> scalar1, IGasScalar<T> scalar2)
+        {
+            return scalar1.ScalarProcessor.CreateScalar(
+                scalar1.ScalarProcessor.Times(scalar1.Scalar, scalar2.Scalar)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IGasVectorTerm<T> Times<T>(this IGasVectorTerm<T> mv, T scalar2)
         {
             return mv.ScalarProcessor.CreateVector(

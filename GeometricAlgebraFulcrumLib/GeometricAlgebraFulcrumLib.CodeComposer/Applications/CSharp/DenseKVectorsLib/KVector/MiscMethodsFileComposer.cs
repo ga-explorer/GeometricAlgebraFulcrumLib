@@ -5,6 +5,7 @@ using DataStructuresLib.BitManipulation;
 using GeometricAlgebraFulcrumLib.Algebra;
 using GeometricAlgebraFulcrumLib.Algebra.Basis;
 using GeometricAlgebraFulcrumLib.CodeComposer.Composers;
+using GeometricAlgebraFulcrumLib.CodeComposer.Languages;
 using GeometricAlgebraFulcrumLib.Processing.Products.Euclidean;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
@@ -75,8 +76,8 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
                 index => $"tempArray[{index}]"
             );
 
-            var macroComposer = new GaClcSymbolicContextCodeComposer(
-                DenseKVectorsLibraryComposer, 
+            var macroComposer = new GaSymbolicContextCodeComposer(
+                DenseKVectorsLibraryComposer.GaLanguage, 
                 context,
                 DenseKVectorsLibraryComposer.DefaultContextCodeComposerOptions
             );
@@ -86,7 +87,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
 
             TextComposer.Append(
                 Templates["edual"],
-                "double", GaClcLanguage.ScalarTypeName,
+                "double", GaLanguage.ScalarTypeName,
                 "grade", inGrade,
                 "num", Processor.KvSpaceDimension(inGrade),
                 "computations", computationsText
@@ -116,7 +117,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             var miscFuncsTemplate = Templates["misc"];
 
             TextComposer.Append(miscFuncsTemplate,
-                "double", GaClcLanguage.ScalarTypeName,
+                "double", GaLanguage.ScalarTypeName,
                 "num", kvSpaceDim,
                 "addcases", addCasesText,
                 "subtcases", subtCasesText,
@@ -125,7 +126,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         }
 
 
-        private void TestSelfDpGradeFunctionComputationCondition(SteSyntaxElementsList textBuilder, GaClcComputationCodeInfo compInfo)
+        private void TestSelfDpGradeFunctionComputationCondition(SteSyntaxElementsList textBuilder, GaSymbolicContextComputationCodeInfo compInfo)
         {
             if (compInfo.ComputedVariable.RhsExpression.ToString() == "0")
             {
@@ -145,7 +146,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             //    compInfo.EnableCodeGeneration = false;
         }
 
-        private static void AddSelfDpGradeFunctionComputationCondition(SteSyntaxElementsList textBuilder, GaClcComputationCodeInfo compInfo)
+        private static void AddSelfDpGradeFunctionComputationCondition(SteSyntaxElementsList textBuilder, GaSymbolicContextComputationCodeInfo compInfo)
         {
             if (compInfo.ComputedVariable.IsOutputVariable == false || compInfo.EnableCodeGeneration == false)
                 return;
@@ -210,8 +211,8 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
                 index => $"tempArray[{index}]"
             );
 
-            var macroComposer = new GaClcSymbolicContextCodeComposer(
-                DenseKVectorsLibraryComposer, 
+            var macroComposer = new GaSymbolicContextCodeComposer(
+                DenseKVectorsLibraryComposer.GaLanguage, 
                 context,
                 DenseKVectorsLibraryComposer.DefaultContextCodeComposerOptions
             );
@@ -228,7 +229,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             TextComposer.Append(
                 Templates["self_dp_grade"],
                 "grade", inGrade,
-                "double", GaClcLanguage.ScalarTypeName,
+                "double", GaLanguage.ScalarTypeName,
                 "computations", computationsText
             );
         }
@@ -297,9 +298,9 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             TextComposer.Append(
                 mainFuncsTemplate,
                 "signature", CurrentNamespace,
-                "double", GaClcLanguage.ScalarTypeName,
-                "norm2_opname", GaClcOperationKind.UnaryNormSquared.GetName(false),
-                "emag2_opname", GaClcOperationKind.UnaryNormSquared.GetName(true)
+                "double", GaLanguage.ScalarTypeName,
+                "norm2_opname", GaLanguageOperationKind.UnaryNormSquared.GetName(false),
+                "emag2_opname", GaLanguageOperationKind.UnaryNormSquared.GetName(true)
             );
 
             GenerateMainSelfDpGradeFunction();

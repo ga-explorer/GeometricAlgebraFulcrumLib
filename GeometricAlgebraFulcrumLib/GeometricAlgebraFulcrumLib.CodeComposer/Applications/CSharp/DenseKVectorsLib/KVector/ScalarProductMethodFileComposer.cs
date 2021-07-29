@@ -1,5 +1,6 @@
 ﻿using System;
 using GeometricAlgebraFulcrumLib.Algebra;
+using GeometricAlgebraFulcrumLib.CodeComposer.Languages;
 using GeometricAlgebraFulcrumLib.Processing.Products;
 using GeometricAlgebraFulcrumLib.Processing.Products.Euclidean;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions;
@@ -13,7 +14,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
     internal sealed class ScalarProductMethodFileComposer : 
         GaLibrarySymbolicContextFileComposerBase
     {
-        private readonly GaClcOperationSpecs _operationSpecs;
+        private readonly GaLanguageOperationSpecs _operationSpecs;
         private readonly uint _inputGrade;
         private readonly uint _outputGrade = 0U;
         private IGasKVector<ISymbolicExpressionAtomic> _inputKVector1;
@@ -21,7 +22,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         private SymbolicVariableComputed _outputScalar;
 
 
-        internal ScalarProductMethodFileComposer(GaLibraryComposer libGen, GaClcOperationSpecs opSpecs, uint inGrade)
+        internal ScalarProductMethodFileComposer(GaLibraryComposer libGen, GaLanguageOperationSpecs opSpecs, uint inGrade)
             : base(libGen)
         {
             _operationSpecs = opSpecs;
@@ -48,7 +49,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         {
             var outputScalar = _operationSpecs.OperationKind switch
             {
-                GaClcOperationKind.BinaryScalarProduct =>
+                GaLanguageOperationKind.BinaryScalarProduct =>
                     _operationSpecs.IsEuclidean
                         ? _inputKVector1.ESp(_inputKVector2)
                         : Processor.Sp(_inputKVector1, _inputKVector2),
@@ -99,7 +100,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
                 Templates["bilinearproduct"],
                 "name", methodName,
                 "num", kvSpaceDimension,
-                "double", GaClcLanguage.ScalarTypeName,
+                "double", GaLanguage.ScalarTypeName,
                 "computations", computationsText
             );
 

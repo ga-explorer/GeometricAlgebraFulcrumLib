@@ -11,7 +11,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Visitors
         /// <summary>
         /// Target language information
         /// </summary>
-        LanguageInfo LanguageInfo { get; }
+        CclLanguageInfo LanguageInfo { get; }
 
         /// <summary>
         /// The indentation string for this language code composer

@@ -34,7 +34,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             TextComposer.AppendAtNewLine(
                 t1,
                 "num", kvSpaceDim,
-                "double", GaClcLanguage.ScalarTypeName,
+                "double", GaLanguage.ScalarTypeName,
                 "iszero_case", iszeroCasesText,
                 "trimscalars_case", trimCoefsCasesText
             );

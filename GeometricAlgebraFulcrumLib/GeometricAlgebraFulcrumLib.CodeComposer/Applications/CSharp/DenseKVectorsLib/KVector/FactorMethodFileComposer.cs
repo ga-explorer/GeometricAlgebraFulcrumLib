@@ -125,7 +125,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
                 Templates["factor"],
                 "signature", CurrentNamespace,
                 "id", _inputId,
-                "double", GaClcLanguage.ScalarTypeName,
+                "double", GaLanguage.ScalarTypeName,
                 "newvectors", newVectorsText,
                 "computations", computationsText
             );

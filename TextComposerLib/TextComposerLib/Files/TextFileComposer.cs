@@ -64,13 +64,12 @@ namespace TextComposerLib.Files
             }
         }
 
+
         /// <summary>
         /// True if the final text is ready
         /// </summary>
         //public bool IsFinalTextReady => _textComposer == null;
-
-
-        internal TextFileComposer(string filePath)
+        public TextFileComposer(string filePath)
         {
             FilePath = filePath;
             FinalText = string.Empty;

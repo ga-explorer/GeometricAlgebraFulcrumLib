@@ -287,10 +287,10 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Mathematica
                 : MathematicaInterface.DefaultCas[Mfs.Simplify[expr]];
         }
 
-        public static Expr Simplify(this Expr expr, Expr assumeExpr)
+        public static Expr Simplify(this Expr expr, Expr assumptionsExpr)
         {
             return MathematicaInterface.DefaultCas[
-                Mfs.Simplify[expr, assumeExpr]
+                Mfs.Simplify[expr, assumptionsExpr]
             ];
         }
 
@@ -572,37 +572,37 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Mathematica
             return expr;
         }
 
-        public static bool IsBooleanScalar(this MathematicaScalar sc, Expr assumeExpr)
+        public static bool IsBooleanScalar(this MathematicaScalar sc, Expr assumptionsExpr)
         {
-            var cond = MathematicaCondition.CreateIsDomainMemberTest(sc, DomainSymbols.Booleans, assumeExpr);
+            var cond = MathematicaCondition.CreateIsDomainMemberTest(sc, DomainSymbols.Booleans, assumptionsExpr);
 
             return cond.IsConstantTrue();
         }
 
-        public static bool IsIntegerScalar(this MathematicaScalar sc, Expr assumeExpr)
+        public static bool IsIntegerScalar(this MathematicaScalar sc, Expr assumptionsExpr)
         {
-            var cond = MathematicaCondition.CreateIsDomainMemberTest(sc, DomainSymbols.Integers, assumeExpr);
+            var cond = MathematicaCondition.CreateIsDomainMemberTest(sc, DomainSymbols.Integers, assumptionsExpr);
 
             return cond.IsConstantTrue();
         }
 
-        public static bool IsRealScalar(this MathematicaScalar sc, Expr assumeExpr)
+        public static bool IsRealScalar(this MathematicaScalar sc, Expr assumptionsExpr)
         {
-            var cond = MathematicaCondition.CreateIsDomainMemberTest(sc, DomainSymbols.Reals, assumeExpr);
+            var cond = MathematicaCondition.CreateIsDomainMemberTest(sc, DomainSymbols.Reals, assumptionsExpr);
 
             return cond.IsConstantTrue();
         }
 
-        public static bool IsComplexScalar(this MathematicaScalar sc, Expr assumeExpr)
+        public static bool IsComplexScalar(this MathematicaScalar sc, Expr assumptionsExpr)
         {
-            var cond = MathematicaCondition.CreateIsDomainMemberTest(sc, DomainSymbols.Complexes, assumeExpr);
+            var cond = MathematicaCondition.CreateIsDomainMemberTest(sc, DomainSymbols.Complexes, assumptionsExpr);
 
             return cond.IsConstantTrue();
         }
 
-        public static bool IsRationalScalar(this MathematicaScalar sc, Expr assumeExpr)
+        public static bool IsRationalScalar(this MathematicaScalar sc, Expr assumptionsExpr)
         {
-            var cond = MathematicaCondition.CreateIsDomainMemberTest(sc, DomainSymbols.Rationals, assumeExpr);
+            var cond = MathematicaCondition.CreateIsDomainMemberTest(sc, DomainSymbols.Rationals, assumptionsExpr);
 
             return cond.IsConstantTrue();
         }

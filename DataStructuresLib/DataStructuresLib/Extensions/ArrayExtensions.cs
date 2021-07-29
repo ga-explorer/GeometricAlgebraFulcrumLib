@@ -336,6 +336,21 @@ namespace DataStructuresLib.Extensions
             return arrayOut;
         }
 
+        public static T[] GetSubArray<T>(this T[] arrayIn, IReadOnlyList<int> indicesList)
+        {
+            var n1 = indicesList.Count;
+            var arrayOut = new T[n1];
+
+            for (var i = 0; i < n1; i++)
+            {
+                var rowIndex = indicesList[i];
+
+                arrayOut[i] = arrayIn[rowIndex];
+            }
+
+            return arrayOut;
+        }
+
         public static T[,] GetSubArray<T>(this T[,] arrayIn, int i1, int i2, int j1, int j2)
         {
             var n1 = i2 - i1 + 1;
@@ -345,6 +360,27 @@ namespace DataStructuresLib.Extensions
             for (var i = 0; i < n1; i++)
             for (var j = 0; j < n2; j++)
                 arrayOut[i, j] = arrayIn[i + i1, j + j1];
+
+            return arrayOut;
+        }
+
+        public static T[,] GetSubArray<T>(this T[,] arrayIn, IReadOnlyList<int> rowIndicesList, IReadOnlyList<int> colIndicesList)
+        {
+            var n1 = rowIndicesList.Count;
+            var n2 = colIndicesList.Count;
+            var arrayOut = new T[n1, n2];
+
+            for (var i = 0; i < n1; i++)
+            {
+                var rowIndex = rowIndicesList[i];
+
+                for (var j = 0; j < n2; j++)
+                {
+                    var colIndex = colIndicesList[j];
+
+                    arrayOut[i, j] = arrayIn[rowIndex, colIndex];
+                }
+            }
 
             return arrayOut;
         }

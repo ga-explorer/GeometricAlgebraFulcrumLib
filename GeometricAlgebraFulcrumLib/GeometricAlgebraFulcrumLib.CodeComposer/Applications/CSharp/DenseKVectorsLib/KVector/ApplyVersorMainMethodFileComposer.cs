@@ -1,4 +1,5 @@
 ﻿using System;
+using GeometricAlgebraFulcrumLib.CodeComposer.Languages;
 using TextComposerLib.Text.Linear;
 using TextComposerLib.Text.Structured;
 
@@ -7,10 +8,10 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
     internal sealed class ApplyVersorMainMethodFileComposer : 
         GaLibraryFileComposerBase 
     {
-        internal GaClcOperationSpecs OperationSpecs { get; }
+        internal GaLanguageOperationSpecs OperationSpecs { get; }
 
 
-        internal ApplyVersorMainMethodFileComposer(GaLibraryComposer libGen, GaClcOperationSpecs opSpecs)
+        internal ApplyVersorMainMethodFileComposer(GaLibraryComposer libGen, GaLanguageOperationSpecs opSpecs)
             : base(libGen)
         {
             OperationSpecs = opSpecs;

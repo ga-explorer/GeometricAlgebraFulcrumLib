@@ -16,8 +16,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Implementations.Float64
             => GaScalarProcessorFloat64.DefaultProcessor;
 
         public static GaProcessorGenericEuclidean<double> EuclideanProcessor { get; }
-            = GaProcessorGenericEuclidean<double>.Create(
-                GaScalarProcessorFloat64.DefaultProcessor,
+            = GaScalarProcessorFloat64.DefaultProcessor.CreateEuclideanProcessor(
                 GaSpaceUtils.MaxVSpaceDimension
             );
 

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using GeometricAlgebraFulcrumLib.Algebra.Basis;
 using GeometricAlgebraFulcrumLib.Processing;
-using GeometricAlgebraFulcrumLib.Processing.Generic;
 using GeometricAlgebraFulcrumLib.Processing.Implementations.Float64;
 using GeometricAlgebraFulcrumLib.Processing.Products;
 using GeometricAlgebraFulcrumLib.Processing.Products.Euclidean;
@@ -21,10 +20,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
 
 
         public IGaProcessor<double> Processor { get; }
-            = GaProcessorGenericOrthonormal<double>.CreateEuclidean(
-                GaScalarProcessorFloat64.DefaultProcessor, 
-                5
-            );
+            = GaScalarProcessorFloat64.DefaultProcessor.CreateEuclideanProcessor(5);
 
         public uint VSpaceDimension 
             => Processor.VSpaceDimension;

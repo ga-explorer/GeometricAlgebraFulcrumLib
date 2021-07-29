@@ -1,6 +1,5 @@
 ﻿using System;
 using GeometricAlgebraFulcrumLib.Samples.CodeComposer;
-using GeometricAlgebraFulcrumLib.Samples.UnitTests;
 
 namespace GeometricAlgebraFulcrumLib.Samples
 {
@@ -8,13 +7,15 @@ namespace GeometricAlgebraFulcrumLib.Samples
     {
         static void Main(string[] args)
         {
-            //var testClass = new GaProductsTests();
+            //var testClass = new GaSimpleEuclideanRotorsTests();
             //testClass.ClassInit();
-            //testClass.AssertCorrectBinaryOperations("elcp");
+            //testClass.AssertRotations();
+
+            Sample1.Execute();
 
             //HilbertTransform.Execute();
 
-            Sample1.Execute();
+            //Sample2.Execute2();
 
             Console.WriteLine();
             Console.WriteLine("Press any key to exit..");

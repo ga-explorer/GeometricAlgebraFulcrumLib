@@ -1,5 +1,6 @@
 ﻿using System;
 using GeometricAlgebraFulcrumLib.Algebra;
+using GeometricAlgebraFulcrumLib.CodeComposer.Languages;
 using GeometricAlgebraFulcrumLib.Processing.Products;
 using GeometricAlgebraFulcrumLib.Processing.Products.Euclidean;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions;
@@ -18,10 +19,10 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         private IGasKVector<ISymbolicExpressionAtomic> _inputKVector;
         private IGasKVector<ISymbolicExpressionAtomic> _outputKVector;
 
-        internal GaClcOperationSpecs OperationSpecs { get; }
+        internal GaLanguageOperationSpecs OperationSpecs { get; }
 
 
-        internal UnaryGpMethodsFileComposer(GaLibraryComposer libGen, GaClcOperationSpecs opSpecs)
+        internal UnaryGpMethodsFileComposer(GaLibraryComposer libGen, GaLanguageOperationSpecs opSpecs)
             : base(libGen)
         {
             OperationSpecs = opSpecs;
@@ -41,12 +42,12 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         {
             _outputKVector = OperationSpecs.OperationKind switch
             {
-                GaClcOperationKind.UnaryGeometricProductSquared
+                GaLanguageOperationKind.UnaryGeometricProductSquared
                     => OperationSpecs.IsEuclidean
                         ? _inputKVector.EGp(_inputKVector).GetKVectorPart(_outGrade)
                         : Processor.Gp(_inputKVector, _inputKVector).GetKVectorPart(_outGrade),
 
-                GaClcOperationKind.UnaryGeometricProductReverse
+                GaLanguageOperationKind.UnaryGeometricProductReverse
                     => OperationSpecs.IsEuclidean
                         ? _inputKVector.EGp(_inputKVector.GetReverse()).GetKVectorPart(_outGrade)
                         : Processor.Gp(_inputKVector, _inputKVector.GetReverse()).GetKVectorPart(_outGrade),
@@ -91,7 +92,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
                 Templates["self_bilinearproduct"],
                 "name", funcName,
                 "num", kvSpaceDim,
-                "double", GaClcLanguage.ScalarTypeName,
+                "double", GaLanguage.ScalarTypeName,
                 "computations", computationsText
             );
         }
@@ -126,7 +127,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
                 Templates["selfgp"],
                 "signature", CurrentNamespace,
                 "name", OperationSpecs.GetName(inputGrade, inputGrade),
-                "double", GaClcLanguage.ScalarTypeName,
+                "double", GaLanguage.ScalarTypeName,
                 "selfgp_case", gpCaseText
             );
         }

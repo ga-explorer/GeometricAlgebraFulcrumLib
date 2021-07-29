@@ -1,5 +1,6 @@
 ﻿using System;
 using GeometricAlgebraFulcrumLib.Algebra;
+using GeometricAlgebraFulcrumLib.CodeComposer.Languages;
 using GeometricAlgebraFulcrumLib.Geometry;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
@@ -14,12 +15,12 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         private IGaSubspace<ISymbolicExpressionAtomic> _subspace;
         private IGasKVector<ISymbolicExpressionAtomic> _inputKVector;
         private IGasKVector<ISymbolicExpressionAtomic> _outputKVector;
-        private readonly GaClcOperationSpecs _operationSpecs;
+        private readonly GaLanguageOperationSpecs _operationSpecs;
         private readonly uint _inputGrade1;
         private readonly uint _inputGrade2;
 
 
-        internal ApplyVersorMethodFileComposer(GaLibraryComposer libGen, GaClcOperationSpecs opSpecs, uint inGrade1, uint inGrade2)
+        internal ApplyVersorMethodFileComposer(GaLibraryComposer libGen, GaLanguageOperationSpecs opSpecs, uint inGrade1, uint inGrade2)
             : base(libGen)
         {
             _operationSpecs = opSpecs;
@@ -51,16 +52,16 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         {
             _outputKVector = _operationSpecs.OperationKind switch
             {
-                GaClcOperationKind.BinaryProject => 
+                GaLanguageOperationKind.BinaryProject => 
                     _subspace.Project(_inputKVector).GetKVectorPart(_inputGrade2),
 
-                GaClcOperationKind.BinaryRotate => 
+                GaLanguageOperationKind.BinaryRotate => 
                     _subspace.Rotate(_inputKVector).GetKVectorPart(_inputGrade2),
 
-                GaClcOperationKind.BinaryReflect => 
+                GaLanguageOperationKind.BinaryReflect => 
                     _subspace.Reflect(_inputKVector).GetKVectorPart(_inputGrade2),
 
-                GaClcOperationKind.BinaryComplement => 
+                GaLanguageOperationKind.BinaryComplement => 
                     _subspace.Complement(_inputKVector).GetKVectorPart(_inputGrade2),
 
                 _ => throw new InvalidOperationException()
@@ -110,7 +111,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
                 Templates["bilinearproduct"],
                 "name", methodName,
                 "num", kvSpaceDimension,
-                "double", GaClcLanguage.ScalarTypeName,
+                "double", GaLanguage.ScalarTypeName,
                 "computations", computationsText
             );
 

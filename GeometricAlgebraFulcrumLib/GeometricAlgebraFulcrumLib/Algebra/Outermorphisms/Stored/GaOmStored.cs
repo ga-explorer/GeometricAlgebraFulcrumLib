@@ -50,12 +50,20 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Outermorphisms.Stored
 
         public IGasKVector<T> this[ulong id]
         {
-            get =>
-                _mappedBasisBladesDictionary.TryGetValue(id, out var value) && !ReferenceEquals(value, null)
+            get
+            {
+                if (id >= GaSpaceDimension)
+                    throw new IndexOutOfRangeException(nameof(id));
+
+                return _mappedBasisBladesDictionary.TryGetValue(id, out var value) && !ReferenceEquals(value, null)
                     ? value
                     : ScalarProcessor.CreateZeroKVector(id.BasisBladeGrade());
+            }
             set
             {
+                if (id >= GaSpaceDimension)
+                    throw new IndexOutOfRangeException(nameof(id));
+
                 if (ReferenceEquals(value, null))
                 {
                     _mappedBasisBladesDictionary.Remove(id);
@@ -75,29 +83,8 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Outermorphisms.Stored
         
         public IGasKVector<T> this[uint grade, ulong index]
         {
-            get =>
-                _mappedBasisBladesDictionary.TryGetValue(GaBasisUtils.BasisBladeId(grade, index), out var value) && !ReferenceEquals(value, null)
-                    ? value
-                    : ScalarProcessor.CreateZeroKVector(grade);
-            set
-            {
-                var id = GaBasisUtils.BasisBladeId(grade, index);
-
-                if (ReferenceEquals(value, null))
-                {
-                    _mappedBasisBladesDictionary.Remove(id);
-                    return;
-                }
-
-                if (value.Grade != grade)
-                    throw new InvalidOperationException();
-
-                if (_mappedBasisBladesDictionary.ContainsKey(id))
-                    _mappedBasisBladesDictionary[id] = value;
-
-                else
-                    _mappedBasisBladesDictionary.Add(id, value);
-            }
+            get => this[GaBasisUtils.BasisBladeId(grade, index)];
+            set => this[GaBasisUtils.BasisBladeId(grade, index)] = value;
         }
 
         public IEnumerable<ulong> Keys 

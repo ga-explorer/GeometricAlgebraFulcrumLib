@@ -1,4 +1,5 @@
-﻿using TextComposerLib.Text.Linear;
+﻿using GeometricAlgebraFulcrumLib.CodeComposer.Languages;
+using TextComposerLib.Text.Linear;
 
 namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVectorsLib.KVector
 {
@@ -21,8 +22,8 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             TextComposer.Append(
                 Templates["kvector"],
                 "signature", CurrentNamespace,
-                "double", GaClcLanguage.ScalarTypeName,
-                "norm2_opname", GaClcOperationKind.UnaryNormSquared.CreateEuclideanOperationSpecs().GetName()
+                "double", GaLanguage.ScalarTypeName,
+                "norm2_opname", GaLanguageOperationKind.UnaryNormSquared.CreateEuclideanOperationSpecs().GetName()
             );
 
             GenerateKVectorFileFinishCode();

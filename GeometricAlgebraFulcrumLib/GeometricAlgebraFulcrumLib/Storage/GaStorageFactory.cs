@@ -773,23 +773,29 @@ namespace GeometricAlgebraFulcrumLib.Storage
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GasKVectorTerm<T> CreateBasisBlade<T>(this IGaScalarProcessor<T> scalarProcessor, ulong id)
+        public static IGasKVectorTerm<T> CreateBasisBlade<T>(this IGaScalarProcessor<T> scalarProcessor, ulong id)
         {
-            return new GasKVectorTerm<T>(
-                scalarProcessor,
-                new GaBasisUniform(id),
-                scalarProcessor.OneScalar
-            );
+            var (grade, index) = id.BasisBladeGradeIndex();
+
+            return grade switch
+            {
+                0 => new GasScalar<T>(scalarProcessor, scalarProcessor.OneScalar),
+                1 => new GasVectorTerm<T>(scalarProcessor, index.CreateBasisVector(), scalarProcessor.OneScalar),
+                2 => new GasBivectorTerm<T>(scalarProcessor, index.CreateBasisBivector(), scalarProcessor.OneScalar),
+                _ => new GasKVectorTerm<T>(scalarProcessor, grade.CreateGradedBasisBlade(index), scalarProcessor.OneScalar)
+            };
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GasKVectorTerm<T> CreateBasisBlade<T>(IGaScalarProcessor<T> scalarProcessor, uint grade, ulong index)
+        public static IGasKVectorTerm<T> CreateBasisBlade<T>(IGaScalarProcessor<T> scalarProcessor, uint grade, ulong index)
         {
-            return new GasKVectorTerm<T>(
-                scalarProcessor,
-                grade.CreateGradedBasisBlade(index),
-                scalarProcessor.OneScalar
-            );
+            return grade switch
+            {
+                0 => new GasScalar<T>(scalarProcessor, scalarProcessor.OneScalar),
+                1 => new GasVectorTerm<T>(scalarProcessor, index.CreateBasisVector(), scalarProcessor.OneScalar),
+                2 => new GasBivectorTerm<T>(scalarProcessor, index.CreateBasisBivector(), scalarProcessor.OneScalar),
+                _ => new GasKVectorTerm<T>(scalarProcessor, grade.CreateGradedBasisBlade(index), scalarProcessor.OneScalar)
+            };
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

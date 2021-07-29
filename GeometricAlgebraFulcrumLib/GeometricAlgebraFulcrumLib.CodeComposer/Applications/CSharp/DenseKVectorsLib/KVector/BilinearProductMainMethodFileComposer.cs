@@ -1,4 +1,5 @@
 ﻿using System;
+using GeometricAlgebraFulcrumLib.CodeComposer.Languages;
 using TextComposerLib.Text.Linear;
 using TextComposerLib.Text.Structured;
 
@@ -7,7 +8,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
     internal sealed class BilinearProductMainMethodFileComposer : 
         GaLibraryFileComposerBase
     {
-        internal GaClcOperationSpecs OperationSpecs { get; }
+        internal GaLanguageOperationSpecs OperationSpecs { get; }
 
         internal string ZeroCondition { get; }
 
@@ -16,7 +17,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         internal Func<uint, uint, bool> IsLegalGrade { get; }
 
 
-        internal BilinearProductMainMethodFileComposer(GaLibraryComposer libGen, GaClcOperationSpecs opSpecs, string zeroCondition, Func<uint, uint, uint> getFinalGrade, Func<uint, uint, bool> isLegalGrade)
+        internal BilinearProductMainMethodFileComposer(GaLibraryComposer libGen, GaLanguageOperationSpecs opSpecs, string zeroCondition, Func<uint, uint, uint> getFinalGrade, Func<uint, uint, bool> isLegalGrade)
             : base(libGen)
         {
             OperationSpecs = opSpecs;

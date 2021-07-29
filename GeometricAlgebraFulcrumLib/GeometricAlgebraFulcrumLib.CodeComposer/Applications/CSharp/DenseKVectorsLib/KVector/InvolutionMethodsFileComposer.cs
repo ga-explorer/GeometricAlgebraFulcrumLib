@@ -3,6 +3,7 @@ using System.Linq;
 using DataStructuresLib.BitManipulation;
 using GeometricAlgebraFulcrumLib.Algebra;
 using GeometricAlgebraFulcrumLib.Algebra.Basis;
+using GeometricAlgebraFulcrumLib.CodeComposer.Languages;
 using TextComposerLib.Text.Linear;
 using TextComposerLib.Text.Structured;
 
@@ -29,12 +30,12 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             TextComposer.AppendAtNewLine(
                 Templates["negative"],
                 "num", kvSpaceDim,
-                "double", GaClcLanguage.ScalarTypeName,
+                "double", GaLanguage.ScalarTypeName,
                 "cases", casesText
             );
         }
 
-        private void GenerateMainInvolutionFunction(GaClcOperationSpecs opSpecs, Func<uint, bool> useNegative)
+        private void GenerateMainInvolutionFunction(GaLanguageOperationSpecs opSpecs, Func<uint, bool> useNegative)
         {
             var caseTemplate1 = Templates["main_negative_case"];
             var caseTemplate2 = Templates["main_negative_case2"];
@@ -75,22 +76,22 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
                 GenerateNegativeFunction(kvSpaceDim);
 
             GenerateMainInvolutionFunction(
-                GaClcOperationKind.UnaryNegative.CreateEuclideanOperationSpecs(), 
+                GaLanguageOperationKind.UnaryNegative.CreateEuclideanOperationSpecs(), 
                 _ => true
             );
 
             GenerateMainInvolutionFunction(
-                GaClcOperationKind.UnaryReverse.CreateEuclideanOperationSpecs(), 
+                GaLanguageOperationKind.UnaryReverse.CreateEuclideanOperationSpecs(), 
                 GaBasisUtils.GradeHasNegativeReverse
             );
 
             GenerateMainInvolutionFunction(
-                GaClcOperationKind.UnaryGradeInvolution.CreateEuclideanOperationSpecs(), 
+                GaLanguageOperationKind.UnaryGradeInvolution.CreateEuclideanOperationSpecs(), 
                 GaBasisUtils.GradeHasNegativeGradeInvolution
             );
 
             GenerateMainInvolutionFunction(
-                GaClcOperationKind.UnaryCliffordConjugate.CreateEuclideanOperationSpecs(), 
+                GaLanguageOperationKind.UnaryCliffordConjugate.CreateEuclideanOperationSpecs(), 
                 GaBasisUtils.GradeHasNegativeCliffordConjugate
             );
 

@@ -9,7 +9,7 @@ using GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVectorsL
 using GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVectorsLib.Multivector;
 using GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVectorsLib.Outermorphism;
 using GeometricAlgebraFulcrumLib.CodeComposer.Composers;
-using GeometricAlgebraFulcrumLib.CodeComposer.LanguageServers;
+using GeometricAlgebraFulcrumLib.CodeComposer.Languages;
 using GeometricAlgebraFulcrumLib.Processing;
 using GeometricAlgebraFulcrumLib.Processing.Generic;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions;
@@ -82,15 +82,14 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
 
 
         private GaLibraryComposer(string rootNamespace, IGaProcessor<ISymbolicExpressionAtomic> processor)
-            : base(GaClcLanguageServer.CSharpWithMathematica())
+            : base(GaLanguageServer.CSharpWithMathematica())
         {
             RootNamespace = rootNamespace;
             Processor = processor;
             EuclideanProcessor =
                 processor.IsOrthonormal && processor.Signature.IsEuclidean
                     ? processor
-                    : GaProcessorGenericOrthonormal<ISymbolicExpressionAtomic>.CreateEuclidean(
-                        processor,
+                    : processor.CreateEuclideanProcessor(
                         processor.VSpaceDimension
                     );
         }
@@ -234,7 +233,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         }
         
 
-        internal void GenerateBilinearProductMethodFile(GaClcOperationSpecs opSpecs, uint inGrade1, uint inGrade2)
+        internal void GenerateBilinearProductMethodFile(GaLanguageOperationSpecs opSpecs, uint inGrade1, uint inGrade2)
         {
             CodeFilesComposer.DownFolder(opSpecs.GetName());
 
@@ -269,7 +268,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             CodeFilesComposer.UpFolder();
         }
 
-        internal void GenerateBilinearProductMethodFile(GaClcOperationSpecs opSpecs, uint inGrade1, uint inGrade2, uint outGrade)
+        internal void GenerateBilinearProductMethodFile(GaLanguageOperationSpecs opSpecs, uint inGrade1, uint inGrade2, uint outGrade)
         {
             CodeFilesComposer.DownFolder(opSpecs.GetName());
 
@@ -295,7 +294,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             CodeFilesComposer.UpFolder();
         }
 
-        internal void GenerateScalarProductMethodFile(GaClcOperationSpecs opSpecs, uint inGrade)
+        internal void GenerateScalarProductMethodFile(GaLanguageOperationSpecs opSpecs, uint inGrade)
         {
             CodeFilesComposer.DownFolder(opSpecs.GetName());
             
@@ -319,7 +318,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             CodeFilesComposer.UpFolder();
         }
 
-        private void GenerateBilinearProductMainMethodFile(GaClcOperationSpecs opSpecs, string zeroCondition, Func<uint, uint, uint> getFinalGrade, Func<uint, uint, bool> isLegalGrade)
+        private void GenerateBilinearProductMainMethodFile(GaLanguageOperationSpecs opSpecs, string zeroCondition, Func<uint, uint, uint> getFinalGrade, Func<uint, uint, bool> isLegalGrade)
         {
             CodeFilesComposer.InitalizeFile(opSpecs.GetName() + ".cs");
 
@@ -352,19 +351,19 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         {
             var opSpecsArray = new[]
             {
-                GaClcOperationKind.BinaryOuterProduct.CreateEuclideanOperationSpecs(),
+                GaLanguageOperationKind.BinaryOuterProduct.CreateEuclideanOperationSpecs(),
                 
-                GaClcOperationKind.BinaryLeftContractionProduct.CreateEuclideanOperationSpecs(),
-                GaClcOperationKind.BinaryLeftContractionProduct.CreateMetricOperationSpecs(),
+                GaLanguageOperationKind.BinaryLeftContractionProduct.CreateEuclideanOperationSpecs(),
+                GaLanguageOperationKind.BinaryLeftContractionProduct.CreateMetricOperationSpecs(),
 
-                GaClcOperationKind.BinaryRightContractionProduct.CreateEuclideanOperationSpecs(),
-                GaClcOperationKind.BinaryRightContractionProduct.CreateMetricOperationSpecs(),
+                GaLanguageOperationKind.BinaryRightContractionProduct.CreateEuclideanOperationSpecs(),
+                GaLanguageOperationKind.BinaryRightContractionProduct.CreateMetricOperationSpecs(),
 
-                GaClcOperationKind.BinaryFatDotProduct.CreateEuclideanOperationSpecs(),
-                GaClcOperationKind.BinaryFatDotProduct.CreateMetricOperationSpecs(),
+                GaLanguageOperationKind.BinaryFatDotProduct.CreateEuclideanOperationSpecs(),
+                GaLanguageOperationKind.BinaryFatDotProduct.CreateMetricOperationSpecs(),
 
-                GaClcOperationKind.BinaryHestenesInnerProduct.CreateEuclideanOperationSpecs(),
-                GaClcOperationKind.BinaryHestenesInnerProduct.CreateMetricOperationSpecs(),
+                GaLanguageOperationKind.BinaryHestenesInnerProduct.CreateEuclideanOperationSpecs(),
+                GaLanguageOperationKind.BinaryHestenesInnerProduct.CreateMetricOperationSpecs(),
             };
                 
 
@@ -462,8 +461,8 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         {
             var opSpecsArray = new []
             {
-                GaClcOperationKind.BinaryScalarProduct.CreateMetricOperationSpecs(),
-                GaClcOperationKind.BinaryScalarProduct.CreateEuclideanOperationSpecs()
+                GaLanguageOperationKind.BinaryScalarProduct.CreateMetricOperationSpecs(),
+                GaLanguageOperationKind.BinaryScalarProduct.CreateEuclideanOperationSpecs()
             };
 
             foreach (var opSpecs in opSpecsArray)
@@ -489,7 +488,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         private void GenerateGeometricProductFiles()
         {
             var opSpecs = 
-                GaClcOperationKind.BinaryGeometricProduct.CreateMetricOperationSpecs();
+                GaLanguageOperationKind.BinaryGeometricProduct.CreateMetricOperationSpecs();
 
             var codeGen = new BinaryGpFilesComposer(this, opSpecs, false);
 
@@ -499,7 +498,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         private void GenerateEuclideanGeometricProductFiles()
         {
             var opSpecs = 
-                GaClcOperationKind.BinaryGeometricProduct.CreateEuclideanOperationSpecs();
+                GaLanguageOperationKind.BinaryGeometricProduct.CreateEuclideanOperationSpecs();
 
             var codeGen = new BinaryGpFilesComposer(this, opSpecs, false);
 
@@ -508,7 +507,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
 
         private void GenerateEuclideanGeometricProductDualFiles()
         {
-            var opSpecs = GaClcOperationKind.BinaryGeometricProductDual.CreateEuclideanOperationSpecs();
+            var opSpecs = GaLanguageOperationKind.BinaryGeometricProductDual.CreateEuclideanOperationSpecs();
 
             var codeGen = new BinaryGpFilesComposer(this, opSpecs, true);
 
@@ -518,7 +517,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         private void GenerateDeltaProductFile()
         {
             var opSpecs = 
-                GaClcOperationKind
+                GaLanguageOperationKind
                     .BinaryDeltaProduct
                     .CreateMetricOperationSpecs();
 
@@ -534,7 +533,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         private void GenerateDeltaProductDualFile()
         {
             var opSpecs = 
-                GaClcOperationKind
+                GaLanguageOperationKind
                     .BinaryDeltaProductDual
                     .CreateMetricOperationSpecs();
 
@@ -551,10 +550,10 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         {
             var opSpecsArray = new[]
             {
-                GaClcOperationKind.UnaryGeometricProductSquared.CreateMetricOperationSpecs(),
-                GaClcOperationKind.UnaryGeometricProductReverse.CreateMetricOperationSpecs(),
-                GaClcOperationKind.UnaryGeometricProductSquared.CreateEuclideanOperationSpecs(),
-                GaClcOperationKind.UnaryGeometricProductReverse.CreateEuclideanOperationSpecs()
+                GaLanguageOperationKind.UnaryGeometricProductSquared.CreateMetricOperationSpecs(),
+                GaLanguageOperationKind.UnaryGeometricProductReverse.CreateMetricOperationSpecs(),
+                GaLanguageOperationKind.UnaryGeometricProductSquared.CreateEuclideanOperationSpecs(),
+                GaLanguageOperationKind.UnaryGeometricProductReverse.CreateEuclideanOperationSpecs()
             };
                 
             foreach (var opSpecs in opSpecsArray)
@@ -569,7 +568,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             }
         }
 
-        private void GenerateApplyVersorMainMethod(GaClcOperationSpecs opSpecs)
+        private void GenerateApplyVersorMainMethod(GaLanguageOperationSpecs opSpecs)
         {
             CodeFilesComposer.InitalizeFile(opSpecs.GetName() + ".cs");
 
@@ -584,21 +583,21 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         {
             var opSpecsArray = new[]
             {
-                GaClcOperationKind.BinaryProject.CreateEuclideanOperationSpecs(),
-                GaClcOperationKind.BinaryReflect.CreateEuclideanOperationSpecs(),
-                GaClcOperationKind.BinaryComplement.CreateEuclideanOperationSpecs(),
-                GaClcOperationKind.BinaryRotate.CreateEuclideanOperationSpecs(),
-                GaClcOperationKind.BinaryProject.CreateMetricOperationSpecs(),
-                GaClcOperationKind.BinaryReflect.CreateMetricOperationSpecs(),
-                GaClcOperationKind.BinaryComplement.CreateMetricOperationSpecs(),
-                GaClcOperationKind.BinaryRotate.CreateMetricOperationSpecs(),
+                GaLanguageOperationKind.BinaryProject.CreateEuclideanOperationSpecs(),
+                GaLanguageOperationKind.BinaryReflect.CreateEuclideanOperationSpecs(),
+                GaLanguageOperationKind.BinaryComplement.CreateEuclideanOperationSpecs(),
+                GaLanguageOperationKind.BinaryRotate.CreateEuclideanOperationSpecs(),
+                GaLanguageOperationKind.BinaryProject.CreateMetricOperationSpecs(),
+                GaLanguageOperationKind.BinaryReflect.CreateMetricOperationSpecs(),
+                GaLanguageOperationKind.BinaryComplement.CreateMetricOperationSpecs(),
+                GaLanguageOperationKind.BinaryRotate.CreateMetricOperationSpecs(),
             };
 
             foreach (var opSpecs in opSpecsArray)
             {
                 foreach (var inGrade1 in Processor.Grades)
                 {
-                    if (inGrade1.IsOdd() && opSpecs.OperationKind == GaClcOperationKind.BinaryRotate)
+                    if (inGrade1.IsOdd() && opSpecs.OperationKind == GaLanguageOperationKind.BinaryRotate)
                         continue;
 
                     foreach (var inGrade2 in Processor.Grades)
@@ -920,29 +919,29 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             this.ReportFinish(progressId);
         }
 
-        private bool GeneratePreComputationsCode(GaClcSymbolicContextCodeComposer macroCodeGen)
+        private bool GeneratePreComputationsCode(GaSymbolicContextCodeComposer contextCodeComposer)
         {
             //Generate comments
-            GaClcSymbolicContextCodeComposer.DefaultGenerateCommentsBeforeComputations(macroCodeGen);
+            GaSymbolicContextCodeComposer.DefaultGenerateCommentsBeforeComputations(contextCodeComposer);
 
             //Temp variables declaration
-            if (macroCodeGen.Context.TargetTempVarsCount > MaxTargetLocalVars)
+            if (contextCodeComposer.Context.TargetTempVarsCount > MaxTargetLocalVars)
             {
                 //Add array declaration code
-                macroCodeGen.SyntaxList.Add(
-                    macroCodeGen.SyntaxFactory.DeclareLocalArray(
-                        GaClcLanguage.ScalarTypeName,
+                contextCodeComposer.SyntaxList.Add(
+                    contextCodeComposer.GaLanguage.SyntaxFactory.DeclareLocalArray(
+                        GaLanguage.ScalarTypeName,
                         "tempArray",
-                        macroCodeGen.Context.TargetTempVarsCount.ToString()
+                        contextCodeComposer.Context.TargetTempVarsCount.ToString()
                         )
                     );
 
-                macroCodeGen.SyntaxList.AddEmptyLine();
+                contextCodeComposer.SyntaxList.AddEmptyLine();
             }
             else
             {
                 var tempVarNames =
-                    macroCodeGen
+                    contextCodeComposer
                         .Context
                         .IntermediateVariables
                         .Select(item => item.ExternalName)
@@ -950,20 +949,20 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
 
                 //Add temp variables declaration code
                 foreach (var tempVarName in tempVarNames)
-                    macroCodeGen.SyntaxList.Add(
-                        macroCodeGen.SyntaxFactory.DeclareLocalVariable(GaClcLanguage.ScalarTypeName, tempVarName)
+                    contextCodeComposer.SyntaxList.Add(
+                        contextCodeComposer.GaLanguage.SyntaxFactory.DeclareLocalVariable(GaLanguage.ScalarTypeName, tempVarName)
                     );
 
-                macroCodeGen.SyntaxList.AddEmptyLine();
+                contextCodeComposer.SyntaxList.AddEmptyLine();
             }
 
             return true;
         }
 
-        private void GeneratePostComputationsCode(GaClcSymbolicContextCodeComposer macroCodeGen)
+        private void GeneratePostComputationsCode(GaSymbolicContextCodeComposer contextCodeComposer)
         {
             //Generate comments
-            GaClcSymbolicContextCodeComposer.DefaultGenerateCommentsAfterComputations(macroCodeGen);
+            GaSymbolicContextCodeComposer.DefaultGenerateCommentsAfterComputations(contextCodeComposer);
         }
 
 

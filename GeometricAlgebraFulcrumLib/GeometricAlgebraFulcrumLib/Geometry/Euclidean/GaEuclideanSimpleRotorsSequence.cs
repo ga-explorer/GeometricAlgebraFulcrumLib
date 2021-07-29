@@ -7,7 +7,6 @@ using System.Linq;
 using GeometricAlgebraFulcrumLib.Algebra.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Geometry.Multivectors;
 using GeometricAlgebraFulcrumLib.Processing;
-using GeometricAlgebraFulcrumLib.Processing.Generic;
 using GeometricAlgebraFulcrumLib.Processing.Implementations.Float64;
 using GeometricAlgebraFulcrumLib.Processing.Products.Euclidean;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
@@ -175,10 +174,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean
             //TODO: Complete this
 
             return new GaEuclideanSimpleRotorsSequence<double>(
-                GaProcessorGenericOrthonormal<double>.CreateEuclidean(
-                    GaScalarProcessorFloat64.DefaultProcessor,
-                    63
-                )
+                GaScalarProcessorFloat64.DefaultProcessor.CreateEuclideanProcessor(63)
             );
         }
 
@@ -196,13 +192,17 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean
         public ulong GaSpaceDimension
             => Processor.GaSpaceDimension;
 
-        public ulong MaxBasisBladeId { get; }
+        public ulong MaxBasisBladeId 
+            => Processor.MaxBasisBladeId;
 
-        public uint GradesCount { get; }
-        
-        public IEnumerable<uint> Grades { get; }
+        public uint GradesCount 
+            => Processor.GradesCount;
 
-        public IGaScalarProcessor<T> ScalarProcessor { get; }
+        public IEnumerable<uint> Grades 
+            => Processor.Grades;
+
+        public IGaScalarProcessor<T> ScalarProcessor 
+            => Processor;
         
         public IGasKVector<T> MappedPseudoScalar { get; }
 

@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Processing.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Processing.Scalars
 {
     public static class GaScalarProcessorUtils
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsOne<T>(this IGaScalarProcessor<T> scalarProcessor, T scalar)
         {
             return scalarProcessor.IsZero(
@@ -14,7 +16,15 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
             );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool IsMinusOne<T>(this IGaScalarProcessor<T> scalarProcessor, T scalar)
+        {
+            return scalarProcessor.IsZero(
+                scalarProcessor.Subtract(scalar, scalarProcessor.MinusOneScalar)
+            );
+        }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T PiRatio<T>(this IGaScalarProcessor<T> scalarProcessor, int numerator, int denominator)
         {
             return scalarProcessor.Divide(
@@ -26,6 +36,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
             );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T PiRatio<T>(this IGaScalarProcessor<T> scalarProcessor, T numerator, int denominator)
         {
             return scalarProcessor.Divide(
@@ -37,6 +48,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
             );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T PiRatio<T>(this IGaScalarProcessor<T> scalarProcessor, int numerator, T denominator)
         {
             return scalarProcessor.Divide(
@@ -48,6 +60,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
             );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T PiRatio<T>(this IGaScalarProcessor<T> scalarProcessor, T numerator, T denominator)
         {
             return scalarProcessor.Divide(
@@ -59,6 +72,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
             );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T CosPiRatio<T>(this IGaScalarProcessor<T> scalarProcessor, int numerator, int denominator)
         {
             return scalarProcessor.Cos(
@@ -72,6 +86,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
             );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T CosPiRatio<T>(this IGaScalarProcessor<T> scalarProcessor, T numerator, int denominator)
         {
             return scalarProcessor.Cos(
@@ -85,6 +100,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
             );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T CosPiRatio<T>(this IGaScalarProcessor<T> scalarProcessor, int numerator, T denominator)
         {
             return scalarProcessor.Cos(
@@ -98,6 +114,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
             );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T CosPiRatio<T>(this IGaScalarProcessor<T> scalarProcessor, T numerator, T denominator)
         {
             return scalarProcessor.Cos(
@@ -111,6 +128,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
             );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T SinPiRatio<T>(this IGaScalarProcessor<T> scalarProcessor, int numerator, int denominator)
         {
             return scalarProcessor.Sin(
@@ -124,6 +142,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
             );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T SinPiRatio<T>(this IGaScalarProcessor<T> scalarProcessor, T numerator, int denominator)
         {
             return scalarProcessor.Sin(
@@ -137,6 +156,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
             );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T SinPiRatio<T>(this IGaScalarProcessor<T> scalarProcessor, int numerator, T denominator)
         {
             return scalarProcessor.Sin(
@@ -150,6 +170,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
             );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T SinPiRatio<T>(this IGaScalarProcessor<T> scalarProcessor, T numerator, T denominator)
         {
             return scalarProcessor.Sin(
@@ -163,6 +184,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
             );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T Sqrt<T>(this IGaScalarProcessor<T> scalarProcessor, int scalar1)
         {
             return scalarProcessor.Sqrt(
@@ -170,6 +192,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
             );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T Add<T>(this IGaScalarProcessor<T> scalarProcessor, int scalar1, int scalar2)
         {
             return scalarProcessor.Add(
@@ -178,6 +201,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
             );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T Add<T>(this IGaScalarProcessor<T> scalarProcessor, T scalar1, int scalar2)
         {
             return scalarProcessor.Add(
@@ -186,6 +210,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
             );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T Add<T>(this IGaScalarProcessor<T> scalarProcessor, int scalar1, T scalar2)
         {
             return scalarProcessor.Add(
@@ -194,6 +219,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
             );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T Subtract<T>(this IGaScalarProcessor<T> scalarProcessor, int scalar1, int scalar2)
         {
             return scalarProcessor.Subtract(
@@ -202,6 +228,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
             );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T Subtract<T>(this IGaScalarProcessor<T> scalarProcessor, T scalar1, int scalar2)
         {
             return scalarProcessor.Subtract(
@@ -210,6 +237,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
             );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T Subtract<T>(this IGaScalarProcessor<T> scalarProcessor, int scalar1, T scalar2)
         {
             return scalarProcessor.Subtract(
@@ -218,6 +246,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
             );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T Times<T>(this IGaScalarProcessor<T> scalarProcessor, int scalar1, int scalar2)
         {
             return scalarProcessor.Times(
@@ -226,6 +255,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
             );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T Times<T>(this IGaScalarProcessor<T> scalarProcessor, T scalar1, int scalar2)
         {
             return scalarProcessor.Times(
@@ -234,6 +264,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
             );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T Times<T>(this IGaScalarProcessor<T> scalarProcessor, int scalar1, T scalar2)
         {
             return scalarProcessor.Times(
@@ -242,6 +273,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
             );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T Times<T>(this IGaScalarProcessor<T> scalarProcessor, int intScalar, T scalar1, T scalar2)
         {
             return intScalar switch
@@ -256,6 +288,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
             };
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T NegativeTimes<T>(this IGaScalarProcessor<T> scalarProcessor, int scalar1, int scalar2)
         {
             return scalarProcessor.NegativeTimes(
@@ -264,6 +297,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
             );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T NegativeTimes<T>(this IGaScalarProcessor<T> scalarProcessor, T scalar1, int scalar2)
         {
             return scalarProcessor.NegativeTimes(
@@ -272,6 +306,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
             );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T NegativeTimes<T>(this IGaScalarProcessor<T> scalarProcessor, int scalar1, T scalar2)
         {
             return scalarProcessor.NegativeTimes(
@@ -280,6 +315,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
             );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T SqrtRational<T>(this IGaScalarProcessor<T> scalarProcessor, int scalar1, int scalar2)
         {
             return scalarProcessor.Sqrt(
@@ -290,6 +326,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
             );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T Rational<T>(this IGaScalarProcessor<T> scalarProcessor, int scalar1, int scalar2)
         {
             return scalarProcessor.Divide(
@@ -298,6 +335,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
             );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T Divide<T>(this IGaScalarProcessor<T> scalarProcessor, int scalar1, int scalar2)
         {
             return scalarProcessor.Divide(
@@ -306,6 +344,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
             );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T Divide<T>(this IGaScalarProcessor<T> scalarProcessor, T scalar1, int scalar2)
         {
             return scalarProcessor.Divide(
@@ -314,6 +353,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
             );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T Divide<T>(this IGaScalarProcessor<T> scalarProcessor, int scalar1, T scalar2)
         {
             return scalarProcessor.Divide(
@@ -322,6 +362,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
             );
         }
         
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T NegativeDivide<T>(this IGaScalarProcessor<T> scalarProcessor, int scalar1, int scalar2)
         {
             return scalarProcessor.NegativeDivide(
@@ -330,6 +371,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
             );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T NegativeDivide<T>(this IGaScalarProcessor<T> scalarProcessor, T scalar1, int scalar2)
         {
             return scalarProcessor.NegativeDivide(
@@ -338,6 +380,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
             );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T NegativeDivide<T>(this IGaScalarProcessor<T> scalarProcessor, int scalar1, T scalar2)
         {
             return scalarProcessor.NegativeDivide(
@@ -346,7 +389,14 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
             );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T Square<T>(this IGaScalarProcessor<T> scalarProcessor, T scalar)
+        {
+            return scalarProcessor.Times(scalar, scalar);
+        }
 
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<KeyValuePair<TKey, TValue>> Negative<TKey, TValue>(this IGaScalarProcessor<TValue> scalarProcessor, IEnumerable<KeyValuePair<TKey, TValue>> keyValuePairs)
         {
             return keyValuePairs.Select(
@@ -354,7 +404,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
             );
         }
 
-
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<KeyValuePair<TKey, TValue>> Negative<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> keyValuePairs, IGaScalarProcessor<TValue> scalarProcessor)
         {
             return keyValuePairs.Select(
@@ -362,25 +412,28 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
             );
         }
 
-
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static GaSparseTupleComposer<T> CreateSparseScalarsTupleComposer<T>(this IGaScalarProcessor<T> itemScalarsDomain)
         {
-            return new(itemScalarsDomain);
+            return new GaSparseTupleComposer<T>(itemScalarsDomain);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static GaSparseTupleComposer<T> CreateSparseScalarsTupleComposer<T>(this IGaScalarProcessor<T> itemScalarsDomain, Dictionary<int, T> indexScalarDictionary)
         {
-            return new(itemScalarsDomain, indexScalarDictionary);
+            return new GaSparseTupleComposer<T>(itemScalarsDomain, indexScalarDictionary);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static GaSparseTupleComposer<T> CreateSparseScalarsTupleComposer<T>(this IGaScalarProcessor<T> itemScalarsDomain, IEnumerable<KeyValuePair<int, T>> indexScalarPairs)
         {
-            return new(itemScalarsDomain, indexScalarPairs);
+            return new GaSparseTupleComposer<T>(itemScalarsDomain, indexScalarPairs);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static GaSparseTupleComposer<T> CreateSparseScalarsTupleComposer<T>(this IGaScalarProcessor<T> itemScalarsDomain, IEnumerable<Tuple<int, T>> indexScalarTuples)
         {
-            return new(itemScalarsDomain, indexScalarTuples);
+            return new GaSparseTupleComposer<T>(itemScalarsDomain, indexScalarTuples);
         }
     }
 }

@@ -2,7 +2,7 @@
 using DataStructuresLib.Extensions;
 using GeometricAlgebraFulcrumLib.Algebra.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Geometry.Euclidean;
-using GeometricAlgebraFulcrumLib.Processing.Generic;
+using GeometricAlgebraFulcrumLib.Processing;
 using GeometricAlgebraFulcrumLib.Symbolic;
 using GeometricAlgebraFulcrumLib.Symbolic.Applications.GaPoT;
 using GeometricAlgebraFulcrumLib.Symbolic.Mathematica;
@@ -15,8 +15,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
 {
     public static class ClarkeTransformationSymbolicSample
     {
-        public static GaProcessorGenericOrthonormal<Expr> Processor { get; }
-            = GaSymbolicUtils.MultivectorProcessor;
+        public static IGaProcessorEuclidean<Expr> Processor { get; }
+            = GaSymbolicUtils.EuclideanProcessor;
 
         public static GaScalarProcessorMathematicaExpr ScalarProcessor { get; }
             = GaScalarProcessorMathematicaExpr.DefaultProcessor;

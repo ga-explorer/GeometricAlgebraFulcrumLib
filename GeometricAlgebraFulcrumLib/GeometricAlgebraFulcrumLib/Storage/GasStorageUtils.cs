@@ -402,5 +402,6 @@ namespace GeometricAlgebraFulcrumLib.Storage
                 mv.ScalarProcessor.Negative
             );
         }
+
     }
 }

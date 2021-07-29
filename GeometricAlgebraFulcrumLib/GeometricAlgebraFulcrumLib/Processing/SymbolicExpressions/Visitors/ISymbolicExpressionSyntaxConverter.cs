@@ -6,8 +6,8 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Visitors
     public interface ISymbolicExpressionSyntaxConverter : 
         ISymbolicExpressionDynamicVisitor<ISyntaxTreeElement>
     {
-        LanguageInfo SourceLanguageInfo { get; }
+        CclLanguageInfo SourceLanguageInfo { get; }
 
-        LanguageInfo TargetLanguageInfo { get; }
+        CclLanguageInfo TargetLanguageInfo { get; }
     }
 }

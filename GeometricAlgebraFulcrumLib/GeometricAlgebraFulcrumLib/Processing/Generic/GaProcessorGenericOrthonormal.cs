@@ -11,47 +11,6 @@ namespace GeometricAlgebraFulcrumLib.Processing.Generic
     public sealed class GaProcessorGenericOrthonormal<T>
         : GaProcessorGenericBase<T>, IGaProcessorOrthonormal<T>
     {
-        public static GaProcessorGenericOrthonormal<T> CreateEuclidean(IGaScalarProcessor<T> scalarProcessor, uint vSpaceDimension)
-        {
-            return new GaProcessorGenericOrthonormal<T>(
-                scalarProcessor, 
-                GaSignatureFactory.CreateEuclidean(vSpaceDimension)
-            );
-        }
-
-        public static GaProcessorGenericOrthonormal<T> CreateConformal(IGaScalarProcessor<T> scalarProcessor, uint vSpaceDimension)
-        {
-            return new GaProcessorGenericOrthonormal<T>(
-                scalarProcessor, 
-                GaSignatureFactory.CreateConformal(vSpaceDimension)
-            );
-        }
-
-        public static GaProcessorGenericOrthonormal<T> CreateProjective(IGaScalarProcessor<T> scalarProcessor, uint vSpaceDimension)
-        {
-            return new GaProcessorGenericOrthonormal<T>(
-                scalarProcessor, 
-                GaSignatureFactory.CreateProjective(vSpaceDimension)
-            );
-        }
-
-        public static GaProcessorGenericOrthonormal<T> Create(IGaScalarProcessor<T> scalarProcessor, uint positiveCount, uint negativeCount)
-        {
-            return new GaProcessorGenericOrthonormal<T>(
-                scalarProcessor, 
-                GaSignatureFactory.Create(positiveCount, negativeCount)
-            );
-        }
-
-        public static GaProcessorGenericOrthonormal<T> Create(IGaScalarProcessor<T> scalarProcessor, uint positiveCount, uint negativeCount, uint zeroCount)
-        {
-            return new GaProcessorGenericOrthonormal<T>(
-                scalarProcessor, 
-                GaSignatureFactory.Create(positiveCount, negativeCount, zeroCount)
-            );
-        }
-
-
         public override uint VSpaceDimension 
             => Signature.VSpaceDimension;
 
@@ -94,7 +53,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Generic
         public override IGasKVector<T> PseudoScalarReverse { get; }
 
 
-        private GaProcessorGenericOrthonormal(IGaScalarProcessor<T> scalarProcessor, [NotNull] IGaSignature signature) 
+        internal GaProcessorGenericOrthonormal(IGaScalarProcessor<T> scalarProcessor, [NotNull] IGaSignature signature) 
             : base(scalarProcessor)
         {
             Signature = signature;

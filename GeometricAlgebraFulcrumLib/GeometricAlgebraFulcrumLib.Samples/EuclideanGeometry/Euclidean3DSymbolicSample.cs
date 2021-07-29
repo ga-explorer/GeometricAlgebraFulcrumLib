@@ -1,6 +1,6 @@
 ﻿using System;
 using GeometricAlgebraFulcrumLib.Geometry.Euclidean;
-using GeometricAlgebraFulcrumLib.Processing.Generic;
+using GeometricAlgebraFulcrumLib.Processing;
 using GeometricAlgebraFulcrumLib.Processing.Products.Euclidean;
 using GeometricAlgebraFulcrumLib.Symbolic;
 using GeometricAlgebraFulcrumLib.Symbolic.Mathematica;
@@ -15,10 +15,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
         public static void Execute()
         {
             var n = 3U;
-            var processor = GaProcessorGenericOrthonormal<Expr>.CreateEuclidean(
-                GaScalarProcessorMathematicaExpr.DefaultProcessor, 
-                n
-            );
+            var processor = 
+                GaScalarProcessorMathematicaExpr.DefaultProcessor.CreateEuclideanProcessor(n);
 
             var v = GaSymbolicUtils.CreateVector(
                 "Subscript[v,1]", "Subscript[v,2]", "Subscript[v,3]"

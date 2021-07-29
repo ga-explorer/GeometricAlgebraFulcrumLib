@@ -73,7 +73,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
 
             TextComposer.Append(
                 Templates["om_apply"],
-                "double", GaClcLanguage.ScalarTypeName,
+                "double", GaLanguage.ScalarTypeName,
                 "grade", _inputGrade,
                 "num", this.KvSpaceDimension(_inputGrade),
                 "computations", computationsText

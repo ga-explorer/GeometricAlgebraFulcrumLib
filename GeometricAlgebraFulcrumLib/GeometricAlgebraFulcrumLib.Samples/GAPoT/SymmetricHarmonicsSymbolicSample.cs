@@ -6,7 +6,6 @@ using GeometricAlgebraFulcrumLib.Algebra.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Geometry;
 using GeometricAlgebraFulcrumLib.Geometry.Euclidean;
 using GeometricAlgebraFulcrumLib.Processing;
-using GeometricAlgebraFulcrumLib.Processing.Generic;
 using GeometricAlgebraFulcrumLib.Processing.Products.Euclidean;
 using GeometricAlgebraFulcrumLib.Storage;
 using GeometricAlgebraFulcrumLib.Storage.Composers;
@@ -28,8 +27,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
         public static GaScalarProcessorMathematicaExpr ScalarProcessor { get; }
             = GaScalarProcessorMathematicaExpr.DefaultProcessor;
             
-        public static GaProcessorGenericOrthonormal<Expr> MultivectorProcessor { get; }
-            = GaProcessorGenericOrthonormal<Expr>.CreateEuclidean(ScalarProcessor,63);
+        public static IGaProcessor<Expr> MultivectorProcessor { get; }
+            = ScalarProcessor.CreateEuclideanProcessor(63);
             
         public static GaTextComposerMathematicaExpr TextComposer { get; }
             = GaTextComposerMathematicaExpr.DefaultComposer;

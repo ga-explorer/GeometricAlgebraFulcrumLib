@@ -13,15 +13,6 @@ namespace GeometricAlgebraFulcrumLib.Processing.Generic
     public sealed class GaProcessorGenericEuclidean<T>
         : GaProcessorGenericBase<T>, IGaProcessorEuclidean<T>
     {
-        public static GaProcessorGenericEuclidean<T> Create(IGaScalarProcessor<T> scalarProcessor, uint vSpaceDimension)
-        {
-            return new GaProcessorGenericEuclidean<T>(
-                scalarProcessor, 
-                vSpaceDimension
-            );
-        }
-
-
         public override uint VSpaceDimension { get; }
 
         public override IGaSignature Signature 
@@ -64,7 +55,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Generic
         public override IGasKVector<T> PseudoScalarReverse { get; }
 
 
-        private GaProcessorGenericEuclidean(IGaScalarProcessor<T> scalarProcessor, uint vSpaceDimension) 
+        internal GaProcessorGenericEuclidean(IGaScalarProcessor<T> scalarProcessor, uint vSpaceDimension) 
             : base(scalarProcessor)
         {
             if (vSpaceDimension > GaSpaceUtils.MaxVSpaceDimension)

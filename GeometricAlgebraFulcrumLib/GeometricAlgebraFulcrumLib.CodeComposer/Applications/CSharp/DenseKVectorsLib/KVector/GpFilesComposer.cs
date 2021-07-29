@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using GeometricAlgebraFulcrumLib.Algebra;
+using GeometricAlgebraFulcrumLib.CodeComposer.Languages;
 using TextComposerLib.Text.Structured;
 
 namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVectorsLib.KVector
@@ -8,12 +9,12 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
     internal sealed class BinaryGpFilesComposer : 
         GaLibraryPartComposerBase
     {
-        private readonly GaClcOperationSpecs _operationSpecs;
+        private readonly GaLanguageOperationSpecs _operationSpecs;
         private readonly bool _dualFlag;
         private GpMethodsFileComposer _mainFileComposer;
 
 
-        internal BinaryGpFilesComposer(GaLibraryComposer libGen, GaClcOperationSpecs opSpecs, bool dualFlag)
+        internal BinaryGpFilesComposer(GaLibraryComposer libGen, GaLanguageOperationSpecs opSpecs, bool dualFlag)
             : base(libGen)
         {
             _operationSpecs = opSpecs;

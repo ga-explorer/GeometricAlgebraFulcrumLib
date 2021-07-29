@@ -2,7 +2,6 @@
 using GeometricAlgebraFulcrumLib.Algebra.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Geometry.Euclidean;
 using GeometricAlgebraFulcrumLib.Processing;
-using GeometricAlgebraFulcrumLib.Processing.Generic;
 using GeometricAlgebraFulcrumLib.Processing.Implementations.Float64;
 using GeometricAlgebraFulcrumLib.Processing.Products.Euclidean;
 using GeometricAlgebraFulcrumLib.Storage;
@@ -15,10 +14,9 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
         {
             var n = 3U;
             var randGen = new Random();
-            var processor = GaProcessorGenericOrthonormal<double>.CreateEuclidean(
-                GaScalarProcessorFloat64.DefaultProcessor, 
-                n
-            );
+            
+            var processor = 
+                GaScalarProcessorFloat64.DefaultProcessor.CreateEuclideanProcessor(n);
 
             IGasVector<double> v = GaFloat64Utils.CreateVector(
                 randGen.NextDouble(), 

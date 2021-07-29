@@ -65,8 +65,8 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             );
 
             var macroComposer = 
-                new GaClcSymbolicContextCodeComposer(
-                    LibraryComposer, 
+                new GaSymbolicContextCodeComposer(
+                    CodeComposer.GaLanguage, 
                     context, 
                     DenseKVectorsLibraryComposer.DefaultContextCodeComposerOptions
                 );
@@ -220,7 +220,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             TextComposer.Append(
                 Templates["outermorphism"],
                 "signature", CurrentNamespace,
-                "double", GaClcLanguage.ScalarTypeName,
+                "double", GaLanguage.ScalarTypeName,
                 "transpose_code", omTransposeCode,
                 "metric_det_code", omDeterminantCode,
                 "plus_code", omPlusCode,

@@ -1,5 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using DataStructuresLib.Extensions;
+using GeometricAlgebraFulcrumLib.Processing.Products.Euclidean;
 using GeometricAlgebraFulcrumLib.Storage;
 
 namespace GeometricAlgebraFulcrumLib.Processing
@@ -19,6 +20,14 @@ namespace GeometricAlgebraFulcrumLib.Processing
         {
             return mv.ScalarProcessor.CreateScalar(
                 mv.ScalarProcessor.Divide(scalar2, mv.Scalar)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IGasScalar<T> Divide<T>(this IGasScalar<T> scalar1, IGasScalar<T> scalar2)
+        {
+            return scalar1.ScalarProcessor.CreateScalar(
+                scalar1.ScalarProcessor.Divide(scalar1.Scalar, scalar2.Scalar)
             );
         }
 
@@ -225,5 +234,114 @@ namespace GeometricAlgebraFulcrumLib.Processing
             };
         }
 
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IGasVectorTerm<T> DivideByENorm<T>(this IGasVectorTerm<T> mv)
+        {
+            return mv.Divide(mv.ENorm());
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IGasBivectorTerm<T> DivideByENorm<T>(this IGasBivectorTerm<T> mv)
+        {
+            return mv.Divide(mv.ENorm());
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IGasKVectorTerm<T> DivideByENorm<T>(this IGasKVectorTerm<T> mv)
+        {
+            return mv.Divide(mv.ENorm());
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IGasVector<T> DivideByENorm<T>(this IGasVector<T> mv)
+        {
+            return mv.Divide(mv.ENorm());
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IGasBivector<T> DivideByENorm<T>(this IGasBivector<T> mv)
+        {
+            return mv.Divide(mv.ENorm());
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IGasKVector<T> DivideByENorm<T>(this IGasKVector<T> mv)
+        {
+            return mv.Divide(mv.ENorm());
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IGasGradedMultivector<T> DivideByENorm<T>(this IGasGradedMultivector<T> mv)
+        {
+            return mv.Divide(mv.ENorm());
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IGasTermsMultivector<T> DivideByENorm<T>(this IGasTermsMultivector<T> mv)
+        {
+            return mv.Divide(mv.ENorm());
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IGasMultivector<T> DivideByENorm<T>(this IGasMultivector<T> mv)
+        {
+            return mv.Divide(mv.ENorm());
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IGasVectorTerm<T> DivideByENormSquared<T>(this IGasVectorTerm<T> mv)
+        {
+            return mv.Divide(mv.ENormSquared());
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IGasBivectorTerm<T> DivideByENormSquared<T>(this IGasBivectorTerm<T> mv)
+        {
+            return mv.Divide(mv.ENormSquared());
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IGasKVectorTerm<T> DivideByENormSquared<T>(this IGasKVectorTerm<T> mv)
+        {
+            return mv.Divide(mv.ENormSquared());
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IGasVector<T> DivideByENormSquared<T>(this IGasVector<T> mv)
+        {
+            return mv.Divide(mv.ENormSquared());
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IGasBivector<T> DivideByENormSquared<T>(this IGasBivector<T> mv)
+        {
+            return mv.Divide(mv.ENormSquared());
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IGasKVector<T> DivideByENormSquared<T>(this IGasKVector<T> mv)
+        {
+            return mv.Divide(mv.ENormSquared());
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IGasGradedMultivector<T> DivideByENormSquared<T>(this IGasGradedMultivector<T> mv)
+        {
+            return mv.Divide(mv.ENormSquared());
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IGasTermsMultivector<T> DivideByENormSquared<T>(this IGasTermsMultivector<T> mv)
+        {
+            return mv.Divide(mv.ENormSquared());
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IGasMultivector<T> DivideByENormSquared<T>(this IGasMultivector<T> mv)
+        {
+            return mv.Divide(mv.ENormSquared());
+        }
     }
 }

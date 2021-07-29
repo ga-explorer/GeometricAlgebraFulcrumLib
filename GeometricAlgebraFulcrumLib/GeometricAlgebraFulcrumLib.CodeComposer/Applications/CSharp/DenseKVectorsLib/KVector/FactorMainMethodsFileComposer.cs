@@ -1,5 +1,6 @@
 ﻿using System;
 using GeometricAlgebraFulcrumLib.Algebra;
+using GeometricAlgebraFulcrumLib.CodeComposer.Languages;
 using TextComposerLib.Text.Linear;
 using TextComposerLib.Text.Structured;
 
@@ -30,7 +31,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             TextComposer.Append(
                 Templates["maxcoefid"],
                 "grade", grade,
-                "double", GaClcLanguage.ScalarTypeName,
+                "double", GaLanguage.ScalarTypeName,
                 "initid", Processor.BasisBladeId(grade, 0),
                 "maxindex", maxIndex,
                 "maxid", Processor.BasisBladeId(grade, maxIndex),
@@ -53,7 +54,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
                 Templates["factorgrade"],
                 "signature", CurrentNamespace,
                 "grade", grade,
-                "double", GaClcLanguage.ScalarTypeName,
+                "double", GaLanguage.ScalarTypeName,
                 "factorgrade_case", casesText
             );
         }
@@ -65,7 +66,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             for (var grade = 2; grade < VSpaceDimension; grade++)
             {
                 var methodName =
-                    GaClcOperationKind.UnaryNorm.GetName(true);
+                    GaLanguageOperationKind.UnaryNorm.GetName(true);
 
                 casesText.Add(
                     Templates["factor_main_case"],

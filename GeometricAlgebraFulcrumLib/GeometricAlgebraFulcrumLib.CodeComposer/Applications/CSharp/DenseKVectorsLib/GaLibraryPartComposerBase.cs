@@ -8,7 +8,7 @@ using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions;
 namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVectorsLib
 {
     internal abstract class GaLibraryPartComposerBase : 
-        GaClcCodePartComposerBase, IGaSpace
+        GaCodePartComposerBase, IGaSpace
     {
         internal IGaProcessor<ISymbolicExpressionAtomic> Processor
             => DenseKVectorsLibraryComposer.Processor;
@@ -35,7 +35,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             => DenseKVectorsLibraryComposer.CurrentNamespace;
 
         internal GaLibraryComposer DenseKVectorsLibraryComposer 
-            => (GaLibraryComposer) LibraryComposer;
+            => (GaLibraryComposer) CodeComposer;
 
 
         internal GaLibraryPartComposerBase(GaLibraryComposer libGen)

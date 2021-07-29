@@ -1,4 +1,5 @@
 ﻿using System;
+using GeometricAlgebraFulcrumLib.CodeComposer.Languages;
 using TextComposerLib.Text.Linear;
 using TextComposerLib.Text.Structured;
 
@@ -7,10 +8,10 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
     internal sealed class GpMethodsFileComposer : 
         GaLibraryFileComposerBase 
     {
-        internal GaClcOperationSpecs OperationSpecs { get; }
+        internal GaLanguageOperationSpecs OperationSpecs { get; }
 
 
-        internal GpMethodsFileComposer(GaLibraryComposer libGen, GaClcOperationSpecs opSpecs)
+        internal GpMethodsFileComposer(GaLibraryComposer libGen, GaLanguageOperationSpecs opSpecs)
             : base(libGen)
         {
             OperationSpecs = opSpecs;
@@ -39,7 +40,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
                         "g1", inGrade1,
                         "g2", inGrade2,
                         "signature", CurrentNamespace
-                        );
+                    );
                 }
 
             TextComposer.AppendAtNewLine(
@@ -56,7 +57,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
                 Templates["gp"],
                 "signature", CurrentNamespace,
                 "name", name,
-                "double", GaClcLanguage.ScalarTypeName,
+                "double", GaLanguage.ScalarTypeName,
                 "gp_case", gpCaseText
             );
         }

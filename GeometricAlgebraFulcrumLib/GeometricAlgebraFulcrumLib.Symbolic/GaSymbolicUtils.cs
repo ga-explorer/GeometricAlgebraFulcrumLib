@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using GeometricAlgebraFulcrumLib.Algebra.Outermorphisms;
-using GeometricAlgebraFulcrumLib.Processing.Generic;
+using GeometricAlgebraFulcrumLib.Processing;
 using GeometricAlgebraFulcrumLib.Processing.Implementations.Float64;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
 using GeometricAlgebraFulcrumLib.Storage;
@@ -17,11 +17,8 @@ namespace GeometricAlgebraFulcrumLib.Symbolic
 {
     public static class GaSymbolicUtils
     {
-        public static GaProcessorGenericOrthonormal<Expr> MultivectorProcessor { get; }
-            = GaProcessorGenericOrthonormal<Expr>.CreateEuclidean(
-                GaScalarProcessorMathematicaExpr.DefaultProcessor,
-                63
-            );
+        public static IGaProcessorEuclidean<Expr> EuclideanProcessor { get; }
+            = GaScalarProcessorMathematicaExpr.DefaultProcessor.CreateEuclideanProcessor(63);
 
         public static GaScalarProcessorMathematicaExpr ScalarProcessor
             => GaScalarProcessorMathematicaExpr.DefaultProcessor;
@@ -147,6 +144,110 @@ namespace GeometricAlgebraFulcrumLib.Symbolic
             return Math.Abs(doubleValue) <= epsilon;
         }
 
+        public static Expr[] SimplifyScalars(this Expr[] array)
+        {
+            var count = array.Length;
+
+            var newArray = new Expr[count];
+
+            for (var i = 0; i < count; i++)
+                newArray[i] = array[i].Simplify();
+
+            return newArray;
+        }
+
+        public static Expr[] SimplifyScalars(this Expr[] array, Expr assumptionsExpr)
+        {
+            var count = array.Length;
+
+            var newArray = new Expr[count];
+
+            for (var i = 0; i < count; i++)
+                newArray[i] = array[i].Simplify(assumptionsExpr);
+
+            return newArray;
+        }
+
+        public static Expr[,] SimplifyScalars(this Expr[,] array)
+        {
+            var rowsCount = array.GetLength(0);
+            var colsCount = array.GetLength(1);
+
+            var newArray = new Expr[rowsCount, colsCount];
+
+            for (var j = 0; j < colsCount; j++)
+            for (var i = 0; i < rowsCount; i++)
+                newArray[i, j] = array[i, j].Simplify();
+
+            return newArray;
+        }
+
+        public static Expr[,] SimplifyScalars(this Expr[,] array, Expr assumptionsExpr)
+        {
+            var rowsCount = array.GetLength(0);
+            var colsCount = array.GetLength(1);
+
+            var newArray = new Expr[rowsCount, colsCount];
+
+            for (var j = 0; j < colsCount; j++)
+            for (var i = 0; i < rowsCount; i++)
+                newArray[i, j] = array[i, j].Simplify(assumptionsExpr);
+
+            return newArray;
+        }
+
+        public static Expr[] FullSimplifyScalars(this Expr[] array)
+        {
+            var count = array.Length;
+
+            var newArray = new Expr[count];
+
+            for (var i = 0; i < count; i++)
+                newArray[i] = array[i].FullSimplify();
+
+            return newArray;
+        }
+
+        public static Expr[] FullSimplifyScalars(this Expr[] array, Expr assumptionsExpr)
+        {
+            var count = array.Length;
+
+            var newArray = new Expr[count];
+
+            for (var i = 0; i < count; i++)
+                newArray[i] = array[i].FullSimplify(assumptionsExpr);
+
+            return newArray;
+        }
+
+        public static Expr[,] FullSimplifyScalars(this Expr[,] array)
+        {
+            var rowsCount = array.GetLength(0);
+            var colsCount = array.GetLength(1);
+
+            var newArray = new Expr[rowsCount, colsCount];
+
+            for (var j = 0; j < colsCount; j++)
+            for (var i = 0; i < rowsCount; i++)
+                newArray[i, j] = array[i, j].FullSimplify();
+
+            return newArray;
+        }
+
+        public static Expr[,] FullSimplifyScalars(this Expr[,] array, Expr assumptionsExpr)
+        {
+            var rowsCount = array.GetLength(0);
+            var colsCount = array.GetLength(1);
+
+            var newArray = new Expr[rowsCount, colsCount];
+
+            for (var j = 0; j < colsCount; j++)
+            for (var i = 0; i < rowsCount; i++)
+                newArray[i, j] = array[i, j].FullSimplify(assumptionsExpr);
+
+            return newArray;
+        }
+
         public static IGasMultivector<Expr> SimplifyScalars(this IGasMultivector<Expr> storage)
         {
             return storage.GetCopy(
@@ -154,10 +255,24 @@ namespace GeometricAlgebraFulcrumLib.Symbolic
             );
         }
 
+        public static IGasMultivector<Expr> SimplifyScalars(this IGasMultivector<Expr> storage, Expr assumptionsExpr)
+        {
+            return storage.GetCopy(
+                scalar => scalar.Simplify(assumptionsExpr)
+            );
+        }
+
         public static IGasMultivector<Expr> FullSimplifyScalars(this IGasMultivector<Expr> storage)
         {
             return storage.GetCopy(
                 scalar => scalar.FullSimplify()
+            );
+        }
+
+        public static IGasMultivector<Expr> FullSimplifyScalars(this IGasMultivector<Expr> storage, Expr assumptionsExpr)
+        {
+            return storage.GetCopy(
+                scalar => scalar.FullSimplify(assumptionsExpr)
             );
         }
 
@@ -873,7 +988,7 @@ namespace GeometricAlgebraFulcrumLib.Symbolic
 
         public static IGaOutermorphism<Expr> CreateVectorsLinearMap(int basisVectorsCount, Func<IGasVector<Expr>, IGasVector<Expr>> basisVectorMapFunc)
         {
-            return MultivectorProcessor.CreateComputedOutermorphism(
+            return EuclideanProcessor.CreateComputedOutermorphism(
                 basisVectorsCount,
                 basisVectorMapFunc
             );
@@ -969,6 +1084,10 @@ namespace GeometricAlgebraFulcrumLib.Symbolic
             return MatrixProcessor.MatrixProduct(matrix1, matrix2);
         }
 
+        public static Expr MatrixDeterminant(this Expr[,] array)
+        {
+            return Mfs.Det[array.ToArrayExpr()];
+        }
 
         public static string GetText(this Expr[,] array)
         {

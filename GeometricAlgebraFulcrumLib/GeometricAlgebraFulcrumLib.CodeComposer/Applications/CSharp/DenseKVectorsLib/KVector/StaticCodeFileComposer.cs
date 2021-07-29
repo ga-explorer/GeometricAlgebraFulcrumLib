@@ -86,7 +86,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
                 Templates["static"],
                 "signature", CurrentNamespace,
                 "vspacedim", VSpaceDimension,
-                "double", GaClcLanguage.ScalarTypeName,
+                "double", GaLanguage.ScalarTypeName,
                 "kvector_sizes_lookup_table", kvdimsText,
                 "basisnames", basisnamesText,
                 "basisblades", basisbladesText

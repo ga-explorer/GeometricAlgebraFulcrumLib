@@ -47,7 +47,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean
                 processor.Sqrt(
                     processor.Divide(
                         processor.Add(processor.OneScalar, cosAngle),
-                        processor.IntegerToScalar(2)
+                        2
                     )
                 );
 
@@ -55,12 +55,12 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean
                 processor.Sqrt(
                     processor.Divide(
                         processor.Subtract(processor.OneScalar, cosAngle),
-                        processor.IntegerToScalar(2)
+                        2
                     )
                 );
             
             var rotationBlade = 
-                sourceVector.Op(targetVector);
+                targetVector.Op(sourceVector);
 
             var rotationBladeScalar =
                 processor.Divide(
@@ -73,7 +73,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean
                     //processor.SqrtOfAbs(rotationBlade.EGpSquared().GetTermScalar(0))
                 );
 
-            var rotorStorage = cosHalfAngle.Subtract(
+            var rotorStorage = cosHalfAngle.Add(
                 rotationBladeScalar.Times(rotationBlade)
             );
             
@@ -201,13 +201,17 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean
         public ulong GaSpaceDimension
             => Processor.GaSpaceDimension;
 
-        public ulong MaxBasisBladeId { get; }
+        public ulong MaxBasisBladeId 
+            => Processor.MaxBasisBladeId;
 
-        public uint GradesCount { get; }
-        
-        public IEnumerable<uint> Grades { get; }
+        public uint GradesCount 
+            => Processor.GradesCount;
 
-        public IGaScalarProcessor<T> ScalarProcessor { get; }
+        public IEnumerable<uint> Grades 
+            => Processor.Grades;
+
+        public IGaScalarProcessor<T> ScalarProcessor 
+            => Processor;
 
         public IGasKVector<T> MappedPseudoScalar { get; }
 
@@ -257,6 +261,9 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean
             Processor = processor;
             Rotor = storage;
             RotorReverse = Rotor.GetReverse();
+
+            MappedPseudoScalar = 
+                Rotor.EGp(Processor.PseudoScalar).EGp(RotorReverse).GetKVectorPart(VSpaceDimension);
         }
 
         private GaEuclideanSimpleRotor([NotNull] IGaProcessor<T> processor, [NotNull] IGasMultivector<T> rotor, [NotNull] IGasMultivector<T> rotorReverse)

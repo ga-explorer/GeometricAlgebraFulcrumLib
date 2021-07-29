@@ -1,0 +1,49 @@
+﻿using GeometricAlgebraFulcrumLib.Storage;
+using GeometricAlgebraFulcrumLib.Storage.Composers;
+
+namespace GeometricAlgebraFulcrumLib.Algebra.LinearMaps
+{
+    public static class GaLinerMapUtils
+    {
+
+        public static T[,] GetMultivectorsMappingArray<T>(this IGaGeneralUnilinearMap<T> linearMap)
+        {
+            var processor = linearMap.ScalarProcessor;
+            var rowsCount = (int) linearMap.GaSpaceDimension;
+            var colsCount = rowsCount;
+            var array = new T[rowsCount, colsCount];
+
+            for (var index = 0; index < colsCount; index++)
+            {
+                var mappedBasisBlade = 
+                    linearMap.MapBasisBlade((ulong) index);
+
+                for (var i = 0; i < rowsCount; i++)
+                    array[i, index] = mappedBasisBlade.TryGetTermScalar((ulong) i, out var scalar)
+                        ? scalar
+                        : processor.ZeroScalar;
+            }
+
+            return array;
+        }
+        
+        public static T[,] GetMultivectorsMappingArray<T>(this IGaGeneralUnilinearMap<T> linearMap, int rowsCount, int colsCount)
+        {
+            var processor = linearMap.ScalarProcessor;
+            var array = new T[rowsCount, colsCount];
+
+            for (var index = 0; index < colsCount; index++)
+            {
+                var mappedBasisBlade = 
+                    linearMap.MapBasisBlade((ulong) index);
+
+                for (var i = 0; i < rowsCount; i++)
+                    array[i, index] = mappedBasisBlade.TryGetTermScalar((ulong) i, out var scalar)
+                        ? scalar
+                        : processor.ZeroScalar;
+            }
+
+            return array;
+        }
+    }
+}

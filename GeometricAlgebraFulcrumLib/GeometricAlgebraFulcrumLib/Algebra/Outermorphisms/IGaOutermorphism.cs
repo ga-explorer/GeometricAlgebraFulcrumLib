@@ -1,14 +1,12 @@
 ﻿using System.Collections.Generic;
-using GeometricAlgebraFulcrumLib.Processing.Scalars;
+using GeometricAlgebraFulcrumLib.Algebra.LinearMaps;
 using GeometricAlgebraFulcrumLib.Storage;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.Outermorphisms
 {
     public interface IGaOutermorphism<T> 
-        : IGaSpace
+        : IGaUnilinearMap<T>
     {
-        IGaScalarProcessor<T> ScalarProcessor { get; }
-
         /// <summary>
         /// det(T) = T[I] lcp BladeInverse(I), where I is the space pseudo-scalar
         /// </summary>
@@ -30,7 +28,5 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Outermorphisms
         IGasBivector<T> MapBivector(IGasBivector<T> bivector);
 
         IGasKVector<T> MapKVector(IGasKVector<T> kVector);
-
-        IGasMultivector<T> MapMultivector(IGasMultivector<T> mv);
     }
 }

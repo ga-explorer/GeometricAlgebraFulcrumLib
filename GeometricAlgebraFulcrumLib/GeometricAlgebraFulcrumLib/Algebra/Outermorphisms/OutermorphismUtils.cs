@@ -123,10 +123,10 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Outermorphisms
 
             for (var index = 0; index < colsCount; index++)
             {
-                var mappedBasisVector = linearMap.MapBasisBlade((ulong) index);
+                var mappedBasisBlade = linearMap.MapBasisBlade((ulong) index);
 
                 for (var i = 0; i < rowsCount; i++)
-                    array[i, index] = mappedBasisVector.TryGetTermScalar((ulong) i, out var scalar)
+                    array[i, index] = mappedBasisBlade.TryGetTermScalar((ulong) i, out var scalar)
                         ? scalar
                         : processor.ZeroScalar;
             }

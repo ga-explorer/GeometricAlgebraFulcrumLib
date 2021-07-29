@@ -1,5 +1,5 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Processing.Generic;
+using GeometricAlgebraFulcrumLib.Processing;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
 
@@ -9,16 +9,14 @@ namespace GeometricAlgebraFulcrumLib.Samples.CodeComposer
     {
         public static void Execute()
         {
-            var processor = GaProcessorGenericOrthonormal<ISymbolicExpressionAtomic>.CreateEuclidean(
-                new SymbolicContext(),
-                63
-            );
-
             var context = 
                 new SymbolicContext()
                 {
                     MergeExpressions = false
                 };
+
+            var processor = 
+                context.CreateEuclideanProcessor(63);
 
             var u =
                 context.ParameterVariablesFactory.CreateVector(

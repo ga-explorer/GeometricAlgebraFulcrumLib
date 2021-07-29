@@ -1,7 +1,7 @@
 ﻿using System;
 using GeometricAlgebraFulcrumLib.CodeComposer.Composers;
-using GeometricAlgebraFulcrumLib.CodeComposer.LanguageServers;
-using GeometricAlgebraFulcrumLib.CodeComposer.LanguageServers.CSharp;
+using GeometricAlgebraFulcrumLib.CodeComposer.Languages;
+using GeometricAlgebraFulcrumLib.CodeComposer.Languages.CSharp;
 using GeometricAlgebraFulcrumLib.Processing;
 using GeometricAlgebraFulcrumLib.Processing.Products;
 using GeometricAlgebraFulcrumLib.Processing.Products.Euclidean;
@@ -54,7 +54,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseMulti
 
 
         public GaLibraryComposer(uint vSpaceDimensions) : 
-            base(GaClcLanguageServer.CSharp(new GaClcMathematicaExprToCSharpConverter()))
+            base(GaLanguageServer.CSharp(new GaMathematicaExprToCSharpConverter()))
         {
             if (vSpaceDimensions < 2)
                 throw new ArgumentOutOfRangeException(nameof(vSpaceDimensions));
@@ -263,7 +263,7 @@ namespace EGA#vSpaceDimensions#D
 
             context.SetIntermediateExternalNamesByNameIndex(index => $"tempVar{index}");
 
-            var codeComposer = new GaClcSymbolicContextCodeComposer(this, context);
+            var codeComposer = new GaSymbolicContextCodeComposer(GaLanguage, context);
 
             return codeComposer.Generate();
         }
