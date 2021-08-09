@@ -14,6 +14,18 @@ GA-FuL is intended to:
 3. provide a simple unified and generic Application Programming Interface (API) for several classes of applications, including numerical computations, symbolic manipulations, and optimized code generation.
 4. implement an extensible layered approach to allow users of different backgrounds to select the suitable level of coding they can handle, ranging from a very high-level of prototyping using GA operations to a low level of direct manipulation of scalars.
 
+## GA-FuL Layers
+
+### 1. Structures Layer
+
+### 2. Storage Layer
+
+### 3. Processing Layer
+
+### 4. Algebra Layer
+
+### 5. Geometry Layer
+
 ## Examples
 
 Typically, GA-FuL requires selecting a *processor* when making computations on multivectors. A processor is a special object capable of performing basic operations on scalars such as addition, subtraction, multiplication, division, negation, in addition to basic functions (sin, cos, exp, log, etc.). In GA-FuL, all processors implement the generic interface `IGaScalarProcessor<T>` under the `GeometricAlgebraFulcrumLib.Processing.Scalars` namespace, where `T` is the type of scalar used. Common operations on multivectors (for example the geometric and other products, the reverse, and grade involution) are all defined in terms of the methods of interface `IGaScalarProcessor<T>`. A processor can also be used for constructing multivectors of various kinds (scalars, vectors, bivectors, k-vectors, and general multivectors). Each kind of scalars has its own processor, and you can define your own processor for any new kind of scalars by properly implementing the `IGaScalarProcessor<T>` interface. 
