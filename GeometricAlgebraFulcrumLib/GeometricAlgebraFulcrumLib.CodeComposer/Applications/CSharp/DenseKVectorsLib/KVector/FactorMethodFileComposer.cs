@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
-using GeometricAlgebraFulcrumLib.Algebra.Basis;
-using GeometricAlgebraFulcrumLib.Processing.Products;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Basis;
+using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
 using GeometricAlgebraFulcrumLib.Storage;
@@ -15,9 +15,9 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
     {
         private readonly uint _inputGrade;
         private readonly ulong _inputId;
-        private IGasKVector<ISymbolicExpressionAtomic> _inputBlade;
-        private IGasVectorTerm<ISymbolicExpressionAtomic>[] _inputBasisVectorsArray;
-        private IGasVector<ISymbolicExpressionAtomic>[] _outputVectorsArray;
+        private IGaStorageKVector<ISymbolicExpressionAtomic> _inputBlade;
+        private IGaStorageVector<ISymbolicExpressionAtomic>[] _inputBasisVectorsArray;
+        private IGaStorageVector<ISymbolicExpressionAtomic>[] _outputVectorsArray;
 
 
         internal FactorMethodFileComposer(GaLibraryComposer libGen, uint inGrade, ulong inId)
@@ -47,7 +47,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
                             .NumbersFactory
                             .CreateBasisVector(index)
                     )
-                    .Cast<IGasVectorTerm<ISymbolicExpressionAtomic>>()
+                    .Cast<IGaStorageVector<ISymbolicExpressionAtomic>>()
                     .ToArray();
         }
 
@@ -57,7 +57,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
                 _inputBasisVectorsArray.Length;
 
             _outputVectorsArray = 
-                new IGasVector<ISymbolicExpressionAtomic>[vectorsCount];
+                new IGaStorageVector<ISymbolicExpressionAtomic>[vectorsCount];
 
             var grade = _inputGrade;
             var inputBlade = _inputBlade;

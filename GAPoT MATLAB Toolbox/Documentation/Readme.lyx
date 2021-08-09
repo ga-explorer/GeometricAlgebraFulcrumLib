@@ -1,0 +1,423 @@
+#LyX 2.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 544
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\use_minted 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Section
+Installation and Usage
+\end_layout
+
+\begin_layout Enumerate
+Download the latest version of GAPoTNumLib from GitHub: https://github.com/ga-exp
+lorer/GAPoTNumLib
+\end_layout
+
+\begin_layout Enumerate
+Open and Build the GAPoTNumLib solution using x64 Debug configuration.
+ Make sure the GAPoTNumLib.Framework project is the default project of the
+ solution
+\end_layout
+
+\begin_layout Enumerate
+In the MATLAB toolbox open the file gapotInit.m and edit the variable gapotAssemb
+lyPath to be the path containing the GAPoTNumLib.Framework.exe file
+\end_layout
+
+\begin_layout Enumerate
+In MATLAB add the toolbox folder to the MATLAB path
+\end_layout
+
+\begin_layout Enumerate
+You can find examples for using the toolbox in files gapotSample1.m, gapotSample2.
+m, etc.
+\end_layout
+
+\begin_layout Section
+Representation of GAPoT Multivectors
+\end_layout
+
+\begin_layout Standard
+The design of GAPoTNumLib mainly targets the representation and manipulation
+ of sparse Euclidean multivectors containing elements of grades 0,1, and
+ 2.
+ Contrast to most general purpose GA libraries, the dimension of vectors
+ in GAPoTNumLib is arbitrary, and can be in the range of thouthands.
+ Additionally, creation of GAPoTNumLib vectors is formulated to be as close
+ as possible to GAPoT symbolic representation of current and voltage vectors.
+ Other GAPoT multivectors are constructed using the geometric product of
+ GAPoT vectors.
+\end_layout
+
+\begin_layout Standard
+A current or voltage vector in GAPoT is essentially a sum of 
+\begin_inset Formula $n$
+\end_inset
+
+ polar phasors of the form:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+V & = & \sum_{i=1}^{n}\alpha_{i}\mathrm{exp}\left(\theta_{i}\sigma_{2i-1}\sigma_{2i}\right)\sigma_{2i-1}
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Where 
+\begin_inset Formula $\alpha_{i},\theta_{i}$
+\end_inset
+
+ are magnitudes and angles of individual phasors.
+ We can also re-write this into two equivalent forms.
+ The rectangular phasor form is:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+V & = & \sum_{i=1}^{n}\alpha_{i}\left(\mathrm{cos}\theta_{i}+\mathrm{sin}\theta_{i}\sigma_{2i-1}\sigma_{2i}\right)\sigma_{2i-1}\nonumber \\
+ & = & \sum_{i=1}^{n}\left(x_{i}+y_{i}\sigma_{2i-1}\sigma_{2i}\right)\sigma_{2i-1}
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Where 
+\begin_inset Formula $x_{i}=\alpha_{i}\mathrm{cos}\theta_{i},y_{i}=\alpha_{i}\mathrm{sin}\theta_{i}$
+\end_inset
+
+ are cartesian components of the phasor.
+ The third form is the most similar to traditional representation of multivector
+s in GA libraries as a sum of scaled basis blades:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+V & = & \sum_{i=1}^{n}\left(x_{i}\sigma_{2i-1}+y_{i}\sigma_{2i-1}\sigma_{2i}\sigma_{2i-1}\right)\nonumber \\
+ & = & \sum_{i=1}^{n}\left(x_{i}\sigma_{2i-1}-y_{i}\sigma_{2i}\right)\nonumber \\
+ & = & \sum_{i=1}^{2n}v_{i}\sigma_{i}
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Where 
+\begin_inset Formula $v_{i}=x_{i}=\alpha_{i}\mathrm{cos}\theta_{i}$
+\end_inset
+
+ for 
+\begin_inset Formula $i=1,3,5,\ldots,2n-1$
+\end_inset
+
+, and 
+\begin_inset Formula $v_{i}=-y_{i}=-\alpha_{i}\mathrm{sin}\theta_{i}$
+\end_inset
+
+ for 
+\begin_inset Formula $i=2,4,6,\ldots,2n$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+In GAPoTNumLib, a simple textual representation can be used to construct
+ GAPoT vectors using either 3 forms: sum of polar phasors, rectangular phasors,
+ or terms.
+ Internally, however, all GAPoT vectors are stored as a sparse list of terms
+ and other forms are composed and displayed to the user on demand.
+ The following are examples for the textual representation of vectors in
+ GAPoTNumLib:
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+'-1.3<1>, 1.2<3>, -4.6<6>'
+\family default
+ represents a GAPoT vector in sum of terms form: 
+\begin_inset Formula $-1.3\sigma_{1}+1.2\sigma_{3}-4.6\sigma_{6}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+'p(233.92, −90) <1,2>, p(-120, 30) <3,4>'
+\family default
+ represents a GAPoT vector in sum of polar phasors form: 
+\begin_inset Formula $233.92e^{-90^{\textdegree}\sigma_{1}\sigma_{2}}\sigma_{1}-120e^{30^{\textdegree}\sigma_{3}\sigma_{4}}\sigma_{3}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+'r(10, 20) <1,2>, r(30, 0) <3,4>'
+\family default
+ represents a GAPoT vector in sum of rectangular phasors form: 
+\begin_inset Formula $\left(10+20\sigma_{1}\sigma_{2}\right)\sigma_{1}+\left(30+0\sigma_{3}\sigma_{4}\right)\sigma_{3}=\left(10\sigma_{1}-20\sigma_{2}\right)+\left(30\sigma_{3}\right)$
+\end_inset
+
+ which is equivalent to 
+\family typewriter
+'10<1>, -20<2>, 30<3>'
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+'1<1>, r(10, 20) <2,3>, p(-120, 30) <4,5>'
+\family default
+ represents a GAPoT vector in sum of phasors form: 
+\begin_inset Formula $1\sigma_{1}+\left(10+20\sigma_{3}\sigma_{4}\right)\sigma_{3}-120e^{30^{\textdegree}\sigma_{5}\sigma_{6}}\sigma_{5}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The geometric product of two GAPoT vectors is a multivector containing only
+ grade 0 and 2 elements.
+ In GAPoTNumLib such multivectors are called biversors, as they are the
+ geometric product of two vectors.
+ The user can also create a biversor from a textual representation such
+ as 
+\family typewriter
+'3<>, -2<1,2>, 4<3,4>'
+\family default
+ which represents the multivector 
+\begin_inset Formula $3-2\sigma_{1}\sigma_{2}+4\sigma_{3}\sigma_{4}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+GAPoTNumLib Classes
+\end_layout
+
+\begin_layout Standard
+In the .NET solution, the user can find several classes to represent GAPoT
+ multivectors under the 
+\family typewriter
+GAPoTNumLib.GAPoT
+\family default
+ namespace as follows:
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+GaPoTNumVector
+\family default
+ is the class used to represent GAPoT vectors, typically holding currents
+ and voltages.
+ The main operations this class provides include setting, getting, and adding
+ terms, polar phasors, and rectangular phasors.
+ The user can also add and subtract two GAPoT vectors, compute their geometric
+ product, find the negative, norm, squared norm, reverse, and inverse of
+ a GAPoT vector.
+ In addition, several methods for displaying the GAPoT vector in various
+ text and LaTeX formats exist.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+GaPoTNumBiversor
+\family default
+ is used to represent GAPoT biversors; sparse multivectors which only contains
+ elements of grades 0 and 2 typically representing power and impedance.
+ The class provides methods for setting, getting, and adding individual
+ terms of grade 0 and 2.
+ The user can also compute the negative, norm, squared norm, reverse, and
+ inverse of biversors.
+ There are several methods for extracting power quantities from the biversor
+ such as asctive, non-active, reactive, fundamental reactive, and harmful
+ power parts.
+ In addition, several methods for displaying the GAPoT biversor in various
+ text and LaTeX formats exist.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+GaPoTNumMultivector
+\family default
+ is capable of representing arbitrary sparse multivectors containing terms
+ of grades < 32.
+ A vector or biversor can be converted into a multivector using their 
+\family typewriter
+ToMultivectr()
+\family default
+ methods.
+ The user can extract the vector part (grade 1 terms) of a multivector using
+ the 
+\family typewriter
+GetVectorPart()
+\family default
+ method, and the same for the 
+\family typewriter
+GetBiversorPart()
+\family default
+ method.
+ Many computations on multivectors are also implemented like the geometric,
+ outer, left-contraction, and scalar products using the methods 
+\family typewriter
+Gp()
+\family default
+, 
+\family typewriter
+Op()
+\family default
+, 
+\family typewriter
+Lcp()
+\family default
+, and 
+\family typewriter
+Sp()
+\family default
+ in addition to the reverse, inverse, negative, squared norm, etc.
+\end_layout
+
+\begin_layout Standard
+For the elements of a GAPoT vector, there are three classes that can be
+ used to hold information on terms and phasors:
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+GaPoTNumVectorTerm
+\family default
+ holds a single term vector.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+GaPoTNumPolarPhasor
+\family default
+ holds a single polar phasor vector.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+GaPoTNumRectPhasor
+\family default
+ holds a single rectangular phasor vector.
+\end_layout
+
+\begin_layout Section
+Operations on Multivectors
+\end_layout
+
+\begin_layout Subsection
+Construction and Update Operations
+\end_layout
+
+\begin_layout Subsection
+Mathematical Operations
+\end_layout
+
+\begin_layout Subsection
+Text Operations
+\end_layout
+
+\begin_layout Subsection
+MATLAB Interoperability
+\end_layout
+
+\end_body
+\end_document

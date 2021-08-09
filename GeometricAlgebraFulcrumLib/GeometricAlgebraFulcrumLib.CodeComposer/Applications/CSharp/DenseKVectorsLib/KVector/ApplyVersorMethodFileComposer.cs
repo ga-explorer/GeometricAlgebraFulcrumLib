@@ -1,7 +1,7 @@
 ﻿using System;
 using GeometricAlgebraFulcrumLib.Algebra;
 using GeometricAlgebraFulcrumLib.CodeComposer.Languages;
-using GeometricAlgebraFulcrumLib.Geometry;
+using GeometricAlgebraFulcrumLib.Geometry.Subspaces;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
 using GeometricAlgebraFulcrumLib.Storage;
@@ -13,8 +13,8 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         GaLibrarySymbolicContextFileComposerBase
     {
         private IGaSubspace<ISymbolicExpressionAtomic> _subspace;
-        private IGasKVector<ISymbolicExpressionAtomic> _inputKVector;
-        private IGasKVector<ISymbolicExpressionAtomic> _outputKVector;
+        private IGaStorageKVector<ISymbolicExpressionAtomic> _inputKVector;
+        private IGaStorageKVector<ISymbolicExpressionAtomic> _outputKVector;
         private readonly GaLanguageOperationSpecs _operationSpecs;
         private readonly uint _inputGrade1;
         private readonly uint _inputGrade2;

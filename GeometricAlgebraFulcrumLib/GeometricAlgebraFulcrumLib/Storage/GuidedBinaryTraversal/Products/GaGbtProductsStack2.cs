@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using DataStructuresLib.BitManipulation;
 using DataStructuresLib.Stacks;
-using GeometricAlgebraFulcrumLib.Algebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.Signatures;
-using GeometricAlgebraFulcrumLib.Geometry.Multivectors;
-using GeometricAlgebraFulcrumLib.Processing.Products.Iterators;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Basis;
+using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Iterators;
+using GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
 using GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Multivectors;
 
@@ -20,18 +20,20 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
             //TODO: Generalize to case where one is larger than the other
             //Debug.Assert(mv1.Storage.VSpaceDimension == mv2.Storage.VSpaceDimension);
 
+            var processor = mv1.Processor;
+
             var treeDepth = 
-                (int) Math.Max(1, Math.Max(mv1.Storage.VSpaceDimension, mv2.Storage.VSpaceDimension));
+                (int) Math.Max(1, Math.Max(mv1.MultivectorStorage.VSpaceDimension, mv2.MultivectorStorage.VSpaceDimension));
 
             var capacity = (treeDepth + 1) * (treeDepth + 1);
             
-            var stack1 = mv1.Storage.CreateGbtStack(treeDepth, capacity);
-            var stack2 = mv2.Storage.CreateGbtStack(treeDepth, capacity);
+            var stack1 = mv1.MultivectorStorage.CreateGbtStack(treeDepth, capacity, processor);
+            var stack2 = mv2.MultivectorStorage.CreateGbtStack(treeDepth, capacity, processor);
 
             return new GaGbtProductsStack2<T>(stack1, stack2);
         }
 
-        public static GaGbtProductsStack2<T> Create(IGasMultivector<T> mv1, IGasMultivector<T> mv2)
+        public static GaGbtProductsStack2<T> Create(IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivector<T> mv1, IGaStorageMultivector<T> mv2)
         {
             //TODO: Generalize to case where one is larger than the other
             //Debug.Assert(mv1.VSpaceDimension == mv2.VSpaceDimension);
@@ -41,8 +43,8 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
 
             var capacity = (treeDepth + 1) * (treeDepth + 1);
             
-            var stack1 = mv1.CreateGbtStack(treeDepth, capacity);
-            var stack2 = mv2.CreateGbtStack(treeDepth, capacity);
+            var stack1 = mv1.CreateGbtStack(treeDepth, capacity, scalarProcessor);
+            var stack2 = mv2.CreateGbtStack(treeDepth, capacity, scalarProcessor);
 
             return new GaGbtProductsStack2<T>(stack1, stack2);
         }
@@ -54,12 +56,12 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
 
 
         public IGaScalarProcessor<T> ScalarProcessor 
-            => Storage1.ScalarProcessor;
+            => MultivectorStack1.ScalarProcessor;
 
-        public IGasMultivector<T> Storage1 
+        public IGaStorageMultivector<T> Storage1 
             => MultivectorStack1.Storage;
 
-        public IGasMultivector<T> Storage2 
+        public IGaStorageMultivector<T> Storage2 
             => MultivectorStack2.Storage;
 
         public T TosValue1 

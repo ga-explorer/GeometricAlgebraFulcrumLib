@@ -11,7 +11,7 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.SymbolicExpressions
         public SymbolicContext Context { get; }
 
 
-        public SymbolicExpressionMathematicaExprSimplifier([NotNull] SymbolicContext context)
+        internal SymbolicExpressionMathematicaExprSimplifier([NotNull] SymbolicContext context)
         {
             Context = context;
         }

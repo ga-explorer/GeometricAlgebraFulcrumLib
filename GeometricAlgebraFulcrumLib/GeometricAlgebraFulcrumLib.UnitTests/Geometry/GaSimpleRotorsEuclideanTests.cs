@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using GAPoTNumLib.GAPoT;
-using GeometricAlgebraFulcrumLib.Geometry.Euclidean;
-using GeometricAlgebraFulcrumLib.Processing;
-using GeometricAlgebraFulcrumLib.Processing.Implementations.Float64;
-using GeometricAlgebraFulcrumLib.Processing.Products.Euclidean;
+using GeometricAlgebraFulcrumLib.Geometry.Rotors;
+using GeometricAlgebraFulcrumLib.Processing.Multivectors;
+using GeometricAlgebraFulcrumLib.Processing.Multivectors.Binary;
+using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean;
+using GeometricAlgebraFulcrumLib.Processing.Random.Float64;
+using GeometricAlgebraFulcrumLib.Processing.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Storage;
 using NUnit.Framework;
 
@@ -14,8 +16,8 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Geometry
     public sealed class GaSimpleRotorsEuclideanTests
     {
         private readonly GaRandomComposerFloat64 _randomGenerator;
-        private readonly List<IGasVector<double>> _vectorsList;
-        private readonly List<GaEuclideanSimpleRotor<double>> _rotorsList;
+        private readonly List<IGaStorageVector<double>> _vectorsList;
+        private readonly List<GaPureRotor<double>> _rotorsList;
 
 
         public IGaProcessor<double> Processor { get; }
@@ -31,8 +33,8 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Geometry
         public GaSimpleRotorsEuclideanTests()
         {
             _randomGenerator = new GaRandomComposerFloat64(VSpaceDimension,10);
-            _vectorsList = new List<IGasVector<double>>();
-            _rotorsList = new List<GaEuclideanSimpleRotor<double>>();
+            _vectorsList = new List<IGaStorageVector<double>>();
+            _rotorsList = new List<GaPureRotor<double>>();
         }
 
         
@@ -44,7 +46,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Geometry
             while (count > 0)
             {
                 _rotorsList.Add(
-                    _randomGenerator.GetEuclideanSimpleRotor(Processor)
+                    (GaPureRotor<double>) _randomGenerator.GetEuclideanSimpleRotor(Processor)
                 );
 
                 count--;
@@ -68,16 +70,16 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Geometry
             var count = 1;
             while (count > 0)
             {
-                var u = _randomGenerator.GetVector().DivideByENorm();
-                var v = _randomGenerator.GetVector().DivideByENorm();
+                var u = Processor.DivideByENorm(_randomGenerator.GetVector());
+                var v = Processor.DivideByENorm(_randomGenerator.GetVector());
 
                 var rotor = 
-                    GaEuclideanSimpleRotor<double>.Create(Processor, u, v);
+                    Processor.CreateEuclideanRotor(u, v);
 
                 var v1 = rotor.MapVector(u);
 
                 var vectorDiffNormSquared = 
-                    v1.Subtract(v).ENormSquared();
+                    Processor.ENormSquared(Processor.Subtract(v1, v));
 
                 if (!vectorDiffNormSquared.IsNearZero())
                 {

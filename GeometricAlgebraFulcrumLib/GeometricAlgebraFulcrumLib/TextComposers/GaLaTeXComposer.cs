@@ -6,10 +6,11 @@ using System.Text;
 using DataStructuresLib;
 using DataStructuresLib.BitManipulation;
 using DataStructuresLib.Combinations;
-using GeometricAlgebraFulcrumLib.Algebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.Terms;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Basis;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
 using GeometricAlgebraFulcrumLib.Storage;
+using GeometricAlgebraFulcrumLib.Storage.Terms;
+using GeometricAlgebraFulcrumLib.Storage.Utils;
 using TextComposerLib.Text;
 
 namespace GeometricAlgebraFulcrumLib.TextComposers
@@ -201,11 +202,11 @@ namespace GeometricAlgebraFulcrumLib.TextComposers
             return textComposer.ToString();
         }
 
-        public string GetMultivectorText(IGasMultivector<T> storage)
+        public string GetMultivectorText(IGaStorageMultivector<T> storage)
         {
             return GetTermsText(
-                storage
-                    .GetNotZeroTerms()
+                ScalarProcessor
+                    .GetNotZeroTerms(storage)
                     .OrderByGradeIndex()
             );
         }

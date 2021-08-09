@@ -4,10 +4,11 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using DataStructuresLib;
-using GeometricAlgebraFulcrumLib.Algebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.Terms;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Basis;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
 using GeometricAlgebraFulcrumLib.Storage;
+using GeometricAlgebraFulcrumLib.Storage.Terms;
+using GeometricAlgebraFulcrumLib.Storage.Utils;
 
 namespace GeometricAlgebraFulcrumLib.TextComposers
 {
@@ -214,11 +215,11 @@ namespace GeometricAlgebraFulcrumLib.TextComposers
             return composer.ToString();
         }
 
-        public string GetMultivectorText(IGasMultivector<T> storage)
+        public string GetMultivectorText(IGaStorageMultivector<T> storage)
         {
             return GetTermsText(
-                storage
-                    .GetNotZeroTerms()
+                ScalarProcessor
+                    .GetNotZeroTerms(storage)
                     .OrderByGradeIndex()
             );
         }

@@ -123,6 +123,62 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Numbers
             }
         }
 
+        public bool IsPositive
+        {
+            get
+            {
+                if (NumberHeadSpecs.IsSymbolicNumber)
+                    return false;
+
+                if (!double.TryParse(NumberHeadSpecs.NumberText, out var number))
+                    return false;
+
+                return Context.IsPositive(number);
+            }
+        }
+
+        public bool IsNegative
+        {
+            get
+            {
+                if (NumberHeadSpecs.IsSymbolicNumber)
+                    return false;
+
+                if (!double.TryParse(NumberHeadSpecs.NumberText, out var number))
+                    return false;
+
+                return Context.IsNegative(number);
+            }
+        }
+
+        public bool IsNotNearPositive
+        {
+            get
+            {
+                if (NumberHeadSpecs.IsSymbolicNumber)
+                    return false;
+
+                if (!double.TryParse(NumberHeadSpecs.NumberText, out var number))
+                    return false;
+
+                return Context.IsNotNearPositive(number);
+            }
+        }
+
+        public bool IsNotNearNegative
+        {
+            get
+            {
+                if (NumberHeadSpecs.IsSymbolicNumber)
+                    return false;
+
+                if (!double.TryParse(NumberHeadSpecs.NumberText, out var number))
+                    return false;
+
+                return Context.IsNotNearNegative(number);
+            }
+        }
+
         public string HeadText 
             => NumberHeadSpecs.NumberText;
 

@@ -3,7 +3,7 @@
 namespace GeometricAlgebraFulcrumLib.CodeComposer.Languages
 {
     /// <summary>
-    /// GaClc built-in type names
+    /// Built-in type names
     /// </summary>
     public static class GaLanguageTypeNames
     {

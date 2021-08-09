@@ -2,6 +2,7 @@
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
 using GeometricAlgebraFulcrumLib.Storage;
 using GeometricAlgebraFulcrumLib.Storage.Composers;
+using GeometricAlgebraFulcrumLib.Storage.Utils;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.Matrices
 {
@@ -165,14 +166,13 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Matrices
             return matrix;
         }
 
-        public static IGasVector<T> MapVector<T>(this T[,] matrix, IGasVector<T> vector)
+        public static IGaStorageVector<T> MapVector<T>(this IGaScalarProcessor<T> scalarProcessor, T[,] matrix, IGaStorageVector<T> vector)
         {
             var rowsCount = matrix.GetLength(0);
             var colsCount = matrix.GetLength(1);
-            var scalarProcessor = vector.ScalarProcessor;
-            var composer = new GaVectorStorageComposer<T>(scalarProcessor);
+            var composer = new GaStorageComposerVector<T>(scalarProcessor);
 
-            foreach (var (index, scalar) in vector.GetIndexScalarPairs())
+            foreach (var (index, scalar) in vector.IndexScalarDictionary)
             {
                 if (index >= (ulong) colsCount)
                     continue;
@@ -194,27 +194,42 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Matrices
 
             composer.RemoveZeroTerms();
 
-            return composer.GetVectorStorage();
+            return composer.GetVector();
         }
 
+
+        public static T[,] CreateRotationMatrixToVector<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageVector<T> sourceVector, IGaStorageVector<T> targetVector, int size)
+        {
+            var matrix1 = scalarProcessor.CreateRotationMatrixFromE1(targetVector, size);
+            var matrix2 = scalarProcessor.CreateRotationMatrixToE1(sourceVector, size);
+
+            return scalarProcessor.MatrixTimes(matrix1, matrix2);
+        }
+
+        public static T[,] CreateRotationMatrixFromVector<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageVector<T> targetVector, IGaStorageVector<T> sourceVector, int size)
+        {
+            var matrix1 = scalarProcessor.CreateRotationMatrixFromE1(targetVector, size);
+            var matrix2 = scalarProcessor.CreateRotationMatrixToE1(sourceVector, size);
+
+            return scalarProcessor.MatrixTimes(matrix1, matrix2);
+        }
 
         /// <summary>
         /// This method creates a rotation matrix which rotates the basis vector e_1 into
         /// the given unit vector
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="vector"></param>
+        /// <param name="scalarProcessor"></param>
+        /// <param name="targetVector"></param>
         /// <param name="size"></param>
         /// <returns></returns>
-        public static T[,] CreateSimpleEuclideanRotationMatrix<T>(this IGasVector<T> vector, int size)
+        public static T[,] CreateRotationMatrixFromE1<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageVector<T> targetVector, int size)
         {
             if (size < 2)
                 throw new ArgumentOutOfRangeException(nameof(size));
 
-            var scalarProcessor = vector.ScalarProcessor;
-            
             // Special case: vector == e_1
-            var v1 = vector.GetTermScalarByIndex(0);
+            var v1 = scalarProcessor.GetTermScalarByIndex(targetVector, 0);
             if (scalarProcessor.IsOne(v1))
                 return scalarProcessor.CreateIdentityMatrix(size);
 
@@ -227,10 +242,11 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Matrices
                 throw new InvalidOperationException();
             }
 
-            var matrix = scalarProcessor.CreateZeroMatrix(size);
+            var matrix = 
+                scalarProcessor.CreateZeroMatrix(size);
 
             var indexScalarPairs = 
-                vector.GetIndexScalarDictionary();
+                targetVector.IndexScalarDictionary;
 
             // Fill first row
             foreach (var (index, scalar) in indexScalarPairs)
@@ -245,6 +261,89 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Matrices
             // Fill first column
             foreach (var (index, scalar) in indexScalarPairs)
                 matrix[index, 0] = scalar;
+
+            // Fill diagonal
+            foreach (var (index, scalar) in indexScalarPairs)
+            {
+                if (index == 0)
+                    continue;
+
+                matrix[index, index] = 
+                    scalarProcessor.Subtract(
+                        scalarProcessor.OneScalar,
+                        scalarProcessor.Divide(
+                            scalarProcessor.Square(scalar),
+                            v1
+                        )
+                    );
+            }
+
+            // Fill remaining items
+            foreach (var (index1, scalar1) in indexScalarPairs)
+            {
+                foreach (var (index2, scalar2) in indexScalarPairs)
+                {
+                    if (index1 == 0 || index2 == 0 || index1 == index2)
+                        continue;
+
+                    matrix[index1, index2] = 
+                        scalarProcessor.Divide(
+                            scalarProcessor.NegativeTimes(scalar1, scalar2),
+                            v1
+                        );
+                }
+            }
+
+            return matrix;
+        }
+
+        /// <summary>
+        /// This method creates a rotation matrix which rotates the given unit vector
+        /// into the basis vector e_1
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="scalarProcessor"></param>
+        /// <param name="sourceVector"></param>
+        /// <param name="size"></param>
+        /// <returns></returns>
+        public static T[,] CreateRotationMatrixToE1<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageVector<T> sourceVector, int size)
+        {
+            if (size < 2)
+                throw new ArgumentOutOfRangeException(nameof(size));
+
+            // Special case: vector == e_1
+            var v1 = scalarProcessor.GetTermScalarByIndex(sourceVector, 0);
+            if (scalarProcessor.IsOne(v1))
+                return scalarProcessor.CreateIdentityMatrix(size);
+
+            v1 = scalarProcessor.Add(scalarProcessor.OneScalar, v1);
+
+            // Special case: vector == -e_1
+            if (scalarProcessor.IsZero(v1))
+            {
+                //TODO: Handle this case
+                throw new InvalidOperationException();
+            }
+
+            var matrix = 
+                scalarProcessor.CreateZeroMatrix(size);
+
+            var indexScalarPairs = 
+                sourceVector.IndexScalarDictionary;
+
+            // Fill first column
+            foreach (var (index, scalar) in indexScalarPairs)
+            {
+                if (index == 0)
+                    continue;
+
+                matrix[index, 0] = 
+                    scalarProcessor.Negative(scalar);
+            }
+
+            // Fill first row
+            foreach (var (index, scalar) in indexScalarPairs)
+                matrix[0, index] = scalar;
 
             // Fill diagonal
             foreach (var (index, scalar) in indexScalarPairs)

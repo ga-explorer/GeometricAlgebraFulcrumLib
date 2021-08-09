@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using GeometricAlgebraFulcrumLib.Algebra.Basis;
-using GeometricAlgebraFulcrumLib.Processing;
-using GeometricAlgebraFulcrumLib.Processing.Implementations.Float64;
-using GeometricAlgebraFulcrumLib.Processing.Products;
-using GeometricAlgebraFulcrumLib.Processing.Products.Euclidean;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Basis;
+using GeometricAlgebraFulcrumLib.Processing.Multivectors;
+using GeometricAlgebraFulcrumLib.Processing.Multivectors.Binary;
+using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products;
+using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean;
+using GeometricAlgebraFulcrumLib.Processing.Multivectors.Unary;
+using GeometricAlgebraFulcrumLib.Processing.Random.Float64;
+using GeometricAlgebraFulcrumLib.Processing.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Storage;
 using NUnit.Framework;
 
@@ -14,8 +17,8 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
     public sealed class GaConsistencyTests
     {
         private readonly GaRandomComposerFloat64 _randomGenerator;
-        private readonly List<IGasMultivector<double>> _mvListTested;
-        private readonly List<IGasTermsMultivector<double>> _mvListRef;
+        private readonly List<IGaStorageMultivector<double>> _mvListTested;
+        private readonly List<IGaStorageMultivectorSparse<double>> _mvListRef;
         private readonly double _scalar;
 
 
@@ -32,24 +35,9 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
         public GaConsistencyTests()
         {
             _randomGenerator = new GaRandomComposerFloat64(VSpaceDimension, 10);
-            _mvListTested = new List<IGasMultivector<double>>();
-            _mvListRef = new List<IGasTermsMultivector<double>>();
+            _mvListTested = new List<IGaStorageMultivector<double>>();
+            _mvListRef = new List<IGaStorageMultivectorSparse<double>>();
             _scalar = _randomGenerator.GetScalar();
-        }
-        
-        private IGasMultivector<double> LeftTimesScalar(IGasMultivector<double> storage)
-        {
-            return storage.Times(_scalar);
-        }
-
-        private IGasMultivector<double> RightTimesScalar(IGasMultivector<double> storage)
-        {
-            return _scalar.Times(storage);
-        }
-        
-        private IGasMultivector<double> DivideByScalar(IGasMultivector<double> storage)
-        {
-            return storage.Divide(_scalar);
         }
         
 
@@ -108,7 +96,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
 
             //Convert all storages into multivector terms storages
             foreach (var storage in _mvListTested)
-                _mvListRef.Add(storage.GetTermsMultivectorCopy());
+                _mvListRef.Add(storage.GetSparseMultivectorCopy());
         }
 
         [Test]
@@ -121,63 +109,57 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
                 Assert.IsTrue(_mvListTested[i].TermsCount == _mvListRef[i].TermsCount);
 
                 var mvStorageDiff = 
-                    _mvListTested[i].Subtract(_mvListRef[i]);
+                    Processor.Subtract(_mvListTested[i], _mvListRef[i]);
 
-                Assert.IsTrue(mvStorageDiff.IsZero());
+                Assert.IsTrue(Processor.IsZero(mvStorageDiff));
             }
         }
 
-        private bool TestDiffIsZero(int i, Func<IGasMultivector<double>, IGasMultivector<double>> opFunction)
+        private bool TestDiffIsZero(int i, Func<IGaProcessor<double>, IGaStorageMultivector<double>, IGaStorageMultivector<double>> opFunction)
         {
             var tstMv = 
-                opFunction(_mvListTested[i]);
+                opFunction(Processor, _mvListTested[i]);
 
             var refMv =
-                opFunction(_mvListRef[i]);
+                opFunction(Processor, _mvListRef[i]);
 
-            return tstMv.Subtract(refMv).IsZero();
+            return Processor.IsZero(Processor.Subtract(tstMv, refMv));
         }
 
-        private bool TestDiffIsZero(int i, int j, Func<IGasMultivector<double>, IGasMultivector<double>, IGasMultivector<double>> opFunction)
+        private bool TestDiffIsZero(int i, int j, Func<IGaProcessor<double>, IGaStorageMultivector<double>, IGaStorageMultivector<double>, IGaStorageMultivector<double>> opFunction)
         {
             var tstMv = 
-                opFunction(_mvListTested[i], _mvListTested[j]);
+                opFunction(Processor, _mvListTested[i], _mvListTested[j]);
 
             var refMv =
-                opFunction(_mvListRef[i], _mvListRef[j]);
+                opFunction(Processor, _mvListRef[i], _mvListRef[j]);
 
-            return tstMv.Subtract(refMv).IsZero();
+            return Processor.IsZero(Processor.Subtract(tstMv, refMv));
         }
         
-        private bool TestDiffIsZero(int i, Func<IGasMultivector<double>, double> opFunction)
+        private bool TestDiffIsZero(int i, Func<IGaProcessor<double>, IGaStorageMultivector<double>, double> opFunction)
         {
-            var scalarProcessor = 
-                _mvListTested[i].ScalarProcessor;
-
             var tstMv = 
-                opFunction(_mvListTested[i]);
+                opFunction(Processor, _mvListTested[i]);
 
             var refMv =
-                opFunction(_mvListRef[i]);
+                opFunction(Processor, _mvListRef[i]);
 
-            return scalarProcessor.IsZero(
-                scalarProcessor.Subtract(tstMv, refMv)
+            return Processor.IsZero(
+                Processor.Subtract(tstMv, refMv)
             );
         }
         
-        private bool TestDiffIsZero(int i, int j, Func<IGasMultivector<double>, IGasMultivector<double>, double> opFunction)
+        private bool TestDiffIsZero(int i, int j, Func<IGaProcessor<double>, IGaStorageMultivector<double>, IGaStorageMultivector<double>, double> opFunction)
         {
-            var scalarProcessor = 
-                _mvListTested[i].ScalarProcessor;
-
             var tstMv = 
-                opFunction(_mvListTested[i], _mvListTested[j]);
+                opFunction(Processor, _mvListTested[i], _mvListTested[j]);
 
             var refMv =
-                opFunction(_mvListRef[i], _mvListRef[j]);
+                opFunction(Processor, _mvListRef[i], _mvListRef[j]);
 
-            return scalarProcessor.IsZero(
-                scalarProcessor.Subtract(tstMv, refMv)
+            return Processor.IsZero(
+                Processor.Subtract(tstMv, refMv)
             );
         }
 
@@ -187,9 +169,9 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
             for (var i = 0; i < _mvListTested.Count; i++)
             {
                 // Test unary operations on multivectors
-                Assert.IsTrue(TestDiffIsZero(i, LeftTimesScalar));
-                Assert.IsTrue(TestDiffIsZero(i, RightTimesScalar));
-                Assert.IsTrue(TestDiffIsZero(i, DivideByScalar));
+                Assert.IsTrue(TestDiffIsZero(i, (processor, mv) => processor.Times(_scalar, mv)));
+                Assert.IsTrue(TestDiffIsZero(i, (processor, mv) => processor.Times(mv, _scalar)));
+                Assert.IsTrue(TestDiffIsZero(i, (processor, mv) => processor.Divide(mv, _scalar)));
                 Assert.IsTrue(TestDiffIsZero(i, GaProductEucGpUtils.EGp));
                 Assert.IsTrue(TestDiffIsZero(i, GaProductEucGpUtils.EGpReverse));
                 Assert.IsTrue(TestDiffIsZero(i, GaProductEucSpUtils.ESp));
@@ -214,7 +196,5 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
                 }
             }
         }
-        
-        
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Numbers;
 using GeometricAlgebraFulcrumLib.Storage;
+using GeometricAlgebraFulcrumLib.Storage.Factories;
 
 namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Factories
 {
@@ -39,23 +40,23 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Factories
         }
 
         
-        public GasVectorTerm<ISymbolicExpressionAtomic> CreateBasisVector(ulong index)
+        public GaStorageVector<ISymbolicExpressionAtomic> CreateBasisVector(ulong index)
         {
-            return Context.CreateVector(index,
+            return Context.CreateStorageVector(index,
                 Context.GetOrDefineLiteralNumber(1)
             );
         }
         
-        public IGasKVectorTerm<ISymbolicExpressionAtomic> CreateBasisBlade(ulong id)
+        public IGaStorageKVector<ISymbolicExpressionAtomic> CreateBasisBlade(ulong id)
         {
-            return Context.CreateKVector(id,
+            return Context.CreateStorageKVector(id,
                 Context.GetOrDefineLiteralNumber(1)
             );
         }
         
-        public IGasKVectorTerm<ISymbolicExpressionAtomic> CreateBasisBlade(uint grade, ulong index)
+        public IGaStorageKVector<ISymbolicExpressionAtomic> CreateBasisBlade(uint grade, ulong index)
         {
-            return Context.CreateKVector(grade,
+            return Context.CreateStorageKVector(grade,
                 index,
                 Context.GetOrDefineLiteralNumber(1)
             );

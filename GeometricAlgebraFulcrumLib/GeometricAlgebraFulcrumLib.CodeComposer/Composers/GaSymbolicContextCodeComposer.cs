@@ -42,7 +42,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Composers
         {
             contextCodeComposer.SyntaxList.Add(
                 contextCodeComposer.GaLanguage.SyntaxFactory.Comment(
-                    "Begin GaClc SymbolicContext Code Generation, " + DateTime.Now.ToString("O")
+                    "Begin GA-FuL Symbolic Context Code Generation, " + DateTime.Now.ToString("O")
                 )
             );
 
@@ -100,7 +100,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Composers
         {
             contextCodeComposer.SyntaxList.Add(
                 contextCodeComposer.GaLanguage.SyntaxFactory.Comment(
-                    "Finish GaClc SymbolicContext Code Generation, " + DateTime.Now.ToString("O")
+                    "Finish GA-FuL Symbolic Context Code Generation, " + DateTime.Now.ToString("O")
                     )
                 );
         }

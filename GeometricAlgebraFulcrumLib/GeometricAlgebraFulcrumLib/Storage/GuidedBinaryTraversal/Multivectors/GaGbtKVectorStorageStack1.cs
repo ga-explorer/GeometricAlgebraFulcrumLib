@@ -1,4 +1,8 @@
-﻿namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Multivectors
+﻿using System.Diagnostics.CodeAnalysis;
+using GeometricAlgebraFulcrumLib.Processing.Scalars;
+using GeometricAlgebraFulcrumLib.Storage.Utils;
+
+namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Multivectors
 {
     /// <summary>
     /// TODO: Simplify this to handle a single grade k-vector
@@ -7,9 +11,9 @@
     public sealed class GaGbtKVectorStorageStack1<T>
         : GaGbtStack1, IGaGbtMultivectorStorageStack1<T>
     {
-        public static GaGbtKVectorStorageStack1<T> Create(int capacity, int treeDepth, IGasKVector<T> multivectorStorage)
+        public static GaGbtKVectorStorageStack1<T> Create(int capacity, int treeDepth, IGaScalarProcessor<T> scalarProcessor, IGaStorageKVector<T> multivectorStorage)
         {
-            return new(capacity, treeDepth, multivectorStorage);
+            return new GaGbtKVectorStorageStack1<T>(capacity, treeDepth, scalarProcessor, multivectorStorage);
         }
 
 
@@ -18,9 +22,11 @@
         private ulong[] ActiveGradesBitMask1Array { get; }
 
 
-        public IGasKVector<T> KVectorStorage { get; }
+        public IGaStorageKVector<T> KVectorStorage { get; }
 
-        public IGasMultivector<T> Storage 
+        public IGaScalarProcessor<T> ScalarProcessor { get; }
+
+        public IGaStorageMultivector<T> Storage 
             => KVectorStorage;
 
         public T TosScalar { get; private set; }
@@ -47,9 +53,10 @@
         public ulong RootActiveGradesBitMask1 { get; }
 
 
-        private GaGbtKVectorStorageStack1(int capacity, int treeDepth, IGasKVector<T> multivectorStorage)
+        private GaGbtKVectorStorageStack1(int capacity, int treeDepth, [NotNull] IGaScalarProcessor<T> scalarProcessor, [NotNull] IGaStorageKVector<T> multivectorStorage)
             : base(capacity, treeDepth, 0ul)
         {
+            ScalarProcessor = scalarProcessor;
             KVectorStorage = multivectorStorage;
             ActiveGradesBitPattern = 1UL << (int) multivectorStorage.Grade;
 
@@ -84,7 +91,7 @@
             }
             else
             {
-                TosScalar = Storage.GetTermScalar(TosId);
+                TosScalar = ScalarProcessor.GetTermScalar(Storage, TosId);
             }
 
             TosIndex--;

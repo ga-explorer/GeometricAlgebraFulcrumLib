@@ -1,5 +1,5 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Processing.Products;
+using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products;
 using GeometricAlgebraFulcrumLib.Symbolic;
 using GeometricAlgebraFulcrumLib.Symbolic.Mathematica;
 
@@ -33,7 +33,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
                 dva, hdva, dvb, hdvb, dvc, hdvc
             );
 
-            var u = v.Op(dv);
+            var u = 
+                GaSymbolicUtils.ScalarProcessor.Op(v, dv);
 
             Console.WriteLine("Text Format:");
             Console.WriteLine($"v = {v.GetText()}");

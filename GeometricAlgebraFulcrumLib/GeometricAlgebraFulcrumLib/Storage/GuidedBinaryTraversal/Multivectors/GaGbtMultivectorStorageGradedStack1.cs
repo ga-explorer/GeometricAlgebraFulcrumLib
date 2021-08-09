@@ -1,12 +1,16 @@
-﻿namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Multivectors
+﻿using System.Diagnostics.CodeAnalysis;
+using GeometricAlgebraFulcrumLib.Processing.Scalars;
+using GeometricAlgebraFulcrumLib.Storage.Utils;
+
+namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Multivectors
 {
     //TODO: This class is not working. WHY?
     public sealed class GaGbtMultivectorStorageGradedStack1<T>
         : GaGbtStack1, IGaGbtMultivectorStorageStack1<T>
     {
-        public static GaGbtMultivectorStorageGradedStack1<T> Create(int capacity, int treeDepth, IGasMultivector<T> multivectorStorage)
+        public static GaGbtMultivectorStorageGradedStack1<T> Create(int capacity, int treeDepth, IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivector<T> multivectorStorage)
         {
-            return new(capacity, treeDepth, multivectorStorage);
+            return new(capacity, treeDepth, scalarProcessor, multivectorStorage);
         }
 
 
@@ -14,7 +18,9 @@
 
         private ulong[] ActiveGradesBitMask1Array { get; }
 
-        public IGasMultivector<T> Storage { get; }
+        public IGaScalarProcessor<T> ScalarProcessor { get; }
+
+        public IGaStorageMultivector<T> Storage { get; }
 
         public T TosScalar { get; private set; }
 
@@ -39,9 +45,10 @@
         public ulong RootActiveGradesBitMask1 { get; }
 
 
-        private GaGbtMultivectorStorageGradedStack1(int capacity, int treeDepth, IGasMultivector<T> multivectorStorage)
+        private GaGbtMultivectorStorageGradedStack1(int capacity, int treeDepth, [NotNull] IGaScalarProcessor<T> scalarProcessor, [NotNull] IGaStorageMultivector<T> multivectorStorage)
             : base(capacity, treeDepth, 0ul)
         {
+            ScalarProcessor = scalarProcessor;
             Storage = multivectorStorage;
             ActiveGradesBitPattern = multivectorStorage.GetStoredGradesBitPattern();
 
@@ -76,7 +83,7 @@
             }
             else
             {
-                TosScalar = Storage.GetTermScalar(TosId);
+                TosScalar = ScalarProcessor.GetTermScalar(Storage, TosId);
             }
 
             TosIndex--;

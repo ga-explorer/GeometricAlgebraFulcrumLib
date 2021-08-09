@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using DataStructuresLib.BitManipulation;
-using GeometricAlgebraFulcrumLib.Algebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.Terms;
-using GeometricAlgebraFulcrumLib.Geometry.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Basis;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
 using GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Multivectors;
+using GeometricAlgebraFulcrumLib.Storage.Terms;
 
 namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
 {
@@ -16,27 +16,29 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
         public static GaGbtProductsStack3<T> Create(GaMultivector<T> mv1, GaMultivector<T> mv2, GaMultivector<T> mv3)
         {
             Debug.Assert(
-                mv1.Storage.VSpaceDimension == mv2.Storage.VSpaceDimension &&
-                mv2.Storage.VSpaceDimension == mv3.Storage.VSpaceDimension
+                mv1.MultivectorStorage.VSpaceDimension == mv2.MultivectorStorage.VSpaceDimension &&
+                mv2.MultivectorStorage.VSpaceDimension == mv3.MultivectorStorage.VSpaceDimension
             );
+
+            var processor = mv1.Processor;
 
             var treeDepth = 
                 (int) Math.Max(
                     1, 
                     Math.Max(
-                        mv1.Storage.VSpaceDimension,
+                        mv1.MultivectorStorage.VSpaceDimension,
                         Math.Max(
-                            mv2.Storage.VSpaceDimension, 
-                            mv3.Storage.VSpaceDimension
+                            mv2.MultivectorStorage.VSpaceDimension, 
+                            mv3.MultivectorStorage.VSpaceDimension
                         )
                     )
                 );
 
             var capacity = (treeDepth + 1) * (treeDepth + 1) * (treeDepth + 1);
             
-            var stack1 = mv1.Storage.CreateGbtStack(treeDepth, capacity);
-            var stack2 = mv2.Storage.CreateGbtStack(treeDepth, capacity);
-            var stack3 = mv3.Storage.CreateGbtStack(treeDepth, capacity);
+            var stack1 = mv1.MultivectorStorage.CreateGbtStack(treeDepth, capacity, processor);
+            var stack2 = mv2.MultivectorStorage.CreateGbtStack(treeDepth, capacity, processor);
+            var stack3 = mv3.MultivectorStorage.CreateGbtStack(treeDepth, capacity, processor);
 
             return new GaGbtProductsStack3<T>(stack1, stack2, stack3);
         }
@@ -50,15 +52,15 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
 
 
         public IGaScalarProcessor<T> ScalarProcessor 
-            => Storage1.ScalarProcessor;
+            => MultivectorStack1.ScalarProcessor;
 
-        public IGasMultivector<T> Storage1 
+        public IGaStorageMultivector<T> Storage1 
             => MultivectorStack1.Storage;
 
-        public IGasMultivector<T> Storage2 
+        public IGaStorageMultivector<T> Storage2 
             => MultivectorStack2.Storage;
 
-        public IGasMultivector<T> Storage3 
+        public IGaStorageMultivector<T> Storage3 
             => MultivectorStack3.Storage;
 
         public T TosValue1 

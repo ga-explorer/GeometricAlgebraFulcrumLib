@@ -47,6 +47,12 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Factories
 
         public SymbolicHeadSpecsFunction ArcTan2 { get; }
 
+        public SymbolicHeadSpecsFunction Cosh { get; }
+
+        public SymbolicHeadSpecsFunction Sinh { get; }
+
+        public SymbolicHeadSpecsFunction Tanh { get; }
+
 
         internal SymbolicFunctionHeadSpecsFactory([NotNull] SymbolicContext context)
         {
@@ -73,6 +79,9 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Factories
             ArcSin = SymbolicHeadSpecsFunction.CreateNonAssociative(Context, "ArcSin");
             ArcTan = SymbolicHeadSpecsFunction.CreateNonAssociative(Context, "ArcTan");
             ArcTan2 = SymbolicHeadSpecsFunction.CreateNonAssociative(Context, "ArcTan");
+            Cosh = SymbolicHeadSpecsFunction.CreateNonAssociative(Context, "Cosh");
+            Sinh = SymbolicHeadSpecsFunction.CreateNonAssociative(Context, "Sinh");
+            Tanh = SymbolicHeadSpecsFunction.CreateNonAssociative(Context, "Tanh");
         }
     }
 }

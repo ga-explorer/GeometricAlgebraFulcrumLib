@@ -1,5 +1,6 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Processing;
+using GeometricAlgebraFulcrumLib.Geometry.Rotors;
+using GeometricAlgebraFulcrumLib.Processing.Multivectors;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
 
@@ -33,15 +34,11 @@ namespace GeometricAlgebraFulcrumLib.Samples.CodeComposer
                 );
 
             var rotor = 
-                context.ComputedVariablesFactory.CreateEuclideanSimpleRotor(
-                    processor,
-                    u, 
-                    v
-                );
+                processor.CreateEuclideanRotor(u, v);
             
-            rotor.Rotor.SetIsOutput(true);
+            rotor.Multivector.SetIsOutput(true);
 
-            rotor.Rotor.SetExternalNamesByTermGradeIndex(
+            rotor.Multivector.SetExternalNamesByTermGradeIndex(
                 (grade, index) => $"C[{grade}][{index}]"
             );
 
@@ -50,7 +47,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.CodeComposer
             u.SetExternalNamesByTermIndex(index => $"u[{index}]");
             
             //Define external names for outputs
-            rotor.Rotor.SetExternalNamesByTermId(id => $"rotor.Scalar{id}");
+            rotor.Multivector.SetExternalNamesByTermId(id => $"rotor.Scalar{id}");
 
             //Optimize sequence computations inside context
             context.ContextOptions.ReduceLowLevelRhsSubExpressions = true;

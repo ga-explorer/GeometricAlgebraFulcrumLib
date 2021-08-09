@@ -38,6 +38,10 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
         public SymbolicFunctionHeadSpecsFactory FunctionHeadSpecsFactory { get; }
 
 
+        public bool IsNumeric => false;
+
+        public bool IsSymbolic => true;
+
         public ISymbolicExpressionAtomic ZeroScalar { get; }
 
         public ISymbolicExpressionAtomic OneScalar { get; }
@@ -911,6 +915,30 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
             );
         }
 
+        public ISymbolicExpressionAtomic Cosh(ISymbolicExpressionAtomic scalar)
+        {
+            return GetOrDefineComputedVariable(
+                SymbolicExpressionProcessor.Cosh,
+                scalar
+            );
+        }
+
+        public ISymbolicExpressionAtomic Sinh(ISymbolicExpressionAtomic scalar)
+        {
+            return GetOrDefineComputedVariable(
+                SymbolicExpressionProcessor.Sinh,
+                scalar
+            );
+        }
+
+        public ISymbolicExpressionAtomic Tanh(ISymbolicExpressionAtomic scalar)
+        {
+            return GetOrDefineComputedVariable(
+                SymbolicExpressionProcessor.Tanh,
+                scalar
+            );
+        }
+
         public bool IsValid(ISymbolicExpressionAtomic scalar)
         {
             return SymbolicExpressionProcessor.IsValid(scalar);
@@ -931,9 +959,49 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
             return SymbolicExpressionProcessor.IsNearZero(scalar);
         }
 
+        public bool IsPositive(ISymbolicExpressionAtomic scalar)
+        {
+            return SymbolicExpressionProcessor.IsPositive(scalar);
+        }
+
+        public bool IsNegative(ISymbolicExpressionAtomic scalar)
+        {
+            return SymbolicExpressionProcessor.IsNegative(scalar);
+        }
+
+        public bool IsNotNearPositive(ISymbolicExpressionAtomic scalar)
+        {
+            return SymbolicExpressionProcessor.IsNotNearPositive(scalar);
+        }
+
+        public bool IsNotNearNegative(ISymbolicExpressionAtomic scalar)
+        {
+            return SymbolicExpressionProcessor.IsNotNearNegative(scalar);
+        }
+
         public bool IsNearZero(double scalar)
         {
             return scalar > -ZeroEpsilon && scalar < ZeroEpsilon;
+        }
+
+        public bool IsPositive(double scalar)
+        {
+            return scalar > 0;
+        }
+
+        public bool IsNegative(double scalar)
+        {
+            return scalar < 0;
+        }
+
+        public bool IsNotNearPositive(double scalar)
+        {
+            return scalar < -ZeroEpsilon;
+        }
+
+        public bool IsNotNearNegative(double scalar)
+        {
+            return scalar > ZeroEpsilon;
         }
 
         public ISymbolicExpressionAtomic TextToScalar(string text)

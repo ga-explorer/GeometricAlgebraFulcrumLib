@@ -1,6 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.Geometry.Euclidean;
-using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
-using GeometricAlgebraFulcrumLib.Storage;
+﻿using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
 
 namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Factories
 {
@@ -13,13 +11,12 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Factories
         }
 
 
-        public GaEuclideanSimpleRotor<ISymbolicExpressionAtomic> CreateEuclideanSimpleRotor(IGaProcessor<ISymbolicExpressionAtomic> processor, IGasVector<ISymbolicExpressionAtomic> sourceVector, IGasVector<ISymbolicExpressionAtomic> targetVector)
-        {
-            return GaEuclideanSimpleRotor<ISymbolicExpressionAtomic>.Create(
-                processor,
-                sourceVector,
-                targetVector
-            );
-        }
+        //public GaEuclideanSimpleRotor<ISymbolicExpressionAtomic> CreateEuclideanSimpleRotor(IGaProcessor<ISymbolicExpressionAtomic> processor, IGasVector<ISymbolicExpressionAtomic> sourceVector, IGasVector<ISymbolicExpressionAtomic> targetVector)
+        //{
+        //    return processor.CreateEuclideanSimpleRotor(
+        //        sourceVector,
+        //        targetVector
+        //    );
+        //}
     }
 }

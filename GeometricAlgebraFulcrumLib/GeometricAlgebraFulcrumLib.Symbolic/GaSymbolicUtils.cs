@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Linq;
 using GeometricAlgebraFulcrumLib.Algebra.Outermorphisms;
-using GeometricAlgebraFulcrumLib.Processing;
-using GeometricAlgebraFulcrumLib.Processing.Implementations.Float64;
+using GeometricAlgebraFulcrumLib.Processing.Multivectors;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
 using GeometricAlgebraFulcrumLib.Storage;
+using GeometricAlgebraFulcrumLib.Storage.Factories;
+using GeometricAlgebraFulcrumLib.Storage.Utils;
 using GeometricAlgebraFulcrumLib.Symbolic.Mathematica;
 using GeometricAlgebraFulcrumLib.Symbolic.Mathematica.Expression;
 using GeometricAlgebraFulcrumLib.Symbolic.Mathematica.ExprFactory;
@@ -67,20 +68,14 @@ namespace GeometricAlgebraFulcrumLib.Symbolic
             return MathematicaScalar.Create(Cas, e.ToExpr());
         }
 
-        public static IGasMultivector<Expr> ToSymbolic(this IGasMultivector<double> storage)
+        public static IGaStorageMultivector<Expr> ToSymbolic(this IGaStorageMultivector<double> storage)
         {
-            return storage.GetCopy(
-                GaScalarProcessorMathematicaExpr.DefaultProcessor,
-                number => number.ToExpr()
-            );
+            return storage.MapScalars(number => number.ToExpr());
         }
 
-        public static IGasMultivector<double> ToNumeric(this IGasMultivector<Expr> storage)
+        public static IGaStorageMultivector<double> ToNumeric(this IGaStorageMultivector<Expr> storage)
         {
-            return storage.GetCopy(
-                GaScalarProcessorFloat64.DefaultProcessor,
-                number => number.ToNumber()
-            );
+            return storage.MapScalars(number => number.ToNumber());
         }
 
 
@@ -248,32 +243,24 @@ namespace GeometricAlgebraFulcrumLib.Symbolic
             return newArray;
         }
 
-        public static IGasMultivector<Expr> SimplifyScalars(this IGasMultivector<Expr> storage)
+        public static IGaStorageMultivector<Expr> SimplifyScalars(this IGaStorageMultivector<Expr> storage)
         {
-            return storage.GetCopy(
-                scalar => scalar.Simplify()
-            );
+            return storage.MapScalars(scalar => scalar.Simplify());
         }
 
-        public static IGasMultivector<Expr> SimplifyScalars(this IGasMultivector<Expr> storage, Expr assumptionsExpr)
+        public static IGaStorageMultivector<Expr> SimplifyScalars(this IGaStorageMultivector<Expr> storage, Expr assumptionsExpr)
         {
-            return storage.GetCopy(
-                scalar => scalar.Simplify(assumptionsExpr)
-            );
+            return storage.MapScalars(scalar => scalar.Simplify(assumptionsExpr));
         }
 
-        public static IGasMultivector<Expr> FullSimplifyScalars(this IGasMultivector<Expr> storage)
+        public static IGaStorageMultivector<Expr> FullSimplifyScalars(this IGaStorageMultivector<Expr> storage)
         {
-            return storage.GetCopy(
-                scalar => scalar.FullSimplify()
-            );
+            return storage.MapScalars(scalar => scalar.FullSimplify());
         }
 
-        public static IGasMultivector<Expr> FullSimplifyScalars(this IGasMultivector<Expr> storage, Expr assumptionsExpr)
+        public static IGaStorageMultivector<Expr> FullSimplifyScalars(this IGaStorageMultivector<Expr> storage, Expr assumptionsExpr)
         {
-            return storage.GetCopy(
-                scalar => scalar.FullSimplify(assumptionsExpr)
-            );
+            return storage.MapScalars(scalar => scalar.FullSimplify(assumptionsExpr));
         }
 
         public static Expr DifferentiateScalar(this Expr scalar, string variableName)
@@ -285,11 +272,11 @@ namespace GeometricAlgebraFulcrumLib.Symbolic
                 .FullSimplify();
         }
 
-        public static IGasMultivector<Expr> DifferentiateScalars(this IGasMultivector<Expr> storage, string variableName)
+        public static IGaStorageMultivector<Expr> DifferentiateScalars(this IGaStorageMultivector<Expr> storage, string variableName)
         {
             var variableExpr = variableName.ToExpr();
 
-            return storage.GetCopy(
+            return storage.MapScalars(
                 scalar => Mfs.D[scalar, variableExpr].FullSimplify()
             );
         }
@@ -304,7 +291,7 @@ namespace GeometricAlgebraFulcrumLib.Symbolic
                 .FullSimplify(Mfs.Greater[freqVariableExpr, Expr.INT_ZERO]);
         }
 
-        public static IGasVector<Expr> DifferentiateScalars(this IGasVector<Expr> storage, string variableName)
+        public static IGaStorageVector<Expr> DifferentiateScalars(this IGaStorageVector<Expr> storage, string variableName)
         {
             var variableExpr = variableName.ToExpr();
 
@@ -313,12 +300,12 @@ namespace GeometricAlgebraFulcrumLib.Symbolic
             );
         }
 
-        public static IGasMultivector<Expr> HilbertTransformScalars(this IGasMultivector<Expr> storage, string timeVariableName, string freqVariableName)
+        public static IGaStorageMultivector<Expr> HilbertTransformScalars(this IGaStorageMultivector<Expr> storage, string timeVariableName, string freqVariableName)
         {
             var timeVariableExpr = timeVariableName.ToExpr();
             var freqVariableExpr = freqVariableName.ToExpr();
 
-            return storage.GetCopy(
+            return storage.MapScalars(
                 scalar => 
                     Mfs
                         .HilbertTransform[scalar, timeVariableExpr, timeVariableExpr]
@@ -326,7 +313,7 @@ namespace GeometricAlgebraFulcrumLib.Symbolic
             );
         }
         
-        public static IGasVector<Expr> HilbertTransformScalars(this IGasVector<Expr> storage, string timeVariableName, string freqVariableName)
+        public static IGaStorageVector<Expr> HilbertTransformScalars(this IGaStorageVector<Expr> storage, string timeVariableName, string freqVariableName)
         {
             var timeVariableExpr = timeVariableName.ToExpr();
             var freqVariableExpr = freqVariableName.ToExpr();
@@ -962,31 +949,25 @@ namespace GeometricAlgebraFulcrumLib.Symbolic
         //    return mv;
         //}
 
-        public static IGasVector<Expr> CreateVector(params Expr[] scalarArray)
+        public static IGaStorageVector<Expr> CreateVector(params Expr[] scalarArray)
         {
-            return GaStorageFactory.CreateVector(
-                ScalarProcessor,
-                scalarArray
+            return ScalarProcessor.CreateStorageVector(scalarArray
             );
         }
 
-        public static IGasVector<Expr> CreateVector(params string[] scalarTextArray)
+        public static IGaStorageVector<Expr> CreateVector(params string[] scalarTextArray)
         {
-            return GaStorageFactory.CreateVector(
-                ScalarProcessor,
-                scalarTextArray.Select(t => t.ToExpr()).ToArray()
+            return ScalarProcessor.CreateStorageVector(scalarTextArray.Select(t => t.ToExpr()).ToArray()
             );
         }
 
-        public static IGasVector<Expr> CreateBasisVector(int index)
+        public static IGaStorageVector<Expr> CreateBasisVector(int index)
         {
-            return GaStorageFactory.CreateBasisVector(
-                ScalarProcessor,
-                index
+            return ScalarProcessor.CreateStorageBasisVector(index
             );
         }
 
-        public static IGaOutermorphism<Expr> CreateVectorsLinearMap(int basisVectorsCount, Func<IGasVector<Expr>, IGasVector<Expr>> basisVectorMapFunc)
+        public static IGaOutermorphism<Expr> CreateVectorsLinearMap(int basisVectorsCount, Func<IGaStorageVector<Expr>, IGaStorageVector<Expr>> basisVectorMapFunc)
         {
             return EuclideanProcessor.CreateComputedOutermorphism(
                 basisVectorsCount,
@@ -995,73 +976,73 @@ namespace GeometricAlgebraFulcrumLib.Symbolic
         }
 
 
-        public static Expr VectorToRowVectorMatrix(this IGasVector<Expr> vectorStorage, uint vSpaceDimension)
+        public static Expr VectorToRowVectorMatrix(this IGaStorageVector<Expr> vectorStorage, uint vSpaceDimension)
         {
             return MatrixProcessor.CreateRowVectorMatrix(
-                vectorStorage.VectorToArray(vSpaceDimension)
+                ScalarProcessor.VectorToArray(vectorStorage, vSpaceDimension)
             );
         }
 
-        public static Expr VectorToColumnVectorMatrix(this IGasVector<Expr> vectorStorage, uint vSpaceDimension)
+        public static Expr VectorToColumnVectorMatrix(this IGaStorageVector<Expr> vectorStorage, uint vSpaceDimension)
         {
             return MatrixProcessor.CreateColumnVectorMatrix(
-                vectorStorage.VectorToArray(vSpaceDimension)
+                ScalarProcessor.VectorToArray(vectorStorage, vSpaceDimension)
             );
         }
 
-        public static Expr BivectorToRowVectorMatrix(this IGasBivector<Expr> bivectorStorage, uint vSpaceDimension)
+        public static Expr BivectorToRowVectorMatrix(this IGaStorageBivector<Expr> bivectorStorage, uint vSpaceDimension)
         {
             return MatrixProcessor.CreateRowVectorMatrix(
-                bivectorStorage.BivectorToArray(vSpaceDimension)
+                ScalarProcessor.BivectorToArray(bivectorStorage, vSpaceDimension)
             );
         }
 
-        public static Expr BivectorToColumnVectorMatrix(this IGasBivector<Expr> bivectorStorage, uint vSpaceDimension)
+        public static Expr BivectorToColumnVectorMatrix(this IGaStorageBivector<Expr> bivectorStorage, uint vSpaceDimension)
         {
             return MatrixProcessor.CreateColumnVectorMatrix(
-                bivectorStorage.BivectorToArray(vSpaceDimension)
+                ScalarProcessor.BivectorToArray(bivectorStorage, vSpaceDimension)
             );
         }
 
-        public static Expr BivectorToMatrix(this IGasBivector<Expr> bivectorStorage, uint vSpaceDimension)
+        public static Expr BivectorToMatrix(this IGaStorageBivector<Expr> bivectorStorage, uint vSpaceDimension)
         {
             return MatrixProcessor.CreateMatrix(
-                bivectorStorage.BivectorToArray2D(vSpaceDimension)
+                ScalarProcessor.BivectorToArray2D(bivectorStorage, vSpaceDimension)
             );
         }
 
-        public static Expr ScalarPlusBivectorToMatrix(this IGasMultivector<Expr> multivectorStorage, uint vSpaceDimension)
+        public static Expr ScalarPlusBivectorToMatrix(this IGaStorageMultivector<Expr> multivectorStorage, uint vSpaceDimension)
         {
             return MatrixProcessor.CreateMatrix(
-                multivectorStorage.ScalarPlusBivectorToArray2D(vSpaceDimension)
+                ScalarProcessor.ScalarPlusBivectorToArray2D(multivectorStorage, vSpaceDimension)
             );
         }
 
-        public static Expr KVectorToRowVectorMatrix(this IGasVector<Expr> kVectorStorage, uint vSpaceDimension)
+        public static Expr KVectorToRowVectorMatrix(this IGaStorageVector<Expr> kVectorStorage, uint vSpaceDimension)
         {
             return MatrixProcessor.CreateRowVectorMatrix(
-                kVectorStorage.KVectorToArray(vSpaceDimension)
+                ScalarProcessor.KVectorToArray(kVectorStorage, vSpaceDimension)
             );
         }
 
-        public static Expr KVectorToColumnVectorMatrix(this IGasVector<Expr> kVectorStorage, uint vSpaceDimension)
+        public static Expr KVectorToColumnVectorMatrix(this IGaStorageVector<Expr> kVectorStorage, uint vSpaceDimension)
         {
             return MatrixProcessor.CreateColumnVectorMatrix(
-                kVectorStorage.KVectorToArray(vSpaceDimension)
+                ScalarProcessor.KVectorToArray(kVectorStorage, vSpaceDimension)
             );
         }
 
-        public static Expr MultivectorToRowVectorMatrix(this IGasMultivector<Expr> multivectorStorage, uint vSpaceDimension)
+        public static Expr MultivectorToRowVectorMatrix(this IGaStorageMultivector<Expr> multivectorStorage, uint vSpaceDimension)
         {
             return MatrixProcessor.CreateRowVectorMatrix(
-                multivectorStorage.MultivectorToArray(vSpaceDimension)
+                ScalarProcessor.MultivectorToArray(multivectorStorage, vSpaceDimension)
             );
         }
 
-        public static Expr MultivectorToColumnVectorMatrix(this IGasMultivector<Expr> multivectorStorage, uint vSpaceDimension)
+        public static Expr MultivectorToColumnVectorMatrix(this IGaStorageMultivector<Expr> multivectorStorage, uint vSpaceDimension)
         {
             return MatrixProcessor.CreateColumnVectorMatrix(
-                multivectorStorage.MultivectorToArray(vSpaceDimension)
+                ScalarProcessor.MultivectorToArray(multivectorStorage, vSpaceDimension)
             );
         }
 
@@ -1094,12 +1075,12 @@ namespace GeometricAlgebraFulcrumLib.Symbolic
             return TextComposer.GetArrayText(array);
         }
 
-        public static string GetText(this IGasMultivector<Expr> mv)
+        public static string GetText(this IGaStorageMultivector<Expr> mv)
         {
             return TextComposer.GetMultivectorText(mv);
         }
 
-        public static string GetLaTeX(this IGasMultivector<Expr> mv)
+        public static string GetLaTeX(this IGaStorageMultivector<Expr> mv)
         {
             return LaTeXComposer.GetMultivectorText(mv);
         }

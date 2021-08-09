@@ -1,6 +1,6 @@
 ﻿using System;
 using GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVectorsLib;
-using GeometricAlgebraFulcrumLib.Processing;
+using GeometricAlgebraFulcrumLib.Processing.Multivectors;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
 
 namespace GeometricAlgebraFulcrumLib.Samples.CodeComposer

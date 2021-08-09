@@ -10,7 +10,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseMulti
         {
             var mv = new Multivector();
 
-            //Begin GaClc SymbolicContext Code Generation, 2021-06-26T22:48:42.7671770+02:00
+            //Begin GA-FuL SymbolicContext Code Generation, 2021-06-26T22:48:42.7671770+02:00
             //SymbolicContext:
             //Input Variables: 32 used, 0 not used, 32 total.
             //Temp Variables: 0 sub-expressions, 0 generated temps, 0 total.
@@ -85,7 +85,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseMulti
 
             mv._scalarsArray[15] = mv1._scalarsArray[15] + mv2._scalarsArray[15];
 
-            //Finish GaClc SymbolicContext Code Generation, 2021-06-26T22:48:42.7838694+02:00
+            //Finish GA-FuL SymbolicContext Code Generation, 2021-06-26T22:48:42.7838694+02:00
 
 
             return mv;
@@ -95,7 +95,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseMulti
         {
             var mv = new Multivector();
 
-            //Begin GaClc SymbolicContext Code Generation, 2021-06-26T22:48:42.9142741+02:00
+            //Begin GA-FuL SymbolicContext Code Generation, 2021-06-26T22:48:42.9142741+02:00
             //SymbolicContext:
             //Input Variables: 32 used, 0 not used, 32 total.
             //Temp Variables: 16 sub-expressions, 0 generated temps, 16 total.
@@ -188,7 +188,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseMulti
             tempVar0 = -1 * mv2._scalarsArray[15];
             mv._scalarsArray[15] = mv1._scalarsArray[15] + tempVar0;
 
-            //Finish GaClc SymbolicContext Code Generation, 2021-06-26T22:48:42.9153454+02:00
+            //Finish GA-FuL SymbolicContext Code Generation, 2021-06-26T22:48:42.9153454+02:00
 
 
             return mv;
@@ -218,7 +218,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseMulti
         {
             var mv = new Multivector();
 
-            //Begin GaClc SymbolicContext Code Generation, 2021-06-26T22:48:47.8080623+02:00
+            //Begin GA-FuL SymbolicContext Code Generation, 2021-06-26T22:48:47.8080623+02:00
             //SymbolicContext:
             //Input Variables: 32 used, 0 not used, 32 total.
             //Temp Variables: 494 sub-expressions, 0 generated temps, 494 total.
@@ -789,7 +789,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseMulti
             tempVar1 = mv2._scalarsArray[9] * tempVar10;
             mv._scalarsArray[0] = tempVar0 + tempVar1;
 
-            //Finish GaClc SymbolicContext Code Generation, 2021-06-26T22:48:47.8095619+02:00
+            //Finish GA-FuL SymbolicContext Code Generation, 2021-06-26T22:48:47.8095619+02:00
 
 
             return mv;
@@ -799,7 +799,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseMulti
         {
             var mv = new Multivector();
 
-            //Begin GaClc SymbolicContext Code Generation, 2021-06-26T22:48:47.9860874+02:00
+            //Begin GA-FuL SymbolicContext Code Generation, 2021-06-26T22:48:47.9860874+02:00
             //SymbolicContext:
             //Input Variables: 32 used, 0 not used, 32 total.
             //Temp Variables: 138 sub-expressions, 0 generated temps, 138 total.
@@ -1014,7 +1014,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseMulti
 
             mv._scalarsArray[0] = _scalarsArray[0] * mv2._scalarsArray[0];
 
-            //Finish GaClc SymbolicContext Code Generation, 2021-06-26T22:48:47.9864726+02:00
+            //Finish GA-FuL SymbolicContext Code Generation, 2021-06-26T22:48:47.9864726+02:00
 
 
             return mv;
@@ -1024,7 +1024,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseMulti
         {
             var mv = new Multivector();
 
-            //Begin GaClc SymbolicContext Code Generation, 2021-06-26T22:48:48.1751723+02:00
+            //Begin GA-FuL SymbolicContext Code Generation, 2021-06-26T22:48:48.1751723+02:00
             //SymbolicContext:
             //Input Variables: 32 used, 0 not used, 32 total.
             //Temp Variables: 143 sub-expressions, 0 generated temps, 143 total.
@@ -1244,7 +1244,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseMulti
             tempVar1 = mv2._scalarsArray[9] * tempVar8;
             mv._scalarsArray[0] = tempVar0 + tempVar1;
 
-            //Finish GaClc SymbolicContext Code Generation, 2021-06-26T22:48:48.1755620+02:00
+            //Finish GA-FuL SymbolicContext Code Generation, 2021-06-26T22:48:48.1755620+02:00
 
 
             return mv;
@@ -1254,7 +1254,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseMulti
         {
             var mv = new Multivector();
 
-            //Begin GaClc SymbolicContext Code Generation, 2021-06-26T22:48:48.3324321+02:00
+            //Begin GA-FuL SymbolicContext Code Generation, 2021-06-26T22:48:48.3324321+02:00
             //SymbolicContext:
             //Input Variables: 32 used, 0 not used, 32 total.
             //Temp Variables: 141 sub-expressions, 0 generated temps, 141 total.
@@ -1472,7 +1472,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseMulti
             tempVar1 = mv2._scalarsArray[9] * tempVar5;
             mv._scalarsArray[0] = tempVar0 + tempVar1;
 
-            //Finish GaClc SymbolicContext Code Generation, 2021-06-26T22:48:48.3327715+02:00
+            //Finish GA-FuL SymbolicContext Code Generation, 2021-06-26T22:48:48.3327715+02:00
 
 
             return mv;
@@ -1482,7 +1482,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseMulti
         {
             var mv = new Multivector();
 
-            //Begin GaClc SymbolicContext Code Generation, 2021-06-26T22:48:48.7548659+02:00
+            //Begin GA-FuL SymbolicContext Code Generation, 2021-06-26T22:48:48.7548659+02:00
             //SymbolicContext:
             //Input Variables: 32 used, 0 not used, 32 total.
             //Temp Variables: 274 sub-expressions, 0 generated temps, 274 total.
@@ -1833,7 +1833,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseMulti
             tempVar1 = mv2._scalarsArray[9] * tempVar9;
             mv._scalarsArray[0] = tempVar0 + tempVar1;
 
-            //Finish GaClc SymbolicContext Code Generation, 2021-06-26T22:48:48.7554653+02:00
+            //Finish GA-FuL SymbolicContext Code Generation, 2021-06-26T22:48:48.7554653+02:00
 
 
             return mv;
@@ -1843,7 +1843,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseMulti
         {
             var mv = new Multivector();
 
-            //Begin GaClc SymbolicContext Code Generation, 2021-06-26T22:48:49.0155945+02:00
+            //Begin GA-FuL SymbolicContext Code Generation, 2021-06-26T22:48:49.0155945+02:00
             //SymbolicContext:
             //Input Variables: 30 used, 0 not used, 30 total.
             //Temp Variables: 214 sub-expressions, 0 generated temps, 214 total.
@@ -2130,7 +2130,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseMulti
             tempVar1 = mv2._scalarsArray[9] * tempVar3;
             mv._scalarsArray[0] = tempVar0 + tempVar1;
 
-            //Finish GaClc SymbolicContext Code Generation, 2021-06-26T22:48:49.0160604+02:00
+            //Finish GA-FuL SymbolicContext Code Generation, 2021-06-26T22:48:49.0160604+02:00
 
 
             return mv;
@@ -2140,7 +2140,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseMulti
         {
             var mv = new Multivector();
 
-            //Begin GaClc SymbolicContext Code Generation, 2021-06-26T22:48:49.2813829+02:00
+            //Begin GA-FuL SymbolicContext Code Generation, 2021-06-26T22:48:49.2813829+02:00
             //SymbolicContext:
             //Input Variables: 32 used, 0 not used, 32 total.
             //Temp Variables: 253 sub-expressions, 0 generated temps, 253 total.
@@ -2470,7 +2470,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseMulti
             tempVar1 = mv2._scalarsArray[9] * tempVar3;
             mv._scalarsArray[0] = tempVar0 + tempVar1;
 
-            //Finish GaClc SymbolicContext Code Generation, 2021-06-26T22:48:49.2819212+02:00
+            //Finish GA-FuL SymbolicContext Code Generation, 2021-06-26T22:48:49.2819212+02:00
 
 
             return mv;
@@ -2480,7 +2480,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseMulti
         {
             var mv = new Multivector();
 
-            //Begin GaClc SymbolicContext Code Generation, 2021-06-26T22:48:49.5531124+02:00
+            //Begin GA-FuL SymbolicContext Code Generation, 2021-06-26T22:48:49.5531124+02:00
             //SymbolicContext:
             //Input Variables: 30 used, 0 not used, 30 total.
             //Temp Variables: 224 sub-expressions, 0 generated temps, 224 total.
@@ -2777,7 +2777,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseMulti
             tempVar1 = mv2._scalarsArray[9] * tempVar3;
             mv._scalarsArray[1] = tempVar0 + tempVar1;
 
-            //Finish GaClc SymbolicContext Code Generation, 2021-06-26T22:48:49.5536254+02:00
+            //Finish GA-FuL SymbolicContext Code Generation, 2021-06-26T22:48:49.5536254+02:00
 
 
             return mv;

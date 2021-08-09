@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using DataStructuresLib.BitManipulation;
 using DataStructuresLib.Combinations;
-using GeometricAlgebraFulcrumLib.Algebra.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Basis;
 
 namespace GeometricAlgebraFulcrumLib.Algebra
 {

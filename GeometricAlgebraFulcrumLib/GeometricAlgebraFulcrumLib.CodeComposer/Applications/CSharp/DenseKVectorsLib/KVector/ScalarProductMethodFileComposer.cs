@@ -1,8 +1,8 @@
 ﻿using System;
 using GeometricAlgebraFulcrumLib.Algebra;
 using GeometricAlgebraFulcrumLib.CodeComposer.Languages;
-using GeometricAlgebraFulcrumLib.Processing.Products;
-using GeometricAlgebraFulcrumLib.Processing.Products.Euclidean;
+using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products;
+using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Variables;
@@ -17,8 +17,8 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         private readonly GaLanguageOperationSpecs _operationSpecs;
         private readonly uint _inputGrade;
         private readonly uint _outputGrade = 0U;
-        private IGasKVector<ISymbolicExpressionAtomic> _inputKVector1;
-        private IGasKVector<ISymbolicExpressionAtomic> _inputKVector2;
+        private IGaStorageKVector<ISymbolicExpressionAtomic> _inputKVector1;
+        private IGaStorageKVector<ISymbolicExpressionAtomic> _inputKVector2;
         private SymbolicVariableComputed _outputScalar;
 
 
@@ -51,7 +51,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             {
                 GaLanguageOperationKind.BinaryScalarProduct =>
                     _operationSpecs.IsEuclidean
-                        ? _inputKVector1.ESp(_inputKVector2)
+                        ? Processor.ESp(_inputKVector1, _inputKVector2)
                         : Processor.Sp(_inputKVector1, _inputKVector2),
 
                 _ => throw new InvalidOperationException()

@@ -11,10 +11,10 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Composers
         public SymbolicContext Context { get; protected set; }
 
         public override string Name 
-            => "Single SymbolicContext Composer";
+            => "Single Symbolic Context Composer";
 
         public override string Description 
-            => "Generates code for a single GaClc macro.";
+            => "Generates code for a single Symbolic Context.";
 
         /// <summary>
         /// Enable the generation of an Excel file to visualize and perform

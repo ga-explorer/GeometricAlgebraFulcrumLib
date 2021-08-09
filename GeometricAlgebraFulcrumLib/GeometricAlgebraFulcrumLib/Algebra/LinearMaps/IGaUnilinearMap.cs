@@ -8,6 +8,6 @@ namespace GeometricAlgebraFulcrumLib.Algebra.LinearMaps
     {
         IGaScalarProcessor<T> ScalarProcessor { get; }
 
-        IGasMultivector<T> MapMultivector(IGasMultivector<T> mv);
+        IGaStorageMultivector<T> MapMultivector(IGaStorageMultivector<T> mv);
     }
 }

@@ -20,7 +20,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Composers
             => GaLanguage;
 
         /// <summary>
-        /// The GaClc target language of this generator
+        /// The target language of this generator
         /// </summary>
         public GaLanguageServer GaLanguage { get; }
 

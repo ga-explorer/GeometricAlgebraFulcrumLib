@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using GeometricAlgebraFulcrumLib.Storage.Trees;
+using GeometricAlgebraFulcrumLib.Structures.Even;
 
 namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal
 {
     public sealed class GaGbtBinaryTreeStack1<T> 
         : GaGbtStack1, IGaGbtStack1<T>
     {
-        public static GaGbtBinaryTreeStack1<T> Create(GasMultivectorBase<T> mv)
+        public static GaGbtBinaryTreeStack1<T> Create(GaStorageMultivectorBase<T> mv)
         {
             var vSpaceDimension = 
                 Math.Max(1, mv.VSpaceDimension);
@@ -22,7 +22,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal
             return stack;
         }
 
-        public static GaGbtBinaryTreeStack1<T> Create(int capacity, GasMultivectorBase<T> mv)
+        public static GaGbtBinaryTreeStack1<T> Create(int capacity, GaStorageMultivectorBase<T> mv)
         {
             var vSpaceDimension = 
                 Math.Max(1, mv.VSpaceDimension);
@@ -37,7 +37,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal
             return stack;
         }
 
-        public static GaGbtBinaryTreeStack1<T> Create(GaBinaryTree<T> rootNode)
+        public static GaGbtBinaryTreeStack1<T> Create(GaEvenDictionaryTree<T> rootNode)
         {
             var treeDepth = rootNode.TreeDepth;
 
@@ -51,7 +51,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal
             return stack;
         }
 
-        public static GaGbtBinaryTreeStack1<T> Create(int capacity, GaBinaryTree<T> rootNode)
+        public static GaGbtBinaryTreeStack1<T> Create(int capacity, GaEvenDictionaryTree<T> rootNode)
         {
             var stack = new GaGbtBinaryTreeStack1<T>(
                 capacity,
@@ -72,10 +72,10 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal
         public T TosScalar { get; private set; }
 
 
-        public GaBinaryTree<T> BinaryTree { get; }
+        public GaEvenDictionaryTree<T> BinaryTree { get; }
 
 
-        private GaGbtBinaryTreeStack1(int capacity, GaBinaryTree<T> binaryTree)
+        private GaGbtBinaryTreeStack1(int capacity, GaEvenDictionaryTree<T> binaryTree)
             : base(capacity, binaryTree.TreeDepth, 0ul)
         {
             BinaryTreeNodeIndexArray = new int[capacity];

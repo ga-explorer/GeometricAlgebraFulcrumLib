@@ -1,4 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.Signatures;
+﻿using GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures;
 using NUnit.Framework;
 
 namespace GeometricAlgebraFulcrumLib.UnitTests.Algebra

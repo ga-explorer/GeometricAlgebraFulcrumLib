@@ -3,7 +3,7 @@ using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
 
 namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.HeadSpecs
 {
-    public readonly struct SymbolicHeadSpecsNumberFloat64 : 
+    public sealed record SymbolicHeadSpecsNumberFloat64 : 
         ISymbolicHeadSpecsNumber
     {
         public static SymbolicHeadSpecsNumberFloat64 Create(SymbolicContext context, double number)

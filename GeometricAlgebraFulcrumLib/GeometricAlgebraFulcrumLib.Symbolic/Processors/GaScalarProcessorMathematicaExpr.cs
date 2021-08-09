@@ -13,17 +13,22 @@ using Wolfram.NETLink;
 namespace GeometricAlgebraFulcrumLib.Symbolic.Processors
 {
     public sealed class GaScalarProcessorMathematicaExpr
-        : IGaSymbolicScalarProcessor<Expr>
+        : IGaScalarProcessorSymbolic<Expr>
     {
         public static GaScalarProcessorMathematicaExpr DefaultProcessor { get; }
-            = new();
+            = new GaScalarProcessorMathematicaExpr();
+
 
         public int RoundingPlaces { get; set; }
             = 13;
 
         public double ZeroEpsilon 
             => Math.Pow(10, -RoundingPlaces);
-        
+
+        public bool IsNumeric => false;
+
+        public bool IsSymbolic => true;
+
         public Expr ZeroScalar 
             => Expr.INT_ZERO;
         
@@ -50,6 +55,7 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Processors
             //return Mfs.Round[Mfs.N[scalar], ZeroEpsilon.ToExpr()].Simplify();
         }
         
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Expr Add(Expr scalar1, Expr scalar2)
         {
             return PostProcessScalar(Mfs.Plus[
@@ -58,6 +64,7 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Processors
             ]);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Expr Add(params Expr[] scalarsList)
         {
             return PostProcessScalar(Mfs.SumExpr(
@@ -65,6 +72,7 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Processors
             ));
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Expr Add(IEnumerable<Expr> scalarsList)
         {
             return PostProcessScalar(Mfs.SumExpr(
@@ -72,6 +80,7 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Processors
             ));
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Expr Subtract(Expr scalar1, Expr scalar2)
         {
             return PostProcessScalar(Mfs.Subtract[
@@ -80,6 +89,7 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Processors
             ]);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Expr Times(Expr scalar1, Expr scalar2)
         {
             return PostProcessScalar(Mfs.Times[
@@ -88,6 +98,7 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Processors
             ]);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Expr Times(params Expr[] scalarsList)
         {
             return PostProcessScalar(Mfs.ProductExpr(
@@ -95,6 +106,7 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Processors
             ));
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Expr Times(IEnumerable<Expr> scalarsList)
         {
             return PostProcessScalar(Mfs.ProductExpr(
@@ -102,6 +114,7 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Processors
             ));
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Expr NegativeTimes(Expr scalar1, Expr scalar2)
         {
             return PostProcessScalar(Mfs.Minus[Mfs.Times[
@@ -110,6 +123,7 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Processors
             ]]);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Expr NegativeTimes(params Expr[] scalarsList)
         {
             return PostProcessScalar(Mfs.ProductExpr(
@@ -118,6 +132,7 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Processors
             ));
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Expr NegativeTimes(IEnumerable<Expr> scalarsList)
         {
             return PostProcessScalar(Mfs.ProductExpr(
@@ -126,6 +141,7 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Processors
             ));
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Expr Divide(Expr scalar1, Expr scalar2)
         {
             return PostProcessScalar(Mfs.Divide[
@@ -134,6 +150,7 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Processors
             ]);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Expr NegativeDivide(Expr scalar1, Expr scalar2)
         {
             return PostProcessScalar(Mfs.Minus[Mfs.Divide[
@@ -142,6 +159,7 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Processors
             ]]);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Expr Positive(Expr scalar)
         {
             return PostProcessScalar(
@@ -149,6 +167,7 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Processors
             );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Expr Negative(Expr scalar)
         {
             return PostProcessScalar(Mfs.Minus[
@@ -156,6 +175,7 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Processors
             ]);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Expr Inverse(Expr scalar)
         {
             return PostProcessScalar(Mfs.Divide[
@@ -164,6 +184,7 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Processors
             ]);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Expr Abs(Expr scalar)
         {
             return PostProcessScalar(Mfs.Abs[
@@ -171,6 +192,7 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Processors
             ]);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Expr Sqrt(Expr scalar)
         {
             return PostProcessScalar(Mfs.Sqrt[
@@ -178,6 +200,7 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Processors
             ]);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Expr SqrtOfAbs(Expr scalar)
         {
             return PostProcessScalar(Mfs.Sqrt[Mfs.Abs[
@@ -185,6 +208,7 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Processors
             ]]);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Expr Exp(Expr scalar)
         {
             return PostProcessScalar(Mfs.Exp[
@@ -192,6 +216,7 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Processors
             ]);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Expr Log(Expr scalar)
         {
             return PostProcessScalar(Mfs.Log[
@@ -199,6 +224,7 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Processors
             ]);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Expr Log2(Expr scalar)
         {
             return PostProcessScalar(Mfs.Log2[
@@ -206,6 +232,7 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Processors
             ]);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Expr Log10(Expr scalar)
         {
             return PostProcessScalar(Mfs.Log2[
@@ -213,6 +240,7 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Processors
             ]);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Expr Log(Expr scalar, Expr baseScalar)
         {
             return PostProcessScalar(Mfs.Log[
@@ -221,6 +249,7 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Processors
             ]);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Expr Cos(Expr scalar)
         {
             return PostProcessScalar(Mfs.Cos[
@@ -228,6 +257,7 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Processors
             ]);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Expr Sin(Expr scalar)
         {
             return PostProcessScalar(Mfs.Sin[
@@ -235,6 +265,7 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Processors
             ]);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Expr Tan(Expr scalar)
         {
             return PostProcessScalar(Mfs.Tan[
@@ -242,6 +273,7 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Processors
             ]);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Expr ArcCos(Expr scalar)
         {
             return PostProcessScalar(Mfs.ArcCos[
@@ -249,6 +281,7 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Processors
             ]);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Expr ArcSin(Expr scalar)
         {
             return PostProcessScalar(Mfs.ArcSin[
@@ -256,6 +289,7 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Processors
             ]);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Expr ArcTan(Expr scalar)
         {
             return PostProcessScalar(Mfs.ArcTan[
@@ -263,6 +297,7 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Processors
             ]);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Expr ArcTan2(Expr scalarX, Expr scalarY)
         {
             return PostProcessScalar(Mfs.ArcTan[
@@ -271,16 +306,43 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Processors
             ]);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Expr Cosh(Expr scalar)
+        {
+            return PostProcessScalar(Mfs.Cosh[
+                PreProcessScalar(scalar)
+            ]);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Expr Sinh(Expr scalar)
+        {
+            return PostProcessScalar(Mfs.Sinh[
+                PreProcessScalar(scalar)
+            ]);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Expr Tanh(Expr scalar)
+        {
+            return PostProcessScalar(Mfs.Tanh[
+                PreProcessScalar(scalar)
+            ]);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsValid(Expr scalar)
         {
             return true;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsZero(Expr scalar)
         {
             return scalar.IsZero();
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsZero(Expr scalar, bool nearZeroFlag)
         {
             if (scalar.IsZero())
@@ -298,6 +360,7 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Processors
             return number > -ZeroEpsilon && number < ZeroEpsilon;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsNearZero(Expr scalar)
         {
             if (scalar.IsZero())
@@ -312,21 +375,73 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Processors
             return number > -ZeroEpsilon && number < ZeroEpsilon;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsPositive(Expr scalar)
+        {
+            if (!scalar.NumberQ())
+                return false;
+
+            var number = 
+                scalar.ToNumber();
+
+            return number > 0;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsNegative(Expr scalar)
+        {
+            if (!scalar.NumberQ())
+                return false;
+
+            var number = 
+                scalar.ToNumber();
+
+            return number < 0;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsNotNearPositive(Expr scalar)
+        {
+            if (!scalar.NumberQ())
+                return false;
+
+            var number = 
+                scalar.ToNumber();
+
+            return number < -ZeroEpsilon;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsNotNearNegative(Expr scalar)
+        {
+            if (!scalar.NumberQ())
+                return false;
+
+            var number = 
+                scalar.ToNumber();
+
+            return number > ZeroEpsilon;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Expr TextToScalar(string text)
         {
             return text.ToExpr();
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Expr IntegerToScalar(int value)
         {
             return value.ToExpr();
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Expr Float64ToScalar(double value)
         {
             return value.ToExpr();
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Expr GetRandomScalar(Random randomGenerator, double minValue, double maxValue)
         {
             var value = minValue + (maxValue - minValue) * randomGenerator.NextDouble();
@@ -334,26 +449,31 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Processors
             return value.ToExpr(); 
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public string ToText(Expr scalar)
         {
             return scalar.ToString();
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Expr Simplify(Expr scalar)
         {
             return scalar.Simplify();
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Expr GetSymbol(string symbolNameText)
         {
             return symbolNameText.ToSymbolExpr();
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Expr SymbolicExpressionToScalar(ISymbolicExpression expression)
         {
             return expression.ToString().ToExpr();
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ISymbolicExpression ScalarToSymbolicExpression(SymbolicContext context, Expr scalar)
         {
             return context.ToSymbolicExpression(scalar);

@@ -4,6 +4,10 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
 {
     public interface IGaScalarProcessor<T> 
     {
+        bool IsNumeric { get; }
+
+        bool IsSymbolic { get; }
+
         T ZeroScalar { get; }
         
         T OneScalar { get; }
@@ -87,6 +91,12 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
 
         T ArcTan2(T scalarX, T scalarY);
 
+        T Cosh(T scalar);
+
+        T Sinh(T scalar);
+
+        T Tanh(T scalar);
+
         bool IsValid(T scalar);
 
         bool IsZero(T scalar);
@@ -94,6 +104,14 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
         bool IsZero(T scalar, bool nearZeroFlag);
 
         bool IsNearZero(T scalar);
+
+        bool IsPositive(T scalar);
+
+        bool IsNegative(T scalar);
+
+        bool IsNotNearPositive(T scalar);
+
+        bool IsNotNearNegative(T scalar);
 
         T TextToScalar(string text);
 

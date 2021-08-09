@@ -1,5 +1,5 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Processing.Products;
+using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products;
 using GeometricAlgebraFulcrumLib.Symbolic;
 
 namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
@@ -16,7 +16,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
                 "a2", "b2", "c2", "d2"
             );
 
-            var bv = v1.Op(v2);
+            var bv = 
+                GaSymbolicUtils.ScalarProcessor.Op(v1, v2);
 
             Console.WriteLine($"v1 = {v1.GetText()}");
             Console.WriteLine();

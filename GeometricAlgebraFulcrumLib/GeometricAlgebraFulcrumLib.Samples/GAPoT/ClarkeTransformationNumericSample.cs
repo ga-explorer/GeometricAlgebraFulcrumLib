@@ -1,11 +1,11 @@
 ﻿using System;
 using GeometricAlgebraFulcrumLib.Algebra.Outermorphisms;
-using GeometricAlgebraFulcrumLib.Geometry.Euclidean;
-using GeometricAlgebraFulcrumLib.Processing;
-using GeometricAlgebraFulcrumLib.Processing.Generic;
-using GeometricAlgebraFulcrumLib.Processing.Implementations.Float64;
+using GeometricAlgebraFulcrumLib.Geometry.Versors;
+using GeometricAlgebraFulcrumLib.Processing.Multivectors;
+using GeometricAlgebraFulcrumLib.Processing.Multivectors.Generic;
+using GeometricAlgebraFulcrumLib.Processing.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Symbolic.Applications.GaPoT;
-using GeometricAlgebraFulcrumLib.TextComposers;
+using GeometricAlgebraFulcrumLib.TextComposers.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
 {
@@ -76,12 +76,12 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
                 );
                 Console.WriteLine();
 
-                var rotorsSequence = linearMapQ.CreateSimpleRotorsSequence();
+                var rotorsSequence = linearMapQ.CreatePureRotorsSequence();
 
                 Console.WriteLine("Q Map Rotors:");
                 for (var i = 0; i < rotorsSequence.Count; i++)
                 {
-                    var rotor = rotorsSequence[i].Rotor;
+                    var rotor = rotorsSequence[i].Multivector;
 
                     Console.WriteLine(
                         TextComposer.GetMultivectorText(rotor)

@@ -1,10 +1,12 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.Signatures;
-using GeometricAlgebraFulcrumLib.Processing;
-using GeometricAlgebraFulcrumLib.Processing.Products;
-using GeometricAlgebraFulcrumLib.Processing.Products.Euclidean;
-using GeometricAlgebraFulcrumLib.Processing.Products.Orthonormal;
-using GeometricAlgebraFulcrumLib.Storage;
+﻿using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Basis;
+using GeometricAlgebraFulcrumLib.Geometry.Frames;
+using GeometricAlgebraFulcrumLib.Processing.Multivectors;
+using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products;
+using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean;
+using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonormal;
+using GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures;
+using GeometricAlgebraFulcrumLib.Storage.Factories;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.Outermorphisms
 {
@@ -136,22 +138,28 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Outermorphisms
 
         public static T GetEuclideanDeterminant<T>(this IGaOutermorphism<T> om)
         {
+            var scalarProcessor = om.ScalarProcessor;
+
             var mappedPseudoScalar = 
                 om.MapBasisBlade((1UL << (int) om.VSpaceDimension) - 1);
 
-            return mappedPseudoScalar.ESp(
-                om.ScalarProcessor.CreateEuclideanPseudoScalarInverse(om.VSpaceDimension)
+            return scalarProcessor.ESp(
+                mappedPseudoScalar,
+                om.ScalarProcessor.CreateStorageEuclideanPseudoScalarInverse(om.VSpaceDimension)
             );
         }
 
-        public static T GetDeterminant<T>(this IGaOutermorphism<T> om, IGaSignature processor)
+        public static T GetDeterminant<T>(this IGaOutermorphism<T> om, IGaSignature signature)
         {
+            var scalarProcessor = om.ScalarProcessor;
+
             var mappedPseudoScalar = 
                 om.MapBasisBlade((1UL << (int) om.VSpaceDimension) - 1);
 
-            return processor.Sp(
+            return scalarProcessor.Sp(
+                signature,
                 mappedPseudoScalar, 
-                processor.CreatePseudoScalarInverse(om.ScalarProcessor)
+                scalarProcessor.CreateStoragePseudoScalarInverse(signature)
             );
         }
 
@@ -163,6 +171,14 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Outermorphisms
             return processor.Sp(
                 mappedPseudoScalar, 
                 processor.PseudoScalarInverse
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IGaOutermorphism<T> CreateComputedOutermorphism<T>(this GaVectorsFrame<T> frame)
+        {
+            return frame.Processor.CreateComputedOutermorphism(
+                frame.GetMatrix()
             );
         }
     }

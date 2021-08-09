@@ -1,9 +1,11 @@
 ﻿using System;
 using GeometricAlgebraFulcrumLib.Algebra.Outermorphisms;
-using GeometricAlgebraFulcrumLib.Geometry.Euclidean;
-using GeometricAlgebraFulcrumLib.Processing;
-using GeometricAlgebraFulcrumLib.Processing.Implementations.Float64;
-using GeometricAlgebraFulcrumLib.Processing.Products.Euclidean;
+using GeometricAlgebraFulcrumLib.Geometry.Rotors;
+using GeometricAlgebraFulcrumLib.Processing.Multivectors;
+using GeometricAlgebraFulcrumLib.Processing.Multivectors.Binary;
+using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean;
+using GeometricAlgebraFulcrumLib.Processing.Multivectors.Unary;
+using GeometricAlgebraFulcrumLib.Processing.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Storage;
 
 namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
@@ -18,28 +20,28 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
             var processor = 
                 GaScalarProcessorFloat64.DefaultProcessor.CreateEuclideanProcessor(n);
 
-            IGasVector<double> v = GaFloat64Utils.CreateVector(
+            IGaStorageVector<double> v = GaFloat64Utils.CreateVector(
                 randGen.NextDouble(), 
                 randGen.NextDouble(),
                 randGen.NextDouble()
             );
 
-            v = v.Divide(v.ENorm()).GetVectorPart();
+            v = processor.DivideByENorm(v);
 
-            IGasVector<double> u = GaFloat64Utils.CreateVector(
+            IGaStorageVector<double> u = GaFloat64Utils.CreateVector(
                 randGen.NextDouble(), 
                 randGen.NextDouble(),
                 randGen.NextDouble()
             );
 
-            u = u.Divide(u.ENorm()).GetVectorPart();
+            u = processor.DivideByENorm(u);
 
 
             var rotor = 
-                GaEuclideanSimpleRotor<double>.Create(processor, v, u);
+                processor.CreateEuclideanRotor(v, u);
 
-            var rotorMv = rotor.Rotor;
-            var rotorMvReverse = rotor.Rotor.GetReverse();
+            var rotorMv = rotor.Multivector;
+            var rotorMvReverse = processor.Reverse(rotor.Multivector);
 
             var rotorMatrix =
                 rotor.GetMatrix(3, 3);
@@ -48,14 +50,14 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
             var rotorMatrix1 =
                 processor.CreateComputedOutermorphism((int) n,
                         basisVector =>
-                            rotorMv.EGp(basisVector).GetVectorPart()
+                            processor.EGp(rotorMv, basisVector).GetVectorPart()
                     )
                     .GetMatrix((int) n, (int) n);
 
             var rotorMatrix2 =
                 processor.CreateComputedOutermorphism((int) n,
                         basisVector =>
-                            basisVector.EGp(rotorMvReverse).GetVectorPart()
+                            processor.EGp(basisVector, rotorMvReverse).GetVectorPart()
                     )
                     .GetMatrix((int) n, (int) n);
 

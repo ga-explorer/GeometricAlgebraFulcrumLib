@@ -1,8 +1,8 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Processing.Implementations.Float64;
-using GeometricAlgebraFulcrumLib.Processing.Products;
-using GeometricAlgebraFulcrumLib.Storage;
-using GeometricAlgebraFulcrumLib.TextComposers;
+using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products;
+using GeometricAlgebraFulcrumLib.Processing.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Storage.Factories;
+using GeometricAlgebraFulcrumLib.TextComposers.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Numeric
 {
@@ -23,11 +23,11 @@ namespace GeometricAlgebraFulcrumLib.Samples.Numeric
             var latexComposer = GaLaTeXComposerFloat64.DefaultComposer;
 
             // Create two vectors each having 3 components (a 3-dimensional GA)
-            var u = processor.CreateVector(1.2, -1, 1.25);
-            var v = processor.CreateVector(2.1, 0.9, 2.1);
+            var u = processor.CreateStorageVector(1.2, -1, 1.25);
+            var v = processor.CreateStorageVector(2.1, 0.9, 2.1);
 
             // Compute their outer product as a bivector
-            var bv = u.Op(v);
+            var bv = processor.Op(u, v);
 
             // Display a text representation of the vectors and their outer product
             Console.WriteLine($@"u = {textComposer.GetMultivectorText(u)}");

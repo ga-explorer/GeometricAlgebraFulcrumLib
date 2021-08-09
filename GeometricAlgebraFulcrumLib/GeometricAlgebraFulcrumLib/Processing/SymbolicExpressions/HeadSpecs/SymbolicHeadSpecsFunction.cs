@@ -6,7 +6,7 @@ using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
 
 namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.HeadSpecs
 {
-    public readonly struct SymbolicHeadSpecsFunction : 
+    public sealed record SymbolicHeadSpecsFunction : 
         ISymbolicHeadSpecsFunction
     {
         public static SymbolicHeadSpecsFunction Create(SymbolicContext context, string functionName, bool isLeftAssociative, bool isRightAssociative)

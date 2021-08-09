@@ -1,6 +1,6 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Processing.Products;
-using GeometricAlgebraFulcrumLib.Storage;
+using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products;
+using GeometricAlgebraFulcrumLib.Storage.Factories;
 using GeometricAlgebraFulcrumLib.Symbolic.Mathematica;
 using GeometricAlgebraFulcrumLib.Symbolic.Processors;
 using GeometricAlgebraFulcrumLib.Symbolic.Text;
@@ -24,11 +24,11 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic
             var latexComposer = GaLaTeXComposerMathematicaExpr.DefaultComposer;
 
             // Create two vectors each having 3 components (a 3-dimensional GA)
-            var u = processor.CreateVector(3, i => $"Subscript[u,{i + 1}]".ToExpr());
-            var v = processor.CreateVector(3, i => $"Subscript[v,{i + 1}]".ToExpr());
+            var u = processor.CreateStorageVector(3, i => $"Subscript[u,{i + 1}]".ToExpr());
+            var v = processor.CreateStorageVector(3, i => $"Subscript[v,{i + 1}]".ToExpr());
 
             // Compute their outer product as a bivector
-            var bv = u.Op(v);
+            var bv = processor.Op(u, v);
 
             // Display a text representation of the vectors and their outer product
             Console.WriteLine($@"u = {textComposer.GetMultivectorText(u)}");

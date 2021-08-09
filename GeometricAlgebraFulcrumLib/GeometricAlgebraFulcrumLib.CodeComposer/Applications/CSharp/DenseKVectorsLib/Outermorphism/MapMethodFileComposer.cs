@@ -12,8 +12,8 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
     {
         private readonly uint _inputGrade;
         private ISymbolicExpressionAtomic[,] _linearMapArray;
-        private IGasKVector<ISymbolicExpressionAtomic> _inputKVector;
-        private IGasKVector<ISymbolicExpressionAtomic> _outputKVector;
+        private IGaStorageKVector<ISymbolicExpressionAtomic> _inputKVector;
+        private IGaStorageKVector<ISymbolicExpressionAtomic> _outputKVector;
 
 
         internal MapMethodFileComposer(GaLibraryComposer libGen, uint inGrade)

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
-using GeometricAlgebraFulcrumLib.Processing.Implementations.Float64;
-using GeometricAlgebraFulcrumLib.Storage;
+using GeometricAlgebraFulcrumLib.Processing.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Storage.Factories;
 using GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products;
-using GeometricAlgebraFulcrumLib.TextComposers;
+using GeometricAlgebraFulcrumLib.TextComposers.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Storage
 {
@@ -17,7 +17,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Storage
 
             var randomGenerator = new Random(10);
 
-            var vectorStorage1 = scalarProcessor.CreateVector(Enumerable
+            var vectorStorage1 = scalarProcessor.CreateStorageVector(Enumerable
                     .Range(0, vSpaceDimensions)
                     .ToDictionary(
                         i => (ulong)i,
@@ -25,7 +25,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Storage
                     )
             );
 
-            var vectorStorage2 = scalarProcessor.CreateVector(Enumerable
+            var vectorStorage2 = scalarProcessor.CreateStorageVector(Enumerable
                     .Range(0, vSpaceDimensions - 2)
                     .ToDictionary(
                         i => (ulong)i,
@@ -38,6 +38,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Storage
 
             var gbtStack =
                 GaGbtProductsStack2<double>.Create(
+                    scalarProcessor,
                     vectorStorage1,
                     vectorStorage2
                 );
@@ -45,7 +46,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Storage
             var idScalarDictionary =
                 gbtStack
                     .GetEGpIdScalarPairs()
-                    .SumToTermsMultivector(scalarProcessor)
+                    .SumToStorageSparseMultivector(scalarProcessor)
                     .GetIdScalarDictionary();
 
             Console.WriteLine(textComposer.GetTermsText(idScalarDictionary));

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using GeometricAlgebraFulcrumLib.Processing.Matrices;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
 using GeometricAlgebraFulcrumLib.Symbolic.Mathematica;
@@ -14,8 +15,107 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Processors
             = new GaMatrixProcessorMathematicaExpr();
 
 
-        public IGaScalarProcessor<Expr> ScalarProcessor 
-            => GaScalarProcessorMathematicaExpr.DefaultProcessor;
+        public IGaScalarProcessor<Expr> ScalarProcessor { get; set; }
+            = GaScalarProcessorMathematicaExpr.DefaultProcessor;
+
+        public int RoundingPlaces { get; set; }
+            = 13;
+
+        public double ZeroEpsilon 
+            => Math.Pow(10, -RoundingPlaces);
+
+        public bool IsNumeric => false;
+
+        public bool IsSymbolic => true;
+
+        public Expr ZeroScalar 
+            => Expr.INT_ZERO;
+        
+        public Expr OneScalar 
+            => Expr.INT_ONE;
+
+        public Expr MinusOneScalar 
+            => Expr.INT_MINUSONE;
+
+        public Expr PiScalar 
+            => MathematicaInterface.DefaultCasConstants.ExprPi;
+
+
+        public Expr Add(Expr scalar1, Expr scalar2)
+        {
+            return ScalarProcessor.Add(scalar1, scalar2);
+        }
+
+        public Expr Add(params Expr[] scalarsList)
+        {
+            return ScalarProcessor.Add(scalarsList);
+        }
+
+        public Expr Add(IEnumerable<Expr> scalarsList)
+        {
+            return ScalarProcessor.Add(scalarsList);
+        }
+
+        public Expr Subtract(Expr scalar1, Expr scalar2)
+        {
+            return ScalarProcessor.Subtract(scalar1, scalar2);
+        }
+
+        public Expr Times(Expr scalar1, Expr scalar2)
+        {
+            return ScalarProcessor.Times(scalar1, scalar2);
+        }
+
+        public Expr Times(params Expr[] scalarsList)
+        {
+            return ScalarProcessor.Times(scalarsList);
+        }
+
+        public Expr Times(IEnumerable<Expr> scalarsList)
+        {
+            return ScalarProcessor.Times(scalarsList);
+        }
+
+        public Expr NegativeTimes(Expr scalar1, Expr scalar2)
+        {
+            return ScalarProcessor.NegativeTimes(scalar1, scalar2);
+        }
+
+        public Expr NegativeTimes(params Expr[] scalarsList)
+        {
+            return ScalarProcessor.NegativeTimes(scalarsList);
+        }
+
+        public Expr NegativeTimes(IEnumerable<Expr> scalarsList)
+        {
+            return ScalarProcessor.NegativeTimes(scalarsList);
+        }
+
+        public Expr Divide(Expr scalar1, Expr scalar2)
+        {
+            return ScalarProcessor.Divide(scalar1, scalar2);
+        }
+
+        public Expr NegativeDivide(Expr scalar1, Expr scalar2)
+        {
+            return ScalarProcessor.NegativeDivide(scalar1, scalar2);
+        }
+
+        public Expr Positive(Expr scalar)
+        {
+            return ScalarProcessor.Positive(scalar);
+        }
+
+        public Expr Negative(Expr scalar)
+        {
+            return ScalarProcessor.Negative(scalar);
+        }
+
+        public Expr Inverse(Expr scalar)
+        {
+            return ScalarProcessor.Inverse(scalar);
+        }
+
 
         public int GetRowsCount(Expr matrix)
         {
@@ -71,9 +171,7 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Processors
                 var scalarExprArray = new Expr[columnsCount];
                 
                 for (var j = 0; j < columnsCount; j++)
-                    scalarExprArray[j] = 
-                        array[i, j] 
-                        ?? ScalarProcessor.ZeroScalar;
+                    scalarExprArray[j] = array[i, j] ?? Expr.INT_ZERO;
 
                 rowExprArray[i] = Mfs.ListExpr(scalarExprArray);
             }
@@ -87,8 +185,7 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Processors
             var scalarExprArray = new Expr[array.Length];
             
             for (var j = 0; j < array.Length; j++)
-                scalarExprArray[j] = 
-                    array[j] ?? ScalarProcessor.ZeroScalar;
+                scalarExprArray[j] = array[j] ?? Expr.INT_ZERO;
 
             rowExprArray[0] = Mfs.ListExpr(scalarExprArray);
 
@@ -103,7 +200,7 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Processors
             
             for (var j = 0; j < count; j++)
                 scalarExprArray[j] = 
-                    array[rowIndex, j] ?? ScalarProcessor.ZeroScalar;
+                    array[rowIndex, j] ?? Expr.INT_ZERO;
 
             rowExprArray[0] = Mfs.ListExpr(scalarExprArray);
 
@@ -118,7 +215,7 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Processors
                 var scalarExprArray = new Expr[1];
                 
                 scalarExprArray[0] = 
-                    array[i] ?? ScalarProcessor.ZeroScalar;
+                    array[i] ?? Expr.INT_ZERO;
 
                 rowExprArray[i] = Mfs.ListExpr(scalarExprArray);
             }
@@ -135,7 +232,7 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Processors
                 var scalarExprArray = new Expr[1];
                 
                 scalarExprArray[0] = 
-                    array[i, columnIndex] ?? ScalarProcessor.ZeroScalar;
+                    array[i, columnIndex] ?? Expr.INT_ZERO;
 
                 rowExprArray[i] = Mfs.ListExpr(scalarExprArray);
             }
@@ -281,22 +378,177 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Processors
             return Mfs.ListExpr(rowExprArray).Simplify();
         }
 
-        public Expr Negative(Expr matrix)
+        public Expr NegativeMatrix(Expr matrix)
         {
             return Mfs.Minus[matrix].Simplify();
         }
 
-        public Expr Adjoint(Expr matrix)
+        public Expr AdjointMatrix(Expr matrix)
         {
             return Mfs.Transpose[matrix].Simplify();
         }
 
-        public Expr Inverse(Expr matrix)
+        public Expr InverseMatrix(Expr matrix)
         {
             return Mfs.Inverse[matrix].Simplify();
         }
 
-        public Expr InverseAdjoint(Expr matrix)
+        public Expr Abs(Expr scalar)
+        {
+            return ScalarProcessor.Abs(scalar);
+        }
+
+        public Expr Sqrt(Expr scalar)
+        {
+            return ScalarProcessor.Sqrt(scalar);
+        }
+
+        public Expr SqrtOfAbs(Expr scalar)
+        {
+            return ScalarProcessor.SqrtOfAbs(scalar);
+        }
+
+        public Expr Exp(Expr scalar)
+        {
+            return ScalarProcessor.Exp(scalar);
+        }
+
+        public Expr Log(Expr scalar)
+        {
+            return ScalarProcessor.Log(scalar);
+        }
+
+        public Expr Log2(Expr scalar)
+        {
+            return ScalarProcessor.Log2(scalar);
+        }
+
+        public Expr Log10(Expr scalar)
+        {
+            return ScalarProcessor.Log10(scalar);
+        }
+
+        public Expr Log(Expr scalar, Expr baseScalar)
+        {
+            return ScalarProcessor.Log(scalar, baseScalar);
+        }
+
+        public Expr Cos(Expr scalar)
+        {
+            return ScalarProcessor.Cos(scalar);
+        }
+
+        public Expr Sin(Expr scalar)
+        {
+            return ScalarProcessor.Sin(scalar);
+        }
+
+        public Expr Tan(Expr scalar)
+        {
+            return ScalarProcessor.Tan(scalar);
+        }
+
+        public Expr ArcCos(Expr scalar)
+        {
+            return ScalarProcessor.ArcCos(scalar);
+        }
+
+        public Expr ArcSin(Expr scalar)
+        {
+            return ScalarProcessor.ArcSin(scalar);
+        }
+
+        public Expr ArcTan(Expr scalar)
+        {
+            return ScalarProcessor.ArcTan(scalar);
+        }
+
+        public Expr ArcTan2(Expr scalarX, Expr scalarY)
+        {
+            return ScalarProcessor.ArcTan2(scalarX, scalarY);
+        }
+
+        public Expr Cosh(Expr scalar)
+        {
+            return ScalarProcessor.Cosh(scalar);
+        }
+
+        public Expr Sinh(Expr scalar)
+        {
+            return ScalarProcessor.Sinh(scalar);
+        }
+
+        public Expr Tanh(Expr scalar)
+        {
+            return ScalarProcessor.Tanh(scalar);
+        }
+
+        public bool IsValid(Expr scalar)
+        {
+            return ScalarProcessor.IsValid(scalar);
+        }
+
+        public bool IsZero(Expr scalar)
+        {
+            return ScalarProcessor.IsZero(scalar);
+        }
+
+        public bool IsZero(Expr scalar, bool nearZeroFlag)
+        {
+            return ScalarProcessor.IsZero(scalar, nearZeroFlag);
+        }
+
+        public bool IsNearZero(Expr scalar)
+        {
+            return ScalarProcessor.IsNearZero(scalar);
+        }
+
+        public bool IsPositive(Expr scalar)
+        {
+            return ScalarProcessor.IsPositive(scalar);
+        }
+
+        public bool IsNegative(Expr scalar)
+        {
+            return ScalarProcessor.IsNegative(scalar);
+        }
+
+        public bool IsNotNearPositive(Expr scalar)
+        {
+            return ScalarProcessor.IsNotNearPositive(scalar);
+        }
+
+        public bool IsNotNearNegative(Expr scalar)
+        {
+            return ScalarProcessor.IsNotNearNegative(scalar);
+        }
+
+        public Expr TextToScalar(string text)
+        {
+            return ScalarProcessor.TextToScalar(text);
+        }
+
+        public Expr IntegerToScalar(int value)
+        {
+            return ScalarProcessor.IntegerToScalar(value);
+        }
+
+        public Expr Float64ToScalar(double value)
+        {
+            return ScalarProcessor.Float64ToScalar(value);
+        }
+
+        public Expr GetRandomScalar(Random randomGenerator, double minValue, double maxValue)
+        {
+            return ScalarProcessor.GetRandomScalar(randomGenerator, minValue, maxValue);
+        }
+
+        public string ToText(Expr scalar)
+        {
+            return ScalarProcessor.ToText(scalar);
+        }
+
+        public Expr InverseAdjointMatrix(Expr matrix)
         {
             return Mfs.Transpose[Mfs.Inverse[matrix]].Simplify();
         }

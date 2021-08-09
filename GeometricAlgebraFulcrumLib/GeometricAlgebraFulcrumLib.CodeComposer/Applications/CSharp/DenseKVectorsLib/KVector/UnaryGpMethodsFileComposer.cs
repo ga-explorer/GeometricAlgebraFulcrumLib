@@ -1,8 +1,9 @@
 ﻿using System;
 using GeometricAlgebraFulcrumLib.Algebra;
 using GeometricAlgebraFulcrumLib.CodeComposer.Languages;
-using GeometricAlgebraFulcrumLib.Processing.Products;
-using GeometricAlgebraFulcrumLib.Processing.Products.Euclidean;
+using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products;
+using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean;
+using GeometricAlgebraFulcrumLib.Processing.Multivectors.Unary;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
 using GeometricAlgebraFulcrumLib.Storage;
@@ -16,8 +17,8 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
     {
         private uint _inGrade;
         private uint _outGrade;
-        private IGasKVector<ISymbolicExpressionAtomic> _inputKVector;
-        private IGasKVector<ISymbolicExpressionAtomic> _outputKVector;
+        private IGaStorageKVector<ISymbolicExpressionAtomic> _inputKVector;
+        private IGaStorageKVector<ISymbolicExpressionAtomic> _outputKVector;
 
         internal GaLanguageOperationSpecs OperationSpecs { get; }
 
@@ -44,13 +45,13 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             {
                 GaLanguageOperationKind.UnaryGeometricProductSquared
                     => OperationSpecs.IsEuclidean
-                        ? _inputKVector.EGp(_inputKVector).GetKVectorPart(_outGrade)
+                        ? Processor.EGp(_inputKVector, _inputKVector).GetKVectorPart(_outGrade)
                         : Processor.Gp(_inputKVector, _inputKVector).GetKVectorPart(_outGrade),
 
                 GaLanguageOperationKind.UnaryGeometricProductReverse
                     => OperationSpecs.IsEuclidean
-                        ? _inputKVector.EGp(_inputKVector.GetReverse()).GetKVectorPart(_outGrade)
-                        : Processor.Gp(_inputKVector, _inputKVector.GetReverse()).GetKVectorPart(_outGrade),
+                        ? Processor.EGp(_inputKVector, Processor.Reverse(_inputKVector)).GetKVectorPart(_outGrade)
+                        : Processor.Gp(_inputKVector, Processor.Reverse(_inputKVector)).GetKVectorPart(_outGrade),
 
                 _ => throw new InvalidOperationException()
             };

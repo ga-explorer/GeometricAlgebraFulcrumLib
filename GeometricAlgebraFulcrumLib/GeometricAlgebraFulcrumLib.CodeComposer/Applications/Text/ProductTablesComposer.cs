@@ -8,10 +8,12 @@ using CodeComposerLib.MathML.Elements.Layout.Tabular;
 using CodeComposerLib.MathML.Elements.Tokens;
 using DataStructuresLib.BitManipulation;
 using GeometricAlgebraFulcrumLib.Algebra;
-using GeometricAlgebraFulcrumLib.Algebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.Signatures;
-using GeometricAlgebraFulcrumLib.Processing.Products.Euclidean;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Basis;
+using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean;
+using GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures;
+using GeometricAlgebraFulcrumLib.Processing.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Storage;
+using GeometricAlgebraFulcrumLib.Storage.Utils;
 using TextComposerLib.Text.Linear;
 
 namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.Text
@@ -46,12 +48,14 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.Text
         }
 
 
-        private static MathMlRow ToMathMlRow(IGasMultivector<double> mv, Func<ulong, IMathMlElement> getBasisBladeNameFunc)
+        private static MathMlRow ToMathMlRow(IGaStorageMultivector<double> mv, Func<ulong, IMathMlElement> getBasisBladeNameFunc)
         {
+            var scalarProcessor = GaScalarProcessorFloat64.DefaultProcessor;
+
             var rowElement = MathMlRow.Create();
 
             var termsList =
-                mv.GetNotZeroTerms()
+                    scalarProcessor.GetNotZeroTerms(mv)
                     .OrderBy(t => t.BasisBlade.Id.BasisBladeGrade())
                     .ThenBy(t => t.BasisBlade.Id);
 

@@ -2,7 +2,7 @@
 using System.Linq;
 using DataStructuresLib.BitManipulation;
 using GeometricAlgebraFulcrumLib.Algebra;
-using GeometricAlgebraFulcrumLib.Algebra.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Basis;
 using GeometricAlgebraFulcrumLib.CodeComposer.Languages;
 using TextComposerLib.Text.Linear;
 using TextComposerLib.Text.Structured;

@@ -10,8 +10,7 @@ using GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVectorsL
 using GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVectorsLib.Outermorphism;
 using GeometricAlgebraFulcrumLib.CodeComposer.Composers;
 using GeometricAlgebraFulcrumLib.CodeComposer.Languages;
-using GeometricAlgebraFulcrumLib.Processing;
-using GeometricAlgebraFulcrumLib.Processing.Generic;
+using GeometricAlgebraFulcrumLib.Processing.Multivectors;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
 using GeometricAlgebraFulcrumLib.Storage;
@@ -95,7 +94,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         }
 
         
-        internal void SetBasisBladeToArrayNaming(SymbolicContext context, IGasKVector<ISymbolicExpressionAtomic> kVector, string arrayVarName)
+        internal void SetBasisBladeToArrayNaming(SymbolicContext context, IGaStorageKVector<ISymbolicExpressionAtomic> kVector, string arrayVarName)
         {
             context.SetExternalNamesByTermIndex(
                 kVector,

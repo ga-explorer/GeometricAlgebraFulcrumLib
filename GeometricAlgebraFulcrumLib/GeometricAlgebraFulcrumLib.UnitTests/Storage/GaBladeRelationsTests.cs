@@ -1,9 +1,12 @@
 ﻿using System.Collections.Generic;
-using GeometricAlgebraFulcrumLib.Processing;
-using GeometricAlgebraFulcrumLib.Processing.Implementations.Float64;
-using GeometricAlgebraFulcrumLib.Processing.Products;
-using GeometricAlgebraFulcrumLib.Processing.Products.Euclidean;
+using GeometricAlgebraFulcrumLib.Processing.Multivectors.Binary;
+using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products;
+using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean;
+using GeometricAlgebraFulcrumLib.Processing.Multivectors.Unary;
+using GeometricAlgebraFulcrumLib.Processing.Random.Float64;
+using GeometricAlgebraFulcrumLib.Processing.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Storage;
+using GeometricAlgebraFulcrumLib.Storage.Factories;
 using NUnit.Framework;
 
 namespace GeometricAlgebraFulcrumLib.UnitTests.Storage
@@ -13,11 +16,11 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Storage
     {
         private readonly GaRandomComposerFloat64 _randomGenerator;
 
-        private readonly List<IGasKVector<double>> _bladesList;
+        private readonly List<IGaStorageKVector<double>> _bladesList;
 
         private readonly double _scalar;
 
-        private GasScalar<double> _scalarStorage;
+        private GaStorageScalar<double> _scalarStorage;
 
 
         public GaScalarProcessorFloat64 ScalarProcessor
@@ -34,7 +37,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Storage
         {
             _randomGenerator = new GaRandomComposerFloat64(VSpaceDimension,10);
             _scalar = _randomGenerator.GetScalar();
-            _bladesList = new List<IGasKVector<double>>();
+            _bladesList = new List<IGaStorageKVector<double>>();
         }
 
         
@@ -45,40 +48,40 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Storage
                 _bladesList.Add(_randomGenerator.GetBlade(grade));
 
             _scalarStorage
-                = ScalarProcessor.CreateScalar(_scalar);
+                = ScalarProcessor.CreateStorageScalar(_scalar);
         }
 
         [Test]
         public void AssertScaling()
         {
-            IGasMultivector<double> blade2;
-            IGasMultivector<double> diff;
+            IGaStorageMultivector<double> blade2;
+            IGaStorageMultivector<double> diff;
 
             foreach (var blade1 in _bladesList)
             {
-                blade2 = blade1.Times(_scalar).Divide(_scalar);
-                diff = blade1.Subtract(blade2);
-                Assert.IsTrue(diff.IsNearZero());
+                blade2 = ScalarProcessor.Divide(ScalarProcessor.Times(blade1, _scalar), _scalar);
+                diff = ScalarProcessor.Subtract(blade1, blade2);
+                Assert.IsTrue(ScalarProcessor.IsNearZero(diff));
 
-                blade2 = _scalar.Times(blade1).Divide(_scalar);
-                diff = blade1.Subtract(blade2);
-                Assert.IsTrue(diff.IsNearZero());
+                blade2 = ScalarProcessor.Divide(ScalarProcessor.Times(_scalar, blade1), _scalar);
+                diff = ScalarProcessor.Subtract(blade1, blade2);
+                Assert.IsTrue(ScalarProcessor.IsNearZero(diff));
 
-                blade2 = _scalarStorage.Op(blade1).Divide(_scalar);
-                diff = blade1.Subtract(blade2);
-                Assert.IsTrue(diff.IsNearZero());
+                blade2 = ScalarProcessor.Divide(ScalarProcessor.Op(_scalarStorage, blade1), _scalar);
+                diff = ScalarProcessor.Subtract(blade1, blade2);
+                Assert.IsTrue(ScalarProcessor.IsNearZero(diff));
 
-                blade2 = blade1.Op(_scalarStorage).Divide(_scalar);
-                diff = blade1.Subtract(blade2);
-                Assert.IsTrue(diff.IsNearZero());
+                blade2 = ScalarProcessor.Divide(ScalarProcessor.Op(blade1, _scalarStorage), _scalar);
+                diff = ScalarProcessor.Subtract(blade1, blade2);
+                Assert.IsTrue(ScalarProcessor.IsNearZero(diff));
 
-                blade2 = _scalarStorage.EGp(blade1).Divide(_scalar);
-                diff = blade1.Subtract(blade2);
-                Assert.IsTrue(diff.IsNearZero());
+                blade2 = ScalarProcessor.Divide(ScalarProcessor.EGp(_scalarStorage, blade1), _scalar);
+                diff = ScalarProcessor.Subtract(blade1, blade2);
+                Assert.IsTrue(ScalarProcessor.IsNearZero(diff));
 
-                blade2 = blade1.EGp(_scalarStorage).Divide(_scalar);
-                diff = blade1.Subtract(blade2);
-                Assert.IsTrue(diff.IsNearZero());
+                blade2 = ScalarProcessor.Divide(ScalarProcessor.EGp(blade1, _scalarStorage), _scalar);
+                diff = ScalarProcessor.Subtract(blade1, blade2);
+                Assert.IsTrue(ScalarProcessor.IsNearZero(diff));
             }
         }
     }

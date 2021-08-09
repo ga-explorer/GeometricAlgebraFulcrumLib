@@ -2,10 +2,11 @@
 using DataStructuresLib.BitManipulation;
 using GeometricAlgebraFulcrumLib.CodeComposer.Composers;
 using GeometricAlgebraFulcrumLib.CodeComposer.Languages;
-using GeometricAlgebraFulcrumLib.Geometry.Euclidean;
-using GeometricAlgebraFulcrumLib.Processing;
+using GeometricAlgebraFulcrumLib.Geometry.Rotors;
+using GeometricAlgebraFulcrumLib.Processing.Multivectors;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
+using GeometricAlgebraFulcrumLib.Symbolic;
 
 namespace GeometricAlgebraFulcrumLib.Samples.CodeComposer
 {
@@ -25,6 +26,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.CodeComposer
                     MergeExpressions = false,
                     ContextOptions = { ContextName = "TestCode" }
                 };
+
+            context.AttachMathematicaExprSimplifier();
 
             // Define a Euclidean multivectors processor for the context
             var processor = 
@@ -56,14 +59,13 @@ namespace GeometricAlgebraFulcrumLib.Samples.CodeComposer
                 );
 
             // Stage 3: Define computations and specify which variables are outputs
-            var rotor = 
-                GaEuclideanSimpleRotor<ISymbolicExpressionAtomic>.Create(
-                    processor, 
-                    u, 
-                    v
-                );
+            var rotor = processor.CreateEuclideanRotor(u, v, true);
+            
+            // Here is another method for making the same computation using a rotation matrix
+            //var rotor = u.CreateRotationMatrixToVector(v, n);
 
-            var xRotated = rotor.MapVector(x);
+            var xRotated = 
+                rotor.MapVector(x);
 
             // Define the final outputs for the computations for proper code generation
             xRotated.SetIsOutput(true);
@@ -91,12 +93,6 @@ namespace GeometricAlgebraFulcrumLib.Samples.CodeComposer
             // Stage 7: Generate the final C# code
             var code = contextCodeComposer.Generate();
 
-            // Display an internal representation of the computations
-            Console.WriteLine("Context Computations:");
-            Console.WriteLine(context.ToString());
-            Console.WriteLine();
-
-            // Display the generated code
             Console.WriteLine("Generated Code:");
             Console.WriteLine(code);
             Console.WriteLine();

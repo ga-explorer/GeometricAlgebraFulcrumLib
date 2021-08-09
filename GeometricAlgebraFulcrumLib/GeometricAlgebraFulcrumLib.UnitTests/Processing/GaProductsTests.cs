@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using GAPoTNumLib.GAPoT;
-using GeometricAlgebraFulcrumLib.Algebra.Basis;
-using GeometricAlgebraFulcrumLib.Processing;
-using GeometricAlgebraFulcrumLib.Processing.Generic;
-using GeometricAlgebraFulcrumLib.Processing.Implementations.Float64;
-using GeometricAlgebraFulcrumLib.Processing.Products;
-using GeometricAlgebraFulcrumLib.Processing.Products.Euclidean;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Basis;
+using GeometricAlgebraFulcrumLib.Processing.Multivectors;
+using GeometricAlgebraFulcrumLib.Processing.Multivectors.Binary;
+using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products;
+using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean;
+using GeometricAlgebraFulcrumLib.Processing.Multivectors.Unary;
+using GeometricAlgebraFulcrumLib.Processing.Random.Float64;
+using GeometricAlgebraFulcrumLib.Processing.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Storage;
+using GeometricAlgebraFulcrumLib.Storage.Factories;
 using NUnit.Framework;
 
 namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
@@ -16,7 +19,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
     public sealed class GaProductsTests
     {
         private readonly GaRandomComposerFloat64 _randomGenerator;
-        private readonly List<IGasMultivector<double>> _mvList1;
+        private readonly List<IGaStorageMultivector<double>> _mvList1;
         private readonly List<GaPoTNumMultivector> _mvList2;
         private readonly double _scalar;
 
@@ -34,7 +37,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
         public GaProductsTests()
         {
             _randomGenerator = new GaRandomComposerFloat64(VSpaceDimension, 10);
-            _mvList1 = new List<IGasMultivector<double>>();
+            _mvList1 = new List<IGaStorageMultivector<double>>();
             _mvList2 = new List<GaPoTNumMultivector>();
             _scalar = _randomGenerator.GetScalar();
         }
@@ -42,7 +45,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
 
 
         private GaPoTNumMultivector 
-            CreateGaPoTMultivector(IGasMultivector<double> mvStorage)
+            CreateGaPoTMultivector(IGaStorageMultivector<double> mvStorage)
         {
             var gapotMv = GaPoTNumMultivector.CreateZero();
 
@@ -53,7 +56,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
         }
 
         private GaPoTNumMultivector 
-            Subtract(IGasMultivector<double> mv1, GaPoTNumMultivector mv2)
+            Subtract(IGaStorageMultivector<double> mv1, GaPoTNumMultivector mv2)
         {
             var mvDiff = GaPoTNumMultivector.CreateZero();
 
@@ -67,7 +70,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
         }
 
         private GaPoTNumMultivector 
-            Subtract(GaPoTNumMultivector mv1, IGasMultivector<double> mv2)
+            Subtract(GaPoTNumMultivector mv1, IGaStorageMultivector<double> mv2)
         {
             var mvDiff = GaPoTNumMultivector.CreateZero();
 
@@ -80,14 +83,14 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
             return mvDiff;
         }
         
-        private Func<IGasMultivector<double>, IGasMultivector<double>, IGasMultivector<double>> 
+        private Func<IGaStorageMultivector<double>, IGaStorageMultivector<double>, IGaStorageMultivector<double>> 
             GetBinaryOperationFunction1(string funcName)
         {
             return funcName switch
             {
-                "add" => GaProcessorAddUtils.Add,
-                "subtract" => GaProcessorSubtractUtils.Subtract,
-                "op" => GaProductOpUtils.Op,
+                "add" => (mv1, mv2) => Processor.Add(mv1, mv2),
+                "subtract" => (mv1, mv2) => Processor.Subtract(mv1, mv2),
+                "op" => (mv1, mv2) => Processor.Op(mv1, mv2),
                 "egp" => (mv1, mv2) => Processor.Gp(mv1, mv2),
                 "elcp" => (mv1, mv2) => Processor.Lcp(mv1, mv2),
                 "ercp" => (mv1, mv2) => Processor.Rcp(mv1, mv2),
@@ -118,7 +121,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
             };
         }
 
-        private Func<IGasMultivector<double>, IGasMultivector<double>, double> 
+        private Func<IGaStorageMultivector<double>, IGaStorageMultivector<double>, double> 
             GetBinaryOperationFunctionWithScalarOutput1(string funcName)
         {
             return funcName switch
@@ -138,10 +141,10 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
             };
         }
 
-        private IGasMultivector<double> 
-            LeftTimesScalar(IGasMultivector<double> storage)
+        private IGaStorageMultivector<double> 
+            LeftTimesScalar(IGaStorageMultivector<double> storage)
         {
-            return storage.Times(_scalar);
+            return Processor.Times(storage, _scalar);
         }
 
         private GaPoTNumMultivector 
@@ -150,10 +153,10 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
             return storage.ScaleBy(_scalar);
         }
 
-        private IGasMultivector<double> 
-            RightTimesScalar(IGasMultivector<double> storage)
+        private IGaStorageMultivector<double> 
+            RightTimesScalar(IGaStorageMultivector<double> storage)
         {
-            return _scalar.Times(storage);
+            return Processor.Times(_scalar, storage);
         }
 
         private GaPoTNumMultivector 
@@ -162,10 +165,10 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
             return storage.ScaleBy(_scalar);
         }
 
-        private IGasMultivector<double> 
-            DivideByScalar(IGasMultivector<double> storage)
+        private IGaStorageMultivector<double> 
+            DivideByScalar(IGaStorageMultivector<double> storage)
         {
-            return storage.Divide(_scalar);
+            return Processor.Divide(storage, _scalar);
         }
 
         private GaPoTNumMultivector 
@@ -174,7 +177,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
             return storage.ScaleBy(1d / _scalar);
         }
 
-        private Func<IGasMultivector<double>, IGasMultivector<double>> 
+        private Func<IGaStorageMultivector<double>, IGaStorageMultivector<double>> 
             GetUnaryOperationFunction1(string funcName)
         {
             return funcName switch
@@ -182,8 +185,8 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
                 "leftTimesScalar" => LeftTimesScalar,
                 "rightTimesScalar" => RightTimesScalar,
                 "divideByScalar" => DivideByScalar,
-                "egpSquared" => GaProductEucGpUtils.EGp,
-                "egpReverse" => GaProductEucGpUtils.EGpReverse,
+                "egpSquared" => mv => Processor.EGp(mv),
+                "egpReverse" => mv => Processor.EGpReverse(mv),
                 _ => null
             };
         }
@@ -202,13 +205,13 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
             };
         }
 
-        private Func<IGasMultivector<double>, double> 
+        private Func<IGaStorageMultivector<double>, double> 
             GetUnaryOperationFunctionWithScalarOutput1(string funcName)
         {
             return funcName switch
             {
-                "espSquared" => GaProductEucSpUtils.ESp,
-                "espReverse" => GaProductEucNormUtils.ENormSquared,
+                "espSquared" => mv => Processor.ESp(mv),
+                "espReverse" => mv => Processor.ENormSquared(mv),
                 _ => null
             };
         }
@@ -351,11 +354,11 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
                     var result1 = testedFunction1(storage1, storage2);
                     var result2 = testedFunction2(termsStorage1, termsStorage2);
 
-                    var storageDiff = Processor.CreateScalar(
+                    var storageDiff = Processor.CreateStorageScalar(
                         result1 - result2
                     );
 
-                    Assert.IsTrue(storageDiff.IsNearZero());
+                    Assert.IsTrue(Processor.IsNearZero(storageDiff));
                 }
             }
         }
@@ -404,11 +407,11 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
                 var result1 = testedFunction1(storage1);
                 var result2 = testedFunction2(termsStorage1);
 
-                var storageDiff = Processor.CreateScalar(
+                var storageDiff = Processor.CreateStorageScalar(
                     result1 - result2
                 );
 
-                Assert.IsTrue(storageDiff.IsNearZero());
+                Assert.IsTrue(Processor.IsNearZero(storageDiff));
             }
         }
     }

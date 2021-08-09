@@ -1,7 +1,7 @@
 ﻿using System;
 using GeometricAlgebraFulcrumLib.CodeComposer.Languages;
-using GeometricAlgebraFulcrumLib.Processing.Products;
-using GeometricAlgebraFulcrumLib.Processing.Products.Euclidean;
+using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products;
+using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Variables;
@@ -20,7 +20,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         : GaLibrarySymbolicContextFileComposerBase
     {
         private uint _inGrade;
-        private IGasKVector<ISymbolicExpressionAtomic> _inputKVector;
+        private IGaStorageKVector<ISymbolicExpressionAtomic> _inputKVector;
         private SymbolicVariableComputed _outputScalar;
         private GaLanguageOperationSpecs _operationSpecs;
 
@@ -61,13 +61,13 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             {
                 GaLanguageOperationKind.UnaryNorm =>
                     _operationSpecs.IsEuclidean
-                        ? _inputKVector.ENorm() 
-                        : _inputKVector.Norm(Processor),
+                        ? Processor.ENorm(_inputKVector) 
+                        : Processor.Norm(_inputKVector),
 
                 GaLanguageOperationKind.UnaryNormSquared =>
                     _operationSpecs.IsEuclidean
-                        ? _inputKVector.ENormSquared() 
-                        : _inputKVector.NormSquared(Processor),
+                        ? Processor.ENormSquared(_inputKVector) 
+                        : Processor.NormSquared(_inputKVector),
 
                 //GaClcOperationKind.UnaryMagnitude =>
                 //    OpSpecs.IsEuclidean

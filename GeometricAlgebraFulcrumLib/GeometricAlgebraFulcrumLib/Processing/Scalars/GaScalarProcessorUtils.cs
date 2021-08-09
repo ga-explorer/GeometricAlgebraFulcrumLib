@@ -9,6 +9,12 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
     public static class GaScalarProcessorUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool IsNotZero<T>(this IGaScalarProcessor<T> scalarProcessor, T scalar)
+        {
+            return !scalarProcessor.IsZero(scalar);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsOne<T>(this IGaScalarProcessor<T> scalarProcessor, T scalar)
         {
             return scalarProcessor.IsZero(
@@ -193,6 +199,56 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T Sqrt<T>(this IGaScalarProcessor<T> scalarProcessor, double scalar1)
+        {
+            return scalarProcessor.Sqrt(
+                scalarProcessor.Float64ToScalar(scalar1)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T SqrtOfNegative<T>(this IGaScalarProcessor<T> scalarProcessor, int scalar1)
+        {
+            return scalarProcessor.Sqrt(
+                scalarProcessor.Negative(scalarProcessor.IntegerToScalar(scalar1))
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T SqrtOfNegative<T>(this IGaScalarProcessor<T> scalarProcessor, double scalar1)
+        {
+            return scalarProcessor.Sqrt(
+                scalarProcessor.Negative(scalarProcessor.Float64ToScalar(scalar1))
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T SqrtOfNegative<T>(this IGaScalarProcessor<T> scalarProcessor, T scalar1)
+        {
+            return scalarProcessor.Sqrt(
+                scalarProcessor.Negative(scalar1)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T AddOne<T>(this IGaScalarProcessor<T> scalarProcessor, T scalar1)
+        {
+            return scalarProcessor.Add(
+                scalar1,
+                scalarProcessor.OneScalar
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T AddToOne<T>(this IGaScalarProcessor<T> scalarProcessor, T scalar2)
+        {
+            return scalarProcessor.Add(
+                scalarProcessor.OneScalar,
+                scalar2
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T Add<T>(this IGaScalarProcessor<T> scalarProcessor, int scalar1, int scalar2)
         {
             return scalarProcessor.Add(
@@ -215,6 +271,24 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
         {
             return scalarProcessor.Add(
                 scalarProcessor.IntegerToScalar(scalar1),
+                scalar2
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T SubtractOne<T>(this IGaScalarProcessor<T> scalarProcessor, T scalar1)
+        {
+            return scalarProcessor.Subtract(
+                scalar1,
+                scalarProcessor.OneScalar
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T SubtractFromOne<T>(this IGaScalarProcessor<T> scalarProcessor, T scalar2)
+        {
+            return scalarProcessor.Subtract(
+                scalarProcessor.OneScalar,
                 scalar2
             );
         }

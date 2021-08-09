@@ -31,7 +31,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions
                     computedVariable.IsOutputVariable = isOutput;
         }
 
-        public static void SetIsOutput(this IGasMultivector<ISymbolicExpressionAtomic> multivector, bool isOutput)
+        public static void SetIsOutput(this IGaStorageMultivector<ISymbolicExpressionAtomic> multivector, bool isOutput)
         {
             var namedScalarsList = 
                 multivector
@@ -43,14 +43,14 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions
                 namedScalar.IsOutputVariable = isOutput;
         }
 
-        public static void SetIsOutput(this IEnumerable<IGasMultivector<ISymbolicExpressionAtomic>> multivectorsList, bool isOutput)
+        public static void SetIsOutput(this IEnumerable<IGaStorageMultivector<ISymbolicExpressionAtomic>> multivectorsList, bool isOutput)
         {
             foreach (var mv in multivectorsList)
                 mv.SetIsOutput(isOutput);
         }
 
 
-        public static void SetExternalNamesByTermId(this IGasMultivector<ISymbolicExpressionAtomic> multivector, Func<ulong, string> namingFunc)
+        public static void SetExternalNamesByTermId(this IGaStorageMultivector<ISymbolicExpressionAtomic> multivector, Func<ulong, string> namingFunc)
         {
             var idScalarPairs = 
                 multivector
@@ -61,7 +61,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions
                 scalar.ExternalName = namingFunc(id);
         }
 
-        public static void SetExternalNamesByTermGradeIndex(this IGasMultivector<ISymbolicExpressionAtomic> multivector, Func<uint, ulong, string> namingFunc)
+        public static void SetExternalNamesByTermGradeIndex(this IGaStorageMultivector<ISymbolicExpressionAtomic> multivector, Func<uint, ulong, string> namingFunc)
         {
             var indexScalarTuples = 
                 multivector
@@ -72,11 +72,11 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions
                 scalar.ExternalName = namingFunc(grade, index);
         }
         
-        public static void SetExternalNamesByTermIndex(this IGasKVector<ISymbolicExpressionAtomic> kVector, Func<ulong, string> namingFunc)
+        public static void SetExternalNamesByTermIndex(this IGaStorageKVector<ISymbolicExpressionAtomic> kVector, Func<ulong, string> namingFunc)
         {
             var indexScalarPairs = 
                 kVector
-                    .GetIndexScalarPairs()
+                    .IndexScalarDictionary
                     .Where(s => !s.Value.IsNumber);
 
             foreach (var (index, scalar) in indexScalarPairs)
@@ -98,7 +98,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions
         }
 
         
-        public static void SetExternalNamesByTermId(this SymbolicContext context, IGasMultivector<ISymbolicExpressionAtomic> multivector, Func<ulong, string> namingFunc)
+        public static void SetExternalNamesByTermId(this SymbolicContext context, IGaStorageMultivector<ISymbolicExpressionAtomic> multivector, Func<ulong, string> namingFunc)
         {
             var idScalarPairs = 
                 multivector
@@ -109,7 +109,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions
                 scalar.ExternalName = namingFunc(id);
         }
 
-        public static void SetExternalNamesByTermGradeIndex(this SymbolicContext context, IGasMultivector<ISymbolicExpressionAtomic> multivector, Func<uint, ulong, string> namingFunc)
+        public static void SetExternalNamesByTermGradeIndex(this SymbolicContext context, IGaStorageMultivector<ISymbolicExpressionAtomic> multivector, Func<uint, ulong, string> namingFunc)
         {
             var indexScalarTuples = 
                 multivector
@@ -120,11 +120,11 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions
                 scalar.ExternalName = namingFunc(grade, index);
         }
         
-        public static void SetExternalNamesByTermIndex(this SymbolicContext context, IGasKVector<ISymbolicExpressionAtomic> kVector, Func<ulong, string> namingFunc)
+        public static void SetExternalNamesByTermIndex(this SymbolicContext context, IGaStorageKVector<ISymbolicExpressionAtomic> kVector, Func<ulong, string> namingFunc)
         {
             var indexScalarPairs = 
                 kVector
-                    .GetIndexScalarPairs()
+                    .IndexScalarDictionary
                     .Where(s => !s.Value.IsNumber);
 
             foreach (var (index, scalar) in indexScalarPairs)

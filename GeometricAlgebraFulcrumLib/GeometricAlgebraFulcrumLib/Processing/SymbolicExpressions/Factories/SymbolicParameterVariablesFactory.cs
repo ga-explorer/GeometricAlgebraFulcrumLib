@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using DataStructuresLib.BitManipulation;
-using GeometricAlgebraFulcrumLib.Algebra.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Basis;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Variables;
 using GeometricAlgebraFulcrumLib.Storage;
+using GeometricAlgebraFulcrumLib.Storage.Factories;
 
 namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Factories
 {
@@ -40,12 +41,12 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Factories
             }
         }
 
-        public GasScalar<ISymbolicExpressionAtomic> CreateScalarTerm(string scalarName)
+        public GaStorageScalar<ISymbolicExpressionAtomic> CreateScalarTerm(string scalarName)
         {
             var namedScalar = 
                 Context.GetOrDefineParameterVariable(scalarName);
 
-            return Context.CreateScalar(namedScalar);
+            return Context.CreateStorageScalar(namedScalar);
         }
 
         public ISymbolicExpressionAtomic[,] CreateDenseArray(int rowsCount, int colsCount, Func<int, int, string> namingFunction)
@@ -59,24 +60,24 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Factories
             return array;
         }
 
-        public IGasVector<ISymbolicExpressionAtomic> CreateVector(params string[] scalarNames)
+        public IGaStorageVector<ISymbolicExpressionAtomic> CreateVector(params string[] scalarNames)
         {
-            return Context.CreateVector(scalarNames
+            return Context.CreateStorageVector(scalarNames
                     .Select(Context.GetOrDefineParameterVariable)
                     .Cast<ISymbolicExpressionAtomic>()
                     .ToArray()
             );
         }
 
-        public GasVectorTerm<ISymbolicExpressionAtomic> CreateVectorTerm(ulong index, string scalarName)
+        public GaStorageVector<ISymbolicExpressionAtomic> CreateVectorTerm(ulong index, string scalarName)
         {
             var namedScalar = 
                 Context.GetOrDefineParameterVariable(scalarName);
 
-            return Context.CreateVector(index, namedScalar);
+            return Context.CreateStorageVector(index, namedScalar);
         }
         
-        public IGasVector<ISymbolicExpressionAtomic> CreateDenseVector(uint vSpaceDimension, Func<ulong, string> namingFunction)
+        public IGaStorageVector<ISymbolicExpressionAtomic> CreateDenseVector(uint vSpaceDimension, Func<ulong, string> namingFunction)
         {
             var parametersList =
                 vSpaceDimension
@@ -94,10 +95,10 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Factories
                         pair => pair.Value
                     );
 
-            return Context.CreateVector(parametersList);
+            return Context.CreateStorageVector(parametersList);
         }
 
-        public IGasKVector<ISymbolicExpressionAtomic> CreateDenseKVector(uint vSpaceDimensions, uint grade, Func<ulong, string> namingFunction)
+        public IGaStorageKVector<ISymbolicExpressionAtomic> CreateDenseKVector(uint vSpaceDimensions, uint grade, Func<ulong, string> namingFunction)
         {
             Debug.Assert(grade <= vSpaceDimensions);
             
@@ -120,10 +121,10 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Factories
                         pair => pair.Value
                     );
 
-            return Context.CreateKVector(grade, parametersList);
+            return Context.CreateStorageKVector(grade, parametersList);
         }
 
-        public IGasTermsMultivector<ISymbolicExpressionAtomic> CreateDenseMultivector(uint vSpaceDimensions, Func<ulong, string> namingFunction)
+        public IGaStorageMultivectorSparse<ISymbolicExpressionAtomic> CreateDenseMultivector(uint vSpaceDimensions, Func<ulong, string> namingFunction)
         {
             var parametersList =
                 (1UL << (int) vSpaceDimensions)
@@ -141,7 +142,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Factories
                         pair => pair.Value
                     );
 
-            return Context.CreateTermsMultivector(parametersList);
+            return GaStorageMultivectorSparse<ISymbolicExpressionAtomic>.Create(parametersList);
         }
 
         //TODO: Add more functions for constructing multivectors

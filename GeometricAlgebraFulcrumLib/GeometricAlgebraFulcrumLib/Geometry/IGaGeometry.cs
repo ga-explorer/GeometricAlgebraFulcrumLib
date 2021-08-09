@@ -1,5 +1,5 @@
 ﻿using EuclideanGeometryLib.BasicMath;
-using GeometricAlgebraFulcrumLib.Processing;
+using GeometricAlgebraFulcrumLib.Processing.Multivectors;
 
 namespace GeometricAlgebraFulcrumLib.Geometry
 {

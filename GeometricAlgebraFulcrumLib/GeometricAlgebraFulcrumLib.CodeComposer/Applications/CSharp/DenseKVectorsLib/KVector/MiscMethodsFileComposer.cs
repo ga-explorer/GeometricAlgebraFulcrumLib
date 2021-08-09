@@ -3,12 +3,13 @@ using System.Linq;
 using CodeComposerLib.SyntaxTree;
 using DataStructuresLib.BitManipulation;
 using GeometricAlgebraFulcrumLib.Algebra;
-using GeometricAlgebraFulcrumLib.Algebra.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Basis;
 using GeometricAlgebraFulcrumLib.CodeComposer.Composers;
 using GeometricAlgebraFulcrumLib.CodeComposer.Languages;
-using GeometricAlgebraFulcrumLib.Processing.Products.Euclidean;
+using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
+using GeometricAlgebraFulcrumLib.Storage.Utils;
 using TextComposerLib.Text.Linear;
 using TextComposerLib.Text.Structured;
 
@@ -51,9 +52,9 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
                     index => $"inputKVectorScalar{index}"
                 );
 
-            var outputKVector =
-                inputKVector
-                    .EDual(VSpaceDimension)
+            var outputKVector = 
+                Processor
+                    .EDual(inputKVector, VSpaceDimension)
                     .GetKVectorPart(outGrade);
 
             outputKVector.SetIsOutput(true);
@@ -184,10 +185,10 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
                     );
 
             var outputKVector = 
-                inputKVector.EGp();
+                Processor.EGp(inputKVector);
 
-            outputKVector
-                .GetNotZeroTerms()
+            Processor
+                .GetNotZeroTerms(outputKVector)
                 .Select(t => t.Scalar)
                 .SetIsOutput(true);
 

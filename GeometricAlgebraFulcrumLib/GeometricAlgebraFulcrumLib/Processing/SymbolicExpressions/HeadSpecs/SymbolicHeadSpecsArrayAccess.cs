@@ -4,7 +4,7 @@ using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
 
 namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.HeadSpecs
 {
-    public readonly struct SymbolicHeadSpecsArrayAccess : 
+    public sealed record SymbolicHeadSpecsArrayAccess : 
         ISymbolicHeadSpecsComposite
     {
         public static SymbolicHeadSpecsArrayAccess Create(SymbolicContext context, string arrayName)

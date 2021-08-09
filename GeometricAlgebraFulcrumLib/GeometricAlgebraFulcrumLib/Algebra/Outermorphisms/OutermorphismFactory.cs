@@ -6,20 +6,21 @@ using GeometricAlgebraFulcrumLib.Algebra.Outermorphisms.Stored;
 using GeometricAlgebraFulcrumLib.Processing.Matrices;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
 using GeometricAlgebraFulcrumLib.Storage;
+using GeometricAlgebraFulcrumLib.Storage.Factories;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.Outermorphisms
 {
     public static class OutermorphismFactory
     {
-        public static GaOmComputed<T> CreateComputedOutermorphism<T>(this IGaScalarProcessor<T> scalarProcessor, uint vSpaceDimension, IReadOnlyDictionary<int, IGasVector<T>> basisVectorsSignatures)
+        public static GaOmComputed<T> CreateComputedOutermorphism<T>(this IGaScalarProcessor<T> scalarProcessor, uint vSpaceDimension, IReadOnlyDictionary<int, IGaStorageVector<T>> basisVectorsSignatures)
         {
-            var mappedBasisVectors = new IGasVector<T>[vSpaceDimension];
+            var mappedBasisVectors = new IGaStorageVector<T>[vSpaceDimension];
 
             foreach (var (index, scalar) in basisVectorsSignatures)
                 mappedBasisVectors[index] = scalar;
 
             for (var i = 0; i < vSpaceDimension; i++) 
-                mappedBasisVectors[i] ??= scalarProcessor.CreateZeroVector();
+                mappedBasisVectors[i] ??= scalarProcessor.CreateStorageZeroVector();
 
             return new GaOmComputed<T>(
                 scalarProcessor,
@@ -27,15 +28,15 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Outermorphisms
             );
         }
 
-        public static GaOmComputed<T> CreateComputedOutermorphism<T>(this IGaScalarProcessor<T> scalarProcessor, uint vSpaceDimension, IReadOnlyDictionary<uint, IGasVector<T>> basisVectorsSignatures)
+        public static GaOmComputed<T> CreateComputedOutermorphism<T>(this IGaScalarProcessor<T> scalarProcessor, uint vSpaceDimension, IReadOnlyDictionary<uint, IGaStorageVector<T>> basisVectorsSignatures)
         {
-            var mappedBasisVectors = new IGasVector<T>[vSpaceDimension];
+            var mappedBasisVectors = new IGaStorageVector<T>[vSpaceDimension];
 
             foreach (var (index, scalar) in basisVectorsSignatures)
                 mappedBasisVectors[index] = scalar;
 
             for (var i = 0; i < vSpaceDimension; i++) 
-                mappedBasisVectors[i] ??= scalarProcessor.CreateZeroVector();
+                mappedBasisVectors[i] ??= scalarProcessor.CreateStorageZeroVector();
 
             return new GaOmComputed<T>(
                 scalarProcessor,
@@ -43,15 +44,15 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Outermorphisms
             );
         }
 
-        public static GaOmComputed<T> CreateComputedOutermorphism<T>(this IGaScalarProcessor<T> scalarProcessor, uint vSpaceDimension, IReadOnlyDictionary<ulong, IGasVector<T>> basisVectorsSignatures)
+        public static GaOmComputed<T> CreateComputedOutermorphism<T>(this IGaScalarProcessor<T> scalarProcessor, uint vSpaceDimension, IReadOnlyDictionary<ulong, IGaStorageVector<T>> basisVectorsSignatures)
         {
-            var mappedBasisVectors = new IGasVector<T>[vSpaceDimension];
+            var mappedBasisVectors = new IGaStorageVector<T>[vSpaceDimension];
 
             foreach (var (index, scalar) in basisVectorsSignatures)
                 mappedBasisVectors[index] = scalar;
 
             for (var i = 0; i < vSpaceDimension; i++) 
-                mappedBasisVectors[i] ??= scalarProcessor.CreateZeroVector();
+                mappedBasisVectors[i] ??= scalarProcessor.CreateStorageZeroVector();
 
             return new GaOmComputed<T>(
                 scalarProcessor,
@@ -98,7 +99,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Outermorphisms
         }
 
 
-        public static GaOmComputed<T> CreateComputedOutermorphism<T>(this IGaScalarProcessor<T> scalarProcessor, IReadOnlyList<IGasVector<T>> mappedBasisVectors)
+        public static GaOmComputed<T> CreateComputedOutermorphism<T>(this IGaScalarProcessor<T> scalarProcessor, IReadOnlyList<IGaStorageVector<T>> mappedBasisVectors)
         {
             return new GaOmComputed<T>(
                 scalarProcessor, 
@@ -106,7 +107,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Outermorphisms
             );
         }
 
-        public static GaOmComputed<T> CreateComputedOutermorphism<T>(this IReadOnlyList<IGasVector<T>> mappedBasisVectors, IGaScalarProcessor<T> scalarProcessor)
+        public static GaOmComputed<T> CreateComputedOutermorphism<T>(this IReadOnlyList<IGaStorageVector<T>> mappedBasisVectors, IGaScalarProcessor<T> scalarProcessor)
         {
             return new GaOmComputed<T>(
                 scalarProcessor, 
@@ -120,7 +121,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Outermorphisms
         }
 
 
-        public static IGaOutermorphism<T> CreateComputedOutermorphism<T>(this IGaScalarProcessor<T> scalarProcessor, int basisVectorsCount, Func<int, IGasVector<T>> basisVectorMapFunc)
+        public static IGaOutermorphism<T> CreateComputedOutermorphism<T>(this IGaScalarProcessor<T> scalarProcessor, int basisVectorsCount, Func<int, IGaStorageVector<T>> basisVectorMapFunc)
         {
             var mappedBasisVectors = 
                 Enumerable
@@ -131,13 +132,13 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Outermorphisms
             return scalarProcessor.CreateComputedOutermorphism(mappedBasisVectors);
         }
         
-        public static IGaOutermorphism<T> CreateComputedOutermorphism<T>(this IGaScalarProcessor<T> scalarProcessor, int basisVectorsCount, Func<IGasVector<T>, IGasVector<T>> basisVectorMapFunc)
+        public static IGaOutermorphism<T> CreateComputedOutermorphism<T>(this IGaScalarProcessor<T> scalarProcessor, int basisVectorsCount, Func<IGaStorageVector<T>, IGaStorageVector<T>> basisVectorMapFunc)
         {
             var mappedBasisVectors = 
                 Enumerable
                     .Range(0, basisVectorsCount)
                     .Select(index =>
-                        basisVectorMapFunc(scalarProcessor.CreateBasisVector(index))
+                        basisVectorMapFunc(scalarProcessor.CreateStorageBasisVector(index))
                     ).ToArray();
 
             return scalarProcessor.CreateComputedOutermorphism(mappedBasisVectors);

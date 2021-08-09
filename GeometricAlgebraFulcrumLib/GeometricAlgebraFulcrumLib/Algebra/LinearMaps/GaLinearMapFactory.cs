@@ -11,7 +11,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.LinearMaps
             return new GaUnilinearMapStored<T>(scalarProcessor, vSpaceDimension);
         }
 
-        public static GaUnilinearMapStored<T> CreateStoredUnilinearMap<T>(this IGaScalarProcessor<T> scalarProcessor, uint vSpaceDimension, Func<ulong, IGasMultivector<T>> mappingFunc)
+        public static GaUnilinearMapStored<T> CreateStoredUnilinearMap<T>(this IGaScalarProcessor<T> scalarProcessor, uint vSpaceDimension, Func<ulong, IGaStorageMultivector<T>> mappingFunc)
         {
             var linearMap = new GaUnilinearMapStored<T>(scalarProcessor, vSpaceDimension);
 

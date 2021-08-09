@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using GeometricAlgebraFulcrumLib.Algebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.Terms;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Basis;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
 using GeometricAlgebraFulcrumLib.Storage;
+using GeometricAlgebraFulcrumLib.Storage.Terms;
 
 namespace GeometricAlgebraFulcrumLib.TextComposers
 {
@@ -55,6 +55,6 @@ namespace GeometricAlgebraFulcrumLib.TextComposers
         
         string GetArrayText(T[,] array);
 
-        string GetMultivectorText(IGasMultivector<T> storage);
+        string GetMultivectorText(IGaStorageMultivector<T> storage);
     }
 }

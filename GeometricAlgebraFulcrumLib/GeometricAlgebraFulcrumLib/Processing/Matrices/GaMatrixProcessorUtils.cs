@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using GeometricAlgebraFulcrumLib.Geometry.Euclidean;
-using GeometricAlgebraFulcrumLib.Processing.Products;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
 using GeometricAlgebraFulcrumLib.Storage;
 using GeometricAlgebraFulcrumLib.Storage.Composers;
@@ -321,11 +319,11 @@ namespace GeometricAlgebraFulcrumLib.Processing.Matrices
         }
 
         
-        public static IGasVector<T> ColumnToVectorStorage<T>(this T[,] scalarsArray, int colIndex, IGaScalarProcessor<T> scalarProcessor)
+        public static IGaStorageVector<T> ColumnToVectorStorage<T>(this T[,] scalarsArray, int colIndex, IGaScalarProcessor<T> scalarProcessor)
         {
             var rowsCount = scalarsArray.GetLength(0);
 
-            var composer = new GaKVectorStorageComposer<T>(scalarProcessor, 1);
+            var composer = new GaStorageComposerKVector<T>(scalarProcessor, 1);
 
             for (var i = 0; i < rowsCount; i++)
             {
@@ -335,14 +333,14 @@ namespace GeometricAlgebraFulcrumLib.Processing.Matrices
                     composer.SetTerm((ulong) i, scalar);
             }
 
-            return composer.GetVectorStorage();
+            return composer.GetVector();
         }
 
-        public static IGasVector<T> RowToVectorStorage<T>(this T[,] scalarsArray, int rowIndex, IGaScalarProcessor<T> scalarProcessor)
+        public static IGaStorageVector<T> RowToVectorStorage<T>(this T[,] scalarsArray, int rowIndex, IGaScalarProcessor<T> scalarProcessor)
         {
             var colsCount = scalarsArray.GetLength(1);
 
-            var composer = new GaKVectorStorageComposer<T>(scalarProcessor, 1);
+            var composer = new GaStorageComposerKVector<T>(scalarProcessor, 1);
 
             for (var j = 0; j < colsCount; j++)
             {
@@ -352,20 +350,20 @@ namespace GeometricAlgebraFulcrumLib.Processing.Matrices
                     composer.SetTerm((ulong) j, scalar);
             }
 
-            return composer.GetVectorStorage();
+            return composer.GetVector();
         }
 
-        public static Dictionary<ulong, IGasVector<T>> ColumnsToVectorStoragesDictionary<T>(this T[,] scalarsArray, IGaScalarProcessor<T> scalarProcessor)
+        public static Dictionary<ulong, IGaStorageVector<T>> ColumnsToVectorStoragesDictionary<T>(this T[,] scalarsArray, IGaScalarProcessor<T> scalarProcessor)
         {
             var rowsCount = scalarsArray.GetLength(0);
             var colsCount = scalarsArray.GetLength(1);
 
             var vectorsDictionary = 
-                new Dictionary<ulong, IGasVector<T>>();
+                new Dictionary<ulong, IGaStorageVector<T>>();
 
             for (var j = 0; j < colsCount; j++)
             {
-                var composer = new GaKVectorStorageComposer<T>(scalarProcessor, 1);
+                var composer = new GaStorageComposerKVector<T>(scalarProcessor, 1);
 
                 for (var i = 0; i < rowsCount; i++)
                 {
@@ -375,23 +373,23 @@ namespace GeometricAlgebraFulcrumLib.Processing.Matrices
                         composer.SetTerm((ulong) i, scalar);
                 }
 
-                vectorsDictionary.Add((ulong) j, composer.GetVectorStorage());
+                vectorsDictionary.Add((ulong) j, composer.GetVector());
             }
 
             return vectorsDictionary;
         }
 
-        public static IGasVector<T>[] ColumnsToVectorStoragesArray<T>(this T[,] scalarsArray, IGaScalarProcessor<T> scalarProcessor)
+        public static IGaStorageVector<T>[] ColumnsToVectorStoragesArray<T>(this T[,] scalarsArray, IGaScalarProcessor<T> scalarProcessor)
         {
             var rowsCount = scalarsArray.GetLength(0);
             var colsCount = scalarsArray.GetLength(1);
 
             var vectorsArray = 
-                new IGasVector<T>[colsCount];
+                new IGaStorageVector<T>[colsCount];
 
             for (var j = 0; j < colsCount; j++)
             {
-                var composer = new GaKVectorStorageComposer<T>(scalarProcessor, 1);
+                var composer = new GaStorageComposerKVector<T>(scalarProcessor, 1);
 
                 for (var i = 0; i < rowsCount; i++)
                 {
@@ -401,66 +399,11 @@ namespace GeometricAlgebraFulcrumLib.Processing.Matrices
                         composer.SetTerm((ulong) i, scalar);
                 }
 
-                vectorsArray[j] = composer.GetVectorStorage();
+                vectorsArray[j] = composer.GetVector();
             }
 
             return vectorsArray;
         }
 
-
-        public static GaEuclideanSimpleRotor<T> ComplexEigenPairToEuclideanSimpleRotor<T>(this IGaProcessor<T> processor, T realValue, T imagValue, T[] realVector, T[] imagVector)
-        {
-            //var scalar = scalarProcessor.Add(
-            //    scalarProcessor.Times(realValue, realValue),
-            //    scalarProcessor.Times(imagValue, imagValue)
-            //);
-
-            var angle = processor.ArcTan2(
-                realValue, 
-                imagValue
-            );
-
-            var blade = processor.VectorsOp(
-                realVector, 
-                imagVector
-            );
-
-            return GaEuclideanSimpleRotor<T>.Create(processor, angle, blade);
-
-            //Console.WriteLine($"Eigen value real part: {realValue.GetLaTeXDisplayEquation()}");
-            //Console.WriteLine();
-
-            //Console.WriteLine($"Eigen value imag part: {imagValue.GetLaTeXDisplayEquation()}");
-            //Console.WriteLine();
-
-            //Console.WriteLine($"Eigen value length: {scalar.GetLaTeXDisplayEquation()}");
-            //Console.WriteLine();
-
-            //Console.WriteLine($"Eigen value angle: {angle.GetLaTeXDisplayEquation()}");
-            //Console.WriteLine();
-
-            //Console.WriteLine("Eigen vector real part:");
-            //Console.WriteLine(realVector.TermsToLaTeX().GetLaTeXDisplayEquation());
-            //Console.WriteLine();
-
-            //Console.WriteLine("Eigen vector imag part:");
-            //Console.WriteLine(imagVector.TermsToLaTeX().GetLaTeXDisplayEquation());
-            //Console.WriteLine();
-
-            //Console.WriteLine("Blade:");
-            //Console.WriteLine(blade.ToLaTeXEquationsArray("B", @"\mu"));
-            //Console.WriteLine();
-
-            //Console.WriteLine("Final rotor:");
-            //Console.WriteLine(rotor.ToLaTeXEquationsArray("R", @"\mu"));
-            //Console.WriteLine();
-
-            //Console.WriteLine($"Is simple rotor? {rotor.IsSimpleRotor()}");
-            //Console.WriteLine();
-
-            //Console.WriteLine();
-
-            //return rotor;
-        }
     }
 }

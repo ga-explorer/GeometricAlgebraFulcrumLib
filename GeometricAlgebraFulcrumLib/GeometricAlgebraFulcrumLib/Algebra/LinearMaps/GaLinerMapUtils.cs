@@ -1,7 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.Storage;
-using GeometricAlgebraFulcrumLib.Storage.Composers;
-
-namespace GeometricAlgebraFulcrumLib.Algebra.LinearMaps
+﻿namespace GeometricAlgebraFulcrumLib.Algebra.LinearMaps
 {
     public static class GaLinerMapUtils
     {

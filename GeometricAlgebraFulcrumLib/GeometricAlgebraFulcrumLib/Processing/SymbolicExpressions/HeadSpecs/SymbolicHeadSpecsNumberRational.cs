@@ -4,7 +4,7 @@ using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Numbers;
 
 namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.HeadSpecs
 {
-    public readonly struct SymbolicHeadSpecsNumberRational : 
+    public sealed record SymbolicHeadSpecsNumberRational : 
         ISymbolicHeadSpecsNumber
     {
         public static SymbolicHeadSpecsNumberRational Create(SymbolicContext context, int numerator, int denominator)

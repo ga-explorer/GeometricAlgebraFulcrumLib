@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using DataStructuresLib;
 using DataStructuresLib.Combinations;
-using GeometricAlgebraFulcrumLib.Algebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.Terms;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Basis;
 using GeometricAlgebraFulcrumLib.Storage;
+using GeometricAlgebraFulcrumLib.Storage.Terms;
+using GeometricAlgebraFulcrumLib.Storage.Utils;
 using TextComposerLib.Text;
 
 namespace GeometricAlgebraFulcrumLib.TextComposers
@@ -195,11 +196,11 @@ namespace GeometricAlgebraFulcrumLib.TextComposers
             return composer.ToString();
         }
 
-        public static string GetMultivectorText<T>(this IGasMultivector<T> storage)
+        public static string GetMultivectorText<T>(this IGaStorageMultivector<T> storage)
         {
             return GetTermsText(
                 storage
-                    .GetNotZeroTerms()
+                    .GetTerms()
                     .OrderByGradeIndex()
             );
         }

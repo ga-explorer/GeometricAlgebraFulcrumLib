@@ -11,9 +11,8 @@ namespace GeometricAlgebraFulcrumLib.Processing.Matrices
     /// <typeparam name="TMatrix">The type of matrix objects</typeparam>
     /// <typeparam name="T">The type of matrix scalars</typeparam>
     public interface IGaMatrixProcessor<TMatrix, T>
+        : IGaScalarProcessor<T>
     {
-        IGaScalarProcessor<T> ScalarProcessor { get; }
-
         int GetRowsCount(TMatrix matrix);
 
         int GetColumnsCount(TMatrix matrix);
@@ -68,13 +67,13 @@ namespace GeometricAlgebraFulcrumLib.Processing.Matrices
 
         TMatrix MapScalars(TMatrix matrix, Func<T, T> mappingFunc);
 
-        TMatrix Negative(TMatrix matrix);
+        TMatrix NegativeMatrix(TMatrix matrix);
 
-        TMatrix Adjoint(TMatrix matrix);
+        TMatrix AdjointMatrix(TMatrix matrix);
 
-        TMatrix Inverse(TMatrix matrix);
+        TMatrix InverseMatrix(TMatrix matrix);
 
-        TMatrix InverseAdjoint(TMatrix matrix);
+        TMatrix InverseAdjointMatrix(TMatrix matrix);
 
         int EigenDecomposition(TMatrix matrix, out Tuple<T, T[]>[] realPairs, out Tuple<T, T[]>[] imagPairs);
 

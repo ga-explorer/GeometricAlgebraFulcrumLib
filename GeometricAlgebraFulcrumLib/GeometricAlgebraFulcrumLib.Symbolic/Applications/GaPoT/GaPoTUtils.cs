@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using GeometricAlgebraFulcrumLib.Algebra.Outermorphisms;
-using GeometricAlgebraFulcrumLib.Geometry;
-using GeometricAlgebraFulcrumLib.Geometry.Euclidean;
-using GeometricAlgebraFulcrumLib.Processing;
+using GeometricAlgebraFulcrumLib.Geometry.Frames;
+using GeometricAlgebraFulcrumLib.Geometry.Rotors;
 using GeometricAlgebraFulcrumLib.Processing.Matrices;
+using GeometricAlgebraFulcrumLib.Processing.Multivectors;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
 using GeometricAlgebraFulcrumLib.Storage;
+using GeometricAlgebraFulcrumLib.Storage.Factories;
 
 namespace GeometricAlgebraFulcrumLib.Symbolic.Applications.GaPoT
 {
@@ -31,7 +32,7 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Applications.GaPoT
                 processor.Divide(2, 3)
             );
 
-            return processor.Times(scalar, clarkeArray);
+            return GaMatrixProcessorUtils.Times(processor, scalar, clarkeArray);
         }
 
         public static T[,] CreateClarkeArray5D<T>(IGaScalarProcessor<T> processor)
@@ -72,7 +73,7 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Applications.GaPoT
                 processor.Divide(2, 5)
             );
 
-            return processor.Times(scalar, clarkeArray);
+            return GaMatrixProcessorUtils.Times(processor, scalar, clarkeArray);
         }
 
         public static T[,] CreateClarkeArray6D<T>(IGaScalarProcessor<T> processor)
@@ -123,7 +124,7 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Applications.GaPoT
 
             var scalar = processor.SqrtRational(2,6);
 
-            return processor.Times(scalar, clarkeArray);
+            return GaMatrixProcessorUtils.Times(processor, scalar, clarkeArray);
         }
 
         /// <summary>
@@ -273,8 +274,8 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Applications.GaPoT
             var clarkeMapArray =
                 CreateClarkeArray(processor, vectorsCount);
 
-            return GaVectorsFrame<T>.Create(
-                processor, 
+            return processor.CreateVectorsFrame(
+                GaVectorsFrameKind.OrthogonalUnitVectors, 
                 clarkeMapArray.ColumnsToVectorStoragesArray(processor)
             );
         }
@@ -285,7 +286,7 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Applications.GaPoT
                 CreateClarkeArray(processor, vectorsCount);
 
             var basisVectorImagesDictionary = 
-                new Dictionary<ulong, IGasVector<T>>();
+                new Dictionary<ulong, IGaStorageVector<T>>();
 
             for (var i = 0; i < vectorsCount; i++)
                 basisVectorImagesDictionary.Add(
@@ -299,20 +300,18 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Applications.GaPoT
             );
         }
 
-        public static GaEuclideanSimpleRotor<T> CreateSimpleKirchhoffRotor<T>(this IGaProcessor<T> processor, uint vSpaceDimension)
+        public static GaPureRotor<T> CreateSimpleKirchhoffRotor<T>(this IGaProcessor<T> processor, uint vSpaceDimension)
         {
-            var v1 = GaStorageFactory.CreateUnitOnesVector(
-                processor, 
+            var v1 = processor.CreateStorageUnitOnesVector(
                 (int) vSpaceDimension
             );
 
-            var v2 = GaStorageFactory.CreateVector(
-                processor, 
+            var v2 = processor.CreateStorageVector(
                 vSpaceDimension - 1,
                 processor.OneScalar
             );
 
-            return GaEuclideanSimpleRotor<T>.Create(processor, v2, v1);
+            return processor.CreateEuclideanRotor(v2, v1);
         }
     }
 }

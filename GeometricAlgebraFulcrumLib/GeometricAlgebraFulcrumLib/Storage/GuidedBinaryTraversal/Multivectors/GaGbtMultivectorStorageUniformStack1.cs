@@ -1,32 +1,37 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Storage.Trees;
+using System.Diagnostics.CodeAnalysis;
+using GeometricAlgebraFulcrumLib.Processing.Scalars;
+using GeometricAlgebraFulcrumLib.Structures.Even;
 
 namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Multivectors
 {
     public sealed class GaGbtMultivectorStorageUniformStack1<T>
         : GaGbtStack1, IGaGbtMultivectorStorageStack1<T>
     {
-        public static GaGbtMultivectorStorageUniformStack1<T> Create(int capacity, int treeDepth, IGasMultivector<T> multivectorStorage)
+        public static GaGbtMultivectorStorageUniformStack1<T> Create(int capacity, int treeDepth, IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivector<T> multivectorStorage)
         {
-            return new(capacity, treeDepth, multivectorStorage);
+            return new(capacity, treeDepth, scalarProcessor, multivectorStorage);
         }
 
 
         private int[] BinaryTreeNodeIndexArray { get; }
 
 
-        public IGasMultivector<T> Storage { get; }
+        public IGaScalarProcessor<T> ScalarProcessor { get; }
+
+        public IGaStorageMultivector<T> Storage { get; }
 
         public Tuple<int, int> TosBinaryTreeNode { get; private set; }
 
         public T TosScalar { get; private set; }
 
-        public GaBinaryTree<T> BinaryTree { get; }
+        public GaEvenDictionaryTree<T> BinaryTree { get; }
 
 
-        private GaGbtMultivectorStorageUniformStack1(int capacity, int treeDepth, IGasMultivector<T> multivectorStorage)
+        private GaGbtMultivectorStorageUniformStack1(int capacity, int treeDepth, [NotNull] IGaScalarProcessor<T> scalarProcessor, [NotNull] IGaStorageMultivector<T> multivectorStorage)
             : base(capacity, treeDepth, 0ul)
         {
+            ScalarProcessor = scalarProcessor;
             BinaryTreeNodeIndexArray = new int[capacity];
             Storage = multivectorStorage;
 
