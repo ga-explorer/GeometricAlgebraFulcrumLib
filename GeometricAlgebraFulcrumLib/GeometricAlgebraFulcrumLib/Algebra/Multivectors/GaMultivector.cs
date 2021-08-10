@@ -25,6 +25,52 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Multivectors
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GaMultivector<T> operator +(GaMultivector<T> v1, int v2)
+        {
+            var processor = v1.Processor;
+
+            return new GaMultivector<T>(
+                processor,
+                processor.Add(v1.MultivectorStorage, processor.IntegerToScalar(v2))
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GaMultivector<T> operator +(int v1, GaMultivector<T> v2)
+        {
+            var processor = v2.Processor;
+
+            return new GaMultivector<T>(
+                processor,
+                processor.Add(processor.IntegerToScalar(v1), v2.MultivectorStorage)
+            );
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GaMultivector<T> operator +(GaMultivector<T> v1, double v2)
+        {
+            var processor = v1.Processor;
+
+            return new GaMultivector<T>(
+                processor,
+                processor.Add(v1.MultivectorStorage, processor.Float64ToScalar(v2))
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GaMultivector<T> operator +(double v1, GaMultivector<T> v2)
+        {
+            var processor = v2.Processor;
+
+            return new GaMultivector<T>(
+                processor,
+                processor.Add(processor.Float64ToScalar(v1), v2.MultivectorStorage)
+            );
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static GaMultivector<T> operator +(GaMultivector<T> v1, T v2)
         {
             var processor = v1.Processor;
@@ -45,6 +91,30 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Multivectors
                 processor.Add(v1, v2.MultivectorStorage)
             );
         }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GaMultivector<T> operator +(GaMultivector<T> v1, GaScalar<T> v2)
+        {
+            var processor = v1.Processor;
+
+            return new GaMultivector<T>(
+                processor,
+                processor.Add(v1.MultivectorStorage, v2.Scalar)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GaMultivector<T> operator +(GaScalar<T> v1, GaMultivector<T> v2)
+        {
+            var processor = v2.Processor;
+
+            return new GaMultivector<T>(
+                processor,
+                processor.Add(v1.Scalar, v2.MultivectorStorage)
+            );
+        }
+
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static GaMultivector<T> operator +(GaMultivector<T> v1, GaVector<T> v2)
@@ -68,6 +138,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Multivectors
             );
         }
 
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static GaMultivector<T> operator +(GaMultivector<T> v1, GaBivector<T> v2)
         {
@@ -89,6 +160,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Multivectors
                 processor.Add(v1.BivectorStorage, v2.MultivectorStorage)
             );
         }
+
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static GaMultivector<T> operator +(GaMultivector<T> v1, GaKVector<T> v2)
@@ -112,6 +184,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Multivectors
             );
         }
 
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static GaMultivector<T> operator +(GaMultivector<T> v1, GaMultivector<T> v2)
         {
@@ -120,6 +193,52 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Multivectors
             return new GaMultivector<T>(
                 processor,
                 processor.Add(v1.MultivectorStorage, v2.MultivectorStorage)
+            );
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GaMultivector<T> operator -(GaMultivector<T> v1, int v2)
+        {
+            var processor = v1.Processor;
+
+            return new GaMultivector<T>(
+                processor,
+                processor.Subtract(v1.MultivectorStorage, processor.IntegerToScalar(v2))
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GaMultivector<T> operator -(int v1, GaMultivector<T> v2)
+        {
+            var processor = v2.Processor;
+
+            return new GaMultivector<T>(
+                processor,
+                processor.Subtract(processor.IntegerToScalar(v1), v2.MultivectorStorage)
+            );
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GaMultivector<T> operator -(GaMultivector<T> v1, double v2)
+        {
+            var processor = v1.Processor;
+
+            return new GaMultivector<T>(
+                processor,
+                processor.Subtract(v1.MultivectorStorage, processor.Float64ToScalar(v2))
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GaMultivector<T> operator -(double v1, GaMultivector<T> v2)
+        {
+            var processor = v2.Processor;
+
+            return new GaMultivector<T>(
+                processor,
+                processor.Subtract(processor.Float64ToScalar(v1), v2.MultivectorStorage)
             );
         }
 
@@ -145,7 +264,31 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Multivectors
                 processor.Subtract(v1, v2.MultivectorStorage)
             );
         }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GaMultivector<T> operator -(GaMultivector<T> v1, GaScalar<T> v2)
+        {
+            var processor = v1.Processor;
+
+            return new GaMultivector<T>(
+                processor,
+                processor.Subtract(v1.MultivectorStorage, v2.Scalar)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GaMultivector<T> operator -(GaScalar<T> v1, GaMultivector<T> v2)
+        {
+            var processor = v2.Processor;
+
+            return new GaMultivector<T>(
+                processor,
+                processor.Subtract(v1.Scalar, v2.MultivectorStorage)
+            );
+        }
         
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static GaMultivector<T> operator -(GaMultivector<T> v1, GaVector<T> v2)
         {
@@ -167,6 +310,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Multivectors
                 processor.Subtract(v1.VectorStorage, v2.MultivectorStorage)
             );
         }
+
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static GaMultivector<T> operator -(GaMultivector<T> v1, GaBivector<T> v2)
@@ -190,6 +334,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Multivectors
             );
         }
 
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static GaMultivector<T> operator -(GaMultivector<T> v1, GaKVector<T> v2)
         {
@@ -212,6 +357,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Multivectors
             );
         }
 
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static GaMultivector<T> operator -(GaMultivector<T> v1, GaMultivector<T> v2)
         {
@@ -221,6 +367,54 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Multivectors
                 processor,
                 processor.Subtract(v1.MultivectorStorage, v2.MultivectorStorage)
             );
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GaMultivector<T> operator *(GaMultivector<T> v1, int v2)
+        {
+            var processor = v1.Processor;
+
+            return new GaMultivector<T>(
+                processor,
+                processor.Times(v1.MultivectorStorage, processor.IntegerToScalar(v2))
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GaMultivector<T> operator *(int v1, GaMultivector<T> v2)
+        {
+            var processor = v2.Processor;
+
+            return new GaMultivector<T>(
+                processor,
+                processor.Times(processor.IntegerToScalar(v1), v2.MultivectorStorage)
+            );
+
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GaMultivector<T> operator *(GaMultivector<T> v1, double v2)
+        {
+            var processor = v1.Processor;
+
+            return new GaMultivector<T>(
+                processor,
+                processor.Times(v1.MultivectorStorage, processor.Float64ToScalar(v2))
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GaMultivector<T> operator *(double v1, GaMultivector<T> v2)
+        {
+            var processor = v2.Processor;
+
+            return new GaMultivector<T>(
+                processor,
+                processor.Times(processor.Float64ToScalar(v1), v2.MultivectorStorage)
+            );
+
         }
 
 
@@ -246,7 +440,53 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Multivectors
             );
 
         }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GaMultivector<T> operator *(GaMultivector<T> v1, GaScalar<T> v2)
+        {
+            var processor = v1.Processor;
+
+            return new GaMultivector<T>(
+                processor,
+                processor.Times(v1.MultivectorStorage, v2.Scalar)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GaMultivector<T> operator *(GaScalar<T> v1, GaMultivector<T> v2)
+        {
+            var processor = v2.Processor;
+
+            return new GaMultivector<T>(
+                processor,
+                processor.Times(v1.Scalar, v2.MultivectorStorage)
+            );
+
+        }
         
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GaMultivector<T> operator /(GaMultivector<T> v1, int v2)
+        {
+            var processor = v1.Processor;
+
+            return new GaMultivector<T>(
+                processor,
+                processor.Divide(v1.MultivectorStorage, processor.IntegerToScalar(v2))
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GaMultivector<T> operator /(GaMultivector<T> v1, double v2)
+        {
+            var processor = v1.Processor;
+
+            return new GaMultivector<T>(
+                processor,
+                processor.Divide(v1.MultivectorStorage, processor.Float64ToScalar(v2))
+            );
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static GaMultivector<T> operator /(GaMultivector<T> v1, T v2)
@@ -256,6 +496,17 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Multivectors
             return new GaMultivector<T>(
                 processor,
                 processor.Divide(v1.MultivectorStorage, v2)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GaMultivector<T> operator /(GaMultivector<T> v1, GaScalar<T> v2)
+        {
+            var processor = v1.Processor;
+
+            return new GaMultivector<T>(
+                processor,
+                processor.Divide(v1.MultivectorStorage, v2.Scalar)
             );
         }
 

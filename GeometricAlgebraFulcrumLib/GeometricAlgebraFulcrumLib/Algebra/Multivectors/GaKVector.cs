@@ -26,18 +26,53 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Multivectors
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaMultivector<T> operator +(GaKVector<T> v1, GaKVector<T> v2)
+        public static GaMultivector<T> operator +(GaKVector<T> v1, int v2)
         {
             var processor = v1.Processor;
 
             return new GaMultivector<T>(
                 processor,
-                processor.Add(v1.KVectorStorage, v2.KVectorStorage)
+                processor.Add(v1.KVectorStorage, processor.IntegerToScalar(v2))
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaMultivector<T> operator +(GaKVector<T> v1, IGaStorageKVector<T> v2)
+        public static GaMultivector<T> operator +(int v1, GaKVector<T> v2)
+        {
+            var processor = v2.Processor;
+
+            return new GaMultivector<T>(
+                processor,
+                processor.Add(processor.IntegerToScalar(v1), v2.KVectorStorage)
+            );
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GaMultivector<T> operator +(GaKVector<T> v1, double v2)
+        {
+            var processor = v1.Processor;
+
+            return new GaMultivector<T>(
+                processor,
+                processor.Add(v1.KVectorStorage, processor.Float64ToScalar(v2))
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GaMultivector<T> operator +(double v1, GaKVector<T> v2)
+        {
+            var processor = v2.Processor;
+
+            return new GaMultivector<T>(
+                processor,
+                processor.Add(processor.Float64ToScalar(v1), v2.KVectorStorage)
+            );
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GaMultivector<T> operator +(GaKVector<T> v1, T v2)
         {
             var processor = v1.Processor;
 
@@ -48,13 +83,232 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Multivectors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaMultivector<T> operator +(IGaStorageKVector<T> v1, GaKVector<T> v2)
+        public static GaMultivector<T> operator +(T v1, GaKVector<T> v2)
         {
             var processor = v2.Processor;
 
             return new GaMultivector<T>(
                 processor,
                 processor.Add(v1, v2.KVectorStorage)
+            );
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GaMultivector<T> operator +(GaKVector<T> v1, GaScalar<T> v2)
+        {
+            var processor = v1.Processor;
+
+            return new GaMultivector<T>(
+                processor,
+                processor.Add(v1.KVectorStorage, v2.Scalar)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GaMultivector<T> operator +(GaScalar<T> v1, GaKVector<T> v2)
+        {
+            var processor = v2.Processor;
+
+            return new GaMultivector<T>(
+                processor,
+                processor.Add(v1.Scalar, v2.KVectorStorage)
+            );
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GaMultivector<T> operator +(GaKVector<T> v1, GaVector<T> v2)
+        {
+            var processor = v1.Processor;
+
+            return new GaMultivector<T>(
+                processor,
+                processor.Add(v1.KVectorStorage, v2.VectorStorage)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GaMultivector<T> operator +(GaVector<T> v1, GaKVector<T> v2)
+        {
+            var processor = v1.Processor;
+
+            return new GaMultivector<T>(
+                processor,
+                processor.Add(v1.VectorStorage, v2.KVectorStorage)
+            );
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GaMultivector<T> operator +(GaKVector<T> v1, GaBivector<T> v2)
+        {
+            var processor = v1.Processor;
+
+            return new GaMultivector<T>(
+                processor,
+                processor.Add(v1.KVectorStorage, v2.BivectorStorage)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GaMultivector<T> operator +(GaBivector<T> v1, GaKVector<T> v2)
+        {
+            var processor = v1.Processor;
+
+            return new GaMultivector<T>(
+                processor,
+                processor.Add(v1.BivectorStorage, v2.KVectorStorage)
+            );
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GaMultivector<T> operator +(GaKVector<T> v1, GaKVector<T> v2)
+        {
+            var processor = v1.Processor;
+
+            return new GaMultivector<T>(
+                processor,
+                processor.Add(v1.KVectorStorage, v2.KVectorStorage)
+            );
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GaMultivector<T> operator -(GaKVector<T> v1, int v2)
+        {
+            var processor = v1.Processor;
+
+            return new GaMultivector<T>(
+                processor,
+                processor.Subtract(v1.KVectorStorage, processor.IntegerToScalar(v2))
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GaMultivector<T> operator -(int v1, GaKVector<T> v2)
+        {
+            var processor = v2.Processor;
+
+            return new GaMultivector<T>(
+                processor,
+                processor.Subtract(processor.IntegerToScalar(v1), v2.KVectorStorage)
+            );
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GaMultivector<T> operator -(GaKVector<T> v1, double v2)
+        {
+            var processor = v1.Processor;
+
+            return new GaMultivector<T>(
+                processor,
+                processor.Subtract(v1.KVectorStorage, processor.Float64ToScalar(v2))
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GaMultivector<T> operator -(double v1, GaKVector<T> v2)
+        {
+            var processor = v2.Processor;
+
+            return new GaMultivector<T>(
+                processor,
+                processor.Subtract(processor.Float64ToScalar(v1), v2.KVectorStorage)
+            );
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GaMultivector<T> operator -(GaKVector<T> v1, T v2)
+        {
+            var processor = v1.Processor;
+
+            return new GaMultivector<T>(
+                processor,
+                processor.Subtract(v1.KVectorStorage, v2)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GaMultivector<T> operator -(T v1, GaKVector<T> v2)
+        {
+            var processor = v2.Processor;
+
+            return new GaMultivector<T>(
+                processor,
+                processor.Subtract(v1, v2.KVectorStorage)
+            );
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GaMultivector<T> operator -(GaKVector<T> v1, GaScalar<T> v2)
+        {
+            var processor = v1.Processor;
+
+            return new GaMultivector<T>(
+                processor,
+                processor.Subtract(v1.KVectorStorage, v2.Scalar)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GaMultivector<T> operator -(GaScalar<T> v1, GaKVector<T> v2)
+        {
+            var processor = v2.Processor;
+
+            return new GaMultivector<T>(
+                processor,
+                processor.Subtract(v1.Scalar, v2.KVectorStorage)
+            );
+        }
+        
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GaMultivector<T> operator -(GaKVector<T> v1, GaVector<T> v2)
+        {
+            var processor = v1.Processor;
+
+            return new GaMultivector<T>(
+                processor,
+                processor.Subtract(v1.KVectorStorage, v2.VectorStorage)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GaMultivector<T> operator -(GaVector<T> v1, GaKVector<T> v2)
+        {
+            var processor = v1.Processor;
+
+            return new GaMultivector<T>(
+                processor,
+                processor.Subtract(v1.VectorStorage, v2.KVectorStorage)
+            );
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GaMultivector<T> operator -(GaKVector<T> v1, GaBivector<T> v2)
+        {
+            var processor = v1.Processor;
+
+            return new GaMultivector<T>(
+                processor,
+                processor.Subtract(v1.KVectorStorage, v2.BivectorStorage)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GaMultivector<T> operator -(GaBivector<T> v1, GaKVector<T> v2)
+        {
+            var processor = v1.Processor;
+
+            return new GaMultivector<T>(
+                processor,
+                processor.Subtract(v1.BivectorStorage, v2.KVectorStorage)
             );
         }
 
@@ -70,159 +324,144 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Multivectors
             );
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaMultivector<T> operator -(GaKVector<T> v1, IGaStorageKVector<T> v2)
-        {
-            var processor = v1.Processor;
-
-            return new GaMultivector<T>(
-                processor,
-                processor.Subtract(v1.KVectorStorage, v2)
-            );
-        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaMultivector<T> operator -(IGaStorageKVector<T> v1, GaKVector<T> v2)
-        {
-            var processor = v2.Processor;
-
-            return new GaMultivector<T>(
-                processor,
-                processor.Subtract(v1, v2.KVectorStorage)
-            );
-        }
-
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaKVector<T> operator *(GaKVector<T> v1, int s2)
+        public static GaKVector<T> operator *(GaKVector<T> v1, int v2)
         {
             var processor = v1.Processor;
 
             return new GaKVector<T>(
                 processor,
-                processor.Times(v1.KVectorStorage, processor.IntegerToScalar(s2))
+                processor.Times(v1.KVectorStorage, processor.IntegerToScalar(v2))
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaKVector<T> operator *(int s1, GaKVector<T> v2)
+        public static GaKVector<T> operator *(int v1, GaKVector<T> v2)
         {
             var processor = v2.Processor;
 
             return new GaKVector<T>(
                 processor,
-                processor.Times(processor.IntegerToScalar(s1), v2.KVectorStorage)
+                processor.Times(processor.IntegerToScalar(v1), v2.KVectorStorage)
             );
+
         }
 
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaKVector<T> operator *(GaKVector<T> v1, double s2)
+        public static GaKVector<T> operator *(GaKVector<T> v1, double v2)
         {
             var processor = v1.Processor;
 
             return new GaKVector<T>(
                 processor,
-                processor.Times(v1.KVectorStorage, processor.Float64ToScalar(s2))
+                processor.Times(v1.KVectorStorage, processor.Float64ToScalar(v2))
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaKVector<T> operator *(double s1, GaKVector<T> v2)
+        public static GaKVector<T> operator *(double v1, GaKVector<T> v2)
         {
             var processor = v2.Processor;
 
             return new GaKVector<T>(
                 processor,
-                processor.Times(processor.Float64ToScalar(s1), v2.KVectorStorage)
+                processor.Times(processor.Float64ToScalar(v1), v2.KVectorStorage)
             );
+
         }
 
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaKVector<T> operator *(GaKVector<T> v1, T s2)
+        public static GaKVector<T> operator *(GaKVector<T> v1, T v2)
         {
             var processor = v1.Processor;
 
             return new GaKVector<T>(
                 processor,
-                processor.Times(v1.KVectorStorage, s2)
+                processor.Times(v1.KVectorStorage, v2)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaKVector<T> operator *(T s1, GaKVector<T> v2)
+        public static GaKVector<T> operator *(T v1, GaKVector<T> v2)
         {
             var processor = v2.Processor;
 
             return new GaKVector<T>(
                 processor,
-                processor.Times(s1, v2.KVectorStorage)
+                processor.Times(v1, v2.KVectorStorage)
             );
+
         }
 
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaKVector<T> operator *(GaKVector<T> v1, GaScalar<T> s2)
+        public static GaKVector<T> operator *(GaKVector<T> v1, GaScalar<T> v2)
         {
             var processor = v1.Processor;
 
             return new GaKVector<T>(
                 processor,
-                processor.Times(v1.KVectorStorage, s2.Scalar)
+                processor.Times(v1.KVectorStorage, v2.Scalar)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaKVector<T> operator *(GaScalar<T> s1, GaKVector<T> v2)
+        public static GaKVector<T> operator *(GaScalar<T> v1, GaKVector<T> v2)
         {
             var processor = v2.Processor;
 
             return new GaKVector<T>(
                 processor,
-                processor.Times(s1.Scalar, v2.KVectorStorage)
+                processor.Times(v1.Scalar, v2.KVectorStorage)
             );
-        }
 
+        }
+        
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaKVector<T> operator /(GaKVector<T> v1, int s2)
+        public static GaKVector<T> operator /(GaKVector<T> v1, int v2)
         {
             var processor = v1.Processor;
 
             return new GaKVector<T>(
                 processor,
-                processor.Divide(v1.KVectorStorage, processor.IntegerToScalar(s2))
+                processor.Divide(v1.KVectorStorage, processor.IntegerToScalar(v2))
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaKVector<T> operator /(GaKVector<T> v1, double s2)
+        public static GaKVector<T> operator /(GaKVector<T> v1, double v2)
         {
             var processor = v1.Processor;
 
             return new GaKVector<T>(
                 processor,
-                processor.Divide(v1.KVectorStorage, processor.Float64ToScalar(s2))
+                processor.Divide(v1.KVectorStorage, processor.Float64ToScalar(v2))
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaKVector<T> operator /(GaKVector<T> v1, T s2)
+        public static GaKVector<T> operator /(GaKVector<T> v1, T v2)
         {
             var processor = v1.Processor;
 
             return new GaKVector<T>(
                 processor,
-                processor.Divide(v1.KVectorStorage, s2)
+                processor.Divide(v1.KVectorStorage, v2)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaKVector<T> operator /(GaKVector<T> v1, GaScalar<T> s2)
+        public static GaKVector<T> operator /(GaKVector<T> v1, GaScalar<T> v2)
         {
             var processor = v1.Processor;
 
             return new GaKVector<T>(
                 processor,
-                processor.Divide(v1.KVectorStorage, s2.Scalar)
+                processor.Divide(v1.KVectorStorage, v2.Scalar)
             );
         }
 

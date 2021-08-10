@@ -7,7 +7,7 @@ namespace TextComposerLib.Samples.Samples
         internal static string Task1()
         {
             //Create a syntax tree for C#
-            var syntaxFactory = CSharpUtils.CSharp4SyntaxFactory();
+            var syntaxFactory = CclCSharpUtils.CSharp4SyntaxFactory();
 
             var mainCode = syntaxFactory.SyntaxElementsList();
 
@@ -28,7 +28,7 @@ namespace TextComposerLib.Samples.Samples
             );
 
             //Generate C# code from the syntax tree
-            var codeComposer = CSharpUtils.CSharp4CodeComposer();
+            var codeComposer = CclCSharpUtils.CSharp4CodeComposer();
 
             return codeComposer.GenerateCode(mainCode);
         }
