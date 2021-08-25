@@ -22,7 +22,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Tuples
         {
             get => IndexScalarDictionary.TryGetValue(index, out var scalar) 
                 ? scalar 
-                : ScalarScalarsDomain.ZeroScalar;
+                : ScalarScalarsDomain.GetZeroScalar();
             set
             {
                 if (IndexScalarDictionary.ContainsKey(index))

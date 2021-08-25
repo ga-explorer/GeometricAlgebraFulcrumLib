@@ -1,21 +1,22 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Processing.Scalars;
-using GeometricAlgebraFulcrumLib.Storage;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
+using GeometricAlgebraFulcrumLib.Processing.ScalarsGrids;
+using GeometricAlgebraFulcrumLib.Storage.Multivectors;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.LinearMaps
 {
     public static class GaLinearMapFactory
     {
-        public static GaUnilinearMapStored<T> CreateStoredUnilinearMap<T>(this IGaScalarProcessor<T> scalarProcessor, uint vSpaceDimension)
+        public static GaUnilinearMapStored<T> CreateStoredUnilinearMap<T>(this IGaScalarsGridProcessor<T> arrayProcessor, uint vSpaceDimension)
         {
-            return new GaUnilinearMapStored<T>(scalarProcessor, vSpaceDimension);
+            return new GaUnilinearMapStored<T>(arrayProcessor, vSpaceDimension);
         }
 
-        public static GaUnilinearMapStored<T> CreateStoredUnilinearMap<T>(this IGaScalarProcessor<T> scalarProcessor, uint vSpaceDimension, Func<ulong, IGaStorageMultivector<T>> mappingFunc)
+        public static GaUnilinearMapStored<T> CreateStoredUnilinearMap<T>(this IGaScalarsGridProcessor<T> arrayProcessor, uint vSpaceDimension, Func<ulong, IGaStorageMultivector<T>> mappingFunc)
         {
-            var linearMap = new GaUnilinearMapStored<T>(scalarProcessor, vSpaceDimension);
+            var linearMap = new GaUnilinearMapStored<T>(arrayProcessor, vSpaceDimension);
 
-            var gaSpaceDimension = 1UL << (int) vSpaceDimension;
+            var gaSpaceDimension = vSpaceDimension.ToGaSpaceDimension();
 
             for (var id = 0UL; id < gaSpaceDimension; id++)
                 linearMap[id] = mappingFunc(id);

@@ -7,12 +7,11 @@ using CodeComposerLib.MathML.Elements.Layout.Elementary;
 using CodeComposerLib.MathML.Elements.Layout.Tabular;
 using CodeComposerLib.MathML.Elements.Tokens;
 using DataStructuresLib.BitManipulation;
-using GeometricAlgebraFulcrumLib.Algebra;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures;
 using GeometricAlgebraFulcrumLib.Processing.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Storage;
+using GeometricAlgebraFulcrumLib.Storage.Multivectors;
 using GeometricAlgebraFulcrumLib.Storage.Utils;
 using TextComposerLib.Text.Linear;
 
@@ -56,7 +55,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.Text
 
             var termsList =
                     scalarProcessor.GetNotZeroTerms(mv)
-                    .OrderBy(t => t.BasisBlade.Id.BasisBladeGrade())
+                    .OrderBy(t => t.BasisBlade.Id.BasisBladeIdToGrade())
                     .ThenBy(t => t.BasisBlade.Id);
 
             var firstItemFlag = true;
@@ -129,7 +128,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.Text
             for (var i = 0; i < gaDim; i++)
             {
                 var id1 = idsList[i];
-                var grade1 = id1.BasisBladeGrade().ToMathMlNumber();
+                var grade1 = id1.BasisBladeIdToGrade().ToMathMlNumber();
                 var name1 = getBasisBladeNameFunc(id1);
 
                 table[i + 2, 0].Append(grade1);

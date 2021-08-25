@@ -8,45 +8,45 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors
     public static class GaProcessorFactory
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaProcessorGenericEuclidean<T> CreateEuclideanProcessor<T>(this IGaScalarProcessor<T> scalarProcessor, uint vSpaceDimension)
+        public static GaProcessorEuclidean<T> CreateEuclideanProcessor<T>(this IGaScalarProcessor<T> scalarProcessor, uint vSpaceDimension)
         {
-            return new GaProcessorGenericEuclidean<T>(
+            return new GaProcessorEuclidean<T>(
                 scalarProcessor,
                 vSpaceDimension
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaProcessorGenericOrthonormal<T> CreateConformalProcessor<T>(this IGaScalarProcessor<T> scalarProcessor, uint vSpaceDimension)
+        public static GaProcessorOrthonormal<T> CreateConformalProcessor<T>(this IGaScalarProcessor<T> scalarProcessor, uint vSpaceDimension)
         {
-            return new GaProcessorGenericOrthonormal<T>(
+            return new GaProcessorOrthonormal<T>(
                 scalarProcessor, 
                 GaSignatureFactory.CreateConformal(vSpaceDimension)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaProcessorGenericOrthonormal<T> CreateProjectiveProcessor<T>(this IGaScalarProcessor<T> scalarProcessor, uint vSpaceDimension)
+        public static GaProcessorOrthonormal<T> CreateProjectiveProcessor<T>(this IGaScalarProcessor<T> scalarProcessor, uint vSpaceDimension)
         {
-            return new GaProcessorGenericOrthonormal<T>(
+            return new GaProcessorOrthonormal<T>(
                 scalarProcessor, 
                 GaSignatureFactory.CreateProjective(vSpaceDimension)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaProcessorGenericOrthonormal<T> CreateOrthonormalProcessor<T>(this IGaScalarProcessor<T> scalarProcessor, uint positiveCount, uint negativeCount)
+        public static GaProcessorOrthonormal<T> CreateOrthonormalProcessor<T>(this IGaScalarProcessor<T> scalarProcessor, uint positiveCount, uint negativeCount)
         {
-            return new GaProcessorGenericOrthonormal<T>(
+            return new GaProcessorOrthonormal<T>(
                 scalarProcessor, 
                 GaSignatureFactory.Create(positiveCount, negativeCount)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaProcessorGenericOrthonormal<T> CreateOrthonormalProcessor<T>(this IGaScalarProcessor<T> scalarProcessor, uint positiveCount, uint negativeCount, uint zeroCount)
+        public static GaProcessorOrthonormal<T> CreateOrthonormalProcessor<T>(this IGaScalarProcessor<T> scalarProcessor, uint positiveCount, uint negativeCount, uint zeroCount)
         {
-            return new GaProcessorGenericOrthonormal<T>(
+            return new GaProcessorOrthonormal<T>(
                 scalarProcessor, 
                 GaSignatureFactory.Create(positiveCount, negativeCount, zeroCount)
             );

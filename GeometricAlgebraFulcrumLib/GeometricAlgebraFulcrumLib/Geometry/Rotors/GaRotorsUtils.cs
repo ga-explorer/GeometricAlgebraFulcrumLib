@@ -12,8 +12,8 @@ using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Unary;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
-using GeometricAlgebraFulcrumLib.Storage;
 using GeometricAlgebraFulcrumLib.Storage.Factories;
+using GeometricAlgebraFulcrumLib.Storage.Multivectors;
 using GeometricAlgebraFulcrumLib.Storage.Utils;
 
 namespace GeometricAlgebraFulcrumLib.Geometry.Rotors
@@ -57,7 +57,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Rotors
             if (processor.IsNearZero(bladeSignature))
                 return new GaPureRotor<T>(
                     processor,
-                    processor.OneScalar, 
+                    processor.GetOneScalar(), 
                     blade
                 );
 
@@ -100,7 +100,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Rotors
             if (bladeSignatureKind == GaBladeSignatureKind.Zero) 
                 return new GaPureRotor<T>(
                     processor,
-                    processor.OneScalar, 
+                    processor.GetOneScalar(), 
                     blade
                 );
 

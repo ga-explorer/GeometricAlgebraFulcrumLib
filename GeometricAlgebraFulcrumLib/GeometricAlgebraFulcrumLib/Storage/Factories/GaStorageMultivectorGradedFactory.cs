@@ -1,88 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.Extensions;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
-using GeometricAlgebraFulcrumLib.Storage.Composers;
-using GeometricAlgebraFulcrumLib.Structures.Even;
-using GeometricAlgebraFulcrumLib.Structures.Graded;
+using GeometricAlgebraFulcrumLib.Storage.Multivectors;
+using GeometricAlgebraFulcrumLib.Structures;
+using GeometricAlgebraFulcrumLib.Structures.Composers;
+using GeometricAlgebraFulcrumLib.Structures.Factories;
+using GeometricAlgebraFulcrumLib.Structures.Lists.Graded;
 
 namespace GeometricAlgebraFulcrumLib.Storage.Factories
 {
     public static class GaStorageMultivectorGradedFactory
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaStorageComposerMultivectorGraded<T> CreateStorageComposerGradedMultivector<T>(this IGaScalarProcessor<T> scalarProcessor)
+        public static GaListGradedComposer<T> CreateStorageGradedMultivectorComposer<T>(this IGaScalarProcessor<T> scalarProcessor)
         {
-            return new GaStorageComposerMultivectorGraded<T>(
-                scalarProcessor
-            );
+            return new GaListGradedComposer<T>(scalarProcessor);
         }
+
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaStorageComposerMultivectorGraded<T> CreateStorageComposerGradedMultivector<T>(this IGaScalarProcessor<T> scalarProcessor, IReadOnlyDictionary<uint, IGaEvenDictionary<T>> gradedDictionary)
+        public static GaStorageMultivectorGraded<T> CreateStorageGradedMultivector<T>(this IGaListGraded<T> termsList)
         {
-            var composer = new GaStorageComposerMultivectorGraded<T>(
-                scalarProcessor
-            );
-
-            composer.AddKVectors(gradedDictionary);
-
-            return composer;
+            return GaStorageMultivectorGraded<T>.Create(termsList);
         }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaStorageComposerMultivectorGraded<T> CreateStorageComposerGradedMultivector<T>(this IGaScalarProcessor<T> scalarProcessor, uint grade, IReadOnlyDictionary<ulong, T> indexScalarDictionary)
-        {
-            var composer = new GaStorageComposerMultivectorGraded<T>(
-                scalarProcessor
-            );
-
-            composer.AddKVector(grade, indexScalarDictionary);
-
-            return composer;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaStorageComposerMultivectorGraded<T> CreateStorageComposerGradedMultivector<T>(this IGaScalarProcessor<T> scalarProcessor, IReadOnlyDictionary<ulong, T> idScalarsDictionary) 
-        {
-            return new GaStorageComposerMultivectorGraded<T>(
-                scalarProcessor,
-                idScalarsDictionary
-            );
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaStorageComposerMultivectorGraded<T> CreateStorageComposerGradedMultivector<T>(this IGaScalarProcessor<T> scalarProcessor, IEnumerable<KeyValuePair<ulong, T>> idScalarsPairs) 
-        {
-            return new GaStorageComposerMultivectorGraded<T>(
-                scalarProcessor,
-                idScalarsPairs
-            );
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaStorageComposerMultivectorGraded<T> CreateStorageComposerGradedMultivector<T>(this IGaScalarProcessor<T> scalarProcessor, IEnumerable<Tuple<ulong, T>> idScalarsTuples) 
-        {
-            return new GaStorageComposerMultivectorGraded<T>(
-                scalarProcessor,
-                idScalarsTuples
-            );
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaStorageComposerMultivectorGraded<T> CreateStorageComposerGradedMultivector<T>(this IGaScalarProcessor<T> scalarProcessor, IEnumerable<Tuple<uint, ulong, T>> gradeIndexScalarsTuples) 
-        {
-            return new GaStorageComposerMultivectorGraded<T>(
-                scalarProcessor,
-                gradeIndexScalarsTuples
-            );
-        }
-
-
-
-        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
 
         public static IGaStorageMultivectorGraded<T> CreateStorageGradedMultivector<T>(this IGaScalarProcessor<T> scalarProcessor, Dictionary<uint, Dictionary<ulong, T>> gradeIndexScalarDictionary)
         {
@@ -97,8 +39,8 @@ namespace GeometricAlgebraFulcrumLib.Storage.Factories
                 var gradedDictionary =
                     gradeIndexScalarDictionary.CopyToDictionary(
                         indexScalarDict => 
-                            indexScalarDict.CreateEvenDictionary()
-                    ).CreateGradedDictionary();
+                            indexScalarDict.CreateEvenList()
+                    ).CreateGradedList();
 
                 return GaStorageMultivectorGraded<T>.Create(gradedDictionary);
             }
@@ -115,7 +57,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Factories
             if (termsCount > 1)
                 return grade switch
                 {
-                    0 => GaStorageScalar<T>.Create(indexScalarDictionary.TryGetValue(0, out var s) ? s : scalarProcessor.ZeroScalar),
+                    0 => GaStorageScalar<T>.Create(indexScalarDictionary.TryGetValue(0, out var s) ? s : scalarProcessor.GetZeroScalar()),
                     1 => GaStorageVector<T>.Create(indexScalarDictionary),
                     2 => GaStorageBivector<T>.Create(indexScalarDictionary),
                     _ => GaStorageKVector<T>.Create(grade, indexScalarDictionary)
@@ -133,70 +75,45 @@ namespace GeometricAlgebraFulcrumLib.Storage.Factories
             };
         }
 
-        public static IGaStorageMultivectorGraded<T> CreateStorageGradedMultivector<T>(this IGaScalarProcessor<T> scalarProcessor, IEnumerable<KeyValuePair<ulong, T>> idScalarPairs)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IGaStorageMultivectorGraded<T> CreateStorageGradedMultivector<T>(this IGaScalarProcessor<T> scalarProcessor, IEnumerable<GaRecordKeyValue<T>> idScalarTuples)
         {
-            var composer = new GaStorageComposerMultivectorGraded<T>(scalarProcessor);
-
-            composer.SetTerms(idScalarPairs);
-
-            composer.RemoveZeroTerms();
-
-            return composer.GetGradedMultivector();
+            return scalarProcessor
+                .CreateStorageGradedMultivectorComposer()
+                .SetTerms(idScalarTuples)
+                .RemoveZeroTerms()
+                .CreateStorageGradedMultivector();
         }
 
-        public static IGaStorageMultivectorGraded<T> CreateStorageGradedMultivector<T>(this IGaScalarProcessor<T> scalarProcessor, IEnumerable<Tuple<ulong, T>> idScalarTuples)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IGaStorageMultivectorGraded<T> CreateStorageGradedMultivector<T>(this IGaScalarProcessor<T> scalarProcessor, IEnumerable<GaRecordGradeKeyValue<T>> gradeIndexScalarTuples)
         {
-            var composer = new GaStorageComposerMultivectorGraded<T>(scalarProcessor);
-
-            composer.SetTerms(idScalarTuples);
-
-            composer.RemoveZeroTerms();
-
-            return composer.GetGradedMultivector();
+            return scalarProcessor
+                .CreateStorageGradedMultivectorComposer()
+                .SetTerms(gradeIndexScalarTuples)
+                .RemoveZeroTerms()
+                .CreateStorageGradedMultivector();
         }
 
-        public static IGaStorageMultivectorGraded<T> CreateStorageGradedMultivector<T>(this IGaScalarProcessor<T> scalarProcessor, IEnumerable<Tuple<uint, ulong, T>> gradeIndexScalarTuples)
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IGaStorageMultivectorGraded<T> SumToStorageGradedMultivector<T>(this IGaScalarProcessor<T> scalarProcessor, IEnumerable<GaRecordKeyValue<T>> idScalarTuples)
         {
-            var composer = new GaStorageComposerMultivectorGraded<T>(scalarProcessor);
-
-            composer.SetTerms(gradeIndexScalarTuples);
-
-            composer.RemoveZeroTerms();
-
-            return composer.GetGradedMultivector();
+            return scalarProcessor
+                .CreateStorageGradedMultivectorComposer()
+                .AddTerms(idScalarTuples)
+                .RemoveZeroTerms()
+                .CreateStorageGradedMultivector();
         }
 
-        public static IGaStorageMultivectorGraded<T> SumToStorageGradedMultivector<T>(this IGaScalarProcessor<T> scalarProcessor, IEnumerable<KeyValuePair<ulong, T>> idScalarPairs)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IGaStorageMultivectorGraded<T> SumToStorageGradedMultivector<T>(this IGaScalarProcessor<T> scalarProcessor, IEnumerable<GaRecordGradeKeyValue<T>> gradeIndexScalarTuples)
         {
-            var composer = new GaStorageComposerMultivectorGraded<T>(scalarProcessor);
-
-            composer.AddTerms(idScalarPairs);
-
-            composer.RemoveZeroTerms();
-
-            return composer.GetGradedMultivector();
-        }
-
-        public static IGaStorageMultivectorGraded<T> SumToStorageGradedMultivector<T>(this IGaScalarProcessor<T> scalarProcessor, IEnumerable<Tuple<ulong, T>> idScalarTuples)
-        {
-            var composer = new GaStorageComposerMultivectorGraded<T>(scalarProcessor);
-
-            composer.AddTerms(idScalarTuples);
-
-            composer.RemoveZeroTerms();
-
-            return composer.GetGradedMultivector();
-        }
-
-        public static IGaStorageMultivectorGraded<T> SumToStorageGradedMultivector<T>(this IGaScalarProcessor<T> scalarProcessor, IEnumerable<Tuple<uint, ulong, T>> gradeIndexScalarTuples)
-        {
-            var composer = new GaStorageComposerMultivectorGraded<T>(scalarProcessor);
-
-            composer.AddTerms(gradeIndexScalarTuples);
-
-            composer.RemoveZeroTerms();
-
-            return composer.GetGradedMultivector();
+            return scalarProcessor
+                .CreateStorageGradedMultivectorComposer()
+                .AddTerms(gradeIndexScalarTuples)
+                .RemoveZeroTerms()
+                .CreateStorageGradedMultivector();
         }
     }
 }

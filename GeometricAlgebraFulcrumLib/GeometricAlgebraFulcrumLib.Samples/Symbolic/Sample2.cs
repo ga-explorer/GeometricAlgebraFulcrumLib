@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Linq;
 using DataStructuresLib.Extensions;
-using GeometricAlgebraFulcrumLib.Algebra;
+using GeometricAlgebraFulcrumLib.Algebra.Arrays;
 using GeometricAlgebraFulcrumLib.Algebra.LinearMaps;
-using GeometricAlgebraFulcrumLib.Algebra.Matrices;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
 using GeometricAlgebraFulcrumLib.Algebra.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Geometry.Rotors;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Unary;
 using GeometricAlgebraFulcrumLib.Storage.Factories;
+using GeometricAlgebraFulcrumLib.Structures.Factories;
 using GeometricAlgebraFulcrumLib.Symbolic;
 using GeometricAlgebraFulcrumLib.Symbolic.Mathematica;
 using GeometricAlgebraFulcrumLib.Symbolic.Mathematica.ExprFactory;
@@ -66,7 +67,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic
                 rotationMatrix.MatrixDeterminant().FullSimplify(unitLengthAssumption);
 
             var v1 = 
-                Processor.MapVector(rotationMatrix, u).FullSimplifyScalars(unitLengthAssumption);
+                Processor.MapVector(rotationMatrix.CreateEvenGridDenseArray(), u).FullSimplifyScalars(unitLengthAssumption);
 
             Console.WriteLine($@"rotor matrix 1 = {LaTeXComposer.GetArrayDisplayEquationText(rotationMatrix1)}");
             Console.WriteLine();
@@ -207,7 +208,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic
                 ).SimplifyScalars(unitLengthAssumption2);
 
             var matrixDot =
-                Mfs.Dot[matrix2.ToArrayExpr(), matrix1.ToArrayExpr()].FullSimplify(unitLengthAssumption2);
+                Mfs.Dot[matrix2.ArrayToMatrixExpr(), matrix1.ArrayToMatrixExpr()].FullSimplify(unitLengthAssumption2);
 
             var matrixDotDet =
                 Mfs.Det[matrixDot].FullSimplify(unitLengthAssumption2);

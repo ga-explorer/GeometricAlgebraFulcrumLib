@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using DataStructuresLib.BitManipulation;
-using GeometricAlgebraFulcrumLib.Algebra;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Space;
 using GeometricAlgebraFulcrumLib.CodeComposer.Composers;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions;

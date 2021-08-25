@@ -3,52 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.BitManipulation;
-using DataStructuresLib.Extensions;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Basis;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
-using GeometricAlgebraFulcrumLib.Storage.Composers;
-using GeometricAlgebraFulcrumLib.Storage.Terms;
-using GeometricAlgebraFulcrumLib.Structures.Even;
+using GeometricAlgebraFulcrumLib.Storage.Multivectors;
+using GeometricAlgebraFulcrumLib.Structures;
+using GeometricAlgebraFulcrumLib.Structures.Factories;
+using GeometricAlgebraFulcrumLib.Structures.Lists.Even;
 
 namespace GeometricAlgebraFulcrumLib.Storage.Factories
 {
     public static class GaStorageVectorFactory
     {
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaStorageComposerVector<T> CreateStorageComposerVector<T>(this IGaScalarProcessor<T> scalarProcessor)
-        {
-            return new GaStorageComposerVector<T>(
-                scalarProcessor
-            );
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaStorageComposerVector<T> CreateStorageComposerVector<T>(this IGaScalarProcessor<T> scalarProcessor, IReadOnlyDictionary<ulong, T> indexScalarsDictionary) 
-        {
-            return new GaStorageComposerVector<T>(
-                scalarProcessor,
-                indexScalarsDictionary
-            );
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaStorageComposerVector<T> CreateStorageComposerVector<T>(this IGaScalarProcessor<T> scalarProcessor, IEnumerable<KeyValuePair<ulong, T>> indexScalarPairs) 
-        {
-            return new GaStorageComposerVector<T>(
-                scalarProcessor,
-                indexScalarPairs
-            );
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaStorageComposerVector<T> CreateStorageComposerVector<T>(this IGaScalarProcessor<T> scalarProcessor, IEnumerable<Tuple<ulong, T>> indexScalarTuples)
-        {
-            return new GaStorageComposerVector<T>(
-                scalarProcessor,
-                indexScalarTuples
-            );
-        }
-
-
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IGaStorageVector<T> CopyToStorageVector<T>(this IReadOnlyDictionary<ulong, T> indexScalarDictionary)
         {
@@ -98,13 +63,13 @@ namespace GeometricAlgebraFulcrumLib.Storage.Factories
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaStorageVector<T> CreateStorageVector<T>(this KeyValuePair<ulong, T> indexScalarPair)
+        public static GaStorageVector<T> CreateStorageVector<T>(this GaRecordKeyValue<T> indexScalarPair)
         {
             return GaStorageVector<T>.Create(indexScalarPair.Key, indexScalarPair.Value);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaStorageVector<T> CreateStorageVector<T>(this IGaScalarProcessor<T> scalarProcessor, KeyValuePair<ulong, T> indexScalarPair)
+        public static GaStorageVector<T> CreateStorageVector<T>(this IGaScalarProcessor<T> scalarProcessor, GaRecordKeyValue<T> indexScalarPair)
         {
             return GaStorageVector<T>.Create(indexScalarPair.Key, indexScalarPair.Value);
         }
@@ -112,28 +77,27 @@ namespace GeometricAlgebraFulcrumLib.Storage.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static GaStorageVector<T> CreateStorageBasisVector<T>(this IGaScalarProcessor<T> scalarProcessor, int index)
         {
-            return GaStorageVector<T>.Create((ulong) index, scalarProcessor.OneScalar);
+            return GaStorageVector<T>.Create((ulong) index, scalarProcessor.GetOneScalar());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static GaStorageVector<T> CreateStorageBasisVector<T>(this IGaScalarProcessor<T> scalarProcessor, ulong index)
         {
-            return GaStorageVector<T>.Create(index, scalarProcessor.OneScalar);
+            return GaStorageVector<T>.Create(index, scalarProcessor.GetOneScalar());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static GaStorageVector<T> CreateStorageBasisVectorNegative<T>(this IGaScalarProcessor<T> scalarProcessor, ulong index)
         {
-            return GaStorageVector<T>.Create(index, scalarProcessor.MinusOneScalar);
+            return GaStorageVector<T>.Create(index, scalarProcessor.GetMinusOneScalar());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static GaStorageVector<T> CreateStorageOnesVector<T>(this IGaScalarProcessor<T> scalarProcessor, int termsCount)
         {
             return GaStorageVector<T>.Create(
-                scalarProcessor
-                    .OneScalar
-                    .CreateEvenDictionaryRepeatedValue(termsCount)
+                scalarProcessor.GetOneScalar()
+                    .CreateEvenListRepeatedValue(termsCount)
             );
         }
 
@@ -144,8 +108,8 @@ namespace GeometricAlgebraFulcrumLib.Storage.Factories
 
             return GaStorageVector<T>.Create(
                 scalarProcessor
-                    .Divide(scalarProcessor.OneScalar, length)
-                    .CreateEvenDictionaryRepeatedValue(termsCount)
+                    .Divide(scalarProcessor.GetOneScalar(), length)
+                    .CreateEvenListRepeatedValue(termsCount)
             );
         }
         
@@ -177,7 +141,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Factories
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaStorageVector<T> Create<T>(params T[] scalarArray)
+        public static GaStorageVector<T> CreateStorageVector<T>(params T[] scalarArray)
         {
             return GaStorageVector<T>.Create(scalarArray);
         }
@@ -195,24 +159,21 @@ namespace GeometricAlgebraFulcrumLib.Storage.Factories
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaStorageVector<T> CreateStorageVector<T>(this IEnumerable<KeyValuePair<ulong, T>> termsList)
-        {
-            return GaStorageVector<T>.Create(termsList.CopyToDictionary());
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaStorageVector<T> CreateStorageVector<T>(this IEnumerable<Tuple<ulong, T>> termsList)
+        public static GaStorageVector<T> CreateStorageVector<T>(this IEnumerable<GaRecordKeyValue<T>> termsList)
         {
             return GaStorageVector<T>.Create(
-                termsList.ToDictionary(
-                    t => t.Item1, 
-                    t => t.Item2
-                )
+                termsList.CreateDictionary()
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaStorageVector<T> CreateStorageVector<T>(this IEnumerable<GaTerm<T>> termsList)
+        public static GaStorageVector<T> CreateStorageVector<T>(this IGaListEven<T> termsList)
+        {
+            return GaStorageVector<T>.Create(termsList);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GaStorageVector<T> CreateStorageVector<T>(this IEnumerable<GaBasisTerm<T>> termsList)
         {
             return GaStorageVector<T>.Create(
                 termsList.ToDictionary(
@@ -241,24 +202,15 @@ namespace GeometricAlgebraFulcrumLib.Storage.Factories
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaStorageVector<T> CreateStorageVector<T>(this IGaScalarProcessor<T> scalarProcessor, IEnumerable<KeyValuePair<ulong, T>> termsList)
-        {
-            return GaStorageVector<T>.Create(termsList.CopyToDictionary());
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaStorageVector<T> CreateStorageVector<T>(this IGaScalarProcessor<T> scalarProcessor, IEnumerable<Tuple<ulong, T>> termsList)
+        public static GaStorageVector<T> CreateStorageVector<T>(this IGaScalarProcessor<T> scalarProcessor, IEnumerable<GaRecordKeyValue<T>> termsList)
         {
             return GaStorageVector<T>.Create(
-                termsList.ToDictionary(
-                    t => t.Item1, 
-                    t => t.Item2
-                )
+                termsList.CreateDictionary()
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaStorageVector<T> CreateStorageVector<T>(this IGaScalarProcessor<T> scalarProcessor, IEnumerable<GaTerm<T>> termsList)
+        public static GaStorageVector<T> CreateStorageVector<T>(this IGaScalarProcessor<T> scalarProcessor, IEnumerable<GaBasisTerm<T>> termsList)
         {
             return GaStorageVector<T>.Create(
                 termsList.ToDictionary(
@@ -270,31 +222,12 @@ namespace GeometricAlgebraFulcrumLib.Storage.Factories
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaStorageVector<T> SumToStorageVector<T>(this IGaScalarProcessor<T> scalarProcessor, IEnumerable<KeyValuePair<ulong, T>> termsList)
+        public static GaStorageVector<T> SumToStorageVector<T>(this IGaScalarProcessor<T> scalarProcessor, IEnumerable<GaRecordKeyValue<T>> termsList)
         {
-            return scalarProcessor
-                .CreateStorageComposerVector(termsList)
-                .RemoveZeroTerms()
-                .GetVector();
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaStorageVector<T> SumToStorageVector<T>(this IGaScalarProcessor<T> scalarProcessor, IEnumerable<Tuple<ulong, T>> termsList)
-        {
-            return scalarProcessor
-                .CreateStorageComposerVector(termsList)
-                .RemoveZeroTerms()
-                .GetVector();
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaStorageVector<T> SumToStorageVector<T>(this IGaScalarProcessor<T> scalarProcessor, IEnumerable<GaTerm<T>> termsList)
-        {
-            return scalarProcessor
-                .CreateStorageComposerVector()
+            return scalarProcessor.CreateStorageKVectorComposer()
                 .AddTerms(termsList)
                 .RemoveZeroTerms()
-                .GetVector();
+                .CreateStorageVector();
         }
     }
 }

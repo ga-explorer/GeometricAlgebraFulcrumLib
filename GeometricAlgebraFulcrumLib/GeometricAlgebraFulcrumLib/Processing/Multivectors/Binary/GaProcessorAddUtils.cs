@@ -1,137 +1,73 @@
 ﻿using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
-using GeometricAlgebraFulcrumLib.Storage;
+using GeometricAlgebraFulcrumLib.Processing.ScalarsGrids.Binary;
 using GeometricAlgebraFulcrumLib.Storage.Factories;
+using GeometricAlgebraFulcrumLib.Storage.Multivectors;
 
 namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Binary
 {
     public static class GaProcessorAddUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static IGaStorageMultivectorGraded<T> AddAsIGaMultivectorGradedStorage<T>(IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivectorGraded<T> mv1, T scalar2)
-        {
-            return scalarProcessor
-                .CreateStorageComposerGradedMultivector()
-                .SetKVectors(mv1.GetGradeIndexScalarDictionary())
-                .AddScalar(scalar2)
-                .RemoveZeroTerms()
-                .GetGradedMultivector();
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static IGaStorageMultivectorGraded<T> AddAsIGaMultivectorGradedStorage<T>(IGaScalarProcessor<T> scalarProcessor, T scalar2, IGaStorageMultivectorGraded<T> mv1)
-        {
-            return scalarProcessor
-                .CreateStorageComposerGradedMultivector()
-                .SetScalar(scalar2)
-                .AddKVectors(mv1.GetGradeIndexScalarDictionary())
-                .RemoveZeroTerms()
-                .GetGradedMultivector();
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static IGaStorageMultivectorGraded<T> AddAsIGaMultivectorGradedStorage<T>(IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivectorGraded<T> mv1, IGaStorageMultivectorGraded<T> mv2)
-        {
-            return scalarProcessor
-                .CreateStorageComposerGradedMultivector()
-                .SetKVectors(mv1.GetGradeIndexScalarDictionary())
-                .AddKVectors(mv2.GetGradeIndexScalarDictionary())
-                .RemoveZeroTerms()
-                .GetGradedMultivector();
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static IGaStorageMultivectorSparse<T> AddAsIGaMultivectorTermsStorage<T>(IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivector<T> mv1, T scalar2)
-        {
-            return scalarProcessor
-                .CreateStorageComposerSparseMultivector()
-                .SetKVectors(mv1.GetGradeIndexScalarDictionary())
-                .AddScalar(scalar2)
-                .RemoveZeroTerms()
-                .GetSparseMultivector();
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static IGaStorageMultivectorSparse<T> AddAsIGaMultivectorTermsStorage<T>(IGaScalarProcessor<T> scalarProcessor, T scalar2, IGaStorageMultivector<T> mv1)
-        {
-            return scalarProcessor
-                .CreateStorageComposerSparseMultivector()
-                .SetScalar(scalar2)
-                .AddKVectors(mv1.GetGradeIndexScalarDictionary())
-                .RemoveZeroTerms()
-                .GetSparseMultivector();
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static IGaStorageMultivectorSparse<T> AddAsIGaMultivectorTermsStorage<T>(IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivector<T> mv1, IGaStorageMultivector<T> mv2)
-        {
-            return scalarProcessor
-                .CreateStorageComposerSparseMultivector()
-                .SetKVectors(mv1.GetGradeIndexScalarDictionary())
-                .AddKVectors(mv2.GetGradeIndexScalarDictionary())
-                .RemoveZeroTerms()
-                .GetSparseMultivector();
-        }
-
-
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IGaStorageScalar<T> Add<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageScalar<T> mv, T scalar2)
         {
-            if (mv.IsEmpty())
-                return scalar2.CreateStorageScalar();
+            var scalar = mv.TryGetScalar(out var scalar1)
+                ? scalarProcessor.Add(scalar1, scalar2)
+                : scalar2;
 
-            return scalarProcessor.CreateStorageScalar(
-                scalarProcessor.Add(mv.FirstScalar, scalar2)
-            );
+            return scalar.CreateStorageScalar();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageScalar<T> Add<T>(this IGaScalarProcessor<T> scalarProcessor, T scalar2, IGaStorageScalar<T> mv)
+        public static IGaStorageScalar<T> Add<T>(this IGaScalarProcessor<T> scalarProcessor, T scalar1, IGaStorageScalar<T> mv)
         {
-            if (mv.IsEmpty())
-                return scalar2.CreateStorageScalar();
+            var scalar = mv.TryGetScalar(out var scalar2)
+                ? scalarProcessor.Add(scalar1, scalar2)
+                : scalar1;
 
-            return scalarProcessor.CreateStorageScalar(
-                scalarProcessor.Add(scalar2, mv.FirstScalar)
-            );
+            return scalar.CreateStorageScalar();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IGaStorageScalar<T> Add<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageScalar<T> mv1, IGaStorageScalar<T> mv2)
         {
-            if (mv1.IsEmpty())
-            {
-                return mv2.IsEmpty() 
-                    ? GaStorageScalar<T>.ZeroScalar 
-                    : mv2.FirstScalar.CreateStorageScalar();
-            }
+            if (mv1.TryGetScalar(out var scalar1))
+                return mv2.TryGetScalar(out var scalar2)
+                    ? scalarProcessor.Add(scalar1, scalar2).CreateStorageScalar()
+                    : mv1;
 
-            return scalarProcessor.CreateStorageScalar(
-                scalarProcessor.Add(mv1.FirstScalar, mv2.FirstScalar)
-            );
+            return mv2.IsEmpty()
+                ? GaStorageScalar<T>.ZeroScalar
+                : mv2;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IGaStorageVector<T> Add<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageVector<T> mv1, IGaStorageVector<T> mv2)
         {
-            return scalarProcessor
-                .CreateStorageComposerVector()
-                .SetTerms(mv1.IndexScalarDictionary)
-                .AddTerms(mv2.IndexScalarDictionary)
-                .RemoveZeroTerms()
-                .GetVector();
+            return scalarProcessor.Add(
+                mv1.IndexScalarList,
+                mv2.IndexScalarList
+            ).CreateStorageVector();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IGaStorageBivector<T> Add<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageBivector<T> mv1, IGaStorageBivector<T> mv2)
         {
-            return scalarProcessor
-                .CreateStorageComposerBivector()
-                .SetTerms(mv1.IndexScalarDictionary)
-                .AddTerms(mv2.IndexScalarDictionary)
-                .RemoveZeroTerms()
-                .GetBivector();
+            return scalarProcessor.Add(
+                mv1.IndexScalarList,
+                mv2.IndexScalarList
+            ).CreateStorageBivector();
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IGaStorageMultivectorGraded<T> Add<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageKVector<T> mv1, IGaStorageKVector<T> mv2)
+        {
+            return scalarProcessor.Add(
+                mv1.Grade,
+                mv1.IndexScalarList,
+                mv2.Grade,
+                mv2.IndexScalarList
+            ).CreateStorageGradedMultivector();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -148,11 +84,21 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Binary
                 IGaStorageBivector<T> bv1 when mv2 is IGaStorageBivector<T> bv2 => 
                     Add(scalarProcessor, bv1, bv2),
 
-                IGaStorageMultivectorGraded<T> gmv1 when mv2 is IGaStorageMultivectorGraded<T> gmv2 =>
-                    AddAsIGaMultivectorGradedStorage(scalarProcessor, gmv1, gmv2),
+                IGaStorageKVector<T> kv1 when mv2 is IGaStorageKVector<T> kv2 => 
+                    Add(scalarProcessor, kv1, kv2),
 
-                _ => 
-                    AddAsIGaMultivectorTermsStorage(scalarProcessor, mv1, mv2)
+                IGaStorageMultivectorGraded<T> gmv1 when mv2 is IGaStorageMultivectorGraded<T> gmv2 =>
+                    scalarProcessor.Add(
+                        gmv1.GradeIndexScalarList, 
+                        gmv2.GradeIndexScalarList
+                    ).CreateStorageGradedMultivector(),
+
+                _ => scalarProcessor
+                        .CreateStorageSparseMultivectorComposer()
+                        .SetTerms(mv1.GetIdScalarRecords())
+                        .AddTerms(mv2.GetIdScalarRecords())
+                        .RemoveZeroTerms()
+                        .CreateStorageSparseMultivector()
             };
         }
 
@@ -165,10 +111,20 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Binary
                     Add(scalarProcessor, s1, scalar2),
 
                 IGaStorageMultivectorGraded<T> gmv1 =>
-                    AddAsIGaMultivectorGradedStorage(scalarProcessor, gmv1, scalar2),
+                    scalarProcessor
+                        .CreateStorageGradedMultivectorComposer()
+                        .SetTerms(gmv1.GradeIndexScalarList)
+                        .AddTerm(0, scalar2)
+                        .RemoveZeroTerms()
+                        .CreateStorageSparseMultivector(),
 
                 _ => 
-                    AddAsIGaMultivectorTermsStorage(scalarProcessor, mv1, scalar2)
+                    scalarProcessor
+                        .CreateStorageSparseMultivectorComposer()
+                        .SetTerms(mv1.GetIdScalarRecords())
+                        .AddTerm(0, scalar2)
+                        .RemoveZeroTerms()
+                        .CreateStorageSparseMultivector()
             };
         }
 
@@ -181,10 +137,20 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Binary
                     Add(scalarProcessor, scalar2, s1),
 
                 IGaStorageMultivectorGraded<T> gmv1 =>
-                    AddAsIGaMultivectorGradedStorage(scalarProcessor, scalar2, gmv1),
+                    scalarProcessor
+                        .CreateStorageGradedMultivectorComposer()
+                        .SetTerm(0, scalar2)
+                        .AddTerms(gmv1.GradeIndexScalarList)
+                        .RemoveZeroTerms()
+                        .CreateStorageSparseMultivector(),
 
                 _ => 
-                    AddAsIGaMultivectorTermsStorage(scalarProcessor, scalar2, mv1)
+                    scalarProcessor
+                        .CreateStorageSparseMultivectorComposer()
+                        .SetTerm(0, scalar2)
+                        .AddTerms(mv1.GetIdScalarRecords())
+                        .RemoveZeroTerms()
+                        .CreateStorageSparseMultivector()
             };
         }
     }

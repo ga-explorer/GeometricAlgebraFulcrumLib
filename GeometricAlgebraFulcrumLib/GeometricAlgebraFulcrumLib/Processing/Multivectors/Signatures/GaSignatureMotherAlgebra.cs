@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using DataStructuresLib.BitManipulation;
-using GeometricAlgebraFulcrumLib.Algebra;
 using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
 
 namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures
 {
@@ -16,10 +16,10 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures
         public uint VSpaceDimension { get; }
 
         public ulong GaSpaceDimension 
-            => 1UL << (int) VSpaceDimension;
+            => VSpaceDimension.ToGaSpaceDimension();
 
         public ulong MaxBasisBladeId 
-            => (1UL << (int) VSpaceDimension) - 1UL;
+            => (VSpaceDimension.ToGaSpaceDimension()) - 1UL;
 
         public uint GradesCount 
             => VSpaceDimension + 1;
@@ -95,10 +95,10 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures
             if (index1 == index2)
                 return 1;
 
-            var id = (1UL << index1) | (1UL << index2);
+            var id = GaBasisBivectorUtils.BasisBivectorId(index1, index2);
 
             var negativeBasisCount = 
-                (id & _negativeMask).BasisBladeGrade();
+                (id & _negativeMask).BasisBladeIdToGrade();
 
             return (negativeBasisCount & 1) == 0 
                 ? 1 : -1;
@@ -112,17 +112,17 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures
             if (index1 == index2)
                 return 1;
 
-            var id = (1UL << (int)index1) | (1UL << (int)index2);
+            var id = GaBasisBivectorUtils.BasisBivectorId(index1, index2);
 
             var negativeBasisCount = 
-                (id & _negativeMask).BasisBladeGrade();
+                (id & _negativeMask).BasisBladeIdToGrade();
 
             return (negativeBasisCount & 1) == 0 ? 1 : -1;
         }
 
         public int GetBasisBladeSignature(uint grade, ulong index)
         {
-            var id = GaBasisUtils.BasisBladeId(grade, index);
+            var id = index.BasisBladeIndexToId(grade);
 
             Debug.Assert(id < GaSpaceDimension);
 
@@ -134,14 +134,14 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures
             Debug.Assert(id < GaSpaceDimension);
 
             var negativeBasisCount = 
-                (id & _negativeMask).BasisBladeGrade();
+                (id & _negativeMask).BasisBladeIdToGrade();
 
             return (negativeBasisCount & 1) == 0 
-                ? GaBasisUtils.EGpSignature(id, id)
-                : -GaBasisUtils.EGpSignature(id, id);
+                ? GaBasisBladeProductUtils.EGpSignature(id, id)
+                : -GaBasisBladeProductUtils.EGpSignature(id, id);
         }
 
-        public int GetBasisBladeSignature(IGaBasisBlade basisBlade)
+        public int GetBasisBladeSignature(GaBasisBlade basisBlade)
         {
             var id = basisBlade.Id;
 
@@ -155,10 +155,10 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures
             Debug.Assert(id < GaSpaceDimension);
 
             var negativeBasisCount = 
-                (id & _negativeMask).BasisBladeGrade();
+                (id & _negativeMask).BasisBladeIdToGrade();
 
             var euclideanSignature = 
-                GaBasisUtils.EGpSignature(id);
+                GaBasisBladeProductUtils.EGpSignature(id);
 
             return (negativeBasisCount & 1) == 0 
                 ? euclideanSignature
@@ -173,10 +173,10 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures
             var commonBasisBladesId = id1 & id2;
 
             var negativeBasisCount = 
-                (commonBasisBladesId & _negativeMask).BasisBladeGrade();
+                (commonBasisBladesId & _negativeMask).BasisBladeIdToGrade();
 
             var euclideanSignature = 
-                GaBasisUtils.EGpSignature(id1, id2);
+                GaBasisBladeProductUtils.EGpSignature(id1, id2);
 
             return (negativeBasisCount & 1) == 0 
                 ? euclideanSignature
@@ -191,10 +191,10 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures
             var commonBasisBladesId = id1 & id2;
 
             var negativeBasisCount = 
-                (commonBasisBladesId & _negativeMask).BasisBladeGrade();
+                (commonBasisBladesId & _negativeMask).BasisBladeIdToGrade();
 
             var euclideanSignature = 
-                GaBasisUtils.EGpReverseSignature(id1, id2);
+                GaBasisBladeProductUtils.EGpReverseSignature(id1, id2);
 
             return (negativeBasisCount & 1) == 0 
                 ? euclideanSignature
@@ -206,7 +206,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures
             Debug.Assert(id1 < GaSpaceDimension);
             Debug.Assert(id2 < GaSpaceDimension);
 
-            return GaBasisUtils.OpSignature(id1, id2);
+            return GaBasisBladeProductUtils.OpSignature(id1, id2);
         }
 
         public int SpSignature(ulong id)
@@ -214,10 +214,10 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures
             Debug.Assert(id < GaSpaceDimension);
 
             var negativeBasisCount = 
-                (id & _negativeMask).BasisBladeGrade();
+                (id & _negativeMask).BasisBladeIdToGrade();
 
             var euclideanSignature = 
-                GaBasisUtils.EGpSignature(id);
+                GaBasisBladeProductUtils.EGpSignature(id);
 
             return (negativeBasisCount & 1) == 0 
                 ? euclideanSignature
@@ -234,10 +234,10 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures
                 var commonBasisBladesId = id1 & id2;
 
                 var negativeBasisCount = 
-                    (commonBasisBladesId & _negativeMask).BasisBladeGrade();
+                    (commonBasisBladesId & _negativeMask).BasisBladeIdToGrade();
 
                 var euclideanSignature = 
-                    GaBasisUtils.EGpSignature(id1, id2);
+                    GaBasisBladeProductUtils.EGpSignature(id1, id2);
 
                 return (negativeBasisCount & 1) == 0 
                     ? euclideanSignature
@@ -252,10 +252,10 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures
             Debug.Assert(id < GaSpaceDimension);
 
             var negativeBasisCount = 
-                (id & _negativeMask).BasisBladeGrade();
+                (id & _negativeMask).BasisBladeIdToGrade();
 
             var euclideanSignature = 
-                GaBasisUtils.ENormSquaredSignature(id);
+                GaBasisBladeProductUtils.ENormSquaredSignature(id);
 
             return (negativeBasisCount & 1) == 0 
                 ? euclideanSignature
@@ -272,10 +272,10 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures
                 var commonBasisBladesId = id1 & id2;
 
                 var negativeBasisCount = 
-                    (commonBasisBladesId & _negativeMask).BasisBladeGrade();
+                    (commonBasisBladesId & _negativeMask).BasisBladeIdToGrade();
 
                 var euclideanSignature = 
-                    GaBasisUtils.EGpSignature(id1, id2);
+                    GaBasisBladeProductUtils.EGpSignature(id1, id2);
 
                 return (negativeBasisCount & 1) == 0 
                     ? euclideanSignature
@@ -295,10 +295,10 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures
                 var commonBasisBladesId = id1 & id2;
 
                 var negativeBasisCount = 
-                    (commonBasisBladesId & _negativeMask).BasisBladeGrade();
+                    (commonBasisBladesId & _negativeMask).BasisBladeIdToGrade();
 
                 var euclideanSignature = 
-                    GaBasisUtils.EGpSignature(id1, id2);
+                    GaBasisBladeProductUtils.EGpSignature(id1, id2);
 
                 return (negativeBasisCount & 1) == 0 
                     ? euclideanSignature
@@ -318,10 +318,10 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures
                 var commonBasisBladesId = id1 & id2;
 
                 var negativeBasisCount = 
-                    (commonBasisBladesId & _negativeMask).BasisBladeGrade();
+                    (commonBasisBladesId & _negativeMask).BasisBladeIdToGrade();
 
                 var euclideanSignature = 
-                    GaBasisUtils.EGpSignature(id1, id2);
+                    GaBasisBladeProductUtils.EGpSignature(id1, id2);
 
                 return (negativeBasisCount & 1) == 0 
                     ? euclideanSignature
@@ -341,10 +341,10 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures
                 var commonBasisBladesId = id1 & id2;
 
                 var negativeBasisCount = 
-                    (commonBasisBladesId & _negativeMask).BasisBladeGrade();
+                    (commonBasisBladesId & _negativeMask).BasisBladeIdToGrade();
 
                 var euclideanSignature = 
-                    GaBasisUtils.EGpSignature(id1, id2);
+                    GaBasisBladeProductUtils.EGpSignature(id1, id2);
 
                 return (negativeBasisCount & 1) == 0 
                     ? euclideanSignature
@@ -360,15 +360,15 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures
             Debug.Assert(id2 < GaSpaceDimension);
 
             //A acp B = (AB + BA) / 2
-            if (GaBasisUtils.IsNegativeEGp(id1, id2) == GaBasisUtils.IsNegativeEGp(id2, id1))
+            if (GaBasisBladeProductUtils.IsNegativeEGp(id1, id2) == GaBasisBladeProductUtils.IsNegativeEGp(id2, id1))
             {
                 var commonBasisBladesId = id1 & id2;
 
                 var negativeBasisCount = 
-                    (commonBasisBladesId & _negativeMask).BasisBladeGrade();
+                    (commonBasisBladesId & _negativeMask).BasisBladeIdToGrade();
 
                 var euclideanSignature = 
-                    GaBasisUtils.EGpSignature(id1, id2);
+                    GaBasisBladeProductUtils.EGpSignature(id1, id2);
 
                 return (negativeBasisCount & 1) == 0 
                     ? euclideanSignature
@@ -384,15 +384,15 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures
             Debug.Assert(id2 < GaSpaceDimension);
 
             //A cp B = (AB - BA) / 2
-            if (GaBasisUtils.IsNegativeEGp(id1, id2) != GaBasisUtils.IsNegativeEGp(id2, id1))
+            if (GaBasisBladeProductUtils.IsNegativeEGp(id1, id2) != GaBasisBladeProductUtils.IsNegativeEGp(id2, id1))
             {
                 var commonBasisBladesId = id1 & id2;
 
                 var negativeBasisCount = 
-                    (commonBasisBladesId & _negativeMask).BasisBladeGrade();
+                    (commonBasisBladesId & _negativeMask).BasisBladeIdToGrade();
 
                 var euclideanSignature = 
-                    GaBasisUtils.EGpSignature(id1, id2);
+                    GaBasisBladeProductUtils.EGpSignature(id1, id2);
 
                 return (negativeBasisCount & 1) == 0 
                     ? euclideanSignature

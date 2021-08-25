@@ -27,8 +27,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context.Eval
             Context = context;
 
             _inputVarsValues = 
-                Context
-                .ParameterVariables
+                Context.GetParameterVariables()
                 .ToDictionary(
                     item => item.InternalName,
                     _ => minValue + (maxValue - minValue) * _randomSource.NextDouble()
@@ -71,7 +70,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context.Eval
 
             var maxLength = _evaluations.Max(item => item.EvaluationTitle.Length);
 
-            foreach (var outputVar in Context.OutputVariables)
+            foreach (var outputVar in Context.GetOutputVariables())
             {
                 s.Append(outputVar.InternalName).AppendLine(":");
 

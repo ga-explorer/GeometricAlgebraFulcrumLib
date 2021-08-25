@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
+﻿using System.Diagnostics.CodeAnalysis;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
 
 namespace GeometricAlgebraFulcrumLib.Processing.Tuples
@@ -8,51 +6,66 @@ namespace GeometricAlgebraFulcrumLib.Processing.Tuples
     public sealed class GaScalarProcessorTuple<T>
         : IGaScalarProcessor<IGaTuple<T>>
     {
+        private readonly IGaTuple<T> _zeroScalar;
+        private readonly IGaTuple<T> _oneScalar;
+        private readonly IGaTuple<T> _minusOneScalar;
+        private readonly IGaTuple<T> _piScalar;
         public IGaScalarProcessor<T> ItemsScalarsDomain { get; }
 
         public bool IsNumeric => false;
 
         public bool IsSymbolic => false;
 
-        public IGaTuple<T> ZeroScalar { get; }
+        public IGaTuple<T> GetZeroScalar()
+        {
+            return _zeroScalar;
+        }
 
-        public IGaTuple<T> OneScalar { get; }
+        public IGaTuple<T> GetOneScalar()
+        {
+            return _oneScalar;
+        }
 
-        public IGaTuple<T> MinusOneScalar { get; }
+        public IGaTuple<T> GetMinusOneScalar()
+        {
+            return _minusOneScalar;
+        }
 
-        public IGaTuple<T> PiScalar { get; }
+        public IGaTuple<T> GetPiScalar()
+        {
+            return _piScalar;
+        }
+
+        public IGaTuple<T>[] GetZeroScalarArray1D(int count)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public IGaTuple<T>[,] GetZeroScalarArray2D(int count)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public IGaTuple<T>[,] GetZeroScalarArray2D(int count1, int count2)
+        {
+            throw new System.NotImplementedException();
+        }
 
 
         public GaScalarProcessorTuple([NotNull] IGaScalarProcessor<T> itemsScalarsDomain)
         {
             ItemsScalarsDomain = itemsScalarsDomain;
 
-            ZeroScalar = GaConstantTuple<T>.Create(itemsScalarsDomain, itemsScalarsDomain.ZeroScalar);
-            OneScalar = GaConstantTuple<T>.Create(itemsScalarsDomain, itemsScalarsDomain.OneScalar);
-            MinusOneScalar = GaConstantTuple<T>.Create(itemsScalarsDomain, itemsScalarsDomain.MinusOneScalar);
-            PiScalar = GaConstantTuple<T>.Create(itemsScalarsDomain, itemsScalarsDomain.PiScalar);
+            _zeroScalar = GaConstantTuple<T>.Create(itemsScalarsDomain, itemsScalarsDomain.GetZeroScalar());
+            _oneScalar = GaConstantTuple<T>.Create(itemsScalarsDomain, itemsScalarsDomain.GetOneScalar());
+            _minusOneScalar = GaConstantTuple<T>.Create(itemsScalarsDomain, itemsScalarsDomain.GetMinusOneScalar());
+            _piScalar = GaConstantTuple<T>.Create(itemsScalarsDomain, itemsScalarsDomain.GetPiScalar());
         }
 
 
         public IGaTuple<T> Add(IGaTuple<T> scalar1, IGaTuple<T> scalar2)
         {
             return scalar1.Add(scalar2);
-        }
-
-        public IGaTuple<T> Add(params IGaTuple<T>[] scalarsList)
-        {
-            return scalarsList.Skip(1).Aggregate(
-                scalarsList[0],
-                (current, item) => current.Add(item)
-            );
-        }
-
-        public IGaTuple<T> Add(IEnumerable<IGaTuple<T>> scalarsList)
-        {
-            return scalarsList.Skip(1).Aggregate(
-                scalarsList.First(),
-                (current, item) => current.Add(item)
-            );
         }
 
         public IGaTuple<T> Subtract(IGaTuple<T> scalar1, IGaTuple<T> scalar2)
@@ -65,35 +78,9 @@ namespace GeometricAlgebraFulcrumLib.Processing.Tuples
             return scalar1.Times(scalar2);
         }
 
-        public IGaTuple<T> Times(params IGaTuple<T>[] scalarsList)
-        {
-            return scalarsList.Skip(1).Aggregate(
-                scalarsList[0],
-                (current, item) => current.Times(item)
-            );
-        }
-
-        public IGaTuple<T> Times(IEnumerable<IGaTuple<T>> scalarsList)
-        {
-            return scalarsList.Skip(1).Aggregate(
-                scalarsList.First(),
-                (current, item) => current.Times(item)
-            );
-        }
-
         public IGaTuple<T> NegativeTimes(IGaTuple<T> t1, IGaTuple<T> t2)
         {
             return t1.Times(t2).Negative();
-        }
-
-        public IGaTuple<T> NegativeTimes(params IGaTuple<T>[] scalarsList)
-        {
-            return Times(scalarsList).Negative();
-        }
-
-        public IGaTuple<T> NegativeTimes(IEnumerable<IGaTuple<T>> scalarsList)
-        {
-            return Times(scalarsList).Negative();
         }
 
         public IGaTuple<T> Divide(IGaTuple<T> scalar1, IGaTuple<T> scalar2)
@@ -236,12 +223,37 @@ namespace GeometricAlgebraFulcrumLib.Processing.Tuples
             throw new System.NotImplementedException();
         }
 
+        public bool IsNotZero(IGaTuple<T> scalar)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public bool IsNotZero(IGaTuple<T> scalar, bool nearZeroFlag)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public bool IsNotNearZero(IGaTuple<T> scalar)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public bool IsPositive(IGaTuple<T> scalar)
         {
             throw new System.NotImplementedException();
         }
 
         public bool IsNegative(IGaTuple<T> scalar)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public bool IsNotPositive(IGaTuple<T> scalar)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public bool IsNotNegative(IGaTuple<T> scalar)
         {
             throw new System.NotImplementedException();
         }

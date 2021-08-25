@@ -41,7 +41,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Composers
         protected void GenerateInputsCode(SymbolicContext context)
         {
             var flag = false;
-            foreach (var paramInfo in context.ParameterVariables)
+            foreach (var paramInfo in context.GetParameterVariables())
             {
                 if (flag)
                     ActiveFileTextComposer.Append(", ");

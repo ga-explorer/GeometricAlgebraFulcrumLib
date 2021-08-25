@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Interface Name="GeometricAlgebraFulcrumLib.Storage.IGaStorageMultivector" Collapsed="true">
+    <Position X="5" Y="2" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AQFAAIAQAIgACAACAAAAAAAAgEAAAQAEAAAAABIIEAA=</HashCode>
+      <FileName>Storage\IGaStorageMultivector.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GeometricAlgebraFulcrumLib.Storage.IGaStorageMultivector&lt;T&gt;" Collapsed="true">
+    <Position X="5" Y="3.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>IAAAQCgAAoAECAFQAAGAEAABYAAIggBgQAgOIACAICQ=</HashCode>
+      <FileName>Storage\IGaStorageMultivector.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GeometricAlgebraFulcrumLib.Storage.IGaStorageMultivectorGraded&lt;T&gt;" Collapsed="true">
+    <Position X="3" Y="4.75" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Storage\IGaStorageMultivectorGraded.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GeometricAlgebraFulcrumLib.Storage.IGaStorageMultivectorSparse&lt;T&gt;" Collapsed="true">
+    <Position X="6.75" Y="4.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Storage\IGaStorageMultivectorSparse.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GeometricAlgebraFulcrumLib.Storage.IGaStorageKVector&lt;T&gt;" Collapsed="true">
+    <Position X="3.25" Y="6" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAABQAAAAgAAAAAABAAAACQAAACAAAEgAAA=</HashCode>
+      <FileName>Storage\IGaStorageKVector.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GeometricAlgebraFulcrumLib.Storage.IGaStorageBivector&lt;T&gt;" Collapsed="true">
+    <Position X="8" Y="7.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>Storage\IGaStorageBivector.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GeometricAlgebraFulcrumLib.Storage.IGaStorageScalar&lt;T&gt;" Collapsed="true">
+    <Position X="3.5" Y="7.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Storage\IGaStorageScalar.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GeometricAlgebraFulcrumLib.Storage.IGaStorageVector&lt;T&gt;" Collapsed="true">
+    <Position X="5.75" Y="7.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Storage\IGaStorageVector.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

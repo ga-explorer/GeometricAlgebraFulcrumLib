@@ -1,12 +1,12 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra;
+﻿using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Space;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures;
-using GeometricAlgebraFulcrumLib.Processing.Scalars;
-using GeometricAlgebraFulcrumLib.Storage;
+using GeometricAlgebraFulcrumLib.Processing.ScalarsGrids;
+using GeometricAlgebraFulcrumLib.Storage.Multivectors;
 
 namespace GeometricAlgebraFulcrumLib.Processing.Multivectors
 {
     public interface IGaProcessor<T> : 
-        IGaSpace, IGaScalarProcessor<T>
+        IGaSpace, IGaScalarsGridProcessor<T>
     {
         IGaSignature Signature { get; }
         

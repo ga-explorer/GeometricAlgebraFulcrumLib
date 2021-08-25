@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using DataStructuresLib.BitManipulation;
-using GeometricAlgebraFulcrumLib.Algebra;
 using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
 
 namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures
 {
@@ -16,10 +16,10 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures
         public uint VSpaceDimension { get; }
 
         public ulong GaSpaceDimension 
-            => 1UL << (int) VSpaceDimension;
+            => VSpaceDimension.ToGaSpaceDimension();
 
         public ulong MaxBasisBladeId 
-            => (1UL << (int) VSpaceDimension) - 1UL;
+            => (VSpaceDimension.ToGaSpaceDimension()) - 1UL;
 
         public uint GradesCount 
             => VSpaceDimension + 1;
@@ -58,7 +58,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures
             => (ulong) VSpaceDimension - 2;
 
         public ulong ZeroBasisVectorId 
-            => 1UL << (int) (VSpaceDimension - 2);
+            => (VSpaceDimension - 2).BasisVectorIndexToId();
 
 
         internal GaSignatureProjective(uint vSpaceDimension)
@@ -112,12 +112,12 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures
 
         public int GetBasisBladeSignature(uint grade, ulong index)
         {
-            var id = GaBasisUtils.BasisBladeId(grade, index);
+            var id = index.BasisBladeIndexToId(grade);
 
             Debug.Assert(id < GaSpaceDimension);
 
             return (id & ZeroBasisVectorId) == 0 
-                ? GaBasisUtils.EGpSignature(id, id) 
+                ? GaBasisBladeProductUtils.EGpSignature(id, id) 
                 : 0;
         }
 
@@ -126,18 +126,18 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures
             Debug.Assert(id < GaSpaceDimension);
 
             return (id & ZeroBasisVectorId) == 0 
-                ? GaBasisUtils.EGpSignature(id, id) 
+                ? GaBasisBladeProductUtils.EGpSignature(id, id) 
                 : 0;
         }
 
-        public int GetBasisBladeSignature(IGaBasisBlade basisBlade)
+        public int GetBasisBladeSignature(GaBasisBlade basisBlade)
         {
             var id = basisBlade.Id;
 
             Debug.Assert(id < GaSpaceDimension);
 
             return (id & ZeroBasisVectorId) == 0 
-                ? GaBasisUtils.EGpSignature(id, id) 
+                ? GaBasisBladeProductUtils.EGpSignature(id, id) 
                 : 0;
         }
 
@@ -146,7 +146,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures
             Debug.Assert(id < GaSpaceDimension);
 
             return (id & ZeroBasisVectorId) == 0 
-                ? GaBasisUtils.EGpSignature(id) 
+                ? GaBasisBladeProductUtils.EGpSignature(id) 
                 : 0;
         }
 
@@ -156,7 +156,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures
             Debug.Assert(id2 < GaSpaceDimension);
 
             return (id1 & id2 & ZeroBasisVectorId) == 0 
-                ? GaBasisUtils.EGpSignature(id1, id2) 
+                ? GaBasisBladeProductUtils.EGpSignature(id1, id2) 
                 : 0;
         }
 
@@ -166,7 +166,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures
             Debug.Assert(id2 < GaSpaceDimension);
 
             return (id1 & id2 & ZeroBasisVectorId) == 0 
-                ? GaBasisUtils.EGpReverseSignature(id1, id2) 
+                ? GaBasisBladeProductUtils.EGpReverseSignature(id1, id2) 
                 : 0;
         }
 
@@ -175,7 +175,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures
             Debug.Assert(id1 < GaSpaceDimension);
             Debug.Assert(id2 < GaSpaceDimension);
 
-            return GaBasisUtils.OpSignature(id1, id2);
+            return GaBasisBladeProductUtils.OpSignature(id1, id2);
         }
 
         public int SpSignature(ulong id)
@@ -183,7 +183,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures
             Debug.Assert(id < GaSpaceDimension);
 
             return (id & ZeroBasisVectorId) == 0 
-                ? GaBasisUtils.EGpSignature(id) 
+                ? GaBasisBladeProductUtils.EGpSignature(id) 
                 : 0;
         }
 
@@ -195,7 +195,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures
             if (id1 == id2)
             {
                 return (id1 & id2 & ZeroBasisVectorId) == 0 
-                    ? GaBasisUtils.EGpSignature(id1, id2) 
+                    ? GaBasisBladeProductUtils.EGpSignature(id1, id2) 
                     : 0;
             }
 
@@ -207,7 +207,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures
             Debug.Assert(id < GaSpaceDimension);
 
             return (id & ZeroBasisVectorId) == 0 
-                ? GaBasisUtils.ENormSquaredSignature(id) 
+                ? GaBasisBladeProductUtils.ENormSquaredSignature(id) 
                 : 0;
         }
 
@@ -219,7 +219,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures
             if ((id1 & ~id2) == 0)
             {
                 return (id1 & id2 & ZeroBasisVectorId) == 0 
-                    ? GaBasisUtils.EGpSignature(id1, id2) 
+                    ? GaBasisBladeProductUtils.EGpSignature(id1, id2) 
                     : 0;
             }
 
@@ -234,7 +234,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures
             if ((id2 & ~id1) == 0)
             {
                 return (id1 & id2 & ZeroBasisVectorId) == 0 
-                    ? GaBasisUtils.EGpSignature(id1, id2) 
+                    ? GaBasisBladeProductUtils.EGpSignature(id1, id2) 
                     : 0;
             }
 
@@ -249,7 +249,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures
             if ((id1 & ~id2) == 0 || (id2 & ~id1) == 0)
             {
                 return (id1 & id2 & ZeroBasisVectorId) == 0 
-                    ? GaBasisUtils.EGpSignature(id1, id2) 
+                    ? GaBasisBladeProductUtils.EGpSignature(id1, id2) 
                     : 0;
             }
 
@@ -264,7 +264,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures
             if (id1 != 0 && id2 != 0 && ((id1 & ~id2) == 0 || (id2 & ~id1) == 0))
             {
                 return (id1 & id2 & ZeroBasisVectorId) == 0 
-                    ? GaBasisUtils.EGpSignature(id1, id2) 
+                    ? GaBasisBladeProductUtils.EGpSignature(id1, id2) 
                     : 0;
             }
 
@@ -277,10 +277,10 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures
             Debug.Assert(id2 < GaSpaceDimension);
 
             //A acp B = (AB + BA) / 2
-            if (GaBasisUtils.IsNegativeEGp(id1, id2) == GaBasisUtils.IsNegativeEGp(id2, id1))
+            if (GaBasisBladeProductUtils.IsNegativeEGp(id1, id2) == GaBasisBladeProductUtils.IsNegativeEGp(id2, id1))
             {
                 return (id1 & id2 & ZeroBasisVectorId) == 0 
-                    ? GaBasisUtils.EGpSignature(id1, id2) 
+                    ? GaBasisBladeProductUtils.EGpSignature(id1, id2) 
                     : 0;
             }
 
@@ -293,10 +293,10 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures
             Debug.Assert(id2 < GaSpaceDimension);
 
             //A cp B = (AB - BA) / 2
-            if (GaBasisUtils.IsNegativeEGp(id1, id2) != GaBasisUtils.IsNegativeEGp(id2, id1))
+            if (GaBasisBladeProductUtils.IsNegativeEGp(id1, id2) != GaBasisBladeProductUtils.IsNegativeEGp(id2, id1))
             {
                 return (id1 & id2 & ZeroBasisVectorId) == 0 
-                    ? GaBasisUtils.EGpSignature(id1, id2) 
+                    ? GaBasisBladeProductUtils.EGpSignature(id1, id2) 
                     : 0;
             }
 

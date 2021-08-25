@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using GeometricAlgebraFulcrumLib.Algebra;
 using GeometricAlgebraFulcrumLib.Algebra.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
-using GeometricAlgebraFulcrumLib.Storage;
-using GeometricAlgebraFulcrumLib.Storage.Composers;
+using GeometricAlgebraFulcrumLib.Processing.Scalars.Binary;
 using GeometricAlgebraFulcrumLib.Storage.Factories;
+using GeometricAlgebraFulcrumLib.Storage.Utils;
+using GeometricAlgebraFulcrumLib.Storage.Multivectors;
 
 namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Iterators
 {
@@ -18,12 +19,12 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Iterators
         {
             return new(
                 mv1.Processor,
-                mv1.MultivectorStorage.GetKVectorStoragesDictionary(),
-                mv2.MultivectorStorage.GetKVectorStoragesDictionary()
+                mv1.MultivectorStorage.GetKVectorStorages().ToArray(),
+                mv2.MultivectorStorage.GetKVectorStorages().ToArray()
             );
         }
 
-        public static GaProductKVectorsIterator<T> Create(IGaScalarProcessor<T> scalarProcessor, IReadOnlyDictionary<uint, IGaStorageKVector<T>> storageList1, IReadOnlyDictionary<uint, IGaStorageKVector<T>> storageList2)
+        public static GaProductKVectorsIterator<T> Create(IGaScalarProcessor<T> scalarProcessor, IReadOnlyList<IGaStorageKVector<T>> storageList1, IReadOnlyList<IGaStorageKVector<T>> storageList2)
         {
             return new GaProductKVectorsIterator<T>(
                 scalarProcessor,
@@ -38,43 +39,43 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Iterators
 
         public IGaScalarProcessor<T> ScalarProcessor { get; }
 
-        public IReadOnlyDictionary<uint, IGaStorageKVector<T>> StoragesDictionary1 { get; }
+        public IReadOnlyList<IGaStorageKVector<T>> Storages1 { get; }
 
-        public IReadOnlyDictionary<uint, IGaStorageKVector<T>> StoragesDictionary2 { get; }
+        public IReadOnlyList<IGaStorageKVector<T>> Storages2 { get; }
 
 
-        private GaProductKVectorsIterator([NotNull] IGaScalarProcessor<T> scalarProcessor, [NotNull] IReadOnlyDictionary<uint, IGaStorageKVector<T>> storageList1, [NotNull] IReadOnlyDictionary<uint, IGaStorageKVector<T>> storageList2)
+        private GaProductKVectorsIterator([NotNull] IGaScalarProcessor<T> scalarProcessor, [NotNull] IReadOnlyList<IGaStorageKVector<T>> storageList1, [NotNull] IReadOnlyList<IGaStorageKVector<T>> storageList2)
         {
             _termsIterator = GaProductTermsIterator<T>.Create(scalarProcessor);
             ScalarProcessor = scalarProcessor;
-            StoragesDictionary1 = storageList1;
-            StoragesDictionary2 = storageList2;
+            Storages1 = storageList1;
+            Storages2 = storageList2;
         }
 
 
         private IEnumerable<IGaStorageKVector<T>> GetOpKVectors2(uint grade1)
         {
-            return StoragesDictionary2.Values.Where(storage => 
-                grade1 + storage.Grade <= GaSpaceUtils.MaxVSpaceDimension
-            );
+            return Storages2
+                .Where(storage => 
+                    grade1 + storage.Grade <= GaSpaceUtils.MaxVSpaceDimension
+                );
         }
 
         private IEnumerable<IGaStorageKVector<T>> GetESpKVector2(uint grade1)
         {
-            if (StoragesDictionary2.TryGetValue(grade1, out var storage2))
-                yield return storage2;
+            return Storages2.Where(s => s.Grade == grade1);
         }
 
         private IEnumerable<IGaStorageKVector<T>> GetELcpKVectors2(uint grade1)
         {
-            return StoragesDictionary2.Values.Where(storage => 
+            return Storages2.Where(storage => 
                 storage.Grade >= grade1
             );
         }
 
         private IEnumerable<IGaStorageKVector<T>> GetERcpKVectors2(uint grade1)
         {
-            return StoragesDictionary2.Values.Where(storage => 
+            return Storages2.Where(storage => 
                 grade1 >= storage.Grade
             );
         }
@@ -87,16 +88,16 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Iterators
             if (grade > GaSpaceUtils.MaxVSpaceDimension)
                 return ScalarProcessor.CreateStorageZeroScalar();
 
-            var storage = new GaStorageComposerKVector<T>(ScalarProcessor, grade);
+            var storage = ScalarProcessor.CreateStorageKVectorComposer();
 
             _termsIterator.Storage1 = storage1;
             _termsIterator.Storage2 = storage2;
 
-            storage.AddIdScalarPairs(
-                _termsIterator.GetOpIdScalarPairs()
+            storage.AddTerms(
+                _termsIterator.GetOpIdScalarRecords()
             );
 
-            return storage.GetKVector();
+            return storage.CreateStorageKVector(grade);
         }
 
         public T GetESpScalar(IGaStorageKVector<T> storage1, IGaStorageKVector<T> storage2)
@@ -116,16 +117,16 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Iterators
 
             var grade = storage2.Grade - storage1.Grade;
 
-            var storage = new GaStorageComposerKVector<T>(ScalarProcessor, grade);
+            var storage = ScalarProcessor.CreateStorageKVectorComposer();
 
             _termsIterator.Storage1 = storage1;
             _termsIterator.Storage2 = storage2;
 
-            storage.AddIdScalarPairs(
-                _termsIterator.GetELcpIdScalarPairs()
+            storage.AddTerms(
+                _termsIterator.GetELcpIdScalarRecords()
             );
 
-            return storage.GetKVector();
+            return storage.CreateStorageKVector(grade);
         }
 
         public IGaStorageKVector<T> GetERcpKVector(IGaStorageKVector<T> storage1, IGaStorageKVector<T> storage2)
@@ -135,16 +136,16 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Iterators
 
             var grade = storage1.Grade - storage2.Grade;
 
-            var storage = new GaStorageComposerKVector<T>(ScalarProcessor, grade);
+            var storage = ScalarProcessor.CreateStorageKVectorComposer();
 
             _termsIterator.Storage1 = storage1;
             _termsIterator.Storage2 = storage2;
 
-            storage.AddIdScalarPairs(
-                _termsIterator.GetERcpIdScalarPairs()
+            storage.AddTerms(
+                _termsIterator.GetERcpIdScalarRecords()
             );
 
-            return storage.GetKVector();
+            return storage.CreateStorageKVector(grade);
         }
 
         public IGaStorageKVector<T> GetEHipKVector(IGaStorageKVector<T> storage1, IGaStorageKVector<T> storage2)
@@ -154,31 +155,31 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Iterators
 
             var grade = (uint) Math.Abs(storage1.Grade - storage2.Grade);
             
-            var storage = new GaStorageComposerKVector<T>(ScalarProcessor, grade);
+            var storage = ScalarProcessor.CreateStorageKVectorComposer();
 
             _termsIterator.Storage1 = storage1;
             _termsIterator.Storage2 = storage2;
 
-            storage.AddIdScalarPairs(
-                _termsIterator.GetERcpIdScalarPairs()
+            storage.AddTerms(
+                _termsIterator.GetERcpIdScalarRecords()
             );
 
-            return storage.GetKVector();
+            return storage.CreateStorageKVector(grade);
         }
 
         public IGaStorageKVector<T> GetEFdpKVector(IGaStorageKVector<T> storage1, IGaStorageKVector<T> storage2)
         {
             var grade = (uint) Math.Abs(storage1.Grade - storage2.Grade);
-            var storage = new GaStorageComposerKVector<T>(ScalarProcessor, grade);
+            var storage = ScalarProcessor.CreateStorageKVectorComposer();
 
             _termsIterator.Storage1 = storage1;
             _termsIterator.Storage2 = storage2;
 
-            storage.AddIdScalarPairs(
-                _termsIterator.GetEFdpIdScalarPairs()
+            storage.AddTerms(
+                _termsIterator.GetEFdpIdScalarRecords()
             );
 
-            return storage.GetKVector();
+            return storage.CreateStorageKVector(grade);
         }
 
 
@@ -199,16 +200,16 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Iterators
 
             var grade = storage2.Grade - storage1.Grade;
 
-            var storage = new GaStorageComposerKVector<T>(ScalarProcessor, grade);
+            var storage = ScalarProcessor.CreateStorageKVectorComposer();
 
             _termsIterator.Storage1 = storage1;
             _termsIterator.Storage2 = storage2;
 
-            storage.AddIdScalarPairs(
-                _termsIterator.GetLcpIdScalarPairs(basesSignature)
+            storage.AddTerms(
+                _termsIterator.GetLcpIdScalarRecords(basesSignature)
             );
 
-            return storage.GetKVector();
+            return storage.CreateStorageKVector(grade);
         }
 
         public IGaStorageKVector<T> GetRcpKVector(IGaStorageKVector<T> storage1, IGaStorageKVector<T> storage2, GaSignature basesSignature)
@@ -218,16 +219,16 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Iterators
 
             var grade = storage1.Grade - storage2.Grade;
 
-            var storage = new GaStorageComposerKVector<T>(ScalarProcessor, grade);
+            var storage = ScalarProcessor.CreateStorageKVectorComposer();
 
             _termsIterator.Storage1 = storage1;
             _termsIterator.Storage2 = storage2;
 
-            storage.AddIdScalarPairs(
-                _termsIterator.GetRcpIdScalarPairs(basesSignature)
+            storage.AddTerms(
+                _termsIterator.GetRcpIdScalarRecords(basesSignature)
             );
 
-            return storage.GetKVector();
+            return storage.CreateStorageKVector(grade);
         }
 
         public IGaStorageKVector<T> GetHipKVector(IGaStorageKVector<T> storage1, IGaStorageKVector<T> storage2, GaSignature basesSignature)
@@ -237,37 +238,37 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Iterators
 
             var grade = (uint) Math.Abs(storage1.Grade - storage2.Grade);
             
-            var storage = new GaStorageComposerKVector<T>(ScalarProcessor, grade);
+            var storage = ScalarProcessor.CreateStorageKVectorComposer();
 
             _termsIterator.Storage1 = storage1;
             _termsIterator.Storage2 = storage2;
 
-            storage.AddIdScalarPairs(
-                _termsIterator.GetRcpIdScalarPairs(basesSignature)
+            storage.AddTerms(
+                _termsIterator.GetRcpIdScalarRecords(basesSignature)
             );
 
-            return storage.GetKVector();
+            return storage.CreateStorageKVector(grade);
         }
 
         public IGaStorageKVector<T> GetFdpKVector(IGaStorageKVector<T> storage1, IGaStorageKVector<T> storage2, GaSignature basesSignature)
         {
             var grade = (uint) Math.Abs(storage1.Grade - storage2.Grade);
-            var storage = new GaStorageComposerKVector<T>(ScalarProcessor, grade);
+            var storage = ScalarProcessor.CreateStorageKVectorComposer();
 
             _termsIterator.Storage1 = storage1;
             _termsIterator.Storage2 = storage2;
 
-            storage.AddIdScalarPairs(
-                _termsIterator.GetFdpIdScalarPairs(basesSignature)
+            storage.AddTerms(
+                _termsIterator.GetFdpIdScalarRecords(basesSignature)
             );
 
-            return storage.GetKVector();
+            return storage.CreateStorageKVector(grade);
         }
 
 
         public IEnumerable<IGaStorageKVector<T>> GetOpKVectors()
         {
-            foreach (var storage1 in StoragesDictionary1.Values)
+            foreach (var storage1 in Storages1)
             {
                 var grade1 = storage1.Grade;
 
@@ -278,7 +279,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Iterators
 
         public IEnumerable<T> GetESpScalars()
         {
-            foreach (var storage1 in StoragesDictionary1.Values)
+            foreach (var storage1 in Storages1)
             {
                 var grade1 = storage1.Grade;
 
@@ -289,7 +290,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Iterators
 
         public IEnumerable<IGaStorageKVector<T>> GetELcpKVectors()
         {
-            foreach (var storage1 in StoragesDictionary1.Values)
+            foreach (var storage1 in Storages1)
             {
                 var grade1 = storage1.Grade;
 
@@ -300,7 +301,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Iterators
 
         public IEnumerable<IGaStorageKVector<T>> GetERcpKVectors()
         {
-            foreach (var storage1 in StoragesDictionary1.Values)
+            foreach (var storage1 in Storages1)
             {
                 var grade1 = storage1.Grade;
 
@@ -311,22 +312,22 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Iterators
 
         public IEnumerable<IGaStorageKVector<T>> GetEHipKVectors()
         {
-            foreach (var storage1 in StoragesDictionary1.Values.Where(s => s.Grade > 0))
-            foreach (var storage2 in StoragesDictionary2.Values.Where(s => s.Grade > 0))
+            foreach (var storage1 in Storages1.Where(s => s.Grade > 0))
+            foreach (var storage2 in Storages2.Where(s => s.Grade > 0))
                 yield return GetEHipKVector(storage1, storage2);
         }
 
         public IEnumerable<IGaStorageKVector<T>> GetEFdpKVectors()
         {
-            foreach (var storage1 in StoragesDictionary1.Values)
-            foreach (var storage2 in StoragesDictionary2.Values)
+            foreach (var storage1 in Storages1)
+            foreach (var storage2 in Storages2)
                 yield return GetEFdpKVector(storage1, storage2);
         }
 
 
         public IEnumerable<IGaStorageKVector<T>> GetELcpKVectors(GaSignature basesSignature)
         {
-            foreach (var storage1 in StoragesDictionary1.Values)
+            foreach (var storage1 in Storages1)
             {
                 var grade1 = storage1.Grade;
 
@@ -337,7 +338,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Iterators
 
         public IEnumerable<IGaStorageKVector<T>> GetERcpKVectors(GaSignature basesSignature)
         {
-            foreach (var storage1 in StoragesDictionary1.Values)
+            foreach (var storage1 in Storages1)
             {
                 var grade1 = storage1.Grade;
 
@@ -348,15 +349,15 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Iterators
 
         public IEnumerable<IGaStorageKVector<T>> GetEHipKVectors(GaSignature basesSignature)
         {
-            foreach (var storage1 in StoragesDictionary1.Values.Where(s => s.Grade > 0))
-            foreach (var storage2 in StoragesDictionary2.Values.Where(s => s.Grade > 0))
+            foreach (var storage1 in Storages1.Where(s => s.Grade > 0))
+            foreach (var storage2 in Storages2.Where(s => s.Grade > 0))
                 yield return GetHipKVector(storage1, storage2, basesSignature);
         }
 
         public IEnumerable<IGaStorageKVector<T>> GetEFdpKVectors(GaSignature basesSignature)
         {
-            foreach (var storage1 in StoragesDictionary1.Values)
-            foreach (var storage2 in StoragesDictionary2.Values)
+            foreach (var storage1 in Storages1)
+            foreach (var storage2 in Storages2)
                 yield return GetFdpKVector(storage1, storage2, basesSignature);
         }
     }

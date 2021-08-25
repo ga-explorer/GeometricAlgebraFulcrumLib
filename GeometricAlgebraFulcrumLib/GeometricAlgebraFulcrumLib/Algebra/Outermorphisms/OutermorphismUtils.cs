@@ -1,5 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
 using GeometricAlgebraFulcrumLib.Geometry.Frames;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products;
@@ -7,16 +7,18 @@ using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonormal;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures;
 using GeometricAlgebraFulcrumLib.Storage.Factories;
+using GeometricAlgebraFulcrumLib.Structures.Factories;
+using GeometricAlgebraFulcrumLib.Structures.Grids.Even;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.Outermorphisms
 {
     public static class OutermorphismUtils
     {
-        public static T[,] GetVectorsMappingArray<T>(this IGaOutermorphism<T> linearMap)
+        public static IGaGridEven<T> GetVectorsMappingArray<T>(this IGaOutermorphism<T> linearMap)
         {
             var rowsCount = linearMap.VSpaceDimension;
             var colsCount = linearMap.VSpaceDimension;
-            var processor = linearMap.ScalarProcessor;
+            var processor = linearMap.ScalarsGridProcessor;
             var array = new T[rowsCount, colsCount];
 
             for (var index = 0; index < colsCount; index++)
@@ -26,15 +28,15 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Outermorphisms
                 for (var i = 0; i < rowsCount; i++)
                     array[i, index] = mappedBasisVector.TryGetTermScalarByIndex((ulong) i, out var scalar)
                         ? scalar
-                        : processor.ZeroScalar;
+                        : processor.GetZeroScalar();
             }
 
-            return array;
+            return array.CreateEvenGridDense();
         }
 
-        public static T[,] GetVectorsMappingArray<T>(this IGaOutermorphism<T> linearMap, int rowsCount, int colsCount)
+        public static IGaGridEven<T> GetVectorsMappingArray<T>(this IGaOutermorphism<T> linearMap, int rowsCount, int colsCount)
         {
-            var processor = linearMap.ScalarProcessor;
+            var processor = linearMap.ScalarsGridProcessor;
             var array = new T[rowsCount, colsCount];
 
             for (var index = 0; index < colsCount; index++)
@@ -44,27 +46,27 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Outermorphisms
                 for (var i = 0; i < rowsCount; i++)
                     array[i, index] = mappedBasisVector.TryGetTermScalarByIndex((ulong) i, out var scalar)
                         ? scalar
-                        : processor.ZeroScalar;
+                        : processor.GetZeroScalar();
             }
 
-            return array;
+            return array.CreateEvenGridDense();
         }
 
-        public static T[,] GetBivectorsMappingArray<T>(this IGaOutermorphism<T> linearMap)
+        public static IGaGridEven<T> GetBivectorsMappingArray<T>(this IGaOutermorphism<T> linearMap)
         {
             return GetKVectorsMappingArray(linearMap, 2);
         }
 
-        public static T[,] GetBivectorsMappingArray<T>(this IGaOutermorphism<T> linearMap, int rowsCount, int colsCount)
+        public static IGaGridEven<T> GetBivectorsMappingArray<T>(this IGaOutermorphism<T> linearMap, int rowsCount, int colsCount)
         {
             return GetKVectorsMappingArray(linearMap, 2, rowsCount, colsCount);
         }
 
-        public static T[,] GetKVectorsMappingArray<T>(this IGaOutermorphism<T> linearMap, uint grade)
+        public static IGaGridEven<T> GetKVectorsMappingArray<T>(this IGaOutermorphism<T> linearMap, uint grade)
         {
-            var rowsCount = (int) GaBasisUtils.KvSpaceDimension(linearMap.VSpaceDimension, grade);
+            var rowsCount = (int) linearMap.VSpaceDimension.KVectorSpaceDimension(grade);
             var colsCount = rowsCount;
-            var processor = linearMap.ScalarProcessor;
+            var processor = linearMap.ScalarsGridProcessor;
             var array = new T[rowsCount, colsCount];
 
             for (var index = 0; index < colsCount; index++)
@@ -74,15 +76,15 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Outermorphisms
                 for (var i = 0; i < rowsCount; i++)
                     array[i, index] = mappedBasisVector.TryGetTermScalarByIndex((ulong) i, out var scalar)
                         ? scalar
-                        : processor.ZeroScalar;
+                        : processor.GetZeroScalar();
             }
 
-            return array;
+            return array.CreateEvenGridDense();
         }
 
-        public static T[,] GetKVectorsMappingArray<T>(this IGaOutermorphism<T> linearMap, uint grade, int rowsCount, int colsCount)
+        public static IGaGridEven<T> GetKVectorsMappingArray<T>(this IGaOutermorphism<T> linearMap, uint grade, int rowsCount, int colsCount)
         {
-            var processor = linearMap.ScalarProcessor;
+            var processor = linearMap.ScalarsGridProcessor;
             var array = new T[rowsCount, colsCount];
 
             for (var index = 0; index < colsCount; index++)
@@ -92,15 +94,15 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Outermorphisms
                 for (var i = 0; i < rowsCount; i++)
                     array[i, index] = mappedBasisVector.TryGetTermScalarByIndex((ulong) i, out var scalar)
                         ? scalar
-                        : processor.ZeroScalar;
+                        : processor.GetZeroScalar();
             }
 
-            return array;
+            return array.CreateEvenGridDense();
         }
 
-        public static T[,] GetMultivectorsMappingArray<T>(this IGaOutermorphism<T> linearMap)
+        public static IGaGridEven<T> GetMultivectorsMappingArray<T>(this IGaOutermorphism<T> linearMap)
         {
-            var processor = linearMap.ScalarProcessor;
+            var processor = linearMap.ScalarsGridProcessor;
             var rowsCount = (int) linearMap.GaSpaceDimension;
             var colsCount = rowsCount;
             var array = new T[rowsCount, colsCount];
@@ -112,15 +114,15 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Outermorphisms
                 for (var i = 0; i < rowsCount; i++)
                     array[i, index] = mappedBasisVector.TryGetTermScalar((ulong) i, out var scalar)
                         ? scalar
-                        : processor.ZeroScalar;
+                        : processor.GetZeroScalar();
             }
 
-            return array;
+            return array.CreateEvenGridDense();
         }
 
-        public static T[,] GetMultivectorsMappingArray<T>(this IGaOutermorphism<T> linearMap, int rowsCount, int colsCount)
+        public static IGaGridEven<T> GetMultivectorsMappingArray<T>(this IGaOutermorphism<T> linearMap, int rowsCount, int colsCount)
         {
-            var processor = linearMap.ScalarProcessor;
+            var processor = linearMap.ScalarsGridProcessor;
             var array = new T[rowsCount, colsCount];
 
             for (var index = 0; index < colsCount; index++)
@@ -130,28 +132,28 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Outermorphisms
                 for (var i = 0; i < rowsCount; i++)
                     array[i, index] = mappedBasisBlade.TryGetTermScalar((ulong) i, out var scalar)
                         ? scalar
-                        : processor.ZeroScalar;
+                        : processor.GetZeroScalar();
             }
 
-            return array;
+            return array.CreateEvenGridDense();
         }
 
         public static T GetEuclideanDeterminant<T>(this IGaOutermorphism<T> om)
         {
-            var scalarProcessor = om.ScalarProcessor;
+            var scalarProcessor = om.ScalarsGridProcessor;
 
             var mappedPseudoScalar = 
                 om.MapBasisBlade((1UL << (int) om.VSpaceDimension) - 1);
 
             return scalarProcessor.ESp(
                 mappedPseudoScalar,
-                om.ScalarProcessor.CreateStorageEuclideanPseudoScalarInverse(om.VSpaceDimension)
+                om.ScalarsGridProcessor.CreateStorageEuclideanPseudoScalarInverse(om.VSpaceDimension)
             );
         }
 
         public static T GetDeterminant<T>(this IGaOutermorphism<T> om, IGaSignature signature)
         {
-            var scalarProcessor = om.ScalarProcessor;
+            var scalarProcessor = om.ScalarsGridProcessor;
 
             var mappedPseudoScalar = 
                 om.MapBasisBlade((1UL << (int) om.VSpaceDimension) - 1);

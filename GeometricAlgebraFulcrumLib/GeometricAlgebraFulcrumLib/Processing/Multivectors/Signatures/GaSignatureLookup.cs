@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using DataStructuresLib.BitManipulation;
 using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
 
 namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures
 {
@@ -20,10 +21,10 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures
         public uint VSpaceDimension { get; }
 
         public ulong GaSpaceDimension 
-            => 1UL << (int) VSpaceDimension;
+            => VSpaceDimension.ToGaSpaceDimension();
 
         public ulong MaxBasisBladeId 
-            => (1UL << (int) VSpaceDimension) - 1UL;
+            => (VSpaceDimension.ToGaSpaceDimension()) - 1UL;
 
         public uint GradesCount 
             => VSpaceDimension + 1;
@@ -85,25 +86,25 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures
                         (1 + baseSignature.OpSignature(id1, id2)) << 2;
                     
                     signature |= 
-                        (GaBasisUtils.IsNonZeroESp(id1, id2) ? gpSignature : 1) << 4;
+                        (GaBasisBladeProductUtils.IsNonZeroESp(id1, id2) ? gpSignature : 1) << 4;
                     
                     signature |= 
-                        (GaBasisUtils.IsNonZeroELcp(id1, id2) ? gpSignature : 1) << 6;
+                        (GaBasisBladeProductUtils.IsNonZeroELcp(id1, id2) ? gpSignature : 1) << 6;
                     
                     signature |= 
-                        (GaBasisUtils.IsNonZeroERcp(id1, id2) ? gpSignature : 1) << 8;
+                        (GaBasisBladeProductUtils.IsNonZeroERcp(id1, id2) ? gpSignature : 1) << 8;
                     
                     signature |= 
-                        (GaBasisUtils.IsNonZeroEFdp(id1, id2) ? gpSignature : 1) << 10;
+                        (GaBasisBladeProductUtils.IsNonZeroEFdp(id1, id2) ? gpSignature : 1) << 10;
                     
                     signature |= 
-                        (GaBasisUtils.IsNonZeroEHip(id1, id2) ? gpSignature : 1) << 12;
+                        (GaBasisBladeProductUtils.IsNonZeroEHip(id1, id2) ? gpSignature : 1) << 12;
                     
                     signature |= 
-                        (GaBasisUtils.IsNonZeroEAcp(id1, id2) ? gpSignature : 1) << 14;
+                        (GaBasisBladeProductUtils.IsNonZeroEAcp(id1, id2) ? gpSignature : 1) << 14;
                     
                     signature |= 
-                        (GaBasisUtils.IsNonZeroECp(id1, id2) ? gpSignature : 1) << 16;
+                        (GaBasisBladeProductUtils.IsNonZeroECp(id1, id2) ? gpSignature : 1) << 16;
 
                     var key = (int) (id1 | (id2 << (int) VSpaceDimension));
 
@@ -149,7 +150,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures
 
         public int GetBasisBladeSignature(uint grade, ulong index)
         {
-            var id = GaBasisUtils.BasisBladeId(grade, index);
+            var id = index.BasisBladeIndexToId(grade);
             var key = (int) (id | (id << (int) VSpaceDimension));
 
             return (_dataDictionary[key] & 3) - 1;
@@ -162,7 +163,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures
             return (_dataDictionary[key] & 3) - 1;
         }
 
-        public int GetBasisBladeSignature(IGaBasisBlade basisBlade)
+        public int GetBasisBladeSignature(GaBasisBlade basisBlade)
         {
             var id = basisBlade.Id;
             var key = (int) (id | (id << (int) VSpaceDimension));

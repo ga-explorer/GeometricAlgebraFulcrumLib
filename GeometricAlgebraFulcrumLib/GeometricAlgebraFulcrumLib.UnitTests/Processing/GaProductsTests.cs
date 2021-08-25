@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using GAPoTNumLib.GAPoT;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Binary;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products;
@@ -9,8 +10,8 @@ using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Unary;
 using GeometricAlgebraFulcrumLib.Processing.Random.Float64;
 using GeometricAlgebraFulcrumLib.Processing.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Storage;
 using GeometricAlgebraFulcrumLib.Storage.Factories;
+using GeometricAlgebraFulcrumLib.Storage.Multivectors;
 using NUnit.Framework;
 
 namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
@@ -49,7 +50,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
         {
             var gapotMv = GaPoTNumMultivector.CreateZero();
 
-            foreach (var (id, scalar) in mvStorage.GetIdScalarPairs())
+            foreach (var (id, scalar) in mvStorage.GetIdScalarRecords())
                 gapotMv.SetTerm((int) id, scalar);
 
             return gapotMv;
@@ -60,7 +61,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
         {
             var mvDiff = GaPoTNumMultivector.CreateZero();
 
-            foreach (var (id, scalar) in mv1.GetIdScalarPairs())
+            foreach (var (id, scalar) in mv1.GetIdScalarRecords())
                 mvDiff.SetTerm((int) id, scalar);
 
             foreach (var term in mv2)
@@ -77,7 +78,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
             foreach (var term in mv1)
                 mvDiff.SetTerm(term.IDsPattern, term.Value);
 
-            foreach (var (id, scalar) in mv2.GetIdScalarPairs())
+            foreach (var (id, scalar) in mv2.GetIdScalarRecords())
                 mvDiff.AddTerm((int) id, -scalar);
 
             return mvDiff;
@@ -243,7 +244,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
                 );
 
             //Create a set of bivector terms storages
-            var kvSpaceDimension2 = GaBasisUtils.KvSpaceDimension(VSpaceDimension, 2);
+            var kvSpaceDimension2 = VSpaceDimension.KVectorSpaceDimension(2);
             for (var index = 0UL; index < kvSpaceDimension2; index++)
                 _mvList1.Add(
                     _randomGenerator.GetBivectorTermByIndex(index)
@@ -289,10 +290,12 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
         [Test]
         public void AssertCorrectInitialization()
         {
+            Debug.Assert(_mvList1.Count == _mvList2.Count);
             Assert.IsTrue(_mvList1.Count == _mvList2.Count);
 
             for (var i = 0; i < _mvList1.Count; i++)
             {
+                Debug.Assert(_mvList1[i].TermsCount == _mvList2[i].Count);
                 Assert.IsTrue(_mvList1[i].TermsCount == _mvList2[i].Count);
 
                 var mvStorageDiff = 
@@ -325,6 +328,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
 
                     var storageDiff = Subtract(result1, result2);
 
+                    Debug.Assert(storageDiff.IsZero());
                     Assert.IsTrue(storageDiff.IsZero());
                 }
             }

@@ -113,7 +113,7 @@ namespace DataStructuresLib.Sequences.Periodic1D
         {
             var index = 0;
             var stepsLeft = sequence.Count - 1;
-            var indexPair = new Pair<T>(sequence[0]);
+            var indexPair = new Pair<T>(sequence[0], sequence[0]);
 
             while (stepsLeft > 0)
             {

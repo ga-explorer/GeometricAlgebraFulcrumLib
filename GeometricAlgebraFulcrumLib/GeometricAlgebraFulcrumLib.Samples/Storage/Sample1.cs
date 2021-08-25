@@ -33,8 +33,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.Storage
                     )
             );
 
-            Console.WriteLine($"vSpaceDimension1: {vectorStorage1.VSpaceDimension}");
-            Console.WriteLine($"vSpaceDimension2: {vectorStorage2.VSpaceDimension}");
+            Console.WriteLine($"vSpaceDimension1: {vectorStorage1.MinVSpaceDimension}");
+            Console.WriteLine($"vSpaceDimension2: {vectorStorage2.MinVSpaceDimension}");
 
             var gbtStack =
                 GaGbtProductsStack2<double>.Create(
@@ -45,11 +45,11 @@ namespace GeometricAlgebraFulcrumLib.Samples.Storage
 
             var idScalarDictionary =
                 gbtStack
-                    .GetEGpIdScalarPairs()
+                    .GetEGpIdScalarRecords()
                     .SumToStorageSparseMultivector(scalarProcessor)
-                    .GetIdScalarDictionary();
+                    .GetIdScalarList();
 
-            Console.WriteLine(textComposer.GetTermsText(idScalarDictionary));
+            Console.WriteLine(textComposer.GetTermsText(idScalarDictionary.GetKeyValueRecords()));
         }
     }
 }

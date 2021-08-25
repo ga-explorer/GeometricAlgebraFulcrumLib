@@ -45,8 +45,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context.Eval
             get
             {
                 return
-                    CodeBlock
-                        .OutputVariables
+                    CodeBlock.GetOutputVariables()
                         .Select(item => item.InternalName)
                         .ToDictionary(outputVarName => outputVarName, outputVarName => this[outputVarName]);
             }

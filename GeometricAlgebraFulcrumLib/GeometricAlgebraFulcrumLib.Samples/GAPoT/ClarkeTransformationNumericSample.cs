@@ -5,18 +5,16 @@ using GeometricAlgebraFulcrumLib.Processing.Multivectors;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Generic;
 using GeometricAlgebraFulcrumLib.Processing.Scalars.Float64;
 using GeometricAlgebraFulcrumLib.Symbolic.Applications.GaPoT;
+using GeometricAlgebraFulcrumLib.Structures.Utils;
 using GeometricAlgebraFulcrumLib.TextComposers.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
 {
     public static class ClarkeTransformationNumericSample
     {
-        public static GaProcessorGenericEuclidean<double> Processor { get; }
+        public static GaProcessorEuclidean<double> Processor { get; }
             = GaScalarProcessorFloat64.DefaultProcessor.CreateEuclideanProcessor(63);
-
-        public static GaScalarProcessorFloat64 ScalarProcessor { get; }
-            = GaScalarProcessorFloat64.DefaultProcessor;
-            
+        
         public static GaTextComposerFloat64 TextComposer { get; }
             = GaTextComposerFloat64.DefaultComposer;
             
@@ -40,7 +38,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
                 
                 Console.WriteLine("Generated Clarke Matrix:");
                 Console.WriteLine(
-                    TextComposer.GetArrayText(clarkeArray)
+                    TextComposer.GetArrayText(clarkeArray.ToArray())
                 );
                 Console.WriteLine();
 
@@ -63,7 +61,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
                 
                 Console.WriteLine("Q Matrix:");
                 Console.WriteLine(
-                    TextComposer.GetArrayText(linearMapQArray)
+                    TextComposer.GetArrayText(linearMapQArray.ToArray())
                 );
                 Console.WriteLine();
 
@@ -72,7 +70,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
                 
                 Console.WriteLine("R Matrix:");
                 Console.WriteLine(
-                    TextComposer.GetArrayText(linearMapRArray)
+                    TextComposer.GetArrayText(linearMapRArray.ToArray())
                 );
                 Console.WriteLine();
 

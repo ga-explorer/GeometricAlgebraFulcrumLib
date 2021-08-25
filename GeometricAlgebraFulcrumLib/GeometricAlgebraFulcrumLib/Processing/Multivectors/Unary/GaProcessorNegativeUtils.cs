@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
-using GeometricAlgebraFulcrumLib.Storage;
-using GeometricAlgebraFulcrumLib.Storage.Utils;
+using GeometricAlgebraFulcrumLib.Storage.Multivectors;
 
 namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Unary
 {
     public static class GaProcessorNegativeUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaStorageScalar<T> Negative<T>(this IGaScalarProcessor<T> scalarProcessor, GaStorageScalar<T> mv)
+        public static IGaStorageScalar<T> Negative<T>(this IGaScalarProcessor<T> scalarProcessor, GaStorageScalar<T> mv)
         {
-            return mv.MapScalars(scalarProcessor.Negative);
+            return mv.MapScalar(scalarProcessor.Negative);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -33,33 +32,33 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Unary
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaStorageVector<T> Negative<T>(this IGaScalarProcessor<T> scalarProcessor, GaStorageVector<T> mv)
+        public static IGaStorageVector<T> Negative<T>(this IGaScalarProcessor<T> scalarProcessor, GaStorageVector<T> mv)
         {
-            return mv.MapScalars(scalarProcessor.Negative);
+            return mv.MapVectorScalars(scalarProcessor.Negative);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaStorageBivector<T> Negative<T>(this IGaScalarProcessor<T> scalarProcessor, GaStorageBivector<T> mv)
+        public static IGaStorageBivector<T> Negative<T>(this IGaScalarProcessor<T> scalarProcessor, GaStorageBivector<T> mv)
         {
-            return mv.MapScalars(scalarProcessor.Negative);
+            return mv.MapBivectorScalars(scalarProcessor.Negative);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaStorageKVector<T> Negative<T>(this IGaScalarProcessor<T> scalarProcessor, GaStorageKVector<T> mv)
+        public static IGaStorageKVector<T> Negative<T>(this IGaScalarProcessor<T> scalarProcessor, GaStorageKVector<T> mv)
         {
-            return mv.MapScalars(scalarProcessor.Negative);
+            return mv.MapKVectorScalars(scalarProcessor.Negative);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaStorageMultivectorGraded<T> Negative<T>(this IGaScalarProcessor<T> scalarProcessor, GaStorageMultivectorGraded<T> mv)
+        public static IGaStorageMultivectorGraded<T> Negative<T>(this IGaScalarProcessor<T> scalarProcessor, GaStorageMultivectorGraded<T> mv)
         {
-            return mv.MapScalars(scalarProcessor.Negative);
+            return mv.MapGradedMultivectorScalars(scalarProcessor.Negative);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static GaStorageMultivectorSparse<T> Negative<T>(this IGaScalarProcessor<T> scalarProcessor, GaStorageMultivectorSparse<T> mv)
         {
-            return mv.MapScalars(scalarProcessor.Negative);
+            return mv.MapSparseMultivectorScalars(scalarProcessor.Negative);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -112,26 +111,26 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Unary
         }
  
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaStorageVector<T> Negative<T>(this IGaScalarProcessor<T> scalarProcessor, GaStorageVector<T> mv, Predicate<uint> gradeToNegativePredicate)
+        public static IGaStorageVector<T> Negative<T>(this IGaScalarProcessor<T> scalarProcessor, GaStorageVector<T> mv, Predicate<uint> gradeToNegativePredicate)
         {
             return gradeToNegativePredicate(1)
-                ? mv.MapScalars(scalarProcessor.Negative)
+                ? mv.MapVectorScalars(scalarProcessor.Negative)
                 : mv;
         }
  
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaStorageBivector<T> Negative<T>(this IGaScalarProcessor<T> scalarProcessor, GaStorageBivector<T> mv, Predicate<uint> gradeToNegativePredicate)
+        public static IGaStorageBivector<T> Negative<T>(this IGaScalarProcessor<T> scalarProcessor, GaStorageBivector<T> mv, Predicate<uint> gradeToNegativePredicate)
         {
             return gradeToNegativePredicate(2)
-                ? mv.MapScalars(scalarProcessor.Negative)
+                ? mv.MapBivectorScalars(scalarProcessor.Negative)
                 : mv;
         }
  
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaStorageKVector<T> Negative<T>(this IGaScalarProcessor<T> scalarProcessor, GaStorageKVector<T> mv, Predicate<uint> gradeToNegativePredicate)
+        public static IGaStorageKVector<T> Negative<T>(this IGaScalarProcessor<T> scalarProcessor, GaStorageKVector<T> mv, Predicate<uint> gradeToNegativePredicate)
         {
             return gradeToNegativePredicate(mv.Grade)
-                ? mv.MapScalars(scalarProcessor.Negative)
+                ? mv.MapKVectorScalars(scalarProcessor.Negative)
                 : mv;
         }
  
@@ -144,9 +143,9 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Unary
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaStorageMultivectorGraded<T> Negative<T>(this IGaScalarProcessor<T> scalarProcessor, GaStorageMultivectorGraded<T> mv, Predicate<uint> gradeToNegativePredicate)
+        public static IGaStorageMultivectorGraded<T> Negative<T>(this IGaScalarProcessor<T> scalarProcessor, GaStorageMultivectorGraded<T> mv, Predicate<uint> gradeToNegativePredicate)
         {
-            return mv.MapScalarsByGradeIndex(
+            return mv.MapGradedMultivectorScalarsByGradeIndex(
                 (grade, _, scalar) =>
                     gradeToNegativePredicate(grade) 
                         ? scalarProcessor.Negative(scalar) 
@@ -168,7 +167,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Unary
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static GaStorageMultivectorSparse<T> Negative<T>(this IGaScalarProcessor<T> scalarProcessor, GaStorageMultivectorSparse<T> mv, Predicate<uint> gradeToNegativePredicate)
         {
-            return mv.MapScalarsByGradeIndex(
+            return mv.MapSparseMultivectorScalarsByGradeIndex(
                 (grade, _, scalar) =>
                     gradeToNegativePredicate(grade) 
                         ? scalarProcessor.Negative(scalar) 

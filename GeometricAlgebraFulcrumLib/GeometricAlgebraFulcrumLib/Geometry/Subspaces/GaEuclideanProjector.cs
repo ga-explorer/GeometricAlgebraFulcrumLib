@@ -1,32 +1,30 @@
 ﻿using System.Collections.Generic;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Space;
 using GeometricAlgebraFulcrumLib.Algebra.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean;
-using GeometricAlgebraFulcrumLib.Processing.Scalars;
-using GeometricAlgebraFulcrumLib.Storage;
+using GeometricAlgebraFulcrumLib.Processing.ScalarsGrids;
+using GeometricAlgebraFulcrumLib.Storage.Multivectors;
 
 namespace GeometricAlgebraFulcrumLib.Geometry.Subspaces
 {
     public sealed class GaProjector<T>
         : IGaProjector<T>
     {
+        public IGaSpace Space => Processor;
+
         public uint VSpaceDimension 
             => Processor.VSpaceDimension;
 
         public ulong GaSpaceDimension
             => Processor.GaSpaceDimension;
 
-        public ulong MaxBasisBladeId { get; }
-
-        public uint GradesCount { get; }
-        
-        public IEnumerable<uint> Grades { get; }
-
         public IGaProcessor<T> Processor { get; }
 
         public IGaStorageKVector<T> UnitBladeStorage { get; }
 
-        public IGaScalarProcessor<T> ScalarProcessor { get; }
+        public IGaScalarsGridProcessor<T> ScalarsGridProcessor 
+            => Processor;
 
         public IGaStorageKVector<T> MappedPseudoScalar { get; }
 

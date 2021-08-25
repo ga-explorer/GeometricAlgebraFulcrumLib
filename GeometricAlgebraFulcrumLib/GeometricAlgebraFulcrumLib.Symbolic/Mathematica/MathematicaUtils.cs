@@ -85,7 +85,29 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Mathematica
             return new Expr(ExpressionType.Symbol, symbolName);
         }
 
-        public static Expr ToArrayExpr(this Expr[,] exprArray)
+        public static Expr[,] MatrixExprToArray(this Expr matrix)
+        {
+            var dimensionsExpr = Mfs.Dimensions[matrix].Simplify();
+
+            var rowsCount = (int) dimensionsExpr[0].AsInt64();
+            var colsCount = (int) dimensionsExpr[1].AsInt64();
+
+            var array = new Expr[rowsCount, colsCount];
+
+            for (var i = 0; i < rowsCount; i++)
+            {
+                var rowExpr = Mfs.Part[matrix, i.ToExpr()];
+
+                for (var j = 0; j < colsCount; j++)
+                {
+                    array[i, j] = Mfs.Part[rowExpr, j.ToExpr()].Simplify();
+                }
+            }
+
+            return array;
+        }
+
+        public static Expr ArrayToMatrixExpr(this Expr[,] exprArray)
         {
             var rowsCount = exprArray.GetLength(0);
             var colsCount = exprArray.GetLength(1);

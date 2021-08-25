@@ -5,6 +5,8 @@ using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
 using GeometricAlgebraFulcrumLib.Storage.Factories;
 using GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Multivectors;
+using GeometricAlgebraFulcrumLib.Storage.Multivectors;
+using GeometricAlgebraFulcrumLib.Structures;
 
 namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Outermorphisms
 {
@@ -13,7 +15,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Outermorphism
     {
         public static GaGbtMultivectorOutermorphismStack<T> Create(IReadOnlyList<IGaStorageVector<T>> basisVectorsMappingsList, GaMultivector<T> mv)
         {
-            var treeDepth = (int) Math.Max(1, mv.MultivectorStorage.VSpaceDimension);
+            var treeDepth = (int) Math.Max(1, mv.MultivectorStorage.MinVSpaceDimension);
             var capacity = treeDepth + 1;
 
             return new GaGbtMultivectorOutermorphismStack<T>(
@@ -24,7 +26,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Outermorphism
 
         public static GaGbtMultivectorOutermorphismStack<T> Create(IReadOnlyList<IGaStorageVector<T>> basisVectorsMappingsList, IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivector<T> mv)
         {
-            var treeDepth = (int) Math.Max(1, mv.VSpaceDimension);
+            var treeDepth = (int) Math.Max(1, mv.MinVSpaceDimension);
             var capacity = treeDepth + 1;
 
             return new GaGbtMultivectorOutermorphismStack<T>(
@@ -172,7 +174,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Outermorphism
         //    KVectorArray[TosIndex] = GetTosChildKVector1();
         //}
 
-        public IEnumerable<Tuple<T, IGaStorageKVector<T>>> TraverseForScaledKVectors()
+        public IEnumerable<GaRecordGradeEvenListValue<T>> TraverseForScaledKVectors()
         {
             //GaNumVectorKVectorOpUtils.SetActiveVSpaceDimension(Multivector.VSpaceDimension);
 
@@ -189,7 +191,11 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Outermorphism
                 if (TosIsLeaf)
                 {
                     if (!ScalarProcessor.IsZero(TosValue))
-                        yield return new Tuple<T, IGaStorageKVector<T>>(TosValue, TosKVector);
+                        yield return new GaRecordGradeEvenListValue<T>(
+                            TosKVector.Grade, 
+                            TosKVector.IndexScalarList, 
+                            TosValue
+                        );
 
                     continue;
                 }
@@ -208,7 +214,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Outermorphism
             //Console.WriteLine(@"Max Stack Size: " + maxStackSizeCounter.ToString("###,###,###,###,###,##0"));        }
         }
 
-        public IEnumerable<Tuple<ulong, IGaStorageKVector<T>>> TraverseForIdKVectors()
+        public IEnumerable<GaRecordKeyValue<IGaStorageKVector<T>>> TraverseForIdKVectors()
         {
             //GaNumVectorKVectorOpUtils.SetActiveVSpaceDimension(Multivector.VSpaceDimension);
 
@@ -220,7 +226,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Outermorphism
 
                 if (TosIsLeaf)
                 {
-                    yield return new Tuple<ulong, IGaStorageKVector<T>>(TosId, TosKVector);
+                    yield return new GaRecordKeyValue<IGaStorageKVector<T>>(TosId, TosKVector);
 
                     continue;
                 }

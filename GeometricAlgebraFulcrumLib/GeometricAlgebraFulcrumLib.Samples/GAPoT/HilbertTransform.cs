@@ -1,7 +1,9 @@
 ﻿using System;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products;
 using GeometricAlgebraFulcrumLib.Symbolic;
 using GeometricAlgebraFulcrumLib.Symbolic.Mathematica;
+using GeometricAlgebraFulcrumLib.Symbolic.Mathematica.ExprFactory;
 
 namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
 {

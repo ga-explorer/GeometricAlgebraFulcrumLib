@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
@@ -7,10 +6,13 @@ using DataStructuresLib;
 using DataStructuresLib.BitManipulation;
 using DataStructuresLib.Combinations;
 using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
-using GeometricAlgebraFulcrumLib.Storage;
-using GeometricAlgebraFulcrumLib.Storage.Terms;
+using GeometricAlgebraFulcrumLib.Storage.Multivectors;
 using GeometricAlgebraFulcrumLib.Storage.Utils;
+using GeometricAlgebraFulcrumLib.Structures;
+using GeometricAlgebraFulcrumLib.Structures.Grids.Even;
+using GeometricAlgebraFulcrumLib.Structures.Utils;
 using TextComposerLib.Text;
 
 namespace GeometricAlgebraFulcrumLib.TextComposers
@@ -40,7 +42,7 @@ namespace GeometricAlgebraFulcrumLib.TextComposers
         }
 
 
-        public string GetBasisBladeText(IGaBasisBlade basisBlade)
+        public string GetBasisBladeText(GaBasisBlade basisBlade)
         {
             return GetBasisBladeText(basisBlade.Id);
         }
@@ -50,7 +52,7 @@ namespace GeometricAlgebraFulcrumLib.TextComposers
         public string GetTermText(uint grade, int index, T scalar)
         {
             return GetTermText(
-                GaBasisUtils.BasisBladeId(grade, (ulong) index),
+                ((ulong) index).BasisBladeIndexToId(grade),
                 scalar
             );
         }
@@ -58,37 +60,29 @@ namespace GeometricAlgebraFulcrumLib.TextComposers
         public string GetTermText(uint grade, ulong index, T scalar)
         {
             return GetTermText(
-                GaBasisUtils.BasisBladeId(grade, index),
+                index.BasisBladeIndexToId(grade),
                 scalar
             );
         }
 
-        public string GetTermText(KeyValuePair<ulong, T> idScalarPair)
+        public string GetTermText(GaRecordKeyValue<T> idScalarTuple)
         {
             return GetTermText(
-                idScalarPair.Key,
-                idScalarPair.Value
+                idScalarTuple.Key,
+                idScalarTuple.Value
             );
         }
 
-        public string GetTermText(Tuple<ulong, T> idScalarTuple)
+        public string GetTermText(GaRecordGradeKeyValue<T> gradeIndexScalarTuple)
         {
             return GetTermText(
-                idScalarTuple.Item1,
-                idScalarTuple.Item2
+                gradeIndexScalarTuple.Grade,
+                gradeIndexScalarTuple.Key,
+                gradeIndexScalarTuple.Value
             );
         }
 
-        public string GetTermText(Tuple<uint, ulong, T> gradeIndexScalarTuple)
-        {
-            return GetTermText(
-                gradeIndexScalarTuple.Item1,
-                gradeIndexScalarTuple.Item2,
-                gradeIndexScalarTuple.Item3
-            );
-        }
-
-        public string GetTermText(IGaBasisBlade basisBlade, T scalar)
+        public string GetTermText(GaBasisBlade basisBlade, T scalar)
         {
             return GetTermText(
                 basisBlade.Id,
@@ -96,7 +90,7 @@ namespace GeometricAlgebraFulcrumLib.TextComposers
             );
         }
 
-        public string GetTermText(GaTerm<T> term)
+        public string GetTermText(GaBasisTerm<T> term)
         {
             return GetTermText(
                 term.BasisBlade.Id,
@@ -104,49 +98,35 @@ namespace GeometricAlgebraFulcrumLib.TextComposers
             );
         }
 
-        public string GetTermsText(IEnumerable<KeyValuePair<ulong, T>> idScalarPairs)
-        {
-            return idScalarPairs
-                .Select(GetTermText)
-                .ConcatenateText(" + ");
-        }
-
-        public string GetTermsText(IEnumerable<Tuple<ulong, T>> idScalarTuples)
+        public string GetTermsText(IEnumerable<GaRecordKeyValue<T>> idScalarTuples)
         {
             return idScalarTuples
                 .Select(GetTermText)
                 .ConcatenateText(" + ");
         }
 
-        public string GetTermsText(IEnumerable<Tuple<uint, ulong, T>> idScalarTuples)
+        public string GetTermsText(IEnumerable<GaRecordGradeKeyValue<T>> idScalarTuples)
         {
             return idScalarTuples
                 .Select(GetTermText)
                 .ConcatenateText(" + ");
         }
 
-        public string GetTermsText(uint grade, IEnumerable<KeyValuePair<ulong, T>> indexScalarPairs)
+        public string GetTermsText(uint grade, IEnumerable<GaRecordKeyValue<T>> indexScalarTuples)
         {
-            return indexScalarPairs
+            return indexScalarTuples
                 .Select(indexScalarPair => GetTermText(grade, indexScalarPair.Key, indexScalarPair.Value))
                 .ConcatenateText(" + ");
         }
-
-        public string GetTermsText(uint grade, IEnumerable<Tuple<ulong, T>> indexScalarTuples)
-        {
-            return indexScalarTuples
-                .Select(indexScalarPair => GetTermText(grade, indexScalarPair.Item1, indexScalarPair.Item2))
-                .ConcatenateText(" + ");
-        }
         
-        public string GetArrayText(T[] array)
+        public string GetArrayText(IReadOnlyList<T> array)
         {
-            var colsCount = array.Length;
+            var colsCount = array.Count;
 
             var textComposer = new StringBuilder();
 
             var ccc = string.Concat(
-                Enumerable.Repeat("c", array.GetLength(1))
+                Enumerable.Repeat("c", array.Count)
             );
 
             textComposer
@@ -213,13 +193,13 @@ namespace GeometricAlgebraFulcrumLib.TextComposers
 
         public string GetBasisVectorText(int index)
         {
-            return GetBasisBladeText(new []{1UL << index});
+            return GetBasisBladeText(new []{index.BasisVectorIndexToId()});
         }
 
         public string GetBasisVectorText(ulong index)
         {
             return GetBasisBladeText(
-                new []{1UL << (int)index}
+                new []{index.BasisVectorIndexToId()}
             );
         }
 
@@ -272,7 +252,7 @@ namespace GeometricAlgebraFulcrumLib.TextComposers
             return $@"\left( {valueText} \right) {basisText}";
         }
 
-        public string GetTermsText(IEnumerable<GaTerm<T>> termsList)
+        public string GetTermsText(IEnumerable<GaBasisTerm<T>> termsList)
         {
             var termsArray = 
                 termsList.OrderByGradeIndex().ToArray();
@@ -297,8 +277,22 @@ namespace GeometricAlgebraFulcrumLib.TextComposers
                 .AppendLine()
                 .ToString();
         }
+
+        public string GetArrayDisplayEquationText(IGaGridEven<T> array)
+        {
+            var textComposer = new StringBuilder();
+
+            var code = GetArrayText(array.ToArray()).Trim();
+
+            return textComposer
+                .AppendLine(@"\[")
+                .AppendLine(code)
+                .AppendLine(@"\]")
+                .AppendLine()
+                .ToString();
+        }
         
-        public string GetTermsEquationsArrayText(string rightHandSide, IEnumerable<GaTerm<T>> termsList)
+        public string GetTermsEquationsArrayText(string rightHandSide, IEnumerable<GaBasisTerm<T>> termsList)
         {
             var textComposer = new StringBuilder();
 

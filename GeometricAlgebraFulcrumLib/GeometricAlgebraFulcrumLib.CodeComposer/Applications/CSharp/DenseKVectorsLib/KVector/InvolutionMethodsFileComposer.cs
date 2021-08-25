@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Linq;
 using DataStructuresLib.BitManipulation;
-using GeometricAlgebraFulcrumLib.Algebra;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
 using GeometricAlgebraFulcrumLib.CodeComposer.Languages;
 using TextComposerLib.Text.Linear;
 using TextComposerLib.Text.Structured;
@@ -82,17 +81,17 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
 
             GenerateMainInvolutionFunction(
                 GaLanguageOperationKind.UnaryReverse.CreateEuclideanOperationSpecs(), 
-                GaBasisUtils.GradeHasNegativeReverse
+                GaBasisBladeUtils.GradeHasNegativeReverse
             );
 
             GenerateMainInvolutionFunction(
                 GaLanguageOperationKind.UnaryGradeInvolution.CreateEuclideanOperationSpecs(), 
-                GaBasisUtils.GradeHasNegativeGradeInvolution
+                GaBasisBladeUtils.GradeHasNegativeGradeInvolution
             );
 
             GenerateMainInvolutionFunction(
                 GaLanguageOperationKind.UnaryCliffordConjugate.CreateEuclideanOperationSpecs(), 
-                GaBasisUtils.GradeHasNegativeCliffordConjugate
+                GaBasisBladeUtils.GradeHasNegativeCliffordConjugate
             );
 
             GenerateKVectorFileFinishCode();

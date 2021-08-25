@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Binary;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products;
@@ -8,7 +8,8 @@ using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Unary;
 using GeometricAlgebraFulcrumLib.Processing.Random.Float64;
 using GeometricAlgebraFulcrumLib.Processing.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Storage;
+using GeometricAlgebraFulcrumLib.Storage.Factories;
+using GeometricAlgebraFulcrumLib.Storage.Multivectors;
 using NUnit.Framework;
 
 namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
@@ -56,7 +57,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
                 );
 
             //Create a set of bivector terms storages
-            var kvSpaceDimension2 = GaBasisUtils.KvSpaceDimension(VSpaceDimension, 2);
+            var kvSpaceDimension2 = VSpaceDimension.KVectorSpaceDimension(2);
             for (var index = 0UL; index < kvSpaceDimension2; index++)
                 _mvListTested.Add(
                     _randomGenerator.GetBivectorTermByIndex(index)
@@ -96,7 +97,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
 
             //Convert all storages into multivector terms storages
             foreach (var storage in _mvListTested)
-                _mvListRef.Add(storage.GetSparseMultivectorCopy());
+                _mvListRef.Add(storage.GetIdScalarList().GetCopy().CreateStorageSparseMultivector());
         }
 
         [Test]

@@ -1,29 +1,24 @@
 ﻿using System.Collections.Generic;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Space;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors;
-using GeometricAlgebraFulcrumLib.Processing.Scalars;
-using GeometricAlgebraFulcrumLib.Storage;
+using GeometricAlgebraFulcrumLib.Processing.ScalarsGrids;
+using GeometricAlgebraFulcrumLib.Storage.Multivectors;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.Outermorphisms
 {
     public sealed class GaFactoredVectorsLinearMap<T>
         : IGaOutermorphism<T>
     {
+        public IGaSpace Space 
+            => Processor;
+
         public uint VSpaceDimension 
             => Processor.VSpaceDimension;
 
         public ulong GaSpaceDimension
             => Processor.GaSpaceDimension;
 
-        public ulong MaxBasisBladeId 
-            => Processor.MaxBasisBladeId;
-
-        public uint GradesCount 
-            => Processor.GradesCount;
-
-        public IEnumerable<uint> Grades 
-            => Processor.Grades;
-
-        public IGaScalarProcessor<T> ScalarProcessor 
+        public IGaScalarsGridProcessor<T> ScalarsGridProcessor 
             => Processor;
 
         public IGaStorageKVector<T> MappedPseudoScalar { get; }

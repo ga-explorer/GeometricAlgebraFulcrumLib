@@ -2,51 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
-using GeometricAlgebraFulcrumLib.Storage.Composers;
-using GeometricAlgebraFulcrumLib.Storage.Terms;
+using GeometricAlgebraFulcrumLib.Storage.Multivectors;
+using GeometricAlgebraFulcrumLib.Structures;
+using GeometricAlgebraFulcrumLib.Structures.Lists.Even;
 
 namespace GeometricAlgebraFulcrumLib.Storage.Factories
 {
     public static class GaStorageBivectorFactory
     {
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaStorageComposerBivector<T> CreateStorageComposerBivector<T>(this IGaScalarProcessor<T> scalarProcessor)
-        {
-            return new GaStorageComposerBivector<T>(
-                scalarProcessor
-            );
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaStorageComposerBivector<T> CreateStorageComposerBivector<T>(this IGaScalarProcessor<T> scalarProcessor, IReadOnlyDictionary<ulong, T> indexScalarsDictionary) 
-        {
-            return new GaStorageComposerBivector<T>(
-                scalarProcessor,
-                indexScalarsDictionary
-            );
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaStorageComposerBivector<T> CreateStorageComposerBivector<T>(this IGaScalarProcessor<T> scalarProcessor, IEnumerable<KeyValuePair<ulong, T>> indexScalarPairs) 
-        {
-            return new GaStorageComposerBivector<T>(
-                scalarProcessor,
-                indexScalarPairs
-            );
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaStorageComposerBivector<T> CreateStorageComposerBivector<T>(this IGaScalarProcessor<T> scalarProcessor, IEnumerable<Tuple<ulong, T>> indexScalarTuples)
-        {
-            return new GaStorageComposerBivector<T>(
-                scalarProcessor,
-                indexScalarTuples
-            );
-        }
-
-
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IGaStorageBivector<T> CopyToStorageBivector<T>(this IReadOnlyDictionary<ulong, T> indexScalarDictionary)
         {
@@ -60,12 +25,19 @@ namespace GeometricAlgebraFulcrumLib.Storage.Factories
         
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GaStorageBivector<T> CreateStorageBivector<T>(this IGaListEven<T> termsList)
+        {
+            return GaStorageBivector<T>.Create(termsList);
+        }
+
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static GaStorageBivector<T> Create<T>(int index1, int index2, T scalar)
         {
             if (index1 >= index2) 
                 throw new InvalidOperationException();
 
-            var index = GaBasisUtils.BasisBivectorIndex(index1, index2);
+            var index = GaBasisBivectorUtils.BasisBivectorIndex(index1, index2);
 
             return GaStorageBivector<T>.Create(index, scalar);
 
@@ -75,13 +47,13 @@ namespace GeometricAlgebraFulcrumLib.Storage.Factories
         {
             if (index1 < index2)
             {
-                var index = GaBasisUtils.BasisBivectorIndex(index1, index2);
+                var index = GaBasisBivectorUtils.BasisBivectorIndex(index1, index2);
 
                 return GaStorageBivector<T>.Create(index, scalar);
             }
             else if (index2 < index1)
             {
-                var index = GaBasisUtils.BasisBivectorIndex(index2, index1);
+                var index = GaBasisBivectorUtils.BasisBivectorIndex(index2, index1);
 
                 return GaStorageBivector<T>.Create(index, scalarProcessor.Negative(scalar));
             }
@@ -93,13 +65,13 @@ namespace GeometricAlgebraFulcrumLib.Storage.Factories
         {
             if (index1 < index2)
             {
-                var index = GaBasisUtils.BasisBivectorIndex(index1, index2);
+                var index = GaBasisBivectorUtils.BasisBivectorIndex(index1, index2);
 
                 return GaStorageBivector<T>.Create(index, scalar);
             }
             else if (index2 < index1)
             {
-                var index = GaBasisUtils.BasisBivectorIndex(index2, index1);
+                var index = GaBasisBivectorUtils.BasisBivectorIndex(index2, index1);
 
                 return GaStorageBivector<T>.Create(index, scalarProcessor.Negative(scalar));
             }
@@ -153,15 +125,15 @@ namespace GeometricAlgebraFulcrumLib.Storage.Factories
         {
             if (index1 < index2)
             {
-                var index = GaBasisUtils.BasisBivectorIndex(index1, index2);
+                var index = GaBasisBivectorUtils.BasisBivectorIndex(index1, index2);
 
-                return GaStorageBivector<T>.Create(index, scalarProcessor.OneScalar);
+                return GaStorageBivector<T>.Create(index, scalarProcessor.GetOneScalar());
             }
             else if (index2 < index1)
             {
-                var index = GaBasisUtils.BasisBivectorIndex(index2, index1);
+                var index = GaBasisBivectorUtils.BasisBivectorIndex(index2, index1);
 
-                return GaStorageBivector<T>.Create(index, scalarProcessor.MinusOneScalar);
+                return GaStorageBivector<T>.Create(index, scalarProcessor.GetMinusOneScalar());
             }
             else
                 throw new InvalidOperationException();
@@ -171,15 +143,15 @@ namespace GeometricAlgebraFulcrumLib.Storage.Factories
         {
             if (index1 < index2)
             {
-                var index = GaBasisUtils.BasisBivectorIndex(index1, index2);
+                var index = GaBasisBivectorUtils.BasisBivectorIndex(index1, index2);
 
-                return GaStorageBivector<T>.Create(index, scalarProcessor.OneScalar);
+                return GaStorageBivector<T>.Create(index, scalarProcessor.GetOneScalar());
             }
             else if (index2 < index1)
             {
-                var index = GaBasisUtils.BasisBivectorIndex(index2, index1);
+                var index = GaBasisBivectorUtils.BasisBivectorIndex(index2, index1);
 
-                return GaStorageBivector<T>.Create(index, scalarProcessor.MinusOneScalar);
+                return GaStorageBivector<T>.Create(index, scalarProcessor.GetMinusOneScalar());
             }
             else
                 throw new InvalidOperationException();
@@ -190,7 +162,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Factories
         {
             return GaStorageBivector<T>.Create(
                 ((ulong) index),
-                scalarProcessor.OneScalar
+                scalarProcessor.GetOneScalar()
             );
         }
 
@@ -199,7 +171,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Factories
         {
             return GaStorageBivector<T>.Create(
                 index,
-                scalarProcessor.OneScalar
+                scalarProcessor.GetOneScalar()
             );
         }
 
@@ -207,15 +179,15 @@ namespace GeometricAlgebraFulcrumLib.Storage.Factories
         {
             if (index1 < index2)
             {
-                var index = GaBasisUtils.BasisBivectorIndex(index1, index2);
+                var index = GaBasisBivectorUtils.BasisBivectorIndex(index1, index2);
 
-                return GaStorageBivector<T>.Create(index, scalarProcessor.MinusOneScalar);
+                return GaStorageBivector<T>.Create(index, scalarProcessor.GetMinusOneScalar());
             }
             else if (index2 < index1)
             {
-                var index = GaBasisUtils.BasisBivectorIndex(index2, index1);
+                var index = GaBasisBivectorUtils.BasisBivectorIndex(index2, index1);
 
-                return GaStorageBivector<T>.Create(index, scalarProcessor.OneScalar);
+                return GaStorageBivector<T>.Create(index, scalarProcessor.GetOneScalar());
             }
             else
                 throw new InvalidOperationException();
@@ -225,15 +197,15 @@ namespace GeometricAlgebraFulcrumLib.Storage.Factories
         {
             if (index1 < index2)
             {
-                var index = GaBasisUtils.BasisBivectorIndex(index1, index2);
+                var index = GaBasisBivectorUtils.BasisBivectorIndex(index1, index2);
 
-                return GaStorageBivector<T>.Create(index, scalarProcessor.MinusOneScalar);
+                return GaStorageBivector<T>.Create(index, scalarProcessor.GetMinusOneScalar());
             }
             else if (index2 < index1)
             {
-                var index = GaBasisUtils.BasisBivectorIndex(index2, index1);
+                var index = GaBasisBivectorUtils.BasisBivectorIndex(index2, index1);
 
-                return GaStorageBivector<T>.Create(index, scalarProcessor.OneScalar);
+                return GaStorageBivector<T>.Create(index, scalarProcessor.GetOneScalar());
             }
             else
                 throw new InvalidOperationException();
@@ -244,7 +216,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Factories
         {
             return GaStorageBivector<T>.Create(
                 ((ulong) index),
-                scalarProcessor.MinusOneScalar
+                scalarProcessor.GetMinusOneScalar()
             );
         }
 
@@ -253,7 +225,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Factories
         {
             return GaStorageBivector<T>.Create(
                 index,
-                scalarProcessor.MinusOneScalar
+                scalarProcessor.GetMinusOneScalar()
             );
         }
 
@@ -283,31 +255,12 @@ namespace GeometricAlgebraFulcrumLib.Storage.Factories
         
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaStorageBivector<T> SumToStorageBivector<T>(this IGaScalarProcessor<T> scalarProcessor, IEnumerable<KeyValuePair<ulong, T>> termsList)
+        public static GaStorageBivector<T> SumToStorageBivector<T>(this IGaScalarProcessor<T> scalarProcessor, IEnumerable<GaRecordKeyValue<T>> termsList)
         {
-            return scalarProcessor
-                .CreateStorageComposerBivector(termsList)
+            return scalarProcessor.CreateStorageKVectorComposer()
+                .SetTerms(termsList)
                 .RemoveZeroTerms()
-                .GetBivector();
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaStorageBivector<T> SumToStorageBivector<T>(this IGaScalarProcessor<T> scalarProcessor, IEnumerable<Tuple<ulong, T>> termsList)
-        {
-            return scalarProcessor
-                .CreateStorageComposerBivector(termsList)
-                .RemoveZeroTerms()
-                .GetBivector();
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaStorageBivector<T> SumToStorageBivector<T>(this IGaScalarProcessor<T> scalarProcessor, IEnumerable<GaTerm<T>> termsList)
-        {
-            return scalarProcessor
-                .CreateStorageComposerBivector()
-                .AddTerms(termsList)
-                .RemoveZeroTerms()
-                .GetBivector();
+                .CreateStorageBivector();
         }
     }
 }

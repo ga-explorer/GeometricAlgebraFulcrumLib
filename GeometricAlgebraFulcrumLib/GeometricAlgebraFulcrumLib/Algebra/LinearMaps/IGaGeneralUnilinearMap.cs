@@ -1,4 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.Storage;
+﻿using GeometricAlgebraFulcrumLib.Storage.Multivectors;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.LinearMaps
 {

@@ -236,7 +236,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context.Opti
         protected override void BeginProcessing()
         {
             //Add output variables and create new intermediate variables
-            foreach (var outputVar in Context.OutputVariables.ToArray())
+            foreach (var outputVar in Context.GetOutputVariables().ToArray())
                 AddOutputVariable(outputVar);
 
             var computedVariables =

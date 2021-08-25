@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Interface Name="GeometricAlgebraFulcrumLib.Processing.Scalars.IGaScalarProcessor&lt;T&gt;" Collapsed="true">
+    <Position X="6.25" Y="1.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AMYDBARQAUEgAAAEwEoHQAEAAE0CQAICIGAAAAGgACg=</HashCode>
+      <FileName>Processing\Scalars\IGaScalarProcessor.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GeometricAlgebraFulcrumLib.Processing.Multivectors.IGaProcessor&lt;T&gt;" Collapsed="true">
+    <Position X="6.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAgAEAAEAAAAAAAAAAEAAAAAAAAAEAE=</HashCode>
+      <FileName>Processing\Multivectors\IGaProcessor.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GeometricAlgebraFulcrumLib.Processing.Scalars.IGaScalarProcessorSymbolic&lt;T&gt;" Collapsed="true">
+    <Position X="8.25" Y="2.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAAAAAAAAhAAAAAAAAAAAAAAAAAAAACA=</HashCode>
+      <FileName>Processing\Scalars\IGaScalarProcessorSymbolic.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GeometricAlgebraFulcrumLib.Processing.Multivectors.IGaProcessorChangeOfBasis&lt;T&gt;" Collapsed="true">
+    <Position X="4.5" Y="4.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAACAAAAAA=</HashCode>
+      <FileName>Processing\Multivectors\IGaProcessorChangeOfBasis.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GeometricAlgebraFulcrumLib.Processing.Multivectors.IGaProcessorOrthonormal&lt;T&gt;" Collapsed="true">
+    <Position X="7.75" Y="4.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Processing\Multivectors\IGaProcessorOrthonormal.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GeometricAlgebraFulcrumLib.Processing.Matrices.IGaMatrixProcessor&lt;TMatrix, TScalar&gt;" Collapsed="true">
+    <Position X="1.25" Y="2.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>IAIEiBkARAkMAECBAAAAAIEAwABAAQAIAgAEAAEAggI=</HashCode>
+      <FileName>Processing\Matrices\IGaMatrixProcessor.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GeometricAlgebraFulcrumLib.Processing.Multivectors.IGaProcessorEuclidean&lt;T&gt;" Collapsed="true">
+    <Position X="7.75" Y="5.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Processing\Multivectors\IGaProcessorEuclidean.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GeometricAlgebraFulcrumLib.Processing.Matrices.IGaMatrixProcessorSymbolic&lt;T&gt;" Collapsed="true">
+    <Position X="4.25" Y="2.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Processing\Matrices\IGaMatrixProcessorSymbolic.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

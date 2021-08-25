@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
-using GeometricAlgebraFulcrumLib.Storage;
+using GeometricAlgebraFulcrumLib.Storage.Multivectors;
 
 namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean
 {
@@ -14,7 +14,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean
         public static GaBasisBilinearProductResult ENormSquared(this IGaSignature signature, ulong id1)
         {
             return new GaBasisBilinearProductResult(
-                GaBasisUtils.ENormSquaredSignature(id1), 
+                GaBasisBladeProductUtils.ENormSquaredSignature(id1), 
                 0
             );
         }
@@ -27,13 +27,13 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean
             var spScalar = 0d;
 
             var idScalarPairs1 = 
-                mv1.GetIdScalarPairs();
+                mv1.GetIdScalarRecords();
 
             foreach (var (id1, scalar1) in idScalarPairs1)
             {
                 var scalar = scalar1 * scalar1;
 
-                spScalar = GaBasisUtils.ENormSquaredSignature(id1) > 0
+                spScalar = GaBasisBladeProductUtils.ENormSquaredSignature(id1) > 0
                     ? spScalar + scalar
                     : spScalar - scalar;
             }
@@ -49,13 +49,13 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean
             var spScalar = 0d;
 
             var idScalarPairs1 = 
-                mv1.GetIdScalarPairs();
+                mv1.GetIdScalarRecords();
 
             foreach (var (id1, scalar1) in idScalarPairs1)
             {
                 var scalar = scalar1 * scalar1;
 
-                spScalar = GaBasisUtils.ENormSquaredSignature(id1) > 0
+                spScalar = GaBasisBladeProductUtils.ENormSquaredSignature(id1) > 0
                     ? spScalar + scalar
                     : spScalar - scalar;
             }
@@ -66,17 +66,17 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T ENorm<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageScalar<T> mv1)
         {
-            return mv1.IsEmpty()
-                ? scalarProcessor.ZeroScalar
-                : scalarProcessor.SqrtOfAbs(scalarProcessor.Square(mv1.FirstScalar));
+            return mv1.TryGetScalar(out var value)
+                ? scalarProcessor.SqrtOfAbs(scalarProcessor.Square(value))
+                : scalarProcessor.GetZeroScalar();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T ENormSquared<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageScalar<T> mv1)
         {
-            return mv1.IsEmpty()
-                ? scalarProcessor.ZeroScalar
-                : scalarProcessor.Square(mv1.FirstScalar);
+            return mv1.TryGetScalar(out var value)
+                ? scalarProcessor.Square(value)
+                : scalarProcessor.GetZeroScalar();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -92,18 +92,18 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean
         
         public static T VectorsENorm<T>(this IGaScalarProcessor<T> scalarProcessor, IReadOnlyList<T> vector1)
         {
-            var spScalar = scalarProcessor.ZeroScalar;
+            var spScalar = scalarProcessor.GetZeroScalar();
 
             var count = vector1.Count;
 
             for (var index = 0; index < count; index++)
             {
-                var id = 1UL << index;
+                var id = index.BasisVectorIndexToId();
                 var scalar1 = vector1[index];
 
                 var scalar = scalarProcessor.Times(scalar1, scalar1);
 
-                spScalar = GaBasisUtils.ENormSquaredSignature(id) > 0
+                spScalar = GaBasisBladeProductUtils.ENormSquaredSignature(id) > 0
                     ? scalarProcessor.Add(spScalar, scalar) 
                     : scalarProcessor.Subtract(spScalar, scalar);
             }
@@ -113,18 +113,18 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean
         
         public static T VectorsENormSquared<T>(this IGaScalarProcessor<T> scalarProcessor, IReadOnlyList<T> vector1)
         {
-            var spScalar = scalarProcessor.ZeroScalar;
+            var spScalar = scalarProcessor.GetZeroScalar();
 
             var count = vector1.Count;
 
             for (var index = 0; index < count; index++)
             {
-                var id = 1UL << index;
+                var id = index.BasisVectorIndexToId();
                 var scalar1 = vector1[index];
 
                 var scalar = scalarProcessor.Times(scalar1, scalar1);
 
-                spScalar = GaBasisUtils.ENormSquaredSignature(id) > 0
+                spScalar = GaBasisBladeProductUtils.ENormSquaredSignature(id) > 0
                     ? scalarProcessor.Add(spScalar, scalar) 
                     : scalarProcessor.Subtract(spScalar, scalar);
             }
@@ -135,16 +135,16 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean
         public static T ENorm<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageVector<T> mv1)
         {
             var indexScalarPairs1 = 
-                mv1.IndexScalarDictionary;
+                mv1.IndexScalarList;
 
-            var spScalar = scalarProcessor.ZeroScalar;
+            var spScalar = scalarProcessor.GetZeroScalar();
 
-            foreach (var (index, scalar1) in indexScalarPairs1)
+            foreach (var (index, scalar1) in indexScalarPairs1.GetKeyValueRecords())
             {
-                var id = 1UL << (int) index;
+                var id = index.BasisVectorIndexToId();
                 var scalar = scalarProcessor.Times(scalar1, scalar1);
 
-                spScalar = GaBasisUtils.ENormSquaredSignature(id) > 0
+                spScalar = GaBasisBladeProductUtils.ENormSquaredSignature(id) > 0
                     ? scalarProcessor.Add(spScalar, scalar) 
                     : scalarProcessor.Subtract(spScalar, scalar);
             }
@@ -156,16 +156,16 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean
         public static T ENormSquared<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageVector<T> mv1)
         {
             var indexScalarPairs1 = 
-                mv1.IndexScalarDictionary;
+                mv1.IndexScalarList;
 
-            var spScalar = scalarProcessor.ZeroScalar;
+            var spScalar = scalarProcessor.GetZeroScalar();
 
-            foreach (var (index, scalar1) in indexScalarPairs1)
+            foreach (var (index, scalar1) in indexScalarPairs1.GetKeyValueRecords())
             {
-                var id = 1UL << (int) index;
+                var id = index.BasisVectorIndexToId();
                 var scalar = scalarProcessor.Times(scalar1, scalar1);
 
-                spScalar = GaBasisUtils.ENormSquaredSignature(id) > 0
+                spScalar = GaBasisBladeProductUtils.ENormSquaredSignature(id) > 0
                     ? scalarProcessor.Add(spScalar, scalar) 
                     : scalarProcessor.Subtract(spScalar, scalar);
             }
@@ -176,18 +176,18 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean
         private static T ENormAsScalar<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageKVector<T> mv1)
         {
             var grade = mv1.Grade;
-            var spScalar = scalarProcessor.ZeroScalar;
+            var spScalar = scalarProcessor.GetZeroScalar();
             
             var indexScalarPairs1 = 
-                mv1.IndexScalarDictionary;
+                mv1.IndexScalarList;
 
-            foreach (var (index, scalar1) in indexScalarPairs1)
+            foreach (var (index, scalar1) in indexScalarPairs1.GetKeyValueRecords())
             {
                 var id = 
-                    GaBasisUtils.BasisBladeId(grade, index);
+                    index.BasisBladeIndexToId(grade);
 
                 var signature = 
-                    GaBasisUtils.ENormSquaredSignature(id);
+                    GaBasisBladeProductUtils.ENormSquaredSignature(id);
 
                 //if (signature == 0) 
                 //    continue;
@@ -205,18 +205,18 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean
         private static T ENormSquaredAsScalar<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageKVector<T> mv1)
         {
             var grade = mv1.Grade;
-            var spScalar = scalarProcessor.ZeroScalar;
+            var spScalar = scalarProcessor.GetZeroScalar();
             
             var indexScalarPairs1 = 
-                mv1.IndexScalarDictionary;
+                mv1.IndexScalarList;
 
-            foreach (var (index, scalar1) in indexScalarPairs1)
+            foreach (var (index, scalar1) in indexScalarPairs1.GetKeyValueRecords())
             {
                 var id = 
-                    GaBasisUtils.BasisBladeId(grade, index);
+                    index.BasisBladeIndexToId(grade);
 
                 var signature = 
-                    GaBasisUtils.ENormSquaredSignature(id);
+                    GaBasisBladeProductUtils.ENormSquaredSignature(id);
 
                 //if (signature == 0) 
                 //    continue;
@@ -244,14 +244,14 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean
 
         private static T ENormAsScalar<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivector<T> mv1)
         {
-            var spScalar = scalarProcessor.ZeroScalar;
+            var spScalar = scalarProcessor.GetZeroScalar();
 
-            var idScalarDictionary1 = mv1.GetIdScalarDictionary();
+            var idScalarDictionary1 = mv1.GetIdScalarList();
 
-            foreach (var (id, scalar1) in idScalarDictionary1)
+            foreach (var (id, scalar1) in idScalarDictionary1.GetKeyValueRecords())
             {
                 var signature = 
-                    GaBasisUtils.ENormSquaredSignature(id);
+                    GaBasisBladeProductUtils.ENormSquaredSignature(id);
 
                 //if (signature == 0) 
                 //    continue;
@@ -268,14 +268,14 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean
 
         private static T ENormSquaredAsScalar<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivector<T> mv1)
         {
-            var spScalar = scalarProcessor.ZeroScalar;
+            var spScalar = scalarProcessor.GetZeroScalar();
 
-            var idScalarDictionary1 = mv1.GetIdScalarDictionary();
+            var idScalarDictionary1 = mv1.GetIdScalarList();
 
-            foreach (var (id, scalar1) in idScalarDictionary1)
+            foreach (var (id, scalar1) in idScalarDictionary1.GetKeyValueRecords())
             {
                 var signature = 
-                    GaBasisUtils.ENormSquaredSignature(id);
+                    GaBasisBladeProductUtils.ENormSquaredSignature(id);
 
                 //if (signature == 0) 
                 //    continue;

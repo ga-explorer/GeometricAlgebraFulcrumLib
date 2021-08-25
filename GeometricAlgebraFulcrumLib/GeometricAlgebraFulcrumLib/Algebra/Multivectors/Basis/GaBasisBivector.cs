@@ -1,38 +1,62 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Text;
-using DataStructuresLib.Collections.Lists;
-using GeometricAlgebraFulcrumLib.Storage.Terms;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.Multivectors.Basis
 {
     public sealed record GaBasisBivector 
-        : IGaBasisBlade
+        : GaBasisBlade
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static GaBasisBivector Create(ulong index)
+        {
+            var (basisVectorIndex1, basisVectorIndex2) = 
+                index.BasisBivectorIndexToVectorIndices();
+
+            return new GaBasisBivector(
+                basisVectorIndex1,
+                basisVectorIndex2
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static GaBasisBivector Create(ulong basisVectorIndex1, ulong basisVectorIndex2)
+        {
+            return new GaBasisBivector(
+                basisVectorIndex1,
+                basisVectorIndex2
+            );
+        }
+
+
         public ulong BasisVectorIndex1 { get; }
 
         public ulong BasisVectorIndex2 { get; }
 
-        public ulong Id 
-            => (1UL << (int) BasisVectorIndex1) | (1UL << (int) BasisVectorIndex2);
+        public override ulong Id 
+            => GaBasisBivectorUtils.BasisBivectorId(
+                BasisVectorIndex1, 
+                BasisVectorIndex2
+            );
 
-        public uint Grade => 2;
+        public override uint Grade => 2;
 
-        public ulong Index 
-            => BasisVectorIndex1 + ((BasisVectorIndex2 * (BasisVectorIndex2 - 1UL)) >> 1);
+        public override ulong Index 
+            => GaBasisBivectorUtils.BasisBivectorIndex(
+                BasisVectorIndex1, 
+                BasisVectorIndex2
+            );
 
-        public bool IsUniform 
-            => false;
+        public override bool IsScalar => false;
 
-        public bool IsGraded 
-            => true;
+        public override bool IsVector => false;
 
-        public bool IsFull 
-            => false;
+        public override bool IsBivector => true;
 
 
-        internal GaBasisBivector(ulong basisVectorIndex1, ulong basisVectorIndex2)
+        private GaBasisBivector(ulong basisVectorIndex1, ulong basisVectorIndex2)
         {
             Debug.Assert(basisVectorIndex1 < basisVectorIndex2);
 
@@ -41,50 +65,12 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Multivectors.Basis
         }
 
 
-        public Tuple<uint, ulong> GetGradeIndex()
-        {
-            return new(2, Index);
-        }
-
-        public Tuple<ulong, uint, ulong> GetIdGradeIndex()
-        {
-            return new(Id, 2, Index);
-        }
-
-        public IReadOnlyList<ulong> GetBasisVectorIndices()
-        {
-            return new ItemsPairAsReadOnlyList<ulong>(
-                BasisVectorIndex1, 
-                BasisVectorIndex2
-            );
-        }
-
-
-        public void GetGradeIndex(out uint grade, out ulong index)
-        {
-            grade = 2;
-            index = Index;
-        }
-
-        public void GetIdGradeIndex(out ulong id, out uint grade, out ulong index)
-        {
-            id = Id;
-            grade = 2;
-            index = Index;
-        }
-        
-
-        public IEnumerable<ulong> GetBasisVectorsIndices()
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override IEnumerable<ulong> GetBasisVectorIndices()
         {
             yield return BasisVectorIndex1;
             yield return BasisVectorIndex2;
         }
-
-        public GaTerm<T> CreateTerm<T>(T scalar)
-        {
-            return new(this, scalar);
-        }
-
 
         public override string ToString()
         {
@@ -96,33 +82,5 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Multivectors.Basis
                 .Append('>')
                 .ToString();
         }
-
-
-        public bool Equals(IGaBasisBlade other)
-        {
-            return other is not null && Id.Equals(other.Id);
-        }
-
-        //public override bool Equals(object obj)
-        //{
-        //    return obj is IGaBasisBlade other && Equals(other);
-        //}
-
-        //public override int GetHashCode()
-        //{
-        //    return Id.GetHashCode();
-        //}
-
-        //public static bool operator ==(GaBasisBivector left, IGaBasisBlade right)
-        //{
-        //    return !ReferenceEquals(left, null) &&
-        //           !ReferenceEquals(right, null) &&
-        //            left.Equals(right);
-        //}
-
-        //public static bool operator !=(GaBasisBivector left, IGaBasisBlade right)
-        //{
-        //    return !(left == right);
-        //}
     }
 }

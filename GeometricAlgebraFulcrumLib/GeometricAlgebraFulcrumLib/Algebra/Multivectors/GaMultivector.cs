@@ -1,10 +1,11 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Factories;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Space;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Binary;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Unary;
-using GeometricAlgebraFulcrumLib.Storage;
+using GeometricAlgebraFulcrumLib.Storage.Multivectors;
 using GeometricAlgebraFulcrumLib.TextComposers;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.Multivectors
@@ -527,12 +528,12 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Multivectors
         public GaScalar<T> this[ulong id] =>
             MultivectorStorage.TryGetTermScalar(id, out var scalar)
                 ? scalar.CreateScalar(Processor)
-                : Processor.ZeroScalar.CreateScalar(Processor);
+                : Processor.GetZeroScalar().CreateScalar(Processor);
 
         public GaScalar<T> this[uint grade, ulong index] =>
             MultivectorStorage.TryGetTermScalar(grade, index, out var scalar)
                 ? scalar.CreateScalar(Processor)
-                : Processor.ZeroScalar.CreateScalar(Processor);
+                : Processor.GetZeroScalar().CreateScalar(Processor);
 
 
         internal GaMultivector([NotNull] IGaProcessor<T> processor, [NotNull] IGaStorageMultivector<T> storage)

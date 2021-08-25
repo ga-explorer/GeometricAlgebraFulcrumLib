@@ -42,7 +42,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context.Opti
         protected override void BeginProcessing()
         {
             //Fill dictionary of RHS expressions uses
-            foreach (var tempVar in Context.IntermediateVariables)
+            foreach (var tempVar in Context.GetIntermediateVariables())
                 AddRhsExprUse(tempVar);
 
             //Select sub-expressions with multiple uses

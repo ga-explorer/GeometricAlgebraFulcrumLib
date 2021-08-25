@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions;
@@ -25,21 +23,73 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Processors
         public double ZeroEpsilon 
             => Math.Pow(10, -RoundingPlaces);
 
-        public bool IsNumeric => false;
+        public bool IsNumeric 
+            => false;
 
-        public bool IsSymbolic => true;
+        public bool IsSymbolic 
+            => true;
 
-        public Expr ZeroScalar 
-            => Expr.INT_ZERO;
-        
-        public Expr OneScalar 
-            => Expr.INT_ONE;
 
-        public Expr MinusOneScalar 
-            => Expr.INT_MINUSONE;
+        private GaScalarProcessorMathematicaExpr()
+        {
+        }
 
-        public Expr PiScalar 
-            => MathematicaInterface.DefaultCasConstants.ExprPi;
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Expr GetZeroScalar()
+        {
+            return Expr.INT_ZERO;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Expr GetOneScalar()
+        {
+            return Expr.INT_ONE;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Expr GetMinusOneScalar()
+        {
+            return Expr.INT_MINUSONE;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Expr GetPiScalar()
+        {
+            return MathematicaInterface.DefaultCasConstants.ExprPi;
+        }
+
+        public Expr[] GetZeroScalarArray1D(int count)
+        {
+            var exprArray = new Expr[count];
+
+            for (var i = 0; i < count; i++)
+                exprArray[i] = Expr.INT_ZERO;
+
+            return exprArray;
+        }
+
+        public Expr[,] GetZeroScalarArray2D(int count)
+        {
+            var exprArray = new Expr[count, count];
+
+            for (var i = 0; i < count; i++)
+            for (var j = 0; j < count; j++)
+                exprArray[i, j] = Expr.INT_ZERO;
+
+            return exprArray;
+        }
+
+        public Expr[,] GetZeroScalarArray2D(int count1, int count2)
+        {
+            var exprArray = new Expr[count1, count2];
+
+            for (var i = 0; i < count1; i++)
+            for (var j = 0; j < count2; j++)
+                exprArray[i, j] = Expr.INT_ZERO;
+
+            return exprArray;
+        }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -65,22 +115,6 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Processors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Expr Add(params Expr[] scalarsList)
-        {
-            return PostProcessScalar(Mfs.SumExpr(
-                scalarsList.Select(PreProcessScalar).ToArray()
-            ));
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Expr Add(IEnumerable<Expr> scalarsList)
-        {
-            return PostProcessScalar(Mfs.SumExpr(
-                scalarsList.Select(PreProcessScalar).ToArray()
-            ));
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Expr Subtract(Expr scalar1, Expr scalar2)
         {
             return PostProcessScalar(Mfs.Subtract[
@@ -99,46 +133,12 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Processors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Expr Times(params Expr[] scalarsList)
-        {
-            return PostProcessScalar(Mfs.ProductExpr(
-                scalarsList.Select(PreProcessScalar).ToArray()
-            ));
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Expr Times(IEnumerable<Expr> scalarsList)
-        {
-            return PostProcessScalar(Mfs.ProductExpr(
-                scalarsList.Select(PreProcessScalar).ToArray()
-            ));
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Expr NegativeTimes(Expr scalar1, Expr scalar2)
         {
             return PostProcessScalar(Mfs.Minus[Mfs.Times[
                 PreProcessScalar(scalar1), 
                 PreProcessScalar(scalar2)
             ]]);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Expr NegativeTimes(params Expr[] scalarsList)
-        {
-            return PostProcessScalar(Mfs.ProductExpr(
-                true, 
-                scalarsList.Select(PreProcessScalar).ToArray()
-            ));
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Expr NegativeTimes(IEnumerable<Expr> scalarsList)
-        {
-            return PostProcessScalar(Mfs.ProductExpr(
-                true, 
-                scalarsList.Select(PreProcessScalar).ToArray()
-            ));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -376,6 +376,24 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Processors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsNotZero(Expr scalar)
+        {
+            return !IsZero(scalar);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsNotZero(Expr scalar, bool nearZeroFlag)
+        {
+            return !IsZero(scalar, nearZeroFlag);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsNotNearZero(Expr scalar)
+        {
+            return !IsNearZero(scalar);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsPositive(Expr scalar)
         {
             if (!scalar.NumberQ())
@@ -397,6 +415,18 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Processors
                 scalar.ToNumber();
 
             return number < 0;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsNotPositive(Expr scalar)
+        {
+            return !IsPositive(scalar);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsNotNegative(Expr scalar)
+        {
+            return !IsNegative(scalar);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

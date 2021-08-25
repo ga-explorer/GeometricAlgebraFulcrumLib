@@ -7,7 +7,8 @@ using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Unary;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
-using GeometricAlgebraFulcrumLib.Storage;
+using GeometricAlgebraFulcrumLib.Storage.Multivectors;
+using GeometricAlgebraFulcrumLib.Structures.Lists.Even;
 
 namespace GeometricAlgebraFulcrumLib.Geometry
 {
@@ -40,7 +41,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry
                 scalarProcessor
                     .Subtract(
                         scalarProcessor.EGpReverse(storage), 
-                        scalarProcessor.OneScalar
+                        scalarProcessor.GetOneScalar()
                     )
             );
         }
@@ -55,13 +56,13 @@ namespace GeometricAlgebraFulcrumLib.Geometry
                 scalarProcessor
                     .Subtract(
                         scalarProcessor.EGpReverse(storage), 
-                        scalarProcessor.OneScalar
+                        scalarProcessor.GetOneScalar()
                     )
             );
         }
 
         
-        public static GaPureRotor<T> ComplexEigenPairToEuclideanSimpleRotor<T>(this IGaProcessor<T> processor, T realValue, T imagValue, T[] realVector, T[] imagVector)
+        public static GaPureRotor<T> ComplexEigenPairToEuclideanSimpleRotor<T>(this IGaProcessor<T> processor, T realValue, T imagValue, IGaListEven<T> realVector, IGaListEven<T> imagVector)
         {
             //var scalar = scalarProcessor.Add(
             //    scalarProcessor.Times(realValue, realValue),

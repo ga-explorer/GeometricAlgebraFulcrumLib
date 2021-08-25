@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
+using GeometricAlgebraFulcrumLib.Storage.Multivectors;
 using GeometricAlgebraFulcrumLib.Storage.Utils;
 
 namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Multivectors
@@ -65,7 +66,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Multivectors
 
             RootActiveGradesBitMask0 = 
                 RootActiveGradesBitMask1 = 
-                    (1ul << (int) (multivectorStorage.VSpaceDimension + 2)) - 1;
+                    (1ul << (int) (multivectorStorage.MinVSpaceDimension + 2)) - 1;
         }
         
 

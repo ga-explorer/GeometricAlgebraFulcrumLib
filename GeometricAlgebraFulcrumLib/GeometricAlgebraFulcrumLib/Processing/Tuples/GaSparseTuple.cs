@@ -82,7 +82,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Tuples
         public T this[int key] 
             => _scalarsDictionary.TryGetValue(key, out var value) 
                 ? value 
-                : ScalarProcessor.ZeroScalar;
+                : ScalarProcessor.GetZeroScalar();
 
         public IEnumerable<int> Keys 
             => _scalarsDictionary.Keys;
@@ -242,8 +242,8 @@ namespace GeometricAlgebraFulcrumLib.Processing.Tuples
             var fullOuterJoinTuples =
                 _scalarsDictionary.FullOuterJoin(
                     scalarsTuple2._scalarsDictionary,
-                    ScalarProcessor.ZeroScalar,
-                    ScalarProcessor.ZeroScalar
+                    ScalarProcessor.GetZeroScalar(),
+                    ScalarProcessor.GetZeroScalar()
                 );
 
             var composer = ScalarProcessor.CreateSparseScalarsTupleComposer(
@@ -302,8 +302,8 @@ namespace GeometricAlgebraFulcrumLib.Processing.Tuples
         {
             var fullOuterJoinTuples = _scalarsDictionary.FullOuterJoin(
                 scalarsTuple2._scalarsDictionary,
-                ScalarProcessor.ZeroScalar,
-                ScalarProcessor.ZeroScalar
+                ScalarProcessor.GetZeroScalar(),
+                ScalarProcessor.GetZeroScalar()
             );
 
             var composer = new GaSparseTupleComposer<T>(ScalarProcessor);

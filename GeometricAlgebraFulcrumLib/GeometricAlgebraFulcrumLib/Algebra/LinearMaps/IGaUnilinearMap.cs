@@ -1,12 +1,13 @@
-﻿using GeometricAlgebraFulcrumLib.Processing.Scalars;
-using GeometricAlgebraFulcrumLib.Storage;
+﻿using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Space;
+using GeometricAlgebraFulcrumLib.Processing.ScalarsGrids;
+using GeometricAlgebraFulcrumLib.Storage.Multivectors;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.LinearMaps
 {
     public interface IGaUnilinearMap<T>
-        : IGaSpace
+        : IGaSpaceElement
     {
-        IGaScalarProcessor<T> ScalarProcessor { get; }
+        IGaScalarsGridProcessor<T> ScalarsGridProcessor { get; }
 
         IGaStorageMultivector<T> MapMultivector(IGaStorageMultivector<T> mv);
     }

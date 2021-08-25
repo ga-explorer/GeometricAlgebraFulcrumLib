@@ -1,4 +1,5 @@
-﻿using GeometricAlgebraFulcrumLib.Processing.Multivectors;
+﻿using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Space;
+using GeometricAlgebraFulcrumLib.Processing.Multivectors;
 
 namespace GeometricAlgebraFulcrumLib.Algebra
 {

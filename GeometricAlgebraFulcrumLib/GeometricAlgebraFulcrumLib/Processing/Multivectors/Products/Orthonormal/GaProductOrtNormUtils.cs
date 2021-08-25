@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
-using GeometricAlgebraFulcrumLib.Storage;
+using GeometricAlgebraFulcrumLib.Storage.Multivectors;
 
 namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonormal
 {
@@ -27,7 +27,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
             var spScalar = 0d;
 
             var idScalarPairs1 = 
-                mv1.GetIdScalarPairs();
+                mv1.GetIdScalarRecords();
 
             foreach (var (id1, scalar1) in idScalarPairs1)
             {
@@ -54,7 +54,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
             var spScalar = 0d;
 
             var idScalarPairs1 = 
-                mv1.GetIdScalarPairs();
+                mv1.GetIdScalarRecords();
 
             foreach (var (id1, scalar1) in idScalarPairs1)
             {
@@ -110,13 +110,13 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
         
         public static T VectorsNorm<T>(this IGaScalarProcessor<T> scalarProcessor, IGaSignature signature, IReadOnlyList<T> vector1)
         {
-            var spScalar = scalarProcessor.ZeroScalar;
+            var spScalar = scalarProcessor.GetZeroScalar();
 
             var count = vector1.Count;
 
             for (var index = 0; index < count; index++)
             {
-                var sig = signature.NormSquaredSignature(1UL << index);
+                var sig = signature.NormSquaredSignature(index.BasisVectorIndexToId());
 
                 if (sig == 0)
                     continue;
@@ -134,13 +134,13 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
         
         public static T VectorsNormSquared<T>(this IGaScalarProcessor<T> scalarProcessor, IGaSignature signature, IReadOnlyList<T> vector1)
         {
-            var spScalar = scalarProcessor.ZeroScalar;
+            var spScalar = scalarProcessor.GetZeroScalar();
 
             var count = vector1.Count;
 
             for (var index = 0; index < count; index++)
             {
-                var sig = signature.NormSquaredSignature(1UL << index);
+                var sig = signature.NormSquaredSignature(index.BasisVectorIndexToId());
 
                 if (sig == 0)
                     continue;
@@ -160,13 +160,13 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
         public static T Norm<T>(this IGaScalarProcessor<T> scalarProcessor, IGaSignature signature, IGaStorageVector<T> mv1)
         {
             var indexScalarPairs1 = 
-                mv1.IndexScalarDictionary;
+                mv1.IndexScalarList;
 
-            var spScalar = scalarProcessor.ZeroScalar;
+            var spScalar = scalarProcessor.GetZeroScalar();
 
-            foreach (var (index, scalar1) in indexScalarPairs1)
+            foreach (var (index, scalar1) in indexScalarPairs1.GetKeyValueRecords())
             {
-                var sig = signature.NormSquaredSignature(1UL << (int) index);
+                var sig = signature.NormSquaredSignature(index.BasisVectorIndexToId());
 
                 if (sig == 0)
                     continue;
@@ -185,13 +185,13 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
         public static T NormSquared<T>(this IGaScalarProcessor<T> scalarProcessor, IGaSignature signature, IGaStorageVector<T> mv1)
         {
             var indexScalarPairs1 = 
-                mv1.IndexScalarDictionary;
+                mv1.IndexScalarList;
 
-            var spScalar = scalarProcessor.ZeroScalar;
+            var spScalar = scalarProcessor.GetZeroScalar();
 
-            foreach (var (index, scalar1) in indexScalarPairs1)
+            foreach (var (index, scalar1) in indexScalarPairs1.GetKeyValueRecords())
             {
-                var sig = signature.NormSquaredSignature(1UL << (int) index);
+                var sig = signature.NormSquaredSignature(index.BasisVectorIndexToId());
 
                 if (sig == 0)
                     continue;
@@ -209,14 +209,14 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
         private static T NormAsScalar<T>(this IGaScalarProcessor<T> scalarProcessor, IGaSignature signature, IGaStorageKVector<T> mv1)
         {
             var grade = mv1.Grade;
-            var spScalar = scalarProcessor.ZeroScalar;
+            var spScalar = scalarProcessor.GetZeroScalar();
             
             var indexScalarPairs1 = 
-                mv1.IndexScalarDictionary;
+                mv1.IndexScalarList;
 
-            foreach (var (index, scalar1) in indexScalarPairs1)
+            foreach (var (index, scalar1) in indexScalarPairs1.GetKeyValueRecords())
             {
-                var id = GaBasisUtils.BasisBladeId(grade, index);
+                var id = index.BasisBladeIndexToId(grade);
                 var sig = signature.NormSquaredSignature(id);
 
                 if (sig == 0)
@@ -235,14 +235,14 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
         private static T NormSquaredAsScalar<T>(this IGaScalarProcessor<T> scalarProcessor, IGaSignature signature, IGaStorageKVector<T> mv1)
         {
             var grade = mv1.Grade;
-            var spScalar = scalarProcessor.ZeroScalar;
+            var spScalar = scalarProcessor.GetZeroScalar();
             
             var indexScalarPairs1 = 
-                mv1.IndexScalarDictionary;
+                mv1.IndexScalarList;
 
-            foreach (var (index, scalar1) in indexScalarPairs1)
+            foreach (var (index, scalar1) in indexScalarPairs1.GetKeyValueRecords())
             {
-                var id = GaBasisUtils.BasisBladeId(grade, index);
+                var id = index.BasisBladeIndexToId(grade);
                 var sig = signature.NormSquaredSignature(id);
 
                 if (sig == 0)
@@ -271,11 +271,11 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
 
         private static T NormAsScalar<T>(this IGaScalarProcessor<T> scalarProcessor, IGaSignature signature, IGaStorageMultivector<T> mv1)
         {
-            var spScalar = scalarProcessor.ZeroScalar;
+            var spScalar = scalarProcessor.GetZeroScalar();
 
-            var idScalarDictionary1 = mv1.GetIdScalarDictionary();
+            var idScalarDictionary1 = mv1.GetIdScalarList();
 
-            foreach (var (id, scalar1) in idScalarDictionary1)
+            foreach (var (id, scalar1) in idScalarDictionary1.GetKeyValueRecords())
             {
                 var sig = signature.NormSquaredSignature(id);
 
@@ -294,11 +294,11 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
 
         private static T NormSquaredAsScalar<T>(this IGaScalarProcessor<T> scalarProcessor, IGaSignature signature, IGaStorageMultivector<T> mv1)
         {
-            var spScalar = scalarProcessor.ZeroScalar;
+            var spScalar = scalarProcessor.GetZeroScalar();
 
-            var idScalarDictionary1 = mv1.GetIdScalarDictionary();
+            var idScalarDictionary1 = mv1.GetIdScalarList();
 
-            foreach (var (id, scalar1) in idScalarDictionary1)
+            foreach (var (id, scalar1) in idScalarDictionary1.GetKeyValueRecords())
             {
                 var sig = signature.NormSquaredSignature(id);
 

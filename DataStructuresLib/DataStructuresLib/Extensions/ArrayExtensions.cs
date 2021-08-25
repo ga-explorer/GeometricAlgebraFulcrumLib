@@ -280,6 +280,19 @@ namespace DataStructuresLib.Extensions
         }
 
 
+        public static T[,] GetArrayCopy<T>(this T[,] array)
+        {
+            var n1 = array.GetLength(0);
+            var n2 = array.GetLength(1);
+            var arrayOut = new T[n2, n1];
+
+            for (var i = 0; i < n1; i++)
+            for (var j = 0; j < n2; j++)
+                arrayOut[i, j] = array[i, j];
+
+            return arrayOut;
+        }
+
         public static T[,] Transpose<T>(this T[,] array)
         {
             var n1 = array.GetLength(0);

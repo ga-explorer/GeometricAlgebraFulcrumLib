@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
-using GeometricAlgebraFulcrumLib.Storage;
+using GeometricAlgebraFulcrumLib.Storage.Multivectors;
 using TextComposerLib.Text.Linear;
 using TextComposerLib.Text.Structured;
 
@@ -41,7 +41,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
 
             _inputBasisVectorsArray = 
                 _inputId
-                    .BasisVectorIndexesInside()
+                    .BasisBladeIdToBasisVectorIndices()
                     .Select(index => 
                         context
                             .NumbersFactory

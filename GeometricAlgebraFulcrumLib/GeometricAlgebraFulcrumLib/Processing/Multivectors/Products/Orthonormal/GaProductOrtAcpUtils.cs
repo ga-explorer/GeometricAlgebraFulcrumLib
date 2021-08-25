@@ -2,8 +2,8 @@
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
-using GeometricAlgebraFulcrumLib.Storage;
 using GeometricAlgebraFulcrumLib.Storage.Composers;
+using GeometricAlgebraFulcrumLib.Storage.Multivectors;
 
 namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonormal
 {
@@ -24,13 +24,13 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
                 new GaStorageComposerMultivectorFloat64(basisSignature);
 
             var idScalarPairs1 = 
-                mv1.GetIdScalarPairs();
+                mv1.GetIdScalarRecords();
 
             var idScalarPairs2 = 
-                mv2.GetIdScalarDictionary();
+                mv2.GetIdScalarList();
 
             foreach (var (id1, scalar1) in idScalarPairs1)
-            foreach (var (id2, scalar2) in idScalarPairs2)
+            foreach (var (id2, scalar2) in idScalarPairs2.GetKeyValueRecords())
                 composer.AddAcpTerm(id1, id2, scalar1, scalar2);
 
             composer.RemoveZeroTerms();

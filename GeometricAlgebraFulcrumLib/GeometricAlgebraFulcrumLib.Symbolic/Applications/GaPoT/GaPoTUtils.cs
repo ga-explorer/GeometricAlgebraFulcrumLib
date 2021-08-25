@@ -2,11 +2,11 @@
 using GeometricAlgebraFulcrumLib.Algebra.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Geometry.Frames;
 using GeometricAlgebraFulcrumLib.Geometry.Rotors;
-using GeometricAlgebraFulcrumLib.Processing.Matrices;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
-using GeometricAlgebraFulcrumLib.Storage;
+using GeometricAlgebraFulcrumLib.Processing.ScalarsGrids;
 using GeometricAlgebraFulcrumLib.Storage.Factories;
+using GeometricAlgebraFulcrumLib.Storage.Multivectors;
 
 namespace GeometricAlgebraFulcrumLib.Symbolic.Applications.GaPoT
 {
@@ -16,11 +16,11 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Applications.GaPoT
         {
             var clarkeArray = new T[3, 3];
 
-            clarkeArray[0, 0] = processor.OneScalar;
+            clarkeArray[0, 0] = processor.GetOneScalar();
             clarkeArray[0, 1] = processor.Divide(-1, 2);
             clarkeArray[0, 2] = processor.Divide(-1, 2);
 
-            clarkeArray[1, 0] = processor.ZeroScalar;
+            clarkeArray[1, 0] = processor.GetZeroScalar();
             clarkeArray[1, 1] = processor.Divide(processor.Sqrt(3), 2);
             clarkeArray[1, 2] = processor.Divide(processor.Sqrt(3), -2);
 
@@ -32,32 +32,32 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Applications.GaPoT
                 processor.Divide(2, 3)
             );
 
-            return GaMatrixProcessorUtils.Times(processor, scalar, clarkeArray);
+            return processor.Times(scalar, clarkeArray);
         }
 
         public static T[,] CreateClarkeArray5D<T>(IGaScalarProcessor<T> processor)
         {
             var clarkeArray = new T[5, 5];
 
-            clarkeArray[0, 0] = processor.OneScalar;
+            clarkeArray[0, 0] = processor.GetOneScalar();
             clarkeArray[0, 1] = processor.CosPiRatio(2, 5);
             clarkeArray[0, 2] = processor.CosPiRatio(4, 5);
             clarkeArray[0, 3] = processor.CosPiRatio(6, 5);
             clarkeArray[0, 4] = processor.CosPiRatio(8, 5);
 
-            clarkeArray[1, 0] = processor.ZeroScalar;
+            clarkeArray[1, 0] = processor.GetZeroScalar();
             clarkeArray[1, 1] = processor.SinPiRatio(2, 5);
             clarkeArray[1, 2] = processor.SinPiRatio(4, 5);
             clarkeArray[1, 3] = processor.SinPiRatio(6, 5);
             clarkeArray[1, 4] = processor.SinPiRatio(8, 5);
 
-            clarkeArray[2, 0] = processor.OneScalar;
+            clarkeArray[2, 0] = processor.GetOneScalar();
             clarkeArray[2, 1] = processor.CosPiRatio(4, 5);
             clarkeArray[2, 2] = processor.CosPiRatio(8, 5);
             clarkeArray[2, 3] = processor.CosPiRatio(12, 5);
             clarkeArray[2, 4] = processor.CosPiRatio(16, 5);
 
-            clarkeArray[3, 0] = processor.ZeroScalar;
+            clarkeArray[3, 0] = processor.GetZeroScalar();
             clarkeArray[3, 1] = processor.SinPiRatio(4, 5);
             clarkeArray[3, 2] = processor.SinPiRatio(8, 5);
             clarkeArray[3, 3] = processor.SinPiRatio(12, 5);
@@ -73,39 +73,39 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Applications.GaPoT
                 processor.Divide(2, 5)
             );
 
-            return GaMatrixProcessorUtils.Times(processor, scalar, clarkeArray);
+            return processor.Times(scalar, clarkeArray);
         }
 
         public static T[,] CreateClarkeArray6D<T>(IGaScalarProcessor<T> processor)
         {
             var clarkeArray = new T[6, 6];
 
-            clarkeArray[0, 0] = processor.OneScalar;
+            clarkeArray[0, 0] = processor.GetOneScalar();
             clarkeArray[0, 1] = processor.Rational(-1, 2);
             clarkeArray[0, 2] = processor.Rational(-1, 2);
             clarkeArray[0, 3] = processor.Rational(1, 2);
-            clarkeArray[0, 4] = processor.MinusOneScalar;
+            clarkeArray[0, 4] = processor.GetMinusOneScalar();
             clarkeArray[0, 5] = processor.Rational(1, 2);
 
-            clarkeArray[1, 0] = processor.ZeroScalar;
+            clarkeArray[1, 0] = processor.GetZeroScalar();
             clarkeArray[1, 1] = processor.Divide(processor.Sqrt(3), 2);
             clarkeArray[1, 2] = processor.NegativeDivide(processor.Sqrt(3), 2);
             clarkeArray[1, 3] = processor.Divide(processor.Sqrt(3), 2);
-            clarkeArray[1, 4] = processor.ZeroScalar;
+            clarkeArray[1, 4] = processor.GetZeroScalar();
             clarkeArray[1, 5] = processor.NegativeDivide(processor.Sqrt(3), 2);
 
-            clarkeArray[2, 0] = processor.OneScalar;
+            clarkeArray[2, 0] = processor.GetOneScalar();
             clarkeArray[2, 1] = processor.Rational(-1, 2);
             clarkeArray[2, 2] = processor.Rational(-1, 2);
             clarkeArray[2, 3] = processor.Rational(-1, 2);
-            clarkeArray[2, 4] = processor.OneScalar;
+            clarkeArray[2, 4] = processor.GetOneScalar();
             clarkeArray[2, 5] = processor.Rational(-1, 2);
 
-            clarkeArray[3, 0] = processor.ZeroScalar;
+            clarkeArray[3, 0] = processor.GetZeroScalar();
             clarkeArray[3, 1] = processor.NegativeDivide(processor.Sqrt(3), 2);
             clarkeArray[3, 2] = processor.Divide(processor.Sqrt(3), 2);
             clarkeArray[3, 3] = processor.Divide(processor.Sqrt(3), 2);
-            clarkeArray[3, 4] = processor.ZeroScalar;
+            clarkeArray[3, 4] = processor.GetZeroScalar();
             clarkeArray[3, 5] = processor.NegativeDivide(processor.Sqrt(3), 2);
 
             clarkeArray[4, 0] = processor.SqrtRational(1, 2);
@@ -124,7 +124,7 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Applications.GaPoT
 
             var scalar = processor.SqrtRational(2,6);
 
-            return GaMatrixProcessorUtils.Times(processor, scalar, clarkeArray);
+            return processor.Times(scalar, clarkeArray);
         }
 
         /// <summary>
@@ -153,7 +153,7 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Applications.GaPoT
                 var rowIndex2 = 2 * k + 1;
 
                 clarkeArray[rowIndex1, 0] = s;
-                clarkeArray[rowIndex2, 0] = processor.ZeroScalar;
+                clarkeArray[rowIndex2, 0] = processor.GetZeroScalar();
                 
                 for (var colIndex = 1; colIndex < m; colIndex++)
                 {
@@ -180,7 +180,7 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Applications.GaPoT
 
             //Fill the last column
             var v = processor.Divide(
-                processor.OneScalar,
+                processor.GetOneScalar(),
                 processor.Sqrt(m)
             ); // $"1 / Sqrt[{m}]";
 
@@ -211,7 +211,7 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Applications.GaPoT
                 var rowIndex2 = 2 * k + 1;
                 
                 clarkeArray[rowIndex1, 0] = s;
-                clarkeArray[rowIndex2, 0] = processor.ZeroScalar;
+                clarkeArray[rowIndex2, 0] = processor.GetZeroScalar();
                 
                 for (var colIndex = 1; colIndex < m; colIndex++)
                 {
@@ -238,12 +238,12 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Applications.GaPoT
 
             //Fill the last two rows
             var v0 = processor.Divide(
-                processor.OneScalar,
+                processor.GetOneScalar(),
                 processor.Sqrt(m)
             ); // $"1 / Sqrt[{m}]";
 
             var v1 = processor.Divide(
-                processor.MinusOneScalar,
+                processor.GetMinusOneScalar(),
                 processor.Sqrt(m)
             ); // $"-1 / Sqrt[{m}]";
 
@@ -308,7 +308,7 @@ namespace GeometricAlgebraFulcrumLib.Symbolic.Applications.GaPoT
 
             var v2 = processor.CreateStorageVector(
                 vSpaceDimension - 1,
-                processor.OneScalar
+                processor.GetOneScalar()
             );
 
             return processor.CreateEuclideanRotor(v2, v1);

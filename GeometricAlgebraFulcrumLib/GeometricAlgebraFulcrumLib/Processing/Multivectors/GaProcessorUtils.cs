@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
-using GeometricAlgebraFulcrumLib.Storage;
+using GeometricAlgebraFulcrumLib.Storage.Factories;
+using GeometricAlgebraFulcrumLib.Storage.Multivectors;
 
 namespace GeometricAlgebraFulcrumLib.Processing.Multivectors
 {
@@ -10,25 +11,25 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T GetScalar<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageScalar<T> scalar)
         {
-            return scalar.IsEmpty()
-                ? scalarProcessor.ZeroScalar
-                : scalar.FirstScalar;
+            return scalar.IndexScalarList.TryGetValue(0, out var scalarValue)
+                ? scalarValue
+                : scalarProcessor.GetZeroScalar();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T GetScalar<T>(this IGaStorageScalar<T> scalar, IGaScalarProcessor<T> scalarProcessor)
         {
-            return scalar.IsEmpty()
-                ? scalarProcessor.ZeroScalar
-                : scalar.FirstScalar;
+            return scalar.IndexScalarList.TryGetValue(0, out var scalarValue)
+                ? scalarValue
+                : scalarProcessor.GetZeroScalar();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T GetScalar<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageScalar<T> scalar, Func<T, T> scalarMapping)
         {
-            return scalar.IsEmpty()
-                ? scalarMapping(scalarProcessor.ZeroScalar)
-                : scalarMapping(scalar.FirstScalar);
+            return scalar.IndexScalarList.TryGetValue(0, out var scalarValue)
+                ? scalarMapping(scalarValue)
+                : scalarMapping(scalarProcessor.GetZeroScalar());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -42,51 +43,42 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IGaStorageScalar<T> Abs<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageScalar<T> scalar)
         {
-            return GaStorageScalar<T>.Create(
-                scalar.IsEmpty()
-                    ? scalarProcessor.ZeroScalar
-                    : scalarProcessor.Abs(scalar.FirstScalar)
-            );
+            return scalar.TryGetScalar(out var value)
+                ? scalarProcessor.Abs(value).CreateStorageScalar()
+                : GaStorageScalar<T>.ZeroScalar;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IGaStorageScalar<T> Square<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageScalar<T> scalar)
         {
-            return GaStorageScalar<T>.Create(
-                scalar.IsEmpty()
-                    ? scalarProcessor.ZeroScalar
-                    : scalarProcessor.Times(scalar.FirstScalar, scalar.FirstScalar)
-            );
+            return scalar.TryGetScalar(out var value)
+                ? scalarProcessor.Square(value).CreateStorageScalar()
+                : GaStorageScalar<T>.ZeroScalar;
+
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IGaStorageScalar<T> Sqrt<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageScalar<T> scalar)
         {
-            return GaStorageScalar<T>.Create(
-                scalar.IsEmpty()
-                    ? scalarProcessor.ZeroScalar
-                    : scalarProcessor.Sqrt(scalar.FirstScalar)
-            );
+            return scalar.TryGetScalar(out var value)
+                ? scalarProcessor.Sqrt(value).CreateStorageScalar()
+                : GaStorageScalar<T>.ZeroScalar;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IGaStorageScalar<T> SqrtOfAbs<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageScalar<T> scalar)
         {
-            return GaStorageScalar<T>.Create(
-                scalar.IsEmpty()
-                    ? scalarProcessor.ZeroScalar
-                    : scalarProcessor.SqrtOfAbs(scalar.FirstScalar)
-            );
+            return scalar.TryGetScalar(out var value)
+                ? scalarProcessor.SqrtOfAbs(value).CreateStorageScalar()
+                : GaStorageScalar<T>.ZeroScalar;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IGaStorageScalar<T> Exp<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageScalar<T> scalar)
         {
-            return GaStorageScalar<T>.Create(
-                scalar.IsEmpty()
-                    ? scalarProcessor.OneScalar
-                    : scalarProcessor.Exp(scalar.FirstScalar)
-            );
+            return scalar.TryGetScalar(out var value)
+                ? scalarProcessor.SqrtOfAbs(value).CreateStorageScalar()
+                : GaStorageScalar<T>.Create(scalarProcessor.GetOneScalar());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -130,7 +122,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors
             return GaStorageScalar<T>.Create(
                 scalarProcessor.Log(
                     scalar, 
-                    baseScalar.FirstScalar
+                    scalarProcessor.GetScalar(baseScalar)
                 )
             );
         }
@@ -141,7 +133,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors
             return GaStorageScalar<T>.Create(
                 scalarProcessor.Log(
                     scalar.GetScalar(scalarProcessor), 
-                    baseScalar.FirstScalar
+                    scalarProcessor.GetScalar(baseScalar)
                 )
             );
         }
@@ -149,31 +141,25 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IGaStorageScalar<T> Sin<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageScalar<T> scalar)
         {
-            return GaStorageScalar<T>.Create(
-                scalar.IsEmpty()
-                    ? scalarProcessor.ZeroScalar
-                    : scalarProcessor.Sin(scalar.FirstScalar)
-            );
+            return scalar.TryGetScalar(out var value)
+                ? scalarProcessor.Sin(value).CreateStorageScalar()
+                : GaStorageScalar<T>.ZeroScalar;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IGaStorageScalar<T> Cos<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageScalar<T> scalar)
         {
-            return GaStorageScalar<T>.Create(
-                scalar.IsEmpty()
-                    ? scalarProcessor.OneScalar
-                    : scalarProcessor.Cos(scalar.FirstScalar)
-            );
+            return scalar.TryGetScalar(out var value)
+                ? scalarProcessor.SqrtOfAbs(value).CreateStorageScalar()
+                : GaStorageScalar<T>.Create(scalarProcessor.GetOneScalar());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IGaStorageScalar<T> Tan<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageScalar<T> scalar)
         {
-            return GaStorageScalar<T>.Create(
-                scalar.IsEmpty()
-                    ? scalarProcessor.ZeroScalar
-                    : scalarProcessor.Tan(scalar.FirstScalar)
-            );
+            return scalar.TryGetScalar(out var value)
+                ? scalarProcessor.SqrtOfAbs(value).CreateStorageScalar()
+                : GaStorageScalar<T>.ZeroScalar;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

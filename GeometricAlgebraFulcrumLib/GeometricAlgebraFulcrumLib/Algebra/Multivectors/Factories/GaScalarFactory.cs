@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors;
+using GeometricAlgebraFulcrumLib.Processing.Scalars.Binary;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.Multivectors.Factories
 {
@@ -75,7 +76,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Multivectors.Factories
         {
             return new GaScalar<T>(
                 processor,
-                processor.ZeroScalar
+                processor.GetZeroScalar()
             );
         }
 
@@ -84,7 +85,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Multivectors.Factories
         {
             return new GaScalar<T>(
                 processor, 
-                processor.OneScalar
+                processor.GetOneScalar()
             );
         }
 
@@ -93,7 +94,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Multivectors.Factories
         {
             return new GaScalar<T>(
                 processor, 
-                processor.MinusOneScalar
+                processor.GetMinusOneScalar()
             );
         }
     }

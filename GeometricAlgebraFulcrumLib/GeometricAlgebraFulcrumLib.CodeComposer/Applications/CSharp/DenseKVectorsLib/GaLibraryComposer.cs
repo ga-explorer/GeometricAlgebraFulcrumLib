@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using DataStructuresLib.BitManipulation;
-using GeometricAlgebraFulcrumLib.Algebra;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Space;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
 using GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVectorsLib.FactoredBlade;
 using GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVectorsLib.FrameUtils;
 using GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVectorsLib.KVector;
@@ -13,7 +14,7 @@ using GeometricAlgebraFulcrumLib.CodeComposer.Languages;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
-using GeometricAlgebraFulcrumLib.Storage;
+using GeometricAlgebraFulcrumLib.Storage.Multivectors;
 using TextComposerLib.Loggers.Progress;
 using TextComposerLib.Text.Parametric;
 
@@ -924,14 +925,14 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             GaSymbolicContextCodeComposer.DefaultGenerateCommentsBeforeComputations(contextCodeComposer);
 
             //Temp variables declaration
-            if (contextCodeComposer.Context.TargetTempVarsCount > MaxTargetLocalVars)
+            if (contextCodeComposer.Context.GetTargetTempVarsCount() > MaxTargetLocalVars)
             {
                 //Add array declaration code
                 contextCodeComposer.SyntaxList.Add(
                     contextCodeComposer.GaLanguage.SyntaxFactory.DeclareLocalArray(
                         GaLanguage.ScalarTypeName,
                         "tempArray",
-                        contextCodeComposer.Context.TargetTempVarsCount.ToString()
+                        contextCodeComposer.Context.GetTargetTempVarsCount().ToString()
                         )
                     );
 
@@ -941,8 +942,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             {
                 var tempVarNames =
                     contextCodeComposer
-                        .Context
-                        .IntermediateVariables
+                        .Context.GetIntermediateVariables()
                         .Select(item => item.ExternalName)
                         .Distinct();
 

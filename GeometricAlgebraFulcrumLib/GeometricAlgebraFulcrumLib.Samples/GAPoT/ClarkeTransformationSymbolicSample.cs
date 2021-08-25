@@ -1,5 +1,4 @@
 ﻿using System;
-using DataStructuresLib.Extensions;
 using GeometricAlgebraFulcrumLib.Algebra.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Geometry.Versors;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors;
@@ -9,6 +8,8 @@ using GeometricAlgebraFulcrumLib.Symbolic.Mathematica;
 using GeometricAlgebraFulcrumLib.Symbolic.Mathematica.ExprFactory;
 using GeometricAlgebraFulcrumLib.Symbolic.Processors;
 using GeometricAlgebraFulcrumLib.Symbolic.Text;
+using GeometricAlgebraFulcrumLib.Structures.Utils;
+using GeometricAlgebraFulcrumLib.TextComposers;
 using Wolfram.NETLink;
 
 namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
@@ -42,13 +43,13 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
                 var clarkeArray = 
                     clarkeMap
                         .GetVectorsMappingArray(n, n)
-                        .MapItems(scalar => 
+                        .MapValues(scalar => 
                             Mfs.TrigReduce[Mfs.FullSimplify[scalar]].Evaluate()
                         );
                 
                 Console.WriteLine("Generated Clarke Matrix:");
                 Console.WriteLine(
-                    TextComposer.GetArrayText(clarkeArray)
+                    TextComposer.GetArrayText(clarkeArray.ToArray())
                 );
                 Console.WriteLine();
 
@@ -69,7 +70,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
                 var linearMapQArray = 
                     linearMapQ
                         .GetVectorsMappingArray(n, n)
-                        .MapItems(scalar => 
+                        .MapValues(scalar => 
                             Mfs.TrigReduce[Mfs.FullSimplify[scalar]].Evaluate()
                         );
                 
@@ -82,7 +83,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
                 var linearMapRArray = 
                     linearMapR
                         .GetVectorsMappingArray(n, n)
-                        .MapItems(scalar => 
+                        .MapValues(scalar => 
                             Mfs.TrigReduce[Mfs.FullSimplify[scalar]].Evaluate()
                         );
                 

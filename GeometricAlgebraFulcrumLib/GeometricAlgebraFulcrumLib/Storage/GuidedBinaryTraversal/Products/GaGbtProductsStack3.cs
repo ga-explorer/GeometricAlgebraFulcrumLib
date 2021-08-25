@@ -4,9 +4,12 @@ using System.Diagnostics;
 using DataStructuresLib.BitManipulation;
 using GeometricAlgebraFulcrumLib.Algebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Factories;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
+using GeometricAlgebraFulcrumLib.Processing.Scalars.Binary;
 using GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Multivectors;
-using GeometricAlgebraFulcrumLib.Storage.Terms;
+using GeometricAlgebraFulcrumLib.Storage.Multivectors;
 
 namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
 {
@@ -16,8 +19,8 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
         public static GaGbtProductsStack3<T> Create(GaMultivector<T> mv1, GaMultivector<T> mv2, GaMultivector<T> mv3)
         {
             Debug.Assert(
-                mv1.MultivectorStorage.VSpaceDimension == mv2.MultivectorStorage.VSpaceDimension &&
-                mv2.MultivectorStorage.VSpaceDimension == mv3.MultivectorStorage.VSpaceDimension
+                mv1.MultivectorStorage.MinVSpaceDimension == mv2.MultivectorStorage.MinVSpaceDimension &&
+                mv2.MultivectorStorage.MinVSpaceDimension == mv3.MultivectorStorage.MinVSpaceDimension
             );
 
             var processor = mv1.Processor;
@@ -26,10 +29,10 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
                 (int) Math.Max(
                     1, 
                     Math.Max(
-                        mv1.MultivectorStorage.VSpaceDimension,
+                        mv1.MultivectorStorage.MinVSpaceDimension,
                         Math.Max(
-                            mv2.MultivectorStorage.VSpaceDimension, 
-                            mv3.MultivectorStorage.VSpaceDimension
+                            mv2.MultivectorStorage.MinVSpaceDimension, 
+                            mv3.MultivectorStorage.MinVSpaceDimension
                         )
                     )
                 );
@@ -73,28 +76,28 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
             => MultivectorStack3.TosScalar;
 
         public bool TosIsNonZeroOp
-            => GaBasisUtils.IsNonZeroOp(TosId1, TosId2);
+            => GaBasisBladeProductUtils.IsNonZeroOp(TosId1, TosId2);
 
         public bool TosIsNonZeroESp
-            => GaBasisUtils.IsNonZeroESp(TosId1, TosId2);
+            => GaBasisBladeProductUtils.IsNonZeroESp(TosId1, TosId2);
 
         public bool TosIsNonZeroELcp
-            => GaBasisUtils.IsNonZeroELcp(TosId1, TosId2);
+            => GaBasisBladeProductUtils.IsNonZeroELcp(TosId1, TosId2);
 
         public bool TosIsNonZeroERcp
-            => GaBasisUtils.IsNonZeroERcp(TosId1, TosId2);
+            => GaBasisBladeProductUtils.IsNonZeroERcp(TosId1, TosId2);
 
         public bool TosIsNonZeroEFdp
-            => GaBasisUtils.IsNonZeroEFdp(TosId1, TosId2);
+            => GaBasisBladeProductUtils.IsNonZeroEFdp(TosId1, TosId2);
 
         public bool TosIsNonZeroEHip
-            => GaBasisUtils.IsNonZeroEHip(TosId1, TosId2);
+            => GaBasisBladeProductUtils.IsNonZeroEHip(TosId1, TosId2);
 
         public bool TosIsNonZeroEAcp
-            => GaBasisUtils.IsNonZeroEAcp(TosId1, TosId2);
+            => GaBasisBladeProductUtils.IsNonZeroEAcp(TosId1, TosId2);
 
         public bool TosIsNonZeroECp
-            => GaBasisUtils.IsNonZeroECp(TosId1, TosId2);
+            => GaBasisBladeProductUtils.IsNonZeroECp(TosId1, TosId2);
 
         public ulong TosChildIdXor000
             => Stack1.TosChildId0 ^ Stack2.TosChildId0 ^ Stack3.TosChildId0;
@@ -169,19 +172,19 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
         }
 
 
-        public GaTerm<T> TosGetTermsEGp()
+        public GaBasisTerm<T> TosGetTermsEGp()
         {
             var id1 = TosId1;
             var id2 = TosId2;
             var id3 = TosId3;
 
-            var value = GaBasisUtils.IsNegativeEGp(id1, id2)
+            var value = GaBasisBladeProductUtils.IsNegativeEGp(id1, id2)
                 ? ScalarProcessor.NegativeTimes(TosValue1, TosValue2, TosValue3)
                 : ScalarProcessor.Times(TosValue1, TosValue2, TosValue3);
 
             //Console.Out.WriteLine($"id: ({id1}, {id2}, {id3}), value: {value}");
 
-            return GaTerm<T>.CreateUniform(id1 ^ id2 ^ id3, value);
+            return value.CreateBasisTerm(id1 ^ id2 ^ id3);
         }
 
         //public GaTerm<T> TosGetTermsGp(IGaNumMetricOrthogonal metric)
@@ -195,21 +198,21 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
         //    return term;
         //}
 
-        public GaTerm<T> TosGetTermsGp(T basisBladeSignature)
+        public GaBasisTerm<T> TosGetTermsGp(T basisBladeSignature)
         {
             var id1 = TosId1;
             var id2 = TosId2;
             var id3 = TosId3;
 
-            var value = GaBasisUtils.IsNegativeEGp(id1, id2)
+            var value = GaBasisBladeProductUtils.IsNegativeEGp(id1, id2)
                 ? ScalarProcessor.NegativeTimes(basisBladeSignature, TosValue1, TosValue2, TosValue3)
                 : ScalarProcessor.Times(basisBladeSignature, TosValue1, TosValue2, TosValue3);
 
-            return GaTerm<T>.CreateUniform(id1 ^ id2 ^ id3, value);
+            return value.CreateBasisTerm(id1 ^ id2 ^ id3);
         }
 
 
-        public IEnumerable<GaTerm<T>> TraverseForEGpGpTerms()
+        public IEnumerable<GaBasisTerm<T>> TraverseForEGpGpTerms()
         {
             PushRootData();
 
@@ -269,7 +272,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
         /// (X op Y) lcp Z
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<GaTerm<T>> TraverseForEOpLcpLaTerms()
+        public IEnumerable<GaBasisTerm<T>> TraverseForEOpLcpLaTerms()
         {
             PushRootData();
 

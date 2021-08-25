@@ -87,7 +87,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context.Opti
 
         protected override void BeginProcessing()
         {
-            foreach (var computedVar in Context.ComputedVariables)
+            foreach (var computedVar in Context.GetComputedVariables())
             {
                 _evaluationData[computedVar.InternalName] = 
                     Context.ExpressionSimplifier.Evaluate(

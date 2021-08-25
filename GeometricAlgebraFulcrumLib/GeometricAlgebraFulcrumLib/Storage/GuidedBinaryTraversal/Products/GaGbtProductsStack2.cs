@@ -4,11 +4,13 @@ using System.Diagnostics;
 using DataStructuresLib.BitManipulation;
 using DataStructuresLib.Stacks;
 using GeometricAlgebraFulcrumLib.Algebra.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Iterators;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
 using GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Multivectors;
+using GeometricAlgebraFulcrumLib.Storage.Multivectors;
+using GeometricAlgebraFulcrumLib.Structures;
 
 namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
 {
@@ -17,13 +19,10 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
     {
         public static GaGbtProductsStack2<T> Create(GaMultivector<T> mv1, GaMultivector<T> mv2)
         {
-            //TODO: Generalize to case where one is larger than the other
-            //Debug.Assert(mv1.Storage.VSpaceDimension == mv2.Storage.VSpaceDimension);
-
             var processor = mv1.Processor;
 
             var treeDepth = 
-                (int) Math.Max(1, Math.Max(mv1.MultivectorStorage.VSpaceDimension, mv2.MultivectorStorage.VSpaceDimension));
+                (int) Math.Max(1, Math.Max(mv1.MultivectorStorage.MinVSpaceDimension, mv2.MultivectorStorage.MinVSpaceDimension));
 
             var capacity = (treeDepth + 1) * (treeDepth + 1);
             
@@ -35,11 +34,8 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
 
         public static GaGbtProductsStack2<T> Create(IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivector<T> mv1, IGaStorageMultivector<T> mv2)
         {
-            //TODO: Generalize to case where one is larger than the other
-            //Debug.Assert(mv1.VSpaceDimension == mv2.VSpaceDimension);
-
             var treeDepth = 
-                (int) Math.Max(1, Math.Max(mv1.VSpaceDimension, mv2.VSpaceDimension));
+                (int) Math.Max(1, Math.Max(mv1.MinVSpaceDimension, mv2.MinVSpaceDimension));
 
             var capacity = (treeDepth + 1) * (treeDepth + 1);
             
@@ -71,28 +67,28 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
             => MultivectorStack2.TosScalar;
 
         public bool TosIsNonZeroOp
-            => GaBasisUtils.IsNonZeroOp(TosId1, TosId2);
+            => GaBasisBladeProductUtils.IsNonZeroOp(TosId1, TosId2);
 
         public bool TosIsNonZeroESp
-            => GaBasisUtils.IsNonZeroESp(TosId1, TosId2);
+            => GaBasisBladeProductUtils.IsNonZeroESp(TosId1, TosId2);
 
         public bool TosIsNonZeroELcp
-            => GaBasisUtils.IsNonZeroELcp(TosId1, TosId2);
+            => GaBasisBladeProductUtils.IsNonZeroELcp(TosId1, TosId2);
 
         public bool TosIsNonZeroERcp
-            => GaBasisUtils.IsNonZeroERcp(TosId1, TosId2);
+            => GaBasisBladeProductUtils.IsNonZeroERcp(TosId1, TosId2);
 
         public bool TosIsNonZeroEFdp
-            => GaBasisUtils.IsNonZeroEFdp(TosId1, TosId2);
+            => GaBasisBladeProductUtils.IsNonZeroEFdp(TosId1, TosId2);
 
         public bool TosIsNonZeroEHip
-            => GaBasisUtils.IsNonZeroEHip(TosId1, TosId2);
+            => GaBasisBladeProductUtils.IsNonZeroEHip(TosId1, TosId2);
 
         public bool TosIsNonZeroEAcp
-            => GaBasisUtils.IsNonZeroEAcp(TosId1, TosId2);
+            => GaBasisBladeProductUtils.IsNonZeroEAcp(TosId1, TosId2);
 
         public bool TosIsNonZeroECp
-            => GaBasisUtils.IsNonZeroECp(TosId1, TosId2);
+            => GaBasisBladeProductUtils.IsNonZeroECp(TosId1, TosId2);
 
         public ulong TosChildIdXor00
             => Stack1.TosChildId0 ^ Stack2.TosChildId0;
@@ -142,22 +138,22 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
         }
 
 
-        private KeyValuePair<ulong, T> TosGetEGpIdScalarPair()
+        private GaRecordKeyValue<T> TosGetEGpIdScalarPair()
         {
             var id1 = TosId1;
             var id2 = TosId2;
 
             var id = id1 ^ id2;
-            var scalar = GaBasisUtils.IsNegativeEGp(id1, id2)
+            var scalar = GaBasisBladeProductUtils.IsNegativeEGp(id1, id2)
                 ? ScalarProcessor.NegativeTimes(TosValue1, TosValue2)
                 : ScalarProcessor.Times(TosValue1, TosValue2);
 
             //Console.Out.WriteLine($"id1: {id1}, id2: {id2}, value: {value}");
 
-            return new KeyValuePair<ulong, T>(id, scalar);
+            return new GaRecordKeyValue<T>(id, scalar);
         }
 
-        private KeyValuePair<ulong, T> TosGetGpIdScalarPair(int basisBladeSignature)
+        private GaRecordKeyValue<T> TosGetGpIdScalarPair(int basisBladeSignature)
         {
             Debug.Assert(basisBladeSignature == 1 || basisBladeSignature == -1);
 
@@ -165,16 +161,16 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
             var id2 = TosId2;
 
             var id = id1 ^ id2;
-            var scalar = GaBasisUtils.IsNegativeGp(basisBladeSignature, id1, id2)
+            var scalar = GaBasisBladeProductUtils.IsNegativeGp(basisBladeSignature, id1, id2)
                 ? ScalarProcessor.NegativeTimes(TosValue1, TosValue2)
                 : ScalarProcessor.Times(TosValue1, TosValue2);
 
-            return new KeyValuePair<ulong, T>(id, scalar);
+            return new GaRecordKeyValue<T>(id, scalar);
         }
 
         private T TosGetEGpScalar()
         {
-            var scalar = GaBasisUtils.IsNegativeEGp(TosId1, TosId2)
+            var scalar = GaBasisBladeProductUtils.IsNegativeEGp(TosId1, TosId2)
                 ? ScalarProcessor.NegativeTimes(TosValue1, TosValue2)
                 : ScalarProcessor.Times(TosValue1, TosValue2);
 
@@ -188,7 +184,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
             var id1 = TosId1;
             var id2 = TosId2;
 
-            var scalar = GaBasisUtils.IsNegativeGp(basisBladeSignature, id1, id2)
+            var scalar = GaBasisBladeProductUtils.IsNegativeGp(basisBladeSignature, id1, id2)
                 ? ScalarProcessor.NegativeTimes(TosValue1, TosValue2)
                 : ScalarProcessor.Times(TosValue1, TosValue2);
 
@@ -196,7 +192,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
         }
 
 
-        public IEnumerable<KeyValuePair<ulong, T>> GetOpIdScalarPairs()
+        public IEnumerable<GaRecordKeyValue<T>> GetOpIdScalarRecords()
         {
             PushRootData();
 
@@ -229,7 +225,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
             }
         }
 
-        public IEnumerable<KeyValuePair<ulong, T>> GetEGpIdScalarPairs()
+        public IEnumerable<GaRecordKeyValue<T>> GetEGpIdScalarRecords()
         {
             PushRootData();
 
@@ -263,7 +259,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
             }
         }
 
-        public IEnumerable<KeyValuePair<ulong, T>> GetESpIdScalarPairs()
+        public IEnumerable<GaRecordKeyValue<T>> GetESpIdScalarRecords()
         {
             PushRootData();
 
@@ -327,7 +323,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
             }
         }
 
-        public IEnumerable<KeyValuePair<ulong, T>> GetELcpIdScalarPairs()
+        public IEnumerable<GaRecordKeyValue<T>> GetELcpIdScalarRecords()
         {
             PushRootData();
 
@@ -360,7 +356,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
             }
         }
 
-        public IEnumerable<KeyValuePair<ulong, T>> GetERcpIdScalarPairs()
+        public IEnumerable<GaRecordKeyValue<T>> GetERcpIdScalarRecords()
         {
             PushRootData();
 
@@ -393,7 +389,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
             }
         }
 
-        public IEnumerable<KeyValuePair<ulong, T>> GetEFdpIdScalarPairs()
+        public IEnumerable<GaRecordKeyValue<T>> GetEFdpIdScalarRecords()
         {
             PushRootData();
 
@@ -428,7 +424,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
             }
         }
 
-        public IEnumerable<KeyValuePair<ulong, T>> GetEHipIdScalarPairs()
+        public IEnumerable<GaRecordKeyValue<T>> GetEHipIdScalarRecords()
         {
             PushRootData();
 
@@ -463,7 +459,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
             }
         }
 
-        public IEnumerable<KeyValuePair<ulong, T>> GetEAcpIdScalarPairs()
+        public IEnumerable<GaRecordKeyValue<T>> GetEAcpIdScalarRecords()
         {
             PushRootData();
 
@@ -498,7 +494,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
             }
         }
 
-        public IEnumerable<KeyValuePair<ulong, T>> GetECpIdScalarPairs()
+        public IEnumerable<GaRecordKeyValue<T>> GetECpIdScalarRecords()
         {
             PushRootData();
 
@@ -534,11 +530,10 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
         }
 
 
-        public IEnumerable<KeyValuePair<ulong, T>> GetGpIdScalarPairs(GaSignature metric)
+        public IEnumerable<GaRecordKeyValue<T>> GetGpIdScalarRecords(IGaSignature metric)
         {
             PushRootData();
 
-            var metricBasisVectorsSignaturesList = metric.BasisVectorSignatures;
             var metricStack = new FixedStack<int>(Capacity);
             metricStack.Push(1);
 
@@ -586,7 +581,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
                     if (hasChild21)
                     {
                         var basisVectorSignature = 
-                            metricBasisVectorsSignaturesList[TosTreeDepth - 1];
+                            metric.GetBasisVectorSignature(TosTreeDepth - 1);
 
                         if (basisVectorSignature != 0)
                         {
@@ -598,11 +593,10 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
             }
         }
 
-        public IEnumerable<KeyValuePair<ulong, T>> GetSpIdScalarPairs(GaSignature metric)
+        public IEnumerable<GaRecordKeyValue<T>> GetSpIdScalarRecords(IGaSignature metric)
         {
             PushRootData();
 
-            var metricBasisVectorsSignaturesList = metric.BasisVectorSignatures;
             var metricStack = new FixedStack<int>(Capacity);
             metricStack.Push(1);
 
@@ -638,7 +632,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
                     if (hasChild21)
                     {
                         var basisVectorSignature =
-                            metricBasisVectorsSignaturesList[TosTreeDepth - 1];
+                            metric.GetBasisVectorSignature(TosTreeDepth - 1);
 
                         if (basisVectorSignature != 0)
                         {
@@ -650,11 +644,10 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
             }
         }
 
-        public IEnumerable<T> GetSpScalars(GaSignature metric)
+        public IEnumerable<T> GetSpScalars(IGaSignature metric)
         {
             PushRootData();
 
-            var metricBasisVectorsSignaturesList = metric.BasisVectorSignatures;
             var metricStack = new FixedStack<int>(Capacity);
             metricStack.Push(1);
 
@@ -690,7 +683,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
                     if (hasChild21)
                     {
                         var basisVectorSignature =
-                            metricBasisVectorsSignaturesList[TosTreeDepth - 1];
+                            metric.GetBasisVectorSignature(TosTreeDepth - 1);
 
                         if (basisVectorSignature != 0)
                         {
@@ -702,11 +695,10 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
             }
         }
 
-        public IEnumerable<KeyValuePair<ulong, T>> GetLcpIdScalarPairs(GaSignature metric)
+        public IEnumerable<GaRecordKeyValue<T>> GetLcpIdScalarRecords(IGaSignature metric)
         {
             PushRootData();
 
-            var metricBasisVectorsSignaturesList = metric.BasisVectorSignatures;
             var metricStack = new FixedStack<int>(Capacity);
             metricStack.Push(1);
 
@@ -748,7 +740,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
                     if (hasChild21)
                     {
                         var basisVectorSignature =
-                            metricBasisVectorsSignaturesList[TosTreeDepth - 1];
+                            metric.GetBasisVectorSignature(TosTreeDepth - 1);
 
                         if (basisVectorSignature != 0)
                         {
@@ -760,11 +752,10 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
             }
         }
 
-        public IEnumerable<KeyValuePair<ulong, T>> GetRcpIdScalarPairs(GaSignature metric)
+        public IEnumerable<GaRecordKeyValue<T>> GetRcpIdScalarRecords(IGaSignature metric)
         {
             PushRootData();
 
-            var metricBasisVectorsSignaturesList = metric.BasisVectorSignatures;
             var metricStack = new FixedStack<int>(Capacity);
             metricStack.Push(1);
 
@@ -806,7 +797,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
                     if (hasChild21)
                     {
                         var basisVectorSignature =
-                            metricBasisVectorsSignaturesList[TosTreeDepth - 1];
+                            metric.GetBasisVectorSignature(TosTreeDepth - 1);
 
                         if (basisVectorSignature != 0)
                         {
@@ -818,11 +809,10 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
             }
         }
 
-        public IEnumerable<KeyValuePair<ulong, T>> GetFdpIdScalarPairs(GaSignature metric)
+        public IEnumerable<GaRecordKeyValue<T>> GetFdpIdScalarRecords(IGaSignature metric)
         {
             PushRootData();
 
-            var metricBasisVectorsSignaturesList = metric.BasisVectorSignatures;
             var metricStack = new FixedStack<int>(Capacity);
             metricStack.Push(1);
 
@@ -871,7 +861,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
                     if (hasChild21)
                     {
                         var basisVectorSignature =
-                            metricBasisVectorsSignaturesList[TosTreeDepth - 1];
+                            metric.GetBasisVectorSignature(TosTreeDepth - 1);
 
                         if (basisVectorSignature != 0)
                         {
@@ -883,11 +873,10 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
             }
         }
 
-        public IEnumerable<KeyValuePair<ulong, T>> GetHipIdScalarPairs(GaSignature metric)
+        public IEnumerable<GaRecordKeyValue<T>> GetHipIdScalarRecords(IGaSignature metric)
         {
             PushRootData();
 
-            var metricBasisVectorsSignaturesList = metric.BasisVectorSignatures;
             var metricStack = new FixedStack<int>(Capacity);
             metricStack.Push(1);
 
@@ -936,7 +925,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
                     if (hasChild21)
                     {
                         var basisVectorSignature =
-                            metricBasisVectorsSignaturesList[TosTreeDepth - 1];
+                            metric.GetBasisVectorSignature(TosTreeDepth - 1);
 
                         if (basisVectorSignature != 0)
                         {
@@ -948,11 +937,10 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
             }
         }
 
-        public IEnumerable<KeyValuePair<ulong, T>> GetAcpIdScalarPairs(GaSignature metric)
+        public IEnumerable<GaRecordKeyValue<T>> GetAcpIdScalarRecords(IGaSignature metric)
         {
             PushRootData();
 
-            var metricBasisVectorsSignaturesList = metric.BasisVectorSignatures;
             var metricStack = new FixedStack<int>(Capacity);
             metricStack.Push(1);
 
@@ -1001,7 +989,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
                     if (hasChild21)
                     {
                         var basisVectorSignature =
-                            metricBasisVectorsSignaturesList[TosTreeDepth - 1];
+                            metric.GetBasisVectorSignature(TosTreeDepth - 1);
 
                         if (basisVectorSignature != 0)
                         {
@@ -1013,11 +1001,10 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
             }
         }
 
-        public IEnumerable<KeyValuePair<ulong, T>> GetCpIdScalarPairs(GaSignature metric)
+        public IEnumerable<GaRecordKeyValue<T>> GetCpIdScalarRecords(IGaSignature metric)
         {
             PushRootData();
 
-            var metricBasisVectorsSignaturesList = metric.BasisVectorSignatures;
             var metricStack = new FixedStack<int>(Capacity);
             metricStack.Push(1);
 
@@ -1066,7 +1053,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
                     if (hasChild21)
                     {
                         var basisVectorSignature =
-                            metricBasisVectorsSignaturesList[TosTreeDepth - 1];
+                            metric.GetBasisVectorSignature(TosTreeDepth - 1);
 
                         if (basisVectorSignature != 0)
                         {

@@ -15,7 +15,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Tuples
 
         public static GaConstantTuple<T> CreateZero(IGaScalarProcessor<T> itemScalarsDomain)
         {
-            return new(itemScalarsDomain, itemScalarsDomain.ZeroScalar);
+            return new(itemScalarsDomain, itemScalarsDomain.GetZeroScalar());
         }
 
 
@@ -96,7 +96,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Tuples
                 return true;
             }
 
-            value = ScalarProcessor.ZeroScalar;
+            value = ScalarProcessor.GetZeroScalar();
             return false;
         }
 

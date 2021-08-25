@@ -7,7 +7,7 @@ using GeometricAlgebraFulcrumLib.Processing.Multivectors.Binary;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean;
 using GeometricAlgebraFulcrumLib.Processing.Random.Float64;
 using GeometricAlgebraFulcrumLib.Processing.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Storage;
+using GeometricAlgebraFulcrumLib.Storage.Multivectors;
 using NUnit.Framework;
 
 namespace GeometricAlgebraFulcrumLib.UnitTests.Geometry
@@ -22,10 +22,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Geometry
 
         public IGaProcessor<double> Processor { get; }
             = GaScalarProcessorFloat64.DefaultProcessor.CreateEuclideanProcessor(8);
-
-        public GaScalarProcessorFloat64 ScalarProcessor
-            => GaScalarProcessorFloat64.DefaultProcessor;
-
+        
         public uint VSpaceDimension 
             => Processor.VSpaceDimension;
 

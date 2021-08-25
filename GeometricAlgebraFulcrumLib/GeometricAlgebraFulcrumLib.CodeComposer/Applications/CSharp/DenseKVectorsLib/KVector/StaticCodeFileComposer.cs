@@ -1,5 +1,5 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Algebra;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
 using TextComposerLib.Text.Linear;
 using TextComposerLib.Text.Structured;
 using TextComposerLib.Text.Parametric;

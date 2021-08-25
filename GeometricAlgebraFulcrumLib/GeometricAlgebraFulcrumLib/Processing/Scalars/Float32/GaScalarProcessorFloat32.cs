@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace GeometricAlgebraFulcrumLib.Processing.Scalars.Float32
 {
@@ -15,28 +13,32 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars.Float32
 
         public bool IsSymbolic => false;
 
-        public float ZeroScalar => 0f;
-        
-        public float OneScalar => 1f;
+        public float GetZeroScalar() => 0f;
 
-        public float MinusOneScalar => -1f;
+        public float GetOneScalar() => 1f;
 
-        public float PiScalar => MathF.PI;
+        public float GetMinusOneScalar() => -1f;
+
+        public float GetPiScalar() => MathF.PI;
+        public float[] GetZeroScalarArray1D(int count)
+        {
+            throw new NotImplementedException();
+        }
+
+        public float[,] GetZeroScalarArray2D(int count)
+        {
+            throw new NotImplementedException();
+        }
+
+        public float[,] GetZeroScalarArray2D(int count1, int count2)
+        {
+            throw new NotImplementedException();
+        }
 
 
         public float Add(float scalar1, float scalar2)
         {
             return scalar1 + scalar2;
-        }
-
-        public float Add(params float[] scalarsList)
-        {
-            return scalarsList.Sum();
-        }
-
-        public float Add(IEnumerable<float> scalarsList)
-        {
-            return scalarsList.Sum();
         }
 
         public float Subtract(float scalar1, float scalar2)
@@ -49,41 +51,9 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars.Float32
             return scalar1 * scalar2;
         }
 
-        public float Times(params float[] scalarsList)
-        {
-            return scalarsList.Aggregate(
-                1f, 
-                (current, scalar) => current * scalar
-            );
-        }
-
-        public float Times(IEnumerable<float> scalarsList)
-        {
-            return scalarsList.Aggregate(
-                1f, 
-                (current, scalar) => current * scalar
-            );
-        }
-
         public float NegativeTimes(float scalar1, float scalar2)
         {
             return -scalar1 * scalar2;
-        }
-
-        public float NegativeTimes(params float[] scalarsList)
-        {
-            return scalarsList.Aggregate(
-                -1f, 
-                (current, scalar) => current * scalar
-            );
-        }
-
-        public float NegativeTimes(IEnumerable<float> scalarsList)
-        {
-            return scalarsList.Aggregate(
-                -1f, 
-                (current, scalar) => current * scalar
-            );
         }
 
         public float Divide(float scalar1, float scalar2)
@@ -223,6 +193,21 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars.Float32
             return scalar > -ZeroEpsilon && scalar < ZeroEpsilon;
         }
 
+        public bool IsNotZero(float scalar)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsNotZero(float scalar, bool nearZeroFlag)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsNotNearZero(float scalar)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool IsPositive(float scalar)
         {
             return scalar > 0;
@@ -231,6 +216,16 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars.Float32
         public bool IsNegative(float scalar)
         {
             return scalar < 0;
+        }
+
+        public bool IsNotPositive(float scalar)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsNotNegative(float scalar)
+        {
+            throw new NotImplementedException();
         }
 
         public bool IsNotNearPositive(float scalar)

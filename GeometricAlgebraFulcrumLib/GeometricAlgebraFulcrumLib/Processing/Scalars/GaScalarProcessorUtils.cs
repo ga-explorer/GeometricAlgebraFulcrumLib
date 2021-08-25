@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Processing.Tuples;
+using GeometricAlgebraFulcrumLib.Structures.Lists.Even;
 
 namespace GeometricAlgebraFulcrumLib.Processing.Scalars
 {
@@ -18,7 +19,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
         public static bool IsOne<T>(this IGaScalarProcessor<T> scalarProcessor, T scalar)
         {
             return scalarProcessor.IsZero(
-                scalarProcessor.Subtract(scalar, scalarProcessor.OneScalar)
+                scalarProcessor.Subtract(scalar, scalarProcessor.GetOneScalar())
             );
         }
 
@@ -26,7 +27,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
         public static bool IsMinusOne<T>(this IGaScalarProcessor<T> scalarProcessor, T scalar)
         {
             return scalarProcessor.IsZero(
-                scalarProcessor.Subtract(scalar, scalarProcessor.MinusOneScalar)
+                scalarProcessor.Subtract(scalar, scalarProcessor.GetMinusOneScalar())
             );
         }
 
@@ -36,7 +37,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
             return scalarProcessor.Divide(
                 scalarProcessor.Times(
                     scalarProcessor.IntegerToScalar(numerator),
-                    scalarProcessor.PiScalar
+                    scalarProcessor.GetPiScalar()
                 ),
                 scalarProcessor.IntegerToScalar(denominator)
             );
@@ -48,7 +49,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
             return scalarProcessor.Divide(
                 scalarProcessor.Times(
                     numerator,
-                    scalarProcessor.PiScalar
+                    scalarProcessor.GetPiScalar()
                 ),
                 scalarProcessor.IntegerToScalar(denominator)
             );
@@ -60,7 +61,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
             return scalarProcessor.Divide(
                 scalarProcessor.Times(
                     scalarProcessor.IntegerToScalar(numerator),
-                    scalarProcessor.PiScalar
+                    scalarProcessor.GetPiScalar()
                 ),
                 denominator
             );
@@ -72,7 +73,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
             return scalarProcessor.Divide(
                 scalarProcessor.Times(
                     numerator,
-                    scalarProcessor.PiScalar
+                    scalarProcessor.GetPiScalar()
                 ),
                 denominator
             );
@@ -85,7 +86,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
                     scalarProcessor.Divide(
                     scalarProcessor.Times(
                         scalarProcessor.IntegerToScalar(numerator),
-                        scalarProcessor.PiScalar
+                        scalarProcessor.GetPiScalar()
                     ),
                     scalarProcessor.IntegerToScalar(denominator)
                 )
@@ -99,7 +100,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
                     scalarProcessor.Divide(
                     scalarProcessor.Times(
                         numerator,
-                        scalarProcessor.PiScalar
+                        scalarProcessor.GetPiScalar()
                     ),
                     scalarProcessor.IntegerToScalar(denominator)
                 )
@@ -113,7 +114,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
                     scalarProcessor.Divide(
                     scalarProcessor.Times(
                         scalarProcessor.IntegerToScalar(numerator),
-                        scalarProcessor.PiScalar
+                        scalarProcessor.GetPiScalar()
                     ),
                     denominator
                 )
@@ -127,7 +128,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
                 scalarProcessor.Divide(
                     scalarProcessor.Times(
                         numerator,
-                        scalarProcessor.PiScalar
+                        scalarProcessor.GetPiScalar()
                     ),
                     denominator
                 )
@@ -141,7 +142,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
                 scalarProcessor.Divide(
                     scalarProcessor.Times(
                         scalarProcessor.IntegerToScalar(numerator),
-                        scalarProcessor.PiScalar
+                        scalarProcessor.GetPiScalar()
                     ),
                     scalarProcessor.IntegerToScalar(denominator)
                 )
@@ -155,7 +156,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
                 scalarProcessor.Divide(
                     scalarProcessor.Times(
                         numerator,
-                        scalarProcessor.PiScalar
+                        scalarProcessor.GetPiScalar()
                     ),
                     scalarProcessor.IntegerToScalar(denominator)
                 )
@@ -169,7 +170,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
                 scalarProcessor.Divide(
                     scalarProcessor.Times(
                         scalarProcessor.IntegerToScalar(numerator),
-                        scalarProcessor.PiScalar
+                        scalarProcessor.GetPiScalar()
                     ),
                     denominator
                 )
@@ -183,7 +184,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
                 scalarProcessor.Divide(
                     scalarProcessor.Times(
                         numerator,
-                        scalarProcessor.PiScalar
+                        scalarProcessor.GetPiScalar()
                     ),
                     denominator
                 )
@@ -235,7 +236,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
         {
             return scalarProcessor.Add(
                 scalar1,
-                scalarProcessor.OneScalar
+                scalarProcessor.GetOneScalar()
             );
         }
 
@@ -243,7 +244,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
         public static T AddToOne<T>(this IGaScalarProcessor<T> scalarProcessor, T scalar2)
         {
             return scalarProcessor.Add(
-                scalarProcessor.OneScalar,
+                scalarProcessor.GetOneScalar(),
                 scalar2
             );
         }
@@ -280,7 +281,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
         {
             return scalarProcessor.Subtract(
                 scalar1,
-                scalarProcessor.OneScalar
+                scalarProcessor.GetOneScalar()
             );
         }
 
@@ -288,7 +289,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
         public static T SubtractFromOne<T>(this IGaScalarProcessor<T> scalarProcessor, T scalar2)
         {
             return scalarProcessor.Subtract(
-                scalarProcessor.OneScalar,
+                scalarProcessor.GetOneScalar(),
                 scalar2
             );
         }
@@ -352,7 +353,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
         {
             return intScalar switch
             {
-                0 => scalarProcessor.ZeroScalar,
+                0 => scalarProcessor.GetZeroScalar(),
                 1 => scalarProcessor.Times(scalar1, scalar2),
                 -1 => scalarProcessor.NegativeTimes(scalar1, scalar2),
                 _ => scalarProcessor.Times(
@@ -508,6 +509,27 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
         public static GaSparseTupleComposer<T> CreateSparseScalarsTupleComposer<T>(this IGaScalarProcessor<T> itemScalarsDomain, IEnumerable<Tuple<int, T>> indexScalarTuples)
         {
             return new GaSparseTupleComposer<T>(itemScalarsDomain, indexScalarTuples);
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IGaListEven<T> RemoveZeroValues<T>(this IGaScalarProcessor<T> scalarProcessor, IGaListEven<T> evenDictionary)
+        {
+            return evenDictionary.FilterByValue(scalarProcessor.IsNotZero);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IGaListEven<T> RemoveZeroValues<T>(this IGaScalarProcessor<T> scalarProcessor, IGaListEven<T> evenDictionary, bool nearZeroFlag)
+        {
+            return nearZeroFlag
+                ? evenDictionary.FilterByValue(scalarProcessor.IsNotNearZero)
+                : evenDictionary.FilterByValue(scalarProcessor.IsNotZero);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IGaListEven<T> RemoveNearZeroValues<T>(this IGaScalarProcessor<T> scalarProcessor, IGaListEven<T> evenDictionary)
+        {
+            return evenDictionary.FilterByValue(scalarProcessor.IsNotNearZero);
         }
     }
 }

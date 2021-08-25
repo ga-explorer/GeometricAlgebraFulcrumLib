@@ -1,16 +1,16 @@
 ﻿using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Processing.Multivectors.Unary;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
-using GeometricAlgebraFulcrumLib.Storage;
-using GeometricAlgebraFulcrumLib.Storage.Utils;
+using GeometricAlgebraFulcrumLib.Storage.Multivectors;
 
 namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Binary
 {
     public static class GaProcessorTimesUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaStorageScalar<T> Times<T>(this IGaScalarProcessor<T> scalarProcessor, GaStorageScalar<T> mv, T scalar)
+        public static IGaStorageScalar<T> Times<T>(this IGaScalarProcessor<T> scalarProcessor, GaStorageScalar<T> mv, T scalar)
         {
-            return mv.MapScalars(s => scalarProcessor.Times(s, scalar));
+            return mv.MapScalar(s => scalarProcessor.Times(s, scalar));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -32,33 +32,33 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Binary
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaStorageVector<T> Times<T>(this IGaScalarProcessor<T> scalarProcessor, GaStorageVector<T> mv, T scalar)
+        public static IGaStorageVector<T> Times<T>(this IGaScalarProcessor<T> scalarProcessor, GaStorageVector<T> mv, T scalar)
         {
-            return mv.MapScalars(s => scalarProcessor.Times(s, scalar));
+            return mv.MapVectorScalars(s => scalarProcessor.Times(s, scalar));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaStorageBivector<T> Times<T>(this IGaScalarProcessor<T> scalarProcessor, GaStorageBivector<T> mv, T scalar)
+        public static IGaStorageBivector<T> Times<T>(this IGaScalarProcessor<T> scalarProcessor, GaStorageBivector<T> mv, T scalar)
         {
-            return mv.MapScalars(s => scalarProcessor.Times(s, scalar));
+            return mv.MapBivectorScalars(s => scalarProcessor.Times(s, scalar));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaStorageKVector<T> Times<T>(this IGaScalarProcessor<T> scalarProcessor, GaStorageKVector<T> mv, T scalar)
+        public static IGaStorageKVector<T> Times<T>(this IGaScalarProcessor<T> scalarProcessor, GaStorageKVector<T> mv, T scalar)
         {
-            return mv.MapScalars(s => scalarProcessor.Times(s, scalar));
+            return mv.MapKVectorScalars(s => scalarProcessor.Times(s, scalar));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaStorageMultivectorGraded<T> Times<T>(this IGaScalarProcessor<T> scalarProcessor, GaStorageMultivectorGraded<T> mv, T scalar)
+        public static IGaStorageMultivectorGraded<T> Times<T>(this IGaScalarProcessor<T> scalarProcessor, GaStorageMultivectorGraded<T> mv, T scalar)
         {
-            return mv.MapScalars(s => scalarProcessor.Times(s, scalar));
+            return mv.MapGradedMultivectorScalars(s => scalarProcessor.Times(s, scalar));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static GaStorageMultivectorSparse<T> Times<T>(this IGaScalarProcessor<T> scalarProcessor, GaStorageMultivectorSparse<T> mv, T scalar)
         {
-            return mv.MapScalars(s => scalarProcessor.Times(s, scalar));
+            return mv.MapSparseMultivectorScalars(s => scalarProcessor.Times(s, scalar));
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -87,9 +87,9 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Binary
         
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaStorageScalar<T> Times<T>(this IGaScalarProcessor<T> scalarProcessor, T scalar, GaStorageScalar<T> mv)
+        public static IGaStorageScalar<T> Times<T>(this IGaScalarProcessor<T> scalarProcessor, T scalar, GaStorageScalar<T> mv)
         {
-            return mv.MapScalars(s => scalarProcessor.Times(scalar, s));
+            return mv.MapScalar(s => scalarProcessor.Times(scalar, s));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -111,33 +111,33 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Binary
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaStorageVector<T> Times<T>(this IGaScalarProcessor<T> scalarProcessor, T scalar, GaStorageVector<T> mv)
+        public static IGaStorageVector<T> Times<T>(this IGaScalarProcessor<T> scalarProcessor, T scalar, GaStorageVector<T> mv)
         {
-            return mv.MapScalars(s => scalarProcessor.Times(scalar, s));
+            return mv.MapVectorScalars(s => scalarProcessor.Times(scalar, s));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaStorageBivector<T> Times<T>(this IGaScalarProcessor<T> scalarProcessor, T scalar, GaStorageBivector<T> mv)
+        public static IGaStorageBivector<T> Times<T>(this IGaScalarProcessor<T> scalarProcessor, T scalar, GaStorageBivector<T> mv)
         {
-            return mv.MapScalars(s => scalarProcessor.Times(scalar, s));
+            return mv.MapBivectorScalars(s => scalarProcessor.Times(scalar, s));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaStorageKVector<T> Times<T>(this IGaScalarProcessor<T> scalarProcessor, T scalar, GaStorageKVector<T> mv)
+        public static IGaStorageKVector<T> Times<T>(this IGaScalarProcessor<T> scalarProcessor, T scalar, GaStorageKVector<T> mv)
         {
-            return mv.MapScalars(s => scalarProcessor.Times(scalar, s));
+            return mv.MapKVectorScalars(s => scalarProcessor.Times(scalar, s));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaStorageMultivectorGraded<T> Times<T>(this IGaScalarProcessor<T> scalarProcessor, T scalar, GaStorageMultivectorGraded<T> mv)
+        public static IGaStorageMultivectorGraded<T> Times<T>(this IGaScalarProcessor<T> scalarProcessor, T scalar, GaStorageMultivectorGraded<T> mv)
         {
-            return mv.MapScalars(s => scalarProcessor.Times(scalar, s));
+            return mv.MapGradedMultivectorScalars(s => scalarProcessor.Times(scalar, s));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static GaStorageMultivectorSparse<T> Times<T>(this IGaScalarProcessor<T> scalarProcessor, T scalar, GaStorageMultivectorSparse<T> mv)
         {
-            return mv.MapScalars(s => scalarProcessor.Times(scalar, s));
+            return mv.MapSparseMultivectorScalars(s => scalarProcessor.Times(scalar, s));
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

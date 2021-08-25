@@ -2,10 +2,11 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using GeometricAlgebraFulcrumLib.Algebra.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
-using GeometricAlgebraFulcrumLib.Storage;
+using GeometricAlgebraFulcrumLib.Storage.Multivectors;
+using GeometricAlgebraFulcrumLib.Structures;
 
 namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Iterators
 {
@@ -43,97 +44,97 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Iterators
         }
 
 
-        private IEnumerable<KeyValuePair<ulong, T>> GetOpIdScalarPairs2(ulong id1)
+        private IEnumerable<GaRecordKeyValue<T>> GetOpIdScalarRecords2(ulong id1)
         {
-            return Storage2.GetIdScalarPairs().Where(pair => GaBasisUtils.IsNonZeroOp(id1, pair.Key));
+            return Storage2.GetIdScalarRecords().Where(pair => GaBasisBladeProductUtils.IsNonZeroOp(id1, pair.Key));
         }
 
-        private IEnumerable<KeyValuePair<ulong, T>> GetELcpIdScalarPairs2(ulong id1)
+        private IEnumerable<GaRecordKeyValue<T>> GetELcpIdScalarRecords2(ulong id1)
         {
-            return Storage2.GetIdScalarPairs().Where(pair => GaBasisUtils.IsNonZeroELcp(id1, pair.Key));
+            return Storage2.GetIdScalarRecords().Where(pair => GaBasisBladeProductUtils.IsNonZeroELcp(id1, pair.Key));
         }
 
-        private IEnumerable<KeyValuePair<ulong, T>> GetERcpIdScalarPairs2(ulong id1)
+        private IEnumerable<GaRecordKeyValue<T>> GetERcpIdScalarRecords2(ulong id1)
         {
-            return Storage2.GetIdScalarPairs().Where(pair => GaBasisUtils.IsNonZeroERcp(id1, pair.Key));
+            return Storage2.GetIdScalarRecords().Where(pair => GaBasisBladeProductUtils.IsNonZeroERcp(id1, pair.Key));
         }
 
-        private IEnumerable<KeyValuePair<ulong, T>> GetEHipIdScalarPairs2(ulong id1)
+        private IEnumerable<GaRecordKeyValue<T>> GetEHipIdScalarRecords2(ulong id1)
         {
-            return Storage2.GetIdScalarPairs().Where(pair => GaBasisUtils.IsNonZeroEHip(id1, pair.Key));
+            return Storage2.GetIdScalarRecords().Where(pair => GaBasisBladeProductUtils.IsNonZeroEHip(id1, pair.Key));
         }
 
-        private IEnumerable<KeyValuePair<ulong, T>> GetEFdpIdScalarPairs2(ulong id1)
+        private IEnumerable<GaRecordKeyValue<T>> GetEFdpIdScalarRecords2(ulong id1)
         {
-            return Storage2.GetIdScalarPairs().Where(pair => GaBasisUtils.IsNonZeroEFdp(id1, pair.Key));
+            return Storage2.GetIdScalarRecords().Where(pair => GaBasisBladeProductUtils.IsNonZeroEFdp(id1, pair.Key));
         }
 
-        private IEnumerable<KeyValuePair<ulong, T>> GetECpIdScalarPairs2(ulong id1)
+        private IEnumerable<GaRecordKeyValue<T>> GetECpIdScalarRecords2(ulong id1)
         {
-            return Storage2.GetIdScalarPairs().Where(pair => GaBasisUtils.IsNonZeroECp(id1, pair.Key));
+            return Storage2.GetIdScalarRecords().Where(pair => GaBasisBladeProductUtils.IsNonZeroECp(id1, pair.Key));
         }
 
-        private IEnumerable<KeyValuePair<ulong, T>> GetEAcpIdScalarPairs2(ulong id1)
+        private IEnumerable<GaRecordKeyValue<T>> GetEAcpIdScalarRecords2(ulong id1)
         {
-            return Storage2.GetIdScalarPairs().Where(pair => GaBasisUtils.IsNonZeroEAcp(id1, pair.Key));
+            return Storage2.GetIdScalarRecords().Where(pair => GaBasisBladeProductUtils.IsNonZeroEAcp(id1, pair.Key));
         }
 
 
-        public IEnumerable<KeyValuePair<ulong, T>> GetOpIdScalarPairs()
+        public IEnumerable<GaRecordKeyValue<T>> GetOpIdScalarRecords()
         {
-            foreach (var (id1, scalar1) in Storage1.GetIdScalarPairs())
+            foreach (var (id1, scalar1) in Storage1.GetIdScalarRecords())
             {
-                foreach (var (id2, scalar2) in GetOpIdScalarPairs2(id1))
+                foreach (var (id2, scalar2) in GetOpIdScalarRecords2(id1))
                 {
                     var id = id1 ^ id2;
-                    var scalar = GaBasisUtils.IsNegativeEGp(id1, id2)
+                    var scalar = GaBasisBladeProductUtils.IsNegativeEGp(id1, id2)
                         ? ScalarProcessor.NegativeTimes(scalar1, scalar2)
                         : ScalarProcessor.Times(scalar1, scalar2);
 
-                    yield return new KeyValuePair<ulong, T>(id, scalar);
+                    yield return new GaRecordKeyValue<T>(id, scalar);
                 }    
             }
         }
 
-        public IEnumerable<KeyValuePair<ulong, T>> GetEGpIdScalarPairs()
+        public IEnumerable<GaRecordKeyValue<T>> GetEGpIdScalarRecords()
         {
-            foreach (var (id1, scalar1) in Storage1.GetIdScalarPairs())
+            foreach (var (id1, scalar1) in Storage1.GetIdScalarRecords())
             {
-                foreach (var (id2, scalar2) in Storage2.GetIdScalarPairs())
+                foreach (var (id2, scalar2) in Storage2.GetIdScalarRecords())
                 {
                     var id = id1 ^ id2;
-                    var scalar = GaBasisUtils.IsNegativeEGp(id1, id2)
+                    var scalar = GaBasisBladeProductUtils.IsNegativeEGp(id1, id2)
                         ? ScalarProcessor.NegativeTimes(scalar1, scalar2)
                         : ScalarProcessor.Times(scalar1, scalar2);
 
-                    yield return new KeyValuePair<ulong, T>(id, scalar);
+                    yield return new GaRecordKeyValue<T>(id, scalar);
                 }    
             }
         }
 
-        public IEnumerable<KeyValuePair<ulong, T>> GetESpIdScalarPairs()
+        public IEnumerable<GaRecordKeyValue<T>> GetESpIdScalarRecords()
         {
-            foreach (var (id, scalar1) in Storage1.GetIdScalarPairs())
+            foreach (var (id, scalar1) in Storage1.GetIdScalarRecords())
             {
                 if (!Storage2.TryGetTermScalar(id, out var scalar2)) 
                     continue;
 
-                var scalar = GaBasisUtils.IsNegativeEGp(id)
+                var scalar = GaBasisBladeProductUtils.IsNegativeEGp(id)
                     ? ScalarProcessor.NegativeTimes(scalar1, scalar2)
                     : ScalarProcessor.Times(scalar1, scalar2);
 
-                yield return new KeyValuePair<ulong, T>(0, scalar);
+                yield return new GaRecordKeyValue<T>(0, scalar);
             }
         }
         
         public IEnumerable<T> GetESpScalars()
         {
-            foreach (var (id, scalar1) in Storage1.GetIdScalarPairs())
+            foreach (var (id, scalar1) in Storage1.GetIdScalarRecords())
             {
                 if (!Storage2.TryGetTermScalar(id, out var scalar2)) 
                     continue;
 
-                var scalar = GaBasisUtils.IsNegativeEGp(id)
+                var scalar = GaBasisBladeProductUtils.IsNegativeEGp(id)
                     ? ScalarProcessor.NegativeTimes(scalar1, scalar2)
                     : ScalarProcessor.Times(scalar1, scalar2);
 
@@ -141,108 +142,108 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Iterators
             }
         }
         
-        public IEnumerable<KeyValuePair<ulong, T>> GetELcpIdScalarPairs()
+        public IEnumerable<GaRecordKeyValue<T>> GetELcpIdScalarRecords()
         {
-            foreach (var (id1, scalar1) in Storage1.GetIdScalarPairs())
+            foreach (var (id1, scalar1) in Storage1.GetIdScalarRecords())
             {
-                foreach (var (id2, scalar2) in GetELcpIdScalarPairs2(id1))
+                foreach (var (id2, scalar2) in GetELcpIdScalarRecords2(id1))
                 {
                     var id = id1 ^ id2;
-                    var scalar = GaBasisUtils.IsNegativeEGp(id1, id2)
+                    var scalar = GaBasisBladeProductUtils.IsNegativeEGp(id1, id2)
                         ? ScalarProcessor.NegativeTimes(scalar1, scalar2)
                         : ScalarProcessor.Times(scalar1, scalar2);
 
-                    yield return new KeyValuePair<ulong, T>(id, scalar);
+                    yield return new GaRecordKeyValue<T>(id, scalar);
                 }    
             }
         }
         
-        public IEnumerable<KeyValuePair<ulong, T>> GetERcpIdScalarPairs()
+        public IEnumerable<GaRecordKeyValue<T>> GetERcpIdScalarRecords()
         {
-            foreach (var (id1, scalar1) in Storage1.GetIdScalarPairs())
+            foreach (var (id1, scalar1) in Storage1.GetIdScalarRecords())
             {
-                foreach (var (id2, scalar2) in GetERcpIdScalarPairs2(id1))
+                foreach (var (id2, scalar2) in GetERcpIdScalarRecords2(id1))
                 {
                     var id = id1 ^ id2;
-                    var scalar = GaBasisUtils.IsNegativeEGp(id1, id2)
+                    var scalar = GaBasisBladeProductUtils.IsNegativeEGp(id1, id2)
                         ? ScalarProcessor.NegativeTimes(scalar1, scalar2)
                         : ScalarProcessor.Times(scalar1, scalar2);
 
-                    yield return new KeyValuePair<ulong, T>(id, scalar);
+                    yield return new GaRecordKeyValue<T>(id, scalar);
                 }    
             }
         }
         
-        public IEnumerable<KeyValuePair<ulong, T>> GetEHipIdScalarPairs()
+        public IEnumerable<GaRecordKeyValue<T>> GetEHipIdScalarRecords()
         {
-            foreach (var (id1, scalar1) in Storage1.GetIdScalarPairs())
+            foreach (var (id1, scalar1) in Storage1.GetIdScalarRecords())
             {
-                foreach (var (id2, scalar2) in GetEHipIdScalarPairs2(id1))
+                foreach (var (id2, scalar2) in GetEHipIdScalarRecords2(id1))
                 {
                     var id = id1 ^ id2;
-                    var scalar = GaBasisUtils.IsNegativeEGp(id1, id2)
+                    var scalar = GaBasisBladeProductUtils.IsNegativeEGp(id1, id2)
                         ? ScalarProcessor.NegativeTimes(scalar1, scalar2)
                         : ScalarProcessor.Times(scalar1, scalar2);
 
-                    yield return new KeyValuePair<ulong, T>(id, scalar);
+                    yield return new GaRecordKeyValue<T>(id, scalar);
                 }    
             }
         }
         
-        public IEnumerable<KeyValuePair<ulong, T>> GetEFdpIdScalarPairs()
+        public IEnumerable<GaRecordKeyValue<T>> GetEFdpIdScalarRecords()
         {
-            foreach (var (id1, scalar1) in Storage1.GetIdScalarPairs())
+            foreach (var (id1, scalar1) in Storage1.GetIdScalarRecords())
             {
-                foreach (var (id2, scalar2) in GetEFdpIdScalarPairs2(id1))
+                foreach (var (id2, scalar2) in GetEFdpIdScalarRecords2(id1))
                 {
                     var id = id1 ^ id2;
-                    var scalar = GaBasisUtils.IsNegativeEGp(id1, id2)
+                    var scalar = GaBasisBladeProductUtils.IsNegativeEGp(id1, id2)
                         ? ScalarProcessor.NegativeTimes(scalar1, scalar2)
                         : ScalarProcessor.Times(scalar1, scalar2);
 
-                    yield return new KeyValuePair<ulong, T>(id, scalar);
+                    yield return new GaRecordKeyValue<T>(id, scalar);
                 }    
             }
         }
         
-        public IEnumerable<KeyValuePair<ulong, T>> GetECpIdScalarPairs()
+        public IEnumerable<GaRecordKeyValue<T>> GetECpIdScalarRecords()
         {
-            foreach (var (id1, scalar1) in Storage1.GetIdScalarPairs())
+            foreach (var (id1, scalar1) in Storage1.GetIdScalarRecords())
             {
-                foreach (var (id2, scalar2) in GetECpIdScalarPairs2(id1))
+                foreach (var (id2, scalar2) in GetECpIdScalarRecords2(id1))
                 {
                     var id = id1 ^ id2;
-                    var scalar = GaBasisUtils.IsNegativeEGp(id1, id2)
+                    var scalar = GaBasisBladeProductUtils.IsNegativeEGp(id1, id2)
                         ? ScalarProcessor.NegativeTimes(scalar1, scalar2)
                         : ScalarProcessor.Times(scalar1, scalar2);
 
-                    yield return new KeyValuePair<ulong, T>(id, scalar);
+                    yield return new GaRecordKeyValue<T>(id, scalar);
                 }    
             }
         }
         
-        public IEnumerable<KeyValuePair<ulong, T>> GetEAcpIdScalarPairs()
+        public IEnumerable<GaRecordKeyValue<T>> GetEAcpIdScalarRecords()
         {
-            foreach (var (id1, scalar1) in Storage1.GetIdScalarPairs())
+            foreach (var (id1, scalar1) in Storage1.GetIdScalarRecords())
             {
-                foreach (var (id2, scalar2) in GetEAcpIdScalarPairs2(id1))
+                foreach (var (id2, scalar2) in GetEAcpIdScalarRecords2(id1))
                 {
                     var id = id1 ^ id2;
-                    var scalar = GaBasisUtils.IsNegativeEGp(id1, id2)
+                    var scalar = GaBasisBladeProductUtils.IsNegativeEGp(id1, id2)
                         ? ScalarProcessor.NegativeTimes(scalar1, scalar2)
                         : ScalarProcessor.Times(scalar1, scalar2);
 
-                    yield return new KeyValuePair<ulong, T>(id, scalar);
+                    yield return new GaRecordKeyValue<T>(id, scalar);
                 }    
             }
         }
 
 
-        public IEnumerable<KeyValuePair<ulong, T>> GetGpIdScalarPairs(GaSignature basesSignature)
+        public IEnumerable<GaRecordKeyValue<T>> GetGpIdScalarRecords(IGaSignature basesSignature)
         {
-            foreach (var (id1, scalar1) in Storage1.GetIdScalarPairs())
+            foreach (var (id1, scalar1) in Storage1.GetIdScalarRecords())
             {
-                foreach (var (id2, scalar2) in Storage2.GetIdScalarPairs())
+                foreach (var (id2, scalar2) in Storage2.GetIdScalarRecords())
                 {
                     var basisSignature = 
                         basesSignature.GpSignature(id1, id2);
@@ -255,14 +256,14 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Iterators
                         ? ScalarProcessor.NegativeTimes(scalar1, scalar2)
                         : ScalarProcessor.Times(scalar1, scalar2);
 
-                    yield return new KeyValuePair<ulong, T>(id, scalar);
+                    yield return new GaRecordKeyValue<T>(id, scalar);
                 }    
             }
         }
 
-        public IEnumerable<KeyValuePair<ulong, T>> GetSpIdScalarPairs(GaSignature basesSignature)
+        public IEnumerable<GaRecordKeyValue<T>> GetSpIdScalarRecords(IGaSignature basesSignature)
         {
-            foreach (var (id, scalar1) in Storage1.GetIdScalarPairs())
+            foreach (var (id, scalar1) in Storage1.GetIdScalarRecords())
             {
                 var basisSignature = 
                     basesSignature.GetBasisBladeSignature(id);
@@ -277,13 +278,13 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Iterators
                     ? ScalarProcessor.NegativeTimes(scalar1, scalar2)
                     : ScalarProcessor.Times(scalar1, scalar2);
 
-                yield return new KeyValuePair<ulong, T>(0, scalar);
+                yield return new GaRecordKeyValue<T>(0, scalar);
             }
         }
 
-        public IEnumerable<T> GetSpScalars(GaSignature basesSignature)
+        public IEnumerable<T> GetSpScalars(IGaSignature basesSignature)
         {
-            foreach (var (id, scalar1) in Storage1.GetIdScalarPairs())
+            foreach (var (id, scalar1) in Storage1.GetIdScalarRecords())
             {
                 var basisSignature = 
                     basesSignature.GetBasisBladeSignature(id);
@@ -302,11 +303,11 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Iterators
             }
         }
 
-        public IEnumerable<KeyValuePair<ulong, T>> GetLcpIdScalarPairs(GaSignature basesSignature)
+        public IEnumerable<GaRecordKeyValue<T>> GetLcpIdScalarRecords(IGaSignature basesSignature)
         {
-            foreach (var (id1, scalar1) in Storage1.GetIdScalarPairs())
+            foreach (var (id1, scalar1) in Storage1.GetIdScalarRecords())
             {
-                foreach (var (id2, scalar2) in GetELcpIdScalarPairs2(id1))
+                foreach (var (id2, scalar2) in GetELcpIdScalarRecords2(id1))
                 {
                     var basisSignature = 
                         basesSignature.GpSignature(id1, id2);
@@ -319,16 +320,16 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Iterators
                         ? ScalarProcessor.NegativeTimes(scalar1, scalar2)
                         : ScalarProcessor.Times(scalar1, scalar2);
 
-                    yield return new KeyValuePair<ulong, T>(id, scalar);
+                    yield return new GaRecordKeyValue<T>(id, scalar);
                 }    
             }
         }
 
-        public IEnumerable<KeyValuePair<ulong, T>> GetRcpIdScalarPairs(GaSignature basesSignature)
+        public IEnumerable<GaRecordKeyValue<T>> GetRcpIdScalarRecords(IGaSignature basesSignature)
         {
-            foreach (var (id1, scalar1) in Storage1.GetIdScalarPairs())
+            foreach (var (id1, scalar1) in Storage1.GetIdScalarRecords())
             {
-                foreach (var (id2, scalar2) in GetERcpIdScalarPairs2(id1))
+                foreach (var (id2, scalar2) in GetERcpIdScalarRecords2(id1))
                 {
                     var basisSignature = 
                         basesSignature.GpSignature(id1, id2);
@@ -341,16 +342,16 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Iterators
                         ? ScalarProcessor.NegativeTimes(scalar1, scalar2)
                         : ScalarProcessor.Times(scalar1, scalar2);
 
-                    yield return new KeyValuePair<ulong, T>(id, scalar);
+                    yield return new GaRecordKeyValue<T>(id, scalar);
                 }    
             }
         }
 
-        public IEnumerable<KeyValuePair<ulong, T>> GetHipIdScalarPairs(GaSignature basesSignature)
+        public IEnumerable<GaRecordKeyValue<T>> GetHipIdScalarRecords(IGaSignature basesSignature)
         {
-            foreach (var (id1, scalar1) in Storage1.GetIdScalarPairs())
+            foreach (var (id1, scalar1) in Storage1.GetIdScalarRecords())
             {
-                foreach (var (id2, scalar2) in GetEHipIdScalarPairs2(id1))
+                foreach (var (id2, scalar2) in GetEHipIdScalarRecords2(id1))
                 {
                     var basisSignature = 
                         basesSignature.GpSignature(id1, id2);
@@ -363,16 +364,16 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Iterators
                         ? ScalarProcessor.NegativeTimes(scalar1, scalar2)
                         : ScalarProcessor.Times(scalar1, scalar2);
 
-                    yield return new KeyValuePair<ulong, T>(id, scalar);
+                    yield return new GaRecordKeyValue<T>(id, scalar);
                 }    
             }
         }
 
-        public IEnumerable<KeyValuePair<ulong, T>> GetFdpIdScalarPairs(GaSignature basesSignature)
+        public IEnumerable<GaRecordKeyValue<T>> GetFdpIdScalarRecords(IGaSignature basesSignature)
         {
-            foreach (var (id1, scalar1) in Storage1.GetIdScalarPairs())
+            foreach (var (id1, scalar1) in Storage1.GetIdScalarRecords())
             {
-                foreach (var (id2, scalar2) in GetEFdpIdScalarPairs2(id1))
+                foreach (var (id2, scalar2) in GetEFdpIdScalarRecords2(id1))
                 {
                     var basisSignature = 
                         basesSignature.GpSignature(id1, id2);
@@ -385,16 +386,16 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Iterators
                         ? ScalarProcessor.NegativeTimes(scalar1, scalar2)
                         : ScalarProcessor.Times(scalar1, scalar2);
 
-                    yield return new KeyValuePair<ulong, T>(id, scalar);
+                    yield return new GaRecordKeyValue<T>(id, scalar);
                 }    
             }
         }
 
-        public IEnumerable<KeyValuePair<ulong, T>> GetCpIdScalarPairs(GaSignature basesSignature)
+        public IEnumerable<GaRecordKeyValue<T>> GetCpIdScalarRecords(IGaSignature basesSignature)
         {
-            foreach (var (id1, scalar1) in Storage1.GetIdScalarPairs())
+            foreach (var (id1, scalar1) in Storage1.GetIdScalarRecords())
             {
-                foreach (var (id2, scalar2) in GetECpIdScalarPairs2(id1))
+                foreach (var (id2, scalar2) in GetECpIdScalarRecords2(id1))
                 {
                     var basisSignature = 
                         basesSignature.GpSignature(id1, id2);
@@ -407,16 +408,16 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Iterators
                         ? ScalarProcessor.NegativeTimes(scalar1, scalar2)
                         : ScalarProcessor.Times(scalar1, scalar2);
 
-                    yield return new KeyValuePair<ulong, T>(id, scalar);
+                    yield return new GaRecordKeyValue<T>(id, scalar);
                 }    
             }
         }
 
-        public IEnumerable<KeyValuePair<ulong, T>> GetAcpIdScalarPairs(GaSignature basesSignature)
+        public IEnumerable<GaRecordKeyValue<T>> GetAcpIdScalarRecords(IGaSignature basesSignature)
         {
-            foreach (var (id1, scalar1) in Storage1.GetIdScalarPairs())
+            foreach (var (id1, scalar1) in Storage1.GetIdScalarRecords())
             {
-                foreach (var (id2, scalar2) in GetEAcpIdScalarPairs2(id1))
+                foreach (var (id2, scalar2) in GetEAcpIdScalarRecords2(id1))
                 {
                     var basisSignature = 
                         basesSignature.GpSignature(id1, id2);
@@ -429,7 +430,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Iterators
                         ? ScalarProcessor.NegativeTimes(scalar1, scalar2)
                         : ScalarProcessor.Times(scalar1, scalar2);
 
-                    yield return new KeyValuePair<ulong, T>(id, scalar);
+                    yield return new GaRecordKeyValue<T>(id, scalar);
                 }    
             }
         }

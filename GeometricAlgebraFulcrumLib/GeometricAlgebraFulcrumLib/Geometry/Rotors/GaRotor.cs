@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using GeometricAlgebraFulcrumLib.Algebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Factories;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Space;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
 using GeometricAlgebraFulcrumLib.Algebra.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Geometry.Frames;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors;
@@ -12,9 +14,9 @@ using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Unary;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
-using GeometricAlgebraFulcrumLib.Storage;
-using GeometricAlgebraFulcrumLib.Storage.Composers;
+using GeometricAlgebraFulcrumLib.Processing.ScalarsGrids;
 using GeometricAlgebraFulcrumLib.Storage.Factories;
+using GeometricAlgebraFulcrumLib.Storage.Multivectors;
 using GeometricAlgebraFulcrumLib.Storage.Utils;
 
 namespace GeometricAlgebraFulcrumLib.Geometry.Rotors
@@ -55,7 +57,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Rotors
             var cosHalfAngle = 
                 processor.Sqrt(
                     processor.Divide(
-                        processor.Add(processor.OneScalar, cosAngle),
+                        processor.Add(processor.GetOneScalar(), cosAngle),
                         processor.IntegerToScalar(2)
                     )
                 );
@@ -63,7 +65,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Rotors
             var sinHalfAngle = 
                 processor.Sqrt(
                     processor.Divide(
-                        processor.Subtract(processor.OneScalar, cosAngle),
+                        processor.Subtract(processor.GetOneScalar(), cosAngle),
                         processor.IntegerToScalar(2)
                     )
                 );
@@ -183,19 +185,21 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Rotors
             var cosHalfAngle = processor.Cos(halfRotationAngle);
             var sinHalfAngle = processor.Sin(halfRotationAngle);
 
-            var bladeId = (1UL << i) | (1UL << j);
+            var bladeId = GaBasisBivectorUtils.BasisBivectorId(i, j);
 
-            var composer = new GaStorageComposerMultivectorSparse<T>(processor);
+            var composer = processor.CreateStorageSparseMultivectorComposer();
 
             composer.SetTerm(0, cosHalfAngle);
             composer.SetTerm(bladeId, sinHalfAngle);
 
             return new GaRotor<T>(
                 processor,
-                composer.GetMultivector()
+                composer.CreateStorageSparseMultivector()
             );
         }
 
+
+        public IGaSpace Space => Processor;
 
         public uint VSpaceDimension 
             => Processor.VSpaceDimension;
@@ -203,16 +207,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Rotors
         public ulong GaSpaceDimension
             => Processor.GaSpaceDimension;
 
-        public ulong MaxBasisBladeId 
-            => Processor.MaxBasisBladeId;
-
-        public uint GradesCount 
-            => Processor.GradesCount;
-
-        public IEnumerable<uint> Grades 
-            => Processor.Grades;
-
-        public IGaScalarProcessor<T> ScalarProcessor 
+        public IGaScalarsGridProcessor<T> ScalarsGridProcessor 
             => Processor;
 
         public IGaStorageKVector<T> MappedPseudoScalar { get; }
@@ -271,44 +266,44 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Rotors
 
         public IGaStorageVector<T> MapBasisVector(int index)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public IReadOnlyList<IGaStorageVector<T>> GetMappedBasisVectors()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public IGaStorageVector<T> MapBasisVector(ulong index)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public IGaStorageBivector<T> MapBasisBivector(int index1, int index2)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public IGaStorageBivector<T> MapBasisBivector(ulong index1, ulong index2)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public IGaStorageKVector<T> MapBasisBlade(ulong id)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public IGaStorageKVector<T> MapBasisBlade(uint grade, ulong index)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public IGaStorageScalar<T> MapScalar(IGaStorageScalar<T> mv)
         {
-            return mv.IsEmpty()
-                ? GaStorageScalar<T>.ZeroScalar 
-                : Processor.CreateStorageScalar(mv.FirstScalar);
+            return mv.TryGetScalarPart(out var scalar)
+                ? scalar
+                : GaStorageScalar<T>.ZeroScalar;
         }
 
         public IGaStorageKVector<T> MapTerm(IGaStorageKVector<T> mv)

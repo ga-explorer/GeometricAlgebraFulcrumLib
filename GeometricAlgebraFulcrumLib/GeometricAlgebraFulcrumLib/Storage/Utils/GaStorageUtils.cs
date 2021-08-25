@@ -4,144 +4,219 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.BitManipulation;
 using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Factories;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
-using GeometricAlgebraFulcrumLib.Storage.Terms;
+using GeometricAlgebraFulcrumLib.Storage.Factories;
+using GeometricAlgebraFulcrumLib.Storage.Multivectors;
+using GeometricAlgebraFulcrumLib.Structures;
+using GeometricAlgebraFulcrumLib.Structures.Factories;
+using GeometricAlgebraFulcrumLib.Structures.Grids.Even;
+using GeometricAlgebraFulcrumLib.Structures.Lists.Even;
 
 namespace GeometricAlgebraFulcrumLib.Storage.Utils
 {
     public static class GaStorageUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<KeyValuePair<ulong, T>> GetIdScalarPairs<T>(this IGaStorageMultivector<T> mv, Func<T, bool> filterFunc)
+        public static IEnumerable<IGaStorageKVector<T>> GetKVectorStorages<T>(this IGaStorageMultivector<T> multivector)
+        {
+            return multivector
+                .GetGradeIndexScalarList()
+                .GetGradeListRecords()
+                .Select(
+                    gradeListRecord => gradeListRecord.CreateStorageKVector()
+                );
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GaRecordGradeEvenListValue<T> GetScaledListRecord<T>(this IGaStorageKVector<T> kVector, T scalingFactor)
+        {
+            return new GaRecordGradeEvenListValue<T>(
+                kVector.Grade,
+                kVector.IndexScalarList,
+                scalingFactor
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GaRecordEvenListValue<T> GetScaledListRecord<T>(this IGaStorageMultivectorSparse<T> multivector, T scalingFactor)
+        {
+            return new GaRecordEvenListValue<T>(
+                multivector.IdScalarList,
+                scalingFactor
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GaRecordGradedListValue<T> GetScaledListRecord<T>(this IGaStorageMultivectorGraded<T> multivector, T scalingFactor)
+        {
+            return new GaRecordGradedListValue<T>(
+                multivector.GetGradeIndexScalarList(),
+                scalingFactor
+            );
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ulong GetMinId<T>(this GaStorageMultivectorSparse<T> mv)
+        {
+            return mv.IdScalarList.GetMinKey();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ulong GetMaxId<T>(this GaStorageMultivectorSparse<T> mv)
+        {
+            return mv.IdScalarList.GetMaxKey();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ulong GetMinIndex<T>(this IGaStorageKVector<T> mv)
+        {
+            return mv.IndexScalarList.GetMinKey();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ulong GetMaxIndex<T>(this IGaStorageKVector<T> mv)
+        {
+            return mv.IndexScalarList.GetMaxKey();
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<GaRecordKeyValue<T>> GetIdScalarRecords<T>(this IGaStorageMultivector<T> mv, Func<T, bool> filterFunc)
         {
             return mv
-                .GetIdScalarPairs()
-                .Where(pair => filterFunc(pair.Value));
+                .GetIdScalarRecords()
+                .Where(record => filterFunc(record.Value));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<KeyValuePair<ulong, T>> GetIdScalarPairs<T>(this IGaStorageMultivector<T> mv, Func<ulong, bool> filterFunc)
+        public static IEnumerable<GaRecordKeyValue<T>> GetIdScalarRecords<T>(this IGaStorageMultivector<T> mv, Func<ulong, bool> filterFunc)
         {
             return mv
-                .GetIdScalarPairs()
-                .Where(pair => filterFunc(pair.Key));
+                .GetIdScalarRecords()
+                .Where(record => filterFunc(record.Key));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<KeyValuePair<ulong, T>> GetIdScalarPairs<T>(this IGaStorageMultivector<T> mv, Func<ulong, T, bool> filterFunc)
+        public static IEnumerable<GaRecordKeyValue<T>> GetIdScalarRecords<T>(this IGaStorageMultivector<T> mv, Func<ulong, T, bool> filterFunc)
         {
             return mv
-                .GetIdScalarPairs()
-                .Where(pair => filterFunc(pair.Key, pair.Value));
+                .GetIdScalarRecords()
+                .Where(record => filterFunc(record.Key, record.Value));
         }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<KeyValuePair<ulong, T>> GetIndexScalarPairs<T>(this IGaStorageKVector<T> mv, Func<T, bool> filterFunc)
+        public static IEnumerable<GaRecordKeyValue<T>> GetIndexScalarRecords<T>(this IGaStorageKVector<T> mv, Func<T, bool> filterFunc)
         {
             return mv
-                .IndexScalarDictionary
-                .Where(pair => filterFunc(pair.Value));
+                .GetIdScalarRecords()
+                .Where(record => filterFunc(record.Value));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<KeyValuePair<ulong, T>> GetIndexScalarPairs<T>(this IGaStorageKVector<T> mv, Func<ulong, bool> filterFunc)
+        public static IEnumerable<GaRecordKeyValue<T>> GetIndexScalarRecords<T>(this IGaStorageKVector<T> mv, Func<ulong, bool> filterFunc)
         {
             return mv
-                .IndexScalarDictionary
-                .Where(pair => filterFunc(pair.Key));
+                .IndexScalarList
+                .GetKeyValueRecords()
+                .Where(record => filterFunc(record.Key));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<KeyValuePair<ulong, T>> GetIndexScalarPairs<T>(this IGaStorageKVector<T> mv, Func<ulong, T, bool> filterFunc)
+        public static IEnumerable<GaRecordKeyValue<T>> GetIndexScalarRecords<T>(this IGaStorageKVector<T> mv, Func<ulong, T, bool> filterFunc)
         {
             return mv
-                .IndexScalarDictionary
-                .Where(pair => filterFunc(pair.Key, pair.Value));
+                .IndexScalarList
+                .GetKeyValueRecords()
+                .Where(record => filterFunc(record.Key, record.Value));
         }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<KeyValuePair<ulong, T>> GetNotZeroIdScalarPairs<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivector<T> mv)
+        public static IEnumerable<GaRecordKeyValue<T>> GetNotZeroIdScalarRecords<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivector<T> mv)
         {
-            return mv.GetIdScalarPairs(scalar => !scalarProcessor.IsZero(scalar));
+            return mv.GetIdScalarRecords(scalar => !scalarProcessor.IsZero(scalar));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<KeyValuePair<ulong, T>> GetNotZeroIdScalarPairs<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivector<T> mv, bool nearZeroFlag)
+        public static IEnumerable<GaRecordKeyValue<T>> GetNotZeroIdScalarRecords<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivector<T> mv, bool nearZeroFlag)
         {
             return nearZeroFlag
-                ? mv.GetIdScalarPairs(scalar => !scalarProcessor.IsNearZero(scalar))
-                : mv.GetIdScalarPairs(scalar => !scalarProcessor.IsZero(scalar));
+                ? mv.GetIdScalarRecords(scalar => !scalarProcessor.IsNearZero(scalar))
+                : mv.GetIdScalarRecords(scalar => !scalarProcessor.IsZero(scalar));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<KeyValuePair<ulong, T>> GetNotNearZeroIdScalarPairs<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivector<T> mv)
+        public static IEnumerable<GaRecordKeyValue<T>> GetNotNearZeroIdScalarRecords<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivector<T> mv)
         {
-            return mv.GetIdScalarPairs(scalar => !scalarProcessor.IsNearZero(scalar));
+            return mv.GetIdScalarRecords(scalar => !scalarProcessor.IsNearZero(scalar));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<KeyValuePair<ulong, T>> GetNearZeroIdScalarPairs<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivector<T> mv)
+        public static IEnumerable<GaRecordKeyValue<T>> GetNearZeroIdScalarRecords<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivector<T> mv)
         {
-            return mv.GetIdScalarPairs(scalarProcessor.IsNearZero);
+            return mv.GetIdScalarRecords(scalarProcessor.IsNearZero);
         }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<KeyValuePair<ulong, T>> GetNotZeroIndexScalarPairs<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageKVector<T> mv)
+        public static IEnumerable<GaRecordKeyValue<T>> GetNotZeroIndexScalarRecords<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageKVector<T> mv)
         {
-            return mv.GetIndexScalarPairs(scalar => !scalarProcessor.IsZero(scalar));
+            return mv.GetIndexScalarRecords(scalar => !scalarProcessor.IsZero(scalar));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<KeyValuePair<ulong, T>> GetNotZeroIndexScalarPairs<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageKVector<T> mv, bool nearZeroFlag)
+        public static IEnumerable<GaRecordKeyValue<T>> GetNotZeroIndexScalarRecords<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageKVector<T> mv, bool nearZeroFlag)
         {
             return nearZeroFlag
-                ? mv.GetIndexScalarPairs(scalar => !scalarProcessor.IsNearZero(scalar))
-                : mv.GetIndexScalarPairs(scalar => !scalarProcessor.IsZero(scalar));
+                ? mv.GetIndexScalarRecords(scalar => !scalarProcessor.IsNearZero(scalar))
+                : mv.GetIndexScalarRecords(scalar => !scalarProcessor.IsZero(scalar));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<KeyValuePair<ulong, T>> GetNotNearZeroIndexScalarPairs<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageKVector<T> mv)
+        public static IEnumerable<GaRecordKeyValue<T>> GetNotNearZeroIndexScalarRecords<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageKVector<T> mv)
         {
-            return mv.GetIndexScalarPairs(scalar => !scalarProcessor.IsNearZero(scalar));
+            return mv.GetIndexScalarRecords(scalar => !scalarProcessor.IsNearZero(scalar));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<KeyValuePair<ulong, T>> GetNearZeroIndexScalarPairs<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageKVector<T> mv)
+        public static IEnumerable<GaRecordKeyValue<T>> GetNearZeroIndexScalarRecords<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageKVector<T> mv)
         {
-            return mv.GetIndexScalarPairs(scalarProcessor.IsNearZero);
+            return mv.GetIndexScalarRecords(scalarProcessor.IsNearZero);
         }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<GaTerm<T>> GetTerms<T>(this IGaStorageMultivector<T> mv, Func<T, bool> filterFunc)
-        {
-            return mv.GetTerms(filterFunc);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<GaTerm<T>> GetTerms<T>(this IGaStorageMultivector<T> mv, Func<ulong, bool> filterFunc)
+        public static IEnumerable<GaBasisTerm<T>> GetTerms<T>(this IGaStorageMultivector<T> mv, Func<T, bool> filterFunc)
         {
             return mv.GetTerms(filterFunc);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<GaTerm<T>> GetTerms<T>(this IGaStorageMultivector<T> mv, Func<ulong, T, bool> filterFunc)
+        public static IEnumerable<GaBasisTerm<T>> GetTerms<T>(this IGaStorageMultivector<T> mv, Func<ulong, bool> filterFunc)
+        {
+            return mv.GetTerms(filterFunc);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<GaBasisTerm<T>> GetTerms<T>(this IGaStorageMultivector<T> mv, Func<ulong, T, bool> filterFunc)
         {
             return mv.GetTerms(filterFunc);
         }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<GaTerm<T>> GetNotZeroTerms<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivector<T> mv)
+        public static IEnumerable<GaBasisTerm<T>> GetNotZeroTerms<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivector<T> mv)
         {
             return mv.GetTerms(scalar => !scalarProcessor.IsZero(scalar));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<GaTerm<T>> GetNotZeroTerms<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivector<T> mv, bool nearZeroFlag)
+        public static IEnumerable<GaBasisTerm<T>> GetNotZeroTerms<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivector<T> mv, bool nearZeroFlag)
         {
             return nearZeroFlag
                 ? mv.GetTerms(scalar => !scalarProcessor.IsNearZero(scalar)) 
@@ -149,13 +224,13 @@ namespace GeometricAlgebraFulcrumLib.Storage.Utils
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<GaTerm<T>> GetNotNearZeroTerms<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivector<T> mv)
+        public static IEnumerable<GaBasisTerm<T>> GetNotNearZeroTerms<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivector<T> mv)
         {
             return mv.GetTerms(scalar => !scalarProcessor.IsNearZero(scalar));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<GaTerm<T>> GetNearZeroTerms<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivector<T> mv)
+        public static IEnumerable<GaBasisTerm<T>> GetNearZeroTerms<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivector<T> mv)
         {
             return mv.GetTerms(scalarProcessor.IsNearZero);
         }
@@ -166,7 +241,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Utils
         {
             return mv.TryGetTermScalar(0, out var scalar)
                 ? scalar
-                : scalarProcessor.ZeroScalar;
+                : scalarProcessor.GetZeroScalar();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -174,7 +249,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Utils
         {
             return mv.TryGetTermScalar(id, out var scalar)
                 ? scalar
-                : scalarProcessor.ZeroScalar;
+                : scalarProcessor.GetZeroScalar();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -182,7 +257,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Utils
         {
             return mv.TryGetTermScalar(grade, index, out var scalar)
                 ? scalar
-                : scalarProcessor.ZeroScalar;
+                : scalarProcessor.GetZeroScalar();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -190,7 +265,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Utils
         {
             return mv.TryGetTermScalarByIndex((ulong) index, out var scalar)
                 ? scalar
-                : scalarProcessor.ZeroScalar;
+                : scalarProcessor.GetZeroScalar();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -198,44 +273,40 @@ namespace GeometricAlgebraFulcrumLib.Storage.Utils
         {
             return mv.TryGetTermScalarByIndex(index, out var scalar)
                 ? scalar
-                : scalarProcessor.ZeroScalar;
+                : scalarProcessor.GetZeroScalar();
         }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaTerm<T> GetTerm<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivector<T> mv, ulong id)
+        public static GaBasisTerm<T> GetTerm<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivector<T> mv, ulong id)
         {
-            return GaTerm<T>.CreateUniform(
-                id,
+            return id.CreateBasisTerm(
                 scalarProcessor.GetTermScalar(mv, id)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaTerm<T> GetTerm<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivector<T> mv, uint grade, ulong index)
+        public static GaBasisTerm<T> GetTerm<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivector<T> mv, uint grade, ulong index)
         {
-            return GaTerm<T>.CreateGraded(
-                grade, 
+            return grade.CreateBasisTerm(
                 index,
                 scalarProcessor.GetTermScalar(mv, grade, index)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaTerm<T> GetTermByIndex<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageKVector<T> mv, int index)
+        public static GaBasisTerm<T> GetTermByIndex<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageKVector<T> mv, int index)
         {
-            return GaTerm<T>.CreateGraded(
-                mv.Grade, 
-                (ulong) index,
+            return mv.Grade.CreateBasisTerm(
+                index,
                 scalarProcessor.GetTermScalarByIndex(mv, index)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaTerm<T> GetTermByIndex<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageKVector<T> mv, ulong index)
+        public static GaBasisTerm<T> GetTermByIndex<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageKVector<T> mv, ulong index)
         {
-            return GaTerm<T>.CreateGraded(
-                mv.Grade, 
+            return mv.Grade.CreateBasisTerm(
                 index,
                 scalarProcessor.GetTermScalarByIndex(mv, index)
             );
@@ -243,120 +314,91 @@ namespace GeometricAlgebraFulcrumLib.Storage.Utils
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<ulong> GetIds(this IEnumerable<IGaBasisBlade> basisBladesList)
+        public static IEnumerable<ulong> GetIds(this IEnumerable<GaBasisBlade> basisBladesList)
         {
             return basisBladesList.Select(basisBlade => basisBlade.Id);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<uint> GetGrades(this IEnumerable<IGaBasisBlade> basisBladesList)
+        public static IEnumerable<uint> GetGrades(this IEnumerable<GaBasisBlade> basisBladesList)
         {
             return basisBladesList.Select(basisBlade => basisBlade.Grade).Distinct();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<ulong> GetIndices(this IEnumerable<IGaBasisBlade> basisBladesList)
+        public static IEnumerable<ulong> GetIndices(this IEnumerable<GaBasisBlade> basisBladesList)
         {
             return basisBladesList.Select(basisBlade => basisBlade.Index);
         }
+        
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<Tuple<uint, ulong>> GetGradeIndexTuples(this IEnumerable<IGaBasisBlade> basisBladesList)
-        {
-            return basisBladesList.Select(basisBlade =>
-            {
-                basisBlade.GetGradeIndex(out var grade, out var index);
-                return new Tuple<uint, ulong>(grade, index);
-            });
-        }
-
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<ulong> GetIds<T>(this IEnumerable<GaTerm<T>> termsList)
+        public static IEnumerable<ulong> GetIds<T>(this IEnumerable<GaBasisTerm<T>> termsList)
         {
             return termsList.Select(term => term.BasisBlade.Id);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<uint> GetGrades<T>(this IEnumerable<GaTerm<T>> termsList)
+        public static IEnumerable<uint> GetGrades<T>(this IEnumerable<GaBasisTerm<T>> termsList)
         {
             return termsList.Select(term => term.BasisBlade.Grade).Distinct();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<ulong> GetIndices<T>(this IEnumerable<GaTerm<T>> termsList)
+        public static IEnumerable<ulong> GetIndices<T>(this IEnumerable<GaBasisTerm<T>> termsList)
         {
             return termsList.Select(term => term.BasisBlade.Index);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<Tuple<uint, ulong>> GetGradeIndexTuples<T>(this IEnumerable<GaTerm<T>> termsList)
-        {
-            return termsList.Select(term =>
-            {
-                term.BasisBlade.GetGradeIndex(out var grade, out var index);
-                return new Tuple<uint, ulong>(grade, index);
-            });
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<IGaBasisBlade> GetBasisBlades<T>(this IEnumerable<GaTerm<T>> termsList)
+        public static IEnumerable<GaBasisBlade> GetBasisBlades<T>(this IEnumerable<GaBasisTerm<T>> termsList)
         {
             return termsList.Select(term => term.BasisBlade);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<T> GetScalars<T>(this IEnumerable<GaTerm<T>> termsList)
+        public static IEnumerable<T> GetScalars<T>(this IEnumerable<GaBasisTerm<T>> termsList)
         {
             return termsList.Select(term => term.Scalar);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<KeyValuePair<ulong, T>> GetIdScalarPairs<T>(this IEnumerable<GaTerm<T>> termsList)
+        public static IEnumerable<GaRecordKeyValue<T>> GetIdScalarRecords<T>(this IEnumerable<GaBasisTerm<T>> termsList)
         {
             return termsList.Select(term => 
-                new KeyValuePair<ulong, T>(term.BasisBlade.Id, term.Scalar)
+                new GaRecordKeyValue<T>(term.BasisBlade.Id, term.Scalar)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<Tuple<ulong, T>> GetIdScalarTuples<T>(this IEnumerable<GaTerm<T>> termsList)
+        public static IEnumerable<GaRecordKeyValue<T>> GetIdScalarTuples<T>(this IEnumerable<GaBasisTerm<T>> termsList)
         {
             return termsList.Select(term => 
-                new Tuple<ulong, T>(term.BasisBlade.Id, term.Scalar)
+                new GaRecordKeyValue<T>(term.BasisBlade.Id, term.Scalar)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<Tuple<uint, ulong, T>> GetGradeIndexScalarTuples<T>(this IEnumerable<GaTerm<T>> termsList)
-        {
-            return termsList.Select(term =>
-            {
-                term.BasisBlade.GetGradeIndex(out var grade, out var index);
-                return new Tuple<uint, ulong, T>(grade, index, term.Scalar);
-            });
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<KeyValuePair<ulong, T>> GetIndexScalarPairs<T>(this IEnumerable<GaTerm<T>> termsList)
+        public static IEnumerable<GaRecordKeyValue<T>> GetIndexScalarRecords<T>(this IEnumerable<GaBasisTerm<T>> termsList)
         {
             return termsList.Select(term => 
-                new KeyValuePair<ulong, T>(term.BasisBlade.Index, term.Scalar)
+                new GaRecordKeyValue<T>(term.BasisBlade.Index, term.Scalar)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<Tuple<ulong, T>> GetIndexScalarTuples<T>(this IEnumerable<GaTerm<T>> termsList)
+        public static IEnumerable<GaRecordKeyValue<T>> GetIndexScalarTuples<T>(this IEnumerable<GaBasisTerm<T>> termsList)
         {
             return termsList.Select(term => 
-                new Tuple<ulong, T>(term.BasisBlade.Index, term.Scalar)
+                new GaRecordKeyValue<T>(term.BasisBlade.Index, term.Scalar)
             );
         }
 
         
-        public static IEnumerable<KeyValuePair<ulong, T>> OrderByGradeIndex<T>(this IEnumerable<KeyValuePair<ulong, T>> idScalarPairs)
+        public static IEnumerable<GaRecordKeyValue<T>> OrderByGradeIndex<T>(this IEnumerable<GaRecordKeyValue<T>> idScalarRecords)
         {
-            var termsArray = idScalarPairs.ToArray();
+            var termsArray = 
+                idScalarRecords.ToArray();
 
             if (termsArray.Length == 0)
                 return termsArray;
@@ -370,45 +412,18 @@ namespace GeometricAlgebraFulcrumLib.Storage.Utils
 
             return termsArray
                 //.Where(t => !t.Scalar.IsZero())
-                .OrderBy(t => t.Key.BasisBladeGrade())
+                .OrderBy(t => t.Key.BasisBladeIdToGrade())
                 .ThenByDescending(t => t.Key.ReverseBits(bitsCount));
         }
         
-        public static IEnumerable<KeyValuePair<ulong, T>> OrderById<T>(this IEnumerable<KeyValuePair<ulong, T>> idScalarPairs)
+        public static IEnumerable<GaRecordKeyValue<T>> OrderById<T>(this IEnumerable<GaRecordKeyValue<T>> idScalarRecords)
         {
-            return idScalarPairs
+            return idScalarRecords
                 //.Where(t => !t.Scalar.IsZero())
                 .OrderBy(t => t.Key);
         }
-
-        public static IEnumerable<Tuple<ulong, T>> OrderByGradeIndex<T>(this IEnumerable<Tuple<ulong, T>> idScalarTuples)
-        {
-            var termsArray = idScalarTuples.ToArray();
-
-            if (termsArray.Length == 0)
-                return termsArray;
-
-            var bitsCount = termsArray
-                .Max(t => t.Item1)
-                .LastOneBitPosition() + 1;
-
-            if (bitsCount == 0)
-                return termsArray;
-
-            return termsArray
-                //.Where(t => !t.Scalar.IsZero())
-                .OrderBy(t => t.Item1.BasisBladeGrade())
-                .ThenByDescending(t => t.Item1.ReverseBits(bitsCount));
-        }
         
-        public static IEnumerable<Tuple<ulong, T>> OrderById<T>(this IEnumerable<Tuple<ulong, T>> idScalarTuples)
-        {
-            return idScalarTuples
-                //.Where(t => !t.Scalar.IsZero())
-                .OrderBy(t => t.Item1);
-        }
-
-        public static IEnumerable<Tuple<uint, ulong, T>> OrderByGradeIndex<T>(this IEnumerable<Tuple<uint, ulong, T>> gradeIndexScalarTuples)
+        public static IEnumerable<GaRecordGradeKeyValue<T>> OrderByGradeIndex<T>(this IEnumerable<GaRecordGradeKeyValue<T>> gradeIndexScalarTuples)
         {
             var termsArray = gradeIndexScalarTuples.ToArray();
 
@@ -417,7 +432,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Utils
 
             var bitsCount = termsArray
                 .Max(t => 
-                    GaBasisUtils.BasisBladeId(t.Item1, t.Item2)
+                    t.Key.BasisBladeIndexToId(t.Grade)
                 )
                 .LastOneBitPosition() + 1;
 
@@ -426,24 +441,22 @@ namespace GeometricAlgebraFulcrumLib.Storage.Utils
 
             return termsArray
                 //.Where(t => !t.Scalar.IsZero())
-                .OrderBy(t => t.Item1)
+                .OrderBy(t => t.Grade)
                 .ThenByDescending(t => 
-                    GaBasisUtils
-                        .BasisBladeId(t.Item1, t.Item2)
-                        .ReverseBits(bitsCount)
+                    t.Key.BasisBladeIndexToId(t.Grade).ReverseBits(bitsCount)
                 );
         }
         
-        public static IEnumerable<Tuple<uint, ulong, T>> OrderById<T>(this IEnumerable<Tuple<uint, ulong, T>> gradeIndexScalarTuples)
+        public static IEnumerable<GaRecordGradeKeyValue<T>> OrderById<T>(this IEnumerable<GaRecordGradeKeyValue<T>> gradeIndexScalarTuples)
         {
             return gradeIndexScalarTuples
                 //.Where(t => !t.Scalar.IsZero())
                 .OrderBy(t => 
-                    GaBasisUtils.BasisBladeId(t.Item1, t.Item2)
+                    t.Key.BasisBladeIndexToId(t.Grade)
                 );
         }
 
-        public static IEnumerable<GaTerm<T>> OrderByGradeIndex<T>(this IEnumerable<GaTerm<T>> termsList)
+        public static IEnumerable<GaBasisTerm<T>> OrderByGradeIndex<T>(this IEnumerable<GaBasisTerm<T>> termsList)
         {
             var termsArray = termsList.ToArray();
 
@@ -463,7 +476,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Utils
                 .ThenByDescending(t => t.BasisBlade.Id.ReverseBits(bitsCount));
         }
         
-        public static IEnumerable<GaTerm<T>> OrderById<T>(this IEnumerable<GaTerm<T>> termsList)
+        public static IEnumerable<GaBasisTerm<T>> OrderById<T>(this IEnumerable<GaBasisTerm<T>> termsList)
         {
             return termsList
                 //.Where(t => !t.Scalar.IsZero())
@@ -471,55 +484,53 @@ namespace GeometricAlgebraFulcrumLib.Storage.Utils
         }
 
 
-        public static T[] VectorToArray<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageVector<T> vectorStorage, uint vSpaceDimension)
+        public static IGaListEvenDense<T> VectorToArrayVector<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageVector<T> vectorStorage, uint vSpaceDimension)
         {
             var array = new T[vSpaceDimension];
 
             for (var index = 0; index < vSpaceDimension; index++)
-                array[index] = scalarProcessor.ZeroScalar;
+                array[index] = scalarProcessor.GetZeroScalar();
 
-            foreach (var (index, scalar) in vectorStorage.IndexScalarDictionary) 
+            foreach (var (index, scalar) in vectorStorage.IndexScalarList.GetKeyValueRecords()) 
                 array[index] = scalar;
 
-            return array;
+            return array.CreateEvenListDense();
         }
 
-        public static T[] BivectorToArray<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageBivector<T> bivectorStorage, uint vSpaceDimension)
+        public static IGaListEvenDense<T> BivectorToArrayVector<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageBivector<T> bivectorStorage, uint vSpaceDimension)
         {
-            var arrayLength = (int) GaBasisUtils.KvSpaceDimension(
-                vSpaceDimension, 
-                2
+            var arrayLength = (int) vSpaceDimension.KVectorSpaceDimension(2
             );
 
             var array = new T[arrayLength];
 
             for (var index = 0; index < arrayLength; index++)
-                array[index] = scalarProcessor.ZeroScalar;
+                array[index] = scalarProcessor.GetZeroScalar();
 
-            foreach (var (index, scalar) in bivectorStorage.IndexScalarDictionary) 
+            foreach (var (index, scalar) in bivectorStorage.IndexScalarList.GetKeyValueRecords()) 
                 array[index] = scalar;
 
-            return array;
+            return array.CreateEvenListDense();
         }
 
-        public static T[,] BivectorToArray2D<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageBivector<T> bivectorStorage, uint vSpaceDimension)
+        public static IGaGridEvenDense<T> BivectorToArray<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageBivector<T> bivectorStorage, uint vSpaceDimension)
         {
             var array = new T[vSpaceDimension, vSpaceDimension];
 
             for (var i = 0; i < vSpaceDimension; i++)
             for (var j = 0; j < vSpaceDimension; j++)
-                array[i, j] = scalarProcessor.ZeroScalar;
+                array[i, j] = scalarProcessor.GetZeroScalar();
 
-            foreach (var (index1, index2, scalar) in bivectorStorage.GetBasisVectorsIndexScalarTuples())
+            foreach (var (index1, index2, scalar) in bivectorStorage.GetBasisVectorsIndexScalarRecords())
             {
                 array[index1, index2] = scalar;
                 array[index2, index1] = scalarProcessor.Negative(scalar);
             }
 
-            return array;
+            return array.CreateEvenGridDense();
         }
 
-        public static T[,] ScalarPlusBivectorToArray2D<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivector<T> storage, uint vSpaceDimension)
+        public static IGaGridEvenDense<T> ScalarPlusBivectorToArray<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivector<T> storage, uint vSpaceDimension)
         {
             var array = new T[vSpaceDimension, vSpaceDimension];
 
@@ -531,8 +542,8 @@ namespace GeometricAlgebraFulcrumLib.Storage.Utils
 
                 for (var j = i + 1; j < vSpaceDimension; j++)
                 {
-                    array[i, j] = scalarProcessor.ZeroScalar;
-                    array[j, i] = scalarProcessor.ZeroScalar;
+                    array[i, j] = scalarProcessor.GetZeroScalar();
+                    array[j, i] = scalarProcessor.GetZeroScalar();
                 }
             }
 
@@ -544,7 +555,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Utils
             {
                 var bivectorScalar = term.Scalar;
                 var basisVectorIndices = 
-                    term.BasisBlade.GetBasisVectorIndices();
+                    term.BasisBlade.GetBasisVectorIndices().ToArray();
 
                 var index1 = basisVectorIndices[0];
                 var index2 = basisVectorIndices[1];
@@ -553,40 +564,38 @@ namespace GeometricAlgebraFulcrumLib.Storage.Utils
                 array[index2, index1] = scalarProcessor.Negative(bivectorScalar);
             }
 
-            return array;
+            return array.CreateEvenGridDense();
         }
 
-        public static T[] KVectorToArray<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageKVector<T> kVectorStorage, uint vSpaceDimension)
+        public static IGaListEvenDense<T> KVectorToArrayVector<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageKVector<T> kVectorStorage, uint vSpaceDimension)
         {
-            var arrayLength = (int) GaBasisUtils.KvSpaceDimension(
-                vSpaceDimension, 
-                kVectorStorage.Grade
+            var arrayLength = (int) vSpaceDimension.KVectorSpaceDimension(kVectorStorage.Grade
             );
 
             var array = new T[arrayLength];
 
             for (var index = 0; index < arrayLength; index++)
-                array[index] = scalarProcessor.ZeroScalar;
+                array[index] = scalarProcessor.GetZeroScalar();
 
-            foreach (var (index, scalar) in kVectorStorage.IndexScalarDictionary) 
+            foreach (var (index, scalar) in kVectorStorage.IndexScalarList.GetKeyValueRecords()) 
                 array[index] = scalar;
 
-            return array;
+            return array.CreateEvenListDense();
         }
 
-        public static T[] MultivectorToArray<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivector<T> multivectorStorage, uint vSpaceDimension)
+        public static IGaListEvenDense<T> MultivectorToArrayVector<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivector<T> multivectorStorage, uint vSpaceDimension)
         {
             var arrayLength = (int) vSpaceDimension.ToGaSpaceDimension();
 
             var array = new T[arrayLength];
 
             for (var index = 0; index < arrayLength; index++)
-                array[index] = scalarProcessor.ZeroScalar;
+                array[index] = scalarProcessor.GetZeroScalar();
 
-            foreach (var (index, scalar) in multivectorStorage.GetIdScalarPairs()) 
+            foreach (var (index, scalar) in multivectorStorage.GetIdScalarRecords()) 
                 array[index] = scalar;
 
-            return array;
+            return array.CreateEvenListDense();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace DataStructuresLib.Combinations
 {
@@ -180,6 +181,26 @@ namespace DataStructuresLib.Combinations
             return ans;
         }
 
+        /// <summary>
+        /// Compute the binomial coefficient C(n, 2) where n is the set size using the simple relation:
+        /// C(n, 2) = n * (n - 1) / 2
+        /// </summary>
+        /// <param name="setSize"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ulong ComputeTake2BinomialCoefficient(int setSize)
+        {
+            if (setSize < 0)
+                throw new ArgumentOutOfRangeException(nameof(setSize));
+
+            if (setSize < 2)
+                return 0;
+
+            var n = (ulong) setSize;
+            return (n * (n - 1UL)) >> 1;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ulong GetBinomialCoefficient(this uint setSize, uint subsetSize)
         {
             if (setSize < subsetSize) return 0UL;
@@ -189,6 +210,7 @@ namespace DataStructuresLib.Combinations
                 : PascalTriangleArray[(int) setSize, (int) subsetSize];
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ulong GetBinomialCoefficient(this int setSize, int subsetSize)
         {
             if (setSize < 0 || subsetSize < 0)

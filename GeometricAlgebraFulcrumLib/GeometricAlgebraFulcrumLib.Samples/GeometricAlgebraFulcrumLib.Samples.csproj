@@ -18,6 +18,7 @@
     <ProjectReference Include="..\..\TextComposerLib\TextComposerLib\TextComposerLib.csproj" />
     <ProjectReference Include="..\GeometricAlgebraFulcrumLib.CodeComposer\GeometricAlgebraFulcrumLib.CodeComposer.csproj" />
     <ProjectReference Include="..\GeometricAlgebraFulcrumLib.Symbolic\GeometricAlgebraFulcrumLib.Symbolic.csproj" />
+    <ProjectReference Include="..\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj" />
     <ProjectReference Include="..\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.csproj" />
   </ItemGroup>
 

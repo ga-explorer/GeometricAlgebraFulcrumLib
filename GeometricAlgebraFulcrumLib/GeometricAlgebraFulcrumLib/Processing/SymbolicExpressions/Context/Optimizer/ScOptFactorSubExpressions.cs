@@ -47,7 +47,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context.Opti
         private void AddRhsExpression(ISymbolicVariableComputed computedVariable)
         {
             var rhsExpression = computedVariable.RhsExpression;
-            var rhsExpressionText = rhsExpression.ToString();
+            var rhsExpressionText = rhsExpression.ToString() ?? string.Empty;
 
             if (computedVariable.IsIntermediateVariable)
             {
@@ -82,7 +82,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context.Opti
 
             foreach (var subExpression in subExpressionsList)
             {
-                var subExpressionText = subExpression.ToString();
+                var subExpressionText = subExpression.ToString() ?? string.Empty;
 
                 if (_subExpressionsTextDictionary.TryGetValue(subExpressionText, out var subExpressionVariable))
                 {
@@ -165,7 +165,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context.Opti
         protected override void BeginProcessing()
         {
             //Add all RHS expressions and subexpressions of all computed variables to a list
-            foreach (var computedVar in Context.ComputedVariables)
+            foreach (var computedVar in Context.GetComputedVariables())
                 AddSubExpressions(computedVar);
 
             //Select which temp variables to add to the final computations list

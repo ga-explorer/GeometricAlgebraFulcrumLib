@@ -92,7 +92,7 @@ namespace DataStructuresLib.Permutations
             var index1 = FirstIndex;
             var index2 = FirstIndex;
             var stepsLeft = IndexCount - 1;
-            var indexPair = new Pair<int>(index1);
+            var indexPair = new Pair<int>(index1, index1);
 
             while (stepsLeft > 0)
             {

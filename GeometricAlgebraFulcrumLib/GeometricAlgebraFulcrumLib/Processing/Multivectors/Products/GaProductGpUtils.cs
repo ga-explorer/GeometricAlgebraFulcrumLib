@@ -2,7 +2,7 @@
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.ChangeOfBasis;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonormal;
-using GeometricAlgebraFulcrumLib.Storage;
+using GeometricAlgebraFulcrumLib.Storage.Multivectors;
 
 namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products
 {
@@ -13,7 +13,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products
         {
             return processor switch
             {
-                IGaProcessorEuclidean<T> _ =>
+                IGaProcessorEuclidean<T> =>
                     processor.EGp(mv1),
                 
                 IGaProcessorOrthonormal<T> ortProcessor =>
@@ -29,7 +29,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products
         {
             return processor switch
             {
-                IGaProcessorEuclidean<T> _ =>
+                IGaProcessorEuclidean<T> =>
                     processor.EGp(mv1, mv2),
                 
                 IGaProcessorOrthonormal<T> ortProcessor =>
@@ -45,7 +45,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products
         {
             return processor switch
             {
-                IGaProcessorEuclidean<T> _ =>
+                IGaProcessorEuclidean<T> =>
                     processor.EGp(mv1, mv2, mv3),
                 
                 IGaProcessorOrthonormal<T> ortProcessor =>
@@ -61,7 +61,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products
         {
             return processor switch
             {
-                IGaProcessorEuclidean<T> _ =>
+                IGaProcessorEuclidean<T> =>
                     processor.EGpReverse(mv1),
                 
                 IGaProcessorOrthonormal<T> ortProcessor =>
@@ -77,7 +77,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products
         {
             return processor switch
             {
-                IGaProcessorEuclidean<T> _ =>
+                IGaProcessorEuclidean<T> =>
                     processor.EGpReverse(mv1, mv2),
                 
                 IGaProcessorOrthonormal<T> ortProcessor =>

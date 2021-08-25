@@ -21,8 +21,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Composers
         {
             var tempVarNames =
                 contextCodeComposer
-                    .Context
-                    .IntermediateVariables
+                    .Context.GetIntermediateVariables()
                     .Select(item => item.ExternalName)
                     .Distinct();
 
@@ -63,8 +62,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Composers
 
             var commentTextLines = 
                 contextCodeComposer
-                    .Context
-                    .IndependentAtomics
+                    .Context.GetIndependentAtomics()
                     .Select(p =>
                         {
                             var s = new StringBuilder();
@@ -212,7 +210,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Composers
             ExpressionConverter.ActiveContext = Context;
 
             //Iterate over optimized low-level computations
-            foreach (var computedVar in Context.ComputedVariables)
+            foreach (var computedVar in Context.GetComputedVariables())
             {
                 //Convert the rhs text expression tree into target language code
                 var rhsExprCode = 

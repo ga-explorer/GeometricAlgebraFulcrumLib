@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
-using GeometricAlgebraFulcrumLib.Storage;
+using GeometricAlgebraFulcrumLib.Storage.Multivectors;
+using GeometricAlgebraFulcrumLib.Structures;
 
 namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Iterators
 {
@@ -14,43 +15,43 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Iterators
         IGaStorageMultivector<T> Storage2 { get; }
 
 
-        IEnumerable<KeyValuePair<ulong, T>> GetOpIdScalarPairs();
+        IEnumerable<GaRecordKeyValue<T>> GetOpIdScalarRecords();
 
-        IEnumerable<KeyValuePair<ulong, T>> GetEGpIdScalarPairs();
+        IEnumerable<GaRecordKeyValue<T>> GetEGpIdScalarRecords();
 
-        IEnumerable<KeyValuePair<ulong, T>> GetESpIdScalarPairs();
+        IEnumerable<GaRecordKeyValue<T>> GetESpIdScalarRecords();
 
         IEnumerable<T> GetESpScalars();
 
-        IEnumerable<KeyValuePair<ulong, T>> GetELcpIdScalarPairs();
+        IEnumerable<GaRecordKeyValue<T>> GetELcpIdScalarRecords();
 
-        IEnumerable<KeyValuePair<ulong, T>> GetERcpIdScalarPairs();
+        IEnumerable<GaRecordKeyValue<T>> GetERcpIdScalarRecords();
 
-        IEnumerable<KeyValuePair<ulong, T>> GetEHipIdScalarPairs();
+        IEnumerable<GaRecordKeyValue<T>> GetEHipIdScalarRecords();
 
-        IEnumerable<KeyValuePair<ulong, T>> GetEFdpIdScalarPairs();
+        IEnumerable<GaRecordKeyValue<T>> GetEFdpIdScalarRecords();
 
-        IEnumerable<KeyValuePair<ulong, T>> GetECpIdScalarPairs();
+        IEnumerable<GaRecordKeyValue<T>> GetECpIdScalarRecords();
 
-        IEnumerable<KeyValuePair<ulong, T>> GetEAcpIdScalarPairs();
+        IEnumerable<GaRecordKeyValue<T>> GetEAcpIdScalarRecords();
 
 
-        IEnumerable<KeyValuePair<ulong, T>> GetGpIdScalarPairs(GaSignature basesSignature);
+        IEnumerable<GaRecordKeyValue<T>> GetGpIdScalarRecords(IGaSignature basesSignature);
 
-        IEnumerable<KeyValuePair<ulong, T>> GetSpIdScalarPairs(GaSignature basesSignature);
+        IEnumerable<GaRecordKeyValue<T>> GetSpIdScalarRecords(IGaSignature basesSignature);
 
-        IEnumerable<T> GetSpScalars(GaSignature basesSignature);
+        IEnumerable<T> GetSpScalars(IGaSignature basesSignature);
 
-        IEnumerable<KeyValuePair<ulong, T>> GetLcpIdScalarPairs(GaSignature basesSignature);
+        IEnumerable<GaRecordKeyValue<T>> GetLcpIdScalarRecords(IGaSignature basesSignature);
 
-        IEnumerable<KeyValuePair<ulong, T>> GetRcpIdScalarPairs(GaSignature basesSignature);
+        IEnumerable<GaRecordKeyValue<T>> GetRcpIdScalarRecords(IGaSignature basesSignature);
 
-        IEnumerable<KeyValuePair<ulong, T>> GetHipIdScalarPairs(GaSignature basesSignature);
+        IEnumerable<GaRecordKeyValue<T>> GetHipIdScalarRecords(IGaSignature basesSignature);
 
-        IEnumerable<KeyValuePair<ulong, T>> GetFdpIdScalarPairs(GaSignature basesSignature);
+        IEnumerable<GaRecordKeyValue<T>> GetFdpIdScalarRecords(IGaSignature basesSignature);
 
-        IEnumerable<KeyValuePair<ulong, T>> GetCpIdScalarPairs(GaSignature basesSignature);
+        IEnumerable<GaRecordKeyValue<T>> GetCpIdScalarRecords(IGaSignature basesSignature);
 
-        IEnumerable<KeyValuePair<ulong, T>> GetAcpIdScalarPairs(GaSignature basesSignature);
+        IEnumerable<GaRecordKeyValue<T>> GetAcpIdScalarRecords(IGaSignature basesSignature);
     }
 }

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace GeometricAlgebraFulcrumLib.Processing.Scalars.Float64
@@ -16,35 +14,59 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars.Float64
             = 1e-13d;
 
 
-        public bool IsNumeric => true;
+        public bool IsNumeric 
+            => true;
 
-        public bool IsSymbolic => false;
+        public bool IsSymbolic 
+            => false;
 
-        public double ZeroScalar => 0d;
-        
-        public double OneScalar => 1d;
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public double GetZeroScalar()
+        {
+            return 0d;
+        }
 
-        public double MinusOneScalar => -1d;
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public double GetOneScalar()
+        {
+            return 1d;
+        }
 
-        public double PiScalar => Math.PI;
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public double GetMinusOneScalar()
+        {
+            return -1d;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public double GetPiScalar()
+        {
+            return Math.PI;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public double[] GetZeroScalarArray1D(int count)
+        {
+            return new double[count];
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public double[,] GetZeroScalarArray2D(int count)
+        {
+            return new double[count, count];
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public double[,] GetZeroScalarArray2D(int count1, int count2)
+        {
+            return new double[count1, count2];
+        }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public double Add(double scalar1, double scalar2)
         {
             return scalar1 + scalar2;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public double Add(params double[] scalarsList)
-        {
-            return scalarsList.Sum();
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public double Add(IEnumerable<double> scalarsList)
-        {
-            return scalarsList.Sum();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -60,45 +82,9 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars.Float64
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public double Times(params double[] scalarsList)
-        {
-            return scalarsList.Aggregate(
-                1d, 
-                (current, scalar) => current * scalar
-            );
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public double Times(IEnumerable<double> scalarsList)
-        {
-            return scalarsList.Aggregate(
-                1d, 
-                (current, scalar) => current * scalar
-            );
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public double NegativeTimes(double scalar1, double scalar2)
         {
             return -scalar1 * scalar2;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public double NegativeTimes(params double[] scalarsList)
-        {
-            return scalarsList.Aggregate(
-                -1d, 
-                (current, scalar) => current * scalar
-            );
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public double NegativeTimes(IEnumerable<double> scalarsList)
-        {
-            return scalarsList.Aggregate(
-                -1d, 
-                (current, scalar) => current * scalar
-            );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -265,6 +251,21 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars.Float64
             return scalar > -ZeroEpsilon && scalar < ZeroEpsilon;
         }
 
+        public bool IsNotZero(double scalar)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsNotZero(double scalar, bool nearZeroFlag)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsNotNearZero(double scalar)
+        {
+            throw new NotImplementedException();
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public double TextToScalar(string text)
         {
@@ -305,6 +306,16 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars.Float64
         public bool IsNegative(double scalar)
         {
             return scalar < 0;
+        }
+
+        public bool IsNotPositive(double scalar)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsNotNegative(double scalar)
+        {
+            throw new NotImplementedException();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

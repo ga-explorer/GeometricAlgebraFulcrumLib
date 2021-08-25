@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
 using GeometricAlgebraFulcrumLib.Processing.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Storage;
 using GeometricAlgebraFulcrumLib.Storage.Factories;
+using GeometricAlgebraFulcrumLib.Storage.Multivectors;
 
 namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures
 {
@@ -13,10 +13,10 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures
         public ulong Id { get; }
 
         public uint Grade 
-            => Id.BasisBladeGrade();
+            => Id.BasisBladeIdToGrade();
 
         public ulong Index 
-            => Id.BasisBladeIndex();
+            => Id.BasisBladeIdToIndex();
 
         public bool IsZeroSignature 
             => Signature == 0;

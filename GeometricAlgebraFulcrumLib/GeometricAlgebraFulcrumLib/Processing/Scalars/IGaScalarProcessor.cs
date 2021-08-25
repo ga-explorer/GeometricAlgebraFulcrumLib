@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace GeometricAlgebraFulcrumLib.Processing.Scalars
+﻿namespace GeometricAlgebraFulcrumLib.Processing.Scalars
 {
     public interface IGaScalarProcessor<T> 
     {
@@ -8,33 +6,27 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
 
         bool IsSymbolic { get; }
 
-        T ZeroScalar { get; }
-        
-        T OneScalar { get; }
-        
-        T MinusOneScalar { get; }
-        
-        T PiScalar { get; }
+        T GetZeroScalar();
+
+        T GetOneScalar();
+
+        T GetMinusOneScalar();
+
+        T GetPiScalar();
+
+        T[] GetZeroScalarArray1D(int count);
+
+        T[,] GetZeroScalarArray2D(int count);
+
+        T[,] GetZeroScalarArray2D(int count1, int count2);
 
         T Add(T scalar1, T scalar2);
 
-        T Add(params T[] scalarsList);
-
-        T Add(IEnumerable<T> scalarsList);
-        
         T Subtract(T scalar1, T scalar2);
 
         T Times(T scalar1, T scalar2);
-        
-        T Times(params T[] scalarsList);
-
-        T Times(IEnumerable<T> scalarsList);
 
         T NegativeTimes(T scalar1, T scalar2);
-        
-        T NegativeTimes(params T[] scalarsList);
-
-        T NegativeTimes(IEnumerable<T> scalarsList);
 
         T Divide(T scalar1, T scalar2);
 
@@ -105,9 +97,19 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars
 
         bool IsNearZero(T scalar);
 
+        bool IsNotZero(T scalar);
+
+        bool IsNotZero(T scalar, bool nearZeroFlag);
+
+        bool IsNotNearZero(T scalar);
+
         bool IsPositive(T scalar);
 
         bool IsNegative(T scalar);
+
+        bool IsNotPositive(T scalar);
+
+        bool IsNotNegative(T scalar);
 
         bool IsNotNearPositive(T scalar);
 

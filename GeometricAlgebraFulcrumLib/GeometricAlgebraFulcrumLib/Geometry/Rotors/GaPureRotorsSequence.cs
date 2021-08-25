@@ -6,6 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using GeometricAlgebraFulcrumLib.Algebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Factories;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Space;
 using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
 using GeometricAlgebraFulcrumLib.Algebra.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Geometry.Frames;
@@ -14,9 +15,9 @@ using GeometricAlgebraFulcrumLib.Processing.Multivectors;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Binary;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Unary;
-using GeometricAlgebraFulcrumLib.Processing.Scalars;
 using GeometricAlgebraFulcrumLib.Processing.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Storage;
+using GeometricAlgebraFulcrumLib.Processing.ScalarsGrids;
+using GeometricAlgebraFulcrumLib.Storage.Multivectors;
 using MathNet.Numerics.LinearAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Geometry.Rotors
@@ -191,6 +192,8 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Rotors
         public int Count 
             => _rotorsList.Count;
 
+        public IGaSpace Space => Processor;
+
         public uint VSpaceDimension 
             => Processor.VSpaceDimension;
 
@@ -206,7 +209,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Rotors
         public IEnumerable<uint> Grades 
             => Processor.Grades;
 
-        public IGaScalarProcessor<T> ScalarProcessor 
+        public IGaScalarsGridProcessor<T> ScalarsGridProcessor 
             => Processor;
         
         public IGaStorageKVector<T> MappedPseudoScalar { get; }

@@ -13,7 +13,7 @@ using GeometricAlgebraFulcrumLib.Processing.Multivectors.Binary;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Unary;
-using GeometricAlgebraFulcrumLib.Storage;
+using GeometricAlgebraFulcrumLib.Storage.Multivectors;
 using GeometricAlgebraFulcrumLib.Storage.Utils;
 
 namespace GeometricAlgebraFulcrumLib.Geometry.Frames
@@ -215,7 +215,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Frames
 
                 var dii = Processor.Subtract(
                     Processor.ESp(v1), 
-                    Processor.OneScalar
+                    Processor.GetOneScalar()
                 );
 
                 if (!Processor.IsNearZero(dii))
@@ -381,13 +381,14 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Frames
         {
             var colsCount = Count;
             var itemsArray = 
-                Processor.CreateZeroMatrix(rowsCount, colsCount);
+                Processor.CreateZeroScalarArray(rowsCount, colsCount);
 
             for (var j = 0; j < Count; j++)
             {
                 var vectorTerms = 
                     _vectorStoragesList[j]
-                        .IndexScalarDictionary
+                        .IndexScalarList
+                        .GetKeyValueRecords()
                         .Where(pair => pair.Key < (ulong) rowsCount);
 
                 foreach (var (index, scalar) in vectorTerms)

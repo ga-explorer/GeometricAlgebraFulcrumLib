@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using GeometricAlgebraFulcrumLib.Processing.Scalars;
+﻿using GeometricAlgebraFulcrumLib.Processing.Scalars;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Numbers;
 
@@ -13,28 +12,59 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions
     public class GaScalarProcessorSymbolicExpression :
         IGaScalarProcessor<ISymbolicExpression>
     {
+        private readonly ISymbolicExpression _zeroScalar;
+        private readonly ISymbolicExpression _oneScalar;
+        private readonly ISymbolicExpression _minusOneScalar;
+        private readonly ISymbolicExpression _piScalar;
         public SymbolicContext Context { get; }
 
         public bool IsNumeric => false;
 
         public bool IsSymbolic => true;
 
-        public ISymbolicExpression ZeroScalar { get; }
-        
-        public ISymbolicExpression OneScalar { get; }
-        
-        public ISymbolicExpression MinusOneScalar { get; }
-        
-        public ISymbolicExpression PiScalar { get; }
+        public ISymbolicExpression GetZeroScalar()
+        {
+            return _zeroScalar;
+        }
+
+        public ISymbolicExpression GetOneScalar()
+        {
+            return _oneScalar;
+        }
+
+        public ISymbolicExpression GetMinusOneScalar()
+        {
+            return _minusOneScalar;
+        }
+
+        public ISymbolicExpression GetPiScalar()
+        {
+            return _piScalar;
+        }
+
+        public ISymbolicExpression[] GetZeroScalarArray1D(int count)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public ISymbolicExpression[,] GetZeroScalarArray2D(int count)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public ISymbolicExpression[,] GetZeroScalarArray2D(int count1, int count2)
+        {
+            throw new System.NotImplementedException();
+        }
 
 
         internal GaScalarProcessorSymbolicExpression(SymbolicContext context)
         {
             Context = context;
-            ZeroScalar = context.ZeroScalar;
-            OneScalar = context.OneScalar;
-            MinusOneScalar = context.MinusOneScalar;
-            PiScalar = context.PiScalar;
+            _zeroScalar = context.GetZeroScalar();
+            _oneScalar = context.GetOneScalar();
+            _minusOneScalar = context.GetMinusOneScalar();
+            _piScalar = context.GetPiScalar();
         }
 
 
@@ -44,22 +74,6 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions
                 .FunctionHeadSpecsFactory
                 .Plus
                 .CreateFunction(scalar1, scalar2);
-        }
-
-        public ISymbolicExpression Add(params ISymbolicExpression[] scalarsList)
-        {
-            return Context
-                .FunctionHeadSpecsFactory
-                .Plus
-                .CreateFunction(scalarsList);
-        }
-
-        public ISymbolicExpression Add(IEnumerable<ISymbolicExpression> scalarsList)
-        {
-            return Context
-                .FunctionHeadSpecsFactory
-                .Plus
-                .CreateFunction(scalarsList);
         }
 
         public ISymbolicExpression Subtract(ISymbolicExpression scalar1, ISymbolicExpression scalar2)
@@ -78,35 +92,9 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions
                 .CreateFunction(scalar1, scalar2);
         }
 
-        public ISymbolicExpression Times(params ISymbolicExpression[] scalarsList)
-        {
-            return Context
-                .FunctionHeadSpecsFactory
-                .Times
-                .CreateFunction(scalarsList);
-        }
-
-        public ISymbolicExpression Times(IEnumerable<ISymbolicExpression> scalarsList)
-        {
-            return Context
-                .FunctionHeadSpecsFactory
-                .Times
-                .CreateFunction(scalarsList);
-        }
-
         public ISymbolicExpression NegativeTimes(ISymbolicExpression scalar1, ISymbolicExpression scalar2)
         {
             return Negative(Times(scalar1, scalar2));
-        }
-
-        public ISymbolicExpression NegativeTimes(params ISymbolicExpression[] scalarsList)
-        {
-            return Negative(Times(scalarsList));
-        }
-
-        public ISymbolicExpression NegativeTimes(IEnumerable<ISymbolicExpression> scalarsList)
-        {
-            return Negative(Times(scalarsList));
         }
 
         public ISymbolicExpression Divide(ISymbolicExpression scalar1, ISymbolicExpression scalar2)
@@ -309,6 +297,21 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions
             return scalar is ISymbolicNumber {IsNearZero: true};
         }
 
+        public bool IsNotZero(ISymbolicExpression scalar)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public bool IsNotZero(ISymbolicExpression scalar, bool nearZeroFlag)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public bool IsNotNearZero(ISymbolicExpression scalar)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public bool IsPositive(ISymbolicExpression scalar)
         {
             return scalar is ISymbolicNumber {IsPositive: true};
@@ -317,6 +320,16 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions
         public bool IsNegative(ISymbolicExpression scalar)
         {
             return scalar is ISymbolicNumber {IsNegative: true};
+        }
+
+        public bool IsNotPositive(ISymbolicExpression scalar)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public bool IsNotNegative(ISymbolicExpression scalar)
+        {
+            throw new System.NotImplementedException();
         }
 
         public bool IsNotNearPositive(ISymbolicExpression scalar)

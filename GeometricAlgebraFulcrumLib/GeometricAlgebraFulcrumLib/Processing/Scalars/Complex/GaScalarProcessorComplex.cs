@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using MathNet.Numerics;
 
 namespace GeometricAlgebraFulcrumLib.Processing.Scalars.Complex
@@ -8,6 +6,11 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars.Complex
     public sealed class GaScalarProcessorComplex
         : IGaScalarProcessor<System.Numerics.Complex>
     {
+        private readonly System.Numerics.Complex _zeroScalar = System.Numerics.Complex.Zero;
+        private readonly System.Numerics.Complex _oneScalar = System.Numerics.Complex.One;
+        private readonly System.Numerics.Complex _minusOneScalar = -System.Numerics.Complex.One;
+        private readonly System.Numerics.Complex _piScalar = Math.PI;
+
         public double ZeroEpsilon { get; set; }
             = 1e-13d;
 
@@ -18,41 +21,45 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars.Complex
         public bool IsSymbolic 
             => false;
 
-        public System.Numerics.Complex ZeroScalar { get; } = System.Numerics.Complex.Zero;
+        public System.Numerics.Complex GetZeroScalar()
+        {
+            return _zeroScalar;
+        }
 
-        public System.Numerics.Complex OneScalar { get; } = System.Numerics.Complex.One;
+        public System.Numerics.Complex GetOneScalar()
+        {
+            return _oneScalar;
+        }
 
-        public System.Numerics.Complex MinusOneScalar { get; } = -System.Numerics.Complex.One;
+        public System.Numerics.Complex GetMinusOneScalar()
+        {
+            return _minusOneScalar;
+        }
 
-        public System.Numerics.Complex PiScalar { get; } = Math.PI;
+        public System.Numerics.Complex GetPiScalar()
+        {
+            return _piScalar;
+        }
+
+        public System.Numerics.Complex[] GetZeroScalarArray1D(int count)
+        {
+            return new System.Numerics.Complex[count];
+        }
+
+        public System.Numerics.Complex[,] GetZeroScalarArray2D(int count)
+        {
+            return new System.Numerics.Complex[count, count];
+        }
+
+        public System.Numerics.Complex[,] GetZeroScalarArray2D(int count1, int count2)
+        {
+            return new System.Numerics.Complex[count1, count2];
+        }
 
 
         public System.Numerics.Complex Add(System.Numerics.Complex scalar1, System.Numerics.Complex scalar2)
         {
             return scalar1 + scalar2;
-        }
-
-        public System.Numerics.Complex Add(params System.Numerics.Complex[] scalarsList)
-        {
-            var real = scalarsList.Aggregate(
-                0d, 
-                (current, s) => current + s.Real
-            );
-            
-            var imaginary = scalarsList.Aggregate(
-                0d, 
-                (current, s) => current + s.Imaginary
-            );
-            
-            return new System.Numerics.Complex(real, imaginary);
-        }
-
-        public System.Numerics.Complex Add(IEnumerable<System.Numerics.Complex> scalarsList)
-        {
-            return scalarsList.Aggregate(
-                System.Numerics.Complex.Zero, 
-                (current, s) => current + s
-            );
         }
 
         public System.Numerics.Complex Subtract(System.Numerics.Complex scalar1, System.Numerics.Complex scalar2)
@@ -65,41 +72,9 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars.Complex
             return scalar1 * scalar2;
         }
 
-        public System.Numerics.Complex Times(params System.Numerics.Complex[] scalarsList)
-        {
-            return scalarsList.Aggregate(
-                System.Numerics.Complex.One, 
-                (current, s) => current * s
-            );
-        }
-
-        public System.Numerics.Complex Times(IEnumerable<System.Numerics.Complex> scalarsList)
-        {
-            return scalarsList.Aggregate(
-                System.Numerics.Complex.One, 
-                (current, s) => current * s
-            );
-        }
-
         public System.Numerics.Complex NegativeTimes(System.Numerics.Complex scalar1, System.Numerics.Complex scalar2)
         {
             return -scalar1 * scalar2;
-        }
-
-        public System.Numerics.Complex NegativeTimes(params System.Numerics.Complex[] scalarsList)
-        {
-            return scalarsList.Aggregate(
-                -System.Numerics.Complex.One, 
-                (current, s) => current * s
-            );
-        }
-
-        public System.Numerics.Complex NegativeTimes(IEnumerable<System.Numerics.Complex> scalarsList)
-        {
-            return scalarsList.Aggregate(
-                -System.Numerics.Complex.One, 
-                (current, s) => current * s
-            );
         }
 
         public System.Numerics.Complex Divide(System.Numerics.Complex scalar1, System.Numerics.Complex scalar2)
@@ -241,12 +216,37 @@ namespace GeometricAlgebraFulcrumLib.Processing.Scalars.Complex
                    scalar.Imaginary > -ZeroEpsilon && scalar.Imaginary < ZeroEpsilon;
         }
 
+        public bool IsNotZero(System.Numerics.Complex scalar)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsNotZero(System.Numerics.Complex scalar, bool nearZeroFlag)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsNotNearZero(System.Numerics.Complex scalar)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool IsPositive(System.Numerics.Complex scalar)
         {
             throw new NotImplementedException();
         }
 
         public bool IsNegative(System.Numerics.Complex scalar)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsNotPositive(System.Numerics.Complex scalar)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsNotNegative(System.Numerics.Complex scalar)
         {
             throw new NotImplementedException();
         }

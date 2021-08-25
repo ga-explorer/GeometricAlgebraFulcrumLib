@@ -1,4 +1,5 @@
 ﻿using System;
+using GeometricAlgebraFulcrumLib.Storage.Multivectors;
 
 namespace GeometricAlgebraFulcrumLib.Storage.Utils
 {
@@ -9,7 +10,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Utils
             return mv switch
             {
                 GaStorageVector<T> mv1 => 
-                    mv1.GetStorageCopy(),
+                    mv1.GetVectorCopy(),
 
                 _ => throw new InvalidOperationException()
             };
@@ -20,7 +21,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Utils
             return mv switch
             {
                 GaStorageBivector<T> mv1 => 
-                    mv1.GetStorageCopy(),
+                    mv1.GetBivectorCopy(),
 
                 _ => throw new InvalidOperationException()
             };
@@ -31,16 +32,16 @@ namespace GeometricAlgebraFulcrumLib.Storage.Utils
             return mv switch
             {
                 GaStorageScalar<T> mv1 => 
-                    mv1.GetStorageCopy(),
+                    mv1.GetScalarCopy(),
 
                 GaStorageVector<T> mv1 => 
-                    mv1.GetStorageCopy(),
+                    mv1.GetVectorCopy(),
 
                 GaStorageBivector<T> mv1 => 
-                    mv1.GetStorageCopy(),
+                    mv1.GetBivectorCopy(),
 
                 GaStorageKVector<T> mv1 => 
-                    mv1.GetStorageCopy(),
+                    mv1.GetKVectorCopy(),
 
                 _ => throw new InvalidOperationException()
             };
@@ -51,7 +52,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Utils
             return mv switch
             {
                 GaStorageMultivectorSparse<T> mv1 => 
-                    mv1.GetStorageCopy(),
+                    mv1.GetSparseMultivectorCopy(),
 
                 _ => throw new InvalidOperationException()
             };
@@ -62,19 +63,19 @@ namespace GeometricAlgebraFulcrumLib.Storage.Utils
             return mv switch
             {
                 GaStorageScalar<T> mv1 => 
-                    mv1.GetStorageCopy(),
+                    mv1.GetScalarCopy(),
 
                 GaStorageVector<T> mv1 => 
-                    mv1.GetStorageCopy(),
+                    mv1.GetVectorCopy(),
 
                 GaStorageBivector<T> mv1 => 
-                    mv1.GetStorageCopy(),
+                    mv1.GetBivectorCopy(),
 
                 GaStorageKVector<T> mv1 => 
-                    mv1.GetStorageCopy(),
+                    mv1.GetKVectorCopy(),
 
                 GaStorageMultivectorGraded<T> mv1 => 
-                    mv1.GetStorageCopy(),
+                    mv1.GetGradedMultivectorCopy(),
 
                 _ => throw new InvalidOperationException()
             };
@@ -85,22 +86,22 @@ namespace GeometricAlgebraFulcrumLib.Storage.Utils
             return mv switch
             {
                 GaStorageScalar<T> mv1 => 
-                    mv1.GetStorageCopy(),
+                    mv1.GetScalarCopy(),
 
                 GaStorageVector<T> mv1 => 
-                    mv1.GetStorageCopy(),
+                    mv1.GetVectorCopy(),
 
                 GaStorageBivector<T> mv1 => 
-                    mv1.GetStorageCopy(),
+                    mv1.GetBivectorCopy(),
 
                 GaStorageKVector<T> mv1 => 
-                    mv1.GetStorageCopy(),
+                    mv1.GetKVectorCopy(),
 
                 GaStorageMultivectorGraded<T> mv1 => 
-                    mv1.GetStorageCopy(),
+                    mv1.GetGradedMultivectorCopy(),
 
                 GaStorageMultivectorSparse<T> mv1 => 
-                    mv1.GetStorageCopy(),
+                    mv1.GetSparseMultivectorCopy(),
 
                 _ => throw new InvalidOperationException()
             };

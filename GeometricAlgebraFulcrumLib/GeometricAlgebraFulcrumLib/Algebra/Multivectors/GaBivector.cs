@@ -1,10 +1,12 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Factories;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Space;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Binary;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Unary;
-using GeometricAlgebraFulcrumLib.Storage;
+using GeometricAlgebraFulcrumLib.Storage.Multivectors;
 using GeometricAlgebraFulcrumLib.Storage.Utils;
 using GeometricAlgebraFulcrumLib.TextComposers;
 
@@ -448,10 +450,10 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Multivectors
             get
             {
                 if (index1 == index2)
-                    return Processor.ZeroScalar.CreateScalar(Processor);
+                    return Processor.GetZeroScalar().CreateScalar(Processor);
 
                 var id = 
-                    (1UL << index1) | (1UL << index2);
+                    GaBasisBivectorUtils.BasisBivectorId(index1, index2);
 
                 return index1 < index2
                     ? Processor.GetTermScalar(BivectorStorage, id).CreateScalar(Processor)
@@ -464,10 +466,10 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Multivectors
             get
             {
                 if (index1 == index2)
-                    return Processor.ZeroScalar.CreateScalar(Processor);
+                    return Processor.GetZeroScalar().CreateScalar(Processor);
 
                 var id = 
-                    (1UL << (int) index1) | (1UL << (int) index2);
+                    GaBasisBivectorUtils.BasisBivectorId(index1, index2);
 
                 return index1 < index2
                     ? Processor.GetTermScalar(BivectorStorage, id).CreateScalar(Processor)

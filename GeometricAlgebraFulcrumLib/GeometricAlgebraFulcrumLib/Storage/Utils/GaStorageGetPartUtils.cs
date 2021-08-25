@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Processing.Multivectors.Unary;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
 using GeometricAlgebraFulcrumLib.Storage.Factories;
+using GeometricAlgebraFulcrumLib.Storage.Multivectors;
 
 namespace GeometricAlgebraFulcrumLib.Storage.Utils
 {
@@ -19,7 +21,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Utils
         public static IGaStorageScalar<T> GetScalarPart<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivector<T> mv, Func<T, T> scalarMapping)
         {
             var scalar = mv.TryGetTermScalar(0UL, out var value)
-                ? value : scalarProcessor.ZeroScalar;
+                ? value : scalarProcessor.GetZeroScalar();
 
             return scalarProcessor.CreateStorageScalar(scalarMapping(scalar));
         }

@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
-using DataStructuresLib.Extensions;
 using GeometricAlgebraFulcrumLib.Algebra.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Geometry.Rotors;
 using GeometricAlgebraFulcrumLib.Geometry.Subspaces;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Binary;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean;
-using GeometricAlgebraFulcrumLib.Storage;
+using GeometricAlgebraFulcrumLib.Processing.Multivectors.Unary;
 using GeometricAlgebraFulcrumLib.Storage.Factories;
+using GeometricAlgebraFulcrumLib.Storage.Multivectors;
 using GeometricAlgebraFulcrumLib.Storage.Utils;
 using GeometricAlgebraFulcrumLib.Symbolic;
 using GeometricAlgebraFulcrumLib.Symbolic.Applications.GaPoT;
@@ -17,20 +17,15 @@ using GeometricAlgebraFulcrumLib.Symbolic.Mathematica;
 using GeometricAlgebraFulcrumLib.Symbolic.Mathematica.ExprFactory;
 using GeometricAlgebraFulcrumLib.Symbolic.Processors;
 using GeometricAlgebraFulcrumLib.Symbolic.Text;
+using GeometricAlgebraFulcrumLib.TextComposers;
 using Wolfram.NETLink;
 
 namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
 {
     public static class SymmetricHarmonicsSymbolicSample
     {
-        public static GaMatrixProcessorMathematicaExpr MatrixProcessor { get; }
-            = GaMatrixProcessorMathematicaExpr.DefaultProcessor;
-
-        public static GaScalarProcessorMathematicaExpr ScalarProcessor { get; }
-            = GaScalarProcessorMathematicaExpr.DefaultProcessor;
-            
         public static IGaProcessor<Expr> Processor { get; }
-            = ScalarProcessor.CreateEuclideanProcessor(63);
+            = GaScalarProcessorMathematicaExpr.DefaultProcessor.CreateEuclideanProcessor(63);
             
         public static GaTextComposerMathematicaExpr TextComposer { get; }
             = GaTextComposerMathematicaExpr.DefaultComposer;
@@ -41,7 +36,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
 
         public static void ValidatePhasor(int k, int n, IGaStorageVector<Expr> phasor2)
         {
-            var composer = ScalarProcessor.CreateStorageComposerVector();
+            var composer = Processor.CreateStorageKVectorComposer();
 
             for (var i = 0; i < n; i++)
             {
@@ -54,14 +49,14 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
 
             var phasor1 = 
                 composer
-                    .GetVector()
-                    .MapScalars(
+                    .CreateStorageVector()
+                    .MapVectorScalars(
                         scalar => Mfs.FullSimplify[scalar].Evaluate()
                     );
 
             var phasorDiff = 
-                ScalarProcessor.GetNotZeroTerms(
-                    ScalarProcessor.Subtract(phasor1, phasor2)
+                Processor.GetNotZeroTerms(
+                    Processor.Subtract(phasor1, phasor2)
                     .MapScalars(
                         scalar => Mfs.FullSimplify[scalar].Evaluate()
                     )
@@ -87,7 +82,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
             Debug.Assert(n >= 2 && i >= 0 && i < n);
 
             var muStorage =
-                ScalarProcessor.CreateStorageVector(i, Expr.INT_ONE
+                Processor.CreateStorageVector(i, Expr.INT_ONE
                 );
 
             var muSubspace = 
@@ -144,8 +139,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
                 phasorTuples
                     .Select(t => t.Item1)
                     .Aggregate(
-                        (IGaStorageMultivector<Expr>) ScalarProcessor.CreateStorageZeroVector(),
-                        (current, vector) => ScalarProcessor.Add(current, vector)
+                        (IGaStorageMultivector<Expr>) Processor.CreateStorageZeroVector(),
+                        (current, vector) => Processor.Add(current, vector)
                     )
                     .MapScalars(scalar => 
                         Mfs.TrigReduce[Mfs.FullSimplify[scalar]].Evaluate()
@@ -156,8 +151,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
                 phasorTuples
                     .Select(t => t.Item2)
                     .Aggregate(
-                        (IGaStorageMultivector<Expr>) ScalarProcessor.CreateStorageZeroVector(),
-                        (current, vector) => ScalarProcessor.Add(current, vector)
+                        (IGaStorageMultivector<Expr>) Processor.CreateStorageZeroVector(),
+                        (current, vector) => Processor.Add(current, vector)
                     )
                     .MapScalars(scalar => 
                         Mfs.TrigReduce[Mfs.FullSimplify[scalar]].Evaluate()
@@ -190,15 +185,15 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
                 Console.WriteLine();
 
                 var unitKirchhoffVector = 
-                    ScalarProcessor.CreateStorageUnitOnesVector(n);
+                    Processor.CreateStorageUnitOnesVector(n);
 
                 var (_, inputPhasor) = GetPhasorsTuple(1, n);
 
                 var e1 = 
-                    ScalarProcessor.CreateStorageBasisVector(0);
+                    Processor.CreateStorageBasisVector(0);
 
                 var e2 = 
-                    ScalarProcessor.CreateStorageBasisVector(1);
+                    Processor.CreateStorageBasisVector(1);
 
                 var mv1 = 
                     inputPhasor.MapScalars(scalar => 
@@ -206,7 +201,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
                 );
 
                 var v1 = 
-                    ScalarProcessor.Divide(mv1, ScalarProcessor.ENorm(mv1)).FullSimplifyScalars().GetVectorPart();
+                    Processor.Divide(mv1, Processor.ENorm(mv1)).FullSimplifyScalars().GetVectorPart();
 
                 Console.WriteLine(
                     TextComposer.GetMultivectorText(v1)
@@ -219,7 +214,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
                     );
                 
                 var v2 = 
-                    ScalarProcessor.Divide(mv2, ScalarProcessor.ENorm(mv2)).FullSimplifyScalars();
+                    Processor.Divide(mv2, Processor.ENorm(mv2)).FullSimplifyScalars();
 
                 Console.WriteLine(
                     TextComposer.GetMultivectorText(v2)
@@ -234,7 +229,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
                 var clarkeArray = 
                     clarkeMap
                         .GetVectorsMappingArray(n, n)
-                        .MapItems(scalar => 
+                        .MapValues(scalar => 
                             Mfs.TrigReduce[Mfs.FullSimplify[scalar]].Evaluate()
                             //Mfs.N[scalar].Simplify()
                         );
@@ -382,10 +377,10 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
                             .SimplifyScalars();
 
                     var phasorLength =
-                        ScalarProcessor.ENorm(phasor2).FullSimplify();
+                        Processor.ENorm(phasor2).FullSimplify();
 
                     var phasorScalarsSum =
-                        ScalarProcessor.ESp(phasor2, unitKirchhoffVector).FullSimplify();
+                        Processor.ESp(phasor2, unitKirchhoffVector).FullSimplify();
 
                     Console.WriteLine("Length of phasor:");
                     Console.WriteLine(

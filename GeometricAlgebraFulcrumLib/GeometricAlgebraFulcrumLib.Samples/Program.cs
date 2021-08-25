@@ -1,5 +1,6 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Samples.CodeComposer;
+using GeometricAlgebraFulcrumLib.Samples.GAPoT;
+using GeometricAlgebraFulcrumLib.UnitTests.Processing;
 
 namespace GeometricAlgebraFulcrumLib.Samples
 {
@@ -7,13 +8,19 @@ namespace GeometricAlgebraFulcrumLib.Samples
     {
         static void Main(string[] args)
         {
-            //var testClass = new GaSimpleEuclideanRotorsTests();
+            //var testClass = new GaProductsTests();
             //testClass.ClassInit();
-            //testClass.AssertRotations();
+            //testClass.AssertCorrectInitialization();
 
-            Sample1.Execute();
+            //var functionNames = new[] {"add", "subtract", "op", "egp", "elcp", "ercp", "efdp", "ehip", "ecp", "eacp"};
+            //foreach (var functionName in functionNames)
+            //    testClass.AssertCorrectBinaryOperations(functionName);
+            
+            //Sample1.Execute();
 
             //HilbertTransform.Execute();
+
+            MultiDerivativeSample.Execute();
 
             //Sample2.Execute2();
 

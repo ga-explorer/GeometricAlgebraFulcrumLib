@@ -1,22 +1,24 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
+using GeometricAlgebraFulcrumLib.Processing.Scalars.Binary;
 using GeometricAlgebraFulcrumLib.Storage.Composers;
+using GeometricAlgebraFulcrumLib.Storage.Multivectors;
 
 namespace GeometricAlgebraFulcrumLib.Storage.Factories
 {
     public static class GaStorageScalarFactory
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaStorageComposerScalar<T> CreateStorageComposerScalar<T>(this IGaScalarProcessor<T> scalarProcessor)
+        public static GaScalarComposer<T> CreateScalarComposer<T>(this IGaScalarProcessor<T> scalarProcessor)
         {
-            return new GaStorageComposerScalar<T>(scalarProcessor);
+            return new GaScalarComposer<T>(scalarProcessor);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaStorageComposerScalar<T> CreateStorageComposerScalar<T>(this IGaScalarProcessor<T> scalarProcessor, T scalar)
+        public static GaScalarComposer<T> CreateScalarComposer<T>(this IGaScalarProcessor<T> scalarProcessor, T scalar)
         {
-            return new GaStorageComposerScalar<T>(scalarProcessor, scalar);
+            return new GaScalarComposer<T>(scalarProcessor, scalar);
         }
 
 
@@ -61,7 +63,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Factories
         public static GaStorageScalar<T> CreateStorageBasisScalar<T>(this IGaScalarProcessor<T> scalarProcessor)
         {
             return GaStorageScalar<T>.Create(
-                scalarProcessor.OneScalar
+                scalarProcessor.GetOneScalar()
             );
         }
 
@@ -69,7 +71,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Factories
         public static GaStorageScalar<T> CreateStorageBasisScalarNegative<T>(this IGaScalarProcessor<T> scalarProcessor)
         {
             return GaStorageScalar<T>.Create(
-                scalarProcessor.MinusOneScalar
+                scalarProcessor.GetMinusOneScalar()
             );
         }
 

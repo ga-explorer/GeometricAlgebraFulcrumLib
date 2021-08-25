@@ -1,84 +1,103 @@
 ﻿using System;
+using DataStructuresLib.Basic;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
+using GeometricAlgebraFulcrumLib.Structures.Grids.Even;
+using GeometricAlgebraFulcrumLib.Structures.Lists.Even;
 
 namespace GeometricAlgebraFulcrumLib.Processing.Matrices
 {
     /// <summary>
     /// This processor class provides basic operations on matrices.
     /// The matrix is represented in a single object of generic type TMatrix.
-    /// A scalar element of the matrix is represented using the type T.
+    /// A scalar element of the matrix is represented using the type TScalar.
     /// </summary>
     /// <typeparam name="TMatrix">The type of matrix objects</typeparam>
-    /// <typeparam name="T">The type of matrix scalars</typeparam>
-    public interface IGaMatrixProcessor<TMatrix, T>
-        : IGaScalarProcessor<T>
+    /// <typeparam name="TScalar">The type of matrix scalars</typeparam>
+    public interface IGaMatrixProcessor<TMatrix, TScalar>
+        : IGaScalarProcessor<TScalar>
     {
-        int GetRowsCount(TMatrix matrix);
-
-        int GetColumnsCount(TMatrix matrix);
-
-        Tuple<int, int> GetSize(TMatrix matrix);
-
-        T[,] GetArray(TMatrix matrix);
-
-        TMatrix CreateMatrix(T[,] array);
-
-        TMatrix CreateRowVectorMatrix(T[] array);
-
-        TMatrix CreateRowVectorMatrix(T[,] array, int rowIndex);
-
-        TMatrix CreateColumnVectorMatrix(T[] array);
-
-        TMatrix CreateColumnVectorMatrix(T[,] array, int columnIndex);
-
         TMatrix CreateZeroMatrix(int size);
 
         TMatrix CreateZeroMatrix(int rowsCount, int columnsCount);
 
         TMatrix CreateUnityMatrix(int size);
 
-        TMatrix AddMatrixScalar(TMatrix matrix, T scalar);
+        TMatrix CreateMatrix(IGaGridEven<TScalar> array);
 
-        TMatrix AddScalarMatrix(T scalar, TMatrix matrix);
+        TMatrix CreateRowVectorMatrix(IGaListEven<TScalar> array);
+
+        TMatrix CreateRowVectorMatrix(IGaGridEven<TScalar> array, int rowIndex);
+
+        TMatrix CreateColumnVectorMatrix(IGaListEven<TScalar> array);
+
+        TMatrix CreateColumnVectorMatrix(IGaGridEven<TScalar> array, int columnIndex);
+
+
+        int GetDenseRowsCount(TMatrix matrix);
+
+        int GetDenseColumnsCount(TMatrix matrix);
+
+        Pair<int> GetDenseSize(TMatrix matrix);
+
+
+        TScalar GetScalar(TMatrix matrix, int rowIndex, int colIndex);
+
+        IGaListEven<TScalar> MatrixRowToVector(TMatrix matrix, int rowIndex);
+
+        IGaListEven<TScalar> MatrixColumnToVector(TMatrix matrix, int colIndex);
+
+        IGaGridEven<TScalar> MatrixToArray(TMatrix matrix);
+
+
+        TMatrix AddMatrixScalar(TMatrix matrix, TScalar scalar);
+
+        TMatrix AddScalarMatrix(TScalar scalar, TMatrix matrix);
 
         TMatrix AddMatrices(TMatrix matrix1, TMatrix matrix2);
 
-        TMatrix SubtractMatrixScalar(TMatrix matrix, T scalar);
 
-        TMatrix SubtractScalarMatrix(T scalar, TMatrix matrix);
+        TMatrix SubtractMatrixScalar(TMatrix matrix, TScalar scalar);
+
+        TMatrix SubtractScalarMatrix(TScalar scalar, TMatrix matrix);
 
         TMatrix SubtractMatrices(TMatrix matrix1, TMatrix matrix2);
 
-        TMatrix ScalarMatrixProduct(T scalar, TMatrix matrix);
 
-        TMatrix MatrixScalarProduct(TMatrix matrix, T scalar);
+        TMatrix TimesMatrixScalar(TMatrix matrix, TScalar scalar);
 
-        TMatrix TimesScalars(TMatrix matrix1, TMatrix matrix2);
+        TMatrix TimesScalarMatrix(TScalar scalar, TMatrix matrix);
 
-        TMatrix DivideScalars(TMatrix matrix1, TMatrix matrix2);
+        TMatrix TimesMatrixItems(TMatrix matrix1, TMatrix matrix2);
 
-        TMatrix DivideMatrixScalar(TMatrix matrix, T scalar);
+        TMatrix TimesMatrices(TMatrix matrix1, TMatrix matrix2);
 
-        TMatrix DivideScalarMatrix(T scalar, TMatrix matrix);
 
-        TMatrix MatrixProduct(TMatrix matrix1, TMatrix matrix2);
+        TMatrix DivideMatrixItems(TMatrix matrix1, TMatrix matrix2);
 
-        TMatrix MapScalars(TMatrix matrix1, TMatrix matrix2, Func<T, T, T> mappingFunc);
+        TMatrix DivideMatrixScalar(TMatrix matrix, TScalar scalar);
 
-        TMatrix MapScalars(TMatrix matrix, Func<T, T> mappingFunc);
+        TMatrix DivideScalarMatrix(TScalar scalar, TMatrix matrix);
 
-        TMatrix NegativeMatrix(TMatrix matrix);
 
-        TMatrix AdjointMatrix(TMatrix matrix);
+        TMatrix MapMatrixItems(TMatrix matrix, Func<TScalar, TScalar> mappingFunc);
 
-        TMatrix InverseMatrix(TMatrix matrix);
+        TMatrix MapMatrixItems(TMatrix matrix, Func<int, int, TScalar, TScalar> mappingFunc);
 
-        TMatrix InverseAdjointMatrix(TMatrix matrix);
+        TMatrix MapMatrixItems(TMatrix matrix1, TMatrix matrix2, Func<TScalar, TScalar, TScalar> mappingFunc);
 
-        int EigenDecomposition(TMatrix matrix, out Tuple<T, T[]>[] realPairs, out Tuple<T, T[]>[] imagPairs);
 
-        Tuple<T, T>[] EigenValues(TMatrix matrix);
+        TMatrix MatrixNegative(TMatrix matrix);
 
-        Tuple<T[], T[]>[] EigenVectors(TMatrix matrix);
+        TMatrix MatrixTranspose(TMatrix matrix);
+
+        TMatrix MatrixInverse(TMatrix matrix);
+
+        TMatrix MatrixInverseTranspose(TMatrix matrix);
+
+        int MatrixEigenDecomposition(TMatrix matrix, out Tuple<TScalar, IGaListEven<TScalar>>[] realPairs, out Tuple<TScalar, IGaListEven<TScalar>>[] imagPairs);
+
+        Pair<TScalar>[] MatrixEigenValues(TMatrix matrix);
+
+        Pair<IGaListEven<TScalar>>[] MatrixEigenVectors(TMatrix matrix);
     }
 }

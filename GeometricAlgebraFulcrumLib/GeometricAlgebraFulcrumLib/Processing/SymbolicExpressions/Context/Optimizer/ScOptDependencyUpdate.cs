@@ -29,7 +29,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context.Opti
             Context.ClearDependencyData();
 
             //Fill dependency lists of all variables
-            foreach (var computedVar in Context.ComputedVariables)
+            foreach (var computedVar in Context.GetComputedVariables())
             {
                 //Find the numbers and variables used in the RHS expression of this computed variable
                 var rhsAtomicsList = 
@@ -54,7 +54,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context.Opti
 
             //Update ComputationOrder property for each computed variable in the block
             var i = 0;
-            foreach (var computedVariable in Context.ComputedVariables)
+            foreach (var computedVariable in Context.GetComputedVariables())
                 computedVariable.SetComputationOrder(i++);
         }
     }

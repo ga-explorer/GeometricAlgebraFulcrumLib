@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Basis;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
-using GeometricAlgebraFulcrumLib.Storage;
-using GeometricAlgebraFulcrumLib.Storage.Terms;
+using GeometricAlgebraFulcrumLib.Storage.Multivectors;
+using GeometricAlgebraFulcrumLib.Structures;
 
 namespace GeometricAlgebraFulcrumLib.TextComposers
 {
@@ -17,7 +16,7 @@ namespace GeometricAlgebraFulcrumLib.TextComposers
 
         string GetBasisBladeText(uint grade, ulong index);
 
-        string GetBasisBladeText(IGaBasisBlade basisBlade);
+        string GetBasisBladeText(GaBasisBlade basisBlade);
 
         string GetBasisBladeText(IEnumerable<ulong> indexList);
 
@@ -29,30 +28,24 @@ namespace GeometricAlgebraFulcrumLib.TextComposers
 
         string GetTermText(uint grade, ulong index, T scalar);
 
-        string GetTermText(KeyValuePair<ulong, T> idScalarPair);
+        string GetTermText(GaRecordKeyValue<T> idScalarPair);
 
-        string GetTermText(Tuple<ulong, T> idScalarPair);
+        string GetTermText(GaRecordGradeKeyValue<T> idScalarPair);
 
-        string GetTermText(Tuple<uint, ulong, T> idScalarPair);
+        string GetTermText(GaBasisBlade basisBlade, T scalar);
 
-        string GetTermText(IGaBasisBlade basisBlade, T scalar);
+        string GetTermText(GaBasisTerm<T> term);
 
-        string GetTermText(GaTerm<T> term);
+        string GetTermsText(IEnumerable<GaRecordKeyValue<T>> idScalarTuples);
 
-        string GetTermsText(IEnumerable<KeyValuePair<ulong, T>> idScalarPairs);
+        string GetTermsText(IEnumerable<GaRecordGradeKeyValue<T>> idScalarTuples);
 
-        string GetTermsText(IEnumerable<Tuple<ulong, T>> idScalarTuples);
+        string GetTermsText(uint grade, IEnumerable<GaRecordKeyValue<T>> indexScalarTuples);
 
-        string GetTermsText(IEnumerable<Tuple<uint, ulong, T>> idScalarTuples);
+        string GetTermsText(IEnumerable<GaBasisTerm<T>> terms);
 
-        string GetTermsText(uint grade, IEnumerable<KeyValuePair<ulong, T>> indexScalarPairs);
+        string GetArrayText(IReadOnlyList<T> array);
 
-        string GetTermsText(uint grade, IEnumerable<Tuple<ulong, T>> indexScalarTuples);
-
-        string GetTermsText(IEnumerable<GaTerm<T>> terms);
-
-        string GetArrayText(T[] array);
-        
         string GetArrayText(T[,] array);
 
         string GetMultivectorText(IGaStorageMultivector<T> storage);

@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
 using GeometricAlgebraFulcrumLib.Processing.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Storage.Multivectors;
 
 namespace GeometricAlgebraFulcrumLib.Storage.Composers
 {
@@ -19,18 +20,18 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
         private readonly Dictionary<ulong, double> _idScalarDictionary
             = new Dictionary<ulong, double>();
 
-        public static IGaScalarProcessor<double> ScalarProcessor 
+        public static IGaScalarProcessor<double> ScalarProcessor
             => GaScalarProcessorFloat64.DefaultProcessor;
 
         public IGaSignatureLookup Signature { get; }
 
-        public int Count 
+        public int Count
             => _idScalarDictionary.Count;
 
-        public IEnumerable<ulong> Keys 
+        public IEnumerable<ulong> Keys
             => _idScalarDictionary.Keys;
 
-        public IEnumerable<double> Values 
+        public IEnumerable<double> Values
             => _idScalarDictionary.Values;
 
         public double this[ulong id]
@@ -41,17 +42,17 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
 
         public GaStorageComposerMultivectorFloat64(uint vSpaceDimension)
         {
-            Signature = (IGaSignatureLookup) GaSignatureFactory.CreateEuclidean(vSpaceDimension, true);
+            Signature = (IGaSignatureLookup)GaSignatureFactory.CreateEuclidean(vSpaceDimension, true);
         }
 
         public GaStorageComposerMultivectorFloat64(uint positiveCount, uint negativeCount)
         {
-            Signature = (IGaSignatureLookup) GaSignatureFactory.Create(positiveCount, negativeCount, true);
+            Signature = (IGaSignatureLookup)GaSignatureFactory.Create(positiveCount, negativeCount, true);
         }
 
         public GaStorageComposerMultivectorFloat64(uint positiveCount, uint negativeCount, uint zeroCount)
         {
-            Signature = (IGaSignatureLookup) GaSignatureFactory.Create(positiveCount, negativeCount, zeroCount, true);
+            Signature = (IGaSignatureLookup)GaSignatureFactory.Create(positiveCount, negativeCount, zeroCount, true);
         }
 
         public GaStorageComposerMultivectorFloat64([NotNull] IGaSignatureLookup signature)
@@ -85,7 +86,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
 
         public void AddGpTerm(ulong id1, ulong id2, double scalar1, double scalar2)
         {
-            var signature = 
+            var signature =
                 Signature.GpSignature(id1, id2);
 
             if (signature == 0)
@@ -93,7 +94,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
 
             var id = id1 ^ id2;
             var scalar = scalar1 * scalar2;
-            
+
             if (signature < 0)
                 scalar = -scalar;
 
@@ -105,7 +106,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
 
         public void AddGpReverseTerm(ulong id1, ulong id2, double scalar1, double scalar2)
         {
-            var signature = 
+            var signature =
                 Signature.GpSignature(id1, id2);
 
             if (id2.BasisBladeIdHasNegativeReverse())
@@ -116,7 +117,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
 
             var id = id1 ^ id2;
             var scalar = scalar1 * scalar2;
-            
+
             if (signature < 0)
                 scalar = -scalar;
 
@@ -128,7 +129,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
 
         public void AddOpTerm(ulong id1, ulong id2, double scalar1, double scalar2)
         {
-            var signature = 
+            var signature =
                 Signature.OpSignature(id1, id2);
 
             if (signature == 0)
@@ -136,7 +137,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
 
             var id = id1 ^ id2;
             var scalar = scalar1 * scalar2;
-            
+
             if (signature < 0)
                 scalar = -scalar;
 
@@ -148,14 +149,14 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
 
         public void AddSpTerm(ulong id, double scalar1, double scalar2)
         {
-            var signature = 
+            var signature =
                 Signature.SpSignature(id);
 
             if (signature == 0)
                 return;
 
             var scalar = scalar1 * scalar2;
-            
+
             if (signature < 0)
                 scalar = -scalar;
 
@@ -167,7 +168,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
 
         public void AddSpTerm(ulong id1, ulong id2, double scalar1, double scalar2)
         {
-            var signature = 
+            var signature =
                 Signature.SpSignature(id1, id2);
 
             if (signature == 0)
@@ -175,7 +176,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
 
             var id = id1 ^ id2;
             var scalar = scalar1 * scalar2;
-            
+
             if (signature < 0)
                 scalar = -scalar;
 
@@ -187,7 +188,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
 
         public void AddLcpTerm(ulong id1, ulong id2, double scalar1, double scalar2)
         {
-            var signature = 
+            var signature =
                 Signature.LcpSignature(id1, id2);
 
             if (signature == 0)
@@ -195,7 +196,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
 
             var id = id1 ^ id2;
             var scalar = scalar1 * scalar2;
-            
+
             if (signature < 0)
                 scalar = -scalar;
 
@@ -207,7 +208,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
 
         public void AddRcpTerm(ulong id1, ulong id2, double scalar1, double scalar2)
         {
-            var signature = 
+            var signature =
                 Signature.RcpSignature(id1, id2);
 
             if (signature == 0)
@@ -215,7 +216,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
 
             var id = id1 ^ id2;
             var scalar = scalar1 * scalar2;
-            
+
             if (signature < 0)
                 scalar = -scalar;
 
@@ -227,7 +228,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
 
         public void AddFdpTerm(ulong id1, ulong id2, double scalar1, double scalar2)
         {
-            var signature = 
+            var signature =
                 Signature.FdpSignature(id1, id2);
 
             if (signature == 0)
@@ -235,7 +236,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
 
             var id = id1 ^ id2;
             var scalar = scalar1 * scalar2;
-            
+
             if (signature < 0)
                 scalar = -scalar;
 
@@ -247,7 +248,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
 
         public void AddHipTerm(ulong id1, ulong id2, double scalar1, double scalar2)
         {
-            var signature = 
+            var signature =
                 Signature.HipSignature(id1, id2);
 
             if (signature == 0)
@@ -255,7 +256,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
 
             var id = id1 ^ id2;
             var scalar = scalar1 * scalar2;
-            
+
             if (signature < 0)
                 scalar = -scalar;
 
@@ -267,7 +268,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
 
         public void AddAcpTerm(ulong id1, ulong id2, double scalar1, double scalar2)
         {
-            var signature = 
+            var signature =
                 Signature.AcpSignature(id1, id2);
 
             if (signature == 0)
@@ -275,7 +276,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
 
             var id = id1 ^ id2;
             var scalar = scalar1 * scalar2;
-            
+
             if (signature < 0)
                 scalar = -scalar;
 
@@ -287,7 +288,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
 
         public void AddCpTerm(ulong id1, ulong id2, double scalar1, double scalar2)
         {
-            var signature = 
+            var signature =
                 Signature.CpSignature(id1, id2);
 
             if (signature == 0)
@@ -295,7 +296,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
 
             var id = id1 ^ id2;
             var scalar = scalar1 * scalar2;
-            
+
             if (signature < 0)
                 scalar = -scalar;
 
@@ -305,7 +306,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
                 _idScalarDictionary.Add(id, scalar);
         }
 
-        
+
         public void RemoveTerms(params ulong[] indexList)
         {
             foreach (var key in indexList)
@@ -314,7 +315,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
 
         public void RemoveZeroTerms()
         {
-            var idsArray = 
+            var idsArray =
                 _idScalarDictionary
                     .Where(pair => ScalarProcessor.IsZero(pair.Value))
                     .Select(pair => pair.Key)
@@ -325,7 +326,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
 
         public void RemoveNearZeroTerms()
         {
-            var idsArray = 
+            var idsArray =
                 _idScalarDictionary
                     .Where(pair => ScalarProcessor.IsNearZero(pair.Value))
                     .Select(pair => pair.Key)
@@ -349,17 +350,17 @@ namespace GeometricAlgebraFulcrumLib.Storage.Composers
             if (termsCount == 0)
                 return GaStorageScalar<double>.ZeroScalar;
 
-            if (termsCount > 1) 
+            if (termsCount > 1)
                 return GaStorageMultivectorSparse<double>.Create(_idScalarDictionary);
 
-            var (id, scalar) = 
+            var (id, scalar) =
                 _idScalarDictionary.First();
 
-            return id == 0UL 
-                ? GaStorageScalar<double>.Create(scalar) 
+            return id == 0UL
+                ? GaStorageScalar<double>.Create(scalar)
                 : GaStorageKVector<double>.Create(id, scalar);
         }
-        
+
         public IGaStorageMultivector<double> GetStorage()
         {
             return GaStorageMultivectorSparse<double>.Create(_idScalarDictionary);

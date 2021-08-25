@@ -50,11 +50,9 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context.Opti
         protected override void BeginProcessing()
         {
             var outputVariablesList = OrderOutputsById
-                ? Context
-                    .OutputVariables
+                ? Context.GetOutputVariables()
                     .OrderBy(item => item.AtomicExpressionId)
-                : Context
-                    .OutputVariables
+                : Context.GetOutputVariables()
                     .OrderBy(item => item.MaxComputationLevel)
                     .ThenBy(item => item.AtomicExpressionId);
 
@@ -67,7 +65,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context.Opti
 
             //Update ComputationOrder property for each computed variable in the block
             var i = 0;
-            foreach (var computedVariable in Context.ComputedVariables)
+            foreach (var computedVariable in Context.GetComputedVariables())
                 computedVariable.SetComputationOrder(i++);
         }
     }

@@ -1,69 +1,50 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using DataStructuresLib.Extensions;
 using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonormal;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
-using GeometricAlgebraFulcrumLib.Storage.Composers;
-using GeometricAlgebraFulcrumLib.Storage.Terms;
+using GeometricAlgebraFulcrumLib.Storage.Multivectors;
+using GeometricAlgebraFulcrumLib.Structures;
+using GeometricAlgebraFulcrumLib.Structures.Composers;
+using GeometricAlgebraFulcrumLib.Structures.Factories;
+using GeometricAlgebraFulcrumLib.Structures.Lists.Even;
 
 namespace GeometricAlgebraFulcrumLib.Storage.Factories
 {
     public static class GaStorageKVectorFactory
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaStorageComposerKVector<T> CreateStorageComposerKVector<T>(this IGaScalarProcessor<T> scalarProcessor, uint grade)
+        public static GaListEvenComposerSparse<T> CreateStorageKVectorComposer<T>(this IGaScalarProcessor<T> scalarProcessor)
         {
-            return new GaStorageComposerKVector<T>(
-                scalarProcessor,
-                grade
-            );
+            return new GaListEvenComposerSparse<T>(scalarProcessor);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaStorageComposerKVector<T> CreateStorageComposerKVector<T>(this IGaScalarProcessor<T> scalarProcessor, uint grade, IReadOnlyDictionary<ulong, T> indexScalarsDictionary) 
+        public static GaListEvenComposerDense<T> CreateStorageKVectorComposer<T>(this IGaScalarProcessor<T> scalarProcessor, int count) 
         {
-            return new GaStorageComposerKVector<T>(
-                scalarProcessor,
-                grade,
-                indexScalarsDictionary
-            );
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaStorageComposerKVector<T> CreateStorageComposerKVector<T>(this IGaScalarProcessor<T> scalarProcessor, uint grade, IEnumerable<KeyValuePair<ulong, T>> indexScalarPairs) 
-        {
-            return new GaStorageComposerKVector<T>(
-                scalarProcessor,
-                grade,
-                indexScalarPairs
-            );
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaStorageComposerKVector<T> CreateStorageComposerKVector<T>(this IGaScalarProcessor<T> scalarProcessor, uint grade, IEnumerable<Tuple<ulong, T>> indexScalarTuples)
-        {
-            return new GaStorageComposerKVector<T>(
-                scalarProcessor,
-                grade,
-                indexScalarTuples
-            );
+            return new GaListEvenComposerDense<T>(scalarProcessor, count);
         }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IGaStorageKVector<T> CopyToStorageKVector<T>(this IReadOnlyDictionary<ulong, T> indexScalarDictionary, uint grade)
         {
-            var evenDictionary = indexScalarDictionary.ToDictionary(
-                pair => pair.Key,
-                pair => pair.Value
-            );
+            if (grade == 0)
+            {
+                return indexScalarDictionary.TryGetValue(0, out var scalar)
+                    ? GaStorageScalar<T>.Create(scalar)
+                    : GaStorageScalar<T>.ZeroScalar;
+            }
+
+            var evenDictionary = 
+                indexScalarDictionary.CopyToDictionary();
 
             return grade switch
             {
-                0 => GaStorageScalar<T>.Create(evenDictionary),
                 1 => GaStorageVector<T>.Create(evenDictionary),
                 2 => GaStorageBivector<T>.Create(evenDictionary),
                 _ => GaStorageKVector<T>.Create(grade, evenDictionary)
@@ -75,7 +56,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Factories
         public static IGaStorageKVector<T> CreateStoragePseudoScalar<T>(this IGaScalarProcessor<T> scalarProcessor, uint vSpaceDimension)
         {
             var index = vSpaceDimension.PseudoScalarIndex();
-            var scalar = scalarProcessor.OneScalar;
+            var scalar = scalarProcessor.GetOneScalar();
 
             return vSpaceDimension switch
             {
@@ -89,11 +70,13 @@ namespace GeometricAlgebraFulcrumLib.Storage.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IGaStorageKVector<T> CreateStoragePseudoScalarReverse<T>(this IGaScalarProcessor<T> scalarProcessor, uint vSpaceDimension)
         {
-            var index = vSpaceDimension.PseudoScalarIndex();
+            var index = 
+                vSpaceDimension.PseudoScalarIndex();
+
             var scalar = 
                 vSpaceDimension.GradeHasNegativeReverse()
-                    ? scalarProcessor.MinusOneScalar 
-                    : scalarProcessor.OneScalar;
+                    ? scalarProcessor.GetMinusOneScalar() 
+                    : scalarProcessor.GetOneScalar();
 
             return vSpaceDimension switch
             {
@@ -148,14 +131,14 @@ namespace GeometricAlgebraFulcrumLib.Storage.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IGaStorageKVector<T> CreateStorageBasisBlade<T>(this IGaScalarProcessor<T> scalarProcessor, ulong id)
         {
-            var (grade, index) = id.BasisBladeGradeIndex();
+            var (grade, index) = id.BasisBladeIdToGradeIndex();
 
             return grade switch
             {
-                0 => GaStorageScalar<T>.Create(scalarProcessor.OneScalar),
-                1 => GaStorageVector<T>.Create(index, scalarProcessor.OneScalar),
-                2 => GaStorageBivector<T>.Create(index, scalarProcessor.OneScalar),
-                _ => GaStorageKVector<T>.Create(grade, index, scalarProcessor.OneScalar)
+                0 => GaStorageScalar<T>.Create(scalarProcessor.GetOneScalar()),
+                1 => GaStorageVector<T>.Create(index, scalarProcessor.GetOneScalar()),
+                2 => GaStorageBivector<T>.Create(index, scalarProcessor.GetOneScalar()),
+                _ => GaStorageKVector<T>.Create(grade, index, scalarProcessor.GetOneScalar())
             };
         }
 
@@ -164,17 +147,17 @@ namespace GeometricAlgebraFulcrumLib.Storage.Factories
         {
             return grade switch
             {
-                0 => GaStorageScalar<T>.Create(scalarProcessor.OneScalar),
-                1 => GaStorageVector<T>.Create(index, scalarProcessor.OneScalar),
-                2 => GaStorageBivector<T>.Create(index, scalarProcessor.OneScalar),
-                _ => GaStorageKVector<T>.Create(grade, index, scalarProcessor.OneScalar)
+                0 => GaStorageScalar<T>.Create(scalarProcessor.GetOneScalar()),
+                1 => GaStorageVector<T>.Create(index, scalarProcessor.GetOneScalar()),
+                2 => GaStorageBivector<T>.Create(index, scalarProcessor.GetOneScalar()),
+                _ => GaStorageKVector<T>.Create(grade, index, scalarProcessor.GetOneScalar())
             };
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageKVector<T> CreateStorageKVector<T>(this IGaBasisBlade basisBlade, T scalar)
+        public static IGaStorageKVector<T> CreateStorageKVector<T>(this GaBasisBlade basisBlade, T scalar)
         {
-            var (grade, index) = basisBlade.GetGradeIndex();
+            var (grade, index) = basisBlade.GetGradeIndexRecord();
 
             return grade switch
             {
@@ -186,9 +169,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.Factories
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageKVector<T> CreateStorageKVector<T>(this IGaScalarProcessor<T> scalarProcessor, IGaBasisBlade basisBlade, T scalar)
+        public static IGaStorageKVector<T> CreateStorageKVector<T>(this IGaScalarProcessor<T> scalarProcessor, GaBasisBlade basisBlade, T scalar)
         {
-            var (grade, index) = basisBlade.GetGradeIndex();
+            var (grade, index) = basisBlade.GetGradeIndexRecord();
 
             return grade switch
             {
@@ -202,7 +185,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IGaStorageKVector<T> CreateStorageKVector<T>(ulong id, T scalar)
         {
-            id.BasisBladeGradeIndex(out var grade, out var index);
+            id.BasisBladeIdToGradeIndex(out var grade, out var index);
 
             return grade switch
             {
@@ -216,7 +199,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IGaStorageKVector<T> CreateStorageKVector<T>(this IGaScalarProcessor<T> scalarProcessor, ulong id, T scalar)
         {
-            id.BasisBladeGradeIndex(out var grade, out var index);
+            id.BasisBladeIdToGradeIndex(out var grade, out var index);
 
             return grade switch
             {
@@ -252,11 +235,11 @@ namespace GeometricAlgebraFulcrumLib.Storage.Factories
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageKVector<T> CreateStorageKVector<T>(this IGaScalarProcessor<T> scalarProcessor, KeyValuePair<ulong, T> idScalarPair)
+        public static IGaStorageKVector<T> CreateStorageKVector<T>(this IGaScalarProcessor<T> scalarProcessor, GaRecordKeyValue<T> idScalarPair)
         {
             var (id, scalar) = idScalarPair;
 
-            id.BasisBladeGradeIndex(out var grade, out var index);
+            id.BasisBladeIdToGradeIndex(out var grade, out var index);
 
             return grade switch
             {
@@ -268,7 +251,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.Factories
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageKVector<T> CreateStorageKVector<T>(this IGaScalarProcessor<T> scalarProcessor, uint grade, KeyValuePair<ulong, T> indexScalarPair)
+        public static IGaStorageKVector<T> CreateStorageKVector<T>(this IGaScalarProcessor<T> scalarProcessor, uint grade, GaRecordKeyValue<T> indexScalarPair)
         {
             var (index, scalar) = indexScalarPair;
 
@@ -284,9 +267,18 @@ namespace GeometricAlgebraFulcrumLib.Storage.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IGaStorageKVector<T> CreateStorageKVector<T>(this IGaScalarProcessor<T> scalarProcessor, uint grade, IEnumerable<T> scalarsList)
         {
+            if (grade == 0)
+            {
+                var scalarsArray = 
+                    scalarsList.Take(1).ToArray();
+
+                return scalarsArray.Length == 1
+                    ? GaStorageScalar<T>.Create(scalarsArray[0])
+                    : GaStorageScalar<T>.ZeroScalar;
+            }
+
             return grade switch
             {
-                0 => GaStorageScalar<T>.Create(scalarsList),
                 1 => GaStorageVector<T>.Create(scalarsList),
                 2 => GaStorageBivector<T>.Create(scalarsList),
                 _ => GaStorageKVector<T>.Create(grade, scalarsList)
@@ -294,16 +286,20 @@ namespace GeometricAlgebraFulcrumLib.Storage.Factories
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageKVector<T> CreateStorageKVector<T>(this IGaScalarProcessor<T> scalarProcessor, uint grade, IEnumerable<KeyValuePair<ulong, T>> termsList)
+        public static IGaStorageKVector<T> CreateStorageKVector<T>(this IGaScalarProcessor<T> scalarProcessor, uint grade, IEnumerable<GaRecordKeyValue<T>> termsList)
         {
-            var indexScalarDictionary = termsList.ToDictionary(
-                pair => pair.Key,
-                pair => pair.Value
-            );
+            var indexScalarDictionary = 
+                termsList.CreateDictionary();
+
+            if (grade == 0)
+            {
+                return indexScalarDictionary.TryGetValue(0UL, out var scalar)
+                    ? GaStorageScalar<T>.Create(scalar)
+                    : GaStorageScalar<T>.ZeroScalar;
+            }
 
             return grade switch
             {
-                0 => GaStorageScalar<T>.Create(indexScalarDictionary),
                 1 => GaStorageVector<T>.Create(indexScalarDictionary),
                 2 => GaStorageBivector<T>.Create(indexScalarDictionary),
                 _ => GaStorageKVector<T>.Create(grade, indexScalarDictionary)
@@ -311,33 +307,22 @@ namespace GeometricAlgebraFulcrumLib.Storage.Factories
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageKVector<T> CreateStorageKVector<T>(this IGaScalarProcessor<T> scalarProcessor, uint grade, IEnumerable<Tuple<ulong, T>> termsList)
-        {
-            var indexScalarDictionary = termsList.ToDictionary(
-                pair => pair.Item1,
-                pair => pair.Item2
-            );
-
-            return grade switch
-            {
-                0 => GaStorageScalar<T>.Create(indexScalarDictionary),
-                1 => GaStorageVector<T>.Create(indexScalarDictionary),
-                2 => GaStorageBivector<T>.Create(indexScalarDictionary),
-                _ => GaStorageKVector<T>.Create(grade, indexScalarDictionary)
-            };
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageKVector<T> CreateStorageKVector<T>(this IGaScalarProcessor<T> scalarProcessor, uint grade, IEnumerable<GaTerm<T>> termsList)
+        public static IGaStorageKVector<T> CreateStorageKVector<T>(this IGaScalarProcessor<T> scalarProcessor, uint grade, IEnumerable<GaBasisTerm<T>> termsList)
         {
             var indexScalarDictionary = termsList.ToDictionary(
                 pair => pair.BasisBlade.Index,
                 pair => pair.Scalar
             );
 
+            if (grade == 0)
+            {
+                return indexScalarDictionary.TryGetValue(0UL, out var scalar)
+                    ? GaStorageScalar<T>.Create(scalar)
+                    : GaStorageScalar<T>.ZeroScalar;
+            }
+
             return grade switch
             {
-                0 => GaStorageScalar<T>.Create(indexScalarDictionary),
                 1 => GaStorageVector<T>.Create(indexScalarDictionary),
                 2 => GaStorageBivector<T>.Create(indexScalarDictionary),
                 _ => GaStorageKVector<T>.Create(grade, indexScalarDictionary)
@@ -346,40 +331,27 @@ namespace GeometricAlgebraFulcrumLib.Storage.Factories
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageKVector<T> SumToStorageKVector<T>(this IGaScalarProcessor<T> scalarProcessor, uint grade, IEnumerable<KeyValuePair<ulong, T>> termsList)
+        public static IGaStorageKVector<T> SumToStorageKVector<T>(this IGaScalarProcessor<T> scalarProcessor, uint grade, IEnumerable<GaRecordKeyValue<T>> termsList)
         {
-            return scalarProcessor
-                .CreateStorageComposerKVector(grade, termsList)
+            return CreateStorageKVectorComposer(scalarProcessor)
+                .SetTerms(termsList)
                 .RemoveZeroTerms()
-                .GetKVector();
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageKVector<T> SumToStorageKVector<T>(this IGaScalarProcessor<T> scalarProcessor, uint grade, IEnumerable<Tuple<ulong, T>> termsList)
-        {
-            return scalarProcessor
-                .CreateStorageComposerKVector(grade, termsList)
-                .RemoveZeroTerms()
-                .GetKVector();
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageKVector<T> SumToStorageKVector<T>(this IGaScalarProcessor<T> scalarProcessor, uint grade, IEnumerable<GaTerm<T>> termsList)
-        {
-            return scalarProcessor
-                .CreateStorageComposerKVector(grade)
-                .AddTerms(termsList)
-                .RemoveZeroTerms()
-                .GetKVector();
+                .CreateStorageKVector(grade);
         }
         
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IGaStorageKVector<T> CreateStorageKVector<T>(this IGaScalarProcessor<T> scalarProcessor, uint grade, Dictionary<ulong, T> indexScalarDictionary)
         {
+            if (grade == 0)
+            {
+                return indexScalarDictionary.TryGetValue(0UL, out var scalar)
+                    ? GaStorageScalar<T>.Create(scalar)
+                    : GaStorageScalar<T>.ZeroScalar;
+            }
+
             return grade switch
             {
-                0 => GaStorageScalar<T>.Create(indexScalarDictionary),
                 1 => GaStorageVector<T>.Create(indexScalarDictionary),
                 2 => GaStorageBivector<T>.Create(indexScalarDictionary),
                 _ => GaStorageKVector<T>.Create(grade, indexScalarDictionary)
@@ -389,9 +361,18 @@ namespace GeometricAlgebraFulcrumLib.Storage.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IGaStorageKVector<T> CreateStorageKVector<T>(this IEnumerable<T> scalarsList, uint grade)
         {
+            if (grade == 0)
+            {
+                var scalarsArray = 
+                    scalarsList.Take(1).ToArray();
+
+                return scalarsArray.Length == 1
+                    ? GaStorageScalar<T>.Create(scalarsArray[0])
+                    : GaStorageScalar<T>.ZeroScalar;
+            }
+
             return grade switch
             {
-                0 => GaStorageScalar<T>.Create(scalarsList),
                 1 => GaStorageVector<T>.Create(scalarsList),
                 2 => GaStorageBivector<T>.Create(scalarsList),
                 _ => GaStorageKVector<T>.Create(grade, scalarsList)
@@ -399,50 +380,69 @@ namespace GeometricAlgebraFulcrumLib.Storage.Factories
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageKVector<T> CreateStorageKVector<T>(this IEnumerable<KeyValuePair<ulong, T>> termsList, uint grade)
+        public static IGaStorageKVector<T> CreateStorageKVector<T>(this IEnumerable<GaRecordKeyValue<T>> termsList, uint grade)
         {
-            var indexScalarDictionary = termsList.ToDictionary(
-                pair => pair.Key,
-                pair => pair.Value
-            );
+            var indexScalarDictionary = 
+                termsList.CreateDictionary();
+            
+            if (grade == 0)
+            {
+                return indexScalarDictionary.TryGetValue(0UL, out var scalar)
+                    ? GaStorageScalar<T>.Create(scalar)
+                    : GaStorageScalar<T>.ZeroScalar;
+            }
 
             return grade switch
             {
-                0 => GaStorageScalar<T>.Create(indexScalarDictionary),
                 1 => GaStorageVector<T>.Create(indexScalarDictionary),
                 2 => GaStorageBivector<T>.Create(indexScalarDictionary),
                 _ => GaStorageKVector<T>.Create(grade, indexScalarDictionary)
             };
         }
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageKVector<T> CreateStorageKVector<T>(this IEnumerable<Tuple<ulong, T>> termsList, uint grade)
+        public static IGaStorageKVector<T> CreateStorageKVector<T>(this IGaListEven<T> termsList, uint grade)
         {
-            var indexScalarDictionary = termsList.ToDictionary(
-                pair => pair.Item1,
-                pair => pair.Item2
-            );
+            if (grade == 0)
+            {
+                return termsList.TryGetValue(0UL, out var scalar)
+                    ? GaStorageScalar<T>.Create(scalar)
+                    : GaStorageScalar<T>.ZeroScalar;
+            }
 
             return grade switch
             {
-                0 => GaStorageScalar<T>.Create(indexScalarDictionary),
-                1 => GaStorageVector<T>.Create(indexScalarDictionary),
-                2 => GaStorageBivector<T>.Create(indexScalarDictionary),
-                _ => GaStorageKVector<T>.Create(grade, indexScalarDictionary)
+                1 => GaStorageVector<T>.Create(termsList),
+                2 => GaStorageBivector<T>.Create(termsList),
+                _ => GaStorageKVector<T>.Create(grade, termsList)
             };
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IGaStorageKVector<T> CreateStorageKVector<T>(this GaRecordGradeEvenList<T> gradeListRecord)
+        {
+            var (grade, termsList) = gradeListRecord;
+
+            return termsList.CreateStorageKVector(grade);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageKVector<T> CreateStorageKVector<T>(this IEnumerable<GaTerm<T>> termsList, uint grade)
+        public static IGaStorageKVector<T> CreateStorageKVector<T>(this IEnumerable<GaBasisTerm<T>> termsList, uint grade)
         {
             var indexScalarDictionary = termsList.ToDictionary(
                 pair => pair.BasisBlade.Index,
                 pair => pair.Scalar
             );
+            
+            if (grade == 0)
+            {
+                return indexScalarDictionary.TryGetValue(0UL, out var scalar)
+                    ? GaStorageScalar<T>.Create(scalar)
+                    : GaStorageScalar<T>.ZeroScalar;
+            }
 
             return grade switch
             {
-                0 => GaStorageScalar<T>.Create(indexScalarDictionary),
                 1 => GaStorageVector<T>.Create(indexScalarDictionary),
                 2 => GaStorageBivector<T>.Create(indexScalarDictionary),
                 _ => GaStorageKVector<T>.Create(grade, indexScalarDictionary)

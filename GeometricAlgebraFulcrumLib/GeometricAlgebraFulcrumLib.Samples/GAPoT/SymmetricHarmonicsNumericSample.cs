@@ -5,15 +5,16 @@ using GeometricAlgebraFulcrumLib.Algebra.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Geometry;
 using GeometricAlgebraFulcrumLib.Geometry.Rotors;
 using GeometricAlgebraFulcrumLib.Geometry.Subspaces;
-using GeometricAlgebraFulcrumLib.Processing.Matrices;
+using GeometricAlgebraFulcrumLib.Processing.Matrices.Float64;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Binary;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean;
 using GeometricAlgebraFulcrumLib.Processing.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Storage;
 using GeometricAlgebraFulcrumLib.Storage.Factories;
+using GeometricAlgebraFulcrumLib.Storage.Multivectors;
 using GeometricAlgebraFulcrumLib.Storage.Utils;
 using GeometricAlgebraFulcrumLib.Symbolic.Applications.GaPoT;
+using GeometricAlgebraFulcrumLib.TextComposers;
 using GeometricAlgebraFulcrumLib.TextComposers.Float64;
 
 namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
@@ -23,14 +24,12 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
         private static Random RandomGenerator { get; }
             = new Random(10);
 
+        //TODO: Replace this by Processor
         public static GaMatrixProcessorFloat64 MatrixProcessor { get; }
             = GaMatrixProcessorFloat64.DefaultProcessor;
-
-        public static GaScalarProcessorFloat64 ScalarProcessor { get; }
-            = GaScalarProcessorFloat64.DefaultProcessor;
             
         public static IGaProcessor<double> Processor { get; }
-            = ScalarProcessor.CreateEuclideanProcessor(63);
+            = GaScalarProcessorFloat64.DefaultProcessor.CreateEuclideanProcessor(63);
 
         public static GaTextComposerFloat64 TextComposer { get; }
             = GaTextComposerFloat64.DefaultComposer;
@@ -41,7 +40,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
 
         public static void ValidatePhasor(int k, int n, IGaStorageVector<double> phasor2, double theta)
         {
-            var composer = ScalarProcessor.CreateStorageComposerVector();
+            var composer = Processor.CreateStorageKVectorComposer();
 
             for (var i = 0; i < n; i++)
             {
@@ -53,11 +52,11 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
             }
 
             var phasor1 = 
-                composer.GetVector();
+                composer.CreateStorageVector();
 
             var phasorDiff = 
-                ScalarProcessor.GetNotZeroTerms(
-                    ScalarProcessor.Subtract(phasor1, phasor2)
+                Processor.GetNotZeroTerms(
+                    Processor.Subtract(phasor1, phasor2)
                 );
 
             //Console.WriteLine(
@@ -80,7 +79,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
             Debug.Assert(n >= 2 && i >= 0 && i < n);
 
             var muStorage =
-                ScalarProcessor.CreateStorageVector(i, 1
+                Processor.CreateStorageVector(i, 1
                 );
 
             var muSubspace = 
@@ -137,8 +136,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
                 phasorTuples
                     .Select(t => t.Item1)
                     .Aggregate(
-                        (IGaStorageMultivector<double>) ScalarProcessor.CreateStorageZeroVector(),
-                        (current, vector) => ScalarProcessor.Add(current, vector)
+                        (IGaStorageMultivector<double>) Processor.CreateStorageZeroVector(),
+                        (current, vector) => Processor.Add(current, vector)
                     )
                     .GetVectorPart();
 
@@ -146,8 +145,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
                 phasorTuples
                     .Select(t => t.Item2)
                     .Aggregate(
-                        (IGaStorageMultivector<double>) ScalarProcessor.CreateStorageZeroVector(),
-                        (current, vector) => ScalarProcessor.Add(current, vector)
+                        (IGaStorageMultivector<double>) Processor.CreateStorageZeroVector(),
+                        (current, vector) => Processor.Add(current, vector)
                     )
                     .GetVectorPart();
 
@@ -177,7 +176,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
                 Console.WriteLine();
 
                 var unitKirchhoffVector = 
-                    ScalarProcessor.CreateStorageUnitOnesVector(n);
+                    Processor.CreateStorageUnitOnesVector(n);
 
                 var theta = 
                     RandomGenerator.NextDouble() * 2d * Math.PI;
@@ -185,15 +184,15 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
                 var (_, inputPhasor) = GetPhasorsTuple(1, n, theta);
 
                 var e1 = 
-                    ScalarProcessor.CreateStorageBasisVector(0);
+                    Processor.CreateStorageBasisVector(0);
 
                 var e2 = 
-                    ScalarProcessor.CreateStorageBasisVector(1);
+                    Processor.CreateStorageBasisVector(1);
 
                 var (_, mv1) = GetPhasorsTuple(1, n, 0);
 
                 var v1 = 
-                    ScalarProcessor.Divide(mv1, ScalarProcessor.ENorm(mv1)).GetVectorPart();
+                    Processor.Divide(mv1, Processor.ENorm(mv1)).GetVectorPart();
 
                 Console.WriteLine(
                     TextComposer.GetMultivectorText(v1)
@@ -203,7 +202,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
                 var (_, mv2) = GetPhasorsTuple(1, n, 0.5d * Math.PI);
                 
                 var v2 = 
-                    ScalarProcessor.Divide(mv2, ScalarProcessor.ENorm(mv2)).GetVectorPart();
+                    Processor.Divide(mv2, Processor.ENorm(mv2)).GetVectorPart();
 
                 Console.WriteLine(
                     TextComposer.GetMultivectorText(v2)
@@ -224,7 +223,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
                 );
                 Console.WriteLine();
 
-                var eigenPairsCount = MatrixProcessor.EigenDecomposition(
+                var eigenPairsCount = MatrixProcessor.MatrixEigenDecomposition(
                     MatrixProcessor.CreateMatrix(clarkeArray),
                     out var realPairs,
                     out var imagPairs

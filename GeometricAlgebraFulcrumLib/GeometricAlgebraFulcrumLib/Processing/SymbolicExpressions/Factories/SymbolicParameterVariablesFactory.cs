@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using DataStructuresLib.BitManipulation;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Variables;
-using GeometricAlgebraFulcrumLib.Storage;
 using GeometricAlgebraFulcrumLib.Storage.Factories;
+using GeometricAlgebraFulcrumLib.Storage.Multivectors;
 
 namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Factories
 {
@@ -103,7 +103,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Factories
             Debug.Assert(grade <= vSpaceDimensions);
             
             var kvSpaceDimension = 
-                GaBasisUtils.KvSpaceDimension(vSpaceDimensions, grade);
+                vSpaceDimensions.KVectorSpaceDimension(grade);
 
             var parametersList =
                 Enumerable

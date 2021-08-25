@@ -1,70 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
-using GeometricAlgebraFulcrumLib.Storage.Terms;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.Multivectors.Basis
 {
     public sealed record GaBasisScalar
-        : IGaBasisBlade
+        : GaBasisBlade
     {
-        public ulong Id 
-            => 0;
-
-        public uint Grade 
-            => 0;
-
-        public ulong Index 
-            => 0;
-
-        public bool IsUniform 
-            => true;
-
-        public bool IsGraded 
-            => true;
-
-        public bool IsFull 
-            => true;
+        public static GaBasisScalar BasisScalar { get; }
+            = new GaBasisScalar();
 
 
-        public Tuple<uint, ulong> GetGradeIndex()
+        public override ulong Id => 0UL;
+
+        public override uint Grade => 0U;
+
+        public override ulong Index => 0UL;
+
+        public override bool IsScalar => true;
+
+        public override bool IsVector => false;
+
+        public override bool IsBivector => false;
+
+
+        private GaBasisScalar()
         {
-            return new(0, 0);
-        }
-
-        public Tuple<ulong, uint, ulong> GetIdGradeIndex()
-        {
-            return new(0, 0, 0);
-        }
-
-        public IReadOnlyList<ulong> GetBasisVectorIndices()
-        {
-            return new ulong[0];
         }
 
 
-        public void GetGradeIndex(out uint grade, out ulong index)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override IEnumerable<ulong> GetBasisVectorIndices()
         {
-            grade = 0;
-            index = 0;
-        }
-
-        public void GetIdGradeIndex(out ulong id, out uint grade, out ulong index)
-        {
-            id = 0;
-            grade = 0;
-            index = 0;
-        }
-        
-
-        public IEnumerable<ulong> GetBasisVectorsIndices()
-        {
-            yield return Index;
-        }
-
-        public GaTerm<T> CreateTerm<T>(T scalar)
-        {
-            return new(this, scalar);
+            return Enumerable.Empty<ulong>();
         }
 
 
@@ -76,36 +45,5 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Multivectors.Basis
                 .Append('>')
                 .ToString();
         }
-
-
-        public bool Equals(IGaBasisBlade other)
-        {
-            if (other is null)
-                return false;
-
-            other.GetGradeIndex(out var grade, out var index);
-
-            return grade.Equals(0) && index.Equals(0);
-        }
-
-        //public override bool Equals(object obj)
-        //{
-        //    return obj is IGaBasisBlade other && Equals(other);
-        //}
-
-        //public override int GetHashCode()
-        //{
-        //    return Id.GetHashCode();
-        //}
-
-        //public static bool operator ==(GaBasisScalar left, IGaBasisBlade right)
-        //{
-        //    return left.Equals(right);
-        //}
-
-        //public static bool operator !=(GaBasisScalar left, IGaBasisBlade right)
-        //{
-        //    return !left.Equals(right);
-        //}
     }
 }

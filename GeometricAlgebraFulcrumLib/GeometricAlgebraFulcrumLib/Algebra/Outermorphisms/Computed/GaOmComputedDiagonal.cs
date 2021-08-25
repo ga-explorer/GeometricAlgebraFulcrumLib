@@ -2,11 +2,12 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using DataStructuresLib.BitManipulation;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Basis;
-using GeometricAlgebraFulcrumLib.Processing.Scalars;
-using GeometricAlgebraFulcrumLib.Storage;
-using GeometricAlgebraFulcrumLib.Storage.Composers;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Space;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
+using GeometricAlgebraFulcrumLib.Processing.Scalars.Binary;
+using GeometricAlgebraFulcrumLib.Processing.ScalarsGrids;
 using GeometricAlgebraFulcrumLib.Storage.Factories;
+using GeometricAlgebraFulcrumLib.Storage.Multivectors;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.Outermorphisms.Computed
 {
@@ -21,13 +22,14 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Outermorphisms.Computed
     {
         public IReadOnlyList<T> DiagonalScalars { get; }
 
+        public IGaSpace Space { get; }
         public uint VSpaceDimension { get; }
 
         public ulong GaSpaceDimension 
-            => 1UL << (int) VSpaceDimension;
+            => VSpaceDimension.ToGaSpaceDimension();
 
         public ulong MaxBasisBladeId 
-            => (1UL << (int) VSpaceDimension) - 1UL;
+            => (VSpaceDimension.ToGaSpaceDimension()) - 1UL;
 
         public uint GradesCount 
             => VSpaceDimension + 1;
@@ -36,23 +38,23 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Outermorphisms.Computed
             => GradesCount.GetRange();
 
 
-        public IGaScalarProcessor<T> ScalarProcessor { get; }
+        public IGaScalarsGridProcessor<T> ScalarsGridProcessor { get; }
 
         public IGaStorageKVector<T> MappedPseudoScalar { get; }
 
 
-        internal GaOmComputedDiagonal([NotNull] IGaScalarProcessor<T> scalarProcessor, [NotNull] IReadOnlyList<T> basisVectorsSignatures)
+        internal GaOmComputedDiagonal([NotNull] IGaScalarsGridProcessor<T> arrayProcessor, [NotNull] IReadOnlyList<T> basisVectorsSignatures)
         {
             VSpaceDimension = (uint) basisVectorsSignatures.Count;
-            ScalarProcessor = scalarProcessor;
+            ScalarsGridProcessor = arrayProcessor;
             DiagonalScalars = basisVectorsSignatures;
 
-            var id = (1UL << (int) VSpaceDimension) - 1;
-            var scalar = ScalarProcessor.Times(
+            var id = (VSpaceDimension.ToGaSpaceDimension()) - 1;
+            var scalar = ScalarsGridProcessor.Times(
                 DiagonalScalars.PickItemsUsingPattern(id)
             );
 
-            MappedPseudoScalar = ScalarProcessor.CreateStorageKVector(id, scalar);
+            MappedPseudoScalar = ScalarsGridProcessor.CreateStorageKVector(id, scalar);
         }
 
 
@@ -67,7 +69,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Outermorphisms.Computed
 
         public IGaStorageVector<T> MapBasisVector(ulong index)
         {
-            return ScalarProcessor.CreateStorageVector(
+            return ScalarsGridProcessor.CreateStorageVector(
                 index, 
                 DiagonalScalars[(int) index]
             );
@@ -78,10 +80,10 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Outermorphisms.Computed
             if (index1 == index2)
                 return GaStorageBivector<T>.ZeroBivector;
 
-            return ScalarProcessor.CreateStorageBivector(
+            return ScalarsGridProcessor.CreateStorageBivector(
                 index1, 
                 index2, 
-                ScalarProcessor.Times(
+                ScalarsGridProcessor.Times(
                     DiagonalScalars[(int) index1], 
                     DiagonalScalars[(int) index2]
                 )
@@ -90,50 +92,52 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Outermorphisms.Computed
 
         public IGaStorageKVector<T> MapBasisBlade(ulong id)
         {
-            var scalar = ScalarProcessor.Times(
+            var scalar = ScalarsGridProcessor.Times(
                 DiagonalScalars.PickItemsUsingPattern(id)
             );
 
-            return ScalarProcessor.CreateStorageKVector(id, scalar);
+            return ScalarsGridProcessor.CreateStorageKVector(id, scalar);
         }
 
         public IGaStorageKVector<T> MapBasisBlade(uint grade, ulong index)
         {
-            var id = GaBasisUtils.BasisBladeId(grade, index);
+            var id = index.BasisBladeIndexToId(grade);
 
-            var scalar = ScalarProcessor.Times(
+            var scalar = ScalarsGridProcessor.Times(
                 DiagonalScalars.PickItemsUsingPattern(id)
             );
 
-            return ScalarProcessor.CreateStorageKVector(grade, index, scalar);
+            return ScalarsGridProcessor.CreateStorageKVector(grade, index, scalar);
         }
 
         public IGaStorageVector<T> MapVector(IGaStorageVector<T> vector)
         {
-            var storage = new GaStorageComposerKVector<T>(ScalarProcessor, 1);
+            var storage = 
+                ScalarsGridProcessor.CreateStorageKVectorComposer();
 
-            foreach (var (index, scalar) in vector.IndexScalarDictionary)
+            foreach (var (index, scalar) in vector.IndexScalarList.GetKeyValueRecords())
                 storage.SetTerm(
                     index, 
-                    ScalarProcessor.Times(scalar, DiagonalScalars[(int)index])
+                    ScalarsGridProcessor.Times(scalar, DiagonalScalars[(int)index])
                 );
 
             storage.RemoveZeroTerms();
 
-            return storage.GetVector();
+            return storage.CreateStorageVector();
         }
 
         public IGaStorageBivector<T> MapBivector(IGaStorageBivector<T> bivector)
         {
-            var storage = new GaStorageComposerBivector<T>(ScalarProcessor);
+            var storage = 
+                ScalarsGridProcessor.CreateStorageKVectorComposer();
 
-            foreach (var (index, scalar) in bivector.IndexScalarDictionary)
+            foreach (var (index, scalar) in bivector.IndexScalarList.GetKeyValueRecords())
             {
-                var id = GaBasisUtils.BasisBladeId(2, index);
+                var id = index.BasisBivectorIndexToId();
 
-                var newScalar = ScalarProcessor.Times(
+                var newScalar = ScalarsGridProcessor.Times(
                     scalar,
-                    ScalarProcessor.Times(
+                    ScalarsGridProcessor.Times(
                         DiagonalScalars.PickItemsUsingPattern(id)
                     )
                 );
@@ -143,20 +147,21 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Outermorphisms.Computed
 
             storage.RemoveZeroTerms();
 
-            return storage.GetBivector();
+            return storage.CreateStorageBivector();
         }
 
         public IGaStorageKVector<T> MapKVector(IGaStorageKVector<T> kVector)
         {
-            var storage = new GaStorageComposerKVector<T>(ScalarProcessor, kVector.Grade);
+            var storage = 
+                ScalarsGridProcessor.CreateStorageKVectorComposer();
 
-            foreach (var (index, scalar) in kVector.IndexScalarDictionary)
+            foreach (var (index, scalar) in kVector.IndexScalarList.GetKeyValueRecords())
             {
-                var id = GaBasisUtils.BasisBladeId(kVector.Grade, index);
+                var id = index.BasisBladeIndexToId(kVector.Grade);
 
-                var newScalar = ScalarProcessor.Times(
+                var newScalar = ScalarsGridProcessor.Times(
                     scalar,
-                    ScalarProcessor.Times(
+                    ScalarsGridProcessor.Times(
                         DiagonalScalars.PickItemsUsingPattern(id)
                     )
                 );
@@ -166,18 +171,19 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Outermorphisms.Computed
 
             storage.RemoveZeroTerms();
 
-            return storage.GetKVector();
+            return storage.CreateStorageKVector(kVector.Grade);
         }
 
         public IGaStorageMultivector<T> MapMultivector(IGaStorageMultivector<T> mv)
         {
-            var storage = new GaStorageComposerMultivectorGraded<T>(ScalarProcessor);
+            var storage = 
+                ScalarsGridProcessor.CreateStorageGradedMultivectorComposer();
 
-            foreach (var (id, scalar) in mv.GetIdScalarPairs())
+            foreach (var (id, scalar) in mv.GetIdScalarRecords())
             {
-                var newScalar = ScalarProcessor.Times(
+                var newScalar = ScalarsGridProcessor.Times(
                     scalar,
-                    ScalarProcessor.Times(
+                    ScalarsGridProcessor.Times(
                         DiagonalScalars.PickItemsUsingPattern(id)
                     )
                 );
@@ -187,7 +193,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Outermorphisms.Computed
 
             storage.RemoveZeroTerms();
 
-            return storage.GetMultivector();
+            return storage.CreateStorageSparseMultivector();
         }
     }
 }

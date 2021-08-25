@@ -5,7 +5,7 @@ using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Composite;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Numbers;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Variables;
-using GeometricAlgebraFulcrumLib.Storage;
+using GeometricAlgebraFulcrumLib.Storage.Multivectors;
 
 namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions
 {
@@ -54,7 +54,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions
         {
             var idScalarPairs = 
                 multivector
-                    .GetIdScalarPairs()
+                    .GetIdScalarRecords()
                     .Where(s => !s.Value.IsNumber);
 
             foreach (var (id, scalar) in idScalarPairs)
@@ -65,8 +65,8 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions
         {
             var indexScalarTuples = 
                 multivector
-                    .GetGradeIndexScalarTuples()
-                    .Where(s => !s.Item3.IsNumber);
+                    .GetGradeIndexScalarRecords()
+                    .Where(s => !s.Value.IsNumber);
 
             foreach (var (grade, index, scalar) in indexScalarTuples) 
                 scalar.ExternalName = namingFunc(grade, index);
@@ -76,7 +76,8 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions
         {
             var indexScalarPairs = 
                 kVector
-                    .IndexScalarDictionary
+                    .IndexScalarList
+                    .GetKeyValueRecords()
                     .Where(s => !s.Value.IsNumber);
 
             foreach (var (index, scalar) in indexScalarPairs)
@@ -102,7 +103,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions
         {
             var idScalarPairs = 
                 multivector
-                    .GetIdScalarPairs()
+                    .GetIdScalarRecords()
                     .Where(s => !s.Value.IsNumber);
 
             foreach (var (id, scalar) in idScalarPairs)
@@ -113,8 +114,8 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions
         {
             var indexScalarTuples = 
                 multivector
-                    .GetGradeIndexScalarTuples()
-                    .Where(s => !s.Item3.IsNumber);
+                    .GetGradeIndexScalarRecords()
+                    .Where(s => !s.Value.IsNumber);
 
             foreach (var (grade, index, scalar) in indexScalarTuples) 
                 scalar.ExternalName = namingFunc(grade, index);
@@ -124,7 +125,8 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions
         {
             var indexScalarPairs = 
                 kVector
-                    .IndexScalarDictionary
+                    .IndexScalarList
+                    .GetKeyValueRecords()
                     .Where(s => !s.Value.IsNumber);
 
             foreach (var (index, scalar) in indexScalarPairs)
@@ -178,20 +180,20 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions
         public static void SetIntermediateExternalNamesByOrder(this SymbolicContext context, Func<int, string> namingFunc)
         {
             var index = 0;
-            foreach (var variable in context.IntermediateVariables)
+            foreach (var variable in context.GetIntermediateVariables())
                 variable.ExternalName = namingFunc(index++);
         }
 
         public static void SetIntermediateExternalNamesByNameIndex(this SymbolicContext context, Func<int, string> namingFunc)
         {
-            foreach (var variable in context.IntermediateVariables)
+            foreach (var variable in context.GetIntermediateVariables())
                 variable.ExternalName = namingFunc(variable.NameIndex);
         }
         
         public static void SetIntermediateExternalNamesByNameIndex(this SymbolicContext context, int varCountLimit, Func<int, string> namingFunc1, Func<int, string> namingFunc2)
         {
             context.SetIntermediateExternalNamesByNameIndex(
-                context.TargetTempVarsCount <= varCountLimit
+                context.GetTargetTempVarsCount() <= varCountLimit
                 ? namingFunc1
                 : namingFunc2
             );

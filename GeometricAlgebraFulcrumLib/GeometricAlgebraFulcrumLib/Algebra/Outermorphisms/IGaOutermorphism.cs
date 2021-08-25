@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using GeometricAlgebraFulcrumLib.Algebra.LinearMaps;
-using GeometricAlgebraFulcrumLib.Storage;
+using GeometricAlgebraFulcrumLib.Storage.Multivectors;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.Outermorphisms
 {

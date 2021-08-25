@@ -1,5 +1,5 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Basis;
+﻿using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Space;
 
 namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures
 {
@@ -34,7 +34,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures
 
         int GetBasisBladeSignature(ulong id);
 
-        int GetBasisBladeSignature(IGaBasisBlade basisBlade);
+        int GetBasisBladeSignature(GaBasisBlade basisBlade);
 
         int GpSignature(ulong id);
 

@@ -1892,13 +1892,75 @@ namespace DataStructuresLib.BitManipulation
                     ? zeroElement
                     : PickItemsUsingPattern(stringsList, bitPattern).ConcatenateText(separator, finalPrefix, finalSuffix, itemPrefix, itemSuffix);
         }
- 
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<T> Repeat<T>(this ulong count, T value)
+        {
+            while (count > 0)
+            {
+                yield return value;
+                count--;
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<T> MapRange<T>(this ulong count, Func<ulong, T> mappingFunc)
+        {
+            return Enumerable
+                .Range(0, (int) count)
+                .Select(i => mappingFunc((ulong) i));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<T> MapRange<T>(this ulong count, ulong offset, Func<ulong, T> mappingFunc)
+        {
+            return Enumerable
+                .Range(0, (int) count)
+                .Select(i => mappingFunc(offset + (ulong) i));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<KeyValuePair<ulong, T>> GetMappedRange<T>(this ulong count, Func<ulong, T> mappingFunc)
+        {
+            return Enumerable
+                .Range(0, (int) count)
+                .Select(
+                    i =>
+                    {
+                        var key = (ulong) i;
+                        return new KeyValuePair<ulong, T>(key, mappingFunc(key));
+                    }
+                );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<KeyValuePair<ulong, T>> GetMappedRange<T>(this ulong count, ulong offset, Func<ulong, T> mappingFunc)
+        {
+            return Enumerable
+                .Range(0, (int) count)
+                .Select(
+                    i =>
+                    {
+                        var key = offset + (ulong) i;
+                        return new KeyValuePair<ulong, T>(key, mappingFunc(key));
+                    }
+                );
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<ulong> GetRange(this ulong count)
         {
             return Enumerable
                 .Range(0, (int) count)
                 .Select(i => (ulong) i);
+        }
+ 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<ulong> GetRange(this ulong count, ulong offset)
+        {
+            return Enumerable
+                .Range(0, (int) count)
+                .Select(i => offset + (ulong) i);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1910,6 +1972,66 @@ namespace DataStructuresLib.BitManipulation
                     i => (ulong) i, 
                     i => keyValueFunc((ulong) i)
                 );
+        }
+
+        public static bool TryGetMinValue(this IEnumerable<ulong> valuesList, out ulong minValue)
+        {
+            var foundFlag = false;
+            minValue = ulong.MaxValue;
+
+            foreach (var value in valuesList)
+            {
+                foundFlag = true;
+
+                if (value < minValue)
+                    minValue = value;
+            }
+
+            return foundFlag;
+        }
+
+        public static bool TryGetMaxValue(this IEnumerable<ulong> valuesList, out ulong maxValue)
+        {
+            var foundFlag = false;
+            maxValue = ulong.MinValue;
+
+            foreach (var value in valuesList)
+            {
+                foundFlag = true;
+
+                if (value > maxValue)
+                    maxValue = value;
+            }
+
+            return foundFlag;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ulong Min(this ulong a, ulong b)
+        {
+            return a <= b ? a : b;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ulong Max(this ulong a, ulong b)
+        {
+            return a >= b ? a : b;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ulong Min(this ulong a, ulong b, ulong c)
+        {
+            return a <= b 
+                ? (a <= c ? a : c)
+                : (b <= c ? b : c);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ulong Max(this ulong a, ulong b, ulong c)
+        {
+            return a >= b 
+                ? (a >= c ? a : c)
+                : (b >= c ? b : c);
         }
     }
 }

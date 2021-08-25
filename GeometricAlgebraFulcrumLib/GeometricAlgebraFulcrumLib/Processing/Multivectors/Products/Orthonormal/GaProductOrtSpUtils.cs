@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
-using GeometricAlgebraFulcrumLib.Storage;
+using GeometricAlgebraFulcrumLib.Storage.Multivectors;
 
 namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonormal
 {
@@ -27,7 +27,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
             var spScalar = 0d;
 
             var idScalarPairs1 = 
-                mv1.GetIdScalarPairs();
+                mv1.GetIdScalarRecords();
 
             foreach (var (id1, scalar1) in idScalarPairs1)
             {
@@ -57,16 +57,16 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
         
         public static T VectorsSp<T>(this IGaScalarProcessor<T> scalarProcessor, IGaSignature signature, IReadOnlyList<T> vector1)
         {
-            var spScalar = scalarProcessor.ZeroScalar;
+            var spScalar = scalarProcessor.GetZeroScalar();
 
             var count = vector1.Count;
 
             for (var index = 0; index < count; index++)
             {
-                var sig = signature.SpSignature(1UL << index);
+                var sig = signature.SpSignature(index.BasisVectorIndexToId());
 
                 if (sig == 0)
-                    return scalarProcessor.ZeroScalar;
+                    return scalarProcessor.GetZeroScalar();
             
                 var scalar1 = vector1[index];
                 var scalar = scalarProcessor.Times(scalar1, scalar1);
@@ -82,16 +82,16 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
         private static T SpAsScalar<T>(this IGaScalarProcessor<T> scalarProcessor, IGaSignature signature, IGaStorageVector<T> mv1)
         {
             var indexScalarPairs1 = 
-                mv1.IndexScalarDictionary;
+                mv1.IndexScalarList;
 
-            var spScalar = scalarProcessor.ZeroScalar;
+            var spScalar = scalarProcessor.GetZeroScalar();
 
-            foreach (var (index, scalar1) in indexScalarPairs1)
+            foreach (var (index, scalar1) in indexScalarPairs1.GetKeyValueRecords())
             {
-                var sig = signature.SpSignature(1UL << (int) index);
+                var sig = signature.SpSignature(index.BasisVectorIndexToId());
 
                 if (sig == 0)
-                    return scalarProcessor.ZeroScalar;
+                    return scalarProcessor.GetZeroScalar();
             
                 var scalar = scalarProcessor.Times(scalar1, scalar1);
                 
@@ -110,17 +110,17 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
 
         private static T SpAsScalar<T>(this IGaScalarProcessor<T> scalarProcessor, IGaSignature signature, IGaStorageKVector<T> mv1)
         {
-            var spScalar = scalarProcessor.ZeroScalar;
+            var spScalar = scalarProcessor.GetZeroScalar();
             
             var indexScalarPairs1 = 
-                mv1.IndexScalarDictionary;
+                mv1.IndexScalarList;
 
-            foreach (var (index, scalar1) in indexScalarPairs1)
+            foreach (var (index, scalar1) in indexScalarPairs1.GetKeyValueRecords())
             {
-                var sig = signature.SpSignature(1UL << (int) index);
+                var sig = signature.SpSignature(index.BasisVectorIndexToId());
 
                 if (sig == 0)
-                    return scalarProcessor.ZeroScalar;
+                    return scalarProcessor.GetZeroScalar();
             
                 var scalar = scalarProcessor.Times(scalar1, scalar1);
                 
@@ -145,16 +145,16 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
 
         private static T SpAsScalar<T>(this IGaScalarProcessor<T> scalarProcessor, IGaSignature signature, IGaStorageMultivector<T> mv1)
         {
-            var spScalar = scalarProcessor.ZeroScalar;
+            var spScalar = scalarProcessor.GetZeroScalar();
 
-            var idScalarDictionary1 = mv1.GetIdScalarDictionary();
+            var idScalarDictionary1 = mv1.GetIdScalarList();
 
-            foreach (var (id, scalar1) in idScalarDictionary1)
+            foreach (var (id, scalar1) in idScalarDictionary1.GetKeyValueRecords())
             {
                 var sig = signature.SpSignature(id);
 
                 if (sig == 0)
-                    return scalarProcessor.ZeroScalar;
+                    return scalarProcessor.GetZeroScalar();
             
                 var scalar = scalarProcessor.Times(scalar1, scalar1);
                 
@@ -195,10 +195,10 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
             var spScalar = 0d;
 
             var idScalarPairs1 = 
-                mv1.GetIdScalarPairs();
+                mv1.GetIdScalarRecords();
 
             var idScalarPairs2 = 
-                mv2.GetIdScalarDictionary();
+                mv2.GetIdScalarList();
 
             foreach (var (id1, scalar1) in idScalarPairs1)
             {
@@ -231,13 +231,13 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
         
         public static T VectorsSp<T>(this IGaScalarProcessor<T> scalarProcessor, IGaSignature signature, IReadOnlyList<T> vector1, IReadOnlyList<T> vector2)
         {
-            var spScalar = scalarProcessor.ZeroScalar;
+            var spScalar = scalarProcessor.GetZeroScalar();
 
             var count = Math.Min(vector1.Count, vector2.Count);
 
             for (var index = 0; index < count; index++)
             {
-                var sig = signature.SpSignature(1UL << index);
+                var sig = signature.SpSignature(index.BasisVectorIndexToId());
 
                 if (sig == 0)
                     continue;
@@ -258,19 +258,19 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
         private static T SpAsScalar<T>(this IGaScalarProcessor<T> scalarProcessor, IGaSignature signature, IGaStorageVector<T> mv1, IGaStorageVector<T> mv2)
         {
             var indexScalarPairs1 = 
-                mv1.IndexScalarDictionary;
+                mv1.IndexScalarList;
 
             var indexScalarPairs2 = 
-                mv2.IndexScalarDictionary;
+                mv2.IndexScalarList;
 
-            var spScalar = scalarProcessor.ZeroScalar;
+            var spScalar = scalarProcessor.GetZeroScalar();
 
-            foreach (var (index, scalar1) in indexScalarPairs1)
+            foreach (var (index, scalar1) in indexScalarPairs1.GetKeyValueRecords())
             {
                 if (!indexScalarPairs2.TryGetValue(index, out var scalar2))
                     continue;
 
-                var sig = signature.SpSignature(1UL << (int) index);
+                var sig = signature.SpSignature(index.BasisVectorIndexToId());
 
                 if (sig == 0)
                     continue;
@@ -293,23 +293,23 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
         private static T SpAsScalar<T>(this IGaScalarProcessor<T> scalarProcessor, IGaSignature signature, IGaStorageKVector<T> mv1, IGaStorageKVector<T> mv2)
         {
             if (mv1.Grade != mv2.Grade)
-                return scalarProcessor.ZeroScalar;
+                return scalarProcessor.GetZeroScalar();
 
             var grade = mv1.Grade;
-            var spScalar = scalarProcessor.ZeroScalar;
+            var spScalar = scalarProcessor.GetZeroScalar();
             
             var indexScalarPairs1 = 
-                mv1.IndexScalarDictionary;
+                mv1.IndexScalarList;
 
             var indexScalarPairs2 = 
-                mv2.IndexScalarDictionary;
+                mv2.IndexScalarList;
 
-            foreach (var (index, scalar1) in indexScalarPairs1)
+            foreach (var (index, scalar1) in indexScalarPairs1.GetKeyValueRecords())
             {
                 if (!indexScalarPairs2.TryGetValue(index, out var scalar2))
                     continue;
 
-                var id = GaBasisUtils.BasisBladeId(grade, index);
+                var id = index.BasisBladeIndexToId(grade);
 
                 var sig = signature.SpSignature(id);
 
@@ -343,23 +343,23 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
 
         private static T SpAsScalar<T>(this IGaScalarProcessor<T> scalarProcessor, IGaSignature signature, IGaStorageMultivectorGraded<T> mv1, IGaStorageMultivectorGraded<T> mv2)
         {
-            var spScalar = scalarProcessor.ZeroScalar;
+            var spScalar = scalarProcessor.GetZeroScalar();
 
-            var gradeIndexScalarDictionary1 = mv1.GetGradeIndexScalarDictionary();
-            var gradeIndexScalarDictionary2 = mv2.GetGradeIndexScalarDictionary();
+            var gradeIndexScalarDictionary1 = mv1.GetGradeIndexScalarList();
+            var gradeIndexScalarDictionary2 = mv2.GetGradeIndexScalarList();
 
-            foreach (var (grade, indexScalarPairs1) in gradeIndexScalarDictionary1)
+            foreach (var (grade, indexScalarPairs1) in gradeIndexScalarDictionary1.GetGradeListRecords())
             {
-                if (!gradeIndexScalarDictionary2.TryGetValue(grade, out var indexScalarPairs2))
+                if (!gradeIndexScalarDictionary2.TryGetList(grade, out var indexScalarPairs2))
                     continue;
 
-                foreach (var (index, scalar1) in indexScalarPairs1)
+                foreach (var (index, scalar1) in indexScalarPairs1.GetKeyValueRecords())
                 {
                     if (!indexScalarPairs2.TryGetValue(index, out var scalar2))
                         continue;
 
                     var id = 
-                        GaBasisUtils.BasisBladeId(grade, index);
+                        index.BasisBladeIndexToId(grade);
 
                     var sig = signature.SpSignature(id);
 
@@ -397,13 +397,13 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
 
         private static T SpAsScalar<T>(this IGaScalarProcessor<T> scalarProcessor, IGaSignature signature, IGaStorageMultivector<T> mv1, IGaStorageMultivector<T> mv2)
         {
-            var spScalar = scalarProcessor.ZeroScalar;
+            var spScalar = scalarProcessor.GetZeroScalar();
 
             var idScalarPairs1 = 
-                mv1.GetIdScalarPairs();
+                mv1.GetIdScalarRecords();
 
             var idScalarPairs2 = 
-                mv2.GetIdScalarDictionary();
+                mv2.GetIdScalarList();
 
             foreach (var (id, scalar1) in idScalarPairs1)
             {

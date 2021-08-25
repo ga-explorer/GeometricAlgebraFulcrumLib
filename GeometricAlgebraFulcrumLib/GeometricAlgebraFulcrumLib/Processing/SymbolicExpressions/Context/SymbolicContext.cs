@@ -2,19 +2,23 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
+using GeometricAlgebraFulcrumLib.Processing.ScalarsGrids;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context.Optimizer;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Factories;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.HeadSpecs;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Numbers;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Variables;
 using TextComposerLib.Text;
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
 {
+    [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
     public sealed class SymbolicContext :
-        IGaScalarProcessor<ISymbolicExpressionAtomic>
+        IGaScalarsGridProcessor<ISymbolicExpressionAtomic>
     {
         private int _tempNamesIndex;
 
@@ -31,24 +35,19 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
         private readonly Dictionary<string, ISymbolicVariableComputed> _computedVariablesDictionary
             = new Dictionary<string, ISymbolicVariableComputed>();
 
+        private readonly ISymbolicExpressionAtomic _zeroScalar;
+        private readonly ISymbolicExpressionAtomic _oneScalar;
+        private readonly ISymbolicExpressionAtomic _minusOneScalar;
+        private readonly ISymbolicExpressionAtomic _piScalar;
+
         public double ZeroEpsilon { get; set; }
             = 1e-13d;
 
+        public bool IsNumeric 
+            => false;
 
-        public SymbolicFunctionHeadSpecsFactory FunctionHeadSpecsFactory { get; }
-
-
-        public bool IsNumeric => false;
-
-        public bool IsSymbolic => true;
-
-        public ISymbolicExpressionAtomic ZeroScalar { get; }
-
-        public ISymbolicExpressionAtomic OneScalar { get; }
-        
-        public ISymbolicExpressionAtomic MinusOneScalar { get; }
-        
-        public ISymbolicExpressionAtomic PiScalar { get; }
+        public bool IsSymbolic 
+            => true;
 
         public IGaScalarProcessor<ISymbolicExpression> SymbolicExpressionProcessor { get; }
 
@@ -63,58 +62,15 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
 
         public SymbolicComputedVariablesFactory ComputedVariablesFactory { get; }
 
+        public SymbolicFunctionHeadSpecsFactory FunctionHeadSpecsFactory { get; }
+
         public string DefaultSymbolName { get; set; } 
             = "tmpVar";
 
         public bool MergeExpressions { get; set; }
 
-        public IEnumerable<ISymbolicNumber> Numbers
-            => _numbersDictionary
-                .Values
-                .OrderBy(v => v.AtomicExpressionId);
-
-        public IEnumerable<ISymbolicVariable> Variables
-            => ParameterVariables
-                .Cast<ISymbolicVariable>()
-                .Concat(ComputedVariables);
-
-        public IEnumerable<ISymbolicVariableParameter> ParameterVariables
-            => _parametersVariablesDictionary
-                .Values
-                .OrderBy(v => v.AtomicExpressionId);
-
-        public IEnumerable<ISymbolicExpressionAtomicIndependent> IndependentAtomics
-            => Numbers
-                .Cast<ISymbolicExpressionAtomicIndependent>()
-                .Concat(ParameterVariables);
-
-        public IEnumerable<ISymbolicVariableComputed> ComputedVariables
-            => _computedVariablesDictionary
-                .Values
-                .OrderBy(v => v.ComputationOrder);
-
-        public IEnumerable<ISymbolicVariableComputed> IntermediateVariables
-            => ComputedVariables
-                .Where(s => s.IsIntermediateVariable);
-
-        public IEnumerable<ISymbolicVariableComputed> OutputVariables
-            => ComputedVariables
-                .Where(s => s.IsOutputVariable);
-
-        public IEnumerable<ISymbolicExpressionAtomic> Atomics
-            => Numbers
-                .Cast<ISymbolicExpressionAtomic>()
-                .Concat(ParameterVariables)
-                .Concat(ComputedVariables);
-        
-        /// <summary>
-        /// The maximum number of temporary target variables required for the
-        /// computations in this block
-        /// </summary>
-        public int TargetTempVarsCount 
-            => IntermediateVariables.Any()
-                ? IntermediateVariables.Max(item => item.NameIndex) + 1
-                : 0;
+        public IGaScalarProcessor<ISymbolicExpressionAtomic> ScalarProcessor 
+            => this;
 
 
         public SymbolicContext()
@@ -123,10 +79,10 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
             ParameterVariablesFactory = new SymbolicParameterVariablesFactory(this);
             ComputedVariablesFactory = new SymbolicComputedVariablesFactory(this);
 
-            ZeroScalar = GetOrDefineLiteralNumber(0);
-            OneScalar = GetOrDefineLiteralNumber(1);
-            MinusOneScalar = GetOrDefineLiteralNumber(-1);
-            PiScalar = GetOrDefineSymbolicNumber("Pi", Math.PI); //TODO: This should be more dynamic
+            _zeroScalar = GetOrDefineLiteralNumber(0);
+            _oneScalar = GetOrDefineLiteralNumber(1);
+            _minusOneScalar = GetOrDefineLiteralNumber(-1);
+            _piScalar = GetOrDefineSymbolicNumber("Pi", Math.PI); //TODO: This should be more dynamic
 
             //These must be initialized after all other members
             SymbolicExpressionProcessor = new GaScalarProcessorSymbolicExpression(this);
@@ -139,7 +95,6 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
             ContextOptions.SetOptions(options);
         }
 
-
         public SymbolicContext([NotNull] ISymbolicExpressionSimplifier expressionReducer)
             : this()
         {
@@ -147,6 +102,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
         }
 
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private string GetNewSymbolName()
         {
             _tempNamesIndex++;
@@ -154,6 +110,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
             return $"{DefaultSymbolName}{_tempNamesIndex}";
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal int GetNextAtomicExpressionId()
         {
             _atomicId++;
@@ -161,6 +118,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
             return _atomicId;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal int GetNextComputationOrder()
         {
             _computationOrder++;
@@ -168,9 +126,85 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
             return _computationOrder;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsValid()
         {
             return true;
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public IEnumerable<ISymbolicNumber> GetNumbers()
+        {
+            return _numbersDictionary
+                .Values
+                .OrderBy(v => v.AtomicExpressionId);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public IEnumerable<ISymbolicVariable> GetVariables()
+        {
+            return GetParameterVariables()
+                .Cast<ISymbolicVariable>()
+                .Concat(GetComputedVariables());
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public IEnumerable<ISymbolicVariableParameter> GetParameterVariables()
+        {
+            return _parametersVariablesDictionary
+                .Values
+                .OrderBy(v => v.AtomicExpressionId);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public IEnumerable<ISymbolicExpressionAtomicIndependent> GetIndependentAtomics()
+        {
+            return GetNumbers()
+                .Cast<ISymbolicExpressionAtomicIndependent>()
+                .Concat(GetParameterVariables());
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public IEnumerable<ISymbolicVariableComputed> GetComputedVariables()
+        {
+            return _computedVariablesDictionary
+                .Values
+                .OrderBy(v => v.ComputationOrder);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public IEnumerable<ISymbolicVariableComputed> GetIntermediateVariables()
+        {
+            return GetComputedVariables()
+                .Where(s => s.IsIntermediateVariable);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public IEnumerable<ISymbolicVariableComputed> GetOutputVariables()
+        {
+            return GetComputedVariables()
+                .Where(s => s.IsOutputVariable);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public IEnumerable<ISymbolicExpressionAtomic> GetAtomics()
+        {
+            return GetNumbers()
+                .Cast<ISymbolicExpressionAtomic>()
+                .Concat(GetParameterVariables())
+                .Concat(GetComputedVariables());
+        }
+
+        /// <summary>
+        /// The maximum number of temporary target variables required for the
+        /// computations in this block
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public int GetTargetTempVarsCount()
+        {
+            return GetIntermediateVariables().Any()
+                ? GetIntermediateVariables().Max(item => item.NameIndex) + 1
+                : 0;
         }
 
 
@@ -198,16 +232,19 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
             return false;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool TryGetNumber(string numberText, out ISymbolicNumber number)
         {
             return _numbersDictionary.TryGetValue(numberText, out number);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool TryGetParameterVariable(string internalName, out ISymbolicVariableParameter variable)
         {
             return _parametersVariablesDictionary.TryGetValue(internalName, out variable);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool TryGetComputedVariable(string internalName, out ISymbolicVariableComputed variable)
         {
             return _computedVariablesDictionary.TryGetValue(internalName, out variable);
@@ -231,14 +268,15 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
             return false;
         }
 
-
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IEnumerable<ISymbolicExpressionAtomic> GetAtomicsByRhsExpressionText(string rhsExpressionText)
         {
-            return Atomics.Where(expr => 
+            return GetAtomics().Where(expr => 
                 expr.RhsExpressionText == rhsExpressionText
             );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IEnumerable<ISymbolicNumber> GetNumbers(string numberText)
         {
             return _numbersDictionary.Values.Where(expr => 
@@ -246,6 +284,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
             );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IEnumerable<ISymbolicVariableComputed> GetComputedVariablesByRhsExpressionText(string rhsExpressionText)
         {
             return _computedVariablesDictionary.Values.Where(expr => 
@@ -253,14 +292,13 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
             );
         }
 
-
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void SetVariableValue(string internalName, double number)
         {
             var variable = GetVariable(internalName);
 
             variable.SetRhsExpressionValue(number);
         }
-
 
         public ISymbolicExpressionAtomic GetAtomic(string internalName)
         {
@@ -276,6 +314,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
             throw new KeyNotFoundException(internalName);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ISymbolicNumber GetNumber(string numberText)
         {
             if (_numbersDictionary.TryGetValue(numberText, out var constantAtomic))
@@ -284,6 +323,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
             throw new KeyNotFoundException(numberText);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ISymbolicVariableParameter GetParameterVariable(string internalName)
         {
             if (_parametersVariablesDictionary.TryGetValue(internalName, out var variable))
@@ -292,6 +332,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
             throw new KeyNotFoundException(internalName);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ISymbolicVariableComputed GetComputedVariable(string internalName)
         {
             if (_computedVariablesDictionary.TryGetValue(internalName, out var variable))
@@ -310,7 +351,6 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
 
             throw new KeyNotFoundException(internalName);
         }
-
 
         public ISymbolicNumber GetOrDefineLiteralNumber(double numberValue)
         {
@@ -419,6 +459,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
             return atomic;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ISymbolicNumber GetOrDefineNumber(ISymbolicHeadSpecsNumber headSpecs)
         {
             return headSpecs switch
@@ -438,7 +479,6 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
                 _ => throw new InvalidOperationException()
             };
         }
-
 
         public ISymbolicVariableParameter GetOrDefineParameterVariable(string parameterName)
         {
@@ -470,7 +510,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
             return atomic;
         }
 
-
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ISymbolicVariableComputed GetOrDefineComputedVariable(Func<ISymbolicExpression, ISymbolicExpression> computingFunc, ISymbolicExpressionAtomic dependsOnAtomic)
         {
             var rhsScalarValue = computingFunc(
@@ -482,6 +522,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
             );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ISymbolicVariableComputed GetOrDefineComputedVariable(Func<ISymbolicExpression, ISymbolicExpression, ISymbolicExpression> computingFunc, ISymbolicExpressionAtomic dependsOnAtomic1, ISymbolicExpressionAtomic dependsOnAtomic2)
         {
             var rhsScalarValue = computingFunc(
@@ -494,6 +535,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
             );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ISymbolicVariableComputed GetOrDefineComputedVariable(Func<ISymbolicExpression, ISymbolicExpression, ISymbolicExpression, ISymbolicExpression> computingFunc, ISymbolicExpressionAtomic dependsOnAtomic1, ISymbolicExpressionAtomic dependsOnAtomic2, ISymbolicExpressionAtomic dependsOnAtomic3)
         {
             var rhsScalarValue = computingFunc(
@@ -507,6 +549,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
             );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ISymbolicVariableComputed GetOrDefineComputedVariable(Func<IEnumerable<ISymbolicExpression>, ISymbolicExpression> computingFunc, IEnumerable<ISymbolicExpressionAtomic> dependsOnAtomics)
         {
             var atomicsArray = 
@@ -588,7 +631,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
             return computedVariable;
         }
 
-
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void RemoveNotUsedNumbers()
         {
             var numbersList = 
@@ -602,6 +645,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
                 _numbersDictionary.Remove(key);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void RemoveNotUsedParameterVariables()
         {
             var parameterVariableNamesList =
@@ -615,6 +659,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
                 _parametersVariablesDictionary.Remove(key);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void RemoveNotUsedComputedVariables()
         {
             var computedVariableNamesList =
@@ -642,6 +687,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
             }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void RemoveNotUsedAtomics()
         {
             RemoveNotUsedNumbers();
@@ -651,7 +697,64 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
             RemoveNotUsedComputedVariables();
         }
 
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ISymbolicExpressionAtomic GetZeroScalar()
+        {
+            return _zeroScalar;
+        }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ISymbolicExpressionAtomic GetOneScalar()
+        {
+            return _oneScalar;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ISymbolicExpressionAtomic GetMinusOneScalar()
+        {
+            return _minusOneScalar;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ISymbolicExpressionAtomic GetPiScalar()
+        {
+            return _piScalar;
+        }
+
+        public ISymbolicExpressionAtomic[] GetZeroScalarArray1D(int count)
+        {
+            var array = new ISymbolicExpressionAtomic[count];
+
+            for (var i = 0; i < count; i++)
+                array[i] = _zeroScalar;
+
+            return array;
+        }
+
+        public ISymbolicExpressionAtomic[,] GetZeroScalarArray2D(int count)
+        {
+            var array = new ISymbolicExpressionAtomic[count, count];
+
+            for (var i = 0; i < count; i++)
+            for (var j = 0; j < count; j++)
+                array[i, j] = _zeroScalar;
+
+            return array;
+        }
+
+        public ISymbolicExpressionAtomic[,] GetZeroScalarArray2D(int count1, int count2)
+        {
+            var array = new ISymbolicExpressionAtomic[count1, count2];
+
+            for (var i = 0; i < count1; i++)
+            for (var j = 0; j < count2; j++)
+                array[i, j] = _zeroScalar;
+
+            return array;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ISymbolicExpressionAtomic Add(ISymbolicExpressionAtomic scalar1, ISymbolicExpressionAtomic scalar2)
         {
             return GetOrDefineComputedVariable(
@@ -661,22 +764,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
             );
         }
 
-        public ISymbolicExpressionAtomic Add(params ISymbolicExpressionAtomic[] scalarsList)
-        {
-            return GetOrDefineComputedVariable(
-                SymbolicExpressionProcessor.Add,
-                scalarsList
-            );
-        }
-
-        public ISymbolicExpressionAtomic Add(IEnumerable<ISymbolicExpressionAtomic> scalarsList)
-        {
-            return GetOrDefineComputedVariable(
-                SymbolicExpressionProcessor.Add,
-                scalarsList
-            );
-        }
-
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ISymbolicExpressionAtomic Subtract(ISymbolicExpressionAtomic scalar1, ISymbolicExpressionAtomic scalar2)
         {
             return GetOrDefineComputedVariable(
@@ -686,6 +774,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
             );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ISymbolicExpressionAtomic Times(ISymbolicExpressionAtomic scalar1, ISymbolicExpressionAtomic scalar2)
         {
             return GetOrDefineComputedVariable(
@@ -695,22 +784,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
             );
         }
 
-        public ISymbolicExpressionAtomic Times(params ISymbolicExpressionAtomic[] scalarsList)
-        {
-            return GetOrDefineComputedVariable(
-                SymbolicExpressionProcessor.Times,
-                scalarsList
-            );
-        }
-
-        public ISymbolicExpressionAtomic Times(IEnumerable<ISymbolicExpressionAtomic> scalarsList)
-        {
-            return GetOrDefineComputedVariable(
-                SymbolicExpressionProcessor.Times,
-                scalarsList
-            );
-        }
-
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ISymbolicExpressionAtomic NegativeTimes(ISymbolicExpressionAtomic scalar1, ISymbolicExpressionAtomic scalar2)
         {
             return GetOrDefineComputedVariable(
@@ -720,22 +794,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
             );
         }
 
-        public ISymbolicExpressionAtomic NegativeTimes(params ISymbolicExpressionAtomic[] scalarsList)
-        {
-            return GetOrDefineComputedVariable(
-                SymbolicExpressionProcessor.NegativeTimes,
-                scalarsList
-            );
-        }
-
-        public ISymbolicExpressionAtomic NegativeTimes(IEnumerable<ISymbolicExpressionAtomic> scalarsList)
-        {
-            return GetOrDefineComputedVariable(
-                SymbolicExpressionProcessor.NegativeTimes,
-                scalarsList
-            );
-        }
-
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ISymbolicExpressionAtomic Divide(ISymbolicExpressionAtomic scalar1, ISymbolicExpressionAtomic scalar2)
         {
             return GetOrDefineComputedVariable(
@@ -745,6 +804,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
             );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ISymbolicExpressionAtomic NegativeDivide(ISymbolicExpressionAtomic scalar1, ISymbolicExpressionAtomic scalar2)
         {
             return GetOrDefineComputedVariable(
@@ -754,6 +814,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
             );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ISymbolicExpressionAtomic Positive(ISymbolicExpressionAtomic scalar)
         {
             return GetOrDefineComputedVariable(
@@ -762,87 +823,88 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
             );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ISymbolicExpressionAtomic Negative(ISymbolicExpressionAtomic scalar)
         {
             return GetOrDefineComputedVariable(
                 SymbolicExpressionProcessor.Negative,
                 scalar
             );
-
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ISymbolicExpressionAtomic Inverse(ISymbolicExpressionAtomic scalar)
         {
             return GetOrDefineComputedVariable(
                 SymbolicExpressionProcessor.Inverse,
                 scalar
             );
-
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ISymbolicExpressionAtomic Abs(ISymbolicExpressionAtomic scalar)
         {
             return GetOrDefineComputedVariable(
                 SymbolicExpressionProcessor.Abs,
                 scalar
             );
-
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ISymbolicExpressionAtomic Sqrt(ISymbolicExpressionAtomic scalar)
         {
             return GetOrDefineComputedVariable(
                 SymbolicExpressionProcessor.Sqrt,
                 scalar
             );
-
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ISymbolicExpressionAtomic SqrtOfAbs(ISymbolicExpressionAtomic scalar)
         {
             return GetOrDefineComputedVariable(
                 SymbolicExpressionProcessor.SqrtOfAbs,
                 scalar
             );
-
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ISymbolicExpressionAtomic Exp(ISymbolicExpressionAtomic scalar)
         {
             return GetOrDefineComputedVariable(
                 SymbolicExpressionProcessor.Exp,
                 scalar
             );
-
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ISymbolicExpressionAtomic Log(ISymbolicExpressionAtomic scalar)
         {
             return GetOrDefineComputedVariable(
                 SymbolicExpressionProcessor.Log,
                 scalar
             );
-
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ISymbolicExpressionAtomic Log2(ISymbolicExpressionAtomic scalar)
         {
             return GetOrDefineComputedVariable(
                 SymbolicExpressionProcessor.Log2,
                 scalar
             );
-
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ISymbolicExpressionAtomic Log10(ISymbolicExpressionAtomic scalar)
         {
             return GetOrDefineComputedVariable(
                 SymbolicExpressionProcessor.Log10,
                 scalar
             );
-
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ISymbolicExpressionAtomic Log(ISymbolicExpressionAtomic scalar, ISymbolicExpressionAtomic baseScalar)
         {
             return GetOrDefineComputedVariable(
@@ -852,60 +914,61 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
             );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ISymbolicExpressionAtomic Cos(ISymbolicExpressionAtomic scalar)
         {
             return GetOrDefineComputedVariable(
                 SymbolicExpressionProcessor.Cos,
                 scalar
             );
-
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ISymbolicExpressionAtomic Sin(ISymbolicExpressionAtomic scalar)
         {
             return GetOrDefineComputedVariable(
                 SymbolicExpressionProcessor.Sin,
                 scalar
             );
-
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ISymbolicExpressionAtomic Tan(ISymbolicExpressionAtomic scalar)
         {
             return GetOrDefineComputedVariable(
                 SymbolicExpressionProcessor.Tan,
                 scalar
             );
-
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ISymbolicExpressionAtomic ArcCos(ISymbolicExpressionAtomic scalar)
         {
             return GetOrDefineComputedVariable(
                 SymbolicExpressionProcessor.ArcCos,
                 scalar
             );
-
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ISymbolicExpressionAtomic ArcSin(ISymbolicExpressionAtomic scalar)
         {
             return GetOrDefineComputedVariable(
                 SymbolicExpressionProcessor.ArcSin,
                 scalar
             );
-
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ISymbolicExpressionAtomic ArcTan(ISymbolicExpressionAtomic scalar)
         {
             return GetOrDefineComputedVariable(
                 SymbolicExpressionProcessor.ArcTan,
                 scalar
             );
-
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ISymbolicExpressionAtomic ArcTan2(ISymbolicExpressionAtomic scalarX, ISymbolicExpressionAtomic scalarY)
         {
             return GetOrDefineComputedVariable(
@@ -915,6 +978,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
             );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ISymbolicExpressionAtomic Cosh(ISymbolicExpressionAtomic scalar)
         {
             return GetOrDefineComputedVariable(
@@ -923,6 +987,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
             );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ISymbolicExpressionAtomic Sinh(ISymbolicExpressionAtomic scalar)
         {
             return GetOrDefineComputedVariable(
@@ -931,6 +996,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
             );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ISymbolicExpressionAtomic Tanh(ISymbolicExpressionAtomic scalar)
         {
             return GetOrDefineComputedVariable(
@@ -939,86 +1005,133 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
             );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsValid(ISymbolicExpressionAtomic scalar)
         {
             return SymbolicExpressionProcessor.IsValid(scalar);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsZero(ISymbolicExpressionAtomic scalar)
         {
             return SymbolicExpressionProcessor.IsZero(scalar);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsZero(ISymbolicExpressionAtomic scalar, bool nearZeroFlag)
         {
             return SymbolicExpressionProcessor.IsZero(scalar, nearZeroFlag);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsNearZero(ISymbolicExpressionAtomic scalar)
         {
             return SymbolicExpressionProcessor.IsNearZero(scalar);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsNotZero(ISymbolicExpressionAtomic scalar)
+        {
+            return SymbolicExpressionProcessor.IsNotZero(scalar);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsNotZero(ISymbolicExpressionAtomic scalar, bool nearZeroFlag)
+        {
+            return SymbolicExpressionProcessor.IsNotZero(scalar, nearZeroFlag);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsNotNearZero(ISymbolicExpressionAtomic scalar)
+        {
+            return SymbolicExpressionProcessor.IsNotNearZero(scalar);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsPositive(ISymbolicExpressionAtomic scalar)
         {
             return SymbolicExpressionProcessor.IsPositive(scalar);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsNegative(ISymbolicExpressionAtomic scalar)
         {
             return SymbolicExpressionProcessor.IsNegative(scalar);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsNotPositive(ISymbolicExpressionAtomic scalar)
+        {
+            return SymbolicExpressionProcessor.IsNotPositive(scalar);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsNotNegative(ISymbolicExpressionAtomic scalar)
+        {
+            return SymbolicExpressionProcessor.IsNotNegative(scalar);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsNotNearPositive(ISymbolicExpressionAtomic scalar)
         {
             return SymbolicExpressionProcessor.IsNotNearPositive(scalar);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsNotNearNegative(ISymbolicExpressionAtomic scalar)
         {
             return SymbolicExpressionProcessor.IsNotNearNegative(scalar);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsNearZero(double scalar)
         {
             return scalar > -ZeroEpsilon && scalar < ZeroEpsilon;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsPositive(double scalar)
         {
             return scalar > 0;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsNegative(double scalar)
         {
             return scalar < 0;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsNotNearPositive(double scalar)
         {
             return scalar < -ZeroEpsilon;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsNotNearNegative(double scalar)
         {
             return scalar > ZeroEpsilon;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ISymbolicExpressionAtomic TextToScalar(string text)
         {
             return (ISymbolicExpressionAtomic) SymbolicExpressionProcessor.TextToScalar(text);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ISymbolicExpressionAtomic IntegerToScalar(int value)
         {
             return GetOrDefineLiteralNumber((double) value);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ISymbolicExpressionAtomic Float64ToScalar(double value)
         {
             return GetOrDefineLiteralNumber((long) value);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ISymbolicExpressionAtomic GetRandomScalar(System.Random randomGenerator, double minValue, double maxValue)
         {
             var value = 
@@ -1027,6 +1140,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
             return GetOrDefineLiteralNumber((long) value);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public string ToText(ISymbolicExpressionAtomic scalar)
         {
             return scalar.ToString();
@@ -1061,7 +1175,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
             if (ExpressionSimplifier is null) 
                 return;
 
-            foreach (var computedVariable in ComputedVariables)
+            foreach (var computedVariable in GetComputedVariables())
                 computedVariable.ResetRhsExpression(
                     ExpressionSimplifier.Simplify(computedVariable.RhsExpression)
                 );
@@ -1072,7 +1186,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
             SimplifyRhsExpressions();
 
             var inputsWithTestValues =
-                ParameterVariables
+                GetParameterVariables()
                     .ToDictionary(
                         binding => binding.InternalName,
                         binding => binding
@@ -1090,46 +1204,46 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
         {
             var stats = new Dictionary<string, string>();
 
-            var inputVarsTotalCount = ParameterVariables.Count();
-            var inputVarsUsedCount = ParameterVariables.Count(inputVar => inputVar.HasDependingVariables);
+            var inputVarsTotalCount = GetParameterVariables().Count();
+            var inputVarsUsedCount = GetParameterVariables().Count(inputVar => inputVar.HasDependingVariables);
             var inputVarsUnUsedCount = inputVarsTotalCount - inputVarsUsedCount;
 
             stats.Add("Used Input Variables: ", inputVarsUsedCount.ToString());
             stats.Add("Unused Input Variables: ", inputVarsUnUsedCount.ToString());
             stats.Add("Total Input Variables: ", inputVarsTotalCount.ToString());
 
-            var tempVarsCount = IntermediateVariables.Count();
-            var tempVarsSubExprCount = IntermediateVariables.Count(item => item.IsFactoredSubExpression);
+            var tempVarsCount = GetIntermediateVariables().Count();
+            var tempVarsSubExprCount = GetIntermediateVariables().Count(item => item.IsFactoredSubExpression);
             var tempVarsNonSubExprCount = tempVarsCount - tempVarsSubExprCount;
 
             stats.Add("Common Subexpressions Temp Variables: ", tempVarsSubExprCount.ToString());
             stats.Add("Generated Temp Variables: ", tempVarsNonSubExprCount.ToString());
             stats.Add("Total Temp Variables: ", tempVarsCount.ToString());
 
-            stats.Add("Total Output Variables: ", OutputVariables.Count().ToString());
+            stats.Add("Total Output Variables: ", GetOutputVariables().Count().ToString());
 
-            stats.Add("Total Computed Variables: ", ComputedVariables.Count().ToString());
+            stats.Add("Total Computed Variables: ", GetComputedVariables().Count().ToString());
 
-            stats.Add("Target Temp Variables: ", TargetTempVarsCount.ToString());
+            stats.Add("Target Temp Variables: ", GetTargetTempVarsCount().ToString());
 
             var computationsCountTotal =
-                ComputedVariables
+                GetComputedVariables()
                     .Select(computedVar => computedVar.RhsExpression.ComputationsCount)
                     .Sum();
 
             var computationsCountAverage =
-                computationsCountTotal / (double) ComputedVariables.Count();
+                computationsCountTotal / (double) GetComputedVariables().Count();
 
             stats.Add("Avg. Computations Count: ", computationsCountAverage.ToString("0.000"));
             stats.Add("Total Computations Count: ", computationsCountTotal.ToString());
 
             var memReadsCountTotal =
-                ComputedVariables
+                GetComputedVariables()
                     .Select(computedVar => computedVar.RhsVariables.Count())
                     .Sum();
 
             var memReadsCountAverage =
-                memReadsCountTotal / (double) ComputedVariables.Count();
+                memReadsCountTotal / (double) GetComputedVariables().Count();
 
             stats.Add("Avg. Memory Reads: ", memReadsCountAverage.ToString("0.000"));
             stats.Add("Total Memory Reads: ", memReadsCountTotal.ToString());
@@ -1145,8 +1259,8 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
         {
             var s = new StringBuilder();
 
-            var inputVarsTotalCount = ParameterVariables.Count();
-            var inputVarsUsedCount = ParameterVariables.Count(inputVar => inputVar.HasDependingVariables);
+            var inputVarsTotalCount = GetParameterVariables().Count();
+            var inputVarsUsedCount = GetParameterVariables().Count(inputVar => inputVar.HasDependingVariables);
             var inputVarsUnUsedCount = inputVarsTotalCount - inputVarsUsedCount;
 
             s.Append("Input Variables: ")
@@ -1158,8 +1272,8 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
                 .AppendLine(" total.")
                 .AppendLine();
 
-            var tempVarsCount = IntermediateVariables.Count();
-            var tempVarsSubExprCount = IntermediateVariables.Count(item => item.IsFactoredSubExpression);
+            var tempVarsCount = GetIntermediateVariables().Count();
+            var tempVarsSubExprCount = GetIntermediateVariables().Count(item => item.IsFactoredSubExpression);
             var tempVarsNonSubExprCount = tempVarsCount - tempVarsSubExprCount;
 
             s.Append("Temp Variables: ")
@@ -1171,13 +1285,13 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
                 .AppendLine(" total.")
                 .AppendLine();
 
-            if (TargetTempVarsCount > 0)
+            if (GetTargetTempVarsCount() > 0)
                 s.Append("Target Temp Variables: ")
-                    .Append(TargetTempVarsCount)
+                    .Append(GetTargetTempVarsCount())
                     .AppendLine(" total.")
                     .AppendLine();
 
-            var outputVarsCount = OutputVariables.Count();
+            var outputVarsCount = GetOutputVariables().Count();
 
             s.Append("Output Variables: ")
                 .Append(outputVarsCount)
@@ -1185,12 +1299,12 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
                 .AppendLine();
 
             var computationsCountTotal =
-                ComputedVariables
+                GetComputedVariables()
                     .Select(computedVar => computedVar.RhsExpression.ComputationsCount)
                     .Sum();
             
             var computationsCountAverage = 
-                computationsCountTotal / (double) ComputedVariables.Count();
+                computationsCountTotal / (double) GetComputedVariables().Count();
 
             s.Append("Computations: ")
                 .Append(computationsCountAverage)
@@ -1200,12 +1314,12 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
                 .AppendLine();
 
             var memReadsCountTotal =
-                ComputedVariables
+                GetComputedVariables()
                     .Select(computedVar => computedVar.RhsVariables.Count())
                     .Sum();
 
             var memReadsCountAverage =
-                memReadsCountTotal / (double) ComputedVariables.Count();
+                memReadsCountTotal / (double) GetComputedVariables().Count();
 
             s.Append("Memory Reads: ")
                 .Append(memReadsCountAverage)
@@ -1215,7 +1329,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
                 .AppendLine();
 
             s.Append("Memory Writes: ")
-                .Append(ComputedVariables.Count())
+                .Append(GetComputedVariables().Count())
                 .AppendLine(" total.")
                 .AppendLine();
 
@@ -1227,7 +1341,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
             var composer = new StringBuilder();
 
             composer.AppendLine(
-                Atomics
+                GetAtomics()
                     .Select(scalar => scalar.GetTextDescription())
                     .Concatenate(Environment.NewLine)
             );

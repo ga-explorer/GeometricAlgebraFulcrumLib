@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using DataStructuresLib.BitManipulation;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Binary;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Unary;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
 using GeometricAlgebraFulcrumLib.Processing.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Storage;
 using GeometricAlgebraFulcrumLib.Storage.Factories;
+using GeometricAlgebraFulcrumLib.Storage.Multivectors;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Storage
 {
@@ -42,8 +42,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.Storage
 
         private static Dictionary<ulong, double> GetRandomKVectorDictionary(uint grade)
         {
-            return GaBasisUtils
-                .KvSpaceDimension(VSpaceDimension, grade)
+            return VSpaceDimension
+                .KVectorSpaceDimension(grade)
                 .GetRange()
                 .ToDictionary(
                     index => index, 
@@ -104,7 +104,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Storage
 
             //Convert all storages into multivector terms storages
             foreach (var storage in StoragesList1)
-                StoragesList2.Add(storage.GetSparseMultivectorCopy());
+                StoragesList2.Add(storage.GetIdScalarList().GetCopy().CreateStorageSparseMultivector());
 
             Debug.Assert(StoragesList1.Count == StoragesList2.Count);
 

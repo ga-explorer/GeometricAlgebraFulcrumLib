@@ -5,7 +5,7 @@ using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Factories;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Unary;
-using GeometricAlgebraFulcrumLib.Storage.Composers;
+using GeometricAlgebraFulcrumLib.Storage.Factories;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils
 {
@@ -49,7 +49,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils
         public static GaScalar<T> ScalarPart<T>(this GaMultivector<T> mv1)
         {
             if (!mv1.MultivectorStorage.TryGetTermScalar(0, out var scalar))
-                scalar = mv1.Processor.ZeroScalar;
+                scalar = mv1.Processor.GetZeroScalar();
 
             return new GaScalar<T>(mv1.Processor, scalar);
         }
@@ -84,30 +84,36 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static GaMultivector<T> OddKVectorsPart<T>(this GaMultivector<T> mv1)
         {
-            var composer = new GaStorageComposerMultivectorSparse<T>(mv1.Processor);
+            var composer = 
+                mv1.Processor.CreateStorageGradedMultivectorComposer();
 
             composer.AddTerms(
-                mv1.MultivectorStorage.GetTerms().Where(term => term.BasisBlade.Grade.IsOdd())
+                mv1.MultivectorStorage
+                    .GetGradeIndexScalarRecords()
+                    .Where(term => term.Grade.IsOdd())
             );
 
             return new GaMultivector<T>(
                 mv1.Processor,
-                composer.GetMultivector()
+                composer.CreateStorageGradedMultivector()
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static GaMultivector<T> EvenKVectorsPart<T>(this GaMultivector<T> mv1)
         {
-            var composer = new GaStorageComposerMultivectorSparse<T>(mv1.Processor);
+            var composer = 
+                mv1.Processor.CreateStorageGradedMultivectorComposer();
 
             composer.AddTerms(
-                mv1.MultivectorStorage.GetTerms().Where(term => term.BasisBlade.Grade.IsEven())
+                mv1.MultivectorStorage
+                    .GetGradeIndexScalarRecords()
+                    .Where(term => term.Grade.IsEven())
             );
 
             return new GaMultivector<T>(
                 mv1.Processor,
-                composer.GetMultivector()
+                composer.CreateStorageGradedMultivector()
             );
         }
 

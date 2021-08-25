@@ -1,7 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
-using GeometricAlgebraFulcrumLib.Storage;
+using GeometricAlgebraFulcrumLib.Storage.Multivectors;
 
 namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Unary
 {
@@ -20,7 +20,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Unary
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaStorageVector<T> GradeInvolution<T>(this IGaScalarProcessor<T> scalarProcessor, GaStorageVector<T> mv)
+        public static IGaStorageVector<T> GradeInvolution<T>(this IGaScalarProcessor<T> scalarProcessor, GaStorageVector<T> mv)
         {
             return scalarProcessor.Negative(mv);
         }
@@ -44,45 +44,45 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Unary
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaStorageKVector<T> GradeInvolution<T>(this IGaScalarProcessor<T> scalarProcessor, GaStorageKVector<T> mv)
+        public static IGaStorageKVector<T> GradeInvolution<T>(this IGaScalarProcessor<T> scalarProcessor, GaStorageKVector<T> mv)
         {
-            return scalarProcessor.Negative(mv, GaBasisUtils.GradeHasNegativeGradeInvolution);
+            return scalarProcessor.Negative(mv, GaBasisBladeUtils.GradeHasNegativeGradeInvolution);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IGaStorageKVector<T> GradeInvolution<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageKVector<T> mv)
         {
-            return scalarProcessor.Negative(mv, GaBasisUtils.GradeHasNegativeGradeInvolution);
+            return scalarProcessor.Negative(mv, GaBasisBladeUtils.GradeHasNegativeGradeInvolution);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IGaStorageMultivectorGraded<T> GradeInvolution<T>(this IGaScalarProcessor<T> scalarProcessor, GaStorageMultivectorGraded<T> mv)
         {
-            return scalarProcessor.Negative(mv, GaBasisUtils.GradeHasNegativeGradeInvolution);
+            return scalarProcessor.Negative(mv, GaBasisBladeUtils.GradeHasNegativeGradeInvolution);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IGaStorageMultivectorGraded<T> GradeInvolution<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivectorGraded<T> mv)
         {
-            return scalarProcessor.Negative(mv, GaBasisUtils.GradeHasNegativeGradeInvolution);
+            return scalarProcessor.Negative(mv, GaBasisBladeUtils.GradeHasNegativeGradeInvolution);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IGaStorageMultivectorSparse<T> GradeInvolution<T>(this IGaScalarProcessor<T> scalarProcessor, GaStorageMultivectorSparse<T> mv)
         {
-            return scalarProcessor.Negative(mv, GaBasisUtils.GradeHasNegativeGradeInvolution);
+            return scalarProcessor.Negative(mv, GaBasisBladeUtils.GradeHasNegativeGradeInvolution);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IGaStorageMultivectorSparse<T> GradeInvolution<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivectorSparse<T> mv)
         {
-            return scalarProcessor.Negative(mv, GaBasisUtils.GradeHasNegativeGradeInvolution);
+            return scalarProcessor.Negative(mv, GaBasisBladeUtils.GradeHasNegativeGradeInvolution);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IGaStorageMultivector<T> GradeInvolution<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivector<T> mv)
         {
-            return scalarProcessor.Negative(mv, GaBasisUtils.GradeHasNegativeGradeInvolution);
+            return scalarProcessor.Negative(mv, GaBasisBladeUtils.GradeHasNegativeGradeInvolution);
         }
     }
 }

@@ -4,15 +4,16 @@ using System.Linq;
 using DataStructuresLib.BitManipulation;
 using GeometricAlgebraFulcrumLib.Algebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Factories;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Space;
 using GeometricAlgebraFulcrumLib.Algebra.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Binary;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Unary;
-using GeometricAlgebraFulcrumLib.Processing.Scalars;
-using GeometricAlgebraFulcrumLib.Storage;
+using GeometricAlgebraFulcrumLib.Processing.ScalarsGrids;
 using GeometricAlgebraFulcrumLib.Storage.Factories;
+using GeometricAlgebraFulcrumLib.Storage.Multivectors;
 using GeometricAlgebraFulcrumLib.Storage.Utils;
 
 namespace GeometricAlgebraFulcrumLib.Geometry.Rotors
@@ -27,6 +28,8 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Rotors
     public sealed class GaPureRotor<T>
         : IGaGeometry<T>, IGaRotor<T>
     {
+        public IGaSpace Space => Processor;
+
         public uint VSpaceDimension 
             => Processor.VSpaceDimension;
 
@@ -42,7 +45,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Rotors
         public IEnumerable<uint> Grades 
             => Processor.Grades;
 
-        public IGaScalarProcessor<T> ScalarProcessor 
+        public IGaScalarsGridProcessor<T> ScalarsGridProcessor 
             => Processor;
 
         public IGaStorageKVector<T> MappedPseudoScalar { get; }
@@ -75,7 +78,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Rotors
                 var diff =
                     Processor.Subtract(
                         Processor.GetTermScalar(gp, 0),
-                        Processor.OneScalar
+                        Processor.GetOneScalar()
                     );
 
                 if (!Processor.IsNearZero(diff))
@@ -144,7 +147,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Rotors
         {
             return MapVector(
                 Processor.CreateStorageVector(index, 
-                    Processor.OneScalar
+                    Processor.GetOneScalar()
                 )
             );
         }

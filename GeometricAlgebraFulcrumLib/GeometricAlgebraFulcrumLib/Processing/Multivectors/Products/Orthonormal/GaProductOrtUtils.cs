@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Binary;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Unary;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
 using GeometricAlgebraFulcrumLib.Processing.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Storage;
-using GeometricAlgebraFulcrumLib.Storage.Composers;
 using GeometricAlgebraFulcrumLib.Storage.Factories;
+using GeometricAlgebraFulcrumLib.Storage.Multivectors;
 
 namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonormal
 {
@@ -17,14 +16,14 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
         internal static IGaStorageMultivector<T> BilinearProduct<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivector<T> mv1, Func<ulong, ulong, int> basisSignatureFunction)
         {
             var composer = 
-                new GaStorageComposerMultivectorSparse<T>(scalarProcessor);
+                scalarProcessor.CreateStorageSparseMultivectorComposer();
 
             var idScalarPairs = 
-                mv1.GetIdScalarDictionary();
+                mv1.GetIdScalarList();
 
-            foreach (var (id1, scalar1) in idScalarPairs)
+            foreach (var (id1, scalar1) in idScalarPairs.GetKeyValueRecords())
             {
-                foreach (var (id2, scalar2) in idScalarPairs)
+                foreach (var (id2, scalar2) in idScalarPairs.GetKeyValueRecords())
                 {
                     var signature = 
                         basisSignatureFunction(id1, id2);
@@ -44,23 +43,23 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
 
             composer.RemoveZeroTerms();
 
-            return composer.GetMultivector();
+            return composer.CreateStorageSparseMultivector();
         }
 
         internal static IGaStorageMultivector<T> BilinearProduct<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivector<T> mv1, IGaStorageMultivector<T> mv2, Func<ulong, ulong, int> basisSignatureFunction)
         {
             var composer = 
-                new GaStorageComposerMultivectorSparse<T>(scalarProcessor);
+                scalarProcessor.CreateStorageSparseMultivectorComposer();
 
             var idScalarPairs1 = 
-                mv1.GetIdScalarPairs();
+                mv1.GetIdScalarRecords();
 
             var idScalarPairs2 = 
-                mv2.GetIdScalarDictionary();
+                mv2.GetIdScalarList();
 
             foreach (var (id1, scalar1) in idScalarPairs1)
             {
-                foreach (var (id2, scalar2) in idScalarPairs2)
+                foreach (var (id2, scalar2) in idScalarPairs2.GetKeyValueRecords())
                 {
                     var signature = 
                         basisSignatureFunction(id1, id2);
@@ -80,7 +79,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
 
             composer.RemoveZeroTerms();
 
-            return composer.GetMultivector();
+            return composer.CreateStorageSparseMultivector();
         }
 
         internal static IGaStorageMultivectorGraded<T> BilinearProduct<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageKVector<T> mv1, Func<ulong, ulong, int> basisSignatureFunction)
@@ -88,18 +87,18 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
             var grade1 = mv1.Grade;
 
             var composer = 
-                new GaStorageComposerMultivectorGraded<T>(scalarProcessor);
+                scalarProcessor.CreateStorageGradedMultivectorComposer();
 
             var indexScalarPairs1 = 
-                mv1.IndexScalarDictionary;
+                mv1.IndexScalarList;
 
-            foreach (var (index1, scalar1) in indexScalarPairs1)
+            foreach (var (index1, scalar1) in indexScalarPairs1.GetKeyValueRecords())
             {
-                var id1 = GaBasisUtils.BasisBladeId(grade1, index1);
+                var id1 = index1.BasisBladeIndexToId(grade1);
 
-                foreach (var (index2, scalar2) in indexScalarPairs1)
+                foreach (var (index2, scalar2) in indexScalarPairs1.GetKeyValueRecords())
                 {
-                    var id2 = GaBasisUtils.BasisBladeId(grade1, index2);
+                    var id2 = index2.BasisBladeIndexToId(grade1);
 
                     var signature = 
                         basisSignatureFunction(id1, id2);
@@ -107,7 +106,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
                     if (signature == 0) 
                         continue;
 
-                    var (grade, index) = (id1 ^ id2).BasisBladeGradeIndex();
+                    var (grade, index) = (id1 ^ id2).BasisBladeIdToGradeIndex();
                     var scalar = scalarProcessor.Times(scalar1, scalar2);
 
                     if (signature > 0)
@@ -119,7 +118,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
 
             composer.RemoveZeroTerms();
 
-            return composer.GetGradedMultivector();
+            return composer.CreateStorageGradedMultivector();
         }
 
         internal static IGaStorageMultivectorGraded<T> BilinearProduct<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageKVector<T> mv1, IGaStorageKVector<T> mv2, Func<ulong, ulong, int> basisSignatureFunction)
@@ -128,21 +127,21 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
             var grade2 = mv2.Grade;
 
             var composer = 
-                new GaStorageComposerMultivectorGraded<T>(scalarProcessor);
+                scalarProcessor.CreateStorageGradedMultivectorComposer();
 
             var indexScalarPairs1 = 
-                mv1.IndexScalarDictionary;
+                mv1.IndexScalarList;
 
             var indexScalarPairs2 = 
-                mv2.IndexScalarDictionary;
+                mv2.IndexScalarList;
 
-            foreach (var (index1, scalar1) in indexScalarPairs1)
+            foreach (var (index1, scalar1) in indexScalarPairs1.GetKeyValueRecords())
             {
-                var id1 = GaBasisUtils.BasisBladeId(grade1, index1);
+                var id1 = index1.BasisBladeIndexToId(grade1);
 
-                foreach (var (index2, scalar2) in indexScalarPairs2)
+                foreach (var (index2, scalar2) in indexScalarPairs2.GetKeyValueRecords())
                 {
-                    var id2 = GaBasisUtils.BasisBladeId(grade2, index2);
+                    var id2 = index2.BasisBladeIndexToId(grade2);
 
                     var signature = 
                         basisSignatureFunction(id1, id2);
@@ -150,7 +149,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
                     if (signature == 0) 
                         continue;
 
-                    var (grade, index) = (id1 ^ id2).BasisBladeGradeIndex();
+                    var (grade, index) = (id1 ^ id2).BasisBladeIdToGradeIndex();
                     var scalar = scalarProcessor.Times(scalar1, scalar2);
 
                     if (signature > 0)
@@ -162,7 +161,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
 
             composer.RemoveZeroTerms();
 
-            return composer.GetGradedMultivector();
+            return composer.CreateStorageGradedMultivector();
         }
 
 

@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using DataStructuresLib.BitManipulation;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Space;
 using GeometricAlgebraFulcrumLib.Algebra.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Geometry.Rotors;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Unary;
-using GeometricAlgebraFulcrumLib.Processing.Scalars;
-using GeometricAlgebraFulcrumLib.Storage;
+using GeometricAlgebraFulcrumLib.Processing.ScalarsGrids;
 using GeometricAlgebraFulcrumLib.Storage.Factories;
+using GeometricAlgebraFulcrumLib.Storage.Multivectors;
 using GeometricAlgebraFulcrumLib.Storage.Utils;
 
 namespace GeometricAlgebraFulcrumLib.Geometry.Versors
@@ -35,22 +36,15 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Versors
         }
 
 
+        public IGaSpace Space => Processor;
+
         public uint VSpaceDimension 
             => Processor.VSpaceDimension;
 
         public ulong GaSpaceDimension
             => Processor.GaSpaceDimension;
 
-        public ulong MaxBasisBladeId 
-            => Processor.MaxBasisBladeId;
-        
-        public uint GradesCount 
-            => Processor.GradesCount;
-
-        public IEnumerable<uint> Grades 
-            => Processor.Grades;
-
-        public IGaScalarProcessor<T> ScalarProcessor 
+        public IGaScalarsGridProcessor<T> ScalarsGridProcessor 
             => Processor;
 
         public IGaStorageKVector<T> MappedPseudoScalar { get; }
@@ -67,7 +61,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Versors
                     .Select(vector =>
                         Processor.Subtract(
                             Processor.ENormSquared(vector),
-                            Processor.OneScalar
+                            Processor.GetOneScalar()
                         )
                     )
                     .All(unitDiff => Processor.IsNearZero(unitDiff));

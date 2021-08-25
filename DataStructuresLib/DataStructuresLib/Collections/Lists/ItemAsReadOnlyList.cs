@@ -11,17 +11,10 @@ namespace DataStructuresLib.Collections.Lists
 
         public int Count => 1;
 
-        public T this[int index]
-        {
-            get
-            {
-                return index switch
-                {
-                    0 => Value,
-                    _ => throw new IndexOutOfRangeException()
-                };
-            }
-        }
+        public T this[int index] 
+            => index == 0 
+                ? Value 
+                : throw new IndexOutOfRangeException();
 
 
         public ItemAsReadOnlyList(T value)

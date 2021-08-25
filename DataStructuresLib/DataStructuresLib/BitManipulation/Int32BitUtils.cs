@@ -1539,9 +1539,65 @@ namespace DataStructuresLib.BitManipulation
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<T> Repeat<T>(this int count, T value)
+        {
+            while (count > 0)
+            {
+                yield return value;
+                count--;
+            }
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<T> MapRange<T>(this int count, Func<int, T> mappingFunc)
+        {
+            return Enumerable
+                .Range(0, count)
+                .Select(mappingFunc);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<T> MapRange<T>(this int count, int offset, Func<int, T> mappingFunc)
+        {
+            return Enumerable
+                .Range(0, count)
+                .Select(i => mappingFunc(offset + i));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<KeyValuePair<int, T>> GetMappedRange<T>(this int count, Func<int, T> mappingFunc)
+        {
+            return Enumerable
+                .Range(0, count)
+                .Select(i => new KeyValuePair<int, T>(i, mappingFunc(i)));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<KeyValuePair<int, T>> GetMappedRange<T>(this int count, int offset, Func<int, T> mappingFunc)
+        {
+            return Enumerable
+                .Range(0, count)
+                .Select(
+                    i =>
+                    {
+                        var key = offset + i;
+                        return new KeyValuePair<int, T>(key, mappingFunc(key));
+                    }
+                );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<int> GetRange(this int count)
         {
             return Enumerable.Range(0, count);
+        }
+  
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<int> GetRange(this int count, int offset)
+        {
+            return Enumerable
+                .Range(0, count)
+                .Select(i => offset + i);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1553,5 +1609,66 @@ namespace DataStructuresLib.BitManipulation
                     i => i, 
                     keyValueFunc
                 );
-        }    }
+        }
+
+        public static bool TryGetMinValue(this IEnumerable<int> valuesList, out int minValue)
+        {
+            var foundFlag = false;
+            minValue = int.MaxValue;
+
+            foreach (var value in valuesList)
+            {
+                foundFlag = true;
+
+                if (value < minValue)
+                    minValue = value;
+            }
+
+            return foundFlag;
+        }
+
+        public static bool TryGetMaxValue(this IEnumerable<int> valuesList, out int maxValue)
+        {
+            var foundFlag = false;
+            maxValue = int.MinValue;
+
+            foreach (var value in valuesList)
+            {
+                foundFlag = true;
+
+                if (value > maxValue)
+                    maxValue = value;
+            }
+
+            return foundFlag;
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int Min(this int a, int b)
+        {
+            return a <= b ? a : b;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int Max(this int a, int b)
+        {
+            return a >= b ? a : b;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int Min(this int a, int b, int c)
+        {
+            return a <= b 
+                ? (a <= c ? a : c)
+                : (b <= c ? b : c);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int Max(this int a, int b, int c)
+        {
+            return a >= b 
+                ? (a >= c ? a : c)
+                : (b >= c ? b : c);
+        }
+    }
 }

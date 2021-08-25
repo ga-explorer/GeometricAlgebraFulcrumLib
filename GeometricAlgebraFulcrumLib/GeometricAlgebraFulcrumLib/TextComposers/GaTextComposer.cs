@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using DataStructuresLib;
 using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Basis;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
-using GeometricAlgebraFulcrumLib.Storage;
-using GeometricAlgebraFulcrumLib.Storage.Terms;
+using GeometricAlgebraFulcrumLib.Storage.Multivectors;
 using GeometricAlgebraFulcrumLib.Storage.Utils;
+using GeometricAlgebraFulcrumLib.Structures;
 
 namespace GeometricAlgebraFulcrumLib.TextComposers
 {
@@ -39,7 +38,7 @@ namespace GeometricAlgebraFulcrumLib.TextComposers
             return GaTextComposersUtils.GetBasisBladeText(grade, index);
         }
 
-        public string GetBasisBladeText(IGaBasisBlade basisBlade)
+        public string GetBasisBladeText(GaBasisBlade basisBlade)
         {
             return basisBlade.GetBasisBladeText();
         }
@@ -91,32 +90,24 @@ namespace GeometricAlgebraFulcrumLib.TextComposers
                 .ToString();
         }
 
-        public string GetTermText(KeyValuePair<ulong, T> idScalarPair)
+        public string GetTermText(GaRecordKeyValue<T> idScalarTuple)
         {
             return GetTermText(
-                idScalarPair.Key, 
-                idScalarPair.Value
+                idScalarTuple.Key, 
+                idScalarTuple.Value
             );
         }
 
-        public string GetTermText(Tuple<ulong, T> idScalarTuple)
+        public string GetTermText(GaRecordGradeKeyValue<T> gradeIndexScalarTuple)
         {
             return GetTermText(
-                idScalarTuple.Item1, 
-                idScalarTuple.Item2
+                gradeIndexScalarTuple.Grade, 
+                gradeIndexScalarTuple.Key,
+                gradeIndexScalarTuple.Value
             );
         }
 
-        public string GetTermText(Tuple<uint, ulong, T> gradeIndexScalarTuple)
-        {
-            return GetTermText(
-                gradeIndexScalarTuple.Item1, 
-                gradeIndexScalarTuple.Item2,
-                gradeIndexScalarTuple.Item3
-            );
-        }
-
-        public string GetTermText(IGaBasisBlade basisBlade, T scalar)
+        public string GetTermText(GaBasisBlade basisBlade, T scalar)
         {
             return GetTermText(
                 basisBlade.Id,
@@ -124,7 +115,7 @@ namespace GeometricAlgebraFulcrumLib.TextComposers
             );
         }
 
-        public string GetTermText(GaTerm<T> term)
+        public string GetTermText(GaBasisTerm<T> term)
         {
             return GetTermText(
                 term.BasisBlade.Id,
@@ -132,53 +123,39 @@ namespace GeometricAlgebraFulcrumLib.TextComposers
             );
         }
 
-        public string GetTermsText(IEnumerable<KeyValuePair<ulong, T>> idScalarPairs)
-        {
-            return idScalarPairs
-                .Select(GetTermText)
-                .ConcatenateText(", ");
-        }
-
-        public string GetTermsText(IEnumerable<Tuple<ulong, T>> idScalarTuples)
+        public string GetTermsText(IEnumerable<GaRecordKeyValue<T>> idScalarTuples)
         {
             return idScalarTuples
                 .Select(GetTermText)
                 .ConcatenateText(", ");
         }
 
-        public string GetTermsText(IEnumerable<Tuple<uint, ulong, T>> gradeIndexScalarTuples)
+        public string GetTermsText(IEnumerable<GaRecordGradeKeyValue<T>> gradeIndexScalarTuples)
         {
             return gradeIndexScalarTuples
                 .Select(GetTermText)
                 .ConcatenateText(", ");
         }
 
-        public string GetTermsText(uint grade, IEnumerable<KeyValuePair<ulong, T>> indexScalarPairs)
+        public string GetTermsText(uint grade, IEnumerable<GaRecordKeyValue<T>> indexScalarTuples)
         {
-            return indexScalarPairs
+            return indexScalarTuples
                 .Select(indexScalarPair => GetTermText(grade, indexScalarPair.Key, indexScalarPair.Value))
                 .ConcatenateText(", ");
         }
 
-        public string GetTermsText(uint grade, IEnumerable<Tuple<ulong, T>> indexScalarTuples)
-        {
-            return indexScalarTuples
-                .Select(indexScalarPair => GetTermText(grade, indexScalarPair.Item1, indexScalarPair.Item2))
-                .ConcatenateText(", ");
-        }
-
-        public string GetTermsText(IEnumerable<GaTerm<T>> terms)
+        public string GetTermsText(IEnumerable<GaBasisTerm<T>> terms)
         {
             return terms
                 .Select(GetTermText)
                 .ConcatenateText(", ");
         }
 
-        public string GetArrayText(T[] array)
+        public string GetArrayText(IReadOnlyList<T> array)
         {
             var composer = new StringBuilder();
 
-            var scalarsCount = array.Length;
+            var scalarsCount = array.Count;
 
             for (var i = 0; i < scalarsCount; i++)
             {

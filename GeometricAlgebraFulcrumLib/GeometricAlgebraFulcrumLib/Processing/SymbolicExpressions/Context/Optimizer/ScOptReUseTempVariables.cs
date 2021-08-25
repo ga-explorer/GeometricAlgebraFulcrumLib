@@ -25,7 +25,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context.Opti
             var finalNameIndexList = new List<int>();
         
             //Go through all temp variables
-            foreach (var tempVar in Context.IntermediateVariables)
+            foreach (var tempVar in Context.GetIntermediateVariables())
             {
                 var nameIndex = 0;
                 var isReused = false;

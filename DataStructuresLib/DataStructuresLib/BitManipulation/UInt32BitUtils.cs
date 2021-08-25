@@ -1656,11 +1656,73 @@ namespace DataStructuresLib.BitManipulation
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<T> Repeat<T>(this uint count, T value)
+        {
+            while (count > 0)
+            {
+                yield return value;
+                count--;
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<T> MapRange<T>(this uint count, Func<uint, T> mappingFunc)
+        {
+            return Enumerable
+                .Range(0, (int) count)
+                .Select(i => mappingFunc((uint) i));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<T> MapRange<T>(this uint count, uint offset, Func<uint, T> mappingFunc)
+        {
+            return Enumerable
+                .Range(0, (int) count)
+                .Select(i => mappingFunc(offset + (uint) i));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<KeyValuePair<uint, T>> GetMappedRange<T>(this uint count, Func<uint, T> mappingFunc)
+        {
+            return Enumerable
+                .Range(0, (int) count)
+                .Select(
+                    i =>
+                    {
+                        var key = (uint) i;
+                        return new KeyValuePair<uint, T>(key, mappingFunc(key));
+                    }
+                );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<KeyValuePair<uint, T>> GetMappedRange<T>(this uint count, uint offset, Func<uint, T> mappingFunc)
+        {
+            return Enumerable
+                .Range(0, (int) count)
+                .Select(
+                    i =>
+                    {
+                        var key = offset + (uint) i;
+                        return new KeyValuePair<uint, T>(key, mappingFunc(key));
+                    }
+                );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<uint> GetRange(this uint count)
         {
             return Enumerable.Range(0, (int) count).Select(i => (uint) i);
         }
- 
+  
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<uint> GetRange(this uint count, uint offset)
+        {
+            return Enumerable
+                .Range(0, (int) count)
+                .Select(i => offset + (uint) i);
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Dictionary<uint, T> RangeToDictionary<T>(this uint count, Func<uint, T> keyValueFunc)
         {
@@ -1670,5 +1732,66 @@ namespace DataStructuresLib.BitManipulation
                     i => (uint) i, 
                     i => keyValueFunc((uint) i)
                 );
-        }   }
+        }
+        
+        public static bool TryGetMinValue(this IEnumerable<uint> valuesList, out uint minValue)
+        {
+            var foundFlag = false;
+            minValue = uint.MaxValue;
+
+            foreach (var value in valuesList)
+            {
+                foundFlag = true;
+
+                if (value < minValue)
+                    minValue = value;
+            }
+
+            return foundFlag;
+        }
+
+        public static bool TryGetMaxValue(this IEnumerable<uint> valuesList, out uint maxValue)
+        {
+            var foundFlag = false;
+            maxValue = uint.MinValue;
+
+            foreach (var value in valuesList)
+            {
+                foundFlag = true;
+
+                if (value > maxValue)
+                    maxValue = value;
+            }
+
+            return foundFlag;
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static uint Min(this uint a, uint b)
+        {
+            return a <= b ? a : b;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static uint Max(this uint a, uint b)
+        {
+            return a >= b ? a : b;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static uint Min(this uint a, uint b, uint c)
+        {
+            return a <= b 
+                ? (a <= c ? a : c)
+                : (b <= c ? b : c);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static uint Max(this uint a, uint b, uint c)
+        {
+            return a >= b 
+                ? (a >= c ? a : c)
+                : (b >= c ? b : c);
+        }
+    }
 }

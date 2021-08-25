@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Space;
 using GeometricAlgebraFulcrumLib.Algebra.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Unary;
-using GeometricAlgebraFulcrumLib.Processing.Scalars;
-using GeometricAlgebraFulcrumLib.Storage;
+using GeometricAlgebraFulcrumLib.Processing.ScalarsGrids;
 using GeometricAlgebraFulcrumLib.Storage.Factories;
+using GeometricAlgebraFulcrumLib.Storage.Multivectors;
 
 namespace GeometricAlgebraFulcrumLib.Geometry.Versors
 {
@@ -19,19 +20,17 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Versors
         }
 
 
+        public IGaSpace Space 
+            => Processor;
+
         public uint VSpaceDimension 
             => Processor.VSpaceDimension;
 
         public ulong GaSpaceDimension
             => Processor.GaSpaceDimension;
 
-        public ulong MaxBasisBladeId { get; }
-
-        public uint GradesCount { get; }
-
-        public IEnumerable<uint> Grades { get; }
-
-        public IGaScalarProcessor<T> ScalarProcessor { get; }
+        public IGaScalarsGridProcessor<T> ScalarsGridProcessor 
+            => Processor;
 
         public IGaStorageKVector<T> MappedPseudoScalar { get; }
 

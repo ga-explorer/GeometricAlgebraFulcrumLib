@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using DataStructuresLib.Extensions;
 using GeometricAlgebraFulcrumLib.Algebra.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Binary;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Unary;
-using GeometricAlgebraFulcrumLib.Storage;
-using GeometricAlgebraFulcrumLib.Storage.Composers;
 using GeometricAlgebraFulcrumLib.Storage.Factories;
+using GeometricAlgebraFulcrumLib.Storage.Multivectors;
+using GeometricAlgebraFulcrumLib.Structures.Composers;
+using GeometricAlgebraFulcrumLib.Structures.Factories;
 
 namespace GeometricAlgebraFulcrumLib.Geometry.Versors
 {
@@ -25,10 +25,10 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Versors
                     .ToArray();
 
             //Vector composers to construct r vectors
-            var vectorComposersArray = new GaStorageComposerKVector<double>[count];
+            var vectorComposersArray = new GaListEvenComposerSparse<double>[count];
             for (var i = 0; i < count; i++)
                 vectorComposersArray[i] = 
-                    new GaStorageComposerKVector<double>(processor, 1);
+                    processor.CreateStorageKVectorComposer();
 
             var basisVectorIndicesList = 
                 Enumerable.Range(0, count).ToList();
@@ -95,9 +95,10 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Versors
                         continue;
 
                     mappedBasisVectors[basisVectorIndex] = processor.CreateStorageVector(reflectedVector
-                            .IndexScalarDictionary
+                            .IndexScalarList
+                            .GetKeyValueRecords()
                             .Where(pair => pair.Key != bestBasisVectorIndexULong)
-                            .CopyToDictionary()
+                            .CreateDictionary()
                     );
                 }
 
@@ -112,7 +113,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Versors
                 composer.RemoveZeroTerms();
 
                 if (!composer.IsEmpty())
-                    linearMapRVectorsDictionary.Add((ulong) i, composer.GetVector());
+                    linearMapRVectorsDictionary.Add((ulong) i, composer.CreateStorageVector());
             }
 
             var linearMapR =
@@ -144,10 +145,10 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Versors
                     .ToArray();
 
             //Vector composers to construct r vectors
-            var vectorComposersArray = new GaStorageComposerKVector<T>[count];
+            var vectorComposersArray = new GaListEvenComposerSparse<T>[count];
             for (var i = 0; i < count; i++)
                 vectorComposersArray[i] = 
-                    new GaStorageComposerKVector<T>(processor, 1);
+                    processor.CreateStorageKVectorComposer();
 
             //TODO: Select the order of basis vectors according to the largest
             //unit vector norm for higher numerical stability
@@ -200,7 +201,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Versors
                 composer.RemoveZeroTerms();
 
                 if (!composer.IsEmpty())
-                    linearMapRVectorsDictionary.Add((ulong) i, composer.GetVector());
+                    linearMapRVectorsDictionary.Add((ulong) i, composer.CreateStorageVector());
             }
 
             var linearMapR =
