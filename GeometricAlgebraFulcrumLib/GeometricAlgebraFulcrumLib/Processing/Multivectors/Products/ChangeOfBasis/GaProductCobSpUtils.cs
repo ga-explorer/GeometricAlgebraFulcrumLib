@@ -7,7 +7,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.ChangeOfBa
     public static class GaProductCobSpUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T Sp<T>(this IGaProcessorChangeOfBasis<T> processor, IGaStorageMultivector<T> mv1)
+        public static T Sp<T>(this IGaProcessorChangeOfBasis<T> processor, IGaMultivectorStorage<T> mv1)
         {
             var s1 = processor.OmTargetToOrthonormal.MapMultivector(mv1);
 
@@ -15,7 +15,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.ChangeOfBa
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T Sp<T>(this IGaProcessorChangeOfBasis<T> processor, IGaStorageMultivector<T> mv1, IGaStorageMultivector<T> mv2)
+        public static T Sp<T>(this IGaProcessorChangeOfBasis<T> processor, IGaMultivectorStorage<T> mv1, IGaMultivectorStorage<T> mv2)
         {
             var s1 = processor.OmTargetToOrthonormal.MapMultivector(mv1);
             var s2 = processor.OmTargetToOrthonormal.MapMultivector(mv2);
@@ -26,7 +26,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.ChangeOfBa
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T Sp<T>(this IGaStorageMultivector<T> mv1, IGaProcessorChangeOfBasis<T> processor)
+        public static T Sp<T>(this IGaMultivectorStorage<T> mv1, IGaProcessorChangeOfBasis<T> processor)
         {
             var s1 = processor.OmTargetToOrthonormal.MapMultivector(mv1);
 
@@ -34,7 +34,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.ChangeOfBa
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T Sp<T>(this IGaStorageMultivector<T> mv1, IGaStorageMultivector<T> mv2, IGaProcessorChangeOfBasis<T> processor)
+        public static T Sp<T>(this IGaMultivectorStorage<T> mv1, IGaMultivectorStorage<T> mv2, IGaProcessorChangeOfBasis<T> processor)
         {
             var s1 = processor.OmTargetToOrthonormal.MapMultivector(mv1);
             var s2 = processor.OmTargetToOrthonormal.MapMultivector(mv2);

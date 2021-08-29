@@ -2,16 +2,14 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using GAPoTNumLib.GAPoT;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors.Binary;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors.Unary;
-using GeometricAlgebraFulcrumLib.Processing.Random.Float64;
-using GeometricAlgebraFulcrumLib.Processing.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Storage.Factories;
+using GeometricAlgebraFulcrumLib.Processing.Random;
+using GeometricAlgebraFulcrumLib.Processing.Scalars;
 using GeometricAlgebraFulcrumLib.Storage.Multivectors;
+using GeometricAlgebraFulcrumLib.Utilities.Extensions;
+using GeometricAlgebraFulcrumLib.Utilities.Factories;
 using NUnit.Framework;
 
 namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
@@ -19,14 +17,14 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
     [TestFixture]
     public sealed class GaProductsTests
     {
-        private readonly GaRandomComposerFloat64 _randomGenerator;
-        private readonly List<IGaStorageMultivector<double>> _mvList1;
+        private readonly GaFloat64RandomComposer _randomGenerator;
+        private readonly List<IGaMultivectorStorage<double>> _mvList1;
         private readonly List<GaPoTNumMultivector> _mvList2;
         private readonly double _scalar;
 
 
         public IGaProcessor<double> Processor { get; }
-            = GaScalarProcessorFloat64.DefaultProcessor.CreateEuclideanProcessor(5);
+            = Float64ScalarProcessor.DefaultProcessor.CreateGaEuclideanProcessor(5);
 
         public uint VSpaceDimension 
             => Processor.VSpaceDimension;
@@ -37,8 +35,8 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
 
         public GaProductsTests()
         {
-            _randomGenerator = new GaRandomComposerFloat64(VSpaceDimension, 10);
-            _mvList1 = new List<IGaStorageMultivector<double>>();
+            _randomGenerator = new GaFloat64RandomComposer(VSpaceDimension, 10);
+            _mvList1 = new List<IGaMultivectorStorage<double>>();
             _mvList2 = new List<GaPoTNumMultivector>();
             _scalar = _randomGenerator.GetScalar();
         }
@@ -46,7 +44,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
 
 
         private GaPoTNumMultivector 
-            CreateGaPoTMultivector(IGaStorageMultivector<double> mvStorage)
+            CreateGaPoTMultivector(IGaMultivectorStorage<double> mvStorage)
         {
             var gapotMv = GaPoTNumMultivector.CreateZero();
 
@@ -57,7 +55,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
         }
 
         private GaPoTNumMultivector 
-            Subtract(IGaStorageMultivector<double> mv1, GaPoTNumMultivector mv2)
+            Subtract(IGaMultivectorStorage<double> mv1, GaPoTNumMultivector mv2)
         {
             var mvDiff = GaPoTNumMultivector.CreateZero();
 
@@ -71,7 +69,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
         }
 
         private GaPoTNumMultivector 
-            Subtract(GaPoTNumMultivector mv1, IGaStorageMultivector<double> mv2)
+            Subtract(GaPoTNumMultivector mv1, IGaMultivectorStorage<double> mv2)
         {
             var mvDiff = GaPoTNumMultivector.CreateZero();
 
@@ -84,7 +82,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
             return mvDiff;
         }
         
-        private Func<IGaStorageMultivector<double>, IGaStorageMultivector<double>, IGaStorageMultivector<double>> 
+        private Func<IGaMultivectorStorage<double>, IGaMultivectorStorage<double>, IGaMultivectorStorage<double>> 
             GetBinaryOperationFunction1(string funcName)
         {
             return funcName switch
@@ -122,7 +120,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
             };
         }
 
-        private Func<IGaStorageMultivector<double>, IGaStorageMultivector<double>, double> 
+        private Func<IGaMultivectorStorage<double>, IGaMultivectorStorage<double>, double> 
             GetBinaryOperationFunctionWithScalarOutput1(string funcName)
         {
             return funcName switch
@@ -142,8 +140,8 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
             };
         }
 
-        private IGaStorageMultivector<double> 
-            LeftTimesScalar(IGaStorageMultivector<double> storage)
+        private IGaMultivectorStorage<double> 
+            LeftTimesScalar(IGaMultivectorStorage<double> storage)
         {
             return Processor.Times(storage, _scalar);
         }
@@ -154,8 +152,8 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
             return storage.ScaleBy(_scalar);
         }
 
-        private IGaStorageMultivector<double> 
-            RightTimesScalar(IGaStorageMultivector<double> storage)
+        private IGaMultivectorStorage<double> 
+            RightTimesScalar(IGaMultivectorStorage<double> storage)
         {
             return Processor.Times(_scalar, storage);
         }
@@ -166,8 +164,8 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
             return storage.ScaleBy(_scalar);
         }
 
-        private IGaStorageMultivector<double> 
-            DivideByScalar(IGaStorageMultivector<double> storage)
+        private IGaMultivectorStorage<double> 
+            DivideByScalar(IGaMultivectorStorage<double> storage)
         {
             return Processor.Divide(storage, _scalar);
         }
@@ -178,7 +176,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
             return storage.ScaleBy(1d / _scalar);
         }
 
-        private Func<IGaStorageMultivector<double>, IGaStorageMultivector<double>> 
+        private Func<IGaMultivectorStorage<double>, IGaMultivectorStorage<double>> 
             GetUnaryOperationFunction1(string funcName)
         {
             return funcName switch
@@ -206,7 +204,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
             };
         }
 
-        private Func<IGaStorageMultivector<double>, double> 
+        private Func<IGaMultivectorStorage<double>, double> 
             GetUnaryOperationFunctionWithScalarOutput1(string funcName)
         {
             return funcName switch

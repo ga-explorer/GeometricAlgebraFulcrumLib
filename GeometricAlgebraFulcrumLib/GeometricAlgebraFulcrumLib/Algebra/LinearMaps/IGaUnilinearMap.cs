@@ -1,5 +1,5 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Space;
-using GeometricAlgebraFulcrumLib.Processing.ScalarsGrids;
+using GeometricAlgebraFulcrumLib.Processing.Matrices;
 using GeometricAlgebraFulcrumLib.Storage.Multivectors;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.LinearMaps
@@ -7,8 +7,8 @@ namespace GeometricAlgebraFulcrumLib.Algebra.LinearMaps
     public interface IGaUnilinearMap<T>
         : IGaSpaceElement
     {
-        IGaScalarsGridProcessor<T> ScalarsGridProcessor { get; }
+        ILaProcessor<T> ScalarsGridProcessor { get; }
 
-        IGaStorageMultivector<T> MapMultivector(IGaStorageMultivector<T> mv);
+        IGaMultivectorStorage<T> MapMultivector(IGaMultivectorStorage<T> mv);
     }
 }

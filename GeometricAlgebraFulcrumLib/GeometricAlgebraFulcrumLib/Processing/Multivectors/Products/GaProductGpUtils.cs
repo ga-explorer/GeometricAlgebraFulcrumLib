@@ -9,7 +9,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products
     public static class GaProductGpUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageMultivector<T> Gp<T>(this IGaProcessor<T> processor, IGaStorageMultivector<T> mv1)
+        public static IGaMultivectorStorage<T> Gp<T>(this IGaProcessor<T> processor, IGaMultivectorStorage<T> mv1)
         {
             return processor switch
             {
@@ -25,7 +25,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageMultivector<T> Gp<T>(this IGaProcessor<T> processor, IGaStorageMultivector<T> mv1, IGaStorageMultivector<T> mv2)
+        public static IGaMultivectorStorage<T> Gp<T>(this IGaProcessor<T> processor, IGaMultivectorStorage<T> mv1, IGaMultivectorStorage<T> mv2)
         {
             return processor switch
             {
@@ -41,7 +41,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageMultivector<T> Gp<T>(this IGaProcessor<T> processor, IGaStorageMultivector<T> mv1, IGaStorageMultivector<T> mv2, IGaStorageMultivector<T> mv3)
+        public static IGaMultivectorStorage<T> Gp<T>(this IGaProcessor<T> processor, IGaMultivectorStorage<T> mv1, IGaMultivectorStorage<T> mv2, IGaMultivectorStorage<T> mv3)
         {
             return processor switch
             {
@@ -57,7 +57,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageMultivector<T> GpReverse<T>(this IGaProcessor<T> processor, IGaStorageMultivector<T> mv1)
+        public static IGaMultivectorStorage<T> GpReverse<T>(this IGaProcessor<T> processor, IGaMultivectorStorage<T> mv1)
         {
             return processor switch
             {
@@ -73,7 +73,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageMultivector<T> GpReverse<T>(this IGaProcessor<T> processor, IGaStorageMultivector<T> mv1, IGaStorageMultivector<T> mv2)
+        public static IGaMultivectorStorage<T> GpReverse<T>(this IGaProcessor<T> processor, IGaMultivectorStorage<T> mv1, IGaMultivectorStorage<T> mv2)
         {
             return processor switch
             {

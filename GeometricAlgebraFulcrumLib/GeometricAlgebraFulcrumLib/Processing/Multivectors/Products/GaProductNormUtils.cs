@@ -10,7 +10,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products
     {
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T Norm<T>(this IGaProcessor<T> processor, IGaStorageMultivector<T> mv1)
+        public static T Norm<T>(this IGaProcessor<T> processor, IGaMultivectorStorage<T> mv1)
         {
             return processor.SqrtOfAbs(
                 NormSquared(processor, mv1)
@@ -18,7 +18,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T NormSquared<T>(this IGaProcessor<T> processor, IGaStorageMultivector<T> mv1)
+        public static T NormSquared<T>(this IGaProcessor<T> processor, IGaMultivectorStorage<T> mv1)
         {
             return processor switch
             {

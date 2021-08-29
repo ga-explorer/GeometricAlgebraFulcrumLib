@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using GAPoTNumLib.GAPoT;
 using GeometricAlgebraFulcrumLib.Geometry.Rotors;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors.Binary;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean;
-using GeometricAlgebraFulcrumLib.Processing.Random.Float64;
-using GeometricAlgebraFulcrumLib.Processing.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Processing.Random;
+using GeometricAlgebraFulcrumLib.Processing.Scalars;
 using GeometricAlgebraFulcrumLib.Storage.Multivectors;
+using GeometricAlgebraFulcrumLib.Utilities.Extensions;
+using GeometricAlgebraFulcrumLib.Utilities.Factories;
 using NUnit.Framework;
 
 namespace GeometricAlgebraFulcrumLib.UnitTests.Geometry
@@ -15,13 +16,13 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Geometry
     [TestFixture]
     public sealed class GaSimpleRotorsEuclideanTests
     {
-        private readonly GaRandomComposerFloat64 _randomGenerator;
-        private readonly List<IGaStorageVector<double>> _vectorsList;
+        private readonly GaFloat64RandomComposer _randomGenerator;
+        private readonly List<IGaVectorStorage<double>> _vectorsList;
         private readonly List<GaPureRotor<double>> _rotorsList;
 
 
         public IGaProcessor<double> Processor { get; }
-            = GaScalarProcessorFloat64.DefaultProcessor.CreateEuclideanProcessor(8);
+            = Float64ScalarProcessor.DefaultProcessor.CreateGaEuclideanProcessor(8);
         
         public uint VSpaceDimension 
             => Processor.VSpaceDimension;
@@ -29,8 +30,8 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Geometry
 
         public GaSimpleRotorsEuclideanTests()
         {
-            _randomGenerator = new GaRandomComposerFloat64(VSpaceDimension,10);
-            _vectorsList = new List<IGaStorageVector<double>>();
+            _randomGenerator = new GaFloat64RandomComposer(VSpaceDimension,10);
+            _vectorsList = new List<IGaVectorStorage<double>>();
             _rotorsList = new List<GaPureRotor<double>>();
         }
 

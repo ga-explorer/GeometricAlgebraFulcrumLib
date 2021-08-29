@@ -1,20 +1,20 @@
 ﻿using System;
 using System.Linq;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
 using GeometricAlgebraFulcrumLib.CodeComposer.Languages;
+using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using TextComposerLib.Text.Structured;
 
 namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVectorsLib.KVector
 {
     internal sealed class BinaryGpFilesComposer : 
-        GaLibraryPartComposerBase
+        GaFuLLibraryPartComposerBase
     {
-        private readonly GaLanguageOperationSpecs _operationSpecs;
+        private readonly GaFuLLanguageOperationSpecs _operationSpecs;
         private readonly bool _dualFlag;
         private GpMethodsFileComposer _mainFileComposer;
 
 
-        internal BinaryGpFilesComposer(GaLibraryComposer libGen, GaLanguageOperationSpecs opSpecs, bool dualFlag)
+        internal BinaryGpFilesComposer(GaFuLLibraryComposer libGen, GaFuLLanguageOperationSpecs opSpecs, bool dualFlag)
             : base(libGen)
         {
             _operationSpecs = opSpecs;

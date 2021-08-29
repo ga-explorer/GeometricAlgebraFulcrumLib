@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using AngouriMath;
 using CodeComposerLib.SyntaxTree.Expressions;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.HeadSpecs;
@@ -225,6 +226,13 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions
         /// </summary>
         /// <returns></returns>
         ISymbolicExpression GetExpressionCopy();
+
+        /// <summary>
+        /// Construct an equivalent copy of this expression tree as an AngouriMath Entity object
+        /// https://am.angouri.org/
+        /// </summary>
+        /// <returns></returns>
+        Entity ToAngouriMathEntity();
 
         /// <summary>
         /// Construct an equivalent copy of this expression tree as a simple text expression

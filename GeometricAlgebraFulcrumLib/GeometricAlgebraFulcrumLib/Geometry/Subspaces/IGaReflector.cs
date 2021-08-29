@@ -6,7 +6,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Subspaces
     public interface IGaReflector<T> : 
         IGaOutermorphism<T>
     {
-        IGaStorageKVector<T> BladeStorage { get; }
+        IGaKVectorStorage<T> BladeStorage { get; }
 
         T BladeNormSquared { get; }
     }

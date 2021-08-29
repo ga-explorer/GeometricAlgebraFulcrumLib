@@ -1,12 +1,10 @@
 ﻿using System;
 using GeometricAlgebraFulcrumLib.Algebra.Outermorphisms;
-using GeometricAlgebraFulcrumLib.Geometry.Rotors;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors.Binary;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors.Unary;
-using GeometricAlgebraFulcrumLib.Processing.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Processing.Scalars;
 using GeometricAlgebraFulcrumLib.Storage.Multivectors;
+using GeometricAlgebraFulcrumLib.Utilities.Extensions;
+using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
 namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
 {
@@ -18,9 +16,9 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
             var randGen = new Random();
             
             var processor = 
-                GaScalarProcessorFloat64.DefaultProcessor.CreateEuclideanProcessor(n);
+                Float64ScalarProcessor.DefaultProcessor.CreateGaEuclideanProcessor(n);
 
-            IGaStorageVector<double> v = GaFloat64Utils.CreateVector(
+            IGaVectorStorage<double> v = GaScalarProcessorFloat64Utils.CreateVector(
                 randGen.NextDouble(), 
                 randGen.NextDouble(),
                 randGen.NextDouble()
@@ -28,7 +26,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
 
             v = processor.DivideByENorm(v);
 
-            IGaStorageVector<double> u = GaFloat64Utils.CreateVector(
+            IGaVectorStorage<double> u = GaScalarProcessorFloat64Utils.CreateVector(
                 randGen.NextDouble(), 
                 randGen.NextDouble(),
                 randGen.NextDouble()

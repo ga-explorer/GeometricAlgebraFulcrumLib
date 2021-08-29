@@ -2,11 +2,9 @@
 using DataStructuresLib.BitManipulation;
 using GeometricAlgebraFulcrumLib.CodeComposer.Composers;
 using GeometricAlgebraFulcrumLib.CodeComposer.Languages;
-using GeometricAlgebraFulcrumLib.Geometry.Rotors;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors;
-using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
-using GeometricAlgebraFulcrumLib.Symbolic;
+using GeometricAlgebraFulcrumLib.Utilities.Extensions;
+using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
 namespace GeometricAlgebraFulcrumLib.Samples.CodeComposer
 {
@@ -27,11 +25,11 @@ namespace GeometricAlgebraFulcrumLib.Samples.CodeComposer
                     ContextOptions = { ContextName = "TestCode" }
                 };
 
-            context.AttachMathematicaExprSimplifier();
+            //context.AttachMathematicaExpressionEvaluator();
 
             // Define a Euclidean multivectors processor for the context
             var processor = 
-                context.CreateEuclideanProcessor(n);
+                context.CreateGaEuclideanProcessor(n);
 
             // Stage 2: Define the input parameters of the context
             // The input parameters are named variables created as scalar parts of multivectors
@@ -41,21 +39,21 @@ namespace GeometricAlgebraFulcrumLib.Samples.CodeComposer
             var u =
                 context.ParameterVariablesFactory.CreateDenseVector(
                     n, 
-                    index => $"u{index + 1}"
+                    index => $"u_{index + 1}"
                 );
 
             // Define the second vector with a given set of scalar components v1, v2, ...
             var v =
                 context.ParameterVariablesFactory.CreateDenseVector(
                     n, 
-                    index => $"v{index + 1}"
+                    index => $"v_{index + 1}"
                 );
 
             // Define the 3rd vector with a given set of scalar components x1, x2, ...
             var x =
                 context.ParameterVariablesFactory.CreateDenseVector(
                     n, 
-                    index => $"x{index + 1}"
+                    index => $"x_{index + 1}"
                 );
 
             // Stage 3: Define computations and specify which variables are outputs
@@ -85,9 +83,9 @@ namespace GeometricAlgebraFulcrumLib.Samples.CodeComposer
             // Define code generated variable names for intermediate variables
             context.SetIntermediateExternalNamesByNameIndex(index => $"temp{index}");
 
-            // Stage 6: Define a C# code composer with Wolfram Mathematica expressions converter
+            // Stage 6: Define a C# code composer
             var contextCodeComposer = context.CreateContextCodeComposer(
-                GaLanguageServer.CSharpWithMathematica()
+                GaFuLLanguageServerBase.CSharp()
             );
 
             // Stage 7: Generate the final C# code

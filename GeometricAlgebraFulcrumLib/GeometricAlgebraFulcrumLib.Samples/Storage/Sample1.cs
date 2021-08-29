@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
-using GeometricAlgebraFulcrumLib.Processing.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Storage.Factories;
+using GeometricAlgebraFulcrumLib.Processing.Scalars;
 using GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products;
-using GeometricAlgebraFulcrumLib.TextComposers.Float64;
+using GeometricAlgebraFulcrumLib.Utilities.Composers;
+using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Storage
 {
@@ -12,12 +12,12 @@ namespace GeometricAlgebraFulcrumLib.Samples.Storage
         public static void Execute()
         {
             var vSpaceDimensions = 5;
-            var scalarProcessor = GaScalarProcessorFloat64.DefaultProcessor;
-            var textComposer = GaTextComposerFloat64.DefaultComposer;
+            var scalarProcessor = Float64ScalarProcessor.DefaultProcessor;
+            var textComposer = Float64TextComposer.DefaultComposer;
 
             var randomGenerator = new Random(10);
 
-            var vectorStorage1 = scalarProcessor.CreateStorageVector(Enumerable
+            var vectorStorage1 = scalarProcessor.CreateGaVectorStorage(Enumerable
                     .Range(0, vSpaceDimensions)
                     .ToDictionary(
                         i => (ulong)i,
@@ -25,7 +25,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Storage
                     )
             );
 
-            var vectorStorage2 = scalarProcessor.CreateStorageVector(Enumerable
+            var vectorStorage2 = scalarProcessor.CreateGaVectorStorage(Enumerable
                     .Range(0, vSpaceDimensions - 2)
                     .ToDictionary(
                         i => (ulong)i,
@@ -49,7 +49,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Storage
                     .SumToStorageSparseMultivector(scalarProcessor)
                     .GetIdScalarList();
 
-            Console.WriteLine(textComposer.GetTermsText(idScalarDictionary.GetKeyValueRecords()));
+            Console.WriteLine(textComposer.GetTermsText(idScalarDictionary.GetIndexScalarRecords()));
         }
     }
 }

@@ -1,15 +1,15 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using DataStructuresLib.Basic;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
+using GeometricAlgebraFulcrumLib.Storage.Matrices.EvenVectors;
 using GeometricAlgebraFulcrumLib.Storage.Multivectors;
-using GeometricAlgebraFulcrumLib.Structures.Lists.Even;
 
 namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Multivectors
 {
     public sealed class GaGbtMultivectorStorageUniformStack1<T>
         : GaGbtStack1, IGaGbtMultivectorStorageStack1<T>
     {
-        public static GaGbtMultivectorStorageUniformStack1<T> Create(int capacity, int treeDepth, IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivector<T> multivectorStorage)
+        public static GaGbtMultivectorStorageUniformStack1<T> Create(int capacity, int treeDepth, IScalarProcessor<T> scalarProcessor, IGaMultivectorStorage<T> multivectorStorage)
         {
             return new(capacity, treeDepth, scalarProcessor, multivectorStorage);
         }
@@ -18,18 +18,18 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Multivectors
         private int[] BinaryTreeNodeIndexArray { get; }
 
 
-        public IGaScalarProcessor<T> ScalarProcessor { get; }
+        public IScalarProcessor<T> ScalarProcessor { get; }
 
-        public IGaStorageMultivector<T> Storage { get; }
+        public IGaMultivectorStorage<T> Storage { get; }
 
         public Pair<int> TosBinaryTreeNode { get; private set; }
 
         public T TosScalar { get; private set; }
 
-        public GaListEvenTree<T> BinaryTree { get; }
+        public LaVectorTreeStorage<T> BinaryTree { get; }
 
 
-        private GaGbtMultivectorStorageUniformStack1(int capacity, int treeDepth, [NotNull] IGaScalarProcessor<T> scalarProcessor, [NotNull] IGaStorageMultivector<T> multivectorStorage)
+        private GaGbtMultivectorStorageUniformStack1(int capacity, int treeDepth, [NotNull] IScalarProcessor<T> scalarProcessor, [NotNull] IGaMultivectorStorage<T> multivectorStorage)
             : base(capacity, treeDepth, 0ul)
         {
             ScalarProcessor = scalarProcessor;

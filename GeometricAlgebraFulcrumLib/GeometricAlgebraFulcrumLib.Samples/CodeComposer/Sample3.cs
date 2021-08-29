@@ -1,8 +1,7 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Geometry.Rotors;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors;
-using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
+using GeometricAlgebraFulcrumLib.Utilities.Extensions;
+using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
 namespace GeometricAlgebraFulcrumLib.Samples.CodeComposer
 {
@@ -17,7 +16,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.CodeComposer
                 };
 
             var processor = 
-                context.CreateEuclideanProcessor(63);
+                context.CreateGaEuclideanProcessor(63);
 
             var u =
                 context.ParameterVariablesFactory.CreateVector(

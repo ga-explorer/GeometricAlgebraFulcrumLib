@@ -1,48 +1,37 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using CodeComposerLib.SyntaxTree;
 using CodeComposerLib.SyntaxTree.Expressions;
+using DataStructuresLib;
 using Microsoft.CSharp.RuntimeBinder;
 
 namespace CodeComposerLib.Languages
 {
-    public abstract class CclLanguageExpressionConverterBase : 
-        ICclLanguageSyntaxConverter
+    public abstract class CclLanguageExpressionConverterBase<T> :
+        ICclLanguageExpressionConverter<T> where T : class
     {
-        public CclLanguageInfo SourceLanguageInfo { get; }
-
         public CclLanguageInfo TargetLanguageInfo { get; }
-
+        
         public bool UseExceptions { get; set; }
 
         public bool IgnoreNullElements { get; set; }
 
 
-        protected CclLanguageExpressionConverterBase(CclLanguageInfo srcInfo, CclLanguageInfo trgtInfo)
+        protected CclLanguageExpressionConverterBase(CclLanguageInfo targetLanguageInfo)
         {
-            SourceLanguageInfo = srcInfo;
-            TargetLanguageInfo = trgtInfo;
+            TargetLanguageInfo = targetLanguageInfo;
         }
 
 
-        public virtual ISyntaxTreeElement Fallback(ISyntaxTreeElement objItem, RuntimeBinderException excException)
+        public abstract SteExpression Fallback(T item, RuntimeBinderException excException);
+        
+        public IEnumerable<SteExpression> Convert(IEnumerable<T> exprList)
         {
-            return objItem;
+            return exprList.Select(expr => expr.AcceptVisitor(this));
         }
 
-
-        public virtual ISyntaxTreeElement Visit(SteExpression expr)
+        public SteExpression Convert(T expr)
         {
-            return Convert(expr);
+            return expr.AcceptVisitor(this);
         }
-
-        public IEnumerable<SteExpression> Convert(IEnumerable<SteExpression> exprList)
-        {
-            return exprList.Select(Convert);
-        }
-
-        public abstract SteExpression Convert(SteExpression expr);
-
-        public abstract SteExpression Convert(SteExpression expr, IDictionary<string, string> targetVarsDictionary);
     }
 }

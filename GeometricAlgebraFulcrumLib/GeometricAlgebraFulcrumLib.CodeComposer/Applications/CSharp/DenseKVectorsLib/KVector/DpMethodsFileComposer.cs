@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Linq;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
 using GeometricAlgebraFulcrumLib.CodeComposer.Languages;
+using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using TextComposerLib.Text.Linear;
 using TextComposerLib.Text.Structured;
 
 namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVectorsLib.KVector
 {
     internal sealed class DpMethodsFileComposer : 
-        GaLibraryFileComposerBase 
+        GaFuLLibraryFileComposerBase 
     {
-        internal GaLanguageOperationSpecs OperationSpecs { get; }
+        internal GaFuLLanguageOperationSpecs OperationSpecs { get; }
 
 
-        internal DpMethodsFileComposer(GaLibraryComposer libGen, GaLanguageOperationSpecs opSpecs)
+        internal DpMethodsFileComposer(GaFuLLibraryComposer libGen, GaFuLLanguageOperationSpecs opSpecs)
             : base(libGen)
         {
             OperationSpecs = opSpecs;
@@ -31,7 +31,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             foreach (var outGrade in gradesList)
             {
                 var funcName = 
-                    GaLanguageOperationKind
+                    GaFuLLanguageOperationKind
                         .BinaryGeometricProduct
                         .CreateEuclideanOperationSpecs()
                         .GetName(inGrade1, inGrade2, outGrade);

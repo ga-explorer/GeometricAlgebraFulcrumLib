@@ -1,9 +1,9 @@
 ﻿using System;
+using GeometricAlgebraFulcrumLib.Mathematica;
+using GeometricAlgebraFulcrumLib.Mathematica.Mathematica;
+using GeometricAlgebraFulcrumLib.Mathematica.Processors;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products;
-using GeometricAlgebraFulcrumLib.Storage.Factories;
-using GeometricAlgebraFulcrumLib.Symbolic;
-using GeometricAlgebraFulcrumLib.Symbolic.Mathematica;
-using GeometricAlgebraFulcrumLib.Symbolic.Processors;
+using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
 namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
 {
@@ -11,7 +11,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
     {
         public static void Execute()
         {
-            var processor = GaScalarProcessorMathematicaExpr.DefaultProcessor;
+            var processor = MathematicaScalarProcessor.DefaultProcessor;
 
             var vab = @"V Cos[\[Omega] t]".ToExpr();
             var vbc = @"V Cos[\[Omega] t - 2 Pi / 3]".ToExpr();
@@ -19,7 +19,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
             var ia = @"C Cos[\[Omega] t - \[CurlyPhi]]".ToExpr();
             var ib = @"C Cos[\[Omega] t - \[CurlyPhi] - 2 Pi / 3]".ToExpr();
 
-            var y = processor.CreateStorageVector(
+            var y = processor.CreateGaVectorStorage(
                 vab,
                 vbc,
                 vab.IntegrateScalar("t"),

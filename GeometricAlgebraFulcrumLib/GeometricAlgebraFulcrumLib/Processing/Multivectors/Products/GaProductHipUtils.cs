@@ -9,7 +9,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products
     public static class GaProductHipUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageMultivector<T> Hip<T>(this IGaProcessor<T> processor, IGaStorageMultivector<T> mv1, IGaStorageMultivector<T> mv2)
+        public static IGaMultivectorStorage<T> Hip<T>(this IGaProcessor<T> processor, IGaMultivectorStorage<T> mv1, IGaMultivectorStorage<T> mv2)
         {
             return processor switch
             {

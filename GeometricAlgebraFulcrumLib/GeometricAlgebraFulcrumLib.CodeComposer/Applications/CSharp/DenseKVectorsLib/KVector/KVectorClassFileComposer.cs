@@ -7,9 +7,9 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
     /// Generate the main code file for the blade class
     /// </summary>
     internal sealed class KVectorClassFileComposer : 
-        GaLibraryFileComposerBase
+        GaFuLLibraryFileComposerBase
     {
-        internal KVectorClassFileComposer(GaLibraryComposer libGen)
+        internal KVectorClassFileComposer(GaFuLLibraryComposer libGen)
             : base(libGen)
         {
         }
@@ -23,7 +23,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
                 Templates["kvector"],
                 "signature", CurrentNamespace,
                 "double", GaLanguage.ScalarTypeName,
-                "norm2_opname", GaLanguageOperationKind.UnaryNormSquared.CreateEuclideanOperationSpecs().GetName()
+                "norm2_opname", GaFuLLanguageOperationKind.UnaryNormSquared.CreateEuclideanOperationSpecs().GetName()
             );
 
             GenerateKVectorFileFinishCode();

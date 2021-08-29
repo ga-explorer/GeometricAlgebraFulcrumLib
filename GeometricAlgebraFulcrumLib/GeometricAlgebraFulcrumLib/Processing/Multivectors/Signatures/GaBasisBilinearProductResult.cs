@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
-using GeometricAlgebraFulcrumLib.Processing.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Storage.Factories;
+using GeometricAlgebraFulcrumLib.Processing.Scalars;
 using GeometricAlgebraFulcrumLib.Storage.Multivectors;
+using GeometricAlgebraFulcrumLib.Utilities.Extensions;
+using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
 namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures
 {
@@ -31,9 +31,9 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures
         }
 
 
-        public IGaStorageKVector<double> GetBasisBladeTermFloat64()
+        public IGaKVectorStorage<double> GetBasisBladeTermFloat64()
         {
-            return GaScalarProcessorFloat64.DefaultProcessor.CreateStorageKVector(Id, Signature);
+            return Float64ScalarProcessor.DefaultProcessor.CreateKVectorStorage(Id, Signature);
         }
     }
 }

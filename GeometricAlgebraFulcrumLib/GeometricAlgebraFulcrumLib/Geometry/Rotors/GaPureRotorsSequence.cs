@@ -5,19 +5,17 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using GeometricAlgebraFulcrumLib.Algebra.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Factories;
 using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Space;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
 using GeometricAlgebraFulcrumLib.Algebra.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Geometry.Frames;
 using GeometricAlgebraFulcrumLib.Geometry.Subspaces;
+using GeometricAlgebraFulcrumLib.Processing.Matrices;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors.Binary;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors.Unary;
-using GeometricAlgebraFulcrumLib.Processing.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Processing.ScalarsGrids;
+using GeometricAlgebraFulcrumLib.Processing.Scalars;
 using GeometricAlgebraFulcrumLib.Storage.Multivectors;
+using GeometricAlgebraFulcrumLib.Utilities.Extensions;
+using GeometricAlgebraFulcrumLib.Utilities.Factories;
 using MathNet.Numerics.LinearAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Geometry.Rotors
@@ -126,8 +124,8 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Rotors
             var pseudoScalarSubspace = 
                 GaSubspace<T>.CreateFromPseudoScalar(processor, baseSpaceDimensions);
 
-            var sourceFrameVectors = new IGaStorageVector<T>[sourceFrame.Count];
-            var targetFrameVectors = new IGaStorageVector<T>[targetFrame.Count];
+            var sourceFrameVectors = new IGaVectorStorage<T>[sourceFrame.Count];
+            var targetFrameVectors = new IGaVectorStorage<T>[targetFrame.Count];
 
             for (var i = 0; i < sourceFrame.Count; i++)
             {
@@ -180,7 +178,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Rotors
             //TODO: Complete this
 
             return new GaPureRotorsSequence<double>(
-                GaScalarProcessorFloat64.DefaultProcessor.CreateEuclideanProcessor(63)
+                Float64ScalarProcessor.DefaultProcessor.CreateGaEuclideanProcessor(63)
             );
         }
 
@@ -209,16 +207,16 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Rotors
         public IEnumerable<uint> Grades 
             => Processor.Grades;
 
-        public IGaScalarsGridProcessor<T> ScalarsGridProcessor 
+        public ILaProcessor<T> ScalarsGridProcessor 
             => Processor;
         
-        public IGaStorageKVector<T> MappedPseudoScalar { get; }
+        public IGaKVectorStorage<T> MappedPseudoScalar { get; }
 
         public IGaProcessor<T> Processor { get; }
 
-        public IGaStorageMultivector<T> Multivector { get; }
+        public IGaMultivectorStorage<T> Multivector { get; }
 
-        public IGaStorageMultivector<T> MultivectorReverse { get; }
+        public IGaMultivectorStorage<T> MultivectorReverse { get; }
         
         public GaPureRotor<T> this[int index]
         {
@@ -304,7 +302,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Rotors
             );
         }
 
-        public IEnumerable<IGaStorageMultivector<T>> GetRotations(IGaStorageMultivector<T> storage)
+        public IEnumerable<IGaMultivectorStorage<T>> GetRotations(IGaMultivectorStorage<T> storage)
         {
             var v = storage;
 
@@ -359,7 +357,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Rotors
 
         public GaVector<T> Map(GaVector<T> vector)
         {
-            return Processor.CreateGenericVector(
+            return Processor.CreateGaVector(
                 MapVector(vector.VectorStorage)
             );
         }
@@ -375,77 +373,77 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Rotors
             );
         }
 
-        public IGaStorageVector<T> MapBasisVector(int index)
+        public IGaVectorStorage<T> MapBasisVector(int index)
         {
             throw new NotImplementedException();
         }
 
-        public IReadOnlyList<IGaStorageVector<T>> GetMappedBasisVectors()
+        public IReadOnlyList<IGaVectorStorage<T>> GetMappedBasisVectors()
         {
             throw new NotImplementedException();
         }
 
-        public IGaStorageVector<T> MapBasisVector(ulong index)
+        public IGaVectorStorage<T> MapBasisVector(ulong index)
         {
             throw new NotImplementedException();
         }
 
-        public IGaStorageBivector<T> MapBasisBivector(int index1, int index2)
+        public IGaBivectorStorage<T> MapBasisBivector(int index1, int index2)
         {
             throw new NotImplementedException();
         }
 
-        public IGaStorageBivector<T> MapBasisBivector(ulong index1, ulong index2)
+        public IGaBivectorStorage<T> MapBasisBivector(ulong index1, ulong index2)
         {
             throw new NotImplementedException();
         }
 
-        public IGaStorageKVector<T> MapBasisBlade(ulong id)
+        public IGaKVectorStorage<T> MapBasisBlade(ulong id)
         {
             throw new NotImplementedException();
         }
 
-        public IGaStorageKVector<T> MapBasisBlade(uint grade, ulong index)
+        public IGaKVectorStorage<T> MapBasisBlade(uint grade, ulong index)
         {
             throw new NotImplementedException();
         }
 
-        public IGaStorageScalar<T> MapScalar(IGaStorageScalar<T> storage)
+        public IGaScalarStorage<T> MapScalar(IGaScalarStorage<T> storage)
         {
             throw new NotImplementedException();
         }
 
-        public IGaStorageKVector<T> MapTerm(IGaStorageKVector<T> storage)
+        public IGaKVectorStorage<T> MapTerm(IGaKVectorStorage<T> storage)
         {
             throw new NotImplementedException();
         }
 
-        public IGaStorageVector<T> MapVector(IGaStorageVector<T> storage)
+        public IGaVectorStorage<T> MapVector(IGaVectorStorage<T> storage)
         {
             throw new NotImplementedException();
         }
 
-        public IGaStorageBivector<T> MapBivector(IGaStorageBivector<T> storage)
+        public IGaBivectorStorage<T> MapBivector(IGaBivectorStorage<T> storage)
         {
             throw new NotImplementedException();
         }
 
-        public IGaStorageKVector<T> MapKVector(IGaStorageKVector<T> storage)
+        public IGaKVectorStorage<T> MapKVector(IGaKVectorStorage<T> storage)
         {
             throw new NotImplementedException();
         }
 
-        public IGaStorageMultivector<T> MapMultivector(IGaStorageMultivectorGraded<T> storage)
+        public IGaMultivectorStorage<T> MapMultivector(IGaMultivectorGradedStorage<T> storage)
         {
             throw new NotImplementedException();
         }
 
-        public IGaStorageMultivector<T> MapMultivector(IGaStorageMultivectorSparse<T> storage)
+        public IGaMultivectorStorage<T> MapMultivector(IGaMultivectorSparseStorage<T> storage)
         {
             throw new NotImplementedException();
         }
 
-        public IGaStorageMultivector<T> MapMultivector(IGaStorageMultivector<T> storage)
+        public IGaMultivectorStorage<T> MapMultivector(IGaMultivectorStorage<T> storage)
         {
             return _rotorsList
                 .Aggregate(

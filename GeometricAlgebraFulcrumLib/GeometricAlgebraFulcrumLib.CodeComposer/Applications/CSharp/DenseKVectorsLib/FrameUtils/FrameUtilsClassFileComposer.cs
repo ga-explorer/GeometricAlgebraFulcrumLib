@@ -3,9 +3,9 @@
 namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVectorsLib.FrameUtils
 {
     internal class FrameUtilsClassFileComposer : 
-        GaLibraryFileComposerBase 
+        GaFuLLibraryFileComposerBase 
     {
-        internal FrameUtilsClassFileComposer(GaLibraryComposer libGen)
+        internal FrameUtilsClassFileComposer(GaFuLLibraryComposer libGen)
             : base(libGen)
         {
         }

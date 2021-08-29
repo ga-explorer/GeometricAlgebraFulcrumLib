@@ -1,15 +1,15 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonormal;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
 using GeometricAlgebraFulcrumLib.Storage.Multivectors;
+using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 
 namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean
 {
     public static class GaProductEucCpUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageMultivector<T> ECp<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivector<T> mv1, IGaStorageMultivector<T> mv2)
+        public static IGaMultivectorStorage<T> ECp<T>(this IScalarProcessor<T> scalarProcessor, IGaMultivectorStorage<T> mv1, IGaMultivectorStorage<T> mv2)
         {
             return scalarProcessor.BilinearProduct(mv1, mv2, GaBasisBladeProductUtils.ECpSignature);
         }

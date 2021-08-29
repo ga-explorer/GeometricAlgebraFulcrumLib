@@ -2,22 +2,20 @@
 using System.Linq;
 using CodeComposerLib.SyntaxTree;
 using DataStructuresLib.BitManipulation;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
 using GeometricAlgebraFulcrumLib.CodeComposer.Composers;
 using GeometricAlgebraFulcrumLib.CodeComposer.Languages;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean;
-using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
-using GeometricAlgebraFulcrumLib.Storage.Utils;
+using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using TextComposerLib.Text.Linear;
 using TextComposerLib.Text.Structured;
 
 namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVectorsLib.KVector
 {
     internal sealed class MiscMethodsFileComposer : 
-        GaLibraryFileComposerBase
+        GaFuLLibraryFileComposerBase
     {
-        internal MiscMethodsFileComposer(GaLibraryComposer libGen)
+        internal MiscMethodsFileComposer(GaFuLLibraryComposer libGen)
             : base(libGen)
         {
         }
@@ -76,7 +74,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
                 index => $"tempArray[{index}]"
             );
 
-            var macroComposer = new GaSymbolicContextCodeComposer(
+            var macroComposer = new GaFuLSymbolicContextCodeComposer(
                 DenseKVectorsLibraryComposer.GaLanguage, 
                 context,
                 DenseKVectorsLibraryComposer.DefaultContextCodeComposerOptions
@@ -126,7 +124,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         }
 
 
-        private void TestSelfDpGradeFunctionComputationCondition(SteSyntaxElementsList textBuilder, GaSymbolicContextComputationCodeInfo compInfo)
+        private void TestSelfDpGradeFunctionComputationCondition(SteSyntaxElementsList textBuilder, GaFuLSymbolicContextComputationCodeInfo compInfo)
         {
             if (compInfo.ComputedVariable.RhsExpression.ToString() == "0")
             {
@@ -146,7 +144,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             //    compInfo.EnableCodeGeneration = false;
         }
 
-        private static void AddSelfDpGradeFunctionComputationCondition(SteSyntaxElementsList textBuilder, GaSymbolicContextComputationCodeInfo compInfo)
+        private static void AddSelfDpGradeFunctionComputationCondition(SteSyntaxElementsList textBuilder, GaFuLSymbolicContextComputationCodeInfo compInfo)
         {
             if (compInfo.ComputedVariable.IsOutputVariable == false || compInfo.EnableCodeGeneration == false)
                 return;
@@ -211,7 +209,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
                 index => $"tempArray[{index}]"
             );
 
-            var macroComposer = new GaSymbolicContextCodeComposer(
+            var macroComposer = new GaFuLSymbolicContextCodeComposer(
                 DenseKVectorsLibraryComposer.GaLanguage, 
                 context,
                 DenseKVectorsLibraryComposer.DefaultContextCodeComposerOptions
@@ -299,8 +297,8 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
                 mainFuncsTemplate,
                 "signature", CurrentNamespace,
                 "double", GaLanguage.ScalarTypeName,
-                "norm2_opname", GaLanguageOperationKind.UnaryNormSquared.GetName(false),
-                "emag2_opname", GaLanguageOperationKind.UnaryNormSquared.GetName(true)
+                "norm2_opname", GaFuLLanguageOperationKind.UnaryNormSquared.GetName(false),
+                "emag2_opname", GaFuLLanguageOperationKind.UnaryNormSquared.GetName(true)
             );
 
             GenerateMainSelfDpGradeFunction();

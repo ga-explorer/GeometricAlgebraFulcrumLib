@@ -1,6 +1,4 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Samples.GAPoT;
-using GeometricAlgebraFulcrumLib.UnitTests.Processing;
 
 namespace GeometricAlgebraFulcrumLib.Samples
 {
@@ -20,9 +18,10 @@ namespace GeometricAlgebraFulcrumLib.Samples
 
             //HilbertTransform.Execute();
 
-            MultiDerivativeSample.Execute();
+            //MultiDerivativeSample.Execute();
 
-            //Sample2.Execute2();
+            //Symbolic.AngouriMath.Sample1.Execute();
+            CodeComposer.Sample1.Execute();
 
             Console.WriteLine();
             Console.WriteLine("Press any key to exit..");

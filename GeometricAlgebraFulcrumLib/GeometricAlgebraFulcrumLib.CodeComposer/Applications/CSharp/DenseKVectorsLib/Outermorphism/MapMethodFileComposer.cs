@@ -1,22 +1,22 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
-using GeometricAlgebraFulcrumLib.Algebra.Outermorphisms;
+﻿using GeometricAlgebraFulcrumLib.Algebra.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
 using GeometricAlgebraFulcrumLib.Storage.Multivectors;
+using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using TextComposerLib.Text.Linear;
 
 namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVectorsLib.Outermorphism
 {
     internal class MapMethodFileComposer : 
-        GaLibrarySymbolicContextFileComposerBase
+        GaFuLLibrarySymbolicContextFileComposerBase
     {
         private readonly uint _inputGrade;
         private ISymbolicExpressionAtomic[,] _linearMapArray;
-        private IGaStorageKVector<ISymbolicExpressionAtomic> _inputKVector;
-        private IGaStorageKVector<ISymbolicExpressionAtomic> _outputKVector;
+        private IGaKVectorStorage<ISymbolicExpressionAtomic> _inputKVector;
+        private IGaKVectorStorage<ISymbolicExpressionAtomic> _outputKVector;
 
 
-        internal MapMethodFileComposer(GaLibraryComposer libGen, uint inGrade)
+        internal MapMethodFileComposer(GaFuLLibraryComposer libGen, uint inGrade)
             : base(libGen)
         {
             _inputGrade = inGrade;

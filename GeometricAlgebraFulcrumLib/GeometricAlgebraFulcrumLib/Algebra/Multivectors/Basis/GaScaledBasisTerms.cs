@@ -12,10 +12,10 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Multivectors.Basis
         
         public IEnumerable<GaBasisTerm<T>> BaseTerms { get; }
         
-        public IGaScalarProcessor<T> ScalarProcessor { get; }
+        public IScalarProcessor<T> ScalarProcessor { get; }
 
 
-        public GaScaledBasisTerms(IGaScalarProcessor<T> scalarProcessor, T scalingFactor, IEnumerable<GaBasisTerm<T>> baseTerms)
+        public GaScaledBasisTerms(IScalarProcessor<T> scalarProcessor, T scalingFactor, IEnumerable<GaBasisTerm<T>> baseTerms)
         {
             ScalingFactor = scalingFactor;
             BaseTerms = baseTerms;

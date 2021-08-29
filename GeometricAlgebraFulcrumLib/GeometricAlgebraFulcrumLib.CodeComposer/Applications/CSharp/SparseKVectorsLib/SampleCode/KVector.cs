@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Euclidean3D
+namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.SparseKVectorsLib.SampleCode
 {
     public static class Euclidean3DSpace
     {

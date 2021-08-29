@@ -1,9 +1,9 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
-using GeometricAlgebraFulcrumLib.Storage.Factories;
 using GeometricAlgebraFulcrumLib.Storage.Multivectors;
+using GeometricAlgebraFulcrumLib.Utilities.Extensions;
+using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
 namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean
 {
@@ -41,7 +41,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean
             );
         }
 
-        public static IGaStorageMultivector<T> EGp<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivector<T> mv1)
+        public static IGaMultivectorStorage<T> EGp<T>(this IScalarProcessor<T> scalarProcessor, IGaMultivectorStorage<T> mv1)
         {
             var composer = 
                 scalarProcessor.CreateStorageSparseMultivectorComposer();
@@ -49,9 +49,9 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean
             var idScalarPairs = 
                 mv1.GetIdScalarList();
 
-            foreach (var (id1, scalar1) in idScalarPairs.GetKeyValueRecords())
+            foreach (var (id1, scalar1) in idScalarPairs.GetIndexScalarRecords())
             {
-                foreach (var (id2, scalar2) in idScalarPairs.GetKeyValueRecords())
+                foreach (var (id2, scalar2) in idScalarPairs.GetIndexScalarRecords())
                 {
                     var signature = 
                         GaBasisBladeProductUtils.EGpSignature(id1, id2);
@@ -68,10 +68,10 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean
 
             composer.RemoveZeroTerms();
 
-            return composer.CreateStorageSparseMultivector();
+            return composer.CreateGaMultivectorSparseStorage();
         }
 
-        public static IGaStorageMultivector<T> EGp<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivector<T> mv1, IGaStorageMultivector<T> mv2)
+        public static IGaMultivectorStorage<T> EGp<T>(this IScalarProcessor<T> scalarProcessor, IGaMultivectorStorage<T> mv1, IGaMultivectorStorage<T> mv2)
         {
             var composer = 
                 scalarProcessor.CreateStorageSparseMultivectorComposer();
@@ -84,7 +84,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean
 
             foreach (var (id1, scalar1) in idScalarPairs1)
             {
-                foreach (var (id2, scalar2) in idScalarPairs2.GetKeyValueRecords())
+                foreach (var (id2, scalar2) in idScalarPairs2.GetIndexScalarRecords())
                 {
                     var signature = 
                         GaBasisBladeProductUtils.EGpSignature(id1, id2);
@@ -101,16 +101,16 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean
 
             composer.RemoveZeroTerms();
 
-            return composer.CreateStorageSparseMultivector();
+            return composer.CreateGaMultivectorSparseStorage();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageMultivector<T> EGp<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivector<T> mv1, IGaStorageMultivector<T> mv2, IGaStorageMultivector<T> mv3)
+        public static IGaMultivectorStorage<T> EGp<T>(this IScalarProcessor<T> scalarProcessor, IGaMultivectorStorage<T> mv1, IGaMultivectorStorage<T> mv2, IGaMultivectorStorage<T> mv3)
         {
             return scalarProcessor.EGp(scalarProcessor.EGp(mv1, mv2), mv3);
         }
 
-        public static IGaStorageMultivector<T> EGpReverse<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivector<T> mv1)
+        public static IGaMultivectorStorage<T> EGpReverse<T>(this IScalarProcessor<T> scalarProcessor, IGaMultivectorStorage<T> mv1)
         {
             var composer = 
                 scalarProcessor.CreateStorageSparseMultivectorComposer();
@@ -118,9 +118,9 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean
             var idScalarPairs = 
                 mv1.GetIdScalarList();
 
-            foreach (var (id1, scalar1) in idScalarPairs.GetKeyValueRecords())
+            foreach (var (id1, scalar1) in idScalarPairs.GetIndexScalarRecords())
             {
-                foreach (var (id2, scalar2) in idScalarPairs.GetKeyValueRecords())
+                foreach (var (id2, scalar2) in idScalarPairs.GetIndexScalarRecords())
                 {
                     var signature = 
                         GaBasisBladeProductUtils.EGpReverseSignature(id1, id2);
@@ -137,10 +137,10 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean
 
             composer.RemoveZeroTerms();
 
-            return composer.CreateStorageSparseMultivector();
+            return composer.CreateGaMultivectorSparseStorage();
         }
 
-        public static IGaStorageMultivector<T> EGpReverse<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivector<T> mv1, IGaStorageMultivector<T> mv2)
+        public static IGaMultivectorStorage<T> EGpReverse<T>(this IScalarProcessor<T> scalarProcessor, IGaMultivectorStorage<T> mv1, IGaMultivectorStorage<T> mv2)
         {
             var composer = 
                 scalarProcessor.CreateStorageSparseMultivectorComposer();
@@ -153,7 +153,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean
 
             foreach (var (id1, scalar1) in idScalarPairs1)
             {
-                foreach (var (id2, scalar2) in idScalarPairs2.GetKeyValueRecords())
+                foreach (var (id2, scalar2) in idScalarPairs2.GetIndexScalarRecords())
                 {
                     var signature = 
                         GaBasisBladeProductUtils.EGpSignature(id1, id2);
@@ -170,7 +170,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean
 
             composer.RemoveZeroTerms();
 
-            return composer.CreateStorageSparseMultivector();
+            return composer.CreateGaMultivectorSparseStorage();
         }
 
 

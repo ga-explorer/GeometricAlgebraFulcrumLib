@@ -1,15 +1,15 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
 using GeometricAlgebraFulcrumLib.CodeComposer.Languages;
+using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using TextComposerLib.Text.Linear;
 using TextComposerLib.Text.Structured;
 
 namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVectorsLib.KVector
 {
     internal sealed class FactorMainMethodsFileComposer : 
-        GaLibraryFileComposerBase 
+        GaFuLLibraryFileComposerBase 
     {
-        internal FactorMainMethodsFileComposer(GaLibraryComposer libGen)
+        internal FactorMainMethodsFileComposer(GaFuLLibraryComposer libGen)
             : base(libGen)
         {
         }
@@ -66,7 +66,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             for (var grade = 2; grade < VSpaceDimension; grade++)
             {
                 var methodName =
-                    GaLanguageOperationKind.UnaryNorm.GetName(true);
+                    GaFuLLanguageOperationKind.UnaryNorm.GetName(true);
 
                 casesText.Add(
                     Templates["factor_main_case"],

@@ -90,7 +90,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context.Opti
             foreach (var computedVar in Context.GetComputedVariables())
             {
                 _evaluationData[computedVar.InternalName] = 
-                    Context.ExpressionSimplifier.Evaluate(
+                    Context.ExpressionEvaluator.EvaluateToFloat64(
                         ExpressionToString(computedVar.RhsExpression)
                     );
             }

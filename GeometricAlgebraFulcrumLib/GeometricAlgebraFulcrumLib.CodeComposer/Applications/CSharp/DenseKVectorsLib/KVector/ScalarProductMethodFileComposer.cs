@@ -1,5 +1,4 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
 using GeometricAlgebraFulcrumLib.CodeComposer.Languages;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean;
@@ -7,22 +6,23 @@ using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Variables;
 using GeometricAlgebraFulcrumLib.Storage.Multivectors;
+using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using TextComposerLib.Text.Linear;
 
 namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVectorsLib.KVector
 {
     internal sealed class ScalarProductMethodFileComposer : 
-        GaLibrarySymbolicContextFileComposerBase
+        GaFuLLibrarySymbolicContextFileComposerBase
     {
-        private readonly GaLanguageOperationSpecs _operationSpecs;
+        private readonly GaFuLLanguageOperationSpecs _operationSpecs;
         private readonly uint _inputGrade;
         private readonly uint _outputGrade = 0U;
-        private IGaStorageKVector<ISymbolicExpressionAtomic> _inputKVector1;
-        private IGaStorageKVector<ISymbolicExpressionAtomic> _inputKVector2;
+        private IGaKVectorStorage<ISymbolicExpressionAtomic> _inputKVector1;
+        private IGaKVectorStorage<ISymbolicExpressionAtomic> _inputKVector2;
         private SymbolicVariableComputed _outputScalar;
 
 
-        internal ScalarProductMethodFileComposer(GaLibraryComposer libGen, GaLanguageOperationSpecs opSpecs, uint inGrade)
+        internal ScalarProductMethodFileComposer(GaFuLLibraryComposer libGen, GaFuLLanguageOperationSpecs opSpecs, uint inGrade)
             : base(libGen)
         {
             _operationSpecs = opSpecs;
@@ -49,7 +49,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         {
             var outputScalar = _operationSpecs.OperationKind switch
             {
-                GaLanguageOperationKind.BinaryScalarProduct =>
+                GaFuLLanguageOperationKind.BinaryScalarProduct =>
                     _operationSpecs.IsEuclidean
                         ? Processor.ESp(_inputKVector1, _inputKVector2)
                         : Processor.Sp(_inputKVector1, _inputKVector2),

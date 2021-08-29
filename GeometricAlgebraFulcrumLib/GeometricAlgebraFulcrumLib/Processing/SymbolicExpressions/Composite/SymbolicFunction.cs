@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
+using AngouriMath;
 using CodeComposerLib.SyntaxTree.Expressions;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.HeadSpecs;
@@ -214,6 +216,41 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Composite
         public override SymbolicExpressionCompositeBase GetEmptyExpressionCopy()
         {
             return new SymbolicFunction(FunctionHeadSpecs);
+        }
+
+        public override Entity ToAngouriMathEntity()
+        {
+            var argumentsList =
+                ArgumentsList
+                    .Select(a => a.ToAngouriMathEntity())
+                    .ToArray();
+
+            return FunctionName switch
+            {
+                SymbolicFunctionNames.Plus => argumentsList.Aggregate((a, b) => a + b),
+                SymbolicFunctionNames.Subtract => argumentsList[0] - argumentsList[1],
+                SymbolicFunctionNames.Times => argumentsList.Aggregate((a, b) => a * b),
+                SymbolicFunctionNames.Divide => argumentsList[0] / argumentsList[1],
+                SymbolicFunctionNames.Negative => -argumentsList[0],
+                SymbolicFunctionNames.Inverse => Entity.Number.Integer.One / argumentsList[0],
+                SymbolicFunctionNames.Abs => MathS.Abs(argumentsList[0]),
+                SymbolicFunctionNames.Sqrt => MathS.Sqrt(argumentsList[0]),
+                SymbolicFunctionNames.Exp => MathS.Pow(MathS.e, argumentsList[0]),
+                SymbolicFunctionNames.Log => MathS.Ln(argumentsList[0]),
+                SymbolicFunctionNames.Log2 => MathS.Log(2, argumentsList[0]),
+                SymbolicFunctionNames.Log10 => MathS.Log(argumentsList[0]),
+                SymbolicFunctionNames.Cos => MathS.Cos(argumentsList[0]),
+                SymbolicFunctionNames.Sin => MathS.Sin(argumentsList[0]),
+                SymbolicFunctionNames.Tan => MathS.Tan(argumentsList[0]),
+                SymbolicFunctionNames.ArcCos => MathS.Arccos(argumentsList[0]),
+                SymbolicFunctionNames.ArcSin => MathS.Arcsin(argumentsList[0]),
+                SymbolicFunctionNames.ArcTan => MathS.Arctan(argumentsList[0]),
+                SymbolicFunctionNames.Cosh => MathS.Hyperbolic.Cosh(argumentsList[0]),
+                SymbolicFunctionNames.Sinh => MathS.Hyperbolic.Sinh(argumentsList[0]),
+                SymbolicFunctionNames.Tanh => MathS.Hyperbolic.Tanh(argumentsList[0]),
+
+                _ => throw new InvalidOperationException()
+            };
         }
 
         public override SteExpression ToSimpleTextExpression()

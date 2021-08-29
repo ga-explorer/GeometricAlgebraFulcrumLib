@@ -23,24 +23,24 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Frames
         public IGaProcessor<T> Processor 
             => VectorsFrame.Processor;
 
-        public IGaStorageVector<T> Point { get; }
+        public IGaVectorStorage<T> Point { get; }
 
         public GaVectorsFrame<T> VectorsFrame { get; }
 
 
-        internal GaPointVectorsFrame([NotNull] IGaStorageVector<T> point, [NotNull] IGaProcessor<T> processor, GaVectorsFrameKind frameKind)
+        internal GaPointVectorsFrame([NotNull] IGaVectorStorage<T> point, [NotNull] IGaProcessor<T> processor, GaVectorsFrameKind frameKind)
         {
             Point = point;
             VectorsFrame = new GaVectorsFrame<T>(processor, frameKind);
         }
 
-        internal GaPointVectorsFrame([NotNull] IGaStorageVector<T> point, [NotNull] IGaProcessor<T> processor, GaVectorsFrameKind frameKind, [NotNull] IEnumerable<IGaStorageVector<T>> vectorStoragesList)
+        internal GaPointVectorsFrame([NotNull] IGaVectorStorage<T> point, [NotNull] IGaProcessor<T> processor, GaVectorsFrameKind frameKind, [NotNull] IEnumerable<IGaVectorStorage<T>> vectorStoragesList)
         {
             Point = point;
             VectorsFrame = new GaVectorsFrame<T>(processor, frameKind, vectorStoragesList);
         }
 
-        internal GaPointVectorsFrame([NotNull] IGaStorageVector<T> point, [NotNull] GaVectorsFrame<T> vectorsFrame)
+        internal GaPointVectorsFrame([NotNull] IGaVectorStorage<T> point, [NotNull] GaVectorsFrame<T> vectorsFrame)
         {
             Point = point;
             VectorsFrame = vectorsFrame;

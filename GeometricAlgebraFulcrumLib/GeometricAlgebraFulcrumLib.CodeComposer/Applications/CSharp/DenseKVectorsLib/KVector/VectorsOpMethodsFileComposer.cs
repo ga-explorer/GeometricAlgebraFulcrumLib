@@ -1,9 +1,9 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
 using GeometricAlgebraFulcrumLib.Storage.Multivectors;
+using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using TextComposerLib.Text.Linear;
 using TextComposerLib.Text.Structured;
 
@@ -14,14 +14,14 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
     /// namings.
     /// </summary>
     internal sealed class VectorsOpMethodsFileComposer : 
-        GaLibrarySymbolicContextFileComposerBase
+        GaFuLLibrarySymbolicContextFileComposerBase
     {
         private uint _outGrade;
-        private IGaStorageVector<ISymbolicExpressionAtomic>[] _inputVectorsArray;
-        private IGaStorageKVector<ISymbolicExpressionAtomic> _outputKVector;
+        private IGaVectorStorage<ISymbolicExpressionAtomic>[] _inputVectorsArray;
+        private IGaKVectorStorage<ISymbolicExpressionAtomic> _outputKVector;
 
 
-        internal VectorsOpMethodsFileComposer(GaLibraryComposer libGen)
+        internal VectorsOpMethodsFileComposer(GaFuLLibraryComposer libGen)
             : base(libGen)
         {
         }
@@ -30,7 +30,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         protected override void DefineContextParameters(SymbolicContext context)
         {
             _inputVectorsArray = 
-                new IGaStorageVector<ISymbolicExpressionAtomic>[_outGrade];
+                new IGaVectorStorage<ISymbolicExpressionAtomic>[_outGrade];
 
             for (var g = 0; g < _outGrade; g++)
             {

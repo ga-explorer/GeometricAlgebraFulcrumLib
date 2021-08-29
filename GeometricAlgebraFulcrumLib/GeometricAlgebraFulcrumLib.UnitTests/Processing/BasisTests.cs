@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 
-namespace GeometricAlgebraFulcrumLib.UnitTests.Algebra
+namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
 {
     [TestFixture]
     public sealed class BasisTests

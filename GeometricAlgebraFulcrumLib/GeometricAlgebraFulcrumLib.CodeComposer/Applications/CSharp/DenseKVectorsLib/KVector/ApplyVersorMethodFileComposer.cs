@@ -1,26 +1,26 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
 using GeometricAlgebraFulcrumLib.CodeComposer.Languages;
 using GeometricAlgebraFulcrumLib.Geometry.Subspaces;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
 using GeometricAlgebraFulcrumLib.Storage.Multivectors;
+using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using TextComposerLib.Text.Linear;
 
 namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVectorsLib.KVector
 {
     internal sealed class ApplyVersorMethodFileComposer : 
-        GaLibrarySymbolicContextFileComposerBase
+        GaFuLLibrarySymbolicContextFileComposerBase
     {
         private IGaSubspace<ISymbolicExpressionAtomic> _subspace;
-        private IGaStorageKVector<ISymbolicExpressionAtomic> _inputKVector;
-        private IGaStorageKVector<ISymbolicExpressionAtomic> _outputKVector;
-        private readonly GaLanguageOperationSpecs _operationSpecs;
+        private IGaKVectorStorage<ISymbolicExpressionAtomic> _inputKVector;
+        private IGaKVectorStorage<ISymbolicExpressionAtomic> _outputKVector;
+        private readonly GaFuLLanguageOperationSpecs _operationSpecs;
         private readonly uint _inputGrade1;
         private readonly uint _inputGrade2;
 
 
-        internal ApplyVersorMethodFileComposer(GaLibraryComposer libGen, GaLanguageOperationSpecs opSpecs, uint inGrade1, uint inGrade2)
+        internal ApplyVersorMethodFileComposer(GaFuLLibraryComposer libGen, GaFuLLanguageOperationSpecs opSpecs, uint inGrade1, uint inGrade2)
             : base(libGen)
         {
             _operationSpecs = opSpecs;
@@ -52,16 +52,16 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         {
             _outputKVector = _operationSpecs.OperationKind switch
             {
-                GaLanguageOperationKind.BinaryProject => 
+                GaFuLLanguageOperationKind.BinaryProject => 
                     _subspace.Project(_inputKVector).GetKVectorPart(_inputGrade2),
 
-                GaLanguageOperationKind.BinaryRotate => 
+                GaFuLLanguageOperationKind.BinaryRotate => 
                     _subspace.Rotate(_inputKVector).GetKVectorPart(_inputGrade2),
 
-                GaLanguageOperationKind.BinaryReflect => 
+                GaFuLLanguageOperationKind.BinaryReflect => 
                     _subspace.Reflect(_inputKVector).GetKVectorPart(_inputGrade2),
 
-                GaLanguageOperationKind.BinaryComplement => 
+                GaFuLLanguageOperationKind.BinaryComplement => 
                     _subspace.Complement(_inputKVector).GetKVectorPart(_inputGrade2),
 
                 _ => throw new InvalidOperationException()

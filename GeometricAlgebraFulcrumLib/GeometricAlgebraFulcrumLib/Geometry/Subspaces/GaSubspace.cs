@@ -1,21 +1,19 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using DataStructuresLib.BitManipulation;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors.Binary;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors.Unary;
-using GeometricAlgebraFulcrumLib.Storage.Factories;
 using GeometricAlgebraFulcrumLib.Storage.Multivectors;
+using GeometricAlgebraFulcrumLib.Utilities.Extensions;
+using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
 namespace GeometricAlgebraFulcrumLib.Geometry.Subspaces
 {
     public sealed class GaSubspace<T> 
         : IGaSubspace<T>
     {
-        public static GaSubspace<T> Create(IGaProcessor<T> processor, IGaStorageKVector<T> bladeStorage)
+        public static GaSubspace<T> Create(IGaProcessor<T> processor, IGaKVectorStorage<T> bladeStorage)
         {
             return new GaSubspace<T>(processor, bladeStorage);
         }
@@ -24,7 +22,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Subspaces
         {
             return new GaSubspace<T>(
                 processor,
-                processor.CreateStoragePseudoScalar(vSpaceDimension
+                processor.CreatePseudoScalarStorage(vSpaceDimension
                 )
             );
         }
@@ -41,9 +39,9 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Subspaces
         public uint SubspaceDimension 
             => Blade.Grade;
 
-        public IGaStorageKVector<T> Blade { get; }
+        public IGaKVectorStorage<T> Blade { get; }
 
-        public IGaStorageKVector<T> BladeInverse { get; }
+        public IGaKVectorStorage<T> BladeInverse { get; }
 
         public T BladeScalarProductSquared { get; }
 
@@ -54,7 +52,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Subspaces
             => false;
 
 
-        private GaSubspace([NotNull] IGaProcessor<T> processor, [NotNull] IGaStorageKVector<T> bladeStorage)
+        private GaSubspace([NotNull] IGaProcessor<T> processor, [NotNull] IGaKVectorStorage<T> bladeStorage)
         {
             Processor = processor;
             Blade = bladeStorage;
@@ -66,18 +64,18 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Subspaces
         }
 
 
-        public IGaStorageMultivector<T> Project(IGaStorageMultivector<T> storage)
+        public IGaMultivectorStorage<T> Project(IGaMultivectorStorage<T> storage)
         {
             return Processor.ELcp(Processor.ELcp(storage, Blade), BladeInverse);
         }
 
-        public IGaStorageMultivector<T> Reflect(IGaStorageMultivector<T> mv)
+        public IGaMultivectorStorage<T> Reflect(IGaMultivectorStorage<T> mv)
         {
             //TODO: Implement all cases in table 7.1 page 201 in "Geometric Algebra for Computer Science"
             return Processor.EGp(Processor.EGp(Blade, Processor.GradeInvolution(mv)), Processor.EBladeInverse(Blade));
         }
 
-        public IGaStorageMultivector<T> Rotate(IGaStorageMultivector<T> mv)
+        public IGaMultivectorStorage<T> Rotate(IGaMultivectorStorage<T> mv)
         {
             if (Blade.Grade.IsOdd())
                 throw new InvalidOperationException();
@@ -95,7 +93,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Subspaces
                 : rotatedMv;
         }
 
-        public IGaStorageMultivector<T> VersorProduct(IGaStorageMultivector<T> mv)
+        public IGaMultivectorStorage<T> VersorProduct(IGaMultivectorStorage<T> mv)
         {
             return Processor.Gp(
                 Blade,
@@ -103,7 +101,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Subspaces
             );
         }
         
-        public IGaStorageMultivector<T> Complement(IGaStorageMultivector<T> storage)
+        public IGaMultivectorStorage<T> Complement(IGaMultivectorStorage<T> storage)
         {
             return Processor.ELcp(storage, Processor.EBladeInverse(Blade));
         }

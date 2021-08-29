@@ -5,7 +5,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Tuples
 {
     public interface IGaTuple<T>
     {
-        IGaScalarProcessor<T> ScalarProcessor { get; }
+        IScalarProcessor<T> ScalarProcessor { get; }
 
         T this[int key] { get; }
 

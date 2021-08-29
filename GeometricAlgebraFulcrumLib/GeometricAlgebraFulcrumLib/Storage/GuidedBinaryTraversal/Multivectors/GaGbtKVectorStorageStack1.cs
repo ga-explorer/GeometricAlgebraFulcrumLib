@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
 using GeometricAlgebraFulcrumLib.Storage.Multivectors;
-using GeometricAlgebraFulcrumLib.Storage.Utils;
+using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 
 namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Multivectors
 {
@@ -12,7 +12,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Multivectors
     public sealed class GaGbtKVectorStorageStack1<T>
         : GaGbtStack1, IGaGbtMultivectorStorageStack1<T>
     {
-        public static GaGbtKVectorStorageStack1<T> Create(int capacity, int treeDepth, IGaScalarProcessor<T> scalarProcessor, IGaStorageKVector<T> multivectorStorage)
+        public static GaGbtKVectorStorageStack1<T> Create(int capacity, int treeDepth, IScalarProcessor<T> scalarProcessor, IGaKVectorStorage<T> multivectorStorage)
         {
             return new GaGbtKVectorStorageStack1<T>(capacity, treeDepth, scalarProcessor, multivectorStorage);
         }
@@ -23,11 +23,11 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Multivectors
         private ulong[] ActiveGradesBitMask1Array { get; }
 
 
-        public IGaStorageKVector<T> KVectorStorage { get; }
+        public IGaKVectorStorage<T> KVectorStorage { get; }
 
-        public IGaScalarProcessor<T> ScalarProcessor { get; }
+        public IScalarProcessor<T> ScalarProcessor { get; }
 
-        public IGaStorageMultivector<T> Storage 
+        public IGaMultivectorStorage<T> Storage 
             => KVectorStorage;
 
         public T TosScalar { get; private set; }
@@ -54,7 +54,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Multivectors
         public ulong RootActiveGradesBitMask1 { get; }
 
 
-        private GaGbtKVectorStorageStack1(int capacity, int treeDepth, [NotNull] IGaScalarProcessor<T> scalarProcessor, [NotNull] IGaStorageKVector<T> multivectorStorage)
+        private GaGbtKVectorStorageStack1(int capacity, int treeDepth, [NotNull] IScalarProcessor<T> scalarProcessor, [NotNull] IGaKVectorStorage<T> multivectorStorage)
             : base(capacity, treeDepth, 0ul)
         {
             ScalarProcessor = scalarProcessor;

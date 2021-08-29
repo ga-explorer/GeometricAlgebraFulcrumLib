@@ -7,20 +7,20 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Subspaces
     {
         uint SubspaceDimension { get; }
 
-        IGaStorageKVector<T> Blade { get; }
+        IGaKVectorStorage<T> Blade { get; }
 
-        IGaStorageKVector<T> BladeInverse { get; }
+        IGaKVectorStorage<T> BladeInverse { get; }
 
         T BladeScalarProductSquared { get; }
 
-        IGaStorageMultivector<T> Project(IGaStorageMultivector<T> mv);
+        IGaMultivectorStorage<T> Project(IGaMultivectorStorage<T> mv);
 
-        IGaStorageMultivector<T> Reflect(IGaStorageMultivector<T> mv);
+        IGaMultivectorStorage<T> Reflect(IGaMultivectorStorage<T> mv);
 
-        IGaStorageMultivector<T> Rotate(IGaStorageMultivector<T> mv);
+        IGaMultivectorStorage<T> Rotate(IGaMultivectorStorage<T> mv);
 
-        IGaStorageMultivector<T> VersorProduct(IGaStorageMultivector<T> mv);
+        IGaMultivectorStorage<T> VersorProduct(IGaMultivectorStorage<T> mv);
 
-        IGaStorageMultivector<T> Complement(IGaStorageMultivector<T> mv);
+        IGaMultivectorStorage<T> Complement(IGaMultivectorStorage<T> mv);
     }
 }

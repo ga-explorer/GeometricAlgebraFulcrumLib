@@ -6,6 +6,7 @@ using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Variables;
 using GeometricAlgebraFulcrumLib.Storage.Multivectors;
+using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using TextComposerLib.Text.Linear;
 using TextComposerLib.Text.Structured;
 
@@ -17,20 +18,20 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
     /// SetBaseSymbolicContext() method to change the base macro
     /// </summary>
     internal sealed class NormMethodsFileComposer 
-        : GaLibrarySymbolicContextFileComposerBase
+        : GaFuLLibrarySymbolicContextFileComposerBase
     {
         private uint _inGrade;
-        private IGaStorageKVector<ISymbolicExpressionAtomic> _inputKVector;
+        private IGaKVectorStorage<ISymbolicExpressionAtomic> _inputKVector;
         private SymbolicVariableComputed _outputScalar;
-        private GaLanguageOperationSpecs _operationSpecs;
+        private GaFuLLanguageOperationSpecs _operationSpecs;
 
-        private readonly GaLanguageOperationSpecs[] _operationSpecsArray 
+        private readonly GaFuLLanguageOperationSpecs[] _operationSpecsArray 
             = {
-                GaLanguageOperationKind.UnaryNorm.CreateEuclideanOperationSpecs(),
-                GaLanguageOperationKind.UnaryNorm.CreateMetricOperationSpecs(),
+                GaFuLLanguageOperationKind.UnaryNorm.CreateEuclideanOperationSpecs(),
+                GaFuLLanguageOperationKind.UnaryNorm.CreateMetricOperationSpecs(),
 
-                GaLanguageOperationKind.UnaryNormSquared.CreateEuclideanOperationSpecs(),
-                GaLanguageOperationKind.UnaryNormSquared.CreateMetricOperationSpecs(),
+                GaFuLLanguageOperationKind.UnaryNormSquared.CreateEuclideanOperationSpecs(),
+                GaFuLLanguageOperationKind.UnaryNormSquared.CreateMetricOperationSpecs(),
                 
                 //GaClcOperationKind.UnaryMagnitude.CreateEuclideanOperationSpecs(),
                 //GaClcOperationKind.UnaryMagnitude.CreateMetricOperationSpecs(),
@@ -40,7 +41,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             };
 
 
-        internal NormMethodsFileComposer(GaLibraryComposer libGen)
+        internal NormMethodsFileComposer(GaFuLLibraryComposer libGen)
             : base(libGen)
         {
         }
@@ -59,12 +60,12 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         {
             var outputScalar = _operationSpecs.OperationKind switch
             {
-                GaLanguageOperationKind.UnaryNorm =>
+                GaFuLLanguageOperationKind.UnaryNorm =>
                     _operationSpecs.IsEuclidean
                         ? Processor.ENorm(_inputKVector) 
                         : Processor.Norm(_inputKVector),
 
-                GaLanguageOperationKind.UnaryNormSquared =>
+                GaFuLLanguageOperationKind.UnaryNormSquared =>
                     _operationSpecs.IsEuclidean
                         ? Processor.ENormSquared(_inputKVector) 
                         : Processor.NormSquared(_inputKVector),
@@ -102,7 +103,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             );
         }
 
-        private void GenerateNormFunction(GaLanguageOperationSpecs opSpecs, uint inGrade)
+        private void GenerateNormFunction(GaFuLLanguageOperationSpecs opSpecs, uint inGrade)
         {
             _inGrade = inGrade;
             _operationSpecs = opSpecs;

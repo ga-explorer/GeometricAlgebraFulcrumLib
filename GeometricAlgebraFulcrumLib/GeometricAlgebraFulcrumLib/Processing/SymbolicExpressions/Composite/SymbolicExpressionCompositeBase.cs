@@ -3,12 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using AngouriMath;
 using CodeComposerLib.SyntaxTree.Expressions;
 using DataStructuresLib.Extensions;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.HeadSpecs;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Numbers;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Variables;
+using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 
 namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Composite
 {
@@ -452,6 +455,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Composite
         /// <param name="index"></param>
         /// <param name="arguments"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void InsertArguments(int index, IEnumerable<ISymbolicExpression> arguments)
         {
             ArgumentsList.InsertRange(index, arguments);
@@ -554,6 +558,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Composite
 
         public abstract SymbolicExpressionCompositeBase GetEmptyExpressionCopy();
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ISymbolicExpression GetExpressionCopy()
         {
             var expr = GetEmptyExpressionCopy();
@@ -567,8 +572,11 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Composite
             return expr;
         }
 
+        public abstract Entity ToAngouriMathEntity();
+
         public abstract SteExpression ToSimpleTextExpression();
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ISymbolicExpressionComposite GetExpressionCopy(IEnumerable<ISymbolicExpression> argumentsList)
         {
             var expr = GetEmptyExpressionCopy();
@@ -578,9 +586,10 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Composite
             return expr;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ISymbolicExpression Simplify()
         {
-            return Context.ExpressionSimplifier?.Simplify(this) ?? this;
+            return Context.ExpressionEvaluator.Simplify(this);
         }
 
         public Tuple<bool, ISymbolicExpression> ReplaceAllExpressionByExpression(ISymbolicExpression oldExpr, ISymbolicExpression newExpr)

@@ -1,8 +1,8 @@
 ﻿using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
-using GeometricAlgebraFulcrumLib.Storage.Composers;
 using GeometricAlgebraFulcrumLib.Storage.Multivectors;
+using GeometricAlgebraFulcrumLib.Utilities.Composers;
 
 namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonormal
 {
@@ -17,10 +17,10 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
             );
         }
 
-        public static IGaStorageMultivector<double> Hip(this GaSignatureLookup basisSignature, IGaStorageMultivector<double> mv1, IGaStorageMultivector<double> mv2)
+        public static IGaMultivectorStorage<double> Hip(this GaSignatureLookup basisSignature, IGaMultivectorStorage<double> mv1, IGaMultivectorStorage<double> mv2)
         {
             var composer = 
-                new GaStorageComposerMultivectorFloat64(basisSignature);
+                new GaMultivectorFloat64StorageComposer(basisSignature);
 
             var idScalarPairs1 = 
                 mv1.GetIdScalarRecords();
@@ -29,7 +29,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
                 mv2.GetIdScalarList();
 
             foreach (var (id1, scalar1) in idScalarPairs1)
-            foreach (var (id2, scalar2) in idScalarPairs2.GetKeyValueRecords())
+            foreach (var (id2, scalar2) in idScalarPairs2.GetIndexScalarRecords())
                 composer.AddHipTerm(id1, id2, scalar1, scalar2);
 
             composer.RemoveZeroTerms();
@@ -38,7 +38,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageMultivector<T> Hip<T>(this IGaScalarProcessor<T> scalarProcessor, IGaSignature basisSignature, IGaStorageMultivector<T> mv1, IGaStorageMultivector<T> mv2)
+        public static IGaMultivectorStorage<T> Hip<T>(this IScalarProcessor<T> scalarProcessor, IGaSignature basisSignature, IGaMultivectorStorage<T> mv1, IGaMultivectorStorage<T> mv2)
         {
             return scalarProcessor.BilinearProduct(mv1, mv2, basisSignature.HipSignature);
         }

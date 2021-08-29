@@ -9,20 +9,18 @@ using GeometricAlgebraFulcrumLib.Algebra.Matrices;
 using GeometricAlgebraFulcrumLib.Geometry.Rotors;
 using GeometricAlgebraFulcrumLib.Geometry.Subspaces;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors.Binary;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors.Unary;
 using GeometricAlgebraFulcrumLib.Storage.Multivectors;
-using GeometricAlgebraFulcrumLib.Storage.Utils;
+using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 
 namespace GeometricAlgebraFulcrumLib.Geometry.Frames
 {
     public sealed class GaVectorsFrame<T> : 
-        IReadOnlyList<IGaStorageVector<T>>, 
+        IReadOnlyList<IGaVectorStorage<T>>, 
         IGaGeometry<T>
     {
-        private readonly List<IGaStorageVector<T>> _vectorStoragesList;
+        private readonly List<IGaVectorStorage<T>> _vectorStoragesList;
 
 
         public int Count 
@@ -36,7 +34,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Frames
 
         public IGaProcessor<T> Processor { get; }
 
-        public IGaStorageVector<T> this[int index]
+        public IGaVectorStorage<T> this[int index]
         {
             get => _vectorStoragesList[index];
             set => _vectorStoragesList[index] = 
@@ -55,13 +53,13 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Frames
 
         internal GaVectorsFrame([NotNull] IGaProcessor<T> processor, GaVectorsFrameKind frameKind)
         {
-            _vectorStoragesList = new List<IGaStorageVector<T>>();
+            _vectorStoragesList = new List<IGaVectorStorage<T>>();
 
             Processor = processor;
             FrameKind = frameKind;
         }
 
-        internal GaVectorsFrame([NotNull] IGaProcessor<T> processor, GaVectorsFrameKind frameKind, [NotNull] IEnumerable<IGaStorageVector<T>> vectorStoragesList)
+        internal GaVectorsFrame([NotNull] IGaProcessor<T> processor, GaVectorsFrameKind frameKind, [NotNull] IEnumerable<IGaVectorStorage<T>> vectorStoragesList)
         {
             _vectorStoragesList = vectorStoragesList.ToList();
 
@@ -70,14 +68,14 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Frames
         }
 
         
-        public GaVectorsFrame<T> AppendVector(IGaStorageVector<T> vector)
+        public GaVectorsFrame<T> AppendVector(IGaVectorStorage<T> vector)
         {
             _vectorStoragesList.Add(vector);
 
             return this;
         }
         
-        public GaVectorsFrame<T> AppendVectors(params IGaStorageVector<T>[] vectorsList)
+        public GaVectorsFrame<T> AppendVectors(params IGaVectorStorage<T>[] vectorsList)
         {
             foreach (var vector in vectorsList)
                 _vectorStoragesList.Add(vector);
@@ -85,14 +83,14 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Frames
             return this;
         }
         
-        public GaVectorsFrame<T> PrependVector(IGaStorageVector<T> vector)
+        public GaVectorsFrame<T> PrependVector(IGaVectorStorage<T> vector)
         {
             _vectorStoragesList.Insert(0, vector);
 
             return this;
         }
         
-        public GaVectorsFrame<T> InsertVector(int index, IGaStorageVector<T> vector)
+        public GaVectorsFrame<T> InsertVector(int index, IGaVectorStorage<T> vector)
         {
             _vectorStoragesList.Insert(index, vector);
 
@@ -129,7 +127,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Frames
                 return this;
 
             var orthogonalVector = _vectorStoragesList[0];
-            var vectorStoragesList = new List<IGaStorageVector<T>>
+            var vectorStoragesList = new List<IGaVectorStorage<T>>
             {
                 makeUnitVectors
                     ? Processor.Divide(
@@ -139,7 +137,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Frames
                     : orthogonalVector
             };
 
-            var mv1 = (IGaStorageMultivector<T>) orthogonalVector;
+            var mv1 = (IGaMultivectorStorage<T>) orthogonalVector;
             
             for (var i = 1; i < _vectorStoragesList.Count; i++)
             {
@@ -215,7 +213,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Frames
 
                 var dii = Processor.Subtract(
                     Processor.ESp(v1), 
-                    Processor.GetOneScalar()
+                    Processor.ScalarOne
                 );
 
                 if (!Processor.IsNearZero(dii))
@@ -251,7 +249,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Frames
             Debug.Assert(IsOrthonormal() && targetFrame.IsOrthonormal());
             Debug.Assert(HasSameHandedness(targetFrame));
 
-            var inputFrame = new IGaStorageVector<T>[Count];
+            var inputFrame = new IGaVectorStorage<T>[Count];
 
             for (var i = 0; i < Count; i++)
                 inputFrame[i] = _vectorStoragesList[i];
@@ -279,7 +277,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Frames
             Debug.Assert(HasSameHandedness(targetFrame));
             //Debug.Assert(GaPoTNumUtils.ValidateIndexPermutationList(basisRotationOrderList));
 
-            var inputFrame = new IGaStorageVector<T>[Count];
+            var inputFrame = new IGaVectorStorage<T>[Count];
 
             for (var i = 0; i < Count; i++)
                 inputFrame[i] = _vectorStoragesList[i];
@@ -388,8 +386,8 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Frames
                 var vectorTerms = 
                     _vectorStoragesList[j]
                         .IndexScalarList
-                        .GetKeyValueRecords()
-                        .Where(pair => pair.Key < (ulong) rowsCount);
+                        .GetIndexScalarRecords()
+                        .Where(pair => pair.Index < (ulong) rowsCount);
 
                 foreach (var (index, scalar) in vectorTerms)
                     itemsArray[index, j] = scalar;
@@ -460,7 +458,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Frames
             return ipm;
         }
 
-        public IEnumerator<IGaStorageVector<T>> GetEnumerator()
+        public IEnumerator<IGaVectorStorage<T>> GetEnumerator()
         {
             return _vectorStoragesList.GetEnumerator();
         }

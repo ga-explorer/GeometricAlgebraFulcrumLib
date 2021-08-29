@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
 using GeometricAlgebraFulcrumLib.Storage.Multivectors;
+using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 
 namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonormal
 {
@@ -19,7 +19,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
             );
         }
 
-        public static double Norm(this GaSignatureLookup signature, IGaStorageMultivector<double> mv1)
+        public static double Norm(this GaSignatureLookup signature, IGaMultivectorStorage<double> mv1)
         {
             if (!signature.IsEuclidean)
                 throw new InvalidOperationException();
@@ -46,7 +46,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
             return Math.Sqrt(Math.Abs(spScalar));
         }
 
-        public static double NormSquared(this GaSignatureLookup signature, IGaStorageMultivector<double> mv1)
+        public static double NormSquared(this GaSignatureLookup signature, IGaMultivectorStorage<double> mv1)
         {
             if (!signature.IsEuclidean)
                 throw new InvalidOperationException();
@@ -74,7 +74,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T Norm<T>(this IGaScalarProcessor<T> scalarProcessor, IGaSignature signature, IGaStorageScalar<T> mv1)
+        public static T Norm<T>(this IScalarProcessor<T> scalarProcessor, IGaSignature signature, IGaScalarStorage<T> mv1)
         {
             return scalarProcessor.SqrtOfAbs(
                 scalarProcessor.Times(
@@ -85,7 +85,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T NormSquared<T>(this IGaScalarProcessor<T> scalarProcessor, IGaSignature signature, IGaStorageScalar<T> mv1)
+        public static T NormSquared<T>(this IScalarProcessor<T> scalarProcessor, IGaSignature signature, IGaScalarStorage<T> mv1)
         {
             return scalarProcessor.Square(
                 mv1.GetScalar(scalarProcessor)
@@ -93,14 +93,14 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T Norm<T>(this IGaScalarProcessor<T> scalarProcessor, IGaSignature signature, IGaStorageKVector<T> mv1)
+        public static T Norm<T>(this IScalarProcessor<T> scalarProcessor, IGaSignature signature, IGaKVectorStorage<T> mv1)
         {
             return mv1 switch
             {
-                IGaStorageScalar<T> s1 => 
+                IGaScalarStorage<T> s1 => 
                     Norm(scalarProcessor, signature, s1),
 
-                IGaStorageVector<T> vt1 => 
+                IGaVectorStorage<T> vt1 => 
                     Norm(scalarProcessor, signature, vt1),
 
                 _ => 
@@ -108,9 +108,9 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
             };
         }
         
-        public static T VectorsNorm<T>(this IGaScalarProcessor<T> scalarProcessor, IGaSignature signature, IReadOnlyList<T> vector1)
+        public static T VectorsNorm<T>(this IScalarProcessor<T> scalarProcessor, IGaSignature signature, IReadOnlyList<T> vector1)
         {
-            var spScalar = scalarProcessor.GetZeroScalar();
+            var spScalar = scalarProcessor.ScalarZero;
 
             var count = vector1.Count;
 
@@ -132,9 +132,9 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
             return scalarProcessor.SqrtOfAbs(spScalar);
         }
         
-        public static T VectorsNormSquared<T>(this IGaScalarProcessor<T> scalarProcessor, IGaSignature signature, IReadOnlyList<T> vector1)
+        public static T VectorsNormSquared<T>(this IScalarProcessor<T> scalarProcessor, IGaSignature signature, IReadOnlyList<T> vector1)
         {
-            var spScalar = scalarProcessor.GetZeroScalar();
+            var spScalar = scalarProcessor.ScalarZero;
 
             var count = vector1.Count;
 
@@ -157,14 +157,14 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T Norm<T>(this IGaScalarProcessor<T> scalarProcessor, IGaSignature signature, IGaStorageVector<T> mv1)
+        public static T Norm<T>(this IScalarProcessor<T> scalarProcessor, IGaSignature signature, IGaVectorStorage<T> mv1)
         {
             var indexScalarPairs1 = 
                 mv1.IndexScalarList;
 
-            var spScalar = scalarProcessor.GetZeroScalar();
+            var spScalar = scalarProcessor.ScalarZero;
 
-            foreach (var (index, scalar1) in indexScalarPairs1.GetKeyValueRecords())
+            foreach (var (index, scalar1) in indexScalarPairs1.GetIndexScalarRecords())
             {
                 var sig = signature.NormSquaredSignature(index.BasisVectorIndexToId());
 
@@ -182,14 +182,14 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T NormSquared<T>(this IGaScalarProcessor<T> scalarProcessor, IGaSignature signature, IGaStorageVector<T> mv1)
+        public static T NormSquared<T>(this IScalarProcessor<T> scalarProcessor, IGaSignature signature, IGaVectorStorage<T> mv1)
         {
             var indexScalarPairs1 = 
                 mv1.IndexScalarList;
 
-            var spScalar = scalarProcessor.GetZeroScalar();
+            var spScalar = scalarProcessor.ScalarZero;
 
-            foreach (var (index, scalar1) in indexScalarPairs1.GetKeyValueRecords())
+            foreach (var (index, scalar1) in indexScalarPairs1.GetIndexScalarRecords())
             {
                 var sig = signature.NormSquaredSignature(index.BasisVectorIndexToId());
 
@@ -206,15 +206,15 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
             return spScalar;
         }
 
-        private static T NormAsScalar<T>(this IGaScalarProcessor<T> scalarProcessor, IGaSignature signature, IGaStorageKVector<T> mv1)
+        private static T NormAsScalar<T>(this IScalarProcessor<T> scalarProcessor, IGaSignature signature, IGaKVectorStorage<T> mv1)
         {
             var grade = mv1.Grade;
-            var spScalar = scalarProcessor.GetZeroScalar();
+            var spScalar = scalarProcessor.ScalarZero;
             
             var indexScalarPairs1 = 
                 mv1.IndexScalarList;
 
-            foreach (var (index, scalar1) in indexScalarPairs1.GetKeyValueRecords())
+            foreach (var (index, scalar1) in indexScalarPairs1.GetIndexScalarRecords())
             {
                 var id = index.BasisBladeIndexToId(grade);
                 var sig = signature.NormSquaredSignature(id);
@@ -232,15 +232,15 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
             return scalarProcessor.SqrtOfAbs(spScalar);
         }
 
-        private static T NormSquaredAsScalar<T>(this IGaScalarProcessor<T> scalarProcessor, IGaSignature signature, IGaStorageKVector<T> mv1)
+        private static T NormSquaredAsScalar<T>(this IScalarProcessor<T> scalarProcessor, IGaSignature signature, IGaKVectorStorage<T> mv1)
         {
             var grade = mv1.Grade;
-            var spScalar = scalarProcessor.GetZeroScalar();
+            var spScalar = scalarProcessor.ScalarZero;
             
             var indexScalarPairs1 = 
                 mv1.IndexScalarList;
 
-            foreach (var (index, scalar1) in indexScalarPairs1.GetKeyValueRecords())
+            foreach (var (index, scalar1) in indexScalarPairs1.GetIndexScalarRecords())
             {
                 var id = index.BasisBladeIndexToId(grade);
                 var sig = signature.NormSquaredSignature(id);
@@ -259,23 +259,23 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T NormSquared<T>(this IGaScalarProcessor<T> scalarProcessor, IGaSignature signature, IGaStorageKVector<T> mv1)
+        public static T NormSquared<T>(this IScalarProcessor<T> scalarProcessor, IGaSignature signature, IGaKVectorStorage<T> mv1)
         {
             return mv1 switch
             {
-                IGaStorageScalar<T> s1 => NormSquared(scalarProcessor, signature, s1),
-                IGaStorageVector<T> vt1 => NormSquared(scalarProcessor, signature, vt1),
+                IGaScalarStorage<T> s1 => NormSquared(scalarProcessor, signature, s1),
+                IGaVectorStorage<T> vt1 => NormSquared(scalarProcessor, signature, vt1),
                 _ => NormSquaredAsScalar(scalarProcessor, signature, mv1)
             };
         }
 
-        private static T NormAsScalar<T>(this IGaScalarProcessor<T> scalarProcessor, IGaSignature signature, IGaStorageMultivector<T> mv1)
+        private static T NormAsScalar<T>(this IScalarProcessor<T> scalarProcessor, IGaSignature signature, IGaMultivectorStorage<T> mv1)
         {
-            var spScalar = scalarProcessor.GetZeroScalar();
+            var spScalar = scalarProcessor.ScalarZero;
 
             var idScalarDictionary1 = mv1.GetIdScalarList();
 
-            foreach (var (id, scalar1) in idScalarDictionary1.GetKeyValueRecords())
+            foreach (var (id, scalar1) in idScalarDictionary1.GetIndexScalarRecords())
             {
                 var sig = signature.NormSquaredSignature(id);
 
@@ -292,13 +292,13 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
             return scalarProcessor.SqrtOfAbs(spScalar);
         }
 
-        private static T NormSquaredAsScalar<T>(this IGaScalarProcessor<T> scalarProcessor, IGaSignature signature, IGaStorageMultivector<T> mv1)
+        private static T NormSquaredAsScalar<T>(this IScalarProcessor<T> scalarProcessor, IGaSignature signature, IGaMultivectorStorage<T> mv1)
         {
-            var spScalar = scalarProcessor.GetZeroScalar();
+            var spScalar = scalarProcessor.ScalarZero;
 
             var idScalarDictionary1 = mv1.GetIdScalarList();
 
-            foreach (var (id, scalar1) in idScalarDictionary1.GetKeyValueRecords())
+            foreach (var (id, scalar1) in idScalarDictionary1.GetIndexScalarRecords())
             {
                 var sig = signature.NormSquaredSignature(id);
 
@@ -316,25 +316,25 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T Norm<T>(this IGaScalarProcessor<T> scalarProcessor, IGaSignature signature, IGaStorageMultivector<T> mv1)
+        public static T Norm<T>(this IScalarProcessor<T> scalarProcessor, IGaSignature signature, IGaMultivectorStorage<T> mv1)
         {
             return mv1 switch
             {
-                IGaStorageScalar<T> s1 => Norm(scalarProcessor, signature, s1),
-                IGaStorageVector<T> vt1 => Norm(scalarProcessor, signature, vt1),
-                IGaStorageKVector<T> kvt1 => Norm(scalarProcessor, signature, kvt1),
+                IGaScalarStorage<T> s1 => Norm(scalarProcessor, signature, s1),
+                IGaVectorStorage<T> vt1 => Norm(scalarProcessor, signature, vt1),
+                IGaKVectorStorage<T> kvt1 => Norm(scalarProcessor, signature, kvt1),
                 _ => NormAsScalar(scalarProcessor, signature, mv1)
             };
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T NormSquared<T>(this IGaScalarProcessor<T> scalarProcessor, IGaSignature signature, IGaStorageMultivector<T> mv1)
+        public static T NormSquared<T>(this IScalarProcessor<T> scalarProcessor, IGaSignature signature, IGaMultivectorStorage<T> mv1)
         {
             return mv1 switch
             {
-                IGaStorageScalar<T> s1 => NormSquared(scalarProcessor, signature, s1),
-                IGaStorageVector<T> vt1 => NormSquared(scalarProcessor, signature, vt1),
-                IGaStorageKVector<T> kvt1 => NormSquared(scalarProcessor, signature, kvt1),
+                IGaScalarStorage<T> s1 => NormSquared(scalarProcessor, signature, s1),
+                IGaVectorStorage<T> vt1 => NormSquared(scalarProcessor, signature, vt1),
+                IGaKVectorStorage<T> kvt1 => NormSquared(scalarProcessor, signature, kvt1),
                 _ => NormSquaredAsScalar(scalarProcessor, signature, mv1)
             };
         }

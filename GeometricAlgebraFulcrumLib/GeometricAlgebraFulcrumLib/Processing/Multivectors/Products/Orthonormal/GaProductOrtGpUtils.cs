@@ -3,23 +3,23 @@ using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
-using GeometricAlgebraFulcrumLib.Storage.Composers;
 using GeometricAlgebraFulcrumLib.Storage.Multivectors;
+using GeometricAlgebraFulcrumLib.Utilities.Composers;
 
 namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonormal
 {
     public static class GaProductOrtGpUtils
     {
-        public static IGaStorageMultivector<double> Gp(this GaSignatureLookup basisSignature, IGaStorageMultivector<double> mv)
+        public static IGaMultivectorStorage<double> Gp(this GaSignatureLookup basisSignature, IGaMultivectorStorage<double> mv)
         {
             var composer = 
-                new GaStorageComposerMultivectorFloat64(basisSignature);
+                new GaMultivectorFloat64StorageComposer(basisSignature);
 
             var idScalarPairs = 
                 mv.GetIdScalarList();
 
-            foreach (var (id1, scalar1) in idScalarPairs.GetKeyValueRecords())
-            foreach (var (id2, scalar2) in idScalarPairs.GetKeyValueRecords())
+            foreach (var (id1, scalar1) in idScalarPairs.GetIndexScalarRecords())
+            foreach (var (id2, scalar2) in idScalarPairs.GetIndexScalarRecords())
                 composer.AddGpTerm(id1, id2, scalar1, scalar2);
 
             composer.RemoveZeroTerms();
@@ -27,16 +27,16 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
             return composer.GetCompactStorage();
         }
         
-        public static IGaStorageMultivector<double> GpReverse(this GaSignatureLookup basisSignature, IGaStorageMultivector<double> mv)
+        public static IGaMultivectorStorage<double> GpReverse(this GaSignatureLookup basisSignature, IGaMultivectorStorage<double> mv)
         {
             var composer = 
-                new GaStorageComposerMultivectorFloat64(basisSignature);
+                new GaMultivectorFloat64StorageComposer(basisSignature);
 
             var idScalarPairs = 
                 mv.GetIdScalarList();
 
-            foreach (var (id1, scalar1) in idScalarPairs.GetKeyValueRecords())
-            foreach (var (id2, scalar2) in idScalarPairs.GetKeyValueRecords())
+            foreach (var (id1, scalar1) in idScalarPairs.GetIndexScalarRecords())
+            foreach (var (id2, scalar2) in idScalarPairs.GetIndexScalarRecords())
                 composer.AddGpReverseTerm(id1, id2, scalar1, scalar2);
 
             composer.RemoveZeroTerms();
@@ -44,10 +44,10 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
             return composer.GetCompactStorage();
         }
         
-        public static IGaStorageMultivector<double> Gp(this GaSignatureLookup basisSignature, IGaStorageMultivector<double> mv1, IGaStorageMultivector<double> mv2)
+        public static IGaMultivectorStorage<double> Gp(this GaSignatureLookup basisSignature, IGaMultivectorStorage<double> mv1, IGaMultivectorStorage<double> mv2)
         {
             var composer = 
-                new GaStorageComposerMultivectorFloat64(basisSignature);
+                new GaMultivectorFloat64StorageComposer(basisSignature);
 
             var idScalarPairs1 = 
                 mv1.GetIdScalarRecords();
@@ -56,7 +56,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
                 mv2.GetIdScalarList();
 
             foreach (var (id1, scalar1) in idScalarPairs1)
-            foreach (var (id2, scalar2) in idScalarPairs2.GetKeyValueRecords())
+            foreach (var (id2, scalar2) in idScalarPairs2.GetIndexScalarRecords())
                 composer.AddGpTerm(id1, id2, scalar1, scalar2);
 
             composer.RemoveZeroTerms();
@@ -64,10 +64,10 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
             return composer.GetCompactStorage();
         }
         
-        public static IGaStorageMultivector<double> GpReverse(this GaSignatureLookup basisSignature, IGaStorageMultivector<double> mv1, IGaStorageMultivector<double> mv2)
+        public static IGaMultivectorStorage<double> GpReverse(this GaSignatureLookup basisSignature, IGaMultivectorStorage<double> mv1, IGaMultivectorStorage<double> mv2)
         {
             var composer = 
-                new GaStorageComposerMultivectorFloat64(basisSignature);
+                new GaMultivectorFloat64StorageComposer(basisSignature);
 
             var idScalarPairs1 = 
                 mv1.GetIdScalarRecords();
@@ -76,7 +76,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
                 mv2.GetIdScalarList();
 
             foreach (var (id1, scalar1) in idScalarPairs1)
-            foreach (var (id2, scalar2) in idScalarPairs2.GetKeyValueRecords())
+            foreach (var (id2, scalar2) in idScalarPairs2.GetIndexScalarRecords())
                 composer.AddGpReverseTerm(id1, id2, scalar1, scalar2);
 
             composer.RemoveZeroTerms();
@@ -86,7 +86,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
         
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageMultivector<T> Gp<T>(this IGaScalarProcessor<T> scalarProcessor, IGaSignature basisSignature, IGaStorageMultivector<T> mv)
+        public static IGaMultivectorStorage<T> Gp<T>(this IScalarProcessor<T> scalarProcessor, IGaSignature basisSignature, IGaMultivectorStorage<T> mv)
         {
             return basisSignature is GaSignatureEuclidean
                 ? scalarProcessor.EGp(mv)
@@ -94,7 +94,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageMultivector<T> Gp<T>(this IGaScalarProcessor<T> scalarProcessor, IGaSignature basisSignature, IGaStorageMultivector<T> mv1, IGaStorageMultivector<T> mv2)
+        public static IGaMultivectorStorage<T> Gp<T>(this IScalarProcessor<T> scalarProcessor, IGaSignature basisSignature, IGaMultivectorStorage<T> mv1, IGaMultivectorStorage<T> mv2)
         {
             return basisSignature is GaSignatureEuclidean
                 ? scalarProcessor.EGp(mv1, mv2)
@@ -102,7 +102,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageMultivector<T> Gp<T>(this IGaScalarProcessor<T> scalarProcessor, IGaSignature basisSignature, IGaStorageMultivector<T> mv1, IGaStorageMultivector<T> mv2, IGaStorageMultivector<T> mv3)
+        public static IGaMultivectorStorage<T> Gp<T>(this IScalarProcessor<T> scalarProcessor, IGaSignature basisSignature, IGaMultivectorStorage<T> mv1, IGaMultivectorStorage<T> mv2, IGaMultivectorStorage<T> mv3)
         {
             return basisSignature is GaSignatureEuclidean
                 ? scalarProcessor.EGp(mv1, mv2, mv3)
@@ -113,7 +113,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageMultivector<T> Gp<T>(this IGaScalarProcessor<T> scalarProcessor, IGaSignature basisSignature, params IGaStorageMultivector<T>[] mvsList)
+        public static IGaMultivectorStorage<T> Gp<T>(this IScalarProcessor<T> scalarProcessor, IGaSignature basisSignature, params IGaMultivectorStorage<T>[] mvsList)
         {
             return mvsList.Skip(1).Aggregate(
                 mvsList[0], 
@@ -123,7 +123,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageMultivector<T> GpReverse<T>(this IGaScalarProcessor<T> scalarProcessor, IGaSignature basisSignature, IGaStorageMultivector<T> mv)
+        public static IGaMultivectorStorage<T> GpReverse<T>(this IScalarProcessor<T> scalarProcessor, IGaSignature basisSignature, IGaMultivectorStorage<T> mv)
         {
             return basisSignature is GaSignatureEuclidean
                 ? scalarProcessor.EGpReverse(mv)
@@ -131,7 +131,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageMultivector<T> GpReverse<T>(this IGaScalarProcessor<T> scalarProcessor, IGaSignature basisSignature, IGaStorageMultivector<T> mv1, IGaStorageMultivector<T> mv2)
+        public static IGaMultivectorStorage<T> GpReverse<T>(this IScalarProcessor<T> scalarProcessor, IGaSignature basisSignature, IGaMultivectorStorage<T> mv1, IGaMultivectorStorage<T> mv2)
         {
             return basisSignature is GaSignatureEuclidean
                 ? scalarProcessor.EGpReverse(mv1, mv2)
@@ -139,20 +139,20 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageMultivectorGraded<T> Gp<T>(this IGaScalarProcessor<T> scalarProcessor, IGaSignature basisSignature, IGaStorageKVector<T> mv)
+        public static IGaMultivectorGradedStorage<T> Gp<T>(this IScalarProcessor<T> scalarProcessor, IGaSignature basisSignature, IGaKVectorStorage<T> mv)
         {
             //TODO: Add the Euclidean case
             return scalarProcessor.BilinearProduct(mv, basisSignature.GpSignature);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageMultivectorGraded<T> Gp<T>(this IGaScalarProcessor<T> scalarProcessor, IGaSignature basisSignature, IGaStorageKVector<T> mv1, IGaStorageKVector<T> mv2)
+        public static IGaMultivectorGradedStorage<T> Gp<T>(this IScalarProcessor<T> scalarProcessor, IGaSignature basisSignature, IGaKVectorStorage<T> mv1, IGaKVectorStorage<T> mv2)
         {
             return scalarProcessor.BilinearProduct(mv1, mv2, basisSignature.GpSignature);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageMultivector<T> Gp<T>(this IGaScalarProcessor<T> scalarProcessor, IGaSignature basisSignature, IGaStorageKVector<T> mv1, IGaStorageKVector<T> mv2, IGaStorageKVector<T> mv3)
+        public static IGaMultivectorStorage<T> Gp<T>(this IScalarProcessor<T> scalarProcessor, IGaSignature basisSignature, IGaKVectorStorage<T> mv1, IGaKVectorStorage<T> mv2, IGaKVectorStorage<T> mv3)
         {
             return scalarProcessor.BilinearProduct(
                 scalarProcessor.BilinearProduct(mv1, mv2, basisSignature.GpSignature), 
@@ -161,13 +161,13 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageMultivector<T> Gp<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivector<T> mv1, IGaSignature basisSignature)
+        public static IGaMultivectorStorage<T> Gp<T>(this IScalarProcessor<T> scalarProcessor, IGaMultivectorStorage<T> mv1, IGaSignature basisSignature)
         {
             return scalarProcessor.BilinearProduct(mv1, basisSignature.GpSignature);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageMultivector<T> Gp<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivector<T> mv1, IGaStorageMultivector<T> mv2, IGaSignature basisSignature)
+        public static IGaMultivectorStorage<T> Gp<T>(this IScalarProcessor<T> scalarProcessor, IGaMultivectorStorage<T> mv1, IGaMultivectorStorage<T> mv2, IGaSignature basisSignature)
         {
             return basisSignature is GaSignatureEuclidean
                 ? scalarProcessor.EGp(mv1, mv2)
@@ -175,7 +175,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageMultivector<T> GpReverse<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivector<T> mv1, IGaSignature basisSignature)
+        public static IGaMultivectorStorage<T> GpReverse<T>(this IScalarProcessor<T> scalarProcessor, IGaMultivectorStorage<T> mv1, IGaSignature basisSignature)
         {
             return basisSignature is GaSignatureEuclidean
                 ? scalarProcessor.EGpReverse(mv1)
@@ -183,7 +183,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageMultivector<T> GpReverse<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivector<T> mv1, IGaStorageMultivector<T> mv2, IGaSignature basisSignature)
+        public static IGaMultivectorStorage<T> GpReverse<T>(this IScalarProcessor<T> scalarProcessor, IGaMultivectorStorage<T> mv1, IGaMultivectorStorage<T> mv2, IGaSignature basisSignature)
         {
             return basisSignature is GaSignatureEuclidean
                 ? scalarProcessor.EGpReverse(mv1, mv2)

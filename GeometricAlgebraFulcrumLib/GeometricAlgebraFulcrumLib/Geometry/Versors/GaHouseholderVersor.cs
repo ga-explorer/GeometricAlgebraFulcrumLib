@@ -2,19 +2,19 @@
 using System.Diagnostics.CodeAnalysis;
 using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Space;
 using GeometricAlgebraFulcrumLib.Algebra.Outermorphisms;
+using GeometricAlgebraFulcrumLib.Processing.Matrices;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors.Unary;
-using GeometricAlgebraFulcrumLib.Processing.ScalarsGrids;
-using GeometricAlgebraFulcrumLib.Storage.Factories;
 using GeometricAlgebraFulcrumLib.Storage.Multivectors;
+using GeometricAlgebraFulcrumLib.Utilities.Extensions;
+using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
 namespace GeometricAlgebraFulcrumLib.Geometry.Versors
 {
     public sealed class GaHouseholderVersor<T> 
         : IGaVersor<T>
     {
-        public static GaHouseholderVersor<T> Create(IGaProcessor<T> processor, IGaStorageVector<T> unitVectorStorage)
+        public static GaHouseholderVersor<T> Create(IGaProcessor<T> processor, IGaVectorStorage<T> unitVectorStorage)
         {
             return new GaHouseholderVersor<T>(processor, unitVectorStorage);
         }
@@ -29,14 +29,14 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Versors
         public ulong GaSpaceDimension
             => Processor.GaSpaceDimension;
 
-        public IGaScalarsGridProcessor<T> ScalarsGridProcessor 
+        public ILaProcessor<T> ScalarsGridProcessor 
             => Processor;
 
-        public IGaStorageKVector<T> MappedPseudoScalar { get; }
+        public IGaKVectorStorage<T> MappedPseudoScalar { get; }
 
         public IGaProcessor<T> Processor { get; }
 
-        public IGaStorageVector<T> UnitVectorStorage { get; }
+        public IGaVectorStorage<T> UnitVectorStorage { get; }
 
         public bool IsValid
             => true;
@@ -45,7 +45,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Versors
             => false;
 
 
-        private GaHouseholderVersor([NotNull] IGaProcessor<T> processor, [NotNull] IGaStorageVector<T> unitVectorStorage)
+        private GaHouseholderVersor([NotNull] IGaProcessor<T> processor, [NotNull] IGaVectorStorage<T> unitVectorStorage)
         {
             Processor = processor;
             UnitVectorStorage = unitVectorStorage;
@@ -57,59 +57,59 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Versors
             return this;
         }
 
-        public IGaStorageVector<T> MapBasisVector(int index)
+        public IGaVectorStorage<T> MapBasisVector(int index)
         {
             return MapVector(
-                Processor.CreateStorageBasisVector(index)
+                Processor.CreateGaVectorStorage(index)
             );
         }
 
-        public IReadOnlyList<IGaStorageVector<T>> GetMappedBasisVectors()
+        public IReadOnlyList<IGaVectorStorage<T>> GetMappedBasisVectors()
         {
             throw new System.NotImplementedException();
         }
 
-        public IGaStorageVector<T> MapBasisVector(ulong index)
+        public IGaVectorStorage<T> MapBasisVector(ulong index)
         {
             return MapVector(
-                Processor.CreateStorageBasisVector(index)
+                Processor.CreateGaVectorStorage(index)
             );
         }
 
-        public IGaStorageBivector<T> MapBasisBivector(int index1, int index2)
+        public IGaBivectorStorage<T> MapBasisBivector(int index1, int index2)
         {
             return MapBivector(
-                Processor.CreateStorageBasisBivector(index1, index2)
+                Processor.CreateBivectorStorage(index1, index2)
             );
         }
 
-        public IGaStorageBivector<T> MapBasisBivector(ulong index1, ulong index2)
+        public IGaBivectorStorage<T> MapBasisBivector(ulong index1, ulong index2)
         {
             return MapBivector(
-                Processor.CreateStorageBasisBivector(index1, index2)
+                Processor.CreateBivectorStorage(index1, index2)
             );
         }
 
-        public IGaStorageKVector<T> MapBasisBlade(ulong id)
+        public IGaKVectorStorage<T> MapBasisBlade(ulong id)
         {
             return MapKVector(
-                Processor.CreateStorageBasisBlade(id)
+                Processor.CreateKVectorStorage(id)
             );
         }
 
-        public IGaStorageKVector<T> MapBasisBlade(uint grade, ulong index)
+        public IGaKVectorStorage<T> MapBasisBlade(uint grade, ulong index)
         {
             return MapKVector(
-                Processor.CreateStorageBasisBlade(grade, index)
+                Processor.CreateKVectorStorage(grade, index)
             );
         }
 
-        public IGaStorageScalar<T> MapScalar(IGaStorageScalar<T> storage)
+        public IGaScalarStorage<T> MapScalar(IGaScalarStorage<T> storage)
         {
             return storage;
         }
         
-        public IGaStorageVector<T> MapVector(IGaStorageVector<T> storage)
+        public IGaVectorStorage<T> MapVector(IGaVectorStorage<T> storage)
         {
             return Processor.EGp(
                 UnitVectorStorage, 
@@ -118,7 +118,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Versors
             ).GetVectorPart();
         }
 
-        public IGaStorageBivector<T> MapBivector(IGaStorageBivector<T> storage)
+        public IGaBivectorStorage<T> MapBivector(IGaBivectorStorage<T> storage)
         {
             return Processor.EGp(
                 UnitVectorStorage, 
@@ -127,7 +127,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Versors
             ).GetBivectorPart();
         }
 
-        public IGaStorageKVector<T> MapKVector(IGaStorageKVector<T> storage)
+        public IGaKVectorStorage<T> MapKVector(IGaKVectorStorage<T> storage)
         {
             return Processor.EGp(
                 UnitVectorStorage, 
@@ -136,7 +136,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Versors
             ).GetKVectorPart(storage.Grade);
         }
 
-        public IGaStorageMultivector<T> MapMultivector(IGaStorageMultivectorGraded<T> storage)
+        public IGaMultivectorStorage<T> MapMultivector(IGaMultivectorGradedStorage<T> storage)
         {
             return Processor.EGp(
                 UnitVectorStorage, 
@@ -145,7 +145,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Versors
             );
         }
 
-        public IGaStorageMultivector<T> MapMultivector(IGaStorageMultivectorSparse<T> storage)
+        public IGaMultivectorStorage<T> MapMultivector(IGaMultivectorSparseStorage<T> storage)
         {
             return Processor.EGp(
                 UnitVectorStorage, 
@@ -154,7 +154,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Versors
             );
         }
 
-        public IGaStorageMultivector<T> MapMultivector(IGaStorageMultivector<T> storage)
+        public IGaMultivectorStorage<T> MapMultivector(IGaMultivectorStorage<T> storage)
         {
             return Processor.EGp(
                 UnitVectorStorage, 

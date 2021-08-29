@@ -9,7 +9,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products
     public static class GaProductSpUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T Sp<T>(this IGaProcessor<T> processor, IGaStorageMultivector<T> mv1)
+        public static T Sp<T>(this IGaProcessor<T> processor, IGaMultivectorStorage<T> mv1)
         {
             return processor switch
             {
@@ -25,7 +25,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T Sp<T>(this IGaProcessor<T> processor, IGaStorageMultivector<T> mv1, IGaStorageMultivector<T> mv2)
+        public static T Sp<T>(this IGaProcessor<T> processor, IGaMultivectorStorage<T> mv1, IGaMultivectorStorage<T> mv2)
         {
             return processor switch
             {

@@ -1,18 +1,18 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
-using GeometricAlgebraFulcrumLib.Storage.Factories;
 using GeometricAlgebraFulcrumLib.Storage.Multivectors;
+using GeometricAlgebraFulcrumLib.Utilities.Extensions;
+using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
 namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonormal
 {
     public static class GaProductOrtRcpUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageScalar<T> Rcp<T>(this IGaScalarProcessor<T> scalarProcessor, IGaSignature signature, IGaStorageScalar<T> mv1, IGaStorageScalar<T> mv2)
+        public static IGaScalarStorage<T> Rcp<T>(this IScalarProcessor<T> scalarProcessor, IGaSignature signature, IGaScalarStorage<T> mv1, IGaScalarStorage<T> mv2)
         {
             return scalarProcessor.CreateStorageScalar(
                 scalarProcessor.Times(
@@ -23,14 +23,14 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageScalar<T> VectorsRcp<T>(this IGaScalarProcessor<T> scalarProcessor, IGaSignature signature, IReadOnlyList<T> vector1, IReadOnlyList<T> vector2)
+        public static IGaScalarStorage<T> VectorsRcp<T>(this IScalarProcessor<T> scalarProcessor, IGaSignature signature, IReadOnlyList<T> vector1, IReadOnlyList<T> vector2)
         {
             return scalarProcessor.CreateStorageScalar(
                 scalarProcessor.VectorsESp(vector1, vector2)
             );
         }
         
-        private static IGaStorageScalar<T> RcpAsScalar<T>(this IGaScalarProcessor<T> scalarProcessor, IGaSignature signature, IGaStorageVector<T> mv1, IGaStorageVector<T> mv2)
+        private static IGaScalarStorage<T> RcpAsScalar<T>(this IScalarProcessor<T> scalarProcessor, IGaSignature signature, IGaVectorStorage<T> mv1, IGaVectorStorage<T> mv2)
         {
             var indexScalarPairs1 = 
                 mv1.IndexScalarList;
@@ -38,11 +38,11 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
             var indexScalarPairs2 = 
                 mv2.IndexScalarList;
 
-            var lcpScalar = scalarProcessor.GetZeroScalar();
+            var lcpScalar = scalarProcessor.ScalarZero;
 
-            foreach (var (index, scalar1) in indexScalarPairs1.GetKeyValueRecords())
+            foreach (var (index, scalar1) in indexScalarPairs1.GetIndexScalarRecords())
             {
-                if (!indexScalarPairs2.TryGetValue(index, out var scalar2))
+                if (!indexScalarPairs2.TryGetScalar(index, out var scalar2))
                     continue;
 
                 var id = index.BasisVectorIndexToId();
@@ -61,12 +61,12 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
             return scalarProcessor.CreateStorageScalar(lcpScalar);
         }
 
-        public static IGaStorageScalar<T> Rcp<T>(this IGaScalarProcessor<T> scalarProcessor, IGaSignature signature, IGaStorageVector<T> mv1, IGaStorageVector<T> mv2)
+        public static IGaScalarStorage<T> Rcp<T>(this IScalarProcessor<T> scalarProcessor, IGaSignature signature, IGaVectorStorage<T> mv1, IGaVectorStorage<T> mv2)
         {
             return scalarProcessor.RcpAsScalar(signature, mv1, mv2);
         }
 
-        private static IGaStorageKVector<T> RcpAsKVector<T>(this IGaScalarProcessor<T> scalarProcessor, IGaSignature signature, IGaStorageKVector<T> mv1, IGaStorageKVector<T> mv2)
+        private static IGaKVectorStorage<T> RcpAsKVector<T>(this IScalarProcessor<T> scalarProcessor, IGaSignature signature, IGaKVectorStorage<T> mv1, IGaKVectorStorage<T> mv2)
         {
             if (mv2.Grade > mv1.Grade)
                 return scalarProcessor.CreateStorageZeroScalar();
@@ -79,7 +79,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
             var grade = grade1 - grade2;
 
             var composer = 
-                scalarProcessor.CreateStorageKVectorComposer();
+                scalarProcessor.CreateKVectorStorageComposer();
 
             var indexScalarPairs1 = 
                 mv1.IndexScalarList;
@@ -87,11 +87,11 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
             var indexScalarPairs2 = 
                 mv2.IndexScalarList;
 
-            foreach (var (index1, scalar1) in indexScalarPairs1.GetKeyValueRecords())
+            foreach (var (index1, scalar1) in indexScalarPairs1.GetIndexScalarRecords())
             {
                 var id1 = signature.BasisBladeId(grade1, index1);
 
-                foreach (var (index2, scalar2) in indexScalarPairs2.GetKeyValueRecords())
+                foreach (var (index2, scalar2) in indexScalarPairs2.GetIndexScalarRecords())
                 {
                     var id2 = signature.BasisBladeId(grade2, index2);
 
@@ -113,11 +113,11 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
 
             composer.RemoveZeroTerms();
 
-            return composer.CreateStorageKVector(grade);
+            return composer.CreateGaKVectorStorage(grade);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageKVector<T> Rcp<T>(this IGaScalarProcessor<T> scalarProcessor, IGaSignature signature, IGaStorageKVector<T> mv1, IGaStorageKVector<T> mv2)
+        public static IGaKVectorStorage<T> Rcp<T>(this IScalarProcessor<T> scalarProcessor, IGaSignature signature, IGaKVectorStorage<T> mv1, IGaKVectorStorage<T> mv2)
         {
             if (mv2.Grade > mv1.Grade)
                 return scalarProcessor.CreateStorageZeroScalar();
@@ -127,10 +127,10 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
 
             return mv1 switch
             {
-                IGaStorageScalar<T> s1 when mv2 is IGaStorageScalar<T> s2 => 
+                IGaScalarStorage<T> s1 when mv2 is IGaScalarStorage<T> s2 => 
                     Rcp(scalarProcessor, signature, s1, s2),
 
-                IGaStorageVector<T> vt1 when mv2 is IGaStorageVector<T> vt2 => 
+                IGaVectorStorage<T> vt1 when mv2 is IGaVectorStorage<T> vt2 => 
                     Rcp(scalarProcessor, signature, vt1, vt2),
                     
                 _ => 
@@ -138,7 +138,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
             };
         }
 
-        private static IGaStorageMultivectorGraded<T> RcpAsGaMultivectorGraded<T>(this IGaScalarProcessor<T> scalarProcessor, IGaSignature signature, IGaStorageMultivectorGraded<T> mv1, IGaStorageMultivectorGraded<T> mv2)
+        private static IGaMultivectorGradedStorage<T> RcpAsGaMultivectorGraded<T>(this IScalarProcessor<T> scalarProcessor, IGaSignature signature, IGaMultivectorGradedStorage<T> mv1, IGaMultivectorGradedStorage<T> mv2)
         {
             var composer = 
                 scalarProcessor.CreateStorageGradedMultivectorComposer();
@@ -146,20 +146,20 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
             var gradeIndexScalarDictionary1 = mv1.GetGradeIndexScalarList();
             var gradeIndexScalarDictionary2 = mv2.GetGradeIndexScalarList();
 
-            foreach (var (grade1, indexScalarPairs1) in gradeIndexScalarDictionary1.GetGradeListRecords())
+            foreach (var (grade1, indexScalarPairs1) in gradeIndexScalarDictionary1.GetGradeStorageRecords())
             {
-                foreach (var (grade2, indexScalarPairs2) in gradeIndexScalarDictionary2.GetGradeListRecords())
+                foreach (var (grade2, indexScalarPairs2) in gradeIndexScalarDictionary2.GetGradeStorageRecords())
                 {
                     if (grade2 > grade1) 
                         continue;
 
                     if (grade2 == grade1)
                     {
-                        foreach (var (index, scalar1) in indexScalarPairs1.GetKeyValueRecords())
+                        foreach (var (index, scalar1) in indexScalarPairs1.GetIndexScalarRecords())
                         {
                             var id = signature.BasisBladeId(grade1, index);
 
-                            if (!indexScalarPairs2.TryGetValue(index, out var scalar2))
+                            if (!indexScalarPairs2.TryGetScalar(index, out var scalar2))
                                 continue;
                             
                             var sig = signature.SpSignature(id);
@@ -180,11 +180,11 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
 
                     var grade = grade1 - grade2;
 
-                    foreach (var (index1, scalar1) in indexScalarPairs1.GetKeyValueRecords())
+                    foreach (var (index1, scalar1) in indexScalarPairs1.GetIndexScalarRecords())
                     {
                         var id1 = signature.BasisBladeId(grade1, index1);
 
-                        foreach (var (index2, scalar2) in indexScalarPairs2.GetKeyValueRecords())
+                        foreach (var (index2, scalar2) in indexScalarPairs2.GetIndexScalarRecords())
                         {
                             var id2 = signature.BasisBladeId(grade2, index2);
 
@@ -208,21 +208,21 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
 
             composer.RemoveZeroTerms();
 
-            return composer.CreateStorageGradedMultivector();
+            return composer.CreateGaMultivectorGradedStorage();
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageMultivectorGraded<T> Rcp<T>(this IGaScalarProcessor<T> scalarProcessor, IGaSignature signature, IGaStorageMultivectorGraded<T> mv1, IGaStorageMultivectorGraded<T> mv2)
+        public static IGaMultivectorGradedStorage<T> Rcp<T>(this IScalarProcessor<T> scalarProcessor, IGaSignature signature, IGaMultivectorGradedStorage<T> mv1, IGaMultivectorGradedStorage<T> mv2)
         {
             return mv1 switch
             {
-                IGaStorageScalar<T> s1 when mv2 is IGaStorageScalar<T> s2 => 
+                IGaScalarStorage<T> s1 when mv2 is IGaScalarStorage<T> s2 => 
                     Rcp(scalarProcessor, signature, s1, s2),
 
-                IGaStorageVector<T> vt1 when mv2 is IGaStorageVector<T> vt2 => 
+                IGaVectorStorage<T> vt1 when mv2 is IGaVectorStorage<T> vt2 => 
                     Rcp(scalarProcessor, signature, vt1, vt2),
                 
-                IGaStorageKVector<T> kv1 when mv2 is IGaStorageKVector<T> kv2 => 
+                IGaKVectorStorage<T> kv1 when mv2 is IGaKVectorStorage<T> kv2 => 
                     RcpAsKVector(scalarProcessor, signature, kv1, kv2),
 
                 _ => 
@@ -230,7 +230,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
             };
         }
 
-        private static IGaStorageMultivectorSparse<T> RcpAsTermsMultivector<T>(this IGaScalarProcessor<T> scalarProcessor, IGaSignature signature, IGaStorageMultivector<T> mv1, IGaStorageMultivector<T> mv2)
+        private static IGaMultivectorSparseStorage<T> RcpAsTermsMultivector<T>(this IScalarProcessor<T> scalarProcessor, IGaSignature signature, IGaMultivectorStorage<T> mv1, IGaMultivectorStorage<T> mv2)
         {
             var composer = 
                 scalarProcessor.CreateStorageSparseMultivectorComposer();
@@ -243,7 +243,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
 
             foreach (var (id1, scalar1) in idScalarPairs1)
             {
-                foreach (var (id2, scalar2) in idScalarPairs2.GetKeyValueRecords())
+                foreach (var (id2, scalar2) in idScalarPairs2.GetIndexScalarRecords())
                 {
                     var sig = 
                         signature.RcpSignature(id1, id2);
@@ -263,30 +263,30 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonorma
 
             composer.RemoveZeroTerms();
 
-            return composer.CreateStorageSparseMultivector();
+            return composer.CreateGaMultivectorSparseStorage();
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageMultivectorSparse<T> Rcp<T>(this IGaScalarProcessor<T> scalarProcessor, IGaSignature signature, IGaStorageMultivectorSparse<T> mv1, IGaStorageMultivectorSparse<T> mv2)
+        public static IGaMultivectorSparseStorage<T> Rcp<T>(this IScalarProcessor<T> scalarProcessor, IGaSignature signature, IGaMultivectorSparseStorage<T> mv1, IGaMultivectorSparseStorage<T> mv2)
         {
             return RcpAsTermsMultivector(scalarProcessor, signature, mv1, mv2);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageMultivector<T> Rcp<T>(this IGaScalarProcessor<T> scalarProcessor, IGaSignature signature, IGaStorageMultivector<T> mv1, IGaStorageMultivector<T> mv2)
+        public static IGaMultivectorStorage<T> Rcp<T>(this IScalarProcessor<T> scalarProcessor, IGaSignature signature, IGaMultivectorStorage<T> mv1, IGaMultivectorStorage<T> mv2)
         {
             return mv1 switch
             {
-                IGaStorageScalar<T> s1 when mv2 is IGaStorageScalar<T> s2 => 
+                IGaScalarStorage<T> s1 when mv2 is IGaScalarStorage<T> s2 => 
                     Rcp(scalarProcessor, signature, s1, s2),
 
-                IGaStorageVector<T> vt1 when mv2 is IGaStorageVector<T> vt2 => 
+                IGaVectorStorage<T> vt1 when mv2 is IGaVectorStorage<T> vt2 => 
                     Rcp(scalarProcessor, signature, vt1, vt2),
 
-                IGaStorageKVector<T> kvt1 when mv2 is IGaStorageKVector<T> kvt2 => 
+                IGaKVectorStorage<T> kvt1 when mv2 is IGaKVectorStorage<T> kvt2 => 
                     Rcp(scalarProcessor, signature, kvt1, kvt2),
 
-                IGaStorageMultivectorGraded<T> gmv1 when mv2 is IGaStorageMultivectorGraded<T> gmv2 => 
+                IGaMultivectorGradedStorage<T> gmv1 when mv2 is IGaMultivectorGradedStorage<T> gmv2 => 
                     RcpAsGaMultivectorGraded(scalarProcessor, signature, gmv1, gmv2),
 
                 _ =>

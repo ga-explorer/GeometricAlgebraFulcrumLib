@@ -4,12 +4,11 @@ using System.Diagnostics;
 using DataStructuresLib.BitManipulation;
 using GeometricAlgebraFulcrumLib.Algebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Factories;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
-using GeometricAlgebraFulcrumLib.Processing.Scalars.Binary;
 using GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Multivectors;
 using GeometricAlgebraFulcrumLib.Storage.Multivectors;
+using GeometricAlgebraFulcrumLib.Utilities.Extensions;
+using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
 namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
 {
@@ -54,16 +53,16 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
         private IGaGbtMultivectorStorageStack1<T> MultivectorStack3 { get; }
 
 
-        public IGaScalarProcessor<T> ScalarProcessor 
+        public IScalarProcessor<T> ScalarProcessor 
             => MultivectorStack1.ScalarProcessor;
 
-        public IGaStorageMultivector<T> Storage1 
+        public IGaMultivectorStorage<T> Storage1 
             => MultivectorStack1.Storage;
 
-        public IGaStorageMultivector<T> Storage2 
+        public IGaMultivectorStorage<T> Storage2 
             => MultivectorStack2.Storage;
 
-        public IGaStorageMultivector<T> Storage3 
+        public IGaMultivectorStorage<T> Storage3 
             => MultivectorStack3.Storage;
 
         public T TosValue1 

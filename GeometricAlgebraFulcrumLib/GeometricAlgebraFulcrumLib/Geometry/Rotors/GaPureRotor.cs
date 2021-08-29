@@ -3,18 +3,15 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using DataStructuresLib.BitManipulation;
 using GeometricAlgebraFulcrumLib.Algebra.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Factories;
 using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Space;
 using GeometricAlgebraFulcrumLib.Algebra.Outermorphisms;
+using GeometricAlgebraFulcrumLib.Processing.Matrices;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors.Binary;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors.Unary;
-using GeometricAlgebraFulcrumLib.Processing.ScalarsGrids;
-using GeometricAlgebraFulcrumLib.Storage.Factories;
 using GeometricAlgebraFulcrumLib.Storage.Multivectors;
-using GeometricAlgebraFulcrumLib.Storage.Utils;
+using GeometricAlgebraFulcrumLib.Utilities.Extensions;
+using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
 namespace GeometricAlgebraFulcrumLib.Geometry.Rotors
 {
@@ -45,16 +42,16 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Rotors
         public IEnumerable<uint> Grades 
             => Processor.Grades;
 
-        public IGaScalarsGridProcessor<T> ScalarsGridProcessor 
+        public ILaProcessor<T> ScalarsGridProcessor 
             => Processor;
 
-        public IGaStorageKVector<T> MappedPseudoScalar { get; }
+        public IGaKVectorStorage<T> MappedPseudoScalar { get; }
 
         public IGaProcessor<T> Processor { get; }
 
-        public IGaStorageMultivector<T> Multivector { get; }
+        public IGaMultivectorStorage<T> Multivector { get; }
 
-        public IGaStorageMultivector<T> MultivectorReverse { get; }
+        public IGaMultivectorStorage<T> MultivectorReverse { get; }
 
         public bool IsValid
         {
@@ -78,7 +75,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Rotors
                 var diff =
                     Processor.Subtract(
                         Processor.GetTermScalar(gp, 0),
-                        Processor.GetOneScalar()
+                        Processor.ScalarOne
                     );
 
                 if (!Processor.IsNearZero(diff))
@@ -100,26 +97,26 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Rotors
         //    MappedPseudoScalar = Processor.CreatePseudoScalar(VSpaceDimension);
         //}
 
-        internal GaPureRotor([NotNull] IGaProcessor<T> processor, [NotNull] T scalarPart, [NotNull] IGaStorageBivector<T> bivectorPart)
+        internal GaPureRotor([NotNull] IGaProcessor<T> processor, [NotNull] T scalarPart, [NotNull] IGaBivectorStorage<T> bivectorPart)
         {
             Processor = processor;
             Multivector = processor.Add(scalarPart, bivectorPart);
             MultivectorReverse = Processor.Subtract(scalarPart, bivectorPart);
-            MappedPseudoScalar = Processor.CreateStoragePseudoScalar(VSpaceDimension);
+            MappedPseudoScalar = Processor.CreatePseudoScalarStorage(VSpaceDimension);
         }
 
-        internal GaPureRotor([NotNull] IGaProcessor<T> processor, [NotNull] IGaStorageMultivector<T> multivector, [NotNull] IGaStorageMultivector<T> multivectorReverse)
+        internal GaPureRotor([NotNull] IGaProcessor<T> processor, [NotNull] IGaMultivectorStorage<T> multivector, [NotNull] IGaMultivectorStorage<T> multivectorReverse)
         {
             Processor = processor;
             Multivector = multivector;
             MultivectorReverse = multivectorReverse;
-            MappedPseudoScalar = Processor.CreateStoragePseudoScalar(VSpaceDimension);
+            MappedPseudoScalar = Processor.CreatePseudoScalarStorage(VSpaceDimension);
         }
 
 
         public GaVector<T> Map(GaVector<T> vector)
         {
-            return Processor.CreateGenericVector(
+            return Processor.CreateGaVector(
                 MapVector(vector.VectorStorage)
             );
         }
@@ -143,16 +140,16 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Rotors
             );
         }
 
-        public IGaStorageVector<T> MapBasisVector(int index)
+        public IGaVectorStorage<T> MapBasisVector(int index)
         {
             return MapVector(
-                Processor.CreateStorageVector(index, 
-                    Processor.GetOneScalar()
+                Processor.CreateGaVectorStorage(index, 
+                    Processor.ScalarOne
                 )
             );
         }
 
-        public IReadOnlyList<IGaStorageVector<T>> GetMappedBasisVectors()
+        public IReadOnlyList<IGaVectorStorage<T>> GetMappedBasisVectors()
         {
             return ((ulong) VSpaceDimension)
                 .GetRange()
@@ -160,85 +157,85 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Rotors
                 .ToArray();
         }
 
-        public IGaStorageVector<T> MapBasisVector(ulong index)
+        public IGaVectorStorage<T> MapBasisVector(ulong index)
         {
             return MapVector(
-                Processor.CreateStorageBasisVector(index)
+                Processor.CreateGaVectorStorage(index)
             );
         }
 
-        public IGaStorageBivector<T> MapBasisBivector(int index1, int index2)
+        public IGaBivectorStorage<T> MapBasisBivector(int index1, int index2)
         {
             return MapBivector(
-                Processor.CreateStorageBasisBivector(index1, index2)
+                Processor.CreateBivectorStorage(index1, index2)
             );
         }
 
-        public IGaStorageBivector<T> MapBasisBivector(ulong index1, ulong index2)
+        public IGaBivectorStorage<T> MapBasisBivector(ulong index1, ulong index2)
         {
             return MapBivector(
-                Processor.CreateStorageBasisBivector(index1, index2)
+                Processor.CreateBivectorStorage(index1, index2)
             );
         }
 
-        public IGaStorageKVector<T> MapBasisBlade(ulong id)
+        public IGaKVectorStorage<T> MapBasisBlade(ulong id)
         {
             return MapTerm(
-                Processor.CreateStorageBasisBlade(id)
+                Processor.CreateKVectorStorage(id)
             );
         }
 
-        public IGaStorageKVector<T> MapBasisBlade(uint grade, ulong index)
+        public IGaKVectorStorage<T> MapBasisBlade(uint grade, ulong index)
         {
             return MapTerm(
-                Processor.CreateStorageBasisBlade(grade, index)
+                Processor.CreateKVectorStorage(grade, index)
             );
         }
 
-        public IGaStorageScalar<T> MapScalar(IGaStorageScalar<T> storage)
+        public IGaScalarStorage<T> MapScalar(IGaScalarStorage<T> storage)
         {
             return storage;
         }
 
-        public IGaStorageKVector<T> MapTerm(IGaStorageKVector<T> storage)
+        public IGaKVectorStorage<T> MapTerm(IGaKVectorStorage<T> storage)
         {
             return Processor
                 .Gp(Multivector, storage, MultivectorReverse)
                 .GetKVectorPart(storage.Grade);
         }
 
-        public IGaStorageVector<T> MapVector(IGaStorageVector<T> storage)
+        public IGaVectorStorage<T> MapVector(IGaVectorStorage<T> storage)
         {
             return Processor
                 .Gp(Multivector, storage, MultivectorReverse)
                 .GetVectorPart();
         }
 
-        public IGaStorageBivector<T> MapBivector(IGaStorageBivector<T> storage)
+        public IGaBivectorStorage<T> MapBivector(IGaBivectorStorage<T> storage)
         {
             return Processor
                 .Gp(Multivector, storage, MultivectorReverse)
                 .GetBivectorPart();
         }
 
-        public IGaStorageKVector<T> MapKVector(IGaStorageKVector<T> storage)
+        public IGaKVectorStorage<T> MapKVector(IGaKVectorStorage<T> storage)
         {
             return Processor
                 .Gp(Multivector, storage, MultivectorReverse)
                 .GetKVectorPart(storage.Grade);
         }
 
-        public IGaStorageMultivector<T> MapMultivector(IGaStorageMultivectorGraded<T> storage)
+        public IGaMultivectorStorage<T> MapMultivector(IGaMultivectorGradedStorage<T> storage)
         {
             return Processor.Gp(Multivector, storage, MultivectorReverse);
         }
 
-        public IGaStorageMultivector<T> MapMultivector(IGaStorageMultivectorSparse<T> storage)
+        public IGaMultivectorStorage<T> MapMultivector(IGaMultivectorSparseStorage<T> storage)
         {
             return Processor.Gp(Multivector, storage, MultivectorReverse);
         }
 
-        public IGaStorageMultivector<T> MapMultivector(IGaStorageMultivector<T> storage)
+        public IGaMultivectorStorage<T> MapMultivector(IGaMultivectorStorage<T> storage)
         {
             return Processor.Gp(Multivector, storage, MultivectorReverse);
         }

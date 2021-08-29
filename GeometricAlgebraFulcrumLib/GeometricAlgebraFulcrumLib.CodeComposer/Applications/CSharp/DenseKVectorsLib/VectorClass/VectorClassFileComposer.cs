@@ -6,9 +6,9 @@ using TextComposerLib.Text.Structured;
 namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVectorsLib.VectorClass
 {
     internal class VectorClassFileComposer : 
-        GaLibraryFileComposerBase 
+        GaFuLLibraryFileComposerBase 
     {
-        internal VectorClassFileComposer(GaLibraryComposer libGen)
+        internal VectorClassFileComposer(GaFuLLibraryComposer libGen)
             : base(libGen)
         {
         }

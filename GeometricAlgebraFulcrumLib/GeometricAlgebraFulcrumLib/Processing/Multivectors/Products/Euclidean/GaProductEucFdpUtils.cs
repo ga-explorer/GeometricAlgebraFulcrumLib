@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonormal;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
-using GeometricAlgebraFulcrumLib.Storage.Factories;
 using GeometricAlgebraFulcrumLib.Storage.Multivectors;
+using GeometricAlgebraFulcrumLib.Utilities.Extensions;
+using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
 namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean
 {
     public static class GaProductEucFdpUtils
     {
-        public static IGaStorageKVector<T> EFdp<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageKVector<T> mv1, IGaStorageKVector<T> mv2)
+        public static IGaKVectorStorage<T> EFdp<T>(this IScalarProcessor<T> scalarProcessor, IGaKVectorStorage<T> mv1, IGaKVectorStorage<T> mv2)
         {
             var grade1 = mv1.Grade;
             var grade2 = mv2.Grade;
@@ -20,7 +20,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean
             var grade = (uint) Math.Abs(grade2 - grade1);
 
             var composer = 
-                scalarProcessor.CreateStorageKVectorComposer();
+                scalarProcessor.CreateKVectorStorageComposer();
 
             var indexScalarPairs1 = 
                 mv1.IndexScalarList;
@@ -28,11 +28,11 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean
             var indexScalarPairs2 = 
                 mv2.IndexScalarList;
 
-            foreach (var (index1, scalar1) in indexScalarPairs1.GetKeyValueRecords())
+            foreach (var (index1, scalar1) in indexScalarPairs1.GetIndexScalarRecords())
             {
                 var id1 = index1.BasisBladeIndexToId(grade1);
 
-                foreach (var (index2, scalar2) in indexScalarPairs2.GetKeyValueRecords())
+                foreach (var (index2, scalar2) in indexScalarPairs2.GetIndexScalarRecords())
                 {
                     var id2 = index2.BasisBladeIndexToId(grade2);
 
@@ -54,12 +54,12 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean
 
             composer.RemoveZeroTerms();
 
-            return composer.CreateStorageKVector(grade);
+            return composer.CreateGaKVectorStorage(grade);
         }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageMultivector<T> EFdp<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivector<T> mv1, IGaStorageMultivector<T> mv2)
+        public static IGaMultivectorStorage<T> EFdp<T>(this IScalarProcessor<T> scalarProcessor, IGaMultivectorStorage<T> mv1, IGaMultivectorStorage<T> mv2)
         {
             return scalarProcessor.BilinearProduct(mv1, mv2, GaBasisBladeProductUtils.EFdpSignature);
         }

@@ -6,9 +6,9 @@ using TextComposerLib.Text.Structured;
 namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVectorsLib.KVector
 {
     internal sealed class BilinearProductMainMethodFileComposer : 
-        GaLibraryFileComposerBase
+        GaFuLLibraryFileComposerBase
     {
-        internal GaLanguageOperationSpecs OperationSpecs { get; }
+        internal GaFuLLanguageOperationSpecs OperationSpecs { get; }
 
         internal string ZeroCondition { get; }
 
@@ -17,7 +17,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         internal Func<uint, uint, bool> IsLegalGrade { get; }
 
 
-        internal BilinearProductMainMethodFileComposer(GaLibraryComposer libGen, GaLanguageOperationSpecs opSpecs, string zeroCondition, Func<uint, uint, uint> getFinalGrade, Func<uint, uint, bool> isLegalGrade)
+        internal BilinearProductMainMethodFileComposer(GaFuLLibraryComposer libGen, GaFuLLanguageOperationSpecs opSpecs, string zeroCondition, Func<uint, uint, uint> getFinalGrade, Func<uint, uint, bool> isLegalGrade)
             : base(libGen)
         {
             OperationSpecs = opSpecs;

@@ -1,6 +1,6 @@
 ﻿using System;
+using GeometricAlgebraFulcrumLib.Mathematica;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products;
-using GeometricAlgebraFulcrumLib.Symbolic;
 
 namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
 {

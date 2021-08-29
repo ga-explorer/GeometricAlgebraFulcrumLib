@@ -4,13 +4,15 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using GeometricAlgebraFulcrumLib.Processing.Matrices;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
-using GeometricAlgebraFulcrumLib.Processing.ScalarsGrids;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context.Optimizer;
-using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Factories;
+using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Evaluators;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.HeadSpecs;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Numbers;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Variables;
+using GeometricAlgebraFulcrumLib.Utilities.Extensions;
+using GeometricAlgebraFulcrumLib.Utilities.Factories;
 using TextComposerLib.Text;
 // ReSharper disable MemberCanBePrivate.Global
 
@@ -18,7 +20,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
 {
     [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
     public sealed class SymbolicContext :
-        IGaScalarsGridProcessor<ISymbolicExpressionAtomic>
+        ILaProcessor<ISymbolicExpressionAtomic>
     {
         private int _tempNamesIndex;
 
@@ -34,11 +36,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
 
         private readonly Dictionary<string, ISymbolicVariableComputed> _computedVariablesDictionary
             = new Dictionary<string, ISymbolicVariableComputed>();
-
-        private readonly ISymbolicExpressionAtomic _zeroScalar;
-        private readonly ISymbolicExpressionAtomic _oneScalar;
-        private readonly ISymbolicExpressionAtomic _minusOneScalar;
-        private readonly ISymbolicExpressionAtomic _piScalar;
+        
 
         public double ZeroEpsilon { get; set; }
             = 1e-13d;
@@ -48,19 +46,45 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
 
         public bool IsSymbolic 
             => true;
+        
+        public ISymbolicExpressionAtomic ScalarZero { get; }
 
-        public IGaScalarProcessor<ISymbolicExpression> SymbolicExpressionProcessor { get; }
+        public ISymbolicExpressionAtomic ScalarOne { get; }
 
-        public ISymbolicExpressionSimplifier ExpressionSimplifier { get; set; }
+        public ISymbolicExpressionAtomic ScalarMinusOne { get; }
+
+        public ISymbolicExpressionAtomic ScalarTwo { get; }
+        
+        public ISymbolicExpressionAtomic ScalarMinusTwo { get; }
+        
+        public ISymbolicExpressionAtomic ScalarTen { get; }
+        
+        public ISymbolicExpressionAtomic ScalarMinusTen { get; }
+
+        public ISymbolicExpressionAtomic ScalarPi { get; }
+
+        public ISymbolicExpressionAtomic ScalarE { get; }
+
+        public IScalarProcessor<ISymbolicExpression> SymbolicExpressionProcessor { get; }
+
+        public AngouriMathSymbolicExpressionEvaluator AngouriMathExpressionEvaluator { get; }
+
+        private ISymbolicExpressionEvaluator _expressionEvaluator;
+
+        public ISymbolicExpressionEvaluator ExpressionEvaluator
+        {
+            get => _expressionEvaluator ?? AngouriMathExpressionEvaluator;
+            set => _expressionEvaluator = value;
+        }
 
         public SymbolicContextOptions ContextOptions { get; }
             = new SymbolicContextOptions();
 
-        public SymbolicNumbersFactory NumbersFactory { get; }
+        public SymbolicNumberFactory NumbersFactory { get; }
 
-        public SymbolicParameterVariablesFactory ParameterVariablesFactory { get; }
+        public SymbolicParameterVariableFactory ParameterVariablesFactory { get; }
 
-        public SymbolicComputedVariablesFactory ComputedVariablesFactory { get; }
+        public SymbolicComputedVariableFactory ComputedVariablesFactory { get; }
 
         public SymbolicFunctionHeadSpecsFactory FunctionHeadSpecsFactory { get; }
 
@@ -69,24 +93,30 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
 
         public bool MergeExpressions { get; set; }
 
-        public IGaScalarProcessor<ISymbolicExpressionAtomic> ScalarProcessor 
+        public IScalarProcessor<ISymbolicExpressionAtomic> ScalarProcessor 
             => this;
 
 
         public SymbolicContext()
         {
-            NumbersFactory = new SymbolicNumbersFactory(this);
-            ParameterVariablesFactory = new SymbolicParameterVariablesFactory(this);
-            ComputedVariablesFactory = new SymbolicComputedVariablesFactory(this);
+            NumbersFactory = new SymbolicNumberFactory(this);
+            ParameterVariablesFactory = new SymbolicParameterVariableFactory(this);
+            ComputedVariablesFactory = new SymbolicComputedVariableFactory(this);
 
-            _zeroScalar = GetOrDefineLiteralNumber(0);
-            _oneScalar = GetOrDefineLiteralNumber(1);
-            _minusOneScalar = GetOrDefineLiteralNumber(-1);
-            _piScalar = GetOrDefineSymbolicNumber("Pi", Math.PI); //TODO: This should be more dynamic
+            ScalarZero = GetOrDefineLiteralNumber(0);
+            ScalarOne = GetOrDefineLiteralNumber(1);
+            ScalarMinusOne = GetOrDefineLiteralNumber(-1);
+            ScalarTwo = GetOrDefineLiteralNumber(2);
+            ScalarMinusTwo = GetOrDefineLiteralNumber(-2);
+            ScalarTen = GetOrDefineLiteralNumber(10);
+            ScalarMinusTen = GetOrDefineLiteralNumber(-10);
+            ScalarPi = GetOrDefineSymbolicNumber(SymbolicNumberNames.Pi, Math.PI);
+            ScalarE = GetOrDefineSymbolicNumber(SymbolicNumberNames.E, Math.E);
 
             //These must be initialized after all other members
-            SymbolicExpressionProcessor = new GaScalarProcessorSymbolicExpression(this);
+            SymbolicExpressionProcessor = new SymbolicExpressionScalarProcessor(this);
             FunctionHeadSpecsFactory = new SymbolicFunctionHeadSpecsFactory(this);
+            AngouriMathExpressionEvaluator = this.CreateAngouriMathEvaluator();
         }
 
         public SymbolicContext(SymbolicContextOptions options)
@@ -95,10 +125,10 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
             ContextOptions.SetOptions(options);
         }
 
-        public SymbolicContext([NotNull] ISymbolicExpressionSimplifier expressionReducer)
+        public SymbolicContext([NotNull] ISymbolicExpressionEvaluator expressionEvaluator)
             : this()
         {
-            ExpressionSimplifier = expressionReducer;
+            ExpressionEvaluator = expressionEvaluator;
         }
 
 
@@ -107,7 +137,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
         {
             _tempNamesIndex++;
 
-            return $"{DefaultSymbolName}{_tempNamesIndex}";
+            return $"{DefaultSymbolName}_{_tempNamesIndex}";
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -404,7 +434,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
             return atomic;
         }
 
-        public ISymbolicNumber GetOrDefineRationalNumber(int numerator, int denominator)
+        public ISymbolicNumber GetOrDefineRationalNumber(long numerator, long denominator)
         {
             var numberText = 
                 SymbolicNumber.GetRationalNumberText(numerator, denominator);
@@ -697,62 +727,6 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
             RemoveNotUsedComputedVariables();
         }
 
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ISymbolicExpressionAtomic GetZeroScalar()
-        {
-            return _zeroScalar;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ISymbolicExpressionAtomic GetOneScalar()
-        {
-            return _oneScalar;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ISymbolicExpressionAtomic GetMinusOneScalar()
-        {
-            return _minusOneScalar;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ISymbolicExpressionAtomic GetPiScalar()
-        {
-            return _piScalar;
-        }
-
-        public ISymbolicExpressionAtomic[] GetZeroScalarArray1D(int count)
-        {
-            var array = new ISymbolicExpressionAtomic[count];
-
-            for (var i = 0; i < count; i++)
-                array[i] = _zeroScalar;
-
-            return array;
-        }
-
-        public ISymbolicExpressionAtomic[,] GetZeroScalarArray2D(int count)
-        {
-            var array = new ISymbolicExpressionAtomic[count, count];
-
-            for (var i = 0; i < count; i++)
-            for (var j = 0; j < count; j++)
-                array[i, j] = _zeroScalar;
-
-            return array;
-        }
-
-        public ISymbolicExpressionAtomic[,] GetZeroScalarArray2D(int count1, int count2)
-        {
-            var array = new ISymbolicExpressionAtomic[count1, count2];
-
-            for (var i = 0; i < count1; i++)
-            for (var j = 0; j < count2; j++)
-                array[i, j] = _zeroScalar;
-
-            return array;
-        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ISymbolicExpressionAtomic Add(ISymbolicExpressionAtomic scalar1, ISymbolicExpressionAtomic scalar2)
@@ -905,12 +879,22 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ISymbolicExpressionAtomic Log(ISymbolicExpressionAtomic scalar, ISymbolicExpressionAtomic baseScalar)
+        public ISymbolicExpressionAtomic Power(ISymbolicExpressionAtomic baseScalar, ISymbolicExpressionAtomic scalar)
+        {
+            return GetOrDefineComputedVariable(
+                SymbolicExpressionProcessor.Power,
+                baseScalar,
+                scalar
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ISymbolicExpressionAtomic Log(ISymbolicExpressionAtomic baseScalar, ISymbolicExpressionAtomic scalar)
         {
             return GetOrDefineComputedVariable(
                 SymbolicExpressionProcessor.Log,
-                scalar,
-                baseScalar
+                baseScalar,
+                scalar
             );
         }
 
@@ -1114,25 +1098,25 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ISymbolicExpressionAtomic TextToScalar(string text)
+        public ISymbolicExpressionAtomic GetScalarFromText(string text)
         {
-            return (ISymbolicExpressionAtomic) SymbolicExpressionProcessor.TextToScalar(text);
+            return (ISymbolicExpressionAtomic) SymbolicExpressionProcessor.GetScalarFromText(text);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ISymbolicExpressionAtomic IntegerToScalar(int value)
+        public ISymbolicExpressionAtomic GetScalarFromInteger(int value)
         {
             return GetOrDefineLiteralNumber((double) value);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ISymbolicExpressionAtomic Float64ToScalar(double value)
+        public ISymbolicExpressionAtomic GetScalarFromFloat64(double value)
         {
             return GetOrDefineLiteralNumber((long) value);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ISymbolicExpressionAtomic GetRandomScalar(System.Random randomGenerator, double minValue, double maxValue)
+        public ISymbolicExpressionAtomic GetScalarFromRandom(System.Random randomGenerator, double minValue, double maxValue)
         {
             var value = 
                 minValue + (maxValue - minValue) * randomGenerator.NextDouble();
@@ -1159,6 +1143,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
                 computedVariable.ClearDependencyData();
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void ResetComputedVariables(IEnumerable<ISymbolicVariableComputed> computedVariablesList)
         {
             _computedVariablesDictionary.Clear();
@@ -1170,17 +1155,18 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context
                 );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void SimplifyRhsExpressions()
         {
-            if (ExpressionSimplifier is null) 
-                return;
+            var expressionEvaluator = ExpressionEvaluator;
 
             foreach (var computedVariable in GetComputedVariables())
                 computedVariable.ResetRhsExpression(
-                    ExpressionSimplifier.Simplify(computedVariable.RhsExpression)
+                    expressionEvaluator.Simplify(computedVariable.RhsExpression)
                 );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void OptimizeContext()
         {
             SimplifyRhsExpressions();

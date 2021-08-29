@@ -3,9 +3,9 @@
 namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVectorsLib.Multivector
 {
     internal class MultivectorClassFileComposer : 
-        GaLibraryFileComposerBase 
+        GaFuLLibraryFileComposerBase 
     {
-        internal MultivectorClassFileComposer(GaLibraryComposer libGen)
+        internal MultivectorClassFileComposer(GaFuLLibraryComposer libGen)
             : base(libGen)
         {
         }

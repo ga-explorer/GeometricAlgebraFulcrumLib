@@ -4,62 +4,46 @@ using GeometricAlgebraFulcrumLib.Processing.Scalars;
 namespace GeometricAlgebraFulcrumLib.Processing.Tuples
 {
     public sealed class GaScalarProcessorTuple<T>
-        : IGaScalarProcessor<IGaTuple<T>>
+        : IScalarProcessor<IGaTuple<T>>
     {
-        private readonly IGaTuple<T> _zeroScalar;
-        private readonly IGaTuple<T> _oneScalar;
-        private readonly IGaTuple<T> _minusOneScalar;
-        private readonly IGaTuple<T> _piScalar;
-        public IGaScalarProcessor<T> ItemsScalarsDomain { get; }
+        public IScalarProcessor<T> ItemScalarProcessor { get; }
 
         public bool IsNumeric => false;
 
         public bool IsSymbolic => false;
 
-        public IGaTuple<T> GetZeroScalar()
+        public IGaTuple<T> ScalarZero { get; }
+
+        public IGaTuple<T> ScalarOne { get; }
+
+        public IGaTuple<T> ScalarMinusOne { get; }
+
+        public IGaTuple<T> ScalarTwo { get; }
+
+        public IGaTuple<T> ScalarMinusTwo { get; }
+
+        public IGaTuple<T> ScalarTen { get; }
+
+        public IGaTuple<T> ScalarMinusTen { get; }
+
+        public IGaTuple<T> ScalarPi { get; }
+
+        public IGaTuple<T> ScalarE { get; }
+
+
+        public GaScalarProcessorTuple([NotNull] IScalarProcessor<T> itemScalarProcessor)
         {
-            return _zeroScalar;
-        }
+            ItemScalarProcessor = itemScalarProcessor;
 
-        public IGaTuple<T> GetOneScalar()
-        {
-            return _oneScalar;
-        }
-
-        public IGaTuple<T> GetMinusOneScalar()
-        {
-            return _minusOneScalar;
-        }
-
-        public IGaTuple<T> GetPiScalar()
-        {
-            return _piScalar;
-        }
-
-        public IGaTuple<T>[] GetZeroScalarArray1D(int count)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public IGaTuple<T>[,] GetZeroScalarArray2D(int count)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public IGaTuple<T>[,] GetZeroScalarArray2D(int count1, int count2)
-        {
-            throw new System.NotImplementedException();
-        }
-
-
-        public GaScalarProcessorTuple([NotNull] IGaScalarProcessor<T> itemsScalarsDomain)
-        {
-            ItemsScalarsDomain = itemsScalarsDomain;
-
-            _zeroScalar = GaConstantTuple<T>.Create(itemsScalarsDomain, itemsScalarsDomain.GetZeroScalar());
-            _oneScalar = GaConstantTuple<T>.Create(itemsScalarsDomain, itemsScalarsDomain.GetOneScalar());
-            _minusOneScalar = GaConstantTuple<T>.Create(itemsScalarsDomain, itemsScalarsDomain.GetMinusOneScalar());
-            _piScalar = GaConstantTuple<T>.Create(itemsScalarsDomain, itemsScalarsDomain.GetPiScalar());
+            ScalarZero = GaConstantTuple<T>.Create(itemScalarProcessor, itemScalarProcessor.ScalarZero);
+            ScalarOne = GaConstantTuple<T>.Create(itemScalarProcessor, itemScalarProcessor.ScalarOne);
+            ScalarMinusOne = GaConstantTuple<T>.Create(itemScalarProcessor, itemScalarProcessor.ScalarMinusOne);
+            ScalarTwo = GaConstantTuple<T>.Create(itemScalarProcessor, itemScalarProcessor.ScalarTwo);
+            ScalarMinusTwo = GaConstantTuple<T>.Create(itemScalarProcessor, itemScalarProcessor.ScalarMinusTwo);
+            ScalarTen = GaConstantTuple<T>.Create(itemScalarProcessor, itemScalarProcessor.ScalarTen);
+            ScalarMinusTen = GaConstantTuple<T>.Create(itemScalarProcessor, itemScalarProcessor.ScalarMinusTen);
+            ScalarPi = GaConstantTuple<T>.Create(itemScalarProcessor, itemScalarProcessor.ScalarPi);
+            ScalarE = GaConstantTuple<T>.Create(itemScalarProcessor, itemScalarProcessor.ScalarE);
         }
 
 
@@ -105,100 +89,108 @@ namespace GeometricAlgebraFulcrumLib.Processing.Tuples
 
         public IGaTuple<T> Inverse(IGaTuple<T> scalar)
         {
-            return scalar.MapScalars(ItemsScalarsDomain.Inverse);
+            return scalar.MapScalars(ItemScalarProcessor.Inverse);
         }
 
         public IGaTuple<T> Abs(IGaTuple<T> scalar)
         {
-            return scalar.MapScalars(ItemsScalarsDomain.Abs);
+            return scalar.MapScalars(ItemScalarProcessor.Abs);
         }
 
         public IGaTuple<T> Sqrt(IGaTuple<T> scalar)
         {
-            return scalar.MapScalars(ItemsScalarsDomain.Sqrt);
+            return scalar.MapScalars(ItemScalarProcessor.Sqrt);
         }
 
         public IGaTuple<T> SqrtOfAbs(IGaTuple<T> scalar)
         {
-            return scalar.MapScalars(ItemsScalarsDomain.SqrtOfAbs);
+            return scalar.MapScalars(ItemScalarProcessor.SqrtOfAbs);
         }
 
         public IGaTuple<T> Exp(IGaTuple<T> scalar)
         {
-            return scalar.MapScalars(ItemsScalarsDomain.Exp);
+            return scalar.MapScalars(ItemScalarProcessor.Exp);
         }
 
         public IGaTuple<T> Log(IGaTuple<T> scalar)
         {
-            return scalar.MapScalars(ItemsScalarsDomain.Log);
+            return scalar.MapScalars(ItemScalarProcessor.Log);
         }
 
         public IGaTuple<T> Log2(IGaTuple<T> scalar)
         {
-            return scalar.MapScalars(ItemsScalarsDomain.Log2);
+            return scalar.MapScalars(ItemScalarProcessor.Log2);
         }
 
         public IGaTuple<T> Log10(IGaTuple<T> scalar)
         {
-            return scalar.MapScalars(ItemsScalarsDomain.Log10);
+            return scalar.MapScalars(ItemScalarProcessor.Log10);
         }
-
-        public IGaTuple<T> Log(IGaTuple<T> scalar, IGaTuple<T> baseScalar)
+        
+        public IGaTuple<T> Power(IGaTuple<T> baseScalar, IGaTuple<T> scalar)
         {
             return scalar.MapScalars(
                 baseScalar, 
-                (s1, s2) => ItemsScalarsDomain.Log(s1, s2)
+                (s1, s2) => ItemScalarProcessor.Power(s1, s2)
+            );
+        }
+
+        public IGaTuple<T> Log(IGaTuple<T> baseScalar, IGaTuple<T> scalar)
+        {
+            return scalar.MapScalars(
+                baseScalar, 
+                (s1, s2) => ItemScalarProcessor.Log(s1, s2)
             );
         }
 
         public IGaTuple<T> Cos(IGaTuple<T> scalar)
         {
-            return scalar.MapScalars(ItemsScalarsDomain.Cos);
+            return scalar.MapScalars(ItemScalarProcessor.Cos);
         }
 
         public IGaTuple<T> Sin(IGaTuple<T> scalar)
         {
-            return scalar.MapScalars(ItemsScalarsDomain.Sin);
+            return scalar.MapScalars(ItemScalarProcessor.Sin);
         }
 
         public IGaTuple<T> Tan(IGaTuple<T> scalar)
         {
-            return scalar.MapScalars(ItemsScalarsDomain.Tan);
+            return scalar.MapScalars(ItemScalarProcessor.Tan);
         }
 
         public IGaTuple<T> ArcCos(IGaTuple<T> scalar)
         {
-            return scalar.MapScalars(ItemsScalarsDomain.ArcCos);
+            return scalar.MapScalars(ItemScalarProcessor.ArcCos);
         }
 
         public IGaTuple<T> ArcSin(IGaTuple<T> scalar)
         {
-            return scalar.MapScalars(ItemsScalarsDomain.ArcSin);
+            return scalar.MapScalars(ItemScalarProcessor.ArcSin);
         }
 
         public IGaTuple<T> ArcTan(IGaTuple<T> scalar)
         {
-            return scalar.MapScalars(ItemsScalarsDomain.ArcTan);
+            return scalar.MapScalars(ItemScalarProcessor.ArcTan);
         }
 
         public IGaTuple<T> ArcTan2(IGaTuple<T> scalarX, IGaTuple<T> scalarY)
         {
-            return scalarX.MapScalars(scalarY, ItemsScalarsDomain.ArcTan2);
+            return scalarX.MapScalars(scalarY, ItemScalarProcessor.ArcTan2);
         }
 
         public IGaTuple<T> Cosh(IGaTuple<T> scalar)
         {
-            return scalar.MapScalars(ItemsScalarsDomain.Cosh);
+            return scalar.MapScalars(ItemScalarProcessor.Cosh);
         }
 
         public IGaTuple<T> Sinh(IGaTuple<T> scalar)
         {
-            return scalar.MapScalars(ItemsScalarsDomain.Sinh);
+            return scalar.MapScalars(ItemScalarProcessor.Sinh);
         }
 
         public IGaTuple<T> Tanh(IGaTuple<T> scalar)
         {
-            return scalar.MapScalars(ItemsScalarsDomain.Tanh);
+            return scalar.MapScalars(ItemScalarProcessor.Tanh);
         }
 
         public bool IsValid(IGaTuple<T> scalar)
@@ -268,32 +260,32 @@ namespace GeometricAlgebraFulcrumLib.Processing.Tuples
             throw new System.NotImplementedException();
         }
 
-        public IGaTuple<T> TextToScalar(string text)
+        public IGaTuple<T> GetScalarFromText(string text)
         {
             throw new System.NotImplementedException();
         }
 
-        public IGaTuple<T> IntegerToScalar(int value)
+        public IGaTuple<T> GetScalarFromInteger(int value)
         {
             return GaConstantTuple<T>.Create(
-                ItemsScalarsDomain, 
-                ItemsScalarsDomain.IntegerToScalar(value)
+                ItemScalarProcessor, 
+                ItemScalarProcessor.GetScalarFromInteger(value)
             );
         }
 
-        public IGaTuple<T> Float64ToScalar(double value)
+        public IGaTuple<T> GetScalarFromFloat64(double value)
         {
             return GaConstantTuple<T>.Create(
-                ItemsScalarsDomain, 
-                ItemsScalarsDomain.Float64ToScalar(value)
+                ItemScalarProcessor, 
+                ItemScalarProcessor.GetScalarFromFloat64(value)
             );
         }
 
-        public IGaTuple<T> GetRandomScalar(System.Random randomGenerator, double minValue, double maxValue)
+        public IGaTuple<T> GetScalarFromRandom(System.Random randomGenerator, double minValue, double maxValue)
         {
             return GaConstantTuple<T>.Create(
-                ItemsScalarsDomain, 
-                ItemsScalarsDomain.GetRandomScalar(randomGenerator, minValue, maxValue)
+                ItemScalarProcessor, 
+                ItemScalarProcessor.GetScalarFromRandom(randomGenerator, minValue, maxValue)
             );
         }
 

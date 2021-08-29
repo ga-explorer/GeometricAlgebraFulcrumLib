@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Linq;
 using DataStructuresLib.BitManipulation;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
+using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using TextComposerLib.Text.Linear;
 using TextComposerLib.Text.Structured;
 
 namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVectorsLib.KVector
 {
     internal sealed class EqualsMethodsFileComposer : 
-        GaLibraryFileComposerBase
+        GaFuLLibraryFileComposerBase
     {
-        internal EqualsMethodsFileComposer(GaLibraryComposer libGen)
+        internal EqualsMethodsFileComposer(GaFuLLibraryComposer libGen)
             : base(libGen)
         {
         }

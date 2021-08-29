@@ -1,34 +1,33 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors.Binary;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors.Unary;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
-using GeometricAlgebraFulcrumLib.Storage.Factories;
 using GeometricAlgebraFulcrumLib.Storage.Multivectors;
+using GeometricAlgebraFulcrumLib.Utilities.Extensions;
+using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
 namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean
 {
     public static class GaProductEucUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageMultivector<T> EDual<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivector<T> mv1, uint vSpaceDimension)
+        public static IGaMultivectorStorage<T> EDual<T>(this IScalarProcessor<T> scalarProcessor, IGaMultivectorStorage<T> mv1, uint vSpaceDimension)
         {
             var pseudoScalarInverse =
-                scalarProcessor.CreateStorageEuclideanPseudoScalarInverse(vSpaceDimension);
+                scalarProcessor.CreateEuclideanPseudoScalarInverseStorage(vSpaceDimension);
 
             return scalarProcessor.ELcp(mv1, pseudoScalarInverse);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageMultivector<T> EUnDual<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivector<T> mv1, uint vSpaceDimension)
+        public static IGaMultivectorStorage<T> EUnDual<T>(this IScalarProcessor<T> scalarProcessor, IGaMultivectorStorage<T> mv1, uint vSpaceDimension)
         {
             var pseudoScalarReverse =
-                scalarProcessor.CreateStoragePseudoScalarReverse(vSpaceDimension);
+                scalarProcessor.CreatePseudoScalarReverseStorage(vSpaceDimension);
 
             return scalarProcessor.ELcp(mv1, pseudoScalarReverse);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageKVector<T> EBladeInverse<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageKVector<T> kVector)
+        public static IGaKVectorStorage<T> EBladeInverse<T>(this IScalarProcessor<T> scalarProcessor, IGaKVectorStorage<T> kVector)
         {
             var bladeSpSquared = scalarProcessor.ESp(kVector);
 
@@ -36,7 +35,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageMultivector<T> EBladeInverse<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivector<T> mv1)
+        public static IGaMultivectorStorage<T> EBladeInverse<T>(this IScalarProcessor<T> scalarProcessor, IGaMultivectorStorage<T> mv1)
         {
             var bladeSpSquared = scalarProcessor.ESp(mv1);
 
@@ -44,7 +43,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageMultivector<T> EVersorInverse<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivector<T> mv1)
+        public static IGaMultivectorStorage<T> EVersorInverse<T>(this IScalarProcessor<T> scalarProcessor, IGaMultivectorStorage<T> mv1)
         {
             var versorSpReverse = scalarProcessor.ENormSquared(mv1);
 

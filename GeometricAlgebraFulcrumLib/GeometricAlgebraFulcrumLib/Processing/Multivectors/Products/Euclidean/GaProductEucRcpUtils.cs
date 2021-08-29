@@ -1,16 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
-using GeometricAlgebraFulcrumLib.Storage.Factories;
 using GeometricAlgebraFulcrumLib.Storage.Multivectors;
+using GeometricAlgebraFulcrumLib.Utilities.Extensions;
+using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
 namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean
 {
     public static class GaProductEucRcpUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageScalar<T> ERcp<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageScalar<T> mv1, IGaStorageScalar<T> mv2)
+        public static IGaScalarStorage<T> ERcp<T>(this IScalarProcessor<T> scalarProcessor, IGaScalarStorage<T> mv1, IGaScalarStorage<T> mv2)
         {
             return scalarProcessor.CreateStorageScalar(
                 scalarProcessor.Times(
@@ -21,14 +21,14 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageScalar<T> VectorsERcp<T>(this IGaScalarProcessor<T> scalarProcessor, IReadOnlyList<T> vector1, IReadOnlyList<T> vector2)
+        public static IGaScalarStorage<T> VectorsERcp<T>(this IScalarProcessor<T> scalarProcessor, IReadOnlyList<T> vector1, IReadOnlyList<T> vector2)
         {
             return scalarProcessor.CreateStorageScalar(
                 scalarProcessor.VectorsESp(vector1, vector2)
             );
         }
         
-        public static IGaStorageScalar<T> ERcp<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageVector<T> mv1, IGaStorageVector<T> mv2)
+        public static IGaScalarStorage<T> ERcp<T>(this IScalarProcessor<T> scalarProcessor, IGaVectorStorage<T> mv1, IGaVectorStorage<T> mv2)
         {
             var indexScalarPairs1 = 
                 mv1.IndexScalarList;
@@ -36,11 +36,11 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean
             var indexScalarPairs2 = 
                 mv2.IndexScalarList;
 
-            var lcpScalar = scalarProcessor.GetZeroScalar();
+            var lcpScalar = scalarProcessor.ScalarZero;
 
-            foreach (var (index, scalar1) in indexScalarPairs1.GetKeyValueRecords())
+            foreach (var (index, scalar1) in indexScalarPairs1.GetIndexScalarRecords())
             {
-                if (!indexScalarPairs2.TryGetValue(index, out var scalar2))
+                if (!indexScalarPairs2.TryGetScalar(index, out var scalar2))
                     continue;
 
                 var id = index.BasisVectorIndexToId();
@@ -54,7 +54,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean
             return scalarProcessor.CreateStorageScalar(lcpScalar);
         }
 
-        private static IGaStorageKVector<T> ERcpAsKVector<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageKVector<T> mv1, IGaStorageKVector<T> mv2)
+        private static IGaKVectorStorage<T> ERcpAsKVector<T>(this IScalarProcessor<T> scalarProcessor, IGaKVectorStorage<T> mv1, IGaKVectorStorage<T> mv2)
         {
             if (mv2.Grade > mv1.Grade)
                 return scalarProcessor.CreateStorageZeroScalar();
@@ -67,7 +67,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean
             var grade = grade1 - grade2;
 
             var composer = 
-                scalarProcessor.CreateStorageKVectorComposer();
+                scalarProcessor.CreateKVectorStorageComposer();
 
             var indexScalarPairs1 = 
                 mv1.IndexScalarList;
@@ -75,11 +75,11 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean
             var indexScalarPairs2 = 
                 mv2.IndexScalarList;
 
-            foreach (var (index1, scalar1) in indexScalarPairs1.GetKeyValueRecords())
+            foreach (var (index1, scalar1) in indexScalarPairs1.GetIndexScalarRecords())
             {
                 var id1 = index1.BasisBladeIndexToId(grade1);
 
-                foreach (var (index2, scalar2) in indexScalarPairs2.GetKeyValueRecords())
+                foreach (var (index2, scalar2) in indexScalarPairs2.GetIndexScalarRecords())
                 {
                     var id2 = index2.BasisBladeIndexToId(grade2);
 
@@ -101,11 +101,11 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean
 
             composer.RemoveZeroTerms();
 
-            return composer.CreateStorageKVector(grade);
+            return composer.CreateGaKVectorStorage(grade);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageKVector<T> ERcp<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageKVector<T> mv1, IGaStorageKVector<T> mv2)
+        public static IGaKVectorStorage<T> ERcp<T>(this IScalarProcessor<T> scalarProcessor, IGaKVectorStorage<T> mv1, IGaKVectorStorage<T> mv2)
         {
             if (mv2.Grade > mv1.Grade)
                 return scalarProcessor.CreateStorageZeroScalar();
@@ -115,10 +115,10 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean
 
             return mv1 switch
             {
-                IGaStorageScalar<T> s1 when mv2 is IGaStorageScalar<T> s2 => 
+                IGaScalarStorage<T> s1 when mv2 is IGaScalarStorage<T> s2 => 
                     ERcp(scalarProcessor, s1, s2),
 
-                IGaStorageVector<T> vt1 when mv2 is IGaStorageVector<T> vt2 => 
+                IGaVectorStorage<T> vt1 when mv2 is IGaVectorStorage<T> vt2 => 
                     ERcp(scalarProcessor, vt1, vt2),
 
                 _ => 
@@ -126,7 +126,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean
             };
         }
 
-        private static IGaStorageMultivectorGraded<T> ERcpAsGaMultivectorGraded<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivectorGraded<T> mv1, IGaStorageMultivectorGraded<T> mv2)
+        private static IGaMultivectorGradedStorage<T> ERcpAsGaMultivectorGraded<T>(this IScalarProcessor<T> scalarProcessor, IGaMultivectorGradedStorage<T> mv1, IGaMultivectorGradedStorage<T> mv2)
         {
             var composer = 
                 scalarProcessor.CreateStorageGradedMultivectorComposer();
@@ -134,20 +134,20 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean
             var gradeIndexScalarDictionary1 = mv1.GetGradeIndexScalarList();
             var gradeIndexScalarDictionary2 = mv2.GetGradeIndexScalarList();
 
-            foreach (var (grade1, indexScalarPairs1) in gradeIndexScalarDictionary1.GetGradeListRecords())
+            foreach (var (grade1, indexScalarPairs1) in gradeIndexScalarDictionary1.GetGradeStorageRecords())
             {
-                foreach (var (grade2, indexScalarPairs2) in gradeIndexScalarDictionary2.GetGradeListRecords())
+                foreach (var (grade2, indexScalarPairs2) in gradeIndexScalarDictionary2.GetGradeStorageRecords())
                 {
                     if (grade2 > grade1)
                         continue;
 
                     if (grade2 == grade1)
                     {
-                        foreach (var (index, scalar1) in indexScalarPairs1.GetKeyValueRecords())
+                        foreach (var (index, scalar1) in indexScalarPairs1.GetIndexScalarRecords())
                         {
                             var id = index.BasisBladeIndexToId(grade1);
 
-                            if (!indexScalarPairs2.TryGetValue(index, out var scalar2))
+                            if (!indexScalarPairs2.TryGetScalar(index, out var scalar2))
                                 continue;
                             
                             var signature = 
@@ -169,11 +169,11 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean
 
                     var grade = grade1 - grade2;
 
-                    foreach (var (index1, scalar1) in indexScalarPairs1.GetKeyValueRecords())
+                    foreach (var (index1, scalar1) in indexScalarPairs1.GetIndexScalarRecords())
                     {
                         var id1 = index1.BasisBladeIndexToId(grade1);
 
-                        foreach (var (index2, scalar2) in indexScalarPairs2.GetKeyValueRecords())
+                        foreach (var (index2, scalar2) in indexScalarPairs2.GetIndexScalarRecords())
                         {
                             var id2 = index2.BasisBladeIndexToId(grade2);
 
@@ -197,21 +197,21 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean
 
             composer.RemoveZeroTerms();
 
-            return composer.CreateStorageGradedMultivector();
+            return composer.CreateGaMultivectorGradedStorage();
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageMultivectorGraded<T> ERcp<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivectorGraded<T> mv1, IGaStorageMultivectorGraded<T> mv2)
+        public static IGaMultivectorGradedStorage<T> ERcp<T>(this IScalarProcessor<T> scalarProcessor, IGaMultivectorGradedStorage<T> mv1, IGaMultivectorGradedStorage<T> mv2)
         {
             return mv1 switch
             {
-                IGaStorageScalar<T> s1 when mv2 is IGaStorageScalar<T> s2 => 
+                IGaScalarStorage<T> s1 when mv2 is IGaScalarStorage<T> s2 => 
                     ERcp(scalarProcessor, s1, s2),
 
-                IGaStorageVector<T> vt1 when mv2 is IGaStorageVector<T> vt2 => 
+                IGaVectorStorage<T> vt1 when mv2 is IGaVectorStorage<T> vt2 => 
                     ERcp(scalarProcessor, vt1, vt2),
 
-                IGaStorageKVector<T> kv1 when mv2 is IGaStorageKVector<T> kv2 => 
+                IGaKVectorStorage<T> kv1 when mv2 is IGaKVectorStorage<T> kv2 => 
                     ERcpAsKVector(scalarProcessor, kv1, kv2),
 
                 _ => 
@@ -219,7 +219,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean
             };
         }
 
-        private static IGaStorageMultivectorSparse<T> ERcpAsTermsMultivector<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivector<T> mv1, IGaStorageMultivector<T> mv2)
+        private static IGaMultivectorSparseStorage<T> ERcpAsTermsMultivector<T>(this IScalarProcessor<T> scalarProcessor, IGaMultivectorStorage<T> mv1, IGaMultivectorStorage<T> mv2)
         {
             var composer = 
                 scalarProcessor.CreateStorageSparseMultivectorComposer();
@@ -232,7 +232,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean
 
             foreach (var (id1, scalar1) in idScalarPairs1)
             {
-                foreach (var (id2, scalar2) in idScalarPairs2.GetKeyValueRecords())
+                foreach (var (id2, scalar2) in idScalarPairs2.GetIndexScalarRecords())
                 {
                     var signature = 
                         GaBasisBladeProductUtils.ERcpSignature(id1, id2);
@@ -252,27 +252,27 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean
 
             composer.RemoveZeroTerms();
 
-            return composer.CreateStorageSparseMultivector();
+            return composer.CreateGaMultivectorSparseStorage();
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageMultivectorSparse<T> ERcp<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivectorSparse<T> mv1, IGaStorageMultivectorSparse<T> mv2)
+        public static IGaMultivectorSparseStorage<T> ERcp<T>(this IScalarProcessor<T> scalarProcessor, IGaMultivectorSparseStorage<T> mv1, IGaMultivectorSparseStorage<T> mv2)
         {
             return ERcpAsTermsMultivector(scalarProcessor, mv1, mv2);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageMultivector<T> ERcp<T>(this IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivector<T> mv1, IGaStorageMultivector<T> mv2)
+        public static IGaMultivectorStorage<T> ERcp<T>(this IScalarProcessor<T> scalarProcessor, IGaMultivectorStorage<T> mv1, IGaMultivectorStorage<T> mv2)
         {
             return mv1 switch
             {
-                IGaStorageScalar<T> s1 when mv2 is IGaStorageScalar<T> s2 => 
+                IGaScalarStorage<T> s1 when mv2 is IGaScalarStorage<T> s2 => 
                     ERcp(scalarProcessor, s1, s2),
 
-                IGaStorageVector<T> vt1 when mv2 is IGaStorageVector<T> vt2 => 
+                IGaVectorStorage<T> vt1 when mv2 is IGaVectorStorage<T> vt2 => 
                     ERcp(scalarProcessor, vt1, vt2),
 
-                IGaStorageMultivectorGraded<T> gmv1 when mv2 is IGaStorageMultivectorGraded<T> gmv2 => 
+                IGaMultivectorGradedStorage<T> gmv1 when mv2 is IGaMultivectorGradedStorage<T> gmv2 => 
                     ERcpAsGaMultivectorGraded(scalarProcessor, gmv1, gmv2),
 
                 _ =>

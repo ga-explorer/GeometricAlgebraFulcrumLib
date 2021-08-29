@@ -3,9 +3,9 @@
 namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVectorsLib.FactoredBlade
 {
     internal class FactoredBladeClassFileComposer : 
-        GaLibraryFileComposerBase
+        GaFuLLibraryFileComposerBase
     {
-        internal FactoredBladeClassFileComposer(GaLibraryComposer libGen)
+        internal FactoredBladeClassFileComposer(GaFuLLibraryComposer libGen)
             : base(libGen)
         {
         }

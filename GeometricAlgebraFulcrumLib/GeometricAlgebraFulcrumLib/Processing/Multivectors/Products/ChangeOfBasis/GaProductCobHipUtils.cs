@@ -7,7 +7,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.ChangeOfBa
     public static class GaProductCobHipUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageMultivector<T> Hip<T>(this IGaProcessorChangeOfBasis<T> processor, IGaStorageMultivector<T> mv1, IGaStorageMultivector<T> mv2)
+        public static IGaMultivectorStorage<T> Hip<T>(this IGaProcessorChangeOfBasis<T> processor, IGaMultivectorStorage<T> mv1, IGaMultivectorStorage<T> mv2)
         {
             var s1 = processor.OmTargetToOrthonormal.MapMultivector(mv1);
             var s2 = processor.OmTargetToOrthonormal.MapMultivector(mv2);
@@ -18,7 +18,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.ChangeOfBa
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageMultivector<T> Hip<T>(this IGaStorageMultivector<T> mv1, IGaStorageMultivector<T> mv2, IGaProcessorChangeOfBasis<T> processor)
+        public static IGaMultivectorStorage<T> Hip<T>(this IGaMultivectorStorage<T> mv1, IGaMultivectorStorage<T> mv2, IGaProcessorChangeOfBasis<T> processor)
         {
             var s1 = processor.OmTargetToOrthonormal.MapMultivector(mv1);
             var s2 = processor.OmTargetToOrthonormal.MapMultivector(mv2);

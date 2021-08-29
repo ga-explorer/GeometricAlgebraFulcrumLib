@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors.Binary;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors.Unary;
-using GeometricAlgebraFulcrumLib.Processing.Random.Float64;
-using GeometricAlgebraFulcrumLib.Processing.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Storage.Factories;
+using GeometricAlgebraFulcrumLib.Processing.Random;
+using GeometricAlgebraFulcrumLib.Processing.Scalars;
 using GeometricAlgebraFulcrumLib.Storage.Multivectors;
+using GeometricAlgebraFulcrumLib.Utilities.Extensions;
+using GeometricAlgebraFulcrumLib.Utilities.Factories;
 using NUnit.Framework;
 
 namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
@@ -17,14 +15,14 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
     [TestFixture]
     public sealed class GaConsistencyTests
     {
-        private readonly GaRandomComposerFloat64 _randomGenerator;
-        private readonly List<IGaStorageMultivector<double>> _mvListTested;
-        private readonly List<IGaStorageMultivectorSparse<double>> _mvListRef;
+        private readonly GaFloat64RandomComposer _randomGenerator;
+        private readonly List<IGaMultivectorStorage<double>> _mvListTested;
+        private readonly List<IGaMultivectorSparseStorage<double>> _mvListRef;
         private readonly double _scalar;
 
 
         public IGaProcessor<double> Processor { get; }
-            = GaScalarProcessorFloat64.DefaultProcessor.CreateEuclideanProcessor(5);
+            = Float64ScalarProcessor.DefaultProcessor.CreateGaEuclideanProcessor(5);
 
         public uint VSpaceDimension 
             => Processor.VSpaceDimension;
@@ -35,9 +33,9 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
 
         public GaConsistencyTests()
         {
-            _randomGenerator = new GaRandomComposerFloat64(VSpaceDimension, 10);
-            _mvListTested = new List<IGaStorageMultivector<double>>();
-            _mvListRef = new List<IGaStorageMultivectorSparse<double>>();
+            _randomGenerator = new GaFloat64RandomComposer(VSpaceDimension, 10);
+            _mvListTested = new List<IGaMultivectorStorage<double>>();
+            _mvListRef = new List<IGaMultivectorSparseStorage<double>>();
             _scalar = _randomGenerator.GetScalar();
         }
         
@@ -116,7 +114,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
             }
         }
 
-        private bool TestDiffIsZero(int i, Func<IGaProcessor<double>, IGaStorageMultivector<double>, IGaStorageMultivector<double>> opFunction)
+        private bool TestDiffIsZero(int i, Func<IGaProcessor<double>, IGaMultivectorStorage<double>, IGaMultivectorStorage<double>> opFunction)
         {
             var tstMv = 
                 opFunction(Processor, _mvListTested[i]);
@@ -127,7 +125,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
             return Processor.IsZero(Processor.Subtract(tstMv, refMv));
         }
 
-        private bool TestDiffIsZero(int i, int j, Func<IGaProcessor<double>, IGaStorageMultivector<double>, IGaStorageMultivector<double>, IGaStorageMultivector<double>> opFunction)
+        private bool TestDiffIsZero(int i, int j, Func<IGaProcessor<double>, IGaMultivectorStorage<double>, IGaMultivectorStorage<double>, IGaMultivectorStorage<double>> opFunction)
         {
             var tstMv = 
                 opFunction(Processor, _mvListTested[i], _mvListTested[j]);
@@ -138,7 +136,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
             return Processor.IsZero(Processor.Subtract(tstMv, refMv));
         }
         
-        private bool TestDiffIsZero(int i, Func<IGaProcessor<double>, IGaStorageMultivector<double>, double> opFunction)
+        private bool TestDiffIsZero(int i, Func<IGaProcessor<double>, IGaMultivectorStorage<double>, double> opFunction)
         {
             var tstMv = 
                 opFunction(Processor, _mvListTested[i]);
@@ -151,7 +149,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
             );
         }
         
-        private bool TestDiffIsZero(int i, int j, Func<IGaProcessor<double>, IGaStorageMultivector<double>, IGaStorageMultivector<double>, double> opFunction)
+        private bool TestDiffIsZero(int i, int j, Func<IGaProcessor<double>, IGaMultivectorStorage<double>, IGaMultivectorStorage<double>, double> opFunction)
         {
             var tstMv = 
                 opFunction(Processor, _mvListTested[i], _mvListTested[j]);

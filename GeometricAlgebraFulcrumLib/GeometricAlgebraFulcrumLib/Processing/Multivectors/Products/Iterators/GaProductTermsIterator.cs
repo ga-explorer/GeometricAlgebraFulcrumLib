@@ -2,41 +2,41 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using GeometricAlgebraFulcrumLib.Algebra.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
+using GeometricAlgebraFulcrumLib.Storage;
 using GeometricAlgebraFulcrumLib.Storage.Multivectors;
-using GeometricAlgebraFulcrumLib.Structures;
+using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 
 namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Iterators
 {
     public sealed class GaProductTermsIterator<T> 
         : IGaProductTermsIterator<T>
     {
-        public static GaProductTermsIterator<T> Create(IGaScalarProcessor<T> scalarProcessor)
+        public static GaProductTermsIterator<T> Create(IScalarProcessor<T> scalarProcessor)
         {
             return new GaProductTermsIterator<T>(scalarProcessor, null, null);
         }
 
-        public static GaProductTermsIterator<T> Create(IGaScalarProcessor<T> scalarProcessor, GaMultivector<T> mv1, GaMultivector<T> mv2)
+        public static GaProductTermsIterator<T> Create(IScalarProcessor<T> scalarProcessor, GaMultivector<T> mv1, GaMultivector<T> mv2)
         {
             return new GaProductTermsIterator<T>(scalarProcessor, mv1.MultivectorStorage, mv2.MultivectorStorage);
         }
 
-        public static GaProductTermsIterator<T> Create(IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivector<T> mv1, IGaStorageMultivector<T> mv2)
+        public static GaProductTermsIterator<T> Create(IScalarProcessor<T> scalarProcessor, IGaMultivectorStorage<T> mv1, IGaMultivectorStorage<T> mv2)
         {
             return new GaProductTermsIterator<T>(scalarProcessor, mv1, mv2);
         }
 
 
-        public IGaScalarProcessor<T> ScalarProcessor { get; }
+        public IScalarProcessor<T> ScalarProcessor { get; }
 
-        public IGaStorageMultivector<T> Storage1 { get; set; }
+        public IGaMultivectorStorage<T> Storage1 { get; set; }
 
-        public IGaStorageMultivector<T> Storage2 { get; set; }
+        public IGaMultivectorStorage<T> Storage2 { get; set; }
 
 
-        private GaProductTermsIterator([NotNull] IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivector<T> storage1, IGaStorageMultivector<T> storage2)
+        private GaProductTermsIterator([NotNull] IScalarProcessor<T> scalarProcessor, IGaMultivectorStorage<T> storage1, IGaMultivectorStorage<T> storage2)
         {
             ScalarProcessor = scalarProcessor;
             Storage1 = storage1;
@@ -44,43 +44,43 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Iterators
         }
 
 
-        private IEnumerable<GaRecordKeyValue<T>> GetOpIdScalarRecords2(ulong id1)
+        private IEnumerable<IndexScalarRecord<T>> GetOpIdScalarRecords2(ulong id1)
         {
-            return Storage2.GetIdScalarRecords().Where(pair => GaBasisBladeProductUtils.IsNonZeroOp(id1, pair.Key));
+            return Storage2.GetIdScalarRecords().Where(pair => GaBasisBladeProductUtils.IsNonZeroOp(id1, pair.Index));
         }
 
-        private IEnumerable<GaRecordKeyValue<T>> GetELcpIdScalarRecords2(ulong id1)
+        private IEnumerable<IndexScalarRecord<T>> GetELcpIdScalarRecords2(ulong id1)
         {
-            return Storage2.GetIdScalarRecords().Where(pair => GaBasisBladeProductUtils.IsNonZeroELcp(id1, pair.Key));
+            return Storage2.GetIdScalarRecords().Where(pair => GaBasisBladeProductUtils.IsNonZeroELcp(id1, pair.Index));
         }
 
-        private IEnumerable<GaRecordKeyValue<T>> GetERcpIdScalarRecords2(ulong id1)
+        private IEnumerable<IndexScalarRecord<T>> GetERcpIdScalarRecords2(ulong id1)
         {
-            return Storage2.GetIdScalarRecords().Where(pair => GaBasisBladeProductUtils.IsNonZeroERcp(id1, pair.Key));
+            return Storage2.GetIdScalarRecords().Where(pair => GaBasisBladeProductUtils.IsNonZeroERcp(id1, pair.Index));
         }
 
-        private IEnumerable<GaRecordKeyValue<T>> GetEHipIdScalarRecords2(ulong id1)
+        private IEnumerable<IndexScalarRecord<T>> GetEHipIdScalarRecords2(ulong id1)
         {
-            return Storage2.GetIdScalarRecords().Where(pair => GaBasisBladeProductUtils.IsNonZeroEHip(id1, pair.Key));
+            return Storage2.GetIdScalarRecords().Where(pair => GaBasisBladeProductUtils.IsNonZeroEHip(id1, pair.Index));
         }
 
-        private IEnumerable<GaRecordKeyValue<T>> GetEFdpIdScalarRecords2(ulong id1)
+        private IEnumerable<IndexScalarRecord<T>> GetEFdpIdScalarRecords2(ulong id1)
         {
-            return Storage2.GetIdScalarRecords().Where(pair => GaBasisBladeProductUtils.IsNonZeroEFdp(id1, pair.Key));
+            return Storage2.GetIdScalarRecords().Where(pair => GaBasisBladeProductUtils.IsNonZeroEFdp(id1, pair.Index));
         }
 
-        private IEnumerable<GaRecordKeyValue<T>> GetECpIdScalarRecords2(ulong id1)
+        private IEnumerable<IndexScalarRecord<T>> GetECpIdScalarRecords2(ulong id1)
         {
-            return Storage2.GetIdScalarRecords().Where(pair => GaBasisBladeProductUtils.IsNonZeroECp(id1, pair.Key));
+            return Storage2.GetIdScalarRecords().Where(pair => GaBasisBladeProductUtils.IsNonZeroECp(id1, pair.Index));
         }
 
-        private IEnumerable<GaRecordKeyValue<T>> GetEAcpIdScalarRecords2(ulong id1)
+        private IEnumerable<IndexScalarRecord<T>> GetEAcpIdScalarRecords2(ulong id1)
         {
-            return Storage2.GetIdScalarRecords().Where(pair => GaBasisBladeProductUtils.IsNonZeroEAcp(id1, pair.Key));
+            return Storage2.GetIdScalarRecords().Where(pair => GaBasisBladeProductUtils.IsNonZeroEAcp(id1, pair.Index));
         }
 
 
-        public IEnumerable<GaRecordKeyValue<T>> GetOpIdScalarRecords()
+        public IEnumerable<IndexScalarRecord<T>> GetOpIdScalarRecords()
         {
             foreach (var (id1, scalar1) in Storage1.GetIdScalarRecords())
             {
@@ -91,12 +91,12 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Iterators
                         ? ScalarProcessor.NegativeTimes(scalar1, scalar2)
                         : ScalarProcessor.Times(scalar1, scalar2);
 
-                    yield return new GaRecordKeyValue<T>(id, scalar);
+                    yield return new IndexScalarRecord<T>(id, scalar);
                 }    
             }
         }
 
-        public IEnumerable<GaRecordKeyValue<T>> GetEGpIdScalarRecords()
+        public IEnumerable<IndexScalarRecord<T>> GetEGpIdScalarRecords()
         {
             foreach (var (id1, scalar1) in Storage1.GetIdScalarRecords())
             {
@@ -107,12 +107,12 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Iterators
                         ? ScalarProcessor.NegativeTimes(scalar1, scalar2)
                         : ScalarProcessor.Times(scalar1, scalar2);
 
-                    yield return new GaRecordKeyValue<T>(id, scalar);
+                    yield return new IndexScalarRecord<T>(id, scalar);
                 }    
             }
         }
 
-        public IEnumerable<GaRecordKeyValue<T>> GetESpIdScalarRecords()
+        public IEnumerable<IndexScalarRecord<T>> GetESpIdScalarRecords()
         {
             foreach (var (id, scalar1) in Storage1.GetIdScalarRecords())
             {
@@ -123,7 +123,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Iterators
                     ? ScalarProcessor.NegativeTimes(scalar1, scalar2)
                     : ScalarProcessor.Times(scalar1, scalar2);
 
-                yield return new GaRecordKeyValue<T>(0, scalar);
+                yield return new IndexScalarRecord<T>(0, scalar);
             }
         }
         
@@ -142,7 +142,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Iterators
             }
         }
         
-        public IEnumerable<GaRecordKeyValue<T>> GetELcpIdScalarRecords()
+        public IEnumerable<IndexScalarRecord<T>> GetELcpIdScalarRecords()
         {
             foreach (var (id1, scalar1) in Storage1.GetIdScalarRecords())
             {
@@ -153,12 +153,12 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Iterators
                         ? ScalarProcessor.NegativeTimes(scalar1, scalar2)
                         : ScalarProcessor.Times(scalar1, scalar2);
 
-                    yield return new GaRecordKeyValue<T>(id, scalar);
+                    yield return new IndexScalarRecord<T>(id, scalar);
                 }    
             }
         }
         
-        public IEnumerable<GaRecordKeyValue<T>> GetERcpIdScalarRecords()
+        public IEnumerable<IndexScalarRecord<T>> GetERcpIdScalarRecords()
         {
             foreach (var (id1, scalar1) in Storage1.GetIdScalarRecords())
             {
@@ -169,12 +169,12 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Iterators
                         ? ScalarProcessor.NegativeTimes(scalar1, scalar2)
                         : ScalarProcessor.Times(scalar1, scalar2);
 
-                    yield return new GaRecordKeyValue<T>(id, scalar);
+                    yield return new IndexScalarRecord<T>(id, scalar);
                 }    
             }
         }
         
-        public IEnumerable<GaRecordKeyValue<T>> GetEHipIdScalarRecords()
+        public IEnumerable<IndexScalarRecord<T>> GetEHipIdScalarRecords()
         {
             foreach (var (id1, scalar1) in Storage1.GetIdScalarRecords())
             {
@@ -185,12 +185,12 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Iterators
                         ? ScalarProcessor.NegativeTimes(scalar1, scalar2)
                         : ScalarProcessor.Times(scalar1, scalar2);
 
-                    yield return new GaRecordKeyValue<T>(id, scalar);
+                    yield return new IndexScalarRecord<T>(id, scalar);
                 }    
             }
         }
         
-        public IEnumerable<GaRecordKeyValue<T>> GetEFdpIdScalarRecords()
+        public IEnumerable<IndexScalarRecord<T>> GetEFdpIdScalarRecords()
         {
             foreach (var (id1, scalar1) in Storage1.GetIdScalarRecords())
             {
@@ -201,12 +201,12 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Iterators
                         ? ScalarProcessor.NegativeTimes(scalar1, scalar2)
                         : ScalarProcessor.Times(scalar1, scalar2);
 
-                    yield return new GaRecordKeyValue<T>(id, scalar);
+                    yield return new IndexScalarRecord<T>(id, scalar);
                 }    
             }
         }
         
-        public IEnumerable<GaRecordKeyValue<T>> GetECpIdScalarRecords()
+        public IEnumerable<IndexScalarRecord<T>> GetECpIdScalarRecords()
         {
             foreach (var (id1, scalar1) in Storage1.GetIdScalarRecords())
             {
@@ -217,12 +217,12 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Iterators
                         ? ScalarProcessor.NegativeTimes(scalar1, scalar2)
                         : ScalarProcessor.Times(scalar1, scalar2);
 
-                    yield return new GaRecordKeyValue<T>(id, scalar);
+                    yield return new IndexScalarRecord<T>(id, scalar);
                 }    
             }
         }
         
-        public IEnumerable<GaRecordKeyValue<T>> GetEAcpIdScalarRecords()
+        public IEnumerable<IndexScalarRecord<T>> GetEAcpIdScalarRecords()
         {
             foreach (var (id1, scalar1) in Storage1.GetIdScalarRecords())
             {
@@ -233,13 +233,13 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Iterators
                         ? ScalarProcessor.NegativeTimes(scalar1, scalar2)
                         : ScalarProcessor.Times(scalar1, scalar2);
 
-                    yield return new GaRecordKeyValue<T>(id, scalar);
+                    yield return new IndexScalarRecord<T>(id, scalar);
                 }    
             }
         }
 
 
-        public IEnumerable<GaRecordKeyValue<T>> GetGpIdScalarRecords(IGaSignature basesSignature)
+        public IEnumerable<IndexScalarRecord<T>> GetGpIdScalarRecords(IGaSignature basesSignature)
         {
             foreach (var (id1, scalar1) in Storage1.GetIdScalarRecords())
             {
@@ -256,12 +256,12 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Iterators
                         ? ScalarProcessor.NegativeTimes(scalar1, scalar2)
                         : ScalarProcessor.Times(scalar1, scalar2);
 
-                    yield return new GaRecordKeyValue<T>(id, scalar);
+                    yield return new IndexScalarRecord<T>(id, scalar);
                 }    
             }
         }
 
-        public IEnumerable<GaRecordKeyValue<T>> GetSpIdScalarRecords(IGaSignature basesSignature)
+        public IEnumerable<IndexScalarRecord<T>> GetSpIdScalarRecords(IGaSignature basesSignature)
         {
             foreach (var (id, scalar1) in Storage1.GetIdScalarRecords())
             {
@@ -278,7 +278,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Iterators
                     ? ScalarProcessor.NegativeTimes(scalar1, scalar2)
                     : ScalarProcessor.Times(scalar1, scalar2);
 
-                yield return new GaRecordKeyValue<T>(0, scalar);
+                yield return new IndexScalarRecord<T>(0, scalar);
             }
         }
 
@@ -303,7 +303,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Iterators
             }
         }
 
-        public IEnumerable<GaRecordKeyValue<T>> GetLcpIdScalarRecords(IGaSignature basesSignature)
+        public IEnumerable<IndexScalarRecord<T>> GetLcpIdScalarRecords(IGaSignature basesSignature)
         {
             foreach (var (id1, scalar1) in Storage1.GetIdScalarRecords())
             {
@@ -320,12 +320,12 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Iterators
                         ? ScalarProcessor.NegativeTimes(scalar1, scalar2)
                         : ScalarProcessor.Times(scalar1, scalar2);
 
-                    yield return new GaRecordKeyValue<T>(id, scalar);
+                    yield return new IndexScalarRecord<T>(id, scalar);
                 }    
             }
         }
 
-        public IEnumerable<GaRecordKeyValue<T>> GetRcpIdScalarRecords(IGaSignature basesSignature)
+        public IEnumerable<IndexScalarRecord<T>> GetRcpIdScalarRecords(IGaSignature basesSignature)
         {
             foreach (var (id1, scalar1) in Storage1.GetIdScalarRecords())
             {
@@ -342,12 +342,12 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Iterators
                         ? ScalarProcessor.NegativeTimes(scalar1, scalar2)
                         : ScalarProcessor.Times(scalar1, scalar2);
 
-                    yield return new GaRecordKeyValue<T>(id, scalar);
+                    yield return new IndexScalarRecord<T>(id, scalar);
                 }    
             }
         }
 
-        public IEnumerable<GaRecordKeyValue<T>> GetHipIdScalarRecords(IGaSignature basesSignature)
+        public IEnumerable<IndexScalarRecord<T>> GetHipIdScalarRecords(IGaSignature basesSignature)
         {
             foreach (var (id1, scalar1) in Storage1.GetIdScalarRecords())
             {
@@ -364,12 +364,12 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Iterators
                         ? ScalarProcessor.NegativeTimes(scalar1, scalar2)
                         : ScalarProcessor.Times(scalar1, scalar2);
 
-                    yield return new GaRecordKeyValue<T>(id, scalar);
+                    yield return new IndexScalarRecord<T>(id, scalar);
                 }    
             }
         }
 
-        public IEnumerable<GaRecordKeyValue<T>> GetFdpIdScalarRecords(IGaSignature basesSignature)
+        public IEnumerable<IndexScalarRecord<T>> GetFdpIdScalarRecords(IGaSignature basesSignature)
         {
             foreach (var (id1, scalar1) in Storage1.GetIdScalarRecords())
             {
@@ -386,12 +386,12 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Iterators
                         ? ScalarProcessor.NegativeTimes(scalar1, scalar2)
                         : ScalarProcessor.Times(scalar1, scalar2);
 
-                    yield return new GaRecordKeyValue<T>(id, scalar);
+                    yield return new IndexScalarRecord<T>(id, scalar);
                 }    
             }
         }
 
-        public IEnumerable<GaRecordKeyValue<T>> GetCpIdScalarRecords(IGaSignature basesSignature)
+        public IEnumerable<IndexScalarRecord<T>> GetCpIdScalarRecords(IGaSignature basesSignature)
         {
             foreach (var (id1, scalar1) in Storage1.GetIdScalarRecords())
             {
@@ -408,12 +408,12 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Iterators
                         ? ScalarProcessor.NegativeTimes(scalar1, scalar2)
                         : ScalarProcessor.Times(scalar1, scalar2);
 
-                    yield return new GaRecordKeyValue<T>(id, scalar);
+                    yield return new IndexScalarRecord<T>(id, scalar);
                 }    
             }
         }
 
-        public IEnumerable<GaRecordKeyValue<T>> GetAcpIdScalarRecords(IGaSignature basesSignature)
+        public IEnumerable<IndexScalarRecord<T>> GetAcpIdScalarRecords(IGaSignature basesSignature)
         {
             foreach (var (id1, scalar1) in Storage1.GetIdScalarRecords())
             {
@@ -430,7 +430,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Iterators
                         ? ScalarProcessor.NegativeTimes(scalar1, scalar2)
                         : ScalarProcessor.Times(scalar1, scalar2);
 
-                    yield return new GaRecordKeyValue<T>(id, scalar);
+                    yield return new IndexScalarRecord<T>(id, scalar);
                 }    
             }
         }

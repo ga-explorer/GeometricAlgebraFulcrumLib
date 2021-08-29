@@ -2,17 +2,19 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using AngouriMath;
 using CodeComposerLib.SyntaxTree.Expressions;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.HeadSpecs;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Variables;
+using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 
 namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Numbers
 {
     public sealed class SymbolicNumber :
         ISymbolicNumber
     {
-        public static string GetRationalNumberText(int numerator, int denominator)
+        public static string GetRationalNumberText(long numerator, long denominator)
         {
             return $"Rational[{numerator}, {denominator}]";
         }
@@ -71,7 +73,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Numbers
             );
         }
 
-        public static SymbolicNumber CreateRational(SymbolicContext context, int numerator, int denominator)
+        public static SymbolicNumber CreateRational(SymbolicContext context, long numerator, long denominator)
         {
             return new SymbolicNumber(
                 SymbolicHeadSpecsNumberRational.Create(context, numerator, denominator)
@@ -381,6 +383,31 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Numbers
         public ISymbolicExpression GetExpressionCopy()
         {
             return new SymbolicNumber(NumberHeadSpecs);
+        }
+
+        public Entity ToAngouriMathEntity()
+        {
+            return NumberHeadSpecs switch
+            {
+                SymbolicHeadSpecsNumberFloat64 n => 
+                    MathS.Numbers.Create(n.NumberValue),
+
+                SymbolicHeadSpecsNumberInt32 n => 
+                    MathS.Numbers.Create(n.NumberValueInt32),
+
+                SymbolicHeadSpecsNumberRational n => 
+                    MathS.Numbers.CreateRational(n.Numerator, n.Denominator),
+                    
+                SymbolicHeadSpecsNumberSymbolic n => 
+                    n.NumberText switch
+                    {
+                        SymbolicNumberNames.Pi => MathS.pi,
+                        SymbolicNumberNames.E => MathS.e,
+                        _ => throw new InvalidOperationException()
+                    },
+
+                _ => throw new InvalidOperationException()
+            };
         }
 
         public SteExpression ToSimpleTextExpression()

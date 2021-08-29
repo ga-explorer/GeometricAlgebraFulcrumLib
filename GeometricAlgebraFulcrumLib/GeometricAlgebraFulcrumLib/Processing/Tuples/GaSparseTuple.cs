@@ -5,18 +5,19 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using DataStructuresLib.Extensions;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
+using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 
 namespace GeometricAlgebraFulcrumLib.Processing.Tuples
 {
     public sealed class GaSparseTuple<T> 
         : IGaTuple<T>, IReadOnlyDictionary<int, T>
     {
-        public static GaSparseTuple<T> Create(IGaScalarProcessor<T> itemScalarsDomain, Dictionary<int, T> indexScalarDictionary)
+        public static GaSparseTuple<T> Create(IScalarProcessor<T> itemScalarsDomain, Dictionary<int, T> indexScalarDictionary)
         {
             return new(itemScalarsDomain, indexScalarDictionary);
         }
 
-        public static GaSparseTuple<T> CreateZero(IGaScalarProcessor<T> itemScalarsDomain)
+        public static GaSparseTuple<T> CreateZero(IScalarProcessor<T> itemScalarsDomain)
         {
             return new(itemScalarsDomain, new Dictionary<int, T>());
         }
@@ -74,7 +75,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Tuples
         private readonly Dictionary<int, T> _scalarsDictionary;
 
 
-        public IGaScalarProcessor<T> ScalarProcessor { get; }
+        public IScalarProcessor<T> ScalarProcessor { get; }
 
         public int Count 
             => _scalarsDictionary.Count;
@@ -82,7 +83,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Tuples
         public T this[int key] 
             => _scalarsDictionary.TryGetValue(key, out var value) 
                 ? value 
-                : ScalarProcessor.GetZeroScalar();
+                : ScalarProcessor.ScalarZero;
 
         public IEnumerable<int> Keys 
             => _scalarsDictionary.Keys;
@@ -91,7 +92,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Tuples
             => _scalarsDictionary.Values;
 
 
-        internal GaSparseTuple([NotNull] IGaScalarProcessor<T> itemScalarsDomain, [NotNull] Dictionary<int, T> indexScalarDictionary)
+        internal GaSparseTuple([NotNull] IScalarProcessor<T> itemScalarsDomain, [NotNull] Dictionary<int, T> indexScalarDictionary)
         {
             ScalarProcessor = itemScalarsDomain;
             _scalarsDictionary = indexScalarDictionary;
@@ -242,8 +243,8 @@ namespace GeometricAlgebraFulcrumLib.Processing.Tuples
             var fullOuterJoinTuples =
                 _scalarsDictionary.FullOuterJoin(
                     scalarsTuple2._scalarsDictionary,
-                    ScalarProcessor.GetZeroScalar(),
-                    ScalarProcessor.GetZeroScalar()
+                    ScalarProcessor.ScalarZero,
+                    ScalarProcessor.ScalarZero
                 );
 
             var composer = ScalarProcessor.CreateSparseScalarsTupleComposer(
@@ -302,8 +303,8 @@ namespace GeometricAlgebraFulcrumLib.Processing.Tuples
         {
             var fullOuterJoinTuples = _scalarsDictionary.FullOuterJoin(
                 scalarsTuple2._scalarsDictionary,
-                ScalarProcessor.GetZeroScalar(),
-                ScalarProcessor.GetZeroScalar()
+                ScalarProcessor.ScalarZero,
+                ScalarProcessor.ScalarZero
             );
 
             var composer = new GaSparseTupleComposer<T>(ScalarProcessor);

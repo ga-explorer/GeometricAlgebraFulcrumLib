@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Linq;
 using DataStructuresLib.BitManipulation;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
 using GeometricAlgebraFulcrumLib.CodeComposer.Languages;
+using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using TextComposerLib.Text.Linear;
 using TextComposerLib.Text.Structured;
 
 namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVectorsLib.KVector
 {
     internal sealed class InvolutionMethodsFileComposer : 
-        GaLibraryFileComposerBase
+        GaFuLLibraryFileComposerBase
     {
-        internal InvolutionMethodsFileComposer(GaLibraryComposer libGen)
+        internal InvolutionMethodsFileComposer(GaFuLLibraryComposer libGen)
             : base(libGen)
         {
         }
@@ -34,7 +34,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             );
         }
 
-        private void GenerateMainInvolutionFunction(GaLanguageOperationSpecs opSpecs, Func<uint, bool> useNegative)
+        private void GenerateMainInvolutionFunction(GaFuLLanguageOperationSpecs opSpecs, Func<uint, bool> useNegative)
         {
             var caseTemplate1 = Templates["main_negative_case"];
             var caseTemplate2 = Templates["main_negative_case2"];
@@ -75,22 +75,22 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
                 GenerateNegativeFunction(kvSpaceDim);
 
             GenerateMainInvolutionFunction(
-                GaLanguageOperationKind.UnaryNegative.CreateEuclideanOperationSpecs(), 
+                GaFuLLanguageOperationKind.UnaryNegative.CreateEuclideanOperationSpecs(), 
                 _ => true
             );
 
             GenerateMainInvolutionFunction(
-                GaLanguageOperationKind.UnaryReverse.CreateEuclideanOperationSpecs(), 
+                GaFuLLanguageOperationKind.UnaryReverse.CreateEuclideanOperationSpecs(), 
                 GaBasisBladeUtils.GradeHasNegativeReverse
             );
 
             GenerateMainInvolutionFunction(
-                GaLanguageOperationKind.UnaryGradeInvolution.CreateEuclideanOperationSpecs(), 
+                GaFuLLanguageOperationKind.UnaryGradeInvolution.CreateEuclideanOperationSpecs(), 
                 GaBasisBladeUtils.GradeHasNegativeGradeInvolution
             );
 
             GenerateMainInvolutionFunction(
-                GaLanguageOperationKind.UnaryCliffordConjugate.CreateEuclideanOperationSpecs(), 
+                GaFuLLanguageOperationKind.UnaryCliffordConjugate.CreateEuclideanOperationSpecs(), 
                 GaBasisBladeUtils.GradeHasNegativeCliffordConjugate
             );
 

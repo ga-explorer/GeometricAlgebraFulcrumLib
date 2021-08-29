@@ -11,22 +11,22 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Outermorphisms
         /// det(T) = T[I] lcp BladeInverse(I), where I is the space pseudo-scalar
         /// </summary>
         /// <returns></returns>
-        IGaStorageKVector<T> MappedPseudoScalar { get; }
+        IGaKVectorStorage<T> MappedPseudoScalar { get; }
 
-        IReadOnlyList<IGaStorageVector<T>> GetMappedBasisVectors();
+        IReadOnlyList<IGaVectorStorage<T>> GetMappedBasisVectors();
 
-        IGaStorageVector<T> MapBasisVector(ulong index);
+        IGaVectorStorage<T> MapBasisVector(ulong index);
 
-        IGaStorageBivector<T> MapBasisBivector(ulong index1, ulong index2);
+        IGaBivectorStorage<T> MapBasisBivector(ulong index1, ulong index2);
 
-        IGaStorageKVector<T> MapBasisBlade(ulong id);
+        IGaKVectorStorage<T> MapBasisBlade(ulong id);
 
-        IGaStorageKVector<T> MapBasisBlade(uint grade, ulong index);
+        IGaKVectorStorage<T> MapBasisBlade(uint grade, ulong index);
 
-        IGaStorageVector<T> MapVector(IGaStorageVector<T> vector);
+        IGaVectorStorage<T> MapVector(IGaVectorStorage<T> vector);
 
-        IGaStorageBivector<T> MapBivector(IGaStorageBivector<T> bivector);
+        IGaBivectorStorage<T> MapBivector(IGaBivectorStorage<T> bivector);
 
-        IGaStorageKVector<T> MapKVector(IGaStorageKVector<T> kVector);
+        IGaKVectorStorage<T> MapKVector(IGaKVectorStorage<T> kVector);
     }
 }

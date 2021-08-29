@@ -6,8 +6,8 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Rotors
     public interface IGaRotor<T> : 
         IGaAutomorphism<T>
     {
-        IGaStorageMultivector<T> Multivector { get; }
+        IGaMultivectorStorage<T> Multivector { get; }
 
-        IGaStorageMultivector<T> MultivectorReverse { get; }
+        IGaMultivectorStorage<T> MultivectorReverse { get; }
     }
 }

@@ -2,7 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Structures;
+using GeometricAlgebraFulcrumLib.Storage;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.Multivectors.Basis
 {
@@ -21,9 +21,9 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Multivectors.Basis
         public abstract bool IsBivector { get; }
 
 
-        public GaRecordGradeKey GetGradeIndexRecord()
+        public GradeIndexRecord GetGradeIndexRecord()
         {
-            return new GaRecordGradeKey(Grade, Index);
+            return new GradeIndexRecord(Grade, Index);
         }
 
         public abstract IEnumerable<ulong> GetBasisVectorIndices();
@@ -35,27 +35,27 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Multivectors.Basis
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GaRecordGradeKey GetGradeIndexRecord<T>()
+        public GradeIndexRecord GetGradeIndexRecord<T>()
         {
-            return new GaRecordGradeKey(Grade, Index);
+            return new GradeIndexRecord(Grade, Index);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GaRecordKeyValue<T> GetIdScalarRecord<T>([NotNull] T scalar)
+        public IndexScalarRecord<T> GetIdScalarRecord<T>([NotNull] T scalar)
         {
-            return new GaRecordKeyValue<T>(Id, scalar);
+            return new IndexScalarRecord<T>(Id, scalar);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GaRecordKeyValue<T> GetIndexScalarRecord<T>([NotNull] T scalar)
+        public IndexScalarRecord<T> GetIndexScalarRecord<T>([NotNull] T scalar)
         {
-            return new GaRecordKeyValue<T>(Index, scalar);
+            return new IndexScalarRecord<T>(Index, scalar);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GaRecordGradeKeyValue<T> GetGradeIndexScalarRecord<T>([NotNull] T scalar)
+        public GradeIndexScalarRecord<T> GetGradeIndexScalarRecord<T>([NotNull] T scalar)
         {
-            return new GaRecordGradeKeyValue<T>(Grade, Index, scalar);
+            return new GradeIndexScalarRecord<T>(Grade, Index, scalar);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

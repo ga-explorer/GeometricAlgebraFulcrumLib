@@ -7,7 +7,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.HeadSpecs
     public sealed record SymbolicHeadSpecsNumberRational : 
         ISymbolicHeadSpecsNumber
     {
-        public static SymbolicHeadSpecsNumberRational Create(SymbolicContext context, int numerator, int denominator)
+        public static SymbolicHeadSpecsNumberRational Create(SymbolicContext context, long numerator, long denominator)
         {
             return new SymbolicHeadSpecsNumberRational(
                 context,
@@ -19,9 +19,9 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.HeadSpecs
         
         public SymbolicContext Context { get; }
 
-        public int Numerator { get; }
+        public long Numerator { get; }
 
-        public int Denominator { get; }
+        public long Denominator { get; }
 
         public double NumberValue 
             => ((double) Numerator) / Denominator;
@@ -63,7 +63,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.HeadSpecs
             => false;
 
 
-        private SymbolicHeadSpecsNumberRational([NotNull] SymbolicContext context, int numerator, int denominator)
+        private SymbolicHeadSpecsNumberRational([NotNull] SymbolicContext context, long numerator, long denominator)
         {
             Context = context;
             Numerator = numerator;

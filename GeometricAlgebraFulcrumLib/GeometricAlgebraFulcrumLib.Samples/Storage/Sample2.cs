@@ -3,15 +3,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using DataStructuresLib.BitManipulation;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors.Binary;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors.Unary;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
-using GeometricAlgebraFulcrumLib.Processing.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Storage.Factories;
 using GeometricAlgebraFulcrumLib.Storage.Multivectors;
+using GeometricAlgebraFulcrumLib.Utilities.Extensions;
+using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Storage
 {
@@ -20,13 +17,13 @@ namespace GeometricAlgebraFulcrumLib.Samples.Storage
         private static readonly Random RandomGenerator 
             = new(10);
 
-        private static readonly IGaScalarProcessor<double> ScalarProcessor
-            = GaScalarProcessorFloat64.DefaultProcessor;
+        private static readonly IScalarProcessor<double> ScalarProcessor
+            = Float64ScalarProcessor.DefaultProcessor;
 
-        private static readonly List<IGaStorageMultivector<double>> StoragesList1 
+        private static readonly List<IGaMultivectorStorage<double>> StoragesList1 
             = new();
 
-        private static readonly List<IGaStorageMultivector<double>> StoragesList2 
+        private static readonly List<IGaMultivectorStorage<double>> StoragesList2 
             = new();
 
         private static double _scalar
@@ -63,26 +60,26 @@ namespace GeometricAlgebraFulcrumLib.Samples.Storage
             //Create a set of term storages
             for (var id = 0UL; id < GaSpaceDimension; id++)
                 StoragesList1.Add(
-                    ScalarProcessor.CreateStorageKVector(id,
+                    ScalarProcessor.CreateKVectorStorage(id,
                         RandomGenerator.NextDouble())
                 );
 
             //Create a vector storage
             StoragesList1.Add(
-                ScalarProcessor.CreateStorageVector(GetRandomKVectorDictionary(1)
+                ScalarProcessor.CreateGaVectorStorage(GetRandomKVectorDictionary(1)
                 )
             );
 
             //Create a bivector storage
             StoragesList1.Add(
-                ScalarProcessor.CreateStorageBivector(GetRandomKVectorDictionary(2)
+                ScalarProcessor.CreateBivectorStorage(GetRandomKVectorDictionary(2)
                 )
             );
 
             //Create k-vector storages
             for (var grade = 0U; grade <= VSpaceDimension; grade++)
                 StoragesList1.Add(
-                    ScalarProcessor.CreateStorageKVector(grade,
+                    ScalarProcessor.CreateKVectorStorage(grade,
                         GetRandomKVectorDictionary(grade)
                     )
                 );
@@ -118,7 +115,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Storage
             }
         }
 
-        private static Func<IGaStorageMultivector<double>, IGaStorageMultivector<double>, IGaStorageMultivector<double>> GetBinaryOperationFunction(string funcName)
+        private static Func<IGaMultivectorStorage<double>, IGaMultivectorStorage<double>, IGaMultivectorStorage<double>> GetBinaryOperationFunction(string funcName)
         {
             return funcName switch
             {

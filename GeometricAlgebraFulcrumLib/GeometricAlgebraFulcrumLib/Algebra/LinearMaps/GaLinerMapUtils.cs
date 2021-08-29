@@ -18,7 +18,7 @@
                 for (var i = 0; i < rowsCount; i++)
                     array[i, index] = mappedBasisBlade.TryGetTermScalar((ulong) i, out var scalar)
                         ? scalar
-                        : processor.GetZeroScalar();
+                        : processor.ScalarZero;
             }
 
             return array;
@@ -37,7 +37,7 @@
                 for (var i = 0; i < rowsCount; i++)
                     array[i, index] = mappedBasisBlade.TryGetTermScalar((ulong) i, out var scalar)
                         ? scalar
-                        : processor.GetZeroScalar();
+                        : processor.ScalarZero;
             }
 
             return array;

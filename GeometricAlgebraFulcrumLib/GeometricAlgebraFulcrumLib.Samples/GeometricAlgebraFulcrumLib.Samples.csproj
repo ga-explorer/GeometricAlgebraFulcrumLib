@@ -7,6 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AngouriMath" Version="1.3.0" />
+    <PackageReference Include="CSharpMath.Evaluation" Version="0.5.1" />
     <PackageReference Include="MathNet.Numerics" Version="4.15.0" />
   </ItemGroup>
 
@@ -17,7 +19,7 @@
     <ProjectReference Include="..\..\GAPoTNumLib\GAPoTNumLib\GAPoTNumLib.csproj" />
     <ProjectReference Include="..\..\TextComposerLib\TextComposerLib\TextComposerLib.csproj" />
     <ProjectReference Include="..\GeometricAlgebraFulcrumLib.CodeComposer\GeometricAlgebraFulcrumLib.CodeComposer.csproj" />
-    <ProjectReference Include="..\GeometricAlgebraFulcrumLib.Symbolic\GeometricAlgebraFulcrumLib.Symbolic.csproj" />
+    <ProjectReference Include="..\GeometricAlgebraFulcrumLib.Mathematica\GeometricAlgebraFulcrumLib.Mathematica.csproj" />
     <ProjectReference Include="..\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj" />
     <ProjectReference Include="..\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.csproj" />
   </ItemGroup>

@@ -1,12 +1,11 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Geometry.Rotors;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors;
+using GeometricAlgebraFulcrumLib.Mathematica;
+using GeometricAlgebraFulcrumLib.Mathematica.Mathematica;
+using GeometricAlgebraFulcrumLib.Mathematica.Mathematica.ExprFactory;
+using GeometricAlgebraFulcrumLib.Mathematica.Processors;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors.Unary;
-using GeometricAlgebraFulcrumLib.Symbolic;
-using GeometricAlgebraFulcrumLib.Symbolic.Mathematica;
-using GeometricAlgebraFulcrumLib.Symbolic.Mathematica.ExprFactory;
-using GeometricAlgebraFulcrumLib.Symbolic.Processors;
+using GeometricAlgebraFulcrumLib.Utilities.Extensions;
+using GeometricAlgebraFulcrumLib.Utilities.Factories;
 using Wolfram.NETLink;
 
 namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
@@ -17,7 +16,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
         {
             var n = 3U;
             var processor = 
-                GaScalarProcessorMathematicaExpr.DefaultProcessor.CreateEuclideanProcessor(n);
+                MathematicaScalarProcessor.DefaultProcessor.CreateGaEuclideanProcessor(n);
 
             var v = GaSymbolicUtils.CreateVector(
                 "Subscript[v,1]", "Subscript[v,2]", "Subscript[v,3]"

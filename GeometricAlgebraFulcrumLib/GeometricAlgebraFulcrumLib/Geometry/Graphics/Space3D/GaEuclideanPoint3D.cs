@@ -4,7 +4,7 @@ using System.Text;
 using EuclideanGeometryLib.BasicMath.Tuples;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
-using GeometricAlgebraFulcrumLib.Processing.Scalars.Float64;
+using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 
 namespace GeometricAlgebraFulcrumLib.Geometry.Graphics.Space3D
 {
@@ -102,8 +102,8 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Graphics.Space3D
         public IGaProcessor<double> Processor 
             => GaEuclideanSpace3DUtils.Processor;
 
-        public IGaScalarProcessor<double> ScalarProcessor 
-            => GaScalarProcessorFloat64.DefaultProcessor;
+        public IScalarProcessor<double> ScalarProcessor 
+            => Float64ScalarProcessor.DefaultProcessor;
 
         public double X { get; }
 

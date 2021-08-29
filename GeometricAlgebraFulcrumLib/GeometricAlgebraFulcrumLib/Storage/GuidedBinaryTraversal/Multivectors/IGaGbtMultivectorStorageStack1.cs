@@ -6,8 +6,8 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Multivectors
     public interface IGaGbtMultivectorStorageStack1<T> : 
         IGaGbtStack1<T>
     {
-        IGaScalarProcessor<T> ScalarProcessor { get; }
+        IScalarProcessor<T> ScalarProcessor { get; }
 
-        IGaStorageMultivector<T> Storage { get; }
+        IGaMultivectorStorage<T> Storage { get; }
     }
 }

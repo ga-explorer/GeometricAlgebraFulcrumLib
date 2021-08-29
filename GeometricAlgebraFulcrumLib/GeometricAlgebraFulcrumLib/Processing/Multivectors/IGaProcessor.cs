@@ -1,12 +1,12 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Space;
+using GeometricAlgebraFulcrumLib.Processing.Matrices;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures;
-using GeometricAlgebraFulcrumLib.Processing.ScalarsGrids;
 using GeometricAlgebraFulcrumLib.Storage.Multivectors;
 
 namespace GeometricAlgebraFulcrumLib.Processing.Multivectors
 {
     public interface IGaProcessor<T> : 
-        IGaSpace, IGaScalarsGridProcessor<T>
+        IGaSpace, ILaProcessor<T>
     {
         IGaSignature Signature { get; }
         
@@ -14,12 +14,12 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors
 
         bool IsChangeOfBasis { get; }
 
-        IGaStorageKVector<T> PseudoScalar { get; }
+        IGaKVectorStorage<T> PseudoScalar { get; }
 
-        IGaStorageKVector<T> PseudoScalarInverse { get; }
+        IGaKVectorStorage<T> PseudoScalarInverse { get; }
 
-        IGaStorageKVector<T> PseudoScalarReverse { get; }
+        IGaKVectorStorage<T> PseudoScalarReverse { get; }
 
-        IGaStorageMultivector<T> Normalize(IGaStorageMultivector<T> mv1);
+        IGaMultivectorStorage<T> Normalize(IGaMultivectorStorage<T> mv1);
     }
 }

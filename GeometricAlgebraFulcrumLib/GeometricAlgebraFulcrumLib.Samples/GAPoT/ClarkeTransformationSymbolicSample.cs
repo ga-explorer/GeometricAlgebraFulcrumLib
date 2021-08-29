@@ -1,15 +1,12 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Algebra.Outermorphisms;
-using GeometricAlgebraFulcrumLib.Geometry.Versors;
+using GeometricAlgebraFulcrumLib.Mathematica;
+using GeometricAlgebraFulcrumLib.Mathematica.Applications.GaPoT;
+using GeometricAlgebraFulcrumLib.Mathematica.Mathematica;
+using GeometricAlgebraFulcrumLib.Mathematica.Mathematica.ExprFactory;
+using GeometricAlgebraFulcrumLib.Mathematica.Processors;
+using GeometricAlgebraFulcrumLib.Mathematica.Text;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors;
-using GeometricAlgebraFulcrumLib.Symbolic;
-using GeometricAlgebraFulcrumLib.Symbolic.Applications.GaPoT;
-using GeometricAlgebraFulcrumLib.Symbolic.Mathematica;
-using GeometricAlgebraFulcrumLib.Symbolic.Mathematica.ExprFactory;
-using GeometricAlgebraFulcrumLib.Symbolic.Processors;
-using GeometricAlgebraFulcrumLib.Symbolic.Text;
-using GeometricAlgebraFulcrumLib.Structures.Utils;
-using GeometricAlgebraFulcrumLib.TextComposers;
+using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using Wolfram.NETLink;
 
 namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
@@ -19,14 +16,14 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
         public static IGaProcessorEuclidean<Expr> Processor { get; }
             = GaSymbolicUtils.EuclideanProcessor;
 
-        public static GaScalarProcessorMathematicaExpr ScalarProcessor { get; }
-            = GaScalarProcessorMathematicaExpr.DefaultProcessor;
+        public static MathematicaScalarProcessor ScalarProcessor { get; }
+            = MathematicaScalarProcessor.DefaultProcessor;
             
-        public static GaTextComposerMathematicaExpr TextComposer { get; }
-            = GaTextComposerMathematicaExpr.DefaultComposer;
+        public static MathematicaTextComposer TextComposer { get; }
+            = MathematicaTextComposer.DefaultComposer;
             
-        public static GaLaTeXComposerMathematicaExpr LaTeXComposer { get; }
-            = GaLaTeXComposerMathematicaExpr.DefaultComposer;
+        public static MathematicaLaTeXComposer LaTeXComposer { get; }
+            = MathematicaLaTeXComposer.DefaultComposer;
 
 
         public static void Execute()
@@ -43,7 +40,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
                 var clarkeArray = 
                     clarkeMap
                         .GetVectorsMappingArray(n, n)
-                        .MapValues(scalar => 
+                        .MapScalars(scalar => 
                             Mfs.TrigReduce[Mfs.FullSimplify[scalar]].Evaluate()
                         );
                 
@@ -70,7 +67,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
                 var linearMapQArray = 
                     linearMapQ
                         .GetVectorsMappingArray(n, n)
-                        .MapValues(scalar => 
+                        .MapScalars(scalar => 
                             Mfs.TrigReduce[Mfs.FullSimplify[scalar]].Evaluate()
                         );
                 
@@ -83,7 +80,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
                 var linearMapRArray = 
                     linearMapR
                         .GetVectorsMappingArray(n, n)
-                        .MapValues(scalar => 
+                        .MapScalars(scalar => 
                             Mfs.TrigReduce[Mfs.FullSimplify[scalar]].Evaluate()
                         );
                 

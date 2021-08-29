@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Structures;
+using GeometricAlgebraFulcrumLib.Storage;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.Multivectors.Basis
 {
@@ -54,27 +54,27 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Multivectors.Basis
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GaRecordGradeKey GetGradeIndexRecord()
+        public GradeIndexRecord GetGradeIndexRecord()
         {
-            return new GaRecordGradeKey(BasisBlade.Grade, BasisBlade.Index);
+            return new GradeIndexRecord(BasisBlade.Grade, BasisBlade.Index);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GaRecordKeyValue<T> GetIdScalarRecord()
+        public IndexScalarRecord<T> GetIdScalarRecord()
         {
-            return new GaRecordKeyValue<T>(BasisBlade.Id, Scalar);
+            return new IndexScalarRecord<T>(BasisBlade.Id, Scalar);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GaRecordKeyValue<T> GetIndexScalarRecord()
+        public IndexScalarRecord<T> GetIndexScalarRecord()
         {
-            return new GaRecordKeyValue<T>(BasisBlade.Index, Scalar);
+            return new IndexScalarRecord<T>(BasisBlade.Index, Scalar);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GaRecordGradeKeyValue<T> GetGradeIndexScalarRecord()
+        public GradeIndexScalarRecord<T> GetGradeIndexScalarRecord()
         {
-            return new GaRecordGradeKeyValue<T>(BasisBlade.Grade, BasisBlade.Index, Scalar);
+            return new GradeIndexScalarRecord<T>(BasisBlade.Grade, BasisBlade.Index, Scalar);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

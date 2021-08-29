@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using AngouriMath;
 using CodeComposerLib.SyntaxTree.Expressions;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.HeadSpecs;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Numbers;
+using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 
 namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Variables
 {
@@ -199,9 +201,14 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Variables
 
         public abstract ISymbolicExpression GetExpressionCopy();
 
+        public Entity ToAngouriMathEntity()
+        {
+            return MathS.Var(InternalName);
+        }
+
         public SteExpression ToSimpleTextExpression()
         {
-            return SteExpression.CreateVariable(ExternalName);
+            return SteExpression.CreateVariable(InternalName);
         }
 
         public abstract ISymbolicExpression GetScalarValue(bool useRhsScalarValue);

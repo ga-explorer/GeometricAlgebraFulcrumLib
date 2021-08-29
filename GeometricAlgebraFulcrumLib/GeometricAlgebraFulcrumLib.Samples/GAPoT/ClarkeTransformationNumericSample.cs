@@ -1,25 +1,23 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Algebra.Outermorphisms;
-using GeometricAlgebraFulcrumLib.Geometry.Versors;
+using GeometricAlgebraFulcrumLib.Mathematica.Applications.GaPoT;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors.Generic;
-using GeometricAlgebraFulcrumLib.Processing.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Symbolic.Applications.GaPoT;
-using GeometricAlgebraFulcrumLib.Structures.Utils;
-using GeometricAlgebraFulcrumLib.TextComposers.Float64;
+using GeometricAlgebraFulcrumLib.Processing.Scalars;
+using GeometricAlgebraFulcrumLib.Utilities.Composers;
+using GeometricAlgebraFulcrumLib.Utilities.Extensions;
+using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
 namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
 {
     public static class ClarkeTransformationNumericSample
     {
         public static GaProcessorEuclidean<double> Processor { get; }
-            = GaScalarProcessorFloat64.DefaultProcessor.CreateEuclideanProcessor(63);
+            = Float64ScalarProcessor.DefaultProcessor.CreateGaEuclideanProcessor(63);
         
-        public static GaTextComposerFloat64 TextComposer { get; }
-            = GaTextComposerFloat64.DefaultComposer;
+        public static Float64TextComposer TextComposer { get; }
+            = Float64TextComposer.DefaultComposer;
             
-        public static GaLaTeXComposerFloat64 LaTeXComposer { get; }
-            = GaLaTeXComposerFloat64.DefaultComposer;
+        public static Float64LaTeXComposer LaTeXComposer { get; }
+            = Float64LaTeXComposer.DefaultComposer;
 
 
         public static void Execute()

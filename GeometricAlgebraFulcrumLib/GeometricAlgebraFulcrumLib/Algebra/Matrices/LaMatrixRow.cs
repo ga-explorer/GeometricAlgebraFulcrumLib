@@ -1,0 +1,30 @@
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Processing.Matrices;
+using GeometricAlgebraFulcrumLib.Storage.Matrices.EvenVectors;
+
+namespace GeometricAlgebraFulcrumLib.Algebra.Matrices
+{
+    public sealed class LaMatrixRow<TMatrix, TScalar> :
+        LaMatrixRowBase<TMatrix, TScalar>
+    {
+        public override TScalar GetScalar(ulong index) => MatrixProcessor.GetScalar(MatrixStorage, RowIndex, (int) index);
+
+
+        internal LaMatrixRow([NotNull] ILaProcessor<TMatrix, TScalar> matrixProcessor, [NotNull] TMatrix matrix, int rowIndex)
+            : base(matrixProcessor, matrix, rowIndex)
+        {
+        }
+        
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override ILaVectorEvenStorage<TScalar> GetCopy()
+        {
+            return new LaMatrixRow<TMatrix, TScalar>(
+                MatrixProcessor, 
+                MatrixStorage, 
+                RowIndex
+            );
+        }
+    }
+}

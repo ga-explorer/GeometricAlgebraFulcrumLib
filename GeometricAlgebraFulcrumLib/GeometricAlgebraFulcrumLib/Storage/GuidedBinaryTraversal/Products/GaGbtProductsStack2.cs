@@ -4,13 +4,12 @@ using System.Diagnostics;
 using DataStructuresLib.BitManipulation;
 using DataStructuresLib.Stacks;
 using GeometricAlgebraFulcrumLib.Algebra.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Iterators;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
 using GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Multivectors;
 using GeometricAlgebraFulcrumLib.Storage.Multivectors;
-using GeometricAlgebraFulcrumLib.Structures;
+using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 
 namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
 {
@@ -32,7 +31,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
             return new GaGbtProductsStack2<T>(stack1, stack2);
         }
 
-        public static GaGbtProductsStack2<T> Create(IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivector<T> mv1, IGaStorageMultivector<T> mv2)
+        public static GaGbtProductsStack2<T> Create(IScalarProcessor<T> scalarProcessor, IGaMultivectorStorage<T> mv1, IGaMultivectorStorage<T> mv2)
         {
             var treeDepth = 
                 (int) Math.Max(1, Math.Max(mv1.MinVSpaceDimension, mv2.MinVSpaceDimension));
@@ -51,13 +50,13 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
         private IGaGbtMultivectorStorageStack1<T> MultivectorStack2 { get; }
 
 
-        public IGaScalarProcessor<T> ScalarProcessor 
+        public IScalarProcessor<T> ScalarProcessor 
             => MultivectorStack1.ScalarProcessor;
 
-        public IGaStorageMultivector<T> Storage1 
+        public IGaMultivectorStorage<T> Storage1 
             => MultivectorStack1.Storage;
 
-        public IGaStorageMultivector<T> Storage2 
+        public IGaMultivectorStorage<T> Storage2 
             => MultivectorStack2.Storage;
 
         public T TosValue1 
@@ -138,7 +137,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
         }
 
 
-        private GaRecordKeyValue<T> TosGetEGpIdScalarPair()
+        private IndexScalarRecord<T> TosGetEGpIdScalarPair()
         {
             var id1 = TosId1;
             var id2 = TosId2;
@@ -150,10 +149,10 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
 
             //Console.Out.WriteLine($"id1: {id1}, id2: {id2}, value: {value}");
 
-            return new GaRecordKeyValue<T>(id, scalar);
+            return new IndexScalarRecord<T>(id, scalar);
         }
 
-        private GaRecordKeyValue<T> TosGetGpIdScalarPair(int basisBladeSignature)
+        private IndexScalarRecord<T> TosGetGpIdScalarPair(int basisBladeSignature)
         {
             Debug.Assert(basisBladeSignature == 1 || basisBladeSignature == -1);
 
@@ -165,7 +164,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
                 ? ScalarProcessor.NegativeTimes(TosValue1, TosValue2)
                 : ScalarProcessor.Times(TosValue1, TosValue2);
 
-            return new GaRecordKeyValue<T>(id, scalar);
+            return new IndexScalarRecord<T>(id, scalar);
         }
 
         private T TosGetEGpScalar()
@@ -192,7 +191,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
         }
 
 
-        public IEnumerable<GaRecordKeyValue<T>> GetOpIdScalarRecords()
+        public IEnumerable<IndexScalarRecord<T>> GetOpIdScalarRecords()
         {
             PushRootData();
 
@@ -225,7 +224,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
             }
         }
 
-        public IEnumerable<GaRecordKeyValue<T>> GetEGpIdScalarRecords()
+        public IEnumerable<IndexScalarRecord<T>> GetEGpIdScalarRecords()
         {
             PushRootData();
 
@@ -259,7 +258,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
             }
         }
 
-        public IEnumerable<GaRecordKeyValue<T>> GetESpIdScalarRecords()
+        public IEnumerable<IndexScalarRecord<T>> GetESpIdScalarRecords()
         {
             PushRootData();
 
@@ -323,7 +322,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
             }
         }
 
-        public IEnumerable<GaRecordKeyValue<T>> GetELcpIdScalarRecords()
+        public IEnumerable<IndexScalarRecord<T>> GetELcpIdScalarRecords()
         {
             PushRootData();
 
@@ -356,7 +355,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
             }
         }
 
-        public IEnumerable<GaRecordKeyValue<T>> GetERcpIdScalarRecords()
+        public IEnumerable<IndexScalarRecord<T>> GetERcpIdScalarRecords()
         {
             PushRootData();
 
@@ -389,7 +388,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
             }
         }
 
-        public IEnumerable<GaRecordKeyValue<T>> GetEFdpIdScalarRecords()
+        public IEnumerable<IndexScalarRecord<T>> GetEFdpIdScalarRecords()
         {
             PushRootData();
 
@@ -424,7 +423,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
             }
         }
 
-        public IEnumerable<GaRecordKeyValue<T>> GetEHipIdScalarRecords()
+        public IEnumerable<IndexScalarRecord<T>> GetEHipIdScalarRecords()
         {
             PushRootData();
 
@@ -459,7 +458,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
             }
         }
 
-        public IEnumerable<GaRecordKeyValue<T>> GetEAcpIdScalarRecords()
+        public IEnumerable<IndexScalarRecord<T>> GetEAcpIdScalarRecords()
         {
             PushRootData();
 
@@ -494,7 +493,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
             }
         }
 
-        public IEnumerable<GaRecordKeyValue<T>> GetECpIdScalarRecords()
+        public IEnumerable<IndexScalarRecord<T>> GetECpIdScalarRecords()
         {
             PushRootData();
 
@@ -530,7 +529,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
         }
 
 
-        public IEnumerable<GaRecordKeyValue<T>> GetGpIdScalarRecords(IGaSignature metric)
+        public IEnumerable<IndexScalarRecord<T>> GetGpIdScalarRecords(IGaSignature metric)
         {
             PushRootData();
 
@@ -593,7 +592,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
             }
         }
 
-        public IEnumerable<GaRecordKeyValue<T>> GetSpIdScalarRecords(IGaSignature metric)
+        public IEnumerable<IndexScalarRecord<T>> GetSpIdScalarRecords(IGaSignature metric)
         {
             PushRootData();
 
@@ -695,7 +694,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
             }
         }
 
-        public IEnumerable<GaRecordKeyValue<T>> GetLcpIdScalarRecords(IGaSignature metric)
+        public IEnumerable<IndexScalarRecord<T>> GetLcpIdScalarRecords(IGaSignature metric)
         {
             PushRootData();
 
@@ -752,7 +751,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
             }
         }
 
-        public IEnumerable<GaRecordKeyValue<T>> GetRcpIdScalarRecords(IGaSignature metric)
+        public IEnumerable<IndexScalarRecord<T>> GetRcpIdScalarRecords(IGaSignature metric)
         {
             PushRootData();
 
@@ -809,7 +808,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
             }
         }
 
-        public IEnumerable<GaRecordKeyValue<T>> GetFdpIdScalarRecords(IGaSignature metric)
+        public IEnumerable<IndexScalarRecord<T>> GetFdpIdScalarRecords(IGaSignature metric)
         {
             PushRootData();
 
@@ -873,7 +872,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
             }
         }
 
-        public IEnumerable<GaRecordKeyValue<T>> GetHipIdScalarRecords(IGaSignature metric)
+        public IEnumerable<IndexScalarRecord<T>> GetHipIdScalarRecords(IGaSignature metric)
         {
             PushRootData();
 
@@ -937,7 +936,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
             }
         }
 
-        public IEnumerable<GaRecordKeyValue<T>> GetAcpIdScalarRecords(IGaSignature metric)
+        public IEnumerable<IndexScalarRecord<T>> GetAcpIdScalarRecords(IGaSignature metric)
         {
             PushRootData();
 
@@ -1001,7 +1000,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products
             }
         }
 
-        public IEnumerable<GaRecordKeyValue<T>> GetCpIdScalarRecords(IGaSignature metric)
+        public IEnumerable<IndexScalarRecord<T>> GetCpIdScalarRecords(IGaSignature metric)
         {
             PushRootData();
 

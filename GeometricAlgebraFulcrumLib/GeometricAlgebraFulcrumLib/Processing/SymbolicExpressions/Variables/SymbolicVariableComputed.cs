@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using DataStructuresLib;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.HeadSpecs;
@@ -161,6 +162,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Variables
         }
 
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override ISymbolicExpression GetExpressionCopy()
         {
             return new SymbolicVariableComputed(
@@ -169,7 +171,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Variables
             );
         }
 
-
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override ISymbolicExpression GetScalarValue(bool useRhsScalarValue)
         {
             return useRhsScalarValue
@@ -177,17 +179,20 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Variables
                 : this;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void SetReuseInfo(bool isReused, int nameIndex)
         {
             IsReused = isReused;
             NameIndex = nameIndex;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void SetComputationOrder(int computationOrder)
         {
             ComputationOrder = computationOrder;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int UpdateMaxComputationLevel()
         {
             _maxComputationLevel =
@@ -200,6 +205,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Variables
             return _maxComputationLevel;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override void ClearDependencyData()
         {
             DependingVariablesCache.Clear();
@@ -213,6 +219,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Variables
         /// </summary>
         /// <param name="oldRhsExpression"></param>
         /// <param name="newVariableName"></param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool ReplaceRhsExpression(ISymbolicExpression oldRhsExpression, string newVariableName)
         {
             var (isReplaced, newRhsExpression) = 
@@ -230,6 +237,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Variables
         /// </summary>
         /// <param name="oldVariableName"></param>
         /// <param name="newVariableName"></param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool ReplaceRhsVariable(string oldVariableName, string newVariableName)
         {
             var (isReplaced, newRhsExpression) = 
@@ -241,18 +249,17 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Variables
             return isReplaced;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void SimplifyRhsExpression()
         {
-            if (Context.ExpressionSimplifier is null)
-                return;
-
-            _rhsExpression = Context.ExpressionSimplifier.Simplify(_rhsExpression);
+            _rhsExpression = Context.ExpressionEvaluator.Simplify(_rhsExpression);
         }
 
         /// <summary>
         /// Set the RHS expression to the given expression
         /// </summary>
         /// <param name="newRhsExpression"></param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void ResetRhsExpression([NotNull] ISymbolicExpression newRhsExpression)
         {
             _rhsExpression = newRhsExpression;
@@ -335,6 +342,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Variables
         /// computed variable's RHS computation in whole the code block
         /// </summary>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IEnumerable<ISymbolicVariableParameter> GetUsedParameterVariables()
         {
             return GetUsedVariables()
@@ -390,9 +398,5 @@ namespace GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Variables
             //Return the final list after reversing so that the ordering of computations is correct
             return finalVariablesDictionary.Values.Reverse();
         }
-
-        
-        
-
     }
 }

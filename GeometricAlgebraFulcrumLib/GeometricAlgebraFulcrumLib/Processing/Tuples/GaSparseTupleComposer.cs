@@ -16,13 +16,13 @@ namespace GeometricAlgebraFulcrumLib.Processing.Tuples
         public int Count 
             => IndexScalarDictionary.Count;
 
-        public IGaScalarProcessor<T> ScalarScalarsDomain { get; }
+        public IScalarProcessor<T> ScalarScalarsDomain { get; }
 
         public T this[int index]
         {
             get => IndexScalarDictionary.TryGetValue(index, out var scalar) 
                 ? scalar 
-                : ScalarScalarsDomain.GetZeroScalar();
+                : ScalarScalarsDomain.ScalarZero;
             set
             {
                 if (IndexScalarDictionary.ContainsKey(index))
@@ -33,18 +33,18 @@ namespace GeometricAlgebraFulcrumLib.Processing.Tuples
         }
 
 
-        public GaSparseTupleComposer([NotNull] IGaScalarProcessor<T> scalarProcessor)
+        public GaSparseTupleComposer([NotNull] IScalarProcessor<T> scalarProcessor)
         {
             ScalarScalarsDomain = scalarProcessor;
         }
 
-        public GaSparseTupleComposer([NotNull] IGaScalarProcessor<T> scalarProcessor, [NotNull] Dictionary<int, T> indexScalarDictionary)
+        public GaSparseTupleComposer([NotNull] IScalarProcessor<T> scalarProcessor, [NotNull] Dictionary<int, T> indexScalarDictionary)
         {
             ScalarScalarsDomain = scalarProcessor;
             IndexScalarDictionary = indexScalarDictionary;
         }
 
-        public GaSparseTupleComposer([NotNull] IGaScalarProcessor<T> scalarProcessor, [NotNull] IEnumerable<KeyValuePair<int, T>> indexScalarPairs)
+        public GaSparseTupleComposer([NotNull] IScalarProcessor<T> scalarProcessor, [NotNull] IEnumerable<KeyValuePair<int, T>> indexScalarPairs)
         {
             ScalarScalarsDomain = scalarProcessor;
             IndexScalarDictionary = indexScalarPairs.ToDictionary(
@@ -53,7 +53,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Tuples
             );
         }
 
-        public GaSparseTupleComposer([NotNull] IGaScalarProcessor<T> scalarProcessor, [NotNull] IEnumerable<Tuple<int, T>> indexScalarTuples)
+        public GaSparseTupleComposer([NotNull] IScalarProcessor<T> scalarProcessor, [NotNull] IEnumerable<Tuple<int, T>> indexScalarTuples)
         {
             ScalarScalarsDomain = scalarProcessor;
             IndexScalarDictionary = indexScalarTuples.ToDictionary(

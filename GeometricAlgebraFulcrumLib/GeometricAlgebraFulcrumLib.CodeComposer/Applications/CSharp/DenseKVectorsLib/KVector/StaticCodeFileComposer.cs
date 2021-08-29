@@ -1,8 +1,8 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
 using TextComposerLib.Text.Linear;
 using TextComposerLib.Text.Structured;
 using TextComposerLib.Text.Parametric;
+using GaSpaceUtils = GeometricAlgebraFulcrumLib.Utilities.Extensions.GaSpaceUtils;
 
 namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVectorsLib.KVector
 {
@@ -10,9 +10,9 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
     /// This class generates a static members file for the k-vector class
     /// </summary>
     internal sealed class StaticCodeFileComposer : 
-        GaLibraryFileComposerBase 
+        GaFuLLibraryFileComposerBase 
     {
-        internal StaticCodeFileComposer(GaLibraryComposer libGen)
+        internal StaticCodeFileComposer(GaFuLLibraryComposer libGen)
             : base(libGen)
         {
         }
@@ -20,7 +20,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
 
         private string GenerateDeclarations(uint grade)
         {
-            var kvDim = this.KvSpaceDimension(grade);
+            var kvDim = GaSpaceUtils.KvSpaceDimension(this, grade);
 
             var template = Templates["static_basisblade_declare"];
 
@@ -38,7 +38,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
                 declaresText.Add(
                     template,
                     "signature", CurrentNamespace,
-                    "id", Processor.BasisBladeId(grade, index),
+                    "id", GaSpaceUtils.BasisBladeId(Processor, grade, index),
                     "grade", grade,
                     "scalars", coefsText
                 );
@@ -53,9 +53,9 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         {
             var namesText = new ListTextComposer(", ") { ActiveItemSuffix = "\"", ActiveItemPrefix = "\"" };
 
-            for (var index = 0UL; index < Processor.KvSpaceDimension(grade); index++)
+            for (var index = 0UL; index < GaSpaceUtils.KvSpaceDimension(Processor, grade); index++)
             {
-                var id = Processor.BasisBladeId(grade, index);
+                var id = GaSpaceUtils.BasisBladeId(Processor, grade, index);
 
                 namesText.Add($"E{id}");
             }
@@ -75,7 +75,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
 
             foreach (var grade in Processor.Grades)
             {
-                kvdimsText.Add(Processor.KvSpaceDimension(grade));
+                kvdimsText.Add(GaSpaceUtils.KvSpaceDimension(Processor, grade));
 
                 basisnamesText.Add(GenerateBasisBladesNames(grade));
 

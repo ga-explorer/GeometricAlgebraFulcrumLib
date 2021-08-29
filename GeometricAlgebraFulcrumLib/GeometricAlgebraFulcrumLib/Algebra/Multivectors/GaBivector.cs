@@ -1,19 +1,16 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Factories;
 using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Space;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors.Binary;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors.Unary;
+using GeometricAlgebraFulcrumLib.Processing.Scalars;
 using GeometricAlgebraFulcrumLib.Storage.Multivectors;
-using GeometricAlgebraFulcrumLib.Storage.Utils;
-using GeometricAlgebraFulcrumLib.TextComposers;
+using GeometricAlgebraFulcrumLib.Utilities.Extensions;
+using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.Multivectors
 {
     public sealed record GaBivector<T>
-        : IGaAlgebraElement<T>
+        : IGeometricAlgebraElement<T>
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static GaBivector<T> operator -(GaBivector<T> v1)
@@ -34,7 +31,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Multivectors
 
             return new GaMultivector<T>(
                 processor,
-                processor.Add(v1.BivectorStorage, processor.IntegerToScalar(v2))
+                processor.Add(v1.BivectorStorage, processor.GetScalarFromInteger(v2))
             );
         }
 
@@ -45,7 +42,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Multivectors
 
             return new GaMultivector<T>(
                 processor,
-                processor.Add(processor.IntegerToScalar(v1), v2.BivectorStorage)
+                processor.Add(processor.GetScalarFromInteger(v1), v2.BivectorStorage)
             );
         }
 
@@ -57,7 +54,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Multivectors
 
             return new GaMultivector<T>(
                 processor,
-                processor.Add(v1.BivectorStorage, processor.Float64ToScalar(v2))
+                processor.Add(v1.BivectorStorage, processor.GetScalarFromFloat64(v2))
             );
         }
 
@@ -68,7 +65,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Multivectors
 
             return new GaMultivector<T>(
                 processor,
-                processor.Add(processor.Float64ToScalar(v1), v2.BivectorStorage)
+                processor.Add(processor.GetScalarFromFloat64(v1), v2.BivectorStorage)
             );
         }
 
@@ -97,24 +94,24 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Multivectors
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaMultivector<T> operator +(GaBivector<T> v1, GaScalar<T> v2)
+        public static GaMultivector<T> operator +(GaBivector<T> v1, Scalar<T> v2)
         {
             var processor = v1.Processor;
 
             return new GaMultivector<T>(
                 processor,
-                processor.Add(v1.BivectorStorage, v2.Scalar)
+                processor.Add(v1.BivectorStorage, v2.ScalarValue)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaMultivector<T> operator +(GaScalar<T> v1, GaBivector<T> v2)
+        public static GaMultivector<T> operator +(Scalar<T> v1, GaBivector<T> v2)
         {
             var processor = v2.Processor;
 
             return new GaMultivector<T>(
                 processor,
-                processor.Add(v1.Scalar, v2.BivectorStorage)
+                processor.Add(v1.ScalarValue, v2.BivectorStorage)
             );
         }
 
@@ -161,7 +158,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Multivectors
 
             return new GaMultivector<T>(
                 processor,
-                processor.Subtract(v1.BivectorStorage, processor.IntegerToScalar(v2))
+                processor.Subtract(v1.BivectorStorage, processor.GetScalarFromInteger(v2))
             );
         }
 
@@ -172,7 +169,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Multivectors
 
             return new GaMultivector<T>(
                 processor,
-                processor.Subtract(processor.IntegerToScalar(v1), v2.BivectorStorage)
+                processor.Subtract(processor.GetScalarFromInteger(v1), v2.BivectorStorage)
             );
         }
 
@@ -184,7 +181,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Multivectors
 
             return new GaMultivector<T>(
                 processor,
-                processor.Subtract(v1.BivectorStorage, processor.Float64ToScalar(v2))
+                processor.Subtract(v1.BivectorStorage, processor.GetScalarFromFloat64(v2))
             );
         }
 
@@ -195,7 +192,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Multivectors
 
             return new GaMultivector<T>(
                 processor,
-                processor.Subtract(processor.Float64ToScalar(v1), v2.BivectorStorage)
+                processor.Subtract(processor.GetScalarFromFloat64(v1), v2.BivectorStorage)
             );
         }
 
@@ -224,24 +221,24 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Multivectors
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaMultivector<T> operator -(GaBivector<T> v1, GaScalar<T> v2)
+        public static GaMultivector<T> operator -(GaBivector<T> v1, Scalar<T> v2)
         {
             var processor = v1.Processor;
 
             return new GaMultivector<T>(
                 processor,
-                processor.Subtract(v1.BivectorStorage, v2.Scalar)
+                processor.Subtract(v1.BivectorStorage, v2.ScalarValue)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaMultivector<T> operator -(GaScalar<T> v1, GaBivector<T> v2)
+        public static GaMultivector<T> operator -(Scalar<T> v1, GaBivector<T> v2)
         {
             var processor = v2.Processor;
 
             return new GaMultivector<T>(
                 processor,
-                processor.Subtract(v1.Scalar, v2.BivectorStorage)
+                processor.Subtract(v1.ScalarValue, v2.BivectorStorage)
             );
         }
         
@@ -288,7 +285,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Multivectors
 
             return new GaBivector<T>(
                 processor,
-                processor.Times(v1.BivectorStorage, processor.IntegerToScalar(v2))
+                processor.Times(v1.BivectorStorage, processor.GetScalarFromInteger(v2))
             );
         }
 
@@ -299,7 +296,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Multivectors
 
             return new GaBivector<T>(
                 processor,
-                processor.Times(processor.IntegerToScalar(v1), v2.BivectorStorage)
+                processor.Times(processor.GetScalarFromInteger(v1), v2.BivectorStorage)
             );
 
         }
@@ -312,7 +309,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Multivectors
 
             return new GaBivector<T>(
                 processor,
-                processor.Times(v1.BivectorStorage, processor.Float64ToScalar(v2))
+                processor.Times(v1.BivectorStorage, processor.GetScalarFromFloat64(v2))
             );
         }
 
@@ -323,7 +320,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Multivectors
 
             return new GaBivector<T>(
                 processor,
-                processor.Times(processor.Float64ToScalar(v1), v2.BivectorStorage)
+                processor.Times(processor.GetScalarFromFloat64(v1), v2.BivectorStorage)
             );
 
         }
@@ -354,24 +351,24 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Multivectors
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaBivector<T> operator *(GaBivector<T> v1, GaScalar<T> v2)
+        public static GaBivector<T> operator *(GaBivector<T> v1, Scalar<T> v2)
         {
             var processor = v1.Processor;
 
             return new GaBivector<T>(
                 processor,
-                processor.Times(v1.BivectorStorage, v2.Scalar)
+                processor.Times(v1.BivectorStorage, v2.ScalarValue)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaBivector<T> operator *(GaScalar<T> v1, GaBivector<T> v2)
+        public static GaBivector<T> operator *(Scalar<T> v1, GaBivector<T> v2)
         {
             var processor = v2.Processor;
 
             return new GaBivector<T>(
                 processor,
-                processor.Times(v1.Scalar, v2.BivectorStorage)
+                processor.Times(v1.ScalarValue, v2.BivectorStorage)
             );
 
         }
@@ -384,7 +381,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Multivectors
 
             return new GaBivector<T>(
                 processor,
-                processor.Divide(v1.BivectorStorage, processor.IntegerToScalar(v2))
+                processor.Divide(v1.BivectorStorage, processor.GetScalarFromInteger(v2))
             );
         }
 
@@ -395,7 +392,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Multivectors
 
             return new GaBivector<T>(
                 processor,
-                processor.Divide(v1.BivectorStorage, processor.Float64ToScalar(v2))
+                processor.Divide(v1.BivectorStorage, processor.GetScalarFromFloat64(v2))
             );
         }
 
@@ -411,13 +408,13 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Multivectors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaBivector<T> operator /(GaBivector<T> v1, GaScalar<T> v2)
+        public static GaBivector<T> operator /(GaBivector<T> v1, Scalar<T> v2)
         {
             var processor = v1.Processor;
 
             return new GaBivector<T>(
                 processor,
-                processor.Divide(v1.BivectorStorage, v2.Scalar)
+                processor.Divide(v1.BivectorStorage, v2.ScalarValue)
             );
         }
 
@@ -433,57 +430,63 @@ namespace GeometricAlgebraFulcrumLib.Algebra.Multivectors
 
         public IGaProcessor<T> Processor { get; }
 
-        public IGaStorageBivector<T> BivectorStorage { get; }
+        public IGaBivectorStorage<T> BivectorStorage { get; }
 
-        public GaScalar<T> this[int index]
-            => Processor.CreateScalar(
+        public Scalar<T> this[int index]
+            => Processor.CreateGaScalarStorage(
                 Processor.GetTermScalarByIndex(BivectorStorage, (ulong) index)
             );
         
-        public GaScalar<T> this[ulong index]
-            => Processor.CreateScalar(
+        public Scalar<T> this[ulong index]
+            => Processor.CreateGaScalarStorage(
                 Processor.GetTermScalarByIndex(BivectorStorage, index)
             );
         
-        public GaScalar<T> this[int index1, int index2]
+        public Scalar<T> this[int index1, int index2]
         {
             get
             {
                 if (index1 == index2)
-                    return Processor.GetZeroScalar().CreateScalar(Processor);
+                    return Processor.ScalarZero.CreateGaScalarStorage(Processor);
 
                 var id = 
                     GaBasisBivectorUtils.BasisBivectorId(index1, index2);
 
                 return index1 < index2
-                    ? Processor.GetTermScalar(BivectorStorage, id).CreateScalar(Processor)
-                    : Processor.GetTermScalar(Processor.Negative(BivectorStorage), id).CreateScalar(Processor);
+                    ? Processor.GetTermScalar(BivectorStorage, id).CreateGaScalarStorage(Processor)
+                    : Processor.GetTermScalar(Processor.Negative(BivectorStorage), id).CreateGaScalarStorage(Processor);
             }
         }
         
-        public GaScalar<T> this[ulong index1, ulong index2]
+        public Scalar<T> this[ulong index1, ulong index2]
         {
             get
             {
                 if (index1 == index2)
-                    return Processor.GetZeroScalar().CreateScalar(Processor);
+                    return Processor.ScalarZero.CreateGaScalarStorage(Processor);
 
                 var id = 
                     GaBasisBivectorUtils.BasisBivectorId(index1, index2);
 
                 return index1 < index2
-                    ? Processor.GetTermScalar(BivectorStorage, id).CreateScalar(Processor)
-                    : Processor.GetTermScalar(Processor.Negative(BivectorStorage), id).CreateScalar(Processor);
+                    ? Processor.GetTermScalar(BivectorStorage, id).CreateGaScalarStorage(Processor)
+                    : Processor.GetTermScalar(Processor.Negative(BivectorStorage), id).CreateGaScalarStorage(Processor);
             }
         }
 
 
-        internal GaBivector([NotNull] IGaProcessor<T> processor, [NotNull] IGaStorageBivector<T> bivector)
+        internal GaBivector([NotNull] IScalarProcessor<T> processor, [NotNull] IGaBivectorStorage<T> bivector)
+        {
+            Processor = (IGaProcessor<T>) processor;
+            BivectorStorage = bivector;
+        }
+        
+        internal GaBivector([NotNull] IGaProcessor<T> processor, [NotNull] IGaBivectorStorage<T> bivector)
         {
             Processor = processor;
             BivectorStorage = bivector;
         }
-        
+
         
         public GaBivector<T> Reverse()
         {

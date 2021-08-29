@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using DataStructuresLib.Basic;
+using GeometricAlgebraFulcrumLib.Storage.Matrices.EvenVectors;
 using GeometricAlgebraFulcrumLib.Storage.Multivectors;
-using GeometricAlgebraFulcrumLib.Structures;
-using GeometricAlgebraFulcrumLib.Structures.Lists.Even;
 
 namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal
 {
     public sealed class GaGbtBinaryTreeStack1<T> 
         : GaGbtStack1, IGaGbtStack1<T>
     {
-        public static GaGbtBinaryTreeStack1<T> Create(GaStorageMultivectorBase<T> mv)
+        public static GaGbtBinaryTreeStack1<T> Create(GaMultivectorStorageBase<T> mv)
         {
             var vSpaceDimension = 
                 Math.Max(1, mv.MinVSpaceDimension);
@@ -25,7 +24,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal
             return stack;
         }
 
-        public static GaGbtBinaryTreeStack1<T> Create(int capacity, GaStorageMultivectorBase<T> mv)
+        public static GaGbtBinaryTreeStack1<T> Create(int capacity, GaMultivectorStorageBase<T> mv)
         {
             var vSpaceDimension = 
                 Math.Max(1, mv.MinVSpaceDimension);
@@ -40,7 +39,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal
             return stack;
         }
 
-        public static GaGbtBinaryTreeStack1<T> Create(GaListEvenTree<T> rootNode)
+        public static GaGbtBinaryTreeStack1<T> Create(LaVectorTreeStorage<T> rootNode)
         {
             var treeDepth = rootNode.TreeDepth;
 
@@ -54,7 +53,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal
             return stack;
         }
 
-        public static GaGbtBinaryTreeStack1<T> Create(int capacity, GaListEvenTree<T> rootNode)
+        public static GaGbtBinaryTreeStack1<T> Create(int capacity, LaVectorTreeStorage<T> rootNode)
         {
             var stack = new GaGbtBinaryTreeStack1<T>(
                 capacity,
@@ -75,10 +74,10 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal
         public T TosScalar { get; private set; }
 
 
-        public GaListEvenTree<T> BinaryTree { get; }
+        public LaVectorTreeStorage<T> BinaryTree { get; }
 
 
-        private GaGbtBinaryTreeStack1(int capacity, GaListEvenTree<T> binaryTree)
+        private GaGbtBinaryTreeStack1(int capacity, LaVectorTreeStorage<T> binaryTree)
             : base(capacity, binaryTree.TreeDepth, 0ul)
         {
             BinaryTreeNodeIndexArray = new int[capacity];
@@ -146,7 +145,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal
         }
 
 
-        public IEnumerable<GaRecordKeyValue<T>> GetLeafIdScalarPairs()
+        public IEnumerable<IndexScalarRecord<T>> GetLeafIdScalarPairs()
         {
             PushRootData();
 
@@ -156,7 +155,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal
 
                 if (TosIsLeaf)
                 {
-                    yield return new GaRecordKeyValue<T>(TosId, TosScalar);
+                    yield return new IndexScalarRecord<T>(TosId, TosScalar);
 
                     continue;
                 }

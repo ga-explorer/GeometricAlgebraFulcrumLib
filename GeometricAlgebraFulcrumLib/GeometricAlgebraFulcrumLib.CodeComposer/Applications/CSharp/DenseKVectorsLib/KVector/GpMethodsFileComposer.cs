@@ -6,12 +6,12 @@ using TextComposerLib.Text.Structured;
 namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVectorsLib.KVector
 {
     internal sealed class GpMethodsFileComposer : 
-        GaLibraryFileComposerBase 
+        GaFuLLibraryFileComposerBase 
     {
-        internal GaLanguageOperationSpecs OperationSpecs { get; }
+        internal GaFuLLanguageOperationSpecs OperationSpecs { get; }
 
 
-        internal GpMethodsFileComposer(GaLibraryComposer libGen, GaLanguageOperationSpecs opSpecs)
+        internal GpMethodsFileComposer(GaFuLLibraryComposer libGen, GaFuLLanguageOperationSpecs opSpecs)
             : base(libGen)
         {
             OperationSpecs = opSpecs;

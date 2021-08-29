@@ -1,29 +1,28 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
 using GeometricAlgebraFulcrumLib.CodeComposer.Languages;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors.Unary;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
 using GeometricAlgebraFulcrumLib.Storage.Multivectors;
+using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using TextComposerLib.Text.Linear;
 using TextComposerLib.Text.Structured;
 
 namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVectorsLib.KVector
 {
     internal sealed class UnaryGpMethodsFileComposer 
-        : GaLibrarySymbolicContextFileComposerBase
+        : GaFuLLibrarySymbolicContextFileComposerBase
     {
         private uint _inGrade;
         private uint _outGrade;
-        private IGaStorageKVector<ISymbolicExpressionAtomic> _inputKVector;
-        private IGaStorageKVector<ISymbolicExpressionAtomic> _outputKVector;
+        private IGaKVectorStorage<ISymbolicExpressionAtomic> _inputKVector;
+        private IGaKVectorStorage<ISymbolicExpressionAtomic> _outputKVector;
 
-        internal GaLanguageOperationSpecs OperationSpecs { get; }
+        internal GaFuLLanguageOperationSpecs OperationSpecs { get; }
 
 
-        internal UnaryGpMethodsFileComposer(GaLibraryComposer libGen, GaLanguageOperationSpecs opSpecs)
+        internal UnaryGpMethodsFileComposer(GaFuLLibraryComposer libGen, GaFuLLanguageOperationSpecs opSpecs)
             : base(libGen)
         {
             OperationSpecs = opSpecs;
@@ -43,12 +42,12 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         {
             _outputKVector = OperationSpecs.OperationKind switch
             {
-                GaLanguageOperationKind.UnaryGeometricProductSquared
+                GaFuLLanguageOperationKind.UnaryGeometricProductSquared
                     => OperationSpecs.IsEuclidean
                         ? Processor.EGp(_inputKVector, _inputKVector).GetKVectorPart(_outGrade)
                         : Processor.Gp(_inputKVector, _inputKVector).GetKVectorPart(_outGrade),
 
-                GaLanguageOperationKind.UnaryGeometricProductReverse
+                GaFuLLanguageOperationKind.UnaryGeometricProductReverse
                     => OperationSpecs.IsEuclidean
                         ? Processor.EGp(_inputKVector, Processor.Reverse(_inputKVector)).GetKVectorPart(_outGrade)
                         : Processor.Gp(_inputKVector, Processor.Reverse(_inputKVector)).GetKVectorPart(_outGrade),

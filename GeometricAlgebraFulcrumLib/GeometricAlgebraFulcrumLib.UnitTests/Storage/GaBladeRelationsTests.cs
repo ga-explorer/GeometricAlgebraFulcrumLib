@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors.Binary;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors.Unary;
-using GeometricAlgebraFulcrumLib.Processing.Random.Float64;
-using GeometricAlgebraFulcrumLib.Processing.Scalars.Float64;
-using GeometricAlgebraFulcrumLib.Storage.Factories;
+using GeometricAlgebraFulcrumLib.Processing.Random;
+using GeometricAlgebraFulcrumLib.Processing.Scalars;
 using GeometricAlgebraFulcrumLib.Storage.Multivectors;
+using GeometricAlgebraFulcrumLib.Utilities.Extensions;
+using GeometricAlgebraFulcrumLib.Utilities.Factories;
 using NUnit.Framework;
 
 namespace GeometricAlgebraFulcrumLib.UnitTests.Storage
@@ -14,17 +13,17 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Storage
     [TestFixture]
     public sealed class GaBladeRelationsTests
     {
-        private readonly GaRandomComposerFloat64 _randomGenerator;
+        private readonly GaFloat64RandomComposer _randomGenerator;
 
-        private readonly List<IGaStorageKVector<double>> _bladesList;
+        private readonly List<IGaKVectorStorage<double>> _bladesList;
 
         private readonly double _scalar;
 
-        private GaStorageScalar<double> _scalarStorage;
+        private GaScalarStorage<double> _scalarStorage;
 
 
-        public GaScalarProcessorFloat64 ScalarProcessor
-            => GaScalarProcessorFloat64.DefaultProcessor;
+        public Float64ScalarProcessor ScalarProcessor
+            => Float64ScalarProcessor.DefaultProcessor;
 
         public uint VSpaceDimension 
             => 8;
@@ -35,9 +34,9 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Storage
 
         public GaBladeRelationsTests()
         {
-            _randomGenerator = new GaRandomComposerFloat64(VSpaceDimension,10);
+            _randomGenerator = new GaFloat64RandomComposer(VSpaceDimension,10);
             _scalar = _randomGenerator.GetScalar();
-            _bladesList = new List<IGaStorageKVector<double>>();
+            _bladesList = new List<IGaKVectorStorage<double>>();
         }
 
         
@@ -54,8 +53,8 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Storage
         [Test]
         public void AssertScaling()
         {
-            IGaStorageMultivector<double> blade2;
-            IGaStorageMultivector<double> diff;
+            IGaMultivectorStorage<double> blade2;
+            IGaMultivectorStorage<double> diff;
 
             foreach (var blade1 in _bladesList)
             {

@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
 using GeometricAlgebraFulcrumLib.Storage.Multivectors;
-using GeometricAlgebraFulcrumLib.Storage.Utils;
+using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 
 namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Multivectors
 {
@@ -9,7 +9,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Multivectors
     public sealed class GaGbtMultivectorStorageGradedStack1<T>
         : GaGbtStack1, IGaGbtMultivectorStorageStack1<T>
     {
-        public static GaGbtMultivectorStorageGradedStack1<T> Create(int capacity, int treeDepth, IGaScalarProcessor<T> scalarProcessor, IGaStorageMultivector<T> multivectorStorage)
+        public static GaGbtMultivectorStorageGradedStack1<T> Create(int capacity, int treeDepth, IScalarProcessor<T> scalarProcessor, IGaMultivectorStorage<T> multivectorStorage)
         {
             return new(capacity, treeDepth, scalarProcessor, multivectorStorage);
         }
@@ -19,9 +19,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Multivectors
 
         private ulong[] ActiveGradesBitMask1Array { get; }
 
-        public IGaScalarProcessor<T> ScalarProcessor { get; }
+        public IScalarProcessor<T> ScalarProcessor { get; }
 
-        public IGaStorageMultivector<T> Storage { get; }
+        public IGaMultivectorStorage<T> Storage { get; }
 
         public T TosScalar { get; private set; }
 
@@ -46,7 +46,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Multivectors
         public ulong RootActiveGradesBitMask1 { get; }
 
 
-        private GaGbtMultivectorStorageGradedStack1(int capacity, int treeDepth, [NotNull] IGaScalarProcessor<T> scalarProcessor, [NotNull] IGaStorageMultivector<T> multivectorStorage)
+        private GaGbtMultivectorStorageGradedStack1(int capacity, int treeDepth, [NotNull] IScalarProcessor<T> scalarProcessor, [NotNull] IGaMultivectorStorage<T> multivectorStorage)
             : base(capacity, treeDepth, 0ul)
         {
             ScalarProcessor = scalarProcessor;

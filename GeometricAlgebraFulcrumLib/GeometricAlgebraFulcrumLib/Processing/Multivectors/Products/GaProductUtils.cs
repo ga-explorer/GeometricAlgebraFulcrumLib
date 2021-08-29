@@ -1,40 +1,39 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors.Binary;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors.Unary;
 using GeometricAlgebraFulcrumLib.Storage.Multivectors;
+using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 
 namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products
 {
     public static class GaProductUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageMultivector<T> Dual<T>(this IGaProcessor<T> processor, IGaStorageMultivector<T> mv1)
+        public static IGaMultivectorStorage<T> Dual<T>(this IGaProcessor<T> processor, IGaMultivectorStorage<T> mv1)
         {
             return processor.Lcp(mv1, processor.PseudoScalarInverse);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageMultivector<T> Dual<T>(this IGaStorageMultivector<T> mv1, IGaProcessor<T> processor)
+        public static IGaMultivectorStorage<T> Dual<T>(this IGaMultivectorStorage<T> mv1, IGaProcessor<T> processor)
         {
             return processor.Lcp(mv1, processor.PseudoScalarInverse);
         }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageMultivector<T> UnDual<T>(this IGaProcessor<T> processor, IGaStorageMultivector<T> mv1)
+        public static IGaMultivectorStorage<T> UnDual<T>(this IGaProcessor<T> processor, IGaMultivectorStorage<T> mv1)
         {
             return processor.Lcp(mv1, processor.PseudoScalarReverse);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageMultivector<T> UnDual<T>(this IGaStorageMultivector<T> mv1, IGaProcessor<T> processor)
+        public static IGaMultivectorStorage<T> UnDual<T>(this IGaMultivectorStorage<T> mv1, IGaProcessor<T> processor)
         {
             return processor.Lcp(mv1, processor.PseudoScalarReverse);
         }
         
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageKVector<T> BladeInverse<T>(this IGaProcessor<T> processor, IGaStorageKVector<T> mv1)
+        public static IGaKVectorStorage<T> BladeInverse<T>(this IGaProcessor<T> processor, IGaKVectorStorage<T> mv1)
         {
             var bladeSpSquared = processor.Sp(mv1);
 
@@ -42,7 +41,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageKVector<T> BladeInverse<T>(this IGaStorageKVector<T> mv1, IGaProcessor<T> processor)
+        public static IGaKVectorStorage<T> BladeInverse<T>(this IGaKVectorStorage<T> mv1, IGaProcessor<T> processor)
         {
             var bladeSpSquared = processor.Sp(mv1);
 
@@ -51,7 +50,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageMultivector<T> BladeInverse<T>(this IGaProcessor<T> processor, IGaStorageMultivector<T> mv1)
+        public static IGaMultivectorStorage<T> BladeInverse<T>(this IGaProcessor<T> processor, IGaMultivectorStorage<T> mv1)
         {
             var bladeSpSquared = processor.Sp(mv1);
 
@@ -60,7 +59,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageMultivector<T> VersorInverse<T>(this IGaProcessor<T> processor, IGaStorageMultivector<T> mv1)
+        public static IGaMultivectorStorage<T> VersorInverse<T>(this IGaProcessor<T> processor, IGaMultivectorStorage<T> mv1)
         {
             var versorSpReverse = processor.NormSquared(mv1);
 
@@ -68,7 +67,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Products
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaStorageMultivector<T> VersorInverse<T>(this IGaStorageMultivector<T> mv1, IGaProcessor<T> processor)
+        public static IGaMultivectorStorage<T> VersorInverse<T>(this IGaMultivectorStorage<T> mv1, IGaProcessor<T> processor)
         {
             var versorSpReverse = processor.NormSquared(mv1);
 

@@ -1,13 +1,13 @@
 ﻿using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
 using GeometricAlgebraFulcrumLib.Processing.Scalars;
+using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 
 namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures
 {
     public sealed record GaTermsBilinearProductResult<T>
     {
-        public IGaScalarProcessor<T> ScalarProcessor { get; }
+        public IScalarProcessor<T> ScalarProcessor { get; }
 
         public int Signature { get; }
 
@@ -31,7 +31,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures
             get
             {
                 if (Signature == 0)
-                    return ScalarProcessor.GetZeroScalar();
+                    return ScalarProcessor.ScalarZero;
 
                 return Signature < 0 
                     ? ScalarProcessor.NegativeTimes(Scalar1, Scalar2)
@@ -39,7 +39,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures
             }
         } 
 
-        internal GaTermsBilinearProductResult([NotNull] IGaScalarProcessor<T> scalarProcessor, int signature, ulong id, T scalar1, T scalar2)
+        internal GaTermsBilinearProductResult([NotNull] IScalarProcessor<T> scalarProcessor, int signature, ulong id, T scalar1, T scalar2)
         {
             Debug.Assert(signature is >= -1 and <= 1);
 

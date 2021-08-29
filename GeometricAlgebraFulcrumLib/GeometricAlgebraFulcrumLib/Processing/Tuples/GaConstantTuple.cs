@@ -8,14 +8,14 @@ namespace GeometricAlgebraFulcrumLib.Processing.Tuples
     public sealed class GaConstantTuple<T>
         : IGaTuple<T>
     {
-        public static GaConstantTuple<T> Create(IGaScalarProcessor<T> itemScalarsDomain, T scalar)
+        public static GaConstantTuple<T> Create(IScalarProcessor<T> itemScalarsDomain, T scalar)
         {
             return new(itemScalarsDomain, scalar);
         }
 
-        public static GaConstantTuple<T> CreateZero(IGaScalarProcessor<T> itemScalarsDomain)
+        public static GaConstantTuple<T> CreateZero(IScalarProcessor<T> itemScalarsDomain)
         {
-            return new(itemScalarsDomain, itemScalarsDomain.GetZeroScalar());
+            return new(itemScalarsDomain, itemScalarsDomain.ScalarZero);
         }
 
 
@@ -70,13 +70,13 @@ namespace GeometricAlgebraFulcrumLib.Processing.Tuples
 
         public T Scalar { get; }
 
-        public IGaScalarProcessor<T> ScalarProcessor { get; }
+        public IScalarProcessor<T> ScalarProcessor { get; }
 
         public T this[int key] 
             => Scalar;
 
 
-        private GaConstantTuple([NotNull] IGaScalarProcessor<T> itemScalarsDomain, [NotNull] T scalar)
+        private GaConstantTuple([NotNull] IScalarProcessor<T> itemScalarsDomain, [NotNull] T scalar)
         {
             ScalarProcessor = itemScalarsDomain;
             Scalar = scalar;
@@ -96,7 +96,7 @@ namespace GeometricAlgebraFulcrumLib.Processing.Tuples
                 return true;
             }
 
-            value = ScalarProcessor.GetZeroScalar();
+            value = ScalarProcessor.ScalarZero;
             return false;
         }
 

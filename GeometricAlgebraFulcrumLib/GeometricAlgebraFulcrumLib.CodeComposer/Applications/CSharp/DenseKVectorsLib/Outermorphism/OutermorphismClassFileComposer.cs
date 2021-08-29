@@ -1,18 +1,18 @@
 ﻿using System;
 using GeometricAlgebraFulcrumLib.Algebra.Outermorphisms;
 using GeometricAlgebraFulcrumLib.CodeComposer.Composers;
-using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Variables;
+using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using TextComposerLib.Text.Structured;
 using TextComposerLib.Text.Linear;
 
 namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVectorsLib.Outermorphism
 {
     internal class OutermorphismClassFileComposer : 
-        GaLibraryFileComposerBase
+        GaFuLLibraryFileComposerBase
     {
-        internal OutermorphismClassFileComposer(GaLibraryComposer libGen)
+        internal OutermorphismClassFileComposer(GaFuLLibraryComposer libGen)
             : base(libGen)
         {
         }
@@ -65,7 +65,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             );
 
             var macroComposer = 
-                new GaSymbolicContextCodeComposer(
+                new GaFuLSymbolicContextCodeComposer(
                     CodeComposer.GaLanguage, 
                     context, 
                     DenseKVectorsLibraryComposer.DefaultContextCodeComposerOptions

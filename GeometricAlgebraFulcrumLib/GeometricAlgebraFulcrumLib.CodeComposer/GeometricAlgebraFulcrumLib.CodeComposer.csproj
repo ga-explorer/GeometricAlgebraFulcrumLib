@@ -6,18 +6,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AngouriMath" Version="1.3.0" />
+    <PackageReference Include="CSharpMath.Evaluation" Version="0.5.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\CodeComposerLib\CodeComposerLib\CodeComposerLib.csproj" />
     <ProjectReference Include="..\..\DataStructuresLib\DataStructuresLib\DataStructuresLib.csproj" />
     <ProjectReference Include="..\..\EuclideanGeometryLib\EuclideanGeometryLib\EuclideanGeometryLib.csproj" />
     <ProjectReference Include="..\..\TextComposerLib\TextComposerLib\TextComposerLib.csproj" />
-    <ProjectReference Include="..\GeometricAlgebraFulcrumLib.Symbolic\GeometricAlgebraFulcrumLib.Symbolic.csproj" />
     <ProjectReference Include="..\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="Wolfram.NETLink">
-      <HintPath>C:\Program Files\Wolfram Research\Mathematica\12.1\SystemFiles\Links\NETLink\Wolfram.NETLink.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
 </Project>

@@ -1,28 +1,28 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Utils;
 using GeometricAlgebraFulcrumLib.CodeComposer.Languages;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products;
 using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions;
 using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
 using GeometricAlgebraFulcrumLib.Storage.Multivectors;
+using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using TextComposerLib.Text.Linear;
 
 namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVectorsLib.KVector
 {
     internal sealed class BilinearProductMethodFileComposer : 
-        GaLibrarySymbolicContextFileComposerBase
+        GaFuLLibrarySymbolicContextFileComposerBase
     {
-        private IGaStorageKVector<ISymbolicExpressionAtomic> _inputKVector1;
-        private IGaStorageKVector<ISymbolicExpressionAtomic> _inputKVector2;
-        private IGaStorageKVector<ISymbolicExpressionAtomic> _outputKVector;
-        private readonly GaLanguageOperationSpecs _operationSpecs;
+        private IGaKVectorStorage<ISymbolicExpressionAtomic> _inputKVector1;
+        private IGaKVectorStorage<ISymbolicExpressionAtomic> _inputKVector2;
+        private IGaKVectorStorage<ISymbolicExpressionAtomic> _outputKVector;
+        private readonly GaFuLLanguageOperationSpecs _operationSpecs;
         private readonly uint _inputGrade1;
         private readonly uint _inputGrade2;
         private readonly uint _outputGrade;
 
 
-        internal BilinearProductMethodFileComposer(GaLibraryComposer libGen, GaLanguageOperationSpecs opSpecs, uint inGrade1, uint inGrade2)
+        internal BilinearProductMethodFileComposer(GaFuLLibraryComposer libGen, GaFuLLanguageOperationSpecs opSpecs, uint inGrade1, uint inGrade2)
             : base(libGen)
         {
             _operationSpecs = opSpecs;
@@ -42,7 +42,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             _outputGrade = outputGrade;
         }
         
-        internal BilinearProductMethodFileComposer(GaLibraryComposer libGen, GaLanguageOperationSpecs opSpecs, uint inGrade1, uint inGrade2, uint outGrade)
+        internal BilinearProductMethodFileComposer(GaFuLLibraryComposer libGen, GaFuLLanguageOperationSpecs opSpecs, uint inGrade1, uint inGrade2, uint outGrade)
             : base(libGen)
         {
             _operationSpecs = opSpecs;
@@ -73,35 +73,35 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         {
             var mv = _operationSpecs.OperationKind switch
             {
-                GaLanguageOperationKind.BinaryOuterProduct =>
+                GaFuLLanguageOperationKind.BinaryOuterProduct =>
                     Processor.Op(_inputKVector1, _inputKVector2),
 
-                GaLanguageOperationKind.BinaryGeometricProduct =>
+                GaFuLLanguageOperationKind.BinaryGeometricProduct =>
                     _operationSpecs.IsEuclidean 
                         ? Processor.EGp(_inputKVector1, _inputKVector2)
                         : Processor.Gp(_inputKVector1, _inputKVector2),
 
-                GaLanguageOperationKind.BinaryGeometricProductDual =>
+                GaFuLLanguageOperationKind.BinaryGeometricProductDual =>
                     _operationSpecs.IsEuclidean 
                         ? Processor.EDual(Processor.EGp(_inputKVector1, _inputKVector2), VSpaceDimension)
                         : Processor.Gp(_inputKVector1, _inputKVector2).Dual(Processor),
 
-                GaLanguageOperationKind.BinaryLeftContractionProduct =>
+                GaFuLLanguageOperationKind.BinaryLeftContractionProduct =>
                     _operationSpecs.IsEuclidean 
                         ? Processor.ELcp(_inputKVector1, _inputKVector2)
                         : Processor.Lcp(_inputKVector1, _inputKVector2),
 
-                GaLanguageOperationKind.BinaryRightContractionProduct =>
+                GaFuLLanguageOperationKind.BinaryRightContractionProduct =>
                     _operationSpecs.IsEuclidean 
                         ? Processor.ERcp(_inputKVector1, _inputKVector2)
                         : Processor.Rcp(_inputKVector1, _inputKVector2),
 
-                GaLanguageOperationKind.BinaryFatDotProduct =>
+                GaFuLLanguageOperationKind.BinaryFatDotProduct =>
                     _operationSpecs.IsEuclidean 
                         ? Processor.EFdp(_inputKVector1, _inputKVector2)
                         : Processor.Fdp(_inputKVector1, _inputKVector2),
 
-                GaLanguageOperationKind.BinaryHestenesInnerProduct =>
+                GaFuLLanguageOperationKind.BinaryHestenesInnerProduct =>
                     _operationSpecs.IsEuclidean 
                         ? Processor.EHip(_inputKVector1, _inputKVector2)
                         : Processor.Hip(_inputKVector1, _inputKVector2),
