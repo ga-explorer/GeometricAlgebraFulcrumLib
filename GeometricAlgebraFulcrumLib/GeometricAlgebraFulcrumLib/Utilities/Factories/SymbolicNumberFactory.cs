@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions;
-using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
-using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Numbers;
-using GeometricAlgebraFulcrumLib.Storage.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.SymbolicAlgebra;
+using GeometricAlgebraFulcrumLib.Algebra.SymbolicAlgebra.Numbers;
+using GeometricAlgebraFulcrumLib.Processors.SymbolicAlgebra.Context;
+using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra.Multivectors;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Factories
 {
@@ -40,23 +40,23 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
 
         
-        public GaVectorStorage<ISymbolicExpressionAtomic> CreateBasisVector(ulong index)
+        public VectorStorage<ISymbolicExpressionAtomic> CreateBasisVector(ulong index)
         {
-            return Context.CreateGaVectorStorage(index,
+            return Context.CreateVectorTermStorage(index,
                 Context.GetOrDefineLiteralNumber(1)
             );
         }
         
-        public IGaKVectorStorage<ISymbolicExpressionAtomic> CreateBasisBlade(ulong id)
+        public KVectorStorage<ISymbolicExpressionAtomic> CreateBasisBlade(ulong id)
         {
-            return Context.CreateKVectorStorage(id,
+            return Context.CreateKVectorTermStorage(id,
                 Context.GetOrDefineLiteralNumber(1)
             );
         }
         
-        public IGaKVectorStorage<ISymbolicExpressionAtomic> CreateBasisBlade(uint grade, ulong index)
+        public KVectorStorage<ISymbolicExpressionAtomic> CreateBasisBlade(uint grade, ulong index)
         {
-            return Context.CreateKVectorStorage(grade,
+            return Context.CreateKVectorTermStorage(grade,
                 index,
                 Context.GetOrDefineLiteralNumber(1)
             );

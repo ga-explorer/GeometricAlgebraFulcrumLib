@@ -7,14 +7,14 @@ using GAPoTNumLib.Text;
 
 namespace GAPoTNumLib.GAPoT
 {
-    public sealed class GaPoTNumLaTeXComposer
+    public sealed class GeoPoTNumLaTeXComposer
     {
-        public static GaPoTNumLaTeXComposer DefaultComposer { get; }
-            = new GaPoTNumLaTeXComposer()
+        public static GeoPoTNumLaTeXComposer DefaultComposer { get; }
+            = new GeoPoTNumLaTeXComposer()
             {
                 ScalarDecimals = 7,
                 BasisName = @"\boldsymbol{\mu}",
-                BasisFormat = GaPoTNumLaTeXComposerBasisFormat.CommaSeparated
+                BasisFormat = GeoPoTNumLaTeXComposerBasisFormat.CommaSeparated
             };
 
 
@@ -24,8 +24,8 @@ namespace GAPoTNumLib.GAPoT
         public string BasisName { get; set; }
             = @"\boldsymbol{\mu}";
 
-        public GaPoTNumLaTeXComposerBasisFormat BasisFormat { get; set; }
-            = GaPoTNumLaTeXComposerBasisFormat.CommaSeparated;
+        public GeoPoTNumLaTeXComposerBasisFormat BasisFormat { get; set; }
+            = GeoPoTNumLaTeXComposerBasisFormat.CommaSeparated;
 
 
         public string GetCodeOfScalar(double value)
@@ -61,11 +61,11 @@ namespace GAPoTNumLib.GAPoT
 
         public string GetCodeOfBasisBlade(IEnumerable<int> indexList)
         {
-            if (BasisFormat == GaPoTNumLaTeXComposerBasisFormat.OuterProduct)
+            if (BasisFormat == GeoPoTNumLaTeXComposerBasisFormat.OuterProduct)
                 return indexList.Select(i => $"{BasisName}_{{{i}}}").Concatenate(@" \wedge ");
 
             var basisSubscript = 
-                BasisFormat == GaPoTNumLaTeXComposerBasisFormat.CommaSeparated 
+                BasisFormat == GeoPoTNumLaTeXComposerBasisFormat.CommaSeparated 
                     ? indexList.Concatenate(",") 
                     : indexList.Concatenate();
 
@@ -92,7 +92,7 @@ namespace GAPoTNumLib.GAPoT
             return $@"\left( {valueText} \right) {basisText}";
         }
 
-        public string GetCode(IEnumerable<GaPoTNumMultivectorTerm> termsList)
+        public string GetCode(IEnumerable<GeoPoTNumMultivectorTerm> termsList)
         {
             var termsArray = 
                 termsList.OrderByGrade().ToArray();
@@ -163,21 +163,21 @@ namespace GAPoTNumLib.GAPoT
                 .ToString();
         }
 
-        public string GetInlineEquationCode(IEnumerable<GaPoTNumMultivectorTerm> termsList)
+        public string GetInlineEquationCode(IEnumerable<GeoPoTNumMultivectorTerm> termsList)
         {
             var code = GetCode(termsList).Trim();
 
             return $"${code}$";
         }
 
-        public string GetInlineEquationCode(string rightHandSide, IEnumerable<GaPoTNumMultivectorTerm> termsList)
+        public string GetInlineEquationCode(string rightHandSide, IEnumerable<GeoPoTNumMultivectorTerm> termsList)
         {
             var code = GetCode(termsList).Trim();
 
             return $"${rightHandSide.Trim()} = {code}$";
         }
 
-        public string GetDisplayEquationCode(IEnumerable<GaPoTNumMultivectorTerm> termsList)
+        public string GetDisplayEquationCode(IEnumerable<GeoPoTNumMultivectorTerm> termsList)
         {
             var textComposer = new StringBuilder();
 
@@ -191,7 +191,7 @@ namespace GAPoTNumLib.GAPoT
                 .ToString();
         }
 
-        public string GetDisplayEquationCode(string rightHandSide, IEnumerable<GaPoTNumMultivectorTerm> termsList)
+        public string GetDisplayEquationCode(string rightHandSide, IEnumerable<GeoPoTNumMultivectorTerm> termsList)
         {
             var textComposer = new StringBuilder();
 
@@ -207,7 +207,7 @@ namespace GAPoTNumLib.GAPoT
                 .ToString();
         }
 
-        public string GetEquationsArrayCode(string rightHandSide, IEnumerable<GaPoTNumMultivectorTerm> termsList)
+        public string GetEquationsArrayCode(string rightHandSide, IEnumerable<GeoPoTNumMultivectorTerm> termsList)
         {
             var textComposer = new StringBuilder();
 

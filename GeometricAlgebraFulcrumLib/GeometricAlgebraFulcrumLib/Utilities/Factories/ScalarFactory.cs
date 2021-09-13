@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Factories
@@ -9,94 +11,608 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
     public static class ScalarFactory
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<T> CreateGaScalarStorage<T>(this IGaProcessor<T> processor, T scalar)
+        public static T GetScalarFromObject<T>(this IScalarAlgebraProcessor<T> scalarProcessor, object valueObject)
+        {
+            return valueObject switch
+            {
+                int v => scalarProcessor.GetScalarFromNumber(v),
+                uint v => scalarProcessor.GetScalarFromNumber(v),
+                long v => scalarProcessor.GetScalarFromNumber(v),
+                ulong v => scalarProcessor.GetScalarFromNumber(v),
+                float v => scalarProcessor.GetScalarFromNumber(v),
+                double v => scalarProcessor.GetScalarFromNumber(v),
+                string v => scalarProcessor.GetScalarFromText(v),
+                T v => v,
+                Scalar<T> v => v.ScalarValue,
+                _ => throw new InvalidOperationException()
+            };
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<T> GetScalarsFromNumbers<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<int> valuesList)
+        {
+            return valuesList.Select(scalarProcessor.GetScalarFromNumber);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<T> GetScalarsFromNumbers<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<uint> valuesList)
+        {
+            return valuesList.Select(scalarProcessor.GetScalarFromNumber);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<T> GetScalarsFromNumbers<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<long> valuesList)
+        {
+            return valuesList.Select(scalarProcessor.GetScalarFromNumber);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<T> GetScalarsFromNumbers<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<ulong> valuesList)
+        {
+            return valuesList.Select(scalarProcessor.GetScalarFromNumber);
+        }
+                
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<T> GetScalarsFromNumbers<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<float> valuesList)
+        {
+            return valuesList.Select(scalarProcessor.GetScalarFromNumber);
+        }
+                
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<T> GetScalarsFromNumbers<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<double> valuesList)
+        {
+            return valuesList.Select(scalarProcessor.GetScalarFromNumber);
+        }
+                
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<T> GetScalarsFrom<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<Scalar<T>> valuesList)
+        {
+            return valuesList.Select(value => value.ScalarValue);
+        }
+                
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<T> GetScalarValues<T>(this IEnumerable<Scalar<T>> valuesList)
+        {
+            return valuesList.Select(value => value.ScalarValue);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<T> GetScalarsFromText<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<string> valuesList)
+        {
+            return valuesList.Select(scalarProcessor.GetScalarFromText);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<T> GetScalarsFromObjects<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<object> valuesList)
+        {
+            return valuesList.Select(scalarProcessor.GetScalarFromObject);
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<T> CreateScalarZero<T>(this IScalarAlgebraProcessor<T> scalarProcessor)
         {
             return new Scalar<T>(
-                processor,
-                scalar
+                scalarProcessor,
+                scalarProcessor.ScalarZero
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<T> CreateGaScalarStorage<T>(this T scalar, IGaProcessor<T> processor)
+        public static Scalar<T> CreateScalarOne<T>(this IScalarAlgebraProcessor<T> scalarProcessor)
         {
             return new Scalar<T>(
-                processor,
-                scalar
+                scalarProcessor, 
+                scalarProcessor.ScalarOne
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<T> CreateScalar<T>(this IGaProcessor<T> processor, int scalar)
+        public static Scalar<T> CreateScalarMinusOne<T>(this IScalarAlgebraProcessor<T> scalarProcessor)
         {
             return new Scalar<T>(
-                processor,
-                processor.GetScalarFromInteger(scalar)
+                scalarProcessor, 
+                scalarProcessor.ScalarMinusOne
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<T> CreateScalar<T>(this IGaProcessor<T> processor, double scalar)
+        public static Scalar<T> CreateScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, object valueObject)
         {
             return new Scalar<T>(
-                processor,
-                processor.GetScalarFromFloat64(scalar)
+                scalarProcessor,
+                scalarProcessor.GetScalarFromObject(valueObject)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<T> CreateScalar<T>(this object valueObject, IScalarAlgebraProcessor<T> scalarProcessor)
+        {
+            return new Scalar<T>(
+                scalarProcessor,
+                scalarProcessor.GetScalarFromObject(valueObject)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<T> CreateScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, T scalar)
+        {
+            return new Scalar<T>(scalarProcessor, scalar);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<T> CreateScalar<T>(this T scalar, IScalarAlgebraProcessor<T> scalarProcessor)
+        {
+            return new Scalar<T>(scalarProcessor, scalar);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<T> CreateScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, int scalar)
+        {
+            return new Scalar<T>(
+                scalarProcessor,
+                scalarProcessor.GetScalarFromNumber(scalar)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<T> CreateScalar<T>(this int scalar, IScalarAlgebraProcessor<T> scalarProcessor)
+        {
+            return new Scalar<T>(
+                scalarProcessor,
+                scalarProcessor.GetScalarFromNumber(scalar)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<T> CreateScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, uint scalar)
+        {
+            return new Scalar<T>(
+                scalarProcessor,
+                scalarProcessor.GetScalarFromNumber(scalar)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<T> CreateScalar<T>(this uint scalar, IScalarAlgebraProcessor<T> scalarProcessor)
+        {
+            return new Scalar<T>(
+                scalarProcessor,
+                scalarProcessor.GetScalarFromNumber(scalar)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<T> CreateScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, long scalar)
+        {
+            return new Scalar<T>(
+                scalarProcessor,
+                scalarProcessor.GetScalarFromNumber(scalar)
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<T> CreateScalar<T>(this long scalar, IScalarAlgebraProcessor<T> scalarProcessor)
+        {
+            return new Scalar<T>(
+                scalarProcessor,
+                scalarProcessor.GetScalarFromNumber(scalar)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<T> CreateScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, ulong scalar)
+        {
+            return new Scalar<T>(
+                scalarProcessor,
+                scalarProcessor.GetScalarFromNumber(scalar)
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<T> CreateScalar<T>(this ulong scalar, IScalarAlgebraProcessor<T> scalarProcessor)
+        {
+            return new Scalar<T>(
+                scalarProcessor,
+                scalarProcessor.GetScalarFromNumber(scalar)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<T> CreateScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, float scalar)
+        {
+            return new Scalar<T>(
+                scalarProcessor,
+                scalarProcessor.GetScalarFromNumber(scalar)
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<T> CreateScalar<T>(this float scalar, IScalarAlgebraProcessor<T> scalarProcessor)
+        {
+            return new Scalar<T>(
+                scalarProcessor,
+                scalarProcessor.GetScalarFromNumber(scalar)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<T> CreateScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, double scalar)
+        {
+            return new Scalar<T>(
+                scalarProcessor,
+                scalarProcessor.GetScalarFromNumber(scalar)
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<T> CreateScalar<T>(this double scalar, IScalarAlgebraProcessor<T> scalarProcessor)
+        {
+            return new Scalar<T>(
+                scalarProcessor,
+                scalarProcessor.GetScalarFromNumber(scalar)
             );
         }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<T> SumToScalar<T>(this IGaProcessor<T> processor, params T[] scalars)
+        public static Scalar<T> AddToScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params T[] scalars)
         {
             return new Scalar<T>(
-                processor,
-                processor.Add(scalars)
+                scalarProcessor,
+                scalarProcessor.Add(scalars)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<T> SumToScalar<T>(this IGaProcessor<T> processor, T scalar1, T scalar2)
+        public static Scalar<T> AddToScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params int[] scalars)
         {
             return new Scalar<T>(
-                processor,
-                processor.Add(scalar1, scalar2)
+                scalarProcessor,
+                scalarProcessor.Add(scalars.Select(scalarProcessor.GetScalarFromNumber))
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<T> AddToScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params uint[] scalars)
+        {
+            return new Scalar<T>(
+                scalarProcessor,
+                scalarProcessor.Add(scalars.Select(scalarProcessor.GetScalarFromNumber))
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<T> SumToScalar<T>(this IGaProcessor<T> processor, IEnumerable<T> scalars)
+        public static Scalar<T> AddToScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params long[] scalars)
         {
             return new Scalar<T>(
-                processor,
-                processor.Add(scalars)
+                scalarProcessor,
+                scalarProcessor.Add(scalars.Select(scalarProcessor.GetScalarFromNumber))
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<T> AddToScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params ulong[] scalars)
+        {
+            return new Scalar<T>(
+                scalarProcessor,
+                scalarProcessor.Add(scalars.Select(scalarProcessor.GetScalarFromNumber))
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<T> AddToScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params Scalar<T>[] scalars)
+        {
+            return new Scalar<T>(
+                scalarProcessor,
+                scalarProcessor.Add(scalars.Select(s => s.ScalarValue))
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<T> AddToScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<T> scalars)
+        {
+            return new Scalar<T>(
+                scalarProcessor,
+                scalarProcessor.Add(scalars)
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<T> AddToScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<int> scalars)
+        {
+            return new Scalar<T>(
+                scalarProcessor,
+                scalarProcessor.Add(scalars.Select(scalarProcessor.GetScalarFromNumber))
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<T> AddToScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<uint> scalars)
+        {
+            return new Scalar<T>(
+                scalarProcessor,
+                scalarProcessor.Add(scalars.Select(scalarProcessor.GetScalarFromNumber))
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<T> AddToScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<long> scalars)
+        {
+            return new Scalar<T>(
+                scalarProcessor,
+                scalarProcessor.Add(scalars.Select(scalarProcessor.GetScalarFromNumber))
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<T> AddToScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<ulong> scalars)
+        {
+            return new Scalar<T>(
+                scalarProcessor,
+                scalarProcessor.Add(scalars.Select(scalarProcessor.GetScalarFromNumber))
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<T> AddToScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<float> scalars)
+        {
+            return new Scalar<T>(
+                scalarProcessor,
+                scalarProcessor.Add(scalars.Select(scalarProcessor.GetScalarFromNumber))
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<T> AddToScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<double> scalars)
+        {
+            return new Scalar<T>(
+                scalarProcessor,
+                scalarProcessor.Add(scalars.Select(scalarProcessor.GetScalarFromNumber))
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<T> CreateZeroScalar<T>(this IGaProcessor<T> processor)
+        public static Scalar<T> AddToScalar<T>(this IEnumerable<T> scalars, IScalarAlgebraProcessor<T> scalarProcessor)
         {
             return new Scalar<T>(
-                processor,
-                processor.ScalarZero
+                scalarProcessor,
+                scalarProcessor.Add(scalars)
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<T> AddToScalar<T>(this IEnumerable<int> scalars, IScalarAlgebraProcessor<T> scalarProcessor)
+        {
+            return new Scalar<T>(
+                scalarProcessor,
+                scalarProcessor.Add(scalars.Select(scalarProcessor.GetScalarFromNumber))
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<T> AddToScalar<T>(this IEnumerable<uint> scalars, IScalarAlgebraProcessor<T> scalarProcessor)
+        {
+            return new Scalar<T>(
+                scalarProcessor,
+                scalarProcessor.Add(scalars.Select(scalarProcessor.GetScalarFromNumber))
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<T> AddToScalar<T>(this IEnumerable<long> scalars, IScalarAlgebraProcessor<T> scalarProcessor)
+        {
+            return new Scalar<T>(
+                scalarProcessor,
+                scalarProcessor.Add(scalars.Select(scalarProcessor.GetScalarFromNumber))
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<T> AddToScalar<T>(this IEnumerable<ulong> scalars, IScalarAlgebraProcessor<T> scalarProcessor)
+        {
+            return new Scalar<T>(
+                scalarProcessor,
+                scalarProcessor.Add(scalars.Select(scalarProcessor.GetScalarFromNumber))
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<T> AddToScalar<T>(this IEnumerable<float> scalars, IScalarAlgebraProcessor<T> scalarProcessor)
+        {
+            return new Scalar<T>(
+                scalarProcessor,
+                scalarProcessor.Add(scalars.Select(scalarProcessor.GetScalarFromNumber))
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<T> AddToScalar<T>(this IEnumerable<double> scalars, IScalarAlgebraProcessor<T> scalarProcessor)
+        {
+            return new Scalar<T>(
+                scalarProcessor,
+                scalarProcessor.Add(scalars.Select(scalarProcessor.GetScalarFromNumber))
+            );
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<T> TimesToScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params T[] scalars)
+        {
+            return new Scalar<T>(
+                scalarProcessor,
+                scalarProcessor.Times(scalars)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<T> CreateBasisScalar<T>(this IGaProcessor<T> processor)
+        public static Scalar<T> TimesToScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params int[] scalars)
         {
             return new Scalar<T>(
-                processor, 
-                processor.ScalarOne
+                scalarProcessor,
+                scalarProcessor.Times(scalars.Select(scalarProcessor.GetScalarFromNumber))
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<T> TimesToScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params uint[] scalars)
+        {
+            return new Scalar<T>(
+                scalarProcessor,
+                scalarProcessor.Times(scalars.Select(scalarProcessor.GetScalarFromNumber))
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<T> CreateBasisScalarNegative<T>(this IGaProcessor<T> processor)
+        public static Scalar<T> TimesToScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params long[] scalars)
         {
             return new Scalar<T>(
-                processor, 
-                processor.ScalarMinusOne
+                scalarProcessor,
+                scalarProcessor.Times(scalars.Select(scalarProcessor.GetScalarFromNumber))
             );
         }
-    }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<T> TimesToScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params ulong[] scalars)
+        {
+            return new Scalar<T>(
+                scalarProcessor,
+                scalarProcessor.Times(scalars.Select(scalarProcessor.GetScalarFromNumber))
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<T> TimesToScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params Scalar<T>[] scalars)
+        {
+            return new Scalar<T>(
+                scalarProcessor,
+                scalarProcessor.Times(scalars.Select(s => s.ScalarValue))
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<T> TimesToScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<T> scalars)
+        {
+            return new Scalar<T>(
+                scalarProcessor,
+                scalarProcessor.Times(scalars)
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<T> TimesToScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<int> scalars)
+        {
+            return new Scalar<T>(
+                scalarProcessor,
+                scalarProcessor.Times(scalars.Select(scalarProcessor.GetScalarFromNumber))
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<T> TimesToScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<uint> scalars)
+        {
+            return new Scalar<T>(
+                scalarProcessor,
+                scalarProcessor.Times(scalars.Select(scalarProcessor.GetScalarFromNumber))
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<T> TimesToScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<long> scalars)
+        {
+            return new Scalar<T>(
+                scalarProcessor,
+                scalarProcessor.Times(scalars.Select(scalarProcessor.GetScalarFromNumber))
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<T> TimesToScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<ulong> scalars)
+        {
+            return new Scalar<T>(
+                scalarProcessor,
+                scalarProcessor.Times(scalars.Select(scalarProcessor.GetScalarFromNumber))
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<T> TimesToScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<float> scalars)
+        {
+            return new Scalar<T>(
+                scalarProcessor,
+                scalarProcessor.Times(scalars.Select(scalarProcessor.GetScalarFromNumber))
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<T> TimesToScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<double> scalars)
+        {
+            return new Scalar<T>(
+                scalarProcessor,
+                scalarProcessor.Times(scalars.Select(scalarProcessor.GetScalarFromNumber))
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<T> TimesToScalar<T>(this IEnumerable<T> scalars, IScalarAlgebraProcessor<T> scalarProcessor)
+        {
+            return new Scalar<T>(
+                scalarProcessor,
+                scalarProcessor.Times(scalars)
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<T> TimesToScalar<T>(this IEnumerable<int> scalars, IScalarAlgebraProcessor<T> scalarProcessor)
+        {
+            return new Scalar<T>(
+                scalarProcessor,
+                scalarProcessor.Times(scalars.Select(scalarProcessor.GetScalarFromNumber))
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<T> TimesToScalar<T>(this IEnumerable<uint> scalars, IScalarAlgebraProcessor<T> scalarProcessor)
+        {
+            return new Scalar<T>(
+                scalarProcessor,
+                scalarProcessor.Times(scalars.Select(scalarProcessor.GetScalarFromNumber))
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<T> TimesToScalar<T>(this IEnumerable<long> scalars, IScalarAlgebraProcessor<T> scalarProcessor)
+        {
+            return new Scalar<T>(
+                scalarProcessor,
+                scalarProcessor.Times(scalars.Select(scalarProcessor.GetScalarFromNumber))
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<T> TimesToScalar<T>(this IEnumerable<ulong> scalars, IScalarAlgebraProcessor<T> scalarProcessor)
+        {
+            return new Scalar<T>(
+                scalarProcessor,
+                scalarProcessor.Times(scalars.Select(scalarProcessor.GetScalarFromNumber))
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<T> TimesToScalar<T>(this IEnumerable<float> scalars, IScalarAlgebraProcessor<T> scalarProcessor)
+        {
+            return new Scalar<T>(
+                scalarProcessor,
+                scalarProcessor.Times(scalars.Select(scalarProcessor.GetScalarFromNumber))
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<T> TimesToScalar<T>(this IEnumerable<double> scalars, IScalarAlgebraProcessor<T> scalarProcessor)
+        {
+            return new Scalar<T>(
+                scalarProcessor,
+                scalarProcessor.Times(scalars.Select(scalarProcessor.GetScalarFromNumber))
+            );
+        }    }
 }

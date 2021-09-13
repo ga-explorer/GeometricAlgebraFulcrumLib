@@ -4,7 +4,7 @@ using Irony.Parsing;
 
 namespace GAPoTNumLib.GAPoT
 {
-    public class GaPoTNumVectorConstructorGrammar : InterpretedLanguageGrammar
+    public class GeoPoTNumVectorConstructorGrammar : InterpretedLanguageGrammar
     {
         //Examples:
         //GAPoT vector using terms form:
@@ -20,7 +20,7 @@ namespace GAPoTNumLib.GAPoT
         //
         //Multi-phase GAPoT vector:
         //  [-1.3<1>, 1.2<3>, -4.6<5>] <a>; [p(233.92, −1.57) <1,2>] <b>; [r(10, 20) <1,2>, r(30, 0) <3,4>] <c>
-        public GaPoTNumVectorConstructorGrammar()
+        public GeoPoTNumVectorConstructorGrammar()
             : base(caseSensitive: true)
         {
             // 1. Terminals

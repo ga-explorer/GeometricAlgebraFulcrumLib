@@ -8,7 +8,7 @@
 
         public static string UpperBeta { get; } = "&Beta;";
 
-        public static string UpperGamma { get; } = "&Gamma;";
+        public static string UpperGeomma { get; } = "&Geomma;";
 
         public static string UpperDelta { get; } = "&Delta;";
 
@@ -58,7 +58,7 @@
 
         public static string LowerBeta { get; } = "&beta;";
 
-        public static string LowerGamma { get; } = "&gamma;";
+        public static string LowerGeomma { get; } = "&gamma;";
 
         public static string LowerDelta { get; } = "&delta;";
 

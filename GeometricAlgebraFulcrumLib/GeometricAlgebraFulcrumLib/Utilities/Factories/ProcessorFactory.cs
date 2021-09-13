@@ -1,61 +1,61 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Processing.Matrices;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures;
-using GeometricAlgebraFulcrumLib.Processing.Scalars;
+using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
+using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.Signatures;
+using GeometricAlgebraFulcrumLib.Processors.LinearAlgebra;
+using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Factories
 {
     public static class ProcessorFactory
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static LaProcessor<T> CreateLaProcessor<T>(this IScalarProcessor<T> scalarProcessor)
+        public static LinearAlgebraProcessor<T> CreateLinearAlgebraProcessor<T>(this IScalarAlgebraProcessor<T> scalarProcessor)
         {
-            return new LaProcessor<T>(scalarProcessor);
+            return new LinearAlgebraProcessor<T>(scalarProcessor);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaProcessorEuclidean<T> CreateGaEuclideanProcessor<T>(this IScalarProcessor<T> scalarProcessor, uint vSpaceDimension)
+        public static GeometricAlgebraEuclideanProcessor<T> CreateGeometricAlgebraEuclideanProcessor<T>(this IScalarAlgebraProcessor<T> scalarProcessor, uint vSpaceDimension)
         {
-            return new GaProcessorEuclidean<T>(
+            return new GeometricAlgebraEuclideanProcessor<T>(
                 scalarProcessor,
                 vSpaceDimension
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaProcessorOrthonormal<T> CreateGaConformalProcessor<T>(this IScalarProcessor<T> scalarProcessor, uint vSpaceDimension)
+        public static GeometricAlgebraOrthonormalProcessor<T> CreateGeometricAlgebraConformalProcessor<T>(this IScalarAlgebraProcessor<T> scalarProcessor, uint vSpaceDimension)
         {
-            return new GaProcessorOrthonormal<T>(
+            return new GeometricAlgebraOrthonormalProcessor<T>(
                 scalarProcessor, 
-                GaSignatureFactory.CreateConformal(vSpaceDimension)
+                GeometricAlgebraSignatureFactory.CreateConformal(vSpaceDimension)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaProcessorOrthonormal<T> CreateGaProjectiveProcessor<T>(this IScalarProcessor<T> scalarProcessor, uint vSpaceDimension)
+        public static GeometricAlgebraOrthonormalProcessor<T> CreateGeometricAlgebraProjectiveProcessor<T>(this IScalarAlgebraProcessor<T> scalarProcessor, uint vSpaceDimension)
         {
-            return new GaProcessorOrthonormal<T>(
+            return new GeometricAlgebraOrthonormalProcessor<T>(
                 scalarProcessor, 
-                GaSignatureFactory.CreateProjective(vSpaceDimension)
+                GeometricAlgebraSignatureFactory.CreateProjective(vSpaceDimension)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaProcessorOrthonormal<T> CreateGaOrthonormalProcessor<T>(this IScalarProcessor<T> scalarProcessor, uint positiveCount, uint negativeCount)
+        public static GeometricAlgebraOrthonormalProcessor<T> CreateGeometricAlgebraOrthonormalProcessor<T>(this IScalarAlgebraProcessor<T> scalarProcessor, uint positiveCount, uint negativeCount)
         {
-            return new GaProcessorOrthonormal<T>(
+            return new GeometricAlgebraOrthonormalProcessor<T>(
                 scalarProcessor, 
-                GaSignatureFactory.Create(positiveCount, negativeCount)
+                GeometricAlgebraSignatureFactory.Create(positiveCount, negativeCount)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaProcessorOrthonormal<T> CreateGaOrthonormalProcessor<T>(this IScalarProcessor<T> scalarProcessor, uint positiveCount, uint negativeCount, uint zeroCount)
+        public static GeometricAlgebraOrthonormalProcessor<T> CreateGeometricAlgebraOrthonormalProcessor<T>(this IScalarAlgebraProcessor<T> scalarProcessor, uint positiveCount, uint negativeCount, uint zeroCount)
         {
-            return new GaProcessorOrthonormal<T>(
+            return new GeometricAlgebraOrthonormalProcessor<T>(
                 scalarProcessor, 
-                GaSignatureFactory.Create(positiveCount, negativeCount, zeroCount)
+                GeometricAlgebraSignatureFactory.Create(positiveCount, negativeCount, zeroCount)
             );
         }
     }

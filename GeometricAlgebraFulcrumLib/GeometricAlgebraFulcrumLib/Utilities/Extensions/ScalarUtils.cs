@@ -1,5 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra;
+using GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 {
@@ -13,7 +14,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             return processor.IsZero(
                 processor.Subtract(
                     scalar1.ScalarValue, 
-                    processor.GetScalarFromInteger(scalar2)
+                    processor.GetScalarFromNumber(scalar2)
                 )
             );
         }
@@ -25,7 +26,111 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 
             return processor.IsZero(
                 processor.Subtract(
-                    processor.GetScalarFromInteger(scalar1),
+                    processor.GetScalarFromNumber(scalar1),
+                    scalar2.ScalarValue
+                )
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool IsEqualTo<T>(this Scalar<T> scalar1, uint scalar2)
+        {
+            var processor = scalar1.ScalarProcessor;
+
+            return processor.IsZero(
+                processor.Subtract(
+                    scalar1.ScalarValue, 
+                    processor.GetScalarFromNumber(scalar2)
+                )
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool IsEqualTo<T>(this uint scalar1, Scalar<T> scalar2)
+        {
+            var processor = scalar2.ScalarProcessor;
+
+            return processor.IsZero(
+                processor.Subtract(
+                    processor.GetScalarFromNumber(scalar1),
+                    scalar2.ScalarValue
+                )
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool IsEqualTo<T>(this Scalar<T> scalar1, long scalar2)
+        {
+            var processor = scalar1.ScalarProcessor;
+
+            return processor.IsZero(
+                processor.Subtract(
+                    scalar1.ScalarValue, 
+                    processor.GetScalarFromNumber(scalar2)
+                )
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool IsEqualTo<T>(this long scalar1, Scalar<T> scalar2)
+        {
+            var processor = scalar2.ScalarProcessor;
+
+            return processor.IsZero(
+                processor.Subtract(
+                    processor.GetScalarFromNumber(scalar1),
+                    scalar2.ScalarValue
+                )
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool IsEqualTo<T>(this Scalar<T> scalar1, ulong scalar2)
+        {
+            var processor = scalar1.ScalarProcessor;
+
+            return processor.IsZero(
+                processor.Subtract(
+                    scalar1.ScalarValue, 
+                    processor.GetScalarFromNumber(scalar2)
+                )
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool IsEqualTo<T>(this ulong scalar1, Scalar<T> scalar2)
+        {
+            var processor = scalar2.ScalarProcessor;
+
+            return processor.IsZero(
+                processor.Subtract(
+                    processor.GetScalarFromNumber(scalar1),
+                    scalar2.ScalarValue
+                )
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool IsEqualTo<T>(this Scalar<T> scalar1, float scalar2)
+        {
+            var processor = scalar1.ScalarProcessor;
+
+            return processor.IsZero(
+                processor.Subtract(
+                    scalar1.ScalarValue, 
+                    processor.GetScalarFromNumber(scalar2)
+                )
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool IsEqualTo<T>(this float scalar1, Scalar<T> scalar2)
+        {
+            var processor = scalar2.ScalarProcessor;
+
+            return processor.IsZero(
+                processor.Subtract(
+                    processor.GetScalarFromNumber(scalar1),
                     scalar2.ScalarValue
                 )
             );
@@ -39,7 +144,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             return processor.IsZero(
                 processor.Subtract(
                     scalar1.ScalarValue, 
-                    processor.GetScalarFromFloat64(scalar2)
+                    processor.GetScalarFromNumber(scalar2)
                 )
             );
         }
@@ -51,7 +156,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 
             return processor.IsZero(
                 processor.Subtract(
-                    processor.GetScalarFromFloat64(scalar1),
+                    processor.GetScalarFromNumber(scalar1),
                     scalar2.ScalarValue
                 )
             );
@@ -78,6 +183,58 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             return processor.IsZero(
                 processor.Subtract(
                     scalar1, 
+                    scalar2.ScalarValue
+                )
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool IsEqualTo<T>(this Scalar<T> scalar1, string scalar2)
+        {
+            var processor = scalar1.ScalarProcessor;
+
+            return processor.IsZero(
+                processor.Subtract(
+                    scalar1.ScalarValue, 
+                    processor.GetScalarFromText(scalar2)
+                )
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool IsEqualTo<T>(this string scalar1, Scalar<T> scalar2)
+        {
+            var processor = scalar2.ScalarProcessor;
+
+            return processor.IsZero(
+                processor.Subtract(
+                    processor.GetScalarFromText(scalar1),
+                    scalar2.ScalarValue
+                )
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool IsEqualTo<T>(this Scalar<T> scalar1, object scalar2)
+        {
+            var processor = scalar1.ScalarProcessor;
+
+            return processor.IsZero(
+                processor.Subtract(
+                    scalar1.ScalarValue, 
+                    processor.GetScalarFromObject(scalar2)
+                )
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool IsEqualTo<T>(this object scalar1, Scalar<T> scalar2)
+        {
+            var processor = scalar2.ScalarProcessor;
+
+            return processor.IsZero(
+                processor.Subtract(
+                    processor.GetScalarFromObject(scalar1),
                     scalar2.ScalarValue
                 )
             );
@@ -159,7 +316,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 
             return new Scalar<T>(
                 processor, 
-                processor.Log(scalar.ScalarValue)
+                processor.LogE(scalar.ScalarValue)
             );
         }
 

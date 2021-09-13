@@ -285,6 +285,51 @@ namespace DataStructuresLib.BitManipulation
         }
 
         /// <summary>
+        /// Return true if the number of ones in the given bit pattern is
+        /// equal to the given count
+        /// </summary>
+        /// <param name="bitPattern"></param>
+        /// <param name="onesCount"></param>
+        /// <returns></returns>
+        public static bool CountOnesEquals(this ulong bitPattern, int onesCount)
+        {
+            if (bitPattern == 0)
+                return onesCount == 0;
+
+            if (bitPattern > long.MaxValue)
+            {
+                if (onesCount < 1) return false;
+
+                bitPattern &= long.MaxValue;
+
+                onesCount--;
+            }
+
+            // Brian Kernighan’s Algorithm. See here for more details:
+            // https://www.geeksforgeeks.org/count-set-bits-in-an-integer/
+            // Subtracting 1 from a decimal number flips all the bits after
+            // the rightmost set bit (which is 1) including the rightmost set bit.
+            // So if we subtract a number by 1 and do it bitwise & with itself
+            // (n & (n-1)), we unset the rightmost set bit. If we do n & (n-1)
+            // in a loop and count the number of times the loop executes, we get
+            // the set bit count. The beauty of this solution is the number of
+            // times it loops is equal to the number of set bits in a given integer. 
+
+            var n = (long) bitPattern;
+            
+            while (n > 0)
+            {
+                n &= (n - 1);
+
+                onesCount--;
+
+                if (onesCount < 0) return false;
+            }
+
+            return onesCount == 0;
+        }
+
+        /// <summary>
         /// Returns the bit position of the first one bit in the given pattern.
         /// If the pattern is zero this returns -1.
         /// </summary>
@@ -1961,6 +2006,16 @@ namespace DataStructuresLib.BitManipulation
             return Enumerable
                 .Range(0, (int) count)
                 .Select(i => offset + (ulong) i);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T[] RangeToArray<T>(this ulong count, Func<ulong, T> keyValueFunc)
+        {
+            return Enumerable
+                .Range(0, (int) count)
+                .Select(
+                    i => keyValueFunc((ulong) i)
+                ).ToArray();
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

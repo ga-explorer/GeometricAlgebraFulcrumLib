@@ -1,12 +1,12 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.Outermorphisms;
-using GeometricAlgebraFulcrumLib.Storage.Multivectors;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms;
+using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra.Multivectors;
 
 namespace GeometricAlgebraFulcrumLib.Geometry.Subspaces
 {
-    public interface IGaReflector<T> : 
-        IGaOutermorphism<T>
+    public interface IGeoReflector<T> : 
+        IOutermorphism<T>
     {
-        IGaKVectorStorage<T> BladeStorage { get; }
+        KVectorStorage<T> BladeStorage { get; }
 
         T BladeNormSquared { get; }
     }

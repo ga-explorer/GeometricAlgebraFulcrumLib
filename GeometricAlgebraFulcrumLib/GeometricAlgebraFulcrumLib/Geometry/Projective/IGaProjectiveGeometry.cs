@@ -1,7 +1,9 @@
-﻿namespace GeometricAlgebraFulcrumLib.Geometry.Projective
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
+
+namespace GeometricAlgebraFulcrumLib.Geometry.Projective
 {
-    public interface IGaProjectiveGeometry<T> : 
-        IGaGeometry<T>
+    public interface IGeoProjectiveGeometry<T> : 
+        IGeometricAlgebraElement<T>
     {
     }
 }

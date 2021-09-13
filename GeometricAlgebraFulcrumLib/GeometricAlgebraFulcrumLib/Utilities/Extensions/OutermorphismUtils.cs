@@ -1,28 +1,23 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.Outermorphisms;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Geometry.Frames;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Orthonormal;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors.Signatures;
-using GeometricAlgebraFulcrumLib.Storage.Matrices.EvenMatrices;
+using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
+using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices;
 using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 {
     public static class OutermorphismUtils
     {
-        public static ILaMatrixEvenStorage<T> GetVectorsMappingArray<T>(this IGaOutermorphism<T> linearMap)
+        //TODO: Remove this
+        public static ILinMatrixStorage<T> GetVectorOmMappingMatrix<T>(this IOutermorphism<T> linearMap, int rowsCount, int colsCount)
         {
-            var rowsCount = linearMap.VSpaceDimension;
-            var colsCount = linearMap.VSpaceDimension;
-            var processor = linearMap.ScalarsGridProcessor;
+            var processor = linearMap.LinearProcessor;
             var array = new T[rowsCount, colsCount];
 
             for (var index = 0; index < colsCount; index++)
             {
-                var mappedBasisVector = linearMap.MapBasisVector((uint) index);
+                var mappedBasisVector = linearMap.OmMapBasisVector((uint) index);
 
                 for (var i = 0; i < rowsCount; i++)
                     array[i, index] = mappedBasisVector.TryGetTermScalarByIndex((ulong) i, out var scalar)
@@ -30,155 +25,118 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                         : processor.ScalarZero;
             }
 
-            return array.CreateEvenGridDense();
+            return array.CreateLinMatrixDenseStorage();
         }
 
-        public static ILaMatrixEvenStorage<T> GetVectorsMappingArray<T>(this IGaOutermorphism<T> linearMap, int rowsCount, int colsCount)
+        //public static ILinMatrixStorage<T> GetKVectorOmMappingMatrix<T>(this IOutermorphism<T> linearMap, uint grade)
+        //{
+        //    var rowsCount = (int) linearMap.GeometricProcessor.VSpaceDimension.KVectorSpaceDimension(grade);
+        //    var colsCount = rowsCount;
+        //    var processor = linearMap.LinearProcessor;
+        //    var array = new T[rowsCount, colsCount];
+
+        //    for (var index = 0; index < colsCount; index++)
+        //    {
+        //        var mappedBasisVector = linearMap.OmMapBasisBlade(grade, (uint) index);
+
+        //        for (var i = 0; i < rowsCount; i++)
+        //            array[i, index] = mappedBasisVector.TryGetTermScalarByIndex((ulong) i, out var scalar)
+        //                ? scalar
+        //                : processor.ScalarZero;
+        //    }
+
+        //    return array.CreateLinMatrixDenseStorage();
+        //}
+
+        //public static ILinMatrixStorage<T> GetKVectorsMappingArray<T>(this IOutermorphism<T> linearMap, uint grade, int rowsCount, int colsCount)
+        //{
+        //    var processor = linearMap.LinearProcessor;
+        //    var array = new T[rowsCount, colsCount];
+
+        //    for (var index = 0; index < colsCount; index++)
+        //    {
+        //        var mappedBasisVector = linearMap.OmMapBasisBlade(grade, (uint) index);
+
+        //        for (var i = 0; i < rowsCount; i++)
+        //            array[i, index] = mappedBasisVector.TryGetTermScalarByIndex((ulong) i, out var scalar)
+        //                ? scalar
+        //                : processor.ScalarZero;
+        //    }
+
+        //    return array.CreateLinMatrixDenseStorage();
+        //}
+
+        //public static ILinMatrixStorage<T> GetMultivectorsMappingArray<T>(this IOutermorphism<T> linearMap)
+        //{
+        //    var processor = linearMap.LinearProcessor;
+        //    var rowsCount = (int) linearMap.GeometricProcessor.GaSpaceDimension;
+        //    var colsCount = rowsCount;
+        //    var array = new T[rowsCount, colsCount];
+
+        //    for (var index = 0; index < colsCount; index++)
+        //    {
+        //        var mappedBasisVector = linearMap.OmMapBasisBlade((ulong) index);
+
+        //        for (var i = 0; i < rowsCount; i++)
+        //            array[i, index] = mappedBasisVector.TryGetTermScalar((ulong) i, out var scalar)
+        //                ? scalar
+        //                : processor.ScalarZero;
+        //    }
+
+        //    return array.CreateLinMatrixDenseStorage();
+        //}
+
+        //public static ILinMatrixStorage<T> GetMultivectorsMappingArray<T>(this IOutermorphism<T> linearMap, int rowsCount, int colsCount)
+        //{
+        //    var processor = linearMap.LinearProcessor;
+        //    var array = new T[rowsCount, colsCount];
+
+        //    for (var index = 0; index < colsCount; index++)
+        //    {
+        //        var mappedBasisBlade = linearMap.OmMapBasisBlade((ulong) index);
+
+        //        for (var i = 0; i < rowsCount; i++)
+        //            array[i, index] = mappedBasisBlade.TryGetTermScalar((ulong) i, out var scalar)
+        //                ? scalar
+        //                : processor.ScalarZero;
+        //    }
+
+        //    return array.CreateLinMatrixDenseStorage();
+        //}
+
+        public static T GetEuclideanDeterminant<T>(this IGeometricAlgebraProcessor<T> geometricProcessor, IOutermorphism<T> om)
         {
-            var processor = linearMap.ScalarsGridProcessor;
-            var array = new T[rowsCount, colsCount];
-
-            for (var index = 0; index < colsCount; index++)
-            {
-                var mappedBasisVector = linearMap.MapBasisVector((uint) index);
-
-                for (var i = 0; i < rowsCount; i++)
-                    array[i, index] = mappedBasisVector.TryGetTermScalarByIndex((ulong) i, out var scalar)
-                        ? scalar
-                        : processor.ScalarZero;
-            }
-
-            return array.CreateEvenGridDense();
-        }
-
-        public static ILaMatrixEvenStorage<T> GetBivectorsMappingArray<T>(this IGaOutermorphism<T> linearMap)
-        {
-            return GetKVectorsMappingArray(linearMap, 2);
-        }
-
-        public static ILaMatrixEvenStorage<T> GetBivectorsMappingArray<T>(this IGaOutermorphism<T> linearMap, int rowsCount, int colsCount)
-        {
-            return GetKVectorsMappingArray(linearMap, 2, rowsCount, colsCount);
-        }
-
-        public static ILaMatrixEvenStorage<T> GetKVectorsMappingArray<T>(this IGaOutermorphism<T> linearMap, uint grade)
-        {
-            var rowsCount = (int) linearMap.VSpaceDimension.KVectorSpaceDimension(grade);
-            var colsCount = rowsCount;
-            var processor = linearMap.ScalarsGridProcessor;
-            var array = new T[rowsCount, colsCount];
-
-            for (var index = 0; index < colsCount; index++)
-            {
-                var mappedBasisVector = linearMap.MapBasisBlade(grade, (uint) index);
-
-                for (var i = 0; i < rowsCount; i++)
-                    array[i, index] = mappedBasisVector.TryGetTermScalarByIndex((ulong) i, out var scalar)
-                        ? scalar
-                        : processor.ScalarZero;
-            }
-
-            return array.CreateEvenGridDense();
-        }
-
-        public static ILaMatrixEvenStorage<T> GetKVectorsMappingArray<T>(this IGaOutermorphism<T> linearMap, uint grade, int rowsCount, int colsCount)
-        {
-            var processor = linearMap.ScalarsGridProcessor;
-            var array = new T[rowsCount, colsCount];
-
-            for (var index = 0; index < colsCount; index++)
-            {
-                var mappedBasisVector = linearMap.MapBasisBlade(grade, (uint) index);
-
-                for (var i = 0; i < rowsCount; i++)
-                    array[i, index] = mappedBasisVector.TryGetTermScalarByIndex((ulong) i, out var scalar)
-                        ? scalar
-                        : processor.ScalarZero;
-            }
-
-            return array.CreateEvenGridDense();
-        }
-
-        public static ILaMatrixEvenStorage<T> GetMultivectorsMappingArray<T>(this IGaOutermorphism<T> linearMap)
-        {
-            var processor = linearMap.ScalarsGridProcessor;
-            var rowsCount = (int) linearMap.GaSpaceDimension;
-            var colsCount = rowsCount;
-            var array = new T[rowsCount, colsCount];
-
-            for (var index = 0; index < colsCount; index++)
-            {
-                var mappedBasisVector = linearMap.MapBasisBlade((ulong) index);
-
-                for (var i = 0; i < rowsCount; i++)
-                    array[i, index] = mappedBasisVector.TryGetTermScalar((ulong) i, out var scalar)
-                        ? scalar
-                        : processor.ScalarZero;
-            }
-
-            return array.CreateEvenGridDense();
-        }
-
-        public static ILaMatrixEvenStorage<T> GetMultivectorsMappingArray<T>(this IGaOutermorphism<T> linearMap, int rowsCount, int colsCount)
-        {
-            var processor = linearMap.ScalarsGridProcessor;
-            var array = new T[rowsCount, colsCount];
-
-            for (var index = 0; index < colsCount; index++)
-            {
-                var mappedBasisBlade = linearMap.MapBasisBlade((ulong) index);
-
-                for (var i = 0; i < rowsCount; i++)
-                    array[i, index] = mappedBasisBlade.TryGetTermScalar((ulong) i, out var scalar)
-                        ? scalar
-                        : processor.ScalarZero;
-            }
-
-            return array.CreateEvenGridDense();
-        }
-
-        public static T GetEuclideanDeterminant<T>(this IGaOutermorphism<T> om)
-        {
-            var scalarProcessor = om.ScalarsGridProcessor;
-
             var mappedPseudoScalar = 
-                om.MapBasisBlade((1UL << (int) om.VSpaceDimension) - 1);
+                om.OmMapBasisBlade(geometricProcessor.MaxBasisBladeId);
 
-            return scalarProcessor.ESp(
+            return geometricProcessor.ESp(
                 mappedPseudoScalar,
-                om.ScalarsGridProcessor.CreateEuclideanPseudoScalarInverseStorage(om.VSpaceDimension)
+                geometricProcessor.CreateEuclideanPseudoScalarInverseStorage(
+                    geometricProcessor.VSpaceDimension
+                )
             );
         }
 
-        public static T GetDeterminant<T>(this IGaOutermorphism<T> om, IGaSignature signature)
+        public static T GetDeterminant<T>(this IGeometricAlgebraProcessor<T> geometricProcessor, IOutermorphism<T> om)
         {
-            var scalarProcessor = om.ScalarsGridProcessor;
-
-            var mappedPseudoScalar = 
-                om.MapBasisBlade((1UL << (int) om.VSpaceDimension) - 1);
-
-            return scalarProcessor.Sp(
-                signature,
-                mappedPseudoScalar, 
-                scalarProcessor.CreatePseudoScalarInverseStorage(signature)
+            return geometricProcessor.Sp(
+                om.OmMapBasisBlade(geometricProcessor.MaxBasisBladeId), 
+                geometricProcessor.PseudoScalarInverse
             );
         }
 
-        public static T GetDeterminant<T>(this IGaOutermorphism<T> om, IGaProcessor<T> processor)
+        public static T GetDeterminant<T>(this IOutermorphism<T> om, IGeometricAlgebraProcessor<T> geometricProcessor)
         {
-            var mappedPseudoScalar = 
-                om.MapBasisBlade((1UL << (int) om.VSpaceDimension) - 1);
-
-            return processor.Sp(
-                mappedPseudoScalar, 
-                processor.PseudoScalarInverse
+            return geometricProcessor.Sp(
+                om.OmMapBasisBlade(geometricProcessor.MaxBasisBladeId), 
+                geometricProcessor.PseudoScalarInverse
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaOutermorphism<T> CreateComputedOutermorphism<T>(this GaVectorsFrame<T> frame)
+        public static IOutermorphism<T> CreateComputedOutermorphism<T>(this GeoFreeFrame<T> frame)
         {
-            return frame.Processor.CreateComputedOutermorphism(
+            return frame.GeometricProcessor.CreateLinearMapOutermorphism(
                 frame.GetMatrix()
             );
         }

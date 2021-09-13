@@ -4,44 +4,44 @@ using GAPoTNumLib.Text.LaTeX;
 
 namespace GAPoTNumLib.GAPoT
 {
-    public sealed class GaPoTNumVectorTerm
+    public sealed class GeoPoTNumVectorTerm
     {
-        public static GaPoTNumVectorTerm operator -(GaPoTNumVectorTerm t)
+        public static GeoPoTNumVectorTerm operator -(GeoPoTNumVectorTerm t)
         {
-            return new GaPoTNumVectorTerm(t.TermId, -t.Value);
+            return new GeoPoTNumVectorTerm(t.TermId, -t.Value);
         }
 
-        public static GaPoTNumVectorTerm operator +(GaPoTNumVectorTerm t1, GaPoTNumVectorTerm t2)
-        {
-            if (t1.TermId != t2.TermId)
-                throw new InvalidOperationException();
-
-            return new GaPoTNumVectorTerm(t1.TermId, t1.Value + t2.Value);
-        }
-
-        public static GaPoTNumVectorTerm operator -(GaPoTNumVectorTerm t1, GaPoTNumVectorTerm t2)
+        public static GeoPoTNumVectorTerm operator +(GeoPoTNumVectorTerm t1, GeoPoTNumVectorTerm t2)
         {
             if (t1.TermId != t2.TermId)
                 throw new InvalidOperationException();
 
-            return new GaPoTNumVectorTerm(t1.TermId, t1.Value - t2.Value);
+            return new GeoPoTNumVectorTerm(t1.TermId, t1.Value + t2.Value);
         }
 
-        public static GaPoTNumVectorTerm operator *(GaPoTNumVectorTerm t, double s)
+        public static GeoPoTNumVectorTerm operator -(GeoPoTNumVectorTerm t1, GeoPoTNumVectorTerm t2)
         {
-            return new GaPoTNumVectorTerm(t.TermId, s * t.Value);
+            if (t1.TermId != t2.TermId)
+                throw new InvalidOperationException();
+
+            return new GeoPoTNumVectorTerm(t1.TermId, t1.Value - t2.Value);
         }
 
-        public static GaPoTNumVectorTerm operator *(double s, GaPoTNumVectorTerm t)
+        public static GeoPoTNumVectorTerm operator *(GeoPoTNumVectorTerm t, double s)
         {
-            return new GaPoTNumVectorTerm(t.TermId, s * t.Value);
+            return new GeoPoTNumVectorTerm(t.TermId, s * t.Value);
         }
 
-        public static GaPoTNumVectorTerm operator /(GaPoTNumVectorTerm t, double s)
+        public static GeoPoTNumVectorTerm operator *(double s, GeoPoTNumVectorTerm t)
+        {
+            return new GeoPoTNumVectorTerm(t.TermId, s * t.Value);
+        }
+
+        public static GeoPoTNumVectorTerm operator /(GeoPoTNumVectorTerm t, double s)
         {
             s = 1.0d / s;
 
-            return new GaPoTNumVectorTerm(t.TermId, s * t.Value);
+            return new GeoPoTNumVectorTerm(t.TermId, s * t.Value);
         }
 
 
@@ -50,7 +50,7 @@ namespace GAPoTNumLib.GAPoT
         public double Value { get; set; }
 
 
-        internal GaPoTNumVectorTerm(int id)
+        internal GeoPoTNumVectorTerm(int id)
         {
             Debug.Assert(id > 0);
 
@@ -58,7 +58,7 @@ namespace GAPoTNumLib.GAPoT
             Value = 0;
         }
 
-        internal GaPoTNumVectorTerm(int id, double value)
+        internal GeoPoTNumVectorTerm(int id, double value)
         {
             Debug.Assert(id > 0);
 
@@ -82,14 +82,14 @@ namespace GAPoTNumLib.GAPoT
             return Value * Value;
         }
 
-        public GaPoTNumMultivectorTerm ToMultivectorTerm()
+        public GeoPoTNumMultivectorTerm ToMultivectorTerm()
         {
-            return new GaPoTNumMultivectorTerm(1 << (TermId - 1) , Value);
+            return new GeoPoTNumMultivectorTerm(1 << (TermId - 1) , Value);
         }
 
-        public GaPoTNumVectorTerm Round(int places)
+        public GeoPoTNumVectorTerm Round(int places)
         {
-            return new GaPoTNumVectorTerm(TermId, Math.Round(Value, places));
+            return new GeoPoTNumVectorTerm(TermId, Math.Round(Value, places));
         }
 
         public string ToText()
@@ -111,11 +111,11 @@ namespace GAPoTNumLib.GAPoT
             return $@"\left( {valueText} \right) {basisText}";
         }
 
-        public GaPoTNumVectorTerm OffsetTermId(int delta)
+        public GeoPoTNumVectorTerm OffsetTermId(int delta)
         {
             var id = TermId + delta;
 
-            return new GaPoTNumVectorTerm(id, Value);
+            return new GeoPoTNumVectorTerm(id, Value);
         }
 
         public override string ToString()

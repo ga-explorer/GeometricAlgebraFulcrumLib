@@ -3,10 +3,10 @@ using CodeComposerLib.Languages;
 using CodeComposerLib.Languages.Cpp;
 using CodeComposerLib.Languages.CSharp;
 using CodeComposerLib.Languages.Excel;
+using GeometricAlgebraFulcrumLib.Algebra.SymbolicAlgebra;
 using GeometricAlgebraFulcrumLib.CodeComposer.Languages.Cpp;
 using GeometricAlgebraFulcrumLib.CodeComposer.Languages.CSharp;
 using GeometricAlgebraFulcrumLib.CodeComposer.Languages.Excel;
-using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions;
 
 namespace GeometricAlgebraFulcrumLib.CodeComposer.Languages
 {
@@ -56,7 +56,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Languages
 
 
         /// <summary>
-        /// Gets the target language type name equivalent to the given GaClcDSL primitive type
+        /// Gets the target language type name equivalent to the given GeoClcDSL primitive type
         /// </summary>
         /// <param name="itemType"></param>
         /// <returns></returns>

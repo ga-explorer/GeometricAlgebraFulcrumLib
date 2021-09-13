@@ -41,7 +41,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
 
                 gpCaseText.Add(Templates["dp_case"],
                     "name", funcName,
-                    "num", Processor.KvSpaceDimension(outGrade),
+                    "num", GeometricProcessor.KVectorSpaceDimension(outGrade),
                     "signature", CurrentNamespace,
                     "grade", invGrade
                 );
@@ -51,7 +51,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
                 Templates["dp"],
                 "signature", CurrentNamespace,
                 "name", OperationSpecs.GetName(inGrade1, inGrade2),
-                "double", GaLanguage.ScalarTypeName,
+                "double", GeoLanguage.ScalarTypeName,
                 "dp_case", gpCaseText
             );
         }
@@ -60,12 +60,12 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         {
             var casesText = new ListTextComposer(Environment.NewLine);
 
-            foreach (var inGrade1 in Processor.Grades)
+            foreach (var inGrade1 in GeometricProcessor.Grades)
             {
-                foreach (var inGrade2 in Processor.Grades)
+                foreach (var inGrade2 in GeometricProcessor.Grades)
                 {
                     var id = 
-                        inGrade1 + inGrade2 * Processor.GradesCount;
+                        inGrade1 + inGrade2 * GeometricProcessor.GradesCount;
 
                     casesText.Add(Templates["dp_main_case"],
                         "name", OperationSpecs.GetName(inGrade1, inGrade2),
@@ -89,8 +89,8 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         {
             GenerateKVectorFileStartCode();
 
-            foreach (var grade1 in Processor.Grades)
-                foreach (var grade2 in Processor.Grades)
+            foreach (var grade1 in GeometricProcessor.Grades)
+                foreach (var grade2 in GeometricProcessor.Grades)
                     GenerateDeltaProductDualFunctions(grade1, grade2);
 
             GenerateMainDeltaProductDualFunction();

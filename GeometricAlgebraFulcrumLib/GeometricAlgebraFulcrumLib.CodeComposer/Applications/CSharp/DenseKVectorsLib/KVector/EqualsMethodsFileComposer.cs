@@ -28,7 +28,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             TextComposer.AppendAtNewLine(
                 Templates["equals"],
                 "num", kvSpaceDim,
-                "double", GaLanguage.ScalarTypeName,
+                "double", GeoLanguage.ScalarTypeName,
                 "cases", casesText
             );
         }
@@ -39,10 +39,10 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
 
             var casesText = new ListTextComposer(Environment.NewLine);
 
-            foreach (var grade in Processor.Grades)
+            foreach (var grade in GeometricProcessor.Grades)
                 casesText.Add(caseTemplate,
                     "grade", grade,
-                    "num", this.KvSpaceDimension(grade)
+                    "num", this.KVectorSpaceDimension(grade)
                 );
 
             TextComposer.AppendAtNewLine(
@@ -59,7 +59,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             var kvSpaceDimList =
                 VSpaceDimension
                 .GetRange()
-                .Select(grade => Processor.KvSpaceDimension(grade))
+                .Select(grade => GeometricProcessor.KVectorSpaceDimension(grade))
                 .Distinct();
 
             foreach (var kvSpaceDim in kvSpaceDimList)

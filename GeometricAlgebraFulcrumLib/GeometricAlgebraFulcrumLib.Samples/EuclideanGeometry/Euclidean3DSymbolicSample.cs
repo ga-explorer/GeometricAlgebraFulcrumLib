@@ -1,9 +1,7 @@
 ﻿using System;
 using GeometricAlgebraFulcrumLib.Mathematica;
-using GeometricAlgebraFulcrumLib.Mathematica.Mathematica;
 using GeometricAlgebraFulcrumLib.Mathematica.Mathematica.ExprFactory;
 using GeometricAlgebraFulcrumLib.Mathematica.Processors;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using GeometricAlgebraFulcrumLib.Utilities.Factories;
 using Wolfram.NETLink;
@@ -16,13 +14,13 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
         {
             var n = 3U;
             var processor = 
-                MathematicaScalarProcessor.DefaultProcessor.CreateGaEuclideanProcessor(n);
+                ScalarAlgebraMathematicaProcessor.DefaultProcessor.CreateGeometricAlgebraEuclideanProcessor(n);
 
-            var v = GaSymbolicUtils.CreateVector(
+            var v = MathematicaUtils.CreateVector(
                 "Subscript[v,1]", "Subscript[v,2]", "Subscript[v,3]"
             );
 
-            var u = GaSymbolicUtils.CreateVector(
+            var u = MathematicaUtils.CreateVector(
                 "Subscript[u,1]", "Subscript[u,2]", "Subscript[u,3]"
             );
 
@@ -45,7 +43,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                     .Simplify(unitLengthAssumptionExpr);
 
             var rotorMatrix1 =
-                GaSymbolicUtils.CreateVectorsLinearMap(
+                MathematicaUtils.CreateVectorsLinearMap(
                         (int) n,
                         basisVector =>
                             processor.EGp(rotorMv, basisVector).GetVectorPart()
@@ -54,7 +52,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                     .Simplify(unitLengthAssumptionExpr);
 
             var rotorMatrix2 =
-                GaSymbolicUtils.CreateVectorsLinearMap(
+                MathematicaUtils.CreateVectorsLinearMap(
                         (int) n,
                         basisVector =>
                             processor.EGp(basisVector, rotorMvReverse).GetVectorPart()
@@ -69,7 +67,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
 
             var vMatrix = v.VectorToColumnVectorMatrix(n);
             var uMatrix = u.VectorToColumnVectorMatrix(n);
-            var u1 = Mfs.Expand[rotor.MapVector(v).VectorToColumnVectorMatrix(n)].Evaluate();
+            var u1 = Mfs.Expand[rotor.OmMapVector(v).VectorToColumnVectorMatrix(n)].Evaluate();
             var u2 = Mfs.Expand[rotorMatrix.MatrixProduct(vMatrix)].Evaluate();
             var u3 = Mfs.Expand[rotorMatrix21.MatrixProduct(vMatrix)].Evaluate();
             var u4 = Mfs.Expand[rotorMatrix2.MatrixProduct(rotorMatrix1.MatrixProduct(vMatrix))].Evaluate();

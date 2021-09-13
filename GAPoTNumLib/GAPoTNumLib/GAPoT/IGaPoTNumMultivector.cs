@@ -1,6 +1,6 @@
 ﻿namespace GAPoTNumLib.GAPoT
 {
-    public interface IGaPoTNumMultivector
+    public interface IGeoPoTNumMultivector
     {
         string TermsToText();
 

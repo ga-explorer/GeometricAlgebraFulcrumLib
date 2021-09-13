@@ -1,11 +1,9 @@
 ﻿using System;
+using GeometricAlgebraFulcrumLib.Algebra.SymbolicAlgebra;
+using GeometricAlgebraFulcrumLib.Algebra.SymbolicAlgebra.Variables;
 using GeometricAlgebraFulcrumLib.CodeComposer.Languages;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean;
-using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions;
-using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
-using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Variables;
-using GeometricAlgebraFulcrumLib.Storage.Multivectors;
+using GeometricAlgebraFulcrumLib.Processors.SymbolicAlgebra.Context;
+using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using TextComposerLib.Text.Linear;
 
@@ -17,8 +15,8 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         private readonly GaFuLLanguageOperationSpecs _operationSpecs;
         private readonly uint _inputGrade;
         private readonly uint _outputGrade = 0U;
-        private IGaKVectorStorage<ISymbolicExpressionAtomic> _inputKVector1;
-        private IGaKVectorStorage<ISymbolicExpressionAtomic> _inputKVector2;
+        private KVectorStorage<ISymbolicExpressionAtomic> _inputKVector1;
+        private KVectorStorage<ISymbolicExpressionAtomic> _inputKVector2;
         private SymbolicVariableComputed _outputScalar;
 
 
@@ -51,8 +49,8 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             {
                 GaFuLLanguageOperationKind.BinaryScalarProduct =>
                     _operationSpecs.IsEuclidean
-                        ? Processor.ESp(_inputKVector1, _inputKVector2)
-                        : Processor.Sp(_inputKVector1, _inputKVector2),
+                        ? GeometricProcessor.ESp(_inputKVector1, _inputKVector2)
+                        : GeometricProcessor.Sp(_inputKVector1, _inputKVector2),
 
                 _ => throw new InvalidOperationException()
             };
@@ -91,7 +89,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
                 GenerateCode();
 
             var kvSpaceDimension = 
-                this.KvSpaceDimension(_outputGrade);
+                this.KVectorSpaceDimension(_outputGrade);
 
             var methodName =
                 _operationSpecs.GetName(_inputGrade, _inputGrade);
@@ -100,7 +98,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
                 Templates["bilinearproduct"],
                 "name", methodName,
                 "num", kvSpaceDimension,
-                "double", GaLanguage.ScalarTypeName,
+                "double", GeoLanguage.ScalarTypeName,
                 "computations", computationsText
             );
 

@@ -1,6 +1,6 @@
 ﻿namespace GeometricAlgebraFulcrumLib.Geometry.Frames
 {
-    public enum GaVectorsFrameKind
+    public enum GeoFreeFrameKind
     {
         Undefined = -1,
         LinearlyIndependent = 0,

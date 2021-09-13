@@ -1,5 +1,5 @@
 ﻿using GeometricAlgebraFulcrumLib.CodeComposer.Composers;
-using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
+using GeometricAlgebraFulcrumLib.Processors.SymbolicAlgebra.Context;
 
 namespace GeometricAlgebraFulcrumLib.CodeComposer.Languages.CSharp
 {

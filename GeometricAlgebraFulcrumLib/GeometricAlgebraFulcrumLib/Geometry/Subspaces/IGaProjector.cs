@@ -1,11 +1,11 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.Outermorphisms;
-using GeometricAlgebraFulcrumLib.Storage.Multivectors;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms;
+using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra.Multivectors;
 
 namespace GeometricAlgebraFulcrumLib.Geometry.Subspaces
 {
-    public interface IGaProjector<T> : 
-        IGaOutermorphism<T>
+    public interface IGeoProjector<T> : 
+        IOutermorphism<T>
     {
-        IGaKVectorStorage<T> UnitBladeStorage { get; }
+        KVectorStorage<T> UnitBladeStorage { get; }
     }
 }

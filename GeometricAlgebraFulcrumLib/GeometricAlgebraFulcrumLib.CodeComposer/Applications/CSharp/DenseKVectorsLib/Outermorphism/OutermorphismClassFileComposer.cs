@@ -1,9 +1,9 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Algebra.Outermorphisms;
+using GeometricAlgebraFulcrumLib.Algebra.SymbolicAlgebra.Variables;
 using GeometricAlgebraFulcrumLib.CodeComposer.Composers;
-using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
-using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Variables;
+using GeometricAlgebraFulcrumLib.Processors.SymbolicAlgebra.Context;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
+using GeometricAlgebraFulcrumLib.Utilities.Factories;
 using TextComposerLib.Text.Structured;
 using TextComposerLib.Text.Linear;
 
@@ -43,10 +43,10 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             );
             
             var outermorphism = 
-                Processor.CreateComputedOutermorphism(linearMapArray);
+                GeometricProcessor.CreateLinearMapOutermorphism(linearMapArray);
 
             var determinant = 
-                (SymbolicVariableComputed) outermorphism.GetDeterminant(Processor);
+                (SymbolicVariableComputed) outermorphism.GetDeterminant(GeometricProcessor);
 
             determinant.IsOutputVariable = true;
 
@@ -66,7 +66,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
 
             var macroComposer = 
                 new GaFuLSymbolicContextCodeComposer(
-                    CodeComposer.GaLanguage, 
+                    CodeComposer.GeoLanguage, 
                     context, 
                     DenseKVectorsLibraryComposer.DefaultContextCodeComposerOptions
                 );
@@ -220,7 +220,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             TextComposer.Append(
                 Templates["outermorphism"],
                 "signature", CurrentNamespace,
-                "double", GaLanguage.ScalarTypeName,
+                "double", GeoLanguage.ScalarTypeName,
                 "transpose_code", omTransposeCode,
                 "metric_det_code", omDeterminantCode,
                 "plus_code", omPlusCode,

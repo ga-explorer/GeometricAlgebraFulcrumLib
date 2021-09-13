@@ -10,34 +10,34 @@ using MathNet.Numerics.LinearAlgebra.Double;
 
 namespace GAPoTNumLib.GAPoT
 {
-    public sealed class GaPoTNumRotorsSequence : IReadOnlyList<GaPoTNumMultivector>
+    public sealed class GeoPoTNumRotorsSequence : IReadOnlyList<GeoPoTNumMultivector>
     {
-        public static GaPoTNumRotorsSequence CreateIdentity()
+        public static GeoPoTNumRotorsSequence CreateIdentity()
         {
-            return new GaPoTNumRotorsSequence();
+            return new GeoPoTNumRotorsSequence();
 
-            //return new GaPoTNumRotorsSequence().AppendRotor(
-            //    GaPoTNumMultivector.CreateZero().SetTerm(0, double.INT_ONE)
+            //return new GeoPoTNumRotorsSequence().AppendRotor(
+            //    GeoPoTNumMultivector.CreateZero().SetTerm(0, double.INT_ONE)
             //);
         }
 
-        public static GaPoTNumRotorsSequence Create(params GaPoTNumMultivector[] rotorsList)
+        public static GeoPoTNumRotorsSequence Create(params GeoPoTNumMultivector[] rotorsList)
         {
-            return new GaPoTNumRotorsSequence(rotorsList);
+            return new GeoPoTNumRotorsSequence(rotorsList);
         }
 
-        public static GaPoTNumRotorsSequence Create(IEnumerable<GaPoTNumMultivector> rotorsList)
+        public static GeoPoTNumRotorsSequence Create(IEnumerable<GeoPoTNumMultivector> rotorsList)
         {
-            return new GaPoTNumRotorsSequence(rotorsList);
+            return new GeoPoTNumRotorsSequence(rotorsList);
         }
 
-        public static GaPoTNumRotorsSequence CreateFromOrthonormalFrames(GaPoTNumFrame sourceFrame, GaPoTNumFrame targetFrame, bool fullRotorsFlag = false)
+        public static GeoPoTNumRotorsSequence CreateFromOrthonormalFrames(GeoPoTNumFrame sourceFrame, GeoPoTNumFrame targetFrame, bool fullRotorsFlag = false)
         {
             Debug.Assert(targetFrame.Count == sourceFrame.Count);
             Debug.Assert(sourceFrame.IsOrthonormal() && targetFrame.IsOrthonormal());
             Debug.Assert(sourceFrame.HasSameHandedness(targetFrame));
 
-            var rotorsSequence = new GaPoTNumRotorsSequence();
+            var rotorsSequence = new GeoPoTNumRotorsSequence();
 
             var sourceFrameVectors = sourceFrame.ToArray();
 
@@ -62,7 +62,7 @@ namespace GAPoTNumLib.GAPoT
             return rotorsSequence;
         }
 
-        public static GaPoTNumRotorsSequence CreateFromOrthonormalFrames(GaPoTNumFrame sourceFrame, GaPoTNumFrame targetFrame, int[] sequenceArray)
+        public static GeoPoTNumRotorsSequence CreateFromOrthonormalFrames(GeoPoTNumFrame sourceFrame, GeoPoTNumFrame targetFrame, int[] sequenceArray)
         {
             Debug.Assert(targetFrame.Count == sourceFrame.Count);
             Debug.Assert(sourceFrame.IsOrthonormal() && targetFrame.IsOrthonormal());
@@ -73,7 +73,7 @@ namespace GAPoTNumLib.GAPoT
             Debug.Assert(sequenceArray.Max() < sourceFrame.Count);
             Debug.Assert(sequenceArray.Distinct().Count() == sourceFrame.Count - 1);
 
-            var rotorsSequence = new GaPoTNumRotorsSequence();
+            var rotorsSequence = new GeoPoTNumRotorsSequence();
 
             var sourceFrameVectors = sourceFrame.ToArray();
             
@@ -84,7 +84,7 @@ namespace GAPoTNumLib.GAPoT
                 var sourceVector = sourceFrameVectors[vectorIndex];
                 var targetVector = targetFrame[vectorIndex];
 
-                var rotor = GaPoTNumMultivector.CreateSimpleRotor(
+                var rotor = GeoPoTNumMultivector.CreateSimpleRotor(
                     sourceVector, 
                     targetVector
                 );
@@ -98,21 +98,21 @@ namespace GAPoTNumLib.GAPoT
             return rotorsSequence;
         }
 
-        public static GaPoTNumRotorsSequence CreateFromFrames(int baseSpaceDimensions, GaPoTNumFrame sourceFrame, GaPoTNumFrame targetFrame)
+        public static GeoPoTNumRotorsSequence CreateFromFrames(int baseSpaceDimensions, GeoPoTNumFrame sourceFrame, GeoPoTNumFrame targetFrame)
         {
             Debug.Assert(targetFrame.Count == sourceFrame.Count);
             //Debug.Assert(IsOrthonormal() && targetFrame.IsOrthonormal());
             Debug.Assert(sourceFrame.HasSameHandedness(targetFrame));
 
-            var rotorsSequence = new GaPoTNumRotorsSequence();
+            var rotorsSequence = new GeoPoTNumRotorsSequence();
 
             var pseudoScalar = 
-                GaPoTNumMultivector
+                GeoPoTNumMultivector
                     .CreateZero()
                     .SetTerm((1 << baseSpaceDimensions) - 1, 1.0d);
 
-            var sourceFrameVectors = new GaPoTNumVector[sourceFrame.Count];
-            var targetFrameVectors = new GaPoTNumVector[targetFrame.Count];
+            var sourceFrameVectors = new GeoPoTNumVector[sourceFrame.Count];
+            var targetFrameVectors = new GeoPoTNumVector[targetFrame.Count];
 
             for (var i = 0; i < sourceFrame.Count; i++)
             {
@@ -145,7 +145,7 @@ namespace GAPoTNumLib.GAPoT
             return rotorsSequence;
         }
 
-        public static GaPoTNumRotorsSequence CreateOrthogonalRotors(double[,] rotationMatrix)
+        public static GeoPoTNumRotorsSequence CreateOrthogonalRotors(double[,] rotationMatrix)
         {
             var evdSolver = Matrix.Build.DenseOfArray(rotationMatrix).Evd();
 
@@ -155,35 +155,35 @@ namespace GAPoTNumLib.GAPoT
 
             //TODO: Complete this
 
-            return new GaPoTNumRotorsSequence();
+            return new GeoPoTNumRotorsSequence();
         }
 
 
-        private readonly List<GaPoTNumMultivector> _rotorsList
-            = new List<GaPoTNumMultivector>();
+        private readonly List<GeoPoTNumMultivector> _rotorsList
+            = new List<GeoPoTNumMultivector>();
 
 
         public int Count 
             => _rotorsList.Count;
         
-        public GaPoTNumMultivector this[int index]
+        public GeoPoTNumMultivector this[int index]
         {
             get => _rotorsList[index];
             set => _rotorsList[index] = value;
         }
 
         
-        internal GaPoTNumRotorsSequence()
+        internal GeoPoTNumRotorsSequence()
         {
         }
 
-        internal GaPoTNumRotorsSequence(IEnumerable<GaPoTNumMultivector> rotorsList)
+        internal GeoPoTNumRotorsSequence(IEnumerable<GeoPoTNumMultivector> rotorsList)
         {
             _rotorsList.AddRange(rotorsList);
         }
 
 
-        public bool ValidateRotation(GaPoTNumFrame sourceFrame, GaPoTNumFrame targetFrame)
+        public bool ValidateRotation(GeoPoTNumFrame sourceFrame, GeoPoTNumFrame targetFrame)
         {
             if (sourceFrame.Count != targetFrame.Count)
                 return false;
@@ -205,40 +205,40 @@ namespace GAPoTNumLib.GAPoT
             return _rotorsList.All(r => r.IsSimpleRotor());
         }
 
-        public GaPoTNumMultivector GetRotor(int index)
+        public GeoPoTNumMultivector GetRotor(int index)
         {
             return _rotorsList[index];
         }
 
-        public GaPoTNumRotorsSequence AppendRotor(GaPoTNumMultivector rotor)
+        public GeoPoTNumRotorsSequence AppendRotor(GeoPoTNumMultivector rotor)
         {
             _rotorsList.Add(rotor);
 
             return this;
         }
 
-        public GaPoTNumRotorsSequence PrependRotor(GaPoTNumMultivector rotor)
+        public GeoPoTNumRotorsSequence PrependRotor(GeoPoTNumMultivector rotor)
         {
             _rotorsList.Insert(0, rotor);
 
             return this;
         }
 
-        public GaPoTNumRotorsSequence InsertRotor(int index, GaPoTNumMultivector rotor)
+        public GeoPoTNumRotorsSequence InsertRotor(int index, GeoPoTNumMultivector rotor)
         {
             _rotorsList.Insert(index, rotor);
 
             return this;
         }
 
-        public GaPoTNumRotorsSequence GetSubSequence(int startIndex, int count)
+        public GeoPoTNumRotorsSequence GetSubSequence(int startIndex, int count)
         {
-            return new GaPoTNumRotorsSequence(
+            return new GeoPoTNumRotorsSequence(
                 _rotorsList.Skip(startIndex).Take(count)
             );
         }
 
-        public IEnumerable<GaPoTNumVector> GetRotations(GaPoTNumVector vector)
+        public IEnumerable<GeoPoTNumVector> GetRotations(GeoPoTNumVector vector)
         {
             var v = vector;
 
@@ -252,7 +252,7 @@ namespace GAPoTNumLib.GAPoT
             }
         }
 
-        public IEnumerable<GaPoTNumMultivector> GetRotations(GaPoTNumMultivector multivector)
+        public IEnumerable<GeoPoTNumMultivector> GetRotations(GeoPoTNumMultivector multivector)
         {
             var mv = multivector;
 
@@ -266,7 +266,7 @@ namespace GAPoTNumLib.GAPoT
             }
         }
 
-        public IEnumerable<GaPoTNumFrame> GetRotations(GaPoTNumFrame frame)
+        public IEnumerable<GeoPoTNumFrame> GetRotations(GeoPoTNumFrame frame)
         {
             var f = frame;
 
@@ -282,7 +282,7 @@ namespace GAPoTNumLib.GAPoT
 
         public IEnumerable<double[,]> GetRotationMatrices(int rowsCount)
         {
-            var f = GaPoTNumFrame.CreateBasisFrame(rowsCount);
+            var f = GeoPoTNumFrame.CreateBasisFrame(rowsCount);
 
             yield return f.GetMatrix(rowsCount);
 
@@ -290,7 +290,7 @@ namespace GAPoTNumLib.GAPoT
                 yield return f.ApplyRotor(rotor).GetMatrix(rowsCount);
         }
 
-        public GaPoTNumVector Rotate(GaPoTNumVector vector)
+        public GeoPoTNumVector Rotate(GeoPoTNumVector vector)
         {
             return _rotorsList
                 .Aggregate(
@@ -299,7 +299,7 @@ namespace GAPoTNumLib.GAPoT
                 );
         }
 
-        public GaPoTNumMultivector Rotate(GaPoTNumMultivector multivector)
+        public GeoPoTNumMultivector Rotate(GeoPoTNumMultivector multivector)
         {
             return _rotorsList
                 .Aggregate(
@@ -308,7 +308,7 @@ namespace GAPoTNumLib.GAPoT
                 );
         }
 
-        public GaPoTNumFrame Rotate(GaPoTNumFrame frame)
+        public GeoPoTNumFrame Rotate(GeoPoTNumFrame frame)
         {
             return _rotorsList
                 .Aggregate(
@@ -317,7 +317,7 @@ namespace GAPoTNumLib.GAPoT
                 );
         }
 
-        public GaPoTNumMultivector GetFinalRotor()
+        public GeoPoTNumMultivector GetFinalRotor()
         {
             return _rotorsList
                 .Skip(1)
@@ -330,13 +330,13 @@ namespace GAPoTNumLib.GAPoT
         public double[,] GetFinalMatrix(int rowsCount)
         {
             return Rotate(
-                GaPoTNumFrame.CreateBasisFrame(rowsCount)
+                GeoPoTNumFrame.CreateBasisFrame(rowsCount)
             ).GetMatrix(rowsCount);
         }
 
-        public GaPoTNumRotorsSequence Reverse()
+        public GeoPoTNumRotorsSequence Reverse()
         {
-            var rotorsSequence = new GaPoTNumRotorsSequence();
+            var rotorsSequence = new GeoPoTNumRotorsSequence();
 
             foreach (var rotor in _rotorsList)
                 rotorsSequence.PrependRotor(rotor.Reverse());
@@ -344,7 +344,7 @@ namespace GAPoTNumLib.GAPoT
             return rotorsSequence;
         }
 
-        public IEnumerator<GaPoTNumMultivector> GetEnumerator()
+        public IEnumerator<GeoPoTNumMultivector> GetEnumerator()
         {
             return _rotorsList.GetEnumerator();
         }

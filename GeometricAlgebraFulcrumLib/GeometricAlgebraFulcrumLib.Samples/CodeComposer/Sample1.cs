@@ -2,7 +2,8 @@
 using DataStructuresLib.BitManipulation;
 using GeometricAlgebraFulcrumLib.CodeComposer.Composers;
 using GeometricAlgebraFulcrumLib.CodeComposer.Languages;
-using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
+using GeometricAlgebraFulcrumLib.Processors.SymbolicAlgebra.Context;
+//using GeometricAlgebraFulcrumLib.Mathematica;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
@@ -29,7 +30,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.CodeComposer
 
             // Define a Euclidean multivectors processor for the context
             var processor = 
-                context.CreateGaEuclideanProcessor(n);
+                context.CreateGeometricAlgebraEuclideanProcessor(n);
 
             // Stage 2: Define the input parameters of the context
             // The input parameters are named variables created as scalar parts of multivectors
@@ -63,7 +64,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.CodeComposer
             //var rotor = u.CreateRotationMatrixToVector(v, n);
 
             var xRotated = 
-                rotor.MapVector(x);
+                rotor.OmMapVector(x);
 
             // Define the final outputs for the computations for proper code generation
             xRotated.SetIsOutput(true);
@@ -83,7 +84,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.CodeComposer
             // Define code generated variable names for intermediate variables
             context.SetIntermediateExternalNamesByNameIndex(index => $"temp{index}");
 
-            // Stage 6: Define a C# code composer
+            // Stage 6: Define a C# code composer with Wolfram Mathematica expressions converter
             var contextCodeComposer = context.CreateContextCodeComposer(
                 GaFuLLanguageServerBase.CSharp()
             );

@@ -1,24 +1,24 @@
 ﻿using System.Collections.Generic;
 using DataStructuresLib.BitManipulation;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Space;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
+using GeometricAlgebraFulcrumLib.Algebra.SymbolicAlgebra;
 using GeometricAlgebraFulcrumLib.CodeComposer.Composers;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors;
-using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions;
+using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
 using TextComposerLib.Text.Linear;
 
 namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVectorsLib
 {
     public abstract class GaFuLLibraryFileComposerBase : 
-        GaFuLCodePartFileComposerBase, IGaSpace
+        GaFuLCodePartFileComposerBase, IGeometricAlgebraSpace
     {
-        internal IGaProcessor<ISymbolicExpressionAtomic> Processor 
-            => DenseKVectorsLibraryComposer.Processor;
+        internal IGeometricAlgebraProcessor<ISymbolicExpressionAtomic> GeometricProcessor 
+            => DenseKVectorsLibraryComposer.GeometricProcessor;
 
-        internal IGaProcessor<ISymbolicExpressionAtomic> EuclideanProcessor 
+        internal IGeometricAlgebraProcessor<ISymbolicExpressionAtomic> EuclideanProcessor 
             => DenseKVectorsLibraryComposer.EuclideanProcessor;
 
         public uint VSpaceDimension 
-            => Processor.VSpaceDimension;
+            => GeometricProcessor.VSpaceDimension;
 
         public ulong GaSpaceDimension 
             => 1UL << (int) VSpaceDimension;

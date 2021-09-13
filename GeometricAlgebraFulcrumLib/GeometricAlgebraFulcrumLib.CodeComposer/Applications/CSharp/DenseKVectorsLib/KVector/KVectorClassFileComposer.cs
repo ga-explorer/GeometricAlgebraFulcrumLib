@@ -22,7 +22,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             TextComposer.Append(
                 Templates["kvector"],
                 "signature", CurrentNamespace,
-                "double", GaLanguage.ScalarTypeName,
+                "double", GeoLanguage.ScalarTypeName,
                 "norm2_opname", GaFuLLanguageOperationKind.UnaryNormSquared.CreateEuclideanOperationSpecs().GetName()
             );
 

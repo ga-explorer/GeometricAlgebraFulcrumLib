@@ -2,108 +2,107 @@
 using System.Diagnostics;
 using System.Text;
 using EuclideanGeometryLib.BasicMath.Tuples;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors;
-using GeometricAlgebraFulcrumLib.Processing.Scalars;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
+using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
+using GeometricAlgebraFulcrumLib.Processors.LinearAlgebra;
+using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 
 namespace GeometricAlgebraFulcrumLib.Geometry.Graphics.Space3D
 {
-    public sealed record GaEuclideanPoint3D : 
+    public sealed record GeoEuclideanPoint3D : 
         ITuple3D,
-        IGaGeometry<double>
+        IGeometricAlgebraElement<double>
     {
-        public static GaEuclideanVector3D operator -(GaEuclideanPoint3D p1)
+        public static GeoEuclideanVector3D operator -(GeoEuclideanPoint3D p1)
         {
-            return new GaEuclideanVector3D(-p1.X, -p1.Y, -p1.Z);
+            return new GeoEuclideanVector3D(-p1.X, -p1.Y, -p1.Z);
         }
 
-        public static GaEuclideanPoint3D operator +(GaEuclideanPoint3D p1, GaEuclideanVector3D v2)
+        public static GeoEuclideanPoint3D operator +(GeoEuclideanPoint3D p1, GeoEuclideanVector3D v2)
         {
-            return new GaEuclideanPoint3D(
+            return new GeoEuclideanPoint3D(
                 p1.X + v2.X,
                 p1.Y + v2.Y,
                 p1.Z + v2.Z
             );
         }
 
-        public static GaEuclideanPoint3D operator +(GaEuclideanPoint3D p1, GaEuclideanPoint3D p2)
+        public static GeoEuclideanPoint3D operator +(GeoEuclideanPoint3D p1, GeoEuclideanPoint3D p2)
         {
-            return new GaEuclideanPoint3D(
+            return new GeoEuclideanPoint3D(
                 p1.X + p2.X,
                 p1.Y + p2.Y,
                 p1.Z + p2.Z
             );
         }
 
-        public static GaEuclideanPoint3D operator -(GaEuclideanPoint3D p1, GaEuclideanVector3D v2)
+        public static GeoEuclideanPoint3D operator -(GeoEuclideanPoint3D p1, GeoEuclideanVector3D v2)
         {
-            return new GaEuclideanPoint3D(
+            return new GeoEuclideanPoint3D(
                 p1.X - v2.X,
                 p1.Y - v2.Y,
                 p1.Z - v2.Z
             );
         }
 
-        public static GaEuclideanVector3D operator -(GaEuclideanPoint3D p1, GaEuclideanPoint3D p2)
+        public static GeoEuclideanVector3D operator -(GeoEuclideanPoint3D p1, GeoEuclideanPoint3D p2)
         {
-            return new GaEuclideanVector3D(
+            return new GeoEuclideanVector3D(
                 p1.X - p2.X,
                 p1.Y - p2.Y,
                 p1.Z - p2.Z
             );
         }
 
-        public static GaEuclideanPoint3D operator *(double s1, GaEuclideanPoint3D p2)
+        public static GeoEuclideanPoint3D operator *(double s1, GeoEuclideanPoint3D p2)
         {
-            return new GaEuclideanPoint3D(
+            return new GeoEuclideanPoint3D(
                 s1 * p2.X,
                 s1 * p2.Y,
                 s1 * p2.Z
             );
         }
 
-        public static GaEuclideanPoint3D operator *(GaEuclideanPoint3D p1, double s2)
+        public static GeoEuclideanPoint3D operator *(GeoEuclideanPoint3D p1, double s2)
         {
-            return new GaEuclideanPoint3D(
+            return new GeoEuclideanPoint3D(
                 p1.X * s2,
                 p1.Y * s2,
                 p1.Z * s2
             );
         }
 
-        public static GaEuclideanPoint3D operator /(GaEuclideanPoint3D p1, double s2)
+        public static GeoEuclideanPoint3D operator /(GeoEuclideanPoint3D p1, double s2)
         {
             s2 = 1d / s2;
 
-            return new GaEuclideanPoint3D(
+            return new GeoEuclideanPoint3D(
                 p1.X * s2,
                 p1.Y * s2,
                 p1.Z * s2
             );
         }
 
-        //public static bool operator ==(GaEuclideanPoint3D v1, GaEuclideanPoint3D v2)
+        //public static bool operator ==(GeoEuclideanPoint3D v1, GeoEuclideanPoint3D v2)
         //{
         //    return v1.Equals(v2);
         //}
 
-        //public static bool operator !=(GaEuclideanPoint3D v1, GaEuclideanPoint3D v2)
+        //public static bool operator !=(GeoEuclideanPoint3D v1, GeoEuclideanPoint3D v2)
         //{
         //    return !v1.Equals(v2);
         //}
 
 
-        public uint VSpaceDimension 
-            => 3;
+        public IScalarAlgebraProcessor<double> ScalarProcessor 
+            => ScalarAlgebraFloat64Processor.DefaultProcessor;
 
-        public ulong GaSpaceDimension
-            => 8;
+        public ILinearAlgebraProcessor<double> LinearProcessor 
+            => GeometricProcessor;
 
-        public IGaProcessor<double> Processor 
-            => GaEuclideanSpace3DUtils.Processor;
-
-        public IScalarProcessor<double> ScalarProcessor 
-            => Float64ScalarProcessor.DefaultProcessor;
+        public IGeometricAlgebraProcessor<double> GeometricProcessor 
+            => GeometricAlgebraEuclideanSpace3DUtils.GeometricProcessor;
 
         public double X { get; }
 
@@ -128,7 +127,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Graphics.Space3D
                double.IsNaN(Z);
 
 
-        public GaEuclideanPoint3D(double x, double y, double z)
+        public GeoEuclideanPoint3D(double x, double y, double z)
         {
             X = x;
             Y = y;
@@ -138,7 +137,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Graphics.Space3D
         }
 
 
-        public double GetDistance(GaEuclideanPoint3D p2)
+        public double GetDistance(GeoEuclideanPoint3D p2)
         {
             var x = X - p2.X;
             var y = Y - p2.Y;
@@ -147,7 +146,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Graphics.Space3D
             return Math.Sqrt(x * x + y * y + z * z);
         }
 
-        public double GetDistanceSquared(GaEuclideanPoint3D p2)
+        public double GetDistanceSquared(GeoEuclideanPoint3D p2)
         {
             var x = X - p2.X;
             var y = Y - p2.Y;
@@ -156,12 +155,12 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Graphics.Space3D
             return x * x + y * y + z * z;
         }
 
-        public GaEuclideanVector3D AsVector()
+        public GeoEuclideanVector3D AsVector()
         {
-            return new GaEuclideanVector3D(X, Y, Z);
+            return new GeoEuclideanVector3D(X, Y, Z);
         }
         
-        //public bool Equals(GaEuclideanPoint3D? other)
+        //public bool Equals(GeoEuclideanPoint3D? other)
         //{
         //    return other.HasValue && Equals(other.Value);
         //}
@@ -171,10 +170,10 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Graphics.Space3D
         //    if (ReferenceEquals(obj, null))
         //        return false;
 
-        //    return obj is GaEuclideanPoint3D other && Equals(other);
+        //    return obj is GeoEuclideanPoint3D other && Equals(other);
         //}
 
-        //public bool Equals(GaEuclideanPoint3D other)
+        //public bool Equals(GeoEuclideanPoint3D other)
         //{
         //    return X.Equals(other.X) && Y.Equals(other.Y) && Z.Equals(other.Z);
         //}

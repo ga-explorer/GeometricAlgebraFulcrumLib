@@ -1,6 +1,6 @@
 ﻿namespace GAPoTNumLib.GAPoT
 {
-    public enum GaPoTNumLaTeXComposerBasisFormat
+    public enum GeoPoTNumLaTeXComposerBasisFormat
     {
         CommaSeparated,
         Concatenated,

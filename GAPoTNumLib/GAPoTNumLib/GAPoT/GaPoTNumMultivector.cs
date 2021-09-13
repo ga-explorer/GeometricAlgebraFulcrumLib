@@ -9,29 +9,29 @@ using GAPoTNumLib.Text;
 
 namespace GAPoTNumLib.GAPoT
 {
-    public sealed class GaPoTNumMultivector : IEnumerable<GaPoTNumMultivectorTerm>
+    public sealed class GeoPoTNumMultivector : IEnumerable<GeoPoTNumMultivectorTerm>
     {
-        public static GaPoTNumMultivector CreateZero()
+        public static GeoPoTNumMultivector CreateZero()
         {
-            return new GaPoTNumMultivector();
+            return new GeoPoTNumMultivector();
         }
         
-        public static GaPoTNumMultivector CreateOne()
+        public static GeoPoTNumMultivector CreateOne()
         {
-            return new GaPoTNumMultivector(new []
+            return new GeoPoTNumMultivector(new []
             {
-                new GaPoTNumMultivectorTerm(0, 1.0d)
+                new GeoPoTNumMultivectorTerm(0, 1.0d)
             });
         }
         
-        public static GaPoTNumMultivector CreateSimpleRotor(GaPoTNumVector sourceVector, GaPoTNumVector targetVector)
+        public static GeoPoTNumMultivector CreateSimpleRotor(GeoPoTNumVector sourceVector, GeoPoTNumVector targetVector)
         {
             var invNorm1 = 1.0d / sourceVector.Norm();
             var invNorm2 = 1.0d / targetVector.Norm();
             var cosAngle = sourceVector.DotProduct(targetVector) * invNorm1 * invNorm2;
 
             if (cosAngle == 1.0d)
-                return new GaPoTNumMultivector().SetTerm(0, 1.0d);
+                return new GeoPoTNumMultivector().SetTerm(0, 1.0d);
             
             //TODO: Handle the case for cosAngle == -1
             
@@ -64,7 +64,7 @@ namespace GAPoTNumLib.GAPoT
         /// <param name="rotationAngle"></param>
         /// <param name="rotationBlade"></param>
         /// <returns></returns>
-        public static GaPoTNumMultivector CreateSimpleRotor(double rotationAngle, GaPoTNumMultivector rotationBlade)
+        public static GeoPoTNumMultivector CreateSimpleRotor(double rotationAngle, GeoPoTNumMultivector rotationBlade)
         {
             var cosHalfAngle = Math.Cos(rotationAngle / 2.0d);
             var sinHalfAngle = Math.Sin(rotationAngle / 2.0d);
@@ -81,24 +81,24 @@ namespace GAPoTNumLib.GAPoT
             return rotor;
         }
 
-        public static GaPoTNumMultivector CreateSimpleRotor(GaPoTNumVector inputVector1, GaPoTNumVector inputVector2, GaPoTNumVector rotatedVector1, GaPoTNumVector rotatedVector2)
+        public static GeoPoTNumMultivector CreateSimpleRotor(GeoPoTNumVector inputVector1, GeoPoTNumVector inputVector2, GeoPoTNumVector rotatedVector1, GeoPoTNumVector rotatedVector2)
         {
-            var inputFrame = GaPoTNumFrame.Create(inputVector1, inputVector2);
-            var rotatedFrame = GaPoTNumFrame.Create(rotatedVector1, rotatedVector2);
+            var inputFrame = GeoPoTNumFrame.Create(inputVector1, inputVector2);
+            var rotatedFrame = GeoPoTNumFrame.Create(rotatedVector1, rotatedVector2);
 
-            return GaPoTNumRotorsSequence.CreateFromOrthonormalFrames(
+            return GeoPoTNumRotorsSequence.CreateFromOrthonormalFrames(
                 inputFrame, 
                 rotatedFrame, 
                 true
             ).GetFinalRotor();
         }
         
-        public static GaPoTNumMultivector CreateSimpleRotor(int baseSpaceDimensions, GaPoTNumVector inputVector1, GaPoTNumVector inputVector2, GaPoTNumVector rotatedVector1, GaPoTNumVector rotatedVector2)
+        public static GeoPoTNumMultivector CreateSimpleRotor(int baseSpaceDimensions, GeoPoTNumVector inputVector1, GeoPoTNumVector inputVector2, GeoPoTNumVector rotatedVector1, GeoPoTNumVector rotatedVector2)
         {
-            var inputFrame = GaPoTNumFrame.Create(inputVector1, inputVector2);
-            var rotatedFrame = GaPoTNumFrame.Create(rotatedVector1, rotatedVector2);
+            var inputFrame = GeoPoTNumFrame.Create(inputVector1, inputVector2);
+            var rotatedFrame = GeoPoTNumFrame.Create(rotatedVector1, rotatedVector2);
 
-            return GaPoTNumRotorsSequence.CreateFromFrames(
+            return GeoPoTNumRotorsSequence.CreateFromFrames(
                 baseSpaceDimensions, 
                 inputFrame, 
                 rotatedFrame
@@ -113,7 +113,7 @@ namespace GAPoTNumLib.GAPoT
         /// <param name="j"></param>
         /// <param name="angle"></param>
         /// <returns></returns>
-        public static GaPoTNumMultivector CreateGivensRotor(int i, int j, double angle)
+        public static GeoPoTNumMultivector CreateGivensRotor(int i, int j, double angle)
         {
             Debug.Assert(i > 0 && j > i);
 
@@ -122,15 +122,15 @@ namespace GAPoTNumLib.GAPoT
 
             var bladeId = (1 << (i - 1)) | (1 << (j - 1));
 
-            return new GaPoTNumMultivector()
+            return new GeoPoTNumMultivector()
                 .AddTerm(0, cosHalfAngle)
                 .AddTerm(bladeId, sinHalfAngle);
         }
 
         
-        public static GaPoTNumMultivector operator -(GaPoTNumMultivector v)
+        public static GeoPoTNumMultivector operator -(GeoPoTNumMultivector v)
         {
-            var result = new GaPoTNumMultivector();
+            var result = new GeoPoTNumMultivector();
 
             foreach (var term in v._termsDictionary.Values)
                 result.AddTerm(term.IDsPattern, -term.Value);
@@ -138,9 +138,9 @@ namespace GAPoTNumLib.GAPoT
             return result;
         }
 
-        public static GaPoTNumMultivector operator +(GaPoTNumMultivector v1, GaPoTNumMultivector v2)
+        public static GeoPoTNumMultivector operator +(GeoPoTNumMultivector v1, GeoPoTNumMultivector v2)
         {
-            var result = new GaPoTNumMultivector();
+            var result = new GeoPoTNumMultivector();
 
             foreach (var term in v1._termsDictionary.Values)
                 result.AddTerm(
@@ -157,9 +157,9 @@ namespace GAPoTNumLib.GAPoT
             return result;
         }
 
-        public static GaPoTNumMultivector operator +(GaPoTNumMultivector v1, double v2)
+        public static GeoPoTNumMultivector operator +(GeoPoTNumMultivector v1, double v2)
         {
-            var result = new GaPoTNumMultivector();
+            var result = new GeoPoTNumMultivector();
 
             foreach (var term in v1._termsDictionary.Values)
                 result.AddTerm(
@@ -172,9 +172,9 @@ namespace GAPoTNumLib.GAPoT
             return result;
         }
 
-        public static GaPoTNumMultivector operator +(double v2, GaPoTNumMultivector v1)
+        public static GeoPoTNumMultivector operator +(double v2, GeoPoTNumMultivector v1)
         {
-            var result = new GaPoTNumMultivector();
+            var result = new GeoPoTNumMultivector();
 
             foreach (var term in v1._termsDictionary.Values)
                 result.AddTerm(
@@ -187,9 +187,9 @@ namespace GAPoTNumLib.GAPoT
             return result;
         }
 
-        public static GaPoTNumMultivector operator -(GaPoTNumMultivector v1, GaPoTNumMultivector v2)
+        public static GeoPoTNumMultivector operator -(GeoPoTNumMultivector v1, GeoPoTNumMultivector v2)
         {
-            var result = new GaPoTNumMultivector();
+            var result = new GeoPoTNumMultivector();
 
             foreach (var term in v1._termsDictionary.Values)
                 result.AddTerm(
@@ -206,9 +206,9 @@ namespace GAPoTNumLib.GAPoT
             return result;
         }
 
-        public static GaPoTNumMultivector operator -(GaPoTNumMultivector v1, double v2)
+        public static GeoPoTNumMultivector operator -(GeoPoTNumMultivector v1, double v2)
         {
-            var result = new GaPoTNumMultivector();
+            var result = new GeoPoTNumMultivector();
 
             foreach (var term in v1._termsDictionary.Values)
                 result.AddTerm(
@@ -221,9 +221,9 @@ namespace GAPoTNumLib.GAPoT
             return result;
         }
 
-        public static GaPoTNumMultivector operator -(double v1, GaPoTNumMultivector v2)
+        public static GeoPoTNumMultivector operator -(double v1, GeoPoTNumMultivector v2)
         {
-            var result = new GaPoTNumMultivector();
+            var result = new GeoPoTNumMultivector();
 
             result.AddTerm(0, v1);
 
@@ -236,9 +236,9 @@ namespace GAPoTNumLib.GAPoT
             return result;
         }
         
-        public static GaPoTNumMultivector operator *(GaPoTNumMultivector v1, GaPoTNumMultivector v2)
+        public static GeoPoTNumMultivector operator *(GeoPoTNumMultivector v1, GeoPoTNumMultivector v2)
         {
-            var result = new GaPoTNumMultivector();
+            var result = new GeoPoTNumMultivector();
 
             foreach (var term1 in v1._termsDictionary.Values)
             foreach (var term2 in v2._termsDictionary.Values)
@@ -252,9 +252,9 @@ namespace GAPoTNumLib.GAPoT
             return result;
         }
         
-        public static GaPoTNumMultivector operator *(GaPoTNumMultivector v, double s)
+        public static GeoPoTNumMultivector operator *(GeoPoTNumMultivector v, double s)
         {
-            var result = new GaPoTNumMultivector();
+            var result = new GeoPoTNumMultivector();
 
             foreach (var term in v._termsDictionary.Values)
                 result.AddTerm(
@@ -265,9 +265,9 @@ namespace GAPoTNumLib.GAPoT
             return result;
         }
 
-        public static GaPoTNumMultivector operator *(double s, GaPoTNumMultivector v)
+        public static GeoPoTNumMultivector operator *(double s, GeoPoTNumMultivector v)
         {
-            var result = new GaPoTNumMultivector();
+            var result = new GeoPoTNumMultivector();
 
             foreach (var term in v._termsDictionary.Values)
                 result.AddTerm(
@@ -278,16 +278,16 @@ namespace GAPoTNumLib.GAPoT
             return result;
         }
         
-        public static GaPoTNumMultivector operator /(GaPoTNumMultivector v1, GaPoTNumMultivector v2)
+        public static GeoPoTNumMultivector operator /(GeoPoTNumMultivector v1, GeoPoTNumMultivector v2)
         {
             return v1 * v2.Inverse();
         }
 
-        public static GaPoTNumMultivector operator /(GaPoTNumMultivector v, double s)
+        public static GeoPoTNumMultivector operator /(GeoPoTNumMultivector v, double s)
         {
             s = 1.0d / s;
             
-            var result = new GaPoTNumMultivector();
+            var result = new GeoPoTNumMultivector();
 
             foreach (var term in v._termsDictionary.Values)
                 result.AddTerm(
@@ -298,32 +298,32 @@ namespace GAPoTNumLib.GAPoT
             return result;
         }
 
-        public static GaPoTNumMultivector operator /(double s, GaPoTNumMultivector v)
+        public static GeoPoTNumMultivector operator /(double s, GeoPoTNumMultivector v)
         {
             return s * v.Inverse();
         }
 
         
-        private readonly Dictionary<int, GaPoTNumMultivectorTerm> _termsDictionary
-            = new Dictionary<int, GaPoTNumMultivectorTerm>();
+        private readonly Dictionary<int, GeoPoTNumMultivectorTerm> _termsDictionary
+            = new Dictionary<int, GeoPoTNumMultivectorTerm>();
 
 
         public int Count 
             => _termsDictionary.Count;
 
         
-        internal GaPoTNumMultivector()
+        internal GeoPoTNumMultivector()
         {
         }
 
-        internal GaPoTNumMultivector(IEnumerable<GaPoTNumMultivectorTerm> termsList)
+        internal GeoPoTNumMultivector(IEnumerable<GeoPoTNumMultivectorTerm> termsList)
         {
             foreach (var term in termsList)
                 AddTerm(term);
         }
 
 
-        public GaPoTNumMultivector SetToZero()
+        public GeoPoTNumMultivector SetToZero()
         {
             _termsDictionary.Clear();
 
@@ -355,45 +355,45 @@ namespace GAPoTNumLib.GAPoT
             return s.IsZero();
         }
 
-        public GaPoTNumMultivector SetTerm(int idsPattern, double value)
+        public GeoPoTNumMultivector SetTerm(int idsPattern, double value)
         {
             Debug.Assert(idsPattern >= 0);
 
             if (_termsDictionary.ContainsKey(idsPattern))
                 _termsDictionary[idsPattern].Value = value;
             else
-                _termsDictionary.Add(idsPattern, new GaPoTNumMultivectorTerm(idsPattern, value));
+                _termsDictionary.Add(idsPattern, new GeoPoTNumMultivectorTerm(idsPattern, value));
 
             return this;
         }
 
-        public GaPoTNumMultivector AddTerm(GaPoTNumMultivectorTerm term)
+        public GeoPoTNumMultivector AddTerm(GeoPoTNumMultivectorTerm term)
         {
             var idsPattern = term.IDsPattern;
 
             if (_termsDictionary.TryGetValue(idsPattern, out var oldTerm))
                 _termsDictionary[idsPattern] = 
-                    new GaPoTNumMultivectorTerm(idsPattern, oldTerm.Value + term.Value);
+                    new GeoPoTNumMultivectorTerm(idsPattern, oldTerm.Value + term.Value);
             else
-                _termsDictionary.Add(idsPattern, new GaPoTNumMultivectorTerm(idsPattern, term.Value));
+                _termsDictionary.Add(idsPattern, new GeoPoTNumMultivectorTerm(idsPattern, term.Value));
 
             return this;
         }
 
-        public GaPoTNumMultivector AddTerm(int idsPattern, double value)
+        public GeoPoTNumMultivector AddTerm(int idsPattern, double value)
         {
             Debug.Assert(idsPattern >= 0);
 
             if (_termsDictionary.TryGetValue(idsPattern, out var oldTerm))
                 _termsDictionary[idsPattern] = 
-                    new GaPoTNumMultivectorTerm(idsPattern, oldTerm.Value + value);
+                    new GeoPoTNumMultivectorTerm(idsPattern, oldTerm.Value + value);
             else
-                _termsDictionary.Add(idsPattern, new GaPoTNumMultivectorTerm(idsPattern, value));
+                _termsDictionary.Add(idsPattern, new GeoPoTNumMultivectorTerm(idsPattern, value));
 
             return this;
         }
 
-        public GaPoTNumMultivector AddTerms(IEnumerable<GaPoTNumMultivectorTerm> termsList)
+        public GeoPoTNumMultivector AddTerms(IEnumerable<GeoPoTNumMultivectorTerm> termsList)
         {
             foreach (var term in termsList)
                 AddTerm(term);
@@ -402,12 +402,12 @@ namespace GAPoTNumLib.GAPoT
         }
 
         
-        public IEnumerable<GaPoTNumMultivectorTerm> GetTerms()
+        public IEnumerable<GeoPoTNumMultivectorTerm> GetTerms()
         {
             return _termsDictionary.Values.Where(t => !t.Value.IsNearZero());
         }
 
-        public IEnumerable<GaPoTNumMultivectorTerm> GetGradeOrderedTerms()
+        public IEnumerable<GeoPoTNumMultivectorTerm> GetGradeOrderedTerms()
         {
             var bitsCount = _termsDictionary.Keys.Max().LastOneBitPosition() + 1;
 
@@ -421,12 +421,12 @@ namespace GAPoTNumLib.GAPoT
                 .ThenByDescending(t => t.IDsPattern.ReverseBits(bitsCount));
         }
 
-        public IEnumerable<GaPoTNumMultivectorTerm> GetNonZeroTerms()
+        public IEnumerable<GeoPoTNumMultivectorTerm> GetNonZeroTerms()
         {
             return _termsDictionary.Values.Where(t => !t.Value.IsNearZero());
         }
 
-        public IEnumerable<GaPoTNumMultivectorTerm> GetTermsOfGrade(int grade)
+        public IEnumerable<GeoPoTNumMultivectorTerm> GetTermsOfGrade(int grade)
         {
             Debug.Assert(grade >= 0);
             
@@ -447,35 +447,35 @@ namespace GAPoTNumLib.GAPoT
             return GetTermValue(0);
         }
 
-        public GaPoTNumMultivectorTerm GetTerm(int idsPattern)
+        public GeoPoTNumMultivectorTerm GetTerm(int idsPattern)
         {
             var value = GetTermValue(idsPattern);
 
-            return new GaPoTNumMultivectorTerm(idsPattern, value);
+            return new GeoPoTNumMultivectorTerm(idsPattern, value);
         }
 
-        public GaPoTNumMultivector GetKVectorPart(int grade)
+        public GeoPoTNumMultivector GetKVectorPart(int grade)
         {
-            return new GaPoTNumMultivector(
+            return new GeoPoTNumMultivector(
                 _termsDictionary.Values.Where(t => t.GetGrade() == grade)
             );
         }
 
-        public GaPoTNumVector GetVectorPart()
+        public GeoPoTNumVector GetVectorPart()
         {
-            return new GaPoTNumVector(
+            return new GeoPoTNumVector(
                 GetTermsOfGrade(1).Select(t => t.ToVectorTerm())
             );
         }
 
-        public GaPoTNumBiversor GetBiversorPart()
+        public GeoPoTNumBiversor GetBiversorPart()
         {
-            var biversor = new GaPoTNumBiversor();
+            var biversor = new GeoPoTNumBiversor();
 
             var scalarValue = GetTermValue(0);
 
             if (scalarValue != 0.0d)
-                biversor.AddTerm(new GaPoTNumBiversorTerm(scalarValue));
+                biversor.AddTerm(new GeoPoTNumBiversorTerm(scalarValue));
 
             biversor.AddTerms(
                 GetTermsOfGrade(2).Select(t => t.ToBiversorTerm())
@@ -488,21 +488,21 @@ namespace GAPoTNumLib.GAPoT
         /// Assuming this multivector is a simple rotor, this extracts its angle and 2-blade of rotation
         /// </summary>
         /// <returns></returns>
-        public Tuple<double, GaPoTNumMultivector> GetSimpleRotorAngleBlade()
+        public Tuple<double, GeoPoTNumMultivector> GetSimpleRotorAngleBlade()
         {
             var scalarPart = GetTermValue(0);
-            var bivectorPart = new GaPoTNumMultivector(GetTermsOfGrade(2));
+            var bivectorPart = new GeoPoTNumMultivector(GetTermsOfGrade(2));
 
             var halfAngle = Math.Acos(scalarPart);
             var angle = 2.0d * halfAngle;
             var blade = bivectorPart / Math.Sin(halfAngle);
 
-            return new Tuple<double, GaPoTNumMultivector>(angle, blade);
+            return new Tuple<double, GeoPoTNumMultivector>(angle, blade);
         }
 
-        public GaPoTNumMultivector Op(GaPoTNumMultivector mv2)
+        public GeoPoTNumMultivector Op(GeoPoTNumMultivector mv2)
         {
-            var result = new GaPoTNumMultivector();
+            var result = new GeoPoTNumMultivector();
 
             foreach (var term1 in _termsDictionary.Values)
             foreach (var term2 in mv2._termsDictionary.Values)
@@ -516,14 +516,14 @@ namespace GAPoTNumLib.GAPoT
             return result;
         }
         
-        public GaPoTNumMultivector Op(GaPoTNumVector v)
+        public GeoPoTNumMultivector Op(GeoPoTNumVector v)
         {
             return Op(v.ToMultivector());
         }
 
-        public GaPoTNumMultivector Sp(GaPoTNumMultivector mv2)
+        public GeoPoTNumMultivector Sp(GeoPoTNumMultivector mv2)
         {
-            var result = new GaPoTNumMultivector();
+            var result = new GeoPoTNumMultivector();
 
             foreach (var term1 in _termsDictionary.Values)
             {
@@ -535,18 +535,18 @@ namespace GAPoTNumLib.GAPoT
                 if (value == 0)
                     continue;
                     
-                if (GaPoTNumUtils.ComputeIsNegativeEGp(term1.IDsPattern, term2.IDsPattern))
+                if (GeoPoTNumUtils.ComputeIsNegativeEGp(term1.IDsPattern, term2.IDsPattern))
                     value = -value;
 
-                result.AddTerm(new GaPoTNumMultivectorTerm(0, value));
+                result.AddTerm(new GeoPoTNumMultivectorTerm(0, value));
             }
 
             return result;
         }
 
-        public GaPoTNumMultivector Lcp(GaPoTNumMultivector mv2)
+        public GeoPoTNumMultivector Lcp(GeoPoTNumMultivector mv2)
         {
-            var result = new GaPoTNumMultivector();
+            var result = new GeoPoTNumMultivector();
 
             foreach (var term1 in _termsDictionary.Values)
             foreach (var term2 in mv2._termsDictionary.Values)
@@ -560,9 +560,9 @@ namespace GAPoTNumLib.GAPoT
             return result;
         }
 
-        public GaPoTNumMultivector Rcp(GaPoTNumMultivector mv2)
+        public GeoPoTNumMultivector Rcp(GeoPoTNumMultivector mv2)
         {
-            var result = new GaPoTNumMultivector();
+            var result = new GeoPoTNumMultivector();
 
             foreach (var term1 in _termsDictionary.Values)
             foreach (var term2 in mv2._termsDictionary.Values)
@@ -576,9 +576,9 @@ namespace GAPoTNumLib.GAPoT
             return result;
         }
 
-        public GaPoTNumMultivector Fdp(GaPoTNumMultivector mv2)
+        public GeoPoTNumMultivector Fdp(GeoPoTNumMultivector mv2)
         {
-            var result = new GaPoTNumMultivector();
+            var result = new GeoPoTNumMultivector();
 
             foreach (var term1 in _termsDictionary.Values)
             foreach (var term2 in mv2._termsDictionary.Values)
@@ -592,9 +592,9 @@ namespace GAPoTNumLib.GAPoT
             return result;
         }
 
-        public GaPoTNumMultivector Hip(GaPoTNumMultivector mv2)
+        public GeoPoTNumMultivector Hip(GeoPoTNumMultivector mv2)
         {
-            var result = new GaPoTNumMultivector();
+            var result = new GeoPoTNumMultivector();
 
             foreach (var term1 in _termsDictionary.Values)
             foreach (var term2 in mv2._termsDictionary.Values)
@@ -608,9 +608,9 @@ namespace GAPoTNumLib.GAPoT
             return result;
         }
 
-        public GaPoTNumMultivector Acp(GaPoTNumMultivector mv2)
+        public GeoPoTNumMultivector Acp(GeoPoTNumMultivector mv2)
         {
-            var result = new GaPoTNumMultivector();
+            var result = new GeoPoTNumMultivector();
 
             foreach (var term1 in _termsDictionary.Values)
             foreach (var term2 in mv2._termsDictionary.Values)
@@ -624,9 +624,9 @@ namespace GAPoTNumLib.GAPoT
             return result;
         }
 
-        public GaPoTNumMultivector Cp(GaPoTNumMultivector mv2)
+        public GeoPoTNumMultivector Cp(GeoPoTNumMultivector mv2)
         {
-            var result = new GaPoTNumMultivector();
+            var result = new GeoPoTNumMultivector();
 
             foreach (var term1 in _termsDictionary.Values)
             foreach (var term2 in mv2._termsDictionary.Values)
@@ -640,9 +640,9 @@ namespace GAPoTNumLib.GAPoT
             return result;
         }
 
-        public GaPoTNumMultivector Gp(GaPoTNumMultivector mv2)
+        public GeoPoTNumMultivector Gp(GeoPoTNumMultivector mv2)
         {
-            var result = new GaPoTNumMultivector();
+            var result = new GeoPoTNumMultivector();
 
             foreach (var term1 in _termsDictionary.Values)
             foreach (var term2 in mv2._termsDictionary.Values)
@@ -656,71 +656,71 @@ namespace GAPoTNumLib.GAPoT
             return result;
         }
 
-        public GaPoTNumMultivector Add(GaPoTNumMultivector v)
+        public GeoPoTNumMultivector Add(GeoPoTNumMultivector v)
         {
             return this + v;
         }
 
-        public GaPoTNumMultivector Subtract(GaPoTNumMultivector v)
+        public GeoPoTNumMultivector Subtract(GeoPoTNumMultivector v)
         {
             return this - v;
         }
 
-        public GaPoTNumMultivector Negative()
+        public GeoPoTNumMultivector Negative()
         {
             return -this;
         }
 
-        public GaPoTNumMultivector ScaleBy(double s)
+        public GeoPoTNumMultivector ScaleBy(double s)
         {
             return s * this;
         }
 
-        public GaPoTNumMultivector MapScalars(Func<double, double> mappingFunc)
+        public GeoPoTNumMultivector MapScalars(Func<double, double> mappingFunc)
         {
-            return new GaPoTNumMultivector(
+            return new GeoPoTNumMultivector(
                 _termsDictionary.Values.Select(
-                    t => new GaPoTNumMultivectorTerm(t.IDsPattern, mappingFunc(t.Value))
+                    t => new GeoPoTNumMultivectorTerm(t.IDsPattern, mappingFunc(t.Value))
                 )
             );
         }
 
-        public GaPoTNumMultivector Reverse()
+        public GeoPoTNumMultivector Reverse()
         {
-            return new GaPoTNumMultivector(
+            return new GeoPoTNumMultivector(
                 _termsDictionary.Values.Select(t => t.Reverse())
             );
         }
 
-        public GaPoTNumMultivector GradeInvolution()
+        public GeoPoTNumMultivector GradeInvolution()
         {
-            return new GaPoTNumMultivector(
+            return new GeoPoTNumMultivector(
                 _termsDictionary.Values.Select(t => t.GradeInvolution())
             );
         }
 
-        public GaPoTNumMultivector CliffordConjugate()
+        public GeoPoTNumMultivector CliffordConjugate()
         {
-            return new GaPoTNumMultivector(
+            return new GeoPoTNumMultivector(
                 _termsDictionary.Values.Select(t => t.CliffordConjugate())
             );
         }
 
-        public GaPoTNumMultivector ScaledReverse(double s)
+        public GeoPoTNumMultivector ScaledReverse(double s)
         {
-            return new GaPoTNumMultivector(
+            return new GeoPoTNumMultivector(
                 _termsDictionary.Values.Select(t => t.ScaledReverse(s))
             );
         }
 
-        public GaPoTNumMultivector OrthogonalComplement(GaPoTNumMultivector blade)
+        public GeoPoTNumMultivector OrthogonalComplement(GeoPoTNumMultivector blade)
         {
             return Gp(blade.Inverse());
         }
 
-        public GaPoTNumMultivector Round(int places)
+        public GeoPoTNumMultivector Round(int places)
         {
-            return new GaPoTNumMultivector(
+            return new GeoPoTNumMultivector(
                 _termsDictionary.Values.Select(t => t.Round(places)).Where(t => !t.Value.IsNearZero())
             );
         }
@@ -737,15 +737,15 @@ namespace GAPoTNumLib.GAPoT
                 .Sum(term => term.Value * term.Value);
         }
 
-        public GaPoTNumMultivector Inverse()
+        public GeoPoTNumMultivector Inverse()
         {
             var norm2 = 0.0d;
-            var termsArray = new GaPoTNumMultivectorTerm[_termsDictionary.Count];
+            var termsArray = new GeoPoTNumMultivectorTerm[_termsDictionary.Count];
 
             var i = 0;
             foreach (var term in _termsDictionary.Values)
             {
-                termsArray[i] = new GaPoTNumMultivectorTerm(
+                termsArray[i] = new GeoPoTNumMultivectorTerm(
                     term.IDsPattern,
                     term.IDsPattern.BasisBladeHasNegativeReverse()
                         ? -term.Value 
@@ -762,20 +762,20 @@ namespace GAPoTNumLib.GAPoT
             foreach (var term in termsArray)
                 term.Value *= invNorm2;
             
-            return new GaPoTNumMultivector(termsArray);
+            return new GeoPoTNumMultivector(termsArray);
         }
 
-        public GaPoTNumMultivector DivideByNorm()
+        public GeoPoTNumMultivector DivideByNorm()
         {
             return this / Norm();
         }
 
-        public GaPoTNumMultivector DivideByNorm2()
+        public GeoPoTNumMultivector DivideByNorm2()
         {
             return this / Norm2();
         }
 
-        public GaPoTNumMultivector ApplyRotor(GaPoTNumMultivector rotor)
+        public GeoPoTNumMultivector ApplyRotor(GeoPoTNumMultivector rotor)
         {
             var r1 = rotor;
             var r2 = rotor.Reverse();
@@ -855,7 +855,7 @@ namespace GAPoTNumLib.GAPoT
             return TermsToText();
         }
 
-        public IEnumerator<GaPoTNumMultivectorTerm> GetEnumerator()
+        public IEnumerator<GeoPoTNumMultivectorTerm> GetEnumerator()
         {
             return _termsDictionary.Values.GetEnumerator();
         }

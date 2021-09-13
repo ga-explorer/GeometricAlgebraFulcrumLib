@@ -1,42 +1,40 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Space;
-using GeometricAlgebraFulcrumLib.Algebra.Outermorphisms;
-using GeometricAlgebraFulcrumLib.Processing.Matrices;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean;
-using GeometricAlgebraFulcrumLib.Storage.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.LinearMaps;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms;
+using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
+using GeometricAlgebraFulcrumLib.Processors.LinearAlgebra;
+using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra.Multivectors;
+using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices;
+using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded;
+using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using GeometricAlgebraFulcrumLib.Utilities.Factories;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 
 namespace GeometricAlgebraFulcrumLib.Geometry.Versors
 {
-    public sealed class GaHouseholderVersor<T> 
-        : IGaVersor<T>
+    public sealed class GeoHouseholderVersor<T> 
+        : IGeoVersor<T>
     {
-        public static GaHouseholderVersor<T> Create(IGaProcessor<T> processor, IGaVectorStorage<T> unitVectorStorage)
+        private readonly KVectorStorage<T> _mappedPseudoScalar;
+
+        public static GeoHouseholderVersor<T> Create(IGeometricAlgebraProcessor<T> processor, VectorStorage<T> unitVectorStorage)
         {
-            return new GaHouseholderVersor<T>(processor, unitVectorStorage);
+            return new GeoHouseholderVersor<T>(processor, unitVectorStorage);
         }
 
 
-        public IGaSpace Space 
-            => Processor;
+        public IScalarAlgebraProcessor<T> ScalarProcessor 
+            => GeometricProcessor;
 
-        public uint VSpaceDimension 
-            => Processor.VSpaceDimension;
+        public ILinearAlgebraProcessor<T> LinearProcessor 
+            => GeometricProcessor;
 
-        public ulong GaSpaceDimension
-            => Processor.GaSpaceDimension;
+        public IGeometricAlgebraProcessor<T> GeometricProcessor { get; }
 
-        public ILaProcessor<T> ScalarsGridProcessor 
-            => Processor;
-
-        public IGaKVectorStorage<T> MappedPseudoScalar { get; }
-
-        public IGaProcessor<T> Processor { get; }
-
-        public IGaVectorStorage<T> UnitVectorStorage { get; }
+        public VectorStorage<T> UnitVectorStorage { get; }
 
         public bool IsValid
             => true;
@@ -45,122 +43,248 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Versors
             => false;
 
 
-        private GaHouseholderVersor([NotNull] IGaProcessor<T> processor, [NotNull] IGaVectorStorage<T> unitVectorStorage)
+        private GeoHouseholderVersor([NotNull] IGeometricAlgebraProcessor<T> processor, [NotNull] VectorStorage<T> unitVectorStorage)
         {
-            Processor = processor;
+            GeometricProcessor = processor;
             UnitVectorStorage = unitVectorStorage;
         }
-        
 
-        public IGaOutermorphism<T> GetAdjoint()
+
+        public IOutermorphism<T> GetAdjoint()
         {
             return this;
         }
 
-        public IGaVectorStorage<T> MapBasisVector(int index)
+        public VectorStorage<T> MapBasisVector(int index)
         {
-            return MapVector(
-                Processor.CreateGaVectorStorage(index)
+            return OmMapVector(
+                GeometricProcessor.CreateVectorBasisStorage(index)
             );
         }
 
-        public IReadOnlyList<IGaVectorStorage<T>> GetMappedBasisVectors()
+        public ILinMatrixGradedStorage<T> GetOmMappingMatrix()
         {
             throw new System.NotImplementedException();
         }
 
-        public IGaVectorStorage<T> MapBasisVector(ulong index)
+        public ILinMatrixGradedStorage<T> GetMultivectorOmMappingMatrix()
         {
-            return MapVector(
-                Processor.CreateGaVectorStorage(index)
+            throw new System.NotImplementedException();
+        }
+
+        public IEnumerable<IndexVectorStorageRecord<T>> GetOmMappedBasisVectors()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public IOutermorphism<T> GetOmAdjoint()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public VectorStorage<T> OmMapBasisVector(ulong index)
+        {
+            return OmMapVector(
+                GeometricProcessor.CreateVectorBasisStorage(index)
             );
         }
 
-        public IGaBivectorStorage<T> MapBasisBivector(int index1, int index2)
+        public BivectorStorage<T> OmMapBasisBivector(ulong index)
         {
-            return MapBivector(
-                Processor.CreateBivectorStorage(index1, index2)
+            throw new System.NotImplementedException();
+        }
+
+        public BivectorStorage<T> MapBasisBivector(int index1, int index2)
+        {
+            return OmMapBivector(
+                GeometricProcessor.CreateBivectorBasisStorage(index1, index2)
             );
         }
 
-        public IGaBivectorStorage<T> MapBasisBivector(ulong index1, ulong index2)
+        public BivectorStorage<T> OmMapBasisBivector(ulong index1, ulong index2)
         {
-            return MapBivector(
-                Processor.CreateBivectorStorage(index1, index2)
+            return OmMapBivector(
+                GeometricProcessor.CreateBivectorBasisStorage(index1, index2)
             );
         }
 
-        public IGaKVectorStorage<T> MapBasisBlade(ulong id)
+        public KVectorStorage<T> OmMapBasisBlade(ulong id)
         {
-            return MapKVector(
-                Processor.CreateKVectorStorage(id)
+            return OmMapKVector(
+                GeometricProcessor.CreateKVectorBasisStorage(id)
             );
         }
 
-        public IGaKVectorStorage<T> MapBasisBlade(uint grade, ulong index)
+        public KVectorStorage<T> OmMapBasisBlade(uint grade, ulong index)
         {
-            return MapKVector(
-                Processor.CreateKVectorStorage(grade, index)
+            return OmMapKVector(
+                GeometricProcessor.CreateKVectorBasisStorage(grade, index)
             );
         }
 
-        public IGaScalarStorage<T> MapScalar(IGaScalarStorage<T> storage)
+        public VectorStorage<T> OmMapVector(VectorStorage<T> storage)
         {
-            return storage;
-        }
-        
-        public IGaVectorStorage<T> MapVector(IGaVectorStorage<T> storage)
-        {
-            return Processor.EGp(
+            return GeometricProcessor.EGp(
                 UnitVectorStorage, 
-                Processor.Negative(storage),
+                GeometricProcessor.Negative(storage),
                 UnitVectorStorage
             ).GetVectorPart();
         }
 
-        public IGaBivectorStorage<T> MapBivector(IGaBivectorStorage<T> storage)
+        public BivectorStorage<T> OmMapBivector(BivectorStorage<T> storage)
         {
-            return Processor.EGp(
+            return GeometricProcessor.EGp(
                 UnitVectorStorage, 
                 storage,
                 UnitVectorStorage
             ).GetBivectorPart();
         }
 
-        public IGaKVectorStorage<T> MapKVector(IGaKVectorStorage<T> storage)
+        public KVectorStorage<T> OmMapKVector(KVectorStorage<T> storage)
         {
-            return Processor.EGp(
+            return GeometricProcessor.EGp(
                 UnitVectorStorage, 
-                Processor.GradeInvolution(storage),
+                GeometricProcessor.GradeInvolution(storage),
                 UnitVectorStorage
             ).GetKVectorPart(storage.Grade);
         }
 
-        public IGaMultivectorStorage<T> MapMultivector(IGaMultivectorGradedStorage<T> storage)
+        public MultivectorStorage<T> OmMapMultivector(MultivectorStorage<T> multivector)
         {
-            return Processor.EGp(
+            throw new System.NotImplementedException();
+        }
+
+        public MultivectorGradedStorage<T> OmMapMultivector(MultivectorGradedStorage<T> multivector)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public ILinMatrixStorage<T> GetVectorOmMappingMatrix()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public ILinMatrixStorage<T> GetBivectorOmMappingMatrix()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public ILinMatrixStorage<T> GetKVectorOmMappingMatrix(uint grade)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public IMultivectorStorage<T> MapMultivector(IMultivectorGradedStorage<T> storage)
+        {
+            return GeometricProcessor.EGp(
                 UnitVectorStorage, 
-                Processor.GradeInvolution(storage),
+                GeometricProcessor.GradeInvolution(storage),
                 UnitVectorStorage
             );
         }
 
-        public IGaMultivectorStorage<T> MapMultivector(IGaMultivectorSparseStorage<T> storage)
+        public IMultivectorStorage<T> MapKVector(KVectorStorage<T> mv)
         {
-            return Processor.EGp(
+            throw new System.NotImplementedException();
+        }
+
+        public IMultivectorStorage<T> MapMultivector(MultivectorGradedStorage<T> mv)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public ILinMatrixStorage<T> GetMultivectorMappingMatrix()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public IEnumerable<IdMultivectorStorageRecord<T>> GetMappedBasisBlades()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        IUnilinearMap<T> IUnilinearMap<T>.GetAdjoint()
+        {
+            return GetAdjoint();
+        }
+
+        public IMultivectorStorage<T> MapBasisScalar()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public IMultivectorStorage<T> MapBasisVector(ulong index)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public IMultivectorStorage<T> MapBasisBivector(ulong index)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public IMultivectorStorage<T> MapBasisBivector(ulong index1, ulong index2)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public IMultivectorStorage<T> MapBasisBlade(ulong id)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public IMultivectorStorage<T> MapBasisBlade(uint grade, ulong index)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public IMultivectorStorage<T> MapScalar(T mv)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public IMultivectorStorage<T> MapVector(VectorStorage<T> mv)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public IMultivectorStorage<T> MapBivector(BivectorStorage<T> mv)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public IMultivectorStorage<T> MapMultivector(MultivectorStorage<T> storage)
+        {
+            return GeometricProcessor.EGp(
                 UnitVectorStorage, 
-                Processor.GradeInvolution(storage),
+                GeometricProcessor.GradeInvolution(storage),
                 UnitVectorStorage
             );
         }
 
-        public IGaMultivectorStorage<T> MapMultivector(IGaMultivectorStorage<T> storage)
+        public ILinVectorStorage<T> LinMapBasisVector(ulong index)
         {
-            return Processor.EGp(
-                UnitVectorStorage, 
-                Processor.GradeInvolution(storage),
-                UnitVectorStorage
-            );
+            throw new System.NotImplementedException();
+        }
+
+        public ILinVectorStorage<T> LinMapVector(ILinVectorStorage<T> vectorStorage)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public ILinMatrixStorage<T> LinMapMatrix(ILinMatrixStorage<T> matrixStorage)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public ILinMatrixStorage<T> GetLinMappingMatrix()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public IEnumerable<IndexLinVectorStorageRecord<T>> GetLinMappedBasisVectors()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

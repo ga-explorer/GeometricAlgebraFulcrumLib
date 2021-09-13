@@ -5,12 +5,12 @@ using System.Text;
 using DataStructuresLib;
 using DataStructuresLib.BitManipulation;
 using DataStructuresLib.Combinations;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Basis;
-using GeometricAlgebraFulcrumLib.Processing.Scalars;
-using GeometricAlgebraFulcrumLib.Storage;
-using GeometricAlgebraFulcrumLib.Storage.Matrices.EvenMatrices;
-using GeometricAlgebraFulcrumLib.Storage.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra.Multivectors;
+using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 using TextComposerLib.Text;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Composers
@@ -21,19 +21,19 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         public string BasisName { get; set; }
             = @"\boldsymbol{e}";
 
-        public IScalarProcessor<T> ScalarProcessor { get; }
+        public IScalarAlgebraProcessor<T> ScalarProcessor { get; }
 
         public LaTeXComposerBasisFormat BasisFormat { get; set; }
             = LaTeXComposerBasisFormat.CommaSeparated;
 
 
-        protected LaTeXComposer([NotNull] IScalarProcessor<T> scalarProcessor)
+        protected LaTeXComposer([NotNull] IScalarAlgebraProcessor<T> scalarProcessor)
         {
             ScalarProcessor = scalarProcessor;
         }
 
 
-        public string GetBasisBladeText(GaBasisBlade basisBlade)
+        public string GetBasisBladeText(BasisBlade basisBlade)
         {
             return GetBasisBladeText(basisBlade.Id);
         }
@@ -73,7 +73,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
             );
         }
 
-        public string GetTermText(GaBasisBlade basisBlade, T scalar)
+        public string GetTermText(BasisBlade basisBlade, T scalar)
         {
             return GetTermText(
                 basisBlade.Id,
@@ -81,7 +81,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
             );
         }
 
-        public string GetTermText(GaBasisTerm<T> term)
+        public string GetTermText(BasisTerm<T> term)
         {
             return GetTermText(
                 term.BasisBlade.Id,
@@ -173,7 +173,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
             return textComposer.ToString();
         }
 
-        public string GetMultivectorText(IGaMultivectorStorage<T> storage)
+        public string GetMultivectorText(IMultivectorStorage<T> storage)
         {
             return GetTermsText(
                 ScalarProcessor
@@ -243,7 +243,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
             return $@"\left( {valueText} \right) {basisText}";
         }
 
-        public string GetTermsText(IEnumerable<GaBasisTerm<T>> termsList)
+        public string GetTermsText(IEnumerable<BasisTerm<T>> termsList)
         {
             var termsArray = 
                 termsList.OrderByGradeIndex().ToArray();
@@ -269,7 +269,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
                 .ToString();
         }
 
-        public string GetArrayDisplayEquationText(ILaMatrixEvenStorage<T> array)
+        public string GetArrayDisplayEquationText(ILinMatrixStorage<T> array)
         {
             var textComposer = new StringBuilder();
 
@@ -283,7 +283,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
                 .ToString();
         }
         
-        public string GetTermsEquationsArrayText(string rightHandSide, IEnumerable<GaBasisTerm<T>> termsList)
+        public string GetTermsEquationsArrayText(string rightHandSide, IEnumerable<BasisTerm<T>> termsList)
         {
             var textComposer = new StringBuilder();
 

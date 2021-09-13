@@ -1,8 +1,8 @@
 ﻿namespace GeometricAlgebraFulcrumLib.Visuals.Geometry.Space3D
 {
-    public interface IGavGeometry3D :
-        IGavGeometry
+    public interface IGeovGeometry3D :
+        IGeovGeometry
     {
-        GavGeometryContext3D GeometryContext { get; }
+        GeovGeometryContext3D GeometryContext { get; }
     }
 }

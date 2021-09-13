@@ -1,9 +1,9 @@
 ﻿using CodeComposerLib.Languages;
 using CodeComposerLib.SyntaxTree.Expressions;
-using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions;
-using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Composite;
-using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Numbers;
-using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Variables;
+using GeometricAlgebraFulcrumLib.Algebra.SymbolicAlgebra;
+using GeometricAlgebraFulcrumLib.Algebra.SymbolicAlgebra.Composite;
+using GeometricAlgebraFulcrumLib.Algebra.SymbolicAlgebra.Numbers;
+using GeometricAlgebraFulcrumLib.Algebra.SymbolicAlgebra.Variables;
 using Microsoft.CSharp.RuntimeBinder;
 
 namespace GeometricAlgebraFulcrumLib.CodeComposer.Languages

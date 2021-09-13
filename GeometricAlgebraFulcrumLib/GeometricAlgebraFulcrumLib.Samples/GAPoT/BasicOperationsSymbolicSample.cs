@@ -1,6 +1,6 @@
 ﻿using System;
 using GeometricAlgebraFulcrumLib.Mathematica;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products;
+using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 
 namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
 {
@@ -8,16 +8,16 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
     {
         public static void Execute()
         {
-            var v1 = GaSymbolicUtils.CreateVector(
+            var v1 = MathematicaUtils.CreateVector(
                 "a1", "b1", "c1", "d1"
             );
 
-            var v2 = GaSymbolicUtils.CreateVector(
+            var v2 = MathematicaUtils.CreateVector(
                 "a2", "b2", "c2", "d2"
             );
 
             var bv = 
-                GaSymbolicUtils.ScalarProcessor.Op(v1, v2);
+                MathematicaUtils.ScalarProcessor.Op(v1, v2);
 
             Console.WriteLine($"v1 = {v1.GetText()}");
             Console.WriteLine();

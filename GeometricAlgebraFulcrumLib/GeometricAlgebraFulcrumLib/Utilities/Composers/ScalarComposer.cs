@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Processing.Scalars;
-using GeometricAlgebraFulcrumLib.Storage.Multivectors;
+using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
@@ -10,19 +10,19 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
 {
     public sealed class ScalarComposer<T>
     {
-        public IScalarProcessor<T> ScalarProcessor { get; }
+        public IScalarAlgebraProcessor<T> ScalarProcessor { get; }
 
         public T Scalar { get; private set; }
 
 
-        internal ScalarComposer([NotNull] IScalarProcessor<T> scalarProcessor)
+        internal ScalarComposer([NotNull] IScalarAlgebraProcessor<T> scalarProcessor)
         {
             ScalarProcessor = scalarProcessor;
 
             Scalar = scalarProcessor.ScalarZero;
         }
 
-        internal ScalarComposer([NotNull] IScalarProcessor<T> scalarProcessor, [NotNull] T scalar)
+        internal ScalarComposer([NotNull] IScalarAlgebraProcessor<T> scalarProcessor, [NotNull] T scalar)
         {
             ScalarProcessor = scalarProcessor;
 
@@ -118,45 +118,37 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
             return this;
         }
 
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GaScalarStorage<T> CreateGaScalarStorage()
+        public VectorStorage<T> CreateVectorStorage(ulong index)
         {
             return ScalarProcessor.IsZero(Scalar)
-                ? GaScalarStorage<T>.ZeroScalar
-                : GaScalarStorage<T>.Create(Scalar);
+                ? VectorStorage<T>.ZeroVector
+                : VectorStorage<T>.CreateVector(index, Scalar);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GaVectorStorage<T> CreateGaVectorStorage(ulong index)
+        public BivectorStorage<T> CreateBivectorStorage(ulong index)
         {
             return ScalarProcessor.IsZero(Scalar)
-                ? GaVectorStorage<T>.ZeroVector
-                : GaVectorStorage<T>.Create(index, Scalar);
+                ? BivectorStorage<T>.ZeroBivector
+                : BivectorStorage<T>.CreateBivector(index, Scalar);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GaBivectorStorage<T> CreateGaBivectorStorage(ulong index)
+        public BivectorStorage<T> CreateBivectorStorage(ulong index1, ulong index2)
         {
             return ScalarProcessor.IsZero(Scalar)
-                ? GaBivectorStorage<T>.ZeroBivector
-                : GaBivectorStorage<T>.Create(index, Scalar);
+                ? BivectorStorage<T>.ZeroBivector
+                : ScalarProcessor.CreateBivectorTermStorage(index1, index2, Scalar);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GaBivectorStorage<T> CreateGaBivectorStorage(ulong index1, ulong index2)
+        public KVectorStorage<T> CreateKVectorStorage(uint grade, ulong index)
         {
             return ScalarProcessor.IsZero(Scalar)
-                ? GaBivectorStorage<T>.ZeroBivector
-                : ScalarProcessor.CreateBivectorStorage(index1, index2, Scalar);
-        }
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IGaKVectorStorage<T> CreateGaKVectorStorage(uint grade, ulong index)
-        {
-            return ScalarProcessor.IsZero(Scalar)
-                ? GaKVectorStorage<T>.ZeroKVector(grade)
-                : ScalarProcessor.CreateKVectorStorage(grade, index, Scalar);
+                ? KVectorStorage<T>.CreateKVectorZero(grade)
+                : ScalarProcessor.CreateKVectorTermStorage(grade, index, Scalar);
         }
     }
 }

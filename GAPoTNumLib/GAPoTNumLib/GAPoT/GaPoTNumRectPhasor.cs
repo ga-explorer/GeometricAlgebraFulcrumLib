@@ -5,64 +5,64 @@ using GAPoTNumLib.Text.LaTeX;
 
 namespace GAPoTNumLib.GAPoT
 {
-    public sealed class GaPoTNumRectPhasor
+    public sealed class GeoPoTNumRectPhasor
     {
-        public static GaPoTNumRectPhasor operator -(GaPoTNumRectPhasor p)
+        public static GeoPoTNumRectPhasor operator -(GeoPoTNumRectPhasor p)
         {
-            return new GaPoTNumRectPhasor(
+            return new GeoPoTNumRectPhasor(
                 p.Id,
                 -p.XValue,
                 -p.YValue
             );
         }
 
-        public static GaPoTNumRectPhasor operator +(GaPoTNumRectPhasor p1, GaPoTNumRectPhasor p2)
+        public static GeoPoTNumRectPhasor operator +(GeoPoTNumRectPhasor p1, GeoPoTNumRectPhasor p2)
         {
             if (p1.Id != p2.Id)
                 throw new InvalidOperationException();
 
-            return new GaPoTNumRectPhasor(
+            return new GeoPoTNumRectPhasor(
                 p1.Id,
                 p1.XValue + p2.XValue,
                 p1.YValue + p2.YValue
             );
         }
 
-        public static GaPoTNumRectPhasor operator -(GaPoTNumRectPhasor p1, GaPoTNumRectPhasor p2)
+        public static GeoPoTNumRectPhasor operator -(GeoPoTNumRectPhasor p1, GeoPoTNumRectPhasor p2)
         {
             if (p1.Id != p2.Id)
                 throw new InvalidOperationException();
 
-            return new GaPoTNumRectPhasor(
+            return new GeoPoTNumRectPhasor(
                 p1.Id,
                 p1.XValue - p2.XValue,
                 p1.YValue - p2.YValue
             );
         }
 
-        public static GaPoTNumRectPhasor operator *(GaPoTNumRectPhasor p, double s)
+        public static GeoPoTNumRectPhasor operator *(GeoPoTNumRectPhasor p, double s)
         {
-            return new GaPoTNumRectPhasor(
+            return new GeoPoTNumRectPhasor(
                 p.Id,
                 s * p.XValue,
                 s * p.YValue
             );
         }
 
-        public static GaPoTNumRectPhasor operator *(double s, GaPoTNumRectPhasor p)
+        public static GeoPoTNumRectPhasor operator *(double s, GeoPoTNumRectPhasor p)
         {
-            return new GaPoTNumRectPhasor(
+            return new GeoPoTNumRectPhasor(
                 p.Id,
                 s * p.XValue,
                 s * p.YValue
             );
         }
 
-        public static GaPoTNumRectPhasor operator /(GaPoTNumRectPhasor p, double s)
+        public static GeoPoTNumRectPhasor operator /(GeoPoTNumRectPhasor p, double s)
         {
             s = 1.0d / s;
 
-            return new GaPoTNumRectPhasor(
+            return new GeoPoTNumRectPhasor(
                 p.Id,
                 s * p.XValue,
                 s * p.YValue
@@ -77,7 +77,7 @@ namespace GAPoTNumLib.GAPoT
         public double YValue { get; set; }
 
 
-        internal GaPoTNumRectPhasor(int id, double x, double y)
+        internal GeoPoTNumRectPhasor(int id, double x, double y)
         {
             Debug.Assert(id > 0 && id % 2 == 1);
 
@@ -86,7 +86,7 @@ namespace GAPoTNumLib.GAPoT
             YValue = y;
         }
 
-        internal GaPoTNumRectPhasor(int id, double x)
+        internal GeoPoTNumRectPhasor(int id, double x)
         {
             Debug.Assert(id > 0 && id % 2 == 1);
 
@@ -101,16 +101,16 @@ namespace GAPoTNumLib.GAPoT
             return XValue == 0 && YValue == 0;
         }
 
-        public IEnumerable<GaPoTNumVectorTerm> GetTerms()
+        public IEnumerable<GeoPoTNumVectorTerm> GetTerms()
         {
             if (XValue != 0)
-                yield return new GaPoTNumVectorTerm(
+                yield return new GeoPoTNumVectorTerm(
                     Id,
                     XValue
                 );
 
             if (YValue != 0)
-                yield return new GaPoTNumVectorTerm(
+                yield return new GeoPoTNumVectorTerm(
                     Id + 1,
                     -YValue
                 );
@@ -126,9 +126,9 @@ namespace GAPoTNumLib.GAPoT
             return XValue * XValue + YValue * YValue;
         }
 
-        public GaPoTNumPolarPhasor ToPolarPhasor()
+        public GeoPoTNumPolarPhasor ToPolarPhasor()
         {
-            return new GaPoTNumPolarPhasor(
+            return new GeoPoTNumPolarPhasor(
                 Id,
                 Math.Sqrt(XValue * XValue + YValue * YValue),
                 Math.Atan2(YValue, XValue)

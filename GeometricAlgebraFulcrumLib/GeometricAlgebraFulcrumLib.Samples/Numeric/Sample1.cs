@@ -1,7 +1,7 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products;
-using GeometricAlgebraFulcrumLib.Processing.Scalars;
+using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Utilities.Composers;
+using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Numeric
@@ -12,19 +12,19 @@ namespace GeometricAlgebraFulcrumLib.Samples.Numeric
         {
             // This is a pre-defined scalar processor for the standard
             // 64-bit floating point scalars
-            var processor = Float64ScalarProcessor.DefaultProcessor;
+            var processor = ScalarAlgebraFloat64Processor.DefaultProcessor;
 
             // This is a pre-defined text generator for displaying multivectors
             // with 64-bit floating point scalars
-            var textComposer = Float64TextComposer.DefaultComposer;
+            var textComposer = TextFloat64Composer.DefaultComposer;
 
             // This is a pre-defined LaTeX generator for displaying multivectors
             // with 64-bit floating point scalars
-            var latexComposer = Float64LaTeXComposer.DefaultComposer;
+            var latexComposer = LaTeXFloat64Composer.DefaultComposer;
 
             // Create two vectors each having 3 components (a 3-dimensional GA)
-            var u = processor.CreateGaVectorStorage(1.2, -1, 1.25);
-            var v = processor.CreateGaVectorStorage(2.1, 0.9, 2.1);
+            var u = processor.CreateVectorStorage(1.2, -1, 1.25);
+            var v = processor.CreateVectorStorage(2.1, 0.9, 2.1);
 
             // Compute their outer product as a bivector
             var bv = processor.Op(u, v);

@@ -2,85 +2,84 @@
 using System.Diagnostics;
 using System.Text;
 using EuclideanGeometryLib.BasicMath.Tuples;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors;
-using GeometricAlgebraFulcrumLib.Processing.Scalars;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
+using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
+using GeometricAlgebraFulcrumLib.Processors.LinearAlgebra;
+using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 
 namespace GeometricAlgebraFulcrumLib.Geometry.Graphics.Space2D
 {
-    public sealed record GaEuclideanVector2D : 
+    public sealed record GeoEuclideanVector2D : 
         ITuple2D,
-        IGaGeometry<double>
+        IGeometricAlgebraElement<double>
     {
-        public static GaEuclideanVector2D operator -(GaEuclideanVector2D v1)
+        public static GeoEuclideanVector2D operator -(GeoEuclideanVector2D v1)
         {
-            return new GaEuclideanVector2D(-v1.X, -v1.Y);
+            return new GeoEuclideanVector2D(-v1.X, -v1.Y);
         }
 
-        public static GaEuclideanVector2D operator +(GaEuclideanVector2D v1, GaEuclideanVector2D v2)
+        public static GeoEuclideanVector2D operator +(GeoEuclideanVector2D v1, GeoEuclideanVector2D v2)
         {
-            return new GaEuclideanVector2D(
+            return new GeoEuclideanVector2D(
                 v1.X + v2.X,
                 v1.Y + v2.Y
             );
         }
 
-        public static GaEuclideanVector2D operator -(GaEuclideanVector2D v1, GaEuclideanVector2D v2)
+        public static GeoEuclideanVector2D operator -(GeoEuclideanVector2D v1, GeoEuclideanVector2D v2)
         {
-            return new GaEuclideanVector2D(
+            return new GeoEuclideanVector2D(
                 v1.X - v2.X,
                 v1.Y - v2.Y
             );
         }
 
-        public static GaEuclideanVector2D operator *(double s1, GaEuclideanVector2D p2)
+        public static GeoEuclideanVector2D operator *(double s1, GeoEuclideanVector2D p2)
         {
-            return new GaEuclideanVector2D(
+            return new GeoEuclideanVector2D(
                 s1 * p2.X,
                 s1 * p2.Y
             );
         }
 
-        public static GaEuclideanVector2D operator *(GaEuclideanVector2D v1, double s2)
+        public static GeoEuclideanVector2D operator *(GeoEuclideanVector2D v1, double s2)
         {
-            return new GaEuclideanVector2D(
+            return new GeoEuclideanVector2D(
                 v1.X * s2,
                 v1.Y * s2
             );
         }
 
-        public static GaEuclideanVector2D operator /(GaEuclideanVector2D v1, double s2)
+        public static GeoEuclideanVector2D operator /(GeoEuclideanVector2D v1, double s2)
         {
             s2 = 1d / s2;
 
-            return new GaEuclideanVector2D(
+            return new GeoEuclideanVector2D(
                 v1.X * s2,
                 v1.Y * s2
             );
         }
 
-        //public static bool operator ==(GaEuclideanVector2D v1, GaEuclideanVector2D v2)
+        //public static bool operator ==(GeoEuclideanVector2D v1, GeoEuclideanVector2D v2)
         //{
         //    return v1.Equals(v2);
         //}
 
-        //public static bool operator !=(GaEuclideanVector2D v1, GaEuclideanVector2D v2)
+        //public static bool operator !=(GeoEuclideanVector2D v1, GeoEuclideanVector2D v2)
         //{
         //    return !v1.Equals(v2);
         //}
 
 
-        public uint VSpaceDimension 
-            => 2;
+        public IScalarAlgebraProcessor<double> ScalarProcessor 
+            => ScalarAlgebraFloat64Processor.DefaultProcessor;
 
-        public ulong GaSpaceDimension
-            => 4;
+        public ILinearAlgebraProcessor<double> LinearProcessor 
+            => GeometricProcessor;
 
-        public IGaProcessor<double> Processor 
-            => GaEuclideanSpace2DUtils.Processor;
-
-        public IScalarProcessor<double> ScalarProcessor 
-            => Float64ScalarProcessor.DefaultProcessor;
+        public IGeometricAlgebraProcessor<double> GeometricProcessor 
+            => GeometricAlgebraEuclideanSpace2DUtils.GeometricProcessor;
 
         public double X { get; }
 
@@ -91,7 +90,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Graphics.Space2D
         public double Item2 => Y;
 
 
-        public GaEuclideanVector2D(double x, double y)
+        public GeoEuclideanVector2D(double x, double y)
         {
             X = x;
             Y = y;
@@ -119,12 +118,12 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Graphics.Space2D
             return X * X + Y * Y;
         }
 
-        public double GetDotProduct(GaEuclideanVector2D v2)
+        public double GetDotProduct(GeoEuclideanVector2D v2)
         {
             return X * v2.X + Y * v2.Y;
         }
 
-        public double GetAngleWith(GaEuclideanVector2D v2)
+        public double GetAngleWith(GeoEuclideanVector2D v2)
         {
             return Math.Acos(
                 (X * v2.X + Y * v2.Y) / 
@@ -135,12 +134,12 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Graphics.Space2D
             );
         }
 
-        public GaEuclideanPoint2D AsPoint()
+        public GeoEuclideanPoint2D AsPoint()
         {
-            return new GaEuclideanPoint2D(X, Y);
+            return new GeoEuclideanPoint2D(X, Y);
         }
 
-        //public bool Equals(GaEuclideanVector2D? other)
+        //public bool Equals(GeoEuclideanVector2D? other)
         //{
         //    return other.HasValue && Equals(other.Value);
         //}
@@ -150,10 +149,10 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Graphics.Space2D
         //    if (ReferenceEquals(obj, null))
         //        return false;
 
-        //    return obj is GaEuclideanVector2D other && Equals(other);
+        //    return obj is GeoEuclideanVector2D other && Equals(other);
         //}
 
-        //public bool Equals(GaEuclideanVector2D other)
+        //public bool Equals(GeoEuclideanVector2D other)
         //{
         //    return X.Equals(other.X) && Y.Equals(other.Y);
         //}

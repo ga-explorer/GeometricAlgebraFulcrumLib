@@ -4,44 +4,44 @@ using GAPoTNumLib.Text.LaTeX;
 
 namespace GAPoTNumLib.GAPoT
 {
-    public sealed class GaPoTNumBiversorTerm
+    public sealed class GeoPoTNumBiversorTerm
     {
-        public static GaPoTNumBiversorTerm operator -(GaPoTNumBiversorTerm t)
+        public static GeoPoTNumBiversorTerm operator -(GeoPoTNumBiversorTerm t)
         {
-            return new GaPoTNumBiversorTerm(t.TermId1, t.TermId2, -t.Value);
+            return new GeoPoTNumBiversorTerm(t.TermId1, t.TermId2, -t.Value);
         }
 
-        public static GaPoTNumBiversorTerm operator +(GaPoTNumBiversorTerm t1, GaPoTNumBiversorTerm t2)
-        {
-            if (t1.TermId1 != t2.TermId1 || t1.TermId2 != t2.TermId2)
-                throw new InvalidOperationException();
-
-            return new GaPoTNumBiversorTerm(t1.TermId1, t1.TermId2, t1.Value + t2.Value);
-        }
-
-        public static GaPoTNumBiversorTerm operator -(GaPoTNumBiversorTerm t1, GaPoTNumBiversorTerm t2)
+        public static GeoPoTNumBiversorTerm operator +(GeoPoTNumBiversorTerm t1, GeoPoTNumBiversorTerm t2)
         {
             if (t1.TermId1 != t2.TermId1 || t1.TermId2 != t2.TermId2)
                 throw new InvalidOperationException();
 
-            return new GaPoTNumBiversorTerm(t1.TermId1, t1.TermId2, t1.Value - t2.Value);
+            return new GeoPoTNumBiversorTerm(t1.TermId1, t1.TermId2, t1.Value + t2.Value);
         }
 
-        public static GaPoTNumBiversorTerm operator *(GaPoTNumBiversorTerm t, double s)
+        public static GeoPoTNumBiversorTerm operator -(GeoPoTNumBiversorTerm t1, GeoPoTNumBiversorTerm t2)
         {
-            return new GaPoTNumBiversorTerm(t.TermId1, t.TermId2, s * t.Value);
+            if (t1.TermId1 != t2.TermId1 || t1.TermId2 != t2.TermId2)
+                throw new InvalidOperationException();
+
+            return new GeoPoTNumBiversorTerm(t1.TermId1, t1.TermId2, t1.Value - t2.Value);
         }
 
-        public static GaPoTNumBiversorTerm operator *(double s, GaPoTNumBiversorTerm t)
+        public static GeoPoTNumBiversorTerm operator *(GeoPoTNumBiversorTerm t, double s)
         {
-            return new GaPoTNumBiversorTerm(t.TermId1, t.TermId2, s * t.Value);
+            return new GeoPoTNumBiversorTerm(t.TermId1, t.TermId2, s * t.Value);
         }
 
-        public static GaPoTNumBiversorTerm operator /(GaPoTNumBiversorTerm t, double s)
+        public static GeoPoTNumBiversorTerm operator *(double s, GeoPoTNumBiversorTerm t)
+        {
+            return new GeoPoTNumBiversorTerm(t.TermId1, t.TermId2, s * t.Value);
+        }
+
+        public static GeoPoTNumBiversorTerm operator /(GeoPoTNumBiversorTerm t, double s)
         {
             s = 1.0d / s;
 
-            return new GaPoTNumBiversorTerm(t.TermId1, t.TermId2, s * t.Value);
+            return new GeoPoTNumBiversorTerm(t.TermId1, t.TermId2, s * t.Value);
         }
 
 
@@ -61,14 +61,14 @@ namespace GAPoTNumLib.GAPoT
             => TermId1 % 2 == 1 && TermId2 == TermId1 + 1;
 
 
-        internal GaPoTNumBiversorTerm(double value)
+        internal GeoPoTNumBiversorTerm(double value)
         {
             TermId1 = 0;
             TermId2 = 0;
             Value = value;
         }
 
-        internal GaPoTNumBiversorTerm(int id1, int id2, double value)
+        internal GeoPoTNumBiversorTerm(int id1, int id2, double value)
         {
             Debug.Assert(id1 == id2 || (id1 > 0 && id2 > 0));
 
@@ -103,28 +103,28 @@ namespace GAPoTNumLib.GAPoT
             return Value * Value;
         }
 
-        public GaPoTNumBiversorTerm Reverse()
+        public GeoPoTNumBiversorTerm Reverse()
         {
             return IsScalar 
                 ? this 
-                : new GaPoTNumBiversorTerm(TermId1, TermId2, -Value);
+                : new GeoPoTNumBiversorTerm(TermId1, TermId2, -Value);
         }
 
-        public GaPoTNumBiversorTerm ScaledReverse(double s)
+        public GeoPoTNumBiversorTerm ScaledReverse(double s)
         {
             return IsScalar 
-                ? new GaPoTNumBiversorTerm(TermId1, TermId2, Value * s)
-                : new GaPoTNumBiversorTerm(TermId1, TermId2, -Value * s);
+                ? new GeoPoTNumBiversorTerm(TermId1, TermId2, Value * s)
+                : new GeoPoTNumBiversorTerm(TermId1, TermId2, -Value * s);
         }
 
-        public GaPoTNumMultivectorTerm ToMultivectorTerm()
+        public GeoPoTNumMultivectorTerm ToMultivectorTerm()
         {
             if (TermId1 == TermId2)
-                return new GaPoTNumMultivectorTerm(0, Value);
+                return new GeoPoTNumMultivectorTerm(0, Value);
 
             var idsPattern = (1 << (TermId1 - 1)) + (1 << (TermId2 - 1));
 
-            return new GaPoTNumMultivectorTerm(
+            return new GeoPoTNumMultivectorTerm(
                 idsPattern,
                 Value
             );
@@ -153,7 +153,7 @@ namespace GAPoTNumLib.GAPoT
                 : $@"\left( {valueText} \right) {basisText}";
         }
  
-        public GaPoTNumBiversorTerm OffsetId(int delta)
+        public GeoPoTNumBiversorTerm OffsetId(int delta)
         {
             if (IsScalar)
                 return this;
@@ -161,7 +161,7 @@ namespace GAPoTNumLib.GAPoT
             var id1 = TermId1 + delta;
             var id2 = TermId2 + delta;
 
-            return new GaPoTNumBiversorTerm(id1, id2, Value);
+            return new GeoPoTNumBiversorTerm(id1, id2, Value);
         }
 
         public override string ToString()

@@ -2,7 +2,7 @@
 using CodeComposerLib.Irony.Semantic;
 using CodeComposerLib.Languages;
 using GeometricAlgebraFulcrumLib.CodeComposer.Languages;
-using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
+using GeometricAlgebraFulcrumLib.Processors.SymbolicAlgebra.Context;
 using TextComposerLib.Loggers.Progress;
 
 namespace GeometricAlgebraFulcrumLib.CodeComposer.Composers
@@ -17,12 +17,12 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Composers
             => null;
 
         public override CclLanguageServerBase Language 
-            => GaLanguage;
+            => GeoLanguage;
 
         /// <summary>
         /// The target language of this generator
         /// </summary>
-        public GaFuLLanguageServerBase GaLanguage { get; }
+        public GaFuLLanguageServerBase GeoLanguage { get; }
 
         public SymbolicContextOptions DefaultContextOptions { get; }
             = new SymbolicContextOptions();
@@ -37,7 +37,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Composers
         /// <param name="targetLanguage"></param>
         protected GaFuLCodeLibraryComposerBase(GaFuLLanguageServerBase targetLanguage)
         {
-            GaLanguage = targetLanguage;
+            GeoLanguage = targetLanguage;
         }
 
 
@@ -54,7 +54,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Composers
         /// <returns></returns>
         public virtual GaFuLSymbolicContextCodeComposer CreateSymbolicContextCodeComposer(SymbolicContext context)
         {
-            return new GaFuLSymbolicContextCodeComposer(GaLanguage, context);
+            return new GaFuLSymbolicContextCodeComposer(GeoLanguage, context);
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Composers
         public void GenerateComment(string commentText)
         {
             ActiveFileTextComposer.AppendLineAtNewLine(
-                GaLanguage.CodeGenerator.GenerateCode(
+                GeoLanguage.CodeGenerator.GenerateCode(
                     SyntaxFactory.Comment(commentText)
                 )
             );

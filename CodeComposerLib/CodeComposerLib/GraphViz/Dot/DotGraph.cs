@@ -729,7 +729,7 @@ namespace CodeComposerLib.GraphViz.Dot
             return SetAttribute("levels", value.ToString());
         }
 
-        public DotGraph SetLevelsGap(double value)
+        public DotGraph SetLevelsGeop(double value)
         {
             return SetAttribute("levelsgap", value.ToDotDouble());
         }

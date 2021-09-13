@@ -75,8 +75,8 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
 
             DenseKVectorsLibraryComposer.CodeFilesComposer.UnselectActiveFile();
 
-            foreach (var grade1 in Processor.Grades)
-                foreach (var grade2 in Processor.Grades)
+            foreach (var grade1 in GeometricProcessor.Grades)
+                foreach (var grade2 in GeometricProcessor.Grades)
                     GenerateMethods(grade1, grade2);
 
             _mainFileComposer.GenerateMainMethod();

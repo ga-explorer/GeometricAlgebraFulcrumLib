@@ -12,7 +12,7 @@ using Vector = MathNet.Numerics.LinearAlgebra.Complex.Vector;
 
 namespace GAPoTNumLib.GAPoT
 {
-    public static class GaPoTNumUtils
+    public static class GeoPoTNumUtils
     {
         public static double Epsilon { get; internal set; } 
             = Math.Pow(2, -25);
@@ -374,12 +374,12 @@ namespace GAPoTNumLib.GAPoT
         }
 
 
-        private static GaPoTNumVector GaPoTNumParseVector(IronyParsingResults parsingResults, ParseTreeNode rootNode)
+        private static GeoPoTNumVector GeoPoTNumParseVector(IronyParsingResults parsingResults, ParseTreeNode rootNode)
         {
             if (rootNode.ToString() != "spVector")
                 throw new SyntaxErrorException(parsingResults.ToString());
 
-            var vector = new GaPoTNumVector();
+            var vector = new GeoPoTNumVector();
 
             var vectorNode = rootNode;
             foreach (var vectorElementNode in vectorNode.ChildNodes)
@@ -433,26 +433,26 @@ namespace GAPoTNumLib.GAPoT
             return vector;
         }
 
-        public static GaPoTNumVector GaPoTNumParseVector(this string sourceText)
+        public static GeoPoTNumVector GeoPoTNumParseVector(this string sourceText)
         {
             var parsingResults = new IronyParsingResults(
-                new GaPoTNumVectorConstructorGrammar(), 
+                new GeoPoTNumVectorConstructorGrammar(), 
                 sourceText
             );
 
             if (parsingResults.ContainsErrorMessages || !parsingResults.ContainsParseTreeRoot)
                 throw new SyntaxErrorException(parsingResults.ToString());
 
-            return GaPoTNumParseVector(parsingResults, parsingResults.ParseTreeRoot);
+            return GeoPoTNumParseVector(parsingResults, parsingResults.ParseTreeRoot);
         }
 
 
-        private static GaPoTNumBiversor GaPoTNumParseBiversor(IronyParsingResults parsingResults, ParseTreeNode rootNode)
+        private static GeoPoTNumBiversor GeoPoTNumParseBiversor(IronyParsingResults parsingResults, ParseTreeNode rootNode)
         {
             if (rootNode.ToString() != "biversor")
                 throw new SyntaxErrorException(parsingResults.ToString());
 
-            var biversor = new GaPoTNumBiversor();
+            var biversor = new GeoPoTNumBiversor();
 
             var vectorNode = rootNode;
             foreach (var vectorElementNode in vectorNode.ChildNodes)
@@ -485,51 +485,51 @@ namespace GAPoTNumLib.GAPoT
             return biversor;
         }
 
-        public static GaPoTNumBiversor GaPoTNumParseBiversor(this string sourceText)
+        public static GeoPoTNumBiversor GeoPoTNumParseBiversor(this string sourceText)
         {
             var parsingResults = new IronyParsingResults(
-                new GaPoTNumBiversorConstructorGrammar(), 
+                new GeoPoTNumBiversorConstructorGrammar(), 
                 sourceText
             );
 
             if (parsingResults.ContainsErrorMessages || !parsingResults.ContainsParseTreeRoot)
                 throw new SyntaxErrorException(parsingResults.ToString());
 
-            return GaPoTNumParseBiversor(parsingResults, parsingResults.ParseTreeRoot);
+            return GeoPoTNumParseBiversor(parsingResults, parsingResults.ParseTreeRoot);
         }
 
 
-        public static GaPoTNumVector[] Negative(this IEnumerable<GaPoTNumVector> vectorsList)
+        public static GeoPoTNumVector[] Negative(this IEnumerable<GeoPoTNumVector> vectorsList)
         {
             return vectorsList.Select(v => v.Negative()).ToArray();
         }
 
-        public static GaPoTNumVector[] Inverse(this IEnumerable<GaPoTNumVector> vectorsList)
+        public static GeoPoTNumVector[] Inverse(this IEnumerable<GeoPoTNumVector> vectorsList)
         {
             return vectorsList.Select(v => v.Inverse()).ToArray();
         }
 
-        public static GaPoTNumVector[] Reverse(this IEnumerable<GaPoTNumVector> vectorsList)
+        public static GeoPoTNumVector[] Reverse(this IEnumerable<GeoPoTNumVector> vectorsList)
         {
             return vectorsList.Select(v => v.Reverse()).ToArray();
         }
 
-        public static double[] Norm(this IEnumerable<GaPoTNumVector> vectorsList)
+        public static double[] Norm(this IEnumerable<GeoPoTNumVector> vectorsList)
         {
             return vectorsList.Select(v => v.Norm()).ToArray();
         }
 
-        public static double[] Norm2(this IEnumerable<GaPoTNumVector> vectorsList)
+        public static double[] Norm2(this IEnumerable<GeoPoTNumVector> vectorsList)
         {
             return vectorsList.Select(v => v.Norm2()).ToArray();
         }
 
-        public static GaPoTNumVector[] Add(this GaPoTNumVector[] vectorsList1, GaPoTNumVector[] vectorsList2)
+        public static GeoPoTNumVector[] Add(this GeoPoTNumVector[] vectorsList1, GeoPoTNumVector[] vectorsList2)
         {
             if (vectorsList1.Length != vectorsList2.Length)
                 throw new InvalidOperationException();
 
-            var results = new GaPoTNumVector[vectorsList1.Length];
+            var results = new GeoPoTNumVector[vectorsList1.Length];
 
             for (var i = 0; i < vectorsList1.Length; i++)
                 results[i] = vectorsList1[i].Add(vectorsList2[i]);
@@ -537,12 +537,12 @@ namespace GAPoTNumLib.GAPoT
             return results;
         }
 
-        public static GaPoTNumVector[] Subtract(this GaPoTNumVector[] vectorsList1, GaPoTNumVector[] vectorsList2)
+        public static GeoPoTNumVector[] Subtract(this GeoPoTNumVector[] vectorsList1, GeoPoTNumVector[] vectorsList2)
         {
             if (vectorsList1.Length != vectorsList2.Length)
                 throw new InvalidOperationException();
 
-            var results = new GaPoTNumVector[vectorsList1.Length];
+            var results = new GeoPoTNumVector[vectorsList1.Length];
 
             for (var i = 0; i < vectorsList1.Length; i++)
                 results[i] = vectorsList1[i].Subtract(vectorsList2[i]);
@@ -550,12 +550,12 @@ namespace GAPoTNumLib.GAPoT
             return results;
         }
 
-        public static GaPoTNumBiversor[] Gp(this GaPoTNumVector[] vectorsList1, GaPoTNumVector[] vectorsList2)
+        public static GeoPoTNumBiversor[] Gp(this GeoPoTNumVector[] vectorsList1, GeoPoTNumVector[] vectorsList2)
         {
             if (vectorsList1.Length != vectorsList2.Length)
                 throw new InvalidOperationException();
 
-            var results = new GaPoTNumBiversor[vectorsList1.Length];
+            var results = new GeoPoTNumBiversor[vectorsList1.Length];
 
             for (var i = 0; i < vectorsList1.Length; i++)
                 results[i] = vectorsList1[i].Gp(vectorsList2[i]);
@@ -564,7 +564,7 @@ namespace GAPoTNumLib.GAPoT
         }
 
 
-        public static GaPoTNumMultivector OuterProduct(params GaPoTNumVector[] vectorsList)
+        public static GeoPoTNumMultivector OuterProduct(params GeoPoTNumVector[] vectorsList)
         {
             return vectorsList
                 .Skip(1)
@@ -574,7 +574,7 @@ namespace GAPoTNumLib.GAPoT
                 );
         }
 
-        public static GaPoTNumMultivector OuterProduct(IReadOnlyList<GaPoTNumVector> vectorsList)
+        public static GeoPoTNumMultivector OuterProduct(IReadOnlyList<GeoPoTNumVector> vectorsList)
         {
             return vectorsList
                 .Skip(1)
@@ -584,7 +584,7 @@ namespace GAPoTNumLib.GAPoT
                 );
         }
 
-        public static GaPoTNumMultivector OuterProduct(params GaPoTNumMultivector[] multivectorsList)
+        public static GeoPoTNumMultivector OuterProduct(params GeoPoTNumMultivector[] multivectorsList)
         {
             return multivectorsList
                 .Skip(1)
@@ -594,7 +594,7 @@ namespace GAPoTNumLib.GAPoT
                 );
         }
 
-        //public static IEnumerable<GaPoTNumVector> ApplyGramSchmidt(GaPoTNumVector[] vectorsArray)
+        //public static IEnumerable<GeoPoTNumVector> ApplyGramSchmidt(GeoPoTNumVector[] vectorsArray)
         //{
         //    var v1 = vectorsArray[0];
         //    yield return (v1 / v1.Norm());
@@ -614,7 +614,7 @@ namespace GAPoTNumLib.GAPoT
         //    }
         //}
 
-        public static IEnumerable<GaPoTNumVector> ApplyGramSchmidt(this IReadOnlyList<GaPoTNumVector> vectorsArray, bool makeUnitVectors)
+        public static IEnumerable<GeoPoTNumVector> ApplyGramSchmidt(this IReadOnlyList<GeoPoTNumVector> vectorsArray, bool makeUnitVectors)
         {
             var v1 = vectorsArray[0];
             yield return makeUnitVectors 
@@ -664,14 +664,14 @@ namespace GAPoTNumLib.GAPoT
                 vectors[i] = (Vector)sysExpr.EigenVectors.Column(i);
         }
 
-        public static GaNumMatlabSparseMatrixData PolarPhasorsToMatlabArray(this IEnumerable<GaPoTNumPolarPhasor> phasorsList, int rowsCount)
+        public static GeoNumMatlabSparseMatrixData PolarPhasorsToMatlabArray(this IEnumerable<GeoPoTNumPolarPhasor> phasorsList, int rowsCount)
         {
             var termsArray = 
                 phasorsList
                     .OrderBy(t => t.Id)
                     .ToArray();
 
-            var result = GaNumMatlabSparseMatrixData.CreateMatrix(
+            var result = GeoNumMatlabSparseMatrixData.CreateMatrix(
                 rowsCount, 
                 2,
                 termsArray.Length * 2
@@ -691,14 +691,14 @@ namespace GAPoTNumLib.GAPoT
             return result;
         }
 
-        public static GaNumMatlabSparseMatrixData RectPhasorsToMatlabArray(this IEnumerable<GaPoTNumRectPhasor> phasorsList, int rowsCount)
+        public static GeoNumMatlabSparseMatrixData RectPhasorsToMatlabArray(this IEnumerable<GeoPoTNumRectPhasor> phasorsList, int rowsCount)
         {
             var termsArray = 
                 phasorsList
                     .OrderBy(t => t.Id)
                     .ToArray();
 
-            var result = GaNumMatlabSparseMatrixData.CreateMatrix(
+            var result = GeoNumMatlabSparseMatrixData.CreateMatrix(
                 rowsCount, 
                 2,
                 termsArray.Length * 2
@@ -718,22 +718,22 @@ namespace GAPoTNumLib.GAPoT
             return result;
         }
 
-        public static GaPoTNumVector TermsToVector(this IEnumerable<GaPoTNumVectorTerm> termsList)
+        public static GeoPoTNumVector TermsToVector(this IEnumerable<GeoPoTNumVectorTerm> termsList)
         {
-            return new GaPoTNumVector(termsList);
+            return new GeoPoTNumVector(termsList);
         }
 
-        public static GaPoTNumBiversor TermsToBiversor(this IEnumerable<GaPoTNumBiversorTerm> termsList)
+        public static GeoPoTNumBiversor TermsToBiversor(this IEnumerable<GeoPoTNumBiversorTerm> termsList)
         {
-            return new GaPoTNumBiversor(termsList);
+            return new GeoPoTNumBiversor(termsList);
         }
 
-        public static GaPoTNumMultivector TermsToMultivector(this IEnumerable<GaPoTNumMultivectorTerm> termsList)
+        public static GeoPoTNumMultivector TermsToMultivector(this IEnumerable<GeoPoTNumMultivectorTerm> termsList)
         {
-            return new GaPoTNumMultivector(termsList);
+            return new GeoPoTNumMultivector(termsList);
         }
         
-        public static IEnumerable<GaPoTNumMultivectorTerm> OrderByGrade(this IEnumerable<GaPoTNumMultivectorTerm> termsList)
+        public static IEnumerable<GeoPoTNumMultivectorTerm> OrderByGrade(this IEnumerable<GeoPoTNumMultivectorTerm> termsList)
         {
             var termsArray = termsList.ToArray();
             var bitsCount = termsArray.Max(t => t.IDsPattern).LastOneBitPosition() + 1;
@@ -747,21 +747,21 @@ namespace GAPoTNumLib.GAPoT
                 .ThenByDescending(t => t.IDsPattern.ReverseBits(bitsCount));
         }
         
-        public static IEnumerable<GaPoTNumMultivectorTerm> OrderById(this IEnumerable<GaPoTNumMultivectorTerm> termsList)
+        public static IEnumerable<GeoPoTNumMultivectorTerm> OrderById(this IEnumerable<GeoPoTNumMultivectorTerm> termsList)
         {
             return termsList
                 .Where(t => !t.Value.IsNearZero())
                 .OrderBy(t => t.IDsPattern);
         }
 
-        public static GaNumMatlabSparseMatrixData TermsToMatlabArray(this IEnumerable<GaPoTNumVectorTerm> termsList, int rowsCount)
+        public static GeoNumMatlabSparseMatrixData TermsToMatlabArray(this IEnumerable<GeoPoTNumVectorTerm> termsList, int rowsCount)
         {
             var termsArray = 
                 termsList
                     .OrderBy(t => t.TermId)
                     .ToArray();
 
-            var result = GaNumMatlabSparseMatrixData.CreateColumnMatrix(
+            var result = GeoNumMatlabSparseMatrixData.CreateColumnMatrix(
                 rowsCount, 
                 termsArray.Length
             );
@@ -777,7 +777,7 @@ namespace GAPoTNumLib.GAPoT
             return result;
         }
 
-        public static GaNumMatlabSparseMatrixData TermsToMatlabArray(this GaPoTNumVector[] vectorsList, int rowsCount)
+        public static GeoNumMatlabSparseMatrixData TermsToMatlabArray(this GeoPoTNumVector[] vectorsList, int rowsCount)
         {
             var columnsCount = vectorsList.Length;
 
@@ -788,7 +788,7 @@ namespace GAPoTNumLib.GAPoT
                         .ToArray()
                     ).ToArray();
 
-            var result = GaNumMatlabSparseMatrixData.CreateMatrix(
+            var result = GeoNumMatlabSparseMatrixData.CreateMatrix(
                 rowsCount,
                 columnsCount,
                 termsList.Sum(t => t.Length)
@@ -811,14 +811,14 @@ namespace GAPoTNumLib.GAPoT
             return result;
         }
 
-        public static GaNumMatlabSparseMatrixData TermsToMatlabArray(this IEnumerable<GaPoTNumBiversorTerm> termsList, int rowsCount)
+        public static GeoNumMatlabSparseMatrixData TermsToMatlabArray(this IEnumerable<GeoPoTNumBiversorTerm> termsList, int rowsCount)
         {
             var termsArray = termsList
                 .OrderBy(t => t.TermId1)
                 .ThenBy(t => t.TermId2)
                 .ToArray();
 
-            var result = GaNumMatlabSparseMatrixData.CreateSquareMatrix(
+            var result = GeoNumMatlabSparseMatrixData.CreateSquareMatrix(
                 rowsCount, 
                 termsArray.Length
             );

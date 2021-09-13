@@ -1,6 +1,6 @@
 ﻿namespace GeometricAlgebraFulcrumLib.Visuals.Geometry.Space3D
 {
-    public interface IGavGeometry
+    public interface IGeovGeometry
     {
         string Name { get; }
     }

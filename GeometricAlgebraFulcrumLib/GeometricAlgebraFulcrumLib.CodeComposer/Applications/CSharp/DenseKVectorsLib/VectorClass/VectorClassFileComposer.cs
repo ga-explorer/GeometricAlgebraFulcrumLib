@@ -49,7 +49,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
 
                 textCollection["basis_vectors"].Add("new " + CurrentNamespace + "Vector(" + basisVectorsCoefsText + ")");
                 textCollection["members_declare"].Add("public double C" + idx + " { get; set; }");
-                textCollection["init_inputs"].Add(GaLanguage.ScalarTypeName + " c" + idx);
+                textCollection["init_inputs"].Add(GeoLanguage.ScalarTypeName + " c" + idx);
                 textCollection["init_assign"].Add("C" + idx + " = c" + idx + ";");
                 textCollection["init_assign_array"].Add("C" + idx + " = c[" + (idx - 1) + "];");
                 textCollection["members_list"].Add("C" + idx);
@@ -61,7 +61,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
 
             TextComposer.Append(Templates["vector"],
                 "signature", CurrentNamespace,
-                "double", GaLanguage.ScalarTypeName,
+                "double", GeoLanguage.ScalarTypeName,
                 "norm2", textCollection["enorm2"].ToString() //TODO: This must be computed from the signature
             );
 

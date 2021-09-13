@@ -1,7 +1,7 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products;
-using GeometricAlgebraFulcrumLib.Processing.Scalars;
+using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Utilities.Composers;
+using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.AngouriMath
@@ -12,19 +12,19 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.AngouriMath
         {
             // This is a pre-defined scalar processor for the symbolic
             // AngouriMath scalars using Entity objects
-            var processor = AngouriMathScalarProcessor.DefaultProcessor;
+            var processor = ScalarAlgebraSymbolicProcessor.DefaultProcessor;
 
             // This is a pre-defined text generator for displaying multivectors
             // with symbolic AngouriMath scalars using Entity objects
-            var textComposer = AngouriMathTextComposer.DefaultComposer;
+            var textComposer = TextAngouriMathComposer.DefaultComposer;
 
             // This is a pre-defined LaTeX generator for displaying multivectors
             // with symbolic AngouriMath scalars using Entity objects
-            var latexComposer = AngouriMathLaTeXComposer.DefaultComposer;
+            var latexComposer = LaTeXAngouriMathComposer.DefaultComposer;
 
             // Create two vectors each having 3 components (a 3-dimensional GA)
-            var u = processor.CreateGaVectorStorage(3, i => $"u_{i + 1}");
-            var v = processor.CreateGaVectorStorage(3, i => $"v_{i + 1}");
+            var u = processor.CreateVectorStorage(3, i => $"u_{i + 1}");
+            var v = processor.CreateVectorStorage(3, i => $"v_{i + 1}");
 
             // Compute their outer product as a bivector
             var bv = processor.Op(u, v);

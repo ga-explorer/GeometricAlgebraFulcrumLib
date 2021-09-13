@@ -1,8 +1,6 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Algebra.Outermorphisms;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean;
-using GeometricAlgebraFulcrumLib.Processing.Scalars;
-using GeometricAlgebraFulcrumLib.Storage.Multivectors;
+using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
@@ -16,9 +14,9 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
             var randGen = new Random();
             
             var processor = 
-                Float64ScalarProcessor.DefaultProcessor.CreateGaEuclideanProcessor(n);
+                ScalarAlgebraFloat64Processor.DefaultProcessor.CreateGeometricAlgebraEuclideanProcessor(n);
 
-            IGaVectorStorage<double> v = GaScalarProcessorFloat64Utils.CreateVector(
+            VectorStorage<double> v = ScalarAlgebraFloat64ProcessorUtils.CreateVector(
                 randGen.NextDouble(), 
                 randGen.NextDouble(),
                 randGen.NextDouble()
@@ -26,7 +24,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
 
             v = processor.DivideByENorm(v);
 
-            IGaVectorStorage<double> u = GaScalarProcessorFloat64Utils.CreateVector(
+            VectorStorage<double> u = ScalarAlgebraFloat64ProcessorUtils.CreateVector(
                 randGen.NextDouble(), 
                 randGen.NextDouble(),
                 randGen.NextDouble()
@@ -65,7 +63,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
             var vMatrix = v.VectorToColumnVectorMatrix(n);
             var uMatrix = u.VectorToColumnVectorMatrix(n);
 
-            var u1 = rotor.MapVector(v);
+            var u1 = rotor.OmMapVector(v);
             var u2 = rotorMatrix * vMatrix;
             var u3 = rotorMatrix21 * vMatrix;
             var u4 = rotorMatrix2 * (rotorMatrix1 * vMatrix);
@@ -125,7 +123,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
             //var rotorMatrix = rotorArray.ArrayToMatrix();
 
             //var uMatrix1 =
-            //    GaFloat64Utils.MatrixProcessor.MatrixProduct(
+            //    GeoFloat64Utils.MatrixProcessor.MatrixProduct(
             //        rotorMatrix,
             //        vMatrix
             //    );

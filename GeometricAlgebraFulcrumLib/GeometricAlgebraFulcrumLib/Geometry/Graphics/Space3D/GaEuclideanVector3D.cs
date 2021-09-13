@@ -2,90 +2,89 @@
 using System.Diagnostics;
 using System.Text;
 using EuclideanGeometryLib.BasicMath.Tuples;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors;
-using GeometricAlgebraFulcrumLib.Processing.Scalars;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
+using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
+using GeometricAlgebraFulcrumLib.Processors.LinearAlgebra;
+using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 
 namespace GeometricAlgebraFulcrumLib.Geometry.Graphics.Space3D
 {
-    public sealed record GaEuclideanVector3D : 
+    public sealed record GeoEuclideanVector3D : 
         ITuple3D,
-        IGaGeometry<double>
+        IGeometricAlgebraElement<double>
     {
-        public static GaEuclideanVector3D operator -(GaEuclideanVector3D v1)
+        public static GeoEuclideanVector3D operator -(GeoEuclideanVector3D v1)
         {
-            return new GaEuclideanVector3D(-v1.X, -v1.Y, -v1.Z);
+            return new GeoEuclideanVector3D(-v1.X, -v1.Y, -v1.Z);
         }
 
-        public static GaEuclideanVector3D operator +(GaEuclideanVector3D v1, GaEuclideanVector3D v2)
+        public static GeoEuclideanVector3D operator +(GeoEuclideanVector3D v1, GeoEuclideanVector3D v2)
         {
-            return new GaEuclideanVector3D(
+            return new GeoEuclideanVector3D(
                 v1.X + v2.X,
                 v1.Y + v2.Y,
                 v1.Z + v2.Z
             );
         }
 
-        public static GaEuclideanVector3D operator -(GaEuclideanVector3D v1, GaEuclideanVector3D v2)
+        public static GeoEuclideanVector3D operator -(GeoEuclideanVector3D v1, GeoEuclideanVector3D v2)
         {
-            return new GaEuclideanVector3D(
+            return new GeoEuclideanVector3D(
                 v1.X - v2.X,
                 v1.Y - v2.Y,
                 v1.Z - v2.Z
             );
         }
 
-        public static GaEuclideanVector3D operator *(double s1, GaEuclideanVector3D p2)
+        public static GeoEuclideanVector3D operator *(double s1, GeoEuclideanVector3D p2)
         {
-            return new GaEuclideanVector3D(
+            return new GeoEuclideanVector3D(
                 s1 * p2.X,
                 s1 * p2.Y,
                 s1 * p2.Z
             );
         }
 
-        public static GaEuclideanVector3D operator *(GaEuclideanVector3D p1, double s2)
+        public static GeoEuclideanVector3D operator *(GeoEuclideanVector3D p1, double s2)
         {
-            return new GaEuclideanVector3D(
+            return new GeoEuclideanVector3D(
                 p1.X * s2,
                 p1.Y * s2,
                 p1.Z * s2
             );
         }
 
-        public static GaEuclideanVector3D operator /(GaEuclideanVector3D p1, double s2)
+        public static GeoEuclideanVector3D operator /(GeoEuclideanVector3D p1, double s2)
         {
             s2 = 1d / s2;
 
-            return new GaEuclideanVector3D(
+            return new GeoEuclideanVector3D(
                 p1.X * s2,
                 p1.Y * s2,
                 p1.Z * s2
             );
         }
 
-        //public static bool operator ==(GaEuclideanVector3D v1, GaEuclideanVector3D v2)
+        //public static bool operator ==(GeoEuclideanVector3D v1, GeoEuclideanVector3D v2)
         //{
         //    return v1.Equals(v2);
         //}
 
-        //public static bool operator !=(GaEuclideanVector3D v1, GaEuclideanVector3D v2)
+        //public static bool operator !=(GeoEuclideanVector3D v1, GeoEuclideanVector3D v2)
         //{
         //    return !v1.Equals(v2);
         //}
+        
 
+        public IGeometricAlgebraProcessor<double> GeometricProcessor 
+            => GeometricAlgebraEuclideanSpace3DUtils.GeometricProcessor;
 
-        public uint VSpaceDimension 
-            => 3;
+        public IScalarAlgebraProcessor<double> ScalarProcessor 
+            => ScalarAlgebraFloat64Processor.DefaultProcessor;
 
-        public ulong GaSpaceDimension
-            => 8;
-
-        public IGaProcessor<double> Processor 
-            => GaEuclideanSpace3DUtils.Processor;
-
-        public IScalarProcessor<double> ScalarProcessor 
-            => Float64ScalarProcessor.DefaultProcessor;
+        public ILinearAlgebraProcessor<double> LinearProcessor 
+            => GeometricProcessor;
 
         public double X { get; }
 
@@ -110,7 +109,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Graphics.Space3D
                double.IsNaN(Z);
 
 
-        public GaEuclideanVector3D(double x, double y, double z)
+        public GeoEuclideanVector3D(double x, double y, double z)
         {
             X = x;
             Y = y;
@@ -130,12 +129,12 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Graphics.Space3D
             return X * X + Y * Y + Z * Z;
         }
 
-        public double GetDotProduct(GaEuclideanVector3D v2)
+        public double GetDotProduct(GeoEuclideanVector3D v2)
         {
             return X * v2.X + Y * v2.Y + Z * v2.Z;
         }
 
-        public double GetAngleWith(GaEuclideanVector3D v2)
+        public double GetAngleWith(GeoEuclideanVector3D v2)
         {
             return Math.Acos(
                 (X * v2.X + Y * v2.Y + Z * v2.Z) / 
@@ -146,12 +145,12 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Graphics.Space3D
             );
         }
 
-        public GaEuclideanPoint3D AsPoint()
+        public GeoEuclideanPoint3D AsPoint()
         {
-            return new GaEuclideanPoint3D(X, Y, Z);
+            return new GeoEuclideanPoint3D(X, Y, Z);
         }
 
-        //public bool Equals(GaEuclideanVector3D? other)
+        //public bool Equals(GeoEuclideanVector3D? other)
         //{
         //    return other.HasValue && Equals(other.Value);
         //}
@@ -161,10 +160,10 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Graphics.Space3D
         //    if (ReferenceEquals(obj, null))
         //        return false;
 
-        //    return obj is GaEuclideanVector3D other && Equals(other);
+        //    return obj is GeoEuclideanVector3D other && Equals(other);
         //}
 
-        //public bool Equals(GaEuclideanVector3D other)
+        //public bool Equals(GeoEuclideanVector3D other)
         //{
         //    return X.Equals(other.X) && Y.Equals(other.Y) && Z.Equals(other.Z);
         //}

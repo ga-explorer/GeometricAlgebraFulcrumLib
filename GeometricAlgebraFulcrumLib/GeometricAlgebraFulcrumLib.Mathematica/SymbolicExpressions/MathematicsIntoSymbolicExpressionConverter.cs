@@ -2,11 +2,11 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using DataStructuresLib;
-using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions;
-using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Composite;
-using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
-using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Evaluators;
-using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Numbers;
+using GeometricAlgebraFulcrumLib.Algebra.SymbolicAlgebra;
+using GeometricAlgebraFulcrumLib.Algebra.SymbolicAlgebra.Composite;
+using GeometricAlgebraFulcrumLib.Algebra.SymbolicAlgebra.Numbers;
+using GeometricAlgebraFulcrumLib.Processors.SymbolicAlgebra.Context;
+using GeometricAlgebraFulcrumLib.Processors.SymbolicAlgebra.Evaluators;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using Microsoft.CSharp.RuntimeBinder;
 using Wolfram.NETLink;
@@ -85,71 +85,71 @@ namespace GeometricAlgebraFulcrumLib.Mathematica.SymbolicExpressions
             return functionName switch
             {
                 "Plus" => 
-                    Context.SymbolicExpressionProcessor.Add(argumentsList),
+                    Context.SymbolicScalarProcessor.Add(argumentsList),
 
                 "Subtract" => 
-                    Context.SymbolicExpressionProcessor.Subtract(argumentsList[0], argumentsList[1]),
+                    Context.SymbolicScalarProcessor.Subtract(argumentsList[0], argumentsList[1]),
 
                 "Times" => 
-                    Context.SymbolicExpressionProcessor.Times(argumentsList),
+                    Context.SymbolicScalarProcessor.Times(argumentsList),
 
                 "Divide" => 
-                    Context.SymbolicExpressionProcessor.Divide(argumentsList[0], argumentsList[1]),
+                    Context.SymbolicScalarProcessor.Divide(argumentsList[0], argumentsList[1]),
 
                 "Minus" => 
-                    Context.SymbolicExpressionProcessor.Negative(argumentsList[0]),
+                    Context.SymbolicScalarProcessor.Negative(argumentsList[0]),
 
                 "Inverse" => 
-                    Context.SymbolicExpressionProcessor.Inverse(argumentsList[0]),
+                    Context.SymbolicScalarProcessor.Inverse(argumentsList[0]),
 
                 "Abs" => 
-                    Context.SymbolicExpressionProcessor.Abs(argumentsList[0]),
+                    Context.SymbolicScalarProcessor.Abs(argumentsList[0]),
 
                 "Sqrt" => 
-                    Context.SymbolicExpressionProcessor.Sqrt(argumentsList[0]),
+                    Context.SymbolicScalarProcessor.Sqrt(argumentsList[0]),
 
                 "Exp" => 
-                    Context.SymbolicExpressionProcessor.Exp(argumentsList[0]),
+                    Context.SymbolicScalarProcessor.Exp(argumentsList[0]),
 
                 "Log" => 
                     argumentsList.Length == 1 
-                        ? Context.SymbolicExpressionProcessor.Log(argumentsList[0])
-                        : Context.SymbolicExpressionProcessor.Log(argumentsList[0], argumentsList[1]),
+                        ? Context.SymbolicScalarProcessor.LogE(argumentsList[0])
+                        : Context.SymbolicScalarProcessor.Log(argumentsList[0], argumentsList[1]),
                 
                 "Log2" => 
-                    Context.SymbolicExpressionProcessor.Log2(argumentsList[0]),
+                    Context.SymbolicScalarProcessor.Log2(argumentsList[0]),
 
                 "Log10" => 
-                    Context.SymbolicExpressionProcessor.Log10(argumentsList[0]),
+                    Context.SymbolicScalarProcessor.Log10(argumentsList[0]),
 
                 "Cos" => 
-                    Context.SymbolicExpressionProcessor.Cos(argumentsList[0]),
+                    Context.SymbolicScalarProcessor.Cos(argumentsList[0]),
 
                 "Sin" => 
-                    Context.SymbolicExpressionProcessor.Sin(argumentsList[0]),
+                    Context.SymbolicScalarProcessor.Sin(argumentsList[0]),
 
                 "Tan" => 
-                    Context.SymbolicExpressionProcessor.Tan(argumentsList[0]),
+                    Context.SymbolicScalarProcessor.Tan(argumentsList[0]),
 
                 "ArcCos" => 
-                    Context.SymbolicExpressionProcessor.ArcCos(argumentsList[0]),
+                    Context.SymbolicScalarProcessor.ArcCos(argumentsList[0]),
 
                 "ArcSin" => 
-                    Context.SymbolicExpressionProcessor.ArcSin(argumentsList[0]),
+                    Context.SymbolicScalarProcessor.ArcSin(argumentsList[0]),
 
                 "ArcTan" => 
                     argumentsList.Length == 1 
-                        ? Context.SymbolicExpressionProcessor.ArcTan(argumentsList[0])
-                        : Context.SymbolicExpressionProcessor.ArcTan2(argumentsList[0], argumentsList[1]),
+                        ? Context.SymbolicScalarProcessor.ArcTan(argumentsList[0])
+                        : Context.SymbolicScalarProcessor.ArcTan2(argumentsList[0], argumentsList[1]),
 
                 "Cosh" => 
-                    Context.SymbolicExpressionProcessor.Cosh(argumentsList[0]),
+                    Context.SymbolicScalarProcessor.Cosh(argumentsList[0]),
 
                 "Sinh" => 
-                    Context.SymbolicExpressionProcessor.Sinh(argumentsList[0]),
+                    Context.SymbolicScalarProcessor.Sinh(argumentsList[0]),
 
                 "Tanh" => 
-                    Context.SymbolicExpressionProcessor.Tanh(argumentsList[0]),
+                    Context.SymbolicScalarProcessor.Tanh(argumentsList[0]),
 
                 _ => 
                     throw new InvalidOperationException(expr.ToString())

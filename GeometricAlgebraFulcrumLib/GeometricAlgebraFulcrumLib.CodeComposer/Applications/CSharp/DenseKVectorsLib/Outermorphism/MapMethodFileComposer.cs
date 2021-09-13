@@ -1,8 +1,8 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.Outermorphisms;
-using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions;
-using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
-using GeometricAlgebraFulcrumLib.Storage.Multivectors;
+﻿using GeometricAlgebraFulcrumLib.Algebra.SymbolicAlgebra;
+using GeometricAlgebraFulcrumLib.Processors.SymbolicAlgebra.Context;
+using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
+using GeometricAlgebraFulcrumLib.Utilities.Factories;
 using TextComposerLib.Text.Linear;
 
 namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVectorsLib.Outermorphism
@@ -12,8 +12,8 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
     {
         private readonly uint _inputGrade;
         private ISymbolicExpressionAtomic[,] _linearMapArray;
-        private IGaKVectorStorage<ISymbolicExpressionAtomic> _inputKVector;
-        private IGaKVectorStorage<ISymbolicExpressionAtomic> _outputKVector;
+        private KVectorStorage<ISymbolicExpressionAtomic> _inputKVector;
+        private KVectorStorage<ISymbolicExpressionAtomic> _outputKVector;
 
 
         internal MapMethodFileComposer(GaFuLLibraryComposer libGen, uint inGrade)
@@ -41,9 +41,9 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         protected override void DefineContextComputations(SymbolicContext context)
         {
             var outermorphism =
-                Processor.CreateComputedOutermorphism(_linearMapArray);
+                GeometricProcessor.CreateLinearMapOutermorphism(_linearMapArray);
 
-            _outputKVector = outermorphism.MapKVector(_inputKVector);
+            _outputKVector = outermorphism.OmMapKVector(_inputKVector);
 
             _outputKVector.SetIsOutput(true);
         }
@@ -73,9 +73,9 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
 
             TextComposer.Append(
                 Templates["om_apply"],
-                "double", GaLanguage.ScalarTypeName,
+                "double", GeoLanguage.ScalarTypeName,
                 "grade", _inputGrade,
-                "num", this.KvSpaceDimension(_inputGrade),
+                "num", this.KVectorSpaceDimension(_inputGrade),
                 "computations", computationsText
             );
 

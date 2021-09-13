@@ -1,10 +1,8 @@
 ﻿using System;
+using GeometricAlgebraFulcrumLib.Algebra.SymbolicAlgebra;
 using GeometricAlgebraFulcrumLib.CodeComposer.Languages;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean;
-using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions;
-using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
-using GeometricAlgebraFulcrumLib.Storage.Multivectors;
+using GeometricAlgebraFulcrumLib.Processors.SymbolicAlgebra.Context;
+using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using TextComposerLib.Text.Linear;
 using TextComposerLib.Text.Structured;
@@ -16,8 +14,8 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
     {
         private uint _inGrade;
         private uint _outGrade;
-        private IGaKVectorStorage<ISymbolicExpressionAtomic> _inputKVector;
-        private IGaKVectorStorage<ISymbolicExpressionAtomic> _outputKVector;
+        private KVectorStorage<ISymbolicExpressionAtomic> _inputKVector;
+        private KVectorStorage<ISymbolicExpressionAtomic> _outputKVector;
 
         internal GaFuLLanguageOperationSpecs OperationSpecs { get; }
 
@@ -44,13 +42,13 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             {
                 GaFuLLanguageOperationKind.UnaryGeometricProductSquared
                     => OperationSpecs.IsEuclidean
-                        ? Processor.EGp(_inputKVector, _inputKVector).GetKVectorPart(_outGrade)
-                        : Processor.Gp(_inputKVector, _inputKVector).GetKVectorPart(_outGrade),
+                        ? GeometricProcessor.EGp(_inputKVector, _inputKVector).GetKVectorPart(_outGrade)
+                        : GeometricProcessor.Gp(_inputKVector, _inputKVector).GetKVectorPart(_outGrade),
 
                 GaFuLLanguageOperationKind.UnaryGeometricProductReverse
                     => OperationSpecs.IsEuclidean
-                        ? Processor.EGp(_inputKVector, Processor.Reverse(_inputKVector)).GetKVectorPart(_outGrade)
-                        : Processor.Gp(_inputKVector, Processor.Reverse(_inputKVector)).GetKVectorPart(_outGrade),
+                        ? GeometricProcessor.EGp(_inputKVector, GeometricProcessor.Reverse(_inputKVector)).GetKVectorPart(_outGrade)
+                        : GeometricProcessor.Gp(_inputKVector, GeometricProcessor.Reverse(_inputKVector)).GetKVectorPart(_outGrade),
 
                 _ => throw new InvalidOperationException()
             };
@@ -86,13 +84,13 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             var computationsText = GenerateCode();
 
             var kvSpaceDim = 
-                this.KvSpaceDimension(_outGrade);
+                this.KVectorSpaceDimension(_outGrade);
 
             TextComposer.AppendAtNewLine(
                 Templates["self_bilinearproduct"],
                 "name", funcName,
                 "num", kvSpaceDim,
-                "double", GaLanguage.ScalarTypeName,
+                "double", GeoLanguage.ScalarTypeName,
                 "computations", computationsText
             );
         }
@@ -102,7 +100,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             var gpCaseText = new ListTextComposer("," + Environment.NewLine);
 
             var gradesList = 
-                Processor.GradesOfEGp(inputGrade, inputGrade);
+                GeometricProcessor.GradesOfEGp(inputGrade, inputGrade);
 
             foreach (var outputGrade in gradesList)
             {
@@ -127,7 +125,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
                 Templates["selfgp"],
                 "signature", CurrentNamespace,
                 "name", OperationSpecs.GetName(inputGrade, inputGrade),
-                "double", GaLanguage.ScalarTypeName,
+                "double", GeoLanguage.ScalarTypeName,
                 "selfgp_case", gpCaseText
             );
         }
@@ -138,7 +136,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
 
             var casesText = new ListTextComposer(Environment.NewLine);
 
-            foreach (var grade in Processor.Grades)
+            foreach (var grade in GeometricProcessor.Grades)
             {
                 casesText.Add(
                     casesTemplate,
@@ -160,7 +158,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         {
             GenerateBladeFileStartCode();
 
-            foreach (var grade in Processor.Grades)
+            foreach (var grade in GeometricProcessor.Grades)
                 GenerateMethods(grade);
 
             GenerateMainMethod();

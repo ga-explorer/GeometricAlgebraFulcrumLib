@@ -23,14 +23,14 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Composers
         public ProgressComposer Progress 
             => null;
 
-        public GaFuLLanguageServerBase GaLanguage 
-            => CodeComposer.GaLanguage;
+        public GaFuLLanguageServerBase GeoLanguage 
+            => CodeComposer.GeoLanguage;
 
         public CclLanguageCodeGeneratorBase CodeGenerator 
-            => CodeComposer.GaLanguage.CodeGenerator;
+            => CodeComposer.GeoLanguage.CodeGenerator;
 
         public CclLanguageSyntaxFactory SyntaxFactory 
-            => CodeComposer.GaLanguage.SyntaxFactory;
+            => CodeComposer.GeoLanguage.SyntaxFactory;
 
 
         protected GaFuLCodePartComposerBase(IGaFuLCodeComposer codeLibraryComposer)

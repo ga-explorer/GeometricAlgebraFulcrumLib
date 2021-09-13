@@ -3,9 +3,9 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using CodeComposerLib.SyntaxTree;
+using GeometricAlgebraFulcrumLib.Algebra.SymbolicAlgebra.Variables;
 using GeometricAlgebraFulcrumLib.CodeComposer.Languages;
-using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
-using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Variables;
+using GeometricAlgebraFulcrumLib.Processors.SymbolicAlgebra.Context;
 using TextComposerLib.Loggers.Progress;
 
 namespace GeometricAlgebraFulcrumLib.CodeComposer.Composers
@@ -29,9 +29,9 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Composers
             foreach (var tempVarName in tempVarNames)
                 contextCodeComposer.SyntaxList.Add(
                     contextCodeComposer
-                        .GaLanguage
+                        .GeoLanguage
                         .SyntaxFactory
-                        .DeclareLocalVariable(contextCodeComposer.GaLanguage.ScalarTypeName, tempVarName)
+                        .DeclareLocalVariable(contextCodeComposer.GeoLanguage.ScalarTypeName, tempVarName)
                     );
 
             contextCodeComposer.SyntaxList.AddEmptyLine();
@@ -40,17 +40,17 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Composers
         public static void DefaultGenerateCommentsBeforeComputations(GaFuLSymbolicContextCodeComposer contextCodeComposer)
         {
             contextCodeComposer.SyntaxList.Add(
-                contextCodeComposer.GaLanguage.SyntaxFactory.Comment(
+                contextCodeComposer.GeoLanguage.SyntaxFactory.Comment(
                     "Begin GA-FuL Symbolic Context Code Generation, " + DateTime.Now.ToString("O")
                 )
             );
 
             contextCodeComposer.SyntaxList.Add(
-                contextCodeComposer.GaLanguage.SyntaxFactory.Comment("SymbolicContext: " + contextCodeComposer.Context.ContextOptions.ContextName)
+                contextCodeComposer.GeoLanguage.SyntaxFactory.Comment("SymbolicContext: " + contextCodeComposer.Context.ContextOptions.ContextName)
             );
 
             contextCodeComposer.SyntaxList.Add(
-                contextCodeComposer.GaLanguage.SyntaxFactory.Comment(
+                contextCodeComposer.GeoLanguage.SyntaxFactory.Comment(
                     contextCodeComposer
                         .Context
                         .GetStatisticsReport()
@@ -82,14 +82,14 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Composers
                     .ToArray();
 
             contextCodeComposer.SyntaxList.Add(
-                contextCodeComposer.GaLanguage.SyntaxFactory.Comment()
+                contextCodeComposer.GeoLanguage.SyntaxFactory.Comment()
             );
 
             contextCodeComposer.SyntaxList.Add(
-                contextCodeComposer.GaLanguage.SyntaxFactory.Comment("SymbolicContext Binding Data: ")
+                contextCodeComposer.GeoLanguage.SyntaxFactory.Comment("SymbolicContext Binding Data: ")
             );
 
-            contextCodeComposer.SyntaxList.Add(contextCodeComposer.GaLanguage.SyntaxFactory.Comment(commentTextLines));
+            contextCodeComposer.SyntaxList.Add(contextCodeComposer.GeoLanguage.SyntaxFactory.Comment(commentTextLines));
 
             contextCodeComposer.SyntaxList.AddEmptyLine();
         }
@@ -97,7 +97,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Composers
         public static void DefaultGenerateCommentsAfterComputations(GaFuLSymbolicContextCodeComposer contextCodeComposer)
         {
             contextCodeComposer.SyntaxList.Add(
-                contextCodeComposer.GaLanguage.SyntaxFactory.Comment(
+                contextCodeComposer.GeoLanguage.SyntaxFactory.Comment(
                     "Finish GA-FuL Symbolic Context Code Generation, " + DateTime.Now.ToString("O")
                     )
                 );
@@ -118,13 +118,13 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Composers
         }
         
 
-        public GaFuLLanguageServerBase GaLanguage { get; }
+        public GaFuLLanguageServerBase GeoLanguage { get; }
 
         /// <summary>
         /// The expression converter object used in this class
         /// </summary>
         public GaFuLLanguageExpressionConverterBase ExpressionConverter 
-            => GaLanguage.ExpressionConverter;
+            => GeoLanguage.ExpressionConverter;
 
         public string ProgressSourceId 
             => "SymbolicContext Code Composer";
@@ -148,7 +148,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Composers
 
         internal GaFuLSymbolicContextCodeComposer([NotNull] GaFuLLanguageServerBase languageServer, [NotNull] SymbolicContext context)
         {
-            GaLanguage = languageServer;
+            GeoLanguage = languageServer;
             SyntaxList = new SteSyntaxElementsList();
             Context = context;
         }
@@ -180,7 +180,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Composers
             //Generate comment to show symbolic form for this computation
             if (ComposerOptions.AllowGenerateComputationComments)
                 SyntaxList.Add(
-                    GaLanguage
+                    GeoLanguage
                         .SyntaxFactory
                         .Comment(codeInfo.ComputedVariable.ToString())
                 );
@@ -188,10 +188,10 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Composers
             //Generate assignment statement for this computation
             var code =
                 codeInfo.ComputedVariable.IsIntermediateVariable && !codeInfo.ComputedVariable.IsReused
-                ? (ISyntaxTreeElement)GaLanguage
+                ? (ISyntaxTreeElement)GeoLanguage
                     .SyntaxFactory
                     .DeclareLocalVariable("var", codeInfo.ExternalName, codeInfo.RhsSimpleTextExpression)
-                : GaLanguage
+                : GeoLanguage
                     .SyntaxFactory
                     .AssignToLocalVariable(codeInfo.ExternalName, codeInfo.RhsSimpleTextExpression);
 
@@ -199,7 +199,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Composers
 
             //Add an empty line
             if (ComposerOptions.AllowGenerateComputationComments || codeInfo.ComputedVariable.IsOutputVariable)
-                SyntaxList.Add(GaLanguage.SyntaxFactory.EmptyLine());
+                SyntaxList.Add(GeoLanguage.SyntaxFactory.EmptyLine());
         }
 
         /// <summary>
@@ -221,7 +221,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Composers
                 {
                     ComputedVariable = computedVar,
                     RhsSimpleTextExpression = rhsExprCode,
-                    LanguageServer = GaLanguage,
+                    LanguageServer = GeoLanguage,
                     EnableCodeGeneration = true
                 };
 
@@ -287,7 +287,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Composers
 
             //Un-parse the SyntaxList into the final code
             var codeText = 
-                GaLanguage.CodeGenerator.GenerateCode(SyntaxList);
+                GeoLanguage.CodeGenerator.GenerateCode(SyntaxList);
 
             this.ReportFinish(progressId, codeText);
 

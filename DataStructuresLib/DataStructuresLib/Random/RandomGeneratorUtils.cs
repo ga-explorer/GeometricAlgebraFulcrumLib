@@ -14,14 +14,14 @@ namespace DataStructuresLib.Random
     /// </summary>
     public static class RandomGeneratorUtils
     {
-        public static double GaussianPdf(this double x, double mean = 0, double standardDeviation = 1)
+        public static double GeoussianPdf(this double x, double mean = 0, double standardDeviation = 1)
         {
             var d = 1d / (Math.Sqrt(2 * Math.PI) * standardDeviation);
 
             return d * Math.Exp(-0.5d * Math.Pow((x - mean) / standardDeviation, 2));
         }
 
-        public static IEnumerable<double> GaussianPdf(this IEnumerable<double> xValues, double mean = 0, double standardDeviation = 1)
+        public static IEnumerable<double> GeoussianPdf(this IEnumerable<double> xValues, double mean = 0, double standardDeviation = 1)
         {
             var d = 1d / (Math.Sqrt(2 * Math.PI) * standardDeviation);
 
@@ -394,31 +394,31 @@ namespace DataStructuresLib.Random
         }
         #endregion
 
-        #region ---- Gaussian ----
+        #region ---- Geoussian ----
         /// <summary>
         /// Returns a normally-distributed double value with mean 0 and standard deviation 1
         /// </summary>
-        public static double NextGaussian(this System.Random random)
+        public static double NextGeoussian(this System.Random random)
         {
             if (random == null) { throw new ArgumentNullException(nameof(random)); }
 
-            var nextGaussianRandom = random as INextGaussianRandom;
-            if (nextGaussianRandom != null)
+            var nextGeoussianRandom = random as INextGeoussianRandom;
+            if (nextGeoussianRandom != null)
             {
-                return nextGaussianRandom.NextGaussian();
+                return nextGeoussianRandom.NextGeoussian();
             }
 
             double result, ignored;
-            random.NextTwoGaussians(out result, out ignored);
+            random.NextTwoGeoussians(out result, out ignored);
             return result;
         }
 
-        private interface INextGaussianRandom
+        private interface INextGeoussianRandom
         {
-            double NextGaussian();
+            double NextGeoussian();
         }
 
-        private static void NextTwoGaussians(this System.Random random, out double value1, out double value2)
+        private static void NextTwoGeoussians(this System.Random random, out double value1, out double value2)
         {
             double v1, v2, s;
             do
@@ -495,7 +495,7 @@ namespace DataStructuresLib.Random
         /// </summary>
         public static int Next(int minValue, int maxValue) => ThreadLocalRandom.Current.Next(minValue, maxValue);
 
-        private sealed class SingletonRandom : System.Random, INextGaussianRandom
+        private sealed class SingletonRandom : System.Random, INextGeoussianRandom
         {
             public static readonly SingletonRandom Instance = new SingletonRandom();
 
@@ -513,10 +513,10 @@ namespace DataStructuresLib.Random
 
             protected override double Sample() => ThreadLocalRandom.Current.NextDouble();
 
-            double INextGaussianRandom.NextGaussian() => ThreadLocalRandom.Current.NextGaussian();
+            double INextGeoussianRandom.NextGeoussian() => ThreadLocalRandom.Current.NextGeoussian();
         }
 
-        private sealed class ThreadLocalRandom : System.Random, INextGaussianRandom
+        private sealed class ThreadLocalRandom : System.Random, INextGeoussianRandom
         {
             private static readonly DateTime SeedTime = DateTime.UtcNow;
 
@@ -530,20 +530,20 @@ namespace DataStructuresLib.Random
             {
             }
             
-            private double? _nextNextGaussian;
+            private double? _nextNextGeoussian;
 
-            public double NextGaussian()
+            public double NextGeoussian()
             {
-                if (this._nextNextGaussian.HasValue)
+                if (this._nextNextGeoussian.HasValue)
                 {
-                    var result = this._nextNextGaussian.Value;
-                    this._nextNextGaussian = null;
+                    var result = this._nextNextGeoussian.Value;
+                    this._nextNextGeoussian = null;
                     return result;
                 }
 
                 double next, nextNext;
-                this.NextTwoGaussians(out next, out nextNext);
-                this._nextNextGaussian = nextNext;
+                this.NextTwoGeoussians(out next, out nextNext);
+                this._nextNextGeoussian = nextNext;
                 return next;
             }
         }
@@ -563,7 +563,7 @@ namespace DataStructuresLib.Random
         #endregion
         
         #region ---- NextBits Random ----
-        private abstract class NextBitsRandom : System.Random, INextGaussianRandom
+        private abstract class NextBitsRandom : System.Random, INextGeoussianRandom
         {
             // pass through the seed just in case
             protected NextBitsRandom(int seed) : base(seed) { }
@@ -674,20 +674,20 @@ namespace DataStructuresLib.Random
             }
             #endregion
 
-            private double? _nextNextGaussian;
+            private double? _nextNextGeoussian;
 
-            double INextGaussianRandom.NextGaussian()
+            double INextGeoussianRandom.NextGeoussian()
             {
-                if (this._nextNextGaussian.HasValue)
+                if (this._nextNextGeoussian.HasValue)
                 {
-                    var result = this._nextNextGaussian.Value;
-                    this._nextNextGaussian = null;
+                    var result = this._nextNextGeoussian.Value;
+                    this._nextNextGeoussian = null;
                     return result;
                 }
 
                 double next, nextNext;
-                this.NextTwoGaussians(out next, out nextNext);
-                this._nextNextGaussian = nextNext;
+                this.NextTwoGeoussians(out next, out nextNext);
+                this._nextNextGeoussian = nextNext;
                 return next;
             }
         }

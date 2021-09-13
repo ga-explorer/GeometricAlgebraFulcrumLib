@@ -1,9 +1,9 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.Outermorphisms;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms;
 
 namespace GeometricAlgebraFulcrumLib.Geometry.Versors
 {
-    public interface IGaVersor<T> : 
-        IGaAutomorphism<T>
+    public interface IGeoVersor<T> : 
+        IAutomorphism<T>
     {
 
     }

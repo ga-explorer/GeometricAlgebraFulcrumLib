@@ -1,26 +1,27 @@
-﻿using GeometricAlgebraFulcrumLib.Storage.Multivectors;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
+using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra.Multivectors;
 
 namespace GeometricAlgebraFulcrumLib.Geometry.Subspaces
 {
-    public interface IGaSubspace<T> : 
-        IGaGeometry<T>
+    public interface IGeoSubspace<T> : 
+        IGeometricAlgebraElement<T>
     {
         uint SubspaceDimension { get; }
 
-        IGaKVectorStorage<T> Blade { get; }
+        KVectorStorage<T> Blade { get; }
 
-        IGaKVectorStorage<T> BladeInverse { get; }
+        KVectorStorage<T> BladeInverse { get; }
 
         T BladeScalarProductSquared { get; }
 
-        IGaMultivectorStorage<T> Project(IGaMultivectorStorage<T> mv);
+        IMultivectorStorage<T> Project(IMultivectorStorage<T> mv);
 
-        IGaMultivectorStorage<T> Reflect(IGaMultivectorStorage<T> mv);
+        IMultivectorStorage<T> Reflect(IMultivectorStorage<T> mv);
 
-        IGaMultivectorStorage<T> Rotate(IGaMultivectorStorage<T> mv);
+        IMultivectorStorage<T> Rotate(IMultivectorStorage<T> mv);
 
-        IGaMultivectorStorage<T> VersorProduct(IGaMultivectorStorage<T> mv);
+        IMultivectorStorage<T> VersorProduct(IMultivectorStorage<T> mv);
 
-        IGaMultivectorStorage<T> Complement(IGaMultivectorStorage<T> mv);
+        IMultivectorStorage<T> Complement(IMultivectorStorage<T> mv);
     }
 }

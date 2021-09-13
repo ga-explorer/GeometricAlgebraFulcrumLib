@@ -1,59 +1,59 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
-  <Interface Name="GeometricAlgebraFulcrumLib.Storage.IGaMultivectorStorage" Collapsed="true">
+  <Interface Name="GeometricAlgebraFulcrumLib.Storage.IMultivectorStorage" Collapsed="true">
     <Position X="5" Y="2" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AQFAAIAQAIgACAACAAAAAAAAgEAAAQAEAAAAABIIEAA=</HashCode>
-      <FileName>Storage\IGaMultivectorStorage.cs</FileName>
+      <FileName>Storage\IMultivectorStorage.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="GeometricAlgebraFulcrumLib.Storage.IGaMultivectorStorage&lt;T&gt;" Collapsed="true">
+  <Interface Name="GeometricAlgebraFulcrumLib.Storage.IMultivectorStorage&lt;T&gt;" Collapsed="true">
     <Position X="5" Y="3.25" Width="2.25" />
     <TypeIdentifier>
       <HashCode>IAAAQCgAAoAECAFQAAGAEAABYAAIggBgQAgOIACAICQ=</HashCode>
-      <FileName>Storage\IGaMultivectorStorage.cs</FileName>
+      <FileName>Storage\IMultivectorStorage.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="GeometricAlgebraFulcrumLib.Storage.IGaMultivectorGradedStorage&lt;T&gt;" Collapsed="true">
+  <Interface Name="GeometricAlgebraFulcrumLib.Storage.IMultivectorGradedStorage&lt;T&gt;" Collapsed="true">
     <Position X="3" Y="4.75" Width="2.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Storage\IGaMultivectorGradedStorage.cs</FileName>
+      <FileName>Storage\IMultivectorGradedStorage.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="GeometricAlgebraFulcrumLib.Storage.IGaMultivectorSparseStorage&lt;T&gt;" Collapsed="true">
+  <Interface Name="GeometricAlgebraFulcrumLib.Storage.MultivectorSparseStorage&lt;T&gt;" Collapsed="true">
     <Position X="6.75" Y="4.75" Width="2.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Storage\IGaMultivectorSparseStorage.cs</FileName>
+      <FileName>Storage\MultivectorSparseStorage.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="GeometricAlgebraFulcrumLib.Storage.IGaKVectorStorage&lt;T&gt;" Collapsed="true">
+  <Interface Name="GeometricAlgebraFulcrumLib.Storage.KVectorStorage&lt;T&gt;" Collapsed="true">
     <Position X="3.25" Y="6" Width="2.25" />
     <TypeIdentifier>
       <HashCode>EAAAAAAAAAABQAAAAgAAAAAABAAAACQAAACAAAEgAAA=</HashCode>
-      <FileName>Storage\IGaKVectorStorage.cs</FileName>
+      <FileName>Storage\KVectorStorage.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="GeometricAlgebraFulcrumLib.Storage.IGaBivectorStorage&lt;T&gt;" Collapsed="true">
+  <Interface Name="GeometricAlgebraFulcrumLib.Storage.BivectorStorage&lt;T&gt;" Collapsed="true">
     <Position X="8" Y="7.5" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAQAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAEAAA=</HashCode>
-      <FileName>Storage\IGaBivectorStorage.cs</FileName>
+      <FileName>Storage\BivectorStorage.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="GeometricAlgebraFulcrumLib.Storage.IGaScalarStorage&lt;T&gt;" Collapsed="true">
+  <Interface Name="GeometricAlgebraFulcrumLib.Storage.GeoScalarStorage&lt;T&gt;" Collapsed="true">
     <Position X="3.5" Y="7.5" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Storage\IGaScalarStorage.cs</FileName>
+      <FileName>Storage\GeoScalarStorage.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="GeometricAlgebraFulcrumLib.Storage.IGaVectorStorage&lt;T&gt;" Collapsed="true">
+  <Interface Name="GeometricAlgebraFulcrumLib.Storage.VectorStorage&lt;T&gt;" Collapsed="true">
     <Position X="5.75" Y="7.5" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Storage\IGaVectorStorage.cs</FileName>
+      <FileName>Storage\VectorStorage.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Font Name="Segoe UI" Size="9" />

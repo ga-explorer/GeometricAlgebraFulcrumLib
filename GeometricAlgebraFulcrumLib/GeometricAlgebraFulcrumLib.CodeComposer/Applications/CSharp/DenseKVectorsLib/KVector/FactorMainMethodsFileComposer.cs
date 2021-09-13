@@ -19,22 +19,22 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         {
             var casesText = new ListTextComposer(Environment.NewLine);
 
-            var maxIndex = this.KvSpaceDimension(grade) - 1;
+            var maxIndex = this.KVectorSpaceDimension(grade) - 1;
 
             for (var index = 1UL; index < maxIndex; index++)
                 casesText.Add(
                     Templates["maxcoefid_case"],
                     "index", index,
-                    "id", Processor.BasisBladeId(grade, index)
+                    "id", GeometricProcessor.BasisBladeId(grade, index)
                 );
 
             TextComposer.Append(
                 Templates["maxcoefid"],
                 "grade", grade,
-                "double", GaLanguage.ScalarTypeName,
-                "initid", Processor.BasisBladeId(grade, 0),
+                "double", GeoLanguage.ScalarTypeName,
+                "initid", GeometricProcessor.BasisBladeId(grade, 0),
                 "maxindex", maxIndex,
-                "maxid", Processor.BasisBladeId(grade, maxIndex),
+                "maxid", GeometricProcessor.BasisBladeId(grade, maxIndex),
                 "maxcoefid_case", casesText
             );
         }
@@ -43,10 +43,10 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         {
             var casesText = new ListTextComposer(Environment.NewLine);
 
-            for (var index = 1UL; index < Processor.KvSpaceDimension(grade); index++)
+            for (var index = 1UL; index < GeometricProcessor.KVectorSpaceDimension(grade); index++)
                 casesText.Add(
                     Templates["factorgrade_case"].GenerateUsing(
-                        Processor.BasisBladeId(grade, index)
+                        GeometricProcessor.BasisBladeId(grade, index)
                         )
                     );
 
@@ -54,7 +54,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
                 Templates["factorgrade"],
                 "signature", CurrentNamespace,
                 "grade", grade,
-                "double", GaLanguage.ScalarTypeName,
+                "double", GeoLanguage.ScalarTypeName,
                 "factorgrade_case", casesText
             );
         }
@@ -80,7 +80,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
                 Templates["factor_main"],
                 "signature", CurrentNamespace,
                 "maxgrade", VSpaceDimension,
-                "maxid", Processor.MaxBasisBladeId,
+                "maxid", GeometricProcessor.MaxBasisBladeId,
                 "factor_main_case", casesText
             );
         }

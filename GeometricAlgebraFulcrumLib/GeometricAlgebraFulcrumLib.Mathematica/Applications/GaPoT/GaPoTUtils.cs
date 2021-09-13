@@ -1,18 +1,18 @@
 ﻿using System.Collections.Generic;
-using GeometricAlgebraFulcrumLib.Algebra.Outermorphisms;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors;
 using GeometricAlgebraFulcrumLib.Geometry.Frames;
-using GeometricAlgebraFulcrumLib.Geometry.Rotors;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors;
-using GeometricAlgebraFulcrumLib.Processing.Scalars;
-using GeometricAlgebraFulcrumLib.Storage.Multivectors;
+using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
+using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
 namespace GeometricAlgebraFulcrumLib.Mathematica.Applications.GaPoT
 {
-    public static class GaPoTUtils
+    public static class GeoPoTUtils
     {
-        public static T[,] CreateClarkeArray3D<T>(IScalarProcessor<T> processor)
+        public static T[,] CreateClarkeArray3D<T>(IScalarAlgebraProcessor<T> processor)
         {
             var clarkeArray = new T[3, 3];
 
@@ -32,10 +32,10 @@ namespace GeometricAlgebraFulcrumLib.Mathematica.Applications.GaPoT
                 processor.Divide(2, 3)
             );
 
-            return LaMatrixUtils.Times(processor, scalar, clarkeArray);
+            return LinArrayUtils.Times(processor, scalar, clarkeArray);
         }
 
-        public static T[,] CreateClarkeArray5D<T>(IScalarProcessor<T> processor)
+        public static T[,] CreateClarkeArray5D<T>(IScalarAlgebraProcessor<T> processor)
         {
             var clarkeArray = new T[5, 5];
 
@@ -73,10 +73,10 @@ namespace GeometricAlgebraFulcrumLib.Mathematica.Applications.GaPoT
                 processor.Divide(2, 5)
             );
 
-            return LaMatrixUtils.Times(processor, scalar, clarkeArray);
+            return LinArrayUtils.Times(processor, scalar, clarkeArray);
         }
 
-        public static T[,] CreateClarkeArray6D<T>(IScalarProcessor<T> processor)
+        public static T[,] CreateClarkeArray6D<T>(IScalarAlgebraProcessor<T> processor)
         {
             var clarkeArray = new T[6, 6];
 
@@ -124,7 +124,7 @@ namespace GeometricAlgebraFulcrumLib.Mathematica.Applications.GaPoT
 
             var scalar = processor.SqrtRational(2,6);
 
-            return LaMatrixUtils.Times(processor, scalar, clarkeArray);
+            return LinArrayUtils.Times(processor, scalar, clarkeArray);
         }
 
         /// <summary>
@@ -133,15 +133,15 @@ namespace GeometricAlgebraFulcrumLib.Mathematica.Applications.GaPoT
         /// <param name="processor"></param>
         /// <param name="vectorsCount"></param>
         /// <returns></returns>
-        private static T[,] CreateClarkeArrayOdd<T>(IGaProcessor<T> processor, int vectorsCount)
+        private static T[,] CreateClarkeArrayOdd<T>(IGeometricAlgebraProcessor<T> processor, int vectorsCount)
         {
             var clarkeArray = new T[vectorsCount, vectorsCount];
 
             var m = vectorsCount;
             var s = processor.Sqrt(
                 processor.Divide(
-                    processor.GetScalarFromInteger(2),
-                    processor.GetScalarFromInteger(m)
+                    processor.GetScalarFromNumber(2),
+                    processor.GetScalarFromNumber(m)
                 )
             ); //$"Sqrt[2 / {m}]";
 
@@ -196,7 +196,7 @@ namespace GeometricAlgebraFulcrumLib.Mathematica.Applications.GaPoT
         /// <param name="processor"></param>
         /// <param name="vectorsCount"></param>
         /// <returns></returns>
-        private static T[,] CreateClarkeArrayEven<T>(IGaProcessor<T> processor, int vectorsCount)
+        private static T[,] CreateClarkeArrayEven<T>(IGeometricAlgebraProcessor<T> processor, int vectorsCount)
         {
             var clarkeArray = new T[vectorsCount, vectorsCount];
 
@@ -256,7 +256,7 @@ namespace GeometricAlgebraFulcrumLib.Mathematica.Applications.GaPoT
             return clarkeArray;
         }
 
-        public static T[,] CreateClarkeArray<T>(this IGaProcessor<T> processor, int vectorsCount)
+        public static T[,] CreateClarkeArray<T>(this IGeometricAlgebraProcessor<T> processor, int vectorsCount)
         {
             return vectorsCount % 2 == 0 
                 ? CreateClarkeArrayEven(processor, vectorsCount) 
@@ -269,24 +269,24 @@ namespace GeometricAlgebraFulcrumLib.Mathematica.Applications.GaPoT
         /// <param name="processor"></param>
         /// <param name="vectorsCount"></param>
         /// <returns></returns>
-        public static GaVectorsFrame<T> CreateClarkeFrame<T>(this IGaProcessor<T> processor, int vectorsCount)
+        public static GeoFreeFrame<T> CreateClarkeFrame<T>(this IGeometricAlgebraProcessor<T> processor, int vectorsCount)
         {
             var clarkeMapArray =
                 CreateClarkeArray(processor, vectorsCount);
 
-            return processor.CreateVectorsFrame(
-                GaVectorsFrameKind.OrthogonalUnitVectors, 
+            return processor.CreateFreeFrame(
+                GeoFreeFrameKind.OrthogonalUnitVectors, 
                 clarkeMapArray.ColumnsToVectorStoragesArray(processor)
             );
         }
 
-        public static IGaOutermorphism<T> CreateClarkeMap<T>(this IGaProcessor<T> processor, int vectorsCount)
+        public static IOutermorphism<T> CreateClarkeMap<T>(this IGeometricAlgebraProcessor<T> processor, int vectorsCount)
         {
             var clarkeMapArray =
                 CreateClarkeArray(processor, vectorsCount);
 
             var basisVectorImagesDictionary = 
-                new Dictionary<ulong, IGaVectorStorage<T>>();
+                new Dictionary<ulong, VectorStorage<T>>();
 
             for (var i = 0; i < vectorsCount; i++)
                 basisVectorImagesDictionary.Add(
@@ -294,19 +294,19 @@ namespace GeometricAlgebraFulcrumLib.Mathematica.Applications.GaPoT
                     clarkeMapArray.ColumnToVectorStorage(i, processor)
                 );
 
-            return processor.CreateComputedOutermorphism(
-                (uint) vectorsCount,
+            return processor.CreateLinearMapOutermorphism(
+                //(uint) vectorsCount,
                 basisVectorImagesDictionary
             );
         }
 
-        public static GaPureRotor<T> CreateSimpleKirchhoffRotor<T>(this IGaProcessor<T> processor, uint vSpaceDimension)
+        public static PureRotor<T> CreateSimpleKirchhoffRotor<T>(this IGeometricAlgebraProcessor<T> processor, uint vSpaceDimension)
         {
             var v1 = processor.CreateStorageVectorUnitOnes(
                 (int) vSpaceDimension
             );
 
-            var v2 = processor.CreateGaVectorStorage(
+            var v2 = processor.CreateVectorTermStorage(
                 vSpaceDimension - 1,
                 processor.ScalarOne
             );

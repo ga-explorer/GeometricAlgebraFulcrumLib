@@ -36,8 +36,8 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
 
             var casesText = new ListTextComposer(Environment.NewLine);
 
-            foreach (var grade1 in Processor.Grades)
-                foreach (var grade2 in Processor.Grades)
+            foreach (var grade1 in GeometricProcessor.Grades)
+                foreach (var grade2 in GeometricProcessor.Grades)
                 {
                     if (IsLegalGrade(grade1, grade2) == false)
                         continue;
@@ -46,7 +46,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
                         GetFinalGrade(grade1, grade2);
 
                     var id = 
-                        grade1 + grade2 * Processor.GradesCount;
+                        grade1 + grade2 * GeometricProcessor.GradesCount;
 
                     var name = OperationSpecs.GetName(
                         grade1, grade2, grade

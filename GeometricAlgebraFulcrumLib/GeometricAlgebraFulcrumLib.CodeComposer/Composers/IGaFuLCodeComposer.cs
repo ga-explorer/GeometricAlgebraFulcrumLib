@@ -1,13 +1,13 @@
 ﻿using CodeComposerLib;
 using GeometricAlgebraFulcrumLib.CodeComposer.Languages;
-using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
+using GeometricAlgebraFulcrumLib.Processors.SymbolicAlgebra.Context;
 
 namespace GeometricAlgebraFulcrumLib.CodeComposer.Composers
 {
     public interface IGaFuLCodeComposer :
         ICclCodeComposer
     {
-        GaFuLLanguageServerBase GaLanguage { get; }
+        GaFuLLanguageServerBase GeoLanguage { get; }
 
         SymbolicContextOptions DefaultContextOptions { get; }
 

@@ -6,11 +6,11 @@ namespace GAPoTNumLib.Interop.MATLAB
     /// <summary>
     /// Used for exchanging sparse matrix data with MATLAB
     /// </summary>
-    public sealed class GaNumMatlabSparseMatrixData
+    public sealed class GeoNumMatlabSparseMatrixData
     {
-        public static GaNumMatlabSparseMatrixData CreateMatrix(int rowsCount, int columnsCount, int[] rowIndicesArray, int[] columnIndicesArray, double[] valuesArray)
+        public static GeoNumMatlabSparseMatrixData CreateMatrix(int rowsCount, int columnsCount, int[] rowIndicesArray, int[] columnIndicesArray, double[] valuesArray)
         {
-            return new GaNumMatlabSparseMatrixData(
+            return new GeoNumMatlabSparseMatrixData(
                 rowsCount,
                 columnsCount,
                 rowIndicesArray,
@@ -19,36 +19,36 @@ namespace GAPoTNumLib.Interop.MATLAB
             );
         }
 
-        public static GaNumMatlabSparseMatrixData CreateMatrix(int rowsCount, int columnsCount, int itemsCount)
+        public static GeoNumMatlabSparseMatrixData CreateMatrix(int rowsCount, int columnsCount, int itemsCount)
         {
-            return new GaNumMatlabSparseMatrixData(
+            return new GeoNumMatlabSparseMatrixData(
                 rowsCount,
                 columnsCount,
                 itemsCount
             );
         }
 
-        public static GaNumMatlabSparseMatrixData CreateColumnMatrix(int rowsCount, int itemsCount)
+        public static GeoNumMatlabSparseMatrixData CreateColumnMatrix(int rowsCount, int itemsCount)
         {
-            return new GaNumMatlabSparseMatrixData(
+            return new GeoNumMatlabSparseMatrixData(
                 rowsCount,
                 1,
                 itemsCount
             );
         }
 
-        public static GaNumMatlabSparseMatrixData CreateRowMatrix(int columnsCount, int itemsCount)
+        public static GeoNumMatlabSparseMatrixData CreateRowMatrix(int columnsCount, int itemsCount)
         {
-            return new GaNumMatlabSparseMatrixData(
+            return new GeoNumMatlabSparseMatrixData(
                 1,
                 columnsCount,
                 itemsCount
             );
         }
 
-        public static GaNumMatlabSparseMatrixData CreateSquareMatrix(int rowsCount, int itemsCount)
+        public static GeoNumMatlabSparseMatrixData CreateSquareMatrix(int rowsCount, int itemsCount)
         {
-            return new GaNumMatlabSparseMatrixData(
+            return new GeoNumMatlabSparseMatrixData(
                 rowsCount,
                 rowsCount,
                 itemsCount
@@ -70,7 +70,7 @@ namespace GAPoTNumLib.Interop.MATLAB
         public double[] ValuesArray { get; }
 
 
-        private GaNumMatlabSparseMatrixData(int rowsCount, int columnsCount, int itemsCount)
+        private GeoNumMatlabSparseMatrixData(int rowsCount, int columnsCount, int itemsCount)
         {
             if (rowsCount * columnsCount < itemsCount)
                 throw new InvalidOperationException();
@@ -82,7 +82,7 @@ namespace GAPoTNumLib.Interop.MATLAB
             ValuesArray = new double[itemsCount];
         }
 
-        private GaNumMatlabSparseMatrixData(int rowsCount, int columnsCount, int[] rowIndicesArray, int[] columnIndicesArray, double[] valuesArray)
+        private GeoNumMatlabSparseMatrixData(int rowsCount, int columnsCount, int[] rowIndicesArray, int[] columnIndicesArray, double[] valuesArray)
         {
             if (rowsCount * columnsCount < rowIndicesArray.Length)
                 throw new InvalidOperationException();
@@ -101,7 +101,7 @@ namespace GAPoTNumLib.Interop.MATLAB
         }
 
 
-        public GaNumMatlabSparseMatrixData SetItem(int sparseIndex, int row, int column, double value)
+        public GeoNumMatlabSparseMatrixData SetItem(int sparseIndex, int row, int column, double value)
         {
             Debug.Assert(
                 row >= 1 && row <= RowsCount, 
@@ -120,7 +120,7 @@ namespace GAPoTNumLib.Interop.MATLAB
             return this;
         }
 
-        public GaNumMatlabSparseMatrixData SetItem(int sparseIndex, int itemIndex, double value)
+        public GeoNumMatlabSparseMatrixData SetItem(int sparseIndex, int itemIndex, double value)
         {
             if (RowsCount == 1)
             {

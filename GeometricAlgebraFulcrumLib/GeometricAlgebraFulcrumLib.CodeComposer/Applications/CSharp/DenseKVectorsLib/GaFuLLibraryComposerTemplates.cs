@@ -2,8 +2,8 @@
 {
     public sealed partial class GaFuLLibraryComposer
     {
-        #region GaClcCode
-        internal const string GaClcCodeTemplates =
+        #region GeoClcCode
+        internal const string GeoClcCodeTemplates =
 @"
 delimiters < >
 

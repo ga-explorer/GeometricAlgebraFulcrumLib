@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Basis;
-using GeometricAlgebraFulcrumLib.Processing.Scalars;
-using GeometricAlgebraFulcrumLib.Storage;
-using GeometricAlgebraFulcrumLib.Storage.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra.Multivectors;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Composers
 {
     public interface ITextComposer<T>
     {
-        IScalarProcessor<T> ScalarProcessor { get; }
+        IScalarAlgebraProcessor<T> ScalarProcessor { get; }
 
         string GetBasisVectorText(ulong index);
 
@@ -16,7 +16,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
 
         string GetBasisBladeText(uint grade, ulong index);
 
-        string GetBasisBladeText(GaBasisBlade basisBlade);
+        string GetBasisBladeText(BasisBlade basisBlade);
 
         string GetBasisBladeText(IEnumerable<ulong> indexList);
 
@@ -32,9 +32,9 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
 
         string GetTermText(GradeIndexScalarRecord<T> idScalarPair);
 
-        string GetTermText(GaBasisBlade basisBlade, T scalar);
+        string GetTermText(BasisBlade basisBlade, T scalar);
 
-        string GetTermText(GaBasisTerm<T> term);
+        string GetTermText(BasisTerm<T> term);
 
         string GetTermsText(IEnumerable<IndexScalarRecord<T>> idScalarTuples);
 
@@ -42,12 +42,12 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
 
         string GetTermsText(uint grade, IEnumerable<IndexScalarRecord<T>> indexScalarTuples);
 
-        string GetTermsText(IEnumerable<GaBasisTerm<T>> terms);
+        string GetTermsText(IEnumerable<BasisTerm<T>> terms);
 
         string GetArrayText(IReadOnlyList<T> array);
 
         string GetArrayText(T[,] array);
 
-        string GetMultivectorText(IGaMultivectorStorage<T> storage);
+        string GetMultivectorText(IMultivectorStorage<T> storage);
     }
 }

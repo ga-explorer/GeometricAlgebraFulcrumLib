@@ -1,5 +1,5 @@
 ﻿using GeometricAlgebraFulcrumLib.CodeComposer.Languages;
-using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
+using GeometricAlgebraFulcrumLib.Processors.SymbolicAlgebra.Context;
 using TextComposerLib.Files;
 using TextComposerLib.Text.Linear;
 
@@ -56,7 +56,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Composers
 
             ContextCodeComposer = 
                 new GaFuLSymbolicContextCodeComposer(
-                    GaLanguage, 
+                    GeoLanguage, 
                     Context, 
                     DefaultContextCodeComposerOptions
                 );

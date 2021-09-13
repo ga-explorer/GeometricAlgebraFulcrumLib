@@ -15,7 +15,7 @@ namespace DataStructuresLib.Random
         /// <summary>
         /// The characteristic exponent alpha lies in the range (0, 2] and determines
         /// the rate at which the tails of the distribution taper off. When alpha = 2,
-        /// a Gaussian distribution results, with mean mu and variance 2 sigma squared.
+        /// a Geoussian distribution results, with mean mu and variance 2 sigma squared.
         /// When alpha is less than 2, the variance is infinite. When alpha is more than 1,
         /// the mean of the distribution exists and is equal to mu.
         /// </summary>
@@ -27,7 +27,7 @@ namespace DataStructuresLib.Random
         /// range [-1, 1]. When beta is positive, the distribution is skewed to the right.
         /// When beta is negative, it is skewed to the left. When beta = 0, the distribution
         /// is symmetrical. As alpha approaches 2, beta loses its effect and the distribution
-        /// approaches the symmetrical Gaussian distribution regardless of beta.
+        /// approaches the symmetrical Geoussian distribution regardless of beta.
         /// </summary>
         public double Beta { get; private set; } 
             = 0d;
@@ -57,7 +57,7 @@ namespace DataStructuresLib.Random
         }
 
 
-        public void SetAsGaussian(double mean = 0d, double standardDeviation = 1d)
+        public void SetAsGeoussian(double mean = 0d, double standardDeviation = 1d)
         {
             SetParameters(2d, standardDeviation / Math.Sqrt(2), 0d, mean);
         }

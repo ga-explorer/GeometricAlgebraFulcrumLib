@@ -1,6 +1,6 @@
 ﻿using CodeComposerLib.SyntaxTree.Expressions;
+using GeometricAlgebraFulcrumLib.Algebra.SymbolicAlgebra.Variables;
 using GeometricAlgebraFulcrumLib.CodeComposer.Languages;
-using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Variables;
 
 namespace GeometricAlgebraFulcrumLib.CodeComposer.Composers
 {

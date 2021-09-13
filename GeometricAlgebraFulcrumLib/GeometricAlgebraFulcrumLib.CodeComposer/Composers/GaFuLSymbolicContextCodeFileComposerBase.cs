@@ -1,4 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
+﻿using GeometricAlgebraFulcrumLib.Processors.SymbolicAlgebra.Context;
 
 namespace GeometricAlgebraFulcrumLib.CodeComposer.Composers
 {
@@ -52,7 +52,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Composers
 
             var symbolicContextCodeComposer = 
                 new GaFuLSymbolicContextCodeComposer(
-                    GaLanguage, 
+                    GeoLanguage, 
                     context, 
                     CodeComposer.DefaultContextCodeComposerOptions
                 );

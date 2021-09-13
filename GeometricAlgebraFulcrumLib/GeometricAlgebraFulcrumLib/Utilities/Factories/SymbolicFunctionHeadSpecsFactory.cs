@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Composite;
-using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
-using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.HeadSpecs;
+using GeometricAlgebraFulcrumLib.Algebra.SymbolicAlgebra.Composite;
+using GeometricAlgebraFulcrumLib.Algebra.SymbolicAlgebra.HeadSpecs;
+using GeometricAlgebraFulcrumLib.Processors.SymbolicAlgebra.Context;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Factories
 {

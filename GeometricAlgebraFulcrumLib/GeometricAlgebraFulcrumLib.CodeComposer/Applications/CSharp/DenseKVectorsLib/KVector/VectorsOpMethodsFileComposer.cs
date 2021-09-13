@@ -1,8 +1,7 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products;
-using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions;
-using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
-using GeometricAlgebraFulcrumLib.Storage.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.SymbolicAlgebra;
+using GeometricAlgebraFulcrumLib.Processors.SymbolicAlgebra.Context;
+using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using TextComposerLib.Text.Linear;
 using TextComposerLib.Text.Structured;
@@ -17,8 +16,8 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         GaFuLLibrarySymbolicContextFileComposerBase
     {
         private uint _outGrade;
-        private IGaVectorStorage<ISymbolicExpressionAtomic>[] _inputVectorsArray;
-        private IGaKVectorStorage<ISymbolicExpressionAtomic> _outputKVector;
+        private VectorStorage<ISymbolicExpressionAtomic>[] _inputVectorsArray;
+        private KVectorStorage<ISymbolicExpressionAtomic> _outputKVector;
 
 
         internal VectorsOpMethodsFileComposer(GaFuLLibraryComposer libGen)
@@ -30,7 +29,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         protected override void DefineContextParameters(SymbolicContext context)
         {
             _inputVectorsArray = 
-                new IGaVectorStorage<ISymbolicExpressionAtomic>[_outGrade];
+                new VectorStorage<ISymbolicExpressionAtomic>[_outGrade];
 
             for (var g = 0; g < _outGrade; g++)
             {
@@ -46,7 +45,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
 
         protected override void DefineContextComputations(SymbolicContext context)
         {
-            _outputKVector = Processor.Op(_inputVectorsArray);
+            _outputKVector = GeometricProcessor.Op(_inputVectorsArray);
 
             _outputKVector.SetIsOutput(true);
         }
@@ -75,16 +74,16 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
 
         private void GenerateVectorsOpFunction()
         {
-            //Each time this protected method is called the internal GaClcSymbolicContextCodeComposer is initialized,
+            //Each time this protected method is called the internal GeoClcSymbolicContextCodeComposer is initialized,
             //the bindings and target names are set, and the macro code is generated automatically.
             var computationsText = GenerateCode();
 
             TextComposer.Append(
                 Templates["op_vectors"],
                 "signature", CurrentNamespace,
-                "double", GaLanguage.ScalarTypeName,
+                "double", GeoLanguage.ScalarTypeName,
                 "grade", _outGrade,
-                "num", this.KvSpaceDimension(_outGrade),
+                "num", this.KVectorSpaceDimension(_outGrade),
                 "computations", computationsText
             );
         }

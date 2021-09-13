@@ -43,7 +43,7 @@ namespace DataStructuresLib.Extensions
                 dict.Remove(key);
         }
 
-        public static Dictionary<TKey, TValue> CopyToDictionary<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> pairsList)
+        public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> pairsList)
         {
             return pairsList.ToDictionary(
                 pair => pair.Key,
@@ -51,11 +51,19 @@ namespace DataStructuresLib.Extensions
             );
         }
 
-        public static Dictionary<TKey, TValue2> CopyToDictionary<TKey, TValue1, TValue2>(this IEnumerable<KeyValuePair<TKey, TValue1>> pairsList, Func<TValue1, TValue2> mappingFunc)
+        public static Dictionary<TKey, TValue2> ToDictionary<TKey, TValue1, TValue2>(this IEnumerable<KeyValuePair<TKey, TValue1>> pairsList, Func<TValue1, TValue2> mappingFunc)
         {
             return pairsList.ToDictionary(
                 pair => pair.Key,
                 pair => mappingFunc(pair.Value)
+            );
+        }
+
+        public static Dictionary<TKey, TValue2> ToDictionary<TKey, TValue1, TValue2>(this IEnumerable<KeyValuePair<TKey, TValue1>> pairsList, Func<TKey, TValue1, TValue2> mappingFunc)
+        {
+            return pairsList.ToDictionary(
+                pair => pair.Key,
+                pair => mappingFunc(pair.Key, pair.Value)
             );
         }
 

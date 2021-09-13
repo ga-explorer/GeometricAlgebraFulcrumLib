@@ -763,22 +763,22 @@ namespace EuclideanGeometryLib.BasicMath
             var z = point.Z;
 
             var absErrorX =
-                (Float64Utils.Gamma3 + 1) *
+                (Float64Utils.Geomma3 + 1) *
                 (Math.Abs(mapMatrix[0, 0]) * ptError.X + Math.Abs(mapMatrix[0, 1]) * ptError.Y +
                  Math.Abs(mapMatrix[0, 2]) * ptError.Z) +
-                Float64Utils.Gamma3 * (Math.Abs(mapMatrix[0, 0] * x) + Math.Abs(mapMatrix[0, 1] * y) +
+                Float64Utils.Geomma3 * (Math.Abs(mapMatrix[0, 0] * x) + Math.Abs(mapMatrix[0, 1] * y) +
                                        Math.Abs(mapMatrix[0, 2] * z) + Math.Abs(mapMatrix[0, 3]));
             var absErrorY =
-                (Float64Utils.Gamma3 + 1) *
+                (Float64Utils.Geomma3 + 1) *
                 (Math.Abs(mapMatrix[1, 0]) * ptError.X + Math.Abs(mapMatrix[1, 1]) * ptError.Y +
                  Math.Abs(mapMatrix[1, 2]) * ptError.Z) +
-                Float64Utils.Gamma3 * (Math.Abs(mapMatrix[1, 0] * x) + Math.Abs(mapMatrix[1, 1] * y) +
+                Float64Utils.Geomma3 * (Math.Abs(mapMatrix[1, 0] * x) + Math.Abs(mapMatrix[1, 1] * y) +
                                        Math.Abs(mapMatrix[1, 2] * z) + Math.Abs(mapMatrix[1, 3]));
             var absErrorZ =
-                (Float64Utils.Gamma3 + 1) *
+                (Float64Utils.Geomma3 + 1) *
                 (Math.Abs(mapMatrix[2, 0]) * ptError.X + Math.Abs(mapMatrix[2, 1]) * ptError.Y +
                  Math.Abs(mapMatrix[2, 2]) * ptError.Z) +
-                Float64Utils.Gamma3 * (Math.Abs(mapMatrix[2, 0] * x) + Math.Abs(mapMatrix[2, 1] * y) +
+                Float64Utils.Geomma3 * (Math.Abs(mapMatrix[2, 0] * x) + Math.Abs(mapMatrix[2, 1] * y) +
                                        Math.Abs(mapMatrix[2, 2] * z) + Math.Abs(mapMatrix[2, 3]));
 
             var p = mapMatrix.MapProjectivePoint(point);

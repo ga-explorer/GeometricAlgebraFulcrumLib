@@ -2,15 +2,15 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using DataStructuresLib;
+using GeometricAlgebraFulcrumLib.Algebra.SymbolicAlgebra;
+using GeometricAlgebraFulcrumLib.Algebra.SymbolicAlgebra.Composite;
+using GeometricAlgebraFulcrumLib.Algebra.SymbolicAlgebra.HeadSpecs;
+using GeometricAlgebraFulcrumLib.Algebra.SymbolicAlgebra.Numbers;
+using GeometricAlgebraFulcrumLib.Algebra.SymbolicAlgebra.Variables;
 using GeometricAlgebraFulcrumLib.Mathematica.Mathematica;
 using GeometricAlgebraFulcrumLib.Mathematica.Mathematica.ExprFactory;
-using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions;
-using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Composite;
-using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
-using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Evaluators;
-using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.HeadSpecs;
-using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Numbers;
-using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Variables;
+using GeometricAlgebraFulcrumLib.Processors.SymbolicAlgebra.Context;
+using GeometricAlgebraFulcrumLib.Processors.SymbolicAlgebra.Evaluators;
 using Microsoft.CSharp.RuntimeBinder;
 using Wolfram.NETLink;
 
@@ -45,10 +45,22 @@ namespace GeometricAlgebraFulcrumLib.Mathematica.SymbolicExpressions
             return expr.NumberHeadSpecs switch
             {
                 SymbolicHeadSpecsNumberFloat64 n => 
-                    n.NumberValue.ToExpr(),
+                    n.NumberFloat64Value.ToExpr(),
+
+                SymbolicHeadSpecsNumberFloat32 n => 
+                    n.NumberFloat64Value.ToExpr(),
 
                 SymbolicHeadSpecsNumberInt32 n => 
-                    n.NumberValueInt32.ToExpr(),
+                    n.NumberInt32Value.ToExpr(),
+
+                SymbolicHeadSpecsNumberUInt32 n => 
+                    n.NumberUInt32Value.ToExpr(),
+
+                SymbolicHeadSpecsNumberInt64 n => 
+                    n.NumberInt64Value.ToExpr(),
+
+                SymbolicHeadSpecsNumberUInt64 n => 
+                    n.NumberUInt64Value.ToExpr(),
 
                 SymbolicHeadSpecsNumberRational n => 
                     Mfs.Rational[n.Numerator.ToExpr(), n.Denominator.ToExpr()],

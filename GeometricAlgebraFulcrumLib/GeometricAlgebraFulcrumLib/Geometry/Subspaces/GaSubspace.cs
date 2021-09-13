@@ -1,26 +1,26 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using DataStructuresLib.BitManipulation;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean;
-using GeometricAlgebraFulcrumLib.Storage.Multivectors;
+using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
+using GeometricAlgebraFulcrumLib.Processors.LinearAlgebra;
+using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
 namespace GeometricAlgebraFulcrumLib.Geometry.Subspaces
 {
-    public sealed class GaSubspace<T> 
-        : IGaSubspace<T>
+    public sealed class GeoSubspace<T> 
+        : IGeoSubspace<T>
     {
-        public static GaSubspace<T> Create(IGaProcessor<T> processor, IGaKVectorStorage<T> bladeStorage)
+        public static GeoSubspace<T> Create(IGeometricAlgebraProcessor<T> processor, KVectorStorage<T> bladeStorage)
         {
-            return new GaSubspace<T>(processor, bladeStorage);
+            return new GeoSubspace<T>(processor, bladeStorage);
         }
 
-        public static GaSubspace<T> CreateFromPseudoScalar(IGaProcessor<T> processor, uint vSpaceDimension)
+        public static GeoSubspace<T> CreateFromPseudoScalar(IGeometricAlgebraProcessor<T> processor, uint vSpaceDimension)
         {
-            return new GaSubspace<T>(
+            return new GeoSubspace<T>(
                 processor,
                 processor.CreatePseudoScalarStorage(vSpaceDimension
                 )
@@ -28,20 +28,20 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Subspaces
         }
 
 
-        public uint VSpaceDimension 
-            => Processor.VSpaceDimension;
+        public IScalarAlgebraProcessor<T> ScalarProcessor 
+            => GeometricProcessor;
 
-        public ulong GaSpaceDimension
-            => Processor.GaSpaceDimension;
+        public ILinearAlgebraProcessor<T> LinearProcessor 
+            => GeometricProcessor;
 
-        public IGaProcessor<T> Processor { get; }
+        public IGeometricAlgebraProcessor<T> GeometricProcessor { get; }
 
         public uint SubspaceDimension 
             => Blade.Grade;
 
-        public IGaKVectorStorage<T> Blade { get; }
+        public KVectorStorage<T> Blade { get; }
 
-        public IGaKVectorStorage<T> BladeInverse { get; }
+        public KVectorStorage<T> BladeInverse { get; }
 
         public T BladeScalarProductSquared { get; }
 
@@ -52,30 +52,30 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Subspaces
             => false;
 
 
-        private GaSubspace([NotNull] IGaProcessor<T> processor, [NotNull] IGaKVectorStorage<T> bladeStorage)
+        private GeoSubspace([NotNull] IGeometricAlgebraProcessor<T> processor, [NotNull] KVectorStorage<T> bladeStorage)
         {
-            Processor = processor;
+            GeometricProcessor = processor;
             Blade = bladeStorage;
             BladeScalarProductSquared = processor.ESp(bladeStorage);
             BladeInverse = 
-                Processor
+                GeometricProcessor
                     .Divide(bladeStorage, BladeScalarProductSquared)
                     .GetKVectorPart(bladeStorage.Grade);
         }
 
 
-        public IGaMultivectorStorage<T> Project(IGaMultivectorStorage<T> storage)
+        public IMultivectorStorage<T> Project(IMultivectorStorage<T> storage)
         {
-            return Processor.ELcp(Processor.ELcp(storage, Blade), BladeInverse);
+            return GeometricProcessor.ELcp(GeometricProcessor.ELcp(storage, Blade), BladeInverse);
         }
 
-        public IGaMultivectorStorage<T> Reflect(IGaMultivectorStorage<T> mv)
+        public IMultivectorStorage<T> Reflect(IMultivectorStorage<T> mv)
         {
             //TODO: Implement all cases in table 7.1 page 201 in "Geometric Algebra for Computer Science"
-            return Processor.EGp(Processor.EGp(Blade, Processor.GradeInvolution(mv)), Processor.EBladeInverse(Blade));
+            return GeometricProcessor.EGp(GeometricProcessor.EGp(Blade, GeometricProcessor.GradeInvolution(mv)), GeometricProcessor.EBladeInverse(Blade));
         }
 
-        public IGaMultivectorStorage<T> Rotate(IGaMultivectorStorage<T> mv)
+        public IMultivectorStorage<T> Rotate(IMultivectorStorage<T> mv)
         {
             if (Blade.Grade.IsOdd())
                 throw new InvalidOperationException();
@@ -83,27 +83,27 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Subspaces
             //Debug.Assert(ScalarProcessor.IsOne(BladeScalarProductSquared));
 
             var rotatedMv =
-                Processor.Gp(
+                GeometricProcessor.Gp(
                     Blade,
-                    Processor.Gp(mv, Blade)
+                    GeometricProcessor.Gp(mv, Blade)
                 );
 
             return Blade.Grade.GradeHasNegativeReverse()
-                ? Processor.Negative(rotatedMv)
+                ? GeometricProcessor.Negative(rotatedMv)
                 : rotatedMv;
         }
 
-        public IGaMultivectorStorage<T> VersorProduct(IGaMultivectorStorage<T> mv)
+        public IMultivectorStorage<T> VersorProduct(IMultivectorStorage<T> mv)
         {
-            return Processor.Gp(
+            return GeometricProcessor.Gp(
                 Blade,
-                Processor.Gp(mv, BladeInverse)
+                GeometricProcessor.Gp(mv, BladeInverse)
             );
         }
         
-        public IGaMultivectorStorage<T> Complement(IGaMultivectorStorage<T> storage)
+        public IMultivectorStorage<T> Complement(IMultivectorStorage<T> storage)
         {
-            return Processor.ELcp(storage, Processor.EBladeInverse(Blade));
+            return GeometricProcessor.ELcp(storage, GeometricProcessor.EBladeInverse(Blade));
         }
     }
 }

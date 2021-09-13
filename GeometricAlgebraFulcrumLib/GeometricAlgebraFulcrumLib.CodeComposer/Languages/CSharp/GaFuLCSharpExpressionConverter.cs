@@ -1,9 +1,9 @@
 ﻿using System.Linq;
 using CodeComposerLib.Languages.CSharp;
 using CodeComposerLib.SyntaxTree.Expressions;
-using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Composite;
-using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.HeadSpecs;
-using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Numbers;
+using GeometricAlgebraFulcrumLib.Algebra.SymbolicAlgebra.Composite;
+using GeometricAlgebraFulcrumLib.Algebra.SymbolicAlgebra.HeadSpecs;
+using GeometricAlgebraFulcrumLib.Algebra.SymbolicAlgebra.Numbers;
 
 namespace GeometricAlgebraFulcrumLib.CodeComposer.Languages.CSharp
 {
@@ -178,7 +178,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Languages.CSharp
                     },
 
                 SymbolicHeadSpecsNumberRational rationalHeadSpecs => 
-                    SteExpression.CreateLiteralNumber(rationalHeadSpecs.NumberValue),
+                    SteExpression.CreateLiteralNumber(rationalHeadSpecs.NumberFloat64Value),
 
                 _ => 
                     numberExpr.ToSimpleTextExpression()

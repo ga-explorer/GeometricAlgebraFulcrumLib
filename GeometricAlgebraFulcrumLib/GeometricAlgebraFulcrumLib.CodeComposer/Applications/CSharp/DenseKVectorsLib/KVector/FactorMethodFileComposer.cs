@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Linq;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products;
-using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions;
-using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
-using GeometricAlgebraFulcrumLib.Storage.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.SymbolicAlgebra;
+using GeometricAlgebraFulcrumLib.Processors.SymbolicAlgebra.Context;
+using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using TextComposerLib.Text.Linear;
 using TextComposerLib.Text.Structured;
@@ -15,9 +14,9 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
     {
         private readonly uint _inputGrade;
         private readonly ulong _inputId;
-        private IGaKVectorStorage<ISymbolicExpressionAtomic> _inputBlade;
-        private IGaVectorStorage<ISymbolicExpressionAtomic>[] _inputBasisVectorsArray;
-        private IGaVectorStorage<ISymbolicExpressionAtomic>[] _outputVectorsArray;
+        private KVectorStorage<ISymbolicExpressionAtomic> _inputBlade;
+        private VectorStorage<ISymbolicExpressionAtomic>[] _inputBasisVectorsArray;
+        private VectorStorage<ISymbolicExpressionAtomic>[] _outputVectorsArray;
 
 
         internal FactorMethodFileComposer(GaFuLLibraryComposer libGen, uint inGrade, ulong inId)
@@ -47,7 +46,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
                             .NumbersFactory
                             .CreateBasisVector(index)
                     )
-                    .Cast<IGaVectorStorage<ISymbolicExpressionAtomic>>()
+                    .Cast<VectorStorage<ISymbolicExpressionAtomic>>()
                     .ToArray();
         }
 
@@ -57,15 +56,15 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
                 _inputBasisVectorsArray.Length;
 
             _outputVectorsArray = 
-                new IGaVectorStorage<ISymbolicExpressionAtomic>[vectorsCount];
+                new VectorStorage<ISymbolicExpressionAtomic>[vectorsCount];
 
             var grade = _inputGrade;
             var inputBlade = _inputBlade;
             for (var index = 0; index < vectorsCount - 1; index++)
             {
                 _outputVectorsArray[index] =
-                    Processor.Lcp(
-                        Processor.Lcp(
+                    GeometricProcessor.Lcp(
+                        GeometricProcessor.Lcp(
                             _inputBasisVectorsArray[index], 
                             inputBlade
                         ), 
@@ -74,7 +73,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
 
                 grade--;
 
-                inputBlade = Processor.Lcp(
+                inputBlade = GeometricProcessor.Lcp(
                     _outputVectorsArray[index],
                     inputBlade
                 ).GetKVectorPart(grade);
@@ -125,7 +124,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
                 Templates["factor"],
                 "signature", CurrentNamespace,
                 "id", _inputId,
-                "double", GaLanguage.ScalarTypeName,
+                "double", GeoLanguage.ScalarTypeName,
                 "newvectors", newVectorsText,
                 "computations", computationsText
             );

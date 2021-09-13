@@ -3,21 +3,21 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using DataStructuresLib;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Basis;
-using GeometricAlgebraFulcrumLib.Processing.Scalars;
-using GeometricAlgebraFulcrumLib.Storage;
-using GeometricAlgebraFulcrumLib.Storage.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Composers
 {
     public abstract class TextComposerBase<T>
         : ITextComposer<T>
     {
-        public IScalarProcessor<T> ScalarProcessor { get; }
+        public IScalarAlgebraProcessor<T> ScalarProcessor { get; }
 
 
-        protected TextComposerBase([NotNull] IScalarProcessor<T> scalarProcessor)
+        protected TextComposerBase([NotNull] IScalarAlgebraProcessor<T> scalarProcessor)
         {
             ScalarProcessor = scalarProcessor;
         }
@@ -35,10 +35,10 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
 
         public string GetBasisBladeText(uint grade, ulong index)
         {
-            return GaTextComposersUtils.GetBasisBladeText(grade, index);
+            return GaFuLTextComposersUtils.GetBasisBladeText(grade, index);
         }
 
-        public string GetBasisBladeText(GaBasisBlade basisBlade)
+        public string GetBasisBladeText(BasisBlade basisBlade)
         {
             return basisBlade.GetBasisBladeText();
         }
@@ -107,7 +107,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
             );
         }
 
-        public string GetTermText(GaBasisBlade basisBlade, T scalar)
+        public string GetTermText(BasisBlade basisBlade, T scalar)
         {
             return GetTermText(
                 basisBlade.Id,
@@ -115,7 +115,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
             );
         }
 
-        public string GetTermText(GaBasisTerm<T> term)
+        public string GetTermText(BasisTerm<T> term)
         {
             return GetTermText(
                 term.BasisBlade.Id,
@@ -144,7 +144,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
                 .ConcatenateText(", ");
         }
 
-        public string GetTermsText(IEnumerable<GaBasisTerm<T>> terms)
+        public string GetTermsText(IEnumerable<BasisTerm<T>> terms)
         {
             return terms
                 .Select(GetTermText)
@@ -192,7 +192,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
             return composer.ToString();
         }
 
-        public string GetMultivectorText(IGaMultivectorStorage<T> storage)
+        public string GetMultivectorText(IMultivectorStorage<T> storage)
         {
             return GetTermsText(
                 ScalarProcessor

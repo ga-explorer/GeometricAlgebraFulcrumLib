@@ -8,44 +8,44 @@ using GAPoTNumLib.Text.LaTeX;
 
 namespace GAPoTNumLib.GAPoT
 {
-    public sealed class GaPoTNumMultivectorTerm
+    public sealed class GeoPoTNumMultivectorTerm
     {
-        public static GaPoTNumVectorTerm operator -(GaPoTNumMultivectorTerm t)
+        public static GeoPoTNumVectorTerm operator -(GeoPoTNumMultivectorTerm t)
         {
-            return new GaPoTNumVectorTerm(t.IDsPattern, -t.Value);
+            return new GeoPoTNumVectorTerm(t.IDsPattern, -t.Value);
         }
 
-        public static GaPoTNumMultivectorTerm operator +(GaPoTNumMultivectorTerm t1, GaPoTNumMultivectorTerm t2)
-        {
-            if (t1.IDsPattern != t2.IDsPattern)
-                throw new InvalidOperationException();
-
-            return new GaPoTNumMultivectorTerm(t1.IDsPattern, t1.Value + t2.Value);
-        }
-
-        public static GaPoTNumMultivectorTerm operator -(GaPoTNumMultivectorTerm t1, GaPoTNumMultivectorTerm t2)
+        public static GeoPoTNumMultivectorTerm operator +(GeoPoTNumMultivectorTerm t1, GeoPoTNumMultivectorTerm t2)
         {
             if (t1.IDsPattern != t2.IDsPattern)
                 throw new InvalidOperationException();
 
-            return new GaPoTNumMultivectorTerm(t1.IDsPattern, t1.Value - t2.Value);
+            return new GeoPoTNumMultivectorTerm(t1.IDsPattern, t1.Value + t2.Value);
         }
 
-        public static GaPoTNumMultivectorTerm operator *(GaPoTNumMultivectorTerm t, double s)
+        public static GeoPoTNumMultivectorTerm operator -(GeoPoTNumMultivectorTerm t1, GeoPoTNumMultivectorTerm t2)
         {
-            return new GaPoTNumMultivectorTerm(t.IDsPattern, s * t.Value);
+            if (t1.IDsPattern != t2.IDsPattern)
+                throw new InvalidOperationException();
+
+            return new GeoPoTNumMultivectorTerm(t1.IDsPattern, t1.Value - t2.Value);
         }
 
-        public static GaPoTNumMultivectorTerm operator *(double s, GaPoTNumMultivectorTerm t)
+        public static GeoPoTNumMultivectorTerm operator *(GeoPoTNumMultivectorTerm t, double s)
         {
-            return new GaPoTNumMultivectorTerm(t.IDsPattern, s * t.Value);
+            return new GeoPoTNumMultivectorTerm(t.IDsPattern, s * t.Value);
         }
 
-        public static GaPoTNumMultivectorTerm operator /(GaPoTNumMultivectorTerm t, double s)
+        public static GeoPoTNumMultivectorTerm operator *(double s, GeoPoTNumMultivectorTerm t)
+        {
+            return new GeoPoTNumMultivectorTerm(t.IDsPattern, s * t.Value);
+        }
+
+        public static GeoPoTNumMultivectorTerm operator /(GeoPoTNumMultivectorTerm t, double s)
         {
             s = 1.0d / s;
 
-            return new GaPoTNumMultivectorTerm(t.IDsPattern, s * t.Value);
+            return new GeoPoTNumMultivectorTerm(t.IDsPattern, s * t.Value);
         }
 
         
@@ -55,7 +55,7 @@ namespace GAPoTNumLib.GAPoT
         public double Value { get; set; }
 
 
-        public GaPoTNumMultivectorTerm(int idsPattern)
+        public GeoPoTNumMultivectorTerm(int idsPattern)
         {
             Debug.Assert(idsPattern >= 0);
 
@@ -63,7 +63,7 @@ namespace GAPoTNumLib.GAPoT
             Value = 0;
         }
 
-        public GaPoTNumMultivectorTerm(int idsPattern, double value)
+        public GeoPoTNumMultivectorTerm(int idsPattern, double value)
         {
             Debug.Assert(idsPattern >= 0);
 
@@ -102,135 +102,135 @@ namespace GAPoTNumLib.GAPoT
             return Value * Value;
         }
 
-        public GaPoTNumMultivectorTerm Op(GaPoTNumMultivectorTerm term2)
+        public GeoPoTNumMultivectorTerm Op(GeoPoTNumMultivectorTerm term2)
         {
             var term1 = this;
 
             var idsPattern = term1.IDsPattern ^ term2.IDsPattern;
             var value = term1.Value * term2.Value;
 
-            if (!GaPoTNumUtils.IsNonZeroOp(term1.IDsPattern, term2.IDsPattern) || value == 0.0d)
-                return new GaPoTNumMultivectorTerm(0, 0.0d);
+            if (!GeoPoTNumUtils.IsNonZeroOp(term1.IDsPattern, term2.IDsPattern) || value == 0.0d)
+                return new GeoPoTNumMultivectorTerm(0, 0.0d);
 
-            if (GaPoTNumUtils.ComputeIsNegativeEGp(term1.IDsPattern, term2.IDsPattern))
+            if (GeoPoTNumUtils.ComputeIsNegativeEGp(term1.IDsPattern, term2.IDsPattern))
                 value = -value;
 
-            return new GaPoTNumMultivectorTerm(idsPattern, value);
+            return new GeoPoTNumMultivectorTerm(idsPattern, value);
         }
 
-        public GaPoTNumMultivectorTerm Sp(GaPoTNumMultivectorTerm term2)
+        public GeoPoTNumMultivectorTerm Sp(GeoPoTNumMultivectorTerm term2)
         {
             var term1 = this;
 
             var idsPattern = term1.IDsPattern ^ term2.IDsPattern;
             var value = term1.Value * term2.Value;
 
-            if (!GaPoTNumUtils.IsNonZeroELcp(term1.IDsPattern, term2.IDsPattern) || value == 0.0d)
-                return new GaPoTNumMultivectorTerm(idsPattern, 0.0d);
+            if (!GeoPoTNumUtils.IsNonZeroELcp(term1.IDsPattern, term2.IDsPattern) || value == 0.0d)
+                return new GeoPoTNumMultivectorTerm(idsPattern, 0.0d);
 
-            if (GaPoTNumUtils.ComputeIsNegativeEGp(term1.IDsPattern, term2.IDsPattern))
+            if (GeoPoTNumUtils.ComputeIsNegativeEGp(term1.IDsPattern, term2.IDsPattern))
                 value = -value;
 
-            return new GaPoTNumMultivectorTerm(idsPattern, value);
+            return new GeoPoTNumMultivectorTerm(idsPattern, value);
         }
 
-        public GaPoTNumMultivectorTerm Lcp(GaPoTNumMultivectorTerm term2)
+        public GeoPoTNumMultivectorTerm Lcp(GeoPoTNumMultivectorTerm term2)
         {
             var term1 = this;
 
             var idsPattern = term1.IDsPattern ^ term2.IDsPattern;
             var value = term1.Value * term2.Value;
 
-            if (!GaPoTNumUtils.IsNonZeroELcp(term1.IDsPattern, term2.IDsPattern) || value == 0.0d)
-                return new GaPoTNumMultivectorTerm(idsPattern, 0.0d);
+            if (!GeoPoTNumUtils.IsNonZeroELcp(term1.IDsPattern, term2.IDsPattern) || value == 0.0d)
+                return new GeoPoTNumMultivectorTerm(idsPattern, 0.0d);
 
-            if (GaPoTNumUtils.ComputeIsNegativeEGp(term1.IDsPattern, term2.IDsPattern))
+            if (GeoPoTNumUtils.ComputeIsNegativeEGp(term1.IDsPattern, term2.IDsPattern))
                 value = -value;
 
-            return new GaPoTNumMultivectorTerm(idsPattern, value);
+            return new GeoPoTNumMultivectorTerm(idsPattern, value);
         }
 
-        public GaPoTNumMultivectorTerm Rcp(GaPoTNumMultivectorTerm term2)
+        public GeoPoTNumMultivectorTerm Rcp(GeoPoTNumMultivectorTerm term2)
         {
             var term1 = this;
 
             var idsPattern = term1.IDsPattern ^ term2.IDsPattern;
             var value = term1.Value * term2.Value;
 
-            if (!GaPoTNumUtils.IsNonZeroERcp(term1.IDsPattern, term2.IDsPattern) || value == 0.0d)
-                return new GaPoTNumMultivectorTerm(idsPattern, 0.0d);
+            if (!GeoPoTNumUtils.IsNonZeroERcp(term1.IDsPattern, term2.IDsPattern) || value == 0.0d)
+                return new GeoPoTNumMultivectorTerm(idsPattern, 0.0d);
 
-            if (GaPoTNumUtils.ComputeIsNegativeEGp(term1.IDsPattern, term2.IDsPattern))
+            if (GeoPoTNumUtils.ComputeIsNegativeEGp(term1.IDsPattern, term2.IDsPattern))
                 value = -value;
 
-            return new GaPoTNumMultivectorTerm(idsPattern, value);
+            return new GeoPoTNumMultivectorTerm(idsPattern, value);
         }
 
-        public GaPoTNumMultivectorTerm Fdp(GaPoTNumMultivectorTerm term2)
+        public GeoPoTNumMultivectorTerm Fdp(GeoPoTNumMultivectorTerm term2)
         {
             var term1 = this;
 
             var idsPattern = term1.IDsPattern ^ term2.IDsPattern;
             var value = term1.Value * term2.Value;
 
-            if (!GaPoTNumUtils.IsNonZeroEFdp(term1.IDsPattern, term2.IDsPattern) || value == 0.0d)
-                return new GaPoTNumMultivectorTerm(idsPattern, 0.0d);
+            if (!GeoPoTNumUtils.IsNonZeroEFdp(term1.IDsPattern, term2.IDsPattern) || value == 0.0d)
+                return new GeoPoTNumMultivectorTerm(idsPattern, 0.0d);
 
-            if (GaPoTNumUtils.ComputeIsNegativeEGp(term1.IDsPattern, term2.IDsPattern))
+            if (GeoPoTNumUtils.ComputeIsNegativeEGp(term1.IDsPattern, term2.IDsPattern))
                 value = -value;
 
-            return new GaPoTNumMultivectorTerm(idsPattern, value);
+            return new GeoPoTNumMultivectorTerm(idsPattern, value);
         }
 
-        public GaPoTNumMultivectorTerm Hip(GaPoTNumMultivectorTerm term2)
+        public GeoPoTNumMultivectorTerm Hip(GeoPoTNumMultivectorTerm term2)
         {
             var term1 = this;
 
             var idsPattern = term1.IDsPattern ^ term2.IDsPattern;
             var value = term1.Value * term2.Value;
 
-            if (!GaPoTNumUtils.IsNonZeroEHip(term1.IDsPattern, term2.IDsPattern) || value == 0.0d)
-                return new GaPoTNumMultivectorTerm(idsPattern, 0.0d);
+            if (!GeoPoTNumUtils.IsNonZeroEHip(term1.IDsPattern, term2.IDsPattern) || value == 0.0d)
+                return new GeoPoTNumMultivectorTerm(idsPattern, 0.0d);
 
-            if (GaPoTNumUtils.ComputeIsNegativeEGp(term1.IDsPattern, term2.IDsPattern))
+            if (GeoPoTNumUtils.ComputeIsNegativeEGp(term1.IDsPattern, term2.IDsPattern))
                 value = -value;
 
-            return new GaPoTNumMultivectorTerm(idsPattern, value);
+            return new GeoPoTNumMultivectorTerm(idsPattern, value);
         }
 
-        public GaPoTNumMultivectorTerm Cp(GaPoTNumMultivectorTerm term2)
+        public GeoPoTNumMultivectorTerm Cp(GeoPoTNumMultivectorTerm term2)
         {
             var term1 = this;
 
             var idsPattern = term1.IDsPattern ^ term2.IDsPattern;
             var value = term1.Value * term2.Value;
 
-            if (!GaPoTNumUtils.IsNonZeroECp(term1.IDsPattern, term2.IDsPattern) || value == 0.0d)
-                return new GaPoTNumMultivectorTerm(idsPattern, 0.0d);
+            if (!GeoPoTNumUtils.IsNonZeroECp(term1.IDsPattern, term2.IDsPattern) || value == 0.0d)
+                return new GeoPoTNumMultivectorTerm(idsPattern, 0.0d);
 
-            if (GaPoTNumUtils.ComputeIsNegativeEGp(term1.IDsPattern, term2.IDsPattern))
+            if (GeoPoTNumUtils.ComputeIsNegativeEGp(term1.IDsPattern, term2.IDsPattern))
                 value = -value;
 
-            return new GaPoTNumMultivectorTerm(idsPattern, value);
+            return new GeoPoTNumMultivectorTerm(idsPattern, value);
         }
 
-        public GaPoTNumMultivectorTerm Acp(GaPoTNumMultivectorTerm term2)
+        public GeoPoTNumMultivectorTerm Acp(GeoPoTNumMultivectorTerm term2)
         {
             var term1 = this;
 
             var idsPattern = term1.IDsPattern ^ term2.IDsPattern;
             var value = term1.Value * term2.Value;
 
-            if (!GaPoTNumUtils.IsNonZeroEAcp(term1.IDsPattern, term2.IDsPattern) || value == 0.0d)
-                return new GaPoTNumMultivectorTerm(idsPattern, 0.0d);
+            if (!GeoPoTNumUtils.IsNonZeroEAcp(term1.IDsPattern, term2.IDsPattern) || value == 0.0d)
+                return new GeoPoTNumMultivectorTerm(idsPattern, 0.0d);
 
-            if (GaPoTNumUtils.ComputeIsNegativeEGp(term1.IDsPattern, term2.IDsPattern))
+            if (GeoPoTNumUtils.ComputeIsNegativeEGp(term1.IDsPattern, term2.IDsPattern))
                 value = -value;
 
-            return new GaPoTNumMultivectorTerm(idsPattern, value);
+            return new GeoPoTNumMultivectorTerm(idsPattern, value);
         }
 
-        public GaPoTNumMultivectorTerm Gp(GaPoTNumMultivectorTerm term2)
+        public GeoPoTNumMultivectorTerm Gp(GeoPoTNumMultivectorTerm term2)
         {
             var term1 = this;
 
@@ -238,71 +238,71 @@ namespace GAPoTNumLib.GAPoT
             var value = term1.Value * term2.Value;
 
             if (value == 0.0d)
-                return new GaPoTNumMultivectorTerm(idsPattern, 0.0d);
+                return new GeoPoTNumMultivectorTerm(idsPattern, 0.0d);
 
-            if (GaPoTNumUtils.ComputeIsNegativeEGp(term1.IDsPattern, term2.IDsPattern))
+            if (GeoPoTNumUtils.ComputeIsNegativeEGp(term1.IDsPattern, term2.IDsPattern))
                 value = -value;
 
-            return new GaPoTNumMultivectorTerm(idsPattern, value);
+            return new GeoPoTNumMultivectorTerm(idsPattern, value);
         }
 
-        public GaPoTNumMultivectorTerm Reverse()
+        public GeoPoTNumMultivectorTerm Reverse()
         {
-            return new GaPoTNumMultivectorTerm(
+            return new GeoPoTNumMultivectorTerm(
                 IDsPattern, 
                 IDsPattern.BasisBladeHasNegativeReverse() ? -Value : Value
             );
         }
 
-        public GaPoTNumMultivectorTerm GradeInvolution()
+        public GeoPoTNumMultivectorTerm GradeInvolution()
         {
-            return new GaPoTNumMultivectorTerm(
+            return new GeoPoTNumMultivectorTerm(
                 IDsPattern, 
                 IDsPattern.BasisBladeHasNegativeGradeInv() ? -Value : Value
             );
         }
 
-        public GaPoTNumMultivectorTerm CliffordConjugate()
+        public GeoPoTNumMultivectorTerm CliffordConjugate()
         {
-            return new GaPoTNumMultivectorTerm(
+            return new GeoPoTNumMultivectorTerm(
                 IDsPattern, 
                 IDsPattern.BasisBladeHasNegativeCliffConj() ? -Value : Value
             );
         }
 
-        public GaPoTNumMultivectorTerm ScaledReverse(double s)
+        public GeoPoTNumMultivectorTerm ScaledReverse(double s)
         {
             var value = (IDsPattern.BasisBladeHasNegativeReverse() ? -Value : Value) * s;
             
-            return new GaPoTNumMultivectorTerm(IDsPattern, value);
+            return new GeoPoTNumMultivectorTerm(IDsPattern, value);
         }
 
-        public GaPoTNumMultivectorTerm Round(int places)
+        public GeoPoTNumMultivectorTerm Round(int places)
         {
-            return new GaPoTNumMultivectorTerm(IDsPattern, Math.Round(Value, places));
+            return new GeoPoTNumMultivectorTerm(IDsPattern, Math.Round(Value, places));
         }
 
-        public GaPoTNumVectorTerm ToVectorTerm()
+        public GeoPoTNumVectorTerm ToVectorTerm()
         {
             var termIDsArray = GetTermIDs().ToArray();
 
             if (termIDsArray.Length != 1)
                 throw new InvalidOperationException($"Can't convert multivector term <{termIDsArray.Concatenate(",")}> to vector term");
 
-            return new GaPoTNumVectorTerm(termIDsArray[0], Value);
+            return new GeoPoTNumVectorTerm(termIDsArray[0], Value);
         }
 
-        public GaPoTNumBiversorTerm ToBiversorTerm()
+        public GeoPoTNumBiversorTerm ToBiversorTerm()
         {
             if (IDsPattern == 0)
-                return new GaPoTNumBiversorTerm(Value);
+                return new GeoPoTNumBiversorTerm(Value);
 
             var termIDsArray = GetTermIDs().ToArray();
 
             if (termIDsArray.Length != 2)
                 throw new InvalidOperationException($"Can't convert multivector term <{termIDsArray.Concatenate(",")}> to biversor term");
 
-            return new GaPoTNumBiversorTerm(termIDsArray[0], termIDsArray[1], Value);
+            return new GeoPoTNumBiversorTerm(termIDsArray[0], termIDsArray[1], Value);
         }
 
 

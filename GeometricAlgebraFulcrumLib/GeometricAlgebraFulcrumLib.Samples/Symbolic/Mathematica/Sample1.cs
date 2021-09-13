@@ -1,7 +1,7 @@
 ﻿using System;
 using GeometricAlgebraFulcrumLib.Mathematica.Processors;
 using GeometricAlgebraFulcrumLib.Mathematica.Text;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products;
+using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.Mathematica
@@ -12,7 +12,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.Mathematica
         {
             // This is a pre-defined scalar processor for the symbolic
             // Wolfram Mathematica scalars using Expr objects
-            var processor = MathematicaScalarProcessor.DefaultProcessor;
+            var processor = ScalarAlgebraMathematicaProcessor.DefaultProcessor;
 
             // This is a pre-defined text generator for displaying multivectors
             // with symbolic Wolfram Mathematica scalars using Expr objects
@@ -23,8 +23,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.Mathematica
             var latexComposer = MathematicaLaTeXComposer.DefaultComposer;
 
             // Create two vectors each having 3 components (a 3-dimensional GA)
-            var u = processor.CreateGaVectorStorage(3, i => $"Subscript[u,{i + 1}]");
-            var v = processor.CreateGaVectorStorage(3, i => $"Subscript[v,{i + 1}]");
+            var u = processor.CreateVectorStorageFromText(3, i => $"Subscript[u,{i + 1}]");
+            var v = processor.CreateVectorStorageFromText(3, i => $"Subscript[v,{i + 1}]");
 
             // Compute their outer product as a bivector
             var bv = processor.Op(u, v);

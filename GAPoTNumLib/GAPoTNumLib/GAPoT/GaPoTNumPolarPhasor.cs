@@ -6,14 +6,14 @@ using GAPoTNumLib.Text.LaTeX;
 
 namespace GAPoTNumLib.GAPoT
 {
-    public sealed class GaPoTNumPolarPhasor
+    public sealed class GeoPoTNumPolarPhasor
     {
-        public static GaPoTNumPolarPhasor operator -(GaPoTNumPolarPhasor p)
+        public static GeoPoTNumPolarPhasor operator -(GeoPoTNumPolarPhasor p)
         {
-            return new GaPoTNumPolarPhasor(p.Id, -p.Magnitude, p.Phase);
+            return new GeoPoTNumPolarPhasor(p.Id, -p.Magnitude, p.Phase);
         }
 
-        public static GaPoTNumPolarPhasor operator +(GaPoTNumPolarPhasor p1, GaPoTNumPolarPhasor p2)
+        public static GeoPoTNumPolarPhasor operator +(GeoPoTNumPolarPhasor p1, GeoPoTNumPolarPhasor p2)
         {
             var rp = 
                 p1.ToRectPhasor() + p2.ToRectPhasor();
@@ -21,7 +21,7 @@ namespace GAPoTNumLib.GAPoT
             return rp.ToPolarPhasor();
         }
 
-        public static GaPoTNumPolarPhasor operator -(GaPoTNumPolarPhasor p1, GaPoTNumPolarPhasor p2)
+        public static GeoPoTNumPolarPhasor operator -(GeoPoTNumPolarPhasor p1, GeoPoTNumPolarPhasor p2)
         {
             var rp = 
                 p1.ToRectPhasor() - p2.ToRectPhasor();
@@ -29,21 +29,21 @@ namespace GAPoTNumLib.GAPoT
             return rp.ToPolarPhasor();
         }
 
-        public static GaPoTNumPolarPhasor operator *(GaPoTNumPolarPhasor p, double s)
+        public static GeoPoTNumPolarPhasor operator *(GeoPoTNumPolarPhasor p, double s)
         {
-            return new GaPoTNumPolarPhasor(p.Id, s * p.Magnitude, p.Phase);
+            return new GeoPoTNumPolarPhasor(p.Id, s * p.Magnitude, p.Phase);
         }
 
-        public static GaPoTNumPolarPhasor operator *(double s, GaPoTNumPolarPhasor p)
+        public static GeoPoTNumPolarPhasor operator *(double s, GeoPoTNumPolarPhasor p)
         {
-            return new GaPoTNumPolarPhasor(p.Id, s * p.Magnitude, p.Phase);
+            return new GeoPoTNumPolarPhasor(p.Id, s * p.Magnitude, p.Phase);
         }
 
-        public static GaPoTNumPolarPhasor operator /(GaPoTNumPolarPhasor p, double s)
+        public static GeoPoTNumPolarPhasor operator /(GeoPoTNumPolarPhasor p, double s)
         {
             s = 1.0d / s;
 
-            return new GaPoTNumPolarPhasor(p.Id, s * p.Magnitude, p.Phase);
+            return new GeoPoTNumPolarPhasor(p.Id, s * p.Magnitude, p.Phase);
         }
 
 
@@ -58,7 +58,7 @@ namespace GAPoTNumLib.GAPoT
             => Phase.RadiansToDegrees();
 
 
-        internal GaPoTNumPolarPhasor(int id, double magnitude, double phase)
+        internal GeoPoTNumPolarPhasor(int id, double magnitude, double phase)
         {
             Debug.Assert(id > 0 && id % 2 == 1);
 
@@ -67,7 +67,7 @@ namespace GAPoTNumLib.GAPoT
             Phase = phase;
         }
 
-        internal GaPoTNumPolarPhasor(int id, double magnitude)
+        internal GeoPoTNumPolarPhasor(int id, double magnitude)
         {
             Debug.Assert(id > 0 && id % 2 == 1);
 
@@ -82,10 +82,10 @@ namespace GAPoTNumLib.GAPoT
             return Magnitude == 0;
         }
 
-        public IEnumerable<GaPoTNumVectorTerm> GetTerms()
+        public IEnumerable<GeoPoTNumVectorTerm> GetTerms()
         {
             return Magnitude == 0
-                ? Enumerable.Empty<GaPoTNumVectorTerm>()
+                ? Enumerable.Empty<GeoPoTNumVectorTerm>()
                 : ToRectPhasor().GetTerms();
         }
 
@@ -99,9 +99,9 @@ namespace GAPoTNumLib.GAPoT
             return Magnitude * Magnitude;
         }
 
-        public GaPoTNumRectPhasor ToRectPhasor()
+        public GeoPoTNumRectPhasor ToRectPhasor()
         {
-            return new GaPoTNumRectPhasor(
+            return new GeoPoTNumRectPhasor(
                 Id,
                 Magnitude * Math.Cos(Phase),
                 Magnitude * Math.Sin(Phase)

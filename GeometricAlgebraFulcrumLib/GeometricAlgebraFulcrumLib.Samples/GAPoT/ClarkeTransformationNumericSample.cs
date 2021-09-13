@@ -1,7 +1,7 @@
 ﻿using System;
 using GeometricAlgebraFulcrumLib.Mathematica.Applications.GaPoT;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors;
-using GeometricAlgebraFulcrumLib.Processing.Scalars;
+using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
+using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Utilities.Composers;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using GeometricAlgebraFulcrumLib.Utilities.Factories;
@@ -10,14 +10,14 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
 {
     public static class ClarkeTransformationNumericSample
     {
-        public static GaProcessorEuclidean<double> Processor { get; }
-            = Float64ScalarProcessor.DefaultProcessor.CreateGaEuclideanProcessor(63);
+        public static GeometricAlgebraEuclideanProcessor<double> GeometricProcessor { get; }
+            = ScalarAlgebraFloat64Processor.DefaultProcessor.CreateGeometricAlgebraEuclideanProcessor(63);
         
-        public static Float64TextComposer TextComposer { get; }
-            = Float64TextComposer.DefaultComposer;
+        public static TextFloat64Composer TextComposer { get; }
+            = TextFloat64Composer.DefaultComposer;
             
-        public static Float64LaTeXComposer LaTeXComposer { get; }
-            = Float64LaTeXComposer.DefaultComposer;
+        public static LaTeXFloat64Composer LaTeXComposer { get; }
+            = LaTeXFloat64Composer.DefaultComposer;
 
 
         public static void Execute()
@@ -29,10 +29,10 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
 
                 var clarkeMap =
                     //ScalarProcessor.CreateSimpleKirchhoffRotor(n);
-                    Processor.CreateClarkeMap(n);
+                    GeometricProcessor.CreateClarkeMap(n);
 
                 var clarkeArray = 
-                    clarkeMap.GetVectorsMappingArray(n, n);
+                    clarkeMap.GetVectorOmMappingMatrix(n, n);
                 
                 Console.WriteLine("Generated Clarke Matrix:");
                 Console.WriteLine(
@@ -41,7 +41,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
                 Console.WriteLine();
 
                 var (linearMapQ, linearMapR) = 
-                    Processor.GetHouseholderQRDecomposition(clarkeMap, n);
+                    GeometricProcessor.GetHouseholderQRDecomposition(clarkeMap, n);
 
                 Console.WriteLine("Q Map Vectors:");
                 for (var i = 0; i < linearMapQ.UnitVectorStorages.Count; i++)
@@ -55,7 +55,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
                 }
 
                 var linearMapQArray = 
-                    linearMapQ.GetVectorsMappingArray(n, n);
+                    linearMapQ.GetVectorOmMappingMatrix(n, n);
                 
                 Console.WriteLine("Q Matrix:");
                 Console.WriteLine(
@@ -64,7 +64,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
                 Console.WriteLine();
 
                 var linearMapRArray = 
-                    linearMapR.GetVectorsMappingArray(n, n);
+                    linearMapR.GetVectorOmMappingMatrix(n, n);
                 
                 Console.WriteLine("R Matrix:");
                 Console.WriteLine(

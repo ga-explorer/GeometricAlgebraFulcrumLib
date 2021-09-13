@@ -358,21 +358,21 @@ namespace EuclideanGeometryLib.BasicMath
         }
 
 
-        public static double Gamma1 { get; } = ErrorGamma(1);
+        public static double Geomma1 { get; } = ErrorGeomma(1);
 
-        public static double Gamma2 { get; } = ErrorGamma(2);
+        public static double Geomma2 { get; } = ErrorGeomma(2);
 
-        public static double Gamma3 { get; } = ErrorGamma(3);
+        public static double Geomma3 { get; } = ErrorGeomma(3);
 
-        public static double Gamma4 { get; } = ErrorGamma(4);
+        public static double Geomma4 { get; } = ErrorGeomma(4);
 
-        public static double Gamma5 { get; } = ErrorGamma(5);
+        public static double Geomma5 { get; } = ErrorGeomma(5);
 
-        public static double Gamma6 { get; } = ErrorGamma(6);
+        public static double Geomma6 { get; } = ErrorGeomma(6);
 
-        public static double Gamma7 { get; } = ErrorGamma(7);
+        public static double Geomma7 { get; } = ErrorGeomma(7);
 
-        public static double ErrorGamma(int n)
+        public static double ErrorGeomma(int n)
         {
             var s = n * Precision.PositiveMachineEpsilon;
 

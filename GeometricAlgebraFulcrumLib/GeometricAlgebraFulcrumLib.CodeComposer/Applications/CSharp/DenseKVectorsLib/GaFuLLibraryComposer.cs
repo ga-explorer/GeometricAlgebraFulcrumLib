@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using DataStructuresLib.BitManipulation;
-using GeometricAlgebraFulcrumLib.Algebra.Multivectors.Space;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
+using GeometricAlgebraFulcrumLib.Algebra.SymbolicAlgebra;
 using GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVectorsLib.FactoredBlade;
 using GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVectorsLib.FrameUtils;
 using GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVectorsLib.KVector;
@@ -10,10 +11,9 @@ using GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVectorsL
 using GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVectorsLib.Outermorphism;
 using GeometricAlgebraFulcrumLib.CodeComposer.Composers;
 using GeometricAlgebraFulcrumLib.CodeComposer.Languages;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors;
-using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions;
-using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
-using GeometricAlgebraFulcrumLib.Storage.Multivectors;
+using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
+using GeometricAlgebraFulcrumLib.Processors.SymbolicAlgebra.Context;
+using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using GeometricAlgebraFulcrumLib.Utilities.Factories;
 using TextComposerLib.Loggers.Progress;
@@ -22,7 +22,7 @@ using TextComposerLib.Text.Parametric;
 namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVectorsLib
 {
     public sealed partial class GaFuLLibraryComposer 
-        : GaFuLCodeLibraryComposerBase, IGaSpace
+        : GaFuLCodeLibraryComposerBase, IGeometricAlgebraSpace
     {
         /// <summary>
         /// Generate for a single signature
@@ -31,7 +31,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         /// <param name="processor"></param>
         /// <param name="generateSymbolicContextCode"></param>
         /// <returns></returns>
-        public static GaFuLLibraryComposer Generate(string rootNamespace, IGaProcessor<ISymbolicExpressionAtomic> processor, bool generateSymbolicContextCode = true)
+        public static GaFuLLibraryComposer Generate(string rootNamespace, IGeometricAlgebraProcessor<ISymbolicExpressionAtomic> processor, bool generateSymbolicContextCode = true)
         {
             var libGen =
                 new GaFuLLibraryComposer(
@@ -51,12 +51,12 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         internal int MaxTargetLocalVars 
             => 1024;
 
-        internal IGaProcessor<ISymbolicExpressionAtomic> Processor { get; }
+        internal IGeometricAlgebraProcessor<ISymbolicExpressionAtomic> GeometricProcessor { get; }
 
-        internal IGaProcessor<ISymbolicExpressionAtomic> EuclideanProcessor { get; }
+        internal IGeometricAlgebraProcessor<ISymbolicExpressionAtomic> EuclideanProcessor { get; }
 
         public uint VSpaceDimension 
-            => Processor.VSpaceDimension;
+            => GeometricProcessor.VSpaceDimension;
 
         public ulong GaSpaceDimension 
             => 1UL << (int) VSpaceDimension;
@@ -82,21 +82,21 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             => "Generate multiple files holding a library for processing multivectors of a given GA signature. A Multivector is represented using zero or more non-zero k-vectors";
 
 
-        private GaFuLLibraryComposer(string rootNamespace, IGaProcessor<ISymbolicExpressionAtomic> processor)
+        private GaFuLLibraryComposer(string rootNamespace, IGeometricAlgebraProcessor<ISymbolicExpressionAtomic> processor)
             : base(GaFuLLanguageServerBase.CSharp())
         {
             RootNamespace = rootNamespace;
-            Processor = processor;
+            GeometricProcessor = processor;
             EuclideanProcessor =
                 processor.IsOrthonormal && processor.Signature.IsEuclidean
                     ? processor
-                    : processor.CreateGaEuclideanProcessor(
+                    : processor.CreateGeometricAlgebraEuclideanProcessor(
                         processor.VSpaceDimension
                     );
         }
 
         
-        internal void SetBasisBladeToArrayNaming(SymbolicContext context, IGaKVectorStorage<ISymbolicExpressionAtomic> kVector, string arrayVarName)
+        internal void SetBasisBladeToArrayNaming(SymbolicContext context, KVectorStorage<ISymbolicExpressionAtomic> kVector, string arrayVarName)
         {
             context.SetExternalNamesByTermIndex(
                 kVector,
@@ -180,18 +180,18 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
 //        {
 //            //Make sure the PointToMultivector3D macro is defined inside the signature
 //            var pointToMultivectorSymbolicContext =
-//                Processor.SymbolicContexts.FirstOrDefault(
+//                GeometricProcessor.SymbolicContexts.FirstOrDefault(
 //                    m => m.Name == "PointToMultivector3D"
 //                );
 
 //            if (ReferenceEquals(pointToMultivectorSymbolicContext, null))
 //                return;
 
-//            var sdfRayStepResultStruct = AddGaClcStructure(
+//            var sdfRayStepResultStruct = AddGeoClcStructure(
 //                "structure SdfRayStepResult (sdf0 : scalar, sdf1 : scalar)"
 //            );
 
-//            var sdfNormalResultStruct = AddGaClcStructure(
+//            var sdfNormalResultStruct = AddGeoClcStructure(
 //                "structure SdfNormalResult (d1 : scalar, d2 : scalar, d3 : scalar, d4 : scalar)"
 //            );
 
@@ -370,9 +370,9 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
 
             foreach (var opSpecs in opSpecsArray)
             {
-                foreach (var inGrade1 in Processor.Grades)
+                foreach (var inGrade1 in GeometricProcessor.Grades)
                 {
-                    foreach (var inGrade2 in Processor.Grades)
+                    foreach (var inGrade2 in GeometricProcessor.Grades)
                     {
                         var (isValid, outGrade) = opSpecs.GetKVectorsBilinearProductGrade(
                             VSpaceDimension,
@@ -468,7 +468,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
 
             foreach (var opSpecs in opSpecsArray)
             {
-                foreach (var inGrade in Processor.Grades)
+                foreach (var inGrade in GeometricProcessor.Grades)
                 {
                     GenerateScalarProductMethodFile(
                         opSpecs,
@@ -596,12 +596,12 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
 
             foreach (var opSpecs in opSpecsArray)
             {
-                foreach (var inGrade1 in Processor.Grades)
+                foreach (var inGrade1 in GeometricProcessor.Grades)
                 {
                     if (inGrade1.IsOdd() && opSpecs.OperationKind == GaFuLLanguageOperationKind.BinaryRotate)
                         continue;
 
-                    foreach (var inGrade2 in Processor.Grades)
+                    foreach (var inGrade2 in GeometricProcessor.Grades)
                     {
                         var methodName =
                             opSpecs.GetName(inGrade1, inGrade2, inGrade2);
@@ -657,11 +657,11 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             for (var inGrade = 2U; inGrade <= VSpaceDimension; inGrade++)
             {
                 var kvSpaceDimension = 
-                    Processor.KvSpaceDimension(inGrade);
+                    GeometricProcessor.KVectorSpaceDimension(inGrade);
 
                 for (var inIndex = 0UL; inIndex < kvSpaceDimension; inIndex++)
                 {
-                    var inId = Processor.BasisBladeId(inGrade, inIndex);
+                    var inId = GeometricProcessor.BasisBladeId(inGrade, inIndex);
 
                     GenerateFactorMethod(inGrade, inId);
                 }
@@ -930,8 +930,8 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             {
                 //Add array declaration code
                 contextCodeComposer.SyntaxList.Add(
-                    contextCodeComposer.GaLanguage.SyntaxFactory.DeclareLocalArray(
-                        GaLanguage.ScalarTypeName,
+                    contextCodeComposer.GeoLanguage.SyntaxFactory.DeclareLocalArray(
+                        GeoLanguage.ScalarTypeName,
                         "tempArray",
                         contextCodeComposer.Context.GetTargetTempVarsCount().ToString()
                         )
@@ -950,7 +950,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
                 //Add temp variables declaration code
                 foreach (var tempVarName in tempVarNames)
                     contextCodeComposer.SyntaxList.Add(
-                        contextCodeComposer.GaLanguage.SyntaxFactory.DeclareLocalVariable(GaLanguage.ScalarTypeName, tempVarName)
+                        contextCodeComposer.GeoLanguage.SyntaxFactory.DeclareLocalVariable(GeoLanguage.ScalarTypeName, tempVarName)
                     );
 
                 contextCodeComposer.SyntaxList.AddEmptyLine();
@@ -970,7 +970,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         {
             //Initialize templates used in code composition
 
-            Templates.Parse(GaClcCodeTemplates);
+            Templates.Parse(GeoClcCodeTemplates);
 
             Templates.Parse(FrameUtilsTemplates);
 
@@ -1073,7 +1073,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         {
             var libGen = new GaFuLLibraryComposer(
                 RootNamespace, 
-                Processor
+                GeometricProcessor
             );
 
             libGen.DefaultContextOptions.SetOptions(DefaultContextOptions);

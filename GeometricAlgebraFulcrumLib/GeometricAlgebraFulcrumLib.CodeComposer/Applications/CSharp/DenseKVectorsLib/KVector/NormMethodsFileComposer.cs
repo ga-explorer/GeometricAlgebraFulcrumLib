@@ -1,11 +1,9 @@
 ﻿using System;
+using GeometricAlgebraFulcrumLib.Algebra.SymbolicAlgebra;
+using GeometricAlgebraFulcrumLib.Algebra.SymbolicAlgebra.Variables;
 using GeometricAlgebraFulcrumLib.CodeComposer.Languages;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean;
-using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions;
-using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
-using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Variables;
-using GeometricAlgebraFulcrumLib.Storage.Multivectors;
+using GeometricAlgebraFulcrumLib.Processors.SymbolicAlgebra.Context;
+using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using TextComposerLib.Text.Linear;
 using TextComposerLib.Text.Structured;
@@ -21,7 +19,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         : GaFuLLibrarySymbolicContextFileComposerBase
     {
         private uint _inGrade;
-        private IGaKVectorStorage<ISymbolicExpressionAtomic> _inputKVector;
+        private KVectorStorage<ISymbolicExpressionAtomic> _inputKVector;
         private SymbolicVariableComputed _outputScalar;
         private GaFuLLanguageOperationSpecs _operationSpecs;
 
@@ -33,11 +31,11 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
                 GaFuLLanguageOperationKind.UnaryNormSquared.CreateEuclideanOperationSpecs(),
                 GaFuLLanguageOperationKind.UnaryNormSquared.CreateMetricOperationSpecs(),
                 
-                //GaClcOperationKind.UnaryMagnitude.CreateEuclideanOperationSpecs(),
-                //GaClcOperationKind.UnaryMagnitude.CreateMetricOperationSpecs(),
+                //GeoClcOperationKind.UnaryMagnitude.CreateEuclideanOperationSpecs(),
+                //GeoClcOperationKind.UnaryMagnitude.CreateMetricOperationSpecs(),
                 
-                //GaClcOperationKind.UnaryMagnitudeSquared.CreateEuclideanOperationSpecs(),
-                //GaClcOperationKind.UnaryMagnitudeSquared.CreateMetricOperationSpecs(),
+                //GeoClcOperationKind.UnaryMagnitudeSquared.CreateEuclideanOperationSpecs(),
+                //GeoClcOperationKind.UnaryMagnitudeSquared.CreateMetricOperationSpecs(),
             };
 
 
@@ -62,23 +60,23 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             {
                 GaFuLLanguageOperationKind.UnaryNorm =>
                     _operationSpecs.IsEuclidean
-                        ? Processor.ENorm(_inputKVector) 
-                        : Processor.Norm(_inputKVector),
+                        ? GeometricProcessor.ENorm(_inputKVector) 
+                        : GeometricProcessor.Norm(_inputKVector),
 
                 GaFuLLanguageOperationKind.UnaryNormSquared =>
                     _operationSpecs.IsEuclidean
-                        ? Processor.ENormSquared(_inputKVector) 
-                        : Processor.NormSquared(_inputKVector),
+                        ? GeometricProcessor.ENormSquared(_inputKVector) 
+                        : GeometricProcessor.NormSquared(_inputKVector),
 
-                //GaClcOperationKind.UnaryMagnitude =>
+                //GeoClcOperationKind.UnaryMagnitude =>
                 //    OpSpecs.IsEuclidean
                 //        ? _inputKVector.EMagnitude() 
-                //        : _inputKVector.Magnitude(Processor),
+                //        : _inputKVector.Magnitude(GeometricProcessor),
 
-                //GaClcOperationKind.UnaryMagnitudeSquared =>
+                //GeoClcOperationKind.UnaryMagnitudeSquared =>
                 //    OpSpecs.IsEuclidean
                 //        ? _inputKVector.EMagnitudeSquared() 
-                //        : _inputKVector.MagnitudeSquared(Processor),
+                //        : _inputKVector.MagnitudeSquared(GeometricProcessor),
 
                 _ => throw new InvalidOperationException()
             };
@@ -114,7 +112,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
                 Templates["norm"],
                 "name", opSpecs,
                 "grade", inGrade,
-                "double", GaLanguage.ScalarTypeName,
+                "double", GeoLanguage.ScalarTypeName,
                 "computations", computationsCode
             );
         }
@@ -125,7 +123,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
 
             var casesText = new ListTextComposer(Environment.NewLine);
 
-            foreach (var grade in Processor.Grades)
+            foreach (var grade in GeometricProcessor.Grades)
                 casesText.Add(
                     caseTemplate,
                     "name", opSpecs,
@@ -135,7 +133,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             TextComposer.AppendAtNewLine(
                 Templates["main_norm"],
                 "name", opSpecs,
-                "double", GaLanguage.ScalarTypeName,
+                "double", GeoLanguage.ScalarTypeName,
                 "main_norm_case", casesText
             );
         }
@@ -148,7 +146,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             {
                 GenerateBeginRegion(opSpecs.GetName());
 
-                foreach (var inGrade in Processor.Grades)
+                foreach (var inGrade in GeometricProcessor.Grades)
                     GenerateNormFunction(opSpecs, inGrade);
 
                 GenerateMainNormFunction(opSpecs.GetName());

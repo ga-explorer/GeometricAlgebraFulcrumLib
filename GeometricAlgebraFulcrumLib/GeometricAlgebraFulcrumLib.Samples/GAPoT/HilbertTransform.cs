@@ -1,7 +1,6 @@
 ﻿using System;
 using GeometricAlgebraFulcrumLib.Mathematica;
-using GeometricAlgebraFulcrumLib.Mathematica.Mathematica;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products;
+using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 
 namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
 {
@@ -25,16 +24,16 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
             var hdvb = dvb.HilbertTransformScalar("t", @"\[Omega]");
             var hdvc = dvc.HilbertTransformScalar("t", @"\[Omega]");
 
-            var v = GaSymbolicUtils.CreateVector(
+            var v = MathematicaUtils.CreateVector(
                 va, hva, vb, hvb, vc, hvc
             );
 
-            var dv = GaSymbolicUtils.CreateVector(
+            var dv = MathematicaUtils.CreateVector(
                 dva, hdva, dvb, hdvb, dvc, hdvc
             );
 
             var u = 
-                GaSymbolicUtils.ScalarProcessor.Op(v, dv);
+                MathematicaUtils.ScalarProcessor.Op(v, dv);
 
             Console.WriteLine("Text Format:");
             Console.WriteLine($"v = {v.GetText()}");

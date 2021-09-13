@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
-using GeometricAlgebraFulcrumLib.Processing.Scalars;
-using GeometricAlgebraFulcrumLib.Storage.GuidedBinaryTraversal.Products;
+using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTraversal.Products;
+using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Utilities.Composers;
 using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
@@ -12,12 +12,12 @@ namespace GeometricAlgebraFulcrumLib.Samples.Storage
         public static void Execute()
         {
             var vSpaceDimensions = 5;
-            var scalarProcessor = Float64ScalarProcessor.DefaultProcessor;
-            var textComposer = Float64TextComposer.DefaultComposer;
+            var scalarProcessor = ScalarAlgebraFloat64Processor.DefaultProcessor;
+            var textComposer = TextFloat64Composer.DefaultComposer;
 
             var randomGenerator = new Random(10);
 
-            var vectorStorage1 = scalarProcessor.CreateGaVectorStorage(Enumerable
+            var vectorStorage1 = scalarProcessor.CreateVectorStorage(Enumerable
                     .Range(0, vSpaceDimensions)
                     .ToDictionary(
                         i => (ulong)i,
@@ -25,7 +25,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Storage
                     )
             );
 
-            var vectorStorage2 = scalarProcessor.CreateGaVectorStorage(Enumerable
+            var vectorStorage2 = scalarProcessor.CreateVectorStorage(Enumerable
                     .Range(0, vSpaceDimensions - 2)
                     .ToDictionary(
                         i => (ulong)i,
@@ -37,7 +37,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Storage
             Console.WriteLine($"vSpaceDimension2: {vectorStorage2.MinVSpaceDimension}");
 
             var gbtStack =
-                GaGbtProductsStack2<double>.Create(
+                GeoGbtProductsStack2<double>.Create(
                     scalarProcessor,
                     vectorStorage1,
                     vectorStorage2
@@ -46,8 +46,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.Storage
             var idScalarDictionary =
                 gbtStack
                     .GetEGpIdScalarRecords()
-                    .SumToStorageSparseMultivector(scalarProcessor)
-                    .GetIdScalarList();
+                    .SumToMultivectorSparseStorage(scalarProcessor)
+                    .GetLinVectorIdScalarStorage();
 
             Console.WriteLine(textComposer.GetTermsText(idScalarDictionary.GetIndexScalarRecords()));
         }

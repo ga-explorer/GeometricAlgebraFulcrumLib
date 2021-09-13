@@ -15,7 +15,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         {
             TextComposer.Append(Templates["multivector"],
                 "signature", CurrentNamespace,
-                "double", GaLanguage.ScalarTypeName,
+                "double", GeoLanguage.ScalarTypeName,
                 "grades_count", VSpaceDimension + 1
             );
 

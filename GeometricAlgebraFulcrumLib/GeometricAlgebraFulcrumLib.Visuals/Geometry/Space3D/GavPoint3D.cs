@@ -5,10 +5,10 @@ using EuclideanGeometryLib.BasicMath.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Visuals.Geometry.Space3D
 {
-    public sealed class GavPoint3D : 
-        ITuple3D, IGavGeometry3D
+    public sealed class GeovPoint3D : 
+        ITuple3D, IGeovGeometry3D
     {
-        public GavGeometryContext3D GeometryContext { get; }
+        public GeovGeometryContext3D GeometryContext { get; }
 
         public string Name { get; private set; }
 
@@ -32,10 +32,10 @@ namespace GeometricAlgebraFulcrumLib.Visuals.Geometry.Space3D
                double.IsNaN(Y) ||
                double.IsNaN(Z);
 
-        public GavPointStyle3D Style { get; }
+        public GeovPointStyle3D Style { get; }
 
 
-        internal GavPoint3D([NotNull] GavGeometryContext3D geometryContext, [NotNull] string name, double x, double y, double z, [NotNull] GavPointStyle3D style)
+        internal GeovPoint3D([NotNull] GeovGeometryContext3D geometryContext, [NotNull] string name, double x, double y, double z, [NotNull] GeovPointStyle3D style)
         {
             GeometryContext = geometryContext;
             Name = name;

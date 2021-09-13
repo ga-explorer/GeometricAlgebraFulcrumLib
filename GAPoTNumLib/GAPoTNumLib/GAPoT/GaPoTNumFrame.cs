@@ -8,33 +8,33 @@ using GAPoTNumLib.Text;
 
 namespace GAPoTNumLib.GAPoT
 {
-    public sealed class GaPoTNumFrame : IReadOnlyList<GaPoTNumVector>
+    public sealed class GeoPoTNumFrame : IReadOnlyList<GeoPoTNumVector>
     {
-        public static GaPoTNumFrame CreateEmptyFrame()
+        public static GeoPoTNumFrame CreateEmptyFrame()
         {
-            return new GaPoTNumFrame();
+            return new GeoPoTNumFrame();
         }
         
-        public static GaPoTNumFrame Create(params GaPoTNumVector[] vectorsList)
+        public static GeoPoTNumFrame Create(params GeoPoTNumVector[] vectorsList)
         {
-            return new GaPoTNumFrame(vectorsList);
+            return new GeoPoTNumFrame(vectorsList);
         }
         
-        public static GaPoTNumFrame Create(IEnumerable<GaPoTNumVector> vectorsList)
+        public static GeoPoTNumFrame Create(IEnumerable<GeoPoTNumVector> vectorsList)
         {
-            return new GaPoTNumFrame(vectorsList);
+            return new GeoPoTNumFrame(vectorsList);
         }
 
-        public static GaPoTNumFrame CreateFromRows(double[,] matrix)
+        public static GeoPoTNumFrame CreateFromRows(double[,] matrix)
         {
             var rowsCount = matrix.GetLength(0);
             var colsCount = matrix.GetLength(1);
 
-            var frame = new GaPoTNumFrame();
+            var frame = new GeoPoTNumFrame();
 
             for (var i = 0; i < rowsCount; i++)
             {
-                var vector = new GaPoTNumVector();
+                var vector = new GeoPoTNumVector();
 
                 for (var j = 0; j < colsCount; j++)
                 {
@@ -52,16 +52,16 @@ namespace GAPoTNumLib.GAPoT
             return frame;
         }
 
-        public static GaPoTNumFrame CreateFromColumns(double[,] matrix)
+        public static GeoPoTNumFrame CreateFromColumns(double[,] matrix)
         {
             var rowsCount = matrix.GetLength(0);
             var colsCount = matrix.GetLength(1);
 
-            var frame = new GaPoTNumFrame();
+            var frame = new GeoPoTNumFrame();
 
             for (var j = 0; j < colsCount; j++)
             {
-                var vector = new GaPoTNumVector();
+                var vector = new GeoPoTNumVector();
 
                 for (var i = 0; i < rowsCount; i++)
                 {
@@ -79,13 +79,13 @@ namespace GAPoTNumLib.GAPoT
             return frame;
         }
 
-        public static GaPoTNumFrame CreateBasisFrame(int vectorsCount)
+        public static GeoPoTNumFrame CreateBasisFrame(int vectorsCount)
         {
-            var frame = new GaPoTNumFrame();
+            var frame = new GeoPoTNumFrame();
 
             for (var i = 0; i < vectorsCount; i++)
             {
-                var vector = new GaPoTNumVector().AddTerm(i + 1, 1.0d);
+                var vector = new GeoPoTNumVector().AddTerm(i + 1, 1.0d);
                 
                 frame.AppendVector(vector);
             }
@@ -98,9 +98,9 @@ namespace GAPoTNumLib.GAPoT
         /// </summary>
         /// <param name="vectorsCount"></param>
         /// <returns></returns>
-        private static GaPoTNumFrame CreateClarkeFrameOdd(int vectorsCount)
+        private static GeoPoTNumFrame CreateClarkeFrameOdd(int vectorsCount)
         {
-            var frameVectorsArray = new GaPoTNumVector[vectorsCount];
+            var frameVectorsArray = new GeoPoTNumVector[vectorsCount];
             
             var m = vectorsCount;
             var s = Math.Sqrt(2.0d / m);
@@ -112,8 +112,8 @@ namespace GAPoTNumLib.GAPoT
                 var vectorIndex1 = 2 * k;
                 var vectorIndex2 = 2 * k + 1;
                 
-                frameVectorsArray[vectorIndex1] = new GaPoTNumVector();
-                frameVectorsArray[vectorIndex2] = new GaPoTNumVector();
+                frameVectorsArray[vectorIndex1] = new GeoPoTNumVector();
+                frameVectorsArray[vectorIndex2] = new GeoPoTNumVector();
                 
                 frameVectorsArray[vectorIndex1].SetTerm(1, s);
                 
@@ -129,13 +129,13 @@ namespace GAPoTNumLib.GAPoT
             }
 
             //Fill the last column
-            frameVectorsArray[m - 1] = new GaPoTNumVector();
+            frameVectorsArray[m - 1] = new GeoPoTNumVector();
 
             var v = 1.0d / Math.Sqrt(m);
             for (var i = 0; i < m; i++) 
                 frameVectorsArray[m - 1].SetTerm(i + 1, v);
 
-            return new GaPoTNumFrame(frameVectorsArray);
+            return new GeoPoTNumFrame(frameVectorsArray);
         }
 
         /// <summary>
@@ -143,9 +143,9 @@ namespace GAPoTNumLib.GAPoT
         /// </summary>
         /// <param name="vectorsCount"></param>
         /// <returns></returns>
-        private static GaPoTNumFrame CreateClarkeFrameEven(int vectorsCount)
+        private static GeoPoTNumFrame CreateClarkeFrameEven(int vectorsCount)
         {
-            var frameVectorsArray = new GaPoTNumVector[vectorsCount];
+            var frameVectorsArray = new GeoPoTNumVector[vectorsCount];
             
             var m = vectorsCount;
             var s = Math.Sqrt(2.0d / m);
@@ -157,8 +157,8 @@ namespace GAPoTNumLib.GAPoT
                 var vectorIndex1 = 2 * k;
                 var vectorIndex2 = 2 * k + 1;
                 
-                frameVectorsArray[vectorIndex1] = new GaPoTNumVector();
-                frameVectorsArray[vectorIndex2] = new GaPoTNumVector();
+                frameVectorsArray[vectorIndex1] = new GeoPoTNumVector();
+                frameVectorsArray[vectorIndex2] = new GeoPoTNumVector();
                 
                 frameVectorsArray[vectorIndex1].SetTerm(1, s);
                 
@@ -174,8 +174,8 @@ namespace GAPoTNumLib.GAPoT
             }
 
             //Fill the last column
-            frameVectorsArray[m - 2] = new GaPoTNumVector();
-            frameVectorsArray[m - 1] = new GaPoTNumVector();
+            frameVectorsArray[m - 2] = new GeoPoTNumVector();
+            frameVectorsArray[m - 1] = new GeoPoTNumVector();
 
             var v0 = 1.0d / Math.Sqrt(m);
             var v1 = -v0;
@@ -186,7 +186,7 @@ namespace GAPoTNumLib.GAPoT
                 frameVectorsArray[m - 1].SetTerm(i + 1, v0);
             }
             
-            return new GaPoTNumFrame(frameVectorsArray);
+            return new GeoPoTNumFrame(frameVectorsArray);
         }
 
         /// <summary>
@@ -194,19 +194,19 @@ namespace GAPoTNumLib.GAPoT
         /// </summary>
         /// <param name="vectorsCount"></param>
         /// <returns></returns>
-        public static GaPoTNumFrame CreateClarkeFrame(int vectorsCount)
+        public static GeoPoTNumFrame CreateClarkeFrame(int vectorsCount)
         {
             return vectorsCount % 2 == 0 
                 ? CreateClarkeFrameEven(vectorsCount) 
                 : CreateClarkeFrameOdd(vectorsCount);
         }
 
-        public static GaPoTNumFrame CreateKirchhoffFrame(int vectorsCount)
+        public static GeoPoTNumFrame CreateKirchhoffFrame(int vectorsCount)
         {
             return CreateKirchhoffFrame(vectorsCount, 0);
         }
 
-        public static GaPoTNumFrame CreateKirchhoffFrame(int vectorsCount, int refVectorIndex)
+        public static GeoPoTNumFrame CreateKirchhoffFrame(int vectorsCount, int refVectorIndex)
         {
             var uFrame = CreateBasisFrame(vectorsCount);
             var eFrame = CreateEmptyFrame();
@@ -223,26 +223,26 @@ namespace GAPoTNumLib.GAPoT
             return eFrame;
         }
 
-        public static GaPoTNumFrame CreateGramSchmidtFrame(int vectorsCount)
+        public static GeoPoTNumFrame CreateGramSchmidtFrame(int vectorsCount)
         {
             return CreateGramSchmidtFrame(vectorsCount, out _);
         }
 
-        public static GaPoTNumFrame CreateGramSchmidtFrame(int vectorsCount, out GaPoTNumFrame kirchhoffFrame)
+        public static GeoPoTNumFrame CreateGramSchmidtFrame(int vectorsCount, out GeoPoTNumFrame kirchhoffFrame)
         {
             return CreateGramSchmidtFrame(vectorsCount, 0, out kirchhoffFrame);
         }
 
-        public static GaPoTNumFrame CreateGramSchmidtFrame(int vectorsCount, int refVectorIndex)
+        public static GeoPoTNumFrame CreateGramSchmidtFrame(int vectorsCount, int refVectorIndex)
         {
             return CreateGramSchmidtFrame(vectorsCount, refVectorIndex, out _);
         }
 
-        public static GaPoTNumFrame CreateGramSchmidtFrame(int vectorsCount, int refVectorIndex, out GaPoTNumFrame kirchhoffFrame)
+        public static GeoPoTNumFrame CreateGramSchmidtFrame(int vectorsCount, int refVectorIndex, out GeoPoTNumFrame kirchhoffFrame)
         {
             kirchhoffFrame = CreateKirchhoffFrame(vectorsCount, refVectorIndex);
 
-            var uPseudoScalar = new GaPoTNumMultivector()
+            var uPseudoScalar = new GeoPoTNumMultivector()
                 .SetTerm(
                     (1 << vectorsCount) - 1, 
                     1.0d
@@ -251,7 +251,7 @@ namespace GAPoTNumLib.GAPoT
             var cFrame = kirchhoffFrame.GetOrthogonalFrame(true);
             
             cFrame.AppendVector(
-                -GaPoTNumUtils
+                -GeoPoTNumUtils
                     .OuterProduct(cFrame)
                     .Gp(uPseudoScalar.CliffordConjugate())
                     .GetVectorPart()
@@ -268,21 +268,21 @@ namespace GAPoTNumLib.GAPoT
             return cFrame;
         }
 
-        public static GaPoTNumFrame CreateHyperVectorsFrame3D()
+        public static GeoPoTNumFrame CreateHyperFreeFrame3D()
         {
-            var frame = new GaPoTNumFrame();
+            var frame = new GeoPoTNumFrame();
 
-            var v1 = new GaPoTNumVector(
+            var v1 = new GeoPoTNumVector(
                 1.0d,
                 0.0d
             );
 
-            var v2 = new GaPoTNumVector(
+            var v2 = new GeoPoTNumVector(
                 -0.5d,
                 0.5d * Math.Sqrt(3.0d)
             );
 
-            var v3 = new GaPoTNumVector(
+            var v3 = new GeoPoTNumVector(
                 -0.5d,
                 -0.5d * Math.Sqrt(3.0d)
             );
@@ -292,31 +292,31 @@ namespace GAPoTNumLib.GAPoT
             return frame;
         }
 
-        public static GaPoTNumFrame CreateHyperVectorsFrame4D()
+        public static GeoPoTNumFrame CreateHyperFreeFrame4D()
         {
             var c = Math.Sqrt(0.75d);
 
-            var frame = new GaPoTNumFrame();
+            var frame = new GeoPoTNumFrame();
 
-            var v1 = new GaPoTNumVector(
+            var v1 = new GeoPoTNumVector(
                 c * Math.Sqrt(8.0d / 9.0d),
                 0.0d,
                 c / 3.0d
             );
 
-            var v2 = new GaPoTNumVector(
+            var v2 = new GeoPoTNumVector(
                 c * -Math.Sqrt(2.0d / 9.0d),
                 c * Math.Sqrt(2.0d / 3.0d),
                 c / 3.0d
             );
 
-            var v3 = new GaPoTNumVector(
+            var v3 = new GeoPoTNumVector(
                 -c * Math.Sqrt(2.0d / 9.0d),
                 c * -Math.Sqrt(2.0d / 3.0d),
                 c / 3.0d
             );
 
-            var v4 = new GaPoTNumVector(
+            var v4 = new GeoPoTNumVector(
                 0.0d,
                 0.0d,
                 -c
@@ -332,7 +332,7 @@ namespace GAPoTNumLib.GAPoT
         /// </summary>
         /// <param name="vectorsCount"></param>
         /// <returns></returns>
-        public static GaPoTNumFrame CreateHyperVectorsFrame(int vectorsCount)
+        public static GeoPoTNumFrame CreateHyperFreeFrame(int vectorsCount)
         {
             var n = vectorsCount;
             var fbdMatrix = new double[n - 1, n];
@@ -356,38 +356,38 @@ namespace GAPoTNumLib.GAPoT
 
 
 
-        private readonly List<GaPoTNumVector> _vectorsList
-            = new List<GaPoTNumVector>();
+        private readonly List<GeoPoTNumVector> _vectorsList
+            = new List<GeoPoTNumVector>();
 
 
         public int Count 
             => _vectorsList.Count;
         
-        public GaPoTNumVector this[int index]
+        public GeoPoTNumVector this[int index]
         {
             get => _vectorsList[index];
             set => _vectorsList[index] = value;
         }
 
 
-        internal GaPoTNumFrame()
+        internal GeoPoTNumFrame()
         {
         }
 
-        internal GaPoTNumFrame(IEnumerable<GaPoTNumVector> vectorsList)
+        internal GeoPoTNumFrame(IEnumerable<GeoPoTNumVector> vectorsList)
         {
             _vectorsList.AddRange(vectorsList);
         }
         
         
-        public GaPoTNumFrame AppendVector(GaPoTNumVector vector)
+        public GeoPoTNumFrame AppendVector(GeoPoTNumVector vector)
         {
             _vectorsList.Add(vector);
 
             return this;
         }
         
-        public GaPoTNumFrame AppendVectors(params GaPoTNumVector[] vectorsList)
+        public GeoPoTNumFrame AppendVectors(params GeoPoTNumVector[] vectorsList)
         {
             foreach (var vector in vectorsList)
                 _vectorsList.Add(vector);
@@ -395,46 +395,46 @@ namespace GAPoTNumLib.GAPoT
             return this;
         }
         
-        public GaPoTNumFrame PrependVector(GaPoTNumVector vector)
+        public GeoPoTNumFrame PrependVector(GeoPoTNumVector vector)
         {
             _vectorsList.Insert(0, vector);
 
             return this;
         }
         
-        public GaPoTNumFrame InsertVector(int index, GaPoTNumVector vector)
+        public GeoPoTNumFrame InsertVector(int index, GeoPoTNumVector vector)
         {
             _vectorsList.Insert(index, vector);
 
             return this;
         }
 
-        public GaPoTNumFrame GetSubFrame(int startIndex, int count)
+        public GeoPoTNumFrame GetSubFrame(int startIndex, int count)
         {
-            return new GaPoTNumFrame(
+            return new GeoPoTNumFrame(
                 _vectorsList
                     .Skip(startIndex)
                     .Take(count)
             );
         }
 
-        public GaPoTNumFrame GetOrthogonalFrame(bool makeUnitVectors)
+        public GeoPoTNumFrame GetOrthogonalFrame(bool makeUnitVectors)
         {
-            return new GaPoTNumFrame(
+            return new GeoPoTNumFrame(
                 _vectorsList.ApplyGramSchmidt(makeUnitVectors)
             );
         }
 
-        public GaPoTNumFrame GetNegativeFrame()
+        public GeoPoTNumFrame GetNegativeFrame()
         {
-            return new GaPoTNumFrame(
+            return new GeoPoTNumFrame(
                 _vectorsList.Select(v => -v)
             );
         }
 
-        public GaPoTNumFrame GetSwappedPairsFrame()
+        public GeoPoTNumFrame GetSwappedPairsFrame()
         {
-            var frame = new GaPoTNumFrame();
+            var frame = new GeoPoTNumFrame();
 
             //Swap each pair of two consecutive vectors in the frame
             for (var i = 0; i < _vectorsList.Count - 1; i += 2)
@@ -460,19 +460,19 @@ namespace GAPoTNumLib.GAPoT
             return frame;
         }
 
-        public GaPoTNumFrame ApplyRotor(GaPoTNumMultivector rotor)
+        public GeoPoTNumFrame ApplyRotor(GeoPoTNumMultivector rotor)
         {
             var r1 = rotor;
             var r2 = rotor.Reverse();
 
-            return new GaPoTNumFrame(
+            return new GeoPoTNumFrame(
                 _vectorsList.Select(v => r1.Gp(v.ToMultivector()).Gp(r2).GetVectorPart())
             );
         }
 
-        public GaPoTNumMultivector GetPseudoScalar()
+        public GeoPoTNumMultivector GetPseudoScalar()
         {
-            return GaPoTNumUtils.OuterProduct(_vectorsList);
+            return GeoPoTNumUtils.OuterProduct(_vectorsList);
         }
 
         public bool IsOrthonormal()
@@ -498,7 +498,7 @@ namespace GAPoTNumLib.GAPoT
             return true;
         }
 
-        public bool HasSameHandedness(GaPoTNumFrame targetFrame)
+        public bool HasSameHandedness(GeoPoTNumFrame targetFrame)
         {
             var ps1 = GetPseudoScalar();
             var ps2 = targetFrame.GetPseudoScalar();
@@ -602,13 +602,13 @@ namespace GAPoTNumLib.GAPoT
         /// </summary>
         /// <param name="targetFrame"></param>
         /// <returns></returns>
-        public IEnumerable<GaPoTNumMultivector> GetRotorsToFrame(GaPoTNumFrame targetFrame)
+        public IEnumerable<GeoPoTNumMultivector> GetRotorsToFrame(GeoPoTNumFrame targetFrame)
         {
             Debug.Assert(targetFrame.Count == Count);
             Debug.Assert(IsOrthonormal() && targetFrame.IsOrthonormal());
             Debug.Assert(HasSameHandedness(targetFrame));
 
-            var inputFrame = new GaPoTNumVector[Count];
+            var inputFrame = new GeoPoTNumVector[Count];
 
             for (var i = 0; i < Count; i++)
                 inputFrame[i] = _vectorsList[i];
@@ -625,14 +625,14 @@ namespace GAPoTNumLib.GAPoT
             }
         }
 
-        public IEnumerable<GaPoTNumMultivector> GetRotorsToFrame(GaPoTNumFrame targetFrame, params int[] basisRotationOrderList)
+        public IEnumerable<GeoPoTNumMultivector> GetRotorsToFrame(GeoPoTNumFrame targetFrame, params int[] basisRotationOrderList)
         {
             Debug.Assert(targetFrame.Count == Count);
             Debug.Assert(IsOrthonormal() && targetFrame.IsOrthonormal());
             Debug.Assert(HasSameHandedness(targetFrame));
-            Debug.Assert(GaPoTNumUtils.ValidateIndexPermutationList(basisRotationOrderList));
+            Debug.Assert(GeoPoTNumUtils.ValidateIndexPermutationList(basisRotationOrderList));
 
-            var inputFrame = new GaPoTNumVector[Count];
+            var inputFrame = new GeoPoTNumVector[Count];
 
             for (var i = 0; i < Count; i++)
                 inputFrame[i] = _vectorsList[i];
@@ -655,7 +655,7 @@ namespace GAPoTNumLib.GAPoT
             }
         }
 
-        public IEnumerable<double> GetAnglesToFrame(GaPoTNumFrame targetFrame)
+        public IEnumerable<double> GetAnglesToFrame(GeoPoTNumFrame targetFrame)
         {
             Debug.Assert(targetFrame.Count == Count);
 
@@ -663,14 +663,14 @@ namespace GAPoTNumLib.GAPoT
                 yield return _vectorsList[i].GetAngle(targetFrame[i]);
         }
 
-        public IEnumerable<GaPoTNumFrame> GetFramePermutations()
+        public IEnumerable<GeoPoTNumFrame> GetFramePermutations()
         {
             var indexPermutationsList = 
-                GaPoTNumUtils.GetIndexPermutations(Count);
+                GeoPoTNumUtils.GetIndexPermutations(Count);
 
             foreach (var indexPermutation in indexPermutationsList)
             {
-                var frame = new GaPoTNumFrame();
+                var frame = new GeoPoTNumFrame();
 
                 foreach (var index in indexPermutation)
                     frame.AppendVector(_vectorsList[index]);
@@ -679,18 +679,18 @@ namespace GAPoTNumLib.GAPoT
             }
         }
 
-        public GaPoTNumFrame GetProjectionOnFrame(GaPoTNumFrame frame)
+        public GeoPoTNumFrame GetProjectionOnFrame(GeoPoTNumFrame frame)
         {
             var ps = frame.GetPseudoScalar();
 
-            return new GaPoTNumFrame(
+            return new GeoPoTNumFrame(
                 _vectorsList.Select(v => v.GetProjectionOnBlade(ps))
             );
         }
 
-        public GaPoTNumFrame Normalize()
+        public GeoPoTNumFrame Normalize()
         {
-            return new GaPoTNumFrame(_vectorsList.Select(v => v / v.Norm()));
+            return new GeoPoTNumFrame(_vectorsList.Select(v => v / v.Norm()));
         }
 
         public string ToLaTeXEquationsArray(string vectorName, string basisName)
@@ -720,7 +720,7 @@ namespace GAPoTNumLib.GAPoT
             return textComposer.ToString();
         }
 
-        public IEnumerator<GaPoTNumVector> GetEnumerator()
+        public IEnumerator<GeoPoTNumVector> GetEnumerator()
         {
             return _vectorsList.GetEnumerator();
         }

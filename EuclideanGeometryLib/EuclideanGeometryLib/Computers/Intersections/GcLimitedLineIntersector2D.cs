@@ -56,8 +56,8 @@ namespace EuclideanGeometryLib.Computers.Intersections
             var tyMax = (corners[isYPositive].Y - lineData.Origin[1]) * lineData.DirectionInv[1];
 
             // Update txMax and tyMax to ensure robust bounds intersection
-            txMax *= 1 + 2 * Float64Utils.Gamma3;
-            tyMax *= 1 + 2 * Float64Utils.Gamma3;
+            txMax *= 1 + 2 * Float64Utils.Geomma3;
+            tyMax *= 1 + 2 * Float64Utils.Geomma3;
             if (txMin > tyMax || tyMin > txMax)
                 return false;
 
@@ -88,8 +88,8 @@ namespace EuclideanGeometryLib.Computers.Intersections
             var tyMax = (corners[isYPositive].Y - lineData.Origin[1]) * lineData.DirectionInv[1];
 
             // Update txMax and tyMax to ensure robust bounds intersection
-            txMax *= 1 + 2 * Float64Utils.Gamma3;
-            tyMax *= 1 + 2 * Float64Utils.Gamma3;
+            txMax *= 1 + 2 * Float64Utils.Geomma3;
+            tyMax *= 1 + 2 * Float64Utils.Geomma3;
             if (txMin > tyMax || tyMin > txMax)
                 return IntersectionUtils.NoIntersectionPair;
 
@@ -1045,7 +1045,7 @@ namespace EuclideanGeometryLib.Computers.Intersections
                 }
 
                 // Update tFar to ensure robust ray-bounds intersection
-                tSlap2 *= 1 + 2 * Float64Utils.Gamma3;
+                tSlap2 *= 1 + 2 * Float64Utils.Geomma3;
                 tMin = tSlap1 > tMin ? tSlap1 : tMin;
                 tMax = tSlap2 < tMax ? tSlap2 : tMax;
 
@@ -1069,7 +1069,7 @@ namespace EuclideanGeometryLib.Computers.Intersections
                 }
 
                 // Update tFar to ensure robust ray-bounds intersection
-                tSlap2 *= 1 + 2 * Float64Utils.Gamma3;
+                tSlap2 *= 1 + 2 * Float64Utils.Geomma3;
                 tMin = tSlap1 > tMin ? tSlap1 : tMin;
                 tMax = tSlap2 < tMax ? tSlap2 : tMax;
 
@@ -1101,7 +1101,7 @@ namespace EuclideanGeometryLib.Computers.Intersections
                 }
 
                 // Update tFar to ensure robust ray-bounds intersection
-                tSlap2 *= 1 + 2 * Float64Utils.Gamma3;
+                tSlap2 *= 1 + 2 * Float64Utils.Geomma3;
                 tMin = tSlap1 > tMin ? tSlap1 : tMin;
                 tMax = tSlap2 < tMax ? tSlap2 : tMax;
 
@@ -1125,7 +1125,7 @@ namespace EuclideanGeometryLib.Computers.Intersections
                 }
 
                 // Update tFar to ensure robust ray-bounds intersection
-                tSlap2 *= 1 + 2 * Float64Utils.Gamma3;
+                tSlap2 *= 1 + 2 * Float64Utils.Geomma3;
                 tMin = tSlap1 > tMin ? tSlap1 : tMin;
                 tMax = tSlap2 < tMax ? tSlap2 : tMax;
 

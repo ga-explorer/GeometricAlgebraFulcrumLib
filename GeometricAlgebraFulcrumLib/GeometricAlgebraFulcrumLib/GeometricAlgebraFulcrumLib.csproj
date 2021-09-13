@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Utilities\Structures\ReadOnlyDictionaries\" />
+    <Folder Include="Utilities\Structures\Dictionaries\" />
   </ItemGroup>
 
 </Project>

@@ -24,10 +24,10 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
 
             var casesText = new ListTextComposer(Environment.NewLine);
 
-            foreach (var inGrade1 in Processor.Grades)
-                foreach (var inGrade2 in Processor.Grades)
+            foreach (var inGrade1 in GeometricProcessor.Grades)
+                foreach (var inGrade2 in GeometricProcessor.Grades)
                 {
-                    var id = inGrade1 + inGrade2 * Processor.GradesCount;
+                    var id = inGrade1 + inGrade2 * GeometricProcessor.GradesCount;
 
                     var name = OperationSpecs.GetName(
                         inGrade1, inGrade2
@@ -57,7 +57,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
                 Templates["gp"],
                 "signature", CurrentNamespace,
                 "name", name,
-                "double", GaLanguage.ScalarTypeName,
+                "double", GeoLanguage.ScalarTypeName,
                 "gp_case", gpCaseText
             );
         }

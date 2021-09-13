@@ -113,7 +113,7 @@
         /// The gather environment gathers and centers equations; each equation is numbered; not available
         /// in wiki. 
         /// </summary>
-        public static string Gather { get; } = "gather";
+        public static string Geother { get; } = "gather";
 
         /// <summary>
         /// The align environment lets you use the ampersand (&amp;) to align multiple equations; each

@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
-using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Evaluators;
+using GeometricAlgebraFulcrumLib.Processors.SymbolicAlgebra.Context;
+using GeometricAlgebraFulcrumLib.Processors.SymbolicAlgebra.Evaluators;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 {

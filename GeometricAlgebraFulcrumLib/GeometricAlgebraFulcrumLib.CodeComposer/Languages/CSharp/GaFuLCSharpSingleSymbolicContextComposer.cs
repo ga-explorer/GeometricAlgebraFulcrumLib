@@ -1,5 +1,5 @@
 ﻿using GeometricAlgebraFulcrumLib.CodeComposer.Composers;
-using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
+using GeometricAlgebraFulcrumLib.Processors.SymbolicAlgebra.Context;
 
 namespace GeometricAlgebraFulcrumLib.CodeComposer.Languages.CSharp
 {
@@ -25,7 +25,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Languages.CSharp
         //        ActiveFileTextComposer.Append("0.0D");
 
         //    else
-        //        ActiveFileTextComposer.Append("new " + typeInfo.GaClcTypeSignature + "()");
+        //        ActiveFileTextComposer.Append("new " + typeInfo.GeoClcTypeSignature + "()");
         //}
 
         protected override void GenerateSymbolicContextCode()
@@ -43,12 +43,12 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Languages.CSharp
             ActiveFileTextComposer.AppendLineAtNewLine("{");
             ActiveFileTextComposer.IncreaseIndentation();
 
-            ActiveFileTextComposer.AppendAtNewLine(GaLanguage.ScalarTypeName);
+            ActiveFileTextComposer.AppendAtNewLine(GeoLanguage.ScalarTypeName);
             ActiveFileTextComposer.AppendLine(" result;");
 
             //if (macroBinding.BaseSymbolicContext.OutputType.IsValidScalarType)
             //{
-            //    ActiveFileTextComposer.AppendAtNewLine(GaClcLanguage.ScalarTypeName);
+            //    ActiveFileTextComposer.AppendAtNewLine(GeoClcLanguage.ScalarTypeName);
             //    ActiveFileTextComposer.AppendLine(" result;");
             //}
             //else

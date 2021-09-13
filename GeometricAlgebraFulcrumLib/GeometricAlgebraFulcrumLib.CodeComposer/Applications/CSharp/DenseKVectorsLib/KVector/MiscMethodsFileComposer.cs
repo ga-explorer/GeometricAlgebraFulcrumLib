@@ -4,8 +4,7 @@ using CodeComposerLib.SyntaxTree;
 using DataStructuresLib.BitManipulation;
 using GeometricAlgebraFulcrumLib.CodeComposer.Composers;
 using GeometricAlgebraFulcrumLib.CodeComposer.Languages;
-using GeometricAlgebraFulcrumLib.Processing.Multivectors.Products.Euclidean;
-using GeometricAlgebraFulcrumLib.Processing.SymbolicExpressions.Context;
+using GeometricAlgebraFulcrumLib.Processors.SymbolicAlgebra.Context;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using TextComposerLib.Text.Linear;
 using TextComposerLib.Text.Structured;
@@ -20,7 +19,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         {
         }
 
-        //private GaClcInfoSymbolicContext AddEuclideanDualGaClcSymbolicContext()
+        //private GeoClcInfoSymbolicContext AddEuclideanDualGeoClcSymbolicContext()
         //{
         //    var codeText =
         //        Templates["edual_macro"].GenerateUsing(CurrentNamespace);
@@ -31,7 +30,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         //            _currentFrame.AssociatedFrame.ChildScope
         //            );
 
-        //    return new GaClcInfoSymbolicContext(gmacSymbolicContext);
+        //    return new GeoClcInfoSymbolicContext(gmacSymbolicContext);
         //}
 
         private void GenerateEuclideanDualFunction(uint inGrade)
@@ -50,7 +49,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
                 );
 
             var outputKVector = 
-                Processor
+                GeometricProcessor
                     .EDual(inputKVector, VSpaceDimension)
                     .GetKVectorPart(outGrade);
 
@@ -75,7 +74,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             );
 
             var macroComposer = new GaFuLSymbolicContextCodeComposer(
-                DenseKVectorsLibraryComposer.GaLanguage, 
+                DenseKVectorsLibraryComposer.GeoLanguage, 
                 context,
                 DenseKVectorsLibraryComposer.DefaultContextCodeComposerOptions
             );
@@ -85,9 +84,9 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
 
             TextComposer.Append(
                 Templates["edual"],
-                "double", GaLanguage.ScalarTypeName,
+                "double", GeoLanguage.ScalarTypeName,
                 "grade", inGrade,
-                "num", Processor.KvSpaceDimension(inGrade),
+                "num", GeometricProcessor.KVectorSpaceDimension(inGrade),
                 "computations", computationsText
             );
         }
@@ -115,7 +114,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             var miscFuncsTemplate = Templates["misc"];
 
             TextComposer.Append(miscFuncsTemplate,
-                "double", GaLanguage.ScalarTypeName,
+                "double", GeoLanguage.ScalarTypeName,
                 "num", kvSpaceDim,
                 "addcases", addCasesText,
                 "subtcases", subtCasesText,
@@ -138,7 +137,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
 
             //var id = ((ValueAccessStepByKey<int>)valueAccess.LastAccessStep).AccessKey;
 
-            //var grade = GaUtils.ID_To_Grade(id);
+            //var grade = GeoUtils.ID_To_Grade(id);
 
             //if (grade == 0)
             //    compInfo.EnableCodeGeneration = false;
@@ -166,7 +165,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             );
 
             //var outGradesList =
-            //    Processor
+            //    GeometricProcessor
             //        .BasisSet
             //        .GradesOfEGp(inGrade, inGrade)
             //        .Where(grade => grade > 0)
@@ -182,9 +181,9 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
                     );
 
             var outputKVector = 
-                Processor.EGp(inputKVector);
+                GeometricProcessor.EGp(inputKVector);
 
-            Processor
+            GeometricProcessor
                 .GetNotZeroTerms(outputKVector)
                 .Select(t => t.Scalar)
                 .SetIsOutput(true);
@@ -210,7 +209,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             );
 
             var macroComposer = new GaFuLSymbolicContextCodeComposer(
-                DenseKVectorsLibraryComposer.GaLanguage, 
+                DenseKVectorsLibraryComposer.GeoLanguage, 
                 context,
                 DenseKVectorsLibraryComposer.DefaultContextCodeComposerOptions
             );
@@ -227,7 +226,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             TextComposer.Append(
                 Templates["self_dp_grade"],
                 "grade", inGrade,
-                "double", GaLanguage.ScalarTypeName,
+                "double", GeoLanguage.ScalarTypeName,
                 "computations", computationsText
             );
         }
@@ -278,12 +277,12 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
 
             miscCasesText.SetSeparator(Environment.NewLine);
 
-            foreach (var grade in Processor.Grades)
+            foreach (var grade in GeometricProcessor.Grades)
             {
                 miscCasesText.AddTextItems(miscCasesTemplates,
                     "signature", CurrentNamespace,
                     "grade", grade,
-                    "num", Processor.KvSpaceDimension(grade),
+                    "num", GeometricProcessor.KVectorSpaceDimension(grade),
                     "sign", grade.GradeHasNegativeReverse() ? "-" : "",
                     "invgrade", VSpaceDimension - grade
                     );
@@ -296,7 +295,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             TextComposer.Append(
                 mainFuncsTemplate,
                 "signature", CurrentNamespace,
-                "double", GaLanguage.ScalarTypeName,
+                "double", GeoLanguage.ScalarTypeName,
                 "norm2_opname", GaFuLLanguageOperationKind.UnaryNormSquared.GetName(false),
                 "emag2_opname", GaFuLLanguageOperationKind.UnaryNormSquared.GetName(true)
             );
@@ -311,13 +310,13 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             var kvSpaceDimList =
                 VSpaceDimension
                     .GetRange()
-                    .Select(grade => Processor.KvSpaceDimension(grade))
+                    .Select(grade => GeometricProcessor.KVectorSpaceDimension(grade))
                     .Distinct();
 
             foreach (var kvSpaceDim in kvSpaceDimList)
                 GenerateMiscFunctions(kvSpaceDim);
 
-            foreach (var inGrade in Processor.Grades)
+            foreach (var inGrade in GeometricProcessor.Grades)
                 GenerateEuclideanDualFunction(inGrade);
 
             for (var inGrade = 2U; inGrade < VSpaceDimension - 1; inGrade++)
