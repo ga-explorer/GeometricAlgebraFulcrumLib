@@ -207,7 +207,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Frames
         public GeoSubspace<T> GetSubspace()
         {
             //TODO: Modify this to find the outer product of the basis from vectors _vectorStoragesList
-            return GeoSubspace<T>.Create(
+            return GeoSubspace<T>.CreateDirect(
                 GeometricProcessor,
                 GeometricProcessor.Op(_vectorStoragesList)
             );
@@ -378,12 +378,12 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Frames
             );
         }
 
-        public T[,] GetMatrix()
+        public T[,] GetArray()
         {
-            return GetMatrix((int) VSpaceDimension);
+            return GetArray((int) VSpaceDimension);
         }
 
-        public T[,] GetMatrix(int rowsCount)
+        public T[,] GetArray(int rowsCount)
         {
             var colsCount = Count;
             var itemsArray = 
@@ -403,7 +403,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Frames
             return itemsArray;
         }
 
-        public T[,] GetInnerProductsMatrix()
+        public T[,] GetInnerProductsArray()
         {
             var ipm = new T[Count, Count];
 
@@ -425,7 +425,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Frames
             return ipm;
         }
 
-        public T[,] GetInnerAnglesMatrix()
+        public T[,] GetInnerAnglesArray()
         {
             var ipm = new T[Count, Count];
 
@@ -445,7 +445,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Frames
             return ipm;
         }
 
-        public T[,] GetInnerAnglesInDegreesMatrix()
+        public T[,] GetInnerAnglesInDegreesArray()
         {
             var ipm = new T[Count, Count];
 

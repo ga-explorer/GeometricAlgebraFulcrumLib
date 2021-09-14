@@ -2,8 +2,6 @@
 using System.Linq;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.LinearMaps;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms;
-using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors;
@@ -16,12 +14,6 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
     public static class MultivectorStorageMappingUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVectorStorage<T> OmMapPseudoScalar<T>(this IGeometricAlgebraProcessor<T> geometricProcessor, IOutermorphism<T> outermorphism)
-        {
-            return outermorphism.OmMapBasisBlade(geometricProcessor.MaxBasisBladeId);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IMultivectorStorage<T> MapMultivector<T>(this IUnilinearMap<T> map, IMultivectorStorage<T> mv)
         {
             return mv switch
@@ -31,20 +23,6 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                 KVectorStorage<T> mv1 => map.MapKVector(mv1),
                 MultivectorStorage<T> mv1 => map.MapMultivector(mv1),
                 MultivectorGradedStorage<T> mv1 => map.MapMultivector(mv1),
-                _ => throw new InvalidOperationException()
-            };
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorStorage<T> OmMapMultivector<T>(this IOutermorphism<T> map, IMultivectorStorage<T> mv)
-        {
-            return mv switch
-            {
-                VectorStorage<T> mv1 => map.OmMapVector(mv1),
-                BivectorStorage<T> mv1 => map.OmMapBivector(mv1),
-                KVectorStorage<T> mv1 => map.OmMapKVector(mv1),
-                MultivectorStorage<T> mv1 => map.OmMapMultivector(mv1),
-                MultivectorGradedStorage<T> mv1 => map.OmMapMultivector(mv1),
                 _ => throw new InvalidOperationException()
             };
         }

@@ -1,7 +1,7 @@
 ﻿namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 {
-    public static class GeoSubspacesUtils
+    public static class RotorUtils
     {
-
+        
     }
 }

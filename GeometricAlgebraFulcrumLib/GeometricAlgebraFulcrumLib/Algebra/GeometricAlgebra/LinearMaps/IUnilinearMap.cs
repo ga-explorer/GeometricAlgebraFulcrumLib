@@ -9,6 +9,10 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.LinearMaps
     public interface IUnilinearMap<T> : 
         ILinearAlgebraElement<T>
     {
+        bool IsValid();
+
+        bool IsInvalid();
+
         IUnilinearMap<T> GetAdjoint();
 
 

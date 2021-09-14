@@ -30,6 +30,16 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.LinearMaps
         }
 
 
+        public bool IsValid()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public bool IsInvalid()
+        {
+            throw new System.NotImplementedException();
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IUnilinearMap<T> GetAdjoint()
         {
@@ -127,6 +137,31 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.LinearMaps
         }
 
         public IMultivectorStorage<T> MapMultivector(MultivectorGradedStorage<T> multivector)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public VectorStorage<T> OmMapVector(VectorStorage<T> vector)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public BivectorStorage<T> OmMapBivector(BivectorStorage<T> bivector)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public KVectorStorage<T> OmMapKVector(KVectorStorage<T> kVector)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public MultivectorStorage<T> OmMapMultivector(MultivectorStorage<T> multivector)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public MultivectorGradedStorage<T> OmMapMultivector(MultivectorGradedStorage<T> multivector)
         {
             throw new System.NotImplementedException();
         }

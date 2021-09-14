@@ -5,11 +5,9 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.BitManipulation;
 using DataStructuresLib.Collections;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.LinearMaps;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.LinearMaps;
 using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTraversal.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Processors.LinearAlgebra;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded;
@@ -20,12 +18,9 @@ using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms
 {
     public sealed class LinearMapOutermorphism<T> 
-        : IOutermorphism<T>
+        : OutermorphismBase<T>
     {
-        public IScalarAlgebraProcessor<T> ScalarProcessor 
-            => LinearMap.LinearProcessor;
-
-        public ILinearAlgebraProcessor<T> LinearProcessor 
+        public override ILinearAlgebraProcessor<T> LinearProcessor 
             => LinearMap.LinearProcessor;
 
         public ILinUnilinearMap<T> LinearMap { get; }
@@ -38,18 +33,18 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IOutermorphism<T> GetOmAdjoint()
+        public override IOutermorphism<T> GetOmAdjoint()
         {
             return new LinearMapOutermorphism<T>(LinearMap.GetLinAdjoint());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public VectorStorage<T> OmMapBasisVector(ulong index)
+        public override VectorStorage<T> OmMapBasisVector(ulong index)
         {
             return LinearMap.LinMapBasisVector(index).CreateVectorStorage();
         }
 
-        public BivectorStorage<T> OmMapBasisBivector(ulong index)
+        public override BivectorStorage<T> OmMapBasisBivector(ulong index)
         {
             var (index1, index2) = 
                 index.BasisBivectorIndexToVectorIndices();
@@ -61,7 +56,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public BivectorStorage<T> OmMapBasisBivector(ulong index1, ulong index2)
+        public override BivectorStorage<T> OmMapBasisBivector(ulong index1, ulong index2)
         {
             if (index1 == index2)
                 return BivectorStorage<T>.ZeroBivector;
@@ -78,7 +73,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public KVectorStorage<T> OmMapBasisBlade(ulong id)
+        public override KVectorStorage<T> OmMapBasisBlade(ulong id)
         {
             if (id == 0)
                 return LinearProcessor.CreateKVectorBasisScalarStorage();
@@ -92,7 +87,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public KVectorStorage<T> OmMapBasisBlade(uint grade, ulong index)
+        public override KVectorStorage<T> OmMapBasisBlade(uint grade, ulong index)
         {
             return grade switch
             {
@@ -107,7 +102,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms
         }
         
 
-        public VectorStorage<T> OmMapVector(VectorStorage<T> vector)
+        public override VectorStorage<T> OmMapVector(VectorStorage<T> vector)
         {
             var storage = 
                 LinearProcessor.CreateVectorStorageComposer();
@@ -123,7 +118,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms
             return storage.CreateVectorStorage();
         }
 
-        public BivectorStorage<T> OmMapBivector(BivectorStorage<T> bivector)
+        public override BivectorStorage<T> OmMapBivector(BivectorStorage<T> bivector)
         {
             var dict = 
                 GetOmMappedBasisVectors().ToDictionary(
@@ -157,7 +152,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms
             return storage.CreateBivectorStorage();
         }
 
-        public KVectorStorage<T> OmMapKVector(KVectorStorage<T> kVector)
+        public override KVectorStorage<T> OmMapKVector(KVectorStorage<T> kVector)
         {
             var dict = 
                 GetOmMappedBasisVectors().ToDictionary(
@@ -191,7 +186,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms
             return storage.CreateKVectorStorage(kVector.Grade);
         }
 
-        public MultivectorStorage<T> OmMapMultivector(MultivectorStorage<T> multivector)
+        public override MultivectorStorage<T> OmMapMultivector(MultivectorStorage<T> multivector)
         {
             var dict = 
                 GetOmMappedBasisVectors().ToDictionary(
@@ -218,7 +213,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms
                 .CreateMultivectorSparseStorage();
         }
 
-        public MultivectorGradedStorage<T> OmMapMultivector(MultivectorGradedStorage<T> multivector)
+        public override MultivectorGradedStorage<T> OmMapMultivector(MultivectorGradedStorage<T> multivector)
         {
             var dict = 
                 GetOmMappedBasisVectors().ToDictionary(
@@ -246,120 +241,45 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms
         }
 
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IUnilinearMap<T> GetAdjoint()
+        public override bool IsValid()
         {
-            return GetOmAdjoint();
+            throw new NotImplementedException();
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IMultivectorStorage<T> MapBasisScalar()
-        {
-            return KVectorStorage<T>.CreateKVectorScalar(LinearProcessor.ScalarOne);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IMultivectorStorage<T> MapBasisVector(ulong index)
-        {
-            return OmMapBasisVector(index);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IMultivectorStorage<T> MapBasisBivector(ulong index)
-        {
-            return OmMapBasisBivector(index);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IMultivectorStorage<T> MapBasisBivector(ulong index1, ulong index2)
-        {
-            return OmMapBasisBivector(index1, index2);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IMultivectorStorage<T> MapBasisBlade(ulong id)
-        {
-            return OmMapBasisBlade(id);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IMultivectorStorage<T> MapBasisBlade(uint grade, ulong index)
-        {
-            return OmMapBasisBlade(grade, index);
-        }
-
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IMultivectorStorage<T> MapScalar(T mv)
-        {
-            return mv.CreateKVectorScalarStorage();
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IMultivectorStorage<T> MapVector(VectorStorage<T> mv)
-        {
-            return OmMapVector(mv);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IMultivectorStorage<T> MapBivector(BivectorStorage<T> mv)
-        {
-            return OmMapBivector(mv);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IMultivectorStorage<T> MapKVector(KVectorStorage<T> mv)
-        {
-            return OmMapKVector(mv);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IMultivectorStorage<T> MapMultivector(MultivectorStorage<T> mv)
-        {
-            return OmMapMultivector(mv);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IMultivectorStorage<T> MapMultivector(MultivectorGradedStorage<T> mv)
-        {
-            return OmMapMultivector(mv);
-        }
-
-
-        public ILinMatrixStorage<T> GetMultivectorMappingMatrix()
+        public override ILinMatrixStorage<T> GetMultivectorMappingMatrix()
         {
             throw new NotImplementedException();
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ILinMatrixStorage<T> GetVectorOmMappingMatrix()
+        public override ILinMatrixStorage<T> GetVectorOmMappingMatrix()
         {
             return LinearMap.GetLinMappingMatrix();
         }
 
-        public ILinMatrixStorage<T> GetBivectorOmMappingMatrix()
+        public override ILinMatrixStorage<T> GetBivectorOmMappingMatrix()
         {
             throw new NotImplementedException();
         }
 
-        public ILinMatrixStorage<T> GetKVectorOmMappingMatrix(uint grade)
+        public override ILinMatrixStorage<T> GetKVectorOmMappingMatrix(uint grade)
         {
             throw new NotImplementedException();
         }
 
-        public ILinMatrixGradedStorage<T> GetMultivectorOmMappingMatrix()
+        public override ILinMatrixGradedStorage<T> GetMultivectorOmMappingMatrix()
         {
             throw new NotImplementedException();
         }
 
 
-        public IEnumerable<IdMultivectorStorageRecord<T>> GetMappedBasisBlades()
+        public override IEnumerable<IdMultivectorStorageRecord<T>> GetMappedBasisBlades()
         {
             throw new NotImplementedException();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<IndexVectorStorageRecord<T>> GetOmMappedBasisVectors()
+        public override IEnumerable<IndexVectorStorageRecord<T>> GetOmMappedBasisVectors()
         {
             return LinearMap
                 .GetLinMappedBasisVectors()

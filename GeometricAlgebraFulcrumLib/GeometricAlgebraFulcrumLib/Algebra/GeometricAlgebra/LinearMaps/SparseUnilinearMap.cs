@@ -80,6 +80,16 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.LinearMaps
             return _mappedBasisBladesDictionary.TryGetValue(id, out multivector);
         }
 
+        public bool IsValid()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsInvalid()
+        {
+            throw new NotImplementedException();
+        }
+
         public IUnilinearMap<T> GetAdjoint()
         {
             throw new NotImplementedException();
@@ -126,17 +136,42 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.LinearMaps
             throw new NotImplementedException();
         }
 
-        public IMultivectorStorage<T> MapVector(VectorStorage<T> mv)
+        public IMultivectorStorage<T> MapVector(VectorStorage<T> vector)
         {
             throw new NotImplementedException();
         }
 
-        public IMultivectorStorage<T> MapBivector(BivectorStorage<T> mv)
+        public IMultivectorStorage<T> MapBivector(BivectorStorage<T> bivector)
         {
             throw new NotImplementedException();
         }
 
-        public IMultivectorStorage<T> MapKVector(KVectorStorage<T> mv)
+        public IMultivectorStorage<T> MapKVector(KVectorStorage<T> kVector)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IMultivectorStorage<T> MapMultivector(MultivectorStorage<T> multivector)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IMultivectorStorage<T> MapMultivector(MultivectorGradedStorage<T> multivector)
+        {
+            throw new NotImplementedException();
+        }
+
+        public VectorStorage<T> OmMapVector(VectorStorage<T> mv)
+        {
+            throw new NotImplementedException();
+        }
+
+        public BivectorStorage<T> OmMapBivector(BivectorStorage<T> mv)
+        {
+            throw new NotImplementedException();
+        }
+
+        public KVectorStorage<T> OmMapKVector(KVectorStorage<T> mv)
         {
             throw new NotImplementedException();
         }
@@ -151,7 +186,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.LinearMaps
             throw new NotImplementedException();
         }
 
-        public IMultivectorStorage<T> MapMultivector(MultivectorStorage<T> mv)
+        public MultivectorStorage<T> OmMapMultivector(MultivectorStorage<T> mv)
         {
             var storage = 
                 LinearProcessor.CreateVectorStorageComposer();
@@ -168,7 +203,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.LinearMaps
             return storage.CreateMultivectorSparseStorage();
         }
 
-        public IMultivectorStorage<T> MapMultivector(MultivectorGradedStorage<T> mv)
+        public MultivectorGradedStorage<T> OmMapMultivector(MultivectorGradedStorage<T> mv)
         {
             throw new NotImplementedException();
         }

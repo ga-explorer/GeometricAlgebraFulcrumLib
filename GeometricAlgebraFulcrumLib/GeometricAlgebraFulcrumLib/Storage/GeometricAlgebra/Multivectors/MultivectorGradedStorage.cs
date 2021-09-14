@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using DataStructuresLib.BitManipulation;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTraversal.Multivectors;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
@@ -928,9 +929,37 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra.Multivectors
             var gradeIndexScalarList =
                 gradeIndexScalarDictionary.CreateLinVectorGradedStorage();
 
-            return new MultivectorGradedStorage<T>(
-                gradeIndexScalarList
-            );
+            return new MultivectorGradedStorage<T>(gradeIndexScalarList);
+        }
+
+        public Tuple<IMultivectorStorage<T>, IMultivectorStorage<T>> SplitEvenOddParts()
+        {
+            var gradeIndexScalarDictionary1 = new Dictionary<uint, ILinVectorStorage<T>>();
+            var gradeIndexScalarDictionary2 = new Dictionary<uint, ILinVectorStorage<T>>();
+
+            foreach (var (grade, indexScalarList) in _gradeIndexScalarVectorStorage.GetGradeStorageRecords())
+            {
+                if (grade.IsEven())
+                    gradeIndexScalarDictionary1.Add(grade, indexScalarList);
+                else
+                    gradeIndexScalarDictionary2.Add(grade, indexScalarList);
+            }
+
+            var mv1 =
+                gradeIndexScalarDictionary1.Count == 0
+                    ? ZeroMultivector
+                    : gradeIndexScalarDictionary1
+                        .CreateLinVectorGradedStorage()
+                        .CreateMultivectorGradedStorage();
+
+            var mv2 =
+                gradeIndexScalarDictionary2.Count == 0
+                    ? ZeroMultivector
+                    : gradeIndexScalarDictionary2
+                        .CreateLinVectorGradedStorage()
+                        .CreateMultivectorGradedStorage();
+
+            return new Tuple<IMultivectorStorage<T>, IMultivectorStorage<T>>(mv1, mv2);
         }
 
         public Tuple<VectorStorage<T>, VectorStorage<T>> SplitVectorPart(Func<ulong, bool> indexSelection)

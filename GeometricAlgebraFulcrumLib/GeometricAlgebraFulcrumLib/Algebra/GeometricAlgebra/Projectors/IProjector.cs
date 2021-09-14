@@ -1,9 +1,9 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra.Multivectors;
 
-namespace GeometricAlgebraFulcrumLib.Geometry.Subspaces
+namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Projectors
 {
-    public interface IGeoProjector<T> : 
+    public interface IProjector<T> : 
         IOutermorphism<T>
     {
         KVectorStorage<T> UnitBladeStorage { get; }

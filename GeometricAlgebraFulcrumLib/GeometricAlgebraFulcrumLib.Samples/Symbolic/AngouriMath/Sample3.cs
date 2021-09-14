@@ -94,7 +94,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.AngouriMath
                 GeometricProcessor.CreateEuclideanRotor(u, v);
 
             var rotor2 =
-                rotor1.GetPureRotorReverse();
+                rotor1.GetPureRotorInverse();
 
             var rotorMv1 = rotor1.Multivector;
             var rotorMv2 = rotor2.Multivector;

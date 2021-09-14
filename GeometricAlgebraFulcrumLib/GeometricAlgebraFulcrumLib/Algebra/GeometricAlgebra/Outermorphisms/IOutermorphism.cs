@@ -47,5 +47,9 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms
         ILinMatrixGradedStorage<T> GetMultivectorOmMappingMatrix();
 
         IEnumerable<IndexVectorStorageRecord<T>> GetOmMappedBasisVectors();
+
+        //IEnumerable<IndexBivectorStorageRecord<T>> GetOmMappedBasisBivectors();
+
+        //IEnumerable<IndexKVectorStorageRecord<T>> GetOmMappedBasisKVectors(uint grade);
     }
 }

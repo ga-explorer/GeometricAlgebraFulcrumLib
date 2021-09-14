@@ -53,9 +53,9 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
                     GeometricProcessor.GetHouseholderQRDecomposition(clarkeMap, n);
 
                 Console.WriteLine("Q Map Vectors:");
-                for (var i = 0; i < linearMapQ.UnitVectorStorages.Count; i++)
+                foreach (var versor in linearMapQ)
                 {
-                    var vector = linearMapQ.UnitVectorStorages[i];
+                    var vector = versor.Vector;
 
                     Console.WriteLine(
                         TextComposer.GetMultivectorText(vector)

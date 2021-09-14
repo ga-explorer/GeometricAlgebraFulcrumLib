@@ -5,6 +5,7 @@ using GeometricAlgebraFulcrumLib.Geometry.Subspaces;
 using GeometricAlgebraFulcrumLib.Processors.SymbolicAlgebra.Context;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
+using GeometricAlgebraFulcrumLib.Utilities.Factories;
 using TextComposerLib.Text.Linear;
 
 namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVectorsLib.KVector
@@ -50,19 +51,22 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
 
         protected override void DefineContextComputations(SymbolicContext context)
         {
+            var inputSubspace = 
+                GeometricProcessor.CreateDirectSubspace(_inputKVector);
+
             _outputKVector = _operationSpecs.OperationKind switch
             {
                 GaFuLLanguageOperationKind.BinaryProject => 
-                    _subspace.Project(_inputKVector).GetKVectorPart(_inputGrade2),
+                    _subspace.Project(inputSubspace).Blade,//.GetKVectorPart(_inputGrade2),
 
-                GaFuLLanguageOperationKind.BinaryRotate => 
-                    _subspace.Rotate(_inputKVector).GetKVectorPart(_inputGrade2),
+                //GaFuLLanguageOperationKind.BinaryRotate => 
+                //    _subspace.Rotate(inputSubspace).Blade,//.GetKVectorPart(_inputGrade2),
 
                 GaFuLLanguageOperationKind.BinaryReflect => 
-                    _subspace.Reflect(_inputKVector).GetKVectorPart(_inputGrade2),
+                    _subspace.Reflect(inputSubspace).Blade,//.GetKVectorPart(_inputGrade2),
 
                 GaFuLLanguageOperationKind.BinaryComplement => 
-                    _subspace.Complement(_inputKVector).GetKVectorPart(_inputGrade2),
+                    _subspace.Complement(inputSubspace).Blade,//.GetKVectorPart(_inputGrade2),
 
                 _ => throw new InvalidOperationException()
             };

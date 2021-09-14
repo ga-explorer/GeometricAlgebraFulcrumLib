@@ -1091,6 +1091,25 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra.Multivectors
             return new MultivectorStorage<T>(idScalarList);
         }
 
+        public Tuple<IMultivectorStorage<T>, IMultivectorStorage<T>> SplitEvenOddParts()
+        {
+            var indexScalarDictionary1 = new Dictionary<ulong, T>();
+            var indexScalarDictionary2 = new Dictionary<ulong, T>();
+
+            foreach (var (id, scalar) in GetIdScalarRecords())
+            {
+                if (id.BasisBladeIdToGrade().IsEven())
+                    indexScalarDictionary1.Add(id, scalar);
+                else
+                    indexScalarDictionary2.Add(id, scalar);
+            }
+
+            return new Tuple<IMultivectorStorage<T>, IMultivectorStorage<T>>(
+                indexScalarDictionary1.CreateMultivectorSparseStorage(),
+                indexScalarDictionary2.CreateMultivectorSparseStorage()
+            );
+        }
+
         public Tuple<VectorStorage<T>, VectorStorage<T>> SplitVectorPart(Func<ulong, bool> indexSelection)
         {
             var indexScalarDictionary1 = new Dictionary<ulong, T>();

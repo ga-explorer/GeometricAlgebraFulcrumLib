@@ -6,9 +6,9 @@ using GeometricAlgebraFulcrumLib.Geometry.Frames;
 using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.Signatures;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra.Multivectors;
-using GeometricAlgebraFulcrumLib.Utilities.Factories;
+using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 
-namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
+namespace GeometricAlgebraFulcrumLib.Utilities.Factories
 {
     public static class RotorFactory
     {

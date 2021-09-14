@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms;
-using GeometricAlgebraFulcrumLib.Geometry.Versors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Versors;
 using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Utilities.Composers;
@@ -10,9 +10,12 @@ using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 {
-    public static class GeoVersorUtils
+    public static class VersorUtils
     {
-        public static Tuple<GeoFactoredVersor<double>, IOutermorphism<double>> GetHouseholderQRDecomposition(this IGeometricAlgebraProcessor<double> processor, IOutermorphism<double> linearMap, int count)
+        
+
+
+        public static Tuple<PureVersorsSequence<double>, IOutermorphism<double>> GetHouseholderQRDecomposition(this IGeometricAlgebraProcessor<double> processor, IOutermorphism<double> linearMap, int count)
         {
             var unitVectorsList = new List<VectorStorage<double>>(count);
             var mappedBasisVectors =
@@ -120,18 +123,18 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 
             unitVectorsList.Reverse();
             var linearMapQ = 
-                GeoFactoredVersor<double>.Create(
+                PureVersorsSequence<double>.Create(
                     processor, 
                     unitVectorsList
                 );
 
-            return new Tuple<GeoFactoredVersor<double>, IOutermorphism<double>>(
+            return new Tuple<PureVersorsSequence<double>, IOutermorphism<double>>(
                 linearMapQ,
                 linearMapR
             );
         }
 
-        public static Tuple<GeoFactoredVersor<T>, IOutermorphism<T>> GetHouseholderQRDecomposition<T>(this IGeometricAlgebraProcessor<T> processor, IOutermorphism<T> linearMap, int count)
+        public static Tuple<PureVersorsSequence<T>, IOutermorphism<T>> GetHouseholderQRDecomposition<T>(this IGeometricAlgebraProcessor<T> processor, IOutermorphism<T> linearMap, int count)
         {
             var unitVectorsList = new List<VectorStorage<T>>(count);
             var mappedBasisVectors =
@@ -208,12 +211,12 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 
             unitVectorsList.Reverse();
             var linearMapQ = 
-                GeoFactoredVersor<T>.Create(
+                PureVersorsSequence<T>.Create(
                     processor, 
                     unitVectorsList
                 );
 
-            return new Tuple<GeoFactoredVersor<T>, IOutermorphism<T>>(
+            return new Tuple<PureVersorsSequence<T>, IOutermorphism<T>>(
                 linearMapQ,
                 linearMapR
             );

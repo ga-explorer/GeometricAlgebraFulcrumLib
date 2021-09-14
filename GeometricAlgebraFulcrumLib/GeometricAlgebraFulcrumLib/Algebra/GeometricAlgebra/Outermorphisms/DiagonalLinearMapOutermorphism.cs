@@ -218,6 +218,18 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsValid()
+        {
+            return true;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsInvalid()
+        {
+            return false;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IUnilinearMap<T> GetAdjoint()
         {
             return this;
@@ -267,33 +279,33 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IMultivectorStorage<T> MapVector(VectorStorage<T> mv)
+        public IMultivectorStorage<T> MapVector(VectorStorage<T> vector)
         {
-            return OmMapVector(mv);
+            return OmMapVector(vector);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IMultivectorStorage<T> MapBivector(BivectorStorage<T> mv)
+        public IMultivectorStorage<T> MapBivector(BivectorStorage<T> bivector)
         {
-            return OmMapBivector(mv);
+            return OmMapBivector(bivector);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IMultivectorStorage<T> MapKVector(KVectorStorage<T> mv)
+        public IMultivectorStorage<T> MapKVector(KVectorStorage<T> kVector)
         {
-            return OmMapKVector(mv);
+            return OmMapKVector(kVector);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IMultivectorStorage<T> MapMultivector(MultivectorStorage<T> mv)
+        public IMultivectorStorage<T> MapMultivector(MultivectorStorage<T> multivector)
         {
-            return OmMapMultivector(mv);
+            return OmMapMultivector(multivector);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IMultivectorStorage<T> MapMultivector(MultivectorGradedStorage<T> mv)
+        public IMultivectorStorage<T> MapMultivector(MultivectorGradedStorage<T> multivector)
         {
-            return OmMapMultivector(mv);
+            return OmMapMultivector(multivector);
         }
 
 

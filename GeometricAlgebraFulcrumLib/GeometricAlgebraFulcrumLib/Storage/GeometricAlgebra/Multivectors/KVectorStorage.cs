@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using DataStructuresLib.BitManipulation;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTraversal.Multivectors;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
@@ -1079,6 +1080,20 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra.Multivectors
                 );
 
             return CreateKVector(Grade, indexScalarDictionary);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Tuple<IMultivectorStorage<T>, IMultivectorStorage<T>> SplitEvenOddParts()
+        {
+            return Grade.IsEven()
+                ? new Tuple<IMultivectorStorage<T>, IMultivectorStorage<T>>(
+                    this,
+                    MultivectorStorage<T>.ZeroMultivector
+                )
+                : new Tuple<IMultivectorStorage<T>, IMultivectorStorage<T>>(
+                    MultivectorStorage<T>.ZeroMultivector,
+                    this
+                );
         }
 
         public virtual Tuple<VectorStorage<T>, VectorStorage<T>> SplitVectorPart(Func<ulong, bool> indexSelection)

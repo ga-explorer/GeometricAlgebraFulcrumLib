@@ -76,7 +76,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
                 GeometricProcessor.CreateVectorTermStorage(i, 1);
 
             var muSubspace = 
-                GeoSubspace<double>.Create(GeometricProcessor, muStorage);
+                GeoSubspace<double>.CreateDirect(GeometricProcessor, muStorage);
 
             //var muVector =
             //    GeoEuclideanVector<double>.Create(muStorage);
@@ -93,7 +93,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
                 rotor.OmMapVector(muStorage).GetVectorPart();
 
             var phasor2 = 
-                muSubspace.Project(phasor1).GetVectorPart();
+                muSubspace.Project(phasor1);
             
             
             //Console.WriteLine(
@@ -277,7 +277,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
                 
                 Console.WriteLine($"Final Rotor Matrix");
                 Console.WriteLine(
-                    TextComposer.GetArrayText(rotorsSequence.GetFinalMatrix(n))
+                    TextComposer.GetArrayText(rotorsSequence.GetFinalRotorArray(n))
                 );
                 Console.WriteLine();
 

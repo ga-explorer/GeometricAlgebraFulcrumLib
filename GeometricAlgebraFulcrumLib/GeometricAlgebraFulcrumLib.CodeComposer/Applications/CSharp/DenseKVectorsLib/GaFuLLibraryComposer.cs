@@ -587,7 +587,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
                 GaFuLLanguageOperationKind.BinaryProject.CreateEuclideanOperationSpecs(),
                 GaFuLLanguageOperationKind.BinaryReflect.CreateEuclideanOperationSpecs(),
                 GaFuLLanguageOperationKind.BinaryComplement.CreateEuclideanOperationSpecs(),
-                GaFuLLanguageOperationKind.BinaryRotate.CreateEuclideanOperationSpecs(),
+                //GaFuLLanguageOperationKind.BinaryRotate.CreateEuclideanOperationSpecs(),
                 GaFuLLanguageOperationKind.BinaryProject.CreateMetricOperationSpecs(),
                 GaFuLLanguageOperationKind.BinaryReflect.CreateMetricOperationSpecs(),
                 GaFuLLanguageOperationKind.BinaryComplement.CreateMetricOperationSpecs(),
@@ -598,8 +598,8 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             {
                 foreach (var inGrade1 in GeometricProcessor.Grades)
                 {
-                    if (inGrade1.IsOdd() && opSpecs.OperationKind == GaFuLLanguageOperationKind.BinaryRotate)
-                        continue;
+                    //if (inGrade1.IsOdd() && opSpecs.OperationKind == GaFuLLanguageOperationKind.BinaryRotate)
+                    //    continue;
 
                     foreach (var inGrade2 in GeometricProcessor.Grades)
                     {

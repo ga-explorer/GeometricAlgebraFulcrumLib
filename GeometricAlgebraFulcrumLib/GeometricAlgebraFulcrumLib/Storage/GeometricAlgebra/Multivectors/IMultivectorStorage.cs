@@ -193,6 +193,8 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra.Multivectors
         IMultivectorStorage<T> GetMultivectorPart(Func<uint, ulong, T, bool> gradeIndexScalarSelection);
 
 
+        Tuple<IMultivectorStorage<T>, IMultivectorStorage<T>> SplitEvenOddParts();
+
         Tuple<VectorStorage<T>, VectorStorage<T>> SplitVectorPart(Func<ulong, bool> indexSelection);
 
         Tuple<VectorStorage<T>, VectorStorage<T>> SplitVectorPart(Func<ulong, T, bool> indexScalarSelection);
