@@ -1,30 +1,28 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Diagnostics.CodeAnalysis;
-using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using GeometricAlgebraFulcrumLib.Utilities.Factories;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 
-namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra.Outermorphisms
+namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
 {
-    public sealed class OutermorphismGradedStorage<T> :
-        IOutermorphismGradedStorage<T>
+    public sealed class OutermorphismStorage<T>
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static OutermorphismGradedStorage<T> Create(ILinMatrixGradedStorage<T> gradeIndexToKVectorMatrix)
+        public static OutermorphismStorage<T> Create(ILinMatrixGradedStorage<T> gradeIndexToKVectorMatrix)
         {
-            return new OutermorphismGradedStorage<T>(gradeIndexToKVectorMatrix);
+            return new OutermorphismStorage<T>(gradeIndexToKVectorMatrix);
         }
 
 
         public ILinMatrixGradedStorage<T> GradeIndexToKVectorMatrix { get; }
 
 
-        private OutermorphismGradedStorage([NotNull] ILinMatrixGradedStorage<T> gradeIndexToKVectorMatrix)
+        private OutermorphismStorage([NotNull] ILinMatrixGradedStorage<T> gradeIndexToKVectorMatrix)
         {
             GradeIndexToKVectorMatrix = gradeIndexToKVectorMatrix;
         }
@@ -102,7 +100,8 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra.Outermorphisms
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ILinMatrixStorage<T> GetMultivectorMappingMatrix()
         {
-            return GradeIndexToKVectorMatrix.ToMatrixStorage(BasisBladeUtils.BasisBladeGradeIndexToId);
+            return GradeIndexToKVectorMatrix
+                .ToMatrixStorage(BasisBladeUtils.BasisBladeGradeIndexToId);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -202,9 +201,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra.Outermorphisms
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IOutermorphismStorage<T> GetTranspose()
+        public OutermorphismStorage<T> GetTranspose()
         {
-            return new OutermorphismGradedStorage<T>(
+            return new OutermorphismStorage<T>(
                 GradeIndexToKVectorMatrix.GetTranspose()
             );
         }

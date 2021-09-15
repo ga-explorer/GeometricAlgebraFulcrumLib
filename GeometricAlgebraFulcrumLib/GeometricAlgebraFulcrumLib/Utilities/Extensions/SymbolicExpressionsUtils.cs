@@ -9,7 +9,7 @@ using GeometricAlgebraFulcrumLib.Algebra.SymbolicAlgebra.Numbers;
 using GeometricAlgebraFulcrumLib.Algebra.SymbolicAlgebra.Variables;
 using GeometricAlgebraFulcrumLib.Processors.SymbolicAlgebra.Context;
 using GeometricAlgebraFulcrumLib.Processors.SymbolicAlgebra.Evaluators;
-using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra.Multivectors;
+using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 {

@@ -8,7 +8,7 @@ using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTravers
 using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.ProductIterators;
 using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.Signatures;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra.Multivectors;
+using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 

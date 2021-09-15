@@ -9,7 +9,7 @@ using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
-namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra.Multivectors
+namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
 {
     /// <summary>
     /// Can store the scalar coefficients of a vector of any dimension.

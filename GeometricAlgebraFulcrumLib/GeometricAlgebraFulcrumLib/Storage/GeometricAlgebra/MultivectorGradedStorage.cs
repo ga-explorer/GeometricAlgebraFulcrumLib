@@ -14,7 +14,7 @@ using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using GeometricAlgebraFulcrumLib.Utilities.Factories;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 
-namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra.Multivectors
+namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
 {
     public sealed record MultivectorGradedStorage<T>
         : IMultivectorGradedStorage<T>

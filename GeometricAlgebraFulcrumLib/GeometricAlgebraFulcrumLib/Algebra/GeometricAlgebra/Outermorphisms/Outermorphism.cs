@@ -3,10 +3,10 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Processors.LinearAlgebra;
-using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra.Multivectors;
-using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra.Outermorphisms;
+using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded;
+using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using GeometricAlgebraFulcrumLib.Utilities.Factories;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 
@@ -17,10 +17,10 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms
     {
         public override ILinearAlgebraProcessor<T> LinearProcessor { get; }
 
-        public IOutermorphismStorage<T> OmStorage { get; }
+        public OutermorphismStorage<T> OmStorage { get; }
 
 
-        internal Outermorphism([NotNull] ILinearAlgebraProcessor<T> linearProcessor, [NotNull] IOutermorphismStorage<T> omStorage)
+        internal Outermorphism([NotNull] ILinearAlgebraProcessor<T> linearProcessor, [NotNull] OutermorphismStorage<T> omStorage)
         {
             LinearProcessor = linearProcessor;
             OmStorage = omStorage;
@@ -143,7 +143,9 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override ILinMatrixStorage<T> GetMultivectorMappingMatrix()
         {
-            return OmStorage.GetMultivectorMappingMatrix();
+            return OmStorage
+                .GetMultivectorGradedMappingMatrix()
+                .ToMatrixStorage(BasisBladeUtils.BasisBladeGradeIndexToId);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

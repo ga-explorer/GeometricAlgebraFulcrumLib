@@ -11,20 +11,70 @@ On the other side, there is a need for software tools that act as a pivot point,
 GA-FuL is intended to:
 1. abstract and unify the representation and manipulation of multivectors as a layer of higher level generic computations on any kind of useful scalars (i.e. numbers).
 2. represent multivectors internally as sparsely as possible using several suitable data structures to reduce memory requirements for high-dimensional geometric algebras (up to 64 dimensions).
-3. provide a simple unified and generic Application Programming Interface (API) for several classes of applications, including numerical computations, symbolic manipulations, and optimized code generation.
-4. implement an extensible layered approach to allow users of different backgrounds to select the suitable level of coding they can handle, ranging from a very high-level of prototyping using GA operations to a low level of direct manipulation of scalars.
+3. provide a simple unified and generic Application Programming Interface (API) for several classes of applications, including, but not limited to, numerical computations, symbolic manipulations, and optimized code generation.
+4. implement an extensible layered approach to allow users of different backgrounds to select the suitable level of coding they can handle, ranging from a very high-level of coordinate-independent prototyping using GA operations to a fully-controlled lower level of direct manipulation of scalars and coordinates.
 
 ## GA-FuL Layers
 
-### 1. Structures Layer
+### 1. Storage Layer
 
-### 2. Storage Layer
+The storage layer is the lowest, and largest, layer of code in GA-FuL. The main objective of the GA-FuL storage layer is to provide a set of generic classes for storing <a href="https://en.wikipedia.org/wiki/Scalar_(mathematics)" target="_blank">scalars</a>, <a href="https://en.wikipedia.org/wiki/Vector_(mathematics_and_physics)" target="_blank">vectors</a>, <a href="https://en.wikipedia.org/wiki/Matrix_(mathematics)" target="_blank">matrices</a>, <a href="https://en.wikipedia.org/wiki/Multivector" target="_blank">multivectors</a>, and <a href="https://en.wikipedia.org/wiki/Outermorphism" target="_blank">outermorphisms</a> at the coordinates level, as compactly as possible. The storage layer classes are located inside the <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/tree/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Storage" target="_blank">`GeometricAlgebraFulcrumLib.Storage`</a> name space.
 
-### 3. Processing Layer
+#### 1.1 Storing Linear Algebra Vectors
 
-### 4. Algebra Layer
+The <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Storage/LinearAlgebra/Vectors/ILinVectorStorage.cs" target="_blank">`ILinVectorStorage<T>`</a> generic interface provides a unified representation of classical dense and sparse vectors of linear algebra. In GA-FuL, a vector can be viewed as a set of **(index, scalar) tuples**, where the index implicitly represents a specific basis vector of an arbitrary <a href="https://en.wikipedia.org/wiki/Vector_space" target="_blank">linear space</a>. A GA-FuL vector as a whole implicitly represents a linear combination of basis vectors. Which basis is used depends on the usage context of the vector. In the storage layer, no information is retained regarding the specific linear space or the exact kind of scalars used.
 
-### 5. Geometry Layer
+The following is a list of important vector interfaces in the GA-FuL storage layer:
+
+* <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Storage/LinearAlgebra/Vectors/Dense/ILinVectorDenseStorage.cs" target="_blank">`ILinVectorDenseStorage<T>`</a> : Represents dense vectors of arbitrary length. The basis vector indices are not stored internally, only scalars are stored in 1-dimensional <a href="https://en.wikipedia.org/wiki/Array_data_type" target="_blank">array-like</a> data structures.
+* <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Storage/LinearAlgebra/Vectors/Sparse/ILinVectorSparseStorage.cs" target="_blank">`ILinVectorSparseStorage<T>`</a> : Represents sparse vectors of arbitrary length. The basis vector indices and scalars are stored internally in <a href="https://en.wikipedia.org/wiki/Associative_array" target="_blank">dictionary-like</a> data structures.
+* <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Storage/LinearAlgebra/Vectors/Graded/ILinVectorGradedStorage.cs" target="_blank">`ILinVectorGradedStorage<T>`</a> : This is mainly used to represent the graded structure of <a href="https://en.wikipedia.org/wiki/Multivector" target="_blank">Grassmann Numbers</a> in an <a href="https://en.wikipedia.org/wiki/Exterior_algebra" target="_blank">Exterior Algebra</a>. Each graded vector can be viewed as a set of **(grade, index, scalar)** tuples. Internally, the tuples are grouped by grade into (grade, <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Storage/LinearAlgebra/Vectors/ILinVectorStorage.cs" target="_blank">`ILinVectorStorage<T>`</a>) structures.
+
+#### 1.2 Storing Linear Algebra Matrices
+
+Classes derived from the generic <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Storage/LinearAlgebra/Matrices/ILinMatrixStorage.cs" target="_blank">`ILinMatrixStorage<T>`</a> interface represent dense and sparse matrices. A GA-FuL matrix is conceptually a set of **(row index, column index, scalar)** tuples. As in the case of vectors, no information is stored in this layer about the exact basis used for the matrices, only the index-scalar structure of the matrix is represented internally.
+
+The following is a list of important GA-FuL matrix storage interfaces:
+
+* <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Storage/LinearAlgebra/Matrices/Dense/ILinMatrixDenseStorage.cs" target="_blank">`ILinMatrixDenseStorage<T>`</a> : Represents dense matrices of arbitrary size. The row-column indices are not stored internally, only scalars are stored in 2-dimensional <a href="https://en.wikipedia.org/wiki/Array_data_type" target="_blank">array-like</a> data structures.
+* <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Storage/LinearAlgebra/Matrices/Sparse/ILinMatrixSparseStorage.cs" target="_blank">`ILinMatrixSparseStorage<T>`</a> : Represents sparse matrices of arbitrary size. The row-column indices and scalars are stored internally in <a href="https://en.wikipedia.org/wiki/Associative_array" target="_blank">dictionary-like</a> data structures.
+* <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Storage/LinearAlgebra/Matrices/Graded/ILinMatrixGradedStorage.cs" target="_blank">`ILinMatrixGradedStorage<T>`</a> : This interface is mainly used to represent the graded structure of <a href="https://en.wikipedia.org/wiki/Outermorphism" target="_blank">Outermorphisms</a> in an <a href="https://en.wikipedia.org/wiki/Exterior_algebra" target="_blank">Exterior Algebra</a>. Each graded matrix can be viewed as a set of **(grade, row index, column index, scalar)** tuples. Internally, the tuples are grouped by grade into (grade, <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Storage/LinearAlgebra/Matrices/ILinMatrixStorage.cs" target="_blank">`ILinMatrixStorage<T>`</a>) structures.
+
+#### 1.3 Storing Multivectors
+
+In <a href="https://en.wikipedia.org/wiki/Geometric_algebra" target="_blank">geometric algebra</a>, the space of multivectors is essentially a <a href="https://en.wikipedia.org/wiki/Graded_vector_space" target="_blank">graded linear space</a> with additional mathematical structure. A multivector is the sum of k-vectors, each of grade k. Each k-vector space is itself a smaller linear subspace of the larger multivectors linear space. 
+
+In GA-FuL, the additional mathematical structure of GA multivectors is encoded in several classes which internally have <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Storage/LinearAlgebra/Vectors/Graded/ILinVectorGradedStorage.cs" target="_blank">`ILinVectorGradedStorage<T>`</a> objects to hold the actual **(grade, index, scalar)** data:
+
+* <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Storage/GeometricAlgebra/VectorStorage.cs" target="_blank">`VectorStorage<T>`</a>, <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Storage/GeometricAlgebra/BivectorStorage.cs" target="_blank">`BivectorStorage<T>`</a>, <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Storage/GeometricAlgebra/KVectorStorage.cs" target="_blank">`KVectorStorage<T>`</a> : These classes represent GA vectors, bivectors, and general k-vectors. An object of such classes only contains internally a single-grade graded storage.
+* <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Storage/GeometricAlgebra/MultivectorGradedStorage.cs" target="_blank">`MultivectorGradedStorage<T>`</a> : This class represents more general multi-grade multivectors as a set of k-vectors.
+* <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Storage/GeometricAlgebra/MultivectorStorage.cs" target="_blank">`MultivectorStorage<T>`</a> : This class also represents general multivectors, but as a uniformly indexed set of terms.
+
+#### 1.4 Storing Outermorphisms
+
+In GA-FuL there are two kinds of outermorphisms: computed and stored. A stored outermorphism internally contains a graded matrix, with some additional operations. The <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Storage/GeometricAlgebra/OutermorphismStorage.cs" target="_blank">`OutermorphismStorage<T>`</a> class represents the graded matrix storage of a stored outermorphism. Computed outermorphisms are described in following sections.
+
+### 2. Processors Layer
+
+#### 2.1 Scalar Algebra Processors
+
+#### 2.2 Linear Algebra Processors
+
+#### 2.3 Geometric Algebra Processors
+
+#### 2.4 Symbolic Algebra Processors
+
+### 3. Algebra Layer
+
+#### 3.1 Scalar Algebra Classes
+
+#### 3.2 Linear Algebra Classes
+
+#### 3.3 Geometric Algebra Classes
+
+#### 3.4 Symbolic Algebra Classes
+
+### 4. Geometry Layer
 
 ## Examples
 

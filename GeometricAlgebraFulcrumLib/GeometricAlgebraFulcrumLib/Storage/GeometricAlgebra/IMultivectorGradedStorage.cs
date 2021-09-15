@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra.Multivectors
+namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
 {
     public interface IMultivectorGradedStorage<T>
         : IMultivectorStorage<T>

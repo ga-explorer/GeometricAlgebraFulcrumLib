@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra.Multivectors;
-using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra.Outermorphisms;
+using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 {
     public static class OutermorphismStorageUtils
     {
-        public static VectorStorage<T> MapVector<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IOutermorphismStorage<T> om, VectorStorage<T> vector)
+        public static VectorStorage<T> MapVector<T>(this IScalarAlgebraProcessor<T> scalarProcessor, OutermorphismStorage<T> om, VectorStorage<T> vector)
         {
             var composer = scalarProcessor.CreateVectorStorageComposer();
 
@@ -31,7 +30,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             return composer.CreateVectorStorage();
         }
 
-        public static BivectorStorage<T> MapBivector<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IOutermorphismStorage<T> om, BivectorStorage<T> bivector)
+        public static BivectorStorage<T> MapBivector<T>(this IScalarAlgebraProcessor<T> scalarProcessor, OutermorphismStorage<T> om, BivectorStorage<T> bivector)
         {
             var composer = scalarProcessor.CreateVectorStorageComposer();
 
@@ -53,7 +52,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             return composer.CreateBivectorStorage();
         }
         
-        public static KVectorStorage<T> MapKVector<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IOutermorphismStorage<T> om, KVectorStorage<T> kVector)
+        public static KVectorStorage<T> MapKVector<T>(this IScalarAlgebraProcessor<T> scalarProcessor, OutermorphismStorage<T> om, KVectorStorage<T> kVector)
         {
             var grade = kVector.Grade;
             var composer = scalarProcessor.CreateVectorStorageComposer();
@@ -76,7 +75,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             return composer.CreateKVectorStorage(grade);
         }
         
-        public static IMultivectorGradedStorage<T> MapGradedMultivector<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IOutermorphismStorage<T> om, IMultivectorGradedStorage<T> multivector)
+        public static IMultivectorGradedStorage<T> MapGradedMultivector<T>(this IScalarAlgebraProcessor<T> scalarProcessor, OutermorphismStorage<T> om, IMultivectorGradedStorage<T> multivector)
         {
             var composer = scalarProcessor.CreateMultivectorGradedStorageComposer();
 
@@ -103,7 +102,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             return composer.CreateMultivectorGradedStorage();
         }
 
-        public static MultivectorStorage<T> MapSparseMultivector<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IOutermorphismStorage<T> om, MultivectorStorage<T> multivector)
+        public static MultivectorStorage<T> MapSparseMultivector<T>(this IScalarAlgebraProcessor<T> scalarProcessor, OutermorphismStorage<T> om, MultivectorStorage<T> multivector)
         {
             var composer = scalarProcessor.CreateVectorStorageComposer();
 
@@ -126,7 +125,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorStorage<T> MapMultivector<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IOutermorphismStorage<T> om, IMultivectorStorage<T> multivector)
+        public static IMultivectorStorage<T> MapMultivector<T>(this IScalarAlgebraProcessor<T> scalarProcessor, OutermorphismStorage<T> om, IMultivectorStorage<T> multivector)
         {
             return multivector switch
             {

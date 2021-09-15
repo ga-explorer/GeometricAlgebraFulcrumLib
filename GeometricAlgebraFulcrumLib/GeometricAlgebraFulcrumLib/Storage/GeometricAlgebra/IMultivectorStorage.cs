@@ -8,7 +8,7 @@ using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Sparse;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 
-namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra.Multivectors
+namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
 {
     public interface IMultivectorStorage
     {

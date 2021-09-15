@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.LinearMaps;
-using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra.Multivectors;
+using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;

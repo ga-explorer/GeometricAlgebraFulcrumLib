@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using DataStructuresLib.Basic;
-using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra.Multivectors;
+using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Sparse;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 

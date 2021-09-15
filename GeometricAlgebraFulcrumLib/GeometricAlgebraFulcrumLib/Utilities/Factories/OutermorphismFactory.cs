@@ -6,21 +6,20 @@ using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.LinearMaps;
 using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.LinearAlgebra;
-using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra.Multivectors;
-using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra.Outermorphisms;
+using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Factories
 {
     public static class OutermorphismFactory
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Outermorphism<T> CreateOutermorphism<T>(this ILinearAlgebraProcessor<T> linearProcessor, IOutermorphismStorage<T> omStorage)
+        public static Outermorphism<T> CreateOutermorphism<T>(this ILinearAlgebraProcessor<T> linearProcessor, OutermorphismStorage<T> omStorage)
         {
             return new Outermorphism<T>(linearProcessor, omStorage);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Outermorphism<T> CreateOutermorphism<T>(this IOutermorphismStorage<T> omStorage, ILinearAlgebraProcessor<T> linearProcessor)
+        public static Outermorphism<T> CreateOutermorphism<T>(this OutermorphismStorage<T> omStorage, ILinearAlgebraProcessor<T> linearProcessor)
         {
             return new Outermorphism<T>(linearProcessor, omStorage);
         }
