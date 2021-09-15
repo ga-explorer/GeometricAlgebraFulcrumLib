@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Dense;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 
 namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense
@@ -14,10 +16,6 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense
         public override int Count1 { get; }
 
         public override int Count2 { get; }
-        public override IEnumerable<IndexLinVectorStorageRecord<T>> GetDenseColumns(IEnumerable<ulong> columnIndexList)
-        {
-            throw new NotImplementedException();
-        }
 
 
         internal LinMatrixComputedDenseStorage(int count1, int count2, [NotNull] Func<ulong, ulong, T> indexScalarMapping)
@@ -46,6 +44,38 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense
         public override ILinMatrixStorage<T> GetCopy()
         {
             return this;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override IEnumerable<IndexLinVectorStorageRecord<T>> GetDenseRows(IEnumerable<ulong> rowIndexList)
+        {
+            return rowIndexList
+                .Where(index => index < (ulong) Count1)
+                .Select(index1 => 
+                    new IndexLinVectorStorageRecord<T>(
+                        index1,
+                        new LinVectorComputedDenseStorage<T>(
+                            Count2, 
+                            index2 => IndexToScalarMapping(index1, index2)
+                        )
+                    )
+                );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override IEnumerable<IndexLinVectorStorageRecord<T>> GetDenseColumns(IEnumerable<ulong> columnIndexList)
+        {
+            return columnIndexList
+                .Where(index => index < (ulong) Count2)
+                .Select(index2 => 
+                    new IndexLinVectorStorageRecord<T>(
+                        index2,
+                        new LinVectorComputedDenseStorage<T>(
+                            Count1, 
+                            index1 => IndexToScalarMapping(index1, index2)
+                        )
+                    )
+                );
         }
     }
 }

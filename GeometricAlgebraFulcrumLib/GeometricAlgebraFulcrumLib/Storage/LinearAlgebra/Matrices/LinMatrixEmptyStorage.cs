@@ -256,14 +256,21 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public IEnumerable<IndexLinVectorStorageRecord<T>> GetRows(Func<ulong, bool> rowIndexFilter)
+        {
+            return Enumerable.Empty<IndexLinVectorStorageRecord<T>>();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IEnumerable<IndexLinVectorStorageRecord<T>> GetColumns()
         {
             return Enumerable.Empty<IndexLinVectorStorageRecord<T>>();
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IEnumerable<IndexLinVectorStorageRecord<T>> GetColumns(Func<ulong, bool> columnIndexFilter)
         {
-            throw new NotImplementedException();
+            return Enumerable.Empty<IndexLinVectorStorageRecord<T>>();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -315,9 +322,16 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices
             return this;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public IEnumerable<IndexLinVectorStorageRecord<T>> GetDenseRows(IEnumerable<ulong> rowIndexList)
+        {
+            return Enumerable.Empty<IndexLinVectorStorageRecord<T>>();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IEnumerable<IndexLinVectorStorageRecord<T>> GetDenseColumns(IEnumerable<ulong> columnIndexList)
         {
-            throw new NotImplementedException();
+            return Enumerable.Empty<IndexLinVectorStorageRecord<T>>();
         }
     }
 }

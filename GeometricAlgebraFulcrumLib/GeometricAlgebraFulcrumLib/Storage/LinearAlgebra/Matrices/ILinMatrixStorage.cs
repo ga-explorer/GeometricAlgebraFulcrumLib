@@ -75,6 +75,8 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices
 
         IEnumerable<IndexLinVectorStorageRecord<T>> GetRows();
 
+        IEnumerable<IndexLinVectorStorageRecord<T>> GetRows(Func<ulong, bool> rowIndexFilter);
+
         IEnumerable<IndexLinVectorStorageRecord<T>> GetColumns();
 
         IEnumerable<IndexLinVectorStorageRecord<T>> GetColumns(Func<ulong, bool> columnIndexFilter);

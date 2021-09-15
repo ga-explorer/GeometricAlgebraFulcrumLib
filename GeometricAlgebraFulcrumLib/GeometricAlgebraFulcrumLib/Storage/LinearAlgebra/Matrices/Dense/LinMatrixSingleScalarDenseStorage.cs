@@ -347,6 +347,16 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public IEnumerable<IndexLinVectorStorageRecord<T>> GetRows(Func<ulong, bool> rowIndexFilter)
+        {
+            if (rowIndexFilter(0))
+                yield return new IndexLinVectorStorageRecord<T>(
+                    0,
+                    new LinVectorSingleScalarDenseStorage<T>(Scalar)
+                );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IEnumerable<IndexLinVectorStorageRecord<T>> GetColumns()
         {
             yield return new IndexLinVectorStorageRecord<T>(
@@ -355,9 +365,14 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense
             );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IEnumerable<IndexLinVectorStorageRecord<T>> GetColumns(Func<ulong, bool> columnIndexFilter)
         {
-            throw new NotImplementedException();
+            if (columnIndexFilter(0))
+                yield return new IndexLinVectorStorageRecord<T>(
+                    0,
+                    new LinVectorSingleScalarDenseStorage<T>(Scalar)
+                );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -446,9 +461,24 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense
                 : throw new InvalidOperationException();
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public IEnumerable<IndexLinVectorStorageRecord<T>> GetDenseRows(IEnumerable<ulong> rowIndexList)
+        {
+            if (rowIndexList.Any(i => i == 0))
+                yield return new IndexLinVectorStorageRecord<T>(
+                    0,
+                    Scalar.CreateLinVectorSingleScalarStorage(0)
+                );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IEnumerable<IndexLinVectorStorageRecord<T>> GetDenseColumns(IEnumerable<ulong> columnIndexList)
         {
-            throw new NotImplementedException();
+            if (columnIndexList.Any(i => i == 0))
+                yield return new IndexLinVectorStorageRecord<T>(
+                    0,
+                    Scalar.CreateLinVectorSingleScalarStorage(0)
+                );
         }
     }
 }

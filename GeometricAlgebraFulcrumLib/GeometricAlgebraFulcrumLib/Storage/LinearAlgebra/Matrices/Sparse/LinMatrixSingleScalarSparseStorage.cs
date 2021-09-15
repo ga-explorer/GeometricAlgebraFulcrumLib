@@ -322,6 +322,16 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public IEnumerable<IndexLinVectorStorageRecord<T>> GetRows(Func<ulong, bool> rowIndexFilter)
+        {
+            if (rowIndexFilter(Index1))
+                yield return new IndexLinVectorStorageRecord<T>(
+                    Index1,
+                    new LinVectorSingleScalarSparseStorage<T>(Index1, Scalar)
+                );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IEnumerable<IndexLinVectorStorageRecord<T>> GetColumns()
         {
             yield return new IndexLinVectorStorageRecord<T>(
@@ -330,9 +340,14 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
             );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IEnumerable<IndexLinVectorStorageRecord<T>> GetColumns(Func<ulong, bool> columnIndexFilter)
         {
-            throw new NotImplementedException();
+            if (columnIndexFilter(Index2))
+                yield return new IndexLinVectorStorageRecord<T>(
+                    Index2,
+                    new LinVectorSingleScalarSparseStorage<T>(Index2, Scalar)
+                );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

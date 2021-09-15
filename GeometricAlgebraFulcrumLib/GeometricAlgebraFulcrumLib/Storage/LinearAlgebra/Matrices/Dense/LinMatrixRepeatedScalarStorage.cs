@@ -380,9 +380,28 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense
             return new LinMatrixDenseStorage<T>(scalarsArray);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public IEnumerable<IndexLinVectorStorageRecord<T>> GetDenseRows(IEnumerable<ulong> rowIndexList)
+        {
+            return rowIndexList
+                .Select(index => 
+                    new IndexLinVectorStorageRecord<T>(
+                        index,
+                        Scalar.CreateLinVectorRepeatedScalarStorage(Count2)
+                    )
+                );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IEnumerable<IndexLinVectorStorageRecord<T>> GetDenseColumns(IEnumerable<ulong> columnIndexList)
         {
-            throw new NotImplementedException();
+            return columnIndexList
+                .Select(index => 
+                    new IndexLinVectorStorageRecord<T>(
+                        index,
+                        Scalar.CreateLinVectorRepeatedScalarStorage(Count1)
+                    )
+                );
         }
 
         public ILinMatrixGradedStorage<T> ToMatrixGradedStorage(Func<ulong, ulong, GradeIndexPairRecord> indexToGradeIndexMapping)
@@ -461,8 +480,21 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense
         {
             var vector = Scalar.CreateLinVectorRepeatedScalarStorage(Count2);
 
-            return ((ulong) Count)
+            return ((ulong) Count1)
                 .GetRange()
+                .Select(index => 
+                    new IndexLinVectorStorageRecord<T>(index, vector)
+                );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public IEnumerable<IndexLinVectorStorageRecord<T>> GetRows(Func<ulong, bool> rowIndexFilter)
+        {
+            var vector = Scalar.CreateLinVectorRepeatedScalarStorage(Count2);
+
+            return ((ulong) Count1)
+                .GetRange()
+                .Where(rowIndexFilter)
                 .Select(index => 
                     new IndexLinVectorStorageRecord<T>(index, vector)
                 );
@@ -473,16 +505,25 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense
         {
             var vector = Scalar.CreateLinVectorRepeatedScalarStorage(Count1);
 
-            return ((ulong) Count)
+            return ((ulong) Count2)
                 .GetRange()
                 .Select(index => 
                     new IndexLinVectorStorageRecord<T>(index, vector)
                 );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IEnumerable<IndexLinVectorStorageRecord<T>> GetColumns(Func<ulong, bool> columnIndexFilter)
         {
-            throw new NotImplementedException();
+            return ((ulong) Count2)
+                .GetRange()
+                .Where(columnIndexFilter)
+                .Select(index => 
+                    new IndexLinVectorStorageRecord<T>(
+                        index,
+                        Scalar.CreateLinVectorRepeatedScalarStorage(Count1)
+                    )
+                );
         }
 
         public ILinVectorStorage<T> CombineRows(IReadOnlyList<T> scalarList, Func<T, ILinVectorStorage<T>, ILinVectorStorage<T>> scalingFunc, Func<ILinVectorStorage<T>, ILinVectorStorage<T>, ILinVectorStorage<T>> reducingFunc)

@@ -315,7 +315,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public virtual ILinMatrixStorage<T> GetTranspose()
         {
-            return new LinMatrixTransposedDenseStorage<T>(this);
+            return new LinMatrixTransposedDenseStorage<T>((ILinMatrixDenseStorage<T>) this);
         }
 
         public ILinMatrixDenseStorage<T> GetDensePermutation(Func<ulong, ulong, IndexPairRecord> indexMapping)
@@ -426,8 +426,19 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IEnumerable<IndexLinVectorStorageRecord<T>> GetRows()
         {
-            return ((ulong) Count)
+            return ((ulong) Count1)
                 .GetRange()
+                .Select(index => 
+                    new IndexLinVectorStorageRecord<T>(index, GetRow(index))
+                );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public IEnumerable<IndexLinVectorStorageRecord<T>> GetRows(Func<ulong, bool> rowIndexFilter)
+        {
+            return ((ulong) Count1)
+                .GetRange()
+                .Where(rowIndexFilter)
                 .Select(index => 
                     new IndexLinVectorStorageRecord<T>(index, GetRow(index))
                 );
@@ -436,16 +447,22 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IEnumerable<IndexLinVectorStorageRecord<T>> GetColumns()
         {
-            return ((ulong) Count)
+            return ((ulong) Count2)
                 .GetRange()
                 .Select(index => 
                     new IndexLinVectorStorageRecord<T>(index, GetColumn(index))
                 );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IEnumerable<IndexLinVectorStorageRecord<T>> GetColumns(Func<ulong, bool> columnIndexFilter)
         {
-            throw new NotImplementedException();
+            return ((ulong) Count2)
+                .GetRange()
+                .Where(columnIndexFilter)
+                .Select(index => 
+                    new IndexLinVectorStorageRecord<T>(index, GetColumn(index))
+                );
         }
 
         public ILinVectorStorage<T> CombineRows(IReadOnlyList<T> scalarList, Func<T, ILinVectorStorage<T>, ILinVectorStorage<T>> scalingFunc, Func<ILinVectorStorage<T>, ILinVectorStorage<T>, ILinVectorStorage<T>> reducingFunc)

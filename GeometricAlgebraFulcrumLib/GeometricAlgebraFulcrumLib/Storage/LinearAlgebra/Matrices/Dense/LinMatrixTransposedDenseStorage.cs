@@ -8,7 +8,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense
     public sealed class LinMatrixTransposedDenseStorage<T> :
         LinMatrixImmutableDenseStorageBase<T>
     {
-        public LinMatrixDenseStorageBase<T> MatrixStorage { get; }
+        public ILinMatrixDenseStorage<T> MatrixStorage { get; }
 
         public override int Count1 
             => MatrixStorage.Count1;
@@ -16,13 +16,8 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense
         public override int Count2 
             => MatrixStorage.Count2;
 
-        public override IEnumerable<IndexLinVectorStorageRecord<T>> GetDenseColumns(IEnumerable<ulong> columnIndexList)
-        {
-            throw new System.NotImplementedException();
-        }
 
-
-        internal LinMatrixTransposedDenseStorage([NotNull] LinMatrixDenseStorageBase<T> source)
+        internal LinMatrixTransposedDenseStorage([NotNull] ILinMatrixDenseStorage<T> source)
         {
             MatrixStorage = source;
         }
@@ -44,6 +39,18 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense
         public override ILinMatrixStorage<T> GetTranspose()
         {
             return MatrixStorage;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override IEnumerable<IndexLinVectorStorageRecord<T>> GetDenseRows(IEnumerable<ulong> rowIndexList)
+        {
+            return MatrixStorage.GetDenseColumns(rowIndexList);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override IEnumerable<IndexLinVectorStorageRecord<T>> GetDenseColumns(IEnumerable<ulong> columnIndexList)
+        {
+            return MatrixStorage.GetDenseRows(columnIndexList);
         }
     }
 }

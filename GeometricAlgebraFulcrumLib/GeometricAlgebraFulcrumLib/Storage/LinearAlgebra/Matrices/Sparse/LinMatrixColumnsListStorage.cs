@@ -417,6 +417,31 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
             );
         }
 
+        public IEnumerable<IndexLinVectorStorageRecord<T>> GetRows(Func<ulong, bool> rowIndexFilter)
+        {
+            var indexPairScalarDictionary = new Dictionary<ulong, Dictionary<ulong, T>>();
+
+            foreach (var (index1, index2, scalar) in GetIndexScalarRecords())
+            {
+                if (!rowIndexFilter(index1)) continue;
+
+                if (!indexPairScalarDictionary.TryGetValue(index1, out var indexScalarDictionary))
+                {
+                    indexScalarDictionary = new Dictionary<ulong, T>();
+                    indexPairScalarDictionary.Add(index1, indexScalarDictionary);
+                }
+
+                indexScalarDictionary.Add(index2, scalar);
+            }
+
+            return indexPairScalarDictionary.Select(
+                pair => new IndexLinVectorStorageRecord<T>(
+                    pair.Key, 
+                    pair.Value.CreateLinVectorStorage()
+                )
+            );
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IEnumerable<IndexLinVectorStorageRecord<T>> GetColumns()
         {
@@ -427,9 +452,15 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
                 );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IEnumerable<IndexLinVectorStorageRecord<T>> GetColumns(Func<ulong, bool> columnIndexFilter)
         {
-            throw new NotImplementedException();
+            return ColumnsList
+                .GetIndexScalarRecords()
+                .Where(r => columnIndexFilter(r.Index))
+                .Select(pair => 
+                    new IndexLinVectorStorageRecord<T>(pair.Index, pair.Scalar)
+                );
         }
 
         public ILinVectorStorage<T> CombineRows(IReadOnlyList<T> scalarList, Func<T, ILinVectorStorage<T>, ILinVectorStorage<T>> scalingFunc, Func<ILinVectorStorage<T>, ILinVectorStorage<T>, ILinVectorStorage<T>> reducingFunc)

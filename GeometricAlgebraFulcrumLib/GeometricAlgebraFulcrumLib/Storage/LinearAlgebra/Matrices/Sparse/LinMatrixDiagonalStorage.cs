@@ -385,6 +385,19 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public IEnumerable<IndexLinVectorStorageRecord<T>> GetRows(Func<ulong, bool> rowIndexFilter)
+        {
+            return SourceList
+                .GetIndexScalarRecords()
+                .Where(r => rowIndexFilter(r.Index))
+                .Select(indexScalar => 
+                    new IndexLinVectorStorageRecord<T>(indexScalar.Index,
+                        indexScalar.Scalar.CreateLinVectorSingleScalarStorage(indexScalar.Index)
+                    )
+                );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IEnumerable<IndexLinVectorStorageRecord<T>> GetColumns()
         {
             return SourceList
@@ -396,9 +409,17 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
                 );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IEnumerable<IndexLinVectorStorageRecord<T>> GetColumns(Func<ulong, bool> columnIndexFilter)
         {
-            throw new NotImplementedException();
+            return SourceList
+                .GetIndexScalarRecords()
+                .Where(r => columnIndexFilter(r.Index))
+                .Select(indexScalar => 
+                    new IndexLinVectorStorageRecord<T>(indexScalar.Index,
+                        indexScalar.Scalar.CreateLinVectorSingleScalarStorage(indexScalar.Index)
+                    )
+                );
         }
 
         public ILinVectorStorage<T> CombineRows(IReadOnlyList<T> scalarList, Func<T, ILinVectorStorage<T>, ILinVectorStorage<T>> scalingFunc, Func<ILinVectorStorage<T>, ILinVectorStorage<T>, ILinVectorStorage<T>> reducingFunc)

@@ -19,6 +19,8 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense
 
         ILinMatrixDenseStorage<T> GetDensePermutation(Func<IndexPairRecord, IndexPairRecord> indexMapping);
 
+        IEnumerable<IndexLinVectorStorageRecord<T>> GetDenseRows(IEnumerable<ulong> rowIndexList);
+
         IEnumerable<IndexLinVectorStorageRecord<T>> GetDenseColumns(IEnumerable<ulong> columnIndexList);
     }
 }

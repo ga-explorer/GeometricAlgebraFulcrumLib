@@ -393,6 +393,27 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
                 ? vector
                 : LinVectorEmptyStorage<T>.EmptyStorage;
         }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public IEnumerable<IndexLinVectorStorageRecord<T>> GetRows()
+        {
+            return RowsList
+                .GetIndexScalarRecords()
+                .Select(pair => 
+                    new IndexLinVectorStorageRecord<T>(pair.Index, pair.Scalar)
+                );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public IEnumerable<IndexLinVectorStorageRecord<T>> GetRows(Func<ulong, bool> rowIndexFilter)
+        {
+            return RowsList
+                .GetIndexScalarRecords()
+                .Where(r => rowIndexFilter(r.Index))
+                .Select(pair => 
+                    new IndexLinVectorStorageRecord<T>(pair.Index, pair.Scalar)
+                );
+        }
 
         public IEnumerable<IndexLinVectorStorageRecord<T>> GetColumns()
         {
@@ -419,19 +440,29 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
 
         public IEnumerable<IndexLinVectorStorageRecord<T>> GetColumns(Func<ulong, bool> columnIndexFilter)
         {
-            throw new NotImplementedException();
+            var indexPairScalarDictionary = new Dictionary<ulong, Dictionary<ulong, T>>();
+
+            foreach (var (index1, index2, scalar) in GetIndexScalarRecords())
+            {
+                if (!columnIndexFilter(index2)) continue;
+
+                if (!indexPairScalarDictionary.TryGetValue(index2, out var indexScalarDictionary))
+                {
+                    indexScalarDictionary = new Dictionary<ulong, T>();
+                    indexPairScalarDictionary.Add(index2, indexScalarDictionary);
+                }
+
+                indexScalarDictionary.Add(index1, scalar);
+            }
+
+            return indexPairScalarDictionary.Select(
+                pair => new IndexLinVectorStorageRecord<T>(
+                    pair.Key, 
+                    pair.Value.CreateLinVectorStorage()
+                )
+            );
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<IndexLinVectorStorageRecord<T>> GetRows()
-        {
-            return RowsList
-                .GetIndexScalarRecords()
-                .Select(pair => 
-                    new IndexLinVectorStorageRecord<T>(pair.Index, pair.Scalar)
-                );
-        }
-        
         public ILinVectorStorage<T> CombineColumns(IReadOnlyList<T> scalarList, Func<T, ILinVectorStorage<T>, ILinVectorStorage<T>> scalingFunc, Func<ILinVectorStorage<T>, ILinVectorStorage<T>, ILinVectorStorage<T>> reducingFunc)
         {
             ILinVectorStorage<T> vector = null;

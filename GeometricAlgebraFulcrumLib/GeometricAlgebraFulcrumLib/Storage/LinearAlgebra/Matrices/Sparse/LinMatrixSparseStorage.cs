@@ -445,6 +445,31 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
             );
         }
 
+        public IEnumerable<IndexLinVectorStorageRecord<T>> GetRows(Func<ulong, bool> rowIndexFilter)
+        {
+            var indexPairScalarDictionary = new Dictionary<ulong, Dictionary<ulong, T>>();
+
+            foreach (var ((index1, index2), scalar) in _indexScalarDictionary)
+            {
+                if (!rowIndexFilter(index1)) continue;
+
+                if (!indexPairScalarDictionary.TryGetValue(index1, out var indexScalarDictionary))
+                {
+                    indexScalarDictionary = new Dictionary<ulong, T>();
+                    indexPairScalarDictionary.Add(index1, indexScalarDictionary);
+                }
+
+                indexScalarDictionary.Add(index2, scalar);
+            }
+
+            return indexPairScalarDictionary.Select(
+                pair => new IndexLinVectorStorageRecord<T>(
+                    pair.Key, 
+                    pair.Value.CreateLinVectorStorage()
+                )
+            );
+        }
+
         public IEnumerable<IndexLinVectorStorageRecord<T>> GetColumns()
         {
             var indexPairScalarDictionary = new Dictionary<ulong, Dictionary<ulong, T>>();
@@ -470,7 +495,27 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
 
         public IEnumerable<IndexLinVectorStorageRecord<T>> GetColumns(Func<ulong, bool> columnIndexFilter)
         {
-            throw new NotImplementedException();
+            var indexPairScalarDictionary = new Dictionary<ulong, Dictionary<ulong, T>>();
+
+            foreach (var ((index1, index2), scalar) in _indexScalarDictionary)
+            {
+                if (!columnIndexFilter(index2)) continue;
+
+                if (!indexPairScalarDictionary.TryGetValue(index2, out var indexScalarDictionary))
+                {
+                    indexScalarDictionary = new Dictionary<ulong, T>();
+                    indexPairScalarDictionary.Add(index2, indexScalarDictionary);
+                }
+
+                indexScalarDictionary.Add(index1, scalar);
+            }
+
+            return indexPairScalarDictionary.Select(
+                pair => new IndexLinVectorStorageRecord<T>(
+                    pair.Key, 
+                    pair.Value.CreateLinVectorStorage()
+                )
+            );
         }
 
         public bool TryGetCompactStorage(out ILinMatrixStorage<T> matrixStorage)

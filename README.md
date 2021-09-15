@@ -56,11 +56,35 @@ In GA-FuL there are two kinds of outermorphisms: computed and stored. A stored o
 
 ### 2. Processors Layer
 
+The second layer in GA-FuL is a collection of classes to implement processing operations on scalars, vectors, matrices, multivectors, and outermorphisms. Processing operations include creating storage objects for specific purposes, applying common algebraic operations (addition, subtraction, products, etc.) and converting between storage objects (for example converting a set of **(index, scalar)** terms into a vector, converting a graded matrix into a stored outermorphism, etc.) There are generally 4 kinds of processors in GA-FuL described in the following subsections.
+
 #### 2.1 Scalar Algebra Processors
+
+A scalar processor implements the generic interface <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Processors/ScalarAlgebra/IScalarAlgebraProcessor.cs" target="_blank">`IScalarAlgebraProcessor<T>`</a>. This interface implements basic operations on scalars, such as addition, subtraction, product, division, power, exponential, logarithm, and trigonometric functions. Additionally, many extension methods are defined in the GA-FuL utilities layer, described later, for more operations on scalars. The user can define a custom scalar processor by implementing the <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Processors/ScalarAlgebra/IScalarAlgebraProcessor.cs" target="_blank">`IScalarAlgebraProcessor<T>`</a> interface to any desired scalar type `T`.
+
+There are some predefined scalar processors in GA-FuL such as:
+
+* <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Processors/ScalarAlgebra/ScalarAlgebraFloat32Processor.cs" target="_blank">`ScalarAlgebraFloat32Processor`</a>, <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Processors/ScalarAlgebra/ScalarAlgebraFloat64Processor.cs" target="_blank">`ScalarAlgebraFloat64Processor`</a> : Scalar processors for the <a href="https://docs.oracle.com/cd/E19957-01/806-3568/ncg_goldberg.html" target="_blank">standard IEEE 32\64 bits floating point numbers</a>.
+* <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Processors/ScalarAlgebra/ScalarAlgebraComplexProcessor.cs" target="_blank">`ScalarAlgebraComplexProcessor`</a> : A scalar processor for complex numbers based on the <a href="https://numerics.mathdotnet.com/" target="_blank">MathNet.Numerics</a> library.
+* <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Processors/ScalarAlgebra/ScalarAlgebraSymbolicProcessor.cs" target="_blank">`ScalarAlgebraSymbolicProcessor`</a> : A scalar processor for symbolic scalar expressions based on the `Entity` class of the <a href="https://am.angouri.org/" target="_blank">AngouriMath</a> symbolic algebra library.
+* <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib.Mathematica/Processors/ScalarAlgebraMathematicaProcessor.cs" target="_blank">`ScalarAlgebraMathematicaProcessor`</a> : A scalar processor for symbolic scalar expressions based on the <a href="https://reference.wolfram.com/language/NETLink/ref/net/Wolfram.NETLink.Expr.html" target="_blank">`Expr`</a> class of the <a href="https://www.wolfram.com/mathematica/" target="_blank">Wolfram Mathematica</a> computer algebra system. Here, `Expr` objects are assumed to represent symbolic scalars, i.e. not matrices, lists, Boolean values, etc.
 
 #### 2.2 Linear Algebra Processors
 
+In GA-FuL, a linear processor is an extended scalar processor which implements either one of the two generic interfaces <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Processors/LinearAlgebra/ILinearAlgebraProcessor.cs" target="_blank">`ILinearAlgebraProcessor<T>`</a> or <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Processors/LinearAlgebra/ILinearAlgebraProcessor.cs" target="_blank">`ILinearAlgebraProcessor<TMatrix, TScalar>`</a>. A linear processor performs common operations on linear algebra vector and matrix storage objects such as creation of matrix objects, accessing matrix elements, addition and subtraction of matrices and vectors, eigen decomposition of matrices, etc. 
+
+The <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Processors/LinearAlgebra/ILinearAlgebraProcessor.cs" target="_blank">`ILinearAlgebraProcessor<TMatrix, TScalar>`</a> interface has two predefined class implementations:
+
+* <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Processors/LinearAlgebra/LinearAlgebraFloat64Processor.cs" target="_blank">`LinearAlgebraFloat64Processor`</a> : Which is a wrapper around the <a href="https://numerics.mathdotnet.com/api/MathNet.Numerics.LinearAlgebra.Double/Matrix.htm" target="_blank">`MathNet.Numerics.LinearAlgebra.Double.Matrix`</a> class of the <a href="https://numerics.mathdotnet.com/" target="_blank">MathNet.Numerics</a> library.
+* <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib.Mathematica/Processors/LinearAlgebraMathematicaProcessor.cs" target="_blank">`LinearAlgebraMathematicaProcessor`</a> : Which is also a wrapper around the `Expr` class of the Wofram Mathematica symbolic algebra system. Here, `Expr` objects are assumed to represent symbolic matrices.
+
+The other interface, <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Processors/LinearAlgebra/ILinearAlgebraProcessor.cs" target="_blank">`ILinearAlgebraProcessor<T>`</a>, has a built-in implementation in GA-FuL; the <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Processors/LinearAlgebra/LinearAlgebraProcessor.cs" target="_blank">`LinearAlgebraProcessor<T>`</a> generic class. This class is a simpler generic version for processing GA-FuL linear algebra vector and matrix storage objects. Most of the basic geometric algebra processing operations can be done using this class.
+
+The other built-in implementation of the <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Processors/LinearAlgebra/ILinearAlgebraProcessor.cs" target="_blank">`ILinearAlgebraProcessor<T>`</a> interface is the <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Processors/SymbolicAlgebra/Context/SymbolicContext.cs" target="_blank">`SymbolicContext`</a> class, which is the core symbolic processing class for optimized code generation in GA-FuL.
+
 #### 2.3 Geometric Algebra Processors
+
+
 
 #### 2.4 Symbolic Algebra Processors
 
@@ -75,6 +99,16 @@ In GA-FuL there are two kinds of outermorphisms: computed and stored. A stored o
 #### 3.4 Symbolic Algebra Classes
 
 ### 4. Geometry Layer
+
+### 5. Utilities Layer
+
+#### 5.1 Structure Classes
+
+#### 5.2 Extension Utility Classes
+
+#### 5.3 Factory Classes
+
+#### 5.4 Composer Classes
 
 ## Examples
 

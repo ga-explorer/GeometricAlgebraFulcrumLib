@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.Extensions;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
@@ -21,11 +22,6 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense
         {
             get => ValuesArray[index1, index2];
             set => ValuesArray[index1, index2] = value;
-        }
-
-        public override IEnumerable<IndexLinVectorStorageRecord<T>> GetDenseColumns(IEnumerable<ulong> columnIndexList)
-        {
-            throw new System.NotImplementedException();
         }
 
         public override int Count1 
@@ -62,6 +58,30 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense
         public override ILinMatrixStorage<T> GetTranspose()
         {
             return new LinMatrixTransposedDenseStorage<T>(this);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override IEnumerable<IndexLinVectorStorageRecord<T>> GetDenseRows(IEnumerable<ulong> rowIndexList)
+        {
+            return rowIndexList
+                .Where(index => index < (ulong) Count1)
+                .Select(index => new IndexLinVectorStorageRecord<T>(
+                    index,
+                    GetRow(index)
+                )
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override IEnumerable<IndexLinVectorStorageRecord<T>> GetDenseColumns(IEnumerable<ulong> columnIndexList)
+        {
+            return columnIndexList
+                .Where(index => index < (ulong) Count1)
+                .Select(index => new IndexLinVectorStorageRecord<T>(
+                        index,
+                        GetColumn(index)
+                    )
+                );
         }
     }
 }

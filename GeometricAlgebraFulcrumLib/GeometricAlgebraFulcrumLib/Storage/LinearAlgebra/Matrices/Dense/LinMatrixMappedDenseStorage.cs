@@ -21,11 +21,6 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense
         public override int Count2 
             => SourceStorage.Count2;
 
-        public override IEnumerable<IndexLinVectorStorageRecord<T>> GetDenseColumns(IEnumerable<ulong> columnIndexList)
-        {
-            throw new NotImplementedException();
-        }
-
 
         internal LinMatrixMappedDenseStorage([NotNull] ILinMatrixDenseStorage<T> source, [NotNull] Func<ulong, ulong, IndexPairRecord> indexMapping)
         {
@@ -61,6 +56,16 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense
         public override ILinMatrixStorage<T> GetCopy()
         {
             return this;
+        }
+        
+        public override IEnumerable<IndexLinVectorStorageRecord<T>> GetDenseRows(IEnumerable<ulong> rowIndexList)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override IEnumerable<IndexLinVectorStorageRecord<T>> GetDenseColumns(IEnumerable<ulong> columnIndexList)
+        {
+            throw new NotImplementedException();
         }
     }
 }
