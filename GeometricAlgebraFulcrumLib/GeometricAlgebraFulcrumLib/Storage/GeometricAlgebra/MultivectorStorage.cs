@@ -855,7 +855,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             return this;
         }
 
-        public MultivectorGradedStorage<T> ToGradedMultivectorStorage()
+        public MultivectorGradedStorage<T> ToMultivectorGradedStorage()
         {
             return MultivectorGradedStorage<T>.Create(
                 GetLinVectorIdScalarStorage().ToVectorGradedStorage()

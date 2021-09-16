@@ -152,7 +152,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
 
         MultivectorStorage<T> ToMultivectorStorage();
 
-        MultivectorGradedStorage<T> ToGradedMultivectorStorage();
+        MultivectorGradedStorage<T> ToMultivectorGradedStorage();
 
 
         VectorStorage<T> GetVectorPart();

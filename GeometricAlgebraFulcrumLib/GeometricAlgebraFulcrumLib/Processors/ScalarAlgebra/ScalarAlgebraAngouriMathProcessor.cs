@@ -7,11 +7,11 @@ using GeometricAlgebraFulcrumLib.Processors.SymbolicAlgebra.Context;
 
 namespace GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra
 {
-    public sealed class ScalarAlgebraSymbolicProcessor
+    public sealed class ScalarAlgebraAngouriMathProcessor
         : IScalarAlgebraSymbolicProcessor<Entity>
     {
-        public static ScalarAlgebraSymbolicProcessor DefaultProcessor { get; }
-            = new ScalarAlgebraSymbolicProcessor();
+        public static ScalarAlgebraAngouriMathProcessor DefaultProcessor { get; }
+            = new ScalarAlgebraAngouriMathProcessor();
 
         
         public Entity ScalarZero 
@@ -54,7 +54,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra
             => Math.Pow(10, -RoundingPlaces);
 
 
-        private ScalarAlgebraSymbolicProcessor()
+        private ScalarAlgebraAngouriMathProcessor()
         {
         }
 

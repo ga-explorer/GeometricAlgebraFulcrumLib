@@ -648,7 +648,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             );
         }
 
-        public MultivectorGradedStorage<T> ToGradedMultivectorStorage()
+        public MultivectorGradedStorage<T> ToMultivectorGradedStorage()
         {
             return this;
         }

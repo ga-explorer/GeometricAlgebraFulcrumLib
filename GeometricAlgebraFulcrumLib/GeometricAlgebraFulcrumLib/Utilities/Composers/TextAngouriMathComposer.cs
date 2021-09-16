@@ -12,7 +12,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         
         
         private TextAngouriMathComposer() 
-            : base(ScalarAlgebraSymbolicProcessor.DefaultProcessor)
+            : base(ScalarAlgebraAngouriMathProcessor.DefaultProcessor)
         {
         }
 

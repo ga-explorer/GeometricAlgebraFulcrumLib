@@ -49,10 +49,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         {
             var processor = v1.GeometricProcessor;
 
-            return new Scalar<T>(
-                processor,
-                processor.Sp(v1.BivectorStorage)
-            );
+            return processor.Sp(v1.BivectorStorage).CreateScalar(processor);
         }
 
         
@@ -98,10 +95,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         {
             var processor = v1.GeometricProcessor;
 
-            return new Scalar<T>(
-                processor,
-                processor.ESp(v1.BivectorStorage)
-            );
+            return processor.ESp(v1.BivectorStorage).CreateScalar(processor);
         }
     }
 }

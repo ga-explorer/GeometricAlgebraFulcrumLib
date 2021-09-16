@@ -8,6 +8,31 @@ namespace GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra
     public sealed record Scalar<T>
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<T> CreateZero(IScalarAlgebraProcessor<T> processor)
+        {
+            return new Scalar<T>(processor, processor.ScalarZero);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<T> CreateOne(IScalarAlgebraProcessor<T> processor)
+        {
+            return new Scalar<T>(processor, processor.ScalarOne);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<T> CreateMinusOne(IScalarAlgebraProcessor<T> processor)
+        {
+            return new Scalar<T>(processor, processor.ScalarMinusOne);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<T> Create(IScalarAlgebraProcessor<T> processor, T scalar)
+        {
+            return new Scalar<T>(processor, scalar);
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static implicit operator T(Scalar<T> d)
         {
             return d.ScalarValue;
@@ -711,7 +736,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra
             => ScalarProcessor.IsNotNearNegative(ScalarValue);
 
 
-        internal Scalar([NotNull] IScalarAlgebraProcessor<T> processor, [NotNull] T scalar)
+        private Scalar([NotNull] IScalarAlgebraProcessor<T> processor, [NotNull] T scalar)
         {
             ScalarProcessor = processor;
             ScalarValue = scalar;

@@ -16,6 +16,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms
 {
     public class OutermorphismsSequence<T> :
         OutermorphismBase<T>,
+        IOutermorphismSequence<T>,
         IReadOnlyList<IOutermorphism<T>>
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -252,6 +253,19 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms
                     )
                 )
                 .Where(r => !r.Storage.IsEmpty());
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public IEnumerable<IOutermorphism<T>> GetLeafOutermorphisms()
+        {
+            foreach (var om in _outermorphismsList)
+            {
+                if (om is IOutermorphismSequence<T> omSeq)
+                    foreach (var childOm in omSeq.GetLeafOutermorphisms())
+                        yield return childOm;
+                else
+                    yield return om;
+            }
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

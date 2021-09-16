@@ -12,7 +12,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.SymbolicAlgebra
     /// of all kinds. This processor only constructs new expressions without
     /// adding or querying data of the associated Context object
     /// </summary>
-    public class SymbolicScalarAlgebraProcessor :
+    public class ScalarAlgebraSymbolicExpressionProcessor :
         IScalarAlgebraProcessor<ISymbolicExpression>
     {
         public SymbolicContext Context { get; }
@@ -51,7 +51,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.SymbolicAlgebra
             => Context.ScalarE;
 
 
-        internal SymbolicScalarAlgebraProcessor([NotNull] SymbolicContext context)
+        internal ScalarAlgebraSymbolicExpressionProcessor([NotNull] SymbolicContext context)
         {
             Context = context;
         }

@@ -19,7 +19,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.AngouriMath
             => GeometricProcessor.GaSpaceDimension;
 
         public static IGeometricAlgebraProcessor<Entity> GeometricProcessor { get; }
-            = ScalarAlgebraSymbolicProcessor.DefaultProcessor.CreateGeometricAlgebraEuclideanProcessor(3);
+            = ScalarAlgebraAngouriMathProcessor.DefaultProcessor.CreateGeometricAlgebraEuclideanProcessor(3);
 
         public static TextAngouriMathComposer TextComposer { get; }
             = TextAngouriMathComposer.DefaultComposer;

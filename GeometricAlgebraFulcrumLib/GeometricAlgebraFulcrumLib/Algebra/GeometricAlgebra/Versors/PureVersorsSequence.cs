@@ -15,6 +15,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Versors
 {
     public sealed class PureVersorsSequence<T> : 
         VersorBase<T>, 
+        IOutermorphismSequence<T>,
         IReadOnlyList<PureVersor<T>>
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -296,7 +297,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Versors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<IOutermorphism<T>> GetOutermorphisms()
+        public IEnumerable<IOutermorphism<T>> GetLeafOutermorphisms()
         {
             return _versorsList;
         }

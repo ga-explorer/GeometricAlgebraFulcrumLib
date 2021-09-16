@@ -70,7 +70,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.SymbolicAlgebra.Context
         public IScalarAlgebraProcessor<ISymbolicExpressionAtomic> ScalarProcessor 
             => this;
 
-        public SymbolicScalarAlgebraProcessor SymbolicScalarProcessor { get; }
+        public ScalarAlgebraSymbolicExpressionProcessor SymbolicScalarProcessor { get; }
 
         public AngouriMathSymbolicExpressionEvaluator DefaultEvaluator { get; }
 
@@ -116,7 +116,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.SymbolicAlgebra.Context
             ScalarE = GetOrDefineSymbolicNumber(SymbolicNumberNames.E, Math.E);
 
             //These must be initialized after all other members
-            SymbolicScalarProcessor = new SymbolicScalarAlgebraProcessor(this);
+            SymbolicScalarProcessor = new ScalarAlgebraSymbolicExpressionProcessor(this);
             FunctionHeadSpecsFactory = new SymbolicFunctionHeadSpecsFactory(this);
             DefaultEvaluator = this.CreateAngouriMathEvaluator();
         }

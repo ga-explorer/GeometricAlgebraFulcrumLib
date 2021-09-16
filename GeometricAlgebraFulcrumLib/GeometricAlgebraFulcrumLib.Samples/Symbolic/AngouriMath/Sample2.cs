@@ -12,7 +12,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.AngouriMath
         {
             // This is a pre-defined scalar processor for the symbolic
             // AngouriMath scalars using Entity objects
-            var processor = ScalarAlgebraSymbolicProcessor.DefaultProcessor;
+            var processor = ScalarAlgebraAngouriMathProcessor.DefaultProcessor;
 
             // This is a pre-defined text generator for displaying multivectors
             // with symbolic AngouriMath scalars using Entity objects

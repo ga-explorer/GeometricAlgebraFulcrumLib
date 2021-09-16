@@ -123,7 +123,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Versors
                 Vector, 
                 GeometricProcessor.GradeInvolution(mv),
                 VectorInverse
-            ).ToGradedMultivectorStorage();
+            ).ToMultivectorGradedStorage();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

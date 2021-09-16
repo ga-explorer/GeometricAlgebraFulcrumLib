@@ -92,16 +92,13 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> CreateScalarZero<T>(this IScalarAlgebraProcessor<T> scalarProcessor)
         {
-            return new Scalar<T>(
-                scalarProcessor,
-                scalarProcessor.ScalarZero
-            );
+            return Scalar<T>.CreateZero(scalarProcessor);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> CreateScalarOne<T>(this IScalarAlgebraProcessor<T> scalarProcessor)
         {
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 scalarProcessor, 
                 scalarProcessor.ScalarOne
             );
@@ -110,7 +107,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> CreateScalarMinusOne<T>(this IScalarAlgebraProcessor<T> scalarProcessor)
         {
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 scalarProcessor, 
                 scalarProcessor.ScalarMinusOne
             );
@@ -119,7 +116,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> CreateScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, object valueObject)
         {
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 scalarProcessor,
                 scalarProcessor.GetScalarFromObject(valueObject)
             );
@@ -128,7 +125,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> CreateScalar<T>(this object valueObject, IScalarAlgebraProcessor<T> scalarProcessor)
         {
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 scalarProcessor,
                 scalarProcessor.GetScalarFromObject(valueObject)
             );
@@ -137,19 +134,19 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> CreateScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, T scalar)
         {
-            return new Scalar<T>(scalarProcessor, scalar);
+            return Scalar<T>.Create(scalarProcessor, scalar);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> CreateScalar<T>(this T scalar, IScalarAlgebraProcessor<T> scalarProcessor)
         {
-            return new Scalar<T>(scalarProcessor, scalar);
+            return Scalar<T>.Create(scalarProcessor, scalar);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> CreateScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, int scalar)
         {
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 scalarProcessor,
                 scalarProcessor.GetScalarFromNumber(scalar)
             );
@@ -158,7 +155,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> CreateScalar<T>(this int scalar, IScalarAlgebraProcessor<T> scalarProcessor)
         {
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 scalarProcessor,
                 scalarProcessor.GetScalarFromNumber(scalar)
             );
@@ -167,7 +164,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> CreateScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, uint scalar)
         {
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 scalarProcessor,
                 scalarProcessor.GetScalarFromNumber(scalar)
             );
@@ -176,7 +173,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> CreateScalar<T>(this uint scalar, IScalarAlgebraProcessor<T> scalarProcessor)
         {
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 scalarProcessor,
                 scalarProcessor.GetScalarFromNumber(scalar)
             );
@@ -185,7 +182,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> CreateScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, long scalar)
         {
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 scalarProcessor,
                 scalarProcessor.GetScalarFromNumber(scalar)
             );
@@ -194,7 +191,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> CreateScalar<T>(this long scalar, IScalarAlgebraProcessor<T> scalarProcessor)
         {
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 scalarProcessor,
                 scalarProcessor.GetScalarFromNumber(scalar)
             );
@@ -203,7 +200,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> CreateScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, ulong scalar)
         {
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 scalarProcessor,
                 scalarProcessor.GetScalarFromNumber(scalar)
             );
@@ -212,7 +209,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> CreateScalar<T>(this ulong scalar, IScalarAlgebraProcessor<T> scalarProcessor)
         {
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 scalarProcessor,
                 scalarProcessor.GetScalarFromNumber(scalar)
             );
@@ -221,7 +218,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> CreateScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, float scalar)
         {
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 scalarProcessor,
                 scalarProcessor.GetScalarFromNumber(scalar)
             );
@@ -230,7 +227,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> CreateScalar<T>(this float scalar, IScalarAlgebraProcessor<T> scalarProcessor)
         {
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 scalarProcessor,
                 scalarProcessor.GetScalarFromNumber(scalar)
             );
@@ -239,7 +236,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> CreateScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, double scalar)
         {
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 scalarProcessor,
                 scalarProcessor.GetScalarFromNumber(scalar)
             );
@@ -248,7 +245,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> CreateScalar<T>(this double scalar, IScalarAlgebraProcessor<T> scalarProcessor)
         {
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 scalarProcessor,
                 scalarProcessor.GetScalarFromNumber(scalar)
             );
@@ -258,7 +255,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> AddToScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params T[] scalars)
         {
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 scalarProcessor,
                 scalarProcessor.Add(scalars)
             );
@@ -267,7 +264,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> AddToScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params int[] scalars)
         {
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 scalarProcessor,
                 scalarProcessor.Add(scalars.Select(scalarProcessor.GetScalarFromNumber))
             );
@@ -276,7 +273,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> AddToScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params uint[] scalars)
         {
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 scalarProcessor,
                 scalarProcessor.Add(scalars.Select(scalarProcessor.GetScalarFromNumber))
             );
@@ -285,7 +282,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> AddToScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params long[] scalars)
         {
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 scalarProcessor,
                 scalarProcessor.Add(scalars.Select(scalarProcessor.GetScalarFromNumber))
             );
@@ -294,7 +291,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> AddToScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params ulong[] scalars)
         {
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 scalarProcessor,
                 scalarProcessor.Add(scalars.Select(scalarProcessor.GetScalarFromNumber))
             );
@@ -303,7 +300,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> AddToScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params Scalar<T>[] scalars)
         {
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 scalarProcessor,
                 scalarProcessor.Add(scalars.Select(s => s.ScalarValue))
             );
@@ -312,7 +309,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> AddToScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<T> scalars)
         {
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 scalarProcessor,
                 scalarProcessor.Add(scalars)
             );
@@ -321,7 +318,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> AddToScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<int> scalars)
         {
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 scalarProcessor,
                 scalarProcessor.Add(scalars.Select(scalarProcessor.GetScalarFromNumber))
             );
@@ -330,7 +327,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> AddToScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<uint> scalars)
         {
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 scalarProcessor,
                 scalarProcessor.Add(scalars.Select(scalarProcessor.GetScalarFromNumber))
             );
@@ -339,7 +336,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> AddToScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<long> scalars)
         {
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 scalarProcessor,
                 scalarProcessor.Add(scalars.Select(scalarProcessor.GetScalarFromNumber))
             );
@@ -348,7 +345,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> AddToScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<ulong> scalars)
         {
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 scalarProcessor,
                 scalarProcessor.Add(scalars.Select(scalarProcessor.GetScalarFromNumber))
             );
@@ -357,7 +354,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> AddToScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<float> scalars)
         {
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 scalarProcessor,
                 scalarProcessor.Add(scalars.Select(scalarProcessor.GetScalarFromNumber))
             );
@@ -366,7 +363,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> AddToScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<double> scalars)
         {
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 scalarProcessor,
                 scalarProcessor.Add(scalars.Select(scalarProcessor.GetScalarFromNumber))
             );
@@ -375,7 +372,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> AddToScalar<T>(this IEnumerable<T> scalars, IScalarAlgebraProcessor<T> scalarProcessor)
         {
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 scalarProcessor,
                 scalarProcessor.Add(scalars)
             );
@@ -384,7 +381,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> AddToScalar<T>(this IEnumerable<int> scalars, IScalarAlgebraProcessor<T> scalarProcessor)
         {
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 scalarProcessor,
                 scalarProcessor.Add(scalars.Select(scalarProcessor.GetScalarFromNumber))
             );
@@ -393,7 +390,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> AddToScalar<T>(this IEnumerable<uint> scalars, IScalarAlgebraProcessor<T> scalarProcessor)
         {
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 scalarProcessor,
                 scalarProcessor.Add(scalars.Select(scalarProcessor.GetScalarFromNumber))
             );
@@ -402,7 +399,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> AddToScalar<T>(this IEnumerable<long> scalars, IScalarAlgebraProcessor<T> scalarProcessor)
         {
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 scalarProcessor,
                 scalarProcessor.Add(scalars.Select(scalarProcessor.GetScalarFromNumber))
             );
@@ -411,7 +408,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> AddToScalar<T>(this IEnumerable<ulong> scalars, IScalarAlgebraProcessor<T> scalarProcessor)
         {
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 scalarProcessor,
                 scalarProcessor.Add(scalars.Select(scalarProcessor.GetScalarFromNumber))
             );
@@ -420,7 +417,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> AddToScalar<T>(this IEnumerable<float> scalars, IScalarAlgebraProcessor<T> scalarProcessor)
         {
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 scalarProcessor,
                 scalarProcessor.Add(scalars.Select(scalarProcessor.GetScalarFromNumber))
             );
@@ -429,7 +426,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> AddToScalar<T>(this IEnumerable<double> scalars, IScalarAlgebraProcessor<T> scalarProcessor)
         {
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 scalarProcessor,
                 scalarProcessor.Add(scalars.Select(scalarProcessor.GetScalarFromNumber))
             );
@@ -439,7 +436,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> TimesToScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params T[] scalars)
         {
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 scalarProcessor,
                 scalarProcessor.Times(scalars)
             );
@@ -448,7 +445,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> TimesToScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params int[] scalars)
         {
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 scalarProcessor,
                 scalarProcessor.Times(scalars.Select(scalarProcessor.GetScalarFromNumber))
             );
@@ -457,7 +454,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> TimesToScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params uint[] scalars)
         {
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 scalarProcessor,
                 scalarProcessor.Times(scalars.Select(scalarProcessor.GetScalarFromNumber))
             );
@@ -466,7 +463,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> TimesToScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params long[] scalars)
         {
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 scalarProcessor,
                 scalarProcessor.Times(scalars.Select(scalarProcessor.GetScalarFromNumber))
             );
@@ -475,7 +472,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> TimesToScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params ulong[] scalars)
         {
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 scalarProcessor,
                 scalarProcessor.Times(scalars.Select(scalarProcessor.GetScalarFromNumber))
             );
@@ -484,7 +481,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> TimesToScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params Scalar<T>[] scalars)
         {
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 scalarProcessor,
                 scalarProcessor.Times(scalars.Select(s => s.ScalarValue))
             );
@@ -493,7 +490,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> TimesToScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<T> scalars)
         {
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 scalarProcessor,
                 scalarProcessor.Times(scalars)
             );
@@ -502,7 +499,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> TimesToScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<int> scalars)
         {
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 scalarProcessor,
                 scalarProcessor.Times(scalars.Select(scalarProcessor.GetScalarFromNumber))
             );
@@ -511,7 +508,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> TimesToScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<uint> scalars)
         {
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 scalarProcessor,
                 scalarProcessor.Times(scalars.Select(scalarProcessor.GetScalarFromNumber))
             );
@@ -520,7 +517,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> TimesToScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<long> scalars)
         {
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 scalarProcessor,
                 scalarProcessor.Times(scalars.Select(scalarProcessor.GetScalarFromNumber))
             );
@@ -529,7 +526,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> TimesToScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<ulong> scalars)
         {
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 scalarProcessor,
                 scalarProcessor.Times(scalars.Select(scalarProcessor.GetScalarFromNumber))
             );
@@ -538,7 +535,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> TimesToScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<float> scalars)
         {
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 scalarProcessor,
                 scalarProcessor.Times(scalars.Select(scalarProcessor.GetScalarFromNumber))
             );
@@ -547,7 +544,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> TimesToScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<double> scalars)
         {
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 scalarProcessor,
                 scalarProcessor.Times(scalars.Select(scalarProcessor.GetScalarFromNumber))
             );
@@ -556,7 +553,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> TimesToScalar<T>(this IEnumerable<T> scalars, IScalarAlgebraProcessor<T> scalarProcessor)
         {
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 scalarProcessor,
                 scalarProcessor.Times(scalars)
             );
@@ -565,7 +562,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> TimesToScalar<T>(this IEnumerable<int> scalars, IScalarAlgebraProcessor<T> scalarProcessor)
         {
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 scalarProcessor,
                 scalarProcessor.Times(scalars.Select(scalarProcessor.GetScalarFromNumber))
             );
@@ -574,7 +571,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> TimesToScalar<T>(this IEnumerable<uint> scalars, IScalarAlgebraProcessor<T> scalarProcessor)
         {
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 scalarProcessor,
                 scalarProcessor.Times(scalars.Select(scalarProcessor.GetScalarFromNumber))
             );
@@ -583,7 +580,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> TimesToScalar<T>(this IEnumerable<long> scalars, IScalarAlgebraProcessor<T> scalarProcessor)
         {
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 scalarProcessor,
                 scalarProcessor.Times(scalars.Select(scalarProcessor.GetScalarFromNumber))
             );
@@ -592,7 +589,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> TimesToScalar<T>(this IEnumerable<ulong> scalars, IScalarAlgebraProcessor<T> scalarProcessor)
         {
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 scalarProcessor,
                 scalarProcessor.Times(scalars.Select(scalarProcessor.GetScalarFromNumber))
             );
@@ -601,7 +598,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> TimesToScalar<T>(this IEnumerable<float> scalars, IScalarAlgebraProcessor<T> scalarProcessor)
         {
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 scalarProcessor,
                 scalarProcessor.Times(scalars.Select(scalarProcessor.GetScalarFromNumber))
             );
@@ -610,7 +607,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> TimesToScalar<T>(this IEnumerable<double> scalars, IScalarAlgebraProcessor<T> scalarProcessor)
         {
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 scalarProcessor,
                 scalarProcessor.Times(scalars.Select(scalarProcessor.GetScalarFromNumber))
             );

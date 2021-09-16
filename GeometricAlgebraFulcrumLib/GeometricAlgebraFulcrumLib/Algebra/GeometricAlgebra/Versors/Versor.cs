@@ -109,14 +109,14 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Versors
                 GeometricProcessor.Gp(Multivector, mv, MultivectorInverse);
 
             if (IsEven)
-                return v.ToGradedMultivectorStorage();
+                return v.ToMultivectorGradedStorage();
 
             var (evenMv, oddMv) = 
                 v.SplitEvenOddParts();
 
             return GeometricProcessor
                 .Subtract(evenMv, oddMv)
-                .ToGradedMultivectorStorage();
+                .ToMultivectorGradedStorage();
         }
 
         public override MultivectorStorage<T> OmMapMultivector(MultivectorStorage<T> mv)

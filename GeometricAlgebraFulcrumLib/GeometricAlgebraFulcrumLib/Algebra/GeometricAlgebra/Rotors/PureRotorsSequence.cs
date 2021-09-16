@@ -17,6 +17,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
 {
     public sealed class PureRotorsSequence<T> : 
         RotorBase<T>, 
+        IOutermorphismSequence<T>,
         IReadOnlyList<PureRotor<T>>
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -440,7 +441,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<IOutermorphism<T>> GetOutermorphisms()
+        public IEnumerable<IOutermorphism<T>> GetLeafOutermorphisms()
         {
             return _rotorsList;
         }

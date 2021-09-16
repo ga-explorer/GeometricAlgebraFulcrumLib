@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -6,6 +7,9 @@ namespace DataStructuresLib.Extensions
 {
     public static class ArrayExtensions
     {
+        
+
+
         public static T[] ToArray1D<T>(this T[,] array, bool columnMajorOrder = true)
         {
             var rows = array.GetLength(0);

@@ -259,10 +259,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         {
             var processor = scalar.ScalarProcessor;
 
-            return new Scalar<T>(
-                processor, 
-                processor.Inverse(scalar.ScalarValue)
-            );
+            return processor.Inverse(scalar.ScalarValue).CreateScalar(processor);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -270,7 +267,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         {
             var processor = scalar.ScalarProcessor;
 
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 processor, 
                 processor.Abs(scalar.ScalarValue)
             );
@@ -281,7 +278,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         {
             var processor = scalar.ScalarProcessor;
 
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 processor, 
                 processor.Sqrt(scalar.ScalarValue)
             );
@@ -292,7 +289,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         {
             var processor = scalar.ScalarProcessor;
 
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 processor, 
                 processor.SqrtOfAbs(scalar.ScalarValue)
             );
@@ -303,7 +300,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         {
             var processor = scalar.ScalarProcessor;
 
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 processor, 
                 processor.Exp(scalar.ScalarValue)
             );
@@ -314,7 +311,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         {
             var processor = scalar.ScalarProcessor;
 
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 processor, 
                 processor.LogE(scalar.ScalarValue)
             );
@@ -325,7 +322,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         {
             var processor = scalar.ScalarProcessor;
 
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 processor, 
                 processor.Log2(scalar.ScalarValue)
             );
@@ -336,7 +333,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         {
             var processor = scalar.ScalarProcessor;
 
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 processor, 
                 processor.Log10(scalar.ScalarValue)
             );
@@ -347,7 +344,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         {
             var processor = scalar.ScalarProcessor;
 
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 processor, 
                 processor.Log(baseScalar, scalar.ScalarValue)
             );
@@ -358,7 +355,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         {
             var processor = scalar.ScalarProcessor;
 
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 processor, 
                 processor.Log(baseScalar.ScalarValue, scalar.ScalarValue)
             );
@@ -369,7 +366,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         {
             var processor = scalar.ScalarProcessor;
 
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 processor, 
                 processor.Cos(scalar.ScalarValue)
             );
@@ -380,7 +377,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         {
             var processor = scalar.ScalarProcessor;
 
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 processor, 
                 processor.Sin(scalar.ScalarValue)
             );
@@ -391,7 +388,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         {
             var processor = scalar.ScalarProcessor;
 
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 processor, 
                 processor.Tan(scalar.ScalarValue)
             );
@@ -402,7 +399,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         {
             var processor = scalar.ScalarProcessor;
 
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 processor, 
                 processor.ArcCos(scalar.ScalarValue)
             );
@@ -413,7 +410,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         {
             var processor = scalar.ScalarProcessor;
 
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 processor, 
                 processor.ArcSin(scalar.ScalarValue)
             );
@@ -424,7 +421,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         {
             var processor = scalar.ScalarProcessor;
 
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 processor, 
                 processor.ArcTan(scalar.ScalarValue)
             );
@@ -435,7 +432,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         {
             var processor = scalarX.ScalarProcessor;
 
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 processor, 
                 processor.ArcTan2(scalarX.ScalarValue, scalarY)
             );
@@ -446,7 +443,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         {
             var processor = scalarX.ScalarProcessor;
 
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 processor, 
                 processor.ArcTan2(scalarX.ScalarValue, scalarY.ScalarValue)
             );
@@ -457,7 +454,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         {
             var processor = scalar.ScalarProcessor;
 
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 processor, 
                 processor.Cosh(scalar.ScalarValue)
             );
@@ -468,7 +465,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         {
             var processor = scalar.ScalarProcessor;
 
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 processor, 
                 processor.Sinh(scalar.ScalarValue)
             );
@@ -479,7 +476,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         {
             var processor = scalar.ScalarProcessor;
 
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 processor, 
                 processor.Tanh(scalar.ScalarValue)
             );

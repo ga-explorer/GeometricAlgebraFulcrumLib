@@ -18,9 +18,11 @@ GA-FuL is intended to:
 
 ### 1. Storage Layer
 
-The storage layer is the lowest, and largest, layer of code in GA-FuL. The main objective of the GA-FuL storage layer is to provide a set of generic classes for storing <a href="https://en.wikipedia.org/wiki/Scalar_(mathematics)" target="_blank">scalars</a>, <a href="https://en.wikipedia.org/wiki/Vector_(mathematics_and_physics)" target="_blank">vectors</a>, <a href="https://en.wikipedia.org/wiki/Matrix_(mathematics)" target="_blank">matrices</a>, <a href="https://en.wikipedia.org/wiki/Multivector" target="_blank">multivectors</a>, and <a href="https://en.wikipedia.org/wiki/Outermorphism" target="_blank">outermorphisms</a> at the coordinates level, as compactly as possible. The storage layer classes are located inside the <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/tree/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Storage" target="_blank">`GeometricAlgebraFulcrumLib.Storage`</a> name space.
+The <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/tree/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Storage" target="_blank">storage layer</a> is the lowest, and largest, layer of code in GA-FuL. The main objective of the GA-FuL storage layer is to provide a set of generic classes for storing <a href="https://en.wikipedia.org/wiki/Scalar_(mathematics)" target="_blank">scalars</a>, <a href="https://en.wikipedia.org/wiki/Vector_(mathematics_and_physics)" target="_blank">vectors</a>, <a href="https://en.wikipedia.org/wiki/Matrix_(mathematics)" target="_blank">matrices</a>, <a href="https://en.wikipedia.org/wiki/Multivector" target="_blank">multivectors</a>, and <a href="https://en.wikipedia.org/wiki/Outermorphism" target="_blank">outermorphisms</a> at the coordinates level, as compactly as possible. The storage layer classes are located inside the <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/tree/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Storage" target="_blank">`GeometricAlgebraFulcrumLib.Storage`</a> name space.
 
-#### 1.1 Storing Linear Algebra Vectors
+#### 1.1 Storing Linear Algebra Vectors and Matrices
+
+![Type Dependencies Diagram for ILinArrayStorage](GeometricAlgebraFulcrumLib.Documentation/Type%20Dependencies%20Diagram%20for%20ILinArrayStorage.png)
 
 The <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Storage/LinearAlgebra/Vectors/ILinVectorStorage.cs" target="_blank">`ILinVectorStorage<T>`</a> generic interface provides a unified representation of classical dense and sparse vectors of linear algebra. In GA-FuL, a vector can be viewed as a set of **(index, scalar) tuples**, where the index implicitly represents a specific basis vector of an arbitrary <a href="https://en.wikipedia.org/wiki/Vector_space" target="_blank">linear space</a>. A GA-FuL vector as a whole implicitly represents a linear combination of basis vectors. Which basis is used depends on the usage context of the vector. In the storage layer, no information is retained regarding the specific linear space or the exact kind of scalars used.
 
@@ -30,8 +32,6 @@ The following is a list of important vector interfaces in the GA-FuL storage lay
 * <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Storage/LinearAlgebra/Vectors/Sparse/ILinVectorSparseStorage.cs" target="_blank">`ILinVectorSparseStorage<T>`</a> : Represents sparse vectors of arbitrary length. The basis vector indices and scalars are stored internally in <a href="https://en.wikipedia.org/wiki/Associative_array" target="_blank">dictionary-like</a> data structures.
 * <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Storage/LinearAlgebra/Vectors/Graded/ILinVectorGradedStorage.cs" target="_blank">`ILinVectorGradedStorage<T>`</a> : This is mainly used to represent the graded structure of <a href="https://en.wikipedia.org/wiki/Multivector" target="_blank">Grassmann Numbers</a> in an <a href="https://en.wikipedia.org/wiki/Exterior_algebra" target="_blank">Exterior Algebra</a>. Each graded vector can be viewed as a set of **(grade, index, scalar)** tuples. Internally, the tuples are grouped by grade into (grade, <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Storage/LinearAlgebra/Vectors/ILinVectorStorage.cs" target="_blank">`ILinVectorStorage<T>`</a>) structures.
 
-#### 1.2 Storing Linear Algebra Matrices
-
 Classes derived from the generic <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Storage/LinearAlgebra/Matrices/ILinMatrixStorage.cs" target="_blank">`ILinMatrixStorage<T>`</a> interface represent dense and sparse matrices. A GA-FuL matrix is conceptually a set of **(row index, column index, scalar)** tuples. As in the case of vectors, no information is stored in this layer about the exact basis used for the matrices, only the index-scalar structure of the matrix is represented internally.
 
 The following is a list of important GA-FuL matrix storage interfaces:
@@ -40,7 +40,9 @@ The following is a list of important GA-FuL matrix storage interfaces:
 * <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Storage/LinearAlgebra/Matrices/Sparse/ILinMatrixSparseStorage.cs" target="_blank">`ILinMatrixSparseStorage<T>`</a> : Represents sparse matrices of arbitrary size. The row-column indices and scalars are stored internally in <a href="https://en.wikipedia.org/wiki/Associative_array" target="_blank">dictionary-like</a> data structures.
 * <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Storage/LinearAlgebra/Matrices/Graded/ILinMatrixGradedStorage.cs" target="_blank">`ILinMatrixGradedStorage<T>`</a> : This interface is mainly used to represent the graded structure of <a href="https://en.wikipedia.org/wiki/Outermorphism" target="_blank">Outermorphisms</a> in an <a href="https://en.wikipedia.org/wiki/Exterior_algebra" target="_blank">Exterior Algebra</a>. Each graded matrix can be viewed as a set of **(grade, row index, column index, scalar)** tuples. Internally, the tuples are grouped by grade into (grade, <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Storage/LinearAlgebra/Matrices/ILinMatrixStorage.cs" target="_blank">`ILinMatrixStorage<T>`</a>) structures.
 
-#### 1.3 Storing Multivectors
+#### 1.2 Storing Geometric Algebra Multivectors and Outermorphisms
+
+![Type Dependencies Diagram for IMultivectorStorage](GeometricAlgebraFulcrumLib.Documentation/Type%20Dependencies%20Diagram%20for%20IMultivectorStorage.png)
 
 In <a href="https://en.wikipedia.org/wiki/Geometric_algebra" target="_blank">geometric algebra</a>, the space of multivectors is essentially a <a href="https://en.wikipedia.org/wiki/Graded_vector_space" target="_blank">graded linear space</a> with additional mathematical structure. A multivector is the sum of k-vectors, each of grade k. Each k-vector space is itself a smaller linear subspace of the larger multivectors linear space. 
 
@@ -50,13 +52,13 @@ In GA-FuL, the additional mathematical structure of GA multivectors is encoded i
 * <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Storage/GeometricAlgebra/MultivectorGradedStorage.cs" target="_blank">`MultivectorGradedStorage<T>`</a> : This class represents more general multi-grade multivectors as a set of k-vectors.
 * <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Storage/GeometricAlgebra/MultivectorStorage.cs" target="_blank">`MultivectorStorage<T>`</a> : This class also represents general multivectors, but as a uniformly indexed set of terms.
 
-#### 1.4 Storing Outermorphisms
-
 In GA-FuL there are two kinds of outermorphisms: computed and stored. A stored outermorphism internally contains a graded matrix, with some additional operations. The <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Storage/GeometricAlgebra/OutermorphismStorage.cs" target="_blank">`OutermorphismStorage<T>`</a> class represents the graded matrix storage of a stored outermorphism. Computed outermorphisms are described in following sections.
 
 ### 2. Processors Layer
 
-The second layer in GA-FuL is a collection of classes to implement processing operations on scalars, vectors, matrices, multivectors, and outermorphisms. Processing operations include creating storage objects for specific purposes, applying common algebraic operations (addition, subtraction, products, etc.) and converting between storage objects (for example converting a set of **(index, scalar)** terms into a vector, converting a graded matrix into a stored outermorphism, etc.) There are generally 4 kinds of processors in GA-FuL described in the following subsections.
+![Type Dependencies Diagram for IScalarAlgebraProcessor](GeometricAlgebraFulcrumLib.Documentation/Type%20Dependencies%20Diagram%20for%20IScalarAlgebraProcessor.png)
+
+The second layer in GA-FuL is the <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/tree/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Processors" target="_blank">processors layer</a>. This layer contains a collection of classes with unified interfaces to implement processing operations on scalars, vectors, matrices, multivectors, and outermorphisms. Processing operations include creating storage objects for specific purposes, applying common algebraic operations (addition, subtraction, products, etc.) and converting between storage objects (for example converting a set of **(index, scalar)** terms into a vector, converting a graded matrix into a stored outermorphism, etc.) There are generally 4 kinds of processors in GA-FuL described in the following subsections.
 
 #### 2.1 Scalar Algebra Processors
 
@@ -66,7 +68,7 @@ There are some predefined scalar processors in GA-FuL such as:
 
 * <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Processors/ScalarAlgebra/ScalarAlgebraFloat32Processor.cs" target="_blank">`ScalarAlgebraFloat32Processor`</a>, <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Processors/ScalarAlgebra/ScalarAlgebraFloat64Processor.cs" target="_blank">`ScalarAlgebraFloat64Processor`</a> : Scalar processors for the <a href="https://docs.oracle.com/cd/E19957-01/806-3568/ncg_goldberg.html" target="_blank">standard IEEE 32\64 bits floating point numbers</a>.
 * <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Processors/ScalarAlgebra/ScalarAlgebraComplexProcessor.cs" target="_blank">`ScalarAlgebraComplexProcessor`</a> : A scalar processor for complex numbers based on the <a href="https://numerics.mathdotnet.com/" target="_blank">MathNet.Numerics</a> library.
-* <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Processors/ScalarAlgebra/ScalarAlgebraSymbolicProcessor.cs" target="_blank">`ScalarAlgebraSymbolicProcessor`</a> : A scalar processor for symbolic scalar expressions based on the `Entity` class of the <a href="https://am.angouri.org/" target="_blank">AngouriMath</a> symbolic algebra library.
+* <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Processors/ScalarAlgebra/ScalarAlgebraAngouriMathProcessor.cs" target="_blank">`ScalarAlgebraAngouriMathProcessor`</a> : A scalar processor for symbolic scalar expressions based on the `Entity` class of the <a href="https://am.angouri.org/" target="_blank">AngouriMath</a> symbolic algebra library.
 * <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib.Mathematica/Processors/ScalarAlgebraMathematicaProcessor.cs" target="_blank">`ScalarAlgebraMathematicaProcessor`</a> : A scalar processor for symbolic scalar expressions based on the <a href="https://reference.wolfram.com/language/NETLink/ref/net/Wolfram.NETLink.Expr.html" target="_blank">`Expr`</a> class of the <a href="https://www.wolfram.com/mathematica/" target="_blank">Wolfram Mathematica</a> computer algebra system. Here, `Expr` objects are assumed to represent symbolic scalars, i.e. not matrices, lists, Boolean values, etc.
 
 #### 2.2 Linear Algebra Processors
@@ -84,19 +86,58 @@ The other built-in implementation of the <a href="https://github.com/ga-explorer
 
 #### 2.3 Geometric Algebra Processors
 
+A GA processor is a linear processor for manipulating and computing with multivectors within a given GA space. Examples of operations a GA processor performs include addition and subtraction of multivector storage objects, GA products (geometric, outer, contraction, etc.), norm of multivectors, and inverses of blades and versors. The generic interface <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Processors/GeometricAlgebra/IGeometricAlgebraProcessor.cs" target="_blank">`IGeometricAlgebraProcessor<T>`</a> is the base for all GA processors. There are 3 derived classes for specific GA spaces:
 
+* <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Processors/GeometricAlgebra/GeometricAlgebraEuclideanProcessor.cs" target="_blank">`GeometricAlgebraEuclideanProcessor<T>`</a> : This GA processor assumes the multivector storage objects are defined on a Euclidean space of given dimensions.
+* <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Processors/GeometricAlgebra/GeometricAlgebraOrthonormalProcessor.cs" target="_blank">`GeometricAlgebraOrthonormalProcessor<T>`</a> : This GA processor handles cases for GA spaces defined using orthonormal basis.
+* <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Processors/GeometricAlgebra/GeometricAlgebraChangeOfBasisProcessor.cs" target="_blank">`GeometricAlgebraChangeOfBasisProcessor<T>`</a> : Which handles GA space defined as a Change of Basis outermorphism on an orthonormal GA space. More detailed information can be found in <a href="https://link.springer.com/article/10.1007/s00006-018-0827-1" target="_blank">this paper</a>.
 
 #### 2.4 Symbolic Algebra Processors
 
+One of the fundamental objectives of GA-FuL is to allow users to generate optimized code from GA-based algorithms. In the <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/tree/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Algebra" target="_blank">algebra layer</a> of GA-FuL, the <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Algebra/SymbolicAlgebra/ISymbolicExpression.cs" target="_blank">`ISymbolicExpression`</a> interface is the base for symbolic expression trees designed specifically for optimized code generation from arbitrary computations (i.e. symbolic computations defined on scalars, vectors, matrices, multivectors, and outermorphisms). This <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/tree/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Algebra/SymbolicAlgebra" target="_blank">symbolic algebra</a> sub-layer is explained in later sections. Inside the <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/tree/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Processors/SymbolicAlgebra" target="_blank">processors layer</a>, however, there are two important processors for this task:
+
+* <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Processors/SymbolicAlgebra/ScalarAlgebraSymbolicExpressionProcessor.cs" target="_blank">`ScalarAlgebraSymbolicExpressionProcessor`</a> : This is a scalar processor specific to computing with symbolic scalars of type <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Algebra/SymbolicAlgebra/ISymbolicExpression.cs" target="_blank">`ISymbolicExpression`</a>.
+* <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Processors/SymbolicAlgebra/Context/SymbolicContext.cs" target="_blank">`SymbolicContext`</a> : This is essentially a linear processor of symbolic scalars designed for optimized code generation operations. 
+
+The best way to learn about this part of GA-FuL is by browsing <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/tree/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib.Samples/CodeComposer" target="_blank">the code generation samples</a>.
+
 ### 3. Algebra Layer
 
-#### 3.1 Scalar Algebra Classes
+The GA-FuL <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/tree/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Algebra" target="_blank">algebra layer</a> contains a set of high-level classes for simplifying the GA-FuL Application User Interface (API). Each class is a wrapper typically containing a storage member and a processor member. Additionally, each class defines wrappers around common processing operations specific to the class type.
 
-#### 3.2 Linear Algebra Classes
+The <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Algebra/ScalarAlgebra/Scalar.cs" target="_blank">`Scalar<T>`</a> class is a simple unified wrapper around a scalar type `T` and a suitable scalar algebra processor of type <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Processors/ScalarAlgebra/IScalarAlgebraProcessor.cs" target="_blank">`IScalarAlgebraProcessor<T>`</a>. Common operations on scalars are implemented through a simple API, for example instead of writing: 
 
-#### 3.3 Geometric Algebra Classes
+```csharp
+scalarStorage4 = scalarProcessor.Add(
+    scalarStorage1, 
+    scalarProcessor.Times(scalarStorage2, scalarStorage3)
+)
+```
 
-#### 3.4 Symbolic Algebra Classes
+the user can simply write: 
+
+```csharp
+scalar4 = scalar1 + scalar2 * scalar3
+```
+
+The same idea carries on for all classes in the algebra layer. Examples of these classes include:
+
+* <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Algebra/LinearAlgebra/Vectors/LinVector.cs" target="_blank">`LinVector<T>`</a> : This class contains a linear processor object of type <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Processors/LinearAlgebra/ILinearAlgebraProcessor.cs" target="_blank">`ILinearAlgebraProcessor<T>`</a>, and a linear vector storage object of type <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Storage/LinearAlgebra/Vectors/ILinVectorStorage.cs" target="_blank">`ILinVectorStorage<T>`</a> for making computations with linear algebra vectors.
+* <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Algebra/LinearAlgebra/Matrices/LinMatrix.cs" target="_blank">`LinMatrix<T>`</a> : This class contains a linear processor object of type <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Processors/LinearAlgebra/ILinearAlgebraProcessor.cs" target="_blank">`ILinearAlgebraProcessor<T>`</a>, and a linear matrix storage object of type <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Storage/LinearAlgebra/Matrices/ILinMatrixStorage.cs" target="_blank">`ILinMatrixStorage<T>`</a> for making computations with linear algebra matrices.
+* <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Algebra/LinearAlgebra/Matrices/LinMatrix.cs" target="_blank">`LinMatrix<TMatrix, TScalar>`</a> : This class contains a linear processor object of type <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Processors/LinearAlgebra/ILinearAlgebraProcessor.cs" target="_blank">`ILinearAlgebraProcessor<TMatrix, TScalar>`</a>, and a linear matrix storage object of type `TMatrix` for making computations with linear algebra matrices.
+* <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Algebra/GeometricAlgebra/Multivectors/Vector.cs" target="_blank">`Vector<T>`</a> : A wrapper class around a geometric processor and a GA vector storage.
+* <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Algebra/GeometricAlgebra/Multivectors/Bivector.cs" target="_blank">`Bivector<T>`</a> : A wrapper class around a geometric processor and a GA bivector storage.
+* <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Algebra/GeometricAlgebra/Multivectors/KVector.cs" target="_blank">`KVector<T>`</a> : A wrapper class around a geometric processor and a GA k-vector storage.
+* <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Algebra/GeometricAlgebra/Multivectors/Multivector.cs" target="_blank">`Multivector<T>`</a> : A wrapper class around a geometric processor and a GA multivector storage of any kind.
+* <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Algebra/GeometricAlgebra/Outermorphisms/Outermorphism.cs" target="_blank">`Outermorphism<T>`</a> : A wrapper class around a linear processor and an outermorphism storage.
+* <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Algebra/GeometricAlgebra/Outermorphisms/OutermorphismsSequence.cs" target="_blank">`OutermorphismsSequence<T>`</a> : Represents a composition sequence of arbitrary outermorphisms.
+* <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Algebra/GeometricAlgebra/Versors/PureVersor.cs" target="_blank">`PureVersor<T>`</a> : Represents a simple versor expressed as a reflection on a hyperspace represented by its dual vector.
+* <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Algebra/GeometricAlgebra/Versors/PureVersorsSequence.cs" target="_blank">`PureVersorsSequence<T>`</a> : Represents a composition sequence of arbitrary pure versors.
+* <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Algebra/GeometricAlgebra/Versors/Versor.cs" target="_blank">`Versor<T>`</a> : Represents a general versor expressed using the geometric product of several vectors; i.e. a single multivector.
+* <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Algebra/GeometricAlgebra/Rotors/PureRotor.cs" target="_blank">`PureRotor<T>`</a> : Represents a simple rotor, which is the exponential of a 2-blade.
+* <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Algebra/GeometricAlgebra/Rotors/PureRotorsSequence.cs" target="_blank">`PureRotorsSequence<T>`</a> : Represents a composition sequence of pure rotors.
+* <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Algebra/GeometricAlgebra/Rotors/Rotor.cs" target="_blank">`Rotor<T>`</a> : Represents a general rotor expressed as the geometric product (a single even multivector) of several simple rotors. 
+* <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Algebra/GeometricAlgebra/Projectors/Projector.cs" target="_blank">`Projector<T>`</a> : Represents a subspace blade acting as a linear projection operator.
 
 ### 4. Geometry Layer
 
@@ -104,7 +145,7 @@ The other built-in implementation of the <a href="https://github.com/ga-explorer
 
 #### 5.1 Structure Classes
 
-#### 5.2 Extension Utility Classes
+#### 5.2 Extension Classes
 
 #### 5.3 Factory Classes
 

@@ -1358,7 +1358,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Scalar<T> Norm()
         {
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 GeometricProcessor,
                 GeometricProcessor.Norm(MultivectorStorage)
             );
@@ -1367,7 +1367,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Scalar<T> ENorm()
         {
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 GeometricProcessor,
                 GeometricProcessor.ENorm(MultivectorStorage)
             );
@@ -1376,7 +1376,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Scalar<T> NormSquared()
         {
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 GeometricProcessor,
                 GeometricProcessor.NormSquared(MultivectorStorage)
             );
@@ -1385,7 +1385,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Scalar<T> ENormSquared()
         {
-            return new Scalar<T>(
+            return Scalar<T>.Create(
                 GeometricProcessor,
                 GeometricProcessor.ENormSquared(MultivectorStorage)
             );

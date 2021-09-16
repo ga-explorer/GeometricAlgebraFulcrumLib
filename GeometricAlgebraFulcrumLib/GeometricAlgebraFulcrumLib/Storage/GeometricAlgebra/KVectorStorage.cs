@@ -878,7 +878,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public MultivectorGradedStorage<T> ToGradedMultivectorStorage()
+        public MultivectorGradedStorage<T> ToMultivectorGradedStorage()
         {
             return SingleGradeVectorStorage.CreateMultivectorGradedStorage();
         }

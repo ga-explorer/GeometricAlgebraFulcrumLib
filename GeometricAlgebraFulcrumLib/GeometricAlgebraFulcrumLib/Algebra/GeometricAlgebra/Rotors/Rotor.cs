@@ -275,7 +275,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
         {
             return GeometricProcessor
                 .Gp(Multivector, mv, MultivectorReverse)
-                .ToGradedMultivectorStorage();
+                .ToMultivectorGradedStorage();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
