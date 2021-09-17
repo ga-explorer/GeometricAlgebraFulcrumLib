@@ -15,7 +15,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Geometry
     [TestFixture]
     public sealed class GeoSimpleRotorsEuclideanTests
     {
-        private readonly GeometricAlgebraRandomFloat64Composer _randomGenerator;
+        private readonly GeometricAlgebraRandomComposer<double> _randomGenerator;
         private readonly List<VectorStorage<double>> _vectorsList;
         private readonly List<PureRotor<double>> _rotorsList;
 
@@ -29,7 +29,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Geometry
 
         public GeoSimpleRotorsEuclideanTests()
         {
-            _randomGenerator = new GeometricAlgebraRandomFloat64Composer(VSpaceDimension,10);
+            _randomGenerator = GeometricProcessor.CreateGeometricRandomComposer(10);
             _vectorsList = new List<VectorStorage<double>>();
             _rotorsList = new List<PureRotor<double>>();
         }

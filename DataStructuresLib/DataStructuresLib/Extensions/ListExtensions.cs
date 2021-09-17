@@ -85,9 +85,8 @@ namespace DataStructuresLib.Extensions
         }
 
 
-        // Function to count the number of swaps required to merge two sorted
-        // sub-array in a sorted form
-        private static int Merge(IList<int> inputArray, IList<int> tempArray, int left, int mid, int right)
+        private static int Merge<T>(IList<T> inputArray, IList<T> tempArray, int left, int mid, int right)
+            where T : IComparable<T>
         {
             // Stores the count of swaps
             var swaps = 0;
@@ -95,7 +94,7 @@ namespace DataStructuresLib.Extensions
 
             while (i < mid && j <= right)
             {
-                if (inputArray[i] <= inputArray[j])
+                if (inputArray[i].CompareTo(inputArray[j]) <= 0)
                 {
                     tempArray[k] = inputArray[i];
                     k++; i++;
@@ -128,9 +127,9 @@ namespace DataStructuresLib.Extensions
 
             return swaps;
         }
-
-        // Function to count the total number of swaps required to sort the array
-        private static int MergeInsertionSwap(IList<int> inputArray, IList<int> tempArray, int left, int right)
+        
+        private static int MergeInsertionSwap<T>(IList<T> inputArray, IList<T> tempArray, int left, int right)
+            where T : IComparable<T>
         {
             // Stores the total count
             // of swaps required
@@ -157,13 +156,104 @@ namespace DataStructuresLib.Extensions
 
             return swaps;
         }
-
+        
+        /// <summary>
+        /// Sort in-place the array and count the minimum number of swaps required to sort the array
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="inputArray"></param>
+        /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static int SortWithSwapCount(this IList<int> inputArray)
+        public static int SortWithSwapCount<T>(this IList<T> inputArray)
+            where T : IComparable<T>
         {
-            var tempArray = new int[inputArray.Count];
+            var tempArray = new T[inputArray.Count];
 
             return MergeInsertionSwap(inputArray, tempArray, 0, inputArray.Count - 1);
         }
+
+
+        //private static int Merge(IList<int> inputArray, IList<int> tempArray, int left, int mid, int right)
+        //{
+        //    // Stores the count of swaps
+        //    var swaps = 0;
+        //    int i = left, j = mid, k = left;
+
+        //    while (i < mid && j <= right)
+        //    {
+        //        if (inputArray[i] <= inputArray[j])
+        //        {
+        //            tempArray[k] = inputArray[i];
+        //            k++; i++;
+        //        }
+        //        else
+        //        {
+        //            tempArray[k] = inputArray[j];
+        //            k++; j++;
+        //            swaps += mid - i;
+        //        }
+        //    }
+
+        //    while (i < mid)
+        //    {
+        //        tempArray[k] = inputArray[i];
+        //        k++; i++;
+        //    }
+
+        //    while (j <= right)
+        //    {
+        //        tempArray[k] = inputArray[j];
+        //        k++; j++;
+        //    }
+
+        //    while (left <= right)
+        //    {
+        //        inputArray[left] = tempArray[left];
+        //        left++;
+        //    }
+
+        //    return swaps;
+        //}
+
+        //private static int MergeInsertionSwap(IList<int> inputArray, IList<int> tempArray, int left, int right)
+        //{
+        //    // Stores the total count
+        //    // of swaps required
+        //    var swaps = 0;
+
+        //    if (left >= right) 
+        //        return swaps;
+
+        //    // Find the middle index
+        //    // splitting the two halves
+        //    var mid = left + (right - left) / 2;
+
+        //    // Count the number of swaps
+        //    // required to sort the left sub-array
+        //    swaps += MergeInsertionSwap(inputArray, tempArray, left, mid);
+
+        //    // Count the number of swaps
+        //    // required to sort the right sub-array
+        //    swaps += MergeInsertionSwap(inputArray, tempArray, mid + 1, right);
+
+        //    // Count the number of swaps required
+        //    // to sort the two sorted sub-arrays
+        //    swaps += Merge(inputArray, tempArray, left, mid + 1, right);
+
+        //    return swaps;
+        //}
+
+        ///// <summary>
+        ///// Sort the array and count the minimum number of swaps required to sort the array
+        ///// </summary>
+        ///// <param name="inputArray"></param>
+        ///// <returns></returns>
+        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+        //public static int SortWithSwapCount(this IList<int> inputArray)
+        //{
+        //    var tempArray = new int[inputArray.Count];
+
+        //    return MergeInsertionSwap(inputArray, tempArray, 0, inputArray.Count - 1);
+        //}
     }
 }

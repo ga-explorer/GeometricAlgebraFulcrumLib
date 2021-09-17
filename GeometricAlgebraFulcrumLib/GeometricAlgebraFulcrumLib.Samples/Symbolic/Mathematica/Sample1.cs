@@ -10,9 +10,13 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.Mathematica
     {
         public static void Execute()
         {
-            // This is a pre-defined scalar processor for the symbolic
+            // This is a pre-defined scalar processor for symbolic
             // Wolfram Mathematica scalars using Expr objects
-            var processor = ScalarAlgebraMathematicaProcessor.DefaultProcessor;
+            var scalarProcessor = ScalarAlgebraMathematicaProcessor.DefaultProcessor;
+            
+            // Create a 3-dimensional Euclidean geometric algebra processor based on the
+            // selected scalar processor
+            var geometricProcessor = scalarProcessor.CreateGeometricAlgebraEuclideanProcessor(3);
 
             // This is a pre-defined text generator for displaying multivectors
             // with symbolic Wolfram Mathematica scalars using Expr objects
@@ -23,11 +27,11 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.Mathematica
             var latexComposer = MathematicaLaTeXComposer.DefaultComposer;
 
             // Create two vectors each having 3 components (a 3-dimensional GA)
-            var u = processor.CreateVectorStorageFromText(3, i => $"Subscript[u,{i + 1}]");
-            var v = processor.CreateVectorStorageFromText(3, i => $"Subscript[v,{i + 1}]");
+            var u = geometricProcessor.CreateVectorFromText(3, i => $"Subscript[u,{i + 1}]");
+            var v = geometricProcessor.CreateVectorFromText(3, i => $"Subscript[v,{i + 1}]");
 
             // Compute their outer product as a bivector
-            var bv = processor.Op(u, v);
+            var bv = u.Op(v);
 
             // Display a text representation of the vectors and their outer product
             Console.WriteLine($@"u = {textComposer.GetMultivectorText(u)}");

@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
+using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Utilities.Composers;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
+using GeometricAlgebraFulcrumLib.Utilities.Factories;
 using NUnit.Framework;
 
 namespace GeometricAlgebraFulcrumLib.UnitTests.Storage
@@ -10,7 +12,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Storage
     [TestFixture]
     public sealed class BladeRelationsTests
     {
-        private readonly GeometricAlgebraRandomFloat64Composer _randomGenerator;
+        private readonly GeometricAlgebraRandomComposer<double> _randomGenerator;
 
         private readonly List<KVectorStorage<double>> _bladesList;
 
@@ -19,19 +21,21 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Storage
         //private GeoScalarStorage<double> _scalarStorage;
 
 
-        public ScalarAlgebraFloat64Processor ScalarProcessor
-            => ScalarAlgebraFloat64Processor.DefaultProcessor;
+        public IGeometricAlgebraProcessor<double> GeometricProcessor
+            => ScalarAlgebraFloat64Processor
+                .DefaultProcessor
+                .CreateGeometricAlgebraEuclideanProcessor(8);
 
         public uint VSpaceDimension 
-            => 8;
+            => GeometricProcessor.VSpaceDimension;
 
         public ulong GaSpaceDimension
-            => 1UL << (int) VSpaceDimension;
+            => GeometricProcessor.GaSpaceDimension;
 
 
         public BladeRelationsTests()
         {
-            _randomGenerator = new GeometricAlgebraRandomFloat64Composer(VSpaceDimension,10);
+            _randomGenerator = GeometricProcessor.CreateGeometricRandomComposer(10);
             _scalar = _randomGenerator.GetScalar();
             _bladesList = new List<KVectorStorage<double>>();
         }
@@ -55,29 +59,29 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Storage
 
             foreach (var blade1 in _bladesList)
             {
-                blade2 = ScalarProcessor.Divide(ScalarProcessor.Times(blade1, _scalar), _scalar);
-                diff = ScalarProcessor.Subtract(blade1, blade2);
-                Assert.IsTrue(ScalarProcessor.IsNearZero(diff));
+                blade2 = GeometricProcessor.Divide(GeometricProcessor.Times(blade1, _scalar), _scalar);
+                diff = GeometricProcessor.Subtract(blade1, blade2);
+                Assert.IsTrue(GeometricProcessor.IsNearZero(diff));
 
-                blade2 = ScalarProcessor.Divide(ScalarProcessor.Times(_scalar, blade1), _scalar);
-                diff = ScalarProcessor.Subtract(blade1, blade2);
-                Assert.IsTrue(ScalarProcessor.IsNearZero(diff));
+                blade2 = GeometricProcessor.Divide(GeometricProcessor.Times(_scalar, blade1), _scalar);
+                diff = GeometricProcessor.Subtract(blade1, blade2);
+                Assert.IsTrue(GeometricProcessor.IsNearZero(diff));
 
-                blade2 = ScalarProcessor.Divide(ScalarProcessor.Op(_scalar, blade1), _scalar);
-                diff = ScalarProcessor.Subtract(blade1, blade2);
-                Assert.IsTrue(ScalarProcessor.IsNearZero(diff));
+                blade2 = GeometricProcessor.Divide(GeometricProcessor.Op(_scalar, blade1), _scalar);
+                diff = GeometricProcessor.Subtract(blade1, blade2);
+                Assert.IsTrue(GeometricProcessor.IsNearZero(diff));
 
-                blade2 = ScalarProcessor.Divide(ScalarProcessor.Op(blade1, _scalar), _scalar);
-                diff = ScalarProcessor.Subtract(blade1, blade2);
-                Assert.IsTrue(ScalarProcessor.IsNearZero(diff));
+                blade2 = GeometricProcessor.Divide(GeometricProcessor.Op(blade1, _scalar), _scalar);
+                diff = GeometricProcessor.Subtract(blade1, blade2);
+                Assert.IsTrue(GeometricProcessor.IsNearZero(diff));
 
-                blade2 = ScalarProcessor.Divide(ScalarProcessor.EGp(_scalar, blade1), _scalar);
-                diff = ScalarProcessor.Subtract(blade1, blade2);
-                Assert.IsTrue(ScalarProcessor.IsNearZero(diff));
+                blade2 = GeometricProcessor.Divide(GeometricProcessor.EGp(_scalar, blade1), _scalar);
+                diff = GeometricProcessor.Subtract(blade1, blade2);
+                Assert.IsTrue(GeometricProcessor.IsNearZero(diff));
 
-                blade2 = ScalarProcessor.Divide(ScalarProcessor.EGp(blade1, _scalar), _scalar);
-                diff = ScalarProcessor.Subtract(blade1, blade2);
-                Assert.IsTrue(ScalarProcessor.IsNearZero(diff));
+                blade2 = GeometricProcessor.Divide(GeometricProcessor.EGp(blade1, _scalar), _scalar);
+                diff = GeometricProcessor.Subtract(blade1, blade2);
+                Assert.IsTrue(GeometricProcessor.IsNearZero(diff));
             }
         }
     }

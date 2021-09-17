@@ -5,7 +5,10 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using DataStructuresLib.BitManipulation;
 using DataStructuresLib.Combinations;
+using DataStructuresLib.Extensions;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Utilities.Structures;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
+using DataStructuresLib.Random;
 using EuclideanGeometryLib.BasicMath.Tuples.Immutable;
 
 namespace EuclideanGeometryLib.Random
@@ -7,9 +9,11 @@ namespace EuclideanGeometryLib.Random
     /// A factory for generating randomly 2D\3D vectors using polar\spherical coordinates with 
     /// parametric angles uniformly distributed
     /// </summary>
-    public class RandomEuclideanVectorsComposer : 
-        RandomEuclideanGeometryComposer
+    public class RandomEuclideanVectorsComposer
     {
+        public System.Random RandomGenerator { get; }
+
+
         //TODO: Create a BoundingSphericalBox class to hold this information
         public double RMin { get; set; } 
             = 0.0d;
@@ -39,19 +43,25 @@ namespace EuclideanGeometryLib.Random
             => PhiMax - PhiMin;
 
 
-        public RandomEuclideanVectorsComposer() 
+        public RandomEuclideanVectorsComposer()
         {
+            RandomGenerator = new System.Random();
         }
 
         public RandomEuclideanVectorsComposer(int seed) 
-            : base(seed)
         {
+            RandomGenerator = new System.Random(seed);
+        }
+
+        public RandomEuclideanVectorsComposer([NotNull] System.Random randomGenerator)
+        {
+            RandomGenerator = randomGenerator;
         }
 
 
         public Tuple2D GetRandomUnitVector2Dp()
         {
-            var phi = PhiMin + GetNumber() * PhiRange;
+            var phi = PhiMin + RandomGenerator.GetNumber() * PhiRange;
             var cosPhi = Math.Cos(phi);
             var sinPhi = Math.Sin(phi);
 
@@ -63,8 +73,8 @@ namespace EuclideanGeometryLib.Random
 
         public Tuple2D GetRandomVector2Dp()
         {
-            var r = RMin + GetNumber() * RRange;
-            var phi = PhiMin + GetNumber() * PhiRange;
+            var r = RMin + RandomGenerator.GetNumber() * RRange;
+            var phi = PhiMin + RandomGenerator.GetNumber() * PhiRange;
             var cosPhi = Math.Cos(phi);
             var sinPhi = Math.Sin(phi);
 
@@ -76,8 +86,8 @@ namespace EuclideanGeometryLib.Random
 
         public Tuple3D GetRandomUnitVector3Dp()
         {
-            var theta = ThetaMin + GetNumber() * ThetaRange;
-            var phi = PhiMin + GetNumber() * PhiRange;
+            var theta = ThetaMin + RandomGenerator.GetNumber() * ThetaRange;
+            var phi = PhiMin + RandomGenerator.GetNumber() * PhiRange;
             var cosTheta = Math.Cos(theta);
             var sinTheta = Math.Sin(theta);
             var cosPhi = Math.Cos(phi);
@@ -92,9 +102,9 @@ namespace EuclideanGeometryLib.Random
 
         public Tuple3D GetRandomVector3Dp()
         {
-            var r = RMin + GetNumber() * RRange;
-            var theta = ThetaMin + GetNumber() * ThetaRange;
-            var phi = PhiMin + GetNumber() * PhiRange;
+            var r = RMin + RandomGenerator.GetNumber() * RRange;
+            var theta = ThetaMin + RandomGenerator.GetNumber() * ThetaRange;
+            var phi = PhiMin + RandomGenerator.GetNumber() * PhiRange;
             var cosTheta = Math.Cos(theta);
             var sinTheta = Math.Sin(theta);
             var cosPhi = Math.Cos(phi);

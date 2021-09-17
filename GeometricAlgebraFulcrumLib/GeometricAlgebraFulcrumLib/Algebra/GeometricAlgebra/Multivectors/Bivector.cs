@@ -12,8 +12,9 @@ using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors
 {
-    public sealed record Bivector<T>
-        : IGeometricAlgebraElement<T>
+    public sealed record Bivector<T> : 
+        IMultivectorStorageContainer<T>,
+        IGeometricAlgebraElement<T>
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Bivector<T> operator -(Bivector<T> v1)
@@ -1186,6 +1187,13 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors
             );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public IMultivectorStorage<T> GetMultivectorStorage()
+        {
+            return BivectorStorage;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override string ToString()
         {
             return BivectorStorage.GetMultivectorText();

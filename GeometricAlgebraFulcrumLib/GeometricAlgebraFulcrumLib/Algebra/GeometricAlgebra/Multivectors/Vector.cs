@@ -12,8 +12,9 @@ using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors
 {
-    public sealed record Vector<T>
-        : IGeometricAlgebraElement<T>
+    public sealed record Vector<T> : 
+        IMultivectorStorageContainer<T>,
+        IGeometricAlgebraElement<T>
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector<T> operator -(Vector<T> v1)
@@ -958,6 +959,12 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors
                 GeometricProcessor, 
                 VectorStorage.MapVectorScalarsByGradeIndex(scalarMapping)
             );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public IMultivectorStorage<T> GetMultivectorStorage()
+        {
+            return VectorStorage;
         }
 
         public override string ToString()

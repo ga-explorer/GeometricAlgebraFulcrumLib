@@ -17,8 +17,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.CodeComposer
             const int n = 3;
 
             // Stage 1: Define the symbolic context
-            // The symbolic context is a special kind of processor for symbolic multivector
-            // assignments
+            // The symbolic context is a special kind of symbolic linear processor for code generation
             var context = 
                 new SymbolicContext()
                 {
@@ -26,6 +25,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.CodeComposer
                     ContextOptions = { ContextName = "TestCode" }
                 };
 
+            // Use this if you want Wolfram Mathematica symbolic processor
+            // instead of the default AngouriMath symbolic processor
             //context.AttachMathematicaExpressionEvaluator();
 
             // Define a Euclidean multivectors processor for the context
@@ -57,19 +58,17 @@ namespace GeometricAlgebraFulcrumLib.Samples.CodeComposer
                     index => $"x_{index + 1}"
                 );
 
-            // Stage 3: Define computations and specify which variables are outputs
+            // Stage 3: Define computations and specify which variables are required outputs
+            //Define a Euclidean rotor which takes input unit vector u to input unit vector v
             var rotor = processor.CreateEuclideanRotor(u, v, true);
             
-            // Here is another method for making the same computation using a rotation matrix
-            //var rotor = u.CreateRotationMatrixToVector(v, n);
-
-            var xRotated = 
-                rotor.OmMapVector(x);
+            //Find the rotation of an arbitrary input vector x using this rotor
+            var xRotated = rotor.OmMapVector(x);
 
             // Define the final outputs for the computations for proper code generation
             xRotated.SetIsOutput(true);
 
-            // Stage 4: Optimize computations in the symbolic context
+            // Stage 4: Optimize symbolic computations in the symbolic context
             context.OptimizeContext();
 
             // Stage 5: Assign code generated variable names for all variables
@@ -84,7 +83,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.CodeComposer
             // Define code generated variable names for intermediate variables
             context.SetIntermediateExternalNamesByNameIndex(index => $"temp{index}");
 
-            // Stage 6: Define a C# code composer with Wolfram Mathematica expressions converter
+            // Stage 6: Define a C# code composer with AngouriMath symbolic expressions converter
             var contextCodeComposer = context.CreateContextCodeComposer(
                 GaFuLLanguageServerBase.CSharp()
             );

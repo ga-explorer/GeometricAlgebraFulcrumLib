@@ -13,7 +13,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
     [TestFixture]
     public sealed class GeoConsistencyTests
     {
-        private readonly GeometricAlgebraRandomFloat64Composer _randomGenerator;
+        private readonly GeometricAlgebraRandomComposer<double> _randomGenerator;
         private readonly List<IMultivectorStorage<double>> _mvListTested;
         private readonly List<MultivectorStorage<double>> _mvListRef;
         private readonly double _scalar;
@@ -31,7 +31,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
 
         public GeoConsistencyTests()
         {
-            _randomGenerator = new GeometricAlgebraRandomFloat64Composer(VSpaceDimension, 10);
+            _randomGenerator = GeometricProcessor.CreateGeometricRandomComposer(10);
             _mvListTested = new List<IMultivectorStorage<double>>();
             _mvListRef = new List<MultivectorStorage<double>>();
             _scalar = _randomGenerator.GetScalar();

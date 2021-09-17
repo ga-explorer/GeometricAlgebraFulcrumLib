@@ -12,7 +12,11 @@ namespace GeometricAlgebraFulcrumLib.Samples.Numeric
         {
             // This is a pre-defined scalar processor for the standard
             // 64-bit floating point scalars
-            var processor = ScalarAlgebraFloat64Processor.DefaultProcessor;
+            var scalarProcessor = ScalarAlgebraFloat64Processor.DefaultProcessor;
+
+            // Create a 3-dimensional Euclidean geometric algebra processor based on the
+            // selected scalar processor
+            var geometricProcessor = scalarProcessor.CreateGeometricAlgebraEuclideanProcessor(3);
 
             // This is a pre-defined text generator for displaying multivectors
             // with 64-bit floating point scalars
@@ -22,12 +26,12 @@ namespace GeometricAlgebraFulcrumLib.Samples.Numeric
             // with 64-bit floating point scalars
             var latexComposer = LaTeXFloat64Composer.DefaultComposer;
 
-            // Create two vectors each having 3 components (a 3-dimensional GA)
-            var u = processor.CreateVectorStorage(1.2, -1, 1.25);
-            var v = processor.CreateVectorStorage(2.1, 0.9, 2.1);
+            // Create two GA vectors each having 3 components
+            var u = geometricProcessor.CreateVector(1.2, -1, 1.25);
+            var v = geometricProcessor.CreateVector(2.1, 0.9, 2.1);
 
             // Compute their outer product as a bivector
-            var bv = processor.Op(u, v);
+            var bv = u.Op(v);
 
             // Display a text representation of the vectors and their outer product
             Console.WriteLine($@"u = {textComposer.GetMultivectorText(u)}");

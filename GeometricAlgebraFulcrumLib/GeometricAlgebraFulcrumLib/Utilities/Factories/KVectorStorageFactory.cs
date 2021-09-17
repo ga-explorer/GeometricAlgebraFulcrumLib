@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using DataStructuresLib.BitManipulation;
 using DataStructuresLib.Extensions;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
@@ -146,6 +147,78 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         public static KVectorStorage<T> CreateKVectorBasisScalarStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor)
         {
             return KVectorStorage<T>.CreateKVectorScalar(scalarProcessor.ScalarOne);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static KVectorStorage<T> CreateKVectorBasisStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params int[] basisVectorIndices)
+        {
+            var basisVectorIndicesArray = basisVectorIndices.ToArray();
+            var swapCount = basisVectorIndicesArray.SortWithSwapCount();
+            var basisBladeId = basisVectorIndicesArray.Aggregate(
+                0UL, 
+                (id, index) => id | (1UL << index)
+            );
+
+            return CreateKVectorTermStorage(
+                basisBladeId,
+                swapCount.IsEven()
+                    ? scalarProcessor.ScalarOne
+                    : scalarProcessor.ScalarMinusOne
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static KVectorStorage<T> CreateKVectorBasisStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params ulong[] basisVectorIndices)
+        {
+            var basisVectorIndicesArray = basisVectorIndices.ToArray();
+            var swapCount = basisVectorIndicesArray.SortWithSwapCount();
+            var basisBladeId = basisVectorIndicesArray.Aggregate(
+                0UL, 
+                (id, index) => id | (1UL << (int) index)
+            );
+
+            return CreateKVectorTermStorage(
+                basisBladeId,
+                swapCount.IsEven()
+                    ? scalarProcessor.ScalarOne
+                    : scalarProcessor.ScalarMinusOne
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static KVectorStorage<T> CreateKVectorBasisStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<int> basisVectorIndices)
+        {
+            var basisVectorIndicesArray = basisVectorIndices.ToArray();
+            var swapCount = basisVectorIndicesArray.SortWithSwapCount();
+            var basisBladeId = basisVectorIndicesArray.Aggregate(
+                0UL, 
+                (id, index) => id | (1UL << index)
+            );
+
+            return CreateKVectorTermStorage(
+                basisBladeId,
+                swapCount.IsEven()
+                    ? scalarProcessor.ScalarOne
+                    : scalarProcessor.ScalarMinusOne
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static KVectorStorage<T> CreateKVectorBasisStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<ulong> basisVectorIndices)
+        {
+            var basisVectorIndicesArray = basisVectorIndices.ToArray();
+            var swapCount = basisVectorIndicesArray.SortWithSwapCount();
+            var basisBladeId = basisVectorIndicesArray.Aggregate(
+                0UL, 
+                (id, index) => id | (1UL << (int) index)
+            );
+
+            return CreateKVectorTermStorage(
+                basisBladeId,
+                swapCount.IsEven()
+                    ? scalarProcessor.ScalarOne
+                    : scalarProcessor.ScalarMinusOne
+            );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

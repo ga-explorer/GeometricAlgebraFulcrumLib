@@ -9,8 +9,8 @@ using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Versors
 {
-    public class Versor<T>
-        : VersorBase<T>
+    public class Versor<T> : 
+        VersorBase<T>
     {
         public uint Grade { get; }
 

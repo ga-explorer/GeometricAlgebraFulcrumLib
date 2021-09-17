@@ -17,6 +17,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Projectors
 {
     public sealed class Projector<T> :
         OutermorphismBase<T>,
+        IMultivectorStorageContainer<T>,
         IProjector<T>
     {
         public override ILinearAlgebraProcessor<T> LinearProcessor 
@@ -192,6 +193,12 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Projectors
                     )
                 )
                 .Where(r => !r.Storage.IsEmpty());
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public IMultivectorStorage<T> GetMultivectorStorage()
+        {
+            return Blade;
         }
     }
 }

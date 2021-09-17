@@ -44,23 +44,23 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.Records
 
     public sealed record LinMatrixGradedStorageScalarRecord<T>(ILinMatrixGradedStorage<T> Storage, T Scalar) : IScalarRecord<T>;
 
-    public sealed record IdVectorStorageRecord<T>(ulong Id, VectorStorage<T> Storage);
+    public sealed record IdVectorStorageRecord<T>(ulong Id, VectorStorage<T> Storage) : IIdRecord;
 
-    public sealed record IdBivectorStorageRecord<T>(ulong Id, BivectorStorage<T> Storage);
+    public sealed record IdBivectorStorageRecord<T>(ulong Id, BivectorStorage<T> Storage) : IIdRecord;
 
-    public sealed record IdKVectorStorageRecord<T>(ulong Id, KVectorStorage<T> Storage);
+    public sealed record IdKVectorStorageRecord<T>(ulong Id, KVectorStorage<T> Storage) : IIdRecord;
 
-    public sealed record IdMultivectorStorageRecord<T>(ulong Id, IMultivectorStorage<T> Storage);
+    public sealed record IdMultivectorStorageRecord<T>(ulong Id, IMultivectorStorage<T> Storage) : IIdRecord;
 
-    public sealed record IndexVectorStorageRecord<T>(ulong Index, VectorStorage<T> Storage);
+    public sealed record IndexVectorStorageRecord<T>(ulong Index, VectorStorage<T> Storage) : IIndexRecord;
 
-    public sealed record IndexBivectorStorageRecord<T>(ulong Index, BivectorStorage<T> Storage);
+    public sealed record IndexBivectorStorageRecord<T>(ulong Index, BivectorStorage<T> Storage) : IIndexRecord;
 
-    public sealed record IndexKVectorStorageRecord<T>(ulong Index, KVectorStorage<T> Storage);
+    public sealed record IndexKVectorStorageRecord<T>(ulong Index, KVectorStorage<T> Storage) : IIndexRecord;
 
-    public sealed record GradeIndexVectorStorageRecord<T>(uint Grade, ulong Index, VectorStorage<T> Storage);
+    public sealed record GradeIndexVectorStorageRecord<T>(uint Grade, ulong Index, VectorStorage<T> Storage) : IGradeIndexRecord;
 
-    public sealed record GradeIndexBivectorStorageRecord<T>(uint Grade, ulong Index, BivectorStorage<T> Storage);
+    public sealed record GradeIndexBivectorStorageRecord<T>(uint Grade, ulong Index, BivectorStorage<T> Storage) : IGradeIndexRecord;
 
-    public sealed record GradeIndexKVectorStorageRecord<T>(uint Grade, ulong Index, KVectorStorage<T> Storage);
+    public sealed record GradeIndexKVectorStorageRecord<T>(uint Grade, ulong Index, KVectorStorage<T> Storage) : IGradeIndexRecord;
 }

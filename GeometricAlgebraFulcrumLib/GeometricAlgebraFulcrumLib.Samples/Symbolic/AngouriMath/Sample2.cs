@@ -12,7 +12,11 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.AngouriMath
         {
             // This is a pre-defined scalar processor for the symbolic
             // AngouriMath scalars using Entity objects
-            var processor = ScalarAlgebraAngouriMathProcessor.DefaultProcessor;
+            var scalarProcessor = ScalarAlgebraAngouriMathProcessor.DefaultProcessor;
+            
+            // Create a 3-dimensional Euclidean geometric algebra processor based on the
+            // selected scalar processor
+            var geometricProcessor = scalarProcessor.CreateGeometricAlgebraEuclideanProcessor(3);
 
             // This is a pre-defined text generator for displaying multivectors
             // with symbolic AngouriMath scalars using Entity objects
@@ -23,11 +27,11 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.AngouriMath
             var latexComposer = LaTeXAngouriMathComposer.DefaultComposer;
 
             // Create two vectors each having 3 components (a 3-dimensional GA)
-            var u = processor.CreateVectorStorage(3, i => $"u_{i + 1}");
-            var v = processor.CreateVectorStorage(3, i => $"v_{i + 1}");
+            var u = geometricProcessor.CreateVectorFromText(3, i => $"u_{i + 1}");
+            var v = geometricProcessor.CreateVectorFromText(3, i => $"v_{i + 1}");
 
             // Compute their outer product as a bivector
-            var bv = processor.Op(u, v);
+            var bv = u.Op(v);
 
             // Display a text representation of the vectors and their outer product
             Console.WriteLine($@"u = {textComposer.GetMultivectorText(u)}");

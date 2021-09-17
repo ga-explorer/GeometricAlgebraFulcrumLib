@@ -13,4 +13,13 @@
     <PackageReference Include="MathNet.Numerics" Version="4.15.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\CodeComposerLib\CodeComposerLib\CodeComposerLib.csproj" />
+    <ProjectReference Include="..\..\DataStructuresLib\DataStructuresLib\DataStructuresLib.csproj" />
+    <ProjectReference Include="..\..\EuclideanGeometryLib\EuclideanGeometryLib\EuclideanGeometryLib.csproj" />
+    <ProjectReference Include="..\..\GAPoTNumLib\GAPoTNumLib\GAPoTNumLib.csproj" />
+    <ProjectReference Include="..\..\TextComposerLib\TextComposerLib\TextComposerLib.csproj" />
+    <ProjectReference Include="..\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.csproj" />
+  </ItemGroup>
+
 </Project>

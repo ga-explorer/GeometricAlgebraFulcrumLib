@@ -8,7 +8,6 @@ using DataStructuresLib.Random;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors;
 using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using GeometricAlgebraFulcrumLib.Utilities.Factories;
@@ -17,74 +16,69 @@ using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 namespace GeometricAlgebraFulcrumLib.Utilities.Composers
 {
     public class GeometricAlgebraRandomComposer<T> :
-        RandomComposer, IGeometricAlgebraSpace
+        LinearAlgebraRandomComposer<T>,
+        IGeometricAlgebraSpace
     {
-        public IScalarAlgebraProcessor<T> ScalarProcessor { get; }
+        private readonly ulong[] _kVectorSpaceDimensions;
 
-        public uint VSpaceDimension { get; }
+
+        public IGeometricAlgebraProcessor<T> GeometricProcessor { get; }
+
+        public uint VSpaceDimension 
+            => GeometricProcessor.VSpaceDimension;
 
         public ulong GaSpaceDimension 
-            => VSpaceDimension.ToGaSpaceDimension();
+            => GeometricProcessor.GaSpaceDimension;
 
         public ulong MaxBasisBladeId 
-            => (VSpaceDimension.ToGaSpaceDimension()) - 1UL;
+            => GeometricProcessor.MaxBasisBladeId;
 
         public uint GradesCount 
-            => VSpaceDimension + 1;
+            => GeometricProcessor.GradesCount;
 
         public IEnumerable<uint> Grades 
-            => GradesCount.GetRange();
+            => GeometricProcessor.Grades;
 
 
-        public GeometricAlgebraRandomComposer([NotNull] IScalarAlgebraProcessor<T> scalarProcessor, uint vSpaceDimension)
+        internal GeometricAlgebraRandomComposer([NotNull] IGeometricAlgebraProcessor<T> geometricProcessor)
+            : base(geometricProcessor)
         {
-            if (vSpaceDimension < 2 || vSpaceDimension > GeometricAlgebraSpaceUtils.MaxVSpaceDimension)
-                throw new ArgumentOutOfRangeException(nameof(vSpaceDimension));
+            GeometricProcessor = geometricProcessor;
 
-            ScalarProcessor = scalarProcessor;
-            VSpaceDimension = vSpaceDimension;
+            _kVectorSpaceDimensions = 
+                GeometricProcessor
+                    .GradesCount
+                    .GetRange()
+                    .Select(grade => GeometricProcessor.KVectorSpaceDimension(grade))
+                    .ToArray();
         }
 
-        public GeometricAlgebraRandomComposer([NotNull] IScalarAlgebraProcessor<T> scalarProcessor, uint vSpaceDimension, int seed)
-            : base(seed)
+        internal GeometricAlgebraRandomComposer([NotNull] IGeometricAlgebraProcessor<T> geometricProcessor, int seed)
+            : base(geometricProcessor, seed)
         {
-            if (vSpaceDimension < 2 || vSpaceDimension > GeometricAlgebraSpaceUtils.MaxVSpaceDimension)
-                throw new ArgumentOutOfRangeException(nameof(vSpaceDimension));
-
-            ScalarProcessor = scalarProcessor;
-            VSpaceDimension = vSpaceDimension;
-        }
-
-        public GeometricAlgebraRandomComposer([NotNull] IScalarAlgebraProcessor<T> scalarProcessor, uint vSpaceDimension, Random randomGenerator)
-            : base(randomGenerator)
-        {
-            if (vSpaceDimension < 2 || vSpaceDimension > GeometricAlgebraSpaceUtils.MaxVSpaceDimension)
-                throw new ArgumentOutOfRangeException(nameof(vSpaceDimension));
+            GeometricProcessor = geometricProcessor;
             
-            ScalarProcessor = scalarProcessor;
-            VSpaceDimension = vSpaceDimension;
+            _kVectorSpaceDimensions = 
+                GeometricProcessor
+                    .GradesCount
+                    .GetRange()
+                    .Select(grade => GeometricProcessor.KVectorSpaceDimension(grade))
+                    .ToArray();
         }
 
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public T GetScalar()
+        internal GeometricAlgebraRandomComposer([NotNull] IGeometricAlgebraProcessor<T> geometricProcessor, Random randomGenerator)
+            : base(geometricProcessor, randomGenerator)
         {
-            return ScalarProcessor.GetScalarFromRandom(
-                RandomGenerator, 
-                -1d, 
-                1d
-            );
+            GeometricProcessor = geometricProcessor;
+            
+            _kVectorSpaceDimensions = 
+                GeometricProcessor
+                    .GradesCount
+                    .GetRange()
+                    .Select(grade => GeometricProcessor.KVectorSpaceDimension(grade))
+                    .ToArray();
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public T GetScalar(double minValue, double maxValue)
-        {
-            return ScalarProcessor.GetScalarFromRandom(
-                RandomGenerator, 
-                minValue, 
-                maxValue
-            );
-        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint GetGrade()
@@ -95,7 +89,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ulong GetBasisVectorId()
         {
-            return RandomGenerator.Next((int) VSpaceDimension).BasisVectorIndexToId();
+            return GetBasisVectorIndex().BasisVectorIndexToId();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -107,7 +101,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ulong GetBasisBladeId()
         {
-            return (ulong) RandomGenerator.Next((int) GaSpaceDimension);
+            return GetIndex(MaxBasisBladeId);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -125,22 +119,21 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ulong GetBasisVectorIndex()
         {
-            return (ulong) RandomGenerator.Next((int) VSpaceDimension);
+            return GetIndex(VSpaceDimension - 1);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ulong GetBasisBivectorIndex()
         {
-            return GetBasisBladeIndex(2);
+            return GetIndex(_kVectorSpaceDimensions[2]);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ulong GetBasisBladeIndex(uint grade)
         {
-            var kvSpaceDimension = VSpaceDimension.KVectorSpaceDimension(grade);
-
-            return (ulong) RandomGenerator.Next((int) kvSpaceDimension);
+            return GetIndex(_kVectorSpaceDimensions[grade]);
         }
+
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Dictionary<ulong, T> GetKVectorIndexScalarDictionary(uint grade)

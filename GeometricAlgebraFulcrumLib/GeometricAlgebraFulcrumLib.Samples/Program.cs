@@ -1,5 +1,5 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.UnitTests.Processing;
+using GeometricAlgebraFulcrumLib.Samples.CodeComposer;
 
 namespace GeometricAlgebraFulcrumLib.Samples
 {
@@ -7,15 +7,15 @@ namespace GeometricAlgebraFulcrumLib.Samples
     {
         static void Main(string[] args)
         {
-            var testClass = new MultivectorStoragesTests();
-            testClass.ClassInit();
-            testClass.AssertCorrectInitialization();
+            //var testClass = new MultivectorStoragesTests();
+            //testClass.ClassInit();
+            //testClass.AssertCorrectInitialization();
 
-            var functionNames = new[] { "add", "subtract", "op", "egp", "elcp", "ercp", "efdp", "ehip", "ecp", "eacp" };
-            foreach (var functionName in functionNames)
-                testClass.AssertCorrectBinaryOperations(functionName);
+            //var functionNames = new[] { "add", "subtract", "op", "egp", "elcp", "ercp", "efdp", "ehip", "ecp", "eacp" };
+            //foreach (var functionName in functionNames)
+            //    testClass.AssertCorrectBinaryOperations(functionName);
 
-            //Sample1.Execute();
+            Sample1.Execute();
 
             //HilbertTransform.Execute();
 

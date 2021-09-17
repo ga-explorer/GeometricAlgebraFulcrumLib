@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Numerics;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Threading;
+using MathNet.Numerics;
 using MathNet.Numerics.Statistics;
 
 namespace DataStructuresLib.Random
@@ -14,6 +17,277 @@ namespace DataStructuresLib.Random
     /// </summary>
     public static class RandomGeneratorUtils
     {
+        private static double ClampAngle(double value)
+        {
+            const double maxValue = 2 * Math.PI;
+
+            //value < -maxValue
+            if (value < -maxValue)
+                return value + Math.Ceiling(-value / maxValue) * maxValue;
+
+            //-maxValue <= value < 0
+            if (value < 0)
+                return value + maxValue;
+
+            //value > maxValue
+            if (value > maxValue)
+                return value - Math.Truncate(value / maxValue) * maxValue;
+
+            //0 <= value <= maxValue
+            return value;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static double GetNumber(this System.Random randomGenerator)
+        {
+            return randomGenerator.NextDouble();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static double GetScaledNumber(this System.Random randomGenerator, double scalingFactor)
+        {
+            return scalingFactor * randomGenerator.NextDouble();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static double GetOffsetScaledNumber(this System.Random randomGenerator, double offsetFactor, double scalingFactor)
+        {
+            return offsetFactor + scalingFactor * randomGenerator.NextDouble();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static double GetLinearMappedNumber(this System.Random randomGenerator, double minValue, double maxValue)
+        {
+            return minValue + (maxValue - minValue) * randomGenerator.NextDouble();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T GetMappedNumber<T>(this System.Random randomGenerator, Func<double, T> mappingFunc)
+        {
+            return mappingFunc(randomGenerator.NextDouble());
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<double> GetNumbers(this System.Random randomGenerator, int count)
+        {
+            while (count > 0)
+            {
+                yield return randomGenerator.GetNumber();
+                count--;
+            }
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<double> GetScaledNumbers(this System.Random randomGenerator, int count, double scalingFactor)
+        {
+            while (count > 0)
+            {
+                yield return randomGenerator.GetScaledNumber(scalingFactor);
+                count--;
+            }
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<double> GetOffsetScaledNumbers(this System.Random randomGenerator, int count, double offsetFactor, double scalingFactor)
+        {
+            while (count > 0)
+            {
+                yield return randomGenerator.GetOffsetScaledNumber(offsetFactor, scalingFactor);
+                count--;
+            }
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<double> GetLinearMappedNumbers(this System.Random randomGenerator, int count, double minValue, double maxValue)
+        {
+            while (count > 0)
+            {
+                yield return randomGenerator.GetLinearMappedNumber(minValue, maxValue);
+                count--;
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<T> GetMappedNumbers<T>(this System.Random randomGenerator, int count, Func<double, T> mappingFunc)
+        {
+            while (count > 0)
+            {
+                yield return randomGenerator.GetMappedNumber(mappingFunc);
+                count--;
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int GetInteger(this System.Random randomGenerator)
+        {
+            return randomGenerator.Next();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int GetInteger(this System.Random randomGenerator, int maxValue)
+        {
+            return maxValue < 0
+                ? -randomGenerator.Next(-maxValue)
+                : randomGenerator.Next(maxValue);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int GetInteger(this System.Random randomGenerator, int minValue, int maxValue)
+        {
+            return randomGenerator.Next(minValue, maxValue);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T GetMappedInteger<T>(this System.Random randomGenerator, Func<int, T> mappingFunc)
+        {
+            return mappingFunc(randomGenerator.GetInteger());
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T GetMappedInteger<T>(this System.Random randomGenerator, int maxValue, Func<int, T> mappingFunc)
+        {
+            return mappingFunc(randomGenerator.GetInteger(maxValue));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T GetMappedInteger<T>(this System.Random randomGenerator, int minValue, int maxValue, Func<int, T> mappingFunc)
+        {
+            return mappingFunc(randomGenerator.GetInteger(minValue, maxValue));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T GetItem<T>(this System.Random randomGenerator, IReadOnlyList<T> itemsList)
+        {
+            return itemsList[randomGenerator.GetInteger(itemsList.Count)];
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<int> GetIntegers(this System.Random randomGenerator, int count)
+        {
+            while (count > 0)
+            {
+                yield return randomGenerator.GetInteger();
+                count--;
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<int> GetIntegers(this System.Random randomGenerator, int count, int maxValue)
+        {
+            while (count > 0)
+            {
+                yield return randomGenerator.GetInteger(maxValue);
+                count--;
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<int> GetIntegers(this System.Random randomGenerator, int count, int minValue, int maxValue)
+        {
+            while (count > 0)
+            {
+                yield return randomGenerator.GetInteger(minValue, maxValue);
+                count--;
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<T> GetMappedIntegers<T>(this System.Random randomGenerator, int count, Func<int, T> mappingFunc)
+        {
+            while (count > 0)
+            {
+                yield return randomGenerator.GetMappedInteger(mappingFunc);
+                count--;
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<T> GetMappedIntegers<T>(this System.Random randomGenerator, int count, int maxValue, Func<int, T> mappingFunc)
+        {
+            while (count > 0)
+            {
+                yield return randomGenerator.GetMappedInteger(maxValue, mappingFunc);
+                count--;
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<T> GetMappedIntegers<T>(this System.Random randomGenerator, int count, int minValue, int maxValue, Func<int, T> mappingFunc)
+        {
+            while (count > 0)
+            {
+                yield return randomGenerator.GetMappedInteger(minValue, maxValue, mappingFunc);
+                count--;
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<T> GetItems<T>(this System.Random randomGenerator, int count, IReadOnlyList<T> itemsList)
+        {
+            var itemsCount = itemsList.Count;
+
+            while (count > 0)
+            {
+                yield return itemsList[randomGenerator.GetInteger(itemsCount)];
+                count--;
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<int> GetUniqueIndices(this System.Random randomGenerator, int indicesCount, int itemsCount)
+        {
+            return Enumerable
+                .Range(0, itemsCount)
+                .Shuffled(randomGenerator)
+                .Take(indicesCount);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<T> GetUniqueItems<T>(this System.Random randomGenerator, int indicesCount, IEnumerable<T> itemsList)
+        {
+            return itemsList
+                .Shuffled(randomGenerator)
+                .Take(indicesCount);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<T> GetPermutation<T>(this System.Random randomGenerator, IEnumerable<T> itemsList)
+        {
+            return itemsList.SelectPermutation(randomGenerator);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Complex GetComplex(this System.Random randomGenerator)
+        {
+            return new Complex(
+                randomGenerator.NextDouble(),
+                randomGenerator.NextDouble()
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static double GetAngle(this System.Random randomGenerator)
+        {
+            return randomGenerator.GetScaledNumber(Constants.Pi2);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static double GetAngle(this System.Random randomGenerator, double maxAngle)
+        {
+            return randomGenerator.GetScaledNumber(ClampAngle(maxAngle));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static double GetAngle(this System.Random randomGenerator, double minAngle, double maxAngle)
+        {
+            return randomGenerator.GetLinearMappedNumber(
+                ClampAngle(minAngle), 
+                ClampAngle(maxAngle)
+            );
+        }
+
+
         public static double GeoussianPdf(this double x, double mean = 0, double standardDeviation = 1)
         {
             var d = 1d / (Math.Sqrt(2 * Math.PI) * standardDeviation);

@@ -14,6 +14,7 @@ using GeometricAlgebraFulcrumLib.Utilities.Factories;
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors
 {
     public sealed record Multivector<T> : 
+        IMultivectorStorageContainer<T>,
         IGeometricAlgebraElement<T>
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1472,7 +1473,13 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors
             );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public IMultivectorStorage<T> GetMultivectorStorage()
+        {
+            return MultivectorStorage;
+        }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override string ToString()
         {
             return MultivectorStorage.GetMultivectorText();

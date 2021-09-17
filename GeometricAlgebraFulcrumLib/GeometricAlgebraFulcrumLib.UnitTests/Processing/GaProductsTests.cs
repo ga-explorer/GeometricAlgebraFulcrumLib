@@ -15,7 +15,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
     [TestFixture]
     public sealed class MultivectorStoragesTests
     {
-        private readonly GeometricAlgebraRandomFloat64Composer _randomGenerator;
+        private readonly GeometricAlgebraRandomComposer<double> _randomGenerator;
         private readonly List<IMultivectorStorage<double>> _mvList1;
         private readonly List<GeoPoTNumMultivector> _mvList2;
         private readonly double _scalar;
@@ -33,7 +33,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
 
         public MultivectorStoragesTests()
         {
-            _randomGenerator = new GeometricAlgebraRandomFloat64Composer(VSpaceDimension, 10);
+            _randomGenerator = GeometricProcessor.CreateGeometricRandomComposer(10);
             _mvList1 = new List<IMultivectorStorage<double>>();
             _mvList2 = new List<GeoPoTNumMultivector>();
             _scalar = _randomGenerator.GetScalar();
