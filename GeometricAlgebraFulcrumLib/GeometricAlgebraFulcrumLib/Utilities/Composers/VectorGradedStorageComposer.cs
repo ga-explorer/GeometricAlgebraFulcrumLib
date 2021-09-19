@@ -62,6 +62,16 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
             return ComposersDictionary.Count == 0;
         }
 
+        public IEnumerable<IndexScalarRecord<T>> GetIndexScalarRecords()
+        {
+            foreach (var (grade, composer) in ComposersDictionary)
+            foreach (var (index, scalar) in composer.GetIndexScalarRecords())
+                yield return new IndexScalarRecord<T>(
+                    BasisBladeUtils.BasisBladeGradeIndexToId(grade, index), 
+                    scalar
+                );
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public VectorGradedStorageComposer<T> Clear()
         {

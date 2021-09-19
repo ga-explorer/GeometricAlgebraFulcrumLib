@@ -554,5 +554,8 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
                 indexScalarRecords.CreateLinVectorStorage()
             );
         }
+
+
+        
     }
 }

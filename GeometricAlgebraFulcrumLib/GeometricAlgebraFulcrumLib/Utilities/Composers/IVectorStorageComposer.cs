@@ -1,7 +1,9 @@
-﻿using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+﻿using System.Collections.Generic;
+using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Composers
 {
@@ -10,6 +12,8 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         IScalarAlgebraProcessor<T> ScalarProcessor { get; }
 
         bool IsEmpty();
+
+        IEnumerable<IndexScalarRecord<T>> GetIndexScalarRecords();
 
         ILinVectorStorage<T> CreateLinVectorStorage();
 

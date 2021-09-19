@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Dense;
 using GeometricAlgebraFulcrumLib.Utilities.Factories;
+using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Composers
 {
@@ -94,6 +96,13 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
                 TermsArray[index] = valueMapping((ulong) index, TermsArray[index]);
 
             return this;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override IEnumerable<IndexScalarRecord<T>> GetIndexScalarRecords()
+        {
+            for (var index = 0; index < Count; index++)
+                yield return new IndexScalarRecord<T>((ulong) index, TermsArray[index]);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

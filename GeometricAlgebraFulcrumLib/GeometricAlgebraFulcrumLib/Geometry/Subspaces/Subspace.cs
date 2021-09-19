@@ -10,25 +10,25 @@ using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
 namespace GeometricAlgebraFulcrumLib.Geometry.Subspaces
 {
-    public sealed class GeoSubspace<T> 
-        : IGeoSubspace<T>
+    public sealed class Subspace<T> 
+        : ISubspace<T>
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GeoSubspace<T> CreateDirect(IGeometricAlgebraProcessor<T> processor, KVectorStorage<T> bladeStorage)
+        public static Subspace<T> CreateDirect(IGeometricAlgebraProcessor<T> processor, KVectorStorage<T> bladeStorage)
         {
-            return new GeoSubspace<T>(processor, bladeStorage, true);
+            return new Subspace<T>(processor, bladeStorage, true);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GeoSubspace<T> CreateDual(IGeometricAlgebraProcessor<T> processor, KVectorStorage<T> bladeStorage)
+        public static Subspace<T> CreateDual(IGeometricAlgebraProcessor<T> processor, KVectorStorage<T> bladeStorage)
         {
-            return new GeoSubspace<T>(processor, bladeStorage, false);
+            return new Subspace<T>(processor, bladeStorage, false);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GeoSubspace<T> CreateFromPseudoScalar(IGeometricAlgebraProcessor<T> processor)
+        public static Subspace<T> CreateFromPseudoScalar(IGeometricAlgebraProcessor<T> processor)
         {
-            return new GeoSubspace<T>(
+            return new Subspace<T>(
                 processor,
                 processor.CreatePseudoScalarStorage(),
                 true
@@ -36,9 +36,9 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Subspaces
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GeoSubspace<T> CreateFromPseudoScalar(IGeometricAlgebraProcessor<T> processor, uint vSpaceDimension)
+        public static Subspace<T> CreateFromPseudoScalar(IGeometricAlgebraProcessor<T> processor, uint vSpaceDimension)
         {
-            return new GeoSubspace<T>(
+            return new Subspace<T>(
                 processor,
                 processor.CreatePseudoScalarStorage(vSpaceDimension),
                 true
@@ -75,7 +75,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Subspaces
             => false;
 
 
-        private GeoSubspace([NotNull] IGeometricAlgebraProcessor<T> processor, [NotNull] KVectorStorage<T> bladeStorage, bool isDirect)
+        private Subspace([NotNull] IGeometricAlgebraProcessor<T> processor, [NotNull] KVectorStorage<T> bladeStorage, bool isDirect)
         {
             GeometricProcessor = processor;
 
@@ -88,7 +88,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Subspaces
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IGeoSubspace<T> Project(IGeoSubspace<T> subspace)
+        public ISubspace<T> Project(ISubspace<T> subspace)
         {
             var blade = 
                 GeometricProcessor.Lcp(
@@ -96,11 +96,11 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Subspaces
                     BladeInverse
                 );
 
-            return new GeoSubspace<T>(GeometricProcessor, blade, subspace.IsDirect);
+            return new Subspace<T>(GeometricProcessor, blade, subspace.IsDirect);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IGeoSubspace<T> Reflect(IGeoSubspace<T> subspace)
+        public ISubspace<T> Reflect(ISubspace<T> subspace)
         {
             //TODO: Implement all cases in table 7.1 page 201 in "Geometric Algebra for Computer Science"
             var blade = 
@@ -110,7 +110,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Subspaces
                     BladeInverse
                 ).GetKVectorPart(subspace.Blade.Grade);
 
-            return new GeoSubspace<T>(GeometricProcessor, blade, subspace.IsDirect);
+            return new Subspace<T>(GeometricProcessor, blade, subspace.IsDirect);
         }
 
         //[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -136,7 +136,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Subspaces
         //}
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IGeoSubspace<T> VersorProduct(IGeoSubspace<T> subspace)
+        public ISubspace<T> VersorProduct(ISubspace<T> subspace)
         {
             var blade = GeometricProcessor.Gp(
                 Blade,
@@ -144,11 +144,11 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Subspaces
                 BladeInverse
             ).GetKVectorPart(subspace.Blade.Grade);
 
-            return new GeoSubspace<T>(GeometricProcessor, blade, subspace.IsDirect);
+            return new Subspace<T>(GeometricProcessor, blade, subspace.IsDirect);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IGeoSubspace<T> Complement(IGeoSubspace<T> subspace)
+        public ISubspace<T> Complement(ISubspace<T> subspace)
         {
             if (subspace.SubspaceDimension > SubspaceDimension)
                 throw new InvalidOperationException();
@@ -158,7 +158,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Subspaces
                 Blade
             );
 
-            return new GeoSubspace<T>(GeometricProcessor, blade, subspace.IsDirect);
+            return new Subspace<T>(GeometricProcessor, blade, subspace.IsDirect);
         }
     }
 }

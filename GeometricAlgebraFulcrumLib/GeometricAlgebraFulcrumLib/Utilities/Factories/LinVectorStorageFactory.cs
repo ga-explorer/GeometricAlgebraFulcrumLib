@@ -1085,5 +1085,64 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         {
             return matrix.CreateLinVectorMatrixColumnDenseStorage((ulong) colIndex, scalarProcessor.ScalarZero);
         }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static LinVectorSparseStorage<T> ToLinVectorSparseStorage<T>(this ILinVectorStorage<T> storage)
+        {
+            if (storage is LinVectorSparseStorage<T> sparseStorage)
+                return sparseStorage;
+
+            return storage
+                .GetIndexScalarRecords()
+                .ToDictionary(
+                    r => r.Index,
+                    r => r.Scalar
+                )
+                .CreateLinVectorSparseStorage();
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static LinVectorTreeStorage<T> ToLinVectorTreeStorage<T>(this ILinVectorStorage<T> storage)
+        {
+            if (storage is LinVectorTreeStorage<T> treeStorage)
+                return treeStorage;
+
+            return storage
+                .GetIndexScalarRecords()
+                .ToDictionary(
+                    r => r.Index,
+                    r => r.Scalar
+                )
+                .CreateLinVectorTreeStorage();
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static LinVectorArrayStorage<T> ToLinVectorArrayStorage<T>(this ILinVectorStorage<T> storage, T defaultScalar)
+        {
+            if (storage is LinVectorArrayStorage<T> arrayStorage)
+                return arrayStorage;
+
+            var array = storage.GetDenseCount().Repeat(defaultScalar).ToArray();
+
+            foreach (var (index, scalar) in storage.GetIndexScalarRecords())
+                array[index] = scalar ?? defaultScalar;
+
+            return array.CreateLinVectorArrayStorage();
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static LinVectorListStorage<T> ToLinVectorListStorage<T>(this ILinVectorStorage<T> storage, T defaultScalar)
+        {
+            if (storage is LinVectorListStorage<T> listStorage)
+                return listStorage;
+
+            var array = storage.GetDenseCount().Repeat(defaultScalar).ToArray();
+
+            foreach (var (index, scalar) in storage.GetIndexScalarRecords())
+                array[index] = scalar ?? defaultScalar;
+
+            return array.CreateLinVectorListStorage();
+        }
     }
 }

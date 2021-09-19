@@ -122,7 +122,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
                 new PureRotorsSequence<T>(processor);
 
             var pseudoScalarSubspace = 
-                GeoSubspace<T>.CreateFromPseudoScalar(processor, baseSpaceDimensions);
+                Subspace<T>.CreateFromPseudoScalar(processor, baseSpaceDimensions);
 
             var sourceFrameVectors = new VectorStorage<T>[sourceFrame.Count];
             var targetFrameVectors = new VectorStorage<T>[targetFrame.Count];

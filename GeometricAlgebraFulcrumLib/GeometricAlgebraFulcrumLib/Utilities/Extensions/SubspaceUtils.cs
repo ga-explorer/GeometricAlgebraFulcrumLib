@@ -4,10 +4,50 @@ using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 {
-    public static class GeoSubspaceUtils
+    public static class SubspaceUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> Project<T>(this IGeoSubspace<T> subspace, VectorStorage<T> blade)
+        public static bool Contains<T>(this ISubspace<T> subspace, VectorStorage<T> vector, bool nearZeroFlag = false)
+        {
+            var processor = subspace.GeometricProcessor;
+
+            return subspace.SubspaceDimension >= 1 && processor.IsZero(
+                processor.Op(vector, subspace.Blade),
+                nearZeroFlag
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool Contains<T>(this ISubspace<T> subspace, BivectorStorage<T> mv, bool nearZeroFlag = false)
+        {
+            var processor = subspace.GeometricProcessor;
+
+            return subspace.SubspaceDimension >= 2 && processor.IsZero(
+                processor.Subtract(mv, subspace.Project(mv)),
+                nearZeroFlag
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool Contains<T>(this ISubspace<T> subspace, KVectorStorage<T> mv, bool nearZeroFlag = false)
+        {
+            var processor = subspace.GeometricProcessor;
+
+            return subspace.SubspaceDimension >= mv.Grade && processor.IsZero(
+                processor.Subtract(mv, subspace.Project(mv)),
+                nearZeroFlag
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool Contains<T>(this ISubspace<T> subspace, ISubspace<T> mv, bool nearZeroFlag = false)
+        {
+            return subspace.Contains(mv.Blade, nearZeroFlag);
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static VectorStorage<T> Project<T>(this ISubspace<T> subspace, VectorStorage<T> blade)
         {
             var processor = subspace.GeometricProcessor;
 
@@ -18,7 +58,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static BivectorStorage<T> Project<T>(this IGeoSubspace<T> subspace, BivectorStorage<T> blade)
+        public static BivectorStorage<T> Project<T>(this ISubspace<T> subspace, BivectorStorage<T> blade)
         {
             var processor = subspace.GeometricProcessor;
 
@@ -29,7 +69,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVectorStorage<T> Project<T>(this IGeoSubspace<T> subspace, KVectorStorage<T> blade)
+        public static KVectorStorage<T> Project<T>(this ISubspace<T> subspace, KVectorStorage<T> blade)
         {
             var processor = subspace.GeometricProcessor;
 
@@ -41,7 +81,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> Reflect<T>(this IGeoSubspace<T> subspace, VectorStorage<T> blade)
+        public static VectorStorage<T> Reflect<T>(this ISubspace<T> subspace, VectorStorage<T> blade)
         {
             var processor = subspace.GeometricProcessor;
 
@@ -53,7 +93,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static BivectorStorage<T> Reflect<T>(this IGeoSubspace<T> subspace, BivectorStorage<T> blade)
+        public static BivectorStorage<T> Reflect<T>(this ISubspace<T> subspace, BivectorStorage<T> blade)
         {
             var processor = subspace.GeometricProcessor;
 
@@ -65,7 +105,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVectorStorage<T> Reflect<T>(this IGeoSubspace<T> subspace, KVectorStorage<T> blade)
+        public static KVectorStorage<T> Reflect<T>(this ISubspace<T> subspace, KVectorStorage<T> blade)
         {
             var processor = subspace.GeometricProcessor;
 
@@ -78,7 +118,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> VersorProduct<T>(this IGeoSubspace<T> subspace, VectorStorage<T> blade)
+        public static VectorStorage<T> VersorProduct<T>(this ISubspace<T> subspace, VectorStorage<T> blade)
         {
             var processor = subspace.GeometricProcessor;
 
@@ -90,7 +130,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static BivectorStorage<T> VersorProduct<T>(this IGeoSubspace<T> subspace, BivectorStorage<T> blade)
+        public static BivectorStorage<T> VersorProduct<T>(this ISubspace<T> subspace, BivectorStorage<T> blade)
         {
             var processor = subspace.GeometricProcessor;
 
@@ -102,7 +142,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVectorStorage<T> VersorProduct<T>(this IGeoSubspace<T> subspace, KVectorStorage<T> blade)
+        public static KVectorStorage<T> VersorProduct<T>(this ISubspace<T> subspace, KVectorStorage<T> blade)
         {
             var processor = subspace.GeometricProcessor;
 
@@ -115,7 +155,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVectorStorage<T> Complement<T>(this IGeoSubspace<T> subspace, KVectorStorage<T> blade)
+        public static KVectorStorage<T> Complement<T>(this ISubspace<T> subspace, KVectorStorage<T> blade)
         {
             var processor = subspace.GeometricProcessor;
 

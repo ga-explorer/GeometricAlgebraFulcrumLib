@@ -157,6 +157,18 @@ namespace DataStructuresLib.Random
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool GetBoolean(this System.Random randomGenerator)
+        {
+            return randomGenerator.Next() % 2 == 0;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool GetBoolean(this System.Random randomGenerator, double trueRatio)
+        {
+            return randomGenerator.NextDouble() < trueRatio;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T GetItem<T>(this System.Random randomGenerator, IReadOnlyList<T> itemsList)
         {
             return itemsList[randomGenerator.GetInteger(itemsList.Count)];

@@ -52,7 +52,9 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
             return Count == 0;
         }
 
-        
+        public abstract IEnumerable<IndexScalarRecord<T>> GetIndexScalarRecords();
+
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public VectorStorageComposerBase<T> RemoveBivectorTerm(int basisVectorIndex1, int basisVectorIndex2)
         {

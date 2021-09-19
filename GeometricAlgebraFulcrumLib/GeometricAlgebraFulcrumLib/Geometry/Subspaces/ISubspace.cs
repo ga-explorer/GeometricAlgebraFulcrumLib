@@ -7,7 +7,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Subspaces
     /// Initially use OPNS (i.e. direct) representation of subspaces
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public interface IGeoSubspace<T> : 
+    public interface ISubspace<T> : 
         IGeometricAlgebraElement<T>
     {
         uint SubspaceDimension { get; }
@@ -31,12 +31,12 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Subspaces
         /// </summary>
         T BladeSignature { get; }
 
-        IGeoSubspace<T> Project(IGeoSubspace<T> mv);
+        ISubspace<T> Project(ISubspace<T> mv);
 
-        IGeoSubspace<T> Reflect(IGeoSubspace<T> mv);
+        ISubspace<T> Reflect(ISubspace<T> mv);
         
-        IGeoSubspace<T> VersorProduct(IGeoSubspace<T> mv);
+        ISubspace<T> VersorProduct(ISubspace<T> mv);
 
-        IGeoSubspace<T> Complement(IGeoSubspace<T> mv);
+        ISubspace<T> Complement(ISubspace<T> mv);
     }
 }

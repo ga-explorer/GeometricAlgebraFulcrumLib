@@ -34,12 +34,6 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Sparse
 
         public T DefaultScalar { get; set; }
             = default;
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public int GetSparseCount()
-        {
-            return _leafNodeIDsList.Count;
-        }
         
         public T this[int id] 
         {
@@ -65,26 +59,6 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Sparse
 
                 throw new IndexOutOfRangeException();
             }
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public T GetScalar(ulong id)
-        {
-            return TryGetLeafNodeIndex(id, out var index)
-                ? _leafNodeScalarsArray[index]
-                : DefaultScalar;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<ulong> GetIndices()
-        {
-            return _leafNodeIDsList;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<T> GetScalars()
-        {
-            return _leafNodeScalarsArray;
         }
 
         public int RootNodeIndex
@@ -180,6 +154,32 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Sparse
             binaryTree._leafNodeScalarsArray.CopyTo(_leafNodeScalarsArray, 0);
         }
 
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public int GetSparseCount()
+        {
+            return _leafNodeIDsList.Count;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public T GetScalar(ulong id)
+        {
+            return TryGetLeafNodeIndex(id, out var index)
+                ? _leafNodeScalarsArray[index]
+                : DefaultScalar;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public IEnumerable<ulong> GetIndices()
+        {
+            return _leafNodeIDsList;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public IEnumerable<T> GetScalars()
+        {
+            return _leafNodeScalarsArray;
+        }
 
         private void ConstructIndexTree()
         {

@@ -13,7 +13,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
     internal sealed class ApplyVersorMethodFileComposer : 
         GaFuLLibrarySymbolicContextFileComposerBase
     {
-        private IGeoSubspace<ISymbolicExpressionAtomic> _subspace;
+        private ISubspace<ISymbolicExpressionAtomic> _subspace;
         private KVectorStorage<ISymbolicExpressionAtomic> _inputKVector;
         private KVectorStorage<ISymbolicExpressionAtomic> _outputKVector;
         private readonly GaFuLLanguageOperationSpecs _operationSpecs;

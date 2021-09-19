@@ -8,39 +8,39 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
     public static class GeoSubspaceFactory
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GeoSubspace<T> CreateDirectSubspace<T>(this IGeometricAlgebraProcessor<T> processor, KVectorStorage<T> blade)
+        public static Subspace<T> CreateDirectSubspace<T>(this IGeometricAlgebraProcessor<T> processor, KVectorStorage<T> blade)
         {
-            return GeoSubspace<T>.CreateDirect(processor, blade);
+            return Subspace<T>.CreateDirect(processor, blade);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GeoSubspace<T> CreateDualSubspace<T>(this IGeometricAlgebraProcessor<T> processor, KVectorStorage<T> blade)
+        public static Subspace<T> CreateDualSubspace<T>(this IGeometricAlgebraProcessor<T> processor, KVectorStorage<T> blade)
         {
-            return GeoSubspace<T>.CreateDual(processor, blade);
+            return Subspace<T>.CreateDual(processor, blade);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GeoSubspace<T> CreateOpnsSubspace<T>(this IGeometricAlgebraProcessor<T> processor, KVectorStorage<T> blade)
+        public static Subspace<T> CreateOpnsSubspace<T>(this IGeometricAlgebraProcessor<T> processor, KVectorStorage<T> blade)
         {
-            return GeoSubspace<T>.CreateDirect(processor, blade);
+            return Subspace<T>.CreateDirect(processor, blade);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GeoSubspace<T> CreateIpnsSubspace<T>(this IGeometricAlgebraProcessor<T> processor, KVectorStorage<T> blade)
+        public static Subspace<T> CreateIpnsSubspace<T>(this IGeometricAlgebraProcessor<T> processor, KVectorStorage<T> blade)
         {
-            return GeoSubspace<T>.CreateDual(processor, blade);
+            return Subspace<T>.CreateDual(processor, blade);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GeoSubspace<T> CreatePseudoScalarSubspace<T>(this IGeometricAlgebraProcessor<T> processor)
+        public static Subspace<T> CreatePseudoScalarSubspace<T>(this IGeometricAlgebraProcessor<T> processor)
         {
-            return GeoSubspace<T>.CreateFromPseudoScalar(processor);
+            return Subspace<T>.CreateFromPseudoScalar(processor);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GeoSubspace<T> CreatePseudoScalarSubspace<T>(this IGeometricAlgebraProcessor<T> processor, uint vSpaceDimension)
+        public static Subspace<T> CreatePseudoScalarSubspace<T>(this IGeometricAlgebraProcessor<T> processor, uint vSpaceDimension)
         {
-            return GeoSubspace<T>.CreateFromPseudoScalar(processor, vSpaceDimension);
+            return Subspace<T>.CreateFromPseudoScalar(processor, vSpaceDimension);
         }
     }
 }
