@@ -275,7 +275,7 @@ namespace GeometricAlgebraFulcrumLib.Mathematica.Applications.GaPoT
                 CreateClarkeArray(processor, vectorsCount);
 
             return processor.CreateFreeFrame(
-                GeoFreeFrameKind.OrthogonalUnitVectors, 
+                GeoFreeFrameSpecs.CreateUnitBasisSpecs(), 
                 clarkeMapArray.ColumnsToVectorStoragesArray(processor)
             );
         }

@@ -21,9 +21,7 @@ namespace EuclideanGeometryLib.Collections
                 if (i == index) continue;
 
                 //Swap the values at indices i and index
-                var k = result[i];
-                result[i] = result[index];
-                result[index] = k;
+                (result[i], result[index]) = (result[index], result[i]);
             }
 
             return result;
@@ -45,9 +43,7 @@ namespace EuclideanGeometryLib.Collections
                 if (i == index) continue;
 
                 //Swap the values at indices i and index
-                var k = result[i];
-                result[i] = result[index];
-                result[index] = k;
+                (result[i], result[index]) = (result[index], result[i]);
             }
 
             return result;

@@ -20,11 +20,11 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
         public static IGeometricAlgebraProcessor<Expr> GeometricProcessor { get; }
             = ScalarAlgebraMathematicaProcessor.DefaultProcessor.CreateGeometricAlgebraEuclideanProcessor(63);
             
-        public static MathematicaTextComposer TextComposer { get; }
-            = MathematicaTextComposer.DefaultComposer;
+        public static TextMathematicaComposer TextComposer { get; }
+            = TextMathematicaComposer.DefaultComposer;
             
-        public static MathematicaLaTeXComposer LaTeXComposer { get; }
-            = MathematicaLaTeXComposer.DefaultComposer;
+        public static LaTeXMathematicaComposer LaTeXComposer { get; }
+            = LaTeXMathematicaComposer.DefaultComposer;
 
 
         public static void ValidatePhasor(int k, int n, VectorStorage<Expr> phasor2)

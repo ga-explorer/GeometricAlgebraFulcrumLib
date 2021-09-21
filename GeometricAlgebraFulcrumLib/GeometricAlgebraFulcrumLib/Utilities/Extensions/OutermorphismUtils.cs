@@ -33,7 +33,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         {
             return new GeoFreeFrame<T>(
                 frame.GeometricProcessor,
-                frame.FrameKind,
+                frame.FrameSpecs,
                 frame.Select(outermorphism.OmMapVector)
             );
         }
@@ -178,7 +178,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         {
             return new GeoFreeFrame<T>(
                 frame.GeometricProcessor,
-                frame.FrameKind,
+                frame.FrameSpecs,
                 frame.Select(omSeq.OmMapVector)
             );
         }
@@ -201,7 +201,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         public static T[,] GetFinalMappingArray<T>(this IGeometricAlgebraProcessor<T> geometricProcessor, IEnumerable<IOutermorphism<T>> omSeq, int rowsCount)
         {
             return omSeq.OmMapFreeFrame(
-                geometricProcessor.CreateBasisFreeFrame((uint) rowsCount)
+                geometricProcessor.CreateFreeFrameOfBasis((uint) rowsCount)
             ).GetArray(rowsCount);
         }
 

@@ -18,11 +18,11 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
         public static ScalarAlgebraMathematicaProcessor ScalarProcessor { get; }
             = ScalarAlgebraMathematicaProcessor.DefaultProcessor;
             
-        public static MathematicaTextComposer TextComposer { get; }
-            = MathematicaTextComposer.DefaultComposer;
+        public static TextMathematicaComposer TextComposer { get; }
+            = TextMathematicaComposer.DefaultComposer;
             
-        public static MathematicaLaTeXComposer LaTeXComposer { get; }
-            = MathematicaLaTeXComposer.DefaultComposer;
+        public static LaTeXMathematicaComposer LaTeXComposer { get; }
+            = LaTeXMathematicaComposer.DefaultComposer;
 
 
         public static void Execute()

@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Interface Name="GeometryComposerLib.Graphics.SVG.Elements.Categories.ISvgDescriptiveElement" Collapsed="true">
+    <Position X="12.25" Y="1.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Diagrams\SVG\Elements\Categories\ISvgDescriptiveElement.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GeometryComposerLib.Graphics.SVG.Elements.Categories.ISvgElement" Collapsed="true">
+    <Position X="24.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Diagrams\SVG\Elements\Categories\ISvgElement.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GeometryComposerLib.Graphics.SVG.Elements.Categories.ISvgGraphicsElement" Collapsed="true">
+    <Position X="3.75" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Diagrams\SVG\Elements\Categories\ISvgGraphicsElement.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GeometryComposerLib.Graphics.SVG.Elements.Categories.ISvgShapeElement" Collapsed="true">
+    <Position X="3.5" Y="3.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Diagrams\SVG\Elements\Categories\ISvgShapeElement.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GeometryComposerLib.Graphics.SVG.Elements.Categories.ISvgBasicShapeElement" Collapsed="true">
+    <Position X="3.5" Y="4.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Diagrams\SVG\Elements\Categories\ISvgBasicShapeElement.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GeometryComposerLib.Graphics.SVG.Elements.Categories.ISvgAnimationElement" Collapsed="true">
+    <Position X="39" Y="1.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Diagrams\SVG\Elements\Categories\ISvgAnimationElement.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GeometryComposerLib.Graphics.SVG.Elements.Categories.ISvgContainerElement" Collapsed="true">
+    <Position X="29.25" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Diagrams\SVG\Elements\Categories\ISvgContainerElement.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GeometryComposerLib.Graphics.SVG.Elements.Categories.ISvgFilterPrimitiveElement" Collapsed="true">
+    <Position X="23.25" Y="1.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Diagrams\SVG\Elements\Categories\ISvgFilterPrimitiveElement.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GeometryComposerLib.Graphics.SVG.Elements.Categories.ISvgFontElement" Collapsed="true">
+    <Position X="34.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Diagrams\SVG\Elements\Categories\ISvgFontElement.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GeometryComposerLib.Graphics.SVG.Elements.Categories.ISvgGradientElement">
+    <Position X="18" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Diagrams\SVG\Elements\Categories\ISvgGradientElement.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GeometryComposerLib.Graphics.SVG.Elements.Categories.ISvgUncategorizedElement" Collapsed="true">
+    <Position X="6.25" Y="1.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Diagrams\SVG\Elements\Categories\ISvgUncategorizedElement.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GeometryComposerLib.Graphics.SVG.Elements.Categories.ISvgContentElement&lt;T&gt;" Collapsed="true">
+    <Position X="0.5" Y="2" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Diagrams\SVG\Elements\Categories\ISvgContentElement.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GeometryComposerLib.Graphics.SVG.Elements.Categories.ISvgGraphicsReferencingElement" Collapsed="true">
+    <Position X="26" Y="1.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Diagrams\SVG\Elements\Categories\ISvgGraphicsReferencingElement.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GeometryComposerLib.Graphics.SVG.Elements.Categories.ISvgHtmlElement" Collapsed="true">
+    <Position X="36.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Diagrams\SVG\Elements\Categories\ISvgHtmlElement.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GeometryComposerLib.Graphics.SVG.Elements.Categories.ISvgLightSourceElement" Collapsed="true">
+    <Position X="44.25" Y="1.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Diagrams\SVG\Elements\Categories\ISvgLightSourceElement.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GeometryComposerLib.Graphics.SVG.Elements.Categories.ISvgNeverRenderedElement" Collapsed="true">
+    <Position X="9.25" Y="1.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Diagrams\SVG\Elements\Categories\ISvgNeverRenderedElement.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GeometryComposerLib.Graphics.SVG.Elements.Categories.ISvgPaintServerElement" Collapsed="true">
+    <Position X="20.5" Y="1.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Diagrams\SVG\Elements\Categories\ISvgPaintServerElement.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GeometryComposerLib.Graphics.SVG.Elements.Categories.ISvgRenderableElement" Collapsed="true">
+    <Position X="31.75" Y="1.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Diagrams\SVG\Elements\Categories\ISvgRenderableElement.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GeometryComposerLib.Graphics.SVG.Elements.Categories.ISvgStructuralElement" Collapsed="true">
+    <Position X="41.75" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Diagrams\SVG\Elements\Categories\ISvgStructuralElement.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GeometryComposerLib.Graphics.SVG.Elements.Categories.ISvgTextContentChildElement" Collapsed="true">
+    <Position X="15" Y="3.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Diagrams\SVG\Elements\Categories\ISvgTextContentChildElement.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GeometryComposerLib.Graphics.SVG.Elements.Categories.ISvgTextContentElement" Collapsed="true">
+    <Position X="15" Y="1.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Diagrams\SVG\Elements\Categories\ISvgTextContentElement.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

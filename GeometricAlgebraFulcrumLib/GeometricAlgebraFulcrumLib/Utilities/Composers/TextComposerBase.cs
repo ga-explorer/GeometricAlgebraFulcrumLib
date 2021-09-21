@@ -200,5 +200,14 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
                     .OrderByGradeIndex()
             );
         }
+        
+        //public string GetMultivectorText(IMultivectorStorageContainer<T> storage)
+        //{
+        //    return GetTermsText(
+        //        ScalarProcessor
+        //            .GetNotZeroTerms(storage.GetMultivectorStorage())
+        //            .OrderByGradeIndex()
+        //    );
+        //}
     }
 }

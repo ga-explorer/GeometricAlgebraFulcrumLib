@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using DataStructuresLib.Basic;
 using EuclideanGeometryLib.BasicMath;
 using EuclideanGeometryLib.BasicMath.Tuples;
@@ -21,6 +22,37 @@ namespace EuclideanGeometryLib.Borders
 {
     public static class BordersUtils
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static BoundingBox2D GetBoundingBox(this IEnumerable<ITuple2D> pointsList)
+        {
+            return BoundingBox2D.CreateFromPoints(pointsList);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static BoundingBox2D GetBoundingBox(this IEnumerable<ITuple2D> pointsList, double scalingFactor)
+        {
+            return BoundingBox2D.CreateFromPoints(pointsList, scalingFactor);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static BoundingSphere2D GetBoundingSphere(this IEnumerable<ITuple2D> pointsList)
+        {
+            return BoundingSphere2D.CreateFromPoints(pointsList);
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static BoundingBox3D GetBoundingBox(this IEnumerable<ITuple3D> pointsList)
+        {
+            return BoundingBox3D.CreateFromPoints(pointsList);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static BoundingBox3D GetBoundingBox(this IEnumerable<ITuple3D> pointsList, double scalingFactor)
+        {
+            return BoundingBox3D.CreateFromPoints(pointsList, scalingFactor);
+        }
+        
 
         public static bool IsFinite(this IBoundingBox1D boundingBox)
             => !double.IsInfinity(boundingBox.MinValue) &&
@@ -482,9 +514,7 @@ namespace EuclideanGeometryLib.Borders
                 // Update parametric interval from slab intersection t values
                 if (tSlap1 > tSlap2)
                 {
-                    var s = tSlap1;
-                    tSlap1 = tSlap2;
-                    tSlap2 = s;
+                    (tSlap1, tSlap2) = (tSlap2, tSlap1);
                 }
 
                 // Update tFar to ensure robust ray-bounds intersection
@@ -506,9 +536,7 @@ namespace EuclideanGeometryLib.Borders
                 // Update parametric interval from slab intersection t values
                 if (tSlap1 > tSlap2)
                 {
-                    var s = tSlap1;
-                    tSlap1 = tSlap2;
-                    tSlap2 = s;
+                    (tSlap1, tSlap2) = (tSlap2, tSlap1);
                 }
 
                 // Update tFar to ensure robust ray-bounds intersection
@@ -543,9 +571,7 @@ namespace EuclideanGeometryLib.Borders
                 // Update parametric interval from slab intersection t values
                 if (tSlap1 > tSlap2)
                 {
-                    var s = tSlap1;
-                    tSlap1 = tSlap2;
-                    tSlap2 = s;
+                    (tSlap1, tSlap2) = (tSlap2, tSlap1);
                 }
 
                 // Update tFar to ensure robust ray-bounds intersection
@@ -567,9 +593,7 @@ namespace EuclideanGeometryLib.Borders
                 // Update parametric interval from slab intersection t values
                 if (tSlap1 > tSlap2)
                 {
-                    var s = tSlap1;
-                    tSlap1 = tSlap2;
-                    tSlap2 = s;
+                    (tSlap1, tSlap2) = (tSlap2, tSlap1);
                 }
 
                 // Update tFar to ensure robust ray-bounds intersection
@@ -1229,9 +1253,7 @@ namespace EuclideanGeometryLib.Borders
                 // Update parametric interval from slab intersection t values
                 if (tSlap1 > tSlap2)
                 {
-                    var s = tSlap1;
-                    tSlap1 = tSlap2;
-                    tSlap2 = s;
+                    (tSlap1, tSlap2) = (tSlap2, tSlap1);
                 }
 
                 // Update tFar to ensure robust ray-bounds intersection
@@ -1253,9 +1275,7 @@ namespace EuclideanGeometryLib.Borders
                 // Update parametric interval from slab intersection t values
                 if (tSlap1 > tSlap2)
                 {
-                    var s = tSlap1;
-                    tSlap1 = tSlap2;
-                    tSlap2 = s;
+                    (tSlap1, tSlap2) = (tSlap2, tSlap1);
                 }
 
                 // Update tFar to ensure robust ray-bounds intersection
@@ -1277,9 +1297,7 @@ namespace EuclideanGeometryLib.Borders
                 // Update parametric interval from slab intersection t values
                 if (tSlap1 > tSlap2)
                 {
-                    var s = tSlap1;
-                    tSlap1 = tSlap2;
-                    tSlap2 = s;
+                    (tSlap1, tSlap2) = (tSlap2, tSlap1);
                 }
 
                 // Update tFar to ensure robust ray-bounds intersection
@@ -1316,9 +1334,7 @@ namespace EuclideanGeometryLib.Borders
                 // Update parametric interval from slab intersection t values
                 if (tSlap1 > tSlap2)
                 {
-                    var s = tSlap1;
-                    tSlap1 = tSlap2;
-                    tSlap2 = s;
+                    (tSlap1, tSlap2) = (tSlap2, tSlap1);
                 }
 
                 // Update tFar to ensure robust ray-bounds intersection
@@ -1340,9 +1356,7 @@ namespace EuclideanGeometryLib.Borders
                 // Update parametric interval from slab intersection t values
                 if (tSlap1 > tSlap2)
                 {
-                    var s = tSlap1;
-                    tSlap1 = tSlap2;
-                    tSlap2 = s;
+                    (tSlap1, tSlap2) = (tSlap2, tSlap1);
                 }
 
                 // Update tFar to ensure robust ray-bounds intersection
@@ -1364,9 +1378,7 @@ namespace EuclideanGeometryLib.Borders
                 // Update parametric interval from slab intersection t values
                 if (tSlap1 > tSlap2)
                 {
-                    var s = tSlap1;
-                    tSlap1 = tSlap2;
-                    tSlap2 = s;
+                    (tSlap1, tSlap2) = (tSlap2, tSlap1);
                 }
 
                 // Update tFar to ensure robust ray-bounds intersection

@@ -144,7 +144,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Versors
         public IEnumerable<T[,]> GetReflectionArrays(int rowsCount)
         {
             var f = 
-                GeometricProcessor.CreateBasisFreeFrame((uint) rowsCount);
+                GeometricProcessor.CreateFreeFrameOfBasis((uint) rowsCount);
 
             yield return f.GetArray(rowsCount);
 

@@ -9,7 +9,8 @@ using EuclideanGeometryLib.Borders.Space2D.Mutable;
 
 namespace EuclideanGeometryLib.Borders.Space2D.Immutable
 {
-    public sealed class BoundingBox2D : IBoundingBox2D
+    public sealed class BoundingBox2D : 
+        IBoundingBox2D
     {
         public static BoundingBox2D CreateInfinite()
         {
@@ -43,19 +44,11 @@ namespace EuclideanGeometryLib.Borders.Space2D.Immutable
             var minY = centerY - deltaY;
             var maxY = centerY + deltaY;
 
-            if (deltaX < 0)
-            {
-                var s = maxX;
-                maxX = minX;
-                minX = s;
-            }
+            if (deltaX < 0) 
+                (maxX, minX) = (minX, maxX);
 
-            if (deltaY < 0)
-            {
-                var s = maxY;
-                maxY = minY;
-                minY = s;
-            }
+            if (deltaY < 0) 
+                (maxY, minY) = (minY, maxY);
 
             return new BoundingBox2D(minX, minY, maxX, maxY);
         }
@@ -67,19 +60,11 @@ namespace EuclideanGeometryLib.Borders.Space2D.Immutable
             var minY = center.Y - deltaY;
             var maxY = center.Y + deltaY;
 
-            if (deltaX < 0)
-            {
-                var s = maxX;
-                maxX = minX;
-                minX = s;
-            }
+            if (deltaX < 0) 
+                (maxX, minX) = (minX, maxX);
 
-            if (deltaY < 0)
-            {
-                var s = maxY;
-                maxY = minY;
-                minY = s;
-            }
+            if (deltaY < 0) 
+                (maxY, minY) = (minY, maxY);
 
             return new BoundingBox2D(minX, minY, maxX, maxY);
         }
@@ -153,7 +138,7 @@ namespace EuclideanGeometryLib.Borders.Space2D.Immutable
             return new BoundingBox2D(minX, minY, maxX, maxY);
         }
 
-        public static BoundingBox2D Create(ITuple2D point1, ITuple2D point2, ITuple2D point3)
+        public static BoundingBox2D CreateFromPoints(ITuple2D point1, ITuple2D point2, ITuple2D point3)
         {
             var minX = point1.X;
             var minY = point1.Y;
@@ -176,7 +161,7 @@ namespace EuclideanGeometryLib.Borders.Space2D.Immutable
             return new BoundingBox2D(minX, minY, maxX, maxY);
         }
 
-        public static BoundingBox2D Create(params ITuple2D[] pointsList)
+        public static BoundingBox2D CreateFromPoints(params ITuple2D[] pointsList)
         {
             var point1 = pointsList[0];
 
@@ -197,7 +182,7 @@ namespace EuclideanGeometryLib.Borders.Space2D.Immutable
             return new BoundingBox2D(minX, minY, maxX, maxY);
         }
 
-        public static BoundingBox2D Create(IEnumerable<ITuple2D> pointsList)
+        public static BoundingBox2D CreateFromPoints(IEnumerable<ITuple2D> pointsList)
         {
             double minX = 0, minY = 0, maxX = 0, maxY = 0;
 
@@ -221,6 +206,43 @@ namespace EuclideanGeometryLib.Borders.Space2D.Immutable
                 if (maxX < point.X) maxX = point.X;
                 if (maxY < point.Y) maxY = point.Y;
             }
+
+            return new BoundingBox2D(minX, minY, maxX, maxY);
+        }
+        
+        public static BoundingBox2D CreateFromPoints(IEnumerable<ITuple2D> pointsList, double updateFactor)
+        {
+            double minX = 0, minY = 0, maxX = 0, maxY = 0;
+
+            var flag = false;
+            foreach (var point in pointsList)
+            {
+                if (!flag)
+                {
+                    minX = point.X;
+                    minY = point.Y;
+
+                    maxX = point.X;
+                    maxY = point.Y;
+
+                    flag = true;
+                    continue;
+                }
+
+                if (minX > point.X) minX = point.X;
+                if (minY > point.Y) minY = point.Y;
+                if (maxX < point.X) maxX = point.X;
+                if (maxY < point.Y) maxY = point.Y;
+            }
+
+            var midX = 0.5d * (maxX + minX);
+            var midY = 0.5d * (maxY + minY);
+
+            minX = (minX - midX) * updateFactor + midX;
+            minY = (minY - midY) * updateFactor + midY;
+
+            maxX = (maxX - midX) * updateFactor + midX;
+            maxY = (maxY - midY) * updateFactor + midY;
 
             return new BoundingBox2D(minX, minY, maxX, maxY);
         }

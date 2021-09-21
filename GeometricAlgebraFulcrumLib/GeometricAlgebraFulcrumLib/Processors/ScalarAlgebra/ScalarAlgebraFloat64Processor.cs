@@ -73,7 +73,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public double NegativeTimes(double scalar1, double scalar2)
         {
-            return -scalar1 * scalar2;
+            return -(scalar1 * scalar2);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -85,7 +85,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public double NegativeDivide(double scalar1, double scalar2)
         {
-            return -scalar1 / scalar2;
+            return -(scalar1 / scalar2);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -278,21 +278,25 @@ namespace GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra
             return value;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public double GetScalarFromNumber(uint value)
         {
             return value;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public double GetScalarFromNumber(long value)
         {
             return value;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public double GetScalarFromNumber(ulong value)
         {
             return value;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public double GetScalarFromNumber(float value)
         {
             return value;
@@ -304,6 +308,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra
             return value;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public double GetScalarFromRational(long numerator, long denominator)
         {
             return numerator / (double) denominator;
@@ -333,11 +338,13 @@ namespace GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra
             return scalar < 0;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsNotPositive(double scalar)
         {
             return scalar <= 0;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsNotNegative(double scalar)
         {
             return scalar >= 0;

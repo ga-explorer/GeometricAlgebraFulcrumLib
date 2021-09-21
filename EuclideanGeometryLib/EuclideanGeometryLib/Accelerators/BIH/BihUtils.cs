@@ -113,9 +113,7 @@ namespace EuclideanGeometryLib.Accelerators.BIH
                     //Swap objects to obtain sorting for almost free!
                     if (i != j)
                     {
-                        var go = objectsArray[i];
-                        objectsArray[i] = objectsArray[j];
-                        objectsArray[j] = go;
+                        (objectsArray[i], objectsArray[j]) = (objectsArray[j], objectsArray[i]);
                     }
 
                     j--;
@@ -504,9 +502,7 @@ namespace EuclideanGeometryLib.Accelerators.BIH
                     //Swap objects to obtain sorting for almost free!
                     if (i != j)
                     {
-                        var go = objectsArray[i];
-                        objectsArray[i] = objectsArray[j];
-                        objectsArray[j] = go;
+                        (objectsArray[i], objectsArray[j]) = (objectsArray[j], objectsArray[i]);
                     }
 
                     j--;

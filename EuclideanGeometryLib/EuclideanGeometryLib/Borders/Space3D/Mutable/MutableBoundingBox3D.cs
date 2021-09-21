@@ -31,16 +31,12 @@ namespace EuclideanGeometryLib.Borders.Space3D.Mutable
         {
             if (y1 > y2)
             {
-                var y = y1;
-                y1 = y2;
-                y2 = y;
+                (y1, y2) = (y2, y1);
             }
 
             if (z1 > z2)
             {
-                var z = z1;
-                z1 = z2;
-                z2 = z;
+                (z1, z2) = (z2, z1);
             }
 
             return new MutableBoundingBox3D(
@@ -53,16 +49,12 @@ namespace EuclideanGeometryLib.Borders.Space3D.Mutable
         {
             if (x1 > x2)
             {
-                var x = x1;
-                x1 = x2;
-                x2 = x;
+                (x1, x2) = (x2, x1);
             }
 
             if (z1 > z2)
             {
-                var z = z1;
-                z1 = z2;
-                z2 = z;
+                (z1, z2) = (z2, z1);
             }
 
             return new MutableBoundingBox3D(
@@ -75,16 +67,12 @@ namespace EuclideanGeometryLib.Borders.Space3D.Mutable
         {
             if (x1 > x2)
             {
-                var x = x1;
-                x1 = x2;
-                x2 = x;
+                (x1, x2) = (x2, x1);
             }
 
             if (y1 > y2)
             {
-                var y = y1;
-                y1 = y2;
-                y2 = y;
+                (y1, y2) = (y2, y1);
             }
 
             return new MutableBoundingBox3D(
@@ -97,9 +85,7 @@ namespace EuclideanGeometryLib.Borders.Space3D.Mutable
         {
             if (z1 > z2)
             {
-                var z = z1;
-                z1 = z2;
-                z2 = z;
+                (z1, z2) = (z2, z1);
             }
 
             return new MutableBoundingBox3D(
@@ -112,9 +98,7 @@ namespace EuclideanGeometryLib.Borders.Space3D.Mutable
         {
             if (x1 > x2)
             {
-                var x = x1;
-                x1 = x2;
-                x2 = x;
+                (x1, x2) = (x2, x1);
             }
 
             return new MutableBoundingBox3D(
@@ -127,9 +111,7 @@ namespace EuclideanGeometryLib.Borders.Space3D.Mutable
         {
             if (y1 > y2)
             {
-                var y = y1;
-                y1 = y2;
-                y2 = y;
+                (y1, y2) = (y2, y1);
             }
 
             return new MutableBoundingBox3D(
@@ -150,23 +132,17 @@ namespace EuclideanGeometryLib.Borders.Space3D.Mutable
 
             if (deltaX < 0)
             {
-                var s = maxX;
-                maxX = minX;
-                minX = s;
+                (maxX, minX) = (minX, maxX);
             }
 
             if (deltaY < 0)
             {
-                var s = maxY;
-                maxY = minY;
-                minY = s;
+                (maxY, minY) = (minY, maxY);
             }
 
             if (deltaZ < 0)
             {
-                var s = maxZ;
-                maxZ = minZ;
-                minZ = s;
+                (maxZ, minZ) = (minZ, maxZ);
             }
 
             return new MutableBoundingBox3D(minX, minY, minZ, maxX, maxY, maxZ);
@@ -183,23 +159,17 @@ namespace EuclideanGeometryLib.Borders.Space3D.Mutable
 
             if (deltaX < 0)
             {
-                var s = maxX;
-                maxX = minX;
-                minX = s;
+                (maxX, minX) = (minX, maxX);
             }
 
             if (deltaY < 0)
             {
-                var s = maxY;
-                maxY = minY;
-                minY = s;
+                (maxY, minY) = (minY, maxY);
             }
 
             if (deltaZ < 0)
             {
-                var s = maxZ;
-                maxZ = minZ;
-                minZ = s;
+                (maxZ, minZ) = (minZ, maxZ);
             }
 
             return new MutableBoundingBox3D(minX, minY, minZ, maxX, maxY, maxZ);
@@ -586,23 +556,17 @@ namespace EuclideanGeometryLib.Borders.Space3D.Mutable
 
             if (MaxX < MinX)
             {
-                var s = MaxX;
-                MaxX = MinX;
-                MinX = s;
+                (MaxX, MinX) = (MinX, MaxX);
             }
 
             if (MaxY < MinY)
             {
-                var s = MaxY;
-                MaxY = MinY;
-                MinY = s;
+                (MaxY, MinY) = (MinY, MaxY);
             }
 
             if (MaxZ < MinZ)
             {
-                var s = MaxZ;
-                MaxZ = MinZ;
-                MinZ = s;
+                (MaxZ, MinZ) = (MinZ, MaxZ);
             }
         }
 
@@ -787,17 +751,29 @@ namespace EuclideanGeometryLib.Borders.Space3D.Mutable
 
         public MutableBoundingBox3D UpdateSizeByFactor(double updateFactor)
         {
-            var deltaX = updateFactor * (MaxX - MinX);
-            var deltaY = updateFactor * (MaxY - MinY);
-            var deltaZ = updateFactor * (MaxZ - MinZ);
+            var midX = 0.5d * (MaxX + MinX);
+            var midY = 0.5d * (MaxY + MinY);
+            var midZ = 0.5d * (MaxZ + MinZ);
 
-            MinX = MinX - deltaX;
-            MinY = MinY - deltaY;
-            MinZ = MinZ - deltaZ;
+            MinX = (MinX - midX) * updateFactor + midX;
+            MinY = (MinY - midY) * updateFactor + midY;
+            MinZ = (MinZ - midZ) * updateFactor + midZ;
 
-            MaxX = MaxX + deltaX;
-            MaxY = MaxY + deltaY;
-            MaxZ = MaxZ + deltaZ;
+            MaxX = (MaxX - midX) * updateFactor + midX;
+            MaxY = (MaxY - midY) * updateFactor + midY;
+            MaxZ = (MaxZ - midZ) * updateFactor + midZ;
+
+            //var deltaX = updateFactor * (MaxX - MinX);
+            //var deltaY = updateFactor * (MaxY - MinY);
+            //var deltaZ = updateFactor * (MaxZ - MinZ);
+
+            //MinX = MinX - deltaX;
+            //MinY = MinY - deltaY;
+            //MinZ = MinZ - deltaZ;
+
+            //MaxX = MaxX + deltaX;
+            //MaxY = MaxY + deltaY;
+            //MaxZ = MaxZ + deltaZ;
 
             ValidateValues();
 
@@ -806,17 +782,17 @@ namespace EuclideanGeometryLib.Borders.Space3D.Mutable
 
         public MutableBoundingBox3D UpdateSizeByFactor(ITuple3D updateFactor)
         {
-            var deltaX = updateFactor.X * (MaxX - MinX);
-            var deltaY = updateFactor.Y * (MaxY - MinY);
-            var deltaZ = updateFactor.Z * (MaxZ - MinZ);
+            var midX = 0.5d * (MaxX + MinX);
+            var midY = 0.5d * (MaxY + MinY);
+            var midZ = 0.5d * (MaxZ + MinZ);
 
-            MinX = MinX - deltaX;
-            MinY = MinY - deltaY;
-            MinZ = MinZ - deltaZ;
+            MinX = (MinX - midX) * updateFactor.X + midX;
+            MinY = (MinY - midY) * updateFactor.Y + midY;
+            MinZ = (MinZ - midZ) * updateFactor.Z + midZ;
 
-            MaxX = MaxX + deltaX;
-            MaxY = MaxY + deltaY;
-            MaxZ = MaxZ + deltaZ;
+            MaxX = (MaxX - midX) * updateFactor.X + midX;
+            MaxY = (MaxY - midY) * updateFactor.Y + midY;
+            MaxZ = (MaxZ - midZ) * updateFactor.Z + midZ;
 
             ValidateValues();
 
@@ -825,17 +801,17 @@ namespace EuclideanGeometryLib.Borders.Space3D.Mutable
 
         public MutableBoundingBox3D UpdateSizeByFactor(double updateFactorX, double updateFactorY, double updateFactorZ)
         {
-            var deltaX = updateFactorX * (MaxX - MinX);
-            var deltaY = updateFactorY * (MaxY - MinY);
-            var deltaZ = updateFactorZ * (MaxZ - MinZ);
+            var midX = 0.5d * (MaxX + MinX);
+            var midY = 0.5d * (MaxY + MinY);
+            var midZ = 0.5d * (MaxZ + MinZ);
 
-            MinX = MinX - deltaX;
-            MinY = MinY - deltaY;
-            MinZ = MinZ - deltaZ;
+            MinX = (MinX - midX) * updateFactorX + midX;
+            MinY = (MinY - midY) * updateFactorY + midY;
+            MinZ = (MinZ - midZ) * updateFactorZ + midZ;
 
-            MaxX = MaxX + deltaX;
-            MaxY = MaxY + deltaY;
-            MaxZ = MaxZ + deltaZ;
+            MaxX = (MaxX - midX) * updateFactorX + midX;
+            MaxY = (MaxY - midY) * updateFactorY + midY;
+            MaxZ = (MaxZ - midZ) * updateFactorZ + midZ;
 
             ValidateValues();
 

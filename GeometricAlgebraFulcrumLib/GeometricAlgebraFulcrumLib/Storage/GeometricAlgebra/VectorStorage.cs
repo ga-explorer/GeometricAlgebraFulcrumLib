@@ -565,5 +565,12 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         {
             return CreateVector(GetLinVectorIndexScalarStorage().MapScalars(scalarMapping));
         }
+
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override string ToString()
+        {
+            return this.GetMultivectorText();
+        }
     }
 }

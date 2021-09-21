@@ -20,11 +20,11 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.Mathematica
 
             // This is a pre-defined text generator for displaying multivectors
             // with symbolic Wolfram Mathematica scalars using Expr objects
-            var textComposer = MathematicaTextComposer.DefaultComposer;
+            var textComposer = TextMathematicaComposer.DefaultComposer;
 
             // This is a pre-defined LaTeX generator for displaying multivectors
             // with symbolic Wolfram Mathematica scalars using Expr objects
-            var latexComposer = MathematicaLaTeXComposer.DefaultComposer;
+            var latexComposer = LaTeXMathematicaComposer.DefaultComposer;
 
             // Create two vectors each having 3 components (a 3-dimensional GA)
             var u = geometricProcessor.CreateVectorFromText(3, i => $"Subscript[u,{i + 1}]");

@@ -1803,9 +1803,7 @@ namespace EuclideanGeometryLib.Computers.Intersections
                 // Update parametric interval from slab intersection t values
                 if (tSlap1 > tSlap2)
                 {
-                    var s = tSlap1;
-                    tSlap1 = tSlap2;
-                    tSlap2 = s;
+                    (tSlap1, tSlap2) = (tSlap2, tSlap1);
                 }
 
                 // Update tFar to ensure robust ray-bounds intersection
@@ -1827,9 +1825,7 @@ namespace EuclideanGeometryLib.Computers.Intersections
                 // Update parametric interval from slab intersection t values
                 if (tSlap1 > tSlap2)
                 {
-                    var s = tSlap1;
-                    tSlap1 = tSlap2;
-                    tSlap2 = s;
+                    (tSlap1, tSlap2) = (tSlap2, tSlap1);
                 }
 
                 // Update tFar to ensure robust ray-bounds intersection
@@ -1859,9 +1855,7 @@ namespace EuclideanGeometryLib.Computers.Intersections
                 // Update parametric interval from slab intersection t values
                 if (tSlap1 > tSlap2)
                 {
-                    var s = tSlap1;
-                    tSlap1 = tSlap2;
-                    tSlap2 = s;
+                    (tSlap1, tSlap2) = (tSlap2, tSlap1);
                 }
 
                 // Update tFar to ensure robust ray-bounds intersection
@@ -1883,9 +1877,7 @@ namespace EuclideanGeometryLib.Computers.Intersections
                 // Update parametric interval from slab intersection t values
                 if (tSlap1 > tSlap2)
                 {
-                    var s = tSlap1;
-                    tSlap1 = tSlap2;
-                    tSlap2 = s;
+                    (tSlap1, tSlap2) = (tSlap2, tSlap1);
                 }
 
                 // Update tFar to ensure robust ray-bounds intersection

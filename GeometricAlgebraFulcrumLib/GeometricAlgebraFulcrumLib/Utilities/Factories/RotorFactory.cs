@@ -258,13 +258,13 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         public static PureRotor<T> CreateEuclideanPureRotor<T>(this IGeometricAlgebraProcessor<T> processor, uint baseSpaceDimensions, VectorStorage<T> inputVector1, VectorStorage<T> inputVector2, VectorStorage<T> rotatedVector1, VectorStorage<T> rotatedVector2)
         {
             var inputFrame = processor.CreateFreeFrame(
-                GeoFreeFrameKind.LinearlyIndependent,
+                GeoFreeFrameSpecs.CreateLinearlyIndependentSpecs(),
                 inputVector1, 
                 inputVector2
             );
 
             var rotatedFrame = processor.CreateFreeFrame(
-                GeoFreeFrameKind.LinearlyIndependent,
+                GeoFreeFrameSpecs.CreateLinearlyIndependentSpecs(),
                 rotatedVector1, 
                 rotatedVector2
             );

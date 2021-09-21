@@ -9,7 +9,7 @@ using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
 namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
 {
-    public sealed class GeometricAlgebraOrthonormalProcessor<T> : 
+    public class GeometricAlgebraOrthonormalProcessor<T> : 
         GeometricAlgebraProcessorBase<T>, 
         IGeometricAlgebraOrthonormalProcessor<T>
     {
@@ -60,17 +60,20 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
         {
             Signature = signature;
 
-            PseudoScalar = ScalarProcessor.CreatePseudoScalarStorage(Signature.VSpaceDimension);
+            var pseudoScalar = 
+                ScalarProcessor.CreatePseudoScalarStorage(signature.VSpaceDimension);
+
+            PseudoScalar = pseudoScalar;
 
             PseudoScalarInverse = 
                 scalarProcessor
-                    .BladeInverse(Signature, PseudoScalar)
-                    .GetKVectorPart(Signature.VSpaceDimension);
+                    .BladeInverse(signature, pseudoScalar)
+                    .GetKVectorPart(signature.VSpaceDimension);
 
             PseudoScalarReverse = 
                 scalarProcessor
-                    .Reverse(PseudoScalar)
-                    .GetKVectorPart(Signature.VSpaceDimension);
+                    .Reverse(pseudoScalar)
+                    .GetKVectorPart(signature.VSpaceDimension);
         }
 
 

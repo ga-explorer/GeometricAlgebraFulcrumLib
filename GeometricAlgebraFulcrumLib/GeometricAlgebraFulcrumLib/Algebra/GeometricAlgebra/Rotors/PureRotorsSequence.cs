@@ -323,7 +323,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
         public IEnumerable<T[,]> GetRotationMatrices(int rowsCount)
         {
             var f = 
-                GeometricProcessor.CreateBasisFreeFrame((uint) rowsCount);
+                GeometricProcessor.CreateFreeFrameOfBasis((uint) rowsCount);
 
             yield return f.GetArray(rowsCount);
 
@@ -424,7 +424,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
         public T[,] GetFinalRotorArray(int rowsCount)
         {
             return Rotate(
-                GeometricProcessor.CreateBasisFreeFrame((uint) rowsCount)
+                GeometricProcessor.CreateFreeFrameOfBasis((uint) rowsCount)
             ).GetArray(rowsCount);
         }
 

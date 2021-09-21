@@ -182,16 +182,12 @@ namespace EuclideanGeometryLib.Borders.Space2D.Mutable
 
             if (deltaX < 0)
             {
-                var s = maxX;
-                maxX = minX;
-                minX = s;
+                (maxX, minX) = (minX, maxX);
             }
 
             if (deltaY < 0)
             {
-                var s = maxY;
-                maxY = minY;
-                minY = s;
+                (maxY, minY) = (minY, maxY);
             }
 
             return new MutableBoundingBox2D(minX, minY, maxX, maxY);
@@ -206,16 +202,12 @@ namespace EuclideanGeometryLib.Borders.Space2D.Mutable
 
             if (deltaX < 0)
             {
-                var s = maxX;
-                maxX = minX;
-                minX = s;
+                (maxX, minX) = (minX, maxX);
             }
 
             if (deltaY < 0)
             {
-                var s = maxY;
-                maxY = minY;
-                minY = s;
+                (maxY, minY) = (minY, maxY);
             }
 
             return new MutableBoundingBox2D(minX, minY, maxX, maxY);
@@ -407,16 +399,12 @@ namespace EuclideanGeometryLib.Borders.Space2D.Mutable
 
             if (MaxX < MinX)
             {
-                var s = MaxX;
-                MaxX = MinX;
-                MinX = s;
+                (MaxX, MinX) = (MinX, MaxX);
             }
 
             if (MaxY < MinY)
             {
-                var s = MaxY;
-                MaxY = MinY;
-                MinY = s;
+                (MaxY, MinY) = (MinY, MaxY);
             }
         }
 
@@ -577,14 +565,23 @@ namespace EuclideanGeometryLib.Borders.Space2D.Mutable
 
         public MutableBoundingBox2D UpdateSizeByFactor(double updateFactor)
         {
-            var deltaX = updateFactor * (MaxX - MinX);
-            var deltaY = updateFactor * (MaxY - MinY);
+            var midX = 0.5d * (MaxX + MinX);
+            var midY = 0.5d * (MaxY + MinY);
 
-            MinX = MinX - deltaX;
-            MinY = MinY - deltaY;
+            MinX = (MinX - midX) * updateFactor + midX;
+            MinY = (MinY - midY) * updateFactor + midY;
 
-            MaxX = MaxX + deltaX;
-            MaxY = MaxY + deltaY;
+            MaxX = (MaxX - midX) * updateFactor + midX;
+            MaxY = (MaxY - midY) * updateFactor + midY;
+
+            //var deltaX = updateFactor * (MaxX - MinX);
+            //var deltaY = updateFactor * (MaxY - MinY);
+
+            //MinX = MinX - deltaX;
+            //MinY = MinY - deltaY;
+
+            //MaxX = MaxX + deltaX;
+            //MaxY = MaxY + deltaY;
 
             ValidateValues();
 
@@ -593,14 +590,14 @@ namespace EuclideanGeometryLib.Borders.Space2D.Mutable
 
         public MutableBoundingBox2D UpdateSizeByFactor(ITuple2D updateFactor)
         {
-            var deltaX = updateFactor.X * (MaxX - MinX);
-            var deltaY = updateFactor.Y * (MaxY - MinY);
+            var midX = 0.5d * (MaxX + MinX);
+            var midY = 0.5d * (MaxY + MinY);
 
-            MinX = MinX - deltaX;
-            MinY = MinY - deltaY;
+            MinX = (MinX - midX) * updateFactor.X + midX;
+            MinY = (MinY - midY) * updateFactor.Y + midY;
 
-            MaxX = MaxX + deltaX;
-            MaxY = MaxY + deltaY;
+            MaxX = (MaxX - midX) * updateFactor.X + midX;
+            MaxY = (MaxY - midY) * updateFactor.Y + midY;
 
             ValidateValues();
 
@@ -609,14 +606,14 @@ namespace EuclideanGeometryLib.Borders.Space2D.Mutable
 
         public MutableBoundingBox2D UpdateSizeByFactor(double updateFactorX, double updateFactorY)
         {
-            var deltaX = updateFactorX * (MaxX - MinX);
-            var deltaY = updateFactorY * (MaxY - MinY);
+            var midX = 0.5d * (MaxX + MinX);
+            var midY = 0.5d * (MaxY + MinY);
 
-            MinX = MinX - deltaX;
-            MinY = MinY - deltaY;
+            MinX = (MinX - midX) * updateFactorX + midX;
+            MinY = (MinY - midY) * updateFactorY + midY;
 
-            MaxX = MaxX + deltaX;
-            MaxY = MaxY + deltaY;
+            MaxX = (MaxX - midX) * updateFactorX + midX;
+            MaxY = (MaxY - midY) * updateFactorY + midY;
 
             ValidateValues();
 

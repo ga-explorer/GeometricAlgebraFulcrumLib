@@ -636,5 +636,12 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
                 }
             );
         }
+
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override string ToString()
+        {
+            return this.GetMultivectorText();
+        }
     }
 }

@@ -116,14 +116,14 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
         {
             var inputFrame = 
                 processor.CreateFreeFrame(
-                    GeoFreeFrameKind.LinearlyIndependent, 
+                    GeoFreeFrameSpecs.CreateLinearlyIndependentSpecs(), 
                     inputVector1, 
                     inputVector2
                 );
 
             var rotatedFrame = 
                 processor.CreateFreeFrame(
-                    GeoFreeFrameKind.LinearlyIndependent, 
+                    GeoFreeFrameSpecs.CreateLinearlyIndependentSpecs(), 
                     rotatedVector1, 
                     rotatedVector2
                 );
@@ -139,14 +139,14 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
         {
             var inputFrame = 
                 processor.CreateFreeFrame(
-                    GeoFreeFrameKind.LinearlyIndependent,
+                    GeoFreeFrameSpecs.CreateLinearlyIndependentSpecs(),
                     inputVector1, 
                     inputVector2
                 );
 
             var rotatedFrame = 
                 processor.CreateFreeFrame(
-                    GeoFreeFrameKind.LinearlyIndependent,
+                    GeoFreeFrameSpecs.CreateLinearlyIndependentSpecs(),
                     rotatedVector1, 
                     rotatedVector2
                 );

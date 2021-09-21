@@ -60,18 +60,14 @@ namespace EuclideanGeometryLib.BasicMath.Maps.Space3D
 
         public LinearMap3Dp SelfInverse()
         {
-            var m = _matrix;
-            _matrix = _invMatrix;
-            _invMatrix = m;
+            (_matrix, _invMatrix) = (_invMatrix, _matrix);
 
             return this;
         }
 
         public LinearMap3Dp SelfInverseTranspose()
         {
-            var m = _matrix;
-            _matrix = _invMatrix;
-            _invMatrix = m;
+            (_matrix, _invMatrix) = (_invMatrix, _matrix);
 
             _matrix.SelfTranspose();
             _invMatrix.SelfTranspose();

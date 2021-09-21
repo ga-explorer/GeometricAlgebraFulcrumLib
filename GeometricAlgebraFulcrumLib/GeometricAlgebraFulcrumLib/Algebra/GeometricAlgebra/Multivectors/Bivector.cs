@@ -17,6 +17,13 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors
         IGeometricAlgebraElement<T>
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static implicit operator BivectorStorage<T>(Bivector<T> v)
+        {
+            return v.BivectorStorage;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Bivector<T> operator -(Bivector<T> v1)
         {
             var processor = v1.GeometricProcessor;

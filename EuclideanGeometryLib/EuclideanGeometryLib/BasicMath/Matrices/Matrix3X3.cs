@@ -467,9 +467,7 @@ namespace EuclideanGeometryLib.BasicMath.Matrices
                 {
                     for (var k = 0; k < 3; ++k)
                     {
-                        var s1 = minv[irow, k];
-                        minv[irow, k] = minv[icol, k];
-                        minv[icol, k] = s1;
+                        (minv[irow, k], minv[icol, k]) = (minv[icol, k], minv[irow, k]);
                     }
                 }
 
@@ -505,9 +503,7 @@ namespace EuclideanGeometryLib.BasicMath.Matrices
 
                 for (var k = 0; k < 3; k++)
                 {
-                    var s2 = minv[k, indxr[j]];
-                    minv[k, indxr[j]] = minv[k, indxc[j]];
-                    minv[k, indxc[j]] = s2;
+                    (minv[k, indxr[j]], minv[k, indxc[j]]) = (minv[k, indxc[j]], minv[k, indxr[j]]);
                 }
             }
 

@@ -24,21 +24,15 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GeometricAlgebraOrthonormalProcessor<T> CreateGeometricAlgebraConformalProcessor<T>(this IScalarAlgebraProcessor<T> scalarProcessor, uint vSpaceDimension)
+        public static GeometricAlgebraConformalProcessor<T> CreateGeometricAlgebraConformalProcessor<T>(this IScalarAlgebraProcessor<T> scalarProcessor, uint vSpaceDimension)
         {
-            return new GeometricAlgebraOrthonormalProcessor<T>(
-                scalarProcessor, 
-                GeometricAlgebraSignatureFactory.CreateConformal(vSpaceDimension)
-            );
+            return new GeometricAlgebraConformalProcessor<T>(scalarProcessor, vSpaceDimension);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GeometricAlgebraOrthonormalProcessor<T> CreateGeometricAlgebraProjectiveProcessor<T>(this IScalarAlgebraProcessor<T> scalarProcessor, uint vSpaceDimension)
+        public static GeometricAlgebraProjectiveProcessor<T> CreateGeometricAlgebraProjectiveProcessor<T>(this IScalarAlgebraProcessor<T> scalarProcessor, uint vSpaceDimension)
         {
-            return new GeometricAlgebraOrthonormalProcessor<T>(
-                scalarProcessor, 
-                GeometricAlgebraSignatureFactory.CreateProjective(vSpaceDimension)
-            );
+            return new GeometricAlgebraProjectiveProcessor<T>(scalarProcessor, vSpaceDimension);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

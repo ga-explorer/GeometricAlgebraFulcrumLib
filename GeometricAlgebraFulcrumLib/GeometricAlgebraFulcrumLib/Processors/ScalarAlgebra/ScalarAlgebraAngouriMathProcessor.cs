@@ -17,7 +17,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra
         public Entity ScalarZero 
             => Entity.Number.Integer.Zero;
 
-        public Entity ScalarOne 
+        public Entity ScalarOne
             => Entity.Number.Integer.One;
 
         public Entity ScalarMinusOne 

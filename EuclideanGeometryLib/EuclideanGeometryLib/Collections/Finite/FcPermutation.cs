@@ -120,9 +120,7 @@ namespace EuclideanGeometryLib.Collections.Finite
 
         public FcPermutation<T> SwapIndices(int i, int j)
         {
-            var k = OffsetPermutation[i];
-            OffsetPermutation[i] = OffsetPermutation[j];
-            OffsetPermutation[j] = k;
+            (OffsetPermutation[i], OffsetPermutation[j]) = (OffsetPermutation[j], OffsetPermutation[i]);
 
             return this;
         }

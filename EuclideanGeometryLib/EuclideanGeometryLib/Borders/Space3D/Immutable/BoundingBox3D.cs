@@ -27,16 +27,12 @@ namespace EuclideanGeometryLib.Borders.Space3D.Immutable
         {
             if (y1 > y2)
             {
-                var y = y1;
-                y1 = y2;
-                y2 = y;
+                (y1, y2) = (y2, y1);
             }
 
             if (z1 > z2)
             {
-                var z = z1;
-                z1 = z2;
-                z2 = z;
+                (z1, z2) = (z2, z1);
             }
 
             return new BoundingBox3D(
@@ -49,16 +45,12 @@ namespace EuclideanGeometryLib.Borders.Space3D.Immutable
         {
             if (x1 > x2)
             {
-                var x = x1;
-                x1 = x2;
-                x2 = x;
+                (x1, x2) = (x2, x1);
             }
 
             if (z1 > z2)
             {
-                var z = z1;
-                z1 = z2;
-                z2 = z;
+                (z1, z2) = (z2, z1);
             }
 
             return new BoundingBox3D(
@@ -71,16 +63,12 @@ namespace EuclideanGeometryLib.Borders.Space3D.Immutable
         {
             if (x1 > x2)
             {
-                var x = x1;
-                x1 = x2;
-                x2 = x;
+                (x1, x2) = (x2, x1);
             }
 
             if (y1 > y2)
             {
-                var y = y1;
-                y1 = y2;
-                y2 = y;
+                (y1, y2) = (y2, y1);
             }
 
             return new BoundingBox3D(
@@ -93,9 +81,7 @@ namespace EuclideanGeometryLib.Borders.Space3D.Immutable
         {
             if (z1 > z2)
             {
-                var z = z1;
-                z1 = z2;
-                z2 = z;
+                (z1, z2) = (z2, z1);
             }
 
             return new BoundingBox3D(
@@ -108,9 +94,7 @@ namespace EuclideanGeometryLib.Borders.Space3D.Immutable
         {
             if (x1 > x2)
             {
-                var x = x1;
-                x1 = x2;
-                x2 = x;
+                (x1, x2) = (x2, x1);
             }
 
             return new BoundingBox3D(
@@ -123,9 +107,7 @@ namespace EuclideanGeometryLib.Borders.Space3D.Immutable
         {
             if (y1 > y2)
             {
-                var y = y1;
-                y1 = y2;
-                y2 = y;
+                (y1, y2) = (y2, y1);
             }
 
             return new BoundingBox3D(
@@ -146,23 +128,17 @@ namespace EuclideanGeometryLib.Borders.Space3D.Immutable
 
             if (deltaX < 0)
             {
-                var s = maxX;
-                maxX = minX;
-                minX = s;
+                (maxX, minX) = (minX, maxX);
             }
 
             if (deltaY < 0)
             {
-                var s = maxY;
-                maxY = minY;
-                minY = s;
+                (maxY, minY) = (minY, maxY);
             }
 
             if (deltaZ < 0)
             {
-                var s = maxZ;
-                maxZ = minZ;
-                minZ = s;
+                (maxZ, minZ) = (minZ, maxZ);
             }
 
             return new BoundingBox3D(minX, minY, minZ, maxX, maxY, maxZ);
@@ -179,23 +155,17 @@ namespace EuclideanGeometryLib.Borders.Space3D.Immutable
 
             if (deltaX < 0)
             {
-                var s = maxX;
-                maxX = minX;
-                minX = s;
+                (maxX, minX) = (minX, maxX);
             }
 
             if (deltaY < 0)
             {
-                var s = maxY;
-                maxY = minY;
-                minY = s;
+                (maxY, minY) = (minY, maxY);
             }
 
             if (deltaZ < 0)
             {
-                var s = maxZ;
-                maxZ = minZ;
-                minZ = s;
+                (maxZ, minZ) = (minZ, maxZ);
             }
 
             return new BoundingBox3D(minX, minY, minZ, maxX, maxY, maxZ);
@@ -381,6 +351,52 @@ namespace EuclideanGeometryLib.Borders.Space3D.Immutable
                 if (maxY < point.Y) maxY = point.Y;
                 if (maxZ < point.Z) maxZ = point.Z;
             }
+
+            return new BoundingBox3D(minX, minY, minZ, maxX, maxY, maxZ);
+        }
+        
+        public static BoundingBox3D CreateFromPoints(IEnumerable<ITuple3D> pointsList, double scalingFactor)
+        {
+            double minX = 0, minY = 0, minZ = 0;
+            double maxX = 0, maxY = 0, maxZ = 0;
+
+            var flag = false;
+            foreach (var point in pointsList)
+            {
+                if (!flag)
+                {
+                    minX = point.X;
+                    minY = point.Y;
+                    minZ = point.Z;
+
+                    maxX = point.X;
+                    maxY = point.Y;
+                    maxZ = point.Z;
+
+                    flag = true;
+                    continue;
+                }
+
+                if (minX > point.X) minX = point.X;
+                if (minY > point.Y) minY = point.Y;
+                if (minZ > point.Z) minZ = point.Z;
+
+                if (maxX < point.X) maxX = point.X;
+                if (maxY < point.Y) maxY = point.Y;
+                if (maxZ < point.Z) maxZ = point.Z;
+            }
+
+            var midX = 0.5d * (maxX + minX);
+            var midY = 0.5d * (maxY + minY);
+            var midZ = 0.5d * (maxZ + minZ);
+
+            minX = (minX - midX) * scalingFactor + midX;
+            minY = (minY - midY) * scalingFactor + midY;
+            minZ = (minZ - midZ) * scalingFactor + midZ;
+
+            maxX = (maxX - midX) * scalingFactor + midX;
+            maxY = (maxY - midY) * scalingFactor + midY;
+            maxZ = (maxZ - midZ) * scalingFactor + midZ;
 
             return new BoundingBox3D(minX, minY, minZ, maxX, maxY, maxZ);
         }

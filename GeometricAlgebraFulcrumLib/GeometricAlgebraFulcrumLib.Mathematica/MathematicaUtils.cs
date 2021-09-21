@@ -38,11 +38,11 @@ namespace GeometricAlgebraFulcrumLib.Mathematica
         public static IGeometricAlgebraEuclideanProcessor<Expr> EuclideanProcessor { get; }
             = ScalarProcessor.CreateGeometricAlgebraEuclideanProcessor(63);
 
-        public static MathematicaLaTeXComposer LaTeXComposer
-            => MathematicaLaTeXComposer.DefaultComposer;
+        public static LaTeXMathematicaComposer LaTeXComposer
+            => LaTeXMathematicaComposer.DefaultComposer;
 
-        public static MathematicaTextComposer TextComposer
-            => MathematicaTextComposer.DefaultComposer;
+        public static TextMathematicaComposer TextComposer
+            => TextMathematicaComposer.DefaultComposer;
 
 
         public static MathematicaInterface Cas 

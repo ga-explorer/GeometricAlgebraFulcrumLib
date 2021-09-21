@@ -13,9 +13,16 @@ using GeometricAlgebraFulcrumLib.Utilities.Factories;
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors
 {
     public sealed record Vector<T> : 
-        IMultivectorStorageContainer<T>,
+        IVectorStorageContainer<T>,
         IGeometricAlgebraElement<T>
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static implicit operator VectorStorage<T>(Vector<T> v)
+        {
+            return v.VectorStorage;
+        }
+
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector<T> operator -(Vector<T> v1)
         {
@@ -963,6 +970,18 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IMultivectorStorage<T> GetMultivectorStorage()
+        {
+            return VectorStorage;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public KVectorStorage<T> GetKVectorStorage()
+        {
+            return VectorStorage;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public VectorStorage<T> GetVectorStorage()
         {
             return VectorStorage;
         }

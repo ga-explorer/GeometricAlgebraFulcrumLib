@@ -14,6 +14,7 @@ using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using GeometricAlgebraFulcrumLib.Utilities.Factories;
+using TextComposerLib.Text.Linear;
 
 namespace GeometricAlgebraFulcrumLib.Geometry.Frames
 {
@@ -56,23 +57,23 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Frames
         public bool IsInvalid
             => false;
 
-        public GeoFreeFrameKind FrameKind { get; }
+        public GeoFreeFrameSpecs FrameSpecs { get; }
 
 
-        internal GeoFreeFrame([NotNull] IGeometricAlgebraProcessor<T> processor, GeoFreeFrameKind frameKind)
+        internal GeoFreeFrame([NotNull] IGeometricAlgebraProcessor<T> processor, GeoFreeFrameSpecs frameSpecs)
         {
             _vectorStoragesList = new List<VectorStorage<T>>();
 
             GeometricProcessor = processor;
-            FrameKind = frameKind;
+            FrameSpecs = frameSpecs;
         }
 
-        internal GeoFreeFrame([NotNull] IGeometricAlgebraProcessor<T> processor, GeoFreeFrameKind frameKind, [NotNull] IEnumerable<VectorStorage<T>> vectorStoragesList)
+        internal GeoFreeFrame([NotNull] IGeometricAlgebraProcessor<T> processor, GeoFreeFrameSpecs frameSpecs, [NotNull] IEnumerable<VectorStorage<T>> vectorStoragesList)
         {
             _vectorStoragesList = vectorStoragesList.ToList();
 
             GeometricProcessor = processor;
-            FrameKind = frameKind;
+            FrameSpecs = frameSpecs;
         }
 
         
@@ -110,7 +111,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Frames
         {
             return new GeoFreeFrame<T>(
                 GeometricProcessor,
-                FrameKind,
+                FrameSpecs,
                 _vectorStoragesList
                     .Skip(startIndex)
                     .Take(count)
@@ -121,28 +122,25 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Frames
         {
             return new GeoFreeFrame<T>(
                 GeometricProcessor,
-                FrameKind,
+                FrameSpecs,
                 _vectorStoragesList.Select(v => v.GetVectorPart(GeometricProcessor.Negative))
             );
         }
 
-        public GeoFreeFrame<T> GetOrthogonalFrame(bool makeUnitVectors)
+        public GeoFreeFrame<T> GetOrthonormalFrame()
         {
-            if (FrameKind == GeoFreeFrameKind.OrthogonalUnitVectors)
-                return this;
-
-            if (FrameKind == GeoFreeFrameKind.Orthogonal && !makeUnitVectors)
-                return this;
+            if (FrameSpecs.Orthonormal == true)
+                return FrameSpecs.UnitNormSquared == true
+                    ? this
+                    : GetUnitNormFrame();
 
             var orthogonalVector = _vectorStoragesList[0];
             var vectorStoragesList = new List<VectorStorage<T>>
             {
-                makeUnitVectors
-                    ? GeometricProcessor.Divide(
-                        orthogonalVector, 
-                        GeometricProcessor.ENorm(orthogonalVector)
-                    )
-                    : orthogonalVector
+                GeometricProcessor.Divide(
+                    orthogonalVector, 
+                    GeometricProcessor.Norm(orthogonalVector)
+                )
             };
 
             var mv1 = (IMultivectorStorage<T>) orthogonalVector;
@@ -156,29 +154,76 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Frames
                     GeometricProcessor.EGp(GeometricProcessor.Reverse(mv1), mv2).GetVectorPart();
                 
                 vectorStoragesList.Add( 
-                    makeUnitVectors
-                        ? GeometricProcessor.Divide(
-                            orthogonalVector, 
-                            GeometricProcessor.ENorm(orthogonalVector)
-                        )
-                        : orthogonalVector
-                    );
+                    GeometricProcessor.Divide(
+                        orthogonalVector, 
+                        GeometricProcessor.Norm(orthogonalVector)
+                    )
+                );
                 
                 mv1 = mv2;
             }
 
+            var frameSpecs = new GeoFreeFrameSpecs()
+            {
+                EqualNormSquared = true,
+                EqualScalarProduct = null,
+                LinearlyIndependent = true,
+                Orthogonal = true,
+                UnitNormSquared = true
+            };
+
             return new GeoFreeFrame<T>(
                 GeometricProcessor, 
-                makeUnitVectors 
-                    ? GeoFreeFrameKind.OrthogonalUnitVectors 
-                    : GeoFreeFrameKind.Orthogonal,
+                frameSpecs,
+                vectorStoragesList
+            );
+        }
+
+        public GeoFreeFrame<T> GetOrthogonalFrame()
+        {
+            if (FrameSpecs.Orthogonal == true)
+                return this;
+
+            var orthogonalVector = _vectorStoragesList[0];
+            var vectorStoragesList = new List<VectorStorage<T>>
+            {
+                orthogonalVector
+            };
+
+            var mv1 = (IMultivectorStorage<T>) orthogonalVector;
+            
+            for (var i = 1; i < _vectorStoragesList.Count; i++)
+            {
+                var mv2 = 
+                    GeometricProcessor.Op(mv1, _vectorStoragesList[i]);
+                
+                orthogonalVector = 
+                    GeometricProcessor.EGp(GeometricProcessor.Reverse(mv1), mv2).GetVectorPart();
+                
+                vectorStoragesList.Add(orthogonalVector);
+                
+                mv1 = mv2;
+            }
+
+            var frameSpecs = new GeoFreeFrameSpecs()
+            {
+                EqualNormSquared = null,
+                EqualScalarProduct = null,
+                LinearlyIndependent = FrameSpecs.LinearlyIndependent,
+                Orthogonal = true,
+                UnitNormSquared = null
+            };
+
+            return new GeoFreeFrame<T>(
+                GeometricProcessor, 
+                frameSpecs,
                 vectorStoragesList
             );
         }
 
         public GeoFreeFrame<T> GetSwappedPairsFrame()
         {
-            var frame = new GeoFreeFrame<T>(GeometricProcessor, FrameKind);
+            var frame = new GeoFreeFrame<T>(GeometricProcessor, FrameSpecs);
 
             //Swap each pair of two consecutive vectors in the frame
             for (var i = 0; i < _vectorStoragesList.Count - 1; i += 2)
@@ -340,7 +385,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Frames
 
             foreach (var indexPermutation in indexPermutationsList)
             {
-                var frame = new GeoFreeFrame<T>(GeometricProcessor, FrameKind);
+                var frame = new GeoFreeFrame<T>(GeometricProcessor, FrameSpecs);
 
                 foreach (var index in indexPermutation)
                     frame.AppendVector(_vectorStoragesList[index]);
@@ -355,25 +400,30 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Frames
 
             return new GeoFreeFrame<T>(
                 GeometricProcessor,
-                GeoFreeFrameKind.Undefined, 
+                GeoFreeFrameSpecs.CreateUndefinedSpecs(), 
                 _vectorStoragesList.Select(v => 
                     ps.Project(v).GetVectorPart()
                 )
             );
         }
 
-        public GeoFreeFrame<T> Normalize()
+        public GeoFreeFrame<T> GetUnitNormFrame()
         {
-            if (FrameKind.IsUnitVectors())
+            if (FrameSpecs.UnitNormSquared == true)
                 return this;
 
-            var frameKind = FrameKind == GeoFreeFrameKind.LinearlyIndependent
-                ? GeoFreeFrameKind.UnitVectors
-                : GeoFreeFrameKind.OrthogonalUnitVectors;
-
+            var frameSpecs = new GeoFreeFrameSpecs()
+            {
+                EqualNormSquared = true,
+                EqualScalarProduct = FrameSpecs.EqualScalarProduct,
+                LinearlyIndependent = FrameSpecs.LinearlyIndependent,
+                Orthogonal = FrameSpecs.Orthogonal,
+                UnitNormSquared = true
+            };
+            
             return new GeoFreeFrame<T>(
                 GeometricProcessor,
-                frameKind,
+                frameSpecs,
                 _vectorStoragesList.Select(v => GeometricProcessor.DivideByENorm(v))
             );
         }
@@ -473,6 +523,24 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Frames
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        public override string ToString()
+        {
+            var composer = new LinearTextComposer();
+
+            composer
+                .AppendLine("Free Frame {")
+                .IncreaseIndentation();
+
+            foreach (var vector in _vectorStoragesList)
+                composer.AppendAtNewLine(vector.ToString());
+
+            composer
+                .DecreaseIndentation()
+                .AppendAtNewLine("}");
+
+            return composer.ToString();
         }
     }
 }
