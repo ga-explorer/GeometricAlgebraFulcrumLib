@@ -74,7 +74,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public float NegativeTimes(float scalar1, float scalar2)
         {
-            return -scalar1 * scalar2;
+            return -(scalar1 * scalar2);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -86,7 +86,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public float NegativeDivide(float scalar1, float scalar2)
         {
-            return -scalar1 / scalar2;
+            return -(scalar1 / scalar2);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

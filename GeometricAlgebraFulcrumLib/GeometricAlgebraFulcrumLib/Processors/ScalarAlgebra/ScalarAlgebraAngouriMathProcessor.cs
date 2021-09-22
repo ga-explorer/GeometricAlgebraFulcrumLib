@@ -103,8 +103,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra
         public Entity NegativeTimes(Entity scalar1, Entity scalar2)
         {
             return PostProcessScalar(
-                -(PreProcessScalar(scalar1) * 
-                PreProcessScalar(scalar2))
+                -(PreProcessScalar(scalar1) * PreProcessScalar(scalar2))
             );
         }
 
@@ -121,8 +120,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra
         public Entity NegativeDivide(Entity scalar1, Entity scalar2)
         {
             return PostProcessScalar(
-                -(PreProcessScalar(scalar1) / 
-                  PreProcessScalar(scalar2))
+                -(PreProcessScalar(scalar1) / PreProcessScalar(scalar2))
             );
         }
 

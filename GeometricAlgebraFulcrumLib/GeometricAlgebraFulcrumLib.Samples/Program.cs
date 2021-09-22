@@ -17,7 +17,7 @@ namespace GeometricAlgebraFulcrumLib.Samples
             //foreach (var functionName in functionNames)
             //    testClass.AssertCorrectBinaryOperations(functionName);
 
-            VoronoiDiagramsSample.Execute();
+            RegularSimplexSample.Execute();
 
             //HilbertTransform.Execute();
 

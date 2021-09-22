@@ -12,15 +12,15 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Subspaces
     {
         uint SubspaceDimension { get; }
 
-        /// <summary>
-        /// The subspace is represented by an Outer-Product Null Space (OPNS) blade
-        /// </summary>
-        bool IsDirect { get; }
+        ///// <summary>
+        ///// The subspace is represented by an Outer-Product Null Space (OPNS) blade
+        ///// </summary>
+        //bool IsDirect { get; }
 
-        /// <summary>
-        /// The subspace is represented by an Inner-Product Null Space (IPNS) blade
-        /// </summary>
-        bool IsDual { get; }
+        ///// <summary>
+        ///// The subspace is represented by an Inner-Product Null Space (IPNS) blade
+        ///// </summary>
+        //bool IsDual { get; }
 
         KVectorStorage<T> Blade { get; }
 

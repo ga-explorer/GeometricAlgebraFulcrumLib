@@ -17,6 +17,134 @@ GA-FuL is intended to:
 3. provide a simple unified and generic Application Programming Interface (API) for several classes of applications, including, but not limited to, numerical computations, symbolic manipulations, and optimized code generation.
 4. implement an extensible layered approach to allow users of different backgrounds to select the suitable level of coding they can handle, ranging from a very high-level of coordinate-independent prototyping using GA operations to a fully-controlled lower level of direct manipulation of scalars and coordinates.
 
+## GA-FuL Usage
+
+The following example shows a geometric construction for computing vertex positions of multidimensional regular <a href="https://en.wikipedia.org/wiki/Simplex" target="_blank">simplex</a>, and finding the radii ratio of its <a href="https://en.wikipedia.org/wiki/Circumscribed_sphere" target="_blank">circumscribed</a> and <a href="https://en.wikipedia.org/wiki/Inscribed_sphere" target="_blank">inscribed</a> hyper-spheres. in 2-dimensions, the regular simplex is an <a href="https://en.wikipedia.org/wiki/Equilateral_triangle" target="_blank">equilateral triangle</a>. The 2-dimensional vectors from the triangle's centroid to its vertices are actually projections of 3 orthonormal basis vectors from a 3-dimensional space. This basic geometric idea can be generalized to any higher dimensions without change.
+
+![Regular Simplex Construction in 3D](GeometricAlgebraFulcrumLib.Documentation/Regular%20Simplex%20Construction%20in%203D.png)
+
+The main point here is the way GA-FuL is used to implement the construction in this example. The code begins by selecting a proper processor for the computation. In this example, a processor can be numeric (<a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Processors/ScalarAlgebra/ScalarAlgebraFloat64Processor.cs" target="_blank">`ScalarAlgebraFloat64Processor`</a>), or symbolic (either <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib.Mathematica/Processors/ScalarAlgebraMathematicaProcessor.cs" target="_blank">`ScalarAlgebraMathematicaProcessor`</a> or <a href="https://github.com/ga-explorer/GeometricAlgebraFulcrumLib/blob/main/GeometricAlgebraFulcrumLib/GeometricAlgebraFulcrumLib/Processors/ScalarAlgebra/ScalarAlgebraAngouriMathProcessor.cs" target="_blank">`ScalarAlgebraAngouriMathProcessor`</a>). The computation code itself is almost independent from the selected processor. Additionally, the computations are coordinates-independent, and dimensions-independents as illustrated in the code. The symbolic processors are very useful in finding mathematical patterns and doing more exact math computations with the geometric construction. Additionally, symbolic processors are the base for optimized code generation in GA-FuL.
+
+```csharp
+using System;
+using System.Linq;
+using GeometricAlgebraFulcrumLib.Mathematica.Processors;
+using GeometricAlgebraFulcrumLib.Mathematica.Text;
+using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.Utilities.Composers;
+using GeometricAlgebraFulcrumLib.Utilities.Extensions;
+using GeometricAlgebraFulcrumLib.Utilities.Factories;
+
+namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
+{
+    public static class RegularSimplexSample
+    {
+        public static void Execute()
+        {
+            // Select suitable scalar processor for managing computations
+            var scalarProcessor = ScalarAlgebraFloat64Processor.DefaultProcessor;
+
+            // Select a suitable text composer for displaying results
+            var textComposer = TextFloat64Composer.DefaultComposer;
+
+            // You can also use other kinds of symbolic processors and text composers
+
+            //var scalarProcessor = ScalarAlgebraMathematicaProcessor.DefaultProcessor;
+            //var textComposer = LaTeXMathematicaComposer.DefaultComposer;
+
+            //var scalarProcessor = ScalarAlgebraAngouriMathProcessor.DefaultProcessor;
+            //var textComposer = TextAngouriMathComposer.DefaultComposer;
+
+            // Make the same construction for dimensions 2, 3, ..., 10
+            // Note that there is no explicit use of coordinates, the abstract geometric
+            // idea is directly expressed in code
+            for (var n = 2U; n < 10U; n++)
+            {
+                // The dimension of the larger GA space is one more than the dimension
+                // of the target space
+                var vSpaceDimension = n + 1;
+
+                // Create a Euclidean geometric algebra processor based on the selected
+                // scalar processor
+                var processor = 
+                    scalarProcessor.CreateGeometricAlgebraEuclideanProcessor(vSpaceDimension);
+                
+                // The ones vector is the core of this geometric construction
+                var onesVector = processor
+                    .CreateVectorOnes((int) vSpaceDimension);
+                    //.MapScalars(expr => Mfs.N[expr].Evaluate());
+
+                // This hyperspace is the orthogonal complement of the all-ones vector
+                var hyperSpace = 
+                    onesVector.GetDualSubspace();
+
+                // Basis vectors of GA space
+                var basisVectors =
+                    processor.CreateVectorBasis().ToArray();
+
+                // Simplex centroid to vertex vectors are projections of basis vectors
+                // onto hyperSpace
+                var simplexVertices =
+                    basisVectors.ProjectOn(hyperSpace).ToArray();
+
+                // Take the average of the first n basis vectors of the larger GA space
+                var avgVector = 
+                    processor.CreateVectorAverageOnes((int) n);
+
+                // Projecting the average vector onto the hyperplane gives a radius of
+                // the inner sphere
+                var innerSphereRadius = 
+                    hyperSpace.Project(avgVector).Norm();
+
+                var outerSphereRadius =
+                    simplexVertices[0].Norm();
+
+                // The radius ratio of outer to inner spheres is equal to n
+                var sphereRatio = 
+                    outerSphereRadius / innerSphereRadius;
+
+                // Find a Euclidean rotor that maps the ones vector into the last
+                // basis vector of the GA space
+                var rotor = 
+                    onesVector.GetEuclideanRotorTo(basisVectors[n]);
+
+                // Rotate the simplex vertices from the GA space to the target space
+                // After rotation, the coordinate of the last basis vector is zero,
+                // so it can be discarded
+                var vertices =
+                    simplexVertices.OmMapUsing(rotor).ToArray();
+
+
+                //Display results
+                Console.WriteLine($"n = {n}");
+                Console.WriteLine();
+
+                Console.WriteLine($"Inner Sphere Radius = {textComposer.GetScalarText(innerSphereRadius)}");
+                Console.WriteLine();
+
+                Console.WriteLine($"Outer Sphere Radius = {textComposer.GetScalarText(outerSphereRadius)}");
+                Console.WriteLine();
+
+                Console.WriteLine($"Sphere Ratio = {textComposer.GetScalarText(sphereRatio)}");
+                Console.WriteLine();
+
+                Console.WriteLine($"Vertex Positions in {n + 1} dimensions:");
+                foreach (var position in simplexVertices)
+                    Console.WriteLine($"   {textComposer.GetMultivectorText(position)}");
+                Console.WriteLine();
+
+                Console.WriteLine($"Vertex Positions in {n} dimensions:");
+                foreach (var position in vertices)
+                    Console.WriteLine($"   {textComposer.GetMultivectorText(position)}");
+                Console.WriteLine();
+
+                Console.WriteLine();
+            }
+        }
+    }
+}
+```
+
 ## GA-FuL Components
 
 ### 1. Storage Components

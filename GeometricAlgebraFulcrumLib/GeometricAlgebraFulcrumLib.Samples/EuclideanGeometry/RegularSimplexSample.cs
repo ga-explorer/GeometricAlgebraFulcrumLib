@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Linq;
-using DataStructuresLib.BitManipulation;
-using GeometricAlgebraFulcrumLib.Mathematica;
-using GeometricAlgebraFulcrumLib.Mathematica.Mathematica.ExprFactory;
 using GeometricAlgebraFulcrumLib.Mathematica.Processors;
 using GeometricAlgebraFulcrumLib.Mathematica.Text;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
@@ -16,75 +13,81 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
     {
         public static void Execute()
         {
-            var scalarProcessor = ScalarAlgebraMathematicaProcessor.DefaultProcessor;
-            var textComposer = TextMathematicaComposer.DefaultComposer;
+            // Select suitable scalar processor for managing computations
+            var scalarProcessor = ScalarAlgebraFloat64Processor.DefaultProcessor;
 
-            //var scalarProcessor = ScalarAlgebraFloat64Processor.DefaultProcessor;
-            //var textComposer = TextFloat64Composer.DefaultComposer;
+            // Select a suitable text composer for displaying results
+            var textComposer = TextFloat64Composer.DefaultComposer;
+
+            // You can also use other kinds of symbolic processors and text composers
+
+            //var scalarProcessor = ScalarAlgebraMathematicaProcessor.DefaultProcessor;
+            //var textComposer = LaTeXMathematicaComposer.DefaultComposer;
 
             //var scalarProcessor = ScalarAlgebraAngouriMathProcessor.DefaultProcessor;
             //var textComposer = TextAngouriMathComposer.DefaultComposer;
 
+            // Make the same construction for dimensions 2, 3, ..., 10
+            // Note that there is no explicit use of coordinates, the abstract geometric
+            // idea is directly expressed in code
             for (var n = 2U; n < 10U; n++)
             {
+                // The dimension of the larger GA space is one more than the dimension
+                // of the target space
                 var vSpaceDimension = n + 1;
 
+                // Create a Euclidean geometric algebra processor based on the selected
+                // scalar processor
                 var processor = 
                     scalarProcessor.CreateGeometricAlgebraEuclideanProcessor(vSpaceDimension);
-
-                var originVector = processor.CreateVectorZero();
                 
-                // The all ones vector is the core of this geometric construction
+                // The ones vector is the core of this geometric construction
                 var onesVector = processor
                     .CreateVectorOnes((int) vSpaceDimension);
                     //.MapScalars(expr => Mfs.N[expr].Evaluate());
 
                 // This hyperspace is the orthogonal complement of the all-ones vector
-                var hyperSpace =
-                    processor.CreateSubspace(
-                    processor
-                            .Dual(onesVector.VectorStorage)
-                            .GetKVectorPart(n)
-                        );
+                var hyperSpace = 
+                    onesVector.GetDualSubspace();
 
-                // Basis vectors of larger GA space
+                // Basis vectors of GA space
                 var basisVectors =
-                    vSpaceDimension
-                        .GetRange()
-                        .Select(i => processor.CreateVectorBasis(i));
+                    processor.CreateVectorBasis().ToArray();
 
-                // Simplex centroid to vertex vectors are projections of basis vectors onto hyperSpace
+                // Simplex centroid to vertex vectors are projections of basis vectors
+                // onto hyperSpace
                 var simplexVertices =
-                    basisVectors
-                        .Select(basisVector => hyperSpace.Project(basisVector).CreateVector(processor))
-                        .ToArray();
+                    basisVectors.ProjectOn(hyperSpace).ToArray();
 
                 // Take the average of the first n basis vectors of the larger GA space
                 var avgVector = 
-                    processor.CreateVectorRepeatedScalar(
-                        (int) n, 
-                        processor.Inverse(processor.GetScalarFromNumber(n))
-                    );
+                    processor.CreateVectorAverageOnes((int) n);
 
-                // Projecting the average vector onto the hyperplane gives a radius of the inner sphere
+                // Projecting the average vector onto the hyperplane gives a radius of
+                // the inner sphere
                 var innerSphereRadius = 
-                    processor.Norm(hyperSpace.Project(avgVector));
+                    hyperSpace.Project(avgVector).Norm();
 
                 var outerSphereRadius =
-                    processor.Norm(simplexVertices[0].VectorStorage);
+                    simplexVertices[0].Norm();
 
                 // The radius ratio of outer to inner spheres is equal to n
                 var sphereRatio = 
-                    processor.Divide(outerSphereRadius, innerSphereRadius);
+                    outerSphereRadius / innerSphereRadius;
 
-                var rotor = processor.CreateEuclideanRotor(
-                    onesVector,
-                    processor.CreateVectorBasisStorage(n)
-                );
+                // Find a Euclidean rotor that maps the ones vector into the last
+                // basis vector of the GA space
+                var rotor = 
+                    onesVector.GetEuclideanRotorTo(basisVectors[n]);
 
+                // Rotate the simplex vertices from the GA space to the target space
+                // After rotation, the coordinate of the last basis vector is zero,
+                // so it can be discarded
                 var vertices =
-                    simplexVertices.Select(v => rotor.OmMapVector(v));
+                    simplexVertices.OmMapUsing(rotor).ToArray();
 
+
+                //Display results
                 Console.WriteLine($"n = {n}");
                 Console.WriteLine();
 

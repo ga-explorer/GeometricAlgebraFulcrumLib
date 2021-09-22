@@ -75,7 +75,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Complex NegativeTimes(Complex scalar1, Complex scalar2)
         {
-            return -scalar1 * scalar2;
+            return -(scalar1 * scalar2);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -87,7 +87,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Complex NegativeDivide(Complex scalar1, Complex scalar2)
         {
-            return -scalar1 / scalar2;
+            return -(scalar1 / scalar2);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

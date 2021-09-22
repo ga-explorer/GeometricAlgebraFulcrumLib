@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using DataStructuresLib.BitManipulation;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
@@ -93,14 +94,26 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
                 geometricProcessor.CreateVectorTermStorage(index, geometricProcessor.ScalarOne)
             );
         }
-        
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<Vector<T>> CreateVectorBasis<T>(this IGeometricAlgebraProcessor<T> geometricProcessor)
+        {
+            return geometricProcessor
+                .VSpaceDimension
+                .GetRange()
+                .Select(index => geometricProcessor.CreateVectorBasis(index));
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector<T> CreateVectorOnes<T>(this IGeometricAlgebraProcessor<T> geometricProcessor, int termsCount)
         {
+            var scalar =
+                geometricProcessor.ScalarOne;
+
             return new Vector<T>(
                 geometricProcessor,
                 geometricProcessor.CreateVectorStorage(
-                    geometricProcessor.ScalarOne.CreateLinVectorRepeatedScalarStorage(termsCount)
+                    scalar.CreateLinVectorRepeatedScalarStorage(termsCount)
                 )
             );
         }
@@ -108,18 +121,31 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector<T> CreateVectorUnitOnes<T>(this IGeometricAlgebraProcessor<T> geometricProcessor, int termsCount)
         {
-            var length = geometricProcessor.Sqrt(termsCount);
+            var scalar = 
+                geometricProcessor.Inverse(geometricProcessor.Sqrt(termsCount));
 
             return new Vector<T>(
                 geometricProcessor,
                 geometricProcessor.CreateVectorStorage(
-                    geometricProcessor
-                        .Divide(geometricProcessor.ScalarOne, length)
-                        .CreateLinVectorRepeatedScalarStorage(termsCount)
+                    scalar.CreateLinVectorRepeatedScalarStorage(termsCount)
                 )
             );
         }
         
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector<T> CreateVectorAverageOnes<T>(this IGeometricAlgebraProcessor<T> geometricProcessor, int termsCount)
+        {
+            var scalar = 
+                geometricProcessor.Inverse(geometricProcessor.GetScalarFromNumber(termsCount));
+
+            return new Vector<T>(
+                geometricProcessor,
+                geometricProcessor.CreateVectorStorage(
+                    scalar.CreateLinVectorRepeatedScalarStorage(termsCount)
+                )
+            );
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector<T> CreateVector<T>(this IGeometricAlgebraProcessor<T> geometricProcessor, IEnumerable<BasisTerm<T>> termsList)
         {

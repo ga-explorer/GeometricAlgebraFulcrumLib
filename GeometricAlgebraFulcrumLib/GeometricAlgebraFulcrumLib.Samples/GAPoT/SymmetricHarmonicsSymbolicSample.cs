@@ -79,7 +79,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
                 );
 
             var muSubspace = 
-                Subspace<Expr>.CreateDirect(GeometricProcessor, muStorage);
+                Subspace<Expr>.Create(GeometricProcessor, muStorage);
 
             //var muVector =
             //    GeoEuclideanVector<Expr>.Create(muStorage);

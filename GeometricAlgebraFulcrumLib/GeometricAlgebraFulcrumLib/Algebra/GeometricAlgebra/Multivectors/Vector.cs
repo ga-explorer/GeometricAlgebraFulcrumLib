@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Vectors;
 using GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.Geometry.Subspaces;
 using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.LinearAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
@@ -986,6 +987,25 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors
             return VectorStorage;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Subspace<T> GetSubspace()
+        {
+            return Subspace<T>.Create(
+                GeometricProcessor,
+                VectorStorage
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Subspace<T> GetDualSubspace()
+        {
+            return Subspace<T>.Create(
+                GeometricProcessor,
+                GeometricProcessor.Dual(VectorStorage)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override string ToString()
         {
             return VectorStorage.GetMultivectorText();

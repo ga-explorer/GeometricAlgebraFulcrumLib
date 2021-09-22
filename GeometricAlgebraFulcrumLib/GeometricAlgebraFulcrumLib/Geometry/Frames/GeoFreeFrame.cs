@@ -252,7 +252,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Frames
         public Subspace<T> GetSubspace()
         {
             //TODO: Modify this to find the outer product of the basis from vectors _vectorStoragesList
-            return Subspace<T>.CreateDirect(
+            return Subspace<T>.Create(
                 GeometricProcessor,
                 GeometricProcessor.Op(_vectorStoragesList)
             );

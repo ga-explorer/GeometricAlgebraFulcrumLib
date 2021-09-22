@@ -14,15 +14,63 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Subspaces
         : ISubspace<T>
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Subspace<T> CreateDirect(IGeometricAlgebraProcessor<T> processor, KVectorStorage<T> bladeStorage)
+        public static Subspace<T> Create(IGeometricAlgebraProcessor<T> processor, KVectorStorage<T> bladeStorage)
         {
-            return new Subspace<T>(processor, bladeStorage, true);
+            return new Subspace<T>(processor, bladeStorage);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Subspace<T> CreateDual(IGeometricAlgebraProcessor<T> processor, KVectorStorage<T> bladeStorage)
+        public static Subspace<T> CreateFromDual(IGeometricAlgebraProcessor<T> processor, KVectorStorage<T> bladeStorage)
         {
-            return new Subspace<T>(processor, bladeStorage, false);
+            return new Subspace<T>(
+                processor, 
+                processor.Dual(bladeStorage)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Subspace<T> CreateFromBasisVector(IGeometricAlgebraProcessor<T> processor, ulong index)
+        {
+            return new Subspace<T>(
+                processor, 
+                processor.CreateVectorBasisStorage(index)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Subspace<T> CreateFromBasisBivector(IGeometricAlgebraProcessor<T> processor, ulong index)
+        {
+            return new Subspace<T>(
+                processor, 
+                processor.CreateBivectorBasisStorage(index)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Subspace<T> CreateFromBasisBivector(IGeometricAlgebraProcessor<T> processor, ulong index1, ulong index2)
+        {
+            return new Subspace<T>(
+                processor, 
+                processor.CreateBivectorBasisStorage(index1, index2)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Subspace<T> CreateFromBasisBlade(IGeometricAlgebraProcessor<T> processor, ulong id)
+        {
+            return new Subspace<T>(
+                processor, 
+                processor.CreateKVectorBasisStorage(id)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Subspace<T> CreateFromBasisBlade(IGeometricAlgebraProcessor<T> processor, uint grade, ulong index)
+        {
+            return new Subspace<T>(
+                processor, 
+                processor.CreateKVectorBasisStorage(grade, index)
+            );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -30,8 +78,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Subspaces
         {
             return new Subspace<T>(
                 processor,
-                processor.CreatePseudoScalarStorage(),
-                true
+                processor.CreatePseudoScalarStorage()
             );
         }
 
@@ -40,8 +87,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Subspaces
         {
             return new Subspace<T>(
                 processor,
-                processor.CreatePseudoScalarStorage(vSpaceDimension),
-                true
+                processor.CreatePseudoScalarStorage(vSpaceDimension)
             );
         }
 
@@ -57,10 +103,10 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Subspaces
         public uint SubspaceDimension 
             => Blade.Grade;
 
-        public bool IsDirect { get; }
+        //public bool IsDirect { get; }
 
-        public bool IsDual 
-            => !IsDirect;
+        //public bool IsDual 
+        //    => !IsDirect;
 
         public KVectorStorage<T> Blade { get; }
 
@@ -75,15 +121,13 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Subspaces
             => false;
 
 
-        private Subspace([NotNull] IGeometricAlgebraProcessor<T> processor, [NotNull] KVectorStorage<T> bladeStorage, bool isDirect)
+        private Subspace([NotNull] IGeometricAlgebraProcessor<T> processor, [NotNull] KVectorStorage<T> bladeStorage)
         {
             GeometricProcessor = processor;
 
             Blade = bladeStorage;
             BladeSignature = processor.Sp(bladeStorage);
             BladeInverse = GeometricProcessor.Divide(bladeStorage, BladeSignature);
-
-            IsDirect = isDirect;
         }
 
 
@@ -96,7 +140,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Subspaces
                     BladeInverse
                 );
 
-            return new Subspace<T>(GeometricProcessor, blade, subspace.IsDirect);
+            return new Subspace<T>(GeometricProcessor, blade);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -110,7 +154,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Subspaces
                     BladeInverse
                 ).GetKVectorPart(subspace.Blade.Grade);
 
-            return new Subspace<T>(GeometricProcessor, blade, subspace.IsDirect);
+            return new Subspace<T>(GeometricProcessor, blade);
         }
 
         //[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -144,7 +188,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Subspaces
                 BladeInverse
             ).GetKVectorPart(subspace.Blade.Grade);
 
-            return new Subspace<T>(GeometricProcessor, blade, subspace.IsDirect);
+            return new Subspace<T>(GeometricProcessor, blade);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -158,7 +202,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Subspaces
                 Blade
             );
 
-            return new Subspace<T>(GeometricProcessor, blade, subspace.IsDirect);
+            return new Subspace<T>(GeometricProcessor, blade);
         }
     }
 }

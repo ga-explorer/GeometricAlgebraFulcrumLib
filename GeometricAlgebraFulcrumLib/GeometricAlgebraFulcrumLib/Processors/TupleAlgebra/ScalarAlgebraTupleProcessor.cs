@@ -4,7 +4,7 @@ using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Processors.TupleAlgebra
 {
-    public sealed class GeoScalarProcessorTuple<T>
+    public sealed class ScalarAlgebraTupleProcessor<T>
         : IScalarAlgebraProcessor<IGeoTuple<T>>
     {
         public IScalarAlgebraProcessor<T> ItemScalarProcessor { get; }
@@ -32,7 +32,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.TupleAlgebra
         public IGeoTuple<T> ScalarE { get; }
 
 
-        public GeoScalarProcessorTuple([NotNull] IScalarAlgebraProcessor<T> itemScalarProcessor)
+        public ScalarAlgebraTupleProcessor([NotNull] IScalarAlgebraProcessor<T> itemScalarProcessor)
         {
             ItemScalarProcessor = itemScalarProcessor;
 

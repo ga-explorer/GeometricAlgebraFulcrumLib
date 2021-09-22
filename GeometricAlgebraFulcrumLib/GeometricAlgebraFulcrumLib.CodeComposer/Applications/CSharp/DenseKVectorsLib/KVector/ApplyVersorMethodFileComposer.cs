@@ -52,7 +52,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         protected override void DefineContextComputations(SymbolicContext context)
         {
             var inputSubspace = 
-                GeometricProcessor.CreateDirectSubspace(_inputKVector);
+                GeometricProcessor.CreateSubspace(_inputKVector);
 
             _outputKVector = _operationSpecs.OperationKind switch
             {
