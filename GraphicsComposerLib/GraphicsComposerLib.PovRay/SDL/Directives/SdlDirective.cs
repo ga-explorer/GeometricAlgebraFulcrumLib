@@ -1,4 +1,4 @@
-﻿namespace GraphicsComposerLib.POVRay.SDL.Directives
+﻿namespace GraphicsComposerLib.PovRay.SDL.Directives
 {
     public abstract class SdlDirective : ISdlDirective
     {

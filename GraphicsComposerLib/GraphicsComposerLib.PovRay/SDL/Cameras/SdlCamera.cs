@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using GraphicsComposerLib.POVRay.SDL.Transforms;
+using GraphicsComposerLib.PovRay.SDL.Transforms;
 
-namespace GraphicsComposerLib.POVRay.SDL.Cameras
+namespace GraphicsComposerLib.PovRay.SDL.Cameras
 {
     public abstract class SdlCamera : ISdlCamera
     {

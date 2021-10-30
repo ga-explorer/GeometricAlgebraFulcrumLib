@@ -1,4 +1,4 @@
-﻿namespace GraphicsComposerLib.POVRay.SDL.Modifiers
+﻿namespace GraphicsComposerLib.PovRay.SDL.Modifiers
 {
     public enum SdlSimpleModifierKind
     {

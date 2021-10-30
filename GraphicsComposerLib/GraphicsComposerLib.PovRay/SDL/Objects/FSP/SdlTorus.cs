@@ -1,6 +1,6 @@
-﻿using GraphicsComposerLib.POVRay.SDL.Values;
+﻿using GraphicsComposerLib.PovRay.SDL.Values;
 
-namespace GraphicsComposerLib.POVRay.SDL.Objects.FSP
+namespace GraphicsComposerLib.PovRay.SDL.Objects.FSP
 {
     public class SdlTorus : SdlPolynomialObject, ISdlFspObject
     {

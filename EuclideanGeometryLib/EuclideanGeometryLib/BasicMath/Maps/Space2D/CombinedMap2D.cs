@@ -11,7 +11,12 @@ namespace EuclideanGeometryLib.BasicMath.Maps.Space2D
             = new List<Tuple<double, IAffineMap2D>>();
 
 
-        public Matrix3X3 ToMatrix()
+        public AffineMapMatrix3X3 ToMatrix()
+        {
+            throw new NotImplementedException();
+        }
+
+        public double[,] ToArray2D()
         {
             throw new NotImplementedException();
         }

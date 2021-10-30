@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using TextComposerLib;
 
-namespace GraphicsComposerLib.POVRay.SDL.Values
+namespace GraphicsComposerLib.PovRay.SDL.Values
 {
     public abstract class SdlValue : ISdlValue
     {

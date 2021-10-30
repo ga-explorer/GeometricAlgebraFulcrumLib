@@ -1,6 +1,6 @@
-﻿using GraphicsComposerLib.POVRay.SDL.Pigments;
+﻿using GraphicsComposerLib.PovRay.SDL.Pigments;
 
-namespace GraphicsComposerLib.POVRay.SDL.Directives
+namespace GraphicsComposerLib.PovRay.SDL.Directives
 {
     public sealed class SdlDefaultPigmentDirective : SdlDirective
     {

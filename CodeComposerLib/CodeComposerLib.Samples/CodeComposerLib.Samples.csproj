@@ -10,4 +10,8 @@
     <PackageReference Include="CS-Script" Version="4.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ThreeJsParser\" />
+  </ItemGroup>
+
 </Project>

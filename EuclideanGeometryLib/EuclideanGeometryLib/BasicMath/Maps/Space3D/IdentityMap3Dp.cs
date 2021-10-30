@@ -1,4 +1,5 @@
-﻿using EuclideanGeometryLib.BasicMath.Matrices;
+﻿using System.Numerics;
+using EuclideanGeometryLib.BasicMath.Matrices;
 using EuclideanGeometryLib.BasicMath.Tuples;
 
 namespace EuclideanGeometryLib.BasicMath.Maps.Space3D
@@ -12,9 +13,19 @@ namespace EuclideanGeometryLib.BasicMath.Maps.Space3D
         public bool SwapsHandedness => false;
 
 
-        public Matrix4X4 ToMatrix()
+        public AffineMapMatrix4X4 ToMatrix()
         {
-            return Matrix4X4.CreateIdentityMatrix();
+            return AffineMapMatrix4X4.CreateIdentityMatrix();
+        }
+
+        public Matrix4x4 ToSystemNumericsMatrix()
+        {
+            return Matrix4x4.Identity;
+        }
+
+        public double[,] ToArray2D()
+        {
+            throw new System.NotImplementedException();
         }
 
         public ITuple3D MapPoint(ITuple3D point)

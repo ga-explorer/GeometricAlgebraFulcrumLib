@@ -1,4 +1,5 @@
-﻿using EuclideanGeometryLib.BasicMath.Matrices;
+﻿using System.Numerics;
+using EuclideanGeometryLib.BasicMath.Matrices;
 using EuclideanGeometryLib.BasicMath.Tuples;
 
 namespace EuclideanGeometryLib.BasicMath.Maps.Space3D
@@ -7,7 +8,11 @@ namespace EuclideanGeometryLib.BasicMath.Maps.Space3D
     {
         bool SwapsHandedness { get; }
 
-        Matrix4X4 ToMatrix();
+        AffineMapMatrix4X4 ToMatrix();
+
+        Matrix4x4 ToSystemNumericsMatrix();
+
+        double[,] ToArray2D();
 
         ITuple3D MapPoint(ITuple3D point);
 

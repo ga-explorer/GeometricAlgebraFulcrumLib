@@ -1,4 +1,4 @@
-﻿namespace GraphicsComposerLib.POVRay.SDL.Objects.ISP
+﻿namespace GraphicsComposerLib.PovRay.SDL.Objects.ISP
 {
     public class SdlCubicPolySurface : SdlPolySurface
     {

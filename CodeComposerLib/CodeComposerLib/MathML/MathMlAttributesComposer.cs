@@ -5,12 +5,13 @@ using TextComposerLib.Text.Attributes;
 
 namespace CodeComposerLib.MathML
 {
-    internal class MathMlAttributesComposer : AttributesTextComposer
+    internal class MathMlAttributesComposer : 
+        AttributesTextComposer
     {
         public MathMlAttributesComposer()
         {
-            KeyValueSeparator = "=";
-            AttributesSeparator = " ";
+            AttributesDictionary.KeyValueSeparator = "=";
+            AttributesDictionary.AttributesSeparator = " ";
         }
 
         public MathMlAttributesComposer SetAttributeValue(string key, double value, double valueDefault)

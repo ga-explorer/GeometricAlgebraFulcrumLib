@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Numerics;
 using EuclideanGeometryLib.BasicMath.Matrices;
 using EuclideanGeometryLib.BasicMath.Tuples;
 using EuclideanGeometryLib.BasicMath.Tuples.Immutable;
@@ -280,7 +281,17 @@ namespace EuclideanGeometryLib.BasicMath.Maps.Space3D
         }
 
 
-        public Matrix4X4 ToMatrix()
+        public AffineMapMatrix4X4 ToMatrix()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Matrix4x4 ToSystemNumericsMatrix()
+        {
+            throw new NotImplementedException();
+        }
+
+        public double[,] ToArray2D()
         {
             throw new NotImplementedException();
         }

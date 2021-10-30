@@ -1,6 +1,6 @@
-﻿using GraphicsComposerLib.POVRay.SDL.Modifiers;
+﻿using GraphicsComposerLib.PovRay.SDL.Modifiers;
 
-namespace GraphicsComposerLib.POVRay.SDL.Pigments
+namespace GraphicsComposerLib.PovRay.SDL.Pigments
 {
     public interface ISdlPigment : ISdlObjectModifier
     {

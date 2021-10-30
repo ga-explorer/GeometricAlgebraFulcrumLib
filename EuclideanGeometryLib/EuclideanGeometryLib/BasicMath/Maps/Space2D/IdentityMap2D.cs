@@ -5,9 +5,14 @@ namespace EuclideanGeometryLib.BasicMath.Maps.Space2D
 {
     public sealed class IdentityMap2D : IAffineMap2D
     {
-        public Matrix3X3 ToMatrix()
+        public AffineMapMatrix3X3 ToMatrix()
         {
-            return Matrix3X3.CreateIdentityMatrix();
+            return AffineMapMatrix3X3.CreateIdentityMatrix();
+        }
+
+        public double[,] ToArray2D()
+        {
+            throw new System.NotImplementedException();
         }
 
         public ITuple2D MapPoint(ITuple2D point)

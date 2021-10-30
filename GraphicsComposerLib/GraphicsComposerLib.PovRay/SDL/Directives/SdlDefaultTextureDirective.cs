@@ -1,6 +1,6 @@
-﻿using GraphicsComposerLib.POVRay.SDL.Textures;
+﻿using GraphicsComposerLib.PovRay.SDL.Textures;
 
-namespace GraphicsComposerLib.POVRay.SDL.Directives
+namespace GraphicsComposerLib.PovRay.SDL.Directives
 {
     public sealed class SdlDefaultTextureDirective : SdlDirective
     {

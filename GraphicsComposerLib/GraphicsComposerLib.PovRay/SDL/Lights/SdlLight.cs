@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using GraphicsComposerLib.POVRay.SDL.Objects;
-using GraphicsComposerLib.POVRay.SDL.Transforms;
-using GraphicsComposerLib.POVRay.SDL.Values;
+using GraphicsComposerLib.PovRay.SDL.Objects;
+using GraphicsComposerLib.PovRay.SDL.Transforms;
+using GraphicsComposerLib.PovRay.SDL.Values;
 
-namespace GraphicsComposerLib.POVRay.SDL.Lights
+namespace GraphicsComposerLib.PovRay.SDL.Lights
 {
     public class SdlLight : ISdlLight
     {

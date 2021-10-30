@@ -1,4 +1,4 @@
-﻿namespace GraphicsComposerLib.POVRay.SDL.Finishes
+﻿namespace GraphicsComposerLib.PovRay.SDL.Finishes
 {
     public interface ISdlFinishItem : ISdlElement
     {

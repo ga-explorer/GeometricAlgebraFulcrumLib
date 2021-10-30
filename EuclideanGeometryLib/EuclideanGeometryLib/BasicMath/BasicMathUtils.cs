@@ -633,13 +633,13 @@ namespace EuclideanGeometryLib.BasicMath
             };
         }
 
-        public static Matrix3X3 Lerp(this double t, Matrix3X3 v1, Matrix3X3 v2)
+        public static AffineMapMatrix3X3 Lerp(this double t, AffineMapMatrix3X3 v1, AffineMapMatrix3X3 v2)
         {
             Debug.Assert(!v1.HasNaNComponent && !v2.HasNaNComponent && !Double.IsNaN(t));
 
             var s = 1.0d - t;
 
-            return new Matrix3X3()
+            return new AffineMapMatrix3X3()
             {
                 [0] = s * v1[0] + t * v2[0],
                 [1] = s * v1[1] + t * v2[1],
@@ -739,7 +739,7 @@ namespace EuclideanGeometryLib.BasicMath
             return tList.Select(t => t.Lerp(v1, v2));
         }
 
-        public static IEnumerable<Matrix3X3> Lerp(this IEnumerable<double> tList, Matrix3X3 v1, Matrix3X3 v2)
+        public static IEnumerable<AffineMapMatrix3X3> Lerp(this IEnumerable<double> tList, AffineMapMatrix3X3 v1, AffineMapMatrix3X3 v2)
         {
             return tList.Select(t => t.Lerp(v1, v2));
         }
@@ -754,7 +754,7 @@ namespace EuclideanGeometryLib.BasicMath
 
         #region Affine Maps
 
-        private static Tuple<Tuple3D, Tuple3D> MapPoint(this Matrix4X4 mapMatrix, Tuple3D point, Tuple3D ptError)
+        private static Tuple<Tuple3D, Tuple3D> MapPoint(this AffineMapMatrix4X4 mapMatrix, Tuple3D point, Tuple3D ptError)
         {
             //TODO: Study techniques in book "Computer-Aided Geometric Design - A Totally Four-Dimensional Approach 2002"
             //and section Section 3.9 on managing rounding errors in PBRT book

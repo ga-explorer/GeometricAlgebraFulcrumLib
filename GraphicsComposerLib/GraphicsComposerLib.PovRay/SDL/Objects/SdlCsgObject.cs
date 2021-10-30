@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace GraphicsComposerLib.POVRay.SDL.Objects
+namespace GraphicsComposerLib.PovRay.SDL.Objects
 {
     public enum SdlCsgOperation
     {

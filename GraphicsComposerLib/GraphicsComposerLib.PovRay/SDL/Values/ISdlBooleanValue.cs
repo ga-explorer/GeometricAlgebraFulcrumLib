@@ -1,4 +1,4 @@
-﻿namespace GraphicsComposerLib.POVRay.SDL.Values
+﻿namespace GraphicsComposerLib.PovRay.SDL.Values
 {
     public interface ISdlBooleanValue : ISdlValue
     {

@@ -1,4 +1,4 @@
-﻿namespace GraphicsComposerLib.Xeogl
+﻿namespace GraphicsComposerLib.WinForms.Xeogl
 {
     partial class FormXeoglRendering
     {

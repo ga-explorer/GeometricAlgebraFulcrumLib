@@ -1,6 +1,6 @@
-﻿using GraphicsComposerLib.POVRay.SDL.Values;
+﻿using GraphicsComposerLib.PovRay.SDL.Values;
 
-namespace GraphicsComposerLib.POVRay.SDL.Lights
+namespace GraphicsComposerLib.PovRay.SDL.Lights
 {
     public enum SdlSpotLightShape
     {

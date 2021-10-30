@@ -17,7 +17,9 @@
     <ProjectReference Include="..\..\DataStructuresLib\DataStructuresLib\DataStructuresLib.csproj" />
     <ProjectReference Include="..\..\EuclideanGeometryLib\EuclideanGeometryLib\EuclideanGeometryLib.csproj" />
     <ProjectReference Include="..\..\GAPoTNumLib\GAPoTNumLib\GAPoTNumLib.csproj" />
+    <ProjectReference Include="..\..\GraphicsComposerLib\GraphicsComposerLib.Geometry\GraphicsComposerLib.Geometry.csproj" />
     <ProjectReference Include="..\..\GraphicsComposerLib\GraphicsComposerLib.Svg\GraphicsComposerLib.Svg.csproj" />
+    <ProjectReference Include="..\..\GraphicsComposerLib\GraphicsComposerLib.WebGl\GraphicsComposerLib.WebGl.csproj" />
     <ProjectReference Include="..\..\TextComposerLib\TextComposerLib\TextComposerLib.csproj" />
     <ProjectReference Include="..\GeometricAlgebraFulcrumLib.CodeComposer\GeometricAlgebraFulcrumLib.CodeComposer.csproj" />
     <ProjectReference Include="..\GeometricAlgebraFulcrumLib.Mathematica\GeometricAlgebraFulcrumLib.Mathematica.csproj" />
@@ -29,6 +31,10 @@
     <Reference Include="Wolfram.NETLink, Version=1.7.7798.4107, Culture=neutral, PublicKeyToken=null">
       <HintPath>C:\Program Files\Wolfram Research\Mathematica\12.3\SystemFiles\Links\NETLink\Wolfram.NETLink.dll</HintPath>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Graphics\ThreeJs\" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,5 @@
-﻿using EuclideanGeometryLib.BasicMath.Matrices;
+﻿using System.Numerics;
+using EuclideanGeometryLib.BasicMath.Matrices;
 using EuclideanGeometryLib.BasicMath.Tuples;
 using EuclideanGeometryLib.BasicMath.Tuples.Immutable;
 
@@ -10,9 +11,9 @@ namespace EuclideanGeometryLib.BasicMath.Maps.Space3D
     /// </summary>
     public sealed class LinearMap3Dp : IAffineMap3D
     {
-        private Matrix4X4 _matrix;
+        private AffineMapMatrix4X4 _matrix;
 
-        private Matrix4X4 _invMatrix;
+        private AffineMapMatrix4X4 _invMatrix;
 
 
         public double this[int i, int j, bool useInvMatrix] =>
@@ -33,20 +34,20 @@ namespace EuclideanGeometryLib.BasicMath.Maps.Space3D
 
         public LinearMap3Dp()
         {
-            _matrix = Matrix4X4.CreateIdentityMatrix();
-            _invMatrix = Matrix4X4.CreateIdentityMatrix();
+            _matrix = AffineMapMatrix4X4.CreateIdentityMatrix();
+            _invMatrix = AffineMapMatrix4X4.CreateIdentityMatrix();
         }
 
-        public LinearMap3Dp(Matrix4X4 matrix)
+        public LinearMap3Dp(AffineMapMatrix4X4 matrix)
         {
-            _matrix = new Matrix4X4(matrix);
+            _matrix = new AffineMapMatrix4X4(matrix);
             _invMatrix = matrix.Inverse();
         }
 
-        public LinearMap3Dp(Matrix4X4 matrix, Matrix4X4 invMatrix)
+        public LinearMap3Dp(AffineMapMatrix4X4 matrix, AffineMapMatrix4X4 invMatrix)
         {
-            _matrix = new Matrix4X4(matrix);
-            _invMatrix = new Matrix4X4(invMatrix);
+            _matrix = new AffineMapMatrix4X4(matrix);
+            _invMatrix = new AffineMapMatrix4X4(invMatrix);
         }
 
 
@@ -78,86 +79,96 @@ namespace EuclideanGeometryLib.BasicMath.Maps.Space3D
 
         public LinearMap3Dp ResetToTranslation(double dx, double dy, double dz)
         {
-            _matrix = Matrix4X4.CreateTranslationMatrix(dx, dy, dz);
-            _invMatrix = Matrix4X4.CreateTranslationMatrix(-dx, -dy, -dz);
+            _matrix = AffineMapMatrix4X4.CreateTranslationMatrix(dx, dy, dz);
+            _invMatrix = AffineMapMatrix4X4.CreateTranslationMatrix(-dx, -dy, -dz);
 
             return this;
         }
 
         public LinearMap3Dp PrependTranslation(double dx, double dy, double dz)
         {
-            _matrix = Matrix4X4.CreateTranslationMatrix(dx, dy, dz) * _matrix;
-            _invMatrix = _invMatrix * Matrix4X4.CreateTranslationMatrix(-dx, -dy, -dz);
+            _matrix = AffineMapMatrix4X4.CreateTranslationMatrix(dx, dy, dz) * _matrix;
+            _invMatrix = _invMatrix * AffineMapMatrix4X4.CreateTranslationMatrix(-dx, -dy, -dz);
 
             return this;
         }
 
         public LinearMap3Dp AppendTranslation(double dx, double dy, double dz)
         {
-            _matrix = _matrix * Matrix4X4.CreateTranslationMatrix(dx, dy, dz);
-            _invMatrix = Matrix4X4.CreateTranslationMatrix(-dx, -dy, -dz) * _invMatrix;
+            _matrix = _matrix * AffineMapMatrix4X4.CreateTranslationMatrix(dx, dy, dz);
+            _invMatrix = AffineMapMatrix4X4.CreateTranslationMatrix(-dx, -dy, -dz) * _invMatrix;
 
             return this;
         }
 
         public LinearMap3Dp ResetToScaling(double sx, double sy, double sz)
         {
-            _matrix = Matrix4X4.CreateScalingMatrix(sx, sy, sz);
-            _invMatrix = Matrix4X4.CreateScalingMatrix(1.0d / sx, 1.0d / sy, 1.0d / sz);
+            _matrix = AffineMapMatrix4X4.CreateScalingMatrix(sx, sy, sz);
+            _invMatrix = AffineMapMatrix4X4.CreateScalingMatrix(1.0d / sx, 1.0d / sy, 1.0d / sz);
 
             return this;
         }
 
         public LinearMap3Dp PrependScaling(double sx, double sy, double sz)
         {
-            _matrix = Matrix4X4.CreateScalingMatrix(sx, sy, sz) * _matrix;
-            _invMatrix = _invMatrix * Matrix4X4.CreateScalingMatrix(1.0d / sx, 1.0d / sy, 1.0d / sz);
+            _matrix = AffineMapMatrix4X4.CreateScalingMatrix(sx, sy, sz) * _matrix;
+            _invMatrix = _invMatrix * AffineMapMatrix4X4.CreateScalingMatrix(1.0d / sx, 1.0d / sy, 1.0d / sz);
 
             return this;
         }
 
         public LinearMap3Dp AppendScaling(double sx, double sy, double sz)
         {
-            _matrix = _matrix * Matrix4X4.CreateScalingMatrix(sx, sy, sz);
-            _invMatrix = Matrix4X4.CreateScalingMatrix(1.0d / sx, 1.0d / sy, 1.0d / sz) * _invMatrix;
+            _matrix = _matrix * AffineMapMatrix4X4.CreateScalingMatrix(sx, sy, sz);
+            _invMatrix = AffineMapMatrix4X4.CreateScalingMatrix(1.0d / sx, 1.0d / sy, 1.0d / sz) * _invMatrix;
 
             return this;
         }
 
         public LinearMap3Dp ResetToScaling(double s)
         {
-            _matrix = Matrix4X4.CreateScalingMatrix(s);
-            _invMatrix = Matrix4X4.CreateScalingMatrix(1.0d / s);
+            _matrix = AffineMapMatrix4X4.CreateScalingMatrix(s);
+            _invMatrix = AffineMapMatrix4X4.CreateScalingMatrix(1.0d / s);
 
             return this;
         }
 
         public LinearMap3Dp PrependScaling(double s)
         {
-            _matrix = Matrix4X4.CreateScalingMatrix(s) * _matrix;
-            _invMatrix = _invMatrix * Matrix4X4.CreateScalingMatrix(1.0d / s);
+            _matrix = AffineMapMatrix4X4.CreateScalingMatrix(s) * _matrix;
+            _invMatrix = _invMatrix * AffineMapMatrix4X4.CreateScalingMatrix(1.0d / s);
 
             return this;
         }
 
         public LinearMap3Dp AppendScaling(double s)
         {
-            _matrix = _matrix * Matrix4X4.CreateScalingMatrix(s);
-            _invMatrix = Matrix4X4.CreateScalingMatrix(1.0d / s) * _invMatrix;
+            _matrix = _matrix * AffineMapMatrix4X4.CreateScalingMatrix(s);
+            _invMatrix = AffineMapMatrix4X4.CreateScalingMatrix(1.0d / s) * _invMatrix;
 
             return this;
         }
 
         //TODO: Complete all other maps here
 
-        public Matrix4X4 ToMatrix()
+        public AffineMapMatrix4X4 ToMatrix()
         {
-            return new Matrix4X4(_matrix);
+            return new AffineMapMatrix4X4(_matrix);
         }
 
-        public Matrix4X4 ToMatrix(bool useInvMatrix)
+        public Matrix4x4 ToSystemNumericsMatrix()
         {
-            return new Matrix4X4(useInvMatrix ? _invMatrix : _matrix);
+            return _matrix.ToSystemNumericsMatrix();
+        }
+
+        public double[,] ToArray2D()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public AffineMapMatrix4X4 ToMatrix(bool useInvMatrix)
+        {
+            return new AffineMapMatrix4X4(useInvMatrix ? _invMatrix : _matrix);
         }
 
         public ITuple3D MapPoint(ITuple3D point)

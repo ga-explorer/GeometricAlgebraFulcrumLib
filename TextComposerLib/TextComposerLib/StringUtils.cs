@@ -99,6 +99,11 @@ namespace TextComposerLib
             return (text.IndexOf('\n') < 0);
         }
 
+        public static bool IsNullOrEmpty(this string text)
+        {
+            return string.IsNullOrEmpty(text);
+        }
+
         /// <summary>
         /// Returns true if this string is  null, empty, or a single line; it contains no '\n' characters
         /// </summary>

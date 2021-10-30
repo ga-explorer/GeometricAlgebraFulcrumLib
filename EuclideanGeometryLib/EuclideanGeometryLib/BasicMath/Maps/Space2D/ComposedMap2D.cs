@@ -75,14 +75,14 @@ namespace EuclideanGeometryLib.BasicMath.Maps.Space2D
             return this;
         }
 
-        public Matrix3X3 ToMatrix()
+        public AffineMapMatrix3X3 ToMatrix()
         {
             //Construct matrix columns
             var c1 = MapVector(new Tuple2D(1, 0));
             var c2 = MapVector(new Tuple2D(0, 1));
             var c3 = MapPoint(new Tuple2D(0, 0));
 
-            return new Matrix3X3()
+            return new AffineMapMatrix3X3()
             {
                 [0] = c1.X,
                 [3] = c2.X,
@@ -92,6 +92,11 @@ namespace EuclideanGeometryLib.BasicMath.Maps.Space2D
                 [7] = c3.Y,
                 [8] = 1.0
             };
+        }
+
+        public double[,] ToArray2D()
+        {
+            throw new System.NotImplementedException();
         }
 
         public ITuple2D MapPoint(ITuple2D point)

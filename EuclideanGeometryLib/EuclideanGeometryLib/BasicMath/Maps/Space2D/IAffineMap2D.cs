@@ -5,7 +5,9 @@ namespace EuclideanGeometryLib.BasicMath.Maps.Space2D
 {
     public interface IAffineMap2D
     {
-        Matrix3X3 ToMatrix();
+        AffineMapMatrix3X3 ToMatrix();
+
+        double[,] ToArray2D();
 
         ITuple2D MapPoint(ITuple2D point);
 

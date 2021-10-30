@@ -2,7 +2,7 @@
 
 using DataStructuresLib;
 
-namespace GraphicsComposerLib.POVRay.SDL
+namespace GraphicsComposerLib.PovRay.SDL
 {
     public interface ISdlDynamicVisitor : IDynamicTreeVisitor<ISdlElement>
     {

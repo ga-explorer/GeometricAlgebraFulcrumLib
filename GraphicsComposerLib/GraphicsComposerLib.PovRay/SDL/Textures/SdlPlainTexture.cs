@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using GraphicsComposerLib.POVRay.SDL.Finishes;
-using GraphicsComposerLib.POVRay.SDL.Pigments;
-using GraphicsComposerLib.POVRay.SDL.Transforms;
+using GraphicsComposerLib.PovRay.SDL.Finishes;
+using GraphicsComposerLib.PovRay.SDL.Pigments;
+using GraphicsComposerLib.PovRay.SDL.Transforms;
 
-namespace GraphicsComposerLib.POVRay.SDL.Textures
+namespace GraphicsComposerLib.PovRay.SDL.Textures
 {
     public class SdlPlainTexture : SdlTexture
     {

@@ -1,4 +1,4 @@
-﻿namespace GraphicsComposerLib.POVRay.SDL
+﻿namespace GraphicsComposerLib.PovRay.SDL
 {
     public class SdlFreeCode : ISdlStatement
     {

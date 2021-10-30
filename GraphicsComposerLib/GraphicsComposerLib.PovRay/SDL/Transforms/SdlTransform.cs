@@ -1,4 +1,4 @@
-﻿namespace GraphicsComposerLib.POVRay.SDL.Transforms
+﻿namespace GraphicsComposerLib.PovRay.SDL.Transforms
 {
     public abstract class SdlTransform : ISdlTransform
     {

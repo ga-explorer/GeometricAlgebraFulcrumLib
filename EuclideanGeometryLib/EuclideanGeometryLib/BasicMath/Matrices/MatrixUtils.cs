@@ -7,7 +7,7 @@ namespace EuclideanGeometryLib.BasicMath.Matrices
         //TODO: Replace Matrices with the System.Numeric versions described here:
         //https://docs.microsoft.com/en-us/dotnet/api/System.Numerics.Matrix4x4?view=netframework-4.6.1
     
-        public static IEnumerable<double> GetComponents(this Matrix4X4 matrix, bool columnMajorOrder = true)
+        public static IEnumerable<double> GetComponents(this AffineMapMatrix4X4 matrix, bool columnMajorOrder = true)
         {
             if (columnMajorOrder)
             {

@@ -1,4 +1,4 @@
-﻿namespace GraphicsComposerLib.POVRay.SDL.Pigments
+﻿namespace GraphicsComposerLib.PovRay.SDL.Pigments
 {
     public sealed class SdlPigmentListPigment : SdlPigment
     {

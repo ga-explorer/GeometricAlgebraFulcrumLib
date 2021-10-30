@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using DataStructuresLib;
-using GraphicsComposerLib.POVRay.SDL.Values;
+using GraphicsComposerLib.PovRay.SDL.Values;
 
-namespace GraphicsComposerLib.POVRay.SDL
+namespace GraphicsComposerLib.PovRay.SDL
 {
     /// <summary>
     /// This class represents a single POV-Ray SDL script file to be rendered

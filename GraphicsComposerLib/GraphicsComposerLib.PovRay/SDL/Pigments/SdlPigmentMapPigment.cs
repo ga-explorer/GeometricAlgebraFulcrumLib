@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using GraphicsComposerLib.POVRay.SDL.Patterns;
+using GraphicsComposerLib.PovRay.SDL.Patterns;
 
-namespace GraphicsComposerLib.POVRay.SDL.Pigments
+namespace GraphicsComposerLib.PovRay.SDL.Pigments
 {
     public sealed class SdlPigmentMapItem
     {

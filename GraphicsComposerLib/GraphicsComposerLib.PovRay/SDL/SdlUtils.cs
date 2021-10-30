@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using GraphicsComposerLib.POVRay.SDL.Values;
+using GraphicsComposerLib.PovRay.SDL.Values;
 
-namespace GraphicsComposerLib.POVRay.SDL
+namespace GraphicsComposerLib.PovRay.SDL
 {
     public static class SdlUtils
     {

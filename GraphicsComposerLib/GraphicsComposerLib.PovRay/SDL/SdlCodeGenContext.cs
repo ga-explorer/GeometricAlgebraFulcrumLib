@@ -1,20 +1,20 @@
 ﻿using System;
 using System.Linq;
 using DataStructuresLib;
-using GraphicsComposerLib.POVRay.SDL.Cameras;
-using GraphicsComposerLib.POVRay.SDL.Directives;
-using GraphicsComposerLib.POVRay.SDL.Finishes;
-using GraphicsComposerLib.POVRay.SDL.Lights;
-using GraphicsComposerLib.POVRay.SDL.Objects;
-using GraphicsComposerLib.POVRay.SDL.Objects.FSP;
-using GraphicsComposerLib.POVRay.SDL.Objects.ISP;
-using GraphicsComposerLib.POVRay.SDL.Pigments;
-using GraphicsComposerLib.POVRay.SDL.Textures;
-using GraphicsComposerLib.POVRay.SDL.Values;
+using GraphicsComposerLib.PovRay.SDL.Cameras;
+using GraphicsComposerLib.PovRay.SDL.Directives;
+using GraphicsComposerLib.PovRay.SDL.Finishes;
+using GraphicsComposerLib.PovRay.SDL.Lights;
+using GraphicsComposerLib.PovRay.SDL.Objects;
+using GraphicsComposerLib.PovRay.SDL.Objects.FSP;
+using GraphicsComposerLib.PovRay.SDL.Objects.ISP;
+using GraphicsComposerLib.PovRay.SDL.Pigments;
+using GraphicsComposerLib.PovRay.SDL.Textures;
+using GraphicsComposerLib.PovRay.SDL.Values;
 using TextComposerLib.Text;
 using TextComposerLib.Text.Linear;
 
-namespace GraphicsComposerLib.POVRay.SDL
+namespace GraphicsComposerLib.PovRay.SDL
 {
     internal sealed class SdlCodeGenContext : ISdlDynamicVisitor
     {

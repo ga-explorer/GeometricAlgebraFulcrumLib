@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Numerics;
 using EuclideanGeometryLib.BasicMath.Matrices;
 using EuclideanGeometryLib.BasicMath.Tuples;
 using EuclideanGeometryLib.BasicMath.Tuples.Immutable;
@@ -14,7 +15,7 @@ namespace EuclideanGeometryLib.BasicMath.Maps.Space3D
     {
         
 
-        public static TrsMap3Dp CreateFromMatrix(Matrix4X4 c)
+        public static TrsMap3Dp CreateFromMatrix(AffineMapMatrix4X4 c)
         {
             var newMap = new TrsMap3Dp();
 
@@ -49,10 +50,10 @@ namespace EuclideanGeometryLib.BasicMath.Maps.Space3D
         /// <summary>
         /// The symmetric stretch matrix
         /// </summary>
-        public Matrix3X3 StretchMatrix { get; set; }
+        public AffineMapMatrix3X3 StretchMatrix { get; set; }
 
         //TODO: Complete this and compare with GMac
-        public Matrix3X3 RotationMatrix
+        public AffineMapMatrix3X3 RotationMatrix
         {
             get
             {
@@ -62,7 +63,7 @@ namespace EuclideanGeometryLib.BasicMath.Maps.Space3D
                 var qj = RotationVector.Y * sinAngle;
                 var qk = RotationVector.Z * sinAngle;
 
-                return new Matrix3X3()
+                return new AffineMapMatrix3X3()
                 {
                     [0] = 1.0d - 2.0d * (qj * qj + qk * qk),
                     [1] = 2.0d * (qi * qj - qk * qr),
@@ -81,16 +82,26 @@ namespace EuclideanGeometryLib.BasicMath.Maps.Space3D
 
         public bool SwapsHandedness { get; }
 
-        public Matrix4X4 ToMatrix()
+        public AffineMapMatrix4X4 ToMatrix()
         {
             Debug.Assert(RotationVector.IsUnitVector());
 
-            return new Matrix4X4
+            return new AffineMapMatrix4X4
             {
                 UpperLeftBlock3X3 = RotationMatrix * StretchMatrix,
                 UpperRightBlock3X1 = TranslationVector,
                 [15] = 1.0d
             };
+        }
+
+        public Matrix4x4 ToSystemNumericsMatrix()
+        {
+            return ToMatrix().ToSystemNumericsMatrix();
+        }
+
+        public double[,] ToArray2D()
+        {
+            throw new NotImplementedException();
         }
 
         public ITuple3D MapPoint(ITuple3D point)

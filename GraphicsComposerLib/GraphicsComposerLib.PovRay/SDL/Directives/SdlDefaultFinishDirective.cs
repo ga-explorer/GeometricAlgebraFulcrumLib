@@ -1,6 +1,6 @@
-﻿using GraphicsComposerLib.POVRay.SDL.Finishes;
+﻿using GraphicsComposerLib.PovRay.SDL.Finishes;
 
-namespace GraphicsComposerLib.POVRay.SDL.Directives
+namespace GraphicsComposerLib.PovRay.SDL.Directives
 {
     public sealed class SdlDefaultFinishDirective : SdlDirective
     {

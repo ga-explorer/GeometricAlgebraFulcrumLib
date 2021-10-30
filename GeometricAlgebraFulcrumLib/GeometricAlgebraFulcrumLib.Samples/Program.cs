@@ -1,7 +1,5 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Samples.CodeComposer;
-using GeometricAlgebraFulcrumLib.Samples.ConformalGeometry;
-using GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry;
+using GeometricAlgebraFulcrumLib.Samples.Graphics.ThreeJs;
 
 namespace GeometricAlgebraFulcrumLib.Samples
 {
@@ -17,7 +15,7 @@ namespace GeometricAlgebraFulcrumLib.Samples
             //foreach (var functionName in functionNames)
             //    testClass.AssertCorrectBinaryOperations(functionName);
 
-            RegularSimplexSample.Execute();
+            Sample2.Execute();
 
             //HilbertTransform.Execute();
 

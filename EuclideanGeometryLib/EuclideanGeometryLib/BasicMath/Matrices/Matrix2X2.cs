@@ -10,13 +10,16 @@ namespace EuclideanGeometryLib.BasicMath.Matrices
         {
             Debug.Assert(!m1.HasNaNComponent);
 
-            var m = new Matrix2X2();
-
-            m._items[0] = -m1._items[0];
-            m._items[1] = -m1._items[1];
-
-            m._items[2] = -m1._items[2];
-            m._items[3] = -m1._items[3];
+            var m = new Matrix2X2
+            {
+                _items =
+                {
+                    [0] = -m1._items[0],
+                    [1] = -m1._items[1],
+                    [2] = -m1._items[2],
+                    [3] = -m1._items[3]
+                }
+            };
 
             return m;
         }
@@ -25,13 +28,16 @@ namespace EuclideanGeometryLib.BasicMath.Matrices
         {
             Debug.Assert(!m1.HasNaNComponent && !m2.HasNaNComponent);
 
-            var m = new Matrix2X2();
-
-            m._items[0] = m1._items[0] + m2._items[0];
-            m._items[1] = m1._items[1] + m2._items[1];
-
-            m._items[2] = m1._items[2] + m2._items[2];
-            m._items[3] = m1._items[3] + m2._items[3];
+            var m = new Matrix2X2
+            {
+                _items =
+                {
+                    [0] = m1._items[0] + m2._items[0],
+                    [1] = m1._items[1] + m2._items[1],
+                    [2] = m1._items[2] + m2._items[2],
+                    [3] = m1._items[3] + m2._items[3]
+                }
+            };
 
             return m;
         }
@@ -40,13 +46,16 @@ namespace EuclideanGeometryLib.BasicMath.Matrices
         {
             Debug.Assert(!m1.HasNaNComponent && !m2.HasNaNComponent);
 
-            var m = new Matrix2X2();
-
-            m._items[0] = m1._items[0] - m2._items[0];
-            m._items[1] = m1._items[1] - m2._items[1];
-
-            m._items[2] = m1._items[2] - m2._items[2];
-            m._items[3] = m1._items[3] - m2._items[3];
+            var m = new Matrix2X2
+            {
+                _items =
+                {
+                    [0] = m1._items[0] - m2._items[0],
+                    [1] = m1._items[1] - m2._items[1],
+                    [2] = m1._items[2] - m2._items[2],
+                    [3] = m1._items[3] - m2._items[3]
+                }
+            };
 
             return m;
         }
@@ -55,24 +64,21 @@ namespace EuclideanGeometryLib.BasicMath.Matrices
         {
             Debug.Assert(!m1.HasNaNComponent && !m2.HasNaNComponent);
 
-            var m = new Matrix2X2();
+            var m = new Matrix2X2
+            {
+                _items =
+                {
+                    [0] = m1._items[0] * m2._items[0] +
+                          m1._items[2] * m2._items[1],
+                    [1] = m1._items[1] * m2._items[0] +
+                          m1._items[3] * m2._items[1],
+                    [2] = m1._items[0] * m2._items[2] +
+                          m1._items[2] * m2._items[3],
+                    [3] = m1._items[1] * m2._items[2] +
+                          m1._items[3] * m2._items[3]
+                }
+            };
 
-            m._items[0] =
-                m1._items[0] * m2._items[0] +
-                m1._items[2] * m2._items[1];
-
-            m._items[1] =
-                m1._items[1] * m2._items[0] +
-                m1._items[3] * m2._items[1];
-
-
-            m._items[2] =
-                m1._items[0] * m2._items[2] +
-                m1._items[2] * m2._items[3];
-
-            m._items[3] =
-                m1._items[1] * m2._items[2] +
-                m1._items[3] * m2._items[3];
 
             return m;
         }
@@ -81,13 +87,16 @@ namespace EuclideanGeometryLib.BasicMath.Matrices
         {
             Debug.Assert(!m1.HasNaNComponent && !double.IsNaN(s));
 
-            var m = new Matrix2X2();
-
-            m._items[0] = s * m1._items[0];
-            m._items[1] = s * m1._items[1];
-
-            m._items[2] = s * m1._items[2];
-            m._items[3] = s * m1._items[3];
+            var m = new Matrix2X2
+            {
+                _items =
+                {
+                    [0] = s * m1._items[0],
+                    [1] = s * m1._items[1],
+                    [2] = s * m1._items[2],
+                    [3] = s * m1._items[3]
+                }
+            };
 
             return m;
         }
@@ -96,13 +105,16 @@ namespace EuclideanGeometryLib.BasicMath.Matrices
         {
             Debug.Assert(!m1.HasNaNComponent && !double.IsNaN(s));
 
-            var m = new Matrix2X2();
-
-            m._items[0] = s * m1._items[0];
-            m._items[1] = s * m1._items[1];
-
-            m._items[2] = s * m1._items[2];
-            m._items[3] = s * m1._items[3];
+            var m = new Matrix2X2
+            {
+                _items =
+                {
+                    [0] = s * m1._items[0],
+                    [1] = s * m1._items[1],
+                    [2] = s * m1._items[2],
+                    [3] = s * m1._items[3]
+                }
+            };
 
             return m;
         }
@@ -115,13 +127,16 @@ namespace EuclideanGeometryLib.BasicMath.Matrices
 
             s = 1.0d / s;
 
-            var m = new Matrix2X2();
-
-            m._items[0] = s * m1._items[0];
-            m._items[1] = s * m1._items[1];
-
-            m._items[2] = s * m1._items[2];
-            m._items[3] = s * m1._items[3];
+            var m = new Matrix2X2
+            {
+                _items =
+                {
+                    [0] = s * m1._items[0],
+                    [1] = s * m1._items[1],
+                    [2] = s * m1._items[2],
+                    [3] = s * m1._items[3]
+                }
+            };
 
             return m;
         }

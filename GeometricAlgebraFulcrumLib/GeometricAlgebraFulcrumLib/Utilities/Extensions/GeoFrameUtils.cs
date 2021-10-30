@@ -1,7 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Geometry.Frames;
-
-namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
+﻿namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 {
     public static class GeoFrameUtils
     {

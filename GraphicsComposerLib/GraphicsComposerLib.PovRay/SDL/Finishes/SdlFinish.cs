@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace GraphicsComposerLib.POVRay.SDL.Finishes
+namespace GraphicsComposerLib.PovRay.SDL.Finishes
 {
     public class SdlFinish : ISdlFinish
     {

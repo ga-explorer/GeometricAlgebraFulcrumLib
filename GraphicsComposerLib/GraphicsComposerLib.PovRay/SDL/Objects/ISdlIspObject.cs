@@ -1,4 +1,4 @@
-﻿namespace GraphicsComposerLib.POVRay.SDL.Objects
+﻿namespace GraphicsComposerLib.PovRay.SDL.Objects
 {
     public interface ISdlIspObject : ISdlSolidObject
     {

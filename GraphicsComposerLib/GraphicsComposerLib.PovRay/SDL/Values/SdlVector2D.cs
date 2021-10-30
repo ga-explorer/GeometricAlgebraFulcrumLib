@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace GraphicsComposerLib.POVRay.SDL.Values
+namespace GraphicsComposerLib.PovRay.SDL.Values
 {
     public sealed class SdlVector2D : SdlValue, ISdlVectorValue
     {

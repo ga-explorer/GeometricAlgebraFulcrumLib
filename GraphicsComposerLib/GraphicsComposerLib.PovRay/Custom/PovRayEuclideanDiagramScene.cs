@@ -1,9 +1,9 @@
-﻿using GraphicsComposerLib.POVRay.SDL;
-using GraphicsComposerLib.POVRay.SDL.Cameras;
-using GraphicsComposerLib.POVRay.SDL.Objects;
-using GraphicsComposerLib.POVRay.SDL.Objects.FSP;
+﻿using GraphicsComposerLib.PovRay.SDL;
+using GraphicsComposerLib.PovRay.SDL.Cameras;
+using GraphicsComposerLib.PovRay.SDL.Objects;
+using GraphicsComposerLib.PovRay.SDL.Objects.FSP;
 
-namespace GraphicsComposerLib.POVRay.Custom
+namespace GraphicsComposerLib.PovRay.Custom
 {
     public class PovRayEuclideanDiagramScene : SdlScene
     {

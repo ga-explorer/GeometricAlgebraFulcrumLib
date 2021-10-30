@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using GraphicsComposerLib.POVRay.SDL.Values;
+using GraphicsComposerLib.PovRay.SDL.Values;
 
-namespace GraphicsComposerLib.POVRay.SDL.Objects.ISP
+namespace GraphicsComposerLib.PovRay.SDL.Objects.ISP
 {
     public sealed class SdlPolySurfaceSparseCoef
     {

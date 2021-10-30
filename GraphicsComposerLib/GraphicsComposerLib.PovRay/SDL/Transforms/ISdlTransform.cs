@@ -1,6 +1,6 @@
-﻿using GraphicsComposerLib.POVRay.SDL.Modifiers;
+﻿using GraphicsComposerLib.PovRay.SDL.Modifiers;
 
-namespace GraphicsComposerLib.POVRay.SDL.Transforms
+namespace GraphicsComposerLib.PovRay.SDL.Transforms
 {
     public interface ISdlTransform : ISdlObjectModifier
     {

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Numerics;
 using EuclideanGeometryLib.BasicMath.Matrices;
 using EuclideanGeometryLib.BasicMath.Tuples;
 using EuclideanGeometryLib.BasicMath.Tuples.Immutable;
@@ -66,7 +67,7 @@ namespace EuclideanGeometryLib.BasicMath.Maps.Space3D
 
         public bool SwapsHandedness { get; }
 
-        public Matrix4X4 ToMatrix()
+        public AffineMapMatrix4X4 ToMatrix()
         {
             //Construct matrix columns
             var c1 = MapVector(new Tuple3D(1, 0, 0));
@@ -74,12 +75,33 @@ namespace EuclideanGeometryLib.BasicMath.Maps.Space3D
             var c3 = MapVector(new Tuple3D(0, 0, 1));
             var c4 = MapPoint(new Tuple3D(0, 0, 0));
 
-            return new Matrix4X4()
+            return new AffineMapMatrix4X4()
             {
                 [0] = c1.X, [5] = c2.X, [9]  = c3.X, [13] = c4.X,
                 [1] = c1.Y, [6] = c2.Y, [10] = c3.Y, [14] = c4.Y,
                 [3] = c1.Z, [7] = c2.Z, [11] = c3.Z, [15] = c4.Z, [16] = 1.0
             };
+        }
+
+        public Matrix4x4 ToSystemNumericsMatrix()
+        {
+            //Construct matrix columns
+            var c1 = MapVector(new Tuple3D(1, 0, 0));
+            var c2 = MapVector(new Tuple3D(0, 1, 0));
+            var c3 = MapVector(new Tuple3D(0, 0, 1));
+            var c4 = MapPoint(new Tuple3D(0, 0, 0));
+
+            return new Matrix4x4(
+                (float) c1.X, (float) c2.X, (float) c3.X, (float) c4.X,
+                (float) c1.Y, (float) c2.Y, (float) c3.Y, (float) c4.Y,
+                (float) c1.Z, (float) c2.Z, (float) c3.Z, (float) c4.Z,
+                0f, 0f, 0f, 1.0f
+            );
+        }
+
+        public double[,] ToArray2D()
+        {
+            throw new System.NotImplementedException();
         }
 
         public ITuple3D MapPoint(ITuple3D point)

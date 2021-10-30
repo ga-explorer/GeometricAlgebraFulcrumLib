@@ -3,11 +3,127 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Humanizer;
+using TextComposerLib.Text.Linear;
 
 namespace TextComposerLib.Text.Parametric
 {
+    public sealed class ParametricTemplate
+    {
+        public static ParametricTextComposer ParametricTextComposer { get; }
+            = new ParametricTextComposer(
+                "#", "#", @"
+private readonly #type_name# _#js_var_name#;
+public #type_name# #cs_var_name#
+{
+    get => _#js_var_name#;
+    set => Composer.CodeLine($""{_#js_var_name#.CodeText} = {value.CodeText};"");
+}
+".Trim()
+            );
+
+        private string _typeName = string.Empty;
+        public string TypeName
+        {
+            get => _typeName;
+            set => _typeName = value ?? string.Empty;
+        }
+
+        private string _jsVarName = string.Empty;
+        public string JsVarName
+        {
+            get => _jsVarName;
+            set => _jsVarName = value ?? string.Empty;
+        }
+
+        private string _csVarName = string.Empty;
+        public string CsVarName
+        {
+            get => _csVarName;
+            set => _csVarName = value ?? string.Empty;
+        }
+
+        public ParametricTemplate SetTypeName(string typeName)
+        {
+            _typeName = string.IsNullOrEmpty(typeName) ? string.Empty : typeName;
+
+            return this;
+        }
+
+        public ParametricTemplate ClearParameters()
+        {
+            _typeName = string.Empty;
+            _jsVarName = string.Empty;
+            _csVarName = string.Empty;
+
+            return this;
+        }
+
+        public override string ToString()
+        {
+            return ParametricTextComposer.GenerateText(
+                "type_name", _typeName,
+                "js_var_name", _jsVarName,
+                "cs_var_name", _csVarName
+            );
+        }
+    }
+
     public class ParametricTextComposer
     {
+        private static ParametricTextComposer CsClassTemplate { get; }
+            = new ParametricTextComposer("#", "#", @"
+public sealed class #template_class_name#
+{
+    public ParametricTextComposer ParametricTextComposer { get; }
+        = new ParametricTextComposer(
+            #left_delimiter_string#, #right_delimiter_string#, @""
+#template_string#
+"".Trim()
+        );
+
+    #template_parameters#
+
+    #template_parameters_set_methods#
+
+    public #template_class_name# ClearBindings()
+    {
+        #clear_bindings_assignments#
+
+        return this;
+    }
+
+    public override string ToString()
+    {
+        #parameters_bindings#
+        
+        return ParametricTextComposer.GenerateText();
+    }
+}
+".Trim());
+
+        private static ParametricTextComposer CsClassPropertyTemplate { get; }
+            = new ParametricTextComposer("#", "#", @"
+private string _#parameter_name# = string.Empty;
+public string #cs_parameter_name#
+{
+	get => _#parameter_name#;
+	set => _#parameter_name# = value ?? string.Empty;
+}
+".Trim());
+
+        private static ParametricTextComposer CsClassPropertySetMethodTemplate { get; }
+            = new ParametricTextComposer("#", "#", @"
+public #template_class_name# Set#cs_parameter_name#(string #parameter_name#)
+{
+    _#parameter_name# = string.IsNullOrEmpty(#parameter_name#) ? string.Empty : #parameter_name#;
+
+    return this;
+}
+".Trim());
+
+        
+
         /// <summary>
         /// Generate a formatted text from the given value. If the format string is empty or null
         /// the default value.ToString() method is used
@@ -552,6 +668,89 @@ namespace TextComposerLib.Text.Parametric
             return GenerateText();
         }
 
+
+        public string GenerateCSharpClass(string className = "ParametricTemplate")
+        {
+            CsClassTemplate["left_delimiter_string"] = 
+                LeftDelimiter.ValueToQuotedLiteral(true);
+
+            CsClassTemplate["right_delimiter_string"] = 
+                RightDelimiter.ValueToQuotedLiteral(true);
+
+            CsClassTemplate["template_string"] =
+                TemplateText.ValueToLiteral(true);
+
+            var templateClassName = 
+                className.IsNullOrEmpty() ? "ParametricTemplate" : className;
+
+            CsClassTemplate["template_class_name"] =
+                templateClassName;
+
+            var textComposer = new LinearTextComposer();
+            foreach (var parameterName in Parameters)
+            {
+                var text = CsClassPropertyTemplate.GenerateText(
+                    "parameter_name", parameterName.Camelize(),
+                    "cs_parameter_name", parameterName.Pascalize()
+                );
+
+                textComposer
+                    .AppendAtNewLine(text)
+                    .AppendEmptyLines(1);
+            }
+
+            CsClassTemplate["template_parameters"] =
+                textComposer.ToString();
+
+
+            textComposer.Clear();
+            foreach (var parameterName in Parameters)
+            {
+                var text = CsClassPropertySetMethodTemplate.GenerateText(
+                    "template_class_name", templateClassName,
+                    "parameter_name", parameterName.Camelize(),
+                    "cs_parameter_name", parameterName.Pascalize()
+                );
+
+                textComposer
+                    .AppendAtNewLine(text)
+                    .AppendEmptyLines(1);
+            }
+
+            CsClassTemplate["template_parameters_set_methods"] =
+                textComposer.ToString();
+
+
+            textComposer.Clear();
+            foreach (var parameterName in Parameters)
+            {
+                var text = 
+                    $"_{parameterName.Camelize()} = string.Empty;";
+                
+                textComposer
+                    .AppendLineAtNewLine(text);
+            }
+
+            CsClassTemplate["clear_bindings_assignments"] =
+                textComposer.ToString();
+
+
+            textComposer.Clear();
+            foreach (var parameterName in Parameters)
+            {
+                var text =
+                    $"ParametricTextComposer[{parameterName.DoubleQuote()}] = _{parameterName.Camelize()};";
+                
+                textComposer
+                    .AppendAtNewLine(text);
+            }
+
+            CsClassTemplate["parameters_bindings"] =
+                textComposer.ToString();
+
+
+            return CsClassTemplate.GenerateText();
+        }
 
         public override string ToString()
         {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace GraphicsComposerLib.POVRay.SDL.Transforms
+namespace GraphicsComposerLib.PovRay.SDL.Transforms
 {
     public sealed class SdlCompositeTransform : SdlTransform
     {

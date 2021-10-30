@@ -1,6 +1,6 @@
-﻿using GraphicsComposerLib.POVRay.SDL.Values;
+﻿using GraphicsComposerLib.PovRay.SDL.Values;
 
-namespace GraphicsComposerLib.POVRay.SDL.Transforms
+namespace GraphicsComposerLib.PovRay.SDL.Transforms
 {
     public sealed class SdlScaleTransform : SdlTransform
     {

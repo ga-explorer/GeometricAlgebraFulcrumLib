@@ -1,4 +1,4 @@
-﻿namespace GraphicsComposerLib.POVRay.SDL.Directives
+﻿namespace GraphicsComposerLib.PovRay.SDL.Directives
 {
     public sealed class SdlDeclareDirective : SdlDirective
     {

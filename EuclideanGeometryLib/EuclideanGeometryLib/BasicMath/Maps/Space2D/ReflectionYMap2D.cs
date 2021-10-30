@@ -6,7 +6,12 @@ namespace EuclideanGeometryLib.BasicMath.Maps.Space2D
 {
     public sealed class ReflectionYMap2D : IAffineMap2D
     {
-        public Matrix3X3 ToMatrix()
+        public AffineMapMatrix3X3 ToMatrix()
+        {
+            throw new NotImplementedException();
+        }
+
+        public double[,] ToArray2D()
         {
             throw new NotImplementedException();
         }

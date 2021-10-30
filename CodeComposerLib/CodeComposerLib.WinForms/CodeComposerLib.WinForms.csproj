@@ -17,4 +17,8 @@
     <ProjectReference Include="..\CodeComposerLib\CodeComposerLib.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ThreeJs\" />
+  </ItemGroup>
+
 </Project>

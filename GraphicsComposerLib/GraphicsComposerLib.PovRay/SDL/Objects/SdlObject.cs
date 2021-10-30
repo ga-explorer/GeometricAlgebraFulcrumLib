@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using GraphicsComposerLib.POVRay.SDL.Modifiers;
+using GraphicsComposerLib.PovRay.SDL.Modifiers;
 
-namespace GraphicsComposerLib.POVRay.SDL.Objects
+namespace GraphicsComposerLib.PovRay.SDL.Objects
 {
     public abstract class SdlObject : ISdlObject
     {

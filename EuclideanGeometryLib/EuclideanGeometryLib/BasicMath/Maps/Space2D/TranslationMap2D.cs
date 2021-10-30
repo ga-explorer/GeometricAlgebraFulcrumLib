@@ -27,9 +27,14 @@ namespace EuclideanGeometryLib.BasicMath.Maps.Space2D
         }
 
 
-        public Matrix3X3 ToMatrix()
+        public AffineMapMatrix3X3 ToMatrix()
         {
-            return Matrix3X3.CreateTranslationMatrix(DirectionX, DirectionY);
+            return AffineMapMatrix3X3.CreateTranslationMatrix(DirectionX, DirectionY);
+        }
+
+        public double[,] ToArray2D()
+        {
+            throw new System.NotImplementedException();
         }
 
         public ITuple2D MapPoint(ITuple2D point)

@@ -1,6 +1,6 @@
-﻿using GraphicsComposerLib.POVRay.SDL.Values;
+﻿using GraphicsComposerLib.PovRay.SDL.Values;
 
-namespace GraphicsComposerLib.POVRay.SDL.Cameras
+namespace GraphicsComposerLib.PovRay.SDL.Cameras
 {
     public abstract class SdlFullCamera : SdlCamera
     {

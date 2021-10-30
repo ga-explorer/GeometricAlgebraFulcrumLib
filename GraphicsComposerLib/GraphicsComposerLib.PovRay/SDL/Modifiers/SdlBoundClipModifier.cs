@@ -1,6 +1,6 @@
-﻿using GraphicsComposerLib.POVRay.SDL.Objects;
+﻿using GraphicsComposerLib.PovRay.SDL.Objects;
 
-namespace GraphicsComposerLib.POVRay.SDL.Modifiers
+namespace GraphicsComposerLib.PovRay.SDL.Modifiers
 {
     public sealed class SdlBoundClipModifier : ISdlObjectModifier
     {
