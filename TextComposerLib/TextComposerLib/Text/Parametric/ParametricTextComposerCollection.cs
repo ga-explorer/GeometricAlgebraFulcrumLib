@@ -18,7 +18,7 @@ namespace TextComposerLib.Text.Parametric
             var text = fileLine.Trim();
 
             //An emprty line
-            if (String.IsNullOrEmpty(text))
+            if (string.IsNullOrEmpty(text))
                 return true;
 
             //A comment

@@ -39,13 +39,13 @@ namespace CodeComposerLib.Irony.SourceCode
             }
         }
 
-        public bool ContainsSourceCodeUnits => String.IsNullOrEmpty(CodeText);
+        public bool ContainsSourceCodeUnits => string.IsNullOrEmpty(CodeText);
 
         public ISourceCodeUnit ActiveCodeUnit { get { return this; } set { } }
 
         public bool IsFile => false;
 
-        public string FilePath => CodeTitle ?? String.Empty;
+        public string FilePath => CodeTitle ?? string.Empty;
 
         public int CharactersCount => CodeText.Length;
 

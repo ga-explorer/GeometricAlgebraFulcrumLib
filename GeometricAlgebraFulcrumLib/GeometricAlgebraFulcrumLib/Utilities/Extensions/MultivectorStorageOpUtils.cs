@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.Signatures;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors;
@@ -13,7 +14,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
     public static class MultivectorStorageOpUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static BasisBilinearProductResult Op(this IGeometricAlgebraSignature signature, ulong id1, ulong id2)
+        public static BasisBilinearProductResult Op(this GeometricAlgebraBasisSet basisSet, ulong id1, ulong id2)
         {
             return new BasisBilinearProductResult(
                 BasisBladeProductUtils.OpSignature(id1, id2), 
@@ -21,10 +22,10 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             );
         }
 
-        public static IMultivectorStorage<double> Op(this GeometricAlgebraSignatureLookup basisSignature, IMultivectorStorage<double> mv1, IMultivectorStorage<double> mv2)
+        public static IMultivectorStorage<double> Op(this GeometricAlgebraBasisSet basisSet, IMultivectorStorage<double> mv1, IMultivectorStorage<double> mv2)
         {
             var composer = 
-                new MultivectorFloat64StorageComposer(basisSignature);
+                new MultivectorFloat64StorageComposer(basisSet);
 
             var idScalarPairs1 = 
                 mv1.GetIdScalarRecords();

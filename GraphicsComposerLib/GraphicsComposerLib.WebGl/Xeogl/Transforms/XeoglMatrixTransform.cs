@@ -1,19 +1,19 @@
-﻿using EuclideanGeometryLib.BasicMath.Matrices;
-using EuclideanGeometryLib.BasicMath.Tuples.Immutable;
+﻿using NumericalGeometryLib.BasicMath.Matrices;
+using NumericalGeometryLib.BasicMath.Tuples.Immutable;
 using TextComposerLib.Text.Linear;
 
 namespace GraphicsComposerLib.WebGl.Xeogl.Transforms
 {
     public sealed class XeoglMatrixTransform : IXeoglNumericalTransform
     {
-        public static XeoglMatrixTransform Create(AffineMapMatrix4X4 matrix)
+        public static XeoglMatrixTransform Create(SquareMatrix4 matrix)
         {
             return new XeoglMatrixTransform(matrix);
         }
 
 
-        public AffineMapMatrix4X4 Matrix { get; }
-            = AffineMapMatrix4X4.CreateIdentityMatrix();
+        public SquareMatrix4 Matrix { get; }
+            = SquareMatrix4.CreateIdentityMatrix();
 
 
         public bool ContainsMatrix => Matrix.IsExactIdentity;
@@ -31,13 +31,13 @@ namespace GraphicsComposerLib.WebGl.Xeogl.Transforms
         {
         }
 
-        public XeoglMatrixTransform(AffineMapMatrix4X4 matrix)
+        public XeoglMatrixTransform(SquareMatrix4 matrix)
         {
             Matrix.ResetTo(matrix);
         }
 
 
-        public AffineMapMatrix4X4 GetMatrix()
+        public SquareMatrix4 GetMatrix()
             => Matrix;
 
         public Tuple4D GetQuaternionTuple()

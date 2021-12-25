@@ -12,7 +12,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             var s1 = processor.OmTargetToOrthonormal.OmMapKVector(mv1);
             var s2 = processor.OmTargetToOrthonormal.OmMapKVector(mv2);
 
-            var s = processor.Lcp(processor.Signature, s1, s2);
+            var s = processor.Lcp(processor.BasisSet, s1, s2);
 
             return processor.OmOrthonormalToTarget.OmMapKVector(s);
         }
@@ -23,7 +23,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             var s1 = processor.OmTargetToOrthonormal.MapMultivector(mv1);
             var s2 = processor.OmTargetToOrthonormal.MapMultivector(mv2);
 
-            var s = processor.Lcp(processor.Signature, s1, s2);
+            var s = processor.Lcp(processor.BasisSet, s1, s2);
 
             return processor.OmOrthonormalToTarget.MapMultivector(s);
         }
@@ -34,7 +34,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             var s1 = processor.OmTargetToOrthonormal.MapMultivector(mv1);
             var s2 = processor.OmTargetToOrthonormal.MapMultivector(mv2);
 
-            var s = processor.Lcp(processor.Signature, s1, s2);
+            var s = processor.Lcp(processor.BasisSet, s1, s2);
 
             return processor.OmOrthonormalToTarget.MapMultivector(s);
         }

@@ -59,6 +59,9 @@ namespace GeometricAlgebraFulcrumLib.Mathematica.Processors
         public Expr ScalarPi 
             => MathematicaInterface.DefaultCasConstants.ExprPi;
 
+        public Expr ScalarPiOver2 
+            => MathematicaInterface.DefaultCas["Pi / 2"];
+
         public Expr ScalarE 
             => MathematicaInterface.DefaultCasConstants.ExprE;
 

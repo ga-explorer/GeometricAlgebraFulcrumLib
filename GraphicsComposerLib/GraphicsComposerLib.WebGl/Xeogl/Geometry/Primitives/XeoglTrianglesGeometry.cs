@@ -1,5 +1,5 @@
-﻿using EuclideanGeometryLib.GraphicsGeometry;
-using EuclideanGeometryLib.GraphicsGeometry.Triangles;
+﻿using GraphicsComposerLib.Geometry.Primitives;
+using GraphicsComposerLib.Geometry.Primitives.Triangles;
 using TextComposerLib.Code.JavaScript;
 
 namespace GraphicsComposerLib.WebGl.Xeogl.Geometry.Primitives
@@ -7,9 +7,9 @@ namespace GraphicsComposerLib.WebGl.Xeogl.Geometry.Primitives
     public sealed class XeoglTrianglesGeometry 
         : XeoglPrimitivesGeometry
     {
-        public IGraphicsTrianglesGeometry3D GraphicsTrianglesGeometry { get; set; }
+        public IGraphicsTriangleGeometry3D GraphicsTrianglesGeometry { get; set; }
 
-        public override IGraphicsGeometry3D GraphicsGeometry
+        public override IGraphicsPrimitiveGeometry3D GraphicsGeometry
             => GraphicsTrianglesGeometry;
 
         public bool AutoVertexNormals { get; set; }
@@ -19,7 +19,7 @@ namespace GraphicsComposerLib.WebGl.Xeogl.Geometry.Primitives
         {
         }
 
-        public XeoglTrianglesGeometry(IGraphicsTrianglesGeometry3D geometryData)
+        public XeoglTrianglesGeometry(IGraphicsTriangleGeometry3D geometryData)
         {
             GraphicsTrianglesGeometry = geometryData;
         }
@@ -31,9 +31,9 @@ namespace GraphicsComposerLib.WebGl.Xeogl.Geometry.Primitives
 
             composer
                 .SetValue("primitive", GraphicsTrianglesGeometry.PrimitiveType, GraphicsPrimitiveType3D.Triangles)
-                .SetNumbersArrayValue("positions", GraphicsTrianglesGeometry.VertexPoints, " // Vertex Position ", "[]")
+                .SetNumbersArrayValue("positions", GraphicsTrianglesGeometry.GeometryPoints, " // Vertex Position ", "[]")
                 .SetNumbersArrayValue("normals", GraphicsTrianglesGeometry.VertexNormals, " // Vertex Normal ", "[]")
-                .SetNumbersArrayValue("uv", GraphicsTrianglesGeometry.VertexUVs, " // Vertex UV ", "[]")
+                .SetNumbersArrayValue("uv", GraphicsTrianglesGeometry.VertexTextureUVs, " // Vertex UV ", "[]")
                 .SetTextValue("colors", GraphicsTrianglesGeometry.VertexColors.ToJavaScriptRgbaNumbersArrayText(" // Vertex Color "), "[]")
                 .SetTextValue("indices", VertexIndices.ToJavaScriptNumbersArrayText(), "[]")
                 .SetTextValue("autoVertexNormals", AutoVertexNormals ? "true" : "false", "false");

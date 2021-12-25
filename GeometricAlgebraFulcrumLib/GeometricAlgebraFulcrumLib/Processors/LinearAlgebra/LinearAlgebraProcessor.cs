@@ -46,6 +46,9 @@ namespace GeometricAlgebraFulcrumLib.Processors.LinearAlgebra
         public T ScalarPi 
             => ScalarProcessor.ScalarPi;
 
+        public T ScalarPiOver2 
+            => ScalarProcessor.ScalarPiOver2;
+
         public T ScalarE 
             => ScalarProcessor.ScalarE;
 

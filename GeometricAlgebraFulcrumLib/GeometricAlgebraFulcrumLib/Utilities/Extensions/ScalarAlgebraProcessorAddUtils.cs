@@ -10,17 +10,75 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
     public static class ScalarAlgebraProcessorAddUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T Add<T>(this IScalarAlgebraProcessor<T> scalarProcessor, int scalar1, params T[] scalarsList)
+        {
+            return scalarsList.Aggregate(
+                scalarProcessor.GetScalarFromNumber(scalar1), 
+                scalarProcessor.Add
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T Add<T>(this IScalarAlgebraProcessor<T> scalarProcessor, uint scalar1, params T[] scalarsList)
+        {
+            return scalarsList.Aggregate(
+                scalarProcessor.GetScalarFromNumber(scalar1), 
+                scalarProcessor.Add
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T Add<T>(this IScalarAlgebraProcessor<T> scalarProcessor, long scalar1, params T[] scalarsList)
+        {
+            return scalarsList.Aggregate(
+                scalarProcessor.GetScalarFromNumber(scalar1), 
+                scalarProcessor.Add
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T Add<T>(this IScalarAlgebraProcessor<T> scalarProcessor, ulong scalar1, params T[] scalarsList)
+        {
+            return scalarsList.Aggregate(
+                scalarProcessor.GetScalarFromNumber(scalar1), 
+                scalarProcessor.Add
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T Add<T>(this IScalarAlgebraProcessor<T> scalarProcessor, float scalar1, params T[] scalarsList)
+        {
+            return scalarsList.Aggregate(
+                scalarProcessor.GetScalarFromNumber(scalar1), 
+                scalarProcessor.Add
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T Add<T>(this IScalarAlgebraProcessor<T> scalarProcessor, double scalar1, params T[] scalarsList)
+        {
+            return scalarsList.Aggregate(
+                scalarProcessor.GetScalarFromNumber(scalar1), 
+                scalarProcessor.Add
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T Add<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<T> scalarsList)
         {
-            return scalarsList
-                .Aggregate(scalarProcessor.ScalarZero, scalarProcessor.Add);
+            return scalarsList.Aggregate(
+                scalarProcessor.ScalarZero, 
+                scalarProcessor.Add
+            );
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T Add<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params T[] scalarsList)
         {
-            return scalarsList
-                .Aggregate(scalarProcessor.ScalarZero, scalarProcessor.Add);
+            return scalarsList.Aggregate(
+                scalarProcessor.ScalarZero, 
+                scalarProcessor.Add
+            );
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

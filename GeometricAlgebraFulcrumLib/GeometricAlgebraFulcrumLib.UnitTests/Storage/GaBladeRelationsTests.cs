@@ -45,7 +45,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Storage
         public void ClassInit()
         {
             for (var grade = 0U; grade <= VSpaceDimension; grade++)
-                _bladesList.Add(_randomGenerator.GetBlade(grade));
+                _bladesList.Add(_randomGenerator.GetBladeStorage(grade));
 
             //_scalarStorage
             //    = ScalarProcessor.CreateKVectorScalarStorage(_scalar);

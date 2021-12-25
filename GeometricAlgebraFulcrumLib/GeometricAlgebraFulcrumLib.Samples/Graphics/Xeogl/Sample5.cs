@@ -1,5 +1,5 @@
-﻿using EuclideanGeometryLib.BasicMath.Tuples.Immutable;
-using GraphicsComposerLib.Geometry.Transforms;
+﻿using NumericalGeometryLib.BasicMath.Tuples.Immutable;
+using NumericalGeometryLib.Transforms;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Graphics.Xeogl
 {

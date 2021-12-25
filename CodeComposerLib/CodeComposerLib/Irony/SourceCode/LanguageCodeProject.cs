@@ -322,7 +322,7 @@ namespace CodeComposerLib.Irony.SourceCode
         {
             for (var i = 0; i < SourceCodeFiles.Count; i++)
             {
-                if (!String.Equals(SourceCodeFiles[i].FilePath, filePath, StringComparison.CurrentCultureIgnoreCase)) 
+                if (!string.Equals(SourceCodeFiles[i].FilePath, filePath, StringComparison.CurrentCultureIgnoreCase)) 
                     continue;
 
                 SourceCodeFiles.RemoveAt(i);
@@ -340,7 +340,7 @@ namespace CodeComposerLib.Irony.SourceCode
         /// <returns></returns>
         public LanguageCodeFile GetSourceFileByRelativePath(string filePath)
         {
-            return SourceCodeFiles.FirstOrDefault(file => String.Equals(file.FileRelativePath, filePath, StringComparison.CurrentCultureIgnoreCase));
+            return SourceCodeFiles.FirstOrDefault(file => string.Equals(file.FileRelativePath, filePath, StringComparison.CurrentCultureIgnoreCase));
         }
 
         /// <summary>
@@ -351,7 +351,7 @@ namespace CodeComposerLib.Irony.SourceCode
         /// <returns></returns>
         public LanguageCodeFile GetSourceFileByPath(string filePath)
         {
-            return SourceCodeFiles.FirstOrDefault(file => String.Equals(file.FilePath, filePath, StringComparison.CurrentCultureIgnoreCase));
+            return SourceCodeFiles.FirstOrDefault(file => string.Equals(file.FilePath, filePath, StringComparison.CurrentCultureIgnoreCase));
         }
 
         /// <summary>

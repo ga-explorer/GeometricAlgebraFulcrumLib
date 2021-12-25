@@ -27,32 +27,32 @@ namespace DataStructuresLib.Dependency
         /// <summary>
         /// A list of all items that directly use the base item
         /// </summary>
-        public IEnumerable<TItem> UserItems { get { return _userItems; } }
+        public IEnumerable<TItem> UserItems => _userItems;
 
         /// <summary>
         /// A list of all items directly used by the base item
         /// </summary>
-        public IEnumerable<TItem> UsedItems { get { return _usedItems; } }
+        public IEnumerable<TItem> UsedItems => _usedItems;
 
         /// <summary>
         /// A list of all items directly used by the base item or are direct users of the base item
         /// </summary>
-        public IEnumerable<TItem> RelatedItems { get { return _usedItems.Concat(_userItems); } }
+        public IEnumerable<TItem> RelatedItems => _usedItems.Concat(_userItems);
 
         /// <summary>
         /// The number of users of the base items
         /// </summary>
-        public int UserCount { get { return _userItems.Count; } }
+        public int UserCount => _userItems.Count;
 
         /// <summary>
         /// The number of items used by the base item
         /// </summary>
-        public int UsedCount { get { return _usedItems.Count; } }
+        public int UsedCount => _usedItems.Count;
 
         /// <summary>
         /// The number of items used by the base item or users of the base item
         /// </summary>
-        public int RelatedCount { get { return _usedItems.Count + _userItems.Count; } }
+        public int RelatedCount => _usedItems.Count + _userItems.Count;
 
 
         internal DependencyInfo(TItem baseItem)

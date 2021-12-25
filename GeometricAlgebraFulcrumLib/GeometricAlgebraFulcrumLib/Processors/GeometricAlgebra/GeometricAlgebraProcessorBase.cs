@@ -2,7 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.BitManipulation;
-using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.Signatures;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Processors.LinearAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
@@ -28,7 +28,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
         public IEnumerable<uint> Grades 
             => GradesCount.GetRange();
 
-        public abstract IGeometricAlgebraSignature Signature { get; }
+        public abstract GeometricAlgebraBasisSet BasisSet { get; }
 
         public abstract bool IsEuclidean { get; }
 

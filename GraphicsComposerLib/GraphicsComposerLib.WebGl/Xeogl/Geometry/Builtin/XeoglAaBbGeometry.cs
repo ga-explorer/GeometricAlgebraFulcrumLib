@@ -1,4 +1,4 @@
-﻿using EuclideanGeometryLib.Borders.Space3D.Mutable;
+﻿using NumericalGeometryLib.Borders.Space3D.Mutable;
 using TextComposerLib.Code.JavaScript;
 
 namespace GraphicsComposerLib.WebGl.Xeogl.Geometry.Builtin

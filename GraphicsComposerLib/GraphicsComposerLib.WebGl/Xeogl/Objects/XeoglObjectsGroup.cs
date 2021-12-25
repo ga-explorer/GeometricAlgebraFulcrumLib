@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using EuclideanGeometryLib.BasicMath.Matrices;
+using NumericalGeometryLib.BasicMath.Matrices;
 using GraphicsComposerLib.WebGl.Xeogl.Geometry;
 using GraphicsComposerLib.WebGl.Xeogl.Materials;
 using GraphicsComposerLib.WebGl.Xeogl.Transforms;
@@ -77,7 +77,7 @@ namespace GraphicsComposerLib.WebGl.Xeogl.Objects
             return this;
         }
 
-        public XeoglObjectsGroup AddChild(XeoglGeometry geometry, XeoglMaterial material, AffineMapMatrix4X4 matrix)
+        public XeoglObjectsGroup AddChild(XeoglGeometry geometry, XeoglMaterial material, SquareMatrix4 matrix)
         {
             var mesh = new XeoglMesh()
             {

@@ -85,11 +85,18 @@ namespace GeometricAlgebraFulcrumLib.Mathematica.Mathematica.ExprFactory
         public static Mfs Rule { get; } = new Mfs("Rule");
         public static Mfs RuleDelayed { get; } = new Mfs("RuleDelayed");
         public static Mfs Element { get; } = new Mfs("Element");
+        public static Mfs Ball { get; } = new Mfs("Ball");
         public static Mfs Alternatives { get; } = new Mfs("Alternatives");
         public static Mfs Simplify { get; } = new Mfs("Simplify");
+        public static Mfs FactorTerms { get; } = new Mfs("FactorTerms");
+        public static Mfs Collect { get; } = new Mfs("Collect");
         public static Mfs Expand { get; } = new Mfs("Expand");
+        public static Mfs ExpandAll { get; } = new Mfs("ExpandAll");
+        public static Mfs Refine { get; } = new Mfs("Refine");
         public static Mfs FullSimplify { get; } = new Mfs("FullSimplify");
         public static Mfs TrigReduce { get; } = new Mfs("TrigReduce");
+        public static Mfs TrigExpand { get; } = new Mfs("TrigExpand");
+        public static Mfs FunctionExpand { get; } = new Mfs("FunctionExpand");
         public static Mfs PowerExpand { get; } = new Mfs("PowerExpand");
         public static Mfs ToRadicals { get; } = new Mfs("ToRadicals");
         public static Mfs ReplaceAll { get; } = new Mfs("ReplaceAll");
@@ -165,6 +172,9 @@ namespace GeometricAlgebraFulcrumLib.Mathematica.Mathematica.ExprFactory
         {
             get
             {
+                if (parameters.Length == 0)
+                    return new Expr(MathExpr);
+
                 Debug.Assert(parameters.All(p => !ReferenceEquals(p, null)));
 
                 return new Expr(MathExpr, parameters);

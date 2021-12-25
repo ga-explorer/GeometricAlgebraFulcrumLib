@@ -18,4 +18,6 @@
     /// <typeparam name="T"></typeparam>
     public sealed record Quad<T>(T Item1, T Item2, T Item3, T Item4) : IQuad<T>;
 
+    public sealed record Pair2D<T>(T Item11, T Item12, T Item21, T Item22) : IPair2D<T>;
+
 }

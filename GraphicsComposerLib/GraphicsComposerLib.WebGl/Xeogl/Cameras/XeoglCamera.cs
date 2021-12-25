@@ -1,8 +1,7 @@
-﻿using EuclideanGeometryLib.BasicMath.Tuples;
-using EuclideanGeometryLib.BasicMath.Tuples.Immutable;
-using EuclideanGeometryLib.BasicMath.Tuples.Mutable;
-using EuclideanGeometryLib.GraphicsGeometry;
-using EuclideanGeometryLib.GraphicsGeometry.Constants;
+﻿using NumericalGeometryLib.BasicMath.Constants;
+using NumericalGeometryLib.BasicMath.Tuples;
+using NumericalGeometryLib.BasicMath.Tuples.Immutable;
+using NumericalGeometryLib.BasicMath.Tuples.Mutable;
 using GraphicsComposerLib.WebGl.Xeogl.Constants;
 using TextComposerLib.Code.JavaScript;
 using TextComposerLib.Text.Linear;
@@ -93,7 +92,7 @@ namespace GraphicsComposerLib.WebGl.Xeogl.Cameras
             return this;
         }
 
-        public XeoglCamera SetOrientation(GraphicsAxis3D rightAxis, GraphicsAxis3D upAxis, GraphicsAxis3D forwardAxis)
+        public XeoglCamera SetOrientation(Axis3D rightAxis, Axis3D upAxis, Axis3D forwardAxis)
         {
             WorldRightDirection.SetTuple(rightAxis.GetVector3D());
             WorldUpDirection.SetTuple(upAxis.GetVector3D());

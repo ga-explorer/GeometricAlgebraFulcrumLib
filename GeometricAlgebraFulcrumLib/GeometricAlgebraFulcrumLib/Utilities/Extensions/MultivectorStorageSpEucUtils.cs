@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.Signatures;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 
@@ -134,7 +135,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static BasisBilinearProductResult ESp(this IGeometricAlgebraSignature signature, ulong id1, ulong id2)
+        public static BasisBilinearProductResult ESp(this GeometricAlgebraBasisSet basisSet, ulong id1, ulong id2)
         {
             return new BasisBilinearProductResult(
                 BasisBladeProductUtils.ESpSignature(id1, id2), 
@@ -142,9 +143,9 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             );
         }
 
-        public static double ESp(this GeometricAlgebraSignatureLookup basisSignature, IMultivectorStorage<double> mv1, IMultivectorStorage<double> mv2)
+        public static double ESp(this GeometricAlgebraBasisSet basisSet, IMultivectorStorage<double> mv1, IMultivectorStorage<double> mv2)
         {
-            if (!basisSignature.IsEuclidean)
+            if (!basisSet.IsEuclidean)
                 throw new InvalidOperationException();
 
             var spScalar = 0d;

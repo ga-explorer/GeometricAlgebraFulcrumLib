@@ -35,7 +35,10 @@ namespace GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra
         
         public Complex ScalarPi { get; } 
             = Math.PI;
-        
+
+        public Complex ScalarPiOver2 { get; } 
+            = 0.5d * Math.PI;
+
         public Complex ScalarE { get; } 
             = Math.E;
 

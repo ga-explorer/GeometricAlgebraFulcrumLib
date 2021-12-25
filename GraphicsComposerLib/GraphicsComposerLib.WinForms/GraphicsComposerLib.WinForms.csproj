@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CefSharp.WinForms.NETCore" Version="93.1.140" />
+    <PackageReference Include="CefSharp.WinForms.NETCore" Version="95.7.141" />
     <PackageReference Include="MathNet.Numerics" Version="4.15.0" />
     <PackageReference Include="Svg" Version="3.3.0" />
   </ItemGroup>
@@ -20,15 +20,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Update="chromiumembeddedframework.runtime.win-x64" Version="94.3.0" />
+    <PackageReference Update="chromiumembeddedframework.runtime.win-x64" Version="95.7.14" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Update="chromiumembeddedframework.runtime.win-x86" Version="94.3.0" />
+    <PackageReference Update="chromiumembeddedframework.runtime.win-x86" Version="95.7.14" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Update="chromiumembeddedframework.runtime.win-arm64" Version="94.3.0" />
+    <PackageReference Update="chromiumembeddedframework.runtime.win-arm64" Version="95.7.14" />
   </ItemGroup>
 
 </Project>

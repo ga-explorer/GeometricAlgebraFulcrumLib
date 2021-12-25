@@ -1,10 +1,10 @@
 ﻿using EuclideanGeometryLib.BasicMath.Tuples.Immutable;
-using EuclideanGeometryLib.GraphicsGeometry;
-using EuclideanGeometryLib.GraphicsGeometry.Composers;
-using EuclideanGeometryLib.GraphicsGeometry.Triangles;
-using GraphicsComposerLib.Geometry.Geometry.PathsMesh;
-using GraphicsComposerLib.Geometry.Geometry.PathsMesh.Space3D;
-using GraphicsComposerLib.Geometry.Geometry.PointsPath.Space3D;
+using GraphicsComposerLib.Geometry.Meshes.PathsMesh;
+using GraphicsComposerLib.Geometry.Meshes.PathsMesh.Space3D;
+using GraphicsComposerLib.Geometry.Meshes.PointsPath.Space3D;
+using GraphicsComposerLib.Geometry.Primitives;
+using GraphicsComposerLib.Geometry.Primitives.Lines;
+using GraphicsComposerLib.Geometry.Primitives.Triangles;
 using GraphicsComposerLib.WebGl.Xeogl;
 
 namespace GraphicsComposerLib.Samples.Xeogl
@@ -36,9 +36,9 @@ namespace GraphicsComposerLib.Samples.Xeogl
             //    );
 
             //Make two patches covering the whole path mesh to render triangles from both sides
-            var composer = new GraphicsTrianglesGeometryComposer3D
+            var composer = new GrTriangleGeometryComposer3D
             {
-                NormalComputationMethod = GraphicsVertexNormalComputationMethod.WeightedNormals
+                NormalComputationMethod = GrVertexNormalComputationMethod.WeightedNormals
             };
 
             composer
@@ -51,18 +51,16 @@ namespace GraphicsComposerLib.Samples.Xeogl
                 .AddTriangles(pathMesh.GetTriangles(true))
                 .EndBatch();
 
-            var trianglesGeometry = composer.GenerateGeometry();
-
             //Render normals to mesh patches
-            var normalsLinesComposer = new GraphicsLinesGeometryComposer3D();
-            normalsLinesComposer.AddLines(trianglesGeometry.GetNormalLines(1));
+            var normalsLinesComposer = new GrLineGeometryComposer3D();
+            normalsLinesComposer.AddLines(composer.GetNormalLines(1));
 
             var normalsLinesGeometry = normalsLinesComposer.GenerateGeometry();
 
             //Render triangles of mesh patches
-            var linesComposer = new GraphicsLinesGeometryComposer3D();
-            linesComposer.AddLines(trianglesGeometry.GetDisplacedTrianglesLines(-0.025d));
-            linesComposer.AddLines(trianglesGeometry.GetDisplacedTrianglesLines(0.025d));
+            var linesComposer = new GrLineGeometryComposer3D();
+            linesComposer.AddLines(composer.GetDisplacedTriangleEdges(-0.025d));
+            linesComposer.AddLines(composer.GetDisplacedTriangleEdges(0.025d));
 
             var linesGeometry = linesComposer.GenerateGeometry();
 
@@ -70,7 +68,7 @@ namespace GraphicsComposerLib.Samples.Xeogl
             scriptGenerator.IncludesList.Add("js/xeogl/xeogl.js");
             scriptGenerator.IncludesList.Add("js/generation/geometryBuilder.js");
 
-            scriptGenerator.AddTrianglesGeometry(trianglesGeometry, @"new xeogl.PhongMaterial({ diffuse: [0.6, 0.6, 1.0] })");
+            scriptGenerator.AddTrianglesGeometry(composer, @"new xeogl.PhongMaterial({ diffuse: [0.6, 0.6, 1.0] })");
             scriptGenerator.AddLinesGeometry(normalsLinesGeometry, @"new xeogl.PhongMaterial({ emissive: [Math.random() + 0.5, Math.random() + 0.5, Math.random() + 0.5] })");
             scriptGenerator.AddLinesGeometry(linesGeometry, @"new xeogl.PhongMaterial({ emissive: [Math.random() + 0.5, Math.random() + 0.5, Math.random() + 0.5] })");
 

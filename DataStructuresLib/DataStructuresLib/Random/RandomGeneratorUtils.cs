@@ -43,6 +43,12 @@ namespace DataStructuresLib.Random
         {
             return randomGenerator.NextDouble();
         }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static double GetNumber(this System.Random randomGenerator, double minValue, double maxValue)
+        {
+            return (maxValue - minValue) * randomGenerator.NextDouble() + minValue;
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static double GetScaledNumber(this System.Random randomGenerator, double scalingFactor)
@@ -78,6 +84,16 @@ namespace DataStructuresLib.Random
             }
         }
         
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<double> GetNumbers(this System.Random randomGenerator, int count, double minValue, double maxValue)
+        {
+            while (count > 0)
+            {
+                yield return randomGenerator.GetNumber(minValue, maxValue);
+                count--;
+            }
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<double> GetScaledNumbers(this System.Random randomGenerator, int count, double scalingFactor)
         {
@@ -656,7 +672,7 @@ namespace DataStructuresLib.Random
             }
 
             // yield the last value
-            yield return list[list.Count - 1];
+            yield return list[^1];
         }
 
         /// <summary>
@@ -713,7 +729,7 @@ namespace DataStructuresLib.Random
                 v2 = 2 * random.NextDouble() - 1; // between -1.0 and 1.0
                 s = v1 * v1 + v2 * v2;
             } while (s >= 1 || s == 0);
-            double multiplier = Math.Sqrt(-2 * Math.Log(s) / s);
+            var multiplier = Math.Sqrt(-2 * Math.Log(s) / s);
 
             value1 = v1* multiplier;
             value2 = v2 * multiplier; 
@@ -809,7 +825,7 @@ namespace DataStructuresLib.Random
             [ThreadStatic]
             private static ThreadLocalRandom _currentInstance;
 
-            public static ThreadLocalRandom Current { get { return _currentInstance ?? (_currentInstance = new ThreadLocalRandom()); } }
+            public static ThreadLocalRandom Current => _currentInstance ?? (_currentInstance = new ThreadLocalRandom());
 
             private ThreadLocalRandom()
                 : base(Seed: HashCombine(HashCombine(SeedTime.GetHashCode(), Thread.CurrentThread.ManagedThreadId), Environment.TickCount))
@@ -938,7 +954,7 @@ namespace DataStructuresLib.Random
             {
                 if (buffer == null) { throw new ArgumentNullException(nameof(buffer)); }
 
-                for (int i = 0; i < buffer.Length;)
+                for (var i = 0; i < buffer.Length;)
                 {
                     for (int rand = this.NextBits(32), n = Math.Min(buffer.Length - i, 4);
                          n-- > 0; 

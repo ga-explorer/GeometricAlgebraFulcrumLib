@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.Signatures;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
@@ -36,22 +36,22 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.ProductIterator
         IEnumerable<IndexScalarRecord<T>> GetEAcpIdScalarRecords();
 
 
-        IEnumerable<IndexScalarRecord<T>> GetGpIdScalarRecords(IGeometricAlgebraSignature basesSignature);
+        IEnumerable<IndexScalarRecord<T>> GetGpIdScalarRecords(GeometricAlgebraBasisSet basisSet);
 
-        IEnumerable<IndexScalarRecord<T>> GetSpIdScalarRecords(IGeometricAlgebraSignature basesSignature);
+        IEnumerable<IndexScalarRecord<T>> GetSpIdScalarRecords(GeometricAlgebraBasisSet basisSet);
 
-        IEnumerable<T> GetSpScalars(IGeometricAlgebraSignature basesSignature);
+        IEnumerable<T> GetSpScalars(GeometricAlgebraBasisSet basisSet);
 
-        IEnumerable<IndexScalarRecord<T>> GetLcpIdScalarRecords(IGeometricAlgebraSignature basesSignature);
+        IEnumerable<IndexScalarRecord<T>> GetLcpIdScalarRecords(GeometricAlgebraBasisSet basisSet);
 
-        IEnumerable<IndexScalarRecord<T>> GetRcpIdScalarRecords(IGeometricAlgebraSignature basesSignature);
+        IEnumerable<IndexScalarRecord<T>> GetRcpIdScalarRecords(GeometricAlgebraBasisSet basisSet);
 
-        IEnumerable<IndexScalarRecord<T>> GetHipIdScalarRecords(IGeometricAlgebraSignature basesSignature);
+        IEnumerable<IndexScalarRecord<T>> GetHipIdScalarRecords(GeometricAlgebraBasisSet basisSet);
 
-        IEnumerable<IndexScalarRecord<T>> GetFdpIdScalarRecords(IGeometricAlgebraSignature basesSignature);
+        IEnumerable<IndexScalarRecord<T>> GetFdpIdScalarRecords(GeometricAlgebraBasisSet basisSet);
 
-        IEnumerable<IndexScalarRecord<T>> GetCpIdScalarRecords(IGeometricAlgebraSignature basesSignature);
+        IEnumerable<IndexScalarRecord<T>> GetCpIdScalarRecords(GeometricAlgebraBasisSet basisSet);
 
-        IEnumerable<IndexScalarRecord<T>> GetAcpIdScalarRecords(IGeometricAlgebraSignature basesSignature);
+        IEnumerable<IndexScalarRecord<T>> GetAcpIdScalarRecords(GeometricAlgebraBasisSet basisSet);
     }
 }

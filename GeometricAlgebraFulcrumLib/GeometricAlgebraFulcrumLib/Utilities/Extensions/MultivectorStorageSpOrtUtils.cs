@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.Signatures;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 
@@ -10,17 +11,17 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
     public static class MultivectorStorageSpOrtUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static BasisBilinearProductResult Sp(this IGeometricAlgebraSignature signature, ulong id1)
+        public static BasisBilinearProductResult Sp(this GeometricAlgebraBasisSet basisSet, ulong id1)
         {
             return new BasisBilinearProductResult(
-                signature.SpSignature(id1), 
+                basisSet.SpSquaredSignature(id1), 
                 0
             );
         }
 
-        public static double Sp(this GeometricAlgebraSignatureLookup signature, IMultivectorStorage<double> mv1)
+        public static double Sp(this GeometricAlgebraBasisSet basisSet, IMultivectorStorage<double> mv1)
         {
-            if (!signature.IsEuclidean)
+            if (!basisSet.IsEuclidean)
                 throw new InvalidOperationException();
 
             var spScalar = 0d;
@@ -30,7 +31,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 
             foreach (var (id1, scalar1) in idScalarPairs1)
             {
-                var sig = signature.SpSignature(id1);
+                var sig = basisSet.SpSquaredSignature(id1);
 
                 if (sig == 0)
                     continue;
@@ -46,12 +47,12 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T Sp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IGeometricAlgebraSignature signature, T mv1)
+        public static T Sp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, T mv1)
         {
             return scalarProcessor.Times(mv1, mv1);
         }
         
-        public static T VectorsSp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IGeometricAlgebraSignature signature, IReadOnlyList<T> vector1)
+        public static T VectorsSp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, IReadOnlyList<T> vector1)
         {
             var spScalar = scalarProcessor.ScalarZero;
 
@@ -59,10 +60,10 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 
             for (var index = 0; index < count; index++)
             {
-                var sig = signature.SpSignature(index.BasisVectorIndexToId());
+                var sig = basisSet.SpSquaredSignature(index.BasisVectorIndexToId());
 
                 if (sig == 0)
-                    return scalarProcessor.ScalarZero;
+                    continue;
             
                 var scalar1 = vector1[index];
                 var scalar = scalarProcessor.Times(scalar1, scalar1);
@@ -75,7 +76,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             return spScalar;
         }
         
-        private static T SpAsScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IGeometricAlgebraSignature signature, VectorStorage<T> mv1)
+        private static T SpAsScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, VectorStorage<T> mv1)
         {
             var indexScalarPairs1 = 
                 mv1.GetLinVectorIndexScalarStorage();
@@ -84,10 +85,10 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 
             foreach (var (index, scalar1) in indexScalarPairs1.GetIndexScalarRecords())
             {
-                var sig = signature.SpSignature(index.BasisVectorIndexToId());
+                var sig = basisSet.SpSquaredSignature(index.BasisVectorIndexToId());
 
                 if (sig == 0)
-                    return scalarProcessor.ScalarZero;
+                    continue;
             
                 var scalar = scalarProcessor.Times(scalar1, scalar1);
                 
@@ -99,13 +100,14 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             return spScalar;
         }
 
-        public static T Sp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IGeometricAlgebraSignature signature, VectorStorage<T> mv1)
+        public static T Sp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, VectorStorage<T> mv1)
         {
-            return scalarProcessor.SpAsScalar(signature, mv1);
+            return scalarProcessor.SpAsScalar(basisSet, mv1);
         }
 
-        private static T SpAsScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IGeometricAlgebraSignature signature, KVectorStorage<T> mv1)
+        private static T SpAsScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, KVectorStorage<T> mv1)
         {
+            var grade = mv1.Grade;
             var spScalar = scalarProcessor.ScalarZero;
             
             var indexScalarPairs1 = 
@@ -113,10 +115,10 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 
             foreach (var (index, scalar1) in indexScalarPairs1.GetIndexScalarRecords())
             {
-                var sig = signature.SpSignature(index.BasisVectorIndexToId());
+                var sig = basisSet.SpSquaredSignature(index.BasisBladeIndexToId(grade));
 
                 if (sig == 0)
-                    return scalarProcessor.ScalarZero;
+                    continue;
             
                 var scalar = scalarProcessor.Times(scalar1, scalar1);
                 
@@ -129,17 +131,17 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T Sp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IGeometricAlgebraSignature signature, KVectorStorage<T> mv1)
+        public static T Sp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, KVectorStorage<T> mv1)
         {
             return mv1 switch
             {
-                T s1 => Sp(scalarProcessor, signature, s1),
-                VectorStorage<T> vt1 => Sp(scalarProcessor, signature, vt1),
-                _ => SpAsScalar(scalarProcessor, signature, mv1)
+                T s1 => Sp(scalarProcessor, basisSet, s1),
+                VectorStorage<T> vt1 => Sp(scalarProcessor, basisSet, vt1),
+                _ => SpAsScalar(scalarProcessor, basisSet, mv1)
             };
         }
 
-        private static T SpAsScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IGeometricAlgebraSignature signature, IMultivectorStorage<T> mv1)
+        private static T SpAsScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, IMultivectorStorage<T> mv1)
         {
             var spScalar = scalarProcessor.ScalarZero;
 
@@ -147,10 +149,10 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 
             foreach (var (id, scalar1) in idScalarDictionary1.GetIndexScalarRecords())
             {
-                var sig = signature.SpSignature(id);
+                var sig = basisSet.SpSquaredSignature(id);
 
                 if (sig == 0)
-                    return scalarProcessor.ScalarZero;
+                    continue;
             
                 var scalar = scalarProcessor.Times(scalar1, scalar1);
                 
@@ -163,29 +165,29 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T Sp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IGeometricAlgebraSignature signature, IMultivectorStorage<T> mv1)
+        public static T Sp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, IMultivectorStorage<T> mv1)
         {
             return mv1 switch
             {
-                T s1 => Sp(scalarProcessor, signature, s1),
-                VectorStorage<T> vt1 => Sp(scalarProcessor, signature, vt1),
-                KVectorStorage<T> kvt1 => Sp(scalarProcessor, signature, kvt1),
-                _ => SpAsScalar(scalarProcessor, signature, mv1)
+                T s1 => Sp(scalarProcessor, basisSet, s1),
+                VectorStorage<T> vt1 => Sp(scalarProcessor, basisSet, vt1),
+                KVectorStorage<T> kvt1 => Sp(scalarProcessor, basisSet, kvt1),
+                _ => SpAsScalar(scalarProcessor, basisSet, mv1)
             };
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static BasisBilinearProductResult Sp(this IGeometricAlgebraSignature signature, ulong id1, ulong id2)
+        public static BasisBilinearProductResult Sp(this GeometricAlgebraBasisSet basisSet, ulong id1, ulong id2)
         {
             return new BasisBilinearProductResult(
-                signature.SpSignature(id1, id2), 
+                basisSet.SpSignature(id1, id2), 
                 id1 ^ id2
             );
         }
 
-        public static double Sp(this GeometricAlgebraSignatureLookup signature, IMultivectorStorage<double> mv1, IMultivectorStorage<double> mv2)
+        public static double Sp(this GeometricAlgebraBasisSet basisSet, IMultivectorStorage<double> mv1, IMultivectorStorage<double> mv2)
         {
-            if (!signature.IsEuclidean)
+            if (!basisSet.IsEuclidean)
                 throw new InvalidOperationException();
 
             var spScalar = 0d;
@@ -201,7 +203,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                 if (!idScalarPairs2.TryGetScalar(id1, out var scalar2))
                     continue;
 
-                var sig = signature.SpSignature(id1);
+                var sig = basisSet.SpSquaredSignature(id1);
 
                 if (sig == 0)
                     continue;
@@ -217,12 +219,12 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T Sp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IGeometricAlgebraSignature signature, T mv1, T mv2)
+        public static T Sp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, T mv1, T mv2)
         {
             return scalarProcessor.Times(mv1, mv2);
         }
         
-        public static T VectorsSp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IGeometricAlgebraSignature signature, IReadOnlyList<T> vector1, IReadOnlyList<T> vector2)
+        public static T VectorsSp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, IReadOnlyList<T> vector1, IReadOnlyList<T> vector2)
         {
             var spScalar = scalarProcessor.ScalarZero;
 
@@ -230,7 +232,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 
             for (var index = 0; index < count; index++)
             {
-                var sig = signature.SpSignature(index.BasisVectorIndexToId());
+                var sig = basisSet.SpSquaredSignature(index.BasisVectorIndexToId());
 
                 if (sig == 0)
                     continue;
@@ -248,7 +250,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             return spScalar;
         }
         
-        private static T SpAsScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IGeometricAlgebraSignature signature, VectorStorage<T> mv1, VectorStorage<T> mv2)
+        private static T SpAsScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, VectorStorage<T> mv1, VectorStorage<T> mv2)
         {
             var indexScalarPairs1 = 
                 mv1.GetLinVectorIndexScalarStorage();
@@ -263,7 +265,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                 if (!indexScalarPairs2.TryGetScalar(index, out var scalar2))
                     continue;
 
-                var sig = signature.SpSignature(index.BasisVectorIndexToId());
+                var sig = basisSet.SpSquaredSignature(index.BasisVectorIndexToId());
 
                 if (sig == 0)
                     continue;
@@ -278,12 +280,12 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             return spScalar;
         }
 
-        public static T Sp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IGeometricAlgebraSignature signature, VectorStorage<T> mv1, VectorStorage<T> mv2)
+        public static T Sp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, VectorStorage<T> mv1, VectorStorage<T> mv2)
         {
-            return scalarProcessor.SpAsScalar(signature, mv1, mv2);
+            return scalarProcessor.SpAsScalar(basisSet, mv1, mv2);
         }
 
-        private static T SpAsScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IGeometricAlgebraSignature signature, KVectorStorage<T> mv1, KVectorStorage<T> mv2)
+        private static T SpAsScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, KVectorStorage<T> mv1, KVectorStorage<T> mv2)
         {
             if (mv1.Grade != mv2.Grade)
                 return scalarProcessor.ScalarZero;
@@ -304,7 +306,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 
                 var id = index.BasisBladeIndexToId(grade);
 
-                var sig = signature.SpSignature(id);
+                var sig = basisSet.SpSquaredSignature(id);
 
                 if (sig == 0)
                     continue;
@@ -320,21 +322,21 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T Sp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IGeometricAlgebraSignature signature, KVectorStorage<T> mv1, KVectorStorage<T> mv2)
+        public static T Sp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, KVectorStorage<T> mv1, KVectorStorage<T> mv2)
         {
             return mv1 switch
             {
                 T s1 when mv2 is T s2 => 
-                    Sp(scalarProcessor, signature, s1, s2),
+                    Sp(scalarProcessor, basisSet, s1, s2),
 
                 VectorStorage<T> vt1 when mv2 is VectorStorage<T> vt2 => 
-                    Sp(scalarProcessor, signature, vt1, vt2),
+                    Sp(scalarProcessor, basisSet, vt1, vt2),
 
-                _ => SpAsScalar(scalarProcessor, signature, mv1, mv2)
+                _ => SpAsScalar(scalarProcessor, basisSet, mv1, mv2)
             };
         }
 
-        private static T SpAsScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IGeometricAlgebraSignature signature, IMultivectorGradedStorage<T> mv1, IMultivectorGradedStorage<T> mv2)
+        private static T SpAsScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, IMultivectorGradedStorage<T> mv1, IMultivectorGradedStorage<T> mv2)
         {
             var spScalar = scalarProcessor.ScalarZero;
 
@@ -354,7 +356,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                     var id = 
                         index.BasisBladeIndexToId(grade);
 
-                    var sig = signature.SpSignature(id);
+                    var sig = basisSet.SpSquaredSignature(id);
 
                     if (sig == 0)
                         continue;
@@ -371,24 +373,24 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T Sp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IGeometricAlgebraSignature signature, IMultivectorGradedStorage<T> mv1, IMultivectorGradedStorage<T> mv2)
+        public static T Sp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, IMultivectorGradedStorage<T> mv1, IMultivectorGradedStorage<T> mv2)
         {
             return mv1 switch
             {
                 T s1 when mv2 is T s2 => 
-                    Sp(scalarProcessor, signature, s1, s2),
+                    Sp(scalarProcessor, basisSet, s1, s2),
 
                 VectorStorage<T> vt1 when mv2 is VectorStorage<T> vt2 => 
-                    Sp(scalarProcessor, signature, vt1, vt2),
+                    Sp(scalarProcessor, basisSet, vt1, vt2),
 
                 KVectorStorage<T> kvt1 when mv2 is KVectorStorage<T> kvt2 => 
-                    Sp(scalarProcessor, signature, kvt1, kvt2),
+                    Sp(scalarProcessor, basisSet, kvt1, kvt2),
 
-                _ => SpAsScalar(scalarProcessor, signature, mv1, mv2)
+                _ => SpAsScalar(scalarProcessor, basisSet, mv1, mv2)
             };
         }
 
-        private static T SpAsScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IGeometricAlgebraSignature signature, IMultivectorStorage<T> mv1, IMultivectorStorage<T> mv2)
+        private static T SpAsScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, IMultivectorStorage<T> mv1, IMultivectorStorage<T> mv2)
         {
             var spScalar = scalarProcessor.ScalarZero;
 
@@ -403,7 +405,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                 if (!idScalarPairs2.TryGetScalar(id, out var scalar2))
                     continue;
                 
-                var sig = signature.SpSignature(id);
+                var sig = basisSet.SpSquaredSignature(id);
 
                 if (sig == 0)
                     continue;
@@ -419,29 +421,29 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T Sp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IGeometricAlgebraSignature signature, MultivectorStorage<T> mv1, MultivectorStorage<T> mv2)
+        public static T Sp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, MultivectorStorage<T> mv1, MultivectorStorage<T> mv2)
         {
-            return SpAsScalar(scalarProcessor, signature, mv1, mv2);
+            return SpAsScalar(scalarProcessor, basisSet, mv1, mv2);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T Sp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IGeometricAlgebraSignature signature, IMultivectorStorage<T> mv1, IMultivectorStorage<T> mv2)
+        public static T Sp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, IMultivectorStorage<T> mv1, IMultivectorStorage<T> mv2)
         {
             return mv1 switch
             {
                 T s1 when mv2 is T s2 => 
-                    Sp(scalarProcessor, signature, s1, s2),
+                    Sp(scalarProcessor, basisSet, s1, s2),
 
                 VectorStorage<T> vt1 when mv2 is VectorStorage<T> vt2 => 
-                    Sp(scalarProcessor, signature, vt1, vt2),
+                    Sp(scalarProcessor, basisSet, vt1, vt2),
 
                 KVectorStorage<T> kvt1 when mv2 is KVectorStorage<T> kvt2 => 
-                    Sp(scalarProcessor, signature, kvt1, kvt2),
+                    Sp(scalarProcessor, basisSet, kvt1, kvt2),
 
                 IMultivectorGradedStorage<T> gmv1 when mv2 is IMultivectorGradedStorage<T> gmv2 => 
-                    SpAsScalar(scalarProcessor, signature, gmv1, gmv2),
+                    SpAsScalar(scalarProcessor, basisSet, gmv1, gmv2),
 
-                _ => SpAsScalar(scalarProcessor, signature, mv1, mv2)
+                _ => SpAsScalar(scalarProcessor, basisSet, mv1, mv2)
             };
         }
     }

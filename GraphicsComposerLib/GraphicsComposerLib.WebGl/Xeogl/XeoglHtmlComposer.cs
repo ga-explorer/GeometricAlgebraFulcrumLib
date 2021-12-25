@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using EuclideanGeometryLib.BasicMath.Tuples.Mutable;
-using EuclideanGeometryLib.GraphicsGeometry.Lines;
-using EuclideanGeometryLib.GraphicsGeometry.Triangles;
+using NumericalGeometryLib.BasicMath.Tuples.Mutable;
+using GraphicsComposerLib.Geometry.Primitives.Lines;
+using GraphicsComposerLib.Geometry.Primitives.Triangles;
 using GraphicsComposerLib.WebGl.Xeogl.Generators;
 using TextComposerLib.Text.Linear;
 using TextComposerLib.Text.Parametric;
@@ -104,7 +104,7 @@ namespace GraphicsComposerLib.WebGl.Xeogl
         }
 
 
-        public XeoglLinesMeshGenerator AddLinesGeometry(IGraphicsLinesGeometry3D geometry, string material)
+        public XeoglLinesMeshGenerator AddLinesGeometry(IGraphicsLineGeometry3D geometry, string material)
         {
             var generator = new XeoglLinesMeshGenerator(geometry, material);
             _generatorsList.Add(generator);
@@ -112,7 +112,7 @@ namespace GraphicsComposerLib.WebGl.Xeogl
             return generator;
         }
 
-        public XeoglTrianglesMeshGenerator AddTrianglesGeometry(GraphicsTrianglesGeometry3D geometry, string material)
+        public XeoglTrianglesMeshGenerator AddTrianglesGeometry(IGraphicsTriangleGeometry3D geometry, string material)
         {
             var generator = new XeoglTrianglesMeshGenerator(geometry, material);
             _generatorsList.Add(generator);

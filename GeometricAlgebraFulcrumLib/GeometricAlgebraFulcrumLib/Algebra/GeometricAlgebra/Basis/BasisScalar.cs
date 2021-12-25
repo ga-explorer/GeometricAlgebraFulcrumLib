@@ -25,6 +25,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis
         public override bool IsBivector => false;
 
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private BasisScalar()
         {
         }
@@ -37,6 +38,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis
         }
 
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override string ToString()
         {
             return new StringBuilder()

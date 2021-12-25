@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using Antlr4.Runtime.Misc;
 using CodeComposerLib.SyntaxTree.Expressions;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms;
@@ -287,16 +288,41 @@ namespace GeometricAlgebraFulcrumLib.Mathematica
         {
             return storage.MapScalars(scalar => scalar.FullSimplify(assumptionsExpr));
         }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector<Expr> FullSimplifyScalars(this Vector<Expr> mv, Expr assumptionsExpr)
+        {
+            return mv.MapScalars(scalar => scalar.FullSimplify(assumptionsExpr));
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Bivector<Expr> FullSimplifyScalars(this Bivector<Expr> mv, Expr assumptionsExpr)
+        {
+            return mv.MapScalars(scalar => scalar.FullSimplify(assumptionsExpr));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static KVector<Expr> FullSimplifyScalars(this KVector<Expr> mv, Expr assumptionsExpr)
+        {
+            return mv.MapScalars(scalar => scalar.FullSimplify(assumptionsExpr));
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Multivector<Expr> FullSimplifyScalars(this Multivector<Expr> mv, Expr assumptionsExpr)
+        {
+            return mv.MapScalars(scalar => scalar.FullSimplify(assumptionsExpr));
+        }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Expr DifferentiateScalar(this Expr scalar, string variableName)
+        public static Expr DifferentiateScalar(this Expr scalar, string variableName, int degree = 1)
         {
             var variableExpr = variableName.ToExpr();
 
-            return Mfs
-                .D[scalar, variableExpr]
-                .FullSimplify();
+            return Mfs.D[
+                scalar, 
+                Mfs.List[variableExpr, degree.ToExpr()]
+            ].FullSimplify();
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -350,18 +376,21 @@ namespace GeometricAlgebraFulcrumLib.Mathematica
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<Expr> DifferentiateScalars(this VectorStorage<Expr> storage, string variableName)
+        public static VectorStorage<Expr> DifferentiateScalars(this VectorStorage<Expr> storage, string variableName, int degree = 1)
         {
             var variableExpr = variableName.ToExpr();
 
             return storage.GetVectorPart(
-                scalar => Mfs.D[scalar, variableExpr].FullSimplify()
+                scalar => Mfs.D[
+                    scalar, 
+                    Mfs.List[variableExpr, degree.ToExpr()]
+                ].FullSimplify()
             );
         }
 
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Expr IntegrateScalar(this Expr scalar, string variableName)
+        public static Expr IntegrateScalar([NotNull] this Expr scalar, [NotNull] string variableName)
         {
             var variableExpr = variableName.ToExpr();
 
@@ -370,6 +399,24 @@ namespace GeometricAlgebraFulcrumLib.Mathematica
                 .FullSimplify();
         }
         
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Expr IntegrateScalar([NotNull] this Expr scalar, [NotNull] string variableName, [NotNull] Expr limitExpr1, [NotNull] Expr limitExpr2)
+        {
+            var variableExpr = variableName.ToExpr();
+
+            return Mfs
+                .Integrate[scalar, Mfs.List[variableExpr, limitExpr1, limitExpr2]]
+                .FullSimplify();
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Expr IntegrateScalar([NotNull] this Expr scalar, [NotNull] Expr variableExpr, [NotNull] Expr limitExpr1, [NotNull] Expr limitExpr2)
+        {
+            return Mfs
+                .Integrate[scalar, Mfs.List[variableExpr, limitExpr1, limitExpr2]]
+                .FullSimplify();
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ILinVectorStorage<Expr> IntegrateScalars(this ILinVectorStorage<Expr> storage, string variableName)
         {
@@ -1649,6 +1696,14 @@ namespace GeometricAlgebraFulcrumLib.Mathematica
                 inputExpr,
                 Mfs.Rule[subExpr1, subExpr2]
             ].FullSimplify();
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Expr Refine(this Expr expr, Expr assumptionsExpr)
+        {
+            return MathematicaInterface.DefaultCas[
+                Mfs.Refine[expr, assumptionsExpr]
+            ];
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

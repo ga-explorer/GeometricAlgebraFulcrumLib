@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Text;
 
@@ -215,47 +216,49 @@ namespace DataStructuresLib.BitManipulation
         /// <returns></returns>
         public static int CountOnes(this uint bitPattern)
         {
-            if (bitPattern == 0)
-                return 0;
+            return BitOperations.PopCount(bitPattern);
 
-            var count = 0;
+            //if (bitPattern == 0)
+            //    return 0;
 
-            //if (bitPattern > int.MaxValue)
-            //{
-            //    bitPattern &= int.MaxValue;
-            //    count = 1;
-            //}
+            //var count = 0;
 
-            // Brian Kernighan’s Algorithm. See here for more details:
-            // https://www.geeksforgeeks.org/count-set-bits-in-an-integer/
-            // Subtracting 1 from a decimal number flips all the bits after
-            // the rightmost set bit (which is 1) including the rightmost set bit.
-            // So if we subtract a number by 1 and do it bitwise & with itself
-            // (n & (n-1)), we unset the rightmost set bit. If we do n & (n-1)
-            // in a loop and count the number of times the loop executes, we get
-            // the set bit count. The beauty of this solution is the number of
-            // times it loops is equal to the number of set bits in a given integer. 
+            ////if (bitPattern > int.MaxValue)
+            ////{
+            ////    bitPattern &= int.MaxValue;
+            ////    count = 1;
+            ////}
 
-            var n = bitPattern;
+            //// Brian Kernighan’s Algorithm. See here for more details:
+            //// https://www.geeksforgeeks.org/count-set-bits-in-an-integer/
+            //// Subtracting 1 from a decimal number flips all the bits after
+            //// the rightmost set bit (which is 1) including the rightmost set bit.
+            //// So if we subtract a number by 1 and do it bitwise & with itself
+            //// (n & (n-1)), we unset the rightmost set bit. If we do n & (n-1)
+            //// in a loop and count the number of times the loop executes, we get
+            //// the set bit count. The beauty of this solution is the number of
+            //// times it loops is equal to the number of set bits in a given integer. 
+
+            //var n = bitPattern;
             
-            while (n > 0)
-            {
-                n &= (n - 1);
-
-                count++;
-            }
-
-            return count;
-
-            //var onesCount = 0;
-
-            //while (bitPattern > 0U)
+            //while (n > 0)
             //{
-            //    bitPattern &= bitPattern - 1U; // clear the least significant bit set
-            //    onesCount++;
+            //    n &= (n - 1);
+
+            //    count++;
             //}
 
-            //return onesCount;
+            //return count;
+
+            ////var onesCount = 0;
+
+            ////while (bitPattern > 0U)
+            ////{
+            ////    bitPattern &= bitPattern - 1U; // clear the least significant bit set
+            ////    onesCount++;
+            ////}
+
+            ////return onesCount;
         }
 
         /// <summary>

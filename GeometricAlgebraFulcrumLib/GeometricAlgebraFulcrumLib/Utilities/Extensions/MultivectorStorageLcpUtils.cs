@@ -15,7 +15,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                     processor.ELcp(mv1, mv2),
                 
                 IGeometricAlgebraOrthonormalProcessor<T> ortProcessor =>
-                    processor.Lcp(ortProcessor, mv1, mv2),
+                    processor.Lcp(ortProcessor.BasisSet, mv1, mv2),
 
                 _ =>
                     ((IGeometricAlgebraChangeOfBasisProcessor<T>) processor).Lcp(mv1, mv2)
@@ -31,7 +31,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                     processor.ELcp(mv1, mv2),
                 
                 IGeometricAlgebraOrthonormalProcessor<T> ortProcessor =>
-                    processor.Lcp(ortProcessor, mv1, mv2),
+                    processor.Lcp(ortProcessor.BasisSet, mv1, mv2),
 
                 _ =>
                     ((IGeometricAlgebraChangeOfBasisProcessor<T>) processor).Lcp(mv1, mv2)

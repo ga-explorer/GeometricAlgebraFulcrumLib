@@ -9,20 +9,20 @@ namespace DataStructuresLib.Combinations
     /// </summary>
     public class Combination
     {
-        private long n = 0;
-        private long k = 0;
-        private long[] data = null;
+        private readonly long _n = 0;
+        private readonly long _k = 0;
+        private readonly long[] _data = null;
 
         public Combination(long n, long k)
         {
             if (n < 0 || k < 0) // normally n >= k
                 throw new Exception("Negative parameter in constructor");
 
-            this.n = n;
-            this.k = k;
-            this.data = new long[k];
+            this._n = n;
+            this._k = k;
+            this._data = new long[k];
             for (long i = 0; i < k; ++i)
-                this.data[i] = i;
+                this._data[i] = i;
         } // Combination(n,k)
 
         public Combination(long n, long k, long[] a) // Combination from a[]
@@ -30,11 +30,11 @@ namespace DataStructuresLib.Combinations
             if (k != a.Length)
                 throw new Exception("Array length does not equal k");
 
-            this.n = n;
-            this.k = k;
-            this.data = new long[k];
+            this._n = n;
+            this._k = k;
+            this._data = new long[k];
             for (long i = 0; i < a.Length; ++i)
-                this.data[i] = a[i];
+                this._data[i] = a[i];
 
             if (!this.IsValid())
                 throw new Exception("Bad value from array");
@@ -42,16 +42,16 @@ namespace DataStructuresLib.Combinations
 
         public bool IsValid()
         {
-            if (this.data.Length != this.k)
+            if (this._data.Length != this._k)
                 return false; // corrupted
 
-            for (long i = 0; i < this.k; ++i)
+            for (long i = 0; i < this._k; ++i)
             {
-                if (this.data[i] < 0 || this.data[i] > this.n - 1)
+                if (this._data[i] < 0 || this._data[i] > this._n - 1)
                     return false; // value out of range
 
-                for (long j = i + 1; j < this.k; ++j)
-                    if (this.data[i] >= this.data[j])
+                for (var j = i + 1; j < this._k; ++j)
+                    if (this._data[i] >= this._data[j])
                         return false; // duplicate or not lexicographic
             }
 
@@ -60,31 +60,31 @@ namespace DataStructuresLib.Combinations
 
         public override string ToString()
         {
-            string s = "{ ";
-            for (long i = 0; i < this.k; ++i)
-                s += this.data[i].ToString() + " ";
+            var s = "{ ";
+            for (long i = 0; i < this._k; ++i)
+                s += this._data[i].ToString() + " ";
             s += "}";
             return s;
         } // ToString()
 
         public Combination Successor()
         {
-            if (this.data[0] == this.n - this.k)
+            if (this._data[0] == this._n - this._k)
                 return null;
 
-            Combination ans = new Combination(this.n, this.k);
+            var ans = new Combination(this._n, this._k);
 
             long i;
-            for (i = 0; i < this.k; ++i)
-                ans.data[i] = this.data[i];
+            for (i = 0; i < this._k; ++i)
+                ans._data[i] = this._data[i];
 
-            for (i = this.k - 1; i > 0 && ans.data[i] == this.n - this.k + i; --i)
+            for (i = this._k - 1; i > 0 && ans._data[i] == this._n - this._k + i; --i)
                 ;
 
-            ++ans.data[i];
+            ++ans._data[i];
 
-            for (long j = i; j < this.k - 1; ++j)
-                ans.data[j + 1] = ans.data[j] + 1;
+            for (var j = i; j < this._k - 1; ++j)
+                ans._data[j + 1] = ans._data[j] + 1;
 
             return ans;
         } // Successor()
@@ -111,7 +111,7 @@ namespace DataStructuresLib.Combinations
                 iMax = n - k;
             }
 
-            long ans = delta + 1;
+            var ans = delta + 1;
 
             for (long i = 2; i <= iMax; ++i)
             {

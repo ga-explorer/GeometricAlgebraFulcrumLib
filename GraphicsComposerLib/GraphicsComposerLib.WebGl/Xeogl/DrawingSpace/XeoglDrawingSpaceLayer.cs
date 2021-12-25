@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using EuclideanGeometryLib.BasicMath.Maps.Space3D;
-using EuclideanGeometryLib.BasicMath.Matrices;
+using NumericalGeometryLib.BasicMath.Maps.Space3D;
+using NumericalGeometryLib.BasicMath.Matrices;
 using GraphicsComposerLib.WebGl.Xeogl.Geometry;
 using GraphicsComposerLib.WebGl.Xeogl.Geometry.Primitives;
 using GraphicsComposerLib.WebGl.Xeogl.Materials;
@@ -121,7 +121,7 @@ namespace GraphicsComposerLib.WebGl.Xeogl.DrawingSpace
             return this;
         }
 
-        public XeoglDrawingSpaceLayer SetTransform(AffineMapMatrix4X4 transformMatrix)
+        public XeoglDrawingSpaceLayer SetTransform(SquareMatrix4 transformMatrix)
         {
             DefaultTransform = transformMatrix.ToXeoglTransform();
 
@@ -130,7 +130,7 @@ namespace GraphicsComposerLib.WebGl.Xeogl.DrawingSpace
 
         public XeoglDrawingSpaceLayer SetTransform(IAffineMap3D affineMap)
         {
-            DefaultTransform = affineMap.ToMatrix().ToXeoglTransform();
+            DefaultTransform = affineMap.ToSquareMatrix4().ToXeoglTransform();
 
             return this;
         }

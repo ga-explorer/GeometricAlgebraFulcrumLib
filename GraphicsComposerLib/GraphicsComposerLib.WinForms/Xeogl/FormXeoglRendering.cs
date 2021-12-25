@@ -1151,12 +1151,12 @@ new xeogl.AxisHelper({
             panelWebBrowser.Controls.Add(_webBrowser);
             _webBrowser.Dock = DockStyle.Fill;
 
-            // Allow the use of local resources in the browser
-            var browserSettings = new BrowserSettings
-            {
-                FileAccessFromFileUrls = CefState.Enabled, 
-                UniversalAccessFromFileUrls = CefState.Enabled
-            };
+            //// Allow the use of local resources in the browser
+            var browserSettings = new BrowserSettings();
+            //{
+            //    FileAccessFromFileUrls = CefState.Enabled, 
+            //    UniversalAccessFromFileUrls = CefState.Enabled
+            //};
 
             _webBrowser.BrowserSettings = browserSettings;
         }

@@ -2,16 +2,15 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using EuclideanGeometryLib.BasicMath;
-using EuclideanGeometryLib.BasicMath.Tuples;
-using EuclideanGeometryLib.BasicMath.Tuples.Immutable;
-using EuclideanGeometryLib.BasicOperations;
-using EuclideanGeometryLib.BasicShapes.Lines;
-using EuclideanGeometryLib.BasicShapes.Lines.Immutable;
-using EuclideanGeometryLib.Borders.Space3D;
-using EuclideanGeometryLib.Colors;
-using EuclideanGeometryLib.GraphicsGeometry;
-using EuclideanGeometryLib.GraphicsGeometry.Lines;
+using NumericalGeometryLib.BasicMath;
+using NumericalGeometryLib.BasicMath.Tuples;
+using NumericalGeometryLib.BasicMath.Tuples.Immutable;
+using NumericalGeometryLib.BasicShapes.Lines;
+using NumericalGeometryLib.BasicShapes.Lines.Immutable;
+using NumericalGeometryLib.Borders.Space3D;
+using NumericalGeometryLib.Colors;
+using GraphicsComposerLib.Geometry.Primitives;
+using GraphicsComposerLib.Geometry.Primitives.Lines;
 using GraphicsComposerLib.WebGl.Xeogl.Constants;
 using GraphicsComposerLib.WebGl.Xeogl.Geometry;
 using GraphicsComposerLib.WebGl.Xeogl.Geometry.Builtin;
@@ -597,7 +596,7 @@ namespace GraphicsComposerLib.WebGl.Xeogl.DrawingSpace
         {
             return layer.DrawGeometry(
                 new XeoglLinesGeometry(
-                    GraphicsLinesGeometry3D.Create(lineSegment)
+                    GrLineGeometry3D.Create(lineSegment)
                 )
             );
         }

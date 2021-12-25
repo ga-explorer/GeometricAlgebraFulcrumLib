@@ -4,7 +4,9 @@ using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors;
+using GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Geometry.Subspaces;
+using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
@@ -12,15 +14,33 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
     public static class VectorUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Vector<T> OmMap<T>(this IOutermorphism<T> om, Vector<T> vector)
+        public static Scalar<T> GetEuclideanAngle<T>(this Vector<T> vector1, Vector<T> vector2, bool assumeUnitVectors = false)
         {
-            var processor = vector.GeometricProcessor;
+            var processor = vector1.GeometricProcessor;
 
-            return new Vector<T>(
-                processor,
-                om.OmMapVector(vector.VectorStorage)
+            var angle = processor.GetEuclideanAngle(
+                vector1.VectorStorage, 
+                vector2.VectorStorage,
+                assumeUnitVectors
             );
+
+            return processor.CreateScalar(angle);
         }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector<T> GetUnitBisector<T>(this Vector<T> vector1, Vector<T> vector2, bool assumeEqualNormVectors = false)
+        {
+            var processor = vector1.GeometricProcessor;
+
+            var unitBisector = processor.GetUnitBisector(
+                vector1.VectorStorage, 
+                vector2.VectorStorage,
+                assumeEqualNormVectors
+            );
+
+            return new Vector<T>(processor, unitBisector);
+        }
+
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector<T> OmMapUsing<T>(this Vector<T> vector, IOutermorphism<T> om)
@@ -34,11 +54,11 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
                 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<Vector<T>> OmMap<T>(this IOutermorphism<T> om, params Vector<T>[] vectorsList)
-        {
-            return vectorsList.Select(v => v.OmMapUsing(om));
-        }
+        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+        //public static IEnumerable<Vector<T>> OmMap<T>(this IOutermorphism<T> om, params Vector<T>[] vectorsList)
+        //{
+        //    return vectorsList.Select(v => v.OmMapUsing(om));
+        //}
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<Vector<T>> OmMap<T>(this IOutermorphism<T> om, IEnumerable<Vector<T>> vectorsList)
@@ -110,9 +130,9 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static PureRotor<T> GetEuclideanRotorFromBasis<T>(this Vector<T> vector2, ulong index)
         {
-            var processor = vector2.GeometricProcessor;
+            var processor = (IGeometricAlgebraEuclideanProcessor<T>) vector2.GeometricProcessor;
 
-            return processor.CreateEuclideanRotor(
+            return processor.CreatePureRotor(
                 processor.CreateVectorBasisStorage(index),
                 vector2.VectorStorage
             );
@@ -121,9 +141,9 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static PureRotor<T> GetEuclideanRotorFrom<T>(this Vector<T> vector2, Vector<T> vector1)
         {
-            var processor = vector2.GeometricProcessor;
+            var processor = (IGeometricAlgebraEuclideanProcessor<T>) vector2.GeometricProcessor;
 
-            return processor.CreateEuclideanRotor(
+            return processor.CreatePureRotor(
                 vector1.VectorStorage,
                 vector2.VectorStorage
             );
@@ -132,9 +152,9 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static PureRotor<T> GetEuclideanRotorFrom<T>(this Vector<T> vector2, Vector<T> vector1, bool assumeUnitVectors)
         {
-            var processor = vector2.GeometricProcessor;
+            var processor = (IGeometricAlgebraEuclideanProcessor<T>) vector2.GeometricProcessor;
 
-            return processor.CreateEuclideanRotor(
+            return processor.CreatePureRotor(
                 vector1.VectorStorage,
                 vector2.VectorStorage,
                 assumeUnitVectors
@@ -145,9 +165,9 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static PureRotor<T> GetEuclideanRotorToBasis<T>(this Vector<T> vector1, ulong index)
         {
-            var processor = vector1.GeometricProcessor;
+            var processor = (IGeometricAlgebraEuclideanProcessor<T>) vector1.GeometricProcessor;
 
-            return processor.CreateEuclideanRotor(
+            return processor.CreatePureRotor(
                 vector1.VectorStorage,
                 processor.CreateVectorBasisStorage(index)
             );
@@ -156,9 +176,9 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static PureRotor<T> GetEuclideanRotorTo<T>(this Vector<T> vector1, Vector<T> vector2)
         {
-            var processor = vector1.GeometricProcessor;
+            var processor = (IGeometricAlgebraEuclideanProcessor<T>) vector1.GeometricProcessor;
 
-            return processor.CreateEuclideanRotor(
+            return processor.CreatePureRotor(
                 vector1.VectorStorage,
                 vector2.VectorStorage
             );
@@ -167,9 +187,9 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static PureRotor<T> GetEuclideanRotorTo<T>(this Vector<T> vector1, Vector<T> vector2, bool assumeUnitVectors)
         {
-            var processor = vector1.GeometricProcessor;
+            var processor = (IGeometricAlgebraEuclideanProcessor<T>) vector1.GeometricProcessor;
 
-            return processor.CreateEuclideanRotor(
+            return processor.CreatePureRotor(
                 vector1.VectorStorage,
                 vector2.VectorStorage,
                 assumeUnitVectors
@@ -186,11 +206,11 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static PureRotor<T> GetEuclideanRotorTo<T>(this Vector<T> vector1, Subspace<T> subspace)
         {
-            var processor = vector1.GeometricProcessor;
+            var processor = (IGeometricAlgebraEuclideanProcessor<T>) vector1.GeometricProcessor;
 
             var vector2 = subspace.Project(vector1.VectorStorage);
 
-            return processor.CreateEuclideanRotor(
+            return processor.CreatePureRotor(
                 vector1.VectorStorage,
                 vector2
             );

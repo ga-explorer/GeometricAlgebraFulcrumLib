@@ -1,4 +1,5 @@
 ﻿using System;
+using GraphicsComposerLib.Samples.Geometry.ParametricShapes;
 
 namespace GraphicsComposerLib.Samples
 {
@@ -6,7 +7,12 @@ namespace GraphicsComposerLib.Samples
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Sample3.Execute();
+            //Sample6.Generate(@"D:\Projects\Study\Xeogl\MyWork\Sample6.html");
+
+            Console.WriteLine();
+            Console.WriteLine("Press any key..");
+            Console.ReadKey();
         }
     }
 }

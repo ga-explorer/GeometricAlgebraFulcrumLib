@@ -60,14 +60,14 @@ namespace DataStructuresLib
                             return sizeof(double);
                         case TypeCode.Int16:
                         case TypeCode.UInt16:
-                            return sizeof(Int16);
+                            return sizeof(short);
                         case TypeCode.Int32:
                         case TypeCode.UInt32:
-                            return sizeof(Int32);
+                            return sizeof(int);
                         case TypeCode.Int64:
                         case TypeCode.UInt64:
                         default:
-                            return sizeof(Int64);
+                            return sizeof(long);
                     }
                 }
                 else if (obj is decimal)
@@ -245,7 +245,7 @@ namespace DataStructuresLib
 
             foreach (var arg in method.GetGenericArguments())
             {
-                List<string> constraints = arg.GetGenericParameterConstraints().Select(TypeName).ToList();
+                var constraints = arg.GetGenericParameterConstraints().Select(TypeName).ToList();
 
                 var attrs = arg.GenericParameterAttributes;
 
@@ -263,7 +263,7 @@ namespace DataStructuresLib
                 }
                 if (constraints.Count > 0)
                 {
-                    sigBuilder.Append(" where " + TypeName(arg) + ": " + String.Join(", ", constraints));
+                    sigBuilder.Append(" where " + TypeName(arg) + ": " + string.Join(", ", constraints));
                 }
             }
 
@@ -397,8 +397,8 @@ namespace DataStructuresLib
                 return member2;
             }
 
-            int vis1 = VisibilityValue(member1);
-            int vis2 = VisibilityValue(member2);
+            var vis1 = VisibilityValue(member1);
+            var vis2 = VisibilityValue(member2);
             if (vis1 < vis2)
             {
                 return member1;

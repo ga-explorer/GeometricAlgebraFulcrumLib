@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using TextComposerLib;
 
 namespace CodeComposerLib.SyntaxTree
@@ -27,7 +26,7 @@ namespace CodeComposerLib.SyntaxTree
 
         public SteComment()
         {
-            CommentedTextLines = new[] {String.Empty};
+            CommentedTextLines = new[] {string.Empty};
         }
 
         public SteComment(int emptyLinesCount)
@@ -35,14 +34,14 @@ namespace CodeComposerLib.SyntaxTree
             CommentedTextLines = new string[emptyLinesCount];
 
             for (var i = 0; i < emptyLinesCount; i++)
-                CommentedTextLines[i] = String.Empty;
+                CommentedTextLines[i] = string.Empty;
         }
 
         public SteComment(string commentedText)
         {
             CommentedTextLines = 
-                String.IsNullOrEmpty(commentedText)
-                ? new[] { String.Empty }
+                string.IsNullOrEmpty(commentedText)
+                ? new[] { string.Empty }
                 : commentedText.SplitLines();
         }
 
@@ -51,14 +50,14 @@ namespace CodeComposerLib.SyntaxTree
             var lines = new List<string>();
 
             foreach (var textString in commentedTextStrings)
-                if (String.IsNullOrEmpty(textString))
-                    lines.Add(String.Empty);
+                if (string.IsNullOrEmpty(textString))
+                    lines.Add(string.Empty);
                 else
                     lines.AddRange(textString.SplitLines());
 
             CommentedTextLines = 
                 lines.Count == 0
-                ? new[] { String.Empty }
+                ? new[] { string.Empty }
                 : lines.ToArray();
         }
 
@@ -67,14 +66,14 @@ namespace CodeComposerLib.SyntaxTree
             var lines = new List<string>();
 
             foreach (var textString in commentedTextStrings)
-                if (String.IsNullOrEmpty(textString))
-                    lines.Add(String.Empty);
+                if (string.IsNullOrEmpty(textString))
+                    lines.Add(string.Empty);
                 else
                     lines.AddRange(textString.SplitLines());
 
             CommentedTextLines =
                 lines.Count == 0
-                ? new[] { String.Empty }
+                ? new[] { string.Empty }
                 : lines.ToArray();
         }
     }

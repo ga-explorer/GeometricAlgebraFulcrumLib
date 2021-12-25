@@ -15,7 +15,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                     processor.ERcp(mv1, mv2),
                 
                 IGeometricAlgebraOrthonormalProcessor<T> ortProcessor =>
-                    processor.Rcp(ortProcessor, mv1, mv2),
+                    processor.Rcp(ortProcessor.BasisSet, mv1, mv2),
 
                 _ =>
                     ((IGeometricAlgebraChangeOfBasisProcessor<T>) processor).Rcp(mv1, mv2)

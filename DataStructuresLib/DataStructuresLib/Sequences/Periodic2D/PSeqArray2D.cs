@@ -25,15 +25,15 @@ namespace DataStructuresLib.Sequences.Periodic2D
         {
             get
             {
-                var indexPair = this.GetItemIndexPair(index);
+                var (index1, index2) = this.GetItemIndexPair(index);
 
-                return _dataArray[indexPair.Item1, indexPair.Item2];
+                return _dataArray[index1, index2];
             }
             set
             {
-                var indexPair = this.GetItemIndexPair(index);
+                var (index1, index2) = this.GetItemIndexPair(index);
 
-                _dataArray[indexPair.Item1, indexPair.Item2] = value;
+                _dataArray[index1, index2] = value;
             }
         }
 

@@ -1,5 +1,5 @@
-﻿using EuclideanGeometryLib.BasicMath.Tuples;
-using EuclideanGeometryLib.BasicMath.Tuples.Immutable;
+﻿using NumericalGeometryLib.BasicMath.Tuples;
+using NumericalGeometryLib.BasicMath.Tuples.Immutable;
 using GraphicsComposerLib.WebGl.ThreeJs.Obsolete.Objects;
 using TextComposerLib.Code.JavaScript;
 using JsCodeComponentUtils = TextComposerLib.Code.JavaScript.Obsolete.JsCodeComponentUtils;

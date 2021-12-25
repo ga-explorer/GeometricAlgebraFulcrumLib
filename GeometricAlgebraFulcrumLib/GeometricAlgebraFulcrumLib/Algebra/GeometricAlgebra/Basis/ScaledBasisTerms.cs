@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis
@@ -15,6 +16,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis
         public IScalarAlgebraProcessor<T> ScalarProcessor { get; }
 
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ScaledBasisTerms(IScalarAlgebraProcessor<T> scalarProcessor, T scalingFactor, IEnumerable<BasisTerm<T>> baseTerms)
         {
             ScalingFactor = scalingFactor;
@@ -23,6 +25,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis
         }
 
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IEnumerator<BasisTerm<T>> GetEnumerator()
         {
             return BaseTerms
@@ -30,6 +33,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis
                 .GetEnumerator();
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();

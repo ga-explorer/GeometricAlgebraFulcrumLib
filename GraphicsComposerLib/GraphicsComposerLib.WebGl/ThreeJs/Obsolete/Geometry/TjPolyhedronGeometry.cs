@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using EuclideanGeometryLib.BasicMath.Tuples;
+using NumericalGeometryLib.BasicMath.Tuples;
 using TextComposerLib.Code.JavaScript;
 
 namespace GraphicsComposerLib.WebGl.ThreeJs.Obsolete.Geometry

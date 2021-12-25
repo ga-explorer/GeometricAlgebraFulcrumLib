@@ -33,7 +33,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Dense
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override T GetScalar(ulong index)
         {
-            return SourceMatrix.GetScalar(ColumnIndex, index, DefaultValueFunc);
+            return SourceMatrix.GetScalar(index, ColumnIndex, DefaultValueFunc);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

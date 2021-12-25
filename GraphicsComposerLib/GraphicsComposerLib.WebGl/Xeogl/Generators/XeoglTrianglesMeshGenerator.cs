@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Text;
-using EuclideanGeometryLib.GraphicsGeometry.Triangles;
-using EuclideanGeometryLib.GraphicsGeometry.Vertices;
+using GraphicsComposerLib.Geometry.Primitives;
+using GraphicsComposerLib.Geometry.Primitives.Triangles;
 using TextComposerLib.Code.JavaScript;
 using TextComposerLib.Text;
 
@@ -15,17 +15,17 @@ namespace GraphicsComposerLib.WebGl.Xeogl.Generators
             "," + Environment.NewLine + Environment.NewLine;
 
 
-        public IGraphicsTrianglesGeometry3D BaseGeometry { get; }
+        public IGraphicsTriangleGeometry3D BaseGeometry { get; }
 
 
-        public XeoglTrianglesMeshGenerator(IGraphicsTrianglesGeometry3D geometry, string material)
+        public XeoglTrianglesMeshGenerator(IGraphicsTriangleGeometry3D geometry, string material)
             : base(material)
         {
             BaseGeometry = geometry;
         }
 
 
-        private static string VertexPositionString(IGraphicsVertex3D vertex)
+        private static string VertexPositionString(IGraphicsSurfaceLocalFrame3D vertex)
         {
             var point = vertex.Point;
 
@@ -40,7 +40,7 @@ namespace GraphicsComposerLib.WebGl.Xeogl.Generators
                 .ToString();
         }
 
-        private static string VertexNormalString(IGraphicsVertex3D vertex)
+        private static string VertexNormalString(IGraphicsSurfaceLocalFrame3D vertex)
         {
             var normal = vertex.Normal;
 
@@ -55,9 +55,9 @@ namespace GraphicsComposerLib.WebGl.Xeogl.Generators
                 .ToString();
         }
 
-        private static string VertexUvString(IGraphicsVertex3D vertex)
+        private static string VertexUvString(IGraphicsSurfaceLocalFrame3D vertex)
         {
-            var uv = vertex.TextureUv;
+            var uv = vertex.ParameterValue;
 
             return new StringBuilder()
                 .Append("// Vertex ")
@@ -68,7 +68,7 @@ namespace GraphicsComposerLib.WebGl.Xeogl.Generators
                 .ToString();
         }
 
-        private static string VertexColorString(IGraphicsVertex3D vertex)
+        private static string VertexColorString(IGraphicsSurfaceLocalFrame3D vertex)
         {
             var color = vertex.Color.ToJavaScriptRgbaNumbersArrayText();
 
@@ -84,7 +84,7 @@ namespace GraphicsComposerLib.WebGl.Xeogl.Generators
         {
             var positions =
                 BaseGeometry
-                    .Vertices
+                    .GeometryVertices
                     .Select(VertexPositionString)
                     .Concatenate(_itemsSeparator);
 
@@ -100,7 +100,7 @@ namespace GraphicsComposerLib.WebGl.Xeogl.Generators
         {
             var normals =
                 BaseGeometry
-                    .Vertices
+                    .GeometryVertices
                     .Select(VertexNormalString)
                     .Concatenate(_itemsSeparator);
 
@@ -116,7 +116,7 @@ namespace GraphicsComposerLib.WebGl.Xeogl.Generators
         {
             var textureUVs =
                 BaseGeometry
-                    .Vertices
+                    .GeometryVertices
                     .Select(VertexUvString)
                     .Concatenate(_itemsSeparator);
 
@@ -132,7 +132,7 @@ namespace GraphicsComposerLib.WebGl.Xeogl.Generators
         {
             var colors =
                 BaseGeometry
-                    .Vertices
+                    .GeometryVertices
                     .Select(VertexColorString)
                     .Concatenate(_itemsSeparator);
 
@@ -151,7 +151,7 @@ namespace GraphicsComposerLib.WebGl.Xeogl.Generators
                 .IncreaseIndentation()
                 .AppendLineAtNewLine(
                     BaseGeometry
-                        .VertexIndices
+                        .GeometryIndices
                         .Select(i => i.ToString())
                         .Concatenate(", ")
                 )
@@ -170,13 +170,13 @@ namespace GraphicsComposerLib.WebGl.Xeogl.Generators
 
             GeneratePositions();
 
-            if (BaseGeometry.ContainsVertexNormals)
+            if (BaseGeometry.VertexNormalsEnabled)
                 GenerateNormals();
 
-            if (BaseGeometry.ContainsVertexUVs)
+            if (BaseGeometry.VertexTextureUVsEnabled)
                 GenerateTextureUVs();
 
-            if (BaseGeometry.ContainsVertexColors)
+            if (BaseGeometry.VertexColorsEnabled)
                 GenerateColors();
 
             GenerateIndices();

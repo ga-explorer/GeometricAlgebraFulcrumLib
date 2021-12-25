@@ -736,6 +736,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra
             => ScalarProcessor.IsNotNearNegative(ScalarValue);
 
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private Scalar([NotNull] IScalarAlgebraProcessor<T> processor, [NotNull] T scalar)
         {
             ScalarProcessor = processor;
@@ -743,6 +744,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra
         }
 
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override string ToString()
         {
             return ScalarProcessor.ToText(ScalarValue);

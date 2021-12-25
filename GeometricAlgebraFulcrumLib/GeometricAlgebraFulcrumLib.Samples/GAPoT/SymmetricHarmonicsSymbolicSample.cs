@@ -17,7 +17,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
 {
     public static class SymmetricHarmonicsSymbolicSample
     {
-        public static IGeometricAlgebraProcessor<Expr> GeometricProcessor { get; }
+        public static IGeometricAlgebraEuclideanProcessor<Expr> GeometricProcessor { get; }
             = ScalarAlgebraMathematicaProcessor.DefaultProcessor.CreateGeometricAlgebraEuclideanProcessor(63);
             
         public static TextMathematicaComposer TextComposer { get; }
@@ -88,7 +88,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
                 ? $@"{k}*\[Theta]".ToExpr()
                 : $@"{k}*(\[Theta] - 2*Pi*{i}/{n})".ToExpr();
 
-            var rotor = GeometricProcessor.CreateEuclideanGivensRotor(
+            var rotor = GeometricProcessor.CreateGivensRotor(
                 i, n, angle
             );
 

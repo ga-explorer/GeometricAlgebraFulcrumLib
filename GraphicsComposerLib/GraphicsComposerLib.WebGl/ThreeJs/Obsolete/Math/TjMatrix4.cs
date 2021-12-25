@@ -1,7 +1,7 @@
 ﻿using System.Numerics;
 using System.Text;
-using EuclideanGeometryLib.BasicMath.Maps.Space2D;
-using EuclideanGeometryLib.BasicMath.Maps.Space3D;
+using NumericalGeometryLib.BasicMath.Maps.Space2D;
+using NumericalGeometryLib.BasicMath.Maps.Space3D;
 
 namespace GraphicsComposerLib.WebGl.ThreeJs.Obsolete.Math
 {
@@ -77,7 +77,7 @@ namespace GraphicsComposerLib.WebGl.ThreeJs.Obsolete.Math
 
         public TjMatrix4(IAffineMap3D affineMap)
         {
-            MatrixValue = affineMap.ToSystemNumericsMatrix();
+            MatrixValue = affineMap.ToMatrix4x4();
         }
 
 

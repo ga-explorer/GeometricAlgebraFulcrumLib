@@ -1,5 +1,5 @@
 ﻿using System;
-using EuclideanGeometryLib.GraphicsGeometry;
+using GraphicsComposerLib.Geometry.Primitives;
 using GraphicsComposerLib.WebGl.Xeogl.Constants;
 
 namespace GraphicsComposerLib.WebGl.Xeogl.Geometry.Builtin

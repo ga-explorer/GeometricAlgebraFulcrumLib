@@ -21,26 +21,26 @@ namespace TextComposerLib.Text.Structured
 
         public QueueTextComposer()
         {
-            Separator = String.Empty;
-            ActiveItemPrefix = String.Empty;
-            ActiveItemSuffix = String.Empty;
-            FinalPrefix = String.Empty;
-            FinalSuffix = String.Empty;
+            Separator = string.Empty;
+            ActiveItemPrefix = string.Empty;
+            ActiveItemSuffix = string.Empty;
+            FinalPrefix = string.Empty;
+            FinalSuffix = string.Empty;
         }
 
         public QueueTextComposer(string separator)
         {
-            Separator = separator ?? String.Empty;
-            ActiveItemPrefix = String.Empty;
-            ActiveItemSuffix = String.Empty;
-            FinalPrefix = String.Empty;
-            FinalSuffix = String.Empty;
+            Separator = separator ?? string.Empty;
+            ActiveItemPrefix = string.Empty;
+            ActiveItemSuffix = string.Empty;
+            FinalPrefix = string.Empty;
+            FinalSuffix = string.Empty;
         }
 
 
         public QueueTextComposer Enqueue()
         {
-            base.Enqueue(this.ToTextItem(String.Empty));
+            base.Enqueue(this.ToTextItem(string.Empty));
 
             return this;
         }

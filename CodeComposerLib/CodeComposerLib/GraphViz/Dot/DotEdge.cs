@@ -684,14 +684,14 @@ namespace CodeComposerLib.GraphViz.Dot
 
         public DotEdge SetHeadPort(string port, DotCompass compass)
         {
-            if (String.IsNullOrEmpty(port) && ReferenceEquals(compass, null))
+            if (string.IsNullOrEmpty(port) && ReferenceEquals(compass, null))
             {
                 AttrValues.ClearAttribute("headport");
 
                 return this;
             }
 
-            if (String.IsNullOrEmpty(port))
+            if (string.IsNullOrEmpty(port))
             {
                 AttrValues.SetAttribute("headport", compass.Value);
 
@@ -1026,14 +1026,14 @@ namespace CodeComposerLib.GraphViz.Dot
 
         public DotEdge SetTailPort(string port, DotCompass compass)
         {
-            if (String.IsNullOrEmpty(port) && ReferenceEquals(compass, null))
+            if (string.IsNullOrEmpty(port) && ReferenceEquals(compass, null))
             {
                 AttrValues.ClearAttribute("tailport");
 
                 return this;
             }
 
-            if (String.IsNullOrEmpty(port))
+            if (string.IsNullOrEmpty(port))
             {
                 AttrValues.SetAttribute("tailport", compass.Value);
 

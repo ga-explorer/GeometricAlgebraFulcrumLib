@@ -1,13 +1,13 @@
-﻿using EuclideanGeometryLib.GraphicsGeometry.Points;
+﻿using GraphicsComposerLib.Geometry.Primitives.Points;
 
 namespace GraphicsComposerLib.WebGl.Xeogl.Generators
 {
     public sealed class XeoglPointsMeshGenerator : XeoglMeshGenerator
     {
-        public IGraphicsPointsGeometry3D BaseGeometry { get; }
+        public IGraphicsPointGeometry3D BaseGeometry { get; }
 
 
-        public XeoglPointsMeshGenerator(IGraphicsPointsGeometry3D baseGeometry, string material)
+        public XeoglPointsMeshGenerator(IGraphicsPointGeometry3D baseGeometry, string material)
             : base(material)
         {
             BaseGeometry = baseGeometry;
@@ -21,7 +21,7 @@ namespace GraphicsComposerLib.WebGl.Xeogl.Generators
                 .IncreaseIndentation();
 
             var isFirstFlag = true;
-            foreach (var vertex in BaseGeometry.VertexPoints)
+            foreach (var vertex in BaseGeometry.GeometryPoints)
             {
                 if (!isFirstFlag)
                     ScriptComposer.AppendLine(", ");

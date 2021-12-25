@@ -33,7 +33,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.CodeComposer
                 );
 
             var rotor = 
-                processor.CreateEuclideanRotor(u, v);
+                processor.CreatePureRotor(u, v);
             
             rotor.Multivector.SetIsOutput(true);
 

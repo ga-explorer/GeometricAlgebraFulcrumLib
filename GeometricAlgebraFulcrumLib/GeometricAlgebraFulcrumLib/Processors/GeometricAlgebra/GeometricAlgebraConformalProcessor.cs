@@ -1,4 +1,5 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Utilities.Factories;
@@ -16,7 +17,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
         internal GeometricAlgebraConformalProcessor(IScalarAlgebraProcessor<T> scalarProcessor, uint vSpaceDimension) 
             : base(
                 scalarProcessor, 
-                GeometricAlgebraSignatureFactory.CreateConformal(vSpaceDimension)
+                GeometricAlgebraBasisSet.CreateConformal(vSpaceDimension)
             )
         {
             InfinityBasisVector = GetInfinityBasisVectorStorage().CreateVector(this);

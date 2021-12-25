@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
 
 namespace CodeComposerLib.GraphViz.Dot.Label.Text
 {
@@ -15,7 +14,7 @@ namespace CodeComposerLib.GraphViz.Dot.Label.Text
         {
             get
             {
-                if (String.IsNullOrEmpty(_align)) 
+                if (string.IsNullOrEmpty(_align)) 
                     return "<BR/>";
 
                 return 
@@ -30,7 +29,7 @@ namespace CodeComposerLib.GraphViz.Dot.Label.Text
 
         internal DotHtmlLineBreak()
         {
-            _align = String.Empty;
+            _align = string.Empty;
         }
 
         internal DotHtmlLineBreak(string align)

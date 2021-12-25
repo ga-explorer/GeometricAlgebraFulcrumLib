@@ -11,7 +11,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         {
             var s1 = processor.OmTargetToOrthonormal.OmMapVector(mv1);
 
-            return processor.NormSquared(processor.Signature, s1);
+            return processor.NormSquared(processor.BasisSet, s1);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -19,7 +19,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         {
             var s1 = processor.OmTargetToOrthonormal.OmMapBivector(mv1);
 
-            return processor.NormSquared(processor.Signature, s1);
+            return processor.NormSquared(processor.BasisSet, s1);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -27,7 +27,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         {
             var s1 = processor.OmTargetToOrthonormal.OmMapKVector(mv1);
 
-            return processor.NormSquared(processor.Signature, s1);
+            return processor.NormSquared(processor.BasisSet, s1);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -35,7 +35,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         {
             var s1 = processor.OmTargetToOrthonormal.MapMultivector(mv1);
 
-            return processor.NormSquared(processor.Signature, s1);
+            return processor.NormSquared(processor.BasisSet, s1);
         }
 
 
@@ -44,7 +44,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         {
             var s1 = processor.OmTargetToOrthonormal.OmMapVector(mv1);
 
-            return processor.NormSquared(processor.Signature, s1);
+            return processor.NormSquared(processor.BasisSet, s1);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -52,7 +52,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         {
             var s1 = processor.OmTargetToOrthonormal.OmMapBivector(mv1);
 
-            return processor.NormSquared(processor.Signature, s1);
+            return processor.NormSquared(processor.BasisSet, s1);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -60,7 +60,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         {
             var s1 = processor.OmTargetToOrthonormal.OmMapKVector(mv1);
 
-            return processor.NormSquared(processor.Signature, s1);
+            return processor.NormSquared(processor.BasisSet, s1);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -68,7 +68,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         {
             var s1 = processor.OmTargetToOrthonormal.MapMultivector(mv1);
 
-            return processor.NormSquared(processor.Signature, s1);
+            return processor.NormSquared(processor.BasisSet, s1);
         }
 
 

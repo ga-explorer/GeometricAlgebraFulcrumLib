@@ -46,10 +46,7 @@ namespace DataStructuresLib.SimpleTree
             return _branches.ContainsKey(key);
         }
 
-        public ICollection<int> Keys
-        {
-            get { return _branches.Keys; }
-        }
+        public ICollection<int> Keys => _branches.Keys;
 
         public bool Remove(int key)
         {
@@ -61,21 +58,12 @@ namespace DataStructuresLib.SimpleTree
             return _branches.TryGetValue(key, out value);
         }
 
-        public ICollection<SimpleTreeBranch<TLeaf>> Values
-        {
-            get { return _branches.Values; }
-        }
+        public ICollection<SimpleTreeBranch<TLeaf>> Values => _branches.Values;
 
         public SimpleTreeBranch<TLeaf> this[int key]
         {
-            get
-            {
-                return _branches[key];
-            }
-            set
-            {
-                _branches[key] = value;
-            }
+            get => _branches[key];
+            set => _branches[key] = value;
         }
 
         public void Add(KeyValuePair<int, SimpleTreeBranch<TLeaf>> item)
@@ -99,15 +87,9 @@ namespace DataStructuresLib.SimpleTree
                 array[arrayIndex++] = pair;
         }
 
-        public int Count
-        {
-            get { return _branches.Count; }
-        }
+        public int Count => _branches.Count;
 
-        public bool IsReadOnly
-        {
-            get { return false; }
-        }
+        public bool IsReadOnly => false;
 
         public bool Remove(KeyValuePair<int, SimpleTreeBranch<TLeaf>> item)
         {

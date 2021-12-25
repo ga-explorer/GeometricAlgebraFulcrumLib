@@ -29,7 +29,7 @@ namespace TextComposerLib.Text.Structured
 
         public SequenceTextComposer(string separator)
         {
-            Separator = separator ?? String.Empty;
+            Separator = separator ?? string.Empty;
         }
 
 

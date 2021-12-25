@@ -21,26 +21,26 @@ namespace GAPoTNumLib.Text.Structured
 
         public StackTextComposer()
         {
-            Separator = String.Empty;
-            ActiveItemPrefix = String.Empty;
-            ActiveItemSuffix = String.Empty;
-            FinalPrefix = String.Empty;
-            FinalSuffix = String.Empty;
+            Separator = string.Empty;
+            ActiveItemPrefix = string.Empty;
+            ActiveItemSuffix = string.Empty;
+            FinalPrefix = string.Empty;
+            FinalSuffix = string.Empty;
         }
 
         public StackTextComposer(string separator)
         {
-            Separator = separator ?? String.Empty;
-            ActiveItemPrefix = String.Empty;
-            ActiveItemSuffix = String.Empty;
-            FinalPrefix = String.Empty;
-            FinalSuffix = String.Empty;
+            Separator = separator ?? string.Empty;
+            ActiveItemPrefix = string.Empty;
+            ActiveItemSuffix = string.Empty;
+            FinalPrefix = string.Empty;
+            FinalSuffix = string.Empty;
         }
 
 
         public StackTextComposer Push()
         {
-            base.Push(this.ToTextItem(String.Empty));
+            base.Push(this.ToTextItem(string.Empty));
 
             return this;
         }

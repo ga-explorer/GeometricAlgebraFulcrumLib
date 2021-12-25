@@ -1,4 +1,6 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Utilities.Factories;
@@ -15,6 +17,24 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                 mv2.GetLinVectorIndexScalarStorage()
             ).CreateVectorStorage();
         }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static VectorStorage<T> Add<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params VectorStorage<T>[] mvList)
+        {
+            return mvList.Aggregate(
+                scalarProcessor.CreateVectorZeroStorage(),
+                scalarProcessor.Add
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static VectorStorage<T> Add<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<VectorStorage<T>> mvList)
+        {
+            return mvList.Aggregate(
+                scalarProcessor.CreateVectorZeroStorage(),
+                scalarProcessor.Add
+            );
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> Add<T>(this IScalarAlgebraProcessor<T> scalarProcessor, BivectorStorage<T> mv1, BivectorStorage<T> mv2)
@@ -25,6 +45,24 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             ).CreateBivectorStorage();
         }
         
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static BivectorStorage<T> Add<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params BivectorStorage<T>[] mvList)
+        {
+            return mvList.Aggregate(
+                scalarProcessor.CreateBivectorZeroStorage(),
+                scalarProcessor.Add
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static BivectorStorage<T> Add<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<BivectorStorage<T>> mvList)
+        {
+            return mvList.Aggregate(
+                scalarProcessor.CreateBivectorZeroStorage(),
+                scalarProcessor.Add
+            );
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IMultivectorGradedStorage<T> Add<T>(this IScalarAlgebraProcessor<T> scalarProcessor, KVectorStorage<T> mv1, KVectorStorage<T> mv2)
         {
@@ -43,7 +81,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                 mv2.GetLinVectorIndexScalarStorage()
             ).CreateMultivectorGradedStorage();
         }
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IMultivectorStorage<T> Add<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorStorage<T> mv1, IMultivectorStorage<T> mv2)
         {
@@ -71,6 +109,24 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                         .RemoveZeroTerms()
                         .CreateMultivectorSparseStorage()
             };
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IMultivectorStorage<T> Add<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params IMultivectorStorage<T>[] mvList)
+        {
+            return mvList.Aggregate(
+                (IMultivectorStorage<T>) scalarProcessor.CreateMultivectorSparseStorageZero(),
+                scalarProcessor.Add
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IMultivectorStorage<T> Add<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<IMultivectorStorage<T>> mvList)
+        {
+            return mvList.Aggregate(
+                (IMultivectorStorage<T>) scalarProcessor.CreateMultivectorSparseStorageZero(),
+                scalarProcessor.Add
+            );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
 
 namespace GAPoTNumLib.Text.Parametric
 {
@@ -45,13 +44,13 @@ namespace GAPoTNumLib.Text.Parametric
 
             ParameterName = parameterName;
 
-            ParameterValue = String.Empty;
+            ParameterValue = string.Empty;
         }
 
 
         internal void ClearValue()
         {
-            ParameterValue = String.Empty;
+            ParameterValue = string.Empty;
         }
     }
 }

@@ -1,15 +1,16 @@
 ﻿using System.Linq;
-using EuclideanGeometryLib.GraphicsGeometry.Lines;
+using DataStructuresLib.Basic;
+using GraphicsComposerLib.Geometry.Primitives.Lines;
 using TextComposerLib.Text;
 
 namespace GraphicsComposerLib.WebGl.Xeogl.Generators
 {
     public sealed class XeoglLinesMeshGenerator : XeoglMeshGenerator
     {
-        public IGraphicsLinesGeometry3D BaseGeometry { get; }
+        public IGraphicsLineGeometry3D BaseGeometry { get; }
 
 
-        public XeoglLinesMeshGenerator(IGraphicsLinesGeometry3D baseGeometry, string material)
+        public XeoglLinesMeshGenerator(IGraphicsLineGeometry3D baseGeometry, string material)
             : base(material)
         {
             BaseGeometry = baseGeometry;
@@ -23,7 +24,7 @@ namespace GraphicsComposerLib.WebGl.Xeogl.Generators
                 .IncreaseIndentation();
 
             var isFirstFlag = true;
-            foreach (var vertex in BaseGeometry.VertexPoints)
+            foreach (var vertex in BaseGeometry.GeometryPoints)
             {
                 if (!isFirstFlag)
                     ScriptComposer.AppendLine(", ");
@@ -50,7 +51,10 @@ namespace GraphicsComposerLib.WebGl.Xeogl.Generators
                 .IncreaseIndentation();
 
             ScriptComposer.AppendLineAtNewLine(
-                BaseGeometry.LineVerticesIndices.Select(i => i.ToString()).Concatenate(", ")
+                BaseGeometry
+                    .LineVertexIndices
+                    .SelectMany(i => i.GetItems())
+                    .Concatenate(", ")
             );
 
             ScriptComposer

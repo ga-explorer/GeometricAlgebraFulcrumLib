@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
-using EuclideanGeometryLib.BasicMath.Tuples;
+using NumericalGeometryLib.BasicMath.Tuples;
 using GraphicsComposerLib.Svg.Values;
 
 namespace GraphicsComposerLib.Svg.Paths

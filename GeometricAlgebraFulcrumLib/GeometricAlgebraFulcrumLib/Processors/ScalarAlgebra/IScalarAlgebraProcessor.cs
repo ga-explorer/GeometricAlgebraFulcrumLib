@@ -21,6 +21,8 @@
         T ScalarMinusTen { get; }
 
         T ScalarPi { get; }
+        
+        T ScalarPiOver2 { get; }
 
         T ScalarE { get; }
 

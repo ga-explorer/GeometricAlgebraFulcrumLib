@@ -15,7 +15,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                     processor.EHip(mv1, mv2),
                 
                 IGeometricAlgebraOrthonormalProcessor<T> ortProcessor =>
-                    processor.Hip(ortProcessor, mv1, mv2),
+                    processor.Hip(ortProcessor.BasisSet, mv1, mv2),
 
                 _ =>
                     ((IGeometricAlgebraChangeOfBasisProcessor<T>) processor).Hip(mv1, mv2)

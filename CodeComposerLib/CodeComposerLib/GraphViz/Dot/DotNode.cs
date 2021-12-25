@@ -37,12 +37,12 @@ namespace CodeComposerLib.GraphViz.Dot
         /// <summary>
         /// True if this is an actual node not a node defauls statement
         /// </summary>
-        public bool IsNode => String.IsNullOrEmpty(NodeName) == false;
+        public bool IsNode => string.IsNullOrEmpty(NodeName) == false;
 
         /// <summary>
         /// True if this is a node defaults statement not an actual node
         /// </summary>
-        public bool IsNodeDefaults => String.IsNullOrEmpty(NodeName);
+        public bool IsNodeDefaults => string.IsNullOrEmpty(NodeName);
 
         #region Attribute Accessors
         public string Url

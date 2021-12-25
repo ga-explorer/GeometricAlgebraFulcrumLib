@@ -65,6 +65,8 @@ namespace GeometricAlgebraFulcrumLib.Processors.SymbolicAlgebra.Context
 
         public ISymbolicExpressionAtomic ScalarPi { get; }
 
+        public ISymbolicExpressionAtomic ScalarPiOver2 { get; }
+
         public ISymbolicExpressionAtomic ScalarE { get; }
         
         public IScalarAlgebraProcessor<ISymbolicExpressionAtomic> ScalarProcessor 
@@ -113,6 +115,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.SymbolicAlgebra.Context
             ScalarTen = GetOrDefineLiteralNumber(10);
             ScalarMinusTen = GetOrDefineLiteralNumber(-10);
             ScalarPi = GetOrDefineSymbolicNumber(SymbolicNumberNames.Pi, Math.PI);
+            ScalarPiOver2 = GetOrDefineSymbolicNumber(SymbolicNumberNames.Pi, 0.5d * Math.PI);
             ScalarE = GetOrDefineSymbolicNumber(SymbolicNumberNames.E, Math.E);
 
             //These must be initialized after all other members
@@ -139,7 +142,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.SymbolicAlgebra.Context
         {
             _tempNamesIndex++;
 
-            return $"{DefaultSymbolName}_{_tempNamesIndex}";
+            return $"{DefaultSymbolName}{_tempNamesIndex}";
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

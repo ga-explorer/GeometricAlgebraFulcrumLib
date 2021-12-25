@@ -1,20 +1,20 @@
-﻿using EuclideanGeometryLib.GraphicsGeometry;
-using EuclideanGeometryLib.GraphicsGeometry.Lines;
-using EuclideanGeometryLib.GraphicsGeometry.Points;
-using EuclideanGeometryLib.GraphicsGeometry.Triangles;
+﻿using GraphicsComposerLib.Geometry.Primitives;
+using GraphicsComposerLib.Geometry.Primitives.Lines;
+using GraphicsComposerLib.Geometry.Primitives.Points;
+using GraphicsComposerLib.Geometry.Primitives.Triangles;
 using GraphicsComposerLib.WebGl.Xeogl.Geometry.Primitives;
 
 namespace GraphicsComposerLib.WebGl.Xeogl.Geometry
 {
     public static class XeoglGeometryUtils
     {
-        public static XeoglPointsGeometry ToXeoglGeometry(this IGraphicsPointsGeometry3D graphicsGeometry)
+        public static XeoglPointsGeometry ToXeoglGeometry(this IGraphicsPointGeometry3D graphicsGeometry)
             => new XeoglPointsGeometry(graphicsGeometry);
         
-        public static XeoglLinesGeometry ToXeoglGeometry(this IGraphicsLinesGeometry3D graphicsGeometry)
+        public static XeoglLinesGeometry ToXeoglGeometry(this IGraphicsLineGeometry3D graphicsGeometry)
             => new XeoglLinesGeometry(graphicsGeometry);
         
-        public static XeoglTrianglesGeometry ToXeoglGeometry(this IGraphicsTrianglesGeometry3D graphicsGeometry)
+        public static XeoglTrianglesGeometry ToXeoglGeometry(this IGraphicsTriangleGeometry3D graphicsGeometry)
             => new XeoglTrianglesGeometry(graphicsGeometry);
 
         

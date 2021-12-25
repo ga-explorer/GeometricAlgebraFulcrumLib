@@ -16,15 +16,9 @@ namespace DataStructuresLib.BooleanPattern
 
         protected readonly List<bool> PatternValues = new List<bool>();
 
-        public int Count { get { return PatternValues.Count; } }
+        public int Count => PatternValues.Count;
 
-        public bool this[int i]
-        {
-            get
-            {
-                return PatternValues[i];
-            }
-        }
+        public bool this[int i] => PatternValues[i];
 
 
         protected BooleanPattern(int size)
@@ -162,7 +156,7 @@ namespace DataStructuresLib.BooleanPattern
         }
 
 
-        public Int32 ToInt32()
+        public int ToInt32()
         {
             if (Count > Int32BlockSize)
                 throw new InvalidOperationException();
@@ -180,7 +174,7 @@ namespace DataStructuresLib.BooleanPattern
             return buffer;
         }
 
-        public Int32 ToInt32(int startIndex, int length)
+        public int ToInt32(int startIndex, int length)
         {
             length = Math.Min(Count - startIndex, length);
 
@@ -200,12 +194,12 @@ namespace DataStructuresLib.BooleanPattern
             return buffer;
         }
 
-        public UInt32 ToUInt32()
+        public uint ToUInt32()
         {
             if (Count > UInt32BlockSize)
                 throw new InvalidOperationException();
 
-            UInt32 buffer = 0;
+            uint buffer = 0;
 
             for (var i = 0; i < Count; i++)
             {
@@ -218,14 +212,14 @@ namespace DataStructuresLib.BooleanPattern
             return buffer;
         }
 
-        public UInt32 ToUInt32(int startIndex, int length)
+        public uint ToUInt32(int startIndex, int length)
         {
             length = Math.Min(Count - startIndex, length);
 
             if (length > UInt32BlockSize || length < 1)
                 throw new InvalidOperationException();
 
-            UInt32 buffer = 0;
+            uint buffer = 0;
 
             for (var i = 0; i < length; i++)
             {
@@ -238,12 +232,12 @@ namespace DataStructuresLib.BooleanPattern
             return buffer;
         }
 
-        public Int64 ToInt64()
+        public long ToInt64()
         {
             if (Count > Int64BlockSize)
                 throw new InvalidOperationException();
 
-            Int64 buffer = 0;
+            long buffer = 0;
 
             for (var i = 0; i < Count; i++)
             {
@@ -256,14 +250,14 @@ namespace DataStructuresLib.BooleanPattern
             return buffer;
         }
 
-        public Int64 ToInt64(int startIndex, int length)
+        public long ToInt64(int startIndex, int length)
         {
             length = Math.Min(Count - startIndex, length);
 
             if (length > Int64BlockSize || length < 1)
                 throw new InvalidOperationException();
 
-            Int64 buffer = 0;
+            long buffer = 0;
 
             for (var i = 0; i < length; i++)
             {
@@ -276,12 +270,12 @@ namespace DataStructuresLib.BooleanPattern
             return buffer;
         }
 
-        public UInt64 ToUInt64()
+        public ulong ToUInt64()
         {
             if (Count > UInt64BlockSize)
                 throw new InvalidOperationException();
 
-            UInt64 buffer = 0;
+            ulong buffer = 0;
 
             for (var i = 0; i < Count; i++)
             {
@@ -294,14 +288,14 @@ namespace DataStructuresLib.BooleanPattern
             return buffer;
         }
 
-        public UInt64 ToUInt64(int startIndex, int length)
+        public ulong ToUInt64(int startIndex, int length)
         {
             length = Math.Min(Count - startIndex, length);
 
             if (length > UInt64BlockSize || length < 1)
                 throw new InvalidOperationException();
 
-            UInt64 buffer = 0;
+            ulong buffer = 0;
 
             for (var i = 0; i < length; i++)
             {
@@ -471,12 +465,12 @@ namespace DataStructuresLib.BooleanPattern
                 yield return PatternValues[i + startIndex];
         }
 
-        public IEnumerable<Int32> ToInt32Enumerator()
+        public IEnumerable<int> ToInt32Enumerator()
         {
             var blockCount = Count / Int32BlockSize;
             var lastBlockSize = Count % Int32BlockSize;
 
-            Int32 buffer;
+            int buffer;
 
             int firstIndex;
             int lastIndex;
@@ -518,7 +512,7 @@ namespace DataStructuresLib.BooleanPattern
             yield return buffer;
         }
 
-        public IEnumerable<Int32> ToInt32Enumerator(int startIndex, int length)
+        public IEnumerable<int> ToInt32Enumerator(int startIndex, int length)
         {
             length = Math.Min(Count - startIndex, length);
 
@@ -528,7 +522,7 @@ namespace DataStructuresLib.BooleanPattern
             var blockCount = length / Int32BlockSize;
             var lastBlockSize = length % Int32BlockSize;
 
-            Int32 buffer;
+            int buffer;
 
             int firstIndex;
             int lastIndex;
@@ -570,12 +564,12 @@ namespace DataStructuresLib.BooleanPattern
             yield return buffer;
         }
 
-        public IEnumerable<UInt32> ToUInt32Enumerator()
+        public IEnumerable<uint> ToUInt32Enumerator()
         {
             var blockCount = Count / UInt32BlockSize;
             var lastBlockSize = Count % UInt32BlockSize;
 
-            UInt32 buffer;
+            uint buffer;
 
             int firstIndex;
             int lastIndex;
@@ -617,7 +611,7 @@ namespace DataStructuresLib.BooleanPattern
             yield return buffer;
         }
 
-        public IEnumerable<UInt32> ToUInt32Enumerator(int startIndex, int length)
+        public IEnumerable<uint> ToUInt32Enumerator(int startIndex, int length)
         {
             length = Math.Min(Count - startIndex, length);
 
@@ -627,7 +621,7 @@ namespace DataStructuresLib.BooleanPattern
             var blockCount = length / UInt32BlockSize;
             var lastBlockSize = length % UInt32BlockSize;
 
-            UInt32 buffer;
+            uint buffer;
 
             int firstIndex;
             int lastIndex;
@@ -669,12 +663,12 @@ namespace DataStructuresLib.BooleanPattern
             yield return buffer;
         }
 
-        public IEnumerable<Int64> ToInt64Enumerator()
+        public IEnumerable<long> ToInt64Enumerator()
         {
             var blockCount = Count / Int32BlockSize;
             var lastBlockSize = Count % Int32BlockSize;
 
-            Int64 buffer;
+            long buffer;
 
             int firstIndex;
             int lastIndex;
@@ -716,7 +710,7 @@ namespace DataStructuresLib.BooleanPattern
             yield return buffer;
         }
 
-        public IEnumerable<Int64> ToInt64Enumerator(int startIndex, int length)
+        public IEnumerable<long> ToInt64Enumerator(int startIndex, int length)
         {
             length = Math.Min(Count - startIndex, length);
 
@@ -726,7 +720,7 @@ namespace DataStructuresLib.BooleanPattern
             var blockCount = length / Int64BlockSize;
             var lastBlockSize = length % Int64BlockSize;
 
-            Int64 buffer;
+            long buffer;
 
             int firstIndex;
             int lastIndex;
@@ -768,12 +762,12 @@ namespace DataStructuresLib.BooleanPattern
             yield return buffer;
         }
 
-        public IEnumerable<UInt64> ToUInt64Enumerator()
+        public IEnumerable<ulong> ToUInt64Enumerator()
         {
             var blockCount = Count / UInt32BlockSize;
             var lastBlockSize = Count % UInt32BlockSize;
 
-            UInt64 buffer;
+            ulong buffer;
 
             int firstIndex;
             int lastIndex;
@@ -815,7 +809,7 @@ namespace DataStructuresLib.BooleanPattern
             yield return buffer;
         }
 
-        public IEnumerable<UInt64> ToUInt64Enumerator(int startIndex, int length)
+        public IEnumerable<ulong> ToUInt64Enumerator(int startIndex, int length)
         {
             length = Math.Min(Count - startIndex, length);
 
@@ -825,7 +819,7 @@ namespace DataStructuresLib.BooleanPattern
             var blockCount = length / UInt64BlockSize;
             var lastBlockSize = length % UInt64BlockSize;
 
-            UInt64 buffer;
+            ulong buffer;
 
             int firstIndex;
             int lastIndex;
@@ -961,7 +955,7 @@ namespace DataStructuresLib.BooleanPattern
         }
 
 
-        public static BooleanPattern CreateFromInt32(int size, Int32 pattern)
+        public static BooleanPattern CreateFromInt32(int size, int pattern)
         {
             if (size > Int32BlockSize)
                 throw new InvalidOperationException();
@@ -974,7 +968,7 @@ namespace DataStructuresLib.BooleanPattern
             return result;
         }
 
-        public static BooleanPattern CreateFromUInt32(int size, UInt32 pattern)
+        public static BooleanPattern CreateFromUInt32(int size, uint pattern)
         {
             if (size > UInt32BlockSize)
                 throw new InvalidOperationException();
@@ -987,7 +981,7 @@ namespace DataStructuresLib.BooleanPattern
             return result;
         }
 
-        public static BooleanPattern CreateFromInt64(int size, Int64 pattern)
+        public static BooleanPattern CreateFromInt64(int size, long pattern)
         {
             if (size > Int64BlockSize)
                 throw new InvalidOperationException();
@@ -1000,7 +994,7 @@ namespace DataStructuresLib.BooleanPattern
             return result;
         }
 
-        public static BooleanPattern CreateFromUInt64(int size, UInt64 pattern)
+        public static BooleanPattern CreateFromUInt64(int size, ulong pattern)
         {
             if (size > UInt64BlockSize)
                 throw new InvalidOperationException();

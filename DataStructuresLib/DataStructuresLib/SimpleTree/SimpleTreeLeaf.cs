@@ -24,15 +24,9 @@ namespace DataStructuresLib.SimpleTree
             Value = value;
         }
 
-        public override IEnumerable<SimpleTreeNode<TLeaf>> ChildNodes
-        {
-            get { return Enumerable.Empty<SimpleTreeNode<TLeaf>>(); }
-        }
+        public override IEnumerable<SimpleTreeNode<TLeaf>> ChildNodes => Enumerable.Empty<SimpleTreeNode<TLeaf>>();
 
-        public override IEnumerable<SimpleTreeBranch<TLeaf>> ChildBranches
-        {
-            get { return Enumerable.Empty<SimpleTreeBranch<TLeaf>>(); }
-        }
+        public override IEnumerable<SimpleTreeBranch<TLeaf>> ChildBranches => Enumerable.Empty<SimpleTreeBranch<TLeaf>>();
 
         //public override void ToString(LinearTextComposer textBuilder)
         //{

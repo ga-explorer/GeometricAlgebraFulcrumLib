@@ -1,12 +1,14 @@
-﻿using GeometricAlgebraFulcrumLib.Mathematica.Mathematica.ExprFactory;
+﻿using System.Runtime.CompilerServices;
+using NumericalGeometryLib.BasicMath;
+using GeometricAlgebraFulcrumLib.Mathematica.Mathematica.ExprFactory;
 using GeometricAlgebraFulcrumLib.Mathematica.Processors;
-using GeometricAlgebraFulcrumLib.Utilities.Composers;
+using GeometricAlgebraFulcrumLib.Text;
 using Wolfram.NETLink;
 
 namespace GeometricAlgebraFulcrumLib.Mathematica.Text
 {
     public sealed class LaTeXMathematicaComposer
-        : LaTeXComposer<Expr>
+        : LaTeXComposerBase<Expr>
     {
         public static LaTeXMathematicaComposer DefaultComposer { get; }
             = new LaTeXMathematicaComposer();
@@ -17,6 +19,14 @@ namespace GeometricAlgebraFulcrumLib.Mathematica.Text
         {
         }
 
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override string GetAngleText(PlanarAngle angle)
+        {
+            return $"{GetScalarText(angle.Degrees.ToExpr())} Degree";
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override string GetScalarText(Expr scalar)
         {
             return MathematicaUtils.Cas.Connection.EvaluateToString(

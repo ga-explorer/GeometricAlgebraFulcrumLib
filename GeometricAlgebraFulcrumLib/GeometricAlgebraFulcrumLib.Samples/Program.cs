@@ -1,5 +1,6 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Samples.Graphics.ThreeJs;
+using GeometricAlgebraFulcrumLib.Samples.GAPoT;
+using GeometricAlgebraFulcrumLib.UnitTests.Processing;
 
 namespace GeometricAlgebraFulcrumLib.Samples
 {
@@ -9,17 +10,29 @@ namespace GeometricAlgebraFulcrumLib.Samples
         {
             //var testClass = new MultivectorStoragesTests();
             //testClass.ClassInit();
+
             //testClass.AssertCorrectInitialization();
 
-            //var functionNames = new[] { "add", "subtract", "op", "egp", "elcp", "ercp", "efdp", "ehip", "ecp", "eacp" };
+            //testClass.AssertBinaryWithSelfOperations();
+
+            //var functionNames = new[] { "add", "subtract", "op", "gp", "lcp", "rcp", "fdp", "hip", "cp", "acp" };
             //foreach (var functionName in functionNames)
             //    testClass.AssertCorrectBinaryOperations(functionName);
 
-            Sample2.Execute();
+            //var functionNames = new[] { "leftTimesScalar", "rightTimesScalar", "divideByScalar", "egpSquared", "egpReverse" };
+            //foreach (var functionName in functionNames)
+            //    testClass.AssertCorrectUnaryOperations(functionName);
+
+            //var functionNames = new[] { "spSquared", "spReverse" };
+            //foreach (var functionName in functionNames)
+            //    testClass.AssertCorrectUnaryOperationsWithScalarOutput(functionName);
+
+            //GeometricAlgebraFulcrumLib.Samples.CodeComposer.Sample1.Execute2();
+            //EuclideanMultivectorOperations3D.Execute();
 
             //HilbertTransform.Execute();
 
-            //MultiDerivativeSample.Execute();
+            MultiDerivativeSample.Execute();
 
             //Symbolic.AngouriMath.Sample1.Execute();
             //CodeComposer.Sample1.Execute();

@@ -26,7 +26,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
 
 
             var rotor = 
-                processor.CreateEuclideanRotor(v, u);
+                processor.CreatePureRotor(v, u);
 
             var rotorMv = rotor.Multivector;
             var rotorMvReverse = processor.Reverse(rotor.Multivector);

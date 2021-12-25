@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.LinearAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
@@ -39,7 +40,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         {
             return new GeometricAlgebraOrthonormalProcessor<T>(
                 scalarProcessor, 
-                GeometricAlgebraSignatureFactory.Create(positiveCount, negativeCount)
+                GeometricAlgebraBasisSet.Create(positiveCount, negativeCount)
             );
         }
 
@@ -48,7 +49,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         {
             return new GeometricAlgebraOrthonormalProcessor<T>(
                 scalarProcessor, 
-                GeometricAlgebraSignatureFactory.Create(positiveCount, negativeCount, zeroCount)
+                GeometricAlgebraBasisSet.Create(positiveCount, negativeCount, zeroCount)
             );
         }
     }

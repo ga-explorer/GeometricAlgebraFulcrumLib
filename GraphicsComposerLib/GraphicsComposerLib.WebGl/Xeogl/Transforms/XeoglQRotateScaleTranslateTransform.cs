@@ -1,9 +1,8 @@
 ﻿using System;
-using EuclideanGeometryLib.BasicMath;
-using EuclideanGeometryLib.BasicMath.Matrices;
-using EuclideanGeometryLib.BasicMath.Tuples;
-using EuclideanGeometryLib.BasicMath.Tuples.Immutable;
-using EuclideanGeometryLib.BasicOperations;
+using NumericalGeometryLib.BasicMath;
+using NumericalGeometryLib.BasicMath.Matrices;
+using NumericalGeometryLib.BasicMath.Tuples;
+using NumericalGeometryLib.BasicMath.Tuples.Immutable;
 using TextComposerLib.Text.Linear;
 
 namespace GraphicsComposerLib.WebGl.Xeogl.Transforms
@@ -273,8 +272,8 @@ namespace GraphicsComposerLib.WebGl.Xeogl.Transforms
                TranslateX < 0 || TranslateY < 0 || TranslateZ < 0;
 
 
-        public AffineMapMatrix4X4 GetMatrix()
-            => AffineMapMatrix4X4.CreateIdentityMatrix();
+        public SquareMatrix4 GetMatrix()
+            => SquareMatrix4.CreateIdentityMatrix();
 
         public Tuple4D GetQuaternionTuple()
             => new Tuple4D(QuaternionX, QuaternionY, QuaternionZ, QuaternionW);

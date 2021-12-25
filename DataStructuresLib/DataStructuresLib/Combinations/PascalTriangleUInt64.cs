@@ -67,7 +67,7 @@ namespace DataStructuresLib.Combinations
                 {
                     var value2 = j < prevRow.Length 
                         ? prevRow[j] 
-                        : prevRow[prevRow.Length - 1];
+                        : prevRow[^1];
 
                     checked { row[j] = value1 + value2; }
 

@@ -19,19 +19,18 @@ namespace DataStructuresLib
 
         public int ActiveLength { get; private set; }
 
-        public int ActiveEndOffset { get { return ActiveStartOffset + ActiveLength - 1; } }
+        public int ActiveEndOffset => ActiveStartOffset + ActiveLength - 1;
 
 
-        public int InternalCount { get { return _internalList.Count; } }
+        public int InternalCount => _internalList.Count;
 
-        public List<T> InternalList { get { return _internalList; } }
+        public List<T> InternalList => _internalList;
 
-        public T FirstItem { get { return _internalList[ActiveStartOffset]; } }
+        public T FirstItem => _internalList[ActiveStartOffset];
 
-        public T LastItem { get { return _internalList[ActiveEndOffset]; } }
+        public T LastItem => _internalList[ActiveEndOffset];
 
-        public T this[int index] { get { return _internalList[GetInternalIndex(index)]; } }
-
+        public T this[int index] => _internalList[GetInternalIndex(index)];
 
 
         public TrimmedList()

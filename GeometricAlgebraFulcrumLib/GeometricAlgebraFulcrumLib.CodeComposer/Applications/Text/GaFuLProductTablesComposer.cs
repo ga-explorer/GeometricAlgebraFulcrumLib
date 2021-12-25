@@ -7,12 +7,12 @@ using CodeComposerLib.MathML.Elements.Layout.Elementary;
 using CodeComposerLib.MathML.Elements.Layout.Tabular;
 using CodeComposerLib.MathML.Elements.Tokens;
 using DataStructuresLib.BitManipulation;
-using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.Signatures;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
-using GeometricAlgebraFulcrumLib.Utilities.Factories;
 using TextComposerLib.Text.Linear;
+// ReSharper disable CompareOfFloatsByEqualityOperator
 
 namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.Text
 {
@@ -37,12 +37,12 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.Text
 
         public static string ComposeHga4D()
         {
-            var signature = 
-                GeometricAlgebraSignatureFactory.CreateEuclidean(4);
+            var basisSet = 
+                GeometricAlgebraBasisSet.CreateEuclidean(4);
 
             var basisBladeNames = CreateBasisBladeNames("x", "y", "z", "w");
 
-            return ComposeMathMlTableColumns(signature, id => basisBladeNames[id]);
+            return ComposeMathMlTableColumns(basisSet, id => basisBladeNames[id]);
         }
 
 
@@ -114,9 +114,9 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.Text
             return rowElement;
         }
 
-        public static MathMlTable ComposeMathMlTable(IGeometricAlgebraSignature signature, Func<ulong, IMathMlElement> getBasisBladeNameFunc)
+        public static MathMlTable ComposeMathMlTable(GeometricAlgebraBasisSet basisSet, Func<ulong, IMathMlElement> getBasisBladeNameFunc)
         {
-            var idsList = signature.BasisBladeIDsSortedByGrade().ToArray();
+            var idsList = basisSet.VSpaceDimension.BasisBladeIDsSortedByGrade().ToArray();
             var gaDim = idsList.Length;
 
             var table = MathMlTable.Create(
@@ -141,7 +141,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.Text
                     var id2 = idsList[j];
 
                     var mv = 
-                        signature.Gp(id1, id2).GetBasisBladeTermFloat64();
+                        basisSet.Gp(id1, id2).GetBasisBladeTermFloat64();
 
                     table[i + 2, j + 2].Append(
                         ToMathMlRow(mv, getBasisBladeNameFunc)
@@ -152,11 +152,11 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.Text
             return table;
         }
 
-        public static string ComposeMathMlTableColumns(IGeometricAlgebraSignature signature, Func<ulong, IMathMlElement> getBasisBladeNameFunc)
+        public static string ComposeMathMlTableColumns(GeometricAlgebraBasisSet basisSet, Func<ulong, IMathMlElement> getBasisBladeNameFunc)
         {
             var textComposer = new LinearTextComposer();
 
-            var idsList = signature.BasisBladeIDsSortedByGrade().ToArray();
+            var idsList = basisSet.VSpaceDimension.BasisBladeIDsSortedByGrade().ToArray();
             var gaDim = idsList.Length;
 
             for (var i = 0; i < gaDim; i++)
@@ -182,7 +182,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.Text
                     var id2 = idsList[j];
 
                     var mv = 
-                        signature.Gp(id1, id2).GetBasisBladeTermFloat64();
+                        basisSet.Gp(id1, id2).GetBasisBladeTermFloat64();
 
                     var mvName = 
                         ToMathMlRow(mv, getBasisBladeNameFunc);

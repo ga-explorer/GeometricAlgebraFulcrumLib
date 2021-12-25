@@ -1,5 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.Signatures;
-using GeometricAlgebraFulcrumLib.Utilities.Factories;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using NUnit.Framework;
 
 namespace GeometricAlgebraFulcrumLib.UnitTests.Algebra
@@ -9,8 +8,8 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Algebra
     {
         private static uint VSpaceDimension = 6;
 
-        private readonly GeometricAlgebraSignatureConformal _processor1 
-            = (GeometricAlgebraSignatureConformal) GeometricAlgebraSignatureFactory.CreateConformal(VSpaceDimension);
+        private readonly GeometricAlgebraBasisSet _basisSet 
+            = GeometricAlgebraBasisSet.CreateConformal(VSpaceDimension);
 
 
     }

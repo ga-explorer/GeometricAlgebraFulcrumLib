@@ -1,4 +1,4 @@
-﻿using EuclideanGeometryLib.BasicMath.Tuples;
+﻿using NumericalGeometryLib.BasicMath.Tuples;
 using GraphicsComposerLib.WebGl.ThreeJs.Obsolete.Math;
 using TextComposerLib.Code.JavaScript;
 

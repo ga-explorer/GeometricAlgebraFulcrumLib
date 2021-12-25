@@ -28,6 +28,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis
         public override bool IsBivector => false;
 
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private BasisVector(ulong index)
         {
             Index = index;
@@ -40,6 +41,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis
             yield return Index;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override string ToString()
         {
             return new StringBuilder()

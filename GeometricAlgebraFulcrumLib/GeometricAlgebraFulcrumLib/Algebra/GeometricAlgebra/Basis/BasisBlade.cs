@@ -21,6 +21,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis
         public abstract bool IsBivector { get; }
 
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public GradeIndexRecord GetGradeIndexRecord()
         {
             return new GradeIndexRecord(Grade, Index);

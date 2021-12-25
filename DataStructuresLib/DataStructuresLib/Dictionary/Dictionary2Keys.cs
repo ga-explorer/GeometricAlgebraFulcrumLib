@@ -26,8 +26,8 @@ namespace DataStructuresLib.Dictionary
 
         public TValue this[TKey1 key1, TKey2 key2]
         {
-            get { return _dictionary[new Tuple<TKey1, TKey2>(key1, key2)]; }
-            set { _dictionary[new Tuple<TKey1, TKey2>(key1, key2)] = value; }
+            get => _dictionary[new Tuple<TKey1, TKey2>(key1, key2)];
+            set => _dictionary[new Tuple<TKey1, TKey2>(key1, key2)] = value;
         }
 
 
@@ -92,8 +92,8 @@ namespace DataStructuresLib.Dictionary
 
         public TValue this[TKey key1, TKey key2]
         {
-            get { return _dictionary[new Tuple<TKey, TKey>(key1, key2)]; }
-            set { _dictionary[new Tuple<TKey, TKey>(key1, key2)] = value; }
+            get => _dictionary[new Tuple<TKey, TKey>(key1, key2)];
+            set => _dictionary[new Tuple<TKey, TKey>(key1, key2)] = value;
         }
 
 

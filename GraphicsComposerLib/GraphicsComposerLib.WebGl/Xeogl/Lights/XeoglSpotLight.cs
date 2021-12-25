@@ -1,6 +1,6 @@
-﻿using EuclideanGeometryLib.BasicMath.Tuples;
-using EuclideanGeometryLib.BasicMath.Tuples.Immutable;
-using EuclideanGeometryLib.BasicMath.Tuples.Mutable;
+﻿using NumericalGeometryLib.BasicMath.Tuples;
+using NumericalGeometryLib.BasicMath.Tuples.Immutable;
+using NumericalGeometryLib.BasicMath.Tuples.Mutable;
 using GraphicsComposerLib.WebGl.Xeogl.Constants;
 using TextComposerLib.Code.JavaScript;
 

@@ -8,47 +8,59 @@ namespace GeometricAlgebraFulcrumLib.Mathematica.Mathematica
     {
         private readonly Dictionary<string, MathematicaExpression> _constantsDictionary = new Dictionary<string, MathematicaExpression>();
 
+
         public MathematicaInterface Cas { get; }
 
-        public MathematicaConnection CasConnection => Cas.Connection;
+        public MathematicaConnection CasConnection 
+            => Cas.Connection;
 
-        public MathematicaEvaluator CasEvaluator => Cas.Evaluator;
+        public MathematicaEvaluator CasEvaluator 
+            => Cas.Evaluator;
 
 
         public MathematicaCondition True { get; }
 
-        public Expr ExprTrue => True.Expression;
+        public Expr ExprTrue 
+            => True.Expression;
 
         public MathematicaCondition False { get; }
 
-        public Expr ExprFalse => False.Expression;
+        public Expr ExprFalse 
+            => False.Expression;
 
         public MathematicaScalar Zero { get; }
 
-        public Expr ExprZero => Zero.Expression;
+        public Expr ExprZero 
+            => Zero.Expression;
 
         public MathematicaScalar One { get; }
 
-        public Expr ExprOne => One.Expression;
+        public Expr ExprOne 
+            => One.Expression;
 
         public MathematicaScalar MinusOne { get; }
 
-        public Expr ExprMinusOne => MinusOne.Expression;
+        public Expr ExprMinusOne 
+            => MinusOne.Expression;
 
         public MathematicaScalar Pi { get; }
 
-        public Expr ExprPi => Pi.Expression;
+        public Expr ExprPi 
+            => Pi.Expression;
 
         public MathematicaScalar E { get; }
 
-        public Expr ExprE => E.Expression;
+        public Expr ExprE 
+            => E.Expression;
 
         public MathematicaScalar TwoPi { get; }
 
-        public Expr ExprTwoPi => TwoPi.Expression;
+        public Expr ExprTwoPi 
+            => TwoPi.Expression;
 
 
-        public MathematicaExpression this[string constName] => _constantsDictionary[constName];
+        public MathematicaExpression this[string constName] 
+            => _constantsDictionary[constName];
 
 
         internal MathematicaConstants(MathematicaInterface parentCas)

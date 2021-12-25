@@ -15,7 +15,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                     processor.ESp(mv1),
                 
                 IGeometricAlgebraOrthonormalProcessor<T> ortProcessor =>
-                    processor.Sp(ortProcessor, mv1),
+                    processor.Sp(ortProcessor.BasisSet, mv1),
 
                 _ =>
                     ((IGeometricAlgebraChangeOfBasisProcessor<T>) processor).Sp(mv1)
@@ -31,7 +31,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                     processor.ESp(mv1, mv2),
                 
                 IGeometricAlgebraOrthonormalProcessor<T> ortProcessor =>
-                    processor.Sp(ortProcessor, mv1, mv2),
+                    processor.Sp(ortProcessor.BasisSet, mv1, mv2),
 
                 _ =>
                     ((IGeometricAlgebraChangeOfBasisProcessor<T>) processor).Sp(mv1, mv2)

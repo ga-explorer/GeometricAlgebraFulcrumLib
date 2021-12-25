@@ -1,5 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.Signatures;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Utilities.Composers;
@@ -9,18 +10,18 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
     public static class MultivectorStorageHipOrtUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static BasisBilinearProductResult Hip(this IGeometricAlgebraSignature signature, ulong id1, ulong id2)
+        public static BasisBilinearProductResult Hip(this GeometricAlgebraBasisSet basisSet, ulong id1, ulong id2)
         {
             return new BasisBilinearProductResult(
-                signature.HipSignature(id1, id2), 
+                basisSet.HipSignature(id1, id2), 
                 id1 ^ id2
             );
         }
 
-        public static IMultivectorStorage<double> Hip(this GeometricAlgebraSignatureLookup basisSignature, IMultivectorStorage<double> mv1, IMultivectorStorage<double> mv2)
+        public static IMultivectorStorage<double> Hip(this GeometricAlgebraBasisSet basisSet, IMultivectorStorage<double> mv1, IMultivectorStorage<double> mv2)
         {
             var composer = 
-                new MultivectorFloat64StorageComposer(basisSignature);
+                new MultivectorFloat64StorageComposer(basisSet);
 
             var idScalarPairs1 = 
                 mv1.GetIdScalarRecords();
@@ -38,9 +39,9 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorStorage<T> Hip<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IGeometricAlgebraSignature basisSignature, IMultivectorStorage<T> mv1, IMultivectorStorage<T> mv2)
+        public static IMultivectorStorage<T> Hip<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, IMultivectorStorage<T> mv1, IMultivectorStorage<T> mv2)
         {
-            return scalarProcessor.BilinearProduct(mv1, mv2, basisSignature.HipSignature);
+            return scalarProcessor.BilinearProduct(mv1, mv2, basisSet.HipSignature);
         }
     }
 }

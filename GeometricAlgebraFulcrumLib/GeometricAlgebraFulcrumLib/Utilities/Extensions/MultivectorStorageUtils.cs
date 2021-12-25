@@ -5,7 +5,6 @@ using System.Runtime.CompilerServices;
 using DataStructuresLib.BitManipulation;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.Signatures;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense;
@@ -170,108 +169,108 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorStorage<double> Dual(this GeometricAlgebraSignatureLookup basisSignature, IMultivectorStorage<double> mv1)
+        public static IMultivectorStorage<double> Dual(this GeometricAlgebraBasisSet basisSet, IMultivectorStorage<double> mv1)
         {
             var scalarProcessor = ScalarAlgebraFloat64Processor.DefaultProcessor;
 
             var pseudoScalarInverse =
-                scalarProcessor.CreatePseudoScalarInverseStorage(basisSignature);
+                scalarProcessor.CreatePseudoScalarInverseStorage(basisSet);
             
-            return scalarProcessor.Lcp(basisSignature, mv1, pseudoScalarInverse);
+            return scalarProcessor.Lcp(basisSet, mv1, pseudoScalarInverse);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorStorage<T> Dual<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IGeometricAlgebraSignature basisSignature, IMultivectorStorage<T> mv1)
+        public static IMultivectorStorage<T> Dual<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, IMultivectorStorage<T> mv1)
         {
             var pseudoScalarInverse =
-                scalarProcessor.CreatePseudoScalarInverseStorage(basisSignature);
+                scalarProcessor.CreatePseudoScalarInverseStorage(basisSet);
 
-            return scalarProcessor.Lcp(basisSignature, mv1, pseudoScalarInverse);
+            return scalarProcessor.Lcp(basisSet, mv1, pseudoScalarInverse);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorStorage<T> Dual<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorStorage<T> mv1, IGeometricAlgebraSignature basisSignature)
+        public static IMultivectorStorage<T> Dual<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorStorage<T> mv1, GeometricAlgebraBasisSet basisSet)
         {
             var pseudoScalarInverse =
-                scalarProcessor.CreatePseudoScalarInverseStorage(basisSignature);
+                scalarProcessor.CreatePseudoScalarInverseStorage(basisSet);
 
-            return scalarProcessor.Lcp(basisSignature, mv1, pseudoScalarInverse);
+            return scalarProcessor.Lcp(basisSet, mv1, pseudoScalarInverse);
         }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorStorage<double> UnDual(this GeometricAlgebraSignatureLookup basisSignature, IMultivectorStorage<double> mv1)
+        public static IMultivectorStorage<double> UnDual(this GeometricAlgebraBasisSet basisSet, IMultivectorStorage<double> mv1)
         {
             var pseudoScalarReverse =
-                ScalarAlgebraFloat64Processor.DefaultProcessor.CreatePseudoScalarReverseStorage(basisSignature.VSpaceDimension);
+                ScalarAlgebraFloat64Processor.DefaultProcessor.CreatePseudoScalarReverseStorage(basisSet.VSpaceDimension);
 
-            return ScalarAlgebraFloat64Processor.DefaultProcessor.Lcp(basisSignature, mv1, pseudoScalarReverse);
+            return ScalarAlgebraFloat64Processor.DefaultProcessor.Lcp(basisSet, mv1, pseudoScalarReverse);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorStorage<T> UnDual<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IGeometricAlgebraSignature basisSignature, IMultivectorStorage<T> mv1)
+        public static IMultivectorStorage<T> UnDual<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, IMultivectorStorage<T> mv1)
         {
             var pseudoScalarReverse =
-                scalarProcessor.CreatePseudoScalarReverseStorage(basisSignature.VSpaceDimension);
+                scalarProcessor.CreatePseudoScalarReverseStorage(basisSet.VSpaceDimension);
 
-            return scalarProcessor.Lcp(basisSignature, mv1, pseudoScalarReverse);
+            return scalarProcessor.Lcp(basisSet, mv1, pseudoScalarReverse);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorStorage<T> UnDual<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorStorage<T> mv1, IGeometricAlgebraSignature basisSignature)
+        public static IMultivectorStorage<T> UnDual<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorStorage<T> mv1, GeometricAlgebraBasisSet basisSet)
         {
             var pseudoScalarReverse =
-                scalarProcessor.CreatePseudoScalarReverseStorage(basisSignature.VSpaceDimension);
+                scalarProcessor.CreatePseudoScalarReverseStorage(basisSet.VSpaceDimension);
 
-            return scalarProcessor.Lcp(basisSignature, mv1, pseudoScalarReverse);
+            return scalarProcessor.Lcp(basisSet, mv1, pseudoScalarReverse);
         }
         
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorStorage<double> BladeInverse(this GeometricAlgebraSignatureLookup basisSignature, IMultivectorStorage<double> mv1)
+        public static IMultivectorStorage<double> BladeInverse(this GeometricAlgebraBasisSet basisSet, IMultivectorStorage<double> mv1)
         {
-            var bladeSpSquared = basisSignature.Sp(mv1);
+            var bladeSpSquared = basisSet.Sp(mv1);
 
             return ScalarAlgebraFloat64Processor.DefaultProcessor.Divide(mv1, bladeSpSquared);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVectorStorage<T> BladeInverse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IGeometricAlgebraSignature basisSignature, KVectorStorage<T> kVector)
+        public static KVectorStorage<T> BladeInverse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, KVectorStorage<T> kVector)
         {
-            var bladeSpSquared = scalarProcessor.Sp(basisSignature, kVector);
+            var bladeSpSquared = scalarProcessor.Sp(basisSet, kVector);
 
             return scalarProcessor.Divide(kVector, bladeSpSquared);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorStorage<T> BladeInverse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorStorage<T> mv1, IGeometricAlgebraSignature basisSignature)
+        public static IMultivectorStorage<T> BladeInverse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorStorage<T> mv1, GeometricAlgebraBasisSet basisSet)
         {
-            var bladeSpSquared = scalarProcessor.Sp(basisSignature, mv1);
+            var bladeSpSquared = scalarProcessor.Sp(basisSet, mv1);
 
             return scalarProcessor.Divide(mv1, bladeSpSquared);
         }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorStorage<double> VersorInverse(this GeometricAlgebraSignatureLookup basisSignature, IMultivectorStorage<double> mv1)
+        public static IMultivectorStorage<double> VersorInverse(this GeometricAlgebraBasisSet basisSet, IMultivectorStorage<double> mv1)
         {
-            var versorSpReverse = basisSignature.NormSquared(mv1);
+            var versorSpReverse = basisSet.NormSquared(mv1);
 
             return ScalarAlgebraFloat64Processor.DefaultProcessor.Divide(ScalarAlgebraFloat64Processor.DefaultProcessor.Reverse(mv1), versorSpReverse);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorStorage<T> VersorInverse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IGeometricAlgebraSignature basisSignature, IMultivectorStorage<T> mv1)
+        public static IMultivectorStorage<T> VersorInverse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, IMultivectorStorage<T> mv1)
         {
-            var versorSpReverse = scalarProcessor.NormSquared(basisSignature, mv1);
+            var versorSpReverse = scalarProcessor.NormSquared(basisSet, mv1);
 
             return scalarProcessor.Divide(scalarProcessor.Reverse(mv1), versorSpReverse);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorStorage<T> VersorInverse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorStorage<T> mv1, IGeometricAlgebraSignature basisSignature)
+        public static IMultivectorStorage<T> VersorInverse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorStorage<T> mv1, GeometricAlgebraBasisSet basisSet)
         {
-            var versorSpReverse = scalarProcessor.NormSquared(basisSignature, mv1);
+            var versorSpReverse = scalarProcessor.NormSquared(basisSet, mv1);
 
             return scalarProcessor.Divide(scalarProcessor.Reverse(mv1), versorSpReverse);
         }

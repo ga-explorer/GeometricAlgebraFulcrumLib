@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 
@@ -147,6 +148,63 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 
             return mv.MapScalars(s => scalarProcessor.Divide(s, scalar));
         }
+        
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static VectorStorage<T> DivideByNorm<T>(this IGeometricAlgebraProcessor<T> scalarProcessor, VectorStorage<T> mv)
+        {
+            var scalar = scalarProcessor.Norm(mv);
+
+            return mv.MapVectorScalars(s => scalarProcessor.Divide(s, scalar));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static BivectorStorage<T> DivideByNorm<T>(this IGeometricAlgebraProcessor<T> scalarProcessor, BivectorStorage<T> mv)
+        {
+            var scalar = scalarProcessor.Norm(mv);
+
+            return mv.MapBivectorScalars(s => scalarProcessor.Divide(s, scalar));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IMultivectorGradedStorage<T> DivideByNorm<T>(this IGeometricAlgebraProcessor<T> scalarProcessor, MultivectorGradedStorage<T> mv)
+        {
+            var scalar = scalarProcessor.Norm(mv);
+
+            return mv.MapGradedMultivectorScalars(s => scalarProcessor.Divide(s, scalar));
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static KVectorStorage<T> DivideByNorm<T>(this IGeometricAlgebraProcessor<T> scalarProcessor, KVectorStorage<T> mv)
+        {
+            var scalar = scalarProcessor.Norm(mv);
+
+            return mv.MapKVectorScalars(s => scalarProcessor.Divide(s, scalar));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IMultivectorGradedStorage<T> DivideByNorm<T>(this IGeometricAlgebraProcessor<T> scalarProcessor, IMultivectorGradedStorage<T> mv)
+        {
+            var scalar = scalarProcessor.Norm(mv);
+
+            return mv.MapScalars(s => scalarProcessor.Divide(s, scalar));
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static MultivectorStorage<T> DivideByNorm<T>(this IGeometricAlgebraProcessor<T> scalarProcessor, MultivectorStorage<T> mv)
+        {
+            var scalar = scalarProcessor.Norm(mv);
+
+            return mv.MapMultivectorScalars(s => scalarProcessor.Divide(s, scalar));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IMultivectorStorage<T> DivideByNorm<T>(this IGeometricAlgebraProcessor<T> scalarProcessor, IMultivectorStorage<T> mv)
+        {
+            var scalar = scalarProcessor.Norm(mv);
+
+            return mv.MapScalars(s => scalarProcessor.Divide(s, scalar));
+        }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -201,6 +259,63 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         public static IMultivectorStorage<T> NegativeDivideByENorm<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorStorage<T> mv)
         {
             var scalar = scalarProcessor.ENorm(mv);
+
+            return mv.MapScalars(s => scalarProcessor.NegativeDivide(s, scalar));
+        }
+
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static VectorStorage<T> NegativeDivideByNorm<T>(this IGeometricAlgebraProcessor<T> scalarProcessor, VectorStorage<T> mv)
+        {
+            var scalar = scalarProcessor.Norm(mv);
+
+            return mv.MapVectorScalars(s => scalarProcessor.NegativeDivide(s, scalar));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static BivectorStorage<T> NegativeDivideByNorm<T>(this IGeometricAlgebraProcessor<T> scalarProcessor, BivectorStorage<T> mv)
+        {
+            var scalar = scalarProcessor.Norm(mv);
+
+            return mv.MapBivectorScalars(s => scalarProcessor.NegativeDivide(s, scalar));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IMultivectorGradedStorage<T> NegativeDivideByNorm<T>(this IGeometricAlgebraProcessor<T> scalarProcessor, MultivectorGradedStorage<T> mv)
+        {
+            var scalar = scalarProcessor.Norm(mv);
+
+            return mv.MapGradedMultivectorScalars(s => scalarProcessor.NegativeDivide(s, scalar));
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static KVectorStorage<T> NegativeDivideByNorm<T>(this IGeometricAlgebraProcessor<T> scalarProcessor, KVectorStorage<T> mv)
+        {
+            var scalar = scalarProcessor.Norm(mv);
+
+            return mv.MapKVectorScalars(s => scalarProcessor.NegativeDivide(s, scalar));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IMultivectorGradedStorage<T> NegativeDivideByNorm<T>(this IGeometricAlgebraProcessor<T> scalarProcessor, IMultivectorGradedStorage<T> mv)
+        {
+            var scalar = scalarProcessor.Norm(mv);
+
+            return mv.MapScalars(s => scalarProcessor.NegativeDivide(s, scalar));
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static MultivectorStorage<T> NegativeDivideByNorm<T>(this IGeometricAlgebraProcessor<T> scalarProcessor, MultivectorStorage<T> mv)
+        {
+            var scalar = scalarProcessor.Norm(mv);
+
+            return mv.MapMultivectorScalars(s => scalarProcessor.NegativeDivide(s, scalar));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IMultivectorStorage<T> NegativeDivideByNorm<T>(this IGeometricAlgebraProcessor<T> scalarProcessor, IMultivectorStorage<T> mv)
+        {
+            var scalar = scalarProcessor.Norm(mv);
 
             return mv.MapScalars(s => scalarProcessor.NegativeDivide(s, scalar));
         }
@@ -264,6 +379,63 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static VectorStorage<T> DivideByNormSquared<T>(this IGeometricAlgebraProcessor<T> scalarProcessor, VectorStorage<T> mv)
+        {
+            var scalar = scalarProcessor.NormSquared(mv);
+
+            return mv.MapVectorScalars(s => scalarProcessor.Divide(s, scalar));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static BivectorStorage<T> DivideByNormSquared<T>(this IGeometricAlgebraProcessor<T> scalarProcessor, BivectorStorage<T> mv)
+        {
+            var scalar = scalarProcessor.NormSquared(mv);
+
+            return mv.MapBivectorScalars(s => scalarProcessor.Divide(s, scalar));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IMultivectorGradedStorage<T> DivideByNormSquared<T>(this IGeometricAlgebraProcessor<T> scalarProcessor, MultivectorGradedStorage<T> mv)
+        {
+            var scalar = scalarProcessor.NormSquared(mv);
+
+            return mv.MapGradedMultivectorScalars(s => scalarProcessor.Divide(s, scalar));
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static KVectorStorage<T> DivideByNormSquared<T>(this IGeometricAlgebraProcessor<T> scalarProcessor, KVectorStorage<T> mv)
+        {
+            var scalar = scalarProcessor.NormSquared(mv);
+
+            return mv.MapKVectorScalars(s => scalarProcessor.Divide(s, scalar));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IMultivectorGradedStorage<T> DivideByNormSquared<T>(this IGeometricAlgebraProcessor<T> scalarProcessor, IMultivectorGradedStorage<T> mv)
+        {
+            var scalar = scalarProcessor.NormSquared(mv);
+
+            return mv.MapScalars(s => scalarProcessor.Divide(s, scalar));
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static MultivectorStorage<T> DivideByNormSquared<T>(this IGeometricAlgebraProcessor<T> scalarProcessor, MultivectorStorage<T> mv)
+        {
+            var scalar = scalarProcessor.NormSquared(mv);
+
+            return mv.MapMultivectorScalars(s => scalarProcessor.Divide(s, scalar));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IMultivectorStorage<T> DivideByNormSquared<T>(this IGeometricAlgebraProcessor<T> scalarProcessor, IMultivectorStorage<T> mv)
+        {
+            var scalar = scalarProcessor.NormSquared(mv);
+
+            return mv.MapScalars(s => scalarProcessor.Divide(s, scalar));
+        }
+        
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static VectorStorage<T> NegativeDivideByENormSquared<T>(this IScalarAlgebraProcessor<T> scalarProcessor, VectorStorage<T> mv)
         {
             var scalar = scalarProcessor.ENormSquared(mv);
@@ -315,6 +487,63 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         public static IMultivectorStorage<T> NegativeDivideByENormSquared<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorStorage<T> mv)
         {
             var scalar = scalarProcessor.ENormSquared(mv);
+
+            return mv.MapScalars(s => scalarProcessor.NegativeDivide(s, scalar));
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static VectorStorage<T> NegativeDivideByNormSquared<T>(this IGeometricAlgebraProcessor<T> scalarProcessor, VectorStorage<T> mv)
+        {
+            var scalar = scalarProcessor.NormSquared(mv);
+
+            return mv.MapVectorScalars(s => scalarProcessor.NegativeDivide(s, scalar));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static BivectorStorage<T> NegativeDivideByNormSquared<T>(this IGeometricAlgebraProcessor<T> scalarProcessor, BivectorStorage<T> mv)
+        {
+            var scalar = scalarProcessor.NormSquared(mv);
+
+            return mv.MapBivectorScalars(s => scalarProcessor.NegativeDivide(s, scalar));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IMultivectorGradedStorage<T> NegativeDivideByNormSquared<T>(this IGeometricAlgebraProcessor<T> scalarProcessor, MultivectorGradedStorage<T> mv)
+        {
+            var scalar = scalarProcessor.NormSquared(mv);
+
+            return mv.MapGradedMultivectorScalars(s => scalarProcessor.NegativeDivide(s, scalar));
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static KVectorStorage<T> NegativeDivideByNormSquared<T>(this IGeometricAlgebraProcessor<T> scalarProcessor, KVectorStorage<T> mv)
+        {
+            var scalar = scalarProcessor.NormSquared(mv);
+
+            return mv.MapKVectorScalars(s => scalarProcessor.NegativeDivide(s, scalar));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IMultivectorGradedStorage<T> NegativeDivideByNormSquared<T>(this IGeometricAlgebraProcessor<T> scalarProcessor, IMultivectorGradedStorage<T> mv)
+        {
+            var scalar = scalarProcessor.NormSquared(mv);
+
+            return mv.MapScalars(s => scalarProcessor.NegativeDivide(s, scalar));
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static MultivectorStorage<T> NegativeDivideByNormSquared<T>(this IGeometricAlgebraProcessor<T> scalarProcessor, MultivectorStorage<T> mv)
+        {
+            var scalar = scalarProcessor.NormSquared(mv);
+
+            return mv.MapMultivectorScalars(s => scalarProcessor.NegativeDivide(s, scalar));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IMultivectorStorage<T> NegativeDivideByNormSquared<T>(this IGeometricAlgebraProcessor<T> scalarProcessor, IMultivectorStorage<T> mv)
+        {
+            var scalar = scalarProcessor.NormSquared(mv);
 
             return mv.MapScalars(s => scalarProcessor.NegativeDivide(s, scalar));
         }

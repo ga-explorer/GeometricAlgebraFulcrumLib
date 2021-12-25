@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
 
 namespace TextComposerLib.Text.Structured
 {
@@ -9,7 +8,7 @@ namespace TextComposerLib.Text.Structured
 
         static StructuredTextItem()
         {
-            Empty = new StructuredTextItem(String.Empty);
+            Empty = new StructuredTextItem(string.Empty);
         }
 
 
@@ -22,16 +21,16 @@ namespace TextComposerLib.Text.Structured
 
         public StructuredTextItem(string text)
         {
-            Prefix = String.Empty;
-            Suffix = String.Empty;
-            Text = text ?? String.Empty;
+            Prefix = string.Empty;
+            Suffix = string.Empty;
+            Text = text ?? string.Empty;
         }
 
         public StructuredTextItem(string prefix, string text, string suffix)
         {
-            Prefix = prefix ?? String.Empty;
-            Suffix = suffix ?? String.Empty;
-            Text = text ?? String.Empty;
+            Prefix = prefix ?? string.Empty;
+            Suffix = suffix ?? string.Empty;
+            Text = text ?? string.Empty;
         }
 
 

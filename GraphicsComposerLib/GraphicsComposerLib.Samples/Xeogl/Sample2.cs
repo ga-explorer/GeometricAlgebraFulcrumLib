@@ -1,8 +1,8 @@
 ﻿using EuclideanGeometryLib.BasicMath.Tuples.Immutable;
-using EuclideanGeometryLib.GraphicsGeometry.Lines;
-using GraphicsComposerLib.Geometry.Geometry.PathsMesh;
-using GraphicsComposerLib.Geometry.Geometry.PathsMesh.Space3D;
-using GraphicsComposerLib.Geometry.Geometry.PointsPath.Space3D;
+using GraphicsComposerLib.Geometry.Meshes.PathsMesh;
+using GraphicsComposerLib.Geometry.Meshes.PathsMesh.Space3D;
+using GraphicsComposerLib.Geometry.Meshes.PointsPath.Space3D;
+using GraphicsComposerLib.Geometry.Primitives.Lines;
 using GraphicsComposerLib.WebGl.Xeogl;
 
 namespace GraphicsComposerLib.Samples.Xeogl
@@ -48,10 +48,10 @@ namespace GraphicsComposerLib.Samples.Xeogl
             return pathMesh;
         }
 
-        private static IGraphicsLinesGeometry3D ConstructLinesGeometry(IPathsMesh3D pathMesh)
+        private static IGraphicsLineGeometry3D ConstructLinesGeometry(IPathsMesh3D pathMesh)
         {
             //Test 1:
-            var lineMesh = GraphicsLinesListGeometry3D.Create(
+            var lineMesh = GrLineSoupGeometry3D.Create(
                 pathMesh.GetLines(true, true)
             );
 

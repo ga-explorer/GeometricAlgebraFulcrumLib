@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using EuclideanGeometryLib.BasicMath.Maps.Space3D;
-using EuclideanGeometryLib.BasicMath.Matrices;
-using EuclideanGeometryLib.BasicShapes.Triangles;
-using EuclideanGeometryLib.GraphicsGeometry;
+using NumericalGeometryLib.BasicMath.Maps.Space3D;
+using NumericalGeometryLib.BasicMath.Matrices;
+using NumericalGeometryLib.BasicShapes.Triangles;
+using GraphicsComposerLib.Geometry.Primitives;
 using GraphicsComposerLib.WebGl.Xeogl.Constants;
 using GraphicsComposerLib.WebGl.Xeogl.Geometry.Primitives;
 using GraphicsComposerLib.WebGl.Xeogl.Transforms;
@@ -124,7 +124,7 @@ namespace GraphicsComposerLib.WebGl.Xeogl
         }
 
         
-        public static XeoglMatrixTransform ToXeoglTransform(this AffineMapMatrix4X4 matrix)
+        public static XeoglMatrixTransform ToXeoglTransform(this SquareMatrix4 matrix)
         {
             return new XeoglMatrixTransform(matrix);
         }

@@ -1,11 +1,11 @@
 ﻿using System.IO;
 using EuclideanGeometryLib.BasicMath.Tuples.Immutable;
-using EuclideanGeometryLib.GraphicsGeometry;
-using EuclideanGeometryLib.GraphicsGeometry.Composers;
-using EuclideanGeometryLib.GraphicsGeometry.Triangles;
-using GraphicsComposerLib.Geometry.Geometry.PathsMesh;
-using GraphicsComposerLib.Geometry.Geometry.PathsMesh.Space3D;
-using GraphicsComposerLib.Geometry.Geometry.PointsPath.Space3D;
+using GraphicsComposerLib.Geometry.Meshes.PathsMesh;
+using GraphicsComposerLib.Geometry.Meshes.PathsMesh.Space3D;
+using GraphicsComposerLib.Geometry.Meshes.PointsPath.Space3D;
+using GraphicsComposerLib.Geometry.Primitives;
+using GraphicsComposerLib.Geometry.Primitives.Lines;
+using GraphicsComposerLib.Geometry.Primitives.Triangles;
 using GraphicsComposerLib.WebGl.Xeogl;
 
 namespace GraphicsComposerLib.Samples.Xeogl
@@ -51,11 +51,11 @@ namespace GraphicsComposerLib.Samples.Xeogl
             return pathMesh;
         }
 
-        private static GraphicsTrianglesGeometry3D ComposeTrianglesGeometry(IPathsMesh3D pathMesh)
+        private static GrTriangleGeometry3D ComposeTrianglesGeometry(IPathsMesh3D pathMesh)
         {
             //Test 1:
             var trianglesGeometry = pathMesh.GetGraphicsTrianglesGeometry(
-                GraphicsVertexNormalComputationMethod.WeightedNormals,
+                GrVertexNormalComputationMethod.WeightedNormals,
                 false
             );
 
@@ -87,16 +87,16 @@ namespace GraphicsComposerLib.Samples.Xeogl
             var pathMesh = ComposePathsMesh();
 
             var trianglesGeometry = pathMesh.GetGraphicsTrianglesGeometry(
-                GraphicsVertexNormalComputationMethod.WeightedNormals,
+                GrVertexNormalComputationMethod.WeightedNormals,
                 false
             );
 
-            var linesGeometryComposer = new GraphicsLinesGeometryComposer3D();
-            linesGeometryComposer.AddLines(trianglesGeometry.GetDisplacedTrianglesLines(-0.05d));
-            linesGeometryComposer.AddLines(trianglesGeometry.GetDisplacedTrianglesLines(0.05d));
+            var linesGeometryComposer = new GrLineGeometryComposer3D();
+            linesGeometryComposer.AddLines(trianglesGeometry.GetDisplacedTriangleEdges(-0.05d));
+            linesGeometryComposer.AddLines(trianglesGeometry.GetDisplacedTriangleEdges(0.05d));
             var linesGeometry = linesGeometryComposer.GenerateGeometry();
 
-            var normalLinesGeometryComposer = new GraphicsLinesGeometryComposer3D();
+            var normalLinesGeometryComposer = new GrLineGeometryComposer3D();
             normalLinesGeometryComposer.AddLines(trianglesGeometry.GetNormalLines(-1, 1));
             var normalLinesGeometry = normalLinesGeometryComposer.GenerateGeometry();
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using DataStructuresLib.Combinations;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.TupleAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors;
@@ -471,6 +472,72 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             return scalarProcessor.Times(scalar, scalar);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T Power<T>(this IScalarAlgebraProcessor<T> scalarProcessor, T scalar1, ulong scalar2)
+        {
+            return scalarProcessor.Power(
+                scalar1,
+                scalarProcessor.GetScalarFromNumber(scalar2)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T Power<T>(this IScalarAlgebraProcessor<T> scalarProcessor, T scalar1, long scalar2)
+        {
+            return scalarProcessor.Power(
+                scalar1,
+                scalarProcessor.GetScalarFromNumber(scalar2)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T Power<T>(this IScalarAlgebraProcessor<T> scalarProcessor, T scalar1, uint scalar2)
+        {
+            return scalarProcessor.Power(
+                scalar1,
+                scalarProcessor.GetScalarFromNumber(scalar2)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T Power<T>(this IScalarAlgebraProcessor<T> scalarProcessor, T scalar1, int scalar2)
+        {
+            return scalarProcessor.Power(
+                scalar1,
+                scalarProcessor.GetScalarFromNumber(scalar2)
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T Power<T>(this IScalarAlgebraProcessor<T> scalarProcessor, T scalar1, float scalar2)
+        {
+            return scalarProcessor.Power(
+                scalar1,
+                scalarProcessor.GetScalarFromNumber(scalar2)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T Power<T>(this IScalarAlgebraProcessor<T> scalarProcessor, T scalar1, double scalar2)
+        {
+            return scalarProcessor.Power(
+                scalar1,
+                scalarProcessor.GetScalarFromNumber(scalar2)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T BinomialCoefficient<T>(this IScalarAlgebraProcessor<T> scalarProcessor, uint setSize, uint subsetSize)
+        {
+            return scalarProcessor.GetScalarFromNumber(setSize.GetBinomialCoefficient(subsetSize));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T BinomialCoefficient<T>(this IScalarAlgebraProcessor<T> scalarProcessor, int setSize, int subsetSize)
+        {
+            return scalarProcessor.GetScalarFromNumber(setSize.GetBinomialCoefficient(subsetSize));
+        }
+
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<KeyValuePair<TKey, TValue>> Negative<TKey, TValue>(this IScalarAlgebraProcessor<TValue> scalarProcessor, IEnumerable<KeyValuePair<TKey, TValue>> keyValuePairs)
@@ -489,27 +556,27 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GeoSparseTupleComposer<T> CreateSparseScalarsTupleComposer<T>(this IScalarAlgebraProcessor<T> itemScalarsDomain)
+        public static SparseTupleComposer<T> CreateSparseScalarsTupleComposer<T>(this IScalarAlgebraProcessor<T> itemScalarsDomain)
         {
-            return new GeoSparseTupleComposer<T>(itemScalarsDomain);
+            return new SparseTupleComposer<T>(itemScalarsDomain);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GeoSparseTupleComposer<T> CreateSparseScalarsTupleComposer<T>(this IScalarAlgebraProcessor<T> itemScalarsDomain, Dictionary<int, T> indexScalarDictionary)
+        public static SparseTupleComposer<T> CreateSparseScalarsTupleComposer<T>(this IScalarAlgebraProcessor<T> itemScalarsDomain, Dictionary<int, T> indexScalarDictionary)
         {
-            return new GeoSparseTupleComposer<T>(itemScalarsDomain, indexScalarDictionary);
+            return new SparseTupleComposer<T>(itemScalarsDomain, indexScalarDictionary);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GeoSparseTupleComposer<T> CreateSparseScalarsTupleComposer<T>(this IScalarAlgebraProcessor<T> itemScalarsDomain, IEnumerable<KeyValuePair<int, T>> indexScalarPairs)
+        public static SparseTupleComposer<T> CreateSparseScalarsTupleComposer<T>(this IScalarAlgebraProcessor<T> itemScalarsDomain, IEnumerable<KeyValuePair<int, T>> indexScalarPairs)
         {
-            return new GeoSparseTupleComposer<T>(itemScalarsDomain, indexScalarPairs);
+            return new SparseTupleComposer<T>(itemScalarsDomain, indexScalarPairs);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GeoSparseTupleComposer<T> CreateSparseScalarsTupleComposer<T>(this IScalarAlgebraProcessor<T> itemScalarsDomain, IEnumerable<Tuple<int, T>> indexScalarTuples)
+        public static SparseTupleComposer<T> CreateSparseScalarsTupleComposer<T>(this IScalarAlgebraProcessor<T> itemScalarsDomain, IEnumerable<Tuple<int, T>> indexScalarTuples)
         {
-            return new GeoSparseTupleComposer<T>(itemScalarsDomain, indexScalarTuples);
+            return new SparseTupleComposer<T>(itemScalarsDomain, indexScalarTuples);
         }
 
 

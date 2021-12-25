@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
-using EuclideanGeometryLib.BasicMath.Tuples;
+using NumericalGeometryLib.BasicMath.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Visuals.Geometry.Space3D
 {
@@ -24,13 +24,10 @@ namespace GeometricAlgebraFulcrumLib.Visuals.Geometry.Space3D
         
         public double Item3 => Z;
         
-        public bool IsValid 
-            => !IsInvalid;
-        
-        public bool IsInvalid
-            => double.IsNaN(X) ||
-               double.IsNaN(Y) ||
-               double.IsNaN(Z);
+        public bool IsValid()
+            => !double.IsNaN(X) &&
+               !double.IsNaN(Y) &&
+               !double.IsNaN(Z);
 
         public GeovPointStyle3D Style { get; }
 
@@ -44,7 +41,7 @@ namespace GeometricAlgebraFulcrumLib.Visuals.Geometry.Space3D
             Z = z;
             Style = style;
 
-            Debug.Assert(IsValid);
+            Debug.Assert(IsValid());
         }
 
 

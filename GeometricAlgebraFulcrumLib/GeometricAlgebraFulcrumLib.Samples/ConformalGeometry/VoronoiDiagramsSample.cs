@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Drawing;
 using System.Linq;
-using EuclideanGeometryLib.Borders;
-using EuclideanGeometryLib.Borders.Space2D.Immutable;
+using NumericalGeometryLib.Borders;
+using NumericalGeometryLib.Borders.Space2D.Immutable;
 using GeometricAlgebraFulcrumLib.Geometry.Graphics.Space2D;
 using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;

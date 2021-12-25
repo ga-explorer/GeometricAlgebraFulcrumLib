@@ -1,6 +1,7 @@
 ﻿using System.Text;
+using NumericalGeometryLib.BasicMath;
 using GeometricAlgebraFulcrumLib.Mathematica.Processors;
-using GeometricAlgebraFulcrumLib.Utilities.Composers;
+using GeometricAlgebraFulcrumLib.Text;
 using Wolfram.NETLink;
 
 namespace GeometricAlgebraFulcrumLib.Mathematica.Text
@@ -17,6 +18,11 @@ namespace GeometricAlgebraFulcrumLib.Mathematica.Text
         {
         }
 
+
+        public override string GetAngleText(PlanarAngle angle)
+        {
+            return $"{angle.Degrees} Degree";
+        }
 
         public override string GetScalarText(Expr scalar)
         {

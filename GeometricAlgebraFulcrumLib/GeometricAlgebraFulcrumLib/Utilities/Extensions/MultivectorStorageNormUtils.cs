@@ -24,7 +24,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                     processor.ENormSquared(mv1),
                 
                 IGeometricAlgebraOrthonormalProcessor<T> ortProcessor =>
-                    processor.NormSquared(ortProcessor, mv1),
+                    processor.NormSquared(ortProcessor.BasisSet, mv1),
 
                 _ =>
                     ((IGeometricAlgebraChangeOfBasisProcessor<T>) processor).NormSquared(mv1)

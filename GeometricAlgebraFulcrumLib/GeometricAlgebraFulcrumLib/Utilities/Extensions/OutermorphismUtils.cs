@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Geometry.Frames;
 using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
@@ -13,7 +14,43 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 {
     public static class OutermorphismUtils
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector<T> OmMap<T>(this IOutermorphism<T> outermorphism, Vector<T> multivector)
+        {
+            return new Vector<T>(
+                multivector.GeometricProcessor,
+                outermorphism.OmMapVector(multivector.VectorStorage)
+            );
+        }
         
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Bivector<T> OmMap<T>(this IOutermorphism<T> outermorphism, Bivector<T> multivector)
+        {
+            return new Bivector<T>(
+                multivector.GeometricProcessor,
+                outermorphism.OmMapBivector(multivector.BivectorStorage)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static KVector<T> OmMap<T>(this IOutermorphism<T> outermorphism, KVector<T> multivector)
+        {
+            return new KVector<T>(
+                multivector.GeometricProcessor,
+                outermorphism.OmMapKVector(multivector.KVectorStorage)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Multivector<T> OmMap<T>(this IOutermorphism<T> outermorphism, Multivector<T> multivector)
+        {
+            return new Multivector<T>(
+                multivector.GeometricProcessor,
+                outermorphism.OmMapMultivector(multivector.MultivectorStorage)
+            );
+        }
+
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IMultivectorStorage<T> OmMapMultivector<T>(this IOutermorphism<T> map, IMultivectorStorage<T> mv)
         {

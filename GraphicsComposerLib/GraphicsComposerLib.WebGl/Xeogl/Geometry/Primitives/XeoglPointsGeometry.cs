@@ -1,14 +1,14 @@
-﻿using EuclideanGeometryLib.GraphicsGeometry;
-using EuclideanGeometryLib.GraphicsGeometry.Points;
+﻿using GraphicsComposerLib.Geometry.Primitives;
+using GraphicsComposerLib.Geometry.Primitives.Points;
 using TextComposerLib.Code.JavaScript;
 
 namespace GraphicsComposerLib.WebGl.Xeogl.Geometry.Primitives
 {
     public sealed class XeoglPointsGeometry : XeoglPrimitivesGeometry
     {
-        public IGraphicsPointsGeometry3D GraphicsPointsGeometry { get; set; }
+        public IGraphicsPointGeometry3D GraphicsPointsGeometry { get; set; }
 
-        public override IGraphicsGeometry3D GraphicsGeometry
+        public override IGraphicsPrimitiveGeometry3D GraphicsGeometry
             => GraphicsPointsGeometry;
 
 
@@ -16,7 +16,7 @@ namespace GraphicsComposerLib.WebGl.Xeogl.Geometry.Primitives
         {
         }
 
-        public XeoglPointsGeometry(IGraphicsPointsGeometry3D geometryData)
+        public XeoglPointsGeometry(IGraphicsPointGeometry3D geometryData)
         {
             GraphicsPointsGeometry = geometryData;
         }
@@ -28,7 +28,7 @@ namespace GraphicsComposerLib.WebGl.Xeogl.Geometry.Primitives
 
             composer
                 .SetValue("primitive", PrimitiveType, GraphicsPrimitiveType3D.Triangles)
-                .SetTextValue("positions", VertexPositions.ToJavaScriptNumbersArrayText(" // Vertex Position "), "[]")
+                .SetTextValue("positions", VertexPoints.ToJavaScriptNumbersArrayText(" // Vertex Position "), "[]")
                 .SetTextValue("indices", VertexIndices.ToJavaScriptNumbersArrayText(), "[]");
         }
 

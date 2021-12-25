@@ -1,4 +1,4 @@
-﻿using EuclideanGeometryLib.GraphicsGeometry;
+﻿using GraphicsComposerLib.Geometry.Primitives;
 
 namespace GraphicsComposerLib.WebGl.Xeogl.Constants
 {

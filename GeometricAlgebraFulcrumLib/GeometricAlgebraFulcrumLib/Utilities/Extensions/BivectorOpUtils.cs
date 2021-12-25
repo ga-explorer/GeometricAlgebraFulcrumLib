@@ -244,19 +244,19 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             );
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVector<T> Op<T>(this Vector<T> mv1, Bivector<T> mv2)
-        {
-            var processor = mv2.GeometricProcessor;
+        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+        //public static KVector<T> Op<T>(this Vector<T> mv1, Bivector<T> mv2)
+        //{
+        //    var processor = mv2.GeometricProcessor;
 
-            return new KVector<T>(
-                processor, 
-                processor.Op(
-                    mv1.VectorStorage, 
-                    mv2.BivectorStorage
-                )
-            );
-        }
+        //    return new KVector<T>(
+        //        processor, 
+        //        processor.Op(
+        //            mv1.VectorStorage, 
+        //            mv2.BivectorStorage
+        //        )
+        //    );
+        //}
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static KVector<T> Op<T>(this Bivector<T> mv1, Bivector<T> mv2)

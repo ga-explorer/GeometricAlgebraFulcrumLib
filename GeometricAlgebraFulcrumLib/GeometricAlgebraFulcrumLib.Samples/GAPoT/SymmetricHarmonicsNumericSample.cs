@@ -8,7 +8,7 @@ using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.LinearAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Utilities.Composers;
+using GeometricAlgebraFulcrumLib.Text;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
@@ -22,7 +22,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
         public static LinearAlgebraFloat64Processor MatrixProcessor { get; }
             = LinearAlgebraFloat64Processor.DefaultProcessor;
             
-        public static IGeometricAlgebraProcessor<double> GeometricProcessor { get; }
+        public static IGeometricAlgebraEuclideanProcessor<double> GeometricProcessor { get; }
             = ScalarAlgebraFloat64Processor.DefaultProcessor.CreateGeometricAlgebraEuclideanProcessor(63);
 
         public static TextFloat64Composer TextComposer { get; }
@@ -85,7 +85,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
                 ? Math.Cos(k * theta)
                 : Math.Cos(k * theta - 2d * Math.PI * i / n);
 
-            var rotor = GeometricProcessor.CreateEuclideanGivensRotor(
+            var rotor = GeometricProcessor.CreateGivensRotor(
                 i, n, angle
             );
 
@@ -252,7 +252,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
                     var i = j; //2 * j;
 
                     rotorsArray[j] =
-                        GeometricProcessor.ComplexEigenPairToEuclideanSimpleRotor(
+                        GeometricProcessor.ComplexEigenPairToPureRotor(
                             realPairs[i].Item1,
                             imagPairs[i].Item1,
                             realPairs[i].Item2,

@@ -20,7 +20,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Geometry
         private readonly List<PureRotor<double>> _rotorsList;
 
 
-        public IGeometricAlgebraProcessor<double> GeometricProcessor { get; }
+        public IGeometricAlgebraEuclideanProcessor<double> GeometricProcessor { get; }
             = ScalarAlgebraFloat64Processor.DefaultProcessor.CreateGeometricAlgebraEuclideanProcessor(8);
         
         public uint VSpaceDimension 
@@ -43,7 +43,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Geometry
             while (count > 0)
             {
                 _rotorsList.Add(
-                    (PureRotor<double>) _randomGenerator.GetEuclideanSimpleRotor(GeometricProcessor)
+                    _randomGenerator.GetEuclideanPureRotor()
                 );
 
                 count--;
@@ -54,7 +54,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Geometry
             while (count > 0)
             {
                 _vectorsList.Add(
-                    _randomGenerator.GetVector()
+                    _randomGenerator.GetVectorStorage()
                 );
 
                 count--;
@@ -67,11 +67,11 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Geometry
             var count = 1;
             while (count > 0)
             {
-                var u = GeometricProcessor.DivideByENorm(_randomGenerator.GetVector());
-                var v = GeometricProcessor.DivideByENorm(_randomGenerator.GetVector());
+                var u = GeometricProcessor.DivideByENorm(_randomGenerator.GetVectorStorage());
+                var v = GeometricProcessor.DivideByENorm(_randomGenerator.GetVectorStorage());
 
                 var rotor = 
-                    GeometricProcessor.CreateEuclideanRotor(u, v);
+                    GeometricProcessor.CreatePureRotor(u, v);
 
                 var v1 = rotor.OmMapVector(u);
 

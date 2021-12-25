@@ -70,7 +70,7 @@ namespace CodeComposerLib.Irony.SourceCode
         /// </summary>
         public void ClearSourceCodeLines()
         {
-            CodeText = String.Empty;
+            CodeText = string.Empty;
             _sourceCodeLines.Clear();
         }
 

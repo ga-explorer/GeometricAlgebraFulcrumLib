@@ -300,7 +300,7 @@ namespace GeometricAlgebraFulcrumLib.Mathematica.Applications.GaPoT
             );
         }
 
-        public static PureRotor<T> CreateSimpleKirchhoffRotor<T>(this IGeometricAlgebraProcessor<T> processor, uint vSpaceDimension)
+        public static PureRotor<T> CreateSimpleKirchhoffRotor<T>(this IGeometricAlgebraEuclideanProcessor<T> processor, uint vSpaceDimension)
         {
             var v1 = processor.CreateStorageVectorUnitOnes(
                 (int) vSpaceDimension
@@ -311,7 +311,7 @@ namespace GeometricAlgebraFulcrumLib.Mathematica.Applications.GaPoT
                 processor.ScalarOne
             );
 
-            return processor.CreateEuclideanRotor(v2, v1);
+            return processor.CreatePureRotor(v2, v1);
         }
     }
 }

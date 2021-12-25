@@ -152,5 +152,11 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
         {
             return MultivectorReverse;
         }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override T GetScalingFactor()
+        {
+            return ScalarProcessor.ScalarOne;
+        }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using CodeComposerLib.GraphViz.Dot.Value;
 using TextComposerLib;
 
@@ -26,10 +25,10 @@ namespace CodeComposerLib.GraphViz.Dot.Label.Table
         {
             get
             {
-                if (String.IsNullOrEmpty(ImageScale) == false)
+                if (string.IsNullOrEmpty(ImageScale) == false)
                     yield return new KeyValuePair<string, string>("SCALE", ImageScale);
 
-                if (String.IsNullOrEmpty(ImageSource) == false)
+                if (string.IsNullOrEmpty(ImageSource) == false)
                     yield return new KeyValuePair<string, string>("SRC", ImageSource);
             }
         }
@@ -38,29 +37,29 @@ namespace CodeComposerLib.GraphViz.Dot.Label.Table
         internal DotHtmlCellImage()
             : base("IMG")
         {
-            ImageSource = String.Empty;
-            ImageScale = String.Empty;
+            ImageSource = string.Empty;
+            ImageScale = string.Empty;
         }
 
 
         public DotHtmlCellImage ClearAttributes()
         {
-            ImageSource = String.Empty;
-            ImageScale = String.Empty;
+            ImageSource = string.Empty;
+            ImageScale = string.Empty;
 
             return this;
         }
 
         public DotHtmlCellImage ClearImageSource()
         {
-            ImageSource = String.Empty;
+            ImageSource = string.Empty;
 
             return this;
         }
 
         public DotHtmlCellImage ClearImageScale()
         {
-            ImageScale = String.Empty;
+            ImageScale = string.Empty;
 
             return this;
         }

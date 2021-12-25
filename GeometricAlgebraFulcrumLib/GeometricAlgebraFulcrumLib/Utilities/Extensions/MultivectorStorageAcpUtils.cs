@@ -15,7 +15,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                     processor.EAcp(mv1, mv2),
                 
                 IGeometricAlgebraOrthonormalProcessor<T> ortProcessor =>
-                    processor.Acp(ortProcessor, mv1, mv2),
+                    processor.Acp(ortProcessor.BasisSet, mv1, mv2),
 
                 _ =>
                     ((IGeometricAlgebraChangeOfBasisProcessor<T>) processor).Acp(mv1, mv2)

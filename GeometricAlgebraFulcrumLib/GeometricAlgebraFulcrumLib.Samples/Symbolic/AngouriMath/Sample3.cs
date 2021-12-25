@@ -4,7 +4,7 @@ using AngouriMath;
 using DataStructuresLib.Extensions;
 using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Utilities.Composers;
+using GeometricAlgebraFulcrumLib.Text;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
@@ -18,7 +18,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.AngouriMath
         public static ulong GaSpaceDimension 
             => GeometricProcessor.GaSpaceDimension;
 
-        public static IGeometricAlgebraProcessor<Entity> GeometricProcessor { get; }
+        public static IGeometricAlgebraEuclideanProcessor<Entity> GeometricProcessor { get; }
             = ScalarAlgebraAngouriMathProcessor.DefaultProcessor.CreateGeometricAlgebraEuclideanProcessor(3);
 
         public static TextAngouriMathComposer TextComposer { get; }
@@ -39,10 +39,10 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.AngouriMath
             //var unitLengthAssumption = Mfs.And[unitLengthAssumption1, unitLengthAssumption2];
 
             var rotationMatrix1 = 
-                GeometricProcessor.CreateRotationMatrixFromE1(u, (int) VSpaceDimension).Transpose();
+                GeometricProcessor.CreateVectorToBasisRotationMatrix(u, 0, (int) VSpaceDimension);
 
             var rotationMatrix2 = 
-                GeometricProcessor.CreateRotationMatrixFromE1(v, (int) VSpaceDimension);
+                GeometricProcessor.CreateBasisToVectorRotationMatrix(0, v, (int) VSpaceDimension);
 
             var rotationMatrix = 
                 GeometricProcessor.MatrixProduct(rotationMatrix2, rotationMatrix1);
@@ -91,7 +91,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.AngouriMath
             //var unitLengthAssumption = Mfs.And[unitLengthAssumption1, unitLengthAssumption2];
 
             var rotor1 =
-                GeometricProcessor.CreateEuclideanRotor(u, v);
+                GeometricProcessor.CreatePureRotor(u, v);
 
             var rotor2 =
                 rotor1.GetPureRotorInverse();
@@ -136,10 +136,10 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.AngouriMath
             //var unitLengthAssumption = Mfs.And[unitLengthAssumption1, unitLengthAssumption2];
 
             var rotor1 =
-                GeometricProcessor.CreateEuclideanRotor(u, e1);
+                GeometricProcessor.CreatePureRotor(u, e1);
 
             var rotor2 =
-                GeometricProcessor.CreateEuclideanRotor(e1, v);
+                GeometricProcessor.CreatePureRotor(e1, v);
 
             var rotorMv = rotor2.Multivector;
             var rotorMvReverse = GeometricProcessor.Reverse(rotorMv);

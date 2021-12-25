@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace CodeComposerLib.Irony.Semantic.Operator
+﻿namespace CodeComposerLib.Irony.Semantic.Operator
 {
     /// <summary>
     /// This class represents a primitive language operator
@@ -41,7 +39,7 @@ namespace CodeComposerLib.Irony.Semantic.Operator
         public override string ToString()
         {
             return 
-                String.IsNullOrEmpty(OperatorSymbolString) ? 
+                string.IsNullOrEmpty(OperatorSymbolString) ? 
                 _operatorName : 
                 OperatorSymbolString;
         }

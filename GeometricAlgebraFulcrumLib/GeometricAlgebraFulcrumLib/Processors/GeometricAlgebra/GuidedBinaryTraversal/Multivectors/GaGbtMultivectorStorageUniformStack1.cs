@@ -6,12 +6,13 @@ using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Sparse;
 
 namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTraversal.Multivectors
 {
-    public sealed class GeoGbtMultivectorStorageUniformStack1<T>
-        : GeoGbtStack1, IGeoGbtMultivectorStorageStack1<T>
+    public sealed class GeoGbtMultivectorStorageUniformStack1<T> : 
+        GeoGbtStack1, 
+        IGeoGbtMultivectorStorageStack1<T>
     {
         public static GeoGbtMultivectorStorageUniformStack1<T> Create(int capacity, int treeDepth, IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorStorage<T> multivectorStorage)
         {
-            return new(capacity, treeDepth, scalarProcessor, multivectorStorage);
+            return new GeoGbtMultivectorStorageUniformStack1<T>(capacity, treeDepth, scalarProcessor, multivectorStorage);
         }
 
 

@@ -362,44 +362,28 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
 
-        public static T[,] CreateRotationMatrixToVector<T>(this IScalarAlgebraProcessor<T> scalarProcessor, VectorStorage<T> sourceVector, VectorStorage<T> targetVector, int size)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T[,] CreateVectorToVectorRotationMatrix<T>(this IScalarAlgebraProcessor<T> scalarProcessor, VectorStorage<T> sourceVector, VectorStorage<T> targetVector, ulong basisVectorIndex, int matrixSize)
         {
-            var matrix1 = scalarProcessor.CreateRotationMatrixFromE1(targetVector, size);
-            var matrix2 = scalarProcessor.CreateRotationMatrixToE1(sourceVector, size);
+            var matrix2 = scalarProcessor.CreateVectorToBasisRotationMatrix(sourceVector, basisVectorIndex, matrixSize);
+            var matrix1 = scalarProcessor.CreateBasisToVectorRotationMatrix(basisVectorIndex, targetVector, matrixSize);
 
             return scalarProcessor.MatrixProduct(matrix1, matrix2);
         }
-
-        public static T[,] CreateRotationMatrixFromVector<T>(this IScalarAlgebraProcessor<T> scalarProcessor, VectorStorage<T> targetVector, VectorStorage<T> sourceVector, int size)
+        
+        public static T[,] CreateBasisToVectorRotationMatrix<T>(this IScalarAlgebraProcessor<T> scalarProcessor, ulong basisVectorIndex, VectorStorage<T> unitVector, int matrixSize)
         {
-            var matrix1 = scalarProcessor.CreateRotationMatrixFromE1(targetVector, size);
-            var matrix2 = scalarProcessor.CreateRotationMatrixToE1(sourceVector, size);
+            if (matrixSize < 2)
+                throw new ArgumentOutOfRangeException(nameof(matrixSize));
 
-            return scalarProcessor.MatrixProduct(matrix1, matrix2);
-        }
-
-        /// <summary>
-        /// This method creates a rotation matrix which rotates the basis vector e_1 into
-        /// the given unit vector
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="scalarProcessor"></param>
-        /// <param name="targetVector"></param>
-        /// <param name="size"></param>
-        /// <returns></returns>
-        public static T[,] CreateRotationMatrixFromE1<T>(this IScalarAlgebraProcessor<T> scalarProcessor, VectorStorage<T> targetVector, int size)
-        {
-            if (size < 2)
-                throw new ArgumentOutOfRangeException(nameof(size));
-
-            // Special case: vector == e_1
-            var v1 = scalarProcessor.GetTermScalarByIndex(targetVector, 0);
+            // Special case: unitVector == e_{basisVectorIndex}
+            var v1 = scalarProcessor.GetTermScalarByIndex(unitVector, basisVectorIndex);
             if (scalarProcessor.IsOne(v1))
-                return scalarProcessor.CreateArrayIdentity2D(size);
+                return scalarProcessor.CreateArrayIdentity2D(matrixSize);
 
             v1 = scalarProcessor.Add(scalarProcessor.ScalarOne, v1);
 
-            // Special case: vector == -e_1
+            // Special case: unitVector == -e_{basisVectorIndex}
             if (scalarProcessor.IsZero(v1))
             {
                 //TODO: Handle this case
@@ -407,29 +391,29 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             }
 
             var matrix = 
-                scalarProcessor.CreateArrayZero2D(size);
+                scalarProcessor.CreateArrayZero2D(matrixSize);
 
             var indexScalarPairs = 
-                targetVector.GetLinVectorIndexScalarStorage();
+                unitVector.GetLinVectorIndexScalarStorage();
 
-            // Fill first row
+            // Fill column number basisVectorIndex
+            foreach (var (index, scalar) in indexScalarPairs.GetIndexScalarRecords())
+                matrix[index, basisVectorIndex] = scalar;
+
+            // Fill row number basisVectorIndex
             foreach (var (index, scalar) in indexScalarPairs.GetIndexScalarRecords())
             {
-                if (index == 0)
+                if (index == basisVectorIndex)
                     continue;
 
-                matrix[0, index] = 
+                matrix[basisVectorIndex, index] = 
                     scalarProcessor.Negative(scalar);
             }
-
-            // Fill first column
-            foreach (var (index, scalar) in indexScalarPairs.GetIndexScalarRecords())
-                matrix[index, 0] = scalar;
 
             // Fill diagonal
             foreach (var (index, scalar) in indexScalarPairs.GetIndexScalarRecords())
             {
-                if (index == 0)
+                if (index == basisVectorIndex)
                     continue;
 
                 matrix[index, index] = 
@@ -445,9 +429,12 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             // Fill remaining items
             foreach (var (index1, scalar1) in indexScalarPairs.GetIndexScalarRecords())
             {
+                if (index1 == basisVectorIndex)
+                    continue;
+
                 foreach (var (index2, scalar2) in indexScalarPairs.GetIndexScalarRecords())
                 {
-                    if (index1 == 0 || index2 == 0 || index1 == index2)
+                    if (index2 == basisVectorIndex || index2 == index1)
                         continue;
 
                     matrix[index1, index2] = 
@@ -460,29 +447,20 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 
             return matrix;
         }
-
-        /// <summary>
-        /// This method creates a rotation matrix which rotates the given unit vector
-        /// into the basis vector e_1
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="scalarProcessor"></param>
-        /// <param name="sourceVector"></param>
-        /// <param name="size"></param>
-        /// <returns></returns>
-        public static T[,] CreateRotationMatrixToE1<T>(this IScalarAlgebraProcessor<T> scalarProcessor, VectorStorage<T> sourceVector, int size)
+        
+        public static T[,] CreateVectorToBasisRotationMatrix<T>(this IScalarAlgebraProcessor<T> scalarProcessor, VectorStorage<T> unitVector, ulong basisVectorIndex, int matrixSize)
         {
-            if (size < 2)
-                throw new ArgumentOutOfRangeException(nameof(size));
+            if (matrixSize < 2)
+                throw new ArgumentOutOfRangeException(nameof(matrixSize));
 
-            // Special case: vector == e_1
-            var v1 = scalarProcessor.GetTermScalarByIndex(sourceVector, 0);
+            // Special case: unitVector == e_{basisVectorIndex}
+            var v1 = scalarProcessor.GetTermScalarByIndex(unitVector, basisVectorIndex);
             if (scalarProcessor.IsOne(v1))
-                return scalarProcessor.CreateArrayIdentity2D(size);
+                return scalarProcessor.CreateArrayIdentity2D(matrixSize);
 
             v1 = scalarProcessor.Add(scalarProcessor.ScalarOne, v1);
 
-            // Special case: vector == -e_1
+            // Special case: unitVector == -e_{basisVectorIndex}
             if (scalarProcessor.IsZero(v1))
             {
                 //TODO: Handle this case
@@ -490,29 +468,29 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             }
 
             var matrix = 
-                scalarProcessor.CreateArrayZero2D(size);
+                scalarProcessor.CreateArrayZero2D(matrixSize);
 
             var indexScalarPairs = 
-                sourceVector.GetLinVectorIndexScalarStorage();
+                unitVector.GetLinVectorIndexScalarStorage();
 
-            // Fill first column
+            // Fill row number basisVectorIndex
+            foreach (var (index, scalar) in indexScalarPairs.GetIndexScalarRecords())
+                matrix[basisVectorIndex, index] = scalar;
+
+            // Fill column number basisVectorIndex
             foreach (var (index, scalar) in indexScalarPairs.GetIndexScalarRecords())
             {
-                if (index == 0)
+                if (index == basisVectorIndex)
                     continue;
 
-                matrix[index, 0] = 
+                matrix[index, basisVectorIndex] = 
                     scalarProcessor.Negative(scalar);
             }
-
-            // Fill first row
-            foreach (var (index, scalar) in indexScalarPairs.GetIndexScalarRecords())
-                matrix[0, index] = scalar;
 
             // Fill diagonal
             foreach (var (index, scalar) in indexScalarPairs.GetIndexScalarRecords())
             {
-                if (index == 0)
+                if (index == basisVectorIndex)
                     continue;
 
                 matrix[index, index] = 
@@ -528,9 +506,12 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             // Fill remaining items
             foreach (var (index1, scalar1) in indexScalarPairs.GetIndexScalarRecords())
             {
+                if (index1 == basisVectorIndex)
+                    continue;
+
                 foreach (var (index2, scalar2) in indexScalarPairs.GetIndexScalarRecords())
                 {
-                    if (index1 == 0 || index2 == 0 || index1 == index2)
+                    if (index2 == basisVectorIndex || index2 == index1)
                         continue;
 
                     matrix[index1, index2] = 
@@ -544,7 +525,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             return matrix;
         }
 
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Pair<int> GetSize<TMatrix, TScalar>(this LinMatrix<TMatrix, TScalar> matrix)
         {

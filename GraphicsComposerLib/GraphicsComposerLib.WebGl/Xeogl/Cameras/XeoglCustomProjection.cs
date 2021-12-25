@@ -1,4 +1,4 @@
-﻿using EuclideanGeometryLib.BasicMath.Matrices;
+﻿using NumericalGeometryLib.BasicMath.Matrices;
 using GraphicsComposerLib.WebGl.Xeogl.Constants;
 
 namespace GraphicsComposerLib.WebGl.Xeogl.Cameras
@@ -11,7 +11,7 @@ namespace GraphicsComposerLib.WebGl.Xeogl.Cameras
         public override XeoglCameraProjectionType ProjectionType
             => XeoglCameraProjectionType.Custom;
 
-        public AffineMapMatrix4X4 Matrix { get; }
-            = new AffineMapMatrix4X4();
+        public SquareMatrix4 Matrix { get; }
+            = new SquareMatrix4();
     }
 }

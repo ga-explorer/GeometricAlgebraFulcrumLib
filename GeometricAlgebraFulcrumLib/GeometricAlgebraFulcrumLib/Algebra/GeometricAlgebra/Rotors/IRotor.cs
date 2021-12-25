@@ -1,9 +1,7 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Versors;
-
-namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
+﻿namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
 {
     public interface IRotor<T> : 
-        IVersor<T>
+        IScaledRotor<T>
     {
         IRotor<T> GetRotorInverse();
     }

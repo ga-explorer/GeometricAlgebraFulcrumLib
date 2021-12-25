@@ -91,7 +91,7 @@ namespace DataStructuresLib
             _comparer = comparer;
             _baseHeap = new List<KeyValuePair<TPriority, TValue>>(data);
             // heapify data
-            for (int pos = _baseHeap.Count / 2 - 1; pos >= 0; pos--)
+            for (var pos = _baseHeap.Count / 2 - 1; pos >= 0; pos--)
                 HeapifyFromBeginningToEnd(pos);
         }
 
@@ -132,11 +132,11 @@ namespace DataStructuresLib
             if (pq1 == null || pq2 == null || comparer == null)
                 throw new ArgumentNullException();
             // merge data
-            PriorityQueue<TPriority, TValue> result = new PriorityQueue<TPriority, TValue>(pq1.Count + pq2.Count, pq1._comparer);
+            var result = new PriorityQueue<TPriority, TValue>(pq1.Count + pq2.Count, pq1._comparer);
             result._baseHeap.AddRange(pq1._baseHeap);
             result._baseHeap.AddRange(pq2._baseHeap);
             // heapify data
-            for (int pos = result._baseHeap.Count / 2 - 1; pos >= 0; pos--)
+            for (var pos = result._baseHeap.Count / 2 - 1; pos >= 0; pos--)
                 result.HeapifyFromBeginningToEnd(pos);
 
             return result;
@@ -167,7 +167,7 @@ namespace DataStructuresLib
         {
             if (!IsEmpty)
             {
-                KeyValuePair<TPriority, TValue> result = _baseHeap[0];
+                var result = _baseHeap[0];
                 DeleteRoot();
                 return result;
             }
@@ -225,14 +225,14 @@ namespace DataStructuresLib
 
         private void ExchangeElements(int pos1, int pos2)
         {
-            KeyValuePair<TPriority, TValue> val = _baseHeap[pos1];
+            var val = _baseHeap[pos1];
             _baseHeap[pos1] = _baseHeap[pos2];
             _baseHeap[pos2] = val;
         }
 
         private void Insert(TPriority priority, TValue value)
         {
-            KeyValuePair<TPriority, TValue> val = new KeyValuePair<TPriority, TValue>(priority, value);
+            var val = new KeyValuePair<TPriority, TValue>(priority, value);
             _baseHeap.Add(val);
 
             // heap[i] have children heap[2*i + 1] and heap[2*i + 2] and parent heap[(i-1)/ 2];
@@ -248,7 +248,7 @@ namespace DataStructuresLib
 
             while (pos > 0)
             {
-                int parentPos = (pos - 1) / 2;
+                var parentPos = (pos - 1) / 2;
                 if (_comparer.Compare(_baseHeap[parentPos].Key, _baseHeap[pos].Key) > 0)
                 {
                     ExchangeElements(parentPos, pos);
@@ -268,7 +268,7 @@ namespace DataStructuresLib
                 return;
             }
 
-            _baseHeap[0] = _baseHeap[_baseHeap.Count - 1];
+            _baseHeap[0] = _baseHeap[^1];
             _baseHeap.RemoveAt(_baseHeap.Count - 1);
 
             // heapify
@@ -284,9 +284,9 @@ namespace DataStructuresLib
             while (true)
             {
                 // on each iteration exchange element with its smallest child
-                int smallest = pos;
-                int left = 2 * pos + 1;
-                int right = 2 * pos + 2;
+                var smallest = pos;
+                var left = 2 * pos + 1;
+                var right = 2 * pos + 2;
                 if (left < _baseHeap.Count && _comparer.Compare(_baseHeap[smallest].Key, _baseHeap[left].Key) > 0)
                     smallest = left;
                 if (right < _baseHeap.Count && _comparer.Compare(_baseHeap[smallest].Key, _baseHeap[right].Key) > 0)
@@ -367,15 +367,15 @@ namespace DataStructuresLib
         public bool Remove(KeyValuePair<TPriority, TValue> item)
         {
             // find element in the collection and remove it
-            int elementIdx = _baseHeap.IndexOf(item);
+            var elementIdx = _baseHeap.IndexOf(item);
             if (elementIdx < 0) return false;
 
             //remove element
-            _baseHeap[elementIdx] = _baseHeap[_baseHeap.Count - 1];
+            _baseHeap[elementIdx] = _baseHeap[^1];
             _baseHeap.RemoveAt(_baseHeap.Count - 1);
 
             // heapify
-            int newPos = HeapifyFromEndToBeginning(elementIdx);
+            var newPos = HeapifyFromEndToBeginning(elementIdx);
             if (newPos == elementIdx)
                 HeapifyFromBeginningToEnd(elementIdx);
 

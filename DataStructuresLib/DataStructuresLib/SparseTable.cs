@@ -20,10 +20,7 @@ namespace DataStructuresLib
 
         public TValue this[TKey key]
         {
-            get
-            {
-                return _dictionary.TryGetValue(key, out var value) ? value : DefaultValue;
-            }
+            get => _dictionary.TryGetValue(key, out var value) ? value : DefaultValue;
             set
             {
                 if (IsDefaultValue(value))

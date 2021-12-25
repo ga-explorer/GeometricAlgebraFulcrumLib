@@ -43,52 +43,52 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
         {
             //Create a scalar storage
             _mvListTested.Add(
-                _randomGenerator.GetScalarTerm()
+                _randomGenerator.GetScalarTermStorage()
             );
 
             //Create a set of vector terms storages
             for (var index = 0; index < VSpaceDimension; index++)
                 _mvListTested.Add(
-                    _randomGenerator.GetVectorTermByIndex((ulong) index)
+                    _randomGenerator.GetVectorTermStorageByIndex((ulong) index)
                 );
 
             //Create a set of bivector terms storages
             var kvSpaceDimension2 = VSpaceDimension.KVectorSpaceDimension(2);
             for (var index = 0UL; index < kvSpaceDimension2; index++)
                 _mvListTested.Add(
-                    _randomGenerator.GetBivectorTermByIndex(index)
+                    _randomGenerator.GetBivectorTermStorageByIndex(index)
                 );
 
             //Create a set of blade terms storages
             for (var id = 0UL; id < GaSpaceDimension; id++)
                 _mvListTested.Add(
-                    _randomGenerator.GetKVectorTermById(id)
+                    _randomGenerator.GetKVectorTermStorageById(id)
                 );
 
             //Create a vector storage
             _mvListTested.Add(
-                _randomGenerator.GetVector()
+                _randomGenerator.GetVectorStorage()
             );
 
             //Create a bivector storage
             _mvListTested.Add(
-                _randomGenerator.GetBivector()
+                _randomGenerator.GetBivectorStorage()
             );
 
             //Create k-vector storages
             for (var grade = 0U; grade <= VSpaceDimension; grade++)
                 _mvListTested.Add(
-                    _randomGenerator.GetKVectorOfGrade(grade)
+                    _randomGenerator.GetKVectorStorageOfGrade(grade)
                 );
 
             //Create graded multivector storage
             _mvListTested.Add(
-                _randomGenerator.GetGradedMultivector()
+                _randomGenerator.GetGradedMultivectorStorage()
             );
 
             //Create terms multivector storage
             _mvListTested.Add(
-                _randomGenerator.GetTermsMultivector()
+                _randomGenerator.GetTermsMultivectorStorage()
             );
 
             //Convert all storages into multivector terms storages

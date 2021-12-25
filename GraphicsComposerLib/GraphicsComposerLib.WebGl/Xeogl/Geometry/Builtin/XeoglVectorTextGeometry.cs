@@ -1,4 +1,4 @@
-﻿using EuclideanGeometryLib.BasicMath.Tuples.Mutable;
+﻿using NumericalGeometryLib.BasicMath.Tuples.Mutable;
 using TextComposerLib;
 using TextComposerLib.Code.JavaScript;
 

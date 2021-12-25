@@ -1,8 +1,8 @@
 ﻿using System;
-using EuclideanGeometryLib.BasicMath.Tuples;
-using EuclideanGeometryLib.BasicMath.Tuples.Immutable;
-using EuclideanGeometryLib.BasicMath.Tuples.Mutable;
-using EuclideanGeometryLib.GraphicsGeometry;
+using NumericalGeometryLib.BasicMath.Tuples;
+using NumericalGeometryLib.BasicMath.Tuples.Immutable;
+using NumericalGeometryLib.BasicMath.Tuples.Mutable;
+using GraphicsComposerLib.Geometry.Primitives;
 using TextComposerLib.Code.JavaScript;
 
 namespace GraphicsComposerLib.WebGl.Xeogl.Geometry.Builtin

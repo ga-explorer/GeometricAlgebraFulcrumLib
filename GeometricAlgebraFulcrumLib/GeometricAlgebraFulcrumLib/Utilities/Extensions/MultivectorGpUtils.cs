@@ -299,7 +299,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Multivector<T> Gp<T>(this Multivector<T> v1, Multivector<T> v2)
         {
-            var processor = v2.GeometricProcessor;
+            var processor = v1.GeometricProcessor;
 
             return new Multivector<T>(
                 processor,
@@ -309,7 +309,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                 )
             );
         }
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Multivector<T> Gp<T>(this Multivector<T> mv1)
         {

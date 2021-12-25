@@ -8,15 +8,15 @@ namespace DataStructuresLib.ReadOnlyLists
     public sealed class UInt64SequenceReadOnlyList
         : IReadOnlyList<ulong>
     {
-        public UInt64 Start { get; }
+        public ulong Start { get; }
 
         public int Count { get; }
 
-        public UInt64 this[int index] 
-            => (UInt64)index + Start;
+        public ulong this[int index] 
+            => (ulong)index + Start;
 
 
-        public UInt64SequenceReadOnlyList(int count, UInt64 start)
+        public UInt64SequenceReadOnlyList(int count, ulong start)
         {
             if (count < 0) 
                 throw new InvalidOperationException();
@@ -30,7 +30,7 @@ namespace DataStructuresLib.ReadOnlyLists
         {
             return Enumerable
                 .Range(0, Count)
-                .Select(i => (UInt64)i + Start)
+                .Select(i => (ulong)i + Start)
                 .GetEnumerator();
         }
 

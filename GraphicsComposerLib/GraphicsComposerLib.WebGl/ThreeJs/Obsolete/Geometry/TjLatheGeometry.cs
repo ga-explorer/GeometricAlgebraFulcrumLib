@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using EuclideanGeometryLib.BasicMath.Tuples;
+using NumericalGeometryLib.BasicMath.Tuples;
 using GraphicsComposerLib.WebGl.ThreeJs.Obsolete.Math;
 using TextComposerLib.Code.JavaScript;
 using TextComposerLib.Text;

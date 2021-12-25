@@ -1,11 +1,11 @@
-﻿using EuclideanGeometryLib.BasicMath.Matrices;
-using EuclideanGeometryLib.BasicMath.Tuples.Immutable;
+﻿using NumericalGeometryLib.BasicMath.Matrices;
+using NumericalGeometryLib.BasicMath.Tuples.Immutable;
 
 namespace GraphicsComposerLib.WebGl.Xeogl.Transforms
 {
     public interface IXeoglNumericalTransform : IXeoglTransform
     {
-        AffineMapMatrix4X4 GetMatrix();
+        SquareMatrix4 GetMatrix();
 
         Tuple4D GetQuaternionTuple();
 

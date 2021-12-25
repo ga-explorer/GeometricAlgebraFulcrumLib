@@ -34,6 +34,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis
         public bool IsBivector => BasisBlade.IsBivector;
 
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private BasisTerm([NotNull] BasisBlade basisBlade, [NotNull] T scalar)
         {
             BasisBlade = basisBlade;
@@ -83,7 +84,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis
             return BasisTerm<T2>.Create(BasisBlade, scalar);
         }
 
-
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override string ToString()
         {
             return $"'{Scalar}'{BasisBlade}";

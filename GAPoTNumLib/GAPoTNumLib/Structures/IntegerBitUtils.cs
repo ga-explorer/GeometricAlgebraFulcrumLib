@@ -430,7 +430,7 @@ namespace GAPoTNumLib.Structures
         /// <returns></returns>
         public static int CreateFullMask(int bitsCount)
         {
-            UInt32 t = (1u << bitsCount) - 1;
+            uint t = (1u << bitsCount) - 1;
 
             return (int)t;
         }
@@ -1222,7 +1222,7 @@ namespace GAPoTNumLib.Structures
         {
             var s = new StringBuilder();
 
-            var itemSeparator = separator ?? String.Empty;
+            var itemSeparator = separator ?? string.Empty;
 
             var flag = false;
             foreach (var item in items)
@@ -1242,10 +1242,10 @@ namespace GAPoTNumLib.Structures
         {
             var s = new StringBuilder();
 
-            if (String.IsNullOrEmpty(finalPrefix) == false)
+            if (string.IsNullOrEmpty(finalPrefix) == false)
                 s.Append(finalPrefix);
 
-            var itemSeparator = separator ?? String.Empty;
+            var itemSeparator = separator ?? string.Empty;
 
             var flag = false;
             foreach (var item in items)
@@ -1258,7 +1258,7 @@ namespace GAPoTNumLib.Structures
                 s.Append(item);
             }
 
-            if (String.IsNullOrEmpty(finalSuffix) == false)
+            if (string.IsNullOrEmpty(finalSuffix) == false)
                 s.Append(finalSuffix);
 
             return s.ToString();
@@ -1268,10 +1268,10 @@ namespace GAPoTNumLib.Structures
         {
             var s = new StringBuilder();
 
-            if (String.IsNullOrEmpty(finalPrefix) == false)
+            if (string.IsNullOrEmpty(finalPrefix) == false)
                 s.Append(finalPrefix);
 
-            var itemSeparator = separator ?? String.Empty;
+            var itemSeparator = separator ?? string.Empty;
 
             var flag = false;
             foreach (var item in items)
@@ -1284,7 +1284,7 @@ namespace GAPoTNumLib.Structures
                 s.Append(itemPrefix).Append(item).Append(itemSuffix);
             }
 
-            if (String.IsNullOrEmpty(finalSuffix) == false)
+            if (string.IsNullOrEmpty(finalSuffix) == false)
                 s.Append(finalSuffix);
 
             return s.ToString();

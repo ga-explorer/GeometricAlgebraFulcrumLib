@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace GAPoTNumLib.Text.Parametric
 {
@@ -64,7 +63,7 @@ namespace GAPoTNumLib.Text.Parametric
 
                 if (ContainsParameter(IndexParamName))
                     this[IndexParamName] =
-                        String.IsNullOrEmpty(IndexFormatString)
+                        string.IsNullOrEmpty(IndexFormatString)
                         ? index.ToString()
                         : index.ToString(IndexFormatString);
 

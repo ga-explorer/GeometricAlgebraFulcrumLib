@@ -47,6 +47,9 @@ namespace GeometricAlgebraFulcrumLib.Processors.SymbolicAlgebra
         public ISymbolicExpression ScalarPi
             => Context.ScalarPi;
 
+        public ISymbolicExpression ScalarPiOver2 
+            => Context.ScalarPiOver2;
+
         public ISymbolicExpression ScalarE
             => Context.ScalarE;
 

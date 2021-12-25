@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>    
+    <TargetFrameworks>netstandard2.0;netcoreapp3.1;net5.0;net6.0;</TargetFrameworks>
+    <AssemblyName>SharpGLTF.Core</AssemblyName>
+    <RootNamespace>SharpGLTF</RootNamespace>
+    <LangVersion>10.0</LangVersion>
+    <Version>0.0.1</Version>
+  </PropertyGroup>
+
+  <PropertyGroup><!--
+    <DefineConstants>TRACE;SUPRESSTRYCATCH</DefineConstants>
+    -->
+  
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageId>SharpGltfTileExt</PackageId>
+    <Authors>Lixuinyu</Authors>
+    <PackageProjectUrl>https://github.com/XYCaptain/SharpGLTF</PackageProjectUrl>
+  </PropertyGroup>
+
+  <Import Project="..\PackageInfo.props" />
+  <Import Project="..\Version.props" />
+  <Import Project="..\Analyzers.props" />
+  <Import Project="..\Testing.props" />
+  
+  <ItemGroup>
+    <Compile Include="..\Shared\Guard.cs" Link="Diagnostics\Guard.cs" />
+    <Compile Include="..\Shared\_Extensions.cs" Link="_Extensions.cs" />
+  </ItemGroup>  
+  
+  <ItemGroup Condition=" '$(TargetFramework)' != 'net5.0' ">    
+    <PackageReference Include="System.Text.Json" Version="5.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Schema2\Generated\*.cs">
+      <ExcludeFromStyleCop>true</ExcludeFromStyleCop>
+    </None>
+  </ItemGroup>  
+
+</Project>

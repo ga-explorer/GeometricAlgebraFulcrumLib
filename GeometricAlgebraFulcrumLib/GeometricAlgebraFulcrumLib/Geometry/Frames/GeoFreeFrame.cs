@@ -27,14 +27,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Frames
 
         public int Count 
             => _vectorStoragesList.Count;
-
-        public uint VSpaceDimension 
-            => GeometricProcessor.VSpaceDimension;
-
-        public ulong GaSpaceDimension
-            => GeometricProcessor.GaSpaceDimension;
         
-
         public IScalarAlgebraProcessor<T> ScalarProcessor 
             => GeometricProcessor;
 
@@ -430,7 +423,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Frames
 
         public T[,] GetArray()
         {
-            return GetArray((int) VSpaceDimension);
+            return GetArray((int) GeometricProcessor.VSpaceDimension);
         }
 
         public T[,] GetArray(int rowsCount)
@@ -485,7 +478,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Frames
 
                 for (var j = i + 1; j < Count; j++)
                 {
-                    var ip = GeometricProcessor.GetAngle(v1, _vectorStoragesList[j]);
+                    var ip = GeometricProcessor.GetEuclideanAngle(v1, _vectorStoragesList[j]);
 
                     ipm[i, j] = ip;
                     ipm[j, i] = ip;
@@ -505,7 +498,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Frames
 
                 for (var j = i + 1; j < Count; j++)
                 {
-                    var ip = GeometricProcessor.GetAngle(v1, _vectorStoragesList[j]);
+                    var ip = GeometricProcessor.GetEuclideanAngle(v1, _vectorStoragesList[j]);
 
                     ipm[i, j] = ip;
                     ipm[j, i] = ip;

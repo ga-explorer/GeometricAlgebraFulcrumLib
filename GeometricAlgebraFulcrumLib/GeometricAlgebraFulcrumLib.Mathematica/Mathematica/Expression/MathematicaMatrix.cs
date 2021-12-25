@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using GeometricAlgebraFulcrumLib.Mathematica.Mathematica.ExprFactory;
 using Wolfram.NETLink;
@@ -203,9 +202,9 @@ namespace GeometricAlgebraFulcrumLib.Mathematica.Mathematica.Expression
         {
             var dimensions = CasInterface[Mfs.Dimensions[mathExpr]];
 
-            RowCount = Int32.Parse(dimensions.Args[0].ToString());
+            RowCount = int.Parse(dimensions.Args[0].ToString());
 
-            ColumnCount = Int32.Parse(dimensions.Args[1].ToString());
+            ColumnCount = int.Parse(dimensions.Args[1].ToString());
         }
 
 

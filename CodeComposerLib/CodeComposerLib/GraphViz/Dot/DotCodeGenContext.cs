@@ -13,14 +13,14 @@ namespace CodeComposerLib.GraphViz.Dot
     {
         private static string ToDotId(string text)
         {
-            if (String.IsNullOrEmpty(text))
+            if (string.IsNullOrEmpty(text))
                 return "";
 
             var firstChar = text[0];
 
             if (text.Length == 1)
             {
-                if (Char.IsLetterOrDigit(firstChar) || firstChar == '_' || (firstChar >= 200 && firstChar <= 377))
+                if (char.IsLetterOrDigit(firstChar) || firstChar == '_' || (firstChar >= 200 && firstChar <= 377))
                     return text;
 
                 return text.ValueToQuotedLiteral();
@@ -31,11 +31,11 @@ namespace CodeComposerLib.GraphViz.Dot
                 return text;
 
             //Test if it's an integer number
-            if ((firstChar == '-' || Char.IsDigit(firstChar)) && text.Skip(1).All(Char.IsDigit))
+            if ((firstChar == '-' || char.IsDigit(firstChar)) && text.Skip(1).All(char.IsDigit))
                 return text;
 
             //Test if it's a name
-            if (Char.IsLetter(firstChar) && text.Skip(1).All(Char.IsLetterOrDigit))
+            if (char.IsLetter(firstChar) && text.Skip(1).All(char.IsLetterOrDigit))
                 return text;
 
             //Test if HTML with matching <>
@@ -215,7 +215,7 @@ namespace CodeComposerLib.GraphViz.Dot
 
         internal void GenerateDotCode(DotSubGraph graph)
         {
-            if (String.IsNullOrEmpty(graph.SubGraphName) == false)
+            if (string.IsNullOrEmpty(graph.SubGraphName) == false)
                 TextComposer
                     .Append("subgraph ")
                     .Append(ToDotId(graph.SubGraphName));

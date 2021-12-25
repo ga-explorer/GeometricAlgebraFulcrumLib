@@ -38,13 +38,13 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
             return new PureRotorsSequence<T>(processor, rotorsList);
         }
 
-        public static PureRotorsSequence<T> CreateFromOrthonormalFrames(GeoFreeFrame<T> sourceFrame, GeoFreeFrame<T> targetFrame, bool fullRotorsFlag = false)
+        public static PureRotorsSequence<T> CreateFromOrthonormalEuclideanFrames(GeoFreeFrame<T> sourceFrame, GeoFreeFrame<T> targetFrame, bool fullRotorsFlag = false)
         {
             Debug.Assert(targetFrame.Count == sourceFrame.Count);
             Debug.Assert(sourceFrame.IsOrthonormal() && targetFrame.IsOrthonormal());
             Debug.Assert(sourceFrame.HasSameHandedness(targetFrame));
 
-            var processor = sourceFrame.GeometricProcessor;
+            var processor = (IGeometricAlgebraEuclideanProcessor<T>) sourceFrame.GeometricProcessor;
 
             var rotorsSequence = new PureRotorsSequence<T>(processor);
 
@@ -60,7 +60,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
                 var targetVector = targetFrame[i];
 
                 var rotor = 
-                    processor.CreateEuclideanRotor(sourceVector, targetVector);
+                    processor.CreatePureRotor(sourceVector, targetVector);
 
                 rotorsSequence.AppendRotor(rotor);
 
@@ -71,7 +71,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
             return rotorsSequence;
         }
 
-        public static PureRotorsSequence<T> CreateFromOrthonormalFrames(GeoFreeFrame<T> sourceFrame, GeoFreeFrame<T> targetFrame, int[] sequenceArray)
+        public static PureRotorsSequence<T> CreateFromOrthonormalEuclideanFrames(GeoFreeFrame<T> sourceFrame, GeoFreeFrame<T> targetFrame, int[] sequenceArray)
         {
             Debug.Assert(targetFrame.Count == sourceFrame.Count);
             Debug.Assert(sourceFrame.IsOrthonormal() && targetFrame.IsOrthonormal());
@@ -82,7 +82,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
             Debug.Assert(sequenceArray.Max() < sourceFrame.Count);
             Debug.Assert(sequenceArray.Distinct().Count() == sourceFrame.Count - 1);
 
-            var processor = sourceFrame.GeometricProcessor;
+            var processor = (IGeometricAlgebraEuclideanProcessor<T>) sourceFrame.GeometricProcessor;
 
             var rotorsSequence = new PureRotorsSequence<T>(processor);
 
@@ -95,7 +95,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
                 var sourceVector = sourceFrameVectors[vectorIndex];
                 var targetVector = targetFrame[vectorIndex];
 
-                var rotor = processor.CreateEuclideanRotor(
+                var rotor = processor.CreatePureRotor(
                     sourceVector, 
                     targetVector
                 );
@@ -110,13 +110,13 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
             return rotorsSequence;
         }
 
-        public static PureRotorsSequence<T> CreateFromFrames(uint baseSpaceDimensions, GeoFreeFrame<T> sourceFrame, GeoFreeFrame<T> targetFrame)
+        public static PureRotorsSequence<T> CreateFromEuclideanFrames(uint baseSpaceDimensions, GeoFreeFrame<T> sourceFrame, GeoFreeFrame<T> targetFrame)
         {
             Debug.Assert(targetFrame.Count == sourceFrame.Count);
             //Debug.Assert(IsOrthonormal() && targetFrame.IsOrthonormal());
             Debug.Assert(sourceFrame.HasSameHandedness(targetFrame));
 
-            var processor = sourceFrame.GeometricProcessor;
+            var processor = (IGeometricAlgebraEuclideanProcessor<T>) sourceFrame.GeometricProcessor;
 
             var rotorsSequence = 
                 new PureRotorsSequence<T>(processor);
@@ -139,7 +139,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
                 var targetVector = targetFrameVectors[i];
 
                 var rotor = 
-                    processor.CreateEuclideanRotor(sourceVector, targetVector);
+                    processor.CreatePureRotor(sourceVector, targetVector);
 
                 rotorsSequence.AppendRotor(rotor);
 
@@ -444,6 +444,12 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
         public IEnumerable<IOutermorphism<T>> GetLeafOutermorphisms()
         {
             return _rotorsList;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override T GetScalingFactor()
+        {
+            return ScalarProcessor.ScalarOne;
         }
     }
 }

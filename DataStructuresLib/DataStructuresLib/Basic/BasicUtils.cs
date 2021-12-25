@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace DataStructuresLib.Basic
@@ -458,6 +459,14 @@ namespace DataStructuresLib.Basic
             return new Quad<T>(quad.Item2, quad.Item3, quad.Item4, quad.Item1);
         }
 
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Pair<T> ToPair<T>(this IPair<T> pair)
+        {
+            return pair is Pair<T> p
+                ? p
+                : new Pair<T>(pair.Item1, pair.Item2);
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Tuple<T, T> ToTuple<T>(this IPair<T> pair)
@@ -484,15 +493,142 @@ namespace DataStructuresLib.Basic
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Triplet<T> ToTriplet<T>(this ITriplet<T> triplet)
+        {
+            return triplet is Triplet<T> t
+                ? t
+                : new Triplet<T>(triplet.Item1, triplet.Item2, triplet.Item3);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ITriplet<T> ToTriplet<T>(this Tuple<T, T, T> tuple)
         {
             return new Triplet<T>(tuple.Item1, tuple.Item2, tuple.Item3);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Quad<T> ToQuad<T>(this IQuad<T> quad)
+        {
+            return quad is Quad<T> q
+                ? q
+                : new Quad<T>(quad.Item1, quad.Item2, quad.Item3, quad.Item4);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IQuad<T> ToQuad<T>(this Tuple<T, T, T, T> tuple)
         {
             return new Quad<T>(tuple.Item1, tuple.Item2, tuple.Item3, tuple.Item4);
+        }
+
+        /// <summary>
+        /// Convert a sequence of items into pairs.
+        /// For example, having the sequence 0, 1, 2, 3 this returns pairs
+        /// (0, 1), (1, 2), (2, 3)
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="itemsList"></param>
+        /// <returns></returns>
+        public static IEnumerable<Pair<T>> GetPairsChain<T>(this IEnumerable<T> itemsList)
+        {
+            var firstItemSkipped = false;
+            T firstItem = default;
+
+            foreach (var nextItem in itemsList.Skip(1))
+            {
+                if (!firstItemSkipped)
+                {
+                    firstItem = nextItem;
+                    firstItemSkipped = true;
+                    continue;
+                }
+
+                yield return new Pair<T>(firstItem, nextItem);
+
+                firstItem = nextItem;
+            }
+        }
+
+        /// <summary>
+        /// Convert an even sequence of items into pairs.
+        /// For example, having the sequence 0, 1, 2, 3 this returns pairs
+        /// (0, 1), (2, 3)
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="itemsList"></param>
+        /// <returns></returns>
+        public static IEnumerable<Pair<T>> GetPairsSequence<T>(this IEnumerable<T> itemsList)
+        {
+            var firstItemSkipped = false;
+            T firstItem = default;
+
+            foreach (var nextItem in itemsList.Skip(1))
+            {
+                if (!firstItemSkipped)
+                {
+                    firstItem = nextItem;
+                    firstItemSkipped = true;
+                    continue;
+                }
+
+                yield return new Pair<T>(firstItem, nextItem);
+
+                firstItemSkipped = false;
+                firstItem = default;
+            }
+
+            if (firstItemSkipped)
+                yield return new Pair<T>(firstItem, default);
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Pair2D<T> ToPair2D<T>(this IPair2D<T> pair2D)
+        {
+            return pair2D is Pair2D<T> p
+                ? p
+                : new Pair2D<T>(pair2D.Item11, pair2D.Item12, pair2D.Item21, pair2D.Item22);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Pair<T> GetPair1_<T>(this IPair2D<T> pair2D)
+        {
+            return new Pair<T>(pair2D.Item11, pair2D.Item12);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Pair<T> GetPair2_<T>(this IPair2D<T> pair2D)
+        {
+            return new Pair<T>(pair2D.Item21, pair2D.Item22);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Pair<T> GetPair_1<T>(this IPair2D<T> pair2D)
+        {
+            return new Pair<T>(pair2D.Item11, pair2D.Item21);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Pair<T> GetPair_2<T>(this IPair2D<T> pair2D)
+        {
+            return new Pair<T>(pair2D.Item12, pair2D.Item22);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static string ToText<T>(this IPair<T> pair)
+        {
+            return $"({pair.Item1}, {pair.Item2})";
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static string ToText<T>(this ITriplet<T> triplet)
+        {
+            return $"({triplet.Item1}, {triplet.Item2}, {triplet.Item3})";
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static string ToText<T>(this IQuad<T> quad)
+        {
+            return $"({quad.Item1}, {quad.Item2}, {quad.Item3}, {quad.Item4})";
         }
     }
 }

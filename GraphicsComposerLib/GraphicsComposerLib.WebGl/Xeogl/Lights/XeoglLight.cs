@@ -1,5 +1,5 @@
 ﻿using System.Drawing;
-using EuclideanGeometryLib.Colors;
+using NumericalGeometryLib.Colors;
 using TextComposerLib.Code.JavaScript;
 
 namespace GraphicsComposerLib.WebGl.Xeogl.Lights

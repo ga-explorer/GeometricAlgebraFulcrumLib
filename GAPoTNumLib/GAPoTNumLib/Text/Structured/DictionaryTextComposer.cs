@@ -37,39 +37,39 @@ namespace GAPoTNumLib.Text.Structured
 
         public DictionaryTextComposer()
         {
-            Separator = String.Empty;
-            ActiveItemPrefix = String.Empty;
-            ActiveItemSuffix = String.Empty;
-            KeyPrefix = String.Empty;
-            KeySuffix = String.Empty;
-            FinalPrefix = String.Empty;
-            FinalSuffix = String.Empty;
+            Separator = string.Empty;
+            ActiveItemPrefix = string.Empty;
+            ActiveItemSuffix = string.Empty;
+            KeyPrefix = string.Empty;
+            KeySuffix = string.Empty;
+            FinalPrefix = string.Empty;
+            FinalSuffix = string.Empty;
         }
 
         public DictionaryTextComposer(string separator)
         {
-            Separator = separator ?? String.Empty;
-            ActiveItemPrefix = String.Empty;
-            ActiveItemSuffix = String.Empty;
-            KeyPrefix = String.Empty;
-            KeySuffix = String.Empty;
-            FinalPrefix = String.Empty;
-            FinalSuffix = String.Empty;
+            Separator = separator ?? string.Empty;
+            ActiveItemPrefix = string.Empty;
+            ActiveItemSuffix = string.Empty;
+            KeyPrefix = string.Empty;
+            KeySuffix = string.Empty;
+            FinalPrefix = string.Empty;
+            FinalSuffix = string.Empty;
         }
 
 
         private void PrepareData()
         {
-            Separator = Separator ?? String.Empty;
+            Separator = Separator ?? string.Empty;
 
-            ActiveItemPrefix = ActiveItemPrefix ?? String.Empty;
-            ActiveItemSuffix = ActiveItemSuffix ?? String.Empty;
+            ActiveItemPrefix = ActiveItemPrefix ?? string.Empty;
+            ActiveItemSuffix = ActiveItemSuffix ?? string.Empty;
             
-            KeyPrefix = KeyPrefix ?? String.Empty;
-            KeySuffix = KeySuffix ?? String.Empty;
+            KeyPrefix = KeyPrefix ?? string.Empty;
+            KeySuffix = KeySuffix ?? string.Empty;
 
-            FinalPrefix = FinalPrefix ?? String.Empty;
-            FinalSuffix = FinalSuffix ?? String.Empty;
+            FinalPrefix = FinalPrefix ?? string.Empty;
+            FinalSuffix = FinalSuffix ?? string.Empty;
         }
 
 

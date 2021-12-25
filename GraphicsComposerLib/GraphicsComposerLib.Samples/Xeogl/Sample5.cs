@@ -1,5 +1,5 @@
 ﻿using EuclideanGeometryLib.BasicMath.Tuples.Immutable;
-using GraphicsComposerLib.Geometry.Transforms;
+using EuclideanGeometryLib.Transforms;
 
 namespace GraphicsComposerLib.Samples.Xeogl
 {

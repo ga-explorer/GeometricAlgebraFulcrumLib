@@ -1,5 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.Signatures;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Utilities.Composers;
@@ -9,18 +10,18 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
     public static class MultivectorStorageFdpOrtUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static BasisBilinearProductResult Fdp(this IGeometricAlgebraSignature signature, ulong id1, ulong id2)
+        public static BasisBilinearProductResult Fdp(this GeometricAlgebraBasisSet basisSet, ulong id1, ulong id2)
         {
             return new BasisBilinearProductResult(
-                signature.FdpSignature(id1, id2), 
+                basisSet.FdpSignature(id1, id2), 
                 id1 ^ id2
             );
         }
 
-        public static IMultivectorStorage<double> Fdp(this GeometricAlgebraSignatureLookup basisSignature, IMultivectorStorage<double> mv1, IMultivectorStorage<double> mv2)
+        public static IMultivectorStorage<double> Fdp(this GeometricAlgebraBasisSet basisSet, IMultivectorStorage<double> mv1, IMultivectorStorage<double> mv2)
         {
             var composer = 
-                new MultivectorFloat64StorageComposer(basisSignature);
+                new MultivectorFloat64StorageComposer(basisSet);
 
             var idScalarPairs1 = 
                 mv1.GetIdScalarRecords();
@@ -38,11 +39,11 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorStorage<T> Fdp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IGeometricAlgebraSignature basisSignature, IMultivectorStorage<T> mv1, IMultivectorStorage<T> mv2)
+        public static IMultivectorStorage<T> Fdp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, IMultivectorStorage<T> mv1, IMultivectorStorage<T> mv2)
         {
-            return basisSignature is GeometricAlgebraSignatureEuclidean
+            return basisSet.IsEuclidean
                 ? scalarProcessor.EFdp(mv1, mv2)
-                : scalarProcessor.BilinearProduct(mv1, mv2, basisSignature.FdpSignature);
+                : scalarProcessor.BilinearProduct(mv1, mv2, basisSet.FdpSignature);
         }
     }
 }

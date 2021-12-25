@@ -44,6 +44,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis
         public override bool IsBivector => false;
 
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private BasisKVector(ulong id, uint grade, ulong index)
         {
             Id = id;
@@ -58,6 +59,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis
             return Id.BasisBladeIdToBasisVectorIndices();
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override string ToString()
         {
             return new StringBuilder()

@@ -5,7 +5,6 @@ using DataStructuresLib.BitManipulation;
 using DataStructuresLib.Extensions;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.Signatures;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors;
@@ -101,7 +100,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
                 _ => KVectorStorage<T>.CreateKVector(vSpaceDimension, index, scalar)
             };
         }
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static KVectorStorage<T> CreateEuclideanPseudoScalarInverseStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, uint vSpaceDimension)
         {
@@ -109,13 +108,13 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVectorStorage<T> CreatePseudoScalarInverseStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IGeometricAlgebraSignature baseSignature)
+        public static KVectorStorage<T> CreatePseudoScalarInverseStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet)
         {
             return scalarProcessor
                 .BladeInverse(
-                    baseSignature,
-                    scalarProcessor.CreatePseudoScalarStorage(baseSignature.VSpaceDimension)
-                ).GetKVectorPart(baseSignature.VSpaceDimension);
+                    basisSet,
+                    scalarProcessor.CreatePseudoScalarStorage(basisSet.VSpaceDimension)
+                ).GetKVectorPart(basisSet.VSpaceDimension);
         }
 
         

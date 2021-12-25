@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics;
-using EuclideanGeometryLib.BasicMath.Tuples;
+using NumericalGeometryLib.BasicMath.Tuples;
 
 namespace GraphicsComposerLib.WebGl.ThreeJs.Obsolete.Math
 {
@@ -44,14 +44,11 @@ namespace GraphicsComposerLib.WebGl.ThreeJs.Obsolete.Math
         public double Item4 
             => W;
 
-        public bool IsValid
-            => !double.IsNaN(X) &&
-               !double.IsNaN(Y) &&
-               !double.IsNaN(Z) &&
-               !double.IsNaN(W);
-
-        public bool IsInvalid 
-            => !IsValid;
+        public bool IsValid() =>
+            !double.IsNaN(X) &&
+            !double.IsNaN(Y) &&
+            !double.IsNaN(Z) &&
+            !double.IsNaN(W);
 
 
         public TjVector4()
@@ -69,7 +66,7 @@ namespace GraphicsComposerLib.WebGl.ThreeJs.Obsolete.Math
             Z = z;
             W = w;
 
-            Debug.Assert(IsValid);
+            Debug.Assert(IsValid());
         }
 
         public TjVector4(ITuple4D tuple)
@@ -79,7 +76,7 @@ namespace GraphicsComposerLib.WebGl.ThreeJs.Obsolete.Math
             Z = tuple.Z;
             W = tuple.W;
 
-            Debug.Assert(IsValid);
+            Debug.Assert(IsValid());
         }
 
 

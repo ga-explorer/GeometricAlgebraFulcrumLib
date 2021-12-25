@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using Newtonsoft.Json.Linq;
 
 namespace TextComposerLib.Code.JavaScript.LibraryComposers
 {

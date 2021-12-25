@@ -15,12 +15,9 @@ namespace DataStructuresLib.SparseTable
 
         public TValue this[TKey1 key1, TKey2 key2, TKey3 key3]
         {
-            get
-            {
-                return
-                    _dictionary.TryGetValue(new Tuple<TKey1, TKey2, TKey3>(key1, key2, key3), out var value)
-                        ? value : DefaultValue;
-            }
+            get =>
+                _dictionary.TryGetValue(new Tuple<TKey1, TKey2, TKey3>(key1, key2, key3), out var value)
+                    ? value : DefaultValue;
             set
             {
                 var key = new Tuple<TKey1, TKey2, TKey3>(key1, key2, key3);

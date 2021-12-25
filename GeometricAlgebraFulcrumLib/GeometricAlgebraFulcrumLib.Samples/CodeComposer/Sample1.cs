@@ -3,7 +3,7 @@ using DataStructuresLib.BitManipulation;
 using GeometricAlgebraFulcrumLib.CodeComposer.Composers;
 using GeometricAlgebraFulcrumLib.CodeComposer.Languages;
 using GeometricAlgebraFulcrumLib.Processors.SymbolicAlgebra.Context;
-//using GeometricAlgebraFulcrumLib.Mathematica;
+using GeometricAlgebraFulcrumLib.Mathematica;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
@@ -11,6 +11,202 @@ namespace GeometricAlgebraFulcrumLib.Samples.CodeComposer
 {
     public static class Sample1
     {
+        /// <summary>
+        /// A special case for generating code for simple rotors in 3D
+        /// </summary>
+        public static void Execute1()
+        {
+            // The number of dimensions
+            const int n = 3;
+            const string basisNames = "XYZ";
+
+            // Stage 1: Define the symbolic context
+            // The symbolic context is a special kind of symbolic linear processor for code generation
+            var context = 
+                new SymbolicContext()
+                {
+                    MergeExpressions = false,
+                    ContextOptions = { ContextName = "TestCode" }
+                };
+
+            // Use this if you want Wolfram Mathematica symbolic processor
+            // instead of the default AngouriMath symbolic processor
+            context.AttachMathematicaExpressionEvaluator();
+
+            // Define a Euclidean multivectors processor for the context
+            var processor = 
+                context.CreateGeometricAlgebraEuclideanProcessor(n);
+
+            // Stage 2: Define the input parameters of the context
+            // The input parameters are named variables created as scalar parts of multivectors
+            // and used for later processing to compute some outputs
+
+            // Define the first vector for constructing the rotor with a given
+            // set of scalar components u1, u2, ...
+            var x =
+                context.ParameterVariablesFactory.CreateDenseVector(
+                    n, 
+                    index => $"x{index + 1}"
+                );
+
+            // Define the second vector for constructing the rotor with a given
+            // set of scalar components v1, v2, ...
+            var xRotated =
+                context.ParameterVariablesFactory.CreateDenseVector(
+                    n, 
+                    index => $"xRotated{index + 1}"
+                );
+
+            // Define 2 vectors to be rotated
+            var y =
+                context.ParameterVariablesFactory.CreateDenseVector(
+                    n, 
+                    index => $"y{index + 1}"
+                );
+            
+            // Define 2 vectors to be rotated
+            var z =
+                context.ParameterVariablesFactory.CreateDenseVector(
+                    n, 
+                    index => $"z{index + 1}"
+                );
+
+            // Stage 3: Define computations and specify which variables are required outputs
+            //Define a Euclidean rotor which takes input unit vector u to input unit vector v
+            var rotor = processor.CreatePureRotor(x, xRotated, true);
+            
+            //Find the rotation of an arbitrary input vector x using this rotor
+            var yRotated = rotor.OmMapVector(y);
+            var zRotated = rotor.OmMapVector(z);
+
+            // Define the final outputs for the computations for proper code generation
+            yRotated.SetIsOutput(true);
+            zRotated.SetIsOutput(true);
+
+            // Stage 4: Optimize symbolic computations in the symbolic context
+            context.OptimizeContext();
+
+            // Stage 5: Assign code generated variable names for all variables
+            // Define code generated variable names for input variables
+            x.SetExternalNamesByTermId(id => $"x.{id.PatternToString(basisNames)}");
+            y.SetExternalNamesByTermId(id => $"y.{id.PatternToString(basisNames)}");
+            z.SetExternalNamesByTermId(id => $"z.{id.PatternToString(basisNames)}");
+            xRotated.SetExternalNamesByTermId(id => $"xRotated.{id.PatternToString(basisNames)}");
+
+            // Define code generated variable names for output variables
+            yRotated.SetExternalNamesByTermId(id => $"yRotated.{id.PatternToString(basisNames)}");
+            zRotated.SetExternalNamesByTermId(id => $"zRotated.{id.PatternToString(basisNames)}");
+
+            // Define code generated variable names for intermediate variables
+            context.SetIntermediateExternalNamesByNameIndex(index => $"temp{index}");
+
+            // Stage 6: Define a C# code composer with AngouriMath symbolic expressions converter
+            var contextCodeComposer = context.CreateContextCodeComposer(
+                GaFuLLanguageServerBase.CSharp()
+            );
+
+            // Stage 7: Generate the final C# code
+            var code = contextCodeComposer.Generate();
+
+            Console.WriteLine("Generated Code:");
+            Console.WriteLine(code);
+            Console.WriteLine();
+        }
+
+        /// <summary>
+        /// A special case for generating code for simple rotors in 3D
+        /// </summary>
+        public static void Execute2()
+        {
+            // The number of dimensions
+            const int n = 3;
+            const string basisNames = "XYZ";
+
+            // Stage 1: Define the symbolic context
+            // The symbolic context is a special kind of symbolic linear processor for code generation
+            var context = 
+                new SymbolicContext()
+                {
+                    MergeExpressions = false,
+                    ContextOptions = { ContextName = "TestCode" }
+                };
+
+            // Use this if you want Wolfram Mathematica symbolic processor
+            // instead of the default AngouriMath symbolic processor
+            context.AttachMathematicaExpressionEvaluator();
+
+            // Define a Euclidean multivectors processor for the context
+            var processor = 
+                context.CreateGeometricAlgebraEuclideanProcessor(n);
+
+            // Stage 2: Define the input parameters of the context
+            // The input parameters are named variables created as scalar parts of multivectors
+            // and used for later processing to compute some outputs
+            
+            // Define basis vectors to compute rotation matrix
+            var e1 = processor.CreateVectorBasisStorage(0);
+            var e2 = processor.CreateVectorBasisStorage(1);
+            var e3 = processor.CreateVectorBasisStorage(2);
+
+            // Define the first vector for constructing the rotor with a given
+            // set of scalar components u1, u2, ...
+            //var x = 
+            //    context.ParameterVariablesFactory.CreateDenseVector(
+            //        n, 
+            //        index => $"x{index + 1}"
+            //    );
+
+            // Define the second vector for constructing the rotor with a given
+            // set of scalar components v1, v2, ...
+            var xRotated =
+                context.ParameterVariablesFactory.CreateDenseVector(
+                    n, 
+                    index => $"xRotated{index + 1}"
+                );
+            
+            // Stage 3: Define computations and specify which variables are required outputs
+            //Define a Euclidean rotor which takes input unit vector u to input unit vector v
+            var rotor = processor.CreatePureRotor(xRotated, e3, true);
+
+            //Find the rotation of 3 basis vectors using this rotor
+            var e1Rotated = rotor.OmMapVector(e1);
+            var e2Rotated = rotor.OmMapVector(e2);
+            var e3Rotated = rotor.OmMapVector(e3);
+
+            // Define the final outputs for the computations for proper code generation
+            e1Rotated.SetIsOutput(true);
+            e2Rotated.SetIsOutput(true);
+            e3Rotated.SetIsOutput(true);
+
+            // Stage 4: Optimize symbolic computations in the symbolic context
+            context.OptimizeContext();
+
+            // Stage 5: Assign code generated variable names for all variables
+            // Define code generated variable names for input variables
+            //x.SetExternalNamesByTermIndex(index => $"_unitVector1.{basisNames[(int) index]}");
+            xRotated.SetExternalNamesByTermIndex(index => $"_unitVector.{basisNames[(int) index]}");
+
+            // Define code generated variable names for output variables
+            e1Rotated.SetExternalNamesByTermIndex(index => $"RotationMatrix.Scalar{index}0");
+            e2Rotated.SetExternalNamesByTermIndex(index => $"RotationMatrix.Scalar{index}1");
+            e3Rotated.SetExternalNamesByTermIndex(index => $"RotationMatrix.Scalar{index}2");
+
+            // Define code generated variable names for intermediate variables
+            context.SetIntermediateExternalNamesByNameIndex(index => $"temp{index}");
+
+            // Stage 6: Define a C# code composer with AngouriMath symbolic expressions converter
+            var contextCodeComposer = context.CreateContextCodeComposer(
+                GaFuLLanguageServerBase.CSharp()
+            );
+
+            // Stage 7: Generate the final C# code
+            var code = contextCodeComposer.Generate();
+
+            Console.WriteLine("Generated Code:");
+            Console.WriteLine(code);
+            Console.WriteLine();
+        }
+
         public static void Execute()
         {
             // The number of dimensions
@@ -27,7 +223,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.CodeComposer
 
             // Use this if you want Wolfram Mathematica symbolic processor
             // instead of the default AngouriMath symbolic processor
-            //context.AttachMathematicaExpressionEvaluator();
+            context.AttachMathematicaExpressionEvaluator();
 
             // Define a Euclidean multivectors processor for the context
             var processor = 
@@ -60,7 +256,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.CodeComposer
 
             // Stage 3: Define computations and specify which variables are required outputs
             //Define a Euclidean rotor which takes input unit vector u to input unit vector v
-            var rotor = processor.CreateEuclideanRotor(u, v, true);
+            var rotor = processor.CreatePureRotor(u, v, true);
             
             //Find the rotation of an arbitrary input vector x using this rotor
             var xRotated = rotor.OmMapVector(x);

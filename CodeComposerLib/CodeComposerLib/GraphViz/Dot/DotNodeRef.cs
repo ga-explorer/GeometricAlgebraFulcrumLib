@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
 using CodeComposerLib.GraphViz.Dot.Value;
 using TextComposerLib;
 
@@ -29,7 +28,7 @@ namespace CodeComposerLib.GraphViz.Dot
         /// <summary>
         /// True if this node reference contains a port name
         /// </summary>
-        public bool HasPort => String.IsNullOrEmpty(PortName) == false;
+        public bool HasPort => string.IsNullOrEmpty(PortName) == false;
 
         /// <summary>
         /// True if this node reference contains a compass direction

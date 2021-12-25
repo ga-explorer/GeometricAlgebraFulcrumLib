@@ -1,5 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
-using EuclideanGeometryLib.BasicMath.Tuples;
+using NumericalGeometryLib.BasicMath.Tuples;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Geometry.Graphics.Space2D;
 using GeometricAlgebraFulcrumLib.Geometry.Graphics.Space3D;

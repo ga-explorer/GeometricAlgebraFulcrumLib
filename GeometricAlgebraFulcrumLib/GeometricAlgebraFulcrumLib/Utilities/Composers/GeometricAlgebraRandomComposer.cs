@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using DataStructuresLib.BitManipulation;
 using DataStructuresLib.Random;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors;
 using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
@@ -23,6 +24,9 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
 
 
         public IGeometricAlgebraProcessor<T> GeometricProcessor { get; }
+
+        public IGeometricAlgebraEuclideanProcessor<T> GeometricEuclideanProcessor
+            => (IGeometricAlgebraEuclideanProcessor<T>) GeometricProcessor;
 
         public uint VSpaceDimension 
             => GeometricProcessor.VSpaceDimension;
@@ -164,13 +168,13 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public KVectorStorage<T> GetScalarTerm()
+        public KVectorStorage<T> GetScalarTermStorage()
         {
             return ScalarProcessor.CreateKVectorScalarStorage(GetScalar());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public KVectorStorage<T> GetScalarTerm(double minValue, double maxValue)
+        public KVectorStorage<T> GetScalarTermStorage(double minValue, double maxValue)
         {
             return ScalarProcessor.CreateKVectorScalarStorage(
                 GetScalar(minValue, maxValue)
@@ -178,7 +182,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public VectorStorage<T> GetVectorTerm()
+        public VectorStorage<T> GetVectorTermStorage()
         {
             var index = GetBasisVectorIndex();
             var scalar = GetScalar();
@@ -187,7 +191,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public VectorStorage<T> GetVectorTerm(double minValue, double maxValue)
+        public VectorStorage<T> GetVectorTermStorage(double minValue, double maxValue)
         {
             var index = GetBasisVectorIndex();
             var scalar = GetScalar(minValue, maxValue);
@@ -196,7 +200,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public VectorStorage<T> GetVectorTermByIndex(ulong index)
+        public VectorStorage<T> GetVectorTermStorageByIndex(ulong index)
         {
             return ScalarProcessor.CreateVectorTermStorage(
                 index,
@@ -205,7 +209,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public VectorStorage<T> GetVectorTermByIndex(ulong index, double minValue, double maxValue)
+        public VectorStorage<T> GetVectorTermStorageByIndex(ulong index, double minValue, double maxValue)
         {
             return ScalarProcessor.CreateVectorTermStorage(
                 index,
@@ -214,7 +218,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public BivectorStorage<T> GetBivectorTerm()
+        public BivectorStorage<T> GetBivectorTermStorage()
         {
             var index = GetBasisBivectorIndex();
             var scalar = GetScalar();
@@ -223,7 +227,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public BivectorStorage<T> GetBivectorTerm(double minValue, double maxValue)
+        public BivectorStorage<T> GetBivectorTermStorage(double minValue, double maxValue)
         {
             var index = GetBasisBivectorIndex();
             var scalar = GetScalar(minValue, maxValue);
@@ -232,19 +236,19 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public BivectorStorage<T> GetBivectorTermByIndex(ulong index)
+        public BivectorStorage<T> GetBivectorTermStorageByIndex(ulong index)
         {
             return ScalarProcessor.CreateBivectorTermStorage(index, GetScalar());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public BivectorStorage<T> GetBivectorTermByIndex(ulong index, double minValue, double maxValue)
+        public BivectorStorage<T> GetBivectorTermStorageByIndex(ulong index, double minValue, double maxValue)
         {
             return ScalarProcessor.CreateBivectorTermStorage(index, GetScalar(minValue, maxValue));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public KVectorStorage<T> GetKVectorTerm()
+        public KVectorStorage<T> GetKVectorTermStorage()
         {
             var (grade, index) = GetBasisBladeGradeIndex();
             var scalar = GetScalar();
@@ -253,7 +257,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public KVectorStorage<T> GetKVectorTerm(double minValue, double maxValue)
+        public KVectorStorage<T> GetKVectorTermStorage(double minValue, double maxValue)
         {
             var (grade, index) = GetBasisBladeGradeIndex();
             var scalar = GetScalar(minValue, maxValue);
@@ -262,7 +266,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public KVectorStorage<T> GetKVectorTermOfGrade(uint grade)
+        public KVectorStorage<T> GetKVectorTermStorageOfGrade(uint grade)
         {
             var index = GetBasisBladeIndex(grade);
             var scalar = GetScalar();
@@ -271,7 +275,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public KVectorStorage<T> GetKVectorTermOfGrade(uint grade, double minValue, double maxValue)
+        public KVectorStorage<T> GetKVectorTermStorageOfGrade(uint grade, double minValue, double maxValue)
         {
             var index = GetBasisBladeIndex(grade);
             var scalar = GetScalar(minValue, maxValue);
@@ -280,7 +284,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public KVectorStorage<T> GetKVectorTermById(ulong id)
+        public KVectorStorage<T> GetKVectorTermStorageById(ulong id)
         {
             return ScalarProcessor.CreateKVectorTermStorage(
                 id,
@@ -289,7 +293,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public KVectorStorage<T> GetKVectorTermById(ulong id, double minValue, double maxValue)
+        public KVectorStorage<T> GetKVectorTermStorageById(ulong id, double minValue, double maxValue)
         {
             return ScalarProcessor.CreateKVectorTermStorage(
                 id,
@@ -298,7 +302,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public KVectorStorage<T> GetKVectorTermByGradeIndex(uint grade, ulong index)
+        public KVectorStorage<T> GetKVectorTermStorageByGradeIndex(uint grade, ulong index)
         {
             return ScalarProcessor.CreateKVectorTermStorage(
                 grade,
@@ -308,7 +312,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public KVectorStorage<T> GetKVectorTermByGradeIndex(uint grade, ulong index, double minValue, double maxValue)
+        public KVectorStorage<T> GetKVectorTermStorageByGradeIndex(uint grade, ulong index, double minValue, double maxValue)
         {
             var scalar = GetScalar(minValue, maxValue);
 
@@ -316,7 +320,25 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public VectorStorage<T> GetVector()
+        public Vector<T> GetVector()
+        {
+            return new Vector<T>(GeometricProcessor, GetVectorStorage());
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Vector<T> GetVector(int termsCount, bool makeUnitVector = false)
+        {
+            return new Vector<T>(GeometricProcessor, GetVectorStorage(termsCount, makeUnitVector));
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Vector<T> GetVector(double minValue, double maxValue)
+        {
+            return new Vector<T>(GeometricProcessor, GetVectorStorage(minValue, maxValue));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public VectorStorage<T> GetVectorStorage()
         {
             var indexScalarDictionary =
                 VSpaceDimension
@@ -328,9 +350,31 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
 
             return ScalarProcessor.CreateVectorStorage(indexScalarDictionary);
         }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public VectorStorage<T> GetVectorStorage(int termsCount, bool makeUnitVector = false)
+        {
+            if (termsCount > VSpaceDimension)
+                throw new ArgumentOutOfRangeException(nameof(termsCount));
+
+            var indexScalarDictionary =
+                termsCount
+                    .GetRange()
+                    .ToDictionary(
+                        index => (ulong) index,
+                        _ => GetScalar()
+                    );
+
+            var vectorStorage = 
+                ScalarProcessor.CreateVectorStorage(indexScalarDictionary);
+
+            return makeUnitVector 
+                ? GeometricProcessor.DivideByNorm(vectorStorage) 
+                : vectorStorage;
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public VectorStorage<T> GetVector(double minValue, double maxValue)
+        public VectorStorage<T> GetVectorStorage(double minValue, double maxValue)
         {
             var indexScalarDictionary =
                 VSpaceDimension
@@ -342,9 +386,9 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
 
             return ScalarProcessor.CreateVectorStorage(indexScalarDictionary);
         }
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public VectorStorage<T> GetSparseVector(int termsCount)
+        public VectorStorage<T> GetSparseVectorStorage(int termsCount)
         {
             if (termsCount > VSpaceDimension)
                 throw new ArgumentOutOfRangeException(nameof(termsCount));
@@ -363,7 +407,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public VectorStorage<T> GetSparseVector(int termsCount, double minValue, double maxValue)
+        public VectorStorage<T> GetSparseVectorStorage(int termsCount, double minValue, double maxValue)
         {
             if (termsCount > VSpaceDimension)
                 throw new ArgumentOutOfRangeException(nameof(termsCount));
@@ -382,7 +426,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public BivectorStorage<T> GetBivector()
+        public BivectorStorage<T> GetBivectorStorage()
         {
             var kvSpaceDimension = 
                 VSpaceDimension.KVectorSpaceDimension(2);
@@ -397,9 +441,15 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
 
             return ScalarProcessor.CreateBivectorStorage(indexScalarDictionary);
         }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Bivector<T> GetBivector()
+        {
+            return new Bivector<T>(GeometricProcessor, GetBivectorStorage());
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public BivectorStorage<T> GetBivector(double minValue, double maxValue)
+        public BivectorStorage<T> GetBivectorStorage(double minValue, double maxValue)
         {
             var kvSpaceDimension = 
                 VSpaceDimension.KVectorSpaceDimension(2);
@@ -414,9 +464,15 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
 
             return ScalarProcessor.CreateBivectorStorage(indexScalarDictionary);
         }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Bivector<T> GetBivector(double minValue, double maxValue)
+        {
+            return new Bivector<T>(GeometricProcessor, GetBivectorStorage(minValue, maxValue));
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public BivectorStorage<T> GetSparseBivector(int termsCount)
+        public BivectorStorage<T> GetSparseBivectorStorage(int termsCount)
         {
             var kvSpaceDimension = 
                 (int) VSpaceDimension.KVectorSpaceDimension(2);
@@ -438,7 +494,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public BivectorStorage<T> GetSparseBivector(int termsCount, double minValue, double maxValue)
+        public BivectorStorage<T> GetSparseBivectorStorage(int termsCount, double minValue, double maxValue)
         {
             var kvSpaceDimension = 
                 (int) VSpaceDimension.KVectorSpaceDimension(2);
@@ -460,19 +516,19 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public KVectorStorage<T> GetKVector()
+        public KVectorStorage<T> GetKVectorStorage()
         {
-            return GetKVectorOfGrade(GetGrade());
+            return GetKVectorStorageOfGrade(GetGrade());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public KVectorStorage<T> GetKVector(double minValue, double maxValue)
+        public KVectorStorage<T> GetKVectorStorage(double minValue, double maxValue)
         {
-            return GetKVectorOfGrade(GetGrade(), minValue, maxValue);
+            return GetKVectorStorageOfGrade(GetGrade(), minValue, maxValue);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public KVectorStorage<T> GetKVectorOfGrade(uint grade)
+        public KVectorStorage<T> GetKVectorStorageOfGrade(uint grade)
         {
             var kvSpaceDimension = 
                 VSpaceDimension.KVectorSpaceDimension(grade);
@@ -489,7 +545,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public KVectorStorage<T> GetKVectorOfGrade(uint grade, double minValue, double maxValue)
+        public KVectorStorage<T> GetKVectorStorageOfGrade(uint grade, double minValue, double maxValue)
         {
             var kvSpaceDimension = 
                 VSpaceDimension.KVectorSpaceDimension(grade);
@@ -506,7 +562,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public KVectorStorage<T> GetSparseKVectorOfGrade(uint grade, int termsCount)
+        public KVectorStorage<T> GetSparseKVectorStorageOfGrade(uint grade, int termsCount)
         {
             var kvSpaceDimension = 
                 (int) VSpaceDimension.KVectorSpaceDimension(grade);
@@ -528,7 +584,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public KVectorStorage<T> GetSparseKVectorOfGrade(uint grade, int termsCount, double minValue, double maxValue)
+        public KVectorStorage<T> GetSparseKVectorStorageOfGrade(uint grade, int termsCount, double minValue, double maxValue)
         {
             var kvSpaceDimension = 
                 (int) VSpaceDimension.KVectorSpaceDimension(grade);
@@ -550,7 +606,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public MultivectorStorage<T> GetTermsMultivector()
+        public MultivectorStorage<T> GetTermsMultivectorStorage()
         {
             var gaSpaceDimension = (int) GaSpaceDimension;
 
@@ -566,7 +622,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public MultivectorStorage<T> GetTermsMultivector(double minValue, double maxValue)
+        public MultivectorStorage<T> GetTermsMultivectorStorage(double minValue, double maxValue)
         {
             var gaSpaceDimension = (int) GaSpaceDimension;
 
@@ -582,7 +638,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public MultivectorStorage<T> GetTermsMultivector(int termsCount)
+        public MultivectorStorage<T> GetTermsMultivectorStorage(int termsCount)
         {
             var gaSpaceDimension = (int) GaSpaceDimension;
 
@@ -603,7 +659,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public MultivectorStorage<T> GetTermsMultivector(int termsCount, double minValue, double maxValue)
+        public MultivectorStorage<T> GetTermsMultivectorStorage(int termsCount, double minValue, double maxValue)
         {
             var gaSpaceDimension = (int) GaSpaceDimension;
 
@@ -624,7 +680,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IMultivectorGradedStorage<T> GetGradedMultivector()
+        public IMultivectorGradedStorage<T> GetGradedMultivectorStorage()
         {
             var gradeIndexScalarDictionary = 
                 new Dictionary<uint, Dictionary<ulong, T>>();
@@ -639,7 +695,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IMultivectorGradedStorage<T> GetGradedMultivector(double minValue, double maxValue)
+        public IMultivectorGradedStorage<T> GetGradedMultivectorStorage(double minValue, double maxValue)
         {
             var gradeIndexScalarDictionary = 
                 new Dictionary<uint, Dictionary<ulong, T>>();
@@ -654,7 +710,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IMultivectorGradedStorage<T> GetGradedMultivector(int termsCount)
+        public IMultivectorGradedStorage<T> GetGradedMultivectorStorage(int termsCount)
         {
             var gaSpaceDimension = (int) GaSpaceDimension;
 
@@ -676,7 +732,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IMultivectorGradedStorage<T> GetGradedMultivector(int termsCount, double minValue, double maxValue)
+        public IMultivectorGradedStorage<T> GetGradedMultivectorStorage(int termsCount, double minValue, double maxValue)
         {
             var gaSpaceDimension = (int) GaSpaceDimension;
 
@@ -698,36 +754,42 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<VectorStorage<T>> GetVectors(int count)
+        public IEnumerable<VectorStorage<T>> GetVectorStorages(int count)
         {
             while (count > 0)
             {
-                yield return GetVector();
+                yield return GetVectorStorage();
                 count--;
             }
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public KVectorStorage<T> GetBlade(uint grade)
+        public KVectorStorage<T> GetBladeStorage(uint grade)
         {
             if (grade == 0U)
-                return GetScalarTerm();
+                return GetScalarTermStorage();
 
             if (grade == 1U)
-                return GetVector();
+                return GetVectorStorage();
 
             if (grade == VSpaceDimension)
-                return GetKVectorTermByGradeIndex(grade, 0);
+                return GetKVectorTermStorageByGradeIndex(grade, 0);
 
-            return ScalarProcessor.Op(GetVectors((int) grade));
+            return ScalarProcessor.Op(GetVectorStorages((int) grade));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public PureRotor<T> GetEuclideanSimpleRotor(IGeometricAlgebraProcessor<T> processor)
+        public KVector<T> GetBlade(uint grade)
         {
-            return processor.CreateEuclideanRotor(
-                GetVector(),
-                GetVector()
+            return new KVector<T>(GeometricProcessor, GetBladeStorage(grade));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public PureRotor<T> GetEuclideanPureRotor()
+        {
+            return GeometricEuclideanProcessor.CreatePureRotor(
+                GetVectorStorage(),
+                GetVectorStorage()
             );
         }
 

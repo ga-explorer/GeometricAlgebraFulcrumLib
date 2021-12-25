@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using GeometricAlgebraFulcrumLib.Mathematica.Mathematica.ExprFactory;
@@ -115,7 +114,7 @@ namespace GeometricAlgebraFulcrumLib.Mathematica.Mathematica.Expression
 
                 var dimensions = CasConnection.EvaluateToExpr(Mfs.Dimensions[Expression]);
 
-                return Int32.Parse(dimensions.Args[0].ToString());
+                return int.Parse(dimensions.Args[0].ToString());
             }
         }
 

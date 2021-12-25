@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.Signatures;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Utilities.Composers;
@@ -9,10 +9,10 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 {
     public static class MultivectorStorageGpOrtUtils
     {
-        public static IMultivectorStorage<double> Gp(this GeometricAlgebraSignatureLookup basisSignature, IMultivectorStorage<double> mv)
+        public static IMultivectorStorage<double> Gp(this GeometricAlgebraBasisSet basisSet, IMultivectorStorage<double> mv)
         {
             var composer = 
-                new MultivectorFloat64StorageComposer(basisSignature);
+                new MultivectorFloat64StorageComposer(basisSet);
 
             var idScalarPairs = 
                 mv.GetLinVectorIdScalarStorage();
@@ -26,10 +26,10 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             return composer.GetCompactStorage();
         }
         
-        public static IMultivectorStorage<double> GpReverse(this GeometricAlgebraSignatureLookup basisSignature, IMultivectorStorage<double> mv)
+        public static IMultivectorStorage<double> GpReverse(this GeometricAlgebraBasisSet basisSet, IMultivectorStorage<double> mv)
         {
             var composer = 
-                new MultivectorFloat64StorageComposer(basisSignature);
+                new MultivectorFloat64StorageComposer(basisSet);
 
             var idScalarPairs = 
                 mv.GetLinVectorIdScalarStorage();
@@ -43,10 +43,10 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             return composer.GetCompactStorage();
         }
         
-        public static IMultivectorStorage<double> Gp(this GeometricAlgebraSignatureLookup basisSignature, IMultivectorStorage<double> mv1, IMultivectorStorage<double> mv2)
+        public static IMultivectorStorage<double> Gp(this GeometricAlgebraBasisSet basisSet, IMultivectorStorage<double> mv1, IMultivectorStorage<double> mv2)
         {
             var composer = 
-                new MultivectorFloat64StorageComposer(basisSignature);
+                new MultivectorFloat64StorageComposer(basisSet);
 
             var idScalarPairs1 = 
                 mv1.GetIdScalarRecords();
@@ -63,10 +63,10 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             return composer.GetCompactStorage();
         }
         
-        public static IMultivectorStorage<double> GpReverse(this GeometricAlgebraSignatureLookup basisSignature, IMultivectorStorage<double> mv1, IMultivectorStorage<double> mv2)
+        public static IMultivectorStorage<double> GpReverse(this GeometricAlgebraBasisSet basisSet, IMultivectorStorage<double> mv1, IMultivectorStorage<double> mv2)
         {
             var composer = 
-                new MultivectorFloat64StorageComposer(basisSignature);
+                new MultivectorFloat64StorageComposer(basisSet);
 
             var idScalarPairs1 = 
                 mv1.GetIdScalarRecords();
@@ -85,108 +85,108 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorStorage<T> Gp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IGeometricAlgebraSignature basisSignature, IMultivectorStorage<T> mv)
+        public static IMultivectorStorage<T> Gp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, IMultivectorStorage<T> mv)
         {
-            return basisSignature is GeometricAlgebraSignatureEuclidean
+            return basisSet.IsEuclidean
                 ? scalarProcessor.EGp(mv)
-                : scalarProcessor.BilinearProduct(mv, basisSignature.GpSignature);
+                : scalarProcessor.BilinearProduct(mv, basisSet.GpSignature);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorStorage<T> Gp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IGeometricAlgebraSignature basisSignature, IMultivectorStorage<T> mv1, IMultivectorStorage<T> mv2)
+        public static IMultivectorStorage<T> Gp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, IMultivectorStorage<T> mv1, IMultivectorStorage<T> mv2)
         {
-            return basisSignature is GeometricAlgebraSignatureEuclidean
+            return basisSet.IsEuclidean
                 ? scalarProcessor.EGp(mv1, mv2)
-                : scalarProcessor.BilinearProduct(mv1, mv2, basisSignature.GpSignature);
+                : scalarProcessor.BilinearProduct(mv1, mv2, basisSet.GpSignature);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorStorage<T> Gp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IGeometricAlgebraSignature basisSignature, IMultivectorStorage<T> mv1, IMultivectorStorage<T> mv2, IMultivectorStorage<T> mv3)
+        public static IMultivectorStorage<T> Gp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, IMultivectorStorage<T> mv1, IMultivectorStorage<T> mv2, IMultivectorStorage<T> mv3)
         {
-            return basisSignature is GeometricAlgebraSignatureEuclidean
+            return basisSet.IsEuclidean
                 ? scalarProcessor.EGp(mv1, mv2, mv3)
                 : scalarProcessor.BilinearProduct(
-                    scalarProcessor.BilinearProduct(mv1, mv2, basisSignature.GpSignature), 
-                    mv3, basisSignature.GpSignature
+                    scalarProcessor.BilinearProduct(mv1, mv2, basisSet.GpSignature), 
+                    mv3, basisSet.GpSignature
                 );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorStorage<T> Gp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IGeometricAlgebraSignature basisSignature, params IMultivectorStorage<T>[] mvsList)
+        public static IMultivectorStorage<T> Gp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, params IMultivectorStorage<T>[] mvsList)
         {
             return mvsList.Skip(1).Aggregate(
                 mvsList[0], 
                 (mv1, mv2) => 
-                    scalarProcessor.Gp(mv1, mv2, basisSignature)
+                    scalarProcessor.Gp(mv1, mv2, basisSet)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorStorage<T> GpReverse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IGeometricAlgebraSignature basisSignature, IMultivectorStorage<T> mv)
+        public static IMultivectorStorage<T> GpReverse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, IMultivectorStorage<T> mv)
         {
-            return basisSignature is GeometricAlgebraSignatureEuclidean
+            return basisSet.IsEuclidean
                 ? scalarProcessor.EGpReverse(mv)
-                : scalarProcessor.BilinearProduct(mv, basisSignature.GpReverseSignature);
+                : scalarProcessor.BilinearProduct(mv, basisSet.GpReverseSignature);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorStorage<T> GpReverse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IGeometricAlgebraSignature basisSignature, IMultivectorStorage<T> mv1, IMultivectorStorage<T> mv2)
+        public static IMultivectorStorage<T> GpReverse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, IMultivectorStorage<T> mv1, IMultivectorStorage<T> mv2)
         {
-            return basisSignature is GeometricAlgebraSignatureEuclidean
+            return basisSet.IsEuclidean
                 ? scalarProcessor.EGpReverse(mv1, mv2)
-                : scalarProcessor.BilinearProduct(mv1, mv2, basisSignature.GpReverseSignature);
+                : scalarProcessor.BilinearProduct(mv1, mv2, basisSet.GpReverseSignature);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorGradedStorage<T> Gp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IGeometricAlgebraSignature basisSignature, KVectorStorage<T> mv)
+        public static IMultivectorGradedStorage<T> Gp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, KVectorStorage<T> mv)
         {
             //TODO: Add the Euclidean case
-            return scalarProcessor.BilinearProduct(mv, basisSignature.GpSignature);
+            return scalarProcessor.BilinearProduct(mv, basisSet.GpSignature);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorGradedStorage<T> Gp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IGeometricAlgebraSignature basisSignature, KVectorStorage<T> mv1, KVectorStorage<T> mv2)
+        public static IMultivectorGradedStorage<T> Gp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, KVectorStorage<T> mv1, KVectorStorage<T> mv2)
         {
-            return scalarProcessor.BilinearProduct(mv1, mv2, basisSignature.GpSignature);
+            return scalarProcessor.BilinearProduct(mv1, mv2, basisSet.GpSignature);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorStorage<T> Gp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IGeometricAlgebraSignature basisSignature, KVectorStorage<T> mv1, KVectorStorage<T> mv2, KVectorStorage<T> mv3)
+        public static IMultivectorStorage<T> Gp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, KVectorStorage<T> mv1, KVectorStorage<T> mv2, KVectorStorage<T> mv3)
         {
             return scalarProcessor.BilinearProduct(
-                scalarProcessor.BilinearProduct(mv1, mv2, basisSignature.GpSignature), 
-                mv3, basisSignature.GpSignature
+                scalarProcessor.BilinearProduct(mv1, mv2, basisSet.GpSignature), 
+                mv3, basisSet.GpSignature
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorStorage<T> Gp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorStorage<T> mv1, IGeometricAlgebraSignature basisSignature)
+        public static IMultivectorStorage<T> Gp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorStorage<T> mv1, GeometricAlgebraBasisSet basisSet)
         {
-            return scalarProcessor.BilinearProduct(mv1, basisSignature.GpSignature);
+            return scalarProcessor.BilinearProduct(mv1, basisSet.GpSignature);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorStorage<T> Gp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorStorage<T> mv1, IMultivectorStorage<T> mv2, IGeometricAlgebraSignature basisSignature)
+        public static IMultivectorStorage<T> Gp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorStorage<T> mv1, IMultivectorStorage<T> mv2, GeometricAlgebraBasisSet basisSet)
         {
-            return basisSignature is GeometricAlgebraSignatureEuclidean
+            return basisSet.IsEuclidean
                 ? scalarProcessor.EGp(mv1, mv2)
-                : scalarProcessor.BilinearProduct(mv1, mv2, basisSignature.GpSignature);
+                : scalarProcessor.BilinearProduct(mv1, mv2, basisSet.GpSignature);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorStorage<T> GpReverse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorStorage<T> mv1, IGeometricAlgebraSignature basisSignature)
+        public static IMultivectorStorage<T> GpReverse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorStorage<T> mv1, GeometricAlgebraBasisSet basisSet)
         {
-            return basisSignature is GeometricAlgebraSignatureEuclidean
+            return basisSet.IsEuclidean
                 ? scalarProcessor.EGpReverse(mv1)
-                : scalarProcessor.BilinearProduct(mv1, basisSignature.GpReverseSignature);
+                : scalarProcessor.BilinearProduct(mv1, basisSet.GpReverseSignature);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorStorage<T> GpReverse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorStorage<T> mv1, IMultivectorStorage<T> mv2, IGeometricAlgebraSignature basisSignature)
+        public static IMultivectorStorage<T> GpReverse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorStorage<T> mv1, IMultivectorStorage<T> mv2, GeometricAlgebraBasisSet basisSet)
         {
-            return basisSignature is GeometricAlgebraSignatureEuclidean
+            return basisSet.IsEuclidean
                 ? scalarProcessor.EGpReverse(mv1, mv2)
-                : scalarProcessor.BilinearProduct(mv1, mv2, basisSignature.GpReverseSignature);
+                : scalarProcessor.BilinearProduct(mv1, mv2, basisSet.GpReverseSignature);
         }
     }
 }

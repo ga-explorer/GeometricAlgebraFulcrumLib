@@ -16,13 +16,19 @@
     <ProjectReference Include="..\..\EuclideanGeometryLib\EuclideanGeometryLib\EuclideanGeometryLib.csproj" />
     <ProjectReference Include="..\..\TextComposerLib\TextComposerLib\TextComposerLib.csproj" />
     <ProjectReference Include="..\GraphicsComposerLib.Geometry\GraphicsComposerLib.Geometry.csproj" />
+    <ProjectReference Include="..\GraphicsComposerLib.IO\GraphicsComposerLib.IO.csproj" />
     <ProjectReference Include="..\GraphicsComposerLib.Svg\GraphicsComposerLib.Svg.csproj" />
     <ProjectReference Include="..\GraphicsComposerLib.WebGl\GraphicsComposerLib.WebGl.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Geometry\" />
     <Folder Include="ThreeJs\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Aspose.3D">
+      <HintPath>..\Aspose.3D.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

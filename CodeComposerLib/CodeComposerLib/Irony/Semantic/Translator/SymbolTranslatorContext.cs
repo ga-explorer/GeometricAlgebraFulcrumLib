@@ -89,7 +89,7 @@ namespace CodeComposerLib.Irony.Semantic.Translator
         /// <summary>
         /// Returns the symbol role name of the context state on the top of stack without removing it from the stack
         /// </summary>
-        public string ActiveSymbolRoleName => StateStack.Count > 0 ? StateStack.Peek().SymbolRoleName : String.Empty;
+        public string ActiveSymbolRoleName => StateStack.Count > 0 ? StateStack.Peek().SymbolRoleName : string.Empty;
 
         /// <summary>
         /// Returns the parse node of the context state on the top of stack without removing it from the stack

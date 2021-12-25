@@ -32,14 +32,8 @@ namespace DataStructuresLib.SimpleTree
 
         public SimpleTreeNode<TLeaf> this[int index]
         {
-            get
-            {
-                return _nodes[index];
-            }
-            set
-            {
-                _nodes[index] = value;
-            }
+            get => _nodes[index];
+            set => _nodes[index] = value;
         }
 
         public void Add(SimpleTreeNode<TLeaf> item)
@@ -63,15 +57,9 @@ namespace DataStructuresLib.SimpleTree
                 array[arrayIndex++] = item;
         }
 
-        public int Count
-        {
-            get { return _nodes.Count; }
-        }
+        public int Count => _nodes.Count;
 
-        public bool IsReadOnly
-        {
-            get { return false; }
-        }
+        public bool IsReadOnly => false;
 
         public bool Remove(SimpleTreeNode<TLeaf> item)
         {
@@ -88,15 +76,9 @@ namespace DataStructuresLib.SimpleTree
             return _nodes.GetEnumerator();
         }
 
-        public override IEnumerable<SimpleTreeNode<TLeaf>> ChildNodes
-        {
-            get { return _nodes; }
-        }
+        public override IEnumerable<SimpleTreeNode<TLeaf>> ChildNodes => _nodes;
 
-        public override IEnumerable<SimpleTreeBranch<TLeaf>> ChildBranches
-        {
-            get { return Enumerable.Empty<SimpleTreeBranch<TLeaf>>(); }
-        }
+        public override IEnumerable<SimpleTreeBranch<TLeaf>> ChildBranches => Enumerable.Empty<SimpleTreeBranch<TLeaf>>();
 
         //public override void ToString(LinearTextComposer textBuilder)
         //{

@@ -4,7 +4,6 @@ using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors;
 using GeometricAlgebraFulcrumLib.Geometry.Frames;
 using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.Signatures;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 
@@ -12,13 +11,6 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
 {
     public static class RotorFactory
     {
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static PureRotor<T> CreateRotor<T>(this IGeometricAlgebraProcessor<T> processor, T scalarPart, BivectorStorage<T> bivectorPart)
-        {
-            return new PureRotor<T>(processor, scalarPart, bivectorPart);
-        }
-
-
         /// <summary>
         /// Create an identity rotor
         /// </summary>
@@ -34,16 +26,50 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
                 KVectorStorage<T>.ZeroBivector
             );
         }
+        
+        /// <summary>
+        /// Create an identity rotor
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="processor"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ScaledPureRotor<T> CreateScaledIdentityRotor<T>(this IGeometricAlgebraProcessor<T> processor)
+        {
+            return new ScaledPureRotor<T>(
+                processor,
+                processor.ScalarOne,
+                KVectorStorage<T>.ZeroBivector
+            );
+        }
 
         /// <summary>
-        /// Create a pure rotor from a 2-blade, the signature of the blade is computed automatically
-        /// using the given processor which must be of numerical type
+        /// Create an identity rotor
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="processor"></param>
+        /// <param name="scalingFactor"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ScaledPureRotor<T> CreateScaledIdentityRotor<T>(this IGeometricAlgebraProcessor<T> processor, T scalingFactor)
+        {
+            return new ScaledPureRotor<T>(
+                processor,
+                scalingFactor,
+                KVectorStorage<T>.ZeroBivector
+            );
+        }
+
+        /// <summary>
+        /// Create a pure rotor from a 2-blade, the signature of the blade
+        /// is computed automatically using the given processor which must
+        /// be of numerical type
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="processor"></param>
         /// <param name="blade"></param>
         /// <returns></returns>
-        public static PureRotor<T> CreateRotor<T>(this IGeometricAlgebraProcessor<T> processor, BivectorStorage<T> blade)
+        public static PureRotor<T> CreatePureRotor<T>(this IGeometricAlgebraProcessor<T> processor, BivectorStorage<T> blade)
         {
             if (!processor.IsNumeric)
                 throw new InvalidOperationException();
@@ -84,14 +110,15 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
 
         /// <summary>
-        /// Create a pure rotor from a 2-blade, the signature of the blade is given by the user
+        /// Create a pure rotor from a 2-blade, the signature of the blade
+        /// is given by the user
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="processor"></param>
         /// <param name="blade"></param>
         /// <param name="bladeSignatureKind"></param>
         /// <returns></returns>
-        public static PureRotor<T> CreateRotor<T>(this IGeometricAlgebraProcessor<T> processor, BivectorStorage<T> blade, BladeSignatureKind bladeSignatureKind)
+        public static PureRotor<T> CreatePureRotor<T>(this IGeometricAlgebraProcessor<T> processor, BivectorStorage<T> blade, BladeSignatureKind bladeSignatureKind)
         {
             if (bladeSignatureKind == BladeSignatureKind.Zero) 
                 return new PureRotor<T>(
@@ -153,7 +180,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         /// <param name="targetVector"></param>
         /// <param name="assumeUnitVectors"></param>
         /// <returns></returns>
-        public static PureRotor<T> CreateEuclideanRotor<T>(this IGeometricAlgebraProcessor<T> processor, VectorStorage<T> sourceVector, VectorStorage<T> targetVector, bool assumeUnitVectors = false)
+        public static PureRotor<T> CreatePureRotor<T>(this IGeometricAlgebraEuclideanProcessor<T> processor, VectorStorage<T> sourceVector, VectorStorage<T> targetVector, bool assumeUnitVectors = false)
         {
             var u = sourceVector.CreateVector(processor);
             var v = targetVector.CreateVector(processor);
@@ -186,8 +213,129 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
                 bivectorPart
             );
         }
+        
+        /// <summary>
+        /// Create a pure Euclidean rotor that rotates the given source vector
+        /// into the target vector
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="processor"></param>
+        /// <param name="sourceVector"></param>
+        /// <param name="targetVector"></param>
+        /// <returns></returns>
+        public static ScaledPureRotor<T> CreateScaledPureRotor<T>(this IGeometricAlgebraEuclideanProcessor<T> processor, VectorStorage<T> sourceVector, VectorStorage<T> targetVector)
+        {
+            var u = sourceVector.CreateVector(processor);
+            var v = targetVector.CreateVector(processor);
 
-        public static PureRotor<T> CreateEuclideanRotor<T>(this IGeometricAlgebraProcessor<T> processor, ulong sourceBasisVectorIndex, VectorStorage<T> targetVector, bool assumeUnitVector = false)
+            var uNorm = u.ENorm();
+            var vNorm = v.ENorm();
+            var scalingFactor = (vNorm / uNorm).Sqrt();
+            var cosAngle = v.ESp(u) / (uNorm * vNorm);
+
+            if (cosAngle.IsOne)
+                return ScaledPureRotor<T>.Create(processor, scalingFactor);
+            
+            //TODO: Handle the case for cosAngle == -1
+            if (cosAngle.IsMinusOne)
+                throw new InvalidOperationException();
+
+            var cosHalfAngle = ((1 + cosAngle) / 2).Sqrt();
+            var sinHalfAngle = ((1 - cosAngle) / 2).Sqrt();
+
+            var rotationBlade = v.Op(u);
+            var unitRotationBlade = 
+                rotationBlade / (-rotationBlade.ESp()).Sqrt();
+
+            var scalarPart = 
+                scalingFactor * cosHalfAngle.ScalarValue;
+
+            var bivectorPart = 
+                (scalingFactor * sinHalfAngle * unitRotationBlade).BivectorStorage;
+
+            return new ScaledPureRotor<T>(
+                processor, 
+                scalarPart,
+                bivectorPart
+            );
+        }
+        
+        /// <summary>
+        /// Create one rotor from the parametric family of pure rotors taking
+        /// sourceVector to targetVector in 3D Euclidean space
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="processor"></param>
+        /// <param name="sourceVector"></param>
+        /// <param name="targetVector"></param>
+        /// <param name="angleTheta"></param>
+        /// <returns></returns>
+        public static PureRotor<T> CreateParametricPureRotor3D<T>(this IGeometricAlgebraEuclideanProcessor<T> processor, VectorStorage<T> sourceVector, VectorStorage<T> targetVector, T angleTheta)
+        {
+            // Compute inverse of 3D pseudo-scalar = -e123
+            var pseudoScalarInverse =
+                processor.VSpaceDimension == 3
+                    ? processor.PseudoScalarInverse
+                    : processor.CreateEuclideanPseudoScalarInverseStorage(3);
+
+            // Compute the smallest angle between source and target vectors
+            var cosAngle0 = 
+                processor.ESp(sourceVector, targetVector);
+
+            // Define a rotor S with angle theta in the plane orthogonal to targetVector - sourceVector
+            var rotorSBlade =
+                processor.EGp(
+                    processor.Subtract(targetVector, sourceVector),
+                    pseudoScalarInverse
+                ).GetBivectorPart();
+
+            var rotorS = processor.CreatePureRotor(
+                angleTheta, 
+                rotorSBlade
+            );
+
+            // Define parametric 2-blade of rotation
+            // The actual plane of rotation is made by rotating the plane containing
+            // sourceVector and targetVector by angle theta in the plane orthogonal to
+            // targetVector - sourceVector using rotor S
+            var rotorBlade =
+                rotorS.OmMapBivector(
+                    processor.Op(targetVector, sourceVector)
+                );
+                
+            // Define parametric angle of rotation
+            var sinTheta = processor.Sin(angleTheta);
+            var rotorAngle =
+                processor.Add(
+                    1,
+                    processor.Divide(
+                        processor.Times(2, processor.Subtract(cosAngle0, 1)),
+                        processor.Subtract(
+                            2, 
+                            processor.Times(
+                                processor.Square(sinTheta),
+                                processor.Add(cosAngle0, 1)
+                            )
+                        )
+                    )
+                );
+            // Math.Acos(1 + 2 * (cosAngle0 - 1) / (2 - Math.Pow(Math.Sin(angleTheta), 2) * (cosAngle0 + 1)));
+            
+            // Return the final rotor taking v1 into v2
+            return processor.CreatePureRotor(rotorAngle, rotorBlade);
+        }
+
+        /// <summary>
+        /// Create a pure Euclidean rotor that rotates the given source basis vector
+        /// into the target vector
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="processor"></param>
+        /// <param name="sourceBasisVectorIndex"></param>
+        /// <param name="targetVector"></param>
+        /// <param name="assumeUnitVector"></param>
+        /// <returns></returns>
+        public static PureRotor<T> CreatePureRotor<T>(this IGeometricAlgebraEuclideanProcessor<T> processor, ulong sourceBasisVectorIndex, VectorStorage<T> targetVector, bool assumeUnitVector = false)
         {
             var k = sourceBasisVectorIndex;
             var v = processor.CreateVector(targetVector);
@@ -212,7 +360,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         /// <param name="rotationAngle"></param>
         /// <param name="rotationBlade"></param>
         /// <returns></returns>
-        public static PureRotor<T> CreateEuclideanRotor<T>(this IGeometricAlgebraProcessor<T> processor, T rotationAngle, BivectorStorage<T> rotationBlade)
+        public static PureRotor<T> CreatePureRotor<T>(this IGeometricAlgebraEuclideanProcessor<T> processor, T rotationAngle, BivectorStorage<T> rotationBlade)
         {
             var halfRotationAngle = processor.Divide(rotationAngle, processor.GetScalarFromNumber(2));
             var cosHalfAngle = processor.Cos(halfRotationAngle);
@@ -231,17 +379,17 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
             );
         }
 
-        public static PureRotor<T> CreateEuclideanRotor<T>(this IGeometricAlgebraProcessor<T> processor, VectorStorage<T> sourceVector1, VectorStorage<T> sourceVector2, VectorStorage<T> targetVector1, VectorStorage<T> targetVector2, bool assumeUnitVectors = false)
+        public static PureRotor<T> CreatePureRotor<T>(this IGeometricAlgebraEuclideanProcessor<T> processor, VectorStorage<T> sourceVector1, VectorStorage<T> sourceVector2, VectorStorage<T> targetVector1, VectorStorage<T> targetVector2, bool assumeUnitVectors = false)
         {
             var rotor1 = 
-                processor.CreateEuclideanRotor(
+                processor.CreatePureRotor(
                     sourceVector1, 
                     targetVector1,
                     assumeUnitVectors
                 );
 
             var rotor2 = 
-                processor.CreateEuclideanRotor(
+                processor.CreatePureRotor(
                     rotor1.OmMapVector(sourceVector2), 
                     targetVector2,
                     assumeUnitVectors
@@ -255,7 +403,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
             return new PureRotor<T>(processor, scalar, bivector);
         }
 
-        public static PureRotor<T> CreateEuclideanPureRotor<T>(this IGeometricAlgebraProcessor<T> processor, uint baseSpaceDimensions, VectorStorage<T> inputVector1, VectorStorage<T> inputVector2, VectorStorage<T> rotatedVector1, VectorStorage<T> rotatedVector2)
+        public static PureRotor<T> CreatePureRotor<T>(this IGeometricAlgebraEuclideanProcessor<T> processor, uint baseSpaceDimensions, VectorStorage<T> inputVector1, VectorStorage<T> inputVector2, VectorStorage<T> rotatedVector1, VectorStorage<T> rotatedVector2)
         {
             var inputFrame = processor.CreateFreeFrame(
                 GeoFreeFrameSpecs.CreateLinearlyIndependentSpecs(),
@@ -269,7 +417,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
                 rotatedVector2
             );
 
-            var rotor = PureRotorsSequence<T>.CreateFromFrames(
+            var rotor = PureRotorsSequence<T>.CreateFromEuclideanFrames(
                 baseSpaceDimensions, 
                 inputFrame, 
                 rotatedFrame
@@ -289,7 +437,8 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         /// <param name="j"></param>
         /// <param name="rotationAngle"></param>
         /// <returns></returns>
-        public static PureRotor<T> CreateEuclideanGivensRotor<T>(this IGeometricAlgebraProcessor<T> processor, int i, int j, T rotationAngle)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static PureRotor<T> CreateGivensRotor<T>(this IGeometricAlgebraEuclideanProcessor<T> processor, int i, int j, T rotationAngle)
         {
             Debug.Assert(i >= 0 && j != i);
 
@@ -301,6 +450,28 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
                 processor,
                 cosHalfAngle,
                 processor.CreateBivectorTermStorage(i, j, sinHalfAngle)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ScaledPureRotor<T> CreateScaledPureRotor<T>(this PureRotor<T> rotor, T scalingFactor)
+        {
+            var processor = rotor.GeometricProcessor;
+            
+            var scalarPart = processor.Times(
+                scalingFactor, 
+                processor.GetScalar(rotor.Multivector)
+            );
+
+            var bivectorPart = processor.Times(
+                scalingFactor, 
+                rotor.Multivector.GetBivectorPart()
+            );
+
+            return new ScaledPureRotor<T>(
+                rotor.GeometricProcessor,
+                scalarPart,
+                bivectorPart
             );
         }
     }

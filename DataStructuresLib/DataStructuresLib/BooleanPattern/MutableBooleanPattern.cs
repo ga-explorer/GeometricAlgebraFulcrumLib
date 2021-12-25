@@ -23,14 +23,8 @@ namespace DataStructuresLib.BooleanPattern
 
         public new bool this[int i]
         {
-            get
-            {
-                return PatternValues[i];
-            }
-            set
-            {
-                PatternValues[i] = value;
-            }
+            get => PatternValues[i];
+            set => PatternValues[i] = value;
         }
 
 
@@ -148,7 +142,7 @@ namespace DataStructuresLib.BooleanPattern
         }
 
 
-        public new static MutableBooleanPattern CreateFromInt32(int size, Int32 pattern)
+        public new static MutableBooleanPattern CreateFromInt32(int size, int pattern)
         {
             if (size > 32)
                 throw new InvalidOperationException();
@@ -161,7 +155,7 @@ namespace DataStructuresLib.BooleanPattern
             return result;
         }
 
-        public new static MutableBooleanPattern CreateFromUInt32(int size, UInt32 pattern)
+        public new static MutableBooleanPattern CreateFromUInt32(int size, uint pattern)
         {
             if (size > 32)
                 throw new InvalidOperationException();
@@ -174,7 +168,7 @@ namespace DataStructuresLib.BooleanPattern
             return result;
         }
 
-        public new static MutableBooleanPattern CreateFromInt64(int size, Int64 pattern)
+        public new static MutableBooleanPattern CreateFromInt64(int size, long pattern)
         {
             if (size > 64)
                 throw new InvalidOperationException();
@@ -187,7 +181,7 @@ namespace DataStructuresLib.BooleanPattern
             return result;
         }
 
-        public new static MutableBooleanPattern CreateFromUInt64(int size, UInt64 pattern)
+        public new static MutableBooleanPattern CreateFromUInt64(int size, ulong pattern)
         {
             if (size > 64)
                 throw new InvalidOperationException();

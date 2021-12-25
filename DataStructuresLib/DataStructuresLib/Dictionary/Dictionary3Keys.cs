@@ -11,7 +11,8 @@ namespace DataStructuresLib.Dictionary
     /// </summary>
     /// <typeparam name="TKey"></typeparam>
     /// <typeparam name="TValue"></typeparam>
-    public sealed class Dictionary3Keys<TKey, TValue> : IReadOnlyCollection<KeyValuePair<Tuple<TKey, TKey, TKey>, TValue>>
+    public sealed class Dictionary3Keys<TKey, TValue> : 
+        IReadOnlyCollection<KeyValuePair<Tuple<TKey, TKey, TKey>, TValue>>
     {
         private readonly Dictionary<Tuple<TKey, TKey, TKey>, TValue> _dictionary =
             new Dictionary<Tuple<TKey, TKey, TKey>, TValue>();
@@ -25,8 +26,8 @@ namespace DataStructuresLib.Dictionary
 
         public TValue this[TKey key1, TKey key2, TKey key3]
         {
-            get { return _dictionary[new Tuple<TKey, TKey, TKey>(key1, key2, key3)]; }
-            set { _dictionary[new Tuple<TKey, TKey, TKey>(key1, key2, key3)] = value; }
+            get => _dictionary[new Tuple<TKey, TKey, TKey>(key1, key2, key3)];
+            set => _dictionary[new Tuple<TKey, TKey, TKey>(key1, key2, key3)] = value;
         }
 
 
@@ -94,8 +95,8 @@ namespace DataStructuresLib.Dictionary
 
         public TValue this[TKey1 key1, TKey2 key2, TKey3 key3]
         {
-            get { return _dictionary[new Tuple<TKey1, TKey2, TKey3>(key1, key2, key3)]; }
-            set { _dictionary[new Tuple<TKey1, TKey2, TKey3>(key1, key2, key3)] = value; }
+            get => _dictionary[new Tuple<TKey1, TKey2, TKey3>(key1, key2, key3)];
+            set => _dictionary[new Tuple<TKey1, TKey2, TKey3>(key1, key2, key3)] = value;
         }
 
 

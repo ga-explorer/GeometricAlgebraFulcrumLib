@@ -1,6 +1,6 @@
-﻿using EuclideanGeometryLib.BasicMath.Tuples.Immutable;
-using GraphicsComposerLib.Geometry.Geometry.PathsMesh.Space3D;
-using GraphicsComposerLib.Geometry.Geometry.PointsPath.Space3D;
+﻿using NumericalGeometryLib.BasicMath.Tuples.Immutable;
+using GraphicsComposerLib.Geometry.Meshes.PathsMesh.Space3D;
+using GraphicsComposerLib.Geometry.Meshes.PointsPath.Space3D;
 
 namespace GraphicsComposerLib.Geometry.Composers
 {

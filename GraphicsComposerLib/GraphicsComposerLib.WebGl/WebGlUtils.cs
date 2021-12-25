@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using EuclideanGeometryLib.BasicMath.Matrices;
-using EuclideanGeometryLib.BasicMath.Tuples;
-using EuclideanGeometryLib.BasicMath.Tuples.Immutable;
-using EuclideanGeometryLib.Borders.Space3D;
+using NumericalGeometryLib.BasicMath.Matrices;
+using NumericalGeometryLib.BasicMath.Tuples;
+using NumericalGeometryLib.BasicMath.Tuples.Immutable;
+using NumericalGeometryLib.Borders.Space3D;
 using TextComposerLib.Code.JavaScript;
 using TextComposerLib.Text.Columns;
 using TextComposerLib.Text.Linear;
@@ -45,7 +45,7 @@ namespace GraphicsComposerLib.WebGl
             return composer;
         }
 
-        public static JavaScriptAttributesDictionary SetNumbersArrayValue(this JavaScriptAttributesDictionary composer, string key, AffineMapMatrix4X4 value, ITuple3D valueDefault)
+        public static JavaScriptAttributesDictionary SetNumbersArrayValue(this JavaScriptAttributesDictionary composer, string key, SquareMatrix4 value, ITuple3D valueDefault)
         {
             composer.SetTextValue(
                 key,
@@ -353,7 +353,7 @@ namespace GraphicsComposerLib.WebGl
         }
         #endregion
 
-        public static string ToJavaScriptNumbersArrayText(this AffineMapMatrix4X4 matrix)
+        public static string ToJavaScriptNumbersArrayText(this SquareMatrix4 matrix)
         {
             return new StringBuilder()
                 .Append('[')

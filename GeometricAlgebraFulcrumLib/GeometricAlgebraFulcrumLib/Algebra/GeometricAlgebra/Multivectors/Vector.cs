@@ -889,6 +889,42 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Vector<T> DivideByNorm()
+        {
+            return new Vector<T>(
+                GeometricProcessor,
+                GeometricProcessor.DivideByNorm(VectorStorage)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Vector<T> DivideByENorm()
+        {
+            return new Vector<T>(
+                GeometricProcessor,
+                GeometricProcessor.DivideByENorm(VectorStorage)
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Vector<T> DivideByNormSquared()
+        {
+            return new Vector<T>(
+                GeometricProcessor,
+                GeometricProcessor.DivideByNormSquared(VectorStorage)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Vector<T> DivideByENormSquared()
+        {
+            return new Vector<T>(
+                GeometricProcessor,
+                GeometricProcessor.DivideByENormSquared(VectorStorage)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Vector<T> Inverse()
         {
             return new Vector<T>(

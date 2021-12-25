@@ -6,7 +6,7 @@ using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
 {
     public abstract class RotorBase<T> : 
-        VersorBase<T>, 
+        ScaledRotorBase<T>, 
         IRotor<T>
     {
         protected RotorBase([NotNull] IGeometricAlgebraProcessor<T> processor)
@@ -19,6 +19,12 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override IVersor<T> GetVersorInverse()
+        {
+            return GetRotorInverse();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override IScaledRotor<T> GetScaledRotorInverse()
         {
             return GetRotorInverse();
         }

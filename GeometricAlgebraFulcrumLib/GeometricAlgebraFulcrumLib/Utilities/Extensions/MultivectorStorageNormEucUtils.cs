@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.Signatures;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 
@@ -10,7 +12,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
     public static class MultivectorStorageNormEucUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static BasisBilinearProductResult ENormSquared(this IGeometricAlgebraSignature signature, ulong id1)
+        public static BasisBilinearProductResult ENormSquared(this GeometricAlgebraBasisSet basisSet, ulong id1)
         {
             return new BasisBilinearProductResult(
                 BasisBladeProductUtils.ENormSquaredSignature(id1), 
@@ -18,9 +20,9 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             );
         }
 
-        public static double ENorm(this GeometricAlgebraSignatureLookup basisSignature, IMultivectorStorage<double> mv1)
+        public static double ENorm(this GeometricAlgebraBasisSet basisSet, IMultivectorStorage<double> mv1)
         {
-            if (!basisSignature.IsEuclidean)
+            if (!basisSet.IsEuclidean)
                 throw new InvalidOperationException();
 
             var spScalar = 0d;
@@ -40,9 +42,9 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             return Math.Sqrt(Math.Abs(spScalar));
         }
 
-        public static double ENormSquared(this GeometricAlgebraSignatureLookup basisSignature, IMultivectorStorage<double> mv1)
+        public static double ENormSquared(this GeometricAlgebraBasisSet basisSet, IMultivectorStorage<double> mv1)
         {
-            if (!basisSignature.IsEuclidean)
+            if (!basisSet.IsEuclidean)
                 throw new InvalidOperationException();
 
             var spScalar = 0d;
@@ -84,87 +86,37 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             };
         }
         
-        public static T VectorsENorm<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IReadOnlyList<T> vector1)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T VectorENorm<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<T> vector1)
         {
-            var spScalar = scalarProcessor.ScalarZero;
-
-            var count = vector1.Count;
-
-            for (var index = 0; index < count; index++)
-            {
-                var id = index.BasisVectorIndexToId();
-                var scalar1 = vector1[index];
-
-                var scalar = scalarProcessor.Times(scalar1, scalar1);
-
-                spScalar = BasisBladeProductUtils.ENormSquaredSignature(id) > 0
-                    ? scalarProcessor.Add(spScalar, scalar) 
-                    : scalarProcessor.Subtract(spScalar, scalar);
-            }
-
-            return scalarProcessor.SqrtOfAbs(spScalar);
+            return scalarProcessor.VectorENormSquared(vector1);
         }
         
-        public static T VectorsENormSquared<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IReadOnlyList<T> vector1)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T VectorENormSquared<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<T> vector1)
         {
-            var spScalar = scalarProcessor.ScalarZero;
-
-            var count = vector1.Count;
-
-            for (var index = 0; index < count; index++)
-            {
-                var id = index.BasisVectorIndexToId();
-                var scalar1 = vector1[index];
-
-                var scalar = scalarProcessor.Times(scalar1, scalar1);
-
-                spScalar = BasisBladeProductUtils.ENormSquaredSignature(id) > 0
-                    ? scalarProcessor.Add(spScalar, scalar) 
-                    : scalarProcessor.Subtract(spScalar, scalar);
-            }
-
-            return spScalar;
+            return vector1
+                .Select(scalar1 => scalarProcessor.Times(scalar1, scalar1))
+                .Aggregate(scalarProcessor.ScalarZero, scalarProcessor.Add);
         }
         
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T ENorm<T>(this IScalarAlgebraProcessor<T> scalarProcessor, VectorStorage<T> mv1)
         {
-            var indexScalarPairs1 = 
-                mv1.GetLinVectorIndexScalarStorage();
-
-            var spScalar = scalarProcessor.ScalarZero;
-
-            foreach (var (index, scalar1) in indexScalarPairs1.GetIndexScalarRecords())
-            {
-                var id = index.BasisVectorIndexToId();
-                var scalar = scalarProcessor.Times(scalar1, scalar1);
-
-                spScalar = BasisBladeProductUtils.ENormSquaredSignature(id) > 0
-                    ? scalarProcessor.Add(spScalar, scalar) 
-                    : scalarProcessor.Subtract(spScalar, scalar);
-            }
-
-            return scalarProcessor.SqrtOfAbs(spScalar);
+            return scalarProcessor.Sqrt(scalarProcessor.ENormSquared(mv1));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T ENormSquared<T>(this IScalarAlgebraProcessor<T> scalarProcessor, VectorStorage<T> mv1)
         {
-            var indexScalarPairs1 = 
-                mv1.GetLinVectorIndexScalarStorage();
-
-            var spScalar = scalarProcessor.ScalarZero;
-
-            foreach (var (index, scalar1) in indexScalarPairs1.GetIndexScalarRecords())
-            {
-                var id = index.BasisVectorIndexToId();
-                var scalar = scalarProcessor.Times(scalar1, scalar1);
-
-                spScalar = BasisBladeProductUtils.ENormSquaredSignature(id) > 0
-                    ? scalarProcessor.Add(spScalar, scalar) 
-                    : scalarProcessor.Subtract(spScalar, scalar);
-            }
-
-            return spScalar;
+            return mv1
+                .GetLinVectorIndexScalarStorage()
+                .GetScalars()
+                .Select(scalar1 => scalarProcessor.Times(scalar1, scalar1))
+                .Aggregate(
+                    scalarProcessor.ScalarZero, 
+                    scalarProcessor.Add
+                );
         }
 
         private static T ENormAsScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, KVectorStorage<T> mv1)

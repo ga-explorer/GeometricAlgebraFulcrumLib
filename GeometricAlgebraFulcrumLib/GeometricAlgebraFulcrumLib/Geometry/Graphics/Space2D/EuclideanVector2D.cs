@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Text;
-using EuclideanGeometryLib.BasicMath.Tuples;
+using NumericalGeometryLib.BasicMath.Tuples;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.LinearAlgebra;
@@ -95,17 +95,13 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Graphics.Space2D
             X = x;
             Y = y;
 
-            Debug.Assert(IsValid);
+            Debug.Assert(IsValid());
         }
 
 
-        public bool IsValid 
+        public bool IsValid() 
             => !double.IsNaN(X) &&
                !double.IsNaN(Y);
-
-        public bool IsInvalid 
-            => double.IsNaN(X) ||
-               double.IsNaN(Y);
 
 
         public double GetLength()

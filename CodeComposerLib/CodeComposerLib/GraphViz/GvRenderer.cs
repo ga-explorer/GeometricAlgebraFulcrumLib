@@ -251,7 +251,7 @@ namespace CodeComposerLib.GraphViz
         /// <param name="errLine"></param>
         private void ErrorDataHandler(object sendingProcess, DataReceivedEventArgs errLine)
         {
-            if (String.IsNullOrEmpty(errLine.Data)) return;
+            if (string.IsNullOrEmpty(errLine.Data)) return;
 
             _errorsList.Add(errLine.Data);
         }
@@ -303,7 +303,7 @@ namespace CodeComposerLib.GraphViz
             var byteArray = RenderGraph(dotSourceText, returnType);
 
             return byteArray.Length == 0 
-                ? String.Empty 
+                ? string.Empty 
                 : Encoding.Default.GetString(byteArray);
         }
 
@@ -319,7 +319,7 @@ namespace CodeComposerLib.GraphViz
             var byteArray = RenderGraph(dotSourceText, returnType);
 
             if (byteArray.Length == 0)
-                return String.Empty;
+                return string.Empty;
 
             try
             {

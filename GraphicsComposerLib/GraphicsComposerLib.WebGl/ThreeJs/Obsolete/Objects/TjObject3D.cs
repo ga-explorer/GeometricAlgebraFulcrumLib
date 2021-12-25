@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using EuclideanGeometryLib.BasicMath.Tuples;
-using EuclideanGeometryLib.BasicMath.Tuples.Immutable;
+using NumericalGeometryLib.BasicMath.Tuples;
+using NumericalGeometryLib.BasicMath.Tuples.Immutable;
 using GraphicsComposerLib.WebGl.ThreeJs.Obsolete.Scenes;
 using TextComposerLib.Code.JavaScript;
 

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using EuclideanGeometryLib.BasicMath.Tuples;
-using EuclideanGeometryLib.BasicShapes.Lines;
-using EuclideanGeometryLib.GraphicsGeometry;
-using EuclideanGeometryLib.GraphicsGeometry.Lines;
+using NumericalGeometryLib.BasicMath.Tuples;
+using NumericalGeometryLib.BasicShapes.Lines;
+using GraphicsComposerLib.Geometry.Primitives;
+using GraphicsComposerLib.Geometry.Primitives.Lines;
 using TextComposerLib.Code.JavaScript;
 
 namespace GraphicsComposerLib.WebGl.Xeogl.Geometry.Primitives
@@ -11,36 +11,36 @@ namespace GraphicsComposerLib.WebGl.Xeogl.Geometry.Primitives
     {
         public static XeoglLinesGeometry CreateLineSegment(ITuple3D point1, ITuple3D point2)
         {
-            var geometryData = GraphicsLinesGeometry3D.Create(point1, point2);
+            var geometryData = GrLineGeometry3D.Create(point1, point2);
 
             return new XeoglLinesGeometry(geometryData);
         }
 
         public static XeoglLinesGeometry CreateLineSegment(ILineSegment3D lineSegment)
         {
-            var geometryData = GraphicsLinesGeometry3D.Create(lineSegment);
+            var geometryData = GrLineGeometry3D.Create(lineSegment);
 
             return new XeoglLinesGeometry(geometryData);
         }
 
         public static XeoglLinesGeometry CreateLineSegments(params ILineSegment3D[] lineSegmentsList)
         {
-            var geometryData = GraphicsLinesGeometry3D.Create(lineSegmentsList);
+            var geometryData = GrLineGeometry3D.Create(lineSegmentsList);
 
             return new XeoglLinesGeometry(geometryData);
         }
 
         public static XeoglLinesGeometry CreateLineSegments(IEnumerable<ILineSegment3D> lineSegmentsList)
         {
-            var geometryData = GraphicsLinesGeometry3D.Create(lineSegmentsList);
+            var geometryData = GrLineGeometry3D.Create(lineSegmentsList);
 
             return new XeoglLinesGeometry(geometryData);
         }
 
 
-        public IGraphicsLinesGeometry3D GraphicsLinesGeometry { get; set; }
+        public IGraphicsLineGeometry3D GraphicsLinesGeometry { get; set; }
 
-        public override IGraphicsGeometry3D GraphicsGeometry
+        public override IGraphicsPrimitiveGeometry3D GraphicsGeometry
             => GraphicsLinesGeometry;
 
 
@@ -48,7 +48,7 @@ namespace GraphicsComposerLib.WebGl.Xeogl.Geometry.Primitives
         {
         }
 
-        public XeoglLinesGeometry(IGraphicsLinesGeometry3D geometryData)
+        public XeoglLinesGeometry(IGraphicsLineGeometry3D geometryData)
         {
             GraphicsLinesGeometry = geometryData;
         }
@@ -60,8 +60,8 @@ namespace GraphicsComposerLib.WebGl.Xeogl.Geometry.Primitives
 
             composer
                 .SetValue("primitive", PrimitiveType, GraphicsPrimitiveType3D.Triangles)
-                .SetTextValue("positions", GraphicsLinesGeometry.VertexPoints.ToJavaScriptNumbersArrayText(" // Vertex Position "), "[]")
-                .SetTextValue("indices", GraphicsLinesGeometry.VertexIndices.ToJavaScriptNumbersArrayText(), "[]");
+                .SetTextValue("positions", GraphicsLinesGeometry.GeometryPoints.ToJavaScriptNumbersArrayText(" // Vertex Position "), "[]")
+                .SetTextValue("indices", GraphicsLinesGeometry.GeometryIndices.ToJavaScriptNumbersArrayText(), "[]");
         }
 
         //public override string ToString()

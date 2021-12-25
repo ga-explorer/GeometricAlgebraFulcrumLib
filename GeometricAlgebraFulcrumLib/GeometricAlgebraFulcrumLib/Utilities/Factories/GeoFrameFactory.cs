@@ -113,7 +113,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
             var basisVector = processor.CreateVectorBasisStorage(vSpaceDimension);
             
             // Find a rotor that rotates the ones vector into the last basis vector
-            var rotor = processor.CreateEuclideanRotor(
+            var rotor = processor.CreatePureRotor(
                 onesVector, 
                 basisVector,
                 true

@@ -11,7 +11,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         {
             var s1 = processor.OmTargetToOrthonormal.MapMultivector(mv1);
 
-            var s = processor.Gp(processor.Signature, s1);
+            var s = processor.Gp(processor.BasisSet, s1);
 
             return processor.OmOrthonormalToTarget.MapMultivector(s);
         }
@@ -22,7 +22,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             var s1 = processor.OmTargetToOrthonormal.MapMultivector(mv1);
             var s2 = processor.OmTargetToOrthonormal.MapMultivector(mv2);
 
-            var s = processor.Gp(processor.Signature, s1, s2);
+            var s = processor.Gp(processor.BasisSet, s1, s2);
 
             return processor.OmOrthonormalToTarget.MapMultivector(s);
         }
@@ -34,7 +34,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             var s2 = processor.OmTargetToOrthonormal.MapMultivector(mv2);
             var s3 = processor.OmTargetToOrthonormal.MapMultivector(mv3);
 
-            var s = processor.Gp(processor.Signature, s1, s2, s3);
+            var s = processor.Gp(processor.BasisSet, s1, s2, s3);
 
             return processor.OmOrthonormalToTarget.MapMultivector(s);
         }
@@ -44,7 +44,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         {
             var s1 = processor.OmTargetToOrthonormal.MapMultivector(mv1);
 
-            var s = processor.GpReverse(processor.Signature, s1);
+            var s = processor.GpReverse(processor.BasisSet, s1);
 
             return processor.OmOrthonormalToTarget.MapMultivector(s);
         }
@@ -55,7 +55,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             var s1 = processor.OmTargetToOrthonormal.MapMultivector(mv1);
             var s2 = processor.OmTargetToOrthonormal.MapMultivector(mv2);
 
-            var s = processor.GpReverse(processor.Signature, s1, s2);
+            var s = processor.GpReverse(processor.BasisSet, s1, s2);
 
             return processor.OmOrthonormalToTarget.MapMultivector(s);
         }
@@ -66,7 +66,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         {
             var s1 = processor.OmTargetToOrthonormal.MapMultivector(mv1);
 
-            var s = processor.Gp(processor.Signature, s1);
+            var s = processor.Gp(processor.BasisSet, s1);
 
             return processor.OmOrthonormalToTarget.MapMultivector(s);
         }
@@ -77,7 +77,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             var s1 = processor.OmTargetToOrthonormal.MapMultivector(mv1);
             var s2 = processor.OmTargetToOrthonormal.MapMultivector(mv2);
 
-            var s = processor.Gp(processor.Signature, s1, s2);
+            var s = processor.Gp(processor.BasisSet, s1, s2);
 
             return processor.OmOrthonormalToTarget.MapMultivector(s);
         }
@@ -87,7 +87,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         {
             var s1 = processor.OmTargetToOrthonormal.MapMultivector(mv1);
 
-            var s = processor.GpReverse(processor.Signature, s1);
+            var s = processor.GpReverse(processor.BasisSet, s1);
 
             return processor.OmOrthonormalToTarget.MapMultivector(s);
         }
@@ -98,7 +98,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             var s1 = processor.OmTargetToOrthonormal.MapMultivector(mv1);
             var s2 = processor.OmTargetToOrthonormal.MapMultivector(mv2);
 
-            var s = processor.GpReverse(processor.Signature, s1, s2);
+            var s = processor.GpReverse(processor.BasisSet, s1, s2);
 
             return processor.OmOrthonormalToTarget.MapMultivector(s);
         }

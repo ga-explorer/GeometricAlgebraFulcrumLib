@@ -21,26 +21,26 @@ namespace TextComposerLib.Text.Structured
 
         public PriorityQueueTextComposer()
         {
-            Separator = String.Empty;
-            ActiveItemPrefix = String.Empty;
-            ActiveItemSuffix = String.Empty;
-            FinalPrefix = String.Empty;
-            FinalSuffix = String.Empty;
+            Separator = string.Empty;
+            ActiveItemPrefix = string.Empty;
+            ActiveItemSuffix = string.Empty;
+            FinalPrefix = string.Empty;
+            FinalSuffix = string.Empty;
         }
 
         public PriorityQueueTextComposer(string separator)
         {
-            Separator = separator ?? String.Empty;
-            ActiveItemPrefix = String.Empty;
-            ActiveItemSuffix = String.Empty;
-            FinalPrefix = String.Empty;
-            FinalSuffix = String.Empty;
+            Separator = separator ?? string.Empty;
+            ActiveItemPrefix = string.Empty;
+            ActiveItemSuffix = string.Empty;
+            FinalPrefix = string.Empty;
+            FinalSuffix = string.Empty;
         }
 
 
         public PriorityQueueTextComposer<TPriority> Enqueue(TPriority priority)
         {
-            base.Enqueue(priority, this.ToTextItem(String.Empty));
+            base.Enqueue(priority, this.ToTextItem(string.Empty));
 
             return this;
         }

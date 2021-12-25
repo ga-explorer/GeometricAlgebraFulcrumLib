@@ -170,7 +170,7 @@ namespace GAPoTNumLib.Text.Structured
                 return true;
             }
 
-            paramValue = String.Empty;
+            paramValue = string.Empty;
             return false;
         }
 

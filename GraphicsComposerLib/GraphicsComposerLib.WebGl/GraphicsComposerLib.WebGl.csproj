@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
@@ -10,8 +10,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\EuclideanGeometryLib\EuclideanGeometryLib\EuclideanGeometryLib.csproj" />
+    <ProjectReference Include="..\..\NumericalGeometryLib\NumericalGeometryLib\NumericalGeometryLib.csproj" />
     <ProjectReference Include="..\..\TextComposerLib\TextComposerLib\TextComposerLib.csproj" />
+    <ProjectReference Include="..\GraphicsComposerLib.Geometry\GraphicsComposerLib.Geometry.csproj" />
   </ItemGroup>
 
 </Project>

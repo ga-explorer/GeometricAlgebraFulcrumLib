@@ -232,7 +232,7 @@ namespace CodeComposerLib.GraphViz.Dot
             return
                 attrList.TryGetValue(attrName, out var value)
                     ? value
-                    : String.Empty;
+                    : string.Empty;
         }
 
         internal static void ClearAttribute(this Dictionary<string, string> attrList, string attrName)
@@ -252,7 +252,7 @@ namespace CodeComposerLib.GraphViz.Dot
 
         internal static void SetAttribute(this Dictionary<string, string> attrList, string attrName, string attrValue)
         {
-            if (String.IsNullOrEmpty(attrValue))
+            if (string.IsNullOrEmpty(attrValue))
             {
                 if (attrList.ContainsKey(attrName))
                     attrList.Remove(attrName);
@@ -1967,7 +1967,7 @@ namespace CodeComposerLib.GraphViz.Dot
         /// <returns></returns>
         public static DotNode AddNodeDefaults(this IDotGraph graph)
         {
-            var nodeDefaults = new DotNode(graph, String.Empty);
+            var nodeDefaults = new DotNode(graph, string.Empty);
 
             AddStatement(graph, nodeDefaults);
 
@@ -1984,7 +1984,7 @@ namespace CodeComposerLib.GraphViz.Dot
         /// <returns></returns>
         public static DotSubGraph AddCluster(this IDotGraph graph, string name)
         {
-            if (String.IsNullOrEmpty(name))
+            if (string.IsNullOrEmpty(name))
                 throw new NoNullAllowedException("Cluster name postfix can't be null");
 
             var subGraph = new DotSubGraph(graph, ("cluster" + name));
@@ -2198,7 +2198,7 @@ namespace CodeComposerLib.GraphViz.Dot
         /// <returns></returns>
         public static DotHtmlText FormatUsing(this DotHtmlText htmlText, string formatFlags)
         {
-            if (String.IsNullOrEmpty(formatFlags))
+            if (string.IsNullOrEmpty(formatFlags))
                 return htmlText;
 
             var result = htmlText;

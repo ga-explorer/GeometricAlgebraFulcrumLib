@@ -35,7 +35,7 @@ namespace TextComposerLib.Loggers.Progress
 
         public string FinishTimeText => StartTime.ToString("O");
 
-        public string DurationText => StartTime == FinishTime ? String.Empty : Duration.ToString("G");
+        public string DurationText => StartTime == FinishTime ? string.Empty : Duration.ToString("G");
 
         public string KindText
         {
@@ -56,7 +56,7 @@ namespace TextComposerLib.Loggers.Progress
                         return "Warning";
 
                     default:
-                        return String.Empty;
+                        return string.Empty;
                 }
             }
         }
@@ -74,7 +74,7 @@ namespace TextComposerLib.Loggers.Progress
                         return "Failure";
 
                     default:
-                        return String.Empty;
+                        return string.Empty;
                 }
             }
         }
@@ -145,7 +145,7 @@ namespace TextComposerLib.Loggers.Progress
 
             s.AppendLineAtNewLine(FullTitle);
 
-            if (String.IsNullOrEmpty(Details) == false)
+            if (string.IsNullOrEmpty(Details) == false)
                 s.AppendLineAtNewLine()
                     .AppendLineAtNewLine("Begin Details")
                     .IncreaseIndentation()

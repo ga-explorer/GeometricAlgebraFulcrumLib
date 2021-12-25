@@ -128,7 +128,7 @@ namespace TextComposerLib.Files
         /// <summary>
         /// The final text of the active file
         /// </summary>
-        public string ActiveFileFinalText => HasActiveFile ? ActiveFileComposer.FinalText : String.Empty;
+        public string ActiveFileFinalText => HasActiveFile ? ActiveFileComposer.FinalText : string.Empty;
 
         /// <summary>
         /// The path of the active folder
@@ -246,7 +246,7 @@ namespace TextComposerLib.Files
             {
                 var firstFile = _fileComposersDictionary.FirstOrDefault();
 
-                return firstFile.Value == null ? String.Empty : firstFile.Value.FinalText;
+                return firstFile.Value == null ? string.Empty : firstFile.Value.FinalText;
             }
         }
 
@@ -959,7 +959,7 @@ namespace TextComposerLib.Files
                 return false;
 
             if (item.Value == null)
-                return value.ToString() == String.Empty;
+                return value.ToString() == string.Empty;
 
             return (value.ToString() == item.Value.ToString());
         }
@@ -979,7 +979,7 @@ namespace TextComposerLib.Files
                 return false;
 
             if (item.Value == null)
-                return value.ToString() == String.Empty;
+                return value.ToString() == string.Empty;
 
             if (value.ToString() != item.Value.ToString())
                 return false;

@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.Signatures;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
-using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Composers
 {
@@ -23,7 +22,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         public static IScalarAlgebraProcessor<double> ScalarProcessor
             => ScalarAlgebraFloat64Processor.DefaultProcessor;
 
-        public IGeometricAlgebraSignatureLookup Signature { get; }
+        public GeometricAlgebraBasisSet BasisSet { get; }
 
         public int Count
             => _idScalarDictionary.Count;
@@ -42,22 +41,22 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
 
         public MultivectorFloat64StorageComposer(uint vSpaceDimension)
         {
-            Signature = (IGeometricAlgebraSignatureLookup)GeometricAlgebraSignatureFactory.CreateEuclidean(vSpaceDimension, true);
+            BasisSet = GeometricAlgebraBasisSet.CreateEuclidean(vSpaceDimension);
         }
 
         public MultivectorFloat64StorageComposer(uint positiveCount, uint negativeCount)
         {
-            Signature = (IGeometricAlgebraSignatureLookup)GeometricAlgebraSignatureFactory.Create(positiveCount, negativeCount, true);
+            BasisSet = GeometricAlgebraBasisSet.Create(positiveCount, negativeCount);
         }
 
         public MultivectorFloat64StorageComposer(uint positiveCount, uint negativeCount, uint zeroCount)
         {
-            Signature = (IGeometricAlgebraSignatureLookup)GeometricAlgebraSignatureFactory.Create(positiveCount, negativeCount, zeroCount, true);
+            BasisSet = GeometricAlgebraBasisSet.Create(positiveCount, negativeCount, zeroCount);
         }
 
-        public MultivectorFloat64StorageComposer([NotNull] IGeometricAlgebraSignatureLookup signature)
+        public MultivectorFloat64StorageComposer([NotNull] GeometricAlgebraBasisSet basisSet)
         {
-            Signature = signature;
+            BasisSet = basisSet;
         }
 
 
@@ -87,7 +86,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         public void AddGpTerm(ulong id1, ulong id2, double scalar1, double scalar2)
         {
             var signature =
-                Signature.GpSignature(id1, id2);
+                BasisSet.GpSignature(id1, id2);
 
             if (signature == 0)
                 return;
@@ -107,7 +106,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         public void AddGpReverseTerm(ulong id1, ulong id2, double scalar1, double scalar2)
         {
             var signature =
-                Signature.GpSignature(id1, id2);
+                BasisSet.GpSignature(id1, id2);
 
             if (id2.BasisBladeIdHasNegativeReverse())
                 signature = -signature;
@@ -130,7 +129,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         public void AddOpTerm(ulong id1, ulong id2, double scalar1, double scalar2)
         {
             var signature =
-                Signature.OpSignature(id1, id2);
+                BasisSet.OpSignature(id1, id2);
 
             if (signature == 0)
                 return;
@@ -150,7 +149,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         public void AddSpTerm(ulong id, double scalar1, double scalar2)
         {
             var signature =
-                Signature.SpSignature(id);
+                BasisSet.SpSquaredSignature(id);
 
             if (signature == 0)
                 return;
@@ -169,7 +168,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         public void AddSpTerm(ulong id1, ulong id2, double scalar1, double scalar2)
         {
             var signature =
-                Signature.SpSignature(id1, id2);
+                BasisSet.SpSignature(id1, id2);
 
             if (signature == 0)
                 return;
@@ -189,7 +188,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         public void AddLcpTerm(ulong id1, ulong id2, double scalar1, double scalar2)
         {
             var signature =
-                Signature.LcpSignature(id1, id2);
+                BasisSet.LcpSignature(id1, id2);
 
             if (signature == 0)
                 return;
@@ -209,7 +208,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         public void AddRcpTerm(ulong id1, ulong id2, double scalar1, double scalar2)
         {
             var signature =
-                Signature.RcpSignature(id1, id2);
+                BasisSet.RcpSignature(id1, id2);
 
             if (signature == 0)
                 return;
@@ -229,7 +228,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         public void AddFdpTerm(ulong id1, ulong id2, double scalar1, double scalar2)
         {
             var signature =
-                Signature.FdpSignature(id1, id2);
+                BasisSet.FdpSignature(id1, id2);
 
             if (signature == 0)
                 return;
@@ -249,7 +248,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         public void AddHipTerm(ulong id1, ulong id2, double scalar1, double scalar2)
         {
             var signature =
-                Signature.HipSignature(id1, id2);
+                BasisSet.HipSignature(id1, id2);
 
             if (signature == 0)
                 return;
@@ -269,7 +268,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         public void AddAcpTerm(ulong id1, ulong id2, double scalar1, double scalar2)
         {
             var signature =
-                Signature.AcpSignature(id1, id2);
+                BasisSet.AcpSignature(id1, id2);
 
             if (signature == 0)
                 return;
@@ -289,7 +288,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         public void AddCpTerm(ulong id1, ulong id2, double scalar1, double scalar2)
         {
             var signature =
-                Signature.CpSignature(id1, id2);
+                BasisSet.CpSignature(id1, id2);
 
             if (signature == 0)
                 return;

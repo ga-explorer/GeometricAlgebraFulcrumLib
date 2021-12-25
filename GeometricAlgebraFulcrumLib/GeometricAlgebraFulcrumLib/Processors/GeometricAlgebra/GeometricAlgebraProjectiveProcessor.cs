@@ -1,5 +1,5 @@
-﻿using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Utilities.Factories;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
 {
@@ -9,7 +9,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
         internal GeometricAlgebraProjectiveProcessor(IScalarAlgebraProcessor<T> scalarProcessor, uint vSpaceDimension) 
             : base(
                 scalarProcessor, 
-                GeometricAlgebraSignatureFactory.CreateProjective(vSpaceDimension)
+                GeometricAlgebraBasisSet.CreateProjective(vSpaceDimension)
             )
         {
         }

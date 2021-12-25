@@ -10,17 +10,75 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
     public static class ScalarAlgebraProcessorTimesUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T Times<T>(this IScalarAlgebraProcessor<T> scalarProcessor, int scalar1, params T[] scalarsList)
+        {
+            return scalarsList.Aggregate(
+                scalarProcessor.GetScalarFromNumber(scalar1), 
+                scalarProcessor.Times
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T Times<T>(this IScalarAlgebraProcessor<T> scalarProcessor, uint scalar1, params T[] scalarsList)
+        {
+            return scalarsList.Aggregate(
+                scalarProcessor.GetScalarFromNumber(scalar1), 
+                scalarProcessor.Times
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T Times<T>(this IScalarAlgebraProcessor<T> scalarProcessor, long scalar1, params T[] scalarsList)
+        {
+            return scalarsList.Aggregate(
+                scalarProcessor.GetScalarFromNumber(scalar1), 
+                scalarProcessor.Times
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T Times<T>(this IScalarAlgebraProcessor<T> scalarProcessor, ulong scalar1, params T[] scalarsList)
+        {
+            return scalarsList.Aggregate(
+                scalarProcessor.GetScalarFromNumber(scalar1), 
+                scalarProcessor.Times
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T Times<T>(this IScalarAlgebraProcessor<T> scalarProcessor, float scalar1, params T[] scalarsList)
+        {
+            return scalarsList.Aggregate(
+                scalarProcessor.GetScalarFromNumber(scalar1), 
+                scalarProcessor.Times
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T Times<T>(this IScalarAlgebraProcessor<T> scalarProcessor, double scalar1, params T[] scalarsList)
+        {
+            return scalarsList.Aggregate(
+                scalarProcessor.GetScalarFromNumber(scalar1), 
+                scalarProcessor.Times
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T Times<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params T[] scalarsList)
         {
-            return scalarsList
-                .Aggregate(scalarProcessor.ScalarOne, scalarProcessor.Times);
+            return scalarsList.Aggregate(
+                scalarProcessor.ScalarOne, 
+                scalarProcessor.Times
+            );
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T Times<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<T> scalarsList)
         {
-            return scalarsList
-                .Aggregate(scalarProcessor.ScalarOne, scalarProcessor.Times);
+            return scalarsList.Aggregate(
+                scalarProcessor.ScalarOne, 
+                scalarProcessor.Times
+            );
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

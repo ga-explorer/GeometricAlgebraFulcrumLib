@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
-using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.Signatures;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
@@ -239,14 +239,14 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.ProductIterator
         }
 
 
-        public IEnumerable<IndexScalarRecord<T>> GetGpIdScalarRecords(IGeometricAlgebraSignature basesSignature)
+        public IEnumerable<IndexScalarRecord<T>> GetGpIdScalarRecords(GeometricAlgebraBasisSet basisSet)
         {
             foreach (var (id1, scalar1) in Storage1.GetIdScalarRecords())
             {
                 foreach (var (id2, scalar2) in Storage2.GetIdScalarRecords())
                 {
                     var basisSignature = 
-                        basesSignature.GpSignature(id1, id2);
+                        basisSet.GpSignature(id1, id2);
 
                     if (basisSignature == 0)
                         continue;
@@ -261,12 +261,12 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.ProductIterator
             }
         }
 
-        public IEnumerable<IndexScalarRecord<T>> GetSpIdScalarRecords(IGeometricAlgebraSignature basesSignature)
+        public IEnumerable<IndexScalarRecord<T>> GetSpIdScalarRecords(GeometricAlgebraBasisSet basisSet)
         {
             foreach (var (id, scalar1) in Storage1.GetIdScalarRecords())
             {
                 var basisSignature = 
-                    basesSignature.GetBasisBladeSignature(id);
+                    basisSet.GetBasisBladeSignature(id);
 
                 if (basisSignature == 0)
                     continue;
@@ -282,12 +282,12 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.ProductIterator
             }
         }
 
-        public IEnumerable<T> GetSpScalars(IGeometricAlgebraSignature basesSignature)
+        public IEnumerable<T> GetSpScalars(GeometricAlgebraBasisSet basisSet)
         {
             foreach (var (id, scalar1) in Storage1.GetIdScalarRecords())
             {
                 var basisSignature = 
-                    basesSignature.GetBasisBladeSignature(id);
+                    basisSet.GetBasisBladeSignature(id);
 
                 if (basisSignature == 0)
                     continue;
@@ -303,14 +303,14 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.ProductIterator
             }
         }
 
-        public IEnumerable<IndexScalarRecord<T>> GetLcpIdScalarRecords(IGeometricAlgebraSignature basesSignature)
+        public IEnumerable<IndexScalarRecord<T>> GetLcpIdScalarRecords(GeometricAlgebraBasisSet basisSet)
         {
             foreach (var (id1, scalar1) in Storage1.GetIdScalarRecords())
             {
                 foreach (var (id2, scalar2) in GetELcpIdScalarRecords2(id1))
                 {
                     var basisSignature = 
-                        basesSignature.GpSignature(id1, id2);
+                        basisSet.GpSignature(id1, id2);
 
                     if (basisSignature == 0)
                         continue;
@@ -325,14 +325,14 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.ProductIterator
             }
         }
 
-        public IEnumerable<IndexScalarRecord<T>> GetRcpIdScalarRecords(IGeometricAlgebraSignature basesSignature)
+        public IEnumerable<IndexScalarRecord<T>> GetRcpIdScalarRecords(GeometricAlgebraBasisSet basisSet)
         {
             foreach (var (id1, scalar1) in Storage1.GetIdScalarRecords())
             {
                 foreach (var (id2, scalar2) in GetERcpIdScalarRecords2(id1))
                 {
                     var basisSignature = 
-                        basesSignature.GpSignature(id1, id2);
+                        basisSet.GpSignature(id1, id2);
 
                     if (basisSignature == 0)
                         continue;
@@ -347,14 +347,14 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.ProductIterator
             }
         }
 
-        public IEnumerable<IndexScalarRecord<T>> GetHipIdScalarRecords(IGeometricAlgebraSignature basesSignature)
+        public IEnumerable<IndexScalarRecord<T>> GetHipIdScalarRecords(GeometricAlgebraBasisSet basisSet)
         {
             foreach (var (id1, scalar1) in Storage1.GetIdScalarRecords())
             {
                 foreach (var (id2, scalar2) in GetEHipIdScalarRecords2(id1))
                 {
                     var basisSignature = 
-                        basesSignature.GpSignature(id1, id2);
+                        basisSet.GpSignature(id1, id2);
 
                     if (basisSignature == 0)
                         continue;
@@ -369,14 +369,14 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.ProductIterator
             }
         }
 
-        public IEnumerable<IndexScalarRecord<T>> GetFdpIdScalarRecords(IGeometricAlgebraSignature basesSignature)
+        public IEnumerable<IndexScalarRecord<T>> GetFdpIdScalarRecords(GeometricAlgebraBasisSet basisSet)
         {
             foreach (var (id1, scalar1) in Storage1.GetIdScalarRecords())
             {
                 foreach (var (id2, scalar2) in GetEFdpIdScalarRecords2(id1))
                 {
                     var basisSignature = 
-                        basesSignature.GpSignature(id1, id2);
+                        basisSet.GpSignature(id1, id2);
 
                     if (basisSignature == 0)
                         continue;
@@ -391,14 +391,14 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.ProductIterator
             }
         }
 
-        public IEnumerable<IndexScalarRecord<T>> GetCpIdScalarRecords(IGeometricAlgebraSignature basesSignature)
+        public IEnumerable<IndexScalarRecord<T>> GetCpIdScalarRecords(GeometricAlgebraBasisSet basisSet)
         {
             foreach (var (id1, scalar1) in Storage1.GetIdScalarRecords())
             {
                 foreach (var (id2, scalar2) in GetECpIdScalarRecords2(id1))
                 {
                     var basisSignature = 
-                        basesSignature.GpSignature(id1, id2);
+                        basisSet.GpSignature(id1, id2);
 
                     if (basisSignature == 0)
                         continue;
@@ -413,14 +413,14 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.ProductIterator
             }
         }
 
-        public IEnumerable<IndexScalarRecord<T>> GetAcpIdScalarRecords(IGeometricAlgebraSignature basesSignature)
+        public IEnumerable<IndexScalarRecord<T>> GetAcpIdScalarRecords(GeometricAlgebraBasisSet basisSet)
         {
             foreach (var (id1, scalar1) in Storage1.GetIdScalarRecords())
             {
                 foreach (var (id2, scalar2) in GetEAcpIdScalarRecords2(id1))
                 {
                     var basisSignature = 
-                        basesSignature.GpSignature(id1, id2);
+                        basisSet.GpSignature(id1, id2);
 
                     if (basisSignature == 0)
                         continue;

@@ -65,25 +65,25 @@ namespace TextComposerLib.Text.Mapped
         /// <summary>
         /// True if this is a marked segment using the delimiters method
         /// </summary>
-        public bool IsMarkedByDelimiters => String.IsNullOrEmpty(LeftDelimiter) == false && 
-                                            String.IsNullOrEmpty(RightDelimiter) == false;
+        public bool IsMarkedByDelimiters => string.IsNullOrEmpty(LeftDelimiter) == false && 
+                                            string.IsNullOrEmpty(RightDelimiter) == false;
 
         /// <summary>
         /// True if this is a marked segment using the identifier method
         /// </summary>
-        public bool IsMarkedByIdentifier => String.IsNullOrEmpty(LeftDelimiter) == false &&
-                                            String.IsNullOrEmpty(RightDelimiter);
+        public bool IsMarkedByIdentifier => string.IsNullOrEmpty(LeftDelimiter) == false &&
+                                            string.IsNullOrEmpty(RightDelimiter);
 
         /// <summary>
         /// True if this is a marked segment
         /// </summary>
-        public bool IsMarked => String.IsNullOrEmpty(LeftDelimiter) == false;
+        public bool IsMarked => string.IsNullOrEmpty(LeftDelimiter) == false;
 
         /// <summary>
         /// True if this is an unmarked segment
         /// </summary>
-        public bool IsUnmarked => String.IsNullOrEmpty(LeftDelimiter) &&
-                                  String.IsNullOrEmpty(RightDelimiter);
+        public bool IsUnmarked => string.IsNullOrEmpty(LeftDelimiter) &&
+                                  string.IsNullOrEmpty(RightDelimiter);
 
         /// <summary>
         /// The full text of this segment including the delimiters, if present
@@ -105,10 +105,10 @@ namespace TextComposerLib.Text.Mapped
         {
             Index = index;
             KindIndex = kindIndex;
-            InitialText = initialText ?? String.Empty;
-            LeftDelimiter = String.Empty;
-            RightDelimiter = String.Empty;
-            FinalText = initialText ?? String.Empty;
+            InitialText = initialText ?? string.Empty;
+            LeftDelimiter = string.Empty;
+            RightDelimiter = string.Empty;
+            FinalText = initialText ?? string.Empty;
             IsFixed = true;
         }
 
@@ -124,10 +124,10 @@ namespace TextComposerLib.Text.Mapped
         {
             Index = index;
             KindIndex = kindIndex;
-            InitialText = initialText ?? String.Empty;
-            LeftDelimiter = leftDel ?? String.Empty;
-            RightDelimiter = rightDel ?? String.Empty;
-            FinalText = initialText ?? String.Empty;
+            InitialText = initialText ?? string.Empty;
+            LeftDelimiter = leftDel ?? string.Empty;
+            RightDelimiter = rightDel ?? string.Empty;
+            FinalText = initialText ?? string.Empty;
             IsFixed = true;
         }
 
@@ -142,10 +142,10 @@ namespace TextComposerLib.Text.Mapped
         {
             Index = index;
             KindIndex = kindIndex;
-            InitialText = initialText ?? String.Empty;
-            LeftDelimiter = prefix ?? String.Empty;
-            RightDelimiter = String.Empty;
-            FinalText = initialText ?? String.Empty;
+            InitialText = initialText ?? string.Empty;
+            LeftDelimiter = prefix ?? string.Empty;
+            RightDelimiter = string.Empty;
+            FinalText = initialText ?? string.Empty;
             IsFixed = true;
         }
 
@@ -156,7 +156,7 @@ namespace TextComposerLib.Text.Mapped
         /// <param name="transFunc"></param>
         public void TransformUsing(Func<string, string> transFunc)
         {
-            FinalText = transFunc(InitialText) ?? String.Empty;
+            FinalText = transFunc(InitialText) ?? string.Empty;
 
             IsFixed = (FinalText == InitialText);
         }
@@ -167,7 +167,7 @@ namespace TextComposerLib.Text.Mapped
         /// <param name="transFunc"></param>
         public void TransformUsing(Func<MappingComposerSegment, string> transFunc)
         {
-            FinalText = transFunc(this) ?? String.Empty;
+            FinalText = transFunc(this) ?? string.Empty;
 
             IsFixed = (FinalText == InitialText);
         }
@@ -181,7 +181,7 @@ namespace TextComposerLib.Text.Mapped
         {
             InitialText.TryParseToTextExpression(out var textExpr);
 
-            FinalText = ReferenceEquals(textExpr, null) ? String.Empty : transConverter.Visit(textExpr);
+            FinalText = ReferenceEquals(textExpr, null) ? string.Empty : transConverter.Visit(textExpr);
 
             IsFixed = (FinalText == InitialText);
         }
@@ -195,7 +195,7 @@ namespace TextComposerLib.Text.Mapped
             FinalText = 
                 transTable.TryGetValue(InitialText, out var finalText) 
                 ? finalText 
-                : String.Empty;
+                : string.Empty;
 
             IsFixed = (FinalText == InitialText);
         }
@@ -206,7 +206,7 @@ namespace TextComposerLib.Text.Mapped
         /// <param name="transTable"></param>
         public void TransformByIndexUsing(Func<int, string> transTable)
         {
-            FinalText = transTable(Index) ?? String.Empty;
+            FinalText = transTable(Index) ?? string.Empty;
 
             IsFixed = (FinalText == InitialText);
         }
@@ -220,7 +220,7 @@ namespace TextComposerLib.Text.Mapped
             FinalText = 
                 transTable.TryGetValue(Index, out var finalText) 
                 ? finalText 
-                : String.Empty;
+                : string.Empty;
 
             IsFixed = (FinalText == InitialText);
         }
@@ -233,7 +233,7 @@ namespace TextComposerLib.Text.Mapped
         {
             FinalText = 
                 (Index >= transArray.Length) 
-                ? String.Empty 
+                ? string.Empty 
                 : transArray[Index];
 
             IsFixed = (FinalText == InitialText);
@@ -245,7 +245,7 @@ namespace TextComposerLib.Text.Mapped
         /// <param name="transTable"></param>
         public void TransformByKindIndexUsing(Func<int, string> transTable)
         {
-            FinalText = transTable(KindIndex) ?? String.Empty;
+            FinalText = transTable(KindIndex) ?? string.Empty;
 
             IsFixed = (FinalText == InitialText);
         }
@@ -259,7 +259,7 @@ namespace TextComposerLib.Text.Mapped
             FinalText = 
                 transTable.TryGetValue(KindIndex, out var finalText) 
                 ? finalText 
-                : String.Empty;
+                : string.Empty;
 
             IsFixed = (FinalText == InitialText);
         }
@@ -272,7 +272,7 @@ namespace TextComposerLib.Text.Mapped
         {
             FinalText = 
                 (KindIndex >= transArray.Length) 
-                ? String.Empty 
+                ? string.Empty 
                 : transArray[KindIndex];
 
             IsFixed = (FinalText == InitialText);
@@ -284,7 +284,7 @@ namespace TextComposerLib.Text.Mapped
         /// <param name="transTable"></param>
         public void TransformByMarkedIndexUsing(Func<int, string> transTable)
         {
-            FinalText = transTable(MarkedIndex) ?? String.Empty;
+            FinalText = transTable(MarkedIndex) ?? string.Empty;
 
             IsFixed = (FinalText == InitialText);
         }
@@ -298,7 +298,7 @@ namespace TextComposerLib.Text.Mapped
             FinalText = 
                 transTable.TryGetValue(MarkedIndex, out var finalText) 
                 ? finalText 
-                : String.Empty;
+                : string.Empty;
 
             IsFixed = (FinalText == InitialText);
         }
@@ -311,7 +311,7 @@ namespace TextComposerLib.Text.Mapped
         {
             FinalText = 
                 (MarkedIndex < 0 || MarkedIndex >= transArray.Length)
-                ? String.Empty
+                ? string.Empty
                 : transArray[MarkedIndex];
 
             IsFixed = (FinalText == InitialText);
@@ -323,7 +323,7 @@ namespace TextComposerLib.Text.Mapped
         /// <param name="transTable"></param>
         public void TransformByUnmarkedIndexUsing(Func<int, string> transTable)
         {
-            FinalText = transTable(UnmarkedIndex) ?? String.Empty;
+            FinalText = transTable(UnmarkedIndex) ?? string.Empty;
 
             IsFixed = (FinalText == InitialText);
         }
@@ -337,7 +337,7 @@ namespace TextComposerLib.Text.Mapped
             FinalText = 
                 transTable.TryGetValue(UnmarkedIndex, out var finalText) 
                 ? finalText 
-                : String.Empty;
+                : string.Empty;
 
             IsFixed = (FinalText == InitialText);
         }
@@ -350,7 +350,7 @@ namespace TextComposerLib.Text.Mapped
         {
             FinalText = 
                 (UnmarkedIndex < 0 || UnmarkedIndex >= transArray.Length)
-                ? String.Empty
+                ? string.Empty
                 : transArray[UnmarkedIndex];
 
             IsFixed = (FinalText == InitialText);

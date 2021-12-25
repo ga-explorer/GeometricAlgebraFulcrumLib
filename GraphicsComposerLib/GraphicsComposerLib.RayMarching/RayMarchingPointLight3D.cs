@@ -1,7 +1,7 @@
 ﻿using System;
 using EuclideanGeometryLib.BasicMath;
+using EuclideanGeometryLib.BasicMath.Tuples;
 using EuclideanGeometryLib.BasicMath.Tuples.Immutable;
-using EuclideanGeometryLib.SdfGeometry;
 
 namespace GraphicsComposerLib.RayMarching
 {
@@ -24,14 +24,14 @@ namespace GraphicsComposerLib.RayMarching
 
         public Tuple3D GetColor(Tuple3D point, Tuple3D unitNormal, RayMarchingMaterial material)
         {
-            var color = AmbientColor.ElementsProduct(material.AmbientColor);
+            var color = AmbientColor.ComponentsProduct(material.AmbientColor);
 
             var vectorL = (Position - point).ToUnitVector();
             var vectorV = (EyePoint - point).ToUnitVector();
-            var vectorR = (-vectorL).ReflectVectorOnUnitVector(unitNormal);
+            var vectorR = unitNormal.ReflectVectorOnUnitVector(-vectorL);
             
-            var dotLN = vectorL.DotProduct(unitNormal);
-            var dotRV = vectorR.DotProduct(vectorV);
+            var dotLN = vectorL.VectorDot(unitNormal);
+            var dotRV = vectorR.VectorDot(vectorV);
             
             if (dotLN < 0.0) {
                 // Light not visible from this point on the surface
@@ -42,7 +42,7 @@ namespace GraphicsComposerLib.RayMarching
             var diffuseFactor = 
                 dotLN * material.DiffuseColor;
 
-            color += DiffuseColor.ElementsProduct(diffuseFactor);
+            color += DiffuseColor.ComponentsProduct(diffuseFactor);
 
             if (dotRV < 0.0) {
                 // Light reflection in opposite direction as viewer, 
@@ -54,7 +54,7 @@ namespace GraphicsComposerLib.RayMarching
                 Math.Pow(dotRV, material.SpecularShininess) * 
                 material.SpecularColor;
 
-            color += SpecularColor.ElementsProduct(specularFactor);
+            color += SpecularColor.ComponentsProduct(specularFactor);
 
             return color;
         }

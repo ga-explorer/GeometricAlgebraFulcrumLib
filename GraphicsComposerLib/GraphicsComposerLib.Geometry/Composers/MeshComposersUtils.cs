@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using EuclideanGeometryLib.BasicMath;
-using EuclideanGeometryLib.BasicMath.Tuples;
-using EuclideanGeometryLib.BasicMath.Tuples.Immutable;
-using GraphicsComposerLib.Geometry.Geometry.PathsMesh;
-using GraphicsComposerLib.Geometry.Geometry.PathsMesh.Space3D;
-using GraphicsComposerLib.Geometry.Geometry.PointsPath;
-using GraphicsComposerLib.Geometry.Geometry.PointsPath.Space3D;
+using NumericalGeometryLib.BasicMath;
+using NumericalGeometryLib.BasicMath.Tuples;
+using NumericalGeometryLib.BasicMath.Tuples.Immutable;
+using GraphicsComposerLib.Geometry.Meshes.PathsMesh;
+using GraphicsComposerLib.Geometry.Meshes.PathsMesh.Space3D;
+using GraphicsComposerLib.Geometry.Meshes.PointsPath;
+using GraphicsComposerLib.Geometry.Meshes.PointsPath.Space3D;
 
 namespace GraphicsComposerLib.Geometry.Composers
 {

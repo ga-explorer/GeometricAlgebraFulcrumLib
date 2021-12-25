@@ -32,10 +32,7 @@ namespace DataStructuresLib.SimpleTree
             return _nodes.ContainsKey(key);
         }
 
-        public ICollection<string> Keys
-        {
-            get { return _nodes.Keys; }
-        }
+        public ICollection<string> Keys => _nodes.Keys;
 
         public bool Remove(string key)
         {
@@ -47,15 +44,12 @@ namespace DataStructuresLib.SimpleTree
             return _nodes.TryGetValue(key, out value);
         }
 
-        public ICollection<SimpleTreeNode<TLeaf>> Values
-        {
-            get { return _nodes.Values; }
-        }
+        public ICollection<SimpleTreeNode<TLeaf>> Values => _nodes.Values;
 
         public SimpleTreeNode<TLeaf> this[string key]
         {
-            get { return _nodes[key]; }
-            set { _nodes[key] = value; }
+            get => _nodes[key];
+            set => _nodes[key] = value;
         }
 
         public void Add(KeyValuePair<string, SimpleTreeNode<TLeaf>> item)
@@ -79,15 +73,9 @@ namespace DataStructuresLib.SimpleTree
                 array[arrayIndex++] = pair;
         }
 
-        public int Count
-        {
-            get { return _nodes.Count; }
-        }
+        public int Count => _nodes.Count;
 
-        public bool IsReadOnly
-        {
-            get { return false; }
-        }
+        public bool IsReadOnly => false;
 
         public bool Remove(KeyValuePair<string, SimpleTreeNode<TLeaf>> item)
         {
@@ -109,10 +97,7 @@ namespace DataStructuresLib.SimpleTree
             get { return _nodes.Select(pair => pair.Value); }
         }
 
-        public override IEnumerable<SimpleTreeBranch<TLeaf>> ChildBranches
-        {
-            get { return Enumerable.Empty<SimpleTreeBranch<TLeaf>>(); }
-        }
+        public override IEnumerable<SimpleTreeBranch<TLeaf>> ChildBranches => Enumerable.Empty<SimpleTreeBranch<TLeaf>>();
 
         //public override void ToString(LinearTextComposer textBuilder)
         //{

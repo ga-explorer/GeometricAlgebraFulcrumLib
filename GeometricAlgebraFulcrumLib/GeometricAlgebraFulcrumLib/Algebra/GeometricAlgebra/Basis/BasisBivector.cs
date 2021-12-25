@@ -56,6 +56,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis
         public override bool IsBivector => true;
 
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private BasisBivector(ulong basisVectorIndex1, ulong basisVectorIndex2)
         {
             Debug.Assert(basisVectorIndex1 < basisVectorIndex2);
@@ -72,6 +73,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis
             yield return BasisVectorIndex2;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override string ToString()
         {
             return new StringBuilder()

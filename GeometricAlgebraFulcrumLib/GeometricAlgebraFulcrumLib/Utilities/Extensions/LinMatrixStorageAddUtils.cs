@@ -1,4 +1,6 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense;
@@ -33,6 +35,23 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             return scalarProcessor.MapScalarsIndicesUnion(v1, v2, scalarProcessor.Add);
         }
         
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ILinMatrixStorage<T> Add<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params ILinMatrixStorage<T>[] vectorsList)
+        {
+            return vectorsList.Aggregate(
+                (ILinMatrixStorage<T>) LinMatrixEmptyStorage<T>.EmptyStorage,
+                scalarProcessor.Add
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ILinMatrixStorage<T> Add<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<ILinMatrixStorage<T>> vectorsList)
+        {
+            return vectorsList.Aggregate(
+                (ILinMatrixStorage<T>) LinMatrixEmptyStorage<T>.EmptyStorage,
+                scalarProcessor.Add
+            );
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ILinMatrixGradedStorage<T> Add<T>(this IScalarAlgebraProcessor<T> scalarProcessor, ILinMatrixGradedStorage<T> v1, ILinMatrixGradedStorage<T> v2)

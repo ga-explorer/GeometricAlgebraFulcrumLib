@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.Signatures;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
@@ -15,8 +14,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
     {
         public override uint VSpaceDimension { get; }
 
-        public override IGeometricAlgebraSignature Signature 
-            => this;
+        public override GeometricAlgebraBasisSet BasisSet { get; }
 
         public override bool IsOrthonormal 
             => true;
@@ -62,18 +60,18 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
                 throw new ArgumentOutOfRangeException(nameof(vSpaceDimension));
 
             VSpaceDimension = vSpaceDimension;
-
-            PseudoScalar = ScalarProcessor.CreatePseudoScalarStorage(Signature.VSpaceDimension);
+            BasisSet = GeometricAlgebraBasisSet.CreateEuclidean(VSpaceDimension);
+            PseudoScalar = ScalarProcessor.CreatePseudoScalarStorage(BasisSet.VSpaceDimension);
 
             PseudoScalarInverse = 
                 ScalarProcessor
-                    .BladeInverse(Signature, PseudoScalar)
-                    .GetKVectorPart(Signature.VSpaceDimension);
+                    .BladeInverse(BasisSet, PseudoScalar)
+                    .GetKVectorPart(BasisSet.VSpaceDimension);
 
             PseudoScalarReverse = 
                 scalarProcessor
                     .Reverse(PseudoScalar)
-                    .GetKVectorPart(Signature.VSpaceDimension);
+                    .GetKVectorPart(BasisSet.VSpaceDimension);
         }
 
         

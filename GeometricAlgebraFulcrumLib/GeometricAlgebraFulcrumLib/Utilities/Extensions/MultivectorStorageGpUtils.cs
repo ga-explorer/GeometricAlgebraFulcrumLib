@@ -15,7 +15,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                     processor.EGp(mv1),
                 
                 IGeometricAlgebraOrthonormalProcessor<T> ortProcessor =>
-                    processor.Gp(ortProcessor, mv1),
+                    processor.Gp(ortProcessor.BasisSet, mv1),
 
                 _ =>
                     ((IGeometricAlgebraChangeOfBasisProcessor<T>) processor).Gp(mv1)
@@ -31,7 +31,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                     processor.EGp(mv1, mv2),
                 
                 IGeometricAlgebraOrthonormalProcessor<T> ortProcessor =>
-                    processor.Gp(ortProcessor, mv1, mv2),
+                    processor.Gp(ortProcessor.BasisSet, mv1, mv2),
 
                 _ =>
                     ((IGeometricAlgebraChangeOfBasisProcessor<T>) processor).Gp(mv1, mv2)
@@ -47,7 +47,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                     processor.EGp(mv1, mv2, mv3),
                 
                 IGeometricAlgebraOrthonormalProcessor<T> ortProcessor =>
-                    processor.Gp(ortProcessor, mv1, mv2, mv3),
+                    processor.Gp(ortProcessor.BasisSet, mv1, mv2, mv3),
 
                 _ =>
                     ((IGeometricAlgebraChangeOfBasisProcessor<T>) processor).Gp(mv1, mv2, mv3)
@@ -63,7 +63,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                     processor.EGpReverse(mv1),
                 
                 IGeometricAlgebraOrthonormalProcessor<T> ortProcessor =>
-                    processor.GpReverse(ortProcessor, mv1),
+                    processor.GpReverse(ortProcessor.BasisSet, mv1),
 
                 _ =>
                     ((IGeometricAlgebraChangeOfBasisProcessor<T>) processor).GpReverse(mv1)
@@ -79,7 +79,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                     processor.EGpReverse(mv1, mv2),
                 
                 IGeometricAlgebraOrthonormalProcessor<T> ortProcessor =>
-                    processor.GpReverse(ortProcessor, mv1, mv2),
+                    processor.GpReverse(ortProcessor.BasisSet, mv1, mv2),
 
                 _ =>
                     ((IGeometricAlgebraChangeOfBasisProcessor<T>) processor).GpReverse(mv1, mv2)

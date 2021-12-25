@@ -1,4 +1,4 @@
-﻿using EuclideanGeometryLib.BasicMath.Matrices;
+﻿using NumericalGeometryLib.BasicMath.Matrices;
 using GraphicsComposerLib.WebGl.Xeogl.Geometry;
 using GraphicsComposerLib.WebGl.Xeogl.Materials;
 using GraphicsComposerLib.WebGl.Xeogl.Transforms;
@@ -17,7 +17,7 @@ namespace GraphicsComposerLib.WebGl.Xeogl.Objects
                 Material = material
             };
 
-        public static XeoglMesh ToXeoglMesh(this XeoglGeometry geometry, AffineMapMatrix4X4 transformMatrix, XeoglMaterial material)
+        public static XeoglMesh ToXeoglMesh(this XeoglGeometry geometry, SquareMatrix4 transformMatrix, XeoglMaterial material)
             => new XeoglMesh()
             {
                 Geometry = geometry,

@@ -2,7 +2,6 @@
 using EuclideanGeometryLib.BasicMath;
 using EuclideanGeometryLib.BasicMath.Tuples.Immutable;
 using EuclideanGeometryLib.BasicShapes.Lines.Immutable;
-using EuclideanGeometryLib.SdfGeometry;
 
 namespace GraphicsComposerLib.RayMarching
 {

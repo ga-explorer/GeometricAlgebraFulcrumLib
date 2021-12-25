@@ -1,5 +1,5 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.Signatures;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Processors.LinearAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 
@@ -9,7 +9,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
         IGeometricAlgebraSpace, 
         ILinearAlgebraProcessor<T>
     {
-        IGeometricAlgebraSignature Signature { get; }
+        GeometricAlgebraBasisSet BasisSet { get; }
 
         bool IsOrthonormal { get; }
 

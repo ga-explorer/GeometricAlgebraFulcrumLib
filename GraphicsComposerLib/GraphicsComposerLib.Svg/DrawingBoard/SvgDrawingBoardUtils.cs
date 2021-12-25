@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using EuclideanGeometryLib.Accelerators.BIH.Space2D;
-using EuclideanGeometryLib.Accelerators.Grids;
-using EuclideanGeometryLib.Accelerators.Grids.Space2D;
-using EuclideanGeometryLib.BasicMath.Tuples;
-using EuclideanGeometryLib.BasicMath.Tuples.Immutable;
-using EuclideanGeometryLib.BasicShapes;
-using EuclideanGeometryLib.BasicShapes.Lines;
-using EuclideanGeometryLib.BasicShapes.Triangles;
-using EuclideanGeometryLib.Borders;
-using EuclideanGeometryLib.Borders.Space2D;
+using NumericalGeometryLib.Accelerators.BIH.Space2D;
+using NumericalGeometryLib.Accelerators.Grids;
+using NumericalGeometryLib.Accelerators.Grids.Space2D;
+using NumericalGeometryLib.BasicMath.Tuples;
+using NumericalGeometryLib.BasicMath.Tuples.Immutable;
+using NumericalGeometryLib.BasicShapes;
+using NumericalGeometryLib.BasicShapes.Lines;
+using NumericalGeometryLib.BasicShapes.Triangles;
+using NumericalGeometryLib.Borders;
+using NumericalGeometryLib.Borders.Space2D;
 using GraphicsComposerLib.Svg.Styles;
 
 namespace GraphicsComposerLib.Svg.DrawingBoard
@@ -262,6 +262,18 @@ namespace GraphicsComposerLib.Svg.DrawingBoard
                 point1.Y,
                 point2.X,
                 point2.Y
+            );
+
+            return drawingLayer;
+        }
+        
+        public static SvgDrawingBoardLayer DrawRectangle(this SvgDrawingBoardLayer drawingLayer, IBoundingBox2D boundingBox)
+        {
+            drawingLayer.DrawRectangle(
+                boundingBox.MinX,
+                boundingBox.MinY,
+                boundingBox.MaxX,
+                boundingBox.MaxY
             );
 
             return drawingLayer;

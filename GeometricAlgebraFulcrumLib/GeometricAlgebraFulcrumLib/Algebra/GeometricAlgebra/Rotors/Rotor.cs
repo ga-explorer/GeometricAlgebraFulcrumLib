@@ -128,7 +128,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
                     rotatedVector2
                 );
 
-            return PureRotorsSequence<T>.CreateFromOrthonormalFrames(
+            return PureRotorsSequence<T>.CreateFromOrthonormalEuclideanFrames(
                 inputFrame, 
                 rotatedFrame, 
                 true
@@ -151,7 +151,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
                     rotatedVector2
                 );
 
-            return PureRotorsSequence<T>.CreateFromFrames(
+            return PureRotorsSequence<T>.CreateFromEuclideanFrames(
                 baseSpaceDimensions, 
                 inputFrame, 
                 rotatedFrame
@@ -297,6 +297,12 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
         public override IMultivectorStorage<T> GetMultivectorInverseStorage()
         {
             return MultivectorReverse;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override T GetScalingFactor()
+        {
+            return ScalarProcessor.ScalarOne;
         }
     }
 }

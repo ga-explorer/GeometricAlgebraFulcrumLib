@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Text;
 
@@ -239,49 +240,52 @@ namespace DataStructuresLib.BitManipulation
         /// </summary>
         /// <param name="bitPattern"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int CountOnes(this ulong bitPattern)
         {
-            if (bitPattern == 0)
-                return 0;
-
-            var count = 0;
-
-            if (bitPattern > long.MaxValue)
-            {
-                bitPattern &= long.MaxValue;
-                count = 1;
-            }
-
-            // Brian Kernighan’s Algorithm. See here for more details:
-            // https://www.geeksforgeeks.org/count-set-bits-in-an-integer/
-            // Subtracting 1 from a decimal number flips all the bits after
-            // the rightmost set bit (which is 1) including the rightmost set bit.
-            // So if we subtract a number by 1 and do it bitwise & with itself
-            // (n & (n-1)), we unset the rightmost set bit. If we do n & (n-1)
-            // in a loop and count the number of times the loop executes, we get
-            // the set bit count. The beauty of this solution is the number of
-            // times it loops is equal to the number of set bits in a given integer. 
-
-            var n = (long) bitPattern;
+            return BitOperations.PopCount(bitPattern);
             
-            while (n > 0)
-            {
-                n &= (n - 1);
+            //if (bitPattern == 0)
+            //    return 0;
 
-                count++;
-            }
+            //var count = 0;
 
-            return count;
-
-            //var onesCount = 0;
-
-            //while (bitPattern > 0ul)
+            //if (bitPattern > long.MaxValue)
             //{
-            //    bitPattern &= bitPattern - 1ul; // clear the least significant bit set
-            //    onesCount++;
+            //    bitPattern &= long.MaxValue;
+            //    count = 1;
             //}
 
-            //return onesCount;
+            //// Brian Kernighan’s Algorithm. See here for more details:
+            //// https://www.geeksforgeeks.org/count-set-bits-in-an-integer/
+            //// Subtracting 1 from a decimal number flips all the bits after
+            //// the rightmost set bit (which is 1) including the rightmost set bit.
+            //// So if we subtract a number by 1 and do it bitwise & with itself
+            //// (n & (n-1)), we unset the rightmost set bit. If we do n & (n-1)
+            //// in a loop and count the number of times the loop executes, we get
+            //// the set bit count. The beauty of this solution is the number of
+            //// times it loops is equal to the number of set bits in a given integer. 
+
+            //var n = (long) bitPattern;
+            
+            //while (n > 0)
+            //{
+            //    n &= (n - 1);
+
+            //    count++;
+            //}
+
+            //return count;
+
+            ////var onesCount = 0;
+
+            ////while (bitPattern > 0ul)
+            ////{
+            ////    bitPattern &= bitPattern - 1ul; // clear the least significant bit set
+            ////    onesCount++;
+            ////}
+
+            ////return onesCount;
         }
 
         /// <summary>
@@ -1410,6 +1414,17 @@ namespace DataStructuresLib.BitManipulation
                 s.Append((bitPattern & (1ul << i)) == 0ul ? '0' : '1');
 
             return s.ToString();
+        }
+        
+        public static string PatternToString(this ulong bitPattern, IEnumerable<char> items)
+        {
+            var bitPosition = 0;
+
+            var charList = items
+                .Take(MaxBitPosition)
+                .Where(item => ((1ul << (bitPosition++)) & bitPattern) != 0ul);
+
+            return string.Concat(charList);
         }
 
         public static string PatternToStringPadRight(this ulong bitPattern, int bitsCount, int leftBitsCount, char paddingChar = '-')

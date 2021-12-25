@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using DataStructuresLib.BitManipulation;
 using DataStructuresLib.Stacks;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTraversal.Multivectors;
 using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.ProductIterators;
-using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.Signatures;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
@@ -14,8 +14,9 @@ using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 
 namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTraversal.Products
 {
-    public sealed class GeoGbtProductsStack2<T>
-        : GeoGbtStack2, IMultivectorStorageTermsIterator<T>
+    public sealed class GeoGbtProductsStack2<T> : 
+        GeoGbtStack2, 
+        IMultivectorStorageTermsIterator<T>
     {
         public static GeoGbtProductsStack2<T> Create(Multivector<T> mv1, Multivector<T> mv2)
         {
@@ -530,7 +531,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTra
         }
 
 
-        public IEnumerable<IndexScalarRecord<T>> GetGpIdScalarRecords(IGeometricAlgebraSignature metric)
+        public IEnumerable<IndexScalarRecord<T>> GetGpIdScalarRecords(GeometricAlgebraBasisSet basisSet)
         {
             PushRootData();
 
@@ -581,7 +582,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTra
                     if (hasChild21)
                     {
                         var basisVectorSignature = 
-                            metric.GetBasisVectorSignature(TosTreeDepth - 1);
+                            basisSet.GetBasisVectorSignature(TosTreeDepth - 1);
 
                         if (basisVectorSignature != 0)
                         {
@@ -593,7 +594,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTra
             }
         }
 
-        public IEnumerable<IndexScalarRecord<T>> GetSpIdScalarRecords(IGeometricAlgebraSignature metric)
+        public IEnumerable<IndexScalarRecord<T>> GetSpIdScalarRecords(GeometricAlgebraBasisSet basisSet)
         {
             PushRootData();
 
@@ -632,7 +633,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTra
                     if (hasChild21)
                     {
                         var basisVectorSignature =
-                            metric.GetBasisVectorSignature(TosTreeDepth - 1);
+                            basisSet.GetBasisVectorSignature(TosTreeDepth - 1);
 
                         if (basisVectorSignature != 0)
                         {
@@ -644,7 +645,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTra
             }
         }
 
-        public IEnumerable<T> GetSpScalars(IGeometricAlgebraSignature metric)
+        public IEnumerable<T> GetSpScalars(GeometricAlgebraBasisSet basisSet)
         {
             PushRootData();
 
@@ -683,7 +684,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTra
                     if (hasChild21)
                     {
                         var basisVectorSignature =
-                            metric.GetBasisVectorSignature(TosTreeDepth - 1);
+                            basisSet.GetBasisVectorSignature(TosTreeDepth - 1);
 
                         if (basisVectorSignature != 0)
                         {
@@ -695,7 +696,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTra
             }
         }
 
-        public IEnumerable<IndexScalarRecord<T>> GetLcpIdScalarRecords(IGeometricAlgebraSignature metric)
+        public IEnumerable<IndexScalarRecord<T>> GetLcpIdScalarRecords(GeometricAlgebraBasisSet basisSet)
         {
             PushRootData();
 
@@ -740,7 +741,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTra
                     if (hasChild21)
                     {
                         var basisVectorSignature =
-                            metric.GetBasisVectorSignature(TosTreeDepth - 1);
+                            basisSet.GetBasisVectorSignature(TosTreeDepth - 1);
 
                         if (basisVectorSignature != 0)
                         {
@@ -752,7 +753,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTra
             }
         }
 
-        public IEnumerable<IndexScalarRecord<T>> GetRcpIdScalarRecords(IGeometricAlgebraSignature metric)
+        public IEnumerable<IndexScalarRecord<T>> GetRcpIdScalarRecords(GeometricAlgebraBasisSet basisSet)
         {
             PushRootData();
 
@@ -797,7 +798,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTra
                     if (hasChild21)
                     {
                         var basisVectorSignature =
-                            metric.GetBasisVectorSignature(TosTreeDepth - 1);
+                            basisSet.GetBasisVectorSignature(TosTreeDepth - 1);
 
                         if (basisVectorSignature != 0)
                         {
@@ -809,7 +810,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTra
             }
         }
 
-        public IEnumerable<IndexScalarRecord<T>> GetFdpIdScalarRecords(IGeometricAlgebraSignature metric)
+        public IEnumerable<IndexScalarRecord<T>> GetFdpIdScalarRecords(GeometricAlgebraBasisSet basisSet)
         {
             PushRootData();
 
@@ -861,7 +862,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTra
                     if (hasChild21)
                     {
                         var basisVectorSignature =
-                            metric.GetBasisVectorSignature(TosTreeDepth - 1);
+                            basisSet.GetBasisVectorSignature(TosTreeDepth - 1);
 
                         if (basisVectorSignature != 0)
                         {
@@ -873,7 +874,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTra
             }
         }
 
-        public IEnumerable<IndexScalarRecord<T>> GetHipIdScalarRecords(IGeometricAlgebraSignature metric)
+        public IEnumerable<IndexScalarRecord<T>> GetHipIdScalarRecords(GeometricAlgebraBasisSet basisSet)
         {
             PushRootData();
 
@@ -925,7 +926,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTra
                     if (hasChild21)
                     {
                         var basisVectorSignature =
-                            metric.GetBasisVectorSignature(TosTreeDepth - 1);
+                            basisSet.GetBasisVectorSignature(TosTreeDepth - 1);
 
                         if (basisVectorSignature != 0)
                         {
@@ -937,7 +938,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTra
             }
         }
 
-        public IEnumerable<IndexScalarRecord<T>> GetAcpIdScalarRecords(IGeometricAlgebraSignature metric)
+        public IEnumerable<IndexScalarRecord<T>> GetAcpIdScalarRecords(GeometricAlgebraBasisSet basisSet)
         {
             PushRootData();
 
@@ -989,7 +990,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTra
                     if (hasChild21)
                     {
                         var basisVectorSignature =
-                            metric.GetBasisVectorSignature(TosTreeDepth - 1);
+                            basisSet.GetBasisVectorSignature(TosTreeDepth - 1);
 
                         if (basisVectorSignature != 0)
                         {
@@ -1001,7 +1002,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTra
             }
         }
 
-        public IEnumerable<IndexScalarRecord<T>> GetCpIdScalarRecords(IGeometricAlgebraSignature metric)
+        public IEnumerable<IndexScalarRecord<T>> GetCpIdScalarRecords(GeometricAlgebraBasisSet basisSet)
         {
             PushRootData();
 
@@ -1053,7 +1054,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTra
                     if (hasChild21)
                     {
                         var basisVectorSignature =
-                            metric.GetBasisVectorSignature(TosTreeDepth - 1);
+                            basisSet.GetBasisVectorSignature(TosTreeDepth - 1);
 
                         if (basisVectorSignature != 0)
                         {

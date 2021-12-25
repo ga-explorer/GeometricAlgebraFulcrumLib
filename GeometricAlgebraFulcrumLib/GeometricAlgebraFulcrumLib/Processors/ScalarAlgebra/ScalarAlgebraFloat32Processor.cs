@@ -44,6 +44,9 @@ namespace GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra
         public float ScalarPi 
             => MathF.PI;
 
+        public float ScalarPiOver2 
+            => 0.5f * MathF.PI;
+
         public float ScalarE 
             => MathF.E;
         

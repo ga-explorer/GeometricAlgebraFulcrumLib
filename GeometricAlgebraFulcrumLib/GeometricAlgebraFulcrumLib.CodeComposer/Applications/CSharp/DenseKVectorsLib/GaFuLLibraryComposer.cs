@@ -88,7 +88,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             RootNamespace = rootNamespace;
             GeometricProcessor = processor;
             EuclideanProcessor =
-                processor.IsOrthonormal && processor.Signature.IsEuclidean
+                processor.IsOrthonormal && processor.BasisSet.IsEuclidean
                     ? processor
                     : processor.CreateGeometricAlgebraEuclideanProcessor(
                         processor.VSpaceDimension

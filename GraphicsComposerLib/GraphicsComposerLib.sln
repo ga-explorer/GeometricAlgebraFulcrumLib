@@ -17,15 +17,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphicsComposerLib.Svg", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphicsComposerLib.PovRay", "GraphicsComposerLib.PovRay\GraphicsComposerLib.PovRay.csproj", "{B36C3954-0668-4B11-8945-662C6BE9893C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphicsComposerLib.RayMarching", "GraphicsComposerLib.RayMarching\GraphicsComposerLib.RayMarching.csproj", "{D94F7819-72A2-4059-83B6-FD1B76D47718}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphicsComposerLib.Geometry", "GraphicsComposerLib.Geometry\GraphicsComposerLib.Geometry.csproj", "{19E2E472-9A9F-4146-B006-3363F9699A45}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphicsComposerLib.GraphViz", "GraphicsComposerLib.GraphViz\GraphicsComposerLib.GraphViz.csproj", "{5D5AE179-C782-4ACA-BA37-3C2ECDCD2B29}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphicsComposerLib.WebGl", "GraphicsComposerLib.WebGl\GraphicsComposerLib.WebGl.csproj", "{9F351F6E-6418-4A2B-8CB9-7C352F9E6E60}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Esprima", "..\TextComposerLib\Esprima\Esprima.csproj", "{A6F66C84-C1D0-4414-8234-2C30C2314BEA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphicsComposerLib.IO", "GraphicsComposerLib.IO\GraphicsComposerLib.IO.csproj", "{E32CE5E2-16EF-4BC2-A6BE-C09EDC673BC3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -91,14 +89,6 @@ Global
 		{B36C3954-0668-4B11-8945-662C6BE9893C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B36C3954-0668-4B11-8945-662C6BE9893C}.Release|x64.ActiveCfg = Release|x64
 		{B36C3954-0668-4B11-8945-662C6BE9893C}.Release|x64.Build.0 = Release|x64
-		{D94F7819-72A2-4059-83B6-FD1B76D47718}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D94F7819-72A2-4059-83B6-FD1B76D47718}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D94F7819-72A2-4059-83B6-FD1B76D47718}.Debug|x64.ActiveCfg = Debug|x64
-		{D94F7819-72A2-4059-83B6-FD1B76D47718}.Debug|x64.Build.0 = Debug|x64
-		{D94F7819-72A2-4059-83B6-FD1B76D47718}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D94F7819-72A2-4059-83B6-FD1B76D47718}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D94F7819-72A2-4059-83B6-FD1B76D47718}.Release|x64.ActiveCfg = Release|x64
-		{D94F7819-72A2-4059-83B6-FD1B76D47718}.Release|x64.Build.0 = Release|x64
 		{19E2E472-9A9F-4146-B006-3363F9699A45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{19E2E472-9A9F-4146-B006-3363F9699A45}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{19E2E472-9A9F-4146-B006-3363F9699A45}.Debug|x64.ActiveCfg = Debug|x64
@@ -123,14 +113,14 @@ Global
 		{9F351F6E-6418-4A2B-8CB9-7C352F9E6E60}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9F351F6E-6418-4A2B-8CB9-7C352F9E6E60}.Release|x64.ActiveCfg = Release|x64
 		{9F351F6E-6418-4A2B-8CB9-7C352F9E6E60}.Release|x64.Build.0 = Release|x64
-		{A6F66C84-C1D0-4414-8234-2C30C2314BEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A6F66C84-C1D0-4414-8234-2C30C2314BEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A6F66C84-C1D0-4414-8234-2C30C2314BEA}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{A6F66C84-C1D0-4414-8234-2C30C2314BEA}.Debug|x64.Build.0 = Debug|Any CPU
-		{A6F66C84-C1D0-4414-8234-2C30C2314BEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A6F66C84-C1D0-4414-8234-2C30C2314BEA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A6F66C84-C1D0-4414-8234-2C30C2314BEA}.Release|x64.ActiveCfg = Release|Any CPU
-		{A6F66C84-C1D0-4414-8234-2C30C2314BEA}.Release|x64.Build.0 = Release|Any CPU
+		{E32CE5E2-16EF-4BC2-A6BE-C09EDC673BC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E32CE5E2-16EF-4BC2-A6BE-C09EDC673BC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E32CE5E2-16EF-4BC2-A6BE-C09EDC673BC3}.Debug|x64.ActiveCfg = Debug|x64
+		{E32CE5E2-16EF-4BC2-A6BE-C09EDC673BC3}.Debug|x64.Build.0 = Debug|x64
+		{E32CE5E2-16EF-4BC2-A6BE-C09EDC673BC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E32CE5E2-16EF-4BC2-A6BE-C09EDC673BC3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E32CE5E2-16EF-4BC2-A6BE-C09EDC673BC3}.Release|x64.ActiveCfg = Release|x64
+		{E32CE5E2-16EF-4BC2-A6BE-C09EDC673BC3}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -4,13 +4,13 @@
     {
         public const string Plus = "Plus";
 
-        public const string Subtract = "Minus";
+        public const string Subtract = "Subtract";
 
         public const string Times = "Times";
 
         public const string Divide = "Divide";
 
-        public const string Negative = "Negative";
+        public const string Negative = "Minus";
 
         public const string Inverse = "Inverse";
 

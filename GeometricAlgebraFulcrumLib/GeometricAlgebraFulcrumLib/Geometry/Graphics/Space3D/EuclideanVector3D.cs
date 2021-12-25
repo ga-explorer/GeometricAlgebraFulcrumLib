@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Text;
-using EuclideanGeometryLib.BasicMath.Tuples;
+using NumericalGeometryLib.BasicMath.Tuples;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.LinearAlgebra;
@@ -98,15 +98,10 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Graphics.Space3D
 
         public double Item3 => Z;
 
-        public bool IsValid
-            => !double.IsNaN(X) && 
+        public bool IsValid()
+            => !double.IsNaN(X) &&
                !double.IsNaN(Y) && 
                !double.IsNaN(Z);
-        
-        public bool IsInvalid
-            => double.IsNaN(X) || 
-               double.IsNaN(Y) || 
-               double.IsNaN(Z);
 
 
         public EuclideanVector3D(double x, double y, double z)
@@ -115,7 +110,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Graphics.Space3D
             Y = y;
             Z = z;
 
-            Debug.Assert(IsValid);
+            Debug.Assert(IsValid());
         }
 
 
