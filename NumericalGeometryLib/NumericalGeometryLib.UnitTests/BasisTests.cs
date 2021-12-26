@@ -1,12 +1,11 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Numerics;
 using DataStructuresLib.Combinations;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Utilities.Extensions;
+using NumericalGeometryLib.GeometricAlgebra.Basis;
 using NUnit.Framework;
 
-namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
+namespace NumericalGeometryLib.UnitTests
 {
     [TestFixture]
     public sealed class BasisTests

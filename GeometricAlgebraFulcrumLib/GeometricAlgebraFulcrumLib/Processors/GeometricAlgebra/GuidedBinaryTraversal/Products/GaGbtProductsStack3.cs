@@ -177,7 +177,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTra
             var id2 = TosId2;
             var id3 = TosId3;
 
-            var value = BasisBladeProductUtils.IsNegativeEGp(id1, id2)
+            var value = BasisBladeProductUtils.EGpIsNegative(id1, id2)
                 ? ScalarProcessor.NegativeTimes(TosValue1, TosValue2, TosValue3)
                 : ScalarProcessor.Times(TosValue1, TosValue2, TosValue3);
 
@@ -203,7 +203,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTra
             var id2 = TosId2;
             var id3 = TosId3;
 
-            var value = BasisBladeProductUtils.IsNegativeEGp(id1, id2)
+            var value = BasisBladeProductUtils.EGpIsNegative(id1, id2)
                 ? ScalarProcessor.NegativeTimes(basisBladeSignature, TosValue1, TosValue2, TosValue3)
                 : ScalarProcessor.Times(basisBladeSignature, TosValue1, TosValue2, TosValue3);
 

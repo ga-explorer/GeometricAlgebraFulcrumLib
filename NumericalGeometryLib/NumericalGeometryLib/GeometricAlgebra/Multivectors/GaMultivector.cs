@@ -20,10 +20,6 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
         IGeometricElement,
         IReadOnlyDictionary<ulong, double>
     {
-        private static GaBasisBladeDataLookup Lookup 
-            => GaBasisBladeDataLookup.Default;
-
-
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static GaMultivector operator +(GaMultivector mv)
         {
@@ -242,7 +238,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
         internal GaMultivectorSparseList ScalarList { get; }
 
 
-        public GaBasisSet BasisSet { get; }
+        public BasisBladeSet BasisSet { get; }
 
         public uint VSpaceDimension 
             => BasisSet.VSpaceDimension;
@@ -269,19 +265,19 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
         {
             get
             {
-                var id = Lookup.GradeIndexToId(grade, index);
+                var id = BasisBladeDataLookup.BasisBladeId(grade, index);
                 return ScalarList[id];
             }
             set
             {
-                var id = Lookup.GradeIndexToId(grade, index);
+                var id = BasisBladeDataLookup.BasisBladeId(grade, index);
                 ScalarList[id] = value;
             }
         }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GaMultivector([NotNull] GaBasisSet basisSet)
+        public GaMultivector([NotNull] BasisBladeSet basisSet)
         {
             BasisSet = basisSet;
             ScalarList = new GaMultivectorSparseList(basisSet.GaSpaceDimension);
@@ -298,7 +294,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal GaMultivector([NotNull] GaBasisSet basisSet, [NotNull] GaMultivectorSparseList scalarList)
+        internal GaMultivector([NotNull] BasisBladeSet basisSet, [NotNull] GaMultivectorSparseList scalarList)
         {
             BasisSet = basisSet;
             ScalarList = scalarList;
@@ -337,7 +333,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public double GetScalar(uint grade, ulong index)
         {
-            var id = Lookup.GradeIndexToId(grade, index);
+            var id = BasisBladeDataLookup.BasisBladeId(grade, index);
 
             return ScalarList.TryGetStoredNumber(id, out var scalar)
                 ? scalar : 0d;
@@ -354,7 +350,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public GaTerm GetTerm(uint grade, ulong index)
         {
-            var id = Lookup.GradeIndexToId(grade, index);
+            var id = BasisBladeDataLookup.BasisBladeId(grade, index);
 
             return ScalarList.TryGetStoredNumber(id, out var scalar)
                 ? new GaTerm(BasisSet, id, scalar)
@@ -382,7 +378,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool TryGetScalar(uint grade, ulong index, out double scalar)
         {
-            var id = Lookup.GradeIndexToId(grade, index);
+            var id = BasisBladeDataLookup.BasisBladeId(grade, index);
 
             return ScalarList.TryGetStoredNumber(id, out scalar);
         }
@@ -403,7 +399,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool TryGetTerm(uint grade, ulong index, out GaTerm term)
         {
-            var id = Lookup.GradeIndexToId(grade, index);
+            var id = BasisBladeDataLookup.BasisBladeId(grade, index);
 
             if (ScalarList.TryGetStoredNumber(id, out var scalar))
             {
@@ -447,7 +443,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
         {
             return ScalarList
                 .StoredIdNumberPairs
-                .Where(p => Lookup.IdToGrade(p.Key) == grade)
+                .Where(p => BasisBladeDataLookup.BasisBladeGrade(p.Key) == grade)
                 .Select(p => p.Value);
         }
         
@@ -456,7 +452,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
         {
             return ScalarList
                 .StoredIdNumberPairs
-                .Where(p => Lookup.IdToGrade(p.Key) == grade);
+                .Where(p => BasisBladeDataLookup.BasisBladeGrade(p.Key) == grade);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -505,7 +501,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
         {
             var scalarList = 
                 ScalarList.FilterById(
-                    id => Lookup.IdToGrade(id) == 1
+                    id => BasisBladeDataLookup.BasisBladeGrade(id) == 1
                 );
 
             return new GaMultivector(BasisSet, scalarList);
@@ -518,7 +514,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
             var idScalarPairs =
                 ScalarList
                     .StoredIdNumberPairs
-                    .Where(p => Lookup.IdToGrade(p.Key) == 1);
+                    .Where(p => BasisBladeDataLookup.BasisBladeGrade(p.Key) == 1);
 
             foreach (var (id, scalar) in idScalarPairs)
             {
@@ -535,7 +531,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
         {
             var scalarList = 
                 ScalarList.FilterById(
-                    id => Lookup.IdToGrade(id) == 2
+                    id => BasisBladeDataLookup.BasisBladeGrade(id) == 2
                 );
 
             return new GaMultivector(BasisSet, scalarList);
@@ -546,7 +542,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
         {
             var scalarList = 
                 ScalarList.FilterById(
-                    id => Lookup.IdToGrade(id) == grade
+                    id => BasisBladeDataLookup.BasisBladeGrade(id) == grade
                 );
 
             return new GaMultivector(BasisSet, scalarList);
@@ -557,7 +553,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
         {
             var scalarList = 
                 ScalarList.FilterById(
-                    id => Lookup.IdToGrade(id) is 0 or 2
+                    id => BasisBladeDataLookup.BasisBladeGrade(id) is 0 or 2
                 );
 
             return new GaMultivector(BasisSet, scalarList);
@@ -568,7 +564,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
         {
             var scalarList = 
                 ScalarList.FilterById(
-                    id => Lookup.IdToGrade(id).IsEven()
+                    id => BasisBladeDataLookup.BasisBladeGrade(id).IsEven()
                 );
 
             return new GaMultivector(BasisSet, scalarList);
@@ -579,7 +575,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
         {
             var scalarList = 
                 ScalarList.FilterById(
-                    id => Lookup.IdToGrade(id).IsOdd()
+                    id => BasisBladeDataLookup.BasisBladeGrade(id).IsOdd()
                 );
 
             return new GaMultivector(BasisSet, scalarList);
@@ -591,7 +587,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
         {
             var scalarList = ScalarList.MapNumbers(
                 (id, scalar) => 
-                    Lookup.HasNegativeGradeInvolution(id) 
+                    BasisBladeDataLookup.GradeInvolutionIsNegative(id) 
                         ? -scalar : scalar
             );
 
@@ -603,7 +599,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
         {
             var scalarList = ScalarList.MapNumbers(
                 (id, scalar) => 
-                    Lookup.HasNegativeReverse(id) 
+                    BasisBladeDataLookup.ReverseIsNegative(id) 
                         ? -scalar : scalar
             );
 
@@ -615,7 +611,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
         {
             var scalarList = ScalarList.MapNumbers(
                 (id, scalar) => 
-                    Lookup.HasNegativeCliffordConjugate(id) 
+                    BasisBladeDataLookup.CliffordConjugateIsNegative(id) 
                         ? -scalar : scalar
             );
 
@@ -746,7 +742,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
             if (BasisSet.BasisSetSignature != mv2.BasisSet.BasisSetSignature)
                 throw new InvalidOperationException();
 
-            var signature = BasisSet.ESpSquaredSignature(mv2.Id);
+            var signature = BasisSet.ESpSquaredSign(mv2.Id);
 
             return signature * this[mv2.Id] * mv2.Scalar;
         }
@@ -766,7 +762,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
             if (BasisSet.BasisSetSignature != mv2.BasisSet.BasisSetSignature)
                 throw new InvalidOperationException();
 
-            var signature = BasisSet.SpSquaredSignature(mv2.Id);
+            var signature = BasisSet.SpSquaredSign(mv2.Id);
 
             if (signature == 0) return 0d;
 

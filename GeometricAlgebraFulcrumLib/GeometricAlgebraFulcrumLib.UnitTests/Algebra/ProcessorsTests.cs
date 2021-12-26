@@ -8,8 +8,8 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Algebra
     {
         private static uint VSpaceDimension = 6;
 
-        private readonly GeometricAlgebraBasisSet _basisSet 
-            = GeometricAlgebraBasisSet.CreateConformal(VSpaceDimension);
+        private readonly BasisBladeSet _basisSet 
+            = BasisBladeSet.CreateConformal(VSpaceDimension);
 
 
     }

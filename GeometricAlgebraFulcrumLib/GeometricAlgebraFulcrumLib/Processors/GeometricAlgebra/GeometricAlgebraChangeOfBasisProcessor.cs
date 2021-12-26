@@ -19,7 +19,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
         public override uint VSpaceDimension 
             => BasisSet.VSpaceDimension;
 
-        public override GeometricAlgebraBasisSet BasisSet { get; }
+        public override BasisBladeSet BasisSet { get; }
 
         public override bool IsEuclidean 
             => false;
@@ -37,7 +37,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
         public override KVectorStorage<T> PseudoScalarReverse { get; }
 
 
-        internal GeometricAlgebraChangeOfBasisProcessor([NotNull] GeometricAlgebraBasisSet basisSet, [NotNull] IOutermorphism<T> omTargetToOrthonormal, [NotNull] IOutermorphism<T> omOrthonormalToTarget) 
+        internal GeometricAlgebraChangeOfBasisProcessor([NotNull] BasisBladeSet basisSet, [NotNull] IOutermorphism<T> omTargetToOrthonormal, [NotNull] IOutermorphism<T> omOrthonormalToTarget) 
             : base(omTargetToOrthonormal.LinearProcessor)
         {
             BasisSet = basisSet;

@@ -9,7 +9,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Maps
     public class GaScaledPureRotor :
         IGeometricElement
     {
-        public GaBasisSet BasisSet 
+        public BasisBladeSet BasisSet 
             => Multivector.BasisSet;
 
         public double ScalingFactor { get; }

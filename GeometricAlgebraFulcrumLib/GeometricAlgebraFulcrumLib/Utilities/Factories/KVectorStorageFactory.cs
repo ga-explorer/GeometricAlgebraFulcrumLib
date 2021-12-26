@@ -88,7 +88,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
                 vSpaceDimension.PseudoScalarIndex();
 
             var scalar = 
-                vSpaceDimension.GradeHasNegativeReverse()
+                vSpaceDimension.ReverseIsNegativeOfGrade()
                     ? scalarProcessor.ScalarMinusOne 
                     : scalarProcessor.ScalarOne;
 
@@ -108,7 +108,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVectorStorage<T> CreatePseudoScalarInverseStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet)
+        public static KVectorStorage<T> CreatePseudoScalarInverseStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, BasisBladeSet basisSet)
         {
             return scalarProcessor
                 .BladeInverse(

@@ -19,8 +19,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.Basic
 {
     public static class EuclideanMultivectorOperations3D
     {
-        public static GeometricAlgebraBasisSet BasisSet { get; }
-            = GeometricAlgebraBasisSet.CreateEuclidean(3);
+        public static BasisBladeSet BasisSet { get; }
+            = BasisBladeSet.CreateEuclidean(3);
 
         // This is a pre-defined scalar processor for symbolic
         // Wolfram Mathematica scalars using Expr objects
@@ -256,19 +256,19 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.Basic
             Composer.AppendHeader("Product Tables", 2);
 
             Composer.AppendHeader("Geometric Product Table:", 3);
-            Composer.AppendLineAtNewLine(CreateProductTable(BasisSet.GpSignature).ToString());
+            Composer.AppendLineAtNewLine(CreateProductTable(BasisSet.GpSign).ToString());
             Composer.AppendLineAtNewLine();
 
             Composer.AppendHeader("Outer Product Table:", 3);
-            Composer.AppendLineAtNewLine(CreateProductTable(BasisSet.OpSignature).ToString());
+            Composer.AppendLineAtNewLine(CreateProductTable(BasisSet.OpSign).ToString());
             Composer.AppendLineAtNewLine();
 
             Composer.AppendHeader("Left Contraction Product Table:", 3);
-            Composer.AppendLineAtNewLine(CreateProductTable(BasisSet.LcpSignature).ToString());
+            Composer.AppendLineAtNewLine(CreateProductTable(BasisSet.LcpSign).ToString());
             Composer.AppendLineAtNewLine();
 
             Composer.AppendHeader("Right Contraction Product Table:", 3);
-            Composer.AppendLineAtNewLine(CreateProductTable(BasisSet.RcpSignature).ToString());
+            Composer.AppendLineAtNewLine(CreateProductTable(BasisSet.RcpSign).ToString());
             Composer.AppendLineAtNewLine();
 
             Composer.AppendHeader("Multivector Definitions", 2);

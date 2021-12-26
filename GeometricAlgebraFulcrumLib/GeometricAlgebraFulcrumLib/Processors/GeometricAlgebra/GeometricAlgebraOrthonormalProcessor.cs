@@ -16,7 +16,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
         public override uint VSpaceDimension 
             => BasisSet.VSpaceDimension;
 
-        public override GeometricAlgebraBasisSet BasisSet { get; }
+        public override BasisBladeSet BasisSet { get; }
 
         public override bool IsOrthonormal
             => true;
@@ -55,7 +55,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
         public override KVectorStorage<T> PseudoScalarReverse { get; }
 
 
-        internal GeometricAlgebraOrthonormalProcessor(IScalarAlgebraProcessor<T> scalarProcessor, [NotNull] GeometricAlgebraBasisSet basisSet) 
+        internal GeometricAlgebraOrthonormalProcessor(IScalarAlgebraProcessor<T> scalarProcessor, [NotNull] BasisBladeSet basisSet) 
             : base(scalarProcessor)
         {
             BasisSet = basisSet;
@@ -114,17 +114,17 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
 
         public int GpSignature(ulong id)
         {
-            return BasisSet.GpSquaredSignature(id);
+            return BasisSet.GpSquaredSign(id);
         }
 
         public int GpSignature(ulong id1, ulong id2)
         {
-            return BasisSet.GpSignature(id1, id2);
+            return BasisSet.GpSign(id1, id2);
         }
 
         public int GpReverseSignature(ulong id1, ulong id2)
         {
-            return BasisSet.GpReverseSignature(id1, id2);
+            return BasisSet.GpReverseSign(id1, id2);
         }
 
         public int OpSignature(ulong id1, ulong id2)
@@ -132,52 +132,52 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
             Debug.Assert(id1 < GaSpaceDimension);
             Debug.Assert(id2 < GaSpaceDimension);
 
-            return BasisBladeProductUtils.OpSignature(id1, id2);
+            return BasisBladeProductUtils.OpSign(id1, id2);
         }
 
         public int SpSignature(ulong id)
         {
-            return BasisSet.SpSquaredSignature(id);
+            return BasisSet.SpSquaredSign(id);
         }
 
         public int SpSignature(ulong id1, ulong id2)
         {
-            return BasisSet.SpSignature(id1, id2);
+            return BasisSet.SpSign(id1, id2);
         }
 
         public int NormSquaredSignature(ulong id)
         {
-            return BasisSet.NormSquaredSignature(id);
+            return BasisSet.NormSquaredSign(id);
         }
 
         public int LcpSignature(ulong id1, ulong id2)
         {
-            return BasisSet.LcpSignature(id1, id2);
+            return BasisSet.LcpSign(id1, id2);
         }
 
         public int RcpSignature(ulong id1, ulong id2)
         {
-            return BasisSet.RcpSignature(id1, id2);
+            return BasisSet.RcpSign(id1, id2);
         }
 
         public int FdpSignature(ulong id1, ulong id2)
         {
-            return BasisSet.FdpSignature(id1, id2);
+            return BasisSet.FdpSign(id1, id2);
         }
 
         public int HipSignature(ulong id1, ulong id2)
         {
-            return BasisSet.HipSignature(id1, id2);
+            return BasisSet.HipSign(id1, id2);
         }
 
         public int AcpSignature(ulong id1, ulong id2)
         {
-            return BasisSet.AcpSignature(id1, id2);
+            return BasisSet.AcpSign(id1, id2);
         }
 
         public int CpSignature(ulong id1, ulong id2)
         {
-            return BasisSet.CpSignature(id1, id2);
+            return BasisSet.CpSign(id1, id2);
         }
 
         public override T Sp(IMultivectorStorage<T> mv1)

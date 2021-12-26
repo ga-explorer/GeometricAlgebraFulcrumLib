@@ -22,7 +22,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         public static IScalarAlgebraProcessor<double> ScalarProcessor
             => ScalarAlgebraFloat64Processor.DefaultProcessor;
 
-        public GeometricAlgebraBasisSet BasisSet { get; }
+        public BasisBladeSet BasisSet { get; }
 
         public int Count
             => _idScalarDictionary.Count;
@@ -41,20 +41,20 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
 
         public MultivectorFloat64StorageComposer(uint vSpaceDimension)
         {
-            BasisSet = GeometricAlgebraBasisSet.CreateEuclidean(vSpaceDimension);
+            BasisSet = BasisBladeSet.CreateEuclidean(vSpaceDimension);
         }
 
         public MultivectorFloat64StorageComposer(uint positiveCount, uint negativeCount)
         {
-            BasisSet = GeometricAlgebraBasisSet.Create(positiveCount, negativeCount);
+            BasisSet = BasisBladeSet.Create(positiveCount, negativeCount);
         }
 
         public MultivectorFloat64StorageComposer(uint positiveCount, uint negativeCount, uint zeroCount)
         {
-            BasisSet = GeometricAlgebraBasisSet.Create(positiveCount, negativeCount, zeroCount);
+            BasisSet = BasisBladeSet.Create(positiveCount, negativeCount, zeroCount);
         }
 
-        public MultivectorFloat64StorageComposer([NotNull] GeometricAlgebraBasisSet basisSet)
+        public MultivectorFloat64StorageComposer([NotNull] BasisBladeSet basisSet)
         {
             BasisSet = basisSet;
         }
@@ -86,7 +86,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         public void AddGpTerm(ulong id1, ulong id2, double scalar1, double scalar2)
         {
             var signature =
-                BasisSet.GpSignature(id1, id2);
+                BasisSet.GpSign(id1, id2);
 
             if (signature == 0)
                 return;
@@ -106,9 +106,9 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         public void AddGpReverseTerm(ulong id1, ulong id2, double scalar1, double scalar2)
         {
             var signature =
-                BasisSet.GpSignature(id1, id2);
+                BasisSet.GpSign(id1, id2);
 
-            if (id2.BasisBladeIdHasNegativeReverse())
+            if (id2.ReverseIsNegativeOfBasisBladeId())
                 signature = -signature;
 
             if (signature == 0)
@@ -129,7 +129,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         public void AddOpTerm(ulong id1, ulong id2, double scalar1, double scalar2)
         {
             var signature =
-                BasisSet.OpSignature(id1, id2);
+                BasisSet.OpSign(id1, id2);
 
             if (signature == 0)
                 return;
@@ -149,7 +149,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         public void AddSpTerm(ulong id, double scalar1, double scalar2)
         {
             var signature =
-                BasisSet.SpSquaredSignature(id);
+                BasisSet.SpSquaredSign(id);
 
             if (signature == 0)
                 return;
@@ -168,7 +168,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         public void AddSpTerm(ulong id1, ulong id2, double scalar1, double scalar2)
         {
             var signature =
-                BasisSet.SpSignature(id1, id2);
+                BasisSet.SpSign(id1, id2);
 
             if (signature == 0)
                 return;
@@ -188,7 +188,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         public void AddLcpTerm(ulong id1, ulong id2, double scalar1, double scalar2)
         {
             var signature =
-                BasisSet.LcpSignature(id1, id2);
+                BasisSet.LcpSign(id1, id2);
 
             if (signature == 0)
                 return;
@@ -208,7 +208,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         public void AddRcpTerm(ulong id1, ulong id2, double scalar1, double scalar2)
         {
             var signature =
-                BasisSet.RcpSignature(id1, id2);
+                BasisSet.RcpSign(id1, id2);
 
             if (signature == 0)
                 return;
@@ -228,7 +228,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         public void AddFdpTerm(ulong id1, ulong id2, double scalar1, double scalar2)
         {
             var signature =
-                BasisSet.FdpSignature(id1, id2);
+                BasisSet.FdpSign(id1, id2);
 
             if (signature == 0)
                 return;
@@ -248,7 +248,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         public void AddHipTerm(ulong id1, ulong id2, double scalar1, double scalar2)
         {
             var signature =
-                BasisSet.HipSignature(id1, id2);
+                BasisSet.HipSign(id1, id2);
 
             if (signature == 0)
                 return;
@@ -268,7 +268,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         public void AddAcpTerm(ulong id1, ulong id2, double scalar1, double scalar2)
         {
             var signature =
-                BasisSet.AcpSignature(id1, id2);
+                BasisSet.AcpSign(id1, id2);
 
             if (signature == 0)
                 return;
@@ -288,7 +288,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         public void AddCpTerm(ulong id1, ulong id2, double scalar1, double scalar2)
         {
             var signature =
-                BasisSet.CpSignature(id1, id2);
+                BasisSet.CpSign(id1, id2);
 
             if (signature == 0)
                 return;

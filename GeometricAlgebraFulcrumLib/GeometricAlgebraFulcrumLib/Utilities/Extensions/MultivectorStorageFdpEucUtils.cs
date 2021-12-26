@@ -35,7 +35,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                     var id2 = index2.BasisBladeIndexToId(grade2);
 
                     var signature = 
-                        BasisBladeProductUtils.EFdpSignature(id1, id2);
+                        BasisBladeProductUtils.EFdpSign(id1, id2);
 
                     if (signature == 0) 
                         continue;
@@ -59,7 +59,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IMultivectorStorage<T> EFdp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorStorage<T> mv1, IMultivectorStorage<T> mv2)
         {
-            return scalarProcessor.BilinearProduct(mv1, mv2, BasisBladeProductUtils.EFdpSignature);
+            return scalarProcessor.BilinearProduct(mv1, mv2, BasisBladeProductUtils.EFdpSign);
         }
     }
 }

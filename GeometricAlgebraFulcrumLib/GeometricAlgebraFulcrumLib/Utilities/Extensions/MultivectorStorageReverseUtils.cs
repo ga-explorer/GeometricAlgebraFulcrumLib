@@ -21,31 +21,31 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static KVectorStorage<T> Reverse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, KVectorStorage<T> mv)
         {
-            return scalarProcessor.Negative(mv, BasisBladeUtils.GradeHasNegativeReverse);
+            return scalarProcessor.Negative(mv, BasisBladeUtils.ReverseIsNegativeOfGrade);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IMultivectorGradedStorage<T> Reverse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, MultivectorGradedStorage<T> mv)
         {
-            return scalarProcessor.Negative(mv, BasisBladeUtils.GradeHasNegativeReverse);
+            return scalarProcessor.Negative(mv, BasisBladeUtils.ReverseIsNegativeOfGrade);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IMultivectorGradedStorage<T> Reverse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorGradedStorage<T> mv)
         {
-            return scalarProcessor.Negative(mv, BasisBladeUtils.GradeHasNegativeReverse);
+            return scalarProcessor.Negative(mv, BasisBladeUtils.ReverseIsNegativeOfGrade);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static MultivectorStorage<T> Reverse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, MultivectorStorage<T> mv)
         {
-            return scalarProcessor.Negative(mv, BasisBladeUtils.GradeHasNegativeReverse);
+            return scalarProcessor.Negative(mv, BasisBladeUtils.ReverseIsNegativeOfGrade);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IMultivectorStorage<T> Reverse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorStorage<T> mv)
         {
-            return scalarProcessor.Negative(mv, BasisBladeUtils.GradeHasNegativeReverse);
+            return scalarProcessor.Negative(mv, BasisBladeUtils.ReverseIsNegativeOfGrade);
         }
     }
 }

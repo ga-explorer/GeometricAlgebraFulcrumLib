@@ -267,9 +267,9 @@ namespace NumericalGeometryLib.GeometricAlgebra.Structures
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GaIdScalarRecord GetLeafNodeByIndex(int index)
+        public IdScalarRecord GetLeafNodeByIndex(int index)
         {
-            return new GaIdScalarRecord(
+            return new IdScalarRecord(
                 _leafNodeIDsList[index],
                 _leafNodeScalarsArray[index]
             );
@@ -436,10 +436,10 @@ namespace NumericalGeometryLib.GeometricAlgebra.Structures
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<GaIdScalarRecord> GetIdScalarRecords()
+        public IEnumerable<IdScalarRecord> GetIdScalarRecords()
         {
             for (var i = 0; i < Count; i++)
-                yield return new GaIdScalarRecord(
+                yield return new IdScalarRecord(
                     _leafNodeIDsList[i], 
                     _leafNodeScalarsArray[i]
                 );
@@ -727,10 +727,10 @@ namespace NumericalGeometryLib.GeometricAlgebra.Structures
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<GaIdScalarRecord> GetIndexScalarRecords()
+        public IEnumerable<IdScalarRecord> GetIndexScalarRecords()
         {
             for (var i = 0; i < Count; i++)
-                yield return new GaIdScalarRecord(
+                yield return new IdScalarRecord(
                     _leafNodeIDsList[i], 
                     _leafNodeScalarsArray[i]
                 );

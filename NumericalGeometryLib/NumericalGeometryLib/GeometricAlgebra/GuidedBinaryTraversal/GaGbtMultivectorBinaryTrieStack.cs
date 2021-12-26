@@ -90,7 +90,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.GuidedBinaryTraversal
 
         private int[] BinaryTreeNodeIndexArray { get; }
 
-        public GaBasisSet BasisSet { get; }
+        public BasisBladeSet BasisSet { get; }
         
         public Pair<int> TosBinaryTreeNode { get; private set; }
         
@@ -98,7 +98,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.GuidedBinaryTraversal
 
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal GaGbtMultivectorBinaryTrieStack([NotNull] GaBasisSet basisSet, int capacity, [NotNull] GaMultivectorBinaryTrie binaryTrie)
+        internal GaGbtMultivectorBinaryTrieStack([NotNull] BasisBladeSet basisSet, int capacity, [NotNull] GaMultivectorBinaryTrie binaryTrie)
         {
             Debug.Assert(binaryTrie.TreeDepth > 0);
 

@@ -9,7 +9,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
         IGeometricAlgebraSpace, 
         ILinearAlgebraProcessor<T>
     {
-        GeometricAlgebraBasisSet BasisSet { get; }
+        BasisBladeSet BasisSet { get; }
 
         bool IsOrthonormal { get; }
 

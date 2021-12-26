@@ -105,7 +105,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.GuidedBinaryTraversal
 
         public GaGbtMultivectorBinaryTrieStack MultivectorStack2 { get; }
 
-        public GaBasisSet BasisSet 
+        public BasisBladeSet BasisSet 
             => MultivectorStack1.BasisSet;
         
         public double TosValue1 
@@ -349,24 +349,24 @@ namespace NumericalGeometryLib.GeometricAlgebra.GuidedBinaryTraversal
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private GaIdScalarRecord TosGetEGpIdScalarPair()
+        private IdScalarRecord TosGetEGpIdScalarPair()
         {
             var id1 = TosId1;
             var id2 = TosId2;
 
             var basisBladeSignature = 
-                GaBasisBladeDataLookup.Default.EGpSignature(id1, id2);
+                BasisBladeDataLookup.EGpSign(id1, id2);
 
             var id = id1 ^ id2;
             var scalar = basisBladeSignature * TosValue1 * TosValue2;
 
             //Console.Out.WriteLine($"id1: {id1}, id2: {id2}, value: {value}");
 
-            return new GaIdScalarRecord(id, scalar);
+            return new IdScalarRecord(id, scalar);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private GaIdScalarRecord TosGetGpIdScalarPair(int basisBladeSignature)
+        private IdScalarRecord TosGetGpIdScalarPair(int basisBladeSignature)
         {
             Debug.Assert(basisBladeSignature is 1 or -1);
 
@@ -374,19 +374,19 @@ namespace NumericalGeometryLib.GeometricAlgebra.GuidedBinaryTraversal
             var id2 = TosId2;
 
             basisBladeSignature *= 
-                GaBasisBladeDataLookup.Default.EGpSignature(id1, id2);
+                BasisBladeDataLookup.EGpSign(id1, id2);
 
             var id = id1 ^ id2;
             var scalar = basisBladeSignature * TosValue1 * TosValue2;
 
-            return new GaIdScalarRecord(id, scalar);
+            return new IdScalarRecord(id, scalar);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private double TosGetEGpScalar()
         {
             var basisBladeSignature = 
-                GaBasisBladeDataLookup.Default.EGpSignature(TosId1, TosId2);
+                BasisBladeDataLookup.EGpSign(TosId1, TosId2);
 
             return basisBladeSignature * TosValue1 * TosValue2;
         }
@@ -397,14 +397,14 @@ namespace NumericalGeometryLib.GeometricAlgebra.GuidedBinaryTraversal
             Debug.Assert(basisBladeSignature is 1 or -1);
 
             basisBladeSignature *= 
-                GaBasisBladeDataLookup.Default.EGpSignature(TosId1, TosId2);
+                BasisBladeDataLookup.EGpSign(TosId1, TosId2);
 
             return basisBladeSignature * TosValue1 * TosValue2;
         }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<GaIdScalarRecord> GetOpIdScalarRecords()
+        public IEnumerable<IdScalarRecord> GetOpIdScalarRecords()
         {
             PushRootData();
 
@@ -438,7 +438,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.GuidedBinaryTraversal
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<GaIdScalarRecord> GetEGpIdScalarRecords()
+        public IEnumerable<IdScalarRecord> GetEGpIdScalarRecords()
         {
             PushRootData();
 
@@ -473,7 +473,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.GuidedBinaryTraversal
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<GaIdScalarRecord> GetESpIdScalarRecords()
+        public IEnumerable<IdScalarRecord> GetESpIdScalarRecords()
         {
             PushRootData();
 
@@ -539,7 +539,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.GuidedBinaryTraversal
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<GaIdScalarRecord> GetELcpIdScalarRecords()
+        public IEnumerable<IdScalarRecord> GetELcpIdScalarRecords()
         {
             PushRootData();
 
@@ -573,7 +573,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.GuidedBinaryTraversal
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<GaIdScalarRecord> GetERcpIdScalarRecords()
+        public IEnumerable<IdScalarRecord> GetERcpIdScalarRecords()
         {
             PushRootData();
 
@@ -607,7 +607,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.GuidedBinaryTraversal
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<GaIdScalarRecord> GetEFdpIdScalarRecords()
+        public IEnumerable<IdScalarRecord> GetEFdpIdScalarRecords()
         {
             PushRootData();
 
@@ -643,7 +643,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.GuidedBinaryTraversal
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<GaIdScalarRecord> GetEHipIdScalarRecords()
+        public IEnumerable<IdScalarRecord> GetEHipIdScalarRecords()
         {
             PushRootData();
 
@@ -679,7 +679,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.GuidedBinaryTraversal
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<GaIdScalarRecord> GetEAcpIdScalarRecords()
+        public IEnumerable<IdScalarRecord> GetEAcpIdScalarRecords()
         {
             PushRootData();
 
@@ -715,7 +715,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.GuidedBinaryTraversal
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<GaIdScalarRecord> GetECpIdScalarRecords()
+        public IEnumerable<IdScalarRecord> GetECpIdScalarRecords()
         {
             PushRootData();
 
@@ -752,7 +752,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.GuidedBinaryTraversal
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<GaIdScalarRecord> GetGpIdScalarRecords()
+        public IEnumerable<IdScalarRecord> GetGpIdScalarRecords()
         {
             PushRootData();
 
@@ -816,7 +816,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.GuidedBinaryTraversal
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<GaIdScalarRecord> GetSpIdScalarRecords()
+        public IEnumerable<IdScalarRecord> GetSpIdScalarRecords()
         {
             PushRootData();
 
@@ -920,7 +920,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.GuidedBinaryTraversal
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<GaIdScalarRecord> GetLcpIdScalarRecords()
+        public IEnumerable<IdScalarRecord> GetLcpIdScalarRecords()
         {
             PushRootData();
 
@@ -978,7 +978,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.GuidedBinaryTraversal
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<GaIdScalarRecord> GetRcpIdScalarRecords()
+        public IEnumerable<IdScalarRecord> GetRcpIdScalarRecords()
         {
             PushRootData();
 
@@ -1036,7 +1036,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.GuidedBinaryTraversal
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<GaIdScalarRecord> GetFdpIdScalarRecords()
+        public IEnumerable<IdScalarRecord> GetFdpIdScalarRecords()
         {
             PushRootData();
 
@@ -1101,7 +1101,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.GuidedBinaryTraversal
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<GaIdScalarRecord> GetHipIdScalarRecords()
+        public IEnumerable<IdScalarRecord> GetHipIdScalarRecords()
         {
             PushRootData();
 
@@ -1166,7 +1166,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.GuidedBinaryTraversal
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<GaIdScalarRecord> GetAcpIdScalarRecords()
+        public IEnumerable<IdScalarRecord> GetAcpIdScalarRecords()
         {
             PushRootData();
 
@@ -1231,7 +1231,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.GuidedBinaryTraversal
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<GaIdScalarRecord> GetCpIdScalarRecords()
+        public IEnumerable<IdScalarRecord> GetCpIdScalarRecords()
         {
             PushRootData();
 

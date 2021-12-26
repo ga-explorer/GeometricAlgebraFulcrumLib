@@ -81,17 +81,17 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
 
             GenerateMainInvolutionFunction(
                 GaFuLLanguageOperationKind.UnaryReverse.CreateEuclideanOperationSpecs(), 
-                BasisBladeUtils.GradeHasNegativeReverse
+                BasisBladeUtils.ReverseIsNegativeOfGrade
             );
 
             GenerateMainInvolutionFunction(
                 GaFuLLanguageOperationKind.UnaryGradeInvolution.CreateEuclideanOperationSpecs(), 
-                BasisBladeUtils.GradeHasNegativeGradeInvolution
+                BasisBladeUtils.GradeInvolutionIsNegativeOfGrade
             );
 
             GenerateMainInvolutionFunction(
                 GaFuLLanguageOperationKind.UnaryCliffordConjugate.CreateEuclideanOperationSpecs(), 
-                BasisBladeUtils.GradeHasNegativeCliffordConjugate
+                BasisBladeUtils.CliffordConjugateIsNegativeOfGrade
             );
 
             GenerateKVectorFileFinishCode();

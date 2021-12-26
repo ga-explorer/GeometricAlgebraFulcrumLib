@@ -11,15 +11,15 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
     public static class MultivectorStorageNormOrtUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static BasisBilinearProductResult NormSquared(this GeometricAlgebraBasisSet basisSet, ulong id1)
+        public static BasisBilinearProductResult NormSquared(this BasisBladeSet basisSet, ulong id1)
         {
             return new BasisBilinearProductResult(
-                basisSet.NormSquaredSignature(id1), 
+                basisSet.NormSquaredSign(id1), 
                 0
             );
         }
 
-        public static double Norm(this GeometricAlgebraBasisSet basisSet, IMultivectorStorage<double> mv1)
+        public static double Norm(this BasisBladeSet basisSet, IMultivectorStorage<double> mv1)
         {
             if (!basisSet.IsEuclidean)
                 throw new InvalidOperationException();
@@ -31,7 +31,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 
             foreach (var (id1, scalar1) in idScalarPairs1)
             {
-                var sig = basisSet.NormSquaredSignature(id1);
+                var sig = basisSet.NormSquaredSign(id1);
 
                 if (sig == 0)
                     continue;
@@ -46,7 +46,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             return Math.Sqrt(Math.Abs(spScalar));
         }
 
-        public static double NormSquared(this GeometricAlgebraBasisSet basisSet, IMultivectorStorage<double> mv1)
+        public static double NormSquared(this BasisBladeSet basisSet, IMultivectorStorage<double> mv1)
         {
             if (!basisSet.IsEuclidean)
                 throw new InvalidOperationException();
@@ -58,7 +58,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 
             foreach (var (id1, scalar1) in idScalarPairs1)
             {
-                var sig = basisSet.NormSquaredSignature(id1);
+                var sig = basisSet.NormSquaredSign(id1);
 
                 if (sig == 0)
                     continue;
@@ -74,7 +74,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T Norm<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, T mv1)
+        public static T Norm<T>(this IScalarAlgebraProcessor<T> scalarProcessor, BasisBladeSet basisSet, T mv1)
         {
             return scalarProcessor.SqrtOfAbs(
                 scalarProcessor.Times(mv1, mv1)
@@ -82,13 +82,13 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T NormSquared<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, T mv1)
+        public static T NormSquared<T>(this IScalarAlgebraProcessor<T> scalarProcessor, BasisBladeSet basisSet, T mv1)
         {
             return scalarProcessor.Square(mv1);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T Norm<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, KVectorStorage<T> mv1)
+        public static T Norm<T>(this IScalarAlgebraProcessor<T> scalarProcessor, BasisBladeSet basisSet, KVectorStorage<T> mv1)
         {
             return mv1 switch
             {
@@ -100,7 +100,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             };
         }
         
-        public static T VectorsNorm<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, IReadOnlyList<T> vector1)
+        public static T VectorsNorm<T>(this IScalarAlgebraProcessor<T> scalarProcessor, BasisBladeSet basisSet, IReadOnlyList<T> vector1)
         {
             var spScalar = scalarProcessor.ScalarZero;
 
@@ -108,7 +108,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 
             for (var index = 0; index < count; index++)
             {
-                var sig = basisSet.NormSquaredSignature(index.BasisVectorIndexToId());
+                var sig = basisSet.NormSquaredSign(index.BasisVectorIndexToId());
 
                 if (sig == 0)
                     continue;
@@ -124,7 +124,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             return scalarProcessor.SqrtOfAbs(spScalar);
         }
         
-        public static T VectorsNormSquared<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, IReadOnlyList<T> vector1)
+        public static T VectorsNormSquared<T>(this IScalarAlgebraProcessor<T> scalarProcessor, BasisBladeSet basisSet, IReadOnlyList<T> vector1)
         {
             var spScalar = scalarProcessor.ScalarZero;
 
@@ -132,7 +132,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 
             for (var index = 0; index < count; index++)
             {
-                var sig = basisSet.NormSquaredSignature(index.BasisVectorIndexToId());
+                var sig = basisSet.NormSquaredSign(index.BasisVectorIndexToId());
 
                 if (sig == 0)
                     continue;
@@ -149,7 +149,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T Norm<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, VectorStorage<T> mv1)
+        public static T Norm<T>(this IScalarAlgebraProcessor<T> scalarProcessor, BasisBladeSet basisSet, VectorStorage<T> mv1)
         {
             var indexScalarPairs1 = 
                 mv1.GetLinVectorIndexScalarStorage();
@@ -158,7 +158,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 
             foreach (var (index, scalar1) in indexScalarPairs1.GetIndexScalarRecords())
             {
-                var sig = basisSet.NormSquaredSignature(index.BasisVectorIndexToId());
+                var sig = basisSet.NormSquaredSign(index.BasisVectorIndexToId());
 
                 if (sig == 0)
                     continue;
@@ -174,7 +174,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T NormSquared<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, VectorStorage<T> mv1)
+        public static T NormSquared<T>(this IScalarAlgebraProcessor<T> scalarProcessor, BasisBladeSet basisSet, VectorStorage<T> mv1)
         {
             var indexScalarPairs1 = 
                 mv1.GetLinVectorIndexScalarStorage();
@@ -183,7 +183,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 
             foreach (var (index, scalar1) in indexScalarPairs1.GetIndexScalarRecords())
             {
-                var sig = basisSet.NormSquaredSignature(index.BasisVectorIndexToId());
+                var sig = basisSet.NormSquaredSign(index.BasisVectorIndexToId());
 
                 if (sig == 0)
                     continue;
@@ -198,7 +198,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             return spScalar;
         }
 
-        private static T NormAsScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, KVectorStorage<T> mv1)
+        private static T NormAsScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, BasisBladeSet basisSet, KVectorStorage<T> mv1)
         {
             var grade = mv1.Grade;
             var spScalar = scalarProcessor.ScalarZero;
@@ -209,7 +209,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             foreach (var (index, scalar1) in indexScalarPairs1.GetIndexScalarRecords())
             {
                 var id = index.BasisBladeIndexToId(grade);
-                var sig = basisSet.NormSquaredSignature(id);
+                var sig = basisSet.NormSquaredSign(id);
 
                 if (sig == 0)
                     continue;
@@ -224,7 +224,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             return scalarProcessor.SqrtOfAbs(spScalar);
         }
 
-        private static T NormSquaredAsScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, KVectorStorage<T> mv1)
+        private static T NormSquaredAsScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, BasisBladeSet basisSet, KVectorStorage<T> mv1)
         {
             var grade = mv1.Grade;
             var spScalar = scalarProcessor.ScalarZero;
@@ -235,7 +235,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             foreach (var (index, scalar1) in indexScalarPairs1.GetIndexScalarRecords())
             {
                 var id = index.BasisBladeIndexToId(grade);
-                var sig = basisSet.NormSquaredSignature(id);
+                var sig = basisSet.NormSquaredSign(id);
 
                 if (sig == 0)
                     continue;
@@ -251,7 +251,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T NormSquared<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, KVectorStorage<T> mv1)
+        public static T NormSquared<T>(this IScalarAlgebraProcessor<T> scalarProcessor, BasisBladeSet basisSet, KVectorStorage<T> mv1)
         {
             return mv1 switch
             {
@@ -260,7 +260,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             };
         }
 
-        private static T NormAsScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, IMultivectorStorage<T> mv1)
+        private static T NormAsScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, BasisBladeSet basisSet, IMultivectorStorage<T> mv1)
         {
             var spScalar = scalarProcessor.ScalarZero;
 
@@ -269,7 +269,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 
             foreach (var (id, scalar1) in idScalarDictionary1.GetIndexScalarRecords())
             {
-                var sig = basisSet.NormSquaredSignature(id);
+                var sig = basisSet.NormSquaredSign(id);
 
                 if (sig == 0)
                     continue;
@@ -284,7 +284,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             return scalarProcessor.SqrtOfAbs(spScalar);
         }
 
-        private static T NormSquaredAsScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, IMultivectorStorage<T> mv1)
+        private static T NormSquaredAsScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, BasisBladeSet basisSet, IMultivectorStorage<T> mv1)
         {
             var spScalar = scalarProcessor.ScalarZero;
 
@@ -293,7 +293,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 
             foreach (var (id, scalar1) in idScalarDictionary1.GetIndexScalarRecords())
             {
-                var sig = basisSet.NormSquaredSignature(id);
+                var sig = basisSet.NormSquaredSign(id);
 
                 if (sig == 0)
                     continue;
@@ -309,7 +309,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T Norm<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, IMultivectorStorage<T> mv1)
+        public static T Norm<T>(this IScalarAlgebraProcessor<T> scalarProcessor, BasisBladeSet basisSet, IMultivectorStorage<T> mv1)
         {
             return mv1 switch
             {
@@ -320,7 +320,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T NormSquared<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, IMultivectorStorage<T> mv1)
+        public static T NormSquared<T>(this IScalarAlgebraProcessor<T> scalarProcessor, BasisBladeSet basisSet, IMultivectorStorage<T> mv1)
         {
             return mv1 switch
             {

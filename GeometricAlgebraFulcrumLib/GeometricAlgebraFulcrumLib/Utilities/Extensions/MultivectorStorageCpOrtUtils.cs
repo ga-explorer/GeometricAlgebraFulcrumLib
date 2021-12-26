@@ -10,15 +10,15 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
     public static class MultivectorStorageCpOrtUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static BasisBilinearProductResult Cp(this GeometricAlgebraBasisSet basisSet, ulong id1, ulong id2)
+        public static BasisBilinearProductResult Cp(this BasisBladeSet basisSet, ulong id1, ulong id2)
         {
             return new BasisBilinearProductResult(
-                basisSet.CpSignature(id1, id2), 
+                basisSet.CpSign(id1, id2), 
                 id1 ^ id2
             );
         }
         
-        public static IMultivectorStorage<double> Cp(this GeometricAlgebraBasisSet basisSet, IMultivectorStorage<double> mv1, IMultivectorStorage<double> mv2)
+        public static IMultivectorStorage<double> Cp(this BasisBladeSet basisSet, IMultivectorStorage<double> mv1, IMultivectorStorage<double> mv2)
         {
             var composer = 
                 new MultivectorFloat64StorageComposer(basisSet);
@@ -39,11 +39,11 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorStorage<T> Cp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, IMultivectorStorage<T> mv1, IMultivectorStorage<T> mv2)
+        public static IMultivectorStorage<T> Cp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, BasisBladeSet basisSet, IMultivectorStorage<T> mv1, IMultivectorStorage<T> mv2)
         {
             return basisSet.IsEuclidean
                 ? scalarProcessor.ECp(mv1, mv2)
-                : scalarProcessor.BilinearProduct(mv1, mv2, basisSet.CpSignature);
+                : scalarProcessor.BilinearProduct(mv1, mv2, basisSet.CpSign);
         }
 
 

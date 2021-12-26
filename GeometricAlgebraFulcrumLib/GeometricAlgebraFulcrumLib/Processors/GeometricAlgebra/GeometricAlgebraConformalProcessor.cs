@@ -17,7 +17,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
         internal GeometricAlgebraConformalProcessor(IScalarAlgebraProcessor<T> scalarProcessor, uint vSpaceDimension) 
             : base(
                 scalarProcessor, 
-                GeometricAlgebraBasisSet.CreateConformal(vSpaceDimension)
+                BasisBladeSet.CreateConformal(vSpaceDimension)
             )
         {
             InfinityBasisVector = GetInfinityBasisVectorStorage().CreateVector(this);

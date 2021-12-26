@@ -181,7 +181,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.ProductIterator
         }
 
 
-        public T GetSpScalar(KVectorStorage<T> storage1, KVectorStorage<T> storage2, GeometricAlgebraBasisSet basisSet)
+        public T GetSpScalar(KVectorStorage<T> storage1, KVectorStorage<T> storage2, BasisBladeSet basisSet)
         {
             _termsIterator.Storage1 = storage1;
             _termsIterator.Storage2 = storage2;
@@ -191,7 +191,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.ProductIterator
             );
         }
 
-        public KVectorStorage<T> GetLcpKVector(KVectorStorage<T> storage1, KVectorStorage<T> storage2, GeometricAlgebraBasisSet basisSet)
+        public KVectorStorage<T> GetLcpKVector(KVectorStorage<T> storage1, KVectorStorage<T> storage2, BasisBladeSet basisSet)
         {
             if (storage2.Grade < storage1.Grade)
                 return KVectorStorage<T>.ZeroScalar;
@@ -210,7 +210,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.ProductIterator
             return storage.CreateKVectorStorage(grade);
         }
 
-        public KVectorStorage<T> GetRcpKVector(KVectorStorage<T> storage1, KVectorStorage<T> storage2, GeometricAlgebraBasisSet basisSet)
+        public KVectorStorage<T> GetRcpKVector(KVectorStorage<T> storage1, KVectorStorage<T> storage2, BasisBladeSet basisSet)
         {
             if (storage1.Grade < storage2.Grade)
                 return KVectorStorage<T>.ZeroScalar;
@@ -229,7 +229,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.ProductIterator
             return storage.CreateKVectorStorage(grade);
         }
 
-        public KVectorStorage<T> GetHipKVector(KVectorStorage<T> storage1, KVectorStorage<T> storage2, GeometricAlgebraBasisSet basisSet)
+        public KVectorStorage<T> GetHipKVector(KVectorStorage<T> storage1, KVectorStorage<T> storage2, BasisBladeSet basisSet)
         {
             if (storage1.Grade < 1 || storage2.Grade < 1)
                 return KVectorStorage<T>.ZeroScalar;
@@ -248,7 +248,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.ProductIterator
             return storage.CreateKVectorStorage(grade);
         }
 
-        public KVectorStorage<T> GetFdpKVector(KVectorStorage<T> storage1, KVectorStorage<T> storage2, GeometricAlgebraBasisSet basisSet)
+        public KVectorStorage<T> GetFdpKVector(KVectorStorage<T> storage1, KVectorStorage<T> storage2, BasisBladeSet basisSet)
         {
             var grade = (uint) Math.Abs(storage1.Grade - storage2.Grade);
             var storage = ScalarProcessor.CreateVectorStorageComposer();
@@ -323,7 +323,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.ProductIterator
         }
 
 
-        public IEnumerable<KVectorStorage<T>> GetELcpKVectors(GeometricAlgebraBasisSet basisSet)
+        public IEnumerable<KVectorStorage<T>> GetELcpKVectors(BasisBladeSet basisSet)
         {
             foreach (var storage1 in Storages1)
             {
@@ -334,7 +334,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.ProductIterator
             }
         }
 
-        public IEnumerable<KVectorStorage<T>> GetERcpKVectors(GeometricAlgebraBasisSet basisSet)
+        public IEnumerable<KVectorStorage<T>> GetERcpKVectors(BasisBladeSet basisSet)
         {
             foreach (var storage1 in Storages1)
             {
@@ -345,14 +345,14 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.ProductIterator
             }
         }
 
-        public IEnumerable<KVectorStorage<T>> GetEHipKVectors(GeometricAlgebraBasisSet basisSet)
+        public IEnumerable<KVectorStorage<T>> GetEHipKVectors(BasisBladeSet basisSet)
         {
             foreach (var storage1 in Storages1.Where(s => s.Grade > 0))
             foreach (var storage2 in Storages2.Where(s => s.Grade > 0))
                 yield return GetHipKVector(storage1, storage2, basisSet);
         }
 
-        public IEnumerable<KVectorStorage<T>> GetEFdpKVectors(GeometricAlgebraBasisSet basisSet)
+        public IEnumerable<KVectorStorage<T>> GetEFdpKVectors(BasisBladeSet basisSet)
         {
             foreach (var storage1 in Storages1)
             foreach (var storage2 in Storages2)

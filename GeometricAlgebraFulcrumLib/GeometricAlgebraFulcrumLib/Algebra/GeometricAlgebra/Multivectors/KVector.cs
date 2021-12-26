@@ -1230,7 +1230,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public KVector<T> Reverse()
         {
-            return Grade.GradeHasNegativeReverse()
+            return Grade.ReverseIsNegativeOfGrade()
                 ? new KVector<T>(GeometricProcessor, GeometricProcessor.Negative(KVectorStorage))
                 : this;
         }
@@ -1238,7 +1238,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public KVector<T> GradeInvolution()
         {
-            return Grade.GradeHasNegativeGradeInvolution()
+            return Grade.GradeInvolutionIsNegativeOfGrade()
                 ? new KVector<T>(GeometricProcessor, GeometricProcessor.Negative(KVectorStorage))
                 : this;
         }
@@ -1246,7 +1246,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public KVector<T> CliffordConjugate()
         {
-            return Grade.GradeHasNegativeCliffordConjugate()
+            return Grade.CliffordConjugateIsNegativeOfGrade()
                 ? new KVector<T>(GeometricProcessor, GeometricProcessor.Negative(KVectorStorage))
                 : this;
         }

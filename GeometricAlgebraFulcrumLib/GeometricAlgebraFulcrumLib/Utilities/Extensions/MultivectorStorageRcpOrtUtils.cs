@@ -10,18 +10,18 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
     public static class MultivectorStorageRcpOrtUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T Rcp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, T mv1, T mv2)
+        public static T Rcp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, BasisBladeSet basisSet, T mv1, T mv2)
         {
             return scalarProcessor.Times(mv1, mv2);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T VectorsRcp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, IReadOnlyList<T> vector1, IReadOnlyList<T> vector2)
+        public static T VectorsRcp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, BasisBladeSet basisSet, IReadOnlyList<T> vector1, IReadOnlyList<T> vector2)
         {
             return scalarProcessor.VectorsESp(vector1, vector2);
         }
         
-        private static T RcpAsScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, VectorStorage<T> mv1, VectorStorage<T> mv2)
+        private static T RcpAsScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, BasisBladeSet basisSet, VectorStorage<T> mv1, VectorStorage<T> mv2)
         {
             var indexScalarPairs1 = 
                 mv1.GetLinVectorIndexScalarStorage();
@@ -37,7 +37,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                     continue;
 
                 var id = index.BasisVectorIndexToId();
-                var sig = basisSet.SpSquaredSignature(id);
+                var sig = basisSet.SpSquaredSign(id);
 
                 if (sig == 0)
                     continue;
@@ -52,12 +52,12 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             return lcpScalar;
         }
 
-        public static T Rcp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, VectorStorage<T> mv1, VectorStorage<T> mv2)
+        public static T Rcp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, BasisBladeSet basisSet, VectorStorage<T> mv1, VectorStorage<T> mv2)
         {
             return scalarProcessor.RcpAsScalar(basisSet, mv1, mv2);
         }
 
-        private static KVectorStorage<T> RcpAsKVector<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, KVectorStorage<T> mv1, KVectorStorage<T> mv2)
+        private static KVectorStorage<T> RcpAsKVector<T>(this IScalarAlgebraProcessor<T> scalarProcessor, BasisBladeSet basisSet, KVectorStorage<T> mv1, KVectorStorage<T> mv2)
         {
             if (mv2.Grade > mv1.Grade)
                 return KVectorStorage<T>.ZeroScalar;
@@ -87,7 +87,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                     var id2 = BasisBladeUtils.BasisBladeGradeIndexToId(grade2, index2);
 
                     var sig = 
-                        basisSet.RcpSignature(id1, id2);
+                        basisSet.RcpSign(id1, id2);
 
                     if (sig == 0) 
                         continue;
@@ -108,7 +108,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVectorStorage<T> Rcp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, KVectorStorage<T> mv1, KVectorStorage<T> mv2)
+        public static KVectorStorage<T> Rcp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, BasisBladeSet basisSet, KVectorStorage<T> mv1, KVectorStorage<T> mv2)
         {
             if (mv2.Grade > mv1.Grade)
                 return KVectorStorage<T>.ZeroScalar;
@@ -129,7 +129,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             };
         }
 
-        private static IMultivectorGradedStorage<T> RcpAsMultivectorGraded<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, IMultivectorGradedStorage<T> mv1, IMultivectorGradedStorage<T> mv2)
+        private static IMultivectorGradedStorage<T> RcpAsMultivectorGraded<T>(this IScalarAlgebraProcessor<T> scalarProcessor, BasisBladeSet basisSet, IMultivectorGradedStorage<T> mv1, IMultivectorGradedStorage<T> mv2)
         {
             var composer = 
                 scalarProcessor.CreateMultivectorGradedStorageComposer();
@@ -153,7 +153,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                             if (!indexScalarPairs2.TryGetScalar(index, out var scalar2))
                                 continue;
                             
-                            var sig = basisSet.SpSquaredSignature(id);
+                            var sig = basisSet.SpSquaredSign(id);
 
                             if (sig == 0) 
                                 continue;
@@ -180,7 +180,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                             var id2 = BasisBladeUtils.BasisBladeGradeIndexToId(grade2, index2);
 
                             var sig = 
-                                basisSet.RcpSignature(id1, id2);
+                                basisSet.RcpSign(id1, id2);
 
                             if (sig == 0) 
                                 continue;
@@ -203,7 +203,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorGradedStorage<T> Rcp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, IMultivectorGradedStorage<T> mv1, IMultivectorGradedStorage<T> mv2)
+        public static IMultivectorGradedStorage<T> Rcp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, BasisBladeSet basisSet, IMultivectorGradedStorage<T> mv1, IMultivectorGradedStorage<T> mv2)
         {
             return mv1 switch
             {
@@ -221,7 +221,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             };
         }
 
-        private static MultivectorStorage<T> RcpAsTermsMultivector<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, IMultivectorStorage<T> mv1, IMultivectorStorage<T> mv2)
+        private static MultivectorStorage<T> RcpAsTermsMultivector<T>(this IScalarAlgebraProcessor<T> scalarProcessor, BasisBladeSet basisSet, IMultivectorStorage<T> mv1, IMultivectorStorage<T> mv2)
         {
             var composer = 
                 scalarProcessor.CreateVectorStorageComposer();
@@ -237,7 +237,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                 foreach (var (id2, scalar2) in idScalarPairs2.GetIndexScalarRecords())
                 {
                     var sig = 
-                        basisSet.RcpSignature(id1, id2);
+                        basisSet.RcpSign(id1, id2);
 
                     if (sig == 0) 
                         continue;
@@ -258,13 +258,13 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static MultivectorStorage<T> Rcp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, MultivectorStorage<T> mv1, MultivectorStorage<T> mv2)
+        public static MultivectorStorage<T> Rcp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, BasisBladeSet basisSet, MultivectorStorage<T> mv1, MultivectorStorage<T> mv2)
         {
             return RcpAsTermsMultivector(scalarProcessor, basisSet, mv1, mv2);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorStorage<T> Rcp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, IMultivectorStorage<T> mv1, IMultivectorStorage<T> mv2)
+        public static IMultivectorStorage<T> Rcp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, BasisBladeSet basisSet, IMultivectorStorage<T> mv1, IMultivectorStorage<T> mv2)
         {
             return mv1 switch
             {

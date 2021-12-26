@@ -14,7 +14,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
     {
         public override uint VSpaceDimension { get; }
 
-        public override GeometricAlgebraBasisSet BasisSet { get; }
+        public override BasisBladeSet BasisSet { get; }
 
         public override bool IsOrthonormal 
             => true;
@@ -60,7 +60,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
                 throw new ArgumentOutOfRangeException(nameof(vSpaceDimension));
 
             VSpaceDimension = vSpaceDimension;
-            BasisSet = GeometricAlgebraBasisSet.CreateEuclidean(VSpaceDimension);
+            BasisSet = BasisBladeSet.CreateEuclidean(VSpaceDimension);
             PseudoScalar = ScalarProcessor.CreatePseudoScalarStorage(BasisSet.VSpaceDimension);
 
             PseudoScalarInverse = 
@@ -111,14 +111,14 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
 
             Debug.Assert(id < GaSpaceDimension);
 
-            return BasisBladeProductUtils.EGpSignature(id, id);
+            return BasisBladeProductUtils.EGpSign(id, id);
         }
 
         public int GetBasisBladeSignature(ulong id)
         {
             Debug.Assert(id < GaSpaceDimension);
 
-            return BasisBladeProductUtils.EGpSignature(id, id);
+            return BasisBladeProductUtils.EGpSign(id, id);
         }
 
         public int GetBasisBladeSignature(BasisBlade basisBlade)
@@ -127,14 +127,14 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
 
             Debug.Assert(id < GaSpaceDimension);
 
-            return BasisBladeProductUtils.EGpSignature(id, id);
+            return BasisBladeProductUtils.EGpSign(id, id);
         }
 
         public int GpSignature(ulong id)
         {
             Debug.Assert(id < GaSpaceDimension);
 
-            return BasisBladeProductUtils.EGpSignature(id);
+            return BasisBladeProductUtils.EGpSquaredSign(id);
         }
 
         public int GpSignature(ulong id1, ulong id2)
@@ -142,7 +142,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
             Debug.Assert(id1 < GaSpaceDimension);
             Debug.Assert(id2 < GaSpaceDimension);
 
-            return BasisBladeProductUtils.EGpSignature(id1, id2);
+            return BasisBladeProductUtils.EGpSign(id1, id2);
         }
 
         public int GpReverseSignature(ulong id1, ulong id2)
@@ -150,7 +150,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
             Debug.Assert(id1 < GaSpaceDimension);
             Debug.Assert(id2 < GaSpaceDimension);
 
-            return BasisBladeProductUtils.EGpReverseSignature(id1, id2);
+            return BasisBladeProductUtils.EGpReverseSign(id1, id2);
         }
 
         public int OpSignature(ulong id1, ulong id2)
@@ -158,14 +158,14 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
             Debug.Assert(id1 < GaSpaceDimension);
             Debug.Assert(id2 < GaSpaceDimension);
 
-            return BasisBladeProductUtils.OpSignature(id1, id2);
+            return BasisBladeProductUtils.OpSign(id1, id2);
         }
 
         public int SpSignature(ulong id)
         {
             Debug.Assert(id < GaSpaceDimension);
 
-            return BasisBladeProductUtils.EGpSignature(id);
+            return BasisBladeProductUtils.EGpSquaredSign(id);
         }
 
         public int SpSignature(ulong id1, ulong id2)
@@ -173,14 +173,14 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
             Debug.Assert(id1 < GaSpaceDimension);
             Debug.Assert(id2 < GaSpaceDimension);
 
-            return BasisBladeProductUtils.ESpSignature(id1, id2);
+            return BasisBladeProductUtils.ESpSign(id1, id2);
         }
 
         public int NormSquaredSignature(ulong id)
         {
             Debug.Assert(id < GaSpaceDimension);
 
-            return BasisBladeProductUtils.ENormSquaredSignature(id);
+            return 1;
         }
 
         public int LcpSignature(ulong id1, ulong id2)
@@ -188,7 +188,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
             Debug.Assert(id1 < GaSpaceDimension);
             Debug.Assert(id2 < GaSpaceDimension);
 
-            return BasisBladeProductUtils.ELcpSignature(id1, id2);
+            return BasisBladeProductUtils.ELcpSign(id1, id2);
         }
 
         public int RcpSignature(ulong id1, ulong id2)
@@ -196,7 +196,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
             Debug.Assert(id1 < GaSpaceDimension);
             Debug.Assert(id2 < GaSpaceDimension);
 
-            return BasisBladeProductUtils.ERcpSignature(id1, id2);
+            return BasisBladeProductUtils.ERcpSign(id1, id2);
         }
 
         public int FdpSignature(ulong id1, ulong id2)
@@ -204,7 +204,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
             Debug.Assert(id1 < GaSpaceDimension);
             Debug.Assert(id2 < GaSpaceDimension);
 
-            return BasisBladeProductUtils.EFdpSignature(id1, id2);
+            return BasisBladeProductUtils.EFdpSign(id1, id2);
         }
 
         public int HipSignature(ulong id1, ulong id2)
@@ -212,7 +212,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
             Debug.Assert(id1 < GaSpaceDimension);
             Debug.Assert(id2 < GaSpaceDimension);
 
-            return BasisBladeProductUtils.EHipSignature(id1, id2);
+            return BasisBladeProductUtils.EHipSign(id1, id2);
         }
 
         public int AcpSignature(ulong id1, ulong id2)
@@ -221,7 +221,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
             Debug.Assert(id2 < GaSpaceDimension);
 
             //A acp B = (AB + BA) / 2
-            return BasisBladeProductUtils.EAcpSignature(id1, id2);
+            return BasisBladeProductUtils.EAcpSign(id1, id2);
         }
 
         public int CpSignature(ulong id1, ulong id2)
@@ -230,7 +230,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
             Debug.Assert(id2 < GaSpaceDimension);
 
             //A cp B = (AB - BA) / 2
-            return BasisBladeProductUtils.ECpSignature(id1, id2);
+            return BasisBladeProductUtils.ECpSign(id1, id2);
         }
 
 

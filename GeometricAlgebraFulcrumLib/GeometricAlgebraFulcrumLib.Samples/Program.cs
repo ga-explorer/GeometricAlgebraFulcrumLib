@@ -1,5 +1,4 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Samples.GAPoT;
 using GeometricAlgebraFulcrumLib.UnitTests.Processing;
 
 namespace GeometricAlgebraFulcrumLib.Samples
@@ -8,6 +7,9 @@ namespace GeometricAlgebraFulcrumLib.Samples
     {
         static void Main(string[] args)
         {
+            var testClass = new BasisTests();
+            testClass.TestGpReverse();
+
             //var testClass = new MultivectorStoragesTests();
             //testClass.ClassInit();
 
@@ -19,7 +21,7 @@ namespace GeometricAlgebraFulcrumLib.Samples
             //foreach (var functionName in functionNames)
             //    testClass.AssertCorrectBinaryOperations(functionName);
 
-            //var functionNames = new[] { "leftTimesScalar", "rightTimesScalar", "divideByScalar", "egpSquared", "egpReverse" };
+            //var functionNames = new[] { "leftTimesScalar", "rightTimesScalar", "divideByScalar", "gpSquared", "gpReverse" };
             //foreach (var functionName in functionNames)
             //    testClass.AssertCorrectUnaryOperations(functionName);
 
@@ -32,7 +34,7 @@ namespace GeometricAlgebraFulcrumLib.Samples
 
             //HilbertTransform.Execute();
 
-            MultiDerivativeSample.Execute();
+            //MultiDerivativeSample.Execute();
 
             //Symbolic.AngouriMath.Sample1.Execute();
             //CodeComposer.Sample1.Execute();

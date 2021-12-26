@@ -20,7 +20,7 @@ namespace NumericalGeometryLib.Benchmarks.Benchmarks.GeometricAlgebra.Products
         private GaGbtMultivectorProductsBinaryTrieStack[,] _binaryTrieStacksArray;
 
         
-        public GaBasisSet BasisSet { get; private set; }
+        public BasisBladeSet BasisSet { get; private set; }
 
         [Params(2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)]
         public uint VSpaceDimension { get; set; }
@@ -29,7 +29,7 @@ namespace NumericalGeometryLib.Benchmarks.Benchmarks.GeometricAlgebra.Products
         [GlobalSetup]
         public void Setup()
         {
-            BasisSet = GaBasisSet.CreateEuclidean(VSpaceDimension);
+            BasisSet = BasisBladeSet.CreateEuclidean(VSpaceDimension);
 
             var randGen = new RandomGaMultivectorComposer(BasisSet, 10);
 

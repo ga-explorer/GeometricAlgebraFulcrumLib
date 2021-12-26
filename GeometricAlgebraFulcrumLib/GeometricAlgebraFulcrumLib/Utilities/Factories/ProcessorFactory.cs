@@ -40,7 +40,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         {
             return new GeometricAlgebraOrthonormalProcessor<T>(
                 scalarProcessor, 
-                GeometricAlgebraBasisSet.Create(positiveCount, negativeCount)
+                BasisBladeSet.Create(positiveCount, negativeCount)
             );
         }
 
@@ -49,7 +49,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         {
             return new GeometricAlgebraOrthonormalProcessor<T>(
                 scalarProcessor, 
-                GeometricAlgebraBasisSet.Create(positiveCount, negativeCount, zeroCount)
+                BasisBladeSet.Create(positiveCount, negativeCount, zeroCount)
             );
         }
     }

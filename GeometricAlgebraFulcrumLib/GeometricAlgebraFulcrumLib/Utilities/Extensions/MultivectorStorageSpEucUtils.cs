@@ -29,7 +29,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 
                 var scalar = scalarProcessor.Times(scalar1, scalar1);
 
-                lcpScalar = BasisBladeProductUtils.IsPositiveEGp(id) 
+                lcpScalar = BasisBladeProductUtils.EGpSquaredIsPositive(id) 
                     ? scalarProcessor.Add(lcpScalar, scalar) 
                     : scalarProcessor.Subtract(lcpScalar, scalar);
             }
@@ -49,7 +49,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                 var id = index.BasisVectorIndexToId();
                 var scalar = scalarProcessor.Times(scalar1, scalar1);
 
-                spScalar = BasisBladeProductUtils.IsPositiveEGp(id) 
+                spScalar = BasisBladeProductUtils.EGpSquaredIsPositive(id) 
                     ? scalarProcessor.Add(spScalar, scalar) 
                     : scalarProcessor.Subtract(spScalar, scalar);
             }
@@ -71,7 +71,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                     index.BasisBladeIndexToId(grade);
 
                 var signature = 
-                    BasisBladeProductUtils.EGpSignature(id);
+                    BasisBladeProductUtils.EGpSquaredSign(id);
 
                 //if (signature == 0) 
                 //    continue;
@@ -107,7 +107,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             foreach (var (id, scalar1) in idScalarDictionary1.GetIndexScalarRecords())
             {
                 var signature = 
-                    BasisBladeProductUtils.EGpSignature(id);
+                    BasisBladeProductUtils.EGpSquaredSign(id);
 
                 //if (signature == 0) 
                 //    continue;
@@ -135,15 +135,15 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static BasisBilinearProductResult ESp(this GeometricAlgebraBasisSet basisSet, ulong id1, ulong id2)
+        public static BasisBilinearProductResult ESp(this BasisBladeSet basisSet, ulong id1, ulong id2)
         {
             return new BasisBilinearProductResult(
-                BasisBladeProductUtils.ESpSignature(id1, id2), 
+                BasisBladeProductUtils.ESpSign(id1, id2), 
                 id1 ^ id2
             );
         }
 
-        public static double ESp(this GeometricAlgebraBasisSet basisSet, IMultivectorStorage<double> mv1, IMultivectorStorage<double> mv2)
+        public static double ESp(this BasisBladeSet basisSet, IMultivectorStorage<double> mv1, IMultivectorStorage<double> mv2)
         {
             if (!basisSet.IsEuclidean)
                 throw new InvalidOperationException();
@@ -163,7 +163,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 
                 var scalar = scalar1 * scalar2;
 
-                spScalar = BasisBladeProductUtils.IsPositiveEGp(id1)
+                spScalar = BasisBladeProductUtils.EGpSquaredIsPositive(id1)
                     ? spScalar + scalar
                     : spScalar - scalar;
             }
@@ -191,7 +191,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 
                 var scalar = scalarProcessor.Times(scalar1, scalar2);
 
-                lcpScalar = BasisBladeProductUtils.IsPositiveEGp(id) 
+                lcpScalar = BasisBladeProductUtils.EGpSquaredIsPositive(id) 
                     ? scalarProcessor.Add(lcpScalar, scalar) 
                     : scalarProcessor.Subtract(lcpScalar, scalar);
             }
@@ -217,7 +217,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                 var id = index.BasisVectorIndexToId();
                 var scalar = scalarProcessor.Times(scalar1, scalar2);
 
-                spScalar = BasisBladeProductUtils.IsPositiveEGp(id) 
+                spScalar = BasisBladeProductUtils.EGpSquaredIsPositive(id) 
                     ? scalarProcessor.Add(spScalar, scalar) 
                     : scalarProcessor.Subtract(spScalar, scalar);
             }
@@ -248,7 +248,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                     index.BasisBladeIndexToId(grade);
 
                 var signature = 
-                    BasisBladeProductUtils.EGpSignature(id);
+                    BasisBladeProductUtils.EGpSquaredSign(id);
 
                 //if (signature == 0) 
                 //    continue;
@@ -295,7 +295,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                         index.BasisBladeIndexToId(grade);
 
                     var signature = 
-                        BasisBladeProductUtils.EGpSignature(id);
+                        BasisBladeProductUtils.EGpSquaredSign(id);
 
                     //if (signature == 0) 
                     //    continue;
@@ -339,7 +339,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                     continue;
                 
                 var signature = 
-                    BasisBladeProductUtils.ESpSignature(id);
+                    BasisBladeProductUtils.EGpSquaredSign(id);
 
                 //if (signature == 0) 
                 //    continue;

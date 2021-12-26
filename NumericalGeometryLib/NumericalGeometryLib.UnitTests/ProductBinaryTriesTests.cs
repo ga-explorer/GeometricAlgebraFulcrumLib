@@ -7,12 +7,12 @@ using NumericalGeometryLib.GeometricAlgebra.Structures;
 using NumericalGeometryLib.Random;
 using NUnit.Framework;
 
-namespace NumericalGeometryLib.Tests
+namespace NumericalGeometryLib.UnitTests
 {
     public class ProductBinaryTriesTests
     {
-        private static readonly GaBasisSet BasisSet 
-            = GaBasisSet.Create(2, 2, 2);
+        private static readonly BasisBladeSet BasisSet 
+            = BasisBladeSet.Create(2, 2, 2);
 
         private static readonly RandomGaMultivectorComposer RandomComposer
             = new RandomGaMultivectorComposer(BasisSet, 10);
@@ -24,7 +24,7 @@ namespace NumericalGeometryLib.Tests
             = new List<GaMultivectorBinaryTrie>();
 
 
-        private GaMultivector GetProductDifference(int i, int j, Func<GaMultivectorSparseList, GaMultivectorSparseList, IEnumerable<GaIdScalarRecord>> sparseListFunc, Func<GaMultivectorBinaryTrie, GaMultivectorBinaryTrie, IEnumerable<GaIdScalarRecord>> binaryTrieFunc)
+        private GaMultivector GetProductDifference(int i, int j, Func<GaMultivectorSparseList, GaMultivectorSparseList, IEnumerable<IdScalarRecord>> sparseListFunc, Func<GaMultivectorBinaryTrie, GaMultivectorBinaryTrie, IEnumerable<IdScalarRecord>> binaryTrieFunc)
         {
             var mv1 = BasisSet.SumToMultivector(
                 sparseListFunc(_sparseLists[i], _sparseLists[j])

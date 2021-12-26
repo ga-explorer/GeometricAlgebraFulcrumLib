@@ -17,7 +17,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Maps
         /// <param name="basisSet"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaScaledPureRotor CreateIdentityRotor(this GaBasisSet basisSet)
+        public static GaScaledPureRotor CreateIdentityRotor(this BasisBladeSet basisSet)
         {
             var multivector = basisSet.CreateBasisBlade(0);
 
@@ -29,7 +29,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Maps
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaScaledPureRotor CreateScaledIdentityRotor(this GaBasisSet basisSet, double scalingFactor)
+        public static GaScaledPureRotor CreateScaledIdentityRotor(this BasisBladeSet basisSet, double scalingFactor)
         {
             if (scalingFactor <= 0)
                 throw new ArgumentOutOfRangeException(nameof(scalingFactor));
@@ -251,7 +251,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Maps
         /// <param name="targetVector"></param>
         /// <param name="assumeUnitVector"></param>
         /// <returns></returns>
-        public static GaScaledPureRotor CreateEuclideanPureRotor(this GaBasisSet basisSet, ulong sourceBasisVectorIndex, GaMultivector targetVector, bool assumeUnitVector = false)
+        public static GaScaledPureRotor CreateEuclideanPureRotor(this BasisBladeSet basisSet, ulong sourceBasisVectorIndex, GaMultivector targetVector, bool assumeUnitVector = false)
         {
             var ek = basisSet.CreateBasisVector(sourceBasisVectorIndex);
             var vk = targetVector[sourceBasisVectorIndex];
@@ -320,7 +320,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Maps
         /// <param name="j"></param>
         /// <param name="rotationAngle"></param>
         /// <returns></returns>
-        public static GaScaledPureRotor CreateGivensRotor(this GaBasisSet basisSet, ulong i, ulong j, PlanarAngle rotationAngle)
+        public static GaScaledPureRotor CreateGivensRotor(this BasisBladeSet basisSet, ulong i, ulong j, PlanarAngle rotationAngle)
         {
             Debug.Assert(j != i);
 

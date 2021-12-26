@@ -9,25 +9,25 @@ using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis
 {
-    public sealed record BasisSubSet : 
+    public sealed record BasisBladeSubSet : 
         IGeometricAlgebraSpace
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static BasisSubSet Create(uint vSpaceDimension)
+        internal static BasisBladeSubSet Create(uint vSpaceDimension)
         {
             if (vSpaceDimension < 1)
                 throw new ArgumentOutOfRangeException(nameof(vSpaceDimension));
 
-            return new BasisSubSet(((ulong) vSpaceDimension).GetRange().ToArray());
+            return new BasisBladeSubSet(((ulong) vSpaceDimension).GetRange().ToArray());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static BasisSubSet Create(IReadOnlyList<ulong> basisVectorIndices)
+        internal static BasisBladeSubSet Create(IReadOnlyList<ulong> basisVectorIndices)
         {
             if (basisVectorIndices.Count < 1)
                 throw new ArgumentException(nameof(basisVectorIndices));
 
-            return new BasisSubSet(basisVectorIndices);
+            return new BasisBladeSubSet(basisVectorIndices);
         }
 
 
@@ -53,7 +53,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private BasisSubSet([NotNull] IReadOnlyList<ulong> basisVectorIndices)
+        private BasisBladeSubSet([NotNull] IReadOnlyList<ulong> basisVectorIndices)
         {
             BasisVectorIndices = basisVectorIndices;
         }

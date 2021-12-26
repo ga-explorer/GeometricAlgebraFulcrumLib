@@ -32,7 +32,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                 var id = index.BasisVectorIndexToId();
                 var scalar = scalarProcessor.Times(scalar1, scalar2);
 
-                lcpScalar = BasisBladeProductUtils.IsPositiveEGp(id) 
+                lcpScalar = BasisBladeProductUtils.EGpSquaredIsPositive(id) 
                     ? scalarProcessor.Add(lcpScalar, scalar) 
                     : scalarProcessor.Subtract(lcpScalar, scalar);
             }
@@ -70,7 +70,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                     var id2 = index2.BasisBladeIndexToId(grade2);
 
                     var signature = 
-                        BasisBladeProductUtils.ELcpSignature(id1, id2);
+                        BasisBladeProductUtils.ELcpSign(id1, id2);
 
                     if (signature == 0) 
                         continue;
@@ -134,7 +134,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                                 continue;
                             
                             var signature = 
-                                BasisBladeProductUtils.EGpSignature(id);
+                                BasisBladeProductUtils.EGpSquaredSign(id);
 
                             if (signature == 0) 
                                 continue;
@@ -161,7 +161,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                             var id2 = index2.BasisBladeIndexToId(grade2);
 
                             var signature = 
-                                BasisBladeProductUtils.ELcpSignature(id1, id2);
+                                BasisBladeProductUtils.ELcpSign(id1, id2);
 
                             if (signature == 0) 
                                 continue;
@@ -212,7 +212,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                 foreach (var (id2, scalar2) in idScalarPairs2.GetIndexScalarRecords())
                 {
                     var signature = 
-                        BasisBladeProductUtils.ELcpSignature(id1, id2);
+                        BasisBladeProductUtils.ELcpSign(id1, id2);
 
                     if (signature == 0) 
                         continue;

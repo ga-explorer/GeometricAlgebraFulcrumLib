@@ -41,7 +41,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 
                     //This is correct because we eliminated the scalar case earlier
                     var signature = 
-                        BasisBladeProductUtils.EFdpSignature(id1, id2); 
+                        BasisBladeProductUtils.EFdpSign(id1, id2); 
 
                     if (signature == 0) 
                         continue;
@@ -64,7 +64,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IMultivectorStorage<T> EHip<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorStorage<T> mv1, IMultivectorStorage<T> mv2)
         {
-            return scalarProcessor.BilinearProduct(mv1, mv2, BasisBladeProductUtils.EHipSignature);
+            return scalarProcessor.BilinearProduct(mv1, mv2, BasisBladeProductUtils.EHipSign);
         }
     }
 }

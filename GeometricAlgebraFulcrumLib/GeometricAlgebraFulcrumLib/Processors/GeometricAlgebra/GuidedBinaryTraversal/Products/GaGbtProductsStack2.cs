@@ -145,7 +145,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTra
             var id2 = TosId2;
 
             var id = id1 ^ id2;
-            var scalar = BasisBladeProductUtils.IsNegativeEGp(id1, id2)
+            var scalar = BasisBladeProductUtils.EGpIsNegative(id1, id2)
                 ? ScalarProcessor.NegativeTimes(TosValue1, TosValue2)
                 : ScalarProcessor.Times(TosValue1, TosValue2);
 
@@ -154,15 +154,15 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTra
             return new IndexScalarRecord<T>(id, scalar);
         }
 
-        private IndexScalarRecord<T> TosGetGpIdScalarPair(int basisBladeSignature)
+        private IndexScalarRecord<T> TosGetGpIdScalarPair(int gpSquaredSign)
         {
-            Debug.Assert(basisBladeSignature == 1 || basisBladeSignature == -1);
+            Debug.Assert(gpSquaredSign is 1 or -1);
 
             var id1 = TosId1;
             var id2 = TosId2;
 
             var id = id1 ^ id2;
-            var scalar = BasisBladeProductUtils.IsNegativeGp(basisBladeSignature, id1, id2)
+            var scalar = BasisBladeProductUtils.EGpSign(id1, id2) * gpSquaredSign == -1
                 ? ScalarProcessor.NegativeTimes(TosValue1, TosValue2)
                 : ScalarProcessor.Times(TosValue1, TosValue2);
 
@@ -171,21 +171,21 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTra
 
         private T TosGetEGpScalar()
         {
-            var scalar = BasisBladeProductUtils.IsNegativeEGp(TosId1, TosId2)
+            var scalar = BasisBladeProductUtils.EGpIsNegative(TosId1, TosId2)
                 ? ScalarProcessor.NegativeTimes(TosValue1, TosValue2)
                 : ScalarProcessor.Times(TosValue1, TosValue2);
 
             return scalar;
         }
 
-        private T TosGetGpScalar(int basisBladeSignature)
+        private T TosGetGpScalar(int gpSquaredSign)
         {
-            Debug.Assert(basisBladeSignature == 1 || basisBladeSignature == -1);
+            Debug.Assert(gpSquaredSign is 1 or -1);
 
             var id1 = TosId1;
             var id2 = TosId2;
 
-            var scalar = BasisBladeProductUtils.IsNegativeGp(basisBladeSignature, id1, id2)
+            var scalar = BasisBladeProductUtils.EGpSign(id1, id2) * gpSquaredSign == -1
                 ? ScalarProcessor.NegativeTimes(TosValue1, TosValue2)
                 : ScalarProcessor.Times(TosValue1, TosValue2);
 
@@ -531,7 +531,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTra
         }
 
 
-        public IEnumerable<IndexScalarRecord<T>> GetGpIdScalarRecords(GeometricAlgebraBasisSet basisSet)
+        public IEnumerable<IndexScalarRecord<T>> GetGpIdScalarRecords(BasisBladeSet basisSet)
         {
             PushRootData();
 
@@ -540,13 +540,13 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTra
 
             while (!IsEmpty)
             {
-                var basisBladeSignature = metricStack.Pop();
+                var gpSquaredSign = metricStack.Pop();
 
                 PopNodeData();
 
                 if (TosIsLeaf)
                 {
-                    yield return TosGetGpIdScalarPair(basisBladeSignature);
+                    yield return TosGetGpIdScalarPair(gpSquaredSign);
 
                     continue;
                 }
@@ -561,13 +561,13 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTra
                     if (hasChild20)
                     {
                         PushDataOfChild(0);
-                        metricStack.Push(basisBladeSignature);
+                        metricStack.Push(gpSquaredSign);
                     }
 
                     if (hasChild21)
                     {
                         PushDataOfChild(2);
-                        metricStack.Push(basisBladeSignature);
+                        metricStack.Push(gpSquaredSign);
                     }
                 }
 
@@ -576,7 +576,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTra
                     if (hasChild20)
                     {
                         PushDataOfChild(1);
-                        metricStack.Push(basisBladeSignature);
+                        metricStack.Push(gpSquaredSign);
                     }
 
                     if (hasChild21)
@@ -587,14 +587,14 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTra
                         if (basisVectorSignature != 0)
                         {
                             PushDataOfChild(3);
-                            metricStack.Push(basisBladeSignature * basisVectorSignature);
+                            metricStack.Push(gpSquaredSign * basisVectorSignature);
                         }
                     }
                 }
             }
         }
 
-        public IEnumerable<IndexScalarRecord<T>> GetSpIdScalarRecords(GeometricAlgebraBasisSet basisSet)
+        public IEnumerable<IndexScalarRecord<T>> GetSpIdScalarRecords(BasisBladeSet basisSet)
         {
             PushRootData();
 
@@ -603,13 +603,13 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTra
 
             while (!IsEmpty)
             {
-                var basisBladeSignature = metricStack.Pop();
+                var gpSquaredSign = metricStack.Pop();
 
                 PopNodeData();
 
                 if (TosIsLeaf)
                 {
-                    yield return TosGetGpIdScalarPair(basisBladeSignature);
+                    yield return TosGetGpIdScalarPair(gpSquaredSign);
 
                     continue;
                 }
@@ -624,7 +624,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTra
                     if (hasChild20)
                     {
                         PushDataOfChild(0);
-                        metricStack.Push(basisBladeSignature);
+                        metricStack.Push(gpSquaredSign);
                     }
                 }
 
@@ -638,14 +638,14 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTra
                         if (basisVectorSignature != 0)
                         {
                             PushDataOfChild(3);
-                            metricStack.Push(basisBladeSignature * basisVectorSignature);
+                            metricStack.Push(gpSquaredSign * basisVectorSignature);
                         }
                     }
                 }
             }
         }
 
-        public IEnumerable<T> GetSpScalars(GeometricAlgebraBasisSet basisSet)
+        public IEnumerable<T> GetSpScalars(BasisBladeSet basisSet)
         {
             PushRootData();
 
@@ -654,13 +654,13 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTra
 
             while (!IsEmpty)
             {
-                var basisBladeSignature = metricStack.Pop();
+                var gpSquaredSign = metricStack.Pop();
 
                 PopNodeData();
 
                 if (TosIsLeaf)
                 {
-                    yield return TosGetGpScalar(basisBladeSignature);
+                    yield return TosGetGpScalar(gpSquaredSign);
 
                     continue;
                 }
@@ -675,7 +675,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTra
                     if (hasChild20)
                     {
                         PushDataOfChild(0);
-                        metricStack.Push(basisBladeSignature);
+                        metricStack.Push(gpSquaredSign);
                     }
                 }
 
@@ -689,14 +689,14 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTra
                         if (basisVectorSignature != 0)
                         {
                             PushDataOfChild(3);
-                            metricStack.Push(basisBladeSignature * basisVectorSignature);
+                            metricStack.Push(gpSquaredSign * basisVectorSignature);
                         }
                     }
                 }
             }
         }
 
-        public IEnumerable<IndexScalarRecord<T>> GetLcpIdScalarRecords(GeometricAlgebraBasisSet basisSet)
+        public IEnumerable<IndexScalarRecord<T>> GetLcpIdScalarRecords(BasisBladeSet basisSet)
         {
             PushRootData();
 
@@ -705,13 +705,13 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTra
 
             while (!IsEmpty)
             {
-                var basisBladeSignature = metricStack.Pop();
+                var gpSquaredSign = metricStack.Pop();
 
                 PopNodeData();
 
                 if (TosIsLeaf)
                 {
-                    yield return TosGetGpIdScalarPair(basisBladeSignature);
+                    yield return TosGetGpIdScalarPair(gpSquaredSign);
 
                     continue;
                 }
@@ -726,13 +726,13 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTra
                     if (hasChild20)
                     {
                         PushDataOfChild(0);
-                        metricStack.Push(basisBladeSignature);
+                        metricStack.Push(gpSquaredSign);
                     }
 
                     if (hasChild21)
                     {
                         PushDataOfChild(2);
-                        metricStack.Push(basisBladeSignature);
+                        metricStack.Push(gpSquaredSign);
                     }
                 }
 
@@ -746,14 +746,14 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTra
                         if (basisVectorSignature != 0)
                         {
                             PushDataOfChild(3);
-                            metricStack.Push(basisBladeSignature * basisVectorSignature);
+                            metricStack.Push(gpSquaredSign * basisVectorSignature);
                         }
                     }
                 }
             }
         }
 
-        public IEnumerable<IndexScalarRecord<T>> GetRcpIdScalarRecords(GeometricAlgebraBasisSet basisSet)
+        public IEnumerable<IndexScalarRecord<T>> GetRcpIdScalarRecords(BasisBladeSet basisSet)
         {
             PushRootData();
 
@@ -762,13 +762,13 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTra
 
             while (!IsEmpty)
             {
-                var basisBladeSignature = metricStack.Pop();
+                var gpSquaredSign = metricStack.Pop();
 
                 PopNodeData();
 
                 if (TosIsLeaf)
                 {
-                    yield return TosGetGpIdScalarPair(basisBladeSignature);
+                    yield return TosGetGpIdScalarPair(gpSquaredSign);
 
                     continue;
                 }
@@ -783,7 +783,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTra
                     if (hasChild20)
                     {
                         PushDataOfChild(0);
-                        metricStack.Push(basisBladeSignature);
+                        metricStack.Push(gpSquaredSign);
                     }
                 }
 
@@ -792,7 +792,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTra
                     if (hasChild20)
                     {
                         PushDataOfChild(1);
-                        metricStack.Push(basisBladeSignature);
+                        metricStack.Push(gpSquaredSign);
                     }
 
                     if (hasChild21)
@@ -803,14 +803,14 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTra
                         if (basisVectorSignature != 0)
                         {
                             PushDataOfChild(3);
-                            metricStack.Push(basisBladeSignature * basisVectorSignature);
+                            metricStack.Push(gpSquaredSign * basisVectorSignature);
                         }
                     }
                 }
             }
         }
 
-        public IEnumerable<IndexScalarRecord<T>> GetFdpIdScalarRecords(GeometricAlgebraBasisSet basisSet)
+        public IEnumerable<IndexScalarRecord<T>> GetFdpIdScalarRecords(BasisBladeSet basisSet)
         {
             PushRootData();
 
@@ -819,14 +819,14 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTra
 
             while (!IsEmpty)
             {
-                var basisBladeSignature = metricStack.Pop();
+                var gpSquaredSign = metricStack.Pop();
 
                 PopNodeData();
 
                 if (TosIsLeaf)
                 {
                     if (TosIsNonZeroEFdp)
-                        yield return TosGetGpIdScalarPair(basisBladeSignature);
+                        yield return TosGetGpIdScalarPair(gpSquaredSign);
 
                     continue;
                 }
@@ -841,13 +841,13 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTra
                     if (hasChild20)
                     {
                         PushDataOfChild(0);
-                        metricStack.Push(basisBladeSignature);
+                        metricStack.Push(gpSquaredSign);
                     }
 
                     if (hasChild21)
                     {
                         PushDataOfChild(2);
-                        metricStack.Push(basisBladeSignature);
+                        metricStack.Push(gpSquaredSign);
                     }
                 }
 
@@ -856,7 +856,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTra
                     if (hasChild20)
                     {
                         PushDataOfChild(1);
-                        metricStack.Push(basisBladeSignature);
+                        metricStack.Push(gpSquaredSign);
                     }
 
                     if (hasChild21)
@@ -867,14 +867,14 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTra
                         if (basisVectorSignature != 0)
                         {
                             PushDataOfChild(3);
-                            metricStack.Push(basisBladeSignature * basisVectorSignature);
+                            metricStack.Push(gpSquaredSign * basisVectorSignature);
                         }
                     }
                 }
             }
         }
 
-        public IEnumerable<IndexScalarRecord<T>> GetHipIdScalarRecords(GeometricAlgebraBasisSet basisSet)
+        public IEnumerable<IndexScalarRecord<T>> GetHipIdScalarRecords(BasisBladeSet basisSet)
         {
             PushRootData();
 
@@ -883,14 +883,14 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTra
 
             while (!IsEmpty)
             {
-                var basisBladeSignature = metricStack.Pop();
+                var gpSquaredSign = metricStack.Pop();
 
                 PopNodeData();
 
                 if (TosIsLeaf)
                 {
                     if (TosIsNonZeroEHip)
-                        yield return TosGetGpIdScalarPair(basisBladeSignature);
+                        yield return TosGetGpIdScalarPair(gpSquaredSign);
 
                     continue;
                 }
@@ -905,13 +905,13 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTra
                     if (hasChild20)
                     {
                         PushDataOfChild(0);
-                        metricStack.Push(basisBladeSignature);
+                        metricStack.Push(gpSquaredSign);
                     }
 
                     if (hasChild21)
                     {
                         PushDataOfChild(2);
-                        metricStack.Push(basisBladeSignature);
+                        metricStack.Push(gpSquaredSign);
                     }
                 }
 
@@ -920,7 +920,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTra
                     if (hasChild20)
                     {
                         PushDataOfChild(1);
-                        metricStack.Push(basisBladeSignature);
+                        metricStack.Push(gpSquaredSign);
                     }
 
                     if (hasChild21)
@@ -931,14 +931,14 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTra
                         if (basisVectorSignature != 0)
                         {
                             PushDataOfChild(3);
-                            metricStack.Push(basisBladeSignature * basisVectorSignature);
+                            metricStack.Push(gpSquaredSign * basisVectorSignature);
                         }
                     }
                 }
             }
         }
 
-        public IEnumerable<IndexScalarRecord<T>> GetAcpIdScalarRecords(GeometricAlgebraBasisSet basisSet)
+        public IEnumerable<IndexScalarRecord<T>> GetAcpIdScalarRecords(BasisBladeSet basisSet)
         {
             PushRootData();
 
@@ -947,14 +947,14 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTra
 
             while (!IsEmpty)
             {
-                var basisBladeSignature = metricStack.Pop();
+                var gpSquaredSign = metricStack.Pop();
 
                 PopNodeData();
 
                 if (TosIsLeaf)
                 {
                     if (TosIsNonZeroEAcp)
-                        yield return TosGetGpIdScalarPair(basisBladeSignature);
+                        yield return TosGetGpIdScalarPair(gpSquaredSign);
 
                     continue;
                 }
@@ -969,13 +969,13 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTra
                     if (hasChild20)
                     {
                         PushDataOfChild(0);
-                        metricStack.Push(basisBladeSignature);
+                        metricStack.Push(gpSquaredSign);
                     }
 
                     if (hasChild21)
                     {
                         PushDataOfChild(2);
-                        metricStack.Push(basisBladeSignature);
+                        metricStack.Push(gpSquaredSign);
                     }
                 }
 
@@ -984,7 +984,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTra
                     if (hasChild20)
                     {
                         PushDataOfChild(1);
-                        metricStack.Push(basisBladeSignature);
+                        metricStack.Push(gpSquaredSign);
                     }
 
                     if (hasChild21)
@@ -995,14 +995,14 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTra
                         if (basisVectorSignature != 0)
                         {
                             PushDataOfChild(3);
-                            metricStack.Push(basisBladeSignature * basisVectorSignature);
+                            metricStack.Push(gpSquaredSign * basisVectorSignature);
                         }
                     }
                 }
             }
         }
 
-        public IEnumerable<IndexScalarRecord<T>> GetCpIdScalarRecords(GeometricAlgebraBasisSet basisSet)
+        public IEnumerable<IndexScalarRecord<T>> GetCpIdScalarRecords(BasisBladeSet basisSet)
         {
             PushRootData();
 
@@ -1011,14 +1011,14 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTra
 
             while (!IsEmpty)
             {
-                var basisBladeSignature = metricStack.Pop();
+                var gpSquaredSign = metricStack.Pop();
 
                 PopNodeData();
 
                 if (TosIsLeaf)
                 {
                     if (TosIsNonZeroECp)
-                        yield return TosGetGpIdScalarPair(basisBladeSignature);
+                        yield return TosGetGpIdScalarPair(gpSquaredSign);
 
                     continue;
                 }
@@ -1033,13 +1033,13 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTra
                     if (hasChild20)
                     {
                         PushDataOfChild(0);
-                        metricStack.Push(basisBladeSignature);
+                        metricStack.Push(gpSquaredSign);
                     }
 
                     if (hasChild21)
                     {
                         PushDataOfChild(2);
-                        metricStack.Push(basisBladeSignature);
+                        metricStack.Push(gpSquaredSign);
                     }
                 }
 
@@ -1048,7 +1048,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTra
                     if (hasChild20)
                     {
                         PushDataOfChild(1);
-                        metricStack.Push(basisBladeSignature);
+                        metricStack.Push(gpSquaredSign);
                     }
 
                     if (hasChild21)
@@ -1059,7 +1059,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTra
                         if (basisVectorSignature != 0)
                         {
                             PushDataOfChild(3);
-                            metricStack.Push(basisBladeSignature * basisVectorSignature);
+                            metricStack.Push(gpSquaredSign * basisVectorSignature);
                         }
                     }
                 }

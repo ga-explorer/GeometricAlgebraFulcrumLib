@@ -10,37 +10,37 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
     public static class MultivectorStorageGpEucUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static BasisBilinearProductResult Gp(this GeometricAlgebraBasisSet basisSet, ulong id)
+        public static BasisBilinearProductResult Gp(this BasisBladeSet basisSet, ulong id)
         {
             return new BasisBilinearProductResult(
-                basisSet.GpSquaredSignature(id), 
+                basisSet.GpSquaredSign(id), 
                 0
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static BasisBilinearProductResult GpReverse(this GeometricAlgebraBasisSet basisSet, ulong id)
+        public static BasisBilinearProductResult GpReverse(this BasisBladeSet basisSet, ulong id)
         {
             return new BasisBilinearProductResult(
-                basisSet.GpReverseSignature(id, id), 
+                basisSet.GpReverseSign(id, id), 
                 0
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static BasisBilinearProductResult Gp(this GeometricAlgebraBasisSet basisSet, ulong id1, ulong id2)
+        public static BasisBilinearProductResult Gp(this BasisBladeSet basisSet, ulong id1, ulong id2)
         {
             return new BasisBilinearProductResult(
-                basisSet.GpSignature(id1, id2), 
+                basisSet.GpSign(id1, id2), 
                 id1 ^ id2
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static BasisBilinearProductResult GpReverse(this GeometricAlgebraBasisSet basisSet, ulong id1, ulong id2)
+        public static BasisBilinearProductResult GpReverse(this BasisBladeSet basisSet, ulong id1, ulong id2)
         {
             return new BasisBilinearProductResult(
-                basisSet.GpReverseSignature(id1, id2), 
+                basisSet.GpReverseSign(id1, id2), 
                 id1 ^ id2
             );
         }
@@ -58,7 +58,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                 foreach (var (id2, scalar2) in idScalarPairs.GetIndexScalarRecords())
                 {
                     var basisSet = 
-                        BasisBladeProductUtils.EGpSignature(id1, id2);
+                        BasisBladeProductUtils.EGpSign(id1, id2);
 
                     var id = id1 ^ id2;
                     var scalar = scalarProcessor.Times(scalar1, scalar2);
@@ -133,7 +133,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                 foreach (var (id2, scalar2) in idScalarPairs2.GetIndexScalarRecords())
                 {
                     var basisSet = 
-                        BasisBladeProductUtils.EGpSignature(id1, id2);
+                        BasisBladeProductUtils.EGpSign(id1, id2);
 
                     var id = id1 ^ id2;
                     var scalar = scalarProcessor.Times(scalar1, scalar2);
@@ -169,7 +169,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                 foreach (var (id2, scalar2) in idScalarPairs.GetIndexScalarRecords())
                 {
                     var basisSet = 
-                        BasisBladeProductUtils.EGpReverseSignature(id1, id2);
+                        BasisBladeProductUtils.EGpReverseSign(id1, id2);
 
                     var id = id1 ^ id2;
                     var scalar = scalarProcessor.Times(scalar1, scalar2);
@@ -202,7 +202,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                 foreach (var (id2, scalar2) in idScalarPairs2.GetIndexScalarRecords())
                 {
                     var basisSet = 
-                        BasisBladeProductUtils.EGpSignature(id1, id2);
+                        BasisBladeProductUtils.EGpSign(id1, id2);
 
                     var id = id1 ^ id2;
                     var scalar = scalarProcessor.Times(scalar1, scalar2);

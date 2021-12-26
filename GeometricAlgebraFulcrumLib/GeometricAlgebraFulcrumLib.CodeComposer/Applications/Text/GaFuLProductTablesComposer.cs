@@ -38,7 +38,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.Text
         public static string ComposeHga4D()
         {
             var basisSet = 
-                GeometricAlgebraBasisSet.CreateEuclidean(4);
+                BasisBladeSet.CreateEuclidean(4);
 
             var basisBladeNames = CreateBasisBladeNames("x", "y", "z", "w");
 
@@ -114,7 +114,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.Text
             return rowElement;
         }
 
-        public static MathMlTable ComposeMathMlTable(GeometricAlgebraBasisSet basisSet, Func<ulong, IMathMlElement> getBasisBladeNameFunc)
+        public static MathMlTable ComposeMathMlTable(BasisBladeSet basisSet, Func<ulong, IMathMlElement> getBasisBladeNameFunc)
         {
             var idsList = basisSet.VSpaceDimension.BasisBladeIDsSortedByGrade().ToArray();
             var gaDim = idsList.Length;
@@ -152,7 +152,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.Text
             return table;
         }
 
-        public static string ComposeMathMlTableColumns(GeometricAlgebraBasisSet basisSet, Func<ulong, IMathMlElement> getBasisBladeNameFunc)
+        public static string ComposeMathMlTableColumns(BasisBladeSet basisSet, Func<ulong, IMathMlElement> getBasisBladeNameFunc)
         {
             var textComposer = new LinearTextComposer();
 

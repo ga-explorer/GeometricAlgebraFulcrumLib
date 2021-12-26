@@ -9,7 +9,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IMultivectorStorage<T> EAcp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorStorage<T> mv1, IMultivectorStorage<T> mv2)
         {
-            return scalarProcessor.BilinearProduct(mv1, mv2, BasisBladeProductUtils.EAcpSignature);
+            return scalarProcessor.BilinearProduct(mv1, mv2, BasisBladeProductUtils.EAcpSign);
         }
     }
 }

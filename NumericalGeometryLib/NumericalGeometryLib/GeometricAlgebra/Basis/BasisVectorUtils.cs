@@ -3,7 +3,7 @@ using System.Numerics;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.BitManipulation;
 
-namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
+namespace NumericalGeometryLib.GeometricAlgebra.Basis
 {
     public static class BasisVectorUtils
     {
@@ -92,27 +92,27 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsValidBasisVectorId(this ulong basisVectorId)
         {
-            return basisVectorId <= GeometricAlgebraSpaceUtils.MaxVSpaceBasisBladeId && 
+            return basisVectorId <= BasisBladeDataLookup.MaxBasisBladeId && 
                    BitOperations.PopCount(basisVectorId) == 1;
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsValidBasisVectorId(this ulong basisVectorId, uint vSpaceDimension)
         {
-            return basisVectorId < vSpaceDimension.ToGaSpaceDimension() && 
+            return basisVectorId < (1UL << (int) vSpaceDimension) && 
                    BitOperations.PopCount(basisVectorId) == 1;
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsValidBasisVectorIndex(this int index)
         {
-            return index >= 0 && index < GeometricAlgebraSpaceUtils.MaxVSpaceDimension;
+            return index >= 0 && index < BasisBladeDataLookup.MaxVSpaceDimension;
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsValidBasisVectorIndex(this ulong basisVectorIndex)
         {
-            return basisVectorIndex < GeometricAlgebraSpaceUtils.MaxVSpaceDimension;
+            return basisVectorIndex < BasisBladeDataLookup.MaxVSpaceDimension;
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

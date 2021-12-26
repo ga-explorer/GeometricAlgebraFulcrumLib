@@ -9,24 +9,24 @@ namespace NumericalGeometryLib.Random
 {
     public class RandomGaMultivectorComposer
     {
-        public GaBasisSet BasisSet { get; }
+        public BasisBladeSet BasisSet { get; }
 
         public System.Random RandomGenerator { get; }
 
 
-        public RandomGaMultivectorComposer([NotNull] GaBasisSet basisSet)
+        public RandomGaMultivectorComposer([NotNull] BasisBladeSet basisSet)
         {
             BasisSet = basisSet;
             RandomGenerator = new System.Random();
         }
 
-        public RandomGaMultivectorComposer([NotNull] GaBasisSet basisSet, int seed) 
+        public RandomGaMultivectorComposer([NotNull] BasisBladeSet basisSet, int seed) 
         {
             BasisSet = basisSet;
             RandomGenerator = new System.Random(seed);
         }
 
-        public RandomGaMultivectorComposer([NotNull] GaBasisSet basisSet, [NotNull] System.Random randomGenerator)
+        public RandomGaMultivectorComposer([NotNull] BasisBladeSet basisSet, [NotNull] System.Random randomGenerator)
         {
             BasisSet = basisSet;
             RandomGenerator = randomGenerator;

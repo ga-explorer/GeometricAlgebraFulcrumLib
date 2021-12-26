@@ -9,10 +9,6 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
 {
     public static class GaMultivectorProductUtils
     {
-        private static GaBasisBladeDataLookup Lookup 
-            => GaBasisBladeDataLookup.Default;
-
-
         /// <summary>
         /// True if the outer product of the given euclidean basis blades is zero
         /// </summary>
@@ -195,8 +191,8 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
         public static bool IsZeroEAcp(ulong id1, ulong id2)
         {
             //A acp B = (AB + BA) / 2
-            return Lookup.IsNegativeEGp(id1, id2) != 
-                   Lookup.IsNegativeEGp(id2, id1);
+            return BasisBladeDataLookup.EGpIsNegative(id1, id2) != 
+                   BasisBladeDataLookup.EGpIsNegative(id2, id1);
         }
 
         /// <summary>
@@ -209,8 +205,8 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
         public static bool IsNonZeroEAcp(ulong id1, ulong id2)
         {
             //A acp B = (AB + BA) / 2
-            return Lookup.IsNegativeEGp(id1, id2) == 
-                   Lookup.IsNegativeEGp(id2, id1);
+            return BasisBladeDataLookup.EGpIsNegative(id1, id2) == 
+                   BasisBladeDataLookup.EGpIsNegative(id2, id1);
         }
 
         /// <summary>
@@ -223,8 +219,8 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
         public static bool IsZeroECp(ulong id1, ulong id2)
         {
             //A cp B = (AB - BA) / 2
-            return Lookup.IsNegativeEGp(id1, id2) == 
-                   Lookup.IsNegativeEGp(id2, id1);
+            return BasisBladeDataLookup.EGpIsNegative(id1, id2) == 
+                   BasisBladeDataLookup.EGpIsNegative(id2, id1);
         }
 
         /// <summary>
@@ -237,34 +233,34 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
         public static bool IsNonZeroECp(ulong id1, ulong id2)
         {
             //A cp B = (AB - BA) / 2
-            return Lookup.IsNegativeEGp(id1, id2) != 
-                   Lookup.IsNegativeEGp(id2, id1);
+            return BasisBladeDataLookup.EGpIsNegative(id1, id2) != 
+                   BasisBladeDataLookup.EGpIsNegative(id2, id1);
         }
 
 
-        public static IEnumerable<double> GetESpSquaredScalars(this GaBasisSet basisSet, GaMultivectorSparseList mvList1)
+        public static IEnumerable<double> GetESpSquaredScalars(this BasisBladeSet basisSet, GaMultivectorSparseList mvList1)
         {
             foreach (var (id, scalar1) in mvList1.StoredIdNumberPairs)
             {
-                var signature = basisSet.ESpSquaredSignature(id);
+                var signature = basisSet.ESpSquaredSign(id);
 
                 yield return signature * scalar1 * scalar1;
             }
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<double> GetENormSquaredScalars(this GaBasisSet basisSet, GaMultivectorSparseList mvList1)
+        public static IEnumerable<double> GetENormSquaredScalars(this BasisBladeSet basisSet, GaMultivectorSparseList mvList1)
         {
             return mvList1.StoredNumbers.Select(scalar => scalar * scalar);
         }
         
-        public static IEnumerable<double> GetESpScalars(this GaBasisSet basisSet, GaMultivectorSparseList mvList1, GaMultivectorSparseList mvList2)
+        public static IEnumerable<double> GetESpScalars(this BasisBladeSet basisSet, GaMultivectorSparseList mvList1, GaMultivectorSparseList mvList2)
         {
             if (mvList1.Count <= mvList2.Count)
             {
                 foreach (var (id, scalar1) in mvList1.StoredIdNumberPairs)
                 {
-                    var signature = basisSet.ESpSquaredSignature(id);
+                    var signature = basisSet.ESpSquaredSign(id);
 
                     yield return signature * scalar1 * mvList2[id];
                 }
@@ -273,413 +269,413 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
             {
                 foreach (var (id, scalar2) in mvList2.StoredIdNumberPairs)
                 {
-                    var signature = basisSet.ESpSquaredSignature(id);
+                    var signature = basisSet.ESpSquaredSign(id);
 
                     yield return signature * mvList1[id] * scalar2;
                 }
             }
         }
 
-        public static IEnumerable<GaIdScalarRecord> GetOpIdScalarRecords(this GaBasisSet basisSet, GaMultivectorSparseList mvList1, GaTerm mv2)
+        public static IEnumerable<IdScalarRecord> GetOpIdScalarRecords(this BasisBladeSet basisSet, GaMultivectorSparseList mvList1, GaTerm mv2)
         {
             foreach (var (id1, scalar1) in mvList1.StoredIdNumberPairs)
             {
-                var signature = basisSet.OpSignature(id1, mv2.Id);
+                var signature = basisSet.OpSign(id1, mv2.Id);
 
                 if (signature == 0) continue;
 
-                yield return new GaIdScalarRecord(
+                yield return new IdScalarRecord(
                     id1 ^ mv2.Id,
                     signature * scalar1 * mv2.Scalar
                 );
             }
         }
         
-        public static IEnumerable<GaIdScalarRecord> GetOpIdScalarRecords(this GaBasisSet basisSet, GaTerm mv1, GaMultivectorSparseList mvList2)
+        public static IEnumerable<IdScalarRecord> GetOpIdScalarRecords(this BasisBladeSet basisSet, GaTerm mv1, GaMultivectorSparseList mvList2)
         {
             foreach (var (id2, scalar2) in mvList2.StoredIdNumberPairs)
             {
-                var signature = basisSet.OpSignature(mv1.Id, id2);
+                var signature = basisSet.OpSign(mv1.Id, id2);
 
                 if (signature == 0) continue;
 
-                yield return new GaIdScalarRecord(
+                yield return new IdScalarRecord(
                     mv1.Id ^ id2,
                     signature * mv1.Scalar * scalar2
                 );
             }
         }
 
-        public static IEnumerable<GaIdScalarRecord> GetOpIdScalarRecords(this GaBasisSet basisSet, GaMultivectorSparseList mvList1, GaMultivectorSparseList mvList2)
+        public static IEnumerable<IdScalarRecord> GetOpIdScalarRecords(this BasisBladeSet basisSet, GaMultivectorSparseList mvList1, GaMultivectorSparseList mvList2)
         {
             foreach (var (id1, scalar1) in mvList1.StoredIdNumberPairs)
             foreach (var (id2, scalar2) in mvList2.StoredIdNumberPairs)
             {
-                var signature = basisSet.OpSignature(id1, id2);
+                var signature = basisSet.OpSign(id1, id2);
 
                 if (signature == 0) continue;
 
-                yield return new GaIdScalarRecord(
+                yield return new IdScalarRecord(
                     id1 ^ id2,
                     signature * scalar1 * scalar2
                 );
             }
         }
         
-        public static IEnumerable<GaIdScalarRecord> GetELcpIdScalarRecords(this GaBasisSet basisSet, GaMultivectorSparseList mvList1, GaTerm mv2)
+        public static IEnumerable<IdScalarRecord> GetELcpIdScalarRecords(this BasisBladeSet basisSet, GaMultivectorSparseList mvList1, GaTerm mv2)
         {
             foreach (var (id1, scalar1) in mvList1.StoredIdNumberPairs)
             {
-                var signature = basisSet.ELcpSignature(id1, mv2.Id);
+                var signature = basisSet.ELcpSign(id1, mv2.Id);
 
                 if (signature == 0) continue;
 
-                yield return new GaIdScalarRecord(
+                yield return new IdScalarRecord(
                     id1 ^ mv2.Id,
                     signature * scalar1 * mv2.Scalar
                 );
             }
         }
         
-        public static IEnumerable<GaIdScalarRecord> GetELcpIdScalarRecords(this GaBasisSet basisSet, GaTerm mv1, GaMultivectorSparseList mvList2)
+        public static IEnumerable<IdScalarRecord> GetELcpIdScalarRecords(this BasisBladeSet basisSet, GaTerm mv1, GaMultivectorSparseList mvList2)
         {
             foreach (var (id2, scalar2) in mvList2.StoredIdNumberPairs)
             {
-                var signature = basisSet.ELcpSignature(mv1.Id, id2);
+                var signature = basisSet.ELcpSign(mv1.Id, id2);
 
                 if (signature == 0) continue;
 
-                yield return new GaIdScalarRecord(
+                yield return new IdScalarRecord(
                     mv1.Id ^ id2,
                     signature * mv1.Scalar * scalar2
                 );
             }
         }
 
-        public static IEnumerable<GaIdScalarRecord> GetELcpIdScalarRecords(this GaBasisSet basisSet, GaMultivectorSparseList mvList1, GaMultivectorSparseList mvList2)
+        public static IEnumerable<IdScalarRecord> GetELcpIdScalarRecords(this BasisBladeSet basisSet, GaMultivectorSparseList mvList1, GaMultivectorSparseList mvList2)
         {
             foreach (var (id1, scalar1) in mvList1.StoredIdNumberPairs)
             foreach (var (id2, scalar2) in mvList2.StoredIdNumberPairs)
             {
-                var signature = basisSet.ELcpSignature(id1, id2);
+                var signature = basisSet.ELcpSign(id1, id2);
 
                 if (signature == 0) continue;
 
-                yield return new GaIdScalarRecord(
+                yield return new IdScalarRecord(
                     id1 ^ id2,
                     signature * scalar1 * scalar2
                 );
             }
         }
         
-        public static IEnumerable<GaIdScalarRecord> GetERcpIdScalarRecords(this GaBasisSet basisSet, GaMultivectorSparseList mvList1, GaTerm mv2)
+        public static IEnumerable<IdScalarRecord> GetERcpIdScalarRecords(this BasisBladeSet basisSet, GaMultivectorSparseList mvList1, GaTerm mv2)
         {
             foreach (var (id1, scalar1) in mvList1.StoredIdNumberPairs)
             {
-                var signature = basisSet.ERcpSignature(id1, mv2.Id);
+                var signature = basisSet.ERcpSign(id1, mv2.Id);
 
                 if (signature == 0) continue;
 
-                yield return new GaIdScalarRecord(
+                yield return new IdScalarRecord(
                     id1 ^ mv2.Id,
                     signature * scalar1 * mv2.Scalar
                 );
             }
         }
         
-        public static IEnumerable<GaIdScalarRecord> GetERcpIdScalarRecords(this GaBasisSet basisSet, GaTerm mv1, GaMultivectorSparseList mvList2)
+        public static IEnumerable<IdScalarRecord> GetERcpIdScalarRecords(this BasisBladeSet basisSet, GaTerm mv1, GaMultivectorSparseList mvList2)
         {
             foreach (var (id2, scalar2) in mvList2.StoredIdNumberPairs)
             {
-                var signature = basisSet.ERcpSignature(mv1.Id, id2);
+                var signature = basisSet.ERcpSign(mv1.Id, id2);
 
                 if (signature == 0) continue;
 
-                yield return new GaIdScalarRecord(
+                yield return new IdScalarRecord(
                     mv1.Id ^ id2,
                     signature * mv1.Scalar * scalar2
                 );
             }
         }
 
-        public static IEnumerable<GaIdScalarRecord> GetERcpIdScalarRecords(this GaBasisSet basisSet, GaMultivectorSparseList mvList1, GaMultivectorSparseList mvList2)
+        public static IEnumerable<IdScalarRecord> GetERcpIdScalarRecords(this BasisBladeSet basisSet, GaMultivectorSparseList mvList1, GaMultivectorSparseList mvList2)
         {
             foreach (var (id1, scalar1) in mvList1.StoredIdNumberPairs)
             foreach (var (id2, scalar2) in mvList2.StoredIdNumberPairs)
             {
-                var signature = basisSet.ERcpSignature(id1, id2);
+                var signature = basisSet.ERcpSign(id1, id2);
 
                 if (signature == 0) continue;
 
-                yield return new GaIdScalarRecord(
+                yield return new IdScalarRecord(
                     id1 ^ id2,
                     signature * scalar1 * scalar2
                 );
             }
         }
         
-        public static IEnumerable<GaIdScalarRecord> GetEFdpIdScalarRecords(this GaBasisSet basisSet, GaMultivectorSparseList mvList1, GaTerm mv2)
+        public static IEnumerable<IdScalarRecord> GetEFdpIdScalarRecords(this BasisBladeSet basisSet, GaMultivectorSparseList mvList1, GaTerm mv2)
         {
             foreach (var (id1, scalar1) in mvList1.StoredIdNumberPairs)
             {
-                var signature = basisSet.EFdpSignature(id1, mv2.Id);
+                var signature = basisSet.EFdpSign(id1, mv2.Id);
 
                 if (signature == 0) continue;
 
-                yield return new GaIdScalarRecord(
+                yield return new IdScalarRecord(
                     id1 ^ mv2.Id,
                     signature * scalar1 * mv2.Scalar
                 );
             }
         }
         
-        public static IEnumerable<GaIdScalarRecord> GetEFdpIdScalarRecords(this GaBasisSet basisSet, GaTerm mv1, GaMultivectorSparseList mvList2)
+        public static IEnumerable<IdScalarRecord> GetEFdpIdScalarRecords(this BasisBladeSet basisSet, GaTerm mv1, GaMultivectorSparseList mvList2)
         {
             foreach (var (id2, scalar2) in mvList2.StoredIdNumberPairs)
             {
-                var signature = basisSet.EFdpSignature(mv1.Id, id2);
+                var signature = basisSet.EFdpSign(mv1.Id, id2);
 
                 if (signature == 0) continue;
 
-                yield return new GaIdScalarRecord(
+                yield return new IdScalarRecord(
                     mv1.Id ^ id2,
                     signature * mv1.Scalar * scalar2
                 );
             }
         }
 
-        public static IEnumerable<GaIdScalarRecord> GetEFdpIdScalarRecords(this GaBasisSet basisSet, GaMultivectorSparseList mvList1, GaMultivectorSparseList mvList2)
+        public static IEnumerable<IdScalarRecord> GetEFdpIdScalarRecords(this BasisBladeSet basisSet, GaMultivectorSparseList mvList1, GaMultivectorSparseList mvList2)
         {
             foreach (var (id1, scalar1) in mvList1.StoredIdNumberPairs)
             foreach (var (id2, scalar2) in mvList2.StoredIdNumberPairs)
             {
-                var signature = basisSet.EFdpSignature(id1, id2);
+                var signature = basisSet.EFdpSign(id1, id2);
 
                 if (signature == 0) continue;
 
-                yield return new GaIdScalarRecord(
+                yield return new IdScalarRecord(
                     id1 ^ id2,
                     signature * scalar1 * scalar2
                 );
             }
         }
         
-        public static IEnumerable<GaIdScalarRecord> GetEHipIdScalarRecords(this GaBasisSet basisSet, GaMultivectorSparseList mvList1, GaTerm mv2)
+        public static IEnumerable<IdScalarRecord> GetEHipIdScalarRecords(this BasisBladeSet basisSet, GaMultivectorSparseList mvList1, GaTerm mv2)
         {
             foreach (var (id1, scalar1) in mvList1.StoredIdNumberPairs)
             {
-                var signature = basisSet.EHipSignature(id1, mv2.Id);
+                var signature = basisSet.EHipSign(id1, mv2.Id);
 
                 if (signature == 0) continue;
 
-                yield return new GaIdScalarRecord(
+                yield return new IdScalarRecord(
                     id1 ^ mv2.Id,
                     signature * scalar1 * mv2.Scalar
                 );
             }
         }
         
-        public static IEnumerable<GaIdScalarRecord> GetEHipIdScalarRecords(this GaBasisSet basisSet, GaTerm mv1, GaMultivectorSparseList mvList2)
+        public static IEnumerable<IdScalarRecord> GetEHipIdScalarRecords(this BasisBladeSet basisSet, GaTerm mv1, GaMultivectorSparseList mvList2)
         {
             foreach (var (id2, scalar2) in mvList2.StoredIdNumberPairs)
             {
-                var signature = basisSet.EHipSignature(mv1.Id, id2);
+                var signature = basisSet.EHipSign(mv1.Id, id2);
 
                 if (signature == 0) continue;
 
-                yield return new GaIdScalarRecord(
+                yield return new IdScalarRecord(
                     mv1.Id ^ id2,
                     signature * mv1.Scalar * scalar2
                 );
             }
         }
 
-        public static IEnumerable<GaIdScalarRecord> GetEHipIdScalarRecords(this GaBasisSet basisSet, GaMultivectorSparseList mvList1, GaMultivectorSparseList mvList2)
+        public static IEnumerable<IdScalarRecord> GetEHipIdScalarRecords(this BasisBladeSet basisSet, GaMultivectorSparseList mvList1, GaMultivectorSparseList mvList2)
         {
             foreach (var (id1, scalar1) in mvList1.StoredIdNumberPairs)
             foreach (var (id2, scalar2) in mvList2.StoredIdNumberPairs)
             {
-                var signature = basisSet.EHipSignature(id1, id2);
+                var signature = basisSet.EHipSign(id1, id2);
 
                 if (signature == 0) continue;
 
-                yield return new GaIdScalarRecord(
+                yield return new IdScalarRecord(
                     id1 ^ id2,
                     signature * scalar1 * scalar2
                 );
             }
         }
         
-        public static IEnumerable<GaIdScalarRecord> GetEAcpIdScalarRecords(this GaBasisSet basisSet, GaMultivectorSparseList mvList1, GaTerm mv2)
+        public static IEnumerable<IdScalarRecord> GetEAcpIdScalarRecords(this BasisBladeSet basisSet, GaMultivectorSparseList mvList1, GaTerm mv2)
         {
             foreach (var (id1, scalar1) in mvList1.StoredIdNumberPairs)
             {
-                var signature = basisSet.EAcpSignature(id1, mv2.Id);
+                var signature = basisSet.EAcpSign(id1, mv2.Id);
 
                 if (signature == 0) continue;
 
-                yield return new GaIdScalarRecord(
+                yield return new IdScalarRecord(
                     id1 ^ mv2.Id,
                     signature * scalar1 * mv2.Scalar
                 );
             }
         }
         
-        public static IEnumerable<GaIdScalarRecord> GetEAcpIdScalarRecords(this GaBasisSet basisSet, GaTerm mv1, GaMultivectorSparseList mvList2)
+        public static IEnumerable<IdScalarRecord> GetEAcpIdScalarRecords(this BasisBladeSet basisSet, GaTerm mv1, GaMultivectorSparseList mvList2)
         {
             foreach (var (id2, scalar2) in mvList2.StoredIdNumberPairs)
             {
-                var signature = basisSet.EAcpSignature(mv1.Id, id2);
+                var signature = basisSet.EAcpSign(mv1.Id, id2);
 
                 if (signature == 0) continue;
 
-                yield return new GaIdScalarRecord(
+                yield return new IdScalarRecord(
                     mv1.Id ^ id2,
                     signature * mv1.Scalar * scalar2
                 );
             }
         }
 
-        public static IEnumerable<GaIdScalarRecord> GetEAcpIdScalarRecords(this GaBasisSet basisSet, GaMultivectorSparseList mvList1, GaMultivectorSparseList mvList2)
+        public static IEnumerable<IdScalarRecord> GetEAcpIdScalarRecords(this BasisBladeSet basisSet, GaMultivectorSparseList mvList1, GaMultivectorSparseList mvList2)
         {
             foreach (var (id1, scalar1) in mvList1.StoredIdNumberPairs)
             foreach (var (id2, scalar2) in mvList2.StoredIdNumberPairs)
             {
-                var signature = basisSet.EAcpSignature(id1, id2);
+                var signature = basisSet.EAcpSign(id1, id2);
 
                 if (signature == 0) continue;
 
-                yield return new GaIdScalarRecord(
+                yield return new IdScalarRecord(
                     id1 ^ id2,
                     signature * scalar1 * scalar2
                 );
             }
         }
         
-        public static IEnumerable<GaIdScalarRecord> GetECpIdScalarRecords(this GaBasisSet basisSet, GaMultivectorSparseList mvList1, GaTerm mv2)
+        public static IEnumerable<IdScalarRecord> GetECpIdScalarRecords(this BasisBladeSet basisSet, GaMultivectorSparseList mvList1, GaTerm mv2)
         {
             foreach (var (id1, scalar1) in mvList1.StoredIdNumberPairs)
             {
-                var signature = basisSet.ECpSignature(id1, mv2.Id);
+                var signature = basisSet.ECpSign(id1, mv2.Id);
 
                 if (signature == 0) continue;
 
-                yield return new GaIdScalarRecord(
+                yield return new IdScalarRecord(
                     id1 ^ mv2.Id,
                     signature * scalar1 * mv2.Scalar
                 );
             }
         }
         
-        public static IEnumerable<GaIdScalarRecord> GetECpIdScalarRecords(this GaBasisSet basisSet, GaTerm mv1, GaMultivectorSparseList mvList2)
+        public static IEnumerable<IdScalarRecord> GetECpIdScalarRecords(this BasisBladeSet basisSet, GaTerm mv1, GaMultivectorSparseList mvList2)
         {
             foreach (var (id2, scalar2) in mvList2.StoredIdNumberPairs)
             {
-                var signature = basisSet.ECpSignature(mv1.Id, id2);
+                var signature = basisSet.ECpSign(mv1.Id, id2);
 
                 if (signature == 0) continue;
 
-                yield return new GaIdScalarRecord(
+                yield return new IdScalarRecord(
                     mv1.Id ^ id2,
                     signature * mv1.Scalar * scalar2
                 );
             }
         }
 
-        public static IEnumerable<GaIdScalarRecord> GetECpIdScalarRecords(this GaBasisSet basisSet, GaMultivectorSparseList mvList1, GaMultivectorSparseList mvList2)
+        public static IEnumerable<IdScalarRecord> GetECpIdScalarRecords(this BasisBladeSet basisSet, GaMultivectorSparseList mvList1, GaMultivectorSparseList mvList2)
         {
             foreach (var (id1, scalar1) in mvList1.StoredIdNumberPairs)
             foreach (var (id2, scalar2) in mvList2.StoredIdNumberPairs)
             {
-                var signature = basisSet.ECpSignature(id1, id2);
+                var signature = basisSet.ECpSign(id1, id2);
 
                 if (signature == 0) continue;
 
-                yield return new GaIdScalarRecord(
+                yield return new IdScalarRecord(
                     id1 ^ id2,
                     signature * scalar1 * scalar2
                 );
             }
         }
         
-        public static IEnumerable<GaIdScalarRecord> GetEGpIdScalarRecords(this GaBasisSet basisSet, GaMultivectorSparseList mvList1, GaTerm mv2)
+        public static IEnumerable<IdScalarRecord> GetEGpIdScalarRecords(this BasisBladeSet basisSet, GaMultivectorSparseList mvList1, GaTerm mv2)
         {
             foreach (var (id1, scalar1) in mvList1.StoredIdNumberPairs)
             {
-                var signature = basisSet.EGpSignature(id1, mv2.Id);
+                var signature = basisSet.EGpSign(id1, mv2.Id);
 
                 if (signature == 0) continue;
 
-                yield return new GaIdScalarRecord(
+                yield return new IdScalarRecord(
                     id1 ^ mv2.Id,
                     signature * scalar1 * mv2.Scalar
                 );
             }
         }
         
-        public static IEnumerable<GaIdScalarRecord> GetEGpIdScalarRecords(this GaBasisSet basisSet, GaTerm mv1, GaMultivectorSparseList mvList2)
+        public static IEnumerable<IdScalarRecord> GetEGpIdScalarRecords(this BasisBladeSet basisSet, GaTerm mv1, GaMultivectorSparseList mvList2)
         {
             foreach (var (id2, scalar2) in mvList2.StoredIdNumberPairs)
             {
-                var signature = basisSet.EGpSignature(mv1.Id, id2);
+                var signature = basisSet.EGpSign(mv1.Id, id2);
 
                 if (signature == 0) continue;
 
-                yield return new GaIdScalarRecord(
+                yield return new IdScalarRecord(
                     mv1.Id ^ id2,
                     signature * mv1.Scalar * scalar2
                 );
             }
         }
 
-        public static IEnumerable<GaIdScalarRecord> GetEGpIdScalarRecords(this GaBasisSet basisSet, GaMultivectorSparseList mvSparseList1, GaMultivectorSparseList mvSparseList2)
+        public static IEnumerable<IdScalarRecord> GetEGpIdScalarRecords(this BasisBladeSet basisSet, GaMultivectorSparseList mvSparseList1, GaMultivectorSparseList mvSparseList2)
         {
             foreach (var (id1, scalar1) in mvSparseList1.StoredIdNumberPairs)
             foreach (var (id2, scalar2) in mvSparseList2.StoredIdNumberPairs)
             {
-                var signature = basisSet.EGpSignature(id1, id2);
+                var signature = basisSet.EGpSign(id1, id2);
 
-                yield return new GaIdScalarRecord(
+                yield return new IdScalarRecord(
                     id1 ^ id2,
                     signature * scalar1 * scalar2
                 );
             }
         }
         
-        public static IEnumerable<GaIdScalarRecord> GetEGpReverseIdScalarRecords(this GaBasisSet basisSet, GaMultivectorSparseList mvList1, GaTerm mv2)
+        public static IEnumerable<IdScalarRecord> GetEGpReverseIdScalarRecords(this BasisBladeSet basisSet, GaMultivectorSparseList mvList1, GaTerm mv2)
         {
             foreach (var (id1, scalar1) in mvList1.StoredIdNumberPairs)
             {
-                var signature = basisSet.EGpReverseSignature(id1, mv2.Id);
+                var signature = basisSet.EGpReverseSign(id1, mv2.Id);
 
-                yield return new GaIdScalarRecord(
+                yield return new IdScalarRecord(
                     id1 ^ mv2.Id,
                     signature * scalar1 * mv2.Scalar
                 );
             }
         }
         
-        public static IEnumerable<GaIdScalarRecord> GetEGpReverseIdScalarRecords(this GaBasisSet basisSet, GaTerm mv1, GaMultivectorSparseList mvList2)
+        public static IEnumerable<IdScalarRecord> GetEGpReverseIdScalarRecords(this BasisBladeSet basisSet, GaTerm mv1, GaMultivectorSparseList mvList2)
         {
             foreach (var (id2, scalar2) in mvList2.StoredIdNumberPairs)
             {
-                var signature = basisSet.EGpReverseSignature(mv1.Id, id2);
+                var signature = basisSet.EGpReverseSign(mv1.Id, id2);
 
-                yield return new GaIdScalarRecord(
+                yield return new IdScalarRecord(
                     mv1.Id ^ id2,
                     signature * mv1.Scalar * scalar2
                 );
             }
         }
 
-        public static IEnumerable<GaIdScalarRecord> GetEGpReverseIdScalarRecords(this GaBasisSet basisSet, GaMultivectorSparseList mvList1, GaMultivectorSparseList mvList2)
+        public static IEnumerable<IdScalarRecord> GetEGpReverseIdScalarRecords(this BasisBladeSet basisSet, GaMultivectorSparseList mvList1, GaMultivectorSparseList mvList2)
         {
             foreach (var (id1, scalar1) in mvList1.StoredIdNumberPairs)
             foreach (var (id2, scalar2) in mvList2.StoredIdNumberPairs)
             {
-                var signature = basisSet.EGpReverseSignature(id1, id2);
+                var signature = basisSet.EGpReverseSign(id1, id2);
 
-                yield return new GaIdScalarRecord(
+                yield return new IdScalarRecord(
                     id1 ^ id2,
                     signature * scalar1 * scalar2
                 );
@@ -687,11 +683,11 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
         }
 
 
-        public static IEnumerable<double> GetSpSquaredScalars(this GaBasisSet basisSet, GaMultivectorSparseList mvList1)
+        public static IEnumerable<double> GetSpSquaredScalars(this BasisBladeSet basisSet, GaMultivectorSparseList mvList1)
         {
             foreach (var (id, scalar1) in mvList1.StoredIdNumberPairs)
             {
-                var signature = basisSet.SpSquaredSignature(id);
+                var signature = basisSet.SpSquaredSign(id);
 
                 if (signature == 0) continue;
 
@@ -699,11 +695,11 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
             }
         }
         
-        public static IEnumerable<double> GetNormSquaredScalars(this GaBasisSet basisSet, GaMultivectorSparseList mvList1)
+        public static IEnumerable<double> GetNormSquaredScalars(this BasisBladeSet basisSet, GaMultivectorSparseList mvList1)
         {
             foreach (var (id, scalar1) in mvList1.StoredIdNumberPairs)
             {
-                var signature = basisSet.NormSquaredSignature(id);
+                var signature = basisSet.NormSquaredSign(id);
 
                 if (signature == 0) continue;
 
@@ -711,13 +707,13 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
             }
         }
 
-        public static IEnumerable<double> GetSpScalars(this GaBasisSet basisSet, GaMultivectorSparseList mvList1, GaMultivectorSparseList mvList2)
+        public static IEnumerable<double> GetSpScalars(this BasisBladeSet basisSet, GaMultivectorSparseList mvList1, GaMultivectorSparseList mvList2)
         {
             if (mvList1.Count <= mvList2.Count)
             {
                 foreach (var (id, scalar1) in mvList1.StoredIdNumberPairs)
                 {
-                    var signature = basisSet.SpSquaredSignature(id);
+                    var signature = basisSet.SpSquaredSign(id);
 
                     if (signature == 0) continue;
 
@@ -728,7 +724,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
             {
                 foreach (var (id, scalar2) in mvList2.StoredIdNumberPairs)
                 {
-                    var signature = basisSet.SpSquaredSignature(id);
+                    var signature = basisSet.SpSquaredSign(id);
 
                     if (signature == 0) continue;
 
@@ -737,368 +733,368 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
             }
         }
         
-        public static IEnumerable<GaIdScalarRecord> GetLcpIdScalarRecords(this GaBasisSet basisSet, GaMultivectorSparseList mvList1, GaTerm mv2)
+        public static IEnumerable<IdScalarRecord> GetLcpIdScalarRecords(this BasisBladeSet basisSet, GaMultivectorSparseList mvList1, GaTerm mv2)
         {
             foreach (var (id1, scalar1) in mvList1.StoredIdNumberPairs)
             {
-                var signature = basisSet.LcpSignature(id1, mv2.Id);
+                var signature = basisSet.LcpSign(id1, mv2.Id);
 
                 if (signature == 0) continue;
 
-                yield return new GaIdScalarRecord(
+                yield return new IdScalarRecord(
                     id1 ^ mv2.Id,
                     signature * scalar1 * mv2.Scalar
                 );
             }
         }
         
-        public static IEnumerable<GaIdScalarRecord> GetLcpIdScalarRecords(this GaBasisSet basisSet, GaTerm mv1, GaMultivectorSparseList mvList2)
+        public static IEnumerable<IdScalarRecord> GetLcpIdScalarRecords(this BasisBladeSet basisSet, GaTerm mv1, GaMultivectorSparseList mvList2)
         {
             foreach (var (id2, scalar2) in mvList2.StoredIdNumberPairs)
             {
-                var signature = basisSet.LcpSignature(mv1.Id, id2);
+                var signature = basisSet.LcpSign(mv1.Id, id2);
 
                 if (signature == 0) continue;
 
-                yield return new GaIdScalarRecord(
+                yield return new IdScalarRecord(
                     mv1.Id ^ id2,
                     signature * mv1.Scalar * scalar2
                 );
             }
         }
 
-        public static IEnumerable<GaIdScalarRecord> GetLcpIdScalarRecords(this GaBasisSet basisSet, GaMultivectorSparseList mvList1, GaMultivectorSparseList mvList2)
+        public static IEnumerable<IdScalarRecord> GetLcpIdScalarRecords(this BasisBladeSet basisSet, GaMultivectorSparseList mvList1, GaMultivectorSparseList mvList2)
         {
             foreach (var (id1, scalar1) in mvList1.StoredIdNumberPairs)
             foreach (var (id2, scalar2) in mvList2.StoredIdNumberPairs)
             {
-                var signature = basisSet.LcpSignature(id1, id2);
+                var signature = basisSet.LcpSign(id1, id2);
 
                 if (signature == 0) continue;
 
-                yield return new GaIdScalarRecord(
+                yield return new IdScalarRecord(
                     id1 ^ id2,
                     signature * scalar1 * scalar2
                 );
             }
         }
         
-        public static IEnumerable<GaIdScalarRecord> GetRcpIdScalarRecords(this GaBasisSet basisSet, GaMultivectorSparseList mvList1, GaTerm mv2)
+        public static IEnumerable<IdScalarRecord> GetRcpIdScalarRecords(this BasisBladeSet basisSet, GaMultivectorSparseList mvList1, GaTerm mv2)
         {
             foreach (var (id1, scalar1) in mvList1.StoredIdNumberPairs)
             {
-                var signature = basisSet.RcpSignature(id1, mv2.Id);
+                var signature = basisSet.RcpSign(id1, mv2.Id);
 
                 if (signature == 0) continue;
 
-                yield return new GaIdScalarRecord(
+                yield return new IdScalarRecord(
                     id1 ^ mv2.Id,
                     signature * scalar1 * mv2.Scalar
                 );
             }
         }
         
-        public static IEnumerable<GaIdScalarRecord> GetRcpIdScalarRecords(this GaBasisSet basisSet, GaTerm mv1, GaMultivectorSparseList mvList2)
+        public static IEnumerable<IdScalarRecord> GetRcpIdScalarRecords(this BasisBladeSet basisSet, GaTerm mv1, GaMultivectorSparseList mvList2)
         {
             foreach (var (id2, scalar2) in mvList2.StoredIdNumberPairs)
             {
-                var signature = basisSet.RcpSignature(mv1.Id, id2);
+                var signature = basisSet.RcpSign(mv1.Id, id2);
 
                 if (signature == 0) continue;
 
-                yield return new GaIdScalarRecord(
+                yield return new IdScalarRecord(
                     mv1.Id ^ id2,
                     signature * mv1.Scalar * scalar2
                 );
             }
         }
 
-        public static IEnumerable<GaIdScalarRecord> GetRcpIdScalarRecords(this GaBasisSet basisSet, GaMultivectorSparseList mvList1, GaMultivectorSparseList mvList2)
+        public static IEnumerable<IdScalarRecord> GetRcpIdScalarRecords(this BasisBladeSet basisSet, GaMultivectorSparseList mvList1, GaMultivectorSparseList mvList2)
         {
             foreach (var (id1, scalar1) in mvList1.StoredIdNumberPairs)
             foreach (var (id2, scalar2) in mvList2.StoredIdNumberPairs)
             {
-                var signature = basisSet.RcpSignature(id1, id2);
+                var signature = basisSet.RcpSign(id1, id2);
 
                 if (signature == 0) continue;
 
-                yield return new GaIdScalarRecord(
+                yield return new IdScalarRecord(
                     id1 ^ id2,
                     signature * scalar1 * scalar2
                 );
             }
         }
         
-        public static IEnumerable<GaIdScalarRecord> GetFdpIdScalarRecords(this GaBasisSet basisSet, GaMultivectorSparseList mvList1, GaTerm mv2)
+        public static IEnumerable<IdScalarRecord> GetFdpIdScalarRecords(this BasisBladeSet basisSet, GaMultivectorSparseList mvList1, GaTerm mv2)
         {
             foreach (var (id1, scalar1) in mvList1.StoredIdNumberPairs)
             {
-                var signature = basisSet.FdpSignature(id1, mv2.Id);
+                var signature = basisSet.FdpSign(id1, mv2.Id);
 
                 if (signature == 0) continue;
 
-                yield return new GaIdScalarRecord(
+                yield return new IdScalarRecord(
                     id1 ^ mv2.Id,
                     signature * scalar1 * mv2.Scalar
                 );
             }
         }
         
-        public static IEnumerable<GaIdScalarRecord> GetFdpIdScalarRecords(this GaBasisSet basisSet, GaTerm mv1, GaMultivectorSparseList mvList2)
+        public static IEnumerable<IdScalarRecord> GetFdpIdScalarRecords(this BasisBladeSet basisSet, GaTerm mv1, GaMultivectorSparseList mvList2)
         {
             foreach (var (id2, scalar2) in mvList2.StoredIdNumberPairs)
             {
-                var signature = basisSet.FdpSignature(mv1.Id, id2);
+                var signature = basisSet.FdpSign(mv1.Id, id2);
 
                 if (signature == 0) continue;
 
-                yield return new GaIdScalarRecord(
+                yield return new IdScalarRecord(
                     mv1.Id ^ id2,
                     signature * mv1.Scalar * scalar2
                 );
             }
         }
 
-        public static IEnumerable<GaIdScalarRecord> GetFdpIdScalarRecords(this GaBasisSet basisSet, GaMultivectorSparseList mvList1, GaMultivectorSparseList mvList2)
+        public static IEnumerable<IdScalarRecord> GetFdpIdScalarRecords(this BasisBladeSet basisSet, GaMultivectorSparseList mvList1, GaMultivectorSparseList mvList2)
         {
             foreach (var (id1, scalar1) in mvList1.StoredIdNumberPairs)
             foreach (var (id2, scalar2) in mvList2.StoredIdNumberPairs)
             {
-                var signature = basisSet.FdpSignature(id1, id2);
+                var signature = basisSet.FdpSign(id1, id2);
 
                 if (signature == 0) continue;
 
-                yield return new GaIdScalarRecord(
+                yield return new IdScalarRecord(
                     id1 ^ id2,
                     signature * scalar1 * scalar2
                 );
             }
         }
         
-        public static IEnumerable<GaIdScalarRecord> GetHipIdScalarRecords(this GaBasisSet basisSet, GaMultivectorSparseList mvList1, GaTerm mv2)
+        public static IEnumerable<IdScalarRecord> GetHipIdScalarRecords(this BasisBladeSet basisSet, GaMultivectorSparseList mvList1, GaTerm mv2)
         {
             foreach (var (id1, scalar1) in mvList1.StoredIdNumberPairs)
             {
-                var signature = basisSet.HipSignature(id1, mv2.Id);
+                var signature = basisSet.HipSign(id1, mv2.Id);
 
                 if (signature == 0) continue;
 
-                yield return new GaIdScalarRecord(
+                yield return new IdScalarRecord(
                     id1 ^ mv2.Id,
                     signature * scalar1 * mv2.Scalar
                 );
             }
         }
         
-        public static IEnumerable<GaIdScalarRecord> GetHipIdScalarRecords(this GaBasisSet basisSet, GaTerm mv1, GaMultivectorSparseList mvList2)
+        public static IEnumerable<IdScalarRecord> GetHipIdScalarRecords(this BasisBladeSet basisSet, GaTerm mv1, GaMultivectorSparseList mvList2)
         {
             foreach (var (id2, scalar2) in mvList2.StoredIdNumberPairs)
             {
-                var signature = basisSet.HipSignature(mv1.Id, id2);
+                var signature = basisSet.HipSign(mv1.Id, id2);
 
                 if (signature == 0) continue;
 
-                yield return new GaIdScalarRecord(
+                yield return new IdScalarRecord(
                     mv1.Id ^ id2,
                     signature * mv1.Scalar * scalar2
                 );
             }
         }
 
-        public static IEnumerable<GaIdScalarRecord> GetHipIdScalarRecords(this GaBasisSet basisSet, GaMultivectorSparseList mvList1, GaMultivectorSparseList mvList2)
+        public static IEnumerable<IdScalarRecord> GetHipIdScalarRecords(this BasisBladeSet basisSet, GaMultivectorSparseList mvList1, GaMultivectorSparseList mvList2)
         {
             foreach (var (id1, scalar1) in mvList1.StoredIdNumberPairs)
             foreach (var (id2, scalar2) in mvList2.StoredIdNumberPairs)
             {
-                var signature = basisSet.HipSignature(id1, id2);
+                var signature = basisSet.HipSign(id1, id2);
 
                 if (signature == 0) continue;
 
-                yield return new GaIdScalarRecord(
+                yield return new IdScalarRecord(
                     id1 ^ id2,
                     signature * scalar1 * scalar2
                 );
             }
         }
         
-        public static IEnumerable<GaIdScalarRecord> GetAcpIdScalarRecords(this GaBasisSet basisSet, GaMultivectorSparseList mvList1, GaTerm mv2)
+        public static IEnumerable<IdScalarRecord> GetAcpIdScalarRecords(this BasisBladeSet basisSet, GaMultivectorSparseList mvList1, GaTerm mv2)
         {
             foreach (var (id1, scalar1) in mvList1.StoredIdNumberPairs)
             {
-                var signature = basisSet.AcpSignature(id1, mv2.Id);
+                var signature = basisSet.AcpSign(id1, mv2.Id);
 
                 if (signature == 0) continue;
 
-                yield return new GaIdScalarRecord(
+                yield return new IdScalarRecord(
                     id1 ^ mv2.Id,
                     signature * scalar1 * mv2.Scalar
                 );
             }
         }
         
-        public static IEnumerable<GaIdScalarRecord> GetAcpIdScalarRecords(this GaBasisSet basisSet, GaTerm mv1, GaMultivectorSparseList mvList2)
+        public static IEnumerable<IdScalarRecord> GetAcpIdScalarRecords(this BasisBladeSet basisSet, GaTerm mv1, GaMultivectorSparseList mvList2)
         {
             foreach (var (id2, scalar2) in mvList2.StoredIdNumberPairs)
             {
-                var signature = basisSet.AcpSignature(mv1.Id, id2);
+                var signature = basisSet.AcpSign(mv1.Id, id2);
 
                 if (signature == 0) continue;
 
-                yield return new GaIdScalarRecord(
+                yield return new IdScalarRecord(
                     mv1.Id ^ id2,
                     signature * mv1.Scalar * scalar2
                 );
             }
         }
 
-        public static IEnumerable<GaIdScalarRecord> GetAcpIdScalarRecords(this GaBasisSet basisSet, GaMultivectorSparseList mvList1, GaMultivectorSparseList mvList2)
+        public static IEnumerable<IdScalarRecord> GetAcpIdScalarRecords(this BasisBladeSet basisSet, GaMultivectorSparseList mvList1, GaMultivectorSparseList mvList2)
         {
             foreach (var (id1, scalar1) in mvList1.StoredIdNumberPairs)
             foreach (var (id2, scalar2) in mvList2.StoredIdNumberPairs)
             {
-                var signature = basisSet.AcpSignature(id1, id2);
+                var signature = basisSet.AcpSign(id1, id2);
 
                 if (signature == 0) continue;
 
-                yield return new GaIdScalarRecord(
+                yield return new IdScalarRecord(
                     id1 ^ id2,
                     signature * scalar1 * scalar2
                 );
             }
         }
         
-        public static IEnumerable<GaIdScalarRecord> GetCpIdScalarRecords(this GaBasisSet basisSet, GaMultivectorSparseList mvList1, GaTerm mv2)
+        public static IEnumerable<IdScalarRecord> GetCpIdScalarRecords(this BasisBladeSet basisSet, GaMultivectorSparseList mvList1, GaTerm mv2)
         {
             foreach (var (id1, scalar1) in mvList1.StoredIdNumberPairs)
             {
-                var signature = basisSet.CpSignature(id1, mv2.Id);
+                var signature = basisSet.CpSign(id1, mv2.Id);
 
                 if (signature == 0) continue;
 
-                yield return new GaIdScalarRecord(
+                yield return new IdScalarRecord(
                     id1 ^ mv2.Id,
                     signature * scalar1 * mv2.Scalar
                 );
             }
         }
         
-        public static IEnumerable<GaIdScalarRecord> GetCpIdScalarRecords(this GaBasisSet basisSet, GaTerm mv1, GaMultivectorSparseList mvList2)
+        public static IEnumerable<IdScalarRecord> GetCpIdScalarRecords(this BasisBladeSet basisSet, GaTerm mv1, GaMultivectorSparseList mvList2)
         {
             foreach (var (id2, scalar2) in mvList2.StoredIdNumberPairs)
             {
-                var signature = basisSet.CpSignature(mv1.Id, id2);
+                var signature = basisSet.CpSign(mv1.Id, id2);
 
                 if (signature == 0) continue;
 
-                yield return new GaIdScalarRecord(
+                yield return new IdScalarRecord(
                     mv1.Id ^ id2,
                     signature * mv1.Scalar * scalar2
                 );
             }
         }
 
-        public static IEnumerable<GaIdScalarRecord> GetCpIdScalarRecords(this GaBasisSet basisSet, GaMultivectorSparseList mvList1, GaMultivectorSparseList mvList2)
+        public static IEnumerable<IdScalarRecord> GetCpIdScalarRecords(this BasisBladeSet basisSet, GaMultivectorSparseList mvList1, GaMultivectorSparseList mvList2)
         {
             foreach (var (id1, scalar1) in mvList1.StoredIdNumberPairs)
             foreach (var (id2, scalar2) in mvList2.StoredIdNumberPairs)
             {
-                var signature = basisSet.CpSignature(id1, id2);
+                var signature = basisSet.CpSign(id1, id2);
 
                 if (signature == 0) continue;
 
-                yield return new GaIdScalarRecord(
+                yield return new IdScalarRecord(
                     id1 ^ id2,
                     signature * scalar1 * scalar2
                 );
             }
         }
         
-        public static IEnumerable<GaIdScalarRecord> GetGpIdScalarRecords(this GaBasisSet basisSet, GaMultivectorSparseList mvList1, GaTerm mv2)
+        public static IEnumerable<IdScalarRecord> GetGpIdScalarRecords(this BasisBladeSet basisSet, GaMultivectorSparseList mvList1, GaTerm mv2)
         {
             foreach (var (id1, scalar1) in mvList1.StoredIdNumberPairs)
             {
-                var signature = basisSet.GpSignature(id1, mv2.Id);
+                var signature = basisSet.GpSign(id1, mv2.Id);
 
                 if (signature == 0) continue;
 
-                yield return new GaIdScalarRecord(
+                yield return new IdScalarRecord(
                     id1 ^ mv2.Id,
                     signature * scalar1 * mv2.Scalar
                 );
             }
         }
         
-        public static IEnumerable<GaIdScalarRecord> GetGpIdScalarRecords(this GaBasisSet basisSet, GaTerm mv1, GaMultivectorSparseList mvList2)
+        public static IEnumerable<IdScalarRecord> GetGpIdScalarRecords(this BasisBladeSet basisSet, GaTerm mv1, GaMultivectorSparseList mvList2)
         {
             foreach (var (id2, scalar2) in mvList2.StoredIdNumberPairs)
             {
-                var signature = basisSet.GpSignature(mv1.Id, id2);
+                var signature = basisSet.GpSign(mv1.Id, id2);
 
                 if (signature == 0) continue;
 
-                yield return new GaIdScalarRecord(
+                yield return new IdScalarRecord(
                     mv1.Id ^ id2,
                     signature * mv1.Scalar * scalar2
                 );
             }
         }
 
-        public static IEnumerable<GaIdScalarRecord> GetGpIdScalarRecords(this GaBasisSet basisSet, GaMultivectorSparseList mvSparseList1, GaMultivectorSparseList mvSparseList2)
+        public static IEnumerable<IdScalarRecord> GetGpIdScalarRecords(this BasisBladeSet basisSet, GaMultivectorSparseList mvSparseList1, GaMultivectorSparseList mvSparseList2)
         {
             foreach (var (id1, scalar1) in mvSparseList1.StoredIdNumberPairs)
             foreach (var (id2, scalar2) in mvSparseList2.StoredIdNumberPairs)
             {
-                var signature = basisSet.GpSignature(id1, id2);
+                var signature = basisSet.GpSign(id1, id2);
 
                 if (signature == 0) continue;
 
-                yield return new GaIdScalarRecord(
+                yield return new IdScalarRecord(
                     id1 ^ id2,
                     signature * scalar1 * scalar2
                 );
             }
         }
         
-        public static IEnumerable<GaIdScalarRecord> GetGpReverseIdScalarRecords(this GaBasisSet basisSet, GaMultivectorSparseList mvList1, GaTerm mv2)
+        public static IEnumerable<IdScalarRecord> GetGpReverseIdScalarRecords(this BasisBladeSet basisSet, GaMultivectorSparseList mvList1, GaTerm mv2)
         {
             foreach (var (id1, scalar1) in mvList1.StoredIdNumberPairs)
             {
-                var signature = basisSet.GpReverseSignature(id1, mv2.Id);
+                var signature = basisSet.GpReverseSign(id1, mv2.Id);
 
                 if (signature == 0) continue;
 
-                yield return new GaIdScalarRecord(
+                yield return new IdScalarRecord(
                     id1 ^ mv2.Id,
                     signature * scalar1 * mv2.Scalar
                 );
             }
         }
         
-        public static IEnumerable<GaIdScalarRecord> GetGpReverseIdScalarRecords(this GaBasisSet basisSet, GaTerm mv1, GaMultivectorSparseList mvList2)
+        public static IEnumerable<IdScalarRecord> GetGpReverseIdScalarRecords(this BasisBladeSet basisSet, GaTerm mv1, GaMultivectorSparseList mvList2)
         {
             foreach (var (id2, scalar2) in mvList2.StoredIdNumberPairs)
             {
-                var signature = basisSet.GpReverseSignature(mv1.Id, id2);
+                var signature = basisSet.GpReverseSign(mv1.Id, id2);
 
                 if (signature == 0) continue;
 
-                yield return new GaIdScalarRecord(
+                yield return new IdScalarRecord(
                     mv1.Id ^ id2,
                     signature * mv1.Scalar * scalar2
                 );
             }
         }
 
-        public static IEnumerable<GaIdScalarRecord> GetGpReverseIdScalarRecords(this GaBasisSet basisSet, GaMultivectorSparseList mvList1, GaMultivectorSparseList mvList2)
+        public static IEnumerable<IdScalarRecord> GetGpReverseIdScalarRecords(this BasisBladeSet basisSet, GaMultivectorSparseList mvList1, GaMultivectorSparseList mvList2)
         {
             foreach (var (id1, scalar1) in mvList1.StoredIdNumberPairs)
             foreach (var (id2, scalar2) in mvList2.StoredIdNumberPairs)
             {
-                var signature = basisSet.GpReverseSignature(id1, id2);
+                var signature = basisSet.GpReverseSign(id1, id2);
 
                 if (signature == 0) continue;
 
-                yield return new GaIdScalarRecord(
+                yield return new IdScalarRecord(
                     id1 ^ id2,
                     signature * scalar1 * scalar2
                 );
@@ -1107,7 +1103,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
 
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<GaIdScalarRecord> GetOpIdScalarRecords(this GaBasisSet basisSet, GaMultivectorBinaryTrie mvBinaryTrie1, GaMultivectorBinaryTrie mvBinaryTrie2)
+        public static IEnumerable<IdScalarRecord> GetOpIdScalarRecords(this BasisBladeSet basisSet, GaMultivectorBinaryTrie mvBinaryTrie1, GaMultivectorBinaryTrie mvBinaryTrie2)
         {
             return basisSet
                 .CreateGbtProductsStack(mvBinaryTrie1, mvBinaryTrie2)
@@ -1115,7 +1111,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<double> GetESpScalars(this GaBasisSet basisSet, GaMultivectorBinaryTrie mvBinaryTrie1, GaMultivectorBinaryTrie mvBinaryTrie2)
+        public static IEnumerable<double> GetESpScalars(this BasisBladeSet basisSet, GaMultivectorBinaryTrie mvBinaryTrie1, GaMultivectorBinaryTrie mvBinaryTrie2)
         {
             return basisSet
                 .CreateGbtProductsStack(mvBinaryTrie1, mvBinaryTrie2)
@@ -1123,7 +1119,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<GaIdScalarRecord> GetELcpIdScalarRecords(this GaBasisSet basisSet, GaMultivectorBinaryTrie mvBinaryTrie1, GaMultivectorBinaryTrie mvBinaryTrie2)
+        public static IEnumerable<IdScalarRecord> GetELcpIdScalarRecords(this BasisBladeSet basisSet, GaMultivectorBinaryTrie mvBinaryTrie1, GaMultivectorBinaryTrie mvBinaryTrie2)
         {
             return basisSet
                 .CreateGbtProductsStack(mvBinaryTrie1, mvBinaryTrie2)
@@ -1131,7 +1127,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<GaIdScalarRecord> GetERcpIdScalarRecords(this GaBasisSet basisSet, GaMultivectorBinaryTrie mvBinaryTrie1, GaMultivectorBinaryTrie mvBinaryTrie2)
+        public static IEnumerable<IdScalarRecord> GetERcpIdScalarRecords(this BasisBladeSet basisSet, GaMultivectorBinaryTrie mvBinaryTrie1, GaMultivectorBinaryTrie mvBinaryTrie2)
         {
             return basisSet
                 .CreateGbtProductsStack(mvBinaryTrie1, mvBinaryTrie2)
@@ -1139,7 +1135,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<GaIdScalarRecord> GetEFdpIdScalarRecords(this GaBasisSet basisSet, GaMultivectorBinaryTrie mvBinaryTrie1, GaMultivectorBinaryTrie mvBinaryTrie2)
+        public static IEnumerable<IdScalarRecord> GetEFdpIdScalarRecords(this BasisBladeSet basisSet, GaMultivectorBinaryTrie mvBinaryTrie1, GaMultivectorBinaryTrie mvBinaryTrie2)
         {
             return basisSet
                 .CreateGbtProductsStack(mvBinaryTrie1, mvBinaryTrie2)
@@ -1147,7 +1143,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<GaIdScalarRecord> GetEHipIdScalarRecords(this GaBasisSet basisSet, GaMultivectorBinaryTrie mvBinaryTrie1, GaMultivectorBinaryTrie mvBinaryTrie2)
+        public static IEnumerable<IdScalarRecord> GetEHipIdScalarRecords(this BasisBladeSet basisSet, GaMultivectorBinaryTrie mvBinaryTrie1, GaMultivectorBinaryTrie mvBinaryTrie2)
         {
             return basisSet
                 .CreateGbtProductsStack(mvBinaryTrie1, mvBinaryTrie2)
@@ -1155,7 +1151,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<GaIdScalarRecord> GetEAcpIdScalarRecords(this GaBasisSet basisSet, GaMultivectorBinaryTrie mvBinaryTrie1, GaMultivectorBinaryTrie mvBinaryTrie2)
+        public static IEnumerable<IdScalarRecord> GetEAcpIdScalarRecords(this BasisBladeSet basisSet, GaMultivectorBinaryTrie mvBinaryTrie1, GaMultivectorBinaryTrie mvBinaryTrie2)
         {
             return basisSet
                 .CreateGbtProductsStack(mvBinaryTrie1, mvBinaryTrie2)
@@ -1163,7 +1159,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<GaIdScalarRecord> GetECpIdScalarRecords(this GaBasisSet basisSet, GaMultivectorBinaryTrie mvBinaryTrie1, GaMultivectorBinaryTrie mvBinaryTrie2)
+        public static IEnumerable<IdScalarRecord> GetECpIdScalarRecords(this BasisBladeSet basisSet, GaMultivectorBinaryTrie mvBinaryTrie1, GaMultivectorBinaryTrie mvBinaryTrie2)
         {
             return basisSet
                 .CreateGbtProductsStack(mvBinaryTrie1, mvBinaryTrie2)
@@ -1171,7 +1167,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<GaIdScalarRecord> GetEGpIdScalarRecords(this GaBasisSet basisSet, GaMultivectorBinaryTrie mvBinaryTrie1, GaMultivectorBinaryTrie mvBinaryTrie2)
+        public static IEnumerable<IdScalarRecord> GetEGpIdScalarRecords(this BasisBladeSet basisSet, GaMultivectorBinaryTrie mvBinaryTrie1, GaMultivectorBinaryTrie mvBinaryTrie2)
         {
             return basisSet
                 .CreateGbtProductsStack(mvBinaryTrie1, mvBinaryTrie2)
@@ -1180,7 +1176,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
         
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<double> GetSpScalars(this GaBasisSet basisSet, GaMultivectorBinaryTrie mvBinaryTrie1, GaMultivectorBinaryTrie mvBinaryTrie2)
+        public static IEnumerable<double> GetSpScalars(this BasisBladeSet basisSet, GaMultivectorBinaryTrie mvBinaryTrie1, GaMultivectorBinaryTrie mvBinaryTrie2)
         {
             return basisSet
                 .CreateGbtProductsStack(mvBinaryTrie1, mvBinaryTrie2)
@@ -1188,7 +1184,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<GaIdScalarRecord> GetLcpIdScalarRecords(this GaBasisSet basisSet, GaMultivectorBinaryTrie mvBinaryTrie1, GaMultivectorBinaryTrie mvBinaryTrie2)
+        public static IEnumerable<IdScalarRecord> GetLcpIdScalarRecords(this BasisBladeSet basisSet, GaMultivectorBinaryTrie mvBinaryTrie1, GaMultivectorBinaryTrie mvBinaryTrie2)
         {
             return basisSet
                 .CreateGbtProductsStack(mvBinaryTrie1, mvBinaryTrie2)
@@ -1196,7 +1192,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<GaIdScalarRecord> GetRcpIdScalarRecords(this GaBasisSet basisSet, GaMultivectorBinaryTrie mvBinaryTrie1, GaMultivectorBinaryTrie mvBinaryTrie2)
+        public static IEnumerable<IdScalarRecord> GetRcpIdScalarRecords(this BasisBladeSet basisSet, GaMultivectorBinaryTrie mvBinaryTrie1, GaMultivectorBinaryTrie mvBinaryTrie2)
         {
             return basisSet
                 .CreateGbtProductsStack(mvBinaryTrie1, mvBinaryTrie2)
@@ -1204,7 +1200,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<GaIdScalarRecord> GetFdpIdScalarRecords(this GaBasisSet basisSet, GaMultivectorBinaryTrie mvBinaryTrie1, GaMultivectorBinaryTrie mvBinaryTrie2)
+        public static IEnumerable<IdScalarRecord> GetFdpIdScalarRecords(this BasisBladeSet basisSet, GaMultivectorBinaryTrie mvBinaryTrie1, GaMultivectorBinaryTrie mvBinaryTrie2)
         {
             return basisSet
                 .CreateGbtProductsStack(mvBinaryTrie1, mvBinaryTrie2)
@@ -1212,7 +1208,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<GaIdScalarRecord> GetHipIdScalarRecords(this GaBasisSet basisSet, GaMultivectorBinaryTrie mvBinaryTrie1, GaMultivectorBinaryTrie mvBinaryTrie2)
+        public static IEnumerable<IdScalarRecord> GetHipIdScalarRecords(this BasisBladeSet basisSet, GaMultivectorBinaryTrie mvBinaryTrie1, GaMultivectorBinaryTrie mvBinaryTrie2)
         {
             return basisSet
                 .CreateGbtProductsStack(mvBinaryTrie1, mvBinaryTrie2)
@@ -1220,7 +1216,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<GaIdScalarRecord> GetAcpIdScalarRecords(this GaBasisSet basisSet, GaMultivectorBinaryTrie mvBinaryTrie1, GaMultivectorBinaryTrie mvBinaryTrie2)
+        public static IEnumerable<IdScalarRecord> GetAcpIdScalarRecords(this BasisBladeSet basisSet, GaMultivectorBinaryTrie mvBinaryTrie1, GaMultivectorBinaryTrie mvBinaryTrie2)
         {
             return basisSet
                 .CreateGbtProductsStack(mvBinaryTrie1, mvBinaryTrie2)
@@ -1228,7 +1224,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<GaIdScalarRecord> GetCpIdScalarRecords(this GaBasisSet basisSet, GaMultivectorBinaryTrie mvBinaryTrie1, GaMultivectorBinaryTrie mvBinaryTrie2)
+        public static IEnumerable<IdScalarRecord> GetCpIdScalarRecords(this BasisBladeSet basisSet, GaMultivectorBinaryTrie mvBinaryTrie1, GaMultivectorBinaryTrie mvBinaryTrie2)
         {
             return basisSet
                 .CreateGbtProductsStack(mvBinaryTrie1, mvBinaryTrie2)
@@ -1236,7 +1232,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<GaIdScalarRecord> GetGpIdScalarRecords(this GaBasisSet basisSet, GaMultivectorBinaryTrie mvBinaryTrie1, GaMultivectorBinaryTrie mvBinaryTrie2)
+        public static IEnumerable<IdScalarRecord> GetGpIdScalarRecords(this BasisBladeSet basisSet, GaMultivectorBinaryTrie mvBinaryTrie1, GaMultivectorBinaryTrie mvBinaryTrie2)
         {
             return basisSet
                 .CreateGbtProductsStack(mvBinaryTrie1, mvBinaryTrie2)

@@ -28,7 +28,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
         public IEnumerable<uint> Grades 
             => GradesCount.GetRange();
 
-        public abstract GeometricAlgebraBasisSet BasisSet { get; }
+        public abstract BasisBladeSet BasisSet { get; }
 
         public abstract bool IsEuclidean { get; }
 

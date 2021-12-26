@@ -1,5 +1,5 @@
 ﻿using System;
-using NumericalGeometryLib.Tests;
+using NumericalGeometryLib.UnitTests;
 
 namespace NumericalGeometryLib.Samples
 {

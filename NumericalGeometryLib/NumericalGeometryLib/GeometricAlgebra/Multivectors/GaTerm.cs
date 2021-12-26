@@ -13,10 +13,6 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
     public sealed record GaTerm :
         IGeometricElement
     {
-        private static GaBasisBladeDataLookup Lookup 
-            => GaBasisBladeDataLookup.Default;
-
-
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static implicit operator GaMultivector(GaTerm mv)
         {
@@ -170,7 +166,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
         }
 
 
-        public GaBasisSet BasisSet { get; }
+        public BasisBladeSet BasisSet { get; }
         
         public uint VSpaceDimension 
             => BasisSet.VSpaceDimension;
@@ -188,7 +184,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal GaTerm([NotNull] GaBasisSet basisSet, ulong id, double scalar)
+        internal GaTerm([NotNull] BasisBladeSet basisSet, ulong id, double scalar)
         {
             Debug.Assert(
                 id < basisSet.GaSpaceDimension && 
@@ -197,15 +193,15 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
 
             BasisSet = basisSet;
             Id = id;
-            (Grade, Index) = GaBasisBladeDataLookup.Default.IdToGradeIndex(id);
+            (Grade, Index) = BasisBladeDataLookup.BasisBladeGradeIndex(id);
             Scalar = scalar;
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal GaTerm([NotNull] GaBasisSet basisSet, uint grade, ulong index, double scalar)
+        internal GaTerm([NotNull] BasisBladeSet basisSet, uint grade, ulong index, double scalar)
         {
             BasisSet = basisSet;
-            Id = GaBasisBladeDataLookup.Default.GradeIndexToId(grade, index);
+            Id = BasisBladeDataLookup.BasisBladeId(grade, index);
             Grade = grade;
             Index = index;
             Scalar = scalar;
@@ -332,21 +328,21 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public GaTerm GradeInvolution()
         {
-            return Grade.GradeHasNegativeGradeInvolution()
+            return Grade.GradeInvolutionIsNegativeOfGrade()
                 ? -this : this;
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public GaTerm Reverse()
         {
-            return Grade.GradeHasNegativeReverse()
+            return Grade.ReverseIsNegativeOfGrade()
                 ? -this : this;
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public GaTerm CliffordConjugate()
         {
-            return Grade.GradeHasNegativeCliffordConjugate()
+            return Grade.CliffordConjugateIsNegativeOfGrade()
                 ? -this : this;
         }
 
@@ -372,7 +368,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public double NormSquared()
         {
-            var signature = BasisSet.NormSquaredSignature(Id);
+            var signature = BasisSet.NormSquaredSign(Id);
 
             return signature == 0
                 ? 0
@@ -382,7 +378,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public double ESpSquared()
         {
-            var signature = BasisSet.ESpSquaredSignature(Id);
+            var signature = BasisSet.ESpSquaredSign(Id);
 
             return signature * Scalar * Scalar;
         }
@@ -390,7 +386,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public double SpSquared()
         {
-            var signature = BasisSet.SpSquaredSignature(Id);
+            var signature = BasisSet.SpSquaredSign(Id);
 
             return signature == 0
                 ? 0
@@ -400,7 +396,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public GaTerm EGpSquared()
         {
-            var signature = BasisSet.EGpSquaredSignature(Id);
+            var signature = BasisSet.EGpSquaredSign(Id);
 
             return new GaTerm(BasisSet, 0, signature * Scalar * Scalar);
         }
@@ -408,7 +404,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public GaTerm GpSquared()
         {
-            var signature = BasisSet.GpSquaredSignature(Id);
+            var signature = BasisSet.GpSquaredSign(Id);
             
             return signature == 0 
                 ? new GaTerm(BasisSet, 0, 0) 
@@ -424,7 +420,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public GaTerm GpReverse()
         {
-            var signature = BasisSet.GpReverseSignature(Id);
+            var signature = BasisSet.GpReverseSign(Id);
             
             return signature == 0 
                 ? new GaTerm(BasisSet, 0, 0) 
@@ -488,7 +484,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
 
             if (Id != mv2.Id) return 0;
 
-            var signature = BasisSet.ESpSquaredSignature(mv2.Id);
+            var signature = BasisSet.ESpSquaredSign(mv2.Id);
 
             return signature * Scalar * mv2.Scalar;
         }
@@ -499,7 +495,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
             if (BasisSet.BasisSetSignature != mv2.BasisSet.BasisSetSignature)
                 throw new InvalidOperationException();
 
-            var signature = BasisSet.ESpSquaredSignature(Id);
+            var signature = BasisSet.ESpSquaredSign(Id);
 
             return signature * Scalar * mv2.ScalarList[Id];
         }
@@ -512,7 +508,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
 
             if (Id != mv2.Id) return 0;
             
-            var signature = BasisSet.SpSquaredSignature(Id);
+            var signature = BasisSet.SpSquaredSign(Id);
 
             return signature == 0 
                 ? 0d 
@@ -525,7 +521,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
             if (BasisSet.BasisSetSignature != mv2.BasisSet.BasisSetSignature)
                 throw new InvalidOperationException();
 
-            var signature = BasisSet.SpSquaredSignature(Id);
+            var signature = BasisSet.SpSquaredSign(Id);
 
             if (signature == 0) return 0;
 
@@ -538,7 +534,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
             if (BasisSet.BasisSetSignature != mv2.BasisSet.BasisSetSignature)
                 throw new InvalidOperationException();
 
-            var signature = BasisSet.OpSignature(Id, mv2.Id);
+            var signature = BasisSet.OpSign(Id, mv2.Id);
 
             return signature == 0 
                 ? new GaTerm(BasisSet, 0, 0) 
@@ -562,7 +558,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
             if (BasisSet.BasisSetSignature != mv2.BasisSet.BasisSetSignature)
                 throw new InvalidOperationException();
 
-            var signature = BasisSet.ELcpSignature(Id, mv2.Id);
+            var signature = BasisSet.ELcpSign(Id, mv2.Id);
 
             return signature == 0 
                 ? new GaTerm(BasisSet, 0, 0) 
@@ -586,7 +582,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
             if (BasisSet.BasisSetSignature != mv2.BasisSet.BasisSetSignature)
                 throw new InvalidOperationException();
 
-            var signature = BasisSet.LcpSignature(Id, mv2.Id);
+            var signature = BasisSet.LcpSign(Id, mv2.Id);
 
             return signature == 0 
                 ? new GaTerm(BasisSet, 0, 0) 
@@ -610,7 +606,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
             if (BasisSet.BasisSetSignature != mv2.BasisSet.BasisSetSignature)
                 throw new InvalidOperationException();
 
-            var signature = BasisSet.ERcpSignature(Id, mv2.Id);
+            var signature = BasisSet.ERcpSign(Id, mv2.Id);
 
             return signature == 0 
                 ? new GaTerm(BasisSet, 0, 0) 
@@ -634,7 +630,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
             if (BasisSet.BasisSetSignature != mv2.BasisSet.BasisSetSignature)
                 throw new InvalidOperationException();
 
-            var signature = BasisSet.RcpSignature(Id, mv2.Id);
+            var signature = BasisSet.RcpSign(Id, mv2.Id);
 
             return signature == 0 
                 ? new GaTerm(BasisSet, 0, 0) 
@@ -658,7 +654,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
             if (BasisSet.BasisSetSignature != mv2.BasisSet.BasisSetSignature)
                 throw new InvalidOperationException();
 
-            var signature = BasisSet.EFdpSignature(Id, mv2.Id);
+            var signature = BasisSet.EFdpSign(Id, mv2.Id);
 
             return signature == 0 
                 ? new GaTerm(BasisSet, 0, 0) 
@@ -682,7 +678,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
             if (BasisSet.BasisSetSignature != mv2.BasisSet.BasisSetSignature)
                 throw new InvalidOperationException();
 
-            var signature = BasisSet.FdpSignature(Id, mv2.Id);
+            var signature = BasisSet.FdpSign(Id, mv2.Id);
 
             return signature == 0 
                 ? new GaTerm(BasisSet, 0, 0) 
@@ -706,7 +702,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
             if (BasisSet.BasisSetSignature != mv2.BasisSet.BasisSetSignature)
                 throw new InvalidOperationException();
 
-            var signature = BasisSet.EHipSignature(Id, mv2.Id);
+            var signature = BasisSet.EHipSign(Id, mv2.Id);
 
             return signature == 0 
                 ? new GaTerm(BasisSet, 0, 0) 
@@ -730,7 +726,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
             if (BasisSet.BasisSetSignature != mv2.BasisSet.BasisSetSignature)
                 throw new InvalidOperationException();
 
-            var signature = BasisSet.HipSignature(Id, mv2.Id);
+            var signature = BasisSet.HipSign(Id, mv2.Id);
 
             return signature == 0 
                 ? new GaTerm(BasisSet, 0, 0) 
@@ -754,7 +750,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
             if (BasisSet.BasisSetSignature != mv2.BasisSet.BasisSetSignature)
                 throw new InvalidOperationException();
 
-            var signature = BasisSet.EAcpSignature(Id, mv2.Id);
+            var signature = BasisSet.EAcpSign(Id, mv2.Id);
 
             return signature == 0 
                 ? new GaTerm(BasisSet, 0, 0) 
@@ -778,7 +774,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
             if (BasisSet.BasisSetSignature != mv2.BasisSet.BasisSetSignature)
                 throw new InvalidOperationException();
 
-            var signature = BasisSet.AcpSignature(Id, mv2.Id);
+            var signature = BasisSet.AcpSign(Id, mv2.Id);
 
             return signature == 0 
                 ? new GaTerm(BasisSet, 0, 0) 
@@ -802,7 +798,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
             if (BasisSet.BasisSetSignature != mv2.BasisSet.BasisSetSignature)
                 throw new InvalidOperationException();
 
-            var signature = BasisSet.ECpSignature(Id, mv2.Id);
+            var signature = BasisSet.ECpSign(Id, mv2.Id);
 
             return signature == 0 
                 ? new GaTerm(BasisSet, 0, 0) 
@@ -826,7 +822,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
             if (BasisSet.BasisSetSignature != mv2.BasisSet.BasisSetSignature)
                 throw new InvalidOperationException();
 
-            var signature = BasisSet.CpSignature(Id, mv2.Id);
+            var signature = BasisSet.CpSign(Id, mv2.Id);
 
             return signature == 0 
                 ? new GaTerm(BasisSet, 0, 0) 
@@ -850,7 +846,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
             if (BasisSet.BasisSetSignature != mv2.BasisSet.BasisSetSignature)
                 throw new InvalidOperationException();
 
-            var signature = BasisSet.EGpSignature(Id, mv2.Id);
+            var signature = BasisSet.EGpSign(Id, mv2.Id);
 
             return new GaTerm(BasisSet, Id ^ mv2.Id, signature * Scalar * mv2.Scalar);
         }
@@ -872,7 +868,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
             if (BasisSet.BasisSetSignature != mv2.BasisSet.BasisSetSignature)
                 throw new InvalidOperationException();
 
-            var signature = BasisSet.GpSignature(Id, mv2.Id);
+            var signature = BasisSet.GpSign(Id, mv2.Id);
 
             return signature == 0 
                 ? new GaTerm(BasisSet, 0, 0) 
@@ -896,7 +892,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
             if (BasisSet.BasisSetSignature != mv2.BasisSet.BasisSetSignature)
                 throw new InvalidOperationException();
 
-            var signature = BasisSet.EGpReverseSignature(Id, mv2.Id);
+            var signature = BasisSet.EGpReverseSign(Id, mv2.Id);
 
             return new GaTerm(BasisSet, Id ^ mv2.Id, signature * Scalar * mv2.Scalar);
         }
@@ -918,7 +914,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
             if (BasisSet.BasisSetSignature != mv2.BasisSet.BasisSetSignature)
                 throw new InvalidOperationException();
 
-            var signature = BasisSet.GpReverseSignature(Id, mv2.Id);
+            var signature = BasisSet.GpReverseSign(Id, mv2.Id);
 
             return signature == 0 
                 ? new GaTerm(BasisSet, 0, 0) 

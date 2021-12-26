@@ -29,13 +29,13 @@ namespace NumericalGeometryLib.GeometricAlgebra.Structures
         {
             get
             {
-                var id = GaBasisBladeDataLookup.Default.GradeIndexToId(grade, index);
+                var id = BasisBladeDataLookup.BasisBladeId(grade, index);
 
                 return this[id];
             }
             set
             {
-                var id = GaBasisBladeDataLookup.Default.GradeIndexToId(grade, index);
+                var id = BasisBladeDataLookup.BasisBladeId(grade, index);
 
                 this[id] = value;
             }
@@ -149,16 +149,16 @@ namespace NumericalGeometryLib.GeometricAlgebra.Structures
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<GaIdScalarRecord> GetIdScalarRecords()
+        public IEnumerable<IdScalarRecord> GetIdScalarRecords()
         {
             return _numbersDictionary.Select(
-                p => new GaIdScalarRecord(p.Key, p.Value)
+                p => new IdScalarRecord(p.Key, p.Value)
             );
         }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GaMultivectorSparseList AddTerm(GaIdScalarRecord idScalarRecord)
+        public GaMultivectorSparseList AddTerm(IdScalarRecord idScalarRecord)
         {
             var (id, scalar) = idScalarRecord;
 
@@ -182,7 +182,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Structures
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GaMultivectorSparseList SubtractTerm(GaIdScalarRecord idScalarRecord)
+        public GaMultivectorSparseList SubtractTerm(IdScalarRecord idScalarRecord)
         {
             var (id, scalar) = idScalarRecord;
 
@@ -206,7 +206,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Structures
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GaMultivectorSparseList AddTerms(IEnumerable<GaIdScalarRecord> idScalarRecords)
+        public GaMultivectorSparseList AddTerms(IEnumerable<IdScalarRecord> idScalarRecords)
         {
             foreach (var (id, scalar) in idScalarRecords)
             {
@@ -231,7 +231,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Structures
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GaMultivectorSparseList SubtractTerms(IEnumerable<GaIdScalarRecord> idScalarRecords)
+        public GaMultivectorSparseList SubtractTerms(IEnumerable<IdScalarRecord> idScalarRecords)
         {
             foreach (var (id, scalar) in idScalarRecords)
             {

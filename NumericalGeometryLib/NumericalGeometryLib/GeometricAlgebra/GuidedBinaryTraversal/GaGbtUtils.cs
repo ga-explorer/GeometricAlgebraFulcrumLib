@@ -7,13 +7,13 @@ namespace NumericalGeometryLib.GeometricAlgebra.GuidedBinaryTraversal
     public static class GaGbtUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaGbtMultivectorBinaryTrieStack CreateGbtMultivectorStack(this GaBasisSet basisSet, int capacity, GaMultivectorBinaryTrie binaryTrie)
+        public static GaGbtMultivectorBinaryTrieStack CreateGbtMultivectorStack(this BasisBladeSet basisSet, int capacity, GaMultivectorBinaryTrie binaryTrie)
         {
             return new GaGbtMultivectorBinaryTrieStack(basisSet, capacity, binaryTrie);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaGbtMultivectorProductsBinaryTrieStack CreateGbtProductsStack(this GaBasisSet basisSet, GaMultivectorBinaryTrie mvBinaryTrie1, GaMultivectorBinaryTrie mvBinaryTrie2)
+        public static GaGbtMultivectorProductsBinaryTrieStack CreateGbtProductsStack(this BasisBladeSet basisSet, GaMultivectorBinaryTrie mvBinaryTrie1, GaMultivectorBinaryTrie mvBinaryTrie2)
         {
             var treeDepth = (int) basisSet.VSpaceDimension;
 

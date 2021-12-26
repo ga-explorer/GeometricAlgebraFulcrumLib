@@ -1,29 +1,33 @@
 ﻿using System.Runtime.CompilerServices;
 using NumericalGeometryLib.BasicMath;
-using NumericalGeometryLib.GeometricAlgebra.Basis;
 using NumericalGeometryLib.GeometricAlgebra.Multivectors;
 
 namespace NumericalGeometryLib.GeometricAlgebra
 {
     public static class GeometricAlgebraUtils
     {
-        private static GaBasisBladeDataLookup Lookup 
-            => GaBasisBladeDataLookup.Default;
-
-
         /// <summary>
-        /// Test if the clifford conjugate of a basis blade with a given grade is -1 the original basis blade
-        /// Sign Pattern: +--+
+        /// Test if the grade inverse of a basis blade with a given grade is 1
+        /// the original basis blade Sign Pattern: +-+-
         /// </summary>
         /// <param name="grade"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool GradeHasNegativeCliffordConjugate(this uint grade)
+        public static bool GradeInvolutionIsPositiveOfGrade(this uint grade)
         {
-            var v = grade % 4;
-            return v is 1 or 2;
+            return (grade & 1) == 0;
+        }
 
-            //return ((grade * (grade + 1)) & 2) != 0;
+        /// <summary>
+        /// Test if the grade inverse of a basis blade with a given grade is -1 the original basis blade
+        /// Sign Pattern: +-+-
+        /// </summary>
+        /// <param name="grade"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool GradeInvolutionIsNegativeOfGrade(this uint grade)
+        {
+            return (grade & 1) != 0;
         }
         
         /// <summary>
@@ -33,9 +37,37 @@ namespace NumericalGeometryLib.GeometricAlgebra
         /// <param name="grade"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool GradeHasNegativeGradeInvolution(this uint grade)
+        public static int GradeInvolutionSignOfGrade(this uint grade)
         {
-            return (grade & 1) != 0;
+            return (grade & 1) != 0 ? -1 : 1;
+        }
+
+        /// <summary>
+        /// Test if the reverse of a basis blade with a given grade is -1 the original basis blade
+        /// Sign Pattern: ++--
+        /// </summary>
+        /// <param name="grade"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool ReverseIsPositiveOfGrade(this uint grade)
+        {
+            return grade % 4 < 2;
+
+            //return ((grade * (grade - 1)) & 2) != 0;
+        }
+
+        /// <summary>
+        /// Test if the reverse of a basis blade with a given grade is -1 the original basis blade
+        /// Sign Pattern: ++--
+        /// </summary>
+        /// <param name="grade"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool ReverseIsNegativeOfGrade(this uint grade)
+        {
+            return grade % 4 > 1;
+
+            //return ((grade * (grade - 1)) & 2) != 0;
         }
         
         /// <summary>
@@ -45,14 +77,51 @@ namespace NumericalGeometryLib.GeometricAlgebra
         /// <param name="grade"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool GradeHasNegativeReverse(this uint grade)
+        public static int ReverseSignOfGrade(this uint grade)
         {
-            return (grade & 2) != 0;
-
-            //return grade % 4 > 1;
-
-            //return ((grade * (grade - 1)) & 2) != 0;
+            return (grade % 4 > 1) ? -1 : 1;
         }
+        
+        /// <summary>
+        /// Test if the clifford conjugate of a basis blade with a given grade is -1 the original basis blade
+        /// Sign Pattern: +--+
+        /// </summary>
+        /// <param name="grade"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool CliffordConjugateIsPositiveOfGrade(this uint grade)
+        {
+            return (grade % 4) is 0 or 3;
+
+            //return ((grade * (grade + 1)) & 2) != 0;
+        }
+        
+        /// <summary>
+        /// Test if the clifford conjugate of a basis blade with a given grade is -1 the original basis blade
+        /// Sign Pattern: +--+
+        /// </summary>
+        /// <param name="grade"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool CliffordConjugateIsNegativeOfGrade(this uint grade)
+        {
+            return (grade % 4) is 1 or 2;
+
+            //return ((grade * (grade + 1)) & 2) != 0;
+        }
+        
+        /// <summary>
+        /// Test if the clifford conjugate of a basis blade with a given grade is -1 the original basis blade
+        /// Sign Pattern: +--+
+        /// </summary>
+        /// <param name="grade"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int CliffordConjugateSignOfGrade(this uint grade)
+        {
+            return ((grade % 4) is 1 or 2) ? -1 : 1;
+        }
+
 
         public static int GetMinScalarMagnitudeIndex(this double[] scalarsArray)
         {

@@ -87,7 +87,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.ProductIterator
                 foreach (var (id2, scalar2) in GetOpIdScalarRecords2(id1))
                 {
                     var id = id1 ^ id2;
-                    var scalar = BasisBladeProductUtils.IsNegativeEGp(id1, id2)
+                    var scalar = BasisBladeProductUtils.EGpIsNegative(id1, id2)
                         ? ScalarProcessor.NegativeTimes(scalar1, scalar2)
                         : ScalarProcessor.Times(scalar1, scalar2);
 
@@ -103,7 +103,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.ProductIterator
                 foreach (var (id2, scalar2) in Storage2.GetIdScalarRecords())
                 {
                     var id = id1 ^ id2;
-                    var scalar = BasisBladeProductUtils.IsNegativeEGp(id1, id2)
+                    var scalar = BasisBladeProductUtils.EGpIsNegative(id1, id2)
                         ? ScalarProcessor.NegativeTimes(scalar1, scalar2)
                         : ScalarProcessor.Times(scalar1, scalar2);
 
@@ -119,7 +119,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.ProductIterator
                 if (!Storage2.TryGetTermScalar(id, out var scalar2)) 
                     continue;
 
-                var scalar = BasisBladeProductUtils.IsNegativeEGp(id)
+                var scalar = BasisBladeProductUtils.EGpSquaredIsNegative(id)
                     ? ScalarProcessor.NegativeTimes(scalar1, scalar2)
                     : ScalarProcessor.Times(scalar1, scalar2);
 
@@ -134,7 +134,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.ProductIterator
                 if (!Storage2.TryGetTermScalar(id, out var scalar2)) 
                     continue;
 
-                var scalar = BasisBladeProductUtils.IsNegativeEGp(id)
+                var scalar = BasisBladeProductUtils.EGpSquaredIsNegative(id)
                     ? ScalarProcessor.NegativeTimes(scalar1, scalar2)
                     : ScalarProcessor.Times(scalar1, scalar2);
 
@@ -149,7 +149,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.ProductIterator
                 foreach (var (id2, scalar2) in GetELcpIdScalarRecords2(id1))
                 {
                     var id = id1 ^ id2;
-                    var scalar = BasisBladeProductUtils.IsNegativeEGp(id1, id2)
+                    var scalar = BasisBladeProductUtils.EGpIsNegative(id1, id2)
                         ? ScalarProcessor.NegativeTimes(scalar1, scalar2)
                         : ScalarProcessor.Times(scalar1, scalar2);
 
@@ -165,7 +165,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.ProductIterator
                 foreach (var (id2, scalar2) in GetERcpIdScalarRecords2(id1))
                 {
                     var id = id1 ^ id2;
-                    var scalar = BasisBladeProductUtils.IsNegativeEGp(id1, id2)
+                    var scalar = BasisBladeProductUtils.EGpIsNegative(id1, id2)
                         ? ScalarProcessor.NegativeTimes(scalar1, scalar2)
                         : ScalarProcessor.Times(scalar1, scalar2);
 
@@ -181,7 +181,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.ProductIterator
                 foreach (var (id2, scalar2) in GetEHipIdScalarRecords2(id1))
                 {
                     var id = id1 ^ id2;
-                    var scalar = BasisBladeProductUtils.IsNegativeEGp(id1, id2)
+                    var scalar = BasisBladeProductUtils.EGpIsNegative(id1, id2)
                         ? ScalarProcessor.NegativeTimes(scalar1, scalar2)
                         : ScalarProcessor.Times(scalar1, scalar2);
 
@@ -197,7 +197,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.ProductIterator
                 foreach (var (id2, scalar2) in GetEFdpIdScalarRecords2(id1))
                 {
                     var id = id1 ^ id2;
-                    var scalar = BasisBladeProductUtils.IsNegativeEGp(id1, id2)
+                    var scalar = BasisBladeProductUtils.EGpIsNegative(id1, id2)
                         ? ScalarProcessor.NegativeTimes(scalar1, scalar2)
                         : ScalarProcessor.Times(scalar1, scalar2);
 
@@ -213,7 +213,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.ProductIterator
                 foreach (var (id2, scalar2) in GetECpIdScalarRecords2(id1))
                 {
                     var id = id1 ^ id2;
-                    var scalar = BasisBladeProductUtils.IsNegativeEGp(id1, id2)
+                    var scalar = BasisBladeProductUtils.EGpIsNegative(id1, id2)
                         ? ScalarProcessor.NegativeTimes(scalar1, scalar2)
                         : ScalarProcessor.Times(scalar1, scalar2);
 
@@ -229,7 +229,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.ProductIterator
                 foreach (var (id2, scalar2) in GetEAcpIdScalarRecords2(id1))
                 {
                     var id = id1 ^ id2;
-                    var scalar = BasisBladeProductUtils.IsNegativeEGp(id1, id2)
+                    var scalar = BasisBladeProductUtils.EGpIsNegative(id1, id2)
                         ? ScalarProcessor.NegativeTimes(scalar1, scalar2)
                         : ScalarProcessor.Times(scalar1, scalar2);
 
@@ -239,14 +239,14 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.ProductIterator
         }
 
 
-        public IEnumerable<IndexScalarRecord<T>> GetGpIdScalarRecords(GeometricAlgebraBasisSet basisSet)
+        public IEnumerable<IndexScalarRecord<T>> GetGpIdScalarRecords(BasisBladeSet basisSet)
         {
             foreach (var (id1, scalar1) in Storage1.GetIdScalarRecords())
             {
                 foreach (var (id2, scalar2) in Storage2.GetIdScalarRecords())
                 {
                     var basisSignature = 
-                        basisSet.GpSignature(id1, id2);
+                        basisSet.GpSign(id1, id2);
 
                     if (basisSignature == 0)
                         continue;
@@ -261,7 +261,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.ProductIterator
             }
         }
 
-        public IEnumerable<IndexScalarRecord<T>> GetSpIdScalarRecords(GeometricAlgebraBasisSet basisSet)
+        public IEnumerable<IndexScalarRecord<T>> GetSpIdScalarRecords(BasisBladeSet basisSet)
         {
             foreach (var (id, scalar1) in Storage1.GetIdScalarRecords())
             {
@@ -282,7 +282,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.ProductIterator
             }
         }
 
-        public IEnumerable<T> GetSpScalars(GeometricAlgebraBasisSet basisSet)
+        public IEnumerable<T> GetSpScalars(BasisBladeSet basisSet)
         {
             foreach (var (id, scalar1) in Storage1.GetIdScalarRecords())
             {
@@ -303,14 +303,14 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.ProductIterator
             }
         }
 
-        public IEnumerable<IndexScalarRecord<T>> GetLcpIdScalarRecords(GeometricAlgebraBasisSet basisSet)
+        public IEnumerable<IndexScalarRecord<T>> GetLcpIdScalarRecords(BasisBladeSet basisSet)
         {
             foreach (var (id1, scalar1) in Storage1.GetIdScalarRecords())
             {
                 foreach (var (id2, scalar2) in GetELcpIdScalarRecords2(id1))
                 {
                     var basisSignature = 
-                        basisSet.GpSignature(id1, id2);
+                        basisSet.GpSign(id1, id2);
 
                     if (basisSignature == 0)
                         continue;
@@ -325,14 +325,14 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.ProductIterator
             }
         }
 
-        public IEnumerable<IndexScalarRecord<T>> GetRcpIdScalarRecords(GeometricAlgebraBasisSet basisSet)
+        public IEnumerable<IndexScalarRecord<T>> GetRcpIdScalarRecords(BasisBladeSet basisSet)
         {
             foreach (var (id1, scalar1) in Storage1.GetIdScalarRecords())
             {
                 foreach (var (id2, scalar2) in GetERcpIdScalarRecords2(id1))
                 {
                     var basisSignature = 
-                        basisSet.GpSignature(id1, id2);
+                        basisSet.GpSign(id1, id2);
 
                     if (basisSignature == 0)
                         continue;
@@ -347,14 +347,14 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.ProductIterator
             }
         }
 
-        public IEnumerable<IndexScalarRecord<T>> GetHipIdScalarRecords(GeometricAlgebraBasisSet basisSet)
+        public IEnumerable<IndexScalarRecord<T>> GetHipIdScalarRecords(BasisBladeSet basisSet)
         {
             foreach (var (id1, scalar1) in Storage1.GetIdScalarRecords())
             {
                 foreach (var (id2, scalar2) in GetEHipIdScalarRecords2(id1))
                 {
                     var basisSignature = 
-                        basisSet.GpSignature(id1, id2);
+                        basisSet.GpSign(id1, id2);
 
                     if (basisSignature == 0)
                         continue;
@@ -369,14 +369,14 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.ProductIterator
             }
         }
 
-        public IEnumerable<IndexScalarRecord<T>> GetFdpIdScalarRecords(GeometricAlgebraBasisSet basisSet)
+        public IEnumerable<IndexScalarRecord<T>> GetFdpIdScalarRecords(BasisBladeSet basisSet)
         {
             foreach (var (id1, scalar1) in Storage1.GetIdScalarRecords())
             {
                 foreach (var (id2, scalar2) in GetEFdpIdScalarRecords2(id1))
                 {
                     var basisSignature = 
-                        basisSet.GpSignature(id1, id2);
+                        basisSet.GpSign(id1, id2);
 
                     if (basisSignature == 0)
                         continue;
@@ -391,14 +391,14 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.ProductIterator
             }
         }
 
-        public IEnumerable<IndexScalarRecord<T>> GetCpIdScalarRecords(GeometricAlgebraBasisSet basisSet)
+        public IEnumerable<IndexScalarRecord<T>> GetCpIdScalarRecords(BasisBladeSet basisSet)
         {
             foreach (var (id1, scalar1) in Storage1.GetIdScalarRecords())
             {
                 foreach (var (id2, scalar2) in GetECpIdScalarRecords2(id1))
                 {
                     var basisSignature = 
-                        basisSet.GpSignature(id1, id2);
+                        basisSet.GpSign(id1, id2);
 
                     if (basisSignature == 0)
                         continue;
@@ -413,14 +413,14 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.ProductIterator
             }
         }
 
-        public IEnumerable<IndexScalarRecord<T>> GetAcpIdScalarRecords(GeometricAlgebraBasisSet basisSet)
+        public IEnumerable<IndexScalarRecord<T>> GetAcpIdScalarRecords(BasisBladeSet basisSet)
         {
             foreach (var (id1, scalar1) in Storage1.GetIdScalarRecords())
             {
                 foreach (var (id2, scalar2) in GetEAcpIdScalarRecords2(id1))
                 {
                     var basisSignature = 
-                        basisSet.GpSignature(id1, id2);
+                        basisSet.GpSign(id1, id2);
 
                     if (basisSignature == 0)
                         continue;

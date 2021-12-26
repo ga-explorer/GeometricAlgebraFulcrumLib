@@ -4,10 +4,10 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using DataStructuresLib.BitManipulation;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
+using DataStructuresLib.Combinations;
+using NumericalGeometryLib.GeometricAlgebra.Structures;
 
-namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
+namespace NumericalGeometryLib.GeometricAlgebra.Basis
 {
     public static class BasisBladeUtils
     {
@@ -122,17 +122,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             return basisVectorIndices
                 .Aggregate(0UL, (acc, item) => acc | item.BasisVectorIndexToId());
         }
-
-        /// <summary>
-        /// Get the largest basis vector basisBladeIndex of the given basis blade
-        /// </summary>
-        /// <param name="basisBlade"></param>
-        /// <returns></returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ulong BasisBladeMaxVectorIndex(this BasisBlade basisBlade)
-        {
-            return (ulong) basisBlade.Id.LastOneBitPosition();
-        }
+        
 
         /// <summary>
         /// Get the largest basis vector basisBladeIndex of the given basis blade
@@ -186,24 +176,6 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             return BasisBladeDataLookup.BasisBladeGradeIndex(basisBladeId);
         }
         
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string BasisBladeIdToName(this ulong basisBladeId)
-        {
-            return GeometricAlgebraSpaceUtils.DefaultBasisVectorsNames.ConcatenateUsingPattern(basisBladeId, "E0", "^");
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string BasisBladeGradeIndexToName(uint grade, ulong basisBladeIndex)
-        {
-            return GeometricAlgebraSpaceUtils
-                .DefaultBasisVectorsNames
-                .ConcatenateUsingPattern(
-                    basisBladeIndex.BasisBladeIndexToId(grade), 
-                    "E0", 
-                    "^"
-                );
-        }
-
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string BasisBladeIdToName(this ulong basisBladeId, params string[] basisVectorNames)
         {
@@ -418,22 +390,22 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsValidBasisBladeId(this ulong basisBladeId)
         {
-            return basisBladeId <= GeometricAlgebraSpaceUtils.MaxVSpaceBasisBladeId;
+            return basisBladeId <= BasisBladeDataLookup.MaxBasisBladeId;
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsValidBasisBladeId(this ulong basisBladeId, uint vSpaceDimension)
         {
-            return basisBladeId < vSpaceDimension.ToGaSpaceDimension();
+            return basisBladeId < (1UL << (int) vSpaceDimension);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsValidBasisBladeIndex(this ulong basisBladeIndex, uint grade)
         {
-            if (grade > GeometricAlgebraSpaceUtils.MaxVSpaceDimension) 
+            if (grade > BasisBladeDataLookup.MaxVSpaceDimension) 
                 return false;
 
-            var kvDim = GeometricAlgebraSpaceUtils.MaxVSpaceDimension.KVectorSpaceDimension(grade);
+            var kvDim = BasisBladeDataLookup.MaxVSpaceDimension.GetBinomialCoefficient(grade);
 
             return basisBladeIndex < kvDim;
         }
@@ -444,7 +416,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             if (grade > vSpaceDimension) 
                 return false;
 
-            var kvDim = vSpaceDimension.KVectorSpaceDimension(grade);
+            var kvDim = vSpaceDimension.GetBinomialCoefficient(grade);
 
             return basisBladeIndex < kvDim;
         }
@@ -452,10 +424,10 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsValidBasisBladeGradeIndex(uint grade, ulong basisBladeIndex)
         {
-            if (grade > GeometricAlgebraSpaceUtils.MaxVSpaceDimension) 
+            if (grade > BasisBladeDataLookup.MaxVSpaceDimension) 
                 return false;
 
-            var kvDim = GeometricAlgebraSpaceUtils.MaxVSpaceDimension.KVectorSpaceDimension(grade);
+            var kvDim = BasisBladeDataLookup.MaxVSpaceDimension.GetBinomialCoefficient(grade);
 
             return basisBladeIndex < kvDim;
         }
@@ -466,7 +438,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             if (grade > vSpaceDimension) 
                 return false;
 
-            var kvDim = vSpaceDimension.KVectorSpaceDimension(grade);
+            var kvDim = vSpaceDimension.GetBinomialCoefficient(grade);
 
             return basisBladeIndex < kvDim;
         }
@@ -474,7 +446,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsValidGrade(this uint grade)
         {
-            return grade <= GeometricAlgebraSpaceUtils.MaxVSpaceDimension;
+            return grade <= BasisBladeDataLookup.MaxVSpaceDimension;
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

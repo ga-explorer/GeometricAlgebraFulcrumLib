@@ -169,7 +169,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorStorage<double> Dual(this GeometricAlgebraBasisSet basisSet, IMultivectorStorage<double> mv1)
+        public static IMultivectorStorage<double> Dual(this BasisBladeSet basisSet, IMultivectorStorage<double> mv1)
         {
             var scalarProcessor = ScalarAlgebraFloat64Processor.DefaultProcessor;
 
@@ -180,7 +180,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorStorage<T> Dual<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, IMultivectorStorage<T> mv1)
+        public static IMultivectorStorage<T> Dual<T>(this IScalarAlgebraProcessor<T> scalarProcessor, BasisBladeSet basisSet, IMultivectorStorage<T> mv1)
         {
             var pseudoScalarInverse =
                 scalarProcessor.CreatePseudoScalarInverseStorage(basisSet);
@@ -189,7 +189,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorStorage<T> Dual<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorStorage<T> mv1, GeometricAlgebraBasisSet basisSet)
+        public static IMultivectorStorage<T> Dual<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorStorage<T> mv1, BasisBladeSet basisSet)
         {
             var pseudoScalarInverse =
                 scalarProcessor.CreatePseudoScalarInverseStorage(basisSet);
@@ -199,7 +199,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorStorage<double> UnDual(this GeometricAlgebraBasisSet basisSet, IMultivectorStorage<double> mv1)
+        public static IMultivectorStorage<double> UnDual(this BasisBladeSet basisSet, IMultivectorStorage<double> mv1)
         {
             var pseudoScalarReverse =
                 ScalarAlgebraFloat64Processor.DefaultProcessor.CreatePseudoScalarReverseStorage(basisSet.VSpaceDimension);
@@ -208,7 +208,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorStorage<T> UnDual<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, IMultivectorStorage<T> mv1)
+        public static IMultivectorStorage<T> UnDual<T>(this IScalarAlgebraProcessor<T> scalarProcessor, BasisBladeSet basisSet, IMultivectorStorage<T> mv1)
         {
             var pseudoScalarReverse =
                 scalarProcessor.CreatePseudoScalarReverseStorage(basisSet.VSpaceDimension);
@@ -217,7 +217,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorStorage<T> UnDual<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorStorage<T> mv1, GeometricAlgebraBasisSet basisSet)
+        public static IMultivectorStorage<T> UnDual<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorStorage<T> mv1, BasisBladeSet basisSet)
         {
             var pseudoScalarReverse =
                 scalarProcessor.CreatePseudoScalarReverseStorage(basisSet.VSpaceDimension);
@@ -227,7 +227,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorStorage<double> BladeInverse(this GeometricAlgebraBasisSet basisSet, IMultivectorStorage<double> mv1)
+        public static IMultivectorStorage<double> BladeInverse(this BasisBladeSet basisSet, IMultivectorStorage<double> mv1)
         {
             var bladeSpSquared = basisSet.Sp(mv1);
 
@@ -235,7 +235,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVectorStorage<T> BladeInverse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, KVectorStorage<T> kVector)
+        public static KVectorStorage<T> BladeInverse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, BasisBladeSet basisSet, KVectorStorage<T> kVector)
         {
             var bladeSpSquared = scalarProcessor.Sp(basisSet, kVector);
 
@@ -243,7 +243,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorStorage<T> BladeInverse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorStorage<T> mv1, GeometricAlgebraBasisSet basisSet)
+        public static IMultivectorStorage<T> BladeInverse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorStorage<T> mv1, BasisBladeSet basisSet)
         {
             var bladeSpSquared = scalarProcessor.Sp(basisSet, mv1);
 
@@ -252,7 +252,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorStorage<double> VersorInverse(this GeometricAlgebraBasisSet basisSet, IMultivectorStorage<double> mv1)
+        public static IMultivectorStorage<double> VersorInverse(this BasisBladeSet basisSet, IMultivectorStorage<double> mv1)
         {
             var versorSpReverse = basisSet.NormSquared(mv1);
 
@@ -260,7 +260,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorStorage<T> VersorInverse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, GeometricAlgebraBasisSet basisSet, IMultivectorStorage<T> mv1)
+        public static IMultivectorStorage<T> VersorInverse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, BasisBladeSet basisSet, IMultivectorStorage<T> mv1)
         {
             var versorSpReverse = scalarProcessor.NormSquared(basisSet, mv1);
 
@@ -268,7 +268,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorStorage<T> VersorInverse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorStorage<T> mv1, GeometricAlgebraBasisSet basisSet)
+        public static IMultivectorStorage<T> VersorInverse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorStorage<T> mv1, BasisBladeSet basisSet)
         {
             var versorSpReverse = scalarProcessor.NormSquared(basisSet, mv1);
 

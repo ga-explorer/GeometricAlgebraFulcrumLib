@@ -1,11 +1,39 @@
 ﻿using System;
-using System.Collections;
+using System.Numerics;
 using System.Runtime.CompilerServices;
+using DataStructuresLib.Combinations;
 
 namespace NumericalGeometryLib.GeometricAlgebra.Basis
 {
-    internal sealed class GaBasisBladeData
+    internal static class BasisBladeDataComputer
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static uint BasisBladeGrade(ulong id)
+        {
+            return (uint) BitOperations.PopCount(id);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ulong BasisBladeIndex(ulong id)
+        {
+            return id.CombinadicPatternToIndex();
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Tuple<uint, ulong> BasisBladeGradeIndex(ulong id)
+        {
+            return new Tuple<uint, ulong>(
+                (uint) BitOperations.PopCount(id), 
+                id.CombinadicPatternToIndex()
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ulong BasisBladeId(uint grade, ulong index)
+        {
+            return index.IndexToCombinadicPattern((int) grade);
+        }
+
         /// <summary>
         /// Compute if the Euclidean Geometric Product of two basis blades is -1.
         /// This method is slower than lookup, but can be used for GAs with dimension
@@ -14,7 +42,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Basis
         /// <param name="id1"></param>
         /// <param name="id2"></param>
         /// <returns></returns>
-        internal static bool ComputeIsNegativeEGp(ulong id1, ulong id2)
+        public static bool EGpIsNegative(ulong id1, ulong id2)
         {
             if (id1 == 0UL || id2 == 0UL) return false;
 
@@ -55,7 +83,13 @@ namespace NumericalGeometryLib.GeometricAlgebra.Basis
             return flag;
         }
 
-        internal static int ComputeEGpSignature(ulong id1, ulong id2)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool EGpIsPositive(ulong id1, ulong id2)
+        {
+            return !EGpIsNegative(id1, id2);
+        }
+
+        public static int EGpSign(ulong id1, ulong id2)
         {
             if (id1 == 0UL || id2 == 0UL) return 1;
 
@@ -96,54 +130,13 @@ namespace NumericalGeometryLib.GeometricAlgebra.Basis
             return signature;
         }
 
-        
-        private readonly BitArray _isNegativeEGpBitArray;
-
-
-        public ulong Id { get; }
-
-        public uint Grade { get; }
-
-        public ulong Index { get; }
-
-
-        internal GaBasisBladeData(ulong gaSpaceDimension, ulong id, uint grade, ulong index)
-        {
-            if (gaSpaceDimension > int.MaxValue)
-                throw new ArgumentOutOfRangeException(nameof(gaSpaceDimension));
-
-            Id = id;
-            Grade = grade;
-            Index = index;
-            _isNegativeEGpBitArray = new BitArray((int) gaSpaceDimension);
-
-            for (var id2 = 0UL; id2 < gaSpaceDimension; id2++)
-                _isNegativeEGpBitArray[(int) id2] = ComputeIsNegativeEGp(id, id2);
-        }
-
-
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IsNegativeEGp()
+        public static int EGpReverseSign(ulong id1, ulong id2)
         {
-            return _isNegativeEGpBitArray[(int) Id];
-        }
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IsNegativeEGp(ulong id2)
-        {
-            return _isNegativeEGpBitArray[(int) id2];
-        }
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public int EGpSignature()
-        {
-            return _isNegativeEGpBitArray[(int) Id] ? -1 : 1;
-        }
+            var egpSign = EGpSign(id1, id2);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public int EGpSignature(int id2)
-        {
-            return _isNegativeEGpBitArray[id2] ? -1 : 1;
+            return ((uint) BitOperations.PopCount(id2)).ReverseIsNegativeOfGrade()
+                ? -egpSign : egpSign;
         }
     }
 }

@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 
-namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
+namespace NumericalGeometryLib.GeometricAlgebra.Basis
 {
     public static class BasisBladeProductUtils
     {
@@ -164,7 +163,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ulong JoinIDs(ulong id1, ulong id2)
         {
-            return id1 | (id2 << (int) GeometricAlgebraSpaceUtils.MaxVSpaceDimension);
+            return id1 | (id2 << (int) BasisBladeDataLookup.MaxVSpaceDimension);
         }
 
         /// <summary>

@@ -7,7 +7,7 @@ using System.Text;
 using DataStructuresLib.BitManipulation;
 using DataStructuresLib.Combinations;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Utilities.Structures;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
@@ -664,15 +664,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ulong BasisBladeId(this IGeometricAlgebraSpace space, uint grade, ulong index)
         {
-            if (grade < GaFuLLookupTables.GradeIndexToIdTable.Count)
-            {
-                var table = GaFuLLookupTables.GradeIndexToIdTable[(int) grade];
-
-                if (index < (ulong) table.Length)
-                    return table[index];
-            }
-
-            return index.IndexToCombinadicPattern((int) grade);
+            return BasisBladeDataLookup.BasisBladeId(grade, index);
         }
 
         /// <summary>
@@ -696,9 +688,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static uint BasisBladeGrade(this IGeometricAlgebraSpace space, ulong basisBladeId)
         {
-            return basisBladeId < (ulong) GaFuLLookupTables.IdToGradeTable.Length
-                ? GaFuLLookupTables.IdToGradeTable[basisBladeId]
-                : (uint) basisBladeId.CountOnes();
+            return BasisBladeDataLookup.BasisBladeGrade(basisBladeId);
         }
 
         /// <summary>
@@ -710,9 +700,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ulong BasisBladeIndex(this IGeometricAlgebraSpace space, ulong basisBladeId)
         {
-            return basisBladeId < (ulong) GaFuLLookupTables.IdToIndexTable.Length
-                ? GaFuLLookupTables.IdToIndexTable[basisBladeId]
-                : basisBladeId.CombinadicPatternToIndex();
+            return BasisBladeDataLookup.BasisBladeIndex(basisBladeId);
         }
 
         /// <summary>
@@ -731,19 +719,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static GradeIndexRecord BasisBladeGradeIndex(this IGeometricAlgebraSpace space, ulong basisBladeId)
         {
-            if (basisBladeId < (ulong) GaFuLLookupTables.IdToIndexTable.Length)
-            {
-                var grade = GaFuLLookupTables.IdToGradeTable[basisBladeId];
-                var index = GaFuLLookupTables.IdToIndexTable[basisBladeId];
-
-                return new GradeIndexRecord(grade, index);
-            }
-            else
-            {
-                basisBladeId.CombinadicPatternToIndex(out var grade, out var index);
-
-                return new GradeIndexRecord((uint) grade, index);
-            }
+            return BasisBladeDataLookup.BasisBladeGradeIndex(basisBladeId);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -815,90 +791,114 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                 .GetSubPatterns();
         }
 
-        /// <summary>
-        /// Test if the clifford conjugate of a basis blade with a given grade is -1 the original basis blade
-        /// Sign Pattern: +--+
-        /// </summary>
-        /// <param name="space"></param>
-        /// <param name="grade"></param>
-        /// <returns></returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool GradeHasNegativeCliffordConjugate(this IGeometricAlgebraSpace space, uint grade)
-        {
-            var v = grade % 4;
-            return v == 1 || v == 2;
-
-            //return ((grade * (grade + 1)) & 2) != 0;
-        }
 
         /// <summary>
-        /// Test if the grade inverse of a basis blade with a given grade is -1 the original basis blade
-        /// Sign Pattern: +-+-
+        /// Test if the grade inverse of a given basis blade is -1 the original basis blade
         /// </summary>
         /// <param name="space"></param>
-        /// <param name="grade"></param>
+        /// <param name="basisBladeId"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool GradeHasNegativeGradeInvolution(this IGeometricAlgebraSpace space, uint grade)
+        public static bool GradeInvolutionIsPositiveOfBasisBladeId(this IGeometricAlgebraSpace space, ulong basisBladeId)
         {
-            return (grade & 1) != 0;
-        }
-
-        /// <summary>
-        /// Test if the reverse of a basis blade with a given grade is -1 the original basis blade
-        /// Sign Pattern: ++--
-        /// </summary>
-        /// <param name="space"></param>
-        /// <param name="grade"></param>
-        /// <returns></returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool GradeHasNegativeReverse(this IGeometricAlgebraSpace space, uint grade)
-        {
-            return grade % 4 > 1;
-
-            //return ((grade * (grade - 1)) & 2) != 0;
-        }
-
-        /// <summary>
-        /// Test if the clifford conjugate of a given basis blade is -1 the original basis blade 
-        /// </summary>
-        /// <param name="space"></param>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool BasisBladeIdHasNegativeCliffordConjugate(this IGeometricAlgebraSpace space, ulong id)
-        {
-            return id < (ulong)GaFuLLookupTables.IsNegativeCliffConjTable.Length
-                ? GaFuLLookupTables.IsNegativeCliffConjTable.Get((int)id)
-                : ((uint) id.CountOnes()).GradeHasNegativeCliffordConjugate();
+            return BasisBladeDataLookup.GradeInvolutionIsPositive(basisBladeId);
         }
 
         /// <summary>
         /// Test if the grade inverse of a given basis blade is -1 the original basis blade
         /// </summary>
         /// <param name="space"></param>
-        /// <param name="id"></param>
+        /// <param name="basisBladeId"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool BasisBladeIdHasNegativeGradeInvolution(this IGeometricAlgebraSpace space, ulong id)
+        public static bool GradeInvolutionIsNegativeOfBasisBladeId(this IGeometricAlgebraSpace space, ulong basisBladeId)
         {
-            return id < (ulong)GaFuLLookupTables.IsNegativeGradeInvTable.Length
-                ? GaFuLLookupTables.IsNegativeGradeInvTable.Get((int)id)
-                : ((uint) id.CountOnes()).GradeHasNegativeGradeInvolution();
+            return BasisBladeDataLookup.GradeInvolutionIsNegative(basisBladeId);
+        }
+
+        /// <summary>
+        /// Test if the grade inverse of a given basis blade is -1 the original basis blade
+        /// </summary>
+        /// <param name="space"></param>
+        /// <param name="basisBladeId"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int GradeInvolutionSignOfBasisBladeId(this IGeometricAlgebraSpace space, ulong basisBladeId)
+        {
+            return BasisBladeDataLookup.GradeInvolutionSign(basisBladeId);
         }
 
         /// <summary>
         /// Test if the reverse of a given basis blade is -1 the original basis blade
         /// </summary>
         /// <param name="space"></param>
-        /// <param name="id"></param>
+        /// <param name="basisBladeId"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool BasisBladeIdHasNegativeReverse(this IGeometricAlgebraSpace space, ulong id)
+        public static bool ReverseIsPositiveOfBasisBladeId(this IGeometricAlgebraSpace space, ulong basisBladeId)
         {
-            return id < (ulong)GaFuLLookupTables.IsNegativeReverseTable.Length
-                ? GaFuLLookupTables.IsNegativeReverseTable.Get((int)id)
-                : ((uint) id.CountOnes()).GradeHasNegativeReverse();
+            return BasisBladeDataLookup.ReverseIsPositive(basisBladeId);
         }
+
+        /// <summary>
+        /// Test if the reverse of a given basis blade is -1 the original basis blade
+        /// </summary>
+        /// <param name="space"></param>
+        /// <param name="basisBladeId"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool ReverseIsNegativeOfBasisBladeId(this IGeometricAlgebraSpace space, ulong basisBladeId)
+        {
+            return BasisBladeDataLookup.ReverseIsNegative(basisBladeId);
+        }
+
+        /// <summary>
+        /// Test if the reverse of a given basis blade is -1 the original basis blade
+        /// </summary>
+        /// <param name="space"></param>
+        /// <param name="basisBladeId"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int ReverseSignOfBasisBladeId(this IGeometricAlgebraSpace space, ulong basisBladeId)
+        {
+            return BasisBladeDataLookup.ReverseSign(basisBladeId);
+        }
+
+        /// <summary>
+        /// Test if the clifford conjugate of a given basis blade is -1 the original basis blade 
+        /// </summary>
+        /// <param name="space"></param>
+        /// <param name="basisBladeId"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool CliffordConjugateIsPositiveOfBasisBladeId(this IGeometricAlgebraSpace space, ulong basisBladeId)
+        {
+            return BasisBladeDataLookup.CliffordConjugateIsPositive(basisBladeId);
+        }
+
+        /// <summary>
+        /// Test if the clifford conjugate of a given basis blade is -1 the original basis blade 
+        /// </summary>
+        /// <param name="space"></param>
+        /// <param name="basisBladeId"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool CliffordConjugateIsNegativeOfBasisBladeId(this IGeometricAlgebraSpace space, ulong basisBladeId)
+        {
+            return BasisBladeDataLookup.CliffordConjugateIsNegative(basisBladeId);
+        }
+
+        /// <summary>
+        /// Test if the clifford conjugate of a given basis blade is -1 the original basis blade 
+        /// </summary>
+        /// <param name="space"></param>
+        /// <param name="basisBladeId"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int CliffordConjugateSignOfBasisBladeId(this IGeometricAlgebraSpace space, ulong basisBladeId)
+        {
+            return BasisBladeDataLookup.CliffordConjugateSign(basisBladeId);
+        }
+
     }
 }

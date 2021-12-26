@@ -21,31 +21,31 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static KVectorStorage<T> GradeInvolution<T>(this IScalarAlgebraProcessor<T> scalarProcessor, KVectorStorage<T> mv)
         {
-            return scalarProcessor.Negative(mv, BasisBladeUtils.GradeHasNegativeGradeInvolution);
+            return scalarProcessor.Negative(mv, BasisBladeUtils.GradeInvolutionIsNegativeOfGrade);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IMultivectorGradedStorage<T> GradeInvolution<T>(this IScalarAlgebraProcessor<T> scalarProcessor, MultivectorGradedStorage<T> mv)
         {
-            return scalarProcessor.Negative(mv, BasisBladeUtils.GradeHasNegativeGradeInvolution);
+            return scalarProcessor.Negative(mv, BasisBladeUtils.GradeInvolutionIsNegativeOfGrade);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IMultivectorGradedStorage<T> GradeInvolution<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorGradedStorage<T> mv)
         {
-            return scalarProcessor.Negative(mv, BasisBladeUtils.GradeHasNegativeGradeInvolution);
+            return scalarProcessor.Negative(mv, BasisBladeUtils.GradeInvolutionIsNegativeOfGrade);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static MultivectorStorage<T> GradeInvolution<T>(this IScalarAlgebraProcessor<T> scalarProcessor, MultivectorStorage<T> mv)
         {
-            return scalarProcessor.Negative(mv, BasisBladeUtils.GradeHasNegativeGradeInvolution);
+            return scalarProcessor.Negative(mv, BasisBladeUtils.GradeInvolutionIsNegativeOfGrade);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IMultivectorStorage<T> GradeInvolution<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorStorage<T> mv)
         {
-            return scalarProcessor.Negative(mv, BasisBladeUtils.GradeHasNegativeGradeInvolution);
+            return scalarProcessor.Negative(mv, BasisBladeUtils.GradeInvolutionIsNegativeOfGrade);
         }
     }
 }

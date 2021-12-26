@@ -1,25 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.Basic;
 using DataStructuresLib.BitManipulation;
 using DataStructuresLib.Combinations;
 using NumericalGeometryLib.GeometricAlgebra.Multivectors;
-using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 
-namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis
+namespace NumericalGeometryLib.GeometricAlgebra.Basis
 {
     /// <summary>
     /// This class holds information about a set of GA basis blades
     /// with orthonormal signature
     /// </summary>
-    public sealed class GeometricAlgebraBasisSet
+    public sealed class BasisBladeSet
     {
-        private static readonly Dictionary<Triplet<ulong>, GeometricAlgebraBasisSet> BasisSetCache
-            = new Dictionary<Triplet<ulong>, GeometricAlgebraBasisSet>();
+        private static readonly Dictionary<Triplet<ulong>, BasisBladeSet> BasisSetCache
+            = new Dictionary<Triplet<ulong>, BasisBladeSet>();
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -72,12 +70,12 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static GeometricAlgebraBasisSet Create(Triplet<ulong> basisSetSignature)
+        private static BasisBladeSet Create(Triplet<ulong> basisSetSignature)
         {
             if (BasisSetCache.TryGetValue(basisSetSignature, out var basisSet))
                 return basisSet;
 
-            basisSet = new GeometricAlgebraBasisSet(basisSetSignature);
+            basisSet = new BasisBladeSet(basisSetSignature);
 
             BasisSetCache.Add(basisSetSignature, basisSet);
 
@@ -86,7 +84,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GeometricAlgebraBasisSet Create(uint positiveCount, uint negativeCount)
+        public static BasisBladeSet Create(uint positiveCount, uint negativeCount)
         {
             var basisSetSignature = 
                 CreateBasisSetSignature(positiveCount, negativeCount);
@@ -95,7 +93,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GeometricAlgebraBasisSet Create(uint positiveCount, uint negativeCount, uint zeroCount)
+        public static BasisBladeSet Create(uint positiveCount, uint negativeCount, uint zeroCount)
         {
             var basisSetSignature = 
                 CreateBasisSetSignature(positiveCount, negativeCount, zeroCount);
@@ -104,7 +102,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GeometricAlgebraBasisSet CreateEuclidean(uint vSpaceDimension)
+        public static BasisBladeSet CreateEuclidean(uint vSpaceDimension)
         {
             var basisSetSignature = 
                 CreateBasisSetSignature(vSpaceDimension);
@@ -113,7 +111,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GeometricAlgebraBasisSet CreateProjective(uint vSpaceDimension)
+        public static BasisBladeSet CreateProjective(uint vSpaceDimension)
         {
             var basisSetSignature = 
                 CreateBasisSetSignature(vSpaceDimension - 1, 0, 1);
@@ -122,7 +120,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GeometricAlgebraBasisSet CreateConformal(uint vSpaceDimension)
+        public static BasisBladeSet CreateConformal(uint vSpaceDimension)
         {
             var basisSetSignature = 
                 CreateBasisSetSignature(vSpaceDimension - 1, 1);
@@ -131,7 +129,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GeometricAlgebraBasisSet CreateMotherAlgebra(uint vSpaceDimension)
+        public static BasisBladeSet CreateMotherAlgebra(uint vSpaceDimension)
         {
             if (!vSpaceDimension.IsEven())
                 throw new ArgumentOutOfRangeException(nameof(vSpaceDimension));
@@ -198,16 +196,16 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis
 
         public IReadOnlyList<int> BasisVectorSignatureList { get; }
 
-        //public GaTerm PseudoScalar { get; }
+        public GaTerm PseudoScalar { get; }
 
-        //public GaTerm PseudoScalarReverse { get; }
+        public GaTerm PseudoScalarReverse { get; }
 
-        //public GaTerm PseudoScalarEInverse { get; }
+        public GaTerm PseudoScalarEInverse { get; }
 
-        //public GaTerm PseudoScalarInverse { get; }
+        public GaTerm PseudoScalarInverse { get; }
 
 
-        private GeometricAlgebraBasisSet(Triplet<ulong> basisSetSignature)
+        private BasisBladeSet(Triplet<ulong> basisSetSignature)
         {
             (_positiveMask, _negativeMask, _zeroMask) = basisSetSignature;
             BasisSetSignature = basisSetSignature;
@@ -236,49 +234,49 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis
 
             BasisVectorSignatureList = basisVectorSignatureList;
 
-            //PseudoScalar = new GaTerm(this, MaxBasisBladeId, 1);
-            //PseudoScalarReverse = PseudoScalar.Reverse();
-            //PseudoScalarInverse = PseudoScalar.Inverse();
-            //PseudoScalarEInverse = PseudoScalar.EInverse();
+            PseudoScalar = new GaTerm(this, MaxBasisBladeId, 1);
+            PseudoScalarReverse = PseudoScalar.Reverse();
+            PseudoScalarInverse = PseudoScalar.Inverse();
+            PseudoScalarEInverse = PseudoScalar.EInverse();
         }
 
-        private GeometricAlgebraBasisSet(IReadOnlyList<int> basisVectorSignatureList)
-        {
-            Debug.Assert(
-                basisVectorSignatureList.Count is > 1 and < 64 && 
-                basisVectorSignatureList.All(s => s is -1 or 0 or 1)
-            );
+        //private BasisBladeSet(IReadOnlyList<int> basisVectorSignatureList)
+        //{
+        //    Debug.Assert(
+        //        basisVectorSignatureList.Count is > 1 and < 64 && 
+        //        basisVectorSignatureList.All(s => s is -1 or 0 or 1)
+        //    );
 
-            BasisVectorSignatureList = basisVectorSignatureList;
+        //    BasisVectorSignatureList = basisVectorSignatureList;
 
-            var i = 0;
-            foreach (var basisVectorSignature in basisVectorSignatureList)
-            {
-                if (basisVectorSignature == 1)
-                {
-                    _positiveMask |= 1UL << i;
-                    PositiveCount++;
-                }
-                else if (basisVectorSignature == -1)
-                {
-                    _negativeMask |= 1UL << i;
-                    NegativeCount++;
-                }
-                else
-                {
-                    _zeroMask |= 1UL << i;
-                    ZeroCount++;
-                }
+        //    var i = 0;
+        //    foreach (var basisVectorSignature in basisVectorSignatureList)
+        //    {
+        //        if (basisVectorSignature == 1)
+        //        {
+        //            _positiveMask |= 1UL << i;
+        //            PositiveCount++;
+        //        }
+        //        else if (basisVectorSignature == -1)
+        //        {
+        //            _negativeMask |= 1UL << i;
+        //            NegativeCount++;
+        //        }
+        //        else
+        //        {
+        //            _zeroMask |= 1UL << i;
+        //            ZeroCount++;
+        //        }
 
-                i++;
-            }
+        //        i++;
+        //    }
 
-            BasisSetSignature = new Triplet<ulong>(
-                _positiveMask, 
-                _negativeMask, 
-                _zeroMask
-            );
-        }
+        //    BasisSetSignature = new Triplet<ulong>(
+        //        _positiveMask, 
+        //        _negativeMask, 
+        //        _zeroMask
+        //    );
+        //}
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -348,7 +346,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int GetBasisBladeSignature(uint grade, ulong index)
         {
-            var id = BasisBladeUtils.BasisBladeGradeIndexToId(grade, index);
+            var id = BasisBladeDataLookup.BasisBladeId(grade, index);
 
             Debug.Assert(id < GaSpaceDimension);
 
@@ -367,7 +365,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis
                 BitOperations.PopCount(id & _negativeMask);
 
             var euclideanSignature = 
-                BasisBladeProductUtils.EGpSignature(id);
+                BasisBladeDataLookup.EGpSquaredSign(id);
 
             return (negativeBasisCount & 1) == 0 
                 ? euclideanSignature
@@ -376,31 +374,23 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis
         
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public int EGpSquaredSignature(ulong id)
+        public int EGpSquaredSign(ulong id)
         {
             Debug.Assert(id < GaSpaceDimension);
 
-            return BasisBladeProductUtils.EGpSignature(id);
+            return BasisBladeDataLookup.EGpSquaredSign(id);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public int EGpSignature(ulong id1, ulong id2)
+        public int EGpReverseSign(ulong id)
         {
-            Debug.Assert(id1 < GaSpaceDimension && id2 < GaSpaceDimension);
+            Debug.Assert(id < GaSpaceDimension);
 
-            return BasisBladeProductUtils.EGpSignature(id1, id2);
+            return 1;
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public int EGpReverseSignature(ulong id1, ulong id2)
-        {
-            Debug.Assert(id1 < GaSpaceDimension && id2 < GaSpaceDimension);
-
-            return BasisBladeProductUtils.EGpReverseSignature(id1, id2);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public int GpSquaredSignature(ulong id)
+        public int GpSquaredSign(ulong id)
         {
             Debug.Assert(id < GaSpaceDimension);
 
@@ -411,7 +401,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis
                 BitOperations.PopCount(id & _negativeMask);
 
             var euclideanSignature = 
-                BasisBladeProductUtils.EGpSignature(id);
+                BasisBladeDataLookup.EGpSquaredSign(id);
 
             return (negativeBasisCount & 1) == 0 
                 ? euclideanSignature
@@ -419,7 +409,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public int GpReverseSignature(ulong id)
+        public int GpReverseSign(ulong id)
         {
             Debug.Assert(id < GaSpaceDimension);
 
@@ -431,79 +421,15 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis
 
             return (negativeBasisCount & 1) == 0 ? 1 : -1;
         }
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public int GpSignature(ulong id1, ulong id2)
+        public int ESpSquaredSign(ulong id)
         {
-            Debug.Assert(id1 < GaSpaceDimension && id2 < GaSpaceDimension);
-
-            var commonBasisBladesId = id1 & id2;
-
-            if ((commonBasisBladesId & _zeroMask) != 0UL)
-                return 0;
-
-            var negativeBasisCount = 
-                BitOperations.PopCount(commonBasisBladesId & _negativeMask);
-
-            var euclideanSignature = 
-                BasisBladeProductUtils.EGpSignature(id1, id2);
-
-            return (negativeBasisCount & 1) == 0 
-                ? euclideanSignature
-                : -euclideanSignature;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public int GpReverseSignature(ulong id1, ulong id2)
-        {
-            Debug.Assert(id1 < GaSpaceDimension && id2 < GaSpaceDimension);
-
-            var commonBasisBladesId = id1 & id2;
-
-            if ((commonBasisBladesId & _zeroMask) != 0UL)
-                return 0;
-
-            var negativeBasisCount = 
-                BitOperations.PopCount(commonBasisBladesId & _negativeMask);
-
-            var euclideanSignature = 
-                BasisBladeProductUtils.EGpReverseSignature(id1, id2);
-
-            return (negativeBasisCount & 1) == 0 
-                ? euclideanSignature
-                : -euclideanSignature;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public int OpSignature(ulong id1, ulong id2)
-        {
-            return GaMultivectorProductUtils.IsZeroOp(id1, id2)
-                ? 0 
-                : EGpSignature(id1, id2);
+            return EGpSquaredSign(id);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public int ESpSquaredSignature(ulong id)
-        {
-            return EGpSquaredSignature(id);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public int SpSquaredSignature(ulong id)
-        {
-            return GpSquaredSignature(id);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public int SpSignature(ulong id1, ulong id2)
-        {
-            return GaMultivectorProductUtils.IsZeroESp(id1, id2)
-                ? 0 
-                : GpSquaredSignature(id1);
-        }
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public int ENormSquaredSignature(ulong id)
+        public int ENormSquaredSign(ulong id)
         {
             Debug.Assert(id < GaSpaceDimension);
 
@@ -511,7 +437,13 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public int NormSquaredSignature(ulong id)
+        public int SpSquaredSign(ulong id)
+        {
+            return GpSquaredSign(id);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public int NormSquaredSign(ulong id)
         {
             Debug.Assert(id < GaSpaceDimension);
 
@@ -524,104 +456,179 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis
             return (negativeBasisCount & 1) == 0 ? 1 : -1;
         }
         
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public int ELcpSignature(ulong id1, ulong id2)
+        public int EGpSign(ulong id1, ulong id2)
+        {
+            Debug.Assert(id1 < GaSpaceDimension && id2 < GaSpaceDimension);
+
+            return BasisBladeDataLookup.EGpSign(id1, id2);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public int EGpReverseSign(ulong id1, ulong id2)
+        {
+            Debug.Assert(id1 < GaSpaceDimension && id2 < GaSpaceDimension);
+
+            return BasisBladeDataLookup.EGpReverseSign(id1, id2);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public int GpSign(ulong id1, ulong id2)
+        {
+            Debug.Assert(id1 < GaSpaceDimension && id2 < GaSpaceDimension);
+
+            var commonBasisBladesId = id1 & id2;
+
+            if ((commonBasisBladesId & _zeroMask) != 0UL)
+                return 0;
+
+            var negativeBasisCount = 
+                BitOperations.PopCount(commonBasisBladesId & _negativeMask);
+
+            var euclideanSignature = 
+                BasisBladeDataLookup.EGpSign(id1, id2);
+
+            return (negativeBasisCount & 1) == 0 
+                ? euclideanSignature
+                : -euclideanSignature;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public int GpReverseSign(ulong id1, ulong id2)
+        {
+            Debug.Assert(id1 < GaSpaceDimension && id2 < GaSpaceDimension);
+
+            var commonBasisBladesId = id1 & id2;
+
+            if ((commonBasisBladesId & _zeroMask) != 0UL)
+                return 0;
+            
+            var euclideanSignature = 
+                BasisBladeDataLookup.EGpReverseSign(id1, id2);
+
+            var negativeBasisCount = 
+                BitOperations.PopCount(commonBasisBladesId & _negativeMask);
+
+            return (negativeBasisCount & 1) == 0 
+                ? euclideanSignature 
+                : -euclideanSignature;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public int OpSign(ulong id1, ulong id2)
+        {
+            return GaMultivectorProductUtils.IsZeroOp(id1, id2)
+                ? 0 
+                : EGpSign(id1, id2);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public int SpSign(ulong id1, ulong id2)
+        {
+            return GaMultivectorProductUtils.IsZeroESp(id1, id2)
+                ? 0 
+                : GpSquaredSign(id1);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public int ELcpSign(ulong id1, ulong id2)
         {
             return GaMultivectorProductUtils.IsZeroELcp(id1, id2)
                 ? 0 
-                : EGpSignature(id1, id2);
+                : EGpSign(id1, id2);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public int LcpSignature(ulong id1, ulong id2)
+        public int LcpSign(ulong id1, ulong id2)
         {
             return GaMultivectorProductUtils.IsZeroELcp(id1, id2)
                 ? 0 
-                : GpSignature(id1, id2);
+                : GpSign(id1, id2);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public int ERcpSignature(ulong id1, ulong id2)
+        public int ERcpSign(ulong id1, ulong id2)
         {
             return GaMultivectorProductUtils.IsZeroERcp(id1, id2)
                 ? 0 
-                : EGpSignature(id1, id2);
+                : EGpSign(id1, id2);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public int RcpSignature(ulong id1, ulong id2)
+        public int RcpSign(ulong id1, ulong id2)
         {
             return GaMultivectorProductUtils.IsZeroERcp(id1, id2)
                 ? 0 
-                : GpSignature(id1, id2);
+                : GpSign(id1, id2);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public int EFdpSignature(ulong id1, ulong id2)
+        public int EFdpSign(ulong id1, ulong id2)
         {
             return GaMultivectorProductUtils.IsZeroEFdp(id1, id2)
                 ? 0
-                : EGpSignature(id1, id2);
+                : EGpSign(id1, id2);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public int FdpSignature(ulong id1, ulong id2)
+        public int FdpSign(ulong id1, ulong id2)
         {
             return GaMultivectorProductUtils.IsZeroEFdp(id1, id2)
                 ? 0
-                : GpSignature(id1, id2);
+                : GpSign(id1, id2);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public int EHipSignature(ulong id1, ulong id2)
+        public int EHipSign(ulong id1, ulong id2)
         {
             return GaMultivectorProductUtils.IsZeroEHip(id1, id2)
                 ? 0 
-                : EGpSignature(id1, id2);
+                : EGpSign(id1, id2);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public int HipSignature(ulong id1, ulong id2)
+        public int HipSign(ulong id1, ulong id2)
         {
             return GaMultivectorProductUtils.IsZeroEHip(id1, id2)
                 ? 0 
-                : GpSignature(id1, id2);
+                : GpSign(id1, id2);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public int EAcpSignature(ulong id1, ulong id2)
+        public int EAcpSign(ulong id1, ulong id2)
         {
             //A acp B = (AB + BA) / 2
             return GaMultivectorProductUtils.IsZeroEAcp(id1, id2)
                 ? 0
-                : EGpSignature(id1, id2);
+                : EGpSign(id1, id2);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public int AcpSignature(ulong id1, ulong id2)
+        public int AcpSign(ulong id1, ulong id2)
         {
             //A acp B = (AB + BA) / 2
             return GaMultivectorProductUtils.IsZeroEAcp(id1, id2)
                 ? 0
-                : GpSignature(id1, id2);
+                : GpSign(id1, id2);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public int ECpSignature(ulong id1, ulong id2)
+        public int ECpSign(ulong id1, ulong id2)
         {
             //A cp B = (AB - BA) / 2
             return GaMultivectorProductUtils.IsZeroECp(id1, id2)
                 ? 0
-                : EGpSignature(id1, id2);
+                : EGpSign(id1, id2);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public int CpSignature(ulong id1, ulong id2)
+        public int CpSign(ulong id1, ulong id2)
         {
             //A cp B = (AB - BA) / 2
             return GaMultivectorProductUtils.IsZeroECp(id1, id2)
                 ? 0
-                : GpSignature(id1, id2);
+                : GpSign(id1, id2);
         }
     }
 }

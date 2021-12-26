@@ -22,8 +22,8 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
         private readonly double _scalar;
 
 
-        public GaBasisSet BasisSet { get; }
-            = GaBasisSet.CreateEuclidean(5);
+        public BasisBladeSet BasisSet { get; }
+            = BasisBladeSet.CreateEuclidean(5);
 
         public IGeometricAlgebraProcessor<double> GeometricProcessor { get; }
             = ScalarAlgebraFloat64Processor.DefaultProcessor.CreateGeometricAlgebraEuclideanProcessor(5);
@@ -171,8 +171,8 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
                 "leftTimesScalar" => LeftTimesScalar,
                 "rightTimesScalar" => RightTimesScalar,
                 "divideByScalar" => DivideByScalar,
-                "egpSquared" => mv => GeometricProcessor.Gp(mv),
-                "egpReverse" => mv => GeometricProcessor.GpReverse(mv),
+                "gpSquared" => mv => GeometricProcessor.Gp(mv),
+                "gpReverse" => mv => GeometricProcessor.GpReverse(mv),
                 _ => null
             };
         }
@@ -184,8 +184,8 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
                 "leftTimesScalar" => LeftTimesScalar,
                 "rightTimesScalar" => RightTimesScalar,
                 "divideByScalar" => DivideByScalar,
-                "egpSquared" => mv => mv.GpSquared(),
-                "egpReverse" => mv => mv.GpReverse(),
+                "gpSquared" => mv => mv.GpSquared(),
+                "gpReverse" => mv => mv.GpReverse(),
                 _ => null
             };
         }
@@ -351,7 +351,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
 
         [Test, Combinatorial]
         public void AssertCorrectUnaryOperations(
-            [Values("leftTimesScalar", "rightTimesScalar", "divideByScalar", "egpSquared", "egpReverse")] string funcName
+            [Values("leftTimesScalar", "rightTimesScalar", "divideByScalar", "gpSquared", "gpReverse")] string funcName
         )
         {
             var testedFunction1 =
@@ -614,8 +614,8 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
     //            "leftTimesScalar" => LeftTimesScalar,
     //            "rightTimesScalar" => RightTimesScalar,
     //            "divideByScalar" => DivideByScalar,
-    //            "egpSquared" => mv => GeometricProcessor.EGp(mv),
-    //            "egpReverse" => mv => GeometricProcessor.EGpReverse(mv),
+    //            "gpSquared" => mv => GeometricProcessor.EGp(mv),
+    //            "gpReverse" => mv => GeometricProcessor.EGpReverse(mv),
     //            _ => null
     //        };
     //    }
@@ -628,8 +628,8 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
     //            "leftTimesScalar" => LeftTimesScalar,
     //            "rightTimesScalar" => RightTimesScalar,
     //            "divideByScalar" => DivideByScalar,
-    //            "egpSquared" => mv => mv.Gp(mv),
-    //            "egpReverse" => mv => mv.Gp(mv.Reverse()),
+    //            "gpSquared" => mv => mv.Gp(mv),
+    //            "gpReverse" => mv => mv.Gp(mv.Reverse()),
     //            _ => null
     //        };
     //    }
@@ -797,7 +797,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
 
     //    [Test, Combinatorial]
     //    public void AssertCorrectUnaryOperations(
-    //        [Values("leftTimesScalar", "rightTimesScalar", "divideByScalar", "egpSquared", "egpReverse")] string funcName
+    //        [Values("leftTimesScalar", "rightTimesScalar", "divideByScalar", "gpSquared", "gpReverse")] string funcName
     //    )
     //    {
     //        var testedFunction1 =

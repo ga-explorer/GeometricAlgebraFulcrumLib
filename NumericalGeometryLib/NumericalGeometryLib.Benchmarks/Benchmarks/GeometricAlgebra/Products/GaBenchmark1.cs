@@ -22,7 +22,7 @@ namespace NumericalGeometryLib.Benchmarks.Benchmarks.GeometricAlgebra.Products
         private GaGbtMultivectorProductsBinaryTrieStack _binaryTrieStack;
 
         
-        public GaBasisSet BasisSet { get; private set; }
+        public BasisBladeSet BasisSet { get; private set; }
 
         public static IEnumerable<int> TermsCountSource 
             => Enumerable.Range(0, 1 + (int) VSpaceDimension).Select(n => 1 << n);
@@ -35,7 +35,7 @@ namespace NumericalGeometryLib.Benchmarks.Benchmarks.GeometricAlgebra.Products
         public void Setup()
         {
             var n = VSpaceDimension / 3;
-            BasisSet = GaBasisSet.Create(n, n, n);
+            BasisSet = BasisBladeSet.Create(n, n, n);
 
             var randGen = new RandomGaMultivectorComposer(BasisSet, 10);
 

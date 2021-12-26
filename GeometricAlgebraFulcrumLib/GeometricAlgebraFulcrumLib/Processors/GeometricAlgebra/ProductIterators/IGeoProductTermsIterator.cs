@@ -36,22 +36,22 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.ProductIterator
         IEnumerable<IndexScalarRecord<T>> GetEAcpIdScalarRecords();
 
 
-        IEnumerable<IndexScalarRecord<T>> GetGpIdScalarRecords(GeometricAlgebraBasisSet basisSet);
+        IEnumerable<IndexScalarRecord<T>> GetGpIdScalarRecords(BasisBladeSet basisSet);
 
-        IEnumerable<IndexScalarRecord<T>> GetSpIdScalarRecords(GeometricAlgebraBasisSet basisSet);
+        IEnumerable<IndexScalarRecord<T>> GetSpIdScalarRecords(BasisBladeSet basisSet);
 
-        IEnumerable<T> GetSpScalars(GeometricAlgebraBasisSet basisSet);
+        IEnumerable<T> GetSpScalars(BasisBladeSet basisSet);
 
-        IEnumerable<IndexScalarRecord<T>> GetLcpIdScalarRecords(GeometricAlgebraBasisSet basisSet);
+        IEnumerable<IndexScalarRecord<T>> GetLcpIdScalarRecords(BasisBladeSet basisSet);
 
-        IEnumerable<IndexScalarRecord<T>> GetRcpIdScalarRecords(GeometricAlgebraBasisSet basisSet);
+        IEnumerable<IndexScalarRecord<T>> GetRcpIdScalarRecords(BasisBladeSet basisSet);
 
-        IEnumerable<IndexScalarRecord<T>> GetHipIdScalarRecords(GeometricAlgebraBasisSet basisSet);
+        IEnumerable<IndexScalarRecord<T>> GetHipIdScalarRecords(BasisBladeSet basisSet);
 
-        IEnumerable<IndexScalarRecord<T>> GetFdpIdScalarRecords(GeometricAlgebraBasisSet basisSet);
+        IEnumerable<IndexScalarRecord<T>> GetFdpIdScalarRecords(BasisBladeSet basisSet);
 
-        IEnumerable<IndexScalarRecord<T>> GetCpIdScalarRecords(GeometricAlgebraBasisSet basisSet);
+        IEnumerable<IndexScalarRecord<T>> GetCpIdScalarRecords(BasisBladeSet basisSet);
 
-        IEnumerable<IndexScalarRecord<T>> GetAcpIdScalarRecords(GeometricAlgebraBasisSet basisSet);
+        IEnumerable<IndexScalarRecord<T>> GetAcpIdScalarRecords(BasisBladeSet basisSet);
     }
 }

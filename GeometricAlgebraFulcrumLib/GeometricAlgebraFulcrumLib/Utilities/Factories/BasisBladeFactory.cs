@@ -15,21 +15,21 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static BasisSubSet CreateBasisSubSet(this int vSpaceDimension)
+        public static BasisBladeSubSet CreateBasisSubSet(this int vSpaceDimension)
         {
             if (vSpaceDimension < 1)
                 throw new ArgumentOutOfRangeException(nameof(vSpaceDimension));
 
-            return BasisSubSet.Create((uint) vSpaceDimension);
+            return BasisBladeSubSet.Create((uint) vSpaceDimension);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static BasisSubSet CreateBasisSubSet(this uint vSpaceDimension)
+        public static BasisBladeSubSet CreateBasisSubSet(this uint vSpaceDimension)
         {
             if (vSpaceDimension < 1)
                 throw new ArgumentOutOfRangeException(nameof(vSpaceDimension));
 
-            return BasisSubSet.Create(vSpaceDimension);
+            return BasisBladeSubSet.Create(vSpaceDimension);
         }
 
 

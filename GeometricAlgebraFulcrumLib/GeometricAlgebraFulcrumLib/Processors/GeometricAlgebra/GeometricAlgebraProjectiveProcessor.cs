@@ -9,7 +9,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
         internal GeometricAlgebraProjectiveProcessor(IScalarAlgebraProcessor<T> scalarProcessor, uint vSpaceDimension) 
             : base(
                 scalarProcessor, 
-                GeometricAlgebraBasisSet.CreateProjective(vSpaceDimension)
+                BasisBladeSet.CreateProjective(vSpaceDimension)
             )
         {
         }

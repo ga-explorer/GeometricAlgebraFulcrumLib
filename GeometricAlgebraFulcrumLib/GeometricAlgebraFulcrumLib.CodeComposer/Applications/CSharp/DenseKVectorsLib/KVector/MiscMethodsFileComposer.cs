@@ -283,7 +283,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
                     "signature", CurrentNamespace,
                     "grade", grade,
                     "num", GeometricProcessor.KVectorSpaceDimension(grade),
-                    "sign", grade.GradeHasNegativeReverse() ? "-" : "",
+                    "sign", grade.ReverseIsNegativeOfGrade() ? "-" : "",
                     "invgrade", VSpaceDimension - grade
                     );
             }

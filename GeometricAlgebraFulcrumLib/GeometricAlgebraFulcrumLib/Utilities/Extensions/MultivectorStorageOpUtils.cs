@@ -14,15 +14,15 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
     public static class MultivectorStorageOpUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static BasisBilinearProductResult Op(this GeometricAlgebraBasisSet basisSet, ulong id1, ulong id2)
+        public static BasisBilinearProductResult Op(this BasisBladeSet basisSet, ulong id1, ulong id2)
         {
             return new BasisBilinearProductResult(
-                BasisBladeProductUtils.OpSignature(id1, id2), 
+                BasisBladeProductUtils.OpSign(id1, id2), 
                 id1 ^ id2
             );
         }
 
-        public static IMultivectorStorage<double> Op(this GeometricAlgebraBasisSet basisSet, IMultivectorStorage<double> mv1, IMultivectorStorage<double> mv2)
+        public static IMultivectorStorage<double> Op(this BasisBladeSet basisSet, IMultivectorStorage<double> mv1, IMultivectorStorage<double> mv2)
         {
             var composer = 
                 new MultivectorFloat64StorageComposer(basisSet);
@@ -146,7 +146,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                     var id2 = index2.BasisBladeIndexToId(grade2);
 
                     var signature = 
-                        BasisBladeProductUtils.OpSignature(id1, id2);
+                        BasisBladeProductUtils.OpSign(id1, id2);
 
                     if (signature == 0) 
                         continue;
@@ -244,7 +244,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                             var id2 = index2.BasisBladeIndexToId(grade2);
 
                             var signature = 
-                                BasisBladeProductUtils.OpSignature(id1, id2);
+                                BasisBladeProductUtils.OpSign(id1, id2);
 
                             if (signature == 0) 
                                 continue;
@@ -301,7 +301,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                 foreach (var (id2, scalar2) in idScalarPairs2.GetIndexScalarRecords())
                 {
                     var signature = 
-                        BasisBladeProductUtils.OpSignature(id1, id2);
+                        BasisBladeProductUtils.OpSign(id1, id2);
 
                     if (signature == 0) 
                         continue;
