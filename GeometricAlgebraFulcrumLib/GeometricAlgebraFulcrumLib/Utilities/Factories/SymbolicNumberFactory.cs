@@ -42,21 +42,21 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         
         public VectorStorage<ISymbolicExpressionAtomic> CreateBasisVector(ulong index)
         {
-            return Context.CreateVectorTermStorage(index,
+            return Context.CreateVectorStorageTerm(index,
                 Context.GetOrDefineLiteralNumber(1)
             );
         }
         
         public KVectorStorage<ISymbolicExpressionAtomic> CreateBasisBlade(ulong id)
         {
-            return Context.CreateKVectorTermStorage(id,
+            return Context.CreateKVectorStorageTerm(id,
                 Context.GetOrDefineLiteralNumber(1)
             );
         }
         
         public KVectorStorage<ISymbolicExpressionAtomic> CreateBasisBlade(uint grade, ulong index)
         {
-            return Context.CreateKVectorTermStorage(grade,
+            return Context.CreateKVectorStorageTerm(grade,
                 index,
                 Context.GetOrDefineLiteralNumber(1)
             );

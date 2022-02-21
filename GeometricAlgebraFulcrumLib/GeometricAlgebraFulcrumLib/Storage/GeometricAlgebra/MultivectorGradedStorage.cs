@@ -457,7 +457,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         {
             if (GetLinVectorGradedStorage().TryGetVectorStorage(2U, out var evenDictionary))
             {
-                bivector = BivectorStorage<T>.CreateBivector(evenDictionary);
+                bivector = BivectorStorage<T>.Create(evenDictionary);
                 return true;
             }
 
@@ -709,7 +709,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             
             return indexScalarDictionary.GetSparseCount() == 0
                 ? BivectorStorage<T>.ZeroBivector
-                : BivectorStorage<T>.CreateBivector(indexScalarDictionary);
+                : BivectorStorage<T>.Create(indexScalarDictionary);
         }
 
         public BivectorStorage<T> GetBivectorPart(Func<T, bool> scalarSelection)
@@ -722,7 +722,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             
             return indexScalarDictionary.GetSparseCount() == 0
                 ? BivectorStorage<T>.ZeroBivector
-                : BivectorStorage<T>.CreateBivector(indexScalarDictionary);
+                : BivectorStorage<T>.Create(indexScalarDictionary);
         }
 
         public BivectorStorage<T> GetBivectorPart(Func<ulong, T, bool> indexScalarSelection)
@@ -735,7 +735,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             
             return indexScalarDictionary.GetSparseCount() == 0
                 ? BivectorStorage<T>.ZeroBivector
-                : BivectorStorage<T>.CreateBivector(indexScalarDictionary);
+                : BivectorStorage<T>.Create(indexScalarDictionary);
         }
 
         public BivectorStorage<T> GetBivectorPart(Func<ulong, bool> indexSelection)
@@ -748,7 +748,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             
             return indexScalarDictionary.GetSparseCount() == 0
                 ? BivectorStorage<T>.ZeroBivector
-                : BivectorStorage<T>.CreateBivector(indexScalarDictionary);
+                : BivectorStorage<T>.Create(indexScalarDictionary);
         }
 
         public KVectorStorage<T> GetKVectorPart(uint grade)
@@ -950,14 +950,14 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
                     ? ZeroMultivector
                     : gradeIndexScalarDictionary1
                         .CreateLinVectorGradedStorage()
-                        .CreateMultivectorGradedStorage();
+                        .CreateMultivectorStorageGraded();
 
             var mv2 =
                 gradeIndexScalarDictionary2.Count == 0
                     ? ZeroMultivector
                     : gradeIndexScalarDictionary2
                         .CreateLinVectorGradedStorage()
-                        .CreateMultivectorGradedStorage();
+                        .CreateMultivectorStorageGraded();
 
             return new Tuple<IMultivectorStorage<T>, IMultivectorStorage<T>>(mv1, mv2);
         }

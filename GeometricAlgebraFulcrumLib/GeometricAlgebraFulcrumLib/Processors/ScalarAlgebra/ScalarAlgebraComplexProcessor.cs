@@ -111,6 +111,16 @@ namespace GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra
             return 1d / scalar;
         }
 
+        public Complex Sign(Complex scalar)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Complex UnitStep(Complex scalar)
+        {
+            throw new NotImplementedException();
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Complex Abs(Complex scalar)
         {

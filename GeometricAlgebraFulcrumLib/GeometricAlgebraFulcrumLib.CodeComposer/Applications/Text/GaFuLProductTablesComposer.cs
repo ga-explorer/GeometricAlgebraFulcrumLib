@@ -7,10 +7,11 @@ using CodeComposerLib.MathML.Elements.Layout.Elementary;
 using CodeComposerLib.MathML.Elements.Layout.Tabular;
 using CodeComposerLib.MathML.Elements.Tokens;
 using DataStructuresLib.BitManipulation;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
+using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
+using GeometricAlgebraFulcrumLib.Utilities.Factories;
 using TextComposerLib.Text.Linear;
 // ReSharper disable CompareOfFloatsByEqualityOperator
 
@@ -37,23 +38,29 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.Text
 
         public static string ComposeHga4D()
         {
-            var basisSet = 
-                BasisBladeSet.CreateEuclidean(4);
+            var composer = 
+                ScalarAlgebraFloat64Processor
+                    .DefaultProcessor
+                    .CreateGeometricAlgebraEuclideanProcessor(4);
 
-            var basisBladeNames = CreateBasisBladeNames("x", "y", "z", "w");
+            var basisBladeNames = 
+                CreateBasisBladeNames("x", "y", "z", "w");
 
-            return ComposeMathMlTableColumns(basisSet, id => basisBladeNames[id]);
+            return ComposeMathMlTableColumns(
+                composer, 
+                id => basisBladeNames[id]
+            );
         }
 
 
-        private static MathMlRow ToMathMlRow(IMultivectorStorage<double> mv, Func<ulong, IMathMlElement> getBasisBladeNameFunc)
+        private static MathMlRow ToMathMlRow(Multivector<double> mv, Func<ulong, IMathMlElement> getBasisBladeNameFunc)
         {
-            var scalarProcessor = ScalarAlgebraFloat64Processor.DefaultProcessor;
+            var scalarProcessor = (IScalarAlgebraProcessor<double>) ScalarAlgebraFloat64Processor.DefaultProcessor;
 
             var rowElement = MathMlRow.Create();
 
             var termsList =
-                    scalarProcessor.GetNotZeroTerms(mv)
+                    scalarProcessor.GetNotZeroTerms(mv.MultivectorStorage)
                     .OrderBy(t => t.BasisBlade.Id.BasisBladeIdToGrade())
                     .ThenBy(t => t.BasisBlade.Id);
 
@@ -114,9 +121,9 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.Text
             return rowElement;
         }
 
-        public static MathMlTable ComposeMathMlTable(BasisBladeSet basisSet, Func<ulong, IMathMlElement> getBasisBladeNameFunc)
+        public static MathMlTable ComposeMathMlTable(IGeometricAlgebraProcessor<double> processor, Func<ulong, IMathMlElement> getBasisBladeNameFunc)
         {
-            var idsList = basisSet.VSpaceDimension.BasisBladeIDsSortedByGrade().ToArray();
+            var idsList = processor.VSpaceDimension.BasisBladeIDsSortedByGrade().ToArray();
             var gaDim = idsList.Length;
 
             var table = MathMlTable.Create(
@@ -141,7 +148,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.Text
                     var id2 = idsList[j];
 
                     var mv = 
-                        basisSet.Gp(id1, id2).GetBasisBladeTermFloat64();
+                        processor.Gp(id1, id2);
 
                     table[i + 2, j + 2].Append(
                         ToMathMlRow(mv, getBasisBladeNameFunc)
@@ -152,11 +159,11 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.Text
             return table;
         }
 
-        public static string ComposeMathMlTableColumns(BasisBladeSet basisSet, Func<ulong, IMathMlElement> getBasisBladeNameFunc)
+        public static string ComposeMathMlTableColumns(IGeometricAlgebraProcessor<double> processor, Func<ulong, IMathMlElement> getBasisBladeNameFunc)
         {
             var textComposer = new LinearTextComposer();
 
-            var idsList = basisSet.VSpaceDimension.BasisBladeIDsSortedByGrade().ToArray();
+            var idsList = processor.VSpaceDimension.BasisBladeIDsSortedByGrade().ToArray();
             var gaDim = idsList.Length;
 
             for (var i = 0; i < gaDim; i++)
@@ -182,7 +189,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.Text
                     var id2 = idsList[j];
 
                     var mv = 
-                        basisSet.Gp(id1, id2).GetBasisBladeTermFloat64();
+                        processor.Gp(id1, id2);
 
                     var mvName = 
                         ToMathMlRow(mv, getBasisBladeNameFunc);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.LinearAlgebra;
@@ -31,14 +32,20 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             => TextFloat64Composer.DefaultComposer;
 
 
-        public static VectorStorage<double> CreateVector(params double[] scalarArray)
+        public static Vector<double> CreateVector(params double[] scalarArray)
         {
-            return ScalarProcessor.CreateVectorStorage(scalarArray);
+            return new Vector<double>(
+                EuclideanProcessor,
+                ScalarProcessor.CreateVectorStorage(scalarArray)
+            );
         }
 
-        public static VectorStorage<double> CreateBasisVector(int index)
+        public static Vector<double> CreateBasisVector(int index)
         {
-            return ScalarProcessor.CreateVectorBasisStorage(index);
+            return new Vector<double>(
+                EuclideanProcessor,
+                ScalarProcessor.CreateVectorStorageBasis(index)
+            );
         }
 
         public static Matrix GetMatrix(this IOutermorphism<double> linearMap, int rowsCount, int columnsCount)
@@ -153,6 +160,11 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 
 
         public static string GetText(this IMultivectorStorage<double> mv)
+        {
+            return TextComposer.GetMultivectorText(mv);
+        }
+        
+        public static string GetText(this IMultivectorStorageContainer<double> mv)
         {
             return TextComposer.GetMultivectorText(mv);
         }

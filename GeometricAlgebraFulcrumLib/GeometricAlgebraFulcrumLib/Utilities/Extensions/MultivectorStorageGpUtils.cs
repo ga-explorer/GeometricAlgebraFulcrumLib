@@ -4,15 +4,15 @@ using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 {
-    public static class MultivectorStorageGpUtils
+    internal static class MultivectorStorageGpUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorStorage<T> Gp<T>(this IGeometricAlgebraProcessor<T> processor, IMultivectorStorage<T> mv1)
+        public static IMultivectorStorage<T> GpSquared<T>(this IGeometricAlgebraProcessor<T> processor, IMultivectorStorage<T> mv1)
         {
             return processor switch
             {
                 IGeometricAlgebraEuclideanProcessor<T> =>
-                    processor.EGp(mv1),
+                    processor.EGpSquared(mv1),
                 
                 IGeometricAlgebraOrthonormalProcessor<T> ortProcessor =>
                     processor.Gp(ortProcessor.BasisSet, mv1),

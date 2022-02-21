@@ -1,4 +1,5 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Versors
@@ -9,6 +10,14 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Versors
     {
         IVersor<T> GetVersorInverse();
 
-        IMultivectorStorage<T> GetMultivectorInverseStorage();
+        Multivector<T> GetMultivector();
+
+        Multivector<T> GetMultivectorReverse();
+
+        Multivector<T> GetMultivectorInverse();
+
+        IMultivectorStorage<T> GetMultivectorStorageReverse();
+
+        IMultivectorStorage<T> GetMultivectorStorageInverse();
     }
 }

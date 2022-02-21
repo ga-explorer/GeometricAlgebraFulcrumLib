@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <UseWPF>true</UseWPF>
+        <OutputType>WinExe</OutputType>
+        <RuntimeIdentifiers>win</RuntimeIdentifiers>
+        <ApplicationManifest>app.manifest</ApplicationManifest>
+    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\..\..\OxyPlot.SkiaSharp.Wpf\OxyPlot.SkiaSharp.Wpf.csproj" />
+        <ProjectReference Include="..\..\..\OxyPlot.Wpf\OxyPlot.Wpf.csproj" />
+        <ProjectReference Include="..\..\..\OxyPlot\OxyPlot.csproj" />
+        <ProjectReference Include="..\..\ExampleLibrary\ExampleLibrary.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <Resource Include="..\..\..\..\Icons\OxyPlot_64.png" Link="OxyPlot_64.png" />
+    </ItemGroup>
+</Project>

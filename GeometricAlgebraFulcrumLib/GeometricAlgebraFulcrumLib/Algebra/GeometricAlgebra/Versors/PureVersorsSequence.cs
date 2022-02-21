@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors;
 using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
@@ -25,37 +26,31 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Versors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static PureVersorsSequence<T> Create(IGeometricAlgebraProcessor<T> processor, params VectorStorage<T>[] vectorStorages)
+        public static PureVersorsSequence<T> Create(IGeometricAlgebraProcessor<T> processor, params Vector<T>[] vectorStorages)
         {
             return new PureVersorsSequence<T>(
-                processor,
-                vectorStorages.Select(v => 
-                    new PureVersor<T>(processor, v)
-                )
+                vectorStorages.Select(PureVersor<T>.Create).ToList()
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static PureVersorsSequence<T> Create(IGeometricAlgebraProcessor<T> processor, IEnumerable<VectorStorage<T>> vectorStorages)
+        public static PureVersorsSequence<T> Create(IEnumerable<Vector<T>> vectorStorages)
         {
             return new PureVersorsSequence<T>(
-                processor,
-                vectorStorages.Select(v => 
-                    new PureVersor<T>(processor, v)
-                )
+                vectorStorages.Select(PureVersor<T>.Create).ToList()
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static PureVersorsSequence<T> Create(IGeometricAlgebraProcessor<T> processor, params PureVersor<T>[] versors)
+        public static PureVersorsSequence<T> Create(params PureVersor<T>[] versors)
         {
-            return new PureVersorsSequence<T>(processor, versors);
+            return new PureVersorsSequence<T>(versors.ToList());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static PureVersorsSequence<T> Create(IGeometricAlgebraProcessor<T> processor, IEnumerable<PureVersor<T>> versors)
+        public static PureVersorsSequence<T> Create(IEnumerable<PureVersor<T>> versors)
         {
-            return new PureVersorsSequence<T>(processor, versors);
+            return new PureVersorsSequence<T>(versors.ToList());
         }
 
 
@@ -80,10 +75,10 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Versors
             _versorsList = new List<PureVersor<T>>();
         }
 
-        private PureVersorsSequence([NotNull] IGeometricAlgebraProcessor<T> processor, [NotNull] IEnumerable<PureVersor<T>> versorsList)
-            : base(processor)
+        private PureVersorsSequence([NotNull] List<PureVersor<T>> versorsList)
+            : base(versorsList.First().GeometricProcessor)
         {
-            _versorsList = new List<PureVersor<T>>(versorsList);
+            _versorsList = versorsList;
         }
 
 
@@ -121,8 +116,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Versors
         public PureVersorsSequence<T> GetSubSequence(int startIndex, int count)
         {
             return new PureVersorsSequence<T>(
-                GeometricProcessor,
-                _versorsList.Skip(startIndex).Take(count)
+                _versorsList.Skip(startIndex).Take(count).ToList()
             );
         }
 
@@ -134,7 +128,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Versors
 
             foreach (var versor in _versorsList)
             {
-                v = versor.MapMultivector(v);
+                v = versor.Map(v);
 
                 yield return v;
             }
@@ -149,22 +143,22 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Versors
             yield return f.GetArray(rowsCount);
 
             foreach (var versor in _versorsList)
-                yield return versor.OmMapFreeFrame(f).GetArray(rowsCount);
+                yield return versor.OmMap(f).GetArray(rowsCount);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Versor<T> GetFinalVersor()
         {
-            var storage = _versorsList
-                .Skip(1)
-                .Select(r => r.Vector)
-                .Aggregate(
-                    (IMultivectorStorage<T>) _versorsList[0].Vector, 
-                    (current, rotor) => 
-                        GeometricProcessor.Gp(rotor, current)
-                );
+            var storage = 
+                _versorsList
+                    .Skip(1)
+                    .Select(r => r.Vector.AsMultivector())
+                    .Aggregate(
+                        _versorsList[0].Vector.AsMultivector(), 
+                        (current, rotor) => rotor.Gp(current)
+                    );
 
-            return new Versor<T>(GeometricProcessor, storage);
+            return Versor<T>.Create(storage);
         }
 
         public PureRotorsSequence<T> CreatePureRotorsSequence()
@@ -181,10 +175,10 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Versors
                 var v1 = _versorsList[2 * i + 1].Vector;
                 var v2 = _versorsList[2 * i].Vector;
 
-                var scalar = GeometricProcessor.Sp(v1, v2);
-                var bivector = GeometricProcessor.Op(v1, v2);
+                var scalar = v1.Sp(v2);
+                var bivector = v1.Op(v2);
 
-                simpleRotorsArray[i] = new PureRotor<T>(GeometricProcessor, scalar, bivector);
+                simpleRotorsArray[i] = PureRotor<T>.Create(scalar, bivector);
             }
 
             return PureRotorsSequence<T>.Create(
@@ -201,52 +195,42 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Versors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override VectorStorage<T> OmMapVector(VectorStorage<T> mv)
+        public override Vector<T> OmMap(Vector<T> mv)
         {
             return _versorsList
                 .Aggregate(
                     mv, 
-                    (bv, rotor) => rotor.OmMapVector(bv)
+                    (bv, rotor) => rotor.OmMap(bv)
                 );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override BivectorStorage<T> OmMapBivector(BivectorStorage<T> mv)
+        public override Bivector<T> OmMap(Bivector<T> mv)
         {
             return _versorsList
                 .Aggregate(
                     mv, 
-                    (bv, rotor) => rotor.OmMapBivector(bv)
+                    (bv, rotor) => rotor.OmMap(bv)
                 );
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override KVectorStorage<T> OmMapKVector(KVectorStorage<T> mv)
+        public override KVector<T> OmMap(KVector<T> mv)
         {
             return _versorsList
                 .Aggregate(
                     mv, 
-                    (kv, rotor) => rotor.OmMapKVector(kv)
+                    (kv, rotor) => rotor.OmMap(kv)
                 );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override MultivectorGradedStorage<T> OmMapMultivector(MultivectorGradedStorage<T> mv)
+        public override Multivector<T> OmMap(Multivector<T> mv)
         {
             return _versorsList
                 .Aggregate(
                     mv, 
-                    (current, rotor) => rotor.OmMapMultivector(current)
-                );
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override MultivectorStorage<T> OmMapMultivector(MultivectorStorage<T> mv)
-        {
-            return _versorsList
-                .Aggregate(
-                    mv, 
-                    (current, rotor) => rotor.OmMapMultivector(current)
+                    (current, rotor) => rotor.OmMap(current)
                 );
         }
 
@@ -254,10 +238,35 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Versors
         public override IVersor<T> GetVersorInverse()
         {
             return new PureVersorsSequence<T>(
-                GeometricProcessor,
                 _versorsList
                     .Select(r => r.GetPureDualVersorInverse())
                     .Reverse()
+                    .ToList()
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override Multivector<T> GetMultivector()
+        {
+            return GeometricProcessor.CreateMultivector(
+                GetMultivectorStorage()
+            );
+
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override Multivector<T> GetMultivectorReverse()
+        {
+            return GeometricProcessor.CreateMultivector(
+                GetMultivectorStorageReverse()
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override Multivector<T> GetMultivectorInverse()
+        {
+            return GeometricProcessor.CreateMultivector(
+                GetMultivectorStorageInverse()
             );
         }
 
@@ -265,21 +274,33 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Versors
         public override IMultivectorStorage<T> GetMultivectorStorage()
         {
             return _versorsList
-                .Select(r => r.Vector)
+                .Select(r => r.Vector.VectorStorage)
                 .Aggregate(
-                    (IMultivectorStorage<T>) GeometricProcessor.CreateKVectorBasisScalarStorage(),
+                    (IMultivectorStorage<T>) GeometricProcessor.CreateKVectorStorageBasisScalar(),
+                    GeometricProcessor.Gp
+                );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override IMultivectorStorage<T> GetMultivectorStorageReverse()
+        {
+            return _versorsList
+                .Select(r => r.Vector.VectorStorage)
+                .Reverse()
+                .Aggregate(
+                    (IMultivectorStorage<T>) GeometricProcessor.CreateKVectorStorageBasisScalar(),
                     GeometricProcessor.Gp
                 );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override IMultivectorStorage<T> GetMultivectorInverseStorage()
+        public override IMultivectorStorage<T> GetMultivectorStorageInverse()
         {
             return _versorsList
-                .Select(r => r.VectorInverse)
+                .Select(r => r.VectorInverse.VectorStorage)
                 .Reverse()
                 .Aggregate(
-                    (IMultivectorStorage<T>) GeometricProcessor.CreateKVectorBasisScalarStorage(),
+                    (IMultivectorStorage<T>) GeometricProcessor.CreateKVectorStorageBasisScalar(),
                     GeometricProcessor.Gp
                 );
         }

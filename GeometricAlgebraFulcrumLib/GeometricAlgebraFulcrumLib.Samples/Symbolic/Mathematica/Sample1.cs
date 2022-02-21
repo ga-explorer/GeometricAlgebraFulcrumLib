@@ -51,9 +51,9 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.Mathematica
             var e1 = geometricProcessor.CreateVectorBasis(0);
             var e2 = geometricProcessor.CreateVectorBasis(1);
             var e3 = geometricProcessor.CreateVectorBasis(2);
-            var y1 = rotor.OmMapVector(e1).FullSimplifyScalars(realAssumption);
-            var y2 = rotor.OmMapVector(e2).FullSimplifyScalars(realAssumption);
-            var y3 = rotor.OmMapVector(e3).FullSimplifyScalars(realAssumption);
+            var y1 = rotor.OmMap(e1).FullSimplifyScalars(realAssumption);
+            var y2 = rotor.OmMap(e2).FullSimplifyScalars(realAssumption);
+            var y3 = rotor.OmMap(e3).FullSimplifyScalars(realAssumption);
 
             // Display a text representation of the vectors
             Console.WriteLine($@"u = {textComposer.GetMultivectorText(u)}");

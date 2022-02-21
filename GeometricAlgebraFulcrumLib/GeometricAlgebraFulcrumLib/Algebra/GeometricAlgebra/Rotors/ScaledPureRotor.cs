@@ -1,5 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
@@ -18,53 +20,58 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
         : ScaledRotorBase<T>
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ScaledPureRotor<T> Create(IGeometricAlgebraProcessor<T> processor, T scalarPart)
+        internal static ScaledPureRotor<T> Create(IGeometricAlgebraProcessor<T> processor, T scalarPart)
         {
             return new ScaledPureRotor<T>(processor, scalarPart);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ScaledPureRotor<T> Create(IGeometricAlgebraProcessor<T> processor, T scalarPart, BivectorStorage<T> bivectorPart)
+        internal static ScaledPureRotor<T> Create(T scalarPart, Bivector<T> bivectorPart)
         {
             return new ScaledPureRotor<T>(
-                processor,
-                processor.Add(scalarPart, bivectorPart),
-                processor.Subtract(scalarPart, bivectorPart)
+                scalarPart + bivectorPart,
+                scalarPart - bivectorPart
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ScaledPureRotor<T> Create(IGeometricAlgebraProcessor<T> processor, IMultivectorStorage<T> multivector)
+        internal static ScaledPureRotor<T> Create(IGeometricAlgebraProcessor<T> processor, Multivector<T> multivector)
         {
             return new ScaledPureRotor<T>(
-                processor,
                 multivector,
-                processor.Reverse(multivector)
+                multivector.Reverse()
             );
+        }
+        
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static implicit operator Multivector<T>(ScaledPureRotor<T> rotor)
+        {
+            return rotor.Multivector;
         }
 
 
-        public IMultivectorStorage<T> Multivector { get; }
+        public Multivector<T> Multivector { get; }
 
-        public IMultivectorStorage<T> MultivectorReverse { get; }
+        public Multivector<T> MultivectorReverse { get; }
 
 
-        internal ScaledPureRotor([NotNull] IGeometricAlgebraProcessor<T> processor, [NotNull] T scalarPart)
+        private ScaledPureRotor([NotNull] IGeometricAlgebraProcessor<T> processor, [NotNull] T scalarPart)
             : base(processor)
         {
-            Multivector = processor.CreateKVectorScalarStorage(scalarPart);
+            Multivector = processor.CreateKVectorStorageScalar(scalarPart).CreateMultivector(processor);
             MultivectorReverse = Multivector;
         }
 
-        internal ScaledPureRotor([NotNull] IGeometricAlgebraProcessor<T> processor, [NotNull] T scalarPart, [NotNull] BivectorStorage<T> bivectorPart)
-            : base(processor)
+        private ScaledPureRotor([NotNull] T scalarPart, [NotNull] Bivector<T> bivectorPart)
+            : base(bivectorPart.GeometricProcessor)
         {
-            Multivector = processor.Add(scalarPart, bivectorPart);
-            MultivectorReverse = processor.Subtract(scalarPart, bivectorPart);
+            Multivector = scalarPart + bivectorPart;
+            MultivectorReverse = scalarPart - bivectorPart;
         }
 
-        private ScaledPureRotor([NotNull] IGeometricAlgebraProcessor<T> processor, [NotNull] IMultivectorStorage<T> multivector, [NotNull] IMultivectorStorage<T> multivectorReverse)
-            : base(processor)
+        private ScaledPureRotor([NotNull] Multivector<T> multivector, [NotNull] Multivector<T> multivectorReverse)
+            : base(multivector.GeometricProcessor)
         {
             Multivector = multivector;
             MultivectorReverse = multivectorReverse;
@@ -74,16 +81,16 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
         public override bool IsValid()
         {
             // Make sure the storage and its reverse are correct
-            if (!GeometricProcessor.IsNearZero(GeometricProcessor.Subtract(GeometricProcessor.Reverse(Multivector), MultivectorReverse)))
+            if (!GeometricProcessor.IsNearZero(GeometricProcessor.Subtract(GeometricProcessor.Reverse(Multivector.MultivectorStorage), MultivectorReverse.MultivectorStorage)))
                 return false;
 
             // Make sure storage contains only terms of grades 0,2
-            if ((Multivector.GetStoredGradesBitPattern() | 5UL) != 5UL)
+            if ((Multivector.MultivectorStorage.GetStoredGradesBitPattern() | 5UL) != 5UL)
                 return false;
 
             // Make sure storage gp reverse(storage) == scalar
             var gp = 
-                GeometricProcessor.Gp(Multivector, MultivectorReverse);
+                Multivector.Gp(MultivectorReverse);
 
             return gp.IsScalar();
         }
@@ -91,22 +98,28 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ScaledPureRotor<T> GetPureScaledRotorInverse()
         {
+            var scalingFactor = GetScalingFactor();
+            
             return new ScaledPureRotor<T>(
-                GeometricProcessor, 
-                MultivectorReverse, 
-                Multivector
+                MultivectorReverse / scalingFactor,
+                Multivector / scalingFactor
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override T GetScalingFactor()
+        public override Scalar<T> GetScalingFactor()
         {
-            return ScalarProcessor.GetScalar(
-                GeometricProcessor.Gp(
-                    Multivector, 
-                    MultivectorReverse
-                )
-            );
+            return Multivector.Sp(MultivectorReverse);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public PureRotor<T> GetPureRotor()
+        {
+            var mv = GeometricProcessor.IsOrthonormalEuclidean
+                ? Multivector / Multivector.Sp(MultivectorReverse).Sqrt()
+                : Multivector / Multivector.Sp(MultivectorReverse).SqrtOfAbs();
+
+            return PureRotor<T>.Create(mv);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -115,58 +128,65 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
             return GetPureScaledRotorInverse();
         }
         
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override VectorStorage<T> OmMapVector(VectorStorage<T> mv)
+        public override Vector<T> OmMap(Vector<T> mv)
         {
-            return GeometricProcessor
-                .Gp(Multivector, mv, MultivectorReverse)
-                .GetVectorPart();
+            return Multivector.Gp(mv).Gp(MultivectorReverse).GetVectorPart();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override BivectorStorage<T> OmMapBivector(BivectorStorage<T> mv)
+        public override Bivector<T> OmMap(Bivector<T> mv)
         {
-            return GeometricProcessor
-                .Gp(Multivector, mv, MultivectorReverse)
-                .GetBivectorPart();
+            return Multivector.Gp(mv).Gp(MultivectorReverse).GetBivectorPart();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override KVectorStorage<T> OmMapKVector(KVectorStorage<T> mv)
+        public override KVector<T> OmMap(KVector<T> mv)
         {
-            return GeometricProcessor
-                .Gp(Multivector, mv, MultivectorReverse)
-                .GetKVectorPart(mv.Grade);
+            return Multivector.Gp(mv).Gp(MultivectorReverse).GetKVectorPart(mv.Grade);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override MultivectorGradedStorage<T> OmMapMultivector(MultivectorGradedStorage<T> mv)
+        public override Multivector<T> OmMap(Multivector<T> mv)
         {
-            return GeometricProcessor
-                .Gp(Multivector, mv, MultivectorReverse)
-                .ToMultivectorGradedStorage();
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override MultivectorStorage<T> OmMapMultivector(MultivectorStorage<T> mv)
-        {
-            return GeometricProcessor
-                .Gp(Multivector, mv, MultivectorReverse)
-                .ToMultivectorStorage();
+            return Multivector.Gp(mv).Gp(MultivectorReverse);
         }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override IMultivectorStorage<T> GetMultivectorStorage()
+        public override Multivector<T> GetMultivector()
         {
             return Multivector;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override IMultivectorStorage<T> GetMultivectorInverseStorage()
+        public override Multivector<T> GetMultivectorReverse()
         {
             return MultivectorReverse;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override Multivector<T> GetMultivectorInverse()
+        {
+            return MultivectorReverse;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override IMultivectorStorage<T> GetMultivectorStorage()
+        {
+            return Multivector.MultivectorStorage;
+        }
+        
+        public override IMultivectorStorage<T> GetMultivectorStorageReverse()
+        {
+            return MultivectorReverse.MultivectorStorage;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override IMultivectorStorage<T> GetMultivectorStorageInverse()
+        {
+            return MultivectorReverse.MultivectorStorage;
         }
     }
 }

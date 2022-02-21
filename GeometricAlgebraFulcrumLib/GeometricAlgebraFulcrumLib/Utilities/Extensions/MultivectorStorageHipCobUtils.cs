@@ -4,28 +4,39 @@ using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 {
-    public static class MultivectorStorageHipCobUtils
+    internal static class MultivectorStorageHipCobUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorStorage<T> Hip<T>(this IGeometricAlgebraChangeOfBasisProcessor<T> processor, IMultivectorStorage<T> mv1, IMultivectorStorage<T> mv2)
+        public static KVectorStorage<T> Hip<T>(this IGeometricAlgebraChangeOfBasisProcessor<T> processor, KVectorStorage<T> mv1, KVectorStorage<T> mv2)
         {
-            var s1 = processor.OmTargetToOrthonormal.MapMultivector(mv1);
-            var s2 = processor.OmTargetToOrthonormal.MapMultivector(mv2);
+            var s1 = processor.OmTargetToOrthonormal.OmMap(mv1);
+            var s2 = processor.OmTargetToOrthonormal.OmMap(mv2);
 
             var s = processor.Hip(processor.BasisSet, s1, s2);
 
-            return processor.OmOrthonormalToTarget.MapMultivector(s);
+            return processor.OmOrthonormalToTarget.OmMap(s);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IMultivectorStorage<T> Hip<T>(this IGeometricAlgebraChangeOfBasisProcessor<T> processor, IMultivectorStorage<T> mv1, IMultivectorStorage<T> mv2)
+        {
+            var s1 = processor.OmTargetToOrthonormal.Map(mv1);
+            var s2 = processor.OmTargetToOrthonormal.Map(mv2);
+
+            var s = processor.Hip(processor.BasisSet, s1, s2);
+
+            return processor.OmOrthonormalToTarget.Map(s);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IMultivectorStorage<T> Hip<T>(this IMultivectorStorage<T> mv1, IMultivectorStorage<T> mv2, IGeometricAlgebraChangeOfBasisProcessor<T> processor)
         {
-            var s1 = processor.OmTargetToOrthonormal.MapMultivector(mv1);
-            var s2 = processor.OmTargetToOrthonormal.MapMultivector(mv2);
+            var s1 = processor.OmTargetToOrthonormal.Map(mv1);
+            var s2 = processor.OmTargetToOrthonormal.Map(mv2);
 
             var s = processor.Hip(processor.BasisSet, s1, s2);
 
-            return processor.OmOrthonormalToTarget.MapMultivector(s);
+            return processor.OmOrthonormalToTarget.Map(s);
         }
     }
 }

@@ -14,16 +14,59 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
     public static class MultivectorStorageMappingUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorStorage<T> MapMultivector<T>(this IUnilinearMap<T> map, IMultivectorStorage<T> mv)
+        public static IMultivectorStorage<T> Map<T>(this IUnilinearMap<T> map, VectorStorage<T> mv)
         {
+            var processor = map.GeometricProcessor;
+
+            return map.Map(mv.CreateVector(processor)).MultivectorStorage;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IMultivectorStorage<T> Map<T>(this IUnilinearMap<T> map, BivectorStorage<T> mv)
+        {
+            var processor = map.GeometricProcessor;
+
+            return map.Map(mv.CreateBivector(processor)).MultivectorStorage;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IMultivectorStorage<T> Map<T>(this IUnilinearMap<T> map, KVectorStorage<T> mv)
+        {
+            var processor = map.GeometricProcessor;
+
             return mv switch
             {
-                VectorStorage<T> mv1 => map.MapVector(mv1),
-                BivectorStorage<T> mv1 => map.MapBivector(mv1),
-                KVectorStorage<T> mv1 => map.MapKVector(mv1),
-                MultivectorStorage<T> mv1 => map.MapMultivector(mv1),
-                MultivectorGradedStorage<T> mv1 => map.MapMultivector(mv1),
-                _ => throw new InvalidOperationException()
+                VectorStorage<T> mv1 => map.Map(mv1.CreateVector(processor)).MultivectorStorage,
+                BivectorStorage<T> mv1 => map.Map(mv1.CreateBivector(processor)).MultivectorStorage,
+                _ => map.Map(mv.CreateKVector(processor)).MultivectorStorage
+            };
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IMultivectorStorage<T> Map<T>(this IUnilinearMap<T> map, IMultivectorGradedStorage<T> mv)
+        {
+            var processor = map.GeometricProcessor;
+
+            return mv switch
+            {
+                VectorStorage<T> mv1 => map.Map(mv1.CreateVector(processor)).MultivectorStorage,
+                BivectorStorage<T> mv1 => map.Map(mv1.CreateBivector(processor)).MultivectorStorage,
+                KVectorStorage<T> mv1 => map.Map(mv1.CreateKVector(processor)).MultivectorStorage,
+                _ => map.Map(mv.CreateMultivector(processor)).MultivectorStorage
+            };
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IMultivectorStorage<T> Map<T>(this IUnilinearMap<T> map, IMultivectorStorage<T> mv)
+        {
+            var processor = map.GeometricProcessor;
+
+            return mv switch
+            {
+                VectorStorage<T> mv1 => map.Map(mv1.CreateVector(processor)).MultivectorStorage,
+                BivectorStorage<T> mv1 => map.Map(mv1.CreateBivector(processor)).MultivectorStorage,
+                KVectorStorage<T> mv1 => map.Map(mv1.CreateKVector(processor)).MultivectorStorage,
+                _ => map.Map(mv.CreateMultivector(processor)).MultivectorStorage
             };
         }
 
@@ -281,7 +324,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         {
             return mv.IsEmpty()
                 ? MultivectorGradedStorage<T>.ZeroMultivector
-                : mappingFunc(mv.GetLinVectorIndexScalarStorage()).CreateMultivectorGradedStorage();
+                : mappingFunc(mv.GetLinVectorIndexScalarStorage()).CreateMultivectorStorageGraded();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -289,7 +332,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         {
             return mv.IsEmpty()
                 ? MultivectorGradedStorage<T>.ZeroMultivector
-                : mappingFunc(mv.GetLinVectorGradedStorage()).CreateMultivectorGradedStorage();
+                : mappingFunc(mv.GetLinVectorGradedStorage()).CreateMultivectorStorageGraded();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -297,7 +340,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         {
             return mv.IsEmpty()
                 ? MultivectorGradedStorage<T>.ZeroMultivector
-                : mappingFunc(mv.GetLinVectorIdScalarStorage()).CreateMultivectorGradedStorage();
+                : mappingFunc(mv.GetLinVectorIdScalarStorage()).CreateMultivectorStorageGraded();
         }
 
 
@@ -306,7 +349,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         {
             return mv.IsEmpty()
                 ? MultivectorStorage<T>.ZeroMultivector
-                : mappingFunc(mv.GetLinVectorIndexScalarStorage()).CreateMultivectorSparseStorage();
+                : mappingFunc(mv.GetLinVectorIndexScalarStorage()).CreateMultivectorStorageSparse();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -314,7 +357,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         {
             return mv.IsEmpty()
                 ? MultivectorStorage<T>.ZeroMultivector
-                : mappingFunc(mv.GetLinVectorGradedStorage()).CreateMultivectorSparseStorage();
+                : mappingFunc(mv.GetLinVectorGradedStorage()).CreateMultivectorStorageSparse();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -322,7 +365,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         {
             return mv.IsEmpty()
                 ? MultivectorStorage<T>.ZeroMultivector
-                : mappingFunc(mv.GetLinVectorIdScalarStorage()).CreateMultivectorSparseStorage();
+                : mappingFunc(mv.GetLinVectorIdScalarStorage()).CreateMultivectorStorageSparse();
         }
         
         public static IMultivectorGradedStorage<T2> MapScalars<T, T2>(this IMultivectorGradedStorage<T> mv, Func<T, T2> scalarMapping)

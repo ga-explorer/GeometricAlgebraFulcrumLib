@@ -5,14 +5,15 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.BitManipulation;
 using DataStructuresLib.Collections;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.LinearMaps;
+using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTraversal.Outermorphisms;
-using GeometricAlgebraFulcrumLib.Processors.LinearAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded;
-using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using GeometricAlgebraFulcrumLib.Utilities.Factories;
+using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms
@@ -20,14 +21,14 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms
     public sealed class LinearMapOutermorphism<T> 
         : OutermorphismBase<T>
     {
-        public override ILinearAlgebraProcessor<T> LinearProcessor 
-            => LinearMap.LinearProcessor;
+        public override IGeometricAlgebraProcessor<T> GeometricProcessor { get; }
 
         public ILinUnilinearMap<T> LinearMap { get; }
 
 
-        internal LinearMapOutermorphism([NotNull] ILinUnilinearMap<T> linearMap)
+        internal LinearMapOutermorphism([NotNull] IGeometricAlgebraProcessor<T> geometricProcessor, [NotNull] ILinUnilinearMap<T> linearMap)
         {
+            GeometricProcessor = geometricProcessor;
             LinearMap = linearMap;
         }
 
@@ -35,77 +36,64 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override IOutermorphism<T> GetOmAdjoint()
         {
-            return new LinearMapOutermorphism<T>(LinearMap.GetLinAdjoint());
+            return new LinearMapOutermorphism<T>(GeometricProcessor, LinearMap.GetLinAdjoint());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override VectorStorage<T> OmMapBasisVector(ulong index)
+        public override Vector<T> OmMapBasisVector(ulong index)
         {
-            return LinearMap.LinMapBasisVector(index).CreateVectorStorage();
+            return LinearMap.LinMapBasisVector(index).CreateVector(GeometricProcessor);
         }
 
-        public override BivectorStorage<T> OmMapBasisBivector(ulong index)
+        public override Bivector<T> OmMapBasisBivector(ulong index)
         {
             var (index1, index2) = 
                 index.BasisBivectorIndexToVectorIndices();
 
-            return LinearProcessor.Op(
-                OmMapBasisVector(index1), 
-                OmMapBasisVector(index2)
-            );
+            return OmMapBasisVector(index1).Op(OmMapBasisVector(index2));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override BivectorStorage<T> OmMapBasisBivector(ulong index1, ulong index2)
+        public override Bivector<T> OmMapBasisBivector(ulong index1, ulong index2)
         {
             if (index1 == index2)
-                return BivectorStorage<T>.ZeroBivector;
+                return GeometricProcessor.CreateBivectorZero();
 
             return index1 < index2 
-                ? LinearProcessor.Op(
-                    OmMapBasisVector(index1), 
-                    OmMapBasisVector(index2)
-                )
-                : LinearProcessor.Op(
-                    OmMapBasisVector(index2), 
-                    OmMapBasisVector(index1)
-                );
+                ? OmMapBasisVector(index1).Op(OmMapBasisVector(index2))
+                : OmMapBasisVector(index2).Op(OmMapBasisVector(index1));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override KVectorStorage<T> OmMapBasisBlade(ulong id)
+        public override KVector<T> OmMapBasisBlade(ulong id)
         {
             if (id == 0)
-                return LinearProcessor.CreateKVectorBasisScalarStorage();
+                return GeometricProcessor.CreateKVectorBasisScalar();
 
-            if (id.IsBasicPattern())
-                return OmMapBasisVector(id.BasisBladeIdToIndex());
-            
-            return LinearProcessor.Op(
-                id.BasisBladeIdToBasisVectorIndices().Select(OmMapBasisVector)
-            );
+            return id.IsBasicPattern() 
+                ? OmMapBasisVector(id.BasisBladeIdToIndex()).AsKVector() 
+                : id.BasisBladeIdToBasisVectorIndices().Select(OmMapBasisVector).Op();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override KVectorStorage<T> OmMapBasisBlade(uint grade, ulong index)
+        public override KVector<T> OmMapBasisBlade(uint grade, ulong index)
         {
             return grade switch
             {
-                0 => LinearProcessor.CreateKVectorBasisScalarStorage(),
-                1 => OmMapBasisVector(index),
-                _ => LinearProcessor.Op(
-                    BasisBladeUtils
-                        .BasisBladeGradeIndexToBasisVectorIds(grade, index)
-                        .Select(OmMapBasisVector)
-                    )
+                0 => GeometricProcessor.CreateKVectorBasisScalar(),
+                1 => OmMapBasisVector(index).AsKVector(),
+                _ => BasisBladeUtils
+                    .BasisBladeGradeIndexToBasisVectorIds(grade, index)
+                    .Select(OmMapBasisVector)
+                    .Op()
             };
         }
         
 
-        public override VectorStorage<T> OmMapVector(VectorStorage<T> vector)
+        public override Vector<T> OmMap(Vector<T> vector)
         {
             var storage = 
-                LinearProcessor.CreateVectorStorageComposer();
+                GeometricProcessor.CreateVectorStorageComposer();
 
             foreach (var (index, scalar) in vector.GetIndexScalarRecords())
                 storage.AddScaledTerms(
@@ -115,31 +103,31 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms
 
             storage.RemoveZeroTerms();
 
-            return storage.CreateVectorStorage();
+            return storage.CreateVector();
         }
 
-        public override BivectorStorage<T> OmMapBivector(BivectorStorage<T> bivector)
+        public override Bivector<T> OmMap(Bivector<T> bivector)
         {
             var dict = 
                 GetOmMappedBasisVectors().ToDictionary(
                     r => (int) r.Index,
-                    r => r.Storage
+                    r => r.Vector.VectorStorage
                 );
 
             var basisVectorsMappingsList = 
                 new SparseReadOnlyList<VectorStorage<T>>(
                     dict.Keys.Max(), 
-                    KVectorStorage<T>.ZeroVector, 
+                    GeometricProcessor.CreateVectorStorageZero(), 
                     dict
                 );
 
             var scaledKVectorsList = 
                 GeoGbtKVectorOutermorphismStack<T>
-                    .Create(basisVectorsMappingsList, LinearProcessor, bivector)
+                    .Create(basisVectorsMappingsList, GeometricProcessor, bivector.BivectorStorage)
                     .TraverseForScaledKVectors();
 
             var storage = 
-                LinearProcessor.CreateVectorStorageComposer();
+                GeometricProcessor.CreateVectorStorageComposer();
 
             foreach (var (scalingFactor, kVectorStorage) in scaledKVectorsList)
                 storage.AddScaledTerms(
@@ -149,31 +137,31 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms
 
             storage.RemoveZeroTerms();
 
-            return storage.CreateBivectorStorage();
+            return storage.CreateBivector();
         }
 
-        public override KVectorStorage<T> OmMapKVector(KVectorStorage<T> kVector)
+        public override KVector<T> OmMap(KVector<T> kVector)
         {
             var dict = 
                 GetOmMappedBasisVectors().ToDictionary(
                     r => (int) r.Index,
-                    r => r.Storage
+                    r => r.Vector.VectorStorage
                 );
 
             var basisVectorsMappingsList = 
                 new SparseReadOnlyList<VectorStorage<T>>(
                     dict.Keys.Max(), 
-                    KVectorStorage<T>.ZeroVector, 
+                    GeometricProcessor.CreateVectorStorageZero(), 
                     dict
                 );
 
             var scaledKVectorsList = 
                 GeoGbtKVectorOutermorphismStack<T>
-                    .Create(basisVectorsMappingsList, LinearProcessor, kVector)
+                    .Create(basisVectorsMappingsList, GeometricProcessor, kVector.KVectorStorage)
                     .TraverseForScaledKVectors();
 
             var storage = 
-                LinearProcessor.CreateVectorStorageComposer();
+                GeometricProcessor.CreateVectorStorageComposer();
 
             foreach (var (scalingFactor, kVectorStorage) in scaledKVectorsList)
                 storage.AddScaledTerms(
@@ -183,61 +171,34 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms
 
             storage.RemoveZeroTerms();
 
-            return storage.CreateKVectorStorage(kVector.Grade);
+            return storage.CreateKVector(kVector.Grade);
         }
 
-        public override MultivectorStorage<T> OmMapMultivector(MultivectorStorage<T> multivector)
+        public override Multivector<T> OmMap(Multivector<T> multivector)
         {
             var dict = 
                 GetOmMappedBasisVectors().ToDictionary(
                     r => (int) r.Index,
-                    r => r.Storage
+                    r => r.Vector.VectorStorage
                 );
 
             var basisVectorsMappingsList = 
                 new SparseReadOnlyList<VectorStorage<T>>(
                     dict.Keys.Max(), 
-                    KVectorStorage<T>.ZeroVector, 
+                    GeometricProcessor.CreateVectorStorageZero(), 
                     dict
                 );
 
             var scaledKVectorsList = 
                 GeoGbtMultivectorOutermorphismStack<T>
-                    .Create(basisVectorsMappingsList, LinearProcessor, multivector)
+                    .Create(basisVectorsMappingsList, GeometricProcessor, multivector.MultivectorStorage)
                     .TraverseForScaledKVectors();
 
-            return LinearProcessor
+            return GeometricProcessor
                 .CreateMultivectorGradedStorageComposer()
                 .AddScaledTerms(scaledKVectorsList)
                 .RemoveZeroTerms()
-                .CreateMultivectorSparseStorage();
-        }
-
-        public override MultivectorGradedStorage<T> OmMapMultivector(MultivectorGradedStorage<T> multivector)
-        {
-            var dict = 
-                GetOmMappedBasisVectors().ToDictionary(
-                    r => (int) r.Index,
-                    r => r.Storage
-                );
-
-            var basisVectorsMappingsList = 
-                new SparseReadOnlyList<VectorStorage<T>>(
-                    dict.Keys.Max(), 
-                    KVectorStorage<T>.ZeroVector, 
-                    dict
-                );
-
-            var scaledKVectorsList = 
-                GeoGbtMultivectorOutermorphismStack<T>
-                    .Create(basisVectorsMappingsList, LinearProcessor, multivector)
-                    .TraverseForScaledKVectors();
-
-            return LinearProcessor
-                .CreateMultivectorGradedStorageComposer()
-                .AddScaledTerms(scaledKVectorsList)
-                .RemoveZeroTerms()
-                .CreateMultivectorGradedStorage();
+                .CreateMultivector();
         }
 
 
@@ -273,20 +234,20 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms
         }
 
 
-        public override IEnumerable<IdMultivectorStorageRecord<T>> GetMappedBasisBlades()
+        public override IEnumerable<IdMultivectorRecord<T>> GetMappedBasisBlades()
         {
             throw new NotImplementedException();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override IEnumerable<IndexVectorStorageRecord<T>> GetOmMappedBasisVectors()
+        public override IEnumerable<IndexVectorRecord<T>> GetOmMappedBasisVectors()
         {
             return LinearMap
                 .GetLinMappedBasisVectors()
                 .Select(r => 
-                    new IndexVectorStorageRecord<T>(
+                    new IndexVectorRecord<T>(
                         r.Index, 
-                        r.Storage.CreateVectorStorage()
+                        r.Storage.CreateVector(GeometricProcessor)
                     )
                 );
         }

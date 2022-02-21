@@ -133,6 +133,24 @@ namespace GeometricAlgebraFulcrumLib.Processors.SymbolicAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ISymbolicExpression Sign(ISymbolicExpression scalar)
+        {
+            return Context
+                .FunctionHeadSpecsFactory
+                .Sign
+                .CreateFunction(scalar);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ISymbolicExpression UnitStep(ISymbolicExpression scalar)
+        {
+            return Context
+                .FunctionHeadSpecsFactory
+                .UnitStep
+                .CreateFunction(scalar);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ISymbolicExpression Abs(ISymbolicExpression scalar)
         {
             return Context

@@ -1,4 +1,6 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra;
 
@@ -244,19 +246,19 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             );
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVector<T> Op<T>(this Bivector<T> mv1, Vector<T> mv2)
-        {
-            var processor = mv1.GeometricProcessor;
+        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+        //public static KVector<T> Op<T>(this Bivector<T> mv1, Vector<T> mv2)
+        //{
+        //    var processor = mv1.GeometricProcessor;
 
-            return new KVector<T>(
-                processor, 
-                processor.Op(
-                    mv1.BivectorStorage, 
-                    mv2.VectorStorage
-                )
-            );
-        }
+        //    return new KVector<T>(
+        //        processor, 
+        //        processor.Op(
+        //            mv1.BivectorStorage, 
+        //            mv2.VectorStorage
+        //        )
+        //    );
+        //}
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Bivector<T> Op<T>(this Vector<T> mv1, Vector<T> mv2)
@@ -268,6 +270,20 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                 processor.Op(
                     mv1.VectorStorage, 
                     mv2.VectorStorage
+                )
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static KVector<T> Op<T>(this IEnumerable<Vector<T>> mvList)
+        {
+            var mvArray = mvList.ToArray();
+            var processor = mvArray[0].GeometricProcessor;
+
+            return new KVector<T>(
+                processor, 
+                processor.Op(
+                    mvArray.Select(mv => mv.VectorStorage)
                 )
             );
         }

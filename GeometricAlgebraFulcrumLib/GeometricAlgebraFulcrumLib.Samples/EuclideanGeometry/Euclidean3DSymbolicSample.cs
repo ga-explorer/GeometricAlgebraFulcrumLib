@@ -29,12 +29,12 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                 processor.CreatePureRotor(v, u);
 
             var rotorMv = rotor.Multivector;
-            var rotorMvReverse = processor.Reverse(rotor.Multivector);
+            var rotorMvReverse = rotor.Multivector.Reverse();
 
             var unitLengthAssumptionExpr =
                 Mfs.And[
-                    Mfs.Equal[processor.ENormSquared(v), Expr.INT_ONE],
-                    Mfs.Equal[processor.ENormSquared(u), Expr.INT_ONE]
+                    Mfs.Equal[v.ENormSquared().ScalarValue, Expr.INT_ONE],
+                    Mfs.Equal[u.ENormSquared().ScalarValue, Expr.INT_ONE]
                 ];
 
             var rotorMatrix =
@@ -46,7 +46,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                 MathematicaUtils.CreateVectorsLinearMap(
                         (int) n,
                         basisVector =>
-                            processor.EGp(rotorMv, basisVector).GetVectorPart()
+                            rotorMv.EGp(basisVector.CreateVector(processor)).GetVectorPart().VectorStorage
                     )
                     .GetMatrix((int) n, (int) n)
                     .Simplify(unitLengthAssumptionExpr);
@@ -55,7 +55,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                 MathematicaUtils.CreateVectorsLinearMap(
                         (int) n,
                         basisVector =>
-                            processor.EGp(basisVector, rotorMvReverse).GetVectorPart()
+                            basisVector.CreateVector(processor).EGp(rotorMvReverse).GetVectorPart().VectorStorage
                     )
                     .GetMatrix((int) n, (int) n)
                     .Simplify(unitLengthAssumptionExpr);
@@ -65,9 +65,9 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                     .MatrixProduct(rotorMatrix1)
                     .Simplify(unitLengthAssumptionExpr);
 
-            var vMatrix = v.VectorToColumnVectorMatrix(n);
-            var uMatrix = u.VectorToColumnVectorMatrix(n);
-            var u1 = Mfs.Expand[rotor.OmMapVector(v).VectorToColumnVectorMatrix(n)].Evaluate();
+            var vMatrix = v.VectorStorage.VectorToColumnVectorMatrix(n);
+            var uMatrix = u.VectorStorage.VectorToColumnVectorMatrix(n);
+            var u1 = Mfs.Expand[rotor.OmMap(v).VectorStorage.VectorToColumnVectorMatrix(n)].Evaluate();
             var u2 = Mfs.Expand[rotorMatrix.MatrixProduct(vMatrix)].Evaluate();
             var u3 = Mfs.Expand[rotorMatrix21.MatrixProduct(vMatrix)].Evaluate();
             var u4 = Mfs.Expand[rotorMatrix2.MatrixProduct(rotorMatrix1.MatrixProduct(vMatrix))].Evaluate();

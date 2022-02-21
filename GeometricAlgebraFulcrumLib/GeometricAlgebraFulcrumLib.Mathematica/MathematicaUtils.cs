@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
-using Antlr4.Runtime.Misc;
+using System.Diagnostics.CodeAnalysis;
 using CodeComposerLib.SyntaxTree.Expressions;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms;
+using GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Algebra.SymbolicAlgebra;
 using GeometricAlgebraFulcrumLib.Algebra.SymbolicAlgebra.Composite;
 using GeometricAlgebraFulcrumLib.Mathematica.Mathematica;
@@ -215,6 +216,48 @@ namespace GeometricAlgebraFulcrumLib.Mathematica
         {
             return storage.MapScalars(scalar => scalar.Simplify());
         }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector<Expr> SimplifyScalars(this Vector<Expr> storage)
+        {
+            return storage.MapScalars(scalar => scalar.Simplify());
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<Expr> Simplify(this Scalar<Expr> storage)
+        {
+            return storage.ScalarValue.Simplify().CreateScalar(storage.ScalarProcessor);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<Expr> Simplify(this Scalar<Expr> storage, Expr assumeExpr)
+        {
+            return storage.ScalarValue.Simplify(assumeExpr).CreateScalar(storage.ScalarProcessor);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector<Expr> SimplifyScalars(this Vector<Expr> storage, Expr assumeExpr)
+        {
+            return storage.MapScalars(scalar => scalar.Simplify(assumeExpr));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Bivector<Expr> SimplifyScalars(this Bivector<Expr> storage)
+        {
+            return storage.MapScalars(scalar => scalar.Simplify());
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static KVector<Expr> SimplifyScalars(this KVector<Expr> storage)
+        {
+            return storage.MapScalars(scalar => scalar.Simplify());
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Multivector<Expr> SimplifyScalars(this Multivector<Expr> storage)
+        {
+            return storage.MapScalars(scalar => scalar.Simplify());
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IMultivectorStorage<Expr> SimplifyScalars(this IMultivectorStorage<Expr> storage, Expr assumptionsExpr)
@@ -276,7 +319,7 @@ namespace GeometricAlgebraFulcrumLib.Mathematica
         {
             return storage.MapScalars(scalar => scalar.FullSimplify(assumptionsExpr));
         }
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IMultivectorStorage<Expr> FullSimplifyScalars(this IMultivectorStorage<Expr> storage)
         {
@@ -290,15 +333,33 @@ namespace GeometricAlgebraFulcrumLib.Mathematica
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector<Expr> FullSimplifyScalars(this Vector<Expr> mv)
+        {
+            return mv.MapScalars(scalar => scalar.FullSimplify());
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector<Expr> FullSimplifyScalars(this Vector<Expr> mv, Expr assumptionsExpr)
         {
             return mv.MapScalars(scalar => scalar.FullSimplify(assumptionsExpr));
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Bivector<Expr> FullSimplifyScalars(this Bivector<Expr> storage)
+        {
+            return storage.MapScalars(scalar => scalar.FullSimplify());
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Bivector<Expr> FullSimplifyScalars(this Bivector<Expr> mv, Expr assumptionsExpr)
         {
             return mv.MapScalars(scalar => scalar.FullSimplify(assumptionsExpr));
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static KVector<Expr> FullSimplifyScalars(this KVector<Expr> mv)
+        {
+            return mv.MapScalars(scalar => scalar.FullSimplify());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -307,6 +368,12 @@ namespace GeometricAlgebraFulcrumLib.Mathematica
             return mv.MapScalars(scalar => scalar.FullSimplify(assumptionsExpr));
         }
         
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Multivector<Expr> FullSimplifyScalars(this Multivector<Expr> mv)
+        {
+            return mv.MapScalars(scalar => scalar.FullSimplify());
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Multivector<Expr> FullSimplifyScalars(this Multivector<Expr> mv, Expr assumptionsExpr)
         {
@@ -374,7 +441,16 @@ namespace GeometricAlgebraFulcrumLib.Mathematica
                 scalar => Mfs.D[scalar, variableExpr].FullSimplify()
             );
         }
-        
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector<Expr> DifferentiateScalars(this Vector<Expr> vector, string variableName, int degree = 1)
+        {
+            return vector
+                .VectorStorage
+                .DifferentiateScalars(variableName, degree)
+                .CreateVector(vector.GeometricProcessor);
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static VectorStorage<Expr> DifferentiateScalars(this VectorStorage<Expr> storage, string variableName, int degree = 1)
         {
@@ -1141,23 +1217,23 @@ namespace GeometricAlgebraFulcrumLib.Mathematica
         //}
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<Expr> CreateVector(params Expr[] scalarArray)
+        public static Vector<Expr> CreateVector(params Expr[] scalarArray)
         {
-            return ScalarProcessor.CreateVectorStorage(scalarArray
+            return EuclideanProcessor.CreateVector(scalarArray);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector<Expr> CreateVector(params string[] scalarTextArray)
+        {
+            return EuclideanProcessor.CreateVector(
+                scalarTextArray.Select(t => t.ToExpr()).ToArray()
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<Expr> CreateVector(params string[] scalarTextArray)
+        public static Vector<Expr> CreateBasisVector(int index)
         {
-            return ScalarProcessor.CreateVectorStorage(scalarTextArray.Select(t => t.ToExpr()).ToArray()
-            );
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<Expr> CreateBasisVector(int index)
-        {
-            return ScalarProcessor.CreateVectorBasisStorage(index);
+            return EuclideanProcessor.CreateVectorBasis(index);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1289,11 +1365,59 @@ namespace GeometricAlgebraFulcrumLib.Mathematica
         {
             return TextComposer.GetArrayText(array);
         }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static string GetText(this Vector<Expr> mv)
+        {
+            return TextComposer.GetMultivectorText(mv);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static string GetText(this Bivector<Expr> mv)
+        {
+            return TextComposer.GetMultivectorText(mv);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static string GetText(this KVector<Expr> mv)
+        {
+            return TextComposer.GetMultivectorText(mv);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static string GetText(this Multivector<Expr> mv)
+        {
+            return TextComposer.GetMultivectorText(mv);
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string GetText(this IMultivectorStorage<Expr> mv)
         {
             return TextComposer.GetMultivectorText(mv);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static string GetLaTeX(this Vector<Expr> mv)
+        {
+            return LaTeXComposer.GetMultivectorText(mv);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static string GetLaTeX(this Bivector<Expr> mv)
+        {
+            return LaTeXComposer.GetMultivectorText(mv);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static string GetLaTeX(this KVector<Expr> mv)
+        {
+            return LaTeXComposer.GetMultivectorText(mv);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static string GetLaTeX(this Multivector<Expr> mv)
+        {
+            return LaTeXComposer.GetMultivectorText(mv);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1713,6 +1837,28 @@ namespace GeometricAlgebraFulcrumLib.Mathematica
                 ? expr 
                 : MathematicaInterface.DefaultCas[Mfs.FullSimplify[expr]];
         }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Expr Collect(this Expr expr, Expr symbolExpr)
+        {
+            return expr.AtomQ() 
+                ? expr 
+                : MathematicaInterface.DefaultCas[Mfs.Collect[expr, symbolExpr]];
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Expr Collect(this Expr expr, string symbolExprText)
+        {
+            return expr.AtomQ() 
+                ? expr 
+                : MathematicaInterface.DefaultCas[Mfs.Collect[expr, symbolExprText.ToExpr()]];
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<Expr> Collect(this Scalar<Expr> expr, Expr symbolExpr)
+        {
+            return expr.ScalarValue.Collect(symbolExpr).CreateScalar(expr.ScalarProcessor);
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Expr FullSimplify(this Expr expr, Expr assumptionsExpr)
@@ -1728,6 +1874,18 @@ namespace GeometricAlgebraFulcrumLib.Mathematica
             return expr.AtomQ() 
                 ? expr 
                 : casInterface[Mfs.FullSimplify[expr]];
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<Expr> FullSimplify(this Scalar<Expr> expr)
+        {
+            return expr.ScalarValue.FullSimplify().CreateScalar(expr.ScalarProcessor);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<Expr> FullSimplify(this Scalar<Expr> expr, Expr assumptionsExpr)
+        {
+            return expr.ScalarValue.FullSimplify(assumptionsExpr).CreateScalar(expr.ScalarProcessor);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

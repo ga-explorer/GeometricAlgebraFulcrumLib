@@ -35,7 +35,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.CodeComposer
 
             // Define a Euclidean multivectors processor for the context
             var processor = 
-                context.CreateGeometricAlgebraEuclideanProcessor(n);
+                context.AttachGeometricAlgebraEuclideanProcessor(n);
 
             // Stage 2: Define the input parameters of the context
             // The input parameters are named variables created as scalar parts of multivectors
@@ -76,8 +76,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.CodeComposer
             var rotor = processor.CreatePureRotor(x, xRotated, true);
             
             //Find the rotation of an arbitrary input vector x using this rotor
-            var yRotated = rotor.OmMapVector(y);
-            var zRotated = rotor.OmMapVector(z);
+            var yRotated = rotor.OmMap(y);
+            var zRotated = rotor.OmMap(z);
 
             // Define the final outputs for the computations for proper code generation
             yRotated.SetIsOutput(true);
@@ -137,16 +137,16 @@ namespace GeometricAlgebraFulcrumLib.Samples.CodeComposer
 
             // Define a Euclidean multivectors processor for the context
             var processor = 
-                context.CreateGeometricAlgebraEuclideanProcessor(n);
+                context.AttachGeometricAlgebraEuclideanProcessor(n);
 
             // Stage 2: Define the input parameters of the context
             // The input parameters are named variables created as scalar parts of multivectors
             // and used for later processing to compute some outputs
             
             // Define basis vectors to compute rotation matrix
-            var e1 = processor.CreateVectorBasisStorage(0);
-            var e2 = processor.CreateVectorBasisStorage(1);
-            var e3 = processor.CreateVectorBasisStorage(2);
+            var e1 = processor.CreateVectorBasis(0);
+            var e2 = processor.CreateVectorBasis(1);
+            var e3 = processor.CreateVectorBasis(2);
 
             // Define the first vector for constructing the rotor with a given
             // set of scalar components u1, u2, ...
@@ -169,9 +169,9 @@ namespace GeometricAlgebraFulcrumLib.Samples.CodeComposer
             var rotor = processor.CreatePureRotor(xRotated, e3, true);
 
             //Find the rotation of 3 basis vectors using this rotor
-            var e1Rotated = rotor.OmMapVector(e1);
-            var e2Rotated = rotor.OmMapVector(e2);
-            var e3Rotated = rotor.OmMapVector(e3);
+            var e1Rotated = rotor.OmMap(e1);
+            var e2Rotated = rotor.OmMap(e2);
+            var e3Rotated = rotor.OmMap(e3);
 
             // Define the final outputs for the computations for proper code generation
             e1Rotated.SetIsOutput(true);
@@ -227,7 +227,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.CodeComposer
 
             // Define a Euclidean multivectors processor for the context
             var processor = 
-                context.CreateGeometricAlgebraEuclideanProcessor(n);
+                context.AttachGeometricAlgebraEuclideanProcessor(n);
 
             // Stage 2: Define the input parameters of the context
             // The input parameters are named variables created as scalar parts of multivectors
@@ -259,7 +259,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.CodeComposer
             var rotor = processor.CreatePureRotor(u, v, true);
             
             //Find the rotation of an arbitrary input vector x using this rotor
-            var xRotated = rotor.OmMapVector(x);
+            var xRotated = rotor.OmMap(x);
 
             // Define the final outputs for the computations for proper code generation
             xRotated.SetIsOutput(true);

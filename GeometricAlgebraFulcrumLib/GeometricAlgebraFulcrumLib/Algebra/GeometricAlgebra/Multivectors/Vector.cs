@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Vectors;
@@ -803,16 +804,31 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors
                 .CreateScalar(GeometricProcessor);
 
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal Vector([NotNull] IScalarAlgebraProcessor<T> processor, [NotNull] VectorStorage<T> vector)
         {
             GeometricProcessor = (IGeometricAlgebraProcessor<T>) processor;
             VectorStorage = vector;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal Vector([NotNull] IGeometricAlgebraProcessor<T> processor, [NotNull] VectorStorage<T> vector)
         {
             GeometricProcessor = processor;
             VectorStorage = vector;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsZero()
+        {
+            return GeometricProcessor.IsZero(VectorStorage);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsNearZero()
+        {
+            return GeometricProcessor.IsNearZero(VectorStorage);
         }
 
         
@@ -828,6 +844,15 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors
             return new Multivector<T>(GeometricProcessor, VectorStorage);
         }
         
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Vector<T> Conjugate()
+        {
+            return new Vector<T>(
+                GeometricProcessor, 
+                GeometricProcessor.Conjugate(VectorStorage)
+            );
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Vector<T> Reverse()
         {
@@ -923,13 +948,22 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors
                 GeometricProcessor.DivideByENormSquared(VectorStorage)
             );
         }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Vector<T> PseudoInverse()
+        {
+            return new Vector<T>(
+                GeometricProcessor,
+                GeometricProcessor.BladePseudoInverse(VectorStorage)
+            );
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Vector<T> Inverse()
         {
             return new Vector<T>(
                 GeometricProcessor,
-                GeometricProcessor.Divide(VectorStorage, GeometricProcessor.Sp(VectorStorage))
+                GeometricProcessor.Divide(VectorStorage, GeometricProcessor.SpSquared(VectorStorage))
             );
         }
 
@@ -977,7 +1011,13 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors
                 GeometricProcessor.EUnDual(VectorStorage)
             );
         }
-        
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public IEnumerable<T> GetScalars()
+        {
+            return VectorStorage.GetScalars();
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Vector<T> MapScalars(Func<T, T> scalarMapping)
         {
@@ -1028,7 +1068,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors
         {
             return Subspace<T>.Create(
                 GeometricProcessor,
-                VectorStorage
+                VectorStorage.CreateKVector(GeometricProcessor)
             );
         }
 
@@ -1037,7 +1077,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors
         {
             return Subspace<T>.Create(
                 GeometricProcessor,
-                GeometricProcessor.Dual(VectorStorage)
+                GeometricProcessor.Dual(VectorStorage).CreateKVector(GeometricProcessor)
             );
         }
 

@@ -64,7 +64,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTra
             BasisVectorsMappingsList = basisVectorsMappingsList;
             MultivectorStack = multivectorStack;
 
-            RootKVector = ScalarProcessor.CreateKVectorBasisScalarStorage();
+            RootKVector = ScalarProcessor.CreateKVectorStorageBasisScalar();
         }
 
 

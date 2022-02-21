@@ -55,7 +55,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         {
             return new Vector<T>(
                 geometricProcessor,
-                geometricProcessor.CreateVectorTermStorage((ulong) index, scalar)
+                geometricProcessor.CreateVectorStorageTerm((ulong) index, scalar)
             );
         }
 
@@ -64,7 +64,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         {
             return new Vector<T>(
                 geometricProcessor,
-                geometricProcessor.CreateVectorTermStorage(index, scalar)
+                geometricProcessor.CreateVectorStorageTerm(index, scalar)
             );
         }
 
@@ -73,7 +73,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         {
             return new Vector<T>(
                 geometricProcessor,
-                geometricProcessor.CreateVectorTermStorage(indexScalarPair.Index, indexScalarPair.Scalar)
+                geometricProcessor.CreateVectorStorageTerm(indexScalarPair.Index, indexScalarPair.Scalar)
             );
         }
 
@@ -82,7 +82,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         {
             return new Vector<T>(
                 geometricProcessor,
-                geometricProcessor.CreateVectorTermStorage((ulong) index, geometricProcessor.ScalarOne)
+                geometricProcessor.CreateVectorStorageTerm((ulong) index, geometricProcessor.ScalarOne)
             );
         }
 
@@ -91,7 +91,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         {
             return new Vector<T>(
                 geometricProcessor,
-                geometricProcessor.CreateVectorTermStorage(index, geometricProcessor.ScalarOne)
+                geometricProcessor.CreateVectorStorageTerm(index, geometricProcessor.ScalarOne)
             );
         }
 
@@ -103,32 +103,22 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
                 .GetRange()
                 .Select(index => geometricProcessor.CreateVectorBasis(index));
         }
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Vector<T> CreateVectorOnes<T>(this IGeometricAlgebraProcessor<T> geometricProcessor, int termsCount)
+        public static Vector<T> CreateVectorSymmetric<T>(this IGeometricAlgebraProcessor<T> geometricProcessor, int termsCount)
         {
-            var scalar =
-                geometricProcessor.ScalarOne;
-
             return new Vector<T>(
                 geometricProcessor,
-                geometricProcessor.CreateVectorStorage(
-                    scalar.CreateLinVectorRepeatedScalarStorage(termsCount)
-                )
+                geometricProcessor.CreateVectorStorageSymmetric(termsCount)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Vector<T> CreateVectorUnitOnes<T>(this IGeometricAlgebraProcessor<T> geometricProcessor, int termsCount)
+        public static Vector<T> CreateVectorSymmetricUnit<T>(this IGeometricAlgebraProcessor<T> geometricProcessor, int termsCount)
         {
-            var scalar = 
-                geometricProcessor.Inverse(geometricProcessor.Sqrt(termsCount));
-
             return new Vector<T>(
                 geometricProcessor,
-                geometricProcessor.CreateVectorStorage(
-                    scalar.CreateLinVectorRepeatedScalarStorage(termsCount)
-                )
+                geometricProcessor.CreateVectorStorageSymmetricUnit(termsCount)
             );
         }
         
@@ -206,6 +196,39 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
             );
         }
         
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector<T> CreateVector<T>(this IGeometricAlgebraProcessor<T> geometricProcessor, VectorStorage<T> storage, bool makeUnitVector)
+        {
+            if (makeUnitVector)
+                return new Vector<T>(
+                    geometricProcessor,
+                    geometricProcessor.DivideByNorm(storage)
+                );
+
+            return new Vector<T>(
+                geometricProcessor,
+                storage
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector<T> CreateUnitVector<T>(this IGeometricAlgebraProcessor<T> geometricProcessor, VectorStorage<T> storage)
+        {
+            return new Vector<T>(
+                geometricProcessor,
+                geometricProcessor.DivideByNorm(storage)
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector<T> CreateEUnitVector<T>(this IGeometricAlgebraProcessor<T> geometricProcessor, VectorStorage<T> storage)
+        {
+            return new Vector<T>(
+                geometricProcessor,
+                geometricProcessor.DivideByENorm(storage)
+            );
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector<T> CreateVector<T>(this VectorStorage<T> storage, IGeometricAlgebraProcessor<T> geometricProcessor)
         {
@@ -545,6 +568,96 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
             return new Vector<T>(
                 geometricProcessor,
                 geometricProcessor.CreateVectorStorage(geometricProcessor.CreateLinVectorStorage(termsCount, indexToScalarFunc))
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector<T> CreateVector<T>(this IGeometricAlgebraProcessor<T> geometricProcessor, params int[] scalarArray)
+        {
+            return new Vector<T>(
+                geometricProcessor,
+                geometricProcessor.CreateVectorStorage(geometricProcessor.CreateLinVectorStorage(scalarArray))
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector<T> CreateVector<T>(this IGeometricAlgebraProcessor<T> geometricProcessor, params uint[] scalarArray)
+        {
+            return new Vector<T>(
+                geometricProcessor,
+                geometricProcessor.CreateVectorStorage(geometricProcessor.CreateLinVectorStorage(scalarArray))
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector<T> CreateVector<T>(this IGeometricAlgebraProcessor<T> geometricProcessor, params long[] scalarArray)
+        {
+            return new Vector<T>(
+                geometricProcessor,
+                geometricProcessor.CreateVectorStorage(geometricProcessor.CreateLinVectorStorage(scalarArray))
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector<T> CreateVector<T>(this IGeometricAlgebraProcessor<T> geometricProcessor, params ulong[] scalarArray)
+        {
+            return new Vector<T>(
+                geometricProcessor,
+                geometricProcessor.CreateVectorStorage(geometricProcessor.CreateLinVectorStorage(scalarArray))
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector<T> CreateVector<T>(this IGeometricAlgebraProcessor<T> geometricProcessor, params float[] scalarArray)
+        {
+            return new Vector<T>(
+                geometricProcessor,
+                geometricProcessor.CreateVectorStorage(geometricProcessor.CreateLinVectorStorage(scalarArray))
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector<T> CreateVector<T>(this IGeometricAlgebraProcessor<T> geometricProcessor, params double[] scalarArray)
+        {
+            return new Vector<T>(
+                geometricProcessor,
+                geometricProcessor.CreateVectorStorage(geometricProcessor.CreateLinVectorStorage(scalarArray))
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector<T> CreateVector<T>(this IGeometricAlgebraProcessor<T> geometricProcessor, params string[] scalarArray)
+        {
+            return new Vector<T>(
+                geometricProcessor,
+                geometricProcessor.CreateVectorStorage(geometricProcessor.CreateLinVectorStorage(scalarArray))
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector<T> CreateVector<T>(this IGeometricAlgebraProcessor<T> geometricProcessor, T scalar1)
+        {
+            return new Vector<T>(
+                geometricProcessor,
+                geometricProcessor.CreateVectorStorage(scalar1)
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector<T> CreateVector<T>(this IGeometricAlgebraProcessor<T> geometricProcessor, T scalar1, T scalar2)
+        {
+            return new Vector<T>(
+                geometricProcessor,
+                geometricProcessor.CreateVectorStorage(scalar1, scalar2)
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector<T> CreateVector<T>(this IGeometricAlgebraProcessor<T> geometricProcessor, T scalar1, T scalar2, T scalar3)
+        {
+            return new Vector<T>(
+                geometricProcessor,
+                geometricProcessor.CreateVectorStorage(scalar1, scalar2, scalar3)
             );
         }
 

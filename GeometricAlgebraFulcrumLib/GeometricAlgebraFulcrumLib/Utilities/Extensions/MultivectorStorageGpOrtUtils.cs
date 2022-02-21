@@ -7,7 +7,7 @@ using GeometricAlgebraFulcrumLib.Utilities.Composers;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 {
-    public static class MultivectorStorageGpOrtUtils
+    internal static class MultivectorStorageGpOrtUtils
     {
         public static IMultivectorStorage<double> Gp(this BasisBladeSet basisSet, IMultivectorStorage<double> mv)
         {
@@ -88,7 +88,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         public static IMultivectorStorage<T> Gp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, BasisBladeSet basisSet, IMultivectorStorage<T> mv)
         {
             return basisSet.IsEuclidean
-                ? scalarProcessor.EGp(mv)
+                ? scalarProcessor.EGpSquared(mv)
                 : scalarProcessor.BilinearProduct(mv, basisSet.GpSign);
         }
 

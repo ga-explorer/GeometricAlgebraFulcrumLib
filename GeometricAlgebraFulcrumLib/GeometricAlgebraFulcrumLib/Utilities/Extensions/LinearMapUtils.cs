@@ -15,7 +15,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                     linearMap.MapBasisBlade((ulong) index);
 
                 for (var i = 0; i < rowsCount; i++)
-                    array[i, index] = mappedBasisBlade.TryGetTermScalar((ulong) i, out var scalar)
+                    array[i, index] = mappedBasisBlade.MultivectorStorage.TryGetTermScalar((ulong) i, out var scalar)
                         ? scalar
                         : processor.ScalarZero;
             }

@@ -6,7 +6,7 @@ using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 namespace GeometricAlgebraFulcrumLib.Text
 {
     public sealed class LaTeXAngouriMathComposer
-        : LaTeXComposerBase<Entity>
+        : LaTeXComposer<Entity>
     {
         public static LaTeXAngouriMathComposer DefaultComposer { get; }
             = new LaTeXAngouriMathComposer();

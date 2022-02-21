@@ -505,6 +505,20 @@ namespace NumericalGeometryLib.GeometricAlgebra.Basis
 
             //return ((grade * (grade - 1)) & 2) != 0;
         }
+        
+        /// <summary>
+        /// Test if the reverse of a basis blade with a given grade is -1 the original basis blade
+        /// Sign Pattern: ++--
+        /// </summary>
+        /// <param name="grade"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool ReverseIsNegativeOfGrade(this int grade)
+        {
+            return grade % 4 > 1;
+
+            //return ((grade * (grade - 1)) & 2) != 0;
+        }
 
         /// <summary>
         /// Test if the reverse of a basis blade with a given grade is -1 the original basis blade
@@ -520,6 +534,18 @@ namespace NumericalGeometryLib.GeometricAlgebra.Basis
             //return ((grade * (grade - 1)) & 2) != 0;
         }
         
+        /// <summary>
+        /// Test if the reverse of a basis blade with a given grade is -1 the original basis blade
+        /// Sign Pattern: ++--
+        /// </summary>
+        /// <param name="grade"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int ReverseSignOfGrade(this int grade)
+        {
+            return (grade % 4 > 1) ? -1 : 1;
+        }
+
         /// <summary>
         /// Test if the reverse of a basis blade with a given grade is -1 the original basis blade
         /// Sign Pattern: ++--

@@ -2,6 +2,8 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
+using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.LinearAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
@@ -16,16 +18,19 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.LinearMaps
         IUnilinearMap<T>
     {
         public IScalarAlgebraProcessor<T> ScalarProcessor 
-            => LinearProcessor;
+            => GeometricProcessor;
 
-        public ILinearAlgebraProcessor<T> LinearProcessor { get; }
+        public ILinearAlgebraProcessor<T> LinearProcessor 
+            => GeometricProcessor;
+
+        public IGeometricAlgebraProcessor<T> GeometricProcessor { get; }
 
         public ILinMatrixStorage<T> MatrixStorage { get; }
 
 
-        internal UnilinearMap([NotNull] ILinearAlgebraProcessor<T> linearProcessor, [NotNull] ILinMatrixStorage<T> matrixStorage)
+        internal UnilinearMap([NotNull] IGeometricAlgebraProcessor<T> geometricProcessor, [NotNull] ILinMatrixStorage<T> matrixStorage)
         {
-            LinearProcessor = linearProcessor;
+            GeometricProcessor = geometricProcessor;
             MatrixStorage = matrixStorage;
         }
 
@@ -44,124 +49,133 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.LinearMaps
         public IUnilinearMap<T> GetAdjoint()
         {
             return new UnilinearMap<T>(
-                LinearProcessor, 
+                GeometricProcessor, 
                 MatrixStorage.GetTranspose()
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IMultivectorStorage<T> MapBasisScalar()
+        public Multivector<T> MapBasisScalar()
         {
-            return MatrixStorage
-                .GetColumn(0)
-                .CreateMultivectorSparseStorage();
+            return GeometricProcessor.CreateMultivector(
+                MatrixStorage
+                    .GetColumn(0)
+                    .CreateMultivectorStorageSparse()
+            );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IMultivectorStorage<T> MapBasisVector(ulong index)
+        public Multivector<T> MapBasisVector(ulong index)
         {
-            return MatrixStorage
-                .GetColumn(index.BasisVectorIndexToId())
-                .CreateMultivectorSparseStorage();
+            return GeometricProcessor.CreateMultivector(
+                MatrixStorage
+                    .GetColumn(index.BasisVectorIndexToId())
+                    .CreateMultivectorStorageSparse()
+            );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IMultivectorStorage<T> MapBasisBivector(ulong index)
+        public Multivector<T> MapBasisBivector(ulong index)
         {
-            return MatrixStorage
-                .GetColumn(index.BasisBivectorIndexToId())
-                .CreateMultivectorSparseStorage();
+            return GeometricProcessor.CreateMultivector(
+                MatrixStorage
+                    .GetColumn(index.BasisBivectorIndexToId())
+                    .CreateMultivectorStorageSparse()
+            );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IMultivectorStorage<T> MapBasisBivector(ulong index1, ulong index2)
+        public Multivector<T> MapBasisBivector(ulong index1, ulong index2)
         {
             if (index1 == index2)
-                return KVectorStorage<T>.ZeroScalar;
+                return GeometricProcessor.CreateMultivector(KVectorStorage<T>.ZeroScalar);
 
             var columnVector = MatrixStorage.GetColumn(
                 BasisBivectorUtils.BasisVectorIndicesToBivectorId(index1, index2)
             );
 
-            return index1 < index2 
-                ? columnVector.CreateMultivectorSparseStorage() 
-                : LinearProcessor.Negative(columnVector).CreateMultivectorSparseStorage();
+            return GeometricProcessor.CreateMultivector(
+                index1 < index2 
+                    ? columnVector.CreateMultivectorStorageSparse() 
+                    : LinearProcessor.Negative(columnVector).CreateMultivectorStorageSparse()
+                );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IMultivectorStorage<T> MapBasisBlade(ulong id)
+        public Multivector<T> MapBasisBlade(ulong id)
         {
-            return MatrixStorage
-                .GetColumn(id)
-                .CreateMultivectorSparseStorage();
+            return GeometricProcessor.CreateMultivector(
+                MatrixStorage
+                    .GetColumn(id)
+                    .CreateMultivectorStorageSparse()
+            );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IMultivectorStorage<T> MapBasisBlade(uint grade, ulong index)
+        public Multivector<T> MapBasisBlade(uint grade, ulong index)
         {
             var id = 
                 BasisBladeUtils.BasisBladeGradeIndexToId(grade, index);
 
-            return MatrixStorage
-                .GetColumn(id)
-                .CreateMultivectorSparseStorage();
+            return GeometricProcessor.CreateMultivector(
+                MatrixStorage
+                    .GetColumn(id)
+                    .CreateMultivectorStorageSparse()
+            );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IMultivectorStorage<T> MapScalar(T mv)
+        public Multivector<T> Map(T mv)
         {
-            return LinearProcessor.Times(
-                mv,
-                MatrixStorage.GetColumn(0)
-            ).CreateMultivectorSparseStorage();
+            return GeometricProcessor.CreateMultivector(
+                LinearProcessor.Times(
+                    mv,
+                    MatrixStorage.GetColumn(0)
+                ).CreateMultivectorStorageSparse()
+            );
         }
 
-        public IMultivectorStorage<T> MapVector(VectorStorage<T> vector)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public IMultivectorStorage<T> MapBivector(BivectorStorage<T> bivector)
+        public Multivector<T> Map(Vector<T> vector)
         {
             throw new System.NotImplementedException();
         }
 
-        public IMultivectorStorage<T> MapKVector(KVectorStorage<T> kVector)
+        public Multivector<T> Map(Bivector<T> bivector)
         {
             throw new System.NotImplementedException();
         }
 
-        public IMultivectorStorage<T> MapMultivector(MultivectorStorage<T> multivector)
+        public Multivector<T> Map(KVector<T> kVector)
         {
             throw new System.NotImplementedException();
         }
 
-        public IMultivectorStorage<T> MapMultivector(MultivectorGradedStorage<T> multivector)
+        public Multivector<T> Map(Multivector<T> multivector)
         {
             throw new System.NotImplementedException();
         }
 
-        public VectorStorage<T> OmMapVector(VectorStorage<T> vector)
+        public VectorStorage<T> OmMap(VectorStorage<T> vector)
         {
             throw new System.NotImplementedException();
         }
 
-        public BivectorStorage<T> OmMapBivector(BivectorStorage<T> bivector)
+        public BivectorStorage<T> OmMap(BivectorStorage<T> bivector)
         {
             throw new System.NotImplementedException();
         }
 
-        public KVectorStorage<T> OmMapKVector(KVectorStorage<T> kVector)
+        public KVectorStorage<T> OmMap(KVectorStorage<T> kVector)
         {
             throw new System.NotImplementedException();
         }
 
-        public MultivectorStorage<T> OmMapMultivector(MultivectorStorage<T> multivector)
+        public MultivectorStorage<T> OmMap(MultivectorStorage<T> multivector)
         {
             throw new System.NotImplementedException();
         }
 
-        public MultivectorGradedStorage<T> OmMapMultivector(MultivectorGradedStorage<T> multivector)
+        public MultivectorGradedStorage<T> OmMap(MultivectorGradedStorage<T> multivector)
         {
             throw new System.NotImplementedException();
         }
@@ -173,14 +187,16 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.LinearMaps
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<IdMultivectorStorageRecord<T>> GetMappedBasisBlades()
+        public IEnumerable<IdMultivectorRecord<T>> GetMappedBasisBlades()
         {
             return MatrixStorage
                 .GetColumns()
                 .Select(r => 
-                    new IdMultivectorStorageRecord<T>(
+                    new IdMultivectorRecord<T>(
                         r.Index, 
-                        r.Storage.CreateMultivectorSparseStorage()
+                        GeometricProcessor.CreateMultivector(
+                            r.Storage.CreateMultivectorStorageSparse()
+                        )
                     )
                 );
         }

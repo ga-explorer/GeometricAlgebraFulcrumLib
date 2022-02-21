@@ -6,7 +6,7 @@ using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 {
-    public static class MultivectorStoragePolynomialUtils
+    internal static class MultivectorStoragePolynomialUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static VectorStorage<T> GetValue<T>(this IPolynomialBasisSet<T> basisSet, T parameterValue, params VectorStorage<T>[] vectorsList)
@@ -15,7 +15,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                 vectorsList.Select((mv, index) => 
                     basisSet.ScalarProcessor.Times(
                         mv,
-                        basisSet.GetValue(index, parameterValue)
+                        basisSet.GetValue(index, parameterValue).ScalarValue
                     )
                 )
             );
@@ -28,7 +28,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                 vectorsList.Select((mv, index) => 
                     basisSet.ScalarProcessor.Times(
                         mv,
-                        basisSet.GetValue(index, parameterValue)
+                        basisSet.GetValue(index, parameterValue).ScalarValue
                     )
                 )
             );
@@ -41,7 +41,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                 vectorsList.Select((mv, index) => 
                     basisSet.ScalarProcessor.Times(
                         mv,
-                        basisSet.GetValue(index, parameterValue)
+                        basisSet.GetValue(index, parameterValue).ScalarValue
                     )
                 )
             );
@@ -54,7 +54,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                 vectorsList.Select((mv, index) => 
                     basisSet.ScalarProcessor.Times(
                         mv,
-                        basisSet.GetValue(index, parameterValue)
+                        basisSet.GetValue(index, parameterValue).ScalarValue
                     )
                 )
             );
@@ -67,7 +67,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                 multivectorsList.Select((mv, index) => 
                     basisSet.ScalarProcessor.Times(
                         mv,
-                        basisSet.GetValue(index, parameterValue)
+                        basisSet.GetValue(index, parameterValue).ScalarValue
                     )
                 )
             );
@@ -80,7 +80,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                 multivectorsList.Select((mv, index) => 
                     basisSet.ScalarProcessor.Times(
                         mv,
-                        basisSet.GetValue(index, parameterValue)
+                        basisSet.GetValue(index, parameterValue).ScalarValue
                     )
                 )
             );

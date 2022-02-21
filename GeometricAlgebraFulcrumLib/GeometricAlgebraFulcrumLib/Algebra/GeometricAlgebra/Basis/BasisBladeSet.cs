@@ -29,6 +29,57 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static Triplet<ulong> CreateBasisSetSignature(IEnumerable<char> basisVectorSignatures)
+        {
+            return CreateBasisSetSignature(
+                basisVectorSignatures.Select(c => 
+                    c switch
+                    {
+                        '+' or 'p' or 'P' => 1,
+                        '-' or 'n' or 'N' => -1,
+                        _ => 0
+                    }
+                ).ToArray()
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static Triplet<ulong> CreateBasisSetSignature(IEnumerable<int> basisVectorSignatures)
+        {
+            return CreateBasisSetSignature(basisVectorSignatures.ToArray());
+        }
+
+        private static Triplet<ulong> CreateBasisSetSignature(params int[] basisVectorSignatures)
+        {
+            if (basisVectorSignatures.Length is < 2 or > 63)
+                throw new ArgumentOutOfRangeException();
+
+            var positiveMask = 0UL;
+            var negativeMask = 0UL;
+            var zeroMask = 0UL;
+
+            for (var i = 0; i < basisVectorSignatures.Length; i++)
+            {
+                var signature = basisVectorSignatures[i];
+
+                if (signature > 0)
+                    positiveMask |= 1UL << i;
+
+                else if (signature < 0)
+                    negativeMask |= 1UL << i;
+
+                else
+                    zeroMask |= 1UL << i;
+            }
+
+            return new Triplet<ulong>(
+                positiveMask,
+                negativeMask,
+                zeroMask
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static Triplet<ulong> CreateBasisSetSignature(uint positiveCount)
         {
             if (positiveCount is < 2 or > 63)
@@ -84,6 +135,33 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis
             return basisSet;
         }
 
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static BasisBladeSet Create(IEnumerable<char> basisVectorSignatures)
+        {
+            var basisSetSignature = 
+                CreateBasisSetSignature(basisVectorSignatures);
+
+            return Create(basisSetSignature);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static BasisBladeSet Create(IEnumerable<int> basisVectorSignatures)
+        {
+            var basisSetSignature = 
+                CreateBasisSetSignature(basisVectorSignatures);
+
+            return Create(basisSetSignature);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static BasisBladeSet Create(params int[] basisVectorSignatures)
+        {
+            var basisSetSignature = 
+                CreateBasisSetSignature(basisVectorSignatures);
+
+            return Create(basisSetSignature);
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BasisBladeSet Create(uint positiveCount, uint negativeCount)
@@ -373,7 +451,47 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis
                 ? euclideanSignature
                 : -euclideanSignature;
         }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool ConjugateIsNegative(ulong id)
+        {
+            return ConjugateSign(id) == -1;
+        }
         
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool ConjugateIsPositive(ulong id)
+        {
+            return ConjugateSign(id) == 1;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public int ConjugateSign(ulong id)
+        {
+            var reverseSign = 
+                BitOperations.PopCount(id).ReverseSignOfGrade();
+
+            return (BitOperations.PopCount(id & _negativeMask) & 1) == 0
+                ? reverseSign 
+                : -reverseSign;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public int GradeInvolutionSign(ulong id)
+        {
+            return BitOperations.PopCount(id).GradeInvolutionSignOfGrade();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public int ReverseSign(ulong id)
+        {
+            return BitOperations.PopCount(id).ReverseSignOfGrade();
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public int CliffordConjugateSign(ulong id)
+        {
+            return BitOperations.PopCount(id).CliffordConjugateSignOfGrade();
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int EGpSquaredSign(ulong id)

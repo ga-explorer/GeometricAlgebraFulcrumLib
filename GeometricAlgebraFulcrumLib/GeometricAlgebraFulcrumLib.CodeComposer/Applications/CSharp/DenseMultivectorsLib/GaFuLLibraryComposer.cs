@@ -1,10 +1,10 @@
 ﻿using System;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.SymbolicAlgebra;
 using GeometricAlgebraFulcrumLib.CodeComposer.Composers;
 using GeometricAlgebraFulcrumLib.CodeComposer.Languages;
 using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.SymbolicAlgebra.Context;
-using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using GeometricAlgebraFulcrumLib.Utilities.Factories;
 using TextComposerLib.Text.Parametric;
@@ -60,7 +60,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseMulti
                 throw new ArgumentOutOfRangeException(nameof(vSpaceDimensions));
 
             VSpaceDimensions = vSpaceDimensions;
-            GeometricProcessor = new SymbolicContext().CreateGeometricAlgebraEuclideanProcessor(vSpaceDimensions);
+            GeometricProcessor = new SymbolicContext().AttachGeometricAlgebraEuclideanProcessor(vSpaceDimensions);
         }
 
 
@@ -219,9 +219,9 @@ namespace EGA#vSpaceDimensions#D
         }
 
 
-        private string GetMultivectorBinaryOperationCode(Func<IMultivectorStorage<ISymbolicExpressionAtomic>, IMultivectorStorage<ISymbolicExpressionAtomic>, IMultivectorStorage<ISymbolicExpressionAtomic>> binaryOperationFunc, Func<ulong, string> namingFunc1, Func<ulong, string> namingFunc2, Func<ulong, string> namingFunc3)
+        private string GetMultivectorBinaryOperationCode(Func<Multivector<ISymbolicExpressionAtomic>, Multivector<ISymbolicExpressionAtomic>, Multivector<ISymbolicExpressionAtomic>> binaryOperationFunc, Func<ulong, string> namingFunc1, Func<ulong, string> namingFunc2, Func<ulong, string> namingFunc3)
         {
-            var context = new SymbolicContext();
+            var context = new SymbolicContext(GeometricProcessor);
 
             //context.AttachMathematicaExpressionEvaluator();
 
@@ -281,70 +281,70 @@ namespace EGA#vSpaceDimensions#D
             MultivectorClassTemplate["gaSpaceDimensions"] = GaSpaceDimensions.ToString();
 
             MultivectorClassTemplate["mvAddCode"] = GetMultivectorBinaryOperationCode(
-                (mv1, mv2) => GeometricProcessor.Add(mv1, mv2),
+                (mv1, mv2) => mv1 + mv2,
                 id => $"mv1._scalarsArray[{id}]",
                 id => $"mv2._scalarsArray[{id}]",
                 id => $"mv._scalarsArray[{id}]"
             );
 
             MultivectorClassTemplate["mvSubtractCode"] = GetMultivectorBinaryOperationCode(
-                (mv1, mv2) => GeometricProcessor.Subtract(mv1, mv2),
+                (mv1, mv2) => mv1 - mv2,
                 id => $"mv1._scalarsArray[{id}]",
                 id => $"mv2._scalarsArray[{id}]",
                 id => $"mv._scalarsArray[{id}]"
             );
 
             MultivectorClassTemplate["mvGpCode"] = GetMultivectorBinaryOperationCode(
-                (mv1, mv2) => GeometricProcessor.EGp(mv1, mv2),
+                (mv1, mv2) => mv1.EGp(mv2),
                 id => $"_scalarsArray[{id}]",
                 id => $"mv2._scalarsArray[{id}]",
                 id => $"mv._scalarsArray[{id}]"
             );
 
             MultivectorClassTemplate["mvOpCode"] = GetMultivectorBinaryOperationCode(
-                (mv1, mv2) => GeometricProcessor.Op(mv1, mv2),
+                (mv1, mv2) => mv1.Op(mv2),
                 id => $"_scalarsArray[{id}]",
                 id => $"mv2._scalarsArray[{id}]",
                 id => $"mv._scalarsArray[{id}]"
             );
 
             MultivectorClassTemplate["mvLcpCode"] = GetMultivectorBinaryOperationCode(
-                (mv1, mv2) => GeometricProcessor.ELcp(mv1, mv2),
+                (mv1, mv2) => mv1.ELcp(mv2),
                 id => $"_scalarsArray[{id}]",
                 id => $"mv2._scalarsArray[{id}]",
                 id => $"mv._scalarsArray[{id}]"
             );
 
             MultivectorClassTemplate["mvRcpCode"] = GetMultivectorBinaryOperationCode(
-                (mv1, mv2) => GeometricProcessor.ERcp(mv1, mv2),
+                (mv1, mv2) => mv1.ERcp(mv2),
                 id => $"_scalarsArray[{id}]",
                 id => $"mv2._scalarsArray[{id}]",
                 id => $"mv._scalarsArray[{id}]"
             );
 
             MultivectorClassTemplate["mvFdpCode"] = GetMultivectorBinaryOperationCode(
-                (mv1, mv2) => GeometricProcessor.EFdp(mv1, mv2),
+                (mv1, mv2) => mv1.EFdp(mv2),
                 id => $"_scalarsArray[{id}]",
                 id => $"mv2._scalarsArray[{id}]",
                 id => $"mv._scalarsArray[{id}]"
             );
 
             MultivectorClassTemplate["mvHipCode"] = GetMultivectorBinaryOperationCode(
-                (mv1, mv2) => GeometricProcessor.EHip(mv1, mv2),
+                (mv1, mv2) => mv1.EHip(mv2),
                 id => $"_scalarsArray[{id}]",
                 id => $"mv2._scalarsArray[{id}]",
                 id => $"mv._scalarsArray[{id}]"
             );
 
             MultivectorClassTemplate["mvAcpCode"] = GetMultivectorBinaryOperationCode(
-                (mv1, mv2) => GeometricProcessor.EAcp(mv1, mv2),
+                (mv1, mv2) => mv1.EAcp(mv2),
                 id => $"_scalarsArray[{id}]",
                 id => $"mv2._scalarsArray[{id}]",
                 id => $"mv._scalarsArray[{id}]"
             );
 
             MultivectorClassTemplate["mvCpCode"] = GetMultivectorBinaryOperationCode(
-                (mv1, mv2) => GeometricProcessor.ECp(mv1, mv2),
+                (mv1, mv2) => mv1.ECp(mv2),
                 id => $"_scalarsArray[{id}]",
                 id => $"mv2._scalarsArray[{id}]",
                 id => $"mv._scalarsArray[{id}]"

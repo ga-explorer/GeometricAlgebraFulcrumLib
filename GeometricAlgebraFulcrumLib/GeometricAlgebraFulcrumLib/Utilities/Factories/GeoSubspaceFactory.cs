@@ -10,13 +10,13 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Subspace<T> CreateSubspace<T>(this IGeometricAlgebraProcessor<T> processor, KVectorStorage<T> blade)
         {
-            return Subspace<T>.Create(processor, blade);
+            return Subspace<T>.Create(processor, blade.CreateKVector(processor));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Subspace<T> CreateSubspaceFromDual<T>(this IGeometricAlgebraProcessor<T> processor, KVectorStorage<T> blade)
         {
-            return Subspace<T>.CreateFromDual(processor, blade);
+            return Subspace<T>.CreateFromDual(processor, blade.CreateKVector(processor));
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

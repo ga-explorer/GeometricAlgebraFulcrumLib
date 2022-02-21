@@ -5,7 +5,6 @@ using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.LinearMaps;
 using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Processors.LinearAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Factories
@@ -13,21 +12,27 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
     public static class OutermorphismFactory
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Outermorphism<T> CreateOutermorphism<T>(this ILinearAlgebraProcessor<T> linearProcessor, OutermorphismStorage<T> omStorage)
+        public static Outermorphism<T> CreateOutermorphism<T>(this IGeometricAlgebraProcessor<T> geometricProcessor, OutermorphismStorage<T> omStorage)
         {
-            return new Outermorphism<T>(linearProcessor, omStorage);
+            return new Outermorphism<T>(geometricProcessor, omStorage);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Outermorphism<T> CreateOutermorphism<T>(this OutermorphismStorage<T> omStorage, ILinearAlgebraProcessor<T> linearProcessor)
+        public static Outermorphism<T> CreateOutermorphism<T>(this OutermorphismStorage<T> omStorage, IGeometricAlgebraProcessor<T> geometricProcessor)
         {
-            return new Outermorphism<T>(linearProcessor, omStorage);
+            return new Outermorphism<T>(geometricProcessor, omStorage);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static LinearMapOutermorphism<T> CreateOutermorphism<T>(this ILinUnilinearMap<T> linearMap)
+        public static LinearMapOutermorphism<T> CreateOutermorphism<T>(this IGeometricAlgebraProcessor<T> geometricProcessor, ILinUnilinearMap<T> linearMap)
         {
-            return new LinearMapOutermorphism<T>(linearMap);
+            return new LinearMapOutermorphism<T>(geometricProcessor, linearMap);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static LinearMapOutermorphism<T> CreateOutermorphism<T>(this ILinUnilinearMap<T> linearMap, IGeometricAlgebraProcessor<T> geometricProcessor)
+        {
+            return new LinearMapOutermorphism<T>(geometricProcessor, linearMap);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -91,7 +96,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
             
             return geometricProcessor
                 .CreateLinUnilinearMap(matrix)
-                .CreateOutermorphism();
+                .CreateOutermorphism(geometricProcessor);
         }
 
 
@@ -103,7 +108,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
             
             return geometricProcessor
                 .CreateLinUnilinearMap(matrix)
-                .CreateOutermorphism();
+                .CreateOutermorphism(geometricProcessor);
         }
 
         public static LinearMapOutermorphism<T> CreateLinearMapOutermorphism<T>(this T[,] mappedBasisVectorsArray, IGeometricAlgebraProcessor<T> geometricProcessor)
@@ -113,7 +118,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
             
             return geometricProcessor
                 .CreateLinUnilinearMap(matrix)
-                .CreateOutermorphism();
+                .CreateOutermorphism(geometricProcessor);
         }
 
 
@@ -127,7 +132,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
             
             return geometricProcessor
                 .CreateLinUnilinearMap(matrix)
-                .CreateOutermorphism();
+                .CreateOutermorphism(geometricProcessor);
         }
 
         public static LinearMapOutermorphism<T> CreateLinearMapOutermorphism<T>(this IEnumerable<VectorStorage<T>> mappedBasisVectors, IGeometricAlgebraProcessor<T> geometricProcessor)
@@ -140,7 +145,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
 
             return geometricProcessor
                 .CreateLinUnilinearMap(matrix)
-                .CreateOutermorphism();
+                .CreateOutermorphism(geometricProcessor);
         }
 
 
@@ -161,7 +166,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
                 Enumerable
                     .Range(0, basisVectorsCount)
                     .Select(index =>
-                        basisVectorMapFunc(geometricProcessor.CreateVectorBasisStorage(index))
+                        basisVectorMapFunc(geometricProcessor.CreateVectorStorageBasis(index))
                     ).ToArray();
 
             return geometricProcessor.CreateLinearMapOutermorphism(mappedBasisVectors);

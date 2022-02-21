@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors;
-using GeometricAlgebraFulcrumLib.Geometry.Subspaces;
 using GeometricAlgebraFulcrumLib.Mathematica.Applications.GaPoT;
 using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.LinearAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Text;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using GeometricAlgebraFulcrumLib.Utilities.Factories;
@@ -32,7 +31,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
             = LaTeXFloat64Composer.DefaultComposer;
 
 
-        public static void ValidatePhasor(int k, int n, VectorStorage<double> phasor2, double theta)
+        public static void ValidatePhasor(int k, int n, Vector<double> phasor2, double theta)
         {
             var composer = GeometricProcessor.CreateVectorStorageComposer();
 
@@ -46,11 +45,11 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
             }
 
             var phasor1 = 
-                composer.CreateVectorStorage();
+                composer.CreateVector();
 
             var phasorDiff = 
                 GeometricProcessor.GetNotZeroTerms(
-                    GeometricProcessor.Subtract(phasor1, phasor2)
+                    (phasor1 - phasor2).VectorStorage
                 );
 
             //Console.WriteLine(
@@ -68,15 +67,14 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
             Console.WriteLine();
         }
 
-        public static Tuple<VectorStorage<double>, VectorStorage<double>> GetComponentPhasorsTuple(int i, int k, int n, double theta)
+        public static Tuple<Vector<double>, Vector<double>> GetComponentPhasorsTuple(int i, int k, int n, double theta)
         {
             Debug.Assert(n >= 2 && i >= 0 && i < n);
 
             var muStorage =
-                GeometricProcessor.CreateVectorTermStorage(i, 1);
+                GeometricProcessor.CreateVectorTerm(i, 1);
 
-            var muSubspace = 
-                Subspace<double>.Create(GeometricProcessor, muStorage);
+            var muSubspace = muStorage.GetSubspace();
 
             //var muVector =
             //    GeoEuclideanVector<double>.Create(muStorage);
@@ -90,7 +88,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
             );
 
             var phasor1 =
-                rotor.OmMapVector(muStorage).GetVectorPart();
+                rotor.OmMap(muStorage);
 
             var phasor2 = 
                 muSubspace.Project(phasor1);
@@ -111,13 +109,10 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
             //);
             //Console.WriteLine();
 
-            return new Tuple<VectorStorage<double>, VectorStorage<double>>(
-                phasor1,
-                phasor2
-            );
+            return new Tuple<Vector<double>, Vector<double>>(phasor1, phasor2);
         }
 
-        public static Tuple<VectorStorage<double>, VectorStorage<double>> GetPhasorsTuple(int k, int n, double theta)
+        public static Tuple<Vector<double>, Vector<double>> GetPhasorsTuple(int k, int n, double theta)
         {
             var phasorTuples =
                 Enumerable
@@ -129,19 +124,17 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
                 phasorTuples
                     .Select(t => t.Item1)
                     .Aggregate(
-                        (IMultivectorStorage<double>) GeometricProcessor.CreateVectorZeroStorage(),
-                        (current, vector) => GeometricProcessor.Add(current, vector)
-                    )
-                    .GetVectorPart();
+                        GeometricProcessor.CreateVectorZero(),
+                        (current, vector) => current + vector
+                    );
 
             var phasor2 =
                 phasorTuples
                     .Select(t => t.Item2)
                     .Aggregate(
-                        (IMultivectorStorage<double>) GeometricProcessor.CreateVectorZeroStorage(),
-                        (current, vector) => GeometricProcessor.Add(current, vector)
-                    )
-                    .GetVectorPart();
+                        GeometricProcessor.CreateVectorZero(),
+                        (current, vector) => current + vector
+                    );
 
             ValidatePhasor(k, n, phasor2, theta);
 
@@ -155,7 +148,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
             );
             Console.WriteLine();
 
-            return new Tuple<VectorStorage<double>, VectorStorage<double>>(
+            return new Tuple<Vector<double>, Vector<double>>(
                 phasor1,
                 phasor2
             );
@@ -169,7 +162,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
                 Console.WriteLine();
 
                 var unitKirchhoffVector = 
-                    GeometricProcessor.CreateStorageVectorUnitOnes(n);
+                    GeometricProcessor.CreateVectorSymmetricUnit(n);
 
                 var theta = 
                     RandomGenerator.NextDouble() * 2d * Math.PI;
@@ -177,15 +170,14 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
                 var (_, inputPhasor) = GetPhasorsTuple(1, n, theta);
 
                 var e1 = 
-                    GeometricProcessor.CreateVectorBasisStorage(0);
+                    GeometricProcessor.CreateVectorBasis(0);
 
                 var e2 = 
-                    GeometricProcessor.CreateVectorBasisStorage(1);
+                    GeometricProcessor.CreateVectorBasis(1);
 
                 var (_, mv1) = GetPhasorsTuple(1, n, 0);
 
-                var v1 = 
-                    GeometricProcessor.Divide(mv1, GeometricProcessor.ENorm(mv1)).GetVectorPart();
+                var v1 = mv1 / mv1.ENorm();
 
                 Console.WriteLine(
                     TextComposer.GetMultivectorText(v1)
@@ -194,8 +186,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
 
                 var (_, mv2) = GetPhasorsTuple(1, n, 0.5d * Math.PI);
                 
-                var v2 = 
-                    GeometricProcessor.Divide(mv2, GeometricProcessor.ENorm(mv2)).GetVectorPart();
+                var v2 = mv2 / mv2.ENorm();
 
                 Console.WriteLine(
                     TextComposer.GetMultivectorText(v2)

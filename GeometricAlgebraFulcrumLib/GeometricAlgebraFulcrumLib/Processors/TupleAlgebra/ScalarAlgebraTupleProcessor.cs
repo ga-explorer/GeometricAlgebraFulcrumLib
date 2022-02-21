@@ -106,6 +106,18 @@ namespace GeometricAlgebraFulcrumLib.Processors.TupleAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ITuple<T> Sign(ITuple<T> scalar)
+        {
+            return scalar.MapScalars(ItemScalarProcessor.Sign);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ITuple<T> UnitStep(ITuple<T> scalar)
+        {
+            return scalar.MapScalars(ItemScalarProcessor.UnitStep);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ITuple<T> Abs(ITuple<T> scalar)
         {
             return scalar.MapScalars(ItemScalarProcessor.Abs);

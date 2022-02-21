@@ -49,7 +49,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         {
             var processor = v1.GeometricProcessor;
 
-            return processor.Sp(v1.BivectorStorage).CreateScalar(processor);
+            return processor.SpSquared(v1.BivectorStorage).CreateScalar(processor);
         }
 
         

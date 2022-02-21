@@ -6,7 +6,7 @@ using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 {
-    public static class MultivectorStorageRcpEucUtils
+    internal static class MultivectorStorageRcpEucUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T ERcp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, T mv1, T mv2)
@@ -52,7 +52,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                 return KVectorStorage<T>.ZeroScalar;
 
             if (mv2.Grade == mv1.Grade)
-                return scalarProcessor.CreateKVectorScalarStorage(scalarProcessor.ESp(mv1, mv2));
+                return scalarProcessor.CreateKVectorStorageScalar(scalarProcessor.ESp(mv1, mv2));
 
             var grade1 = mv1.Grade;
             var grade2 = mv2.Grade;
@@ -103,15 +103,15 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                 return KVectorStorage<T>.ZeroScalar;
 
             if (mv1.Grade == mv2.Grade)
-                return scalarProcessor.CreateKVectorScalarStorage(scalarProcessor.ESp(mv1, mv2));
+                return scalarProcessor.CreateKVectorStorageScalar(scalarProcessor.ESp(mv1, mv2));
 
             return mv1 switch
             {
                 T s1 when mv2 is T s2 => 
-                    ERcp(scalarProcessor, s1, s2).CreateKVectorScalarStorage(),
+                    ERcp(scalarProcessor, s1, s2).CreateKVectorStorageScalar(),
 
                 VectorStorage<T> vt1 when mv2 is VectorStorage<T> vt2 => 
-                    ERcp(scalarProcessor, vt1, vt2).CreateKVectorScalarStorage(),
+                    ERcp(scalarProcessor, vt1, vt2).CreateKVectorStorageScalar(),
 
                 _ => 
                     ERcpAsKVector(scalarProcessor, mv1, mv2)
@@ -198,10 +198,10 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             return mv1 switch
             {
                 T s1 when mv2 is T s2 => 
-                    ERcp(scalarProcessor, s1, s2).CreateKVectorScalarStorage(),
+                    ERcp(scalarProcessor, s1, s2).CreateKVectorStorageScalar(),
 
                 VectorStorage<T> vt1 when mv2 is VectorStorage<T> vt2 => 
-                    ERcp(scalarProcessor, vt1, vt2).CreateKVectorScalarStorage(),
+                    ERcp(scalarProcessor, vt1, vt2).CreateKVectorStorageScalar(),
 
                 KVectorStorage<T> kv1 when mv2 is KVectorStorage<T> kv2 => 
                     ERcpAsKVector(scalarProcessor, kv1, kv2),
@@ -244,7 +244,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 
             composer.RemoveZeroTerms();
 
-            return composer.CreateMultivectorSparseStorage();
+            return composer.CreateMultivectorStorageSparse();
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -259,10 +259,10 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             return mv1 switch
             {
                 T s1 when mv2 is T s2 => 
-                    ERcp(scalarProcessor, s1, s2).CreateKVectorScalarStorage(),
+                    ERcp(scalarProcessor, s1, s2).CreateKVectorStorageScalar(),
 
                 VectorStorage<T> vt1 when mv2 is VectorStorage<T> vt2 => 
-                    ERcp(scalarProcessor, vt1, vt2).CreateKVectorScalarStorage(),
+                    ERcp(scalarProcessor, vt1, vt2).CreateKVectorStorageScalar(),
 
                 IMultivectorGradedStorage<T> gmv1 when mv2 is IMultivectorGradedStorage<T> gmv2 => 
                     ERcpAsMultivectorGraded(scalarProcessor, gmv1, gmv2),

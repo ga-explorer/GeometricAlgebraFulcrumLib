@@ -5,7 +5,9 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms;
+using GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Geometry.Frames;
 using GeometricAlgebraFulcrumLib.Geometry.Subspaces;
 using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
@@ -38,7 +40,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
             return new PureRotorsSequence<T>(processor, rotorsList);
         }
 
-        public static PureRotorsSequence<T> CreateFromOrthonormalEuclideanFrames(GeoFreeFrame<T> sourceFrame, GeoFreeFrame<T> targetFrame, bool fullRotorsFlag = false)
+        public static PureRotorsSequence<T> CreateFromOrthonormalEuclideanFrames(VectorFrame<T> sourceFrame, VectorFrame<T> targetFrame, bool fullRotorsFlag = false)
         {
             Debug.Assert(targetFrame.Count == sourceFrame.Count);
             Debug.Assert(sourceFrame.IsOrthonormal() && targetFrame.IsOrthonormal());
@@ -65,13 +67,13 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
                 rotorsSequence.AppendRotor(rotor);
 
                 for (var j = i + 1; j < sourceFrame.Count; j++)
-                    sourceFrameVectors[j] = rotor.OmMapVector(sourceFrameVectors[j]);
+                    sourceFrameVectors[j] = rotor.OmMap(sourceFrameVectors[j]);
             }
 
             return rotorsSequence;
         }
 
-        public static PureRotorsSequence<T> CreateFromOrthonormalEuclideanFrames(GeoFreeFrame<T> sourceFrame, GeoFreeFrame<T> targetFrame, int[] sequenceArray)
+        public static PureRotorsSequence<T> CreateFromOrthonormalEuclideanFrames(VectorFrame<T> sourceFrame, VectorFrame<T> targetFrame, int[] sequenceArray)
         {
             Debug.Assert(targetFrame.Count == sourceFrame.Count);
             Debug.Assert(sourceFrame.IsOrthonormal() && targetFrame.IsOrthonormal());
@@ -104,13 +106,13 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
 
                 for (var j = i + 1; j < sourceFrame.Count; j++)
                     sourceFrameVectors[j] = 
-                        rotor.OmMapVector(sourceFrameVectors[j]);
+                        rotor.OmMap(sourceFrameVectors[j]);
             }
 
             return rotorsSequence;
         }
 
-        public static PureRotorsSequence<T> CreateFromEuclideanFrames(uint baseSpaceDimensions, GeoFreeFrame<T> sourceFrame, GeoFreeFrame<T> targetFrame)
+        public static PureRotorsSequence<T> CreateFromEuclideanFrames(uint baseSpaceDimensions, VectorFrame<T> sourceFrame, VectorFrame<T> targetFrame)
         {
             Debug.Assert(targetFrame.Count == sourceFrame.Count);
             //Debug.Assert(IsOrthonormal() && targetFrame.IsOrthonormal());
@@ -124,8 +126,8 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
             var pseudoScalarSubspace = 
                 Subspace<T>.CreateFromPseudoScalar(processor, baseSpaceDimensions);
 
-            var sourceFrameVectors = new VectorStorage<T>[sourceFrame.Count];
-            var targetFrameVectors = new VectorStorage<T>[targetFrame.Count];
+            var sourceFrameVectors = new Vector<T>[sourceFrame.Count];
+            var targetFrameVectors = new Vector<T>[targetFrame.Count];
 
             for (var i = 0; i < sourceFrame.Count; i++)
             {
@@ -144,23 +146,17 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
                 rotorsSequence.AppendRotor(rotor);
 
                 pseudoScalarSubspace = 
-                    processor.CreateSubspace(
-                        pseudoScalarSubspace
-                            .Complement(targetVector)
-                            .GetKVectorPart(baseSpaceDimensions - i - 1)
-                    );
+                    pseudoScalarSubspace.Complement(targetVector).GetSubspace();
 
                 for (var j = i + 1; j < sourceFrame.Count; j++)
                 {
                     sourceFrameVectors[j] =
                         pseudoScalarSubspace
-                            .Project(rotor.OmMapVector(sourceFrameVectors[j]))
-                            .GetVectorPart();
+                            .Project(rotor.OmMap(sourceFrameVectors[j]));
 
                     targetFrameVectors[j] =
                         pseudoScalarSubspace
-                            .Project(targetFrameVectors[j])
-                            .GetVectorPart();
+                            .Project(targetFrameVectors[j]);
                 }
             }
 
@@ -218,29 +214,59 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override Multivector<T> GetMultivector()
+        {
+            return GeometricProcessor.CreateMultivector(
+                GetMultivectorStorage()
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override Multivector<T> GetMultivectorReverse()
+        {
+            return GeometricProcessor.CreateMultivector(
+                GetMultivectorStorageReverse()
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override Multivector<T> GetMultivectorInverse()
+        {
+            return GeometricProcessor.CreateMultivector(
+                GetMultivectorStorageReverse()
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override IMultivectorStorage<T> GetMultivectorStorage()
         {
             return _rotorsList
-                .Select(r => r.Multivector)
+                .Select(r => r.Multivector.MultivectorStorage)
                 .Aggregate(
-                    (IMultivectorStorage<T>) GeometricProcessor.CreateKVectorBasisScalarStorage(),
+                    (IMultivectorStorage<T>) GeometricProcessor.CreateKVectorStorageBasisScalar(),
+                    GeometricProcessor.Gp
+                );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override IMultivectorStorage<T> GetMultivectorStorageReverse()
+        {
+            return _rotorsList
+                .Select(r => r.MultivectorReverse.MultivectorStorage)
+                .Reverse()
+                .Aggregate(
+                    (IMultivectorStorage<T>) GeometricProcessor.CreateKVectorStorageBasisScalar(),
                     GeometricProcessor.Gp
                 );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override IMultivectorStorage<T> GetMultivectorInverseStorage()
+        public override IMultivectorStorage<T> GetMultivectorStorageInverse()
         {
-            return _rotorsList
-                .Select(r => r.MultivectorReverse)
-                .Reverse()
-                .Aggregate(
-                    (IMultivectorStorage<T>) GeometricProcessor.CreateKVectorBasisScalarStorage(),
-                    GeometricProcessor.Gp
-                );
+            return GetMultivectorStorageReverse();
         }
 
-        public bool ValidateRotation(GeoFreeFrame<T> sourceFrame, GeoFreeFrame<T> targetFrame)
+        public bool ValidateRotation(VectorFrame<T> sourceFrame, VectorFrame<T> targetFrame)
         {
             if (sourceFrame.Count != targetFrame.Count)
                 return false;
@@ -248,7 +274,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
             var rotatedFrame = Rotate(sourceFrame);
 
             return !rotatedFrame.Select(
-                (v, i) => !GeometricProcessor.IsZero(GeometricProcessor.Subtract(targetFrame[i], v))
+                (v, i) => !(targetFrame[i] - v).IsZero()
             ).Any();
         }
         
@@ -300,13 +326,13 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
 
             foreach (var rotor in _rotorsList)
             {
-                v = rotor.MapMultivector(v);
+                v = rotor.Map(v);
 
                 yield return v;
             }
         }
 
-        public IEnumerable<GeoFreeFrame<T>> GetRotations(GeoFreeFrame<T> frame)
+        public IEnumerable<VectorFrame<T>> GetRotations(VectorFrame<T> frame)
         {
             var f = frame;
 
@@ -314,7 +340,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
 
             foreach (var rotor in _rotorsList)
             {
-                f = rotor.OmMapFreeFrame(f);
+                f = rotor.OmMap(f);
 
                 yield return f;
             }
@@ -328,7 +354,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
             yield return f.GetArray(rowsCount);
 
             foreach (var rotor in _rotorsList)
-                yield return rotor.OmMapFreeFrame(f).GetArray(rowsCount);
+                yield return rotor.OmMap(f).GetArray(rowsCount);
         }
         
 
@@ -345,63 +371,53 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
         
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override VectorStorage<T> OmMapVector(VectorStorage<T> mv)
+        public override Vector<T> OmMap(Vector<T> mv)
         {
             return _rotorsList
                 .Aggregate(
                     mv, 
-                    (bv, rotor) => rotor.OmMapVector(bv)
+                    (bv, rotor) => rotor.OmMap(bv)
                 );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override BivectorStorage<T> OmMapBivector(BivectorStorage<T> mv)
+        public override Bivector<T> OmMap(Bivector<T> mv)
         {
             return _rotorsList
                 .Aggregate(
                     mv, 
-                    (bv, rotor) => rotor.OmMapBivector(bv)
+                    (bv, rotor) => rotor.OmMap(bv)
                 );
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override KVectorStorage<T> OmMapKVector(KVectorStorage<T> mv)
+        public override KVector<T> OmMap(KVector<T> mv)
         {
             return _rotorsList
                 .Aggregate(
                     mv, 
-                    (kv, rotor) => rotor.OmMapKVector(kv)
+                    (kv, rotor) => rotor.OmMap(kv)
                 );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override MultivectorGradedStorage<T> OmMapMultivector(MultivectorGradedStorage<T> mv)
+        public override Multivector<T> OmMap(Multivector<T> mv)
         {
             return _rotorsList
                 .Aggregate(
                     mv, 
-                    (current, rotor) => rotor.OmMapMultivector(current)
-                );
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override MultivectorStorage<T> OmMapMultivector(MultivectorStorage<T> mv)
-        {
-            return _rotorsList
-                .Aggregate(
-                    mv, 
-                    (current, rotor) => rotor.OmMapMultivector(current)
+                    (current, rotor) => rotor.OmMap(current)
                 );
         }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GeoFreeFrame<T> Rotate(GeoFreeFrame<T> frame)
+        public VectorFrame<T> Rotate(VectorFrame<T> frame)
         {
             return _rotorsList
                 .Aggregate(
                     frame, 
-                    (current, rotor) => rotor.OmMapFreeFrame(current)
+                    (current, rotor) => rotor.OmMap(current)
                 );
         }
 
@@ -414,10 +430,10 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
                 .Aggregate(
                     _rotorsList[0].Multivector, 
                     (current, rotor) => 
-                        GeometricProcessor.Gp(rotor, current)
+                        rotor.Gp(current)
                 );
 
-            return Rotor<T>.Create(GeometricProcessor, storage);
+            return Rotor<T>.Create(storage);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -447,9 +463,9 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override T GetScalingFactor()
+        public override Scalar<T> GetScalingFactor()
         {
-            return ScalarProcessor.ScalarOne;
+            return ScalarProcessor.CreateScalarOne();
         }
     }
 }

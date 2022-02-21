@@ -296,6 +296,29 @@ namespace DataStructuresLib.Extensions
             return arrayOut;
         }
 
+        public static double[,] Add(this double[,] array1, double[,] array2)
+        {
+            return array1.MapItems(array2, (a, b) => a + b);
+        }
+        
+        public static double[,] Subtract(this double[,] array1, double[,] array2)
+        {
+            return array1.MapItems(array2, (a, b) => a - b);
+        }
+
+        public static T[,] MapItems<T>(this T[,] array1, T[,] array2, Func<T, T, T> itemMapping)
+        {
+            var n1 = array1.GetLength(0);
+            var n2 = array2.GetLength(1);
+            var arrayOut = new T[n1, n2];
+
+            for (var i = 0; i < n1; i++)
+            for (var j = 0; j < n2; j++)
+                arrayOut[i, j] = itemMapping(array1[i, j], array2[i, j]);
+
+            return arrayOut;
+        }
+
         public static T[,] Transpose<T>(this T[,] array)
         {
             var n1 = array.GetLength(0);

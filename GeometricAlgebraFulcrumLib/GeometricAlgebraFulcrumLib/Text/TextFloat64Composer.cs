@@ -6,7 +6,7 @@ using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 namespace GeometricAlgebraFulcrumLib.Text
 {
     public sealed class TextFloat64Composer
-        : TextComposerBase<double>
+        : TextComposer<double>
     {
         public static TextFloat64Composer DefaultComposer { get; }
             = new TextFloat64Composer();
@@ -27,7 +27,7 @@ namespace GeometricAlgebraFulcrumLib.Text
         {
             return $"{GetScalarText(angle.Degrees)} degrees";
         }
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override string GetScalarText(double scalar)
         {

@@ -14,6 +14,10 @@
 
         public const string Inverse = "Inverse";
 
+        public const string Sign = "Sign";
+
+        public const string UnitStep = "UnitStep";
+
         public const string Abs = "Abs";
 
         public const string Sqrt = "Sqrt";

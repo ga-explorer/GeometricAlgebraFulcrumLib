@@ -7,7 +7,7 @@ using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 {
-    public static class MultivectorStorageAddUtils
+    internal static class MultivectorStorageAddUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static VectorStorage<T> Add<T>(this IScalarAlgebraProcessor<T> scalarProcessor, VectorStorage<T> mv1, VectorStorage<T> mv2)
@@ -22,7 +22,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         public static VectorStorage<T> Add<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params VectorStorage<T>[] mvList)
         {
             return mvList.Aggregate(
-                scalarProcessor.CreateVectorZeroStorage(),
+                scalarProcessor.CreateVectorStorageZero(),
                 scalarProcessor.Add
             );
         }
@@ -31,7 +31,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         public static VectorStorage<T> Add<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<VectorStorage<T>> mvList)
         {
             return mvList.Aggregate(
-                scalarProcessor.CreateVectorZeroStorage(),
+                scalarProcessor.CreateVectorStorageZero(),
                 scalarProcessor.Add
             );
         }
@@ -79,7 +79,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                 mv1.GetLinVectorIndexScalarStorage(),
                 mv2.Grade,
                 mv2.GetLinVectorIndexScalarStorage()
-            ).CreateMultivectorGradedStorage();
+            ).CreateMultivectorStorageGraded();
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -101,13 +101,13 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                     scalarProcessor.Add(
                         v1.GetLinVectorGradedStorage(), 
                         v2.GetLinVectorGradedStorage()
-                    ).CreateMultivectorGradedStorage(),
+                    ).CreateMultivectorStorageGraded(),
 
                 _ => scalarProcessor.CreateVectorStorageComposer()
                         .SetTerms(mv1.GetIdScalarRecords())
                         .AddTerms(mv2.GetIdScalarRecords())
                         .RemoveZeroTerms()
-                        .CreateMultivectorSparseStorage()
+                        .CreateMultivectorStorageSparse()
             };
         }
 
@@ -115,7 +115,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         public static IMultivectorStorage<T> Add<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params IMultivectorStorage<T>[] mvList)
         {
             return mvList.Aggregate(
-                (IMultivectorStorage<T>) scalarProcessor.CreateMultivectorSparseStorageZero(),
+                (IMultivectorStorage<T>) scalarProcessor.CreateMultivectorStorageSparseZero(),
                 scalarProcessor.Add
             );
         }
@@ -124,7 +124,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         public static IMultivectorStorage<T> Add<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<IMultivectorStorage<T>> mvList)
         {
             return mvList.Aggregate(
-                (IMultivectorStorage<T>) scalarProcessor.CreateMultivectorSparseStorageZero(),
+                (IMultivectorStorage<T>) scalarProcessor.CreateMultivectorStorageSparseZero(),
                 scalarProcessor.Add
             );
         }
@@ -140,14 +140,14 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                         .SetTerms(gmv1.GetLinVectorGradedStorage())
                         .AddTerm(0, scalar2)
                         .RemoveZeroTerms()
-                        .CreateMultivectorSparseStorage(),
+                        .CreateMultivectorStorageSparse(),
 
                 _ => 
                     scalarProcessor.CreateVectorStorageComposer()
                         .SetTerms(mv1.GetIdScalarRecords())
                         .AddTerm(0, scalar2)
                         .RemoveZeroTerms()
-                        .CreateMultivectorSparseStorage()
+                        .CreateMultivectorStorageSparse()
             };
         }
 
@@ -162,14 +162,14 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                         .SetTerm(0, scalar2)
                         .AddTerms(gmv1.GetLinVectorGradedStorage())
                         .RemoveZeroTerms()
-                        .CreateMultivectorSparseStorage(),
+                        .CreateMultivectorStorageSparse(),
 
                 _ => 
                     scalarProcessor.CreateVectorStorageComposer()
                         .SetTerm(0, scalar2)
                         .AddTerms(mv1.GetIdScalarRecords())
                         .RemoveZeroTerms()
-                        .CreateMultivectorSparseStorage()
+                        .CreateMultivectorStorageSparse()
             };
         }
     }

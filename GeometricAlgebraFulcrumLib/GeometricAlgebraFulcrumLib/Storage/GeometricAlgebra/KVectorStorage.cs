@@ -64,7 +64,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             {
                 0 => index == 0 ? CreateKVectorScalar(scalar) : throw new InvalidOperationException(),
                 1 => VectorStorage<T>.CreateVector(index, scalar),
-                2 => BivectorStorage<T>.CreateBivector(index, scalar),
+                2 => BivectorStorage<T>.Create(index, scalar),
                 _ => new KVectorStorage<T>(new LinVectorSingleScalarGradedStorage<T>(grade, index, scalar))
             };
         }
@@ -76,7 +76,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             {
                 0 => index == 0 ? CreateKVectorScalar(scalar) : throw new InvalidOperationException(),
                 1 => VectorStorage<T>.CreateVector(index, scalar),
-                2 => BivectorStorage<T>.CreateBivector(index, scalar),
+                2 => BivectorStorage<T>.Create(index, scalar),
                 _ => new KVectorStorage<T>(new LinVectorSingleScalarGradedStorage<T>(grade, index, scalar))
             };
         }
@@ -94,7 +94,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
 
                 1 => VectorStorage<T>.CreateVector(indexScalarList),
 
-                2 => BivectorStorage<T>.CreateBivector(indexScalarList),
+                2 => BivectorStorage<T>.Create(indexScalarList),
 
                 _ => indexScalarList.Length switch
                 {
@@ -122,7 +122,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
 
                 1 => VectorStorage<T>.CreateVector(indexScalarList),
 
-                2 => BivectorStorage<T>.CreateBivector(indexScalarList),
+                2 => BivectorStorage<T>.Create(indexScalarList),
 
                 _ => count switch
                 {
@@ -163,7 +163,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             return grade switch
             {
                 1 => VectorStorage<T>.CreateVector(indexScalarDictionary),
-                2 => BivectorStorage<T>.CreateBivector(indexScalarDictionary),
+                2 => BivectorStorage<T>.Create(indexScalarDictionary),
                 _ => indexScalarDictionary.Count switch
                 {
                     0 => CreateKVectorZero(grade),
@@ -179,7 +179,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             return grade switch
             {
                 1 => VectorStorage<T>.CreateVector(indexScalarList),
-                2 => BivectorStorage<T>.CreateBivector(indexScalarList),
+                2 => BivectorStorage<T>.Create(indexScalarList),
                 _ => indexScalarList.IsEmpty()
                     ? CreateKVectorZero(grade)
                     : new KVectorStorage<T>(grade, indexScalarList)
@@ -203,7 +203,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             return grade switch
             {
                 1 => VectorStorage<T>.CreateVector(indexScalarList),
-                2 => BivectorStorage<T>.CreateBivector(indexScalarList),
+                2 => BivectorStorage<T>.Create(indexScalarList),
                 _ => indexScalarList.IsEmpty()
                     ? CreateKVectorZero(grade)
                     : new KVectorStorage<T>(grade, indexScalarList)
@@ -216,7 +216,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             return singleGradeIndexScalarList.Grade switch
             {
                 1 => VectorStorage<T>.CreateVector(singleGradeIndexScalarList),
-                2 => BivectorStorage<T>.CreateBivector(singleGradeIndexScalarList),
+                2 => BivectorStorage<T>.Create(singleGradeIndexScalarList),
                 _ => new KVectorStorage<T>(singleGradeIndexScalarList)
             };
         }
@@ -880,7 +880,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public MultivectorGradedStorage<T> ToMultivectorGradedStorage()
         {
-            return SingleGradeVectorStorage.CreateMultivectorGradedStorage();
+            return SingleGradeVectorStorage.CreateMultivectorStorageGraded();
         }
 
 

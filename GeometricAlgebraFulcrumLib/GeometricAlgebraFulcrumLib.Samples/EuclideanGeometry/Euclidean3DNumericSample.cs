@@ -1,6 +1,5 @@
 ﻿using System;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
@@ -16,28 +15,28 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
             var processor = 
                 ScalarAlgebraFloat64Processor.DefaultProcessor.CreateGeometricAlgebraEuclideanProcessor(n);
 
-            VectorStorage<double> v = ScalarAlgebraFloat64ProcessorUtils.CreateVector(
+            var v = ScalarAlgebraFloat64ProcessorUtils.CreateVector(
                 randGen.NextDouble(), 
                 randGen.NextDouble(),
                 randGen.NextDouble()
             );
 
-            v = processor.DivideByENorm(v);
+            v = v.DivideByENorm();
 
-            VectorStorage<double> u = ScalarAlgebraFloat64ProcessorUtils.CreateVector(
+            var u = ScalarAlgebraFloat64ProcessorUtils.CreateVector(
                 randGen.NextDouble(), 
                 randGen.NextDouble(),
                 randGen.NextDouble()
             );
 
-            u = processor.DivideByENorm(u);
+            u = u.DivideByENorm();
 
 
             var rotor = 
                 processor.CreatePureRotor(v, u);
 
             var rotorMv = rotor.Multivector;
-            var rotorMvReverse = processor.Reverse(rotor.Multivector);
+            var rotorMvReverse = rotor.Multivector.Reverse();
 
             var rotorMatrix =
                 rotor.GetMatrix(3, 3);
@@ -46,24 +45,24 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
             var rotorMatrix1 =
                 processor.CreateComputedOutermorphism((int) n,
                         basisVector =>
-                            processor.EGp(rotorMv, basisVector).GetVectorPart()
+                            rotorMv.EGp(basisVector).GetVectorPart().VectorStorage
                     )
                     .GetMatrix((int) n, (int) n);
 
             var rotorMatrix2 =
                 processor.CreateComputedOutermorphism((int) n,
                         basisVector =>
-                            processor.EGp(basisVector, rotorMvReverse).GetVectorPart()
+                            basisVector.EGp(rotorMvReverse).GetVectorPart().VectorStorage
                     )
                     .GetMatrix((int) n, (int) n);
 
             var rotorMatrix21 = 
                 rotorMatrix2 * rotorMatrix1;
 
-            var vMatrix = v.VectorToColumnVectorMatrix(n);
-            var uMatrix = u.VectorToColumnVectorMatrix(n);
+            var vMatrix = v.VectorStorage.VectorToColumnVectorMatrix(n);
+            var uMatrix = u.VectorStorage.VectorToColumnVectorMatrix(n);
 
-            var u1 = rotor.OmMapVector(v);
+            var u1 = rotor.OmMap(v);
             var u2 = rotorMatrix * vMatrix;
             var u3 = rotorMatrix21 * vMatrix;
             var u4 = rotorMatrix2 * (rotorMatrix1 * vMatrix);

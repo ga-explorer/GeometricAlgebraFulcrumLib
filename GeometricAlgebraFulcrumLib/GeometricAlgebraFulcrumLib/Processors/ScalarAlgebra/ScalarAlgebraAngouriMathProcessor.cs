@@ -150,6 +150,22 @@ namespace GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Entity Sign(Entity scalar)
+        {
+            return PostProcessScalar(
+                MathS.Signum(PreProcessScalar(scalar))
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Entity UnitStep(Entity scalar)
+        {
+            return PostProcessScalar(
+                (1 + MathS.Signum(PreProcessScalar(scalar))) / 2
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Entity Abs(Entity scalar)
         {
             return PostProcessScalar(

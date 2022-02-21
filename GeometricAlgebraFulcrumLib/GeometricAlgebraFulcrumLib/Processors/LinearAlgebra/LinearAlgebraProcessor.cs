@@ -109,6 +109,18 @@ namespace GeometricAlgebraFulcrumLib.Processors.LinearAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public T Sign(T scalar)
+        {
+            return ScalarProcessor.Sign(scalar);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public T UnitStep(T scalar)
+        {
+            return ScalarProcessor.UnitStep(scalar);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public T Abs(T scalar)
         {
             return ScalarProcessor.Abs(scalar);

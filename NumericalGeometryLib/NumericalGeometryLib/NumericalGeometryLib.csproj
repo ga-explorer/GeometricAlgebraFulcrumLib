@@ -12,12 +12,16 @@
 
   <ItemGroup>
     <PackageReference Include="MathNet.Numerics" Version="4.15.0" />
+    <PackageReference Include="PeterO.Numbers" Version="1.8.2" />
     <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
     <PackageReference Include="System.Drawing.Primitives" Version="4.3.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\DataStructuresLib\DataStructuresLib\DataStructuresLib.csproj" />
+    <ProjectReference Include="..\..\GraphicsComposerLib\OxyPlot\OxyPlot.Core.Drawing\OxyPlot.Core.Drawing.csproj" />
+    <ProjectReference Include="..\..\GraphicsComposerLib\OxyPlot\OxyPlot.SkiaSharp\OxyPlot.SkiaSharp.csproj" />
+    <ProjectReference Include="..\..\GraphicsComposerLib\OxyPlot\OxyPlot\OxyPlot.csproj" />
     <ProjectReference Include="..\..\TextComposerLib\TextComposerLib\TextComposerLib.csproj" />
   </ItemGroup>
 

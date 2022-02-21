@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using GAPoTNumLib.GAPoT;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors;
 using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Utilities.Composers;
-using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using GeometricAlgebraFulcrumLib.Utilities.Factories;
 using NUnit.Framework;
 
@@ -16,7 +15,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Geometry
     public sealed class GeoSimpleRotorsEuclideanTests
     {
         private readonly GeometricAlgebraRandomComposer<double> _randomGenerator;
-        private readonly List<VectorStorage<double>> _vectorsList;
+        private readonly List<Vector<double>> _vectorsList;
         private readonly List<PureRotor<double>> _rotorsList;
 
 
@@ -30,7 +29,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Geometry
         public GeoSimpleRotorsEuclideanTests()
         {
             _randomGenerator = GeometricProcessor.CreateGeometricRandomComposer(10);
-            _vectorsList = new List<VectorStorage<double>>();
+            _vectorsList = new List<Vector<double>>();
             _rotorsList = new List<PureRotor<double>>();
         }
 
@@ -54,7 +53,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Geometry
             while (count > 0)
             {
                 _vectorsList.Add(
-                    _randomGenerator.GetVectorStorage()
+                    _randomGenerator.GetVector()
                 );
 
                 count--;
@@ -67,16 +66,16 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Geometry
             var count = 1;
             while (count > 0)
             {
-                var u = GeometricProcessor.DivideByENorm(_randomGenerator.GetVectorStorage());
-                var v = GeometricProcessor.DivideByENorm(_randomGenerator.GetVectorStorage());
+                var u = _randomGenerator.GetVector().DivideByENorm();
+                var v = _randomGenerator.GetVector().DivideByENorm();
 
                 var rotor = 
                     GeometricProcessor.CreatePureRotor(u, v);
 
-                var v1 = rotor.OmMapVector(u);
+                var v1 = rotor.OmMap(u);
 
                 var vectorDiffNormSquared = 
-                    GeometricProcessor.ENormSquared(GeometricProcessor.Subtract(v1, v));
+                    (v1 - v).ENormSquared().ScalarValue;
 
                 if (!vectorDiffNormSquared.IsNearZero())
                 {

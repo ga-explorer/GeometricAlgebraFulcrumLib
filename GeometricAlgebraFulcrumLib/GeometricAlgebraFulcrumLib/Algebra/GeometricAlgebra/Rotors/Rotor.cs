@@ -4,6 +4,8 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.BitManipulation;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Geometry.Frames;
 using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
@@ -15,115 +17,86 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
     public class Rotor<T> 
         : RotorBase<T>
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Rotor<T> CreateIdentity(IGeometricAlgebraProcessor<T> processor)
         {
             return new Rotor<T>(
-                processor, 
-                processor.CreateKVectorBasisScalarStorage()
+                processor.CreateKVectorStorageBasisScalar().CreateMultivector(processor)
             );
         }
         
-        public static Rotor<T> Create(IGeometricAlgebraProcessor<T> processor, IMultivectorStorage<T> mv)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static Rotor<T> Create(Multivector<T> mv)
         {
-            return new Rotor<T>(processor, mv);
+            return new Rotor<T>(mv);
         }
 
-        public static Rotor<T> CreateSimpleRotor(IGeometricAlgebraProcessor<T> processor, VectorStorage<T> sourceVector, VectorStorage<T> targetVector)
+        public static Rotor<T> CreateEuclideanPureRotor(Vector<T> sourceVector, Vector<T> targetVector)
         {
-            var norm1 = processor.ENorm(sourceVector);
-            var norm2 = processor.ENorm(targetVector);
-            var cosAngle = processor.Divide(
-                processor.ESp(sourceVector, targetVector), 
-                processor.Times(norm1, norm2)
-            );
+            var norm1 = sourceVector.ENorm();
+            var norm2 = targetVector.ENorm();
+            var cosAngle = sourceVector.ESp(targetVector) / (norm1 * norm2);
 
-            if (processor.IsOne(cosAngle))
-                return CreateIdentity(processor);
+            if (cosAngle.IsOne())
+                return CreateIdentity(sourceVector.GeometricProcessor);
             
             //TODO: Handle the case for cosAngle == -1
-            if (processor.IsMinusOne(cosAngle))
+            if (cosAngle.IsMinusOne())
                 throw new InvalidOperationException();
 
-            var cosHalfAngle = 
-                processor.Sqrt(
-                    processor.Divide(
-                        processor.Add(processor.ScalarOne, cosAngle),
-                        processor.GetScalarFromNumber(2)
-                    )
-                );
-
-            var sinHalfAngle = 
-                processor.Sqrt(
-                    processor.Divide(
-                        processor.Subtract(processor.ScalarOne, cosAngle),
-                        processor.GetScalarFromNumber(2)
-                    )
-                );
+            var cosHalfAngle = ((1 + cosAngle) / 2).Sqrt();
+            var sinHalfAngle = ((1 - cosAngle) / 2).Sqrt();
             
-            var rotationBlade = 
-                processor.Op(sourceVector, targetVector);
+            var rotationBlade = sourceVector.Op(targetVector);
+            var rotationBladeScalar = sinHalfAngle / (-rotationBlade.ESp(rotationBlade)).Sqrt();
 
-            var rotationBladeScalar =
-                processor.Divide(
-                    sinHalfAngle,
-                    processor.Sqrt(
-                        processor.GetTermScalar(processor.Negative(processor.EGp(rotationBlade)), 0)
-                    )
-                );
-
-            var rotorStorage = processor.Subtract(
-                cosHalfAngle,
-                processor.Times(rotationBladeScalar, rotationBlade)
-            );
+            var rotorStorage = 
+                cosHalfAngle - rotationBladeScalar * rotationBlade;
             
             //rotor.IsSimpleRotor();
 
-            return new Rotor<T>(processor, rotorStorage);
+            return new Rotor<T>(rotorStorage);
         }
 
         /// <summary>
         /// Create a simple rotor from an angle and a blade
         /// </summary>
-        /// <param name="processor"></param>
         /// <param name="rotationAngle"></param>
         /// <param name="rotationBlade"></param>
         /// <returns></returns>
-        public static Rotor<T> CreateSimpleRotor(IGeometricAlgebraProcessor<T> processor, T rotationAngle, KVectorStorage<T> rotationBlade)
+        public static Rotor<T> CreateEuclideanPureRotor(T rotationAngle, KVector<T> rotationBlade)
         {
-            var halfRotationAngle = processor.Divide(rotationAngle, processor.GetScalarFromNumber(2));
+            var processor = rotationBlade.GeometricProcessor;
+
+            var halfRotationAngle = processor.Divide(rotationAngle , processor.GetScalarFromNumber(2));
             var cosHalfAngle = processor.Cos(halfRotationAngle);
             var sinHalfAngle = processor.Sin(halfRotationAngle);
 
             var rotationBladeScalar =
-                processor.Divide(
-                    sinHalfAngle,
-                    processor.Sqrt(
-                        processor.GetTermScalar(processor.Negative(processor.EGp(rotationBlade)), 0)
-                    )
-                );
+                sinHalfAngle * (-rotationBlade.ESp(rotationBlade)).Sqrt();
 
-            var rotorStorage = processor.Add(
-                cosHalfAngle,
-                processor.Times(rotationBladeScalar, rotationBlade)
-            );
+            var rotorStorage =
+                cosHalfAngle + rotationBladeScalar * rotationBlade;
 
             //rotor.IsSimpleRotor();
 
-            return new Rotor<T>(processor, rotorStorage);
+            return new Rotor<T>(rotorStorage);
         }
 
-        public static Rotor<T> CreateSimpleRotor(IGeometricAlgebraProcessor<T> processor, VectorStorage<T> inputVector1, VectorStorage<T> inputVector2, VectorStorage<T> rotatedVector1, VectorStorage<T> rotatedVector2)
+        public static Rotor<T> CreateEuclideanPureRotor(Vector<T> inputVector1, Vector<T> inputVector2, Vector<T> rotatedVector1, Vector<T> rotatedVector2)
         {
+            var processor = inputVector1.GeometricProcessor;
+
             var inputFrame = 
-                processor.CreateFreeFrame(
-                    GeoFreeFrameSpecs.CreateLinearlyIndependentSpecs(), 
+                processor.CreateVectorFrame(
+                    VectorFrameSpecs.CreateLinearlyIndependentSpecs(), 
                     inputVector1, 
                     inputVector2
                 );
 
             var rotatedFrame = 
-                processor.CreateFreeFrame(
-                    GeoFreeFrameSpecs.CreateLinearlyIndependentSpecs(), 
+                processor.CreateVectorFrame(
+                    VectorFrameSpecs.CreateLinearlyIndependentSpecs(), 
                     rotatedVector1, 
                     rotatedVector2
                 );
@@ -135,18 +108,18 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
             ).GetFinalRotor();
         }
         
-        public static Rotor<T> CreateSimpleRotor(IGeometricAlgebraProcessor<T> processor, uint baseSpaceDimensions, VectorStorage<T> inputVector1, VectorStorage<T> inputVector2, VectorStorage<T> rotatedVector1, VectorStorage<T> rotatedVector2)
+        public static Rotor<T> CreateEuclideanPureRotor(IGeometricAlgebraProcessor<T> processor, uint baseSpaceDimensions, Vector<T> inputVector1, Vector<T> inputVector2, Vector<T> rotatedVector1, Vector<T> rotatedVector2)
         {
             var inputFrame = 
-                processor.CreateFreeFrame(
-                    GeoFreeFrameSpecs.CreateLinearlyIndependentSpecs(),
+                processor.CreateVectorFrame(
+                    VectorFrameSpecs.CreateLinearlyIndependentSpecs(),
                     inputVector1, 
                     inputVector2
                 );
 
             var rotatedFrame = 
-                processor.CreateFreeFrame(
-                    GeoFreeFrameSpecs.CreateLinearlyIndependentSpecs(),
+                processor.CreateVectorFrame(
+                    VectorFrameSpecs.CreateLinearlyIndependentSpecs(),
                     rotatedVector1, 
                     rotatedVector2
                 );
@@ -183,26 +156,32 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
             composer.SetTerm(bladeId, sinHalfAngle);
 
             return new Rotor<T>(
-                processor,
-                composer.CreateMultivectorSparseStorage()
+                composer.CreateMultivector()
             );
         }
+        
 
-
-        public IMultivectorStorage<T> Multivector { get; }
-
-        public IMultivectorStorage<T> MultivectorReverse { get; }
-
-
-        internal Rotor(IGeometricAlgebraProcessor<T> processor, [NotNull] IMultivectorStorage<T> mv)
-            : base(processor)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static implicit operator Multivector<T>(Rotor<T> rotor)
         {
-            Multivector = mv;
-            MultivectorReverse = processor.Reverse(Multivector);
+            return rotor.Multivector;
         }
 
-        private Rotor(IGeometricAlgebraProcessor<T> processor, [NotNull] IMultivectorStorage<T> mv, [NotNull] IMultivectorStorage<T> mvReverse)
-            : base(processor)
+
+        public Multivector<T> Multivector { get; }
+
+        public Multivector<T> MultivectorReverse { get; }
+
+
+        private Rotor([NotNull] Multivector<T> mv)
+            : base(mv.GeometricProcessor)
+        {
+            Multivector = mv;
+            MultivectorReverse = mv.Reverse();
+        }
+
+        private Rotor([NotNull] Multivector<T> mv, [NotNull] Multivector<T> mvReverse)
+            : base(mv.GeometricProcessor)
         {
             Multivector = mv;
             MultivectorReverse = mvReverse;
@@ -212,7 +191,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
         public override bool IsValid()
         {
             // Make sure the storage and its reverse are correct
-            if (!GeometricProcessor.IsNearZero(GeometricProcessor.Subtract(GeometricProcessor.Reverse(Multivector), MultivectorReverse)))
+            if (!GeometricProcessor.IsNearZero(GeometricProcessor.Subtract(GeometricProcessor.Reverse(Multivector.MultivectorStorage), MultivectorReverse.MultivectorStorage)))
                 return false;
 
             // Make sure storage contains only terms of even grade
@@ -221,25 +200,20 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
 
             // Make sure storage gp reverse(storage) == 1
             var gp = 
-                GeometricProcessor.Gp(Multivector, MultivectorReverse);
+                Multivector.Gp(MultivectorReverse);
 
             if (!gp.IsScalar())
                 return false;
 
-            var diff =
-                GeometricProcessor.Subtract(
-                    GeometricProcessor.GetTermScalar(gp, 0),
-                    GeometricProcessor.ScalarOne
-                );
+            var diff = gp[0] - 1;
 
-            return GeometricProcessor.IsNearZero(diff);
+            return diff.IsNearZero();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override IRotor<T> GetRotorInverse()
         {
             return new Rotor<T>(
-                GeometricProcessor,
                 MultivectorReverse, 
                 Multivector
             );
@@ -247,62 +221,70 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
         
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override VectorStorage<T> OmMapVector(VectorStorage<T> mv)
+        public override Vector<T> OmMap(Vector<T> mv)
         {
-            return GeometricProcessor
-                .Gp(Multivector, mv, MultivectorReverse)
-                .GetVectorPart();
+            return Multivector.Gp(mv).Gp(MultivectorReverse).GetVectorPart();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override BivectorStorage<T> OmMapBivector(BivectorStorage<T> mv)
+        public override Bivector<T> OmMap(Bivector<T> mv)
         {
-            return GeometricProcessor
-                .Gp(Multivector, mv, MultivectorReverse)
-                .GetBivectorPart();
+            return Multivector.Gp(mv).Gp(MultivectorReverse).GetBivectorPart();
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override KVectorStorage<T> OmMapKVector(KVectorStorage<T> mv)
+        public override KVector<T> OmMap(KVector<T> mv)
         {
-            return GeometricProcessor
-                .Gp(Multivector, mv, MultivectorReverse)
-                .GetKVectorPart(mv.Grade);
+            return Multivector.Gp(mv).Gp(MultivectorReverse).GetKVectorPart(mv.Grade);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override MultivectorGradedStorage<T> OmMapMultivector(MultivectorGradedStorage<T> mv)
+        public override Multivector<T> OmMap(Multivector<T> mv)
         {
-            return GeometricProcessor
-                .Gp(Multivector, mv, MultivectorReverse)
-                .ToMultivectorGradedStorage();
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override MultivectorStorage<T> OmMapMultivector(MultivectorStorage<T> mv)
-        {
-            return GeometricProcessor
-                .Gp(Multivector, mv, MultivectorReverse)
-                .ToMultivectorStorage();
+            return Multivector.Gp(mv).Gp(MultivectorReverse);
         }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override IMultivectorStorage<T> GetMultivectorStorage()
+        public override Multivector<T> GetMultivector()
         {
             return Multivector;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override IMultivectorStorage<T> GetMultivectorInverseStorage()
+        public override Multivector<T> GetMultivectorReverse()
         {
             return MultivectorReverse;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override T GetScalingFactor()
+        public override Multivector<T> GetMultivectorInverse()
         {
-            return ScalarProcessor.ScalarOne;
+            return MultivectorReverse;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override IMultivectorStorage<T> GetMultivectorStorage()
+        {
+            return Multivector.MultivectorStorage;
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override IMultivectorStorage<T> GetMultivectorStorageReverse()
+        {
+            return MultivectorReverse.MultivectorStorage;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override IMultivectorStorage<T> GetMultivectorStorageInverse()
+        {
+            return MultivectorReverse.MultivectorStorage;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override Scalar<T> GetScalingFactor()
+        {
+            return ScalarProcessor.CreateScalarOne();
         }
     }
 }

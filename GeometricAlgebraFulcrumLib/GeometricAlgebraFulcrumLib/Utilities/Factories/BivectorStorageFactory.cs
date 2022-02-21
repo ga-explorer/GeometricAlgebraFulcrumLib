@@ -13,7 +13,7 @@ using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Factories
 {
-    public static class BivectorStorageFactory
+    internal static class BivectorStorageFactory
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CopyToBivectorStorage<T>(this IReadOnlyDictionary<ulong, T> indexScalarDictionary)
@@ -23,7 +23,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
                 pair => pair.Value
             );
 
-            return BivectorStorage<T>.CreateBivector(evenDictionary);
+            return BivectorStorage<T>.Create(evenDictionary);
         }
 
 
@@ -38,7 +38,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static BivectorStorage<T> CreateBivectorZeroStorage<T>()
+        public static BivectorStorage<T> CreateBivectorStorageZero<T>()
         {
             return BivectorStorage<T>.ZeroBivector;
         }
@@ -52,55 +52,55 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CreateBivectorTermStorage<T>(int index, T scalar)
         {
-            return BivectorStorage<T>.CreateBivector((ulong) index, scalar);
+            return BivectorStorage<T>.Create((ulong) index, scalar);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CreateBivectorTermStorage<T>(ulong index, T scalar)
         {
-            return BivectorStorage<T>.CreateBivector(index, scalar);
+            return BivectorStorage<T>.Create(index, scalar);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CreateBivectorTermStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, int index, T scalar)
         {
-            return BivectorStorage<T>.CreateBivector((ulong) index, scalar);
+            return BivectorStorage<T>.Create((ulong) index, scalar);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CreateBivectorTermStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, ulong index, T scalar)
         {
-            return BivectorStorage<T>.CreateBivector(index, scalar);
+            return BivectorStorage<T>.Create(index, scalar);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CreateBivectorTermStorage<T>(this IndexScalarRecord<T> indexScalarPair)
         {
-            return BivectorStorage<T>.CreateBivector(indexScalarPair.Index, indexScalarPair.Scalar);
+            return BivectorStorage<T>.Create(indexScalarPair.Index, indexScalarPair.Scalar);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CreateBivectorTermStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IndexScalarRecord<T> indexScalarPair)
         {
-            return BivectorStorage<T>.CreateBivector(indexScalarPair.Index, indexScalarPair.Scalar);
+            return BivectorStorage<T>.Create(indexScalarPair.Index, indexScalarPair.Scalar);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CreateBivectorBasisStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, int index)
         {
-            return BivectorStorage<T>.CreateBivector((ulong) index, scalarProcessor.ScalarOne);
+            return BivectorStorage<T>.Create((ulong) index, scalarProcessor.ScalarOne);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CreateBivectorBasisStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, ulong index)
         {
-            return BivectorStorage<T>.CreateBivector(index, scalarProcessor.ScalarOne);
+            return BivectorStorage<T>.Create(index, scalarProcessor.ScalarOne);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CreateStorageBivectorOnes<T>(this IScalarAlgebraProcessor<T> scalarProcessor, int termsCount)
         {
-            return BivectorStorage<T>.CreateBivector(
+            return BivectorStorage<T>.Create(
                 scalarProcessor.ScalarOne
                     .CreateLinVectorRepeatedScalarStorage(termsCount)
             );
@@ -111,7 +111,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         {
             var length = scalarProcessor.Sqrt(termsCount);
 
-            return BivectorStorage<T>.CreateBivector(
+            return BivectorStorage<T>.Create(
                 scalarProcessor
                     .Divide(scalarProcessor.ScalarOne, length)
                     .CreateLinVectorRepeatedScalarStorage(termsCount)
@@ -121,31 +121,31 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CreateBivectorStorage<T>(this Dictionary<ulong, T> indexScalarDictionary)
         {
-            return BivectorStorage<T>.CreateBivector(indexScalarDictionary);
+            return BivectorStorage<T>.Create(indexScalarDictionary);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CreateBivectorStorage<T>(params T[] scalarArray)
         {
-            return BivectorStorage<T>.CreateBivector(scalarArray);
+            return BivectorStorage<T>.Create(scalarArray);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CreateBivectorStorage<T>(this IReadOnlyList<T> scalarList)
         {
-            return BivectorStorage<T>.CreateBivector(scalarList);
+            return BivectorStorage<T>.Create(scalarList);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CreateBivectorStorage<T>(this IEnumerable<T> scalarList)
         {
-            return BivectorStorage<T>.CreateBivector(scalarList);
+            return BivectorStorage<T>.Create(scalarList);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CreateBivectorStorage<T>(this IEnumerable<IndexScalarRecord<T>> termsList)
         {
-            return BivectorStorage<T>.CreateBivector(
+            return BivectorStorage<T>.Create(
                 termsList.CreateDictionary()
             );
         }
@@ -153,7 +153,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CreateBivectorStorage<T>(this IEnumerable<BasisTerm<T>> termsList)
         {
-            return BivectorStorage<T>.CreateBivector(
+            return BivectorStorage<T>.Create(
                 termsList.ToDictionary(
                     t => t.BasisBlade.Index, 
                     t => t.Scalar
@@ -164,7 +164,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CreateBivectorStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<BasisTerm<T>> termsList)
         {
-            return BivectorStorage<T>.CreateBivector(
+            return BivectorStorage<T>.Create(
                 termsList.ToDictionary(
                     t => t.BasisBlade.Index, 
                     t => t.Scalar
@@ -176,19 +176,19 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CreateBivectorStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, ILinVectorStorage<T> storage)
         {
-            return BivectorStorage<T>.CreateBivector(storage);
+            return BivectorStorage<T>.Create(storage);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CreateBivectorStorage<T>(this ILinVectorStorage<T> storage)
         {
-            return BivectorStorage<T>.CreateBivector(storage);
+            return BivectorStorage<T>.Create(storage);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CreateBivectorStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, ILinVectorGradedStorage<T> storage)
         {
-            return BivectorStorage<T>.CreateBivector(
+            return BivectorStorage<T>.Create(
                 storage.ToVectorStorage(BasisBladeUtils.BasisBladeGradeIndexToId)
             );
         }
@@ -196,7 +196,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CreateBivectorStorage<T>(this ILinVectorGradedStorage<T> storage)
         {
-            return BivectorStorage<T>.CreateBivector(
+            return BivectorStorage<T>.Create(
                 storage.ToVectorStorage(BasisBladeUtils.BasisBladeGradeIndexToId)
             );
         }
@@ -205,7 +205,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CreateBivectorStorageFromNumbers<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IReadOnlyDictionary<ulong, int> indexScalarDictionary)
         {
-            return BivectorStorage<T>.CreateBivector(
+            return BivectorStorage<T>.Create(
                 scalarProcessor.CreateLinVectorStorageFromNumbers(indexScalarDictionary)
             );
         }
@@ -213,7 +213,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CreateBivectorStorageFromNumbers<T>(this IScalarAlgebraProcessor<T> scalarProcessor, int termsCount, Func<ulong, int> indexToScalarFunc)
         {
-            return BivectorStorage<T>.CreateBivector(
+            return BivectorStorage<T>.Create(
                 scalarProcessor.CreateLinVectorStorageFromNumbers(termsCount, indexToScalarFunc)
             );
         }
@@ -221,7 +221,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CreateBivectorStorageFromNumbers<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params int[] scalarArray)
         {
-            return BivectorStorage<T>.CreateBivector(
+            return BivectorStorage<T>.Create(
                 scalarProcessor.CreateLinVectorStorageFromNumbers(scalarArray)
             );
         }
@@ -229,7 +229,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CreateBivectorStorageFromNumbers<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<int> scalarList)
         {
-            return BivectorStorage<T>.CreateBivector(
+            return BivectorStorage<T>.Create(
                 scalarProcessor.CreateLinVectorStorageFromNumbers(scalarList.ToArray())
             );
         }
@@ -238,7 +238,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CreateBivectorStorageFromNumbers<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IReadOnlyDictionary<ulong, uint> indexScalarDictionary)
         {
-            return BivectorStorage<T>.CreateBivector(
+            return BivectorStorage<T>.Create(
                 scalarProcessor.CreateLinVectorStorageFromNumbers(indexScalarDictionary)
             );
         }
@@ -246,7 +246,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CreateBivectorStorageFromNumbers<T>(this IScalarAlgebraProcessor<T> scalarProcessor, int termsCount, Func<ulong, uint> indexToScalarFunc)
         {
-            return BivectorStorage<T>.CreateBivector(
+            return BivectorStorage<T>.Create(
                 scalarProcessor.CreateLinVectorStorageFromNumbers(termsCount, indexToScalarFunc)
             );
         }
@@ -254,7 +254,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CreateBivectorStorageFromNumbers<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params uint[] scalarArray)
         {
-            return BivectorStorage<T>.CreateBivector(
+            return BivectorStorage<T>.Create(
                 scalarProcessor.CreateLinVectorStorageFromNumbers(scalarArray)
             );
         }
@@ -262,7 +262,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CreateBivectorStorageFromNumbers<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<uint> scalarList)
         {
-            return BivectorStorage<T>.CreateBivector(
+            return BivectorStorage<T>.Create(
                 scalarProcessor.CreateLinVectorStorageFromNumbers(scalarList.ToArray())
             );
         }
@@ -271,7 +271,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CreateBivectorStorageFromNumbers<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IReadOnlyDictionary<ulong, long> indexScalarDictionary)
         {
-            return BivectorStorage<T>.CreateBivector(
+            return BivectorStorage<T>.Create(
                 scalarProcessor.CreateLinVectorStorageFromNumbers(indexScalarDictionary)
             );
         }
@@ -279,7 +279,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CreateBivectorStorageFromNumbers<T>(this IScalarAlgebraProcessor<T> scalarProcessor, int termsCount, Func<ulong, long> indexToScalarFunc)
         {
-            return BivectorStorage<T>.CreateBivector(
+            return BivectorStorage<T>.Create(
                 scalarProcessor.CreateLinVectorStorageFromNumbers(termsCount, indexToScalarFunc)
             );
         }
@@ -287,7 +287,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CreateBivectorStorageFromNumbers<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params long[] scalarArray)
         {
-            return BivectorStorage<T>.CreateBivector(
+            return BivectorStorage<T>.Create(
                 scalarProcessor.CreateLinVectorStorageFromNumbers(scalarArray)
             );
         }
@@ -295,7 +295,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CreateBivectorStorageFromNumbers<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<long> scalarList)
         {
-            return BivectorStorage<T>.CreateBivector(
+            return BivectorStorage<T>.Create(
                 scalarProcessor.CreateLinVectorStorageFromNumbers(scalarList.ToArray())
             );
         }
@@ -304,7 +304,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CreateBivectorStorageFromNumbers<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IReadOnlyDictionary<ulong, ulong> indexScalarDictionary)
         {
-            return BivectorStorage<T>.CreateBivector(
+            return BivectorStorage<T>.Create(
                 scalarProcessor.CreateLinVectorStorageFromNumbers(indexScalarDictionary)
             );
         }
@@ -312,7 +312,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CreateBivectorStorageFromNumbers<T>(this IScalarAlgebraProcessor<T> scalarProcessor, int termsCount, Func<ulong, ulong> indexToScalarFunc)
         {
-            return BivectorStorage<T>.CreateBivector(
+            return BivectorStorage<T>.Create(
                 scalarProcessor.CreateLinVectorStorageFromNumbers(termsCount, indexToScalarFunc)
             );
         }
@@ -320,7 +320,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CreateBivectorStorageFromNumbers<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params ulong[] scalarArray)
         {
-            return BivectorStorage<T>.CreateBivector(
+            return BivectorStorage<T>.Create(
                 scalarProcessor.CreateLinVectorStorageFromNumbers(scalarArray)
             );
         }
@@ -328,7 +328,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CreateBivectorStorageFromNumbers<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<ulong> scalarList)
         {
-            return BivectorStorage<T>.CreateBivector(
+            return BivectorStorage<T>.Create(
                 scalarProcessor.CreateLinVectorStorageFromNumbers(scalarList.ToArray())
             );
         }
@@ -337,7 +337,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CreateBivectorStorageFromNumbers<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IReadOnlyDictionary<ulong, float> indexScalarDictionary)
         {
-            return BivectorStorage<T>.CreateBivector(
+            return BivectorStorage<T>.Create(
                 scalarProcessor.CreateLinVectorStorageFromNumbers(indexScalarDictionary)
             );
         }
@@ -345,7 +345,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CreateBivectorStorageFromNumbers<T>(this IScalarAlgebraProcessor<T> scalarProcessor, int termsCount, Func<ulong, float> indexToScalarFunc)
         {
-            return BivectorStorage<T>.CreateBivector(
+            return BivectorStorage<T>.Create(
                 scalarProcessor.CreateLinVectorStorageFromNumbers(termsCount, indexToScalarFunc)
             );
         }
@@ -353,7 +353,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CreateBivectorStorageFromNumbers<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params float[] scalarArray)
         {
-            return BivectorStorage<T>.CreateBivector(
+            return BivectorStorage<T>.Create(
                 scalarProcessor.CreateLinVectorStorageFromNumbers(scalarArray)
             );
         }
@@ -361,7 +361,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CreateBivectorStorageFromNumbers<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<float> scalarList)
         {
-            return BivectorStorage<T>.CreateBivector(
+            return BivectorStorage<T>.Create(
                 scalarProcessor.CreateLinVectorStorageFromNumbers(scalarList.ToArray())
             );
         }
@@ -370,7 +370,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CreateBivectorStorageFromNumbers<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IReadOnlyDictionary<ulong, double> indexScalarDictionary)
         {
-            return BivectorStorage<T>.CreateBivector(
+            return BivectorStorage<T>.Create(
                 scalarProcessor.CreateLinVectorStorageFromNumbers(indexScalarDictionary)
             );
         }
@@ -378,7 +378,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CreateBivectorStorageFromNumbers<T>(this IScalarAlgebraProcessor<T> scalarProcessor, int termsCount, Func<ulong, double> indexToScalarFunc)
         {
-            return BivectorStorage<T>.CreateBivector(
+            return BivectorStorage<T>.Create(
                 scalarProcessor.CreateLinVectorStorageFromNumbers(termsCount, indexToScalarFunc)
             );
         }
@@ -386,7 +386,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CreateBivectorStorageFromNumbers<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params double[] scalarArray)
         {
-            return BivectorStorage<T>.CreateBivector(
+            return BivectorStorage<T>.Create(
                 scalarProcessor.CreateLinVectorStorageFromNumbers(scalarArray)
             );
         }
@@ -394,7 +394,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CreateBivectorStorageFromNumbers<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<double> scalarList)
         {
-            return BivectorStorage<T>.CreateBivector(
+            return BivectorStorage<T>.Create(
                 scalarProcessor.CreateLinVectorStorageFromNumbers(scalarList.ToArray())
             );
         }
@@ -403,7 +403,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CreateBivectorStorageFromText<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IReadOnlyDictionary<ulong, string> indexScalarDictionary)
         {
-            return BivectorStorage<T>.CreateBivector(
+            return BivectorStorage<T>.Create(
                 scalarProcessor.CreateLinVectorStorageFromText(indexScalarDictionary)
             );
         }
@@ -411,7 +411,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CreateBivectorStorageFromText<T>(this IScalarAlgebraProcessor<T> scalarProcessor, int termsCount, Func<ulong, string> indexToScalarFunc)
         {
-            return BivectorStorage<T>.CreateBivector(
+            return BivectorStorage<T>.Create(
                 scalarProcessor.CreateLinVectorStorageFromText(termsCount, indexToScalarFunc)
             );
         }
@@ -419,7 +419,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CreateBivectorStorageFromText<T>(this IScalarAlgebraProcessor<T> scalarProcessor, uint termsCount, Func<ulong, string> indexToScalarFunc)
         {
-            return BivectorStorage<T>.CreateBivector(
+            return BivectorStorage<T>.Create(
                 scalarProcessor.CreateLinVectorStorageFromText(termsCount, indexToScalarFunc)
             );
         }
@@ -427,7 +427,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CreateBivectorStorageFromText<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params string[] scalarArray)
         {
-            return BivectorStorage<T>.CreateBivector(
+            return BivectorStorage<T>.Create(
                 scalarProcessor.CreateLinVectorStorageFromText(scalarArray)
             );
         }
@@ -435,7 +435,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CreateBivectorStorageFromText<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<string> scalarList)
         {
-            return BivectorStorage<T>.CreateBivector(
+            return BivectorStorage<T>.Create(
                 scalarProcessor.CreateLinVectorStorageFromText(scalarList.ToArray())
             );
         }
@@ -444,7 +444,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CreateBivectorStorageFromObjects<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IReadOnlyDictionary<ulong, object> indexScalarDictionary)
         {
-            return BivectorStorage<T>.CreateBivector(
+            return BivectorStorage<T>.Create(
                 scalarProcessor.CreateLinVectorStorageFromObjects(indexScalarDictionary)
             );
         }
@@ -452,7 +452,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CreateBivectorStorageFromObjects<T>(this IScalarAlgebraProcessor<T> scalarProcessor, int termsCount, Func<ulong, object> indexToScalarFunc)
         {
-            return BivectorStorage<T>.CreateBivector(
+            return BivectorStorage<T>.Create(
                 scalarProcessor.CreateLinVectorStorageFromObjects(termsCount, indexToScalarFunc)
             );
         }
@@ -460,7 +460,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CreateBivectorStorageFromObjects<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params object[] scalarArray)
         {
-            return BivectorStorage<T>.CreateBivector(
+            return BivectorStorage<T>.Create(
                 scalarProcessor.CreateLinVectorStorageFromObjects(scalarArray)
             );
         }
@@ -468,7 +468,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CreateBivectorStorageFromObjects<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<object> scalarList)
         {
-            return BivectorStorage<T>.CreateBivector(
+            return BivectorStorage<T>.Create(
                 scalarProcessor.CreateLinVectorStorageFromObjects(scalarList.ToArray())
             );
         }
@@ -477,7 +477,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CreateBivectorStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, Dictionary<ulong, T> indexScalarDictionary)
         {
-            return BivectorStorage<T>.CreateBivector(
+            return BivectorStorage<T>.Create(
                 scalarProcessor.CreateLinVectorStorage(indexScalarDictionary)
             );
         }
@@ -485,7 +485,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CreateBivectorStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, int termsCount, Func<ulong, T> indexToScalarFunc)
         {
-            return BivectorStorage<T>.CreateBivector(
+            return BivectorStorage<T>.Create(
                 scalarProcessor.CreateLinVectorStorage(termsCount, indexToScalarFunc)
             );
         }
@@ -493,7 +493,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CreateBivectorStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, uint termsCount, Func<ulong, T> indexToScalarFunc)
         {
-            return BivectorStorage<T>.CreateBivector(
+            return BivectorStorage<T>.Create(
                 scalarProcessor.CreateLinVectorStorage(termsCount, indexToScalarFunc)
             );
         }
@@ -501,7 +501,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CreateBivectorStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params T[] scalarArray)
         {
-            return BivectorStorage<T>.CreateBivector(
+            return BivectorStorage<T>.Create(
                 scalarProcessor.CreateLinVectorStorage(scalarArray)
             );
         }
@@ -509,7 +509,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CreateBivectorStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<T> scalarList)
         {
-            return BivectorStorage<T>.CreateBivector(
+            return BivectorStorage<T>.Create(
                 scalarProcessor.CreateLinVectorStorage(scalarList.ToArray())
             );
         }
@@ -518,7 +518,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CreateBivectorStorageZero<T>(this IScalarAlgebraProcessor<T> scalarProcessor)
         {
-            return BivectorStorage<T>.CreateBivector(
+            return BivectorStorage<T>.Create(
                 LinVectorEmptyStorage<T>.EmptyStorage
             );
         }
@@ -526,7 +526,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CreateBivectorStorageRepeatedScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, int count, T value)
         {
-            return BivectorStorage<T>.CreateBivector(
+            return BivectorStorage<T>.Create(
                 value.CreateLinVectorDenseStorage(count)
             );
         }
@@ -534,7 +534,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CreateBivectorStorageTerm<T>(this IScalarAlgebraProcessor<T> scalarProcessor, T value)
         {
-            return BivectorStorage<T>.CreateBivector(
+            return BivectorStorage<T>.Create(
                 new LinVectorSingleScalarDenseStorage<T>(value)
             );
         }
@@ -542,7 +542,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CreateBivectorStorageTerm<T>(this IScalarAlgebraProcessor<T> scalarProcessor, ulong index, T value)
         {
-            return BivectorStorage<T>.CreateBivector(
+            return BivectorStorage<T>.Create(
                 value.CreateLinVectorSingleScalarStorage(index)
             );
         }
@@ -550,7 +550,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> CreateBivectorStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<IndexScalarRecord<T>> indexScalarRecords)
         {
-            return BivectorStorage<T>.CreateBivector(
+            return BivectorStorage<T>.Create(
                 indexScalarRecords.CreateLinVectorStorage()
             );
         }
@@ -564,7 +564,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
 
             var index = BasisBivectorUtils.BasisVectorIndicesToBivectorIndex(index1, index2);
 
-            return BivectorStorage<T>.CreateBivector(index, scalar);
+            return BivectorStorage<T>.Create(index, scalar);
 
         }
 
@@ -572,13 +572,13 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         public static BivectorStorage<T> CreateBivectorTermStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, int index1, int index2, T scalar)
         {
             if (index1 < index2)
-                return BivectorStorage<T>.CreateBivector(
+                return BivectorStorage<T>.Create(
                     BasisBivectorUtils.BasisVectorIndicesToBivectorIndex(index1, index2),
                     scalar
                 );
 
             if (index2 < index1)
-                return BivectorStorage<T>.CreateBivector(
+                return BivectorStorage<T>.Create(
                     BasisBivectorUtils.BasisVectorIndicesToBivectorIndex(index2, index1),
                     scalarProcessor.Negative(scalar)
                 );
@@ -590,13 +590,13 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         public static BivectorStorage<T> CreateBivectorTermStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, ulong index1, ulong index2, T scalar)
         {
             if (index1 < index2)
-                return BivectorStorage<T>.CreateBivector(
+                return BivectorStorage<T>.Create(
                     BasisBivectorUtils.BasisVectorIndicesToBivectorIndex(index1, index2),
                     scalar
                 );
 
             if (index2 < index1)
-                return BivectorStorage<T>.CreateBivector(
+                return BivectorStorage<T>.Create(
                     BasisBivectorUtils.BasisVectorIndicesToBivectorIndex(index2, index1),
                     scalarProcessor.Negative(scalar)
                 );
@@ -608,13 +608,13 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         public static BivectorStorage<T> CreateBivectorBasisStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, int index1, int index2)
         {
             if (index1 < index2)
-                return BivectorStorage<T>.CreateBivector(
+                return BivectorStorage<T>.Create(
                     BasisBivectorUtils.BasisVectorIndicesToBivectorIndex(index1, index2),
                     scalarProcessor.ScalarOne
                 );
             
             if (index2 < index1)
-                return BivectorStorage<T>.CreateBivector(
+                return BivectorStorage<T>.Create(
                     BasisBivectorUtils.BasisVectorIndicesToBivectorIndex(index2, index1),
                     scalarProcessor.ScalarMinusOne
                 );
@@ -626,13 +626,13 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         public static BivectorStorage<T> CreateBivectorBasisStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, ulong index1, ulong index2)
         {
             if (index1 < index2)
-                return BivectorStorage<T>.CreateBivector(
+                return BivectorStorage<T>.Create(
                     BasisBivectorUtils.BasisVectorIndicesToBivectorIndex(index1, index2),
                     scalarProcessor.ScalarOne
                 );
             
             if (index2 < index1)
-                return BivectorStorage<T>.CreateBivector(
+                return BivectorStorage<T>.Create(
                     BasisBivectorUtils.BasisVectorIndicesToBivectorIndex(index2, index1),
                     scalarProcessor.ScalarMinusOne
                 );

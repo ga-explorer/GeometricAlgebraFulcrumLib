@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.BitManipulation;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Processors.LinearAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
@@ -36,11 +37,14 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
 
         public abstract bool IsChangeOfBasis { get; }
 
-        public abstract KVectorStorage<T> PseudoScalar { get; }
+        public bool IsOrthonormalEuclidean 
+            => IsOrthonormal && BasisSet.IsEuclidean;
 
-        public abstract KVectorStorage<T> PseudoScalarInverse { get; }
+        public abstract KVector<T> PseudoScalar { get; }
 
-        public abstract KVectorStorage<T> PseudoScalarReverse { get; }
+        public abstract KVector<T> PseudoScalarInverse { get; }
+
+        public abstract KVector<T> PseudoScalarReverse { get; }
 
 
         protected GeometricAlgebraProcessorBase([NotNull] IScalarAlgebraProcessor<T> scalarProcessor)
@@ -48,18 +52,8 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
         {
         }
 
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public virtual IMultivectorStorage<T> Normalize(IMultivectorStorage<T> mv1)
-        {
-            return ScalarProcessor.Divide(
-                mv1,
-                ScalarProcessor.SqrtOfAbs(NormSquared(mv1))
-            );
-        }
 
-
-        public abstract T Sp(IMultivectorStorage<T> mv1);
+        public abstract T SpSquared(IMultivectorStorage<T> mv1);
 
         public abstract T Sp(IMultivectorStorage<T> mv1, IMultivectorStorage<T> mv2);
 
@@ -81,38 +75,33 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public T Norm(IMultivectorStorage<T> mv1)
         {
-            return ScalarProcessor.SqrtOfAbs(NormSquared(mv1));
+            return IsEuclidean
+                ? ScalarProcessor.Sqrt(NormSquared(mv1))
+                : ScalarProcessor.SqrtOfAbs(NormSquared(mv1));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IMultivectorStorage<T> Dual(IMultivectorStorage<T> mv1)
         {
-            return Lcp(mv1, PseudoScalarInverse);
+            return Lcp(mv1, PseudoScalarInverse.KVectorStorage);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IMultivectorStorage<T> UnDual(IMultivectorStorage<T> mv1)
         {
-            return Lcp(mv1, PseudoScalar);
+            return Lcp(mv1, PseudoScalar.KVectorStorage);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IMultivectorStorage<T> BladeInverse(IMultivectorStorage<T> mv1)
         {
-            var bladeSpSquared = Sp(mv1);
-
-            return ScalarProcessor.Divide(mv1, bladeSpSquared);
+            return ScalarProcessor.Divide(mv1, SpSquared(mv1));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IMultivectorStorage<T> VersorInverse(IMultivectorStorage<T> mv1)
         {
-            var versorSpReverse = NormSquared(mv1);
-
-            return ScalarProcessor.Divide(
-                ScalarProcessor.Reverse(mv1), 
-                versorSpReverse
-            );
+            return ScalarProcessor.Divide(ScalarProcessor.Reverse(mv1), NormSquared(mv1));
         }
     }
 }

@@ -93,9 +93,11 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                 imagValue
             );
 
-            var blade = processor.VectorsOp(
-                realVector, 
-                imagVector
+            var blade = processor.CreateBivector(
+                processor.VectorsOp(
+                    realVector, 
+                    imagVector
+                )
             );
 
             return processor.CreatePureRotor(angle, blade);

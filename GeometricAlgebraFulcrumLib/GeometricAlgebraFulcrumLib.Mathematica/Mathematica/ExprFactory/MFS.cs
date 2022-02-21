@@ -35,7 +35,12 @@ namespace GeometricAlgebraFulcrumLib.Mathematica.Mathematica.ExprFactory
         public static Mfs Dot { get; } = new Mfs("Dot");
 
         public static Mfs Rational { get; } = new Mfs("Rational");
+        public static Mfs Sign { get; } = new Mfs("Sign");
+        public static Mfs RealSign { get; } = new Mfs("RealSign");
+        public static Mfs UnitStep { get; } = new Mfs("UnitStep");
+        public static Mfs UnitBox { get; } = new Mfs("UnitBox");
         public static Mfs Abs { get; } = new Mfs("Abs");
+        public static Mfs RealAbs { get; } = new Mfs("RealAbs");
         public static Mfs Sqrt { get; } = new Mfs("Sqrt");
         public static Mfs Sin { get; } = new Mfs("Sin");
         public static Mfs Cos { get; } = new Mfs("Cos");

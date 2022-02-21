@@ -13,7 +13,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.CodeComposer
             //    GeoLibraryComposer.GenerateCode(4);
 
             var processor = 
-                new SymbolicContext().CreateGeometricAlgebraEuclideanProcessor(3);
+                new SymbolicContext().AttachGeometricAlgebraEuclideanProcessor(3);
 
             var codeComposer = 
                 GaFuLLibraryComposer.Generate("Euclidean3D", processor, false);

@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.BitManipulation;
-using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 
@@ -12,6 +12,13 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Versors
     public class Versor<T> : 
         VersorBase<T>
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static Versor<T> Create(Multivector<T> multivector)
+        {
+            return new Versor<T>(multivector);
+        }
+
+
         public uint Grade { get; }
 
         public bool IsEven 
@@ -20,21 +27,23 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Versors
         public bool IsOdd 
             => Grade.IsOdd();
 
-        public IMultivectorStorage<T> Multivector { get; }
+        public Multivector<T> Multivector { get; }
 
-        public IMultivectorStorage<T> MultivectorInverse { get; }
+        public Multivector<T> MultivectorInverse { get; }
 
         
-        internal Versor([NotNull] IGeometricAlgebraProcessor<T> processor, [NotNull] IMultivectorStorage<T> multivector) 
-            : base(processor)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private Versor([NotNull] Multivector<T> multivector) 
+            : base(multivector.GeometricProcessor)
         {
-            Grade = multivector.GetMaxGrade();
+            Grade = multivector.MultivectorStorage.GetMaxGrade();
             Multivector = multivector;
-            MultivectorInverse = processor.VersorInverse(Multivector);
+            MultivectorInverse = Multivector.Inverse();
         }
         
-        private Versor([NotNull] IGeometricAlgebraProcessor<T> processor, uint grade, [NotNull] IMultivectorStorage<T> multivector, [NotNull] IMultivectorStorage<T> multivectorInverse) 
-            : base(processor)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private Versor(uint grade, [NotNull] Multivector<T> multivector, [NotNull] Multivector<T> multivectorInverse) 
+            : base(multivector.GeometricProcessor)
         {
             Grade = grade;
             Multivector = multivector;
@@ -45,7 +54,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Versors
         public override bool IsValid()
         {
             // Make sure the storage and its inverse are correct
-            if (!GeometricProcessor.IsNearZero(GeometricProcessor.Subtract(GeometricProcessor.VersorInverse(Multivector), MultivectorInverse)))
+            if (!GeometricProcessor.IsNearZero((Multivector.Inverse() - MultivectorInverse).MultivectorStorage))
                 return false;
 
             // Make sure storage contains terms of only even or only odd grade
@@ -55,91 +64,57 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Versors
 
             // Make sure storage gp versorInverse(storage) == 1
             var gp = 
-                GeometricProcessor.Gp(Multivector, MultivectorInverse);
+                Multivector.Gp(MultivectorInverse);
 
             if (!gp.IsScalar())
                 return false;
 
-            var diff =
-                GeometricProcessor.Subtract(
-                    GeometricProcessor.GetScalar(gp),
-                    GeometricProcessor.ScalarOne
-                );
+            var diff = gp[0] - 1;
 
-            return GeometricProcessor.IsNearZero(diff);
+            return diff.IsNearZero();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override VectorStorage<T> OmMapVector(VectorStorage<T> mv)
+        public override Vector<T> OmMap(Vector<T> mv)
         {
-            var v = 
-                GeometricProcessor
-                    .Gp(Multivector, mv, MultivectorInverse)
-                    .GetVectorPart();
-
             return IsEven 
-                ? v 
-                : GeometricProcessor.Negative(v);
+                ? Multivector.Gp(mv).Gp(MultivectorInverse).GetVectorPart() 
+                : Multivector.Gp(-mv).Gp(MultivectorInverse).GetVectorPart();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override BivectorStorage<T> OmMapBivector(BivectorStorage<T> mv)
+        public override Bivector<T> OmMap(Bivector<T> mv)
         {
-            return GeometricProcessor
-                .Gp(Multivector, mv, MultivectorInverse)
-                .GetBivectorPart();
+            return Multivector.Gp(mv).Gp(MultivectorInverse).GetBivectorPart();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override KVectorStorage<T> OmMapKVector(KVectorStorage<T> mv)
+        public override KVector<T> OmMap(KVector<T> mv)
         {
-            var v = 
-                GeometricProcessor
-                    .Gp(Multivector, mv, MultivectorInverse)
-                    .GetKVectorPart(mv.Grade);
-
             return mv.Grade.IsEven() || IsEven
-                ? v 
-                : GeometricProcessor.Negative(v);
+                ? Multivector.Gp(mv).Gp(MultivectorInverse).GetKVectorPart(mv.Grade) 
+                : Multivector.Gp(-mv).Gp(MultivectorInverse).GetKVectorPart(mv.Grade);
         }
 
-        public override MultivectorGradedStorage<T> OmMapMultivector(MultivectorGradedStorage<T> mv)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override Multivector<T> OmMap(Multivector<T> mv)
         {
             var v = 
-                GeometricProcessor.Gp(Multivector, mv, MultivectorInverse);
+                Multivector.Gp(mv).Gp(MultivectorInverse);
 
             if (IsEven)
-                return v.ToMultivectorGradedStorage();
+                return v;
 
             var (evenMv, oddMv) = 
-                v.SplitEvenOddParts();
+                v.GetEvenOddParts();
 
-            return GeometricProcessor
-                .Subtract(evenMv, oddMv)
-                .ToMultivectorGradedStorage();
-        }
-
-        public override MultivectorStorage<T> OmMapMultivector(MultivectorStorage<T> mv)
-        {
-            var v = 
-                GeometricProcessor.Gp(Multivector, mv, MultivectorInverse);
-
-            if (IsEven)
-                return v.ToMultivectorStorage();
-
-            var (evenMv, oddMv) = 
-                v.SplitEvenOddParts();
-
-            return GeometricProcessor
-                .Subtract(evenMv, oddMv)
-                .ToMultivectorStorage();
+            return evenMv - oddMv;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override IVersor<T> GetVersorInverse()
         {
             return new Versor<T>(
-                GeometricProcessor, 
                 Grade,
                 MultivectorInverse, 
                 Multivector
@@ -147,15 +122,39 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Versors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override IMultivectorStorage<T> GetMultivectorStorage()
+        public override Multivector<T> GetMultivector()
         {
             return Multivector;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override IMultivectorStorage<T> GetMultivectorInverseStorage()
+        public override Multivector<T> GetMultivectorReverse()
+        {
+            return Multivector.Reverse();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override Multivector<T> GetMultivectorInverse()
         {
             return MultivectorInverse;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override IMultivectorStorage<T> GetMultivectorStorage()
+        {
+            return Multivector.MultivectorStorage;
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override IMultivectorStorage<T> GetMultivectorStorageReverse()
+        {
+            return Multivector.Reverse().MultivectorStorage;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override IMultivectorStorage<T> GetMultivectorStorageInverse()
+        {
+            return MultivectorInverse.MultivectorStorage;
         }
     }
 }

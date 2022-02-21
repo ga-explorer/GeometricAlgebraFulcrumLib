@@ -1,9 +1,9 @@
 ﻿using System;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.SymbolicAlgebra;
 using GeometricAlgebraFulcrumLib.Algebra.SymbolicAlgebra.Variables;
 using GeometricAlgebraFulcrumLib.CodeComposer.Languages;
 using GeometricAlgebraFulcrumLib.Processors.SymbolicAlgebra.Context;
-using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using TextComposerLib.Text.Linear;
 
@@ -15,8 +15,8 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         private readonly GaFuLLanguageOperationSpecs _operationSpecs;
         private readonly uint _inputGrade;
         private readonly uint _outputGrade = 0U;
-        private KVectorStorage<ISymbolicExpressionAtomic> _inputKVector1;
-        private KVectorStorage<ISymbolicExpressionAtomic> _inputKVector2;
+        private KVector<ISymbolicExpressionAtomic> _inputKVector1;
+        private KVector<ISymbolicExpressionAtomic> _inputKVector2;
         private SymbolicVariableComputed _outputScalar;
 
 
@@ -49,13 +49,13 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             {
                 GaFuLLanguageOperationKind.BinaryScalarProduct =>
                     _operationSpecs.IsEuclidean
-                        ? GeometricProcessor.ESp(_inputKVector1, _inputKVector2)
-                        : GeometricProcessor.Sp(_inputKVector1, _inputKVector2),
+                        ? _inputKVector1.ESp(_inputKVector2)
+                        : _inputKVector1.Sp(_inputKVector2),
 
                 _ => throw new InvalidOperationException()
             };
 
-            _outputScalar = (SymbolicVariableComputed) outputScalar;
+            _outputScalar = (SymbolicVariableComputed) outputScalar.ScalarValue;
 
             _outputScalar.IsOutputVariable = true;
         }
@@ -63,12 +63,12 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         protected override void DefineContextExternalNames(SymbolicContext context)
         {
             context.SetExternalNamesByTermIndex(
-                _inputKVector1,
+                _inputKVector1.KVectorStorage,
                 index => $"mv1[{index}]"
             );
 
             context.SetExternalNamesByTermIndex(
-                _inputKVector2,
+                _inputKVector2.KVectorStorage,
                 index => $"mv2[{index}]"
             );
 

@@ -11,7 +11,7 @@ using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 {
-    public static class MultivectorStorageOpUtils
+    internal static class MultivectorStorageOpUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BasisBilinearProductResult Op(this BasisBladeSet basisSet, ulong id1, ulong id2)
@@ -54,7 +54,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             return vectorsList
                     .Select(v => v.CreateVectorStorage())
                     .Aggregate(
-                    scalarProcessor.CreateKVectorBasisScalarStorage(),
+                    scalarProcessor.CreateKVectorStorageBasisScalar(),
                     scalarProcessor.Op
                 );
         }
@@ -208,7 +208,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             return mv1 switch
             {
                 T s1 when mv2 is T s2 => 
-                    Op(scalarProcessor, s1, s2).CreateKVectorScalarStorage(),
+                    Op(scalarProcessor, s1, s2).CreateKVectorStorageScalar(),
 
                 VectorStorage<T> vt1 when mv2 is VectorStorage<T> vt2 => 
                     Op(scalarProcessor, vt1, vt2),
@@ -272,7 +272,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             return mv1 switch
             {
                 T s1 when mv2 is T s2 => 
-                    Op(scalarProcessor, s1, s2).CreateKVectorScalarStorage(),
+                    Op(scalarProcessor, s1, s2).CreateKVectorStorageScalar(),
 
                 VectorStorage<T> vt1 when mv2 is VectorStorage<T> vt2 => 
                     Op(scalarProcessor, vt1, vt2),
@@ -318,7 +318,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 
             composer.RemoveZeroTerms();
 
-            return composer.CreateMultivectorSparseStorage();
+            return composer.CreateMultivectorStorageSparse();
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -333,7 +333,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             return mv1 switch
             {
                 T s1 when mv2 is T s2 => 
-                    Op(scalarProcessor, s1, s2).CreateKVectorScalarStorage(),
+                    Op(scalarProcessor, s1, s2).CreateKVectorStorageScalar(),
 
                 VectorStorage<T> vt1 when mv2 is VectorStorage<T> vt2 => 
                     Op(scalarProcessor, vt1, vt2),
@@ -355,7 +355,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         {
             return vectorStorageList
                 .Aggregate(
-                    scalarProcessor.CreateKVectorBasisScalarStorage(),
+                    scalarProcessor.CreateKVectorStorageBasisScalar(),
                     scalarProcessor.Op
                 );
         }
@@ -365,7 +365,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         {
             return vectorStorageList
                 .Aggregate(
-                    scalarProcessor.CreateKVectorBasisScalarStorage(),
+                    scalarProcessor.CreateKVectorStorageBasisScalar(),
                     scalarProcessor.Op
                 );
         }
@@ -375,7 +375,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         {
             return kVectorStorageList
                 .Aggregate(
-                    scalarProcessor.CreateKVectorBasisScalarStorage(),
+                    scalarProcessor.CreateKVectorStorageBasisScalar(),
                     scalarProcessor.Op
                 );
         }
@@ -385,7 +385,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         {
             return kVectorStorageList
                 .Aggregate(
-                    scalarProcessor.CreateKVectorBasisScalarStorage(),
+                    scalarProcessor.CreateKVectorStorageBasisScalar(),
                     scalarProcessor.Op
                 );
         }
@@ -395,7 +395,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         {
             return mvStoragesList
                 .Aggregate(
-                    (IMultivectorStorage<T>) scalarProcessor.CreateKVectorBasisScalarStorage(),
+                    (IMultivectorStorage<T>) scalarProcessor.CreateKVectorStorageBasisScalar(),
                     scalarProcessor.Op
                 );
         }
@@ -405,7 +405,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         {
             return mvStoragesList
                 .Aggregate(
-                    (IMultivectorStorage<T>) scalarProcessor.CreateKVectorBasisScalarStorage(),
+                    (IMultivectorStorage<T>) scalarProcessor.CreateKVectorStorageBasisScalar(),
                     scalarProcessor.Op
                 );
         }

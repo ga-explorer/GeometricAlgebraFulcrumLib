@@ -1,9 +1,9 @@
 ﻿using System;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.SymbolicAlgebra;
 using GeometricAlgebraFulcrumLib.CodeComposer.Languages;
 using GeometricAlgebraFulcrumLib.Geometry.Subspaces;
 using GeometricAlgebraFulcrumLib.Processors.SymbolicAlgebra.Context;
-using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using GeometricAlgebraFulcrumLib.Utilities.Factories;
 using TextComposerLib.Text.Linear;
@@ -14,8 +14,8 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         GaFuLLibrarySymbolicContextFileComposerBase
     {
         private ISubspace<ISymbolicExpressionAtomic> _subspace;
-        private KVectorStorage<ISymbolicExpressionAtomic> _inputKVector;
-        private KVectorStorage<ISymbolicExpressionAtomic> _outputKVector;
+        private KVector<ISymbolicExpressionAtomic> _inputKVector;
+        private KVector<ISymbolicExpressionAtomic> _outputKVector;
         private readonly GaFuLLanguageOperationSpecs _operationSpecs;
         private readonly uint _inputGrade1;
         private readonly uint _inputGrade2;
@@ -39,8 +39,8 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             );
 
             _subspace = _operationSpecs.IsEuclidean
-                ? GeometricProcessor.CreateSubspace(subspaceKVector)
-                : EuclideanProcessor.CreateSubspace(subspaceKVector);
+                ? GeometricProcessor.CreateSubspace(subspaceKVector.KVectorStorage)
+                : EuclideanProcessor.CreateSubspace(subspaceKVector.KVectorStorage);
 
             _inputKVector = context.ParameterVariablesFactory.CreateDenseKVector(
                 VSpaceDimension,
@@ -52,21 +52,21 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         protected override void DefineContextComputations(SymbolicContext context)
         {
             var inputSubspace = 
-                GeometricProcessor.CreateSubspace(_inputKVector);
+                GeometricProcessor.CreateSubspace(_inputKVector.KVectorStorage);
 
             _outputKVector = _operationSpecs.OperationKind switch
             {
                 GaFuLLanguageOperationKind.BinaryProject => 
-                    _subspace.Project(inputSubspace).Blade,//.GetKVectorPart(_inputGrade2),
+                    _subspace.Project(inputSubspace).GetBlade(),//.GetKVectorPart(_inputGrade2),
 
                 //GaFuLLanguageOperationKind.BinaryRotate => 
                 //    _subspace.Rotate(inputSubspace).Blade,//.GetKVectorPart(_inputGrade2),
 
                 GaFuLLanguageOperationKind.BinaryReflect => 
-                    _subspace.Reflect(inputSubspace).Blade,//.GetKVectorPart(_inputGrade2),
+                    _subspace.Reflect(inputSubspace).GetBlade(),//.GetKVectorPart(_inputGrade2),
 
                 GaFuLLanguageOperationKind.BinaryComplement => 
-                    _subspace.Complement(inputSubspace).Blade,//.GetKVectorPart(_inputGrade2),
+                    _subspace.Complement(inputSubspace).GetBlade(),//.GetKVectorPart(_inputGrade2),
 
                 _ => throw new InvalidOperationException()
             };
@@ -77,17 +77,17 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         protected override void DefineContextExternalNames(SymbolicContext context)
         {
             context.SetExternalNamesByTermIndex(
-                _subspace.Blade,
+                _subspace.GetBlade().KVectorStorage,
                 index => $"scalars1[{index}]"
             );
 
             context.SetExternalNamesByTermIndex(
-                _inputKVector,
+                _inputKVector.KVectorStorage,
                 index => $"scalars2[{index}]"
             );
 
             context.SetExternalNamesByTermIndex(
-                _outputKVector,
+                _outputKVector.KVectorStorage,
                 index => $"c[{index}]"
             );
 

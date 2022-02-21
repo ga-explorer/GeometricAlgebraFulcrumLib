@@ -538,6 +538,23 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             return scalarProcessor.GetScalarFromNumber(setSize.GetBinomialCoefficient(subsetSize));
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T Sign<T>(this IScalarAlgebraProcessor<T> scalarProcessor, T scalar, T offsetScalar)
+        {
+            return scalarProcessor.Sign(
+                scalarProcessor.Subtract(scalar, offsetScalar)
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T BoxCar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, T scalar, T scalarA, T scalarB)
+        {
+            return scalarProcessor.Subtract(
+                scalarProcessor.UnitStep(scalarProcessor.Subtract(scalar, scalarA)),
+                scalarProcessor.UnitStep(scalarProcessor.Subtract(scalar, scalarB))
+            );
+        }
+
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<KeyValuePair<TKey, TValue>> Negative<TKey, TValue>(this IScalarAlgebraProcessor<TValue> scalarProcessor, IEnumerable<KeyValuePair<TKey, TValue>> keyValuePairs)

@@ -16,8 +16,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
                 "a2", "b2", "c2", "d2"
             );
 
-            var bv = 
-                MathematicaUtils.ScalarProcessor.Op(v1, v2);
+            var bv = v1.Op(v2);
 
             Console.WriteLine($"v1 = {v1.GetText()}");
             Console.WriteLine();

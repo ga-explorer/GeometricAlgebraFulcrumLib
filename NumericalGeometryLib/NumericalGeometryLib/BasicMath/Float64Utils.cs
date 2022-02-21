@@ -784,5 +784,13 @@ namespace NumericalGeometryLib.BasicMath
 
             return Enumerable.Range(0, count).Select(i => start + i * n);
         }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void ClearNearZeroItems(this MathNet.Numerics.LinearAlgebra.Vector<double> vector, double epsilon = 1e-12)
+        {
+            for (var i = 0; i < vector.Count; i++)
+                if (vector[i].IsNearZero(epsilon))
+                    vector[i] = 0d;
+        }
     }
 }

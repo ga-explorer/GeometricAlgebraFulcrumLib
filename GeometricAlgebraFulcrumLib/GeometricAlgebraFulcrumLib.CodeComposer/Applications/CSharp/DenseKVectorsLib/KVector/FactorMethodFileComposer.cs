@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Linq;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.SymbolicAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.SymbolicAlgebra.Context;
-using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
+using GeometricAlgebraFulcrumLib.Utilities.Factories;
 using TextComposerLib.Text.Linear;
 using TextComposerLib.Text.Structured;
 
@@ -14,9 +15,9 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
     {
         private readonly uint _inputGrade;
         private readonly ulong _inputId;
-        private KVectorStorage<ISymbolicExpressionAtomic> _inputBlade;
-        private VectorStorage<ISymbolicExpressionAtomic>[] _inputBasisVectorsArray;
-        private VectorStorage<ISymbolicExpressionAtomic>[] _outputVectorsArray;
+        private KVector<ISymbolicExpressionAtomic> _inputBlade;
+        private Vector<ISymbolicExpressionAtomic>[] _inputBasisVectorsArray;
+        private Vector<ISymbolicExpressionAtomic>[] _outputVectorsArray;
 
 
         internal FactorMethodFileComposer(GaFuLLibraryComposer libGen, uint inGrade, ulong inId)
@@ -44,10 +45,8 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
                     .Select(index => 
                         context
                             .NumbersFactory
-                            .CreateBasisVector(index)
-                    )
-                    .Cast<VectorStorage<ISymbolicExpressionAtomic>>()
-                    .ToArray();
+                            .CreateBasisVector(index).CreateVector(GeometricProcessor)
+                    ).ToArray();
         }
 
         protected override void DefineContextComputations(SymbolicContext context)
@@ -56,30 +55,18 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
                 _inputBasisVectorsArray.Length;
 
             _outputVectorsArray = 
-                new VectorStorage<ISymbolicExpressionAtomic>[vectorsCount];
+                new Vector<ISymbolicExpressionAtomic>[vectorsCount];
 
-            var grade = _inputGrade;
             var inputBlade = _inputBlade;
             for (var index = 0; index < vectorsCount - 1; index++)
             {
                 _outputVectorsArray[index] =
-                    GeometricProcessor.Lcp(
-                        GeometricProcessor.Lcp(
-                            _inputBasisVectorsArray[index], 
-                            inputBlade
-                        ), 
-                        inputBlade
-                    ).GetVectorPart();
+                    _inputBasisVectorsArray[index].Lcp(inputBlade).Lcp(inputBlade).AsVector();
 
-                grade--;
-
-                inputBlade = GeometricProcessor.Lcp(
-                    _outputVectorsArray[index],
-                    inputBlade
-                ).GetKVectorPart(grade);
+                inputBlade = _outputVectorsArray[index].Lcp(inputBlade);
             }
 
-            _outputVectorsArray[^1] = inputBlade.GetVectorPart();
+            _outputVectorsArray[^1] = inputBlade.AsVector();
 
             _outputVectorsArray.SetIsOutput(true);
         }
@@ -87,7 +74,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         protected override void DefineContextExternalNames(SymbolicContext context)
         {
             context.SetExternalNamesByTermIndex(
-                _inputBlade,
+                _inputBlade.KVectorStorage,
                 index => $"scalars[{index}]"
             );
 
@@ -97,7 +84,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
                 var j = i;
 
                 context.SetExternalNamesByTermIndex(
-                    _outputVectorsArray[i],
+                    _outputVectorsArray[i].VectorStorage,
                     index => $"vectors[{j}].C{index}"
                 );
             }

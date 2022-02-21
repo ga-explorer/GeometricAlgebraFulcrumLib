@@ -1,0 +1,55 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+      <TargetFramework>netcoreapp3.1</TargetFramework>
+      <UseWPF>true</UseWPF>
+      <UseWindowsForms>true</UseWindowsForms>
+      <OutputType>WinExe</OutputType>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\OxyPlot.Wpf\OxyPlot.Wpf.csproj" />
+    <ProjectReference Include="..\..\..\OxyPlot\OxyPlot.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="PropertyTools.Wpf" Version="3.1.0-alpha0009" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\..\..\Icons\OxyPlot_64.png" Link="OxyPlot_64.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Examples\WorldStatisticsDemo\Data\gdp_per_capita_ppp.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Examples\WorldStatisticsDemo\Data\life_expectancy_at_birth.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Examples\WorldStatisticsDemo\Data\population.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Examples\CsvDemo\Data\GlobalTemperatureAnomaly.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Examples\CsvDemo\Data\RiverFlow.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Examples\CsvDemo\Data\WorldPopulation.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\*.png" />
+    <Content Include="Examples\WorldStatisticsDemo\Data\gdp_per_capita_ppp.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Examples\WorldStatisticsDemo\Data\life_expectancy_at_birth.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Examples\WorldStatisticsDemo\Data\population.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="ReadMe.txt" />
+    <Resource Include="Examples\HistogramDemo\hare.jpg" />
+  </ItemGroup>
+</Project>

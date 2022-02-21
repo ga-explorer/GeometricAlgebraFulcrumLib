@@ -4,15 +4,15 @@ using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 {
-    public static class MultivectorStorageSpUtils
+    internal static class MultivectorStorageSpUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T Sp<T>(this IGeometricAlgebraProcessor<T> processor, IMultivectorStorage<T> mv1)
+        public static T SpSquared<T>(this IGeometricAlgebraProcessor<T> processor, IMultivectorStorage<T> mv1)
         {
             return processor switch
             {
                 IGeometricAlgebraEuclideanProcessor<T> =>
-                    processor.ESp(mv1),
+                    processor.ESpSquared(mv1),
                 
                 IGeometricAlgebraOrthonormalProcessor<T> ortProcessor =>
                     processor.Sp(ortProcessor.BasisSet, mv1),
@@ -41,25 +41,25 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static VectorStorage<T> BladeInverse<T>(this IGeometricAlgebraProcessor<T> processor, VectorStorage<T> vector)
         {
-            return processor.Divide(vector, processor.Sp(vector));
+            return processor.Divide(vector, processor.SpSquared(vector));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BivectorStorage<T> BladeInverse<T>(this IGeometricAlgebraProcessor<T> processor, BivectorStorage<T> vector)
         {
-            return processor.Divide(vector, processor.Sp(vector));
+            return processor.Divide(vector, processor.SpSquared(vector));
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static KVectorStorage<T> BladeInverse<T>(this IGeometricAlgebraProcessor<T> processor, KVectorStorage<T> kVector)
         {
-            return processor.Divide(kVector, processor.Sp(kVector));
+            return processor.Divide(kVector, processor.SpSquared(kVector));
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IMultivectorStorage<T> BladeInverse<T>(this IGeometricAlgebraProcessor<T> processor, IMultivectorStorage<T> mv)
         {
-            return processor.Divide(mv, processor.Sp(mv));
+            return processor.Divide(mv, processor.SpSquared(mv));
         }
     }
 }

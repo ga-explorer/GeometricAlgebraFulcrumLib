@@ -1,5 +1,6 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Geometry.Subspaces
 {
@@ -22,14 +23,16 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Subspaces
         ///// </summary>
         //bool IsDual { get; }
 
-        KVectorStorage<T> Blade { get; }
+        KVector<T> GetBlade();
 
-        KVectorStorage<T> BladeInverse { get; }
+        KVector<T> GetBladeInverse();
+
+        KVector<T> GetBladePseudoInverse();
 
         /// <summary>
         /// The scalar product of the subspace blade with itself
         /// </summary>
-        T BladeSignature { get; }
+        Scalar<T> BladeSignature { get; }
 
         ISubspace<T> Project(ISubspace<T> mv);
 

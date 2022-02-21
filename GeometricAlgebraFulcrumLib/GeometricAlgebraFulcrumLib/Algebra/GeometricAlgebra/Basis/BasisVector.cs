@@ -15,17 +15,21 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis
         }
 
 
-        public override ulong Id => Index.BasisVectorIndexToId();
+        public override ulong Id 
+            => Index.BasisVectorIndexToId();
 
         public override uint Grade => 1;
 
         public override ulong Index { get; }
 
-        public override bool IsScalar => false;
+        public override bool IsScalar 
+            => false;
 
-        public override bool IsVector => true;
+        public override bool IsVector 
+            => true;
 
-        public override bool IsBivector => false;
+        public override bool IsBivector 
+            => false;
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

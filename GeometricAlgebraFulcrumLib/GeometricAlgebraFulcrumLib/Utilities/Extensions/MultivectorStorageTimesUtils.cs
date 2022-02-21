@@ -4,7 +4,7 @@ using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 {
-    public static class MultivectorStorageTimesUtils
+    internal static class MultivectorStorageTimesUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static VectorStorage<T> Times<T>(this IScalarAlgebraProcessor<T> scalarProcessor, VectorStorage<T> mv, T scalar)

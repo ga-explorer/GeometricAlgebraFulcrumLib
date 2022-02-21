@@ -8,6 +8,7 @@ using GeometricAlgebraFulcrumLib.Algebra.SymbolicAlgebra;
 using GeometricAlgebraFulcrumLib.Algebra.SymbolicAlgebra.HeadSpecs;
 using GeometricAlgebraFulcrumLib.Algebra.SymbolicAlgebra.Numbers;
 using GeometricAlgebraFulcrumLib.Algebra.SymbolicAlgebra.Variables;
+using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.LinearAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.SymbolicAlgebra.Context.Optimizer;
@@ -72,6 +73,11 @@ namespace GeometricAlgebraFulcrumLib.Processors.SymbolicAlgebra.Context
         public IScalarAlgebraProcessor<ISymbolicExpressionAtomic> ScalarProcessor 
             => this;
 
+        public IGeometricAlgebraProcessor<ISymbolicExpressionAtomic> GeometricProcessor { get; set; }
+        
+        public bool ContainsGeometricProcessor 
+            => GeometricProcessor is not null;
+
         public ScalarAlgebraSymbolicExpressionProcessor SymbolicScalarProcessor { get; }
 
         public AngouriMathSymbolicExpressionEvaluator DefaultEvaluator { get; }
@@ -99,8 +105,8 @@ namespace GeometricAlgebraFulcrumLib.Processors.SymbolicAlgebra.Context
 
         public bool MergeExpressions { get; set; }
 
-
-
+        //TODO: Hide the constructors and use static Create() methods to automatically assign 
+        //TODO: geometric algebra processors if needed
         public SymbolicContext()
         {
             NumbersFactory = new SymbolicNumberFactory(this);
@@ -122,6 +128,12 @@ namespace GeometricAlgebraFulcrumLib.Processors.SymbolicAlgebra.Context
             SymbolicScalarProcessor = new ScalarAlgebraSymbolicExpressionProcessor(this);
             FunctionHeadSpecsFactory = new SymbolicFunctionHeadSpecsFactory(this);
             DefaultEvaluator = this.CreateAngouriMathEvaluator();
+        }
+
+        public SymbolicContext([NotNull] IGeometricAlgebraProcessor<ISymbolicExpressionAtomic> geometricProcessor)
+            : this()
+        {
+            GeometricProcessor = geometricProcessor;
         }
 
         public SymbolicContext(SymbolicContextOptions options)
@@ -932,6 +944,23 @@ namespace GeometricAlgebraFulcrumLib.Processors.SymbolicAlgebra.Context
         {
             return GetOrDefineComputedVariable(
                 SymbolicScalarProcessor.Inverse,
+                scalar
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ISymbolicExpressionAtomic Sign(ISymbolicExpressionAtomic scalar)
+        {
+            return GetOrDefineComputedVariable(
+                SymbolicScalarProcessor.Sign,
+                scalar
+            );
+        }
+
+        public ISymbolicExpressionAtomic UnitStep(ISymbolicExpressionAtomic scalar)
+        {
+            return GetOrDefineComputedVariable(
+                SymbolicScalarProcessor.UnitStep,
                 scalar
             );
         }

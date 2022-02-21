@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Vectors;
@@ -1047,15 +1048,24 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Bivector<T> AsBivector()
+        public KVector<T> AsKVector()
         {
-            return new Bivector<T>(GeometricProcessor, BivectorStorage);
+            return new KVector<T>(GeometricProcessor, BivectorStorage);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Multivector<T> AsMultivector()
         {
             return new Multivector<T>(GeometricProcessor, BivectorStorage);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Bivector<T> Conjugate()
+        {
+            return new Bivector<T>(
+                GeometricProcessor, 
+                GeometricProcessor.Conjugate(BivectorStorage)
+            );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1113,13 +1123,22 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors
                 .ENormSquared(BivectorStorage)
                 .CreateScalar(GeometricProcessor);
         }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Bivector<T> PseudoInverse()
+        {
+            return new Bivector<T>(
+                GeometricProcessor,
+                GeometricProcessor.BladePseudoInverse(BivectorStorage)
+            );
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Bivector<T> Inverse()
         {
             return new Bivector<T>(
                 GeometricProcessor,
-                GeometricProcessor.Divide(BivectorStorage, GeometricProcessor.Sp(BivectorStorage))
+                GeometricProcessor.Divide(BivectorStorage, GeometricProcessor.SpSquared(BivectorStorage))
             );
         }
 
@@ -1167,6 +1186,12 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors
                 GeometricProcessor.EUnDual(BivectorStorage)
             );
         }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public IEnumerable<T> GetScalars()
+        {
+            return BivectorStorage.GetScalars();
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Bivector<T> MapScalars(Func<T, T> scalarMapping)
@@ -1206,7 +1231,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors
         {
             return Subspace<T>.Create(
                 GeometricProcessor,
-                BivectorStorage
+                AsKVector()
             );
         }
 
@@ -1215,7 +1240,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors
         {
             return Subspace<T>.Create(
                 GeometricProcessor,
-                GeometricProcessor.Dual(BivectorStorage)
+                GeometricProcessor.Dual(BivectorStorage).CreateKVector(GeometricProcessor)
             );
         }
 

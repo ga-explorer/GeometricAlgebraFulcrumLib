@@ -1,11 +1,11 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms;
-using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Projectors
 {
     public interface IProjector<T> : 
         IOutermorphism<T>
     {
-        KVectorStorage<T> Blade { get; }
+        KVector<T> Blade { get; }
     }
 }

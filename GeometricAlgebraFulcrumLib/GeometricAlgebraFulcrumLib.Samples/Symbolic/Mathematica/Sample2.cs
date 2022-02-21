@@ -33,29 +33,29 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.Mathematica
         public static void Execute1()
         {
             var basisVectorIndex = 1ul;
-            var u = GeometricProcessor.CreateVectorStorageFromText(VSpaceDimension, i => $"Subscript[u,{i + 1}]");
-            var v = GeometricProcessor.CreateVectorStorageFromText(VSpaceDimension, i => $"Subscript[v,{i + 1}]");
+            var u = GeometricProcessor.CreateVectorFromText(VSpaceDimension, i => $"Subscript[u,{i + 1}]");
+            var v = GeometricProcessor.CreateVectorFromText(VSpaceDimension, i => $"Subscript[v,{i + 1}]");
 
             var unitLengthAssumption1 =
                 Mfs.And[
                     Mfs.Element[Mfs.List[u.GetScalars().Cast<object>().ToArray()], Mfs.Ball[Array.Empty<object>()]],
-                    Mfs.Equal[GeometricProcessor.ENormSquared(u), Expr.INT_ONE]
+                    Mfs.Equal[u.ENormSquared(), Expr.INT_ONE]
                 ].Evaluate();
 
             var unitLengthAssumption2 = 
                 Mfs.And[
                     Mfs.Element[Mfs.List[v.GetScalars().Cast<object>().ToArray()], Mfs.Ball[Array.Empty<object>()]],
-                    Mfs.Equal[GeometricProcessor.ENormSquared(v), Expr.INT_ONE]
+                    Mfs.Equal[v.ENormSquared(), Expr.INT_ONE]
                 ].Evaluate();
 
             var unitLengthAssumption = 
                 Mfs.And[unitLengthAssumption1, unitLengthAssumption2].Evaluate();
 
             var rotationMatrix1 = 
-                GeometricProcessor.CreateVectorToBasisRotationMatrix(u, basisVectorIndex, (int) VSpaceDimension).FullSimplifyScalars(unitLengthAssumption1);
+                u.CreateVectorToBasisRotationMatrix(basisVectorIndex, (int) VSpaceDimension).FullSimplifyScalars(unitLengthAssumption1);
 
             var rotationMatrix2 = 
-                GeometricProcessor.CreateBasisToVectorRotationMatrix(basisVectorIndex, v, (int) VSpaceDimension).FullSimplifyScalars(unitLengthAssumption2);
+                v.CreateBasisToVectorRotationMatrix(basisVectorIndex, (int) VSpaceDimension).FullSimplifyScalars(unitLengthAssumption2);
 
             var rotationMatrix = 
                 GeometricProcessor.MatrixProduct(rotationMatrix2, rotationMatrix1).FullSimplifyScalars(unitLengthAssumption);
@@ -70,10 +70,10 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.Mathematica
                 rotationMatrix.MatrixDeterminant().FullSimplify(unitLengthAssumption);
 
             var u1 = 
-                GeometricProcessor.MapVector(rotationMatrix1.CreateLinMatrixDenseStorage(), u).FullSimplifyScalars(unitLengthAssumption1);
+                u.MapUsing(rotationMatrix1).FullSimplifyScalars(unitLengthAssumption1);
 
             var v1 = 
-                GeometricProcessor.MapVector(rotationMatrix.CreateLinMatrixDenseStorage(), u).FullSimplifyScalars(unitLengthAssumption);
+                u.MapUsing(rotationMatrix).FullSimplifyScalars(unitLengthAssumption);
 
             Console.WriteLine($@"rotor matrix 1 = {LaTeXComposer.GetArrayDisplayEquationText(rotationMatrix1)}");
             Console.WriteLine();
@@ -105,19 +105,19 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.Mathematica
 
         public static void Execute2()
         {
-            var u = GeometricProcessor.CreateVectorStorageFromText(VSpaceDimension, i => $"Subscript[u,{i + 1}]");
-            var v = GeometricProcessor.CreateVectorStorageFromText(VSpaceDimension, i => $"Subscript[v,{i + 1}]");
+            var u = GeometricProcessor.CreateVectorFromText(VSpaceDimension, i => $"Subscript[u,{i + 1}]");
+            var v = GeometricProcessor.CreateVectorFromText(VSpaceDimension, i => $"Subscript[v,{i + 1}]");
 
             var unitLengthAssumption1 =
                 Mfs.And[
                     Mfs.Element[Mfs.List[u.GetScalars().Cast<object>().ToArray()], Mfs.Ball[Array.Empty<object>()]],
-                    Mfs.Equal[GeometricProcessor.ENormSquared(u), Expr.INT_ONE]
+                    Mfs.Equal[u.ENormSquared().ScalarValue, Expr.INT_ONE]
                 ].Evaluate();
 
             var unitLengthAssumption2 = 
                 Mfs.And[
                     Mfs.Element[Mfs.List[v.GetScalars().Cast<object>().ToArray()], Mfs.Ball[Array.Empty<object>()]],
-                    Mfs.Equal[GeometricProcessor.ENormSquared(v), Expr.INT_ONE]
+                    Mfs.Equal[v.ENormSquared().ScalarValue, Expr.INT_ONE]
                 ].Evaluate();
 
             var unitLengthAssumption = 
@@ -142,10 +142,10 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.Mathematica
             //    Mfs.Det[rotorMatrix].FullSimplify(unitLengthAssumption);
 
             var v1 =
-                rotor1.OmMapVector(u); //.SimplifyScalars(unitLengthAssumption);
+                rotor1.OmMap(u); //.SimplifyScalars(unitLengthAssumption);
 
             var u1 = 
-                rotor2.OmMapVector(v); //.SimplifyScalars(unitLengthAssumption);
+                rotor2.OmMap(v); //.SimplifyScalars(unitLengthAssumption);
 
             // Display a LaTeX representation of the vectors and their outer product
             Console.WriteLine($@"\boldsymbol{{u}} = {LaTeXComposer.GetMultivectorText(u)}");
@@ -160,20 +160,20 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.Mathematica
 
         public static void Execute3()
         {
-            var e1 = GeometricProcessor.CreateVectorTermStorage(0, Expr.INT_MINUSONE);
-            var u = GeometricProcessor.CreateVectorStorageFromText(VSpaceDimension, i => $"Subscript[u,{i + 1}]");
-            var v = GeometricProcessor.CreateVectorStorageFromText(VSpaceDimension, i => $"Subscript[v,{i + 1}]");
+            var e1 = GeometricProcessor.CreateVectorTerm(0, Expr.INT_MINUSONE);
+            var u = GeometricProcessor.CreateVectorFromText(VSpaceDimension, i => $"Subscript[u,{i + 1}]");
+            var v = GeometricProcessor.CreateVectorFromText(VSpaceDimension, i => $"Subscript[v,{i + 1}]");
 
             var unitLengthAssumption1 =
                 Mfs.And[
                     Mfs.Element[Mfs.List[u.GetScalars().Cast<object>().ToArray()], Mfs.Ball[Array.Empty<object>()]],
-                    Mfs.Equal[GeometricProcessor.ENormSquared(u), Expr.INT_ONE]
+                    Mfs.Equal[u.ENormSquared().ScalarValue, Expr.INT_ONE]
                 ].Evaluate();
 
             var unitLengthAssumption2 = 
                 Mfs.And[
                     Mfs.Element[Mfs.List[v.GetScalars().Cast<object>().ToArray()], Mfs.Ball[Array.Empty<object>()]],
-                    Mfs.Equal[GeometricProcessor.ENormSquared(v), Expr.INT_ONE]
+                    Mfs.Equal[v.ENormSquared().ScalarValue, Expr.INT_ONE]
                 ].Evaluate();
 
             var unitLengthAssumption = 
@@ -186,7 +186,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.Mathematica
                 GeometricProcessor.CreatePureRotor(e1, v);
 
             var rotorMv = rotor2.Multivector.SimplifyScalars(unitLengthAssumption2);
-            var rotorMvReverse = GeometricProcessor.Reverse(rotorMv);
+            var rotorMvReverse = rotorMv.Reverse();
 
             //var u1 =
             //    rotorMv.EGp(e1).FullSimplifyScalars(unitLengthAssumption2);
@@ -206,7 +206,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.Mathematica
             var matrix1 =
                 GeometricProcessor
                     .CreateSparseUnilinearMap(
-                        i => GeometricProcessor.EGp(rotorMv, GeometricProcessor.CreateKVectorBasisStorage(i))
+                        i => rotorMv.EGp(GeometricProcessor.CreateKVectorBasis(i)).MultivectorStorage
                     )
                     .GetMultivectorsMappingArray(
                         (int)GaSpaceDimension,
@@ -218,7 +218,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.Mathematica
             var matrix2 =
                 GeometricProcessor
                     .CreateSparseUnilinearMap(
-                        i => GeometricProcessor.EGp(GeometricProcessor.CreateKVectorBasisStorage(i), rotorMvReverse)
+                        i => GeometricProcessor.CreateKVectorBasis(i).EGp(rotorMvReverse).MultivectorStorage
                     )
                     .GetMultivectorsMappingArray(
                         (int)GaSpaceDimension,
@@ -245,8 +245,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.Mathematica
             var matrixDotDet =
                 Mfs.Det[matrixDot].FullSimplify(unitLengthAssumption2);
 
-            var v1 = GeometricProcessor.MapVector(rotorMatrix, e1).FullSimplifyScalars(unitLengthAssumption2);
-            var v2 = GeometricProcessor.MapVector(rotorMatrix.GetTranspose(), v).FullSimplifyScalars(unitLengthAssumption2);
+            var v1 = rotorMatrix.Map(e1).FullSimplifyScalars(unitLengthAssumption2);
+            var v2 = rotorMatrix.GetTranspose().Map(v).FullSimplifyScalars(unitLengthAssumption2);
 
             // Display a LaTeX representation of the vectors and their outer product
             Console.WriteLine($@"\boldsymbol{{u}} = {LaTeXComposer.GetMultivectorText(u)}");

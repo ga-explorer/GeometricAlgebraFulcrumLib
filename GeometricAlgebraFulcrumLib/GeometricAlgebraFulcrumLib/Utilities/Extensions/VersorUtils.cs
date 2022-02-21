@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Versors;
 using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
@@ -12,12 +13,9 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 {
     public static class VersorUtils
     {
-        
-
-
         public static Tuple<PureVersorsSequence<double>, IOutermorphism<double>> GetHouseholderQRDecomposition(this IGeometricAlgebraProcessor<double> processor, IOutermorphism<double> linearMap, int count)
         {
-            var unitVectorsList = new List<VectorStorage<double>>(count);
+            var unitVectorsList = new List<Vector<double>>(count);
             var mappedBasisVectors =
                 Enumerable
                     .Range(0, count)
@@ -42,63 +40,61 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                 foreach (var basisVectorIndex in basisVectorIndicesList)
                 {
                     var basisVectorImage = mappedBasisVectors[basisVectorIndex];
-                    var basisVectorImageNorm = processor.ENorm(basisVectorImage);
+                    var basisVectorImageNorm = basisVectorImage.ENorm().ScalarValue;
 
                     var differenceLengthSquared = 
-                        processor.ESp(
-                            processor.Subtract(
-                                basisVectorImage,
-                                processor.CreateVectorTermStorage(basisVectorIndex, basisVectorImageNorm)
-                            )
-                        );
+                        (
+                            basisVectorImage - 
+                            processor.CreateVectorTerm(basisVectorIndex, basisVectorImageNorm)
+                        ).ESpSquared();
 
-                    if (differenceLengthSquared < bestDifferenceLengthSquared) 
+                    if (differenceLengthSquared.ScalarValue < bestDifferenceLengthSquared) 
                         continue;
 
                     bestBasisVectorIndex = basisVectorIndex;
-                    bestDifferenceLengthSquared = differenceLengthSquared;
+                    bestDifferenceLengthSquared = differenceLengthSquared.ScalarValue;
                 }
 
                 var bestBasisVectorImage = mappedBasisVectors[bestBasisVectorIndex];
-                var bestBasisVectorImageNorm = processor.ENorm(bestBasisVectorImage);
+                var bestBasisVectorImageNorm = bestBasisVectorImage.ENorm().ScalarValue;
 
-                var unitVector = processor.Subtract(
-                    bestBasisVectorImage,
-                    processor.CreateVectorTermStorage(bestBasisVectorIndex, bestBasisVectorImageNorm)
-                ).GetVectorPart();
+                var unitVector = 
+                    bestBasisVectorImage -
+                    processor.CreateVectorTerm(bestBasisVectorIndex, bestBasisVectorImageNorm);
 
-                var reflectionVectorFound = !processor.IsZero(unitVector);
+                var reflectionVectorFound = !unitVector.IsZero();
                 if (reflectionVectorFound)
                 {
-                    unitVector = processor.Divide(unitVector, processor.ENorm(unitVector)).GetVectorPart();
+                    unitVector /= unitVector.ENorm();
                     unitVectorsList.Add(unitVector);
                 }
 
                 foreach (var basisVectorIndex in basisVectorIndicesList)
                 {
                     var reflectedVector = reflectionVectorFound
-                        ? processor.Negative(
-                            processor.EGp(
-                                unitVector,
-                                mappedBasisVectors[basisVectorIndex], 
-                                unitVector
-                            ).GetVectorPart()
-                        )
+                        ? -unitVector
+                            .EGp(mappedBasisVectors[basisVectorIndex])
+                            .EGp(unitVector)
+                            .GetVectorPart()
                         : mappedBasisVectors[basisVectorIndex];
 
                     var bestBasisVectorIndexULong = (ulong) bestBasisVectorIndex;
 
-                    if (reflectedVector.TryGetTermScalarByIndex(bestBasisVectorIndexULong, out var scalar))
+                    if (reflectedVector.VectorStorage.TryGetTermScalarByIndex(bestBasisVectorIndexULong, out var scalar))
                         vectorComposersArray[basisVectorIndex].SetTerm(bestBasisVectorIndexULong, scalar);
 
                     if (basisVectorIndex == bestBasisVectorIndex)
                         continue;
 
-                    mappedBasisVectors[basisVectorIndex] = processor.CreateVectorStorage(reflectedVector.GetLinVectorIndexScalarStorage()
-                            .GetIndexScalarRecords()
-                            .Where(pair => pair.Index != bestBasisVectorIndexULong)
-                            .CreateDictionary()
-                    );
+                    mappedBasisVectors[basisVectorIndex] = 
+                        processor.CreateVector(
+                            reflectedVector
+                                .VectorStorage
+                                .GetLinVectorIndexScalarStorage()
+                                .GetIndexScalarRecords()
+                                .Where(pair => pair.Index != bestBasisVectorIndexULong)
+                                .CreateDictionary()
+                            );
                 }
 
                 basisVectorIndicesList.Remove(bestBasisVectorIndex);
@@ -124,7 +120,6 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             unitVectorsList.Reverse();
             var linearMapQ = 
                 PureVersorsSequence<double>.Create(
-                    processor, 
                     unitVectorsList
                 );
 
@@ -136,7 +131,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 
         public static Tuple<PureVersorsSequence<T>, IOutermorphism<T>> GetHouseholderQRDecomposition<T>(this IGeometricAlgebraProcessor<T> processor, IOutermorphism<T> linearMap, int count)
         {
-            var unitVectorsList = new List<VectorStorage<T>>(count);
+            var unitVectorsList = new List<Vector<T>>(count);
             var mappedBasisVectors =
                 Enumerable
                     .Range(0, count)
@@ -154,41 +149,35 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             for (var i = 0; i < count; i++)
             {
                 var x = mappedBasisVectors[i];
-                var xNorm = processor.ENorm(x);
+                var xNorm = x.ENorm().ScalarValue;
 
-                var unitVector = processor.Subtract(
-                    x,
-                    processor.CreateVectorTermStorage(i, xNorm)
-                ).GetVectorPart();
+                var unitVector = x - processor.CreateVectorTerm(i, xNorm);
 
-                var reflectionVectorFound = !processor.IsZero(unitVector);
+                var reflectionVectorFound = !unitVector.IsZero();
                 if (reflectionVectorFound)
                 {
-                    unitVector = processor.Divide(unitVector, processor.ENorm(unitVector)).GetVectorPart();
+                    unitVector /= unitVector.ENorm();
                     unitVectorsList.Add(unitVector);
                 }
 
                 for (var j = i; j < count; j++)
                 {
                     var reflectedVector = reflectionVectorFound
-                        ? processor.Negative(
-                            processor.EGp(
-                                    unitVector, 
-                                    mappedBasisVectors[j], 
-                                    unitVector
-                                ).GetVectorPart()
-                        )
+                        ? -unitVector
+                            .EGp(mappedBasisVectors[j])
+                            .EGp(unitVector)
+                            .GetVectorPart()
                         : mappedBasisVectors[j];
 
                     var basisVectorIndex = (ulong) i;
 
-                    if (reflectedVector.TryGetTermScalarByIndex(basisVectorIndex, out var scalar))
+                    if (reflectedVector.VectorStorage.TryGetTermScalarByIndex(basisVectorIndex, out var scalar))
                         vectorComposersArray[j].SetTerm(basisVectorIndex, scalar);
 
                     if (j > i)
-                        mappedBasisVectors[j] = reflectedVector.GetVectorPart(
+                        mappedBasisVectors[j] = reflectedVector.VectorStorage.GetVectorPart(
                             index => index > basisVectorIndex
-                        );
+                        ).CreateVector(processor);
                 }
             }
 
@@ -212,7 +201,6 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             unitVectorsList.Reverse();
             var linearMapQ = 
                 PureVersorsSequence<T>.Create(
-                    processor, 
                     unitVectorsList
                 );
 

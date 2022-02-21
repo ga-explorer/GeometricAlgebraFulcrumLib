@@ -1,9 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms;
+using GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Geometry.Frames;
 using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
@@ -15,75 +16,89 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
     public static class OutermorphismUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Vector<T> OmMap<T>(this IOutermorphism<T> outermorphism, Vector<T> multivector)
+        public static Vector<T> OmMap<T>(this IOutermorphism<T> outermorphism, Axis axis)
         {
-            return new Vector<T>(
-                multivector.GeometricProcessor,
-                outermorphism.OmMapVector(multivector.VectorStorage)
-            );
-        }
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Bivector<T> OmMap<T>(this IOutermorphism<T> outermorphism, Bivector<T> multivector)
-        {
-            return new Bivector<T>(
-                multivector.GeometricProcessor,
-                outermorphism.OmMapBivector(multivector.BivectorStorage)
-            );
+            return axis.IsPositive
+                ? outermorphism.OmMapBasisVector(axis.BasisVectorIndex)
+                : -outermorphism.OmMapBasisVector(axis.BasisVectorIndex);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVector<T> OmMap<T>(this IOutermorphism<T> outermorphism, KVector<T> multivector)
+        public static VectorStorage<T> OmMap<T>(this IOutermorphism<T> map, VectorStorage<T> mv)
         {
-            return new KVector<T>(
-                multivector.GeometricProcessor,
-                outermorphism.OmMapKVector(multivector.KVectorStorage)
-            );
+            var processor = map.GeometricProcessor;
+
+            return map.OmMap(mv.CreateVector(processor)).VectorStorage;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> OmMap<T>(this IOutermorphism<T> outermorphism, Multivector<T> multivector)
+        public static BivectorStorage<T> OmMap<T>(this IOutermorphism<T> map, BivectorStorage<T> mv)
         {
-            return new Multivector<T>(
-                multivector.GeometricProcessor,
-                outermorphism.OmMapMultivector(multivector.MultivectorStorage)
-            );
+            var processor = map.GeometricProcessor;
+
+            return map.OmMap(mv.CreateBivector(processor)).BivectorStorage;
         }
 
-
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorStorage<T> OmMapMultivector<T>(this IOutermorphism<T> map, IMultivectorStorage<T> mv)
+        public static KVectorStorage<T> OmMap<T>(this IOutermorphism<T> map, KVectorStorage<T> mv)
         {
+            var processor = map.GeometricProcessor;
+
             return mv switch
             {
-                VectorStorage<T> mv1 => map.OmMapVector(mv1),
-                BivectorStorage<T> mv1 => map.OmMapBivector(mv1),
-                KVectorStorage<T> mv1 => map.OmMapKVector(mv1),
-                MultivectorStorage<T> mv1 => map.OmMapMultivector(mv1),
-                MultivectorGradedStorage<T> mv1 => map.OmMapMultivector(mv1),
-                _ => throw new InvalidOperationException()
+                VectorStorage<T> mv1 => map.OmMap(mv1.CreateVector(processor)).VectorStorage,
+                BivectorStorage<T> mv1 => map.OmMap(mv1.CreateBivector(processor)).BivectorStorage,
+                _ => map.OmMap(mv.CreateKVector(processor)).KVectorStorage
             };
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GeoFreeFrame<T> OmMapFreeFrame<T>(this IOutermorphism<T> outermorphism, GeoFreeFrame<T> frame)
+        public static IMultivectorGradedStorage<T> OmMap<T>(this IOutermorphism<T> map, IMultivectorGradedStorage<T> mv)
         {
-            return new GeoFreeFrame<T>(
+            var processor = map.GeometricProcessor;
+
+            return mv switch
+            {
+                VectorStorage<T> mv1 => map.OmMap(mv1.CreateVector(processor)).VectorStorage,
+                BivectorStorage<T> mv1 => map.OmMap(mv1.CreateBivector(processor)).BivectorStorage,
+                KVectorStorage<T> mv1 => map.OmMap(mv1.CreateKVector(processor)).KVectorStorage,
+                _ => map.OmMap(mv.CreateMultivector(processor)).MultivectorStorage.ToMultivectorGradedStorage()
+            };
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IMultivectorStorage<T> OmMap<T>(this IOutermorphism<T> map, IMultivectorStorage<T> mv)
+        {
+            var processor = map.GeometricProcessor;
+
+            return mv switch
+            {
+                VectorStorage<T> mv1 => map.OmMap(mv1.CreateVector(processor)).VectorStorage,
+                BivectorStorage<T> mv1 => map.OmMap(mv1.CreateBivector(processor)).BivectorStorage,
+                KVectorStorage<T> mv1 => map.OmMap(mv1.CreateKVector(processor)).KVectorStorage,
+                _ => map.OmMap(mv.CreateMultivector(processor)).MultivectorStorage
+            };
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static VectorFrame<T> OmMap<T>(this IOutermorphism<T> outermorphism, VectorFrame<T> frame)
+        {
+            return VectorFrame<T>.Create(
                 frame.GeometricProcessor,
                 frame.FrameSpecs,
-                frame.Select(outermorphism.OmMapVector)
+                frame.Select(outermorphism.OmMap)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVectorStorage<T> OmMapPseudoScalar<T>(this IOutermorphism<T> outermorphism, uint vSpaceDimension)
+        public static KVector<T> OmMapPseudoScalar<T>(this IOutermorphism<T> outermorphism, uint vSpaceDimension)
         {
             return outermorphism.OmMapBasisBlade(vSpaceDimension.GetMaxBasisBladeId());
         }
 
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> OmMapBasisVector<T>(this IReadOnlyList<IOutermorphism<T>> omList, ulong index)
+        public static Vector<T> OmMapBasisVector<T>(this IReadOnlyList<IOutermorphism<T>> omList, ulong index)
         {
             var kVector = omList[0].OmMapBasisVector(index);
 
@@ -91,12 +106,12 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                 .Skip(1)
                 .Aggregate(
                     kVector, 
-                    (v, om) => om.OmMapVector(v)
+                    (v, om) => om.OmMap(v)
                 );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static BivectorStorage<T> OmMapBasisBivector<T>(this IReadOnlyList<IOutermorphism<T>> omList, ulong index)
+        public static Bivector<T> OmMapBasisBivector<T>(this IReadOnlyList<IOutermorphism<T>> omList, ulong index)
         {
             var kVector = omList[0].OmMapBasisBivector(index);
 
@@ -104,12 +119,12 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                 .Skip(1)
                 .Aggregate(
                     kVector, 
-                    (v, om) => om.OmMapBivector(v)
+                    (v, om) => om.OmMap(v)
                 );
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static BivectorStorage<T> OmMapBasisBivector<T>(this IReadOnlyList<IOutermorphism<T>> omList, ulong index1, ulong index2)
+        public static Bivector<T> OmMapBasisBivector<T>(this IReadOnlyList<IOutermorphism<T>> omList, ulong index1, ulong index2)
         {
             var kVector = omList[0].OmMapBasisBivector(index1, index2);
 
@@ -117,12 +132,12 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                 .Skip(1)
                 .Aggregate(
                     kVector, 
-                    (v, om) => om.OmMapBivector(v)
+                    (v, om) => om.OmMap(v)
                 );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVectorStorage<T> OmMapBasisBlade<T>(this IReadOnlyList<IOutermorphism<T>> omList, uint grade, ulong index)
+        public static KVector<T> OmMapBasisBlade<T>(this IReadOnlyList<IOutermorphism<T>> omList, uint grade, ulong index)
         {
             var kVector = omList[0].OmMapBasisBlade(grade, index);
 
@@ -130,12 +145,12 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                 .Skip(1)
                 .Aggregate(
                     kVector, 
-                    (v, om) => om.OmMapKVector(v)
+                    (v, om) => om.OmMap(v)
                 );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVectorStorage<T> OmMapBasisBlade<T>(this IReadOnlyList<IOutermorphism<T>> omList, ulong id)
+        public static KVector<T> OmMapBasisBlade<T>(this IReadOnlyList<IOutermorphism<T>> omList, ulong id)
         {
             var kVector = omList[0].OmMapBasisBlade(id);
 
@@ -143,12 +158,12 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                 .Skip(1)
                 .Aggregate(
                     kVector, 
-                    (v, om) => om.OmMapKVector(v)
+                    (v, om) => om.OmMap(v)
                 );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVectorStorage<T> OmMapPseudoScalar<T>(this IReadOnlyList<IOutermorphism<T>> omList, uint vSpaceDimension)
+        public static KVector<T> OmMapPseudoScalar<T>(this IReadOnlyList<IOutermorphism<T>> omList, uint vSpaceDimension)
         {
             var kVector = omList[0].OmMapPseudoScalar(vSpaceDimension);
 
@@ -156,94 +171,84 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                 .Skip(1)
                 .Aggregate(
                     kVector, 
-                    (v, om) => om.OmMapKVector(v)
+                    (v, om) => om.OmMap(v)
                 );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> OmMapVector<T>(this IEnumerable<IOutermorphism<T>> omSeq, VectorStorage<T> vector)
+        public static Vector<T> OmMap<T>(this IEnumerable<IOutermorphism<T>> omSeq, Vector<T> vector)
         {
             return omSeq
                 .Aggregate(
                     vector, 
-                    (v, om) => om.OmMapVector(v)
-                );
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static BivectorStorage<T> OmMapBivector<T>(this IEnumerable<IOutermorphism<T>> omSeq, BivectorStorage<T> vector)
-        {
-            return omSeq
-                .Aggregate(
-                    vector, 
-                    (v, om) => om.OmMapBivector(v)
+                    (v, om) => om.OmMap(v)
                 );
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVectorStorage<T> OmMapKVector<T>(this IEnumerable<IOutermorphism<T>> omSeq, KVectorStorage<T> vector)
+        public static Bivector<T> OmMap<T>(this IEnumerable<IOutermorphism<T>> omSeq, Bivector<T> vector)
         {
             return omSeq
                 .Aggregate(
                     vector, 
-                    (v, om) => om.OmMapKVector(v)
+                    (v, om) => om.OmMap(v)
                 );
         }
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static MultivectorGradedStorage<T> OmMapMultivector<T>(this IEnumerable<IOutermorphism<T>> omSeq, MultivectorGradedStorage<T> vector)
+        public static KVector<T> OmMap<T>(this IEnumerable<IOutermorphism<T>> omSeq, KVector<T> vector)
         {
             return omSeq
                 .Aggregate(
                     vector, 
-                    (v, om) => om.OmMapMultivector(v)
+                    (v, om) => om.OmMap(v)
                 );
         }
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static MultivectorStorage<T> OmMapMultivector<T>(this IEnumerable<IOutermorphism<T>> omSeq, MultivectorStorage<T> vector)
+        public static Multivector<T> OmMap<T>(this IEnumerable<IOutermorphism<T>> omSeq, Multivector<T> vector)
         {
             return omSeq
                 .Aggregate(
                     vector, 
-                    (v, om) => om.OmMapMultivector(v)
+                    (v, om) => om.OmMap(v)
                 );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GeoFreeFrame<T> OmMapFreeFrame<T>(this IEnumerable<IOutermorphism<T>> omSeq, GeoFreeFrame<T> frame)
+        public static VectorFrame<T> OmMap<T>(this IEnumerable<IOutermorphism<T>> omSeq, VectorFrame<T> frame)
         {
-            return new GeoFreeFrame<T>(
+            return VectorFrame<T>.Create(
                 frame.GeometricProcessor,
                 frame.FrameSpecs,
-                frame.Select(omSeq.OmMapVector)
+                frame.Select(omSeq.OmMap)
             );
         }
         
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorStorage<T> OmMapMultivector<T>(this IEnumerable<IOutermorphism<T>> omSeq, IMultivectorStorage<T> mv)
-        {
-            return mv switch
-            {
-                VectorStorage<T> mv1 => omSeq.OmMapVector(mv1),
-                BivectorStorage<T> mv1 => omSeq.OmMapBivector(mv1),
-                KVectorStorage<T> mv1 => omSeq.OmMapKVector(mv1),
-                MultivectorStorage<T> mv1 => omSeq.OmMapMultivector(mv1),
-                MultivectorGradedStorage<T> mv1 => omSeq.OmMapMultivector(mv1),
-                _ => throw new InvalidOperationException()
-            };
-        }
+        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+        //public static IMultivectorStorage<T> OmMap<T>(this IEnumerable<IOutermorphism<T>> omSeq, IMultivectorStorage<T> mv)
+        //{
+        //    return mv switch
+        //    {
+        //        VectorStorage<T> mv1 => omSeq.OmMap(mv1),
+        //        BivectorStorage<T> mv1 => omSeq.OmMap(mv1),
+        //        KVectorStorage<T> mv1 => omSeq.OmMap(mv1),
+        //        MultivectorStorage<T> mv1 => omSeq.OmMap(mv1),
+        //        MultivectorGradedStorage<T> mv1 => omSeq.OmMap(mv1),
+        //        _ => throw new InvalidOperationException()
+        //    };
+        //}
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T[,] GetFinalMappingArray<T>(this IGeometricAlgebraProcessor<T> geometricProcessor, IEnumerable<IOutermorphism<T>> omSeq, int rowsCount)
         {
-            return omSeq.OmMapFreeFrame(
+            return omSeq.OmMap(
                 geometricProcessor.CreateFreeFrameOfBasis((uint) rowsCount)
             ).GetArray(rowsCount);
         }
 
 
-        public static IEnumerable<VectorStorage<T>> OmMapVectorSequence<T>(this IEnumerable<IOutermorphism<T>> omSeq, VectorStorage<T> vector)
+        public static IEnumerable<Vector<T>> OmMapVectorSequence<T>(this IEnumerable<IOutermorphism<T>> omSeq, Vector<T> vector)
         {
             var v = vector;
 
@@ -251,13 +256,13 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 
             foreach (var om in omSeq)
             {
-                v = om.OmMapVector(v);
+                v = om.OmMap(v);
 
                 yield return v;
             }
         }
         
-        public static IEnumerable<BivectorStorage<T>> OmMapBivectorSequence<T>(this IEnumerable<IOutermorphism<T>> omSeq, BivectorStorage<T> vector)
+        public static IEnumerable<Bivector<T>> OmMapBivectorSequence<T>(this IEnumerable<IOutermorphism<T>> omSeq, Bivector<T> vector)
         {
             var v = vector;
 
@@ -265,13 +270,13 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 
             foreach (var om in omSeq)
             {
-                v = om.OmMapBivector(v);
+                v = om.OmMap(v);
 
                 yield return v;
             }
         }
         
-        public static IEnumerable<KVectorStorage<T>> OmMapKVectorSequence<T>(this IEnumerable<IOutermorphism<T>> omSeq, KVectorStorage<T> vector)
+        public static IEnumerable<KVector<T>> OmMapKVectorSequence<T>(this IEnumerable<IOutermorphism<T>> omSeq, KVector<T> vector)
         {
             var v = vector;
 
@@ -279,27 +284,27 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 
             foreach (var om in omSeq)
             {
-                v = om.OmMapKVector(v);
+                v = om.OmMap(v);
 
                 yield return v;
             }
         }
         
-        public static IEnumerable<MultivectorGradedStorage<T>> OmMapMultivectorSequence<T>(this IEnumerable<IOutermorphism<T>> omSeq, MultivectorGradedStorage<T> vector)
-        {
-            var v = vector;
+        //public static IEnumerable<MultivectorGradedStorage<T>> OmMapMultivectorSequence<T>(this IEnumerable<IOutermorphism<T>> omSeq, MultivectorGradedStorage<T> vector)
+        //{
+        //    var v = vector;
 
-            yield return v;
+        //    yield return v;
 
-            foreach (var om in omSeq)
-            {
-                v = om.OmMapMultivector(v);
+        //    foreach (var om in omSeq)
+        //    {
+        //        v = om.OmMap(v);
 
-                yield return v;
-            }
-        }
+        //        yield return v;
+        //    }
+        //}
         
-        public static IEnumerable<MultivectorStorage<T>> OmMapMultivectorSequence<T>(this IEnumerable<IOutermorphism<T>> omSeq, MultivectorStorage<T> vector)
+        public static IEnumerable<Multivector<T>> OmMapMultivectorSequence<T>(this IEnumerable<IOutermorphism<T>> omSeq, Multivector<T> vector)
         {
             var v = vector;
 
@@ -307,13 +312,13 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 
             foreach (var om in omSeq)
             {
-                v = om.OmMapMultivector(v);
+                v = om.OmMap(v);
 
                 yield return v;
             }
         }
 
-        public static IEnumerable<GeoFreeFrame<T>> OmMapFreeFrameSequence<T>(this IEnumerable<IOutermorphism<T>> omSeq, GeoFreeFrame<T> frame)
+        public static IEnumerable<VectorFrame<T>> OmMapFreeFrameSequence<T>(this IEnumerable<IOutermorphism<T>> omSeq, VectorFrame<T> frame)
         {
             var f = frame;
 
@@ -321,7 +326,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 
             foreach (var om in omSeq)
             {
-                f = om.OmMapFreeFrame(f);
+                f = om.OmMap(f);
 
                 yield return f;
             }
@@ -339,7 +344,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                 var mappedBasisVector = linearMap.OmMapBasisVector((uint) index);
 
                 for (var i = 0; i < rowsCount; i++)
-                    array[i, index] = mappedBasisVector.TryGetTermScalarByIndex((ulong) i, out var scalar)
+                    array[i, index] = mappedBasisVector.VectorStorage.TryGetTermScalarByIndex((ulong) i, out var scalar)
                         ? scalar
                         : processor.ScalarZero;
             }
@@ -429,31 +434,38 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                 om.OmMapBasisBlade(geometricProcessor.MaxBasisBladeId);
 
             return geometricProcessor.ESp(
-                mappedPseudoScalar,
-                geometricProcessor.CreateEuclideanPseudoScalarInverseStorage(
+                mappedPseudoScalar.KVectorStorage,
+                geometricProcessor.CreateKVectorStorageEuclideanPseudoScalarInverse(
                     geometricProcessor.VSpaceDimension
                 )
             );
         }
 
-        public static T GetDeterminant<T>(this IGeometricAlgebraProcessor<T> geometricProcessor, IOutermorphism<T> om)
+        public static Scalar<T> GetDeterminant<T>(this IOutermorphism<T> om)
         {
-            return geometricProcessor.Sp(
-                om.OmMapBasisBlade(geometricProcessor.MaxBasisBladeId), 
-                geometricProcessor.PseudoScalarInverse
-            );
+            var geometricProcessor = om.GeometricProcessor;
+
+            return om
+                .OmMapBasisBlade(geometricProcessor.MaxBasisBladeId)
+                .Sp(geometricProcessor.PseudoScalarInverse);
+        }
+        
+        public static Scalar<T> GetDeterminant<T>(this IGeometricAlgebraProcessor<T> geometricProcessor, IOutermorphism<T> om)
+        {
+            return om
+                .OmMapBasisBlade(geometricProcessor.MaxBasisBladeId)
+                .Sp(geometricProcessor.PseudoScalarInverse);
         }
 
-        public static T GetDeterminant<T>(this IOutermorphism<T> om, IGeometricAlgebraProcessor<T> geometricProcessor)
+        public static Scalar<T> GetDeterminant<T>(this IOutermorphism<T> om, IGeometricAlgebraProcessor<T> geometricProcessor)
         {
-            return geometricProcessor.Sp(
-                om.OmMapBasisBlade(geometricProcessor.MaxBasisBladeId), 
-                geometricProcessor.PseudoScalarInverse
-            );
+            return om
+                .OmMapBasisBlade(geometricProcessor.MaxBasisBladeId)
+                .Sp(geometricProcessor.PseudoScalarInverse);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IOutermorphism<T> CreateComputedOutermorphism<T>(this GeoFreeFrame<T> frame)
+        public static IOutermorphism<T> CreateComputedOutermorphism<T>(this VectorFrame<T> frame)
         {
             return frame.GeometricProcessor.CreateLinearMapOutermorphism(
                 frame.GetArray()

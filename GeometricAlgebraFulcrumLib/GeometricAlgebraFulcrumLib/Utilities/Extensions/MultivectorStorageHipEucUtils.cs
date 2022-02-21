@@ -6,7 +6,7 @@ using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 {
-    public static class MultivectorStorageHipEucUtils
+    internal static class MultivectorStorageHipEucUtils
     {
         public static KVectorStorage<T> EHip<T>(this IScalarAlgebraProcessor<T> scalarProcessor, KVectorStorage<T> mv1, KVectorStorage<T> mv2)
         {
@@ -16,7 +16,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                 return KVectorStorage<T>.ZeroScalar;
 
             if (grade1 == grade2)
-                return scalarProcessor.CreateKVectorScalarStorage(
+                return scalarProcessor.CreateKVectorStorageScalar(
                     scalarProcessor.ESp(mv1, mv2)
                 );
 

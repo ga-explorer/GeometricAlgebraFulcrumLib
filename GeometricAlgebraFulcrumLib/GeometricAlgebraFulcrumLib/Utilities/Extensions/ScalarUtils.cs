@@ -274,6 +274,28 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<T> Square<T>(this Scalar<T> scalar)
+        {
+            var processor = scalar.ScalarProcessor;
+
+            return Scalar<T>.Create(
+                processor, 
+                processor.Square(scalar.ScalarValue)
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<T> Sign<T>(this Scalar<T> scalar)
+        {
+            var processor = scalar.ScalarProcessor;
+
+            return Scalar<T>.Create(
+                processor, 
+                processor.Sign(scalar.ScalarValue)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> Sqrt<T>(this Scalar<T> scalar)
         {
             var processor = scalar.ScalarProcessor;

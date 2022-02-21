@@ -1,11 +1,23 @@
 ﻿using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
+using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 {
     public static class KVectorOpUtils
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static KVector<T> Op<T>(this IGeometricAlgebraProcessor<T> processor, ulong id1, ulong id2)
+        {
+            return processor.Op(
+                processor.CreateKVectorStorageBasis(id1),
+                processor.CreateKVectorStorageBasis(id2)
+            ).CreateKVector(processor);
+        }
+
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static KVector<T> Op<T>(this KVector<T> mv1, int mv2)
         {

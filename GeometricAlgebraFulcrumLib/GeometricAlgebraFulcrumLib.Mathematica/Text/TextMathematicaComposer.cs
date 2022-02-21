@@ -7,7 +7,7 @@ using Wolfram.NETLink;
 namespace GeometricAlgebraFulcrumLib.Mathematica.Text
 {
     public sealed class TextMathematicaComposer
-        : TextComposerBase<Expr>
+        : TextComposer<Expr>
     {
         public static TextMathematicaComposer DefaultComposer { get; }
             = new();

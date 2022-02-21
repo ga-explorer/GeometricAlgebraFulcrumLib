@@ -29,7 +29,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
 
         IMultivectorStorage<T> CreateMultivectorStorage();
 
-        MultivectorStorage<T> CreateMultivectorSparseStorage();
+        MultivectorStorage<T> CreateMultivectorStorageSparse();
 
         MultivectorGradedStorage<T> CreateMultivectorGradedStorage();
     }

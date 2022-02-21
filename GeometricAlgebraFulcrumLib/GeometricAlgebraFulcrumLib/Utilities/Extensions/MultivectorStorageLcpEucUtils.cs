@@ -6,7 +6,7 @@ using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 {
-    public static class MultivectorStorageLcpEucUtils
+    internal static class MultivectorStorageLcpEucUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T VectorsELcp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IReadOnlyList<T> vector1, IReadOnlyList<T> vector2)
@@ -46,7 +46,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                 return KVectorStorage<T>.ZeroScalar;
 
             if (mv2.Grade == mv1.Grade)
-                return scalarProcessor.CreateKVectorScalarStorage(scalarProcessor.ESp(mv1, mv2));
+                return scalarProcessor.CreateKVectorStorageScalar(scalarProcessor.ESp(mv1, mv2));
 
             var grade1 = mv1.Grade;
             var grade2 = mv2.Grade;
@@ -97,12 +97,12 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                 return KVectorStorage<T>.ZeroScalar;
 
             if (mv1.Grade == mv2.Grade)
-                return scalarProcessor.CreateKVectorScalarStorage(scalarProcessor.ESp(mv1, mv2));
+                return scalarProcessor.CreateKVectorStorageScalar(scalarProcessor.ESp(mv1, mv2));
 
             return mv1 switch
             {
                 VectorStorage<T> vt1 when mv2 is VectorStorage<T> vt2 => 
-                    ELcp(scalarProcessor, vt1, vt2).CreateKVectorScalarStorage(),
+                    ELcp(scalarProcessor, vt1, vt2).CreateKVectorStorageScalar(),
 
                 _ => 
                     ELcpAsKVector(scalarProcessor, mv1, mv2)
@@ -189,7 +189,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             return mv1 switch
             {
                 VectorStorage<T> vt1 when mv2 is VectorStorage<T> vt2 => 
-                    ELcp(scalarProcessor, vt1, vt2).CreateKVectorScalarStorage(),
+                    ELcp(scalarProcessor, vt1, vt2).CreateKVectorStorageScalar(),
 
                 _ => 
                     ELcpAsMultivectorGraded(scalarProcessor, mv1, mv2)
@@ -229,7 +229,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 
             composer.RemoveZeroTerms();
 
-            return composer.CreateMultivectorSparseStorage();
+            return composer.CreateMultivectorStorageSparse();
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -244,7 +244,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             return mv1 switch
             {
                 VectorStorage<T> vt1 when mv2 is VectorStorage<T> vt2 => 
-                    ELcp(scalarProcessor, vt1, vt2).CreateKVectorScalarStorage(),
+                    ELcp(scalarProcessor, vt1, vt2).CreateKVectorStorageScalar(),
 
                 IMultivectorGradedStorage<T> gmv1 when mv2 is IMultivectorGradedStorage<T> gmv2 => 
                     ELcpAsMultivectorGraded(scalarProcessor, gmv1, gmv2),

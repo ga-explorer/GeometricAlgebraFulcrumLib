@@ -39,7 +39,10 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
 
             var context = new SymbolicContext(
                 DenseKVectorsLibraryComposer.DefaultContextOptions
-            );
+            )
+            {
+                GeometricProcessor = GeometricProcessor
+            };
 
             var inputKVector = 
                 context.ParameterVariablesFactory.CreateDenseKVector(
@@ -48,22 +51,19 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
                     index => $"inputKVectorScalar{index}"
                 );
 
-            var outputKVector = 
-                GeometricProcessor
-                    .EDual(inputKVector, VSpaceDimension)
-                    .GetKVectorPart(outGrade);
+            var outputKVector = inputKVector.EDual();
 
             outputKVector.SetIsOutput(true);
 
             context.OptimizeContext();
             
             context.SetExternalNamesByTermIndex(
-                inputKVector,
+                inputKVector.KVectorStorage,
                 index => $"scalars[{index}]"
             );
             
             context.SetExternalNamesByTermIndex(
-                outputKVector,
+                outputKVector.KVectorStorage,
                 index => $"c[{index}]"
             );
 
@@ -162,7 +162,10 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         {
             var context = new SymbolicContext(
                 DenseKVectorsLibraryComposer.DefaultContextOptions
-            );
+            )
+            {
+                GeometricProcessor = GeometricProcessor
+            };
 
             //var outGradesList =
             //    GeometricProcessor
@@ -181,10 +184,10 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
                     );
 
             var outputKVector = 
-                GeometricProcessor.EGp(inputKVector);
+                inputKVector.EGpSquared();
 
             GeometricProcessor
-                .GetNotZeroTerms(outputKVector)
+                .GetNotZeroTerms(outputKVector.MultivectorStorage)
                 .Select(t => t.Scalar)
                 .SetIsOutput(true);
 
@@ -193,7 +196,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             context.OptimizeContext();
             
             context.SetExternalNamesByTermIndex(
-                inputKVector,
+                inputKVector.KVectorStorage,
                 index => $"scalars[{index}]"
             );
             
@@ -212,13 +215,14 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
                 DenseKVectorsLibraryComposer.GeoLanguage, 
                 context,
                 DenseKVectorsLibraryComposer.DefaultContextCodeComposerOptions
-            );
-
-            macroComposer.ComposerOptions.ActionBeforeGenerateSingleComputation =
-                TestSelfDpGradeFunctionComputationCondition;
-
-            macroComposer.ComposerOptions.ActionAfterGenerateSingleComputation =
-                AddSelfDpGradeFunctionComputationCondition;
+            )
+            {
+                ComposerOptions =
+                {
+                    ActionBeforeGenerateSingleComputation = TestSelfDpGradeFunctionComputationCondition,
+                    ActionAfterGenerateSingleComputation = AddSelfDpGradeFunctionComputationCondition
+                }
+            };
 
             //Generate code from macro binding
             var computationsText = macroComposer.Generate();

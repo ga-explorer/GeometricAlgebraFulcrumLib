@@ -5,7 +5,7 @@ using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 {
-    public static class MultivectorStorageDivideUtils
+    internal static class MultivectorStorageDivideUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static VectorStorage<T> Divide<T>(this IScalarAlgebraProcessor<T> scalarProcessor, VectorStorage<T> mv, T scalar)

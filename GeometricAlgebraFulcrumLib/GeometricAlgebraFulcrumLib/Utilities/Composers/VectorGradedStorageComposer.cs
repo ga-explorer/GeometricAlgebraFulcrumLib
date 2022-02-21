@@ -258,10 +258,10 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public VectorGradedStorageComposer<T> SetTerms(IEnumerable<IndexScalarRecord<T>> indexTermRecords)
+        public VectorGradedStorageComposer<T> SetTerms(IEnumerable<IndexScalarRecord<T>> idTermRecords)
         {
-            foreach (var (index, value) in indexTermRecords)
-                SetTerm(index, value);
+            foreach (var (id, value) in idTermRecords)
+                SetTerm(id, value);
 
             return this;
         }
@@ -642,13 +642,13 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public MultivectorGradedStorage<T> CreateMultivectorGradedStorage()
         {
-            return CreateLinVectorGradedStorage().CreateMultivectorGradedStorage();
+            return CreateLinVectorGradedStorage().CreateMultivectorStorageGraded();
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public MultivectorStorage<T> CreateMultivectorSparseStorage()
+        public MultivectorStorage<T> CreateMultivectorStorageSparse()
         {
-            return CreateLinVectorStorage().CreateMultivectorSparseStorage();
+            return CreateLinVectorStorage().CreateMultivectorStorageSparse();
         }
     }
 }

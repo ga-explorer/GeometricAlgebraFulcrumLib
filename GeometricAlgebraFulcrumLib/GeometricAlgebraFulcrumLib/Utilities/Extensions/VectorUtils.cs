@@ -45,12 +45,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector<T> OmMapUsing<T>(this Vector<T> vector, IOutermorphism<T> om)
         {
-            var processor = vector.GeometricProcessor;
-
-            return new Vector<T>(
-                processor,
-                om.OmMapVector(vector.VectorStorage)
-            );
+            return om.OmMap(vector);
         }
 
                 
@@ -73,57 +68,51 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Vector<T> Project<T>(this ISubspace<T> subspace, Vector<T> vector)
-        {
-            var processor = subspace.GeometricProcessor;
+        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+        //public static Vector<T> Project<T>(this ISubspace<T> subspace, Vector<T> vector)
+        //{
+        //    var processor = subspace.GeometricProcessor;
 
-            return new Vector<T>(
-                processor,
-                subspace.Project(vector.VectorStorage)
-            );
-        }
+        //    return new Vector<T>(
+        //        processor,
+        //        subspace.Project(vector)
+        //    );
+        //}
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Vector<T> ProjectOn<T>(this Vector<T> vector, ISubspace<T> subspace)
-        {
-            var processor = subspace.GeometricProcessor;
+        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+        //public static Vector<T> ProjectOn<T>(this Vector<T> vector, ISubspace<T> subspace)
+        //{
+        //    var processor = subspace.GeometricProcessor;
 
-            return new Vector<T>(
-                processor,
-                subspace.Project(vector.VectorStorage)
-            );
-        }
+        //    return new Vector<T>(
+        //        processor,
+        //        subspace.Project(vector.VectorStorage)
+        //    );
+        //}
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<Vector<T>> Project<T>(this ISubspace<T> subspace, params Vector<T>[] vectorsList)
         {
-            var processor = subspace.GeometricProcessor;
-
-            return vectorsList.Select(v => 
-                new Vector<T>(processor, subspace.Project(v))
-            );
+            return vectorsList.Select(subspace.Project);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<Vector<T>> Project<T>(this ISubspace<T> subspace, IEnumerable<Vector<T>> vectorsList)
         {
-            var processor = subspace.GeometricProcessor;
-
-            return vectorsList.Select(v => 
-                new Vector<T>(processor, subspace.Project(v))
-            );
+            return vectorsList.Select(subspace.Project);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector<T> ProjectOn<T>(this Vector<T> vector, ISubspace<T> subspace)
+        {
+            return subspace.Project(vector);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<Vector<T>> ProjectOn<T>(this IEnumerable<Vector<T>> vectorsList, ISubspace<T> subspace)
         {
-            var processor = subspace.GeometricProcessor;
-
-            return vectorsList.Select(v => 
-                new Vector<T>(processor, subspace.Project(v))
-            );
+            return vectorsList.Select(subspace.Project);
         }
 
 
@@ -133,8 +122,8 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             var processor = (IGeometricAlgebraEuclideanProcessor<T>) vector2.GeometricProcessor;
 
             return processor.CreatePureRotor(
-                processor.CreateVectorBasisStorage(index),
-                vector2.VectorStorage
+                processor.CreateVectorBasis(index),
+                vector2
             );
         }
         
@@ -143,10 +132,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         {
             var processor = (IGeometricAlgebraEuclideanProcessor<T>) vector2.GeometricProcessor;
 
-            return processor.CreatePureRotor(
-                vector1.VectorStorage,
-                vector2.VectorStorage
-            );
+            return processor.CreatePureRotor(vector1, vector2);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -155,8 +141,8 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             var processor = (IGeometricAlgebraEuclideanProcessor<T>) vector2.GeometricProcessor;
 
             return processor.CreatePureRotor(
-                vector1.VectorStorage,
-                vector2.VectorStorage,
+                vector1,
+                vector2,
                 assumeUnitVectors
             );
         }
@@ -168,8 +154,8 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             var processor = (IGeometricAlgebraEuclideanProcessor<T>) vector1.GeometricProcessor;
 
             return processor.CreatePureRotor(
-                vector1.VectorStorage,
-                processor.CreateVectorBasisStorage(index)
+                vector1,
+                processor.CreateVectorBasis(index)
             );
         }
 
@@ -178,10 +164,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         {
             var processor = (IGeometricAlgebraEuclideanProcessor<T>) vector1.GeometricProcessor;
 
-            return processor.CreatePureRotor(
-                vector1.VectorStorage,
-                vector2.VectorStorage
-            );
+            return processor.CreatePureRotor(vector1, vector2);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -190,8 +173,8 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             var processor = (IGeometricAlgebraEuclideanProcessor<T>) vector1.GeometricProcessor;
 
             return processor.CreatePureRotor(
-                vector1.VectorStorage,
-                vector2.VectorStorage,
+                vector1,
+                vector2,
                 assumeUnitVectors
             );
         }
@@ -208,10 +191,10 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         {
             var processor = (IGeometricAlgebraEuclideanProcessor<T>) vector1.GeometricProcessor;
 
-            var vector2 = subspace.Project(vector1.VectorStorage);
+            var vector2 = subspace.Project(vector1);
 
             return processor.CreatePureRotor(
-                vector1.VectorStorage,
+                vector1,
                 vector2
             );
         }

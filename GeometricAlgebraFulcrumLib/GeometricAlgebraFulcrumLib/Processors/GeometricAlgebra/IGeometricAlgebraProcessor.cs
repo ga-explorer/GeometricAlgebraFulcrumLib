@@ -1,7 +1,7 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Processors.LinearAlgebra;
-using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
 {
@@ -15,12 +15,12 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
 
         bool IsChangeOfBasis { get; }
 
-        KVectorStorage<T> PseudoScalar { get; }
+        bool IsOrthonormalEuclidean { get; }
 
-        KVectorStorage<T> PseudoScalarInverse { get; }
+        KVector<T> PseudoScalar { get; }
 
-        KVectorStorage<T> PseudoScalarReverse { get; }
+        KVector<T> PseudoScalarInverse { get; }
 
-        IMultivectorStorage<T> Normalize(IMultivectorStorage<T> mv1);
+        KVector<T> PseudoScalarReverse { get; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using DataStructuresLib.BitManipulation;
 
 namespace DataStructuresLib.Combinations
 {
@@ -217,6 +218,21 @@ namespace DataStructuresLib.Combinations
                 throw new ArgumentOutOfRangeException();
 
             if (setSize < subsetSize) return 0UL;
+
+            return setSize > MaxSetSize 
+                ? ComputeBinomialCoefficient(setSize, subsetSize) 
+                : PascalTriangleArray[setSize, subsetSize];
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ulong GetMaxBinomialCoefficient(this int setSize)
+        {
+            if (setSize < 0)
+                throw new ArgumentOutOfRangeException();
+
+            var subsetSize = setSize.IsEven()
+                ? setSize / 2
+                : (setSize - 1) / 2;
 
             return setSize > MaxSetSize 
                 ? ComputeBinomialCoefficient(setSize, subsetSize) 

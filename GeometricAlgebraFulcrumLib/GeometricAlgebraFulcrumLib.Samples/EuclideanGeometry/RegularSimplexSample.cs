@@ -41,7 +41,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                 
                 // The ones vector is the core of this geometric construction
                 var onesVector = processor
-                    .CreateVectorOnes((int) vSpaceDimension);
+                    .CreateVectorSymmetric((int) vSpaceDimension);
                     //.MapScalars(expr => Mfs.N[expr].Evaluate());
 
                 // This hyperspace is the orthogonal complement of the all-ones vector

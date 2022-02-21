@@ -60,7 +60,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTra
             TargetVSpaceDimension = targetVSpaceDim;
             BasisVectorsMappingsList = basisVectorsMappingsList;
 
-            RootKVector = ScalarProcessor.CreateKVectorBasisScalarStorage();
+            RootKVector = ScalarProcessor.CreateKVectorStorageBasisScalar();
         }
 
 

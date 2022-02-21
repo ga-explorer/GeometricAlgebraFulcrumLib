@@ -214,6 +214,7 @@ namespace DataStructuresLib.BitManipulation
         /// </summary>
         /// <param name="bitPattern"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int CountOnes(this uint bitPattern)
         {
             return BitOperations.PopCount(bitPattern);
@@ -267,131 +268,136 @@ namespace DataStructuresLib.BitManipulation
         /// </summary>
         /// <param name="bitPattern"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int FirstOneBitPosition(this uint bitPattern)
         {
-            if (bitPattern == 0)
-                return -1;
+            return bitPattern == 0 
+                ? -1 
+                : BitOperations.TrailingZeroCount(bitPattern);
 
-            // Found ones in positions 0-31
-            if ((bitPattern & 65535U) != 0)
-            {
-                // Found ones in positions 0-15
-                if ((bitPattern & 255U) != 0)
-                {
-                    // Found ones in positions 0-7
-                    if ((bitPattern & 15U) != 0)
-                    {
-                        // Found ones in positions 0-3
-                        if ((bitPattern & 3U) != 0)
-                        {
-                            // Found ones in positions 0-1
-                            return (bitPattern & 1U) != 0 ? 0 : 1;
-                        }
+            //if (bitPattern == 0)
+            //    return -1;
 
-                        // Found ones in positions 2-3
-                        return (bitPattern & 4U) != 0 ? 2 : 3;
-                    }
-
-                    // Found ones in positions 4-7
-                    if ((bitPattern & 48U) != 0)
-                    {
-                        // Found ones in positions 4-5
-                        return (bitPattern & 16U) != 0 ? 4 : 5;
-                    }
-
-                    // Found ones in positions 6-7
-                    return (bitPattern & 64U) != 0 ? 6 : 7;
-                }
-
-                // Found ones in positions 8-15
-                if ((bitPattern & 3840U) != 0)
-                {
-                    // Found ones in positions 8-11
-                    if ((bitPattern & 768U) != 0)
-                    {
-                        // Found ones in positions 8-9
-                        return (bitPattern & 256U) != 0 ? 8 : 9;
-                    }
-
-                    // Found ones in positions 10-11
-                    return (bitPattern & 1024U) != 0 ? 10 : 11;
-                }
-
-                // Found ones in positions 12-15
-                if ((bitPattern & 12288U) != 0)
-                {
-                    // Found ones in positions 12-13
-                    return (bitPattern & 4096U) != 0 ? 12 : 13;
-                }
-
-                // Found ones in positions 14-15
-                return (bitPattern & 16384U) != 0 ? 14 : 15;
-            }
-
-            // Found ones in positions 16-31
-            if ((bitPattern & 16711680U) != 0)
-            {
-                // Found ones in positions 16-23
-                if ((bitPattern & 983040U) != 0)
-                {
-                    // Found ones in positions 16-19
-                    if ((bitPattern & 196608U) != 0)
-                    {
-                        // Found ones in positions 16-17
-                        return (bitPattern & 65536U) != 0 ? 16 : 17;
-                    }
-
-                    // Found ones in positions 18-19
-                    return (bitPattern & 262144U) != 0 ? 18 : 19;
-                }
-
-                // Found ones in positions 20-23
-                if ((bitPattern & 3145728U) != 0)
-                {
-                    // Found ones in positions 20-21
-                    return (bitPattern & 1048576U) != 0 ? 20 : 21;
-                }
-
-                // Found ones in positions 22-23
-                return (bitPattern & 4194304U) != 0 ? 22 : 23;
-            }
-
-            // Found ones in positions 24-31
-            if ((bitPattern & 251658240U) != 0)
-            {
-                // Found ones in positions 24-27
-                if ((bitPattern & 50331648U) != 0)
-                {
-                    // Found ones in positions 24-25
-                    return (bitPattern & 16777216U) != 0 ? 24 : 25;
-                }
-
-                // Found ones in positions 26-27
-                return (bitPattern & 67108864U) != 0 ? 26 : 27;
-            }
-
-            // Found ones in positions 28-31
-            if ((bitPattern & 805306368U) != 0)
-            {
-                // Found ones in positions 28-29
-                return (bitPattern & 268435456U) != 0 ? 28 : 29;
-            }
-
-            // Found ones in positions 30-31
-            return (bitPattern & 1073741824U) != 0 ? 30 : 31;
-
-            //var bitPosition = 0;
-
-            //while (bitPattern > 0U)
+            //// Found ones in positions 0-31
+            //if ((bitPattern & 65535U) != 0)
             //{
-            //    if ((bitPattern & 1U) == 1U)
-            //        return bitPosition;
+            //    // Found ones in positions 0-15
+            //    if ((bitPattern & 255U) != 0)
+            //    {
+            //        // Found ones in positions 0-7
+            //        if ((bitPattern & 15U) != 0)
+            //        {
+            //            // Found ones in positions 0-3
+            //            if ((bitPattern & 3U) != 0)
+            //            {
+            //                // Found ones in positions 0-1
+            //                return (bitPattern & 1U) != 0 ? 0 : 1;
+            //            }
 
-            //    bitPosition++;
-            //    bitPattern >>= 1;
+            //            // Found ones in positions 2-3
+            //            return (bitPattern & 4U) != 0 ? 2 : 3;
+            //        }
+
+            //        // Found ones in positions 4-7
+            //        if ((bitPattern & 48U) != 0)
+            //        {
+            //            // Found ones in positions 4-5
+            //            return (bitPattern & 16U) != 0 ? 4 : 5;
+            //        }
+
+            //        // Found ones in positions 6-7
+            //        return (bitPattern & 64U) != 0 ? 6 : 7;
+            //    }
+
+            //    // Found ones in positions 8-15
+            //    if ((bitPattern & 3840U) != 0)
+            //    {
+            //        // Found ones in positions 8-11
+            //        if ((bitPattern & 768U) != 0)
+            //        {
+            //            // Found ones in positions 8-9
+            //            return (bitPattern & 256U) != 0 ? 8 : 9;
+            //        }
+
+            //        // Found ones in positions 10-11
+            //        return (bitPattern & 1024U) != 0 ? 10 : 11;
+            //    }
+
+            //    // Found ones in positions 12-15
+            //    if ((bitPattern & 12288U) != 0)
+            //    {
+            //        // Found ones in positions 12-13
+            //        return (bitPattern & 4096U) != 0 ? 12 : 13;
+            //    }
+
+            //    // Found ones in positions 14-15
+            //    return (bitPattern & 16384U) != 0 ? 14 : 15;
             //}
 
-            //return -1;
+            //// Found ones in positions 16-31
+            //if ((bitPattern & 16711680U) != 0)
+            //{
+            //    // Found ones in positions 16-23
+            //    if ((bitPattern & 983040U) != 0)
+            //    {
+            //        // Found ones in positions 16-19
+            //        if ((bitPattern & 196608U) != 0)
+            //        {
+            //            // Found ones in positions 16-17
+            //            return (bitPattern & 65536U) != 0 ? 16 : 17;
+            //        }
+
+            //        // Found ones in positions 18-19
+            //        return (bitPattern & 262144U) != 0 ? 18 : 19;
+            //    }
+
+            //    // Found ones in positions 20-23
+            //    if ((bitPattern & 3145728U) != 0)
+            //    {
+            //        // Found ones in positions 20-21
+            //        return (bitPattern & 1048576U) != 0 ? 20 : 21;
+            //    }
+
+            //    // Found ones in positions 22-23
+            //    return (bitPattern & 4194304U) != 0 ? 22 : 23;
+            //}
+
+            //// Found ones in positions 24-31
+            //if ((bitPattern & 251658240U) != 0)
+            //{
+            //    // Found ones in positions 24-27
+            //    if ((bitPattern & 50331648U) != 0)
+            //    {
+            //        // Found ones in positions 24-25
+            //        return (bitPattern & 16777216U) != 0 ? 24 : 25;
+            //    }
+
+            //    // Found ones in positions 26-27
+            //    return (bitPattern & 67108864U) != 0 ? 26 : 27;
+            //}
+
+            //// Found ones in positions 28-31
+            //if ((bitPattern & 805306368U) != 0)
+            //{
+            //    // Found ones in positions 28-29
+            //    return (bitPattern & 268435456U) != 0 ? 28 : 29;
+            //}
+
+            //// Found ones in positions 30-31
+            //return (bitPattern & 1073741824U) != 0 ? 30 : 31;
+
+            ////var bitPosition = 0;
+
+            ////while (bitPattern > 0U)
+            ////{
+            ////    if ((bitPattern & 1U) == 1U)
+            ////        return bitPosition;
+
+            ////    bitPosition++;
+            ////    bitPattern >>= 1;
+            ////}
+
+            ////return -1;
         }
 
         /// <summary>
@@ -400,132 +406,137 @@ namespace DataStructuresLib.BitManipulation
         /// </summary>
         /// <param name="bitPattern"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int LastOneBitPosition(this uint bitPattern)
         {
-            if (bitPattern == 0U) 
-                return -1;
+            return bitPattern == 0 
+                ? -1 
+                : 31 - BitOperations.LeadingZeroCount(bitPattern);
 
-            if ((bitPattern & 4294901760U) != 0)
-            {
-                // Found ones in positions 16-31
-                if ((bitPattern & 4278190080U) != 0)
-                {
-                    // Found ones in positions 24-31
-                    if ((bitPattern & 4026531840U) != 0)
-                    {
-                        // Found ones in positions 28-31
-                        if ((bitPattern & 3221225472U) != 0)
-                        {
-                            // Found ones in positions 30-31
-                            return (bitPattern & 2147483648U) != 0 ? 31 : 30;
-                        }
+            //if (bitPattern == 0U) 
+            //    return -1;
 
-                        // Found ones in positions 28-29
-                        return (bitPattern & 536870912U) != 0 ? 29 : 28;
-                    }
-
-                    // Found ones in positions 24-27
-                    if ((bitPattern & 201326592U) != 0)
-                    {
-                        // Found ones in positions 26-27
-                        return (bitPattern & 134217728U) != 0 ? 27 : 26;
-                    }
-
-                    // Found ones in positions 24-25
-                    return (bitPattern & 33554432U) != 0 ? 25 : 24;
-                }
-
-                // Found ones in positions 16-23
-                if ((bitPattern & 15728640U) != 0)
-                {
-                    // Found ones in positions 20-23
-                    if ((bitPattern & 12582912U) != 0)
-                    {
-                        // Found ones in positions 22-23
-                        return (bitPattern & 8388608U) != 0 ? 23 : 22;
-                    }
-
-                    // Found ones in positions 20-21
-                    return (bitPattern & 2097152U) != 0 ? 21 : 20;
-                }
-
-                // Found ones in positions 16-19
-                if ((bitPattern & 786432U) != 0)
-                {
-                    // Found ones in positions 18-19
-                    return (bitPattern & 524288U) != 0 ? 19 : 18;
-                }
-
-                // Found ones in positions 16-17
-                return (bitPattern & 131072U) != 0 ? 17 : 16;
-            }
-
-            // Found ones in positions 0-15
-            if ((bitPattern & 65280U) != 0)
-            {
-                // Found ones in positions 8-15
-                if ((bitPattern & 61440U) != 0)
-                {
-                    // Found ones in positions 12-15
-                    if ((bitPattern & 49152U) != 0)
-                    {
-                        // Found ones in positions 14-15
-                        return (bitPattern & 32768U) != 0 ? 15 : 14;
-                    }
-
-                    // Found ones in positions 12-13
-                    return (bitPattern & 8192U) != 0 ? 13 : 12;
-                }
-
-                // Found ones in positions 8-11
-                if ((bitPattern & 3072U) != 0)
-                {
-                    // Found ones in positions 10-11
-                    return (bitPattern & 2048U) != 0 ? 11 : 10;
-                }
-
-                // Found ones in positions 8-9
-                return (bitPattern & 512U) != 0 ? 9 : 8;
-            }
-
-            // Found ones in positions 0-7
-            if ((bitPattern & 240U) != 0)
-            {
-                // Found ones in positions 4-7
-                if ((bitPattern & 192U) != 0)
-                {
-                    // Found ones in positions 6-7
-                    return (bitPattern & 128U) != 0 ? 7 : 6;
-                }
-
-                // Found ones in positions 4-5
-                return (bitPattern & 32U) != 0 ? 5 : 4;
-            }
-
-            // Found ones in positions 0-3
-            if ((bitPattern & 12U) != 0)
-            {
-                // Found ones in positions 2-3
-                return (bitPattern & 8U) != 0 ? 3 : 2;
-            }
-
-            // Found ones in positions 0-1
-            return (bitPattern & 2U) != 0 ? 1 : 0;
-
-            //var bitPosition = 0;
-
-            //var lastOneBitPos = -1;
-
-            //while (bitPattern > 0U)
+            //if ((bitPattern & 4294901760U) != 0)
             //{
-            //    if ((bitPattern & 1U) == 1U)
-            //        lastOneBitPos = bitPosition;
+            //    // Found ones in positions 16-31
+            //    if ((bitPattern & 4278190080U) != 0)
+            //    {
+            //        // Found ones in positions 24-31
+            //        if ((bitPattern & 4026531840U) != 0)
+            //        {
+            //            // Found ones in positions 28-31
+            //            if ((bitPattern & 3221225472U) != 0)
+            //            {
+            //                // Found ones in positions 30-31
+            //                return (bitPattern & 2147483648U) != 0 ? 31 : 30;
+            //            }
 
-            //    bitPosition++;
-            //    bitPattern >>= 1;
+            //            // Found ones in positions 28-29
+            //            return (bitPattern & 536870912U) != 0 ? 29 : 28;
+            //        }
+
+            //        // Found ones in positions 24-27
+            //        if ((bitPattern & 201326592U) != 0)
+            //        {
+            //            // Found ones in positions 26-27
+            //            return (bitPattern & 134217728U) != 0 ? 27 : 26;
+            //        }
+
+            //        // Found ones in positions 24-25
+            //        return (bitPattern & 33554432U) != 0 ? 25 : 24;
+            //    }
+
+            //    // Found ones in positions 16-23
+            //    if ((bitPattern & 15728640U) != 0)
+            //    {
+            //        // Found ones in positions 20-23
+            //        if ((bitPattern & 12582912U) != 0)
+            //        {
+            //            // Found ones in positions 22-23
+            //            return (bitPattern & 8388608U) != 0 ? 23 : 22;
+            //        }
+
+            //        // Found ones in positions 20-21
+            //        return (bitPattern & 2097152U) != 0 ? 21 : 20;
+            //    }
+
+            //    // Found ones in positions 16-19
+            //    if ((bitPattern & 786432U) != 0)
+            //    {
+            //        // Found ones in positions 18-19
+            //        return (bitPattern & 524288U) != 0 ? 19 : 18;
+            //    }
+
+            //    // Found ones in positions 16-17
+            //    return (bitPattern & 131072U) != 0 ? 17 : 16;
             //}
 
-            //return lastOneBitPos;
+            //// Found ones in positions 0-15
+            //if ((bitPattern & 65280U) != 0)
+            //{
+            //    // Found ones in positions 8-15
+            //    if ((bitPattern & 61440U) != 0)
+            //    {
+            //        // Found ones in positions 12-15
+            //        if ((bitPattern & 49152U) != 0)
+            //        {
+            //            // Found ones in positions 14-15
+            //            return (bitPattern & 32768U) != 0 ? 15 : 14;
+            //        }
+
+            //        // Found ones in positions 12-13
+            //        return (bitPattern & 8192U) != 0 ? 13 : 12;
+            //    }
+
+            //    // Found ones in positions 8-11
+            //    if ((bitPattern & 3072U) != 0)
+            //    {
+            //        // Found ones in positions 10-11
+            //        return (bitPattern & 2048U) != 0 ? 11 : 10;
+            //    }
+
+            //    // Found ones in positions 8-9
+            //    return (bitPattern & 512U) != 0 ? 9 : 8;
+            //}
+
+            //// Found ones in positions 0-7
+            //if ((bitPattern & 240U) != 0)
+            //{
+            //    // Found ones in positions 4-7
+            //    if ((bitPattern & 192U) != 0)
+            //    {
+            //        // Found ones in positions 6-7
+            //        return (bitPattern & 128U) != 0 ? 7 : 6;
+            //    }
+
+            //    // Found ones in positions 4-5
+            //    return (bitPattern & 32U) != 0 ? 5 : 4;
+            //}
+
+            //// Found ones in positions 0-3
+            //if ((bitPattern & 12U) != 0)
+            //{
+            //    // Found ones in positions 2-3
+            //    return (bitPattern & 8U) != 0 ? 3 : 2;
+            //}
+
+            //// Found ones in positions 0-1
+            //return (bitPattern & 2U) != 0 ? 1 : 0;
+
+            ////var bitPosition = 0;
+
+            ////var lastOneBitPos = -1;
+
+            ////while (bitPattern > 0U)
+            ////{
+            ////    if ((bitPattern & 1U) == 1U)
+            ////        lastOneBitPos = bitPosition;
+
+            ////    bitPosition++;
+            ////    bitPattern >>= 1;
+            ////}
+
+            ////return lastOneBitPos;
         }
 
         /// <summary>

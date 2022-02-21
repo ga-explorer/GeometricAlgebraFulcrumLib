@@ -15,7 +15,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                 vectorsList.Select((mv, index) => 
                     basisSet.ScalarProcessor.Times(
                         mv,
-                        basisSet.GetValue(index, parameterValue)
+                        basisSet.GetValue(index, parameterValue).ScalarValue
                     )
                 )
             );
@@ -28,7 +28,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                 vectorsList.Select((mv, index) => 
                     basisSet.ScalarProcessor.Times(
                         mv,
-                        basisSet.GetValue(index, parameterValue)
+                        basisSet.GetValue(index, parameterValue).ScalarValue
                     )
                 )
             );

@@ -108,6 +108,18 @@ namespace GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra
         {
             return 1d / scalar;
         }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public double Sign(double scalar)
+        {
+            return Math.Sign(scalar);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public double UnitStep(double scalar)
+        {
+            return scalar < 0d ? 0d : 1d;
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public double Abs(double scalar)

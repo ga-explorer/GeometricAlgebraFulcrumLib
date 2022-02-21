@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Versors;
+using GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
@@ -15,7 +16,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
         }
 
 
-        public abstract T GetScalingFactor();
+        public abstract Scalar<T> GetScalingFactor();
 
         public abstract IScaledRotor<T> GetScaledRotorInverse();
 

@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <TargetFrameworks>net461;netcoreapp3.1</TargetFrameworks>
+      <UseWindowsForms>true</UseWindowsForms>
+    <OutputType>WinExe</OutputType>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\OxyPlot.WindowsForms\OxyPlot.WindowsForms.csproj" />
+    <ProjectReference Include="..\..\..\OxyPlot\OxyPlot.csproj" />
+    <ProjectReference Include="..\..\ExampleLibrary\ExampleLibrary.csproj" />
+  </ItemGroup>
+</Project>

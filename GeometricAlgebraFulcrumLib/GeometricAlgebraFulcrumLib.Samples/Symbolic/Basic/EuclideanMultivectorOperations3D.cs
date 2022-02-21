@@ -48,47 +48,39 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.Basic
 
         private static Multivector<Expr> CreateScalar(string name)
         {
-            return GeometricProcessor.CreateMultivector(
-                GeometricProcessor.CreateKVectorScalarStorage(name.ToExpr())
-            );
+            return GeometricProcessor.CreateKVectorScalar(name).AsMultivector();
         }
 
         private static Multivector<Expr> CreateVector(string name)
         {
             name = name.ToLower();
 
-            return GeometricProcessor.CreateMultivector(
-                GeometricProcessor.CreateVectorStorage(
-                    $"Subscript[{name},1]".ToExpr(), 
-                    $"Subscript[{name},2]".ToExpr(), 
-                    $"Subscript[{name},3]".ToExpr()
-                )
-            );
+            return GeometricProcessor.CreateVector(
+                $"Subscript[{name},1]".ToExpr(), 
+                $"Subscript[{name},2]".ToExpr(), 
+                $"Subscript[{name},3]".ToExpr()
+            ).AsMultivector();
         }
         
         private static Multivector<Expr> CreateBivector(string name)
         {
             name = name.ToLower();
 
-            return GeometricProcessor.CreateMultivector(
-                GeometricProcessor.CreateBivectorStorage(
-                    $"Subscript[{name},12]".ToExpr(), 
-                    $"Subscript[{name},13]".ToExpr(), 
-                    $"Subscript[{name},23]".ToExpr()
-                )
-            );
+            return GeometricProcessor.CreateBivector(
+                $"Subscript[{name},12]", 
+                $"Subscript[{name},13]", 
+                $"Subscript[{name},23]"
+            ).AsMultivector();
         }
 
         private static Multivector<Expr> CreateTrivector(string name)
         {
             name = name.ToLower();
 
-            return GeometricProcessor.CreateMultivector(
-                GeometricProcessor.CreateKVectorStorage(
-                    3, 
-                    new[]{$"Subscript[{name},123]".ToExpr()}
-                )
-            );
+            return GeometricProcessor.CreateKVector(
+                3, 
+                new[]{$"Subscript[{name},123]".ToExpr()}
+            ).AsMultivector();
         }
 
         private static Multivector<Expr> CreateEvenMultivector(string name)
@@ -226,7 +218,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.Basic
         public static void Execute()
         {
             var invI = 
-                GeometricProcessor.PseudoScalarInverse.CreateKVector(GeometricProcessor);
+                GeometricProcessor.PseudoScalarInverse;
 
             var mvList1 = new Dictionary<string, Multivector<Expr>>();
             var mvList2 = new Dictionary<string, Multivector<Expr>>();
@@ -294,7 +286,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.Basic
                 Composer.AppendAtNewLine($"${name}^{{-1}} = {LaTeXComposer.GetMultivectorText(mv.Inverse())}$");
                 Composer.AppendLineAtNewLine();
 
-                Composer.AppendAtNewLine($"${name}^{{2}} = {LaTeXComposer.GetMultivectorText(mv.Gp())}$");
+                Composer.AppendAtNewLine($"${name}^{{2}} = {LaTeXComposer.GetMultivectorText(mv.GpSquared())}$");
                 Composer.AppendLineAtNewLine();
 
                 Composer.AppendAtNewLine($@"${name} \rfloor I^{{-1}} = {LaTeXComposer.GetMultivectorText(mv.Gp(invI))}$");

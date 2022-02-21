@@ -269,14 +269,14 @@ namespace GeometricAlgebraFulcrumLib.Mathematica.Applications.GaPoT
         /// <param name="processor"></param>
         /// <param name="vectorsCount"></param>
         /// <returns></returns>
-        public static GeoFreeFrame<T> CreateClarkeFrame<T>(this IGeometricAlgebraProcessor<T> processor, int vectorsCount)
+        public static VectorFrame<T> CreateClarkeFrame<T>(this IGeometricAlgebraProcessor<T> processor, int vectorsCount)
         {
             var clarkeMapArray =
                 CreateClarkeArray(processor, vectorsCount);
 
-            return processor.CreateFreeFrame(
-                GeoFreeFrameSpecs.CreateUnitBasisSpecs(), 
-                clarkeMapArray.ColumnsToVectorStoragesArray(processor)
+            return processor.CreateVectorFrame(
+                VectorFrameSpecs.CreateUnitBasisSpecs(), 
+                clarkeMapArray.ColumnsToVectorsArray(processor)
             );
         }
 
@@ -302,11 +302,11 @@ namespace GeometricAlgebraFulcrumLib.Mathematica.Applications.GaPoT
 
         public static PureRotor<T> CreateSimpleKirchhoffRotor<T>(this IGeometricAlgebraEuclideanProcessor<T> processor, uint vSpaceDimension)
         {
-            var v1 = processor.CreateStorageVectorUnitOnes(
+            var v1 = processor.CreateVectorSymmetricUnit(
                 (int) vSpaceDimension
             );
 
-            var v2 = processor.CreateVectorTermStorage(
+            var v2 = processor.CreateVectorTerm(
                 vSpaceDimension - 1,
                 processor.ScalarOne
             );

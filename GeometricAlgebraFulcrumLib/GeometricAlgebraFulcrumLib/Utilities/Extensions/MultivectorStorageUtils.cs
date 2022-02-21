@@ -46,7 +46,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 
             composer.RemoveZeroTerms();
 
-            return composer.CreateMultivectorSparseStorage();
+            return composer.CreateMultivectorStorageSparse();
         }
 
         internal static IMultivectorStorage<T> BilinearProduct<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorStorage<T> mv1, IMultivectorStorage<T> mv2, Func<ulong, ulong, int> basisSignatureFunction)
@@ -82,7 +82,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 
             composer.RemoveZeroTerms();
 
-            return composer.CreateMultivectorSparseStorage();
+            return composer.CreateMultivectorStorageSparse();
         }
 
         internal static IMultivectorGradedStorage<T> BilinearProduct<T>(this IScalarAlgebraProcessor<T> scalarProcessor, KVectorStorage<T> mv1, Func<ulong, ulong, int> basisSignatureFunction)
@@ -174,7 +174,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             var scalarProcessor = ScalarAlgebraFloat64Processor.DefaultProcessor;
 
             var pseudoScalarInverse =
-                scalarProcessor.CreatePseudoScalarInverseStorage(basisSet);
+                scalarProcessor.CreateKVectorStoragePseudoScalarInverse(basisSet);
             
             return scalarProcessor.Lcp(basisSet, mv1, pseudoScalarInverse);
         }
@@ -183,7 +183,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         public static IMultivectorStorage<T> Dual<T>(this IScalarAlgebraProcessor<T> scalarProcessor, BasisBladeSet basisSet, IMultivectorStorage<T> mv1)
         {
             var pseudoScalarInverse =
-                scalarProcessor.CreatePseudoScalarInverseStorage(basisSet);
+                scalarProcessor.CreateKVectorStoragePseudoScalarInverse(basisSet);
 
             return scalarProcessor.Lcp(basisSet, mv1, pseudoScalarInverse);
         }
@@ -192,7 +192,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         public static IMultivectorStorage<T> Dual<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorStorage<T> mv1, BasisBladeSet basisSet)
         {
             var pseudoScalarInverse =
-                scalarProcessor.CreatePseudoScalarInverseStorage(basisSet);
+                scalarProcessor.CreateKVectorStoragePseudoScalarInverse(basisSet);
 
             return scalarProcessor.Lcp(basisSet, mv1, pseudoScalarInverse);
         }
@@ -202,7 +202,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         public static IMultivectorStorage<double> UnDual(this BasisBladeSet basisSet, IMultivectorStorage<double> mv1)
         {
             var pseudoScalarReverse =
-                ScalarAlgebraFloat64Processor.DefaultProcessor.CreatePseudoScalarReverseStorage(basisSet.VSpaceDimension);
+                ScalarAlgebraFloat64Processor.DefaultProcessor.CreateKVectorStoragePseudoScalarReverse(basisSet.VSpaceDimension);
 
             return ScalarAlgebraFloat64Processor.DefaultProcessor.Lcp(basisSet, mv1, pseudoScalarReverse);
         }
@@ -211,7 +211,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         public static IMultivectorStorage<T> UnDual<T>(this IScalarAlgebraProcessor<T> scalarProcessor, BasisBladeSet basisSet, IMultivectorStorage<T> mv1)
         {
             var pseudoScalarReverse =
-                scalarProcessor.CreatePseudoScalarReverseStorage(basisSet.VSpaceDimension);
+                scalarProcessor.CreateKVectorStoragePseudoScalarReverse(basisSet.VSpaceDimension);
 
             return scalarProcessor.Lcp(basisSet, mv1, pseudoScalarReverse);
         }
@@ -220,7 +220,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         public static IMultivectorStorage<T> UnDual<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorStorage<T> mv1, BasisBladeSet basisSet)
         {
             var pseudoScalarReverse =
-                scalarProcessor.CreatePseudoScalarReverseStorage(basisSet.VSpaceDimension);
+                scalarProcessor.CreateKVectorStoragePseudoScalarReverse(basisSet.VSpaceDimension);
 
             return scalarProcessor.Lcp(basisSet, mv1, pseudoScalarReverse);
         }
@@ -241,7 +241,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 
             return scalarProcessor.Divide(kVector, bladeSpSquared);
         }
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IMultivectorStorage<T> BladeInverse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorStorage<T> mv1, BasisBladeSet basisSet)
         {
@@ -250,36 +250,82 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             return scalarProcessor.Divide(mv1, bladeSpSquared);
         }
 
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static VectorStorage<T> BladePseudoInverse<T>(this IGeometricAlgebraProcessor<T> processor, VectorStorage<T> kVector)
+        {
+            var kVectorConjugate = processor.Conjugate(kVector);
+
+            return processor.Divide(
+                kVectorConjugate, 
+                processor.Sp(kVectorConjugate, kVector)
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static BivectorStorage<T> BladePseudoInverse<T>(this IGeometricAlgebraProcessor<T> processor, BivectorStorage<T> kVector)
+        {
+            var kVectorConjugate = processor.Conjugate(kVector);
+
+            return processor.Divide(
+                kVectorConjugate, 
+                processor.Sp(kVectorConjugate, kVector)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static KVectorStorage<T> BladePseudoInverse<T>(this IGeometricAlgebraProcessor<T> processor, KVectorStorage<T> kVector)
+        {
+            var kVectorConjugate = processor.Conjugate(kVector);
+
+            return processor.Divide(
+                kVectorConjugate, 
+                processor.Sp(kVectorConjugate, kVector)
+            );
+        }
+                
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IMultivectorStorage<T> BladePseudoInverse<T>(this IGeometricAlgebraProcessor<T> processor, IMultivectorStorage<T> kVector)
+        {
+            var kVectorConjugate = processor.Conjugate(kVector);
+
+            return processor.Divide(
+                kVectorConjugate, 
+                processor.Sp(kVectorConjugate, kVector)
+            );
+        }
+
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IMultivectorStorage<double> VersorInverse(this BasisBladeSet basisSet, IMultivectorStorage<double> mv1)
         {
-            var versorSpReverse = basisSet.NormSquared(mv1);
+            var versorNormSquared = basisSet.NormSquared(mv1);
 
-            return ScalarAlgebraFloat64Processor.DefaultProcessor.Divide(ScalarAlgebraFloat64Processor.DefaultProcessor.Reverse(mv1), versorSpReverse);
+            return ScalarAlgebraFloat64Processor.DefaultProcessor.Divide(ScalarAlgebraFloat64Processor.DefaultProcessor.Reverse(mv1), versorNormSquared);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IMultivectorStorage<T> VersorInverse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, BasisBladeSet basisSet, IMultivectorStorage<T> mv1)
         {
-            var versorSpReverse = scalarProcessor.NormSquared(basisSet, mv1);
+            var versorNormSquared = scalarProcessor.NormSquared(basisSet, mv1);
 
-            return scalarProcessor.Divide(scalarProcessor.Reverse(mv1), versorSpReverse);
+            return scalarProcessor.Divide(scalarProcessor.Reverse(mv1), versorNormSquared);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IMultivectorStorage<T> VersorInverse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorStorage<T> mv1, BasisBladeSet basisSet)
         {
-            var versorSpReverse = scalarProcessor.NormSquared(basisSet, mv1);
+            var versorNormSquared = scalarProcessor.NormSquared(basisSet, mv1);
 
-            return scalarProcessor.Divide(scalarProcessor.Reverse(mv1), versorSpReverse);
+            return scalarProcessor.Divide(scalarProcessor.Reverse(mv1), versorNormSquared);
         }
         
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static KVectorStorage<T> EDual<T>(this IScalarAlgebraProcessor<T> scalarProcessor, KVectorStorage<T> mv1, uint vSpaceDimension)
         {
             var pseudoScalarInverse =
-                scalarProcessor.CreateEuclideanPseudoScalarInverseStorage(vSpaceDimension);
+                scalarProcessor.CreateKVectorStorageEuclideanPseudoScalarInverse(vSpaceDimension);
 
             return scalarProcessor.ELcp(mv1, pseudoScalarInverse);
         }
@@ -288,7 +334,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         public static IMultivectorStorage<T> EDual<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorStorage<T> mv1, uint vSpaceDimension)
         {
             var pseudoScalarInverse =
-                scalarProcessor.CreateEuclideanPseudoScalarInverseStorage(vSpaceDimension);
+                scalarProcessor.CreateKVectorStorageEuclideanPseudoScalarInverse(vSpaceDimension);
 
             return scalarProcessor.ELcp(mv1, pseudoScalarInverse);
         }
@@ -305,11 +351,12 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             return processor.EDual(mv1, processor.VSpaceDimension);
         }
         
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static KVectorStorage<T> EUnDual<T>(this IScalarAlgebraProcessor<T> scalarProcessor, KVectorStorage<T> mv1, uint vSpaceDimension)
         {
             var pseudoScalarReverse =
-                scalarProcessor.CreatePseudoScalarReverseStorage(vSpaceDimension);
+                scalarProcessor.CreateKVectorStoragePseudoScalarReverse(vSpaceDimension);
 
             return scalarProcessor.ELcp(mv1, pseudoScalarReverse);
         }
@@ -318,7 +365,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         public static IMultivectorStorage<T> EUnDual<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorStorage<T> mv1, uint vSpaceDimension)
         {
             var pseudoScalarReverse =
-                scalarProcessor.CreatePseudoScalarReverseStorage(vSpaceDimension);
+                scalarProcessor.CreateKVectorStoragePseudoScalarReverse(vSpaceDimension);
 
             return scalarProcessor.ELcp(mv1, pseudoScalarReverse);
         }
@@ -335,6 +382,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             return processor.EUnDual(mv1, processor.VSpaceDimension);
         }
         
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static KVectorStorage<T> EBladeInverse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, KVectorStorage<T> kVector)
         {
@@ -346,17 +394,18 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IMultivectorStorage<T> EBladeInverse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorStorage<T> mv1)
         {
-            var bladeSpSquared = scalarProcessor.ESp(mv1);
+            var bladeSpSquared = scalarProcessor.ESpSquared(mv1);
 
             return scalarProcessor.Divide(mv1, bladeSpSquared);
         }
         
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IMultivectorStorage<T> EVersorInverse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorStorage<T> mv1)
         {
-            var versorSpReverse = scalarProcessor.ENormSquared(mv1);
+            var versorNormSquared = scalarProcessor.ENormSquared(mv1);
 
-            return scalarProcessor.Divide(scalarProcessor.Reverse(mv1), versorSpReverse);
+            return scalarProcessor.Divide(scalarProcessor.Reverse(mv1), versorNormSquared);
         }
 
         //[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -365,41 +414,42 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         //    return processor.Lcp(mv1, processor.PseudoScalarInverse);
         //}
         
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static KVectorStorage<T> Dual<T>(this IGeometricAlgebraProcessor<T> processor, KVectorStorage<T> mv1)
         {
-            return processor.Lcp(mv1, processor.PseudoScalarInverse);
+            return processor.Lcp(mv1, processor.PseudoScalarInverse.KVectorStorage);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IMultivectorStorage<T> Dual<T>(this IGeometricAlgebraProcessor<T> processor, IMultivectorStorage<T> mv1)
         {
-            return processor.Lcp(mv1, processor.PseudoScalarInverse);
+            return processor.Lcp(mv1, processor.PseudoScalarInverse.KVectorStorage);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IMultivectorStorage<T> Dual<T>(this IMultivectorStorage<T> mv1, IGeometricAlgebraProcessor<T> processor)
         {
-            return processor.Lcp(mv1, processor.PseudoScalarInverse);
+            return processor.Lcp(mv1, processor.PseudoScalarInverse.KVectorStorage);
         }
 
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static KVectorStorage<T> UnDual<T>(this IGeometricAlgebraProcessor<T> processor, KVectorStorage<T> mv1)
         {
-            return processor.Lcp(mv1, processor.PseudoScalarReverse);
+            return processor.Lcp(mv1, processor.PseudoScalarReverse.KVectorStorage);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IMultivectorStorage<T> UnDual<T>(this IGeometricAlgebraProcessor<T> processor, IMultivectorStorage<T> mv1)
         {
-            return processor.Lcp(mv1, processor.PseudoScalarReverse);
+            return processor.Lcp(mv1, processor.PseudoScalarReverse.KVectorStorage);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IMultivectorStorage<T> UnDual<T>(this IMultivectorStorage<T> mv1, IGeometricAlgebraProcessor<T> processor)
         {
-            return processor.Lcp(mv1, processor.PseudoScalarReverse);
+            return processor.Lcp(mv1, processor.PseudoScalarReverse.KVectorStorage);
         }
         
         
@@ -1005,6 +1055,25 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                 array[index] = scalar;
 
             return array.CreateLinVectorDenseStorage();
+        }
+
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<IndexScalarRecord<T>> GetIdScalarRecords<T>(this IMultivectorStorageContainer<T> storageContainer)
+        {
+            return storageContainer.GetMultivectorStorage().GetIdScalarRecords();
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<GradeIndexScalarRecord<T>> GetGradeIndexScalarRecords<T>(this IMultivectorStorageContainer<T> storageContainer)
+        {
+            return storageContainer.GetMultivectorStorage().GetGradeIndexScalarRecords();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<IndexScalarRecord<T>> GetIndexScalarRecords<T>(this IKVectorStorageContainer<T> storageContainer)
+        {
+            return storageContainer.GetKVectorStorage().GetIndexScalarRecords();
         }
     }
 }

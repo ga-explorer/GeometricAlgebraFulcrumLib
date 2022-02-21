@@ -702,39 +702,6 @@ namespace GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra
 
         public T ScalarValue { get; }
 
-        public bool IsNumeric 
-            => ScalarProcessor.IsNumeric;
-
-        public bool IsSymbolic 
-            => ScalarProcessor.IsSymbolic;
-
-        public bool IsValid 
-            => ScalarProcessor.IsValid(ScalarValue);
-
-        public bool IsZero 
-            => ScalarProcessor.IsZero(ScalarValue);
-
-        public bool IsOne 
-            => ScalarProcessor.IsOne(ScalarValue);
-
-        public bool IsMinusOne 
-            => ScalarProcessor.IsMinusOne(ScalarValue);
-
-        public bool IsNearZero 
-            => ScalarProcessor.IsNearZero(ScalarValue);
-
-        public bool IsPositive 
-            => ScalarProcessor.IsPositive(ScalarValue);
-
-        public bool IsNegative 
-            => ScalarProcessor.IsNegative(ScalarValue);
-
-        public bool IsNotNearPositive 
-            => ScalarProcessor.IsNotNearPositive(ScalarValue);
-
-        public bool IsNotNearNegative 
-            => ScalarProcessor.IsNotNearNegative(ScalarValue);
-
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private Scalar([NotNull] IScalarAlgebraProcessor<T> processor, [NotNull] T scalar)
@@ -749,5 +716,73 @@ namespace GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra
         {
             return ScalarProcessor.ToText(ScalarValue);
         }
+
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsZero()
+        {
+            return ScalarProcessor.IsZero(ScalarValue);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsNearZero()
+        {
+            return ScalarProcessor.IsNearZero(ScalarValue);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsNumeric()
+        {
+            return ScalarProcessor.IsNumeric;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsSymbolic()
+        {
+            return ScalarProcessor.IsSymbolic;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsValid()
+        {
+            return ScalarProcessor.IsValid(ScalarValue);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsOne()
+        {
+            return ScalarProcessor.IsOne(ScalarValue);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsMinusOne()
+        {
+            return ScalarProcessor.IsMinusOne(ScalarValue);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsPositive()
+        {
+            return ScalarProcessor.IsPositive(ScalarValue);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsNegative()
+        {
+            return ScalarProcessor.IsNegative(ScalarValue);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsNotNearPositive()
+        {
+            return ScalarProcessor.IsNotNearPositive(ScalarValue);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsNotNearNegative()
+        {
+            return ScalarProcessor.IsNotNearNegative(ScalarValue);
+        }
+
     }
 }

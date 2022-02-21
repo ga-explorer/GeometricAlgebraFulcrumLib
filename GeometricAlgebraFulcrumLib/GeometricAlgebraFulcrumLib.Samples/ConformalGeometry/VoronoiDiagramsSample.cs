@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Drawing;
 using System.Linq;
-using NumericalGeometryLib.Borders;
 using NumericalGeometryLib.Borders.Space2D.Immutable;
 using GeometricAlgebraFulcrumLib.Geometry.Graphics.Space2D;
 using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
@@ -9,6 +8,7 @@ using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Utilities.Composers;
 using GeometricAlgebraFulcrumLib.Utilities.Factories;
 using GraphicsComposerLib.Svg.DrawingBoard;
+using NumericalGeometryLib.Borders;
 
 namespace GeometricAlgebraFulcrumLib.Samples.ConformalGeometry
 {
@@ -66,7 +66,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.ConformalGeometry
             Console.WriteLine();
 
             var simplexPoints = 
-                simplexFrame.Select(p => p.ToEuclideanPoint2D()).ToArray();
+                simplexFrame.Select(p => p.VectorStorage.ToEuclideanPoint2D()).ToArray();
             
 
             var boundingBox = simplexPoints.GetBoundingBox(1.15);

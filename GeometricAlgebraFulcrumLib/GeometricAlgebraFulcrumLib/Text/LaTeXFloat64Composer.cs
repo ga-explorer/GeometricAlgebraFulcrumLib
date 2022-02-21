@@ -6,7 +6,7 @@ using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 namespace GeometricAlgebraFulcrumLib.Text
 {
     public sealed class LaTeXFloat64Composer
-        : LaTeXComposerBase<double>
+        : LaTeXComposer<double>
     {
         public static LaTeXFloat64Composer DefaultComposer { get; }
             = new LaTeXFloat64Composer();

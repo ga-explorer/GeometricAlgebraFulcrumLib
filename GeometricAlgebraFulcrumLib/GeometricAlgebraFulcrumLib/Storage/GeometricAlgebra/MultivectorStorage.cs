@@ -703,7 +703,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
 
             if (indexScalarDictionary.Count > 0)
             {
-                bivector = BivectorStorage<T>.CreateBivector(indexScalarDictionary);
+                bivector = BivectorStorage<T>.Create(indexScalarDictionary);
                 return true;
             }
 
@@ -929,7 +929,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
                         pair => pair.Scalar
                     );
 
-            return BivectorStorage<T>.CreateBivector(indexScalarDictionary);
+            return BivectorStorage<T>.Create(indexScalarDictionary);
         }
 
 
@@ -944,7 +944,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
                         pair => pair.Scalar
                     );
 
-            return BivectorStorage<T>.CreateBivector(indexScalarDictionary);
+            return BivectorStorage<T>.Create(indexScalarDictionary);
         }
 
         public BivectorStorage<T> GetBivectorPart(Func<ulong, T, bool> indexScalarSelection)
@@ -958,7 +958,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
                         pair => pair.Scalar
                     );
 
-            return BivectorStorage<T>.CreateBivector(indexScalarDictionary);
+            return BivectorStorage<T>.Create(indexScalarDictionary);
         }
 
         public BivectorStorage<T> GetBivectorPart(Func<ulong, bool> indexSelection)
@@ -972,7 +972,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
                         pair => pair.Scalar
                     );
 
-            return BivectorStorage<T>.CreateBivector(indexScalarDictionary);
+            return BivectorStorage<T>.Create(indexScalarDictionary);
         }
 
         public KVectorStorage<T> GetKVectorPart(uint grade)
@@ -1105,8 +1105,8 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             }
 
             return new Tuple<IMultivectorStorage<T>, IMultivectorStorage<T>>(
-                indexScalarDictionary1.CreateMultivectorSparseStorage(),
-                indexScalarDictionary2.CreateMultivectorSparseStorage()
+                indexScalarDictionary1.CreateMultivectorStorageSparse(),
+                indexScalarDictionary2.CreateMultivectorStorageSparse()
             );
         }
 

@@ -21,7 +21,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         : KVectorStorage<T>
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static BivectorStorage<T> CreateBivector([NotNull] T scalar)
+        public static BivectorStorage<T> Create([NotNull] T scalar)
         {
             return new BivectorStorage<T>(
                 new LinVectorSingleScalarGradedStorage<T>(2, scalar)
@@ -29,7 +29,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static BivectorStorage<T> CreateBivector(ulong index, T scalar)
+        public static BivectorStorage<T> Create(ulong index, T scalar)
         {
             return new BivectorStorage<T>(
                 new LinVectorSingleScalarGradedStorage<T>(2, index, scalar)
@@ -37,7 +37,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static BivectorStorage<T> CreateBivector(params T[] indexScalarList)
+        public static BivectorStorage<T> Create(params T[] indexScalarList)
         {
             return indexScalarList.Length switch
             {
@@ -48,7 +48,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static BivectorStorage<T> CreateBivector(IReadOnlyList<T> indexScalarList)
+        public static BivectorStorage<T> Create(IReadOnlyList<T> indexScalarList)
         {
             return indexScalarList.Count switch
             {
@@ -59,13 +59,13 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static BivectorStorage<T> CreateBivector(IEnumerable<T> indexScalarList)
+        public static BivectorStorage<T> Create(IEnumerable<T> indexScalarList)
         {
-            return CreateBivector(indexScalarList.ToArray());
+            return Create(indexScalarList.ToArray());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static BivectorStorage<T> CreateBivector(Dictionary<ulong, T> indexScalarDictionary)
+        public static BivectorStorage<T> Create(Dictionary<ulong, T> indexScalarDictionary)
         {
             return indexScalarDictionary.Count switch
             {
@@ -76,13 +76,13 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static BivectorStorage<T> CreateBivector(ILinVectorSingleScalarStorage<T> singleScalarVectorStorage)
+        public static BivectorStorage<T> Create(ILinVectorSingleScalarStorage<T> singleScalarVectorStorage)
         {
             return new BivectorStorage<T>(singleScalarVectorStorage);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static BivectorStorage<T> CreateBivector(ILinVectorStorage<T> indexScalarList)
+        public static BivectorStorage<T> Create(ILinVectorStorage<T> indexScalarList)
         {
             return indexScalarList.IsEmpty()
                 ? ZeroBivector
@@ -90,7 +90,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static BivectorStorage<T> CreateBivector(ILinVectorSingleGradeStorage<T> gradeIndexScalarList)
+        public static BivectorStorage<T> Create(ILinVectorSingleGradeStorage<T> gradeIndexScalarList)
         {
             return new BivectorStorage<T>(gradeIndexScalarList);
         }
@@ -306,7 +306,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             var indexScalarList = 
                 GetLinVectorIndexScalarStorage().GetCopy();
 
-            return CreateBivector(indexScalarList);
+            return Create(indexScalarList);
         }
 
         public BivectorStorage<T2> MapBivectorScalars<T2>(Func<T, T2> scalarMapping)
@@ -314,7 +314,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             var indexScalarList = 
                 GetLinVectorIndexScalarStorage().MapScalars(scalarMapping);
 
-            return BivectorStorage<T2>.CreateBivector(indexScalarList);
+            return BivectorStorage<T2>.Create(indexScalarList);
         }
 
         public BivectorStorage<T2> MapBivectorScalarsById<T2>(Func<ulong, T, T2> idScalarMapping)
@@ -325,7 +325,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
                         idScalarMapping(index.BasisBivectorIndexToId(), scalar)
                 );
 
-            return BivectorStorage<T2>.CreateBivector(indexScalarList);
+            return BivectorStorage<T2>.Create(indexScalarList);
         }
 
         public BivectorStorage<T2> MapBivectorScalarsByIndex<T2>(Func<ulong, T, T2> indexScalarMapping)
@@ -333,7 +333,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             var indexScalarList = 
                 GetLinVectorIndexScalarStorage().MapScalars(indexScalarMapping);
 
-            return BivectorStorage<T2>.CreateBivector(indexScalarList);
+            return BivectorStorage<T2>.Create(indexScalarList);
         }
 
         public BivectorStorage<T2> MapBivectorScalarsByGradeIndex<T2>(Func<uint, ulong, T, T2> gradeIndexScalarMapping)
@@ -344,7 +344,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
                         gradeIndexScalarMapping(2U, index, scalar)
                 );
 
-            return BivectorStorage<T2>.CreateBivector(indexScalarList);
+            return BivectorStorage<T2>.Create(indexScalarList);
         }
 
 
@@ -353,7 +353,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             var indexScalarList =
                 GetLinVectorIndexScalarStorage().FilterByScalar(scalarFilter);
 
-            return CreateBivector(indexScalarList);
+            return Create(indexScalarList);
         }
 
         public BivectorStorage<T> FilterBivectorByIndexScalar(Func<ulong, T, bool> indexScalarFilter)
@@ -361,7 +361,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             var indexScalarList =
                 GetLinVectorIndexScalarStorage().FilterByIndexScalar(indexScalarFilter);
 
-            return CreateBivector(indexScalarList);
+            return Create(indexScalarList);
         }
 
         public BivectorStorage<T> FilterBivectorByIndex(Func<ulong, bool> indexFilter)
@@ -369,7 +369,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             var indexScalarList =
                 GetLinVectorIndexScalarStorage().FilterByIndex(indexFilter);
 
-            return CreateBivector(indexScalarList);
+            return Create(indexScalarList);
         }
 
 
@@ -407,7 +407,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
                     pair => scalarSelection(pair.Scalar)
                 ).CreateDictionary();
 
-            return CreateBivector(indexScalarList);
+            return Create(indexScalarList);
         }
 
         public override BivectorStorage<T> GetBivectorPart(Func<ulong, T, bool> indexScalarSelection)
@@ -417,7 +417,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
                     pair => indexScalarSelection(pair.Index, pair.Scalar)
                 ).CreateDictionary();
 
-            return CreateBivector(indexScalarList);
+            return Create(indexScalarList);
         }
 
         public override BivectorStorage<T> GetBivectorPart(Func<ulong, bool> indexSelection)
@@ -427,7 +427,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
                     pair => indexSelection(pair.Index)
                 ).CreateDictionary();
 
-            return CreateBivector(indexScalarList);
+            return Create(indexScalarList);
         }
 
         public override KVectorStorage<T> GetKVectorPart(uint grade)
@@ -466,7 +466,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
                     pair => idSelection(pair.Index.BasisBivectorIndexToId())
                 ).CreateDictionary();
 
-            return CreateBivector(indexScalarList);
+            return Create(indexScalarList);
         }
 
         public override IMultivectorStorage<T> GetMultivectorPart(Func<uint, ulong, bool> gradeIndexSelection)
@@ -476,7 +476,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
                     pair => gradeIndexSelection(2, pair.Index)
                 ).CreateDictionary();
 
-            return CreateBivector(indexScalarList);
+            return Create(indexScalarList);
         }
 
         public override IMultivectorStorage<T> GetMultivectorPart(Func<T, bool> scalarSelection)
@@ -486,7 +486,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
                     pair => scalarSelection(pair.Scalar)
                 ).CreateDictionary();
 
-            return CreateBivector(indexScalarList);
+            return Create(indexScalarList);
         }
 
         public override IMultivectorStorage<T> GetMultivectorPart(Func<ulong, T, bool> idScalarSelection)
@@ -496,7 +496,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
                     pair => idScalarSelection(pair.Index.BasisBivectorIndexToId(), pair.Scalar)
                 ).CreateDictionary();
 
-            return CreateBivector(indexScalarList);
+            return Create(indexScalarList);
         }
 
         public override IMultivectorStorage<T> GetMultivectorPart(Func<uint, ulong, T, bool> gradeIndexScalarSelection)
@@ -506,7 +506,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
                     pair => gradeIndexScalarSelection(2, pair.Index, pair.Scalar)
                 ).CreateDictionary();
 
-            return CreateBivector(indexScalarList);
+            return Create(indexScalarList);
         }
 
         public override Tuple<VectorStorage<T>, VectorStorage<T>> SplitVectorPart(Func<ulong, bool> indexSelection)
@@ -611,14 +611,14 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
 
         public BivectorStorage<T> GetBivectorStorageCopy()
         {
-            return CreateBivector(
+            return Create(
                 GetLinVectorIndexScalarStorage().GetCopy()
             );
         }
 
         public BivectorStorage<T> GetBivectorStorageCopy(Func<T, T> scalarMapping)
         {
-            return CreateBivector(
+            return Create(
                 GetLinVectorIndexScalarStorage().MapScalars(scalarMapping)
             );
         }

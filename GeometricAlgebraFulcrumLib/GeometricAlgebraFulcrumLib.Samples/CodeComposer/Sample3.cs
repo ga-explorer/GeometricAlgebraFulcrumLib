@@ -16,7 +16,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.CodeComposer
                 };
 
             var processor = 
-                context.CreateGeometricAlgebraEuclideanProcessor(63);
+                context.AttachGeometricAlgebraEuclideanProcessor(63);
 
             var u =
                 context.ParameterVariablesFactory.CreateVector(
@@ -35,9 +35,9 @@ namespace GeometricAlgebraFulcrumLib.Samples.CodeComposer
             var rotor = 
                 processor.CreatePureRotor(u, v);
             
-            rotor.Multivector.SetIsOutput(true);
+            rotor.SetIsOutput(true);
 
-            rotor.Multivector.SetExternalNamesByTermGradeIndex(
+            rotor.GetMultivectorStorage().SetExternalNamesByTermGradeIndex(
                 (grade, index) => $"C[{grade}][{index}]"
             );
 
@@ -46,7 +46,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.CodeComposer
             u.SetExternalNamesByTermIndex(index => $"u[{index}]");
             
             //Define external names for outputs
-            rotor.Multivector.SetExternalNamesByTermId(id => $"rotor.Scalar{id}");
+            rotor.SetExternalNamesByTermId(id => $"rotor.Scalar{id}");
 
             //Optimize sequence computations inside context
             context.ContextOptions.ReduceLowLevelRhsSubExpressions = true;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Vectors;
@@ -14,7 +15,7 @@ using GeometricAlgebraFulcrumLib.Utilities.Factories;
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors
 {
     public sealed record KVector<T> : 
-        IMultivectorStorageContainer<T>,
+        IKVectorStorageContainer<T>,
         IGeometricAlgebraElement<T>
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1148,10 +1149,10 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors
                 GeometricProcessor.GetTermScalarByIndex(KVectorStorage, (ulong) index)
             );
         
-        public T this[ulong index]
-            => GeometricProcessor.CreateScalar(
-                GeometricProcessor.GetTermScalarByIndex(KVectorStorage, index)
-            );
+        public Scalar<T> this[ulong index]
+            => GeometricProcessor
+                .GetTermScalarByIndex(KVectorStorage, index)
+                .CreateScalar(GeometricProcessor);
 
 
         internal KVector([NotNull] IScalarAlgebraProcessor<T> processor, [NotNull] KVectorStorage<T> storage)
@@ -1166,7 +1167,19 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors
             KVectorStorage = storage;
         }
 
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsZero()
+        {
+            return GeometricProcessor.IsZero(KVectorStorage);
+        }
         
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsNearZero()
+        {
+            return GeometricProcessor.IsNearZero(KVectorStorage);
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public T AsScalarValue()
         {
@@ -1225,6 +1238,15 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors
         public Multivector<T> AsMultivector()
         {
             return new Multivector<T>(GeometricProcessor, KVectorStorage);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public KVector<T> Conjugate()
+        {
+            return new KVector<T>(
+                GeometricProcessor, 
+                GeometricProcessor.Conjugate(KVectorStorage)
+            );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1286,13 +1308,22 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors
                 GeometricProcessor.ENormSquared(KVectorStorage)
             );
         }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public KVector<T> PseudoInverse()
+        {
+            return new KVector<T>(
+                GeometricProcessor,
+                GeometricProcessor.BladePseudoInverse(KVectorStorage)
+            );
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public KVector<T> Inverse()
         {
             return new KVector<T>(
                 GeometricProcessor,
-                GeometricProcessor.Divide(KVectorStorage, GeometricProcessor.Sp(KVectorStorage))
+                GeometricProcessor.Divide(KVectorStorage, GeometricProcessor.SpSquared(KVectorStorage))
             );
         }
 
@@ -1340,6 +1371,12 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors
                 GeometricProcessor.EUnDual(KVectorStorage)
             );
         }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public IEnumerable<T> GetScalars()
+        {
+            return KVectorStorage.GetScalars();
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public KVector<T> MapScalars(Func<T, T> scalarMapping)
@@ -1367,6 +1404,12 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors
                 KVectorStorage.MapKVectorScalarsByGradeIndex(scalarMapping)
             );
         }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public KVectorStorage<T> GetKVectorStorage()
+        {
+            return KVectorStorage;
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IMultivectorStorage<T> GetMultivectorStorage()
@@ -1379,7 +1422,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors
         {
             return Subspace<T>.Create(
                 GeometricProcessor,
-                KVectorStorage
+                this
             );
         }
 
@@ -1388,7 +1431,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors
         {
             return Subspace<T>.Create(
                 GeometricProcessor,
-                GeometricProcessor.Dual(KVectorStorage)
+                GeometricProcessor.Dual(KVectorStorage).CreateKVector(GeometricProcessor)
             );
         }
 

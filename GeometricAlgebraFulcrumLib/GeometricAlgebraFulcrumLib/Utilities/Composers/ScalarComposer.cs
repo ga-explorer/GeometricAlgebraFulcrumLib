@@ -132,7 +132,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         {
             return ScalarProcessor.IsZero(Scalar)
                 ? BivectorStorage<T>.ZeroBivector
-                : BivectorStorage<T>.CreateBivector(index, Scalar);
+                : BivectorStorage<T>.Create(index, Scalar);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -148,7 +148,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         {
             return ScalarProcessor.IsZero(Scalar)
                 ? KVectorStorage<T>.CreateKVectorZero(grade)
-                : ScalarProcessor.CreateKVectorTermStorage(grade, index, Scalar);
+                : ScalarProcessor.CreateKVectorStorageTerm(grade, index, Scalar);
         }
     }
 }

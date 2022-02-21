@@ -366,6 +366,18 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         {
             basisBladeId.SplitByLargestBasicPattern(out basisVectorId, out subBasisBladeId);
         }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="basisBladeId"></param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Tuple<ulong, ulong> SplitByLargestBasisVectorId(this ulong basisBladeId)
+        {
+            basisBladeId.SplitByLargestBasicPattern(out var basisVectorId, out var subBasisBladeId);
+
+            return new Tuple<ulong, ulong>(basisVectorId, subBasisBladeId);
+        }
 
         /// <summary>
         /// 
@@ -491,6 +503,18 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         /// <param name="grade"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool GradeInvolutionIsPositiveOfGrade(this int grade)
+        {
+            return (grade & 1) == 0;
+        }
+        
+        /// <summary>
+        /// Test if the grade inverse of a basis blade with a given grade is 1
+        /// the original basis blade Sign Pattern: +-+-
+        /// </summary>
+        /// <param name="grade"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool GradeInvolutionIsPositiveOfGrade(this uint grade)
         {
             return (grade & 1) == 0;
@@ -503,7 +527,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         /// <param name="grade"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool GradeInvolutionIsNegativeOfGrade(this uint grade)
+        public static bool GradeInvolutionIsNegativeOfGrade(this int grade)
         {
             return (grade & 1) != 0;
         }
@@ -515,9 +539,47 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         /// <param name="grade"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool GradeInvolutionIsNegativeOfGrade(this uint grade)
+        {
+            return (grade & 1) != 0;
+        }
+
+        /// <summary>
+        /// Test if the grade inverse of a basis blade with a given grade is -1 the original basis blade
+        /// Sign Pattern: +-+-
+        /// </summary>
+        /// <param name="grade"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int GradeInvolutionSignOfGrade(this int grade)
+        {
+            return (grade & 1) == 0 ? 1 : -1;
+        }
+
+        /// <summary>
+        /// Test if the grade inverse of a basis blade with a given grade is -1 the original basis blade
+        /// Sign Pattern: +-+-
+        /// </summary>
+        /// <param name="grade"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int GradeInvolutionSignOfGrade(this uint grade)
         {
-            return (grade & 1) != 0 ? -1 : 1;
+            return (grade & 1) == 0 ? 1 : -1;
+        }
+        
+        /// <summary>
+        /// Test if the reverse of a basis blade with a given grade is -1 the original basis blade
+        /// Sign Pattern: ++--
+        /// </summary>
+        /// <param name="grade"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool ReverseIsPositiveOfGrade(this int grade)
+        {
+            return grade % 4 < 2;
+
+            //return ((grade * (grade - 1)) & 2) != 0;
         }
 
         /// <summary>
@@ -530,6 +592,20 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         public static bool ReverseIsPositiveOfGrade(this uint grade)
         {
             return grade % 4 < 2;
+
+            //return ((grade * (grade - 1)) & 2) != 0;
+        }
+        
+        /// <summary>
+        /// Test if the reverse of a basis blade with a given grade is -1 the original basis blade
+        /// Sign Pattern: ++--
+        /// </summary>
+        /// <param name="grade"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool ReverseIsNegativeOfGrade(this int grade)
+        {
+            return grade % 4 > 1;
 
             //return ((grade * (grade - 1)) & 2) != 0;
         }
@@ -555,9 +631,35 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         /// <param name="grade"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int ReverseSignOfGrade(this int grade)
+        {
+            return (grade % 4 > 1) ? -1 : 1;
+        }
+        
+        /// <summary>
+        /// Test if the reverse of a basis blade with a given grade is -1 the original basis blade
+        /// Sign Pattern: ++--
+        /// </summary>
+        /// <param name="grade"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int ReverseSignOfGrade(this uint grade)
         {
             return (grade % 4 > 1) ? -1 : 1;
+        }
+
+        /// <summary>
+        /// Test if the clifford conjugate of a basis blade with a given grade is -1 the original basis blade
+        /// Sign Pattern: +--+
+        /// </summary>
+        /// <param name="grade"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool CliffordConjugateIsPositiveOfGrade(this int grade)
+        {
+            return (grade % 4) is 0 or 3;
+
+            //return ((grade * (grade + 1)) & 2) != 0;
         }
         
         /// <summary>
@@ -570,6 +672,20 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         public static bool CliffordConjugateIsPositiveOfGrade(this uint grade)
         {
             return (grade % 4) is 0 or 3;
+
+            //return ((grade * (grade + 1)) & 2) != 0;
+        }
+
+        /// <summary>
+        /// Test if the clifford conjugate of a basis blade with a given grade is -1 the original basis blade
+        /// Sign Pattern: +--+
+        /// </summary>
+        /// <param name="grade"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool CliffordConjugateIsNegativeOfGrade(this int grade)
+        {
+            return (grade % 4) is 1 or 2;
 
             //return ((grade * (grade + 1)) & 2) != 0;
         }
@@ -586,6 +702,18 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             return (grade % 4) is 1 or 2;
 
             //return ((grade * (grade + 1)) & 2) != 0;
+        }
+
+        /// <summary>
+        /// Test if the clifford conjugate of a basis blade with a given grade is -1 the original basis blade
+        /// Sign Pattern: +--+
+        /// </summary>
+        /// <param name="grade"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int CliffordConjugateSignOfGrade(this int grade)
+        {
+            return ((grade % 4) is 1 or 2) ? -1 : 1;
         }
         
         /// <summary>

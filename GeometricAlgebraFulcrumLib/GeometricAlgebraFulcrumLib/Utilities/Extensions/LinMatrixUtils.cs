@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.Basic;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Matrices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Vectors;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
@@ -283,6 +284,50 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             return gradeVectorDictionary.CreateLinMatrixGradedStorage();
         }
 
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector<T> MapUsing<T>(this Vector<T> vector, T[,] matrix)
+        {
+            var processor = vector.GeometricProcessor;
+
+            return processor.MatrixProduct(
+                matrix.CreateLinMatrixDenseStorage(),
+                vector.VectorStorage.GetLinVectorIndexScalarStorage()
+            ).CreateVector(processor);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector<T> MapUsing<T>(this Vector<T> vector, ILinMatrixStorage<T> matrix)
+        {
+            var processor = vector.GeometricProcessor;
+
+            return processor.MatrixProduct(
+                matrix,
+                vector.VectorStorage.GetLinVectorIndexScalarStorage()
+            ).CreateVector(processor);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector<T> Map<T>(this T[,] matrix, Vector<T> vector)
+        {
+            var processor = vector.GeometricProcessor;
+
+            return processor.MatrixProduct(
+                matrix.CreateLinMatrixDenseStorage(),
+                vector.VectorStorage.GetLinVectorIndexScalarStorage()
+            ).CreateVector(processor);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector<T> Map<T>(this ILinMatrixStorage<T> matrix, Vector<T> vector)
+        {
+            var processor = vector.GeometricProcessor;
+
+            return processor.MatrixProduct(
+                matrix,
+                vector.VectorStorage.GetLinVectorIndexScalarStorage()
+            ).CreateVector(processor);
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static VectorStorage<T> MapVector<T>(this IScalarAlgebraProcessor<T> scalarProcessor, ILinMatrixStorage<T> matrix, VectorStorage<T> vector)
@@ -319,7 +364,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             return scalarProcessor.MatrixProduct(
                 matrix,
                 vector.GetLinVectorIdScalarStorage()
-            ).CreateMultivectorSparseStorage();
+            ).CreateMultivectorStorageSparse();
         }
         
 
@@ -358,9 +403,21 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             return scalarProcessor.MatrixProduct(
                 matrix,
                 vector.GetLinVectorGradedStorage()
-            ).CreateMultivectorGradedStorage();
+            ).CreateMultivectorStorageGraded();
         }
 
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T[,] CreateVectorToVectorRotationMatrix<T>(this Vector<T> sourceVector, Vector<T> targetVector, ulong basisVectorIndex, int matrixSize)
+        {
+            return CreateVectorToVectorRotationMatrix(
+                sourceVector.GeometricProcessor,
+                sourceVector.VectorStorage,
+                targetVector.VectorStorage,
+                basisVectorIndex,
+                matrixSize
+            );
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T[,] CreateVectorToVectorRotationMatrix<T>(this IScalarAlgebraProcessor<T> scalarProcessor, VectorStorage<T> sourceVector, VectorStorage<T> targetVector, ulong basisVectorIndex, int matrixSize)
@@ -371,6 +428,28 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             return scalarProcessor.MatrixProduct(matrix1, matrix2);
         }
         
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T[,] CreateBasisToVectorRotationMatrix<T>(this Vector<T> unitVector, ulong basisVectorIndex, int matrixSize)
+        {
+            return CreateBasisToVectorRotationMatrix(
+                unitVector.GeometricProcessor, 
+                basisVectorIndex, 
+                unitVector.VectorStorage, 
+                matrixSize
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T[,] CreateBasisToVectorRotationMatrix<T>(this IScalarAlgebraProcessor<T> scalarProcessor, ulong basisVectorIndex, IVectorStorageContainer<T> unitVector, int matrixSize)
+        {
+            return CreateBasisToVectorRotationMatrix(
+                scalarProcessor, 
+                basisVectorIndex, 
+                unitVector.GetVectorStorage(), 
+                matrixSize
+            );
+        }
+
         public static T[,] CreateBasisToVectorRotationMatrix<T>(this IScalarAlgebraProcessor<T> scalarProcessor, ulong basisVectorIndex, VectorStorage<T> unitVector, int matrixSize)
         {
             if (matrixSize < 2)
@@ -448,6 +527,28 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             return matrix;
         }
         
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T[,] CreateVectorToBasisRotationMatrix<T>(this Vector<T> unitVector, ulong basisVectorIndex, int matrixSize)
+        {
+            return CreateVectorToBasisRotationMatrix(
+                unitVector.GeometricProcessor, 
+                unitVector.VectorStorage, 
+                basisVectorIndex, 
+                matrixSize
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T[,] CreateVectorToBasisRotationMatrix<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IVectorStorageContainer<T> unitVector, ulong basisVectorIndex, int matrixSize)
+        {
+            return CreateVectorToBasisRotationMatrix(
+                scalarProcessor, 
+                unitVector.GetVectorStorage(), 
+                basisVectorIndex, 
+                matrixSize
+            );
+        }
+
         public static T[,] CreateVectorToBasisRotationMatrix<T>(this IScalarAlgebraProcessor<T> scalarProcessor, VectorStorage<T> unitVector, ulong basisVectorIndex, int matrixSize)
         {
             if (matrixSize < 2)

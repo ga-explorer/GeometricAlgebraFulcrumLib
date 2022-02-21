@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
+using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.LinearAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
@@ -22,9 +24,12 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.LinearMaps
 
 
         public IScalarAlgebraProcessor<T> ScalarProcessor 
-            => LinearProcessor;
-        
-        public ILinearAlgebraProcessor<T> LinearProcessor { get; }
+            => GeometricProcessor;
+
+        public ILinearAlgebraProcessor<T> LinearProcessor 
+            => GeometricProcessor;
+
+        public IGeometricAlgebraProcessor<T> GeometricProcessor { get; }
 
         public int Count 
             => _mappedBasisBladesDictionary.Count;
@@ -34,7 +39,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.LinearMaps
             get =>
                 _mappedBasisBladesDictionary.TryGetValue(id, out var value) && !ReferenceEquals(value, null)
                     ? value
-                    : LinearProcessor.CreateKVectorBasisStorage(id.BasisBladeIdToGrade());
+                    : GeometricProcessor.CreateKVectorStorageBasis(id.BasisBladeIdToGrade());
             set
             {
                 if (ReferenceEquals(value, null))
@@ -64,9 +69,9 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.LinearMaps
             => _mappedBasisBladesDictionary.Values;
 
 
-        internal SparseUnilinearMap([NotNull] ILinearAlgebraProcessor<T> linearProcessor)
+        internal SparseUnilinearMap([NotNull] IGeometricAlgebraProcessor<T> geometricProcessor)
         {
-            LinearProcessor = linearProcessor;
+            GeometricProcessor = geometricProcessor;
         }
 
 
@@ -95,83 +100,82 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.LinearMaps
             throw new NotImplementedException();
         }
 
-        public IMultivectorStorage<T> MapBasisScalar()
+        public Multivector<T> MapBasisScalar()
         {
             throw new NotImplementedException();
         }
 
-        public IMultivectorStorage<T> MapBasisVector(ulong index)
+        public Multivector<T> MapBasisVector(ulong index)
         {
             throw new NotImplementedException();
         }
 
-        public IMultivectorStorage<T> MapBasisBivector(ulong index)
+        public Multivector<T> MapBasisBivector(ulong index)
         {
             throw new NotImplementedException();
         }
 
-        public IMultivectorStorage<T> MapBasisBivector(ulong index1, ulong index2)
+        public Multivector<T> MapBasisBivector(ulong index1, ulong index2)
         {
             throw new NotImplementedException();
         }
 
-        public IMultivectorStorage<T> MapBasisBlade(ulong id)
+        public Multivector<T> MapBasisBlade(ulong id)
         {
-            return _mappedBasisBladesDictionary.TryGetValue(id, out var mappedMultivector)
-                ? mappedMultivector
-                : KVectorStorage<T>.ZeroScalar;
+            return GeometricProcessor.CreateMultivector(
+                _mappedBasisBladesDictionary.TryGetValue(id, out var mappedMultivector)
+                    ? mappedMultivector
+                    : KVectorStorage<T>.ZeroScalar
+            );
         }
 
-        public IMultivectorStorage<T> MapBasisBlade(uint grade, ulong index)
+        public Multivector<T> MapBasisBlade(uint grade, ulong index)
         {
             var id = index.BasisBladeIndexToId(grade);
 
-            return _mappedBasisBladesDictionary.TryGetValue(id, out var mappedMultivector)
-                ? mappedMultivector
-                : KVectorStorage<T>.ZeroScalar;
+            return GeometricProcessor.CreateMultivector(
+                _mappedBasisBladesDictionary.TryGetValue(id, out var mappedMultivector)
+                    ? mappedMultivector
+                    : KVectorStorage<T>.ZeroScalar
+                );
         }
 
-        public IMultivectorStorage<T> MapScalar(T mv)
+        public Multivector<T> Map(T mv)
         {
             throw new NotImplementedException();
         }
 
-        public IMultivectorStorage<T> MapVector(VectorStorage<T> vector)
+        public Multivector<T> Map(Vector<T> vector)
         {
             throw new NotImplementedException();
         }
 
-        public IMultivectorStorage<T> MapBivector(BivectorStorage<T> bivector)
+        public Multivector<T> Map(Bivector<T> bivector)
         {
             throw new NotImplementedException();
         }
 
-        public IMultivectorStorage<T> MapKVector(KVectorStorage<T> kVector)
+        public Multivector<T> Map(KVector<T> kVector)
         {
             throw new NotImplementedException();
         }
 
-        public IMultivectorStorage<T> MapMultivector(MultivectorStorage<T> multivector)
+        public Multivector<T> Map(Multivector<T> multivector)
         {
             throw new NotImplementedException();
         }
 
-        public IMultivectorStorage<T> MapMultivector(MultivectorGradedStorage<T> multivector)
+        public VectorStorage<T> OmMap(VectorStorage<T> mv)
         {
             throw new NotImplementedException();
         }
 
-        public VectorStorage<T> OmMapVector(VectorStorage<T> mv)
+        public BivectorStorage<T> OmMap(BivectorStorage<T> mv)
         {
             throw new NotImplementedException();
         }
 
-        public BivectorStorage<T> OmMapBivector(BivectorStorage<T> mv)
-        {
-            throw new NotImplementedException();
-        }
-
-        public KVectorStorage<T> OmMapKVector(KVectorStorage<T> mv)
+        public KVectorStorage<T> OmMap(KVectorStorage<T> mv)
         {
             throw new NotImplementedException();
         }
@@ -186,10 +190,10 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.LinearMaps
             throw new NotImplementedException();
         }
 
-        public MultivectorStorage<T> OmMapMultivector(MultivectorStorage<T> mv)
+        public MultivectorStorage<T> OmMap(MultivectorStorage<T> mv)
         {
             var storage = 
-                LinearProcessor.CreateVectorStorageComposer();
+                GeometricProcessor.CreateVectorStorageComposer();
 
             foreach (var (id, scalar) in mv.GetIdScalarRecords())
                 if (_mappedBasisBladesDictionary.TryGetValue(id, out var mappedMultivector))
@@ -200,10 +204,10 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.LinearMaps
 
             storage.RemoveZeroTerms();
 
-            return storage.CreateMultivectorSparseStorage();
+            return storage.CreateMultivectorStorageSparse();
         }
 
-        public MultivectorGradedStorage<T> OmMapMultivector(MultivectorGradedStorage<T> mv)
+        public MultivectorGradedStorage<T> OmMap(MultivectorGradedStorage<T> mv)
         {
             throw new NotImplementedException();
         }
@@ -213,7 +217,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.LinearMaps
             throw new NotImplementedException();
         }
 
-        public IEnumerable<IdMultivectorStorageRecord<T>> GetMappedBasisBlades()
+        public IEnumerable<IdMultivectorRecord<T>> GetMappedBasisBlades()
         {
             throw new NotImplementedException();
         }

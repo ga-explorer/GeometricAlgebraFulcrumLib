@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.SymbolicAlgebra;
 using GeometricAlgebraFulcrumLib.Mathematica.Mathematica;
@@ -75,7 +76,12 @@ namespace GeometricAlgebraFulcrumLib.Mathematica.Processors
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Expr PostProcessScalar([NotNull] Expr scalar)
         {
-            return scalar.Simplify();
+            var expr = scalar.Simplify();
+
+            if (expr.ToString() == "Indeterminate")
+                throw new InvalidDataException();
+
+            return expr;
             //return Mfs.Round[Mfs.N[scalar], ZeroEpsilon.ToExpr()].Simplify();
         }
         
@@ -154,6 +160,22 @@ namespace GeometricAlgebraFulcrumLib.Mathematica.Processors
         {
             return PostProcessScalar(Mfs.Divide[
                 Expr.INT_ONE, 
+                PreProcessScalar(scalar)
+            ]);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Expr Sign(Expr scalar)
+        {
+            return PostProcessScalar(Mfs.Sign[
+                PreProcessScalar(scalar)
+            ]);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Expr UnitStep(Expr scalar)
+        {
+            return PostProcessScalar(Mfs.UnitStep[
                 PreProcessScalar(scalar)
             ]);
         }

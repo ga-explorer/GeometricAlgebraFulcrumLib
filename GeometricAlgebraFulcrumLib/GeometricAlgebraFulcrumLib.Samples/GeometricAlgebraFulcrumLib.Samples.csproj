@@ -15,6 +15,9 @@
   <ItemGroup>
     <ProjectReference Include="..\..\CodeComposerLib\CodeComposerLib\CodeComposerLib.csproj" />
     <ProjectReference Include="..\..\DataStructuresLib\DataStructuresLib\DataStructuresLib.csproj" />
+    <ProjectReference Include="..\..\GraphicsComposerLib\OxyPlot\OxyPlot.Core.Drawing\OxyPlot.Core.Drawing.csproj" />
+    <ProjectReference Include="..\..\GraphicsComposerLib\OxyPlot\OxyPlot.SkiaSharp\OxyPlot.SkiaSharp.csproj" />
+    <ProjectReference Include="..\..\GraphicsComposerLib\OxyPlot\OxyPlot\OxyPlot.csproj" />
     <ProjectReference Include="..\..\NumericalGeometryLib\NumericalGeometryLib\NumericalGeometryLib.csproj" />
     <ProjectReference Include="..\..\GAPoTNumLib\GAPoTNumLib\GAPoTNumLib.csproj" />
     <ProjectReference Include="..\..\GraphicsComposerLib\GraphicsComposerLib.Geometry\GraphicsComposerLib.Geometry.csproj" />

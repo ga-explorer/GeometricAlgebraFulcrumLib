@@ -6,7 +6,7 @@ using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 {
-    public static class OutermorphismStorageUtils
+    internal static class OutermorphismStorageUtils
     {
         public static VectorStorage<T> MapVector<T>(this IScalarAlgebraProcessor<T> scalarProcessor, OutermorphismStorage<T> om, VectorStorage<T> vector)
         {
@@ -121,7 +121,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 
             composer.RemoveZeroTerms();
 
-            return composer.CreateMultivectorSparseStorage();
+            return composer.CreateMultivectorStorageSparse();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

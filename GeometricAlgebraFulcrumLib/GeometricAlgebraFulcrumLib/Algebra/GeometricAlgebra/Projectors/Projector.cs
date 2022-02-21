@@ -3,9 +3,9 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.BitManipulation;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Processors.LinearAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded;
@@ -20,21 +20,18 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Projectors
         IMultivectorStorageContainer<T>,
         IProjector<T>
     {
-        public override ILinearAlgebraProcessor<T> LinearProcessor 
-            => GeometricProcessor;
-
-        public IGeometricAlgebraProcessor<T> GeometricProcessor { get; }
+        public override IGeometricAlgebraProcessor<T> GeometricProcessor { get; }
         
-        public KVectorStorage<T> Blade { get; }
+        public KVector<T> Blade { get; }
 
-        public KVectorStorage<T> BladeInverse { get; }
+        public KVector<T> BladePseudoInverse { get; }
 
 
-        internal Projector([NotNull] IGeometricAlgebraProcessor<T> geometricProcessor, [NotNull] KVectorStorage<T> blade)
+        internal Projector([NotNull] KVector<T> blade)
         {
-            GeometricProcessor = geometricProcessor;
+            GeometricProcessor = blade.GeometricProcessor;
             Blade = blade;
-            BladeInverse = geometricProcessor.BladeInverse(blade);
+            BladePseudoInverse = blade.PseudoInverse();
         }
 
 
@@ -51,18 +48,18 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Projectors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override IEnumerable<IdMultivectorStorageRecord<T>> GetMappedBasisBlades()
+        public override IEnumerable<IdMultivectorRecord<T>> GetMappedBasisBlades()
         {
             return GeometricProcessor
                 .GaSpaceDimension
                 .GetRange()
                 .Select(id => 
-                    new IdMultivectorStorageRecord<T>(
+                    new IdMultivectorRecord<T>(
                         id,
-                        OmMapBasisBlade(id)
+                        OmMapBasisBlade(id).AsMultivector()
                     )
                 )
-                .Where(r => !r.Storage.IsEmpty());
+                .Where(r => !r.Multivector.MultivectorStorage.IsEmpty());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -72,89 +69,68 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Projectors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override VectorStorage<T> OmMapBasisVector(ulong index)
+        public override Vector<T> OmMapBasisVector(ulong index)
         {
-            return OmMapVector(
-                GeometricProcessor.CreateVectorBasisStorage(index)
+            return OmMap(
+                GeometricProcessor.CreateVectorBasis(index)
             );
 
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override BivectorStorage<T> OmMapBasisBivector(ulong index)
+        public override Bivector<T> OmMapBasisBivector(ulong index)
         {
-            return OmMapBivector(
-                GeometricProcessor.CreateBivectorBasisStorage(index)
+            return OmMap(
+                GeometricProcessor.CreateBivectorBasis(index)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override BivectorStorage<T> OmMapBasisBivector(ulong index1, ulong index2)
+        public override Bivector<T> OmMapBasisBivector(ulong index1, ulong index2)
         {
-            return OmMapBivector(
-                GeometricProcessor.CreateBivectorBasisStorage(index1, index2)
+            return OmMap(
+                GeometricProcessor.CreateBivectorBasis(index1, index2)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override KVectorStorage<T> OmMapBasisBlade(ulong id)
+        public override KVector<T> OmMapBasisBlade(ulong id)
         {
-            return OmMapKVector(
-                GeometricProcessor.CreateKVectorBasisStorage(id)
+            return OmMap(
+                GeometricProcessor.CreateKVectorStorageBasis(id).CreateKVector(GeometricProcessor)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override KVectorStorage<T> OmMapBasisBlade(uint grade, ulong index)
+        public override KVector<T> OmMapBasisBlade(uint grade, ulong index)
         {
-            return OmMapKVector(
-                GeometricProcessor.CreateKVectorBasisStorage(grade, index)
+            return OmMap(
+                GeometricProcessor.CreateKVectorStorageBasis(grade, index).CreateKVector(GeometricProcessor)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override VectorStorage<T> OmMapVector(VectorStorage<T> vector)
+        public override Vector<T> OmMap(Vector<T> vector)
         {
-            return GeometricProcessor.Lcp(
-                GeometricProcessor.Lcp(vector, Blade), 
-                BladeInverse
-            ).GetVectorPart();
+            return vector.Lcp(BladePseudoInverse).Lcp(Blade).AsVector();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override BivectorStorage<T> OmMapBivector(BivectorStorage<T> bivector)
+        public override Bivector<T> OmMap(Bivector<T> bivector)
         {
-            return GeometricProcessor.Lcp(
-                GeometricProcessor.Lcp(bivector, Blade), 
-                BladeInverse
-            ).GetBivectorPart();
+            return bivector.Lcp(BladePseudoInverse).Lcp(Blade).AsBivector();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override KVectorStorage<T> OmMapKVector(KVectorStorage<T> kVector)
+        public override KVector<T> OmMap(KVector<T> kVector)
         {
-            return GeometricProcessor.Lcp(
-                GeometricProcessor.Lcp(kVector, Blade), 
-                BladeInverse
-            );
+            return kVector.Lcp(BladePseudoInverse).Lcp(Blade);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override MultivectorStorage<T> OmMapMultivector(MultivectorStorage<T> multivector)
+        public override Multivector<T> OmMap(Multivector<T> multivector)
         {
-            return GeometricProcessor.Lcp(
-                GeometricProcessor.Lcp(multivector, Blade), 
-                BladeInverse
-            ).ToMultivectorStorage();
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override MultivectorGradedStorage<T> OmMapMultivector(MultivectorGradedStorage<T> multivector)
-        {
-            return GeometricProcessor.Lcp(
-                GeometricProcessor.Lcp(multivector, Blade), 
-                BladeInverse
-            ).ToMultivectorGradedStorage();
+            return multivector.Lcp(BladePseudoInverse).Lcp(Blade);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -182,23 +158,23 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Projectors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override IEnumerable<IndexVectorStorageRecord<T>> GetOmMappedBasisVectors()
+        public override IEnumerable<IndexVectorRecord<T>> GetOmMappedBasisVectors()
         {
             return ((ulong) GeometricProcessor.VSpaceDimension)
                 .GetRange()
                 .Select(index => 
-                    new IndexVectorStorageRecord<T>(
+                    new IndexVectorRecord<T>(
                         index,
                         OmMapBasisVector(index)
                     )
                 )
-                .Where(r => !r.Storage.IsEmpty());
+                .Where(r => !r.Vector.VectorStorage.IsEmpty());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IMultivectorStorage<T> GetMultivectorStorage()
         {
-            return Blade;
+            return Blade.KVectorStorage;
         }
     }
 }

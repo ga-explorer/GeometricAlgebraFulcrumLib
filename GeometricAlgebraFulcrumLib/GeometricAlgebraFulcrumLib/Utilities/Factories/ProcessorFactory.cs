@@ -1,8 +1,10 @@
 ﻿using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.SymbolicAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.LinearAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.Processors.SymbolicAlgebra.Context;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Factories
 {
@@ -51,6 +53,72 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
                 scalarProcessor, 
                 BasisBladeSet.Create(positiveCount, negativeCount, zeroCount)
             );
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GeometricAlgebraEuclideanProcessor<ISymbolicExpressionAtomic> AttachGeometricAlgebraEuclideanProcessor(this SymbolicContext context, uint vSpaceDimension)
+        {
+            var processor = new GeometricAlgebraEuclideanProcessor<ISymbolicExpressionAtomic>(
+                context,
+                vSpaceDimension
+            );
+
+            context.GeometricProcessor = processor;
+
+            return processor;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GeometricAlgebraConformalProcessor<ISymbolicExpressionAtomic> AttachGeometricAlgebraConformalProcessor(this SymbolicContext context, uint vSpaceDimension)
+        {
+            var processor = new GeometricAlgebraConformalProcessor<ISymbolicExpressionAtomic>(
+                context, 
+                vSpaceDimension
+            );
+            
+            context.GeometricProcessor = processor;
+
+            return processor;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GeometricAlgebraProjectiveProcessor<ISymbolicExpressionAtomic> AttachGeometricAlgebraProjectiveProcessor(this SymbolicContext context, uint vSpaceDimension)
+        {
+            var processor = new GeometricAlgebraProjectiveProcessor<ISymbolicExpressionAtomic>(
+                context, 
+                vSpaceDimension
+            );
+            
+            context.GeometricProcessor = processor;
+
+            return processor;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GeometricAlgebraOrthonormalProcessor<ISymbolicExpressionAtomic> AttachGeometricAlgebraOrthonormalProcessor(this SymbolicContext context, uint positiveCount, uint negativeCount)
+        {
+            var processor = new GeometricAlgebraOrthonormalProcessor<ISymbolicExpressionAtomic>(
+                context, 
+                BasisBladeSet.Create(positiveCount, negativeCount)
+            );
+            
+            context.GeometricProcessor = processor;
+
+            return processor;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GeometricAlgebraOrthonormalProcessor<ISymbolicExpressionAtomic> AttachGeometricAlgebraOrthonormalProcessor(this SymbolicContext context, uint positiveCount, uint negativeCount, uint zeroCount)
+        {
+            var processor = new GeometricAlgebraOrthonormalProcessor<ISymbolicExpressionAtomic>(
+                context, 
+                BasisBladeSet.Create(positiveCount, negativeCount, zeroCount)
+            );
+            
+            context.GeometricProcessor = processor;
+
+            return processor;
         }
     }
 }

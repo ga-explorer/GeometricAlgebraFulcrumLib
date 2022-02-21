@@ -68,7 +68,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Conformal
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public T GetRadiusSquared()
         {
-            return ConformalProcessor.Sp(VectorStorage);
+            return MultivectorStorageSpUtils.SpSquared(ConformalProcessor, VectorStorage);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

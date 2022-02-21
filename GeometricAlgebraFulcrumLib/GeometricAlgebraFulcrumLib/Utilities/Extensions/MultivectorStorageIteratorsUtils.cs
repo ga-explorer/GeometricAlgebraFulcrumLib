@@ -9,7 +9,7 @@ using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 {
-    public static class MultivectorStorageIteratorsUtils
+    internal static class MultivectorStorageIteratorsUtils
     {
         public static IEnumerable<GradeLinVectorStorageScalarRecord<T>> GetGbtOutermorphismScaledKVectors<T>(this Multivector<T> mv, IReadOnlyList<VectorStorage<T>> basisVectorMappings)
         {

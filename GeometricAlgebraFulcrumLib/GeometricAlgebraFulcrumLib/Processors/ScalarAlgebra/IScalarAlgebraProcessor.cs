@@ -72,6 +72,10 @@
 
         T Inverse(T scalar);
 
+        T Sign(T scalar);
+
+        T UnitStep(T scalar);
+
         T Abs(T scalar);
 
         T Power(T baseScalar, T scalar);

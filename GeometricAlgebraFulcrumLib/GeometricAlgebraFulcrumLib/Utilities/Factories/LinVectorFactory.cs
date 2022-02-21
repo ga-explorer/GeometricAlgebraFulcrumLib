@@ -428,5 +428,33 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
                 indexScalarRecords.CreateLinVectorStorage()
             );
         }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static LinVector<T> CreateLinVectorBibolar<T>(this ILinearAlgebraProcessor<T> processor, IEnumerable<char> basisVectorSignatures)
+        {
+            return new LinVector<T>(
+                processor,
+                processor.CreateLinVectorStorageBibolar(basisVectorSignatures)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static LinVector<T> CreateLinVectorBibolar<T>(this ILinearAlgebraProcessor<T> processor, IEnumerable<int> basisVectorSignatures)
+        {
+            return new LinVector<T>(
+                processor,
+                processor.CreateLinVectorStorageBibolar(basisVectorSignatures)
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static LinVector<T> CreateLinVectorBibolar<T>(this ILinearAlgebraProcessor<T> processor, params int[] basisVectorSignatures)
+        {
+            return new LinVector<T>(
+                processor,
+                processor.CreateLinVectorStorageBibolar(basisVectorSignatures)
+            );
+        }
     }
 }

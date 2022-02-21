@@ -4,7 +4,7 @@ using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 {
-    public static class MultivectorStorageLcpUtils
+    internal static class MultivectorStorageLcpUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static KVectorStorage<T> Lcp<T>(this IGeometricAlgebraProcessor<T> processor, KVectorStorage<T> mv1, KVectorStorage<T> mv2)

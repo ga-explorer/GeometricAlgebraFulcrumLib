@@ -7,6 +7,7 @@ using System.Numerics;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.BitManipulation;
 using NumericalGeometryLib.BasicMath;
+using NumericalGeometryLib.BasicMath.Tuples.Immutable;
 using NumericalGeometryLib.GeometricAlgebra.Basis;
 using NumericalGeometryLib.GeometricAlgebra.GuidedBinaryTraversal;
 using NumericalGeometryLib.GeometricAlgebra.Structures;
@@ -15,6 +16,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
 {
     /// <summary>
     /// This class represents a general GA multivector
+    /// TODO: Create another class for Multivectors over rational scalars
     /// </summary>
     public sealed class GaMultivector : 
         IGeometricElement,
@@ -595,6 +597,18 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public GaMultivector Conjugate()
+        {
+            var scalarList = ScalarList.MapNumbers(
+                (id, scalar) => 
+                    BasisSet.ConjugateIsNegative(id) 
+                        ? -scalar : scalar
+            );
+
+            return new GaMultivector(BasisSet, scalarList);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public GaMultivector Reverse()
         {
             var scalarList = ScalarList.MapNumbers(
@@ -703,6 +717,14 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
         public GaMultivector EInverse()
         {
             return Reverse() / ENormSquared();
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public GaMultivector PseudoInverse()
+        {
+            var conjugate = Conjugate();
+
+            return conjugate / conjugate.Sp(this);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1205,6 +1227,26 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
         public GaMultivectorBinaryTrie GetBinaryTrie()
         {
             return ScalarList.CreateBinaryTrie();
+        }
+
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Tuple2D GetVectorPartAsTuple2D()
+        {
+            return new Tuple2D(
+                ScalarList[1],
+                ScalarList[2]
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Tuple3D GetVectorPartAsTuple3D()
+        {
+            return new Tuple3D(
+                ScalarList[1],
+                ScalarList[2],
+                ScalarList[4]
+            );
         }
 
 

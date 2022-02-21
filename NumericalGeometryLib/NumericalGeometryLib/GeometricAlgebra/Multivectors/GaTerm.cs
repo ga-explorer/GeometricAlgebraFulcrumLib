@@ -333,6 +333,13 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public GaTerm Conjugate()
+        {
+            return BasisSet.ConjugateIsNegative(Id)
+                ? -this : this;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public GaTerm Reverse()
         {
             return Grade.ReverseIsNegativeOfGrade()
@@ -444,11 +451,19 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
         {
             return Reverse() / ENormSquared();
         }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public GaTerm PseudoInverse()
+        {
+            return Reverse() / NormSquared();
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public GaTerm Inverse()
         {
-            return Reverse() / NormSquared();
+            var conjugate = Conjugate();
+
+            return conjugate / conjugate.Sp(this);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

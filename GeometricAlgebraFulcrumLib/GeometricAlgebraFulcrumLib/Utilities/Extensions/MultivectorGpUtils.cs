@@ -2,12 +2,32 @@
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Vectors;
 using GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 {
     public static class MultivectorGpUtils
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Multivector<T> Gp<T>(this IGeometricAlgebraProcessor<T> processor, ulong id1, ulong id2)
+        {
+            return processor.Gp(
+                processor.CreateKVectorStorageBasis(id1),
+                processor.CreateKVectorStorageBasis(id2)
+            ).CreateMultivector(processor);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Multivector<T> EGp<T>(this IGeometricAlgebraProcessor<T> processor, ulong id1, ulong id2)
+        {
+            return processor.EGp(
+                processor.CreateKVectorStorageBasis(id1),
+                processor.CreateKVectorStorageBasis(id2)
+            ).CreateMultivector(processor);
+        }
+
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Multivector<T> Gp<T>(this Multivector<T> v1, int v2)
         {
@@ -311,12 +331,12 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> Gp<T>(this Multivector<T> mv1)
+        public static Multivector<T> GpSquared<T>(this Multivector<T> mv1)
         {
             var processor = mv1.GeometricProcessor;
 
             return processor
-                .Gp(mv1.MultivectorStorage)
+                .GpSquared(mv1.MultivectorStorage)
                 .CreateMultivector(processor);
         }
         
@@ -644,12 +664,12 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> EGp<T>(this Multivector<T> mv1)
+        public static Multivector<T> EGpSquared<T>(this Multivector<T> mv1)
         {
             var processor = mv1.GeometricProcessor;
 
             return processor
-                .EGp(mv1.MultivectorStorage)
+                .EGpSquared(mv1.MultivectorStorage)
                 .CreateMultivector(processor);
         }
         

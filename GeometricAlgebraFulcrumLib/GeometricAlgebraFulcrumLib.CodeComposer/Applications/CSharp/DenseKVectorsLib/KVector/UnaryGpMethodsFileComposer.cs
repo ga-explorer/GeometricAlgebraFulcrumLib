@@ -1,8 +1,8 @@
 ﻿using System;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.SymbolicAlgebra;
 using GeometricAlgebraFulcrumLib.CodeComposer.Languages;
 using GeometricAlgebraFulcrumLib.Processors.SymbolicAlgebra.Context;
-using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using TextComposerLib.Text.Linear;
 using TextComposerLib.Text.Structured;
@@ -14,8 +14,8 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
     {
         private uint _inGrade;
         private uint _outGrade;
-        private KVectorStorage<ISymbolicExpressionAtomic> _inputKVector;
-        private KVectorStorage<ISymbolicExpressionAtomic> _outputKVector;
+        private KVector<ISymbolicExpressionAtomic> _inputKVector;
+        private KVector<ISymbolicExpressionAtomic> _outputKVector;
 
         internal GaFuLLanguageOperationSpecs OperationSpecs { get; }
 
@@ -42,13 +42,13 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             {
                 GaFuLLanguageOperationKind.UnaryGeometricProductSquared
                     => OperationSpecs.IsEuclidean
-                        ? GeometricProcessor.EGp(_inputKVector, _inputKVector).GetKVectorPart(_outGrade)
-                        : GeometricProcessor.Gp(_inputKVector, _inputKVector).GetKVectorPart(_outGrade),
+                        ? _inputKVector.EGp(_inputKVector).GetKVectorPart(_outGrade)
+                        : _inputKVector.Gp(_inputKVector).GetKVectorPart(_outGrade),
 
                 GaFuLLanguageOperationKind.UnaryGeometricProductReverse
                     => OperationSpecs.IsEuclidean
-                        ? GeometricProcessor.EGp(_inputKVector, GeometricProcessor.Reverse(_inputKVector)).GetKVectorPart(_outGrade)
-                        : GeometricProcessor.Gp(_inputKVector, GeometricProcessor.Reverse(_inputKVector)).GetKVectorPart(_outGrade),
+                        ? _inputKVector.EGp(_inputKVector.Reverse()).GetKVectorPart(_outGrade)
+                        : _inputKVector.Gp(_inputKVector.Reverse()).GetKVectorPart(_outGrade),
 
                 _ => throw new InvalidOperationException()
             };
@@ -59,12 +59,12 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         protected override void DefineContextExternalNames(SymbolicContext context)
         {
             context.SetExternalNamesByTermIndex(
-                _inputKVector,
+                _inputKVector.KVectorStorage,
                 index => $"scalars[{index}]"
             );
 
             context.SetExternalNamesByTermIndex(
-                _outputKVector,
+                _outputKVector.KVectorStorage,
                 index => $"c[{index}]"
             );
             

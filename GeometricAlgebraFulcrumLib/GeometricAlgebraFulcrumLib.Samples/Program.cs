@@ -1,5 +1,5 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.UnitTests.Processing;
+using GeometricAlgebraFulcrumLib.Samples.Numeric;
 
 namespace GeometricAlgebraFulcrumLib.Samples
 {
@@ -7,8 +7,8 @@ namespace GeometricAlgebraFulcrumLib.Samples
     {
         static void Main(string[] args)
         {
-            var testClass = new BasisTests();
-            testClass.TestGpReverse();
+            //var testClass = new BasisBladeTests();
+            //testClass.TestGpReverse();
 
             //var testClass = new MultivectorStoragesTests();
             //testClass.ClassInit();
@@ -38,6 +38,18 @@ namespace GeometricAlgebraFulcrumLib.Samples
 
             //Symbolic.AngouriMath.Sample1.Execute();
             //CodeComposer.Sample1.Execute();
+
+            GeometricFrequency.Sample1.Example1();
+            //SymbolicBSplineSample.Example2();
+            //NumericPhCurveSamples.Example3();
+            //SymbolicBernsteinPolynomialsSample.Example5();
+            //SymbolicPhConstruction3DSample.Example2();
+            //SymbolicPhConstruction2DSample.Example2();
+            //SymbolicRotorsSample.Example9();
+            //NumericRotorsSample.Example12();
+            //SymbolicScaledRotors3DSample.Example3();
+            //SymbolicScaledRotors2DSample.Example3();
+            //NumericPhSplineCurveSamples.Example1();
 
             Console.WriteLine();
             Console.WriteLine("Press any key to exit..");

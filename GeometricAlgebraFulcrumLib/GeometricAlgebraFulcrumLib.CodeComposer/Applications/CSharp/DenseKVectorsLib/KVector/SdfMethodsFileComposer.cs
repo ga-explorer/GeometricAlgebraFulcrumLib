@@ -1,9 +1,9 @@
 ﻿using System;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.SymbolicAlgebra;
 using GeometricAlgebraFulcrumLib.Algebra.SymbolicAlgebra.Variables;
 using GeometricAlgebraFulcrumLib.CodeComposer.Languages;
 using GeometricAlgebraFulcrumLib.Processors.SymbolicAlgebra.Context;
-using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using TextComposerLib.Text.Linear;
 using TextComposerLib.Text.Structured;
@@ -14,7 +14,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         : GaFuLLibrarySymbolicContextFileComposerBase
     {
         private uint _inGrade;
-        private KVectorStorage<ISymbolicExpressionAtomic> _inputKVector;
+        private KVector<ISymbolicExpressionAtomic> _inputKVector;
         private SymbolicVariableComputed _outputScalar;
         private GaFuLLanguageOperationSpecs _operationSpecs;
 
@@ -50,13 +50,13 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             {
                 GaFuLLanguageOperationKind.UnaryNorm =>
                     _operationSpecs.IsEuclidean
-                        ? GeometricProcessor.ENorm(_inputKVector) 
-                        : GeometricProcessor.Norm(_inputKVector),
+                        ? _inputKVector.ENorm() 
+                        : _inputKVector.Norm(),
 
                 GaFuLLanguageOperationKind.UnaryNormSquared =>
                     _operationSpecs.IsEuclidean
-                        ? GeometricProcessor.ENormSquared(_inputKVector) 
-                        : GeometricProcessor.NormSquared(_inputKVector),
+                        ? _inputKVector.ENormSquared() 
+                        : _inputKVector.NormSquared(),
 
                 //GeoClcOperationKind.UnaryMagnitude =>
                 //    OperationSpecs.IsEuclidean
@@ -71,7 +71,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
                 _ => throw new InvalidOperationException()
             };
 
-            _outputScalar = (SymbolicVariableComputed) outputScalar;
+            _outputScalar = (SymbolicVariableComputed) outputScalar.ScalarValue;
 
             _outputScalar.IsOutputVariable = true;
         }

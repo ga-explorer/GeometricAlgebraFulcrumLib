@@ -1,12 +1,32 @@
 ﻿using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 {
     public static class KVectorSpUtils
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<T> Sp<T>(this IGeometricAlgebraProcessor<T> processor, ulong id1, ulong id2)
+        {
+            return processor.Sp(
+                processor.CreateKVectorStorageBasis(id1),
+                processor.CreateKVectorStorageBasis(id2)
+            ).CreateScalar(processor);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<T> ESp<T>(this IGeometricAlgebraProcessor<T> processor, ulong id1, ulong id2)
+        {
+            return processor.ESp(
+                processor.CreateKVectorStorageBasis(id1),
+                processor.CreateKVectorStorageBasis(id2)
+            ).CreateScalar(processor);
+        }
+
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> Sp<T>(this KVector<T> v1, Scalar<T> v2)
         {
@@ -78,11 +98,11 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<T> Sp<T>(this KVector<T> v1)
+        public static Scalar<T> SpSquared<T>(this KVector<T> v1)
         {
             var processor = v1.GeometricProcessor;
 
-            return v1.GeometricProcessor.CreateScalar(processor.Sp(v1.KVectorStorage));
+            return v1.GeometricProcessor.CreateScalar(processor.SpSquared(v1.KVectorStorage));
         }
 
         

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
@@ -46,11 +47,11 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
         public bool IsMotherAlgebra 
             => false;
 
-        public override KVectorStorage<T> PseudoScalar { get; }
+        public override KVector<T> PseudoScalar { get; }
 
-        public override KVectorStorage<T> PseudoScalarInverse { get; }
+        public override KVector<T> PseudoScalarInverse { get; }
 
-        public override KVectorStorage<T> PseudoScalarReverse { get; }
+        public override KVector<T> PseudoScalarReverse { get; }
 
 
         internal GeometricAlgebraEuclideanProcessor(IScalarAlgebraProcessor<T> scalarProcessor, uint vSpaceDimension) 
@@ -61,17 +62,9 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
 
             VSpaceDimension = vSpaceDimension;
             BasisSet = BasisBladeSet.CreateEuclidean(VSpaceDimension);
-            PseudoScalar = ScalarProcessor.CreatePseudoScalarStorage(BasisSet.VSpaceDimension);
-
-            PseudoScalarInverse = 
-                ScalarProcessor
-                    .BladeInverse(BasisSet, PseudoScalar)
-                    .GetKVectorPart(BasisSet.VSpaceDimension);
-
-            PseudoScalarReverse = 
-                scalarProcessor
-                    .Reverse(PseudoScalar)
-                    .GetKVectorPart(BasisSet.VSpaceDimension);
+            PseudoScalar = ScalarProcessor.CreateKVectorStoragePseudoScalar(BasisSet.VSpaceDimension).CreateKVector(this);
+            PseudoScalarInverse = PseudoScalar.EInverse();
+            PseudoScalarReverse = PseudoScalar.Reverse();
         }
 
         
@@ -234,9 +227,9 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
         }
 
 
-        public override T Sp(IMultivectorStorage<T> mv1)
+        public override T SpSquared(IMultivectorStorage<T> mv1)
         {
-            return ScalarProcessor.ESp(mv1);
+            return ScalarProcessor.ESpSquared(mv1);
         }
 
         public override T Sp(IMultivectorStorage<T> mv1, IMultivectorStorage<T> mv2)

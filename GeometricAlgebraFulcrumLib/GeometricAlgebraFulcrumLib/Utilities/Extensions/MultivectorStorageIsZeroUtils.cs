@@ -5,7 +5,7 @@ using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 {
-    public static class MultivectorStorageIsZeroUtils
+    internal static class MultivectorStorageIsZeroUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsZero<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorStorage<T> mv)

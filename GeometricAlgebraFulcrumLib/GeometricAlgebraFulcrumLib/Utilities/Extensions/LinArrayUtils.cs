@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Utilities.Factories;
@@ -425,6 +426,32 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                 }
 
                 vectorsArray[j] = composer.CreateVectorStorage();
+            }
+
+            return vectorsArray;
+        }
+        
+        public static Vector<T>[] ColumnsToVectorsArray<T>(this T[,] scalarsArray, IScalarAlgebraProcessor<T> scalarProcessor)
+        {
+            var rowsCount = scalarsArray.GetLength(0);
+            var colsCount = scalarsArray.GetLength(1);
+
+            var vectorsArray = 
+                new Vector<T>[colsCount];
+
+            for (var j = 0; j < colsCount; j++)
+            {
+                var composer = scalarProcessor.CreateVectorStorageComposer(1);
+
+                for (var i = 0; i < rowsCount; i++)
+                {
+                    var scalar = scalarsArray[i, j] ?? scalarProcessor.ScalarZero;
+
+                    if (!scalarProcessor.IsZero(scalar))
+                        composer.SetTerm((ulong) i, scalar);
+                }
+
+                vectorsArray[j] = composer.CreateVector();
             }
 
             return vectorsArray;

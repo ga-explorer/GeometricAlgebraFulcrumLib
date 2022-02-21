@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using NumericalGeometryLib.BasicMath.Tuples;
 using NumericalGeometryLib.GeometricAlgebra.Basis;
 using NumericalGeometryLib.GeometricAlgebra.Structures;
 
@@ -131,7 +132,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static GaMultivector CreateVector(this BasisBladeSet basisSet, params double[] numbersList)
         {
-            if ((ulong) numbersList.Length > basisSet.GaSpaceDimension)
+            if ((ulong) numbersList.Length > basisSet.VSpaceDimension)
                 throw new InvalidOperationException();
 
             var mv = new GaMultivector(basisSet);
@@ -141,7 +142,48 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
 
             return mv;
         }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GaMultivector CreateVector(this BasisBladeSet basisSet, ITuple2D vector)
+        {
+            if (basisSet.VSpaceDimension < 2)
+                throw new InvalidOperationException();
 
+            return new GaMultivector(basisSet)
+            {
+                [1] = vector.X,
+                [2] = vector.Y
+            };
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GaMultivector CreateVector(this BasisBladeSet basisSet, ITuple3D vector)
+        {
+            if (basisSet.VSpaceDimension < 3)
+                throw new InvalidOperationException();
+
+            return new GaMultivector(basisSet)
+            {
+                [1] = vector.X,
+                [2] = vector.Y,
+                [4] = vector.Z
+            };
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GaMultivector CreateVector(this BasisBladeSet basisSet, ITuple4D vector)
+        {
+            if (basisSet.VSpaceDimension < 4)
+                throw new InvalidOperationException();
+
+            return new GaMultivector(basisSet)
+            {
+                [1] = vector.X,
+                [2] = vector.Y,
+                [4] = vector.Z,
+                [8] = vector.W
+            };
+        }
 
     }
 }

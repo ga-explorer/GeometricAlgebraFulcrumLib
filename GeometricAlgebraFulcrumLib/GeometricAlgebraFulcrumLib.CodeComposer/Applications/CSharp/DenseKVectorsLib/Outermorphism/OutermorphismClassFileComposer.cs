@@ -34,7 +34,10 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
         private string GenerateOutermorphismDeterminantCode()
         {
             var context = 
-                new SymbolicContext(DenseKVectorsLibraryComposer.DefaultContextOptions);
+                new SymbolicContext(DenseKVectorsLibraryComposer.DefaultContextOptions)
+                {
+                    GeometricProcessor = GeometricProcessor
+                };
 
             var linearMapArray = context.ParameterVariablesFactory.CreateDenseArray(
                 (int) VSpaceDimension,
@@ -46,7 +49,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
                 GeometricProcessor.CreateLinearMapOutermorphism(linearMapArray);
 
             var determinant = 
-                (SymbolicVariableComputed) outermorphism.GetDeterminant(GeometricProcessor);
+                (SymbolicVariableComputed) GeometricProcessor.GetDeterminant(outermorphism).ScalarValue;
 
             determinant.IsOutputVariable = true;
 

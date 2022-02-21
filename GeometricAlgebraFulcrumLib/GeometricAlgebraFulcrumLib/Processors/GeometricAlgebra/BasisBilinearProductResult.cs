@@ -33,7 +33,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
 
         public KVectorStorage<double> GetBasisBladeTermFloat64()
         {
-            return ScalarAlgebraFloat64Processor.DefaultProcessor.CreateKVectorTermStorage(Id, Signature);
+            return ScalarAlgebraFloat64Processor.DefaultProcessor.CreateKVectorStorageTerm(Id, Signature);
         }
     }
 }

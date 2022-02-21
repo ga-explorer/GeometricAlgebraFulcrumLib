@@ -8,7 +8,7 @@ using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 {
-    public static class MultivectorStorageSpOrtUtils
+    internal static class MultivectorStorageSpOrtUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BasisBilinearProductResult Sp(this BasisBladeSet basisSet, ulong id1)

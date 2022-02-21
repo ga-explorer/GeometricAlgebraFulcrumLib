@@ -157,6 +157,15 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
                 storage
             );
         }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Bivector<T> CreateBivector<T>(this BivectorStorage<T> storage, IGeometricAlgebraProcessor<T> geometricProcessor)
+        {
+            return new Bivector<T>(
+                geometricProcessor, 
+                storage
+            );
+        }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -492,6 +501,69 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Bivector<T> CreateBivector<T>(this IGeometricAlgebraProcessor<T> geometricProcessor, params int[] scalarArray)
+        {
+            return new Bivector<T>(
+                geometricProcessor, 
+                geometricProcessor.CreateBivectorStorage(geometricProcessor.CreateLinVectorStorage(scalarArray))
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Bivector<T> CreateBivector<T>(this IGeometricAlgebraProcessor<T> geometricProcessor, params long[] scalarArray)
+        {
+            return new Bivector<T>(
+                geometricProcessor, 
+                geometricProcessor.CreateBivectorStorage(geometricProcessor.CreateLinVectorStorage(scalarArray))
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Bivector<T> CreateBivector<T>(this IGeometricAlgebraProcessor<T> geometricProcessor, params uint[] scalarArray)
+        {
+            return new Bivector<T>(
+                geometricProcessor, 
+                geometricProcessor.CreateBivectorStorage(geometricProcessor.CreateLinVectorStorage(scalarArray))
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Bivector<T> CreateBivector<T>(this IGeometricAlgebraProcessor<T> geometricProcessor, params ulong[] scalarArray)
+        {
+            return new Bivector<T>(
+                geometricProcessor, 
+                geometricProcessor.CreateBivectorStorage(geometricProcessor.CreateLinVectorStorage(scalarArray))
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Bivector<T> CreateBivector<T>(this IGeometricAlgebraProcessor<T> geometricProcessor, params float[] scalarArray)
+        {
+            return new Bivector<T>(
+                geometricProcessor, 
+                geometricProcessor.CreateBivectorStorage(geometricProcessor.CreateLinVectorStorage(scalarArray))
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Bivector<T> CreateBivector<T>(this IGeometricAlgebraProcessor<T> geometricProcessor, params double[] scalarArray)
+        {
+            return new Bivector<T>(
+                geometricProcessor, 
+                geometricProcessor.CreateBivectorStorage(geometricProcessor.CreateLinVectorStorage(scalarArray))
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Bivector<T> CreateBivector<T>(this IGeometricAlgebraProcessor<T> geometricProcessor, params string[] scalarArray)
+        {
+            return new Bivector<T>(
+                geometricProcessor, 
+                geometricProcessor.CreateBivectorStorage(geometricProcessor.CreateLinVectorStorage(scalarArray))
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Bivector<T> CreateBivector<T>(this IGeometricAlgebraProcessor<T> geometricProcessor, params T[] scalarArray)
         {
             return new Bivector<T>(
@@ -500,6 +572,15 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
             );
         }
         
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Bivector<T> CreateBivector<T>(this IGeometricAlgebraProcessor<T> geometricProcessor, params object[] scalarArray)
+        {
+            return new Bivector<T>(
+                geometricProcessor, 
+                geometricProcessor.CreateBivectorStorage(geometricProcessor.CreateLinVectorStorage(scalarArray))
+            );
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Bivector<T> CreateBivector<T>(this IGeometricAlgebraProcessor<T> geometricProcessor, IEnumerable<T> scalarList)
         {

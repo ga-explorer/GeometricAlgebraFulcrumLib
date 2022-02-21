@@ -13,7 +13,7 @@ using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Factories
 {
-    public static class KVectorStorageFactory
+    internal static class KVectorStorageFactory
     {
         //[MethodImpl(MethodImplOptions.AggressiveInlining)]
         //public static VectorSparseStorageComposer<T> CreateVectorStorageComposer<T>(this IScalarAlgebraProcessor<T> scalarProcessor)
@@ -44,14 +44,14 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
             return grade switch
             {
                 1 => VectorStorage<T>.CreateVector(evenDictionary),
-                2 => BivectorStorage<T>.CreateBivector(evenDictionary),
+                2 => BivectorStorage<T>.Create(evenDictionary),
                 _ => KVectorStorage<T>.CreateKVector(grade, evenDictionary)
             };
         }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVectorStorage<T> CreatePseudoScalarStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, uint vSpaceDimension)
+        public static KVectorStorage<T> CreateKVectorStoragePseudoScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, uint vSpaceDimension)
         {
             var index = vSpaceDimension.PseudoScalarIndex();
             var scalar = scalarProcessor.ScalarOne;
@@ -60,13 +60,13 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
             {
                 0 => KVectorStorage<T>.CreateKVectorScalar(scalar),
                 1 => VectorStorage<T>.CreateVector(index, scalar),
-                2 => BivectorStorage<T>.CreateBivector(index, scalar),
+                2 => BivectorStorage<T>.Create(index, scalar),
                 _ => KVectorStorage<T>.CreateKVector(vSpaceDimension, index, scalar)
             };
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVectorStorage<T> CreatePseudoScalarStorage<T>(this IGeometricAlgebraProcessor<T> processor)
+        public static KVectorStorage<T> CreateKVectorStoragePseudoScalar<T>(this IGeometricAlgebraProcessor<T> processor)
         {
             var vSpaceDimension = processor.VSpaceDimension;
             var index = vSpaceDimension.PseudoScalarIndex();
@@ -76,13 +76,13 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
             {
                 0 => KVectorStorage<T>.CreateKVectorScalar(scalar),
                 1 => VectorStorage<T>.CreateVector(index, scalar),
-                2 => BivectorStorage<T>.CreateBivector(index, scalar),
+                2 => BivectorStorage<T>.Create(index, scalar),
                 _ => KVectorStorage<T>.CreateKVector(vSpaceDimension, index, scalar)
             };
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVectorStorage<T> CreatePseudoScalarReverseStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, uint vSpaceDimension)
+        public static KVectorStorage<T> CreateKVectorStoragePseudoScalarReverse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, uint vSpaceDimension)
         {
             var index = 
                 vSpaceDimension.PseudoScalarIndex();
@@ -96,30 +96,30 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
             {
                 0 => KVectorStorage<T>.CreateKVectorScalar(scalar),
                 1 => VectorStorage<T>.CreateVector(index, scalar),
-                2 => BivectorStorage<T>.CreateBivector(index, scalar),
+                2 => BivectorStorage<T>.Create(index, scalar),
                 _ => KVectorStorage<T>.CreateKVector(vSpaceDimension, index, scalar)
             };
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVectorStorage<T> CreateEuclideanPseudoScalarInverseStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, uint vSpaceDimension)
+        public static KVectorStorage<T> CreateKVectorStorageEuclideanPseudoScalarInverse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, uint vSpaceDimension)
         {
-            return CreatePseudoScalarReverseStorage(scalarProcessor, vSpaceDimension);
+            return CreateKVectorStoragePseudoScalarReverse(scalarProcessor, vSpaceDimension);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVectorStorage<T> CreatePseudoScalarInverseStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, BasisBladeSet basisSet)
+        public static KVectorStorage<T> CreateKVectorStoragePseudoScalarInverse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, BasisBladeSet basisSet)
         {
             return scalarProcessor
                 .BladeInverse(
                     basisSet,
-                    scalarProcessor.CreatePseudoScalarStorage(basisSet.VSpaceDimension)
+                    scalarProcessor.CreateKVectorStoragePseudoScalar(basisSet.VSpaceDimension)
                 ).GetKVectorPart(basisSet.VSpaceDimension);
         }
 
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVectorStorage<T> CreateKVectorZeroStorage<T>(this uint grade)
+        public static KVectorStorage<T> CreateKVectorStorageZero<T>(this uint grade)
         {
             return grade switch
             {
@@ -131,7 +131,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVectorStorage<T> CreateKVectorZeroStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, uint grade)
+        public static KVectorStorage<T> CreateKVectorStorageZero<T>(this IScalarAlgebraProcessor<T> scalarProcessor, uint grade)
         {
             return grade switch
             {
@@ -143,13 +143,13 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVectorStorage<T> CreateKVectorBasisScalarStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor)
+        public static KVectorStorage<T> CreateKVectorStorageBasisScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor)
         {
             return KVectorStorage<T>.CreateKVectorScalar(scalarProcessor.ScalarOne);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVectorStorage<T> CreateKVectorBasisStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params int[] basisVectorIndices)
+        public static KVectorStorage<T> CreateKVectorStorageBasis<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params int[] basisVectorIndices)
         {
             var basisVectorIndicesArray = basisVectorIndices.ToArray();
             var swapCount = basisVectorIndicesArray.SortWithSwapCount();
@@ -158,7 +158,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
                 (id, index) => id | (1UL << index)
             );
 
-            return CreateKVectorTermStorage(
+            return CreateKVectorStorageTerm(
                 basisBladeId,
                 swapCount.IsEven()
                     ? scalarProcessor.ScalarOne
@@ -167,7 +167,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVectorStorage<T> CreateKVectorBasisStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params ulong[] basisVectorIndices)
+        public static KVectorStorage<T> CreateKVectorStorageBasis<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params ulong[] basisVectorIndices)
         {
             var basisVectorIndicesArray = basisVectorIndices.ToArray();
             var swapCount = basisVectorIndicesArray.SortWithSwapCount();
@@ -176,7 +176,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
                 (id, index) => id | (1UL << (int) index)
             );
 
-            return CreateKVectorTermStorage(
+            return CreateKVectorStorageTerm(
                 basisBladeId,
                 swapCount.IsEven()
                     ? scalarProcessor.ScalarOne
@@ -185,7 +185,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVectorStorage<T> CreateKVectorBasisStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<int> basisVectorIndices)
+        public static KVectorStorage<T> CreateKVectorStorageBasis<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<int> basisVectorIndices)
         {
             var basisVectorIndicesArray = basisVectorIndices.ToArray();
             var swapCount = basisVectorIndicesArray.SortWithSwapCount();
@@ -194,7 +194,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
                 (id, index) => id | (1UL << index)
             );
 
-            return CreateKVectorTermStorage(
+            return CreateKVectorStorageTerm(
                 basisBladeId,
                 swapCount.IsEven()
                     ? scalarProcessor.ScalarOne
@@ -203,7 +203,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVectorStorage<T> CreateKVectorBasisStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<ulong> basisVectorIndices)
+        public static KVectorStorage<T> CreateKVectorStorageBasis<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<ulong> basisVectorIndices)
         {
             var basisVectorIndicesArray = basisVectorIndices.ToArray();
             var swapCount = basisVectorIndicesArray.SortWithSwapCount();
@@ -212,7 +212,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
                 (id, index) => id | (1UL << (int) index)
             );
 
-            return CreateKVectorTermStorage(
+            return CreateKVectorStorageTerm(
                 basisBladeId,
                 swapCount.IsEven()
                     ? scalarProcessor.ScalarOne
@@ -221,7 +221,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVectorStorage<T> CreateKVectorBasisStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, ulong id)
+        public static KVectorStorage<T> CreateKVectorStorageBasis<T>(this IScalarAlgebraProcessor<T> scalarProcessor, ulong id)
         {
             var (grade, index) = id.BasisBladeIdToGradeIndex();
 
@@ -229,25 +229,25 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
             {
                 0 => KVectorStorage<T>.CreateKVectorScalar(scalarProcessor.ScalarOne),
                 1 => VectorStorage<T>.CreateVector(index, scalarProcessor.ScalarOne),
-                2 => BivectorStorage<T>.CreateBivector(index, scalarProcessor.ScalarOne),
+                2 => BivectorStorage<T>.Create(index, scalarProcessor.ScalarOne),
                 _ => KVectorStorage<T>.CreateKVector(grade, index, scalarProcessor.ScalarOne)
             };
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVectorStorage<T> CreateKVectorBasisStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, uint grade, ulong index)
+        public static KVectorStorage<T> CreateKVectorStorageBasis<T>(this IScalarAlgebraProcessor<T> scalarProcessor, uint grade, ulong index)
         {
             return grade switch
             {
                 0 => KVectorStorage<T>.CreateKVectorScalar(scalarProcessor.ScalarOne),
                 1 => VectorStorage<T>.CreateVector(index, scalarProcessor.ScalarOne),
-                2 => BivectorStorage<T>.CreateBivector(index, scalarProcessor.ScalarOne),
+                2 => BivectorStorage<T>.Create(index, scalarProcessor.ScalarOne),
                 _ => KVectorStorage<T>.CreateKVector(grade, index, scalarProcessor.ScalarOne)
             };
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVectorStorage<T> CreateKVectorScalarStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, int scalar)
+        public static KVectorStorage<T> CreateKVectorStorageScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, int scalar)
         {
             return KVectorStorage<T>.CreateKVectorScalar(
                 scalarProcessor.GetScalarFromNumber(scalar)
@@ -255,7 +255,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVectorStorage<T> CreateKVectorScalarStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, uint scalar)
+        public static KVectorStorage<T> CreateKVectorStorageScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, uint scalar)
         {
             return KVectorStorage<T>.CreateKVectorScalar(
                 scalarProcessor.GetScalarFromNumber(scalar)
@@ -263,7 +263,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVectorStorage<T> CreateKVectorScalarStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, long scalar)
+        public static KVectorStorage<T> CreateKVectorStorageScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, long scalar)
         {
             return KVectorStorage<T>.CreateKVectorScalar(
                 scalarProcessor.GetScalarFromNumber(scalar)
@@ -271,7 +271,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVectorStorage<T> CreateKVectorScalarStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, ulong scalar)
+        public static KVectorStorage<T> CreateKVectorStorageScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, ulong scalar)
         {
             return KVectorStorage<T>.CreateKVectorScalar(
                 scalarProcessor.GetScalarFromNumber(scalar)
@@ -279,7 +279,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVectorStorage<T> CreateKVectorScalarStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, float scalar)
+        public static KVectorStorage<T> CreateKVectorStorageScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, float scalar)
         {
             return KVectorStorage<T>.CreateKVectorScalar(
                 scalarProcessor.GetScalarFromNumber(scalar)
@@ -287,7 +287,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVectorStorage<T> CreateKVectorScalarStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, double scalar)
+        public static KVectorStorage<T> CreateKVectorStorageScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, double scalar)
         {
             return KVectorStorage<T>.CreateKVectorScalar(
                 scalarProcessor.GetScalarFromNumber(scalar)
@@ -295,19 +295,19 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVectorStorage<T> CreateKVectorScalarStorage<T>(this T scalar)
+        public static KVectorStorage<T> CreateKVectorStorageScalar<T>(this T scalar)
         {
             return KVectorStorage<T>.CreateKVectorScalar(scalar);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVectorStorage<T> CreateKVectorScalarStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, T scalar)
+        public static KVectorStorage<T> CreateKVectorStorageScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, T scalar)
         {
             return KVectorStorage<T>.CreateKVectorScalar(scalar);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVectorStorage<T> CreateKVectorScalarStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, string scalar)
+        public static KVectorStorage<T> CreateKVectorStorageScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, string scalar)
         {
             return KVectorStorage<T>.CreateKVectorScalar(
                 scalarProcessor.GetScalarFromText(scalar)
@@ -315,7 +315,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVectorStorage<T> CreateKVectorScalarStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, object scalar)
+        public static KVectorStorage<T> CreateKVectorStorageScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, object scalar)
         {
             return KVectorStorage<T>.CreateKVectorScalar(
                 scalarProcessor.GetScalarFromObject(scalar)
@@ -323,7 +323,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVectorStorage<T> CreateKVectorTermStorage<T>(this BasisBlade basisBlade, T scalar)
+        public static KVectorStorage<T> CreateKVectorStorageTerm<T>(this BasisBlade basisBlade, T scalar)
         {
             var (grade, index) = basisBlade.GetGradeIndexRecord();
 
@@ -331,13 +331,13 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
             {
                 0 => KVectorStorage<T>.CreateKVectorScalar(scalar),
                 1 => VectorStorage<T>.CreateVector(index, scalar),
-                2 => BivectorStorage<T>.CreateBivector(index, scalar),
+                2 => BivectorStorage<T>.Create(index, scalar),
                 _ => KVectorStorage<T>.CreateKVector(grade, index, scalar)
             };
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVectorStorage<T> CreateKVectorTermStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, BasisBlade basisBlade, T scalar)
+        public static KVectorStorage<T> CreateKVectorStorageTerm<T>(this IScalarAlgebraProcessor<T> scalarProcessor, BasisBlade basisBlade, T scalar)
         {
             var (grade, index) = basisBlade.GetGradeIndexRecord();
 
@@ -345,13 +345,13 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
             {
                 0 => KVectorStorage<T>.CreateKVectorScalar(scalar),
                 1 => VectorStorage<T>.CreateVector(index, scalar),
-                2 => BivectorStorage<T>.CreateBivector(index, scalar),
+                2 => BivectorStorage<T>.Create(index, scalar),
                 _ => KVectorStorage<T>.CreateKVector(grade, index, scalar)
             };
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVectorStorage<T> CreateKVectorTermStorage<T>(ulong id, T scalar)
+        public static KVectorStorage<T> CreateKVectorStorageTerm<T>(ulong id, T scalar)
         {
             id.BasisBladeIdToGradeIndex(out var grade, out var index);
 
@@ -359,13 +359,13 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
             {
                 0 => KVectorStorage<T>.CreateKVectorScalar(scalar),
                 1 => VectorStorage<T>.CreateVector(index, scalar),
-                2 => BivectorStorage<T>.CreateBivector(index, scalar),
+                2 => BivectorStorage<T>.Create(index, scalar),
                 _ => KVectorStorage<T>.CreateKVector(grade, index, scalar)
             };
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVectorStorage<T> CreateKVectorTermStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, ulong id, T scalar)
+        public static KVectorStorage<T> CreateKVectorStorageTerm<T>(this IScalarAlgebraProcessor<T> scalarProcessor, ulong id, T scalar)
         {
             id.BasisBladeIdToGradeIndex(out var grade, out var index);
 
@@ -373,37 +373,37 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
             {
                 0 => KVectorStorage<T>.CreateKVectorScalar(scalar),
                 1 => VectorStorage<T>.CreateVector(index, scalar),
-                2 => BivectorStorage<T>.CreateBivector(index, scalar),
+                2 => BivectorStorage<T>.Create(index, scalar),
                 _ => KVectorStorage<T>.CreateKVector(grade, index, scalar)
             };
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVectorStorage<T> CreateKVectorTermStorage<T>(uint grade, ulong index, T scalar)
+        public static KVectorStorage<T> CreateKVectorStorageTerm<T>(uint grade, ulong index, T scalar)
         {
             return grade switch
             {
                 0 => KVectorStorage<T>.CreateKVectorScalar(scalar),
                 1 => VectorStorage<T>.CreateVector(index, scalar),
-                2 => BivectorStorage<T>.CreateBivector(index, scalar),
+                2 => BivectorStorage<T>.Create(index, scalar),
                 _ => KVectorStorage<T>.CreateKVector(grade, index, scalar)
             };
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVectorStorage<T> CreateKVectorTermStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, uint grade, ulong index, T scalar)
+        public static KVectorStorage<T> CreateKVectorStorageTerm<T>(this IScalarAlgebraProcessor<T> scalarProcessor, uint grade, ulong index, T scalar)
         {
             return grade switch
             {
                 0 => KVectorStorage<T>.CreateKVectorScalar(scalar),
                 1 => VectorStorage<T>.CreateVector(index, scalar),
-                2 => BivectorStorage<T>.CreateBivector(index, scalar),
+                2 => BivectorStorage<T>.Create(index, scalar),
                 _ => KVectorStorage<T>.CreateKVector(grade, index, scalar)
             };
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVectorStorage<T> CreateKVectorTermStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IndexScalarRecord<T> idScalarPair)
+        public static KVectorStorage<T> CreateKVectorStorageTerm<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IndexScalarRecord<T> idScalarPair)
         {
             var (id, scalar) = idScalarPair;
 
@@ -413,13 +413,13 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
             {
                 0 => KVectorStorage<T>.CreateKVectorScalar(scalar),
                 1 => VectorStorage<T>.CreateVector(index, scalar),
-                2 => BivectorStorage<T>.CreateBivector(index, scalar),
+                2 => BivectorStorage<T>.Create(index, scalar),
                 _ => KVectorStorage<T>.CreateKVector(grade, index, scalar)
             };
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVectorStorage<T> CreateKVectorTermStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, uint grade, IndexScalarRecord<T> indexScalarPair)
+        public static KVectorStorage<T> CreateKVectorStorageTerm<T>(this IScalarAlgebraProcessor<T> scalarProcessor, uint grade, IndexScalarRecord<T> indexScalarPair)
         {
             var (index, scalar) = indexScalarPair;
 
@@ -427,9 +427,107 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
             {
                 0 => KVectorStorage<T>.CreateKVectorScalar(scalar),
                 1 => VectorStorage<T>.CreateVector(index, scalar),
-                2 => BivectorStorage<T>.CreateBivector(index, scalar),
+                2 => BivectorStorage<T>.Create(index, scalar),
                 _ => KVectorStorage<T>.CreateKVector(grade, index, scalar)
             };
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static KVectorStorage<T> CreateKVectorStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, uint grade, params T[] scalarsArray)
+        {
+            if (grade == 0)
+            {
+                return scalarsArray.Length >= 1
+                    ? KVectorStorage<T>.CreateKVectorScalar(scalarsArray[0])
+                    : KVectorStorage<T>.ZeroScalar;
+            }
+
+            return grade switch
+            {
+                1 => VectorStorage<T>.CreateVector(scalarsArray),
+                2 => BivectorStorage<T>.Create(scalarsArray),
+                _ => KVectorStorage<T>.CreateKVector(grade, scalarsArray)
+            };
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static KVectorStorage<T> CreateKVectorStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, uint grade, params int[] scalarsArray)
+        {
+            return CreateKVectorStorage(
+                scalarProcessor,
+                grade,
+                scalarsArray.Select(scalarProcessor.GetScalarFromNumber).ToArray()
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static KVectorStorage<T> CreateKVectorStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, uint grade, params uint[] scalarsArray)
+        {
+            return CreateKVectorStorage(
+                scalarProcessor,
+                grade,
+                scalarsArray.Select(scalarProcessor.GetScalarFromNumber).ToArray()
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static KVectorStorage<T> CreateKVectorStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, uint grade, params long[] scalarsArray)
+        {
+            return CreateKVectorStorage(
+                scalarProcessor,
+                grade,
+                scalarsArray.Select(scalarProcessor.GetScalarFromNumber).ToArray()
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static KVectorStorage<T> CreateKVectorStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, uint grade, params ulong[] scalarsArray)
+        {
+            return CreateKVectorStorage(
+                scalarProcessor,
+                grade,
+                scalarsArray.Select(scalarProcessor.GetScalarFromNumber).ToArray()
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static KVectorStorage<T> CreateKVectorStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, uint grade, params float[] scalarsArray)
+        {
+            return CreateKVectorStorage(
+                scalarProcessor,
+                grade,
+                scalarsArray.Select(scalarProcessor.GetScalarFromNumber).ToArray()
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static KVectorStorage<T> CreateKVectorStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, uint grade, params double[] scalarsArray)
+        {
+            return CreateKVectorStorage(
+                scalarProcessor,
+                grade,
+                scalarsArray.Select(scalarProcessor.GetScalarFromNumber).ToArray()
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static KVectorStorage<T> CreateKVectorStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, uint grade, params string[] scalarsArray)
+        {
+            return CreateKVectorStorage(
+                scalarProcessor,
+                grade,
+                scalarsArray.Select(scalarProcessor.GetScalarFromText).ToArray()
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static KVectorStorage<T> CreateKVectorStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, uint grade, params object[] scalarsArray)
+        {
+            return CreateKVectorStorage(
+                scalarProcessor,
+                grade,
+                scalarsArray.Select(scalarProcessor.GetScalarFromObject).ToArray()
+            );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -448,7 +546,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
             return grade switch
             {
                 1 => VectorStorage<T>.CreateVector(scalarsList),
-                2 => BivectorStorage<T>.CreateBivector(scalarsList),
+                2 => BivectorStorage<T>.Create(scalarsList),
                 _ => KVectorStorage<T>.CreateKVector(grade, scalarsList)
             };
         }
@@ -469,7 +567,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
             return grade switch
             {
                 1 => VectorStorage<T>.CreateVector(indexScalarDictionary),
-                2 => BivectorStorage<T>.CreateBivector(indexScalarDictionary),
+                2 => BivectorStorage<T>.Create(indexScalarDictionary),
                 _ => KVectorStorage<T>.CreateKVector(grade, indexScalarDictionary)
             };
         }
@@ -492,7 +590,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
             return grade switch
             {
                 1 => VectorStorage<T>.CreateVector(indexScalarDictionary),
-                2 => BivectorStorage<T>.CreateBivector(indexScalarDictionary),
+                2 => BivectorStorage<T>.Create(indexScalarDictionary),
                 _ => KVectorStorage<T>.CreateKVector(grade, indexScalarDictionary)
             };
         }
@@ -522,7 +620,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
             return grade switch
             {
                 1 => VectorStorage<T>.CreateVector(indexScalarDictionary),
-                2 => BivectorStorage<T>.CreateBivector(indexScalarDictionary),
+                2 => BivectorStorage<T>.Create(indexScalarDictionary),
                 _ => KVectorStorage<T>.CreateKVector(grade, indexScalarDictionary)
             };
         }
@@ -543,7 +641,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
             return grade switch
             {
                 1 => VectorStorage<T>.CreateVector(scalarsList),
-                2 => BivectorStorage<T>.CreateBivector(scalarsList),
+                2 => BivectorStorage<T>.Create(scalarsList),
                 _ => KVectorStorage<T>.CreateKVector(grade, scalarsList)
             };
         }
@@ -564,7 +662,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
             return grade switch
             {
                 1 => VectorStorage<T>.CreateVector(indexScalarDictionary),
-                2 => BivectorStorage<T>.CreateBivector(indexScalarDictionary),
+                2 => BivectorStorage<T>.Create(indexScalarDictionary),
                 _ => KVectorStorage<T>.CreateKVector(grade, indexScalarDictionary)
             };
         }
@@ -582,7 +680,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
             return grade switch
             {
                 1 => VectorStorage<T>.CreateVector(termsList),
-                2 => BivectorStorage<T>.CreateBivector(termsList),
+                2 => BivectorStorage<T>.Create(termsList),
                 _ => KVectorStorage<T>.CreateKVector(grade, termsList)
             };
         }
@@ -613,7 +711,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
             return grade switch
             {
                 1 => VectorStorage<T>.CreateVector(indexScalarDictionary),
-                2 => BivectorStorage<T>.CreateBivector(indexScalarDictionary),
+                2 => BivectorStorage<T>.Create(indexScalarDictionary),
                 _ => KVectorStorage<T>.CreateKVector(grade, indexScalarDictionary)
             };
         }

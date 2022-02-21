@@ -10,7 +10,9 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
     {
         public static void Execute()
         {
-            var processor = ScalarAlgebraMathematicaProcessor.DefaultProcessor;
+            var processor = ScalarAlgebraMathematicaProcessor
+                .DefaultProcessor
+                .CreateGeometricAlgebraEuclideanProcessor(10);
 
             var v1 = @"V Cos[\[Omega] t]".ToExpr();
             var v2 = @"V Cos[\[Omega] t + 2 Pi / 3]".ToExpr();
@@ -24,7 +26,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
             var di1 = i1.DifferentiateScalar("t", 1);
             var di2 = i2.DifferentiateScalar("t", 1);
 
-            var z = processor.CreateVectorStorage(
+            var z = processor.CreateVector(
                 i1, di1,
                 i2, di2,
                 v1, v2
@@ -35,9 +37,9 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
             var dz3 = z.DifferentiateScalars("t", 3);
             var dz4 = z.DifferentiateScalars("t", 4);
 
-            var zOp12 = processor.Op(dz1, dz2).FullSimplifyScalars();
-            var zOp123 = processor.Op(zOp12, dz3).FullSimplifyScalars();
-            var zOp1234 = processor.Op(zOp123, dz4).FullSimplifyScalars();
+            var zOp12 = dz1.Op(dz2).FullSimplifyScalars();
+            var zOp123 = zOp12.Op(dz3).FullSimplifyScalars();
+            var zOp1234 = zOp123.Op(dz4).FullSimplifyScalars();
 
 
             Console.WriteLine($@"$v_1 = {v1.GetLaTeX()}$");

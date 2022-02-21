@@ -4,6 +4,7 @@ using DataStructuresLib.Dictionary;
 using NumericalGeometryLib.BasicMath;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
@@ -92,6 +93,11 @@ namespace GeometricAlgebraFulcrumLib.Text
         public string GetAngleText(PlanarAngle angle)
         {
             throw new System.NotImplementedException();
+        }
+
+        public string GetScalarText(Scalar<T> scalar)
+        {
+            throw new NotImplementedException();
         }
 
         public abstract string GetScalarText(T scalar);

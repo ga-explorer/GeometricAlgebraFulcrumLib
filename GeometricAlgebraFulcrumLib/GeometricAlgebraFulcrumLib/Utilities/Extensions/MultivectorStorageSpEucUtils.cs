@@ -8,7 +8,7 @@ using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 {
-    public static class MultivectorStorageSpEucUtils
+    internal static class MultivectorStorageSpEucUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T ESp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, T mv1)
@@ -123,7 +123,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T ESp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorStorage<T> mv1)
+        public static T ESpSquared<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorStorage<T> mv1)
         {
             return mv1 switch
             {

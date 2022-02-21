@@ -13,6 +13,166 @@ namespace NumericalGeometryLib.BasicMath
 {
     public static class VectorAlgebraUtils
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Tuple2D Add(this ITuple2D v1, ITuple2D v2)
+        {
+            return new Tuple2D(
+                v1.X + v2.X,
+                v1.Y + v2.Y
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Tuple2D Subtract(this ITuple2D v1, ITuple2D v2)
+        {
+            return new Tuple2D(
+                v1.X - v2.X,
+                v1.Y - v2.Y
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Tuple2D Times(this ITuple2D v1, double v2)
+        {
+            return new Tuple2D(
+                v1.X * v2,
+                v1.Y * v2
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Tuple2D Times(this double v1, ITuple2D v2)
+        {
+            return new Tuple2D(
+                v1 * v2.X,
+                v1 * v2.Y
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Tuple2D Divide(this ITuple2D v1, double v2)
+        {
+            v2 = 1d / v2;
+
+            return new Tuple2D(
+                v1.X * v2,
+                v1.Y * v2
+            );
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Tuple3D Add(this ITuple3D v1, ITuple3D v2)
+        {
+            return new Tuple3D(
+                v1.X + v2.X,
+                v1.Y + v2.Y,
+                v1.Z + v2.Z
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Tuple3D Subtract(this ITuple3D v1, ITuple3D v2)
+        {
+            return new Tuple3D(
+                v1.X - v2.X,
+                v1.Y - v2.Y,
+                v1.Z - v2.Z
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Tuple3D Times(this ITuple3D v1, double v2)
+        {
+            return new Tuple3D(
+                v1.X * v2,
+                v1.Y * v2,
+                v1.Z * v2
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Tuple3D Times(this double v1, ITuple3D v2)
+        {
+            return new Tuple3D(
+                v1 * v2.X,
+                v1 * v2.Y,
+                v1 * v2.Z
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Tuple3D Divide(this ITuple3D v1, double v2)
+        {
+            v2 = 1d / v2;
+
+            return new Tuple3D(
+                v1.X * v2,
+                v1.Y * v2,
+                v1.Z * v2
+            );
+        }
+
+        
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Tuple4D Add(this ITuple4D v1, ITuple4D v2)
+        {
+            return new Tuple4D(
+                v1.X + v2.X,
+                v1.Y + v2.Y,
+                v1.Z + v2.Z,
+                v1.W + v2.W
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Tuple4D Subtract(this ITuple4D v1, ITuple4D v2)
+        {
+            return new Tuple4D(
+                v1.X - v2.X,
+                v1.Y - v2.Y,
+                v1.Z - v2.Z,
+                v1.W - v2.W
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Tuple4D Times(this ITuple4D v1, double v2)
+        {
+            return new Tuple4D(
+                v1.X * v2,
+                v1.Y * v2,
+                v1.Z * v2,
+                v1.W * v2
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Tuple4D Times(this double v1, ITuple4D v2)
+        {
+            return new Tuple4D(
+                v1 * v2.X,
+                v1 * v2.Y,
+                v1 * v2.Z,
+                v1 * v2.W
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Tuple4D Divide(this ITuple4D v1, double v2)
+        {
+            v2 = 1d / v2;
+
+            return new Tuple4D(
+                v1.X * v2,
+                v1.Y * v2,
+                v1.Z * v2,
+                v1.W * v2
+            );
+        }
+
+
         public static Tuple2D GetCenterOfMassPoint(this IEnumerable<ITuple2D> pointsList)
         {
             var centerX = 0.0d;
@@ -354,6 +514,31 @@ namespace NumericalGeometryLib.BasicMath
                 vector.Y * vector.Y +
                 vector.Z * vector.Z
             );
+        }
+        
+        /// <summary>
+        /// The Euclidean squared length of this tuple when it represents a vector
+        /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Tuple<Tuple3D, double> GetUnitVectorLengthTuple(this ITuple3D vector)
+        {
+            var length = Math.Sqrt(
+                vector.X * vector.X +
+                vector.Y * vector.Y +
+                vector.Z * vector.Z
+            );
+
+            if (length == 0d)
+                return new Tuple<Tuple3D, double>(vector.ToTuple3D(), length);
+
+            var s = 1d / length;
+            var unitVector = new Tuple3D(
+                vector.X * s,
+                vector.Y * s,
+                vector.Z * s
+            );
+
+            return new Tuple<Tuple3D, double>(unitVector, length);
         }
 
         /// <summary>
@@ -840,6 +1025,12 @@ namespace NumericalGeometryLib.BasicMath
         {
             return new Tuple2D(-vector.Y, vector.X);
         }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Tuple2D GetUnitNormal(this ITuple2D vector)
+        {
+            return vector.GetNormal().ToUnitVector();
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Tuple3D GetNormal(this ITuple3D vector)
@@ -874,22 +1065,7 @@ namespace NumericalGeometryLib.BasicMath
         {
             return new IntTuple2D(-vector.Y, vector.X);
         }
-
-        /// <summary>
-        /// Returns a new vector orthogonal to this one.
-        /// </summary>
-        /// <returns></returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple2D GetUnitNormal(this ITuple2D vector)
-        {
-            var s = vector.GetLength();
-            if (s.IsAlmostZero())
-                return new Tuple2D(-vector.Y, vector.X);
-
-            s = 1.0d / s;
-            return new Tuple2D(-vector.Y * s, vector.X * s);
-        }
-
+        
 
         /// <summary>
         /// The Euclidean cross product between the given vectors

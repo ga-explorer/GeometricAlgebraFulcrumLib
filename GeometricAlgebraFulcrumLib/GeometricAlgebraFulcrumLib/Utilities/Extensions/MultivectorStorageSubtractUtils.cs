@@ -5,7 +5,7 @@ using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 {
-    public static class MultivectorStorageSubtractUtils
+    internal static class MultivectorStorageSubtractUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static VectorStorage<T> Subtract<T>(this IScalarAlgebraProcessor<T> scalarProcessor, VectorStorage<T> mv1, VectorStorage<T> mv2)
@@ -41,7 +41,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                 mv1.GetLinVectorIndexScalarStorage(),
                 mv2.Grade,
                 mv2.GetLinVectorIndexScalarStorage()
-            ).CreateMultivectorGradedStorage();
+            ).CreateMultivectorStorageGraded();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -62,13 +62,13 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                     scalarProcessor.Subtract(
                         gmv1.GetLinVectorGradedStorage(), 
                         gmv2.GetLinVectorGradedStorage()
-                    ).CreateMultivectorGradedStorage(),
+                    ).CreateMultivectorStorageGraded(),
 
                 _ => scalarProcessor.CreateVectorStorageComposer()
                         .SetTerms(mv1.GetIdScalarRecords())
                         .SubtractTerms(mv2.GetIdScalarRecords())
                         .RemoveZeroTerms()
-                        .CreateMultivectorSparseStorage()
+                        .CreateMultivectorStorageSparse()
             };
         }
 
@@ -83,14 +83,14 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                         .SetTerms(gmv1.GetLinVectorGradedStorage())
                         .SubtractTerm(0, scalar2)
                         .RemoveZeroTerms()
-                        .CreateMultivectorSparseStorage(),
+                        .CreateMultivectorStorageSparse(),
 
                 _ => 
                     scalarProcessor.CreateVectorStorageComposer()
                         .SetTerms(mv1.GetIdScalarRecords())
                         .SubtractTerm(0, scalar2)
                         .RemoveZeroTerms()
-                        .CreateMultivectorSparseStorage()
+                        .CreateMultivectorStorageSparse()
             };
         }
 
@@ -105,14 +105,14 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                         .SetTerm(0, scalar2)
                         .SubtractTerms(gmv1.GetLinVectorGradedStorage())
                         .RemoveZeroTerms()
-                        .CreateMultivectorSparseStorage(),
+                        .CreateMultivectorStorageSparse(),
 
                 _ => 
                     scalarProcessor.CreateVectorStorageComposer()
                         .SetTerm(0, scalar2)
                         .SubtractTerms(mv1.GetIdScalarRecords())
                         .RemoveZeroTerms()
-                        .CreateMultivectorSparseStorage()
+                        .CreateMultivectorStorageSparse()
             };
         }
     }

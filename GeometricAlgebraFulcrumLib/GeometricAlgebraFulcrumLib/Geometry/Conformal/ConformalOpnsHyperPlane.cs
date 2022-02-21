@@ -58,7 +58,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Conformal
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public T Square()
         {
-            return ConformalProcessor.Sp(BladeStorage);
+            return MultivectorStorageSpUtils.SpSquared(ConformalProcessor, BladeStorage);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

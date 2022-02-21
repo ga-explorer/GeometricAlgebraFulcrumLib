@@ -7,7 +7,7 @@ using GeometricAlgebraFulcrumLib.Utilities.Composers;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 {
-    public static class MultivectorStorageAcpOrtUtils
+    internal static class MultivectorStorageAcpOrtUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BasisBilinearProductResult Acp(this BasisBladeSet basisSet, ulong id1, ulong id2)

@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.Basis
 {
     /// <summary>
-    /// Generalized Blended Trigonometric Bernstein Basis
+    /// Defines a set of Generalized Blended Trigonometric Bernstein Basis
+    /// polynomials.
     /// See paper "Geometric modeling and applications of generalized
     /// blended trigonometric Bézier curves with shape parameters"
     /// https://link.springer.com/article/10.1186/s13662-020-03001-4
@@ -51,7 +54,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.Basis
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override T GetValueDegree20(T parameterValue)
+        public override Scalar<T> GetValueDegree20(T parameterValue)
         {
             var sin = ScalarProcessor.Sin(
                 ScalarProcessor.Times(ScalarProcessor.ScalarPiOver2, parameterValue)
@@ -60,11 +63,11 @@ namespace GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.Basis
             return ScalarProcessor.Times(
                 ScalarProcessor.Subtract(ScalarProcessor.ScalarOne, sin), 
                 ScalarProcessor.Subtract(ScalarProcessor.ScalarOne, ScalarProcessor.Times(_alpha, sin))
-            );
+            ).CreateScalar(ScalarProcessor);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override T GetValueDegree22(T parameterValue)
+        public override Scalar<T> GetValueDegree22(T parameterValue)
         {
             var cos = ScalarProcessor.Cos(
                 ScalarProcessor.Times(ScalarProcessor.ScalarPiOver2, parameterValue)
@@ -73,7 +76,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.Basis
             return ScalarProcessor.Times(
                 ScalarProcessor.Subtract(ScalarProcessor.ScalarOne, cos), 
                 ScalarProcessor.Subtract(ScalarProcessor.ScalarOne, ScalarProcessor.Times(_beta, cos))
-            );
+            ).CreateScalar(ScalarProcessor);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using NumericalGeometryLib.BasicMath;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
@@ -22,6 +23,8 @@ namespace GeometricAlgebraFulcrumLib.Text
         string GetBasisBladeText(IEnumerable<ulong> indexList);
 
         string GetAngleText(PlanarAngle angle);
+
+        string GetScalarText(Scalar<T> scalar);
 
         string GetScalarText(T scalar);
 

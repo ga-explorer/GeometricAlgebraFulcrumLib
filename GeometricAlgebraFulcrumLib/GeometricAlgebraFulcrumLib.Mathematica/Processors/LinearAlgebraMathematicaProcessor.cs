@@ -126,6 +126,18 @@ namespace GeometricAlgebraFulcrumLib.Mathematica.Processors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Expr Sign(Expr scalar)
+        {
+            return ScalarProcessor.Sign(scalar);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Expr UnitStep(Expr scalar)
+        {
+            return ScalarProcessor.UnitStep(scalar);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int GetDenseRowsCount(Expr matrix)
         {
             var dimensionsExpr = Mfs.Dimensions[matrix].Simplify();

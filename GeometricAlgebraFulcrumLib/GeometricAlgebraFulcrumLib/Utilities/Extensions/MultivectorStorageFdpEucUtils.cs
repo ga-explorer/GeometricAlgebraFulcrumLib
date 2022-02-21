@@ -6,7 +6,7 @@ using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 {
-    public static class MultivectorStorageFdpEucUtils
+    internal static class MultivectorStorageFdpEucUtils
     {
         public static KVectorStorage<T> EFdp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, KVectorStorage<T> mv1, KVectorStorage<T> mv2)
         {

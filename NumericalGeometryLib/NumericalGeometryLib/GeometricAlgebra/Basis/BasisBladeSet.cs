@@ -20,6 +20,14 @@ namespace NumericalGeometryLib.GeometricAlgebra.Basis
             = new Dictionary<Triplet<ulong>, BasisBladeSet>();
 
 
+        public static BasisBladeSet Euclidean2D { get; }
+            = CreateEuclidean(2);
+
+        public static BasisBladeSet Euclidean3D { get; }
+            = CreateEuclidean(3);
+
+
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void ClearBasisSetCache()
         {
@@ -372,6 +380,25 @@ namespace NumericalGeometryLib.GeometricAlgebra.Basis
                 : -euclideanSignature;
         }
         
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public int ConjugateSign(ulong id)
+        {
+            var reverseSign = 
+                BitOperations.PopCount(id).ReverseSignOfGrade();
+
+            return (BitOperations.PopCount(id & _negativeMask) & 1) == 0
+                ? reverseSign 
+                : -reverseSign;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool ConjugateIsNegative(ulong id)
+        {
+            Debug.Assert(id < GaSpaceDimension);
+
+            return ConjugateSign(id) == -1;
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int EGpSquaredSign(ulong id)

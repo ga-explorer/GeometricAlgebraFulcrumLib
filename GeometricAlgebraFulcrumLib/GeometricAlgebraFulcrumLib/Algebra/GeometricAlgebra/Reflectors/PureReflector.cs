@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 
@@ -16,26 +16,26 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Reflectors
         : ReflectorBase<T>
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static PureReflector<T> Create(IGeometricAlgebraProcessor<T> processor, VectorStorage<T> vector)
+        internal static PureReflector<T> Create(Vector<T> vector)
         {
-            return new PureReflector<T>(processor, vector);
+            return new PureReflector<T>(vector);
         }
         
 
-        public VectorStorage<T> Vector { get; }
+        public Vector<T> Vector { get; }
 
-        public VectorStorage<T> VectorInverse { get; }
+        public Vector<T> VectorInverse { get; }
 
 
-        internal PureReflector([NotNull] IGeometricAlgebraProcessor<T> processor, [NotNull] VectorStorage<T> vector)
-            : base(processor)
+        private PureReflector([NotNull] Vector<T> vector)
+            : base(vector.GeometricProcessor)
         {
             Vector = vector;
-            VectorInverse = processor.BladeInverse(vector);
+            VectorInverse = vector.Inverse();
         }
 
-        private PureReflector([NotNull] IGeometricAlgebraProcessor<T> processor, [NotNull] VectorStorage<T> vector, [NotNull] VectorStorage<T> vectorInverse)
-            : base(processor)
+        private PureReflector([NotNull] Vector<T> vector, [NotNull] Vector<T> vectorInverse)
+            : base(vector.GeometricProcessor)
         {
             Vector = vector;
             VectorInverse = vectorInverse;
@@ -45,7 +45,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Reflectors
         public override bool IsValid()
         {
             // Make sure the storage and its reverse are correct
-            if (!GeometricProcessor.IsNearZero(GeometricProcessor.Subtract(GeometricProcessor.BladeInverse(Vector), VectorInverse)))
+            if (!(Vector.Inverse() - VectorInverse).IsNearZero())
                 return false;
 
             //// Make sure storage gp inverse(storage) == 1
@@ -70,7 +70,6 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Reflectors
         public PureReflector<T> GetPureReflectorInverse()
         {
             return new PureReflector<T>(
-                GeometricProcessor, 
                 VectorInverse, 
                 Vector
             );
@@ -84,56 +83,64 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Reflectors
         
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override VectorStorage<T> OmMapVector(VectorStorage<T> mv)
+        public override Vector<T> OmMap(Vector<T> mv)
         {
-            return GeometricProcessor
-                .Gp(Vector, mv, VectorInverse)
-                .GetVectorPart();
+            return Vector.Gp(mv).Gp(VectorInverse).GetVectorPart();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override BivectorStorage<T> OmMapBivector(BivectorStorage<T> mv)
+        public override Bivector<T> OmMap(Bivector<T> mv)
         {
-            return GeometricProcessor
-                .Gp(Vector, mv, VectorInverse)
-                .GetBivectorPart();
+            return Vector.Gp(mv).Gp(VectorInverse).GetBivectorPart();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override KVectorStorage<T> OmMapKVector(KVectorStorage<T> mv)
+        public override KVector<T> OmMap(KVector<T> mv)
         {
-            return GeometricProcessor
-                .Gp(Vector, mv, VectorInverse)
-                .GetKVectorPart(mv.Grade);
+            return Vector.Gp(mv).Gp(VectorInverse).GetKVectorPart(mv.Grade);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override MultivectorGradedStorage<T> OmMapMultivector(MultivectorGradedStorage<T> mv)
+        public override Multivector<T> OmMap(Multivector<T> mv)
         {
-            return GeometricProcessor
-                .Gp(Vector, mv, VectorInverse)
-                .ToMultivectorGradedStorage();
+            return Vector.Gp(mv).Gp(VectorInverse);
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override Multivector<T> GetMultivector()
+        {
+            return Vector.AsMultivector();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override MultivectorStorage<T> OmMapMultivector(MultivectorStorage<T> mv)
+        public override Multivector<T> GetMultivectorReverse()
         {
-            return GeometricProcessor
-                .Gp(Vector, mv, VectorInverse)
-                .ToMultivectorStorage();
+            return Vector.AsMultivector();
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override Multivector<T> GetMultivectorInverse()
+        {
+            return VectorInverse.AsMultivector();
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override IMultivectorStorage<T> GetMultivectorStorage()
         {
-            return Vector;
+            return Vector.VectorStorage;
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override IMultivectorStorage<T> GetMultivectorStorageReverse()
+        {
+            return Vector.VectorStorage;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override IMultivectorStorage<T> GetMultivectorInverseStorage()
+        public override IMultivectorStorage<T> GetMultivectorStorageInverse()
         {
-            return VectorInverse;
+            return VectorInverse.VectorStorage;
         }
     }
 }

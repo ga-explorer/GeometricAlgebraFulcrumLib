@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using Antlr4.Runtime.Misc;
+using System.Diagnostics.CodeAnalysis;
 using DataStructuresLib.Basic;
+using GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
+using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.Basis
 {
@@ -28,115 +30,52 @@ namespace GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.Basis
         }
 
 
-        public abstract T GetValueDegree20(T parameterValue);
+        /// <summary>
+        /// Get value at 'parameterValue' of degree 2 basis polynomial 0
+        /// </summary>
+        /// <param name="parameterValue"></param>
+        /// <returns></returns>
+        public abstract Scalar<T> GetValueDegree20(T parameterValue);
 
-        public abstract T GetValueDegree22(T parameterValue);
+        /// <summary>
+        /// Get value at 'parameterValue' of degree 2 basis polynomial 2
+        /// </summary>
+        /// <param name="parameterValue"></param>
+        /// <returns></returns>
+        public abstract Scalar<T> GetValueDegree22(T parameterValue);
         
+        /// <summary>
+        /// Get value at 'parameterValue' of degree 2 basis polynomial 1
+        /// </summary>
+        /// <param name="parameterValue"></param>
+        /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public T GetValueDegree21(T parameterValue)
+        public Scalar<T> GetValueDegree21(T parameterValue)
         {
-            return ScalarProcessor.Subtract(
-                ScalarProcessor.ScalarOne,
-                ScalarProcessor.Add(
-                    GetValueDegree20(parameterValue), 
-                    GetValueDegree22(parameterValue)
-                )
-            );
+            return 1 - (GetValueDegree20(parameterValue) + GetValueDegree22(parameterValue));
         }
 
+        /// <summary>
+        /// Get value at 'parameterValue' of degree 2 basis polynomials
+        /// </summary>
+        /// <param name="parameterValue"></param>
+        /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Triplet<T> GetValueDegree2(T parameterValue)
         {
             var b02 = GetValueDegree20(parameterValue);
             var b22 = GetValueDegree22(parameterValue);
-
-            var b12 = ScalarProcessor.Subtract(
-                ScalarProcessor.ScalarOne,
-                ScalarProcessor.Add(b02, b22)
-            );
+            var b12 = 1 - (b02 + b22);
 
             return new Triplet<T>(b02, b12, b22);
         }
 
-        
-        public T GetValue(int index, T parameterValue)
+
+        private T Power(T value, int power)
         {
-            if (index < 0 || index > Degree)
-                return ScalarProcessor.ScalarZero;
-
-            if (Degree == 2)
-                return index switch
-                {
-                    0 => GetValueDegree20(parameterValue),
-                    2 => GetValueDegree22(parameterValue),
-                    _ => GetValueDegree21(parameterValue)
-                };
-
-            if (index == Degree)
-                return ScalarProcessor.Times(
-                    ScalarProcessor.Power(parameterValue, Degree - 2),
-                    GetValueDegree22(parameterValue)
-                );
-
-            var oneMinusParameterValue = 
-                ScalarProcessor.Subtract(ScalarProcessor.ScalarOne, parameterValue);
-
-            if (index == 0)
-                return ScalarProcessor.Times(
-                    ScalarProcessor.Power(oneMinusParameterValue, Degree - 2),
-                    GetValueDegree20(parameterValue)
-                );
-
-            var (b02, b12, b22) = GetValueDegree2(parameterValue);
-            
-            if (index == Degree - 1)
-                return ScalarProcessor.Add(
-                    ScalarProcessor.Times(
-                        ScalarProcessor.Power(parameterValue, Degree - 2),
-                        b12
-                    ),
-                    ScalarProcessor.Times(
-                        Degree - 2,
-                        ScalarProcessor.Power(parameterValue, Degree - 3),
-                        oneMinusParameterValue,
-                        b22
-                    )
-                );
-
-            if (index == 1)
-                return ScalarProcessor.Add(
-                    ScalarProcessor.Times(
-                        Degree - 2,
-                        parameterValue,
-                        ScalarProcessor.Power(oneMinusParameterValue, Degree - 3),
-                        b02
-                    ),
-                    ScalarProcessor.Times(
-                        ScalarProcessor.Power(oneMinusParameterValue, Degree - 2),
-                        b12
-                    )
-                );
-
-            return ScalarProcessor.Add(
-                ScalarProcessor.Times(
-                    ScalarProcessor.BinomialCoefficient(Degree - 2, index),
-                    ScalarProcessor.Power(parameterValue, index),
-                    ScalarProcessor.Power(oneMinusParameterValue, Degree - 2 - index),
-                    b02
-                ),
-                ScalarProcessor.Times(
-                    ScalarProcessor.BinomialCoefficient(Degree - 2, index - 1),
-                    ScalarProcessor.Power(parameterValue, index - 1),
-                    ScalarProcessor.Power(oneMinusParameterValue, Degree - 2 - (index - 1)),
-                    b12
-                ),
-                ScalarProcessor.Times(
-                    ScalarProcessor.BinomialCoefficient(Degree - 2, index - 2),
-                    ScalarProcessor.Power(parameterValue, index - 2),
-                    ScalarProcessor.Power(oneMinusParameterValue, Degree - 2 - (index - 2)),
-                    b22
-                )
-            );
+            return power == 0
+                ? ScalarProcessor.ScalarOne
+                : ScalarProcessor.Power(value, power);
         }
         
         private T GetValue(int index, T parameterValue, Triplet<T> degree2Values)
@@ -154,7 +93,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.Basis
 
             if (index == Degree)
                 return ScalarProcessor.Times(
-                    ScalarProcessor.Power(parameterValue, Degree - 2),
+                    Power(parameterValue, Degree - 2),
                     degree2Values.Item3
                 );
 
@@ -163,7 +102,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.Basis
 
             if (index == 0)
                 return ScalarProcessor.Times(
-                    ScalarProcessor.Power(oneMinusParameterValue, Degree - 2),
+                    Power(oneMinusParameterValue, Degree - 2),
                     degree2Values.Item1
                 );
 
@@ -172,12 +111,12 @@ namespace GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.Basis
             if (index == Degree - 1)
                 return ScalarProcessor.Add(
                     ScalarProcessor.Times(
-                        ScalarProcessor.Power(parameterValue, Degree - 2),
+                        Power(parameterValue, Degree - 2),
                         b12
                     ),
                     ScalarProcessor.Times(
                         Degree - 2,
-                        ScalarProcessor.Power(parameterValue, Degree - 3),
+                        Power(parameterValue, Degree - 3),
                         oneMinusParameterValue,
                         b22
                     )
@@ -188,11 +127,11 @@ namespace GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.Basis
                     ScalarProcessor.Times(
                         Degree - 2,
                         parameterValue,
-                        ScalarProcessor.Power(oneMinusParameterValue, Degree - 3),
+                        Power(oneMinusParameterValue, Degree - 3),
                         b02
                     ),
                     ScalarProcessor.Times(
-                        ScalarProcessor.Power(oneMinusParameterValue, Degree - 2),
+                        Power(oneMinusParameterValue, Degree - 2),
                         b12
                     )
                 );
@@ -200,36 +139,107 @@ namespace GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.Basis
             return ScalarProcessor.Add(
                 ScalarProcessor.Times(
                     ScalarProcessor.BinomialCoefficient(Degree - 2, index),
-                    ScalarProcessor.Power(parameterValue, index),
-                    ScalarProcessor.Power(oneMinusParameterValue, Degree - 2 - index),
+                    Power(parameterValue, index),
+                    Power(oneMinusParameterValue, Degree - 2 - index),
                     b02
                 ),
                 ScalarProcessor.Times(
                     ScalarProcessor.BinomialCoefficient(Degree - 2, index - 1),
-                    ScalarProcessor.Power(parameterValue, index - 1),
-                    ScalarProcessor.Power(oneMinusParameterValue, Degree - 2 - (index - 1)),
+                    Power(parameterValue, index - 1),
+                    Power(oneMinusParameterValue, Degree - 2 - (index - 1)),
                     b12
                 ),
                 ScalarProcessor.Times(
                     ScalarProcessor.BinomialCoefficient(Degree - 2, index - 2),
-                    ScalarProcessor.Power(parameterValue, index - 2),
-                    ScalarProcessor.Power(oneMinusParameterValue, Degree - 2 - (index - 2)),
+                    Power(parameterValue, index - 2),
+                    Power(oneMinusParameterValue, Degree - 2 - (index - 2)),
                     b22
                 )
             );
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public T GetValue(int index, T parameterValue, T termScalar)
+        public Scalar<T> GetValue(int index, T parameterValue)
         {
-            return ScalarProcessor.Times(
-                termScalar,
-                GetValue(index, parameterValue)
-            );
+            if (index < 0 || index > Degree)
+                return ScalarProcessor.CreateScalarZero();
+
+            if (Degree == 2)
+                return index switch
+                {
+                    0 => GetValueDegree20(parameterValue),
+                    2 => GetValueDegree22(parameterValue),
+                    _ => GetValueDegree21(parameterValue)
+                };
+
+            if (index == Degree)
+                return Power(parameterValue, Degree - 2) * GetValueDegree22(parameterValue);
+
+            var oneMinusParameterValue = 
+                ScalarProcessor.Subtract(ScalarProcessor.ScalarOne, parameterValue);
+
+            if (index == 0)
+                return Power(oneMinusParameterValue, Degree - 2) * GetValueDegree20(parameterValue);
+
+            var (b02, b12, b22) = GetValueDegree2(parameterValue);
+            
+            if (index == Degree - 1)
+                return ScalarProcessor.Add(
+                    ScalarProcessor.Times(
+                        Power(parameterValue, Degree - 2),
+                        b12
+                    ),
+                    ScalarProcessor.Times(
+                        Degree - 2,
+                        Power(parameterValue, Degree - 3),
+                        oneMinusParameterValue,
+                        b22
+                    )
+                ).CreateScalar(ScalarProcessor);
+
+            if (index == 1)
+                return ScalarProcessor.Add(
+                    ScalarProcessor.Times(
+                        Degree - 2,
+                        parameterValue,
+                        Power(oneMinusParameterValue, Degree - 3),
+                        b02
+                    ),
+                    ScalarProcessor.Times(
+                        Power(oneMinusParameterValue, Degree - 2),
+                        b12
+                    )
+                ).CreateScalar(ScalarProcessor);
+
+            return ScalarProcessor.Add(
+                ScalarProcessor.Times(
+                    ScalarProcessor.BinomialCoefficient(Degree - 2, index),
+                    Power(parameterValue, index),
+                    Power(oneMinusParameterValue, Degree - 2 - index),
+                    b02
+                ),
+                ScalarProcessor.Times(
+                    ScalarProcessor.BinomialCoefficient(Degree - 2, index - 1),
+                    Power(parameterValue, index - 1),
+                    Power(oneMinusParameterValue, Degree - 2 - (index - 1)),
+                    b12
+                ),
+                ScalarProcessor.Times(
+                    ScalarProcessor.BinomialCoefficient(Degree - 2, index - 2),
+                    Power(parameterValue, index - 2),
+                    Power(oneMinusParameterValue, Degree - 2 - (index - 2)),
+                    b22
+                )
+            ).CreateScalar(ScalarProcessor);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Scalar<T> GetValue(int index, T parameterValue, T termScalar)
+        {
+            return termScalar * GetValue(index, parameterValue);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public T GetValue(T parameterValue, params T[] termScalarsList)
+        public Scalar<T> GetValue(T parameterValue, params T[] termScalarsList)
         {
             var degree2Values = 
                 GetValueDegree2(parameterValue);
@@ -241,7 +251,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.Basis
                         GetValue(index, parameterValue, degree2Values)
                     )
                 )
-            );
+            ).CreateScalar(ScalarProcessor);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

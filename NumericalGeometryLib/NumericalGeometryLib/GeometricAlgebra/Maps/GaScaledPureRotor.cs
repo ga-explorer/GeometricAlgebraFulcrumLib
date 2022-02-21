@@ -1,6 +1,8 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using NumericalGeometryLib.BasicMath;
+using NumericalGeometryLib.BasicMath.Tuples;
+using NumericalGeometryLib.BasicMath.Tuples.Immutable;
 using NumericalGeometryLib.GeometricAlgebra.Basis;
 using NumericalGeometryLib.GeometricAlgebra.Multivectors;
 
@@ -51,9 +53,54 @@ namespace NumericalGeometryLib.GeometricAlgebra.Maps
                    MultivectorReverse.IsValid() &&
                    Multivector.Gp(MultivectorReverse).IsScalar();
         }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public double GetScalingFactor()
+        {
+            return Multivector.Sp(MultivectorReverse);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public GaScaledPureRotor GetPureRotor()
+        {
+            var mv = BasisSet.IsEuclidean
+                ? Multivector / Multivector.Sp(MultivectorReverse).Sqrt()
+                : Multivector / Multivector.Sp(MultivectorReverse).SqrtOfAbs();
+
+            return new GaScaledPureRotor(mv);
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GaMultivector Rotate(GaMultivector multivector)
+        public GaScaledPureRotor GetPureScaledRotorInverse()
+        {
+            var scalingFactor = GetScalingFactor();
+            
+            return new GaScaledPureRotor(
+                MultivectorReverse / scalingFactor,
+                Multivector / scalingFactor
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Tuple2D OmMap(ITuple2D multivector)
+        {
+            return Multivector.Gp(multivector).Gp(MultivectorReverse).GetVectorPartAsTuple2D();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Tuple3D OmMap(ITuple3D multivector)
+        {
+            return Multivector.Gp(multivector).Gp(MultivectorReverse).GetVectorPartAsTuple3D();
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public GaMultivector OmMap(GaTerm multivector)
+        {
+            return Multivector.Gp(multivector).Gp(MultivectorReverse);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public GaMultivector OmMap(GaMultivector multivector)
         {
             return Multivector.Gp(multivector).Gp(MultivectorReverse);
         }

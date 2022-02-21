@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.BitManipulation;
@@ -1258,6 +1259,30 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsZero()
+        {
+            return GeometricProcessor.IsZero(MultivectorStorage);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsNearZero()
+        {
+            return GeometricProcessor.IsNearZero(MultivectorStorage);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsScalar()
+        {
+            return MultivectorStorage.IsScalar();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public IEnumerable<uint> GetGrades()
+        {
+            return MultivectorStorage.GetGrades();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Scalar<T> GetScalarPart()
         {
             return MultivectorStorage.TryGetScalar(out var scalarValue)
@@ -1280,7 +1305,19 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors
                 ? GeometricProcessor.CreateBivector(storage)
                 : GeometricProcessor.CreateBivectorZero();
         }
-        
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Tuple<Scalar<T>, Bivector<T>> GetScalarBivectorParts()
+        {
+            var (scalar, bivector) = 
+                GeometricProcessor.GetScalarBivectorParts(MultivectorStorage);
+
+            return new Tuple<Scalar<T>, Bivector<T>>(
+                GeometricProcessor.CreateScalar(scalar), 
+                GeometricProcessor.CreateBivector(bivector)
+            );
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public KVector<T> GetKVectorPart(uint grade)
         {
@@ -1328,7 +1365,28 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors
 
             return new Multivector<T>(GeometricProcessor, storage);
         }
-        
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Tuple<Multivector<T>, Multivector<T>> GetEvenOddParts()
+        {
+            var (mv1, mv2) = 
+                MultivectorStorage.SplitEvenOddParts();
+
+            return new Tuple<Multivector<T>, Multivector<T>>(
+                mv1.CreateMultivector(GeometricProcessor),
+                mv2.CreateMultivector(GeometricProcessor)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Multivector<T> Conjugate()
+        {
+            return new Multivector<T>(
+                GeometricProcessor, 
+                GeometricProcessor.Conjugate(MultivectorStorage)
+            );
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Multivector<T> Reverse()
         {
@@ -1391,6 +1449,15 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors
                 GeometricProcessor.ENormSquared(MultivectorStorage)
             );
         }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Multivector<T> PseudoInverse()
+        {
+            return new Multivector<T>(
+                GeometricProcessor,
+                GeometricProcessor.BladePseudoInverse(MultivectorStorage)
+            );
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Multivector<T> Inverse()
@@ -1446,6 +1513,12 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors
             );
         }
         
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public IEnumerable<T> GetScalars()
+        {
+            return MultivectorStorage.GetScalars();
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Multivector<T> MapScalars(Func<T, T> scalarMapping)
         {

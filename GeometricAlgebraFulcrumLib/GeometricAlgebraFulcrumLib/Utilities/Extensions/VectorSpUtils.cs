@@ -30,12 +30,12 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<T> Sp<T>(this Vector<T> v1)
+        public static Scalar<T> SpSquared<T>(this Vector<T> v1)
         {
             var processor = v1.GeometricProcessor;
 
             return processor.CreateScalar(
-                processor.Sp(v1.VectorStorage)
+                processor.SpSquared(v1.VectorStorage)
             );
         }
 
@@ -63,7 +63,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<T> ESp<T>(this Vector<T> v1)
+        public static Scalar<T> ESpSquared<T>(this Vector<T> v1)
         {
             var processor = v1.GeometricProcessor;
 

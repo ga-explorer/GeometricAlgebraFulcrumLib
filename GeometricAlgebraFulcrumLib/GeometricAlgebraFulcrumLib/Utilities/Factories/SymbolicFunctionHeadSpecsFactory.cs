@@ -21,6 +21,10 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
 
         public SymbolicHeadSpecsFunction Inverse { get; }
 
+        public SymbolicHeadSpecsFunction Sign { get; }
+
+        public SymbolicHeadSpecsFunction UnitStep { get; }
+
         public SymbolicHeadSpecsFunction Abs { get; }
 
         public SymbolicHeadSpecsFunction Sqrt { get; }
@@ -68,6 +72,8 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
             Divide = SymbolicHeadSpecsOperator.CreateNonAssociative(Context, SymbolicFunctionNames.Divide, " / ", 3, SymbolicOperatorPosition.Infix);
             
             Inverse = SymbolicHeadSpecsFunction.CreateNonAssociative(Context, SymbolicFunctionNames.Inverse);
+            Sign = SymbolicHeadSpecsFunction.CreateNonAssociative(Context, SymbolicFunctionNames.Sign);
+            UnitStep = SymbolicHeadSpecsFunction.CreateNonAssociative(Context, SymbolicFunctionNames.UnitStep);
             Abs = SymbolicHeadSpecsFunction.CreateNonAssociative(Context, SymbolicFunctionNames.Abs);
             Sqrt = SymbolicHeadSpecsFunction.CreateNonAssociative(Context, SymbolicFunctionNames.Sqrt);
             Exp = SymbolicHeadSpecsFunction.CreateNonAssociative(Context, SymbolicFunctionNames.Exp);

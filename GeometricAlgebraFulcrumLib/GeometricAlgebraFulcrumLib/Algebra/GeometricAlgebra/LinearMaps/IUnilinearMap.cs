@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra;
-using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.LinearMaps
 {
     public interface IUnilinearMap<T> : 
-        ILinearAlgebraElement<T>
+        IGeometricAlgebraElement<T>
     {
         bool IsValid();
 
@@ -16,36 +15,34 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.LinearMaps
         IUnilinearMap<T> GetAdjoint();
 
 
-        IMultivectorStorage<T> MapBasisScalar();
+        Multivector<T> MapBasisScalar();
 
-        IMultivectorStorage<T> MapBasisVector(ulong index);
+        Multivector<T> MapBasisVector(ulong index);
 
-        IMultivectorStorage<T> MapBasisBivector(ulong index);
+        Multivector<T> MapBasisBivector(ulong index);
 
-        IMultivectorStorage<T> MapBasisBivector(ulong index1, ulong index2);
+        Multivector<T> MapBasisBivector(ulong index1, ulong index2);
 
-        IMultivectorStorage<T> MapBasisBlade(ulong id);
+        Multivector<T> MapBasisBlade(ulong id);
 
-        IMultivectorStorage<T> MapBasisBlade(uint grade, ulong index);
+        Multivector<T> MapBasisBlade(uint grade, ulong index);
 
 
-        IMultivectorStorage<T> MapScalar(T mv);
+        Multivector<T> Map(T mv);
 
-        IMultivectorStorage<T> MapVector(VectorStorage<T> vector);
+        Multivector<T> Map(Vector<T> vector);
 
-        IMultivectorStorage<T> MapBivector(BivectorStorage<T> bivector);
+        Multivector<T> Map(Bivector<T> bivector);
 
-        IMultivectorStorage<T> MapKVector(KVectorStorage<T> kVector);
+        Multivector<T> Map(KVector<T> kVector);
 
-        IMultivectorStorage<T> MapMultivector(MultivectorStorage<T> multivector);
+        Multivector<T> Map(Multivector<T> multivector);
 
-        IMultivectorStorage<T> MapMultivector(MultivectorGradedStorage<T> multivector);
 
-        
         //IndexPairRecord GetMultivectorMappingMatrixSize();
 
         ILinMatrixStorage<T> GetMultivectorMappingMatrix();
 
-        IEnumerable<IdMultivectorStorageRecord<T>> GetMappedBasisBlades();
+        IEnumerable<IdMultivectorRecord<T>> GetMappedBasisBlades();
     }
 }

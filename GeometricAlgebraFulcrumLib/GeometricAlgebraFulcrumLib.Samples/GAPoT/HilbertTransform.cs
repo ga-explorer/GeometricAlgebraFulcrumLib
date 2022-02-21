@@ -32,8 +32,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
                 dva, hdva, dvb, hdvb, dvc, hdvc
             );
 
-            var u = 
-                MathematicaUtils.ScalarProcessor.Op(v, dv);
+            var u = v.Op(dv);
 
             Console.WriteLine("Text Format:");
             Console.WriteLine($"v = {v.GetText()}");

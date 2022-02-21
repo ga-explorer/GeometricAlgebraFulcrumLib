@@ -7,7 +7,7 @@ using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 {
-    public static class MultivectorStorageGpEucUtils
+    internal static class MultivectorStorageGpEucUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BasisBilinearProductResult Gp(this BasisBladeSet basisSet, ulong id)
@@ -45,7 +45,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             );
         }
 
-        public static IMultivectorStorage<T> EGp<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorStorage<T> mv1)
+        public static IMultivectorStorage<T> EGpSquared<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorStorage<T> mv1)
         {
             var composer = 
                 scalarProcessor.CreateVectorStorageComposer();
@@ -72,7 +72,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 
             composer.RemoveZeroTerms();
 
-            return composer.CreateMultivectorSparseStorage();
+            return composer.CreateMultivectorStorageSparse();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -147,7 +147,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 
             composer.RemoveZeroTerms();
 
-            return composer.CreateMultivectorSparseStorage();
+            return composer.CreateMultivectorStorageSparse();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -183,7 +183,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 
             composer.RemoveZeroTerms();
 
-            return composer.CreateMultivectorSparseStorage();
+            return composer.CreateMultivectorStorageSparse();
         }
 
         public static IMultivectorStorage<T> EGpReverse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorStorage<T> mv1, IMultivectorStorage<T> mv2)
@@ -216,7 +216,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 
             composer.RemoveZeroTerms();
 
-            return composer.CreateMultivectorSparseStorage();
+            return composer.CreateMultivectorStorageSparse();
         }
 
 

@@ -8,7 +8,7 @@ using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 {
-    public static class MultivectorStorageNormEucUtils
+    internal static class MultivectorStorageNormEucUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static double ENorm(this BasisBladeSet basisSet, IMultivectorStorage<double> mv1)

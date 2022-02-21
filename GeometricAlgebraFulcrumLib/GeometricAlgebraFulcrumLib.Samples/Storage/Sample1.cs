@@ -12,12 +12,13 @@ namespace GeometricAlgebraFulcrumLib.Samples.Storage
         public static void Execute()
         {
             var vSpaceDimensions = 5;
-            var scalarProcessor = ScalarAlgebraFloat64Processor.DefaultProcessor;
+            var scalarProcessor = ScalarAlgebraFloat64Processor.DefaultProcessor.CreateGeometricAlgebraEuclideanProcessor(10);
             var textComposer = TextFloat64Composer.DefaultComposer;
 
             var randomGenerator = new Random(10);
 
-            var vectorStorage1 = scalarProcessor.CreateVectorStorage(Enumerable
+            var vectorStorage1 = scalarProcessor.CreateVector(
+                Enumerable
                     .Range(0, vSpaceDimensions)
                     .ToDictionary(
                         i => (ulong)i,
@@ -25,7 +26,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.Storage
                     )
             );
 
-            var vectorStorage2 = scalarProcessor.CreateVectorStorage(Enumerable
+            var vectorStorage2 = scalarProcessor.CreateVector(
+                Enumerable
                     .Range(0, vSpaceDimensions - 2)
                     .ToDictionary(
                         i => (ulong)i,
@@ -33,20 +35,21 @@ namespace GeometricAlgebraFulcrumLib.Samples.Storage
                     )
             );
 
-            Console.WriteLine($"vSpaceDimension1: {vectorStorage1.MinVSpaceDimension}");
-            Console.WriteLine($"vSpaceDimension2: {vectorStorage2.MinVSpaceDimension}");
+            Console.WriteLine($"vSpaceDimension1: {vectorStorage1.VectorStorage.MinVSpaceDimension}");
+            Console.WriteLine($"vSpaceDimension2: {vectorStorage2.VectorStorage.MinVSpaceDimension}");
 
             var gbtStack =
                 GeoGbtProductsStack2<double>.Create(
                     scalarProcessor,
-                    vectorStorage1,
-                    vectorStorage2
+                    vectorStorage1.VectorStorage,
+                    vectorStorage2.VectorStorage
                 );
 
             var idScalarDictionary =
                 gbtStack
                     .GetEGpIdScalarRecords()
-                    .SumToMultivectorSparseStorage(scalarProcessor)
+                    .CreateMultivectorSparse(scalarProcessor, true)
+                    .MultivectorStorage
                     .GetLinVectorIdScalarStorage();
 
             Console.WriteLine(textComposer.GetTermsText(idScalarDictionary.GetIndexScalarRecords()));

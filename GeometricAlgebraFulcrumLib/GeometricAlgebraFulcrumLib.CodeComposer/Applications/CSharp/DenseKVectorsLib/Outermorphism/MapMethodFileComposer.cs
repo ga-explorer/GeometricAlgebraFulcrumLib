@@ -1,6 +1,6 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.SymbolicAlgebra;
+﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.SymbolicAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.SymbolicAlgebra.Context;
-using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using GeometricAlgebraFulcrumLib.Utilities.Factories;
 using TextComposerLib.Text.Linear;
@@ -12,8 +12,8 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
     {
         private readonly uint _inputGrade;
         private ISymbolicExpressionAtomic[,] _linearMapArray;
-        private KVectorStorage<ISymbolicExpressionAtomic> _inputKVector;
-        private KVectorStorage<ISymbolicExpressionAtomic> _outputKVector;
+        private KVector<ISymbolicExpressionAtomic> _inputKVector;
+        private KVector<ISymbolicExpressionAtomic> _outputKVector;
 
 
         internal MapMethodFileComposer(GaFuLLibraryComposer libGen, uint inGrade)
@@ -43,7 +43,7 @@ namespace GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVect
             var outermorphism =
                 GeometricProcessor.CreateLinearMapOutermorphism(_linearMapArray);
 
-            _outputKVector = outermorphism.OmMapKVector(_inputKVector);
+            _outputKVector = outermorphism.OmMap(_inputKVector);
 
             _outputKVector.SetIsOutput(true);
         }

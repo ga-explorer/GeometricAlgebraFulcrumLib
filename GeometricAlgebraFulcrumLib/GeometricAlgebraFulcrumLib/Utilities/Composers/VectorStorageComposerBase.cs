@@ -683,19 +683,19 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IMultivectorStorage<T> CreateMultivectorStorage()
         {
-            return CreateMultivectorSparseStorage();
+            return CreateMultivectorStorageSparse();
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public MultivectorStorage<T> CreateMultivectorSparseStorage()
+        public MultivectorStorage<T> CreateMultivectorStorageSparse()
         {
-            return CreateLinVectorStorage().CreateMultivectorSparseStorage();
+            return CreateLinVectorStorage().CreateMultivectorStorageSparse();
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public MultivectorGradedStorage<T> CreateMultivectorGradedStorage()
         {
-            return CreateLinVectorGradedStorage().CreateMultivectorGradedStorage();
+            return CreateLinVectorGradedStorage().CreateMultivectorStorageGraded();
         }
     }
 }
