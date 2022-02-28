@@ -316,7 +316,40 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                 processor.SqrtOfAbs(scalar.ScalarValue)
             );
         }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<T> Power<T>(this Scalar<T> scalar, int exponentScalar)
+        {
+            var processor = scalar.ScalarProcessor;
 
+            return Scalar<T>.Create(
+                processor, 
+                processor.Power(scalar.ScalarValue, exponentScalar)
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<T> Power<T>(this Scalar<T> scalar, double exponentScalar)
+        {
+            var processor = scalar.ScalarProcessor;
+
+            return Scalar<T>.Create(
+                processor, 
+                processor.Power(scalar.ScalarValue, exponentScalar)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<T> Power<T>(this Scalar<T> scalar, T exponentScalar)
+        {
+            var processor = scalar.ScalarProcessor;
+
+            return Scalar<T>.Create(
+                processor, 
+                processor.Power(scalar.ScalarValue, exponentScalar)
+            );
+        }
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> Exp<T>(this Scalar<T> scalar)
         {

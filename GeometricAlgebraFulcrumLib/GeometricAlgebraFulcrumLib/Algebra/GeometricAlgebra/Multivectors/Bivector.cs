@@ -1048,6 +1048,12 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsZero()
+        {
+            return GeometricProcessor.IsZero(BivectorStorage);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public KVector<T> AsKVector()
         {
             return new KVector<T>(GeometricProcessor, BivectorStorage);

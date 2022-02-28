@@ -58,6 +58,7 @@ namespace GeometricAlgebraFulcrumLib.Mathematica.Mathematica.ExprFactory
         public static Mfs Log10 { get; } = new Mfs("Log10");
         public static Mfs D { get; } = new Mfs("D");
         public static Mfs Integrate { get; } = new Mfs("Integrate");
+        public static Mfs ArcLength { get; } = new Mfs("ArcLength");
         public static Mfs N { get; } = new Mfs("N");
         public static Mfs ArcTan { get; } = new Mfs("ArcTan");
         public static Mfs Re { get; } = new Mfs("Re");

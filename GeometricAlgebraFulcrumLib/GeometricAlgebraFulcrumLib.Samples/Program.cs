@@ -39,7 +39,7 @@ namespace GeometricAlgebraFulcrumLib.Samples
             //Symbolic.AngouriMath.Sample1.Execute();
             //CodeComposer.Sample1.Execute();
 
-            GeometricFrequency.Sample1.Example1();
+            GeometricFrequency.Sample1.Example2();
             //SymbolicBSplineSample.Example2();
             //NumericPhCurveSamples.Example3();
             //SymbolicBernsteinPolynomialsSample.Example5();

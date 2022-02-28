@@ -797,6 +797,11 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors
         public IGeometricAlgebraProcessor<T> GeometricProcessor { get; }
 
         public VectorStorage<T> VectorStorage { get; }
+        
+        public Scalar<T> this[int index]
+            => GeometricProcessor
+                .GetTermScalarByIndex(VectorStorage, index)
+                .CreateScalar(GeometricProcessor);
 
         public Scalar<T> this[ulong index]
             => GeometricProcessor

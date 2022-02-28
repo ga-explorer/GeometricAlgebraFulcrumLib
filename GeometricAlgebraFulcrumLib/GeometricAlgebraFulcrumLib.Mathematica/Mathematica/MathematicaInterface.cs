@@ -91,5 +91,31 @@ HilbertTransform[f_,u_,t_] := Module[{fp = FourierParameters -> {1, -1}, x},
 ";
             Connection.EvaluateToExpr(hilbertTransformText);
         }
+
+
+        public MathematicaInterface ClearGlobalAssumptions()
+        {
+            Connection.EvaluateToExpr("$Assumptions = True");
+
+            return this;
+        }
+        
+        public MathematicaInterface SetGlobalAssumptions(string assumptionsExprText)
+        {
+            ClearGlobalAssumptions();
+
+            Connection.EvaluateToExpr($"$Assumptions = {assumptionsExprText}");
+
+            return this;
+        }
+
+        public MathematicaInterface SetGlobalAssumptions(Expr assumptionsExpr)
+        {
+            ClearGlobalAssumptions();
+
+            Connection.EvaluateToExpr($"$Assumptions = {assumptionsExpr}");
+
+            return this;
+        }
     }
 }

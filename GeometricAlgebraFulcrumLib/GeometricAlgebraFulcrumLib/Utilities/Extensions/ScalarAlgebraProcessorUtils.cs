@@ -11,6 +11,11 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 {
     public static class ScalarAlgebraProcessorUtils
     {
+        //public static bool ValidateEqual<T>(this IScalarAlgebraProcessor<T> scalarProcessor, T scalar1, T scalar2)
+        //{
+        //    scalarProcessor.Subtract(scalar1, scalar2).
+        //}
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsNotZero<T>(this IScalarAlgebraProcessor<T> scalarProcessor, T scalar)
         {

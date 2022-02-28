@@ -112,6 +112,15 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
                 scalarProcessor.ScalarMinusOne
             );
         }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Scalar<T> CreateScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, string valueText)
+        {
+            return Scalar<T>.Create(
+                scalarProcessor,
+                scalarProcessor.GetScalarFromText(valueText)
+            );
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> CreateScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, object valueObject)
