@@ -7,6 +7,7 @@ using System.Diagnostics.CodeAnalysis;
 using CodeComposerLib.SyntaxTree.Expressions;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors;
 using GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Algebra.SymbolicAlgebra;
 using GeometricAlgebraFulcrumLib.Algebra.SymbolicAlgebra.Composite;
@@ -283,6 +284,24 @@ namespace GeometricAlgebraFulcrumLib.Mathematica
             return storage.MapScalars(scalar => scalar.Simplify(assumptionsExpr));
         }
         
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static PureRotor<Expr> SimplifyScalars(this PureRotor<Expr> rotor)
+        {
+            return rotor
+                .Multivector
+                .MapScalars(scalar => scalar.Simplify())
+                .CreatePureRotor();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static PureRotor<Expr> SimplifyScalars(this PureRotor<Expr> rotor, Expr assumeExpr)
+        {
+            return rotor
+                .Multivector
+                .MapScalars(scalar => scalar.Simplify(assumeExpr))
+                .CreatePureRotor();
+        }
+
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Expr[] FullSimplifyScalars(this Expr[] array)

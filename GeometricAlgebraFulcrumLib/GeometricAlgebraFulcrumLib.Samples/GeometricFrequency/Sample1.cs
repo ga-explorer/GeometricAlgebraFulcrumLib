@@ -89,27 +89,21 @@ namespace GeometricAlgebraFulcrumLib.Samples.GeometricFrequency
         {
             LaTeXComposer.BasisName = @"\boldsymbol{\sigma}";
 
-            var assumeExpr = @"And[Subscript[V,a] > 0, Subscript[V,b] > 0, Subscript[V,c] > 0, \[Omega] > 0, t >= 0, Element[{Subscript[V,a], Subscript[V,b], Subscript[V,c], w, t}, Reals]]".ToExpr();
+            var assumeExpr = @"And[a > 0, b > 0, c > 0, \[Omega] > 0, t >= 0, Element[{a, b, c, w, t}, Reals]]".ToExpr();
 
             MathematicaInterface.DefaultCas.SetGlobalAssumptions(assumeExpr);
 
-            var t = "t".ToExpr();
+            var t = "t".CreateScalar(GeometricProcessor);
 
-            var k = GeometricProcessor.CreateVector(
-                "Subscript[V,b] * Subscript[V,c]", 
-                "Subscript[V,a] * Subscript[V,c]",
-                "Subscript[V,a] * Subscript[V,b]"
-            );
-
+            var k = GeometricProcessor.CreateVector("b * c", "a * c", "a * b");
             var kUnit = k.DivideByNorm();
-
             var kDual = k.Dual().AsBivector();
 
-            var va = Mfs.TrigExpand[@"Sqrt[2] Subscript[V,a] Cos[\[Omega] t]".ToExpr()];
-            var vb = Mfs.TrigExpand[@"Sqrt[2] Subscript[V,b] Cos[\[Omega] t - 2 Pi / 3]".ToExpr()];
-            var vc = Mfs.TrigExpand[@"Sqrt[2] Subscript[V,c] Cos[\[Omega] t + 2 Pi / 3]".ToExpr()];
+            var v1 = Mfs.TrigExpand[@"Sqrt[2] a Cos[\[Omega] t]".ToExpr()];
+            var v2 = Mfs.TrigExpand[@"Sqrt[2] b Cos[\[Omega] t - 2 Pi / 3]".ToExpr()];
+            var v3 = Mfs.TrigExpand[@"Sqrt[2] c Cos[\[Omega] t + 2 Pi / 3]".ToExpr()];
             
-            var v = GeometricProcessor.CreateVector(va, vb, vc);
+            var v = GeometricProcessor.CreateVector(v1, v2, v3);
 
             var vDt1 = v.MapScalars(s => 
                 s.DifferentiateScalar("t", 1).Simplify()
@@ -124,11 +118,11 @@ namespace GeometricAlgebraFulcrumLib.Samples.GeometricFrequency
             );
 
             var g = GeometricProcessor.CreateScalar(
-                @"-(Cos[2*t*\[Omega]]*(2*Subscript[V, a]^2 - Subscript[V, b]^2 - Subscript[V, c]^2)) + Sqrt[3]*Sin[2*t*\[Omega]]*(Subscript[V, b]^2 - Subscript[V, c]^2) + 2*(Subscript[V, a]^2 + Subscript[V, b]^2 + Subscript[V, c]^2)"
+                @"-(Cos[2*t*\[Omega]]*(2*a^2 - b^2 - c^2)) + Sqrt[3]*Sin[2*t*\[Omega]]*(b^2 - c^2) + 2*(a^2 + b^2 + c^2)"
             );
 
             var gDt = GeometricProcessor.CreateScalar(
-                @"2 \[Omega] (2 Subscript[V, a]^2 - Subscript[V, b]^2 - Subscript[V, c]^2) Sin[2 \[Omega] t] + 2 Sqrt[3] \[Omega] (Subscript[V, b]^2 - Subscript[V, c]^2) Cos[2 \[Omega] t]"
+                @"2 \[Omega] (2 a^2 - b^2 - c^2) Sin[2 \[Omega] t] + 2 Sqrt[3] \[Omega] (b^2 - c^2) Cos[2 \[Omega] t]"
             );
 
             var vDt1NormSquared = @"\[Omega] * \[Omega] / 2".ToExpr() * g;
@@ -161,27 +155,27 @@ namespace GeometricAlgebraFulcrumLib.Samples.GeometricFrequency
             var kappa1 = e1d.Sp(e2).FullSimplify();
             var kappa2 = e2d.Sp(e3).Simplify();
 
-            var twoOmega = @"2 \[Omega]".ToExpr();
+            var twoOmega = @"2 \[Omega]".CreateScalar(GeometricProcessor);
 
-            var a = @"2 Subscript[V,a]^2 - Subscript[V,b]^2 - Subscript[V,c]^2".ToExpr();
-            var b = @"Sqrt[3] (Subscript[V,b]^2 - Subscript[V,c]^2)".ToExpr();
-            var tAxis = Mfs.Divide[Mfs.ArcTan[Mfs.Minus[a], b], twoOmega].Evaluate();
+            var a = "A".CreateScalar(GeometricProcessor);//@"-2 a^2 + b^2 + c^2".CreateScalar(GeometricProcessor);
+            var b = "B".CreateScalar(GeometricProcessor);//@"Sqrt[3] (b^2 - c^2)".CreateScalar(GeometricProcessor);
 
-            var sin2OmegaT = Mfs.Sin[Mfs.Times[twoOmega, tAxis]].FullSimplify();
-            var cos2OmegaT = Mfs.Cos[Mfs.Times[twoOmega, tAxis]].FullSimplify();
-            var sinOmegaT1 = @"Sin[Times[t,\[Omega]]]".ToExpr();
-            var cosOmegaT1 = @"Cos[Times[t,\[Omega]]]".ToExpr();
-            var sinOmegaT2 = Mfs.Sqrt[Mfs.Divide[Mfs.Subtract[1, cos2OmegaT], 2]].FullSimplify();
-            var cosOmegaT2 = Mfs.Sqrt[Mfs.Divide[Mfs.Plus[1, cos2OmegaT], 2]].FullSimplify();
+            var tAxis = a.ArcTan2(b) / twoOmega;
+
+            var sin2OmegaT = (twoOmega * tAxis).Sin();
+            var cos2OmegaT = (twoOmega * tAxis).Cos();
+            var sinOmegaT1 = (t * @"\[Omega]".ToExpr()).Sin().FullSimplify();
+            var cosOmegaT1 = (t * @"\[Omega]".ToExpr()).Cos().FullSimplify();
+            var sinOmegaT2 = ((1 - cos2OmegaT) / 2).Sqrt().FullSimplify();
+            var cosOmegaT2 = ((1 + cos2OmegaT) / 2).Sqrt().FullSimplify();
 
             Console.WriteLine($@"$\sin(\omega t) = {LaTeXComposer.GetScalarText(sinOmegaT2)}$");
             Console.WriteLine($@"$\cos(\omega t) = {LaTeXComposer.GetScalarText(cosOmegaT2)}$");
-            Console.WriteLine($@"$\cos(\omega t) = {LaTeXComposer.GetScalarText(cosOmegaT1.ReplaceAll(cosOmegaT1, cosOmegaT2))}$");
             Console.WriteLine($@"$\sin(2 \omega t) = {LaTeXComposer.GetScalarText(sin2OmegaT)}$");
             Console.WriteLine($@"$\cos(2 \omega t) = {LaTeXComposer.GetScalarText(cos2OmegaT)}$");
             Console.WriteLine();
 
-            var e1tAxis = e1.MapScalars(
+            var a1 = e1.MapScalars(
                 s => s
                     .ReplaceAll(sinOmegaT1, sinOmegaT2)
                     .ReplaceAll(cosOmegaT1, cosOmegaT2)
@@ -189,7 +183,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.GeometricFrequency
                     .Simplify()
             );
             
-            var e2tAxis = e2.MapScalars(
+            var a2 = e2.MapScalars(
                 s => s
                     .ReplaceAll(sinOmegaT1, sinOmegaT2)
                     .ReplaceAll(cosOmegaT1, cosOmegaT2)
@@ -197,20 +191,34 @@ namespace GeometricAlgebraFulcrumLib.Samples.GeometricFrequency
                     .Simplify()
             );
 
-            //var rotorMv1 = 
-            //    GeometricProcessor.CreatePureRotor(
-            //        GeometricProcessor.CreateVectorBasis(2),
-            //        kUnit,
-            //        true
-            //    ).Multivector.SimplifyScalars();
+            var a3 = kUnit;
 
-            //var rotor1 = GeometricProcessor.CreatePureRotor(
-            //    rotorMv1.GetScalarPart(), 
-            //    rotorMv1.GetBivectorPart()
-            //);
+            var sigma1 = GeometricProcessor.CreateVectorBasis(0);
+            var sigma2 = GeometricProcessor.CreateVectorBasis(1);
+            var sigma3 = GeometricProcessor.CreateVectorBasis(2);
 
-            //var sigma1 = GeometricProcessor.CreateVectorBasis(0);
-            //var angle1 = rotor1.GetRotorInverse().OmMap(e1).SimplifyScalars();
+            var rotor1 =
+                GeometricProcessor.CreatePureRotor(
+                    sigma3,
+                    kUnit,
+                    true
+                ).SimplifyScalars();
+
+            
+            var r1 = 
+                rotor1.OmMap(sigma1).SimplifyScalars();
+
+            var angle2 = Mfs.ArcCos[Mfs.TrigReduce[
+                r1.Lcp(a1).ScalarValue
+            ]].FullSimplify();
+
+            //var phi2 = @"Subscript[\[Phi], 2]".CreateScalar(GeometricProcessor);
+            var rotor2 = GeometricProcessor
+                .CreatePureRotor(r1, a1)
+                .SimplifyScalars();
+
+            var rotor = 
+                rotor2.Multivector.Gp(rotor1.Multivector).SimplifyScalars().CreatePureRotor();
 
             Console.WriteLine($@"$\boldsymbol{{k}} = {LaTeXComposer.GetMultivectorText(k)}$");
             Console.WriteLine($@"$\boldsymbol{{k}}^{{*}} = {LaTeXComposer.GetMultivectorText(kDual)}$");
@@ -247,15 +255,22 @@ namespace GeometricAlgebraFulcrumLib.Samples.GeometricFrequency
             Console.WriteLine();
             
             Console.WriteLine($@"$t_{{axis}} = {LaTeXComposer.GetScalarText(tAxis)}$");
-            Console.WriteLine($@"$\boldsymbol{{e}}_{{1}}\left(t_{{axis}}\right) = {LaTeXComposer.GetMultivectorText(e1tAxis)}$");
-            Console.WriteLine($@"$\boldsymbol{{e}}_{{2}}\left(t_{{axis}}\right) = {LaTeXComposer.GetMultivectorText(e2tAxis)}$");
+            Console.WriteLine($@"$\boldsymbol{{e}}_{{1}}\left(t_{{axis}}\right) = {LaTeXComposer.GetMultivectorText(a1)}$");
+            Console.WriteLine($@"$\boldsymbol{{e}}_{{2}}\left(t_{{axis}}\right) = {LaTeXComposer.GetMultivectorText(a2)}$");
             Console.WriteLine();
 
-            //Console.WriteLine($@"$R\left(t\right) = {TextComposer.GetMultivectorText(rotor1)}$");
-            //Console.WriteLine($@"$R\left(t\right) = {LaTeXComposer.GetMultivectorText(rotor1)}$");
-            //Console.WriteLine($@"$R\left(t\right) \boldsymbol{{\sigma}}_{{1}} R^{{\dagger}}\left(t\right) = {LaTeXComposer.GetMultivectorText(angle1)}$");
-            //Console.WriteLine();
+            //Console.WriteLine($@"R1 = {TextComposer.GetMultivectorText(rotor1)}");
+            Console.WriteLine($@"$\boldsymbol{{R}}_{{1}} = {LaTeXComposer.GetMultivectorText(rotor1)}$");
+            Console.WriteLine($@"$\boldsymbol{{R}}_{{1}}\boldsymbol{{\sigma}}_{{1}}\boldsymbol{{R}}_{{1}}^{{\dagger}} = {LaTeXComposer.GetMultivectorText(r1)}$");
+            Console.WriteLine($@"$\cos\left(\varphi_{{2}}\right) = {LaTeXComposer.GetScalarText(angle2)}$");
+            Console.WriteLine();
 
+            Console.WriteLine($@"$\boldsymbol{{R}}_{{2}} = {LaTeXComposer.GetMultivectorText(rotor2)}$");
+            Console.WriteLine();
+
+            Console.WriteLine($@"$\boldsymbol{{R}} = {LaTeXComposer.GetMultivectorText(rotor)}$");
+            Console.WriteLine();
+            
             // For validation
             var vDt1NormSquared1 = vDt1.Sp(vDt1);
             var vDt1NormSquaredDiff = (vDt1NormSquared1 - vDt1NormSquared).FullSimplify();
@@ -265,11 +280,11 @@ namespace GeometricAlgebraFulcrumLib.Samples.GeometricFrequency
             var gDtDiff = (gDt1 - gDt).FullSimplify();
             Debug.Assert(gDtDiff.IsZero());
 
-            var sDt1 =  vDt1.Norm();
+            var sDt1 =  vDt1.Norm().ScalarValue.ReplaceAll("Abs", "Plus");
             var sDtDiff = (sDt1 - sDt).FullSimplify();
             Debug.Assert(sDtDiff.IsZero());
 
-            var omega1 = (vDt1.Op(vDt2) / vDt1.Norm().Power(2)).SimplifyScalars();
+            var omega1 = (vDt1.Op(vDt2) / vDt1.Norm().Power(2)).MapScalars(s => s.ReplaceAll("Abs", "Plus").Simplify());
             var omegaDiff = (omega1 - omega).FullSimplifyScalars();
             Debug.Assert(omegaDiff.IsZero());
 
@@ -281,35 +296,14 @@ namespace GeometricAlgebraFulcrumLib.Samples.GeometricFrequency
             var kDiff = (k1 - k.DivideByNorm()).FullSimplifyScalars();
             Debug.Assert(kDiff.IsZero());
 
-            return;
-            
+            //var a1Diff = (rotor.OmMap(sigma1) - a1).SimplifyScalars();
+            //Debug.Assert(a1Diff.IsZero());
 
-            //var re2 = rotor1 * .OmMap(GeometricProcessor.CreateVectorBasis(1)).SimplifyScalars();
+            //var a2Diff = (rotor.OmMap(sigma2) - a2).SimplifyScalars();
+            //Debug.Assert(a2Diff.IsZero());
 
-            //Console.WriteLine($@"$R\left(t\right) = {LaTeXComposer.GetMultivectorText(re2)}$");
-
-            //var rotor2 = 
-            //    GeometricProcessor.CreatePureRotor(
-            //        re2, 
-            //        e2,
-            //        true
-            //    );
-
-            //Console.WriteLine($@"$R\left(t\right) = {LaTeXComposer.GetMultivectorText(rotor2)}$");
-
-            //var rotor = 
-            //    rotor2.Multivector.EGp(rotor1.Multivector);
-
-            ////var rotor = GeometricProcessor.CreatePureRotor(
-            ////    e1,
-            ////    e2,
-            ////    GeometricProcessor.CreateVectorBasis(0),
-            ////    GeometricProcessor.CreateVectorBasis(1),
-            ////    true
-            ////);
-
-            //Console.WriteLine($@"$R\left(t\right) = {LaTeXComposer.GetMultivectorText(rotor)}$");
-            //Console.WriteLine();
+            //var a3Diff = (rotor.OmMap(sigma3) - a3).SimplifyScalars();
+            //Debug.Assert(a3Diff.IsZero());
         }
     }
 }

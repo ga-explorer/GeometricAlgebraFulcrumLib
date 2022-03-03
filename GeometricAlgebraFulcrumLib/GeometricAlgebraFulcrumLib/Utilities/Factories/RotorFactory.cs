@@ -153,15 +153,30 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="processor"></param>
-        /// <param name="scalarPart"></param>
-        /// <param name="bivectorPart"></param>
+        /// <param name="rotorMv"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static PureRotor<T> CreatePureRotor<T>(this IGeometricAlgebraProcessor<T> processor, T scalarPart, Bivector<T> bivectorPart)
+        public static PureRotor<T> CreatePureRotor<T>(this Multivector<T> rotorMv)
         {
             return PureRotor<T>.Create(
-                scalarPart, 
-                bivectorPart
+                rotorMv.GetScalarPart(), 
+                rotorMv.GetBivectorPart()
+            );
+        }
+
+        /// <summary>
+        /// Create a pure rotor from its scalar and bivector parts
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="processor"></param>
+        /// <param name="rotorMv"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static PureRotor<T> CreatePureRotor<T>(this IGeometricAlgebraProcessor<T> processor, Multivector<T> rotorMv)
+        {
+            return PureRotor<T>.Create(
+                rotorMv.GetScalarPart(), 
+                rotorMv.GetBivectorPart()
             );
         }
 
