@@ -1,5 +1,5 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.SymbolicAlgebra;
-using GeometricAlgebraFulcrumLib.Processors.SymbolicAlgebra.Context;
+﻿using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
+using GeometricAlgebraFulcrumLib.MetaProgramming.Expressions;
 
 namespace GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra
 {
@@ -10,8 +10,8 @@ namespace GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra
 
         T GetSymbol(string symbolNameText);
 
-        T SymbolicExpressionToScalar(ISymbolicExpression expression);
+        T MetaExpressionToScalar(IMetaExpression expression);
 
-        ISymbolicExpression ScalarToSymbolicExpression(SymbolicContext context, T scalar);
+        IMetaExpression ScalarToMetaExpression(MetaContext context, T scalar);
     }
 }

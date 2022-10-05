@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.Basic;
@@ -10,6 +9,8 @@ using NumericalGeometryLib.BasicMath;
 using NumericalGeometryLib.BasicMath.Tuples;
 using NumericalGeometryLib.BasicMath.Tuples.Immutable;
 using GraphicsComposerLib.Geometry.Primitives.Triangles;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
 using TextComposerLib.Text.Linear;
 
 namespace GraphicsComposerLib.Geometry.LatticeShapes.Surfaces
@@ -356,17 +357,19 @@ namespace GraphicsComposerLib.Geometry.LatticeShapes.Surfaces
             foreach (var batch in Surfaces)
             {
                 composer
-                    .AppendLine($"Surface <{batch.CurveIndex.ToString().PadLeft(3)}>:")
+                    .AppendLine($"Surface <{batch.CurveIndex,3}>:")
                     .IncreaseIndentation();
 
                 foreach (var vertex in batch.VertexList)
                 {
+                    var c = vertex.Color.ToPixel<Rgb24>();
+
                     composer
-                        .AppendAtNewLine($"Vertex <{vertex.Index.ToString().PadLeft(4)}>:")
+                        .AppendAtNewLine($"Vertex <{vertex.Index,4}>:")
                         .Append($" Point({vertex.X:F5}, {vertex.Y:F5}, {vertex.Z:F5})")
                         .Append($" Normal({vertex.Normal.X:F5}, {vertex.Normal.Y:F5}, {vertex.Normal.Z:F5})")
                         .Append($" TextureUV({vertex.ParameterValue.Item1:F5}, {vertex.ParameterValue.Item2:F5})")
-                        .Append($" Color({vertex.Color.R}, {vertex.Color.G}, {vertex.Color.B})");
+                        .Append($" Color({c.R}, {c.G}, {c.B})");
                 }
 
                 composer.AppendLineAtNewLine();

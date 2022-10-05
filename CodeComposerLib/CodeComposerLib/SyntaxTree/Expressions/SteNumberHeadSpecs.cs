@@ -31,13 +31,25 @@
 
         public SteNumberHeadSpecs(int number)
         {
-            NumberText = number.ToString("G");
+            NumberText = number.ToString();
+            IsSymbolic = false;
+        }
+        
+        public SteNumberHeadSpecs(uint number)
+        {
+            NumberText = number.ToString();
             IsSymbolic = false;
         }
 
         public SteNumberHeadSpecs(long number)
         {
-            NumberText = number.ToString("G");
+            NumberText = number.ToString();
+            IsSymbolic = false;
+        }
+        
+        public SteNumberHeadSpecs(ulong number)
+        {
+            NumberText = number.ToString();
             IsSymbolic = false;
         }
 

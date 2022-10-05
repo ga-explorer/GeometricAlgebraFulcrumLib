@@ -9,6 +9,80 @@ namespace NumericalGeometryLib.BasicMath.Matrices
 {
     public static class MatrixUtils
     {
+        public static double Sum(this double[] vector)
+        {
+            var count = vector.Length;
+            var sum = 0d;
+                
+            for (var i = 0; i < count; i++)
+                sum += vector[i];
+
+            return sum;
+        }
+        
+        public static double Min(this double[] vector)
+        {
+            var count = vector.Length;
+            var min = vector[0];
+            
+            for (var i = 1; i < count; i++)
+                if (min > vector[i]) min = vector[i];
+
+            return min;
+        }
+
+        public static double Max(this double[] vector)
+        {
+            var count = vector.Length;
+            var max = vector[0];
+            
+            for (var i = 1; i < count; i++)
+                if (max < vector[i]) max = vector[i];
+
+            return max;
+        }
+
+        public static double[] SumRows(this double[,] matrix)
+        {
+            var rowCount = matrix.GetLength(0);
+            var colCount = matrix.GetLength(1);
+
+            var sumVector = new double[rowCount];
+
+            for (var row = 0; row < rowCount; row++)
+            {
+                var sum = 0d;
+                
+                for (var col = 0; col < colCount; col++)
+                    sum += matrix[row, col];
+
+                sumVector[row] = sum;
+            }
+
+            return sumVector;
+        }
+
+        public static double[] SumColumns(this double[,] matrix)
+        {
+            var rowCount = matrix.GetLength(0);
+            var colCount = matrix.GetLength(1);
+
+            var sumVector = new double[colCount];
+
+            for (var col = 0; col < colCount; col++)
+            {
+                var sum = 0d;
+
+                for (var row = 0; row < rowCount; row++)
+                    sum += matrix[row, col];
+
+                sumVector[col] = sum;
+            }
+
+            return sumVector;
+        }
+
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Matrix4x4 ToMatrix4x4(this double[,] array)
         {

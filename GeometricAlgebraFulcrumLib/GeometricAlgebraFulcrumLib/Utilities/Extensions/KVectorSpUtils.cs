@@ -28,7 +28,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<T> Sp<T>(this KVector<T> v1, Scalar<T> v2)
+        public static Scalar<T> Sp<T>(this GaKVector<T> v1, Scalar<T> v2)
         {
             var processor = v1.GeometricProcessor;
 
@@ -38,7 +38,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<T> Sp<T>(this Scalar<T> v1, KVector<T> v2)
+        public static Scalar<T> Sp<T>(this Scalar<T> v1, GaKVector<T> v2)
         {
             var processor = v2.GeometricProcessor;
 
@@ -48,7 +48,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<T> Sp<T>(this KVector<T> v1, Vector<T> v2)
+        public static Scalar<T> Sp<T>(this GaKVector<T> v1, GaVector<T> v2)
         {
             var processor = v1.GeometricProcessor;
 
@@ -58,7 +58,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<T> Sp<T>(this Vector<T> v1, KVector<T> v2)
+        public static Scalar<T> Sp<T>(this GaVector<T> v1, GaKVector<T> v2)
         {
             var processor = v1.GeometricProcessor;
 
@@ -68,7 +68,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<T> Sp<T>(this KVector<T> v1, Bivector<T> v2)
+        public static Scalar<T> Sp<T>(this GaKVector<T> v1, GaBivector<T> v2)
         {
             var processor = v1.GeometricProcessor;
 
@@ -78,7 +78,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<T> Sp<T>(this Bivector<T> v1, KVector<T> v2)
+        public static Scalar<T> Sp<T>(this GaBivector<T> v1, GaKVector<T> v2)
         {
             var processor = v1.GeometricProcessor;
 
@@ -88,7 +88,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<T> Sp<T>(this KVector<T> v1, KVector<T> v2)
+        public static Scalar<T> Sp<T>(this GaKVector<T> v1, GaKVector<T> v2)
         {
             var processor = v1.GeometricProcessor;
 
@@ -98,7 +98,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<T> SpSquared<T>(this KVector<T> v1)
+        public static Scalar<T> SpSquared<T>(this GaKVector<T> v1)
         {
             var processor = v1.GeometricProcessor;
 
@@ -107,7 +107,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<T> ESp<T>(this KVector<T> v1, Scalar<T> v2)
+        public static Scalar<T> ESp<T>(this GaKVector<T> v1, Scalar<T> v2)
         {
             var processor = v1.GeometricProcessor;
 
@@ -117,7 +117,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<T> ESp<T>(this Scalar<T> v1, KVector<T> v2)
+        public static Scalar<T> ESp<T>(this Scalar<T> v1, GaKVector<T> v2)
         {
             var processor = v2.GeometricProcessor;
 
@@ -127,7 +127,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<T> ESp<T>(this KVector<T> v1, Vector<T> v2)
+        public static Scalar<T> ESp<T>(this GaKVector<T> v1, GaVector<T> v2)
         {
             var processor = v1.GeometricProcessor;
 
@@ -137,7 +137,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<T> ESp<T>(this Vector<T> v1, KVector<T> v2)
+        public static Scalar<T> ESp<T>(this GaVector<T> v1, GaKVector<T> v2)
         {
             var processor = v1.GeometricProcessor;
 
@@ -147,7 +147,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<T> ESp<T>(this KVector<T> v1, Bivector<T> v2)
+        public static Scalar<T> ESp<T>(this GaKVector<T> v1, GaBivector<T> v2)
         {
             var processor = v1.GeometricProcessor;
 
@@ -157,7 +157,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<T> ESp<T>(this Bivector<T> v1, KVector<T> v2)
+        public static Scalar<T> ESp<T>(this GaBivector<T> v1, GaKVector<T> v2)
         {
             var processor = v1.GeometricProcessor;
 
@@ -167,7 +167,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<T> ESp<T>(this KVector<T> v1, KVector<T> v2)
+        public static Scalar<T> ESp<T>(this GaKVector<T> v1, GaKVector<T> v2)
         {
             var processor = v1.GeometricProcessor;
 
@@ -177,7 +177,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<T> ESp<T>(this KVector<T> v1)
+        public static Scalar<T> ESp<T>(this GaKVector<T> v1)
         {
             var processor = v1.GeometricProcessor;
 

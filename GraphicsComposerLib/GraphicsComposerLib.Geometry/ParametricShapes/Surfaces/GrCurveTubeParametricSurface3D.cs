@@ -10,12 +10,12 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Surfaces
     public class GrCurveTubeParametricSurface3D :
         IGraphicsParametricSurface3D
     {
-        public IGraphicsParametricCurve3D Curve { get; }
+        public IGraphicsC1ParametricCurve3D Curve { get; }
 
         public double Radius { get; }
 
 
-        public GrCurveTubeParametricSurface3D([NotNull] IGraphicsParametricCurve3D curve, double radius)
+        public GrCurveTubeParametricSurface3D([NotNull] IGraphicsC1ParametricCurve3D curve, double radius)
         {
             if (radius < 0)
                 throw new ArgumentException(nameof(radius));

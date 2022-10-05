@@ -15,28 +15,28 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.LinearMaps
         IUnilinearMap<T> GetAdjoint();
 
 
-        Multivector<T> MapBasisScalar();
+        GaMultivector<T> MapBasisScalar();
 
-        Multivector<T> MapBasisVector(ulong index);
+        GaMultivector<T> MapBasisVector(ulong index);
 
-        Multivector<T> MapBasisBivector(ulong index);
+        GaMultivector<T> MapBasisBivector(ulong index);
 
-        Multivector<T> MapBasisBivector(ulong index1, ulong index2);
+        GaMultivector<T> MapBasisBivector(ulong index1, ulong index2);
 
-        Multivector<T> MapBasisBlade(ulong id);
+        GaMultivector<T> MapBasisBlade(ulong id);
 
-        Multivector<T> MapBasisBlade(uint grade, ulong index);
+        GaMultivector<T> MapBasisBlade(uint grade, ulong index);
 
 
-        Multivector<T> Map(T mv);
+        GaMultivector<T> Map(T mv);
 
-        Multivector<T> Map(Vector<T> vector);
+        GaMultivector<T> Map(GaVector<T> vector);
 
-        Multivector<T> Map(Bivector<T> bivector);
+        GaMultivector<T> Map(GaBivector<T> bivector);
 
-        Multivector<T> Map(KVector<T> kVector);
+        GaMultivector<T> Map(GaKVector<T> kVector);
 
-        Multivector<T> Map(Multivector<T> multivector);
+        GaMultivector<T> Map(GaMultivector<T> multivector);
 
 
         //IndexPairRecord GetMultivectorMappingMatrixSize();

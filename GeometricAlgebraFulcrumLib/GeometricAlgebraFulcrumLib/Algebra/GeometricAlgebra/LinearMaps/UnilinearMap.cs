@@ -55,7 +55,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.LinearMaps
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Multivector<T> MapBasisScalar()
+        public GaMultivector<T> MapBasisScalar()
         {
             return GeometricProcessor.CreateMultivector(
                 MatrixStorage
@@ -65,7 +65,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.LinearMaps
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Multivector<T> MapBasisVector(ulong index)
+        public GaMultivector<T> MapBasisVector(ulong index)
         {
             return GeometricProcessor.CreateMultivector(
                 MatrixStorage
@@ -75,7 +75,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.LinearMaps
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Multivector<T> MapBasisBivector(ulong index)
+        public GaMultivector<T> MapBasisBivector(ulong index)
         {
             return GeometricProcessor.CreateMultivector(
                 MatrixStorage
@@ -85,7 +85,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.LinearMaps
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Multivector<T> MapBasisBivector(ulong index1, ulong index2)
+        public GaMultivector<T> MapBasisBivector(ulong index1, ulong index2)
         {
             if (index1 == index2)
                 return GeometricProcessor.CreateMultivector(KVectorStorage<T>.ZeroScalar);
@@ -102,7 +102,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.LinearMaps
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Multivector<T> MapBasisBlade(ulong id)
+        public GaMultivector<T> MapBasisBlade(ulong id)
         {
             return GeometricProcessor.CreateMultivector(
                 MatrixStorage
@@ -112,7 +112,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.LinearMaps
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Multivector<T> MapBasisBlade(uint grade, ulong index)
+        public GaMultivector<T> MapBasisBlade(uint grade, ulong index)
         {
             var id = 
                 BasisBladeUtils.BasisBladeGradeIndexToId(grade, index);
@@ -125,7 +125,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.LinearMaps
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Multivector<T> Map(T mv)
+        public GaMultivector<T> Map(T mv)
         {
             return GeometricProcessor.CreateMultivector(
                 LinearProcessor.Times(
@@ -135,22 +135,22 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.LinearMaps
             );
         }
 
-        public Multivector<T> Map(Vector<T> vector)
+        public GaMultivector<T> Map(GaVector<T> vector)
         {
             throw new System.NotImplementedException();
         }
 
-        public Multivector<T> Map(Bivector<T> bivector)
+        public GaMultivector<T> Map(GaBivector<T> bivector)
         {
             throw new System.NotImplementedException();
         }
 
-        public Multivector<T> Map(KVector<T> kVector)
+        public GaMultivector<T> Map(GaKVector<T> kVector)
         {
             throw new System.NotImplementedException();
         }
 
-        public Multivector<T> Map(Multivector<T> multivector)
+        public GaMultivector<T> Map(GaMultivector<T> multivector)
         {
             throw new System.NotImplementedException();
         }

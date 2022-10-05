@@ -1,206 +1,137 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
+using DataStructuresLib.Basic;
 using NumericalGeometryLib.BasicMath.Tuples;
 using NumericalGeometryLib.BasicMath.Tuples.Immutable;
 
 namespace NumericalGeometryLib.BasicMath.Frames.Space3D
 {
     /// <summary>
-    /// This class represents a directions frame of 3 orthonormal vectors U, V, W where
+    /// This class represents a directions frame of 3 vectors U, V, W where
     /// the components are double precision numbers
     /// </summary>
-    public class AffineFrame3D
+    public class AffineFrame3D :
+        ITuple3D
     {
         /// <summary>
         /// Create a set of 3 right-handed orthonormal direction vectors from the given vector
         /// </summary>
         /// <param name="origin"></param>
-        /// <param name="uDirection"></param>
+        /// <param name="direction"></param>
+        /// <param name="rightHanded"></param>
         /// <returns></returns>
-        public static AffineFrame3D CreateRightHanded(ITuple3D origin, ITuple3D uDirection)
+        public static AffineFrame3D CreateOrthonormal(ITuple3D origin, ITuple3D direction, bool rightHanded = true)
         {
-            var s = uDirection.GetLength();
+            Debug.Assert(!direction.GetLengthSquared().IsAlmostZero());
 
-            Debug.Assert(!s.IsAlmostZero());
+            var u = direction.ToUnitVector();
+            var v = direction.GetUnitNormal();
+            var w = rightHanded ? u.VectorUnitCross(v) : v.VectorUnitCross(u);
 
-            s = 1.0d / s;
             return new AffineFrame3D(
-                origin.X, origin.Y, origin.Z,
-                uDirection.X * s, uDirection.Y * s, uDirection.Z * s, 
-                true
+                origin.ToTuple3D(),
+                u,
+                v,
+                w
             );
         }
-
-        /// <summary>
-        /// Create a set of 3 left-handed orthonormal direction vectors from the given vector
-        /// </summary>
-        /// <param name="origin"></param>
-        /// <param name="uDirection"></param>
-        /// <returns></returns>
-        public static AffineFrame3D CreateLeftHanded(ITuple3D origin, ITuple3D uDirection)
+        
+        public static AffineFrame3D Create(ITuple3D origin, ITuple3D direction1, ITuple3D direction2, ITuple3D direction3)
         {
-            var s = uDirection.GetLength();
+            Debug.Assert(!direction1.GetLengthSquared().IsAlmostZero());
 
-            Debug.Assert(!s.IsAlmostZero());
-
-            s = 1.0d / s;
             return new AffineFrame3D(
-                origin.X, origin.Y, origin.Z,
-                uDirection.X * s, uDirection.Y * s, uDirection.Z * s, 
-                false
+                origin.ToTuple3D(),
+                direction1.ToTuple3D(),
+                direction2.ToTuple3D(),
+                direction3.ToTuple3D()
             );
         }
 
 
-        public double OriginX { get; }
+        public double Item1 
+            => Origin.X;
 
-        public double OriginY { get; }
+        public double Item2 
+            => Origin.Y;
 
-        public double OriginZ { get; }
+        public double Item3 
+            => Origin.Z;
 
-        public double UDirectionX { get; }
+        public double X 
+            => Origin.X;
 
-        public double UDirectionY { get; }
+        public double Y 
+            => Origin.Y;
 
-        public double UDirectionZ { get; }
+        public double Z 
+            => Origin.Z;
 
-        public double VDirectionX { get; }
+        public Tuple3D Origin { get; }
+        
+        public Tuple3D Direction1 { get; }
 
-        public double VDirectionY { get; }
+        public Tuple3D Direction2 { get; }
 
-        public double VDirectionZ { get; }
+        public Tuple3D Direction3 { get; }
+        
 
-        public double WDirectionX { get; }
-
-        public double WDirectionY { get; }
-
-        public double WDirectionZ { get; }
-
-        public Tuple3D UDirection
+        private AffineFrame3D(Tuple3D origin, Tuple3D direction1, Tuple3D direction2, Tuple3D direction3)
         {
-            get { return new Tuple3D(UDirectionX, UDirectionY, UDirectionZ); }
+            Origin = origin;
+            Direction1 = direction1;
+            Direction2 = direction2;
+            Direction3 = direction3;
+
+            Debug.Assert(IsValid());
+        }
+        
+
+        public bool IsValid()
+        {
+            return Origin.IsValid() &&
+                   Direction1.IsValid() &&
+                   Direction2.IsValid() &&
+                   Direction3.IsValid();
+        }
+        
+        public bool IsRightHanded()
+        {
+            return VectorAlgebraUtils.Determinant(Direction1, Direction2, Direction3) > 0.0d;
         }
 
-        public Tuple3D VDirection
+        public bool IsLeftHanded()
         {
-            get { return new Tuple3D(VDirectionX, VDirectionY, VDirectionZ); }
+            return VectorAlgebraUtils.Determinant(Direction1, Direction2, Direction3) < 0.0d;
         }
 
-        public Tuple3D WDirection
+        public Tuple3D GetLocalVector(double u, double v, double w)
         {
-            get { return new Tuple3D(WDirectionX, WDirectionY, WDirectionZ); }
+            return u * Direction1 +
+                   v * Direction2 +
+                   w * Direction3;
         }
 
-        public bool IsRightHanded
+        public Tuple3D GetLocalVector(ITriplet<double> scalarList)
         {
-            get { return VectorAlgebraUtils.Determinant(UDirection, VDirection, WDirection) > 0.0d; }
+            return scalarList.Item1 * Direction1 +
+                   scalarList.Item2 * Direction2 +
+                   scalarList.Item3 * Direction3;
         }
-
-        public bool IsLeftHanded
+        
+        public Tuple3D GetLocalPoint(ITriplet<double> scalarList)
         {
-            get { return VectorAlgebraUtils.Determinant(UDirection, VDirection, WDirection) < 0.0d; }
+            return Origin +
+                   scalarList.Item1 * Direction1 +
+                   scalarList.Item2 * Direction2 +
+                   scalarList.Item3 * Direction3;
         }
-
-        public bool HasNaNComponent
+        
+        public Tuple3D GetLocalPoint(double u, double v, double w)
         {
-            get
-            {
-                return double.IsNaN(OriginX) ||
-                       double.IsNaN(OriginY) ||
-                       double.IsNaN(OriginZ) ||
-                       double.IsNaN(UDirectionX) ||
-                       double.IsNaN(UDirectionY) ||
-                       double.IsNaN(UDirectionZ) ||
-                       double.IsNaN(VDirectionX) ||
-                       double.IsNaN(VDirectionY) ||
-                       double.IsNaN(VDirectionZ) ||
-                       double.IsNaN(WDirectionX) ||
-                       double.IsNaN(WDirectionY) ||
-                       double.IsNaN(WDirectionZ);
-            }
-        }
-
-
-        public AffineFrame3D(ITuple3D origin, ITuple3D uDirection, ITuple3D vDirection, ITuple3D wDirection)
-        {
-            OriginX = origin.X;
-            OriginY = origin.Y;
-            OriginZ = origin.Z;
-
-            UDirectionX = uDirection.X;
-            UDirectionY = uDirection.Y;
-            UDirectionZ = uDirection.Z;
-
-            VDirectionX = vDirection.X;
-            VDirectionY = vDirection.Y;
-            VDirectionZ = vDirection.Z;
-
-            WDirectionX = wDirection.X;
-            WDirectionY = wDirection.Y;
-            WDirectionZ = wDirection.Z;
-
-            Debug.Assert(!HasNaNComponent);
-        }
-
-        private AffineFrame3D(double ox, double oy, double oz, double ux, double uy, double uz, bool rightHanded)
-        {
-            Debug.Assert(
-                (ux * ux + uy * uy + uz * uz).IsAlmostEqual(1.0d)
-            );
-
-            OriginX = ox;
-            OriginY = oy;
-            OriginZ = oz;
-
-            UDirectionX = ux;
-            UDirectionY = uy;
-            UDirectionZ = uz;
-
-            double vLength;
-            var absUx = Math.Abs(ux);
-            var absUy = Math.Abs(uy);
-            var absUz = Math.Abs(uz);
-
-            if (absUx < absUy && absUx < absUz)
-            {
-                //Ux is the smallest component in magnitude, make it zero in V
-                vLength = uy * uy + uz * uz;
-                VDirectionX = 0.0d;
-                VDirectionY = -uz / vLength;
-                VDirectionZ = uy / vLength;
-            }
-            else if (absUy < absUx && absUy < absUz)
-            {
-                //Uy is the smallest component in magnitude, make it zero in V
-                vLength = ux * ux + uz * uz;
-                VDirectionX = uz / vLength;
-                VDirectionY = 0.0d;
-                VDirectionZ = -ux / vLength;
-            }
-            else
-            {
-                //Uz is the smallest component in magnitude, make it zero in V
-                vLength = ux * ux + uy * uy;
-                VDirectionX = -uy / vLength;
-                VDirectionY = ux / vLength;
-                VDirectionZ = 0.0d;
-            }
-
-            //Compute W as the cross product of U and V
-            if (rightHanded)
-            {
-                WDirectionX = UDirectionY * VDirectionZ - UDirectionZ * VDirectionY;
-                WDirectionY = UDirectionZ * VDirectionX - UDirectionX * VDirectionZ;
-                WDirectionZ = UDirectionX * VDirectionY - UDirectionY * VDirectionX;
-            }
-            else
-            {
-                WDirectionX = UDirectionZ * VDirectionY - UDirectionY * VDirectionZ;
-                WDirectionY = UDirectionX * VDirectionZ - UDirectionZ * VDirectionX;
-                WDirectionZ = UDirectionY * VDirectionX - UDirectionX * VDirectionY;
-            }
-
-            Debug.Assert(!HasNaNComponent);
+            return Origin +
+                   u * Direction1 +
+                   v * Direction2 +
+                   w * Direction3;
         }
     }
 }

@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net5.0-windows</TargetFramework>
+    <TargetFramework>net6.0-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
     <Platforms>AnyCPU;ARM32;x86;x64</Platforms>
   </PropertyGroup>
@@ -10,6 +10,19 @@
   <ItemGroup>
     <Folder Include="Graphics\" />
     <Folder Include="TestScenes\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ILGPU" Version="1.2.0" />
+    <PackageReference Include="ILGPU.Algorithms" Version="1.2.0" />
+    <PackageReference Include="ILGPU.Lightning" Version="0.3.0" />
+    <PackageReference Include="NumpyDotNet" Version="0.9.80.3" />
+    <PackageReference Include="OxyPlot.Core" Version="2.1.0" />
+    <PackageReference Include="OxyPlot.Core.Drawing" Version="2.1.0" />
+    <PackageReference Include="OxyPlot.SkiaSharp" Version="2.1.0" />
+    <PackageReference Include="Selenium.Support" Version="4.4.0" />
+    <PackageReference Include="Selenium.WebDriver" Version="4.4.0" />
+    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="105.0.5195.5200" />
   </ItemGroup>
 
   <ItemGroup>

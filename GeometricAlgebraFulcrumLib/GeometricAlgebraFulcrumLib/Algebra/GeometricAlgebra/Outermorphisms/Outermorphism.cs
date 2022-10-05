@@ -45,7 +45,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Vector<T> OmMapBasisVector(ulong index)
+        public override GaVector<T> OmMapBasisVector(ulong index)
         {
             return GeometricProcessor.CreateVector(
                 OmStorage.GetMappedBasisVector(index)
@@ -53,7 +53,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Bivector<T> OmMapBasisBivector(ulong index)
+        public override GaBivector<T> OmMapBasisBivector(ulong index)
         {
             return GeometricProcessor.CreateBivector(
                 OmStorage.GetMappedBasisBivector(index)
@@ -61,7 +61,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Bivector<T> OmMapBasisBivector(ulong index1, ulong index2)
+        public override GaBivector<T> OmMapBasisBivector(ulong index1, ulong index2)
         {
             return GeometricProcessor.CreateBivector(
                 OmStorage.GetMappedBasisBivector(index1, index2)
@@ -69,7 +69,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override KVector<T> OmMapBasisBlade(ulong id)
+        public override GaKVector<T> OmMapBasisBlade(ulong id)
         {
             return GeometricProcessor.CreateKVector(
                 OmStorage.GetMappedBasisBlade(id)
@@ -77,7 +77,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override KVector<T> OmMapBasisBlade(uint grade, ulong index)
+        public override GaKVector<T> OmMapBasisBlade(uint grade, ulong index)
         {
             return GeometricProcessor.CreateKVector(
                 OmStorage.GetMappedBasisBlade(grade, index)
@@ -85,7 +85,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms
         }
 
 
-        public override Vector<T> OmMap(Vector<T> vector)
+        public override GaVector<T> OmMap(GaVector<T> vector)
         {
             var composer = LinearProcessor.CreateVectorStorageComposer();
 
@@ -98,7 +98,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms
             return composer.CreateVector();
         }
 
-        public override Bivector<T> OmMap(Bivector<T> bivector)
+        public override GaBivector<T> OmMap(GaBivector<T> bivector)
         {
             var composer = LinearProcessor.CreateVectorStorageComposer();
 
@@ -111,7 +111,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms
             return composer.CreateBivector();
         }
 
-        public override KVector<T> OmMap(KVector<T> kVector)
+        public override GaKVector<T> OmMap(GaKVector<T> kVector)
         {
             var composer = LinearProcessor.CreateVectorStorageComposer();
 
@@ -124,7 +124,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms
             return composer.CreateKVector(kVector.Grade);
         }
 
-        public override Multivector<T> OmMap(Multivector<T> multivector)
+        public override GaMultivector<T> OmMap(GaMultivector<T> multivector)
         {
             var composer = LinearProcessor.CreateVectorStorageComposer();
 

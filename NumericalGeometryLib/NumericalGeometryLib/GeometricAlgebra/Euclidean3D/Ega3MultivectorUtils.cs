@@ -1,10 +1,18 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
+using DataStructuresLib.Basic;
 
 namespace NumericalGeometryLib.GeometricAlgebra.Euclidean3D
 {
     public static class Ega3MultivectorUtils
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Ega3KVector1 ToEga3KVector1(this ITriplet<double> vector)
+        {
+            return new Ega3KVector1(vector);
+        }
+
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Ega3KVector0 GradeInvolution(this Ega3KVector0 mv)
         {
@@ -136,13 +144,84 @@ namespace NumericalGeometryLib.GeometricAlgebra.Euclidean3D
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static double Norm(this Ega3KVector2 mv)
         {
-            return Math.Sqrt(mv.Scalar12 * mv.Scalar12 + mv.Scalar13 * mv.Scalar13 + mv.Scalar23 * mv.Scalar23);
+            return Math.Sqrt(
+                mv.Scalar12 * mv.Scalar12 +
+                mv.Scalar13 * mv.Scalar13 + 
+                mv.Scalar23 * mv.Scalar23
+            );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static double Norm(this Ega3KVector3 mv)
         {
             return Math.Abs(mv.Scalar123);
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Ega3KVector3 Dual(this Ega3KVector0 mv)
+        {
+            return new Ega3KVector3(mv.Scalar0);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Ega3KVector2 Dual(this Ega3KVector1 mv)
+        {
+            return new Ega3KVector2(
+                mv.Scalar3,
+                -mv.Scalar2,
+                mv.Scalar1
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Ega3KVector1 Dual(this Ega3KVector2 mv)
+        {
+            return new Ega3KVector1(
+                -mv.Scalar23, 
+                mv.Scalar13, 
+                -mv.Scalar12
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Ega3KVector0 Dual(this Ega3KVector3 mv)
+        {
+            return new Ega3KVector0(-mv.Scalar123);
+        }
+
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Ega3KVector3 UnDual(this Ega3KVector0 mv)
+        {
+            return new Ega3KVector3(mv.Scalar0);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Ega3KVector2 UnDual(this Ega3KVector1 mv)
+        {
+            return new Ega3KVector2(
+                -mv.Scalar3,
+                mv.Scalar2,
+                -mv.Scalar1
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Ega3KVector1 UnDual(this Ega3KVector2 mv)
+        {
+            return new Ega3KVector1(
+                mv.Scalar23,
+                -mv.Scalar13,
+                mv.Scalar12
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Ega3KVector0 UnDual(this Ega3KVector3 mv)
+        {
+            return new Ega3KVector0(mv.Scalar123);
         }
 
 

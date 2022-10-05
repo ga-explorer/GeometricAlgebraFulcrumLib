@@ -15,7 +15,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
     {
         public static Tuple<PureVersorsSequence<double>, IOutermorphism<double>> GetHouseholderQRDecomposition(this IGeometricAlgebraProcessor<double> processor, IOutermorphism<double> linearMap, int count)
         {
-            var unitVectorsList = new List<Vector<double>>(count);
+            var unitVectorsList = new List<GaVector<double>>(count);
             var mappedBasisVectors =
                 Enumerable
                     .Range(0, count)
@@ -131,7 +131,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 
         public static Tuple<PureVersorsSequence<T>, IOutermorphism<T>> GetHouseholderQRDecomposition<T>(this IGeometricAlgebraProcessor<T> processor, IOutermorphism<T> linearMap, int count)
         {
-            var unitVectorsList = new List<Vector<T>>(count);
+            var unitVectorsList = new List<GaVector<T>>(count);
             var mappedBasisVectors =
                 Enumerable
                     .Range(0, count)

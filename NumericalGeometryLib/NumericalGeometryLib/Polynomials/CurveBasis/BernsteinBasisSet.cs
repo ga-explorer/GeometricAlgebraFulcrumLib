@@ -12,6 +12,7 @@ namespace NumericalGeometryLib.Polynomials.CurveBasis
         private static readonly Dictionary<int, BernsteinBasisSet> BasisSetCache
             = new Dictionary<int, BernsteinBasisSet>();
 
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BernsteinBasisSet Create(int degree)
         {

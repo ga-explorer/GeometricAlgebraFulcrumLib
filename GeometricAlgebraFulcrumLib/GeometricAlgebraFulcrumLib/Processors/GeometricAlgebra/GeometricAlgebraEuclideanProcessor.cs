@@ -47,11 +47,11 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
         public bool IsMotherAlgebra 
             => false;
 
-        public override KVector<T> PseudoScalar { get; }
+        public override GaKVector<T> PseudoScalar { get; }
 
-        public override KVector<T> PseudoScalarInverse { get; }
+        public override GaKVector<T> PseudoScalarInverse { get; }
 
-        public override KVector<T> PseudoScalarReverse { get; }
+        public override GaKVector<T> PseudoScalarReverse { get; }
 
 
         internal GeometricAlgebraEuclideanProcessor(IScalarAlgebraProcessor<T> scalarProcessor, uint vSpaceDimension) 

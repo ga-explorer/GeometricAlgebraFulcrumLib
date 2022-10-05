@@ -13,7 +13,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTra
     public sealed class GeoGbtMultivectorOutermorphismStack<T>
         : GeoGbtStack1
     {
-        public static GeoGbtMultivectorOutermorphismStack<T> Create(IReadOnlyList<VectorStorage<T>> basisVectorsMappingsList, Multivector<T> mv)
+        public static GeoGbtMultivectorOutermorphismStack<T> Create(IReadOnlyList<VectorStorage<T>> basisVectorsMappingsList, GaMultivector<T> mv)
         {
             var treeDepth = (int) Math.Max(1, mv.MultivectorStorage.MinVSpaceDimension);
             var capacity = treeDepth + 1;

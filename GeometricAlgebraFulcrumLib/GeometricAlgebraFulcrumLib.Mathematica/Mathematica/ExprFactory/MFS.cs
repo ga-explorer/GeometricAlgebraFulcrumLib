@@ -33,6 +33,8 @@ namespace GeometricAlgebraFulcrumLib.Mathematica.Mathematica.ExprFactory
         public static Mfs Divide { get; } = new Mfs("Divide");
         public static Mfs Power { get; } = new Mfs("Power");
         public static Mfs Dot { get; } = new Mfs("Dot");
+        public static Mfs TensorReduce { get; } = new Mfs("TensorReduce");
+        public static Mfs TensorExpand { get; } = new Mfs("TensorExpand");
 
         public static Mfs Rational { get; } = new Mfs("Rational");
         public static Mfs Sign { get; } = new Mfs("Sign");
@@ -52,14 +54,17 @@ namespace GeometricAlgebraFulcrumLib.Mathematica.Mathematica.ExprFactory
         public static Mfs Tanh { get; } = new Mfs("Tanh");
         public static Mfs ArcCosh { get; } = new Mfs("ArcCosh");
         public static Mfs ArcSinh { get; } = new Mfs("ArcSinh");
+        public static Mfs Sinc { get; } = new Mfs("Sinc");
         public static Mfs Exp { get; } = new Mfs("Exp");
         public static Mfs Log { get; } = new Mfs("Log");
         public static Mfs Log2 { get; } = new Mfs("Log2");
         public static Mfs Log10 { get; } = new Mfs("Log10");
         public static Mfs D { get; } = new Mfs("D");
         public static Mfs Integrate { get; } = new Mfs("Integrate");
+        public static Mfs NIntegrate { get; } = new Mfs("NIntegrate");
         public static Mfs ArcLength { get; } = new Mfs("ArcLength");
-        public static Mfs N { get; } = new Mfs("N");
+        public static Mfs N { get; } = new Mfs("NumberForm");
+        public static Mfs NumberForm { get; } = new Mfs("N");
         public static Mfs ArcTan { get; } = new Mfs("ArcTan");
         public static Mfs Re { get; } = new Mfs("Re");
         public static Mfs Im { get; } = new Mfs("Im");

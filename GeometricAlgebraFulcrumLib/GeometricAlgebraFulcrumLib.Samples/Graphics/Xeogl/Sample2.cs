@@ -3,7 +3,7 @@ using GraphicsComposerLib.Geometry.Meshes.PathsMesh;
 using GraphicsComposerLib.Geometry.Meshes.PathsMesh.Space3D;
 using GraphicsComposerLib.Geometry.Meshes.PointsPath.Space3D;
 using GraphicsComposerLib.Geometry.Primitives.Lines;
-using GraphicsComposerLib.WebGl.Xeogl;
+using GraphicsComposerLib.Rendering.Xeogl;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Graphics.Xeogl
 {

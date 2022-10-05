@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Drawing;
+
 using System.Linq;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.Basic;
 using NumericalGeometryLib.BasicMath.Tuples.Immutable;
 using GraphicsComposerLib.Geometry.Primitives;
 using GraphicsComposerLib.Geometry.Primitives.Vertices;
+using SixLabors.ImageSharp;
 
 // ReSharper disable CompareOfFloatsByEqualityOperator
 

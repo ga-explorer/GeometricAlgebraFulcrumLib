@@ -2,7 +2,7 @@
 
 namespace GeometricAlgebraFulcrumLib.Geometry.Conformal
 {
-    public interface IGeoConformalGeometry<T> : 
+    public interface IGaConformalGeometry<T> : 
         IGeometricAlgebraElement<T>
     {
 

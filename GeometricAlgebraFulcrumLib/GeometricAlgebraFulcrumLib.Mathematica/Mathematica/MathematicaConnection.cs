@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using GeometricAlgebraFulcrumLib.Mathematica.Mathematica.ExprFactory;
 using Wolfram.NETLink;
 
 namespace GeometricAlgebraFulcrumLib.Mathematica.Mathematica
@@ -284,7 +285,7 @@ namespace GeometricAlgebraFulcrumLib.Mathematica.Mathematica
             KernelLink.WaitForAnswer();
 
             var outExpr = KernelLink.GetString();
-
+            
             CacheMisses++;
 
             Stopwatch.Stop();
@@ -308,5 +309,24 @@ namespace GeometricAlgebraFulcrumLib.Mathematica.Mathematica
 
             return outExpr;
         }
+        
+        public double EvaluateToDouble(Expr exprObject)
+        {
+            Stopwatch.Start();
+
+            ClearErrors();
+            KernelLink.Evaluate(Mfs.NumberForm[exprObject]);
+            KernelLink.WaitForAnswer();
+
+            var outExpr = KernelLink.GetString();
+            var outValue = double.Parse(outExpr);
+
+            CacheMisses++;
+
+            Stopwatch.Stop();
+
+            return outValue;
+        }
+
     }
 }

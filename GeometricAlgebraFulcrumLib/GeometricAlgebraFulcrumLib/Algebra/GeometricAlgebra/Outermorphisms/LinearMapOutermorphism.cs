@@ -40,12 +40,12 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Vector<T> OmMapBasisVector(ulong index)
+        public override GaVector<T> OmMapBasisVector(ulong index)
         {
             return LinearMap.LinMapBasisVector(index).CreateVector(GeometricProcessor);
         }
 
-        public override Bivector<T> OmMapBasisBivector(ulong index)
+        public override GaBivector<T> OmMapBasisBivector(ulong index)
         {
             var (index1, index2) = 
                 index.BasisBivectorIndexToVectorIndices();
@@ -54,7 +54,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Bivector<T> OmMapBasisBivector(ulong index1, ulong index2)
+        public override GaBivector<T> OmMapBasisBivector(ulong index1, ulong index2)
         {
             if (index1 == index2)
                 return GeometricProcessor.CreateBivectorZero();
@@ -65,7 +65,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override KVector<T> OmMapBasisBlade(ulong id)
+        public override GaKVector<T> OmMapBasisBlade(ulong id)
         {
             if (id == 0)
                 return GeometricProcessor.CreateKVectorBasisScalar();
@@ -76,7 +76,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override KVector<T> OmMapBasisBlade(uint grade, ulong index)
+        public override GaKVector<T> OmMapBasisBlade(uint grade, ulong index)
         {
             return grade switch
             {
@@ -90,7 +90,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms
         }
         
 
-        public override Vector<T> OmMap(Vector<T> vector)
+        public override GaVector<T> OmMap(GaVector<T> vector)
         {
             var storage = 
                 GeometricProcessor.CreateVectorStorageComposer();
@@ -106,7 +106,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms
             return storage.CreateVector();
         }
 
-        public override Bivector<T> OmMap(Bivector<T> bivector)
+        public override GaBivector<T> OmMap(GaBivector<T> bivector)
         {
             var dict = 
                 GetOmMappedBasisVectors().ToDictionary(
@@ -140,7 +140,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms
             return storage.CreateBivector();
         }
 
-        public override KVector<T> OmMap(KVector<T> kVector)
+        public override GaKVector<T> OmMap(GaKVector<T> kVector)
         {
             var dict = 
                 GetOmMappedBasisVectors().ToDictionary(
@@ -174,7 +174,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms
             return storage.CreateKVector(kVector.Grade);
         }
 
-        public override Multivector<T> OmMap(Multivector<T> multivector)
+        public override GaMultivector<T> OmMap(GaMultivector<T> multivector)
         {
             var dict = 
                 GetOmMappedBasisVectors().ToDictionary(

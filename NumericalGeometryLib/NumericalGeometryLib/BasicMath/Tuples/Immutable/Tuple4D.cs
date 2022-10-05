@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using DataStructuresLib.Basic;
 
 namespace NumericalGeometryLib.BasicMath.Tuples.Immutable
 {
@@ -169,21 +170,33 @@ namespace NumericalGeometryLib.BasicMath.Tuples.Immutable
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Tuple4D(double x, double y, double z, double w)
         {
+            Debug.Assert(
+                x.IsNotNaN() &&
+                y.IsNotNaN() &&
+                z.IsNotNaN() &&
+                w.IsNotNaN()
+            );
+
             X = x;
             Y = y;
             Z = z;
             W = w;
-
-            Debug.Assert(IsValid());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple4D(ITuple4D v)
+        public Tuple4D(IQuad<double> v)
         {
-            X = v.X;
-            Y = v.Y;
-            Z = v.Z;
-            W = v.W;
+            Debug.Assert(
+                v.Item1.IsNotNaN() &&
+                v.Item2.IsNotNaN() &&
+                v.Item3.IsNotNaN() &&
+                v.Item4.IsNotNaN()
+            );
+
+            X = v.Item1;
+            Y = v.Item2;
+            Z = v.Item3;
+            W = v.Item4;
 
             Debug.Assert(IsValid());
         }

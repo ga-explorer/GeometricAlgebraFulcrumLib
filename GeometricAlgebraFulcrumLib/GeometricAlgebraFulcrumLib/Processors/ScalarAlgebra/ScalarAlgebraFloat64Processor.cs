@@ -4,11 +4,11 @@ using System.Runtime.CompilerServices;
 namespace GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra
 {
     public sealed class ScalarAlgebraFloat64Processor 
-        : IScalarAlgebraProcessor<double>
+        : IScalarAlgebraNumericProcessor<double>
     {
         public static ScalarAlgebraFloat64Processor DefaultProcessor { get; }
             = new ScalarAlgebraFloat64Processor();
-
+        
 
         public double ZeroEpsilon { get; set; }
             = 1e-13d;
@@ -43,11 +43,20 @@ namespace GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra
         public double ScalarPi 
             => Math.PI;
 
+        public double ScalarTwoPi 
+            => 2d * Math.PI;
+
         public double ScalarPiOver2 
             => 0.5d * Math.PI;
 
         public double ScalarE 
             => Math.E;
+
+        public double ScalarDegreeToRadian 
+            => Math.PI / 180;
+
+        public double ScalarRadianToDegree 
+            => 180 / Math.PI;
 
 
         private ScalarAlgebraFloat64Processor()
@@ -82,7 +91,10 @@ namespace GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public double Divide(double scalar1, double scalar2)
         {
-            return scalar1 / scalar2;
+            //TODO: Is this acceptable?
+            var scalar = scalar1 / scalar2;
+
+            return double.IsNaN(scalar) ? 0d : scalar;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -236,9 +248,26 @@ namespace GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public double Sinc(double scalar)
+        {
+            if (double.IsInfinity(scalar))
+                return 0d;
+
+            return IsZero(scalar) 
+                ? 1d 
+                : Math.Sin(scalar) / scalar;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsValid(double scalar)
         {
             return !double.IsNaN(scalar);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsFiniteNumber(double scalar)
+        {
+            return double.IsFinite(scalar);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

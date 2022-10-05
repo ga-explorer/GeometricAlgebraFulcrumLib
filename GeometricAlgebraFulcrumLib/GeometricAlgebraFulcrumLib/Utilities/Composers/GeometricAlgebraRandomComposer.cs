@@ -167,13 +167,13 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public KVector<T> GetScalarTerm()
+        public GaKVector<T> GetScalarTerm()
         {
             return GeometricProcessor.CreateKVectorScalar(GetScalar());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public KVector<T> GetScalarTerm(double minValue, double maxValue)
+        public GaKVector<T> GetScalarTerm(double minValue, double maxValue)
         {
             return GeometricProcessor.CreateKVectorScalar(
                 GetScalar(minValue, maxValue)
@@ -181,7 +181,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Vector<T> GetVectorTerm()
+        public GaVector<T> GetVectorTerm()
         {
             var index = GetBasisVectorIndex();
             var scalar = GetScalar();
@@ -190,7 +190,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Vector<T> GetVectorTerm(double minValue, double maxValue)
+        public GaVector<T> GetVectorTerm(double minValue, double maxValue)
         {
             var index = GetBasisVectorIndex();
             var scalar = GetScalar(minValue, maxValue);
@@ -199,7 +199,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Vector<T> GetVectorTermByIndex(ulong index)
+        public GaVector<T> GetVectorTermByIndex(ulong index)
         {
             return GeometricProcessor.CreateVectorTerm(
                 index,
@@ -208,7 +208,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Vector<T> GetVectorTermByIndex(ulong index, double minValue, double maxValue)
+        public GaVector<T> GetVectorTermByIndex(ulong index, double minValue, double maxValue)
         {
             return GeometricProcessor.CreateVectorTerm(
                 index,
@@ -217,7 +217,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Bivector<T> GetBivectorTerm()
+        public GaBivector<T> GetBivectorTerm()
         {
             var index = GetBasisBivectorIndex();
             var scalar = GetScalar();
@@ -226,7 +226,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Bivector<T> GetBivectorTerm(double minValue, double maxValue)
+        public GaBivector<T> GetBivectorTerm(double minValue, double maxValue)
         {
             var index = GetBasisBivectorIndex();
             var scalar = GetScalar(minValue, maxValue);
@@ -235,19 +235,19 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Bivector<T> GetBivectorTermByIndex(ulong index)
+        public GaBivector<T> GetBivectorTermByIndex(ulong index)
         {
             return GeometricProcessor.CreateBivectorTerm(index, GetScalar());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Bivector<T> GetBivectorTermByIndex(ulong index, double minValue, double maxValue)
+        public GaBivector<T> GetBivectorTermByIndex(ulong index, double minValue, double maxValue)
         {
             return GeometricProcessor.CreateBivectorTerm(index, GetScalar(minValue, maxValue));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public KVector<T> GetKVectorTerm()
+        public GaKVector<T> GetKVectorTerm()
         {
             var (grade, index) = GetBasisBladeGradeIndex();
             var scalar = GetScalar();
@@ -256,7 +256,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public KVector<T> GetKVectorTerm(double minValue, double maxValue)
+        public GaKVector<T> GetKVectorTerm(double minValue, double maxValue)
         {
             var (grade, index) = GetBasisBladeGradeIndex();
             var scalar = GetScalar(minValue, maxValue);
@@ -265,7 +265,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public KVector<T> GetKVectorTermOfGrade(uint grade)
+        public GaKVector<T> GetKVectorTermOfGrade(uint grade)
         {
             var index = GetBasisBladeIndex(grade);
             var scalar = GetScalar();
@@ -274,7 +274,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public KVector<T> GetKVectorTermOfGrade(uint grade, double minValue, double maxValue)
+        public GaKVector<T> GetKVectorTermOfGrade(uint grade, double minValue, double maxValue)
         {
             var index = GetBasisBladeIndex(grade);
             var scalar = GetScalar(minValue, maxValue);
@@ -283,7 +283,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public KVector<T> GetKVectorTermById(ulong id)
+        public GaKVector<T> GetKVectorTermById(ulong id)
         {
             return GeometricProcessor.CreateKVectorTerm(
                 id,
@@ -292,7 +292,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public KVector<T> GetKVectorTermById(ulong id, double minValue, double maxValue)
+        public GaKVector<T> GetKVectorTermById(ulong id, double minValue, double maxValue)
         {
             return GeometricProcessor.CreateKVectorTerm(
                 id,
@@ -301,7 +301,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public KVector<T> GetKVectorTermByGradeIndex(uint grade, ulong index)
+        public GaKVector<T> GetKVectorTermByGradeIndex(uint grade, ulong index)
         {
             return GeometricProcessor.CreateKVectorTerm(
                 grade,
@@ -311,7 +311,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public KVector<T> GetKVectorTermByGradeIndex(uint grade, ulong index, double minValue, double maxValue)
+        public GaKVector<T> GetKVectorTermByGradeIndex(uint grade, ulong index, double minValue, double maxValue)
         {
             var scalar = GetScalar(minValue, maxValue);
 
@@ -319,7 +319,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Vector<T> GetVector()
+        public GaVector<T> GetVector()
         {
             var indexScalarDictionary =
                 VSpaceDimension
@@ -333,7 +333,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Vector<T> GetVector(int termsCount, bool makeUnitVector = false)
+        public GaVector<T> GetVector(int termsCount, bool makeUnitVector = false)
         {
             if (termsCount > VSpaceDimension)
                 throw new ArgumentOutOfRangeException(nameof(termsCount));
@@ -355,7 +355,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Vector<T> GetVector(double minValue, double maxValue)
+        public GaVector<T> GetVector(double minValue, double maxValue)
         {
             var indexScalarDictionary =
                 VSpaceDimension
@@ -369,7 +369,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Vector<T> GetSparseVector(int termsCount)
+        public GaVector<T> GetSparseVector(int termsCount)
         {
             if (termsCount > VSpaceDimension)
                 throw new ArgumentOutOfRangeException(nameof(termsCount));
@@ -388,7 +388,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Vector<T> GetSparseVector(int termsCount, double minValue, double maxValue)
+        public GaVector<T> GetSparseVector(int termsCount, double minValue, double maxValue)
         {
             if (termsCount > VSpaceDimension)
                 throw new ArgumentOutOfRangeException(nameof(termsCount));
@@ -407,7 +407,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Bivector<T> GetBivector()
+        public GaBivector<T> GetBivector()
         {
             var kvSpaceDimension = 
                 VSpaceDimension.KVectorSpaceDimension(2);
@@ -424,7 +424,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Bivector<T> GetBivector(double minValue, double maxValue)
+        public GaBivector<T> GetBivector(double minValue, double maxValue)
         {
             var kvSpaceDimension = 
                 VSpaceDimension.KVectorSpaceDimension(2);
@@ -441,7 +441,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Bivector<T> GetSparseBivector(int termsCount)
+        public GaBivector<T> GetSparseBivector(int termsCount)
         {
             var kvSpaceDimension = 
                 (int) VSpaceDimension.KVectorSpaceDimension(2);
@@ -463,7 +463,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Bivector<T> GetSparseBivector(int termsCount, double minValue, double maxValue)
+        public GaBivector<T> GetSparseBivector(int termsCount, double minValue, double maxValue)
         {
             var kvSpaceDimension = 
                 (int) VSpaceDimension.KVectorSpaceDimension(2);
@@ -485,19 +485,19 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public KVector<T> GetKVector()
+        public GaKVector<T> GetKVector()
         {
             return GetKVectorOfGrade(GetGrade());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public KVector<T> GetKVector(double minValue, double maxValue)
+        public GaKVector<T> GetKVector(double minValue, double maxValue)
         {
             return GetKVectorOfGrade(GetGrade(), minValue, maxValue);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public KVector<T> GetKVectorOfGrade(uint grade)
+        public GaKVector<T> GetKVectorOfGrade(uint grade)
         {
             var kvSpaceDimension = 
                 VSpaceDimension.KVectorSpaceDimension(grade);
@@ -514,7 +514,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public KVector<T> GetKVectorOfGrade(uint grade, double minValue, double maxValue)
+        public GaKVector<T> GetKVectorOfGrade(uint grade, double minValue, double maxValue)
         {
             var kvSpaceDimension = 
                 VSpaceDimension.KVectorSpaceDimension(grade);
@@ -531,7 +531,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public KVector<T> GetSparseKVectorOfGrade(uint grade, int termsCount)
+        public GaKVector<T> GetSparseKVectorOfGrade(uint grade, int termsCount)
         {
             var kvSpaceDimension = 
                 (int) VSpaceDimension.KVectorSpaceDimension(grade);
@@ -553,7 +553,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public KVector<T> GetSparseKVectorOfGrade(uint grade, int termsCount, double minValue, double maxValue)
+        public GaKVector<T> GetSparseKVectorOfGrade(uint grade, int termsCount, double minValue, double maxValue)
         {
             var kvSpaceDimension = 
                 (int) VSpaceDimension.KVectorSpaceDimension(grade);
@@ -575,7 +575,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Multivector<T> GetTermsMultivector()
+        public GaMultivector<T> GetTermsMultivector()
         {
             var gaSpaceDimension = (int) GaSpaceDimension;
 
@@ -591,7 +591,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Multivector<T> GetTermsMultivector(double minValue, double maxValue)
+        public GaMultivector<T> GetTermsMultivector(double minValue, double maxValue)
         {
             var gaSpaceDimension = (int) GaSpaceDimension;
 
@@ -607,7 +607,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Multivector<T> GetTermsMultivector(int termsCount)
+        public GaMultivector<T> GetTermsMultivector(int termsCount)
         {
             var gaSpaceDimension = (int) GaSpaceDimension;
 
@@ -628,7 +628,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Multivector<T> GetTermsMultivector(int termsCount, double minValue, double maxValue)
+        public GaMultivector<T> GetTermsMultivector(int termsCount, double minValue, double maxValue)
         {
             var gaSpaceDimension = (int) GaSpaceDimension;
 
@@ -649,7 +649,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Multivector<T> GetGradedMultivector()
+        public GaMultivector<T> GetGradedMultivector()
         {
             var gradeIndexScalarDictionary = 
                 new Dictionary<uint, Dictionary<ulong, T>>();
@@ -664,7 +664,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Multivector<T> GetGradedMultivector(double minValue, double maxValue)
+        public GaMultivector<T> GetGradedMultivector(double minValue, double maxValue)
         {
             var gradeIndexScalarDictionary = 
                 new Dictionary<uint, Dictionary<ulong, T>>();
@@ -679,7 +679,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Multivector<T> GetGradedMultivector(int termsCount)
+        public GaMultivector<T> GetGradedMultivector(int termsCount)
         {
             var gaSpaceDimension = (int) GaSpaceDimension;
 
@@ -701,7 +701,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Multivector<T> GetGradedMultivector(int termsCount, double minValue, double maxValue)
+        public GaMultivector<T> GetGradedMultivector(int termsCount, double minValue, double maxValue)
         {
             var gaSpaceDimension = (int) GaSpaceDimension;
 
@@ -723,7 +723,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<Vector<T>> GetVectors(int count)
+        public IEnumerable<GaVector<T>> GetVectors(int count)
         {
             while (count > 0)
             {
@@ -733,7 +733,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public KVector<T> GetBlade(uint grade)
+        public GaKVector<T> GetBlade(uint grade)
         {
             if (grade == 0U)
                 return GetScalarTerm();

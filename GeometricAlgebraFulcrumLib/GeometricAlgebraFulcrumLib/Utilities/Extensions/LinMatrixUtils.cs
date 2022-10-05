@@ -157,7 +157,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         public static ILinVectorStorage<T> CombineRows<T>(this ILinMatrixStorage<T> matrix, ILinVectorStorage<T> vector, Func<T, ILinVectorStorage<T>, ILinVectorStorage<T>> scalingFunc, Func<ILinVectorStorage<T>, ILinVectorStorage<T>, ILinVectorStorage<T>> reducingFunc)
         {
             return vector is ILinVectorDenseStorage<T> denseVector
-                ? matrix.CombineRows(denseVector.GetScalarsList(), scalingFunc, reducingFunc)
+                ? matrix.CombineRows(denseVector, scalingFunc, reducingFunc)
                 : matrix.CombineRows(vector.GetIndexScalarRecords(), scalingFunc, reducingFunc);
         }
         
@@ -223,7 +223,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         public static ILinVectorStorage<T> CombineColumns<T>(this ILinMatrixStorage<T> matrix, ILinVectorStorage<T> vector, Func<T, ILinVectorStorage<T>, ILinVectorStorage<T>> scalingFunc, Func<ILinVectorStorage<T>, ILinVectorStorage<T>, ILinVectorStorage<T>> reducingFunc)
         {
             return vector is ILinVectorDenseStorage<T> denseVector
-                ? matrix.CombineColumns(denseVector.GetScalarsList(), scalingFunc, reducingFunc)
+                ? matrix.CombineColumns(denseVector, scalingFunc, reducingFunc)
                 : matrix.CombineColumns(vector.GetIndexScalarRecords(), scalingFunc, reducingFunc);
         }
         
@@ -286,7 +286,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Vector<T> MapUsing<T>(this Vector<T> vector, T[,] matrix)
+        public static GaVector<T> MapUsing<T>(this GaVector<T> vector, T[,] matrix)
         {
             var processor = vector.GeometricProcessor;
 
@@ -297,7 +297,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Vector<T> MapUsing<T>(this Vector<T> vector, ILinMatrixStorage<T> matrix)
+        public static GaVector<T> MapUsing<T>(this GaVector<T> vector, ILinMatrixStorage<T> matrix)
         {
             var processor = vector.GeometricProcessor;
 
@@ -308,7 +308,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Vector<T> Map<T>(this T[,] matrix, Vector<T> vector)
+        public static GaVector<T> Map<T>(this T[,] matrix, GaVector<T> vector)
         {
             var processor = vector.GeometricProcessor;
 
@@ -319,7 +319,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Vector<T> Map<T>(this ILinMatrixStorage<T> matrix, Vector<T> vector)
+        public static GaVector<T> Map<T>(this ILinMatrixStorage<T> matrix, GaVector<T> vector)
         {
             var processor = vector.GeometricProcessor;
 
@@ -408,7 +408,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T[,] CreateVectorToVectorRotationMatrix<T>(this Vector<T> sourceVector, Vector<T> targetVector, ulong basisVectorIndex, int matrixSize)
+        public static T[,] CreateVectorToVectorRotationMatrix<T>(this GaVector<T> sourceVector, GaVector<T> targetVector, ulong basisVectorIndex, int matrixSize)
         {
             return CreateVectorToVectorRotationMatrix(
                 sourceVector.GeometricProcessor,
@@ -429,7 +429,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T[,] CreateBasisToVectorRotationMatrix<T>(this Vector<T> unitVector, ulong basisVectorIndex, int matrixSize)
+        public static T[,] CreateBasisToVectorRotationMatrix<T>(this GaVector<T> unitVector, ulong basisVectorIndex, int matrixSize)
         {
             return CreateBasisToVectorRotationMatrix(
                 unitVector.GeometricProcessor, 
@@ -528,7 +528,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T[,] CreateVectorToBasisRotationMatrix<T>(this Vector<T> unitVector, ulong basisVectorIndex, int matrixSize)
+        public static T[,] CreateVectorToBasisRotationMatrix<T>(this GaVector<T> unitVector, ulong basisVectorIndex, int matrixSize)
         {
             return CreateVectorToBasisRotationMatrix(
                 unitVector.GeometricProcessor, 

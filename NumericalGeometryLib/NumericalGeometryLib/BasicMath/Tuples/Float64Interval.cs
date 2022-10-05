@@ -1,13 +1,20 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
 // ReSharper disable CompareOfFloatsByEqualityOperator
 
 namespace NumericalGeometryLib.BasicMath.Tuples
 {
+    /// <summary>
+    /// Represents a real interval
+    /// </summary>
     public sealed record Float64Interval :
         IGeometricElement
     {
+        /// <summary>
+        /// The empty interval
+        /// </summary>
         public static Float64Interval EmptyInterval { get; }
             = new Float64Interval(
                 0d, 
@@ -16,6 +23,9 @@ namespace NumericalGeometryLib.BasicMath.Tuples
                 true
             );
 
+        /// <summary>
+        /// The full real interval from -Infinity to +Infinity
+        /// </summary>
         public static Float64Interval FullInterval { get; }
             = new Float64Interval(
                 double.NegativeInfinity, 
@@ -24,7 +34,14 @@ namespace NumericalGeometryLib.BasicMath.Tuples
                 true
             );
 
-
+        /// <summary>
+        /// Create an interval
+        /// </summary>
+        /// <param name="minValue"></param>
+        /// <param name="maxValue"></param>
+        /// <param name="excludeMinValue"></param>
+        /// <param name="excludeMaxValue"></param>
+        /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Float64Interval Create(double minValue, double maxValue, bool excludeMinValue = false, bool excludeMaxValue = false)
         {
@@ -36,6 +53,12 @@ namespace NumericalGeometryLib.BasicMath.Tuples
             );
         }
         
+        /// <summary>
+        /// Create an interval (-Infinity, maxValue)
+        /// </summary>
+        /// <param name="maxValue"></param>
+        /// <param name="excludeMaxValue"></param>
+        /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Float64Interval CreateFromInfinity(double maxValue, bool excludeMaxValue = false)
         {
@@ -47,6 +70,12 @@ namespace NumericalGeometryLib.BasicMath.Tuples
             );
         }
         
+        /// <summary>
+        /// Create an interval (minValue, +Infinity)
+        /// </summary>
+        /// <param name="minValue"></param>
+        /// <param name="excludeMinValue"></param>
+        /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Float64Interval CreateToInfinity(double minValue, bool excludeMinValue = false)
         {
@@ -68,29 +97,31 @@ namespace NumericalGeometryLib.BasicMath.Tuples
         public double MaxValue { get; }
 
         public double Length 
-            => MaxValue - MinValue;
+            => Math.Max(0, MaxValue - MinValue);
         
         public bool IsFullInterval 
             => double.IsNegativeInfinity(MinValue) &&
                double.IsPositiveInfinity(MaxValue);
 
         public bool IsEmptyInterval 
-            => MinValue == MaxValue && 
-               ExcludeMinValue && 
-               ExcludeMaxValue;
+            => MinValue > MaxValue || (MinValue == MaxValue && ExcludeMinValue && ExcludeMaxValue);
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private Float64Interval(double minValue, double maxValue, bool excludeMinValue = false, bool excludeMaxValue = false)
         {
-            if (minValue > maxValue)
+            if (minValue > maxValue || (minValue == maxValue && excludeMaxValue && excludeMinValue))
+            {
                 minValue = maxValue;
+            }
+            else
+            {
+                ExcludeMinValue = double.IsFinite(minValue) && excludeMinValue;
+                ExcludeMaxValue = double.IsFinite(maxValue) && excludeMaxValue;
 
-            ExcludeMinValue = double.IsFinite(minValue) && excludeMinValue;
-            ExcludeMaxValue = double.IsFinite(maxValue) && excludeMaxValue;
-
-            MinValue = minValue;
-            MaxValue = maxValue;
+                MinValue = minValue;
+                MaxValue = maxValue;
+            }
 
             IsValid();
         }
@@ -148,7 +179,7 @@ namespace NumericalGeometryLib.BasicMath.Tuples
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsValid()
         {
-            return MinValue.IsValid() && MaxValue.IsValid() && MinValue <= MaxValue;
+            return MinValue.IsValid() && MaxValue.IsValid();
         }
     }
 }

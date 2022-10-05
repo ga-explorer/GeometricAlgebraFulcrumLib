@@ -1,5 +1,4 @@
-﻿using System;
-using NumericalGeometryLib.BasicMath.Tuples.Immutable;
+﻿using NumericalGeometryLib.BasicMath.Tuples.Immutable;
 using NumericalGeometryLib.GeometricAlgebra.Basis;
 using NumericalGeometryLib.Polynomials.BSplineCurveBasis;
 

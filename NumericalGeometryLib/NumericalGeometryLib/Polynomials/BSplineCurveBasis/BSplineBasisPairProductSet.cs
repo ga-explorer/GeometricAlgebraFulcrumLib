@@ -88,7 +88,7 @@ namespace NumericalGeometryLib.Polynomials.BSplineCurveBasis
                     var item =
                         h == k
                             ? PolynomialUtils.NewtonCotes(
-                                t => BasisSet2.GetValue(h, t).Squared(),
+                                t => BasisSet2.GetValue(h, t).Square(),
                                 a, b, 4, 10
                             )
                             : PolynomialUtils.NewtonCotes(
@@ -225,7 +225,7 @@ namespace NumericalGeometryLib.Polynomials.BSplineCurveBasis
                     var item = matrixA[h, h];
 
                     for (var s = kMin; s < h; s++)
-                        item -= matrixL[h, s].Squared();
+                        item -= matrixL[h, s].Square();
 
                     matrixL[h, h] = item.Sqrt();
                 }

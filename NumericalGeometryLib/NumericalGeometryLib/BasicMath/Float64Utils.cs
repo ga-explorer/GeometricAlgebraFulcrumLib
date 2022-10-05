@@ -5,6 +5,7 @@ using System.Linq;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Text;
+using DataStructuresLib.Basic;
 using NumericalGeometryLib.BasicMath.Tuples;
 using MathNet.Numerics;
 // ReSharper disable CompareOfFloatsByEqualityOperator
@@ -274,6 +275,12 @@ namespace NumericalGeometryLib.BasicMath
         {
             return double.IsNaN(value);
         }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool IsInteger(this double value)
+        {
+            return Math.Truncate(value) == value;
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsDefiniteNotEqual(this double a, double b)
@@ -304,7 +311,7 @@ namespace NumericalGeometryLib.BasicMath
         {
             Debug.Assert(!double.IsNaN(x));
 
-            return x < 0 || x > 0;
+            return x is < 0 or > 0;
         }
 
         /// <summary>
@@ -325,7 +332,7 @@ namespace NumericalGeometryLib.BasicMath
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsNearZero(this double x, double epsilon = 1e-7d)
+        public static bool IsNearZero(this double x, double epsilon = 1e-12d)
         {
             Debug.Assert(!double.IsNaN(x));
 
@@ -398,6 +405,18 @@ namespace NumericalGeometryLib.BasicMath
             Debug.Assert(!double.IsNaN(x));
 
             return x >= DefaultAccuracyNegative;
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool IsNaN(this double x)
+        {
+            return double.IsNaN(x);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool IsNotNaN(this double x)
+        {
+            return !double.IsNaN(x);
         }
 
         
@@ -528,13 +547,13 @@ namespace NumericalGeometryLib.BasicMath
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double Squared(this double number)
+        public static double Square(this double number)
         {
             return number * number;
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double Cubed(this double number)
+        public static double Cube(this double number)
         {
             return number * number * number;
         }
@@ -683,6 +702,18 @@ namespace NumericalGeometryLib.BasicMath
             return Math.Atanh(number);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static double NaNToZero(this double number)
+        {
+            return double.IsNaN(number) ? 0d : number;
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static double NearZeroToZero(this double number, double epsilon)
+        {
+            return number.IsNearZero(epsilon) ? 0d : number;
+        }
+
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static double LerpRemap(this double value, double inputValue1, double inputValue2, double outputValue1, double outputValue2)
@@ -774,6 +805,20 @@ namespace NumericalGeometryLib.BasicMath
         }
 
 
+        public static Pair<double> GetRange(this IEnumerable<double> valueList)
+        {
+            var minValue = double.PositiveInfinity;
+            var maxValue = double.NegativeInfinity;
+
+            foreach (var value in valueList)
+            {
+                if (value < minValue) minValue = value;
+                if (value > maxValue) maxValue = value;
+            }
+
+            return new Pair<double>(minValue, maxValue);
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<double> GetLinearRange(this double start, double finish, int count, bool periodicRange = false)
         {
@@ -782,7 +827,31 @@ namespace NumericalGeometryLib.BasicMath
                 ? length / count
                 : length / (count - 1);
 
-            return Enumerable.Range(0, count).Select(i => start + i * n);
+            return Enumerable
+                .Range(0, count)
+                .Select(i => start + i * n);
+        }
+
+        /// <summary>
+        /// Go from start to finish then to start again following a cos shape
+        /// </summary>
+        /// <param name="start"></param>
+        /// <param name="finish"></param>
+        /// <param name="sampleCount"></param>
+        /// <param name="cycleCount"></param>
+        /// <param name="periodicRange"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<double> GetCosRange(this double start, double finish, int sampleCount, int cycleCount = 1, bool periodicRange = false)
+        {
+            var length = finish - start;
+            var n = periodicRange
+                ? 2d * Math.PI * cycleCount / sampleCount
+                : 2d * Math.PI * cycleCount / (sampleCount - 1);
+
+            return Enumerable
+                .Range(0, sampleCount)
+                .Select(i => start + 0.5d * (1d - Math.Cos(i * n)) * length);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

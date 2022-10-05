@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using DataStructuresLib.Random;
-using EuclideanGeometryLib.Accelerators.BIH;
-using EuclideanGeometryLib.Accelerators.Grids;
-using EuclideanGeometryLib.BasicShapes.Lines;
-using EuclideanGeometryLib.BasicShapes.Lines.Immutable;
-using EuclideanGeometryLib.Borders;
-using EuclideanGeometryLib.Borders.Space2D.Immutable;
-using EuclideanGeometryLib.Computers.Intersections;
-using EuclideanGeometryLib.Random;
+using NumericalGeometryLib.Accelerators.BIH;
+using NumericalGeometryLib.Accelerators.Grids;
+using NumericalGeometryLib.BasicShapes.Lines;
+using NumericalGeometryLib.BasicShapes.Lines.Immutable;
+using NumericalGeometryLib.Borders;
+using NumericalGeometryLib.Borders.Space2D.Immutable;
+using NumericalGeometryLib.Computers.Intersections;
+using NumericalGeometryLib.Random;
 using TextComposerLib.Text.Linear;
 
 namespace GraphicsComposerLib.Samples.Accelerators

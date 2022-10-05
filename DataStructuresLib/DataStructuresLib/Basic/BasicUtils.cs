@@ -630,5 +630,110 @@ namespace DataStructuresLib.Basic
         {
             return $"({quad.Item1}, {quad.Item2}, {quad.Item3}, {quad.Item4})";
         }
+
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static double Min(this IPair<double> triplet)
+        {
+            return Math.Min(triplet.Item1, triplet.Item2);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static double Max(this IPair<double> triplet)
+        {
+            return Math.Max(triplet.Item1, triplet.Item2);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static double Min(this ITriplet<double> triplet)
+        {
+            return Math.Min(
+                triplet.Item1, 
+                Math.Min(triplet.Item2, triplet.Item3)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static double Max(this ITriplet<double> triplet)
+        {
+            return Math.Max(
+                triplet.Item1, 
+                Math.Max(triplet.Item2, triplet.Item3)
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static double Min(this IQuad<double> triplet)
+        {
+            return Math.Min(
+                Math.Min(triplet.Item1, triplet.Item2), 
+                Math.Min(triplet.Item3, triplet.Item4)
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static double Max(this IQuad<double> triplet)
+        {
+            return Math.Max(
+                Math.Max(triplet.Item1, triplet.Item2), 
+                Math.Max(triplet.Item3, triplet.Item4)
+            );
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Pair<T> GetItemPair<T>(this IReadOnlyList<T> itemArray, int index)
+        {
+            return new Pair<T>(
+                itemArray[index],
+                itemArray[index + 1]
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Triplet<T> GetItemTriplet<T>(this IReadOnlyList<T> itemArray, int index)
+        {
+            return new Triplet<T>(
+                itemArray[index],
+                itemArray[index + 1],
+                itemArray[index + 2]
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Quad<T> GetItemQuad<T>(this IReadOnlyList<T> itemArray, int index)
+        {
+            return new Quad<T>(
+                itemArray[index],
+                itemArray[index + 1],
+                itemArray[index + 2],
+                itemArray[index + 3]
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Quint<T> GetItemQuint<T>(this IReadOnlyList<T> itemArray, int index)
+        {
+            return new Quint<T>(
+                itemArray[index],
+                itemArray[index + 1],
+                itemArray[index + 2],
+                itemArray[index + 3],
+                itemArray[index + 4]
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Hexad<T> GetItemHexad<T>(this IReadOnlyList<T> itemArray, int index)
+        {
+            return new Hexad<T>(
+                itemArray[index],
+                itemArray[index + 1],
+                itemArray[index + 2],
+                itemArray[index + 3],
+                itemArray[index + 4],
+                itemArray[index + 5]
+            );
+        }
     }
 }

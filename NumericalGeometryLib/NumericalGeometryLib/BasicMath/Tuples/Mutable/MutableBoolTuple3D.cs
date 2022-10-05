@@ -67,7 +67,7 @@ namespace NumericalGeometryLib.BasicMath.Tuples.Mutable
         {
             get
             {
-                Debug.Assert(index == 0 || index == 1 || index == 2);
+                Debug.Assert(index is 0 or 1 or 2);
 
                 if (index == 0) return X;
                 if (index == 1) return Y;

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
+
 using System.Linq;
 using DataStructuresLib.Basic;
 using NumericalGeometryLib.BasicMath;
@@ -12,6 +12,7 @@ using GraphicsComposerLib.Geometry.Primitives.Vertices;
 using GraphicsComposerLib.Geometry.Structures.Data;
 using GraphicsComposerLib.Geometry.Structures.Faces;
 using GraphicsComposerLib.Geometry.Structures.Vertices;
+using SixLabors.ImageSharp;
 
 namespace GraphicsComposerLib.Geometry.Structures.Composers
 {

@@ -9,7 +9,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.PhCurves
 {
     public sealed class PhCurve2DDegree5<T>
     {
-        public static PhCurve2DDegree5<T> Create(IGeometricAlgebraEuclideanProcessor<T> processor, Vector<T> point0, Vector<T> tangent0, Vector<T> point1, Vector<T> tangent1)
+        public static PhCurve2DDegree5<T> Create(IGeometricAlgebraEuclideanProcessor<T> processor, GaVector<T> point0, GaVector<T> tangent0, GaVector<T> point1, GaVector<T> tangent1)
         {
             return new PhCurve2DDegree5<T>(
                 processor,
@@ -17,7 +17,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.PhCurves
             );
         }
 
-        public static PhCurve2DDegree5<T> Create(IGeometricAlgebraEuclideanProcessor<T> processor, Vector<T> point0, Vector<T> tangent0, Vector<T> point1, Vector<T> tangent1, T theta1, T theta2)
+        public static PhCurve2DDegree5<T> Create(IGeometricAlgebraEuclideanProcessor<T> processor, GaVector<T> point0, GaVector<T> tangent0, GaVector<T> point1, GaVector<T> tangent1, T theta1, T theta2)
         {
             return new PhCurve2DDegree5<T>(
                 processor,
@@ -26,13 +26,13 @@ namespace GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.PhCurves
         }
 
 
-        public Vector<T> Point0 { get; }
+        public GaVector<T> Point0 { get; }
 
-        public Vector<T> Point1 { get; }
+        public GaVector<T> Point1 { get; }
 
-        public Vector<T> Tangent0 { get; }
+        public GaVector<T> Tangent0 { get; }
 
-        public Vector<T> Tangent1 { get; }
+        public GaVector<T> Tangent1 { get; }
 
         public Scalar<T> TangentLength0 { get; }
 
@@ -41,7 +41,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.PhCurves
         public PhCurve2DDegree5Canonical<T> CanonicalCurve { get; }
 
 
-        private PhCurve2DDegree5([NotNull] IGeometricAlgebraEuclideanProcessor<T> processor, [NotNull] Vector<T> point0, [NotNull] Vector<T> tangent0, [NotNull] Vector<T> point1, [NotNull] Vector<T> tangent1, [NotNull] T theta1, [NotNull] T theta2)
+        private PhCurve2DDegree5([NotNull] IGeometricAlgebraEuclideanProcessor<T> processor, [NotNull] GaVector<T> point0, [NotNull] GaVector<T> tangent0, [NotNull] GaVector<T> point1, [NotNull] GaVector<T> tangent1, [NotNull] T theta1, [NotNull] T theta2)
         {
             Point0 = point0;
             Point1 = point1;
@@ -64,14 +64,14 @@ namespace GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.PhCurves
         }
 
 
-        public Vector<T> GetHodographPoint(T parameterValue)
+        public GaVector<T> GetHodographPoint(T parameterValue)
         {
             return ScaledRotor.OmMap(
                 CanonicalCurve.GetHodographPoint(parameterValue)
             );
         }
 
-        public Vector<T> GetCurvePoint(T parameterValue)
+        public GaVector<T> GetCurvePoint(T parameterValue)
         {
             return Point0 + ScaledRotor.OmMap(
                 CanonicalCurve.GetCurvePoint(parameterValue)

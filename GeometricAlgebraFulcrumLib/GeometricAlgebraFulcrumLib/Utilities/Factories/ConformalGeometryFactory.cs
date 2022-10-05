@@ -48,7 +48,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
             );
         }
 
-        public static ConformalIpnsPoint<T> CreateIpnsPoint<T>(this GeometricAlgebraConformalProcessor<T> processor, Vector<T> positionVector)
+        public static ConformalIpnsPoint<T> CreateIpnsPoint<T>(this GeometricAlgebraConformalProcessor<T> processor, GaVector<T> positionVector)
         {
             if (positionVector.VectorStorage.MinVSpaceDimension > processor.VSpaceDimension - 2)
                 throw new InvalidOperationException();
@@ -80,7 +80,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
             );
         }
         
-        public static ConformalIpnsHyperSphere<T> CreateIpnsHyperSphere<T>(this GeometricAlgebraConformalProcessor<T> processor, Vector<T> centerPoint, T radiusSquared)
+        public static ConformalIpnsHyperSphere<T> CreateIpnsHyperSphere<T>(this GeometricAlgebraConformalProcessor<T> processor, GaVector<T> centerPoint, T radiusSquared)
         {
             if (centerPoint.VectorStorage.MinVSpaceDimension > processor.VSpaceDimension - 2)
                 throw new InvalidOperationException();
@@ -115,7 +115,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
             );
         }
         
-        public static ConformalIpnsHyperPlane<T> CreateIpnsHyperPlane<T>(this GeometricAlgebraConformalProcessor<T> processor, Vector<T> normal, T delta)
+        public static ConformalIpnsHyperPlane<T> CreateIpnsHyperPlane<T>(this GeometricAlgebraConformalProcessor<T> processor, GaVector<T> normal, T delta)
         {
             if (normal.VectorStorage.MinVSpaceDimension > processor.VSpaceDimension - 2)
                 throw new InvalidOperationException();
@@ -144,7 +144,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
 
 
-        public static ConformalOpnsRound<T> CreateOpnsRound<T>(this GeometricAlgebraConformalProcessor<T> processor, params Vector<T>[] points)
+        public static ConformalOpnsRound<T> CreateOpnsRound<T>(this GeometricAlgebraConformalProcessor<T> processor, params GaVector<T>[] points)
         {
             if (points.Length < 2 || points.Length > processor.VSpaceDimension - 1)
                 throw new InvalidOperationException();
@@ -156,7 +156,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
             return new ConformalOpnsRound<T>(processor, kVector);
         }
 
-        public static ConformalOpnsHyperSphere<T> CreateOpnsHyperSphere<T>(this GeometricAlgebraConformalProcessor<T> processor, params Vector<T>[] points)
+        public static ConformalOpnsHyperSphere<T> CreateOpnsHyperSphere<T>(this GeometricAlgebraConformalProcessor<T> processor, params GaVector<T>[] points)
         {
             if (points.Length != processor.VSpaceDimension - 1)
                 throw new InvalidOperationException();
@@ -171,7 +171,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
             return new ConformalOpnsHyperSphere<T>(processor, kVector);
         }
 
-        public static ConformalOpnsFlat<T> CreateOpnsFlat<T>(this GeometricAlgebraConformalProcessor<T> processor, params Vector<T>[] points)
+        public static ConformalOpnsFlat<T> CreateOpnsFlat<T>(this GeometricAlgebraConformalProcessor<T> processor, params GaVector<T>[] points)
         {
             if (points.Length < 2 || points.Length >= processor.VSpaceDimension - 1)
                 throw new InvalidOperationException();
@@ -186,7 +186,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
             return new ConformalOpnsFlat<T>(processor, kVector);
         }
 
-        public static ConformalOpnsFlat<T> CreateOpnsFlat<T>(this GeometricAlgebraConformalProcessor<T> processor, Vector<T> positionVector, KVector<T> directionBlade)
+        public static ConformalOpnsFlat<T> CreateOpnsFlat<T>(this GeometricAlgebraConformalProcessor<T> processor, GaVector<T> positionVector, GaKVector<T> directionBlade)
         {
             if (positionVector.VectorStorage.MinVSpaceDimension > processor.VSpaceDimension - 2)
                 throw new InvalidOperationException();
@@ -203,7 +203,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
             return new ConformalOpnsFlat<T>(processor, kVector);
         }
         
-        public static ConformalOpnsDirection<T> CreateOpnsDirection<T>(this GeometricAlgebraConformalProcessor<T> processor, KVector<T> directionBlade)
+        public static ConformalOpnsDirection<T> CreateOpnsDirection<T>(this GeometricAlgebraConformalProcessor<T> processor, GaKVector<T> directionBlade)
         {
             if (directionBlade.KVectorStorage.MinVSpaceDimension > processor.VSpaceDimension - 2)
                 throw new InvalidOperationException();
@@ -216,7 +216,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
             return new ConformalOpnsDirection<T>(processor, kVector);
         }
 
-        public static ConformalOpnsHyperPlane<T> CreateOpnsHyperPlane<T>(this GeometricAlgebraConformalProcessor<T> processor, params Vector<T>[] points)
+        public static ConformalOpnsHyperPlane<T> CreateOpnsHyperPlane<T>(this GeometricAlgebraConformalProcessor<T> processor, params GaVector<T>[] points)
         {
             if (points.Length != processor.VSpaceDimension - 2)
                 throw new InvalidOperationException();

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using NumericalGeometryLib.BasicMath.Constants;
 using NumericalGeometryLib.BasicMath.Maps.Space3D;
@@ -6,8 +7,10 @@ using NumericalGeometryLib.BasicMath.Tuples;
 using NumericalGeometryLib.BasicMath.Tuples.Immutable;
 using NumericalGeometryLib.Borders.Space1D.Immutable;
 using GraphicsComposerLib.Geometry.ParametricShapes.Curves.Bezier;
+using GraphicsComposerLib.Geometry.ParametricShapes.Curves.CatmullRom;
 using GraphicsComposerLib.Geometry.ParametricShapes.Curves.Circles;
 using GraphicsComposerLib.Geometry.ParametricShapes.Curves.Sampled;
+using NumericalGeometryLib.BasicMath.Calculus;
 
 namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves
 {
@@ -57,6 +60,24 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves
                 point4
             );
         }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GrCatmullRomSpline2D CreateCatmullRomSpline2D(this IEnumerable<ITuple2D> pointList, CatmullRomSplineType curveType, bool isClosed)
+        {
+            return new GrCatmullRomSpline2D(pointList, curveType, isClosed);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GrCatmullRomSpline3D CreateCatmullRomSpline3D(this IEnumerable<ITuple3D> pointList, CatmullRomSplineType curveType, bool isClosed)
+        {
+            return new GrCatmullRomSpline3D(pointList, curveType, isClosed);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GrCatmullRomSpline4D CreateCatmullRomSpline4D(this IEnumerable<ITuple4D> pointList, CatmullRomSplineType curveType, bool isClosed)
+        {
+            return new GrCatmullRomSpline4D(pointList, curveType, isClosed);
+        }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -96,7 +117,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves
         
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GrParametricCurveTree3D CreateSampledCurve3D(this IGraphicsParametricCurve3D curve, GrParametricCurveTreeOptions3D options)
+        public static GrParametricCurveTree3D CreateSampledCurve3D(this IGraphicsC1ParametricCurve3D curve, GrParametricCurveTreeOptions3D options)
         {
             var surfaceTree = new GrParametricCurveTree3D(
                 curve,
@@ -107,7 +128,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GrParametricCurveTree3D CreateSampledCurve3D(this IGraphicsParametricCurve3D surface, BoundingBox1D parameterValueRange, GrParametricCurveTreeOptions3D options)
+        public static GrParametricCurveTree3D CreateSampledCurve3D(this IGraphicsC1ParametricCurve3D surface, BoundingBox1D parameterValueRange, GrParametricCurveTreeOptions3D options)
         {
             var surfaceTree = new GrParametricCurveTree3D(
                 surface,
@@ -119,7 +140,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves
         
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GrMappedParametricCurve3D CreateMappedCurve3D(this IGraphicsParametricCurve3D surface, IAffineMap3D map)
+        public static GrMappedParametricCurve3D CreateMappedCurve3D(this IGraphicsC1ParametricCurve3D surface, IAffineMap3D map)
         {
             return new GrMappedParametricCurve3D(surface, map);
         }

@@ -2,8 +2,8 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using AngouriMath;
-using GeometricAlgebraFulcrumLib.Algebra.SymbolicAlgebra;
-using GeometricAlgebraFulcrumLib.Processors.SymbolicAlgebra.Context;
+using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
+using GeometricAlgebraFulcrumLib.MetaProgramming.Expressions;
 
 namespace GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra
 {
@@ -38,11 +38,20 @@ namespace GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra
         public Entity ScalarPi 
             => MathS.pi;
 
+        public Entity ScalarTwoPi 
+            => MathS.pi * 2;
+
         public Entity ScalarPiOver2 
             => MathS.pi / 2;
 
         public Entity ScalarE 
             => MathS.e;
+
+        public Entity ScalarDegreeToRadian 
+            => MathS.pi / 180;
+
+        public Entity ScalarRadianToDegree 
+            => 180 / MathS.pi;
 
         public bool IsNumeric 
             => false;
@@ -314,11 +323,33 @@ namespace GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra
                 MathS.Hyperbolic.Tanh(PreProcessScalar(scalar))
             );
         }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Entity Sinc(Entity scalar)
+        {
+            if (IsZero(scalar))
+                return ScalarOne;
+
+            var s = PreProcessScalar(scalar);
+            
+            return PostProcessScalar(
+                MathS.Sin(s) / s
+            );
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsValid(Entity scalar)
         {
             return scalar is not null;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsFiniteNumber(Entity scalar)
+        {
+            var simpleScalar = scalar.Simplify();
+            
+            return simpleScalar.EvaluableNumerical && 
+                   simpleScalar.EvalNumerical().IsFinite;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -486,13 +517,13 @@ namespace GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Entity SymbolicExpressionToScalar(ISymbolicExpression expression)
+        public Entity MetaExpressionToScalar(IMetaExpression expression)
         {
             throw new NotImplementedException();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ISymbolicExpression ScalarToSymbolicExpression(SymbolicContext context, Entity scalar)
+        public IMetaExpression ScalarToMetaExpression(MetaContext context, Entity scalar)
         {
             throw new NotImplementedException();
         }

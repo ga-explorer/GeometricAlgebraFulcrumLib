@@ -18,7 +18,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.ProductIterator
             return new MultivectorStorageTermsIterator<T>(scalarProcessor, null, null);
         }
 
-        public static MultivectorStorageTermsIterator<T> Create(IScalarAlgebraProcessor<T> scalarProcessor, Multivector<T> mv1, Multivector<T> mv2)
+        public static MultivectorStorageTermsIterator<T> Create(IScalarAlgebraProcessor<T> scalarProcessor, GaMultivector<T> mv1, GaMultivector<T> mv2)
         {
             return new MultivectorStorageTermsIterator<T>(scalarProcessor, mv1.MultivectorStorage, mv2.MultivectorStorage);
         }

@@ -1,14 +1,48 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using MathNet.Numerics;
 using NumericalGeometryLib.BasicMath;
+using NumericalGeometryLib.BasicMath.Calculus;
 using NumericalGeometryLib.BasicMath.Tuples.Immutable;
 
 namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves
 {
     public class GrComputedParametricCurve3D :
-        IGraphicsParametricCurve3D
+        IGraphicsC1ParametricCurve3D
     {
+        public static GrComputedParametricCurve3D Create(IScalarD1Function xFunc, IScalarD1Function yFunc, IScalarD1Function zFunc)
+        {
+            return new GrComputedParametricCurve3D(
+                t => new Tuple3D(
+                    xFunc.GetValue(t), 
+                    yFunc.GetValue(t), 
+                    zFunc.GetValue(t)
+                ),
+                t => new Tuple3D(
+                    xFunc.GetFirstDerivative(t), 
+                    yFunc.GetFirstDerivative(t), 
+                    zFunc.GetFirstDerivative(t)
+                )
+            );
+        }
+
+        public static GrComputedParametricCurve3D Create(Func<double, double> xFunc, Func<double, double> yFunc, Func<double, double> zFunc)
+        {
+            return new GrComputedParametricCurve3D(
+                t => new Tuple3D(
+                    xFunc(t), 
+                    yFunc(t), 
+                    zFunc(t)
+                ),
+                t => new Tuple3D(
+                    Differentiate.FirstDerivative(xFunc, t), 
+                    Differentiate.FirstDerivative(yFunc, t), 
+                    Differentiate.FirstDerivative(zFunc, t)
+                )
+            );
+        }
+
         public Func<double, Tuple3D> GetPointFunc { get; }
 
         public Func<double, Tuple3D> GetTangentFunc { get; }

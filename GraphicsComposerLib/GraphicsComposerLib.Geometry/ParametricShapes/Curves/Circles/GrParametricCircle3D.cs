@@ -13,7 +13,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Circles
     public class GrParametricCircle3D :
         IGraphicsParametricCircle3D
     {
-        private readonly IGraphicsParametricCurve3D _baseCircle;
+        private readonly IGraphicsC1ParametricCurve3D _baseCircle;
         private readonly SquareMatrix3 _baseCircleRotation;
 
         public double Radius { get; }

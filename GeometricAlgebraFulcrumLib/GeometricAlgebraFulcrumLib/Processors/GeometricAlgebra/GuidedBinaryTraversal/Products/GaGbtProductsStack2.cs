@@ -18,7 +18,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTra
         GeoGbtStack2, 
         IMultivectorStorageTermsIterator<T>
     {
-        public static GeoGbtProductsStack2<T> Create(Multivector<T> mv1, Multivector<T> mv2)
+        public static GeoGbtProductsStack2<T> Create(GaMultivector<T> mv1, GaMultivector<T> mv2)
         {
             var processor = mv1.GeometricProcessor;
 

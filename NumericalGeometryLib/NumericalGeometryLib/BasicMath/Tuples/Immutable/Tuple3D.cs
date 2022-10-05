@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Numerics;
 using System.Runtime.CompilerServices;
+using DataStructuresLib.Basic;
 
 namespace NumericalGeometryLib.BasicMath.Tuples.Immutable
 {
@@ -91,6 +92,8 @@ namespace NumericalGeometryLib.BasicMath.Tuples.Immutable
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Tuple3D operator *(double s, Tuple3D v1)
         {
+            s = s.NaNToZero();
+
             return new Tuple3D(v1.X * s, v1.Y * s, v1.Z * s);
         }
 
@@ -111,7 +114,9 @@ namespace NumericalGeometryLib.BasicMath.Tuples.Immutable
         {
             s = 1.0d / s;
 
-            return new Tuple3D(v1.X * s, v1.Y * s, v1.Z * s);
+            return double.IsInfinity(s) 
+                ? Zero 
+                : new Tuple3D(v1.X * s, v1.Y * s, v1.Z * s);
         }
 
 
@@ -167,21 +172,29 @@ namespace NumericalGeometryLib.BasicMath.Tuples.Immutable
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Tuple3D(double x, double y, double z)
         {
+            Debug.Assert(
+                x.IsNotNaN() &&
+                y.IsNotNaN() &&
+                z.IsNotNaN()
+            );
+
             X = x;
             Y = y;
             Z = z;
-
-            Debug.Assert(IsValid());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple3D(ITuple3D v)
+        public Tuple3D(ITriplet<double> v)
         {
-            X = v.X;
-            Y = v.Y;
-            Z = v.Z;
+            Debug.Assert(
+                v.Item1.IsNotNaN() &&
+                v.Item2.IsNotNaN() &&
+                v.Item3.IsNotNaN()
+            );
 
-            Debug.Assert(IsValid());
+            X = v.Item1;
+            Y = v.Item2;
+            Z = v.Item3;
         }
 
         

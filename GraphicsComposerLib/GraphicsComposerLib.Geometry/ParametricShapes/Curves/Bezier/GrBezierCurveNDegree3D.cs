@@ -7,7 +7,7 @@ using NumericalGeometryLib.BasicMath.Tuples.Immutable;
 namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Bezier
 {
     public sealed class GrBezierCurveNDegree3D :
-        IGraphicsParametricCurve3D
+        IGraphicsC1ParametricCurve3D
     {
         public bool IsValid() => ControlPoints.All(p => p.IsValid());
 

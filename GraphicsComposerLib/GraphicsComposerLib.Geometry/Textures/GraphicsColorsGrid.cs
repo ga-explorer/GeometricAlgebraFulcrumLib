@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
+
 using DataStructuresLib.Collections;
 using DataStructuresLib.Sequences.Periodic1D;
 using DataStructuresLib.Sequences.Periodic2D;
+using SixLabors.ImageSharp;
 
 namespace GraphicsComposerLib.Geometry.Textures
 {

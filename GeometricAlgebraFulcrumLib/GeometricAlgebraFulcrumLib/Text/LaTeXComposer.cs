@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -8,6 +9,7 @@ using DataStructuresLib.BitManipulation;
 using DataStructuresLib.Combinations;
 using NumericalGeometryLib.BasicMath;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
@@ -333,6 +335,63 @@ namespace GeometricAlgebraFulcrumLib.Text
             textComposer.AppendLine(@"\end{eqnarray*}");
 
             return textComposer.ToString();
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public LaTeXComposer<T> ConsoleWriteLine()
+        {
+            Console.WriteLine();
+
+            return this;
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public LaTeXComposer<T> ConsoleWriteLine(string vText)
+        {
+            Console.WriteLine(vText);
+
+            return this;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public LaTeXComposer<T> ConsoleWriteLine(T v, string vText)
+        {
+            Console.WriteLine(@$"${vText} = {GetScalarText(v)}$");
+
+            return this;
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public LaTeXComposer<T> ConsoleWriteLine(GaVector<T> v, string vText)
+        {
+            Console.WriteLine(@$"${vText} = {GetMultivectorText(v.VectorStorage)}$");
+
+            return this;
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public LaTeXComposer<T> ConsoleWriteLine(GaBivector<T> v, string vText)
+        {
+            Console.WriteLine(@$"${vText} = {GetMultivectorText(v.BivectorStorage)}$");
+
+            return this;
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public LaTeXComposer<T> ConsoleWriteLine(GaKVector<T> v, string vText)
+        {
+            Console.WriteLine(@$"${vText} = {GetMultivectorText(v.KVectorStorage)}$");
+
+            return this;
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public LaTeXComposer<T> ConsoleWriteLine(GaMultivector<T> v, string vText)
+        {
+            Console.WriteLine(@$"${vText} = {GetMultivectorText(v.MultivectorStorage)}$");
+
+            return this;
         }
     }
 }

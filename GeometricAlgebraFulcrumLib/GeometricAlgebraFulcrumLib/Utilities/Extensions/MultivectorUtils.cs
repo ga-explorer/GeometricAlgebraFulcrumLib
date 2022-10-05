@@ -28,7 +28,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         //}
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> Fdp<T>(this Multivector<T> mv1, Multivector<T> mv2)
+        public static GaMultivector<T> Fdp<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2)
         {
             var processor = mv1.GeometricProcessor;
 
@@ -38,7 +38,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> Hip<T>(this Multivector<T> mv1, Multivector<T> mv2)
+        public static GaMultivector<T> Hip<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2)
         {
             var processor = mv1.GeometricProcessor;
 
@@ -48,7 +48,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> Acp<T>(this Multivector<T> mv1, Multivector<T> mv2)
+        public static GaMultivector<T> Acp<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2)
         {
             var processor = mv1.GeometricProcessor;
 
@@ -58,7 +58,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> Cp<T>(this Multivector<T> mv1, Multivector<T> mv2)
+        public static GaMultivector<T> Cp<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2)
         {
             var processor = mv1.GeometricProcessor;
 
@@ -90,7 +90,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         //}
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> EFdp<T>(this Multivector<T> mv1, Multivector<T> mv2)
+        public static GaMultivector<T> EFdp<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2)
         {
             var processor = mv1.GeometricProcessor;
 
@@ -100,7 +100,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> EHip<T>(this Multivector<T> mv1, Multivector<T> mv2)
+        public static GaMultivector<T> EHip<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2)
         {
             var processor = mv1.GeometricProcessor;
 
@@ -110,7 +110,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> EAcp<T>(this Multivector<T> mv1, Multivector<T> mv2)
+        public static GaMultivector<T> EAcp<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2)
         {
             var processor = mv1.GeometricProcessor;
 
@@ -120,7 +120,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> ECp<T>(this Multivector<T> mv1, Multivector<T> mv2)
+        public static GaMultivector<T> ECp<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2)
         {
             var processor = mv1.GeometricProcessor;
 

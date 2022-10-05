@@ -8,7 +8,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
     public static class GaFuLConformalGeometryUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T GetDistance<T>(this ConformalIpnsVectorBase<T> ipnsVector, Vector<T> positionVector)
+        public static T GetDistance<T>(this ConformalIpnsVectorBase<T> ipnsVector, GaVector<T> positionVector)
         {
             var processor = ipnsVector.ConformalProcessor;
 

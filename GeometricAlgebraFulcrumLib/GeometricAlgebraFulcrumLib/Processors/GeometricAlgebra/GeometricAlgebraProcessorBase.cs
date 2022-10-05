@@ -40,11 +40,11 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
         public bool IsOrthonormalEuclidean 
             => IsOrthonormal && BasisSet.IsEuclidean;
 
-        public abstract KVector<T> PseudoScalar { get; }
+        public abstract GaKVector<T> PseudoScalar { get; }
 
-        public abstract KVector<T> PseudoScalarInverse { get; }
+        public abstract GaKVector<T> PseudoScalarInverse { get; }
 
-        public abstract KVector<T> PseudoScalarReverse { get; }
+        public abstract GaKVector<T> PseudoScalarReverse { get; }
 
 
         protected GeometricAlgebraProcessorBase([NotNull] IScalarAlgebraProcessor<T> scalarProcessor)

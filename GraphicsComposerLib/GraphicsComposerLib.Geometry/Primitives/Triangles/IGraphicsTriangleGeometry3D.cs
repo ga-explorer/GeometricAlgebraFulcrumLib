@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.Drawing;
+
 using DataStructuresLib.Basic;
 using NumericalGeometryLib.BasicMath.Tuples;
 using NumericalGeometryLib.BasicShapes.Triangles;
 using GraphicsComposerLib.Geometry.Primitives.Vertices;
+using SixLabors.ImageSharp;
 
 namespace GraphicsComposerLib.Geometry.Primitives.Triangles
 {

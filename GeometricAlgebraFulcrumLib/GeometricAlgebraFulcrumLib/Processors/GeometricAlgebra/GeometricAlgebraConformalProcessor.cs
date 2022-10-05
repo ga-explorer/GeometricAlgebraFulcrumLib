@@ -9,9 +9,9 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
     public class GeometricAlgebraConformalProcessor<T> :
         GeometricAlgebraOrthonormalProcessor<T>
     {
-        public Vector<T> OriginBasisVector { get; }
+        public GaVector<T> OriginBasisVector { get; }
 
-        public Vector<T> InfinityBasisVector { get; }
+        public GaVector<T> InfinityBasisVector { get; }
 
 
         internal GeometricAlgebraConformalProcessor(IScalarAlgebraProcessor<T> scalarProcessor, uint vSpaceDimension) 

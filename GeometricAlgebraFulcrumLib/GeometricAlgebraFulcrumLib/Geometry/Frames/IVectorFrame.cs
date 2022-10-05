@@ -6,7 +6,7 @@ using NumericalGeometryLib.BasicMath;
 namespace GeometricAlgebraFulcrumLib.Geometry.Frames
 {
     public interface IVectorFrame<T> :
-        IReadOnlyList<Vector<T>>,
+        IReadOnlyList<GaVector<T>>,
         IGeometricAlgebraElement<T>,
         IGeometricElement
     {

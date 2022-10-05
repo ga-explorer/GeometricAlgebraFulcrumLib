@@ -5,7 +5,7 @@ using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors;
 using GeometricAlgebraFulcrumLib.Mathematica.Applications.GaPoT;
 using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Processors.LinearAlgebra;
+using GeometricAlgebraFulcrumLib.Processors.MatrixAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Text;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
@@ -18,8 +18,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
         private static Random RandomGenerator { get; }
             = new Random(10);
 
-        public static LinearAlgebraFloat64Processor MatrixProcessor { get; }
-            = LinearAlgebraFloat64Processor.DefaultProcessor;
+        public static MatrixAlgebraFloat64Processor MatrixProcessor { get; }
+            = MatrixAlgebraFloat64Processor.DefaultProcessor;
             
         public static IGeometricAlgebraEuclideanProcessor<double> GeometricProcessor { get; }
             = ScalarAlgebraFloat64Processor.DefaultProcessor.CreateGeometricAlgebraEuclideanProcessor(63);
@@ -31,7 +31,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
             = LaTeXFloat64Composer.DefaultComposer;
 
 
-        public static void ValidatePhasor(int k, int n, Vector<double> phasor2, double theta)
+        public static void ValidatePhasor(int k, int n, GaVector<double> phasor2, double theta)
         {
             var composer = GeometricProcessor.CreateVectorStorageComposer();
 
@@ -67,7 +67,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
             Console.WriteLine();
         }
 
-        public static Tuple<Vector<double>, Vector<double>> GetComponentPhasorsTuple(int i, int k, int n, double theta)
+        public static Tuple<GaVector<double>, GaVector<double>> GetComponentPhasorsTuple(int i, int k, int n, double theta)
         {
             Debug.Assert(n >= 2 && i >= 0 && i < n);
 
@@ -109,10 +109,10 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
             //);
             //Console.WriteLine();
 
-            return new Tuple<Vector<double>, Vector<double>>(phasor1, phasor2);
+            return new Tuple<GaVector<double>, GaVector<double>>(phasor1, phasor2);
         }
 
-        public static Tuple<Vector<double>, Vector<double>> GetPhasorsTuple(int k, int n, double theta)
+        public static Tuple<GaVector<double>, GaVector<double>> GetPhasorsTuple(int k, int n, double theta)
         {
             var phasorTuples =
                 Enumerable
@@ -148,7 +148,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
             );
             Console.WriteLine();
 
-            return new Tuple<Vector<double>, Vector<double>>(
+            return new Tuple<GaVector<double>, GaVector<double>>(
                 phasor1,
                 phasor2
             );

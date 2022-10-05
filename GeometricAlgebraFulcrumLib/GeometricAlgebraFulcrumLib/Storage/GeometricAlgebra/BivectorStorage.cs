@@ -375,22 +375,22 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
 
         public override VectorStorage<T> GetVectorPart()
         {
-            return VectorStorage<T>.ZeroVector;
+            return ZeroVector;
         }
 
         public override VectorStorage<T> GetVectorPart(Func<T, bool> scalarSelection)
         {
-            return VectorStorage<T>.ZeroVector;
+            return ZeroVector;
         }
 
         public override VectorStorage<T> GetVectorPart(Func<ulong, T, bool> indexScalarSelection)
         {
-            return VectorStorage<T>.ZeroVector;
+            return ZeroVector;
         }
 
         public override VectorStorage<T> GetVectorPart(Func<ulong, bool> indexSelection)
         {
-            return VectorStorage<T>.ZeroVector;
+            return ZeroVector;
         }
 
         public override BivectorStorage<T> GetBivectorPart()
@@ -434,7 +434,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         {
             return grade == 2 && !IsEmpty()
                 ? this 
-                : KVectorStorage<T>.CreateKVectorZero(grade);
+                : CreateKVectorZero(grade);
         }
 
 
@@ -442,21 +442,21 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         {
             return grade == 2
                 ? GetBivectorPart(scalarSelection)
-                : KVectorStorage<T>.CreateKVectorZero(grade);
+                : CreateKVectorZero(grade);
         }
 
         public override KVectorStorage<T> GetKVectorPart(uint grade, Func<ulong, T, bool> indexScalarSelection)
         {
             return grade == 2
                 ? GetBivectorPart(indexScalarSelection)
-                : KVectorStorage<T>.CreateKVectorZero(grade);
+                : CreateKVectorZero(grade);
         }
 
         public override KVectorStorage<T> GetKVectorPart(uint grade, Func<ulong, bool> indexSelection)
         {
             return grade == 2
                 ? GetBivectorPart(indexSelection)
-                : KVectorStorage<T>.CreateKVectorZero(grade);
+                : CreateKVectorZero(grade);
         }
 
         public override IMultivectorStorage<T> GetMultivectorPart(Func<ulong, bool> idSelection)
@@ -512,24 +512,24 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         public override Tuple<VectorStorage<T>, VectorStorage<T>> SplitVectorPart(Func<ulong, bool> indexSelection)
         {
             return new Tuple<VectorStorage<T>, VectorStorage<T>>(
-                VectorStorage<T>.ZeroVector,
-                VectorStorage<T>.ZeroVector
+                ZeroVector,
+                ZeroVector
             );
         }
 
         public override Tuple<VectorStorage<T>, VectorStorage<T>> SplitVectorPart(Func<ulong, T, bool> indexScalarSelection)
         {
             return new Tuple<VectorStorage<T>, VectorStorage<T>>(
-                VectorStorage<T>.ZeroVector,
-                VectorStorage<T>.ZeroVector
+                ZeroVector,
+                ZeroVector
             );
         }
 
         public override Tuple<VectorStorage<T>, VectorStorage<T>> SplitVectorPart(Func<T, bool> scalarSelection)
         {
             return new Tuple<VectorStorage<T>, VectorStorage<T>>(
-                VectorStorage<T>.ZeroVector,
-                VectorStorage<T>.ZeroVector
+                ZeroVector,
+                ZeroVector
             );
         }
         

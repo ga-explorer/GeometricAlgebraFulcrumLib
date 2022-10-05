@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 
@@ -46,13 +47,43 @@ namespace CodeComposerLib.SyntaxTree.Expressions
         {
             return new SteExpression(new SteNumberHeadSpecs(number));
         }
-
+        
         /// <summary>
         /// Create a literal number expression like "2", "-1.7" and "3.56e-4"
         /// </summary>
         /// <param name="number"></param>
         /// <returns></returns>
-        public static SteExpression CreateLiteralNumber(double number)
+        public static SteExpression CreateLiteralNumber(uint number)
+        {
+            return new SteExpression(new SteNumberHeadSpecs(number));
+        }
+        
+        /// <summary>
+        /// Create a literal number expression like "2", "-1.7" and "3.56e-4"
+        /// </summary>
+        /// <param name="number"></param>
+        /// <returns></returns>
+        public static SteExpression CreateLiteralNumber(long number)
+        {
+            return new SteExpression(new SteNumberHeadSpecs(number));
+        }
+        
+        /// <summary>
+        /// Create a literal number expression like "2", "-1.7" and "3.56e-4"
+        /// </summary>
+        /// <param name="number"></param>
+        /// <returns></returns>
+        public static SteExpression CreateLiteralNumber(ulong number)
+        {
+            return new SteExpression(new SteNumberHeadSpecs(number));
+        }
+        
+        /// <summary>
+        /// Create a literal number expression like "2", "-1.7" and "3.56e-4"
+        /// </summary>
+        /// <param name="number"></param>
+        /// <returns></returns>
+        public static SteExpression CreateLiteralNumber(float number)
         {
             return new SteExpression(new SteNumberHeadSpecs(number));
         }
@@ -62,7 +93,7 @@ namespace CodeComposerLib.SyntaxTree.Expressions
         /// </summary>
         /// <param name="number"></param>
         /// <returns></returns>
-        public static SteExpression CreateLiteralNumber(float number)
+        public static SteExpression CreateLiteralNumber(double number)
         {
             return new SteExpression(new SteNumberHeadSpecs(number));
         }
@@ -91,6 +122,81 @@ namespace CodeComposerLib.SyntaxTree.Expressions
                 throw new ArgumentNullException(nameof(funcName), @"Function name not initialized");
 
             return new SteExpression(new SteFunctionHeadSpecs(funcName), Enumerable.Empty<SteExpression>());
+        }
+
+        public static SteExpression CreateFunction(string funcName, int arg1)
+        {
+            return CreateFunction(
+                funcName,
+                SteExpression.CreateLiteralNumber(arg1)
+            );
+        }
+
+        public static SteExpression CreateFunction(string funcName, float arg1)
+        {
+            return CreateFunction(
+                funcName,
+                SteExpression.CreateLiteralNumber(arg1)
+            );
+        }
+        
+        public static SteExpression CreateFunction(string funcName, double arg1)
+        {
+            return CreateFunction(
+                funcName,
+                SteExpression.CreateLiteralNumber(arg1)
+            );
+        }
+
+        /// <summary>
+        /// Create a function expression with one argument
+        /// </summary>
+        /// <param name="funcName"></param>
+        /// <param name="arg1"></param>
+        /// <returns></returns>
+        public static SteExpression CreateFunction(string funcName, [NotNull] SteExpression arg1)
+        {
+            if (string.IsNullOrEmpty(funcName))
+                throw new ArgumentNullException(nameof(funcName), @"Function name not initialized");
+
+            var funcHeadSpecs = new SteFunctionHeadSpecs(funcName);
+
+            return new SteExpression(funcHeadSpecs, new []{ arg1 });
+        }
+        
+        /// <summary>
+        /// Create a function expression with two arguments
+        /// </summary>
+        /// <param name="funcName"></param>
+        /// <param name="arg1"></param>
+        /// <param name="arg2"></param>
+        /// <returns></returns>
+        public static SteExpression CreateFunction(string funcName, [NotNull] SteExpression arg1, [NotNull] SteExpression arg2)
+        {
+            if (string.IsNullOrEmpty(funcName))
+                throw new ArgumentNullException(nameof(funcName), @"Function name not initialized");
+
+            var funcHeadSpecs = new SteFunctionHeadSpecs(funcName);
+
+            return new SteExpression(funcHeadSpecs, new []{ arg1, arg2 });
+        }
+        
+        /// <summary>
+        /// Create a function expression with 3 arguments
+        /// </summary>
+        /// <param name="funcName"></param>
+        /// <param name="arg1"></param>
+        /// <param name="arg2"></param>
+        /// <param name="arg3"></param>
+        /// <returns></returns>
+        public static SteExpression CreateFunction(string funcName, [NotNull] SteExpression arg1, [NotNull] SteExpression arg2, [NotNull] SteExpression arg3)
+        {
+            if (string.IsNullOrEmpty(funcName))
+                throw new ArgumentNullException(nameof(funcName), @"Function name not initialized");
+
+            var funcHeadSpecs = new SteFunctionHeadSpecs(funcName);
+
+            return new SteExpression(funcHeadSpecs, new []{ arg1, arg2, arg3 });
         }
 
         /// <summary>

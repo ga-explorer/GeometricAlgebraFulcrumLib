@@ -393,7 +393,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Euclidean3D
         {
             get
             {
-                if (grade < 0 || grade > 3)
+                if (grade is < 0 or > 3)
                     throw new ArgumentOutOfRangeException(nameof(grade));
 
                 if (grade == 0)

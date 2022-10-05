@@ -13,7 +13,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Versors
         VersorBase<T>
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static Versor<T> Create(Multivector<T> multivector)
+        internal static Versor<T> Create(GaMultivector<T> multivector)
         {
             return new Versor<T>(multivector);
         }
@@ -27,13 +27,13 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Versors
         public bool IsOdd 
             => Grade.IsOdd();
 
-        public Multivector<T> Multivector { get; }
+        public GaMultivector<T> Multivector { get; }
 
-        public Multivector<T> MultivectorInverse { get; }
+        public GaMultivector<T> MultivectorInverse { get; }
 
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private Versor([NotNull] Multivector<T> multivector) 
+        private Versor([NotNull] GaMultivector<T> multivector) 
             : base(multivector.GeometricProcessor)
         {
             Grade = multivector.MultivectorStorage.GetMaxGrade();
@@ -42,7 +42,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Versors
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private Versor(uint grade, [NotNull] Multivector<T> multivector, [NotNull] Multivector<T> multivectorInverse) 
+        private Versor(uint grade, [NotNull] GaMultivector<T> multivector, [NotNull] GaMultivector<T> multivectorInverse) 
             : base(multivector.GeometricProcessor)
         {
             Grade = grade;
@@ -75,7 +75,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Versors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Vector<T> OmMap(Vector<T> mv)
+        public override GaVector<T> OmMap(GaVector<T> mv)
         {
             return IsEven 
                 ? Multivector.Gp(mv).Gp(MultivectorInverse).GetVectorPart() 
@@ -83,13 +83,13 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Versors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Bivector<T> OmMap(Bivector<T> mv)
+        public override GaBivector<T> OmMap(GaBivector<T> mv)
         {
             return Multivector.Gp(mv).Gp(MultivectorInverse).GetBivectorPart();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override KVector<T> OmMap(KVector<T> mv)
+        public override GaKVector<T> OmMap(GaKVector<T> mv)
         {
             return mv.Grade.IsEven() || IsEven
                 ? Multivector.Gp(mv).Gp(MultivectorInverse).GetKVectorPart(mv.Grade) 
@@ -97,7 +97,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Versors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Multivector<T> OmMap(Multivector<T> mv)
+        public override GaMultivector<T> OmMap(GaMultivector<T> mv)
         {
             var v = 
                 Multivector.Gp(mv).Gp(MultivectorInverse);
@@ -122,19 +122,19 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Versors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Multivector<T> GetMultivector()
+        public override GaMultivector<T> GetMultivector()
         {
             return Multivector;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Multivector<T> GetMultivectorReverse()
+        public override GaMultivector<T> GetMultivectorReverse()
         {
             return Multivector.Reverse();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Multivector<T> GetMultivectorInverse()
+        public override GaMultivector<T> GetMultivectorInverse()
         {
             return MultivectorInverse;
         }

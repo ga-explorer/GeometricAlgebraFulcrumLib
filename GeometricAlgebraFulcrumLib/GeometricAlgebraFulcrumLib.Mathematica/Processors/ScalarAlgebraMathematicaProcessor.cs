@@ -2,11 +2,11 @@
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.SymbolicAlgebra;
 using GeometricAlgebraFulcrumLib.Mathematica.Mathematica;
 using GeometricAlgebraFulcrumLib.Mathematica.Mathematica.ExprFactory;
+using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
+using GeometricAlgebraFulcrumLib.MetaProgramming.Expressions;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Processors.SymbolicAlgebra.Context;
 using Wolfram.NETLink;
 
 namespace GeometricAlgebraFulcrumLib.Mathematica.Processors
@@ -24,6 +24,8 @@ namespace GeometricAlgebraFulcrumLib.Mathematica.Processors
         public double ZeroEpsilon 
             => Math.Pow(10, -RoundingPlaces);
 
+        public Func<Expr, Expr> SimplificationFunc { get; set; }
+
         public bool IsNumeric 
             => false;
 
@@ -40,26 +42,35 @@ namespace GeometricAlgebraFulcrumLib.Mathematica.Processors
         public Expr ScalarMinusOne 
             => Expr.INT_MINUSONE;
 
-        public Expr ScalarTwo 
-            => 2.ToExpr();
+        public Expr ScalarTwo { get; } 
+            = 2.ToExpr();
         
-        public Expr ScalarMinusTwo 
-            => (-2).ToExpr();
+        public Expr ScalarMinusTwo { get; } 
+            = (-2).ToExpr();
         
-        public Expr ScalarTen 
-            => 10.ToExpr();
+        public Expr ScalarTen { get; } 
+            = 10.ToExpr();
         
-        public Expr ScalarMinusTen 
-            => (-10).ToExpr();
+        public Expr ScalarMinusTen { get; } 
+            = (-10).ToExpr();
 
         public Expr ScalarPi 
             => MathematicaInterface.DefaultCasConstants.ExprPi;
 
-        public Expr ScalarPiOver2 
-            => MathematicaInterface.DefaultCas["Pi / 2"];
+        public Expr ScalarTwoPi { get; }
+            = MathematicaInterface.DefaultCas["2 * Pi"];
+
+        public Expr ScalarPiOver2 { get; }
+            = MathematicaInterface.DefaultCas["Pi / 2"];
 
         public Expr ScalarE 
             => MathematicaInterface.DefaultCasConstants.ExprE;
+
+        public Expr ScalarDegreeToRadian { get; }
+            = MathematicaInterface.DefaultCas["Pi / 180"];
+
+        public Expr ScalarRadianToDegree { get; }
+            = MathematicaInterface.DefaultCas["180 / Pi"];
 
 
         private ScalarAlgebraMathematicaProcessor()
@@ -68,15 +79,18 @@ namespace GeometricAlgebraFulcrumLib.Mathematica.Processors
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Expr PreProcessScalar([NotNull] Expr scalar)
+        private Expr PreProcessScalar([NotNull] Expr scalar)
         {
             return scalar;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Expr PostProcessScalar([NotNull] Expr scalar)
+        private Expr PostProcessScalar([NotNull] Expr scalar)
         {
-            var expr = scalar.Simplify();
+            var expr = 
+                SimplificationFunc is null 
+                    ? scalar.Simplify() 
+                    : SimplificationFunc(scalar) ?? scalar;
 
             if (expr.ToString() == "Indeterminate")
                 throw new InvalidDataException();
@@ -336,9 +350,29 @@ namespace GeometricAlgebraFulcrumLib.Mathematica.Processors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Expr Sinc(Expr scalar)
+        {
+            return PostProcessScalar(Mfs.Sinc[
+                PreProcessScalar(scalar)
+            ]);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsValid(Expr scalar)
         {
             return true;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsFiniteNumber(Expr scalar)
+        {
+            if (!scalar.NumberQ())
+                return false;
+
+            var number = 
+                scalar.ToNumber();
+
+            return double.IsFinite(number);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -533,13 +567,13 @@ namespace GeometricAlgebraFulcrumLib.Mathematica.Processors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Expr SymbolicExpressionToScalar(ISymbolicExpression expression)
+        public Expr MetaExpressionToScalar(IMetaExpression expression)
         {
             return expression.ToString().ToExpr();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ISymbolicExpression ScalarToSymbolicExpression(SymbolicContext context, Expr scalar)
+        public IMetaExpression ScalarToMetaExpression(MetaContext context, Expr scalar)
         {
             return context.ToSymbolicExpression(scalar);
         }

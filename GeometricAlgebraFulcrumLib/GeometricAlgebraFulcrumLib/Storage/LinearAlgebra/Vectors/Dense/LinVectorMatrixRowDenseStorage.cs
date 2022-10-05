@@ -51,11 +51,11 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Dense
 
             return new LinVectorArrayStorage<T>(scalarsArray);
         }
-        
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override IReadOnlyList<T> GetScalarsList()
+        public override IEnumerator<T> GetEnumerator()
         {
-            return ((ulong) Count).GetRange().Select(GetScalar).ToArray();
+            return ((ulong) Count).GetRange().Select(GetScalar).GetEnumerator();
         }
     }
 }

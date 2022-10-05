@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Dense
 {
@@ -11,8 +13,14 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Dense
 
         public abstract T this[ulong index] { get; set; }
 
-        public abstract IReadOnlyList<T> GetScalarsList();
-
         public abstract ILinVectorDenseStorage<T> GetDensePermutation(Func<ulong, ulong> indexMapping);
+        
+        public abstract IEnumerator<T> GetEnumerator();
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
     }
 }

@@ -949,6 +949,16 @@ namespace NumericalGeometryLib.BasicMath.Tuples
             return tuplesList.SelectMany(t => t.GetComponents());
         }
 
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Tuple3D MapComponents(this ITuple3D tuple, Func<double, double> scalarMapping)
+        {
+            return new Tuple3D(
+                scalarMapping(tuple.X),
+                scalarMapping(tuple.Y),
+                scalarMapping(tuple.Z)
+            );
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Tuple3D ComponentsMin(this ITuple3D tuple, double scalar)
@@ -1033,5 +1043,567 @@ namespace NumericalGeometryLib.BasicMath.Tuples
                 tuple1.W * tuple2.W * tuple3.W
             );
         }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Pair<double> GetTupleXPair(this IReadOnlyList<ITuple2D> itemArray, int index)
+        {
+            return new Pair<double>(
+                itemArray[index].X,
+                itemArray[index + 1].X
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Triplet<double> GetTupleXTriplet(this IReadOnlyList<ITuple2D> itemArray, int index)
+        {
+            return new Triplet<double>(
+                itemArray[index].X,
+                itemArray[index + 1].X,
+                itemArray[index + 2].X
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Quad<double> GetTupleXQuad(this IReadOnlyList<ITuple2D> itemArray, int index)
+        {
+            return new Quad<double>(
+                itemArray[index].X,
+                itemArray[index + 1].X,
+                itemArray[index + 2].X,
+                itemArray[index + 3].X
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Quint<double> GetTupleXQuint(this IReadOnlyList<ITuple2D> itemArray, int index)
+        {
+            return new Quint<double>(
+                itemArray[index].X,
+                itemArray[index + 1].X,
+                itemArray[index + 2].X,
+                itemArray[index + 3].X,
+                itemArray[index + 4].X
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Hexad<double> GetTupleXHexad(this IReadOnlyList<ITuple2D> itemArray, int index)
+        {
+            return new Hexad<double>(
+                itemArray[index].X,
+                itemArray[index + 1].X,
+                itemArray[index + 2].X,
+                itemArray[index + 3].X,
+                itemArray[index + 4].X,
+                itemArray[index + 5].X
+            );
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Pair<double> GetTupleYPair(this IReadOnlyList<ITuple2D> itemArray, int index)
+        {
+            return new Pair<double>(
+                itemArray[index].Y,
+                itemArray[index + 1].Y
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Triplet<double> GetTupleYTriplet(this IReadOnlyList<ITuple2D> itemArray, int index)
+        {
+            return new Triplet<double>(
+                itemArray[index].Y,
+                itemArray[index + 1].Y,
+                itemArray[index + 2].Y
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Quad<double> GetTupleYQuad(this IReadOnlyList<ITuple2D> itemArray, int index)
+        {
+            return new Quad<double>(
+                itemArray[index].Y,
+                itemArray[index + 1].Y,
+                itemArray[index + 2].Y,
+                itemArray[index + 3].Y
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Quint<double> GetTupleYQuint(this IReadOnlyList<ITuple2D> itemArray, int index)
+        {
+            return new Quint<double>(
+                itemArray[index].Y,
+                itemArray[index + 1].Y,
+                itemArray[index + 2].Y,
+                itemArray[index + 3].Y,
+                itemArray[index + 4].Y
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Hexad<double> GetTupleYHexad(this IReadOnlyList<ITuple2D> itemArray, int index)
+        {
+            return new Hexad<double>(
+                itemArray[index].Y,
+                itemArray[index + 1].Y,
+                itemArray[index + 2].Y,
+                itemArray[index + 3].Y,
+                itemArray[index + 4].Y,
+                itemArray[index + 5].Y
+            );
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Pair<double> GetTupleXPair(this IReadOnlyList<ITuple3D> itemArray, int index)
+        {
+            return new Pair<double>(
+                itemArray[index].X,
+                itemArray[index + 1].X
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Triplet<double> GetTupleXTriplet(this IReadOnlyList<ITuple3D> itemArray, int index)
+        {
+            return new Triplet<double>(
+                itemArray[index].X,
+                itemArray[index + 1].X,
+                itemArray[index + 2].X
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Quad<double> GetTupleXQuad(this IReadOnlyList<ITuple3D> itemArray, int index)
+        {
+            return new Quad<double>(
+                itemArray[index].X,
+                itemArray[index + 1].X,
+                itemArray[index + 2].X,
+                itemArray[index + 3].X
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Quint<double> GetTupleXQuint(this IReadOnlyList<ITuple3D> itemArray, int index)
+        {
+            return new Quint<double>(
+                itemArray[index].X,
+                itemArray[index + 1].X,
+                itemArray[index + 2].X,
+                itemArray[index + 3].X,
+                itemArray[index + 4].X
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Hexad<double> GetTupleXHexad(this IReadOnlyList<ITuple3D> itemArray, int index)
+        {
+            return new Hexad<double>(
+                itemArray[index].X,
+                itemArray[index + 1].X,
+                itemArray[index + 2].X,
+                itemArray[index + 3].X,
+                itemArray[index + 4].X,
+                itemArray[index + 5].X
+            );
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Pair<double> GetTupleYPair(this IReadOnlyList<ITuple3D> itemArray, int index)
+        {
+            return new Pair<double>(
+                itemArray[index].Y,
+                itemArray[index + 1].Y
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Triplet<double> GetTupleYTriplet(this IReadOnlyList<ITuple3D> itemArray, int index)
+        {
+            return new Triplet<double>(
+                itemArray[index].Y,
+                itemArray[index + 1].Y,
+                itemArray[index + 2].Y
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Quad<double> GetTupleYQuad(this IReadOnlyList<ITuple3D> itemArray, int index)
+        {
+            return new Quad<double>(
+                itemArray[index].Y,
+                itemArray[index + 1].Y,
+                itemArray[index + 2].Y,
+                itemArray[index + 3].Y
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Quint<double> GetTupleYQuint(this IReadOnlyList<ITuple3D> itemArray, int index)
+        {
+            return new Quint<double>(
+                itemArray[index].Y,
+                itemArray[index + 1].Y,
+                itemArray[index + 2].Y,
+                itemArray[index + 3].Y,
+                itemArray[index + 4].Y
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Hexad<double> GetTupleYHexad(this IReadOnlyList<ITuple3D> itemArray, int index)
+        {
+            return new Hexad<double>(
+                itemArray[index].Y,
+                itemArray[index + 1].Y,
+                itemArray[index + 2].Y,
+                itemArray[index + 3].Y,
+                itemArray[index + 4].Y,
+                itemArray[index + 5].Y
+            );
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Pair<double> GetTupleZPair(this IReadOnlyList<ITuple3D> itemArray, int index)
+        {
+            return new Pair<double>(
+                itemArray[index].Z,
+                itemArray[index + 1].Z
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Triplet<double> GetTupleZTriplet(this IReadOnlyList<ITuple3D> itemArray, int index)
+        {
+            return new Triplet<double>(
+                itemArray[index].Z,
+                itemArray[index + 1].Z,
+                itemArray[index + 2].Z
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Quad<double> GetTupleZQuad(this IReadOnlyList<ITuple3D> itemArray, int index)
+        {
+            return new Quad<double>(
+                itemArray[index].Z,
+                itemArray[index + 1].Z,
+                itemArray[index + 2].Z,
+                itemArray[index + 3].Z
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Quint<double> GetTupleZQuint(this IReadOnlyList<ITuple3D> itemArray, int index)
+        {
+            return new Quint<double>(
+                itemArray[index].Z,
+                itemArray[index + 1].Z,
+                itemArray[index + 2].Z,
+                itemArray[index + 3].Z,
+                itemArray[index + 4].Z
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Hexad<double> GetTupleZHexad(this IReadOnlyList<ITuple3D> itemArray, int index)
+        {
+            return new Hexad<double>(
+                itemArray[index].Z,
+                itemArray[index + 1].Z,
+                itemArray[index + 2].Z,
+                itemArray[index + 3].Z,
+                itemArray[index + 4].Z,
+                itemArray[index + 5].Z
+            );
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Pair<double> GetTupleXPair(this IReadOnlyList<ITuple4D> itemArray, int index)
+        {
+            return new Pair<double>(
+                itemArray[index].X,
+                itemArray[index + 1].X
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Triplet<double> GetTupleXTriplet(this IReadOnlyList<ITuple4D> itemArray, int index)
+        {
+            return new Triplet<double>(
+                itemArray[index].X,
+                itemArray[index + 1].X,
+                itemArray[index + 2].X
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Quad<double> GetTupleXQuad(this IReadOnlyList<ITuple4D> itemArray, int index)
+        {
+            return new Quad<double>(
+                itemArray[index].X,
+                itemArray[index + 1].X,
+                itemArray[index + 2].X,
+                itemArray[index + 3].X
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Quint<double> GetTupleXQuint(this IReadOnlyList<ITuple4D> itemArray, int index)
+        {
+            return new Quint<double>(
+                itemArray[index].X,
+                itemArray[index + 1].X,
+                itemArray[index + 2].X,
+                itemArray[index + 3].X,
+                itemArray[index + 4].X
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Hexad<double> GetTupleXHexad(this IReadOnlyList<ITuple4D> itemArray, int index)
+        {
+            return new Hexad<double>(
+                itemArray[index].X,
+                itemArray[index + 1].X,
+                itemArray[index + 2].X,
+                itemArray[index + 3].X,
+                itemArray[index + 4].X,
+                itemArray[index + 5].X
+            );
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Pair<double> GetTupleYPair(this IReadOnlyList<ITuple4D> itemArray, int index)
+        {
+            return new Pair<double>(
+                itemArray[index].Y,
+                itemArray[index + 1].Y
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Triplet<double> GetTupleYTriplet(this IReadOnlyList<ITuple4D> itemArray, int index)
+        {
+            return new Triplet<double>(
+                itemArray[index].Y,
+                itemArray[index + 1].Y,
+                itemArray[index + 2].Y
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Quad<double> GetTupleYQuad(this IReadOnlyList<ITuple4D> itemArray, int index)
+        {
+            return new Quad<double>(
+                itemArray[index].Y,
+                itemArray[index + 1].Y,
+                itemArray[index + 2].Y,
+                itemArray[index + 3].Y
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Quint<double> GetTupleYQuint(this IReadOnlyList<ITuple4D> itemArray, int index)
+        {
+            return new Quint<double>(
+                itemArray[index].Y,
+                itemArray[index + 1].Y,
+                itemArray[index + 2].Y,
+                itemArray[index + 3].Y,
+                itemArray[index + 4].Y
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Hexad<double> GetTupleYHexad(this IReadOnlyList<ITuple4D> itemArray, int index)
+        {
+            return new Hexad<double>(
+                itemArray[index].Y,
+                itemArray[index + 1].Y,
+                itemArray[index + 2].Y,
+                itemArray[index + 3].Y,
+                itemArray[index + 4].Y,
+                itemArray[index + 5].Y
+            );
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Pair<double> GetTupleZPair(this IReadOnlyList<ITuple4D> itemArray, int index)
+        {
+            return new Pair<double>(
+                itemArray[index].Z,
+                itemArray[index + 1].Z
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Triplet<double> GetTupleZTriplet(this IReadOnlyList<ITuple4D> itemArray, int index)
+        {
+            return new Triplet<double>(
+                itemArray[index].Z,
+                itemArray[index + 1].Z,
+                itemArray[index + 2].Z
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Quad<double> GetTupleZQuad(this IReadOnlyList<ITuple4D> itemArray, int index)
+        {
+            return new Quad<double>(
+                itemArray[index].Z,
+                itemArray[index + 1].Z,
+                itemArray[index + 2].Z,
+                itemArray[index + 3].Z
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Quint<double> GetTupleZQuint(this IReadOnlyList<ITuple4D> itemArray, int index)
+        {
+            return new Quint<double>(
+                itemArray[index].Z,
+                itemArray[index + 1].Z,
+                itemArray[index + 2].Z,
+                itemArray[index + 3].Z,
+                itemArray[index + 4].Z
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Hexad<double> GetTupleZHexad(this IReadOnlyList<ITuple4D> itemArray, int index)
+        {
+            return new Hexad<double>(
+                itemArray[index].Z,
+                itemArray[index + 1].Z,
+                itemArray[index + 2].Z,
+                itemArray[index + 3].Z,
+                itemArray[index + 4].Z,
+                itemArray[index + 5].Z
+            );
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Pair<double> GetTupleWPair(this IReadOnlyList<ITuple4D> itemArray, int index)
+        {
+            return new Pair<double>(
+                itemArray[index].W,
+                itemArray[index + 1].W
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Triplet<double> GetTupleWTriplet(this IReadOnlyList<ITuple4D> itemArray, int index)
+        {
+            return new Triplet<double>(
+                itemArray[index].W,
+                itemArray[index + 1].W,
+                itemArray[index + 2].W
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Quad<double> GetTupleWQuad(this IReadOnlyList<ITuple4D> itemArray, int index)
+        {
+            return new Quad<double>(
+                itemArray[index].W,
+                itemArray[index + 1].W,
+                itemArray[index + 2].W,
+                itemArray[index + 3].W
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Quint<double> GetTupleWQuint(this IReadOnlyList<ITuple4D> itemArray, int index)
+        {
+            return new Quint<double>(
+                itemArray[index].W,
+                itemArray[index + 1].W,
+                itemArray[index + 2].W,
+                itemArray[index + 3].W,
+                itemArray[index + 4].W
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Hexad<double> GetTupleWHexad(this IReadOnlyList<ITuple4D> itemArray, int index)
+        {
+            return new Hexad<double>(
+                itemArray[index].W,
+                itemArray[index + 1].W,
+                itemArray[index + 2].W,
+                itemArray[index + 3].W,
+                itemArray[index + 4].W,
+                itemArray[index + 5].W
+            );
+        }
+        
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Pair<double> GetTupleItemPair(this IReadOnlyList<SparseTuple> itemArray, int index, int itemIndex)
+        {
+            return new Pair<double>(
+                itemArray[index][itemIndex],
+                itemArray[index + 1][itemIndex]
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Triplet<double> GetTupleItemTriplet(this IReadOnlyList<SparseTuple> itemArray, int index, int itemIndex)
+        {
+            return new Triplet<double>(
+                itemArray[index][itemIndex],
+                itemArray[index + 1][itemIndex],
+                itemArray[index + 2][itemIndex]
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Quad<double> GetTupleItemQuad(this IReadOnlyList<SparseTuple> itemArray, int index, int itemIndex)
+        {
+            return new Quad<double>(
+                itemArray[index][itemIndex],
+                itemArray[index + 1][itemIndex],
+                itemArray[index + 2][itemIndex],
+                itemArray[index + 3][itemIndex]
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Quint<double> GetTupleItemQuint(this IReadOnlyList<SparseTuple> itemArray, int index, int itemIndex)
+        {
+            return new Quint<double>(
+                itemArray[index][itemIndex],
+                itemArray[index + 1][itemIndex],
+                itemArray[index + 2][itemIndex],
+                itemArray[index + 3][itemIndex],
+                itemArray[index + 4][itemIndex]
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Hexad<double> GetTupleItemHexad(this IReadOnlyList<SparseTuple> itemArray, int index, int itemIndex)
+        {
+            return new Hexad<double>(
+                itemArray[index][itemIndex],
+                itemArray[index + 1][itemIndex],
+                itemArray[index + 2][itemIndex],
+                itemArray[index + 3][itemIndex],
+                itemArray[index + 4][itemIndex],
+                itemArray[index + 5][itemIndex]
+            );
+        }
+
+
     }
 }

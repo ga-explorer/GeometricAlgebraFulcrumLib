@@ -22,9 +22,15 @@
 
         T ScalarPi { get; }
         
+        T ScalarTwoPi { get; }
+
         T ScalarPiOver2 { get; }
 
         T ScalarE { get; }
+
+        T ScalarDegreeToRadian { get; }
+
+        T ScalarRadianToDegree { get; }
 
         T GetScalarFromNumber(int value);
         
@@ -119,7 +125,11 @@
 
         T Tanh(T scalar);
 
+        T Sinc(T scalar);
+
         bool IsValid(T scalar);
+
+        bool IsFiniteNumber(T scalar);
 
         bool IsZero(T scalar);
 

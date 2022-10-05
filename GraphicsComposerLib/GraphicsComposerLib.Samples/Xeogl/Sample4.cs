@@ -1,10 +1,12 @@
-﻿using EuclideanGeometryLib.Textures;
+﻿using System.IO;
+using NumericalGeometryLib.Textures;
 using GraphicsComposerLib.Geometry.Composers;
 using GraphicsComposerLib.Geometry.Meshes.PathsMesh;
 using GraphicsComposerLib.Geometry.Primitives;
 using GraphicsComposerLib.Geometry.Primitives.Lines;
 using GraphicsComposerLib.Geometry.Primitives.Triangles;
-using GraphicsComposerLib.WebGl.Xeogl;
+using GraphicsComposerLib.Rendering.Xeogl;
+using SixLabors.ImageSharp.Formats.Png;
 
 namespace GraphicsComposerLib.Samples.Xeogl
 {
@@ -68,7 +70,12 @@ namespace GraphicsComposerLib.Samples.Xeogl
 
             var gridTexture = new GridTextureComposer();
             var gridTextureImage = gridTexture.ComposeImage();
-            gridTextureImage.Save(@"C:\Projects\Study\WebGL\samples\Sample4\gridTexture.png");
+
+            using var stream = File.OpenWrite(
+                @"C:\Projects\Study\WebGL\samples\Sample4\gridTexture.png"
+            );
+
+            gridTextureImage.Save(stream, new PngEncoder());
 
             var scriptCode = scriptGenerator.GenerateHtmlPage();
 

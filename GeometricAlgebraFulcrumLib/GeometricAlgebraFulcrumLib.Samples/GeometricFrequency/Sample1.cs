@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using GeometricAlgebraFulcrumLib.Mathematica;
 using GeometricAlgebraFulcrumLib.Mathematica.Mathematica;
 using GeometricAlgebraFulcrumLib.Mathematica.Mathematica.ExprFactory;
@@ -92,6 +91,10 @@ namespace GeometricAlgebraFulcrumLib.Samples.GeometricFrequency
             var assumeExpr = @"And[a > 0, b > 0, c > 0, \[Omega] > 0, t >= 0, Element[{a, b, c, w, t}, Reals]]".ToExpr();
 
             MathematicaInterface.DefaultCas.SetGlobalAssumptions(assumeExpr);
+            
+            var sigma1 = GeometricProcessor.CreateVectorBasis(0);
+            var sigma2 = GeometricProcessor.CreateVectorBasis(1);
+            var sigma3 = GeometricProcessor.CreateVectorBasis(2);
 
             var t = "t".CreateScalar(GeometricProcessor);
 
@@ -142,10 +145,12 @@ namespace GeometricAlgebraFulcrumLib.Samples.GeometricFrequency
             // Apply GS process
             var u1 = vDt1;
             var e1 = u1.DivideByNorm().SimplifyScalars();
+            var e10 = e1.MapScalars(s => s.ReplaceAll(t, Expr.INT_ZERO).FullSimplify());
             var e1d = (e1.DifferentiateScalars("t") / sDt).SimplifyScalars();
 
             var u2 = vDt2 - vDt2.ProjectOn(u1.GetSubspace());
             var e2 = u2.DivideByNorm().MapScalars(s => s.ReplaceAll("Abs", "Plus")).SimplifyScalars();
+            var e20 = e2.MapScalars(s => s.ReplaceAll(t, Expr.INT_ZERO).FullSimplify());
             var e2d = (e2.DifferentiateScalars("t") / sDt).SimplifyScalars();
 
             var u3 = vDt3 - vDt3.ProjectOn(u1.GetSubspace()) - vDt3.ProjectOn(u2.GetSubspace());
@@ -193,10 +198,6 @@ namespace GeometricAlgebraFulcrumLib.Samples.GeometricFrequency
 
             var a3 = kUnit;
 
-            var sigma1 = GeometricProcessor.CreateVectorBasis(0);
-            var sigma2 = GeometricProcessor.CreateVectorBasis(1);
-            var sigma3 = GeometricProcessor.CreateVectorBasis(2);
-
             var rotor1 =
                 GeometricProcessor.CreatePureRotor(
                     sigma3,
@@ -204,21 +205,27 @@ namespace GeometricAlgebraFulcrumLib.Samples.GeometricFrequency
                     true
                 ).SimplifyScalars();
 
-            
             var r1 = 
                 rotor1.OmMap(sigma1).SimplifyScalars();
 
-            var angle2 = Mfs.ArcCos[Mfs.TrigReduce[
-                r1.Lcp(a1).ScalarValue
-            ]].FullSimplify();
+            //var angle2 = Mfs.ArcCos[Mfs.TrigReduce[
+            //    r1.Lcp(a1).ScalarValue
+            //]].FullSimplify();
 
             //var phi2 = @"Subscript[\[Phi], 2]".CreateScalar(GeometricProcessor);
             var rotor2 = GeometricProcessor
                 .CreatePureRotor(r1, a1)
                 .SimplifyScalars();
 
-            var rotor = 
+            //var rotor2 = GeometricProcessor
+            //    .CreatePureRotor(r1, rotor1.OmMap(e1))
+            //    .SimplifyScalars();
+
+            var rotor =
                 rotor2.Multivector.Gp(rotor1.Multivector).SimplifyScalars().CreatePureRotor();
+
+            var omegaRotated1 = rotor1.OmMap(omega).SimplifyScalars();
+            var omegaRotated2 = rotor2.OmMap(omegaRotated1).SimplifyScalars();
 
             Console.WriteLine($@"$\boldsymbol{{k}} = {LaTeXComposer.GetMultivectorText(k)}$");
             Console.WriteLine($@"$\boldsymbol{{k}}^{{*}} = {LaTeXComposer.GetMultivectorText(kDual)}$");
@@ -261,40 +268,43 @@ namespace GeometricAlgebraFulcrumLib.Samples.GeometricFrequency
 
             //Console.WriteLine($@"R1 = {TextComposer.GetMultivectorText(rotor1)}");
             Console.WriteLine($@"$\boldsymbol{{R}}_{{1}} = {LaTeXComposer.GetMultivectorText(rotor1)}$");
-            Console.WriteLine($@"$\boldsymbol{{R}}_{{1}}\boldsymbol{{\sigma}}_{{1}}\boldsymbol{{R}}_{{1}}^{{\dagger}} = {LaTeXComposer.GetMultivectorText(r1)}$");
-            Console.WriteLine($@"$\cos\left(\varphi_{{2}}\right) = {LaTeXComposer.GetScalarText(angle2)}$");
+            Console.WriteLine($@"$\boldsymbol{{R}}_{{1}}\boldsymbol{{\Omega}}\boldsymbol{{R}}_{{1}}^{{\dagger}} = {LaTeXComposer.GetMultivectorText(omegaRotated1)}$");
+            Console.WriteLine($@"$\boldsymbol{{R}}_{{1}}\boldsymbol{{e}}_{{1}}\left(0\right)\boldsymbol{{R}}_{{1}}^{{\dagger}} = {LaTeXComposer.GetMultivectorText(r1)}$");
+            //Console.WriteLine($@"$\cos\left(\varphi_{{2}}\right) = {LaTeXComposer.GetScalarText(angle2)}$");
             Console.WriteLine();
 
             Console.WriteLine($@"$\boldsymbol{{R}}_{{2}} = {LaTeXComposer.GetMultivectorText(rotor2)}$");
+            Console.WriteLine($@"$\boldsymbol{{R}}\boldsymbol{{\Omega}}\boldsymbol{{R}}^{{\dagger}} = {LaTeXComposer.GetMultivectorText(omegaRotated2)}$");
             Console.WriteLine();
 
             Console.WriteLine($@"$\boldsymbol{{R}} = {LaTeXComposer.GetMultivectorText(rotor)}$");
+            Console.WriteLine($@"$\boldsymbol{{R}}\boldsymbol{{\Omega}}\boldsymbol{{R}}^{{\dagger}} = {LaTeXComposer.GetMultivectorText(omegaRotated2)}$");
             Console.WriteLine();
             
-            // For validation
-            var vDt1NormSquared1 = vDt1.Sp(vDt1);
-            var vDt1NormSquaredDiff = (vDt1NormSquared1 - vDt1NormSquared).FullSimplify();
-            Debug.Assert(vDt1NormSquaredDiff.IsZero());
+            //// For validation
+            //var vDt1NormSquared1 = vDt1.Sp(vDt1);
+            //var vDt1NormSquaredDiff = (vDt1NormSquared1 - vDt1NormSquared).FullSimplify();
+            //Debug.Assert(vDt1NormSquaredDiff.IsZero());
 
-            var gDt1 = g.DifferentiateScalar("t", 1).Simplify();
-            var gDtDiff = (gDt1 - gDt).FullSimplify();
-            Debug.Assert(gDtDiff.IsZero());
+            //var gDt1 = g.DifferentiateScalar("t", 1).Simplify();
+            //var gDtDiff = (gDt1 - gDt).FullSimplify();
+            //Debug.Assert(gDtDiff.IsZero());
 
-            var sDt1 =  vDt1.Norm().ScalarValue.ReplaceAll("Abs", "Plus");
-            var sDtDiff = (sDt1 - sDt).FullSimplify();
-            Debug.Assert(sDtDiff.IsZero());
+            //var sDt1 =  vDt1.Norm().ScalarValue.ReplaceAll("Abs", "Plus");
+            //var sDtDiff = (sDt1 - sDt).FullSimplify();
+            //Debug.Assert(sDtDiff.IsZero());
 
-            var omega1 = (vDt1.Op(vDt2) / vDt1.Norm().Power(2)).MapScalars(s => s.ReplaceAll("Abs", "Plus").Simplify());
-            var omegaDiff = (omega1 - omega).FullSimplifyScalars();
-            Debug.Assert(omegaDiff.IsZero());
+            //var omega1 = (vDt1.Op(vDt2) / vDt1.Norm().Power(2)).MapScalars(s => s.ReplaceAll("Abs", "Plus").Simplify());
+            //var omegaDiff = (omega1 - omega).FullSimplifyScalars();
+            //Debug.Assert(omegaDiff.IsZero());
 
-            var omegaDt1 = omega.MapScalars(s => s.DifferentiateScalar("t", 1).Simplify());
-            var omegaDtDiff = (omegaDt1 - omegaDt).FullSimplifyScalars();
-            Debug.Assert(omegaDtDiff.IsZero());
+            //var omegaDt1 = omega.MapScalars(s => s.DifferentiateScalar("t", 1).Simplify());
+            //var omegaDtDiff = (omegaDt1 - omegaDt).FullSimplifyScalars();
+            //Debug.Assert(omegaDtDiff.IsZero());
 
-            var k1 = e1.Op(e2).Dual().MapScalars(s => s.ReplaceAll("Abs", "Plus").Simplify()).AsVector();
-            var kDiff = (k1 - k.DivideByNorm()).FullSimplifyScalars();
-            Debug.Assert(kDiff.IsZero());
+            //var k1 = e1.Op(e2).Dual().MapScalars(s => s.ReplaceAll("Abs", "Plus").Simplify()).AsVector();
+            //var kDiff = (k1 - k.DivideByNorm()).FullSimplifyScalars();
+            //Debug.Assert(kDiff.IsZero());
 
             //var a1Diff = (rotor.OmMap(sigma1) - a1).SimplifyScalars();
             //Debug.Assert(a1Diff.IsZero());
@@ -304,6 +314,425 @@ namespace GeometricAlgebraFulcrumLib.Samples.GeometricFrequency
 
             //var a3Diff = (rotor.OmMap(sigma3) - a3).SimplifyScalars();
             //Debug.Assert(a3Diff.IsZero());
+        }
+        
+        public static void Example3()
+        {
+            LaTeXComposer.BasisName = @"\boldsymbol{\sigma}";
+
+            var assumeExpr = @"And[a > 0, b > 0, c > 0, \[Omega] > 0, t >= 0, Element[{a, b, c, \[Omega], t}, Reals]]".ToExpr();
+            //var assumeExpr = @"And[V > 0, \[Omega] > 0, t >= 0, Element[{V, \[Omega], t}, Reals]]".ToExpr();
+            
+            MathematicaInterface.DefaultCas.SetGlobalAssumptions(assumeExpr);
+
+            var sigma1 = GeometricProcessor.CreateVectorBasis(0);
+            var sigma2 = GeometricProcessor.CreateVectorBasis(1);
+            var sigma3 = GeometricProcessor.CreateVectorBasis(2);
+
+            var t = "t".CreateScalar(GeometricProcessor);
+
+            var k = GeometricProcessor.CreateVector("b * c", "a * c", "a * b");
+            //var k = GeometricProcessor.CreateVector("V * V", "V * V", "V * V");
+            var kNormSquared = k.NormSquared();
+            var kUnit = k.DivideByNorm();
+            var kDual = k.Dual().AsBivector();
+            
+            Console.WriteLine($@"$\boldsymbol{{k}} = {LaTeXComposer.GetMultivectorText(k)}$");
+            Console.WriteLine($@"$\left\Vert \boldsymbol{{k}}\right\Vert ^{{2}} = {LaTeXComposer.GetScalarText(kNormSquared)}$");
+            Console.WriteLine($@"$\boldsymbol{{k}}^{{*}} = {LaTeXComposer.GetMultivectorText(kDual)}$");
+            Console.WriteLine();
+
+            //var r1 =
+            //    GeometricProcessor.CreatePureRotor(
+            //        kUnit,
+            //        sigma3,
+            //        true
+            //    ).SimplifyScalars();
+
+            //var e1t0 = r1.OmMap(
+            //    GeometricProcessor.CreateVector("0", "b", "-c")
+            //).DivideByNorm().FullSimplifyScalars();
+
+            //Console.WriteLine($@"$\boldsymbol{{e}}_{{1}}\left(0\right) = {LaTeXComposer.GetMultivectorText(e1t0)}$");
+            //Console.WriteLine();
+
+            //var r2 = GeometricProcessor.CreatePureRotor(
+            //    e1t0,
+            //    sigma1,
+            //    true
+            //).SimplifyScalars();
+
+            //var rotor1 = GeometricProcessor.CreatePureRotor(
+            //    r2.Multivector.Gp(r1.Multivector).FullSimplifyScalars()
+            //);
+
+            var rotor1 =
+                GeometricProcessor.CreatePureRotor(
+                    kUnit,
+                    sigma3,
+                    true
+                ).SimplifyScalars();
+
+            Console.WriteLine($@"$\boldsymbol{{R}}_{{1}} = {LaTeXComposer.GetMultivectorText(rotor1)}$");
+            Console.WriteLine();
+
+            var v1 = Mfs.TrigExpand[@"Sqrt[2] a Cos[\[Omega] t]".ToExpr()];
+            var v2 = Mfs.TrigExpand[@"Sqrt[2] b Cos[\[Omega] t - 2 Pi / 3]".ToExpr()];
+            var v3 = Mfs.TrigExpand[@"Sqrt[2] c Cos[\[Omega] t + 2 Pi / 3]".ToExpr()];
+            
+            var v = rotor1.OmMap(
+                GeometricProcessor
+                    .CreateVector(v1, v2, v3))
+                .MapScalars(s => Mfs.TrigReduce[s].FullSimplify()
+            );
+            //var v = 
+            //    GeometricProcessor
+            //        .CreateVector(v1, v2, v3)
+            //        .MapScalars(s => Mfs.TrigReduce[s].FullSimplify());
+
+            Console.WriteLine($@"$\boldsymbol{{v}}\left(t\right) = {LaTeXComposer.GetMultivectorText(v)}$");
+            Console.WriteLine();
+            
+            //var r1 = 
+            //    rotor1.OmMap(sigma1).SimplifyScalars();
+
+            var vDt1 = v.MapScalars(s => 
+                s.DifferentiateScalar("t", 1).Simplify()
+            );
+
+            var vDt2 = v.MapScalars(s => 
+                s.DifferentiateScalar("t", 2).Simplify()
+            );
+
+            var vDt3 = v.MapScalars(s => 
+                s.DifferentiateScalar("t", 3).Simplify()
+            );
+
+            Console.WriteLine($@"$\boldsymbol{{v}}^{{\prime}}\left(t\right) = {LaTeXComposer.GetMultivectorText(vDt1)}$");
+            Console.WriteLine($@"$\boldsymbol{{v}}^{{\prime\prime}}\left(t\right) = {LaTeXComposer.GetMultivectorText(vDt2)}$");
+            Console.WriteLine($@"$\boldsymbol{{v}}^{{\prime\prime\prime}}\left(t\right) = {LaTeXComposer.GetMultivectorText(vDt3)}$");
+            Console.WriteLine();
+
+            //var g = GeometricProcessor.CreateScalar(
+            //    @"-(Cos[2*t*\[Omega]]*(2*a^2 - b^2 - c^2)) + Sqrt[3]*Sin[2*t*\[Omega]]*(b^2 - c^2) + 2*(a^2 + b^2 + c^2)"
+            //);
+
+            //var gDt = GeometricProcessor.CreateScalar(
+            //    @"2 \[Omega] (2 a^2 - b^2 - c^2) Sin[2 \[Omega] t] + 2 Sqrt[3] \[Omega] (b^2 - c^2) Cos[2 \[Omega] t]"
+            //);
+
+            var vDt1NormSquared = vDt1.NormSquared();
+
+            Console.WriteLine($@"$\left\Vert \boldsymbol{{v}}^{{\prime}}\left(t\right)\right\Vert ^{{2}} = {LaTeXComposer.GetScalarText(vDt1NormSquared)}$");
+            Console.WriteLine();
+
+            //var s = 
+            //    v
+            //    .MapScalars(s => s.ReplaceAll("t", "x"))
+            //    .ArcLength("x", Expr.INT_ZERO, "t".ToExpr())
+            //    .Simplify();
+
+            var sDt = 
+                vDt1.Norm().Simplify();//.ScalarValue.ReplaceAll("Abs", "Plus");
+
+            //Console.WriteLine($@"$s\left(t\right) = {LaTeXComposer.GetScalarText(s)}$");
+            Console.WriteLine($@"$s^{{\prime}}\left(t\right) = {LaTeXComposer.GetScalarText(sDt)}$");
+            Console.WriteLine();
+
+            var omega =
+                (vDt1.Op(vDt2) / vDt1.NormSquared()).SimplifyScalars();//.MapScalars(s => s.ReplaceAll("Abs", "Plus").Simplify());
+
+            var omegaDt = 
+                omega.MapScalars(s => s.DifferentiateScalar("t", 1).Simplify());
+
+            Console.WriteLine($@"$\boldsymbol{{\Omega}}\left(t\right) = {LaTeXComposer.GetMultivectorText(omega)}$");
+            Console.WriteLine($@"$\boldsymbol{{\Omega}}^{{\prime}}\left(t\right) = {LaTeXComposer.GetMultivectorText(omegaDt)}$");
+            Console.WriteLine();
+
+            // Apply GS process
+            var u1 = vDt1;
+            var e1 = u1.DivideByNorm().SimplifyScalars();
+            var e10 = e1.MapScalars(s => s.ReplaceAll(t, Expr.INT_ZERO).FullSimplify());
+            var e1d = (e1.DifferentiateScalars("t") / sDt).SimplifyScalars();
+
+            Console.WriteLine($@"$\boldsymbol{{e}}_{{1}}\left(t\right) = {LaTeXComposer.GetMultivectorText(e1)}$");
+            Console.WriteLine($@"$\dot{{\boldsymbol{{e}}}}_{{1}}\left(t\right) = {LaTeXComposer.GetMultivectorText(e1d)}$");
+            Console.WriteLine();
+
+            var u2 = vDt2 - vDt2.ProjectOn(u1.GetSubspace());
+            var e2 = u2.DivideByNorm().MapScalars(s => s.ReplaceAll("Abs", "Plus")).SimplifyScalars();
+            var e20 = e2.MapScalars(s => s.ReplaceAll(t, Expr.INT_ZERO).FullSimplify());
+            var e2d = (e2.DifferentiateScalars("t") / sDt).SimplifyScalars();
+
+            Console.WriteLine($@"$\boldsymbol{{e}}_{{2}}\left(t\right) = {LaTeXComposer.GetMultivectorText(e2)}$");
+            Console.WriteLine($@"$\dot{{\boldsymbol{{e}}}}_{{2}}\left(t\right) = {LaTeXComposer.GetMultivectorText(e2d)}$");
+            Console.WriteLine();
+
+            var u3 = vDt3 - vDt3.ProjectOn(u1.GetSubspace()) - vDt3.ProjectOn(u2.GetSubspace());
+            var e3 = u3.DivideByNorm().SimplifyScalars();
+            var e3d = (e3.DifferentiateScalars("t") / sDt).SimplifyScalars();
+            
+            Console.WriteLine($@"$\boldsymbol{{e}}_{{3}}\left(t\right) = {LaTeXComposer.GetMultivectorText(e3)}$");
+            Console.WriteLine($@"$\dot{{\boldsymbol{{e}}}}_{{3}}\left(t\right) = {LaTeXComposer.GetMultivectorText(e3d)}$");
+            Console.WriteLine();
+
+            var kappa1 = e1d.Sp(e2).Simplify();
+            var kappa2 = e2d.Sp(e3).Simplify();
+
+            Console.WriteLine($@"$\kappa_{{1}}\left(t\right) = {LaTeXComposer.GetScalarText(kappa1)}$");
+            Console.WriteLine($@"$\kappa_{{2}}\left(t\right) = {LaTeXComposer.GetScalarText(kappa2)}$");
+            Console.WriteLine();
+            
+            //var rotor2 =
+            //    GeometricProcessor.CreatePureRotor(
+            //        e1,
+            //        sigma1,
+            //        true
+            //    ).SimplifyScalars();
+            
+            //Console.WriteLine($@"$\boldsymbol{{R}}_{{2}} = {LaTeXComposer.GetMultivectorText(rotor2)}$");
+            //Console.WriteLine();
+
+            //var vRotated = rotor2.OmMap(v).SimplifyScalars();
+
+            //Console.WriteLine($@"$\boldsymbol{{v}}\left(t\right) = {LaTeXComposer.GetMultivectorText(vRotated)}$");
+            //Console.WriteLine();
+
+            //var omegaRotated = rotor2.OmMap(omega).SimplifyScalars();
+            
+            //Console.WriteLine($@"$\boldsymbol{{\Omega}}\left(t\right) = {LaTeXComposer.GetMultivectorText(omegaRotated)}$");
+            //Console.WriteLine();
+        }
+        
+        public static void Example4()
+        {
+            LaTeXComposer.BasisName = @"\boldsymbol{\sigma}";
+
+            //var va1 = "V".ToExpr();
+            //var vb1 = "V".ToExpr();
+            //var vc1 = "V".ToExpr();
+
+            //var va2 = "V".ToExpr();
+            //var vb2 = "V".ToExpr();
+            //var vc2 = "V".ToExpr();
+
+            //var va7 = "V".ToExpr();
+            //var vb7 = "V".ToExpr();
+            //var vc7 = "V".ToExpr();
+
+            //var va1 = "Subscript[V, 1]".ToExpr();
+            //var vb1 = "Subscript[V, 1]".ToExpr();
+            //var vc1 = "Subscript[V, 1]".ToExpr();
+
+            //var va2 = "Subscript[V, 2]".ToExpr();
+            //var vb2 = "Subscript[V, 2]".ToExpr();
+            //var vc2 = "Subscript[V, 2]".ToExpr();
+
+            //var va7 = "Subscript[V, 7]".ToExpr();
+            //var vb7 = "Subscript[V, 7]".ToExpr();
+            //var vc7 = "Subscript[V, 7]".ToExpr();
+
+            var va1 = "Subscript[V, a, 1]".ToExpr();
+            var vb1 = "Subscript[V, b, 1]".ToExpr();
+            var vc1 = "Subscript[V, c, 1]".ToExpr();
+
+            var va2 = "Subscript[V, a, 2]".ToExpr();
+            var vb2 = "Subscript[V, b, 2]".ToExpr();
+            var vc2 = "Subscript[V, c, 2]".ToExpr();
+
+            var va7 = "Subscript[V, a, 7]".ToExpr();
+            var vb7 = "Subscript[V, b, 7]".ToExpr();
+            var vc7 = "Subscript[V, c, 7]".ToExpr();
+
+            var assumeExpr = @$"And[{va1} > 0, {vb1} > 0, {vc1} > 0, {va2} > 0, {vb2} > 0, {vc2} > 0, {va7} > 0, {vb7} > 0, {vc7} > 0, \[Omega] > 0, t >= 0, Element[{{{va1}, {vb1}, {vc1}, {va2}, {vb2}, {vc2}, {va7}, {vb7}, {vc7}, \[Omega], t}}, Reals]]".ToExpr();
+            
+            MathematicaInterface.DefaultCas.SetGlobalAssumptions(assumeExpr);
+
+            var sigma1 = GeometricProcessor.CreateVectorBasis(0);
+            var sigma2 = GeometricProcessor.CreateVectorBasis(1);
+            var sigma3 = GeometricProcessor.CreateVectorBasis(2);
+
+            var t = "t".CreateScalar(GeometricProcessor);
+
+            //var k = GeometricProcessor.CreateVector("b * c", "a * c", "a * b");
+            //var k = GeometricProcessor.CreateVector("V * V", "V * V", "V * V");
+            //var kNormSquared = k.NormSquared();
+            //var kUnit = k.DivideByNorm();
+            //var kDual = k.Dual().AsBivector();
+            
+            //Console.WriteLine($@"$\boldsymbol{{k}} = {LaTeXComposer.GetMultivectorText(k)}$");
+            //Console.WriteLine($@"$\left\Vert \boldsymbol{{k}}\right\Vert ^{{2}} = {LaTeXComposer.GetScalarText(kNormSquared)}$");
+            //Console.WriteLine($@"$\boldsymbol{{k}}^{{*}} = {LaTeXComposer.GetMultivectorText(kDual)}$");
+            //Console.WriteLine();
+
+            //var r1 =
+            //    GeometricProcessor.CreatePureRotor(
+            //        kUnit,
+            //        sigma3,
+            //        true
+            //    ).SimplifyScalars();
+
+            //var e1t0 = r1.OmMap(
+            //    GeometricProcessor.CreateVector("0", "b", "-c")
+            //).DivideByNorm().FullSimplifyScalars();
+
+            //Console.WriteLine($@"$\boldsymbol{{e}}_{{1}}\left(0\right) = {LaTeXComposer.GetMultivectorText(e1t0)}$");
+            //Console.WriteLine();
+
+            //var r2 = GeometricProcessor.CreatePureRotor(
+            //    e1t0,
+            //    sigma1,
+            //    true
+            //).SimplifyScalars();
+
+            //var rotor1 = GeometricProcessor.CreatePureRotor(
+            //    r2.Multivector.Gp(r1.Multivector).FullSimplifyScalars()
+            //);
+
+            //var rotor1 =
+            //    GeometricProcessor.CreatePureRotor(
+            //        kUnit,
+            //        sigma3,
+            //        true
+            //    ).SimplifyScalars();
+
+            //Console.WriteLine($@"$\boldsymbol{{R}}_{{1}} = {LaTeXComposer.GetMultivectorText(rotor1)}$");
+            //Console.WriteLine();
+
+            var v1 = Mfs.TrigExpand[@$"Sqrt[2] ({va1} Cos[\[Omega] t] + {va2} Cos[2 \[Omega] t] + {va7} Cos[7 \[Omega] t])".ToExpr()];
+            var v2 = Mfs.TrigExpand[@$"Sqrt[2] ({vb1} Cos[\[Omega] t - 2 Pi / 3] + {vb2} Cos[2 (\[Omega] t - 2 Pi / 3)] + {vb7} Cos[7 (\[Omega] t - 2 Pi / 3)])".ToExpr()];
+            var v3 = Mfs.TrigExpand[@$"Sqrt[2] ({vc1} Cos[\[Omega] t + 2 Pi / 3] + {vc2} Cos[2 (\[Omega] t + 2 Pi / 3)] + {vc7} Cos[7 (\[Omega] t + 2 Pi / 3)])".ToExpr()];
+
+            //var v = rotor1.OmMap(
+            //    GeometricProcessor.CreateVector(v1, v2, v3)).MapScalars(s => Mfs.TrigReduce[s].FullSimplify()
+            //);
+            var v =
+                GeometricProcessor
+                    .CreateVector(v1, v2, v3)
+                    .MapScalars(s => Mfs.TrigReduce[s].FullSimplify());
+
+            Console.WriteLine($@"$\boldsymbol{{v}}\left(t\right) = {LaTeXComposer.GetMultivectorText(v)}$");
+            Console.WriteLine();
+            
+            var vNormSquared = Mfs.TrigReduce[v.NormSquared().ScalarValue].Evaluate();
+
+            Console.WriteLine($@"$\left\Vert \boldsymbol{{v}}\left(t\right)\right\Vert ^{{2}} = {LaTeXComposer.GetScalarText(vNormSquared)}$");
+            Console.WriteLine();
+
+            //var r1 = 
+            //    rotor1.OmMap(sigma1).SimplifyScalars();
+
+            var vDt1 = v.MapScalars(s => 
+                s.DifferentiateScalar("t", 1).Simplify()
+            );
+
+            var vDt2 = v.MapScalars(s => 
+                s.DifferentiateScalar("t", 2).Simplify()
+            );
+
+            var vDt3 = v.MapScalars(s => 
+                s.DifferentiateScalar("t", 3).Simplify()
+            );
+
+            Console.WriteLine($@"$\boldsymbol{{v}}^{{\prime}}\left(t\right) = {LaTeXComposer.GetMultivectorText(vDt1)}$");
+            Console.WriteLine($@"$\boldsymbol{{v}}^{{\prime\prime}}\left(t\right) = {LaTeXComposer.GetMultivectorText(vDt2)}$");
+            Console.WriteLine($@"$\boldsymbol{{v}}^{{\prime\prime\prime}}\left(t\right) = {LaTeXComposer.GetMultivectorText(vDt3)}$");
+            Console.WriteLine();
+
+            //var g = GeometricProcessor.CreateScalar(
+            //    @"-(Cos[2*t*\[Omega]]*(2*a^2 - b^2 - c^2)) + Sqrt[3]*Sin[2*t*\[Omega]]*(b^2 - c^2) + 2*(a^2 + b^2 + c^2)"
+            //);
+
+            //var gDt = GeometricProcessor.CreateScalar(
+            //    @"2 \[Omega] (2 a^2 - b^2 - c^2) Sin[2 \[Omega] t] + 2 Sqrt[3] \[Omega] (b^2 - c^2) Cos[2 \[Omega] t]"
+            //);
+
+            var vDt1NormSquared = Mfs.TrigReduce[Mfs.TrigExpand[vDt1.NormSquared().ScalarValue]].FullSimplify();
+
+            Console.WriteLine($@"$\left\Vert \boldsymbol{{v}}^{{\prime}}\left(t\right)\right\Vert ^{{2}} = {LaTeXComposer.GetScalarText(vDt1NormSquared)}$");
+            Console.WriteLine();
+
+            //var s = 
+            //    v
+            //    .MapScalars(s => s.ReplaceAll("t", "x"))
+            //    .ArcLength("x", Expr.INT_ZERO, "t".ToExpr())
+            //    .Simplify();
+
+            var sDt = 
+                vDt1.Norm().Simplify();//.ScalarValue.ReplaceAll("Abs", "Plus");
+
+            //Console.WriteLine($@"$s\left(t\right) = {LaTeXComposer.GetScalarText(s)}$");
+            Console.WriteLine($@"$s^{{\prime}}\left(t\right) = {LaTeXComposer.GetScalarText(sDt)}$");
+            Console.WriteLine();
+
+            var omega =
+                (vDt1.Op(vDt2) / vDt1.NormSquared()).SimplifyScalars();//.MapScalars(s => s.ReplaceAll("Abs", "Plus").Simplify());
+
+            //var omegaDt = 
+            //    omega.MapScalars(s => s.DifferentiateScalar("t", 1).Simplify());
+
+            var omegaNorm = omega.Norm().Simplify();
+            var omegaBlade = omega / omegaNorm;
+
+            Console.WriteLine($@"$\boldsymbol{{\Omega}}\left(t\right) = {LaTeXComposer.GetMultivectorText(omega)}$");
+            Console.WriteLine($@"$\left\Vert \boldsymbol{{\Omega}}\left(t\right)\right\Vert ^{{2}} = {LaTeXComposer.GetScalarText(omegaNorm)}$");
+            Console.WriteLine($@"$\widehat{{\boldsymbol{{\Omega}}}}\left(t\right) = {LaTeXComposer.GetMultivectorText(omegaBlade)}$");
+            //Console.WriteLine($@"$\boldsymbol{{\Omega}}^{{\prime}}\left(t\right) = {LaTeXComposer.GetMultivectorText(omegaDt)}$");
+            Console.WriteLine();
+
+            //// Apply GS process
+            //var u1 = vDt1;
+            //var e1 = u1.DivideByNorm().SimplifyScalars();
+            //var e10 = e1.MapScalars(s => s.ReplaceAll(t, Expr.INT_ZERO).FullSimplify());
+            //var e1d = (e1.DifferentiateScalars("t") / sDt).SimplifyScalars();
+
+            //Console.WriteLine($@"$\boldsymbol{{e}}_{{1}}\left(t\right) = {LaTeXComposer.GetMultivectorText(e1)}$");
+            //Console.WriteLine($@"$\dot{{\boldsymbol{{e}}}}_{{1}}\left(t\right) = {LaTeXComposer.GetMultivectorText(e1d)}$");
+            //Console.WriteLine();
+
+            //var u2 = vDt2 - vDt2.ProjectOn(u1.GetSubspace());
+            //var e2 = u2.DivideByNorm().MapScalars(s => s.ReplaceAll("Abs", "Plus")).SimplifyScalars();
+            //var e20 = e2.MapScalars(s => s.ReplaceAll(t, Expr.INT_ZERO).FullSimplify());
+            //var e2d = (e2.DifferentiateScalars("t") / sDt).SimplifyScalars();
+
+            //Console.WriteLine($@"$\boldsymbol{{e}}_{{2}}\left(t\right) = {LaTeXComposer.GetMultivectorText(e2)}$");
+            //Console.WriteLine($@"$\dot{{\boldsymbol{{e}}}}_{{2}}\left(t\right) = {LaTeXComposer.GetMultivectorText(e2d)}$");
+            //Console.WriteLine();
+
+            //var u3 = vDt3 - vDt3.ProjectOn(u1.GetSubspace()) - vDt3.ProjectOn(u2.GetSubspace());
+            //var e3 = u3.DivideByNorm().SimplifyScalars();
+            //var e3d = (e3.DifferentiateScalars("t") / sDt).SimplifyScalars();
+            
+            //Console.WriteLine($@"$\boldsymbol{{e}}_{{3}}\left(t\right) = {LaTeXComposer.GetMultivectorText(e3)}$");
+            //Console.WriteLine($@"$\dot{{\boldsymbol{{e}}}}_{{3}}\left(t\right) = {LaTeXComposer.GetMultivectorText(e3d)}$");
+            //Console.WriteLine();
+
+            //var kappa1 = e1d.Sp(e2).Simplify();
+            //var kappa2 = e2d.Sp(e3).Simplify();
+
+            //Console.WriteLine($@"$\kappa_{{1}}\left(t\right) = {LaTeXComposer.GetScalarText(kappa1)}$");
+            //Console.WriteLine($@"$\kappa_{{2}}\left(t\right) = {LaTeXComposer.GetScalarText(kappa2)}$");
+            //Console.WriteLine();
+            
+            //var rotor2 =
+            //    GeometricProcessor.CreatePureRotor(
+            //        e1,
+            //        sigma1,
+            //        true
+            //    ).SimplifyScalars();
+            
+            //Console.WriteLine($@"$\boldsymbol{{R}}_{{2}} = {LaTeXComposer.GetMultivectorText(rotor2)}$");
+            //Console.WriteLine();
+
+            //var vRotated = rotor2.OmMap(v).SimplifyScalars();
+
+            //Console.WriteLine($@"$\boldsymbol{{v}}\left(t\right) = {LaTeXComposer.GetMultivectorText(vRotated)}$");
+            //Console.WriteLine();
+
+            //var omegaRotated = rotor2.OmMap(omega).SimplifyScalars();
+            
+            //Console.WriteLine($@"$\boldsymbol{{\Omega}}\left(t\right) = {LaTeXComposer.GetMultivectorText(omegaRotated)}$");
+            //Console.WriteLine();
         }
     }
 }

@@ -31,11 +31,11 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Versors
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public abstract IVersor<T> GetVersorInverse();
 
-        public abstract Multivector<T> GetMultivector();
+        public abstract GaMultivector<T> GetMultivector();
         
-        public abstract Multivector<T> GetMultivectorReverse();
+        public abstract GaMultivector<T> GetMultivectorReverse();
         
-        public abstract Multivector<T> GetMultivectorInverse();
+        public abstract GaMultivector<T> GetMultivectorInverse();
         
         public abstract IMultivectorStorage<T> GetMultivectorStorage();
 
@@ -51,7 +51,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Versors
 
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Vector<T> OmMapBasisVector(ulong index)
+        public override GaVector<T> OmMapBasisVector(ulong index)
         {
             return OmMap(
                 GeometricProcessor.CreateVectorBasis(index)
@@ -59,7 +59,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Versors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Bivector<T> OmMapBasisBivector(ulong index)
+        public override GaBivector<T> OmMapBasisBivector(ulong index)
         {
             return OmMap(
                 GeometricProcessor.CreateBivectorBasis(index)
@@ -67,7 +67,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Versors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Bivector<T> OmMapBasisBivector(ulong index1, ulong index2)
+        public override GaBivector<T> OmMapBasisBivector(ulong index1, ulong index2)
         {
             if (index1 == index2)
                 return GeometricProcessor.CreateBivectorZero();
@@ -80,7 +80,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Versors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override KVector<T> OmMapBasisBlade(ulong id)
+        public override GaKVector<T> OmMapBasisBlade(ulong id)
         {
             return OmMap(
                 GeometricProcessor.CreateKVectorBasis(id)
@@ -88,7 +88,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Versors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override KVector<T> OmMapBasisBlade(uint grade, ulong index)
+        public override GaKVector<T> OmMapBasisBlade(uint grade, ulong index)
         {
             return OmMap(
                 GeometricProcessor.CreateKVectorBasis(grade, index)

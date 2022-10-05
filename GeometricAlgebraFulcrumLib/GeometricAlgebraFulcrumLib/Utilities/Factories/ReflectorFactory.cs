@@ -7,7 +7,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
     public static class ReflectorFactory
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static PureReflector<T> CreatePureReflector<T>(this Vector<T> vector)
+        public static PureReflector<T> CreatePureReflector<T>(this GaVector<T> vector)
         {
             return PureReflector<T>.Create(vector);
         }

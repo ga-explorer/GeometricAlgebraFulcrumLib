@@ -33,7 +33,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Frames
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static BasisKVectorFrame<T> Create(IGeometricAlgebraProcessor<T> geometricProcessor, IEnumerable<KVector<T>> kVectorList)
+        internal static BasisKVectorFrame<T> Create(IGeometricAlgebraProcessor<T> geometricProcessor, IEnumerable<GaKVector<T>> kVectorList)
         {
             var kVectorArray = 
                 kVectorList.Select(v => v.KVectorStorage).ToArray();
@@ -81,7 +81,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Frames
         public int Count 
             => (int) GeometricProcessor.GaSpaceDimension;
 
-        public KVector<T> this[int index]
+        public GaKVector<T> this[int index]
         {
             get => _kVectorArray[index].CreateKVector(GeometricProcessor);
             set => _kVectorArray[index] = value.KVectorStorage ?? throw new ArgumentNullException(nameof(value));
@@ -109,7 +109,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Frames
         
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public BasisKVectorFrame<T> MapAsBasisUsing(Func<KVector<T>, KVector<T>> vectorMapping)
+        public BasisKVectorFrame<T> MapAsBasisUsing(Func<GaKVector<T>, GaKVector<T>> vectorMapping)
         {
             var vectorArray = 
                 Count
@@ -122,7 +122,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Frames
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerator<KVector<T>> GetEnumerator()
+        public IEnumerator<GaKVector<T>> GetEnumerator()
         {
             return _kVectorArray.Select(
                 v => v.CreateKVector(GeometricProcessor)

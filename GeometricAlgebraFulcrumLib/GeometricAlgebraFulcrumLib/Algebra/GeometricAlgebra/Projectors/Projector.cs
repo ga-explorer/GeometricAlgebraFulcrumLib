@@ -22,12 +22,12 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Projectors
     {
         public override IGeometricAlgebraProcessor<T> GeometricProcessor { get; }
         
-        public KVector<T> Blade { get; }
+        public GaKVector<T> Blade { get; }
 
-        public KVector<T> BladePseudoInverse { get; }
+        public GaKVector<T> BladePseudoInverse { get; }
 
 
-        internal Projector([NotNull] KVector<T> blade)
+        internal Projector([NotNull] GaKVector<T> blade)
         {
             GeometricProcessor = blade.GeometricProcessor;
             Blade = blade;
@@ -69,7 +69,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Projectors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Vector<T> OmMapBasisVector(ulong index)
+        public override GaVector<T> OmMapBasisVector(ulong index)
         {
             return OmMap(
                 GeometricProcessor.CreateVectorBasis(index)
@@ -78,7 +78,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Projectors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Bivector<T> OmMapBasisBivector(ulong index)
+        public override GaBivector<T> OmMapBasisBivector(ulong index)
         {
             return OmMap(
                 GeometricProcessor.CreateBivectorBasis(index)
@@ -86,7 +86,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Projectors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Bivector<T> OmMapBasisBivector(ulong index1, ulong index2)
+        public override GaBivector<T> OmMapBasisBivector(ulong index1, ulong index2)
         {
             return OmMap(
                 GeometricProcessor.CreateBivectorBasis(index1, index2)
@@ -94,7 +94,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Projectors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override KVector<T> OmMapBasisBlade(ulong id)
+        public override GaKVector<T> OmMapBasisBlade(ulong id)
         {
             return OmMap(
                 GeometricProcessor.CreateKVectorStorageBasis(id).CreateKVector(GeometricProcessor)
@@ -102,7 +102,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Projectors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override KVector<T> OmMapBasisBlade(uint grade, ulong index)
+        public override GaKVector<T> OmMapBasisBlade(uint grade, ulong index)
         {
             return OmMap(
                 GeometricProcessor.CreateKVectorStorageBasis(grade, index).CreateKVector(GeometricProcessor)
@@ -110,25 +110,25 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Projectors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Vector<T> OmMap(Vector<T> vector)
+        public override GaVector<T> OmMap(GaVector<T> vector)
         {
             return vector.Lcp(BladePseudoInverse).Lcp(Blade).AsVector();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Bivector<T> OmMap(Bivector<T> bivector)
+        public override GaBivector<T> OmMap(GaBivector<T> bivector)
         {
             return bivector.Lcp(BladePseudoInverse).Lcp(Blade).AsBivector();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override KVector<T> OmMap(KVector<T> kVector)
+        public override GaKVector<T> OmMap(GaKVector<T> kVector)
         {
             return kVector.Lcp(BladePseudoInverse).Lcp(Blade);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Multivector<T> OmMap(Multivector<T> multivector)
+        public override GaMultivector<T> OmMap(GaMultivector<T> multivector)
         {
             return multivector.Lcp(BladePseudoInverse).Lcp(Blade);
         }

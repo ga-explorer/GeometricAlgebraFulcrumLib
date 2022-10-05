@@ -26,12 +26,12 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ScaledRotor<T> Create(Multivector<T> mv)
+        public static ScaledRotor<T> Create(GaMultivector<T> mv)
         {
             return new ScaledRotor<T>(mv);
         }
 
-        public static ScaledRotor<T> CreateEuclideanScaledPureRotor(Vector<T> sourceVector, Vector<T> targetVector)
+        public static ScaledRotor<T> CreateEuclideanScaledPureRotor(GaVector<T> sourceVector, GaVector<T> targetVector)
         {
             var norm1 = sourceVector.ENorm();
             var norm2 = targetVector.ENorm();
@@ -62,7 +62,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
         /// <param name="rotationAngle"></param>
         /// <param name="rotationBlade"></param>
         /// <returns></returns>
-        public static ScaledRotor<T> CreateEuclideanScaledPureRotor(IGeometricAlgebraProcessor<T> processor, T rotationAngle, KVector<T> rotationBlade)
+        public static ScaledRotor<T> CreateEuclideanScaledPureRotor(IGeometricAlgebraProcessor<T> processor, T rotationAngle, GaKVector<T> rotationBlade)
         {
             var halfRotationAngle = processor.Divide(rotationAngle, processor.GetScalarFromNumber(2));
             var cosHalfAngle = processor.Cos(halfRotationAngle);
@@ -75,7 +75,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
             return new ScaledRotor<T>(rotorStorage);
         }
 
-        public static ScaledRotor<T> CreateEuclideanScaledPureRotor(Vector<T> inputVector1, Vector<T> inputVector2, Vector<T> rotatedVector1, Vector<T> rotatedVector2)
+        public static ScaledRotor<T> CreateEuclideanScaledPureRotor(GaVector<T> inputVector1, GaVector<T> inputVector2, GaVector<T> rotatedVector1, GaVector<T> rotatedVector2)
         {
             var processor = inputVector1.GeometricProcessor;
 
@@ -100,7 +100,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
             ).GetFinalScaledRotor();
         }
         
-        public static ScaledRotor<T> CreateEuclideanScaledPureRotor(uint baseSpaceDimensions, Vector<T> inputVector1, Vector<T> inputVector2, Vector<T> rotatedVector1, Vector<T> rotatedVector2)
+        public static ScaledRotor<T> CreateEuclideanScaledPureRotor(uint baseSpaceDimensions, GaVector<T> inputVector1, GaVector<T> inputVector2, GaVector<T> rotatedVector1, GaVector<T> rotatedVector2)
         {
             var processor = inputVector1.GeometricProcessor;
 
@@ -156,25 +156,25 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
         
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static implicit operator Multivector<T>(ScaledRotor<T> rotor)
+        public static implicit operator GaMultivector<T>(ScaledRotor<T> rotor)
         {
             return rotor.Multivector;
         }
 
 
-        public Multivector<T> Multivector { get; }
+        public GaMultivector<T> Multivector { get; }
 
-        public Multivector<T> MultivectorReverse { get; }
+        public GaMultivector<T> MultivectorReverse { get; }
 
 
-        private ScaledRotor([NotNull] Multivector<T> mv)
+        private ScaledRotor([NotNull] GaMultivector<T> mv)
             : base(mv.GeometricProcessor)
         {
             Multivector = mv;
             MultivectorReverse = mv.Reverse();
         }
 
-        private ScaledRotor([NotNull] Multivector<T> mv, [NotNull] Multivector<T> mvReverse)
+        private ScaledRotor([NotNull] GaMultivector<T> mv, [NotNull] GaMultivector<T> mvReverse)
             : base(mv.GeometricProcessor)
         {
             Multivector = mv;
@@ -216,44 +216,44 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
         
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Vector<T> OmMap(Vector<T> mv)
+        public override GaVector<T> OmMap(GaVector<T> mv)
         {
             return Multivector.Gp(mv).Gp(MultivectorReverse).GetVectorPart();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Bivector<T> OmMap(Bivector<T> mv)
+        public override GaBivector<T> OmMap(GaBivector<T> mv)
         {
             return Multivector.Gp(mv).Gp(MultivectorReverse).GetBivectorPart();
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override KVector<T> OmMap(KVector<T> mv)
+        public override GaKVector<T> OmMap(GaKVector<T> mv)
         {
             return Multivector.Gp(mv).Gp(MultivectorReverse).GetKVectorPart(mv.Grade);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Multivector<T> OmMap(Multivector<T> mv)
+        public override GaMultivector<T> OmMap(GaMultivector<T> mv)
         {
             return Multivector.Gp(mv).Gp(MultivectorReverse);
         }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Multivector<T> GetMultivector()
+        public override GaMultivector<T> GetMultivector()
         {
             return Multivector;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Multivector<T> GetMultivectorReverse()
+        public override GaMultivector<T> GetMultivectorReverse()
         {
             return MultivectorReverse;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Multivector<T> GetMultivectorInverse()
+        public override GaMultivector<T> GetMultivectorInverse()
         {
             return MultivectorReverse;
         }

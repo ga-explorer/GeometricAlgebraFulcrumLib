@@ -7,7 +7,7 @@ using NumericalGeometryLib.BasicMath.Tuples.Immutable;
 namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves
 {
     public class GrParametricLine3D :
-        IGraphicsParametricCurve3D
+        IGraphicsC1ParametricCurve3D
     {
         public Tuple3D Point { get; }
 

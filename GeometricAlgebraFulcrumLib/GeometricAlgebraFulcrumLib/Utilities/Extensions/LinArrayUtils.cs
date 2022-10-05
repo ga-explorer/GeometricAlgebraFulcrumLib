@@ -431,13 +431,13 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             return vectorsArray;
         }
         
-        public static Vector<T>[] ColumnsToVectorsArray<T>(this T[,] scalarsArray, IScalarAlgebraProcessor<T> scalarProcessor)
+        public static GaVector<T>[] ColumnsToVectorsArray<T>(this T[,] scalarsArray, IScalarAlgebraProcessor<T> scalarProcessor)
         {
             var rowsCount = scalarsArray.GetLength(0);
             var colsCount = scalarsArray.GetLength(1);
 
             var vectorsArray = 
-                new Vector<T>[colsCount];
+                new GaVector<T>[colsCount];
 
             for (var j = 0; j < colsCount; j++)
             {

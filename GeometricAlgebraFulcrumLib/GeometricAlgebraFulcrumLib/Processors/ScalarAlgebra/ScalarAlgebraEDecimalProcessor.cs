@@ -10,11 +10,11 @@ namespace GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra
     /// https://github.com/peteroupc/Numbers
     /// </summary>
     public sealed class ScalarAlgebraEDecimalProcessor
-        : IScalarAlgebraProcessor<EDecimal>
+        : IScalarAlgebraNumericProcessor<EDecimal>
     {
         public static ScalarAlgebraEDecimalProcessor DefaultProcessor { get; }
             = new ScalarAlgebraEDecimalProcessor();
-
+        
 
         public EContext NumericalContext { get; set; }
             = EContext.Binary128;
@@ -48,16 +48,25 @@ namespace GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra
 
         public EDecimal ScalarPi { get; }
 
+        public EDecimal ScalarTwoPi { get; }
+
         public EDecimal ScalarPiOver2 { get; }
 
         public EDecimal ScalarE { get; }
+
+        public EDecimal ScalarDegreeToRadian { get; }
+
+        public EDecimal ScalarRadianToDegree { get; }
 
 
         private ScalarAlgebraEDecimalProcessor()
         {
             ScalarPi = EDecimal.PI(NumericalContext);
+            ScalarTwoPi = EDecimal.PI(NumericalContext) * 2;
             ScalarPiOver2 = EDecimal.PI(NumericalContext) / 2;
             ScalarE = EDecimal.One.Exp(NumericalContext);
+            ScalarDegreeToRadian = EDecimal.PI(NumericalContext) / 180;
+            ScalarRadianToDegree = 180 / EDecimal.PI(NumericalContext);
         }
 
 
@@ -283,9 +292,23 @@ namespace GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public EDecimal Sinc(EDecimal scalar)
+        {
+            return IsZero(scalar) 
+                ? ScalarOne 
+                : Sin(scalar) / scalar;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsValid(EDecimal scalar)
         {
             return !scalar.IsNaN();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsFiniteNumber(EDecimal scalar)
+        {
+            return scalar.IsFinite;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

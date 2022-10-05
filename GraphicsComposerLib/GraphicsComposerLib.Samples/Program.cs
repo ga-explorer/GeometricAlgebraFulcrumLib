@@ -1,5 +1,6 @@
 ﻿using System;
-using GraphicsComposerLib.Samples.Geometry.ParametricShapes;
+using GraphicsComposerLib.Samples.SkiaSharp;
+using GraphicsComposerLib.Samples.Textures;
 
 namespace GraphicsComposerLib.Samples
 {
@@ -7,7 +8,14 @@ namespace GraphicsComposerLib.Samples
     {
         static void Main(string[] args)
         {
-            Sample3.Execute();
+            LaTeXSamples.Example1();
+
+            GrVisualImage3DSamples.Example1();
+            GrVisualImage3DSamples.Example2();
+            GrVisualImage3DSamples.Example3();
+            GrVisualImage3DSamples.Example4();
+
+            //Sample3.Execute();
             //Sample6.Generate(@"D:\Projects\Study\Xeogl\MyWork\Sample6.html");
 
             Console.WriteLine();

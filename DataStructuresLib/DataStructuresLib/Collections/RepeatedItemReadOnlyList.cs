@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace DataStructuresLib.Collections
 {
@@ -24,6 +25,7 @@ namespace DataStructuresLib.Collections
         }
 
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public RepeatedItemReadOnlyList(T itemValue, int count)
         {
             if (count < 0)
@@ -33,12 +35,14 @@ namespace DataStructuresLib.Collections
             Count = count;
         }
 
-        
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IEnumerator<T> GetEnumerator()
         {
             return Enumerable.Repeat(ItemValue, Count).GetEnumerator();
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();

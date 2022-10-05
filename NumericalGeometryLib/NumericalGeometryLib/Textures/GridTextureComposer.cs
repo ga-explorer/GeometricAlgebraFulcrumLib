@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
 
 namespace NumericalGeometryLib.Textures
 {
@@ -28,20 +29,16 @@ namespace NumericalGeometryLib.Textures
 
         public int LineWidth { get; set; } = 1;
 
-        public int ImageWidth
-        {
-            get { return LineWidth * XPattern.Length; }
-        }
+        public int ImageWidth 
+            => LineWidth * XPattern.Length;
 
-        public int ImageHeight
-        {
-            get { return LineWidth * YPattern.Length; }
-        }
+        public int ImageHeight 
+            => LineWidth * YPattern.Length;
 
 
         public Image ComposeImage()
         {
-            var image = new Bitmap(ImageWidth, ImageHeight);
+            var image = new Image<Rgba32>(ImageWidth, ImageHeight);
 
             for (var x = 0; x < ImageWidth; x++)
             {
@@ -52,11 +49,9 @@ namespace NumericalGeometryLib.Textures
                 {
                     var j = y / LineWidth;
 
-                    var c = xFlag || YPattern[j] == '|'
+                    image[x, y] = xFlag || YPattern[j] == '|'
                         ? LineColor
                         : BackgroundColor;
-
-                    image.SetPixel(x, y, c);
                 }
             }
 

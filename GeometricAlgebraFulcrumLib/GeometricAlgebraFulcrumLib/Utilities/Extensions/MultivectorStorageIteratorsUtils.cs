@@ -11,14 +11,14 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 {
     internal static class MultivectorStorageIteratorsUtils
     {
-        public static IEnumerable<GradeLinVectorStorageScalarRecord<T>> GetGbtOutermorphismScaledKVectors<T>(this Multivector<T> mv, IReadOnlyList<VectorStorage<T>> basisVectorMappings)
+        public static IEnumerable<GradeLinVectorStorageScalarRecord<T>> GetGbtOutermorphismScaledKVectors<T>(this GaMultivector<T> mv, IReadOnlyList<VectorStorage<T>> basisVectorMappings)
         {
             return GeoGbtMultivectorOutermorphismStack<T>
                 .Create(basisVectorMappings, mv)
                 .TraverseForScaledKVectors();
         }
 
-        public static IEnumerable<IndexScalarRecord<T>> GetGbtOutermorphismIdScalarRecords<T>(this Multivector<T> mv, IReadOnlyList<VectorStorage<T>> basisVectorMappings)
+        public static IEnumerable<IndexScalarRecord<T>> GetGbtOutermorphismIdScalarRecords<T>(this GaMultivector<T> mv, IReadOnlyList<VectorStorage<T>> basisVectorMappings)
         {
             var scalarProcessor = mv.GeometricProcessor;
             var factorsList = 
@@ -53,7 +53,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         /// <param name="mv1"></param>
         /// <param name="mv2"></param>
         /// <returns></returns>
-        public static IEnumerable<IndexScalarRecord<T>> GetGbtOpIdScalarPairs<T>(this Multivector<T> mv1, Multivector<T> mv2)
+        public static IEnumerable<IndexScalarRecord<T>> GetGbtOpIdScalarPairs<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2)
         {
             var stack = GeoGbtProductsStack2<T>.Create(mv1, mv2);
 
@@ -66,7 +66,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         /// <param name="mv1"></param>
         /// <param name="mv2"></param>
         /// <returns></returns>
-        public static IEnumerable<IndexScalarRecord<T>> GetGbtEGpIdScalarPairs<T>(this Multivector<T> mv1, Multivector<T> mv2)
+        public static IEnumerable<IndexScalarRecord<T>> GetGbtEGpIdScalarPairs<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2)
         {
             var stack = GeoGbtProductsStack2<T>.Create(mv1, mv2);
 
@@ -79,7 +79,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         /// <param name="mv1"></param>
         /// <param name="mv2"></param>
         /// <returns></returns>
-        public static IEnumerable<IndexScalarRecord<T>> GetGbtELcpIdScalarPairs<T>(this Multivector<T> mv1, Multivector<T> mv2)
+        public static IEnumerable<IndexScalarRecord<T>> GetGbtELcpIdScalarPairs<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2)
         {
             var stack = GeoGbtProductsStack2<T>.Create(mv1, mv2);
 
@@ -92,7 +92,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         /// <param name="mv1"></param>
         /// <param name="mv2"></param>
         /// <returns></returns>
-        public static IEnumerable<IndexScalarRecord<T>> GetGbtERcpIdScalarPairs<T>(this Multivector<T> mv1, Multivector<T> mv2)
+        public static IEnumerable<IndexScalarRecord<T>> GetGbtERcpIdScalarPairs<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2)
         {
             var stack = GeoGbtProductsStack2<T>.Create(mv1, mv2);
 
@@ -105,7 +105,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         /// <param name="mv1"></param>
         /// <param name="mv2"></param>
         /// <returns></returns>
-        public static IEnumerable<IndexScalarRecord<T>> GetGbtESpIdScalarPairs<T>(this Multivector<T> mv1, Multivector<T> mv2)
+        public static IEnumerable<IndexScalarRecord<T>> GetGbtESpIdScalarPairs<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2)
         {
             var stack = GeoGbtProductsStack2<T>.Create(mv1, mv2);
 
@@ -118,7 +118,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         /// <param name="mv1"></param>
         /// <param name="mv2"></param>
         /// <returns></returns>
-        public static IEnumerable<IndexScalarRecord<T>> GetGbtEFdpIdScalarPairs<T>(this Multivector<T> mv1, Multivector<T> mv2)
+        public static IEnumerable<IndexScalarRecord<T>> GetGbtEFdpIdScalarPairs<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2)
         {
             var stack = GeoGbtProductsStack2<T>.Create(mv1, mv2);
 
@@ -131,7 +131,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         /// <param name="mv1"></param>
         /// <param name="mv2"></param>
         /// <returns></returns>
-        public static IEnumerable<IndexScalarRecord<T>> GetGbtEHipIdScalarPairs<T>(this Multivector<T> mv1, Multivector<T> mv2)
+        public static IEnumerable<IndexScalarRecord<T>> GetGbtEHipIdScalarPairs<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2)
         {
             var stack = GeoGbtProductsStack2<T>.Create(mv1, mv2);
 
@@ -144,7 +144,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         /// <param name="mv1"></param>
         /// <param name="mv2"></param>
         /// <returns></returns>
-        public static IEnumerable<IndexScalarRecord<T>> GetGbtEAcpIdScalarPairs<T>(this Multivector<T> mv1, Multivector<T> mv2)
+        public static IEnumerable<IndexScalarRecord<T>> GetGbtEAcpIdScalarPairs<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2)
         {
             var stack = GeoGbtProductsStack2<T>.Create(mv1, mv2);
 
@@ -157,28 +157,28 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         /// <param name="mv1"></param>
         /// <param name="mv2"></param>
         /// <returns></returns>
-        public static IEnumerable<IndexScalarRecord<T>> GetGbtECpIdScalarPairs<T>(this Multivector<T> mv1, Multivector<T> mv2)
+        public static IEnumerable<IndexScalarRecord<T>> GetGbtECpIdScalarPairs<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2)
         {
             var stack = GeoGbtProductsStack2<T>.Create(mv1, mv2);
 
             return stack.GetECpIdScalarRecords();
         }
 
-        public static IEnumerable<IndexScalarRecord<T>> GetGbtENorm2IdScalarPairs<T>(this Multivector<T> mv)
+        public static IEnumerable<IndexScalarRecord<T>> GetGbtENorm2IdScalarPairs<T>(this GaMultivector<T> mv)
         {
             var stack = GeoGbtProductsStack2<T>.Create(mv, mv.Reverse());
 
             return stack.GetESpIdScalarRecords();
         }
 
-        public static T ENorm2<T>(this Multivector<T> mv)
+        public static T ENorm2<T>(this GaMultivector<T> mv)
         {
             return mv.GeometricProcessor.Add(
                 mv.GetGbtENorm2IdScalarPairs().Select(t => t.Scalar)
             );
         }
 
-        public static T ENorm<T>(this Multivector<T> mv)
+        public static T ENorm<T>(this GaMultivector<T> mv)
         {
             var scalarProcessor = mv.GeometricProcessor;
 
@@ -189,7 +189,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             );
         }
 
-        public static IEnumerable<BasisTerm<T>> GetGptEInverseIdScalarPairs<T>(this Multivector<T> mv)
+        public static IEnumerable<BasisTerm<T>> GetGptEInverseIdScalarPairs<T>(this GaMultivector<T> mv)
         {
             var mvReverse = mv.Reverse();
 
@@ -216,7 +216,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         /// <param name="mv1"></param>
         /// <param name="mv2"></param>
         /// <returns></returns>
-        public static IEnumerable<IndexScalarRecord<T>> GetGbtGpIdScalarPairs<T>(this Multivector<T> mv1, Multivector<T> mv2, BasisBladeSet basisSet)
+        public static IEnumerable<IndexScalarRecord<T>> GetGbtGpIdScalarPairs<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2, BasisBladeSet basisSet)
         {
             var stack = GeoGbtProductsStack2<T>.Create(mv1, mv2);
 
@@ -230,7 +230,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         /// <param name="mv1"></param>
         /// <param name="mv2"></param>
         /// <returns></returns>
-        public static IEnumerable<IndexScalarRecord<T>> GetGbtLcpIdScalarPairs<T>(this Multivector<T> mv1, Multivector<T> mv2, BasisBladeSet basisSet)
+        public static IEnumerable<IndexScalarRecord<T>> GetGbtLcpIdScalarPairs<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2, BasisBladeSet basisSet)
         {
             var stack = GeoGbtProductsStack2<T>.Create(mv1, mv2);
 
@@ -244,7 +244,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         /// <param name="mv1"></param>
         /// <param name="mv2"></param>
         /// <returns></returns>
-        public static IEnumerable<IndexScalarRecord<T>> GetGbtRcpIdScalarPairs<T>(this Multivector<T> mv1, Multivector<T> mv2, BasisBladeSet basisSet)
+        public static IEnumerable<IndexScalarRecord<T>> GetGbtRcpIdScalarPairs<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2, BasisBladeSet basisSet)
         {
             var stack = GeoGbtProductsStack2<T>.Create(mv1, mv2);
 
@@ -258,7 +258,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         /// <param name="mv1"></param>
         /// <param name="mv2"></param>
         /// <returns></returns>
-        public static IEnumerable<IndexScalarRecord<T>> GetGbtSpIdScalarPairs<T>(this Multivector<T> mv1, Multivector<T> mv2, BasisBladeSet basisSet)
+        public static IEnumerable<IndexScalarRecord<T>> GetGbtSpIdScalarPairs<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2, BasisBladeSet basisSet)
         {
             var stack = GeoGbtProductsStack2<T>.Create(mv1, mv2);
 
@@ -272,7 +272,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         /// <param name="mv1"></param>
         /// <param name="mv2"></param>
         /// <returns></returns>
-        public static IEnumerable<IndexScalarRecord<T>> GetGbtFdpIdScalarPairs<T>(this Multivector<T> mv1, Multivector<T> mv2, BasisBladeSet basisSet)
+        public static IEnumerable<IndexScalarRecord<T>> GetGbtFdpIdScalarPairs<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2, BasisBladeSet basisSet)
         {
             var stack = GeoGbtProductsStack2<T>.Create(mv1, mv2);
 
@@ -286,7 +286,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         /// <param name="mv1"></param>
         /// <param name="mv2"></param>
         /// <returns></returns>
-        public static IEnumerable<IndexScalarRecord<T>> GetGbtHipIdScalarPairs<T>(this Multivector<T> mv1, Multivector<T> mv2, BasisBladeSet basisSet)
+        public static IEnumerable<IndexScalarRecord<T>> GetGbtHipIdScalarPairs<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2, BasisBladeSet basisSet)
         {
             var stack = GeoGbtProductsStack2<T>.Create(mv1, mv2);
 
@@ -300,7 +300,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         /// <param name="mv1"></param>
         /// <param name="mv2"></param>
         /// <returns></returns>
-        public static IEnumerable<IndexScalarRecord<T>> GetGbtAcpIdScalarPairs<T>(this Multivector<T> mv1, Multivector<T> mv2, BasisBladeSet basisSet)
+        public static IEnumerable<IndexScalarRecord<T>> GetGbtAcpIdScalarPairs<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2, BasisBladeSet basisSet)
         {
             var stack = GeoGbtProductsStack2<T>.Create(mv1, mv2);
 
@@ -314,28 +314,28 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         /// <param name="mv1"></param>
         /// <param name="mv2"></param>
         /// <returns></returns>
-        public static IEnumerable<IndexScalarRecord<T>> GetGbtCpIdScalarPairs<T>(this Multivector<T> mv1, Multivector<T> mv2, BasisBladeSet basisSet)
+        public static IEnumerable<IndexScalarRecord<T>> GetGbtCpIdScalarPairs<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2, BasisBladeSet basisSet)
         {
             var stack = GeoGbtProductsStack2<T>.Create(mv1, mv2);
 
             return stack.GetCpIdScalarRecords(basisSet);
         }
 
-        public static IEnumerable<IndexScalarRecord<T>> GetGbtNorm2IdScalarPairs<T>(this Multivector<T> mv, BasisBladeSet basisSet)
+        public static IEnumerable<IndexScalarRecord<T>> GetGbtNorm2IdScalarPairs<T>(this GaMultivector<T> mv, BasisBladeSet basisSet)
         {
             var stack = GeoGbtProductsStack2<T>.Create(mv, mv.Reverse());
 
             return stack.GetSpIdScalarRecords(basisSet);
         }
 
-        public static T Norm2<T>(this Multivector<T> mv, BasisBladeSet basisSet)
+        public static T Norm2<T>(this GaMultivector<T> mv, BasisBladeSet basisSet)
         {
             return mv.GeometricProcessor.Add(
                 mv.GetGbtNorm2IdScalarPairs(basisSet).Select(t => t.Scalar)
             );
         }
 
-        public static T Norm<T>(this Multivector<T> mv, BasisBladeSet basisSet)
+        public static T Norm<T>(this GaMultivector<T> mv, BasisBladeSet basisSet)
         {
             var scalarProcessor = mv.GeometricProcessor;
 
@@ -344,7 +344,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             ));
         }
 
-        public static IEnumerable<BasisTerm<T>> GetGptInverseIdScalarPairs<T>(this Multivector<T> mv, BasisBladeSet basisSet)
+        public static IEnumerable<BasisTerm<T>> GetGptInverseIdScalarPairs<T>(this GaMultivector<T> mv, BasisBladeSet basisSet)
         {
             var mvReverse = mv.Reverse();
 

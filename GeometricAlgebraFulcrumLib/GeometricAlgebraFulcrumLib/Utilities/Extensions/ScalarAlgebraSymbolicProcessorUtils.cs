@@ -2,9 +2,9 @@
 using System.Runtime.CompilerServices;
 using AngouriMath;
 using CodeComposerLib.SyntaxTree.Expressions;
-using GeometricAlgebraFulcrumLib.Algebra.SymbolicAlgebra;
-using GeometricAlgebraFulcrumLib.Algebra.SymbolicAlgebra.Composite;
-using GeometricAlgebraFulcrumLib.Processors.SymbolicAlgebra.Context;
+using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
+using GeometricAlgebraFulcrumLib.MetaProgramming.Expressions;
+using GeometricAlgebraFulcrumLib.MetaProgramming.Expressions.Composite;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 {
@@ -53,7 +53,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             return SteExpression.CreateFunction(expr.GetType().Name, args);
         }
 
-        public static ISymbolicExpression ToSymbolicExpression(this Entity expr, SymbolicContext context)
+        public static IMetaExpression ToSymbolicExpression(this Entity expr, MetaContext context)
         {
             var isNumber = expr.EvaluableNumerical;
             var isSymbol = expr.IsSymbolic;
@@ -68,7 +68,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                 return context.GetVariable(expr.ToString());
 
             if (expr.DirectChildren.Count == 0)
-                return SymbolicFunction.CreateNonAssociative(
+                return MetaExpressionFunction.CreateNonAssociative(
                     context, 
                     expr.GetType().Name
                 );
@@ -87,11 +87,11 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                 "Times" => context.FunctionHeadSpecsFactory.Times.CreateFunction(args),
                 "Divide" => context.FunctionHeadSpecsFactory.Divide.CreateFunction(args),
                 
-                _ => SymbolicFunction.CreateNonAssociative(context, functionName, args)
+                _ => MetaExpressionFunction.CreateNonAssociative(context, functionName, args)
             };
         }
 
-        public static ISymbolicExpression ToSymbolicExpression(this SymbolicContext context, Entity expr)
+        public static IMetaExpression ToSymbolicExpression(this MetaContext context, Entity expr)
         {
             return ToSymbolicExpression(expr, context);
         }

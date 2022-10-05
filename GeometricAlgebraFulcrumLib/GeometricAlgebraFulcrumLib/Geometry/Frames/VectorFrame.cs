@@ -29,7 +29,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Frames
             );
         }
 
-        internal static VectorFrame<T> Create(IGeometricAlgebraProcessor<T> geometricProcessor, VectorFrameSpecs frameSpecs, IEnumerable<Vector<T>> vectorList)
+        internal static VectorFrame<T> Create(IGeometricAlgebraProcessor<T> geometricProcessor, VectorFrameSpecs frameSpecs, IEnumerable<GaVector<T>> vectorList)
         {
             return new VectorFrame<T>(
                 geometricProcessor,
@@ -53,7 +53,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Frames
 
         public IGeometricAlgebraProcessor<T> GeometricProcessor { get; }
 
-        public Vector<T> this[int index]
+        public GaVector<T> this[int index]
         {
             get => _vectorList[index].CreateVector(GeometricProcessor);
             set => _vectorList[index] = 
@@ -310,7 +310,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Frames
             Debug.Assert(IsOrthonormal() && targetFrame.IsOrthonormal());
             Debug.Assert(HasSameHandedness(targetFrame));
 
-            var sourceFrame = new Vector<T>[Count];
+            var sourceFrame = new GaVector<T>[Count];
 
             for (var i = 0; i < Count; i++)
                 sourceFrame[i] = _vectorList[i].CreateVector(GeometricProcessor);
@@ -337,7 +337,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Frames
             Debug.Assert(HasSameHandedness(targetFrame));
             //Debug.Assert(GeoPoTNumUtils.ValidateIndexPermutationList(basisRotationOrderList));
 
-            var sourceFrame = new Vector<T>[Count];
+            var sourceFrame = new GaVector<T>[Count];
 
             for (var i = 0; i < Count; i++)
                 sourceFrame[i] = _vectorList[i].CreateVector(GeometricProcessor);
@@ -512,7 +512,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Frames
             return ipm;
         }
 
-        public IEnumerator<Vector<T>> GetEnumerator()
+        public IEnumerator<GaVector<T>> GetEnumerator()
         {
             return _vectorList.Select(
                 v => v.CreateVector(GeometricProcessor)

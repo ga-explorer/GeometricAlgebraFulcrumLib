@@ -18,6 +18,19 @@
     /// <typeparam name="T"></typeparam>
     public sealed record Quad<T>(T Item1, T Item2, T Item3, T Item4) : IQuad<T>;
 
+    /// <summary>
+    /// This structure represents an immutable quint of items of the same type
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public sealed record Quint<T>(T Item1, T Item2, T Item3, T Item4, T Item5) : IQuint<T>;
+
+    /// <summary>
+    /// This structure represents an immutable hexad of items of the same type
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public sealed record Hexad<T>(T Item1, T Item2, T Item3, T Item4, T Item5, T Item6) : IHexad<T>;
+    
+
     public sealed record Pair2D<T>(T Item11, T Item12, T Item21, T Item22) : IPair2D<T>;
 
 }

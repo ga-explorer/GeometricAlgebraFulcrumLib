@@ -33,7 +33,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Frames
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static BasisVectorFrame<T> Create(IGeometricAlgebraProcessor<T> geometricProcessor, IEnumerable<Vector<T>> vectorList)
+        internal static BasisVectorFrame<T> Create(IGeometricAlgebraProcessor<T> geometricProcessor, IEnumerable<GaVector<T>> vectorList)
         {
             var vectorArray = 
                 vectorList.Select(v => v.VectorStorage).ToArray();
@@ -56,7 +56,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Frames
         public int Count 
             => (int) GeometricProcessor.VSpaceDimension;
 
-        public Vector<T> this[int index]
+        public GaVector<T> this[int index]
         {
             get => _vectorArray[index].CreateVector(GeometricProcessor);
             set => _vectorArray[index] = value ?? throw new ArgumentNullException(nameof(value));
@@ -111,7 +111,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Frames
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public BasisVectorFrame<T> MapAsBasisUsing(Func<Vector<T>, Vector<T>> vectorMapping)
+        public BasisVectorFrame<T> MapAsBasisUsing(Func<GaVector<T>, GaVector<T>> vectorMapping)
         {
             var vectorArray = 
                 Count
@@ -123,7 +123,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Frames
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public BasisVectorFrame<T> MapAsBasisUsing(Func<int, Vector<T>, Vector<T>> vectorMapping)
+        public BasisVectorFrame<T> MapAsBasisUsing(Func<int, GaVector<T>, GaVector<T>> vectorMapping)
         {
             var vectorArray = 
                 Count
@@ -148,7 +148,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Frames
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerator<Vector<T>> GetEnumerator()
+        public IEnumerator<GaVector<T>> GetEnumerator()
         {
             return _vectorArray.Select(
                 v => v.CreateVector(GeometricProcessor)

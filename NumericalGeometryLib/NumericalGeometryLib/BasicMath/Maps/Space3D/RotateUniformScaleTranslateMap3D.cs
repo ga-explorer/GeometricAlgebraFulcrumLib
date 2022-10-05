@@ -32,7 +32,7 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
             get => _scalingFactor;
             set
             {
-                if (value < 0 || double.IsNaN(value) || double.IsInfinity(value))
+                if (value is < 0 or Double.NaN || double.IsInfinity(value))
                     throw new InvalidOperationException(nameof(value));
 
                 _scalingFactor = value;

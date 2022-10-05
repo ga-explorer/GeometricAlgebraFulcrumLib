@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Numerics;
 using System.Runtime.CompilerServices;
@@ -412,23 +411,6 @@ namespace DataStructuresLib.Random
                 xValues,
                 yValues
             );
-        }
-
-        public static void SaveHistogramImage(this Histogram hist, string fileName, double yMax)
-        {
-            var imageSize = hist.BucketCount;
-
-            var image = new Bitmap(imageSize, imageSize);
-
-            for (var j = 0; j < imageSize; j++)
-            {
-                var y = imageSize * (hist[j].Count / yMax);
-
-                for (var i = 0; i < y; i++)
-                    image.SetPixel(j, imageSize - i - 1, Color.DarkBlue);
-            }
-
-            image.Save(fileName);
         }
 
         public static double MaxBucketCount(this Histogram hist)

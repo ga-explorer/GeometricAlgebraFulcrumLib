@@ -451,12 +451,10 @@ namespace TextComposerLib.Settings
         {
             var xdoc = ToXDocument();
 
-            using (var text = new StringWriter())
-            {
-                xdoc.Save(text);
+            using var text = new StringWriter();
+            xdoc.Save(text);
 
-                return text.ToString();
-            }
+            return text.ToString();
         }
 
         /// <summary>
@@ -538,12 +536,10 @@ namespace TextComposerLib.Settings
         {
             var xdoc = ChainToXDocument();
 
-            using (var text = new StringWriter())
-            {
-                xdoc.Save(text);
+            using var text = new StringWriter();
+            xdoc.Save(text);
 
-                return text.ToString();
-            }
+            return text.ToString();
         }
 
         /// <summary>
@@ -784,12 +780,10 @@ namespace TextComposerLib.Settings
             {
                 var text = File.ReadAllText(FilePath, XmlConverter.TextEncoding);
 
-                using (var textReader = new StringReader(text))
-                {
-                    var xdoc = XDocument.Load(textReader);
+                using var textReader = new StringReader(text);
+                var xdoc = XDocument.Load(textReader);
 
-                    UpdateFrom(xdoc, ignoreChain);
-                }
+                UpdateFrom(xdoc, ignoreChain);
 
                 return string.Empty;
             }
@@ -812,12 +806,10 @@ namespace TextComposerLib.Settings
             {
                 var text = File.ReadAllText(filePath, XmlConverter.TextEncoding);
 
-                using (var textReader = new StringReader(text))
-                {
-                    var xdoc = XDocument.Load(textReader);
+                using var textReader = new StringReader(text);
+                var xdoc = XDocument.Load(textReader);
 
-                    UpdateFrom(xdoc, ignoreChain);
-                }
+                UpdateFrom(xdoc, ignoreChain);
 
                 return string.Empty;
             }

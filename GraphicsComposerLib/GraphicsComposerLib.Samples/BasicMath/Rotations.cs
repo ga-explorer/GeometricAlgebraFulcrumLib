@@ -1,8 +1,8 @@
 ﻿using System;
-using EuclideanGeometryLib.BasicMath;
-using EuclideanGeometryLib.BasicMath.Constants;
-using EuclideanGeometryLib.BasicMath.Matrices;
-using EuclideanGeometryLib.BasicMath.Tuples.Immutable;
+using NumericalGeometryLib.BasicMath;
+using NumericalGeometryLib.BasicMath.Constants;
+using NumericalGeometryLib.BasicMath.Matrices;
+using NumericalGeometryLib.BasicMath.Tuples.Immutable;
 
 namespace GraphicsComposerLib.Samples.BasicMath
 {

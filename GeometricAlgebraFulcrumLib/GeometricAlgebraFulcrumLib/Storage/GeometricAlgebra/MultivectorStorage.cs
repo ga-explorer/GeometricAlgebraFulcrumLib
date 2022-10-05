@@ -682,7 +682,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
 
             if (indexScalarDictionary.Count > 0)
             {
-                vector = VectorStorage<T>.CreateVector(indexScalarDictionary);
+                vector = VectorStorage<T>.CreateVectorStorage(indexScalarDictionary);
                 return true;
             }
 
@@ -873,7 +873,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
                         pair => pair.Scalar
                     );
 
-            return VectorStorage<T>.CreateVector(indexScalarDictionary);
+            return VectorStorage<T>.CreateVectorStorage(indexScalarDictionary);
         }
 
         public VectorStorage<T> GetVectorPart(Func<T, bool> scalarSelection)
@@ -887,7 +887,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
                         pair => pair.Scalar
                     );
 
-            return VectorStorage<T>.CreateVector(indexScalarDictionary);
+            return VectorStorage<T>.CreateVectorStorage(indexScalarDictionary);
         }
 
         public VectorStorage<T> GetVectorPart(Func<ulong, T, bool> indexScalarSelection)
@@ -901,7 +901,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
                         pair => pair.Scalar
                     );
 
-            return VectorStorage<T>.CreateVector(indexScalarDictionary);
+            return VectorStorage<T>.CreateVectorStorage(indexScalarDictionary);
         }
 
         public VectorStorage<T> GetVectorPart(Func<ulong, bool> indexSelection)
@@ -915,7 +915,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
                         pair => pair.Scalar
                     );
 
-            return VectorStorage<T>.CreateVector(indexScalarDictionary);
+            return VectorStorage<T>.CreateVectorStorage(indexScalarDictionary);
         }
 
         public BivectorStorage<T> GetBivectorPart()

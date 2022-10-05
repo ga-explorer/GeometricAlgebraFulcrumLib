@@ -1,5 +1,5 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Processors.SymbolicAlgebra.Context;
+using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
@@ -10,13 +10,13 @@ namespace GeometricAlgebraFulcrumLib.Samples.CodeComposer
         public static void Execute()
         {
             var context = 
-                new SymbolicContext()
+                new MetaContext()
                 {
                     MergeExpressions = false
                 };
 
             var processor = 
-                context.AttachGeometricAlgebraEuclideanProcessor(63);
+                context.CreateGeometricAlgebraEuclideanProcessor(63);
 
             var u =
                 context.ParameterVariablesFactory.CreateVector(

@@ -1,11 +1,11 @@
-﻿using EuclideanGeometryLib.BasicMath.Tuples.Immutable;
+﻿using NumericalGeometryLib.BasicMath.Tuples.Immutable;
 using GraphicsComposerLib.Geometry.Meshes.PathsMesh;
 using GraphicsComposerLib.Geometry.Meshes.PathsMesh.Space3D;
 using GraphicsComposerLib.Geometry.Meshes.PointsPath.Space3D;
 using GraphicsComposerLib.Geometry.Primitives;
 using GraphicsComposerLib.Geometry.Primitives.Lines;
 using GraphicsComposerLib.Geometry.Primitives.Triangles;
-using GraphicsComposerLib.WebGl.Xeogl;
+using GraphicsComposerLib.Rendering.Xeogl;
 
 namespace GraphicsComposerLib.Samples.Xeogl
 {

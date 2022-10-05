@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
+using SixLabors.ImageSharp;
 using System.IO;
 using DataStructuresLib.Random;
-using EuclideanGeometryLib.Accelerators.BIH;
-using EuclideanGeometryLib.BasicShapes.Lines;
-using EuclideanGeometryLib.BasicShapes.Lines.Immutable;
-using EuclideanGeometryLib.Borders;
-using EuclideanGeometryLib.Borders.Space2D.Immutable;
-using EuclideanGeometryLib.Random;
-using GraphicsComposerLib.Svg.DrawingBoard;
+using GraphicsComposerLib.Rendering.Svg.DrawingBoard;
+using NumericalGeometryLib.Accelerators.BIH;
+using NumericalGeometryLib.BasicShapes.Lines;
+using NumericalGeometryLib.BasicShapes.Lines.Immutable;
+using NumericalGeometryLib.Borders;
+using NumericalGeometryLib.Borders.Space2D.Immutable;
+using NumericalGeometryLib.Random;
 
 namespace GraphicsComposerLib.Samples.Accelerators
 {

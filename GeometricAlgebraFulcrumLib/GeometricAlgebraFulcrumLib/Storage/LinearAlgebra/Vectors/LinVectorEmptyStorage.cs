@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -20,6 +21,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors
 
         public int Count 
             => 0;
+        
+        public T this[int index] 
+            => throw new IndexOutOfRangeException();
 
 
         private LinVectorEmptyStorage()
@@ -131,12 +135,6 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IReadOnlyList<T> GetScalarsList()
-        {
-            return Array.Empty<T>();
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ILinVectorDenseStorage<T> GetDensePermutation(Func<ulong, ulong> indexMapping)
         {
             return this;
@@ -164,6 +162,16 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors
         public IEnumerable<T> GetScalars()
         {
             yield break;
+        }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            return Enumerable.Empty<T>().GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }

@@ -58,7 +58,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Conformal
 
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Vector<T> GetPosition()
+        public GaVector<T> GetPosition()
         {
             return ConformalProcessor.Divide(
                 VectorStorage.FilterVectorByIndex(index => index < ConformalProcessor.VSpaceDimension - 2),

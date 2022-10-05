@@ -39,12 +39,6 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Dense
             return this;
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override IReadOnlyList<T> GetScalarsList()
-        {
-            return ((ulong) Count).GetRange().Select(GetScalar).ToArray();
-        }
-
         public override ILinVectorDenseStorage<T> GetDensePermutation(Func<ulong, ulong> indexMapping)
         {
             var scalarsArray = new T[Count];
@@ -53,6 +47,12 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Dense
                 scalarsArray[indexMapping(index)] = IndexToScalarMapping(index);
 
             return new LinVectorArrayStorage<T>(scalarsArray);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override IEnumerator<T> GetEnumerator()
+        {
+            return ((ulong) Count).GetRange().Select(GetScalar).GetEnumerator();
         }
     }
 }

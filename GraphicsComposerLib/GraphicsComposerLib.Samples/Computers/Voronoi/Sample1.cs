@@ -1,13 +1,14 @@
 ﻿using System;
-using System.Drawing;
+
 using System.Linq;
-using EuclideanGeometryLib.BasicMath.Tuples;
-using EuclideanGeometryLib.Borders;
-using EuclideanGeometryLib.Borders.Space2D.Immutable;
-using EuclideanGeometryLib.Borders.Space2D.Mutable;
-using EuclideanGeometryLib.Computers.Voronoi;
-using EuclideanGeometryLib.Random;
-using GraphicsComposerLib.Svg.DrawingBoard;
+using GraphicsComposerLib.Rendering.Svg.DrawingBoard;
+using NumericalGeometryLib.BasicMath.Tuples;
+using NumericalGeometryLib.Borders;
+using NumericalGeometryLib.Borders.Space2D.Immutable;
+using NumericalGeometryLib.Borders.Space2D.Mutable;
+using NumericalGeometryLib.Computers.Voronoi;
+using NumericalGeometryLib.Random;
+using SixLabors.ImageSharp;
 
 namespace GraphicsComposerLib.Samples.Computers.Voronoi
 {

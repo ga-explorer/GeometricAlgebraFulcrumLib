@@ -3,7 +3,7 @@ using System.Linq;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Processors.LinearAlgebra;
+using GeometricAlgebraFulcrumLib.Processors.MatrixAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Text;
@@ -22,8 +22,8 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                 GeometricAlgebraSpaceUtils.MaxVSpaceDimension
             );
 
-        public static LinearAlgebraFloat64Processor MatrixProcessor
-            => LinearAlgebraFloat64Processor.DefaultProcessor;
+        public static MatrixAlgebraFloat64Processor MatrixProcessor
+            => MatrixAlgebraFloat64Processor.DefaultProcessor;
 
         public static LaTeXFloat64Composer LaTeXComposer
             => LaTeXFloat64Composer.DefaultComposer;
@@ -32,17 +32,17 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             => TextFloat64Composer.DefaultComposer;
 
 
-        public static Vector<double> CreateVector(params double[] scalarArray)
+        public static GaVector<double> CreateVector(params double[] scalarArray)
         {
-            return new Vector<double>(
+            return new GaVector<double>(
                 EuclideanProcessor,
                 ScalarProcessor.CreateVectorStorage(scalarArray)
             );
         }
 
-        public static Vector<double> CreateBasisVector(int index)
+        public static GaVector<double> CreateBasisVector(int index)
         {
-            return new Vector<double>(
+            return new GaVector<double>(
                 EuclideanProcessor,
                 ScalarProcessor.CreateVectorStorageBasis(index)
             );

@@ -1,6 +1,7 @@
-﻿using System.Drawing;
+﻿
 using NumericalGeometryLib.BasicMath.Tuples;
 using NumericalGeometryLib.BasicMath.Tuples.Immutable;
+using SixLabors.ImageSharp;
 
 namespace GraphicsComposerLib.Geometry.Primitives
 {

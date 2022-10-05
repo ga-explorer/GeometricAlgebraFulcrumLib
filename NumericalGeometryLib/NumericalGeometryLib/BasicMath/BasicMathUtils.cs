@@ -10,6 +10,7 @@ using NumericalGeometryLib.BasicMath.Maps.Space3D;
 using NumericalGeometryLib.BasicMath.Matrices;
 using NumericalGeometryLib.BasicMath.Tuples;
 using NumericalGeometryLib.BasicMath.Tuples.Immutable;
+using NumericalGeometryLib.BasicMath.Tuples.Mutable;
 using NumericalGeometryLib.BasicShapes;
 using NumericalGeometryLib.Borders.Space3D.Mutable;
 
@@ -573,6 +574,23 @@ namespace NumericalGeometryLib.BasicMath
 
         #region Interpolation Operations
 
+        /// <summary>
+        /// https://www.youtube.com/watch?v=vD5g8aVscUI
+        /// </summary>
+        /// <param name="t"></param>
+        /// <returns></returns>
+        public static double SmoothUnitStep(this double t)
+        {
+            //TODO: use this for Fourier interpolation of non-periodic signals
+            if (t <= 0) return 0;
+            if (t >= 1) return 1;
+
+            var e1 = Math.Exp(-1d / t);
+            var e2 = Math.Exp(-1d / (1d - t));
+
+            return e1 / (e1 + e2);
+        }
+
         public static TrsMap3D Lerp(this double t, TrsMap3D v1, TrsMap3D v2)
         {
             var s = 1.0d - t;
@@ -643,6 +661,12 @@ namespace NumericalGeometryLib.BasicMath
         //        );
         //}
         
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static SparseTuple Lerp(this double t, SparseTuple v1, SparseTuple v2)
+        {
+            return (1.0d - t) * v1 + t * v2;
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Tuple2D Lerp(this double t, ITuple2D v1, ITuple2D v2)
         {

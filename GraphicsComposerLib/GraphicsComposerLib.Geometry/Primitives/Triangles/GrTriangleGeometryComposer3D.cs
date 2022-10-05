@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
+
 using System.Linq;
 using DataStructuresLib.Basic;
 using NumericalGeometryLib.BasicMath;
@@ -10,6 +10,7 @@ using NumericalGeometryLib.BasicMath.Tuples;
 using NumericalGeometryLib.BasicShapes.Triangles;
 using NumericalGeometryLib.BasicShapes.Triangles.Immutable;
 using GraphicsComposerLib.Geometry.Primitives.Vertices;
+using SixLabors.ImageSharp;
 
 namespace GraphicsComposerLib.Geometry.Primitives.Triangles
 {

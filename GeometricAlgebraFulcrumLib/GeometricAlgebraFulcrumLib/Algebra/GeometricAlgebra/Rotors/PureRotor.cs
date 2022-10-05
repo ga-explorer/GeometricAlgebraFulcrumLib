@@ -20,7 +20,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
         : RotorBase<T>
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static PureRotor<T> Create(T scalarPart, Bivector<T> bivectorPart)
+        public static PureRotor<T> Create(T scalarPart, GaBivector<T> bivectorPart)
         {
             return new PureRotor<T>(
                 scalarPart + bivectorPart,
@@ -29,7 +29,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static PureRotor<T> Create(Multivector<T> multivector)
+        public static PureRotor<T> Create(GaMultivector<T> multivector)
         {
             return new PureRotor<T>(
                 multivector,
@@ -39,25 +39,25 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static implicit operator Multivector<T>(PureRotor<T> rotor)
+        public static implicit operator GaMultivector<T>(PureRotor<T> rotor)
         {
             return rotor.Multivector;
         }
 
 
-        public Multivector<T> Multivector { get; }
+        public GaMultivector<T> Multivector { get; }
 
-        public Multivector<T> MultivectorReverse { get; }
+        public GaMultivector<T> MultivectorReverse { get; }
 
 
-        private PureRotor([NotNull] T scalarPart, [NotNull] Bivector<T> bivectorPart)
+        private PureRotor([NotNull] T scalarPart, [NotNull] GaBivector<T> bivectorPart)
             : base(bivectorPart.GeometricProcessor)
         {
             Multivector = scalarPart + bivectorPart;
             MultivectorReverse = scalarPart - bivectorPart;
         }
         
-        private PureRotor([NotNull] Multivector<T> multivector, [NotNull] Multivector<T> multivectorReverse)
+        private PureRotor([NotNull] GaMultivector<T> multivector, [NotNull] GaMultivector<T> multivectorReverse)
             : base(multivector.GeometricProcessor)
         {
             Multivector = multivector;
@@ -112,44 +112,44 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
         
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Vector<T> OmMap(Vector<T> mv)
+        public override GaVector<T> OmMap(GaVector<T> mv)
         {
             return Multivector.Gp(mv).Gp(MultivectorReverse).GetVectorPart();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Bivector<T> OmMap(Bivector<T> mv)
+        public override GaBivector<T> OmMap(GaBivector<T> mv)
         {
             return Multivector.Gp(mv).Gp(MultivectorReverse).GetBivectorPart();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override KVector<T> OmMap(KVector<T> mv)
+        public override GaKVector<T> OmMap(GaKVector<T> mv)
         {
             return Multivector.Gp(mv).Gp(MultivectorReverse).GetKVectorPart(mv.Grade);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Multivector<T> OmMap(Multivector<T> mv)
+        public override GaMultivector<T> OmMap(GaMultivector<T> mv)
         {
             return Multivector.Gp(mv).Gp(MultivectorReverse);
         }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Multivector<T> GetMultivector()
+        public override GaMultivector<T> GetMultivector()
         {
             return Multivector;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Multivector<T> GetMultivectorReverse()
+        public override GaMultivector<T> GetMultivectorReverse()
         {
             return MultivectorReverse;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Multivector<T> GetMultivectorInverse()
+        public override GaMultivector<T> GetMultivectorInverse()
         {
             return MultivectorReverse;
         }

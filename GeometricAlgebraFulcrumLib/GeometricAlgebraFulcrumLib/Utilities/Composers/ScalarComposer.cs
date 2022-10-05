@@ -124,7 +124,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         {
             return ScalarProcessor.IsZero(Scalar)
                 ? VectorStorage<T>.ZeroVector
-                : VectorStorage<T>.CreateVector(index, Scalar);
+                : VectorStorage<T>.CreateVectorStorage(index, Scalar);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

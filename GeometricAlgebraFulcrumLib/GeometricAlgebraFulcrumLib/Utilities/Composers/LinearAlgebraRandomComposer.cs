@@ -108,7 +108,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
                 index => 
                     vectorData.TryGetValue(index, out var scalar) 
                         ? scalar 
-                        : LinearProcessor.ScalarZero
+                        : ScalarProcessor.ScalarZero
             );
         }
 
@@ -157,7 +157,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
                             index % (ulong) denseCount
                         )
                     ,
-                    (_, _) => LinearProcessor.ScalarZero
+                    (_, _) => ScalarProcessor.ScalarZero
                 )
             );
 

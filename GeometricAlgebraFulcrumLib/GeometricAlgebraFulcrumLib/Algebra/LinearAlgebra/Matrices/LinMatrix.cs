@@ -3,6 +3,7 @@ using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Vectors;
 using GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.LinearAlgebra;
+using GeometricAlgebraFulcrumLib.Processors.MatrixAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 
@@ -1213,7 +1214,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Matrices
         }
 
 
-        public ILinearAlgebraProcessor<TMatrix, TScalar> MatrixProcessor { get; }
+        public IMatrixAlgebraProcessor<TMatrix, TScalar> MatrixProcessor { get; }
 
         public TMatrix MatrixStorage { get; }
 
@@ -1227,7 +1228,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Matrices
             => MatrixProcessor.GetScalar(MatrixStorage, i, j);
 
 
-        internal LinMatrix([NotNull] ILinearAlgebraProcessor<TMatrix, TScalar> matrixProcessor, [NotNull] TMatrix matrixStorage)
+        internal LinMatrix([NotNull] IMatrixAlgebraProcessor<TMatrix, TScalar> matrixProcessor, [NotNull] TMatrix matrixStorage)
         {
             MatrixProcessor = matrixProcessor;
             MatrixStorage = matrixStorage;

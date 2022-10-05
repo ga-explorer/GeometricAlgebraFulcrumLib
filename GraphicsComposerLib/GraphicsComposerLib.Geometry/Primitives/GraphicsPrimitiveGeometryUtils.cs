@@ -16,6 +16,23 @@ namespace GraphicsComposerLib.Geometry.Primitives
 {
     public static class GraphicsPrimitiveGeometryUtils
     {
+        private static readonly string[] GraphicsPrimitiveTypeNames =
+        {
+            "points",
+            "lines",
+            "line-loop",
+            "line-strip",
+            "triangles",
+            "triangle-strip",
+            "triangle-fan"
+        };
+
+        public static string GetName(this GraphicsPrimitiveType3D primitiveType)
+        {
+            return GraphicsPrimitiveTypeNames[(int) primitiveType];
+        }
+
+
         public static bool IsValidTriangleIndexTriplet(this ITriplet<int> triplet, bool isOrdered)
         {
             var index1 = triplet.Item1;

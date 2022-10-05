@@ -7,7 +7,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
     public static class SubspaceUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool Contains<T>(this ISubspace<T> subspace, Vector<T> vector, bool nearZeroFlag = false)
+        public static bool Contains<T>(this ISubspace<T> subspace, GaVector<T> vector, bool nearZeroFlag = false)
         {
             var processor = subspace.GeometricProcessor;
 
@@ -18,7 +18,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool Contains<T>(this ISubspace<T> subspace, Bivector<T> mv, bool nearZeroFlag = false)
+        public static bool Contains<T>(this ISubspace<T> subspace, GaBivector<T> mv, bool nearZeroFlag = false)
         {
             var processor = subspace.GeometricProcessor;
 
@@ -29,7 +29,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool Contains<T>(this ISubspace<T> subspace, KVector<T> mv, bool nearZeroFlag = false)
+        public static bool Contains<T>(this ISubspace<T> subspace, GaKVector<T> mv, bool nearZeroFlag = false)
         {
             var processor = subspace.GeometricProcessor;
 
@@ -47,7 +47,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Vector<T> Project<T>(this ISubspace<T> subspace, Vector<T> blade)
+        public static GaVector<T> Project<T>(this ISubspace<T> subspace, GaVector<T> blade)
         {
             return blade
                 .Lcp(subspace.GetBladePseudoInverse())
@@ -56,7 +56,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Bivector<T> Project<T>(this ISubspace<T> subspace, Bivector<T> blade)
+        public static GaBivector<T> Project<T>(this ISubspace<T> subspace, GaBivector<T> blade)
         {
             return blade
                 .Lcp(subspace.GetBladePseudoInverse())
@@ -65,7 +65,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVector<T> Project<T>(this ISubspace<T> subspace, KVector<T> blade)
+        public static GaKVector<T> Project<T>(this ISubspace<T> subspace, GaKVector<T> blade)
         {
             return blade
                 .Lcp(subspace.GetBladePseudoInverse())
@@ -74,7 +74,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Vector<T> Reflect<T>(this ISubspace<T> subspace, Vector<T> blade)
+        public static GaVector<T> Reflect<T>(this ISubspace<T> subspace, GaVector<T> blade)
         {
             return subspace
                 .GetBlade()
@@ -84,7 +84,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Bivector<T> Reflect<T>(this ISubspace<T> subspace, Bivector<T> blade)
+        public static GaBivector<T> Reflect<T>(this ISubspace<T> subspace, GaBivector<T> blade)
         {
             return subspace
                 .GetBlade()
@@ -94,7 +94,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVector<T> Reflect<T>(this ISubspace<T> subspace, KVector<T> blade)
+        public static GaKVector<T> Reflect<T>(this ISubspace<T> subspace, GaKVector<T> blade)
         {
             return subspace
                 .GetBlade()
@@ -105,7 +105,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Vector<T> VersorProduct<T>(this ISubspace<T> subspace, Vector<T> blade)
+        public static GaVector<T> VersorProduct<T>(this ISubspace<T> subspace, GaVector<T> blade)
         {
             return subspace
                 .GetBlade()
@@ -115,7 +115,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Bivector<T> VersorProduct<T>(this ISubspace<T> subspace, Bivector<T> blade)
+        public static GaBivector<T> VersorProduct<T>(this ISubspace<T> subspace, GaBivector<T> blade)
         {
             return subspace
                 .GetBlade()
@@ -125,7 +125,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVector<T> VersorProduct<T>(this ISubspace<T> subspace, KVector<T> blade)
+        public static GaKVector<T> VersorProduct<T>(this ISubspace<T> subspace, GaKVector<T> blade)
         {
             return subspace
                 .GetBlade()
@@ -136,25 +136,25 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVector<T> Complement<T>(this ISubspace<T> subspace, Vector<T> blade)
+        public static GaKVector<T> Complement<T>(this ISubspace<T> subspace, GaVector<T> blade)
         {
             return blade.Lcp(subspace.GetBlade());
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVector<T> Complement<T>(this ISubspace<T> subspace, Bivector<T> blade)
+        public static GaKVector<T> Complement<T>(this ISubspace<T> subspace, GaBivector<T> blade)
         {
             return blade.Lcp(subspace.GetBlade());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVector<T> Complement<T>(this ISubspace<T> subspace, KVector<T> blade)
+        public static GaKVector<T> Complement<T>(this ISubspace<T> subspace, GaKVector<T> blade)
         {
             return blade.Lcp(subspace.GetBlade());
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> Complement<T>(this ISubspace<T> subspace, Multivector<T> blade)
+        public static GaMultivector<T> Complement<T>(this ISubspace<T> subspace, GaMultivector<T> blade)
         {
             return blade.Lcp(subspace.GetBlade());
         }

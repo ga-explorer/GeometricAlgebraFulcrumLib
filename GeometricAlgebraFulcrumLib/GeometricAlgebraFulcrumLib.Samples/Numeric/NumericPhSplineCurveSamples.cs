@@ -8,7 +8,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Numeric
     {
         public static void Example1()
         {
-            var nMax = 2;
+            const int nMax = 2;
             var knotVector = BSplineKnotVector.CreateSimpleClamped(0, 1, 7, nMax);
             //var knotVector = BSplineKnotVector.CreateUniform(0, 1, 8);
             

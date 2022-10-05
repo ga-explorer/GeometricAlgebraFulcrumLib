@@ -13,13 +13,20 @@ namespace GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.Basis
     public sealed class MonomialBasisSet<T> :
         IPolynomialBasisSet<T>
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static MonomialBasisSet<T> Create(IScalarAlgebraProcessor<T> scalarProcessor, int degree)
+        {
+            return new MonomialBasisSet<T>(scalarProcessor, degree);
+        }
+
+
         public IScalarAlgebraProcessor<T> ScalarProcessor { get; }
 
         public int Degree { get; }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public MonomialBasisSet([NotNull] IScalarAlgebraProcessor<T> scalarProcessor, int degree)
+        private MonomialBasisSet([NotNull] IScalarAlgebraProcessor<T> scalarProcessor, int degree)
         {
             if (degree < 0)
                 throw new ArgumentOutOfRangeException(nameof(degree));

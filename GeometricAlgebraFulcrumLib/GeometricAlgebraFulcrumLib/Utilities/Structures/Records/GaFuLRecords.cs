@@ -53,25 +53,25 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.Records
 
     public sealed record IdMultivectorStorageRecord<T>(ulong Id, IMultivectorStorage<T> Storage) : IIdRecord;
     
-    public sealed record IdVectorRecord<T>(ulong Id, Vector<T> Vector) : IIdRecord;
+    public sealed record IdVectorRecord<T>(ulong Id, GaVector<T> Vector) : IIdRecord;
     
-    public sealed record IdBivectorRecord<T>(ulong Id, Bivector<T> Bivector) : IIdRecord;
+    public sealed record IdBivectorRecord<T>(ulong Id, GaBivector<T> Bivector) : IIdRecord;
     
-    public sealed record IdKVectorRecord<T>(ulong Id, KVector<T> KVector) : IIdRecord;
+    public sealed record IdKVectorRecord<T>(ulong Id, GaKVector<T> KVector) : IIdRecord;
     
-    public sealed record IdMultivectorRecord<T>(ulong Id, Multivector<T> Multivector) : IIdRecord;
+    public sealed record IdMultivectorRecord<T>(ulong Id, GaMultivector<T> Multivector) : IIdRecord;
 
     public sealed record IndexVectorStorageRecord<T>(ulong Index, VectorStorage<T> Storage) : IIndexRecord;
 
-    public sealed record IndexVectorRecord<T>(ulong Index, Vector<T> Vector) : IIndexRecord;
+    public sealed record IndexVectorRecord<T>(ulong Index, GaVector<T> Vector) : IIndexRecord;
 
     public sealed record IndexBivectorStorageRecord<T>(ulong Index, BivectorStorage<T> Storage) : IIndexRecord;
 
-    public sealed record IndexBivectorRecord<T>(ulong Index, Bivector<T> Bivector) : IIndexRecord;
+    public sealed record IndexBivectorRecord<T>(ulong Index, GaBivector<T> Bivector) : IIndexRecord;
 
     public sealed record IndexKVectorStorageRecord<T>(ulong Index, KVectorStorage<T> Storage) : IIndexRecord;
 
-    public sealed record IndexKVectorRecord<T>(ulong Index, KVector<T> KVector) : IIndexRecord;
+    public sealed record IndexKVectorRecord<T>(ulong Index, GaKVector<T> KVector) : IIndexRecord;
 
     public sealed record GradeIndexVectorStorageRecord<T>(uint Grade, ulong Index, VectorStorage<T> Storage) : IGradeIndexRecord;
 

@@ -10,11 +10,11 @@ namespace GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra
     /// https://github.com/peteroupc/Numbers
     /// </summary>
     public sealed class ScalarAlgebraEFloatProcessor
-        : IScalarAlgebraProcessor<EFloat>
+        : IScalarAlgebraNumericProcessor<EFloat>
     {
         public static ScalarAlgebraEFloatProcessor DefaultProcessor { get; }
             = new ScalarAlgebraEFloatProcessor();
-
+        
 
         public EContext NumericalContext { get; set; }
             = EContext.Binary128;
@@ -48,16 +48,25 @@ namespace GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra
 
         public EFloat ScalarPi { get; }
 
+        public EFloat ScalarTwoPi { get; }
+
         public EFloat ScalarPiOver2 { get; }
 
         public EFloat ScalarE { get; }
+
+        public EFloat ScalarDegreeToRadian { get; }
+
+        public EFloat ScalarRadianToDegree { get; }
 
 
         private ScalarAlgebraEFloatProcessor()
         {
             ScalarPi = EFloat.PI(NumericalContext);
+            ScalarTwoPi = EFloat.PI(NumericalContext) * 2;
             ScalarPiOver2 = EFloat.PI(NumericalContext) / 2;
             ScalarE = EFloat.One.Exp(NumericalContext);
+            ScalarDegreeToRadian = EFloat.PI(NumericalContext) / 180;
+            ScalarRadianToDegree = 180 / EFloat.PI(NumericalContext);
         }
 
 
@@ -269,9 +278,23 @@ namespace GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public EFloat Sinc(EFloat scalar)
+        {
+            return IsZero(scalar) 
+                ? ScalarOne 
+                : Sin(scalar) / scalar;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsValid(EFloat scalar)
         {
             return !scalar.IsNaN();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsFiniteNumber(EFloat scalar)
+        {
+            return scalar.IsFinite;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

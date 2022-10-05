@@ -13,7 +13,7 @@ using GraphicsComposerLib.Geometry.Primitives.Lines;
 namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Sampled
 {
     public sealed class GrParametricCurveTree3D :
-        IGraphicsParametricCurve3D,
+        IGraphicsC1ParametricCurve3D,
         IReadOnlyList<GrParametricCurveLocalFrame3D>
     {
         private readonly Dictionary<GrParametricTreeCornerPosition3D, int> _cornerDictionary
@@ -34,7 +34,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Sampled
                 ? _leafNodeList[^1].Frame1
                 : _leafNodeList[index].Frame0;
 
-        public IGraphicsParametricCurve3D Curve { get; }
+        public IGraphicsC1ParametricCurve3D Curve { get; }
 
         public GrParametricCurveTreeBranch3D RootNode { get; private set; }
         
@@ -147,7 +147,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Sampled
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GrParametricCurveTree3D([NotNull] IGraphicsParametricCurve3D surface, [NotNull] IBoundingBox1D parameterValueRange)
+        public GrParametricCurveTree3D([NotNull] IGraphicsC1ParametricCurve3D surface, [NotNull] IBoundingBox1D parameterValueRange)
         {
             Curve = surface;
             ParameterValueRange = parameterValueRange;
@@ -155,7 +155,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Sampled
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GrParametricCurveTree3D([NotNull] IGraphicsParametricCurve3D surface, double minParameterValue, double maxParameterValue)
+        public GrParametricCurveTree3D([NotNull] IGraphicsC1ParametricCurve3D surface, double minParameterValue, double maxParameterValue)
         {
             Debug.Assert(
                 minParameterValue < maxParameterValue
@@ -167,7 +167,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Sampled
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GrParametricCurveTree3D([NotNull] IGraphicsParametricCurve3D surface)
+        public GrParametricCurveTree3D([NotNull] IGraphicsC1ParametricCurve3D surface)
         {
             Curve = surface;
             ParameterValueRange = BoundingBox1D.Create(0, 1);

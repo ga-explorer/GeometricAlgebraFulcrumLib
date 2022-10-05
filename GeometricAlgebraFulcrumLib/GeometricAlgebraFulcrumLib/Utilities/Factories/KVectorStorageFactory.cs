@@ -43,7 +43,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
 
             return grade switch
             {
-                1 => VectorStorage<T>.CreateVector(evenDictionary),
+                1 => VectorStorage<T>.CreateVectorStorage(evenDictionary),
                 2 => BivectorStorage<T>.Create(evenDictionary),
                 _ => KVectorStorage<T>.CreateKVector(grade, evenDictionary)
             };
@@ -59,7 +59,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
             return vSpaceDimension switch
             {
                 0 => KVectorStorage<T>.CreateKVectorScalar(scalar),
-                1 => VectorStorage<T>.CreateVector(index, scalar),
+                1 => VectorStorage<T>.CreateVectorStorage(index, scalar),
                 2 => BivectorStorage<T>.Create(index, scalar),
                 _ => KVectorStorage<T>.CreateKVector(vSpaceDimension, index, scalar)
             };
@@ -75,7 +75,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
             return vSpaceDimension switch
             {
                 0 => KVectorStorage<T>.CreateKVectorScalar(scalar),
-                1 => VectorStorage<T>.CreateVector(index, scalar),
+                1 => VectorStorage<T>.CreateVectorStorage(index, scalar),
                 2 => BivectorStorage<T>.Create(index, scalar),
                 _ => KVectorStorage<T>.CreateKVector(vSpaceDimension, index, scalar)
             };
@@ -95,7 +95,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
             return vSpaceDimension switch
             {
                 0 => KVectorStorage<T>.CreateKVectorScalar(scalar),
-                1 => VectorStorage<T>.CreateVector(index, scalar),
+                1 => VectorStorage<T>.CreateVectorStorage(index, scalar),
                 2 => BivectorStorage<T>.Create(index, scalar),
                 _ => KVectorStorage<T>.CreateKVector(vSpaceDimension, index, scalar)
             };
@@ -228,7 +228,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
             return grade switch
             {
                 0 => KVectorStorage<T>.CreateKVectorScalar(scalarProcessor.ScalarOne),
-                1 => VectorStorage<T>.CreateVector(index, scalarProcessor.ScalarOne),
+                1 => VectorStorage<T>.CreateVectorStorage(index, scalarProcessor.ScalarOne),
                 2 => BivectorStorage<T>.Create(index, scalarProcessor.ScalarOne),
                 _ => KVectorStorage<T>.CreateKVector(grade, index, scalarProcessor.ScalarOne)
             };
@@ -240,7 +240,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
             return grade switch
             {
                 0 => KVectorStorage<T>.CreateKVectorScalar(scalarProcessor.ScalarOne),
-                1 => VectorStorage<T>.CreateVector(index, scalarProcessor.ScalarOne),
+                1 => VectorStorage<T>.CreateVectorStorage(index, scalarProcessor.ScalarOne),
                 2 => BivectorStorage<T>.Create(index, scalarProcessor.ScalarOne),
                 _ => KVectorStorage<T>.CreateKVector(grade, index, scalarProcessor.ScalarOne)
             };
@@ -330,7 +330,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
             return grade switch
             {
                 0 => KVectorStorage<T>.CreateKVectorScalar(scalar),
-                1 => VectorStorage<T>.CreateVector(index, scalar),
+                1 => VectorStorage<T>.CreateVectorStorage(index, scalar),
                 2 => BivectorStorage<T>.Create(index, scalar),
                 _ => KVectorStorage<T>.CreateKVector(grade, index, scalar)
             };
@@ -344,7 +344,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
             return grade switch
             {
                 0 => KVectorStorage<T>.CreateKVectorScalar(scalar),
-                1 => VectorStorage<T>.CreateVector(index, scalar),
+                1 => VectorStorage<T>.CreateVectorStorage(index, scalar),
                 2 => BivectorStorage<T>.Create(index, scalar),
                 _ => KVectorStorage<T>.CreateKVector(grade, index, scalar)
             };
@@ -358,7 +358,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
             return grade switch
             {
                 0 => KVectorStorage<T>.CreateKVectorScalar(scalar),
-                1 => VectorStorage<T>.CreateVector(index, scalar),
+                1 => VectorStorage<T>.CreateVectorStorage(index, scalar),
                 2 => BivectorStorage<T>.Create(index, scalar),
                 _ => KVectorStorage<T>.CreateKVector(grade, index, scalar)
             };
@@ -372,7 +372,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
             return grade switch
             {
                 0 => KVectorStorage<T>.CreateKVectorScalar(scalar),
-                1 => VectorStorage<T>.CreateVector(index, scalar),
+                1 => VectorStorage<T>.CreateVectorStorage(index, scalar),
                 2 => BivectorStorage<T>.Create(index, scalar),
                 _ => KVectorStorage<T>.CreateKVector(grade, index, scalar)
             };
@@ -384,7 +384,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
             return grade switch
             {
                 0 => KVectorStorage<T>.CreateKVectorScalar(scalar),
-                1 => VectorStorage<T>.CreateVector(index, scalar),
+                1 => VectorStorage<T>.CreateVectorStorage(index, scalar),
                 2 => BivectorStorage<T>.Create(index, scalar),
                 _ => KVectorStorage<T>.CreateKVector(grade, index, scalar)
             };
@@ -396,7 +396,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
             return grade switch
             {
                 0 => KVectorStorage<T>.CreateKVectorScalar(scalar),
-                1 => VectorStorage<T>.CreateVector(index, scalar),
+                1 => VectorStorage<T>.CreateVectorStorage(index, scalar),
                 2 => BivectorStorage<T>.Create(index, scalar),
                 _ => KVectorStorage<T>.CreateKVector(grade, index, scalar)
             };
@@ -412,7 +412,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
             return grade switch
             {
                 0 => KVectorStorage<T>.CreateKVectorScalar(scalar),
-                1 => VectorStorage<T>.CreateVector(index, scalar),
+                1 => VectorStorage<T>.CreateVectorStorage(index, scalar),
                 2 => BivectorStorage<T>.Create(index, scalar),
                 _ => KVectorStorage<T>.CreateKVector(grade, index, scalar)
             };
@@ -426,7 +426,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
             return grade switch
             {
                 0 => KVectorStorage<T>.CreateKVectorScalar(scalar),
-                1 => VectorStorage<T>.CreateVector(index, scalar),
+                1 => VectorStorage<T>.CreateVectorStorage(index, scalar),
                 2 => BivectorStorage<T>.Create(index, scalar),
                 _ => KVectorStorage<T>.CreateKVector(grade, index, scalar)
             };
@@ -444,7 +444,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
 
             return grade switch
             {
-                1 => VectorStorage<T>.CreateVector(scalarsArray),
+                1 => VectorStorage<T>.CreateVectorStorage(scalarsArray),
                 2 => BivectorStorage<T>.Create(scalarsArray),
                 _ => KVectorStorage<T>.CreateKVector(grade, scalarsArray)
             };
@@ -545,7 +545,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
 
             return grade switch
             {
-                1 => VectorStorage<T>.CreateVector(scalarsList),
+                1 => VectorStorage<T>.CreateVectorStorage(scalarsList),
                 2 => BivectorStorage<T>.Create(scalarsList),
                 _ => KVectorStorage<T>.CreateKVector(grade, scalarsList)
             };
@@ -566,7 +566,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
 
             return grade switch
             {
-                1 => VectorStorage<T>.CreateVector(indexScalarDictionary),
+                1 => VectorStorage<T>.CreateVectorStorage(indexScalarDictionary),
                 2 => BivectorStorage<T>.Create(indexScalarDictionary),
                 _ => KVectorStorage<T>.CreateKVector(grade, indexScalarDictionary)
             };
@@ -589,7 +589,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
 
             return grade switch
             {
-                1 => VectorStorage<T>.CreateVector(indexScalarDictionary),
+                1 => VectorStorage<T>.CreateVectorStorage(indexScalarDictionary),
                 2 => BivectorStorage<T>.Create(indexScalarDictionary),
                 _ => KVectorStorage<T>.CreateKVector(grade, indexScalarDictionary)
             };
@@ -619,7 +619,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
 
             return grade switch
             {
-                1 => VectorStorage<T>.CreateVector(indexScalarDictionary),
+                1 => VectorStorage<T>.CreateVectorStorage(indexScalarDictionary),
                 2 => BivectorStorage<T>.Create(indexScalarDictionary),
                 _ => KVectorStorage<T>.CreateKVector(grade, indexScalarDictionary)
             };
@@ -640,7 +640,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
 
             return grade switch
             {
-                1 => VectorStorage<T>.CreateVector(scalarsList),
+                1 => VectorStorage<T>.CreateVectorStorage(scalarsList),
                 2 => BivectorStorage<T>.Create(scalarsList),
                 _ => KVectorStorage<T>.CreateKVector(grade, scalarsList)
             };
@@ -661,7 +661,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
 
             return grade switch
             {
-                1 => VectorStorage<T>.CreateVector(indexScalarDictionary),
+                1 => VectorStorage<T>.CreateVectorStorage(indexScalarDictionary),
                 2 => BivectorStorage<T>.Create(indexScalarDictionary),
                 _ => KVectorStorage<T>.CreateKVector(grade, indexScalarDictionary)
             };
@@ -679,7 +679,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
 
             return grade switch
             {
-                1 => VectorStorage<T>.CreateVector(termsList),
+                1 => VectorStorage<T>.CreateVectorStorage(termsList),
                 2 => BivectorStorage<T>.Create(termsList),
                 _ => KVectorStorage<T>.CreateKVector(grade, termsList)
             };
@@ -710,7 +710,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
 
             return grade switch
             {
-                1 => VectorStorage<T>.CreateVector(indexScalarDictionary),
+                1 => VectorStorage<T>.CreateVectorStorage(indexScalarDictionary),
                 2 => BivectorStorage<T>.Create(indexScalarDictionary),
                 _ => KVectorStorage<T>.CreateKVector(grade, indexScalarDictionary)
             };

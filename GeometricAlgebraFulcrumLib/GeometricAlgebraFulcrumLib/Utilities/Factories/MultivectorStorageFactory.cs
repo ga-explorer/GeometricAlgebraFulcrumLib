@@ -196,7 +196,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         public static MultivectorStorage<T> CreateMultivectorStorageSparse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, int termsCount, Func<ulong, int> indexToScalarFunc)
         {
             return MultivectorStorage<T>.Create(
-                scalarProcessor.CreateLinVectorStorageFromNumbers(termsCount, indexToScalarFunc)
+                (ILinVectorStorage<T>) scalarProcessor.CreateLinVectorStorageFromNumbers(termsCount, indexToScalarFunc)
             );
         }
 
@@ -204,7 +204,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         public static MultivectorStorage<T> CreateMultivectorStorageSparse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params int[] scalarArray)
         {
             return MultivectorStorage<T>.Create(
-                scalarProcessor.CreateLinVectorStorageFromNumbers(scalarArray)
+                (ILinVectorStorage<T>) scalarProcessor.CreateLinVectorStorageFromNumbers(scalarArray)
             );
         }
         
@@ -212,7 +212,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         public static MultivectorStorage<T> CreateMultivectorStorageSparse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<int> scalarList)
         {
             return MultivectorStorage<T>.Create(
-                scalarProcessor.CreateLinVectorStorageFromNumbers(scalarList.ToArray())
+                (ILinVectorStorage<T>) scalarProcessor.CreateLinVectorStorageFromNumbers(scalarList.ToArray())
             );
         }
         
@@ -229,7 +229,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         public static MultivectorStorage<T> CreateMultivectorStorageSparse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, int termsCount, Func<ulong, uint> indexToScalarFunc)
         {
             return MultivectorStorage<T>.Create(
-                scalarProcessor.CreateLinVectorStorageFromNumbers(termsCount, indexToScalarFunc)
+                (ILinVectorStorage<T>) scalarProcessor.CreateLinVectorStorageFromNumbers(termsCount, indexToScalarFunc)
             );
         }
 
@@ -237,7 +237,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         public static MultivectorStorage<T> CreateMultivectorStorageSparse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params uint[] scalarArray)
         {
             return MultivectorStorage<T>.Create(
-                scalarProcessor.CreateLinVectorStorageFromNumbers(scalarArray)
+                (ILinVectorStorage<T>) scalarProcessor.CreateLinVectorStorageFromNumbers(scalarArray)
             );
         }
         
@@ -245,7 +245,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         public static MultivectorStorage<T> CreateMultivectorStorageSparse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<uint> scalarList)
         {
             return MultivectorStorage<T>.Create(
-                scalarProcessor.CreateLinVectorStorageFromNumbers(scalarList.ToArray())
+                (ILinVectorStorage<T>) scalarProcessor.CreateLinVectorStorageFromNumbers(scalarList.ToArray())
             );
         }
         
@@ -262,7 +262,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         public static MultivectorStorage<T> CreateMultivectorStorageSparse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, int termsCount, Func<ulong, long> indexToScalarFunc)
         {
             return MultivectorStorage<T>.Create(
-                scalarProcessor.CreateLinVectorStorageFromNumbers(termsCount, indexToScalarFunc)
+                (ILinVectorStorage<T>) scalarProcessor.CreateLinVectorStorageFromNumbers(termsCount, indexToScalarFunc)
             );
         }
 
@@ -270,7 +270,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         public static MultivectorStorage<T> CreateMultivectorStorageSparse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params long[] scalarArray)
         {
             return MultivectorStorage<T>.Create(
-                scalarProcessor.CreateLinVectorStorageFromNumbers(scalarArray)
+                (ILinVectorStorage<T>) scalarProcessor.CreateLinVectorStorageFromNumbers(scalarArray)
             );
         }
         
@@ -278,7 +278,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         public static MultivectorStorage<T> CreateMultivectorStorageSparse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<long> scalarList)
         {
             return MultivectorStorage<T>.Create(
-                scalarProcessor.CreateLinVectorStorageFromNumbers(scalarList.ToArray())
+                (ILinVectorStorage<T>) scalarProcessor.CreateLinVectorStorageFromNumbers(scalarList.ToArray())
             );
         }
         
@@ -295,7 +295,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         public static MultivectorStorage<T> CreateMultivectorStorageSparse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, int termsCount, Func<ulong, ulong> indexToScalarFunc)
         {
             return MultivectorStorage<T>.Create(
-                scalarProcessor.CreateLinVectorStorageFromNumbers(termsCount, indexToScalarFunc)
+                (ILinVectorStorage<T>) scalarProcessor.CreateLinVectorStorageFromNumbers(termsCount, indexToScalarFunc)
             );
         }
 
@@ -303,7 +303,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         public static MultivectorStorage<T> CreateMultivectorStorageSparse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params ulong[] scalarArray)
         {
             return MultivectorStorage<T>.Create(
-                scalarProcessor.CreateLinVectorStorageFromNumbers(scalarArray)
+                (ILinVectorStorage<T>) scalarProcessor.CreateLinVectorStorageFromNumbers(scalarArray)
             );
         }
         
@@ -311,7 +311,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         public static MultivectorStorage<T> CreateMultivectorStorageSparse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<ulong> scalarList)
         {
             return MultivectorStorage<T>.Create(
-                scalarProcessor.CreateLinVectorStorageFromNumbers(scalarList.ToArray())
+                (ILinVectorStorage<T>) scalarProcessor.CreateLinVectorStorageFromNumbers(scalarList.ToArray())
             );
         }
         
@@ -328,7 +328,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         public static MultivectorStorage<T> CreateMultivectorStorageSparse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, int termsCount, Func<ulong, float> indexToScalarFunc)
         {
             return MultivectorStorage<T>.Create(
-                scalarProcessor.CreateLinVectorStorageFromNumbers(termsCount, indexToScalarFunc)
+                (ILinVectorStorage<T>) scalarProcessor.CreateLinVectorStorageFromNumbers(termsCount, indexToScalarFunc)
             );
         }
 
@@ -336,7 +336,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         public static MultivectorStorage<T> CreateMultivectorStorageSparse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params float[] scalarArray)
         {
             return MultivectorStorage<T>.Create(
-                scalarProcessor.CreateLinVectorStorageFromNumbers(scalarArray)
+                (ILinVectorStorage<T>) scalarProcessor.CreateLinVectorStorageFromNumbers(scalarArray)
             );
         }
         
@@ -344,7 +344,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         public static MultivectorStorage<T> CreateMultivectorStorageSparse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<float> scalarList)
         {
             return MultivectorStorage<T>.Create(
-                scalarProcessor.CreateLinVectorStorageFromNumbers(scalarList.ToArray())
+                (ILinVectorStorage<T>) scalarProcessor.CreateLinVectorStorageFromNumbers(scalarList.ToArray())
             );
         }
 
@@ -361,7 +361,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         public static MultivectorStorage<T> CreateMultivectorStorageSparse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, int termsCount, Func<ulong, double> indexToScalarFunc)
         {
             return MultivectorStorage<T>.Create(
-                scalarProcessor.CreateLinVectorStorageFromNumbers(termsCount, indexToScalarFunc)
+                (ILinVectorStorage<T>) scalarProcessor.CreateLinVectorStorageFromNumbers(termsCount, indexToScalarFunc)
             );
         }
 
@@ -369,7 +369,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         public static MultivectorStorage<T> CreateMultivectorStorageSparse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params double[] scalarArray)
         {
             return MultivectorStorage<T>.Create(
-                scalarProcessor.CreateLinVectorStorageFromNumbers(scalarArray)
+                (ILinVectorStorage<T>) scalarProcessor.CreateLinVectorStorageFromNumbers(scalarArray)
             );
         }
         
@@ -377,7 +377,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         public static MultivectorStorage<T> CreateMultivectorStorageSparse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<double> scalarList)
         {
             return MultivectorStorage<T>.Create(
-                scalarProcessor.CreateLinVectorStorageFromNumbers(scalarList.ToArray())
+                (ILinVectorStorage<T>) scalarProcessor.CreateLinVectorStorageFromNumbers(scalarList.ToArray())
             );
         }
         
@@ -394,7 +394,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         public static MultivectorStorage<T> CreateMultivectorStorageSparse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, int termsCount, Func<ulong, string> indexToScalarFunc)
         {
             return MultivectorStorage<T>.Create(
-                scalarProcessor.CreateLinVectorStorageFromText(termsCount, indexToScalarFunc)
+                (ILinVectorStorage<T>) scalarProcessor.CreateLinVectorStorageFromText(termsCount, indexToScalarFunc)
             );
         }
 
@@ -402,7 +402,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         public static MultivectorStorage<T> CreateMultivectorStorageSparse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, uint termsCount, Func<ulong, string> indexToScalarFunc)
         {
             return MultivectorStorage<T>.Create(
-                scalarProcessor.CreateLinVectorStorageFromText(termsCount, indexToScalarFunc)
+                (ILinVectorStorage<T>) scalarProcessor.CreateLinVectorStorageFromText(termsCount, indexToScalarFunc)
             );
         }
 
@@ -410,7 +410,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         public static MultivectorStorage<T> CreateMultivectorStorageSparse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params string[] scalarArray)
         {
             return MultivectorStorage<T>.Create(
-                scalarProcessor.CreateLinVectorStorageFromText(scalarArray)
+                (ILinVectorStorage<T>) scalarProcessor.CreateLinVectorStorageFromText(scalarArray)
             );
         }
         
@@ -418,7 +418,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         public static MultivectorStorage<T> CreateMultivectorStorageSparse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<string> scalarList)
         {
             return MultivectorStorage<T>.Create(
-                scalarProcessor.CreateLinVectorStorageFromText(scalarList.ToArray())
+                (ILinVectorStorage<T>) scalarProcessor.CreateLinVectorStorageFromText(scalarList.ToArray())
             );
         }
         
@@ -435,7 +435,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         public static MultivectorStorage<T> CreateMultivectorStorageSparse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, int termsCount, Func<ulong, object> indexToScalarFunc)
         {
             return MultivectorStorage<T>.Create(
-                scalarProcessor.CreateLinVectorStorageFromObjects(termsCount, indexToScalarFunc)
+                (ILinVectorStorage<T>) scalarProcessor.CreateLinVectorStorageFromObjects(termsCount, indexToScalarFunc)
             );
         }
 
@@ -443,7 +443,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         public static MultivectorStorage<T> CreateMultivectorStorageSparse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params object[] scalarArray)
         {
             return MultivectorStorage<T>.Create(
-                scalarProcessor.CreateLinVectorStorageFromObjects(scalarArray)
+                (ILinVectorStorage<T>) scalarProcessor.CreateLinVectorStorageFromObjects(scalarArray)
             );
         }
         
@@ -451,7 +451,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         public static MultivectorStorage<T> CreateMultivectorStorageSparse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<object> scalarList)
         {
             return MultivectorStorage<T>.Create(
-                scalarProcessor.CreateLinVectorStorageFromObjects(scalarList.ToArray())
+                (ILinVectorStorage<T>) scalarProcessor.CreateLinVectorStorageFromObjects(scalarList.ToArray())
             );
         }
         
@@ -468,7 +468,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         public static MultivectorStorage<T> CreateMultivectorStorageSparse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, int termsCount, Func<ulong, T> indexToScalarFunc)
         {
             return MultivectorStorage<T>.Create(
-                scalarProcessor.CreateLinVectorStorage(termsCount, indexToScalarFunc)
+                (ILinVectorStorage<T>) scalarProcessor.CreateLinVectorStorage(termsCount, indexToScalarFunc)
             );
         }
         
@@ -476,7 +476,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         public static MultivectorStorage<T> CreateMultivectorStorageSparse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, uint termsCount, Func<ulong, T> indexToScalarFunc)
         {
             return MultivectorStorage<T>.Create(
-                scalarProcessor.CreateLinVectorStorage(termsCount, indexToScalarFunc)
+                (ILinVectorStorage<T>) scalarProcessor.CreateLinVectorStorage(termsCount, indexToScalarFunc)
             );
         }
 
@@ -484,7 +484,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         public static MultivectorStorage<T> CreateMultivectorStorageSparse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params T[] scalarArray)
         {
             return MultivectorStorage<T>.Create(
-                scalarProcessor.CreateLinVectorStorage(scalarArray)
+                (ILinVectorStorage<T>) scalarProcessor.CreateLinVectorStorage(scalarArray)
             );
         }
         
@@ -492,7 +492,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         public static MultivectorStorage<T> CreateMultivectorStorageSparse<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<T> scalarList)
         {
             return MultivectorStorage<T>.Create(
-                scalarProcessor.CreateLinVectorStorage(scalarList.ToArray())
+                (ILinVectorStorage<T>) scalarProcessor.CreateLinVectorStorage(scalarList.ToArray())
             );
         }
 
@@ -501,7 +501,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         public static MultivectorStorage<T> CreateMultivectorStorageSparseZero<T>(this IScalarAlgebraProcessor<T> scalarProcessor)
         {
             return MultivectorStorage<T>.Create(
-                LinVectorEmptyStorage<T>.EmptyStorage
+                (ILinVectorStorage<T>) LinVectorEmptyStorage<T>.EmptyStorage
             );
         }
         
@@ -509,7 +509,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         public static MultivectorStorage<T> CreateMultivectorStorageSparseRepeatedScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, int count, T value)
         {
             return MultivectorStorage<T>.Create(
-                value.CreateLinVectorDenseStorage(count)
+                (ILinVectorStorage<T>) value.CreateLinVectorDenseStorage(count)
             );
         }
 
@@ -517,7 +517,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         public static MultivectorStorage<T> CreateMultivectorStorageSparseTerm<T>(this IScalarAlgebraProcessor<T> scalarProcessor, T value)
         {
             return MultivectorStorage<T>.Create(
-                new LinVectorSingleScalarDenseStorage<T>(value)
+                (ILinVectorStorage<T>) new LinVectorSingleScalarDenseStorage<T>(value)
             );
         }
 

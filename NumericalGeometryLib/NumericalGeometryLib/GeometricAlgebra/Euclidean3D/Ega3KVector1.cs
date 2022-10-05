@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using DataStructuresLib.Basic;
 using NumericalGeometryLib.BasicMath;
 using NumericalGeometryLib.BasicMath.Tuples;
 
@@ -216,6 +217,18 @@ namespace NumericalGeometryLib.GeometricAlgebra.Euclidean3D
             Scalar3 = z;
 
             IsZero = x == 0d && y == 0d && z == 0d;
+
+            Debug.Assert(IsValid());
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Ega3KVector1(ITriplet<double> vector)
+        {
+            Scalar1 = vector.Item1;
+            Scalar2 = vector.Item2;
+            Scalar3 = vector.Item3;
+
+            IsZero = vector.Item1 == 0d && vector.Item2 == 0d && vector.Item3 == 0d;
 
             Debug.Assert(IsValid());
         }

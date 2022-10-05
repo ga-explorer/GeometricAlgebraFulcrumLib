@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using GraphicsComposerLib.WebGl.ThreeJs;
-using GraphicsComposerLib.WebGl.ThreeJs.Objects;
+using GraphicsComposerLib.Rendering.ThreeJs;
+using GraphicsComposerLib.Rendering.ThreeJs.Objects;
 using TextComposerLib.Code.JavaScript;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Graphics.ThreeJs

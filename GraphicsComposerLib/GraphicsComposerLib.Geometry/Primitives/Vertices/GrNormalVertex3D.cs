@@ -1,9 +1,10 @@
 ﻿using System;
-using System.Drawing;
+
 using DataStructuresLib.Basic;
 using NumericalGeometryLib.BasicMath.Tuples;
 using NumericalGeometryLib.BasicMath.Tuples.Immutable;
 using GraphicsComposerLib.Geometry.Structures.Vertices;
+using SixLabors.ImageSharp;
 
 namespace GraphicsComposerLib.Geometry.Primitives.Vertices
 {

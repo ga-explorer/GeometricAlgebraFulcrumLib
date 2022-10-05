@@ -2,13 +2,13 @@
 using System.IO;
 using System.Linq;
 using DataStructuresLib;
-using EuclideanGeometryLib.BasicShapes.Lines.Immutable;
-using EuclideanGeometryLib.Borders.Space3D.Immutable;
+using NumericalGeometryLib.BasicShapes.Lines.Immutable;
+using NumericalGeometryLib.Borders.Space3D.Immutable;
 using GraphicsComposerLib.Geometry.ParametricShapes.Volumes;
 using GraphicsComposerLib.Geometry.ParametricShapes.Volumes.Sampled;
 using GraphicsComposerLib.Geometry.Primitives.Lines;
 using GraphicsComposerLib.Geometry.SdfShapes.Primitives;
-using GraphicsComposerLib.WebGl.Xeogl;
+using GraphicsComposerLib.Rendering.Xeogl;
 
 namespace GraphicsComposerLib.Samples.Geometry.ParametricShapes
 {

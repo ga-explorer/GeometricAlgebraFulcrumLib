@@ -14,7 +14,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Storage
     {
         private readonly GeometricAlgebraRandomComposer<double> _randomGenerator;
 
-        private readonly List<KVector<double>> _bladesList;
+        private readonly List<GaKVector<double>> _bladesList;
 
         private readonly double _scalar;
 
@@ -37,7 +37,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Storage
         {
             _randomGenerator = GeometricProcessor.CreateGeometricRandomComposer(10);
             _scalar = _randomGenerator.GetScalar();
-            _bladesList = new List<KVector<double>>();
+            _bladesList = new List<GaKVector<double>>();
         }
 
         
@@ -54,8 +54,8 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Storage
         [Test]
         public void AssertScaling()
         {
-            Multivector<double> blade2;
-            Multivector<double> diff;
+            GaMultivector<double> blade2;
+            GaMultivector<double> diff;
 
             foreach (var blade1 in _bladesList)
             {

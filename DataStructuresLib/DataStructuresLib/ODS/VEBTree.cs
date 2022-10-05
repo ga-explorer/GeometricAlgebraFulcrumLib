@@ -288,7 +288,7 @@ namespace DataStructuresLib.ODS
             {
                 for(uint i = 0; i < _cluster.Length; i++)
                 {
-                    var iter = _cluster[i].GetEnumerator((parent << (_width/2)) + i);
+                    using var iter = _cluster[i].GetEnumerator((parent << (_width/2)) + i);
                     while (iter.MoveNext())
                     {
                         yield return iter.Current;

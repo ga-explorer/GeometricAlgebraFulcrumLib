@@ -70,46 +70,31 @@ namespace NumericalGeometryLib.BasicMath.Frames.Space3D
 
         public double WDirectionZ { get; }
 
-        public Tuple3D UDirection
-        {
-            get { return new Tuple3D(UDirectionX, UDirectionY, UDirectionZ); }
-        }
+        public Tuple3D UDirection 
+            => new Tuple3D(UDirectionX, UDirectionY, UDirectionZ);
 
-        public Tuple3D VDirection
-        {
-            get { return new Tuple3D(VDirectionX, VDirectionY, VDirectionZ); }
-        }
+        public Tuple3D VDirection 
+            => new Tuple3D(VDirectionX, VDirectionY, VDirectionZ);
 
-        public Tuple3D WDirection
-        {
-            get { return new Tuple3D(WDirectionX, WDirectionY, WDirectionZ); }
-        }
+        public Tuple3D WDirection 
+            => new Tuple3D(WDirectionX, WDirectionY, WDirectionZ);
 
-        public bool IsRightHanded
-        {
-            get { return VectorAlgebraUtils.Determinant(UDirection, VDirection, WDirection) > 0.0d; }
-        }
+        public bool IsRightHanded 
+            => VectorAlgebraUtils.Determinant(UDirection, VDirection, WDirection) > 0.0d;
 
-        public bool IsLeftHanded
-        {
-            get { return VectorAlgebraUtils.Determinant(UDirection, VDirection, WDirection) < 0.0d; }
-        }
+        public bool IsLeftHanded 
+            => VectorAlgebraUtils.Determinant(UDirection, VDirection, WDirection) < 0.0d;
 
-        public bool HasNaNComponent
-        {
-            get
-            {
-                return double.IsNaN(UDirectionX) ||
-                       double.IsNaN(UDirectionY) ||
-                       double.IsNaN(UDirectionZ) ||
-                       double.IsNaN(VDirectionX) ||
-                       double.IsNaN(VDirectionY) ||
-                       double.IsNaN(VDirectionZ) ||
-                       double.IsNaN(WDirectionX) ||
-                       double.IsNaN(WDirectionY) ||
-                       double.IsNaN(WDirectionZ);
-            }
-        }
+        public bool HasNaNComponent =>
+            double.IsNaN(UDirectionX) ||
+            double.IsNaN(UDirectionY) ||
+            double.IsNaN(UDirectionZ) ||
+            double.IsNaN(VDirectionX) ||
+            double.IsNaN(VDirectionY) ||
+            double.IsNaN(VDirectionZ) ||
+            double.IsNaN(WDirectionX) ||
+            double.IsNaN(WDirectionY) ||
+            double.IsNaN(WDirectionZ);
 
 
         public LinearFrame3D(ITuple3D uDirection, ITuple3D vDirection, ITuple3D wDirection)
@@ -133,7 +118,7 @@ namespace NumericalGeometryLib.BasicMath.Frames.Space3D
         {
             Debug.Assert(
                 (ux * ux + uy * uy + uz * uz).IsAlmostEqual(1.0d)
-                );
+            );
 
             UDirectionX = ux;
             UDirectionY = uy;

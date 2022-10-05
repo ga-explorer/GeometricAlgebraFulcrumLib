@@ -70,7 +70,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         /// <param name="processor"></param>
         /// <param name="blade"></param>
         /// <returns></returns>
-        public static PureRotor<T> CreatePureRotor<T>(this IGeometricAlgebraProcessor<T> processor, Bivector<T> blade)
+        public static PureRotor<T> CreatePureRotor<T>(this IGeometricAlgebraProcessor<T> processor, GaBivector<T> blade)
         {
             if (!processor.IsNumeric)
                 throw new InvalidOperationException();
@@ -116,7 +116,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         /// <param name="blade"></param>
         /// <param name="bladeSignatureKind"></param>
         /// <returns></returns>
-        public static PureRotor<T> CreatePureRotor<T>(this IGeometricAlgebraProcessor<T> processor, Bivector<T> blade, BladeSignatureKind bladeSignatureKind)
+        public static PureRotor<T> CreatePureRotor<T>(this IGeometricAlgebraProcessor<T> processor, GaBivector<T> blade, BladeSignatureKind bladeSignatureKind)
         {
             if (bladeSignatureKind == BladeSignatureKind.Zero) 
                 return PureRotor<T>.Create(
@@ -156,7 +156,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         /// <param name="rotorMv"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static PureRotor<T> CreatePureRotor<T>(this Multivector<T> rotorMv)
+        public static PureRotor<T> CreatePureRotor<T>(this GaMultivector<T> rotorMv)
         {
             return PureRotor<T>.Create(
                 rotorMv.GetScalarPart(), 
@@ -172,7 +172,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         /// <param name="rotorMv"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static PureRotor<T> CreatePureRotor<T>(this IGeometricAlgebraProcessor<T> processor, Multivector<T> rotorMv)
+        public static PureRotor<T> CreatePureRotor<T>(this IGeometricAlgebraProcessor<T> processor, GaMultivector<T> rotorMv)
         {
             return PureRotor<T>.Create(
                 rotorMv.GetScalarPart(), 
@@ -189,7 +189,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         /// <param name="targetVector"></param>
         /// <param name="assumeUnitVectors"></param>
         /// <returns></returns>
-        public static PureRotor<T> CreatePureRotor<T>(this IGeometricAlgebraEuclideanProcessor<T> processor, Vector<T> sourceVector, Vector<T> targetVector, bool assumeUnitVectors = false)
+        public static PureRotor<T> CreatePureRotor<T>(this IGeometricAlgebraEuclideanProcessor<T> processor, GaVector<T> sourceVector, GaVector<T> targetVector, bool assumeUnitVectors = false)
         {
             var cosAngle = 
                 assumeUnitVectors
@@ -228,7 +228,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         /// <param name="sourceVector"></param>
         /// <param name="targetVector"></param>
         /// <returns></returns>
-        public static ScaledPureRotor<T> CreateScaledPureRotor<T>(this IGeometricAlgebraEuclideanProcessor<T> processor, Vector<T> sourceVector, Vector<T> targetVector)
+        public static ScaledPureRotor<T> CreateScaledPureRotor<T>(this IGeometricAlgebraEuclideanProcessor<T> processor, GaVector<T> sourceVector, GaVector<T> targetVector)
         {
             var uNorm = sourceVector.ENorm();
             var vNorm = targetVector.ENorm();
@@ -271,7 +271,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         /// <param name="targetVector"></param>
         /// <param name="angleTheta"></param>
         /// <returns></returns>
-        public static PureRotor<T> CreateParametricPureRotor3D<T>(this IGeometricAlgebraEuclideanProcessor<T> processor, Vector<T> sourceVector, Vector<T> targetVector, T angleTheta)
+        public static PureRotor<T> CreateParametricPureRotor3D<T>(this IGeometricAlgebraEuclideanProcessor<T> processor, GaVector<T> sourceVector, GaVector<T> targetVector, T angleTheta)
         {
             // Compute inverse of 3D pseudo-scalar = -e123
             var pseudoScalarInverse =
@@ -314,7 +314,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ScaledPureRotor<T> CreateScaledParametricPureRotor3D<T>(this IGeometricAlgebraEuclideanProcessor<T> processor, Vector<T> sourceVector, Vector<T> targetVector, T angleTheta, T scalingFactor)
+        public static ScaledPureRotor<T> CreateScaledParametricPureRotor3D<T>(this IGeometricAlgebraEuclideanProcessor<T> processor, GaVector<T> sourceVector, GaVector<T> targetVector, T angleTheta, T scalingFactor)
         {
             return processor
                 .CreateParametricPureRotor3D(sourceVector, targetVector, angleTheta)
@@ -331,7 +331,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         /// <param name="targetVector"></param>
         /// <param name="assumeUnitVector"></param>
         /// <returns></returns>
-        public static ScaledPureRotor<T> CreateScaledPureRotorFromAxis<T>(this Vector<T> targetVector, Axis sourceAxis, bool assumeUnitVector = false)
+        public static ScaledPureRotor<T> CreateScaledPureRotorFromAxis<T>(this GaVector<T> targetVector, Axis sourceAxis, bool assumeUnitVector = false)
         {
             var processor = targetVector.GeometricProcessor;
             var k = sourceAxis.BasisVectorIndex;
@@ -359,7 +359,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         /// <param name="assumeUnitVector"></param>
         /// <param name="sourceVector"></param>
         /// <returns></returns>
-        public static ScaledPureRotor<T> CreateScaledPureRotorToAxis<T>(this Vector<T> sourceVector, Axis targetAxis, bool assumeUnitVector = false)
+        public static ScaledPureRotor<T> CreateScaledPureRotorToAxis<T>(this GaVector<T> sourceVector, Axis targetAxis, bool assumeUnitVector = false)
         {
             var processor = sourceVector.GeometricProcessor;
             var k = targetAxis.BasisVectorIndex;
@@ -393,7 +393,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         /// <param name="targetVector"></param>
         /// <param name="assumeUnitVector"></param>
         /// <returns></returns>
-        public static PureRotor<T> CreatePureRotorFromAxis<T>(this Vector<T> targetVector, Axis sourceAxis, bool assumeUnitVector = false)
+        public static PureRotor<T> CreatePureRotorFromAxis<T>(this GaVector<T> targetVector, Axis sourceAxis, bool assumeUnitVector = false)
         {
             var processor = targetVector.GeometricProcessor;
             var k = sourceAxis.BasisVectorIndex;
@@ -423,7 +423,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         /// <param name="assumeUnitVector"></param>
         /// <param name="sourceVector"></param>
         /// <returns></returns>
-        public static PureRotor<T> CreatePureRotorToAxis<T>(this Vector<T> sourceVector, Axis targetAxis, bool assumeUnitVector = false)
+        public static PureRotor<T> CreatePureRotorToAxis<T>(this GaVector<T> sourceVector, Axis targetAxis, bool assumeUnitVector = false)
         {
             var processor = sourceVector.GeometricProcessor;
             var k = targetAxis.BasisVectorIndex;
@@ -454,7 +454,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         /// <param name="targetVector"></param>
         /// <param name="assumeUnitVector"></param>
         /// <returns></returns>
-        public static PureRotor<T> CreatePureRotor<T>(this IGeometricAlgebraEuclideanProcessor<T> processor, Axis sourceAxis, Vector<T> targetVector, bool assumeUnitVector = false)
+        public static PureRotor<T> CreatePureRotor<T>(this IGeometricAlgebraEuclideanProcessor<T> processor, Axis sourceAxis, GaVector<T> targetVector, bool assumeUnitVector = false)
         {
             var k = sourceAxis.BasisVectorIndex;
             
@@ -484,7 +484,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         /// <param name="assumeUnitVector"></param>
         /// <param name="sourceVector"></param>
         /// <returns></returns>
-        public static PureRotor<T> CreatePureRotor<T>(this IGeometricAlgebraEuclideanProcessor<T> processor, Vector<T> sourceVector, Axis targetAxis, bool assumeUnitVector = false)
+        public static PureRotor<T> CreatePureRotor<T>(this IGeometricAlgebraEuclideanProcessor<T> processor, GaVector<T> sourceVector, Axis targetAxis, bool assumeUnitVector = false)
         {
             var k = targetAxis.BasisVectorIndex;
             
@@ -511,7 +511,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         /// <param name="rotationAngle"></param>
         /// <param name="rotationBlade"></param>
         /// <returns></returns>
-        public static PureRotor<T> CreatePureRotor<T>(this IGeometricAlgebraEuclideanProcessor<T> processor, T rotationAngle, Bivector<T> rotationBlade)
+        public static PureRotor<T> CreatePureRotor<T>(this IGeometricAlgebraEuclideanProcessor<T> processor, T rotationAngle, GaBivector<T> rotationBlade)
         {
             var halfRotationAngle = processor.Divide(rotationAngle, processor.GetScalarFromNumber(2));
             var cosHalfAngle = processor.Cos(halfRotationAngle);
@@ -526,7 +526,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
             );
         }
 
-        public static PureRotor<T> CreatePureRotor<T>(this IGeometricAlgebraEuclideanProcessor<T> processor, Vector<T> sourceVector1, Vector<T> sourceVector2, Vector<T> targetVector1, Vector<T> targetVector2, bool assumeUnitVectors = false)
+        public static PureRotorsSequence<T> CreatePureRotorSequence<T>(this IGeometricAlgebraEuclideanProcessor<T> processor, GaVector<T> sourceVector1, GaVector<T> sourceVector2, GaVector<T> targetVector1, GaVector<T> targetVector2, bool assumeUnitVectors = false)
         {
             var rotor1 = 
                 processor.CreatePureRotor(
@@ -542,15 +542,15 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
                     assumeUnitVectors
                 );
 
-            var rotor = 
-                rotor2.Multivector.EGp(rotor1.Multivector);
+            //var rotor = 
+            //    rotor2.Multivector.EGp(rotor1.Multivector);
 
-            var (scalar, bivector) = rotor.GetScalarBivectorParts();
+            //var (scalar, bivector) = rotor.GetScalarBivectorParts();
 
-            return PureRotor<T>.Create(scalar.ScalarValue, bivector);
+            return PureRotorsSequence<T>.Create(processor, rotor1, rotor2);
         }
 
-        public static PureRotor<T> CreatePureRotor<T>(this IGeometricAlgebraEuclideanProcessor<T> processor, uint baseSpaceDimensions, Vector<T> inputVector1, Vector<T> inputVector2, Vector<T> rotatedVector1, Vector<T> rotatedVector2)
+        public static PureRotor<T> CreatePureRotor<T>(this IGeometricAlgebraEuclideanProcessor<T> processor, uint baseSpaceDimensions, GaVector<T> inputVector1, GaVector<T> inputVector2, GaVector<T> rotatedVector1, GaVector<T> rotatedVector2)
         {
             var inputFrame = processor.CreateVectorFrame(
                 VectorFrameSpecs.CreateLinearlyIndependentSpecs(),

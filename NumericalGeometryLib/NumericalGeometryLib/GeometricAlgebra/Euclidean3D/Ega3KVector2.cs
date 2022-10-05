@@ -5,8 +5,9 @@ using NumericalGeometryLib.BasicMath;
 
 namespace NumericalGeometryLib.GeometricAlgebra.Euclidean3D
 {
-    public sealed record Ega3KVector2
-        : ITriplet<double>, IGeometricElement
+    public sealed record Ega3KVector2 : 
+        ITriplet<double>, 
+        IGeometricElement
     {
         public static Ega3KVector2 Zero { get; }
             = new Ega3KVector2(0d, 0d, 0d);
@@ -74,6 +75,37 @@ namespace NumericalGeometryLib.GeometricAlgebra.Euclidean3D
         }
 
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Ega3KVector2 operator *(Ega3KVector2 mv1, double mv2)
+        {
+            if (mv1.IsZero || mv2.IsExactZero()) return Zero;
+
+            return new Ega3KVector2(
+                mv1.Scalar12 * mv2,
+                mv1.Scalar13 * mv2,
+                mv1.Scalar23 * mv2
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Ega3KVector2 operator *(double mv1, Ega3KVector2 mv2)
+        {
+            if (mv1.IsExactZero() || mv2.IsZero) return Zero;
+
+            return new Ega3KVector2(
+                mv1 * mv2.Scalar12,
+                mv1 * mv2.Scalar13,
+                mv1 * mv2.Scalar23
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Ega3KVector2 operator /(Ega3KVector2 mv1, double mv2)
+        {
+            return mv1 * (1d / mv2);
+        }
+
+
         public double Item1 => Scalar12;
 
         public double Item2 => Scalar13;
@@ -129,7 +161,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Euclidean3D
         {
             return new Ega3Multivector(0d, Ega3KVector1.Zero, this, 0d);
         }
-        
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override string ToString()
         {

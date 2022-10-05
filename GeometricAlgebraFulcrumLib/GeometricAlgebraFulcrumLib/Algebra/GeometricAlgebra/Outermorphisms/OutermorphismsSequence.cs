@@ -123,55 +123,55 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Vector<T> OmMapBasisVector(ulong index)
+        public override GaVector<T> OmMapBasisVector(ulong index)
         {
             return _outermorphismsList.OmMapBasisVector(index);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Bivector<T> OmMapBasisBivector(ulong index)
+        public override GaBivector<T> OmMapBasisBivector(ulong index)
         {
             return _outermorphismsList.OmMapBasisBivector(index);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Bivector<T> OmMapBasisBivector(ulong index1, ulong index2)
+        public override GaBivector<T> OmMapBasisBivector(ulong index1, ulong index2)
         {
             return _outermorphismsList.OmMapBasisBivector(index1, index2);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override KVector<T> OmMapBasisBlade(ulong id)
+        public override GaKVector<T> OmMapBasisBlade(ulong id)
         {
             return _outermorphismsList.OmMapBasisBlade(id);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override KVector<T> OmMapBasisBlade(uint grade, ulong index)
+        public override GaKVector<T> OmMapBasisBlade(uint grade, ulong index)
         {
             return _outermorphismsList.OmMapBasisBlade(grade, index);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Vector<T> OmMap(Vector<T> vector)
+        public override GaVector<T> OmMap(GaVector<T> vector)
         {
             return _outermorphismsList.OmMap(vector);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Bivector<T> OmMap(Bivector<T> bivector)
+        public override GaBivector<T> OmMap(GaBivector<T> bivector)
         {
             return _outermorphismsList.OmMap(bivector);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override KVector<T> OmMap(KVector<T> kVector)
+        public override GaKVector<T> OmMap(GaKVector<T> kVector)
         {
             return _outermorphismsList.OmMap(kVector);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Multivector<T> OmMap(Multivector<T> multivector)
+        public override GaMultivector<T> OmMap(GaMultivector<T> multivector)
         {
             return _outermorphismsList.OmMap(multivector);
         }

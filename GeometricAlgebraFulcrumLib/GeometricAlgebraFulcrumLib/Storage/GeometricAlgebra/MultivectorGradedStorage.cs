@@ -445,7 +445,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         {
             if (GetLinVectorGradedStorage().TryGetVectorStorage(1U, out var evenDictionary))
             {
-                vector = VectorStorage<T>.CreateVector(evenDictionary);
+                vector = VectorStorage<T>.CreateVectorStorage(evenDictionary);
                 return true;
             }
 
@@ -660,7 +660,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             
             return indexScalarDictionary.GetSparseCount() == 0
                 ? VectorStorage<T>.ZeroVector
-                : VectorStorage<T>.CreateVector(indexScalarDictionary);
+                : VectorStorage<T>.CreateVectorStorage(indexScalarDictionary);
         }
 
         public VectorStorage<T> GetVectorPart(Func<T, bool> scalarSelection)
@@ -673,7 +673,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             
             return indexScalarDictionary.GetSparseCount() == 0
                 ? VectorStorage<T>.ZeroVector
-                : VectorStorage<T>.CreateVector(indexScalarDictionary);
+                : VectorStorage<T>.CreateVectorStorage(indexScalarDictionary);
         }
 
         public VectorStorage<T> GetVectorPart(Func<ulong, T, bool> indexScalarSelection)
@@ -686,7 +686,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             
             return indexScalarDictionary.GetSparseCount() == 0
                 ? VectorStorage<T>.ZeroVector
-                : VectorStorage<T>.CreateVector(indexScalarDictionary);
+                : VectorStorage<T>.CreateVectorStorage(indexScalarDictionary);
         }
 
         public VectorStorage<T> GetVectorPart(Func<ulong, bool> indexSelection)
@@ -699,7 +699,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             
             return indexScalarDictionary.GetSparseCount() == 0
                 ? VectorStorage<T>.ZeroVector
-                : VectorStorage<T>.CreateVector(indexScalarDictionary);
+                : VectorStorage<T>.CreateVectorStorage(indexScalarDictionary);
         }
 
         public BivectorStorage<T> GetBivectorPart()

@@ -10,7 +10,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
     public static class MultivectorGpUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> Gp<T>(this IGeometricAlgebraProcessor<T> processor, ulong id1, ulong id2)
+        public static GaMultivector<T> Gp<T>(this IGeometricAlgebraProcessor<T> processor, ulong id1, ulong id2)
         {
             return processor.Gp(
                 processor.CreateKVectorStorageBasis(id1),
@@ -19,7 +19,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> EGp<T>(this IGeometricAlgebraProcessor<T> processor, ulong id1, ulong id2)
+        public static GaMultivector<T> EGp<T>(this IGeometricAlgebraProcessor<T> processor, ulong id1, ulong id2)
         {
             return processor.EGp(
                 processor.CreateKVectorStorageBasis(id1),
@@ -29,187 +29,187 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> Gp<T>(this Multivector<T> v1, int v2)
+        public static GaMultivector<T> Gp<T>(this GaMultivector<T> v1, int v2)
         {
             var processor = v1.GeometricProcessor;
 
-            return new Multivector<T>(
+            return new GaMultivector<T>(
                 processor,
                 processor.Times(v1.MultivectorStorage, processor.GetScalarFromNumber(v2))
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> Gp<T>(this int v1, Multivector<T> v2)
+        public static GaMultivector<T> Gp<T>(this int v1, GaMultivector<T> v2)
         {
             var processor = v2.GeometricProcessor;
 
-            return new Multivector<T>(
+            return new GaMultivector<T>(
                 processor,
                 processor.Times(processor.GetScalarFromNumber(v1), v2.MultivectorStorage)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> Gp<T>(this Multivector<T> v1, uint v2)
+        public static GaMultivector<T> Gp<T>(this GaMultivector<T> v1, uint v2)
         {
             var processor = v1.GeometricProcessor;
 
-            return new Multivector<T>(
+            return new GaMultivector<T>(
                 processor,
                 processor.Times(v1.MultivectorStorage, processor.GetScalarFromNumber(v2))
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> Gp<T>(this uint v1, Multivector<T> v2)
+        public static GaMultivector<T> Gp<T>(this uint v1, GaMultivector<T> v2)
         {
             var processor = v2.GeometricProcessor;
 
-            return new Multivector<T>(
+            return new GaMultivector<T>(
                 processor,
                 processor.Times(processor.GetScalarFromNumber(v1), v2.MultivectorStorage)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> Gp<T>(this long v1, Multivector<T> v2)
+        public static GaMultivector<T> Gp<T>(this long v1, GaMultivector<T> v2)
         {
             var processor = v2.GeometricProcessor;
 
-            return new Multivector<T>(
-                processor,
-                processor.Times(processor.GetScalarFromNumber(v1), v2.MultivectorStorage)
-            );
-        }
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> Gp<T>(this Multivector<T> v1, long v2)
-        {
-            var processor = v1.GeometricProcessor;
-
-            return new Multivector<T>(
-                processor,
-                processor.Times(v1.MultivectorStorage, processor.GetScalarFromNumber(v2))
-            );
-        }
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> Gp<T>(this Multivector<T> v1, ulong v2)
-        {
-            var processor = v1.GeometricProcessor;
-
-            return new Multivector<T>(
-                processor,
-                processor.Times(v1.MultivectorStorage, processor.GetScalarFromNumber(v2))
-            );
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> Gp<T>(this ulong v1, Multivector<T> v2)
-        {
-            var processor = v2.GeometricProcessor;
-
-            return new Multivector<T>(
+            return new GaMultivector<T>(
                 processor,
                 processor.Times(processor.GetScalarFromNumber(v1), v2.MultivectorStorage)
             );
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> Gp<T>(this Multivector<T> v1, float v2)
+        public static GaMultivector<T> Gp<T>(this GaMultivector<T> v1, long v2)
         {
             var processor = v1.GeometricProcessor;
 
-            return new Multivector<T>(
+            return new GaMultivector<T>(
+                processor,
+                processor.Times(v1.MultivectorStorage, processor.GetScalarFromNumber(v2))
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GaMultivector<T> Gp<T>(this GaMultivector<T> v1, ulong v2)
+        {
+            var processor = v1.GeometricProcessor;
+
+            return new GaMultivector<T>(
                 processor,
                 processor.Times(v1.MultivectorStorage, processor.GetScalarFromNumber(v2))
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> Gp<T>(this float v1, Multivector<T> v2)
+        public static GaMultivector<T> Gp<T>(this ulong v1, GaMultivector<T> v2)
         {
             var processor = v2.GeometricProcessor;
 
-            return new Multivector<T>(
+            return new GaMultivector<T>(
                 processor,
                 processor.Times(processor.GetScalarFromNumber(v1), v2.MultivectorStorage)
             );
         }
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> Gp<T>(this Multivector<T> v1, double v2)
+        public static GaMultivector<T> Gp<T>(this GaMultivector<T> v1, float v2)
         {
             var processor = v1.GeometricProcessor;
 
-            return new Multivector<T>(
+            return new GaMultivector<T>(
                 processor,
                 processor.Times(v1.MultivectorStorage, processor.GetScalarFromNumber(v2))
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> Gp<T>(this double v1, Multivector<T> v2)
+        public static GaMultivector<T> Gp<T>(this float v1, GaMultivector<T> v2)
         {
             var processor = v2.GeometricProcessor;
 
-            return new Multivector<T>(
+            return new GaMultivector<T>(
                 processor,
                 processor.Times(processor.GetScalarFromNumber(v1), v2.MultivectorStorage)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> Gp<T>(this Multivector<T> v1, T v2)
+        public static GaMultivector<T> Gp<T>(this GaMultivector<T> v1, double v2)
         {
             var processor = v1.GeometricProcessor;
 
-            return new Multivector<T>(
+            return new GaMultivector<T>(
+                processor,
+                processor.Times(v1.MultivectorStorage, processor.GetScalarFromNumber(v2))
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GaMultivector<T> Gp<T>(this double v1, GaMultivector<T> v2)
+        {
+            var processor = v2.GeometricProcessor;
+
+            return new GaMultivector<T>(
+                processor,
+                processor.Times(processor.GetScalarFromNumber(v1), v2.MultivectorStorage)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GaMultivector<T> Gp<T>(this GaMultivector<T> v1, T v2)
+        {
+            var processor = v1.GeometricProcessor;
+
+            return new GaMultivector<T>(
                 processor,
                 processor.Times(v1.MultivectorStorage, v2)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> Gp<T>(this T v1, Multivector<T> v2)
+        public static GaMultivector<T> Gp<T>(this T v1, GaMultivector<T> v2)
         {
             var processor = v2.GeometricProcessor;
 
-            return new Multivector<T>(
+            return new GaMultivector<T>(
                 processor,
                 processor.Times(v1, v2.MultivectorStorage)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> Gp<T>(this Multivector<T> v1, Scalar<T> v2)
+        public static GaMultivector<T> Gp<T>(this GaMultivector<T> v1, Scalar<T> v2)
         {
             var processor = v1.GeometricProcessor;
 
-            return new Multivector<T>(
+            return new GaMultivector<T>(
                 processor,
                 processor.Times(v1.MultivectorStorage, v2.ScalarValue)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> Gp<T>(this Scalar<T> v1, Multivector<T> v2)
+        public static GaMultivector<T> Gp<T>(this Scalar<T> v1, GaMultivector<T> v2)
         {
             var processor = v2.GeometricProcessor;
 
-            return new Multivector<T>(
+            return new GaMultivector<T>(
                 processor,
                 processor.Times(v1.ScalarValue, v2.MultivectorStorage)
             );
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> Gp<T>(this Multivector<T> v1, LinVector<T> v2)
+        public static GaMultivector<T> Gp<T>(this GaMultivector<T> v1, LinVector<T> v2)
         {
             var processor = v1.GeometricProcessor;
 
-            return new Multivector<T>(
+            return new GaMultivector<T>(
                 processor,
                 processor.Gp(
                     v1.MultivectorStorage, 
@@ -219,11 +219,11 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> Gp<T>(this LinVector<T> v1, Multivector<T> v2)
+        public static GaMultivector<T> Gp<T>(this LinVector<T> v1, GaMultivector<T> v2)
         {
             var processor = v2.GeometricProcessor;
 
-            return new Multivector<T>(
+            return new GaMultivector<T>(
                 processor,
                 processor.Gp(
                     v1.VectorStorage.CreateVectorStorage(), 
@@ -233,11 +233,11 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> Gp<T>(this Multivector<T> v1, Vector<T> v2)
+        public static GaMultivector<T> Gp<T>(this GaMultivector<T> v1, GaVector<T> v2)
         {
             var processor = v2.GeometricProcessor;
 
-            return new Multivector<T>(
+            return new GaMultivector<T>(
                 processor,
                 processor.Gp(
                     v1.MultivectorStorage, 
@@ -247,11 +247,11 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> Gp<T>(this Vector<T> v1, Multivector<T> v2)
+        public static GaMultivector<T> Gp<T>(this GaVector<T> v1, GaMultivector<T> v2)
         {
             var processor = v2.GeometricProcessor;
 
-            return new Multivector<T>(
+            return new GaMultivector<T>(
                 processor,
                 processor.Gp(
                     v1.VectorStorage, 
@@ -261,11 +261,11 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> Gp<T>(this Multivector<T> v1, Bivector<T> v2)
+        public static GaMultivector<T> Gp<T>(this GaMultivector<T> v1, GaBivector<T> v2)
         {
             var processor = v2.GeometricProcessor;
 
-            return new Multivector<T>(
+            return new GaMultivector<T>(
                 processor,
                 processor.Gp(
                     v1.MultivectorStorage, 
@@ -275,11 +275,11 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> Gp<T>(this Bivector<T> v1, Multivector<T> v2)
+        public static GaMultivector<T> Gp<T>(this GaBivector<T> v1, GaMultivector<T> v2)
         {
             var processor = v2.GeometricProcessor;
 
-            return new Multivector<T>(
+            return new GaMultivector<T>(
                 processor,
                 processor.Gp(
                     v1.BivectorStorage, 
@@ -289,11 +289,11 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> Gp<T>(this Multivector<T> v1, KVector<T> v2)
+        public static GaMultivector<T> Gp<T>(this GaMultivector<T> v1, GaKVector<T> v2)
         {
             var processor = v2.GeometricProcessor;
 
-            return new Multivector<T>(
+            return new GaMultivector<T>(
                 processor,
                 processor.Gp(
                     v1.MultivectorStorage, 
@@ -303,11 +303,11 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> Gp<T>(this KVector<T> v1, Multivector<T> v2)
+        public static GaMultivector<T> Gp<T>(this GaKVector<T> v1, GaMultivector<T> v2)
         {
             var processor = v2.GeometricProcessor;
 
-            return new Multivector<T>(
+            return new GaMultivector<T>(
                 processor,
                 processor.Gp(
                     v1.KVectorStorage, 
@@ -317,11 +317,11 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> Gp<T>(this Multivector<T> v1, Multivector<T> v2)
+        public static GaMultivector<T> Gp<T>(this GaMultivector<T> v1, GaMultivector<T> v2)
         {
             var processor = v1.GeometricProcessor;
 
-            return new Multivector<T>(
+            return new GaMultivector<T>(
                 processor,
                 processor.Gp(
                     v1.MultivectorStorage, 
@@ -331,7 +331,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> GpSquared<T>(this Multivector<T> mv1)
+        public static GaMultivector<T> GpSquared<T>(this GaMultivector<T> mv1)
         {
             var processor = mv1.GeometricProcessor;
 
@@ -341,7 +341,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> GpReverse<T>(this Multivector<T> mv1)
+        public static GaMultivector<T> GpReverse<T>(this GaMultivector<T> mv1)
         {
             var processor = mv1.GeometricProcessor;
 
@@ -351,7 +351,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> GpReverse<T>(this Multivector<T> mv1, Multivector<T> mv2)
+        public static GaMultivector<T> GpReverse<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2)
         {
             var processor = mv1.GeometricProcessor;
 
@@ -362,187 +362,187 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> EGp<T>(this Multivector<T> v1, int v2)
+        public static GaMultivector<T> EGp<T>(this GaMultivector<T> v1, int v2)
         {
             var processor = v1.GeometricProcessor;
 
-            return new Multivector<T>(
+            return new GaMultivector<T>(
                 processor,
                 processor.Times(v1.MultivectorStorage, processor.GetScalarFromNumber(v2))
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> EGp<T>(this int v1, Multivector<T> v2)
+        public static GaMultivector<T> EGp<T>(this int v1, GaMultivector<T> v2)
         {
             var processor = v2.GeometricProcessor;
 
-            return new Multivector<T>(
+            return new GaMultivector<T>(
                 processor,
                 processor.Times(processor.GetScalarFromNumber(v1), v2.MultivectorStorage)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> EGp<T>(this Multivector<T> v1, uint v2)
+        public static GaMultivector<T> EGp<T>(this GaMultivector<T> v1, uint v2)
         {
             var processor = v1.GeometricProcessor;
 
-            return new Multivector<T>(
+            return new GaMultivector<T>(
                 processor,
                 processor.Times(v1.MultivectorStorage, processor.GetScalarFromNumber(v2))
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> EGp<T>(this uint v1, Multivector<T> v2)
+        public static GaMultivector<T> EGp<T>(this uint v1, GaMultivector<T> v2)
         {
             var processor = v2.GeometricProcessor;
 
-            return new Multivector<T>(
+            return new GaMultivector<T>(
                 processor,
                 processor.Times(processor.GetScalarFromNumber(v1), v2.MultivectorStorage)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> EGp<T>(this long v1, Multivector<T> v2)
+        public static GaMultivector<T> EGp<T>(this long v1, GaMultivector<T> v2)
         {
             var processor = v2.GeometricProcessor;
 
-            return new Multivector<T>(
-                processor,
-                processor.Times(processor.GetScalarFromNumber(v1), v2.MultivectorStorage)
-            );
-        }
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> EGp<T>(this Multivector<T> v1, long v2)
-        {
-            var processor = v1.GeometricProcessor;
-
-            return new Multivector<T>(
-                processor,
-                processor.Times(v1.MultivectorStorage, processor.GetScalarFromNumber(v2))
-            );
-        }
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> EGp<T>(this Multivector<T> v1, ulong v2)
-        {
-            var processor = v1.GeometricProcessor;
-
-            return new Multivector<T>(
-                processor,
-                processor.Times(v1.MultivectorStorage, processor.GetScalarFromNumber(v2))
-            );
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> EGp<T>(this ulong v1, Multivector<T> v2)
-        {
-            var processor = v2.GeometricProcessor;
-
-            return new Multivector<T>(
+            return new GaMultivector<T>(
                 processor,
                 processor.Times(processor.GetScalarFromNumber(v1), v2.MultivectorStorage)
             );
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> EGp<T>(this Multivector<T> v1, float v2)
+        public static GaMultivector<T> EGp<T>(this GaMultivector<T> v1, long v2)
         {
             var processor = v1.GeometricProcessor;
 
-            return new Multivector<T>(
+            return new GaMultivector<T>(
+                processor,
+                processor.Times(v1.MultivectorStorage, processor.GetScalarFromNumber(v2))
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GaMultivector<T> EGp<T>(this GaMultivector<T> v1, ulong v2)
+        {
+            var processor = v1.GeometricProcessor;
+
+            return new GaMultivector<T>(
                 processor,
                 processor.Times(v1.MultivectorStorage, processor.GetScalarFromNumber(v2))
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> EGp<T>(this float v1, Multivector<T> v2)
+        public static GaMultivector<T> EGp<T>(this ulong v1, GaMultivector<T> v2)
         {
             var processor = v2.GeometricProcessor;
 
-            return new Multivector<T>(
+            return new GaMultivector<T>(
                 processor,
                 processor.Times(processor.GetScalarFromNumber(v1), v2.MultivectorStorage)
             );
         }
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> EGp<T>(this Multivector<T> v1, double v2)
+        public static GaMultivector<T> EGp<T>(this GaMultivector<T> v1, float v2)
         {
             var processor = v1.GeometricProcessor;
 
-            return new Multivector<T>(
+            return new GaMultivector<T>(
                 processor,
                 processor.Times(v1.MultivectorStorage, processor.GetScalarFromNumber(v2))
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> EGp<T>(this double v1, Multivector<T> v2)
+        public static GaMultivector<T> EGp<T>(this float v1, GaMultivector<T> v2)
         {
             var processor = v2.GeometricProcessor;
 
-            return new Multivector<T>(
+            return new GaMultivector<T>(
                 processor,
                 processor.Times(processor.GetScalarFromNumber(v1), v2.MultivectorStorage)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> EGp<T>(this Multivector<T> v1, T v2)
+        public static GaMultivector<T> EGp<T>(this GaMultivector<T> v1, double v2)
         {
             var processor = v1.GeometricProcessor;
 
-            return new Multivector<T>(
+            return new GaMultivector<T>(
+                processor,
+                processor.Times(v1.MultivectorStorage, processor.GetScalarFromNumber(v2))
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GaMultivector<T> EGp<T>(this double v1, GaMultivector<T> v2)
+        {
+            var processor = v2.GeometricProcessor;
+
+            return new GaMultivector<T>(
+                processor,
+                processor.Times(processor.GetScalarFromNumber(v1), v2.MultivectorStorage)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GaMultivector<T> EGp<T>(this GaMultivector<T> v1, T v2)
+        {
+            var processor = v1.GeometricProcessor;
+
+            return new GaMultivector<T>(
                 processor,
                 processor.Times(v1.MultivectorStorage, v2)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> EGp<T>(this T v1, Multivector<T> v2)
+        public static GaMultivector<T> EGp<T>(this T v1, GaMultivector<T> v2)
         {
             var processor = v2.GeometricProcessor;
 
-            return new Multivector<T>(
+            return new GaMultivector<T>(
                 processor,
                 processor.Times(v1, v2.MultivectorStorage)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> EGp<T>(this Multivector<T> v1, Scalar<T> v2)
+        public static GaMultivector<T> EGp<T>(this GaMultivector<T> v1, Scalar<T> v2)
         {
             var processor = v1.GeometricProcessor;
 
-            return new Multivector<T>(
+            return new GaMultivector<T>(
                 processor,
                 processor.Times(v1.MultivectorStorage, v2.ScalarValue)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> EGp<T>(this Scalar<T> v1, Multivector<T> v2)
+        public static GaMultivector<T> EGp<T>(this Scalar<T> v1, GaMultivector<T> v2)
         {
             var processor = v2.GeometricProcessor;
 
-            return new Multivector<T>(
+            return new GaMultivector<T>(
                 processor,
                 processor.Times(v1.ScalarValue, v2.MultivectorStorage)
             );
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> EGp<T>(this Multivector<T> v1, LinVector<T> v2)
+        public static GaMultivector<T> EGp<T>(this GaMultivector<T> v1, LinVector<T> v2)
         {
             var processor = v1.GeometricProcessor;
 
-            return new Multivector<T>(
+            return new GaMultivector<T>(
                 processor,
                 processor.EGp(
                     v1.MultivectorStorage, 
@@ -552,11 +552,11 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> EGp<T>(this LinVector<T> v1, Multivector<T> v2)
+        public static GaMultivector<T> EGp<T>(this LinVector<T> v1, GaMultivector<T> v2)
         {
             var processor = v2.GeometricProcessor;
 
-            return new Multivector<T>(
+            return new GaMultivector<T>(
                 processor,
                 processor.EGp(
                     v1.VectorStorage.CreateVectorStorage(), 
@@ -566,11 +566,11 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> EGp<T>(this Multivector<T> v1, Vector<T> v2)
+        public static GaMultivector<T> EGp<T>(this GaMultivector<T> v1, GaVector<T> v2)
         {
             var processor = v2.GeometricProcessor;
 
-            return new Multivector<T>(
+            return new GaMultivector<T>(
                 processor,
                 processor.EGp(
                     v1.MultivectorStorage, 
@@ -580,11 +580,11 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> EGp<T>(this Vector<T> v1, Multivector<T> v2)
+        public static GaMultivector<T> EGp<T>(this GaVector<T> v1, GaMultivector<T> v2)
         {
             var processor = v2.GeometricProcessor;
 
-            return new Multivector<T>(
+            return new GaMultivector<T>(
                 processor,
                 processor.EGp(
                     v1.VectorStorage, 
@@ -594,11 +594,11 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> EGp<T>(this Multivector<T> v1, Bivector<T> v2)
+        public static GaMultivector<T> EGp<T>(this GaMultivector<T> v1, GaBivector<T> v2)
         {
             var processor = v2.GeometricProcessor;
 
-            return new Multivector<T>(
+            return new GaMultivector<T>(
                 processor,
                 processor.EGp(
                     v1.MultivectorStorage, 
@@ -608,11 +608,11 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> EGp<T>(this Bivector<T> v1, Multivector<T> v2)
+        public static GaMultivector<T> EGp<T>(this GaBivector<T> v1, GaMultivector<T> v2)
         {
             var processor = v2.GeometricProcessor;
 
-            return new Multivector<T>(
+            return new GaMultivector<T>(
                 processor,
                 processor.EGp(
                     v1.BivectorStorage, 
@@ -622,11 +622,11 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> EGp<T>(this Multivector<T> v1, KVector<T> v2)
+        public static GaMultivector<T> EGp<T>(this GaMultivector<T> v1, GaKVector<T> v2)
         {
             var processor = v2.GeometricProcessor;
 
-            return new Multivector<T>(
+            return new GaMultivector<T>(
                 processor,
                 processor.EGp(
                     v1.MultivectorStorage, 
@@ -636,11 +636,11 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> EGp<T>(this KVector<T> v1, Multivector<T> v2)
+        public static GaMultivector<T> EGp<T>(this GaKVector<T> v1, GaMultivector<T> v2)
         {
             var processor = v2.GeometricProcessor;
 
-            return new Multivector<T>(
+            return new GaMultivector<T>(
                 processor,
                 processor.EGp(
                     v1.KVectorStorage, 
@@ -650,11 +650,11 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> EGp<T>(this Multivector<T> v1, Multivector<T> v2)
+        public static GaMultivector<T> EGp<T>(this GaMultivector<T> v1, GaMultivector<T> v2)
         {
             var processor = v2.GeometricProcessor;
 
-            return new Multivector<T>(
+            return new GaMultivector<T>(
                 processor,
                 processor.EGp(
                     v1.MultivectorStorage, 
@@ -664,7 +664,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> EGpSquared<T>(this Multivector<T> mv1)
+        public static GaMultivector<T> EGpSquared<T>(this GaMultivector<T> mv1)
         {
             var processor = mv1.GeometricProcessor;
 
@@ -674,7 +674,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> EGpReverse<T>(this Multivector<T> mv1)
+        public static GaMultivector<T> EGpReverse<T>(this GaMultivector<T> mv1)
         {
             var processor = mv1.GeometricProcessor;
 
@@ -684,7 +684,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> EGpReverse<T>(this Multivector<T> mv1, Multivector<T> mv2)
+        public static GaMultivector<T> EGpReverse<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2)
         {
             var processor = mv1.GeometricProcessor;
 

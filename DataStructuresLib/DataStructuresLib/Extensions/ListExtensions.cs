@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
@@ -7,6 +8,42 @@ namespace DataStructuresLib.Extensions
 {
     public static class ListExtensions
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IReadOnlyList<T> SubList<T>(this IReadOnlyList<T> list, int index, int count)
+        {
+            return list.GetItems(index, count).ToImmutableArray();
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<T> Sample<T>(this IReadOnlyList<T> sValues, int skipCount)
+        {
+            for (var i = 0; i < sValues.Count; i += skipCount)
+                yield return sValues[i];
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<T> Sample<T>(this IReadOnlyList<T> sValues, int startIndex, int skipCount)
+        {
+            for (var i = startIndex; i < sValues.Count; i += skipCount)
+                yield return sValues[i];
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<T> GetItems<T>(this IReadOnlyList<T> list, int index, int count)
+        {
+            var listCount = list.Count;
+
+            for (var i = 0; i < count; i++)
+            {
+                var listIndex = i + index;
+
+                if (listIndex < listCount)
+                    yield return list[listIndex];
+                else
+                    break;
+            }
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T GetFirstItem<T>(this IList<T> list)
         {

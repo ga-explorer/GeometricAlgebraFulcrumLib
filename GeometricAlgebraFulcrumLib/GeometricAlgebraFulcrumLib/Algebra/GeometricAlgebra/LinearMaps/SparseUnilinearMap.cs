@@ -100,27 +100,27 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.LinearMaps
             throw new NotImplementedException();
         }
 
-        public Multivector<T> MapBasisScalar()
+        public GaMultivector<T> MapBasisScalar()
         {
             throw new NotImplementedException();
         }
 
-        public Multivector<T> MapBasisVector(ulong index)
+        public GaMultivector<T> MapBasisVector(ulong index)
         {
             throw new NotImplementedException();
         }
 
-        public Multivector<T> MapBasisBivector(ulong index)
+        public GaMultivector<T> MapBasisBivector(ulong index)
         {
             throw new NotImplementedException();
         }
 
-        public Multivector<T> MapBasisBivector(ulong index1, ulong index2)
+        public GaMultivector<T> MapBasisBivector(ulong index1, ulong index2)
         {
             throw new NotImplementedException();
         }
 
-        public Multivector<T> MapBasisBlade(ulong id)
+        public GaMultivector<T> MapBasisBlade(ulong id)
         {
             return GeometricProcessor.CreateMultivector(
                 _mappedBasisBladesDictionary.TryGetValue(id, out var mappedMultivector)
@@ -129,7 +129,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.LinearMaps
             );
         }
 
-        public Multivector<T> MapBasisBlade(uint grade, ulong index)
+        public GaMultivector<T> MapBasisBlade(uint grade, ulong index)
         {
             var id = index.BasisBladeIndexToId(grade);
 
@@ -140,27 +140,27 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.LinearMaps
                 );
         }
 
-        public Multivector<T> Map(T mv)
+        public GaMultivector<T> Map(T mv)
         {
             throw new NotImplementedException();
         }
 
-        public Multivector<T> Map(Vector<T> vector)
+        public GaMultivector<T> Map(GaVector<T> vector)
         {
             throw new NotImplementedException();
         }
 
-        public Multivector<T> Map(Bivector<T> bivector)
+        public GaMultivector<T> Map(GaBivector<T> bivector)
         {
             throw new NotImplementedException();
         }
 
-        public Multivector<T> Map(KVector<T> kVector)
+        public GaMultivector<T> Map(GaKVector<T> kVector)
         {
             throw new NotImplementedException();
         }
 
-        public Multivector<T> Map(Multivector<T> multivector)
+        public GaMultivector<T> Map(GaMultivector<T> multivector)
         {
             throw new NotImplementedException();
         }

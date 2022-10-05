@@ -49,7 +49,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
                 return grade switch
                 {
                     0 => KVectorStorage<T>.CreateKVectorScalar(indexScalarDictionary.TryGetValue(0, out var s) ? s : scalarProcessor.ScalarZero),
-                    1 => VectorStorage<T>.CreateVector(indexScalarDictionary),
+                    1 => VectorStorage<T>.CreateVectorStorage(indexScalarDictionary),
                     2 => BivectorStorage<T>.Create(indexScalarDictionary),
                     _ => KVectorStorage<T>.CreateKVector(grade, indexScalarDictionary)
                 };
@@ -60,7 +60,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
             return grade switch
             {
                 0 => KVectorStorage<T>.CreateKVectorScalar(scalar),
-                1 => VectorStorage<T>.CreateVector(index, scalar),
+                1 => VectorStorage<T>.CreateVectorStorage(index, scalar),
                 2 => BivectorStorage<T>.Create(index, scalar),
                 _ => KVectorStorage<T>.CreateKVector(grade, index, scalar)
             };

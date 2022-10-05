@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using DataStructuresLib;
-using EuclideanGeometryLib.BasicMath;
-using EuclideanGeometryLib.BasicMath.Tuples;
-using EuclideanGeometryLib.BasicMath.Tuples.Immutable;
+using NumericalGeometryLib.BasicMath;
+using NumericalGeometryLib.BasicMath.Tuples;
+using NumericalGeometryLib.BasicMath.Tuples.Immutable;
 using GraphicsComposerLib.Geometry.LatticeShapes;
 using GraphicsComposerLib.Geometry.LatticeShapes.Surfaces;
 using GraphicsComposerLib.Geometry.ParametricShapes.Curves;
 using GraphicsComposerLib.Geometry.ParametricShapes.Curves.Sampled;
 using GraphicsComposerLib.Geometry.Primitives;
 using GraphicsComposerLib.Geometry.Primitives.Lines;
-using GraphicsComposerLib.WebGl.Xeogl;
+using GraphicsComposerLib.Rendering.Xeogl;
 
 namespace GraphicsComposerLib.Samples.Geometry.ParametricShapes
 {

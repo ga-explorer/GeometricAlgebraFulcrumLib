@@ -14,8 +14,8 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
     public sealed class MultivectorConsistencyTests
     {
         private readonly GeometricAlgebraRandomComposer<double> _randomGenerator;
-        private readonly List<Multivector<double>> _mvListTested;
-        private readonly List<Multivector<double>> _mvListRef;
+        private readonly List<GaMultivector<double>> _mvListTested;
+        private readonly List<GaMultivector<double>> _mvListRef;
         private readonly double _scalar;
 
 
@@ -32,8 +32,8 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
         public MultivectorConsistencyTests()
         {
             _randomGenerator = GeometricProcessor.CreateGeometricRandomComposer(10);
-            _mvListTested = new List<Multivector<double>>();
-            _mvListRef = new List<Multivector<double>>();
+            _mvListTested = new List<GaMultivector<double>>();
+            _mvListRef = new List<GaMultivector<double>>();
             _scalar = _randomGenerator.GetScalar();
         }
         
@@ -116,7 +116,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
             }
         }
 
-        private bool TestDiffIsZero(int i, Func<Multivector<double>, Multivector<double>> opFunction)
+        private bool TestDiffIsZero(int i, Func<GaMultivector<double>, GaMultivector<double>> opFunction)
         {
             var tstMv = 
                 opFunction(_mvListTested[i]);
@@ -127,7 +127,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
             return (tstMv - refMv).IsZero();
         }
 
-        private bool TestDiffIsZero(int i, int j, Func<Multivector<double>, Multivector<double>, Multivector<double>> opFunction)
+        private bool TestDiffIsZero(int i, int j, Func<GaMultivector<double>, GaMultivector<double>, GaMultivector<double>> opFunction)
         {
             var tstMv = 
                 opFunction(_mvListTested[i], _mvListTested[j]);
@@ -138,7 +138,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
             return (tstMv - refMv).IsZero();
         }
         
-        private bool TestDiffIsZero(int i, Func<Multivector<double>, double> opFunction)
+        private bool TestDiffIsZero(int i, Func<GaMultivector<double>, double> opFunction)
         {
             var tstMv = 
                 opFunction(_mvListTested[i]);
@@ -151,7 +151,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
             );
         }
         
-        private bool TestDiffIsZero(int i, int j, Func<Multivector<double>, Multivector<double>, double> opFunction)
+        private bool TestDiffIsZero(int i, int j, Func<GaMultivector<double>, GaMultivector<double>, double> opFunction)
         {
             var tstMv = 
                 opFunction(_mvListTested[i], _mvListTested[j]);

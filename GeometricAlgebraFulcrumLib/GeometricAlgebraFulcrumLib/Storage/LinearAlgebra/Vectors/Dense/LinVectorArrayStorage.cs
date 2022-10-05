@@ -59,12 +59,6 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Dense
             return new LinVectorArrayStorage<T>(scalarsArray);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override IReadOnlyList<T> GetScalarsList()
-        {
-            return ScalarsArray;
-        }
-
         public override ILinVectorDenseStorage<T> GetDensePermutation(Func<ulong, ulong> indexMapping)
         {
             var scalarsArray = new T[ScalarsArray.Length];
@@ -73,6 +67,12 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Dense
                 scalarsArray[indexMapping((ulong) index)] = ScalarsArray[index];
 
             return new LinVectorArrayStorage<T>(scalarsArray);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override IEnumerator<T> GetEnumerator()
+        {
+            return ((IEnumerable<T>) ScalarsArray).GetEnumerator();
         }
     }
 }

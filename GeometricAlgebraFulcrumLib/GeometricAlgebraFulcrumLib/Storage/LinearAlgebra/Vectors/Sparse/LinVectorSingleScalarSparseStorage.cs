@@ -19,6 +19,11 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Sparse
 
         public int Count 
             => 1;
+        
+        public T this[int index] 
+            => (ulong) index == Index
+                ? Scalar : default;
+
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int GetSparseCount()
@@ -27,10 +32,12 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Sparse
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public T GetScalar(ulong index) =>
-            index == Index
+        public T GetScalar(ulong index)
+        {
+            return index == Index
                 ? Scalar
                 : default;
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IEnumerable<ulong> GetIndices()

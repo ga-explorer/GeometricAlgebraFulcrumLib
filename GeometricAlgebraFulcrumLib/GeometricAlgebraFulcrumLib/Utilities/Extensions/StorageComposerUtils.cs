@@ -17,36 +17,36 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Vector<T> CreateVector<T>(this IVectorStorageComposer<T> composer)
+        public static GaVector<T> CreateVector<T>(this IVectorStorageComposer<T> composer)
         {
-            return new Vector<T>(
+            return new GaVector<T>(
                 composer.ScalarProcessor,
                 composer.CreateVectorStorage()
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Bivector<T> CreateBivector<T>(this IVectorStorageComposer<T> composer)
+        public static GaBivector<T> CreateBivector<T>(this IVectorStorageComposer<T> composer)
         {
-            return new Bivector<T>(
+            return new GaBivector<T>(
                 composer.ScalarProcessor,
                 composer.CreateBivectorStorage()
             );
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVector<T> CreateKVector<T>(this IVectorStorageComposer<T> composer, uint grade)
+        public static GaKVector<T> CreateKVector<T>(this IVectorStorageComposer<T> composer, uint grade)
         {
-            return new KVector<T>(
+            return new GaKVector<T>(
                 composer.ScalarProcessor,
                 composer.CreateKVectorStorage(grade)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivector<T>(this IVectorStorageComposer<T> composer)
+        public static GaMultivector<T> CreateMultivector<T>(this IVectorStorageComposer<T> composer)
         {
-            return new Multivector<T>(
+            return new GaMultivector<T>(
                 composer.ScalarProcessor,
                 composer.CreateMultivectorStorage()
             );

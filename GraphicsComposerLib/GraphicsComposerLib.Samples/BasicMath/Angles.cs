@@ -1,5 +1,5 @@
 ﻿using System;
-using EuclideanGeometryLib.BasicMath;
+using NumericalGeometryLib.BasicMath;
 
 namespace GraphicsComposerLib.Samples.BasicMath
 {

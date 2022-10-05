@@ -85,13 +85,13 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Vector<double> ToVector(this ITuple2D v)
+        public static GaVector<double> ToVector(this ITuple2D v)
         {
             return GraphicsUtils.GeometricProcessor.CreateVector(v.X, v.Y);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Vector<double> ToVector(this ITuple3D v)
+        public static GaVector<double> ToVector(this ITuple3D v)
         {
             return GraphicsUtils.GeometricProcessor.CreateVector(v.X, v.Y, v.Z);
         }

@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.Combinations;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Processors.TupleAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
@@ -15,6 +13,154 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         //{
         //    scalarProcessor.Subtract(scalar1, scalar2).
         //}
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool HaveOppositeSign<T>(this IScalarAlgebraProcessor<T> scalarProcessor, T scalar1, T scalar2)
+        {
+            return (scalarProcessor.IsPositive(scalar1) && scalarProcessor.IsNegative(scalar2)) ||
+                   (scalarProcessor.IsNegative(scalar1) && scalarProcessor.IsPositive(scalar2));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool AllSameSign<T>(this IScalarAlgebraProcessor<T> scalarProcessor, T scalar1, T scalar2)
+        {
+            return scalarProcessor.AllPositive(scalar1, scalar2) ||
+                   scalarProcessor.AllNegative(scalar1, scalar2);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool AllSameSign<T>(this IScalarAlgebraProcessor<T> scalarProcessor, T scalar1, T scalar2, T scalar3)
+        {
+            return scalarProcessor.AllPositive(scalar1, scalar2, scalar3) ||
+                   scalarProcessor.AllNegative(scalar1, scalar2, scalar3);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool AllSameSign<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params T[] scalarList)
+        {
+            return scalarList.All(scalarProcessor.IsPositive) ||
+                   scalarList.All(scalarProcessor.IsNegative);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool AllZeroOrSameSign<T>(this IScalarAlgebraProcessor<T> scalarProcessor, T scalar1, T scalar2)
+        {
+            return scalarProcessor.AllZeroOrPositive(scalar1, scalar2) ||
+                   scalarProcessor.AllZeroOrNegative(scalar1, scalar2);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool AllZeroOrSameSign<T>(this IScalarAlgebraProcessor<T> scalarProcessor, T scalar1, T scalar2, T scalar3)
+        {
+            return scalarProcessor.AllZeroOrPositive(scalar1, scalar2, scalar3) ||
+                   scalarProcessor.AllZeroOrNegative(scalar1, scalar2, scalar3);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool AllZeroOrSameSign<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params T[] scalarList)
+        {
+            return scalarList.All(scalarProcessor.IsZeroOrPositive) ||
+                   scalarList.All(scalarProcessor.IsZeroOrNegative);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool AllPositive<T>(this IScalarAlgebraProcessor<T> scalarProcessor, T scalar1, T scalar2)
+        {
+            return scalarProcessor.IsPositive(scalar1) &&
+                   scalarProcessor.IsPositive(scalar2);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool AllPositive<T>(this IScalarAlgebraProcessor<T> scalarProcessor, T scalar1, T scalar2, T scalar3)
+        {
+            return scalarProcessor.IsPositive(scalar1) &&
+                   scalarProcessor.IsPositive(scalar2) &&
+                   scalarProcessor.IsPositive(scalar3);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool AllPositive<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params T[] scalarList)
+        {
+            return scalarList.All(scalarProcessor.IsPositive);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool AllNegative<T>(this IScalarAlgebraProcessor<T> scalarProcessor, T scalar1, T scalar2)
+        {
+            return scalarProcessor.IsNegative(scalar1) &&
+                   scalarProcessor.IsNegative(scalar2);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool AllNegative<T>(this IScalarAlgebraProcessor<T> scalarProcessor, T scalar1, T scalar2, T scalar3)
+        {
+            return scalarProcessor.IsNegative(scalar1) &&
+                   scalarProcessor.IsNegative(scalar2) &&
+                   scalarProcessor.IsNegative(scalar3);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool AllNegative<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params T[] scalarList)
+        {
+            return scalarList.All(scalarProcessor.IsNegative);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool AllZeroOrPositive<T>(this IScalarAlgebraProcessor<T> scalarProcessor, T scalar1, T scalar2)
+        {
+            return scalarProcessor.IsZeroOrPositive(scalar1) &&
+                   scalarProcessor.IsZeroOrPositive(scalar2);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool AllZeroOrPositive<T>(this IScalarAlgebraProcessor<T> scalarProcessor, T scalar1, T scalar2, T scalar3)
+        {
+            return scalarProcessor.IsZeroOrPositive(scalar1) &&
+                   scalarProcessor.IsZeroOrPositive(scalar2) &&
+                   scalarProcessor.IsZeroOrPositive(scalar3);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool AllZeroOrPositive<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params T[] scalarList)
+        {
+            return scalarList.All(scalarProcessor.IsZeroOrPositive);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool AllZeroOrNegative<T>(this IScalarAlgebraProcessor<T> scalarProcessor, T scalar1, T scalar2)
+        {
+            return scalarProcessor.IsZeroOrNegative(scalar1) &&
+                   scalarProcessor.IsZeroOrNegative(scalar2);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool AllZeroOrNegative<T>(this IScalarAlgebraProcessor<T> scalarProcessor, T scalar1, T scalar2, T scalar3)
+        {
+            return scalarProcessor.IsZeroOrNegative(scalar1) &&
+                   scalarProcessor.IsZeroOrNegative(scalar2) &&
+                   scalarProcessor.IsZeroOrNegative(scalar3);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool AllZeroOrNegative<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params T[] scalarList)
+        {
+            return scalarList.All(scalarProcessor.IsZeroOrNegative);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool IsZeroOrPositive<T>(this IScalarAlgebraProcessor<T> scalarProcessor, T scalar)
+        {
+            return scalarProcessor.IsZero(scalar) || 
+                   scalarProcessor.IsPositive(scalar);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool IsZeroOrNegative<T>(this IScalarAlgebraProcessor<T> scalarProcessor, T scalar)
+        {
+            return scalarProcessor.IsZero(scalar) || 
+                   scalarProcessor.IsNegative(scalar);
+        }
+
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsNotZero<T>(this IScalarAlgebraProcessor<T> scalarProcessor, T scalar)
@@ -35,6 +181,106 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         {
             return scalarProcessor.IsZero(
                 scalarProcessor.Subtract(scalar, scalarProcessor.ScalarMinusOne)
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T DegreesToRadians<T>(this IScalarAlgebraProcessor<T> scalarProcessor, int angleInDegrees)
+        {
+            angleInDegrees = angleInDegrees switch
+            {
+                < -360 => (angleInDegrees % 720) + 360,
+                > 360 => angleInDegrees % 360,
+                _ => angleInDegrees
+            };
+
+            return scalarProcessor.Times(
+                scalarProcessor.ScalarDegreeToRadian, 
+                scalarProcessor.GetScalarFromNumber(angleInDegrees)
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T DegreesToRadians<T>(this IScalarAlgebraProcessor<T> scalarProcessor, long angleInDegrees)
+        {
+            angleInDegrees = angleInDegrees switch
+            {
+                < -360L => (angleInDegrees % 720L) + 360L,
+                > 360L => angleInDegrees % 360L,
+                _ => angleInDegrees
+            };
+
+            return scalarProcessor.Times(
+                scalarProcessor.ScalarDegreeToRadian, 
+                scalarProcessor.GetScalarFromNumber(angleInDegrees)
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T DegreesToRadians<T>(this IScalarAlgebraProcessor<T> scalarProcessor, float angleInDegrees)
+        {
+            angleInDegrees = angleInDegrees switch
+            {
+                < -360f => (angleInDegrees % 720f) + 360f,
+                > 360f => angleInDegrees % 360f,
+                _ => angleInDegrees
+            };
+
+            return scalarProcessor.Times(
+                scalarProcessor.ScalarDegreeToRadian, 
+                scalarProcessor.GetScalarFromNumber(angleInDegrees)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T DegreesToRadians<T>(this IScalarAlgebraProcessor<T> scalarProcessor, double angleInDegrees)
+        {
+            angleInDegrees = angleInDegrees switch
+            {
+                < -360d => (angleInDegrees % 720d) + 360d,
+                > 360d => angleInDegrees % 360d,
+                _ => angleInDegrees
+            };
+
+            return scalarProcessor.Times(
+                scalarProcessor.ScalarDegreeToRadian, 
+                scalarProcessor.GetScalarFromNumber(angleInDegrees)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T DegreesToRadians<T>(this IScalarAlgebraProcessor<T> scalarProcessor, T angleInDegrees)
+        {
+            return scalarProcessor.Times(
+                scalarProcessor.ScalarDegreeToRadian, 
+                angleInDegrees
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T RadiansToDegrees<T>(this IScalarAlgebraProcessor<T> scalarProcessor, float angleInRadians)
+        {
+            return scalarProcessor.Times(
+                scalarProcessor.ScalarRadianToDegree, 
+                scalarProcessor.GetScalarFromNumber(angleInRadians)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T RadiansToDegrees<T>(this IScalarAlgebraProcessor<T> scalarProcessor, double angleInRadians)
+        {
+            return scalarProcessor.Times(
+                scalarProcessor.ScalarRadianToDegree, 
+                scalarProcessor.GetScalarFromNumber(angleInRadians)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T RadiansToDegrees<T>(this IScalarAlgebraProcessor<T> scalarProcessor, T angleInRadians)
+        {
+            return scalarProcessor.Times(
+                scalarProcessor.ScalarRadianToDegree, 
+                angleInRadians
             );
         }
 
@@ -476,6 +722,12 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         {
             return scalarProcessor.Times(scalar, scalar);
         }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T Cube<T>(this IScalarAlgebraProcessor<T> scalarProcessor, T scalar)
+        {
+            return scalarProcessor.Times(scalar, scalarProcessor.Times(scalar, scalar));
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T Power<T>(this IScalarAlgebraProcessor<T> scalarProcessor, T scalar1, ulong scalar2)
@@ -577,29 +829,29 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             );
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static SparseTupleComposer<T> CreateSparseScalarsTupleComposer<T>(this IScalarAlgebraProcessor<T> itemScalarsDomain)
-        {
-            return new SparseTupleComposer<T>(itemScalarsDomain);
-        }
+        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+        //public static SparseTupleComposer<T> CreateSparseScalarsTupleComposer<T>(this IScalarAlgebraProcessor<T> itemScalarsDomain)
+        //{
+        //    return new SparseTupleComposer<T>(itemScalarsDomain);
+        //}
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static SparseTupleComposer<T> CreateSparseScalarsTupleComposer<T>(this IScalarAlgebraProcessor<T> itemScalarsDomain, Dictionary<int, T> indexScalarDictionary)
-        {
-            return new SparseTupleComposer<T>(itemScalarsDomain, indexScalarDictionary);
-        }
+        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+        //public static SparseTupleComposer<T> CreateSparseScalarsTupleComposer<T>(this IScalarAlgebraProcessor<T> itemScalarsDomain, Dictionary<int, T> indexScalarDictionary)
+        //{
+        //    return new SparseTupleComposer<T>(itemScalarsDomain, indexScalarDictionary);
+        //}
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static SparseTupleComposer<T> CreateSparseScalarsTupleComposer<T>(this IScalarAlgebraProcessor<T> itemScalarsDomain, IEnumerable<KeyValuePair<int, T>> indexScalarPairs)
-        {
-            return new SparseTupleComposer<T>(itemScalarsDomain, indexScalarPairs);
-        }
+        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+        //public static SparseTupleComposer<T> CreateSparseScalarsTupleComposer<T>(this IScalarAlgebraProcessor<T> itemScalarsDomain, IEnumerable<KeyValuePair<int, T>> indexScalarPairs)
+        //{
+        //    return new SparseTupleComposer<T>(itemScalarsDomain, indexScalarPairs);
+        //}
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static SparseTupleComposer<T> CreateSparseScalarsTupleComposer<T>(this IScalarAlgebraProcessor<T> itemScalarsDomain, IEnumerable<Tuple<int, T>> indexScalarTuples)
-        {
-            return new SparseTupleComposer<T>(itemScalarsDomain, indexScalarTuples);
-        }
+        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+        //public static SparseTupleComposer<T> CreateSparseScalarsTupleComposer<T>(this IScalarAlgebraProcessor<T> itemScalarsDomain, IEnumerable<Tuple<int, T>> indexScalarTuples)
+        //{
+        //    return new SparseTupleComposer<T>(itemScalarsDomain, indexScalarTuples);
+        //}
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -5,7 +5,7 @@ using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
 namespace GeometricAlgebraFulcrumLib.Geometry.Frames
 {
     public interface IMultivectorFrame<T> :
-        IReadOnlyList<Multivector<T>>,
+        IReadOnlyList<GaMultivector<T>>,
         IGeometricAlgebraElement<T>
     {
 

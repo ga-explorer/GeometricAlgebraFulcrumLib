@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
@@ -784,5 +785,13 @@ namespace GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra
             return ScalarProcessor.IsNotNearNegative(ScalarValue);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Scalar<T> MapScalar(Func<T, T> scalarMapping)
+        {
+            return new Scalar<T>(
+                ScalarProcessor, 
+                scalarMapping(ScalarValue)
+            );
+        }
     }
 }

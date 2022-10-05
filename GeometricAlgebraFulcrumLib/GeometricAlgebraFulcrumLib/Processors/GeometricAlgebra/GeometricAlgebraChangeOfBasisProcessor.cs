@@ -31,11 +31,11 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
         public override bool IsChangeOfBasis
             => true;
 
-        public override KVector<T> PseudoScalar { get; }
+        public override GaKVector<T> PseudoScalar { get; }
         
-        public override KVector<T> PseudoScalarInverse { get; }
+        public override GaKVector<T> PseudoScalarInverse { get; }
         
-        public override KVector<T> PseudoScalarReverse { get; }
+        public override GaKVector<T> PseudoScalarReverse { get; }
 
 
         internal GeometricAlgebraChangeOfBasisProcessor([NotNull] BasisBladeSet basisSet, [NotNull] IOutermorphism<T> omTargetToOrthonormal, [NotNull] IOutermorphism<T> omOrthonormalToTarget) 

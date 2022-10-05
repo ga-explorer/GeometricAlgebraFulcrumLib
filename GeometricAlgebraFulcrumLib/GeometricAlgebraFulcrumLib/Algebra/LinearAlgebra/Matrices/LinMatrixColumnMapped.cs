@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Processors.LinearAlgebra;
+using GeometricAlgebraFulcrumLib.Processors.MatrixAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Matrices
@@ -12,7 +12,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Matrices
         public Func<TScalar, TScalar> ScalarMapping { get; }
 
 
-        internal LinMatrixColumnMapped([NotNull] ILinearAlgebraProcessor<TMatrix, TScalar> matrixProcessor, [NotNull] TMatrix matrix, int columnIndex, [NotNull] Func<TScalar, TScalar> scalarMapping)
+        internal LinMatrixColumnMapped([NotNull] IMatrixAlgebraProcessor<TMatrix, TScalar> matrixProcessor, [NotNull] TMatrix matrix, int columnIndex, [NotNull] Func<TScalar, TScalar> scalarMapping)
             : base(matrixProcessor, matrix, columnIndex)
         {
             ScalarMapping = scalarMapping;

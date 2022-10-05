@@ -55,6 +55,14 @@ namespace NumericalGeometryLib.BasicMath
         public static float AngleEpsilon { get; }
             = (float)Math.Pow(2.0d, -16);
 
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool IsNearZero(this float x, float epsilon = 1e-7f)
+        {
+            Debug.Assert(!float.IsNaN(x));
+
+            return !(float.IsInfinity(x) || x < -epsilon || x > epsilon);
+        }
 
         /// <summary>
         /// True if the given value is near zero relative to the global tolerance

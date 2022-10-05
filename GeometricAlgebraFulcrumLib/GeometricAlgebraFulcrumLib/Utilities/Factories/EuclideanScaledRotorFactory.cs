@@ -31,7 +31,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static EuclideanScaledRotor2D<T> CreateEuclideanScaledRotor2D<T>(this IGeometricAlgebraProcessor<T> processor, Vector<T> sourceVector, Vector<T> targetVector)
+        public static EuclideanScaledRotor2D<T> CreateEuclideanScaledRotor2D<T>(this IGeometricAlgebraProcessor<T> processor, GaVector<T> sourceVector, GaVector<T> targetVector)
         {
             Debug.Assert(
                 ReferenceEquals(
@@ -43,7 +43,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
             return CreateEuclideanScaledRotor2D(sourceVector, targetVector);
         }
 
-        public static EuclideanScaledRotor2D<T> CreateEuclideanScaledRotor2D<T>(this Vector<T> sourceVector, Vector<T> targetVector)
+        public static EuclideanScaledRotor2D<T> CreateEuclideanScaledRotor2D<T>(this GaVector<T> sourceVector, GaVector<T> targetVector)
         {
             Debug.Assert(
                 ReferenceEquals(
@@ -96,7 +96,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static EuclideanScaledRotorSquared2D<T> CreateEuclideanScaledRotorSquared2D<T>(this IGeometricAlgebraProcessor<T> processor, Vector<T> sourceVector, Vector<T> targetVector)
+        public static EuclideanScaledRotorSquared2D<T> CreateEuclideanScaledRotorSquared2D<T>(this IGeometricAlgebraProcessor<T> processor, GaVector<T> sourceVector, GaVector<T> targetVector)
         {
             Debug.Assert(
                 ReferenceEquals(
@@ -108,7 +108,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
             return CreateEuclideanScaledRotorSquared2D(sourceVector, targetVector);
         }
 
-        public static EuclideanScaledRotorSquared2D<T> CreateEuclideanScaledRotorSquared2D<T>(this Vector<T> sourceVector, Vector<T> targetVector)
+        public static EuclideanScaledRotorSquared2D<T> CreateEuclideanScaledRotorSquared2D<T>(this GaVector<T> sourceVector, GaVector<T> targetVector)
         {
             var processor = sourceVector.GeometricProcessor;
 

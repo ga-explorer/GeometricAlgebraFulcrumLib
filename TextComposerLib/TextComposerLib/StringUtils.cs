@@ -738,6 +738,6 @@ namespace TextComposerLib
 
             return s;
         }
-
+        
     }
 }

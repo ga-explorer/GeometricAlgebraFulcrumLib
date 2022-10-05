@@ -8,7 +8,7 @@ using NumericalGeometryLib.BasicMath.Tuples.Immutable;
 namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Bezier
 {
     public class GrBezierCurve3Degree3D :
-        IGraphicsParametricCurve3D
+        IGraphicsC2ParametricCurve3D
     {
         public Tuple3D Point1 { get; }
 
@@ -94,32 +94,40 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Bezier
             );
         }
 
-        public GrParametricCurveLocalFrame3D GetFrenetFrame(double parameterValue)
+        public Tuple3D GetSecondDerivative(double parameterValue)
         {
-            var derivative2 = GetDerivativeCurve().GetDerivativeCurve();
+            var derivative2 = 
+                GetDerivativeCurve().GetDerivativeCurve();
 
-            var firstDerivativeVector = GetTangent(parameterValue);
-            var secondDerivativeVector = derivative2.GetPoint(parameterValue);
-
-            return GrParametricCurveLocalFrame3D.CreateFrenetFrame(
-                parameterValue,
-                GetPoint(parameterValue),
-                firstDerivativeVector, 
-                secondDerivativeVector
-            );
+            return derivative2.GetPoint(parameterValue);
         }
 
-        public GrParametricCurveLocalFrame3D GetFrenetFrameAt0()
-        {
-            var firstDerivativeVector = 3 * (Point2 - Point1);
-            var secondDerivativeVector = 6 * (Point3 - 2 * Point2 + Point1);
+        //public GrParametricCurveLocalFrame3D GetFrenetFrame(double parameterValue)
+        //{
+        //    var derivative2 = GetDerivativeCurve().GetDerivativeCurve();
 
-            return GrParametricCurveLocalFrame3D.CreateFrenetFrame(
-                0,
-                Point1,
-                firstDerivativeVector, 
-                secondDerivativeVector
-            );
-        }
+        //    var firstDerivativeVector = GetTangent(parameterValue);
+        //    var secondDerivativeVector = derivative2.GetPoint(parameterValue);
+
+        //    return GrParametricCurveLocalFrame3D.CreateFrenetFrame(
+        //        parameterValue,
+        //        GetPoint(parameterValue),
+        //        firstDerivativeVector, 
+        //        secondDerivativeVector
+        //    );
+        //}
+
+        //public GrParametricCurveLocalFrame3D GetFrenetFrameAt0()
+        //{
+        //    var firstDerivativeVector = 3 * (Point2 - Point1);
+        //    var secondDerivativeVector = 6 * (Point3 - 2 * Point2 + Point1);
+
+        //    return GrParametricCurveLocalFrame3D.CreateFrenetFrame(
+        //        0,
+        //        Point1,
+        //        firstDerivativeVector, 
+        //        secondDerivativeVector
+        //    );
+        //}
     }
 }

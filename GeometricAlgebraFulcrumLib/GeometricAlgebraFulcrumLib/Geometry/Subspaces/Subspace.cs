@@ -15,18 +15,18 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Subspaces
     public sealed class Subspace<T> 
         : ISubspace<T>
     {
-        private readonly KVector<T> _blade;
-        private readonly KVector<T> _bladeInverse;
-        private readonly KVector<T> _bladePseudoInverse;
+        private readonly GaKVector<T> _blade;
+        private readonly GaKVector<T> _bladeInverse;
+        private readonly GaKVector<T> _bladePseudoInverse;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Subspace<T> Create(IGeometricAlgebraProcessor<T> processor, KVector<T> blade)
+        public static Subspace<T> Create(IGeometricAlgebraProcessor<T> processor, GaKVector<T> blade)
         {
             return new Subspace<T>(processor, blade);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Subspace<T> CreateFromDual(IGeometricAlgebraProcessor<T> processor, KVector<T> blade)
+        public static Subspace<T> CreateFromDual(IGeometricAlgebraProcessor<T> processor, GaKVector<T> blade)
         {
             return new Subspace<T>(
                 processor, 
@@ -114,17 +114,17 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Subspaces
         //public bool IsDual 
         //    => !IsDirect;
 
-        public KVector<T> GetBlade()
+        public GaKVector<T> GetBlade()
         {
             return _blade;
         }
 
-        public KVector<T> GetBladeInverse()
+        public GaKVector<T> GetBladeInverse()
         {
             return _bladeInverse;
         }
 
-        public KVector<T> GetBladePseudoInverse()
+        public GaKVector<T> GetBladePseudoInverse()
         {
             return _bladePseudoInverse;
         }
@@ -138,7 +138,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Subspaces
             => false;
 
 
-        private Subspace([NotNull] IGeometricAlgebraProcessor<T> processor, [NotNull] KVector<T> blade)
+        private Subspace([NotNull] IGeometricAlgebraProcessor<T> processor, [NotNull] GaKVector<T> blade)
         {
             GeometricProcessor = processor;
 

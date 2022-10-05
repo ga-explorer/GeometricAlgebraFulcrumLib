@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
+
 using NumericalGeometryLib.BasicMath.Tuples.Immutable;
 using NumericalGeometryLib.BasicShapes.Lines.Immutable;
 using GraphicsComposerLib.Geometry.SdfShapes.Primitives;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
 
 namespace GraphicsComposerLib.Geometry.SdfShapes.RayMarching
 {
@@ -25,9 +27,9 @@ namespace GraphicsComposerLib.Geometry.SdfShapes.RayMarching
             = new SdfRayMarchingComputer3D();
 
 
-        public Bitmap Render()
+        public Image Render()
         {
-            var image = new Bitmap(
+            var image = new Image<Rgba32>(
                 Camera.ResolutionX, 
                 Camera.ResolutionY
             );
@@ -86,7 +88,7 @@ namespace GraphicsComposerLib.Geometry.SdfShapes.RayMarching
                             ); 
                     }
 
-                    image.SetPixel(pixelX, pixelY, colorVector.ToColor());
+                    image[pixelX, pixelY] = colorVector.ToColor();
                 }
             }
 

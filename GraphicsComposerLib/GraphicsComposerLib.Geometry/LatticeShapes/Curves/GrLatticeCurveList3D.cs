@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
+
 using System.Linq;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.Basic;
@@ -9,6 +9,8 @@ using NumericalGeometryLib.BasicMath;
 using NumericalGeometryLib.BasicMath.Tuples;
 using NumericalGeometryLib.BasicMath.Tuples.Immutable;
 using GraphicsComposerLib.Geometry.Primitives.Triangles;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
 using TextComposerLib.Text.Linear;
 
 namespace GraphicsComposerLib.Geometry.LatticeShapes.Curves
@@ -352,12 +354,14 @@ namespace GraphicsComposerLib.Geometry.LatticeShapes.Curves
 
                 foreach (var vertex in curve.VertexList)
                 {
+                    var c = vertex.Color.ToPixel<Rgb24>();
+
                     composer
-                        .AppendAtNewLine($"Vertex <{vertex.Index.ToString().PadLeft(4)}>:")
+                        .AppendAtNewLine($"Vertex <{vertex.Index,4}>:")
                         .Append($" Point({vertex.X:F5}, {vertex.Y:F5}, {vertex.Z:F5})")
                         .Append($" Normal({vertex.Normal1.X:F5}, {vertex.Normal1.Y:F5}, {vertex.Normal1.Z:F5})")
                         .Append($" TextureU({vertex.ParameterValue:F5})")
-                        .Append($" Color({vertex.Color.R}, {vertex.Color.G}, {vertex.Color.B})");
+                        .Append($" Color({c.R}, {c.G}, {c.B})");
                 }
 
                 composer.AppendLineAtNewLine();

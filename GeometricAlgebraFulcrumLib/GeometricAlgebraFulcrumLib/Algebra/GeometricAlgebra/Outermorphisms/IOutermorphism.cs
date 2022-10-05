@@ -13,23 +13,23 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms
         IOutermorphism<T> GetOmAdjoint();
 
 
-        Vector<T> OmMapBasisVector(ulong index);
+        GaVector<T> OmMapBasisVector(ulong index);
 
-        Bivector<T> OmMapBasisBivector(ulong index);
+        GaBivector<T> OmMapBasisBivector(ulong index);
 
-        Bivector<T> OmMapBasisBivector(ulong index1, ulong index2);
+        GaBivector<T> OmMapBasisBivector(ulong index1, ulong index2);
 
-        KVector<T> OmMapBasisBlade(ulong id);
+        GaKVector<T> OmMapBasisBlade(ulong id);
 
-        KVector<T> OmMapBasisBlade(uint grade, ulong index);
+        GaKVector<T> OmMapBasisBlade(uint grade, ulong index);
 
-        Vector<T> OmMap(Vector<T> vector);
+        GaVector<T> OmMap(GaVector<T> vector);
 
-        Bivector<T> OmMap(Bivector<T> bivector);
+        GaBivector<T> OmMap(GaBivector<T> bivector);
 
-        KVector<T> OmMap(KVector<T> kVector);
+        GaKVector<T> OmMap(GaKVector<T> kVector);
 
-        Multivector<T> OmMap(Multivector<T> multivector);
+        GaMultivector<T> OmMap(GaMultivector<T> multivector);
 
 
         //IndexPairRecord GetKVectorOmMappingMatrixSize(uint grade);

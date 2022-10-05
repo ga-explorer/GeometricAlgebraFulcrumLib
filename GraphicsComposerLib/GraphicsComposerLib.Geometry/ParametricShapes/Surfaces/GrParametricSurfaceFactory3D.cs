@@ -232,7 +232,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Surfaces
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GrCurveTubeParametricSurface3D CreateTube3D(this IGraphicsParametricCurve3D curve, double radius)
+        public static GrCurveTubeParametricSurface3D CreateTube3D(this IGraphicsC1ParametricCurve3D curve, double radius)
         {
             return new GrCurveTubeParametricSurface3D(curve, radius);
         }

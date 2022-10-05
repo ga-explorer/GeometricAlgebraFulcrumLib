@@ -3,7 +3,7 @@ using GraphicsComposerLib.Geometry.LatticeShapes;
 using GraphicsComposerLib.Geometry.LatticeShapes.Surfaces;
 using GraphicsComposerLib.Geometry.Primitives;
 using GraphicsComposerLib.Geometry.Primitives.Lines;
-using GraphicsComposerLib.WebGl.Xeogl;
+using GraphicsComposerLib.Rendering.Xeogl;
 
 namespace GraphicsComposerLib.Samples.Xeogl
 {

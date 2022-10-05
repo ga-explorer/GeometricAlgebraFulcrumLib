@@ -10,11 +10,11 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Versors
     {
         IVersor<T> GetVersorInverse();
 
-        Multivector<T> GetMultivector();
+        GaMultivector<T> GetMultivector();
 
-        Multivector<T> GetMultivectorReverse();
+        GaMultivector<T> GetMultivectorReverse();
 
-        Multivector<T> GetMultivectorInverse();
+        GaMultivector<T> GetMultivectorInverse();
 
         IMultivectorStorage<T> GetMultivectorStorageReverse();
 

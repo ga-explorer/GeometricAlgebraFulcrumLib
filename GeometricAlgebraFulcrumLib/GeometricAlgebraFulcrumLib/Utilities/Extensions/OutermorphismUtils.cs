@@ -16,7 +16,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
     public static class OutermorphismUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Vector<T> OmMap<T>(this IOutermorphism<T> outermorphism, Axis axis)
+        public static GaVector<T> OmMap<T>(this IOutermorphism<T> outermorphism, Axis axis)
         {
             return axis.IsPositive
                 ? outermorphism.OmMapBasisVector(axis.BasisVectorIndex)
@@ -91,14 +91,14 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVector<T> OmMapPseudoScalar<T>(this IOutermorphism<T> outermorphism, uint vSpaceDimension)
+        public static GaKVector<T> OmMapPseudoScalar<T>(this IOutermorphism<T> outermorphism, uint vSpaceDimension)
         {
             return outermorphism.OmMapBasisBlade(vSpaceDimension.GetMaxBasisBladeId());
         }
 
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Vector<T> OmMapBasisVector<T>(this IReadOnlyList<IOutermorphism<T>> omList, ulong index)
+        public static GaVector<T> OmMapBasisVector<T>(this IReadOnlyList<IOutermorphism<T>> omList, ulong index)
         {
             var kVector = omList[0].OmMapBasisVector(index);
 
@@ -111,7 +111,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Bivector<T> OmMapBasisBivector<T>(this IReadOnlyList<IOutermorphism<T>> omList, ulong index)
+        public static GaBivector<T> OmMapBasisBivector<T>(this IReadOnlyList<IOutermorphism<T>> omList, ulong index)
         {
             var kVector = omList[0].OmMapBasisBivector(index);
 
@@ -124,7 +124,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Bivector<T> OmMapBasisBivector<T>(this IReadOnlyList<IOutermorphism<T>> omList, ulong index1, ulong index2)
+        public static GaBivector<T> OmMapBasisBivector<T>(this IReadOnlyList<IOutermorphism<T>> omList, ulong index1, ulong index2)
         {
             var kVector = omList[0].OmMapBasisBivector(index1, index2);
 
@@ -137,7 +137,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVector<T> OmMapBasisBlade<T>(this IReadOnlyList<IOutermorphism<T>> omList, uint grade, ulong index)
+        public static GaKVector<T> OmMapBasisBlade<T>(this IReadOnlyList<IOutermorphism<T>> omList, uint grade, ulong index)
         {
             var kVector = omList[0].OmMapBasisBlade(grade, index);
 
@@ -150,7 +150,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVector<T> OmMapBasisBlade<T>(this IReadOnlyList<IOutermorphism<T>> omList, ulong id)
+        public static GaKVector<T> OmMapBasisBlade<T>(this IReadOnlyList<IOutermorphism<T>> omList, ulong id)
         {
             var kVector = omList[0].OmMapBasisBlade(id);
 
@@ -163,7 +163,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVector<T> OmMapPseudoScalar<T>(this IReadOnlyList<IOutermorphism<T>> omList, uint vSpaceDimension)
+        public static GaKVector<T> OmMapPseudoScalar<T>(this IReadOnlyList<IOutermorphism<T>> omList, uint vSpaceDimension)
         {
             var kVector = omList[0].OmMapPseudoScalar(vSpaceDimension);
 
@@ -176,7 +176,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Vector<T> OmMap<T>(this IEnumerable<IOutermorphism<T>> omSeq, Vector<T> vector)
+        public static GaVector<T> OmMap<T>(this IEnumerable<IOutermorphism<T>> omSeq, GaVector<T> vector)
         {
             return omSeq
                 .Aggregate(
@@ -186,7 +186,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Bivector<T> OmMap<T>(this IEnumerable<IOutermorphism<T>> omSeq, Bivector<T> vector)
+        public static GaBivector<T> OmMap<T>(this IEnumerable<IOutermorphism<T>> omSeq, GaBivector<T> vector)
         {
             return omSeq
                 .Aggregate(
@@ -196,7 +196,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVector<T> OmMap<T>(this IEnumerable<IOutermorphism<T>> omSeq, KVector<T> vector)
+        public static GaKVector<T> OmMap<T>(this IEnumerable<IOutermorphism<T>> omSeq, GaKVector<T> vector)
         {
             return omSeq
                 .Aggregate(
@@ -206,7 +206,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> OmMap<T>(this IEnumerable<IOutermorphism<T>> omSeq, Multivector<T> vector)
+        public static GaMultivector<T> OmMap<T>(this IEnumerable<IOutermorphism<T>> omSeq, GaMultivector<T> vector)
         {
             return omSeq
                 .Aggregate(
@@ -248,7 +248,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
 
-        public static IEnumerable<Vector<T>> OmMapVectorSequence<T>(this IEnumerable<IOutermorphism<T>> omSeq, Vector<T> vector)
+        public static IEnumerable<GaVector<T>> OmMapVectorSequence<T>(this IEnumerable<IOutermorphism<T>> omSeq, GaVector<T> vector)
         {
             var v = vector;
 
@@ -262,7 +262,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             }
         }
         
-        public static IEnumerable<Bivector<T>> OmMapBivectorSequence<T>(this IEnumerable<IOutermorphism<T>> omSeq, Bivector<T> vector)
+        public static IEnumerable<GaBivector<T>> OmMapBivectorSequence<T>(this IEnumerable<IOutermorphism<T>> omSeq, GaBivector<T> vector)
         {
             var v = vector;
 
@@ -276,7 +276,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             }
         }
         
-        public static IEnumerable<KVector<T>> OmMapKVectorSequence<T>(this IEnumerable<IOutermorphism<T>> omSeq, KVector<T> vector)
+        public static IEnumerable<GaKVector<T>> OmMapKVectorSequence<T>(this IEnumerable<IOutermorphism<T>> omSeq, GaKVector<T> vector)
         {
             var v = vector;
 
@@ -304,7 +304,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         //    }
         //}
         
-        public static IEnumerable<Multivector<T>> OmMapMultivectorSequence<T>(this IEnumerable<IOutermorphism<T>> omSeq, Multivector<T> vector)
+        public static IEnumerable<GaMultivector<T>> OmMapMultivectorSequence<T>(this IEnumerable<IOutermorphism<T>> omSeq, GaMultivector<T> vector)
         {
             var v = vector;
 

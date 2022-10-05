@@ -1386,7 +1386,7 @@ namespace NumericalGeometryLib.Computers.Intersections
 
             //Finish GMac Macro Code Generation, 2018-10-05T22:07:42.3247418+02:00
 
-            if (t < 0 || t > 1)
+            if (t is < 0 or > 1)
                 return IntersectionUtils.NoIntersection;
 
             //Correction to get line parameter t w.r.t. line origin and direction

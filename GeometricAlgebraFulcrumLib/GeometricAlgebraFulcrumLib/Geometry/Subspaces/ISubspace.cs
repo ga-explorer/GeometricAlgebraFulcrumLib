@@ -23,11 +23,11 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Subspaces
         ///// </summary>
         //bool IsDual { get; }
 
-        KVector<T> GetBlade();
+        GaKVector<T> GetBlade();
 
-        KVector<T> GetBladeInverse();
+        GaKVector<T> GetBladeInverse();
 
-        KVector<T> GetBladePseudoInverse();
+        GaKVector<T> GetBladePseudoInverse();
 
         /// <summary>
         /// The scalar product of the subspace blade with itself

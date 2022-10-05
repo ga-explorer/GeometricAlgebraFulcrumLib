@@ -1,4 +1,5 @@
 ﻿using System;
+using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Text;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
@@ -8,6 +9,24 @@ namespace GeometricAlgebraFulcrumLib.Samples.Numeric
 {
     public static class MultivectorProductsSample
     {
+        // This is a pre-defined scalar processor for numeric scalars
+        public static ScalarAlgebraFloat64Processor ScalarProcessor { get; }
+            = ScalarAlgebraFloat64Processor.DefaultProcessor;
+            
+        // Create a 3-dimensional Euclidean geometric algebra processor based on the
+        // selected scalar processor
+        public static GeometricAlgebraEuclideanProcessor<double> GeometricProcessor { get; } 
+            = ScalarProcessor.CreateGeometricAlgebraEuclideanProcessor(3);
+
+        // This is a pre-defined text generator for displaying multivectors
+        public static TextFloat64Composer TextComposer { get; }
+            = TextFloat64Composer.DefaultComposer;
+
+        // This is a pre-defined LaTeX generator for displaying multivectors
+        public static LaTeXFloat64Composer LaTeXComposer { get; }
+            = LaTeXFloat64Composer.DefaultComposer;
+
+
         public static void Example1()
         {
             // This is a pre-defined scalar processor for the standard

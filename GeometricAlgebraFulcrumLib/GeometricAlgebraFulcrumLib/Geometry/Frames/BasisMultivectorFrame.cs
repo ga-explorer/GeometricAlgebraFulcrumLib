@@ -34,7 +34,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Frames
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static BasisMultivectorFrame<T> Create(IGeometricAlgebraProcessor<T> geometricProcessor, IEnumerable<Multivector<T>> multivectorList)
+        internal static BasisMultivectorFrame<T> Create(IGeometricAlgebraProcessor<T> geometricProcessor, IEnumerable<GaMultivector<T>> multivectorList)
         {
             var multivectorArray = 
                 multivectorList.Select(v => v.MultivectorStorage).ToArray();
@@ -82,7 +82,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Frames
         public int Count 
             => (int) GeometricProcessor.GaSpaceDimension;
 
-        public Multivector<T> this[int index]
+        public GaMultivector<T> this[int index]
         {
             get => _multivectorArray[index].CreateMultivector(GeometricProcessor);
             set => _multivectorArray[index] = value.MultivectorStorage ?? throw new ArgumentNullException(nameof(value));
@@ -110,7 +110,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Frames
         
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public BasisMultivectorFrame<T> MapAsBasisUsing(Func<Multivector<T>, Multivector<T>> vectorMapping)
+        public BasisMultivectorFrame<T> MapAsBasisUsing(Func<GaMultivector<T>, GaMultivector<T>> vectorMapping)
         {
             var vectorArray = 
                 Count
@@ -123,7 +123,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Frames
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerator<Multivector<T>> GetEnumerator()
+        public IEnumerator<GaMultivector<T>> GetEnumerator()
         {
             return _multivectorArray.Select(
                 v => v.CreateMultivector(GeometricProcessor)

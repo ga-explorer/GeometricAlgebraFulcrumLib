@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
+using SixLabors.ImageSharp;
 using System.Linq;
 using NumericalGeometryLib.BasicMath;
+using SixLabors.ImageSharp.PixelFormats;
 
 namespace NumericalGeometryLib.Colors
 {
@@ -18,14 +19,15 @@ namespace NumericalGeometryLib.Colors
         /// <returns></returns>
         public static Color LerpFromWhite(this Color c2, double t)
         {
-            var c1 = Color.White;
+            var color1 = Color.White.ToPixel<Rgba32>();
+            var color2 = c2.ToPixel<Rgba32>();
 
             var s = 1.0d - t;
-            return Color.FromArgb(
-                (int)Math.Round(s * c1.A + t * c2.A),
-                (int)Math.Round(s * c1.R + t * c2.R),
-                (int)Math.Round(s * c1.G + t * c2.G),
-                (int)Math.Round(s * c1.B + t * c2.B)
+            return Color.FromRgba(
+                (byte) Math.Round(s * color1.R + t * color2.R),
+                (byte) Math.Round(s * color1.G + t * color2.G),
+                (byte) Math.Round(s * color1.B + t * color2.B),
+                (byte) Math.Round(s * color1.A + t * color2.A)
             );
         }
 
@@ -37,14 +39,15 @@ namespace NumericalGeometryLib.Colors
         /// <returns></returns>
         public static Color LerpFromBlack(this Color c2, double t)
         {
-            var c1 = Color.Black;
+            var color1 = Color.Black.ToPixel<Rgba32>();
+            var color2 = c2.ToPixel<Rgba32>();
 
             var s = 1.0d - t;
-            return Color.FromArgb(
-                (int)Math.Round(s * c1.A + t * c2.A),
-                (int)Math.Round(s * c1.R + t * c2.R),
-                (int)Math.Round(s * c1.G + t * c2.G),
-                (int)Math.Round(s * c1.B + t * c2.B)
+            return Color.FromRgba(
+                (byte) Math.Round(s * color1.R + t * color2.R),
+                (byte) Math.Round(s * color1.G + t * color2.G),
+                (byte) Math.Round(s * color1.B + t * color2.B),
+                (byte) Math.Round(s * color1.A + t * color2.A)
             );
         }
 
@@ -57,12 +60,15 @@ namespace NumericalGeometryLib.Colors
         /// <returns></returns>
         public static Color LerpFromColor(this Color c2, Color c1, double t)
         {
+            var color1 = c1.ToPixel<Rgba32>();
+            var color2 = c2.ToPixel<Rgba32>();
+
             var s = 1.0d - t;
-            return Color.FromArgb(
-                (int)Math.Round(s * c1.A + t * c2.A),
-                (int)Math.Round(s * c1.R + t * c2.R),
-                (int)Math.Round(s * c1.G + t * c2.G),
-                (int)Math.Round(s * c1.B + t * c2.B)
+            return Color.FromRgba(
+                (byte) Math.Round(s * color1.R + t * color2.R),
+                (byte) Math.Round(s * color1.G + t * color2.G),
+                (byte) Math.Round(s * color1.B + t * color2.B),
+                (byte) Math.Round(s * color1.A + t * color2.A)
             );
         }
 
@@ -74,14 +80,15 @@ namespace NumericalGeometryLib.Colors
         /// <returns></returns>
         public static Color LerpToWhite(this Color c1, double t)
         {
-            var c2 = Color.White;
+            var color1 = c1.ToPixel<Rgba32>();
+            var color2 = Color.White.ToPixel<Rgba32>();
 
             var s = 1.0d - t;
-            return Color.FromArgb(
-                (int)Math.Round(s * c1.A + t * c2.A),
-                (int)Math.Round(s * c1.R + t * c2.R),
-                (int)Math.Round(s * c1.G + t * c2.G),
-                (int)Math.Round(s * c1.B + t * c2.B)
+            return Color.FromRgba(
+                (byte) Math.Round(s * color1.R + t * color2.R),
+                (byte) Math.Round(s * color1.G + t * color2.G),
+                (byte) Math.Round(s * color1.B + t * color2.B),
+                (byte) Math.Round(s * color1.A + t * color2.A)
             );
         }
 
@@ -93,14 +100,15 @@ namespace NumericalGeometryLib.Colors
         /// <returns></returns>
         public static Color LerpToBlack(this Color c1, double t)
         {
-            var c2 = Color.Black;
+            var color1 = c1.ToPixel<Rgba32>();
+            var color2 = Color.Black.ToPixel<Rgba32>();
 
             var s = 1.0d - t;
-            return Color.FromArgb(
-                (int)Math.Round(s * c1.A + t * c2.A),
-                (int)Math.Round(s * c1.R + t * c2.R),
-                (int)Math.Round(s * c1.G + t * c2.G),
-                (int)Math.Round(s * c1.B + t * c2.B)
+            return Color.FromRgba(
+                (byte) Math.Round(s * color1.R + t * color2.R),
+                (byte) Math.Round(s * color1.G + t * color2.G),
+                (byte) Math.Round(s * color1.B + t * color2.B),
+                (byte) Math.Round(s * color1.A + t * color2.A)
             );
         }
 
@@ -113,12 +121,15 @@ namespace NumericalGeometryLib.Colors
         /// <returns></returns>
         public static Color LerpToColor(this Color c1, Color c2, double t)
         {
+            var color1 = c1.ToPixel<Rgba32>();
+            var color2 = c2.ToPixel<Rgba32>();
+
             var s = 1.0d - t;
-            return Color.FromArgb(
-                (int)Math.Round(s * c1.A + t * c2.A),
-                (int)Math.Round(s * c1.R + t * c2.R),
-                (int)Math.Round(s * c1.G + t * c2.G),
-                (int)Math.Round(s * c1.B + t * c2.B)
+            return Color.FromRgba(
+                (byte) Math.Round(s * color1.R + t * color2.R),
+                (byte) Math.Round(s * color1.G + t * color2.G),
+                (byte) Math.Round(s * color1.B + t * color2.B),
+                (byte) Math.Round(s * color1.A + t * color2.A)
             );
         }
 
@@ -208,10 +219,10 @@ namespace NumericalGeometryLib.Colors
                 var blue = Math.Min(4 * x + 0.5, -4 * x + 2.5);
                 if (blue < 0) blue = 0; else if (blue > 1) blue = 1;
 
-                colorPaletteList.Add(Color.FromArgb(
-                    (int)(red * 255),
-                    (int)(green * 255),
-                    (int)(blue * 255)
+                colorPaletteList.Add(Color.FromRgb(
+                    (byte) (red * 255),
+                    (byte) (green * 255),
+                    (byte) (blue * 255)
                 ));
             }
 
@@ -220,14 +231,14 @@ namespace NumericalGeometryLib.Colors
 
         public static Image SaveToImage(this Color[] colorPalette, int imageWidth)
         {
-            var image = new Bitmap(imageWidth, colorPalette.Length);
+            var image = new Image<Rgba32>(imageWidth, colorPalette.Length);
 
             for (var row = 0; row < colorPalette.Length; row++)
             {
                 var color = colorPalette[row];
 
                 for (var col = 0; col < imageWidth; col++)
-                    image.SetPixel(col, row, color);
+                    image[col, row] = color;
             }
 
             return image;
@@ -235,25 +246,29 @@ namespace NumericalGeometryLib.Colors
 
         public static Color ToSystemColor(double red, double green, double blue)
         {
-            var r = (int)(red.Clamp(1) * 255);
-            var g = (int)(green.Clamp(1) * 255);
-            var b = (int)(blue.Clamp(1) * 255);
+            var r = (byte) (red.Clamp(1) * 255);
+            var g = (byte) (green.Clamp(1) * 255);
+            var b = (byte) (blue.Clamp(1) * 255);
 
-            return Color.FromArgb(r, g, b);
+            return Color.FromRgb(r, g, b);
         }
 
-        public static IEnumerable<double> GetNormalizedColorComponentsRgb(this Color color)
+        public static IEnumerable<double> GetNormalizedColorComponentsRgb(this Color c)
         {
             const double d = 1.0d / 255.0d;
+
+            var color = c.ToPixel<Rgb24>();
 
             yield return d * color.R;
             yield return d * color.G;
             yield return d * color.B;
         }
 
-        public static IEnumerable<double> GetNormalizedColorComponentsRgbA(this Color color)
+        public static IEnumerable<double> GetNormalizedColorComponentsRgbA(this Color c)
         {
             const double d = 1.0d / 255.0d;
+
+            var color = c.ToPixel<Rgba32>();
 
             yield return d * color.R;
             yield return d * color.G;
@@ -261,9 +276,11 @@ namespace NumericalGeometryLib.Colors
             yield return d * color.A;
         }
 
-        public static IEnumerable<double> GetNormalizedColorComponentsARgb(this Color color)
+        public static IEnumerable<double> GetNormalizedColorComponentsARgb(this Color c)
         {
             const double d = 1.0d / 255.0d;
+
+            var color = c.ToPixel<Rgba32>();
 
             yield return d * color.A;
             yield return d * color.R;

@@ -14,7 +14,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
     public static class VectorUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<T> GetEuclideanAngle<T>(this Vector<T> vector1, Vector<T> vector2, bool assumeUnitVectors = false)
+        public static Scalar<T> GetEuclideanAngle<T>(this GaVector<T> vector1, GaVector<T> vector2, bool assumeUnitVectors = false)
         {
             var processor = vector1.GeometricProcessor;
 
@@ -28,7 +28,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Vector<T> GetUnitBisector<T>(this Vector<T> vector1, Vector<T> vector2, bool assumeEqualNormVectors = false)
+        public static GaVector<T> GetUnitBisector<T>(this GaVector<T> vector1, GaVector<T> vector2, bool assumeEqualNormVectors = false)
         {
             var processor = vector1.GeometricProcessor;
 
@@ -38,12 +38,12 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                 assumeEqualNormVectors
             );
 
-            return new Vector<T>(processor, unitBisector);
+            return new GaVector<T>(processor, unitBisector);
         }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Vector<T> OmMapUsing<T>(this Vector<T> vector, IOutermorphism<T> om)
+        public static GaVector<T> OmMapUsing<T>(this GaVector<T> vector, IOutermorphism<T> om)
         {
             return om.OmMap(vector);
         }
@@ -56,13 +56,13 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         //}
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<Vector<T>> OmMap<T>(this IOutermorphism<T> om, IEnumerable<Vector<T>> vectorsList)
+        public static IEnumerable<GaVector<T>> OmMap<T>(this IOutermorphism<T> om, IEnumerable<GaVector<T>> vectorsList)
         {
             return vectorsList.Select(v => v.OmMapUsing(om));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<Vector<T>> OmMapUsing<T>(this IEnumerable<Vector<T>> vectorsList, IOutermorphism<T> om)
+        public static IEnumerable<GaVector<T>> OmMapUsing<T>(this IEnumerable<GaVector<T>> vectorsList, IOutermorphism<T> om)
         {
             return vectorsList.Select(v => v.OmMapUsing(om));
         }
@@ -92,32 +92,32 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<Vector<T>> Project<T>(this ISubspace<T> subspace, params Vector<T>[] vectorsList)
+        public static IEnumerable<GaVector<T>> Project<T>(this ISubspace<T> subspace, params GaVector<T>[] vectorsList)
         {
             return vectorsList.Select(subspace.Project);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<Vector<T>> Project<T>(this ISubspace<T> subspace, IEnumerable<Vector<T>> vectorsList)
+        public static IEnumerable<GaVector<T>> Project<T>(this ISubspace<T> subspace, IEnumerable<GaVector<T>> vectorsList)
         {
             return vectorsList.Select(subspace.Project);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Vector<T> ProjectOn<T>(this Vector<T> vector, ISubspace<T> subspace)
+        public static GaVector<T> ProjectOn<T>(this GaVector<T> vector, ISubspace<T> subspace)
         {
             return subspace.Project(vector);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<Vector<T>> ProjectOn<T>(this IEnumerable<Vector<T>> vectorsList, ISubspace<T> subspace)
+        public static IEnumerable<GaVector<T>> ProjectOn<T>(this IEnumerable<GaVector<T>> vectorsList, ISubspace<T> subspace)
         {
             return vectorsList.Select(subspace.Project);
         }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static PureRotor<T> GetEuclideanRotorFromBasis<T>(this Vector<T> vector2, ulong index)
+        public static PureRotor<T> GetEuclideanRotorFromBasis<T>(this GaVector<T> vector2, ulong index)
         {
             var processor = (IGeometricAlgebraEuclideanProcessor<T>) vector2.GeometricProcessor;
 
@@ -128,7 +128,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static PureRotor<T> GetEuclideanRotorFrom<T>(this Vector<T> vector2, Vector<T> vector1)
+        public static PureRotor<T> GetEuclideanRotorFrom<T>(this GaVector<T> vector2, GaVector<T> vector1)
         {
             var processor = (IGeometricAlgebraEuclideanProcessor<T>) vector2.GeometricProcessor;
 
@@ -136,7 +136,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static PureRotor<T> GetEuclideanRotorFrom<T>(this Vector<T> vector2, Vector<T> vector1, bool assumeUnitVectors)
+        public static PureRotor<T> GetEuclideanRotorFrom<T>(this GaVector<T> vector2, GaVector<T> vector1, bool assumeUnitVectors)
         {
             var processor = (IGeometricAlgebraEuclideanProcessor<T>) vector2.GeometricProcessor;
 
@@ -149,7 +149,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static PureRotor<T> GetEuclideanRotorToBasis<T>(this Vector<T> vector1, ulong index)
+        public static PureRotor<T> GetEuclideanRotorToBasis<T>(this GaVector<T> vector1, ulong index)
         {
             var processor = (IGeometricAlgebraEuclideanProcessor<T>) vector1.GeometricProcessor;
 
@@ -160,7 +160,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static PureRotor<T> GetEuclideanRotorTo<T>(this Vector<T> vector1, Vector<T> vector2)
+        public static PureRotor<T> GetEuclideanRotorTo<T>(this GaVector<T> vector1, GaVector<T> vector2)
         {
             var processor = (IGeometricAlgebraEuclideanProcessor<T>) vector1.GeometricProcessor;
 
@@ -168,7 +168,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static PureRotor<T> GetEuclideanRotorTo<T>(this Vector<T> vector1, Vector<T> vector2, bool assumeUnitVectors)
+        public static PureRotor<T> GetEuclideanRotorTo<T>(this GaVector<T> vector1, GaVector<T> vector2, bool assumeUnitVectors)
         {
             var processor = (IGeometricAlgebraEuclideanProcessor<T>) vector1.GeometricProcessor;
 
@@ -187,7 +187,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         /// <param name="subspace"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static PureRotor<T> GetEuclideanRotorTo<T>(this Vector<T> vector1, Subspace<T> subspace)
+        public static PureRotor<T> GetEuclideanRotorTo<T>(this GaVector<T> vector1, Subspace<T> subspace)
         {
             var processor = (IGeometricAlgebraEuclideanProcessor<T>) vector1.GeometricProcessor;
 

@@ -6,11 +6,11 @@ using MathNet.Numerics;
 namespace GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra
 {
     public sealed class ScalarAlgebraComplexProcessor
-        : IScalarAlgebraProcessor<Complex>
+        : IScalarAlgebraNumericProcessor<Complex>
     {
         public static ScalarAlgebraComplexProcessor DefaultProcessor { get; }
             = new ScalarAlgebraComplexProcessor();
-
+        
 
         public Complex ScalarZero { get; } 
             = Complex.Zero;
@@ -36,11 +36,20 @@ namespace GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra
         public Complex ScalarPi { get; } 
             = Math.PI;
 
+        public Complex ScalarTwoPi { get; } 
+            = 2d * Math.PI;
+
         public Complex ScalarPiOver2 { get; } 
             = 0.5d * Math.PI;
 
         public Complex ScalarE { get; } 
             = Math.E;
+
+        public Complex ScalarDegreeToRadian { get; } 
+            = Math.PI / 180d;
+
+        public Complex ScalarRadianToDegree { get; } 
+            = 180d / Math.PI;
 
         public bool IsNumeric 
             => true;
@@ -236,9 +245,25 @@ namespace GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Complex Sinc(Complex scalar)
+        {
+            if (IsZero(scalar))
+                return ScalarOne;
+
+            return Complex.Sin(scalar) / scalar;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsValid(Complex scalar)
         {
             return !scalar.IsNaN();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsFiniteNumber(Complex scalar)
+        {
+            return double.IsFinite(scalar.Real) && 
+                   double.IsFinite(scalar.Imaginary);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

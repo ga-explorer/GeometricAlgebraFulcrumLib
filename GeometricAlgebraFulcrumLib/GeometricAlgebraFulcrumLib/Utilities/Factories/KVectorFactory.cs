@@ -12,214 +12,214 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
     public static class KVectorFactory
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVector<T> CreateKVector<T>(this IGeometricAlgebraProcessor<T> processor, KVectorStorage<T> storage)
+        public static GaKVector<T> CreateKVector<T>(this IGeometricAlgebraProcessor<T> processor, KVectorStorage<T> storage)
         {
-            return new KVector<T>(processor, storage);
+            return new GaKVector<T>(processor, storage);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVector<T> CreateKVector<T>(this KVectorStorage<T> storage, IGeometricAlgebraProcessor<T> processor)
+        public static GaKVector<T> CreateKVector<T>(this KVectorStorage<T> storage, IGeometricAlgebraProcessor<T> processor)
         {
-            return new KVector<T>(processor, storage);
+            return new GaKVector<T>(processor, storage);
         }
         
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVector<T> CopyToKVector<T>(this IGeometricAlgebraProcessor<T> processor, IReadOnlyDictionary<ulong, T> indexScalarDictionary, uint grade)
+        public static GaKVector<T> CopyToKVector<T>(this IGeometricAlgebraProcessor<T> processor, IReadOnlyDictionary<ulong, T> indexScalarDictionary, uint grade)
         {
             return indexScalarDictionary.CopyToKVectorStorage(grade).CreateKVector(processor);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVector<T> CopyToKVector<T>(this IReadOnlyDictionary<ulong, T> indexScalarDictionary, IGeometricAlgebraProcessor<T> processor, uint grade)
+        public static GaKVector<T> CopyToKVector<T>(this IReadOnlyDictionary<ulong, T> indexScalarDictionary, IGeometricAlgebraProcessor<T> processor, uint grade)
         {
             return indexScalarDictionary.CopyToKVectorStorage(grade).CreateKVector(processor);
         }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVector<T> CreateKVectorPseudoScalar<T>(this IGeometricAlgebraProcessor<T> processor, uint vSpaceDimension)
+        public static GaKVector<T> CreateKVectorPseudoScalar<T>(this IGeometricAlgebraProcessor<T> processor, uint vSpaceDimension)
         {
             return processor.CreateKVectorStoragePseudoScalar(vSpaceDimension).CreateKVector(processor);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVector<T> CreateKVectorPseudoScalar<T>(this IGeometricAlgebraProcessor<T> processor)
+        public static GaKVector<T> CreateKVectorPseudoScalar<T>(this IGeometricAlgebraProcessor<T> processor)
         {
             return processor.CreateKVectorStoragePseudoScalar().CreateKVector(processor);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVector<T> CreateKVectorPseudoScalarReverse<T>(this IGeometricAlgebraProcessor<T> processor, uint vSpaceDimension)
+        public static GaKVector<T> CreateKVectorPseudoScalarReverse<T>(this IGeometricAlgebraProcessor<T> processor, uint vSpaceDimension)
         {
             return processor.CreateKVectorStoragePseudoScalarReverse(vSpaceDimension).CreateKVector(processor);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVector<T> CreateKVectorEuclideanPseudoScalarInverse<T>(this IGeometricAlgebraProcessor<T> processor, uint vSpaceDimension)
+        public static GaKVector<T> CreateKVectorEuclideanPseudoScalarInverse<T>(this IGeometricAlgebraProcessor<T> processor, uint vSpaceDimension)
         {
             return processor.CreateKVectorStorageEuclideanPseudoScalarInverse(vSpaceDimension).CreateKVector(processor);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVector<T> CreateKVectorPseudoScalarInverse<T>(this IGeometricAlgebraProcessor<T> processor, BasisBladeSet basisSet)
+        public static GaKVector<T> CreateKVectorPseudoScalarInverse<T>(this IGeometricAlgebraProcessor<T> processor, BasisBladeSet basisSet)
         {
             return processor.CreateKVectorStoragePseudoScalarInverse(basisSet).CreateKVector(processor);
         }
 
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVector<T> CreateKVectorZero<T>(this IGeometricAlgebraProcessor<T> processor, uint grade)
+        public static GaKVector<T> CreateKVectorZero<T>(this IGeometricAlgebraProcessor<T> processor, uint grade)
         {
             return processor.CreateKVectorStorageZero(grade).CreateKVector(processor);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVector<T> CreateKVectorBasisScalar<T>(this IGeometricAlgebraProcessor<T> processor)
+        public static GaKVector<T> CreateKVectorBasisScalar<T>(this IGeometricAlgebraProcessor<T> processor)
         {
             return processor.CreateKVectorStorageBasisScalar().CreateKVector(processor);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVector<T> CreateKVectorBasis<T>(this IGeometricAlgebraProcessor<T> processor, params int[] basisVectorIndices)
+        public static GaKVector<T> CreateKVectorBasis<T>(this IGeometricAlgebraProcessor<T> processor, params int[] basisVectorIndices)
         {
             return processor.CreateKVectorStorageBasis(basisVectorIndices).CreateKVector(processor);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVector<T> CreateKVectorBasis<T>(this IGeometricAlgebraProcessor<T> processor, params ulong[] basisVectorIndices)
+        public static GaKVector<T> CreateKVectorBasis<T>(this IGeometricAlgebraProcessor<T> processor, params ulong[] basisVectorIndices)
         {
             return processor.CreateKVectorStorageBasis(basisVectorIndices).CreateKVector(processor);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVector<T> CreateKVectorBasis<T>(this IGeometricAlgebraProcessor<T> processor, IEnumerable<int> basisVectorIndices)
+        public static GaKVector<T> CreateKVectorBasis<T>(this IGeometricAlgebraProcessor<T> processor, IEnumerable<int> basisVectorIndices)
         {
             return processor.CreateKVectorStorageBasis(basisVectorIndices).CreateKVector(processor);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVector<T> CreateKVectorBasis<T>(this IGeometricAlgebraProcessor<T> processor, IEnumerable<ulong> basisVectorIndices)
+        public static GaKVector<T> CreateKVectorBasis<T>(this IGeometricAlgebraProcessor<T> processor, IEnumerable<ulong> basisVectorIndices)
         {
             return processor.CreateKVectorStorageBasis(basisVectorIndices).CreateKVector(processor);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVector<T> CreateKVectorBasis<T>(this IGeometricAlgebraProcessor<T> processor, ulong id)
+        public static GaKVector<T> CreateKVectorBasis<T>(this IGeometricAlgebraProcessor<T> processor, ulong id)
         {
             return processor.CreateKVectorStorageBasis(id).CreateKVector(processor);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVector<T> CreateKVectorBasis<T>(this IGeometricAlgebraProcessor<T> processor, uint grade, ulong index)
+        public static GaKVector<T> CreateKVectorBasis<T>(this IGeometricAlgebraProcessor<T> processor, uint grade, ulong index)
         {
             return processor.CreateKVectorStorageBasis(grade, index).CreateKVector(processor);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVector<T> CreateKVectorScalar<T>(this IGeometricAlgebraProcessor<T> processor, int scalar)
+        public static GaKVector<T> CreateKVectorScalar<T>(this IGeometricAlgebraProcessor<T> processor, int scalar)
         {
             return processor.CreateKVectorStorageScalar(scalar).CreateKVector(processor);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVector<T> CreateKVectorScalar<T>(this IGeometricAlgebraProcessor<T> processor, uint scalar)
+        public static GaKVector<T> CreateKVectorScalar<T>(this IGeometricAlgebraProcessor<T> processor, uint scalar)
         {
             return processor.CreateKVectorStorageScalar(scalar).CreateKVector(processor);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVector<T> CreateKVectorScalar<T>(this IGeometricAlgebraProcessor<T> processor, long scalar)
+        public static GaKVector<T> CreateKVectorScalar<T>(this IGeometricAlgebraProcessor<T> processor, long scalar)
         {
             return processor.CreateKVectorStorageScalar(scalar).CreateKVector(processor);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVector<T> CreateKVectorScalar<T>(this IGeometricAlgebraProcessor<T> processor, ulong scalar)
+        public static GaKVector<T> CreateKVectorScalar<T>(this IGeometricAlgebraProcessor<T> processor, ulong scalar)
         {
             return processor.CreateKVectorStorageScalar(scalar).CreateKVector(processor);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVector<T> CreateKVectorScalar<T>(this IGeometricAlgebraProcessor<T> processor, float scalar)
+        public static GaKVector<T> CreateKVectorScalar<T>(this IGeometricAlgebraProcessor<T> processor, float scalar)
         {
             return processor.CreateKVectorStorageScalar(scalar).CreateKVector(processor);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVector<T> CreateKVectorScalar<T>(this IGeometricAlgebraProcessor<T> processor, double scalar)
+        public static GaKVector<T> CreateKVectorScalar<T>(this IGeometricAlgebraProcessor<T> processor, double scalar)
         {
             return processor.CreateKVectorStorageScalar(scalar).CreateKVector(processor);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVector<T> CreateKVectorScalar<T>(this IGeometricAlgebraProcessor<T> processor, T scalar)
+        public static GaKVector<T> CreateKVectorScalar<T>(this IGeometricAlgebraProcessor<T> processor, T scalar)
         {
             return processor.CreateKVectorStorageScalar(scalar).CreateKVector(processor);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVector<T> CreateKVectorScalar<T>(this IGeometricAlgebraProcessor<T> processor, string scalar)
+        public static GaKVector<T> CreateKVectorScalar<T>(this IGeometricAlgebraProcessor<T> processor, string scalar)
         {
             return processor.CreateKVectorStorageScalar(scalar).CreateKVector(processor);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVector<T> CreateKVectorScalar<T>(this IGeometricAlgebraProcessor<T> processor, object scalar)
+        public static GaKVector<T> CreateKVectorScalar<T>(this IGeometricAlgebraProcessor<T> processor, object scalar)
         {
             return processor.CreateKVectorStorageScalar(scalar).CreateKVector(processor);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVector<T> CreateKVectorTerm<T>(this IGeometricAlgebraProcessor<T> processor, BasisBlade basisBlade, T scalar)
+        public static GaKVector<T> CreateKVectorTerm<T>(this IGeometricAlgebraProcessor<T> processor, BasisBlade basisBlade, T scalar)
         {
             return processor.CreateKVectorStorageTerm(basisBlade, scalar).CreateKVector(processor);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVector<T> CreateKVectorTerm<T>(this IGeometricAlgebraProcessor<T> processor, ulong id, T scalar)
+        public static GaKVector<T> CreateKVectorTerm<T>(this IGeometricAlgebraProcessor<T> processor, ulong id, T scalar)
         {
             return processor.CreateKVectorStorageTerm(id, scalar).CreateKVector(processor);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVector<T> CreateKVectorTerm<T>(this IGeometricAlgebraProcessor<T> processor, uint grade, ulong index, T scalar)
+        public static GaKVector<T> CreateKVectorTerm<T>(this IGeometricAlgebraProcessor<T> processor, uint grade, ulong index, T scalar)
         {
             return processor.CreateKVectorStorageTerm(grade, index, scalar).CreateKVector(processor);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVector<T> CreateKVectorTerm<T>(this IGeometricAlgebraProcessor<T> processor, IndexScalarRecord<T> idScalarPair)
+        public static GaKVector<T> CreateKVectorTerm<T>(this IGeometricAlgebraProcessor<T> processor, IndexScalarRecord<T> idScalarPair)
         {
             return processor.CreateKVectorStorageTerm(idScalarPair).CreateKVector(processor);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVector<T> CreateKVectorTerm<T>(this IGeometricAlgebraProcessor<T> processor, uint grade, IndexScalarRecord<T> indexScalarPair)
+        public static GaKVector<T> CreateKVectorTerm<T>(this IGeometricAlgebraProcessor<T> processor, uint grade, IndexScalarRecord<T> indexScalarPair)
         {
             return processor.CreateKVectorStorageTerm(grade, indexScalarPair).CreateKVector(processor);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVector<T> CreateKVector<T>(this IGeometricAlgebraProcessor<T> processor, uint grade, params T[] scalarsList)
+        public static GaKVector<T> CreateKVector<T>(this IGeometricAlgebraProcessor<T> processor, uint grade, params T[] scalarsList)
         {
             return processor.CreateKVectorStorage(grade, scalarsList).CreateKVector(processor);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVector<T> CreateKVector<T>(this IGeometricAlgebraProcessor<T> processor, uint grade, params object[] scalarsList)
+        public static GaKVector<T> CreateKVector<T>(this IGeometricAlgebraProcessor<T> processor, uint grade, params object[] scalarsList)
         {
             return processor.CreateKVectorStorage(grade, scalarsList).CreateKVector(processor);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVector<T> CreateKVector<T>(this IGeometricAlgebraProcessor<T> processor, uint grade, IEnumerable<T> scalarsList)
+        public static GaKVector<T> CreateKVector<T>(this IGeometricAlgebraProcessor<T> processor, uint grade, IEnumerable<T> scalarsList)
         {
             return processor.CreateKVectorStorage(grade, scalarsList).CreateKVector(processor);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVector<T> CreateKVector<T>(this IGeometricAlgebraProcessor<T> processor, uint grade, IEnumerable<IndexScalarRecord<T>> termsList, bool sumFlag)
+        public static GaKVector<T> CreateKVector<T>(this IGeometricAlgebraProcessor<T> processor, uint grade, IEnumerable<IndexScalarRecord<T>> termsList, bool sumFlag)
         {
             return sumFlag
                 ? processor.SumToKVectorStorage(grade, termsList).CreateKVector(processor)
@@ -227,31 +227,31 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVector<T> CreateKVector<T>(this IGeometricAlgebraProcessor<T> processor, uint grade, IEnumerable<BasisTerm<T>> termsList)
+        public static GaKVector<T> CreateKVector<T>(this IGeometricAlgebraProcessor<T> processor, uint grade, IEnumerable<BasisTerm<T>> termsList)
         {
             return processor.CreateKVectorStorage(grade, termsList).CreateKVector(processor);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVector<T> CreateKVector<T>(this IGeometricAlgebraProcessor<T> processor, uint grade, Dictionary<ulong, T> indexScalarDictionary)
+        public static GaKVector<T> CreateKVector<T>(this IGeometricAlgebraProcessor<T> processor, uint grade, Dictionary<ulong, T> indexScalarDictionary)
         {
             return processor.CreateKVectorStorage(grade, indexScalarDictionary).CreateKVector(processor);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVector<T> CreateKVector<T>(this IGeometricAlgebraProcessor<T> processor, uint grade, IEnumerable<IndexScalarRecord<T>> termsList)
+        public static GaKVector<T> CreateKVector<T>(this IGeometricAlgebraProcessor<T> processor, uint grade, IEnumerable<IndexScalarRecord<T>> termsList)
         {
             return processor.CreateKVectorStorage(grade, termsList).CreateKVector(processor);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVector<T> CreateKVector<T>(this IGeometricAlgebraProcessor<T> processor, uint grade, ILinVectorStorage<T> termsList)
+        public static GaKVector<T> CreateKVector<T>(this IGeometricAlgebraProcessor<T> processor, uint grade, ILinVectorStorage<T> termsList)
         {
             return termsList.CreateKVectorStorage(grade).CreateKVector(processor);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVector<T> CreateKVector<T>(this IGeometricAlgebraProcessor<T> processor, GradeLinVectorStorageRecord<T> gradeListRecord)
+        public static GaKVector<T> CreateKVector<T>(this IGeometricAlgebraProcessor<T> processor, GradeLinVectorStorageRecord<T> gradeListRecord)
         {
             return gradeListRecord.CreateKVectorStorage().CreateKVector(processor);
         }

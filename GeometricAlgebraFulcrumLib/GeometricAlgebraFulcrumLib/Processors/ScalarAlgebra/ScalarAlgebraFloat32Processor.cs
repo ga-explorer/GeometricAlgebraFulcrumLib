@@ -4,11 +4,11 @@ using System.Runtime.CompilerServices;
 namespace GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra
 {
     public sealed class ScalarAlgebraFloat32Processor 
-        : IScalarAlgebraProcessor<float>
+        : IScalarAlgebraNumericProcessor<float>
     {
         public static ScalarAlgebraFloat32Processor DefaultProcessor { get; }
             = new ScalarAlgebraFloat32Processor();
-
+        
 
         public float ZeroEpsilon { get; set; }
             = 1e-7f;
@@ -44,12 +44,21 @@ namespace GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra
         public float ScalarPi 
             => MathF.PI;
 
+        public float ScalarTwoPi 
+            => 2f * MathF.PI;
+
         public float ScalarPiOver2 
             => 0.5f * MathF.PI;
 
         public float ScalarE 
             => MathF.E;
-        
+
+        public float ScalarDegreeToRadian 
+            => MathF.PI / 180f;
+
+        public float ScalarRadianToDegree 
+            => 180f / MathF.PI;
+
 
         private ScalarAlgebraFloat32Processor()
         {
@@ -237,9 +246,26 @@ namespace GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public float Sinc(float scalar)
+        {
+            if (float.IsInfinity(scalar))
+                return 0f;
+
+            return IsZero(scalar) 
+                ? 1f 
+                : MathF.Sin(scalar) / scalar;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsValid(float scalar)
         {
             return !float.IsNaN(scalar);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsFiniteNumber(float scalar)
+        {
+            return float.IsFinite(scalar);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

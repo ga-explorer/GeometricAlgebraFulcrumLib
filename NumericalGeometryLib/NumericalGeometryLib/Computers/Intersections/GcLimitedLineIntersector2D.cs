@@ -243,7 +243,7 @@ namespace NumericalGeometryLib.Computers.Intersections
 
             var ta = ta1 / t2;
 
-            if (ta < 0 || ta > 1)
+            if (ta is < 0 or > 1)
                 return false;
 
             var tb1 =
@@ -252,7 +252,7 @@ namespace NumericalGeometryLib.Computers.Intersections
 
             var tb = tb1 / t2;
 
-            if (tb < 0 || tb > 1)
+            if (tb is < 0 or > 1)
                 return false;
 
             return true;
@@ -494,7 +494,7 @@ namespace NumericalGeometryLib.Computers.Intersections
 
             var ta = ta1 / t2;
 
-            if (ta < 0 || ta > 1)
+            if (ta is < 0 or > 1)
                 return IntersectionUtils.NoIntersection;
 
             var tb1 =
@@ -503,7 +503,7 @@ namespace NumericalGeometryLib.Computers.Intersections
 
             var tb = tb1 / t2;
 
-            if (tb < 0 || tb > 1)
+            if (tb is < 0 or > 1)
                 return IntersectionUtils.NoIntersection;
 
             return Tuple.Create(true, ta);

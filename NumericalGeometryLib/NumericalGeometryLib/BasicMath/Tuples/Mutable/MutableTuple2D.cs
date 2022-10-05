@@ -35,7 +35,7 @@ namespace NumericalGeometryLib.BasicMath.Tuples.Mutable
         {
             get
             {
-                Debug.Assert(index == 0 || index == 1);
+                Debug.Assert(index is 0 or 1);
 
                 if (index == 0) return X;
                 if (index == 1) return Y;
@@ -45,7 +45,7 @@ namespace NumericalGeometryLib.BasicMath.Tuples.Mutable
             set
             {
                 Debug.Assert(!double.IsNaN(value));
-                Debug.Assert(index == 0 || index == 1);
+                Debug.Assert(index is 0 or 1);
 
                 if (index == 0) X = value;
                 if (index == 1) Y = value;

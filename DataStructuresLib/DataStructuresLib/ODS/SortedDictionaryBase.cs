@@ -39,7 +39,7 @@ namespace DataStructuresLib.ODS
         void ICollection<KeyValuePair<uint, T>>.CopyTo(KeyValuePair<uint, T>[] array, int arrayIndex)
         {
             CollectionHelpers.ThrowIfInsufficientArray(this, array, arrayIndex);
-            var iter = GetEnumerator();
+            using var iter = GetEnumerator();
             for (var i = 0; i < Count; i++)
             {
                 iter.MoveNext();

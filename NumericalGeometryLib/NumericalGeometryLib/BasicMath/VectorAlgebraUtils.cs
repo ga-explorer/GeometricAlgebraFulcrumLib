@@ -8,6 +8,7 @@ using DataStructuresLib.Basic;
 using NumericalGeometryLib.BasicMath.Tuples;
 using NumericalGeometryLib.BasicMath.Tuples.Immutable;
 using MathNet.Numerics;
+using NumericalGeometryLib.BasicMath.Constants;
 
 namespace NumericalGeometryLib.BasicMath
 {
@@ -773,6 +774,46 @@ namespace NumericalGeometryLib.BasicMath
         {
             return v1.X * v2.X + v1.Y * v2.Y;
         }
+        
+        /// <summary>
+        /// The Euclidean dot product between the given vectors
+        /// </summary>
+        /// <param name="v1"></param>
+        /// <param name="v2"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static double VectorDot(this Axis3D v1, ITuple3D v2)
+        {
+            return v1 switch
+            {
+                Axis3D.PositiveX => v2.X,
+                Axis3D.PositiveY => v2.Y,
+                Axis3D.PositiveZ => v2.Z,
+                Axis3D.NegativeX => -v2.X,
+                Axis3D.NegativeY => -v2.Y,
+                _ => -v2.Z,
+            };
+        }
+        
+        /// <summary>
+        /// The Euclidean dot product between the given vectors
+        /// </summary>
+        /// <param name="v1"></param>
+        /// <param name="v2"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static double VectorDot(this ITuple3D v1, Axis3D v2)
+        {
+            return v2 switch
+            {
+                Axis3D.PositiveX => v1.X,
+                Axis3D.PositiveY => v1.Y,
+                Axis3D.PositiveZ => v1.Z,
+                Axis3D.NegativeX => -v1.X,
+                Axis3D.NegativeY => -v1.Y,
+                _ => -v1.Z,
+            };
+        }
 
         /// <summary>
         /// The Euclidean dot product between the given vectors
@@ -939,6 +980,20 @@ namespace NumericalGeometryLib.BasicMath
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Tuple3D RejectOnVector(this ITuple3D v, ITuple3D u)
+        {
+            var s1 = v.X * u.X + v.Y * u.Y + v.Z * u.Z;
+            var s2 = u.X * u.X + u.Y * u.Y + u.Z * u.Z;
+            var s = s1 / s2;
+
+            return new Tuple3D(
+                v.X - u.X * s,
+                v.Y - u.Y * s,
+                v.Z - u.Z * s
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Tuple3D ProjectOnUnitVector(this ITuple3D v, ITuple3D u)
         {
             var s = v.X * u.X + v.Y * u.Y + v.Z * u.Z;
@@ -947,6 +1002,18 @@ namespace NumericalGeometryLib.BasicMath
                 u.X * s,
                 u.Y * s,
                 u.Z * s
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Tuple3D RejectOnUnitVector(this ITuple3D v, ITuple3D u)
+        {
+            var s = v.X * u.X + v.Y * u.Y + v.Z * u.Z;
+
+            return new Tuple3D(
+                v.X - u.X * s,
+                v.Y - u.Y * s,
+                v.Z - u.Z * s
             );
         }
 
@@ -1031,6 +1098,34 @@ namespace NumericalGeometryLib.BasicMath
         {
             return vector.GetNormal().ToUnitVector();
         }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Axis3D GetNormal(this Axis3D vector)
+        {
+            return vector switch
+            {
+                Axis3D.PositiveX => Axis3D.PositiveY,
+                Axis3D.PositiveY => Axis3D.PositiveZ,
+                Axis3D.PositiveZ => Axis3D.PositiveX,
+                Axis3D.NegativeX => Axis3D.NegativeY,
+                Axis3D.NegativeY => Axis3D.NegativeZ,
+                _ => Axis3D.NegativeX
+            };
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Axis3D GetUnitNormal(this Axis3D vector)
+        {
+            return vector switch
+            {
+                Axis3D.PositiveX => Axis3D.PositiveY,
+                Axis3D.PositiveY => Axis3D.PositiveZ,
+                Axis3D.PositiveZ => Axis3D.PositiveX,
+                Axis3D.NegativeX => Axis3D.NegativeY,
+                Axis3D.NegativeY => Axis3D.NegativeZ,
+                _ => Axis3D.NegativeX
+            };
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Tuple3D GetNormal(this ITuple3D vector)
@@ -1039,15 +1134,24 @@ namespace NumericalGeometryLib.BasicMath
             var y = vector.Y;
             var z = vector.Z;
 
+            if (x == 0)
+                return new Tuple3D(0, -z, y);
+
+            if (y == 0)
+                return new Tuple3D(-z, 0, x);
+
+            if (z == 0)
+                return new Tuple3D(-y, x, 0);
+
             var minComponentIndex = 
                 vector.GetMinAbsComponentIndex();
 
             return minComponentIndex switch
-                {
-                    0 => new Tuple3D(-(y + z), x, x),
-                    1 => new Tuple3D(y, -(x + z), y),
-                    _ => new Tuple3D(z, z, -(x + y))
-                };
+            {
+                0 => new Tuple3D(-(y + z), x, x),
+                1 => new Tuple3D(y, -(x + z), y),
+                _ => new Tuple3D(z, z, -(x + y))
+            };
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1066,6 +1170,38 @@ namespace NumericalGeometryLib.BasicMath
             return new IntTuple2D(-vector.Y, vector.X);
         }
         
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool IsNearParallelTo(this ITuple2D v1, ITuple2D v2, double epsilon = 1e-12d)
+        {
+            return (v1.X * v2.Y - v1.Y * v2.X).IsNearZero(epsilon);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool IsNearNormalTo(this ITuple2D v1, ITuple2D v2, double epsilon = 1e-12d)
+        {
+            return (v1.X * v2.X + v1.Y * v2.Y).IsNearZero(epsilon);
+        }
+
+        
+        /// <summary>
+        /// The Euclidean cross product between the given vectors
+        /// </summary>
+        /// <param name="v1"></param>
+        /// <param name="v2"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Tuple3D VectorCross(this Axis3D v1, ITuple3D v2)
+        {
+            return v1 switch
+            {
+                Axis3D.PositiveX => new Tuple3D(0, -v2.Z, v2.Y),
+                Axis3D.PositiveY => new Tuple3D(v2.Z, 0, -v2.X),
+                Axis3D.PositiveZ => new Tuple3D(-v2.Y, v2.X, 0),
+                Axis3D.NegativeX => new Tuple3D(0, v2.Z, -v2.Y),
+                Axis3D.NegativeY => new Tuple3D(-v2.Z, 0, v2.X),
+                _ => new Tuple3D(v2.Y, -v2.X, 0)
+            };
+        }
 
         /// <summary>
         /// The Euclidean cross product between the given vectors
@@ -1104,13 +1240,13 @@ namespace NumericalGeometryLib.BasicMath
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsParallelTo(this ITuple3D v1, ITuple3D v2)
+        public static bool IsNearParallelTo(this ITuple3D v1, ITuple3D v2, double epsilon = 1e-12d)
         {
             var x = v1.Y * v2.Z - v1.Z * v2.Y;
             var y = v1.Z * v2.X - v1.X * v2.Z;
             var z = v1.X * v2.Y - v1.Y * v2.X;
 
-            return (x * x + y * y + z * z).IsAlmostZero();
+            return (x * x + y * y + z * z).IsNearZero(epsilon);
         }
 
 
@@ -1175,6 +1311,18 @@ namespace NumericalGeometryLib.BasicMath
         /// <param name="v2"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Tuple3D VectorUnitCross(this Axis3D v1, ITuple3D v2)
+        {
+            return v1.VectorCross(v2).ToUnitVector();
+        }
+
+        /// <summary>
+        /// Returns the Euclidean cross product between the given vectors as a unit vector
+        /// </summary>
+        /// <param name="v1"></param>
+        /// <param name="v2"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Tuple3D VectorUnitCross(this ITuple3D v1, ITuple3D v2)
         {
             var vx = v1.Y * v2.Z - v1.Z * v2.Y;
@@ -1183,7 +1331,9 @@ namespace NumericalGeometryLib.BasicMath
 
             var s = 1.0d / Math.Sqrt(vx * vx + vy * vy + vz * vz);
 
-            return new Tuple3D(vx * s, vy * s, vz * s);
+            return double.IsInfinity(s)
+                ? Tuple3D.Zero 
+                : new Tuple3D(vx * s, vy * s, vz * s);
         }
 
         /// <summary>
@@ -2303,6 +2453,168 @@ namespace NumericalGeometryLib.BasicMath
                 : new Tuple3D(0, v1.Z, -v1.Y) / Math.Sqrt(v1.Y * v1.Y + v1.Z * v1.Z);
 
             v3 = v1.VectorCross(v2);
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool IsNearZero(this Quaternion quaternion, float epsilon = 1e-5f)
+        {
+            return quaternion.X.IsNearZero(epsilon) &&
+                   quaternion.Y.IsNearZero(epsilon) &&
+                   quaternion.Z.IsNearZero(epsilon);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool IsNearNormalized(this Quaternion quaternion, float epsilon = 1e-5f)
+        {
+            return (quaternion.LengthSquared() - 1f).IsNearZero(epsilon);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Quaternion ToQuaternion(this ITuple3D vector)
+        {
+            return new Quaternion(
+                (float) vector.X,
+                (float) vector.Y,
+                (float) vector.Z,
+                0f
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Quaternion ToQuaternion(this Axis3D axis)
+        {
+            return axis switch
+            {
+                Axis3D.PositiveX => new Quaternion(1, 0, 0, 0),
+                Axis3D.PositiveY => new Quaternion(0, 1, 0, 0),
+                Axis3D.PositiveZ => new Quaternion(0, 0, 1, 0),
+                Axis3D.NegativeX => new Quaternion(-1, 0, 0, 0),
+                Axis3D.NegativeY => new Quaternion(0, -1, 0, 0),
+                _ => new Quaternion(0, 0, -1, 0),
+            };
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Quaternion ToQuaternion(this ITuple3D vector, double scalar)
+        {
+            return new Quaternion(
+                (float) vector.X,
+                (float) vector.Y,
+                (float) vector.Z,
+                (float) scalar
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static double GetScalarPart(this Quaternion quaternion)
+        {
+            return quaternion.W;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Tuple3D GetVectorPart(this Quaternion quaternion)
+        {
+            return new Tuple3D(quaternion.X, quaternion.Y, quaternion.Z);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Tuple<double, Tuple3D> GetScalarVectorParts(this Quaternion quaternion)
+        {
+            return new Tuple<double, Tuple3D>(
+                quaternion.W,
+                new Tuple3D(quaternion.X, quaternion.Y, quaternion.Z)
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Quaternion Conjugate(this Quaternion quaternion)
+        {
+            return Quaternion.Conjugate(quaternion);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Quaternion Inverse(this Quaternion quaternion)
+        {
+            return Quaternion.Inverse(quaternion);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Quaternion Normalize(this Quaternion quaternion)
+        {
+            return Quaternion.Normalize(quaternion);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Quaternion Concatenate(this Quaternion quaternion1, Quaternion quaternion2)
+        {
+            return Quaternion.Concatenate(
+                quaternion1, 
+                quaternion2
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Quaternion Concatenate(this Quaternion quaternion1, Quaternion quaternion2, Quaternion quaternion3)
+        {
+            return Quaternion.Concatenate(
+                Quaternion.Concatenate(
+                    quaternion1, 
+                    quaternion2
+                ), 
+                quaternion3
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Quaternion Concatenate(this Quaternion quaternion1, params Quaternion[] quaternionList)
+        {
+            return quaternionList.Aggregate(
+                quaternion1,
+                Quaternion.Concatenate
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Tuple3D Rotate(this Quaternion quaternion, Axis3D axis)
+        {
+            Debug.Assert(
+                quaternion.IsNearNormalized()
+            );
+
+            return (quaternion * axis.ToQuaternion() * quaternion.Inverse()).GetVectorPart();
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Tuple3D Rotate(this Quaternion quaternion, double x, double y, double z)
+        {
+            Debug.Assert(
+                quaternion.IsNearNormalized()
+            );
+
+            var vector = new Quaternion((float) x, (float) y, (float) z, 0);
+
+            return (quaternion * vector * quaternion.Inverse()).GetVectorPart();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Tuple3D Rotate(this Quaternion quaternion, ITuple3D vector)
+        {
+            Debug.Assert(
+                quaternion.IsNearNormalized()
+            );
+
+            return (quaternion * vector.ToQuaternion() * quaternion.Inverse()).GetVectorPart();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Tuple3D RotateUsing(this ITuple3D vector, Quaternion quaternion)
+        {
+            Debug.Assert(
+                quaternion.IsNearNormalized()
+            );
+
+            return (quaternion * vector.ToQuaternion() * quaternion.Inverse()).GetVectorPart();
         }
     }
 }

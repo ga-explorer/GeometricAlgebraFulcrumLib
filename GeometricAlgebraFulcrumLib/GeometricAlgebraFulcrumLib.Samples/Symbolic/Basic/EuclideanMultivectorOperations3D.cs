@@ -46,12 +46,12 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.Basic
             = new MarkdownComposer();
 
 
-        private static Multivector<Expr> CreateScalar(string name)
+        private static GaMultivector<Expr> CreateScalar(string name)
         {
             return GeometricProcessor.CreateKVectorScalar(name).AsMultivector();
         }
 
-        private static Multivector<Expr> CreateVector(string name)
+        private static GaMultivector<Expr> CreateVector(string name)
         {
             name = name.ToLower();
 
@@ -62,7 +62,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.Basic
             ).AsMultivector();
         }
         
-        private static Multivector<Expr> CreateBivector(string name)
+        private static GaMultivector<Expr> CreateBivector(string name)
         {
             name = name.ToLower();
 
@@ -73,7 +73,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.Basic
             ).AsMultivector();
         }
 
-        private static Multivector<Expr> CreateTrivector(string name)
+        private static GaMultivector<Expr> CreateTrivector(string name)
         {
             name = name.ToLower();
 
@@ -83,21 +83,21 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.Basic
             ).AsMultivector();
         }
 
-        private static Multivector<Expr> CreateEvenMultivector(string name)
+        private static GaMultivector<Expr> CreateEvenMultivector(string name)
         {
             name = name.ToLower();
 
             return CreateScalar($"Subscript[{name},0]") + CreateBivector(name);
         }
         
-        private static Multivector<Expr> CreateOddMultivector(string name)
+        private static GaMultivector<Expr> CreateOddMultivector(string name)
         {
             name = name.ToLower();
 
             return CreateVector(name) + CreateTrivector(name);
         }
         
-        private static Multivector<Expr> CreateMultivector(string name)
+        private static GaMultivector<Expr> CreateMultivector(string name)
         {
             name = name.ToLower();
 
@@ -220,8 +220,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.Basic
             var invI = 
                 GeometricProcessor.PseudoScalarInverse;
 
-            var mvList1 = new Dictionary<string, Multivector<Expr>>();
-            var mvList2 = new Dictionary<string, Multivector<Expr>>();
+            var mvList1 = new Dictionary<string, GaMultivector<Expr>>();
+            var mvList2 = new Dictionary<string, GaMultivector<Expr>>();
 
             mvList1.Add("a", CreateScalar("a"));
             mvList2.Add("b", CreateScalar("b"));

@@ -26,7 +26,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Versors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static PureVersorsSequence<T> Create(IGeometricAlgebraProcessor<T> processor, params Vector<T>[] vectorStorages)
+        public static PureVersorsSequence<T> Create(IGeometricAlgebraProcessor<T> processor, params GaVector<T>[] vectorStorages)
         {
             return new PureVersorsSequence<T>(
                 vectorStorages.Select(PureVersor<T>.Create).ToList()
@@ -34,7 +34,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Versors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static PureVersorsSequence<T> Create(IEnumerable<Vector<T>> vectorStorages)
+        public static PureVersorsSequence<T> Create(IEnumerable<GaVector<T>> vectorStorages)
         {
             return new PureVersorsSequence<T>(
                 vectorStorages.Select(PureVersor<T>.Create).ToList()
@@ -195,7 +195,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Versors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Vector<T> OmMap(Vector<T> mv)
+        public override GaVector<T> OmMap(GaVector<T> mv)
         {
             return _versorsList
                 .Aggregate(
@@ -205,7 +205,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Versors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Bivector<T> OmMap(Bivector<T> mv)
+        public override GaBivector<T> OmMap(GaBivector<T> mv)
         {
             return _versorsList
                 .Aggregate(
@@ -215,7 +215,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Versors
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override KVector<T> OmMap(KVector<T> mv)
+        public override GaKVector<T> OmMap(GaKVector<T> mv)
         {
             return _versorsList
                 .Aggregate(
@@ -225,7 +225,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Versors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Multivector<T> OmMap(Multivector<T> mv)
+        public override GaMultivector<T> OmMap(GaMultivector<T> mv)
         {
             return _versorsList
                 .Aggregate(
@@ -246,7 +246,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Versors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Multivector<T> GetMultivector()
+        public override GaMultivector<T> GetMultivector()
         {
             return GeometricProcessor.CreateMultivector(
                 GetMultivectorStorage()
@@ -255,7 +255,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Versors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Multivector<T> GetMultivectorReverse()
+        public override GaMultivector<T> GetMultivectorReverse()
         {
             return GeometricProcessor.CreateMultivector(
                 GetMultivectorStorageReverse()
@@ -263,7 +263,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Versors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Multivector<T> GetMultivectorInverse()
+        public override GaMultivector<T> GetMultivectorInverse()
         {
             return GeometricProcessor.CreateMultivector(
                 GetMultivectorStorageInverse()

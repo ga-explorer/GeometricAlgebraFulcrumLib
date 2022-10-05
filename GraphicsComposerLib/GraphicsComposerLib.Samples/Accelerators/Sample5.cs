@@ -1,12 +1,13 @@
-﻿using System.Drawing;
+﻿
 using System.IO;
-using EuclideanGeometryLib.BasicMath.Tuples.Immutable;
-using EuclideanGeometryLib.BasicShapes.Lines;
-using EuclideanGeometryLib.BasicShapes.Lines.Immutable;
-using EuclideanGeometryLib.Borders;
-using EuclideanGeometryLib.Borders.Space2D;
-using EuclideanGeometryLib.Borders.Space2D.Immutable;
-using GraphicsComposerLib.Svg.DrawingBoard;
+using GraphicsComposerLib.Rendering.Svg.DrawingBoard;
+using NumericalGeometryLib.BasicMath.Tuples.Immutable;
+using NumericalGeometryLib.BasicShapes.Lines;
+using NumericalGeometryLib.BasicShapes.Lines.Immutable;
+using NumericalGeometryLib.Borders;
+using NumericalGeometryLib.Borders.Space2D;
+using NumericalGeometryLib.Borders.Space2D.Immutable;
+using SixLabors.ImageSharp;
 
 namespace GraphicsComposerLib.Samples.Accelerators
 {
@@ -30,7 +31,7 @@ namespace GraphicsComposerLib.Samples.Accelerators
             caseName = lineDirName + clipDirName + "-" + caseName;
 
             var drawingBoard = boundingBox.CreateDrawingBoard(4, 0);
-            drawingBoard.BackgroundColor = Color.White;
+            drawingBoard.BackgroundRectColor = Color.White;
 
             //Draw line
             drawingBoard

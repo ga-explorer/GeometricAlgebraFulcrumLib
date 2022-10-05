@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors;
+using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 {
@@ -31,6 +33,19 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                         basisSet.GetValue(index, parameterValue).ScalarValue
                     )
                 )
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GaVector<T> GetValue<T>(this IPolynomialBasisSet<T> basisSet, T parameterValue, params GaVector<T>[] vectorsList)
+        {
+            var processor = vectorsList[0].GeometricProcessor;
+
+            return vectorsList.Select(
+                (mv, index) => mv * basisSet.GetValue(index, parameterValue)
+            ).Aggregate(
+                processor.CreateVectorZero(), 
+                (a, b) => a + b
             );
         }
     }

@@ -6,7 +6,7 @@ using GraphicsComposerLib.Geometry.Meshes.PointsPath.Space3D;
 using GraphicsComposerLib.Geometry.Primitives;
 using GraphicsComposerLib.Geometry.Primitives.Lines;
 using GraphicsComposerLib.Geometry.Primitives.Triangles;
-using GraphicsComposerLib.WebGl.Xeogl;
+using GraphicsComposerLib.Rendering.Xeogl;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Graphics.Xeogl
 {

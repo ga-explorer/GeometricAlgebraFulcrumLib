@@ -46,12 +46,20 @@ namespace GeometricAlgebraFulcrumLib.Processors.LinearAlgebra
         public T ScalarPi 
             => ScalarProcessor.ScalarPi;
 
+        public T ScalarTwoPi 
+            => ScalarProcessor.ScalarTwoPi;
+
         public T ScalarPiOver2 
             => ScalarProcessor.ScalarPiOver2;
 
         public T ScalarE 
             => ScalarProcessor.ScalarE;
 
+        public T ScalarDegreeToRadian 
+            => ScalarProcessor.ScalarDegreeToRadian;
+
+        public T ScalarRadianToDegree 
+            => ScalarProcessor.ScalarRadianToDegree;
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -235,9 +243,21 @@ namespace GeometricAlgebraFulcrumLib.Processors.LinearAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public T Sinc(T scalar)
+        {
+            return ScalarProcessor.Sinc(scalar);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsValid(T scalar)
         {
             return ScalarProcessor.IsValid(scalar);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsFiniteNumber(T scalar)
+        {
+            return ScalarProcessor.IsFiniteNumber(scalar);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

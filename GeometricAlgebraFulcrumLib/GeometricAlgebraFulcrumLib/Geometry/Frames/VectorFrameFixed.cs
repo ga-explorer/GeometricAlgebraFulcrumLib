@@ -15,13 +15,13 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Frames
         IVectorFrame<T>
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static VectorFrameFixed<T> Create(Vector<T> point, IVectorFrame<T> vectorFrame)
+        internal static VectorFrameFixed<T> Create(GaVector<T> point, IVectorFrame<T> vectorFrame)
         {
             return new VectorFrameFixed<T>(point, vectorFrame);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static VectorFrameFixed<T> Create(Vector<T> point, VectorFrameSpecs frameSpecs)
+        internal static VectorFrameFixed<T> Create(GaVector<T> point, VectorFrameSpecs frameSpecs)
         {
             var vectorFrame = VectorFrame<T>.Create(point.GeometricProcessor, frameSpecs);
 
@@ -29,7 +29,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Frames
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static VectorFrameFixed<T> Create(Vector<T> point, VectorFrameSpecs frameSpecs, IEnumerable<Vector<T>> vectorStoragesList)
+        internal static VectorFrameFixed<T> Create(GaVector<T> point, VectorFrameSpecs frameSpecs, IEnumerable<GaVector<T>> vectorStoragesList)
         {
             var vectorFrame = VectorFrame<T>.Create(point.GeometricProcessor, frameSpecs, vectorStoragesList);
 
@@ -46,19 +46,19 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Frames
         public IGeometricAlgebraProcessor<T> GeometricProcessor 
             => VectorFrame.GeometricProcessor;
 
-        public Vector<T> Point { get; }
+        public GaVector<T> Point { get; }
 
         public IVectorFrame<T> VectorFrame { get; }
 
         public int Count 
             => VectorFrame.Count;
 
-        public Vector<T> this[int index] 
+        public GaVector<T> this[int index] 
             => Point + VectorFrame[index];
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private VectorFrameFixed([NotNull] Vector<T> point, [NotNull] IVectorFrame<T> vectorFrame)
+        private VectorFrameFixed([NotNull] GaVector<T> point, [NotNull] IVectorFrame<T> vectorFrame)
         {
             Point = point;
             VectorFrame = vectorFrame;
@@ -72,7 +72,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Frames
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerator<Vector<T>> GetEnumerator()
+        public IEnumerator<GaVector<T>> GetEnumerator()
         {
             return VectorFrame
                 .Select(v => Point + v)

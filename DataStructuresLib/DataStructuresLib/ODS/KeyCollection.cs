@@ -14,7 +14,7 @@ namespace DataStructuresLib.ODS
 
         public IEnumerator<uint> GetEnumerator()
         {
-            var iter = _tree.GetEnumerator();
+            using var iter = _tree.GetEnumerator();
             while (iter.MoveNext())
                 yield return iter.Current.Key;
         }
@@ -43,7 +43,7 @@ namespace DataStructuresLib.ODS
         void ICollection<uint>.CopyTo(uint[] array, int arrayIndex)
         {
             CollectionHelpers.ThrowIfInsufficientArray(this, array, arrayIndex);
-            var iter = _tree.GetEnumerator();
+            using var iter = _tree.GetEnumerator();
             for (var i = 0; i < _tree.Count; i++)
             {
                 iter.MoveNext();

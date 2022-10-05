@@ -6,6 +6,6 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Projectors
     public interface IProjector<T> : 
         IOutermorphism<T>
     {
-        KVector<T> Blade { get; }
+        GaKVector<T> Blade { get; }
     }
 }

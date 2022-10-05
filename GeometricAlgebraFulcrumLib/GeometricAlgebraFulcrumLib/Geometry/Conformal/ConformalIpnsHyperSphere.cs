@@ -58,7 +58,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Conformal
 
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Vector<T> GetCenter()
+        public GaVector<T> GetCenter()
         {
             return VectorStorage
                 .FilterVectorByIndex(index => index < ConformalProcessor.VSpaceDimension - 2)

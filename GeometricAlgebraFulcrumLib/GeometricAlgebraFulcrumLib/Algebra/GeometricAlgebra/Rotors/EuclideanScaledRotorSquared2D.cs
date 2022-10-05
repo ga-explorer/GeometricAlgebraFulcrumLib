@@ -82,7 +82,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
             var scalingFactor = 
                 GetScalingFactor();
 
-            return EuclideanScaledRotorSquared2D<T>.Create(
+            return Create(
                 GeometricProcessor,
                 Scalar0 / scalingFactor,
                 Scalar12 / scalingFactor
@@ -96,7 +96,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Vector<T> OmMap(T u1, T u2)
+        public GaVector<T> OmMap(T u1, T u2)
         {
             var v1 = Scalar0 * u1 + Scalar12 * u2;
             var v2 = Scalar0 * u2 - Scalar12 * u1;
@@ -105,7 +105,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Vector<T> OmMap(Vector<T> mv)
+        public override GaVector<T> OmMap(GaVector<T> mv)
         {
             var u1 = mv[0];
             var u2 = mv[1];
@@ -114,13 +114,13 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Bivector<T> OmMap(Bivector<T> mv)
+        public override GaBivector<T> OmMap(GaBivector<T> mv)
         {
             return GetScalingFactor() * mv;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override KVector<T> OmMap(KVector<T> mv)
+        public override GaKVector<T> OmMap(GaKVector<T> mv)
         {
             return mv.Grade switch
             {
@@ -131,7 +131,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Multivector<T> OmMap(Multivector<T> mv)
+        public override GaMultivector<T> OmMap(GaMultivector<T> mv)
         {
             var mv0 = mv[0];
             var mv1 = mv[1];
@@ -195,7 +195,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Multivector<T> GetMultivector()
+        public override GaMultivector<T> GetMultivector()
         {
             return GeometricProcessor.CreateMultivector(
                 GetMultivectorStorage()
@@ -203,7 +203,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Multivector<T> GetMultivectorReverse()
+        public override GaMultivector<T> GetMultivectorReverse()
         {
             return GeometricProcessor.CreateMultivector(
                 GetMultivectorStorageReverse()
@@ -211,7 +211,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Multivector<T> GetMultivectorInverse()
+        public override GaMultivector<T> GetMultivectorInverse()
         {
             return GeometricProcessor.CreateMultivector(
                 GetMultivectorStorageInverse()

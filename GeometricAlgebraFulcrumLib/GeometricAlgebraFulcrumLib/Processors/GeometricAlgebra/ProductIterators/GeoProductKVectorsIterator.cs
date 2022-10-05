@@ -13,7 +13,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.ProductIterator
 {
     public sealed class MultivectorStorageKVectorsIterator<T>
     {
-        public static MultivectorStorageKVectorsIterator<T> Create(Multivector<T> mv1, Multivector<T> mv2)
+        public static MultivectorStorageKVectorsIterator<T> Create(GaMultivector<T> mv1, GaMultivector<T> mv2)
         {
             return new(
                 mv1.GeometricProcessor,

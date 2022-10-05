@@ -104,6 +104,20 @@ namespace NumericalGeometryLib.BasicMath.Constants
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool IsOppositeTo(this Axis3D axis1, Axis3D axis2)
+        {
+            return axis1 switch
+            {
+                Axis3D.PositiveX => axis2 == Axis3D.NegativeX,
+                Axis3D.PositiveY => axis2 == Axis3D.NegativeY,
+                Axis3D.PositiveZ => axis2 == Axis3D.NegativeZ,
+                Axis3D.NegativeX => axis2 == Axis3D.PositiveX,
+                Axis3D.NegativeY => axis2 == Axis3D.PositiveY,
+                _ => axis2 == Axis3D.PositiveZ,
+            };
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Axis3D SelectNearestAxis(this ITuple3D unitVector)
         {
             return unitVector.GetMaxAbsComponentIndex() switch

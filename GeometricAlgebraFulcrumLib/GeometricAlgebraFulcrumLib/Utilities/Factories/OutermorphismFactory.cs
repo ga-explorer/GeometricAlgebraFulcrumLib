@@ -6,6 +6,7 @@ using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.LinearMaps;
 using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
+using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Factories
 {
@@ -124,11 +125,12 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
 
         public static LinearMapOutermorphism<T> CreateLinearMapOutermorphism<T>(this IGeometricAlgebraProcessor<T> geometricProcessor, IEnumerable<VectorStorage<T>> mappedBasisVectors)
         {
-            var matrix =
+            ILinVectorStorage<ILinVectorStorage<T>> storage =
                 mappedBasisVectors
                     .Select(v => v.GetLinVectorIndexScalarStorage())
-                    .CreateLinVectorArrayStorage()
-                    .CreateLinMatrixColumnsListStorage();
+                    .CreateLinVectorArrayStorage();
+
+            var matrix = storage.CreateLinMatrixColumnsListStorage();
             
             return geometricProcessor
                 .CreateLinUnilinearMap(matrix)
@@ -137,11 +139,11 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
 
         public static LinearMapOutermorphism<T> CreateLinearMapOutermorphism<T>(this IEnumerable<VectorStorage<T>> mappedBasisVectors, IGeometricAlgebraProcessor<T> geometricProcessor)
         {
-            var matrix =
-                mappedBasisVectors
-                    .Select(v => v.GetLinVectorIndexScalarStorage())
-                    .CreateLinVectorArrayStorage()
-                    .CreateLinMatrixColumnsListStorage();
+            ILinVectorStorage<ILinVectorStorage<T>> storage = mappedBasisVectors
+                .Select(v => v.GetLinVectorIndexScalarStorage())
+                .CreateLinVectorArrayStorage();
+
+            var matrix = storage.CreateLinMatrixColumnsListStorage();
 
             return geometricProcessor
                 .CreateLinUnilinearMap(matrix)

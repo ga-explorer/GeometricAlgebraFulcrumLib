@@ -17,7 +17,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
     public sealed class MultivectorStoragesTests
     {
         private readonly GeometricAlgebraRandomComposer<double> _randomGenerator;
-        private readonly List<Multivector<double>> _mvList1;
+        private readonly List<GaMultivector<double>> _mvList1;
         private readonly List<GaMultivector> _mvList2;
         private readonly double _scalar;
 
@@ -38,13 +38,13 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
         public MultivectorStoragesTests()
         {
             _randomGenerator = GeometricProcessor.CreateGeometricRandomComposer(10);
-            _mvList1 = new List<Multivector<double>>();
+            _mvList1 = new List<GaMultivector<double>>();
             _mvList2 = new List<GaMultivector>();
             _scalar = _randomGenerator.GetScalar();
         }
 
 
-        private GaMultivector CreateGeoPoTMultivector(Multivector<double> mvStorage)
+        private GaMultivector CreateGeoPoTMultivector(GaMultivector<double> mvStorage)
         {
             var gapotMv = BasisSet.CreateZero();
 
@@ -54,7 +54,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
             return gapotMv;
         }
 
-        private GaMultivector Subtract(Multivector<double> mv1, GaMultivector mv2)
+        private GaMultivector Subtract(GaMultivector<double> mv1, GaMultivector mv2)
         {
             var mvDiff = BasisSet.CreateZero();
 
@@ -67,7 +67,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
             return mvDiff.RemoveNearZeroScalars();
         }
 
-        private GaMultivector Subtract(GaMultivector mv1, Multivector<double> mv2)
+        private GaMultivector Subtract(GaMultivector mv1, GaMultivector<double> mv2)
         {
             var mvDiff = BasisSet.CreateZero();
 
@@ -80,7 +80,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
             return mvDiff.RemoveNearZeroScalars();
         }
         
-        private Func<Multivector<double>, Multivector<double>, Multivector<double>> GetBinaryOperationFunction1(string funcName)
+        private Func<GaMultivector<double>, GaMultivector<double>, GaMultivector<double>> GetBinaryOperationFunction1(string funcName)
         {
             return funcName switch
             {
@@ -116,7 +116,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
             };
         }
 
-        private Func<Multivector<double>, Multivector<double>, double> GetBinaryOperationFunctionWithScalarOutput1(string funcName)
+        private Func<GaMultivector<double>, GaMultivector<double>, double> GetBinaryOperationFunctionWithScalarOutput1(string funcName)
         {
             return funcName switch
             {
@@ -134,7 +134,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
             };
         }
 
-        private Multivector<double> LeftTimesScalar(Multivector<double> storage)
+        private GaMultivector<double> LeftTimesScalar(GaMultivector<double> storage)
         {
             return storage * _scalar;
         }
@@ -144,7 +144,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
             return storage * _scalar;
         }
 
-        private Multivector<double> RightTimesScalar(Multivector<double> storage)
+        private GaMultivector<double> RightTimesScalar(GaMultivector<double> storage)
         {
             return _scalar * storage;
         }
@@ -154,7 +154,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
             return storage * _scalar;
         }
 
-        private Multivector<double> DivideByScalar(Multivector<double> storage)
+        private GaMultivector<double> DivideByScalar(GaMultivector<double> storage)
         {
             return storage / _scalar;
         }
@@ -164,7 +164,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
             return storage / _scalar;
         }
 
-        private Func<Multivector<double>, Multivector<double>> GetUnaryOperationFunction1(string funcName)
+        private Func<GaMultivector<double>, GaMultivector<double>> GetUnaryOperationFunction1(string funcName)
         {
             return funcName switch
             {
@@ -190,7 +190,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
             };
         }
 
-        private Func<Multivector<double>, double> GetUnaryOperationFunctionWithScalarOutput1(string funcName)
+        private Func<GaMultivector<double>, double> GetUnaryOperationFunctionWithScalarOutput1(string funcName)
         {
             return funcName switch
             {

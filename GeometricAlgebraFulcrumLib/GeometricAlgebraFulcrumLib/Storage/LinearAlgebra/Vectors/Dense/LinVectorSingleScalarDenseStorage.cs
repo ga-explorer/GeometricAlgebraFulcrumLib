@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -216,17 +217,23 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Dense
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IReadOnlyList<T> GetScalarsList()
-        {
-            return new [] { Scalar };
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ILinVectorDenseStorage<T> GetDensePermutation(Func<ulong, ulong> indexMapping)
         {
             return indexMapping(0) == 0
                 ? this
                 : throw new InvalidOperationException();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public IEnumerator<T> GetEnumerator()
+        {
+            return Enumerable.Repeat(Scalar, Count).GetEnumerator();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }

@@ -27,7 +27,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
             = LaTeXMathematicaComposer.DefaultComposer;
 
 
-        public static void ValidatePhasor(int k, int n, Vector<Expr> phasor2)
+        public static void ValidatePhasor(int k, int n, GaVector<Expr> phasor2)
         {
             var composer = GeometricProcessor.CreateVectorStorageComposer();
 
@@ -69,7 +69,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
             Console.WriteLine();
         }
 
-        public static Tuple<Vector<Expr>, Vector<Expr>> GetPhasorsTuple(int i, int k, int n)
+        public static Tuple<GaVector<Expr>, GaVector<Expr>> GetPhasorsTuple(int i, int k, int n)
         {
             Debug.Assert(n >= 2 && i >= 0 && i < n);
 
@@ -112,13 +112,13 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
             //);
             //Console.WriteLine();
 
-            return new Tuple<Vector<Expr>, Vector<Expr>>(
+            return new Tuple<GaVector<Expr>, GaVector<Expr>>(
                 phasor1,
                 phasor2
             );
         }
 
-        public static Tuple<Vector<Expr>, Vector<Expr>> GetPhasorsTuple(int k, int n)
+        public static Tuple<GaVector<Expr>, GaVector<Expr>> GetPhasorsTuple(int k, int n)
         {
             var phasorTuples =
                 Enumerable
@@ -160,7 +160,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.GAPoT
             );
             Console.WriteLine();
 
-            return new Tuple<Vector<Expr>, Vector<Expr>>(
+            return new Tuple<GaVector<Expr>, GaVector<Expr>>(
                 phasor1,
                 phasor2
             );

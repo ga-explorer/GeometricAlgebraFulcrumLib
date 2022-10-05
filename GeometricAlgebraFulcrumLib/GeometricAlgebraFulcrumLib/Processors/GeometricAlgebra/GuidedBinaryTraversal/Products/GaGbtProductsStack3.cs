@@ -15,7 +15,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTra
     public sealed class GeoGbtProductsStack3<T> 
         : GeoGbtStack3
     {
-        public static GeoGbtProductsStack3<T> Create(Multivector<T> mv1, Multivector<T> mv2, Multivector<T> mv3)
+        public static GeoGbtProductsStack3<T> Create(GaMultivector<T> mv1, GaMultivector<T> mv2, GaMultivector<T> mv3)
         {
             Debug.Assert(
                 mv1.MultivectorStorage.MinVSpaceDimension == mv2.MultivectorStorage.MinVSpaceDimension &&

@@ -20,7 +20,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static BasisVectorFrame<T> CreateBasisVectorFrame<T>(this IGeometricAlgebraProcessor<T> processor, params Vector<T>[] vectorArray)
+        public static BasisVectorFrame<T> CreateBasisVectorFrame<T>(this IGeometricAlgebraProcessor<T> processor, params GaVector<T>[] vectorArray)
         {
             return BasisVectorFrame<T>.Create(processor, vectorArray);
         }
@@ -33,7 +33,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static BasisKVectorFrame<T> CreateBasisKVectorFrame<T>(this IGeometricAlgebraProcessor<T> geometricProcessor, IEnumerable<KVector<T>> kVectorList)
+        public static BasisKVectorFrame<T> CreateBasisKVectorFrame<T>(this IGeometricAlgebraProcessor<T> geometricProcessor, IEnumerable<GaKVector<T>> kVectorList)
         {
             return BasisKVectorFrame<T>.Create(geometricProcessor, kVectorList);
         }
@@ -59,7 +59,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorFrame<T> CreateVectorFrame<T>(this IGeometricAlgebraProcessor<T> processor, VectorFrameSpecs frameSpecs, Vector<T> vector1, Vector<T> vector2)
+        public static VectorFrame<T> CreateVectorFrame<T>(this IGeometricAlgebraProcessor<T> processor, VectorFrameSpecs frameSpecs, GaVector<T> vector1, GaVector<T> vector2)
         {
             return VectorFrame<T>.Create(
                 processor, 
@@ -69,13 +69,13 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorFrame<T> CreateVectorFrame<T>(this IGeometricAlgebraProcessor<T> processor, VectorFrameSpecs frameSpecs, params Vector<T>[] vectorsList)
+        public static VectorFrame<T> CreateVectorFrame<T>(this IGeometricAlgebraProcessor<T> processor, VectorFrameSpecs frameSpecs, params GaVector<T>[] vectorsList)
         {
             return VectorFrame<T>.Create(processor, frameSpecs, vectorsList);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorFrame<T> CreateVectorFrame<T>(this IGeometricAlgebraProcessor<T> processor, VectorFrameSpecs frameSpecs, IEnumerable<Vector<T>> vectorsList)
+        public static VectorFrame<T> CreateVectorFrame<T>(this IGeometricAlgebraProcessor<T> processor, VectorFrameSpecs frameSpecs, IEnumerable<GaVector<T>> vectorsList)
         {
             return VectorFrame<T>.Create(processor, frameSpecs, vectorsList);
         }
@@ -180,7 +180,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorFrameFixed<T> CreateFixedFrame<T>(this IVectorFrame<T> frame, Vector<T> point)
+        public static VectorFrameFixed<T> CreateFixedFrame<T>(this IVectorFrame<T> frame, GaVector<T> point)
         {
             return VectorFrameFixed<T>.Create(point, frame);
         }
@@ -192,7 +192,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorFrameFixed<T> CreateBasisVectorFrameFixed<T>(this IGeometricAlgebraProcessor<T> processor, Vector<T> point)
+        public static VectorFrameFixed<T> CreateBasisVectorFrameFixed<T>(this IGeometricAlgebraProcessor<T> processor, GaVector<T> point)
         {
             return processor.CreateBasisVectorFrameFixed().CreateFixedFrame(point);
         }
@@ -204,7 +204,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorFrameFixed<T> CreateBasisVectorFrameFixed<T>(this IGeometricAlgebraProcessor<T> processor, Vector<T> point, uint vSpaceDimension)
+        public static VectorFrameFixed<T> CreateBasisVectorFrameFixed<T>(this IGeometricAlgebraProcessor<T> processor, GaVector<T> point, uint vSpaceDimension)
         {
             return processor.CreateFreeFrameOfBasis(vSpaceDimension).CreateFixedFrame(point);
         }
@@ -216,7 +216,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorFrameFixed<T> CreateFixedFrameOfScaledBasis<T>(this IGeometricAlgebraProcessor<T> processor, Vector<T> point, T scalingFactor)
+        public static VectorFrameFixed<T> CreateFixedFrameOfScaledBasis<T>(this IGeometricAlgebraProcessor<T> processor, GaVector<T> point, T scalingFactor)
         {
             return processor.CreateFreeFrameOfScaledBasis(scalingFactor).CreateFixedFrame(point);
         }
@@ -228,7 +228,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorFrameFixed<T> CreateFixedFrameOfScaledBasis<T>(this IGeometricAlgebraProcessor<T> processor, Vector<T> point, uint vSpaceDimension, T scalingFactor)
+        public static VectorFrameFixed<T> CreateFixedFrameOfScaledBasis<T>(this IGeometricAlgebraProcessor<T> processor, GaVector<T> point, uint vSpaceDimension, T scalingFactor)
         {
             return processor.CreateFreeFrameOfScaledBasis(vSpaceDimension, scalingFactor).CreateFixedFrame(point);
         }
@@ -240,7 +240,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorFrameFixed<T> CreateFixedFrameOfSimplex<T>(this IScalarAlgebraProcessor<T> scalarProcessor, uint vSpaceDimension, Vector<T> point, T scalingFactor)
+        public static VectorFrameFixed<T> CreateFixedFrameOfSimplex<T>(this IScalarAlgebraProcessor<T> scalarProcessor, uint vSpaceDimension, GaVector<T> point, T scalingFactor)
         {
             return scalarProcessor.CreateFreeFrameOfSimplex(vSpaceDimension, scalingFactor).CreateFixedFrame(point);
         }

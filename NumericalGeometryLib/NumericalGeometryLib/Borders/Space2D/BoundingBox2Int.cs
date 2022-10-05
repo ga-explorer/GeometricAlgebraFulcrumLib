@@ -53,7 +53,7 @@ namespace NumericalGeometryLib.Borders.Space2D
         {
             get
             {
-                Debug.Assert(index == 0 || index == 1);
+                Debug.Assert(index is 0 or 1);
 
                 return (index & 1) == 0 ? MinCorner : MaxCorner;
             }
@@ -191,7 +191,7 @@ namespace NumericalGeometryLib.Borders.Space2D
         /// <returns></returns>
         public IntTuple2D GetCorner(int index)
         {
-            Debug.Assert(index >= 0 || index <= 3);
+            Debug.Assert(index is >= 0 or <= 3);
 
             if (index == 0) return new IntTuple2D(MinX, MinY);
             if (index == 1) return new IntTuple2D(MaxX, MinY);

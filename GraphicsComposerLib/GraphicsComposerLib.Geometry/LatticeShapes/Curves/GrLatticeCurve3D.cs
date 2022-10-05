@@ -3,13 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Drawing;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.Basic;
 using NumericalGeometryLib.BasicMath;
 using NumericalGeometryLib.BasicMath.Tuples;
 using NumericalGeometryLib.BasicMath.Tuples.Immutable;
+using SixLabors.ImageSharp;
 
 namespace GraphicsComposerLib.Geometry.LatticeShapes.Curves
 {

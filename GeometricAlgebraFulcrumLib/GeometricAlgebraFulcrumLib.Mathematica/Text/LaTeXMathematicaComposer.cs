@@ -30,8 +30,9 @@ namespace GeometricAlgebraFulcrumLib.Mathematica.Text
         public override string GetScalarText(Expr scalar)
         {
             return MathematicaUtils.Cas.Connection.EvaluateToString(
-                Mfs.EToString[Mfs.TeXForm[scalar]]
+                Mfs.EToString[Mfs.TeXForm[Mfs.HoldForm[scalar]]]
             );
         }
+
     }
 }

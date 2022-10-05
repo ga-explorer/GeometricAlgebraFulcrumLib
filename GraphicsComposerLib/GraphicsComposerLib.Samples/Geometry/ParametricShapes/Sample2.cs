@@ -1,20 +1,21 @@
 ﻿using System;
-using System.Drawing;
+
 using System.IO;
 using System.Linq;
 using DataStructuresLib;
-using EuclideanGeometryLib.BasicMath;
-using EuclideanGeometryLib.BasicMath.Tuples;
-using EuclideanGeometryLib.BasicMath.Tuples.Immutable;
-using EuclideanGeometryLib.BasicShapes.Triangles.Immutable;
-using EuclideanGeometryLib.Borders.Space2D.Immutable;
+using NumericalGeometryLib.BasicMath;
+using NumericalGeometryLib.BasicMath.Tuples;
+using NumericalGeometryLib.BasicMath.Tuples.Immutable;
+using NumericalGeometryLib.BasicShapes.Triangles.Immutable;
+using NumericalGeometryLib.Borders.Space2D.Immutable;
 using GraphicsComposerLib.Geometry.ParametricShapes.Surfaces;
 using GraphicsComposerLib.Geometry.ParametricShapes.Surfaces.Sampled;
 using GraphicsComposerLib.Geometry.Primitives;
 using GraphicsComposerLib.Geometry.Primitives.Lines;
 using GraphicsComposerLib.Geometry.Primitives.Triangles;
-using GraphicsComposerLib.Svg.DrawingBoard;
-using GraphicsComposerLib.WebGl.Xeogl;
+using GraphicsComposerLib.Rendering.Svg.DrawingBoard;
+using GraphicsComposerLib.Rendering.Xeogl;
+using SixLabors.ImageSharp;
 
 namespace GraphicsComposerLib.Samples.Geometry.ParametricShapes
 {

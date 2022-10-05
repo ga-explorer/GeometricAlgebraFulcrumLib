@@ -396,7 +396,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Maps
             
             // Define parametric angle of rotation
             var rotorAngle =
-                (1 + 2 * (cosAngle0 - 1) / (2 - angleTheta.Sin().Squared() * (cosAngle0 + 1))).ArcCos();
+                (1 + 2 * (cosAngle0 - 1) / (2 - angleTheta.Sin().Square() * (cosAngle0 + 1))).ArcCos();
 
             // Math.Acos(1 + 2 * (cosAngle0 - 1) / (2 - Math.Pow(Math.Sin(angleTheta), 2) * (cosAngle0 + 1)));
             

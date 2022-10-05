@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using EuclideanGeometryLib.BasicMath;
-using EuclideanGeometryLib.BasicMath.Tuples;
-using EuclideanGeometryLib.BasicMath.Tuples.Immutable;
-using EuclideanGeometryLib.Borders.Space1D.Immutable;
+using NumericalGeometryLib.BasicMath;
+using NumericalGeometryLib.BasicMath.Tuples;
+using NumericalGeometryLib.BasicMath.Tuples.Immutable;
+using NumericalGeometryLib.Borders.Space1D.Immutable;
 using GraphicsComposerLib.Geometry.LatticeShapes;
 using GraphicsComposerLib.Geometry.LatticeShapes.Surfaces;
 using GraphicsComposerLib.Geometry.ParametricShapes.Curves;
@@ -12,7 +12,7 @@ using GraphicsComposerLib.Geometry.ParametricShapes.Curves.Bezier;
 using GraphicsComposerLib.Geometry.ParametricShapes.Curves.Sampled;
 using GraphicsComposerLib.Geometry.Primitives;
 using GraphicsComposerLib.Geometry.Primitives.Lines;
-using GraphicsComposerLib.WebGl.Xeogl;
+using GraphicsComposerLib.Rendering.Xeogl;
 
 namespace GraphicsComposerLib.Samples.Geometry.BezierShapes
 {

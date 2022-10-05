@@ -17,10 +17,10 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
 
         bool IsOrthonormalEuclidean { get; }
 
-        KVector<T> PseudoScalar { get; }
+        GaKVector<T> PseudoScalar { get; }
 
-        KVector<T> PseudoScalarInverse { get; }
+        GaKVector<T> PseudoScalarInverse { get; }
 
-        KVector<T> PseudoScalarReverse { get; }
+        GaKVector<T> PseudoScalarReverse { get; }
     }
 }

@@ -8,17 +8,17 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
     public static class BivectorLcpUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<T> Lcp<T>(this Bivector<T> mv1, int mv2)
+        public static Scalar<T> Lcp<T>(this GaBivector<T> mv1, int mv2)
         {
             return mv1.GeometricProcessor.CreateScalarZero();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Bivector<T> Lcp<T>(this int mv1, Bivector<T> mv2)
+        public static GaBivector<T> Lcp<T>(this int mv1, GaBivector<T> mv2)
         {
             var processor = mv2.GeometricProcessor;
 
-            return new Bivector<T>(
+            return new GaBivector<T>(
                 processor, 
                 processor.Times(
                     processor.GetScalarFromNumber(mv1),
@@ -28,17 +28,17 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<T> Lcp<T>(this Bivector<T> mv1, uint mv2)
+        public static Scalar<T> Lcp<T>(this GaBivector<T> mv1, uint mv2)
         {
             return mv1.GeometricProcessor.CreateScalarZero();
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Bivector<T> Lcp<T>(this uint mv1, Bivector<T> mv2)
+        public static GaBivector<T> Lcp<T>(this uint mv1, GaBivector<T> mv2)
         {
             var processor = mv2.GeometricProcessor;
 
-            return new Bivector<T>(
+            return new GaBivector<T>(
                 processor, 
                 processor.Times(
                     processor.GetScalarFromNumber(mv1),
@@ -48,17 +48,17 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<T> Lcp<T>(this Bivector<T> mv1, long mv2)
+        public static Scalar<T> Lcp<T>(this GaBivector<T> mv1, long mv2)
         {
             return mv1.GeometricProcessor.CreateScalarZero();
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Bivector<T> Lcp<T>(this long mv1, Bivector<T> mv2)
+        public static GaBivector<T> Lcp<T>(this long mv1, GaBivector<T> mv2)
         {
             var processor = mv2.GeometricProcessor;
 
-            return new Bivector<T>(
+            return new GaBivector<T>(
                 processor, 
                 processor.Times(
                     processor.GetScalarFromNumber(mv1),
@@ -68,17 +68,17 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<T> Lcp<T>(this Bivector<T> mv1, ulong mv2)
+        public static Scalar<T> Lcp<T>(this GaBivector<T> mv1, ulong mv2)
         {
             return mv1.GeometricProcessor.CreateScalarZero();
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Bivector<T> Lcp<T>(this ulong mv1, Bivector<T> mv2)
+        public static GaBivector<T> Lcp<T>(this ulong mv1, GaBivector<T> mv2)
         {
             var processor = mv2.GeometricProcessor;
 
-            return new Bivector<T>(
+            return new GaBivector<T>(
                 processor, 
                 processor.Times(
                     processor.GetScalarFromNumber(mv1),
@@ -88,17 +88,17 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<T> Lcp<T>(this Bivector<T> mv1, float mv2)
+        public static Scalar<T> Lcp<T>(this GaBivector<T> mv1, float mv2)
         {
             return mv1.GeometricProcessor.CreateScalarZero();
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Bivector<T> Lcp<T>(this float mv1, Bivector<T> mv2)
+        public static GaBivector<T> Lcp<T>(this float mv1, GaBivector<T> mv2)
         {
             var processor = mv2.GeometricProcessor;
 
-            return new Bivector<T>(
+            return new GaBivector<T>(
                 processor, 
                 processor.Times(
                     processor.GetScalarFromNumber(mv1),
@@ -108,17 +108,17 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<T> Lcp<T>(this Bivector<T> mv1, double mv2)
+        public static Scalar<T> Lcp<T>(this GaBivector<T> mv1, double mv2)
         {
             return mv1.GeometricProcessor.CreateScalarZero();
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Bivector<T> Lcp<T>(this double mv1, Bivector<T> mv2)
+        public static GaBivector<T> Lcp<T>(this double mv1, GaBivector<T> mv2)
         {
             var processor = mv2.GeometricProcessor;
 
-            return new Bivector<T>(
+            return new GaBivector<T>(
                 processor, 
                 processor.Times(
                     processor.GetScalarFromNumber(mv1),
@@ -128,17 +128,17 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<T> Lcp<T>(this Bivector<T> mv1, T mv2)
+        public static Scalar<T> Lcp<T>(this GaBivector<T> mv1, T mv2)
         {
             return mv1.GeometricProcessor.CreateScalarZero();
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Bivector<T> Lcp<T>(this T mv1, Bivector<T> mv2)
+        public static GaBivector<T> Lcp<T>(this T mv1, GaBivector<T> mv2)
         {
             var processor = mv2.GeometricProcessor;
 
-            return new Bivector<T>(
+            return new GaBivector<T>(
                 processor, 
                 processor.Times(
                     mv1,
@@ -148,17 +148,17 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<T> Lcp<T>(this Bivector<T> mv1, Scalar<T> mv2)
+        public static Scalar<T> Lcp<T>(this GaBivector<T> mv1, Scalar<T> mv2)
         {
             return mv1.GeometricProcessor.CreateScalarZero();
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Bivector<T> Lcp<T>(this Scalar<T> mv1, Bivector<T> mv2)
+        public static GaBivector<T> Lcp<T>(this Scalar<T> mv1, GaBivector<T> mv2)
         {
             var processor = mv2.GeometricProcessor;
 
-            return new Bivector<T>(
+            return new GaBivector<T>(
                 processor, 
                 processor.Times(
                     mv1.ScalarValue,
@@ -168,17 +168,17 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<T> Lcp<T>(this Bivector<T> mv1, Vector<T> mv2)
+        public static Scalar<T> Lcp<T>(this GaBivector<T> mv1, GaVector<T> mv2)
         {
             return mv1.GeometricProcessor.CreateScalarZero();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Vector<T> Lcp<T>(this Vector<T> mv1, Bivector<T> mv2)
+        public static GaVector<T> Lcp<T>(this GaVector<T> mv1, GaBivector<T> mv2)
         {
             var processor = mv2.GeometricProcessor;
 
-            return new Vector<T>(
+            return new GaVector<T>(
                 processor, 
                 processor.Lcp(
                     mv1.VectorStorage, 
@@ -188,7 +188,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<T> Lcp<T>(this Bivector<T> mv1, Bivector<T> mv2)
+        public static Scalar<T> Lcp<T>(this GaBivector<T> mv1, GaBivector<T> mv2)
         {
             var processor = mv1.GeometricProcessor;
 
@@ -199,17 +199,17 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<T> ELcp<T>(this Bivector<T> mv1, int mv2)
+        public static Scalar<T> ELcp<T>(this GaBivector<T> mv1, int mv2)
         {
             return mv1.GeometricProcessor.CreateScalarZero();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Bivector<T> ELcp<T>(this int mv1, Bivector<T> mv2)
+        public static GaBivector<T> ELcp<T>(this int mv1, GaBivector<T> mv2)
         {
             var processor = mv2.GeometricProcessor;
 
-            return new Bivector<T>(
+            return new GaBivector<T>(
                 processor, 
                 processor.Times(
                     processor.GetScalarFromNumber(mv1),
@@ -219,17 +219,17 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<T> ELcp<T>(this Bivector<T> mv1, uint mv2)
+        public static Scalar<T> ELcp<T>(this GaBivector<T> mv1, uint mv2)
         {
             return mv1.GeometricProcessor.CreateScalarZero();
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Bivector<T> ELcp<T>(this uint mv1, Bivector<T> mv2)
+        public static GaBivector<T> ELcp<T>(this uint mv1, GaBivector<T> mv2)
         {
             var processor = mv2.GeometricProcessor;
 
-            return new Bivector<T>(
+            return new GaBivector<T>(
                 processor, 
                 processor.Times(
                     processor.GetScalarFromNumber(mv1),
@@ -239,17 +239,17 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<T> ELcp<T>(this Bivector<T> mv1, long mv2)
+        public static Scalar<T> ELcp<T>(this GaBivector<T> mv1, long mv2)
         {
             return mv1.GeometricProcessor.CreateScalarZero();
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Bivector<T> ELcp<T>(this long mv1, Bivector<T> mv2)
+        public static GaBivector<T> ELcp<T>(this long mv1, GaBivector<T> mv2)
         {
             var processor = mv2.GeometricProcessor;
 
-            return new Bivector<T>(
+            return new GaBivector<T>(
                 processor, 
                 processor.Times(
                     processor.GetScalarFromNumber(mv1),
@@ -259,17 +259,17 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<T> ELcp<T>(this Bivector<T> mv1, ulong mv2)
+        public static Scalar<T> ELcp<T>(this GaBivector<T> mv1, ulong mv2)
         {
             return mv1.GeometricProcessor.CreateScalarZero();
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Bivector<T> ELcp<T>(this ulong mv1, Bivector<T> mv2)
+        public static GaBivector<T> ELcp<T>(this ulong mv1, GaBivector<T> mv2)
         {
             var processor = mv2.GeometricProcessor;
 
-            return new Bivector<T>(
+            return new GaBivector<T>(
                 processor, 
                 processor.Times(
                     processor.GetScalarFromNumber(mv1),
@@ -279,17 +279,17 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<T> ELcp<T>(this Bivector<T> mv1, float mv2)
+        public static Scalar<T> ELcp<T>(this GaBivector<T> mv1, float mv2)
         {
             return mv1.GeometricProcessor.CreateScalarZero();
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Bivector<T> ELcp<T>(this float mv1, Bivector<T> mv2)
+        public static GaBivector<T> ELcp<T>(this float mv1, GaBivector<T> mv2)
         {
             var processor = mv2.GeometricProcessor;
 
-            return new Bivector<T>(
+            return new GaBivector<T>(
                 processor, 
                 processor.Times(
                     processor.GetScalarFromNumber(mv1),
@@ -299,17 +299,17 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<T> ELcp<T>(this Bivector<T> mv1, double mv2)
+        public static Scalar<T> ELcp<T>(this GaBivector<T> mv1, double mv2)
         {
             return mv1.GeometricProcessor.CreateScalarZero();
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Bivector<T> ELcp<T>(this double mv1, Bivector<T> mv2)
+        public static GaBivector<T> ELcp<T>(this double mv1, GaBivector<T> mv2)
         {
             var processor = mv2.GeometricProcessor;
 
-            return new Bivector<T>(
+            return new GaBivector<T>(
                 processor, 
                 processor.Times(
                     processor.GetScalarFromNumber(mv1),
@@ -319,17 +319,17 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<T> ELcp<T>(this Bivector<T> mv1, T mv2)
+        public static Scalar<T> ELcp<T>(this GaBivector<T> mv1, T mv2)
         {
             return mv1.GeometricProcessor.CreateScalarZero();
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Bivector<T> ELcp<T>(this T mv1, Bivector<T> mv2)
+        public static GaBivector<T> ELcp<T>(this T mv1, GaBivector<T> mv2)
         {
             var processor = mv2.GeometricProcessor;
 
-            return new Bivector<T>(
+            return new GaBivector<T>(
                 processor, 
                 processor.Times(
                     mv1,
@@ -339,17 +339,17 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<T> ELcp<T>(this Bivector<T> mv1, Scalar<T> mv2)
+        public static Scalar<T> ELcp<T>(this GaBivector<T> mv1, Scalar<T> mv2)
         {
             return mv1.GeometricProcessor.CreateScalarZero();
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Bivector<T> ELcp<T>(this Scalar<T> mv1, Bivector<T> mv2)
+        public static GaBivector<T> ELcp<T>(this Scalar<T> mv1, GaBivector<T> mv2)
         {
             var processor = mv2.GeometricProcessor;
 
-            return new Bivector<T>(
+            return new GaBivector<T>(
                 processor, 
                 processor.Times(
                     mv1.ScalarValue,
@@ -359,17 +359,17 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<T> ELcp<T>(this Bivector<T> mv1, Vector<T> mv2)
+        public static Scalar<T> ELcp<T>(this GaBivector<T> mv1, GaVector<T> mv2)
         {
             return mv1.GeometricProcessor.CreateScalarZero();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Vector<T> ELcp<T>(this Vector<T> mv1, Bivector<T> mv2)
+        public static GaVector<T> ELcp<T>(this GaVector<T> mv1, GaBivector<T> mv2)
         {
             var processor = mv2.GeometricProcessor;
 
-            return new Vector<T>(
+            return new GaVector<T>(
                 processor, 
                 processor.ELcp(
                     mv1.VectorStorage, 
@@ -379,7 +379,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<T> ELcp<T>(this Bivector<T> mv1, Bivector<T> mv2)
+        public static Scalar<T> ELcp<T>(this GaBivector<T> mv1, GaBivector<T> mv2)
         {
             var processor = mv1.GeometricProcessor;
 

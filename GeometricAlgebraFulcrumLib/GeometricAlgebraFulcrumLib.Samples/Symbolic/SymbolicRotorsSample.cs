@@ -2,6 +2,7 @@
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Mathematica;
+using GeometricAlgebraFulcrumLib.Mathematica.Mathematica;
 using GeometricAlgebraFulcrumLib.Mathematica.Mathematica.ExprFactory;
 using GeometricAlgebraFulcrumLib.Mathematica.Processors;
 using GeometricAlgebraFulcrumLib.Mathematica.Text;
@@ -22,7 +23,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic
         // Create a 6-dimensional Euclidean geometric algebra processor based on the
         // selected scalar processor
         public static GeometricAlgebraEuclideanProcessor<Expr> GeometricProcessor { get; } 
-            = ScalarProcessor.CreateGeometricAlgebraEuclideanProcessor(5);
+            = ScalarProcessor.CreateGeometricAlgebraEuclideanProcessor(3);
 
         // This is a pre-defined text generator for displaying multivectors
         // with symbolic Wolfram Mathematica scalars using Expr objects
@@ -35,17 +36,17 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic
             = LaTeXMathematicaComposer.DefaultComposer;
 
 
-        private static Vector<Expr> CreateVector3D(string name, string subscript)
+        private static GaVector<Expr> CreateVector3D(string name, string subscript)
         {
             return CreateVector(name, subscript, 3);
         }
 
-        private static Vector<Expr> CreateVector3D(string name)
+        private static GaVector<Expr> CreateVector3D(string name)
         {
             return CreateVector(name, 3);
         }
 
-        private static Vector<Expr> CreateVector(string name, string subscript, int termsCount)
+        private static GaVector<Expr> CreateVector(string name, string subscript, int termsCount)
         {
             var vector =
                 $"Subscript[{name},{subscript}1]".ToExpr() * GeometricProcessor.CreateVectorBasis(0);
@@ -56,7 +57,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic
             return vector;
         }
 
-        private static Vector<Expr> CreateVector(string name, int termsCount)
+        private static GaVector<Expr> CreateVector(string name, int termsCount)
         {
             var vector =
                 $"Subscript[{name},1]".ToExpr() * GeometricProcessor.CreateVectorBasis(0);
@@ -200,24 +201,24 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic
             var pseudoScalar = e1.Gp(e2).Gp(e3).GetKVectorPart(3);
             var pseudoScalarInverse = pseudoScalar.Inverse();
 
-            var v1 = 
-                "Subscript[v,11]".ToExpr() * e1 +
-                "Subscript[v,12]".ToExpr() * e2 +
-                "Subscript[v,13]".ToExpr() * e3;
+            var u = 
+                "Subscript[u,1]".ToExpr() * e1 +
+                "Subscript[u,2]".ToExpr() * e2 +
+                "Subscript[u,3]".ToExpr() * e3;
 
-            var v2 = 
-                "Subscript[v,21]".ToExpr() * e1 +
-                "Subscript[v,22]".ToExpr() * e2 +
-                "Subscript[v,23]".ToExpr() * e3;
+            var v = 
+                "Subscript[v,1]".ToExpr() * e1 +
+                "Subscript[v,2]".ToExpr() * e2 +
+                "Subscript[v,3]".ToExpr() * e3;
 
             // Rotation angle
             var angle = 
-                v1.ESp(v2).ArcCos().ScalarValue;
+                u.ESp(v).ArcCos();
 
             // Compute the rotor from the angle and 2-blade of rotation
             var rotor = GeometricProcessor.CreatePureRotor(
-                v1, 
-                v2, 
+                u, 
+                v, 
                 true
             );
 
@@ -229,7 +230,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic
 
             // Make sure v1 rotates into v2
             var diff1 = 
-                (rotor.OmMap(v1) - v2).VectorStorage.FullSimplifyScalars();
+                (rotor.OmMap(u) - v).FullSimplifyScalars();
 
             // Make sure the eigen vector and eigen 2-blade of rotation are correct
             var diff2 = rotor.OmMap(rotationAxis) - rotationAxis;
@@ -257,8 +258,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic
             // correctly into the projection of b on the rotation 2-blade
             var diff5 = rotor.OmMap(pa) - pb;
 
-            Console.WriteLine($@"first vector  $v_1 = {LaTeXComposer.GetMultivectorText(v1)}$");
-            Console.WriteLine($@"second vector $v_2 = {LaTeXComposer.GetMultivectorText(v2)}$");
+            Console.WriteLine($@"first vector  $v_1 = {LaTeXComposer.GetMultivectorText(u)}$");
+            Console.WriteLine($@"second vector $v_2 = {LaTeXComposer.GetMultivectorText(v)}$");
             Console.WriteLine($@"Rotor $R = {LaTeXComposer.GetMultivectorText(rotor)}$");
             Console.WriteLine($@"Rotation Axis $v = {LaTeXComposer.GetMultivectorText(rotationAxis)}$");
             Console.WriteLine($@"Rotation Blade $B = {LaTeXComposer.GetMultivectorText(rotationBlade)}$");
@@ -630,5 +631,76 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic
             Console.WriteLine($@"$-N^2 = {LaTeXComposer.GetScalarText(nNormSquared)}$");
             Console.WriteLine();
         }
+        
+        /// <summary>
+        /// Define rotors in 3D that rotate unit basis vectors to a given unit vector
+        /// </summary>
+        public static void Example11()
+        {
+            LaTeXComposer.BasisName = @"\boldsymbol{e}";
+        
+            var assumeExpr = 
+                $@"And[Element[Subscript[v,1] | Subscript[v,2] | Subscript[v,3], Reals], Subscript[v,1]^2 + Subscript[v,2]^2 + Subscript[v,3]^2 == 1]".ToExpr();
+
+            MathematicaInterface.DefaultCas.SetGlobalAssumptions(assumeExpr);
+
+            ScalarProcessor.SimplificationFunc =
+                expr => expr.FullSimplify();
+
+            var e1 = GeometricProcessor.CreateVectorBasis(0);
+            var e2 = GeometricProcessor.CreateVectorBasis(1);
+            var e3 = GeometricProcessor.CreateVectorBasis(2);
+            var pseudoScalar = e1.Gp(e2).Gp(e3).GetKVectorPart(3);
+            var pseudoScalarInverse = pseudoScalar.Inverse();
+
+            var uVectors = new[]
+            {
+                e1, -e1, e2, -e2, e3, -e3
+            };
+
+            var v = 
+                "Subscript[v,1]".ToExpr() * e1 +
+                "Subscript[v,2]".ToExpr() * e2 +
+                "Subscript[v,3]".ToExpr() * e3;
+
+            foreach (var u in uVectors)
+            {
+                // Compute the rotor from the angle and 2-blade of rotation
+                var rotor = GeometricProcessor.CreatePureRotor(
+                    u, 
+                    v, 
+                    true
+                );
+
+                var matrix = rotor.GetVectorOmMappingMatrix();
+
+                // Create a general vector a and find its rotation b using rotor
+                var a = 
+                    "Subscript[a,1]".ToExpr() * e1 +
+                    "Subscript[a,2]".ToExpr() * e2 +
+                    "Subscript[a,3]".ToExpr() * e3;
+
+                var b = rotor.OmMap(a);
+
+                Console.WriteLine($@"$u = {LaTeXComposer.GetMultivectorText(u)}$");
+                Console.WriteLine();
+
+                Console.WriteLine($@"$v = {LaTeXComposer.GetMultivectorText(v)}$");
+                Console.WriteLine();
+
+                Console.WriteLine($@"$R = {LaTeXComposer.GetMultivectorText(rotor)}$");
+                Console.WriteLine();
+
+                Console.WriteLine($@"$M = {LaTeXComposer.GetArrayText(matrix)}$");
+                Console.WriteLine();
+
+                Console.WriteLine($@"$a = {LaTeXComposer.GetMultivectorText(a)}$");
+                Console.WriteLine();
+
+                Console.WriteLine($@"$b = R a R^\dagger = {LaTeXComposer.GetMultivectorText(b)}$");
+                Console.WriteLine();
+            }
+        }
+
     }
 }

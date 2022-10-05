@@ -1,7 +1,8 @@
 ﻿using System;
-using System.Drawing;
+
 using NumericalGeometryLib.BasicMath.Tuples;
 using GraphicsComposerLib.Geometry.Primitives.Vertices;
+using SixLabors.ImageSharp;
 
 namespace GraphicsComposerLib.Geometry.Structures.Faces
 {

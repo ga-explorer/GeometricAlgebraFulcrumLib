@@ -1,6 +1,6 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.CodeComposer.Applications.CSharp.DenseKVectorsLib;
-using GeometricAlgebraFulcrumLib.Processors.SymbolicAlgebra.Context;
+using GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKVectorsLib;
+using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
 using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
 namespace GeometricAlgebraFulcrumLib.Samples.CodeComposer
@@ -13,7 +13,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.CodeComposer
             //    GeoLibraryComposer.GenerateCode(4);
 
             var processor = 
-                new SymbolicContext().AttachGeometricAlgebraEuclideanProcessor(3);
+                new MetaContext().CreateGeometricAlgebraEuclideanProcessor(3);
 
             var codeComposer = 
                 GaFuLLibraryComposer.Generate("Euclidean3D", processor, false);

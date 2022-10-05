@@ -15,19 +15,19 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
     {
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivector<T>(this IGeometricAlgebraProcessor<T> processor, IMultivectorStorage<T> storage)
+        public static GaMultivector<T> CreateMultivector<T>(this IGeometricAlgebraProcessor<T> processor, IMultivectorStorage<T> storage)
         {
-            return new Multivector<T>(processor, storage);
+            return new GaMultivector<T>(processor, storage);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivector<T>(this IMultivectorStorage<T> storage, IGeometricAlgebraProcessor<T> processor)
+        public static GaMultivector<T> CreateMultivector<T>(this IMultivectorStorage<T> storage, IGeometricAlgebraProcessor<T> processor)
         {
-            return new Multivector<T>(processor, storage);
+            return new GaMultivector<T>(processor, storage);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorSparse<T>(this Dictionary<ulong, T> idScalarDictionary, IGeometricAlgebraProcessor<T> processor)
+        public static GaMultivector<T> CreateMultivectorSparse<T>(this Dictionary<ulong, T> idScalarDictionary, IGeometricAlgebraProcessor<T> processor)
         {
             return processor
                 .CreateMultivectorStorageSparse(idScalarDictionary)
@@ -35,25 +35,25 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorGraded<T>(this IGeometricAlgebraProcessor<T> processor, Dictionary<uint, Dictionary<ulong, T>> gradeIndexScalarDictionary)
+        public static GaMultivector<T> CreateMultivectorGraded<T>(this IGeometricAlgebraProcessor<T> processor, Dictionary<uint, Dictionary<ulong, T>> gradeIndexScalarDictionary)
         {
-            return new Multivector<T>(
+            return new GaMultivector<T>(
                 processor, 
                 processor.CreateMultivectorStorageGraded(gradeIndexScalarDictionary)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorGraded<T>(this Dictionary<uint, Dictionary<ulong, T>> gradeIndexScalarDictionary, IGeometricAlgebraProcessor<T> processor)
+        public static GaMultivector<T> CreateMultivectorGraded<T>(this Dictionary<uint, Dictionary<ulong, T>> gradeIndexScalarDictionary, IGeometricAlgebraProcessor<T> processor)
         {
-            return new Multivector<T>(
+            return new GaMultivector<T>(
                 processor, 
                 processor.CreateMultivectorStorageGraded(gradeIndexScalarDictionary)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, IEnumerable<IndexScalarRecord<T>> idScalarRecords, bool sumFlag)
+        public static GaMultivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, IEnumerable<IndexScalarRecord<T>> idScalarRecords, bool sumFlag)
         {
             return sumFlag
                 ? processor.SumToMultivectorStorageSparse(idScalarRecords).CreateMultivector(processor)
@@ -61,7 +61,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorSparse<T>(this IEnumerable<IndexScalarRecord<T>> idScalarRecords, IGeometricAlgebraProcessor<T> processor, bool sumFlag = false)
+        public static GaMultivector<T> CreateMultivectorSparse<T>(this IEnumerable<IndexScalarRecord<T>> idScalarRecords, IGeometricAlgebraProcessor<T> processor, bool sumFlag = false)
         {
             return sumFlag
                 ? processor.SumToMultivectorStorageSparse(idScalarRecords).CreateMultivector(processor)
@@ -69,7 +69,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorGraded<T>(this IGeometricAlgebraProcessor<T> processor, IEnumerable<IndexScalarRecord<T>> idScalarRecords, bool sumFlag = false)
+        public static GaMultivector<T> CreateMultivectorGraded<T>(this IGeometricAlgebraProcessor<T> processor, IEnumerable<IndexScalarRecord<T>> idScalarRecords, bool sumFlag = false)
         {
             return sumFlag
                 ? processor.SumToMultivectorStorageSparse(idScalarRecords).CreateMultivector(processor)
@@ -77,7 +77,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorGraded<T>(this IEnumerable<IndexScalarRecord<T>> idScalarRecords, IGeometricAlgebraProcessor<T> processor, bool sumFlag = false)
+        public static GaMultivector<T> CreateMultivectorGraded<T>(this IEnumerable<IndexScalarRecord<T>> idScalarRecords, IGeometricAlgebraProcessor<T> processor, bool sumFlag = false)
         {
             return sumFlag
                 ? processor.SumToMultivectorStorageSparse(idScalarRecords).CreateMultivector(processor)
@@ -85,7 +85,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorGraded<T>(this IGeometricAlgebraProcessor<T> processor, IEnumerable<GradeIndexScalarRecord<T>> gradeIndexScalarRecords, bool sumFlag = false)
+        public static GaMultivector<T> CreateMultivectorGraded<T>(this IGeometricAlgebraProcessor<T> processor, IEnumerable<GradeIndexScalarRecord<T>> gradeIndexScalarRecords, bool sumFlag = false)
         {
             return sumFlag
                 ? processor.SumToMultivectorStorageGraded(gradeIndexScalarRecords).CreateMultivector(processor)
@@ -93,7 +93,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorGraded<T>(this IEnumerable<GradeIndexScalarRecord<T>> gradeIndexScalarRecords, IGeometricAlgebraProcessor<T> processor, bool sumFlag = false)
+        public static GaMultivector<T> CreateMultivectorGraded<T>(this IEnumerable<GradeIndexScalarRecord<T>> gradeIndexScalarRecords, IGeometricAlgebraProcessor<T> processor, bool sumFlag = false)
         {
             var storage = sumFlag
                 ? processor.SumToMultivectorStorageGraded(gradeIndexScalarRecords)
@@ -103,7 +103,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivector<T>(this IGeometricAlgebraProcessor<T> processor, ILinVectorStorage<T> idScalarList)
+        public static GaMultivector<T> CreateMultivector<T>(this IGeometricAlgebraProcessor<T> processor, ILinVectorStorage<T> idScalarList)
         {
             return idScalarList
                 .CreateMultivectorStorageSparse()
@@ -112,7 +112,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CopyToMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, IReadOnlyDictionary<ulong, T> idScalarDictionary)
+        public static GaMultivector<T> CopyToMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, IReadOnlyDictionary<ulong, T> idScalarDictionary)
         {
             return idScalarDictionary
                 .CopyToMultivectorStorageSparse()
@@ -121,7 +121,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateToMultivectorSparseZero<T>(this IGeometricAlgebraProcessor<T> processor)
+        public static GaMultivector<T> CreateToMultivectorSparseZero<T>(this IGeometricAlgebraProcessor<T> processor)
         {
             return processor
                 .CreateToMultivectorStorageSparseZero()
@@ -129,7 +129,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorSparseTerm<T>(this IGeometricAlgebraProcessor<T> processor, int index, T scalar)
+        public static GaMultivector<T> CreateMultivectorSparseTerm<T>(this IGeometricAlgebraProcessor<T> processor, int index, T scalar)
         {
             return processor
                 .CreateMultivectorStorageSparseTerm(index, scalar)
@@ -137,7 +137,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorSparseTerm<T>(this IGeometricAlgebraProcessor<T> processor, IndexScalarRecord<T> idScalarPair)
+        public static GaMultivector<T> CreateMultivectorSparseTerm<T>(this IGeometricAlgebraProcessor<T> processor, IndexScalarRecord<T> idScalarPair)
         {
             return processor
                 .CreateMultivectorStorageSparseTerm(idScalarPair)
@@ -145,7 +145,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorSparseBasis<T>(this IGeometricAlgebraProcessor<T> processor, int index)
+        public static GaMultivector<T> CreateMultivectorSparseBasis<T>(this IGeometricAlgebraProcessor<T> processor, int index)
         {
             return processor
                 .CreateMultivectorStorageSparseBasis(index)
@@ -153,7 +153,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorSparseBasis<T>(this IGeometricAlgebraProcessor<T> processor, ulong index)
+        public static GaMultivector<T> CreateMultivectorSparseBasis<T>(this IGeometricAlgebraProcessor<T> processor, ulong index)
         {
             return processor
                 .CreateMultivectorStorageSparseBasis(index)
@@ -161,7 +161,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, IReadOnlyList<T> scalarList)
+        public static GaMultivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, IReadOnlyList<T> scalarList)
         {
             return processor
                 .CreateMultivectorStorageSparse(scalarList)
@@ -169,7 +169,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, IEnumerable<BasisTerm<T>> termsList)
+        public static GaMultivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, IEnumerable<BasisTerm<T>> termsList)
         {
             return processor
                 .CreateMultivectorStorageSparse(termsList)
@@ -178,7 +178,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, ILinVectorStorage<T> storage)
+        public static GaMultivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, ILinVectorStorage<T> storage)
         {
             return processor
                 .CreateMultivectorStorageSparse(storage)
@@ -186,7 +186,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, ILinVectorGradedStorage<T> storage)
+        public static GaMultivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, ILinVectorGradedStorage<T> storage)
         {
             return processor
                 .CreateMultivectorStorageSparse(storage)
@@ -195,7 +195,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, IReadOnlyDictionary<ulong, int> idScalarDictionary)
+        public static GaMultivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, IReadOnlyDictionary<ulong, int> idScalarDictionary)
         {
             return processor
                 .CreateMultivectorStorageSparse(idScalarDictionary)
@@ -203,7 +203,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, int termsCount, Func<ulong, int> indexToScalarFunc)
+        public static GaMultivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, int termsCount, Func<ulong, int> indexToScalarFunc)
         {
             return processor
                 .CreateMultivectorStorageSparse(indexToScalarFunc)
@@ -211,7 +211,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, params int[] scalarArray)
+        public static GaMultivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, params int[] scalarArray)
         {
             return processor
                 .CreateMultivectorStorageSparse(scalarArray)
@@ -219,7 +219,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, IEnumerable<int> scalarList)
+        public static GaMultivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, IEnumerable<int> scalarList)
         {
             return processor
                 .CreateMultivectorStorageSparse(scalarList)
@@ -228,7 +228,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, IReadOnlyDictionary<ulong, uint> idScalarDictionary)
+        public static GaMultivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, IReadOnlyDictionary<ulong, uint> idScalarDictionary)
         {
             return processor
                 .CreateMultivectorStorageSparse(idScalarDictionary)
@@ -236,7 +236,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, int termsCount, Func<ulong, uint> indexToScalarFunc)
+        public static GaMultivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, int termsCount, Func<ulong, uint> indexToScalarFunc)
         {
             return processor
                 .CreateMultivectorStorageSparse(indexToScalarFunc)
@@ -244,7 +244,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, params uint[] scalarArray)
+        public static GaMultivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, params uint[] scalarArray)
         {
             return processor
                 .CreateMultivectorStorageSparse(scalarArray)
@@ -252,7 +252,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, IEnumerable<uint> scalarList)
+        public static GaMultivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, IEnumerable<uint> scalarList)
         {
             return processor
                 .CreateMultivectorStorageSparse(scalarList)
@@ -261,7 +261,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, IReadOnlyDictionary<ulong, long> idScalarDictionary)
+        public static GaMultivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, IReadOnlyDictionary<ulong, long> idScalarDictionary)
         {
             return processor
                 .CreateMultivectorStorageSparse(idScalarDictionary)
@@ -269,7 +269,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, int termsCount, Func<ulong, long> indexToScalarFunc)
+        public static GaMultivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, int termsCount, Func<ulong, long> indexToScalarFunc)
         {
             return processor
                 .CreateMultivectorStorageSparse(termsCount, indexToScalarFunc)
@@ -277,7 +277,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, params long[] scalarArray)
+        public static GaMultivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, params long[] scalarArray)
         {
             return processor
                 .CreateMultivectorStorageSparse(scalarArray)
@@ -285,7 +285,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, IEnumerable<long> scalarList)
+        public static GaMultivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, IEnumerable<long> scalarList)
         {
             return processor
                 .CreateMultivectorStorageSparse(scalarList)
@@ -294,7 +294,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, IReadOnlyDictionary<ulong, ulong> idScalarDictionary)
+        public static GaMultivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, IReadOnlyDictionary<ulong, ulong> idScalarDictionary)
         {
             return processor
                 .CreateMultivectorStorageSparse(idScalarDictionary)
@@ -302,7 +302,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, int termsCount, Func<ulong, ulong> indexToScalarFunc)
+        public static GaMultivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, int termsCount, Func<ulong, ulong> indexToScalarFunc)
         {
             return processor
                 .CreateMultivectorStorageSparse(termsCount, indexToScalarFunc)
@@ -310,7 +310,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, params ulong[] scalarArray)
+        public static GaMultivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, params ulong[] scalarArray)
         {
             return processor
                 .CreateMultivectorStorageSparse(scalarArray)
@@ -318,7 +318,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, IEnumerable<ulong> scalarList)
+        public static GaMultivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, IEnumerable<ulong> scalarList)
         {
             return processor
                 .CreateMultivectorStorageSparse(scalarList)
@@ -327,7 +327,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, IReadOnlyDictionary<ulong, float> idScalarDictionary)
+        public static GaMultivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, IReadOnlyDictionary<ulong, float> idScalarDictionary)
         {
             return processor
                 .CreateMultivectorStorageSparse(idScalarDictionary)
@@ -335,7 +335,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, int termsCount, Func<ulong, float> indexToScalarFunc)
+        public static GaMultivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, int termsCount, Func<ulong, float> indexToScalarFunc)
         {
             return processor
                 .CreateMultivectorStorageSparse(indexToScalarFunc)
@@ -343,7 +343,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, params float[] scalarArray)
+        public static GaMultivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, params float[] scalarArray)
         {
             return processor
                 .CreateMultivectorStorageSparse(scalarArray)
@@ -351,7 +351,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, IEnumerable<float> scalarList)
+        public static GaMultivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, IEnumerable<float> scalarList)
         {
             return processor
                 .CreateMultivectorStorageSparse(scalarList)
@@ -360,7 +360,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
 
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, IReadOnlyDictionary<ulong, double> idScalarDictionary)
+        public static GaMultivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, IReadOnlyDictionary<ulong, double> idScalarDictionary)
         {
             return processor
                 .CreateMultivectorStorageSparse(idScalarDictionary)
@@ -368,7 +368,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, int termsCount, Func<ulong, double> indexToScalarFunc)
+        public static GaMultivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, int termsCount, Func<ulong, double> indexToScalarFunc)
         {
             return processor
                 .CreateMultivectorStorageSparse(termsCount, indexToScalarFunc)
@@ -376,7 +376,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, params double[] scalarArray)
+        public static GaMultivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, params double[] scalarArray)
         {
             return processor
                 .CreateMultivectorStorageSparse(scalarArray)
@@ -384,7 +384,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, IEnumerable<double> scalarList)
+        public static GaMultivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, IEnumerable<double> scalarList)
         {
             return processor
                 .CreateMultivectorStorageSparse(scalarList)
@@ -393,7 +393,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, IReadOnlyDictionary<ulong, string> idScalarDictionary)
+        public static GaMultivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, IReadOnlyDictionary<ulong, string> idScalarDictionary)
         {
             return processor
                 .CreateMultivectorStorageSparse(idScalarDictionary)
@@ -401,7 +401,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, int termsCount, Func<ulong, string> indexToScalarFunc)
+        public static GaMultivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, int termsCount, Func<ulong, string> indexToScalarFunc)
         {
             return processor
                 .CreateMultivectorStorageSparse(termsCount, indexToScalarFunc)
@@ -409,7 +409,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, uint termsCount, Func<ulong, string> indexToScalarFunc)
+        public static GaMultivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, uint termsCount, Func<ulong, string> indexToScalarFunc)
         {
             return processor
                 .CreateMultivectorStorageSparse(termsCount, indexToScalarFunc)
@@ -417,7 +417,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, params string[] scalarArray)
+        public static GaMultivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, params string[] scalarArray)
         {
             return processor
                 .CreateMultivectorStorageSparse(scalarArray)
@@ -425,7 +425,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, IEnumerable<string> scalarList)
+        public static GaMultivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, IEnumerable<string> scalarList)
         {
             return processor
                 .CreateMultivectorStorageSparse(scalarList)
@@ -434,7 +434,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, IReadOnlyDictionary<ulong, object> idScalarDictionary)
+        public static GaMultivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, IReadOnlyDictionary<ulong, object> idScalarDictionary)
         {
             return processor
                 .CreateMultivectorStorageSparse(idScalarDictionary)
@@ -442,7 +442,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, int termsCount, Func<ulong, object> indexToScalarFunc)
+        public static GaMultivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, int termsCount, Func<ulong, object> indexToScalarFunc)
         {
             return processor
                 .CreateMultivectorStorageSparse(indexToScalarFunc)
@@ -450,7 +450,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, params object[] scalarArray)
+        public static GaMultivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, params object[] scalarArray)
         {
             return processor
                 .CreateMultivectorStorageSparse(scalarArray)
@@ -458,7 +458,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, IEnumerable<object> scalarList)
+        public static GaMultivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, IEnumerable<object> scalarList)
         {
             return processor
                 .CreateMultivectorStorageSparse(scalarList)
@@ -467,7 +467,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, Dictionary<ulong, T> idScalarDictionary)
+        public static GaMultivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, Dictionary<ulong, T> idScalarDictionary)
         {
             return processor
                 .CreateMultivectorStorageSparse(idScalarDictionary)
@@ -475,7 +475,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, int termsCount, Func<ulong, T> indexToScalarFunc)
+        public static GaMultivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, int termsCount, Func<ulong, T> indexToScalarFunc)
         {
             return processor
                 .CreateMultivectorStorageSparse(indexToScalarFunc)
@@ -483,7 +483,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, uint termsCount, Func<ulong, T> indexToScalarFunc)
+        public static GaMultivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, uint termsCount, Func<ulong, T> indexToScalarFunc)
         {
             return processor
                 .CreateMultivectorStorageSparse(termsCount, indexToScalarFunc)
@@ -491,7 +491,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, params T[] scalarArray)
+        public static GaMultivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, params T[] scalarArray)
         {
             return processor
                 .CreateMultivectorStorageSparse(scalarArray)
@@ -499,7 +499,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, IEnumerable<T> scalarList)
+        public static GaMultivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, IEnumerable<T> scalarList)
         {
             return processor
                 .CreateMultivectorStorageSparse(scalarList)
@@ -508,7 +508,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorSparseZero<T>(this IGeometricAlgebraProcessor<T> processor)
+        public static GaMultivector<T> CreateMultivectorSparseZero<T>(this IGeometricAlgebraProcessor<T> processor)
         {
             return processor
                 .CreateMultivectorStorageSparseZero()
@@ -516,7 +516,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorSparseRepeatedScalar<T>(this IGeometricAlgebraProcessor<T> processor, int count, T value)
+        public static GaMultivector<T> CreateMultivectorSparseRepeatedScalar<T>(this IGeometricAlgebraProcessor<T> processor, int count, T value)
         {
             return processor
                 .CreateMultivectorStorageSparseRepeatedScalar(count, value)
@@ -524,7 +524,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorSparseTerm<T>(this IGeometricAlgebraProcessor<T> processor, T value)
+        public static GaMultivector<T> CreateMultivectorSparseTerm<T>(this IGeometricAlgebraProcessor<T> processor, T value)
         {
             return processor
                 .CreateMultivectorStorageSparseTerm(value)
@@ -532,7 +532,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorSparseTerm<T>(this IGeometricAlgebraProcessor<T> processor, ulong index, T value)
+        public static GaMultivector<T> CreateMultivectorSparseTerm<T>(this IGeometricAlgebraProcessor<T> processor, ulong index, T value)
         {
             return processor
                 .CreateMultivectorStorageSparseTerm(value)
@@ -540,7 +540,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, IEnumerable<IndexScalarRecord<T>> idScalarRecords)
+        public static GaMultivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, IEnumerable<IndexScalarRecord<T>> idScalarRecords)
         {
             return processor
                 .CreateMultivectorStorageSparse(idScalarRecords)
@@ -549,7 +549,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
 
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorSparse2D<T>(this IGeometricAlgebraProcessor<T> processor, float scalar0, float scalar1, float scalar2, float scalar12)
+        public static GaMultivector<T> CreateMultivectorSparse2D<T>(this IGeometricAlgebraProcessor<T> processor, float scalar0, float scalar1, float scalar2, float scalar12)
         {
             var idScalarDictionary = new Dictionary<ulong, T>()
             {
@@ -565,7 +565,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorSparse2D<T>(this IGeometricAlgebraProcessor<T> processor, double scalar0, double scalar1, double scalar2, double scalar12)
+        public static GaMultivector<T> CreateMultivectorSparse2D<T>(this IGeometricAlgebraProcessor<T> processor, double scalar0, double scalar1, double scalar2, double scalar12)
         {
             var idScalarDictionary = new Dictionary<ulong, T>()
             {
@@ -581,7 +581,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorSparse2D<T>(this IGeometricAlgebraProcessor<T> processor, object scalar0, object scalar1, object scalar2, object scalar12)
+        public static GaMultivector<T> CreateMultivectorSparse2D<T>(this IGeometricAlgebraProcessor<T> processor, object scalar0, object scalar1, object scalar2, object scalar12)
         {
             var idScalarDictionary = new Dictionary<ulong, T>()
             {
@@ -597,7 +597,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorSparse2D<T>(this IGeometricAlgebraProcessor<T> processor, string scalar0, string scalar1, string scalar2, string scalar12)
+        public static GaMultivector<T> CreateMultivectorSparse2D<T>(this IGeometricAlgebraProcessor<T> processor, string scalar0, string scalar1, string scalar2, string scalar12)
         {
             var idScalarDictionary = new Dictionary<ulong, T>()
             {
@@ -613,7 +613,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorSparse2D<T>(this IGeometricAlgebraProcessor<T> processor, T scalar0, T scalar1, T scalar2, T scalar12)
+        public static GaMultivector<T> CreateMultivectorSparse2D<T>(this IGeometricAlgebraProcessor<T> processor, T scalar0, T scalar1, T scalar2, T scalar12)
         {
             var idScalarDictionary = new Dictionary<ulong, T>()
             {
@@ -630,7 +630,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, IEnumerable<GradeIndexScalarRecord<T>> termsList)
+        public static GaMultivector<T> CreateMultivectorSparse<T>(this IGeometricAlgebraProcessor<T> processor, IEnumerable<GradeIndexScalarRecord<T>> termsList)
         {
             return processor
                 .CreateMultivectorStorageSparse(termsList)
@@ -639,7 +639,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Multivector<T> CreateMultivector2D<T>(this IGeometricAlgebraProcessor<T> processor, T scalar0, T scalar1, T scalar2, T scalar12)
+        public static GaMultivector<T> CreateMultivector2D<T>(this IGeometricAlgebraProcessor<T> processor, T scalar0, T scalar1, T scalar2, T scalar12)
         {
             return processor
                 .CreateMultivectorStorageSparse2D(scalar0, scalar1, scalar2, scalar12)

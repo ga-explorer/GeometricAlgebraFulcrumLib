@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using DataStructuresLib.Basic;
 
 namespace NumericalGeometryLib.BasicMath.Tuples.Immutable
 {
@@ -100,7 +101,7 @@ namespace NumericalGeometryLib.BasicMath.Tuples.Immutable
         {
             get
             {
-                Debug.Assert(index == 0 || index == 1);
+                Debug.Assert(index is 0 or 1);
 
                 return index switch
                 {
@@ -123,19 +124,25 @@ namespace NumericalGeometryLib.BasicMath.Tuples.Immutable
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Tuple2D(double x, double y)
         {
+            Debug.Assert(
+                x.IsNotNaN() &&
+                y.IsNotNaN()
+            );
+
             X = x;
             Y = y;
-
-            Debug.Assert(IsValid());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple2D(ITuple2D tuple)
+        public Tuple2D(IPair<double> tuple)
         {
-            X = tuple.X;
-            Y = tuple.Y;
+            Debug.Assert(
+                tuple.Item1.IsNotNaN() &&
+                tuple.Item2.IsNotNaN()
+            );
 
-            Debug.Assert(IsValid());
+            X = tuple.Item1;
+            Y = tuple.Item2;
         }
 
 

@@ -14,12 +14,10 @@ namespace DataStructuresLib.SimpleTree
         /// <param name="filePath"></param>
         public static void SaveToFile<TLeaf>(this SimpleTreeNode<TLeaf> treeNode, string filePath)
         {
-            using (var stream = File.Open(filePath, FileMode.Create, FileAccess.Write))
-            {
-                var formatter = new BinaryFormatter();
+            using var stream = File.Open(filePath, FileMode.Create, FileAccess.Write);
+            var formatter = new BinaryFormatter();
 
-                formatter.Serialize(stream, treeNode);
-            }
+            formatter.Serialize(stream, treeNode);
         }
 
         /// <summary>
@@ -32,12 +30,10 @@ namespace DataStructuresLib.SimpleTree
         {
             SimpleTreeNode<TLeaf> treeNode;
 
-            using (Stream stream = File.Open(filePath, FileMode.Open, FileAccess.Read))
-            {
-                var formatter = new BinaryFormatter();
+            using Stream stream = File.Open(filePath, FileMode.Open, FileAccess.Read);
+            var formatter = new BinaryFormatter();
 
-                treeNode = (SimpleTreeNode<TLeaf>)formatter.Deserialize(stream);
-            }
+            treeNode = (SimpleTreeNode<TLeaf>)formatter.Deserialize(stream);
 
             return treeNode;
         }

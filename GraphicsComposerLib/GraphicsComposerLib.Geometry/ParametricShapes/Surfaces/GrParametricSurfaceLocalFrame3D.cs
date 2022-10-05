@@ -1,11 +1,12 @@
 ﻿using System.Diagnostics;
-using System.Drawing;
+
 using DataStructuresLib.Basic;
 using NumericalGeometryLib.BasicMath;
 using NumericalGeometryLib.BasicMath.Tuples;
 using NumericalGeometryLib.BasicMath.Tuples.Immutable;
 using GraphicsComposerLib.Geometry.Primitives.Vertices;
 using GraphicsComposerLib.Geometry.Structures.Vertices;
+using SixLabors.ImageSharp;
 
 namespace GraphicsComposerLib.Geometry.ParametricShapes.Surfaces
 {

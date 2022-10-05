@@ -19,10 +19,10 @@ namespace GeometricAlgebraFulcrumLib.Samples.Storage
         private static readonly IGeometricAlgebraEuclideanProcessor<double> Processor
             = ScalarAlgebraFloat64Processor.DefaultProcessor.CreateGeometricAlgebraEuclideanProcessor(5);
 
-        private static readonly List<Multivector<double>> sList1 
+        private static readonly List<GaMultivector<double>> sList1 
             = new();
 
-        private static readonly List<Multivector<double>> sList2 
+        private static readonly List<GaMultivector<double>> sList2 
             = new();
 
         private static double _scalar
@@ -118,7 +118,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Storage
             }
         }
 
-        private static Func<Multivector<double>, Multivector<double>, Multivector<double>> GetBinaryOperationFunction(string funcName)
+        private static Func<GaMultivector<double>, GaMultivector<double>, GaMultivector<double>> GetBinaryOperationFunction(string funcName)
         {
             return funcName switch
             {

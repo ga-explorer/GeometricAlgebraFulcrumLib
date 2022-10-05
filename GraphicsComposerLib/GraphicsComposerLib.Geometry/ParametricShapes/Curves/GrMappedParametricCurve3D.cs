@@ -7,14 +7,14 @@ using NumericalGeometryLib.BasicMath.Tuples.Immutable;
 namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves
 {
     public class GrMappedParametricCurve3D :
-        IGraphicsParametricCurve3D
+        IGraphicsC1ParametricCurve3D
     {
-        public IGraphicsParametricCurve3D BaseCurve { get; }
+        public IGraphicsC1ParametricCurve3D BaseCurve { get; }
 
         public IAffineMap3D Map { get; }
 
 
-        public GrMappedParametricCurve3D([NotNull] IGraphicsParametricCurve3D baseCurve, [NotNull] IAffineMap3D map)
+        public GrMappedParametricCurve3D([NotNull] IGraphicsC1ParametricCurve3D baseCurve, [NotNull] IAffineMap3D map)
         {
             BaseCurve = baseCurve;
             Map = map;

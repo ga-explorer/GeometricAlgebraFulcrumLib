@@ -1,10 +1,11 @@
 ﻿using System;
-using System.Drawing;
 using NumericalGeometryLib.BasicMath.Tuples;
 using NumericalGeometryLib.BasicMath.Tuples.Immutable;
 using GraphicsComposerLib.Geometry.SdfShapes.Operations;
 using GraphicsComposerLib.Geometry.SdfShapes.Primitives;
 using GraphicsComposerLib.Geometry.SdfShapes.Transforms;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
 
 namespace GraphicsComposerLib.Geometry.SdfShapes
 {
@@ -12,19 +13,21 @@ namespace GraphicsComposerLib.Geometry.SdfShapes
     {
         public static Tuple3D ToTuple3D(this Color color)
         {
+            var c = color.ToPixel<Rgb24>();
+
             return new Tuple3D(
-                color.R / 255.0d,
-                color.G / 255.0d,
-                color.B / 255.0d
+                c.R / 255.0d,
+                c.G / 255.0d,
+                c.B / 255.0d
             );
         }
 
         public static Color ToColor(this ITuple3D colorVector)
         {
-            return Color.FromArgb(
-                (int)(colorVector.X.ClampToUnit() * 255),
-                (int)(colorVector.Y.ClampToUnit() * 255),
-                (int)(colorVector.Z.ClampToUnit() * 255)
+            return Color.FromRgb(
+                (byte) (colorVector.X.ClampToUnit() * 255),
+                (byte) (colorVector.Y.ClampToUnit() * 255),
+                (byte) (colorVector.Z.ClampToUnit() * 255)
             );
         }
 

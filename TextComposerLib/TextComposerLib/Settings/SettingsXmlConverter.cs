@@ -267,12 +267,10 @@ namespace TextComposerLib.Settings
         {
             var xdoc = SettingsToXDocument(settings);
 
-            using (var text = new StringWriter())
-            {
-                xdoc.Save(text);
+            using var text = new StringWriter();
+            xdoc.Save(text);
 
-                return text.ToString();
-            }
+            return text.ToString();
         }
     }
 }

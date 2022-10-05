@@ -15,7 +15,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.PhCurves
     /// <typeparam name="T"></typeparam>
     public sealed class PhCurve3DDegree5Canonical<T>
     {
-        public static PhCurve3DDegree5Canonical<T> Create(IGeometricAlgebraEuclideanProcessor<T> processor, Vector<T> p, Vector<T> d)
+        public static PhCurve3DDegree5Canonical<T> Create(IGeometricAlgebraEuclideanProcessor<T> processor, GaVector<T> p, GaVector<T> d)
         {
             return new PhCurve3DDegree5Canonical<T>(
                 processor, 
@@ -26,7 +26,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.PhCurves
             );
         }
         
-        public static PhCurve3DDegree5Canonical<T> Create(IGeometricAlgebraEuclideanProcessor<T> processor, Vector<T> p, Vector<T> d, Scalar<T> theta1, Scalar<T> theta2)
+        public static PhCurve3DDegree5Canonical<T> Create(IGeometricAlgebraEuclideanProcessor<T> processor, GaVector<T> p, GaVector<T> d, Scalar<T> theta1, Scalar<T> theta2)
         {
             return new PhCurve3DDegree5Canonical<T>(
                 processor, 
@@ -37,7 +37,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.PhCurves
             );
         }
         
-        public static PhCurve3DDegree5Canonical<T> Create(IGeometricAlgebraEuclideanProcessor<T> processor, Vector<T> p, Vector<T> d, T theta1, T theta2)
+        public static PhCurve3DDegree5Canonical<T> Create(IGeometricAlgebraEuclideanProcessor<T> processor, GaVector<T> p, GaVector<T> d, T theta1, T theta2)
         {
             return new PhCurve3DDegree5Canonical<T>(
                 processor, 
@@ -77,19 +77,19 @@ namespace GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.PhCurves
         
         public Scalar<T> Scalar22 { get; }
 
-        public Vector<T> Vector00 { get; }
+        public GaVector<T> Vector00 { get; }
         
-        public Vector<T> Vector01 { get; }
+        public GaVector<T> Vector01 { get; }
         
-        public Vector<T> Vector02 { get; }
+        public GaVector<T> Vector02 { get; }
         
-        public Vector<T> Vector11 { get; }
+        public GaVector<T> Vector11 { get; }
         
-        public Vector<T> Vector12 { get; }
+        public GaVector<T> Vector12 { get; }
         
-        public Vector<T> Vector22 { get; }
+        public GaVector<T> Vector22 { get; }
 
-        public Vector<T> VectorU { get; }
+        public GaVector<T> VectorU { get; }
 
         public ScaledPureRotor<T> ScaledRotor0 { get; }
 
@@ -106,7 +106,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.PhCurves
         public IGeometricAlgebraEuclideanProcessor<T> GeometricProcessor { get; }
 
 
-        private PhCurve3DDegree5Canonical([NotNull] IGeometricAlgebraEuclideanProcessor<T> processor, [NotNull] Vector<T> p, [NotNull] Vector<T> d, [NotNull] Scalar<T> theta1, [NotNull] Scalar<T> theta2)
+        private PhCurve3DDegree5Canonical([NotNull] IGeometricAlgebraEuclideanProcessor<T> processor, [NotNull] GaVector<T> p, [NotNull] GaVector<T> d, [NotNull] Scalar<T> theta1, [NotNull] Scalar<T> theta2)
         {
             GeometricProcessor = processor;
             Theta1 = theta1;
@@ -180,7 +180,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.PhCurves
         }
 
 
-        public Vector<T> GetHodographPoint(T parameterValue)
+        public GaVector<T> GetHodographPoint(T parameterValue)
         {
             var f00 = _basisPairProductSet.GetValue(0, 0, parameterValue);
             var f01 = _basisPairProductSet.GetValue(0, 1, parameterValue);
@@ -198,7 +198,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.PhCurves
                 f22 * Vector22;
         }
 
-        public Vector<T> GetCurvePoint(T parameterValue)
+        public GaVector<T> GetCurvePoint(T parameterValue)
         {
             var f00 = _basisPairProductIntegralSet.GetValue(0, 0, parameterValue);
             var f01 = _basisPairProductIntegralSet.GetValue(0, 1, parameterValue);

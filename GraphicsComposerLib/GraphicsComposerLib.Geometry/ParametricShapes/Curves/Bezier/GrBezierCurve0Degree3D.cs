@@ -7,7 +7,7 @@ using NumericalGeometryLib.BasicMath.Tuples.Immutable;
 namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Bezier
 {
     public class GrBezierCurve0Degree3D :
-        IGraphicsParametricCurve3D
+        IGraphicsC1ParametricCurve3D
     {
         public Tuple3D Point1 { get; }
 

@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Drawing;
 using DataStructuresLib.Basic;
 using NumericalGeometryLib.BasicMath;
 using NumericalGeometryLib.BasicMath.Matrices;
@@ -8,35 +7,26 @@ using NumericalGeometryLib.BasicMath.Tuples;
 using NumericalGeometryLib.BasicMath.Tuples.Immutable;
 using GraphicsComposerLib.Geometry.Primitives;
 using GraphicsComposerLib.Geometry.Primitives.Vertices;
+using NumericalGeometryLib.BasicMath.Frames.Space3D;
+using SixLabors.ImageSharp;
 
 namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves
 {
     public sealed record GrParametricCurveLocalFrame3D :
         IGraphicsCurveLocalFrame3D
     {
-        /// <summary>
-        /// https://en.wikipedia.org/wiki/Frenet%E2%80%93Serret_formulas
-        /// </summary>
-        /// <param name="point"></param>
-        /// <param name="firstDerivativeVector"></param>
-        /// <param name="secondDerivativeVector"></param>
-        /// <param name="parameterValue"></param>
-        /// <returns></returns>
-        public static GrParametricCurveLocalFrame3D CreateFrenetFrame(double parameterValue, ITuple3D point, ITuple3D firstDerivativeVector, ITuple3D secondDerivativeVector)
+        public static GrParametricCurveLocalFrame3D CreateFromAffineFrame(double parameterValue, AffineFrame3D affineFrame)
         {
-            var tangent = firstDerivativeVector;
-            var normal1 = secondDerivativeVector.VectorCross(firstDerivativeVector);
-            var normal2 = firstDerivativeVector.VectorCross(normal1);
-
             return new GrParametricCurveLocalFrame3D(
                 parameterValue,
-                point.ToTuple3D(),
-                normal1.ToUnitVector(),
-                normal2.ToUnitVector(),
-                tangent.ToUnitVector()
+                affineFrame.Origin,
+                affineFrame.Direction2,
+                affineFrame.Direction3,
+                affineFrame.Direction1
             );
         }
 
+        
         /// <summary>
         /// Create a local frame based on the tangent only
         /// </summary>
@@ -263,8 +253,8 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves
             //var z = Normal2;
             //var xRotated = newTangent.ToTuple3D();
 
-            ////Begin GA-FuL Symbolic Context Code Generation, 2021-11-20T13:06:13.1183386+02:00
-            ////SymbolicContext: TestCode
+            ////Begin GA-FuL MetaContext Code Generation, 2021-11-20T13:06:13.1183386+02:00
+            ////MetaContext: TestCode
             ////Input Variables: 12 used, 0 not used, 12 total.
             ////Temp Variables: 138 sub-expressions, 0 generated temps, 138 total.
             ////Target Temp Variables: 14 total.
@@ -273,7 +263,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves
             ////Memory Reads: 1.7222222222222223 average, 248 total.
             ////Memory Writes: 144 total.
             ////
-            ////SymbolicContext Binding Data:
+            ////MetaContext Binding Data:
             ////   1 = constant: '1'
             ////   -1 = constant: '-1'
             ////   2 = constant: '2'
@@ -441,7 +431,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves
             //temp1 = -temp1;
             //var zRotatedX = temp0 + temp1;
 
-            ////Finish GA-FuL Symbolic Context Code Generation, 2021-11-20T13:06:13.2049363+02:00
+            ////Finish GA-FuL MetaContext Code Generation, 2021-11-20T13:06:13.2049363+02:00
 
             //var newNormal1 = new Tuple3D(yRotatedX, yRotatedY, yRotatedZ);
             //var newNormal2 = new Tuple3D(zRotatedX, zRotatedY, zRotatedZ);
