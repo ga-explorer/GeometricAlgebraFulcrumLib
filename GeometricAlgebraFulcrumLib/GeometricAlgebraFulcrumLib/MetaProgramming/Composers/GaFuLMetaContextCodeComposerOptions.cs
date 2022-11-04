@@ -9,7 +9,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Composers
         /// <summary>
         /// If false, the comments before each computational line are not generated
         /// </summary>
-        public bool AllowGenerateComputationComments { get; set; } = false;
+        public bool AllowGenerateComputationComments { get; set; } = true;
 
         /// <summary>
         /// This is executed before generating computation code. It can be used to add comments, declare temp 

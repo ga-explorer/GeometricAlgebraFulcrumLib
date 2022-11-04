@@ -1,7 +1,6 @@
 ﻿using DataStructuresLib.Basic;
 using NumericalGeometryLib.BasicMath;
 using NumericalGeometryLib.BasicMath.Constants;
-using NumericalGeometryLib.BasicMath.Matrices;
 using NumericalGeometryLib.BasicMath.Tuples;
 using NumericalGeometryLib.BasicMath.Tuples.Immutable;
 
@@ -39,9 +38,9 @@ public sealed class GrVisualCircleCurve3D :
         var a = Radius * Math.Cos(angle);
         var b = Radius * Math.Sin(angle);
 
-        var point1 = Center + quaternion.Rotate(Radius, 0, 0);
-        var point2 = Center + quaternion.Rotate(a, b, 0);
-        var point3 = Center + quaternion.Rotate(a, -b, 0);
+        var point1 = Center + quaternion.QuaternionRotate(Radius, 0, 0);
+        var point2 = Center + quaternion.QuaternionRotate(a, b, 0);
+        var point3 = Center + quaternion.QuaternionRotate(a, -b, 0);
 
         return new Triplet<Tuple3D>(point1, point2, point3);
     }

@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using DataStructuresLib.Basic;
+﻿using DataStructuresLib.Basic;
 using GraphicsComposerLib.Rendering.BabylonJs.Values;
 using TextComposerLib;
 
@@ -220,7 +219,7 @@ public abstract class GrBabylonJsGuiControl :
         => null;
 
     
-    protected GrBabylonJsGuiControl(string constName, [NotNull] IGrBabylonJsGuiControlContainer parentContainer)
+    protected GrBabylonJsGuiControl(string constName, IGrBabylonJsGuiControlContainer parentContainer)
         : base(constName)
     {
         ParentContainer = parentContainer;

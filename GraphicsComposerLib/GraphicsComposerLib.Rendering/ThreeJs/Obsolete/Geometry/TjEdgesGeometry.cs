@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using TextComposerLib.Code.JavaScript;
+﻿using TextComposerLib.Code.JavaScript;
 using JsCodeComponentUtils = TextComposerLib.Code.JavaScript.Obsolete.JsCodeComponentUtils;
 
 namespace GraphicsComposerLib.Rendering.ThreeJs.Obsolete.Geometry
@@ -19,7 +18,7 @@ namespace GraphicsComposerLib.Rendering.ThreeJs.Obsolete.Geometry
         public int ThresholdAngleInDegrees { get; set; } = 1;
 
 
-        public TjEdgesGeometry([NotNull] TjBufferGeometryBase geometry)
+        public TjEdgesGeometry(TjBufferGeometryBase geometry)
         {
             Geometry = geometry;
         }

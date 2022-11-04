@@ -80,10 +80,10 @@ namespace NumericalGeometryLib.BasicMath.Frames.Space3D
             => new Tuple3D(WDirectionX, WDirectionY, WDirectionZ);
 
         public bool IsRightHanded 
-            => VectorAlgebraUtils.Determinant(UDirection, VDirection, WDirection) > 0.0d;
+            => VectorUtils.Determinant(UDirection, VDirection, WDirection) > 0.0d;
 
         public bool IsLeftHanded 
-            => VectorAlgebraUtils.Determinant(UDirection, VDirection, WDirection) < 0.0d;
+            => VectorUtils.Determinant(UDirection, VDirection, WDirection) < 0.0d;
 
         public bool HasNaNComponent =>
             double.IsNaN(UDirectionX) ||

@@ -387,7 +387,7 @@ namespace NumericalGeometryLib.BasicMath.Matrices
             if (!axis.IsAlmostEqual(Tuple3D.Zero)) 
                 return CreateRotationMatrix3D(axis.ToUnitVector(), angle);
 
-            return angle.IsAlmostZero()
+            return angle.Radians.IsAlmostZero()
                 ? SquareMatrix4.CreateIdentityMatrix()
                 : CreateRotationMatrix3D(
                     srcUnitVector.GetUnitNormal(), 

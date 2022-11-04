@@ -1,11 +1,12 @@
-﻿using System.Numerics;
+﻿using NumericalGeometryLib.BasicMath.Tuples;
+using NumericalGeometryLib.BasicMath.Tuples.Immutable;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Values;
 
 public sealed class GrBabylonJsQuaternionValue :
-    GrBabylonJsValue<Quaternion>
+    GrBabylonJsValue<ITuple4D>
 {
-    internal static GrBabylonJsQuaternionValue Create(Quaternion value)
+    internal static GrBabylonJsQuaternionValue Create(ITuple4D value)
     {
         return new GrBabylonJsQuaternionValue(value);
     }
@@ -16,7 +17,7 @@ public sealed class GrBabylonJsQuaternionValue :
         return new GrBabylonJsQuaternionValue(valueText);
     }
 
-    public static implicit operator GrBabylonJsQuaternionValue(Quaternion value)
+    public static implicit operator GrBabylonJsQuaternionValue(Tuple4D value)
     {
         return new GrBabylonJsQuaternionValue(value);
     }
@@ -27,7 +28,7 @@ public sealed class GrBabylonJsQuaternionValue :
     {
     }
 
-    private GrBabylonJsQuaternionValue(Quaternion value)
+    private GrBabylonJsQuaternionValue(ITuple4D value)
         : base(value)
     {
     }
@@ -36,7 +37,7 @@ public sealed class GrBabylonJsQuaternionValue :
     public override string GetCode()
     {
         return string.IsNullOrEmpty(ValueText) 
-            ? Value.GetBabylonJsCode() 
+            ? Value.GetQuaternionBabylonJsCode() 
             : ValueText;
     }
 }

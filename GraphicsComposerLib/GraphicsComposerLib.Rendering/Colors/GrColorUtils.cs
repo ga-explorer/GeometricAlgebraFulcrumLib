@@ -18,6 +18,16 @@ namespace GraphicsComposerLib.Rendering.Colors
             );
         }
 
+        public static Color ToImageSharpColor(this System.Drawing.Color color, byte alpha)
+        {
+            return Color.FromRgba(
+                color.R, 
+                color.G,
+                color.B, 
+                alpha
+            );
+        }
+
         public static Color SetAlpha(this Color color, byte alpha)
         {
             var c = color.ToPixel<Rgba32>();

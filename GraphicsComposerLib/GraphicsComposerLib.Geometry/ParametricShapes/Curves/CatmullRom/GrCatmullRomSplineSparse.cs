@@ -23,26 +23,26 @@ public sealed class GrCatmullRomSplineSparse
 
 
     private readonly double[] _knotList;
-    private readonly List<SparseTuple> _pointList;
+    private readonly List<Float64SparseTuple> _pointList;
 
     public CatmullRomSplineType CurveType { get; }
 
     public bool IsClosed { get; }
 
-    public IEnumerable<SparseTuple> ControlPoints 
+    public IEnumerable<Float64SparseTuple> ControlPoints 
         => _pointList;
 
     public int ControlPointCount 
         => _pointList.Count;
 
 
-    internal GrCatmullRomSplineSparse(IEnumerable<SparseTuple> inputPointList, CatmullRomSplineType curveType, bool isClosed)
+    internal GrCatmullRomSplineSparse(IEnumerable<Float64SparseTuple> inputPointList, CatmullRomSplineType curveType, bool isClosed)
     {
         CurveType = curveType;
         IsClosed = isClosed;
-        _pointList = new List<SparseTuple>(inputPointList);
+        _pointList = new List<Float64SparseTuple>(inputPointList);
 
-        SparseTuple endPoint1, endPoint2;
+        Float64SparseTuple endPoint1, endPoint2;
 
         if (isClosed)
         {
@@ -206,7 +206,7 @@ public sealed class GrCatmullRomSplineSparse
         return GetPointItem(parameterValue, 3);
     }
 
-    public SparseTuple GetPoint(double parameterValue)
+    public Float64SparseTuple GetPoint(double parameterValue)
     {
         // Handle edge cases
         if (parameterValue <= _knotList[0])
@@ -248,10 +248,10 @@ public sealed class GrCatmullRomSplineSparse
         return parameterValue.GetCatmullRomValue(tQuad, pQuad);
     }
 
-    public SparseTuple GetTangent(double parameterValue)
+    public Float64SparseTuple GetTangent(double parameterValue)
     {
         if (parameterValue is <= 0d or >= 1d) 
-            return new SparseTuple(
+            return new Float64SparseTuple(
                 GetPointItemIndexList()
                     .Select(i => 
                         Differentiate.FirstDerivative(
@@ -265,7 +265,7 @@ public sealed class GrCatmullRomSplineSparse
             GetKnotIndexContaining(parameterValue, 0, _knotList.Length - 1);
 
         if (index1 == index2)
-            return new SparseTuple(
+            return new Float64SparseTuple(
                 GetPointItemIndexList()
                     .Select(i => 
                         Differentiate.FirstDerivative(
@@ -287,10 +287,10 @@ public sealed class GrCatmullRomSplineSparse
         return parameterValue.GetCatmullRomDerivativeValue(tQuad, pQuad);
     }
     
-    public SparseTuple GetSecondDerivative(double parameterValue)
+    public Float64SparseTuple GetSecondDerivative(double parameterValue)
     {
         if (parameterValue is <= 0d or >= 1d)
-            return new SparseTuple(
+            return new Float64SparseTuple(
                 GetPointItemIndexList()
                     .Select(i => 
                         Differentiate.SecondDerivative(
@@ -304,7 +304,7 @@ public sealed class GrCatmullRomSplineSparse
             GetKnotIndexContaining(parameterValue, 0, _knotList.Length - 1);
 
         if (index1 == index2)
-            return new SparseTuple(
+            return new Float64SparseTuple(
                 GetPointItemIndexList()
                     .Select(i => 
                         Differentiate.SecondDerivative(
@@ -327,7 +327,7 @@ public sealed class GrCatmullRomSplineSparse
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public SparseTuple GetUnitTangent(double parameterValue)
+    public Float64SparseTuple GetUnitTangent(double parameterValue)
     {
         return GetTangent(parameterValue).ToUnitVector();
     }

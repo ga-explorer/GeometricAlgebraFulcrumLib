@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using DataStructuresLib.Basic;
+﻿using DataStructuresLib.Basic;
 using GraphicsComposerLib.Rendering.LaTeX.ImageComposers;
 using SixLabors.ImageSharp;
 
@@ -13,7 +12,7 @@ public class GrVisualLaTeXImage3D :
     public string LaTeXCode { get; }
     
 
-    public GrVisualLaTeXImage3D(string name, [NotNull] string latexCode, [NotNull] IGrLaTeXImageComposer imageComposer)
+    public GrVisualLaTeXImage3D(string name, string latexCode, IGrLaTeXImageComposer imageComposer)
         : base(name)
     {
         LaTeXCode = latexCode;

@@ -1,5 +1,6 @@
 ﻿using DataStructuresLib.Basic;
 using GraphicsComposerLib.Rendering.Visuals.Space3D.Curves;
+using GraphicsComposerLib.Rendering.Visuals.Space3D.Surfaces;
 using NumericalGeometryLib.BasicMath;
 using NumericalGeometryLib.BasicMath.Tuples;
 using NumericalGeometryLib.BasicMath.Tuples.Immutable;
@@ -9,18 +10,30 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Groups;
 public sealed class GrVisualRightAngle3D :
     GrVisualCurve3D
 {
-    public ITuple3D Center { get; set; } = Tuple3D.Zero;
+    public Tuple3D Origin { get; }
 
-    public ITuple3D Direction1 { get; set; } = Tuple3D.E1;
+    public Tuple3D Direction1 { get; }
 
-    public ITuple3D Direction2 { get; set; } = Tuple3D.E2;
+    public Tuple3D Direction2 { get; }
 
-    public double Radius { get; set; } = 1d;
-    
+    public double Radius { get; }
 
-    public GrVisualRightAngle3D(string name) 
+    public double Width 
+        => Radius / 2d.Sqrt();
+
+    public double Height 
+        => Radius / 2d.Sqrt();
+
+    public GrVisualSurfaceThinStyle3D? InnerStyle { get; set; }
+
+
+    public GrVisualRightAngle3D(string name, ITuple3D origin, ITuple3D direction1, ITuple3D direction2, double radius) 
         : base(name)
     {
+        Origin = origin.ToTuple3D();
+        Direction1 = direction1.ToUnitVector();
+        Direction2 = direction2.RejectOnUnitVector(Direction1).ToUnitVector();
+        Radius = radius;
     }
 
 
@@ -28,25 +41,21 @@ public sealed class GrVisualRightAngle3D :
     {
         var s = Radius / Math.Sqrt(2d);
 
-        var vector1 = Direction1.ToUnitVector();
-        var vector3 = Direction2.ToUnitVector();
-        var vector2 = vector1 + vector3;
-
         return new Triplet<Tuple3D>(
-            Center + s * vector1, 
-            Center + s * vector2, 
-            Center + s * vector3
+            Origin + s * Direction1, 
+            Origin + s * (Direction1 + Direction2), 
+            Origin + s * Direction2
         );
     }
 
     public Tuple3D GetArcStartUnitVector()
     {
-        return Direction1.ToUnitVector();
+        return Direction1;
     }
     
     public Tuple3D GetArcEndUnitVector()
     {
-        return Direction2.ToUnitVector();
+        return Direction2;
     }
     
     public Tuple3D GetUnitNormal()
@@ -61,6 +70,6 @@ public sealed class GrVisualRightAngle3D :
 
     public double GetLength()
     {
-        return Math.Sqrt(2) * Radius;
+        return 2d.Sqrt() * Radius;
     } 
 }

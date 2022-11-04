@@ -387,7 +387,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Surfaces.Sampled
         public PlanarAngle MaxEdgeFramesAngle()
         {
             return GetEdgeFramePairs().Select(p => 
-                p.Item1.Normal.GetVectorsAngle(p.Item2.Normal)
+                p.Item1.Normal.GetVectorsAngle(p.Item2.Normal).Radians
             ).Max().RadiansToAngle();
         }
 

@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Numerics;
 using NumericalGeometryLib.BasicMath;
 using NumericalGeometryLib.BasicMath.Constants;
-using NumericalGeometryLib.BasicMath.Matrices;
 using NumericalGeometryLib.BasicMath.Tuples;
 using NumericalGeometryLib.BasicMath.Tuples.Immutable;
 using TextComposerLib.Text.Linear;
@@ -62,31 +60,31 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.Basic
 
                     if (axis1 == axis2)
                     {
-                        composer.AppendLineAtNewLine($"{axisName2} => Quaternion.Identity,");
+                        composer.AppendLineAtNewLine($"{axisName2} => Tuple4D.QuaternionIdentity,");
                     }
                     else if (axis1.IsOppositeTo(axis2))
                     {
                         var rotationAxis = axis1 switch
                         {
-                            Axis3D.PositiveX or Axis3D.NegativeX => Vector3.UnitZ,
-                            Axis3D.PositiveY or Axis3D.NegativeY => Vector3.UnitX,
-                            _ => Vector3.UnitY
+                            Axis3D.PositiveX or Axis3D.NegativeX => Tuple3D.E3,
+                            Axis3D.PositiveY or Axis3D.NegativeY => Tuple3D.E1,
+                            _ => Tuple3D.E2
                         };
 
-                        var q = Quaternion.CreateFromAxisAngle(rotationAxis, MathF.PI);
+                        var q = rotationAxis.CreateQuaternionFromAxisAngle(Math.PI);
                         
                         composer
-                            .AppendLineAtNewLine($"{axisName2} => new Quaternion({q.X}, {q.Y}, {q.Z}, {q.W}),");
+                            .AppendLineAtNewLine($"{axisName2} => new Tuple4D({q.X}, {q.Y}, {q.Z}, {q.W}),");
                     }
                     else
                     {
                         var v3 = axisVector1.VectorCross(axisVector2);
-                        var rotationAxis = new Vector3((float) v3.X, (float) v3.Y, (float) v3.Z);
+                        var rotationAxis = new Tuple3D(v3.X, v3.Y, v3.Z);
 
-                        var q = Quaternion.CreateFromAxisAngle(rotationAxis, MathF.PI / 2);
+                        var q = rotationAxis.CreateQuaternionFromAxisAngle(Math.PI / 2);
 
                         composer
-                            .AppendLineAtNewLine($"{axisName2} => new Quaternion({q.X}, {q.Y}, {q.Z}, {q.W}),");
+                            .AppendLineAtNewLine($"{axisName2} => new Tuple4D({q.X}, {q.Y}, {q.Z}, {q.W}),");
                     }
                 }
 
@@ -127,7 +125,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.Basic
 
                     var quaternion = axis1.CreateAxisToAxisRotationQuaternion(axis2);
 
-                    var v2 = quaternion.Rotate(axis1).MapComponents(
+                    var v2 = quaternion.QuaternionRotate(axis1).MapComponents(
                         s => Math.Round(s, 3)
                     );
 
@@ -172,16 +170,13 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.Basic
                 var (u, a) = 
                     axisVector.CreateVectorToVectorRotationAxisAngle(vector);
 
-                var q = Quaternion.CreateFromAxisAngle(
-                    new Vector3((float) u.X, (float) u.Y, (float) u.Z),
-                    (float) a
-                );
+                var q = u.CreateQuaternionFromAxisAngle(a);
                 
-                if ((quaternion - q).IsNearZero()) 
+                if ((quaternion - q).IsNearZeroQuaternion()) 
                     continue;
 
-                var v2 = quaternion.Rotate(axis);
-                var v3 = q.Rotate(axis);
+                var v2 = quaternion.QuaternionRotate(axis);
+                var v3 = q.QuaternionRotate(axis);
 
                 Console.WriteLine($"             Vector: {vector}");
                 Console.WriteLine($"               Axis: {axis}");
@@ -235,18 +230,15 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.Basic
                     var (u, a) = 
                         axisVector.CreateVectorToVectorRotationAxisAngle(vector);
 
-                    var q = Quaternion.CreateFromAxisAngle(
-                        new Vector3((float) u.X, (float) u.Y, (float) u.Z),
-                        (float) a
-                    );
+                    var q = u.CreateQuaternionFromAxisAngle(a);
 
-                    var v1 = quaternion.Rotate(axis);
-                    var v2 = q.Rotate(axis);
+                    var v1 = quaternion.QuaternionRotate(axis);
+                    var v2 = q.QuaternionRotate(axis);
 
                     var l1 = (v1 - vector).GetLengthSquared();
                     var l2 = (v2 - vector).GetLengthSquared();
 
-                    var qDiff = (quaternion - q).LengthSquared();
+                    var qDiff = (quaternion - q).GetLengthSquared();
 
                     if (l1.IsNearZero() && l2.IsNearZero() && qDiff.IsNearZero())
                         continue;

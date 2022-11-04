@@ -23,7 +23,7 @@ namespace GeometricAlgebraFulcrumLib.Mathematica.Text
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override string GetAngleText(PlanarAngle angle)
         {
-            return $"{GetScalarText(angle.Degrees.ToExpr())} Degree";
+            return $@"{GetScalarText(angle.Degrees.ToExpr())} \degree";
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

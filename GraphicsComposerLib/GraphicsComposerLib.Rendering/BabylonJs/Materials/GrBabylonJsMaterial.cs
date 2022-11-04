@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using DataStructuresLib.Basic;
+﻿using DataStructuresLib.Basic;
 using GraphicsComposerLib.Rendering.BabylonJs.Values;
 using GraphicsComposerLib.Rendering.Visuals.Space3D;
 using TextComposerLib;
@@ -67,7 +66,7 @@ public abstract class GrBabylonJsMaterial :
     {
     }
 
-    protected GrBabylonJsMaterial(string constName, [NotNull] GrBabylonJsSceneValue scene) 
+    protected GrBabylonJsMaterial(string constName, GrBabylonJsSceneValue scene) 
         : base(constName)
     {
         ParentScene = scene;

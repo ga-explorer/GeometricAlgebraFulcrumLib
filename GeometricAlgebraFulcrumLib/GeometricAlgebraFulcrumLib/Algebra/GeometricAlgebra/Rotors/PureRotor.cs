@@ -50,6 +50,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
         public GaMultivector<T> MultivectorReverse { get; }
 
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private PureRotor([NotNull] T scalarPart, [NotNull] GaBivector<T> bivectorPart)
             : base(bivectorPart.GeometricProcessor)
         {
@@ -57,6 +58,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
             MultivectorReverse = scalarPart - bivectorPart;
         }
         
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private PureRotor([NotNull] GaMultivector<T> multivector, [NotNull] GaMultivector<T> multivectorReverse)
             : base(multivector.GeometricProcessor)
         {
@@ -64,6 +66,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
             MultivectorReverse = multivectorReverse;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private PureRotor([NotNull] IGeometricAlgebraProcessor<T> processor, [NotNull] IMultivectorStorage<T> multivector, [NotNull] IMultivectorStorage<T> multivectorReverse)
             : base(processor)
         {

@@ -10,7 +10,8 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
     /// <summary>
     /// Represents a Rotate then Scale then Translate affine map in 3D
     /// </summary>
-    public class RotateScaleTranslateMap3D : IAffineMap3D
+    public class RotateScaleTranslateMap3D : 
+        IAffineMap3D
     {
         public static RotateScaleTranslateMap3D CreateRotate(PlanarAngle angle, ITuple3D vector)
         {

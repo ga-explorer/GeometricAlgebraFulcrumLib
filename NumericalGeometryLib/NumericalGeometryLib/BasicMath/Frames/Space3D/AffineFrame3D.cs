@@ -96,12 +96,12 @@ namespace NumericalGeometryLib.BasicMath.Frames.Space3D
         
         public bool IsRightHanded()
         {
-            return VectorAlgebraUtils.Determinant(Direction1, Direction2, Direction3) > 0.0d;
+            return VectorUtils.Determinant(Direction1, Direction2, Direction3) > 0.0d;
         }
 
         public bool IsLeftHanded()
         {
-            return VectorAlgebraUtils.Determinant(Direction1, Direction2, Direction3) < 0.0d;
+            return VectorUtils.Determinant(Direction1, Direction2, Direction3) < 0.0d;
         }
 
         public Tuple3D GetLocalVector(double u, double v, double w)

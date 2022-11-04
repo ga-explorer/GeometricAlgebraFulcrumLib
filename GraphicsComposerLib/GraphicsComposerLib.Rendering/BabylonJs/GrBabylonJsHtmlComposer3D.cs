@@ -1,7 +1,4 @@
-﻿using System.Text;
-using Humanizer;
-using TextComposerLib.Text;
-using TextComposerLib.Text.Linear;
+﻿using TextComposerLib.Text;
 using TextComposerLib.Text.Parametric;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs
@@ -224,7 +221,7 @@ window.addEventListener(""resize"", function () {
 
         public IEnumerable<GrBabylonJsScene> Scenes
             => _sceneComposerList.Values.Select(c => c.SceneObject);
-
+        
 
         public GrBabylonJsHtmlComposer3D()
             : this(new GrBabylonJsSceneComposer3D())

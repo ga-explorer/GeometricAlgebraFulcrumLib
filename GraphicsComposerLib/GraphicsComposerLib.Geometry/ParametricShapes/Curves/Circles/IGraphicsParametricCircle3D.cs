@@ -3,7 +3,8 @@
 namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Circles
 {
     public interface IGraphicsParametricCircle3D :
-        IGraphicsC1ParametricCurve3D
+        IGraphicsC2ParametricCurve3D,
+        IGraphicsC1ArcLengthCurve3D
     {
         public double Radius { get; }
 

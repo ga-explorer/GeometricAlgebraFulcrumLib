@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Threading;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
 
 namespace GeometricAlgebraFulcrumLib.Samples
 {
@@ -77,10 +74,17 @@ namespace GeometricAlgebraFulcrumLib.Samples
             //    driver.Quit();
             //}
 
+            //Graphics.BabylonJs.RotorFamilySamples.Example1();
+            //Graphics.BabylonJs.CurveSamples.Example3();
             //Numeric.InterpolationSample.Example6();
-            GeometricFrequency.PowerSignalVisualizationSample2.Execute();
-
+            //GeometricFrequency.PowerSignalVisualizationSample1.Execute();
+            //EuclideanGeometry.RotationSamples.Example1();
             //Symbolic.SymbolicGramSchmidtSample.Example1();
+            
+            EuclideanGeometry.RotationSamples.ValidationExample3();
+            //EuclideanGeometry.VectorRotationSamples.NumericExample1();
+            //GAPoT.SimpleKirchhoffRotationSamples.Example3();
+            //GAPoT.SymmetricHarmonicsSymbolicSample.Execute();
 
             //GeometricFrequency.NumericGeometricFrequencySample.Example2();
             //GeometricFrequency.SymbolicAngularVelocitySample.Example1();

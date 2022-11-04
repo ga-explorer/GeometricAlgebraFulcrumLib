@@ -4,6 +4,36 @@ namespace NumericalGeometryLib.BasicMath
 {
     public static class IntUtils
     {
+        /// <summary>
+        /// Greatest Common Factor
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
+        public static int Gcf(this int a, int b)
+        {
+            while (b != 0)
+            {
+                var temp = b;
+                b = a % b;
+                a = temp;
+            }
+
+            return a;
+        }
+
+        /// <summary>
+        /// Least Common Multiple
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int Lcm(this int a, int b)
+        {
+            return (a / Gcf(a, b)) * b;
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsPowerOf2(this int n)
         {

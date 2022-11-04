@@ -5,7 +5,6 @@ using DataStructuresLib.Basic;
 using GeometricAlgebraFulcrumLib.Applications.PowerSystems;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using GeometricAlgebraFulcrumLib.Utilities.Factories;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using NumericalGeometryLib.BasicMath;
 using NumericalGeometryLib.BasicMath.Calculus;
 using OfficeOpenXml;
@@ -187,7 +186,7 @@ public static class PowerSignalVisualizationSample2
                     Path.Combine(excelPath, "EMTP_transient_ahmad.xlsx"),
                     4000, //12000,
                     sampleCount + 2,
-                    5
+                    2
                 )
                 .MapItems(p => 
                     p.Select(d => d * magnitudeFactor)
@@ -219,10 +218,23 @@ public static class PowerSignalVisualizationSample2
         const bool renderAnimations = true;
             
         var powerSignal = GetPowerSignal_EMTP();
+        
+        var cameraAlphaValues =
+            30d.DegreesToRadians().GetCosRange(
+                150d.DegreesToRadians(),
+                powerSignal.SampleCount,
+                1,
+                true
+            ).CreateSignal(powerSignal.SamplingRate);
 
-        var visualizer = new PowerSignalVisualizer3D(powerSignal)
+        var cameraBetaValues =
+            Enumerable
+                .Repeat(2 * Math.PI / 5, powerSignal.SampleCount)
+                .CreateSignal(powerSignal.SamplingRate);
+
+        var visualizer = new PowerSignalVisualizer3D(cameraAlphaValues, cameraBetaValues, powerSignal)
         {
-            Title = "EMTP Line Voltages",
+            Title = "EMTP Phase Voltages",
             WorkingPath = @"D:\Projects\Study\Babylon.js\",
             HostUrl = "http://localhost:5200/", 
             //LiveReloadWebServer "D:/Projects/Study/Babylon.js/" --port 5200 --UseSsl False --LiveReloadEnabled False --OpenBrowser True

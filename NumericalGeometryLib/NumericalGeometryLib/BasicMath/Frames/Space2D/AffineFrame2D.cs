@@ -78,12 +78,12 @@ namespace NumericalGeometryLib.BasicMath.Frames.Space2D
 
         public bool IsRightHanded
         {
-            get { return VectorAlgebraUtils.Determinant(UDirection, VDirection) > 0.0d; }
+            get { return VectorUtils.Determinant(UDirection, VDirection) > 0.0d; }
         }
 
         public bool IsLeftHanded
         {
-            get { return VectorAlgebraUtils.Determinant(UDirection, VDirection) < 0.0d; }
+            get { return VectorUtils.Determinant(UDirection, VDirection) < 0.0d; }
         }
 
         public bool HasNaNComponent

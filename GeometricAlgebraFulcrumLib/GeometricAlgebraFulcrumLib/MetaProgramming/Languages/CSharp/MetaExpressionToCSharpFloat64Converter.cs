@@ -67,12 +67,34 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Languages.CSharp
                 case "Power":
                     return argumentsArray[1].ToString() switch
                     {
-                        "-1" => SteExpression.CreateOperator(CclCSharpUtils.Operators.Divide,
-                            SteExpression.CreateLiteralNumber(1), argumentsArray[0]),
-                        "2" => SteExpression.CreateOperator(CclCSharpUtils.Operators.Multiply, argumentsArray[0],
-                            argumentsArray[0]),
-                        "3" => SteExpression.CreateOperator(CclCSharpUtils.Operators.Multiply, argumentsArray[0],
-                            argumentsArray[0], argumentsArray[0]),
+                        "0.5" => SteExpression.CreateFunction(
+                                "Math.Sqrt", 
+                                argumentsArray[0]
+                            ),
+                        "-0.5" => SteExpression.CreateOperator(
+                                CclCSharpUtils.Operators.Divide,
+                                SteExpression.CreateLiteralNumber(1), 
+                                SteExpression.CreateFunction(
+                                    "Math.Sqrt", 
+                                    argumentsArray[0]
+                                )
+                            ),
+                        "-1" => SteExpression.CreateOperator(
+                                CclCSharpUtils.Operators.Divide,
+                                SteExpression.CreateLiteralNumber(1), 
+                                argumentsArray[0]
+                            ),
+                        "2" => SteExpression.CreateOperator(
+                                CclCSharpUtils.Operators.Multiply, 
+                                argumentsArray[0],
+                                argumentsArray[0]
+                            ),
+                        "3" => SteExpression.CreateOperator(
+                                CclCSharpUtils.Operators.Multiply, 
+                                argumentsArray[0],
+                                argumentsArray[0], 
+                                argumentsArray[0]
+                            ),
                         _ => SteExpression.CreateFunction("Math.Pow", argumentsArray)
                     };
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Vectors;
@@ -1155,16 +1156,26 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors
                 .CreateScalar(GeometricProcessor);
 
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal GaKVector([NotNull] IScalarAlgebraProcessor<T> processor, [NotNull] KVectorStorage<T> storage)
         {
             GeometricProcessor = (IGeometricAlgebraProcessor<T>) processor;
             KVectorStorage = storage;
+
+            Debug.Assert(
+                KVectorStorage.GetStoredBasisVectorsBitPattern() < GeometricProcessor.GaSpaceDimension
+            );
         }
         
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal GaKVector([NotNull] IGeometricAlgebraProcessor<T> processor, [NotNull] KVectorStorage<T> storage)
         {
             GeometricProcessor = processor;
             KVectorStorage = storage;
+
+            Debug.Assert(
+                KVectorStorage.GetStoredBasisVectorsBitPattern() < GeometricProcessor.GaSpaceDimension
+            );
         }
 
 
@@ -1178,6 +1189,12 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors
         public bool IsNearZero()
         {
             return GeometricProcessor.IsNearZero(KVectorStorage);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ulong GetStoredBasisVectorsBitPattern()
+        {
+            return KVectorStorage.GetStoredBasisVectorsBitPattern();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

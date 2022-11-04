@@ -349,7 +349,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         {
             var rowsCount = scalarsArray.GetLength(0);
 
-            var composer = scalarProcessor.CreateVectorStorageComposer(1);
+            var composer = scalarProcessor.CreateVectorStorageComposer(rowsCount);
 
             for (var i = 0; i < rowsCount; i++)
             {
@@ -709,6 +709,32 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
             return newMatrix;
         }
         
+        public static T[] MatrixProduct<T>(this IScalarAlgebraProcessor<T> scalarProcessor, T[,] matrix1, T[] matrix2)
+        {
+            var m = matrix1.GetLength(0);
+            var n = matrix1.GetLength(1);
+
+            if (n != matrix2.Length)
+                throw new InvalidOperationException();
+
+            var matrix = new T[m];
+
+            for (var i = 0; i < m; i++)
+            {
+                var d = scalarProcessor.ScalarZero;
+
+                for (var j = 0; j < n; j++)
+                    d = scalarProcessor.Add(d, scalarProcessor.Times(
+                        matrix1[i, j],
+                        matrix2[j]
+                    ));
+
+                matrix[i] = d;
+            }
+
+            return matrix;
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T[,] MatrixProduct<T>(this IScalarAlgebraProcessor<T> scalarProcessor, T[,] matrix1, T[,] matrix2)
         {

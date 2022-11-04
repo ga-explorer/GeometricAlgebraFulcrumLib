@@ -1,8 +1,6 @@
 ﻿using System.Collections.Immutable;
 using DataStructuresLib.Basic;
 using DataStructuresLib.Files;
-using GeometricAlgebraFulcrumLib.Algebra.SignalProcessing;
-using GeometricAlgebraFulcrumLib.Utilities.Factories;
 using GraphicsComposerLib.Rendering.BabylonJs;
 using GraphicsComposerLib.Rendering.BabylonJs.Cameras;
 using GraphicsComposerLib.Rendering.BabylonJs.Constants;
@@ -13,15 +11,12 @@ using GraphicsComposerLib.Rendering.BabylonJs.Textures;
 using GraphicsComposerLib.Rendering.Colors;
 using GraphicsComposerLib.Rendering.Images;
 using GraphicsComposerLib.Rendering.LaTeX.ImageComposers;
-using GraphicsComposerLib.Rendering.Visuals.Space3D.Basic;
 using GraphicsComposerLib.Rendering.Visuals.Space3D.Curves;
 using GraphicsComposerLib.Rendering.Visuals.Space3D.Grids;
 using GraphicsComposerLib.Rendering.Visuals.Space3D.Groups;
 using GraphicsComposerLib.Rendering.Visuals.Space3D.Images;
 using GraphicsComposerLib.Rendering.Visuals.Space3D.Surfaces;
 using NumericalGeometryLib.BasicMath;
-using NumericalGeometryLib.BasicMath.Constants;
-using NumericalGeometryLib.BasicMath.Matrices;
 using NumericalGeometryLib.BasicMath.Tuples;
 using NumericalGeometryLib.BasicMath.Tuples.Immutable;
 using NumericalGeometryLib.GeometricAlgebra.Euclidean3D;
@@ -32,63 +27,8 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems;
 public class PowerSignalVisualizer3D :
     GrBabylonJsSnapshotComposer3D
 {
-    private static GrBabylonJsHtmlComposer3D InitializeSceneComposers(int index, int canvasWidth, int canvasHeight)
-    {
-        var mainSceneComposer = new GrBabylonJsSceneComposer3D(
-            "mainScene",
-            new GrBabylonJsSnapshotSpecs
-            {
-                Enabled = true,
-                Width = canvasWidth,
-                Height = canvasHeight,
-                Precision = 1,
-                UsePrecision = true,
-                Delay = index == 0 ? 1800 : 800,
-                FileName = $"Frame-{index:D6}.png"
-            }
-        )
-        {
-            BackgroundColor = Color.AliceBlue,
-            ShowDebugLayer = false,
-        };
-
-        //mainSceneComposer.SceneObject.SceneProperties.UseOrderIndependentTransparency = true;
-
-        var omegaSceneComposer = new GrBabylonJsSceneComposer3D("omegaScene")
-        {
-            BackgroundColor = Color.AliceBlue,
-            ShowDebugLayer = false
-        };
-
-        omegaSceneComposer.SceneObject.Properties.AutoClear = false;
-
-        var htmlComposer = new GrBabylonJsHtmlComposer3D(mainSceneComposer)
-        {
-            CanvasWidth = canvasWidth,
-            CanvasHeight = canvasHeight,
-            CanvasFullScreen = false
-        };
-
-        htmlComposer.AddSceneComposer(omegaSceneComposer, false);
-
-        //htmlComposer.SetActiveSceneComposer(constName);
-
-        return htmlComposer;
-    }
-    
-
     public ComputedPowerSignal3D PowerSignal { get; }
  
-    public int CanvasWidth { get; set; } = 1280;
-
-    public int CanvasHeight { get; set; } = 720;
-
-    public int GridUnitCount { get; set; } = 24;
-
-    public double CameraDistance { get; set; } = 13;
-
-    public int CameraRotationCount { get; set; } = 1;
-
     public int TrailSampleCount { get; set; }
 
     public int PlotSampleCount { get; set; }
@@ -98,37 +38,25 @@ public class PowerSignalVisualizer3D :
     public bool ShowLeftPanel { get; set; } = true;
 
     public bool ShowRightPanel { get; set; } = true;
-
-    public bool ShowCopyright { get; set; } = true;
-
+    
     public Tuple3D OmegaFrameOrigin { get; set; } = new Tuple3D(-6, 2, 1);
-
-    public ScalarSignalFloat64 CameraAlphaValues { get; private set; }
-
-    public ScalarSignalFloat64 CameraBetaValues { get; private set; }
     
     public int SignalTextImageMaxWidth { get; private set; }
 
     public int SignalTextImageMaxHeight { get; private set; }
-
-    public GrBabylonJsHtmlComposer3D HtmlComposer { get; private set; }
-
-    public GrBabylonJsSceneComposer3D MainSceneComposer 
-        => HtmlComposer.GetSceneComposer("mainScene");
-
+    
     public GrBabylonJsSceneComposer3D OmegaSceneComposer 
         => HtmlComposer.GetSceneComposer("omegaScene");
 
 
-    public PowerSignalVisualizer3D(ComputedPowerSignal3D powerSignal)
+    public PowerSignalVisualizer3D(IReadOnlyList<double> cameraAlphaValues, IReadOnlyList<double> cameraBetaValues, ComputedPowerSignal3D powerSignal)
+        : base(cameraAlphaValues, cameraBetaValues)
     {
         PowerSignal = powerSignal;
-        CodeGenerationFunc = GenerateSnapshotCode;
-        FrameCount = powerSignal.SampleCount;
     }
 
     
-    private void InitializeImageCache()
+    protected override void InitializeImageCache()
     {
         var workingPath = Path.Combine(WorkingPath, "images");
 
@@ -337,24 +265,53 @@ public class PowerSignalVisualizer3D :
         Console.WriteLine();
     }
 
-    private void AddCamera(double alpha, double beta)
+    protected override GrBabylonJsHtmlComposer3D InitializeSceneComposers(int index)
     {
-        // Add main scene camera
-        MainSceneComposer.SceneObject.AddArcRotateCamera(
-            "camera1",
-            alpha, //"2 * Math.PI / 20",
-            beta, //"2 * Math.PI / 5",
-            CameraDistance,
-            "BABYLON.Vector3.Zero()",
-            new GrBabylonJsArcRotateCamera.ArcRotateCameraProperties
+        var mainSceneComposer = new GrBabylonJsSceneComposer3D(
+            "mainScene",
+            new GrBabylonJsSnapshotSpecs
             {
-                Mode = GrBabylonJsCameraMode.PerspectiveCamera,
-                //OrthoLeft = -8,
-                //OrthoRight = 8,
-                //OrthoBottom = -8,
-                //OrthoTop = 8
+                Enabled = true,
+                Width = CanvasWidth,
+                Height = CanvasHeight,
+                Precision = 1,
+                UsePrecision = true,
+                Delay = index == 0 ? 2000 : 1000,
+                FileName = $"Frame-{index:D6}.png"
             }
-        );
+        )
+        {
+            BackgroundColor = Color.AliceBlue,
+            ShowDebugLayer = false,
+        };
+
+        //mainSceneComposer.SceneObject.SceneProperties.UseOrderIndependentTransparency = true;
+
+        var omegaSceneComposer = new GrBabylonJsSceneComposer3D("omegaScene")
+        {
+            BackgroundColor = Color.AliceBlue,
+            ShowDebugLayer = false
+        };
+
+        omegaSceneComposer.SceneObject.Properties.AutoClear = false;
+
+        var htmlComposer = new GrBabylonJsHtmlComposer3D(mainSceneComposer)
+        {
+            CanvasWidth = CanvasWidth,
+            CanvasHeight = CanvasHeight,
+            CanvasFullScreen = false
+        };
+
+        htmlComposer.AddSceneComposer(omegaSceneComposer, false);
+
+        //htmlComposer.SetActiveSceneComposer(constName);
+
+        return htmlComposer;
+    }
+    
+    protected override void AddCamera(int index)
+    {
+        base.AddCamera(index);
 
         // Add omega scene camera
         var omegaSceneCamera = OmegaSceneComposer.SceneObject.AddArcRotateCamera(
@@ -375,102 +332,11 @@ public class PowerSignalVisualizer3D :
 
         //omegaSceneCamera.AttachControl = false;
     }
-
-    private void AddEnvironment()
+     
+    protected override void AddGrid()
     {
-        //var scene = MainSceneComposer.SceneObject;
-        //scene.SceneProperties.AmbientColor = Color.AliceBlue;
-
-        // Add scene environment
-        MainSceneComposer.SceneObject.AddEnvironmentHelper(
-            "environmentHelper",
-
-            new GrBabylonJsEnvironmentHelper.EnvironmentHelperOptions
-            {
-                GroundYBias = 0.01,
-                SkyBoxColor = Color.LightSkyBlue,
-                GroundColor = Color.White,
-                CreateGround = true,
-                GroundSize = 8,
-                SkyBoxSize = GridUnitCount + 10
-            }
-        );
-    }
-
-    private void AddGrid()
-    {
-        var scene = MainSceneComposer.SceneObject;
-
-        // Add ground coordinates grid
-        MainSceneComposer.GridMaterialKind =
-            GrBabylonJsGridMaterialKind.TexturedMaterial;
-
-        MainSceneComposer.AddXzSquareGrid(
-            new GrVisualXzSquareGrid3D("grid")
-            {
-                UnitCountX = GridUnitCount,
-                UnitCountZ = GridUnitCount,
-                UnitSize = 1,
-                Origin = new Tuple3D(-0.5d * GridUnitCount, 0, -0.5d * GridUnitCount),
-                Opacity = 0.25,
-                BaseSquareColor = Color.LightYellow,
-                BaseLineColor = Color.BurlyWood,
-                MidLineColor = Color.SandyBrown,
-                BorderLineColor = Color.SaddleBrown,
-                BaseSquareCount = 4,
-                BaseSquareSize = 64,
-                BaseLineWidth = 2,
-                MidLineWidth = 4,
-                BorderLineWidth = 3
-            }
-        );
-
-        // Add reference unit axis frame
-        var axisFrameOriginMaterial = scene.AddSimpleMaterial("axisFrameOriginMaterial", Color.DarkGray);
-        var axisFrameXMaterial = scene.AddSimpleMaterial("axisFrameXMaterial", Color.DarkRed);
-        var axisFrameYMaterial = scene.AddSimpleMaterial("axisFrameYMaterial", Color.DarkGreen);
-        var axisFrameZMaterial = scene.AddSimpleMaterial("axisFrameZMaterial", Color.DarkBlue);
-
-        var frameOrigin = new Tuple3D(-4, 0, -4);
-        MainSceneComposer.AddElement(
-            new GrVisualFrame3D("axisFrame")
-            {
-                Origin = frameOrigin,
-
-                Direction1 = Tuple3D.E1,
-                Direction2 = Tuple3D.E2,
-                Direction3 = Tuple3D.E3,
-
-                Style = new GrVisualFrameStyle3D
-                {
-                    OriginThickness = 0.075,
-                    DirectionThickness = 0.035,
-                    OriginMaterial = axisFrameOriginMaterial,
-                    DirectionMaterial1 = axisFrameXMaterial,
-                    DirectionMaterial2 = axisFrameYMaterial,
-                    DirectionMaterial3 = axisFrameZMaterial
-                },
-                
-                Direction1TextImage = new GrVisualLaTeXText3D(ImageCache, "basis1VectorText")
-                {
-                    Origin = frameOrigin + Tuple3D.E1 + 0.25 * Tuple3D.E2,
-                    ScalingFactor = LaTeXScalingFactor
-                },
-                
-                Direction2TextImage = new GrVisualLaTeXText3D(ImageCache, "basis2VectorText")
-                {
-                    Origin = frameOrigin + 1.25 * Tuple3D.E2,
-                    ScalingFactor = LaTeXScalingFactor
-                },
-                
-                Direction3TextImage = new GrVisualLaTeXText3D(ImageCache, "basis3VectorText")
-                {
-                    Origin = frameOrigin + Tuple3D.E3 + 0.25 * Tuple3D.E2,
-                    ScalingFactor = LaTeXScalingFactor
-                }
-            }
-        );
-
+        base.AddGrid();
+        
         // Add ground coordinates grid
         OmegaSceneComposer.GridMaterialKind =
             GrBabylonJsGridMaterialKind.TexturedMaterial;
@@ -496,7 +362,7 @@ public class PowerSignalVisualizer3D :
         );
     }
 
-    private void AddGuiLayer(int index)
+    protected override void AddGuiLayer(int index)
     {
         var scene = MainSceneComposer.SceneObject;
 
@@ -704,256 +570,146 @@ public class PowerSignalVisualizer3D :
 
     private void AddPhaseVector1(Tuple3D x)
     {
-        var scene = MainSceneComposer.SceneObject;
-
-        var material = scene.AddSimpleMaterial("v1VectorMaterial", Color.Red);
-
         MainSceneComposer.AddVector(
-            new GrVisualVector3D("v1Vector")
-            {
-                Origin = Tuple3D.Zero,
-                Direction = x,
-
-                Style = new GrVisualVectorStyle3D
-                {
-                    Material = material,
-                    Thickness = 0.05
-                },
-
-                TextImage = new GrVisualLaTeXText3D(ImageCache, "v1VectorText")
-                {
-                    ScalingFactor = LaTeXScalingFactor,
-                    Origin = x + x.ToUnitVector() * 0.25d + (Tuple3D.E2 + Tuple3D.E3) * 0.25d / 2d.Sqrt()
-                }
-            }
+            "v1Vector",
+            Tuple3D.Zero,
+            x,
+            Color.Red,
+            0.05
+        ).AddLaTeXText(
+            "v1VectorText",
+            ImageCache,
+            x + x.ToUnitVector() * 0.25d + (Tuple3D.E2 + Tuple3D.E3) * 0.25d / 2d.Sqrt(),
+            LaTeXScalingFactor
         );
 
         MainSceneComposer.AddLineSegment(
-            new GrVisualLineSegment3D("v1Trail")
-            {
-                Position1 = new Tuple3D(PowerSignal.VectorBounds.MinX, 0, 0),
-                Position2 = new Tuple3D(PowerSignal.VectorBounds.MaxX, 0, 0),
-
-                Style = new GrVisualCurveTubeStyle3D
-                {
-                    Material = scene.AddSimpleMaterial("v1TrailMaterial", Color.Red.WithAlpha(0.25f)),
-                    Thickness = 0.045
-                }
-            }
+            "v1Trail",
+            new Tuple3D(PowerSignal.VectorBounds.MinX, 0, 0),
+            new Tuple3D(PowerSignal.VectorBounds.MaxX, 0, 0),
+            Color.Red.WithAlpha(0.25f),
+            0.045
         );
     }
 
     private void AddPhaseVector2(Tuple3D y)
     {
-        var scene = MainSceneComposer.SceneObject;
-
-        var material = scene.AddSimpleMaterial("v2VectorMaterial", Color.Green);
-
         MainSceneComposer.AddVector(
-            new GrVisualVector3D("v2Vector")
-            {
-                Origin = Tuple3D.Zero,
-                Direction = y,
-
-                Style = new GrVisualVectorStyle3D
-                {
-                    Material = material,
-                    Thickness = 0.05
-                },
-
-                TextImage = new GrVisualLaTeXText3D(ImageCache, "v2VectorText")
-                {
-                    ScalingFactor = LaTeXScalingFactor,
-                    Origin = y + y.ToUnitVector() * 0.25d + (Tuple3D.E1 + Tuple3D.E3) * 0.25d / 2d.Sqrt()
-                }
-            }
+            "v2Vector", 
+            Tuple3D.Zero, 
+            y,
+            Color.Green,
+            0.05
+        ).AddLaTeXText(
+            "v2VectorText",
+            ImageCache,
+            y + y.ToUnitVector() * 0.25d + (Tuple3D.E1 + Tuple3D.E3) * 0.25d / 2d.Sqrt(),
+            LaTeXScalingFactor
         );
             
         MainSceneComposer.AddLineSegment(
-            new GrVisualLineSegment3D("v2TrailSegment")
-            {
-                Position1 = new Tuple3D(0, PowerSignal.VectorBounds.MinY, 0),
-                Position2 = new Tuple3D(0, PowerSignal.VectorBounds.MaxY, 0),
-
-                Style = new GrVisualCurveTubeStyle3D
-                {
-                    Material = scene.AddSimpleMaterial("v2TrailMaterial", Color.Green.WithAlpha(0.25f)),
-                    Thickness = 0.045
-                }
-            }
+            "v2TrailSegment",
+            new Tuple3D(0, PowerSignal.VectorBounds.MinY, 0),
+            new Tuple3D(0, PowerSignal.VectorBounds.MaxY, 0),
+            Color.Green.WithAlpha(0.25f),
+            0.045
         );
     }
 
     private void AddPhaseVector3(Tuple3D z)
     {
-        var scene = MainSceneComposer.SceneObject;
-
-        var material = scene.AddSimpleMaterial("v3VectorMaterial", Color.Blue);
-
         MainSceneComposer.AddVector(
-            new GrVisualVector3D("v3Vector")
-            {
-                Origin = Tuple3D.Zero,
-                Direction = z,
-
-                Style = new GrVisualVectorStyle3D
-                {
-                    Material = material,
-                    Thickness = 0.05
-                },
-
-                TextImage = new GrVisualLaTeXText3D(ImageCache, "v3VectorText")
-                {
-                    ScalingFactor = LaTeXScalingFactor,
-                    Origin = z + z.ToUnitVector() * 0.25d + (Tuple3D.E1 + Tuple3D.E2) * 0.25d / 2d.Sqrt()
-                }
-            }
-        );
-            
-        MainSceneComposer.AddLineSegment(
-            new GrVisualLineSegment3D("v3TrailSegment")
-            {
-                Position1 = new Tuple3D(0, 0, PowerSignal.VectorBounds.MinZ),
-                Position2 = new Tuple3D(0, 0, PowerSignal.VectorBounds.MaxZ),
-
-                Style = new GrVisualCurveTubeStyle3D
-                {
-                    Material = scene.AddSimpleMaterial("v3TrailMaterial", Color.Blue.WithAlpha(0.25f)),
-                    Thickness = 0.045
-                }
-            }
+            "v3Vector", 
+            Tuple3D.Zero, 
+            z,
+            Color.Blue,
+            0.05
+        ).AddLaTeXText(
+            "v3VectorText",
+            ImageCache,
+            z + z.ToUnitVector() * 0.25d + (Tuple3D.E1 + Tuple3D.E2) * 0.25d / 2d.Sqrt(),
+            LaTeXScalingFactor
         );
     }
 
     private void AddSignalVector(Tuple3D x, Tuple3D y, Tuple3D z)
     {
         var v = x + y + z;
-
-        var scene = MainSceneComposer.SceneObject;
-
-        var material = 
-            scene.AddStandardMaterial("vVectorMaterial", System.Drawing.Color.DarkOrange);
-
-        //SceneComposer.AddLineSegment(
-        //    new GrVisualLineSegment3D("vVector")
-        //    {
-        //        Position1 = Tuple3D.Zero,
-        //        Position2 = v,
-        //        Style = new GrVisualCurveTubeStyle3D
-        //        {
-        //            Material = material,
-        //            Thickness = 0.035
-        //        }
-        //    }
-        //);
-
+        
         MainSceneComposer.AddVector(
-            new GrVisualVector3D("vVector")
-            {
-                Origin = Tuple3D.Zero,
-                Direction = v,
-
-                Style = new GrVisualVectorStyle3D
-                {
-                    Material = material,
-                    Thickness = 0.05
-                },
-
-                TextImage = new GrVisualLaTeXText3D(ImageCache, "vVectorText")
-                {
-                    ScalingFactor = LaTeXScalingFactor,
-                    Origin = v + v.ToUnitVector() * 0.25d
-                }
-            }
+            "vVector",
+            Tuple3D.Zero,
+            v,
+            Color.DarkOrange,
+            0.05
+        ).AddLaTeXText(
+            "vVectorText",
+            ImageCache,
+            v + v.ToUnitVector() * 0.25d,
+            LaTeXScalingFactor
         );
-            
-        var dashedStyle = new GrVisualCurveDashedLineStyle3D
-        {
-            Color = Color.Gray,
-            DashOn = 1,
-            DashOff = 1,
-            DashPerLine = 20
-        };
+        
+        var dashSpecs = 
+            new GrVisualDashedLineSpecs(1, 1, 20);
 
         MainSceneComposer.AddLineSegment(
-            new GrVisualLineSegment3D("xySegment1")
-            {
-                Position1 = x + y,
-                Position2 = x,
-                Style = dashedStyle
-            }
+            "xySegment1",
+            x + y,
+            x,
+            Color.Gray,
+            dashSpecs
+        ).AddLineSegment(
+            "xySegment2",
+            x + y,
+            y,
+            Color.Gray,
+            dashSpecs
+        ).AddLineSegment(
+            "xySegment3",
+            x + y,
+            v,
+            Color.Gray,
+            dashSpecs
         );
-
+        
         MainSceneComposer.AddLineSegment(
-            new GrVisualLineSegment3D("xySegment2")
-            {
-                Position1 = x + y,
-                Position2 = y,
-                Style = dashedStyle
-            }
-        );
-
-        MainSceneComposer.AddLineSegment(
-            new GrVisualLineSegment3D("xySegment3")
-            {
-                Position1 = x + y,
-                Position2 = v,
-                Style = dashedStyle
-            }
-        );
-
-        MainSceneComposer.AddLineSegment(
-            new GrVisualLineSegment3D("yzSegment1")
-            {
-                Position1 = y + z,
-                Position2 = y,
-                Style = dashedStyle
-            }
+            "yzSegment1",
+            y + z,
+            y,
+            Color.Gray,
+            dashSpecs
+        ).AddLineSegment(
+            "yzSegment2",
+            y + z,
+            z,
+            Color.Gray,
+            dashSpecs
+        ).AddLineSegment(
+            "yzSegment3",
+            y + z,
+            v,
+            Color.Gray,
+            dashSpecs
         );
 
         MainSceneComposer.AddLineSegment(
-            new GrVisualLineSegment3D("yzSegment2")
-            {
-                Position1 = y + z,
-                Position2 = z,
-                Style = dashedStyle
-            }
-        );
-
-        MainSceneComposer.AddLineSegment(
-            new GrVisualLineSegment3D("yzSegment3")
-            {
-                Position1 = y + z,
-                Position2 = v,
-                Style = dashedStyle
-            }
-        );
-
-        MainSceneComposer.AddLineSegment(
-            new GrVisualLineSegment3D("zxSegment1")
-            {
-                Position1 = z + x,
-                Position2 = z,
-                Style = dashedStyle
-            }
-        );
-
-        MainSceneComposer.AddLineSegment(
-            new GrVisualLineSegment3D("zxSegment2")
-            {
-                Position1 = z + x,
-                Position2 = x,
-                Style = dashedStyle
-            }
-        );
-
-        MainSceneComposer.AddLineSegment(
-            new GrVisualLineSegment3D("zxSegment3")
-            {
-                Position1 = z + x,
-                Position2 = v,
-                Style = dashedStyle
-            }
+            "zxSegment1",
+            z + x,
+            z,
+            Color.Gray,
+            dashSpecs
+        ).AddLineSegment(
+            "zxSegment2",
+            z + x,
+            x,
+            Color.Gray,
+            dashSpecs
+        ).AddLineSegment(
+            "zxSegment3",
+            z + x,
+            v,
+            Color.Gray,
+            dashSpecs
         );
     }
 
@@ -1008,11 +764,11 @@ public class PowerSignalVisualizer3D :
             Center = Tuple3D.Zero,
             Radius = PowerSignal.ScalarBounds.MaxValue * 1.5d, //Math.Sqrt(3d / 2d),
             Normal = k,
-            Style = new GrVisualThickSurfaceStyle3D
-            {
-                Material = scene.GetMaterial("discMaterial"),
-                Thickness = 0.025
-            }
+
+            Style = new GrVisualSurfaceThickStyle3D(
+                scene.GetMaterial("discMaterial"),
+                0.025
+            )
         };
 
         var ring = new GrVisualRingSurface3D("ring")
@@ -1021,11 +777,11 @@ public class PowerSignalVisualizer3D :
             MinRadius = PowerSignal.ScalarBounds.MaxValue * Math.Sqrt(3d / 2d) - 0.5d,
             MaxRadius = PowerSignal.ScalarBounds.MaxValue * Math.Sqrt(3d / 2d) + 0.5d,
             Normal = k,
-            Style = new GrVisualThickSurfaceStyle3D
-            {
-                Material = scene.GetMaterial("discMaterial"),
-                Thickness = 0.025
-            }
+
+            Style = new GrVisualSurfaceThickStyle3D(
+                scene.GetMaterial("discMaterial"),
+                0.025
+            )
         };
 
         MainSceneComposer.AddElement(ring);
@@ -1085,16 +841,11 @@ public class PowerSignalVisualizer3D :
                 .Take(trailLength)
                 .ToImmutableArray();
 
-        MainSceneComposer.AddLineCurve(
-            new GrVisualLineCurve3D("curve")
-            {
-                PositionList = pointList,
-                Style = new GrVisualCurveTubeStyle3D
-                {
-                    Material = material,
-                    Thickness = 0.05
-                }
-            }
+        MainSceneComposer.AddLinePath(
+            "curve",
+            pointList,
+            material, 
+            0.05
         );
 
         //var magnitude = Magnitudes.Max();
@@ -1190,32 +941,35 @@ public class PowerSignalVisualizer3D :
                     DirectionMaterial1 = scene.AddStandardMaterial("curveFrameDirectionMaterial1", Color.DarkRed),
                     DirectionMaterial2 = scene.AddStandardMaterial("curveFrameDirectionMaterial2", Color.DarkGreen),
                     DirectionMaterial3 = scene.AddStandardMaterial("curveFrameDirectionMaterial3", Color.DarkBlue)
-                },
-
-                Direction1TextImage = new GrVisualLaTeXText3D(ImageCache, "e1VectorText")
-                {
-                    ScalingFactor = LaTeXScalingFactor,
-                    Origin = curveFrame.Origin + 
-                             curveFrame.Direction1 + 
-                             curveFrame.Direction1.ToUnitVector() * 0.25d
-                },
-
-                Direction2TextImage = new GrVisualLaTeXText3D(ImageCache, "e2VectorText")
-                {
-                    ScalingFactor = LaTeXScalingFactor,
-                    Origin = curveFrame.Origin + 
-                             curveFrame.Direction2 + 
-                             curveFrame.Direction2.ToUnitVector() * 0.25d
-                },
-
-                Direction3TextImage = new GrVisualLaTeXText3D(ImageCache, "e3VectorText")
-                {
-                    ScalingFactor = LaTeXScalingFactor,
-                    Origin = curveFrame.Origin + 
-                             curveFrame.Direction3 + 
-                             curveFrame.Direction3.ToUnitVector() * 0.25d
                 }
             }
+        );
+
+        MainSceneComposer.AddLaTeXText(
+            "e1VectorText",
+            ImageCache,
+            curveFrame.Origin + 
+            curveFrame.Direction1 + 
+            curveFrame.Direction1.ToUnitVector() * 0.25d,
+            LaTeXScalingFactor
+        );
+        
+        MainSceneComposer.AddLaTeXText(
+            "e2VectorText",
+            ImageCache,
+            curveFrame.Origin + 
+            curveFrame.Direction2 + 
+            curveFrame.Direction2.ToUnitVector() * 0.25d,
+            LaTeXScalingFactor
+        );
+        
+        MainSceneComposer.AddLaTeXText(
+            "e3VectorText",
+            ImageCache,
+            curveFrame.Origin + 
+            curveFrame.Direction3 + 
+            curveFrame.Direction3.ToUnitVector() * 0.25d,
+            LaTeXScalingFactor
         );
 
         var (kappa1, kappa2) = PowerSignal.CurvatureList[index];
@@ -1233,60 +987,37 @@ public class PowerSignalVisualizer3D :
         var center = Tuple3D.Zero; //curveFrame.Origin + e2 * radius; 
         var normal = e2.VectorUnitCross(k21Vector);
 
-        MainSceneComposer.AddCircleSurface(
-            new GrVisualCircleSurface3D("curveFrameCircleSurface")
-            {
-                Center = center,
-                Radius = radius,
-                Normal = normal,
-
-                Style = new GrVisualThickSurfaceStyle3D
-                {
-                    Material = scene.AddStandardMaterial(
-                        "curveFrameCircleSurfaceMaterial", 
-                        Color.YellowGreen.WithAlpha(0.2f)
-                    ),
-                    Thickness = 0.035d
-                }
-            }
+        MainSceneComposer.AddDisc(
+            "curveFrameCircleSurface",
+            center,
+            normal,
+            radius,
+            Color.YellowGreen.WithAlpha(0.2f),
+            0.035d
         );
 
         MainSceneComposer.AddVector(
-            new GrVisualVector3D("curveFrameCircleNormal")
-            {
-                Origin = center,
-                Direction = normal,
-
-                Style = new GrVisualVectorStyle3D
-                {
-                    Material = scene.AddStandardMaterial(
-                        "curveFrameCircleNormalMaterial",
-                        System.Drawing.Color.Brown
-                    ),
-                    Thickness = 0.05d
-                },
-
-                TextImage = new GrVisualLaTeXText3D(ImageCache, "kVectorText")
-                {
-                    ScalingFactor = LaTeXScalingFactor,
-                    Origin = center + normal * 1.25d
-                }
-            }
+            "curveFrameCircleNormal",
+            center,
+            normal,
+            Color.Brown,
+            0.05d
         );
 
-        MainSceneComposer.AddCircleCurve(
-            new GrVisualCircleCurve3D("curveFrameCircleCurve")
-            {
-                Center = center,
-                Radius = radius,
-                Normal = normal,
+        MainSceneComposer.AddLaTeXText(
+            "kVectorText",
+            ImageCache,
+            center + normal * 1.25d,
+            LaTeXScalingFactor
+        );
 
-                Style = new GrVisualCurveTubeStyle3D
-                {
-                    Material = scene.GetMaterial("curveFrameCircleNormalMaterial"),
-                    Thickness = 0.035d
-                }
-            }
+        MainSceneComposer.AddCircle(
+            "curveFrameCircleCurve",
+            center,
+            normal,
+            radius,
+            scene.GetMaterial("curveFrameCircleNormalMaterial"),
+            0.035d
         );
     }
 
@@ -1296,9 +1027,7 @@ public class PowerSignalVisualizer3D :
             return;
 
         var scene = HtmlComposer.GetScene("omegaScene");
-
-        var curveFrame = PowerSignal.FrameList[index];
-
+        
         // Display bivector omega = kappa1 e12 + kappa2 e23
         var (kappa1, kappa2) = PowerSignal.CurvatureList[index];
 
@@ -1326,56 +1055,42 @@ public class PowerSignalVisualizer3D :
                     DirectionMaterial1 = scene.AddStandardMaterial("curveFrameDirectionMaterial1", Color.DarkRed),
                     DirectionMaterial2 = scene.AddStandardMaterial("curveFrameDirectionMaterial2", Color.DarkGreen),
                     DirectionMaterial3 = scene.AddStandardMaterial("curveFrameDirectionMaterial3", Color.DarkBlue)
-                },
-
-                Direction1TextImage = new GrVisualLaTeXText3D(ImageCache, "e1VectorText")
-                {
-                    ScalingFactor = LaTeXScalingFactor,
-                    Origin = OmegaFrameOrigin + e1 * 1.25d
-                },
-
-                Direction2TextImage = new GrVisualLaTeXText3D(ImageCache, "e2VectorText")
-                {
-                    ScalingFactor = LaTeXScalingFactor,
-                    Origin = OmegaFrameOrigin + e2 * 1.25d
-                },
-
-                Direction3TextImage = new GrVisualLaTeXText3D(ImageCache, "e3VectorText")
-                {
-                    ScalingFactor = LaTeXScalingFactor,
-                    Origin = OmegaFrameOrigin + e3 * 1.25d
                 }
             }
         );
 
+        OmegaSceneComposer.AddLaTeXText(
+            "e1VectorText",
+            ImageCache,
+            OmegaFrameOrigin + e1 * 1.25d,
+            LaTeXScalingFactor
+        ).AddLaTeXText(
+            "e2VectorText",
+            ImageCache,
+            OmegaFrameOrigin + e2 * 1.25d,
+            LaTeXScalingFactor
+        ).AddLaTeXText(
+            "e2VectorText",
+            ImageCache,
+            OmegaFrameOrigin + e3 * 1.25d,
+            LaTeXScalingFactor
+        );
+
         if (e1Ds.GetLength() > 0.1)
         {
-            var e1DsVectorMaterial = OmegaSceneComposer.SceneObject.AddStandardMaterial(
-                "e1DsVectorMaterial",
-                new GrBabylonJsStandardMaterial.StandardMaterialProperties
-                {
-                    Color = System.Drawing.Color.IndianRed
-                }
+            OmegaSceneComposer.AddVector(
+                "e1DsVector",
+                OmegaFrameOrigin,
+                e1Ds,
+                Color.IndianRed,
+                0.035
             );
 
-            OmegaSceneComposer.AddVector(
-                new GrVisualVector3D("e1DsVector")
-                {
-                    Origin = OmegaFrameOrigin,
-                    Direction = e1Ds,
-
-                    Style = new GrVisualVectorStyle3D
-                    {
-                        Thickness = 0.035,
-                        Material = e1DsVectorMaterial
-                    },
-
-                    TextImage = new GrVisualLaTeXText3D(ImageCache, "e1DsVectorText")
-                    {
-                        ScalingFactor = LaTeXScalingFactor,
-                        Origin = OmegaFrameOrigin + e1Ds + e1Ds.ToUnitVector() * 0.25d
-                    }
-                }
+            OmegaSceneComposer.AddLaTeXText(
+                "e1DsVectorText",
+                ImageCache,
+                OmegaFrameOrigin + e1Ds + e1Ds.ToUnitVector() * 0.25d,
+                LaTeXScalingFactor
             );
 
             var curveFrameOmega1BivectorMaterial = OmegaSceneComposer.SceneObject.AddStandardMaterial(
@@ -1389,56 +1104,37 @@ public class PowerSignalVisualizer3D :
                 }
             );
 
-            OmegaSceneComposer.AddRectangleSurface(
-                new GrVisualRectangleSurface3D(
-                    "omega1Bivector",
-                    OmegaFrameOrigin,
-                    e1,
-                    e1Ds
-                )
-                {
-                    Style = new GrVisualThinSurfaceStyle3D
-                    {
-                        Material = curveFrameOmega1BivectorMaterial
-                    },
-
-                    TextImage = new GrVisualLaTeXText3D(ImageCache, "omega1BivectorText")
-                    {
-                        Origin = OmegaFrameOrigin + 0.75d * (e1 + e1Ds),
-                        ScalingFactor = LaTeXScalingFactor
-                    }
-                }
+            OmegaSceneComposer.AddRectangle(
+                "omega1Bivector",
+                OmegaFrameOrigin,
+                e1,
+                e1Ds,
+                curveFrameOmega1BivectorMaterial
+            );
+            
+            OmegaSceneComposer.AddLaTeXText(
+                "omega1BivectorText",
+                ImageCache,
+                OmegaFrameOrigin + 0.75d * (e1 + e1Ds),
+                LaTeXScalingFactor
             );
         }
 
         if (e2Ds.GetLength() > 0.1)
         {
-            var e2DsVectorMaterial = OmegaSceneComposer.SceneObject.AddStandardMaterial(
-                "e2DsVectorMaterial",
-                new GrBabylonJsStandardMaterial.StandardMaterialProperties
-                {
-                    Color = System.Drawing.Color.LimeGreen
-                }
-            );
-
             OmegaSceneComposer.AddVector(
-                new GrVisualVector3D("e2DsVector")
-                {
-                    Origin = OmegaFrameOrigin,
-                    Direction = e2Ds,
-
-                    Style = new GrVisualVectorStyle3D
-                    {
-                        Thickness = 0.035,
-                        Material = e2DsVectorMaterial
-                    },
-
-                    TextImage = new GrVisualLaTeXText3D(ImageCache, "e2DsVectorText")
-                    {
-                        ScalingFactor = LaTeXScalingFactor,
-                        Origin = OmegaFrameOrigin + e2Ds + e2Ds.ToUnitVector() * 0.25d
-                    }
-                }
+                "e2DsVector",
+                OmegaFrameOrigin,
+                e2Ds,
+                Color.LimeGreen,
+                0.035
+            );
+            
+            OmegaSceneComposer.AddLaTeXText(
+                "e2DsVectorText",
+                ImageCache,
+                OmegaFrameOrigin + e2Ds + e2Ds.ToUnitVector() * 0.25d,
+                LaTeXScalingFactor
             );
 
             var curveFrameOmegaBivectorMaterial = OmegaSceneComposer.SceneObject.AddStandardMaterial(
@@ -1452,25 +1148,19 @@ public class PowerSignalVisualizer3D :
                 }
             );
 
-            OmegaSceneComposer.AddRectangleSurface(
-                new GrVisualRectangleSurface3D(
-                    "omegaBivector",
-                    OmegaFrameOrigin,
-                    e2,
-                    e2Ds
-                )
-                {
-                    Style = new GrVisualThinSurfaceStyle3D
-                    {
-                        Material = curveFrameOmegaBivectorMaterial
-                    },
-
-                    TextImage = new GrVisualLaTeXText3D(ImageCache, "omega2BivectorText")
-                    {
-                        Origin = OmegaFrameOrigin + 0.75 * (e2 + e2Ds),
-                        ScalingFactor = LaTeXScalingFactor
-                    }
-                }
+            OmegaSceneComposer.AddRectangle(
+                "omegaBivector",
+                OmegaFrameOrigin,
+                e2,
+                e2Ds,
+                curveFrameOmegaBivectorMaterial
+            );
+            
+            OmegaSceneComposer.AddLaTeXText(
+                "omega2BivectorText",
+                ImageCache,
+                OmegaFrameOrigin + 0.75 * (e2 + e2Ds),
+                LaTeXScalingFactor
             );
         }
 
@@ -1485,23 +1175,18 @@ public class PowerSignalVisualizer3D :
             );
 
             OmegaSceneComposer.AddVector(
-                new GrVisualVector3D("e3DsVector")
-                {
-                    Origin = OmegaFrameOrigin,
-                    Direction = e3Ds,
-
-                    Style = new GrVisualVectorStyle3D
-                    {
-                        Thickness = 0.035,
-                        Material = e3DsVectorMaterial
-                    },
-
-                    TextImage = new GrVisualLaTeXText3D(ImageCache, "e3DsVectorText")
-                    {
-                        ScalingFactor = LaTeXScalingFactor,
-                        Origin = OmegaFrameOrigin + e3Ds + e3Ds.ToUnitVector() * 0.25d
-                    }
-                }
+                "e3DsVector",
+                OmegaFrameOrigin,
+                e3Ds,
+                Color.DodgerBlue,
+                0.035
+            );
+            
+            OmegaSceneComposer.AddLaTeXText(
+                "e3DsVectorText",
+                ImageCache,
+                OmegaFrameOrigin + e3Ds + e3Ds.ToUnitVector() * 0.25d,
+                LaTeXScalingFactor
             );
 
             var curveFrameOmega3BivectorMaterial = OmegaSceneComposer.SceneObject.AddStandardMaterial(
@@ -1515,47 +1200,30 @@ public class PowerSignalVisualizer3D :
                 }
             );
 
-            OmegaSceneComposer.AddRectangleSurface(
-                new GrVisualRectangleSurface3D(
-                    "omega3Bivector",
-                    OmegaFrameOrigin,
-                    e3,
-                    e3Ds
-                )
-                {
-                    Style = new GrVisualThinSurfaceStyle3D
-                    {
-                        Material = curveFrameOmega3BivectorMaterial
-                    },
-
-                    TextImage = new GrVisualLaTeXText3D(ImageCache, "omega3BivectorText")
-                    {
-                        Origin = OmegaFrameOrigin + 0.75d * (e3 + e3Ds),
-                        ScalingFactor = LaTeXScalingFactor
-                    }
-                }
+            OmegaSceneComposer.AddRectangle(
+                "omega3Bivector",
+                OmegaFrameOrigin,
+                e3,
+                e3Ds,
+                curveFrameOmega3BivectorMaterial
+            );
+            
+            OmegaSceneComposer.AddLaTeXText(
+                "omega3BivectorText",
+                ImageCache,
+                OmegaFrameOrigin + 0.75d * (e3 + e3Ds),
+                LaTeXScalingFactor
             );
         }
     }
 
-    private string GenerateSnapshotCode(int index)
+    protected override GrBabylonJsHtmlComposer3D GenerateSnapshotCode(int index)
     {
+        base.GenerateSnapshotCode(index);
+
         var t = PowerSignal.TimeValues[index];
-        var alpha = CameraAlphaValues[index];
-        var beta = CameraBetaValues[index];
-
         var (x, y, z) = PowerSignal.GetPhaseVectors(t);
-
-        HtmlComposer = InitializeSceneComposers(
-            index, 
-            CanvasWidth, 
-            CanvasHeight
-        );
         
-        AddCamera(alpha, beta);
-        AddEnvironment();
-        AddGrid();
-        AddGuiLayer(index);
         AddPhaseVector1(x);
         AddPhaseVector2(y);
         AddPhaseVector3(z);
@@ -1566,36 +1234,6 @@ public class PowerSignalVisualizer3D :
         AddSignalFrame(index);
         AddSignalFrameBivectors(index);
 
-        return HtmlComposer.GetHtmlCode();
-    }
-
-
-    public override void GenerateSnapshots()
-    {
-        Console.Write("Computing signal values .. ");
-
-        CameraAlphaValues =
-            30d.DegreesToRadians().GetCosRange(
-                150d.DegreesToRadians(),
-                FrameCount,
-                CameraRotationCount,
-                true
-            ).CreateSignal(PowerSignal.SamplingRate);
-
-        CameraBetaValues =
-            Enumerable
-                .Repeat(2 * Math.PI / 5, FrameCount)
-                .CreateSignal(PowerSignal.SamplingRate);
-
-        Console.WriteLine("done.");
-        Console.WriteLine();
-
-        InitializeImageCache();
-
-        GenerateHtml = true;
-        AnimatedGifFrameDelay = (int) Math.Ceiling(1d / PowerSignal.SamplingRate);
-        Mp4FrameRate = PowerSignal.SamplingRate;
-
-        base.GenerateSnapshots();
+        return HtmlComposer;
     }
 }

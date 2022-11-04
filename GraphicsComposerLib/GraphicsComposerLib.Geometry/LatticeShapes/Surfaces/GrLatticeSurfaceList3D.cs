@@ -221,8 +221,8 @@ namespace GraphicsComposerLib.Geometry.LatticeShapes.Surfaces
             {
                 //Find triangle normal, not unit but full normal vector
                 var normal = vertex1.ParentSurface.ReverseNormals
-                    ? VectorAlgebraUtils.GetTriangleNormal(vertex3, vertex2, vertex1)
-                    : VectorAlgebraUtils.GetTriangleNormal(vertex1, vertex2, vertex3);
+                    ? VectorUtils.GetTriangleNormal(vertex3, vertex2, vertex1)
+                    : VectorUtils.GetTriangleNormal(vertex1, vertex2, vertex3);
 
                 //For debugging only
                 Debug.Assert(normal.IsValid());
@@ -239,8 +239,8 @@ namespace GraphicsComposerLib.Geometry.LatticeShapes.Surfaces
             {
                 //Find triangle unit normal
                 var normal = vertex1.ParentSurface.ReverseNormals
-                    ? VectorAlgebraUtils.GetTriangleUnitNormal(vertex3, vertex2, vertex1)
-                    : VectorAlgebraUtils.GetTriangleUnitNormal(vertex1, vertex2, vertex3);
+                    ? VectorUtils.GetTriangleUnitNormal(vertex3, vertex2, vertex1)
+                    : VectorUtils.GetTriangleUnitNormal(vertex1, vertex2, vertex3);
                 
                 //For debugging only
                 Debug.Assert(normal.IsValid());
@@ -262,8 +262,8 @@ namespace GraphicsComposerLib.Geometry.LatticeShapes.Surfaces
 
                 //Find triangle normal, not unit but full normal vector
                 var normal = vertex1.ParentSurface.ReverseNormals
-                    ? VectorAlgebraUtils.GetTriangleNormal(vertex3, vertex2, vertex1)
-                    : VectorAlgebraUtils.GetTriangleNormal(vertex1, vertex2, vertex3);
+                    ? VectorUtils.GetTriangleNormal(vertex3, vertex2, vertex1)
+                    : VectorUtils.GetTriangleNormal(vertex1, vertex2, vertex3);
 
                 // For debugging only
                 Debug.Assert(

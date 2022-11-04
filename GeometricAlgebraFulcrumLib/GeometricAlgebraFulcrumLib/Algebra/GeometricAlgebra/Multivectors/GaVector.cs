@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Vectors;
@@ -11,6 +12,7 @@ using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using GeometricAlgebraFulcrumLib.Utilities.Factories;
+using NumericalGeometryLib.BasicMath.Tuples.Mutable;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors
 {
@@ -814,6 +816,10 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors
         {
             GeometricProcessor = (IGeometricAlgebraProcessor<T>) processor;
             VectorStorage = vector;
+
+            Debug.Assert(
+                VectorStorage.GetStoredBasisVectorsBitPattern() < GeometricProcessor.GaSpaceDimension
+            );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -821,6 +827,10 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors
         {
             GeometricProcessor = processor;
             VectorStorage = vector;
+
+            Debug.Assert(
+                VectorStorage.GetStoredBasisVectorsBitPattern() < GeometricProcessor.GaSpaceDimension
+            );
         }
 
 
@@ -837,6 +847,12 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors
         }
 
         
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ulong GetStoredBasisVectorsBitPattern()
+        {
+            return VectorStorage.GetStoredBasisVectorsBitPattern();
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public GaKVector<T> AsKVector()
         {

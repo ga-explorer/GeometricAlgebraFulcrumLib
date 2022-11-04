@@ -1,17 +1,14 @@
-﻿using GraphicsComposerLib.Rendering.Visuals.Space3D.Images;
-using System.Diagnostics.CodeAnalysis;
-
-namespace GraphicsComposerLib.Rendering.Visuals.Space3D;
+﻿namespace GraphicsComposerLib.Rendering.Visuals.Space3D;
 
 public abstract class GrVisualElement3D :
     IGrVisualElement3D
 {
     public string Name { get; }
 
-    public GrVisualImage3D? TextImage { get; set; }
+    //public GrVisualImage3D? TextImage { get; set; }
 
 
-    protected GrVisualElement3D([NotNull] string name)
+    protected GrVisualElement3D(string name)
     {
         Name = name;
     }

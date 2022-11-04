@@ -2507,13 +2507,31 @@ namespace GeometricAlgebraFulcrumLib.Mathematica
             var isSymbol = expr.SymbolQ();
 
             if (isNumber)
+            {
+                if (expr.Head.ToString() == "Rational")
+                    return context.GetOrDefineRationalNumber(
+                        long.Parse(expr.Args[0].ToString()),
+                        long.Parse(expr.Args[1].ToString())
+                    );
+
                 return context.GetOrDefineSymbolicNumber(
-                    expr.ToString(), 
+                    expr.ToString(),
                     expr.ToNumber()
                 );
+            }
 
             if (isSymbol)
-                return context.GetVariable(expr.ToString());
+            {
+                var exprText = expr.ToString();
+
+                return exprText switch
+                {
+                    "Pi" => context.GetOrDefineSymbolicNumber(exprText, Math.PI),
+                    "E" => context.GetOrDefineSymbolicNumber(exprText, Math.E),
+
+                    _ => context.GetVariable(exprText)
+                };
+            }
 
             if (expr.Args.Length == 0)
                 return MetaExpressionFunction.CreateNonAssociative(

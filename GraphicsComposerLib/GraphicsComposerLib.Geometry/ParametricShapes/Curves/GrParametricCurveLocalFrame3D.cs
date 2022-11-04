@@ -9,6 +9,8 @@ using GraphicsComposerLib.Geometry.Primitives;
 using GraphicsComposerLib.Geometry.Primitives.Vertices;
 using NumericalGeometryLib.BasicMath.Frames.Space3D;
 using SixLabors.ImageSharp;
+using System.Runtime.CompilerServices;
+using System.Text;
 
 namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves
 {
@@ -34,7 +36,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves
         /// <param name="point"></param>
         /// <param name="tangentVector"></param>
         /// <returns></returns>
-        public static GrParametricCurveLocalFrame3D CreateFrame(double parameterValue, ITuple3D point, ITuple3D tangentVector)
+        public static GrParametricCurveLocalFrame3D Create(double parameterValue, ITuple3D point, ITuple3D tangentVector)
         {
             var tangent = tangentVector.ToUnitVector();
             var normal1 = tangentVector.GetUnitNormal();
@@ -49,7 +51,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves
             );
         }
 
-        public static GrParametricCurveLocalFrame3D CreateFrame(double parameterValue, ITuple3D point, ITuple3D normal1, ITuple3D normal2, ITuple3D tangent)
+        public static GrParametricCurveLocalFrame3D Create(double parameterValue, ITuple3D point, ITuple3D normal1, ITuple3D normal2, ITuple3D tangent)
         {
             return new GrParametricCurveLocalFrame3D(
                 parameterValue,
@@ -439,6 +441,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves
             //return new Triplet<Tuple3D>(newNormal1, newNormal2, newTangent.ToTuple3D());
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Pair<Tuple3D> RotateNormalsByTangent(ITuple3D newTangent)
         {
             var matrix = 
@@ -451,6 +454,21 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves
         }
 
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public GrParametricCurveLocalFrame3D RotateNormalsBy(PlanarAngle angle)
+        {
+            Debug.Assert(angle.IsValid());
+
+            return new GrParametricCurveLocalFrame3D(
+                ParameterValue,
+                Point,
+                Normal1.RotateUsingAxisAngle(Tangent, angle),
+                Normal2.RotateUsingAxisAngle(Tangent, angle),
+                Tangent
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public GrParametricCurveLocalFrame3D TranslateBy(ITuple3D translationVector)
         {
             Debug.Assert(translationVector.IsValid());
@@ -466,6 +484,63 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves
                 Normal2,
                 Tangent
             );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public GrParametricCurveLocalFrame3D TranslateRotateNormalsBy(ITuple3D translationVector, PlanarAngle angle)
+        {
+            Debug.Assert(translationVector.IsValid());
+
+            return new GrParametricCurveLocalFrame3D(
+                ParameterValue,
+                new Tuple3D(
+                    Point.X + translationVector.X,
+                    Point.Y + translationVector.Y,
+                    Point.Z + translationVector.Z
+                ),
+                Normal1.RotateUsingAxisAngle(Tangent, angle),
+                Normal2.RotateUsingAxisAngle(Tangent, angle),
+                Tangent
+            );
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public GrParametricCurveLocalFrame3D GetNegativeFrame()
+        {
+            return new GrParametricCurveLocalFrame3D(
+                ParameterValue,
+                Point,
+                Normal1.GetNegative(),
+                Normal2.GetNegative(),
+                -Tangent
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public GrParametricCurveLocalFrame3D GetRotatedFrameUsingQuaternion(ITuple4D quaternion)
+        {
+            return new GrParametricCurveLocalFrame3D(
+                ParameterValue,
+                Point,
+                Normal1.RotateUsingQuaternion(quaternion),
+                Normal2.RotateUsingQuaternion(quaternion),
+                Tangent.RotateUsingQuaternion(quaternion)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override string ToString()
+        {
+            return new StringBuilder()
+                .AppendLine("Frame {")
+                .AppendLine($"         t: {ParameterValue:G}")
+                .AppendLine($"     Point: {Point}")
+                .AppendLine($"   Tangent: {Tangent}")
+                .AppendLine($"   Normal1: {Normal1}")
+                .AppendLine($"   Normal2: {Normal2}")
+                .Append("}")
+                .ToString();
         }
     }
 }

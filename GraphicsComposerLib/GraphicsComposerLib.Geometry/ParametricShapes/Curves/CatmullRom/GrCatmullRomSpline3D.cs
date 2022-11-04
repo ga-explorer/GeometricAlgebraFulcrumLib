@@ -388,7 +388,7 @@ public sealed class GrCatmullRomSpline3D :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public GrParametricCurveLocalFrame3D GetFrame(double parameterValue)
     {
-        return GrParametricCurveLocalFrame3D.CreateFrame(
+        return GrParametricCurveLocalFrame3D.Create(
             parameterValue,
             GetPoint(parameterValue),
             GetTangent(parameterValue)

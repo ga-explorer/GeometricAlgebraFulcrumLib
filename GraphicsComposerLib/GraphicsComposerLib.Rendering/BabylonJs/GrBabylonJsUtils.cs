@@ -108,7 +108,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
 
         public static string GetBabylonJsCode(this double value)
         {
-            return value.ToString("G");
+            return ((float) value).ToString("G");
         }
         
         public static string GetBabylonJsCode(this System.Drawing.Color color, bool useAlpha = false)
@@ -149,17 +149,22 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
 
         public static string GetBabylonJsCode(this IPair<double> vector)
         {
-            return $"new BABYLON.Vector2({vector.Item1:G}, {vector.Item2:G})";
+            return $"new BABYLON.Vector2({(float) vector.Item1:G}, {(float) vector.Item2:G})";
         }
 
         public static string GetBabylonJsCode(this ITriplet<double> vector)
         {
-            return $"new BABYLON.Vector3({vector.Item1:G}, {vector.Item2:G}, {vector.Item3:G})";
+            return $"new BABYLON.Vector3({(float) vector.Item1:G}, {(float) vector.Item2:G}, {(float) vector.Item3:G})";
         }
         
         public static string GetBabylonJsCode(this IQuad<double> vector)
         {
-            return $"new BABYLON.Vector3({vector.Item1:G}, {vector.Item2:G}, {vector.Item3:G}, {vector.Item4:G})";
+            return $"new BABYLON.Vector3({(float) vector.Item1:G}, {(float) vector.Item2:G}, {(float) vector.Item3:G}, {(float) vector.Item4:G})";
+        }
+
+        public static string GetQuaternionBabylonJsCode(this ITuple4D quaternion)
+        {
+            return $"new BABYLON.Quaternion({(float) quaternion.X:G}, {(float) quaternion.Y:G}, {(float) quaternion.Z:G}, {(float) quaternion.W:G})";
         }
 
         public static string GetBabylonJsCode(this Quaternion quaternion)

@@ -133,7 +133,7 @@ namespace GeometricAlgebraFulcrumLib.Mathematica.Applications.GaPoT
         /// <param name="processor"></param>
         /// <param name="vectorsCount"></param>
         /// <returns></returns>
-        private static T[,] CreateClarkeArrayOdd<T>(IGeometricAlgebraProcessor<T> processor, int vectorsCount)
+        private static T[,] CreateClarkeArrayOdd<T>(IScalarAlgebraProcessor<T> processor, int vectorsCount)
         {
             var clarkeArray = new T[vectorsCount, vectorsCount];
 
@@ -196,7 +196,7 @@ namespace GeometricAlgebraFulcrumLib.Mathematica.Applications.GaPoT
         /// <param name="processor"></param>
         /// <param name="vectorsCount"></param>
         /// <returns></returns>
-        private static T[,] CreateClarkeArrayEven<T>(IGeometricAlgebraProcessor<T> processor, int vectorsCount)
+        private static T[,] CreateClarkeArrayEven<T>(IScalarAlgebraProcessor<T> processor, int vectorsCount)
         {
             var clarkeArray = new T[vectorsCount, vectorsCount];
 
@@ -256,7 +256,7 @@ namespace GeometricAlgebraFulcrumLib.Mathematica.Applications.GaPoT
             return clarkeArray;
         }
 
-        public static T[,] CreateClarkeArray<T>(this IGeometricAlgebraProcessor<T> processor, int vectorsCount)
+        public static T[,] CreateClarkeArray<T>(this IScalarAlgebraProcessor<T> processor, int vectorsCount)
         {
             return vectorsCount % 2 == 0 
                 ? CreateClarkeArrayEven(processor, vectorsCount) 

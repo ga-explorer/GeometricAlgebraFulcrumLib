@@ -10,7 +10,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Values
         public abstract bool IsEmpty { get; }
 
 
-        protected GrBabylonJsValue([NotNull] string valueText)
+        protected GrBabylonJsValue(string valueText)
         {
             ValueText = valueText;
         }

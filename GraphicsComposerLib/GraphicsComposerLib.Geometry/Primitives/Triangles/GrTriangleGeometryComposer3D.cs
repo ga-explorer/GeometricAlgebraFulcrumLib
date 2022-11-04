@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-
 using System.Linq;
 using DataStructuresLib.Basic;
 using NumericalGeometryLib.BasicMath;
@@ -233,8 +232,8 @@ namespace GraphicsComposerLib.Geometry.Primitives.Triangles
                 //Find triangle normal, not unit but full normal vector
                 var normal = 
                     ReverseNormals
-                        ? VectorAlgebraUtils.GetTriangleNormal(vertex3, vertex2, vertex1)
-                        : VectorAlgebraUtils.GetTriangleNormal(vertex1, vertex2, vertex3);
+                        ? VectorUtils.GetTriangleNormal(vertex3, vertex2, vertex1)
+                        : VectorUtils.GetTriangleNormal(vertex1, vertex2, vertex3);
 
                 // For debugging only
                 Debug.Assert(
@@ -260,8 +259,8 @@ namespace GraphicsComposerLib.Geometry.Primitives.Triangles
                 //Find triangle unit normal
                 var normal = 
                     ReverseNormals
-                        ? VectorAlgebraUtils.GetTriangleUnitNormal(vertex3, vertex2, vertex1)
-                        : VectorAlgebraUtils.GetTriangleUnitNormal(vertex1, vertex2, vertex3);
+                        ? VectorUtils.GetTriangleUnitNormal(vertex3, vertex2, vertex1)
+                        : VectorUtils.GetTriangleUnitNormal(vertex1, vertex2, vertex3);
                 
                 //For debugging only
                 Debug.Assert(normal.IsValid());
@@ -278,8 +277,8 @@ namespace GraphicsComposerLib.Geometry.Primitives.Triangles
                 //Find triangle normal, not unit but full normal vector
                 var normal = 
                     ReverseNormals
-                        ? VectorAlgebraUtils.GetTriangleNormal(vertex3, vertex2, vertex1)
-                        : VectorAlgebraUtils.GetTriangleNormal(vertex1, vertex2, vertex3);
+                        ? VectorUtils.GetTriangleNormal(vertex3, vertex2, vertex1)
+                        : VectorUtils.GetTriangleNormal(vertex1, vertex2, vertex3);
 
                 //For debugging only
                 Debug.Assert(normal.IsValid());

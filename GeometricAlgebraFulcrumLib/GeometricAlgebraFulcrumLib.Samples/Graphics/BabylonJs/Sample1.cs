@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Drawing;
 using System.IO;
 using GraphicsComposerLib.Geometry.ParametricShapes.Curves;
 using GraphicsComposerLib.Geometry.ParametricShapes.Curves.Sampled;
 using GraphicsComposerLib.Rendering.BabylonJs;
 using GraphicsComposerLib.Rendering.BabylonJs.Materials;
 using GraphicsComposerLib.Rendering.BabylonJs.Textures;
-using GraphicsComposerLib.Rendering.Colors;
 using GraphicsComposerLib.Rendering.Visuals.Space3D.Basic;
 using GraphicsComposerLib.Rendering.Visuals.Space3D.Curves;
 using GraphicsComposerLib.Rendering.Visuals.Space3D.Groups;
@@ -14,13 +12,15 @@ using GraphicsComposerLib.Rendering.Visuals.Space3D.Surfaces;
 using NumericalGeometryLib.BasicMath;
 using NumericalGeometryLib.BasicMath.Calculus;
 using NumericalGeometryLib.BasicMath.Tuples.Immutable;
+using SixLabors.ImageSharp;
 using TextComposerLib;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Graphics.BabylonJs
 {
     public static class Sample1
     {
-        public const string WorkingPath = @"D:\Projects\Study\Babylon.js";
+        private const string WorkingPath = @"D:\Projects\Study\Babylon.js";
+
 
         public static void Example1()
         {
@@ -61,34 +61,19 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.BabylonJs
                 rosyBrownMaterial
             );
 
-            var pointA = new GrVisualPoint3D("pointA")
+            var pointA = new GrVisualPoint3D("pointA", new Tuple3D(5, 0, 0))
             {
-                Position = new Tuple3D(5, 0, 0),
-                Style = new GrVisualThickSurfaceStyle3D
-                {
-                    Material = redMaterial,
-                    Thickness = thickness * 2
-                }
+                Style = new GrVisualSurfaceThickStyle3D(redMaterial, thickness * 2)
             };
 
-            var pointB = new GrVisualPoint3D("pointB")
+            var pointB = new GrVisualPoint3D("pointB", new Tuple3D(0, 5, 0))
             {
-                Position = new Tuple3D(0, 5, 0),
-                Style = new GrVisualThickSurfaceStyle3D
-                {
-                    Material = greenMaterial,
-                    Thickness = thickness * 2
-                }
+                Style = new GrVisualSurfaceThickStyle3D(greenMaterial, thickness * 2)
             };
 
-            var pointC = new GrVisualPoint3D("pointC")
+            var pointC = new GrVisualPoint3D("pointC", new Tuple3D(0, 0, 5))
             {
-                Position = new Tuple3D(0, 0, 5),
-                Style = new GrVisualThickSurfaceStyle3D
-                {
-                    Material = blueMaterial,
-                    Thickness = thickness * 2
-                }
+                Style = new GrVisualSurfaceThickStyle3D(blueMaterial, thickness * 2)
             };
 
             var worldFrame = new GrVisualFrame3D("worldFrame")
@@ -97,6 +82,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.BabylonJs
                 Direction1 = Tuple3D.E1,
                 Direction2 = Tuple3D.E2,
                 Direction3 = Tuple3D.E3,
+
                 Style = new GrVisualFrameStyle3D
                 {
                     OriginMaterial = grayMaterial,
@@ -108,99 +94,63 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.BabylonJs
                 }
             };
 
-            var xAxis = new GrVisualVector3D("xAxis")
+            var xAxis = new GrVisualVector3D("xAxis", new Tuple3D(2, 0, 0), 3 * Tuple3D.E1)
             {
-                Origin = new Tuple3D(2, 0, 0),
-                Direction = 3 * Tuple3D.E1,
-                Style = new GrVisualVectorStyle3D
-                {
-                    Material = darkRedMaterial,
-                    Thickness = thickness
-                }
+                Style = new GrVisualVectorStyle3D(darkRedMaterial, thickness)
             };
             
-            var yAxis = new GrVisualVector3D("yAxis")
+            var yAxis = new GrVisualVector3D("yAxis", new Tuple3D(0, 2, 0), 3 * Tuple3D.E2)
             {
-                Origin = new Tuple3D(0, 2, 0),
-                Direction = 3 * Tuple3D.E2,
-                Style = new GrVisualVectorStyle3D
-                {
-                    Material = darkGreenMaterial,
-                    Thickness = thickness
-                }
+                Style = new GrVisualVectorStyle3D(darkGreenMaterial, thickness)
             };
             
-            var zAxis = new GrVisualVector3D("zAxis")
+            var zAxis = new GrVisualVector3D("zAxis", new Tuple3D(0, 0, 2), 3 * Tuple3D.E3)
             {
-                Origin = new Tuple3D(0, 0, 2),
-                Direction = 3 * Tuple3D.E3,
-                Style = new GrVisualVectorStyle3D
-                {
-                    Material = darkBlueMaterial,
-                    Thickness = thickness
-                }
+                Style = new GrVisualVectorStyle3D(darkBlueMaterial, thickness)
             };
 
             var lineSegment = new GrVisualLineSegment3D("lineSegment")
             {
                 Position1 = new Tuple3D(1, 1, 1),
                 Position2 = new Tuple3D(4, 4, 4),
-                Style = new GrVisualCurveTubeStyle3D
-                {
-                    Material = yellowMaterial,
-                    Thickness = thickness * 1.5d
-                }
+
+                Style = new GrVisualCurveTubeStyle3D(yellowMaterial, thickness * 1.5d)
             };
             
             var lineSegmentX = new GrVisualLineSegment3D("lineSegmentX")
             {
                 Position1 = new Tuple3D(4, 4, 4),
                 Position2 = new Tuple3D(0, 4, 4),
-                Style = new GrVisualCurveDashedLineStyle3D
-                {
-                    DashOn = 3,
-                    DashOff = 1,
-                    DashPerLine = 16,
-                    Color = Color.Red.ToImageSharpColor()
-                }
+
+                Style = new GrVisualCurveDashedLineStyle3D(Color.Red, 3, 1, 16)
             };
             
             var lineSegmentY = new GrVisualLineSegment3D("lineSegmentY")
             {
                 Position1 = new Tuple3D(4, 4, 4),
                 Position2 = new Tuple3D(4, 0, 4),
-                Style = new GrVisualCurveDashedLineStyle3D
-                {
-                    DashOn = 3,
-                    DashOff = 1,
-                    DashPerLine = 16,
-                    Color = Color.Green.ToImageSharpColor()
-                }
+
+                Style = new GrVisualCurveDashedLineStyle3D(Color.Green, 3, 1, 16)
             };
             
             var lineSegmentZ = new GrVisualLineSegment3D("lineSegmentZ")
             {
                 Position1 = new Tuple3D(4, 4, 4),
                 Position2 = new Tuple3D(4, 4, 0),
-                Style = new GrVisualCurveDashedLineStyle3D
-                {
-                    DashOn = 3,
-                    DashOff = 1,
-                    DashPerLine = 16,
-                    Color = Color.Blue.ToImageSharpColor()
-                }
+
+                Style = new GrVisualCurveDashedLineStyle3D(Color.Blue, 3, 1, 16)
             };
 
-            var rightAngleX = new GrVisualRightAngle3D("angleXy")
+            var rightAngleX = new GrVisualRightAngle3D(
+                "angleXy",
+                new Tuple3D(4, 4, 4),
+                new Tuple3D(-1, 0, 0),
+                new Tuple3D(0, -1, 0),
+                0.25
+            )
             {
-                Center = new Tuple3D(4, 4, 4),
-                Direction1 = new Tuple3D(-1, 0, 0),
-                Direction2 = new Tuple3D(0, -1, 0),
-                Radius = 0.25,
-                Style = new GrVisualCurveSolidLineStyle3D
-                {
-                    Color = Color.Red.ToImageSharpColor()
-                }
+                Style = new GrVisualCurveSolidLineStyle3D(Color.Red),
+                InnerStyle = new GrVisualSurfaceThinStyle3D(scene.AddSimpleMaterial("angleXyMaterial", Color.Red))
             };
 
             var circleCurve = new GrVisualCircleCurve3D("circleCurve")
@@ -208,25 +158,19 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.BabylonJs
                 Center = new Tuple3D(1, 1, 1),
                 Normal = new Tuple3D(1, 1, 1),
                 Radius = 3,
-                Style = new GrVisualCurveTubeStyle3D()
-                {
-                    Material = yellowMaterial,
-                    Thickness = 2 * thickness
-                }
+
+                Style = new GrVisualCurveTubeStyle3D(yellowMaterial, 2 * thickness)
             };
             
-            var circleCurveArc = new GrVisualCircleCurveArc3D("circleCurveArc")
+            var circleCurveArc = new GrVisualCircleArcCurve3D("circleCurveArc")
             {
                 InnerArc = true,
                 Center = new Tuple3D(0, 0, 0),
                 Direction1 = new Tuple3D(1, 1, 1),
                 Direction2 = new Tuple3D(0, 1, 0),
                 Radius = 4,
-                Style = new GrVisualCurveTubeStyle3D()
-                {
-                    Thickness = 2 * thickness,
-                    Material = yellowMaterial
-                }
+
+                Style = new GrVisualCurveTubeStyle3D(yellowMaterial, 2 * thickness)
             };
             
             var circleDisk = new GrVisualCircleSurface3D("circleDisk")
@@ -234,10 +178,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.BabylonJs
                 Center = new Tuple3D(1, 1, 1),
                 Normal = new Tuple3D(1, 1, 1),
                 Radius = 4,
-                Style = new GrVisualThinSurfaceStyle3D
-                {
-                    Material = rosyBrownMaterial
-                }
+
+                Style = new GrVisualSurfaceThinStyle3D(rosyBrownMaterial)
             };
 
             var circleDiskArc = new GrVisualCircleSurfaceArc3D("circleDiskArc")
@@ -247,10 +189,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.BabylonJs
                 Direction1 = new Tuple3D(1, 1, 1),
                 Direction2 = new Tuple3D(0, 1, 0),
                 Radius = 4,
-                Style = new GrVisualThinSurfaceStyle3D
-                {
-                    Material = rosyBrownMaterial
-                }
+
+                Style = new GrVisualSurfaceThinStyle3D(rosyBrownMaterial)
             };
             
             composer.AddElements(
@@ -275,7 +215,10 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.BabylonJs
             var sceneCode = htmlComposer.GetCreateScenesCode();
             var htmlCode = htmlComposer.GetHtmlCode();
 
-            File.WriteAllText(@"D:\Projects\Study\Babylon.js\Sample1.html", htmlCode);
+            File.WriteAllText(
+                Path.Combine(WorkingPath, "Sample1.html"), 
+                htmlCode
+            );
 
             Console.WriteLine(sceneCode);
             Console.WriteLine();
@@ -385,14 +328,12 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.BabylonJs
                     )
                 );
 
-            var curve = new GrVisualLineCurve3D("curve")
+            var curve = new GrVisualLinePathCurve3D("curve", sampledCurve)
             {
-                PositionList = sampledCurve,
-                Style = new GrVisualCurveTubeStyle3D()
-                {
-                    Material = scene.GetMaterial(curveMaterialName),
-                    Thickness = 2 * thickness
-                }
+                Style = new GrVisualCurveTubeStyle3D(
+                    scene.GetMaterial(curveMaterialName), 
+                    2 * thickness
+                )
             };
 
             composer.AddElements(

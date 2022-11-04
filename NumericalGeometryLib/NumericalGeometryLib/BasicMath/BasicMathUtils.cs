@@ -120,6 +120,12 @@ namespace NumericalGeometryLib.BasicMath
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static double ClampPeriodic(this double value, double minValue, double maxValue)
+        {
+            return (value - minValue).ClampPeriodic(maxValue - minValue) + minValue;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static double ClampPeriodic(this double value, double maxValue)
         {
             //Make sure maxValue > 0
@@ -662,7 +668,7 @@ namespace NumericalGeometryLib.BasicMath
         //}
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static SparseTuple Lerp(this double t, SparseTuple v1, SparseTuple v2)
+        public static Float64SparseTuple Lerp(this double t, Float64SparseTuple v1, Float64SparseTuple v2)
         {
             return (1.0d - t) * v1 + t * v2;
         }

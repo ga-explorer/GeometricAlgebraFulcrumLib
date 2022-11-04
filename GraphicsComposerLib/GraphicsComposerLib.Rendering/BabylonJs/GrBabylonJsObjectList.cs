@@ -1,11 +1,9 @@
 ﻿using System.Collections;
-using System.Diagnostics.CodeAnalysis;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs;
 
 public sealed class GrBabylonJsObjectList :
     IReadOnlyList<GrBabylonJsObject>
-
 {
     private readonly Dictionary<string, GrBabylonJsObject> _objectDictionary 
         = new Dictionary<string, GrBabylonJsObject>();
@@ -28,7 +26,7 @@ public sealed class GrBabylonJsObjectList :
         return this;
     }
 
-    public bool Contains([NotNull] GrBabylonJsObject babylonObject)
+    public bool Contains(GrBabylonJsObject babylonObject)
     {
         return _objectDictionary.TryGetValue(babylonObject.ConstName, out var babylonObject1) && 
                ReferenceEquals(babylonObject, babylonObject1);

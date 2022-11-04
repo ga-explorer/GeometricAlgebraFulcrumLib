@@ -1,0 +1,61 @@
+﻿//This is a sample file for text templates collection
+
+//This must be the first dircetive in the file
+//delimiters # #
+delimiters #
+
+//A template must begin with the begin directive followed by the name of the template on a single line
+//Any remaining text on the line is ignored. 
+//The following lines are the template text until an end directive is found with the same name as
+//the template name
+//Comments inside the begin-end block are not ignored
+
+begin equals_case
+c = coefs1[#num#] - coefs2[#num#];
+if (c <= -Epsilon || c >= Epsilon) return false;
+
+end equals_case
+
+begin equals
+private static bool Equals1(#double#[] coefs1, #double#[] coefs2)
+{
+    #double# c;
+
+    #cases#
+
+    return true;
+}
+
+end equals
+
+begin main_equals_case
+case #grade#: return Equals#num#(Coefs, blade2.Coefs);
+
+end main_equals_case
+
+begin main_equals
+public bool Equals(cga5dBlade blade2)
+{
+    if ((object)blade2 == null) 
+        return false;
+
+    if (ReferenceEquals(this, blade2)) 
+        return true;
+
+    if (IsZeroBlade) 
+        return blade2.IsZero;
+
+    if (blade2.IsZeroBlade) 
+        return IsZero;
+
+    if (Grade != blade2.Grade) 
+        return false;
+
+    switch (Grade)
+    {
+        #cases#
+    }
+
+    throw new InvalidDataException("Internal error. Blade grade not acceptable!");
+}
+end equals_main

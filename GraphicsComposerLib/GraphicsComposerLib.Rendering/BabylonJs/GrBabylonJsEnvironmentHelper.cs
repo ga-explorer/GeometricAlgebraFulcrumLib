@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using DataStructuresLib.Basic;
+﻿using DataStructuresLib.Basic;
 using GraphicsComposerLib.Rendering.BabylonJs.Values;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs;
@@ -207,7 +206,7 @@ public sealed class GrBabylonJsEnvironmentHelper :
         => Properties;
 
 
-    public GrBabylonJsEnvironmentHelper(string constName, [NotNull] GrBabylonJsScene parentScene)
+    public GrBabylonJsEnvironmentHelper(string constName, GrBabylonJsScene parentScene)
         : base(constName)
     {
         ParentScene = parentScene;

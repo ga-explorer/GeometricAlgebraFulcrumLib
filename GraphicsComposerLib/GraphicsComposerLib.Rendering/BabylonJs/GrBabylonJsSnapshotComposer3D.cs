@@ -1,7 +1,10 @@
 ﻿using DataStructuresLib.Files;
-using FFMpegCore;
-using FFMpegCore.Enums;
+using GraphicsComposerLib.Rendering.BabylonJs.Cameras;
+using GraphicsComposerLib.Rendering.BabylonJs.Constants;
 using GraphicsComposerLib.Rendering.Images;
+using GraphicsComposerLib.Rendering.Visuals.Space3D.Grids;
+using GraphicsComposerLib.Rendering.Visuals.Space3D.Groups;
+using NumericalGeometryLib.BasicMath.Tuples.Immutable;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using SixLabors.ImageSharp;
@@ -10,49 +13,8 @@ using SixLabors.ImageSharp.PixelFormats;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs;
 
-public class GrBabylonJsSnapshotComposer3D
+public abstract class GrBabylonJsSnapshotComposer3D
 {
-    public string Title { get; init; }
-
-    public int FrameCount { get; init; }
-
-    public string WorkingPath { get; init; }
-
-    public string HostUrl { get; init; }
-
-    public bool GenerateHtml { get; set; }
-
-    public bool GeneratePng { get; set; }
-
-    public bool GenerateAnimatedGif { get; set; }
-
-    public int AnimatedGifFrameDelay { get; set; }
-
-    public bool GenerateMp4 { get; set; }
-
-    public double Mp4FrameRate { get; set; }
-
-    public Func<int, string> CodeGenerationFunc { get; protected set; }
-
-    public int FrameIndex { get; private set; } = -1;
-
-    public static double LaTeXScalingFactor { get; set; }
-        = 1 / 75d;
-
-    public static GrImageBase64StringCache ImageCache { get; }
-        = new GrImageBase64StringCache();
-
-
-    public GrBabylonJsSnapshotComposer3D()
-    {
-    }
-
-    public GrBabylonJsSnapshotComposer3D(Func<int, string> codeGenerationFunc)
-    {
-        CodeGenerationFunc = codeGenerationFunc;
-    }
-
-
     private static void WaitFor(int timeInMilliseconds)
     {
         Thread.Sleep(timeInMilliseconds);
@@ -72,63 +34,196 @@ public class GrBabylonJsSnapshotComposer3D
         if (height % 2 != 0 || width % 2 != 0)
             throw new ArgumentException("FFMpeg yuv420p encoding requires the width and height to be a multiple of 2!");
     }
+    
 
-    /// <summary>
-    /// Converts an image sequence to a video.
-    /// </summary>
-    /// <param name="output">Output video file.</param>
-    /// <param name="frameRate">FPS</param>
-    /// <param name="images">Image sequence collection</param>
-    /// <returns>Output video information.</returns>
-    public static bool JoinImageSequence(string output, double frameRate, IEnumerable<ImageInfo> images)
+    public string Title { get; init; }
+
+    public int FrameCount { get; }
+
+    public string WorkingPath { get; init; }
+
+    public string HostUrl { get; init; }
+
+    public bool GenerateHtml { get; set; } = true;
+
+    public bool GeneratePng { get; set; } = false;
+
+    public bool GenerateAnimatedGif { get; set; } = false;
+
+    public int AnimatedGifFrameDelay { get; set; } = 20;
+
+    public bool GenerateMp4 { get; set; } = false;
+
+    public double Mp4FrameRate { get; set; } = 50d;
+
+    public int FrameIndex { get; private set; } = -1;
+
+    public double LaTeXScalingFactor { get; set; }
+        = 1 / 75d;
+
+    public static GrImageBase64StringCache ImageCache { get; }
+        = new GrImageBase64StringCache();
+
+    public int CanvasWidth { get; set; } = 1280;
+
+    public int CanvasHeight { get; set; } = 720;
+
+    public int GridUnitCount { get; set; } = 24;
+
+    public double CameraDistance { get; set; } = 16;
+
+    public int CameraRotationCount { get; set; } = 1;
+
+    public bool ShowCopyright { get; set; } = true;
+
+    public IReadOnlyList<double> CameraAlphaValues { get; }
+
+    public IReadOnlyList<double> CameraBetaValues { get; }
+
+    public GrBabylonJsHtmlComposer3D HtmlComposer { get; protected set; }
+
+    public GrBabylonJsSceneComposer3D MainSceneComposer
+        => HtmlComposer.FirstSceneComposer;
+    
+    public GrBabylonJsScene MainScene
+        => HtmlComposer.FirstScene;
+
+
+    public GrBabylonJsSnapshotComposer3D(IReadOnlyList<double> cameraAlphaValues, IReadOnlyList<double> cameraBetaValues)
     {
-        var tempFolderName = Path.Combine(GlobalFFOptions.Current.TemporaryFilesFolder, Guid.NewGuid().ToString());
-        var temporaryImageFiles = images.Select((imageInfo, index) =>
-        {
-            using var image = Image.Load(imageInfo.FullName);
-            ConversionSizeExceptionCheck(image.Width, image.Height);
-            var destinationPath = Path.Combine(tempFolderName, $"{index.ToString().PadLeft(9, '0')}{imageInfo.Extension}");
-            Directory.CreateDirectory(tempFolderName);
-            File.Copy(imageInfo.FullName, destinationPath);
-            return destinationPath;
-        }).ToArray();
-
-        //var firstImage = images.First();
-        try
-        {
-            return FFMpegArguments
-                .FromFileInput(Path.Combine(tempFolderName, "%09d.png"), false)
-                .OutputToFile(
-                    output,
-                    true,
-                    options => options
-                        //.ForcePixelFormat("yuv420p")
-                        .WithVideoCodec(VideoCodec.Png)
-                        //.Resize(firstImage.Width, firstImage.Height)
-                        .WithVideoFilters(filterOptions =>
-                            filterOptions.Scale(VideoSize.Hd)
-                        )
-                        .WithFastStart()
-                        .WithFramerate(frameRate)
-                    )
-                .ProcessSynchronously();
-        }
-        finally
-        {
-            Cleanup(temporaryImageFiles);
-            Directory.Delete(tempFolderName);
-        }
+        FrameCount = cameraAlphaValues.Count;
+        CameraAlphaValues = cameraAlphaValues;
+        CameraBetaValues = cameraBetaValues;
     }
 
-    public void GenerateHtmlFiles()
+    
+    protected abstract void InitializeImageCache();
+
+    protected abstract GrBabylonJsHtmlComposer3D InitializeSceneComposers(int index);
+
+    protected virtual void AddCamera(int index)
     {
+        // Add main scene camera
+        MainSceneComposer.SceneObject.AddArcRotateCamera(
+            "camera1",
+            CameraAlphaValues[index], //"2 * Math.PI / 20",
+            CameraBetaValues[index], //"2 * Math.PI / 5",
+            CameraDistance,
+            "BABYLON.Vector3.Zero()",
+            new GrBabylonJsArcRotateCamera.ArcRotateCameraProperties
+            {
+                Mode = GrBabylonJsCameraMode.PerspectiveCamera,
+                //OrthoLeft = -8,
+                //OrthoRight = 8,
+                //OrthoBottom = -8,
+                //OrthoTop = 8
+            }
+        );
+    }
+
+    protected virtual void AddEnvironment()
+    {
+        //var scene = MainSceneComposer.SceneObject;
+        //scene.SceneProperties.AmbientColor = Color.AliceBlue;
+
+        // Add scene environment
+        MainSceneComposer.SceneObject.AddEnvironmentHelper(
+            "environmentHelper",
+
+            new GrBabylonJsEnvironmentHelper.EnvironmentHelperOptions
+            {
+                GroundYBias = 0.01,
+                SkyBoxColor = Color.LightSkyBlue,
+                GroundColor = Color.White,
+                CreateGround = true,
+                GroundSize = 8,
+                SkyBoxSize = GridUnitCount + 10
+            }
+        );
+    }
+
+    protected virtual void AddGrid()
+    {
+        var scene = MainSceneComposer.SceneObject;
+
+        // Add ground coordinates grid
+        MainSceneComposer.GridMaterialKind =
+            GrBabylonJsGridMaterialKind.TexturedMaterial;
+
+        MainSceneComposer.AddXzSquareGrid(
+            new GrVisualXzSquareGrid3D("grid")
+            {
+                UnitCountX = GridUnitCount,
+                UnitCountZ = GridUnitCount,
+                UnitSize = 1,
+                Origin = new Tuple3D(-0.5d * GridUnitCount, 0, -0.5d * GridUnitCount),
+                Opacity = 0.25,
+                BaseSquareColor = Color.LightYellow,
+                BaseLineColor = Color.BurlyWood,
+                MidLineColor = Color.SandyBrown,
+                BorderLineColor = Color.SaddleBrown,
+                BaseSquareCount = 4,
+                BaseSquareSize = 64,
+                BaseLineWidth = 2,
+                MidLineWidth = 4,
+                BorderLineWidth = 3
+            }
+        );
+
+        // Add reference unit axis frame
+        var axisFrameOriginMaterial = scene.AddSimpleMaterial("axisFrameOriginMaterial", Color.DarkGray);
+        var axisFrameXMaterial = scene.AddSimpleMaterial("axisFrameXMaterial", Color.DarkRed);
+        var axisFrameYMaterial = scene.AddSimpleMaterial("axisFrameYMaterial", Color.DarkGreen);
+        var axisFrameZMaterial = scene.AddSimpleMaterial("axisFrameZMaterial", Color.DarkBlue);
+
+        var frameOrigin = Tuple3D.Zero;
+        MainSceneComposer.AddElement(
+            new GrVisualFrame3D("axisFrame")
+            {
+                Origin = frameOrigin,
+
+                Direction1 = Tuple3D.E1,
+                Direction2 = Tuple3D.E2,
+                Direction3 = Tuple3D.E3,
+
+                Style = new GrVisualFrameStyle3D
+                {
+                    OriginThickness = 0.075,
+                    DirectionThickness = 0.035,
+                    OriginMaterial = axisFrameOriginMaterial,
+                    DirectionMaterial1 = axisFrameXMaterial,
+                    DirectionMaterial2 = axisFrameYMaterial,
+                    DirectionMaterial3 = axisFrameZMaterial
+                }
+            }
+        );
+    }
+
+    protected abstract void AddGuiLayer(int index);
+
+    protected virtual GrBabylonJsHtmlComposer3D GenerateSnapshotCode(int index)
+    {
+        HtmlComposer = InitializeSceneComposers(index);
+
+        AddCamera(index);
+        AddEnvironment();
+        AddGrid();
+        AddGuiLayer(index);
+
+        return HtmlComposer;
+    }
+
+    private void GenerateHtmlFiles()
+    {
+        InitializeImageCache();
+
         Console.Write("Generating HTML files .. ");
 
         for (var index = 0; index < FrameCount; index++)
         {
             FrameIndex = index;
 
-            var htmlCode = CodeGenerationFunc(index);
+            var htmlCode = GenerateSnapshotCode(index).GetHtmlCode();
 
             var htmlFilePath = WorkingPath.GetFilePath(
                 @$"Frame-{index:D6}", 
@@ -143,11 +238,13 @@ public class GrBabylonJsSnapshotComposer3D
         Console.WriteLine("Done.");
     }
 
-    public void GeneratePngFiles()
+    private void GeneratePngFiles()
     {
         const int delay1 = 2000;
         const int delay2 = 1000;
+        const int tabCount = 10;
 
+        var startTime = DateTime.Now;
 
         Console.Write("Generating Png files .. ");
         
@@ -174,31 +271,67 @@ public class GrBabylonJsSnapshotComposer3D
             driver.Manage().Window.Position = new System.Drawing.Point(0, 0);
             driver.Manage().Window.Maximize();
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromMilliseconds(delay1);
+
+            // Open several tabs at once
+            for (var i = 0; i < tabCount - 1; i++)
+                driver.SwitchTo().NewWindow(WindowType.Tab);
+
+            while (driver.WindowHandles.Count < tabCount) ;
+
+            var tabHandles = driver.WindowHandles;
             
             Console.WriteLine("Press any key to start png file generation ..");
             Console.WriteLine();
             Console.ReadKey();
-            
-            for (var index = 0; index < FrameCount; index++)
+
+            startTime = DateTime.Now;
+
+            FrameIndex = 0;
+            while (FrameIndex < FrameCount)
             {
-                FrameIndex = index;
+                var frameIndexList = new List<int>(tabHandles.Count);
 
-                //htmlFilePath = WorkingPath.GetFilePath(@$"Frame-{index:D6}", "html");
-                //htmlFileUri = new Uri(htmlFilePath).AbsoluteUri;
-                
-                driver.Navigate().GoToUrl(@$"{HostUrl}Frame-{index:D6}.html");
-                Thread.Sleep(index == 0 ? delay1 : delay2);
-                
-                //var canvas = driver.FindElement(By.Id("renderCanvas"));
-                //var screenShot = ((ITakesScreenshot) canvas).GetScreenshot();
+                foreach (var tabHandle in tabHandles)
+                {
+                    if (FrameIndex >= FrameCount) continue;
 
-                //screenShot.SaveAsFile(
-                //    WorkingPath.GetFilePath($"Frame-{index:D6}", "png"),
-                //    ScreenshotImageFormat.Png
-                //);
+                    frameIndexList.Add(FrameIndex);
 
-                if (index % 10 == 0)
-                    Console.WriteLine($"Snapshot {index} done.");
+                    //htmlFilePath = WorkingPath.GetFilePath(@$"Frame-{index:D6}", "html");
+                    //htmlFileUri = new Uri(htmlFilePath).AbsoluteUri;
+
+                    driver.SwitchTo().Window(tabHandle);
+                    driver.Navigate().GoToUrl(@$"{HostUrl}Frame-{FrameIndex:D6}.html");
+                    
+                    //var canvas = driver.FindElement(By.Id("renderCanvas"));
+                    //var screenShot = ((ITakesScreenshot) canvas).GetScreenshot();
+
+                    //screenShot.SaveAsFile(
+                    //    WorkingPath.GetFilePath($"Frame-{index:D6}", "png"),
+                    //    ScreenshotImageFormat.Png
+                    //);
+
+                    FrameIndex++;
+                }
+
+                foreach (var tabHandle in tabHandles)
+                {
+                    driver.SwitchTo().Window(tabHandle);
+                    Thread.Sleep(200);
+                }
+
+                var flag = false;
+                while (!flag)
+                {
+                    flag = frameIndexList.All(i =>
+                        File.Exists(WorkingPath.GetFilePath(@$"Frame-{i:D6}", "png"))
+                    );
+                }
+
+                //Thread.Sleep(delay1);
+                //Thread.Sleep(FrameIndex == 0 ? delay1 : delay2);
+
+                Console.WriteLine($"Snapshot {FrameIndex} done.");
             }
         }
         catch (Exception ex)
@@ -214,10 +347,11 @@ public class GrBabylonJsSnapshotComposer3D
 
         FrameIndex = -1;
 
-        Console.WriteLine("Done.");
+        var timeSpan = DateTime.Now - startTime;
+        Console.WriteLine($"Done in {timeSpan.Minutes} minutes.");
     }
 
-    public void GenerateAnimatedGifFile()
+    private void GenerateAnimatedGifFile()
     {
         Console.Write("Generating Animated Gif file .. ");
 
@@ -276,36 +410,6 @@ public class GrBabylonJsSnapshotComposer3D
         Console.WriteLine("Done.");
     }
 
-    public void GenerateMp4File()
-    {
-        Console.Write("Generating Mp4 file .. ");
-
-        var imageFilePathList =
-            Enumerable
-                .Range(0, FrameCount)
-                .Select(i => WorkingPath.GetFilePath($"Frame-{i:D6}", "png"));
-
-        GlobalFFOptions.Configure(
-            new FFOptions
-            {
-                BinaryFolder = @"D:\Projects\Tools\ffmpeg\bin\",
-                TemporaryFilesFolder = Path.GetTempPath()
-            }
-        );
-
-        var images =
-            imageFilePathList
-                .Select(ImageInfo.FromPath);
-
-        JoinImageSequence(
-            WorkingPath.GetFilePath(Title, "mp4"),
-            frameRate: Mp4FrameRate,
-            images
-        );
-
-        Console.WriteLine("Done.");
-    }
-
     public virtual void GenerateSnapshots()
     {
         // Delete any old html\png files
@@ -355,8 +459,5 @@ public class GrBabylonJsSnapshotComposer3D
 
         if (GenerateAnimatedGif)
             GenerateAnimatedGifFile();
-
-        if (GenerateMp4)
-            GenerateMp4File();
     }
 }

@@ -413,7 +413,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         public static T[,] ToArray<T>(this ILinMatrixStorage<T> matrixStorage, int count1, int count2)
         {
             var array = new T[count1, count2];
-            
+
             foreach (var (index1, index2, value) in matrixStorage.GetIndexScalarRecords())
                 array[index1, index2] = value;
 

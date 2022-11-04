@@ -191,7 +191,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Triangles
 
                 //Find triangle normal, not unit but full normal vector
                 var normal = 
-                    VectorAlgebraUtils.GetTriangleNormal(vertex1, vertex2, vertex3);
+                    VectorUtils.GetTriangleNormal(vertex1, vertex2, vertex3);
 
                 //For debugging only
                 Debug.Assert(
@@ -215,7 +215,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Triangles
             {
                 //Find triangle unit normal
                 var normal = 
-                    VectorAlgebraUtils.GetTriangleNormal(vertex1, vertex2, vertex3);
+                    VectorUtils.GetTriangleNormal(vertex1, vertex2, vertex3);
                 
                 //For debugging only
                 Debug.Assert(normal.IsValid());
@@ -231,7 +231,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Triangles
             {
                 //Find triangle normal, not unit but full normal vector
                 var normal = 
-                    VectorAlgebraUtils.GetTriangleNormal(vertex1, vertex2, vertex3);
+                    VectorUtils.GetTriangleNormal(vertex1, vertex2, vertex3);
 
                 //For debugging only
                 Debug.Assert(normal.IsValid());

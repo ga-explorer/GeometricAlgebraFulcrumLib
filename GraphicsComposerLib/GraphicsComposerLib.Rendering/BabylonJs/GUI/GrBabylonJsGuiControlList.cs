@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Diagnostics.CodeAnalysis;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.GUI;
 
@@ -21,14 +20,14 @@ public sealed class GrBabylonJsGuiControlList :
         => _objectDictionary[constName];
 
 
-    public GrBabylonJsGuiControlList Add([NotNull] GrBabylonJsGuiControl babylonObject)
+    public GrBabylonJsGuiControlList Add(GrBabylonJsGuiControl babylonObject)
     {
         _objectDictionary.Add(babylonObject.ConstName, babylonObject);
 
         return this;
     }
 
-    public bool Contains([NotNull] GrBabylonJsGuiControl babylonObject)
+    public bool Contains(GrBabylonJsGuiControl babylonObject)
     {
         return _objectDictionary.TryGetValue(babylonObject.ConstName, out var babylonObject1) && 
                ReferenceEquals(babylonObject, babylonObject1);

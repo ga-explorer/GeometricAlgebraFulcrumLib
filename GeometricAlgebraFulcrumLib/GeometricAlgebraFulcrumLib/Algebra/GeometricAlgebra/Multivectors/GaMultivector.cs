@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.BitManipulation;
@@ -1245,16 +1246,26 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors
                 : GeometricProcessor.ScalarZero.CreateScalar(GeometricProcessor);
 
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal GaMultivector([NotNull] IScalarAlgebraProcessor<T> processor, [NotNull] IMultivectorStorage<T> storage)
         {
             GeometricProcessor = (IGeometricAlgebraProcessor<T>) processor;
             MultivectorStorage = storage;
+
+            Debug.Assert(
+                MultivectorStorage.GetStoredBasisVectorsBitPattern() < GeometricProcessor.GaSpaceDimension
+            );
         }
         
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal GaMultivector([NotNull] IGeometricAlgebraProcessor<T> processor, [NotNull] IMultivectorStorage<T> storage)
         {
             GeometricProcessor = processor;
             MultivectorStorage = storage;
+
+            Debug.Assert(
+                MultivectorStorage.GetStoredBasisVectorsBitPattern() < GeometricProcessor.GaSpaceDimension
+            );
         }
 
 
@@ -1280,6 +1291,12 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors
         public IEnumerable<uint> GetGrades()
         {
             return MultivectorStorage.GetGrades();
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ulong GetStoredBasisVectorsBitPattern()
+        {
+            return MultivectorStorage.GetStoredBasisVectorsBitPattern();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

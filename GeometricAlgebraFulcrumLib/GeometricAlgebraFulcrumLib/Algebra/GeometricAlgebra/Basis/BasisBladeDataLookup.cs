@@ -289,7 +289,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ulong BasisBladeId(uint grade, ulong index)
         {
-            if (grade > BasisBladeDataGradedArray.Length) 
+            if (grade >= BasisBladeDataGradedArray.Length) 
                 return index.IndexToCombinadicPattern((int) grade);
             
             var table = 

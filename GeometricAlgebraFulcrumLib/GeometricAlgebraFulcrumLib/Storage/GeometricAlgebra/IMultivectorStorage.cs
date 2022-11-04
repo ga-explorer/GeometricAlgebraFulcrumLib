@@ -72,6 +72,8 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
 
         ulong GetStoredGradesBitPattern();
 
+        ulong GetStoredBasisVectorsBitPattern();
+
         IEnumerable<GradeIndexRecord> GetGradeIndexRecords();
 
         IEnumerable<BasisBlade> GetBasisBlades();

@@ -13,7 +13,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Circles
     public class GrParametricCircle3D :
         IGraphicsParametricCircle3D
     {
-        private readonly IGraphicsC1ParametricCurve3D _baseCircle;
+        private readonly IGraphicsParametricCircle3D _baseCircle;
         private readonly SquareMatrix3 _baseCircleRotation;
 
         public double Radius { get; }
@@ -21,6 +21,12 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Circles
         public Tuple3D Center { get; }
 
         public Tuple3D UnitNormal { get; }
+
+        public double ParameterValueMin
+            => 0d;
+
+        public double ParameterValueMax
+            => 1d;
 
 
         public GrParametricCircle3D([NotNull] ITuple3D center, [NotNull] ITuple3D unitNormal, double radius)
@@ -82,13 +88,39 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Circles
         {
             var frame = _baseCircle.GetFrame(parameterValue);
 
-            return GrParametricCurveLocalFrame3D.CreateFrame(
+            return GrParametricCurveLocalFrame3D.Create(
                 parameterValue,
                 _baseCircleRotation * frame.Point + Center,
                 _baseCircleRotation * frame.Normal1,
                 _baseCircleRotation * frame.Normal2,
                 _baseCircleRotation * frame.Tangent
             );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Tuple3D GetSecondDerivative(double parameterValue)
+        {
+            return _baseCircleRotation * _baseCircle.GetSecondDerivative(parameterValue);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public double GetLength()
+        {
+            return 2d * Math.PI * Radius;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public double ParameterToLength(double parameterValue)
+        {
+            return parameterValue.ClampPeriodic(1d) * GetLength();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public double LengthToParameter(double length)
+        {
+            var maxLength = GetLength();
+
+            return length.ClampPeriodic(maxLength) / maxLength;
         }
     }
 }

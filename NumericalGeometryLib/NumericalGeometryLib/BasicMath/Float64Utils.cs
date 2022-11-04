@@ -281,6 +281,19 @@ namespace NumericalGeometryLib.BasicMath
         {
             return Math.Truncate(value) == value;
         }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool IsNearInRange(this double x, double value1, double value2, double epsilon = 1e-12d)
+        {
+            Debug.Assert(
+                !double.IsNaN(x) &&
+                !double.IsNaN(value1) &&
+                !double.IsNaN(value2) &&
+                value1 < value2
+            );
+
+            return !(double.IsInfinity(x) || x < value1 - epsilon || x > value2 + epsilon);
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsDefiniteNotEqual(this double a, double b)
@@ -337,6 +350,12 @@ namespace NumericalGeometryLib.BasicMath
             Debug.Assert(!double.IsNaN(x));
 
             return !(double.IsInfinity(x) || x < -epsilon || x > epsilon);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool IsNearOne(this double x, double epsilon = 1e-12d)
+        {
+            return (x - 1d).IsNearZero(epsilon);
         }
 
         /// <summary>
@@ -830,6 +849,24 @@ namespace NumericalGeometryLib.BasicMath
             return Enumerable
                 .Range(0, count)
                 .Select(i => start + i * n);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static double CosWave(this double t, double value1, double value2, int cycleCount = 1)
+        {
+            t = (cycleCount * t).ClampPeriodic(1);
+
+            return value1 + 0.5d * (1d - Math.Cos(2d * Math.PI * t)) * (value2 - value1);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static double TriangleWave(this double t, double value1, double value2, int cycleCount = 1)
+        {
+            t = (cycleCount * t).ClampPeriodic(1);
+
+            return t <= 0.5d
+                ? value1 + 2 * t * (value2 - value1)
+                : value1 + 2 * (1d - t) * (value2 - value1);
         }
 
         /// <summary>

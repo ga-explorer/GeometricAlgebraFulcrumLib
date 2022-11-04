@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Diagnostics.CodeAnalysis;
 
 namespace GraphicsComposerLib.Rendering.SvgNew;
 
@@ -27,7 +26,7 @@ public sealed class GrSvgElementList :
         return this;
     }
 
-    public bool Contains([NotNull] GrSvgElement svgElement)
+    public bool Contains(GrSvgElement svgElement)
     {
         return _elementDictionary.TryGetValue(svgElement.Id, out var svgElement1) && 
                ReferenceEquals(svgElement, svgElement1);

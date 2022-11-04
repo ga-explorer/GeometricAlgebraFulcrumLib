@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BenchmarkDotNet.Running;
+using GeometricAlgebraFulcrumLib.Benchmarks.GAPoT;
 
 namespace GeometricAlgebraFulcrumLib.Benchmarks
 {
@@ -6,7 +7,9 @@ namespace GeometricAlgebraFulcrumLib.Benchmarks
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            //var benckmark = new SkrClarkeBenchmark();
+
+            BenchmarkRunner.Run<SkrClarkeBenchmark>();
         }
     }
 }

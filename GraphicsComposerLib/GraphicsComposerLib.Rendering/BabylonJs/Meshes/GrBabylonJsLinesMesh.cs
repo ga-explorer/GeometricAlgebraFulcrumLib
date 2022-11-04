@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using DataStructuresLib.Basic;
+﻿using DataStructuresLib.Basic;
 using GraphicsComposerLib.Rendering.BabylonJs.Values;
 using TextComposerLib;
 
@@ -44,7 +43,7 @@ public abstract class GrBabylonJsLinesMesh :
     {
     }
     
-    protected GrBabylonJsLinesMesh(string constName, [NotNull] GrBabylonJsSceneValue scene) 
+    protected GrBabylonJsLinesMesh(string constName, GrBabylonJsSceneValue scene) 
         : base(constName)
     {
         ParentScene = scene;

@@ -47,7 +47,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Bezier
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public GrParametricCurveLocalFrame3D GetFrame(double parameterValue)
         {
-            return GrParametricCurveLocalFrame3D.CreateFrame(
+            return GrParametricCurveLocalFrame3D.Create(
                 parameterValue,
                 Point1,
                 Tuple3D.Zero,

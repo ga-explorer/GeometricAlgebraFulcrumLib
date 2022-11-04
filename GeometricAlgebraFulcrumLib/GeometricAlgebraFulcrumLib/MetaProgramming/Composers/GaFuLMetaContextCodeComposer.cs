@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using CodeComposerLib.SyntaxTree;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
-using GeometricAlgebraFulcrumLib.MetaProgramming.Expressions.Variables;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Languages;
 using TextComposerLib.Loggers.Progress;
 
@@ -49,6 +48,9 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Composers
                 contextCodeComposer.GeoLanguage.SyntaxFactory.Comment("MetaContext: " + contextCodeComposer.Context.ContextOptions.ContextName)
             );
 
+            if (!contextCodeComposer.Context.ContextOptions.AllowGenerateComments)
+                return;
+
             contextCodeComposer.SyntaxList.Add(
                 contextCodeComposer.GeoLanguage.SyntaxFactory.Comment(
                     contextCodeComposer
@@ -57,8 +59,6 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Composers
                         .Split(new[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries)
                     )
                 );
-
-            IMetaExpressionVariableParameter paramVar;
 
             var commentTextLines = 
                 contextCodeComposer
@@ -72,7 +72,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Composers
                             if (p.IsNumber) 
                                 return s.Append(" = constant: '").Append(p.RhsExpressionText).Append("'").ToString();
 
-                            if (!contextCodeComposer.Context.TryGetParameterVariable(p.InternalName, out paramVar))
+                            if (!contextCodeComposer.Context.TryGetParameterVariable(p.InternalName, out var paramVar))
                                 return s.Append(" = constant: '0', the parameter binding was not found in the code block!!").ToString();
 
                             return (string.IsNullOrEmpty(paramVar.ExternalName))

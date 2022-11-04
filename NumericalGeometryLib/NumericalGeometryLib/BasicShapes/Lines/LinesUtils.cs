@@ -54,7 +54,7 @@ namespace NumericalGeometryLib.BasicShapes.Lines
 
         public static Tuple2D GetUnitDirection(this ILine2D line)
         {
-            return VectorAlgebraUtils.ToUnitVector(line.DirectionX, line.DirectionY);
+            return VectorUtils.ToUnitVector(line.DirectionX, line.DirectionY);
         }
 
         public static Tuple<double, Tuple2D> ToLengthAndUnitDirection(this ILine2D line)
@@ -300,7 +300,7 @@ namespace NumericalGeometryLib.BasicShapes.Lines
 
         public static Tuple3D GetUnitDirection(this ILine3D line)
         {
-            return VectorAlgebraUtils.ToUnitVector(
+            return VectorUtils.ToUnitVector(
                 line.DirectionX,
                 line.DirectionY,
                 line.DirectionZ

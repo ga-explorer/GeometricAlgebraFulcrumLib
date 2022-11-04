@@ -12,10 +12,22 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Sampled
         public override int Count 
             => 0;
         
+        public int LeafListIndex { get; }
+        
+        public GrParametricCurveTreeLeaf3D PrevLeafNode 
+            => LeafListIndex >= 0
+                ? ParentTree.LeafNodesList[LeafListIndex - 1]
+                : null;
+
+        public GrParametricCurveTreeLeaf3D NextLeafNode 
+            => LeafListIndex < ParentTree.LeafNodeCount
+                ? ParentTree.LeafNodesList[LeafListIndex + 1]
+                : null;
 
         internal GrParametricCurveTreeLeaf3D(GrParametricCurveTreeBranch3D parentBranch, bool isRightChild)
             : base(parentBranch, isRightChild)
         {
+            LeafListIndex = parentBranch.ParentTree.LeafNodeCount;
         }
 
 

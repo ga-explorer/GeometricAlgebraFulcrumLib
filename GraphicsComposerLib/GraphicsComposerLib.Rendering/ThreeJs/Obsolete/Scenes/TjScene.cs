@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Diagnostics.CodeAnalysis;
 using GraphicsComposerLib.Rendering.ThreeJs.Obsolete.Fog;
 using GraphicsComposerLib.Rendering.ThreeJs.Obsolete.Materials;
 using GraphicsComposerLib.Rendering.ThreeJs.Obsolete.Math;
@@ -43,7 +42,7 @@ namespace GraphicsComposerLib.Rendering.ThreeJs.Obsolete.Scenes
             return this;
         }
 
-        public TjScene SetLinearFog([NotNull] TjColor color, double nearDistance, double farDistance)
+        public TjScene SetLinearFog(TjColor color, double nearDistance, double farDistance)
         {
             Fog = new TjLinearFog()
             {
@@ -56,7 +55,7 @@ namespace GraphicsComposerLib.Rendering.ThreeJs.Obsolete.Scenes
             return this;
         }
 
-        public TjScene SetExponentialSquaredFog([NotNull] TjColor color, double density)
+        public TjScene SetExponentialSquaredFog(TjColor color, double density)
         {
             Fog = new TjExponentialSquaredFog()
             {
@@ -75,7 +74,7 @@ namespace GraphicsComposerLib.Rendering.ThreeJs.Obsolete.Scenes
             return this;
         }
 
-        public TjScene Add([NotNull] TjObject3D sceneObject)
+        public TjScene Add(TjObject3D sceneObject)
         {
             sceneObject.ParentScene = this;
             _objectsList.Add(sceneObject);
@@ -83,7 +82,7 @@ namespace GraphicsComposerLib.Rendering.ThreeJs.Obsolete.Scenes
             return this;
         }
 
-        public TjScene Add([NotNull] params TjObject3D[] sceneObjectList)
+        public TjScene Add(params TjObject3D[] sceneObjectList)
         {
             foreach (var sceneObject in sceneObjectList)
             {
@@ -94,7 +93,7 @@ namespace GraphicsComposerLib.Rendering.ThreeJs.Obsolete.Scenes
             return this;
         }
 
-        public TjScene Add([NotNull] IEnumerable<TjObject3D> sceneObjectList)
+        public TjScene Add(IEnumerable<TjObject3D> sceneObjectList)
         {
             foreach (var sceneObject in sceneObjectList)
             {

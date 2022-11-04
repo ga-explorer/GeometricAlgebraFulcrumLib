@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using TextComposerLib.Code.JavaScript;
+﻿using TextComposerLib.Code.JavaScript;
 using TextComposerLib.Code.JavaScript.Obsolete;
 
 namespace GraphicsComposerLib.Rendering.ThreeJs.Obsolete.Geometry
@@ -17,7 +16,7 @@ namespace GraphicsComposerLib.Rendering.ThreeJs.Obsolete.Geometry
         public TjBufferGeometryBase Geometry { get; }
         
 
-        public TjWireFrameGeometry([NotNull] TjBufferGeometryBase geometry)
+        public TjWireFrameGeometry(TjBufferGeometryBase geometry)
         {
             Geometry = geometry;
         }

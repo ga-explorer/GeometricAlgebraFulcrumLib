@@ -12,6 +12,9 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Sampled
     {
         public GrParametricCurveTreeLeaf3D LeafNode { get; }
 
+        public int LeafNodeIndex 
+            => LeafNode.LeafListIndex;
+
         public double ParameterValue { get; }
         
         public double InterpolationValue { get; }
@@ -58,7 +61,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Sampled
                 ).ToUnitVector();
 
             var (axis, angle) = 
-                VectorAlgebraUtils.GetRotationAxisAngle(
+                QuaternionUtils.GetRotationAxisAngle(
                     LeafNode.Frame0.Tangent, 
                     LeafNode.Frame1.Tangent
                 );
@@ -99,7 +102,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Sampled
             {
                 // Use spherical linear interpolation on the whole frame
                 var (axis, angle) =
-                    VectorAlgebraUtils.GetRotationAxisAngle(
+                    QuaternionUtils.GetRotationAxisAngle(
                         LeafNode.Frame0.Tangent,
                         LeafNode.Frame1.Tangent
                     );
@@ -114,7 +117,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Sampled
                         );
             }
 
-            return GrParametricCurveLocalFrame3D.CreateFrame(
+            return GrParametricCurveLocalFrame3D.Create(
                 ParameterValue,
                 point,
                 normal1,

@@ -29,7 +29,7 @@
     <PackageReference Include="ILGPU.Algorithms" Version="1.2.0" />
     <PackageReference Include="ILGPU.Lightning" Version="0.3.0" />
     <PackageReference Include="MathNet.Numerics" Version="5.0.0" />
-    <PackageReference Include="NumpyDotNet" Version="0.9.80.4" />
+    <PackageReference Include="NumpyDotNet" Version="0.9.80.5" />
     <PackageReference Include="OxyPlot.Core" Version="2.1.0" />
     <PackageReference Include="OxyPlot.Core.Drawing" Version="2.1.0" />
     <PackageReference Include="OxyPlot.SkiaSharp" Version="2.1.0" />

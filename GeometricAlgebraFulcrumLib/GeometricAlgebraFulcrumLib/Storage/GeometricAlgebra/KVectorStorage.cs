@@ -434,6 +434,12 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ulong GetStoredBasisVectorsBitPattern()
+        {
+            return GetIds().Aggregate(0UL, (id1, id2) => id1 | id2);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool TryGetTermScalarByIndex(ulong index, out T value)
         {
             if (GetLinVectorIndexScalarStorage().TryGetScalar(index, out value))

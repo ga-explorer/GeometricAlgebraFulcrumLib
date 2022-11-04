@@ -96,6 +96,8 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Expressions.Numbers
 
         public static MetaExpressionNumber CreateSymbolic(MetaContext context, string numberText, double numberValue)
         {
+            //MetaExpressionHeadSpecsNumberRational.Create(context, numerator, denominator);
+
             return new MetaExpressionNumber(
                 MetaExpressionHeadSpecsNumberSymbolic.Create(context, numberText, numberValue)
             );

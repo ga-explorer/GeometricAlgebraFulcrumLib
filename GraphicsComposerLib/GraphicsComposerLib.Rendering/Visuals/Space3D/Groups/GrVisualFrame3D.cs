@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using GraphicsComposerLib.Rendering.Visuals.Space3D.Basic;
-using GraphicsComposerLib.Rendering.Visuals.Space3D.Images;
 using GraphicsComposerLib.Rendering.Visuals.Space3D.Surfaces;
 using NumericalGeometryLib.BasicMath.Tuples;
 using NumericalGeometryLib.BasicMath.Tuples.Immutable;
@@ -25,13 +24,13 @@ public sealed class GrVisualFrame3D :
 
     public GrVisualFrameStyle3D Style { get; set; } 
 
-    public GrVisualImage3D? OriginTextImage { get; set; }
+    //public GrVisualImage3D? OriginTextImage { get; set; }
 
-    public GrVisualImage3D? Direction1TextImage { get; set; }
+    //public GrVisualImage3D? Direction1TextImage { get; set; }
 
-    public GrVisualImage3D? Direction2TextImage { get; set; }
+    //public GrVisualImage3D? Direction2TextImage { get; set; }
 
-    public GrVisualImage3D? Direction3TextImage { get; set; }
+    //public GrVisualImage3D? Direction3TextImage { get; set; }
 
     public int Count 
         => 4;
@@ -60,56 +59,45 @@ public sealed class GrVisualFrame3D :
 
     public GrVisualPoint3D GetVisualOrigin()
     {
-        return new GrVisualPoint3D($"{Name}Origin")
+        return new GrVisualPoint3D($"{Name}Origin", Origin)
         {
-            Position = Origin,
-            Style = new GrVisualThickSurfaceStyle3D()
-            {
-                Material = Style.OriginMaterial,
-                Thickness = Style.OriginThickness
-            }
+            Style = new GrVisualSurfaceThickStyle3D(
+                Style.OriginMaterial, 
+                Style.OriginThickness
+            )
         };
     }
 
     public GrVisualVector3D GetVisualVector1()
     {
-        return new GrVisualVector3D($"{Name}Vector1")
+        return new GrVisualVector3D($"{Name}Vector1", Origin, Direction1)
         {
-            Origin = Origin,
-            Direction = Direction1,
-            Style = new GrVisualVectorStyle3D
-            {
-                Material = Style.DirectionMaterial1,
-                Thickness = Style.DirectionThickness
-            }
+            Style = new GrVisualVectorStyle3D(
+                Style.DirectionMaterial1,
+                Style.DirectionThickness
+            )
         };
     }
 
     public GrVisualVector3D GetVisualVector2()
     {
-        return new GrVisualVector3D($"{Name}Vector2")
+        return new GrVisualVector3D($"{Name}Vector2", Origin, Direction2)
         {
-            Origin = Origin,
-            Direction = Direction2,
-            Style = new GrVisualVectorStyle3D
-            {
-                Material = Style.DirectionMaterial2,
-                Thickness = Style.DirectionThickness
-            }
+            Style = new GrVisualVectorStyle3D(
+                Style.DirectionMaterial2,
+                Style.DirectionThickness
+            )
         };
     }
 
     public GrVisualVector3D GetVisualVector3()
     {
-        return new GrVisualVector3D($"{Name}Vector3")
+        return new GrVisualVector3D($"{Name}Vector3", Origin, Direction3)
         {
-            Origin = Origin,
-            Direction = Direction3,
-            Style = new GrVisualVectorStyle3D
-            {
-                Material = Style.DirectionMaterial3,
-                Thickness = Style.DirectionThickness
-            }
+            Style = new GrVisualVectorStyle3D(
+                Style.DirectionMaterial3,
+                Style.DirectionThickness
+            )
         };
     }
 
@@ -120,10 +108,10 @@ public sealed class GrVisualFrame3D :
         yield return GetVisualVector2();
         yield return GetVisualVector3();
 
-        if (OriginTextImage is not null) yield return OriginTextImage;
-        if (Direction1TextImage is not null) yield return Direction1TextImage;
-        if (Direction2TextImage is not null) yield return Direction2TextImage;
-        if (Direction3TextImage is not null) yield return Direction3TextImage;
+        //if (OriginTextImage is not null) yield return OriginTextImage;
+        //if (Direction1TextImage is not null) yield return Direction1TextImage;
+        //if (Direction2TextImage is not null) yield return Direction2TextImage;
+        //if (Direction3TextImage is not null) yield return Direction3TextImage;
     }
 
     IEnumerator IEnumerable.GetEnumerator()

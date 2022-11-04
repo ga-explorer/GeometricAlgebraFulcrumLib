@@ -10,18 +10,29 @@ public sealed class GrVisualLaTeXText3D :
 {
     public GrImageBase64StringCache ImageCache { get; }
 
-    public string Key 
-        => Name;
+    public string Key { get; }
 
-    public double ScalingFactor { get; set; } = 1;
+    public double ScalingFactor { get; }
 
-    public ITuple3D Origin { get; set; }
+    public ITuple3D Origin { get; }
 
     
-    public GrVisualLaTeXText3D(GrImageBase64StringCache pngCache, string key) 
-        : base(key)
+    public GrVisualLaTeXText3D(string name, GrImageBase64StringCache pngCache, ITuple3D origin, double scalingFactor) 
+        : base(name)
     {
         ImageCache = pngCache;
+        Key = name;
+        Origin = origin;
+        ScalingFactor = scalingFactor;
+    }
+
+    public GrVisualLaTeXText3D(string name, GrImageBase64StringCache pngCache, string key, ITuple3D origin, double scalingFactor) 
+        : base(name)
+    {
+        ImageCache = pngCache;
+        Key = key;
+        Origin = origin;
+        ScalingFactor = scalingFactor;
     }
 
 

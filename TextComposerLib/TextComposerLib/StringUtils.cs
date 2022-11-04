@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Numerics;
@@ -576,6 +577,37 @@ namespace TextComposerLib
             return string.IsNullOrEmpty(text) 
                 ? "\"\"" 
                 : WebUtility.HtmlEncode(text).DoubleQuote();
+        }
+        
+        public static string ToValidFileName(this string text, char replaceChar = '-')
+        {
+            var invalidChars =
+                Path.GetInvalidFileNameChars().ToArray();
+
+            var composer = new StringBuilder(text);
+
+            for (var i = 0; i < composer.Length; i++)
+                if (invalidChars.Contains(composer[i]))
+                    composer[i] = '_';
+
+            return composer.ToString();
+        }
+
+        public static string ToValidPath(this string text, char replaceChar = '_')
+        {
+            var invalidChars =
+                Path.GetInvalidPathChars()
+                    .Concat(Path.GetInvalidFileNameChars())
+                    .Distinct()
+                    .ToArray();
+
+            var composer = new StringBuilder(text);
+
+            for (var i = 0; i < composer.Length; i++)
+                if (invalidChars.Contains(composer[i]))
+                    composer[i] = '_';
+
+            return composer.ToString();
         }
 
         public static string[] SplitLines(this string text)

@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using NumericalGeometryLib.BasicMath.Tuples;
+﻿using NumericalGeometryLib.BasicMath.Tuples;
 using TextComposerLib.Code.JavaScript;
 
 namespace GraphicsComposerLib.Rendering.ThreeJs.Obsolete.Geometry
@@ -23,7 +22,7 @@ namespace GraphicsComposerLib.Rendering.ThreeJs.Obsolete.Geometry
         public IReadOnlyList<int> FaceIndices { get; }
 
 
-        public TjPolyhedronGeometry([NotNull] IReadOnlyList<ITuple3D> vertexPositions, [NotNull] IReadOnlyList<int> faceIndices)
+        public TjPolyhedronGeometry(IReadOnlyList<ITuple3D> vertexPositions, IReadOnlyList<int> faceIndices)
         {
             VertexPositions = vertexPositions;
             FaceIndices = faceIndices;

@@ -18,7 +18,7 @@ namespace FFMpegCore
         {
             if (!fileInfo.Extension.ToLowerInvariant().EndsWith(FileExtension.Png))
             {
-                throw new Exception("Image joining currently suppors only .png file types");
+                throw new Exception("Image joining currently supports only .png file types");
             }
 
             fileInfo.Refresh();

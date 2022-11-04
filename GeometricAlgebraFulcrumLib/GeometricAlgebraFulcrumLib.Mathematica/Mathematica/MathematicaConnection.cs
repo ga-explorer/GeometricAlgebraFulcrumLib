@@ -315,10 +315,10 @@ namespace GeometricAlgebraFulcrumLib.Mathematica.Mathematica
             Stopwatch.Start();
 
             ClearErrors();
-            KernelLink.Evaluate(Mfs.NumberForm[exprObject]);
+            KernelLink.Evaluate(Mfs.N[exprObject]);
             KernelLink.WaitForAnswer();
 
-            var outExpr = KernelLink.GetString();
+            var outExpr = KernelLink.GetExpr().ToString();
             var outValue = double.Parse(outExpr);
 
             CacheMisses++;

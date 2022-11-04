@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using GraphicsComposerLib.Rendering.ThreeJs.Obsolete.Math;
+﻿using GraphicsComposerLib.Rendering.ThreeJs.Obsolete.Math;
 using NumericalGeometryLib.BasicMath.Tuples;
 using TextComposerLib.Code.JavaScript;
 using TextComposerLib.Text;
@@ -25,12 +24,12 @@ namespace GraphicsComposerLib.Rendering.ThreeJs.Obsolete.Geometry
         public double PhiLength { get; set; } = 2d * System.Math.PI;
 
 
-        public TjLatheGeometry([NotNull] IReadOnlyList<TjVector2> xyPoints)
+        public TjLatheGeometry(IReadOnlyList<TjVector2> xyPoints)
         {
             XyPoints = xyPoints;
         }
 
-        public TjLatheGeometry([NotNull] IEnumerable<ITuple2D> xyPoints)
+        public TjLatheGeometry(IEnumerable<ITuple2D> xyPoints)
         {
             XyPoints = xyPoints.Select(t => new TjVector2(t)).ToArray();
         }

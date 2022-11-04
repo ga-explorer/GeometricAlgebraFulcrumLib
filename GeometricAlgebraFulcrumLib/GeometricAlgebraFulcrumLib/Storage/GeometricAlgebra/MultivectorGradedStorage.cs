@@ -22,7 +22,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         public static MultivectorGradedStorage<T> ZeroMultivector { get; }
             = new MultivectorGradedStorage<T>(LinVectorEmptyGradedStorage<T>.EmptyStorage);
 
-
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static MultivectorGradedStorage<T> Create(ILinVectorGradedStorage<T> gradeIndexScalarList)
         {
             return new MultivectorGradedStorage<T>(
@@ -30,7 +30,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             );
         }
 
-
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ILinVectorGradedStorage<T> GetLinVectorGradedStorage()
         {
             return _gradeIndexScalarVectorStorage;
@@ -56,6 +56,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             => true;
 
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private MultivectorGradedStorage([NotNull] ILinVectorGradedStorage<T> gradeIndexScalarList)
         {
             _gradeIndexScalarVectorStorage = gradeIndexScalarList;
@@ -66,6 +67,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         /// Create a bit pattern where each active grades is a 1
         /// </summary>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ulong GetStoredGradesBitPattern()
         {
             return GetGrades().Aggregate(
@@ -74,6 +76,14 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             );
         }
 
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ulong GetStoredBasisVectorsBitPattern()
+        {
+            return GetIds().Aggregate(0UL, (id1, id2) => id1 | id2);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IMultivectorGradedStorage<T> GetGradedMultivectorCopy()
         {
             var gradeIndexScalarList = 
@@ -84,6 +94,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             );
         }
         
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IMultivectorGradedStorage<T2> MapGradedMultivectorScalars<T2>(Func<T, T2> scalarMapping)
         {
             var gradeIndexScalarList =
@@ -94,6 +105,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IMultivectorGradedStorage<T2> MapGradedMultivectorScalarsById<T2>(Func<ulong, T, T2> idScalarMapping)
         {
             var gradeIndexScalarList =
@@ -107,6 +119,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             );
         }
         
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IMultivectorGradedStorage<T2> MapGradedMultivectorScalarsByIndex<T2>(Func<ulong, T, T2> indexScalarMapping)
         {
             var gradeIndexScalarList =
@@ -120,6 +133,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IMultivectorGradedStorage<T2> MapGradedMultivectorScalarsByGradeIndex<T2>(Func<uint, ulong, T, T2> gradeIndexScalarMapping)
         {
             var gradeIndexScalarList =
@@ -131,27 +145,32 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool ContainsVectorPart()
         {
             return GetLinVectorGradedStorage().ContainsGrade(1);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool TryGetScalar(out T value)
         {
             return GetLinVectorGradedStorage().TryGetScalar(0, 0, out value);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool ContainsBivectorPart()
         {
             return GetLinVectorGradedStorage().ContainsGrade(2);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool ContainsKVectorPart(uint grade)
         {
             return GetLinVectorGradedStorage().ContainsGrade(grade);
         }
 
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsEmpty()
         {
             return GetLinVectorGradedStorage().IsEmpty();
@@ -199,6 +218,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             return true;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsKVector()
         {
             return GetLinVectorGradedStorage().GetVectorStorages().Count(pair => !pair.IsEmpty()) < 2;
@@ -218,6 +238,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             return true;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ulong GetMinId()
         {
             return GetLinVectorGradedStorage()
@@ -225,6 +246,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
                 .Min();
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ulong GetMaxId()
         {
             return GetLinVectorGradedStorage()
@@ -232,42 +254,50 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
                 .Max();
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ulong GetMinId(uint grade)
         {
             return GetLinVectorGradedStorage().GetMinIndex(grade).BasisBladeIndexToId(grade);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ulong GetMaxId(uint grade)
         {
             return GetLinVectorGradedStorage().GetMaxIndex(grade).BasisBladeIndexToId(grade);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint GetMinGrade()
         {
             return GetLinVectorGradedStorage().GetMinGrade();
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public uint GetMaxGrade()
         {
             return GetLinVectorGradedStorage().GetMaxGrade();
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ulong GetMinIndex(uint grade)
         {
             return GetLinVectorGradedStorage().GetMinIndex(grade);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ulong GetMaxIndex(uint grade)
         {
             return GetLinVectorGradedStorage().GetMaxIndex(grade);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IEnumerable<uint> GetGrades()
         {
             return GetLinVectorGradedStorage().GetGrades();
         }
 
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool ContainsTerm(ulong id)
         {
             id.BasisBladeIdToGradeIndex(out var grade, out var index);
@@ -275,17 +305,20 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             return GetLinVectorGradedStorage().ContainsIndex(grade, index);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool ContainsTerm(uint grade, ulong index)
         {
             return GetLinVectorGradedStorage().ContainsIndex(grade, index);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool ContainsScalarPart()
         {
             return GetLinVectorGradedStorage().ContainsGrade(0);
         }
 
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool TryGetTermScalar(ulong id, out T value)
         {
             id.BasisBladeIdToGradeIndex(out var grade, out var index);
@@ -297,6 +330,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             return false;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool TryGetTermScalar(uint grade, ulong index, out T value)
         {
             if (GetLinVectorGradedStorage().TryGetVectorStorage(grade, out var storage))
@@ -307,6 +341,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool TryGetKVectorPart(uint grade, out KVectorStorage<T> kVector)
         {
             if (GetLinVectorGradedStorage().TryGetVectorStorage(grade, out var evenDictionary))
@@ -319,11 +354,13 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             return false;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool TryGetScalarPartList(out ILinVectorStorage<T> indexScalarList)
         {
             return GetLinVectorGradedStorage().TryGetVectorStorage(0, out indexScalarList);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool TryGetVectorPartList(out ILinVectorStorage<T> indexScalarDictionary)
         {
             if (GetLinVectorGradedStorage().TryGetVectorStorage(1U, out indexScalarDictionary) && !indexScalarDictionary.IsEmpty())
@@ -333,6 +370,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             return false;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool TryGetBivectorPartList(out ILinVectorStorage<T> indexScalarDictionary)
         {
             if (GetLinVectorGradedStorage().TryGetVectorStorage(2U, out indexScalarDictionary) && !indexScalarDictionary.IsEmpty())
@@ -343,6 +381,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
 
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool TryGetKVectorPartList(uint grade, out ILinVectorStorage<T> indexScalarDictionary)
         {
             if (GetLinVectorGradedStorage().TryGetVectorStorage(grade, out indexScalarDictionary) && !indexScalarDictionary.IsEmpty())
@@ -371,6 +410,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
         
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ILinVectorStorage<T> GetLinVectorIndexScalarStorage(uint grade)
         {
             return GetLinVectorGradedStorage().TryGetVectorStorage(grade, out var indexScalarList)
@@ -379,6 +419,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool TryGetTerm(ulong id, out BasisTerm<T> term)
         {
             id.BasisBladeIdToGradeIndex(out var grade, out var index);
@@ -393,6 +434,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             return false;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool TryGetTerm(uint grade, ulong index, out BasisTerm<T> term)
         {
             if (TryGetTermScalar(grade, index, out var value))
@@ -405,6 +447,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             return false;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ILinVectorStorage<T> GetScalarPartList()
         {
             return 
@@ -414,6 +457,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
                     : LinVectorEmptyStorage<T>.EmptyStorage;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ILinVectorStorage<T> GetVectorPartList()
         {
             return 
@@ -423,6 +467,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
                     : LinVectorEmptyStorage<T>.EmptyStorage;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ILinVectorStorage<T> GetBivectorPartList()
         {
             return 
@@ -432,6 +477,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
                     : LinVectorEmptyStorage<T>.EmptyStorage;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ILinVectorStorage<T> GetKVectorPartList(uint grade)
         {
             return 
@@ -441,6 +487,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
                     : LinVectorEmptyStorage<T>.EmptyStorage;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool TryGetVectorPart(out VectorStorage<T> vector)
         {
             if (GetLinVectorGradedStorage().TryGetVectorStorage(1U, out var evenDictionary))
@@ -453,6 +500,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             return false;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool TryGetBivectorPart(out BivectorStorage<T> bivector)
         {
             if (GetLinVectorGradedStorage().TryGetVectorStorage(2U, out var evenDictionary))
@@ -466,6 +514,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IEnumerable<ulong> GetIds()
         {
             return GetLinVectorGradedStorage()
@@ -484,6 +533,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
                 yield return new GradeIndexRecord(grade, index);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IEnumerable<BasisBlade> GetBasisBlades()
         {
             return GetLinVectorGradedStorage()
@@ -495,6 +545,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
                 );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IEnumerable<BasisTerm<T>> GetTerms()
         {
             return GetLinVectorGradedStorage()
@@ -570,6 +621,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IEnumerable<IndexScalarRecord<T>> GetIdScalarRecords()
         {
             return GetLinVectorGradedStorage()
@@ -584,11 +636,13 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
                 );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IEnumerable<IndexScalarRecord<T>> GetIndexScalarRecords(uint grade)
         {
             return GetLinVectorGradedStorage().GetVectorStorage(grade).GetIndexScalarRecords();
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IEnumerable<GradeIndexScalarRecord<T>> GetGradeIndexScalarRecords()
         {
             return GetLinVectorGradedStorage()
@@ -600,6 +654,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
                 );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IEnumerable<T> GetScalars()
         {
             return GetLinVectorGradedStorage().GetVectorStorages()
@@ -607,6 +662,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IGeoGbtMultivectorStorageStack1<T> CreateGbtStack(int treeDepth, int capacity, IScalarAlgebraProcessor<T> scalarProcessor)
         {
             //return GeoGbtMultivectorStorageGradedStack1<T>.Create(
@@ -626,6 +682,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         /// Construct a binary tree representation of this storage
         /// </summary>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public LinVectorTreeStorage<T> GetBinaryTree(int treeDepth)
         {
             if (treeDepth < MinVSpaceDimension)
@@ -641,6 +698,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public MultivectorStorage<T> ToMultivectorStorage()
         {
             return MultivectorStorage<T>.Create(
@@ -648,11 +706,13 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             );
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public MultivectorGradedStorage<T> ToMultivectorGradedStorage()
         {
             return this;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public VectorStorage<T> GetVectorPart()
         {
             if (!GetLinVectorGradedStorage().TryGetVectorStorage(1, out var indexScalarDictionary))
@@ -663,6 +723,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
                 : VectorStorage<T>.CreateVectorStorage(indexScalarDictionary);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public VectorStorage<T> GetVectorPart(Func<T, bool> scalarSelection)
         {
             if (!GetLinVectorGradedStorage().TryGetVectorStorage(1, out var indexScalarDictionary))
@@ -676,6 +737,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
                 : VectorStorage<T>.CreateVectorStorage(indexScalarDictionary);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public VectorStorage<T> GetVectorPart(Func<ulong, T, bool> indexScalarSelection)
         {
             if (!GetLinVectorGradedStorage().TryGetVectorStorage(1, out var indexScalarDictionary))
@@ -689,6 +751,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
                 : VectorStorage<T>.CreateVectorStorage(indexScalarDictionary);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public VectorStorage<T> GetVectorPart(Func<ulong, bool> indexSelection)
         {
             if (!GetLinVectorGradedStorage().TryGetVectorStorage(1, out var indexScalarDictionary))
@@ -702,6 +765,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
                 : VectorStorage<T>.CreateVectorStorage(indexScalarDictionary);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public BivectorStorage<T> GetBivectorPart()
         {
             if (!GetLinVectorGradedStorage().TryGetVectorStorage(2, out var indexScalarDictionary))
@@ -712,6 +776,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
                 : BivectorStorage<T>.Create(indexScalarDictionary);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public BivectorStorage<T> GetBivectorPart(Func<T, bool> scalarSelection)
         {
             if (!GetLinVectorGradedStorage().TryGetVectorStorage(2, out var indexScalarDictionary))
@@ -725,6 +790,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
                 : BivectorStorage<T>.Create(indexScalarDictionary);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public BivectorStorage<T> GetBivectorPart(Func<ulong, T, bool> indexScalarSelection)
         {
             if (!GetLinVectorGradedStorage().TryGetVectorStorage(2, out var indexScalarDictionary))
@@ -738,6 +804,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
                 : BivectorStorage<T>.Create(indexScalarDictionary);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public BivectorStorage<T> GetBivectorPart(Func<ulong, bool> indexSelection)
         {
             if (!GetLinVectorGradedStorage().TryGetVectorStorage(2, out var indexScalarDictionary))
@@ -751,6 +818,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
                 : BivectorStorage<T>.Create(indexScalarDictionary);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public KVectorStorage<T> GetKVectorPart(uint grade)
         {
             if (!GetLinVectorGradedStorage().TryGetVectorStorage(grade, out var indexScalarDictionary))
@@ -761,6 +829,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
                 : KVectorStorage<T>.CreateKVector(grade, indexScalarDictionary);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public KVectorStorage<T> GetKVectorPart(uint grade, Func<T, bool> scalarSelection)
         {
             if (!GetLinVectorGradedStorage().TryGetVectorStorage(grade, out var indexScalarDictionary))
@@ -774,6 +843,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
                 : KVectorStorage<T>.CreateKVector(grade, indexScalarDictionary);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public KVectorStorage<T> GetKVectorPart(uint grade, Func<ulong, T, bool> indexScalarSelection)
         {
             if (!GetLinVectorGradedStorage().TryGetVectorStorage(grade, out var indexScalarDictionary))
@@ -787,6 +857,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
                 : KVectorStorage<T>.CreateKVector(grade, indexScalarDictionary);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public KVectorStorage<T> GetKVectorPart(uint grade, Func<ulong, bool> indexSelection)
         {
             if (!GetLinVectorGradedStorage().TryGetVectorStorage(grade, out var indexScalarDictionary))

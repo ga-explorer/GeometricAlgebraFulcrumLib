@@ -13,7 +13,7 @@ using GraphicsComposerLib.Geometry.Primitives.Lines;
 namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Sampled
 {
     public sealed class GrParametricCurveTree3D :
-        IGraphicsC1ParametricCurve3D,
+        IGraphicsC1ArcLengthCurve3D,
         IReadOnlyList<GrParametricCurveLocalFrame3D>
     {
         private readonly Dictionary<GrParametricTreeCornerPosition3D, int> _cornerDictionary
@@ -126,11 +126,34 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Sampled
             => RootNode.Length1;
 
         public IBoundingBox1D ParameterValueRange { get; }
+        
+        public double GetLength()
+        {
+            var arcLength = 0d;
+            
+            GrParametricCurveLocalFrame3D frame1 = null;
+            var firstFrame = true;
+            foreach (var frame2 in this)
+            {
+                if (firstFrame)
+                {
+                    frame1 = frame2;
+                    firstFrame = false;
+                    continue;
+                }
 
-        public double MinParameterValue 
+                arcLength += frame2.Point.GetDistanceToPoint(frame1.Point);
+
+                frame1 = frame2;
+            }
+
+            return arcLength;
+        }
+
+        public double ParameterValueMin 
             => ParameterValueRange.MinValue;
 
-        public double MaxParameterValue 
+        public double ParameterValueMax 
             => ParameterValueRange.MaxValue;
         
         public GrCurveFrameInterpolationMethod FrameInterpolationMethod { get; set; }
@@ -191,7 +214,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Sampled
         {
             return cornerPosition
                 .GetInterpolationValue()
-                .Lerp(MinParameterValue, MaxParameterValue);
+                .Lerp(ParameterValueMin, ParameterValueMax);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -359,8 +382,95 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Sampled
                 branchNode = (GrParametricCurveTreeBranch3D) childNode;
             }
         }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public IEnumerable<Tuple3D> GetPoints(double parameterValue)
+        {
+            return GetPoints(ParameterValueMin, parameterValue);
+        }
+
+        public IEnumerable<Tuple3D> GetPoints(double parameterValue1, double parameterValue2)
+        {
+            if (parameterValue1 > parameterValue2)
+                (parameterValue1, parameterValue2) = (parameterValue2, parameterValue1);
+
+            var sample1 = GetSample(parameterValue1);
+            var sample2 = GetSample(parameterValue2);
+
+            yield return sample1.GetPoint();
+
+            var index1 = sample1.LeafNodeIndex + 1;
+            var index2 = sample2.LeafNodeIndex;
+            for (var index = index1; index <= index2; index++)
+            {
+                var leafNode = _leafNodeList[index];
+
+                yield return leafNode.Frame0.Point;
+            }
+
+            if (parameterValue2 > sample2.LeafNode.MinParameterValue)
+                yield return sample2.GetPoint();
+        }
         
-        public double GetParameterValueByLength(double length)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public IEnumerable<GrParametricCurveLocalFrame3D> GetFrames(double parameterValue)
+        {
+            return GetFrames(ParameterValueMin, parameterValue);
+        }
+
+        public IEnumerable<GrParametricCurveLocalFrame3D> GetFrames(double parameterValue1, double parameterValue2)
+        {
+            if (parameterValue1 > parameterValue2)
+                (parameterValue1, parameterValue2) = (parameterValue2, parameterValue1);
+
+            var sample1 = GetSample(parameterValue1);
+            var sample2 = GetSample(parameterValue2);
+
+            yield return sample1.GetFrame();
+
+            var index1 = sample1.LeafNodeIndex + 1;
+            var index2 = sample2.LeafNodeIndex;
+            for (var index = index1; index <= index2; index++)
+            {
+                var leafNode = _leafNodeList[index];
+
+                yield return leafNode.Frame0;
+            }
+
+            if (parameterValue2 > sample2.LeafNode.MinParameterValue)
+                yield return sample2.GetFrame();
+        }
+
+        public double ParameterToLength(double parameterValue)
+        {
+            parameterValue = parameterValue.ClampPeriodic(ParameterValueMin, ParameterValueMax);
+
+            if (!RootNode.Contains(parameterValue))
+                throw new ArgumentOutOfRangeException();
+
+            var branchNode = RootNode;
+
+            while (true)
+            {
+                var childNode = 
+                    branchNode.GetChildContaining(parameterValue);
+
+                if (childNode is GrParametricCurveTreeLeaf3D)
+                {
+                    var t = 
+                        (parameterValue - childNode.MinParameterValue) / (childNode.MaxParameterValue - childNode.MinParameterValue);
+
+                    var length = 
+                        t.Lerp(childNode.Length0, childNode.Length1);
+
+                    return length;
+                }
+
+                branchNode = (GrParametricCurveTreeBranch3D) childNode;
+            }
+        }
+
+        public double LengthToParameter(double length)
         {
             if (!RootNode.ContainsLength(length))
                 throw new ArgumentOutOfRangeException();
@@ -410,8 +520,8 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Sampled
                 (length1, length2) = (length2, length1);
 
             return GetSubCurve(
-                GetParameterValueByLength(length1),
-                GetParameterValueByLength(length2),
+                LengthToParameter(length1),
+                LengthToParameter(length2),
                 options
             );
         }

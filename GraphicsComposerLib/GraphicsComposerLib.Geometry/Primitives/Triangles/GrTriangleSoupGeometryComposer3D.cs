@@ -269,8 +269,8 @@ namespace GraphicsComposerLib.Geometry.Primitives.Triangles
             {
                 var normal = 
                     ReverseNormals
-                        ? VectorAlgebraUtils.GetTriangleUnitNormal(vertex3, vertex2, vertex1)
-                        : VectorAlgebraUtils.GetTriangleUnitNormal(vertex1, vertex2, vertex3);
+                        ? VectorUtils.GetTriangleUnitNormal(vertex3, vertex2, vertex1)
+                        : VectorUtils.GetTriangleUnitNormal(vertex1, vertex2, vertex3);
 
                 Debug.Assert(normal.IsValid());
 

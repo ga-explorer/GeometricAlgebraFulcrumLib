@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using DataStructuresLib.Basic;
 using NumericalGeometryLib.BasicMath;
 using NumericalGeometryLib.BasicMath.Tuples;
@@ -24,12 +25,8 @@ namespace GraphicsComposerLib.Geometry.Primitives.Vertices
         public double Item3
             => Z;
 
-        public bool IsValid() =>
-            !double.IsNaN(X) &&
-            !double.IsNaN(Y) &&
-            !double.IsNaN(Z);
 
-
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public GrNormal3D()
         {
             X = 0;
@@ -37,6 +34,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Vertices
             Z = 0;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public GrNormal3D(double x, double y, double z)
         {
             X = x;
@@ -46,6 +44,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Vertices
             Debug.Assert(IsValid());
         }
         
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public GrNormal3D(ITuple3D normal)
         {
             X = normal.X;
@@ -55,10 +54,19 @@ namespace GraphicsComposerLib.Geometry.Primitives.Vertices
             Debug.Assert(IsValid());
         }
 
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsValid()
+        {
+            return !double.IsNaN(X) &&
+                   !double.IsNaN(Y) &&
+                   !double.IsNaN(Z);
+        }
 
         /// <summary>
         /// Reset the normal to zero
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Reset()
         {
             X = 0;
@@ -72,6 +80,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Vertices
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <param name="z"></param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Set(double x, double y, double z)
         {
             X = x;
@@ -85,6 +94,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Vertices
         /// Set the normal to the given value
         /// </summary>
         /// <param name="normalTriplet"></param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Set(ITriplet<double> normalTriplet)
         {
             X = normalTriplet.Item1;
@@ -100,6 +110,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Vertices
         /// <param name="dx"></param>
         /// <param name="dy"></param>
         /// <param name="dz"></param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Update(double dx, double dy, double dz)
         {
             X += dx;
@@ -113,6 +124,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Vertices
         /// Add the given vector to this normal
         /// </summary>
         /// <param name="normalTriplet"></param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void Update(ITriplet<double> normalTriplet)
         {
             X += normalTriplet.Item1;
@@ -125,6 +137,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Vertices
         /// <summary>
         /// Make the normal vector of this vertex a unit vector if not near zero
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void MakeUnit()
         {
             var s = Math.Sqrt(X * X + Y * Y + Z * Z);
@@ -142,6 +155,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Vertices
         /// <summary>
         /// Reverse the direction of the normal and make its length 1
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void MakeNegativeUnit()
         {
             var s = Math.Sqrt(X * X + Y * Y + Z * Z);
@@ -159,6 +173,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Vertices
         /// <summary>
         /// Reverse the direction of the normal
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void MakeNegative()
         {
             X = -X;
@@ -166,6 +181,18 @@ namespace GraphicsComposerLib.Geometry.Primitives.Vertices
             Z = -Z;
 
             Debug.Assert(IsValid());
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public GrNormal3D GetNegative()
+        {
+            return new GrNormal3D(-X, -Y, -Z);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override string ToString()
+        {
+            return $"({X:G}, {Y:G}, {Z:G})";
         }
     }
 }

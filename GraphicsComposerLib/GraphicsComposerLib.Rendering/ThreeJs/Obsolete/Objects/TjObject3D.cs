@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using GraphicsComposerLib.Rendering.ThreeJs.Obsolete.Scenes;
+﻿using GraphicsComposerLib.Rendering.ThreeJs.Obsolete.Scenes;
 using NumericalGeometryLib.BasicMath.Tuples;
 using NumericalGeometryLib.BasicMath.Tuples.Immutable;
 using TextComposerLib.Code.JavaScript;
@@ -41,7 +40,7 @@ namespace GraphicsComposerLib.Rendering.ThreeJs.Obsolete.Objects
 
         }
 
-        protected TjObject3D([NotNull] TjScene parentScene)
+        protected TjObject3D(TjScene parentScene)
         {
             ParentScene = parentScene;
         }

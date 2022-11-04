@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.Basic;
@@ -80,6 +81,30 @@ namespace NumericalGeometryLib.BasicMath.Matrices
             }
 
             return sumVector;
+        }
+
+        
+        public static double[] MatrixProduct(this double[,] matrix1, IReadOnlyList<double> matrix2)
+        {
+            var m = matrix1.GetLength(0);
+            var n = matrix1.GetLength(1);
+
+            if (n != matrix2.Count)
+                throw new InvalidOperationException();
+
+            var matrix = new double[m];
+
+            for (var i = 0; i < m; i++)
+            {
+                var d = 0d;
+
+                for (var j = 0; j < n; j++)
+                    d += matrix1[i, j] * matrix2[j];
+
+                matrix[i] = d;
+            }
+
+            return matrix;
         }
 
 

@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Diagnostics.CodeAnalysis;
 
 namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Groups;
 
@@ -48,7 +47,7 @@ public sealed class GrVisualElementList3D :
         return this;
     }
 
-    public GrVisualElementList3D Add([NotNull] IGrVisualElement3D visualElement)
+    public GrVisualElementList3D Add(IGrVisualElement3D visualElement)
     {
         _visualElementList.Add(visualElement.Name, visualElement);
 

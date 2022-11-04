@@ -73,6 +73,8 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Context
         public bool EnableTestEvaluation { get; set; } 
             = false;
 
+        public bool AllowGenerateComments { get; set; }
+
         public bool AllowGenerateCode { get; set; }
             = true;
 

@@ -1,5 +1,4 @@
-﻿using System.Numerics;
-using GraphicsComposerLib.Rendering.BabylonJs.Constants;
+﻿using GraphicsComposerLib.Rendering.BabylonJs.Constants;
 using GraphicsComposerLib.Rendering.BabylonJs.Materials;
 using GraphicsComposerLib.Rendering.BabylonJs.Meshes;
 using GraphicsComposerLib.Rendering.BabylonJs.Textures;
@@ -15,8 +14,9 @@ using GraphicsComposerLib.Rendering.Visuals.Space3D.Surfaces;
 using Humanizer;
 using NumericalGeometryLib.BasicMath;
 using NumericalGeometryLib.BasicMath.Constants;
-using NumericalGeometryLib.BasicMath.Matrices;
 using NumericalGeometryLib.BasicMath.Tuples.Immutable;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
 using TextComposerLib.Text.Linear;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs;
@@ -24,6 +24,10 @@ namespace GraphicsComposerLib.Rendering.BabylonJs;
 public class GrBabylonJsSceneComposer3D :
     GrVisualElementsSceneComposer3D<GrBabylonJsScene>
 {
+    private readonly Dictionary<string, GrBabylonJsMaterial> _colorMaterialCache
+        = new Dictionary<string, GrBabylonJsMaterial>();
+
+
     public override GrBabylonJsScene SceneObject { get; }
 
     public GrBabylonJsSnapshotSpecs SnapshotSpecs { get; }
@@ -62,6 +66,23 @@ public class GrBabylonJsSceneComposer3D :
             .SetProperties(new GrBabylonJsScene.SceneProperties());
 
         SnapshotSpecs = snapshotSpecs;
+    }
+
+
+    public override IGrVisualElementMaterial3D AddOrGetColorMaterial(Color color)
+    {
+        var key = color.ToHex();
+
+        if (_colorMaterialCache.TryGetValue(key, out var material))
+            return material;
+
+        material = color.ToPixel<Rgba32>().A == 255
+            ? SceneObject.AddSimpleMaterial($"colorMaterial{key}", color)
+            : SceneObject.AddStandardMaterial($"colorMaterial{key}", color);
+
+        _colorMaterialCache.Add(key, material);
+
+        return material;
     }
 
 
@@ -246,8 +267,8 @@ public class GrBabylonJsSceneComposer3D :
 
     public override void AddPoint(GrVisualPoint3D visualElement)
     {
-        if (visualElement.TextImage is not null)
-            AddImage(visualElement.TextImage);
+        //if (visualElement.TextImage is not null)
+        //    AddImage(visualElement.TextImage);
 
         SceneObject.AddSphere(
             $"{visualElement.Name}Sphere",
@@ -273,8 +294,8 @@ public class GrBabylonJsSceneComposer3D :
         if (length == 0)
             return;
 
-        if (visualElement.TextImage is not null)
-            AddImage(visualElement.TextImage);
+        //if (visualElement.TextImage is not null)
+        //    AddImage(visualElement.TextImage);
 
         var cylinderBaseDiameter = visualElement.Style.Thickness * 3;
         var cylinderHeight = cylinderBaseDiameter * 1.5d;
@@ -342,8 +363,8 @@ public class GrBabylonJsSceneComposer3D :
         if (visualElement.GetLength().IsNearZero())
             return;
         
-        if (visualElement.TextImage is not null)
-            AddImage(visualElement.TextImage);
+        //if (visualElement.TextImage is not null)
+        //    AddImage(visualElement.TextImage);
 
         var length = visualElement.GetLength();
         var midPoint = 0.5d.Lerp(visualElement.Position1, visualElement.Position2);
@@ -433,16 +454,16 @@ public class GrBabylonJsSceneComposer3D :
         throw new ArgumentOutOfRangeException();
     }
 
-    public override void AddLineCurve(GrVisualLineCurve3D visualElement)
+    public override void AddLinePath(GrVisualLinePathCurve3D visualElement)
     {
-        if (visualElement.TextImage is not null)
-            AddImage(visualElement.TextImage);
+        //if (visualElement.TextImage is not null)
+        //    AddImage(visualElement.TextImage);
 
         var pathName = $"{visualElement.Name}Path";
 
         SceneObject.AddCurve3(
             pathName,
-            visualElement.PositionList.GetBabylonJsCode()
+            visualElement.PointList.GetBabylonJsCode()
         );
 
         if (visualElement.Style is GrVisualCurveTubeStyle3D tubeStyle)
@@ -488,10 +509,10 @@ public class GrBabylonJsSceneComposer3D :
         throw new ArgumentOutOfRangeException();
     }
 
-    public override void AddCircleCurve(GrVisualCircleCurve3D visualElement)
+    public override void AddCircle(GrVisualCircleCurve3D visualElement)
     {
-        if (visualElement.TextImage is not null)
-            AddImage(visualElement.TextImage);
+        //if (visualElement.TextImage is not null)
+        //    AddImage(visualElement.TextImage);
 
         var normal = visualElement.Normal.ToUnitVector();
         var quaternion = Axis3D.PositiveY.CreateAxisToVectorRotationQuaternion(normal);
@@ -596,10 +617,10 @@ public class GrBabylonJsSceneComposer3D :
         throw new ArgumentOutOfRangeException();
     }
 
-    public override void AddCircleCurveArc(GrVisualCircleCurveArc3D visualElement)
+    public override void AddCircleArc(GrVisualCircleArcCurve3D visualElement)
     {
-        if (visualElement.TextImage is not null)
-            AddImage(visualElement.TextImage);
+        //if (visualElement.TextImage is not null)
+        //    AddImage(visualElement.TextImage);
 
         var length = visualElement.GetLength();
         var pathPointCount = (int)(2 * length + 1).Ceiling();
@@ -685,10 +706,106 @@ public class GrBabylonJsSceneComposer3D :
         throw new ArgumentOutOfRangeException();
     }
 
-    public override void AddRectangleSurface(GrVisualRectangleSurface3D visualElement)
+    public override void AddParametricCurve(GrVisualParametricCurve3D visualElement)
     {
-        if (visualElement.TextImage is not null)
-            AddImage(visualElement.TextImage);
+        //if (visualElement.TextImage is not null)
+        //    AddImage(visualElement.TextImage);
+
+        if (visualElement.ShowFrames)
+        {
+            var lineArrayList = new List<Tuple3D[]>(visualElement.ParameterValues.Count);
+            var colorArrayList = new List<Color[]>(visualElement.ParameterValues.Count);
+
+            var xColor1 = Color.Red.WithAlpha(0.9f); //Color.Red.SetAlpha(128);
+            var xColor2 = Color.Red.WithAlpha(0.1f);
+            var yColor1 = Color.Green.WithAlpha(0.9f);
+            var yColor2 = Color.Green.WithAlpha(0.1f);
+            var zColor1 = Color.Blue.WithAlpha(0.9f);
+            var zColor2 = Color.Blue.WithAlpha(0.1f);
+
+            var length = visualElement.FrameSize;
+            foreach (var t in visualElement.FrameParameterValues)
+            {
+                var frame = visualElement.Curve.GetFrame(t);
+
+                var origin = frame.Point;
+                var xPoint = origin + length * frame.Tangent.ToUnitVector();
+                var yPoint = origin + length * frame.Normal1.ToUnitVector();
+                var zPoint = origin + length * frame.Normal2.ToUnitVector();
+
+                lineArrayList.Add(new[] { origin, xPoint });
+                lineArrayList.Add(new[] { origin, yPoint });
+                lineArrayList.Add(new[] { origin, zPoint });
+
+                colorArrayList.Add(new[] { xColor1, xColor2 });
+                colorArrayList.Add(new[] { yColor1, yColor2 });
+                colorArrayList.Add(new[] { zColor1, zColor2 });
+            }
+
+            SceneObject.AddLineSystem(
+                $"{visualElement.Name}FrameLines",
+                new GrBabylonJsLineSystem.LineSystemOptions
+                {
+                    Lines = lineArrayList.ToArray(),
+                    Colors = colorArrayList.ToArray()
+                }
+            );
+        }
+
+        var pathName = $"{visualElement.Name}Path";
+
+        SceneObject.AddCurve3(
+            pathName,
+            visualElement.ParameterValues.Select(visualElement.Curve.GetPoint).GetBabylonJsCode()
+        );
+
+        if (visualElement.Style is GrVisualCurveTubeStyle3D tubeStyle)
+        {
+            SceneObject.AddTube(
+                $"{visualElement.Name}Tube",
+
+                new GrBabylonJsTube.TubeOptions
+                {
+                    Radius = tubeStyle.Thickness / 2d,
+                    Path = $"{pathName}.getPoints()",
+                    Tessellation = 32
+                },
+
+                new GrBabylonJsMesh.MeshProperties
+                {
+                    Material = tubeStyle.Material.MaterialName
+                }
+            );
+
+            return;
+        }
+
+        if (visualElement.Style is GrVisualCurveSolidLineStyle3D solidLineStyle)
+        {
+            SceneObject.AddLines(
+                $"{visualElement.Name}Line",
+
+                new GrBabylonJsLines.LinesOptions
+                {
+                    Points = $"{pathName}.getPoints()"
+                },
+
+                new GrBabylonJsLinesMesh.LinesMeshProperties
+                {
+                    Color = solidLineStyle.Color
+                }
+            );
+
+            return;
+        }
+
+        throw new ArgumentOutOfRangeException();
+    }
+
+    public override void AddRectangle(GrVisualRectangleSurface3D visualElement)
+    {
+        //if (visualElement.TextImage is not null)
+        //    AddImage(visualElement.TextImage);
 
         var quaternion = Axis3D.PositiveX.CreateAxisPairToVectorPairRotationQuaternion(
             Axis3D.PositiveY,
@@ -696,7 +813,7 @@ public class GrBabylonJsSceneComposer3D :
             visualElement.HeightUnitDirection
         );
 
-        if (visualElement.Style is GrVisualThickSurfaceStyle3D thickStyle)
+        if (visualElement.Style is GrVisualSurfaceThickStyle3D thickStyle)
         {
             SceneObject.AddBox(
                 $"{visualElement.Name}Box",
@@ -716,7 +833,7 @@ public class GrBabylonJsSceneComposer3D :
                 }
             );
         }
-        else if (visualElement.Style is GrVisualThinSurfaceStyle3D thinStyle)
+        else if (visualElement.Style is GrVisualSurfaceThinStyle3D thinStyle)
         {
             SceneObject.AddPlane(
                 $"{visualElement.Name}Plane",
@@ -738,14 +855,79 @@ public class GrBabylonJsSceneComposer3D :
         }
     }
 
-    public override void AddCircleSurface(GrVisualCircleSurface3D visualElement)
+    public override void AddSphere(GrVisualSphere3D visualElement)
     {
-        if (visualElement.TextImage is not null)
-            AddImage(visualElement.TextImage);
+        //if (visualElement.TextImage is not null)
+        //    AddImage(visualElement.TextImage);
+
+        if (visualElement.Style is GrVisualSurfaceThickStyle3D thickStyle)
+        {
+            SceneObject.AddSphere(
+                $"{visualElement.Name}OuterSphere",
+
+                new GrBabylonJsSphere.SphereOptions
+                {
+                    Diameter = visualElement.Radius * 2 + thickStyle.Thickness * 0.5d,
+                    Segments = 320,
+                    Slice = 320,
+                    SideOrientation = GrBabylonJsMeshOrientation.FrontAndBack
+                },
+
+                new GrBabylonJsMesh.MeshProperties
+                {
+                    Material = visualElement.Style.Material.MaterialName,
+                    Position = visualElement.Center.ToBabylonJsVector3Value()
+                }
+            );
+
+            SceneObject.AddSphere(
+                $"{visualElement.Name}InnerSphere",
+
+                new GrBabylonJsSphere.SphereOptions
+                {
+                    Diameter = visualElement.Radius * 2 - thickStyle.Thickness * 0.5d,
+                    Segments = 320,
+                    Slice = 320,
+                    SideOrientation = GrBabylonJsMeshOrientation.FrontAndBack
+                },
+
+                new GrBabylonJsMesh.MeshProperties
+                {
+                    Material = visualElement.Style.Material.MaterialName,
+                    Position = visualElement.Center.ToBabylonJsVector3Value()
+                }
+            );
+        }
+        else if (visualElement.Style is GrVisualSurfaceThinStyle3D thinStyle)
+        {
+            SceneObject.AddSphere(
+                $"{visualElement.Name}Sphere",
+
+                new GrBabylonJsSphere.SphereOptions
+                {
+                    Diameter = visualElement.Radius * 2,
+                    Segments = 320,
+                    Slice = 320,
+                    SideOrientation = GrBabylonJsMeshOrientation.FrontAndBack
+                },
+
+                new GrBabylonJsMesh.MeshProperties
+                {
+                    Material = visualElement.Style.Material.MaterialName,
+                    Position = visualElement.Center.ToBabylonJsVector3Value()
+                }
+            );
+        }
+    }
+
+    public override void AddDisc(GrVisualCircleSurface3D visualElement)
+    {
+        //if (visualElement.TextImage is not null)
+        //    AddImage(visualElement.TextImage);
 
         var normal = visualElement.Normal.ToUnitVector();
 
-        if (visualElement.Style is GrVisualThickSurfaceStyle3D thickStyle)
+        if (visualElement.Style is GrVisualSurfaceThickStyle3D thickStyle)
         {
             var quaternion = Axis3D.PositiveY.CreateAxisToVectorRotationQuaternion(normal);
 
@@ -767,8 +949,29 @@ public class GrBabylonJsSceneComposer3D :
                     RotationQuaternion = quaternion
                 }
             );
+
+            if (visualElement.DrawEdge)
+            {
+                SceneObject.AddTorus(
+                    $"{visualElement.Name}EdgeTorus",
+
+                    new GrBabylonJsTorus.TorusOptions
+                    {
+                        Diameter = visualElement.Radius * 2,
+                        Thickness = thickStyle.Thickness,
+                        Tessellation = 320
+                    },
+
+                    new GrBabylonJsMesh.MeshProperties
+                    {
+                        Material = thickStyle.EdgeMaterial.MaterialName,
+                        Position = visualElement.Center.ToBabylonJsVector3Value(),
+                        RotationQuaternion = quaternion
+                    }
+                );
+            }
         }
-        else if (visualElement.Style is GrVisualThinSurfaceStyle3D thinStyle)
+        else if (visualElement.Style is GrVisualSurfaceThinStyle3D thinStyle)
         {
             var quaternion = Axis3D.PositiveZ.CreateAxisToVectorRotationQuaternion(normal);
 
@@ -789,18 +992,50 @@ public class GrBabylonJsSceneComposer3D :
                     RotationQuaternion = quaternion
                 }
             );
+
+            if (visualElement.DrawEdge)
+            {
+                var (point1, point2, point3) =
+                    visualElement.GetEdgePointsTriplet();
+
+                var pathName = $"{visualElement.Name}EdgePath";
+
+                SceneObject.AddArcThru3Points(
+                    pathName,
+                    point1,
+                    point2,
+                    point3,
+                    320,
+                    false,
+                    true
+                );
+
+                SceneObject.AddLines(
+                    $"{visualElement.Name}EdgeLine",
+
+                    new GrBabylonJsLines.LinesOptions
+                    {
+                        Points = $"{pathName}.getPoints()"
+                    },
+
+                    new GrBabylonJsLinesMesh.LinesMeshProperties
+                    {
+                        Color = thinStyle.EdgeColor
+                    }
+                );
+            }
         }
     }
 
-    public override void AddCircleSurfaceArc(GrVisualCircleSurfaceArc3D visualElement)
+    public override void AddDiscSector(GrVisualCircleSurfaceArc3D visualElement)
     {
-        if (visualElement.TextImage is not null)
-            AddImage(visualElement.TextImage);
+        //if (visualElement.TextImage is not null)
+        //    AddImage(visualElement.TextImage);
 
         var vector = visualElement.GetArcStartUnitVector();
         var normal = visualElement.GetUnitNormal();
 
-        if (visualElement.Style is GrVisualThickSurfaceStyle3D thickStyle)
+        if (visualElement.Style is GrVisualSurfaceThickStyle3D thickStyle)
         {
             var quaternion =
                 Axis3D.PositiveX.CreateAxisPairToVectorPairRotationQuaternion(
@@ -829,6 +1064,42 @@ public class GrBabylonJsSceneComposer3D :
                 }
             );
 
+            if (visualElement.DrawEdge)
+            {
+                var length = visualElement.GetEdgeLength();
+                var pathPointCount = (int)(2 * length + 1).Ceiling();
+                var (point1, point2, point3) =
+                    visualElement.GetArcPointsTriplet();
+
+                var pathName = $"{visualElement.Name}EdgePath";
+
+                SceneObject.AddArcThru3Points(
+                    pathName,
+                    point1,
+                    point2,
+                    point3,
+                    pathPointCount,
+                    false,
+                    false
+                );
+
+                SceneObject.AddTube(
+                    $"{visualElement.Name}EdgeTube",
+
+                    new GrBabylonJsTube.TubeOptions
+                    {
+                        Path = $"{pathName}.getPoints()",
+                        Radius = thickStyle.Thickness / 2d,
+                        Tessellation = 320,
+                        Cap = GrBabylonJsMeshCap.StartAndEnd
+                    },
+
+                    new GrBabylonJsMesh.MeshProperties
+                    {
+                        Material = thickStyle.Material.MaterialName
+                    }
+                );
+            }
 
             var qYx =
                 Axis3D.PositiveY.CreateAxisToAxisRotationQuaternion(Axis3D.PositiveX);
@@ -849,15 +1120,12 @@ public class GrBabylonJsSceneComposer3D :
                     Material = thickStyle.Material.MaterialName,
                     Scaling = new Tuple3D(thickStyle.Thickness / (2d * visualElement.Radius), 1, 1),
                     Position = visualElement.Center.ToBabylonJsVector3Value(),
-                    RotationQuaternion = qYx.Concatenate(quaternion)
+                    RotationQuaternion = qYx.QuaternionConcatenate(quaternion)
                 }
             );
 
 
-            var q2 = Quaternion.CreateFromAxisAngle(
-                Vector3.UnitY,
-                (float)visualElement.GetAngle()
-            );
+            var q2 = Tuple3D.E2.CreateQuaternionFromAxisAngle(visualElement.GetAngle());
 
             SceneObject.AddDisc(
                 $"{visualElement.Name}Disc2",
@@ -875,12 +1143,14 @@ public class GrBabylonJsSceneComposer3D :
                     Material = visualElement.Style.Material.MaterialName,
                     Scaling = new Tuple3D(thickStyle.Thickness / (2d * visualElement.Radius), 1, 1),
                     Position = visualElement.Center.ToBabylonJsVector3Value(),
-                    RotationQuaternion = qYx.Concatenate(q2, quaternion)
+                    RotationQuaternion = qYx.QuaternionConcatenate(q2, quaternion)
                 }
             );
         }
         else
         {
+            var thinStyle = (GrVisualSurfaceThinStyle3D) visualElement.Style; 
+
             var quaternion =
                 Axis3D.PositiveX.CreateAxisPairToVectorPairRotationQuaternion(
                     Axis3D.PositiveZ,
@@ -906,17 +1176,51 @@ public class GrBabylonJsSceneComposer3D :
                     RotationQuaternion = quaternion
                 }
             );
+
+            if (visualElement.DrawEdge)
+            {
+                var length = visualElement.GetEdgeLength();
+                var pathPointCount = (int)(2 * length + 1).Ceiling();
+                var (point1, point2, point3) =
+                    visualElement.GetArcPointsTriplet();
+
+                var pathName = $"{visualElement.Name}EdgePath";
+
+                SceneObject.AddArcThru3Points(
+                    pathName,
+                    point1,
+                    point2,
+                    point3,
+                    pathPointCount,
+                    false,
+                    false
+                );
+
+                SceneObject.AddLines(
+                    $"{visualElement.Name}Line",
+
+                    new GrBabylonJsLines.LinesOptions
+                    {
+                        Points = $"{pathName}.getPoints()"
+                    },
+
+                    new GrBabylonJsLinesMesh.LinesMeshProperties
+                    {
+                        Color = thinStyle.EdgeColor
+                    }
+                );
+            }
         }
     }
 
     public override void AddRingSurface(GrVisualRingSurface3D visualElement)
     {
-        if (visualElement.TextImage is not null)
-            AddImage(visualElement.TextImage);
+        //if (visualElement.TextImage is not null)
+        //    AddImage(visualElement.TextImage);
 
         var normal = visualElement.Normal.ToUnitVector();
 
-        if (visualElement.Style is GrVisualThickSurfaceStyle3D thickStyle)
+        if (visualElement.Style is GrVisualSurfaceThickStyle3D thickStyle)
         {
             var quaternion = Axis3D.PositiveY.CreateAxisToVectorRotationQuaternion(normal);
 
@@ -944,7 +1248,7 @@ public class GrBabylonJsSceneComposer3D :
                     RotationQuaternion = quaternion
                 }
             );
-
+            
             return;
         }
         //else
@@ -975,10 +1279,35 @@ public class GrBabylonJsSceneComposer3D :
 
     public override void AddRightAngle(GrVisualRightAngle3D visualElement)
     {
-        if (visualElement.TextImage is not null)
-            AddImage(visualElement.TextImage);
+        //if (visualElement.TextImage is not null)
+        //    AddImage(visualElement.TextImage);
 
-        //var pathPointCount = 3;
+        if (visualElement.InnerStyle is not null)
+        {
+            var quaternion = Axis3D.PositiveX.CreateAxisPairToVectorPairRotationQuaternion(
+                Axis3D.PositiveY,
+                visualElement.Direction1,
+                visualElement.Direction2
+            );
+
+            SceneObject.AddPlane(
+                $"{visualElement.Name}Plane",
+
+                new GrBabylonJsPlane.PlaneOptions
+                {
+                    Width = visualElement.Width,
+                    Height = visualElement.Height,
+                    SideOrientation = GrBabylonJsMeshOrientation.FrontAndBack
+                },
+
+                new GrBabylonJsMesh.MeshProperties
+                {
+                    Material = visualElement.InnerStyle.Material.MaterialName,
+                    Position = visualElement.Origin + (visualElement.Direction1 + visualElement.Direction2) * visualElement.Radius / 8d.Sqrt(),
+                    RotationQuaternion = quaternion
+                }
+            );
+        }
 
         var pathCode =
             visualElement

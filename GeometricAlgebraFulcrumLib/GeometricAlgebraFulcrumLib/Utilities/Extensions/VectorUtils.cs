@@ -8,11 +8,27 @@ using GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Geometry.Subspaces;
 using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Utilities.Factories;
+using NumericalGeometryLib.BasicMath.Tuples.Mutable;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 {
     public static class VectorUtils
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T[] GetArray<T>(this GaVector<T> vector)
+        {
+            return vector.VectorStorage.GetLinVectorIndexScalarStorage().ToArray();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Float64DenseTuple GetDenseTuple(this GaVector<double> vector)
+        {
+            return new Float64DenseTuple(
+                vector.VectorStorage.GetLinVectorIndexScalarStorage().ToArray()
+            );
+        }
+
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> GetEuclideanAngle<T>(this GaVector<T> vector1, GaVector<T> vector2, bool assumeUnitVectors = false)
         {

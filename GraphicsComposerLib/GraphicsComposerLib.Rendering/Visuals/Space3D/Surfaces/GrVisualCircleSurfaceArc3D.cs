@@ -1,4 +1,5 @@
-﻿using NumericalGeometryLib.BasicMath;
+﻿using DataStructuresLib.Basic;
+using NumericalGeometryLib.BasicMath;
 using NumericalGeometryLib.BasicMath.Tuples;
 using NumericalGeometryLib.BasicMath.Tuples.Immutable;
 
@@ -23,12 +24,54 @@ public sealed class GrVisualCircleSurfaceArc3D :
         set => InnerArc = !value;
     }
 
+    public bool DrawEdge { get; set; } = false;
+
 
     public GrVisualCircleSurfaceArc3D(string name) 
         : base(name)
     {
     }
 
+    public Triplet<Tuple3D> GetArcPointsTriplet()
+    {
+        if (InnerArc)
+        {
+            var vector1 = Direction1.ToUnitVector();
+            var vector3 = Direction2.ToUnitVector();
+            var vector2 = 0.5d * (vector1 + vector3);
+
+            vector2 = vector2.GetLengthSquared().IsNearZero()
+                ? vector1.GetUnitNormal()
+                : vector2.ToUnitVector();
+
+            return new Triplet<Tuple3D>(
+                Center + Radius * vector1, 
+                Center + Radius * vector2, 
+                Center + Radius * vector3
+            );
+        }
+        else
+        {
+            var vector1 = Direction2.ToUnitVector();
+            var vector3 = Direction1.ToUnitVector();
+            var vector2 = -0.5d * (vector1 + vector3);
+
+            vector2 = vector2.GetLengthSquared().IsNearZero()
+                ? vector1.GetUnitNormal()
+                : vector2.ToUnitVector();
+
+            return new Triplet<Tuple3D>(
+                Center + Radius * vector1, 
+                Center + Radius * vector2, 
+                Center + Radius * vector3
+            );
+        }
+    }
+
+    public double GetEdgeLength()
+    {
+        return 2d * Math.PI * Radius * GetArcRatio();
+    } 
 
     public Tuple3D GetArcStartUnitVector()
     {
@@ -54,7 +97,7 @@ public sealed class GrVisualCircleSurfaceArc3D :
             : normal.ToUnitVector();
     }
 
-    public double GetAngle()
+    public PlanarAngle GetAngle()
     {
         var arcRatio = 
             Direction1.GetVectorsAngle(Direction2);

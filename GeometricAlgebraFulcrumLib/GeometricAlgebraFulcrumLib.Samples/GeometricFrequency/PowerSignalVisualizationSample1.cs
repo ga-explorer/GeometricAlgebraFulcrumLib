@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
-using DataStructuresLib.Basic;
 using DataStructuresLib.BitManipulation;
 using GeometricAlgebraFulcrumLib.Applications.PowerSystems;
 using GeometricAlgebraFulcrumLib.Utilities.Factories;
@@ -258,9 +257,20 @@ namespace GeometricAlgebraFulcrumLib.Samples.GeometricFrequency
             Console.WriteLine($"Mean omega norm / frequency: {omegaMeanNorm / Frequency}");
             Console.WriteLine();
 
-            //return;
+            var cameraAlphaValues =
+                30d.DegreesToRadians().GetCosRange(
+                    150d.DegreesToRadians(),
+                    powerSignal.SampleCount,
+                    1,
+                    true
+                ).CreateSignal(powerSignal.SamplingRate);
 
-            var visualizer = new PowerSignalVisualizer3D(powerSignal)
+            var cameraBetaValues =
+                Enumerable
+                    .Repeat(2 * Math.PI / 5, powerSignal.SampleCount)
+                    .CreateSignal(powerSignal.SamplingRate);
+
+            var visualizer = new PowerSignalVisualizer3D(cameraAlphaValues, cameraBetaValues, powerSignal)
             {
                 Title = "Balanced 3-phase 3-harmonics signal",
                 WorkingPath = @"D:\Projects\Study\Babylon.js\",

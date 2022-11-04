@@ -33,7 +33,7 @@ namespace GraphicsComposerLib.Rendering.Colors
                     256, 
                     false
                 ).Select(k => 
-                    curve.GetPoint(curve.GetParameterValueByLength(k)).ToColor()
+                    curve.GetPoint(curve.LengthToParameter(k)).ToColor()
                 ).ToImmutableArray();
 
             return new GrColorCurve(colorList);

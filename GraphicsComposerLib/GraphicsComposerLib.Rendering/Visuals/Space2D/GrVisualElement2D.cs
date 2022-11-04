@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-namespace GraphicsComposerLib.Rendering.Visuals.Space2D;
+﻿namespace GraphicsComposerLib.Rendering.Visuals.Space2D;
 
 public abstract class GrVisualElement2D :
     IGrVisualElement2D
@@ -11,7 +9,7 @@ public abstract class GrVisualElement2D :
         = new GrVisualElementStyle2D();
 
 
-    protected GrVisualElement2D([NotNull] string name)
+    protected GrVisualElement2D(string name)
     {
         Name = name;
     }

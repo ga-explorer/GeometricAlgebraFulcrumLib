@@ -17,30 +17,20 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
         private SquareMatrix4 _invMatrix;
 
 
-        public double this[int i, int j, bool useInvMatrix]
-        {
-            get { return useInvMatrix ? _invMatrix[i, j] : _matrix[i, j]; }
-        }
+        public double this[int i, int j, bool useInvMatrix] 
+            => useInvMatrix ? _invMatrix[i, j] : _matrix[i, j];
 
-        public double this[int i, int j]
-        {
-            get { return _matrix[i, j]; }
-        }
+        public double this[int i, int j] 
+            => _matrix[i, j];
 
-        public bool IsIdentity
-        {
-            get { return _matrix.IsIdentity; }
-        }
+        public bool IsIdentity 
+            => _matrix.IsIdentity;
 
-        public bool ContainsScaling
-        {
-            get { return _matrix.ContainsScaling; }
-        }
+        public bool ContainsScaling 
+            => _matrix.ContainsScaling;
 
-        public bool SwapsHandedness
-        {
-            get { return _matrix.Determinant < 0; }
-        }
+        public bool SwapsHandedness 
+            => _matrix.Determinant < 0;
 
 
         public AffineMap3D()

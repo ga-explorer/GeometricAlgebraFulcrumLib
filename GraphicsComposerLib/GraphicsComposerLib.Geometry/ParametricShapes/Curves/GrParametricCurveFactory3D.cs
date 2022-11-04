@@ -11,6 +11,8 @@ using GraphicsComposerLib.Geometry.ParametricShapes.Curves.CatmullRom;
 using GraphicsComposerLib.Geometry.ParametricShapes.Curves.Circles;
 using GraphicsComposerLib.Geometry.ParametricShapes.Curves.Sampled;
 using NumericalGeometryLib.BasicMath.Calculus;
+using GraphicsComposerLib.Geometry.ParametricShapes.Curves.Lines;
+using GraphicsComposerLib.Geometry.ParametricShapes.Curves.Mapped;
 
 namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves
 {

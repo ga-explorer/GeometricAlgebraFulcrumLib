@@ -1035,16 +1035,26 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors
         }
 
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal GaBivector([System.Diagnostics.CodeAnalysis.NotNull] IScalarAlgebraProcessor<T> processor, [System.Diagnostics.CodeAnalysis.NotNull] BivectorStorage<T> bivector)
         {
             GeometricProcessor = (IGeometricAlgebraProcessor<T>) processor;
             BivectorStorage = bivector;
+
+            Debug.Assert(
+                BivectorStorage.GetStoredBasisVectorsBitPattern() < GeometricProcessor.GaSpaceDimension
+            );
         }
         
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal GaBivector([System.Diagnostics.CodeAnalysis.NotNull] IGeometricAlgebraProcessor<T> processor, [System.Diagnostics.CodeAnalysis.NotNull] BivectorStorage<T> bivector)
         {
             GeometricProcessor = processor;
             BivectorStorage = bivector;
+
+            Debug.Assert(
+                BivectorStorage.GetStoredBasisVectorsBitPattern() < GeometricProcessor.GaSpaceDimension
+            );
         }
 
 
@@ -1058,6 +1068,12 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors
         public bool IsNearZero()
         {
             return GeometricProcessor.IsNearZero(BivectorStorage);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ulong GetStoredBasisVectorsBitPattern()
+        {
+            return BivectorStorage.GetStoredBasisVectorsBitPattern();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

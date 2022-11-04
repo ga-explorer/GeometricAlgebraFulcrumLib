@@ -17,6 +17,9 @@ namespace NumericalGeometryLib.BasicMath
 
         public static PlanarAngle Angle30 { get; }
             = new PlanarAngle(30d);
+        
+        public static PlanarAngle Angle45 { get; }
+            = new PlanarAngle(45d);
 
         public static PlanarAngle Angle60 { get; }
             = new PlanarAngle(60d);
@@ -26,12 +29,18 @@ namespace NumericalGeometryLib.BasicMath
 
         public static PlanarAngle Angle120 { get; }
             = new PlanarAngle(120d);
+        
+        public static PlanarAngle Angle135 { get; }
+            = new PlanarAngle(135d);
 
         public static PlanarAngle Angle150 { get; }
             = new PlanarAngle(150d);
 
         public static PlanarAngle Angle180 { get; }
             = new PlanarAngle(180d);
+        
+        public static PlanarAngle Angle225 { get; }
+            = new PlanarAngle(225d);
 
         public static PlanarAngle Angle210 { get; }
             = new PlanarAngle(210d);
@@ -44,6 +53,9 @@ namespace NumericalGeometryLib.BasicMath
 
         public static PlanarAngle Angle300 { get; }
             = new PlanarAngle(300d);
+        
+        public static PlanarAngle Angle315 { get; }
+            = new PlanarAngle(315d);
 
         public static PlanarAngle Angle330 { get; }
             = new PlanarAngle(330d);

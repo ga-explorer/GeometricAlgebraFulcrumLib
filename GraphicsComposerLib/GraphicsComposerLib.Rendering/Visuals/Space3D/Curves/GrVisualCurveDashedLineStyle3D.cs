@@ -1,17 +1,35 @@
-﻿
-
-using SixLabors.ImageSharp;
+﻿using SixLabors.ImageSharp;
 
 namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Curves;
+
+public sealed record GrVisualDashedLineSpecs(int DashOn, int DashOff, int DashPerLine);
 
 public class GrVisualCurveDashedLineStyle3D :
     GrVisualCurveStyle3D
 {
-    public Color Color { get; set; } = Color.Bisque;
+    public Color Color { get; }
 
-    public int DashOn { get; set; } = 3;
+    public GrVisualDashedLineSpecs Dash { get; }
 
-    public int DashOff { get; set; } = 1;
+    public int DashOn 
+        => Dash.DashOn;
 
-    public int DashPerLine { get; set; } = 2;
+    public int DashOff 
+        => Dash.DashOff;
+
+    public int DashPerLine 
+        => Dash.DashPerLine;
+
+    
+    public GrVisualCurveDashedLineStyle3D(Color color, GrVisualDashedLineSpecs dashSpecs)
+    {
+        Color = color;
+        Dash = dashSpecs;
+    }
+
+    public GrVisualCurveDashedLineStyle3D(Color color, int dashOn, int dashOff, int dashPerLine)
+    {
+        Color = color;
+        Dash = new GrVisualDashedLineSpecs(dashOn, dashOff, dashPerLine);
+    }
 }

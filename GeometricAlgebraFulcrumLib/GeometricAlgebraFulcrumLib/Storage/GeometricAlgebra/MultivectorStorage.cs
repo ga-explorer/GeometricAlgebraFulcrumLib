@@ -212,6 +212,12 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
                 (current, grade) => current | 1UL << (int) grade
             );
         }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ulong GetStoredBasisVectorsBitPattern()
+        {
+            return GetIds().Aggregate(0UL, (id1, id2) => id1 | id2);
+        }
 
         public MultivectorStorage<T> GetMultivectorCopy()
         {
