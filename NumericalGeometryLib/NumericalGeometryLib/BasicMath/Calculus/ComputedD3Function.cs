@@ -76,7 +76,7 @@ public class ComputedD3Function :
 
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public double GetThirdDerivative(double t)
+    public double GetThirdDerivativeValue(double t)
     {
         return ThirdDerivativeFunc(t);
     }

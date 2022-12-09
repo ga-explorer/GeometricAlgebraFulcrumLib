@@ -43,12 +43,12 @@ namespace NumericalGeometryLib.Accelerators.Grids.Space2D
         /// <summary>
         /// Delta value of line parameter in x and y directions
         /// </summary>
-        public Tuple2D TDelta { get; }
+        public Float64Tuple2D TDelta { get; }
 
         /// <summary>
         /// Initial values of line parameter in x and y directions 
         /// </summary>
-        public Tuple2D TFirst { get; }
+        public Float64Tuple2D TFirst { get; }
 
         public double TNext { get; private set; }
 
@@ -113,7 +113,7 @@ namespace NumericalGeometryLib.Accelerators.Grids.Space2D
             {
                 IsEmpty = true;
                 TLimits = new BoundingBox1D();
-                TDelta = Tuple2D.Zero;
+                TDelta = Float64Tuple2D.Zero;
 
                 return;
             }
@@ -165,7 +165,7 @@ namespace NumericalGeometryLib.Accelerators.Grids.Space2D
             CellIndexStart = grid.PointToCellIndex(point1X, point1Y);
 
             //Line segment parameter increments per cell in the x and y directions
-            TDelta = new Tuple2D(
+            TDelta = new Float64Tuple2D(
                 (txMax - txMin) / grid.CellsCountX,
                 (tyMax - tyMin) / grid.CellsCountY
             );
@@ -212,7 +212,7 @@ namespace NumericalGeometryLib.Accelerators.Grids.Space2D
                 iyStop = -1;
             }
 
-            TFirst = new Tuple2D(txNext, tyNext);
+            TFirst = new Float64Tuple2D(txNext, tyNext);
             CellIndexStep = new IntTuple2D(ixStep, iyStep);
             CellIndexStop = new IntTuple2D(ixStop, iyStop);
         }

@@ -23,9 +23,9 @@ public static class GrCatmullRomUtils
     /// <param name="isClosed">Handle the input points to get a closed curve</param>
     /// <returns>The list of interpolated points.</returns>
     /// <exception cref="ArgumentException"></exception>
-    public static List<Tuple3D> CatmullRomInterpolate(this IEnumerable<Tuple3D> inputPointList, int pointsPerSegment, CatmullRomSplineType curveType, bool isClosed)
+    public static List<Float64Tuple3D> CatmullRomInterpolate(this IEnumerable<Float64Tuple3D> inputPointList, int pointsPerSegment, CatmullRomSplineType curveType, bool isClosed)
     {
-        var vertices = new List<Tuple3D>(inputPointList);
+        var vertices = new List<Float64Tuple3D>(inputPointList);
 
         if (pointsPerSegment < 2)
             throw new ArgumentException("The pointsPerSegment parameter must be greater than 2, since 2 points is just the linear segment.");
@@ -35,7 +35,7 @@ public static class GrCatmullRomUtils
         if (vertices.Count < 3)
             return vertices;
 
-        Tuple3D startPoint, endPoint;
+        Float64Tuple3D startPoint, endPoint;
 
         if (isClosed)
         {
@@ -60,7 +60,7 @@ public static class GrCatmullRomUtils
         vertices.Insert(0, startPoint);
         vertices.Add(endPoint);
 
-        var result = new List<Tuple3D>();
+        var result = new List<Float64Tuple3D>();
 
         // When looping, each cycle requires 4 points, starting with i
         // and ending with i+3. So we don't loop through all the points.
@@ -96,9 +96,9 @@ public static class GrCatmullRomUtils
     /// <param name="pointsPerSegment">The total number of uniformly spaced interpolated points to calculate for each segment. The larger this number, the smoother the resulting curve.</param>
     /// <param name="curveType">Clarifies whether the curve should use uniform, chordal or centripetal curve types. Uniform can produce loops, chordal can produce large distortions from the original lines, and centripetal is an optimal balance without spaces.</param>
     /// <returns>The list of coordinates that define the CatmullRom curve between the points defined by index+1 and index+2.</returns>
-    private static List<Tuple3D> CatmullRomInterpolate(this IReadOnlyList<Tuple3D> points, int index, int pointsPerSegment, CatmullRomSplineType curveType)
+    private static List<Float64Tuple3D> CatmullRomInterpolate(this IReadOnlyList<Float64Tuple3D> points, int index, int pointsPerSegment, CatmullRomSplineType curveType)
     {
-        var result = new List<Tuple3D>();
+        var result = new List<Float64Tuple3D>();
         var tArray = new double[4];
         var xArray = new double[4];
         var yArray = new double[4];
@@ -158,7 +158,7 @@ public static class GrCatmullRomUtils
             var zi = ti.GetCatmullRomValue(tQuad, zQuad);
 
             result.Add(
-                new Tuple3D(xi, yi, zi)
+                new Float64Tuple3D(xi, yi, zi)
             );
         }
 

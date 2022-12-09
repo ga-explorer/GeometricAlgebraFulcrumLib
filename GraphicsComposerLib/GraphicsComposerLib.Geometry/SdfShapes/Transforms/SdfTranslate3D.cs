@@ -8,10 +8,10 @@ namespace GraphicsComposerLib.Geometry.SdfShapes.Transforms
     /// </summary>
     public sealed class SdfTranslate3D : SdfUnaryOperation
     {
-        public Tuple3D Direction { get; set; }
-            = new Tuple3D(0, 0, 0);
+        public Float64Tuple3D Direction { get; set; }
+            = new Float64Tuple3D(0, 0, 0);
 
-        public override double GetScalarDistance(ITuple3D point)
+        public override double GetScalarDistance(IFloat64Tuple3D point)
         {
             return Surface.GetScalarDistance(point - Direction);
         }

@@ -11,7 +11,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
     public static class GraphicsFactory
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static EuclideanVector2D ToEuclideanVector2D(this ITuple2D v)
+        public static EuclideanVector2D ToEuclideanVector2D(this IFloat64Tuple2D v)
         {
             return v is EuclideanVector2D ev
                 ? ev
@@ -29,7 +29,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static EuclideanVector3D ToEuclideanVector3D(this ITuple3D v)
+        public static EuclideanVector3D ToEuclideanVector3D(this IFloat64Tuple3D v)
         {
             return v is EuclideanVector3D ev
                 ? ev
@@ -48,7 +48,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
 
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static EuclideanPoint2D ToEuclideanPoint2D(this ITuple2D v)
+        public static EuclideanPoint2D ToEuclideanPoint2D(this IFloat64Tuple2D v)
         {
             return v is EuclideanPoint2D ev
                 ? ev
@@ -66,7 +66,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static EuclideanPoint3D ToEuclideanPoint3D(this ITuple3D v)
+        public static EuclideanPoint3D ToEuclideanPoint3D(this IFloat64Tuple3D v)
         {
             return v is EuclideanPoint3D ev
                 ? ev
@@ -85,13 +85,13 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaVector<double> ToVector(this ITuple2D v)
+        public static GaVector<double> ToVector(this IFloat64Tuple2D v)
         {
             return GraphicsUtils.GeometricProcessor.CreateVector(v.X, v.Y);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaVector<double> ToVector(this ITuple3D v)
+        public static GaVector<double> ToVector(this IFloat64Tuple3D v)
         {
             return GraphicsUtils.GeometricProcessor.CreateVector(v.X, v.Y, v.Z);
         }

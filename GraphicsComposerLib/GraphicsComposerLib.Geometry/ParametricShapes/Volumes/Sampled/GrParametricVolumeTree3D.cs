@@ -373,14 +373,14 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Volumes.Sampled
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<Pair<Tuple3D>> GetEdgePointPairs()
+        public IEnumerable<Pair<Float64Tuple3D>> GetEdgePointPairs()
         {
             return LeafNodes.SelectMany(n =>
-                n.GetEdgeFramePairs().Select(p => new Pair<Tuple3D>(p.Item1.Point, p.Item2.Point))
+                n.GetEdgeFramePairs().Select(p => new Pair<Float64Tuple3D>(p.Item1.Point, p.Item2.Point))
             ).Distinct();
         }
 
-        public GrParametricVolumeTreeSample3D GetSample(ITuple3D parameterValue)
+        public GrParametricVolumeTreeSample3D GetSample(IFloat64Tuple3D parameterValue)
         {
             var parameterValue1 = parameterValue.Item1;
             var parameterValue2 = parameterValue.Item2;
@@ -440,19 +440,19 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Volumes.Sampled
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple3D GetPoint(ITuple3D parameterValue)
+        public Float64Tuple3D GetPoint(IFloat64Tuple3D parameterValue)
         {
             return GetSample(parameterValue).GetPoint();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple3D GetPoint(double parameterValue1, double parameterValue2, double parameterValue3)
+        public Float64Tuple3D GetPoint(double parameterValue1, double parameterValue2, double parameterValue3)
         {
             return GetSample(parameterValue1, parameterValue2, parameterValue3).GetPoint();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public double GetScalarDistance(ITuple3D parameterValue)
+        public double GetScalarDistance(IFloat64Tuple3D parameterValue)
         {
             return GetSample(parameterValue).GetScalarDistance();
         }
@@ -464,7 +464,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Volumes.Sampled
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GrParametricVolumeLocalFrame3D GetFrame(ITuple3D parameterValue)
+        public GrParametricVolumeLocalFrame3D GetFrame(IFloat64Tuple3D parameterValue)
         {
             return GetSample(parameterValue).GetFrame();
         }

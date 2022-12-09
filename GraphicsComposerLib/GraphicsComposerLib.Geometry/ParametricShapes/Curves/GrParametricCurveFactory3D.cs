@@ -19,14 +19,14 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves
     public static class GrParametricCurveFactory3D
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GrParametricLine3D CreateLine3D(this ITuple3D point, ITuple3D vector)
+        public static GrParametricLine3D CreateLine3D(this IFloat64Tuple3D point, IFloat64Tuple3D vector)
         {
             return new GrParametricLine3D(point, vector);
         }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GrBezierCurve0Degree3D CreateBezier3D(ITuple3D point1)
+        public static GrBezierCurve0Degree3D CreateBezier3D(IFloat64Tuple3D point1)
         {
             return new GrBezierCurve0Degree3D(
                 point1
@@ -34,7 +34,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GrBezierCurve1Degree3D CreateBezier3D(ITuple3D point1, ITuple3D point2)
+        public static GrBezierCurve1Degree3D CreateBezier3D(IFloat64Tuple3D point1, IFloat64Tuple3D point2)
         {
             return new GrBezierCurve1Degree3D(
                 point1,
@@ -43,7 +43,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GrBezierCurve2Degree3D CreateBezier3D(ITuple3D point1, ITuple3D point2, ITuple3D point3)
+        public static GrBezierCurve2Degree3D CreateBezier3D(IFloat64Tuple3D point1, IFloat64Tuple3D point2, IFloat64Tuple3D point3)
         {
             return new GrBezierCurve2Degree3D(
                 point1,
@@ -53,7 +53,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GrBezierCurve3Degree3D CreateBezier3D(ITuple3D point1, ITuple3D point2, ITuple3D point3, ITuple3D point4)
+        public static GrBezierCurve3Degree3D CreateBezier3D(IFloat64Tuple3D point1, IFloat64Tuple3D point2, IFloat64Tuple3D point3, IFloat64Tuple3D point4)
         {
             return new GrBezierCurve3Degree3D(
                 point1,
@@ -64,19 +64,19 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GrCatmullRomSpline2D CreateCatmullRomSpline2D(this IEnumerable<ITuple2D> pointList, CatmullRomSplineType curveType, bool isClosed)
+        public static GrCatmullRomSpline2D CreateCatmullRomSpline2D(this IEnumerable<IFloat64Tuple2D> pointList, CatmullRomSplineType curveType, bool isClosed)
         {
             return new GrCatmullRomSpline2D(pointList, curveType, isClosed);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GrCatmullRomSpline3D CreateCatmullRomSpline3D(this IEnumerable<ITuple3D> pointList, CatmullRomSplineType curveType, bool isClosed)
+        public static GrCatmullRomSpline3D CreateCatmullRomSpline3D(this IEnumerable<IFloat64Tuple3D> pointList, CatmullRomSplineType curveType, bool isClosed)
         {
             return new GrCatmullRomSpline3D(pointList, curveType, isClosed);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GrCatmullRomSpline4D CreateCatmullRomSpline4D(this IEnumerable<ITuple4D> pointList, CatmullRomSplineType curveType, bool isClosed)
+        public static GrCatmullRomSpline4D CreateCatmullRomSpline4D(this IEnumerable<IFloat64Tuple4D> pointList, CatmullRomSplineType curveType, bool isClosed)
         {
             return new GrCatmullRomSpline4D(pointList, curveType, isClosed);
         }
@@ -97,13 +97,13 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GrParametricCircle3D CreateCircle3D(this ITuple3D unitNormal, double radius)
+        public static GrParametricCircle3D CreateCircle3D(this IFloat64Tuple3D unitNormal, double radius)
         {
-            return new GrParametricCircle3D(Tuple3D.Zero, unitNormal, radius);
+            return new GrParametricCircle3D(Float64Tuple3D.Zero, unitNormal, radius);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GrParametricCircle3D CreateCircle3D(this ITuple3D unitNormal, ITuple3D center, double radius)
+        public static GrParametricCircle3D CreateCircle3D(this IFloat64Tuple3D unitNormal, IFloat64Tuple3D center, double radius)
         {
             return new GrParametricCircle3D(center, unitNormal, radius);
         }
@@ -113,7 +113,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves
         public static GrComputedParametricCurve2D CreateMathCurve2D(Func<double, double> mathFunction)
         {
             return new GrComputedParametricCurve2D(
-                x => new Tuple2D(x, mathFunction(x))
+                x => new Float64Tuple2D(x, mathFunction(x))
             );
         }
         

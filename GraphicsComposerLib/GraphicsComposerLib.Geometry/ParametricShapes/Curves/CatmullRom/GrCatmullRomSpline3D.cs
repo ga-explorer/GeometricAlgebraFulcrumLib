@@ -23,26 +23,26 @@ public sealed class GrCatmullRomSpline3D :
 
 
     private readonly double[] _knotList;
-    private readonly List<ITuple3D> _pointList;
+    private readonly List<IFloat64Tuple3D> _pointList;
 
     public CatmullRomSplineType CurveType { get; }
 
     public bool IsClosed { get; }
 
-    public IEnumerable<ITuple3D> ControlPoints 
+    public IEnumerable<IFloat64Tuple3D> ControlPoints 
         => _pointList;
 
     public int ControlPointCount 
         => _pointList.Count;
 
 
-    internal GrCatmullRomSpline3D(IEnumerable<ITuple3D> inputPointList, CatmullRomSplineType curveType, bool isClosed)
+    internal GrCatmullRomSpline3D(IEnumerable<IFloat64Tuple3D> inputPointList, CatmullRomSplineType curveType, bool isClosed)
     {
         CurveType = curveType;
         IsClosed = isClosed;
-        _pointList = new List<ITuple3D>(inputPointList);
+        _pointList = new List<IFloat64Tuple3D>(inputPointList);
 
-        ITuple3D endPoint1, endPoint2;
+        IFloat64Tuple3D endPoint1, endPoint2;
 
         if (isClosed)
         {
@@ -73,7 +73,7 @@ public sealed class GrCatmullRomSpline3D :
         for (var i = 1; i < _pointList.Count; i++)
         {
             var vector = _pointList[i].ToTuple3D() - _pointList[i - 1];
-            var ds = vector.GetLengthSquared();
+            var ds = vector.GetVectorNormSquared();
 
             var power = 
                 curveType == CatmullRomSplineType.Centripetal 
@@ -257,7 +257,7 @@ public sealed class GrCatmullRomSpline3D :
         return parameterValue.GetCatmullRomValue(tQuad, zQuad);
     }
 
-    public Tuple3D GetPoint(double parameterValue)
+    public Float64Tuple3D GetPoint(double parameterValue)
     {
         // Handle edge cases
         if (parameterValue <= _knotList[0])
@@ -302,13 +302,13 @@ public sealed class GrCatmullRomSpline3D :
         var y = parameterValue.GetCatmullRomValue(tQuad, yQuad);
         var z = parameterValue.GetCatmullRomValue(tQuad, zQuad);
 
-        return new Tuple3D(x, y, z);
+        return new Float64Tuple3D(x, y, z);
     }
 
-    public Tuple3D GetTangent(double parameterValue)
+    public Float64Tuple3D GetTangent(double parameterValue)
     {
         if (parameterValue is <= 0d or >= 1d) 
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 Differentiate.FirstDerivative(GetPointX, parameterValue),
                 Differentiate.FirstDerivative(GetPointY, parameterValue),
                 Differentiate.FirstDerivative(GetPointZ, parameterValue)
@@ -318,7 +318,7 @@ public sealed class GrCatmullRomSpline3D :
             GetKnotIndexContaining(parameterValue, 0, _knotList.Length - 1);
 
         if (index1 == index2)
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 Differentiate.FirstDerivative(GetPointX, parameterValue),
                 Differentiate.FirstDerivative(GetPointY, parameterValue),
                 Differentiate.FirstDerivative(GetPointZ, parameterValue)
@@ -339,13 +339,13 @@ public sealed class GrCatmullRomSpline3D :
         var y = parameterValue.GetCatmullRomDerivativeValue(tQuad, yQuad);
         var z = parameterValue.GetCatmullRomDerivativeValue(tQuad, zQuad);
 
-        return new Tuple3D(x, y, z);
+        return new Float64Tuple3D(x, y, z);
     }
     
-    public Tuple3D GetSecondDerivative(double parameterValue)
+    public Float64Tuple3D GetSecondDerivative(double parameterValue)
     {
         if (parameterValue is <= 0d or >= 1d) 
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 Differentiate.SecondDerivative(GetPointX, parameterValue),
                 Differentiate.SecondDerivative(GetPointY, parameterValue),
                 Differentiate.SecondDerivative(GetPointZ, parameterValue)
@@ -355,7 +355,7 @@ public sealed class GrCatmullRomSpline3D :
             GetKnotIndexContaining(parameterValue, 0, _knotList.Length - 1);
 
         if (index1 == index2)
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 Differentiate.SecondDerivative(GetPointX, parameterValue),
                 Differentiate.SecondDerivative(GetPointY, parameterValue),
                 Differentiate.SecondDerivative(GetPointZ, parameterValue)
@@ -376,11 +376,11 @@ public sealed class GrCatmullRomSpline3D :
         var y = parameterValue.GetCatmullRomDerivative2Value(tQuad, yQuad);
         var z = parameterValue.GetCatmullRomDerivative2Value(tQuad, zQuad);
 
-        return new Tuple3D(x, y, z);
+        return new Float64Tuple3D(x, y, z);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Tuple3D GetUnitTangent(double parameterValue)
+    public Float64Tuple3D GetUnitTangent(double parameterValue)
     {
         return GetTangent(parameterValue).ToUnitVector();
     }

@@ -11,7 +11,7 @@ using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 namespace GeometricAlgebraFulcrumLib.Geometry.Graphics.Space2D
 {
     public sealed record EuclideanPoint2D : 
-        ITuple2D,
+        IFloat64Tuple2D,
         IGeometricAlgebraElement<double>
     {
         public static EuclideanVector2D operator -(EuclideanPoint2D p1)

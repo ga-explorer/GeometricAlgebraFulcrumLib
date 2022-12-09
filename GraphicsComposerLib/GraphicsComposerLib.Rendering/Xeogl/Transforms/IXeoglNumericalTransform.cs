@@ -7,12 +7,12 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Transforms
     {
         SquareMatrix4 GetMatrix();
 
-        Tuple4D GetQuaternionTuple();
+        Float64Tuple4D GetQuaternionTuple();
 
-        Tuple3D GetRotateTuple();
+        Float64Tuple3D GetRotateTuple();
 
-        Tuple3D GetScaleTuple();
+        Float64Tuple3D GetScaleTuple();
 
-        Tuple3D GetTranslateTuple();
+        Float64Tuple3D GetTranslateTuple();
     }
 }

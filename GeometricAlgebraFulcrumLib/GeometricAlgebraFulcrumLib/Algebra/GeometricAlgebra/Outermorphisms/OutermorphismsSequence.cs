@@ -8,16 +8,14 @@ using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded;
-using GeometricAlgebraFulcrumLib.Utilities.Extensions;
-using GeometricAlgebraFulcrumLib.Utilities.Factories;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms
 {
     public class OutermorphismsSequence<T> :
-        OutermorphismBase<T>,
+        GaOutermorphismBase<T>,
         IOutermorphismSequence<T>,
-        IReadOnlyList<IOutermorphism<T>>
+        IReadOnlyList<IGaOutermorphism<T>>
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static OutermorphismsSequence<T> CreateIdentity(IGeometricAlgebraProcessor<T> processor)
@@ -38,38 +36,38 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms
         }
         
         
-        private readonly List<IOutermorphism<T>> _outermorphismsList;
+        private readonly List<IGaOutermorphism<T>> _outermorphismsList;
 
         public override IGeometricAlgebraProcessor<T> GeometricProcessor { get; }
 
         public int Count 
             => _outermorphismsList.Count;
 
-        public IOutermorphism<T> this[int index] 
+        public IGaOutermorphism<T> this[int index] 
             => _outermorphismsList[index];
         
 
         private OutermorphismsSequence([NotNull] IGeometricAlgebraProcessor<T> processor)
         {
-            _outermorphismsList = new List<IOutermorphism<T>>();
+            _outermorphismsList = new List<IGaOutermorphism<T>>();
             GeometricProcessor = processor;
         }
 
-        private OutermorphismsSequence([NotNull] IGeometricAlgebraProcessor<T> processor, [NotNull] IEnumerable<IOutermorphism<T>> versorsList)
+        private OutermorphismsSequence([NotNull] IGeometricAlgebraProcessor<T> processor, [NotNull] IEnumerable<IGaOutermorphism<T>> versorsList)
         {
-            _outermorphismsList = new List<IOutermorphism<T>>(versorsList);
+            _outermorphismsList = new List<IGaOutermorphism<T>>(versorsList);
             GeometricProcessor = processor;
         }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IOutermorphism<T> GetOutermorphism(int index)
+        public IGaOutermorphism<T> GetOutermorphism(int index)
         {
             return _outermorphismsList[index];
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public OutermorphismsSequence<T> AppendOutermorphism([NotNull] IOutermorphism<T> om)
+        public OutermorphismsSequence<T> AppendOutermorphism([NotNull] IGaOutermorphism<T> om)
         {
             _outermorphismsList.Add(om);
 
@@ -77,7 +75,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public OutermorphismsSequence<T> PrependOutermorphism([NotNull] IOutermorphism<T> om)
+        public OutermorphismsSequence<T> PrependOutermorphism([NotNull] IGaOutermorphism<T> om)
         {
             _outermorphismsList.Insert(0, om);
 
@@ -85,7 +83,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public OutermorphismsSequence<T> InsertOutermorphism(int index, [NotNull] IOutermorphism<T> om)
+        public OutermorphismsSequence<T> InsertOutermorphism(int index, [NotNull] IGaOutermorphism<T> om)
         {
             _outermorphismsList.Insert(index, om);
 
@@ -102,7 +100,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<IOutermorphism<T>> GetOutermorphisms()
+        public IEnumerable<IGaOutermorphism<T>> GetOutermorphisms()
         {
             return _outermorphismsList;
         }
@@ -114,7 +112,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override IOutermorphism<T> GetOmAdjoint()
+        public override IGaOutermorphism<T> GetOmAdjoint()
         {
             return new OutermorphismsSequence<T>(
                 GeometricProcessor,
@@ -177,7 +175,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override ILinMatrixStorage<T> GetMultivectorMappingMatrix()
+        public override ILinMatrixStorage<T> GetMultivectorMappingMatrixStorage()
         {
             return GetMappedBasisBlades()
                 .ToDictionary(
@@ -187,7 +185,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override ILinMatrixStorage<T> GetVectorOmMappingMatrix()
+        public override ILinMatrixStorage<T> GetVectorOmMappingMatrixStorage()
         {
             return GetOmMappedBasisVectors()
                 .ToDictionary(
@@ -197,17 +195,17 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms
                 .CreateLinMatrixColumnsListStorage();
         }
 
-        public override ILinMatrixStorage<T> GetBivectorOmMappingMatrix()
+        public override ILinMatrixStorage<T> GetBivectorOmMappingMatrixStorage()
         {
             throw new NotImplementedException();
         }
 
-        public override ILinMatrixStorage<T> GetKVectorOmMappingMatrix(uint grade)
+        public override ILinMatrixStorage<T> GetKVectorOmMappingMatrixStorage(uint grade)
         {
             throw new NotImplementedException();
         }
 
-        public override ILinMatrixGradedStorage<T> GetMultivectorOmMappingMatrix()
+        public override ILinMatrixGradedStorage<T> GetMultivectorOmMappingMatrixStorage()
         {
             throw new NotImplementedException();
         }
@@ -251,7 +249,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<IOutermorphism<T>> GetLeafOutermorphisms()
+        public IEnumerable<IGaOutermorphism<T>> GetLeafOutermorphisms()
         {
             foreach (var om in _outermorphismsList)
             {
@@ -264,7 +262,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerator<IOutermorphism<T>> GetEnumerator()
+        public IEnumerator<IGaOutermorphism<T>> GetEnumerator()
         {
             return _outermorphismsList.GetEnumerator();
         }

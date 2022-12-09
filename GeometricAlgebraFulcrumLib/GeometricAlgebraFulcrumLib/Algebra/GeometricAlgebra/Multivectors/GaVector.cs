@@ -10,9 +10,8 @@ using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.LinearAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Utilities.Extensions;
-using GeometricAlgebraFulcrumLib.Utilities.Factories;
-using NumericalGeometryLib.BasicMath.Tuples.Mutable;
+using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors;
+using GeometricAlgebraFulcrumLib.Text;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors
 {

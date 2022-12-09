@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using DataStructuresLib.Basic;
-using NumericalGeometryLib.BasicMath;
+using NumericalGeometryLib.BasicMath.Tuples;
 using NumericalGeometryLib.BasicMath.Tuples.Immutable;
 
 namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Bezier
@@ -106,23 +106,23 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Bezier
         }
 
 
-        public static Tuple3D DeCasteljau(this double t, Tuple3D p0)
+        public static Float64Tuple3D DeCasteljau(this double t, Float64Tuple3D p0)
         {
-            return new Tuple3D(p0);
+            return new Float64Tuple3D(p0);
         }
 
-        public static Tuple3D DeCasteljau(this double t, Tuple3D p0, Tuple3D p1)
+        public static Float64Tuple3D DeCasteljau(this double t, Float64Tuple3D p0, Float64Tuple3D p1)
         {
             var s = 1.0d - t;
 
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 s * p0.X + t * p1.X,
                 s * p0.Y + t * p1.Y,
                 s * p0.Z + t * p1.Z
                 );
         }
 
-        public static Tuple3D DeCasteljau(this double t, Tuple3D p0, Tuple3D p1, Tuple3D p2)
+        public static Float64Tuple3D DeCasteljau(this double t, Float64Tuple3D p0, Float64Tuple3D p1, Float64Tuple3D p2)
         {
             //Not using the Lerp function to increase performance by avoiding heap allocations and function calls
             var s = 1.0d - t;
@@ -135,14 +135,14 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Bezier
             var y1 = s * p1.Y + t * p2.Y;
             var z1 = s * p1.Z + t * p2.Z;
 
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 s * x0 + t * x1,
                 s * y0 + t * y1,
                 s * z0 + t * z1
                 );
         }
 
-        public static Tuple3D DeCasteljau(this double t, Tuple3D p0, Tuple3D p1, Tuple3D p2, Tuple3D p3)
+        public static Float64Tuple3D DeCasteljau(this double t, Float64Tuple3D p0, Float64Tuple3D p1, Float64Tuple3D p2, Float64Tuple3D p3)
         {
             //Not using the Lerp function to increase performance by avoiding heap allocations and function calls
             var s = 1.0d - t;
@@ -167,19 +167,19 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Bezier
             y1 = s * y1 + t * y2;
             z1 = s * z1 + t * z2;
 
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 s * x0 + t * x1,
                 s * y0 + t * y1,
                 s * z0 + t * z1
             );
         }
 
-        public static Tuple3D DeCasteljau(this double t, params Tuple3D[] pointsList)
+        public static Float64Tuple3D DeCasteljau(this double t, params Float64Tuple3D[] pointsList)
         {
             var pointsCount = pointsList.Length;
 
             if (pointsCount == 1)
-                return new Tuple3D(pointsList[0]);
+                return new Float64Tuple3D(pointsList[0]);
 
             if (pointsCount == 2)
                 return t.Lerp(pointsList[0], pointsList[1]);
@@ -217,7 +217,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Bezier
             }
 
             //Only two points remain; interpolate them at t
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 s * xList[0] + t * xList[1],
                 s * yList[0] + t * yList[1],
                 s * zList[0] + t * zList[1]

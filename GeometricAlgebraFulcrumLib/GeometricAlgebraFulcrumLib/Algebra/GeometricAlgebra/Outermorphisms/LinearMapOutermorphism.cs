@@ -5,21 +5,21 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.BitManipulation;
 using DataStructuresLib.Collections;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.LinearMaps;
 using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTraversal.Outermorphisms;
+using GeometricAlgebraFulcrumLib.Storage;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded;
-using GeometricAlgebraFulcrumLib.Utilities.Factories;
-using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms
 {
     public sealed class LinearMapOutermorphism<T> 
-        : OutermorphismBase<T>
+        : GaOutermorphismBase<T>
     {
         public override IGeometricAlgebraProcessor<T> GeometricProcessor { get; }
 
@@ -34,7 +34,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override IOutermorphism<T> GetOmAdjoint()
+        public override IGaOutermorphism<T> GetOmAdjoint()
         {
             return new LinearMapOutermorphism<T>(GeometricProcessor, LinearMap.GetLinAdjoint());
         }
@@ -207,28 +207,28 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms
             throw new NotImplementedException();
         }
 
-        public override ILinMatrixStorage<T> GetMultivectorMappingMatrix()
+        public override ILinMatrixStorage<T> GetMultivectorMappingMatrixStorage()
         {
             throw new NotImplementedException();
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override ILinMatrixStorage<T> GetVectorOmMappingMatrix()
+        public override ILinMatrixStorage<T> GetVectorOmMappingMatrixStorage()
         {
             return LinearMap.GetLinMappingMatrix();
         }
 
-        public override ILinMatrixStorage<T> GetBivectorOmMappingMatrix()
+        public override ILinMatrixStorage<T> GetBivectorOmMappingMatrixStorage()
         {
             throw new NotImplementedException();
         }
 
-        public override ILinMatrixStorage<T> GetKVectorOmMappingMatrix(uint grade)
+        public override ILinMatrixStorage<T> GetKVectorOmMappingMatrixStorage(uint grade)
         {
             throw new NotImplementedException();
         }
 
-        public override ILinMatrixGradedStorage<T> GetMultivectorOmMappingMatrix()
+        public override ILinMatrixGradedStorage<T> GetMultivectorOmMappingMatrixStorage()
         {
             throw new NotImplementedException();
         }

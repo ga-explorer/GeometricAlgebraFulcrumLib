@@ -13,13 +13,13 @@ namespace GraphicsComposerLib.Geometry.SdfShapes.Transforms
         public double Angle { get; set; }
             = 0;
 
-        public Tuple3D AxisOrigin { get; set; }
-            = new Tuple3D(0, 0, 0);
+        public Float64Tuple3D AxisOrigin { get; set; }
+            = new Float64Tuple3D(0, 0, 0);
 
-        public Tuple3D AxisUnitDirection { get; set; }
-            = new Tuple3D(1, 0, 0);
+        public Float64Tuple3D AxisUnitDirection { get; set; }
+            = new Float64Tuple3D(1, 0, 0);
 
-        public override double GetScalarDistance(ITuple3D point)
+        public override double GetScalarDistance(IFloat64Tuple3D point)
         {
             var cosAngle = Math.Cos(-Angle);
             var sinAngle = Math.Sin(-Angle);

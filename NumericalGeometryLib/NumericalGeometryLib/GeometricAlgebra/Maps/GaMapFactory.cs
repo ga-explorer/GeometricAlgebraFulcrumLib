@@ -145,7 +145,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Maps
         /// <param name="targetVector"></param>
         /// <param name="assumeUnitVectors"></param>
         /// <returns></returns>
-        public static GaScaledPureRotor CreateEuclideanPureRotor(this ITuple2D sourceVector, ITuple2D targetVector, bool assumeUnitVectors = false)
+        public static GaScaledPureRotor CreateEuclideanPureRotor(this IFloat64Tuple2D sourceVector, IFloat64Tuple2D targetVector, bool assumeUnitVectors = false)
         {
             var basisSet = BasisBladeSet.Euclidean2D;
 
@@ -153,7 +153,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Maps
                 assumeUnitVectors
                     ? targetVector.VectorDot(sourceVector)
                     : targetVector.VectorDot(sourceVector) / 
-                      (targetVector.GetLengthSquared() * sourceVector.GetLengthSquared()).Sqrt();
+                      (targetVector.GetVectorNormSquared() * sourceVector.GetVectorNormSquared()).Sqrt();
 
             if (cosAngle == 1d)
                 return basisSet.CreateIdentityRotor();
@@ -184,7 +184,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Maps
         /// <param name="targetVector"></param>
         /// <param name="assumeUnitVectors"></param>
         /// <returns></returns>
-        public static GaScaledPureRotor CreateEuclideanPureRotor(this ITuple3D sourceVector, ITuple3D targetVector, bool assumeUnitVectors = false)
+        public static GaScaledPureRotor CreateEuclideanPureRotor(this IFloat64Tuple3D sourceVector, IFloat64Tuple3D targetVector, bool assumeUnitVectors = false)
         {
             var basisSet = BasisBladeSet.Euclidean3D;
 
@@ -192,7 +192,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Maps
                 assumeUnitVectors
                     ? targetVector.VectorDot(sourceVector)
                     : targetVector.VectorDot(sourceVector) / 
-                      (targetVector.GetLengthSquared() * sourceVector.GetLengthSquared()).Sqrt();
+                      (targetVector.GetVectorNormSquared() * sourceVector.GetVectorNormSquared()).Sqrt();
 
             if (cosAngle == 1d)
                 return basisSet.CreateIdentityRotor();
@@ -264,12 +264,12 @@ namespace NumericalGeometryLib.GeometricAlgebra.Maps
         /// <param name="sourceVector"></param>
         /// <param name="targetVector"></param>
         /// <returns></returns>
-        public static GaScaledPureRotor CreateEuclideanScaledPureRotor(this ITuple2D sourceVector, ITuple2D targetVector)
+        public static GaScaledPureRotor CreateEuclideanScaledPureRotor(this IFloat64Tuple2D sourceVector, IFloat64Tuple2D targetVector)
         {
             var basisSet = BasisBladeSet.Euclidean2D;
 
-            var uNorm = sourceVector.GetLength();
-            var vNorm = targetVector.GetLength();
+            var uNorm = sourceVector.GetVectorNorm();
+            var vNorm = targetVector.GetVectorNorm();
             var scalingFactor = (vNorm / uNorm).Sqrt();
             var cosAngle = targetVector.VectorDot(sourceVector) / (uNorm * vNorm);
 
@@ -305,12 +305,12 @@ namespace NumericalGeometryLib.GeometricAlgebra.Maps
         /// <param name="sourceVector"></param>
         /// <param name="targetVector"></param>
         /// <returns></returns>
-        public static GaScaledPureRotor CreateEuclideanScaledPureRotor(this ITuple3D sourceVector, ITuple3D targetVector)
+        public static GaScaledPureRotor CreateEuclideanScaledPureRotor(this IFloat64Tuple3D sourceVector, IFloat64Tuple3D targetVector)
         {
             var basisSet = BasisBladeSet.Euclidean3D;
 
-            var uNorm = sourceVector.GetLength();
-            var vNorm = targetVector.GetLength();
+            var uNorm = sourceVector.GetVectorNorm();
+            var vNorm = targetVector.GetVectorNorm();
             var scalingFactor = (vNorm / uNorm).Sqrt();
             var cosAngle = targetVector.VectorDot(sourceVector) / (uNorm * vNorm);
 
@@ -368,7 +368,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Maps
         /// <param name="targetVector"></param>
         /// <param name="angleTheta"></param>
         /// <returns></returns>
-        public static GaScaledPureRotor CreateEuclideanParametricPureRotor3D(this BasisBladeSet basisSet, ITuple3D sourceVector, ITuple3D targetVector, PlanarAngle angleTheta)
+        public static GaScaledPureRotor CreateEuclideanParametricPureRotor3D(this BasisBladeSet basisSet, IFloat64Tuple3D sourceVector, IFloat64Tuple3D targetVector, PlanarAngle angleTheta)
         {
             //var basisSet = BasisBladeSet.CreateEuclidean(3);
 
@@ -405,16 +405,16 @@ namespace NumericalGeometryLib.GeometricAlgebra.Maps
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaScaledPureRotor CreateEuclideanScaledParametricPureRotor3D(this BasisBladeSet basisSet, ITuple3D sourceVector, ITuple3D targetVector, PlanarAngle angleTheta, bool assumeUnitVectors = false)
+        public static GaScaledPureRotor CreateEuclideanScaledParametricPureRotor3D(this BasisBladeSet basisSet, IFloat64Tuple3D sourceVector, IFloat64Tuple3D targetVector, PlanarAngle angleTheta, bool assumeUnitVectors = false)
         {
             if (assumeUnitVectors)
                 basisSet.CreateEuclideanParametricPureRotor3D(sourceVector, targetVector, angleTheta);
 
             var (sourceVectorUnit, sourceVectorLength) = 
-                sourceVector.GetUnitVectorLengthTuple();
+                sourceVector.GetUnitVectorNormTuple();
 
             var (targetVectorUnit, targetVectorLength) = 
-                targetVector.GetUnitVectorLengthTuple();
+                targetVector.GetUnitVectorNormTuple();
 
             var scalingFactor = targetVectorLength / sourceVectorLength;
 
@@ -424,7 +424,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Maps
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaScaledPureRotor CreateEuclideanScaledParametricPureRotor3D(this BasisBladeSet basisSet, ITuple3D sourceVector, ITuple3D targetVector, PlanarAngle angleTheta, double scalingFactor)
+        public static GaScaledPureRotor CreateEuclideanScaledParametricPureRotor3D(this BasisBladeSet basisSet, IFloat64Tuple3D sourceVector, IFloat64Tuple3D targetVector, PlanarAngle angleTheta, double scalingFactor)
         {
             return basisSet
                 .CreateEuclideanParametricPureRotor3D(sourceVector, targetVector, angleTheta)

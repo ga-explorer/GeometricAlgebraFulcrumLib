@@ -18,9 +18,9 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Circles
 
         public double Radius { get; }
 
-        public Tuple3D Center { get; }
+        public Float64Tuple3D Center { get; }
 
-        public Tuple3D UnitNormal { get; }
+        public Float64Tuple3D UnitNormal { get; }
 
         public double ParameterValueMin
             => 0d;
@@ -29,7 +29,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Circles
             => 1d;
 
 
-        public GrParametricCircle3D([NotNull] ITuple3D center, [NotNull] ITuple3D unitNormal, double radius)
+        public GrParametricCircle3D([NotNull] IFloat64Tuple3D center, [NotNull] IFloat64Tuple3D unitNormal, double radius)
         {
             if (radius < 0)
                 throw new ArgumentException(nameof(radius));
@@ -66,19 +66,19 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Circles
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple3D GetPoint(double parameterValue)
+        public Float64Tuple3D GetPoint(double parameterValue)
         {
             return _baseCircleRotation * _baseCircle.GetPoint(parameterValue) + Center;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple3D GetTangent(double parameterValue)
+        public Float64Tuple3D GetTangent(double parameterValue)
         {
             return _baseCircleRotation * _baseCircle.GetTangent(parameterValue);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple3D GetUnitTangent(double parameterValue)
+        public Float64Tuple3D GetUnitTangent(double parameterValue)
         {
             return GetTangent(parameterValue).ToUnitVector();
         }
@@ -98,7 +98,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Circles
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple3D GetSecondDerivative(double parameterValue)
+        public Float64Tuple3D GetSecondDerivative(double parameterValue)
         {
             return _baseCircleRotation * _baseCircle.GetSecondDerivative(parameterValue);
         }

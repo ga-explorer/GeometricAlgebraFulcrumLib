@@ -4,7 +4,7 @@ using NumericalGeometryLib.BasicMath.Tuples;
 namespace GraphicsComposerLib.Geometry.Meshes.PointsPath.Space2D
 {
     public class ReversedPointsPath2D
-        : PSeqReverse1D<ITuple2D>, IPointsPath2D
+        : PSeqReverse1D<IFloat64Tuple2D>, IPointsPath2D
     {
         public IPointsPath2D BasePath { get; }
 

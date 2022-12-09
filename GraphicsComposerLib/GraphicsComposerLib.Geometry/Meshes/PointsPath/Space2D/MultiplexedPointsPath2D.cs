@@ -5,7 +5,7 @@ using NumericalGeometryLib.BasicMath.Tuples;
 namespace GraphicsComposerLib.Geometry.Meshes.PointsPath.Space2D
 {
     public sealed class MultiplexedPointsPath2D
-        : PSeqMultiplexed1D<ITuple2D>, IPointsPath2D
+        : PSeqMultiplexed1D<IFloat64Tuple2D>, IPointsPath2D
     {
         public MultiplexedPointsPath2D(IReadOnlyList<IPointsPath2D> sequencesList, IEnumerable<int> sequenceSelectionList) 
             : base(sequencesList, sequenceSelectionList)

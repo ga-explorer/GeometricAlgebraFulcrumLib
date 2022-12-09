@@ -13,8 +13,6 @@ using GeometricAlgebraFulcrumLib.MetaProgramming.Expressions.Variables;
 using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.LinearAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Utilities.Extensions;
-using GeometricAlgebraFulcrumLib.Utilities.Factories;
 using TextComposerLib.Text;
 
 // ReSharper disable MemberCanBePrivate.Global

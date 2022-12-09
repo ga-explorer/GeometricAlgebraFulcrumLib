@@ -165,12 +165,12 @@ namespace GraphicsComposerLib.Rendering.Svg.Elements.Shape
             return this;
         }
 
-        public SvgElementPolygon SetPoints(IEnumerable<ITuple2D> points)
+        public SvgElementPolygon SetPoints(IEnumerable<IFloat64Tuple2D> points)
         {
             return SetPoints(SvgValuePointsList.Create(points));
         }
 
-        public SvgElementPolygon SetPoints(SvgValueLengthUnit unit, IEnumerable<ITuple2D> points)
+        public SvgElementPolygon SetPoints(SvgValueLengthUnit unit, IEnumerable<IFloat64Tuple2D> points)
         {
             return SetPoints(SvgValuePointsList.Create(unit, points));
         }

@@ -9,7 +9,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Volumes
     public class GrComputedParametricVolume3D :
         IGraphicsParametricVolume3D
     {
-        public Func<double, double, double, Tuple3D> GetPointFunc { get; }
+        public Func<double, double, double, Float64Tuple3D> GetPointFunc { get; }
 
         public Func<double, double, double, double> GetScalarDistanceFunc { get; }
 
@@ -22,7 +22,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Volumes
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GrComputedParametricVolume3D([NotNull] Func<double, double, double, Tuple3D> getPointFunc, [NotNull] Func<double, double, double, double> getScalarDistanceFunc)
+        public GrComputedParametricVolume3D([NotNull] Func<double, double, double, Float64Tuple3D> getPointFunc, [NotNull] Func<double, double, double, double> getScalarDistanceFunc)
         {
             GetPointFunc = getPointFunc;
             GetScalarDistanceFunc = getScalarDistanceFunc;
@@ -36,7 +36,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Volumes
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple3D GetPoint(ITuple3D parameterValue)
+        public Float64Tuple3D GetPoint(IFloat64Tuple3D parameterValue)
         {
             return GetPointFunc is null
                 ? parameterValue.ToTuple3D()
@@ -44,15 +44,15 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Volumes
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple3D GetPoint(double parameterValue1, double parameterValue2, double parameterValue3)
+        public Float64Tuple3D GetPoint(double parameterValue1, double parameterValue2, double parameterValue3)
         {
             return GetPointFunc is null
-                ? new Tuple3D(parameterValue1, parameterValue2, parameterValue3)
+                ? new Float64Tuple3D(parameterValue1, parameterValue2, parameterValue3)
                 : GetPointFunc(parameterValue1, parameterValue2, parameterValue3);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public double GetScalarDistance(ITuple3D parameterValue)
+        public double GetScalarDistance(IFloat64Tuple3D parameterValue)
         {
             return GetScalarDistanceFunc(
                 parameterValue.Item1, 
@@ -72,7 +72,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Volumes
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GrParametricVolumeLocalFrame3D GetFrame(ITuple3D parameterValue)
+        public GrParametricVolumeLocalFrame3D GetFrame(IFloat64Tuple3D parameterValue)
         {
             return new GrParametricVolumeLocalFrame3D(
                 this, 

@@ -5,7 +5,7 @@ using NumericalGeometryLib.BasicMath.Tuples.Immutable;
 namespace GraphicsComposerLib.Geometry.Meshes.PointsPath.Space3D
 {
     public sealed class PlanarZyPointsPath3D
-        : PSeqMapped1D<ITuple2D, ITuple3D>, IPointsPath3D
+        : PSeqMapped1D<IFloat64Tuple2D, IFloat64Tuple3D>, IPointsPath3D
     {
         public double ValueX { get; set; }
 
@@ -23,9 +23,9 @@ namespace GraphicsComposerLib.Geometry.Meshes.PointsPath.Space3D
         }
 
 
-        protected override ITuple3D MappingFunction(ITuple2D zyPoint)
+        protected override IFloat64Tuple3D MappingFunction(IFloat64Tuple2D zyPoint)
         {
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 ValueX,
                 zyPoint.Y,
                 zyPoint.X

@@ -25,7 +25,7 @@ namespace NumericalGeometryLib.Computers.Reflections
         public ITriangle3D Triangle { get; set; }
 
 
-        public Tuple3D ReflectPointVa(ITuple3D point)
+        public Float64Tuple3D ReflectPointVa(IFloat64Tuple3D point)
         {
             //http://mathworld.wolfram.com/Reflection.html
             //https://en.wikipedia.org/wiki/Reflection_(mathematics)
@@ -33,7 +33,7 @@ namespace NumericalGeometryLib.Computers.Reflections
             ComputePointReflectionCounter.Begin();
 
             var n = Triangle.GetNormal();
-            var n2 = n.GetLengthSquared();
+            var n2 = n.GetVectorNormSquared();
             var d = -n.VectorDot(Triangle.GetPoint1());
             var p = point.ToTuple3D();
 
@@ -44,7 +44,7 @@ namespace NumericalGeometryLib.Computers.Reflections
             return result;
         }
 
-        public Tuple3D ReflectPoint(ITuple3D point)
+        public Float64Tuple3D ReflectPoint(IFloat64Tuple3D point)
         {
             ComputePointReflectionCounter.Begin();
 
@@ -298,7 +298,7 @@ namespace NumericalGeometryLib.Computers.Reflections
 
             ComputePointReflectionCounter.End();
 
-            return new Tuple3D(pointImageX, pointImageY, pointImageZ);
+            return new Float64Tuple3D(pointImageX, pointImageY, pointImageZ);
         }
     }
 }

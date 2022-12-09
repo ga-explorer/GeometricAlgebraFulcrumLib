@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using DataStructuresLib.Basic;
 using DataStructuresLib.BitManipulation;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Frames;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Processors.LinearAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
@@ -52,6 +54,8 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
         {
         }
 
+
+        public abstract Pair<BasisVectorFrame<T>> GetBasisVectorFrame();
 
         public abstract T SpSquared(IMultivectorStorage<T> mv1);
 

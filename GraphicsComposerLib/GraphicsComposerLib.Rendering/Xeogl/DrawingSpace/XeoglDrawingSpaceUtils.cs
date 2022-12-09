@@ -31,7 +31,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.DrawingSpace
             );
         }
 
-        public static XeoglDrawingSpace AddViewSpaceDirectionalLight(this XeoglDrawingSpace drawingSpace, Color color, double intensity, ITuple3D direction)
+        public static XeoglDrawingSpace AddViewSpaceDirectionalLight(this XeoglDrawingSpace drawingSpace, Color color, double intensity, IFloat64Tuple3D direction)
         {
             return drawingSpace.AddLight(
                 new XeoglDirectionalLight(direction)
@@ -43,7 +43,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.DrawingSpace
             );
         }
 
-        public static XeoglDrawingSpace AddViewSpacePointLight(this XeoglDrawingSpace drawingSpace, Color color, double intensity, ITuple3D position)
+        public static XeoglDrawingSpace AddViewSpacePointLight(this XeoglDrawingSpace drawingSpace, Color color, double intensity, IFloat64Tuple3D position)
         {
             return drawingSpace.AddLight(
                 new XeoglPointLight(position)
@@ -55,7 +55,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.DrawingSpace
             );
         }
 
-        public static XeoglDrawingSpace AddViewSpaceSpotLight(this XeoglDrawingSpace drawingSpace, Color color, double intensity, ITuple3D position, ITuple3D direction)
+        public static XeoglDrawingSpace AddViewSpaceSpotLight(this XeoglDrawingSpace drawingSpace, Color color, double intensity, IFloat64Tuple3D position, IFloat64Tuple3D direction)
         {
             return drawingSpace.AddLight(
                 new XeoglSpotLight(position, direction)
@@ -67,7 +67,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.DrawingSpace
             );
         }
 
-        public static XeoglDrawingSpace AddWorldSpaceDirectionalLight(this XeoglDrawingSpace drawingSpace, Color color, double intensity, ITuple3D direction)
+        public static XeoglDrawingSpace AddWorldSpaceDirectionalLight(this XeoglDrawingSpace drawingSpace, Color color, double intensity, IFloat64Tuple3D direction)
         {
             return drawingSpace.AddLight(
                 new XeoglDirectionalLight(direction)
@@ -79,7 +79,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.DrawingSpace
             );
         }
 
-        public static XeoglDrawingSpace AddWorldSpacePointLight(this XeoglDrawingSpace drawingSpace, Color color, double intensity, ITuple3D position)
+        public static XeoglDrawingSpace AddWorldSpacePointLight(this XeoglDrawingSpace drawingSpace, Color color, double intensity, IFloat64Tuple3D position)
         {
             return drawingSpace.AddLight(
                 new XeoglPointLight(position)
@@ -91,7 +91,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.DrawingSpace
             );
         }
 
-        public static XeoglDrawingSpace AddWorldSpaceSpotLight(this XeoglDrawingSpace drawingSpace, Color color, double intensity, ITuple3D position, ITuple3D direction)
+        public static XeoglDrawingSpace AddWorldSpaceSpotLight(this XeoglDrawingSpace drawingSpace, Color color, double intensity, IFloat64Tuple3D position, IFloat64Tuple3D direction)
         {
             return drawingSpace.AddLight(
                 new XeoglSpotLight(position, direction)
@@ -118,14 +118,14 @@ namespace GraphicsComposerLib.Rendering.Xeogl.DrawingSpace
             );
         }
 
-        public static XeoglDrawingSpaceLayer DrawSphere(this XeoglDrawingSpaceLayer layer, ITuple3D center, double radius)
+        public static XeoglDrawingSpaceLayer DrawSphere(this XeoglDrawingSpaceLayer layer, IFloat64Tuple3D center, double radius)
         {
             return layer.DrawGeometry(
                 XeoglSphereGeometry.Create(center, radius)
             );
         }
 
-        public static XeoglDrawingSpaceLayer DrawSphere(this XeoglDrawingSpaceLayer layer, ITuple3D center, double radius, int widthSegments, int heightSegments)
+        public static XeoglDrawingSpaceLayer DrawSphere(this XeoglDrawingSpaceLayer layer, IFloat64Tuple3D center, double radius, int widthSegments, int heightSegments)
         {
             return layer.DrawGeometry(
                 XeoglSphereGeometry.Create(center, radius, widthSegments, heightSegments)
@@ -140,21 +140,21 @@ namespace GraphicsComposerLib.Rendering.Xeogl.DrawingSpace
             );
         }
 
-        public static XeoglDrawingSpaceLayer DrawBox(this XeoglDrawingSpaceLayer layer, ITuple3D halfSize)
+        public static XeoglDrawingSpaceLayer DrawBox(this XeoglDrawingSpaceLayer layer, IFloat64Tuple3D halfSize)
         {
             return layer.DrawGeometry(
                 XeoglBoxGeometry.Create(halfSize)
             );
         }
 
-        public static XeoglDrawingSpaceLayer DrawBox(this XeoglDrawingSpaceLayer layer, ITuple3D center, double halfSize)
+        public static XeoglDrawingSpaceLayer DrawBox(this XeoglDrawingSpaceLayer layer, IFloat64Tuple3D center, double halfSize)
         {
             return layer.DrawGeometry(
                 XeoglBoxGeometry.Create(center, halfSize)
             );
         }
 
-        public static XeoglDrawingSpaceLayer DrawBox(this XeoglDrawingSpaceLayer layer, ITuple3D center, ITuple3D halfSize)
+        public static XeoglDrawingSpaceLayer DrawBox(this XeoglDrawingSpaceLayer layer, IFloat64Tuple3D center, IFloat64Tuple3D halfSize)
         {
             return layer.DrawGeometry(
                 XeoglBoxGeometry.Create(center, halfSize)
@@ -183,7 +183,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.DrawingSpace
             );
         }
 
-        public static XeoglDrawingSpaceLayer DrawPlaneSegment(this XeoglDrawingSpaceLayer layer, ITuple2D size, int segments)
+        public static XeoglDrawingSpaceLayer DrawPlaneSegment(this XeoglDrawingSpaceLayer layer, IFloat64Tuple2D size, int segments)
         {
             return layer.DrawGeometry(
                 XeoglPlaneGeometry.Create(size, segments)
@@ -191,35 +191,35 @@ namespace GraphicsComposerLib.Rendering.Xeogl.DrawingSpace
         }
 
         
-        public static XeoglDrawingSpaceLayer DrawPlaneSegment(this XeoglDrawingSpaceLayer layer, ITuple2D size, int xSegments, int zSegments)
+        public static XeoglDrawingSpaceLayer DrawPlaneSegment(this XeoglDrawingSpaceLayer layer, IFloat64Tuple2D size, int xSegments, int zSegments)
         {
             return layer.DrawGeometry(
                 XeoglPlaneGeometry.Create(size, xSegments, zSegments)
             );
         }
 
-        public static XeoglDrawingSpaceLayer DrawPlaneSegment(this XeoglDrawingSpaceLayer layer, ITuple3D center, double size, int segments)
+        public static XeoglDrawingSpaceLayer DrawPlaneSegment(this XeoglDrawingSpaceLayer layer, IFloat64Tuple3D center, double size, int segments)
         {
             return layer.DrawGeometry(
                 XeoglPlaneGeometry.Create(center, size, segments)
             );
         }
 
-        public static XeoglDrawingSpaceLayer DrawPlaneSegment(this XeoglDrawingSpaceLayer layer, ITuple3D center, double size, int xSegments, int zSegments)
+        public static XeoglDrawingSpaceLayer DrawPlaneSegment(this XeoglDrawingSpaceLayer layer, IFloat64Tuple3D center, double size, int xSegments, int zSegments)
         {
             return layer.DrawGeometry(
                 XeoglPlaneGeometry.Create(center, size, xSegments, zSegments)
             );
         }
 
-        public static XeoglDrawingSpaceLayer DrawPlaneSegment(this XeoglDrawingSpaceLayer layer, ITuple3D center, ITuple2D size, int segments)
+        public static XeoglDrawingSpaceLayer DrawPlaneSegment(this XeoglDrawingSpaceLayer layer, IFloat64Tuple3D center, IFloat64Tuple2D size, int segments)
         {
             return layer.DrawGeometry(
                 XeoglPlaneGeometry.Create(center, size, segments)
             );
         }
 
-        public static XeoglDrawingSpaceLayer DrawPlaneSegment(this XeoglDrawingSpaceLayer layer, ITuple3D center, ITuple2D size, int xSegments, int zSegments)
+        public static XeoglDrawingSpaceLayer DrawPlaneSegment(this XeoglDrawingSpaceLayer layer, IFloat64Tuple3D center, IFloat64Tuple2D size, int xSegments, int zSegments)
         {
             return layer.DrawGeometry(
                 XeoglPlaneGeometry.Create(center, size, xSegments, zSegments)
@@ -268,7 +268,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.DrawingSpace
             });
         }
 
-        public static XeoglDrawingSpaceLayer DrawClosedCylinder(this XeoglDrawingSpaceLayer layer, ITuple3D center, double radius, double height)
+        public static XeoglDrawingSpaceLayer DrawClosedCylinder(this XeoglDrawingSpaceLayer layer, IFloat64Tuple3D center, double radius, double height)
         {
             return layer.DrawGeometry(new XeoglCylinderGeometry(center)
             {
@@ -278,7 +278,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.DrawingSpace
             });
         }
 
-        public static XeoglDrawingSpaceLayer DrawClosedCylinder(this XeoglDrawingSpaceLayer layer, ITuple3D center, double radius, double height, int radialSegments, int heightSegments)
+        public static XeoglDrawingSpaceLayer DrawClosedCylinder(this XeoglDrawingSpaceLayer layer, IFloat64Tuple3D center, double radius, double height, int radialSegments, int heightSegments)
         {
             return layer.DrawGeometry(new XeoglCylinderGeometry(center)
             {
@@ -290,7 +290,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.DrawingSpace
             });
         }
 
-        public static XeoglDrawingSpaceLayer DrawClosedCylinder(this XeoglDrawingSpaceLayer layer, ITuple3D center, double radiusTop, double radiusBottom, double height)
+        public static XeoglDrawingSpaceLayer DrawClosedCylinder(this XeoglDrawingSpaceLayer layer, IFloat64Tuple3D center, double radiusTop, double radiusBottom, double height)
         {
             return layer.DrawGeometry(new XeoglCylinderGeometry(center)
             {
@@ -300,7 +300,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.DrawingSpace
             });
         }
 
-        public static XeoglDrawingSpaceLayer DrawClosedCylinder(this XeoglDrawingSpaceLayer layer, ITuple3D center, double radiusTop, double radiusBottom, double height, int radialSegments, int heightSegments)
+        public static XeoglDrawingSpaceLayer DrawClosedCylinder(this XeoglDrawingSpaceLayer layer, IFloat64Tuple3D center, double radiusTop, double radiusBottom, double height, int radialSegments, int heightSegments)
         {
             return layer.DrawGeometry(new XeoglCylinderGeometry(center)
             {
@@ -361,7 +361,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.DrawingSpace
             });
         }
 
-        public static XeoglDrawingSpaceLayer DrawOpenedCylinder(this XeoglDrawingSpaceLayer layer, ITuple3D center, double radius, double height)
+        public static XeoglDrawingSpaceLayer DrawOpenedCylinder(this XeoglDrawingSpaceLayer layer, IFloat64Tuple3D center, double radius, double height)
         {
             return layer.DrawGeometry(new XeoglCylinderGeometry(center)
             {
@@ -372,7 +372,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.DrawingSpace
             });
         }
 
-        public static XeoglDrawingSpaceLayer DrawOpenedCylinder(this XeoglDrawingSpaceLayer layer, ITuple3D center, double radius, double height, int radialSegments, int heightSegments)
+        public static XeoglDrawingSpaceLayer DrawOpenedCylinder(this XeoglDrawingSpaceLayer layer, IFloat64Tuple3D center, double radius, double height, int radialSegments, int heightSegments)
         {
             return layer.DrawGeometry(new XeoglCylinderGeometry(center)
             {
@@ -385,7 +385,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.DrawingSpace
             });
         }
 
-        public static XeoglDrawingSpaceLayer DrawOpenedCylinder(this XeoglDrawingSpaceLayer layer, ITuple3D center, double radiusTop, double radiusBottom, double height)
+        public static XeoglDrawingSpaceLayer DrawOpenedCylinder(this XeoglDrawingSpaceLayer layer, IFloat64Tuple3D center, double radiusTop, double radiusBottom, double height)
         {
             return layer.DrawGeometry(new XeoglCylinderGeometry(center)
             {
@@ -396,7 +396,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.DrawingSpace
             });
         }
 
-        public static XeoglDrawingSpaceLayer DrawOpenedCylinder(this XeoglDrawingSpaceLayer layer, ITuple3D center, double radiusTop, double radiusBottom, double height, int radialSegments, int heightSegments)
+        public static XeoglDrawingSpaceLayer DrawOpenedCylinder(this XeoglDrawingSpaceLayer layer, IFloat64Tuple3D center, double radiusTop, double radiusBottom, double height, int radialSegments, int heightSegments)
         {
             return layer.DrawGeometry(new XeoglCylinderGeometry(center)
             {
@@ -432,7 +432,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.DrawingSpace
             });
         }
 
-        public static XeoglDrawingSpaceLayer DrawClosedCone(this XeoglDrawingSpaceLayer layer, ITuple3D center, double radiusBottom, double height)
+        public static XeoglDrawingSpaceLayer DrawClosedCone(this XeoglDrawingSpaceLayer layer, IFloat64Tuple3D center, double radiusBottom, double height)
         {
             return layer.DrawGeometry(new XeoglCylinderGeometry(center)
             {
@@ -442,7 +442,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.DrawingSpace
             });
         }
 
-        public static XeoglDrawingSpaceLayer DrawClosedCone(this XeoglDrawingSpaceLayer layer, ITuple3D center, double radiusBottom, double height, int radialSegments, int heightSegments)
+        public static XeoglDrawingSpaceLayer DrawClosedCone(this XeoglDrawingSpaceLayer layer, IFloat64Tuple3D center, double radiusBottom, double height, int radialSegments, int heightSegments)
         {
             return layer.DrawGeometry(new XeoglCylinderGeometry(center)
             {
@@ -479,7 +479,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.DrawingSpace
             });
         }
 
-        public static XeoglDrawingSpaceLayer DrawOpenedCone(this XeoglDrawingSpaceLayer layer, ITuple3D center, double radiusBottom, double height)
+        public static XeoglDrawingSpaceLayer DrawOpenedCone(this XeoglDrawingSpaceLayer layer, IFloat64Tuple3D center, double radiusBottom, double height)
         {
             return layer.DrawGeometry(new XeoglCylinderGeometry(center)
             {
@@ -490,7 +490,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.DrawingSpace
             });
         }
 
-        public static XeoglDrawingSpaceLayer DrawOpenedCone(this XeoglDrawingSpaceLayer layer, ITuple3D center, double radiusBottom, double height, int radialSegments, int heightSegments)
+        public static XeoglDrawingSpaceLayer DrawOpenedCone(this XeoglDrawingSpaceLayer layer, IFloat64Tuple3D center, double radiusBottom, double height, int radialSegments, int heightSegments)
         {
             return layer.DrawGeometry(new XeoglCylinderGeometry(center)
             {
@@ -504,7 +504,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.DrawingSpace
         }
 
 
-        public static XeoglDrawingSpaceLayer DrawTorus(this XeoglDrawingSpaceLayer layer, ITuple3D center, double radius, double tubeRadius)
+        public static XeoglDrawingSpaceLayer DrawTorus(this XeoglDrawingSpaceLayer layer, IFloat64Tuple3D center, double radius, double tubeRadius)
         {
             return layer.DrawGeometry(new XeoglTorusGeometry(center)
             {
@@ -513,7 +513,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.DrawingSpace
             });
         }
 
-        public static XeoglDrawingSpaceLayer DrawTorus(this XeoglDrawingSpaceLayer layer, ITuple3D center, double radius, double tubeRadius, double arcAngle)
+        public static XeoglDrawingSpaceLayer DrawTorus(this XeoglDrawingSpaceLayer layer, IFloat64Tuple3D center, double radius, double tubeRadius, double arcAngle)
         {
             return layer.DrawGeometry(new XeoglTorusGeometry(center)
             {
@@ -523,7 +523,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.DrawingSpace
             });
         }
 
-        public static XeoglDrawingSpaceLayer DrawTorus(this XeoglDrawingSpaceLayer layer, ITuple3D center, double radius, double tubeRadius, int radialSegments, int tubeSegments)
+        public static XeoglDrawingSpaceLayer DrawTorus(this XeoglDrawingSpaceLayer layer, IFloat64Tuple3D center, double radius, double tubeRadius, int radialSegments, int tubeSegments)
         {
             return layer.DrawGeometry(new XeoglTorusGeometry(center)
             {
@@ -534,7 +534,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.DrawingSpace
             });
         }
         
-        public static XeoglDrawingSpaceLayer DrawTorus(this XeoglDrawingSpaceLayer layer, ITuple3D center, double radius, double tubeRadius, double arcAngle, int radialSegments, int tubeSegments)
+        public static XeoglDrawingSpaceLayer DrawTorus(this XeoglDrawingSpaceLayer layer, IFloat64Tuple3D center, double radius, double tubeRadius, double arcAngle, int radialSegments, int tubeSegments)
         {
             return layer.DrawGeometry(new XeoglTorusGeometry(center)
             {
@@ -605,14 +605,14 @@ namespace GraphicsComposerLib.Rendering.Xeogl.DrawingSpace
             );
         }
 
-        public static XeoglDrawingSpaceLayer DrawLineStrip(this XeoglDrawingSpaceLayer layer, IEnumerable<ITuple3D> pointsList)
+        public static XeoglDrawingSpaceLayer DrawLineStrip(this XeoglDrawingSpaceLayer layer, IEnumerable<IFloat64Tuple3D> pointsList)
         {
             return layer.DrawGeometry(
                 pointsList.ToGraphicsLineStripGeometry().ToXeoglGeometry()
             );
         }
 
-        public static XeoglDrawingSpaceLayer DrawLineLoop(this XeoglDrawingSpaceLayer layer, IEnumerable<ITuple3D> pointsList)
+        public static XeoglDrawingSpaceLayer DrawLineLoop(this XeoglDrawingSpaceLayer layer, IEnumerable<IFloat64Tuple3D> pointsList)
         {
             return layer.DrawGeometry(
                 pointsList.ToGraphicsLineLoopGeometry().ToXeoglGeometry()
@@ -620,7 +620,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.DrawingSpace
         }
 
 
-        public static XeoglDrawingSpaceLayer DrawMarker(this XeoglDrawingSpaceLayer layer, XeoglGeometry markerGeometry, ITuple3D point)
+        public static XeoglDrawingSpaceLayer DrawMarker(this XeoglDrawingSpaceLayer layer, XeoglGeometry markerGeometry, IFloat64Tuple3D point)
         {
             return layer.DrawGeometry(
                 markerGeometry,
@@ -628,7 +628,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.DrawingSpace
             );
         }
 
-        public static XeoglDrawingSpaceLayer DrawMarker(this XeoglDrawingSpaceLayer layer, XeoglGeometry markerGeometry, params ITuple3D[] pointsList)
+        public static XeoglDrawingSpaceLayer DrawMarker(this XeoglDrawingSpaceLayer layer, XeoglGeometry markerGeometry, params IFloat64Tuple3D[] pointsList)
         {
             foreach (var point in pointsList)
                 layer.DrawGeometry(
@@ -639,7 +639,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.DrawingSpace
             return layer;
         }
 
-        public static XeoglDrawingSpaceLayer DrawMarker(this XeoglDrawingSpaceLayer layer, XeoglGeometry markerGeometry, IEnumerable<ITuple3D> pointsList)
+        public static XeoglDrawingSpaceLayer DrawMarker(this XeoglDrawingSpaceLayer layer, XeoglGeometry markerGeometry, IEnumerable<IFloat64Tuple3D> pointsList)
         {
             foreach (var point in pointsList)
                 layer.DrawGeometry(
@@ -650,7 +650,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.DrawingSpace
             return layer;
         }
 
-        public static XeoglDrawingSpaceLayer DrawStoredMarker(this XeoglDrawingSpaceLayer layer, string geometryVariableName, ITuple3D point)
+        public static XeoglDrawingSpaceLayer DrawStoredMarker(this XeoglDrawingSpaceLayer layer, string geometryVariableName, IFloat64Tuple3D point)
         {
             return layer.DrawStoredGeometry(
                 geometryVariableName,
@@ -658,7 +658,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.DrawingSpace
             );
         }
 
-        public static XeoglDrawingSpaceLayer DrawStoredMarker(this XeoglDrawingSpaceLayer layer, string geometryVariableName, params ITuple3D[] pointsList)
+        public static XeoglDrawingSpaceLayer DrawStoredMarker(this XeoglDrawingSpaceLayer layer, string geometryVariableName, params IFloat64Tuple3D[] pointsList)
         {
             foreach (var point in pointsList)
                 layer.DrawStoredGeometry(
@@ -669,7 +669,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.DrawingSpace
             return layer;
         }
 
-        public static XeoglDrawingSpaceLayer DrawStoredMarker(this XeoglDrawingSpaceLayer layer, string geometryVariableName, IEnumerable<ITuple3D> pointsList)
+        public static XeoglDrawingSpaceLayer DrawStoredMarker(this XeoglDrawingSpaceLayer layer, string geometryVariableName, IEnumerable<IFloat64Tuple3D> pointsList)
         {
             foreach (var point in pointsList)
                 layer.DrawStoredGeometry(
@@ -684,19 +684,19 @@ namespace GraphicsComposerLib.Rendering.Xeogl.DrawingSpace
         public static XeoglDrawingSpaceLayer DrawWireWorldAxes(this XeoglDrawingSpaceLayer layer, double length, int thickness)
         {
             return layer.DrawWireWorldAxes(
-                Tuple3D.Zero,
+                Float64Tuple3D.Zero,
                 length,
                 thickness
             );
         }
 
-        public static XeoglDrawingSpaceLayer DrawWireWorldAxes(this XeoglDrawingSpaceLayer layer, ITuple3D origin, double length, int thickness)
+        public static XeoglDrawingSpaceLayer DrawWireWorldAxes(this XeoglDrawingSpaceLayer layer, IFloat64Tuple3D origin, double length, int thickness)
         {
             //x-axis
             layer.DrawGeometry(
                 XeoglLinesGeometry.CreateLineSegment(
                     origin,
-                    new Tuple3D(origin.X + length, origin.Y, origin.Z)
+                    new Float64Tuple3D(origin.X + length, origin.Y, origin.Z)
                 ),
                 new XeoglPhongMaterial()
                 {
@@ -709,7 +709,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.DrawingSpace
             layer.DrawGeometry(
                 XeoglLinesGeometry.CreateLineSegment(
                     origin,
-                    new Tuple3D(origin.X, origin.Y + length, origin.Z)
+                    new Float64Tuple3D(origin.X, origin.Y + length, origin.Z)
                 ),
                 new XeoglPhongMaterial()
                 {
@@ -722,7 +722,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.DrawingSpace
             layer.DrawGeometry(
                 XeoglLinesGeometry.CreateLineSegment(
                     origin,
-                    new Tuple3D(origin.X, origin.Y, origin.Z + length)
+                    new Float64Tuple3D(origin.X, origin.Y, origin.Z + length)
                 ),
                 new XeoglPhongMaterial()
                 {
@@ -737,14 +737,14 @@ namespace GraphicsComposerLib.Rendering.Xeogl.DrawingSpace
         public static XeoglDrawingSpaceLayer DrawSolidWorldAxes(this XeoglDrawingSpaceLayer layer, double length = 1, double thickness = 0.075, double arrowHeadLength = 0.3)
         {
             return layer.DrawSolidWorldAxes(
-                Tuple3D.Zero,
+                Float64Tuple3D.Zero,
                 length,
                 thickness,
                 arrowHeadLength
             );
         }
 
-        public static XeoglDrawingSpaceLayer DrawSolidWorldAxes(this XeoglDrawingSpaceLayer layer, ITuple3D origin, double length = 1, double thickness = 0.075, double arrowHeadLength = 0.3)
+        public static XeoglDrawingSpaceLayer DrawSolidWorldAxes(this XeoglDrawingSpaceLayer layer, IFloat64Tuple3D origin, double length = 1, double thickness = 0.075, double arrowHeadLength = 0.3)
         {
             var arrowHeadBaseRadius = arrowHeadLength / 3;
             var arrowEdgeLength = length - arrowHeadLength;
@@ -861,7 +861,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.DrawingSpace
         }
 
 
-        public static XeoglDrawingSpaceLayer DrawWireArrow(this XeoglDrawingSpaceLayer layer, ITuple3D origin, ITuple3D direction, int thickness, Color color)
+        public static XeoglDrawingSpaceLayer DrawWireArrow(this XeoglDrawingSpaceLayer layer, IFloat64Tuple3D origin, IFloat64Tuple3D direction, int thickness, Color color)
         {
             var endPoint = origin.GetPointInDirection(direction);
 
@@ -880,12 +880,12 @@ namespace GraphicsComposerLib.Rendering.Xeogl.DrawingSpace
             return layer;
         }
 
-        public static XeoglDrawingSpaceLayer DrawWireArrows(this XeoglDrawingSpaceLayer layer, IEnumerable<Tuple<ITuple3D, ITuple3D>> arrowsList, double maxLength, int thickness, Color color)
+        public static XeoglDrawingSpaceLayer DrawWireArrows(this XeoglDrawingSpaceLayer layer, IEnumerable<Tuple<IFloat64Tuple3D, IFloat64Tuple3D>> arrowsList, double maxLength, int thickness, Color color)
         {
             var arrowsArray = arrowsList.ToArray();
 
             var scaleFactor = 
-                maxLength / arrowsArray.Select(t => t.Item2.GetLength()).Max();
+                maxLength / arrowsArray.Select(t => t.Item2.GetVectorNorm()).Max();
 
             var lineSegmentsGeometry =
                 arrowsArray.Select(t =>

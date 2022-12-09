@@ -54,12 +54,12 @@ public sealed class SmoothBlendD2Function :
                ScalarFunction2.GetValue(t) * x;
     }
 
-    public double GetFirstDerivative(double t)
+    public double GetFirstDerivativeValue(double t)
     {
         throw new NotImplementedException();
     }
 
-    public double GetSecondDerivative(double t)
+    public double GetSecondDerivativeValue(double t)
     {
         throw new NotImplementedException();
     }

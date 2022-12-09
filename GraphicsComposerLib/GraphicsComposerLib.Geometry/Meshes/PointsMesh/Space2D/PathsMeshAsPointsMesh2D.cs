@@ -17,7 +17,7 @@ namespace GraphicsComposerLib.Geometry.Meshes.PointsMesh.Space2D
         public int Count
             => BaseMesh.MeshPointsCount;
 
-        public ITuple2D this[int index]
+        public IFloat64Tuple2D this[int index]
         {
             get
             {
@@ -35,7 +35,7 @@ namespace GraphicsComposerLib.Geometry.Meshes.PointsMesh.Space2D
         public int Count2
             => BaseMesh.Count;
 
-        public ITuple2D this[int index1, int index2]
+        public IFloat64Tuple2D this[int index1, int index2]
             => BaseMesh[index2][index1];
 
         public bool IsBasic
@@ -51,7 +51,7 @@ namespace GraphicsComposerLib.Geometry.Meshes.PointsMesh.Space2D
         }
 
 
-        public PSeqSlice1D<ITuple2D> GetSliceAt(int dimension, int index)
+        public PSeqSlice1D<IFloat64Tuple2D> GetSliceAt(int dimension, int index)
         {
             return new PointsMeshSlicePointsPath2D(this, dimension, index);
         }
@@ -61,7 +61,7 @@ namespace GraphicsComposerLib.Geometry.Meshes.PointsMesh.Space2D
             return new PointsMeshSlicePointsPath2D(this, dimension, index);
         }
 
-        public IEnumerator<ITuple2D> GetEnumerator()
+        public IEnumerator<IFloat64Tuple2D> GetEnumerator()
         {
             return BaseMesh.SelectMany(p => p).GetEnumerator();
         }

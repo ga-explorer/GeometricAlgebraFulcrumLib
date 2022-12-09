@@ -144,7 +144,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaMultivector CreateVector(this BasisBladeSet basisSet, ITuple2D vector)
+        public static GaMultivector CreateVector(this BasisBladeSet basisSet, IFloat64Tuple2D vector)
         {
             if (basisSet.VSpaceDimension < 2)
                 throw new InvalidOperationException();
@@ -157,7 +157,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaMultivector CreateVector(this BasisBladeSet basisSet, ITuple3D vector)
+        public static GaMultivector CreateVector(this BasisBladeSet basisSet, IFloat64Tuple3D vector)
         {
             if (basisSet.VSpaceDimension < 3)
                 throw new InvalidOperationException();
@@ -171,7 +171,7 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaMultivector CreateVector(this BasisBladeSet basisSet, ITuple4D vector)
+        public static GaMultivector CreateVector(this BasisBladeSet basisSet, IFloat64Tuple4D vector)
         {
             if (basisSet.VSpaceDimension < 4)
                 throw new InvalidOperationException();

@@ -1,21 +1,18 @@
-﻿using NumericalGeometryLib.BasicMath.Tuples.Mutable;
-using System.Collections.Generic;
+﻿namespace NumericalGeometryLib.BasicMath.Tuples;
 
-namespace NumericalGeometryLib.BasicMath.Tuples;
+//public interface IFloat64Tuple :
+//    IGeometricElement,
+//    IReadOnlyList<double>
+//{
+//    public bool IsZero();
 
-public interface IFloat64Tuple :
-    IGeometricElement,
-    IReadOnlyList<double>
-{
-    public bool IsZero();
+//    public bool IsNearZero(double epsilon = 1e-12);
 
-    public bool IsNearZero(double epsilon = 1e-12);
+//    public double GetComponent(int axisIndex, bool axisNegative = false);
 
-    public double GetComponent(int axisIndex, bool axisNegative = false);
+//    public double GetLength();
 
-    public double GetLength();
+//    public double GetLengthSquared();
 
-    public double GetLengthSquared();
-
-    public double VectorDot(IFloat64Tuple tuple);
-}
+//    public double VectorDot(IFloat64Tuple tuple);
+//}

@@ -10,8 +10,8 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
     public sealed class TranslateMap3D :
         IAffineMap3D
     {
-        private Tuple3D _translationVector = Tuple3D.Zero;
-        public Tuple3D TranslationVector
+        private Float64Tuple3D _translationVector = Float64Tuple3D.Zero;
+        public Float64Tuple3D TranslationVector
         {
             get => _translationVector;
             set
@@ -33,7 +33,7 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public TranslateMap3D(ITuple3D translationVector)
+        public TranslateMap3D(IFloat64Tuple3D translationVector)
         {
             TranslationVector = translationVector.ToTuple3D();
         }
@@ -46,13 +46,13 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public SquareMatrix4 ToSquareMatrix4()
+        public SquareMatrix4 GetSquareMatrix4()
         {
             return SquareMatrix4.CreateTranslationMatrix3D(_translationVector);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Matrix4x4 ToMatrix4x4()
+        public Matrix4x4 GetMatrix4x4()
         {
             return new Matrix4x4(
                 1, 0, 0, (float) _translationVector.X,
@@ -63,7 +63,7 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public double[,] ToArray2D()
+        public double[,] GetArray2D()
         {
             var array = new double[4, 4];
 
@@ -80,25 +80,25 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple3D MapPoint(ITuple3D point)
+        public Float64Tuple3D MapPoint(IFloat64Tuple3D point)
         {
             return TranslationVector + point;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple3D MapVector(ITuple3D vector)
+        public Float64Tuple3D MapVector(IFloat64Tuple3D vector)
         {
             return vector.ToTuple3D();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple3D MapNormal(ITuple3D normal)
+        public Float64Tuple3D MapNormal(IFloat64Tuple3D normal)
         {
             return normal.ToTuple3D();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IAffineMap3D InverseMap()
+        public IAffineMap3D GetInverseAffineMap()
         {
             return new TranslateMap3D(-TranslationVector);
         }

@@ -49,10 +49,10 @@ namespace GraphicsComposerLib.Geometry.LatticeShapes.Surfaces
                 ? VertexList 
                 : _pointToVertexDictionary.Values;
 
-        public IEnumerable<Tuple3D> VertexPoints 
+        public IEnumerable<Float64Tuple3D> VertexPoints 
             => Vertices.Select(v => v.Point);
 
-        public IEnumerable<ITuple3D> VertexNormals 
+        public IEnumerable<IFloat64Tuple3D> VertexNormals 
             => Vertices.Select(v => v.Normal);
 
         public IEnumerable<Pair<double>> VertexTextureUvs 
@@ -180,15 +180,15 @@ namespace GraphicsComposerLib.Geometry.LatticeShapes.Surfaces
             ];
         }
 
-        public Tuple2D GetLatticeTextureUv(int indexU, int indexV)
+        public Float64Tuple2D GetLatticeTextureUv(int indexU, int indexV)
         {
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 indexU / (double)(LatticeSizeU - 1),
                 indexV / (double)(LatticeSizeV - 1)
             );
         }
 
-        public Tuple3D GetLatticeTangentU(int indexU, int indexV)
+        public Float64Tuple3D GetLatticeTangentU(int indexU, int indexV)
         {
             if (LatticeClosedU || (indexU > 0 && indexU < LatticeSizeU - 1))
             {
@@ -213,7 +213,7 @@ namespace GraphicsComposerLib.Geometry.LatticeShapes.Surfaces
             }
         }
         
-        public Tuple3D GetLatticeTangentV(int indexU, int indexV)
+        public Float64Tuple3D GetLatticeTangentV(int indexU, int indexV)
         {
             if (LatticeClosedV || (indexV > 0 && indexV < LatticeSizeV - 1))
             {
@@ -440,7 +440,7 @@ namespace GraphicsComposerLib.Geometry.LatticeShapes.Surfaces
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GrLatticeSurface3D MapPoints(Func<Tuple3D, Tuple3D> mappingFunc)
+        public GrLatticeSurface3D MapPoints(Func<Float64Tuple3D, Float64Tuple3D> mappingFunc)
         {
             foreach (var vertex in _pointToVertexDictionary.Values)
                 vertex.Point = mappingFunc(vertex.Point);
@@ -459,7 +459,7 @@ namespace GraphicsComposerLib.Geometry.LatticeShapes.Surfaces
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GrLatticeSurface3D TranslatePointsBy(ITuple3D translationVector)
+        public GrLatticeSurface3D TranslatePointsBy(IFloat64Tuple3D translationVector)
         {
             return MapPoints(p => 
                 p.TranslateBy(translationVector)

@@ -6,16 +6,16 @@ using SixLabors.ImageSharp;
 namespace GraphicsComposerLib.Geometry.Primitives
 {
     public interface IGraphicsCurveLocalFrame2D : 
-        ITuple2D
+        IFloat64Tuple2D
     {
         int Index { get; }
 
-        Tuple2D Point { get; }
+        Float64Tuple2D Point { get; }
 
         Color Color { get; set; }
 
         double ParameterValue { get; }
 
-        Tuple2D Tangent { get; }
+        Float64Tuple2D Tangent { get; }
     }
 }

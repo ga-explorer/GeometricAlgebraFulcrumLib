@@ -23,8 +23,8 @@ namespace GraphicsComposerLib.Rendering.ThreeJs.Obsolete.Lights
         public bool CastShadow { get; set; }
             = false;
 
-        public ITuple3D Position { get; set; }
-            = new Tuple3D(0, 0, 0);
+        public IFloat64Tuple3D Position { get; set; }
+            = new Float64Tuple3D(0, 0, 0);
 
         public TjObject3D Target { get; set; }
 
@@ -35,7 +35,7 @@ namespace GraphicsComposerLib.Rendering.ThreeJs.Obsolete.Lights
 
             JsCodeComponentUtils.SetValue(attributesDictionary
                     .SetValue("castShadow", CastShadow, false)
-                    .SetThreeJsVector3Value("position", Position, Tuple3D.Zero), "target", Target, null);
+                    .SetThreeJsVector3Value("position", Position, Float64Tuple3D.Zero), "target", Target, null);
         }
     }
 }

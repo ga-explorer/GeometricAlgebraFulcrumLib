@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.SignalProcessing;
-using GeometricAlgebraFulcrumLib.Algebra.SignalProcessing.Interpolators;
+using GeometricAlgebraFulcrumLib.Algebra.SignalAlgebra;
+using GeometricAlgebraFulcrumLib.Algebra.SignalAlgebra.Interpolators;
 using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Factories

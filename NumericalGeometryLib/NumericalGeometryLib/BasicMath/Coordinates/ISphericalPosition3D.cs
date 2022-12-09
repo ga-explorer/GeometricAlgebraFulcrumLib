@@ -2,7 +2,7 @@
 
 namespace NumericalGeometryLib.BasicMath.Coordinates
 {
-    public interface ISphericalPosition3D : ITuple3D
+    public interface ISphericalPosition3D : IFloat64Tuple3D
     {
         double R { get; }
 

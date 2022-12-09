@@ -8,7 +8,7 @@ namespace NumericalGeometryLib.BasicShapes.Triangles.Mutable
 {
     public sealed class MutableTriangle2D : ITriangle2D
     {
-        public static MutableTriangle2D Create(ITuple2D point1, ITuple2D point2, ITuple2D point3)
+        public static MutableTriangle2D Create(IFloat64Tuple2D point1, IFloat64Tuple2D point2, IFloat64Tuple2D point3)
         {
             return new MutableTriangle2D(
                 point1.X, point1.Y,
@@ -65,7 +65,7 @@ namespace NumericalGeometryLib.BasicShapes.Triangles.Mutable
         }
 
 
-        public MutableTriangle2D SetPoint1(ITuple2D point)
+        public MutableTriangle2D SetPoint1(IFloat64Tuple2D point)
         {
             Point1X = point.X;
             Point1Y = point.Y;
@@ -73,7 +73,7 @@ namespace NumericalGeometryLib.BasicShapes.Triangles.Mutable
             return this;
         }
 
-        public MutableTriangle2D SetPoint2(ITuple2D point)
+        public MutableTriangle2D SetPoint2(IFloat64Tuple2D point)
         {
             Point2X = point.X;
             Point2Y = point.Y;
@@ -81,7 +81,7 @@ namespace NumericalGeometryLib.BasicShapes.Triangles.Mutable
             return this;
         }
 
-        public MutableTriangle2D SetPoint3(ITuple2D point)
+        public MutableTriangle2D SetPoint3(IFloat64Tuple2D point)
         {
             Point3X = point.X;
             Point3Y = point.Y;
@@ -89,7 +89,7 @@ namespace NumericalGeometryLib.BasicShapes.Triangles.Mutable
             return this;
         }
 
-        public MutableTriangle2D SetTriangle(ITuple2D point1, ITuple2D point2, ITuple2D point3)
+        public MutableTriangle2D SetTriangle(IFloat64Tuple2D point1, IFloat64Tuple2D point2, IFloat64Tuple2D point3)
         {
             Point1X = point1.X;
             Point1Y = point1.Y;

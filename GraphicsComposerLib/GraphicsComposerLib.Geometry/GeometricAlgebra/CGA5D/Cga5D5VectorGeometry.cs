@@ -14,12 +14,12 @@ namespace GraphicsComposerLib.Geometry.GeometricAlgebra.CGA5D
         }
 
 
-        protected override double ComputeSdfOpns(ITuple3D point)
+        protected override double ComputeSdfOpns(IFloat64Tuple3D point)
         {
             return 0;
         }
 
-        protected override double ComputeSdfIpns(ITuple3D point)
+        protected override double ComputeSdfIpns(IFloat64Tuple3D point)
         {
             //Begin GMac Macro Code Generation, 2019-09-12T20:59:17.9435771+02:00
             //Macro: main.cga5d.SdfIpns

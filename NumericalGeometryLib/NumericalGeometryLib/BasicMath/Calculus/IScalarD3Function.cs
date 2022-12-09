@@ -3,5 +3,5 @@
 public interface IScalarD3Function :
     IScalarD2Function
 {
-    double GetThirdDerivative(double t);
+    double GetThirdDerivativeValue(double t);
 }

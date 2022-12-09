@@ -57,7 +57,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Builtin
             };
         }
 
-        public static XeoglCylinderGeometry CreateClosed(ITuple3D center, double radius, double height)
+        public static XeoglCylinderGeometry CreateClosed(IFloat64Tuple3D center, double radius, double height)
         {
             return new XeoglCylinderGeometry(center)
             {
@@ -67,7 +67,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Builtin
             };
         }
 
-        public static XeoglCylinderGeometry CreateClosed(ITuple3D center, double radius, double height, int radialSegments, int heightSegments)
+        public static XeoglCylinderGeometry CreateClosed(IFloat64Tuple3D center, double radius, double height, int radialSegments, int heightSegments)
         {
             return new XeoglCylinderGeometry(center)
             {
@@ -79,7 +79,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Builtin
             };
         }
 
-        public static XeoglCylinderGeometry CreateClosed(ITuple3D center, double radiusTop, double radiusBottom, double height)
+        public static XeoglCylinderGeometry CreateClosed(IFloat64Tuple3D center, double radiusTop, double radiusBottom, double height)
         {
             return new XeoglCylinderGeometry(center)
             {
@@ -89,7 +89,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Builtin
             };
         }
 
-        public static XeoglCylinderGeometry CreateClosed(ITuple3D center, double radiusTop, double radiusBottom, double height, int radialSegments, int heightSegments)
+        public static XeoglCylinderGeometry CreateClosed(IFloat64Tuple3D center, double radiusTop, double radiusBottom, double height, int radialSegments, int heightSegments)
         {
             return new XeoglCylinderGeometry(center)
             {
@@ -149,7 +149,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Builtin
             };
         }
 
-        public static XeoglCylinderGeometry CreateOpened(ITuple3D center, double radius, double height)
+        public static XeoglCylinderGeometry CreateOpened(IFloat64Tuple3D center, double radius, double height)
         {
             return new XeoglCylinderGeometry(center)
             {
@@ -160,7 +160,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Builtin
             };
         }
 
-        public static XeoglCylinderGeometry CreateOpened(ITuple3D center, double radius, double height, int radialSegments, int heightSegments)
+        public static XeoglCylinderGeometry CreateOpened(IFloat64Tuple3D center, double radius, double height, int radialSegments, int heightSegments)
         {
             return new XeoglCylinderGeometry(center)
             {
@@ -173,7 +173,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Builtin
             };
         }
 
-        public static XeoglCylinderGeometry CreateOpened(ITuple3D center, double radiusTop, double radiusBottom, double height)
+        public static XeoglCylinderGeometry CreateOpened(IFloat64Tuple3D center, double radiusTop, double radiusBottom, double height)
         {
             return new XeoglCylinderGeometry(center)
             {
@@ -184,7 +184,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Builtin
             };
         }
 
-        public static XeoglCylinderGeometry CreateOpened(ITuple3D center, double radiusTop, double radiusBottom, double height, int radialSegments, int heightSegments)
+        public static XeoglCylinderGeometry CreateOpened(IFloat64Tuple3D center, double radiusTop, double radiusBottom, double height, int radialSegments, int heightSegments)
         {
             return new XeoglCylinderGeometry(center)
             {
@@ -219,7 +219,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Builtin
             };
         }
 
-        public static XeoglCylinderGeometry CreateClosedCone(ITuple3D center, double radiusBottom, double height)
+        public static XeoglCylinderGeometry CreateClosedCone(IFloat64Tuple3D center, double radiusBottom, double height)
         {
             return new XeoglCylinderGeometry(center)
             {
@@ -229,7 +229,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Builtin
             };
         }
 
-        public static XeoglCylinderGeometry CreateClosedCone(ITuple3D center, double radiusBottom, double height, int radialSegments, int heightSegments)
+        public static XeoglCylinderGeometry CreateClosedCone(IFloat64Tuple3D center, double radiusBottom, double height, int radialSegments, int heightSegments)
         {
             return new XeoglCylinderGeometry(center)
             {
@@ -265,7 +265,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Builtin
             };
         }
 
-        public static XeoglCylinderGeometry CreateOpenedCone(ITuple3D center, double radiusBottom, double height)
+        public static XeoglCylinderGeometry CreateOpenedCone(IFloat64Tuple3D center, double radiusBottom, double height)
         {
             return new XeoglCylinderGeometry(center)
             {
@@ -276,7 +276,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Builtin
             };
         }
 
-        public static XeoglCylinderGeometry CreateOpenedCone(ITuple3D center, double radiusBottom, double height, int radialSegments, int heightSegments)
+        public static XeoglCylinderGeometry CreateOpenedCone(IFloat64Tuple3D center, double radiusBottom, double height, int radialSegments, int heightSegments)
         {
             return new XeoglCylinderGeometry(center)
             {
@@ -290,8 +290,8 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Builtin
         }
 
         
-        public MutableTuple3D Center { get; }
-            = new MutableTuple3D();
+        public MutableFloat64Tuple3D Center { get; }
+            = new MutableFloat64Tuple3D();
 
         public double RadiusTop { get; set; } = 1;
 
@@ -314,7 +314,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Builtin
         {
         }
 
-        public XeoglCylinderGeometry(ITuple3D center)
+        public XeoglCylinderGeometry(IFloat64Tuple3D center)
         {
             Center.SetTuple(center);
         }
@@ -326,7 +326,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Builtin
 
             composer
                 .SetValue("primitive", PrimitiveType, GraphicsPrimitiveType3D.Triangles)
-                .SetNumbersArrayValue("center", Center, Tuple3D.Zero)
+                .SetNumbersArrayValue("center", Center, Float64Tuple3D.Zero)
                 .SetValue("radiusTop", RadiusTop, 1)
                 .SetValue("radiusBottom", RadiusBottom, 1)
                 .SetValue("height", Height, 1)

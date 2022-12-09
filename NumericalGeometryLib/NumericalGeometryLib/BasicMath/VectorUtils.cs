@@ -14,48 +14,71 @@ namespace NumericalGeometryLib.BasicMath
 {
     public static class VectorUtils
     {
+        #region MathNet Numerics Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple2D Add(this ITuple2D v1, ITuple2D v2)
+        public static double GetVectorNorm(this MathNet.Numerics.LinearAlgebra.Vector<double> vector)
         {
-            return new Tuple2D(
+            return vector.DotProduct(vector).Sqrt();
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static double GetVectorNormSquared(this MathNet.Numerics.LinearAlgebra.Vector<double> vector)
+        {
+            return vector.DotProduct(vector);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static double VectorDot(this MathNet.Numerics.LinearAlgebra.Vector<double> vector1, MathNet.Numerics.LinearAlgebra.Vector<double> vector2)
+        {
+            return vector1.DotProduct(vector2);
+        }
+
+
+
+        #endregion
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Float64Tuple2D Add(this IFloat64Tuple2D v1, IFloat64Tuple2D v2)
+        {
+            return new Float64Tuple2D(
                 v1.X + v2.X,
                 v1.Y + v2.Y
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple2D Subtract(this ITuple2D v1, ITuple2D v2)
+        public static Float64Tuple2D Subtract(this IFloat64Tuple2D v1, IFloat64Tuple2D v2)
         {
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 v1.X - v2.X,
                 v1.Y - v2.Y
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple2D Times(this ITuple2D v1, double v2)
+        public static Float64Tuple2D Times(this IFloat64Tuple2D v1, double v2)
         {
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 v1.X * v2,
                 v1.Y * v2
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple2D Times(this double v1, ITuple2D v2)
+        public static Float64Tuple2D Times(this double v1, IFloat64Tuple2D v2)
         {
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 v1 * v2.X,
                 v1 * v2.Y
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple2D Divide(this ITuple2D v1, double v2)
+        public static Float64Tuple2D Divide(this IFloat64Tuple2D v1, double v2)
         {
             v2 = 1d / v2;
 
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 v1.X * v2,
                 v1.Y * v2
             );
@@ -63,9 +86,9 @@ namespace NumericalGeometryLib.BasicMath
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D Add(this ITuple3D v1, ITuple3D v2)
+        public static Float64Tuple3D Add(this IFloat64Tuple3D v1, IFloat64Tuple3D v2)
         {
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 v1.X + v2.X,
                 v1.Y + v2.Y,
                 v1.Z + v2.Z
@@ -73,9 +96,9 @@ namespace NumericalGeometryLib.BasicMath
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D Subtract(this ITuple3D v1, ITuple3D v2)
+        public static Float64Tuple3D Subtract(this IFloat64Tuple3D v1, IFloat64Tuple3D v2)
         {
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 v1.X - v2.X,
                 v1.Y - v2.Y,
                 v1.Z - v2.Z
@@ -83,9 +106,9 @@ namespace NumericalGeometryLib.BasicMath
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D Times(this ITuple3D v1, double v2)
+        public static Float64Tuple3D Times(this IFloat64Tuple3D v1, double v2)
         {
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 v1.X * v2,
                 v1.Y * v2,
                 v1.Z * v2
@@ -93,9 +116,9 @@ namespace NumericalGeometryLib.BasicMath
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D Times(this double v1, ITuple3D v2)
+        public static Float64Tuple3D Times(this double v1, IFloat64Tuple3D v2)
         {
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 v1 * v2.X,
                 v1 * v2.Y,
                 v1 * v2.Z
@@ -103,11 +126,11 @@ namespace NumericalGeometryLib.BasicMath
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D Divide(this ITuple3D v1, double v2)
+        public static Float64Tuple3D Divide(this IFloat64Tuple3D v1, double v2)
         {
             v2 = 1d / v2;
 
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 v1.X * v2,
                 v1.Y * v2,
                 v1.Z * v2
@@ -117,9 +140,9 @@ namespace NumericalGeometryLib.BasicMath
         
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple4D Add(this ITuple4D v1, ITuple4D v2)
+        public static Float64Tuple4D Add(this IFloat64Tuple4D v1, IFloat64Tuple4D v2)
         {
-            return new Tuple4D(
+            return new Float64Tuple4D(
                 v1.X + v2.X,
                 v1.Y + v2.Y,
                 v1.Z + v2.Z,
@@ -128,9 +151,9 @@ namespace NumericalGeometryLib.BasicMath
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple4D Subtract(this ITuple4D v1, ITuple4D v2)
+        public static Float64Tuple4D Subtract(this IFloat64Tuple4D v1, IFloat64Tuple4D v2)
         {
-            return new Tuple4D(
+            return new Float64Tuple4D(
                 v1.X - v2.X,
                 v1.Y - v2.Y,
                 v1.Z - v2.Z,
@@ -139,9 +162,9 @@ namespace NumericalGeometryLib.BasicMath
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple4D Times(this ITuple4D v1, double v2)
+        public static Float64Tuple4D Times(this IFloat64Tuple4D v1, double v2)
         {
-            return new Tuple4D(
+            return new Float64Tuple4D(
                 v1.X * v2,
                 v1.Y * v2,
                 v1.Z * v2,
@@ -150,9 +173,9 @@ namespace NumericalGeometryLib.BasicMath
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple4D Times(this double v1, ITuple4D v2)
+        public static Float64Tuple4D Times(this double v1, IFloat64Tuple4D v2)
         {
-            return new Tuple4D(
+            return new Float64Tuple4D(
                 v1 * v2.X,
                 v1 * v2.Y,
                 v1 * v2.Z,
@@ -161,11 +184,11 @@ namespace NumericalGeometryLib.BasicMath
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple4D Divide(this ITuple4D v1, double v2)
+        public static Float64Tuple4D Divide(this IFloat64Tuple4D v1, double v2)
         {
             v2 = 1d / v2;
 
-            return new Tuple4D(
+            return new Float64Tuple4D(
                 v1.X * v2,
                 v1.Y * v2,
                 v1.Z * v2,
@@ -174,7 +197,7 @@ namespace NumericalGeometryLib.BasicMath
         }
 
 
-        public static Tuple2D GetCenterOfMassPoint(this IEnumerable<ITuple2D> pointsList)
+        public static Float64Tuple2D GetCenterOfMassPoint(this IEnumerable<IFloat64Tuple2D> pointsList)
         {
             var centerX = 0.0d;
             var centerY = 0.0d;
@@ -190,13 +213,13 @@ namespace NumericalGeometryLib.BasicMath
 
             var pointsCountInv = 1.0d / pointsCount;
 
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 centerX * pointsCountInv,
                 centerY * pointsCountInv
             );
         }
 
-        public static Tuple2D GetCenterPoint(this IEnumerable<ITuple2D> pointsList)
+        public static Float64Tuple2D GetCenterPoint(this IEnumerable<IFloat64Tuple2D> pointsList)
         {
             var minX = double.PositiveInfinity;
             var minY = double.PositiveInfinity;
@@ -213,13 +236,13 @@ namespace NumericalGeometryLib.BasicMath
                 if (point.Y > maxY) maxY = point.Y;
             }
 
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 0.5 * (minX + maxX),
                 0.5 * (minY + maxY)
             );
         }
 
-        public static Tuple3D GetCenterOfMassPoint(this IEnumerable<ITuple3D> pointsList)
+        public static Float64Tuple3D GetCenterOfMassPoint(this IEnumerable<IFloat64Tuple3D> pointsList)
         {
             var centerX = 0.0d;
             var centerY = 0.0d;
@@ -237,14 +260,14 @@ namespace NumericalGeometryLib.BasicMath
 
             var pointsCountInv = 1.0d / pointsCount;
 
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 centerX * pointsCountInv,
                 centerY * pointsCountInv,
                 centerZ * pointsCountInv
             );
         }
 
-        public static Tuple3D GetCenterPoint(this IEnumerable<ITuple3D> pointsList)
+        public static Float64Tuple3D GetCenterPoint(this IEnumerable<IFloat64Tuple3D> pointsList)
         {
             var minX = double.PositiveInfinity;
             var minY = double.PositiveInfinity;
@@ -266,7 +289,7 @@ namespace NumericalGeometryLib.BasicMath
                 if (point.Z > maxZ) maxZ = point.Z;
             }
 
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 0.5 * (minX + maxX),
                 0.5 * (minY + maxY),
                 0.5 * (minZ + maxZ)
@@ -274,95 +297,95 @@ namespace NumericalGeometryLib.BasicMath
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<double> GetDistancesToPoints(this ITuple2D point, IEnumerable<ITuple2D> pointsList)
+        public static IEnumerable<double> GetDistancesToPoints(this IFloat64Tuple2D point, IEnumerable<IFloat64Tuple2D> pointsList)
         {
             return pointsList.Select(p => GetDistanceToPoint(point, p));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<double> GetDistancesSquaredToPoints(this ITuple2D point, IEnumerable<ITuple2D> pointsList)
+        public static IEnumerable<double> GetDistancesSquaredToPoints(this IFloat64Tuple2D point, IEnumerable<IFloat64Tuple2D> pointsList)
         {
             return pointsList.Select(p => GetDistanceSquaredToPoint(point, p));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple2D GetDirectionToPoint(this ITuple2D p1, ITuple2D p2)
+        public static Float64Tuple2D GetDirectionToPoint(this IFloat64Tuple2D p1, IFloat64Tuple2D p2)
         {
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 p2.X - p1.X,
                 p2.Y - p1.Y
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple2D GetDirectionToPoint(this ITuple2D p1, double p2X, double p2Y)
+        public static Float64Tuple2D GetDirectionToPoint(this IFloat64Tuple2D p1, double p2X, double p2Y)
         {
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 p2X - p1.X,
                 p2Y - p1.Y
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple2D GetDirectionFromPoint(this ITuple2D p2, ITuple2D p1)
+        public static Float64Tuple2D GetDirectionFromPoint(this IFloat64Tuple2D p2, IFloat64Tuple2D p1)
         {
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 p2.X - p1.X,
                 p2.Y - p1.Y
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple2D GetDirectionFromPoint(this ITuple2D p2, double p1X, double p1Y)
+        public static Float64Tuple2D GetDirectionFromPoint(this IFloat64Tuple2D p2, double p1X, double p1Y)
         {
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 p2.X - p1X,
                 p2.Y - p1Y
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple2D GetUnitDirectionToPoint(this ITuple2D p1, ITuple2D p2)
+        public static Float64Tuple2D GetUnitDirectionToPoint(this IFloat64Tuple2D p1, IFloat64Tuple2D p2)
         {
             var dx = p2.X - p1.X;
             var dy = p2.Y - p1.Y;
             var dInv = 1 / Math.Sqrt(dx * dx + dy * dy);
 
-            return new Tuple2D(dx * dInv, dy * dInv);
+            return new Float64Tuple2D(dx * dInv, dy * dInv);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple2D GetUnitDirectionFromPoint(this ITuple2D p2, ITuple2D p1)
+        public static Float64Tuple2D GetUnitDirectionFromPoint(this IFloat64Tuple2D p2, IFloat64Tuple2D p1)
         {
             var dx = p2.X - p1.X;
             var dy = p2.Y - p1.Y;
             var dInv = 1 / Math.Sqrt(dx * dx + dy * dy);
 
-            return new Tuple2D(dx * dInv, dy * dInv);
+            return new Float64Tuple2D(dx * dInv, dy * dInv);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple2D GetPointInDirection(this ITuple2D p, ITuple2D v)
+        public static Float64Tuple2D GetPointInDirection(this IFloat64Tuple2D p, IFloat64Tuple2D v)
         {
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 p.X + v.X,
                 p.Y + v.Y
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple2D GetPointInDirection(this ITuple2D p, ITuple2D v, double t)
+        public static Float64Tuple2D GetPointInDirection(this IFloat64Tuple2D p, IFloat64Tuple2D v, double t)
         {
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 p.X + t * v.X,
                 p.Y + t * v.Y
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D GetDirectionTo(this ITuple3D p1, ITuple3D p2)
+        public static Float64Tuple3D GetDirectionTo(this IFloat64Tuple3D p1, IFloat64Tuple3D p2)
         {
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 p2.X - p1.X,
                 p2.Y - p1.Y,
                 p2.Z - p1.Z
@@ -370,9 +393,9 @@ namespace NumericalGeometryLib.BasicMath
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D GetDirectionFrom(this ITuple3D p2, double p1X, double p1Y, double p1Z)
+        public static Float64Tuple3D GetDirectionFrom(this IFloat64Tuple3D p2, double p1X, double p1Y, double p1Z)
         {
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 p2.X - p1X,
                 p2.Y - p1Y,
                 p2.Z - p1Z
@@ -380,18 +403,18 @@ namespace NumericalGeometryLib.BasicMath
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple2D GetDirectionFrom(this ITuple2D p2, ITuple2D p1)
+        public static Float64Tuple2D GetDirectionFrom(this IFloat64Tuple2D p2, IFloat64Tuple2D p1)
         {
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 p2.X - p1.X,
                 p2.Y - p1.Y
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D GetDirectionFrom(this ITuple3D p2, ITuple3D p1)
+        public static Float64Tuple3D GetDirectionFrom(this IFloat64Tuple3D p2, IFloat64Tuple3D p1)
         {
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 p2.X - p1.X,
                 p2.Y - p1.Y,
                 p2.Z - p1.Z
@@ -399,31 +422,31 @@ namespace NumericalGeometryLib.BasicMath
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D GetUnitDirectionTo(this ITuple3D p1, ITuple3D p2)
+        public static Float64Tuple3D GetUnitDirectionTo(this IFloat64Tuple3D p1, IFloat64Tuple3D p2)
         {
             var dx = p2.X - p1.X;
             var dy = p2.Y - p1.Y;
             var dz = p2.Z - p1.Z;
             var dInv = 1 / Math.Sqrt(dx * dx + dy * dy + dz * dz);
 
-            return new Tuple3D(dx * dInv, dy * dInv, dz * dInv);
+            return new Float64Tuple3D(dx * dInv, dy * dInv, dz * dInv);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D GetUnitDirectionFrom(this ITuple3D p2, ITuple3D p1)
+        public static Float64Tuple3D GetUnitDirectionFrom(this IFloat64Tuple3D p2, IFloat64Tuple3D p1)
         {
             var dx = p2.X - p1.X;
             var dy = p2.Y - p1.Y;
             var dz = p2.Z - p1.Z;
             var dInv = 1 / Math.Sqrt(dx * dx + dy * dy + dz * dz);
 
-            return new Tuple3D(dx * dInv, dy * dInv, dz * dInv);
+            return new Float64Tuple3D(dx * dInv, dy * dInv, dz * dInv);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D GetPointInDirection(this ITuple3D p, ITuple3D v)
+        public static Float64Tuple3D GetPointInDirection(this IFloat64Tuple3D p, IFloat64Tuple3D v)
         {
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 p.X + v.X,
                 p.Y + v.Y,
                 p.Z + v.Z
@@ -431,9 +454,9 @@ namespace NumericalGeometryLib.BasicMath
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D GetPointInDirection(this ITuple3D p, ITuple3D v, double t)
+        public static Float64Tuple3D GetPointInDirection(this IFloat64Tuple3D p, IFloat64Tuple3D v, double t)
         {
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 p.X + t * v.X,
                 p.Y + t * v.Y,
                 p.Z + t * v.Z
@@ -443,7 +466,7 @@ namespace NumericalGeometryLib.BasicMath
         /// <summary>
         /// The Euclidean length of this tuple when it represents a vector
         /// </summary>
-        public static double GetLength(this ITuple2D vector)
+        public static double GetVectorNorm(this IFloat64Tuple2D vector)
         {
             return Math.Sqrt(
                 vector.X * vector.X +
@@ -479,7 +502,7 @@ namespace NumericalGeometryLib.BasicMath
         /// <summary>
         /// The Euclidean squared length of this tuple when it represents a vector
         /// </summary>
-        public static double GetLengthSquared(this ITuple2D vector)
+        public static double GetVectorNormSquared(this IFloat64Tuple2D vector)
         {
             return vector.X * vector.X +
                    vector.Y * vector.Y;
@@ -491,13 +514,13 @@ namespace NumericalGeometryLib.BasicMath
                    vectorY * vectorY;
         }
 
-        public static double GetLengthSquared(this IComplexTuple2D vector)
+        public static double GetVectorNormSquared(this IComplexTuple2D vector)
         {
             return (vector.X * vector.X.Conjugate()).Real +
                    (vector.Y * vector.Y.Conjugate()).Real;
         }
 
-        public static double GetLengthSquared(this IComplexTuple3D vector)
+        public static double GetVectorNormSquared(this IComplexTuple3D vector)
         {
             return (vector.X * vector.X.Conjugate()).Real +
                    (vector.Y * vector.Y.Conjugate()).Real +
@@ -508,7 +531,7 @@ namespace NumericalGeometryLib.BasicMath
         /// The Euclidean squared length of this tuple when it represents a vector
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double GetLength(this ITuple3D vector)
+        public static double GetVectorNorm(this IFloat64Tuple3D vector)
         {
             return Math.Sqrt(
                 vector.X * vector.X +
@@ -521,7 +544,7 @@ namespace NumericalGeometryLib.BasicMath
         /// The Euclidean squared length of this tuple when it represents a vector
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple<Tuple3D, double> GetUnitVectorLengthTuple(this ITuple3D vector)
+        public static Tuple<Float64Tuple3D, double> GetUnitVectorNormTuple(this IFloat64Tuple3D vector)
         {
             var length = Math.Sqrt(
                 vector.X * vector.X +
@@ -530,23 +553,23 @@ namespace NumericalGeometryLib.BasicMath
             );
 
             if (length == 0d)
-                return new Tuple<Tuple3D, double>(vector.ToTuple3D(), length);
+                return new Tuple<Float64Tuple3D, double>(vector.ToTuple3D(), length);
 
             var s = 1d / length;
-            var unitVector = new Tuple3D(
+            var unitVector = new Float64Tuple3D(
                 vector.X * s,
                 vector.Y * s,
                 vector.Z * s
             );
 
-            return new Tuple<Tuple3D, double>(unitVector, length);
+            return new Tuple<Float64Tuple3D, double>(unitVector, length);
         }
 
         /// <summary>
         /// The Euclidean squared length of this tuple when it represents a vector
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double GetLengthSquared(this ITuple3D vector)
+        public static double GetVectorNormSquared(this IFloat64Tuple3D vector)
         {
             return vector.X * vector.X +
                    vector.Y * vector.Y +
@@ -554,7 +577,7 @@ namespace NumericalGeometryLib.BasicMath
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double GetLength(double vectorX, double vectorY, double vectorZ)
+        public static double GetVectorNorm(double vectorX, double vectorY, double vectorZ)
         {
             return Math.Sqrt(
                 vectorX * vectorX +
@@ -564,7 +587,7 @@ namespace NumericalGeometryLib.BasicMath
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double GetLengthSquared(double vectorX, double vectorY, double vectorZ)
+        public static double GetVectorNormSquared(double vectorX, double vectorY, double vectorZ)
         {
             return vectorX * vectorX +
                    vectorY * vectorY +
@@ -575,7 +598,7 @@ namespace NumericalGeometryLib.BasicMath
         /// The Euclidean squared length of this tuple when it represents a vector
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double GetLength(this ITuple4D vector)
+        public static double GetVectorNorm(this IFloat64Tuple4D vector)
         {
             return Math.Sqrt(
                 vector.X * vector.X +
@@ -589,7 +612,7 @@ namespace NumericalGeometryLib.BasicMath
         /// The Euclidean squared length of this tuple when it represents a vector
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double GetLengthSquared(this ITuple4D vector)
+        public static double GetVectorNormSquared(this IFloat64Tuple4D vector)
         {
             return vector.X * vector.X +
                    vector.Y * vector.Y +
@@ -598,7 +621,7 @@ namespace NumericalGeometryLib.BasicMath
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double GetLength(double vectorX, double vectorY, double vectorZ, double vectorW)
+        public static double GetVectorNorm(double vectorX, double vectorY, double vectorZ, double vectorW)
         {
             return Math.Sqrt(
                 vectorX * vectorX +
@@ -609,7 +632,7 @@ namespace NumericalGeometryLib.BasicMath
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double GetLengthSquared(double vectorX, double vectorY, double vectorZ, double vectorW)
+        public static double GetVectorNormSquared(double vectorX, double vectorY, double vectorZ, double vectorW)
         {
             return vectorX * vectorX +
                    vectorY * vectorY +
@@ -621,10 +644,10 @@ namespace NumericalGeometryLib.BasicMath
         /// True of the Euclidean squared length of this vector is near unity
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsUnitVector(this ITuple2D vector)
+        public static bool IsUnitVector(this IFloat64Tuple2D vector)
         {
             return vector
-                .GetLengthSquared()
+                .GetVectorNormSquared()
                 .IsAlmostEqual(1.0d);
         }
 
@@ -632,10 +655,10 @@ namespace NumericalGeometryLib.BasicMath
         /// True of the Euclidean squared length of this vector is near unity
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsUnitVector(this ITuple3D vector)
+        public static bool IsUnitVector(this IFloat64Tuple3D vector)
         {
             return vector
-                .GetLengthSquared()
+                .GetVectorNormSquared()
                 .IsAlmostEqual(1.0d);
         }
         
@@ -643,10 +666,10 @@ namespace NumericalGeometryLib.BasicMath
         /// True of the Euclidean squared length of this vector is near unity
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsNearUnitVector(this ITuple3D vector)
+        public static bool IsNearUnitVector(this IFloat64Tuple3D vector)
         {
             return vector
-                .GetLengthSquared()
+                .GetVectorNormSquared()
                 .IsNearEqual(1.0d);
         }
 
@@ -654,10 +677,10 @@ namespace NumericalGeometryLib.BasicMath
         /// True of the Euclidean squared length of this vector is near unity
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsUnitVector(this ITuple4D vector)
+        public static bool IsUnitVector(this IFloat64Tuple4D vector)
         {
             return vector
-                .GetLengthSquared()
+                .GetVectorNormSquared()
                 .IsAlmostEqual(1.0d);
         }
 
@@ -665,10 +688,10 @@ namespace NumericalGeometryLib.BasicMath
         /// True of the Euclidean squared length of this vector is near zero
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsZeroVector(this ITuple2D vector)
+        public static bool IsZeroVector(this IFloat64Tuple2D vector)
         {
             return vector
-                .GetLengthSquared()
+                .GetVectorNormSquared()
                 .IsAlmostZero();
         }
 
@@ -676,19 +699,19 @@ namespace NumericalGeometryLib.BasicMath
         /// True of the Euclidean squared length of this vector is near zero
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsExactZeroVector(this ITuple3D vector)
+        public static bool IsExactZeroVector(this IFloat64Tuple3D vector)
         {
-            return vector.GetLengthSquared().IsExactZero();
+            return vector.GetVectorNormSquared().IsExactZero();
         }
 
         /// <summary>
         /// True of the Euclidean squared length of this vector is near zero
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsAlmostZeroVector(this ITuple3D vector)
+        public static bool IsAlmostZeroVector(this IFloat64Tuple3D vector)
         {
             return vector
-                .GetLengthSquared()
+                .GetVectorNormSquared()
                 .IsAlmostZero();
         }
 
@@ -696,15 +719,15 @@ namespace NumericalGeometryLib.BasicMath
         /// True of the Euclidean squared length of this vector is near zero
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsAlmostZeroVector(this ITuple4D vector)
+        public static bool IsAlmostZeroVector(this IFloat64Tuple4D vector)
         {
             return vector
-                .GetLengthSquared()
+                .GetVectorNormSquared()
                 .IsAlmostZero();
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsAlmostVector(this ITuple3D vector1, ITuple3D vector2)
+        public static bool IsAlmostVector(this IFloat64Tuple3D vector1, IFloat64Tuple3D vector2)
         {
             return vector1.X.IsAlmostEqual(vector2.X) &&
                    vector1.Y.IsAlmostEqual(vector2.Y) &&
@@ -712,7 +735,7 @@ namespace NumericalGeometryLib.BasicMath
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsNearVector(this ITuple3D vector1, ITuple3D vector2)
+        public static bool IsNearVector(this IFloat64Tuple3D vector1, IFloat64Tuple3D vector2)
         {
             return vector1.X.IsNearEqual(vector2.X) &&
                    vector1.Y.IsNearEqual(vector2.Y) &&
@@ -720,7 +743,7 @@ namespace NumericalGeometryLib.BasicMath
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsAlmostVectorNegative(this ITuple3D vector1, ITuple3D vector2)
+        public static bool IsAlmostVectorNegative(this IFloat64Tuple3D vector1, IFloat64Tuple3D vector2)
         {
             return vector1.X.IsAlmostEqual(-vector2.X) &&
                    vector1.Y.IsAlmostEqual(-vector2.Y) &&
@@ -728,7 +751,7 @@ namespace NumericalGeometryLib.BasicMath
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsNearVectorNegative(this ITuple3D vector1, ITuple3D vector2)
+        public static bool IsNearVectorNegative(this IFloat64Tuple3D vector1, IFloat64Tuple3D vector2)
         {
             return vector1.X.IsNearEqual(-vector2.X) &&
                    vector1.Y.IsNearEqual(-vector2.Y) &&
@@ -737,13 +760,13 @@ namespace NumericalGeometryLib.BasicMath
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double Determinant(ITuple2D v1, ITuple2D v2)
+        public static double Determinant(IFloat64Tuple2D v1, IFloat64Tuple2D v2)
         {
             return v1.X * v2.Y - v1.Y * v2.X;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double Determinant(ITuple3D v1, ITuple3D v2, ITuple3D v3)
+        public static double Determinant(IFloat64Tuple3D v1, IFloat64Tuple3D v2, IFloat64Tuple3D v3)
         {
             return v1.X * (v2.Y * v3.Z - v2.Z * v3.Y) +
                    v1.Y * (v2.Z * v3.X - v2.X * v3.Z) +
@@ -758,7 +781,7 @@ namespace NumericalGeometryLib.BasicMath
         /// <param name="v2"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double VectorDot(this ITuple2D v1, ITuple2D v2)
+        public static double VectorDot(this IFloat64Tuple2D v1, IFloat64Tuple2D v2)
         {
             return v1.X * v2.X + v1.Y * v2.Y;
         }
@@ -782,7 +805,7 @@ namespace NumericalGeometryLib.BasicMath
         /// <param name="v2"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double VectorDot(this Axis3D v1, ITuple3D v2)
+        public static double VectorDot(this Axis3D v1, IFloat64Tuple3D v2)
         {
             return v1 switch
             {
@@ -802,7 +825,7 @@ namespace NumericalGeometryLib.BasicMath
         /// <param name="v2"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double VectorDot(this ITuple3D v1, Axis3D v2)
+        public static double VectorDot(this IFloat64Tuple3D v1, Axis3D v2)
         {
             return v2 switch
             {
@@ -822,7 +845,7 @@ namespace NumericalGeometryLib.BasicMath
         /// <param name="v2"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double VectorDot(this ITuple3D v1, ITuple3D v2)
+        public static double VectorDot(this IFloat64Tuple3D v1, IFloat64Tuple3D v2)
         {
             return v1.X * v2.X + v1.Y * v2.Y + v1.Z * v2.Z;
         }
@@ -846,7 +869,7 @@ namespace NumericalGeometryLib.BasicMath
         /// <param name="v2"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double VectorDot(this ITuple4D v1, ITuple4D v2)
+        public static double VectorDot(this IFloat64Tuple4D v1, IFloat64Tuple4D v2)
         {
             return v1.X * v2.X + v1.Y * v2.Y + v1.Z * v2.Z + v1.W * v2.W;
         }
@@ -867,7 +890,7 @@ namespace NumericalGeometryLib.BasicMath
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Complex VectorDot(this IComplexTuple3D v1, ITuple3D v2)
+        public static Complex VectorDot(this IComplexTuple3D v1, IFloat64Tuple3D v2)
         {
             return v1.X * v2.X +
                    v1.Y * v2.Y +
@@ -882,7 +905,7 @@ namespace NumericalGeometryLib.BasicMath
         /// <param name="v2"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double VectorAbsDot(this ITuple2D v1, ITuple2D v2)
+        public static double VectorAbsDot(this IFloat64Tuple2D v1, IFloat64Tuple2D v2)
         {
             return Math.Abs(v1.X * v2.X + v1.Y * v2.Y);
         }
@@ -906,7 +929,7 @@ namespace NumericalGeometryLib.BasicMath
         /// <param name="v2"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double VectorAbsDot(this Tuple3D v1, Tuple3D v2)
+        public static double VectorAbsDot(this Float64Tuple3D v1, Float64Tuple3D v2)
         {
             return Math.Abs(v1.X * v2.X + v1.Y * v2.Y + v1.Z * v2.Z);
         }
@@ -930,13 +953,13 @@ namespace NumericalGeometryLib.BasicMath
         /// <param name="v2"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double VectorAbsDot(this Tuple4D v1, Tuple4D v2)
+        public static double VectorAbsDot(this Float64Tuple4D v1, Float64Tuple4D v2)
         {
             return Math.Abs(v1.X * v2.X + v1.Y * v2.Y + v1.Z * v2.Z + v1.W * v2.W);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple2D AnalyzeOnVectors(this ITuple2D v, ITuple2D u1, ITuple2D u2)
+        public static Float64Tuple2D AnalyzeOnVectors(this IFloat64Tuple2D v, IFloat64Tuple2D u1, IFloat64Tuple2D u2)
         {
             var s1 = (v.X * u1.X + v.Y * u1.Y) /
                      Math.Sqrt(u1.X * u1.X + u1.Y * u1.Y);
@@ -944,35 +967,35 @@ namespace NumericalGeometryLib.BasicMath
             var s2 = (v.X * u2.X + v.Y * u2.Y) /
                     Math.Sqrt(u2.X * u2.X + u2.Y * u2.Y);
 
-            return new Tuple2D(s1, s2);
+            return new Float64Tuple2D(s1, s2);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple2D ProjectOnVector(this ITuple2D v, ITuple2D u)
+        public static Float64Tuple2D ProjectOnVector(this IFloat64Tuple2D v, IFloat64Tuple2D u)
         {
             var s1 = v.X * u.X + v.Y * u.Y;
             var s2 = u.X * u.X + u.Y * u.Y;
             var s = s1 / s2;
 
-            return new Tuple2D(u.X * s, u.Y * s);
+            return new Float64Tuple2D(u.X * s, u.Y * s);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple2D ProjectOnUnitVector(this ITuple2D v, ITuple2D u)
+        public static Float64Tuple2D ProjectOnUnitVector(this IFloat64Tuple2D v, IFloat64Tuple2D u)
         {
             var s = v.X * u.X + v.Y * u.Y;
 
-            return new Tuple2D(u.X * s, u.Y * s);
+            return new Float64Tuple2D(u.X * s, u.Y * s);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D ProjectOnVector(this ITuple3D v, ITuple3D u)
+        public static Float64Tuple3D ProjectOnVector(this IFloat64Tuple3D v, IFloat64Tuple3D u)
         {
             var s1 = v.X * u.X + v.Y * u.Y + v.Z * u.Z;
             var s2 = u.X * u.X + u.Y * u.Y + u.Z * u.Z;
             var s = s1 / s2;
 
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 u.X * s,
                 u.Y * s,
                 u.Z * s
@@ -980,13 +1003,13 @@ namespace NumericalGeometryLib.BasicMath
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D RejectOnVector(this ITuple3D v, ITuple3D u)
+        public static Float64Tuple3D RejectOnVector(this IFloat64Tuple3D v, IFloat64Tuple3D u)
         {
             var s1 = v.X * u.X + v.Y * u.Y + v.Z * u.Z;
             var s2 = u.X * u.X + u.Y * u.Y + u.Z * u.Z;
             var s = s1 / s2;
 
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 v.X - u.X * s,
                 v.Y - u.Y * s,
                 v.Z - u.Z * s
@@ -994,11 +1017,11 @@ namespace NumericalGeometryLib.BasicMath
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D ProjectOnUnitVector(this ITuple3D v, ITuple3D u)
+        public static Float64Tuple3D ProjectOnUnitVector(this IFloat64Tuple3D v, IFloat64Tuple3D u)
         {
             var s = v.X * u.X + v.Y * u.Y + v.Z * u.Z;
 
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 u.X * s,
                 u.Y * s,
                 u.Z * s
@@ -1006,11 +1029,11 @@ namespace NumericalGeometryLib.BasicMath
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D RejectOnUnitVector(this ITuple3D v, ITuple3D u)
+        public static Float64Tuple3D RejectOnUnitVector(this IFloat64Tuple3D v, IFloat64Tuple3D u)
         {
             var s = v.X * u.X + v.Y * u.Y + v.Z * u.Z;
 
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 v.X - u.X * s,
                 v.Y - u.Y * s,
                 v.Z - u.Z * s
@@ -1018,13 +1041,13 @@ namespace NumericalGeometryLib.BasicMath
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple4D ProjectOnVector(this ITuple4D v, ITuple4D u)
+        public static Float64Tuple4D ProjectOnVector(this IFloat64Tuple4D v, IFloat64Tuple4D u)
         {
             var s1 = v.X * u.X + v.Y * u.Y + v.Z * u.Z + v.W * u.W;
             var s2 = u.X * u.X + u.Y * u.Y + u.Z * u.Z + u.W * u.W;
             var s = s1 / s2;
 
-            return new Tuple4D(
+            return new Float64Tuple4D(
                 u.X * s,
                 u.Y * s,
                 u.Z * s,
@@ -1033,11 +1056,11 @@ namespace NumericalGeometryLib.BasicMath
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple4D ProjectOnUnitVector(this ITuple4D v, ITuple4D u)
+        public static Float64Tuple4D ProjectOnUnitVector(this IFloat64Tuple4D v, IFloat64Tuple4D u)
         {
             var s = v.X * u.X + v.Y * u.Y + v.Z * u.Z + v.W * u.W;
 
-            return new Tuple4D(
+            return new Float64Tuple4D(
                 u.X * s,
                 u.Y * s,
                 u.Z * s,
@@ -1054,14 +1077,14 @@ namespace NumericalGeometryLib.BasicMath
         /// <param name="directionVector"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple2D FaceDirection(this ITuple2D vector, ITuple2D directionVector)
+        public static Float64Tuple2D FaceDirection(this IFloat64Tuple2D vector, IFloat64Tuple2D directionVector)
         {
             Debug.Assert(!directionVector.IsZeroVector());
 
             return
                 (vector.X * directionVector.X + vector.Y * directionVector.Y).IsDefiniteNegative()
-                    ? new Tuple2D(-vector.X, -vector.Y)
-                    : new Tuple2D(vector.X, vector.Y);
+                    ? new Float64Tuple2D(-vector.X, -vector.Y)
+                    : new Float64Tuple2D(vector.X, vector.Y);
         }
 
         /// <summary>
@@ -1072,14 +1095,14 @@ namespace NumericalGeometryLib.BasicMath
         /// <param name="directionVector"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D FaceDirection(this ITuple3D vector, ITuple3D directionVector)
+        public static Float64Tuple3D FaceDirection(this IFloat64Tuple3D vector, IFloat64Tuple3D directionVector)
         {
             Debug.Assert(!directionVector.IsAlmostZeroVector());
 
             return
                 (vector.X * directionVector.X + vector.Y * directionVector.Y + vector.Z * directionVector.Z).IsDefiniteNegative()
-                    ? new Tuple3D(-vector.X, -vector.Y, -vector.Z)
-                    : new Tuple3D(vector.X, vector.Y, vector.Z);
+                    ? new Float64Tuple3D(-vector.X, -vector.Y, -vector.Z)
+                    : new Float64Tuple3D(vector.X, vector.Y, vector.Z);
         }
 
 
@@ -1088,13 +1111,13 @@ namespace NumericalGeometryLib.BasicMath
         /// </summary>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple2D GetNormal(this ITuple2D vector)
+        public static Float64Tuple2D GetNormal(this IFloat64Tuple2D vector)
         {
-            return new Tuple2D(-vector.Y, vector.X);
+            return new Float64Tuple2D(-vector.Y, vector.X);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple2D GetUnitNormal(this ITuple2D vector)
+        public static Float64Tuple2D GetUnitNormal(this IFloat64Tuple2D vector)
         {
             return vector.GetNormal().ToUnitVector();
         }
@@ -1128,34 +1151,34 @@ namespace NumericalGeometryLib.BasicMath
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D GetNormal(this ITuple3D vector)
+        public static Float64Tuple3D GetNormal(this IFloat64Tuple3D vector)
         {
             var x = vector.X;
             var y = vector.Y;
             var z = vector.Z;
 
             if (x == 0)
-                return new Tuple3D(0, -z, y);
+                return new Float64Tuple3D(0, -z, y);
 
             if (y == 0)
-                return new Tuple3D(-z, 0, x);
+                return new Float64Tuple3D(-z, 0, x);
 
             if (z == 0)
-                return new Tuple3D(-y, x, 0);
+                return new Float64Tuple3D(-y, x, 0);
 
             var minComponentIndex = 
                 vector.GetMinAbsComponentIndex();
 
             return minComponentIndex switch
             {
-                0 => new Tuple3D(-(y + z), x, x),
-                1 => new Tuple3D(y, -(x + z), y),
-                _ => new Tuple3D(z, z, -(x + y))
+                0 => new Float64Tuple3D(-(y + z), x, x),
+                1 => new Float64Tuple3D(y, -(x + z), y),
+                _ => new Float64Tuple3D(z, z, -(x + y))
             };
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D GetUnitNormal(this ITuple3D vector)
+        public static Float64Tuple3D GetUnitNormal(this IFloat64Tuple3D vector)
         {
             return vector.GetNormal().ToUnitVector();
         }
@@ -1171,13 +1194,13 @@ namespace NumericalGeometryLib.BasicMath
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsNearParallelTo(this ITuple2D v1, ITuple2D v2, double epsilon = 1e-12d)
+        public static bool IsNearParallelTo(this IFloat64Tuple2D v1, IFloat64Tuple2D v2, double epsilon = 1e-12d)
         {
             return (v1.X * v2.Y - v1.Y * v2.X).IsNearZero(epsilon);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsNearNormalTo(this ITuple2D v1, ITuple2D v2, double epsilon = 1e-12d)
+        public static bool IsNearNormalTo(this IFloat64Tuple2D v1, IFloat64Tuple2D v2, double epsilon = 1e-12d)
         {
             return (v1.X * v2.X + v1.Y * v2.Y).IsNearZero(epsilon);
         }
@@ -1190,16 +1213,16 @@ namespace NumericalGeometryLib.BasicMath
         /// <param name="v2"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D VectorCross(this Axis3D v1, ITuple3D v2)
+        public static Float64Tuple3D VectorCross(this Axis3D v1, IFloat64Tuple3D v2)
         {
             return v1 switch
             {
-                Axis3D.PositiveX => new Tuple3D(0, -v2.Z, v2.Y),
-                Axis3D.PositiveY => new Tuple3D(v2.Z, 0, -v2.X),
-                Axis3D.PositiveZ => new Tuple3D(-v2.Y, v2.X, 0),
-                Axis3D.NegativeX => new Tuple3D(0, v2.Z, -v2.Y),
-                Axis3D.NegativeY => new Tuple3D(-v2.Z, 0, v2.X),
-                _ => new Tuple3D(v2.Y, -v2.X, 0)
+                Axis3D.PositiveX => new Float64Tuple3D(0, -v2.Z, v2.Y),
+                Axis3D.PositiveY => new Float64Tuple3D(v2.Z, 0, -v2.X),
+                Axis3D.PositiveZ => new Float64Tuple3D(-v2.Y, v2.X, 0),
+                Axis3D.NegativeX => new Float64Tuple3D(0, v2.Z, -v2.Y),
+                Axis3D.NegativeY => new Float64Tuple3D(-v2.Z, 0, v2.X),
+                _ => new Float64Tuple3D(v2.Y, -v2.X, 0)
             };
         }
 
@@ -1210,9 +1233,9 @@ namespace NumericalGeometryLib.BasicMath
         /// <param name="v2"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D VectorCross(this ITuple3D v1, ITuple3D v2)
+        public static Float64Tuple3D VectorCross(this IFloat64Tuple3D v1, IFloat64Tuple3D v2)
         {
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 v1.Y * v2.Z - v1.Z * v2.Y,
                 v1.Z * v2.X - v1.X * v2.Z,
                 v1.X * v2.Y - v1.Y * v2.X
@@ -1220,7 +1243,7 @@ namespace NumericalGeometryLib.BasicMath
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double VectorCrossLength(this ITuple3D v1, ITuple3D v2)
+        public static double GetVectorCrossNorm(this IFloat64Tuple3D v1, IFloat64Tuple3D v2)
         {
             var x = v1.Y * v2.Z - v1.Z * v2.Y;
             var y = v1.Z * v2.X - v1.X * v2.Z;
@@ -1230,7 +1253,7 @@ namespace NumericalGeometryLib.BasicMath
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double VectorCrossLengthSquared(this ITuple3D v1, ITuple3D v2)
+        public static double GetVectorCrossNormSquared(this IFloat64Tuple3D v1, IFloat64Tuple3D v2)
         {
             var x = v1.Y * v2.Z - v1.Z * v2.Y;
             var y = v1.Z * v2.X - v1.X * v2.Z;
@@ -1240,7 +1263,7 @@ namespace NumericalGeometryLib.BasicMath
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsNearParallelTo(this ITuple3D v1, ITuple3D v2, double epsilon = 1e-12d)
+        public static bool IsNearParallelTo(this IFloat64Tuple3D v1, IFloat64Tuple3D v2, double epsilon = 1e-12d)
         {
             var x = v1.Y * v2.Z - v1.Z * v2.Y;
             var y = v1.Z * v2.X - v1.X * v2.Z;
@@ -1275,11 +1298,11 @@ namespace NumericalGeometryLib.BasicMath
         /// <param name="v2"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D VectorUnitCrossXy(this ITuple2D v1, ITuple2D v2)
+        public static Float64Tuple3D VectorUnitCrossXy(this IFloat64Tuple2D v1, IFloat64Tuple2D v2)
         {
             var vz = v1.X * v2.Y - v1.Y * v2.X;
 
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 0,
                 0,
                 vz < 0 ? -1 : (vz > 0 ? 1 : 0)
@@ -1294,14 +1317,14 @@ namespace NumericalGeometryLib.BasicMath
         /// <param name="v2Z"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D VectorUnitCrossXy_Z(this ITuple2D v1, double v2Z)
+        public static Float64Tuple3D VectorUnitCrossXy_Z(this IFloat64Tuple2D v1, double v2Z)
         {
             var vx = v1.Y * v2Z;
             var vy = -v1.X * v2Z;
 
             var s = 1.0d / Math.Sqrt(vx * vx + vy * vy);
 
-            return new Tuple3D(vx * s, vy * s, 0);
+            return new Float64Tuple3D(vx * s, vy * s, 0);
         }
 
         /// <summary>
@@ -1311,7 +1334,7 @@ namespace NumericalGeometryLib.BasicMath
         /// <param name="v2"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D VectorUnitCross(this Axis3D v1, ITuple3D v2)
+        public static Float64Tuple3D VectorUnitCross(this Axis3D v1, IFloat64Tuple3D v2)
         {
             return v1.VectorCross(v2).ToUnitVector();
         }
@@ -1323,7 +1346,7 @@ namespace NumericalGeometryLib.BasicMath
         /// <param name="v2"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D VectorUnitCross(this ITuple3D v1, ITuple3D v2)
+        public static Float64Tuple3D VectorUnitCross(this IFloat64Tuple3D v1, IFloat64Tuple3D v2)
         {
             var vx = v1.Y * v2.Z - v1.Z * v2.Y;
             var vy = v1.Z * v2.X - v1.X * v2.Z;
@@ -1332,8 +1355,8 @@ namespace NumericalGeometryLib.BasicMath
             var s = 1.0d / Math.Sqrt(vx * vx + vy * vy + vz * vz);
 
             return double.IsInfinity(s)
-                ? Tuple3D.Zero 
-                : new Tuple3D(vx * s, vy * s, vz * s);
+                ? Float64Tuple3D.Zero 
+                : new Float64Tuple3D(vx * s, vy * s, vz * s);
         }
 
         /// <summary>
@@ -1345,7 +1368,7 @@ namespace NumericalGeometryLib.BasicMath
         /// <param name="v2Z"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D VectorUnitCross(this ITuple3D v1, double v2X, double v2Y, double v2Z)
+        public static Float64Tuple3D VectorUnitCross(this IFloat64Tuple3D v1, double v2X, double v2Y, double v2Z)
         {
             var vx = v1.Y * v2Z - v1.Z * v2Y;
             var vy = v1.Z * v2X - v1.X * v2Z;
@@ -1353,7 +1376,7 @@ namespace NumericalGeometryLib.BasicMath
 
             var s = 1.0d / Math.Sqrt(vx * vx + vy * vy + vz * vz);
 
-            return new Tuple3D(vx * s, vy * s, vz * s);
+            return new Float64Tuple3D(vx * s, vy * s, vz * s);
         }
 
         /// <summary>
@@ -1365,7 +1388,7 @@ namespace NumericalGeometryLib.BasicMath
         /// <param name="v2Y"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D VectorUnitCrossXy(this ITuple3D v1, double v2X, double v2Y)
+        public static Float64Tuple3D VectorUnitCrossXy(this IFloat64Tuple3D v1, double v2X, double v2Y)
         {
             var vx = -v1.Z * v2Y;
             var vy = v1.Z * v2X;
@@ -1373,7 +1396,7 @@ namespace NumericalGeometryLib.BasicMath
 
             var s = 1.0d / Math.Sqrt(vx * vx + vy * vy + vz * vz);
 
-            return new Tuple3D(vx * s, vy * s, vz * s);
+            return new Float64Tuple3D(vx * s, vy * s, vz * s);
         }
 
         /// <summary>
@@ -1384,7 +1407,7 @@ namespace NumericalGeometryLib.BasicMath
         /// <param name="v2"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D VectorUnitCrossXy(this ITuple3D v1, ITuple2D v2)
+        public static Float64Tuple3D VectorUnitCrossXy(this IFloat64Tuple3D v1, IFloat64Tuple2D v2)
         {
             var vx = -v1.Z * v2.Y;
             var vy = v1.Z * v2.X;
@@ -1392,7 +1415,7 @@ namespace NumericalGeometryLib.BasicMath
 
             var s = 1.0d / Math.Sqrt(vx * vx + vy * vy + vz * vz);
 
-            return new Tuple3D(vx * s, vy * s, vz * s);
+            return new Float64Tuple3D(vx * s, vy * s, vz * s);
         }
 
 
@@ -1403,25 +1426,25 @@ namespace NumericalGeometryLib.BasicMath
         /// <param name="vector"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple2D ToUnitVector(this ITuple2D vector)
+        public static Float64Tuple2D ToUnitVector(this IFloat64Tuple2D vector)
         {
-            var s = vector.GetLength();
+            var s = vector.GetVectorNorm();
             if (s.IsAlmostZero())
                 return vector.ToTuple2D();
 
             s = 1.0d / s;
-            return new Tuple2D(vector.X * s, vector.Y * s);
+            return new Float64Tuple2D(vector.X * s, vector.Y * s);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple2D ToUnitVector(double vectorX, double vectorY)
+        public static Float64Tuple2D ToUnitVector(double vectorX, double vectorY)
         {
             var s = GetLength(vectorX, vectorY);
             if (s.IsAlmostZero())
-                return new Tuple2D(vectorX, vectorY);
+                return new Float64Tuple2D(vectorX, vectorY);
 
             s = 1.0d / s;
-            return new Tuple2D(vectorX * s, vectorY * s);
+            return new Float64Tuple2D(vectorX * s, vectorY * s);
         }
 
         /// <summary>
@@ -1431,25 +1454,25 @@ namespace NumericalGeometryLib.BasicMath
         /// <param name="vector"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D ToUnitVector(this ITuple3D vector)
+        public static Float64Tuple3D ToUnitVector(this IFloat64Tuple3D vector)
         {
-            var s = vector.GetLength();
+            var s = vector.GetVectorNorm();
             if (s.IsAlmostZero())
-                return Tuple3D.Zero;
+                return Float64Tuple3D.Zero;
 
             s = 1.0d / s;
-            return new Tuple3D(vector.X * s, vector.Y * s, vector.Z * s);
+            return new Float64Tuple3D(vector.X * s, vector.Y * s, vector.Z * s);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D ToUnitVector(double vectorX, double vectorY, double vectorZ)
+        public static Float64Tuple3D ToUnitVector(double vectorX, double vectorY, double vectorZ)
         {
-            var s = GetLength(vectorX, vectorY, vectorZ);
+            var s = GetVectorNorm(vectorX, vectorY, vectorZ);
             if (s.IsAlmostZero())
-                return new Tuple3D(vectorX, vectorY, vectorZ);
+                return new Float64Tuple3D(vectorX, vectorY, vectorZ);
 
             s = 1.0d / s;
-            return new Tuple3D(vectorX * s, vectorY * s, vectorZ * s);
+            return new Float64Tuple3D(vectorX * s, vectorY * s, vectorZ * s);
         }
 
         /// <summary>
@@ -1459,14 +1482,14 @@ namespace NumericalGeometryLib.BasicMath
         /// <param name="vector"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple4D ToUnitVector(this ITuple4D vector)
+        public static Float64Tuple4D ToUnitVector(this IFloat64Tuple4D vector)
         {
-            var s = vector.GetLength();
+            var s = vector.GetVectorNorm();
             if (s.IsAlmostZero())
                 return vector.ToTuple4D();
 
             s = 1.0d / s;
-            return new Tuple4D(vector.X * s, vector.Y * s, vector.Z * s, vector.W * s);
+            return new Float64Tuple4D(vector.X * s, vector.Y * s, vector.Z * s, vector.W * s);
         }
 
         /// <summary>
@@ -1476,9 +1499,9 @@ namespace NumericalGeometryLib.BasicMath
         /// <param name="vector"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple2D ToNegativeVector(this ITuple2D vector)
+        public static Float64Tuple2D ToNegativeVector(this IFloat64Tuple2D vector)
         {
-            return new Tuple2D(-vector.X, -vector.Y);
+            return new Float64Tuple2D(-vector.X, -vector.Y);
         }
 
         /// <summary>
@@ -1488,14 +1511,14 @@ namespace NumericalGeometryLib.BasicMath
         /// <param name="vector"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple2D ToNegativeUnitVector(this ITuple2D vector)
+        public static Float64Tuple2D ToNegativeUnitVector(this IFloat64Tuple2D vector)
         {
-            var s = vector.GetLength();
+            var s = vector.GetVectorNorm();
             if (s.IsAlmostZero())
                 return vector.ToTuple2D();
 
             s = -1.0d / s;
-            return new Tuple2D(vector.X * s, vector.Y * s);
+            return new Float64Tuple2D(vector.X * s, vector.Y * s);
         }
 
         /// <summary>
@@ -1505,9 +1528,9 @@ namespace NumericalGeometryLib.BasicMath
         /// <param name="vector"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D ToNegativeVector(this ITuple3D vector)
+        public static Float64Tuple3D ToNegativeVector(this IFloat64Tuple3D vector)
         {
-            return new Tuple3D(-vector.X, -vector.Y, -vector.Z);
+            return new Float64Tuple3D(-vector.X, -vector.Y, -vector.Z);
         }
 
         /// <summary>
@@ -1517,14 +1540,14 @@ namespace NumericalGeometryLib.BasicMath
         /// <param name="vector"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D ToNegativeUnitVector(this ITuple3D vector)
+        public static Float64Tuple3D ToNegativeUnitVector(this IFloat64Tuple3D vector)
         {
-            var s = vector.GetLength();
+            var s = vector.GetVectorNorm();
             if (s.IsAlmostZero())
                 return vector.ToTuple3D();
 
             s = 1.0d / s;
-            return new Tuple3D(vector.X * s, vector.Y * s, vector.Z * s);
+            return new Float64Tuple3D(vector.X * s, vector.Y * s, vector.Z * s);
         }
 
         /// <summary>
@@ -1534,9 +1557,9 @@ namespace NumericalGeometryLib.BasicMath
         /// <param name="vector"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple4D ToNegativeVector(this ITuple4D vector)
+        public static Float64Tuple4D ToNegativeVector(this IFloat64Tuple4D vector)
         {
-            return new Tuple4D(-vector.X, -vector.Y, -vector.Z, -vector.W);
+            return new Float64Tuple4D(-vector.X, -vector.Y, -vector.Z, -vector.W);
         }
 
         /// <summary>
@@ -1546,18 +1569,18 @@ namespace NumericalGeometryLib.BasicMath
         /// <param name="vector"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple4D ToNegativeUnitVector(this ITuple4D vector)
+        public static Float64Tuple4D ToNegativeUnitVector(this IFloat64Tuple4D vector)
         {
-            var s = vector.GetLength();
+            var s = vector.GetVectorNorm();
             if (s.IsAlmostZero())
                 return vector.ToTuple4D();
 
             s = 1.0d / s;
-            return new Tuple4D(vector.X * s, vector.Y * s, vector.Z * s, vector.W * s);
+            return new Float64Tuple4D(vector.X * s, vector.Y * s, vector.Z * s, vector.W * s);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple<double, Tuple2D> ToLengthAndUnitDirection(this ITuple2D vector)
+        public static Tuple<double, Float64Tuple2D> ToLengthAndUnitDirection(this IFloat64Tuple2D vector)
         {
             var length = Math.Sqrt(
                 vector.X * vector.X +
@@ -1568,7 +1591,7 @@ namespace NumericalGeometryLib.BasicMath
 
             return Tuple.Create(
                 length,
-                new Tuple2D(
+                new Float64Tuple2D(
                     vector.X * lengthInv,
                     vector.Y * lengthInv
                 )
@@ -1576,7 +1599,7 @@ namespace NumericalGeometryLib.BasicMath
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple<double, Tuple3D> ToLengthAndUnitDirection(this ITuple3D vector)
+        public static Tuple<double, Float64Tuple3D> ToLengthAndUnitDirection(this IFloat64Tuple3D vector)
         {
             var length = Math.Sqrt(
                 vector.X * vector.X +
@@ -1588,7 +1611,7 @@ namespace NumericalGeometryLib.BasicMath
 
             return Tuple.Create(
                 length,
-                new Tuple3D(
+                new Float64Tuple3D(
                     vector.X * lengthInv,
                     vector.Y * lengthInv,
                     vector.Z * lengthInv
@@ -1597,14 +1620,14 @@ namespace NumericalGeometryLib.BasicMath
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D SetLength(this ITuple3D vector, double newLength)
+        public static Float64Tuple3D SetLength(this IFloat64Tuple3D vector, double newLength)
         {
-            var s = vector.GetLength();
+            var s = vector.GetVectorNorm();
             if (s.IsAlmostZero())
-                return Tuple3D.Zero;
+                return Float64Tuple3D.Zero;
 
             s = newLength / s;
-            return new Tuple3D(vector.X * s, vector.Y * s, vector.Z * s);
+            return new Float64Tuple3D(vector.X * s, vector.Y * s, vector.Z * s);
         }
 
 
@@ -1615,7 +1638,7 @@ namespace NumericalGeometryLib.BasicMath
         /// <param name="v2"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double GetDistanceToPoint(this ITuple2D v1, ITuple2D v2)
+        public static double GetDistanceToPoint(this IFloat64Tuple2D v1, IFloat64Tuple2D v2)
         {
             var vX = v2.X - v1.X;
             var vY = v2.Y - v1.Y;
@@ -1631,7 +1654,7 @@ namespace NumericalGeometryLib.BasicMath
         /// <param name="v2Y"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double GetDistanceToPoint(this ITuple2D v1, double v2X, double v2Y)
+        public static double GetDistanceToPoint(this IFloat64Tuple2D v1, double v2X, double v2Y)
         {
             var vX = v2X - v1.X;
             var vY = v2Y - v1.Y;
@@ -1646,7 +1669,7 @@ namespace NumericalGeometryLib.BasicMath
         /// <param name="p2"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double GetDistanceToPoint(this ITuple3D p1, ITuple3D p2)
+        public static double GetDistanceToPoint(this IFloat64Tuple3D p1, IFloat64Tuple3D p2)
         {
             var vX = p2.X - p1.X;
             var vY = p2.Y - p1.Y;
@@ -1656,7 +1679,7 @@ namespace NumericalGeometryLib.BasicMath
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double GetDistanceToPoint(this ITuple3D p1, double p2X, double p2Y, double p2Z)
+        public static double GetDistanceToPoint(this IFloat64Tuple3D p1, double p2X, double p2Y, double p2Z)
         {
             var vX = p2X - p1.X;
             var vY = p2Y - p1.Y;
@@ -1672,7 +1695,7 @@ namespace NumericalGeometryLib.BasicMath
         /// <param name="v2"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double GetDistanceToPoint(this ITuple4D v1, ITuple4D v2)
+        public static double GetDistanceToPoint(this IFloat64Tuple4D v1, IFloat64Tuple4D v2)
         {
             var vX = v2.X - v1.X;
             var vY = v2.Y - v1.Y;
@@ -1690,7 +1713,7 @@ namespace NumericalGeometryLib.BasicMath
         /// <param name="v2"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double GetDistanceSquaredToPoint(this ITuple2D v1, ITuple2D v2)
+        public static double GetDistanceSquaredToPoint(this IFloat64Tuple2D v1, IFloat64Tuple2D v2)
         {
             var vX = v2.X - v1.X;
             var vY = v2.Y - v1.Y;
@@ -1706,7 +1729,7 @@ namespace NumericalGeometryLib.BasicMath
         /// <param name="v2Y"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double GetDistanceSquaredToPoint(this ITuple2D v1, double v2X, double v2Y)
+        public static double GetDistanceSquaredToPoint(this IFloat64Tuple2D v1, double v2X, double v2Y)
         {
             var vX = v2X - v1.X;
             var vY = v2Y - v1.Y;
@@ -1733,7 +1756,7 @@ namespace NumericalGeometryLib.BasicMath
         /// <param name="v2"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double GetDistanceSquaredToPoint(this ITuple3D v1, ITuple3D v2)
+        public static double GetDistanceSquaredToPoint(this IFloat64Tuple3D v1, IFloat64Tuple3D v2)
         {
             var vX = v2.X - v1.X;
             var vY = v2.Y - v1.Y;
@@ -1743,7 +1766,7 @@ namespace NumericalGeometryLib.BasicMath
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double GetDistanceSquaredToPoint(this ITuple3D p1, double p2X, double p2Y, double p2Z)
+        public static double GetDistanceSquaredToPoint(this IFloat64Tuple3D p1, double p2X, double p2Y, double p2Z)
         {
             var vX = p2X - p1.X;
             var vY = p2Y - p1.Y;
@@ -1771,7 +1794,7 @@ namespace NumericalGeometryLib.BasicMath
         /// <param name="v2"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double GetDistanceSquaredToPoint(this ITuple4D v1, ITuple4D v2)
+        public static double GetDistanceSquaredToPoint(this IFloat64Tuple4D v1, IFloat64Tuple4D v2)
         {
             var vX = v2.X - v1.X;
             var vY = v2.Y - v1.Y;
@@ -1783,40 +1806,40 @@ namespace NumericalGeometryLib.BasicMath
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple2D ReflectVectorOnVector(this ITuple2D reflectionVector, ITuple2D vector)
+        public static Float64Tuple2D ReflectVectorOnVector(this IFloat64Tuple2D reflectionVector, IFloat64Tuple2D vector)
         {
-            var s = 2 * reflectionVector.VectorDot(vector) / reflectionVector.GetLengthSquared();
+            var s = 2 * reflectionVector.VectorDot(vector) / reflectionVector.GetVectorNormSquared();
 
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 vector.X - s * reflectionVector.X,
                 vector.Y - s * reflectionVector.Y
             );
         }
 
-        public static IEnumerable<Tuple2D> ReflectVectorsOnVector(this ITuple2D reflectionVector, params ITuple2D[] vectorsList)
+        public static IEnumerable<Float64Tuple2D> ReflectVectorsOnVector(this IFloat64Tuple2D reflectionVector, params IFloat64Tuple2D[] vectorsList)
         {
-            var s = 2 / reflectionVector.GetLengthSquared();
+            var s = 2 / reflectionVector.GetVectorNormSquared();
 
             foreach (var vector in vectorsList)
             {
                 var s1 = s * reflectionVector.VectorDot(vector);
 
-                yield return new Tuple2D(
+                yield return new Float64Tuple2D(
                     vector.X - s1 * reflectionVector.X,
                     vector.Y - s1 * reflectionVector.Y
                 );
             }
         }
 
-        public static IEnumerable<Tuple2D> ReflectVectorsOnVector(this ITuple2D reflectionVector, IEnumerable<ITuple2D> vectorsList)
+        public static IEnumerable<Float64Tuple2D> ReflectVectorsOnVector(this IFloat64Tuple2D reflectionVector, IEnumerable<IFloat64Tuple2D> vectorsList)
         {
-            var s = 2 / reflectionVector.GetLengthSquared();
+            var s = 2 / reflectionVector.GetVectorNormSquared();
 
             foreach (var vector in vectorsList)
             {
                 var s1 = s * reflectionVector.VectorDot(vector);
 
-                yield return new Tuple2D(
+                yield return new Float64Tuple2D(
                     vector.X - s1 * reflectionVector.X,
                     vector.Y - s1 * reflectionVector.Y
                 );
@@ -1824,11 +1847,11 @@ namespace NumericalGeometryLib.BasicMath
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D ReflectVectorOnVector(this ITuple3D reflectionVector, ITuple3D vector)
+        public static Float64Tuple3D ReflectVectorOnVector(this IFloat64Tuple3D reflectionVector, IFloat64Tuple3D vector)
         {
-            var s = 2 * reflectionVector.VectorDot(vector) / reflectionVector.GetLengthSquared();
+            var s = 2 * reflectionVector.VectorDot(vector) / reflectionVector.GetVectorNormSquared();
 
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 vector.X - s * reflectionVector.X,
                 vector.Y - s * reflectionVector.Y,
                 vector.Z - s * reflectionVector.Z
@@ -1836,99 +1859,99 @@ namespace NumericalGeometryLib.BasicMath
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Triplet<Tuple3D> ReflectVectorsOnVector(this ITuple3D reflectionVector, Triplet<ITuple3D> vectorsTriplet)
+        public static Triplet<Float64Tuple3D> ReflectVectorsOnVector(this IFloat64Tuple3D reflectionVector, Triplet<IFloat64Tuple3D> vectorsTriplet)
         {
             var (v1, v2, v3) = vectorsTriplet;
 
-            var s = 2 / reflectionVector.GetLengthSquared();
+            var s = 2 / reflectionVector.GetVectorNormSquared();
 
             var s1 = s * reflectionVector.VectorDot(v1);
             var s2 = s * reflectionVector.VectorDot(v2);
             var s3 = s * reflectionVector.VectorDot(v3);
 
-            var rv1 = new Tuple3D(
+            var rv1 = new Float64Tuple3D(
                 v1.X - s1 * reflectionVector.X,
                 v1.Y - s1 * reflectionVector.Y,
                 v1.Z - s1 * reflectionVector.Z
             );
 
-            var rv2 = new Tuple3D(
+            var rv2 = new Float64Tuple3D(
                 v2.X - s2 * reflectionVector.X,
                 v2.Y - s2 * reflectionVector.Y,
                 v2.Z - s2 * reflectionVector.Z
             );
 
-            var rv3 = new Tuple3D(
+            var rv3 = new Float64Tuple3D(
                 v3.X - s3 * reflectionVector.X,
                 v3.Y - s3 * reflectionVector.Y,
                 v3.Z - s3 * reflectionVector.Z
             );
 
-            return new Triplet<Tuple3D>(rv1, rv2, rv3);
+            return new Triplet<Float64Tuple3D>(rv1, rv2, rv3);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Pair<Tuple3D> ReflectVectorsOnVector(this ITuple3D reflectionVector, ITuple3D v1, ITuple3D v2)
+        public static Pair<Float64Tuple3D> ReflectVectorsOnVector(this IFloat64Tuple3D reflectionVector, IFloat64Tuple3D v1, IFloat64Tuple3D v2)
         {
-            var s = 2 / reflectionVector.GetLengthSquared();
+            var s = 2 / reflectionVector.GetVectorNormSquared();
 
             var s1 = s * reflectionVector.VectorDot(v1);
             var s2 = s * reflectionVector.VectorDot(v2);
 
-            var rv1 = new Tuple3D(
+            var rv1 = new Float64Tuple3D(
                 v1.X - s1 * reflectionVector.X,
                 v1.Y - s1 * reflectionVector.Y,
                 v1.Z - s1 * reflectionVector.Z
             );
 
-            var rv2 = new Tuple3D(
+            var rv2 = new Float64Tuple3D(
                 v2.X - s2 * reflectionVector.X,
                 v2.Y - s2 * reflectionVector.Y,
                 v2.Z - s2 * reflectionVector.Z
             );
 
-            return new Pair<Tuple3D>(rv1, rv2);
+            return new Pair<Float64Tuple3D>(rv1, rv2);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Triplet<Tuple3D> ReflectVectorsOnVector(this ITuple3D reflectionVector, ITuple3D v1, ITuple3D v2, ITuple3D v3)
+        public static Triplet<Float64Tuple3D> ReflectVectorsOnVector(this IFloat64Tuple3D reflectionVector, IFloat64Tuple3D v1, IFloat64Tuple3D v2, IFloat64Tuple3D v3)
         {
-            var s = 2 / reflectionVector.GetLengthSquared();
+            var s = 2 / reflectionVector.GetVectorNormSquared();
 
             var s1 = s * reflectionVector.VectorDot(v1);
             var s2 = s * reflectionVector.VectorDot(v2);
             var s3 = s * reflectionVector.VectorDot(v3);
 
-            var rv1 = new Tuple3D(
+            var rv1 = new Float64Tuple3D(
                 v1.X - s1 * reflectionVector.X,
                 v1.Y - s1 * reflectionVector.Y,
                 v1.Z - s1 * reflectionVector.Z
             );
 
-            var rv2 = new Tuple3D(
+            var rv2 = new Float64Tuple3D(
                 v2.X - s2 * reflectionVector.X,
                 v2.Y - s2 * reflectionVector.Y,
                 v2.Z - s2 * reflectionVector.Z
             );
 
-            var rv3 = new Tuple3D(
+            var rv3 = new Float64Tuple3D(
                 v3.X - s3 * reflectionVector.X,
                 v3.Y - s3 * reflectionVector.Y,
                 v3.Z - s3 * reflectionVector.Z
             );
 
-            return new Triplet<Tuple3D>(rv1, rv2, rv3);
+            return new Triplet<Float64Tuple3D>(rv1, rv2, rv3);
         }
 
-        public static IEnumerable<Tuple3D> ReflectVectorsOnVector(this ITuple3D reflectionVector, params ITuple3D[] vectorsList)
+        public static IEnumerable<Float64Tuple3D> ReflectVectorsOnVector(this IFloat64Tuple3D reflectionVector, params IFloat64Tuple3D[] vectorsList)
         {
-            var s = 2 / reflectionVector.GetLengthSquared();
+            var s = 2 / reflectionVector.GetVectorNormSquared();
 
             foreach (var vector in vectorsList)
             {
                 var s1 = s * reflectionVector.VectorDot(vector);
 
-                yield return new Tuple3D(
+                yield return new Float64Tuple3D(
                     vector.X - s1 * reflectionVector.X,
                     vector.Y - s1 * reflectionVector.Y,
                     vector.Z - s1 * reflectionVector.Z
@@ -1936,15 +1959,15 @@ namespace NumericalGeometryLib.BasicMath
             }
         }
 
-        public static IEnumerable<Tuple3D> ReflectVectorsOnVector(this ITuple3D reflectionVector, IEnumerable<ITuple3D> vectorsList)
+        public static IEnumerable<Float64Tuple3D> ReflectVectorsOnVector(this IFloat64Tuple3D reflectionVector, IEnumerable<IFloat64Tuple3D> vectorsList)
         {
-            var s = 2 / reflectionVector.GetLengthSquared();
+            var s = 2 / reflectionVector.GetVectorNormSquared();
 
             foreach (var vector in vectorsList)
             {
                 var s1 = s * reflectionVector.VectorDot(vector);
 
-                yield return new Tuple3D(
+                yield return new Float64Tuple3D(
                     vector.X - s1 * reflectionVector.X,
                     vector.Y - s1 * reflectionVector.Y,
                     vector.Z - s1 * reflectionVector.Z
@@ -1954,36 +1977,36 @@ namespace NumericalGeometryLib.BasicMath
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple2D ReflectVectorOnUnitVector(this ITuple2D reflectionVector, ITuple2D vector)
+        public static Float64Tuple2D ReflectVectorOnUnitVector(this IFloat64Tuple2D reflectionVector, IFloat64Tuple2D vector)
         {
             var s = 2 * reflectionVector.VectorDot(vector);
 
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 vector.X - s * reflectionVector.X,
                 vector.Y - s * reflectionVector.Y
             );
         }
 
-        public static IEnumerable<Tuple2D> ReflectVectorsOnUnitVector(this ITuple2D reflectionVector, params ITuple2D[] vectorsList)
+        public static IEnumerable<Float64Tuple2D> ReflectVectorsOnUnitVector(this IFloat64Tuple2D reflectionVector, params IFloat64Tuple2D[] vectorsList)
         {
             foreach (var vector in vectorsList)
             {
                 var s1 = 2 * reflectionVector.VectorDot(vector);
 
-                yield return new Tuple2D(
+                yield return new Float64Tuple2D(
                     vector.X - s1 * reflectionVector.X,
                     vector.Y - s1 * reflectionVector.Y
                 );
             }
         }
 
-        public static IEnumerable<Tuple2D> ReflectVectorsOnUnitVector(this ITuple2D reflectionVector, IEnumerable<ITuple2D> vectorsList)
+        public static IEnumerable<Float64Tuple2D> ReflectVectorsOnUnitVector(this IFloat64Tuple2D reflectionVector, IEnumerable<IFloat64Tuple2D> vectorsList)
         {
             foreach (var vector in vectorsList)
             {
                 var s1 = 2 * reflectionVector.VectorDot(vector);
 
-                yield return new Tuple2D(
+                yield return new Float64Tuple2D(
                     vector.X - s1 * reflectionVector.X,
                     vector.Y - s1 * reflectionVector.Y
                 );
@@ -1991,11 +2014,11 @@ namespace NumericalGeometryLib.BasicMath
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D ReflectVectorOnUnitVector(this ITuple3D reflectionVector, ITuple3D vector)
+        public static Float64Tuple3D ReflectVectorOnUnitVector(this IFloat64Tuple3D reflectionVector, IFloat64Tuple3D vector)
         {
             var s = 2 * reflectionVector.VectorDot(vector);
 
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 vector.X - s * reflectionVector.X,
                 vector.Y - s * reflectionVector.Y,
                 vector.Z - s * reflectionVector.Z
@@ -2003,7 +2026,7 @@ namespace NumericalGeometryLib.BasicMath
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Triplet<Tuple3D> ReflectVectorsOnUnitVector(this ITuple3D reflectionVector, Triplet<ITuple3D> vectorsTriplet)
+        public static Triplet<Float64Tuple3D> ReflectVectorsOnUnitVector(this IFloat64Tuple3D reflectionVector, Triplet<IFloat64Tuple3D> vectorsTriplet)
         {
             var (v1, v2, v3) = vectorsTriplet;
 
@@ -2011,34 +2034,34 @@ namespace NumericalGeometryLib.BasicMath
             var s2 = 2 * reflectionVector.VectorDot(v2);
             var s3 = 2 * reflectionVector.VectorDot(v3);
 
-            var rv1 = new Tuple3D(
+            var rv1 = new Float64Tuple3D(
                 v1.X - s1 * reflectionVector.X,
                 v1.Y - s1 * reflectionVector.Y,
                 v1.Z - s1 * reflectionVector.Z
             );
 
-            var rv2 = new Tuple3D(
+            var rv2 = new Float64Tuple3D(
                 v2.X - s2 * reflectionVector.X,
                 v2.Y - s2 * reflectionVector.Y,
                 v2.Z - s2 * reflectionVector.Z
             );
 
-            var rv3 = new Tuple3D(
+            var rv3 = new Float64Tuple3D(
                 v3.X - s3 * reflectionVector.X,
                 v3.Y - s3 * reflectionVector.Y,
                 v3.Z - s3 * reflectionVector.Z
             );
 
-            return new Triplet<Tuple3D>(rv1, rv2, rv3);
+            return new Triplet<Float64Tuple3D>(rv1, rv2, rv3);
         }
 
-        public static IEnumerable<Tuple3D> ReflectVectorsOnUnitVector(this ITuple3D reflectionVector, params ITuple3D[] vectorsList)
+        public static IEnumerable<Float64Tuple3D> ReflectVectorsOnUnitVector(this IFloat64Tuple3D reflectionVector, params IFloat64Tuple3D[] vectorsList)
         {
             foreach (var vector in vectorsList)
             {
                 var s1 = 2 * reflectionVector.VectorDot(vector);
 
-                yield return new Tuple3D(
+                yield return new Float64Tuple3D(
                     vector.X - s1 * reflectionVector.X,
                     vector.Y - s1 * reflectionVector.Y,
                     vector.Z - s1 * reflectionVector.Z
@@ -2046,13 +2069,13 @@ namespace NumericalGeometryLib.BasicMath
             }
         }
 
-        public static IEnumerable<Tuple3D> ReflectVectorsOnUnitVector(this ITuple3D reflectionVector, IEnumerable<ITuple3D> vectorsList)
+        public static IEnumerable<Float64Tuple3D> ReflectVectorsOnUnitVector(this IFloat64Tuple3D reflectionVector, IEnumerable<IFloat64Tuple3D> vectorsList)
         {
             foreach (var vector in vectorsList)
             {
                 var s1 = 2 * reflectionVector.VectorDot(vector);
 
-                yield return new Tuple3D(
+                yield return new Float64Tuple3D(
                     vector.X - s1 * reflectionVector.X,
                     vector.Y - s1 * reflectionVector.Y,
                     vector.Z - s1 * reflectionVector.Z
@@ -2063,18 +2086,18 @@ namespace NumericalGeometryLib.BasicMath
         
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple2D TranslateBy(this ITuple2D vector, double translationX, double translationY)
+        public static Float64Tuple2D TranslateBy(this IFloat64Tuple2D vector, double translationX, double translationY)
         {
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 translationX + vector.X,
                 translationY + vector.Y
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D TranslateBy(this ITuple3D vector, double translationX, double translationY, double translationZ)
+        public static Float64Tuple3D TranslateBy(this IFloat64Tuple3D vector, double translationX, double translationY, double translationZ)
         {
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 translationX + vector.X,
                 translationY + vector.Y,
                 translationZ + vector.Z
@@ -2082,18 +2105,18 @@ namespace NumericalGeometryLib.BasicMath
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple2D TranslateBy(this ITuple2D vector, ITuple2D translationVector)
+        public static Float64Tuple2D TranslateBy(this IFloat64Tuple2D vector, IFloat64Tuple2D translationVector)
         {
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 translationVector.X + vector.X,
                 translationVector.Y + vector.Y
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D TranslateBy(this ITuple3D vector, ITuple3D translationVector)
+        public static Float64Tuple3D TranslateBy(this IFloat64Tuple3D vector, IFloat64Tuple3D translationVector)
         {
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 translationVector.X + vector.X,
                 translationVector.Y + vector.Y,
                 translationVector.Z + vector.Z
@@ -2101,9 +2124,9 @@ namespace NumericalGeometryLib.BasicMath
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D ScaleBy(this ITuple3D vector, double scaleFactor)
+        public static Float64Tuple3D ScaleBy(this IFloat64Tuple3D vector, double scaleFactor)
         {
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 scaleFactor * vector.X,
                 scaleFactor * vector.Y,
                 scaleFactor * vector.Z
@@ -2111,27 +2134,27 @@ namespace NumericalGeometryLib.BasicMath
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple2D ScaleBy(this ITuple2D vector, double scaleFactor)
+        public static Float64Tuple2D ScaleBy(this IFloat64Tuple2D vector, double scaleFactor)
         {
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 scaleFactor * vector.X,
                 scaleFactor * vector.Y
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple2D ScaleBy(this ITuple2D vector, double scaleFactorX, double scaleFactorY)
+        public static Float64Tuple2D ScaleBy(this IFloat64Tuple2D vector, double scaleFactorX, double scaleFactorY)
         {
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 scaleFactorX * vector.X,
                 scaleFactorY * vector.Y
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D ScaleBy(this ITuple3D vector, double scaleFactorX, double scaleFactorY, double scaleFactorZ)
+        public static Float64Tuple3D ScaleBy(this IFloat64Tuple3D vector, double scaleFactorX, double scaleFactorY, double scaleFactorZ)
         {
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 scaleFactorX * vector.X,
                 scaleFactorY * vector.Y,
                 scaleFactorZ * vector.Z
@@ -2139,18 +2162,18 @@ namespace NumericalGeometryLib.BasicMath
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple2D ScaleBy(this ITuple2D vector, ITuple2D scaleFactorVector)
+        public static Float64Tuple2D ScaleBy(this IFloat64Tuple2D vector, IFloat64Tuple2D scaleFactorVector)
         {
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 scaleFactorVector.X * vector.X,
                 scaleFactorVector.Y * vector.Y
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D ScaleBy(this ITuple3D vector, ITuple3D scaleFactorVector)
+        public static Float64Tuple3D ScaleBy(this IFloat64Tuple3D vector, IFloat64Tuple3D scaleFactorVector)
         {
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 scaleFactorVector.X * vector.X,
                 scaleFactorVector.Y * vector.Y,
                 scaleFactorVector.Z * vector.Z
@@ -2159,24 +2182,24 @@ namespace NumericalGeometryLib.BasicMath
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple2D RotateBy(this ITuple2D vector, PlanarAngle angle)
+        public static Float64Tuple2D RotateBy(this IFloat64Tuple2D vector, PlanarAngle angle)
         {
             var cosAngle = Math.Cos(angle);
             var sinAngle = Math.Sin(angle);
 
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 vector.X * cosAngle - vector.Y * sinAngle,
                 vector.X * sinAngle + vector.Y * cosAngle
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D XRotateBy(this ITuple3D vector, PlanarAngle angle)
+        public static Float64Tuple3D XRotateBy(this IFloat64Tuple3D vector, PlanarAngle angle)
         {
             var cosAngle = Math.Cos(angle);
             var sinAngle = Math.Sin(angle);
 
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 vector.X,
                 vector.Y * cosAngle - vector.Z * sinAngle,
                 vector.Y * sinAngle + vector.Z * cosAngle
@@ -2184,12 +2207,12 @@ namespace NumericalGeometryLib.BasicMath
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D YRotateBy(this ITuple3D vector, PlanarAngle angle)
+        public static Float64Tuple3D YRotateBy(this IFloat64Tuple3D vector, PlanarAngle angle)
         {
             var cosAngle = Math.Cos(angle);
             var sinAngle = Math.Sin(angle);
 
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 vector.X * cosAngle + vector.Z * sinAngle,
                 vector.Y,
                 -vector.X * sinAngle + vector.Z * cosAngle
@@ -2197,12 +2220,12 @@ namespace NumericalGeometryLib.BasicMath
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D ZRotateBy(this ITuple3D vector, PlanarAngle angle)
+        public static Float64Tuple3D ZRotateBy(this IFloat64Tuple3D vector, PlanarAngle angle)
         {
             var cosAngle = Math.Cos(angle);
             var sinAngle = Math.Sin(angle);
 
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 vector.X * cosAngle - vector.Y * sinAngle,
                 vector.X * sinAngle + vector.Y * cosAngle,
                 vector.Z
@@ -2210,19 +2233,19 @@ namespace NumericalGeometryLib.BasicMath
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D XRotateByDegrees(this ITuple3D vector, PlanarAngle angle)
+        public static Float64Tuple3D XRotateByDegrees(this IFloat64Tuple3D vector, PlanarAngle angle)
         {
             return vector.XRotateBy(angle * Math.PI / 180);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D YRotateByDegrees(this ITuple3D vector, PlanarAngle angle)
+        public static Float64Tuple3D YRotateByDegrees(this IFloat64Tuple3D vector, PlanarAngle angle)
         {
             return vector.YRotateBy(angle * Math.PI / 180);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D ZRotateByDegrees(this ITuple3D vector, PlanarAngle angle)
+        public static Float64Tuple3D ZRotateByDegrees(this IFloat64Tuple3D vector, PlanarAngle angle)
         {
             return vector.ZRotateBy(angle * Math.PI / 180);
         }
@@ -2246,7 +2269,7 @@ namespace NumericalGeometryLib.BasicMath
         /// <param name="v2"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static PlanarAngle GetVectorsAngle(this ITuple2D v1, ITuple2D v2)
+        public static PlanarAngle GetVectorsAngle(this IFloat64Tuple2D v1, IFloat64Tuple2D v2)
         {
             var t1 = v1.X * v2.X + v1.Y * v2.Y;
             var t2 = v1.X * v1.X + v1.Y * v1.Y;
@@ -2258,11 +2281,11 @@ namespace NumericalGeometryLib.BasicMath
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D GetTriangleNormal(ITuple3D p1, ITuple3D p2, ITuple3D p3)
+        public static Float64Tuple3D GetTriangleNormal(IFloat64Tuple3D p1, IFloat64Tuple3D p2, IFloat64Tuple3D p3)
         {
             //TODO: Test this for numerical stability, maybe select two sides with largest lengths
-            var v12 = new Tuple3D(p2.X - p1.X, p2.Y - p1.Y, p2.Z - p1.Z);
-            var v23 = new Tuple3D(p3.X - p2.X, p3.Y - p2.Y, p3.Z - p2.Z);
+            var v12 = new Float64Tuple3D(p2.X - p1.X, p2.Y - p1.Y, p2.Z - p1.Z);
+            var v23 = new Float64Tuple3D(p3.X - p2.X, p3.Y - p2.Y, p3.Z - p2.Z);
 
             return v12.VectorCross(v23);
 
@@ -2291,21 +2314,21 @@ namespace NumericalGeometryLib.BasicMath
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D GetTriangleUnitNormal(ITuple3D p1, ITuple3D p2, ITuple3D p3)
+        public static Float64Tuple3D GetTriangleUnitNormal(IFloat64Tuple3D p1, IFloat64Tuple3D p2, IFloat64Tuple3D p3)
         {
             //TODO: Test this for numerical stability, maybe select two sides with largest lengths
-            var v12 = new Tuple3D(p2.X - p1.X, p2.Y - p1.Y, p2.Z - p1.Z);
-            var v23 = new Tuple3D(p3.X - p2.X, p3.Y - p2.Y, p3.Z - p2.Z);
+            var v12 = new Float64Tuple3D(p2.X - p1.X, p2.Y - p1.Y, p2.Z - p1.Z);
+            var v23 = new Float64Tuple3D(p3.X - p2.X, p3.Y - p2.Y, p3.Z - p2.Z);
 
             return v12.VectorUnitCross(v23);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D GetTriangleInverseUnitNormal(ITuple3D p1, ITuple3D p2, ITuple3D p3)
+        public static Float64Tuple3D GetTriangleInverseUnitNormal(IFloat64Tuple3D p1, IFloat64Tuple3D p2, IFloat64Tuple3D p3)
         {
             //TODO: Test this for numerical stability, maybe select two sides with largest lengths
-            var v12 = new Tuple3D(p2.X - p1.X, p2.Y - p1.Y, p2.Z - p1.Z);
-            var v23 = new Tuple3D(p3.X - p2.X, p3.Y - p2.Y, p3.Z - p2.Z);
+            var v12 = new Float64Tuple3D(p2.X - p1.X, p2.Y - p1.Y, p2.Z - p1.Z);
+            var v23 = new Float64Tuple3D(p3.X - p2.X, p3.Y - p2.Y, p3.Z - p2.Z);
 
             return v12.VectorUnitCross(v23);
         }
@@ -2318,13 +2341,13 @@ namespace NumericalGeometryLib.BasicMath
         /// <param name="v2"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double GetVectorsAngleCos(this ITuple3D v1, ITuple3D v2)
+        public static double GetVectorsAngleCos(this IFloat64Tuple3D v1, IFloat64Tuple3D v2)
         {
             var t1 = v1.X * v2.X + v1.Y * v2.Y + v1.Z * v2.Z;
             var t2 = v1.X * v1.X + v1.Y * v1.Y + v1.Z * v1.Z;
             var t3 = v2.X * v2.X + v2.Y * v2.Y + v2.Z * v2.Z;
 
-            return t1 / Math.Sqrt(t2 * t3);
+            return (t1 / Math.Sqrt(t2 * t3)).Clamp(-1d, 1d);
         }
 
         /// <summary>
@@ -2334,7 +2357,7 @@ namespace NumericalGeometryLib.BasicMath
         /// <param name="v2"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static PlanarAngle GetVectorsAngle(this ITuple3D v1, ITuple3D v2)
+        public static PlanarAngle GetVectorsAngle(this IFloat64Tuple3D v1, IFloat64Tuple3D v2)
         {
             return Math.Acos(
                 v1.GetVectorsAngleCos(v2)
@@ -2348,7 +2371,7 @@ namespace NumericalGeometryLib.BasicMath
         /// <param name="v2"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double GetUnitVectorsAngleCos(this ITuple3D v1, ITuple3D v2)
+        public static double GetUnitVectorsAngleCos(this IFloat64Tuple3D v1, IFloat64Tuple3D v2)
         {
             Debug.Assert(
                 v1.IsNearUnitVector() && 
@@ -2365,7 +2388,7 @@ namespace NumericalGeometryLib.BasicMath
         /// <param name="v2"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static PlanarAngle GetUnitVectorsAngle(this ITuple3D v1, ITuple3D v2)
+        public static PlanarAngle GetUnitVectorsAngle(this IFloat64Tuple3D v1, IFloat64Tuple3D v2)
         {
             return Math.Acos(
                 v1.GetUnitVectorsAngleCos(v2)
@@ -2380,20 +2403,20 @@ namespace NumericalGeometryLib.BasicMath
         /// <param name="p2"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static PlanarAngle GetPointsAngle(this ITuple3D p0, ITuple3D p1, ITuple3D p2)
+        public static PlanarAngle GetPointsAngle(this IFloat64Tuple3D p0, IFloat64Tuple3D p1, IFloat64Tuple3D p2)
         {
             return GetVectorsAngle(
-                new Tuple3D(p1.X - p0.X, p1.Y - p0.Y, p1.Z - p0.Z),
-                new Tuple3D(p2.X - p0.X, p2.Y - p0.Y, p2.Z - p0.Z)
+                new Float64Tuple3D(p1.X - p0.X, p1.Y - p0.Y, p1.Z - p0.Z),
+                new Float64Tuple3D(p2.X - p0.X, p2.Y - p0.Y, p2.Z - p0.Z)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void GetCoordinateSystem(this Tuple3D v1, out Tuple3D v2, out Tuple3D v3)
+        public static void GetCoordinateSystem(this Float64Tuple3D v1, out Float64Tuple3D v2, out Float64Tuple3D v3)
         {
             v2 = Math.Abs(v1.X) > Math.Abs(v1.Y)
-                ? new Tuple3D(-v1.Z, 0, v1.X) / Math.Sqrt(v1.X * v1.X + v1.Z * v1.Z)
-                : new Tuple3D(0, v1.Z, -v1.Y) / Math.Sqrt(v1.Y * v1.Y + v1.Z * v1.Z);
+                ? new Float64Tuple3D(-v1.Z, 0, v1.X) / Math.Sqrt(v1.X * v1.X + v1.Z * v1.Z)
+                : new Float64Tuple3D(0, v1.Z, -v1.Y) / Math.Sqrt(v1.Y * v1.Y + v1.Z * v1.Z);
 
             v3 = v1.VectorCross(v2);
         }

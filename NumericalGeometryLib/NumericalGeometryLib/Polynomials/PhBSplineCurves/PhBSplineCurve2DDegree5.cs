@@ -6,7 +6,7 @@ namespace NumericalGeometryLib.Polynomials.PhBSplineCurves
 {
     public class PhBSplineCurve2DDegree5
     {
-        public static PhBSplineCurve2DDegree5 Create(double tMin, double tMax, params Tuple2D[] controlPointsArray)
+        public static PhBSplineCurve2DDegree5 Create(double tMin, double tMax, params Float64Tuple2D[] controlPointsArray)
         {
             const int n = 2;
             var q = controlPointsArray.Length - 1;

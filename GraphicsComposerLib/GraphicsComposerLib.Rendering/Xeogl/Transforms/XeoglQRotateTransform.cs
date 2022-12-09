@@ -8,9 +8,9 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Transforms
 {
     public sealed class XeoglQRotateTransform : IXeoglNumericalTransform
     {
-        public static XeoglQRotateTransform CreateRotate(double angle, ITuple3D rotateVector)
+        public static XeoglQRotateTransform CreateRotate(double angle, IFloat64Tuple3D rotateVector)
         {
-            var d = 1 / rotateVector.GetLength();
+            var d = 1 / rotateVector.GetVectorNorm();
             var cosAngle = d * Math.Cos(angle / 2);
             var sinAngle = d * Math.Sin(angle / 2);
 
@@ -23,10 +23,10 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Transforms
             };
         }
 
-        public static XeoglQRotateTransform CreateRotate(ITuple3D vector1, ITuple3D vector2)
+        public static XeoglQRotateTransform CreateRotate(IFloat64Tuple3D vector1, IFloat64Tuple3D vector2)
         {
-            var lengthSquared1 = vector1.GetLengthSquared();
-            var lengthSquared2 = vector2.GetLengthSquared();
+            var lengthSquared1 = vector1.GetVectorNormSquared();
+            var lengthSquared2 = vector2.GetVectorNormSquared();
 
             var n1 = Math.Sqrt(lengthSquared1 * lengthSquared2);
 
@@ -38,10 +38,10 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Transforms
             if (w < 1e-12 * n1)
             {
                 var v1 = Math.Abs(vector1.X) > Math.Abs(vector1.Z) 
-                    ? new Tuple3D(-vector1.Y, vector1.X, 0)
-                    : new Tuple3D(0, -vector1.Z, vector1.Y);
+                    ? new Float64Tuple3D(-vector1.Y, vector1.X, 0)
+                    : new Float64Tuple3D(0, -vector1.Z, vector1.Y);
 
-                var d = 1 / v1.GetLength();
+                var d = 1 / v1.GetVectorNorm();
 
                 vx = d * v1.X;
                 vy = d * v1.Y;
@@ -51,7 +51,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Transforms
             {
                 var v2 = vector1.VectorCross(vector2);
 
-                var d = 1 / v2.GetLength();
+                var d = 1 / v2.GetVectorNorm();
 
                 vx = d * v2.X;
                 vy = d * v2.Y;
@@ -167,17 +167,17 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Transforms
         public SquareMatrix4 GetMatrix()
             => SquareMatrix4.CreateIdentityMatrix();
 
-        public Tuple4D GetQuaternionTuple()
-            => new Tuple4D(QuaternionX, QuaternionY, QuaternionZ, QuaternionW);
+        public Float64Tuple4D GetQuaternionTuple()
+            => new Float64Tuple4D(QuaternionX, QuaternionY, QuaternionZ, QuaternionW);
 
-        public Tuple3D GetRotateTuple()
-            => Tuple3D.Zero;
+        public Float64Tuple3D GetRotateTuple()
+            => Float64Tuple3D.Zero;
 
-        public Tuple3D GetScaleTuple()
-            => new Tuple3D(1, 1, 1);
+        public Float64Tuple3D GetScaleTuple()
+            => new Float64Tuple3D(1, 1, 1);
 
-        public Tuple3D GetTranslateTuple()
-            => Tuple3D.Zero;
+        public Float64Tuple3D GetTranslateTuple()
+            => Float64Tuple3D.Zero;
 
 
         public string GetMatrixText()

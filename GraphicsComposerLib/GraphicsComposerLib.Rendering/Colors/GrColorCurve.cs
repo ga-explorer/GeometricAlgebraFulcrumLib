@@ -3,6 +3,7 @@ using GraphicsComposerLib.Geometry.ParametricShapes.Curves;
 using GraphicsComposerLib.Geometry.ParametricShapes.Curves.Sampled;
 using GraphicsComposerLib.Geometry.SdfShapes;
 using NumericalGeometryLib.BasicMath;
+using NumericalGeometryLib.BasicMath.Tuples;
 using NumericalGeometryLib.BasicMath.Calculus;
 using SixLabors.ImageSharp;
 

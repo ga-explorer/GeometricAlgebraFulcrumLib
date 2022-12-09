@@ -36,7 +36,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.BabylonJs
                 30d.DegreesToRadians(), 
                 30d.DegreesToRadians(), 
                 5, 
-                Tuple3D.Zero
+                Float64Tuple3D.Zero
             );
 
             var grayMaterial = Color.Gray.ToBabylonJsStandardMaterial("grayMaterial");
@@ -61,27 +61,27 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.BabylonJs
                 rosyBrownMaterial
             );
 
-            var pointA = new GrVisualPoint3D("pointA", new Tuple3D(5, 0, 0))
+            var pointA = new GrVisualPoint3D("pointA", new Float64Tuple3D(5, 0, 0))
             {
                 Style = new GrVisualSurfaceThickStyle3D(redMaterial, thickness * 2)
             };
 
-            var pointB = new GrVisualPoint3D("pointB", new Tuple3D(0, 5, 0))
+            var pointB = new GrVisualPoint3D("pointB", new Float64Tuple3D(0, 5, 0))
             {
                 Style = new GrVisualSurfaceThickStyle3D(greenMaterial, thickness * 2)
             };
 
-            var pointC = new GrVisualPoint3D("pointC", new Tuple3D(0, 0, 5))
+            var pointC = new GrVisualPoint3D("pointC", new Float64Tuple3D(0, 0, 5))
             {
                 Style = new GrVisualSurfaceThickStyle3D(blueMaterial, thickness * 2)
             };
 
             var worldFrame = new GrVisualFrame3D("worldFrame")
             {
-                Origin = Tuple3D.Zero,
-                Direction1 = Tuple3D.E1,
-                Direction2 = Tuple3D.E2,
-                Direction3 = Tuple3D.E3,
+                Origin = Float64Tuple3D.Zero,
+                Direction1 = Float64Tuple3D.E1,
+                Direction2 = Float64Tuple3D.E2,
+                Direction3 = Float64Tuple3D.E3,
 
                 Style = new GrVisualFrameStyle3D
                 {
@@ -94,58 +94,58 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.BabylonJs
                 }
             };
 
-            var xAxis = new GrVisualVector3D("xAxis", new Tuple3D(2, 0, 0), 3 * Tuple3D.E1)
+            var xAxis = new GrVisualVector3D("xAxis", new Float64Tuple3D(2, 0, 0), 3 * Float64Tuple3D.E1)
             {
                 Style = new GrVisualVectorStyle3D(darkRedMaterial, thickness)
             };
             
-            var yAxis = new GrVisualVector3D("yAxis", new Tuple3D(0, 2, 0), 3 * Tuple3D.E2)
+            var yAxis = new GrVisualVector3D("yAxis", new Float64Tuple3D(0, 2, 0), 3 * Float64Tuple3D.E2)
             {
                 Style = new GrVisualVectorStyle3D(darkGreenMaterial, thickness)
             };
             
-            var zAxis = new GrVisualVector3D("zAxis", new Tuple3D(0, 0, 2), 3 * Tuple3D.E3)
+            var zAxis = new GrVisualVector3D("zAxis", new Float64Tuple3D(0, 0, 2), 3 * Float64Tuple3D.E3)
             {
                 Style = new GrVisualVectorStyle3D(darkBlueMaterial, thickness)
             };
 
             var lineSegment = new GrVisualLineSegment3D("lineSegment")
             {
-                Position1 = new Tuple3D(1, 1, 1),
-                Position2 = new Tuple3D(4, 4, 4),
+                Position1 = new Float64Tuple3D(1, 1, 1),
+                Position2 = new Float64Tuple3D(4, 4, 4),
 
                 Style = new GrVisualCurveTubeStyle3D(yellowMaterial, thickness * 1.5d)
             };
             
             var lineSegmentX = new GrVisualLineSegment3D("lineSegmentX")
             {
-                Position1 = new Tuple3D(4, 4, 4),
-                Position2 = new Tuple3D(0, 4, 4),
+                Position1 = new Float64Tuple3D(4, 4, 4),
+                Position2 = new Float64Tuple3D(0, 4, 4),
 
                 Style = new GrVisualCurveDashedLineStyle3D(Color.Red, 3, 1, 16)
             };
             
             var lineSegmentY = new GrVisualLineSegment3D("lineSegmentY")
             {
-                Position1 = new Tuple3D(4, 4, 4),
-                Position2 = new Tuple3D(4, 0, 4),
+                Position1 = new Float64Tuple3D(4, 4, 4),
+                Position2 = new Float64Tuple3D(4, 0, 4),
 
                 Style = new GrVisualCurveDashedLineStyle3D(Color.Green, 3, 1, 16)
             };
             
             var lineSegmentZ = new GrVisualLineSegment3D("lineSegmentZ")
             {
-                Position1 = new Tuple3D(4, 4, 4),
-                Position2 = new Tuple3D(4, 4, 0),
+                Position1 = new Float64Tuple3D(4, 4, 4),
+                Position2 = new Float64Tuple3D(4, 4, 0),
 
                 Style = new GrVisualCurveDashedLineStyle3D(Color.Blue, 3, 1, 16)
             };
 
             var rightAngleX = new GrVisualRightAngle3D(
                 "angleXy",
-                new Tuple3D(4, 4, 4),
-                new Tuple3D(-1, 0, 0),
-                new Tuple3D(0, -1, 0),
+                new Float64Tuple3D(4, 4, 4),
+                new Float64Tuple3D(-1, 0, 0),
+                new Float64Tuple3D(0, -1, 0),
                 0.25
             )
             {
@@ -155,8 +155,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.BabylonJs
 
             var circleCurve = new GrVisualCircleCurve3D("circleCurve")
             {
-                Center = new Tuple3D(1, 1, 1),
-                Normal = new Tuple3D(1, 1, 1),
+                Center = new Float64Tuple3D(1, 1, 1),
+                Normal = new Float64Tuple3D(1, 1, 1),
                 Radius = 3,
 
                 Style = new GrVisualCurveTubeStyle3D(yellowMaterial, 2 * thickness)
@@ -165,9 +165,9 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.BabylonJs
             var circleCurveArc = new GrVisualCircleArcCurve3D("circleCurveArc")
             {
                 InnerArc = true,
-                Center = new Tuple3D(0, 0, 0),
-                Direction1 = new Tuple3D(1, 1, 1),
-                Direction2 = new Tuple3D(0, 1, 0),
+                Center = new Float64Tuple3D(0, 0, 0),
+                Direction1 = new Float64Tuple3D(1, 1, 1),
+                Direction2 = new Float64Tuple3D(0, 1, 0),
                 Radius = 4,
 
                 Style = new GrVisualCurveTubeStyle3D(yellowMaterial, 2 * thickness)
@@ -175,8 +175,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.BabylonJs
             
             var circleDisk = new GrVisualCircleSurface3D("circleDisk")
             {
-                Center = new Tuple3D(1, 1, 1),
-                Normal = new Tuple3D(1, 1, 1),
+                Center = new Float64Tuple3D(1, 1, 1),
+                Normal = new Float64Tuple3D(1, 1, 1),
                 Radius = 4,
 
                 Style = new GrVisualSurfaceThinStyle3D(rosyBrownMaterial)
@@ -185,9 +185,9 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.BabylonJs
             var circleDiskArc = new GrVisualCircleSurfaceArc3D("circleDiskArc")
             {
                 InnerArc = true,
-                Center = new Tuple3D(0, 0, 0),
-                Direction1 = new Tuple3D(1, 1, 1),
-                Direction2 = new Tuple3D(0, 1, 0),
+                Center = new Float64Tuple3D(0, 0, 0),
+                Direction1 = new Float64Tuple3D(1, 1, 1),
+                Direction2 = new Float64Tuple3D(0, 1, 0),
                 Radius = 4,
 
                 Style = new GrVisualSurfaceThinStyle3D(rosyBrownMaterial)
@@ -240,7 +240,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.BabylonJs
                 30d.DegreesToRadians(), 
                 30d.DegreesToRadians(), 
                 5, 
-                Tuple3D.Zero
+                Float64Tuple3D.Zero
             );
 
             var grayMaterial = Color.Gray.ToBabylonJsSimpleMaterial("grayMaterial");
@@ -267,10 +267,10 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.BabylonJs
             
             var worldFrame = new GrVisualFrame3D("worldFrame")
             {
-                Origin = Tuple3D.Zero,
-                Direction1 = Tuple3D.E1,
-                Direction2 = Tuple3D.E2,
-                Direction3 = Tuple3D.E3,
+                Origin = Float64Tuple3D.Zero,
+                Direction1 = Float64Tuple3D.E1,
+                Direction2 = Float64Tuple3D.E2,
+                Direction3 = Float64Tuple3D.E3,
                 Style = new GrVisualFrameStyle3D
                 {
                     OriginMaterial = grayMaterial,
@@ -311,9 +311,9 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.BabylonJs
 
             var curvePointList = new[]
             {
-                new Tuple3D(1.5, 0, 0),
-                new Tuple3D(0, 1.5, 0),
-                new Tuple3D(0, 0, 1.5)
+                new Float64Tuple3D(1.5, 0, 0),
+                new Float64Tuple3D(0, 1.5, 0),
+                new Float64Tuple3D(0, 0, 1.5)
             };
 
             var sampledCurve =

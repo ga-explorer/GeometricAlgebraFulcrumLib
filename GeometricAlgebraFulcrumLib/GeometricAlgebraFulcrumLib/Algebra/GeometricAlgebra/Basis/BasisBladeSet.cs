@@ -8,7 +8,6 @@ using DataStructuresLib.Basic;
 using DataStructuresLib.BitManipulation;
 using DataStructuresLib.Combinations;
 using NumericalGeometryLib.GeometricAlgebra.Multivectors;
-using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis
 {

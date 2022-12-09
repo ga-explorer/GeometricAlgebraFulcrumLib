@@ -43,7 +43,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
                 : new Pair<string>(name, value.GetCode());
         }
 
-        public static GrBabylonJsVector3Value ToBabylonJsVector3Value(this ITuple3D value)
+        public static GrBabylonJsVector3Value ToBabylonJsVector3Value(this IFloat64Tuple3D value)
         {
             return GrBabylonJsVector3Value.Create(value);
         }
@@ -162,7 +162,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
             return $"new BABYLON.Vector3({(float) vector.Item1:G}, {(float) vector.Item2:G}, {(float) vector.Item3:G}, {(float) vector.Item4:G})";
         }
 
-        public static string GetQuaternionBabylonJsCode(this ITuple4D quaternion)
+        public static string GetQuaternionBabylonJsCode(this IFloat64Tuple4D quaternion)
         {
             return $"new BABYLON.Quaternion({(float) quaternion.X:G}, {(float) quaternion.Y:G}, {(float) quaternion.Z:G}, {(float) quaternion.W:G})";
         }

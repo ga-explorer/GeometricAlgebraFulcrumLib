@@ -11,8 +11,8 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Builtin
     /// </summary>
     public sealed class XeoglVectorTextGeometry : XeoglGeometry
     {
-        public MutableTuple3D Origin { get; }
-            = new MutableTuple3D();
+        public MutableFloat64Tuple3D Origin { get; }
+            = new MutableFloat64Tuple3D();
 
         public double Size { get; set; } = 1;
 

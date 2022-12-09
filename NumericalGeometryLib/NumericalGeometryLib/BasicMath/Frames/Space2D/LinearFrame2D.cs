@@ -14,9 +14,9 @@ namespace NumericalGeometryLib.BasicMath.Frames.Space2D
         /// Create a set of 2 right-handed orthonormal direction vectors from the given vector
         /// </summary>
         /// <returns></returns>
-        public static LinearFrame2D CreateRightHanded(ITuple2D uDirection)
+        public static LinearFrame2D CreateRightHanded(IFloat64Tuple2D uDirection)
         {
-            var s = uDirection.GetLength();
+            var s = uDirection.GetVectorNorm();
 
             Debug.Assert(!s.IsAlmostZero());
 
@@ -29,9 +29,9 @@ namespace NumericalGeometryLib.BasicMath.Frames.Space2D
         /// </summary>
         /// <param name="uDirection"></param>
         /// <returns></returns>
-        public static LinearFrame2D CreateLeftHanded(ITuple2D uDirection)
+        public static LinearFrame2D CreateLeftHanded(IFloat64Tuple2D uDirection)
         {
-            var s = uDirection.GetLength();
+            var s = uDirection.GetVectorNorm();
 
             Debug.Assert(!s.IsAlmostZero());
 
@@ -49,14 +49,14 @@ namespace NumericalGeometryLib.BasicMath.Frames.Space2D
 
         public double VDirectionY { get; }
 
-        public Tuple2D UDirection
+        public Float64Tuple2D UDirection
         {
-            get { return new Tuple2D(UDirectionX, UDirectionY); }
+            get { return new Float64Tuple2D(UDirectionX, UDirectionY); }
         }
 
-        public Tuple2D VDirection
+        public Float64Tuple2D VDirection
         {
-            get { return new Tuple2D(VDirectionX, VDirectionY); }
+            get { return new Float64Tuple2D(VDirectionX, VDirectionY); }
         }
 
         public bool IsRightHanded
@@ -79,7 +79,7 @@ namespace NumericalGeometryLib.BasicMath.Frames.Space2D
         }
 
 
-        public LinearFrame2D(ITuple2D uDirection, ITuple2D vDirection)
+        public LinearFrame2D(IFloat64Tuple2D uDirection, IFloat64Tuple2D vDirection)
         {
             UDirectionX = uDirection.X;
             UDirectionY = uDirection.Y;

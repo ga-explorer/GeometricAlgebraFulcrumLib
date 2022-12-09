@@ -3,6 +3,7 @@ using GraphicsComposerLib.Rendering.BabylonJs.Materials;
 using GraphicsComposerLib.Rendering.BabylonJs.Meshes;
 using GraphicsComposerLib.Rendering.BabylonJs.Textures;
 using GraphicsComposerLib.Rendering.BabylonJs.Values;
+using GraphicsComposerLib.Rendering.Colors;
 using GraphicsComposerLib.Rendering.Images;
 using GraphicsComposerLib.Rendering.Visuals.Space3D;
 using GraphicsComposerLib.Rendering.Visuals.Space3D.Basic;
@@ -13,6 +14,7 @@ using GraphicsComposerLib.Rendering.Visuals.Space3D.Images;
 using GraphicsComposerLib.Rendering.Visuals.Space3D.Surfaces;
 using Humanizer;
 using NumericalGeometryLib.BasicMath;
+using NumericalGeometryLib.BasicMath.Tuples;
 using NumericalGeometryLib.BasicMath.Constants;
 using NumericalGeometryLib.BasicMath.Tuples.Immutable;
 using SixLabors.ImageSharp;
@@ -219,7 +221,7 @@ public class GrBabylonJsSceneComposer3D :
             {
                 Material = $"{visualElement.Name}Material",
                 Position = visualElement.Origin +
-                           new Tuple3D(
+                           new Float64Tuple3D(
                                0.5d * visualElement.SizeX,
                                0,
                                0.5d * visualElement.SizeZ
@@ -291,7 +293,7 @@ public class GrBabylonJsSceneComposer3D :
     {
         var length = visualElement.GetLength();
 
-        if (length == 0)
+        if (length.IsNearZero())
             return;
 
         //if (visualElement.TextImage is not null)
@@ -713,15 +715,15 @@ public class GrBabylonJsSceneComposer3D :
 
         if (visualElement.ShowFrames)
         {
-            var lineArrayList = new List<Tuple3D[]>(visualElement.ParameterValues.Count);
+            var lineArrayList = new List<Float64Tuple3D[]>(visualElement.ParameterValues.Count);
             var colorArrayList = new List<Color[]>(visualElement.ParameterValues.Count);
 
-            var xColor1 = Color.Red.WithAlpha(0.9f); //Color.Red.SetAlpha(128);
-            var xColor2 = Color.Red.WithAlpha(0.1f);
-            var yColor1 = Color.Green.WithAlpha(0.9f);
-            var yColor2 = Color.Green.WithAlpha(0.1f);
-            var zColor1 = Color.Blue.WithAlpha(0.9f);
-            var zColor2 = Color.Blue.WithAlpha(0.1f);
+            var xColor1 = Color.Red.SetAlpha(0.9f); //Color.Red.SetAlpha(128);
+            var xColor2 = Color.Red.SetAlpha(0.1f);
+            var yColor1 = Color.Green.SetAlpha(0.9f);
+            var yColor2 = Color.Green.SetAlpha(0.1f);
+            var zColor1 = Color.Blue.SetAlpha(0.9f);
+            var zColor2 = Color.Blue.SetAlpha(0.1f);
 
             var length = visualElement.FrameSize;
             foreach (var t in visualElement.FrameParameterValues)
@@ -1118,14 +1120,14 @@ public class GrBabylonJsSceneComposer3D :
                 new GrBabylonJsMesh.MeshProperties
                 {
                     Material = thickStyle.Material.MaterialName,
-                    Scaling = new Tuple3D(thickStyle.Thickness / (2d * visualElement.Radius), 1, 1),
+                    Scaling = new Float64Tuple3D(thickStyle.Thickness / (2d * visualElement.Radius), 1, 1),
                     Position = visualElement.Center.ToBabylonJsVector3Value(),
                     RotationQuaternion = qYx.QuaternionConcatenate(quaternion)
                 }
             );
 
 
-            var q2 = Tuple3D.E2.CreateQuaternionFromAxisAngle(visualElement.GetAngle());
+            var q2 = Float64Tuple3D.E2.CreateQuaternionFromAxisAngle(visualElement.GetAngle());
 
             SceneObject.AddDisc(
                 $"{visualElement.Name}Disc2",
@@ -1141,7 +1143,7 @@ public class GrBabylonJsSceneComposer3D :
                 new GrBabylonJsMesh.MeshProperties
                 {
                     Material = visualElement.Style.Material.MaterialName,
-                    Scaling = new Tuple3D(thickStyle.Thickness / (2d * visualElement.Radius), 1, 1),
+                    Scaling = new Float64Tuple3D(thickStyle.Thickness / (2d * visualElement.Radius), 1, 1),
                     Position = visualElement.Center.ToBabylonJsVector3Value(),
                     RotationQuaternion = qYx.QuaternionConcatenate(q2, quaternion)
                 }
@@ -1244,7 +1246,7 @@ public class GrBabylonJsSceneComposer3D :
                 {
                     Material = visualElement.Style.Material.MaterialName,
                     Position = visualElement.Center.ToBabylonJsVector3Value(),
-                    Scaling = new Tuple3D(1, thickStyle.Thickness / thickness, 1),
+                    Scaling = new Float64Tuple3D(1, thickStyle.Thickness / thickness, 1),
                     RotationQuaternion = quaternion
                 }
             );

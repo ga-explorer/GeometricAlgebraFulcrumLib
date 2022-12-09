@@ -44,10 +44,10 @@ namespace GraphicsComposerLib.Geometry.LatticeShapes.Curves
                 ? VertexList 
                 : _pointToVertexDictionary.Values;
 
-        public IEnumerable<Tuple3D> VertexPoints 
+        public IEnumerable<Float64Tuple3D> VertexPoints 
             => Vertices.Select(v => v.Point);
 
-        public IEnumerable<ITuple3D> VertexNormals 
+        public IEnumerable<IFloat64Tuple3D> VertexNormals 
             => Vertices.Select(v => v.Normal1);
 
         public IEnumerable<double> VertexTextureUvs 
@@ -172,7 +172,7 @@ namespace GraphicsComposerLib.Geometry.LatticeShapes.Curves
             return indexU / (double)(LatticeSize - 1);
         }
 
-        public Tuple3D GetLatticeTangentU(int indexU)
+        public Float64Tuple3D GetLatticeTangentU(int indexU)
         {
             if (LatticeClosed || (indexU > 0 && indexU < LatticeSize - 1))
             {
@@ -337,7 +337,7 @@ namespace GraphicsComposerLib.Geometry.LatticeShapes.Curves
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GrLatticeCurve3D MapPoints(Func<Tuple3D, Tuple3D> mappingFunc)
+        public GrLatticeCurve3D MapPoints(Func<Float64Tuple3D, Float64Tuple3D> mappingFunc)
         {
             foreach (var vertex in _pointToVertexDictionary.Values)
                 vertex.Point = mappingFunc(vertex.Point);

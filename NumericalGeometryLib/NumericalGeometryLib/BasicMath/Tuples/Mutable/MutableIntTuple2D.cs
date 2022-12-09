@@ -22,10 +22,7 @@ namespace NumericalGeometryLib.BasicMath.Tuples.Mutable
         /// <summary>
         /// The squared Euclidean length of this tuple if it represents a vector
         /// </summary>
-        public int VectorLengthSquared
-        {
-            get { return X * X + Y * Y; }
-        }
+        public int VectorLengthSquared => X * X + Y * Y;
 
         /// <summary>
         /// Get or set the ith component of this tuple
@@ -48,42 +45,27 @@ namespace NumericalGeometryLib.BasicMath.Tuples.Mutable
         /// <summary>
         /// True of the Euclidean squared length of this vector is zero
         /// </summary>
-        public bool IsZeroVector
-        {
-            get { return VectorLengthSquared == 0; }
-        }
+        public bool IsZeroVector => VectorLengthSquared == 0;
 
         /// <summary>
         /// The value of the smallest component in this tuple
         /// </summary>
-        public int MinComponent
-        {
-            get { return (X < Y) ? X : Y; }
-        }
+        public int MinComponent => (X < Y) ? X : Y;
 
         /// <summary>
         /// The value of the largest component in this tuple
         /// </summary>
-        public int MaxComponent
-        {
-            get { return (X > Y) ? X : Y; }
-        }
+        public int MaxComponent => (X > Y) ? X : Y;
 
         /// <summary>
         /// The index of the smallest component in this tuple
         /// </summary>
-        public int MinComponentIndex
-        {
-            get { return (X < Y) ? 0 : 1; }
-        }
+        public int MinComponentIndex => (X < Y) ? 0 : 1;
 
         /// <summary>
         /// The index of the largest component in this tuple
         /// </summary>
-        public int MaxComponentIndex
-        {
-            get { return (X > Y) ? 0 : 1; }
-        }
+        public int MaxComponentIndex => (X > Y) ? 0 : 1;
 
 
         public MutableIntTuple2D()

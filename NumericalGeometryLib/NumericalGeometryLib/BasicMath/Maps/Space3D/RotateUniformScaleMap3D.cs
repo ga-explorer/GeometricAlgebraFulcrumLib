@@ -50,21 +50,21 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public SquareMatrix4 ToSquareMatrix4()
+        public SquareMatrix4 GetSquareMatrix4()
         {
-            return new SquareMatrix4(ToArray2D());
+            return new SquareMatrix4(GetArray2D());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Matrix4x4 ToMatrix4x4()
+        public Matrix4x4 GetMatrix4x4()
         {
-            return ToArray2D().ToMatrix4x4();
+            return GetArray2D().ToMatrix4x4();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public double[,] ToArray2D()
+        public double[,] GetArray2D()
         {
-            var array = _rotateMap.ToArray2D();
+            var array = _rotateMap.GetArray2D();
 
             array[0, 0] *= _scalingFactor;
             array[1, 1] *= _scalingFactor;
@@ -74,11 +74,11 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple3D MapPoint(ITuple3D point)
+        public Float64Tuple3D MapPoint(IFloat64Tuple3D point)
         {
             var p = _rotateMap.MapPoint(point);
 
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 _scalingFactor * p.X,
                 _scalingFactor * p.Y,
                 _scalingFactor * p.Z
@@ -86,11 +86,11 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple3D MapVector(ITuple3D vector)
+        public Float64Tuple3D MapVector(IFloat64Tuple3D vector)
         {
             var p = _rotateMap.MapPoint(vector);
 
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 _scalingFactor * p.X,
                 _scalingFactor * p.Y,
                 _scalingFactor * p.Z
@@ -98,11 +98,11 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple3D MapNormal(ITuple3D normal)
+        public Float64Tuple3D MapNormal(IFloat64Tuple3D normal)
         {
             var p = _rotateMap.MapPoint(normal);
 
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 _scalingFactor * p.X,
                 _scalingFactor * p.Y,
                 _scalingFactor * p.Z
@@ -110,7 +110,7 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IAffineMap3D InverseMap()
+        public IAffineMap3D GetInverseAffineMap()
         {
             return new RotateUniformScaleMap3D()
             {

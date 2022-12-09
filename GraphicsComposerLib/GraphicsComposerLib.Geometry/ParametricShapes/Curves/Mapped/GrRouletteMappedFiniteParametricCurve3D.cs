@@ -33,19 +33,19 @@ public class GrRouletteMappedFiniteParametricCurve3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Tuple3D GetPoint(double parameterValue)
+    public Float64Tuple3D GetPoint(double parameterValue)
     {
         return RouletteMap.MapPoint(BaseCurve.GetPoint(parameterValue));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Tuple3D GetTangent(double parameterValue)
+    public Float64Tuple3D GetTangent(double parameterValue)
     {
         return BaseCurve.GetTangent(parameterValue);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Tuple3D GetUnitTangent(double parameterValue)
+    public Float64Tuple3D GetUnitTangent(double parameterValue)
     {
         return BaseCurve.GetUnitTangent(parameterValue);
     }

@@ -13,9 +13,9 @@ namespace GraphicsComposerLib.Geometry.Structures.Vertices
         public Color Color { get; set; }
             = Color.Black;
 
-        public ITuple2D TextureUv
+        public IFloat64Tuple2D TextureUv
         {
-            get => Tuple2D.Zero;
+            get => Float64Tuple2D.Zero;
             set => throw new InvalidOperationException();
         }
 
@@ -59,7 +59,7 @@ namespace GraphicsComposerLib.Geometry.Structures.Vertices
             Color = color;
         }
 
-        public GraphicsNormalColorVertexData3D(Color color, ITuple3D normal)
+        public GraphicsNormalColorVertexData3D(Color color, IFloat64Tuple3D normal)
         {
             Color = color;
             Normal.Set(normal);
@@ -71,9 +71,9 @@ namespace GraphicsComposerLib.Geometry.Structures.Vertices
         }
 
 
-        public Tuple3D GetDisplacedPoint(ITuple3D point, double d)
+        public Float64Tuple3D GetDisplacedPoint(IFloat64Tuple3D point, double d)
         {
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 point.X + d * Normal.X,
                 point.Y + d * Normal.Y,
                 point.Z + d * Normal.Z

@@ -2,7 +2,8 @@
 
 namespace NumericalGeometryLib.BasicMath.Coordinates
 {
-    public interface IPolarPosition2D : ITuple2D
+    public interface IPolarPosition2D : 
+        IFloat64Tuple2D
     {
         double R { get; }
 

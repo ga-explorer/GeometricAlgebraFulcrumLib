@@ -13,17 +13,17 @@ namespace GraphicsComposerLib.Geometry.Primitives.Points
     public sealed class GrPointSoupGeometry3D
         : IGraphicsPointGeometry3D
     {
-        public static GrPointSoupGeometry3D Create(IReadOnlyList<ITuple3D> pointsList)
+        public static GrPointSoupGeometry3D Create(IReadOnlyList<IFloat64Tuple3D> pointsList)
         {
             return new GrPointSoupGeometry3D(pointsList);
         }
 
-        public static GrPointSoupGeometry3D Create(params ITuple3D[] pointsList)
+        public static GrPointSoupGeometry3D Create(params IFloat64Tuple3D[] pointsList)
         {
             return new GrPointSoupGeometry3D(pointsList);
         }
 
-        public static GrPointSoupGeometry3D Create(IEnumerable<ITuple3D> pointsList)
+        public static GrPointSoupGeometry3D Create(IEnumerable<IFloat64Tuple3D> pointsList)
         {
             return new GrPointSoupGeometry3D(pointsList.ToArray());
         }
@@ -32,8 +32,8 @@ namespace GraphicsComposerLib.Geometry.Primitives.Points
         public IEnumerable<IGraphicsVertex3D> GeometryVertices
             => _vertexPoints.Select((p, i) => new GrVertex3D(i, p));
 
-        private readonly IReadOnlyList<ITuple3D> _vertexPoints;
-        public IEnumerable<ITuple3D> GeometryPoints 
+        private readonly IReadOnlyList<IFloat64Tuple3D> _vertexPoints;
+        public IEnumerable<IFloat64Tuple3D> GeometryPoints 
             => _vertexPoints;
 
         public GraphicsPrimitiveType3D PrimitiveType
@@ -45,25 +45,25 @@ namespace GraphicsComposerLib.Geometry.Primitives.Points
         public int Count 
             => _vertexPoints.Count;
 
-        public ITuple3D this[int index] 
+        public IFloat64Tuple3D this[int index] 
             => _vertexPoints[index];
 
         public IEnumerable<int> GeometryIndices
             => Enumerable.Range(0, _vertexPoints.Count).ToArray();
 
 
-        private GrPointSoupGeometry3D(IReadOnlyList<ITuple3D> pointsList)
+        private GrPointSoupGeometry3D(IReadOnlyList<IFloat64Tuple3D> pointsList)
         {
             _vertexPoints = pointsList;
         }
 
         
-        public ITuple3D GetGeometryPoint(int index)
+        public IFloat64Tuple3D GetGeometryPoint(int index)
         {
             return _vertexPoints[index];
         }
 
-        public IEnumerator<ITuple3D> GetEnumerator()
+        public IEnumerator<IFloat64Tuple3D> GetEnumerator()
         {
             return _vertexPoints.GetEnumerator();
         }

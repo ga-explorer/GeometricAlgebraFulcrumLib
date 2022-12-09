@@ -1,4 +1,5 @@
 ﻿using System;
+using GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency;
 
 namespace GeometricAlgebraFulcrumLib.Samples
 {
@@ -74,17 +75,29 @@ namespace GeometricAlgebraFulcrumLib.Samples
             //    driver.Quit();
             //}
 
-            //Graphics.BabylonJs.RotorFamilySamples.Example1();
+            //Graphics.BabylonJs.RotorFamilySamples.Example2();
             //Graphics.BabylonJs.CurveSamples.Example3();
             //Numeric.InterpolationSample.Example6();
-            //GeometricFrequency.PowerSignalVisualizationSample1.Execute();
+            PowerSignalVisualizationSample1.Execute();
             //EuclideanGeometry.RotationSamples.Example1();
             //Symbolic.SymbolicGramSchmidtSample.Example1();
+
+            //EigenSubspaceSamples.Example1();
+            //ReflectionSamples.ReflectionMatrixToHyperPlaneReflectionsSample(5, 3);
+
+            //for (var n = 3; n <= 8; n++)
+            //    EuclideanGeometry.RotationSamples.CirculantMatrixToSimpleRotationsSample(n);
             
-            EuclideanGeometry.RotationSamples.ValidationExample3();
+            //EuclideanGeometry.RotationSamples.Validations();
+            //EuclideanGeometry.RotationSamples.OutermorphismMatrixToRotationsSample(5);
+            //EuclideanGeometry.ReflectionSamples.Example4();
+            //EuclideanGeometry.OrthogonalLinearMapSequenceSamples.Example4();
+
             //EuclideanGeometry.VectorRotationSamples.NumericExample1();
             //GAPoT.SimpleKirchhoffRotationSamples.Example3();
             //GAPoT.SymmetricHarmonicsSymbolicSample.Execute();
+            //GAPoT.SymmetricalComponentsSamples.SymbolicSymmetricalComponentsSample(3);
+
 
             //GeometricFrequency.NumericGeometricFrequencySample.Example2();
             //GeometricFrequency.SymbolicAngularVelocitySample.Example1();

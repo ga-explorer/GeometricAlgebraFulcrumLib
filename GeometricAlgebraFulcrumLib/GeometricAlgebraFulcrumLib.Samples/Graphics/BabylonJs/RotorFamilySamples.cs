@@ -1,8 +1,13 @@
-﻿using System.Collections.Immutable;
+﻿using System;
+using System.Collections.Immutable;
+using System.IO;
 using System.Linq;
 using GeometricAlgebraFulcrumLib.Applications.Graphics;
 using NumericalGeometryLib.BasicMath;
 using NumericalGeometryLib.BasicMath.Tuples.Immutable;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Processing;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Graphics.BabylonJs;
 
@@ -14,22 +19,22 @@ public static class RotorFamilySamples
     {
         const int frameCount = 1001;
 
-        var sourceVector = Tuple3D.E3;
-        var targetVector = new Tuple3D(1, 1, 1).ToUnitVector();
+        var sourceVector = Float64Tuple3D.E3;
+        var targetVector = new Float64Tuple3D(1, 1, 1).ToUnitVector();
 
-
-        var cameraAlphaValues =
-            60d.DegreesToRadians().GetCosRange(
-                150d.DegreesToRadians(),
-                frameCount,
-                1,
-                false
-            ).ToImmutableArray();
 
         //var cameraAlphaValues =
-        //    Enumerable
-        //        .Repeat(120d.DegreesToRadians(), frameCount)
-        //        .ToImmutableArray();
+        //    60d.DegreesToRadians().GetCosRange(
+        //        150d.DegreesToRadians(),
+        //        frameCount,
+        //        1,
+        //        false
+        //    ).ToImmutableArray();
+
+        var cameraAlphaValues =
+            Enumerable
+                .Repeat(120d.DegreesToRadians(), frameCount)
+                .ToImmutableArray();
 
         var cameraBetaValues =
             Enumerable
@@ -50,14 +55,18 @@ public static class RotorFamilySamples
             thetaValues
         )
         {
+            CanvasWidth = 3840 - 1080,
+            CanvasHeight = 2160,
+            ShowCopyright = true,
+            ShowGuiLayer = true,
+
             Title = "Rotor Family of Two Vectors",
             WorkingPath = @"D:\Projects\Study\Babylon.js\",
             HostUrl = "http://localhost:5200/", 
             //LiveReloadWebServer "D:/Projects/Study/Babylon.js/" --port 5200 --UseSsl False --LiveReloadEnabled False --OpenBrowser True
 
-            CameraDistance = 15,
+            CameraDistance = 20,
             GridUnitCount = 20,
-            ShowCopyright = true,
             LaTeXScalingFactor = 1d / 60d,
             DrawRotorTrace = false,
 
@@ -68,5 +77,121 @@ public static class RotorFamilySamples
         };
 
         visualizer.GenerateSnapshots();
+    }
+
+    public static void Example2()
+    {
+        const string imageFolderIn1 = 
+            @"D:\Projects\Study\Babylon.js\Animations\Images\Rotor Family of Two Vectors\00\";
+
+        const string imageFolderIn2 = 
+            @"D:\Projects\Study\Babylon.js\Animations\Images\Rotor Family of Two Vectors\01\";
+
+        const string imageFolderIn3 = 
+            @"D:\Projects\Study\Babylon.js\Animations\Images\Rotor Family of Two Vectors\10\";
+
+        const string imageFolderOut = 
+            @"D:\Projects\Study\Babylon.js\Animations\Images\";
+
+        const int imageCount = 1001;
+
+        for (var i = 0; i < imageCount; i++)
+        {
+            var imageFileName = @$"Frame-{i:D6}.png";
+
+            var imageIn1 = Image.Load(Path.Combine(imageFolderIn1, imageFileName));
+            var imageIn2 = Image.Load(Path.Combine(imageFolderIn2, imageFileName));
+            var imageIn3 = Image.Load(Path.Combine(imageFolderIn3, imageFileName));
+
+            //imageIn1.Mutate(c=>
+            //    c.Resize(imageIn1.Width / 2, imageIn1.Height / 2)
+            //);
+
+            //imageIn2.Mutate(c=>
+            //    c.Resize(imageIn2.Width / 2, imageIn2.Height / 2)
+            //);
+            
+            var imageOut = new Image<Rgba32>(
+                imageIn3.Width + imageIn1.Width, 
+                imageIn3.Height
+            );
+            
+            imageOut.Mutate(c =>
+                c.DrawImage(imageIn1, new Point(imageIn3.Width, 0), 1f)
+            );
+            
+            imageOut.Mutate(c =>
+                c.DrawImage(imageIn2, new Point(imageIn3.Width, imageIn1.Height), 1f)
+            );
+
+            imageOut.Mutate(c =>
+                c.DrawImage(imageIn3, new Point(0, 0), 1f)
+            );
+
+            imageOut.Save(Path.Combine(imageFolderOut, imageFileName));
+
+            if (i % 10 == 0)
+            {
+                Console.WriteLine($"Finished processing frame {i}");
+            }
+        }
+    }
+    
+    public static void Example3()
+    {
+        const string imageFolderIn1 = 
+            @"D:\Projects\Study\Babylon.js\Animations\Images\Rotor Family of Two Vectors\00\";
+
+        const string imageFolderIn2 = 
+            @"D:\Projects\Study\Babylon.js\Animations\Images\Rotor Family of Two Vectors\01\";
+
+        const string imageFolderIn3 = 
+            @"D:\Projects\Study\Babylon.js\Animations\Images\Rotor Family of Two Vectors\10\";
+
+        const string imageFolderOut = 
+            @"D:\Projects\Study\Babylon.js\Animations\Images\";
+
+        const int imageCount = 1001;
+
+        for (var i = 0; i < imageCount; i++)
+        {
+            var imageFileName = @$"Frame-{i:D6}.png";
+
+            var imageIn1 = Image.Load(Path.Combine(imageFolderIn1, imageFileName));
+            var imageIn2 = Image.Load(Path.Combine(imageFolderIn2, imageFileName));
+            var imageIn3 = Image.Load(Path.Combine(imageFolderIn3, imageFileName));
+
+            imageIn1.Mutate(c=>
+                c.Resize(imageIn3.Width / 2, imageIn3.Width / 2)
+            );
+
+            imageIn2.Mutate(c=>
+                c.Resize(imageIn3.Width / 2, imageIn3.Width / 2)
+            );
+            
+            var imageOut = new Image<Rgba32>(
+                imageIn3.Width, 
+                imageIn3.Height + imageIn1.Height
+            );
+            
+            imageOut.Mutate(c =>
+                c.DrawImage(imageIn1, new Point(0, imageIn3.Height), 1f)
+            );
+            
+            imageOut.Mutate(c =>
+                c.DrawImage(imageIn2, new Point(imageIn1.Width, imageIn3.Height), 1f)
+            );
+
+            imageOut.Mutate(c =>
+                c.DrawImage(imageIn3, new Point(0, 0), 1f)
+            );
+
+            imageOut.Save(Path.Combine(imageFolderOut, imageFileName));
+
+            if (i % 10 == 0)
+            {
+                Console.WriteLine($"Finished processing frame {i}");
+            }
+        }
     }
 }

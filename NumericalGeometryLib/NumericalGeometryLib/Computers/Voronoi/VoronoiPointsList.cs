@@ -10,10 +10,10 @@ using NumericalGeometryLib.Borders.Space2D.Immutable;
 
 namespace NumericalGeometryLib.Computers.Voronoi
 {
-    public sealed class VoronoiPointsList : IReadOnlyList<Tuple2D>
+    public sealed class VoronoiPointsList : IReadOnlyList<Float64Tuple2D>
     {
-        private readonly List<Tuple2D> _pointsList
-            = new List<Tuple2D>();
+        private readonly List<Float64Tuple2D> _pointsList
+            = new List<Float64Tuple2D>();
 
 
         public int Count
@@ -21,7 +21,7 @@ namespace NumericalGeometryLib.Computers.Voronoi
             get { return _pointsList.Count; }
         }
 
-        public Tuple2D this[int index]
+        public Float64Tuple2D this[int index]
         {
             get { return _pointsList[index.Mod(_pointsList.Count)]; }
         }
@@ -31,12 +31,12 @@ namespace NumericalGeometryLib.Computers.Voronoi
             get { return _pointsList.Count - 3; }
         }
 
-        public IEnumerable<Tuple2D> DataPoints
+        public IEnumerable<Float64Tuple2D> DataPoints
         {
             get { return _pointsList.Take(_pointsList.Count - 3); }
         }
 
-        public IEnumerable<Tuple2D> BoundingTrianglePoints
+        public IEnumerable<Float64Tuple2D> BoundingTrianglePoints
         {
             get { return _pointsList.Skip(_pointsList.Count - 3); }
         }
@@ -51,14 +51,14 @@ namespace NumericalGeometryLib.Computers.Voronoi
         }
 
 
-        public VoronoiPointsList(IEnumerable<ITuple2D> pointsList)
+        public VoronoiPointsList(IEnumerable<IFloat64Tuple2D> pointsList)
         {
             _pointsList.AddRange(
                 pointsList.Select(p => p.ToTuple2D())
             );
 
             BoundingSphere = BoundingSphere2D.CreateFromPoints(
-                _pointsList.Cast<ITuple2D>(), 
+                _pointsList.Cast<IFloat64Tuple2D>(), 
                 1
             );
 
@@ -75,19 +75,19 @@ namespace NumericalGeometryLib.Computers.Voronoi
             var halfSideLength = 
                 radius / Math.Tan(Math.PI / 6);
 
-            var point1 = new Tuple2D(
+            var point1 = new Float64Tuple2D(
                 centerX - halfSideLength,
                 centerY - radius
             );
 
-            var point2 = new Tuple2D(
+            var point2 = new Float64Tuple2D(
                 centerX + halfSideLength,
                 centerY - radius
             );
 
             var d = point1.GetDistanceToPoint(centerX, centerY);
 
-            var point3 = new Tuple2D(
+            var point3 = new Float64Tuple2D(
                 centerX, 
                 centerY + d
             );
@@ -109,7 +109,7 @@ namespace NumericalGeometryLib.Computers.Voronoi
         }
 
 
-        public IEnumerator<Tuple2D> GetEnumerator()
+        public IEnumerator<Float64Tuple2D> GetEnumerator()
         {
             return _pointsList.GetEnumerator();
         }

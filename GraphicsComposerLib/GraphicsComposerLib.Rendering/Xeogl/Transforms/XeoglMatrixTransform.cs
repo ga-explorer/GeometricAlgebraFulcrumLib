@@ -40,17 +40,17 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Transforms
         public SquareMatrix4 GetMatrix()
             => Matrix;
 
-        public Tuple4D GetQuaternionTuple()
-            => new Tuple4D(0, 0, 0, 1);
+        public Float64Tuple4D GetQuaternionTuple()
+            => new Float64Tuple4D(0, 0, 0, 1);
 
-        public Tuple3D GetRotateTuple()
-            => Tuple3D.Zero;
+        public Float64Tuple3D GetRotateTuple()
+            => Float64Tuple3D.Zero;
 
-        public Tuple3D GetScaleTuple()
-            => new Tuple3D(1, 1, 1);
+        public Float64Tuple3D GetScaleTuple()
+            => new Float64Tuple3D(1, 1, 1);
 
-        public Tuple3D GetTranslateTuple()
-            => Tuple3D.Zero;
+        public Float64Tuple3D GetTranslateTuple()
+            => Float64Tuple3D.Zero;
 
 
         public string GetMatrixText()

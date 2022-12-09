@@ -148,7 +148,7 @@ namespace NumericalGeometryLib.Borders.Space3D.Mutable
             return new MutableBoundingBox3D(minX, minY, minZ, maxX, maxY, maxZ);
         }
 
-        public static MutableBoundingBox3D CreateAround(ITuple3D center, double deltaX, double deltaY, double deltaZ)
+        public static MutableBoundingBox3D CreateAround(IFloat64Tuple3D center, double deltaX, double deltaY, double deltaZ)
         {
             var minX = center.X - deltaX;
             var maxX = center.X + deltaX;
@@ -181,7 +181,7 @@ namespace NumericalGeometryLib.Borders.Space3D.Mutable
             return new MutableBoundingBox3D(pointX, pointY, pointZ);
         }
 
-        public static MutableBoundingBox3D CreateFromPoint(ITuple3D point)
+        public static MutableBoundingBox3D CreateFromPoint(IFloat64Tuple3D point)
         {
             return new MutableBoundingBox3D(point.X, point.Y, point.Z);
         }
@@ -226,7 +226,7 @@ namespace NumericalGeometryLib.Borders.Space3D.Mutable
             return new MutableBoundingBox3D(minX, minY, minZ, maxX, maxY, maxZ);
         }
 
-        public static MutableBoundingBox3D CreateFromPoints(ITuple3D point1, ITuple3D point2)
+        public static MutableBoundingBox3D CreateFromPoints(IFloat64Tuple3D point1, IFloat64Tuple3D point2)
         {
             double minX, minY, minZ, maxX, maxY, maxZ;
 
@@ -266,7 +266,7 @@ namespace NumericalGeometryLib.Borders.Space3D.Mutable
             return new MutableBoundingBox3D(minX, minY, minZ, maxX, maxY, maxZ);
         }
 
-        public static MutableBoundingBox3D CreateFromPoints(ITuple3D point1, ITuple3D point2, ITuple3D point3)
+        public static MutableBoundingBox3D CreateFromPoints(IFloat64Tuple3D point1, IFloat64Tuple3D point2, IFloat64Tuple3D point3)
         {
             var minX = point1.X;
             var minY = point1.Y;
@@ -297,7 +297,7 @@ namespace NumericalGeometryLib.Borders.Space3D.Mutable
             return new MutableBoundingBox3D(minX, minY, minZ, maxX, maxY, maxZ);
         }
 
-        public static MutableBoundingBox3D CreateFromPoints(params ITuple3D[] pointsList)
+        public static MutableBoundingBox3D CreateFromPoints(params IFloat64Tuple3D[] pointsList)
         {
             var point1 = pointsList[0];
 
@@ -323,7 +323,7 @@ namespace NumericalGeometryLib.Borders.Space3D.Mutable
             return new MutableBoundingBox3D(minX, minY, minZ, maxX, maxY, maxZ);
         }
 
-        public static MutableBoundingBox3D CreateFromPoints(IEnumerable<ITuple3D> pointsList)
+        public static MutableBoundingBox3D CreateFromPoints(IEnumerable<IFloat64Tuple3D> pointsList)
         {
             double minX = 0, minY = 0, minZ = 0;
             double maxX = 0, maxY = 0, maxZ = 0;
@@ -590,7 +590,7 @@ namespace NumericalGeometryLib.Borders.Space3D.Mutable
             return this;
         }
 
-        public MutableBoundingBox3D SetTo(ITuple3D point)
+        public MutableBoundingBox3D SetTo(IFloat64Tuple3D point)
         {
             MinX = point.X;
             MinY = point.Y;
@@ -638,7 +638,7 @@ namespace NumericalGeometryLib.Borders.Space3D.Mutable
         }
 
 
-        public MutableBoundingBox3D MoveMidPointTo(ITuple3D newMidPoint)
+        public MutableBoundingBox3D MoveMidPointTo(IFloat64Tuple3D newMidPoint)
         {
             var deltaX = newMidPoint.X - 0.5d * (MaxX + MinX);
             var deltaY = newMidPoint.Y - 0.5d * (MaxY + MinY);
@@ -677,7 +677,7 @@ namespace NumericalGeometryLib.Borders.Space3D.Mutable
         }
 
 
-        public MutableBoundingBox3D MoveBy(ITuple3D delta)
+        public MutableBoundingBox3D MoveBy(IFloat64Tuple3D delta)
         {
             MinX += delta.X;
             MinY += delta.Y;
@@ -723,7 +723,7 @@ namespace NumericalGeometryLib.Borders.Space3D.Mutable
             return this;
         }
 
-        public MutableBoundingBox3D UpdateSizeBy(ITuple3D delta)
+        public MutableBoundingBox3D UpdateSizeBy(IFloat64Tuple3D delta)
         {
             MinX = MinX - delta.X;
             MinY = MinY - delta.Y;
@@ -784,7 +784,7 @@ namespace NumericalGeometryLib.Borders.Space3D.Mutable
             return this;
         }
 
-        public MutableBoundingBox3D UpdateSizeByFactor(ITuple3D updateFactor)
+        public MutableBoundingBox3D UpdateSizeByFactor(IFloat64Tuple3D updateFactor)
         {
             var midX = 0.5d * (MaxX + MinX);
             var midY = 0.5d * (MaxY + MinY);
@@ -852,7 +852,7 @@ namespace NumericalGeometryLib.Borders.Space3D.Mutable
             return this;
         }
 
-        public MutableBoundingBox3D ExpandToInclude(ITuple3D point)
+        public MutableBoundingBox3D ExpandToInclude(IFloat64Tuple3D point)
         {
             if (MinX > point.X) MinX = point.X;
             if (MinY > point.Y) MinY = point.Y;
@@ -867,7 +867,7 @@ namespace NumericalGeometryLib.Borders.Space3D.Mutable
             return this;
         }
 
-        public MutableBoundingBox3D ExpandToInclude(params ITuple3D[] pointsList)
+        public MutableBoundingBox3D ExpandToInclude(params IFloat64Tuple3D[] pointsList)
         {
             foreach (var point in pointsList)
             {
@@ -885,7 +885,7 @@ namespace NumericalGeometryLib.Borders.Space3D.Mutable
             return this;
         }
 
-        public MutableBoundingBox3D ExpandToInclude(IEnumerable<ITuple3D> pointsList)
+        public MutableBoundingBox3D ExpandToInclude(IEnumerable<IFloat64Tuple3D> pointsList)
         {
             foreach (var point in pointsList)
             {
@@ -1016,9 +1016,9 @@ namespace NumericalGeometryLib.Borders.Space3D.Mutable
 
         public IBorderSurface3D MapUsing(IAffineMap3D affineMap)
         {
-            var oldSide001 = new Tuple3D(MaxX - MinX, 0, 0);
-            var oldSide010 = new Tuple3D(0, MaxY - MinY, 0);
-            var oldSide100 = new Tuple3D(0, 0, MaxZ - MinZ);
+            var oldSide001 = new Float64Tuple3D(MaxX - MinX, 0, 0);
+            var oldSide010 = new Float64Tuple3D(0, MaxY - MinY, 0);
+            var oldSide100 = new Float64Tuple3D(0, 0, MaxZ - MinZ);
 
             var newSide001 = affineMap.MapVector(oldSide001).ToTuple3D();
             var newSide010 = affineMap.MapVector(oldSide010).ToTuple3D();

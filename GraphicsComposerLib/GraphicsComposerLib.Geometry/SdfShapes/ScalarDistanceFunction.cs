@@ -46,14 +46,14 @@ namespace GraphicsComposerLib.Geometry.SdfShapes
             throw new System.NotImplementedException();
         }
 
-        public Tuple3D GetPoint(ITuple3D parameterValue)
+        public Float64Tuple3D GetPoint(IFloat64Tuple3D parameterValue)
         {
             return parameterValue.ToTuple3D();
         }
 
-        public Tuple3D GetPoint(double parameterValue1, double parameterValue2, double parameterValue3)
+        public Float64Tuple3D GetPoint(double parameterValue1, double parameterValue2, double parameterValue3)
         {
-            return new Tuple3D(parameterValue1, parameterValue2, parameterValue3);
+            return new Float64Tuple3D(parameterValue1, parameterValue2, parameterValue3);
         }
 
         /// <summary>
@@ -61,16 +61,16 @@ namespace GraphicsComposerLib.Geometry.SdfShapes
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
-        public abstract double GetScalarDistance(ITuple3D point);
+        public abstract double GetScalarDistance(IFloat64Tuple3D point);
 
         public double GetScalarDistance(double parameterValue1, double parameterValue2, double parameterValue3)
         {
             return GetScalarDistance(
-                new Tuple3D(parameterValue1, parameterValue2, parameterValue3)
+                new Float64Tuple3D(parameterValue1, parameterValue2, parameterValue3)
             );
         }
 
-        public GrParametricVolumeLocalFrame3D GetFrame(ITuple3D parameterValue)
+        public GrParametricVolumeLocalFrame3D GetFrame(IFloat64Tuple3D parameterValue)
         {
             return new GrParametricVolumeLocalFrame3D(
                 parameterValue,
@@ -85,7 +85,7 @@ namespace GraphicsComposerLib.Geometry.SdfShapes
                 parameterValue1,
                 parameterValue2,
                 parameterValue3,
-                new Tuple3D(parameterValue1, parameterValue2, parameterValue3),
+                new Float64Tuple3D(parameterValue1, parameterValue2, parameterValue3),
                 GetScalarDistance(parameterValue1, parameterValue2, parameterValue3)
             );
         }
@@ -109,34 +109,34 @@ namespace GraphicsComposerLib.Geometry.SdfShapes
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
-        public virtual Tuple3D ComputeSdfNormal(ITuple3D point)
+        public virtual Float64Tuple3D ComputeSdfNormal(IFloat64Tuple3D point)
         {
-            var d1 = GetScalarDistance(new Tuple3D(
+            var d1 = GetScalarDistance(new Float64Tuple3D(
                 point.X + SdfDistanceDelta,
                 point.Y - SdfDistanceDelta,
                 point.Z - SdfDistanceDelta
             ));
 
-            var d2 = GetScalarDistance(new Tuple3D(
+            var d2 = GetScalarDistance(new Float64Tuple3D(
                 point.X - SdfDistanceDelta,
                 point.Y - SdfDistanceDelta,
                 point.Z + SdfDistanceDelta
             ));
 
-            var d3 = GetScalarDistance(new Tuple3D(
+            var d3 = GetScalarDistance(new Float64Tuple3D(
                 point.X - SdfDistanceDelta,
                 point.Y + SdfDistanceDelta,
                 point.Z - SdfDistanceDelta
             ));
 
-            var d4 = GetScalarDistance(new Tuple3D(
+            var d4 = GetScalarDistance(new Float64Tuple3D(
                 point.X + SdfDistanceDelta,
                 point.Y + SdfDistanceDelta,
                 point.Z + SdfDistanceDelta
             ));
 
 
-            return Tuple3D.CreateUnitVector(
+            return Float64Tuple3D.CreateUnitVector(
                 d4 + d1 - d2 - d3,
                 d4 - d1 - d2 + d3,
                 d4 - d1 + d2 - d3

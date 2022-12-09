@@ -6,7 +6,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Basic;
 
 public sealed class GrVisualVector3D :
     GrVisualElement3D,
-    ITuple3D
+    IFloat64Tuple3D
 {
     public double Item1 => Direction.X;
         
@@ -20,21 +20,21 @@ public sealed class GrVisualVector3D :
         
     public double Z => Direction.Z;
 
-    public ITuple3D Origin { get; } 
+    public IFloat64Tuple3D Origin { get; } 
 
-    public ITuple3D Direction { get; }
+    public IFloat64Tuple3D Direction { get; }
     
     public GrVisualVectorStyle3D Style { get; set; } 
     
     
-    public GrVisualVector3D(string name, ITuple3D direction) 
+    public GrVisualVector3D(string name, IFloat64Tuple3D direction) 
         : base(name)
     {
-        Origin = Tuple3D.Zero;
+        Origin = Float64Tuple3D.Zero;
         Direction = direction;
     }
 
-    public GrVisualVector3D(string name, ITuple3D origin, ITuple3D direction) 
+    public GrVisualVector3D(string name, IFloat64Tuple3D origin, IFloat64Tuple3D direction) 
         : base(name)
     {
         Origin = origin;
@@ -44,10 +44,10 @@ public sealed class GrVisualVector3D :
 
     public double GetLength()
     {
-        return Direction.GetLength();
+        return Direction.GetVectorNorm();
     }
     
-    public Tuple3D GetUnitDirection()
+    public Float64Tuple3D GetUnitDirection()
     {
         return Direction.ToUnitVector();
     }

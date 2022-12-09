@@ -62,17 +62,17 @@ namespace NumericalGeometryLib.Computers.Voronoi
 
         public bool IsBad { get; internal set; }
 
-        public Tuple2D Point1
+        public Float64Tuple2D Point1
         {
             get { return PointsList[PointIndex1]; }
         }
 
-        public Tuple2D Point2
+        public Float64Tuple2D Point2
         {
             get { return PointsList[PointIndex2]; }
         }
 
-        public Tuple2D Point3
+        public Float64Tuple2D Point3
         {
             get { return PointsList[PointIndex3]; }
         }
@@ -157,7 +157,7 @@ namespace NumericalGeometryLib.Computers.Voronoi
                    PointIndex3 == pointIndex3;
         }
 
-        public bool CircumcircleContainsVa(ITuple2D point)
+        public bool CircumcircleContainsVa(IFloat64Tuple2D point)
         {
             var ab = Point1X * Point1X + Point1Y * Point1Y;
             var cd = Point2X * Point2X + Point2Y * Point2Y;
@@ -165,7 +165,7 @@ namespace NumericalGeometryLib.Computers.Voronoi
 
             var centerX = 0.5d * (ab * (Point3Y - Point2Y) + cd * (Point1Y - Point3Y) + ef * (Point2Y - Point1Y)) / (Point1X * (Point3Y - Point2Y) + Point2X * (Point1Y - Point3Y) + Point3X * (Point2Y - Point1Y));
             var centerY = 0.5d * (ab * (Point3X - Point2X) + cd * (Point1X - Point3X) + ef * (Point2X - Point1X)) / (Point1Y * (Point3X - Point2X) + Point2Y * (Point1X - Point3X) + Point3Y * (Point2X - Point1X));
-            var center = new Tuple2D(centerX, centerY);
+            var center = new Float64Tuple2D(centerX, centerY);
 
             var radiusSquared = center.GetDistanceSquaredToPoint(Point1X, Point1Y);
 

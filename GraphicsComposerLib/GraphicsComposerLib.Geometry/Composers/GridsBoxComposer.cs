@@ -18,7 +18,7 @@ namespace GraphicsComposerLib.Geometry.Composers
         public ZxGridComposer RighGridComposer { get; }
 
 
-        public GridsBoxComposer(Tuple3D center)
+        public GridsBoxComposer(Float64Tuple3D center)
         {
             //TODO: Adjust the centers to make a box
             UpperGridComposer = new XyGridComposer();

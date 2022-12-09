@@ -39,7 +39,7 @@ namespace GraphicsComposerLib.Geometry.Meshes.PathsMesh
         }
 
         
-        public static ITuple3D GetPoint(this IPathsMesh3D baseMesh, int meshPointIndex)
+        public static IFloat64Tuple3D GetPoint(this IPathsMesh3D baseMesh, int meshPointIndex)
         {
             meshPointIndex = meshPointIndex.Mod(baseMesh.MeshPointsCount);
             var pathPointIndex = meshPointIndex % baseMesh.PathPointsCount;
@@ -48,7 +48,7 @@ namespace GraphicsComposerLib.Geometry.Meshes.PathsMesh
             return baseMesh[pathIndex][pathPointIndex];
         }
 
-        public static ITuple3D GetPoint(this IPathsMesh3D baseMesh, int pathIndex, int pathPointIndex)
+        public static IFloat64Tuple3D GetPoint(this IPathsMesh3D baseMesh, int pathIndex, int pathPointIndex)
         {
             return baseMesh[pathIndex][pathPointIndex];
         }
@@ -160,7 +160,7 @@ namespace GraphicsComposerLib.Geometry.Meshes.PathsMesh
             }
         }
 
-        public static IEnumerable<ITuple3D> GetPoints(this IPathsMesh3D mesh)
+        public static IEnumerable<IFloat64Tuple3D> GetPoints(this IPathsMesh3D mesh)
         {
             return mesh.SelectMany(p => p);
         }
@@ -205,41 +205,41 @@ namespace GraphicsComposerLib.Geometry.Meshes.PathsMesh
         }
 
 
-        public static Pair<ITuple3D> GetPointPair(this IPathsMesh3D mesh, int pathIndex1, int pathIndex2, int pathPointIndex)
+        public static Pair<IFloat64Tuple3D> GetPointPair(this IPathsMesh3D mesh, int pathIndex1, int pathIndex2, int pathPointIndex)
         {
-            return new Pair<ITuple3D>(
+            return new Pair<IFloat64Tuple3D>(
                 mesh[pathIndex1][pathPointIndex],
                 mesh[pathIndex2][pathPointIndex]
             );
         }
 
-        public static Pair<ITuple3D> GetPointPair(this IPathsMesh3D mesh, int pathIndex1, int pathIndex2, int pathPointIndex1, int pathPointIndex2)
+        public static Pair<IFloat64Tuple3D> GetPointPair(this IPathsMesh3D mesh, int pathIndex1, int pathIndex2, int pathPointIndex1, int pathPointIndex2)
         {
-            return new Pair<ITuple3D>(
+            return new Pair<IFloat64Tuple3D>(
                 mesh[pathIndex1][pathPointIndex1],
                 mesh[pathIndex2][pathPointIndex2]
             );
         }
 
-        public static Pair<ITuple3D> GetPointPair(this IPathsMesh3D mesh, Pair<int> pathIndexPair, int pathPointIndex)
+        public static Pair<IFloat64Tuple3D> GetPointPair(this IPathsMesh3D mesh, Pair<int> pathIndexPair, int pathPointIndex)
         {
-            return new Pair<ITuple3D>(
+            return new Pair<IFloat64Tuple3D>(
                 mesh[pathIndexPair.Item1][pathPointIndex],
                 mesh[pathIndexPair.Item2][pathPointIndex]
             );
         }
 
-        public static Pair<ITuple3D> GetPointPair(this IPathsMesh3D mesh, int pathIndex, Pair<int> pathPointIndexPair)
+        public static Pair<IFloat64Tuple3D> GetPointPair(this IPathsMesh3D mesh, int pathIndex, Pair<int> pathPointIndexPair)
         {
             return mesh[pathIndex].GetPointsPair(pathPointIndexPair);
         }
 
 
-        public static IEnumerable<IQuad<ITuple3D>> GetPointQuads(this IPathsMesh3D baseMesh)
+        public static IEnumerable<IQuad<IFloat64Tuple3D>> GetPointQuads(this IPathsMesh3D baseMesh)
         {
             for (var pathIndex = 1; pathIndex < baseMesh.Count; pathIndex++)
             for (var pathPointIndex = 1; pathPointIndex < baseMesh.PathPointsCount; pathPointIndex++)
-                yield return new Quad<ITuple3D>(
+                yield return new Quad<IFloat64Tuple3D>(
                     baseMesh.GetPoint(pathIndex - 1, pathPointIndex - 1),
                     baseMesh.GetPoint(pathIndex - 1, pathPointIndex),
                     baseMesh.GetPoint(pathIndex, pathPointIndex - 1),
@@ -295,25 +295,25 @@ namespace GraphicsComposerLib.Geometry.Meshes.PathsMesh
                     var texturedPoint1 = new GrTextureVertex3D(
                         baseMesh.GetMeshPointIndex(i1, j1),
                         baseMesh.GetPoint(i1, j1),
-                        new Tuple2D(u1, v1)
+                        new Float64Tuple2D(u1, v1)
                     );
 
                     var texturedPoint2 = new GrTextureVertex3D(
                         baseMesh.GetMeshPointIndex(i1, j2),
                         baseMesh.GetPoint(i1, j2),
-                        new Tuple2D(u1, v2)
+                        new Float64Tuple2D(u1, v2)
                     );
 
                     var texturedPoint3 = new GrTextureVertex3D(
                         baseMesh.GetMeshPointIndex(i2, j1),
                         baseMesh.GetPoint(i2, j1),
-                        new Tuple2D(u2, v1)
+                        new Float64Tuple2D(u2, v1)
                     );
 
                     var texturedPoint4 = new GrTextureVertex3D(
                         baseMesh.GetMeshPointIndex(i2, j2),
                         baseMesh.GetPoint(i2, j2),
-                        new Tuple2D(u2, v2)
+                        new Float64Tuple2D(u2, v2)
                     );
 
                     yield return new Quad<GrTextureVertex3D>(
@@ -350,25 +350,25 @@ namespace GraphicsComposerLib.Geometry.Meshes.PathsMesh
                     var texturedPoint1 = new GrTextureVertex3D(
                         baseMesh.GetMeshPointIndex(i1, j1),
                         baseMesh.GetPoint(i1, j1),
-                        new Tuple2D(u1, v1)
+                        new Float64Tuple2D(u1, v1)
                     );
 
                     var texturedPoint2 = new GrTextureVertex3D(
                         baseMesh.GetMeshPointIndex(i1, j2),
                         baseMesh.GetPoint(i1, j2),
-                        new Tuple2D(u1, v2)
+                        new Float64Tuple2D(u1, v2)
                     );
 
                     var texturedPoint3 = new GrTextureVertex3D(
                         baseMesh.GetMeshPointIndex(i2, j1),
                         baseMesh.GetPoint(i2, j1),
-                        new Tuple2D(u2, v1)
+                        new Float64Tuple2D(u2, v1)
                     );
 
                     var texturedPoint4 = new GrTextureVertex3D(
                         baseMesh.GetMeshPointIndex(i2, j2),
                         baseMesh.GetPoint(i2, j2),
-                        new Tuple2D(u2, v2)
+                        new Float64Tuple2D(u2, v2)
                     );
 
                     yield return new Quad<GrTextureVertex3D>(

@@ -9,11 +9,11 @@ using GeometricAlgebraFulcrumLib.Mathematica;
 using GeometricAlgebraFulcrumLib.Mathematica.Processors;
 using GeometricAlgebraFulcrumLib.Mathematica.Text;
 using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Utilities.Factories;
-using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using TextComposerLib.Text;
 using TextComposerLib.Text.Markdown;
 using Wolfram.NETLink;
+using GeometricAlgebraFulcrumLib.Text;
+using GeometricAlgebraFulcrumLib.Processors;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.Basic
 {

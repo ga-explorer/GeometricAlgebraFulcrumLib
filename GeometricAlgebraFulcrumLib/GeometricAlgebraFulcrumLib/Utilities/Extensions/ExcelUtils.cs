@@ -3,10 +3,9 @@ using System.IO;
 using DataStructuresLib.Basic;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Algebra.SignalProcessing;
+using GeometricAlgebraFulcrumLib.Algebra.SignalAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Utilities.Factories;
 using OfficeOpenXml;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Extensions

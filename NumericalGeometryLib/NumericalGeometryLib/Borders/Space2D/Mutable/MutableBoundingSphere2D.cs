@@ -22,12 +22,12 @@ namespace NumericalGeometryLib.Borders.Space2D.Mutable
             return new MutableBoundingSphere2D(centerX, centerY, radius);
         }
 
-        public static MutableBoundingSphere2D Create(ITuple2D center, double radius)
+        public static MutableBoundingSphere2D Create(IFloat64Tuple2D center, double radius)
         {
             return new MutableBoundingSphere2D(center.X, center.Y, radius);
         }
 
-        public static MutableBoundingSphere2D CreateFromPoints(IEnumerable<ITuple2D> pointsList, bool tightBound = true)
+        public static MutableBoundingSphere2D CreateFromPoints(IEnumerable<IFloat64Tuple2D> pointsList, bool tightBound = true)
         {
             var pointsArray = pointsList.ToArray();
 
@@ -68,7 +68,7 @@ namespace NumericalGeometryLib.Borders.Space2D.Mutable
                 }
             }
 
-            var center1 = new Tuple2D(
+            var center1 = new Float64Tuple2D(
                 0.5 * (maxPoint1.X + maxPoint2.X),
                 0.5 * (maxPoint1.Y + maxPoint2.Y)
             );
@@ -85,9 +85,9 @@ namespace NumericalGeometryLib.Borders.Space2D.Mutable
 
         public double CenterY { get; private set; }
 
-        public Tuple2D Center
+        public Float64Tuple2D Center
         {
-            get { return new Tuple2D(CenterX, CenterY); }
+            get { return new Float64Tuple2D(CenterX, CenterY); }
         }
 
         public bool IntersectionTestsEnabled { get; set; } = true;
@@ -104,7 +104,7 @@ namespace NumericalGeometryLib.Borders.Space2D.Mutable
         {
         }
 
-        internal MutableBoundingSphere2D(ITuple2D center, double radius)
+        internal MutableBoundingSphere2D(IFloat64Tuple2D center, double radius)
         {
             CenterX = center.X;
             CenterY = center.Y;
@@ -140,7 +140,7 @@ namespace NumericalGeometryLib.Borders.Space2D.Mutable
             return this;
         }
 
-        public MutableBoundingSphere2D SetCenter(ITuple2D center)
+        public MutableBoundingSphere2D SetCenter(IFloat64Tuple2D center)
         {
             CenterX = center.X;
             CenterY = center.Y;
@@ -160,7 +160,7 @@ namespace NumericalGeometryLib.Borders.Space2D.Mutable
             return this;
         }
 
-        public MutableBoundingSphere2D SetTo(ITuple2D center, double radius)
+        public MutableBoundingSphere2D SetTo(IFloat64Tuple2D center, double radius)
         {
             CenterX = center.X;
             CenterY = center.Y;
@@ -212,7 +212,7 @@ namespace NumericalGeometryLib.Borders.Space2D.Mutable
             return this;
         }
 
-        public MutableBoundingSphere2D MoveCenterBy(ITuple2D delta)
+        public MutableBoundingSphere2D MoveCenterBy(IFloat64Tuple2D delta)
         {
             CenterX += delta.X;
             CenterY += delta.Y;
@@ -225,24 +225,24 @@ namespace NumericalGeometryLib.Borders.Space2D.Mutable
 
         public BoundingBox2D GetBoundingBox()
         {
-            var point1 = new Tuple2D(CenterX - Radius, CenterY - Radius);
-            var point2 = new Tuple2D(CenterX + Radius, CenterY + Radius);
+            var point1 = new Float64Tuple2D(CenterX - Radius, CenterY - Radius);
+            var point2 = new Float64Tuple2D(CenterX + Radius, CenterY + Radius);
 
             return BoundingBox2D.Create(point1, point2);
         }
 
         public MutableBoundingBox2D GetMutableBoundingBox()
         {
-            var point1 = new Tuple2D(CenterX - Radius, CenterY - Radius);
-            var point2 = new Tuple2D(CenterX + Radius, CenterY + Radius);
+            var point1 = new Float64Tuple2D(CenterX - Radius, CenterY - Radius);
+            var point2 = new Float64Tuple2D(CenterX + Radius, CenterY + Radius);
 
             return MutableBoundingBox2D.CreateFromPoints(point1, point2);
         }
 
         public IBorderCurve2D MapUsing(IAffineMap2D affineMap)
         {
-            var s1 = affineMap.MapVector(Tuple2D.E1).ToTuple2D().GetLength();
-            var s2 = affineMap.MapVector(Tuple2D.E2).ToTuple2D().GetLength();
+            var s1 = affineMap.MapVector(Float64Tuple2D.E1).ToTuple2D().GetVectorNorm();
+            var s2 = affineMap.MapVector(Float64Tuple2D.E2).ToTuple2D().GetVectorNorm();
 
             var sMax = s1 > s2 ? s1 : s2;
 

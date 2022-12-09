@@ -115,7 +115,7 @@ namespace GraphicsComposerLib.Geometry.Primitives
             return new Triplet<int>(index3, index1, index2);
         }
 
-        public static GrLineGeometryComposer3D ToLineGeometryComposer(this IEnumerable<ITuple3D> pointsList, bool closedFlag = false)
+        public static GrLineGeometryComposer3D ToLineGeometryComposer(this IEnumerable<IFloat64Tuple3D> pointsList, bool closedFlag = false)
         {
             var lineMesh = new GrLineGeometryComposer3D();
 
@@ -124,52 +124,52 @@ namespace GraphicsComposerLib.Geometry.Primitives
             return lineMesh;
         }
 
-        public static GrPointGeometry3D ToGraphicsPointsGeometry(this IReadOnlyList<ITuple3D> pointsList)
+        public static GrPointGeometry3D ToGraphicsPointsGeometry(this IReadOnlyList<IFloat64Tuple3D> pointsList)
         {
             return GrPointGeometry3D.Create(pointsList);
         }
 
-        public static GrPointGeometry3D ToGraphicsPointsGeometry(this IEnumerable<ITuple3D> pointsList)
+        public static GrPointGeometry3D ToGraphicsPointsGeometry(this IEnumerable<IFloat64Tuple3D> pointsList)
         {
             return GrPointGeometry3D.Create(pointsList);
         }
 
-        public static GrPointSoupGeometry3D ToGraphicsPointsListGeometry(this IReadOnlyList<ITuple3D> pointsList)
+        public static GrPointSoupGeometry3D ToGraphicsPointsListGeometry(this IReadOnlyList<IFloat64Tuple3D> pointsList)
         {
             return GrPointSoupGeometry3D.Create(pointsList);
         }
 
-        public static GrPointSoupGeometry3D ToGraphicsPointsListGeometry(this IEnumerable<ITuple3D> pointsList)
+        public static GrPointSoupGeometry3D ToGraphicsPointsListGeometry(this IEnumerable<IFloat64Tuple3D> pointsList)
         {
             return GrPointSoupGeometry3D.Create(pointsList);
         }
 
-        public static GrLineLoopGeometry3D ToGraphicsLineLoopGeometry(this IReadOnlyList<ITuple3D> pointsList)
+        public static GrLineLoopGeometry3D ToGraphicsLineLoopGeometry(this IReadOnlyList<IFloat64Tuple3D> pointsList)
         {
             return GrLineLoopGeometry3D.Create(pointsList);
         }
 
-        public static GrLineLoopGeometry3D ToGraphicsLineLoopGeometry(this IEnumerable<ITuple3D> pointsList)
+        public static GrLineLoopGeometry3D ToGraphicsLineLoopGeometry(this IEnumerable<IFloat64Tuple3D> pointsList)
         {
             return GrLineLoopGeometry3D.Create(pointsList);
         }
 
-        public static GrLineStripGeometry3D ToGraphicsLineStripGeometry(this IReadOnlyList<ITuple3D> pointsList)
+        public static GrLineStripGeometry3D ToGraphicsLineStripGeometry(this IReadOnlyList<IFloat64Tuple3D> pointsList)
         {
             return GrLineStripGeometry3D.Create(pointsList);
         }
 
-        public static GrLineStripGeometry3D ToGraphicsLineStripGeometry(this IEnumerable<ITuple3D> pointsList)
+        public static GrLineStripGeometry3D ToGraphicsLineStripGeometry(this IEnumerable<IFloat64Tuple3D> pointsList)
         {
             return GrLineStripGeometry3D.Create(pointsList);
         }
 
-        public static GrLineGeometry3D ToGraphicsLinesGeometry(this IReadOnlyList<ITuple3D> pointsList)
+        public static GrLineGeometry3D ToGraphicsLinesGeometry(this IReadOnlyList<IFloat64Tuple3D> pointsList)
         {
             return GrLineGeometry3D.Create(pointsList);
         }
 
-        public static GrLineGeometry3D ToGraphicsLinesGeometry(this IEnumerable<ITuple3D> pointsList)
+        public static GrLineGeometry3D ToGraphicsLinesGeometry(this IEnumerable<IFloat64Tuple3D> pointsList)
         {
             return GrLineGeometry3D.Create(pointsList);
         }
@@ -179,12 +179,12 @@ namespace GraphicsComposerLib.Geometry.Primitives
             return GrLineGeometry3D.Create(lineSegmentsList);
         }
 
-        public static GrLineSoupGeometry3D ToGraphicsLinesListGeometry(this IReadOnlyList<ITuple3D> pointsList)
+        public static GrLineSoupGeometry3D ToGraphicsLinesListGeometry(this IReadOnlyList<IFloat64Tuple3D> pointsList)
         {
             return GrLineSoupGeometry3D.Create(pointsList);
         }
 
-        public static GrLineSoupGeometry3D ToGraphicsLinesListGeometry(this IEnumerable<ITuple3D> pointsList)
+        public static GrLineSoupGeometry3D ToGraphicsLinesListGeometry(this IEnumerable<IFloat64Tuple3D> pointsList)
         {
             return GrLineSoupGeometry3D.Create(pointsList);
         }
@@ -194,32 +194,32 @@ namespace GraphicsComposerLib.Geometry.Primitives
             return GrLineSoupGeometry3D.Create(lineSegmentsList);
         }
 
-        public static GrTriangleFanGeometry3D ToGraphicsTriangleFanGeometry(this IReadOnlyList<ITuple3D> pointsList)
+        public static GrTriangleFanGeometry3D ToGraphicsTriangleFanGeometry(this IReadOnlyList<IFloat64Tuple3D> pointsList)
         {
             return GrTriangleFanGeometry3D.Create(pointsList);
         }
 
-        public static GrTriangleFanGeometry3D ToGraphicsTriangleFanGeometry(this IEnumerable<ITuple3D> pointsList)
+        public static GrTriangleFanGeometry3D ToGraphicsTriangleFanGeometry(this IEnumerable<IFloat64Tuple3D> pointsList)
         {
             return GrTriangleFanGeometry3D.Create(pointsList);
         }
 
-        public static GrTriangleStripGeometry3D ToGraphicsTriangleStripGeometry(this IReadOnlyList<ITuple3D> pointsList)
+        public static GrTriangleStripGeometry3D ToGraphicsTriangleStripGeometry(this IReadOnlyList<IFloat64Tuple3D> pointsList)
         {
             return GrTriangleStripGeometry3D.Create(pointsList);
         }
 
-        public static GrTriangleStripGeometry3D ToGraphicsTriangleStripGeometry(this IEnumerable<ITuple3D> pointsList)
+        public static GrTriangleStripGeometry3D ToGraphicsTriangleStripGeometry(this IEnumerable<IFloat64Tuple3D> pointsList)
         {
             return GrTriangleStripGeometry3D.Create(pointsList);
         }
 
-        public static GrTriangleGeometry3D ToGraphicsTrianglesGeometry(this IReadOnlyList<ITuple3D> pointsList)
+        public static GrTriangleGeometry3D ToGraphicsTrianglesGeometry(this IReadOnlyList<IFloat64Tuple3D> pointsList)
         {
             return GrTriangleGeometry3D.Create(pointsList);
         }
 
-        public static GrTriangleGeometry3D ToGraphicsTrianglesGeometry(this IEnumerable<ITuple3D> pointsList)
+        public static GrTriangleGeometry3D ToGraphicsTrianglesGeometry(this IEnumerable<IFloat64Tuple3D> pointsList)
         {
             return GrTriangleGeometry3D.Create(pointsList);
         }
@@ -229,7 +229,7 @@ namespace GraphicsComposerLib.Geometry.Primitives
             return GrTriangleGeometry3D.Create(trianglesList, reversePoints);
         }
 
-        public static GrTriangleSoupGeometry3D ToGraphicsTrianglesListGeometry(this IEnumerable<ITuple3D> pointsList)
+        public static GrTriangleSoupGeometry3D ToGraphicsTrianglesListGeometry(this IEnumerable<IFloat64Tuple3D> pointsList)
         {
             return GrTriangleSoupGeometry3D.Create(pointsList);
         }
@@ -240,9 +240,9 @@ namespace GraphicsComposerLib.Geometry.Primitives
         }
 
 
-        public static Tuple3D GetDisplacedPoint(this IGraphicsSurfaceLocalFrame3D vertex, double t)
+        public static Float64Tuple3D GetDisplacedPoint(this IGraphicsSurfaceLocalFrame3D vertex, double t)
         {
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 vertex.Point.X + t * vertex.Normal.X,
                 vertex.Point.Y + t * vertex.Normal.Y,
                 vertex.Point.Z + t * vertex.Normal.Z
@@ -252,12 +252,12 @@ namespace GraphicsComposerLib.Geometry.Primitives
         public static LineSegment3D GetDisplacedLineSegment(this IGraphicsSurfaceLocalFrame3D vertex, double t1, double t2)
         {
             return LineSegment3D.Create(
-                new Tuple3D(
+                new Float64Tuple3D(
                     vertex.Point.X + t1 * vertex.Normal.X,
                     vertex.Point.Y + t1 * vertex.Normal.Y,
                     vertex.Point.Z + t1 * vertex.Normal.Z
                 ),
-                new Tuple3D(
+                new Float64Tuple3D(
                     vertex.Point.X + t2 * vertex.Normal.X,
                     vertex.Point.Y + t2 * vertex.Normal.Y,
                     vertex.Point.Z + t2 * vertex.Normal.Z

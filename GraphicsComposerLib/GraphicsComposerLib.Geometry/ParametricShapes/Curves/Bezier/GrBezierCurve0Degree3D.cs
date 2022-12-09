@@ -9,10 +9,10 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Bezier
     public class GrBezierCurve0Degree3D :
         IGraphicsC1ParametricCurve3D
     {
-        public Tuple3D Point1 { get; }
+        public Float64Tuple3D Point1 { get; }
 
 
-        public GrBezierCurve0Degree3D([NotNull] ITuple3D point1)
+        public GrBezierCurve0Degree3D([NotNull] IFloat64Tuple3D point1)
         {
             Point1 = point1.ToTuple3D();
 
@@ -27,21 +27,21 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Bezier
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple3D GetPoint(double t)
+        public Float64Tuple3D GetPoint(double t)
         {
             return Point1;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple3D GetTangent(double t)
+        public Float64Tuple3D GetTangent(double t)
         {
-            return Tuple3D.Zero;
+            return Float64Tuple3D.Zero;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple3D GetUnitTangent(double t)
+        public Float64Tuple3D GetUnitTangent(double t)
         {
-            return Tuple3D.Zero;
+            return Float64Tuple3D.Zero;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -50,9 +50,9 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Bezier
             return GrParametricCurveLocalFrame3D.Create(
                 parameterValue,
                 Point1,
-                Tuple3D.Zero,
-                Tuple3D.Zero,
-                Tuple3D.Zero
+                Float64Tuple3D.Zero,
+                Float64Tuple3D.Zero,
+                Float64Tuple3D.Zero
             );
         }
     }

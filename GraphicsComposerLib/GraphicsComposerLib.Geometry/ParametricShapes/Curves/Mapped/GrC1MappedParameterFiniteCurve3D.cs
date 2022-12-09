@@ -49,7 +49,7 @@ public class GrC1MappedParameterFiniteCurve3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Tuple3D GetPoint(double parameterValue)
+    public Float64Tuple3D GetPoint(double parameterValue)
     {
         return BaseCurve.GetPoint(
             ParameterMapping(parameterValue)
@@ -57,7 +57,7 @@ public class GrC1MappedParameterFiniteCurve3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Tuple3D GetTangent(double parameterValue)
+    public Float64Tuple3D GetTangent(double parameterValue)
     {
         return BaseCurve.GetTangent(
             ParameterMapping(parameterValue)
@@ -65,7 +65,7 @@ public class GrC1MappedParameterFiniteCurve3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Tuple3D GetUnitTangent(double parameterValue)
+    public Float64Tuple3D GetUnitTangent(double parameterValue)
     {
         return GetTangent(parameterValue).ToUnitVector();
     }

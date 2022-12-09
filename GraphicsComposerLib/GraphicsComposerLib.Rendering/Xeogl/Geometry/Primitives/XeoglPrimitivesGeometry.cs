@@ -19,13 +19,13 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Primitives
         public int VertexCount 
             => GraphicsGeometry.VertexCount;
 
-        public IEnumerable<ITuple3D> VertexPoints
+        public IEnumerable<IFloat64Tuple3D> VertexPoints
             => GraphicsGeometry.GeometryPoints;
 
         public IEnumerable<int> VertexIndices
             => GraphicsGeometry.GeometryIndices;
 
-        public ITuple3D GetVertexPoint(int vertexIndex)
+        public IFloat64Tuple3D GetVertexPoint(int vertexIndex)
         {
             return GraphicsGeometry.GetGeometryPoint(vertexIndex);
         }

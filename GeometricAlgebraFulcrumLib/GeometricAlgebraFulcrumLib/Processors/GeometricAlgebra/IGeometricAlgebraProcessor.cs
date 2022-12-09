@@ -1,5 +1,7 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
+﻿using DataStructuresLib.Basic;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Frames;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Processors.LinearAlgebra;
 
@@ -22,5 +24,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
         GaKVector<T> PseudoScalarInverse { get; }
 
         GaKVector<T> PseudoScalarReverse { get; }
+
+        Pair<BasisVectorFrame<T>> GetBasisVectorFrame();
     }
 }

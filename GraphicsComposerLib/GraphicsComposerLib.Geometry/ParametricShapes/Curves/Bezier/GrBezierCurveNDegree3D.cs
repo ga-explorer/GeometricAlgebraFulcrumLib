@@ -11,8 +11,8 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Bezier
     {
         public bool IsValid() => ControlPoints.All(p => p.IsValid());
 
-        public List<Tuple3D> ControlPoints { get; } 
-            = new List<Tuple3D>();
+        public List<Float64Tuple3D> ControlPoints { get; } 
+            = new List<Float64Tuple3D>();
 
         public int Degree 
             => ControlPoints.Count - 1;
@@ -29,18 +29,18 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Bezier
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple3D GetPoint(double t)
+        public Float64Tuple3D GetPoint(double t)
         {
             return t.DeCasteljau(ControlPoints.ToArray());
         }
 
-        public Tuple3D GetTangent(double t)
+        public Float64Tuple3D GetTangent(double t)
         {
             throw new System.NotImplementedException();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple3D GetUnitTangent(double t)
+        public Float64Tuple3D GetUnitTangent(double t)
         {
             return GetTangent(t).ToUnitVector();
         }

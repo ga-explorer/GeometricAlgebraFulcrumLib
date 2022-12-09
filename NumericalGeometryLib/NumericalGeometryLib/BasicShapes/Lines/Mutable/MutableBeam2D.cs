@@ -8,7 +8,7 @@ namespace NumericalGeometryLib.BasicShapes.Lines.Mutable
     /// </summary>
     public sealed class MutableBeam2D : IBeam2D
     {
-        public static MutableBeam2D Create(ITuple2D origin, ITuple2D direction1, ITuple2D direction2)
+        public static MutableBeam2D Create(IFloat64Tuple2D origin, IFloat64Tuple2D direction1, IFloat64Tuple2D direction2)
         {
             return new MutableBeam2D(
                 origin.X, 
@@ -62,7 +62,7 @@ namespace NumericalGeometryLib.BasicShapes.Lines.Mutable
         }
 
 
-        public MutableBeam2D SetOrigin(ITuple2D origin)
+        public MutableBeam2D SetOrigin(IFloat64Tuple2D origin)
         {
             OriginX = origin.X;
             OriginY = origin.Y;
@@ -78,7 +78,7 @@ namespace NumericalGeometryLib.BasicShapes.Lines.Mutable
             return this;
         }
 
-        public MutableBeam2D SetDirection1(ITuple2D direction)
+        public MutableBeam2D SetDirection1(IFloat64Tuple2D direction)
         {
             Direction1X = direction.X;
             Direction1Y = direction.Y;
@@ -94,7 +94,7 @@ namespace NumericalGeometryLib.BasicShapes.Lines.Mutable
             return this;
         }
 
-        public MutableBeam2D SetDirection2(ITuple2D direction)
+        public MutableBeam2D SetDirection2(IFloat64Tuple2D direction)
         {
             Direction2X = direction.X;
             Direction2Y = direction.Y;
@@ -110,7 +110,7 @@ namespace NumericalGeometryLib.BasicShapes.Lines.Mutable
             return this;
         }
 
-        public MutableBeam2D SetBeam(ITuple2D origin, ITuple2D direction1, ITuple2D direction2)
+        public MutableBeam2D SetBeam(IFloat64Tuple2D origin, IFloat64Tuple2D direction1, IFloat64Tuple2D direction2)
         {
             OriginX = origin.X;
             OriginY = origin.Y;

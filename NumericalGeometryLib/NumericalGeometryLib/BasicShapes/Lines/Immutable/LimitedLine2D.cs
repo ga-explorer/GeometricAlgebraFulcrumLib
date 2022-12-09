@@ -17,7 +17,7 @@ namespace NumericalGeometryLib.BasicShapes.Lines.Immutable
             );
         }
 
-        public static LimitedLine2D Create(ITuple2D origin, ITuple2D direction, IBoundingBox1D parameterLimits)
+        public static LimitedLine2D Create(IFloat64Tuple2D origin, IFloat64Tuple2D direction, IBoundingBox1D parameterLimits)
         {
             return new LimitedLine2D(
                 origin.X,

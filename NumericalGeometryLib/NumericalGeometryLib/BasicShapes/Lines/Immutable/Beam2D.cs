@@ -7,7 +7,7 @@ namespace NumericalGeometryLib.BasicShapes.Lines.Immutable
     /// </summary>
     public sealed class Beam2D : IBeam2D
     {
-        public static Beam2D Create(ITuple2D origin, ITuple2D direction1, ITuple2D direction2)
+        public static Beam2D Create(IFloat64Tuple2D origin, IFloat64Tuple2D direction1, IFloat64Tuple2D direction2)
         {
             return new Beam2D(
                 origin.X, origin.Y,

@@ -10,12 +10,12 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Bezier
     public class GrBezierCurve1Degree3D :
         IGraphicsC1ParametricCurve3D
     {
-        public Tuple3D Point1 { get; }
+        public Float64Tuple3D Point1 { get; }
 
-        public Tuple3D Point2 { get; }
+        public Float64Tuple3D Point2 { get; }
 
 
-        public GrBezierCurve1Degree3D([NotNull] ITuple3D point1, [NotNull] ITuple3D point2)
+        public GrBezierCurve1Degree3D([NotNull] IFloat64Tuple3D point1, [NotNull] IFloat64Tuple3D point2)
         {
             Point1 = point1.ToTuple3D();
             Point2 = point2.ToTuple3D();
@@ -38,11 +38,11 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Bezier
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple3D GetPoint(double parameterValue)
+        public Float64Tuple3D GetPoint(double parameterValue)
         {
             var (p1, p2) = parameterValue.BernsteinBasis_1();
 
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 p1 * Point1.X + p2 * Point2.X,
                 p1 * Point1.Y + p2 * Point2.Y,
                 p1 * Point1.Z + p2 * Point2.Z
@@ -50,13 +50,13 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Bezier
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple3D GetTangent(double parameterValue)
+        public Float64Tuple3D GetTangent(double parameterValue)
         {
             return Point2 - Point1;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple3D GetUnitTangent(double parameterValue)
+        public Float64Tuple3D GetUnitTangent(double parameterValue)
         {
             return GetTangent(parameterValue).ToUnitVector();
         }

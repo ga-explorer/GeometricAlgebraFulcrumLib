@@ -41,6 +41,20 @@ namespace GraphicsComposerLib.Rendering.Colors
 
             return Color.FromRgba(c.R, c.G, c.B, (byte) alpha);
         }
+        
+        public static Color SetAlpha(this Color color, float alpha)
+        {
+            var c = color.ToPixel<Rgba32>();
+
+            return Color.FromRgba(c.R, c.G, c.B, (byte) (255 * alpha));
+        }
+
+        public static Color SetAlpha(this Color color, double alpha)
+        {
+            var c = color.ToPixel<Rgba32>();
+
+            return Color.FromRgba(c.R, c.G, c.B, (byte) (255 * alpha));
+        }
 
         public static Color ToImageSharpColor(this SKColor color)
         {

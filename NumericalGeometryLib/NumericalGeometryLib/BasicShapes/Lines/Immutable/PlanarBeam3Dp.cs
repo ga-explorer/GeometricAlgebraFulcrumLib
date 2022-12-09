@@ -33,19 +33,19 @@ namespace NumericalGeometryLib.BasicShapes.Lines.Immutable
         public double Direction2Z { get; }
 
 
-        public Tuple3D Origin
+        public Float64Tuple3D Origin
         {
-            get { return new Tuple3D(OriginX, OriginY, OriginZ); }
+            get { return new Float64Tuple3D(OriginX, OriginY, OriginZ); }
         }
 
-        public Tuple3D Direction1
+        public Float64Tuple3D Direction1
         {
-            get { return new Tuple3D(Direction1X, Direction1Y, Direction1Z); }
+            get { return new Float64Tuple3D(Direction1X, Direction1Y, Direction1Z); }
         }
 
-        public Tuple3D Direction2
+        public Float64Tuple3D Direction2
         {
-            get { return new Tuple3D(Direction2X, Direction2Y, Direction2Z); }
+            get { return new Float64Tuple3D(Direction2X, Direction2Y, Direction2Z); }
         }
 
 
@@ -60,22 +60,22 @@ namespace NumericalGeometryLib.BasicShapes.Lines.Immutable
         }
 
 
-        public Tuple3D Normal12
+        public Float64Tuple3D Normal12
         {
             get { return Direction1.VectorCross(Direction2); }
         }
 
-        public Tuple3D UnitNormal12
+        public Float64Tuple3D UnitNormal12
         {
             get { return Direction1.VectorUnitCross(Direction2); }
         }
 
-        public Tuple3D Normal21
+        public Float64Tuple3D Normal21
         {
             get { return Direction2.VectorCross(Direction1); }
         }
 
-        public Tuple3D UnitNormal21
+        public Float64Tuple3D UnitNormal21
         {
             get { return Direction2.VectorUnitCross(Direction1); }
         }
@@ -118,21 +118,21 @@ namespace NumericalGeometryLib.BasicShapes.Lines.Immutable
         }
 
 
-        public Tuple3D GetPoint(double t1, double t2)
+        public Float64Tuple3D GetPoint(double t1, double t2)
         {
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 OriginX + t1 * Direction1X + t2 * Direction2X,
                 OriginY + t1 * Direction1Y + t2 * Direction2Y,
                 OriginZ + t1 * Direction1Z + t2 * Direction2Z
             );
         }
 
-        public IEnumerable<Tuple3D> GetPoints(IEnumerable<Tuple2D> tList)
+        public IEnumerable<Float64Tuple3D> GetPoints(IEnumerable<Float64Tuple2D> tList)
         {
             return tList.Select(t => GetPoint(t.X, t.Y));
         }
 
-        public LineSegment3D GetLineSegment(Tuple2D t1, Tuple2D t2)
+        public LineSegment3D GetLineSegment(Float64Tuple2D t1, Float64Tuple2D t2)
         {
             var point1 = GetPoint(t1.X, t1.Y);
             var point2 = GetPoint(t2.X, t2.Y);
@@ -143,7 +143,7 @@ namespace NumericalGeometryLib.BasicShapes.Lines.Immutable
             );
         }
 
-        public Line3D GetRay(Tuple2D t1, Tuple2D t2)
+        public Line3D GetRay(Float64Tuple2D t1, Float64Tuple2D t2)
         {
             var point1 = GetPoint(t1.X, t1.Y);
             var point2 = GetPoint(t2.X, t2.Y);
@@ -163,7 +163,7 @@ namespace NumericalGeometryLib.BasicShapes.Lines.Immutable
             );
         }
 
-        public Triangle3D GetTriangle(Tuple2D t1, Tuple2D t2, Tuple2D t3)
+        public Triangle3D GetTriangle(Float64Tuple2D t1, Float64Tuple2D t2, Float64Tuple2D t3)
         {
             var point1 = GetPoint(t1.X, t1.Y);
             var point2 = GetPoint(t2.X, t2.Y);
@@ -176,7 +176,7 @@ namespace NumericalGeometryLib.BasicShapes.Lines.Immutable
             );
         }
 
-        public Tetrahedron3D GetTetrahedron(Tuple3D point4)
+        public Tetrahedron3D GetTetrahedron(Float64Tuple3D point4)
         {
             return new Tetrahedron3D(
                 OriginX, OriginY, OriginZ,

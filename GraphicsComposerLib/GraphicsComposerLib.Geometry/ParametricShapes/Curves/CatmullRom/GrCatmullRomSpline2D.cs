@@ -23,26 +23,26 @@ public sealed class GrCatmullRomSpline2D :
 
 
     private readonly double[] _knotList;
-    private readonly List<ITuple2D> _pointList;
+    private readonly List<IFloat64Tuple2D> _pointList;
 
     public CatmullRomSplineType CurveType { get; }
 
     public bool IsClosed { get; }
 
-    public IEnumerable<ITuple2D> ControlPoints 
+    public IEnumerable<IFloat64Tuple2D> ControlPoints 
         => _pointList;
 
     public int ControlPointCount 
         => _pointList.Count;
 
 
-    internal GrCatmullRomSpline2D(IEnumerable<ITuple2D> inputPointList, CatmullRomSplineType curveType, bool isClosed)
+    internal GrCatmullRomSpline2D(IEnumerable<IFloat64Tuple2D> inputPointList, CatmullRomSplineType curveType, bool isClosed)
     {
         CurveType = curveType;
         IsClosed = isClosed;
-        _pointList = new List<ITuple2D>(inputPointList);
+        _pointList = new List<IFloat64Tuple2D>(inputPointList);
 
-        ITuple2D endPoint1, endPoint2;
+        IFloat64Tuple2D endPoint1, endPoint2;
 
         if (isClosed)
         {
@@ -73,7 +73,7 @@ public sealed class GrCatmullRomSpline2D :
         for (var i = 1; i < _pointList.Count; i++)
         {
             var vector = _pointList[i].ToTuple2D() - _pointList[i - 1];
-            var ds = vector.GetLengthSquared();
+            var ds = vector.GetVectorNormSquared();
 
             var power = 
                 curveType == CatmullRomSplineType.Centripetal 
@@ -295,7 +295,7 @@ public sealed class GrCatmullRomSpline2D :
     /// <param name="x"></param>
     /// <returns></returns>
     /// <exception cref="KeyNotFoundException"></exception>
-    public Tuple2D GetPointFromX(double x)
+    public Float64Tuple2D GetPointFromX(double x)
     {
         // Handle edge cases
         if (x <= _pointList[0].X)
@@ -344,7 +344,7 @@ public sealed class GrCatmullRomSpline2D :
         var xh = t.GetCatmullRomValue(tQuad, xQuad);
         var yh = t.GetCatmullRomValue(tQuad, yQuad);
 
-        return new Tuple2D(xh, yh);
+        return new Float64Tuple2D(xh, yh);
     }
     
     public double GetPointX(double parameterValue)
@@ -431,7 +431,7 @@ public sealed class GrCatmullRomSpline2D :
         return parameterValue.GetCatmullRomValue(tQuad, yQuad);
     }
 
-    public Tuple2D GetPoint(double parameterValue)
+    public Float64Tuple2D GetPoint(double parameterValue)
     {
         // Handle edge cases
         if (parameterValue <= _knotList[0])
@@ -474,13 +474,13 @@ public sealed class GrCatmullRomSpline2D :
         var x = parameterValue.GetCatmullRomValue(tQuad, xQuad);
         var y = parameterValue.GetCatmullRomValue(tQuad, yQuad);
 
-        return new Tuple2D(x, y);
+        return new Float64Tuple2D(x, y);
     }
 
-    public Tuple2D GetTangent(double parameterValue)
+    public Float64Tuple2D GetTangent(double parameterValue)
     {
         if (parameterValue is <= 0d or >= 1d) 
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 Differentiate.FirstDerivative(GetPointX, parameterValue),
                 Differentiate.FirstDerivative(GetPointY, parameterValue)
             );
@@ -489,7 +489,7 @@ public sealed class GrCatmullRomSpline2D :
             GetKnotIndexContaining(parameterValue, 0, _knotList.Length - 1);
 
         if (index1 == index2)
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 Differentiate.FirstDerivative(GetPointX, parameterValue),
                 Differentiate.FirstDerivative(GetPointY, parameterValue)
             );
@@ -507,13 +507,13 @@ public sealed class GrCatmullRomSpline2D :
         var x = parameterValue.GetCatmullRomDerivativeValue(tQuad, xQuad);
         var y = parameterValue.GetCatmullRomDerivativeValue(tQuad, yQuad);
 
-        return new Tuple2D(x, y);
+        return new Float64Tuple2D(x, y);
     }
     
-    public Tuple2D GetSecondDerivative(double parameterValue)
+    public Float64Tuple2D GetSecondDerivative(double parameterValue)
     {
         if (parameterValue is <= 0d or >= 1d) 
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 Differentiate.SecondDerivative(GetPointX, parameterValue),
                 Differentiate.SecondDerivative(GetPointY, parameterValue)
             );
@@ -522,7 +522,7 @@ public sealed class GrCatmullRomSpline2D :
             GetKnotIndexContaining(parameterValue, 0, _knotList.Length - 1);
 
         if (index1 == index2)
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 Differentiate.SecondDerivative(GetPointX, parameterValue),
                 Differentiate.SecondDerivative(GetPointY, parameterValue)
             );
@@ -540,11 +540,11 @@ public sealed class GrCatmullRomSpline2D :
         var x = parameterValue.GetCatmullRomDerivative2Value(tQuad, xQuad);
         var y = parameterValue.GetCatmullRomDerivative2Value(tQuad, yQuad);
 
-        return new Tuple2D(x, y);
+        return new Float64Tuple2D(x, y);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Tuple2D GetUnitTangent(double parameterValue)
+    public Float64Tuple2D GetUnitTangent(double parameterValue)
     {
         return GetTangent(parameterValue).ToUnitVector();
     }

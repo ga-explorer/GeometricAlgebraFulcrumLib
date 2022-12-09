@@ -11,7 +11,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Triangles
     public sealed class GrTriangleSoupGeometry3D 
         : GrTriangleGeometryBase3D
     {
-        public static GrTriangleSoupGeometry3D Create(IReadOnlyList<ITuple3D> pointsList)
+        public static GrTriangleSoupGeometry3D Create(IReadOnlyList<IFloat64Tuple3D> pointsList)
         {
             if ((pointsList.Count % 3) != 0)
                 throw new ArgumentException();
@@ -19,7 +19,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Triangles
             return new GrTriangleSoupGeometry3D(pointsList);
         }
 
-        public static GrTriangleSoupGeometry3D Create(params ITuple3D[] pointsList)
+        public static GrTriangleSoupGeometry3D Create(params IFloat64Tuple3D[] pointsList)
         {
             if ((pointsList.Length % 3) != 0)
                 throw new ArgumentException();
@@ -27,7 +27,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Triangles
             return new GrTriangleSoupGeometry3D(pointsList);
         }
 
-        public static GrTriangleSoupGeometry3D Create(IEnumerable<ITuple3D> pointsList)
+        public static GrTriangleSoupGeometry3D Create(IEnumerable<IFloat64Tuple3D> pointsList)
         {
             var pointsArray = pointsList.ToArray();
 
@@ -39,7 +39,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Triangles
 
         public static GrTriangleSoupGeometry3D Create(params ITriangle3D[] trianglesList)
         {
-            var pointsList = new List<ITuple3D>(trianglesList.Length * 3);
+            var pointsList = new List<IFloat64Tuple3D>(trianglesList.Length * 3);
 
             foreach (var triangle in trianglesList)
             {
@@ -53,7 +53,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Triangles
 
         public static GrTriangleSoupGeometry3D Create(IEnumerable<ITriangle3D> trianglesList, bool reversePoints)
         {
-            var pointsList = new List<ITuple3D>();
+            var pointsList = new List<IFloat64Tuple3D>();
 
             foreach (var triangle in trianglesList)
             {
@@ -91,14 +91,14 @@ namespace GraphicsComposerLib.Geometry.Primitives.Triangles
                 GetGeometryPoint(3 * index + 2)
             );
 
-        public override IEnumerable<Triplet<ITuple3D>> TriangleVertexPoints
+        public override IEnumerable<Triplet<IFloat64Tuple3D>> TriangleVertexPoints
         {
             get
             {
-                var pointsList = new List<Triplet<ITuple3D>>(Count);
+                var pointsList = new List<Triplet<IFloat64Tuple3D>>(Count);
 
                 for (var i = 0; i < VertexCount; i += 3)
-                    pointsList.Add(new Triplet<ITuple3D>(
+                    pointsList.Add(new Triplet<IFloat64Tuple3D>(
                         GetGeometryPoint(i),
                         GetGeometryPoint(i + 1),
                         GetGeometryPoint(i + 2)
@@ -122,7 +122,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Triangles
         }
 
 
-        private GrTriangleSoupGeometry3D(IReadOnlyList<ITuple3D> pointsList)
+        private GrTriangleSoupGeometry3D(IReadOnlyList<IFloat64Tuple3D> pointsList)
             : base(pointsList)
         {
             if ((VertexCount % 3) != 0)

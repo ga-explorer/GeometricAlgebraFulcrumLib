@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Vectors;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
@@ -13,7 +14,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.LinearMaps
 
         ILinVectorStorage<T> LinMapBasisVector(ulong index);
 
-        ILinVectorStorage<T> LinMapVector(ILinVectorStorage<T> vectorStorage);
+        LinVector<T> LinMapVector(LinVector<T> vectorStorage);
 
         ILinMatrixStorage<T> LinMapMatrix(ILinMatrixStorage<T> matrixStorage);
 

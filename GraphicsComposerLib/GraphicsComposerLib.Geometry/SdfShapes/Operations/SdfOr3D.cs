@@ -8,7 +8,7 @@ namespace GraphicsComposerLib.Geometry.SdfShapes.Operations
     /// </summary>
     public sealed class SdfOr3D : SdfAggregation
     {
-        public override double GetScalarDistance(ITuple3D point)
+        public override double GetScalarDistance(IFloat64Tuple3D point)
         {
             return Surfaces.Min(s => s.GetScalarDistance(point));
         }

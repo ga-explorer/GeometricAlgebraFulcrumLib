@@ -111,7 +111,7 @@ namespace NumericalGeometryLib.BasicMath.Matrices
             return m;
         }
 
-        public static SquareMatrix3 CreateAxisToVectorRotationMatrix3D(Axis3D axis, ITuple3D unitVector)
+        public static SquareMatrix3 CreateAxisToVectorRotationMatrix3D(Axis3D axis, IFloat64Tuple3D unitVector)
         {
             //Debug.Assert(unitVector.IsNearUnitVector());
             
@@ -262,7 +262,7 @@ namespace NumericalGeometryLib.BasicMath.Matrices
             return matrix;
         }
 
-        public static SquareMatrix3 CreateVectorToAxisRotationMatrix3D(ITuple3D unitVector, Axis3D axis)
+        public static SquareMatrix3 CreateVectorToAxisRotationMatrix3D(IFloat64Tuple3D unitVector, Axis3D axis)
         {
             //Debug.Assert(unitVector.IsValid() && unitVector.IsNearUnitVector());
             
@@ -413,14 +413,14 @@ namespace NumericalGeometryLib.BasicMath.Matrices
             return matrix;
         }
 
-        public static SquareMatrix3 CreateVectorToVectorRotationMatrix3D(ITuple3D unitVector1, ITuple3D unitVector2)
+        public static SquareMatrix3 CreateVectorToVectorRotationMatrix3D(IFloat64Tuple3D unitVector1, IFloat64Tuple3D unitVector2)
         {
             //Debug.Assert(
             //    unitVector1.IsNearUnitVector() && 
             //    unitVector2.IsNearUnitVector()
             //);
 
-            var sumVector = new Tuple3D(
+            var sumVector = new Float64Tuple3D(
                 unitVector1.X + unitVector2.X,
                 unitVector1.Y + unitVector2.Y,
                 unitVector1.Z + unitVector2.Z
@@ -518,13 +518,13 @@ namespace NumericalGeometryLib.BasicMath.Matrices
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D operator *(SquareMatrix3 m, ITuple3D vector)
+        public static Float64Tuple3D operator *(SquareMatrix3 m, IFloat64Tuple3D vector)
         {
             var x = vector.X;
             var y = vector.Y;
             var z = vector.Z;
 
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 m.Scalar00 * x + m.Scalar01 * y + m.Scalar02 * z,
                 m.Scalar10 * x + m.Scalar11 * y + m.Scalar12 * z,
                 m.Scalar20 * x + m.Scalar21 * y + m.Scalar22 * z
@@ -532,13 +532,13 @@ namespace NumericalGeometryLib.BasicMath.Matrices
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D operator *(ITuple3D vector, SquareMatrix3 m)
+        public static Float64Tuple3D operator *(IFloat64Tuple3D vector, SquareMatrix3 m)
         {
             var x = vector.X;
             var y = vector.Y;
             var z = vector.Z;
 
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 m.Scalar00 * x + m.Scalar10 * y + m.Scalar20 * z,
                 m.Scalar01 * x + m.Scalar11 * y + m.Scalar21 * z,
                 m.Scalar02 * x + m.Scalar12 * y + m.Scalar22 * z
@@ -863,7 +863,7 @@ namespace NumericalGeometryLib.BasicMath.Matrices
         /// https://github.com/mmp/pbrt-v3/blob/master/src/core/quaternion.cpp
         /// </summary>
         /// <returns></returns>
-        public Tuple4D ToQuaternion()
+        public Float64Tuple4D ToQuaternion()
         {
             var trace = Scalar00 + Scalar11 + Scalar22;
             if (trace > 0d)
@@ -874,7 +874,7 @@ namespace NumericalGeometryLib.BasicMath.Matrices
                 var w = 0.5d * s;
                 s = 0.5d / s;
 
-                return new Tuple4D(
+                return new Float64Tuple4D(
                     (Scalar21 - Scalar12) * s,
                     (Scalar02 - Scalar20) * s,
                     (Scalar10 - Scalar01) * s,
@@ -899,7 +899,7 @@ namespace NumericalGeometryLib.BasicMath.Matrices
                 q[j] = (this[j, i] + this[i, j]) * s;
                 q[k] = (this[k, i] + this[i, k]) * s;
 
-                return new Tuple4D(q[0], q[1], q[2], w);
+                return new Float64Tuple4D(q[0], q[1], q[2], w);
             }
         }
 
@@ -1053,29 +1053,29 @@ namespace NumericalGeometryLib.BasicMath.Matrices
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple2D MapPoint(ITuple2D point)
+        public Float64Tuple2D MapPoint(IFloat64Tuple2D point)
         {
             Debug.Assert(IsAffine2D());
 
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 Scalar00 * point.X + Scalar01 * point.Y + Scalar02,
                 Scalar10 * point.X + Scalar11 * point.Y + Scalar12
             ); 
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple2D MapVector(ITuple2D vector)
+        public Float64Tuple2D MapVector(IFloat64Tuple2D vector)
         {
             Debug.Assert(IsAffine2D());
 
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 Scalar00 * vector.X + Scalar01 * vector.Y,
                 Scalar10 * vector.X + Scalar11 * vector.Y
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple2D MapNormal(ITuple2D normal)
+        public Float64Tuple2D MapNormal(IFloat64Tuple2D normal)
         {
             return InverseTranspose().MapVector(normal);
         }

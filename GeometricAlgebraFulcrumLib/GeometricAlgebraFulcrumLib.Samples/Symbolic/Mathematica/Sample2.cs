@@ -1,13 +1,20 @@
 ﻿using System;
 using System.Linq;
 using DataStructuresLib.Extensions;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.LinearMaps;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Matrices;
 using GeometricAlgebraFulcrumLib.Mathematica;
 using GeometricAlgebraFulcrumLib.Mathematica.Mathematica.ExprFactory;
 using GeometricAlgebraFulcrumLib.Mathematica.Processors;
 using GeometricAlgebraFulcrumLib.Mathematica.Text;
+using GeometricAlgebraFulcrumLib.Processors;
 using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
+using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra;
+using GeometricAlgebraFulcrumLib.Text;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
-using GeometricAlgebraFulcrumLib.Utilities.Factories;
 using Wolfram.NETLink;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.Mathematica
@@ -212,7 +219,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.Mathematica
                         (int)GaSpaceDimension,
                         (int)GaSpaceDimension
                     )
-                    .GetSubArray(indicesArray1, indicesArray1)
+                    .GetShallowCopy(indicesArray1, indicesArray1)
                     .SimplifyScalars(unitLengthAssumption2);
 
             var matrix2 =
@@ -224,7 +231,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.Mathematica
                         (int)GaSpaceDimension,
                         (int)GaSpaceDimension
                     )
-                    .GetSubArray(indicesArray1, indicesArray1)
+                    .GetShallowCopy(indicesArray1, indicesArray1)
                     .SimplifyScalars(unitLengthAssumption2);
 
             //var det1 = 

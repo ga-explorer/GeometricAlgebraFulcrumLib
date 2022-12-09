@@ -14,15 +14,15 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves
         public static GrComputedParametricCurve3D Create(IScalarD1Function xFunc, IScalarD1Function yFunc, IScalarD1Function zFunc)
         {
             return new GrComputedParametricCurve3D(
-                t => new Tuple3D(
+                t => new Float64Tuple3D(
                     xFunc.GetValue(t), 
                     yFunc.GetValue(t), 
                     zFunc.GetValue(t)
                 ),
-                t => new Tuple3D(
-                    xFunc.GetFirstDerivative(t), 
-                    yFunc.GetFirstDerivative(t), 
-                    zFunc.GetFirstDerivative(t)
+                t => new Float64Tuple3D(
+                    xFunc.GetFirstDerivativeValue(t), 
+                    yFunc.GetFirstDerivativeValue(t), 
+                    zFunc.GetFirstDerivativeValue(t)
                 )
             );
         }
@@ -30,12 +30,12 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves
         public static GrComputedParametricCurve3D Create(Func<double, double> xFunc, Func<double, double> yFunc, Func<double, double> zFunc)
         {
             return new GrComputedParametricCurve3D(
-                t => new Tuple3D(
+                t => new Float64Tuple3D(
                     xFunc(t), 
                     yFunc(t), 
                     zFunc(t)
                 ),
-                t => new Tuple3D(
+                t => new Float64Tuple3D(
                     Differentiate.FirstDerivative(xFunc, t), 
                     Differentiate.FirstDerivative(yFunc, t), 
                     Differentiate.FirstDerivative(zFunc, t)
@@ -43,18 +43,18 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves
             );
         }
 
-        public Func<double, Tuple3D> GetPointFunc { get; }
+        public Func<double, Float64Tuple3D> GetPointFunc { get; }
 
-        public Func<double, Tuple3D> GetTangentFunc { get; }
+        public Func<double, Float64Tuple3D> GetTangentFunc { get; }
 
 
-        public GrComputedParametricCurve3D([NotNull] Func<double, Tuple3D> getPointFunc)
+        public GrComputedParametricCurve3D([NotNull] Func<double, Float64Tuple3D> getPointFunc)
         {
             GetPointFunc = getPointFunc;
             GetTangentFunc = null;
         }
         
-        public GrComputedParametricCurve3D([NotNull] Func<double, Tuple3D> getPointFunc, [NotNull] Func<double, Tuple3D> getTangentFunc)
+        public GrComputedParametricCurve3D([NotNull] Func<double, Float64Tuple3D> getPointFunc, [NotNull] Func<double, Float64Tuple3D> getTangentFunc)
         {
             GetPointFunc = getPointFunc;
             GetTangentFunc = getTangentFunc;
@@ -68,13 +68,13 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple3D GetPoint(double parameterValue)
+        public Float64Tuple3D GetPoint(double parameterValue)
         {
             return GetPointFunc(parameterValue);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple3D GetTangent(double parameterValue)
+        public Float64Tuple3D GetTangent(double parameterValue)
         {
             if (GetTangentFunc is not null)
                 return GetTangentFunc(parameterValue);
@@ -88,7 +88,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple3D GetUnitTangent(double parameterValue)
+        public Float64Tuple3D GetUnitTangent(double parameterValue)
         {
             return GetTangent(parameterValue).ToUnitVector();
         }

@@ -13,28 +13,28 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.Xeogl
         {
             var path1 = new ConstantPointsPath3D(
                 4, 
-                new Tuple3D(0, 0, -2)
+                new Float64Tuple3D(0, 0, -2)
             );
 
             var path2 = new ArrayPointsPath3D(
-                new Tuple3D(-2, -2, -2),
-                new Tuple3D(2, -2, -2),
-                new Tuple3D(2, 2, -2),
-                new Tuple3D(-2, 2, -2)
+                new Float64Tuple3D(-2, -2, -2),
+                new Float64Tuple3D(2, -2, -2),
+                new Float64Tuple3D(2, 2, -2),
+                new Float64Tuple3D(-2, 2, -2)
             );
 
             var path3 = new ArrayPointsPath3D(
-                new Tuple3D(-2, -2, 2),
-                new Tuple3D(2, -2, 2),
-                new Tuple3D(2, 2, 2),
-                new Tuple3D(-2, 2, 2)
+                new Float64Tuple3D(-2, -2, 2),
+                new Float64Tuple3D(2, -2, 2),
+                new Float64Tuple3D(2, 2, 2),
+                new Float64Tuple3D(-2, 2, 2)
             );
 
             var path4 = new ArrayPointsPath3D(
-                new Tuple3D(-1, -1, 2),
-                new Tuple3D(1, -1, 2),
-                new Tuple3D(1, 1, 2),
-                new Tuple3D(-1, 1, 2)
+                new Float64Tuple3D(-1, -1, 2),
+                new Float64Tuple3D(1, -1, 2),
+                new Float64Tuple3D(1, 1, 2),
+                new Float64Tuple3D(-1, 1, 2)
             );
 
             var pathMesh = new ArrayPathsMesh3D(

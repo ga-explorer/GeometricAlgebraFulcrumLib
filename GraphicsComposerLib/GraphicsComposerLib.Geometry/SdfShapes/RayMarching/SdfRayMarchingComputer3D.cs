@@ -29,7 +29,7 @@ namespace GraphicsComposerLib.Geometry.SdfShapes.RayMarching
             MaxStepsCounter = -1;
         }
 
-        public Tuple<bool, double> ComputeIntersection1(ISdfGeometry3D surface, Tuple3D rayOrigin, Tuple3D rayDirection)
+        public Tuple<bool, double> ComputeIntersection1(ISdfGeometry3D surface, Float64Tuple3D rayOrigin, Float64Tuple3D rayDirection)
         {
             var depth = MinDistance;
             for (var i = 0; i < MaxSteps; i++) 
@@ -82,7 +82,7 @@ namespace GraphicsComposerLib.Geometry.SdfShapes.RayMarching
         /// <param name="surface"></param>
         /// <param name="surfacePoint"></param>
         /// <returns></returns>
-        public Tuple3D ComputeNormal4(ISdfGeometry3D surface, Tuple3D surfacePoint)
+        public Float64Tuple3D ComputeNormal4(ISdfGeometry3D surface, Float64Tuple3D surfacePoint)
         {
             //var pointsArray = new Tuple3D[]
             //{ 
@@ -119,32 +119,32 @@ namespace GraphicsComposerLib.Geometry.SdfShapes.RayMarching
             //).Normalize();
 
 
-            var d1 = surface.GetScalarDistance(new Tuple3D(
+            var d1 = surface.GetScalarDistance(new Float64Tuple3D(
                 surfacePoint.X + surface.SdfDistanceDelta,
                 surfacePoint.Y - surface.SdfDistanceDelta,
                 surfacePoint.Z - surface.SdfDistanceDelta
             ));
 
-            var d2 = surface.GetScalarDistance(new Tuple3D(
+            var d2 = surface.GetScalarDistance(new Float64Tuple3D(
                 surfacePoint.X - surface.SdfDistanceDelta,
                 surfacePoint.Y - surface.SdfDistanceDelta,
                 surfacePoint.Z + surface.SdfDistanceDelta
             ));
 
-            var d3 = surface.GetScalarDistance(new Tuple3D(
+            var d3 = surface.GetScalarDistance(new Float64Tuple3D(
                 surfacePoint.X - surface.SdfDistanceDelta,
                 surfacePoint.Y + surface.SdfDistanceDelta,
                 surfacePoint.Z - surface.SdfDistanceDelta
             ));
 
-            var d4 = surface.GetScalarDistance(new Tuple3D(
+            var d4 = surface.GetScalarDistance(new Float64Tuple3D(
                 surfacePoint.X + surface.SdfDistanceDelta,
                 surfacePoint.Y + surface.SdfDistanceDelta,
                 surfacePoint.Z + surface.SdfDistanceDelta
             ));
 
 
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 d4 + d1 - d2 - d3,
                 d4 - d1 - d2 + d3,
                 d4 - d1 + d2 - d3
@@ -157,46 +157,46 @@ namespace GraphicsComposerLib.Geometry.SdfShapes.RayMarching
         /// <param name="surface"></param>
         /// <param name="surfacePoint"></param>
         /// <returns></returns>
-        public Tuple3D GetNormalToSurface6(ISdfGeometry3D surface, Tuple3D surfacePoint)
+        public Float64Tuple3D GetNormalToSurface6(ISdfGeometry3D surface, Float64Tuple3D surfacePoint)
         {
-            var dx1 = surface.GetScalarDistance(new Tuple3D(
+            var dx1 = surface.GetScalarDistance(new Float64Tuple3D(
                 surfacePoint.X - surface.SdfDistanceDelta,
                 surfacePoint.Y,
                 surfacePoint.Z
             ));
 
-            var dx2 = surface.GetScalarDistance(new Tuple3D(
+            var dx2 = surface.GetScalarDistance(new Float64Tuple3D(
                 surfacePoint.X + surface.SdfDistanceDelta,
                 surfacePoint.Y,
                 surfacePoint.Z
             ));
 
-            var dy1 = surface.GetScalarDistance(new Tuple3D(
+            var dy1 = surface.GetScalarDistance(new Float64Tuple3D(
                 surfacePoint.X,
                 surfacePoint.Y - surface.SdfDistanceDelta,
                 surfacePoint.Z
             ));
 
-            var dy2 = surface.GetScalarDistance(new Tuple3D(
+            var dy2 = surface.GetScalarDistance(new Float64Tuple3D(
                 surfacePoint.X,
                 surfacePoint.Y + surface.SdfDistanceDelta,
                 surfacePoint.Z
             ));
 
-            var dz1 = surface.GetScalarDistance(new Tuple3D(
+            var dz1 = surface.GetScalarDistance(new Float64Tuple3D(
                 surfacePoint.X,
                 surfacePoint.Y,
                 surfacePoint.Z - surface.SdfDistanceDelta
             ));
 
-            var dz2 = surface.GetScalarDistance(new Tuple3D(
+            var dz2 = surface.GetScalarDistance(new Float64Tuple3D(
                 surfacePoint.X,
                 surfacePoint.Y,
                 surfacePoint.Z + surface.SdfDistanceDelta
             ));
 
 
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 dx2 - dx1,
                 dy2 - dy1,
                 dz2 - dz1

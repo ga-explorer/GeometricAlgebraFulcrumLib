@@ -181,7 +181,7 @@ namespace NumericalGeometryLib.BasicMath
         /// <param name="x"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsAlmostZero(this ITuple3D x)
+        public static bool IsAlmostZero(this IFloat64Tuple3D x)
         {
             return
                 IsAlmostZero(x.X) &&
@@ -196,7 +196,7 @@ namespace NumericalGeometryLib.BasicMath
         /// <param name="x2"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsAlmostEqual(this ITuple2D x1, ITuple2D x2)
+        public static bool IsAlmostEqual(this IFloat64Tuple2D x1, IFloat64Tuple2D x2)
         {
             return
                 IsAlmostEqual(x1.X, x2.X) &&
@@ -210,7 +210,7 @@ namespace NumericalGeometryLib.BasicMath
         /// <param name="x2"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsAlmostEqual(this ITuple3D x1, ITuple3D x2)
+        public static bool IsAlmostEqual(this IFloat64Tuple3D x1, IFloat64Tuple3D x2)
         {
             return
                 IsAlmostEqual(x1.X, x2.X) &&
@@ -225,7 +225,7 @@ namespace NumericalGeometryLib.BasicMath
         /// <param name="x2"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsEqual(this ITuple3D x1, ITuple3D x2)
+        public static bool IsEqual(this IFloat64Tuple3D x1, IFloat64Tuple3D x2)
         {
             return
                 x1.X == x2.X &&
@@ -240,7 +240,7 @@ namespace NumericalGeometryLib.BasicMath
         /// <param name="x2"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsNegativeEqual(this ITuple3D x1, ITuple3D x2)
+        public static bool IsNegativeEqual(this IFloat64Tuple3D x1, IFloat64Tuple3D x2)
         {
             return
                 -x1.X == x2.X &&
@@ -255,7 +255,7 @@ namespace NumericalGeometryLib.BasicMath
         /// <param name="x2"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsAlmostEqual(this ITuple4D x1, ITuple4D x2)
+        public static bool IsAlmostEqual(this IFloat64Tuple4D x1, IFloat64Tuple4D x2)
         {
             return
                 IsAlmostEqual(x1.X, x2.X) &&
@@ -322,9 +322,15 @@ namespace NumericalGeometryLib.BasicMath
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsNotExactZero(this double x)
         {
+            return !double.IsNaN(x) && (x is < 0 or > 0);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool IsExactOne(this double x)
+        {
             Debug.Assert(!double.IsNaN(x));
 
-            return x is < 0 or > 0;
+            return x == 1d;
         }
 
         /// <summary>
@@ -356,6 +362,12 @@ namespace NumericalGeometryLib.BasicMath
         public static bool IsNearOne(this double x, double epsilon = 1e-12d)
         {
             return (x - 1d).IsNearZero(epsilon);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool IsNearMinusOne(this double x, double epsilon = 1e-12d)
+        {
+            return (x + 1d).IsNearZero(epsilon);
         }
 
         /// <summary>
@@ -728,6 +740,13 @@ namespace NumericalGeometryLib.BasicMath
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static double NaNInfinityToZero(this double number)
+        {
+            return double.IsNaN(number) || double.IsInfinity(number) 
+                ? 0d : number;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static double NearZeroToZero(this double number, double epsilon)
         {
             return number.IsNearZero(epsilon) ? 0d : number;
@@ -891,12 +910,230 @@ namespace NumericalGeometryLib.BasicMath
                 .Select(i => start + 0.5d * (1d - Math.Cos(i * n)) * length);
         }
 
+
+        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+        //public static bool IsInvalid(this IGeometricElement element)
+        //{
+        //    return !element.IsValid();
+        //}
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void ClearNearZeroItems(this MathNet.Numerics.LinearAlgebra.Vector<double> vector, double epsilon = 1e-12)
+        public static PlanarAngle DegreesToAngle(this int angleInDegrees)
         {
-            for (var i = 0; i < vector.Count; i++)
-                if (vector[i].IsNearZero(epsilon))
-                    vector[i] = 0d;
+            return PlanarAngle.CreateFromDegrees(angleInDegrees);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static PlanarAngle DegreesToAngle(this double angleInDegrees)
+        {
+            return PlanarAngle.CreateFromDegrees(angleInDegrees);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static PlanarAngle RadiansToAngle(this double angleInRadians)
+        {
+            return PlanarAngle.CreateFromRadians(angleInRadians);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static double GetFractionPart(this double value)
+        {
+            return value - Math.Truncate(value);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static double ToNearestInteger(this double value, ScalarToIntOption conversionMethod)
+        {
+            return conversionMethod switch
+            {
+                ScalarToIntOption.Round => Math.Round(value),
+                ScalarToIntOption.Ceiling => Math.Ceiling(value),
+                ScalarToIntOption.Floor => Math.Floor(value),
+                _ => throw new ArgumentOutOfRangeException(nameof(conversionMethod), conversionMethod, null)
+            };
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static double DegreesToRadians(this double angle)
+        {
+            const double c = Math.PI / 180.0d;
+
+            return angle * c;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static double DegreesToRadians(this int angle)
+        {
+            const double c = Math.PI / 180.0d;
+
+            return angle * c;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static double RadiansToDegrees(this double angle)
+        {
+            const double c = 180.0d / Math.PI;
+
+            return angle * c;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static double RadiansToDegrees(this float angle)
+        {
+            const double c = 180.0d / Math.PI;
+
+            return angle * c;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static double ClampAngleInDegrees(this double value)
+        {
+            const int maxValue = 360;
+
+            return value switch
+            {
+                //value < -maxValue
+                < -maxValue => value + Math.Ceiling(-value / maxValue) * maxValue,
+
+                //-maxValue <= value < 0
+                < 0 => value + maxValue,
+
+                //value > maxValue
+                > maxValue => value - Math.Truncate(value / maxValue) * maxValue,
+
+                //0 <= value <= maxValue
+                _ => value
+            };
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static double ClampAngle(this double value)
+        {
+            const double maxValue = 2 * Math.PI;
+
+            return value switch
+            {
+                //value < -maxValue
+                < -maxValue => value + Math.Ceiling(-value / maxValue) * maxValue,
+
+                //-maxValue <= value < 0
+                < 0 => value + maxValue,
+
+                //value > maxValue
+                > maxValue => value - Math.Truncate(value / maxValue) * maxValue,
+
+                //0 <= value <= maxValue
+                _ => value
+            };
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static double ClampNegativeAngle(this double value)
+        {
+            const double maxValue = 2 * Math.PI;
+
+            value += Math.PI;
+
+            return value switch
+            {
+                //value < -maxValue
+                < -maxValue => value + Math.Ceiling(-value / maxValue) * maxValue,
+
+                //-maxValue <= value < 0
+                < 0 => value + maxValue,
+
+                //value > maxValue
+                > maxValue => value - Math.Truncate(value / maxValue) * maxValue,
+
+                //0 <= value <= maxValue
+                _ => value
+            };
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static double ClampPeriodic(this double value, double minValue, double maxValue)
+        {
+            return (value - minValue).ClampPeriodic(maxValue - minValue) + minValue;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static double ClampPeriodic(this double value, double maxValue)
+        {
+            //Make sure maxValue > 0
+            Debug.Assert(maxValue > 0);
+
+            //value < -maxValue
+            if (value < -maxValue)
+                return value + Math.Ceiling(-value / maxValue) * maxValue;
+
+            //-maxValue <= value < 0
+            if (value < 0)
+                return value + maxValue;
+
+            //value > maxValue
+            if (value > maxValue)
+                return value - Math.Truncate(value / maxValue) * maxValue;
+
+            //0 <= value <= maxValue
+            return value;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static double Clamp(this double value, double maxValue)
+        {
+            if (value < 0) return 0;
+
+            return value > maxValue ? maxValue : value;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static double ClampInt(this int value, int maxValue)
+        {
+            if (value < 0) return 0;
+
+            return value > maxValue ? maxValue : value;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int ClampToInt(this double value, int maxValue)
+        {
+            if (value < 0) return 0;
+
+            return value > maxValue ? maxValue : (int) value;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ulong ClampToULong(this double value, ulong maxValue)
+        {
+            if (value < 0ul) return 0ul;
+
+            return value > maxValue ? maxValue : (ulong) value;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool HasSameSignAs(this double value1, double value2)
+        {
+            return (value1 >= 0 && value2 >= 0) ||
+                   (value1 <= 0 && value2 <= 0);
+        }
+        
+        /// <summary>
+        /// https://www.youtube.com/watch?v=vD5g8aVscUI
+        /// </summary>
+        /// <param name="t"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static double SmoothUnitStep(this double t)
+        {
+            //TODO: use this for Fourier interpolation of non-periodic signals
+            if (t <= 0) return 0;
+            if (t >= 1) return 1;
+
+            var e1 = Math.Exp(-1d / t);
+            var e2 = Math.Exp(-1d / (1d - t));
+
+            return e1 / (e1 + e2);
         }
     }
 }

@@ -9,9 +9,9 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Surfaces;
 public sealed class GrVisualCircleSurface3D :
     GrVisualSurface3D
 {
-    public ITuple3D Center { get; set; } = Tuple3D.Zero;
+    public IFloat64Tuple3D Center { get; set; } = Float64Tuple3D.Zero;
 
-    public ITuple3D Normal { get; set; } = Tuple3D.E2;
+    public IFloat64Tuple3D Normal { get; set; } = Float64Tuple3D.E2;
 
     public double Radius { get; set; } = 1d;
 
@@ -24,7 +24,7 @@ public sealed class GrVisualCircleSurface3D :
     }
 
     
-    public Triplet<Tuple3D> GetEdgePointsTriplet()
+    public Triplet<Float64Tuple3D> GetEdgePointsTriplet()
     {
         var quaternion = Axis3D.PositiveZ.CreateAxisToVectorRotationQuaternion(
             Normal.ToUnitVector()
@@ -39,6 +39,6 @@ public sealed class GrVisualCircleSurface3D :
         var point2 = Center + quaternion.QuaternionRotate(a, b, 0);
         var point3 = Center + quaternion.QuaternionRotate(a, -b, 0);
 
-        return new Triplet<Tuple3D>(point1, point2, point3);
+        return new Triplet<Float64Tuple3D>(point1, point2, point3);
     }
 }

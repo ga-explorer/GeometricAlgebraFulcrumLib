@@ -11,8 +11,8 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Lights
     /// </summary>
     public sealed class XeoglDirectionalLight : XeoglLight
     {
-        private static Tuple3D DefaultLightDirection { get; }
-            = new Tuple3D(1, 1, 1);
+        private static Float64Tuple3D DefaultLightDirection { get; }
+            = new Float64Tuple3D(1, 1, 1);
 
 
         public override string JavaScriptClassName => "DirLight";
@@ -22,15 +22,15 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Lights
 
         public bool CastsShadow { get; set; }
 
-        public MutableTuple3D LightDirection { get; set; }
-            = new MutableTuple3D(DefaultLightDirection);
+        public MutableFloat64Tuple3D LightDirection { get; set; }
+            = new MutableFloat64Tuple3D(DefaultLightDirection);
 
 
         public XeoglDirectionalLight()
         {
         }
 
-        public XeoglDirectionalLight(ITuple3D lightDirection)
+        public XeoglDirectionalLight(IFloat64Tuple3D lightDirection)
         {
             LightDirection.SetTuple(lightDirection);
         }

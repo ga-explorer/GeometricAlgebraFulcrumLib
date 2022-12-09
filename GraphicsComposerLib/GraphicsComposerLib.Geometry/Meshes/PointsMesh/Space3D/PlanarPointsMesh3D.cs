@@ -11,11 +11,11 @@ namespace GraphicsComposerLib.Geometry.Meshes.PointsMesh.Space3D
     public class PlanarPointsMesh3D
         : IPointsMesh3D
     {
-        public ITuple3D Origin { get; set; }
+        public IFloat64Tuple3D Origin { get; set; }
 
-        public ITuple3D Direction1 { get; set; }
+        public IFloat64Tuple3D Direction1 { get; set; }
 
-        public ITuple3D Direction2 { get; set; }
+        public IFloat64Tuple3D Direction2 { get; set; }
 
         public IPeriodicSequence1D<double> Parameters1 { get; }
 
@@ -30,7 +30,7 @@ namespace GraphicsComposerLib.Geometry.Meshes.PointsMesh.Space3D
         public int Count2 
             => Parameters2.Count;
 
-        public ITuple3D this[int index]
+        public IFloat64Tuple3D this[int index]
         {
             get
             {
@@ -42,14 +42,14 @@ namespace GraphicsComposerLib.Geometry.Meshes.PointsMesh.Space3D
             }
         }
 
-        public ITuple3D this[int index1, int index2]
+        public IFloat64Tuple3D this[int index1, int index2]
         {
             get
             {
                 var t1 = Parameters1[index1];
                 var t2 = Parameters2[index2];
 
-                return new Tuple3D(
+                return new Float64Tuple3D(
                     Origin.X + t1 * Direction1.X + t2 * Direction2.X,
                     Origin.Y + t1 * Direction1.Y + t2 * Direction2.Y,
                     Origin.Z + t1 * Direction1.Z + t2 * Direction2.Z
@@ -69,13 +69,13 @@ namespace GraphicsComposerLib.Geometry.Meshes.PointsMesh.Space3D
             Parameters1 = parameters1;
             Parameters2 = parameters2;
 
-            Origin = new Tuple3D(0, 0, 0);
-            Direction1 = new Tuple3D(1, 0, 0);
-            Direction2 = new Tuple3D(0, 1, 0);
+            Origin = new Float64Tuple3D(0, 0, 0);
+            Direction1 = new Float64Tuple3D(1, 0, 0);
+            Direction2 = new Float64Tuple3D(0, 1, 0);
         }
 
 
-        public PSeqSlice1D<ITuple3D> GetSliceAt(int dimension, int index)
+        public PSeqSlice1D<IFloat64Tuple3D> GetSliceAt(int dimension, int index)
         {
             return new PointsMeshSlicePointsPath3D(this, dimension, index);
         }
@@ -85,7 +85,7 @@ namespace GraphicsComposerLib.Geometry.Meshes.PointsMesh.Space3D
             return new PointsMeshSlicePointsPath3D(this, dimension, index);
         }
 
-        public IEnumerator<ITuple3D> GetEnumerator()
+        public IEnumerator<IFloat64Tuple3D> GetEnumerator()
         {
             for (var i2 = 0; i2 < Count2; i2++)
             for (var i1 = 0; i1 < Count1; i1++)

@@ -8,7 +8,7 @@ namespace GraphicsComposerLib.Geometry.SdfShapes.Operations
     /// </summary>
     public sealed class SdfBinaryOrNot3D : SdfBinaryOperation
     {
-        public override double GetScalarDistance(ITuple3D point)
+        public override double GetScalarDistance(IFloat64Tuple3D point)
         {
             return Math.Min(
                 Surface1.GetScalarDistance(point),

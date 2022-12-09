@@ -13,7 +13,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Vertices
     {
         public int Index { get; }
 
-        public Tuple3D Point { get; }
+        public Float64Tuple3D Point { get; }
 
         public Color Color
         {
@@ -82,9 +82,9 @@ namespace GraphicsComposerLib.Geometry.Primitives.Vertices
 
 
         
-        public Tuple3D GetDisplacedPoint(double d)
+        public Float64Tuple3D GetDisplacedPoint(double d)
         {
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 Point.X + d * Normal.X,
                 Point.Y + d * Normal.Y,
                 Point.Z + d * Normal.Z

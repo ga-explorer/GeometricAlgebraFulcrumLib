@@ -9,9 +9,9 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Curves;
 public sealed class GrVisualCircleCurve3D :
     GrVisualCurve3D
 {
-    public ITuple3D Center { get; set; }
+    public IFloat64Tuple3D Center { get; set; }
 
-    public ITuple3D Normal { get; set; }
+    public IFloat64Tuple3D Normal { get; set; }
 
     public double Radius { get; set; }
 
@@ -27,7 +27,7 @@ public sealed class GrVisualCircleCurve3D :
         return 2d * Math.PI * Radius;
     }
 
-    public Triplet<Tuple3D> GetPointsTriplet()
+    public Triplet<Float64Tuple3D> GetPointsTriplet()
     {
         var quaternion = Axis3D.PositiveZ.CreateAxisToVectorRotationQuaternion(
             Normal.ToUnitVector()
@@ -42,6 +42,6 @@ public sealed class GrVisualCircleCurve3D :
         var point2 = Center + quaternion.QuaternionRotate(a, b, 0);
         var point3 = Center + quaternion.QuaternionRotate(a, -b, 0);
 
-        return new Triplet<Tuple3D>(point1, point2, point3);
+        return new Triplet<Float64Tuple3D>(point1, point2, point3);
     }
 }

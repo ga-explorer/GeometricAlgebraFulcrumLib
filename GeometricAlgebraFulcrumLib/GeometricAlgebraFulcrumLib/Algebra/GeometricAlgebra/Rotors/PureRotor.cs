@@ -1,11 +1,10 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Utilities.Extensions;
-using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
 {
@@ -179,6 +178,24 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors
         public override Scalar<T> GetScalingFactor()
         {
             return ScalarProcessor.CreateScalarOne();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Tuple<Scalar<T>, GaBivector<T>> GetEuclideanAngleBivector()
+        {
+            var halfAngle = 
+                Multivector.GetScalarPart().ArcCos();
+
+            var angle = 
+                2 * halfAngle;
+
+            var bivector = 
+                Multivector.GetBivectorPart() / halfAngle.Sin();
+
+            return new Tuple<Scalar<T>, GaBivector<T>>(
+                angle,
+                bivector
+            );
         }
     }
 }

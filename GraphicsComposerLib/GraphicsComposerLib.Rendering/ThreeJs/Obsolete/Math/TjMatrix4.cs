@@ -77,7 +77,7 @@ namespace GraphicsComposerLib.Rendering.ThreeJs.Obsolete.Math
 
         public TjMatrix4(IAffineMap3D affineMap)
         {
-            MatrixValue = affineMap.ToMatrix4x4();
+            MatrixValue = affineMap.GetMatrix4x4();
         }
 
 

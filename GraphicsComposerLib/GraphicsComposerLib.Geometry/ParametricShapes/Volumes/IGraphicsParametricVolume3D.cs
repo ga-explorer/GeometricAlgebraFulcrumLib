@@ -7,15 +7,15 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Volumes
     public interface IGraphicsParametricVolume3D : 
         IGeometricElement
     {
-        Tuple3D GetPoint(ITuple3D parameterValue);
+        Float64Tuple3D GetPoint(IFloat64Tuple3D parameterValue);
 
-        Tuple3D GetPoint(double parameterValue1, double parameterValue2, double parameterValue3);
+        Float64Tuple3D GetPoint(double parameterValue1, double parameterValue2, double parameterValue3);
 
-        double GetScalarDistance(ITuple3D parameterValue);
+        double GetScalarDistance(IFloat64Tuple3D parameterValue);
 
         double GetScalarDistance(double parameterValue1, double parameterValue2, double parameterValue3);
         
-        GrParametricVolumeLocalFrame3D GetFrame(ITuple3D parameterValue);
+        GrParametricVolumeLocalFrame3D GetFrame(IFloat64Tuple3D parameterValue);
 
         GrParametricVolumeLocalFrame3D GetFrame(double parameterValue1, double parameterValue2, double parameterValue3);
     }

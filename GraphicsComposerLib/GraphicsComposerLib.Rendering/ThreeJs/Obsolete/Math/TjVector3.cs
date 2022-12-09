@@ -15,7 +15,7 @@ namespace GraphicsComposerLib.Rendering.ThreeJs.Obsolete.Math
     /// </summary>
     public sealed class TjVector3 :
         TjComponentSimple,
-        ITuple3D
+        IFloat64Tuple3D
     {
         public override string JavaScriptClassName 
             => "Vector3";
@@ -57,7 +57,7 @@ namespace GraphicsComposerLib.Rendering.ThreeJs.Obsolete.Math
             Debug.Assert(IsValid());
         }
 
-        public TjVector3(ITuple3D tuple)
+        public TjVector3(IFloat64Tuple3D tuple)
         {
             X = tuple.X;
             Y = tuple.Y;

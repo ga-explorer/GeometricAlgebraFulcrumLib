@@ -1,12 +1,14 @@
 ﻿using System.Collections.Generic;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Frames;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors;
-using GeometricAlgebraFulcrumLib.Geometry.Frames;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Matrices;
 using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
+using GeometricAlgebraFulcrumLib.Processors.LinearAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Utilities.Extensions;
-using GeometricAlgebraFulcrumLib.Utilities.Factories;
+using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Mathematica.Applications.GaPoT
 {
@@ -263,6 +265,13 @@ namespace GeometricAlgebraFulcrumLib.Mathematica.Applications.GaPoT
                 : CreateClarkeArrayOdd(processor, vectorsCount);
         }
 
+        public static LinMatrix<T> CreateClarkeMatrix<T>(this ILinearAlgebraProcessor<T> processor, int vectorsCount)
+        {
+            return processor
+                .CreateClarkeArray(vectorsCount)
+                .CreateLinMatrix(processor);
+        }
+
         /// <summary>
         /// See the paper "Generalized Clarke Components for Polyphase Networks", 1969
         /// </summary>
@@ -280,7 +289,7 @@ namespace GeometricAlgebraFulcrumLib.Mathematica.Applications.GaPoT
             );
         }
 
-        public static IOutermorphism<T> CreateClarkeMap<T>(this IGeometricAlgebraProcessor<T> processor, int vectorsCount)
+        public static IGaOutermorphism<T> CreateClarkeMap<T>(this IGeometricAlgebraProcessor<T> processor, int vectorsCount)
         {
             var clarkeMapArray =
                 CreateClarkeArray(processor, vectorsCount);

@@ -44,10 +44,10 @@ namespace GraphicsComposerLib.Geometry.Structures.Composers
         public IEnumerable<PointData3D<IGraphicsVertexData3D>> Vertices
             => PointDataSet;
 
-        public IEnumerable<ITuple3D> VertexPoints
+        public IEnumerable<IFloat64Tuple3D> VertexPoints
             => PointDataSet;
 
-        public IEnumerable<ITuple2D> VertexTextureUVs
+        public IEnumerable<IFloat64Tuple2D> VertexTextureUVs
             => PointDataSet.Select(p => p.DataValue.TextureUv);
 
         public IEnumerable<Color> VertexColors
@@ -68,18 +68,18 @@ namespace GraphicsComposerLib.Geometry.Structures.Composers
                 )
             );
         
-        public IEnumerable<Triplet<ITuple3D>> TriangleVertexPoints
+        public IEnumerable<Triplet<IFloat64Tuple3D>> TriangleVertexPoints
             => TriangleDataSet.Triangles.Select(t => 
-                new Triplet<ITuple3D>(
+                new Triplet<IFloat64Tuple3D>(
                     PointDataSet[t.Item1],
                     PointDataSet[t.Item2],
                     PointDataSet[t.Item3]
                 )
             );
 
-        public IEnumerable<Triplet<ITuple2D>> TriangleVertexTextureUVs
+        public IEnumerable<Triplet<IFloat64Tuple2D>> TriangleVertexTextureUVs
             => TriangleDataSet.Triangles.Select(t => 
-                new Triplet<ITuple2D>(
+                new Triplet<IFloat64Tuple2D>(
                     PointDataSet[t.Item1].DataValue.TextureUv,
                     PointDataSet[t.Item2].DataValue.TextureUv,
                     PointDataSet[t.Item3].DataValue.TextureUv
@@ -289,7 +289,7 @@ namespace GraphicsComposerLib.Geometry.Structures.Composers
                 : PointDataSet.AddPoint(x, y, z, CreateVertexData());
         }
 
-        public PointData3D<IGraphicsVertexData3D> AddVertex(ITuple3D point)
+        public PointData3D<IGraphicsVertexData3D> AddVertex(IFloat64Tuple3D point)
         {
             return PointDataSet.TryGetPointData(point, out var pointData) 
                 ? pointData 
@@ -304,7 +304,7 @@ namespace GraphicsComposerLib.Geometry.Structures.Composers
         }
 
 
-        public TriangleDataSetComposer3D AddVertices(params ITuple3D[] pointsList)
+        public TriangleDataSetComposer3D AddVertices(params IFloat64Tuple3D[] pointsList)
         {
             foreach (var point in pointsList)
                 AddVertex(point);
@@ -312,7 +312,7 @@ namespace GraphicsComposerLib.Geometry.Structures.Composers
             return this;
         }
 
-        public TriangleDataSetComposer3D AddVertices(IEnumerable<ITuple3D> pointsList)
+        public TriangleDataSetComposer3D AddVertices(IEnumerable<IFloat64Tuple3D> pointsList)
         {
             foreach (var point in pointsList)
                 AddVertex(point);
@@ -353,7 +353,7 @@ namespace GraphicsComposerLib.Geometry.Structures.Composers
             );
         }
 
-        public bool AddTriangle(ITuple3D point1, ITuple3D point2, ITuple3D point3)
+        public bool AddTriangle(IFloat64Tuple3D point1, IFloat64Tuple3D point2, IFloat64Tuple3D point3)
         {
             return StoreTriangle(
                 AddVertex(point1), 
@@ -362,7 +362,7 @@ namespace GraphicsComposerLib.Geometry.Structures.Composers
             );
         }
 
-        public bool AddTriangle(ITriplet<ITuple3D> points)
+        public bool AddTriangle(ITriplet<IFloat64Tuple3D> points)
         {
             return StoreTriangle(
                 AddVertex(points.Item1), 
@@ -444,7 +444,7 @@ namespace GraphicsComposerLib.Geometry.Structures.Composers
             return this;
         }
 
-        public TriangleDataSetComposer3D AddTriangles(IReadOnlyList<ITuple3D> pointsList)
+        public TriangleDataSetComposer3D AddTriangles(IReadOnlyList<IFloat64Tuple3D> pointsList)
         {
             if (pointsList.Count % 3 != 0)
                 throw new InvalidOperationException();
@@ -461,7 +461,7 @@ namespace GraphicsComposerLib.Geometry.Structures.Composers
             return this;
         }
 
-        public TriangleDataSetComposer3D AddTriangles(IEnumerable<ITriplet<ITuple3D>> trianglePointsList)
+        public TriangleDataSetComposer3D AddTriangles(IEnumerable<ITriplet<IFloat64Tuple3D>> trianglePointsList)
         {
             foreach (var points in trianglePointsList)
             {

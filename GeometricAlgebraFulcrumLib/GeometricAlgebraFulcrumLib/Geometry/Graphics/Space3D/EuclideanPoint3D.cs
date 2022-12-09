@@ -6,12 +6,12 @@ using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.LinearAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Utilities.Extensions;
+using GeometricAlgebraFulcrumLib.Geometry.Euclidean.Space3D;
 
 namespace GeometricAlgebraFulcrumLib.Geometry.Graphics.Space3D
 {
     public sealed record EuclideanPoint3D : 
-        ITuple3D,
+        IFloat64Tuple3D,
         IGeometricAlgebraElement<double>
     {
         public static EuclideanVector3D operator -(EuclideanPoint3D p1)
@@ -102,7 +102,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Graphics.Space3D
             => GeometricProcessor;
 
         public IGeometricAlgebraProcessor<double> GeometricProcessor 
-            => GeometricAlgebraEuclideanSpace3DUtils.GeometricProcessor;
+            => GaEuclideanSpace3DUtils.GeometricProcessor;
 
         public double X { get; }
 

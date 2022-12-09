@@ -41,10 +41,10 @@ namespace GraphicsComposerLib.Geometry.LatticeShapes.Curves
                 ? VertexList
                 : _gridsList.SelectMany(b => b.Vertices);
         
-        public IEnumerable<ITuple3D> VertexPoints 
+        public IEnumerable<IFloat64Tuple3D> VertexPoints 
             => Vertices.Select(v => v.Point);
 
-        public IEnumerable<ITuple3D> VertexNormals 
+        public IEnumerable<IFloat64Tuple3D> VertexNormals 
             => Vertices.Select(v => v.Normal1);
 
         public IEnumerable<double> VertexTextureUs 
@@ -56,9 +56,9 @@ namespace GraphicsComposerLib.Geometry.LatticeShapes.Curves
         public IReadOnlyList<Pair<GrLatticeCurveLocalFrame3D>> LineVerticesList { get; private set; } 
             = Array.Empty<Pair<GrLatticeCurveLocalFrame3D>>();
 
-        public IEnumerable<Pair<ITuple3D>> LineVertexPoints
+        public IEnumerable<Pair<IFloat64Tuple3D>> LineVertexPoints
             => LineVerticesList.Select(t => 
-                new Pair<ITuple3D>(
+                new Pair<IFloat64Tuple3D>(
                     t.Item1.Point,
                     t.Item2.Point
                 )
@@ -126,7 +126,7 @@ namespace GraphicsComposerLib.Geometry.LatticeShapes.Curves
         
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GrLatticeCurveList3D MapPoints(Func<Tuple3D, Tuple3D> mappingFunc)
+        public GrLatticeCurveList3D MapPoints(Func<Float64Tuple3D, Float64Tuple3D> mappingFunc)
         {
             foreach (var curve in _gridsList)
                 curve.MapPoints(mappingFunc);

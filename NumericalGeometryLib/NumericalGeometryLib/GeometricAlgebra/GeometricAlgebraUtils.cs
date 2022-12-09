@@ -213,309 +213,309 @@ namespace NumericalGeometryLib.GeometricAlgebra
 
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaMultivector EGp(this ITuple3D mv1, GaTerm mv2)
+        public static GaMultivector EGp(this IFloat64Tuple3D mv1, GaTerm mv2)
         {
             return mv2.BasisSet.CreateVector(mv1).EGp(mv2);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaMultivector EGp(this GaTerm mv1, ITuple3D mv2)
+        public static GaMultivector EGp(this GaTerm mv1, IFloat64Tuple3D mv2)
         {
             return mv1.EGp(mv1.BasisSet.CreateVector(mv2));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaMultivector EGp(this ITuple3D mv1, GaMultivector mv2)
+        public static GaMultivector EGp(this IFloat64Tuple3D mv1, GaMultivector mv2)
         {
             return mv2.BasisSet.CreateVector(mv1).EGp(mv2);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaMultivector EGp(this GaMultivector mv1, ITuple3D mv2)
+        public static GaMultivector EGp(this GaMultivector mv1, IFloat64Tuple3D mv2)
         {
             return mv1.EGp(mv1.BasisSet.CreateVector(mv2));
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaMultivector EGp(this BasisBladeSet basisSet, ITuple3D mv1, ITuple3D mv2)
+        public static GaMultivector EGp(this BasisBladeSet basisSet, IFloat64Tuple3D mv1, IFloat64Tuple3D mv2)
         {
             return basisSet.CreateVector(mv1).EGp(basisSet.CreateVector(mv2));
         }
 
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaMultivector Gp(this ITuple3D mv1, GaTerm mv2)
+        public static GaMultivector Gp(this IFloat64Tuple3D mv1, GaTerm mv2)
         {
             return mv2.BasisSet.CreateVector(mv1).Gp(mv2);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaMultivector Gp(this GaTerm mv1, ITuple3D mv2)
+        public static GaMultivector Gp(this GaTerm mv1, IFloat64Tuple3D mv2)
         {
             return mv1.Gp(mv1.BasisSet.CreateVector(mv2));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaMultivector Gp(this ITuple3D mv1, GaMultivector mv2)
+        public static GaMultivector Gp(this IFloat64Tuple3D mv1, GaMultivector mv2)
         {
             return mv2.BasisSet.CreateVector(mv1).Gp(mv2);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaMultivector Gp(this GaMultivector mv1, ITuple2D mv2)
+        public static GaMultivector Gp(this GaMultivector mv1, IFloat64Tuple2D mv2)
         {
             return mv1.Gp(mv1.BasisSet.CreateVector(mv2));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaMultivector Gp(this GaMultivector mv1, ITuple3D mv2)
+        public static GaMultivector Gp(this GaMultivector mv1, IFloat64Tuple3D mv2)
         {
             return mv1.Gp(mv1.BasisSet.CreateVector(mv2));
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaMultivector Gp(this BasisBladeSet basisSet, ITuple3D mv1, ITuple3D mv2)
+        public static GaMultivector Gp(this BasisBladeSet basisSet, IFloat64Tuple3D mv1, IFloat64Tuple3D mv2)
         {
             return basisSet.CreateVector(mv1).Gp(basisSet.CreateVector(mv2));
         }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double ESp(this ITuple3D mv1, GaTerm mv2)
+        public static double ESp(this IFloat64Tuple3D mv1, GaTerm mv2)
         {
             return mv2.BasisSet.CreateVector(mv1).ESp(mv2);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double ESp(this GaTerm mv1, ITuple3D mv2)
+        public static double ESp(this GaTerm mv1, IFloat64Tuple3D mv2)
         {
             return mv1.ESp(mv1.BasisSet.CreateVector(mv2));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double ESp(this ITuple3D mv1, GaMultivector mv2)
+        public static double ESp(this IFloat64Tuple3D mv1, GaMultivector mv2)
         {
             return mv2.BasisSet.CreateVector(mv1).ESp(mv2);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double ESp(this GaMultivector mv1, ITuple3D mv2)
+        public static double ESp(this GaMultivector mv1, IFloat64Tuple3D mv2)
         {
             return mv1.ESp(mv1.BasisSet.CreateVector(mv2));
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double ESp(this BasisBladeSet basisSet, ITuple3D mv1, ITuple3D mv2)
+        public static double ESp(this BasisBladeSet basisSet, IFloat64Tuple3D mv1, IFloat64Tuple3D mv2)
         {
             return basisSet.CreateVector(mv1).ESp(basisSet.CreateVector(mv2));
         }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double Sp(this ITuple3D mv1, GaTerm mv2)
+        public static double Sp(this IFloat64Tuple3D mv1, GaTerm mv2)
         {
             return mv2.BasisSet.CreateVector(mv1).Sp(mv2);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double Sp(this GaTerm mv1, ITuple3D mv2)
+        public static double Sp(this GaTerm mv1, IFloat64Tuple3D mv2)
         {
             return mv1.Sp(mv1.BasisSet.CreateVector(mv2));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double Sp(this ITuple3D mv1, GaMultivector mv2)
+        public static double Sp(this IFloat64Tuple3D mv1, GaMultivector mv2)
         {
             return mv2.BasisSet.CreateVector(mv1).Sp(mv2);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double Sp(this GaMultivector mv1, ITuple3D mv2)
+        public static double Sp(this GaMultivector mv1, IFloat64Tuple3D mv2)
         {
             return mv1.Sp(mv1.BasisSet.CreateVector(mv2));
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double Sp(this BasisBladeSet basisSet, ITuple3D mv1, ITuple3D mv2)
+        public static double Sp(this BasisBladeSet basisSet, IFloat64Tuple3D mv1, IFloat64Tuple3D mv2)
         {
             return basisSet.CreateVector(mv1).Sp(basisSet.CreateVector(mv2));
         }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaMultivector Op(this ITuple3D mv1, GaTerm mv2)
+        public static GaMultivector Op(this IFloat64Tuple3D mv1, GaTerm mv2)
         {
             return mv2.BasisSet.CreateVector(mv1).Op(mv2);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaMultivector Op(this GaTerm mv1, ITuple3D mv2)
+        public static GaMultivector Op(this GaTerm mv1, IFloat64Tuple3D mv2)
         {
             return mv1.Op(mv1.BasisSet.CreateVector(mv2));
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaMultivector Op(this ITuple2D mv1, ITuple2D mv2)
+        public static GaMultivector Op(this IFloat64Tuple2D mv1, IFloat64Tuple2D mv2)
         {
             return BasisBladeSet.Euclidean2D.CreateVector(mv1).Op(mv2);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaMultivector Op(this ITuple3D mv1, ITuple3D mv2)
+        public static GaMultivector Op(this IFloat64Tuple3D mv1, IFloat64Tuple3D mv2)
         {
             return BasisBladeSet.Euclidean3D.CreateVector(mv1).Op(mv2);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaMultivector Op(this ITuple3D mv1, GaMultivector mv2)
+        public static GaMultivector Op(this IFloat64Tuple3D mv1, GaMultivector mv2)
         {
             return mv2.BasisSet.CreateVector(mv1).Op(mv2);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaMultivector Op(this GaMultivector mv1, ITuple2D mv2)
+        public static GaMultivector Op(this GaMultivector mv1, IFloat64Tuple2D mv2)
         {
             return mv1.Op(mv1.BasisSet.CreateVector(mv2));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaMultivector Op(this GaMultivector mv1, ITuple3D mv2)
+        public static GaMultivector Op(this GaMultivector mv1, IFloat64Tuple3D mv2)
         {
             return mv1.Op(mv1.BasisSet.CreateVector(mv2));
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaMultivector Op(this BasisBladeSet basisSet, ITuple2D mv1, ITuple2D mv2)
+        public static GaMultivector Op(this BasisBladeSet basisSet, IFloat64Tuple2D mv1, IFloat64Tuple2D mv2)
         {
             return basisSet.CreateVector(mv1).Op(basisSet.CreateVector(mv2));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaMultivector Op(this BasisBladeSet basisSet, ITuple3D mv1, ITuple3D mv2)
+        public static GaMultivector Op(this BasisBladeSet basisSet, IFloat64Tuple3D mv1, IFloat64Tuple3D mv2)
         {
             return basisSet.CreateVector(mv1).Op(basisSet.CreateVector(mv2));
         }
 
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaMultivector ELcp(this ITuple3D mv1, GaTerm mv2)
+        public static GaMultivector ELcp(this IFloat64Tuple3D mv1, GaTerm mv2)
         {
             return mv2.BasisSet.CreateVector(mv1).ELcp(mv2);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaMultivector ELcp(this GaTerm mv1, ITuple3D mv2)
+        public static GaMultivector ELcp(this GaTerm mv1, IFloat64Tuple3D mv2)
         {
             return mv1.ELcp(mv1.BasisSet.CreateVector(mv2));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaMultivector ELcp(this ITuple3D mv1, GaMultivector mv2)
+        public static GaMultivector ELcp(this IFloat64Tuple3D mv1, GaMultivector mv2)
         {
             return mv2.BasisSet.CreateVector(mv1).ELcp(mv2);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaMultivector ELcp(this GaMultivector mv1, ITuple3D mv2)
+        public static GaMultivector ELcp(this GaMultivector mv1, IFloat64Tuple3D mv2)
         {
             return mv1.ELcp(mv1.BasisSet.CreateVector(mv2));
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaMultivector ELcp(this BasisBladeSet basisSet, ITuple3D mv1, ITuple3D mv2)
+        public static GaMultivector ELcp(this BasisBladeSet basisSet, IFloat64Tuple3D mv1, IFloat64Tuple3D mv2)
         {
             return basisSet.CreateVector(mv1).ELcp(basisSet.CreateVector(mv2));
         }
 
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaMultivector Lcp(this ITuple3D mv1, GaTerm mv2)
+        public static GaMultivector Lcp(this IFloat64Tuple3D mv1, GaTerm mv2)
         {
             return mv2.BasisSet.CreateVector(mv1).Lcp(mv2);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaMultivector Lcp(this GaTerm mv1, ITuple3D mv2)
+        public static GaMultivector Lcp(this GaTerm mv1, IFloat64Tuple3D mv2)
         {
             return mv1.Lcp(mv1.BasisSet.CreateVector(mv2));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaMultivector Lcp(this ITuple3D mv1, GaMultivector mv2)
+        public static GaMultivector Lcp(this IFloat64Tuple3D mv1, GaMultivector mv2)
         {
             return mv2.BasisSet.CreateVector(mv1).Lcp(mv2);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaMultivector Lcp(this GaMultivector mv1, ITuple3D mv2)
+        public static GaMultivector Lcp(this GaMultivector mv1, IFloat64Tuple3D mv2)
         {
             return mv1.Lcp(mv1.BasisSet.CreateVector(mv2));
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaMultivector Lcp(this BasisBladeSet basisSet, ITuple3D mv1, ITuple3D mv2)
+        public static GaMultivector Lcp(this BasisBladeSet basisSet, IFloat64Tuple3D mv1, IFloat64Tuple3D mv2)
         {
             return basisSet.CreateVector(mv1).Lcp(basisSet.CreateVector(mv2));
         }
         
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaMultivector ERcp(this ITuple3D mv1, GaTerm mv2)
+        public static GaMultivector ERcp(this IFloat64Tuple3D mv1, GaTerm mv2)
         {
             return mv2.BasisSet.CreateVector(mv1).ERcp(mv2);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaMultivector ERcp(this GaTerm mv1, ITuple3D mv2)
+        public static GaMultivector ERcp(this GaTerm mv1, IFloat64Tuple3D mv2)
         {
             return mv1.ERcp(mv1.BasisSet.CreateVector(mv2));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaMultivector ERcp(this ITuple3D mv1, GaMultivector mv2)
+        public static GaMultivector ERcp(this IFloat64Tuple3D mv1, GaMultivector mv2)
         {
             return mv2.BasisSet.CreateVector(mv1).ERcp(mv2);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaMultivector ERcp(this GaMultivector mv1, ITuple3D mv2)
+        public static GaMultivector ERcp(this GaMultivector mv1, IFloat64Tuple3D mv2)
         {
             return mv1.ERcp(mv1.BasisSet.CreateVector(mv2));
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaMultivector ERcp(this BasisBladeSet basisSet, ITuple3D mv1, ITuple3D mv2)
+        public static GaMultivector ERcp(this BasisBladeSet basisSet, IFloat64Tuple3D mv1, IFloat64Tuple3D mv2)
         {
             return basisSet.CreateVector(mv1).ERcp(basisSet.CreateVector(mv2));
         }
 
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaMultivector Rcp(this ITuple3D mv1, GaTerm mv2)
+        public static GaMultivector Rcp(this IFloat64Tuple3D mv1, GaTerm mv2)
         {
             return mv2.BasisSet.CreateVector(mv1).Rcp(mv2);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaMultivector Rcp(this GaTerm mv1, ITuple3D mv2)
+        public static GaMultivector Rcp(this GaTerm mv1, IFloat64Tuple3D mv2)
         {
             return mv1.Rcp(mv1.BasisSet.CreateVector(mv2));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaMultivector Rcp(this ITuple3D mv1, GaMultivector mv2)
+        public static GaMultivector Rcp(this IFloat64Tuple3D mv1, GaMultivector mv2)
         {
             return mv2.BasisSet.CreateVector(mv1).Rcp(mv2);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaMultivector Rcp(this GaMultivector mv1, ITuple3D mv2)
+        public static GaMultivector Rcp(this GaMultivector mv1, IFloat64Tuple3D mv2)
         {
             return mv1.Rcp(mv1.BasisSet.CreateVector(mv2));
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaMultivector Rcp(this BasisBladeSet basisSet, ITuple3D mv1, ITuple3D mv2)
+        public static GaMultivector Rcp(this BasisBladeSet basisSet, IFloat64Tuple3D mv1, IFloat64Tuple3D mv2)
         {
             return basisSet.CreateVector(mv1).Rcp(basisSet.CreateVector(mv2));
         }

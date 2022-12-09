@@ -17,7 +17,7 @@ namespace GraphicsComposerLib.Geometry.Meshes.PointsMesh.Space3D
         public int Count 
             => BaseMesh.MeshPointsCount;
 
-        public ITuple3D this[int index]
+        public IFloat64Tuple3D this[int index]
         {
             get
             {
@@ -35,7 +35,7 @@ namespace GraphicsComposerLib.Geometry.Meshes.PointsMesh.Space3D
         public int Count2 
             => BaseMesh.Count;
 
-        public ITuple3D this[int index1, int index2] 
+        public IFloat64Tuple3D this[int index1, int index2] 
             => BaseMesh[index2][index1];
 
         public bool IsBasic 
@@ -51,7 +51,7 @@ namespace GraphicsComposerLib.Geometry.Meshes.PointsMesh.Space3D
         }
 
 
-        public PSeqSlice1D<ITuple3D> GetSliceAt(int dimension, int index)
+        public PSeqSlice1D<IFloat64Tuple3D> GetSliceAt(int dimension, int index)
         {
             return new PointsMeshSlicePointsPath3D(this, dimension, index);
         }
@@ -61,7 +61,7 @@ namespace GraphicsComposerLib.Geometry.Meshes.PointsMesh.Space3D
             return new PointsMeshSlicePointsPath3D(this, dimension, index);
         }
 
-        public IEnumerator<ITuple3D> GetEnumerator()
+        public IEnumerator<IFloat64Tuple3D> GetEnumerator()
         {
             return BaseMesh.SelectMany(p => p).GetEnumerator();
         }

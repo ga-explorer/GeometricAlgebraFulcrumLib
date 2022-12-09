@@ -29,7 +29,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Volumes
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple3D GetPoint(ITuple3D parameterValue)
+        public Float64Tuple3D GetPoint(IFloat64Tuple3D parameterValue)
         {
             return Map.MapPoint(
                 BaseVolume.GetPoint(parameterValue)
@@ -37,7 +37,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Volumes
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple3D GetPoint(double parameterValue1, double parameterValue2, double parameterValue3)
+        public Float64Tuple3D GetPoint(double parameterValue1, double parameterValue2, double parameterValue3)
         {
             return Map.MapPoint(
                 BaseVolume.GetPoint(parameterValue1, parameterValue2, parameterValue3)
@@ -45,7 +45,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Volumes
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public double GetScalarDistance(ITuple3D parameterValue)
+        public double GetScalarDistance(IFloat64Tuple3D parameterValue)
         {
             return BaseVolume.GetScalarDistance(parameterValue);
         }
@@ -57,7 +57,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Volumes
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GrParametricVolumeLocalFrame3D GetFrame(ITuple3D parameterValue)
+        public GrParametricVolumeLocalFrame3D GetFrame(IFloat64Tuple3D parameterValue)
         {
             var frame = BaseVolume.GetFrame(parameterValue);
 

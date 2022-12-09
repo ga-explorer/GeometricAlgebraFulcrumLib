@@ -18,24 +18,24 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Builtin
         public static XeoglBoxGeometry Create(double halfSize)
             => new XeoglBoxGeometry(halfSize);
 
-        public static XeoglBoxGeometry Create(ITuple3D halfSize)
+        public static XeoglBoxGeometry Create(IFloat64Tuple3D halfSize)
             => new XeoglBoxGeometry(halfSize);
 
-        public static XeoglBoxGeometry Create(ITuple3D center, double halfSize)
+        public static XeoglBoxGeometry Create(IFloat64Tuple3D center, double halfSize)
             => new XeoglBoxGeometry(center, halfSize);
 
-        public static XeoglBoxGeometry Create(ITuple3D center, ITuple3D halfSize)
+        public static XeoglBoxGeometry Create(IFloat64Tuple3D center, IFloat64Tuple3D halfSize)
             => new XeoglBoxGeometry(center, halfSize);
 
         public static XeoglBoxGeometry Create(IBoundingBox3D box)
             => new XeoglBoxGeometry(box);
 
 
-        public MutableTuple3D Center { get; }
-            = new MutableTuple3D();
+        public MutableFloat64Tuple3D Center { get; }
+            = new MutableFloat64Tuple3D();
 
-        public MutableTuple3D HalfSize { get; }
-            = new MutableTuple3D();
+        public MutableFloat64Tuple3D HalfSize { get; }
+            = new MutableFloat64Tuple3D();
 
         public override string JavaScriptClassName => "BoxGeometry";
 
@@ -49,18 +49,18 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Builtin
             HalfSize.SetTuple(halfSize, halfSize, halfSize);
         }
 
-        public XeoglBoxGeometry(ITuple3D halfSize)
+        public XeoglBoxGeometry(IFloat64Tuple3D halfSize)
         {
             HalfSize.SetTuple(halfSize);
         }
 
-        public XeoglBoxGeometry(ITuple3D center, double halfSize)
+        public XeoglBoxGeometry(IFloat64Tuple3D center, double halfSize)
         {
             Center.SetTuple(center);
             HalfSize.SetTuple(halfSize, halfSize, halfSize);
         }
 
-        public XeoglBoxGeometry(ITuple3D center, ITuple3D halfSize)
+        public XeoglBoxGeometry(IFloat64Tuple3D center, IFloat64Tuple3D halfSize)
         {
             Center.SetTuple(center);
             HalfSize.SetTuple(halfSize);
@@ -89,7 +89,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Builtin
 
             composer
                 .SetValue("primitive", PrimitiveType, GraphicsPrimitiveType3D.Triangles)
-                .SetNumbersArrayValue("center", Center, Tuple3D.Zero)
+                .SetNumbersArrayValue("center", Center, Float64Tuple3D.Zero)
                 .SetValue("xSize", HalfSize.X, 1)
                 .SetValue("ySize", HalfSize.Y, 1)
                 .SetValue("zSize", HalfSize.Z, 1);

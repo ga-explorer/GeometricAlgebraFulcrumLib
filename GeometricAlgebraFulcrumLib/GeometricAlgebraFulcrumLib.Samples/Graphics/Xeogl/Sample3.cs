@@ -14,14 +14,14 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.Xeogl
         public static string Generate()
         {
             var firstPath = new LinearPointsPath3D(
-                new Tuple3D(-3,0,0), 
-                new Tuple3D(3,0,0), 
+                new Float64Tuple3D(-3,0,0), 
+                new Float64Tuple3D(3,0,0), 
                 5
             );
 
             var lastPath = new LinearPointsPath3D(
-                new Tuple3D(0, -2, 0),
-                new Tuple3D(0, 2, 2),
+                new Float64Tuple3D(0, -2, 0),
+                new Float64Tuple3D(0, 2, 2),
                 5
             );
 

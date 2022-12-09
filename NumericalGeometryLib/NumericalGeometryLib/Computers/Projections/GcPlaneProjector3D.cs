@@ -17,7 +17,7 @@ namespace NumericalGeometryLib.Computers.Projections
         public Plane3D Plane { get; private set; }
 
 
-        public GcPlaneProjector3D SetPlaneFromPoints(ITuple3D p1, ITuple3D p2, ITuple3D p3)
+        public GcPlaneProjector3D SetPlaneFromPoints(IFloat64Tuple3D p1, IFloat64Tuple3D p2, IFloat64Tuple3D p3)
         {
             Plane = new Plane3D(
                 p1,
@@ -35,7 +35,7 @@ namespace NumericalGeometryLib.Computers.Projections
             return this;
         }
 
-        public GcPlaneProjector3D SetPlane(ITuple3D origin, ITuple3D direction1, ITuple3D direction2)
+        public GcPlaneProjector3D SetPlane(IFloat64Tuple3D origin, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2)
         {
             Plane = new Plane3D(origin, direction1, direction2);
 
@@ -55,7 +55,7 @@ namespace NumericalGeometryLib.Computers.Projections
         /// </summary>
         /// <param name="vector"></param>
         /// <returns></returns>
-        public Tuple3D ComputeProjection(ITuple3D vector)
+        public Float64Tuple3D ComputeProjection(IFloat64Tuple3D vector)
         {
             //Begin GMac Macro Code Generation, 2018-10-20T20:49:38.2694768+02:00
             //Macro: cemsim.hga4d.ProjectVectorOnPlaneDirections3D
@@ -211,7 +211,7 @@ namespace NumericalGeometryLib.Computers.Projections
 
             //Finish GMac Macro Code Generation, 2018-10-20T20:49:38.3300163+02:00
 
-            return new Tuple3D(x, y, z);
+            return new Float64Tuple3D(x, y, z);
         }
 
         /// <summary>
@@ -220,7 +220,7 @@ namespace NumericalGeometryLib.Computers.Projections
         /// </summary>
         /// <param name="vector"></param>
         /// <returns></returns>
-        public Tuple<Tuple3D, Tuple3D> ComputeComponents(ITuple3D vector)
+        public Tuple<Float64Tuple3D, Float64Tuple3D> ComputeComponents(IFloat64Tuple3D vector)
         {
             //Begin GMac Macro Code Generation, 2018-10-20T20:49:38.2694768+02:00
             //Macro: cemsim.hga4d.ProjectVectorOnPlaneDirections3D
@@ -377,8 +377,8 @@ namespace NumericalGeometryLib.Computers.Projections
             //Finish GMac Macro Code Generation, 2018-10-20T20:49:38.3300163+02:00
 
             return Tuple.Create(
-                new Tuple3D(x, y, z),
-                new Tuple3D(
+                new Float64Tuple3D(x, y, z),
+                new Float64Tuple3D(
                     vector.X - x, 
                     vector.Y - y, 
                     vector.Z - z
@@ -392,7 +392,7 @@ namespace NumericalGeometryLib.Computers.Projections
         /// </summary>
         /// <param name="vector"></param>
         /// <returns></returns>
-        public Tuple3D ComputeRejection(ITuple3D vector)
+        public Float64Tuple3D ComputeRejection(IFloat64Tuple3D vector)
         {
             //Begin GMac Macro Code Generation, 2018-10-20T20:49:38.2694768+02:00
             //Macro: cemsim.hga4d.ProjectVectorOnPlaneDirections3D
@@ -548,7 +548,7 @@ namespace NumericalGeometryLib.Computers.Projections
 
             //Finish GMac Macro Code Generation, 2018-10-20T20:49:38.3300163+02:00
 
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 vector.X - x,
                 vector.Y - y,
                 vector.Z - z

@@ -27,13 +27,13 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Builtin
                 HeightSegments = heightSegments
             };
 
-        public static XeoglSphereGeometry Create(ITuple3D center, double radius)
+        public static XeoglSphereGeometry Create(IFloat64Tuple3D center, double radius)
             => new XeoglSphereGeometry(center)
             {
                 Radius = radius
             };
 
-        public static XeoglSphereGeometry Create(ITuple3D center, double radius, int widthSegments, int heightSegments)
+        public static XeoglSphereGeometry Create(IFloat64Tuple3D center, double radius, int widthSegments, int heightSegments)
             => new XeoglSphereGeometry(center)
             {
                 Radius = radius,
@@ -42,8 +42,8 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Builtin
             };
 
 
-        public MutableTuple3D Center { get; }
-            = new MutableTuple3D();
+        public MutableFloat64Tuple3D Center { get; }
+            = new MutableFloat64Tuple3D();
 
         public double Radius { get; set; } = 1;
 
@@ -60,7 +60,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Builtin
         {
         }
 
-        public XeoglSphereGeometry(ITuple3D center)
+        public XeoglSphereGeometry(IFloat64Tuple3D center)
         {
             Center.SetTuple(center);
         }
@@ -72,7 +72,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Builtin
 
             composer
                 .SetValue("primitive", PrimitiveType, GraphicsPrimitiveType3D.Triangles)
-                .SetNumbersArrayValue("center", Center, Tuple3D.Zero);
+                .SetNumbersArrayValue("center", Center, Float64Tuple3D.Zero);
 
             composer
                 .SetValue("radius", Radius, 1);

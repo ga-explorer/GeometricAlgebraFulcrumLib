@@ -8,8 +8,8 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Circles
     {
         public double Radius { get; }
 
-        public Tuple3D Center { get; }
+        public Float64Tuple3D Center { get; }
 
-        public Tuple3D UnitNormal { get; }
+        public Float64Tuple3D UnitNormal { get; }
     }
 }

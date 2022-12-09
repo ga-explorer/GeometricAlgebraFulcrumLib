@@ -7,7 +7,7 @@ namespace GraphicsComposerLib.Geometry.Meshes.PointsMesh.Space2D
     /// This class represents a 2D point inside a points mesh. The class holds data
     /// on the point coordinates and index values inside the mesh.
     /// </summary>
-    public sealed class PointsMeshPoint2D : ITuple2D
+    public sealed class PointsMeshPoint2D : IFloat64Tuple2D
     {
         /// <summary>
         /// The base mesh of this point
@@ -39,7 +39,7 @@ namespace GraphicsComposerLib.Geometry.Meshes.PointsMesh.Space2D
         /// <summary>
         /// The point coordinates of this point
         /// </summary>
-        public ITuple2D Point 
+        public IFloat64Tuple2D Point 
             => BaseMesh[PointIndex1, PointIndex2];
 
         public double X 

@@ -8,7 +8,7 @@ using NumericalGeometryLib.BasicMath.Tuples;
 namespace GraphicsComposerLib.Geometry.Primitives.Vertices
 {
     public sealed class GrNormal3D : 
-        ITuple3D
+        IFloat64Tuple3D
     {
         public double X { get; private set; }
 
@@ -45,7 +45,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Vertices
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GrNormal3D(ITuple3D normal)
+        public GrNormal3D(IFloat64Tuple3D normal)
         {
             X = normal.X;
             Y = normal.Y;

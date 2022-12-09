@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using DataStructuresLib.BitManipulation;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Languages;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using TextComposerLib.Text.Linear;

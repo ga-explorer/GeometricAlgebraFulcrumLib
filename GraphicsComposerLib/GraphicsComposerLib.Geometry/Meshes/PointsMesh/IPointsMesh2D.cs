@@ -5,7 +5,7 @@ using GraphicsComposerLib.Geometry.Meshes.PointsPath.Space2D;
 namespace GraphicsComposerLib.Geometry.Meshes.PointsMesh
 {
     public interface IPointsMesh2D
-        : IPeriodicSequence2D<ITuple2D>
+        : IPeriodicSequence2D<IFloat64Tuple2D>
     {
         PointsMeshSlicePointsPath2D GetSlicePathAt(int dimension, int index);
     }

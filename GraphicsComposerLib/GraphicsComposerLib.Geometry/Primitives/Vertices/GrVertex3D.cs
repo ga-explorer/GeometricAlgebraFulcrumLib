@@ -13,7 +13,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Vertices
     {
         public int Index { get; }
 
-        public Tuple3D Point { get; }
+        public Float64Tuple3D Point { get; }
 
         public Pair<double> ParameterValue 
             => new Pair<double>(0, 0);
@@ -63,7 +63,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Vertices
         public GrVertex3D(int index, double x, double y, double z)
         {
             Index = index;
-            Point = new Tuple3D(x, y, z);
+            Point = new Float64Tuple3D(x, y, z);
         }
 
         public GrVertex3D(int index, ITriplet<double> point)

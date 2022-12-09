@@ -73,7 +73,7 @@ public static class CurveSamples
                 UnitCountX = gridUnitCount,
                 UnitCountZ = gridUnitCount,
                 UnitSize = 1,
-                Origin = new Tuple3D(-0.5d * gridUnitCount, 0, -0.5d * gridUnitCount),
+                Origin = new Float64Tuple3D(-0.5d * gridUnitCount, 0, -0.5d * gridUnitCount),
                 Opacity = 0.25,
                 BaseSquareColor = Color.LightYellow,
                 BaseLineColor = Color.BurlyWood,
@@ -93,15 +93,15 @@ public static class CurveSamples
         var axisFrameYMaterial = scene.AddSimpleMaterial("axisFrameYMaterial", Color.Green);
         var axisFrameZMaterial = scene.AddSimpleMaterial("axisFrameZMaterial", Color.Blue);
 
-        var frameOrigin = Tuple3D.Zero;
+        var frameOrigin = Float64Tuple3D.Zero;
         sceneComposer.AddElement(
             new GrVisualFrame3D("axisFrame")
             {
                 Origin = frameOrigin,
 
-                Direction1 = Tuple3D.E1,
-                Direction2 = Tuple3D.E2,
-                Direction3 = Tuple3D.E3,
+                Direction1 = Float64Tuple3D.E1,
+                Direction2 = Float64Tuple3D.E2,
+                Direction3 = Float64Tuple3D.E3,
 
                 Style = new GrVisualFrameStyle3D
                 {
@@ -259,9 +259,9 @@ public static class CurveSamples
 
         var generatorPointList = new List<RouletteTracerVisualizer3D.GeneratorPoint>
         {
-            new(new Tuple3D(0, -1, 0), Color.Red),
-            new(new Tuple3D(radius / 2, 0, 0), Color.Green),
-            new(new Tuple3D(radius, 1, 0), Color.Blue),
+            new(new Float64Tuple3D(0, -1, 0), Color.Red),
+            new(new Float64Tuple3D(radius / 2, 0, 0), Color.Green),
+            new(new Float64Tuple3D(radius, 1, 0), Color.Blue),
             //new(movingCurve.GetPoint(t1), Color.Red),
             //new(movingCurve.GetPoint(t2), Color.Green),
             //new(movingCurve.GetPoint(t3), Color.Blue),
@@ -338,8 +338,8 @@ public static class CurveSamples
             movingCurveFactor;
 
         var generatorPointCurve = new GrArcLengthLineSegment3D(
-            new Tuple3D(-radius, -radius, -radius),
-            new Tuple3D(radius, radius, radius)
+            new Float64Tuple3D(-radius, -radius, -radius),
+            new Float64Tuple3D(radius, radius, radius)
         ).GetMappedParameterCurveCosWave(2);
 
         var generatorPoint = 

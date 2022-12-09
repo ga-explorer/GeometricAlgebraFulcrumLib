@@ -18,12 +18,12 @@ public sealed class GrBabylonJsVector3ArrayValue :
         return new GrBabylonJsVector3ArrayValue(valueText);
     }
 
-    public static implicit operator GrBabylonJsVector3ArrayValue(Tuple3D[] value)
+    public static implicit operator GrBabylonJsVector3ArrayValue(Float64Tuple3D[] value)
     {
         return new GrBabylonJsVector3ArrayValue(value);
     }
     
-    public static implicit operator GrBabylonJsVector3ArrayValue(ITuple3D[] value)
+    public static implicit operator GrBabylonJsVector3ArrayValue(IFloat64Tuple3D[] value)
     {
         return new GrBabylonJsVector3ArrayValue(value);
     }

@@ -16,76 +16,76 @@ namespace GraphicsComposerLib.Geometry.Meshes.PointsPath
 {
     public static class PointsPathUtils
     {
-        public static Pair<ITuple2D> GetPointsPair(this IPointsPath2D path, int index1, int index2)
+        public static Pair<IFloat64Tuple2D> GetPointsPair(this IPointsPath2D path, int index1, int index2)
         {
             if (path is null)
                 throw new ArgumentNullException(nameof(path));
 
-            return new Pair<ITuple2D>(path[index1], path[index2]);
+            return new Pair<IFloat64Tuple2D>(path[index1], path[index2]);
         }
 
-        public static Pair<ITuple2D> GetPointsPair(this IPointsPath2D path, Pair<int> pointIndexPair)
+        public static Pair<IFloat64Tuple2D> GetPointsPair(this IPointsPath2D path, Pair<int> pointIndexPair)
         {
-            return new Pair<ITuple2D>(
+            return new Pair<IFloat64Tuple2D>(
                 path[pointIndexPair.Item1], 
                 path[pointIndexPair.Item2]
             );
         }
 
 
-        public static Pair<ITuple3D> GetPointsPair(this IPointsPath3D path, int index1, int index2)
+        public static Pair<IFloat64Tuple3D> GetPointsPair(this IPointsPath3D path, int index1, int index2)
         {
             if (path is null)
                 throw new ArgumentNullException(nameof(path));
 
-            return new Pair<ITuple3D>(path[index1], path[index2]);
+            return new Pair<IFloat64Tuple3D>(path[index1], path[index2]);
         }
 
-        public static Pair<ITuple3D> GetPointsPair(this IPointsPath3D path, Pair<int> pointIndexPair)
+        public static Pair<IFloat64Tuple3D> GetPointsPair(this IPointsPath3D path, Pair<int> pointIndexPair)
         {
-            return new Pair<ITuple3D>(
+            return new Pair<IFloat64Tuple3D>(
                 path[pointIndexPair.Item1], 
                 path[pointIndexPair.Item2]
             );
         }
 
 
-        public static ArrayPointsPath2D ToArrayPointsPath2D(this ITuple2D[] pathPoints)
+        public static ArrayPointsPath2D ToArrayPointsPath2D(this IFloat64Tuple2D[] pathPoints)
         {
             return new ArrayPointsPath2D(pathPoints);
         }
 
-        public static ArrayPointsPath2D ToArrayPointsPath2D(this IEnumerable<ITuple2D> pathPoints)
+        public static ArrayPointsPath2D ToArrayPointsPath2D(this IEnumerable<IFloat64Tuple2D> pathPoints)
         {
             return new ArrayPointsPath2D(pathPoints);
         }
 
         public static CircularPointsPath2D ToCircularPointsPath2D(this IPeriodicSequence1D<double> parameterSequence, double radius)
         {
-            return new CircularPointsPath2D(new Tuple2D(0, 0), radius, parameterSequence);
+            return new CircularPointsPath2D(new Float64Tuple2D(0, 0), radius, parameterSequence);
         }
 
-        public static CircularPointsPath2D ToCircularPointsPath2D(this IPeriodicSequence1D<double> parameterSequence, ITuple2D center, double radius)
+        public static CircularPointsPath2D ToCircularPointsPath2D(this IPeriodicSequence1D<double> parameterSequence, IFloat64Tuple2D center, double radius)
         {
             return new CircularPointsPath2D(center, radius, parameterSequence);
         }
 
-        public static ConstantPointsPath2D ToConstantPointsPath2D(this ITuple2D point, int count)
+        public static ConstantPointsPath2D ToConstantPointsPath2D(this IFloat64Tuple2D point, int count)
         {
             return new ConstantPointsPath2D(count, point);
         }
 
-        public static LinearPointsPath2D ToLinearPointsPath2D(this IPeriodicSequence1D<double> parameterSequence, ITuple2D point1, ITuple2D point2)
+        public static LinearPointsPath2D ToLinearPointsPath2D(this IPeriodicSequence1D<double> parameterSequence, IFloat64Tuple2D point1, IFloat64Tuple2D point2)
         {
             return new LinearPointsPath2D(point1, point2, parameterSequence);
         }
 
-        public static ListPointsPath2D ToListPointsPath2D(this IReadOnlyList<ITuple2D> pathPoints)
+        public static ListPointsPath2D ToListPointsPath2D(this IReadOnlyList<IFloat64Tuple2D> pathPoints)
         {
             return new ListPointsPath2D(pathPoints);
         }
 
-        public static ListPointsPath2D ToListPointsPath2D(this IEnumerable<ITuple2D> pathPoints)
+        public static ListPointsPath2D ToListPointsPath2D(this IEnumerable<IFloat64Tuple2D> pathPoints)
         {
             return new ListPointsPath2D(pathPoints);
         }
@@ -100,7 +100,7 @@ namespace GraphicsComposerLib.Geometry.Meshes.PointsPath
             return new MultiplexedPointsPath2D(sequencesList, sequenceSelectionList);
         }
 
-        public static ParametricPointsPath2D ToParametricPointsPath2D(this IPeriodicSequence1D<double> parameterSequence, Func<double, ITuple2D> mappingFunc)
+        public static ParametricPointsPath2D ToParametricPointsPath2D(this IPeriodicSequence1D<double> parameterSequence, Func<double, IFloat64Tuple2D> mappingFunc)
         {
             return new ParametricPointsPath2D(
                 parameterSequence,
@@ -139,12 +139,12 @@ namespace GraphicsComposerLib.Geometry.Meshes.PointsPath
             return new LerpPointsPath2D(baseMesh, paramValue);
         }
 
-        public static MappedPointsPath2D MapToPath2D(this IPointsPath2D basePath, Func<ITuple2D, ITuple2D> mapping)
+        public static MappedPointsPath2D MapToPath2D(this IPointsPath2D basePath, Func<IFloat64Tuple2D, IFloat64Tuple2D> mapping)
         {
             return new MappedPointsPath2D(basePath, mapping);
         }
 
-        public static Mapped3DPointsPath2D MapToPath2D(this IPointsPath3D basePath, Func<ITuple3D, ITuple2D> mapping)
+        public static Mapped3DPointsPath2D MapToPath2D(this IPointsPath3D basePath, Func<IFloat64Tuple3D, IFloat64Tuple2D> mapping)
         {
             return new Mapped3DPointsPath2D(basePath, mapping);
         }
@@ -168,27 +168,27 @@ namespace GraphicsComposerLib.Geometry.Meshes.PointsPath
         }
 
 
-        public static ConstantPointsPath3D ToConstantPointsPath3D(this ITuple3D point, int count)
+        public static ConstantPointsPath3D ToConstantPointsPath3D(this IFloat64Tuple3D point, int count)
         {
             return new ConstantPointsPath3D(count, point);
         }
 
-        public static ArrayPointsPath3D ArrayPointsPath3D(this ITuple3D[] pathPoints)
+        public static ArrayPointsPath3D ArrayPointsPath3D(this IFloat64Tuple3D[] pathPoints)
         {
             return new ArrayPointsPath3D(pathPoints);
         }
 
-        public static ArrayPointsPath3D ToArrayPointsPath3D(this IEnumerable<ITuple3D> pathPoints)
+        public static ArrayPointsPath3D ToArrayPointsPath3D(this IEnumerable<IFloat64Tuple3D> pathPoints)
         {
             return new ArrayPointsPath3D(pathPoints);
         }
 
-        public static LinearPointsPath3D ToLinearPointsPath3D(this IPeriodicSequence1D<double> parameterSequence, ITuple3D point1, ITuple3D point2)
+        public static LinearPointsPath3D ToLinearPointsPath3D(this IPeriodicSequence1D<double> parameterSequence, IFloat64Tuple3D point1, IFloat64Tuple3D point2)
         {
             return new LinearPointsPath3D(point1, point2, parameterSequence);
         }
 
-        public static ParametricPointsPath3D ToParametricPointsPath3D(this IPeriodicSequence1D<double> parameterSequence, Func<double, ITuple3D> mappingFunc)
+        public static ParametricPointsPath3D ToParametricPointsPath3D(this IPeriodicSequence1D<double> parameterSequence, Func<double, IFloat64Tuple3D> mappingFunc)
         {
             return new ParametricPointsPath3D(
                 parameterSequence,
@@ -287,12 +287,12 @@ namespace GraphicsComposerLib.Geometry.Meshes.PointsPath
             return new LerpPointsPath3D(baseMesh, paramValue);
         }
 
-        public static MappedPointsPath3D MapToPath3D(this IPointsPath3D basePath, Func<ITuple3D, ITuple3D> mapping)
+        public static MappedPointsPath3D MapToPath3D(this IPointsPath3D basePath, Func<IFloat64Tuple3D, IFloat64Tuple3D> mapping)
         {
             return new MappedPointsPath3D(basePath, mapping);
         }
 
-        public static Mapped2DPointsPath3D MapToPath3D(this IPointsPath2D basePath, Func<ITuple2D, ITuple3D> mapping)
+        public static Mapped2DPointsPath3D MapToPath3D(this IPointsPath2D basePath, Func<IFloat64Tuple2D, IFloat64Tuple3D> mapping)
         {
             return new Mapped2DPointsPath3D(basePath, mapping);
         }

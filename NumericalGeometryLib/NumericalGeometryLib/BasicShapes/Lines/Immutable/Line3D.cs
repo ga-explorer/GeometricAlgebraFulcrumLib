@@ -41,7 +41,7 @@ namespace NumericalGeometryLib.BasicShapes.Lines.Immutable
             DirectionZ = directionZ;
         }
 
-        public Line3D(ITuple3D origin, ITuple3D direction)
+        public Line3D(IFloat64Tuple3D origin, IFloat64Tuple3D direction)
         {
             OriginX = origin.X;
             OriginY = origin.Y;

@@ -8,7 +8,7 @@ namespace GraphicsComposerLib.Geometry.Meshes.PointsPath
     /// https://en.wikipedia.org/wiki/Polygonal_chain
     /// </summary>
     public interface IPointsPath2D 
-        : IPeriodicSequence1D<ITuple2D>
+        : IPeriodicSequence1D<IFloat64Tuple2D>
     {
     }
 }

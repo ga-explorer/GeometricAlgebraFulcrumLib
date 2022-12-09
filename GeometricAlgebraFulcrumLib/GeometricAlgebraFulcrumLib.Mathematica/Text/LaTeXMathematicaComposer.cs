@@ -29,6 +29,9 @@ namespace GeometricAlgebraFulcrumLib.Mathematica.Text
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override string GetScalarText(Expr scalar)
         {
+            if (scalar is null)
+                return "0";
+
             return MathematicaUtils.Cas.Connection.EvaluateToString(
                 Mfs.EToString[Mfs.TeXForm[Mfs.HoldForm[scalar]]]
             );

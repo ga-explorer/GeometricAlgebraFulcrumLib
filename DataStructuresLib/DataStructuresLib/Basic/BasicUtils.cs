@@ -34,14 +34,24 @@ namespace DataStructuresLib.Basic
 
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<T> GetItems<T>(this Pair<T> pair)
+        public static IEnumerable<T> GetItems<T>(this IPair<T> pair)
         {
             yield return pair.Item1;
             yield return pair.Item2;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Pair<T2> MapItems<T, T2>(this Pair<T> pair, Func<T, T2> itemMapping)
+        public static T[] GetItemArray<T>(this IPair<T> pair)
+        {
+            return new []
+            {
+                pair.Item1, 
+                pair.Item2
+            };
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Pair<T2> MapItems<T, T2>(this IPair<T> pair, Func<T, T2> itemMapping)
         {
             return new Pair<T2>(
                 itemMapping(pair.Item1), 
@@ -50,7 +60,7 @@ namespace DataStructuresLib.Basic
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Pair<T2> MapItems<T, T2>(this Pair<T> pair, Func<int, T, T2> itemMapping)
+        public static Pair<T2> MapItems<T, T2>(this IPair<T> pair, Func<int, T, T2> itemMapping)
         {
             return new Pair<T2>(
                 itemMapping(0, pair.Item1), 
@@ -59,7 +69,7 @@ namespace DataStructuresLib.Basic
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T2 LeftFoldItems<T, T2>(this Pair<T> pair, T2 initialValue, Func<T2, T, T2> itemMapping)
+        public static T2 LeftFoldItems<T, T2>(this IPair<T> pair, T2 initialValue, Func<T2, T, T2> itemMapping)
         {
             return 
                 itemMapping(
@@ -72,7 +82,7 @@ namespace DataStructuresLib.Basic
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<T2> LeftScanItems<T, T2>(this Pair<T> pair, T2 initialValue, Func<T2, T, T2> itemMapping)
+        public static IEnumerable<T2> LeftScanItems<T, T2>(this IPair<T> pair, T2 initialValue, Func<T2, T, T2> itemMapping)
         {
             var item = initialValue;
             yield return item;
@@ -85,7 +95,7 @@ namespace DataStructuresLib.Basic
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T2 RightFoldItems<T, T2>(this Pair<T> pair, T2 initialValue, Func<T, T2, T2> itemMapping)
+        public static T2 RightFoldItems<T, T2>(this IPair<T> pair, T2 initialValue, Func<T, T2, T2> itemMapping)
         {
             return 
                 itemMapping(
@@ -98,7 +108,7 @@ namespace DataStructuresLib.Basic
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<T2> RightScanItems<T, T2>(this Pair<T> pair, T2 initialValue, Func<T, T2, T2> itemMapping)
+        public static IEnumerable<T2> RightScanItems<T, T2>(this IPair<T> pair, T2 initialValue, Func<T, T2, T2> itemMapping)
         {
             var item = initialValue;
             yield return item;
@@ -111,7 +121,7 @@ namespace DataStructuresLib.Basic
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T2 ReduceItems<T, T2>(this Pair<T> pair, Func<T, T, T2> itemMapping)
+        public static T2 ReduceItems<T, T2>(this IPair<T> pair, Func<T, T, T2> itemMapping)
         {
             return itemMapping(pair.Item1, pair.Item2);
         }
@@ -123,7 +133,7 @@ namespace DataStructuresLib.Basic
         /// <param name="nextItem"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Pair<T> NextPair<T>(this Pair<T> pair, T nextItem)
+        public static Pair<T> NextPair<T>(this IPair<T> pair, T nextItem)
         {
             return new Pair<T>(pair.Item2, nextItem);
         }
@@ -135,7 +145,7 @@ namespace DataStructuresLib.Basic
         /// <param name="previousItem"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Pair<T> PreviousPair<T>(this Pair<T> pair, T previousItem)
+        public static Pair<T> PreviousPair<T>(this IPair<T> pair, T previousItem)
         {
             return new Pair<T>(previousItem, pair.Item1);
         }
@@ -145,22 +155,33 @@ namespace DataStructuresLib.Basic
         /// </summary>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Pair<T> SwapItems<T>(this Pair<T> pair)
+        public static Pair<T> SwapItems<T>(this IPair<T> pair)
         {
             return new Pair<T>(pair.Item2, pair.Item1);
         }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<T> GetItems<T>(this Triplet<T> triplet)
+        public static IEnumerable<T> GetItems<T>(this ITriplet<T> triplet)
         {
             yield return triplet.Item1;
             yield return triplet.Item2;
             yield return triplet.Item3;
         }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T[] GetItemArray<T>(this ITriplet<T> triplet)
+        {
+            return new []
+            {
+                triplet.Item1, 
+                triplet.Item2,
+                triplet.Item3
+            };
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Triplet<T2> MapItems<T, T2>(this Triplet<T> triplet, Func<T, T2> itemMapping)
+        public static Triplet<T2> MapItems<T, T2>(this ITriplet<T> triplet, Func<T, T2> itemMapping)
         {
             return new Triplet<T2>(
                 itemMapping(triplet.Item1), 
@@ -170,7 +191,7 @@ namespace DataStructuresLib.Basic
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Triplet<T2> MapItems<T, T2>(this Triplet<T> triplet, Func<int, T, T2> itemMapping)
+        public static Triplet<T2> MapItems<T, T2>(this ITriplet<T> triplet, Func<int, T, T2> itemMapping)
         {
             return new Triplet<T2>(
                 itemMapping(0, triplet.Item1), 
@@ -180,13 +201,13 @@ namespace DataStructuresLib.Basic
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T LeftReduceItems<T>(this Triplet<T> triplet, Func<T, T, T> itemMapping)
+        public static T LeftReduceItems<T>(this ITriplet<T> triplet, Func<T, T, T> itemMapping)
         {
             return itemMapping(itemMapping(triplet.Item1, triplet.Item2), triplet.Item3);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T2 LeftFoldItems<T, T2>(this Triplet<T> triplet, T2 initialValue, Func<T2, T, T2> itemMapping)
+        public static T2 LeftFoldItems<T, T2>(this ITriplet<T> triplet, T2 initialValue, Func<T2, T, T2> itemMapping)
         {
             return 
                 itemMapping(
@@ -202,7 +223,7 @@ namespace DataStructuresLib.Basic
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<T2> LeftScanItems<T, T2>(this Triplet<T> triplet, T2 initialValue, Func<T2, T, T2> itemMapping)
+        public static IEnumerable<T2> LeftScanItems<T, T2>(this ITriplet<T> triplet, T2 initialValue, Func<T2, T, T2> itemMapping)
         {
             var item = initialValue;
             yield return item;
@@ -218,13 +239,13 @@ namespace DataStructuresLib.Basic
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T RightReduceItems<T>(this Triplet<T> triplet, Func<T, T, T> itemMapping)
+        public static T RightReduceItems<T>(this ITriplet<T> triplet, Func<T, T, T> itemMapping)
         {
             return itemMapping(triplet.Item1, itemMapping(triplet.Item2, triplet.Item3));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T2 RightFoldItems<T, T2>(this Triplet<T> triplet, T2 initialValue, Func<T, T2, T2> itemMapping)
+        public static T2 RightFoldItems<T, T2>(this ITriplet<T> triplet, T2 initialValue, Func<T, T2, T2> itemMapping)
         {
             return 
                 itemMapping(
@@ -240,7 +261,7 @@ namespace DataStructuresLib.Basic
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<T2> RightScanItems<T, T2>(this Triplet<T> triplet, T2 initialValue, Func<T, T2, T2> itemMapping)
+        public static IEnumerable<T2> RightScanItems<T, T2>(this ITriplet<T> triplet, T2 initialValue, Func<T, T2, T2> itemMapping)
         {
             var item = initialValue;
             yield return item;
@@ -256,7 +277,7 @@ namespace DataStructuresLib.Basic
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T2 ReduceItems<T, T2>(this Triplet<T> triplet, Func<T, T, T, T2> itemMapping)
+        public static T2 ReduceItems<T, T2>(this ITriplet<T> triplet, Func<T, T, T, T2> itemMapping)
         {
             return itemMapping(triplet.Item1, triplet.Item2, triplet.Item3);
         }
@@ -268,7 +289,7 @@ namespace DataStructuresLib.Basic
         /// <param name="nextItem"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Triplet<T> NextTriplet<T>(this Triplet<T> triplet, T nextItem)
+        public static Triplet<T> NextTriplet<T>(this ITriplet<T> triplet, T nextItem)
         {
             return new Triplet<T>(triplet.Item2, triplet.Item3, nextItem);
         }
@@ -280,35 +301,47 @@ namespace DataStructuresLib.Basic
         /// <param name="previousItem"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Triplet<T> PreviousTriplet<T>(this Triplet<T> triplet, T previousItem)
+        public static Triplet<T> PreviousTriplet<T>(this ITriplet<T> triplet, T previousItem)
         {
             return new Triplet<T>(previousItem, triplet.Item1, triplet.Item2);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Triplet<T> RotateForward<T>(this Triplet<T> triplet)
+        public static Triplet<T> RotateForward<T>(this ITriplet<T> triplet)
         {
             return new Triplet<T>(triplet.Item3, triplet.Item1, triplet.Item2);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Triplet<T> RotateBackward<T>(this Triplet<T> triplet)
+        public static Triplet<T> RotateBackward<T>(this ITriplet<T> triplet)
         {
             return new Triplet<T>(triplet.Item2, triplet.Item3, triplet.Item1);
         }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<T> GetItems<T>(this Quad<T> quad)
+        public static IEnumerable<T> GetItems<T>(this IQuad<T> quad)
         {
             yield return quad.Item1;
             yield return quad.Item2;
             yield return quad.Item3;
             yield return quad.Item4;
         }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T[] GetItemArray<T>(this IQuad<T> quad)
+        {
+            return new []
+            {
+                quad.Item1, 
+                quad.Item2,
+                quad.Item3,
+                quad.Item4
+            };
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Quad<T2> MapItems<T, T2>(this Quad<T> quad, Func<T, T2> itemMapping)
+        public static Quad<T2> MapItems<T, T2>(this IQuad<T> quad, Func<T, T2> itemMapping)
         {
             return new Quad<T2>(
                 itemMapping(quad.Item1), 
@@ -319,7 +352,7 @@ namespace DataStructuresLib.Basic
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Quad<T2> MapItems<T, T2>(this Quad<T> quad, Func<int, T, T2> itemMapping)
+        public static Quad<T2> MapItems<T, T2>(this IQuad<T> quad, Func<int, T, T2> itemMapping)
         {
             return new Quad<T2>(
                 itemMapping(0, quad.Item1), 
@@ -330,13 +363,13 @@ namespace DataStructuresLib.Basic
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T LeftReduceItems<T>(this Quad<T> quad, Func<T, T, T> itemMapping)
+        public static T LeftReduceItems<T>(this IQuad<T> quad, Func<T, T, T> itemMapping)
         {
             return itemMapping(itemMapping(itemMapping(quad.Item1, quad.Item2), quad.Item3), quad.Item4);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T2 LeftFoldItems<T, T2>(this Quad<T> quad, T2 initialValue, Func<T2, T, T2> itemMapping)
+        public static T2 LeftFoldItems<T, T2>(this IQuad<T> quad, T2 initialValue, Func<T2, T, T2> itemMapping)
         {
             return 
                 itemMapping(
@@ -355,7 +388,7 @@ namespace DataStructuresLib.Basic
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<T2> LeftScanItems<T, T2>(this Quad<T> quad, T2 initialValue, Func<T2, T, T2> itemMapping)
+        public static IEnumerable<T2> LeftScanItems<T, T2>(this IQuad<T> quad, T2 initialValue, Func<T2, T, T2> itemMapping)
         {
             var item = initialValue;
             yield return item;
@@ -374,13 +407,13 @@ namespace DataStructuresLib.Basic
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T RightReduceItems<T>(this Quad<T> quad, Func<T, T, T> itemMapping)
+        public static T RightReduceItems<T>(this IQuad<T> quad, Func<T, T, T> itemMapping)
         {
             return itemMapping(quad.Item1, itemMapping(quad.Item2, itemMapping(quad.Item3, quad.Item4)));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T2 RightFoldItems<T, T2>(this Quad<T> quad, T2 initialValue, Func<T, T2, T2> itemMapping)
+        public static T2 RightFoldItems<T, T2>(this IQuad<T> quad, T2 initialValue, Func<T, T2, T2> itemMapping)
         {
             return 
                 itemMapping(
@@ -399,7 +432,7 @@ namespace DataStructuresLib.Basic
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<T2> RightScanItems<T, T2>(this Quad<T> quad, T2 initialValue, Func<T, T2, T2> itemMapping)
+        public static IEnumerable<T2> RightScanItems<T, T2>(this IQuad<T> quad, T2 initialValue, Func<T, T2, T2> itemMapping)
         {
             var item = initialValue;
             yield return item;
@@ -418,7 +451,7 @@ namespace DataStructuresLib.Basic
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T2 ReduceItems<T, T2>(this Quad<T> quad, Func<T, T, T, T, T2> itemMapping)
+        public static T2 ReduceItems<T, T2>(this IQuad<T> quad, Func<T, T, T, T, T2> itemMapping)
         {
             return itemMapping(quad.Item1, quad.Item2, quad.Item3, quad.Item4);
         }
@@ -430,7 +463,7 @@ namespace DataStructuresLib.Basic
         /// <param name="nextItem"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Quad<T> NextQuad<T>(this Quad<T> quad, T nextItem)
+        public static Quad<T> NextQuad<T>(this IQuad<T> quad, T nextItem)
         {
             return new Quad<T>(quad.Item2, quad.Item3, quad.Item4, nextItem);
         }
@@ -442,24 +475,74 @@ namespace DataStructuresLib.Basic
         /// <param name="previousItem"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Quad<T> PreviousQuad<T>(this Quad<T> quad, T previousItem)
+        public static Quad<T> PreviousQuad<T>(this IQuad<T> quad, T previousItem)
         {
             return new Quad<T>(previousItem, quad.Item1, quad.Item2, quad.Item3);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Quad<T> RotateForward<T>(this Quad<T> quad)
+        public static Quad<T> RotateForward<T>(this IQuad<T> quad)
         {
             return new Quad<T>(quad.Item4, quad.Item1, quad.Item2, quad.Item3);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Quad<T> RotateBackward<T>(this Quad<T> quad)
+        public static Quad<T> RotateBackward<T>(this IQuad<T> quad)
         {
             return new Quad<T>(quad.Item2, quad.Item3, quad.Item4, quad.Item1);
         }
 
         
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<T> GetItems<T>(this IQuint<T> quint)
+        {
+            yield return quint.Item1;
+            yield return quint.Item2;
+            yield return quint.Item3;
+            yield return quint.Item4;
+            yield return quint.Item5;
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T[] GetItemArray<T>(this IQuint<T> quint)
+        {
+            return new []
+            {
+                quint.Item1, 
+                quint.Item2,
+                quint.Item3,
+                quint.Item4,
+                quint.Item5
+            };
+        }
+
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<T> GetItems<T>(this IHexad<T> hexad)
+        {
+            yield return hexad.Item1;
+            yield return hexad.Item2;
+            yield return hexad.Item3;
+            yield return hexad.Item4;
+            yield return hexad.Item5;
+            yield return hexad.Item6;
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T[] GetItemArray<T>(this IHexad<T> hexad)
+        {
+            return new []
+            {
+                hexad.Item1, 
+                hexad.Item2,
+                hexad.Item3,
+                hexad.Item4,
+                hexad.Item5,
+                hexad.Item6
+            };
+        }
+
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Pair<T> ToPair<T>(this IPair<T> pair)
         {

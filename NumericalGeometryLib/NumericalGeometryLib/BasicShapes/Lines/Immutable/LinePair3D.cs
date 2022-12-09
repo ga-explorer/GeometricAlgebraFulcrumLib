@@ -22,7 +22,7 @@ namespace NumericalGeometryLib.BasicShapes.Lines.Immutable
             );
         }
 
-        public static LinePair3D Create(ITuple3D origin1, ITuple3D direction1, ITuple3D origin2, ITuple3D direction2)
+        public static LinePair3D Create(IFloat64Tuple3D origin1, IFloat64Tuple3D direction1, IFloat64Tuple3D origin2, IFloat64Tuple3D direction2)
         {
             return new LinePair3D(
                 origin1.X, 

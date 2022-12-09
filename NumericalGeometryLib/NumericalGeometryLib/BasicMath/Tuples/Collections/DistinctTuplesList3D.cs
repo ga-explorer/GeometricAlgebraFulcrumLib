@@ -8,12 +8,12 @@ using NumericalGeometryLib.BasicMath.Tuples.Immutable;
 namespace NumericalGeometryLib.BasicMath.Tuples.Collections
 {
     public class DistinctTuplesList3D 
-        : IReadOnlyList<ITuple3D>
+        : IReadOnlyList<IFloat64Tuple3D>
     {
         private readonly Dictionary3Keys<double, int> _tupleIndicesTable =
             new Dictionary3Keys<double, int>();
 
-        private readonly List<ITuple3D> _tuplesList;
+        private readonly List<IFloat64Tuple3D> _tuplesList;
 
 
         public int Count
@@ -21,7 +21,7 @@ namespace NumericalGeometryLib.BasicMath.Tuples.Collections
             get { return _tupleIndicesTable.Count; }
         }
 
-        public ITuple3D this[int index]
+        public IFloat64Tuple3D this[int index]
         {
             get { return _tuplesList[index]; }
             set
@@ -45,31 +45,31 @@ namespace NumericalGeometryLib.BasicMath.Tuples.Collections
 
         public DistinctTuplesList3D()
         {
-            _tuplesList = new List<ITuple3D>();
+            _tuplesList = new List<IFloat64Tuple3D>();
         }
 
         public DistinctTuplesList3D(int capacity)
         {
-            _tuplesList = new List<ITuple3D>(capacity);
+            _tuplesList = new List<IFloat64Tuple3D>(capacity);
         }
 
-        public DistinctTuplesList3D(ITuple3D tuple)
+        public DistinctTuplesList3D(IFloat64Tuple3D tuple)
         {
-            _tuplesList = new List<ITuple3D>();
+            _tuplesList = new List<IFloat64Tuple3D>();
 
             AddTuple(tuple);
         }
 
-        public DistinctTuplesList3D(params ITuple3D[] tuplesList)
+        public DistinctTuplesList3D(params IFloat64Tuple3D[] tuplesList)
         {
-            _tuplesList = new List<ITuple3D>(tuplesList.Length);
+            _tuplesList = new List<IFloat64Tuple3D>(tuplesList.Length);
 
             AddTuples(tuplesList);
         }
 
-        public DistinctTuplesList3D(IEnumerable<ITuple3D> tuplesList)
+        public DistinctTuplesList3D(IEnumerable<IFloat64Tuple3D> tuplesList)
         {
-            _tuplesList = new List<ITuple3D>();
+            _tuplesList = new List<IFloat64Tuple3D>();
 
             AddTuples(tuplesList);
         }
@@ -96,35 +96,35 @@ namespace NumericalGeometryLib.BasicMath.Tuples.Collections
             return this;
         }
 
-        public KeyValuePair<int, ITuple3D> AddTuple(double x, double y, double z)
+        public KeyValuePair<int, IFloat64Tuple3D> AddTuple(double x, double y, double z)
         {
             int tupleIndex;
             if (_tupleIndicesTable.TryGetValue(x, y, z, out tupleIndex))
-                return new KeyValuePair<int, ITuple3D>(
+                return new KeyValuePair<int, IFloat64Tuple3D>(
                     tupleIndex,
                     _tuplesList[tupleIndex]
                 );
 
             tupleIndex = _tuplesList.Count;
-            var tuple = new Tuple3D(x, y, z);
+            var tuple = new Float64Tuple3D(x, y, z);
 
             _tuplesList.Add(tuple);
             _tupleIndicesTable.Add(x, y, z, tupleIndex);
 
-            return new KeyValuePair<int, ITuple3D>(
+            return new KeyValuePair<int, IFloat64Tuple3D>(
                 tupleIndex,
                 tuple
             );
         }
 
-        public KeyValuePair<int, ITuple3D> AddTuple(ITuple3D tuple)
+        public KeyValuePair<int, IFloat64Tuple3D> AddTuple(IFloat64Tuple3D tuple)
         {
             if (ReferenceEquals(tuple, null))
                 throw new ArgumentNullException(nameof(tuple));
 
             int tupleIndex;
             if (_tupleIndicesTable.TryGetValue(tuple.X, tuple.Y, tuple.Z, out tupleIndex))
-                return new KeyValuePair<int, ITuple3D>(
+                return new KeyValuePair<int, IFloat64Tuple3D>(
                     tupleIndex,
                     _tuplesList[tupleIndex]
                 );
@@ -134,30 +134,30 @@ namespace NumericalGeometryLib.BasicMath.Tuples.Collections
             _tuplesList.Add(tuple);
             _tupleIndicesTable.Add(tuple.X, tuple.Y, tuple.Z, tupleIndex);
 
-            return new KeyValuePair<int, ITuple3D>(
+            return new KeyValuePair<int, IFloat64Tuple3D>(
                 tupleIndex,
                 tuple
             );
         }
 
-        public IEnumerable<KeyValuePair<int, ITuple3D>> AddTuples(IEnumerable<ITuple3D> tuplesList)
+        public IEnumerable<KeyValuePair<int, IFloat64Tuple3D>> AddTuples(IEnumerable<IFloat64Tuple3D> tuplesList)
         {
             return tuplesList.Select(AddTuple);
         }
 
-        public KeyValuePair<int, ITuple3D>[] AddTuples(params ITuple3D[] tuplesList)
+        public KeyValuePair<int, IFloat64Tuple3D>[] AddTuples(params IFloat64Tuple3D[] tuplesList)
         {
             return tuplesList.Select(AddTuple).ToArray();
         }
 
-        public ITuple3D GetTuple(double x, double y, double z)
+        public IFloat64Tuple3D GetTuple(double x, double y, double z)
         {
             var tupleIndex = _tupleIndicesTable[x, y, z];
 
             return _tuplesList[tupleIndex];
         }
 
-        public ITuple3D GetTuple(ITuple3D tuple)
+        public IFloat64Tuple3D GetTuple(IFloat64Tuple3D tuple)
         {
             var tupleIndex = _tupleIndicesTable[tuple.X, tuple.Y, tuple.Z];
 
@@ -169,26 +169,26 @@ namespace NumericalGeometryLib.BasicMath.Tuples.Collections
             return _tupleIndicesTable[x, y, z];
         }
 
-        public int GetTupleIndex(ITuple3D tuple)
+        public int GetTupleIndex(IFloat64Tuple3D tuple)
         {
             return _tupleIndicesTable[tuple.X, tuple.Y, tuple.Z];
         }
 
-        public KeyValuePair<int, ITuple3D> GetTupleWithIndex(double x, double y, double z)
+        public KeyValuePair<int, IFloat64Tuple3D> GetTupleWithIndex(double x, double y, double z)
         {
             var tupleIndex = _tupleIndicesTable[x, y, z];
 
-            return new KeyValuePair<int, ITuple3D>(
+            return new KeyValuePair<int, IFloat64Tuple3D>(
                 tupleIndex,
                 _tuplesList[tupleIndex]
             );
         }
 
-        public KeyValuePair<int, ITuple3D> GetTupleWithIndex(ITuple3D tuple)
+        public KeyValuePair<int, IFloat64Tuple3D> GetTupleWithIndex(IFloat64Tuple3D tuple)
         {
             var tupleIndex = _tupleIndicesTable[tuple.X, tuple.Y, tuple.Z];
 
-            return new KeyValuePair<int, ITuple3D>(
+            return new KeyValuePair<int, IFloat64Tuple3D>(
                 tupleIndex,
                 _tuplesList[tupleIndex]
             );
@@ -201,7 +201,7 @@ namespace NumericalGeometryLib.BasicMath.Tuples.Collections
                 return tupleIndex;
 
             tupleIndex = _tuplesList.Count;
-            var tuple = new Tuple3D(x, y, z);
+            var tuple = new Float64Tuple3D(x, y, z);
 
             _tuplesList.Add(tuple);
             _tupleIndicesTable.Add(x, y, z, tupleIndex);
@@ -209,7 +209,7 @@ namespace NumericalGeometryLib.BasicMath.Tuples.Collections
             return tupleIndex;
         }
 
-        public int GetOrAddTupleIndex(ITuple3D tuple)
+        public int GetOrAddTupleIndex(IFloat64Tuple3D tuple)
         {
             if (_tupleIndicesTable.TryGetValue(tuple.X, tuple.Y, tuple.Z, out var tupleIndex))
                 return tupleIndex;
@@ -222,32 +222,32 @@ namespace NumericalGeometryLib.BasicMath.Tuples.Collections
             return tupleIndex;
         }
 
-        public KeyValuePair<int, ITuple3D> GetOrAddTupleWithIndex(double x, double y, double z)
+        public KeyValuePair<int, IFloat64Tuple3D> GetOrAddTupleWithIndex(double x, double y, double z)
         {
             int tupleIndex;
             if (_tupleIndicesTable.TryGetValue(x, y, z, out tupleIndex))
-                return new KeyValuePair<int, ITuple3D>(
+                return new KeyValuePair<int, IFloat64Tuple3D>(
                     tupleIndex,
                     _tuplesList[tupleIndex]
                 );
 
             tupleIndex = _tuplesList.Count;
-            var tuple = new Tuple3D(x, y, z);
+            var tuple = new Float64Tuple3D(x, y, z);
 
             _tuplesList.Add(tuple);
             _tupleIndicesTable.Add(x, y, z, tupleIndex);
 
-            return new KeyValuePair<int, ITuple3D>(
+            return new KeyValuePair<int, IFloat64Tuple3D>(
                 tupleIndex,
                 tuple
             );
         }
 
-        public KeyValuePair<int, ITuple3D> GetOrAddTupleWithIndex(ITuple3D tuple)
+        public KeyValuePair<int, IFloat64Tuple3D> GetOrAddTupleWithIndex(IFloat64Tuple3D tuple)
         {
             int tupleIndex;
             if (_tupleIndicesTable.TryGetValue(tuple.X, tuple.Y, tuple.Z, out tupleIndex))
-                return new KeyValuePair<int, ITuple3D>(
+                return new KeyValuePair<int, IFloat64Tuple3D>(
                     tupleIndex,
                     _tuplesList[tupleIndex]
                 );
@@ -257,13 +257,13 @@ namespace NumericalGeometryLib.BasicMath.Tuples.Collections
             _tuplesList.Add(tuple);
             _tupleIndicesTable.Add(tuple.X, tuple.Y, tuple.Z, tupleIndex);
 
-            return new KeyValuePair<int, ITuple3D>(
+            return new KeyValuePair<int, IFloat64Tuple3D>(
                 tupleIndex,
                 tuple
             );
         }
 
-        public bool TryGetTuple(double x, double y, double z, out ITuple3D outputTuple)
+        public bool TryGetTuple(double x, double y, double z, out IFloat64Tuple3D outputTuple)
         {
             int tupleIndex;
             if (_tupleIndicesTable.TryGetValue(x, y, z, out tupleIndex))
@@ -276,7 +276,7 @@ namespace NumericalGeometryLib.BasicMath.Tuples.Collections
             return false;
         }
 
-        public bool TryGetTuple(ITuple3D tuple, out ITuple3D outputTuple)
+        public bool TryGetTuple(IFloat64Tuple3D tuple, out IFloat64Tuple3D outputTuple)
         {
             int tupleIndex;
             if (_tupleIndicesTable.TryGetValue(tuple.X, tuple.Y, tuple.Z, out tupleIndex))
@@ -294,17 +294,17 @@ namespace NumericalGeometryLib.BasicMath.Tuples.Collections
             return _tupleIndicesTable.TryGetValue(x, y, z, out tupleIndex);
         }
 
-        public bool TryGetTupleIndex(ITuple3D tuple, out int tupleIndex)
+        public bool TryGetTupleIndex(IFloat64Tuple3D tuple, out int tupleIndex)
         {
             return _tupleIndicesTable.TryGetValue(tuple.X, tuple.Y, tuple.Z, out tupleIndex);
         }
 
-        public bool TryGetTupleWithIndex(double x, double y, double z, out KeyValuePair<int, ITuple3D> tupleWithIndex)
+        public bool TryGetTupleWithIndex(double x, double y, double z, out KeyValuePair<int, IFloat64Tuple3D> tupleWithIndex)
         {
             int tupleIndex;
             if (_tupleIndicesTable.TryGetValue(x, y, z, out tupleIndex))
             {
-                tupleWithIndex = new KeyValuePair<int, ITuple3D>(
+                tupleWithIndex = new KeyValuePair<int, IFloat64Tuple3D>(
                     tupleIndex,
                     _tuplesList[tupleIndex]
                 );
@@ -312,16 +312,16 @@ namespace NumericalGeometryLib.BasicMath.Tuples.Collections
                 return true;
             }
 
-            tupleWithIndex = new KeyValuePair<int, ITuple3D>(-1, Tuple3D.Zero);
+            tupleWithIndex = new KeyValuePair<int, IFloat64Tuple3D>(-1, Float64Tuple3D.Zero);
             return false;
         }
 
-        public bool TryGetTupleWithIndex(ITuple3D tuple, out KeyValuePair<int, ITuple3D> tupleWithIndex)
+        public bool TryGetTupleWithIndex(IFloat64Tuple3D tuple, out KeyValuePair<int, IFloat64Tuple3D> tupleWithIndex)
         {
             int tupleIndex;
             if (_tupleIndicesTable.TryGetValue(tuple.X, tuple.Y, tuple.Z, out tupleIndex))
             {
-                tupleWithIndex = new KeyValuePair<int, ITuple3D>(
+                tupleWithIndex = new KeyValuePair<int, IFloat64Tuple3D>(
                     tupleIndex,
                     _tuplesList[tupleIndex]
                 );
@@ -329,7 +329,7 @@ namespace NumericalGeometryLib.BasicMath.Tuples.Collections
                 return true;
             }
 
-            tupleWithIndex = new KeyValuePair<int, ITuple3D>(-1, Tuple3D.Zero);
+            tupleWithIndex = new KeyValuePair<int, IFloat64Tuple3D>(-1, Float64Tuple3D.Zero);
             return false;
         }
 
@@ -352,7 +352,7 @@ namespace NumericalGeometryLib.BasicMath.Tuples.Collections
         }
 
 
-        public IEnumerator<ITuple3D> GetEnumerator()
+        public IEnumerator<IFloat64Tuple3D> GetEnumerator()
         {
             return _tuplesList.GetEnumerator();
         }

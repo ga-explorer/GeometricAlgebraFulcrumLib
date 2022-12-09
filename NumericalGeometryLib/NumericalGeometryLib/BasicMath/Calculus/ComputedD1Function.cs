@@ -38,7 +38,7 @@ public class ComputedD1Function :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public double GetFirstDerivative(double t)
+    public double GetFirstDerivativeValue(double t)
     {
         return FirstDerivativeFunc(t);
     }

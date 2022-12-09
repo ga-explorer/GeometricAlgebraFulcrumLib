@@ -12,11 +12,11 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Lights
     /// </summary>
     public sealed class XeoglSpotLight : XeoglLight
     {
-        public static Tuple3D DefaultLightPosition { get; }
-            = new Tuple3D(1, 1, 1);
+        public static Float64Tuple3D DefaultLightPosition { get; }
+            = new Float64Tuple3D(1, 1, 1);
 
-        public static Tuple3D DefaultLightDirection { get; }
-            = new Tuple3D(0, -1, 0);
+        public static Float64Tuple3D DefaultLightDirection { get; }
+            = new Float64Tuple3D(0, -1, 0);
 
 
         public override string JavaScriptClassName => "SpotLight";
@@ -32,18 +32,18 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Lights
 
         public double QuadraticAttenuation { get; set; }
 
-        public MutableTuple3D LightPosition { get; set; }
-            = new MutableTuple3D(DefaultLightPosition);
+        public MutableFloat64Tuple3D LightPosition { get; set; }
+            = new MutableFloat64Tuple3D(DefaultLightPosition);
 
-        public MutableTuple3D LightDirection { get; set; }
-            = new MutableTuple3D(DefaultLightDirection);
+        public MutableFloat64Tuple3D LightDirection { get; set; }
+            = new MutableFloat64Tuple3D(DefaultLightDirection);
 
 
         public XeoglSpotLight()
         {
         }
 
-        public XeoglSpotLight(ITuple3D lightPosition, ITuple3D lightDirection)
+        public XeoglSpotLight(IFloat64Tuple3D lightPosition, IFloat64Tuple3D lightDirection)
         {
             LightPosition.SetTuple(lightPosition);
             LightDirection.SetTuple(lightDirection);

@@ -4,7 +4,7 @@ using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms;
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Projectors
 {
     public interface IProjector<T> : 
-        IOutermorphism<T>
+        IGaOutermorphism<T>
     {
         GaKVector<T> Blade { get; }
     }

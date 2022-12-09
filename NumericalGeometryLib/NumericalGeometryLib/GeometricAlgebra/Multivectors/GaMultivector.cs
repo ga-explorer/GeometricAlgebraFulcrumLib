@@ -1231,18 +1231,18 @@ namespace NumericalGeometryLib.GeometricAlgebra.Multivectors
 
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple2D GetVectorPartAsTuple2D()
+        public Float64Tuple2D GetVectorPartAsTuple2D()
         {
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 ScalarList[1],
                 ScalarList[2]
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple3D GetVectorPartAsTuple3D()
+        public Float64Tuple3D GetVectorPartAsTuple3D()
         {
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 ScalarList[1],
                 ScalarList[2],
                 ScalarList[4]

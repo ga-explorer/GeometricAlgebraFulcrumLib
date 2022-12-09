@@ -7,7 +7,7 @@ namespace GraphicsComposerLib.Geometry.SdfShapes.Primitives
     /// </summary>
     public sealed class SdfPlaneXy3D : ScalarDistanceFunction
     {
-        public override double GetScalarDistance(ITuple3D point)
+        public override double GetScalarDistance(IFloat64Tuple3D point)
         {
             return point.Z;
         }

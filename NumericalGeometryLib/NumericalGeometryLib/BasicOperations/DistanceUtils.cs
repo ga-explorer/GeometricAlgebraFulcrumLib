@@ -10,7 +10,7 @@ namespace NumericalGeometryLib.BasicOperations
     public static class DistanceUtils
     {
         //TODO: Implement these using GA instead of VA
-        public static double GetSignedDistanceToLineVa(this ITuple2D point, ILine2D line)
+        public static double GetSignedDistanceToLineVa(this IFloat64Tuple2D point, ILine2D line)
         {
             //https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line
 
@@ -27,7 +27,7 @@ namespace NumericalGeometryLib.BasicOperations
             return t1 / t2;
         }
 
-        public static double GetSignedDistanceToLineVa(this ITuple2D point, ITuple2D linePoint1, ITuple2D linePoint2)
+        public static double GetSignedDistanceToLineVa(this IFloat64Tuple2D point, IFloat64Tuple2D linePoint1, IFloat64Tuple2D linePoint2)
         {
             //https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line
 
@@ -47,7 +47,7 @@ namespace NumericalGeometryLib.BasicOperations
             return t1 / t2;
         }
 
-        public static double GetSignedDistanceToLineVa(this ITuple2D point, ILineSegment2D lineSegment)
+        public static double GetSignedDistanceToLineVa(this IFloat64Tuple2D point, ILineSegment2D lineSegment)
         {
             //https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line
 
@@ -68,7 +68,7 @@ namespace NumericalGeometryLib.BasicOperations
         }
 
 
-        public static double GetDistanceToLineVa(this ITuple2D point, ILine2D line)
+        public static double GetDistanceToLineVa(this IFloat64Tuple2D point, ILine2D line)
         {
             //https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line
 
@@ -85,7 +85,7 @@ namespace NumericalGeometryLib.BasicOperations
             return Math.Abs(t1 / t2);
         }
 
-        public static double GetDistanceToLineVa(this ITuple2D point, ITuple2D linePoint1, ITuple2D linePoint2)
+        public static double GetDistanceToLineVa(this IFloat64Tuple2D point, IFloat64Tuple2D linePoint1, IFloat64Tuple2D linePoint2)
         {
             //https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line
 
@@ -105,7 +105,7 @@ namespace NumericalGeometryLib.BasicOperations
             return Math.Abs(t1 / t2);
         }
 
-        public static double GetDistanceToLineVa(this ITuple2D point, ILineSegment2D lineSegment)
+        public static double GetDistanceToLineVa(this IFloat64Tuple2D point, ILineSegment2D lineSegment)
         {
             //https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line
 
@@ -126,7 +126,7 @@ namespace NumericalGeometryLib.BasicOperations
         }
 
 
-        public static double GetSignedDistanceToPlaneVa(this ITuple3D point, IPlane3D plane)
+        public static double GetSignedDistanceToPlaneVa(this IFloat64Tuple3D point, IPlane3D plane)
         {
             //https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_plane
 
@@ -145,7 +145,7 @@ namespace NumericalGeometryLib.BasicOperations
             return t1 / t2;
         }
 
-        public static double GetSignedDistanceToPlaneVa(this ITuple3D point, ITriangle3D triangle)
+        public static double GetSignedDistanceToPlaneVa(this IFloat64Tuple3D point, ITriangle3D triangle)
         {
             //https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_plane
 
@@ -164,7 +164,7 @@ namespace NumericalGeometryLib.BasicOperations
             return t1 / t2;
         }
 
-        public static double GetSignedDistanceToPlaneVa(this ITuple3D point, ITuple3D planePoint1, ITuple3D planePoint2, ITuple3D planePoint3)
+        public static double GetSignedDistanceToPlaneVa(this IFloat64Tuple3D point, IFloat64Tuple3D planePoint1, IFloat64Tuple3D planePoint2, IFloat64Tuple3D planePoint3)
         {
             //https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_plane
 
@@ -187,7 +187,7 @@ namespace NumericalGeometryLib.BasicOperations
         }
 
 
-        public static double GetDistanceToPlaneVa(this ITuple3D point, IPlane3D plane)
+        public static double GetDistanceToPlaneVa(this IFloat64Tuple3D point, IPlane3D plane)
         {
             //https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_plane
 
@@ -206,7 +206,7 @@ namespace NumericalGeometryLib.BasicOperations
             return Math.Abs(t1 / t2);
         }
 
-        public static double GetDistanceToPlaneVa(this ITuple3D point, ITriangle3D triangle)
+        public static double GetDistanceToPlaneVa(this IFloat64Tuple3D point, ITriangle3D triangle)
         {
             //https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_plane
 
@@ -225,7 +225,7 @@ namespace NumericalGeometryLib.BasicOperations
             return Math.Abs(t1 / t2);
         }
 
-        public static double GetDistanceToPlaneVa(this ITuple3D point, ITuple3D planePoint1, ITuple3D planePoint2, ITuple3D planePoint3)
+        public static double GetDistanceToPlaneVa(this IFloat64Tuple3D point, IFloat64Tuple3D planePoint1, IFloat64Tuple3D planePoint2, IFloat64Tuple3D planePoint3)
         {
             //https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_plane
 
@@ -248,7 +248,7 @@ namespace NumericalGeometryLib.BasicOperations
         }
 
 
-        public static double GetSignedDistanceFromPointVa(this IPlane3D plane, ITuple3D point)
+        public static double GetSignedDistanceFromPointVa(this IPlane3D plane, IFloat64Tuple3D point)
         {
             //https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_plane
 
@@ -267,7 +267,7 @@ namespace NumericalGeometryLib.BasicOperations
             return t1 / t2;
         }
 
-        public static double GetDistanceFromPointVa(this IPlane3D plane, ITuple3D point)
+        public static double GetDistanceFromPointVa(this IPlane3D plane, IFloat64Tuple3D point)
         {
             //https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_plane
 
@@ -287,7 +287,7 @@ namespace NumericalGeometryLib.BasicOperations
         }
 
 
-        public static double GetSignedDistanceFromPointVa(this ILine2D line, ITuple2D point)
+        public static double GetSignedDistanceFromPointVa(this ILine2D line, IFloat64Tuple2D point)
         {
             //https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line
 
@@ -304,7 +304,7 @@ namespace NumericalGeometryLib.BasicOperations
             return t1 / t2;
         }
 
-        public static double GetDistanceFromPointVa(this ILine2D line, ITuple2D point)
+        public static double GetDistanceFromPointVa(this ILine2D line, IFloat64Tuple2D point)
         {
             //https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line
 

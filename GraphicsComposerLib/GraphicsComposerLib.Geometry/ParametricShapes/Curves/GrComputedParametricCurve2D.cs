@@ -9,18 +9,18 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves
     public class GrComputedParametricCurve2D :
         IGraphicsParametricCurve2D
     {
-        public Func<double, Tuple2D> GetPointFunc { get; }
+        public Func<double, Float64Tuple2D> GetPointFunc { get; }
 
-        public Func<double, Tuple2D> GetTangentFunc { get; }
+        public Func<double, Float64Tuple2D> GetTangentFunc { get; }
 
 
-        public GrComputedParametricCurve2D([NotNull] Func<double, Tuple2D> getPointFunc)
+        public GrComputedParametricCurve2D([NotNull] Func<double, Float64Tuple2D> getPointFunc)
         {
             GetPointFunc = getPointFunc;
             GetTangentFunc = null;
         }
         
-        public GrComputedParametricCurve2D([NotNull] Func<double, Tuple2D> getPointFunc, [NotNull] Func<double, Tuple2D> getTangentFunc)
+        public GrComputedParametricCurve2D([NotNull] Func<double, Float64Tuple2D> getPointFunc, [NotNull] Func<double, Float64Tuple2D> getTangentFunc)
         {
             GetPointFunc = getPointFunc;
             GetTangentFunc = getTangentFunc;
@@ -34,13 +34,13 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple2D GetPoint(double parameterValue)
+        public Float64Tuple2D GetPoint(double parameterValue)
         {
             return GetPointFunc(parameterValue);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple2D GetTangent(double parameterValue)
+        public Float64Tuple2D GetTangent(double parameterValue)
         {
             if (GetTangentFunc is not null)
                 return GetTangentFunc(parameterValue);
@@ -54,7 +54,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple2D GetUnitTangent(double parameterValue)
+        public Float64Tuple2D GetUnitTangent(double parameterValue)
         {
             return GetTangent(parameterValue).ToUnitVector();
         }

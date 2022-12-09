@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using NumericalGeometryLib.BasicMath.Coordinates;
 using NumericalGeometryLib.BasicMath.Tuples;
 
 namespace NumericalGeometryLib.BasicMath
@@ -84,7 +85,7 @@ namespace NumericalGeometryLib.BasicMath
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static PlanarAngle CreateFromUnitVectors(ITuple2D v1, ITuple2D v2)
+        public static PlanarAngle CreateFromUnitVectors(IFloat64Tuple2D v1, IFloat64Tuple2D v2)
         {
             return CreateFromDegrees(
                 Math.Acos(v1.VectorDot(v2)) * RadianToDegreeFactor
@@ -92,7 +93,7 @@ namespace NumericalGeometryLib.BasicMath
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static PlanarAngle CreateFromUnitVectors(ITuple3D v1, ITuple3D v2)
+        public static PlanarAngle CreateFromUnitVectors(IFloat64Tuple3D v1, IFloat64Tuple3D v2)
         {
             return CreateFromDegrees(
                 Math.Acos(v1.VectorDot(v2)) * RadianToDegreeFactor
@@ -100,7 +101,7 @@ namespace NumericalGeometryLib.BasicMath
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static PlanarAngle CreateFromUnitVectors(ITuple4D v1, ITuple4D v2)
+        public static PlanarAngle CreateFromUnitVectors(IFloat64Tuple4D v1, IFloat64Tuple4D v2)
         {
             return CreateFromDegrees(
                 Math.Acos(v1.VectorDot(v2)) * RadianToDegreeFactor
@@ -271,6 +272,18 @@ namespace NumericalGeometryLib.BasicMath
 
             //0 <= value <= maxValue
             return new PlanarAngle(Degrees);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public PolarPosition2D ToPolarPosition()
+        {
+            return new PolarPosition2D(this);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public PolarPosition2D ToPolarPosition(double r)
+        {
+            return new PolarPosition2D(r, this);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

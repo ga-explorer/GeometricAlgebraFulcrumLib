@@ -9,11 +9,11 @@ namespace GraphicsComposerLib.Geometry.SdfShapes.Operations
     /// </summary>
     public sealed class SdfSurfaceElongation3D : SdfUnaryOperation
     {
-        public Tuple3D Direction { get; set; }
-            = new Tuple3D(0, 0, 1);
+        public Float64Tuple3D Direction { get; set; }
+            = new Float64Tuple3D(0, 0, 1);
 
 
-        public override double GetScalarDistance(ITuple3D point)
+        public override double GetScalarDistance(IFloat64Tuple3D point)
         {
             var q = point.ComponentsAbs() - Direction;
 

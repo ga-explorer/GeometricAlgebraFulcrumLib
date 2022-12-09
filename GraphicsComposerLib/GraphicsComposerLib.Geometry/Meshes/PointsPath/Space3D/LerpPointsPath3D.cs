@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using DataStructuresLib.Basic;
-using NumericalGeometryLib.BasicMath;
 using NumericalGeometryLib.BasicMath.Tuples;
 using GraphicsComposerLib.Geometry.Meshes.PathsMesh.Space3D;
 
@@ -24,14 +23,14 @@ namespace GraphicsComposerLib.Geometry.Meshes.PointsPath.Space3D
         public int Count 
             => Path1.Count;
 
-        public ITuple3D this[int index] 
+        public IFloat64Tuple3D this[int index] 
             => ParamValue.Lerp(
                 Path1[index], 
                 Path2[index]
             );
 
-        public Pair<ITuple3D> this[int index1, int index2] 
-            => new Pair<ITuple3D>(
+        public Pair<IFloat64Tuple3D> this[int index1, int index2] 
+            => new Pair<IFloat64Tuple3D>(
                 this[index1],
                 this[index2]
             );
@@ -56,7 +55,7 @@ namespace GraphicsComposerLib.Geometry.Meshes.PointsPath.Space3D
         }
 
 
-        public IEnumerator<ITuple3D> GetEnumerator()
+        public IEnumerator<IFloat64Tuple3D> GetEnumerator()
         {
             return Enumerable
                 .Range(0, Count)

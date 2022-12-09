@@ -5,7 +5,7 @@ using NumericalGeometryLib.BasicMath.Tuples;
 namespace GraphicsComposerLib.Geometry.Meshes.PointsPath.Space3D
 {
     public class PartialPointsPath3D
-        : PSeqPartial1D<ITuple3D>, IPointsPath3D
+        : PSeqPartial1D<IFloat64Tuple3D>, IPointsPath3D
     {
         public IPointsPath3D BasePath { get; }
 

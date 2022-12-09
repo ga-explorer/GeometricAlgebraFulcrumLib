@@ -8,7 +8,7 @@ namespace NumericalGeometryLib.BasicShapes.Triangles.Immutable
 {
     public sealed class Triangle2D : ITriangle2D
     {
-        public static Triangle2D Create(ITuple2D point1, ITuple2D point2, ITuple2D point3)
+        public static Triangle2D Create(IFloat64Tuple2D point1, IFloat64Tuple2D point2, IFloat64Tuple2D point3)
         {
             return new Triangle2D(
                 point1.X, point1.Y,

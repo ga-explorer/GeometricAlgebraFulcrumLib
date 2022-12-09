@@ -36,7 +36,7 @@ namespace NumericalGeometryLib.Transforms
         /// 2- We have an arbitrary line segment in 3D space (section2)
         /// 3- We use the two line segments to define a "Translate then Rotate then Scale then Translate" map that maps section1 to section2
         /// 4- We use the given parameters of section1 and section2 to map points to points using the map we constructed in step 3
-        public static TrstMap3D CreateFromXSectionToLineSectionMap(double section1StartX, double section1EndX, Tuple3D section2Start, Tuple3D section2End)
+        public static TrstMap3D CreateFromXSectionToLineSectionMap(double section1StartX, double section1EndX, Float64Tuple3D section2Start, Float64Tuple3D section2End)
         {
             var section1VectorX = section1EndX - section1StartX;
             var section1LengthInv = 1.0d / Math.Abs(section1VectorX);
@@ -123,16 +123,16 @@ namespace NumericalGeometryLib.Transforms
 
         public double XSectionLength { get; set; } = 1.0d;
 
-        public Tuple3D XSectionStart => new Tuple3D(0, 0, 0);
+        public Float64Tuple3D XSectionStart => new Float64Tuple3D(0, 0, 0);
 
-        public Tuple3D XSectionEnd => new Tuple3D(XSectionLength, 0, 0);
+        public Float64Tuple3D XSectionEnd => new Float64Tuple3D(XSectionLength, 0, 0);
 
-        public Tuple3D FinalSectionStart { get; set; }
+        public Float64Tuple3D FinalSectionStart { get; set; }
 
-        public Tuple3D FinalSectionEnd { get; set; }
+        public Float64Tuple3D FinalSectionEnd { get; set; }
 
 
-        public Tuple3D MapPoint(Tuple3D point)
+        public Float64Tuple3D MapPoint(Float64Tuple3D point)
         {
             //Apply the first translation
             var pointX = point.X + _translate1X;
@@ -217,7 +217,7 @@ namespace NumericalGeometryLib.Transforms
             //Finish GMac Macro Code Generation, 2018-01-19T22:16:17.1698546+02:00
 
             //Apply the uniform scaling and second translation
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 x * _scaleFactor + _translate2X,
                 y * _scaleFactor + _translate2Y,
                 z * _scaleFactor + _translate2Z

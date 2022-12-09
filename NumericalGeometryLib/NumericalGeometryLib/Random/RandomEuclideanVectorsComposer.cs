@@ -65,32 +65,32 @@ namespace NumericalGeometryLib.Random
         }
 
 
-        public Tuple2D GetRandomUnitVector2Dp()
+        public Float64Tuple2D GetRandomUnitVector2Dp()
         {
             var phi = PhiMin + RandomGenerator.GetNumber() * PhiRange;
             var cosPhi = Math.Cos(phi);
             var sinPhi = Math.Sin(phi);
 
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 cosPhi,
                 sinPhi
             );
         }
 
-        public Tuple2D GetRandomVector2Dp()
+        public Float64Tuple2D GetRandomVector2Dp()
         {
             var r = RMin + RandomGenerator.GetNumber() * RRange;
             var phi = PhiMin + RandomGenerator.GetNumber() * PhiRange;
             var cosPhi = Math.Cos(phi);
             var sinPhi = Math.Sin(phi);
 
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 r * cosPhi,
                 r * sinPhi
             );
         }
 
-        public Tuple3D GetRandomUnitVector3Dp()
+        public Float64Tuple3D GetRandomUnitVector3Dp()
         {
             var theta = ThetaMin + RandomGenerator.GetNumber() * ThetaRange;
             var phi = PhiMin + RandomGenerator.GetNumber() * PhiRange;
@@ -99,14 +99,14 @@ namespace NumericalGeometryLib.Random
             var cosPhi = Math.Cos(phi);
             var sinPhi = Math.Sin(phi);
 
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 sinTheta * cosPhi,
                 sinTheta * sinPhi,
                 cosTheta
             );
         }
 
-        public Tuple3D GetRandomVector3Dp()
+        public Float64Tuple3D GetRandomVector3Dp()
         {
             var r = RMin + RandomGenerator.GetNumber() * RRange;
             var theta = ThetaMin + RandomGenerator.GetNumber() * ThetaRange;
@@ -116,7 +116,7 @@ namespace NumericalGeometryLib.Random
             var cosPhi = Math.Cos(phi);
             var sinPhi = Math.Sin(phi);
             
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 r * sinTheta * cosPhi,
                 r * sinTheta * sinPhi,
                 r * cosTheta
@@ -133,9 +133,9 @@ namespace NumericalGeometryLib.Random
         //}
 
 
-        public Tuple2D[] GetRandomUnitVectors2Dp(int count)
+        public Float64Tuple2D[] GetRandomUnitVectors2Dp(int count)
         {
-            var vectorsList = new Tuple2D[count];
+            var vectorsList = new Float64Tuple2D[count];
 
             for (var i = 0; i < count; i++)
                 vectorsList[i] = GetRandomUnitVector2Dp();
@@ -143,9 +143,9 @@ namespace NumericalGeometryLib.Random
             return vectorsList;
         }
 
-        public Tuple2D[] GetRandomVectors2Dp(int count)
+        public Float64Tuple2D[] GetRandomVectors2Dp(int count)
         {
-            var vectorsList = new Tuple2D[count];
+            var vectorsList = new Float64Tuple2D[count];
 
             for (var i = 0; i < count; i++)
                 vectorsList[i] = GetRandomVector2Dp();
@@ -153,9 +153,9 @@ namespace NumericalGeometryLib.Random
             return vectorsList;
         }
 
-        public Tuple3D[] GetRandomUnitVectors3Dp(int count)
+        public Float64Tuple3D[] GetRandomUnitVectors3Dp(int count)
         {
-            var vectorsList = new Tuple3D[count];
+            var vectorsList = new Float64Tuple3D[count];
 
             for (var i = 0; i < count; i++)
                 vectorsList[i] = GetRandomUnitVector3Dp();
@@ -163,9 +163,9 @@ namespace NumericalGeometryLib.Random
             return vectorsList;
         }
 
-        public Tuple3D[] GetRandomVectors3Dp(int count)
+        public Float64Tuple3D[] GetRandomVectors3Dp(int count)
         {
-            var vectorsList = new Tuple3D[count];
+            var vectorsList = new Float64Tuple3D[count];
 
             for (var i = 0; i < count; i++)
                 vectorsList[i] = GetRandomVector3Dp();

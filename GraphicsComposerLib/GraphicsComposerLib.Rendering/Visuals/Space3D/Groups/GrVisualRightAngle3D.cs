@@ -10,11 +10,11 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Groups;
 public sealed class GrVisualRightAngle3D :
     GrVisualCurve3D
 {
-    public Tuple3D Origin { get; }
+    public Float64Tuple3D Origin { get; }
 
-    public Tuple3D Direction1 { get; }
+    public Float64Tuple3D Direction1 { get; }
 
-    public Tuple3D Direction2 { get; }
+    public Float64Tuple3D Direction2 { get; }
 
     public double Radius { get; }
 
@@ -27,7 +27,7 @@ public sealed class GrVisualRightAngle3D :
     public GrVisualSurfaceThinStyle3D? InnerStyle { get; set; }
 
 
-    public GrVisualRightAngle3D(string name, ITuple3D origin, ITuple3D direction1, ITuple3D direction2, double radius) 
+    public GrVisualRightAngle3D(string name, IFloat64Tuple3D origin, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, double radius) 
         : base(name)
     {
         Origin = origin.ToTuple3D();
@@ -37,33 +37,33 @@ public sealed class GrVisualRightAngle3D :
     }
 
 
-    public Triplet<Tuple3D> GetArcPointsTriplet()
+    public Triplet<Float64Tuple3D> GetArcPointsTriplet()
     {
         var s = Radius / Math.Sqrt(2d);
 
-        return new Triplet<Tuple3D>(
+        return new Triplet<Float64Tuple3D>(
             Origin + s * Direction1, 
             Origin + s * (Direction1 + Direction2), 
             Origin + s * Direction2
         );
     }
 
-    public Tuple3D GetArcStartUnitVector()
+    public Float64Tuple3D GetArcStartUnitVector()
     {
         return Direction1;
     }
     
-    public Tuple3D GetArcEndUnitVector()
+    public Float64Tuple3D GetArcEndUnitVector()
     {
         return Direction2;
     }
     
-    public Tuple3D GetUnitNormal()
+    public Float64Tuple3D GetUnitNormal()
     {
         var normal = 
             Direction1.VectorCross(Direction2);
 
-        return normal.GetLengthSquared().IsNearZero() 
+        return normal.GetVectorNormSquared().IsNearZero() 
             ? Direction1.GetUnitNormal() 
             : normal.ToUnitVector();
     }

@@ -239,19 +239,19 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Sampled
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple3D GetPoint(double parameterValue)
+        public Float64Tuple3D GetPoint(double parameterValue)
         {
             return GetSample(parameterValue).GetPoint();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple3D GetTangent(double parameterValue)
+        public Float64Tuple3D GetTangent(double parameterValue)
         {
             return GetSample(parameterValue).GetTangent();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple3D GetUnitTangent(double parameterValue)
+        public Float64Tuple3D GetUnitTangent(double parameterValue)
         {
             return GetSample(parameterValue).GetTangent().ToUnitVector();
         }
@@ -384,12 +384,12 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Sampled
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<Tuple3D> GetPoints(double parameterValue)
+        public IEnumerable<Float64Tuple3D> GetPoints(double parameterValue)
         {
             return GetPoints(ParameterValueMin, parameterValue);
         }
 
-        public IEnumerable<Tuple3D> GetPoints(double parameterValue1, double parameterValue2)
+        public IEnumerable<Float64Tuple3D> GetPoints(double parameterValue1, double parameterValue2)
         {
             if (parameterValue1 > parameterValue2)
                 (parameterValue1, parameterValue2) = (parameterValue2, parameterValue1);

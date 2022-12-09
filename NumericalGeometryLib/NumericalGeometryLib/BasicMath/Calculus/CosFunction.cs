@@ -1,5 +1,4 @@
-﻿using System;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 
 namespace NumericalGeometryLib.BasicMath.Calculus;
 
@@ -12,12 +11,12 @@ public sealed class CosFunction :
         return new CosFunction(
             magnitude,
             frequency,
-            0d
+            PlanarAngle.Angle0
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static CosFunction Create(double magnitude, double frequency, double phase)
+    public static CosFunction Create(double magnitude, double frequency, PlanarAngle phase)
     {
         return new CosFunction(
             magnitude,
@@ -31,11 +30,11 @@ public sealed class CosFunction :
 
     public double Frequency { get; }
 
-    public double Phase { get; }
+    public PlanarAngle Phase { get; }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private CosFunction(double magnitude, double frequency, double phase)
+    private CosFunction(double magnitude, double frequency, PlanarAngle phase)
     {
         Magnitude = magnitude;
         Frequency = frequency;
@@ -47,26 +46,27 @@ public sealed class CosFunction :
     public double GetValue(double t)
     {
         return Magnitude * 
-               Math.Cos(Frequency * t + Phase);
+               (Frequency * t + Phase).Cos();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public double GetFirstDerivative(double t)
+    public double GetFirstDerivativeValue(double t)
     {
         return -Magnitude * Frequency * 
-               Math.Sin(Frequency * t + Phase);
+               (Frequency * t + Phase).Sin();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public double GetSecondDerivative(double t)
+    public double GetSecondDerivativeValue(double t)
     {
         return -Magnitude * Frequency * Frequency * 
-               Math.Cos(Frequency * t + Phase);
+               (Frequency * t + Phase).Cos();
     }
 
-    public double GetThirdDerivative(double t)
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public double GetThirdDerivativeValue(double t)
     {
         return Magnitude * Frequency * Frequency * Frequency * 
-               Math.Sin(Frequency * t + Phase);
+               (Frequency * t + Phase).Sin();
     }
 }

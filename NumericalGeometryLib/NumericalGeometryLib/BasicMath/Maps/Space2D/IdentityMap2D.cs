@@ -21,19 +21,19 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space2D
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple2D MapPoint(ITuple2D point)
+        public Float64Tuple2D MapPoint(IFloat64Tuple2D point)
         {
             return point.ToTuple2D();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple2D MapVector(ITuple2D vector)
+        public Float64Tuple2D MapVector(IFloat64Tuple2D vector)
         {
             return vector.ToTuple2D();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple2D MapNormal(ITuple2D normal)
+        public Float64Tuple2D MapNormal(IFloat64Tuple2D normal)
         {
             return normal.ToTuple2D();
         }

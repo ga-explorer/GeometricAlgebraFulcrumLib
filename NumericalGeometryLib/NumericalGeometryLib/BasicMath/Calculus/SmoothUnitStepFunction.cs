@@ -27,7 +27,7 @@ public sealed class SmoothUnitStepFunction :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public double GetFirstDerivative(double t)
+    public double GetFirstDerivativeValue(double t)
     {
         var s = 1 - t;
         var r = t * s;
@@ -38,14 +38,14 @@ public sealed class SmoothUnitStepFunction :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public double GetSecondDerivative(double t)
+    public double GetSecondDerivativeValue(double t)
     {
         return Math.Exp(1/(t-t.Square())) * 
             (Math.Exp(1/(1-t)) * (-1+2 * t-4 * t.Cube() + 6 * Math.Pow(t,4) - 4 * Math.Pow(t,5)) + Math.Exp(1/t) * (1 - 2 * (-1+t) * t * (-3 + 2 * t) * (1+ (-1 + t) * t)))/((Math.Exp(1/(1-t))+Math.Exp(1/t)).Cube() * Math.Pow(-1+t,4) * Math.Pow(t,4));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public double GetThirdDerivative(double t)
+    public double GetThirdDerivativeValue(double t)
     {
         //(1/((E^(1/(1 - t)) + E^(1/t))^4*(-1 + t)^6*t^6))*(E^(-(3/(-1 + t)) + 1/t)*(1 + 4*E^(1/(-1 + t) + 1/t)*(-1 + (-1 + t)*t*(2 + 3*(-1 + t)*t)*(-3 + 2*(-1 + t)^2*t^2)) + 4*t^2*(-3 + t*(7 - 6*t + t^3*(5 + 3*(-2 + t)*t))) + E^(2*(1/(-1 + t) + 1/t))*(1 + 4*(-1 + t)^2*t*(-3 + (-1 + t)*t*(-9 + t*(11 + 3*(-3 + t)*t))))
         throw new NotImplementedException();

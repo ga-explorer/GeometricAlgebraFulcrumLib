@@ -78,9 +78,9 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space2D
         public SquareMatrix3 ToSquareMatrix3()
         {
             //Construct matrix columns
-            var c1 = MapVector(new Tuple2D(1, 0));
-            var c2 = MapVector(new Tuple2D(0, 1));
-            var c3 = MapPoint(new Tuple2D(0, 0));
+            var c1 = MapVector(new Float64Tuple2D(1, 0));
+            var c2 = MapVector(new Float64Tuple2D(0, 1));
+            var c3 = MapPoint(new Float64Tuple2D(0, 0));
 
             return new SquareMatrix3()
             {
@@ -99,7 +99,7 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space2D
             throw new System.NotImplementedException();
         }
 
-        public Tuple2D MapPoint(ITuple2D point)
+        public Float64Tuple2D MapPoint(IFloat64Tuple2D point)
         {
             return _affineMapsList.Aggregate(
                 point.ToTuple2D(), 
@@ -107,7 +107,7 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space2D
             );
         }
 
-        public Tuple2D MapVector(ITuple2D vector)
+        public Float64Tuple2D MapVector(IFloat64Tuple2D vector)
         {
             return _affineMapsList.Aggregate(
                 vector.ToTuple2D(), 
@@ -115,7 +115,7 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space2D
             );
         }
 
-        public Tuple2D MapNormal(ITuple2D normal)
+        public Float64Tuple2D MapNormal(IFloat64Tuple2D normal)
         {
             return _affineMapsList.Aggregate(
                 normal.ToTuple2D(), 

@@ -17,12 +17,12 @@ namespace GraphicsComposerLib.Rendering.ThreeJs.Obsolete.Geometry
         public override string JavaScriptClassName 
             => "PolyhedronGeometry";
 
-        public IReadOnlyList<ITuple3D> VertexPositions { get; }
+        public IReadOnlyList<IFloat64Tuple3D> VertexPositions { get; }
 
         public IReadOnlyList<int> FaceIndices { get; }
 
 
-        public TjPolyhedronGeometry(IReadOnlyList<ITuple3D> vertexPositions, IReadOnlyList<int> faceIndices)
+        public TjPolyhedronGeometry(IReadOnlyList<IFloat64Tuple3D> vertexPositions, IReadOnlyList<int> faceIndices)
         {
             VertexPositions = vertexPositions;
             FaceIndices = faceIndices;

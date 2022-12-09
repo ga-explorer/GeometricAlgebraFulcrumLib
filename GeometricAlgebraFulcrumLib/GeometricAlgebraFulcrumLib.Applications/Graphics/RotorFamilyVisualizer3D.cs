@@ -21,9 +21,9 @@ namespace GeometricAlgebraFulcrumLib.Applications.Graphics;
 public class RotorFamilyVisualizer3D :
     GrBabylonJsSnapshotComposer3D
 {
-    public Tuple3D SourceVector { get; }
+    public Float64Tuple3D SourceVector { get; }
 
-    public Tuple3D TargetVector { get; }
+    public Float64Tuple3D TargetVector { get; }
 
     public IReadOnlyList<PlanarAngle> ThetaValues { get; }
     
@@ -34,7 +34,7 @@ public class RotorFamilyVisualizer3D :
     public int DataTextImageMaxHeight { get; private set; }
 
 
-    public RotorFamilyVisualizer3D(IReadOnlyList<double> cameraAlphaValues, IReadOnlyList<double> cameraBetaValues, ITuple3D sourceVector, ITuple3D targetVector, IReadOnlyList<PlanarAngle> thetaValues) 
+    public RotorFamilyVisualizer3D(IReadOnlyList<double> cameraAlphaValues, IReadOnlyList<double> cameraBetaValues, IFloat64Tuple3D sourceVector, IFloat64Tuple3D targetVector, IReadOnlyList<PlanarAngle> thetaValues) 
         : base(cameraAlphaValues, cameraBetaValues)
     {
         SourceVector = sourceVector.ToUnitVector();
@@ -58,7 +58,7 @@ public class RotorFamilyVisualizer3D :
         return ThetaToPhiCos(theta).ArcCos();
     }
 
-    public Tuple3D ThetaToUnitNormal(PlanarAngle theta)
+    public Float64Tuple3D ThetaToUnitNormal(PlanarAngle theta)
     {
         var n = 
             SourceVector.VectorUnitCross(TargetVector);
@@ -79,7 +79,7 @@ public class RotorFamilyVisualizer3D :
         return 1d + (2d * (1 - phiMinCos)) / (theta.Sin().Square() * (1 + phiMinCos) - 2d);
     }
 
-    public Tuple4D ThetaToQuaternion(PlanarAngle theta)
+    public Float64Tuple4D ThetaToQuaternion(PlanarAngle theta)
     {
         var phi = ThetaToPhi(theta);
         var normal = ThetaToUnitNormal(theta);
@@ -104,12 +104,12 @@ public class RotorFamilyVisualizer3D :
         return (2d * (phiCos - phiMinCos) / ((1 + phiMinCos) * (phiCos - 1))).Sqrt();
     }
     
-    public Tuple3D PhiToUnitNormal(PlanarAngle phi)
+    public Float64Tuple3D PhiToUnitNormal(PlanarAngle phi)
     {
         return ThetaToUnitNormal(PhiToTheta(phi));
     }
     
-    public Tuple4D PhiToQuaternion(PlanarAngle phi)
+    public Float64Tuple4D PhiToQuaternion(PlanarAngle phi)
     {
         var normal = PhiToUnitNormal(phi);
 
@@ -208,7 +208,7 @@ public class RotorFamilyVisualizer3D :
 
         ImageCache.AddPngFromFile(
             "copyright",
-            workingPath.GetFilePath("Copyright-1.png")
+            workingPath.GetFilePath("Copyright.png")
         );
         
         for (var i = 0; i < FrameCount; i++)
@@ -419,23 +419,23 @@ public class RotorFamilyVisualizer3D :
         }
 
         var uiPanel1Width = HtmlComposer.CanvasWidth * 0.275;
-            var uiPanel1 = uiTexture.AddGuiStackPanel(
-                "uiPanel1",
-                new GrBabylonJsGuiStackPanel.GuiStackPanelProperties
-                {
-                    IsVertical = true,
-                    Spacing = 10,
-                    //Color = Color.Blue,
-                    BackgroundColor = Color.FromRgba(208, 206, 226, 24),
-                    PaddingLeftInPixels = 10,
-                    PaddingTopInPixels = 10,
-                    PaddingBottomInPixels = 10,
-                    PaddingRightInPixels = 10,
-                    WidthInPixels = uiPanel1Width,
-                    HorizontalAlignment = GrBabylonJsHorizontalAlignment.Left,
-                    VerticalAlignment = GrBabylonJsVerticalAlignment.Top
-                }
-            );
+        var uiPanel1 = uiTexture.AddGuiStackPanel(
+            "uiPanel1",
+            new GrBabylonJsGuiStackPanel.GuiStackPanelProperties
+            {
+                IsVertical = true,
+                Spacing = 10,
+                //Color = Color.Blue,
+                BackgroundColor = Color.FromRgba(208, 206, 226, 24),
+                PaddingLeftInPixels = 10,
+                PaddingTopInPixels = 10,
+                PaddingBottomInPixels = 10,
+                PaddingRightInPixels = 10,
+                WidthInPixels = uiPanel1Width,
+                HorizontalAlignment = GrBabylonJsHorizontalAlignment.Left,
+                VerticalAlignment = GrBabylonJsVerticalAlignment.Top
+            }
+        );
             
         uiPanel1.AddGuiTextBlock(
             "uiTextTitle",
@@ -445,8 +445,8 @@ public class RotorFamilyVisualizer3D :
                 WidthInPixels = uiPanel1Width - 20,
                 HeightInPixels = 50,
                 ResizeToFit = true,
-                FontSize = 16,
-                FontWeight = "'500'",
+                FontSize = 36,
+                FontWeight = "'750'",
                 FontFamily = "'Georgia,Times,Times New Roman,serif'",
                 TextHorizontalAlignment = GrBabylonJsHorizontalAlignment.Left,
                 Color = Color.Black,
@@ -465,10 +465,10 @@ public class RotorFamilyVisualizer3D :
             {
                 X1 = 10,
                 X2 = uiPanel1Width - 10,
-                Y1 = 35,
-                Y2 = 35,
+                Y1 = 70,
+                Y2 = 70,
                 Color = Color.Black,
-                LineWidth = 1
+                LineWidth = 3
             }
         );
 
@@ -599,7 +599,7 @@ public class RotorFamilyVisualizer3D :
         ).AddLineSegment(
             "originSegment",
             u - u1,
-            Tuple3D.Zero,
+            Float64Tuple3D.Zero,
             Color.DarkGreen,
             dashSpecs
         ).AddLineSegment(
@@ -653,10 +653,10 @@ public class RotorFamilyVisualizer3D :
 
         MainSceneComposer.AddDiscSector(
             "phiMinRotor",
-            Tuple3D.Zero,
+            Float64Tuple3D.Zero,
             u,
             v,
-            u1.GetLength(),
+            u1.GetVectorNorm(),
             true,
             System.Drawing.Color.IndianRed.ToImageSharpColor(128),
             0.05,
@@ -664,7 +664,7 @@ public class RotorFamilyVisualizer3D :
         ).AddLaTeXText(
             "phiMinRotorText",
             ImageCache,
-            0.5d.Lerp(u, v).SetLength(u1.GetLength() + 0.35d),
+            0.5d.Lerp(u, v).SetLength(u1.GetVectorNorm() + 0.35d),
             LaTeXScalingFactor
         );
 
@@ -672,10 +672,10 @@ public class RotorFamilyVisualizer3D :
         {
             MainSceneComposer.AddDiscSector(
                 "thetaRotor",
-                Tuple3D.Zero,
+                Float64Tuple3D.Zero,
                 vuSum,
                 vuSum1,
-                u1.GetLength(),
+                u1.GetVectorNorm(),
                 true,
                 System.Drawing.Color.LightGreen.ToImageSharpColor(128),
                 0.05,
@@ -683,17 +683,17 @@ public class RotorFamilyVisualizer3D :
             ).AddLaTeXText(
                 "thetaRotorText",
                 ImageCache,
-                0.5d.Lerp(vuSum, vuSum1).SetLength(u1.GetLength() + 0.35d),
+                0.5d.Lerp(vuSum, vuSum1).SetLength(u1.GetVectorNorm() + 0.35d),
                 LaTeXScalingFactor
             );
         }
 
         MainSceneComposer.AddDiscSector(
             "phiRotor",
-            Tuple3D.Zero,
+            Float64Tuple3D.Zero,
             u1,
             v1,
-            u1.GetLength(),
+            u1.GetVectorNorm(),
             true,
             System.Drawing.Color.DarkSlateBlue.ToImageSharpColor(128),
             0.05,
@@ -701,7 +701,7 @@ public class RotorFamilyVisualizer3D :
         ).AddLaTeXText(
             "phiRotorText",
             ImageCache,
-            0.5d.Lerp(u1, v1).SetLength(u1.GetLength() + 0.35d),
+            0.5d.Lerp(u1, v1).SetLength(u1.GetVectorNorm() + 0.35d),
             LaTeXScalingFactor
         );
 
@@ -710,7 +710,7 @@ public class RotorFamilyVisualizer3D :
             u - u1,
             u1,
             v1,
-            u1.GetLength(),
+            u1.GetVectorNorm(),
             true,
             System.Drawing.Color.DarkSlateBlue.ToImageSharpColor(128),
             0.05,
@@ -718,13 +718,13 @@ public class RotorFamilyVisualizer3D :
         ).AddLaTeXText(
             "phiRotorCopyText",
             ImageCache,
-            u - u1 + 0.5d.Lerp(u1, v1).SetLength(u1.GetLength() + 0.35d),
+            u - u1 + 0.5d.Lerp(u1, v1).SetLength(u1.GetVectorNorm() + 0.35d),
             LaTeXScalingFactor
         );
 
         MainSceneComposer.AddDisc(
             "thetaRotorPlane",
-            Tuple3D.Zero,
+            Float64Tuple3D.Zero,
             vuDiff,
             5d,
             System.Drawing.Color.YellowGreen.ToImageSharpColor(64),
@@ -739,7 +739,7 @@ public class RotorFamilyVisualizer3D :
 
         MainSceneComposer.AddDisc(
             "phiRotorPlane",
-            Tuple3D.Zero,
+            Float64Tuple3D.Zero,
             uvNormal1,
             5d,
             System.Drawing.Color.BurlyWood.ToImageSharpColor(64),
@@ -782,8 +782,8 @@ public class RotorFamilyVisualizer3D :
                 $"phiRotorTrace{i}",
                 u - u1,
                 u1.VectorUnitCross(v1),
-                u1.GetLength(),
-                System.Drawing.Color.DarkSlateBlue.ToImageSharpColor(32),
+                u1.GetVectorNorm(),
+                System.Drawing.Color.DarkSlateBlue.ToImageSharpColor(64),
                 0.025
             );
 
@@ -821,13 +821,13 @@ public class RotorFamilyVisualizer3D :
         var vuSum1 = vuSum.RotateUsingAxisAngle(vuDiff, theta);
 
         var intersectionPointColor = Color.DarkSlateGray;
-        var intersectionLineColor = Color.DarkSlateGray.WithAlpha(0.5f);
+        var intersectionLineColor = Color.DarkSlateGray.SetAlpha(0.5f);
         
         MainSceneComposer.AddPoints(
             i=> $"intersectionPoint{i + 1}", 
             intersectionPointColor, 
             0.08, 
-            Tuple3D.Zero, 
+            Float64Tuple3D.Zero, 
             vuSum1.SetLength(5d),
             vuSum1.SetLength(-5d),
             u - u1,
@@ -835,10 +835,10 @@ public class RotorFamilyVisualizer3D :
             v,
             u1,
             v1,
-            vuSum.SetLength(u1.GetLength()),
-            vuSum1.SetLength(u1.GetLength()),
-            u.SetLength(u1.GetLength()),
-            v.SetLength(u1.GetLength())
+            vuSum.SetLength(u1.GetVectorNorm()),
+            vuSum1.SetLength(u1.GetVectorNorm()),
+            u.SetLength(u1.GetVectorNorm()),
+            v.SetLength(u1.GetVectorNorm())
         );
 
         MainSceneComposer.AddLineSegment(
@@ -849,7 +849,7 @@ public class RotorFamilyVisualizer3D :
             0.035
         );
 
-        if ((u - u1).GetLength() > 1)
+        if ((u - u1).GetVectorNorm() > 1)
         {
             MainSceneComposer.AddRightAngle(
                 "rightAngle1",
@@ -858,7 +858,7 @@ public class RotorFamilyVisualizer3D :
                 u - u1,
                 0.5,
                 Color.Red,
-                Color.Red.WithAlpha(0.25f)
+                Color.Red.SetAlpha(0.25f)
             );
 
             MainSceneComposer.AddRightAngle(
@@ -868,7 +868,7 @@ public class RotorFamilyVisualizer3D :
                 v - v1,
                 0.5,
                 Color.Blue,
-                Color.Blue.WithAlpha(0.25f)
+                Color.Blue.SetAlpha(0.25f)
             );
         }
     }
@@ -877,8 +877,7 @@ public class RotorFamilyVisualizer3D :
     {
         base.GenerateSnapshotCode(index);
 
-        if (DrawRotorTrace) 
-            AddRotorTrace();
+        if (DrawRotorTrace) AddRotorTrace();
 
         AddInputVectors();
         AddRotors(index);

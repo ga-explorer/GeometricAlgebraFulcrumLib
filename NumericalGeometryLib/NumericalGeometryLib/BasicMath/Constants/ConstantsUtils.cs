@@ -7,40 +7,40 @@ namespace NumericalGeometryLib.BasicMath.Constants
     public static class ConstantsUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple2D GetVector2D(this Axis2D axis)
+        public static Float64Tuple2D GetVector2D(this Axis2D axis)
         {
             return axis switch
             {
-                Axis2D.PositiveX => Tuple2D.E1,
-                Axis2D.NegativeX => Tuple2D.NegativeE1,
-                Axis2D.PositiveY => Tuple2D.E2,
-                _ => Tuple2D.NegativeE2
+                Axis2D.PositiveX => Float64Tuple2D.E1,
+                Axis2D.NegativeX => Float64Tuple2D.NegativeE1,
+                Axis2D.PositiveY => Float64Tuple2D.E2,
+                _ => Float64Tuple2D.NegativeE2
             };
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D GetVector3D(this Axis2D axis)
+        public static Float64Tuple3D GetVector3D(this Axis2D axis)
         {
             return axis switch
             {
-                Axis2D.PositiveX => Tuple3D.E1,
-                Axis2D.NegativeX => Tuple3D.NegativeE1,
-                Axis2D.PositiveY => Tuple3D.E2,
-                _ => Tuple3D.NegativeE2
+                Axis2D.PositiveX => Float64Tuple3D.E1,
+                Axis2D.NegativeX => Float64Tuple3D.NegativeE1,
+                Axis2D.PositiveY => Float64Tuple3D.E2,
+                _ => Float64Tuple3D.NegativeE2
             };
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D GetVector3D(this Axis3D axis)
+        public static Float64Tuple3D GetVector3D(this Axis3D axis)
         {
             return axis switch
             {
-                Axis3D.PositiveX => Tuple3D.E1,
-                Axis3D.NegativeX => Tuple3D.NegativeE1,
-                Axis3D.PositiveY => Tuple3D.E2,
-                Axis3D.NegativeY => Tuple3D.NegativeE2,
-                Axis3D.PositiveZ => Tuple3D.E3,
-                _ => Tuple3D.NegativeE3
+                Axis3D.PositiveX => Float64Tuple3D.E1,
+                Axis3D.NegativeX => Float64Tuple3D.NegativeE1,
+                Axis3D.PositiveY => Float64Tuple3D.E2,
+                Axis3D.NegativeY => Float64Tuple3D.NegativeE2,
+                Axis3D.PositiveZ => Float64Tuple3D.E3,
+                _ => Float64Tuple3D.NegativeE3
             };
         }
 
@@ -118,7 +118,7 @@ namespace NumericalGeometryLib.BasicMath.Constants
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Axis3D SelectNearestAxis(this ITuple3D unitVector)
+        public static Axis3D SelectNearestAxis(this IFloat64Tuple3D unitVector)
         {
             return unitVector.GetMaxAbsComponentIndex() switch
             {

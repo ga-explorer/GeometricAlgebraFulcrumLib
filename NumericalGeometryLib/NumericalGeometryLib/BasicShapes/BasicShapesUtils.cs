@@ -14,7 +14,7 @@ namespace NumericalGeometryLib.BasicShapes
 {
     public static class BasicShapesUtils
     {
-        public static IEnumerable<ITuple2D> GetRegularPolygonPoints(int sidesCount, double centerX, double centerY, double radius, double offsetAngle = 0, bool reverseOrder = false)
+        public static IEnumerable<IFloat64Tuple2D> GetRegularPolygonPoints(int sidesCount, double centerX, double centerY, double radius, double offsetAngle = 0, bool reverseOrder = false)
         {
             if (sidesCount < 3)
                 throw new InvalidOperationException();
@@ -24,7 +24,7 @@ namespace NumericalGeometryLib.BasicShapes
             var result = Enumerable
                 .Range(0, sidesCount)
                 .Select(i => offsetAngle + i * angleStep)
-                .Select(a => (ITuple2D)new Tuple2D(
+                .Select(a => (IFloat64Tuple2D)new Float64Tuple2D(
                     centerX + radius * Math.Cos(a),
                     centerY + radius * Math.Sin(a)
                 ));
@@ -32,7 +32,7 @@ namespace NumericalGeometryLib.BasicShapes
             return reverseOrder ? result.Reverse() : result;
         }
 
-        public static IEnumerable<ITuple2D> GetRegularPolygonPoints(int sidesCount, ITuple2D center, double radius, double offsetAngle = 0, bool reverseOrder = false)
+        public static IEnumerable<IFloat64Tuple2D> GetRegularPolygonPoints(int sidesCount, IFloat64Tuple2D center, double radius, double offsetAngle = 0, bool reverseOrder = false)
         {
             if (sidesCount < 3)
                 throw new InvalidOperationException();
@@ -42,7 +42,7 @@ namespace NumericalGeometryLib.BasicShapes
             var result = Enumerable
                 .Range(0, sidesCount)
                 .Select(i => offsetAngle + i * angleStep)
-                .Select(a => (ITuple2D)new Tuple2D(
+                .Select(a => (IFloat64Tuple2D)new Float64Tuple2D(
                     center.X + radius * Math.Cos(a),
                     center.Y + radius * Math.Sin(a)
                 ));

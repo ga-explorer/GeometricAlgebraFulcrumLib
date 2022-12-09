@@ -10,7 +10,7 @@ namespace NumericalGeometryLib.BasicMath.Frames.Space3D
     /// the components are double precision numbers
     /// </summary>
     public class AffineFrame3D :
-        ITuple3D
+        IFloat64Tuple3D
     {
         /// <summary>
         /// Create a set of 3 right-handed orthonormal direction vectors from the given vector
@@ -19,9 +19,9 @@ namespace NumericalGeometryLib.BasicMath.Frames.Space3D
         /// <param name="direction"></param>
         /// <param name="rightHanded"></param>
         /// <returns></returns>
-        public static AffineFrame3D CreateOrthonormal(ITuple3D origin, ITuple3D direction, bool rightHanded = true)
+        public static AffineFrame3D CreateOrthonormal(IFloat64Tuple3D origin, IFloat64Tuple3D direction, bool rightHanded = true)
         {
-            Debug.Assert(!direction.GetLengthSquared().IsAlmostZero());
+            Debug.Assert(!direction.GetVectorNormSquared().IsAlmostZero());
 
             var u = direction.ToUnitVector();
             var v = direction.GetUnitNormal();
@@ -35,9 +35,9 @@ namespace NumericalGeometryLib.BasicMath.Frames.Space3D
             );
         }
         
-        public static AffineFrame3D Create(ITuple3D origin, ITuple3D direction1, ITuple3D direction2, ITuple3D direction3)
+        public static AffineFrame3D Create(IFloat64Tuple3D origin, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, IFloat64Tuple3D direction3)
         {
-            Debug.Assert(!direction1.GetLengthSquared().IsAlmostZero());
+            Debug.Assert(!direction1.GetVectorNormSquared().IsAlmostZero());
 
             return new AffineFrame3D(
                 origin.ToTuple3D(),
@@ -66,16 +66,16 @@ namespace NumericalGeometryLib.BasicMath.Frames.Space3D
         public double Z 
             => Origin.Z;
 
-        public Tuple3D Origin { get; }
+        public Float64Tuple3D Origin { get; }
         
-        public Tuple3D Direction1 { get; }
+        public Float64Tuple3D Direction1 { get; }
 
-        public Tuple3D Direction2 { get; }
+        public Float64Tuple3D Direction2 { get; }
 
-        public Tuple3D Direction3 { get; }
+        public Float64Tuple3D Direction3 { get; }
         
 
-        private AffineFrame3D(Tuple3D origin, Tuple3D direction1, Tuple3D direction2, Tuple3D direction3)
+        private AffineFrame3D(Float64Tuple3D origin, Float64Tuple3D direction1, Float64Tuple3D direction2, Float64Tuple3D direction3)
         {
             Origin = origin;
             Direction1 = direction1;
@@ -93,7 +93,16 @@ namespace NumericalGeometryLib.BasicMath.Frames.Space3D
                    Direction2.IsValid() &&
                    Direction3.IsValid();
         }
-        
+
+        public bool IsFrame3D()
+        {
+            if (Direction1.GetVectorNormSquared().IsNearZero()) return false;
+            if (Direction2.GetVectorNormSquared().IsNearZero()) return false;
+            if (Direction3.GetVectorNormSquared().IsNearZero()) return false;
+
+            return true;
+        }
+
         public bool IsRightHanded()
         {
             return VectorUtils.Determinant(Direction1, Direction2, Direction3) > 0.0d;
@@ -104,21 +113,21 @@ namespace NumericalGeometryLib.BasicMath.Frames.Space3D
             return VectorUtils.Determinant(Direction1, Direction2, Direction3) < 0.0d;
         }
 
-        public Tuple3D GetLocalVector(double u, double v, double w)
+        public Float64Tuple3D GetLocalVector(double u, double v, double w)
         {
             return u * Direction1 +
                    v * Direction2 +
                    w * Direction3;
         }
 
-        public Tuple3D GetLocalVector(ITriplet<double> scalarList)
+        public Float64Tuple3D GetLocalVector(ITriplet<double> scalarList)
         {
             return scalarList.Item1 * Direction1 +
                    scalarList.Item2 * Direction2 +
                    scalarList.Item3 * Direction3;
         }
         
-        public Tuple3D GetLocalPoint(ITriplet<double> scalarList)
+        public Float64Tuple3D GetLocalPoint(ITriplet<double> scalarList)
         {
             return Origin +
                    scalarList.Item1 * Direction1 +
@@ -126,7 +135,7 @@ namespace NumericalGeometryLib.BasicMath.Frames.Space3D
                    scalarList.Item3 * Direction3;
         }
         
-        public Tuple3D GetLocalPoint(double u, double v, double w)
+        public Float64Tuple3D GetLocalPoint(double u, double v, double w)
         {
             return Origin +
                    u * Direction1 +

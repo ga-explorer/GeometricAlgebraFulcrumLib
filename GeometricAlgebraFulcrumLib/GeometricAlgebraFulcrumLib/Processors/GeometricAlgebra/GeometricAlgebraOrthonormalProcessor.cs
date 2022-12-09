@@ -1,13 +1,14 @@
 ﻿using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.Basic;
+using DataStructuresLib.BitManipulation;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Frames;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Utilities.Extensions;
-using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
 namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
 {
@@ -194,6 +195,28 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
         public int CpSign(ulong id1, ulong id2)
         {
             return BasisSet.CpSign(id1, id2);
+        }
+
+        public override Pair<BasisVectorFrame<T>> GetBasisVectorFrame()
+        {
+            var vectorArray1 = 
+                VSpaceDimension
+                    .GetRange()
+                    .Select(i => this.CreateVectorBasis(i));
+
+            var vectorArray2 = 
+                VSpaceDimension
+                    .GetRange()
+                    .Select(i => 
+                        BasisSet.GetBasisVectorSignature(i) > 0 
+                            ? this.CreateVectorBasis(i) 
+                            : -this.CreateVectorBasis(i)
+                    );
+
+            var frame1 = BasisVectorFrame<T>.Create(this, vectorArray1);
+            var frame2 = BasisVectorFrame<T>.Create(this, vectorArray2);
+
+            return new Pair<BasisVectorFrame<T>>(frame1, frame2);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

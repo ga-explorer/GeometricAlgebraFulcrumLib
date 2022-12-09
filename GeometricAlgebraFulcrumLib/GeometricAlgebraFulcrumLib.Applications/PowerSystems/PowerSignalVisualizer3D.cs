@@ -27,7 +27,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems;
 public class PowerSignalVisualizer3D :
     GrBabylonJsSnapshotComposer3D
 {
-    public ComputedPowerSignal3D PowerSignal { get; }
+    public PowerSignal3D Signal { get; }
  
     public int TrailSampleCount { get; set; }
 
@@ -39,7 +39,7 @@ public class PowerSignalVisualizer3D :
 
     public bool ShowRightPanel { get; set; } = true;
     
-    public Tuple3D OmegaFrameOrigin { get; set; } = new Tuple3D(-6, 2, 1);
+    public Float64Tuple3D OmegaFrameOrigin { get; set; } = new Float64Tuple3D(-6, 2, 1);
     
     public int SignalTextImageMaxWidth { get; private set; }
 
@@ -49,10 +49,10 @@ public class PowerSignalVisualizer3D :
         => HtmlComposer.GetSceneComposer("omegaScene");
 
 
-    public PowerSignalVisualizer3D(IReadOnlyList<double> cameraAlphaValues, IReadOnlyList<double> cameraBetaValues, ComputedPowerSignal3D powerSignal)
+    public PowerSignalVisualizer3D(IReadOnlyList<double> cameraAlphaValues, IReadOnlyList<double> cameraBetaValues, PowerSignal3D powerSignal)
         : base(cameraAlphaValues, cameraBetaValues)
     {
-        PowerSignal = powerSignal;
+        Signal = powerSignal;
     }
 
     
@@ -70,21 +70,21 @@ public class PowerSignalVisualizer3D :
             workingPath.GetFilePath("Copyright.png")
         );
             
-        for (var i = 0; i < PowerSignal.TimeValues.Count; i++)
+        for (var i = 0; i < Signal.TimeValues.Count; i++)
         {
             ImageCache.AddPng(
                 $"SignalPlot-{i:D6}", 
-                PowerSignal.GetSignalPlotImage(i, PlotSampleCount)
+                Signal.GetSignalPlotImage(i, PlotSampleCount)
             );
 
             ImageCache.AddPng(
                 $"CurvaturePlot-{i:D6}", 
-                PowerSignal.GetCurvaturesPlotImage(i, PlotSampleCount)
+                Signal.GetCurvaturesPlotImage(i, PlotSampleCount)
             );
 
             ImageCache.AddPng(
                 $"FrequencyHzPlot-{i:D6}",
-                PowerSignal.GetFrequencyHzPlotImage(i, PlotSampleCount)
+                Signal.GetFrequencyHzPlotImage(i, PlotSampleCount)
             );
         }
 
@@ -185,28 +185,28 @@ public class PowerSignalVisualizer3D :
         ImageCache.MarginSize = 20;
         //ImageCache.BackgroundColor = Color.FromRgba(32, 32, 255, 16);
         
-        ImageCache.AddLaTeXCode("symbolicSignalText", PowerSignal.LaTeXCode);
+        ImageCache.AddLaTeXCode("symbolicSignalText", Signal.LaTeXCode);
 
-        for (var i = 0; i < PowerSignal.TimeValues.Count; i++)
+        for (var i = 0; i < Signal.TimeValues.Count; i++)
         {
-            var t = PowerSignal.TimeValues[i];
-            var (x, y, z) = PowerSignal.GetPhaseVectors(t);
+            var t = Signal.TimeValues[i];
+            var (x, y, z) = Signal.GetPhaseVectors(t);
             var v = x + y + z;
 
-            var frame = PowerSignal.FrameList[i]; //GetSignalFrame(t);
+            var frame = Signal.FrameList[i]; //GetSignalFrame(t);
 
             var e1 = frame.Direction1.ToUnitVector();
             var e2 = frame.Direction2.ToUnitVector();
             var e3 = frame.Direction3.ToUnitVector();
             
-            var sDt = PowerSignal.GetDerivative1Norm(t);
+            var sDt = Signal.GetDerivative1Norm(t);
 
-            var (kappa1, kappa2) = PowerSignal.CurvatureList[i];
+            var (kappa1, kappa2) = Signal.CurvatureList[i];
 
-            var omega = PowerSignal.DarbouxBivectorList[i];
+            var omega = Signal.DarbouxBivectorList[i];
             var omegaNorm = omega.Norm();
 
-            var omegaMean = PowerSignal.GetDarbouxBivectorMean(i);
+            var omegaMean = Signal.GetDarbouxBivectorMean(i);
             var omegaMeanNorm = omegaMean.Norm();
 
             var frequencyHz = omegaNorm / (2d * Math.PI);
@@ -250,7 +250,7 @@ public class PowerSignalVisualizer3D :
 
         var maxWidth = 0;
         var maxHeight = 0;
-        for (var i = 0; i < PowerSignal.TimeValues.Count; i++)
+        for (var i = 0; i < Signal.TimeValues.Count; i++)
         {
             var imageData = ImageCache[$"signalText-{i:D6}"];
 
@@ -347,7 +347,7 @@ public class PowerSignalVisualizer3D :
                 UnitCountX = 4,
                 UnitCountZ = 4,
                 UnitSize = 1,
-                Origin = OmegaFrameOrigin + new Tuple3D(-0.5d * 4, 0, -0.5d * 4),
+                Origin = OmegaFrameOrigin + new Float64Tuple3D(-0.5d * 4, 0, -0.5d * 4),
                 Opacity = 0.2,
                 BaseSquareColor = System.Drawing.Color.LightYellow.ToImageSharpColor(),
                 BaseLineColor = System.Drawing.Color.BurlyWood.ToImageSharpColor(),
@@ -568,77 +568,77 @@ public class PowerSignalVisualizer3D :
         }
     }
 
-    private void AddPhaseVector1(Tuple3D x)
+    private void AddPhaseVector1(Float64Tuple3D x)
     {
         MainSceneComposer.AddVector(
             "v1Vector",
-            Tuple3D.Zero,
+            Float64Tuple3D.Zero,
             x,
             Color.Red,
             0.05
         ).AddLaTeXText(
             "v1VectorText",
             ImageCache,
-            x + x.ToUnitVector() * 0.25d + (Tuple3D.E2 + Tuple3D.E3) * 0.25d / 2d.Sqrt(),
+            x + x.ToUnitVector() * 0.25d + (Float64Tuple3D.E2 + Float64Tuple3D.E3) * 0.25d / 2d.Sqrt(),
             LaTeXScalingFactor
         );
 
         MainSceneComposer.AddLineSegment(
             "v1Trail",
-            new Tuple3D(PowerSignal.VectorBounds.MinX, 0, 0),
-            new Tuple3D(PowerSignal.VectorBounds.MaxX, 0, 0),
-            Color.Red.WithAlpha(0.25f),
+            new Float64Tuple3D(Signal.VectorBounds.MinX, 0, 0),
+            new Float64Tuple3D(Signal.VectorBounds.MaxX, 0, 0),
+            Color.Red.SetAlpha(0.25f),
             0.045
         );
     }
 
-    private void AddPhaseVector2(Tuple3D y)
+    private void AddPhaseVector2(Float64Tuple3D y)
     {
         MainSceneComposer.AddVector(
             "v2Vector", 
-            Tuple3D.Zero, 
+            Float64Tuple3D.Zero, 
             y,
             Color.Green,
             0.05
         ).AddLaTeXText(
             "v2VectorText",
             ImageCache,
-            y + y.ToUnitVector() * 0.25d + (Tuple3D.E1 + Tuple3D.E3) * 0.25d / 2d.Sqrt(),
+            y + y.ToUnitVector() * 0.25d + (Float64Tuple3D.E1 + Float64Tuple3D.E3) * 0.25d / 2d.Sqrt(),
             LaTeXScalingFactor
         );
             
         MainSceneComposer.AddLineSegment(
             "v2TrailSegment",
-            new Tuple3D(0, PowerSignal.VectorBounds.MinY, 0),
-            new Tuple3D(0, PowerSignal.VectorBounds.MaxY, 0),
-            Color.Green.WithAlpha(0.25f),
+            new Float64Tuple3D(0, Signal.VectorBounds.MinY, 0),
+            new Float64Tuple3D(0, Signal.VectorBounds.MaxY, 0),
+            Color.Green.SetAlpha(0.25f),
             0.045
         );
     }
 
-    private void AddPhaseVector3(Tuple3D z)
+    private void AddPhaseVector3(Float64Tuple3D z)
     {
         MainSceneComposer.AddVector(
             "v3Vector", 
-            Tuple3D.Zero, 
+            Float64Tuple3D.Zero, 
             z,
             Color.Blue,
             0.05
         ).AddLaTeXText(
             "v3VectorText",
             ImageCache,
-            z + z.ToUnitVector() * 0.25d + (Tuple3D.E1 + Tuple3D.E2) * 0.25d / 2d.Sqrt(),
+            z + z.ToUnitVector() * 0.25d + (Float64Tuple3D.E1 + Float64Tuple3D.E2) * 0.25d / 2d.Sqrt(),
             LaTeXScalingFactor
         );
     }
 
-    private void AddSignalVector(Tuple3D x, Tuple3D y, Tuple3D z)
+    private void AddSignalVector(Float64Tuple3D x, Float64Tuple3D y, Float64Tuple3D z)
     {
         var v = x + y + z;
         
         MainSceneComposer.AddVector(
             "vVector",
-            Tuple3D.Zero,
+            Float64Tuple3D.Zero,
             v,
             Color.DarkOrange,
             0.05
@@ -743,7 +743,7 @@ public class PowerSignalVisualizer3D :
     //    return SceneComposer;
     //}
 
-    private void AddSignalPlane(ITuple3D k)
+    private void AddSignalPlane(IFloat64Tuple3D k)
     {
         var scene = MainSceneComposer.SceneObject;
 
@@ -761,8 +761,8 @@ public class PowerSignalVisualizer3D :
 
         var disc = new GrVisualCircleSurface3D("disc")
         {
-            Center = Tuple3D.Zero,
-            Radius = PowerSignal.ScalarBounds.MaxValue * 1.5d, //Math.Sqrt(3d / 2d),
+            Center = Float64Tuple3D.Zero,
+            Radius = Signal.ScalarBounds.MaxValue * 1.5d, //Math.Sqrt(3d / 2d),
             Normal = k,
 
             Style = new GrVisualSurfaceThickStyle3D(
@@ -773,9 +773,9 @@ public class PowerSignalVisualizer3D :
 
         var ring = new GrVisualRingSurface3D("ring")
         {
-            Center = Tuple3D.Zero,
-            MinRadius = PowerSignal.ScalarBounds.MaxValue * Math.Sqrt(3d / 2d) - 0.5d,
-            MaxRadius = PowerSignal.ScalarBounds.MaxValue * Math.Sqrt(3d / 2d) + 0.5d,
+            Center = Float64Tuple3D.Zero,
+            MinRadius = Signal.ScalarBounds.MaxValue * Math.Sqrt(3d / 2d) - 0.5d,
+            MaxRadius = Signal.ScalarBounds.MaxValue * Math.Sqrt(3d / 2d) + 0.5d,
             Normal = k,
 
             Style = new GrVisualSurfaceThickStyle3D(
@@ -789,7 +789,7 @@ public class PowerSignalVisualizer3D :
 
     private void AddSignalCurve(int index)
     {
-        if (index < 2 || PowerSignal.FrameList is null) 
+        if (index < 2 || Signal.FrameList is null) 
             return;
 
         var scene = MainSceneComposer.SceneObject;
@@ -806,7 +806,7 @@ public class PowerSignalVisualizer3D :
         {
             Width = 1,
             Height = 256,
-            ColorFunc = (i, j) => Color.Yellow.WithAlpha(1f - j / 255f)
+            ColorFunc = (i, j) => Color.Yellow.SetAlpha(1f - j / 255f)
         }.GetImage().PngToBase64HtmlString();
 
         var texture = scene.AddTexture(
@@ -835,7 +835,7 @@ public class PowerSignalVisualizer3D :
         var trailLength = index - trailStartIndex;
 
         var pointList = 
-            PowerSignal
+            Signal
                 .FrameList
                 .Skip(trailStartIndex)
                 .Take(trailLength)
@@ -866,20 +866,20 @@ public class PowerSignalVisualizer3D :
 
     private void AddSignalFrame(int index)
     {
-        if (PowerSignal.FrameList is null || PowerSignal.CurvatureList is null || PowerSignal.SampledCurve is null)
+        if (Signal.FrameList is null || Signal.CurvatureList is null || Signal.SampledCurve is null)
             return;
 
         var scene = MainSceneComposer.SceneObject;
 
-        var lineArrayList = new List<Tuple3D[]>(PowerSignal.SampledCurve.CornerCount);
-        var colorArrayList = new List<Color[]>(PowerSignal.SampledCurve.CornerCount);
+        var lineArrayList = new List<Float64Tuple3D[]>(Signal.SampledCurve.CornerCount);
+        var colorArrayList = new List<Color[]>(Signal.SampledCurve.CornerCount);
 
-        var xColor1 = Color.Red.WithAlpha(0.8f); //Color.Red.SetAlpha(128);
-        var xColor2 = Color.Red.WithAlpha(0.0f);
-        var yColor1 = Color.Green.WithAlpha(0.8f);
-        var yColor2 = Color.Green.WithAlpha(0.0f);
-        var zColor1 = Color.Blue.WithAlpha(0.8f);
-        var zColor2 = Color.Blue.WithAlpha(0.0f);
+        var xColor1 = Color.Red.SetAlpha(0.8f); //Color.Red.SetAlpha(128);
+        var xColor2 = Color.Red.SetAlpha(0.0f);
+        var yColor1 = Color.Green.SetAlpha(0.8f);
+        var yColor2 = Color.Green.SetAlpha(0.0f);
+        var zColor1 = Color.Blue.SetAlpha(0.8f);
+        var zColor2 = Color.Blue.SetAlpha(0.0f);
 
         const double length = 0.8d;
 
@@ -887,7 +887,7 @@ public class PowerSignalVisualizer3D :
         var trailLength = index - trailStartIndex;
 
         var frameList = 
-            PowerSignal
+            Signal
                 .FrameList
                 .Skip(trailStartIndex)
                 .Take(trailLength)
@@ -924,7 +924,7 @@ public class PowerSignalVisualizer3D :
             }
         );
 
-        var curveFrame = PowerSignal.FrameList[index];
+        var curveFrame = Signal.FrameList[index];
         MainSceneComposer.AddElement(
             new GrVisualFrame3D("curveFrame")
             {
@@ -972,19 +972,19 @@ public class PowerSignalVisualizer3D :
             LaTeXScalingFactor
         );
 
-        var (kappa1, kappa2) = PowerSignal.CurvatureList[index];
+        var (kappa1, kappa2) = Signal.CurvatureList[index];
 
         var e1 = curveFrame.Direction1.ToUnitVector();
         var e2 = curveFrame.Direction2.ToUnitVector();
         var e3 = curveFrame.Direction3.ToUnitVector();
 
-        var t = PowerSignal.TimeValues[index];
-        var sDt = PowerSignal.GetDerivative1Norm(t);
+        var t = Signal.TimeValues[index];
+        var sDt = Signal.GetDerivative1Norm(t);
         var k21Vector = (kappa2 * e3 - kappa1 * e1) / 2;
         var omegaNorm = (kappa1.Square() + kappa2.Square()).Sqrt() / 2;
         
         var radius = sDt / (2 * omegaNorm);
-        var center = Tuple3D.Zero; //curveFrame.Origin + e2 * radius; 
+        var center = Float64Tuple3D.Zero; //curveFrame.Origin + e2 * radius; 
         var normal = e2.VectorUnitCross(k21Vector);
 
         MainSceneComposer.AddDisc(
@@ -992,7 +992,7 @@ public class PowerSignalVisualizer3D :
             center,
             normal,
             radius,
-            Color.YellowGreen.WithAlpha(0.2f),
+            Color.YellowGreen.SetAlpha(0.2f),
             0.035d
         );
 
@@ -1011,29 +1011,34 @@ public class PowerSignalVisualizer3D :
             LaTeXScalingFactor
         );
 
+        var material = scene.AddStandardMaterial(
+            "curveFrameCircleMaterial",
+            Color.Yellow
+        );
+
         MainSceneComposer.AddCircle(
             "curveFrameCircleCurve",
             center,
             normal,
             radius,
-            scene.GetMaterial("curveFrameCircleNormalMaterial"),
+            material,
             0.035d
         );
     }
 
     private void AddSignalFrameBivectors(int index)
     {
-        if (PowerSignal.FrameList is null || PowerSignal.CurvatureList is null || PowerSignal.SampledCurve is null)
+        if (Signal.FrameList is null || Signal.CurvatureList is null || Signal.SampledCurve is null)
             return;
 
         var scene = HtmlComposer.GetScene("omegaScene");
         
         // Display bivector omega = kappa1 e12 + kappa2 e23
-        var (kappa1, kappa2) = PowerSignal.CurvatureList[index];
+        var (kappa1, kappa2) = Signal.CurvatureList[index];
 
-        var e1 = Tuple3D.E1;
-        var e2 = Tuple3D.E2;
-        var e3 = Tuple3D.E3;
+        var e1 = Float64Tuple3D.E1;
+        var e2 = Float64Tuple3D.E2;
+        var e3 = Float64Tuple3D.E3;
 
         var e1Ds = kappa1 * e2;
         var e2Ds = kappa2 * e3 - kappa1 * e1;
@@ -1070,13 +1075,13 @@ public class PowerSignalVisualizer3D :
             OmegaFrameOrigin + e2 * 1.25d,
             LaTeXScalingFactor
         ).AddLaTeXText(
-            "e2VectorText",
+            "e3VectorText",
             ImageCache,
             OmegaFrameOrigin + e3 * 1.25d,
             LaTeXScalingFactor
         );
 
-        if (e1Ds.GetLength() > 0.1)
+        if (e1Ds.GetVectorNorm() > 0.1)
         {
             OmegaSceneComposer.AddVector(
                 "e1DsVector",
@@ -1120,7 +1125,7 @@ public class PowerSignalVisualizer3D :
             );
         }
 
-        if (e2Ds.GetLength() > 0.1)
+        if (e2Ds.GetVectorNorm() > 0.1)
         {
             OmegaSceneComposer.AddVector(
                 "e2DsVector",
@@ -1164,7 +1169,7 @@ public class PowerSignalVisualizer3D :
             );
         }
 
-        if (e3Ds.GetLength() > 0.1)
+        if (e3Ds.GetVectorNorm() > 0.1)
         {
             var e3DsVectorMaterial = OmegaSceneComposer.SceneObject.AddStandardMaterial(
                 "e3DsVectorMaterial",
@@ -1221,8 +1226,8 @@ public class PowerSignalVisualizer3D :
     {
         base.GenerateSnapshotCode(index);
 
-        var t = PowerSignal.TimeValues[index];
-        var (x, y, z) = PowerSignal.GetPhaseVectors(t);
+        var t = Signal.TimeValues[index];
+        var (x, y, z) = Signal.GetPhaseVectors(t);
         
         AddPhaseVector1(x);
         AddPhaseVector2(y);

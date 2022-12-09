@@ -6,7 +6,7 @@ using GraphicsComposerLib.Geometry.Meshes.PointsMesh;
 namespace GraphicsComposerLib.Geometry.Meshes.PointsPath.Space3D
 {
     public sealed class PointsMeshSubsetPointsPath3D
-        : PSeq2DSubset1D<ITuple3D>, IPointsPath3D
+        : PSeq2DSubset1D<IFloat64Tuple3D>, IPointsPath3D
     {
         public IPointsMesh3D BaseMesh { get; }
 

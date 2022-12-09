@@ -39,13 +39,13 @@ public class BarycentricPolynomialEquidistantFunction :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public double GetFirstDerivative(double t)
+    public double GetFirstDerivativeValue(double t)
     {
         return Differentiate.FirstDerivative(GetValue, t);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public double GetSecondDerivative(double t)
+    public double GetSecondDerivativeValue(double t)
     {
         return Differentiate.SecondDerivative(GetValue, t);
     }

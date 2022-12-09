@@ -5,9 +5,9 @@ using NumericalGeometryLib.BasicMath.Tuples;
 namespace GraphicsComposerLib.Geometry.Meshes.PointsPath.Space3D
 {
     public sealed class MappedPointsPath3D
-        : PSeqMapped1D<ITuple3D>, IPointsPath3D
+        : PSeqMapped1D<IFloat64Tuple3D>, IPointsPath3D
     {
-        public Func<ITuple3D, ITuple3D> Mapping { get; set; }
+        public Func<IFloat64Tuple3D, IFloat64Tuple3D> Mapping { get; set; }
 
 
         public MappedPointsPath3D(IPointsPath3D basePath)
@@ -16,14 +16,14 @@ namespace GraphicsComposerLib.Geometry.Meshes.PointsPath.Space3D
             Mapping = (point => point);
         }
 
-        public MappedPointsPath3D(IPointsPath3D basePath, Func<ITuple3D, ITuple3D> mapping)
+        public MappedPointsPath3D(IPointsPath3D basePath, Func<IFloat64Tuple3D, IFloat64Tuple3D> mapping)
             : base(basePath)
         {
             Mapping = mapping;
         }
 
 
-        protected override ITuple3D MappingFunction(ITuple3D input)
+        protected override IFloat64Tuple3D MappingFunction(IFloat64Tuple3D input)
         {
             return Mapping(input);
         }

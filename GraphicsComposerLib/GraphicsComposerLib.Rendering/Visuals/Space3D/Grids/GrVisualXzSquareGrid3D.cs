@@ -7,8 +7,8 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Grids;
 public sealed class GrVisualXzSquareGrid3D :
     GrVisualLineGridImage3D
 {
-    public ITuple3D Origin { get; set; } 
-        = new Tuple3D(-12, 0, -12);
+    public IFloat64Tuple3D Origin { get; set; } 
+        = new Float64Tuple3D(-12, 0, -12);
 
     public double UnitSize { get; set; } 
         = 1;

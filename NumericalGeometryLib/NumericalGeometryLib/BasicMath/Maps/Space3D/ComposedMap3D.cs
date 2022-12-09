@@ -81,13 +81,13 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
         public bool SwapsHandedness 
             => _affineMapsList.Count(m => m.SwapsHandedness).IsOdd();
 
-        public SquareMatrix4 ToSquareMatrix4()
+        public SquareMatrix4 GetSquareMatrix4()
         {
             //Construct matrix columns
-            var c0 = MapVector(new Tuple3D(1, 0, 0));
-            var c1 = MapVector(new Tuple3D(0, 1, 0));
-            var c2 = MapVector(new Tuple3D(0, 0, 1));
-            var c3 = MapPoint(new Tuple3D(0, 0, 0));
+            var c0 = MapVector(new Float64Tuple3D(1, 0, 0));
+            var c1 = MapVector(new Float64Tuple3D(0, 1, 0));
+            var c2 = MapVector(new Float64Tuple3D(0, 0, 1));
+            var c3 = MapPoint(new Float64Tuple3D(0, 0, 0));
 
             return new SquareMatrix4()
             {
@@ -97,13 +97,13 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
             };
         }
 
-        public Matrix4x4 ToMatrix4x4()
+        public Matrix4x4 GetMatrix4x4()
         {
             //Construct matrix columns
-            var c0 = MapVector(Tuple3D.E1);
-            var c1 = MapVector(Tuple3D.E2);
-            var c2 = MapVector(Tuple3D.E3);
-            var c3 = MapPoint(Tuple3D.Zero);
+            var c0 = MapVector(Float64Tuple3D.E1);
+            var c1 = MapVector(Float64Tuple3D.E2);
+            var c2 = MapVector(Float64Tuple3D.E3);
+            var c3 = MapPoint(Float64Tuple3D.Zero);
 
             return new Matrix4x4(
                 (float) c0.X, (float) c1.X, (float) c2.X, (float) c3.X,
@@ -113,12 +113,12 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
             );
         }
 
-        public double[,] ToArray2D()
+        public double[,] GetArray2D()
         {
-            var c0 = MapVector(Tuple3D.E1);
-            var c1 = MapVector(Tuple3D.E2);
-            var c2 = MapVector(Tuple3D.E3);
-            var c3 = MapPoint(Tuple3D.Zero);
+            var c0 = MapVector(Float64Tuple3D.E1);
+            var c1 = MapVector(Float64Tuple3D.E2);
+            var c2 = MapVector(Float64Tuple3D.E3);
+            var c3 = MapPoint(Float64Tuple3D.Zero);
 
             var array = new double[4, 4];
 
@@ -130,7 +130,7 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
             return array;
         }
 
-        public Tuple3D MapPoint(ITuple3D point)
+        public Float64Tuple3D MapPoint(IFloat64Tuple3D point)
         {
             return _affineMapsList.Aggregate(
                 point.ToTuple3D(), 
@@ -138,7 +138,7 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
             );
         }
 
-        public Tuple3D MapVector(ITuple3D vector)
+        public Float64Tuple3D MapVector(IFloat64Tuple3D vector)
         {
             return _affineMapsList.Aggregate(
                 vector.ToTuple3D(), 
@@ -146,7 +146,7 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
             );
         }
 
-        public Tuple3D MapNormal(ITuple3D normal)
+        public Float64Tuple3D MapNormal(IFloat64Tuple3D normal)
         {
             return _affineMapsList.Aggregate(
                 normal.ToTuple3D(), 
@@ -154,12 +154,12 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
             );
         }
 
-        public IAffineMap3D InverseMap()
+        public IAffineMap3D GetInverseAffineMap()
         {
             var invMap = new ComposedMap3D();
 
             foreach (var map in _affineMapsList)
-                invMap.PrependAffineMap(map.InverseMap());
+                invMap.PrependAffineMap(map.GetInverseAffineMap());
 
             return invMap;
         }

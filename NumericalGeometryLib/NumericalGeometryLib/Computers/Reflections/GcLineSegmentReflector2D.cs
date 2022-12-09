@@ -29,7 +29,7 @@ namespace NumericalGeometryLib.Computers.Reflections
         }
 
 
-        public Tuple2D ReflectPointVa(ITuple2D point)
+        public Float64Tuple2D ReflectPointVa(IFloat64Tuple2D point)
         {
             //https://math.stackexchange.com/questions/281503/reflecting-a-point-by-a-line-in-mathbb-r3
 
@@ -44,13 +44,13 @@ namespace NumericalGeometryLib.Computers.Reflections
 
             var s = LineSegment.GetPointAt(t0);
 
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 2 * s.X - point.X,
                 2 * s.Y - point.Y
             );
         }
         
-        public Tuple2D ReflectPoint(ITuple2D point)
+        public Float64Tuple2D ReflectPoint(IFloat64Tuple2D point)
         {
             ComputePointReflectionCounter.Begin();
 
@@ -166,7 +166,7 @@ namespace NumericalGeometryLib.Computers.Reflections
 
             ComputePointReflectionCounter.End();
 
-            return new Tuple2D(pointImageX, pointImageY);
+            return new Float64Tuple2D(pointImageX, pointImageY);
         }
     }
 }

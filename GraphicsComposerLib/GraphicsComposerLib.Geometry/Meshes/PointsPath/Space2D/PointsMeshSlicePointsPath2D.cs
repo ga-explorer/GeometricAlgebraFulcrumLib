@@ -5,7 +5,7 @@ using GraphicsComposerLib.Geometry.Meshes.PointsMesh;
 namespace GraphicsComposerLib.Geometry.Meshes.PointsPath.Space2D
 {
     public sealed class PointsMeshSlicePointsPath2D
-        : PSeqSlice1D<ITuple2D>, IPointsPath2D
+        : PSeqSlice1D<IFloat64Tuple2D>, IPointsPath2D
     {
         public IPointsMesh2D BaseMesh { get; }
 

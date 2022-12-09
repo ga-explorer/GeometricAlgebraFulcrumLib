@@ -7,22 +7,22 @@ namespace GraphicsComposerLib.Geometry.SdfShapes.RayMarching
 {
     public sealed class RayMarchingPointLight3D
     {
-        public Tuple3D Position { get; set; }
-            = new Tuple3D(0, 2, 4);
+        public Float64Tuple3D Position { get; set; }
+            = new Float64Tuple3D(0, 2, 4);
 
-        public Tuple3D AmbientColor { get; set; }
-            = new Tuple3D(0.5, 0.5, 0.5);
+        public Float64Tuple3D AmbientColor { get; set; }
+            = new Float64Tuple3D(0.5, 0.5, 0.5);
 
-        public Tuple3D DiffuseColor { get; set; }
-            = new Tuple3D(0.4, 0.4, 0.4);
+        public Float64Tuple3D DiffuseColor { get; set; }
+            = new Float64Tuple3D(0.4, 0.4, 0.4);
 
-        public Tuple3D SpecularColor { get; set; }
-            = new Tuple3D(0.4, 0.4, 0.4);
+        public Float64Tuple3D SpecularColor { get; set; }
+            = new Float64Tuple3D(0.4, 0.4, 0.4);
 
-        public Tuple3D EyePoint { get; set; }
+        public Float64Tuple3D EyePoint { get; set; }
 
 
-        public Tuple3D GetColor(Tuple3D point, Tuple3D unitNormal, RayMarchingMaterial material)
+        public Float64Tuple3D GetColor(Float64Tuple3D point, Float64Tuple3D unitNormal, RayMarchingMaterial material)
         {
             var color = AmbientColor.ComponentsProduct(material.AmbientColor);
 

@@ -15,7 +15,7 @@ namespace GraphicsComposerLib.Geometry.Structures.Vertices
 
         Color Color { get; set; }
 
-        ITuple2D TextureUv { get; set; }
+        IFloat64Tuple2D TextureUv { get; set; }
 
         GrNormal3D Normal { get; }
 

@@ -17,11 +17,11 @@ namespace GraphicsComposerLib.Geometry.SdfShapes.RayMarching
         public int ResolutionY { get; set; }
             = 640;
 
-        public Tuple3D EyePoint 
-            => new Tuple3D(0, 0, EyeDistance);
+        public Float64Tuple3D EyePoint 
+            => new Float64Tuple3D(0, 0, EyeDistance);
 
 
-        public Tuple3D GetRayDirection(int pixelX, int pixelY)
+        public Float64Tuple3D GetRayDirection(int pixelX, int pixelY)
         {
             var x = pixelX - ResolutionX / 2.0d;
             var y = pixelY - ResolutionY / 2.0d;
@@ -29,7 +29,7 @@ namespace GraphicsComposerLib.Geometry.SdfShapes.RayMarching
 
             var length = Math.Sqrt(x * x + y * y + z * z);
 
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 x / length, 
                 y / length, 
                 -z / length

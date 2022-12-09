@@ -37,7 +37,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Triangles
         public IEnumerable<IGraphicsVertex3D> GeometryVertices
             => _localFrameList;
 
-        public IEnumerable<ITuple3D> GeometryPoints 
+        public IEnumerable<IFloat64Tuple3D> GeometryPoints 
             => _localFrameList;
 
         public int Count 
@@ -58,9 +58,9 @@ namespace GraphicsComposerLib.Geometry.Primitives.Triangles
             }
         }
 
-        public IEnumerable<Triplet<ITuple3D>> TriangleVertexPoints
+        public IEnumerable<Triplet<IFloat64Tuple3D>> TriangleVertexPoints
             => _triangleIndexTripletList.Select(t => 
-                new Triplet<ITuple3D>(
+                new Triplet<IFloat64Tuple3D>(
                     _localFrameList[t.Item1],
                     _localFrameList[t.Item2],
                     _localFrameList[t.Item3]
@@ -70,10 +70,10 @@ namespace GraphicsComposerLib.Geometry.Primitives.Triangles
         public IEnumerable<Triplet<int>> TriangleVertexIndices
             => _triangleIndexTripletList;
 
-        public IEnumerable<ITuple3D> VertexNormals 
+        public IEnumerable<IFloat64Tuple3D> VertexNormals 
             => _localFrameList.Select(f => f.Normal);
         
-        public IEnumerable<ITuple2D> VertexTextureUVs
+        public IEnumerable<IFloat64Tuple2D> VertexTextureUVs
             => _localFrameList.Select(f => f.ParameterValue.ToTuple2D());
         
         public IEnumerable<Color> VertexColors 
@@ -147,7 +147,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Triangles
             return this;
         }
 
-        public ITuple3D GetGeometryPoint(int index)
+        public IFloat64Tuple3D GetGeometryPoint(int index)
         {
             return _localFrameList[index].Point;
         }

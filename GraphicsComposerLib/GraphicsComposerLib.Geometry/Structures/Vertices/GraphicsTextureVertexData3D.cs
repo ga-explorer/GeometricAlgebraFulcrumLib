@@ -16,7 +16,7 @@ namespace GraphicsComposerLib.Geometry.Structures.Vertices
             set => throw new InvalidOperationException();
         }
 
-        public ITuple2D TextureUv { get; set; }
+        public IFloat64Tuple2D TextureUv { get; set; }
 
         public GrNormal3D Normal
             => null;
@@ -51,10 +51,10 @@ namespace GraphicsComposerLib.Geometry.Structures.Vertices
 
         public GraphicsTextureVertexData3D()
         {
-            TextureUv = new Tuple2D(0, 0);
+            TextureUv = new Float64Tuple2D(0, 0);
         }
 
-        public GraphicsTextureVertexData3D(ITuple2D textureUv)
+        public GraphicsTextureVertexData3D(IFloat64Tuple2D textureUv)
         {
             TextureUv = textureUv;
         }

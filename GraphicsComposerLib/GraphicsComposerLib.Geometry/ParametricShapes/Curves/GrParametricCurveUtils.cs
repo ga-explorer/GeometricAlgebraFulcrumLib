@@ -15,7 +15,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves
 {
     public static class GrParametricCurveUtils
     {
-        public static Tuple4D CreateFrameToFrameRotationQuaternion(this GrParametricCurveLocalFrame3D frame1, GrParametricCurveLocalFrame3D frame2)
+        public static Float64Tuple4D CreateFrameToFrameRotationQuaternion(this GrParametricCurveLocalFrame3D frame1, GrParametricCurveLocalFrame3D frame2)
         {
             var q1 =
                 frame1
@@ -24,7 +24,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves
                     .CreateVectorToVectorRotationQuaternion(frame2.Tangent.ToUnitVector());
             
             Debug.Assert(
-                (q1.QuaternionRotate(frame1.Tangent) - frame2.Tangent).GetLengthSquared().IsNearZero(1e-7)
+                (q1.QuaternionRotate(frame1.Tangent) - frame2.Tangent).GetVectorNormSquared().IsNearZero(1e-7)
             );
 
             var f1 = 
@@ -48,15 +48,15 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves
                 f1.GetRotatedFrameUsingQuaternion(q2);
 
             Debug.Assert(
-                (quaternion.QuaternionRotate(frame1.Tangent) - frame2.Tangent).GetLengthSquared().IsNearZero(1e-7)
+                (quaternion.QuaternionRotate(frame1.Tangent) - frame2.Tangent).GetVectorNormSquared().IsNearZero(1e-7)
             );
 
             Debug.Assert(
-                (quaternion.QuaternionRotate(frame1.Normal1) - frame2.Normal1).GetLengthSquared().IsNearZero(1e-7)
+                (quaternion.QuaternionRotate(frame1.Normal1) - frame2.Normal1).GetVectorNormSquared().IsNearZero(1e-7)
             );
 
             Debug.Assert(
-                (quaternion.QuaternionRotate(frame1.Normal2) - frame2.Normal2).GetLengthSquared().IsNearZero(1e-7)
+                (quaternion.QuaternionRotate(frame1.Normal2) - frame2.Normal2).GetVectorNormSquared().IsNearZero(1e-7)
             );
 
             return quaternion;
@@ -159,13 +159,13 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<Tuple2D> GetPointsAt(this IGraphicsParametricCurve2D curve, IEnumerable<double> tList)
+        public static IEnumerable<Float64Tuple2D> GetPointsAt(this IGraphicsParametricCurve2D curve, IEnumerable<double> tList)
         {
             return tList.Select(curve.GetPoint);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple2D[] GetPointsAt(this IGraphicsParametricCurve2D curve, params double[] tList)
+        public static Float64Tuple2D[] GetPointsAt(this IGraphicsParametricCurve2D curve, params double[] tList)
         {
             return tList.Select(curve.GetPoint).ToArray();
         }
@@ -179,19 +179,19 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves
 
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<Tuple3D> GetPoints(this GrParametricCurveTree3D curve)
+        public static IEnumerable<Float64Tuple3D> GetPoints(this GrParametricCurveTree3D curve)
         {
             return curve.Select(f => f.Point);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<Tuple3D> GetPoints(this IGraphicsC1ParametricCurve3D curve, IEnumerable<double> tList)
+        public static IEnumerable<Float64Tuple3D> GetPoints(this IGraphicsC1ParametricCurve3D curve, IEnumerable<double> tList)
         {
             return tList.Select(curve.GetPoint);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D[] GetPoints(this IGraphicsC1ParametricCurve3D curve, params double[] tList)
+        public static Float64Tuple3D[] GetPoints(this IGraphicsC1ParametricCurve3D curve, params double[] tList)
         {
             return tList.Select(curve.GetPoint).ToArray();
         }
@@ -234,7 +234,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves
             var vDt2 = curve.GetSecondDerivative(parameterValue);
             //var vDt3 = GetSignalVectorDerivative3(t);
 
-            var sDt1 = vDt1.GetLength();
+            var sDt1 = vDt1.GetVectorNorm();
             var sDt2 = vDt1.VectorDot(vDt2) / sDt1;
             //var sDt3 = (vDt2.VectorDot(vDt2) + vDt1.VectorDot(vDt3) - sDt2.Square()) / sDt1;
 
@@ -295,7 +295,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves
             var vDt2 = curve.GetSecondDerivative(parameterValue);
             //var vDt3 = GetSignalVectorDerivative3(t);
 
-            var sDt1 = vDt1.GetLength();
+            var sDt1 = vDt1.GetVectorNorm();
             var sDt2 = vDt1.VectorDot(vDt2) / sDt1;
             //var sDt3 = (vDt2.VectorDot(vDt2) + vDt1.VectorDot(vDt3) - sDt2.Square()) / sDt1;
 

@@ -11,10 +11,10 @@ namespace GraphicsComposerLib.Geometry.SdfShapes.Transforms
         public double Factor { get; set; }
             = 1.0d;
 
-        public override double GetScalarDistance(ITuple3D point)
+        public override double GetScalarDistance(IFloat64Tuple3D point)
         {
             var s = 1d / Factor;
-            var p = new Tuple3D(
+            var p = new Float64Tuple3D(
                 point.X * s,
                 point.Y * s,
                 point.Z * s

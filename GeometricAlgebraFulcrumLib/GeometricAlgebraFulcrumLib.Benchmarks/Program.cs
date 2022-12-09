@@ -7,9 +7,16 @@ namespace GeometricAlgebraFulcrumLib.Benchmarks
     {
         static void Main(string[] args)
         {
-            //var benckmark = new SkrClarkeBenchmark();
+            //var benckmark = new ClarkeBenchmark()
+            //{
+            //    VSpaceDimension = 48
+            //};
 
-            BenchmarkRunner.Run<SkrClarkeBenchmark>();
+            //benckmark.Setup();
+            //benckmark.Validate();
+
+
+            BenchmarkRunner.Run<ClarkeBenchmark>();
         }
     }
 }

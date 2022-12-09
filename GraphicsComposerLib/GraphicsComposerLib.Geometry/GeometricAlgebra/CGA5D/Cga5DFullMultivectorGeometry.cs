@@ -13,7 +13,7 @@ namespace GraphicsComposerLib.Geometry.GeometricAlgebra.CGA5D
         }
 
 
-        protected override double ComputeSdfOpns(ITuple3D point)
+        protected override double ComputeSdfOpns(IFloat64Tuple3D point)
         {
             //Begin GMac Macro Code Generation, 2019-09-12T13:32:56.0514935+02:00
             //Macro: main.cga5d.SdfOpns
@@ -747,7 +747,7 @@ namespace GraphicsComposerLib.Geometry.GeometricAlgebra.CGA5D
             return sdf;
         }
 
-        protected override double ComputeSdfIpns(ITuple3D point)
+        protected override double ComputeSdfIpns(IFloat64Tuple3D point)
         {
             //Begin GMac Macro Code Generation, 2019-09-12T13:44:16.5061972+02:00
             //Macro: main.cga5d.SdfIpns
@@ -1497,7 +1497,7 @@ namespace GraphicsComposerLib.Geometry.GeometricAlgebra.CGA5D
         }
 
 
-        private Tuple3D GetOpnsNormal(ITuple3D point)
+        private Float64Tuple3D GetOpnsNormal(IFloat64Tuple3D point)
         {
             //Begin GMac Macro Code Generation, 2019-09-12T13:48:25.0433393+02:00
             //Macro: main.cga5d.GetNormalOpns
@@ -3969,14 +3969,14 @@ namespace GraphicsComposerLib.Geometry.GeometricAlgebra.CGA5D
             d3 = CorrectSdf(d3);
             d4 = CorrectSdf(d4);
 
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 d4 + d1 - d2 - d3,
                 d4 - d1 - d2 + d3,
                 d4 - d1 + d2 - d3
             ).ToUnitVector();
         }
 
-        private Tuple3D GetIpnsNormal(ITuple3D point)
+        private Float64Tuple3D GetIpnsNormal(IFloat64Tuple3D point)
         {
             //Begin GMac Macro Code Generation, 2019-09-12T13:49:30.9667858+02:00
             //Macro: main.cga5d.GetNormalIpns
@@ -6491,14 +6491,14 @@ namespace GraphicsComposerLib.Geometry.GeometricAlgebra.CGA5D
             d3 = CorrectSdf(d3);
             d4 = CorrectSdf(d4);
 
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 d4 + d1 - d2 - d3,
                 d4 - d1 - d2 + d3,
                 d4 - d1 + d2 - d3
             ).ToUnitVector();
         }
 
-        public override Tuple3D ComputeSdfNormal(ITuple3D point)
+        public override Float64Tuple3D ComputeSdfNormal(IFloat64Tuple3D point)
         {
             return NullSpaceKind == MultivectorNullSpaceKind.OuterProductNullSpace
                 ? GetOpnsNormal(point)

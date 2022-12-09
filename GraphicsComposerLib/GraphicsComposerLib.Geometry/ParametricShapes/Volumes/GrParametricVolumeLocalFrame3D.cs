@@ -10,7 +10,7 @@ using SixLabors.ImageSharp;
 namespace GraphicsComposerLib.Geometry.ParametricShapes.Volumes
 {
     public sealed record GrParametricVolumeLocalFrame3D :
-        ITuple3D
+        IFloat64Tuple3D
     {
         public double Item1
             => Point.X;
@@ -33,9 +33,9 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Volumes
         public int Index { get; internal set; } 
             = -1;
 
-        public Tuple3D ParameterValue { get; }
+        public Float64Tuple3D ParameterValue { get; }
 
-        public Tuple3D Point { get; }
+        public Float64Tuple3D Point { get; }
         
         public Color Color { get; set; }
         
@@ -43,9 +43,9 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Volumes
         
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal GrParametricVolumeLocalFrame3D(double parameterValue1, double parameterValue2, double parameterValue3, [NotNull] ITuple3D point, double scalarDistance)
+        internal GrParametricVolumeLocalFrame3D(double parameterValue1, double parameterValue2, double parameterValue3, [NotNull] IFloat64Tuple3D point, double scalarDistance)
         {
-            ParameterValue = new Tuple3D(parameterValue1, parameterValue2, parameterValue3);
+            ParameterValue = new Float64Tuple3D(parameterValue1, parameterValue2, parameterValue3);
             Point = point.ToTuple3D();
             ScalarDistance = scalarDistance;
 
@@ -53,7 +53,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Volumes
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal GrParametricVolumeLocalFrame3D([NotNull] ITuple3D parameterValue, [NotNull] ITuple3D point, double scalarDistance)
+        internal GrParametricVolumeLocalFrame3D([NotNull] IFloat64Tuple3D parameterValue, [NotNull] IFloat64Tuple3D point, double scalarDistance)
         {
             ParameterValue = parameterValue.ToTuple3D();
             Point = point.ToTuple3D();
@@ -65,7 +65,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Volumes
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal GrParametricVolumeLocalFrame3D([NotNull] IGraphicsParametricVolume3D volume, double parameterValue1, double parameterValue2, double parameterValue3)
         {
-            ParameterValue = new Tuple3D(parameterValue1, parameterValue2, parameterValue3);
+            ParameterValue = new Float64Tuple3D(parameterValue1, parameterValue2, parameterValue3);
             Point = volume.GetPoint(parameterValue1, parameterValue2, parameterValue3);
             ScalarDistance = volume.GetScalarDistance(parameterValue1, parameterValue2, parameterValue3);
 
@@ -73,7 +73,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Volumes
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal GrParametricVolumeLocalFrame3D([NotNull] IGraphicsParametricVolume3D volume, ITuple3D parameterValue)
+        internal GrParametricVolumeLocalFrame3D([NotNull] IGraphicsParametricVolume3D volume, IFloat64Tuple3D parameterValue)
         {
             ParameterValue = parameterValue.ToTuple3D();
             Point = volume.GetPoint(parameterValue);

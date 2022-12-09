@@ -4,9 +4,9 @@ using NumericalGeometryLib.BasicMath.Tuples.Immutable;
 namespace GraphicsComposerLib.Rendering.BabylonJs.Values;
 
 public sealed class GrBabylonJsQuaternionValue :
-    GrBabylonJsValue<ITuple4D>
+    GrBabylonJsValue<IFloat64Tuple4D>
 {
-    internal static GrBabylonJsQuaternionValue Create(ITuple4D value)
+    internal static GrBabylonJsQuaternionValue Create(IFloat64Tuple4D value)
     {
         return new GrBabylonJsQuaternionValue(value);
     }
@@ -17,7 +17,7 @@ public sealed class GrBabylonJsQuaternionValue :
         return new GrBabylonJsQuaternionValue(valueText);
     }
 
-    public static implicit operator GrBabylonJsQuaternionValue(Tuple4D value)
+    public static implicit operator GrBabylonJsQuaternionValue(Float64Tuple4D value)
     {
         return new GrBabylonJsQuaternionValue(value);
     }
@@ -28,7 +28,7 @@ public sealed class GrBabylonJsQuaternionValue :
     {
     }
 
-    private GrBabylonJsQuaternionValue(ITuple4D value)
+    private GrBabylonJsQuaternionValue(IFloat64Tuple4D value)
         : base(value)
     {
     }

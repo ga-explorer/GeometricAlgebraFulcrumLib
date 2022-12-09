@@ -12,22 +12,22 @@ namespace GraphicsComposerLib.Geometry.SdfShapes.RayMarching
     public sealed class SdfRay3D :
         IGeometricElement
     {
-        public Tuple3D Origin { get; }
+        public Float64Tuple3D Origin { get; }
 
-        public Tuple3D Direction { get; }
+        public Float64Tuple3D Direction { get; }
 
-        public Tuple3D DirectionInv { get; }
+        public Float64Tuple3D DirectionInv { get; }
 
         public Triplet<int> DirectionInvSign { get; }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public SdfRay3D([NotNull] ITuple3D origin, [NotNull] ITuple3D direction)
+        public SdfRay3D([NotNull] IFloat64Tuple3D origin, [NotNull] IFloat64Tuple3D direction)
         {
             Origin = origin.ToTuple3D();
             Direction = direction.ToTuple3D();
 
-            DirectionInv = new Tuple3D(
+            DirectionInv = new Float64Tuple3D(
                 1d / direction.X,
                 1d / direction.Y,
                 1d / direction.Z
@@ -44,9 +44,9 @@ namespace GraphicsComposerLib.Geometry.SdfShapes.RayMarching
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple3D GetPoint(double t)
+        public Float64Tuple3D GetPoint(double t)
         {
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 Origin.X + t * Direction.X,
                 Origin.Y + t * Direction.Y,
                 Origin.Z + t * Direction.Z
@@ -63,10 +63,10 @@ namespace GraphicsComposerLib.Geometry.SdfShapes.RayMarching
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool Intersect(IBoundingBox3D box, out double tMin, out double tMax)
         {
-            var bounds = new Tuple3D[]
+            var bounds = new Float64Tuple3D[]
             {
-                new Tuple3D(box.MinX, box.MinY, box.MinZ),
-                new Tuple3D(box.MinX, box.MinY, box.MinZ)
+                new Float64Tuple3D(box.MinX, box.MinY, box.MinZ),
+                new Float64Tuple3D(box.MinX, box.MinY, box.MinZ)
             };
 
             tMin = (bounds[DirectionInvSign.Item1].X - Origin.X) * DirectionInv.X; 

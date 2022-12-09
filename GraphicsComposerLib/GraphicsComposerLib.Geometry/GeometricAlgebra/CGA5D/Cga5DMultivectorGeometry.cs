@@ -6,7 +6,7 @@ namespace GraphicsComposerLib.Geometry.GeometricAlgebra.CGA5D
     public abstract class Cga5DMultivectorGeometry
         : MultivectorGeometry3D
     {
-        public static Cga5D1VectorGeometry CreateOpnsPoint(Tuple3D point)
+        public static Cga5D1VectorGeometry CreateOpnsPoint(Float64Tuple3D point)
         {
             var scalars = new double[5];
 
@@ -78,7 +78,7 @@ namespace GraphicsComposerLib.Geometry.GeometricAlgebra.CGA5D
             );
         }
 
-        public static Cga5D2VectorGeometry CreateOpnsPointPair(Tuple3D p1, Tuple3D p2)
+        public static Cga5D2VectorGeometry CreateOpnsPointPair(Float64Tuple3D p1, Float64Tuple3D p2)
         {
             var scalars = new double[10];
 
@@ -281,22 +281,22 @@ namespace GraphicsComposerLib.Geometry.GeometricAlgebra.CGA5D
             );
         }
 
-        public static Cga5D3VectorGeometry CreateOpnsLine(Tuple3D p1, Tuple3D p2)
+        public static Cga5D3VectorGeometry CreateOpnsLine(Float64Tuple3D p1, Float64Tuple3D p2)
         {
             throw new NotImplementedException();
         }
 
-        public static Cga5D4VectorGeometry CreateOpnsPlane(Tuple3D p1, Tuple3D p2, Tuple3D p3)
+        public static Cga5D4VectorGeometry CreateOpnsPlane(Float64Tuple3D p1, Float64Tuple3D p2, Float64Tuple3D p3)
         {
             throw new NotImplementedException();
         }
 
-        public static Cga5D4VectorGeometry CreateOpnsPlane(double distance, Tuple3D normal)
+        public static Cga5D4VectorGeometry CreateOpnsPlane(double distance, Float64Tuple3D normal)
         {
             throw new NotImplementedException();
         }
 
-        public static Cga5D4VectorGeometry CreateOpnsPlane(Tuple3D point, Tuple3D normal)
+        public static Cga5D4VectorGeometry CreateOpnsPlane(Float64Tuple3D point, Float64Tuple3D normal)
         {
             throw new NotImplementedException();
         }
@@ -307,7 +307,7 @@ namespace GraphicsComposerLib.Geometry.GeometricAlgebra.CGA5D
             throw new NotImplementedException();
         }
 
-        public static Cga5D3VectorGeometry CreateIpnsPointPair(Tuple3D p1, Tuple3D p2)
+        public static Cga5D3VectorGeometry CreateIpnsPointPair(Float64Tuple3D p1, Float64Tuple3D p2)
         {
             var scalars = new double[10];
 
@@ -523,27 +523,27 @@ namespace GraphicsComposerLib.Geometry.GeometricAlgebra.CGA5D
             );
         }
 
-        public static Cga5D2VectorGeometry CreateIpnsLine(Tuple3D p1, Tuple3D p2)
+        public static Cga5D2VectorGeometry CreateIpnsLine(Float64Tuple3D p1, Float64Tuple3D p2)
         {
             throw new NotImplementedException();
         }
 
-        public static Cga5D1VectorGeometry CreateIpnsPlane(double distance, Tuple3D normal)
+        public static Cga5D1VectorGeometry CreateIpnsPlane(double distance, Float64Tuple3D normal)
         {
             throw new NotImplementedException();
         }
 
-        public static Cga5D1VectorGeometry CreateIpnsPlane(Tuple3D p1, Tuple3D p2, Tuple3D p3)
+        public static Cga5D1VectorGeometry CreateIpnsPlane(Float64Tuple3D p1, Float64Tuple3D p2, Float64Tuple3D p3)
         {
             throw new NotImplementedException();
         }
 
-        public static Cga5D1VectorGeometry CreateIpnsPlane(Tuple3D point, Tuple3D normal)
+        public static Cga5D1VectorGeometry CreateIpnsPlane(Float64Tuple3D point, Float64Tuple3D normal)
         {
             throw new NotImplementedException();
         }
 
-        public static Cga5D4VectorGeometry CreateOpnsSphere(Tuple3D p1, Tuple3D p2, Tuple3D p3, Tuple3D p4)
+        public static Cga5D4VectorGeometry CreateOpnsSphere(Float64Tuple3D p1, Float64Tuple3D p2, Float64Tuple3D p3, Float64Tuple3D p4)
         {
             var bladeScalars = new double[5];
 
@@ -1113,7 +1113,7 @@ namespace GraphicsComposerLib.Geometry.GeometricAlgebra.CGA5D
             );
         }
 
-        public static Cga5D4VectorGeometry CreateOpnsSphere(Tuple3D center, double radius)
+        public static Cga5D4VectorGeometry CreateOpnsSphere(Float64Tuple3D center, double radius)
         {
             var bladeScalars = new double[5];
 
@@ -1196,7 +1196,7 @@ namespace GraphicsComposerLib.Geometry.GeometricAlgebra.CGA5D
             );
         }
 
-        public static Cga5D1VectorGeometry CreateIpnsSphere(Tuple3D p1, Tuple3D p2, Tuple3D p3, Tuple3D p4)
+        public static Cga5D1VectorGeometry CreateIpnsSphere(Float64Tuple3D p1, Float64Tuple3D p2, Float64Tuple3D p3, Float64Tuple3D p4)
         {
             var bladeScalars = new double[5];
 
@@ -1774,7 +1774,7 @@ namespace GraphicsComposerLib.Geometry.GeometricAlgebra.CGA5D
             );
         }
 
-        public static Cga5D1VectorGeometry CreateIpnsSphere(Tuple3D center, double radius)
+        public static Cga5D1VectorGeometry CreateIpnsSphere(Float64Tuple3D center, double radius)
         {
             var bladeScalars = new double[5];
 

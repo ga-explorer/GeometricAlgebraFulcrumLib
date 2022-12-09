@@ -9,18 +9,18 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D;
 public sealed record RouletteMap3D :
     IAffineMap3D
 {
-    public Tuple3D FixedFrameOrigin { get; }
+    public Float64Tuple3D FixedFrameOrigin { get; }
 
-    public Tuple3D MovingFrameOrigin { get; }
+    public Float64Tuple3D MovingFrameOrigin { get; }
 
-    public Tuple4D RotationQuaternion { get; }
+    public Float64Tuple4D RotationQuaternion { get; }
 
     public bool SwapsHandedness
         => false;
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public RouletteMap3D(Tuple3D fixedFrameOrigin, Tuple3D movingFrameOrigin, Tuple4D rotationQuaternion)
+    public RouletteMap3D(Float64Tuple3D fixedFrameOrigin, Float64Tuple3D movingFrameOrigin, Float64Tuple4D rotationQuaternion)
     {
         FixedFrameOrigin = fixedFrameOrigin;
         MovingFrameOrigin = movingFrameOrigin;
@@ -29,18 +29,18 @@ public sealed record RouletteMap3D :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public SquareMatrix4 ToSquareMatrix4()
+    public SquareMatrix4 GetSquareMatrix4()
     {
-        return new SquareMatrix4(ToArray2D());
+        return new SquareMatrix4(GetArray2D());
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Matrix4x4 ToMatrix4x4()
+    public Matrix4x4 GetMatrix4x4()
     {
         var (c1, c2, c3) = 
             RotationQuaternion.QuaternionRotateBasisFrame();
 
-        var c4 = MapPoint(Tuple3D.Zero);
+        var c4 = MapPoint(Float64Tuple3D.Zero);
 
         return new Matrix4x4(
             (float) c1.X, (float) c2.X, (float) c3.X, (float) c4.X,
@@ -51,12 +51,12 @@ public sealed record RouletteMap3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public double[,] ToArray2D()
+    public double[,] GetArray2D()
     {
         var (c1, c2, c3) = 
             RotationQuaternion.QuaternionRotateBasisFrame();
 
-        var c4 = MapPoint(Tuple3D.Zero);
+        var c4 = MapPoint(Float64Tuple3D.Zero);
 
         return new[,]
         {
@@ -68,26 +68,26 @@ public sealed record RouletteMap3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Tuple3D MapPoint(ITuple3D point)
+    public Float64Tuple3D MapPoint(IFloat64Tuple3D point)
     {
         return FixedFrameOrigin + 
                RotationQuaternion.QuaternionRotate(point - MovingFrameOrigin);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Tuple3D MapVector(ITuple3D vector)
+    public Float64Tuple3D MapVector(IFloat64Tuple3D vector)
     {
         return RotationQuaternion.QuaternionRotate(vector);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Tuple3D MapNormal(ITuple3D normal)
+    public Float64Tuple3D MapNormal(IFloat64Tuple3D normal)
     {
         return RotationQuaternion.QuaternionRotate(normal);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public IAffineMap3D InverseMap()
+    public IAffineMap3D GetInverseAffineMap()
     {
         return new RouletteMap3D(
             MovingFrameOrigin,

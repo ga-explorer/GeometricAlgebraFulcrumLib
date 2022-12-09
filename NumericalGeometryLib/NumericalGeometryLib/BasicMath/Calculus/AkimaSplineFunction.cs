@@ -43,19 +43,19 @@ public class AkimaSplineFunction :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public double GetFirstDerivative(double t)
+    public double GetFirstDerivativeValue(double t)
     {
         return Interpolator.Differentiate(t);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public double GetSecondDerivative(double t)
+    public double GetSecondDerivativeValue(double t)
     {
         return Interpolator.Differentiate2(t);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public double GetThirdDerivative(double t)
+    public double GetThirdDerivativeValue(double t)
     {
         return Differentiate.FirstDerivative(Interpolator.Differentiate2, t);
     }

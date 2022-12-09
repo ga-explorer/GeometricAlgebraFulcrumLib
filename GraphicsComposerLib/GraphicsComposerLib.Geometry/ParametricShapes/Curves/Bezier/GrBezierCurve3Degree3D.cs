@@ -10,16 +10,16 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Bezier
     public class GrBezierCurve3Degree3D :
         IGraphicsC2ParametricCurve3D
     {
-        public Tuple3D Point1 { get; }
+        public Float64Tuple3D Point1 { get; }
 
-        public Tuple3D Point2 { get; }
+        public Float64Tuple3D Point2 { get; }
 
-        public Tuple3D Point3 { get; }
+        public Float64Tuple3D Point3 { get; }
 
-        public Tuple3D Point4 { get; }
+        public Float64Tuple3D Point4 { get; }
 
 
-        public GrBezierCurve3Degree3D([NotNull] ITuple3D point1, [NotNull] ITuple3D point2, [NotNull] ITuple3D point3, [NotNull] ITuple3D point4)
+        public GrBezierCurve3Degree3D([NotNull] IFloat64Tuple3D point1, [NotNull] IFloat64Tuple3D point2, [NotNull] IFloat64Tuple3D point3, [NotNull] IFloat64Tuple3D point4)
         {
             Point1 = point1.ToTuple3D();
             Point2 = point2.ToTuple3D();
@@ -51,11 +51,11 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Bezier
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple3D GetPoint(double parameterValue)
+        public Float64Tuple3D GetPoint(double parameterValue)
         {
             var (p1, p2, p3, p4) = parameterValue.BernsteinBasis_3();
 
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 p1 * Point1.X + p2 * Point2.X + p3 * Point3.X + p4 * Point4.X,
                 p1 * Point1.Y + p2 * Point2.Y + p3 * Point3.Y + p4 * Point4.Y,
                 p1 * Point1.Z + p2 * Point2.Z + p3 * Point3.Z + p4 * Point4.Z
@@ -63,7 +63,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Bezier
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple3D GetTangent(double parameterValue)
+        public Float64Tuple3D GetTangent(double parameterValue)
         {
             var s = 1 - parameterValue;
 
@@ -71,7 +71,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Bezier
             var p2 = 6 * parameterValue * s;
             var p3 = 3 * parameterValue * parameterValue;
 
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 p1 * (Point2.X - Point1.X) + p2 * (Point3.X - Point2.X) + p3 * (Point4.X - Point3.X),
                 p1 * (Point2.Y - Point1.Y) + p2 * (Point3.Y - Point2.Y) + p3 * (Point4.Y - Point3.Y),
                 p1 * (Point2.Z - Point1.Z) + p2 * (Point3.Z - Point2.Z) + p3 * (Point4.Z - Point3.Z)
@@ -79,7 +79,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Bezier
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple3D GetUnitTangent(double parameterValue)
+        public Float64Tuple3D GetUnitTangent(double parameterValue)
         {
             return GetTangent(parameterValue).ToUnitVector();
         }
@@ -94,7 +94,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Bezier
             );
         }
 
-        public Tuple3D GetSecondDerivative(double parameterValue)
+        public Float64Tuple3D GetSecondDerivative(double parameterValue)
         {
             var derivative2 = 
                 GetDerivativeCurve().GetDerivativeCurve();

@@ -17,7 +17,7 @@ namespace NumericalGeometryLib.BasicMath;
 public static class QuaternionUtils
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Quaternion ToSystemNumericsQuaternion(this ITuple4D quaternion)
+    public static Quaternion ToSystemNumericsQuaternion(this IFloat64Tuple4D quaternion)
     {
         return new Quaternion(
             (float)quaternion.X,
@@ -28,9 +28,9 @@ public static class QuaternionUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Tuple4D ToQuaternion(this Quaternion quaternion)
+    public static Float64Tuple4D ToQuaternion(this Quaternion quaternion)
     {
-        return new Tuple4D(
+        return new Float64Tuple4D(
             quaternion.X,
             quaternion.Y,
             quaternion.Z,
@@ -39,7 +39,7 @@ public static class QuaternionUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsQuaternionIdentity(this ITuple4D quaternion)
+    public static bool IsQuaternionIdentity(this IFloat64Tuple4D quaternion)
     {
         return quaternion.X == 0d &&
                quaternion.Y == 0d &&
@@ -54,7 +54,7 @@ public static class QuaternionUtils
     /// <param name="value1"></param>
     /// <param name="value2"></param>
     /// <returns></returns>
-    public static Tuple4D QuaternionTimes(this ITuple4D value1, ITuple4D value2)
+    public static Float64Tuple4D QuaternionTimes(this IFloat64Tuple4D value1, IFloat64Tuple4D value2)
     {
         var q1X = value1.X;
         var q1Y = value1.Y;
@@ -73,7 +73,7 @@ public static class QuaternionUtils
 
         var dot = q1X * q2X + q1Y * q2Y + q1Z * q2Z;
 
-        return new Tuple4D(
+        return new Float64Tuple4D(
             q1X * q2W + q2X * q1W + cx,
             q1Y * q2W + q2Y * q1W + cy,
             q1Z * q2W + q2Z * q1W + cz,
@@ -87,7 +87,7 @@ public static class QuaternionUtils
     /// <param name="value1"></param>
     /// <param name="value2"></param>
     /// <returns></returns>
-    public static Tuple4D QuaternionDivide(this ITuple4D value1, ITuple4D value2)
+    public static Float64Tuple4D QuaternionDivide(this IFloat64Tuple4D value1, IFloat64Tuple4D value2)
     {
         var q1X = value1.X;
         var q1Y = value1.Y;
@@ -116,7 +116,7 @@ public static class QuaternionUtils
 
         var dot = q1X * q2X + q1Y * q2Y + q1Z * q2Z;
 
-        return new Tuple4D(
+        return new Float64Tuple4D(
             q1X * q2W + q2X * q1W + cx,
             q1Y * q2W + q2Y * q1W + cy,
             q1Z * q2W + q2Z * q1W + cz,
@@ -126,14 +126,14 @@ public static class QuaternionUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double QuaternionDot(this ITuple4D v1, ITuple4D v2)
+    public static double QuaternionDot(this IFloat64Tuple4D v1, IFloat64Tuple4D v2)
     {
         return v1.X * v2.X + v1.Y * v2.Y + v1.Z * v2.Z + v1.W * v2.W;
     }
 
-    public static Tuple4D QuaternionConjugate(this ITuple4D quaternion)
+    public static Float64Tuple4D QuaternionConjugate(this IFloat64Tuple4D quaternion)
     {
-        return new Tuple4D(
+        return new Float64Tuple4D(
             -quaternion.X,
             -quaternion.Y,
             -quaternion.Z,
@@ -142,7 +142,7 @@ public static class QuaternionUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Tuple4D QuaternionInverse(this ITuple4D quaternion)
+    public static Float64Tuple4D QuaternionInverse(this IFloat64Tuple4D quaternion)
     {
         //  -1   (       a              -v       )
         // q   = ( -------------   ------------- )
@@ -156,7 +156,7 @@ public static class QuaternionUtils
 
         var invNorm = 1.0f / ls;
 
-        return new Tuple4D(
+        return new Float64Tuple4D(
             -quaternion.X * invNorm,
             -quaternion.Y * invNorm,
             -quaternion.Z * invNorm,
@@ -165,7 +165,7 @@ public static class QuaternionUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Tuple4D QuaternionNormalize(this ITuple4D quaternion)
+    public static Float64Tuple4D QuaternionNormalize(this IFloat64Tuple4D quaternion)
     {
         var ls =
             quaternion.X * quaternion.X +
@@ -175,7 +175,7 @@ public static class QuaternionUtils
 
         var invNorm = 1d / Math.Sqrt(ls);
 
-        return new Tuple4D(
+        return new Float64Tuple4D(
             quaternion.X * invNorm,
             quaternion.Y * invNorm,
             quaternion.Z * invNorm,
@@ -183,7 +183,7 @@ public static class QuaternionUtils
         );
     }
 
-    public static Tuple4D QuaternionLerp(ITuple4D quaternion1, ITuple4D quaternion2, double t)
+    public static Float64Tuple4D QuaternionLerp(IFloat64Tuple4D quaternion1, IFloat64Tuple4D quaternion2, double t)
     {
         var t1 = 1d - t;
 
@@ -195,13 +195,13 @@ public static class QuaternionUtils
 
         var r =
             dot >= 0d
-                ? new Tuple4D(
+                ? new Float64Tuple4D(
                     t1 * quaternion1.X + t * quaternion2.X,
                     t1 * quaternion1.Y + t * quaternion2.Y,
                     t1 * quaternion1.Z + t * quaternion2.Z,
                     t1 * quaternion1.W + t * quaternion2.W
                 ) :
-                new Tuple4D(
+                new Float64Tuple4D(
                     t1 * quaternion1.X - t * quaternion2.X,
                     t1 * quaternion1.Y - t * quaternion2.Y,
                     t1 * quaternion1.Z - t * quaternion2.Z,
@@ -215,7 +215,7 @@ public static class QuaternionUtils
         return r * invNorm;
     }
 
-    public static Tuple4D QuaternionSlerp(ITuple4D quaternion1, ITuple4D quaternion2, double t, double slerpEpsilon = 1e-6)
+    public static Float64Tuple4D QuaternionSlerp(IFloat64Tuple4D quaternion1, IFloat64Tuple4D quaternion2, double t, double slerpEpsilon = 1e-6)
     {
         var cosOmega =
             quaternion1.X * quaternion2.X +
@@ -250,7 +250,7 @@ public static class QuaternionUtils
                 : Math.Sin(t * omega) * invSinOmega;
         }
 
-        return new Tuple4D(
+        return new Float64Tuple4D(
             s1 * quaternion1.X + s2 * quaternion2.X,
             s1 * quaternion1.Y + s2 * quaternion2.Y,
             s1 * quaternion1.Z + s2 * quaternion2.Z,
@@ -259,7 +259,7 @@ public static class QuaternionUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Tuple4D QuaternionConcatenate(this ITuple4D quaternion1, ITuple4D quaternion2)
+    public static Float64Tuple4D QuaternionConcatenate(this IFloat64Tuple4D quaternion1, IFloat64Tuple4D quaternion2)
     {
         // Concatenate rotation is actually q2 * q1 instead of q1 * q2.
         // So that's why value2 goes q1 and value1 goes q2.
@@ -280,7 +280,7 @@ public static class QuaternionUtils
 
         var dot = q1X * q2X + q1Y * q2Y + q1Z * q2Z;
 
-        return new Tuple4D(
+        return new Float64Tuple4D(
             q1X * q2W + q2X * q1W + cx,
             q1Y * q2W + q2Y * q1W + cy,
             q1Z * q2W + q2Z * q1W + cz,
@@ -289,13 +289,13 @@ public static class QuaternionUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Tuple4D QuaternionConcatenate(this ITuple4D quaternion1, ITuple4D quaternion2, ITuple4D quaternion3)
+    public static Float64Tuple4D QuaternionConcatenate(this IFloat64Tuple4D quaternion1, IFloat64Tuple4D quaternion2, IFloat64Tuple4D quaternion3)
     {
         return quaternion1.QuaternionConcatenate(quaternion2).QuaternionConcatenate(quaternion3);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Tuple4D QuaternionConcatenate(this ITuple4D quaternion1, params ITuple4D[] quaternionList)
+    public static Float64Tuple4D QuaternionConcatenate(this IFloat64Tuple4D quaternion1, params IFloat64Tuple4D[] quaternionList)
     {
         return quaternionList.Aggregate(
             quaternion1.ToTuple4D(),
@@ -304,13 +304,13 @@ public static class QuaternionUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Tuple4D CreateQuaternionFromAngleAxis(this PlanarAngle angle, ITuple3D axis)
+    public static Float64Tuple4D CreateQuaternionFromAngleAxis(this PlanarAngle angle, IFloat64Tuple3D axis)
     {
         var halfAngle = angle * 0.5;
         var s = halfAngle.Sin();
         var c = halfAngle.Cos();
 
-        return new Tuple4D(
+        return new Float64Tuple4D(
             axis.X * s,
             axis.Y * s,
             axis.Z * s,
@@ -326,7 +326,7 @@ public static class QuaternionUtils
     /// <param name="rotationAngle"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Tuple4D CreateQuaternionFromAxisAngle(this ITuple3D vector, PlanarAngle rotationAngle)
+    public static Float64Tuple4D CreateQuaternionFromAxisAngle(this IFloat64Tuple3D vector, PlanarAngle rotationAngle)
     {
         Debug.Assert(vector.IsNearUnitVector());
 
@@ -334,7 +334,7 @@ public static class QuaternionUtils
         var cosHalfTheta = halfTheta.Cos();
         var sinHalfTheta = halfTheta.Sin();
 
-        return new Tuple4D(
+        return new Float64Tuple4D(
             sinHalfTheta * vector.X,
             sinHalfTheta * vector.Y,
             sinHalfTheta * vector.Z,
@@ -347,7 +347,7 @@ public static class QuaternionUtils
     /// </summary>
     /// <param name="matrix">The rotation matrix.</param>
     /// <returns>The newly created quaternion.</returns>
-    public static Tuple4D CreateQuaternionFromRotationMatrix(this Matrix4x4 matrix)
+    public static Float64Tuple4D CreateQuaternionFromRotationMatrix(this Matrix4x4 matrix)
     {
         var trace = matrix.M11 + matrix.M22 + matrix.M33;
 
@@ -356,7 +356,7 @@ public static class QuaternionUtils
             var s = Math.Sqrt(trace + 1d);
             var invS = 0.5d / s;
 
-            return new Tuple4D(
+            return new Float64Tuple4D(
                 (matrix.M23 - matrix.M32) * invS,
                 (matrix.M31 - matrix.M13) * invS,
                 (matrix.M12 - matrix.M21) * invS,
@@ -369,7 +369,7 @@ public static class QuaternionUtils
             var s = Math.Sqrt(1d + matrix.M11 - matrix.M22 - matrix.M33);
             var invS = 0.5d / s;
 
-            return new Tuple4D(
+            return new Float64Tuple4D(
                 0.5d * s,
                 (matrix.M12 + matrix.M21) * invS,
                 (matrix.M13 + matrix.M31) * invS,
@@ -382,7 +382,7 @@ public static class QuaternionUtils
             var s = Math.Sqrt(1d + matrix.M22 - matrix.M11 - matrix.M33);
             var invS = 0.5d / s;
 
-            return new Tuple4D(
+            return new Float64Tuple4D(
                 (matrix.M21 + matrix.M12) * invS,
                 0.5d * s,
                 (matrix.M32 + matrix.M23) * invS,
@@ -394,7 +394,7 @@ public static class QuaternionUtils
             var s = Math.Sqrt(1d + matrix.M33 - matrix.M11 - matrix.M22);
             var invS = 0.5d / s;
 
-            return new Tuple4D(
+            return new Float64Tuple4D(
                 (matrix.M31 + matrix.M13) * invS,
                 (matrix.M32 + matrix.M23) * invS,
                 0.5d * s,
@@ -410,7 +410,7 @@ public static class QuaternionUtils
     /// <param name="pitch">The pitch angle, in radians, around the X axis.</param>
     /// <param name="roll">The roll angle, in radians, around the Z axis.</param>
     /// <returns>The resulting quaternion.</returns>
-    public static Tuple4D CreateQuaternionFromYawPitchRoll(double yaw, double pitch, double roll)
+    public static Float64Tuple4D CreateQuaternionFromYawPitchRoll(double yaw, double pitch, double roll)
     {
         //  Roll first, about axis the object is facing, then
         //  pitch upward, then yaw to face into the new heading
@@ -426,7 +426,7 @@ public static class QuaternionUtils
         var sy = Math.Sin(halfYaw);
         var cy = Math.Cos(halfYaw);
 
-        return new Tuple4D(
+        return new Float64Tuple4D(
             cy * sp * cr + sy * cp * sr,
             sy * cp * cr - cy * sp * sr,
             cy * cp * sr - sy * sp * cr,
@@ -442,13 +442,13 @@ public static class QuaternionUtils
     /// <param name="srcUnitVector"></param>
     /// <param name="dstUnitVector"></param>
     /// <returns></returns>
-    public static Tuple<Tuple3D, PlanarAngle> GetRotationAxisAngle(ITuple3D srcUnitVector, ITuple3D dstUnitVector)
+    public static Tuple<Float64Tuple3D, PlanarAngle> GetRotationAxisAngle(IFloat64Tuple3D srcUnitVector, IFloat64Tuple3D dstUnitVector)
     {
         if (srcUnitVector.IsEqual(dstUnitVector))
-            return new Tuple<Tuple3D, PlanarAngle>(srcUnitVector.ToTuple3D(), 0);
+            return new Tuple<Float64Tuple3D, PlanarAngle>(srcUnitVector.ToTuple3D(), 0);
 
         if (srcUnitVector.IsNegativeEqual(dstUnitVector))
-            return new Tuple<Tuple3D, PlanarAngle>(
+            return new Tuple<Float64Tuple3D, PlanarAngle>(
                 srcUnitVector.GetUnitNormal(),
                 Math.PI
             );
@@ -459,9 +459,9 @@ public static class QuaternionUtils
         var axis =
             srcUnitVector.VectorCross(dstUnitVector);
 
-        Debug.Assert(axis != Tuple3D.Zero);
+        Debug.Assert(axis != Float64Tuple3D.Zero);
 
-        return new Tuple<Tuple3D, PlanarAngle>(
+        return new Tuple<Float64Tuple3D, PlanarAngle>(
             axis.ToUnitVector(),
             angle
         );
@@ -472,10 +472,10 @@ public static class QuaternionUtils
     /// 2 * Pi * length of vector.
     /// </summary>
     /// <returns></returns>
-    public static Tuple4D ToRotationQuaternion(this ITuple3D vector)
+    public static Float64Tuple4D ToRotationQuaternion(this IFloat64Tuple3D vector)
     {
         //Compute the vector length and its inverse
-        var vectorLength = vector.GetLength();
+        var vectorLength = vector.GetVectorNorm();
         var invVectorLength = 1.0d / vectorLength;
 
         //Compute the rotation angle
@@ -483,7 +483,7 @@ public static class QuaternionUtils
         var cosHalfTheta = Math.Cos(halfTheta);
         var sinHalfTheta = Math.Sin(halfTheta);
 
-        return new Tuple4D(
+        return new Float64Tuple4D(
             sinHalfTheta * vector.X * invVectorLength,
             sinHalfTheta * vector.Y * invVectorLength,
             sinHalfTheta * vector.Z * invVectorLength,
@@ -491,9 +491,9 @@ public static class QuaternionUtils
         );
     }
 
-    public static SquareMatrix3 RotationQuaternionToSquareMatrix3(this ITuple4D quaternion)
+    public static SquareMatrix3 RotationQuaternionToSquareMatrix3(this IFloat64Tuple4D quaternion)
     {
-        var n = quaternion.GetLengthSquared();
+        var n = quaternion.GetVectorNormSquared();
 
         if (n.IsNearZero())
             return SquareMatrix3.CreateIdentityMatrix();
@@ -522,25 +522,25 @@ public static class QuaternionUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Triplet<Tuple3D> QuaternionRotateBasisFrame(this ITuple4D quaternion)
+    public static Triplet<Float64Tuple3D> QuaternionRotateBasisFrame(this IFloat64Tuple4D quaternion)
     {
-        return new Triplet<Tuple3D>(
-            quaternion.QuaternionRotate(Tuple3D.E1),
-            quaternion.QuaternionRotate(Tuple3D.E2),
-            quaternion.QuaternionRotate(Tuple3D.E3)
+        return new Triplet<Float64Tuple3D>(
+            quaternion.QuaternionRotate(Float64Tuple3D.E1),
+            quaternion.QuaternionRotate(Float64Tuple3D.E2),
+            quaternion.QuaternionRotate(Float64Tuple3D.E3)
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Tuple3D QuaternionRotate(this ITuple4D quaternion, double x, double y, double z)
+    public static Float64Tuple3D QuaternionRotate(this IFloat64Tuple4D quaternion, double x, double y, double z)
     {
         return quaternion.QuaternionRotate(
-            new Tuple3D(x, y, z)
+            new Float64Tuple3D(x, y, z)
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Tuple3D QuaternionRotate(this ITuple4D quaternion, Axis3D axis)
+    public static Float64Tuple3D QuaternionRotate(this IFloat64Tuple4D quaternion, Axis3D axis)
     {
         var vector = axis.GetVector3D();
 
@@ -548,7 +548,7 @@ public static class QuaternionUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Tuple3D QuaternionRotate(this ITuple4D quaternion, ITuple3D vector)
+    public static Float64Tuple3D QuaternionRotate(this IFloat64Tuple4D quaternion, IFloat64Tuple3D vector)
     {
         var rotationMatrix = 
             quaternion.RotationQuaternionToSquareMatrix3();
@@ -561,12 +561,12 @@ public static class QuaternionUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Pair<Tuple3D> QuaternionRotate(this ITuple4D quaternion, ITuple3D vector1, ITuple3D vector2)
+    public static Pair<Float64Tuple3D> QuaternionRotate(this IFloat64Tuple4D quaternion, IFloat64Tuple3D vector1, IFloat64Tuple3D vector2)
     {
         var rotationMatrix = 
             quaternion.RotationQuaternionToSquareMatrix3();
 
-        return new Pair<Tuple3D>(
+        return new Pair<Float64Tuple3D>(
             rotationMatrix * vector1,
             rotationMatrix * vector2
         );
@@ -578,12 +578,12 @@ public static class QuaternionUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Triplet<Tuple3D> QuaternionRotate(this ITuple4D quaternion, ITuple3D vector1, ITuple3D vector2, ITuple3D vector3)
+    public static Triplet<Float64Tuple3D> QuaternionRotate(this IFloat64Tuple4D quaternion, IFloat64Tuple3D vector1, IFloat64Tuple3D vector2, IFloat64Tuple3D vector3)
     {
         var rotationMatrix = 
             quaternion.RotationQuaternionToSquareMatrix3();
 
-        return new Triplet<Tuple3D>(
+        return new Triplet<Float64Tuple3D>(
             rotationMatrix * vector1,
             rotationMatrix * vector2,
             rotationMatrix * vector3
@@ -597,7 +597,7 @@ public static class QuaternionUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IReadOnlyList<Tuple3D> QuaternionRotate(this ITuple4D quaternion, params ITuple3D[] vectorArray)
+    public static IReadOnlyList<Float64Tuple3D> QuaternionRotate(this IFloat64Tuple4D quaternion, params IFloat64Tuple3D[] vectorArray)
     {
         var rotationMatrix = 
             quaternion.RotationQuaternionToSquareMatrix3();
@@ -608,7 +608,7 @@ public static class QuaternionUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IEnumerable<Tuple3D> QuaternionRotate(this ITuple4D quaternion, IEnumerable<ITuple3D> vectorList)
+    public static IEnumerable<Float64Tuple3D> QuaternionRotate(this IFloat64Tuple4D quaternion, IEnumerable<IFloat64Tuple3D> vectorList)
     {
         var rotationMatrix = 
             quaternion.RotationQuaternionToSquareMatrix3();
@@ -617,13 +617,13 @@ public static class QuaternionUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Tuple3D RotateUsingQuaternion(this ITuple3D vector, ITuple4D quaternion)
+    public static Float64Tuple3D RotateUsingQuaternion(this IFloat64Tuple3D vector, IFloat64Tuple4D quaternion)
     {
         return quaternion.QuaternionRotate(vector);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Tuple3D RotateUsingAxisAngle(this ITuple3D vector, ITuple3D rotationVector, PlanarAngle rotationAngle)
+    public static Float64Tuple3D RotateUsingAxisAngle(this IFloat64Tuple3D vector, IFloat64Tuple3D rotationVector, PlanarAngle rotationAngle)
     {
         return rotationVector
             .CreateQuaternionFromAxisAngle(rotationAngle)
@@ -631,7 +631,7 @@ public static class QuaternionUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Tuple3D RotateUsingVector(this ITuple3D vector, ITuple3D rotationVector)
+    public static Float64Tuple3D RotateUsingVector(this IFloat64Tuple3D vector, IFloat64Tuple3D rotationVector)
     {
         return rotationVector
             .ToRotationQuaternion()
@@ -640,7 +640,7 @@ public static class QuaternionUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearZeroQuaternion(this ITuple4D quaternion, double epsilon = 1e-12)
+    public static bool IsNearZeroQuaternion(this IFloat64Tuple4D quaternion, double epsilon = 1e-12)
     {
         return quaternion.X.IsNearZero(epsilon) &&
                quaternion.Y.IsNearZero(epsilon) &&
@@ -648,15 +648,15 @@ public static class QuaternionUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearNormalizedQuaternion(this ITuple4D quaternion, double epsilon = 1e-12)
+    public static bool IsNearNormalizedQuaternion(this IFloat64Tuple4D quaternion, double epsilon = 1e-12)
     {
-        return (quaternion.GetLengthSquared() - 1f).IsNearZero(epsilon);
+        return (quaternion.GetVectorNormSquared() - 1f).IsNearZero(epsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Tuple4D ToQuaternion(this ITuple3D vector)
+    public static Float64Tuple4D ToQuaternion(this IFloat64Tuple3D vector)
     {
-        return new Tuple4D(
+        return new Float64Tuple4D(
             vector.X,
             vector.Y,
             vector.Z,
@@ -665,23 +665,23 @@ public static class QuaternionUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Tuple4D ToQuaternion(this Axis3D axis)
+    public static Float64Tuple4D ToQuaternion(this Axis3D axis)
     {
         return axis switch
         {
-            Axis3D.PositiveX => new Tuple4D(1, 0, 0, 0),
-            Axis3D.PositiveY => new Tuple4D(0, 1, 0, 0),
-            Axis3D.PositiveZ => new Tuple4D(0, 0, 1, 0),
-            Axis3D.NegativeX => new Tuple4D(-1, 0, 0, 0),
-            Axis3D.NegativeY => new Tuple4D(0, -1, 0, 0),
-            _ => new Tuple4D(0, 0, -1, 0),
+            Axis3D.PositiveX => new Float64Tuple4D(1, 0, 0, 0),
+            Axis3D.PositiveY => new Float64Tuple4D(0, 1, 0, 0),
+            Axis3D.PositiveZ => new Float64Tuple4D(0, 0, 1, 0),
+            Axis3D.NegativeX => new Float64Tuple4D(-1, 0, 0, 0),
+            Axis3D.NegativeY => new Float64Tuple4D(0, -1, 0, 0),
+            _ => new Float64Tuple4D(0, 0, -1, 0),
         };
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Tuple4D ToQuaternion(this ITuple3D vector, double scalar)
+    public static Float64Tuple4D ToQuaternion(this IFloat64Tuple3D vector, double scalar)
     {
-        return new Tuple4D(
+        return new Float64Tuple4D(
             vector.X,
             vector.Y,
             vector.Z,
@@ -690,28 +690,28 @@ public static class QuaternionUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double GetQuaternionScalarPart(this ITuple4D quaternion)
+    public static double GetQuaternionScalarPart(this IFloat64Tuple4D quaternion)
     {
         return quaternion.W;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Tuple3D GetQuaternionVectorPart(this ITuple4D quaternion)
+    public static Float64Tuple3D GetQuaternionVectorPart(this IFloat64Tuple4D quaternion)
     {
-        return new Tuple3D(quaternion.X, quaternion.Y, quaternion.Z);
+        return new Float64Tuple3D(quaternion.X, quaternion.Y, quaternion.Z);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Tuple<double, Tuple3D> GetQuaternionScalarVectorParts(this ITuple4D quaternion)
+    public static Tuple<double, Float64Tuple3D> GetQuaternionScalarVectorParts(this IFloat64Tuple4D quaternion)
     {
-        return new Tuple<double, Tuple3D>(
+        return new Tuple<double, Float64Tuple3D>(
             quaternion.W,
-            new Tuple3D(quaternion.X, quaternion.Y, quaternion.Z)
+            new Float64Tuple3D(quaternion.X, quaternion.Y, quaternion.Z)
         );
     }
 
 
-    public static Tuple4D CreateAxisToAxisRotationQuaternion(this Axis3D axis1, Axis3D axis2)
+    public static Float64Tuple4D CreateAxisToAxisRotationQuaternion(this Axis3D axis1, Axis3D axis2)
     {
         var sqrt2Inv = 1d / Math.Sqrt(2d);
 
@@ -719,67 +719,67 @@ public static class QuaternionUtils
         {
             Axis3D.PositiveX => axis2 switch
             {
-                Axis3D.PositiveX => Tuple4D.IdentityQuaternion,
-                Axis3D.PositiveY => new Tuple4D(0, 0, sqrt2Inv, sqrt2Inv),
-                Axis3D.PositiveZ => new Tuple4D(0, -sqrt2Inv, 0, sqrt2Inv),
-                Axis3D.NegativeX => new Tuple4D(0, 0, 1, 0),
-                Axis3D.NegativeY => new Tuple4D(0, 0, -sqrt2Inv, sqrt2Inv),
-                _ => new Tuple4D(0, sqrt2Inv, 0, sqrt2Inv),
+                Axis3D.PositiveX => Float64Tuple4D.IdentityQuaternion,
+                Axis3D.PositiveY => new Float64Tuple4D(0, 0, sqrt2Inv, sqrt2Inv),
+                Axis3D.PositiveZ => new Float64Tuple4D(0, -sqrt2Inv, 0, sqrt2Inv),
+                Axis3D.NegativeX => new Float64Tuple4D(0, 0, 1, 0),
+                Axis3D.NegativeY => new Float64Tuple4D(0, 0, -sqrt2Inv, sqrt2Inv),
+                _ => new Float64Tuple4D(0, sqrt2Inv, 0, sqrt2Inv),
             },
 
             Axis3D.PositiveY => axis2 switch
             {
-                Axis3D.PositiveX => new Tuple4D(0, 0, -sqrt2Inv, sqrt2Inv),
-                Axis3D.PositiveY => Tuple4D.IdentityQuaternion,
-                Axis3D.PositiveZ => new Tuple4D(sqrt2Inv, 0, 0, sqrt2Inv),
-                Axis3D.NegativeX => new Tuple4D(0, 0, sqrt2Inv, sqrt2Inv),
-                Axis3D.NegativeY => new Tuple4D(1, 0, 0, 0),
-                _ => new Tuple4D(-sqrt2Inv, 0, 0, sqrt2Inv),
+                Axis3D.PositiveX => new Float64Tuple4D(0, 0, -sqrt2Inv, sqrt2Inv),
+                Axis3D.PositiveY => Float64Tuple4D.IdentityQuaternion,
+                Axis3D.PositiveZ => new Float64Tuple4D(sqrt2Inv, 0, 0, sqrt2Inv),
+                Axis3D.NegativeX => new Float64Tuple4D(0, 0, sqrt2Inv, sqrt2Inv),
+                Axis3D.NegativeY => new Float64Tuple4D(1, 0, 0, 0),
+                _ => new Float64Tuple4D(-sqrt2Inv, 0, 0, sqrt2Inv),
             },
 
             Axis3D.PositiveZ => axis2 switch
             {
-                Axis3D.PositiveX => new Tuple4D(0, sqrt2Inv, 0, sqrt2Inv),
-                Axis3D.PositiveY => new Tuple4D(-sqrt2Inv, 0, 0, sqrt2Inv),
-                Axis3D.PositiveZ => Tuple4D.IdentityQuaternion,
-                Axis3D.NegativeX => new Tuple4D(0, -sqrt2Inv, 0, sqrt2Inv),
-                Axis3D.NegativeY => new Tuple4D(sqrt2Inv, 0, 0, sqrt2Inv),
-                _ => new Tuple4D(0, 1, 0, 0),
+                Axis3D.PositiveX => new Float64Tuple4D(0, sqrt2Inv, 0, sqrt2Inv),
+                Axis3D.PositiveY => new Float64Tuple4D(-sqrt2Inv, 0, 0, sqrt2Inv),
+                Axis3D.PositiveZ => Float64Tuple4D.IdentityQuaternion,
+                Axis3D.NegativeX => new Float64Tuple4D(0, -sqrt2Inv, 0, sqrt2Inv),
+                Axis3D.NegativeY => new Float64Tuple4D(sqrt2Inv, 0, 0, sqrt2Inv),
+                _ => new Float64Tuple4D(0, 1, 0, 0),
             },
 
             Axis3D.NegativeX => axis2 switch
             {
-                Axis3D.PositiveX => new Tuple4D(0, 0, 1, 0),
-                Axis3D.PositiveY => new Tuple4D(0, 0, -sqrt2Inv, sqrt2Inv),
-                Axis3D.PositiveZ => new Tuple4D(0, sqrt2Inv, 0, sqrt2Inv),
-                Axis3D.NegativeX => Tuple4D.IdentityQuaternion,
-                Axis3D.NegativeY => new Tuple4D(0, 0, sqrt2Inv, sqrt2Inv),
-                _ => new Tuple4D(0, -sqrt2Inv, 0, sqrt2Inv),
+                Axis3D.PositiveX => new Float64Tuple4D(0, 0, 1, 0),
+                Axis3D.PositiveY => new Float64Tuple4D(0, 0, -sqrt2Inv, sqrt2Inv),
+                Axis3D.PositiveZ => new Float64Tuple4D(0, sqrt2Inv, 0, sqrt2Inv),
+                Axis3D.NegativeX => Float64Tuple4D.IdentityQuaternion,
+                Axis3D.NegativeY => new Float64Tuple4D(0, 0, sqrt2Inv, sqrt2Inv),
+                _ => new Float64Tuple4D(0, -sqrt2Inv, 0, sqrt2Inv),
             },
 
             Axis3D.NegativeY => axis2 switch
             {
-                Axis3D.PositiveX => new Tuple4D(0, 0, sqrt2Inv, sqrt2Inv),
-                Axis3D.PositiveY => new Tuple4D(1, 0, 0, 0),
-                Axis3D.PositiveZ => new Tuple4D(-sqrt2Inv, 0, 0, sqrt2Inv),
-                Axis3D.NegativeX => new Tuple4D(0, 0, -sqrt2Inv, sqrt2Inv),
-                Axis3D.NegativeY => Tuple4D.IdentityQuaternion,
-                _ => new Tuple4D(sqrt2Inv, 0, 0, sqrt2Inv),
+                Axis3D.PositiveX => new Float64Tuple4D(0, 0, sqrt2Inv, sqrt2Inv),
+                Axis3D.PositiveY => new Float64Tuple4D(1, 0, 0, 0),
+                Axis3D.PositiveZ => new Float64Tuple4D(-sqrt2Inv, 0, 0, sqrt2Inv),
+                Axis3D.NegativeX => new Float64Tuple4D(0, 0, -sqrt2Inv, sqrt2Inv),
+                Axis3D.NegativeY => Float64Tuple4D.IdentityQuaternion,
+                _ => new Float64Tuple4D(sqrt2Inv, 0, 0, sqrt2Inv),
             },
 
             _ => axis2 switch
             {
-                Axis3D.PositiveX => new Tuple4D(0, -sqrt2Inv, 0, sqrt2Inv),
-                Axis3D.PositiveY => new Tuple4D(sqrt2Inv, 0, 0, sqrt2Inv),
-                Axis3D.PositiveZ => new Tuple4D(0, 1, 0, 0),
-                Axis3D.NegativeX => new Tuple4D(0, sqrt2Inv, 0, sqrt2Inv),
-                Axis3D.NegativeY => new Tuple4D(-sqrt2Inv, 0, 0, sqrt2Inv),
-                _ => Tuple4D.IdentityQuaternion,
+                Axis3D.PositiveX => new Float64Tuple4D(0, -sqrt2Inv, 0, sqrt2Inv),
+                Axis3D.PositiveY => new Float64Tuple4D(sqrt2Inv, 0, 0, sqrt2Inv),
+                Axis3D.PositiveZ => new Float64Tuple4D(0, 1, 0, 0),
+                Axis3D.NegativeX => new Float64Tuple4D(0, sqrt2Inv, 0, sqrt2Inv),
+                Axis3D.NegativeY => new Float64Tuple4D(-sqrt2Inv, 0, 0, sqrt2Inv),
+                _ => Float64Tuple4D.IdentityQuaternion,
             },
         };
     }
 
-    public static Tuple<ITuple3D, PlanarAngle> CreateAxisToVectorRotationAxisAngle(this Axis3D axis, ITuple3D unitVector)
+    public static Tuple<IFloat64Tuple3D, PlanarAngle> CreateAxisToVectorRotationAxisAngle(this Axis3D axis, IFloat64Tuple3D unitVector)
     {
         //Debug.Assert(
         //    (unitVector.GetLengthSquared() - 1).IsNearZero()
@@ -789,44 +789,44 @@ public static class QuaternionUtils
 
         // The case where the two vectors are almost the same
         if ((dot12 - 1d).IsNearZero())
-            return new Tuple<ITuple3D, PlanarAngle>(
+            return new Tuple<IFloat64Tuple3D, PlanarAngle>(
                 unitVector,
                 PlanarAngle.Angle0
             );
 
         // The case where the two vectors are almost opposite
         if ((dot12 + 1d).IsNearZero())
-            return new Tuple<ITuple3D, PlanarAngle>(
+            return new Tuple<IFloat64Tuple3D, PlanarAngle>(
                 axis.GetUnitNormal().GetVector3D(),
                 PlanarAngle.Angle180
             );
 
         // The general case
-        return new Tuple<ITuple3D, PlanarAngle>(
+        return new Tuple<IFloat64Tuple3D, PlanarAngle>(
             axis.VectorUnitCross(unitVector),
             Math.Acos(dot12)
         );
     }
 
-    public static Tuple<ITuple3D, PlanarAngle> CreateVectorToVectorRotationAxisAngle(this ITuple3D unitVector1, ITuple3D unitVector2)
+    public static Tuple<IFloat64Tuple3D, PlanarAngle> CreateVectorToVectorRotationAxisAngle(this IFloat64Tuple3D unitVector1, IFloat64Tuple3D unitVector2)
     {
         Debug.Assert(
-            (unitVector1.GetLengthSquared() - 1).IsNearZero() &&
-            (unitVector2.GetLengthSquared() - 1).IsNearZero()
+            (unitVector1.GetVectorNormSquared() - 1).IsNearZero() &&
+            (unitVector2.GetVectorNormSquared() - 1).IsNearZero()
         );
 
         var dot12 = unitVector1.VectorDot(unitVector2);
 
         // The case where the two vectors are almost identical
         if ((dot12 - 1d).IsNearZero())
-            return new Tuple<ITuple3D, PlanarAngle>(
+            return new Tuple<IFloat64Tuple3D, PlanarAngle>(
                 unitVector1,
                 PlanarAngle.Angle0
             );
 
         // The case where the two vectors are almost opposite
         if ((dot12 + 1d).IsNearZero())
-            return new Tuple<ITuple3D, PlanarAngle>(
+            return new Tuple<IFloat64Tuple3D, PlanarAngle>(
                 unitVector1.GetUnitNormal(),
                 PlanarAngle.Angle180
             );
@@ -834,18 +834,18 @@ public static class QuaternionUtils
         Debug.Assert(dot12.Abs() < 1);
 
         // The general case
-        return new Tuple<ITuple3D, PlanarAngle>(
+        return new Tuple<IFloat64Tuple3D, PlanarAngle>(
             unitVector1.VectorUnitCross(unitVector2),
             Math.Acos(dot12)
         );
     }
     
-    public static Tuple<ITuple3D, PlanarAngle> CreateVectorToVectorRotationAxisAngle(this ITuple3D unitVector1, ITuple3D unitVector2, ITuple3D unitNormal)
+    public static Tuple<IFloat64Tuple3D, PlanarAngle> CreateVectorToVectorRotationAxisAngle(this IFloat64Tuple3D unitVector1, IFloat64Tuple3D unitVector2, IFloat64Tuple3D unitNormal)
     {
         Debug.Assert(
-            (unitVector1.GetLengthSquared() - 1).IsNearZero(1e-7) &&
-            (unitVector2.GetLengthSquared() - 1).IsNearZero(1e-7) &&
-            (unitNormal.GetLengthSquared() - 1).IsNearZero(1e-7) &&
+            (unitVector1.GetVectorNormSquared() - 1).IsNearZero(1e-7) &&
+            (unitVector2.GetVectorNormSquared() - 1).IsNearZero(1e-7) &&
+            (unitNormal.GetVectorNormSquared() - 1).IsNearZero(1e-7) &&
             unitNormal.VectorDot(unitVector1).IsNearZero(1e-5) && 
             unitNormal.VectorDot(unitVector2).IsNearZero(1e-5)
         );
@@ -854,14 +854,14 @@ public static class QuaternionUtils
 
         // The case where the two vectors are almost identical
         if ((dot12 - 1d).IsNearZero())
-            return new Tuple<ITuple3D, PlanarAngle>(
+            return new Tuple<IFloat64Tuple3D, PlanarAngle>(
                 unitNormal,
                 PlanarAngle.Angle0
             );
 
         // The case where the two vectors are almost opposite
         if ((dot12 + 1d).IsNearZero())
-            return new Tuple<ITuple3D, PlanarAngle>(
+            return new Tuple<IFloat64Tuple3D, PlanarAngle>(
                 unitNormal,
                 PlanarAngle.Angle180
             );
@@ -873,14 +873,14 @@ public static class QuaternionUtils
             : -Math.Acos(dot12);
 
         // The general case
-        return new Tuple<ITuple3D, PlanarAngle>(
+        return new Tuple<IFloat64Tuple3D, PlanarAngle>(
             unitNormal,
             angle
         );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Tuple4D CreateVectorToVectorRotationQuaternion(this ITuple3D unitVector1, ITuple3D unitVector2)
+    public static Float64Tuple4D CreateVectorToVectorRotationQuaternion(this IFloat64Tuple3D unitVector1, IFloat64Tuple3D unitVector2)
     {
         var (u, a) =
             unitVector1.CreateVectorToVectorRotationAxisAngle(unitVector2);
@@ -889,7 +889,7 @@ public static class QuaternionUtils
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Tuple4D CreateVectorToVectorRotationQuaternion(this ITuple3D unitVector1, ITuple3D unitVector2, ITuple3D unitNormal)
+    public static Float64Tuple4D CreateVectorToVectorRotationQuaternion(this IFloat64Tuple3D unitVector1, IFloat64Tuple3D unitVector2, IFloat64Tuple3D unitNormal)
     {
         var (u, a) =
             unitVector1.CreateVectorToVectorRotationAxisAngle(unitVector2, unitNormal);
@@ -897,10 +897,10 @@ public static class QuaternionUtils
         return u.CreateQuaternionFromAxisAngle(a);
     }
 
-    public static Tuple<Axis3D, Tuple4D> CreateNearestAxisToVectorRotationQuaternion(this ITuple3D unitVector)
+    public static Tuple<Axis3D, Float64Tuple4D> CreateNearestAxisToVectorRotationQuaternion(this IFloat64Tuple3D unitVector)
     {
         Debug.Assert(
-            (unitVector.GetLengthSquared() - 1).IsNearZero()
+            (unitVector.GetVectorNormSquared() - 1).IsNearZero()
         );
 
         var axis = unitVector.SelectNearestAxis();
@@ -970,23 +970,23 @@ public static class QuaternionUtils
             w = v1 * v2;
         }
 
-        var quaternion = new Tuple4D(x, y, z, w);
+        var quaternion = new Float64Tuple4D(x, y, z, w);
 
         return Tuple.Create(axis, quaternion);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Tuple4D CreateAxisToVectorRotationQuaternion(this ITuple3D unitVector, Axis3D axis)
+    public static Float64Tuple4D CreateAxisToVectorRotationQuaternion(this IFloat64Tuple3D unitVector, Axis3D axis)
     {
         return axis.CreateAxisToVectorRotationQuaternion(unitVector);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Tuple4D CreateAxisPairToVectorPairRotationQuaternion(this Axis3D axis1, Axis3D axis2, ITuple3D unitVector1, ITuple3D unitVector2)
+    public static Float64Tuple4D CreateAxisPairToVectorPairRotationQuaternion(this Axis3D axis1, Axis3D axis2, IFloat64Tuple3D unitVector1, IFloat64Tuple3D unitVector2)
     {
         Debug.Assert(
-            unitVector1.GetLengthSquared().IsNearEqual(1) &&
-            unitVector2.GetLengthSquared().IsNearEqual(1)
+            unitVector1.GetVectorNormSquared().IsNearEqual(1) &&
+            unitVector2.GetVectorNormSquared().IsNearEqual(1)
         );
 
         var q1 =
@@ -1002,22 +1002,22 @@ public static class QuaternionUtils
             q1.QuaternionConcatenate(q2);
 
         Debug.Assert(
-            (quaternion.QuaternionRotate(axis1) - unitVector1).GetLengthSquared().IsNearZero()
+            (quaternion.QuaternionRotate(axis1) - unitVector1).GetVectorNormSquared().IsNearZero()
         );
         
         Debug.Assert(
-            (quaternion.QuaternionRotate(axis2) - unitVector2).GetLengthSquared().IsNearZero()
+            (quaternion.QuaternionRotate(axis2) - unitVector2).GetVectorNormSquared().IsNearZero()
         );
 
         return quaternion;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Pair<Tuple4D> CreateAxisPairToVectorPairRotationQuaternionPair(this Axis3D axis1, Axis3D axis2, ITuple3D unitVector1, ITuple3D unitVector2)
+    public static Pair<Float64Tuple4D> CreateAxisPairToVectorPairRotationQuaternionPair(this Axis3D axis1, Axis3D axis2, IFloat64Tuple3D unitVector1, IFloat64Tuple3D unitVector2)
     {
         Debug.Assert(
-            unitVector1.GetLengthSquared().IsNearEqual(1) &&
-            unitVector2.GetLengthSquared().IsNearEqual(1)
+            unitVector1.GetVectorNormSquared().IsNearEqual(1) &&
+            unitVector2.GetVectorNormSquared().IsNearEqual(1)
         );
 
         var q1 =
@@ -1030,18 +1030,18 @@ public static class QuaternionUtils
             axis2Rotated.CreateVectorToVectorRotationQuaternion(unitVector2, unitVector1);
 
         Debug.Assert(
-            (q1.QuaternionConcatenate(q2).QuaternionRotate(axis1) - unitVector1).GetLengthSquared().IsNearZero()
+            (q1.QuaternionConcatenate(q2).QuaternionRotate(axis1) - unitVector1).GetVectorNormSquared().IsNearZero()
         );
         
         Debug.Assert(
-            (q1.QuaternionConcatenate(q2).QuaternionRotate(axis2) - unitVector2).GetLengthSquared().IsNearZero()
+            (q1.QuaternionConcatenate(q2).QuaternionRotate(axis2) - unitVector2).GetVectorNormSquared().IsNearZero()
         );
 
-        return new Pair<Tuple4D>(q1, q2);
+        return new Pair<Float64Tuple4D>(q1, q2);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Tuple4D CreateAxisToVectorRotationQuaternion(this Axis3D axis, ITuple3D unitVector)
+    public static Float64Tuple4D CreateAxisToVectorRotationQuaternion(this Axis3D axis, IFloat64Tuple3D unitVector)
     {
         var (u, a) =
             axis.CreateAxisToVectorRotationAxisAngle(unitVector);
@@ -1075,7 +1075,7 @@ public static class QuaternionUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Quaternion ToSystemNumericsQuaternion(this ITuple3D vector)
+    public static Quaternion ToSystemNumericsQuaternion(this IFloat64Tuple3D vector)
     {
         return new Quaternion(
             (float)vector.X,
@@ -1100,7 +1100,7 @@ public static class QuaternionUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Quaternion ToSystemNumericsQuaternion(this ITuple3D vector, double scalar)
+    public static Quaternion ToSystemNumericsQuaternion(this IFloat64Tuple3D vector, double scalar)
     {
         return new Quaternion(
             (float)vector.X,
@@ -1117,17 +1117,17 @@ public static class QuaternionUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Tuple3D GetVectorPart(this Quaternion quaternion)
+    public static Float64Tuple3D GetVectorPart(this Quaternion quaternion)
     {
-        return new Tuple3D(quaternion.X, quaternion.Y, quaternion.Z);
+        return new Float64Tuple3D(quaternion.X, quaternion.Y, quaternion.Z);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Tuple<double, Tuple3D> GetScalarVectorParts(this Quaternion quaternion)
+    public static Tuple<double, Float64Tuple3D> GetScalarVectorParts(this Quaternion quaternion)
     {
-        return new Tuple<double, Tuple3D>(
+        return new Tuple<double, Float64Tuple3D>(
             quaternion.W,
-            new Tuple3D(quaternion.X, quaternion.Y, quaternion.Z)
+            new Float64Tuple3D(quaternion.X, quaternion.Y, quaternion.Z)
         );
     }
 
@@ -1180,7 +1180,7 @@ public static class QuaternionUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Tuple3D Rotate(this Quaternion quaternion, Axis3D axis)
+    public static Float64Tuple3D Rotate(this Quaternion quaternion, Axis3D axis)
     {
         Debug.Assert(
             quaternion.IsNearNormalized()
@@ -1192,13 +1192,13 @@ public static class QuaternionUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Tuple3D Rotate(this Quaternion quaternion, double x, double y, double z)
+    public static Float64Tuple3D Rotate(this Quaternion quaternion, double x, double y, double z)
     {
         Debug.Assert(
             quaternion.IsNearNormalized()
         );
 
-        var vector = new Tuple4D(x, y, z, 0);
+        var vector = new Float64Tuple4D(x, y, z, 0);
 
         var q = quaternion.ToQuaternion();
 
@@ -1206,7 +1206,7 @@ public static class QuaternionUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Tuple3D Rotate(this Quaternion quaternion, ITuple3D vector)
+    public static Float64Tuple3D Rotate(this Quaternion quaternion, IFloat64Tuple3D vector)
     {
         Debug.Assert(
             quaternion.IsNearNormalized()
@@ -1218,7 +1218,7 @@ public static class QuaternionUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Tuple3D RotateUsing(this ITuple3D vector, Quaternion quaternion)
+    public static Float64Tuple3D RotateUsing(this IFloat64Tuple3D vector, Quaternion quaternion)
     {
         Debug.Assert(
             quaternion.IsNearNormalized()

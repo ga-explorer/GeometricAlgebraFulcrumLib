@@ -70,8 +70,8 @@ namespace GraphicsComposerLib.Geometry.Structures.Data
             }
         }
         
-        public IEnumerable<Tuple2D> Points
-            => _pointDataList.Select(p => new Tuple2D(p.X, p.Y));
+        public IEnumerable<Float64Tuple2D> Points
+            => _pointDataList.Select(p => new Float64Tuple2D(p.X, p.Y));
 
         public PointDataSet2D()
         {
@@ -338,7 +338,7 @@ namespace GraphicsComposerLib.Geometry.Structures.Data
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple2D GetPoint(int index)
+        public Float64Tuple2D GetPoint(int index)
         {
             return _pointDataList[index].ToTuple2D();
         }

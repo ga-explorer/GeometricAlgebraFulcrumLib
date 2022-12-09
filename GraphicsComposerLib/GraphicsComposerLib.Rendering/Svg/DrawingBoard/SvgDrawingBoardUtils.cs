@@ -102,7 +102,7 @@ namespace GraphicsComposerLib.Rendering.Svg.DrawingBoard
         /// <param name="point1"></param>
         /// <param name="point2"></param>
         /// <returns></returns>
-        public static SvgDrawingBoardLayer DrawLineSegment(this SvgDrawingBoardLayer drawingLayer, ITuple2D point1, ITuple2D point2)
+        public static SvgDrawingBoardLayer DrawLineSegment(this SvgDrawingBoardLayer drawingLayer, IFloat64Tuple2D point1, IFloat64Tuple2D point2)
         {
             drawingLayer.DrawLineSegment(
                 point1.X, 
@@ -159,7 +159,7 @@ namespace GraphicsComposerLib.Rendering.Svg.DrawingBoard
         /// <param name="center"></param>
         /// <param name="radius"></param>
         /// <returns></returns>
-        public static SvgDrawingBoardLayer DrawCircle(this SvgDrawingBoardLayer drawingLayer, ITuple2D center, double radius)
+        public static SvgDrawingBoardLayer DrawCircle(this SvgDrawingBoardLayer drawingLayer, IFloat64Tuple2D center, double radius)
         {
             drawingLayer.DrawCircle(
                 center.X,
@@ -170,7 +170,7 @@ namespace GraphicsComposerLib.Rendering.Svg.DrawingBoard
             return drawingLayer;
         }
 
-        public static SvgDrawingBoardLayer DrawCircles(this SvgDrawingBoardLayer drawingLayer, IEnumerable<ITuple2D> circleCentersList, double radius)
+        public static SvgDrawingBoardLayer DrawCircles(this SvgDrawingBoardLayer drawingLayer, IEnumerable<IFloat64Tuple2D> circleCentersList, double radius)
         {
             foreach (var center in circleCentersList)
                 drawingLayer.DrawCircle(
@@ -182,7 +182,7 @@ namespace GraphicsComposerLib.Rendering.Svg.DrawingBoard
             return drawingLayer;
         }
 
-        public static SvgDrawingBoardLayer DrawCircleMarker(this SvgDrawingBoardLayer drawingLayer, ITuple2D center, int pixelsRadius)
+        public static SvgDrawingBoardLayer DrawCircleMarker(this SvgDrawingBoardLayer drawingLayer, IFloat64Tuple2D center, int pixelsRadius)
         {
             drawingLayer.DrawCircleMarker(
                 center.X,
@@ -193,7 +193,7 @@ namespace GraphicsComposerLib.Rendering.Svg.DrawingBoard
             return drawingLayer;
         }
 
-        public static SvgDrawingBoardLayer DrawCircleMarkers(this SvgDrawingBoardLayer drawingLayer, IEnumerable<ITuple2D> circleCentersList, int pixelRadius)
+        public static SvgDrawingBoardLayer DrawCircleMarkers(this SvgDrawingBoardLayer drawingLayer, IEnumerable<IFloat64Tuple2D> circleCentersList, int pixelRadius)
         {
             foreach (var center in circleCentersList)
                 drawingLayer.DrawCircleMarker(
@@ -206,7 +206,7 @@ namespace GraphicsComposerLib.Rendering.Svg.DrawingBoard
         }
 
 
-        public static SvgDrawingBoardLayer DrawSquare(this SvgDrawingBoardLayer drawingLayer, ITuple2D center, double radius)
+        public static SvgDrawingBoardLayer DrawSquare(this SvgDrawingBoardLayer drawingLayer, IFloat64Tuple2D center, double radius)
         {
             drawingLayer.DrawSquare(
                 center.X,
@@ -217,7 +217,7 @@ namespace GraphicsComposerLib.Rendering.Svg.DrawingBoard
             return drawingLayer;
         }
 
-        public static SvgDrawingBoardLayer DrawSquares(this SvgDrawingBoardLayer drawingLayer, IEnumerable<ITuple2D> circleCentersList, double radius)
+        public static SvgDrawingBoardLayer DrawSquares(this SvgDrawingBoardLayer drawingLayer, IEnumerable<IFloat64Tuple2D> circleCentersList, double radius)
         {
             foreach (var center in circleCentersList)
                 drawingLayer.DrawSquare(
@@ -229,7 +229,7 @@ namespace GraphicsComposerLib.Rendering.Svg.DrawingBoard
             return drawingLayer;
         }
 
-        public static SvgDrawingBoardLayer DrawSquareMarker(this SvgDrawingBoardLayer drawingLayer, ITuple2D center, int pixelsRadius)
+        public static SvgDrawingBoardLayer DrawSquareMarker(this SvgDrawingBoardLayer drawingLayer, IFloat64Tuple2D center, int pixelsRadius)
         {
             drawingLayer.DrawSquareMarker(
                 center.X,
@@ -240,7 +240,7 @@ namespace GraphicsComposerLib.Rendering.Svg.DrawingBoard
             return drawingLayer;
         }
 
-        public static SvgDrawingBoardLayer DrawSquareMarkers(this SvgDrawingBoardLayer drawingLayer, IEnumerable<ITuple2D> circleCentersList, int pixelRadius)
+        public static SvgDrawingBoardLayer DrawSquareMarkers(this SvgDrawingBoardLayer drawingLayer, IEnumerable<IFloat64Tuple2D> circleCentersList, int pixelRadius)
         {
             foreach (var center in circleCentersList)
                 drawingLayer.DrawSquareMarker(
@@ -253,7 +253,7 @@ namespace GraphicsComposerLib.Rendering.Svg.DrawingBoard
         }
 
 
-        public static SvgDrawingBoardLayer DrawRectangle(this SvgDrawingBoardLayer drawingLayer, ITuple2D point1, ITuple2D point2)
+        public static SvgDrawingBoardLayer DrawRectangle(this SvgDrawingBoardLayer drawingLayer, IFloat64Tuple2D point1, IFloat64Tuple2D point2)
         {
             drawingLayer.DrawRectangle(
                 point1.X,
@@ -327,7 +327,7 @@ namespace GraphicsComposerLib.Rendering.Svg.DrawingBoard
         }
 
 
-        public static SvgDrawingBoardLayer DrawText(this SvgDrawingBoardLayer drawingLayer, string text, ITuple2D position)
+        public static SvgDrawingBoardLayer DrawText(this SvgDrawingBoardLayer drawingLayer, string text, IFloat64Tuple2D position)
         {
             drawingLayer.DrawText(text, position.X, position.Y);
 

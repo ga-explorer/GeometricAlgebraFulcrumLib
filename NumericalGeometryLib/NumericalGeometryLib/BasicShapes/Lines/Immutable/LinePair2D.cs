@@ -13,7 +13,7 @@ namespace NumericalGeometryLib.BasicShapes.Lines.Immutable
             );
         }
 
-        public LinePair2D Create(ITuple2D origin1, ITuple2D direction1, ITuple2D origin2, ITuple2D direction2)
+        public LinePair2D Create(IFloat64Tuple2D origin1, IFloat64Tuple2D direction1, IFloat64Tuple2D origin2, IFloat64Tuple2D direction2)
         {
             return new LinePair2D(
                 origin1.X, 

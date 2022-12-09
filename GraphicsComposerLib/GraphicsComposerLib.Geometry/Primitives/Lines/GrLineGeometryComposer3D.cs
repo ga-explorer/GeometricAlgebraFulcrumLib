@@ -58,7 +58,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Lines
         public IEnumerable<IGraphicsVertex3D> GeometryVertices 
             => _verticesTable.Select(p => p.Value);
 
-        public IEnumerable<ITuple3D> GeometryPoints 
+        public IEnumerable<IFloat64Tuple3D> GeometryPoints 
             => _verticesTable.Select(p => p.Value);
 
         public IEnumerable<Pair<int>> LineVertexIndices
@@ -85,12 +85,12 @@ namespace GraphicsComposerLib.Geometry.Primitives.Lines
             }
         }
 
-        public IEnumerable<Pair<ITuple3D>> LineVertexPoints
+        public IEnumerable<Pair<IFloat64Tuple3D>> LineVertexPoints
         {
             get
             {
                 for (var i = 0; i < _indicesList.Count; i += 2)
-                    yield return new Pair<ITuple3D>(
+                    yield return new Pair<IFloat64Tuple3D>(
                         _verticesList[_indicesList[i]].Point, 
                         _verticesList[_indicesList[i + 1]].Point
                     );
@@ -106,7 +106,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Lines
         }
 
         
-        public ITuple3D GetGeometryPoint(int index)
+        public IFloat64Tuple3D GetGeometryPoint(int index)
         {
             return _verticesList[index];
         }
@@ -232,7 +232,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Lines
         }
 
 
-        public GrLineGeometryComposer3D AddVerticesFromPoints(params ITuple3D[] pointsList)
+        public GrLineGeometryComposer3D AddVerticesFromPoints(params IFloat64Tuple3D[] pointsList)
         {
             foreach (var point in pointsList)
                 AddVertexFromPoint(point);
@@ -240,7 +240,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Lines
             return this;
         }
 
-        public GrLineGeometryComposer3D AddVerticesFromPoints(IEnumerable<ITuple3D> pointsList)
+        public GrLineGeometryComposer3D AddVerticesFromPoints(IEnumerable<IFloat64Tuple3D> pointsList)
         {
             foreach (var point in pointsList)
                 AddVertexFromPoint(point);
@@ -279,7 +279,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Lines
             );
         }
 
-        public bool AddLine(ITuple3D point1, ITuple3D point2)
+        public bool AddLine(IFloat64Tuple3D point1, IFloat64Tuple3D point2)
         {
             return StoreLine(
                 AddVertexFromPoint(point1.X, point1.Y, point1.Z), 
@@ -287,7 +287,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Lines
             );
         }
 
-        public bool AddLine(IPair<ITuple3D> points)
+        public bool AddLine(IPair<IFloat64Tuple3D> points)
         {
             return StoreLine(
                 AddVertexFromPoint(points.Item1), 
@@ -353,7 +353,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Lines
             return this;
         }
 
-        public GrLineGeometryComposer3D AddLines(IEnumerable<IPair<ITuple3D>> linesList)
+        public GrLineGeometryComposer3D AddLines(IEnumerable<IPair<IFloat64Tuple3D>> linesList)
         {
             foreach (var pair in linesList)
                 AddLine(pair.Item1, pair.Item2);
@@ -361,10 +361,10 @@ namespace GraphicsComposerLib.Geometry.Primitives.Lines
             return this;
         }
 
-        public GrLineGeometryComposer3D AddLines(IEnumerable<ITuple3D> linePointsList)
+        public GrLineGeometryComposer3D AddLines(IEnumerable<IFloat64Tuple3D> linePointsList)
         {
             var firstPointFlag = true;
-            ITuple3D point1 = null;
+            IFloat64Tuple3D point1 = null;
 
             foreach (var point in linePointsList)
             {
@@ -439,10 +439,10 @@ namespace GraphicsComposerLib.Geometry.Primitives.Lines
             return this;
         }
 
-        public GrLineGeometryComposer3D AddPolyLine(IEnumerable<ITuple3D> pointsList, bool closed)
+        public GrLineGeometryComposer3D AddPolyLine(IEnumerable<IFloat64Tuple3D> pointsList, bool closed)
         {
-            ITuple3D firstPoint = null;
-            ITuple3D point1 = null;
+            IFloat64Tuple3D firstPoint = null;
+            IFloat64Tuple3D point1 = null;
 
             foreach (var point2 in pointsList)
             {

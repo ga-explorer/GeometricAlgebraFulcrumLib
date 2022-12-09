@@ -8,7 +8,7 @@ using NumericalGeometryLib.BasicMath.Tuples;
 namespace GraphicsComposerLib.Geometry.Structures.Data
 {
     public sealed record PointData2D<T> :
-        ITuple2D
+        IFloat64Tuple2D
     {
         public bool IsValid() =>
             !double.IsNaN(X) &&

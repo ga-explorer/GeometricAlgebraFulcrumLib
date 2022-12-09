@@ -8,5 +8,5 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves;
 public interface IGraphicsC2ParametricCurve3D :
     IGraphicsC1ParametricCurve3D
 {
-    Tuple3D GetSecondDerivative(double parameterValue);
+    Float64Tuple3D GetSecondDerivative(double parameterValue);
 }

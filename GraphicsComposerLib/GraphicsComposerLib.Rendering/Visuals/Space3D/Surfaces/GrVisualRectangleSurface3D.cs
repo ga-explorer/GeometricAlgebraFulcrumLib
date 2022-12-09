@@ -11,27 +11,27 @@ public sealed class GrVisualRectangleSurface3D :
 
     public double Height { get; }
 
-    public Tuple3D BottomLeftCorner { get; }
+    public Float64Tuple3D BottomLeftCorner { get; }
 
-    public Tuple3D WidthUnitDirection { get; }
+    public Float64Tuple3D WidthUnitDirection { get; }
 
-    public Tuple3D HeightUnitDirection { get; }
+    public Float64Tuple3D HeightUnitDirection { get; }
 
-    public Tuple3D WidthDirection 
+    public Float64Tuple3D WidthDirection 
         => Width * WidthUnitDirection;
 
-    public Tuple3D HeightDirection
+    public Float64Tuple3D HeightDirection
         => Height * HeightUnitDirection;
 
-    public Tuple3D Normal
+    public Float64Tuple3D Normal
         => WidthUnitDirection.VectorUnitCross(HeightUnitDirection);
 
 
-    public GrVisualRectangleSurface3D(string name, ITuple3D bottomLeftCorner, ITuple3D widthDirection, ITuple3D heightDirection)
+    public GrVisualRectangleSurface3D(string name, IFloat64Tuple3D bottomLeftCorner, IFloat64Tuple3D widthDirection, IFloat64Tuple3D heightDirection)
         : base(name)
     {
-        Width = widthDirection.GetLength();
-        Height = heightDirection.GetLength();
+        Width = widthDirection.GetVectorNorm();
+        Height = heightDirection.GetVectorNorm();
 
         BottomLeftCorner = bottomLeftCorner.ToTuple3D();
         WidthUnitDirection = widthDirection.ScaleBy(1d / Width);

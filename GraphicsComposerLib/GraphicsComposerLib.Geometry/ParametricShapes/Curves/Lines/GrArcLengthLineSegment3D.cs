@@ -9,9 +9,9 @@ public class GrArcLengthLineSegment3D :
     IGraphicsC2ParametricCurve3D,
     IGraphicsC1ArcLengthCurve3D
 {
-    public Tuple3D Point1 { get; }
+    public Float64Tuple3D Point1 { get; }
 
-    public Tuple3D Point2 { get; }
+    public Float64Tuple3D Point2 { get; }
     
     public double ParameterValueMin
         => 0d;
@@ -21,7 +21,7 @@ public class GrArcLengthLineSegment3D :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public GrArcLengthLineSegment3D(ITuple3D point1, ITuple3D point2)
+    public GrArcLengthLineSegment3D(IFloat64Tuple3D point1, IFloat64Tuple3D point2)
     {
         Point1 = point1.ToTuple3D();
         Point2 = point2.ToTuple3D();
@@ -56,19 +56,19 @@ public class GrArcLengthLineSegment3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Tuple3D GetPoint(double parameterValue)
+    public Float64Tuple3D GetPoint(double parameterValue)
     {
         return parameterValue.Lerp(Point1, Point2);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Tuple3D GetTangent(double parameterValue)
+    public Float64Tuple3D GetTangent(double parameterValue)
     {
         return Point2 - Point1;
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Tuple3D GetUnitTangent(double parameterValue)
+    public Float64Tuple3D GetUnitTangent(double parameterValue)
     {
         return GetTangent(parameterValue).ToUnitVector();
     }
@@ -83,8 +83,8 @@ public class GrArcLengthLineSegment3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Tuple3D GetSecondDerivative(double parameterValue)
+    public Float64Tuple3D GetSecondDerivative(double parameterValue)
     {
-        return Tuple3D.Zero;
+        return Float64Tuple3D.Zero;
     }
 }

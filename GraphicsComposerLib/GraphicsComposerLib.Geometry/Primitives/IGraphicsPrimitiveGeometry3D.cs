@@ -34,14 +34,14 @@ namespace GraphicsComposerLib.Geometry.Primitives
         /// <summary>
         /// The list of vertex positions of this graphics geometry
         /// </summary>
-        IEnumerable<ITuple3D> GeometryPoints { get; }
+        IEnumerable<IFloat64Tuple3D> GeometryPoints { get; }
 
         /// <summary>
         /// Get a vertex point by vertex index
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        ITuple3D GetGeometryPoint(int index);
+        IFloat64Tuple3D GetGeometryPoint(int index);
     }
 
     /// <summary>

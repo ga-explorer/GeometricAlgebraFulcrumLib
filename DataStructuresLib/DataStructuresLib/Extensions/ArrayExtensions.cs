@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace DataStructuresLib.Extensions
 {
     public static class ArrayExtensions
     {
-        
-
-
         public static T[] ToArray1D<T>(this T[,] array, bool columnMajorOrder = true)
         {
             var rows = array.GetLength(0);
@@ -364,7 +362,17 @@ namespace DataStructuresLib.Extensions
         }
 
 
-        public static T[] GetSubArray<T>(this T[] arrayIn, int i1, int i2)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T[] GetShallowCopy<T>(this T[] arrayIn)
+        {
+            var arrayOut = new T[arrayIn.Length];
+
+            arrayIn.CopyTo(arrayOut, 0);
+
+            return arrayOut;
+        }
+
+        public static T[] GetShallowCopy<T>(this T[] arrayIn, int i1, int i2)
         {
             var n1 = i2 - i1 + 1;
             var arrayOut = new T[n1];
@@ -375,7 +383,7 @@ namespace DataStructuresLib.Extensions
             return arrayOut;
         }
 
-        public static T[] GetSubArray<T>(this T[] arrayIn, IReadOnlyList<int> indicesList)
+        public static T[] GetShallowCopy<T>(this T[] arrayIn, IReadOnlyList<int> indicesList)
         {
             var n1 = indicesList.Count;
             var arrayOut = new T[n1];
@@ -390,7 +398,7 @@ namespace DataStructuresLib.Extensions
             return arrayOut;
         }
 
-        public static T[,] GetSubArray<T>(this T[,] arrayIn, int i1, int i2, int j1, int j2)
+        public static T[,] GetShallowCopy<T>(this T[,] arrayIn, int i1, int i2, int j1, int j2)
         {
             var n1 = i2 - i1 + 1;
             var n2 = j2 - j1 + 1;
@@ -403,7 +411,7 @@ namespace DataStructuresLib.Extensions
             return arrayOut;
         }
 
-        public static T[,] GetSubArray<T>(this T[,] arrayIn, IReadOnlyList<int> rowIndicesList, IReadOnlyList<int> colIndicesList)
+        public static T[,] GetShallowCopy<T>(this T[,] arrayIn, IReadOnlyList<int> rowIndicesList, IReadOnlyList<int> colIndicesList)
         {
             var n1 = rowIndicesList.Count;
             var n2 = colIndicesList.Count;
@@ -424,7 +432,7 @@ namespace DataStructuresLib.Extensions
             return arrayOut;
         }
 
-        public static T[,,] GetSubArray<T>(this T[,,] arrayIn, int i1, int i2, int j1, int j2, int k1, int k2)
+        public static T[,,] GetShallowCopy<T>(this T[,,] arrayIn, int i1, int i2, int j1, int j2, int k1, int k2)
         {
             var n1 = i2 - i1 + 1;
             var n2 = j2 - j1 + 1;

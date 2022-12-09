@@ -6,7 +6,7 @@ using GraphicsComposerLib.Geometry.Meshes.PointsPath.Space2D;
 namespace GraphicsComposerLib.Geometry.Meshes.PointsMesh.Space2D
 {
     public sealed class PartialPointsMesh2D
-        : PSeqPartial2D<ITuple2D>, IPointsMesh2D
+        : PSeqPartial2D<IFloat64Tuple2D>, IPointsMesh2D
     {
         public IPointsMesh2D BaseMesh { get; }
 
@@ -18,7 +18,7 @@ namespace GraphicsComposerLib.Geometry.Meshes.PointsMesh.Space2D
         }
 
 
-        public override PSeqSlice1D<ITuple2D> GetSliceAt(int dimension, int index)
+        public override PSeqSlice1D<IFloat64Tuple2D> GetSliceAt(int dimension, int index)
         {
             return new PointsMeshSlicePointsPath2D(this, dimension, index);
         }

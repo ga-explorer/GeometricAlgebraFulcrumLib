@@ -11,9 +11,9 @@ namespace GraphicsComposerLib.Geometry.SdfShapes.Primitives
         public double Radius { get; set; } = 0.5d;
 
 
-        public override double GetScalarDistance(ITuple3D point)
+        public override double GetScalarDistance(IFloat64Tuple3D point)
         {
-            var sdf = point.GetLength() - Radius;
+            var sdf = point.GetVectorNorm() - Radius;
             return SdfAlpha * sdf - SdfDelta;
         }
     }

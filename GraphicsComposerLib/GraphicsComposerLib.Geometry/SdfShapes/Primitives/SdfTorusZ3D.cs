@@ -16,11 +16,11 @@ namespace GraphicsComposerLib.Geometry.SdfShapes.Primitives
             = 1.0d;
 
 
-        public override double GetScalarDistance(ITuple3D point)
+        public override double GetScalarDistance(IFloat64Tuple3D point)
         {
-            var q = new Tuple2D(point.LengthXy() - InnerRadius, point.Z);
+            var q = new Float64Tuple2D(point.LengthXy() - InnerRadius, point.Z);
 
-            return q.GetLength() - OuterRadius;
+            return q.GetVectorNorm() - OuterRadius;
         }
     }
 }

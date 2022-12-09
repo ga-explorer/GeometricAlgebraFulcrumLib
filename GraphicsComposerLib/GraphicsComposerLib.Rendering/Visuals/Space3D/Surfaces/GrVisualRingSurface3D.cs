@@ -5,9 +5,9 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Surfaces;
 public sealed class GrVisualRingSurface3D :
     GrVisualSurface3D
 {
-    public ITuple3D Center { get; set; }
+    public IFloat64Tuple3D Center { get; set; }
 
-    public ITuple3D Normal { get; set; }
+    public IFloat64Tuple3D Normal { get; set; }
 
     public double MinRadius { get; set; }
 

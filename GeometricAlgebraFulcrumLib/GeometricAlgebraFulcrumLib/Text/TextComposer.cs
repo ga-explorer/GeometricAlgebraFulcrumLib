@@ -9,7 +9,6 @@ using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 
 namespace GeometricAlgebraFulcrumLib.Text
@@ -42,7 +41,7 @@ namespace GeometricAlgebraFulcrumLib.Text
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public string GetBasisBladeText(uint grade, ulong index)
         {
-            return GaFuLTextComposersUtils.GetBasisBladeText(grade, index);
+            return TextComposerUtils.GetBasisBladeText(grade, index);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

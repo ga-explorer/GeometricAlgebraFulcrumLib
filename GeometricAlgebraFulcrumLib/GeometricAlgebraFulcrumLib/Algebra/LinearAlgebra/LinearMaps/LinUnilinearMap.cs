@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Vectors;
 using GeometricAlgebraFulcrumLib.Processors.LinearAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.Storage;
+using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors;
-using GeometricAlgebraFulcrumLib.Utilities.Factories;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.LinearMaps
@@ -21,6 +23,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.LinearMaps
         public ILinMatrixStorage<T> MatrixStorage { get; }
 
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal LinUnilinearMap([NotNull] ILinearAlgebraProcessor<T> linearProcessor, [NotNull] ILinMatrixStorage<T> matrixStorage)
         {
             LinearProcessor = linearProcessor;
@@ -43,17 +46,17 @@ namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.LinearMaps
             return MatrixStorage.GetColumn(index);
         }
 
-        public ILinVectorStorage<T> LinMapVector(ILinVectorStorage<T> vectorStorage)
+        public LinVector<T> LinMapVector(LinVector<T> vector)
         {
             var composer = LinearProcessor.CreateVectorStorageComposer();
 
-            foreach (var (index, scalar) in vectorStorage.GetIndexScalarRecords())
+            foreach (var (index, scalar) in vector.VectorStorage.GetIndexScalarRecords())
                 composer.AddScaledTerms(
                     scalar,
                     LinMapBasisVector(index).GetIndexScalarRecords()
                 );
 
-            return composer.CreateLinVectorStorage();
+            return composer.CreateLinVector();
         }
 
         public ILinMatrixStorage<T> LinMapMatrix(ILinMatrixStorage<T> matrixStorage)

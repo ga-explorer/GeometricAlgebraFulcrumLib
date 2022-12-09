@@ -44,7 +44,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Lines
         public IEnumerable<IGraphicsVertex3D> GeometryVertices
             => _verticesList;
 
-        public IEnumerable<ITuple3D> GeometryPoints
+        public IEnumerable<IFloat64Tuple3D> GeometryPoints
             => _verticesList;
 
         public IEnumerable<Pair<int>> LineVertexIndices
@@ -68,12 +68,12 @@ namespace GraphicsComposerLib.Geometry.Primitives.Lines
             }
         }
 
-        public IEnumerable<Pair<ITuple3D>> LineVertexPoints
+        public IEnumerable<Pair<IFloat64Tuple3D>> LineVertexPoints
         {
             get
             {
                 for (var i = 0; i < _verticesList.Count; i += 2)
-                    yield return new Pair<ITuple3D>(
+                    yield return new Pair<IFloat64Tuple3D>(
                         _verticesList[i].Point, 
                         _verticesList[i + 1].Point
                     );
@@ -97,7 +97,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Lines
         }
 
 
-        private IGraphicsSurfaceLocalFrame3D AddVertex(ITuple3D point)
+        private IGraphicsSurfaceLocalFrame3D AddVertex(IFloat64Tuple3D point)
         {
             var storedVertex = new GrVertex3D(_verticesList.Count, point);
             _verticesList.Add(storedVertex);
@@ -133,7 +133,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Lines
         }
         
         
-        public ITuple3D GetGeometryPoint(int index)
+        public IFloat64Tuple3D GetGeometryPoint(int index)
         {
             return _verticesList[index];
         }
@@ -146,7 +146,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Lines
             );
         }
 
-        public bool AddLine(ITuple3D point1, ITuple3D point2)
+        public bool AddLine(IFloat64Tuple3D point1, IFloat64Tuple3D point2)
         {
             return StoreLine(
                 AddVertex(point1),
@@ -154,7 +154,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Lines
             );
         }
 
-        public bool AddLine(IPair<ITuple3D> points)
+        public bool AddLine(IPair<IFloat64Tuple3D> points)
         {
             return StoreLine(
                 AddVertex(points.Item1),
@@ -192,7 +192,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Lines
             return this;
         }
 
-        public GrLineSoupGeometryComposer3D AddLines(IEnumerable<IPair<ITuple3D>> linePointsList)
+        public GrLineSoupGeometryComposer3D AddLines(IEnumerable<IPair<IFloat64Tuple3D>> linePointsList)
         {
             foreach (var points in linePointsList)
             {
@@ -205,7 +205,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Lines
             return this;
         }
 
-        public GrLineSoupGeometryComposer3D AddLines(IReadOnlyList<ITuple3D> pointsList)
+        public GrLineSoupGeometryComposer3D AddLines(IReadOnlyList<IFloat64Tuple3D> pointsList)
         {
             if (pointsList.Count % 2 != 0)
                 throw new InvalidOperationException();

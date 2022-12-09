@@ -12,41 +12,41 @@ namespace NumericalGeometryLib.BasicShapes.Triangles
     public static class TrianglesUtils
     {
         #region Triangles in 2D
-        public static Tuple2D GetPoint1(this ITriangle2D triangle)
+        public static Float64Tuple2D GetPoint1(this ITriangle2D triangle)
         {
-            return new Tuple2D(triangle.Point1X, triangle.Point1Y);
+            return new Float64Tuple2D(triangle.Point1X, triangle.Point1Y);
         }
 
-        public static Tuple2D GetPoint2(this ITriangle2D triangle)
+        public static Float64Tuple2D GetPoint2(this ITriangle2D triangle)
         {
-            return new Tuple2D(triangle.Point2X, triangle.Point2Y);
+            return new Float64Tuple2D(triangle.Point2X, triangle.Point2Y);
         }
 
-        public static Tuple2D GetPoint3(this ITriangle2D triangle)
+        public static Float64Tuple2D GetPoint3(this ITriangle2D triangle)
         {
-            return new Tuple2D(triangle.Point3X, triangle.Point3Y);
+            return new Float64Tuple2D(triangle.Point3X, triangle.Point3Y);
         }
 
-        public static Tuple2D[] GetEndPoints(this ITriangle2D lineSegment)
+        public static Float64Tuple2D[] GetEndPoints(this ITriangle2D lineSegment)
         {
             return new[]
             {
-                new Tuple2D(
+                new Float64Tuple2D(
                     lineSegment.Point1X,
                     lineSegment.Point1Y
                 ),
-                new Tuple2D(
+                new Float64Tuple2D(
                     lineSegment.Point2X,
                     lineSegment.Point2Y
                 ),
-                new Tuple2D(
+                new Float64Tuple2D(
                     lineSegment.Point3X,
                     lineSegment.Point3Y
                 )
             };
         }
 
-        public static IEnumerable<Tuple2D> GetEndPoints(this IEnumerable<ITriangle2D> trianglesList)
+        public static IEnumerable<Float64Tuple2D> GetEndPoints(this IEnumerable<ITriangle2D> trianglesList)
         {
             return trianglesList.SelectMany(t => t.GetEndPoints());
         }
@@ -69,49 +69,49 @@ namespace NumericalGeometryLib.BasicShapes.Triangles
             );
         }
 
-        public static Tuple2D GetDirection12(this ITriangle2D triangle)
+        public static Float64Tuple2D GetDirection12(this ITriangle2D triangle)
         {
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 triangle.Point2X - triangle.Point1X,
                 triangle.Point2Y - triangle.Point1Y
             );
         }
 
-        public static Tuple2D GetDirection21(this ITriangle2D triangle)
+        public static Float64Tuple2D GetDirection21(this ITriangle2D triangle)
         {
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 triangle.Point1X - triangle.Point2X,
                 triangle.Point1Y - triangle.Point2Y
             );
         }
 
-        public static Tuple2D GetDirection23(this ITriangle2D triangle)
+        public static Float64Tuple2D GetDirection23(this ITriangle2D triangle)
         {
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 triangle.Point3X - triangle.Point2X,
                 triangle.Point3Y - triangle.Point2Y
             );
         }
 
-        public static Tuple2D GetDirection32(this ITriangle2D triangle)
+        public static Float64Tuple2D GetDirection32(this ITriangle2D triangle)
         {
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 triangle.Point2X - triangle.Point3X,
                 triangle.Point2Y - triangle.Point3Y
             );
         }
 
-        public static Tuple2D GetDirection31(this ITriangle2D triangle)
+        public static Float64Tuple2D GetDirection31(this ITriangle2D triangle)
         {
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 triangle.Point1X - triangle.Point3X,
                 triangle.Point1Y - triangle.Point3Y
             );
         }
 
-        public static Tuple2D GetDirection13(this ITriangle2D triangle)
+        public static Float64Tuple2D GetDirection13(this ITriangle2D triangle)
         {
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 triangle.Point3X - triangle.Point1X,
                 triangle.Point3Y - triangle.Point1Y
             );
@@ -291,57 +291,57 @@ namespace NumericalGeometryLib.BasicShapes.Triangles
             );
         }
 
-        public static Tuple2D GetInnerPointAt(this ITriangle2D triangle, double d1, double d2, double d3)
+        public static Float64Tuple2D GetInnerPointAt(this ITriangle2D triangle, double d1, double d2, double d3)
         {
             var dInv = 1 / (d1 + d2 + d3);
             var w1 = d1 * dInv;
             var w2 = d2 * dInv;
             var w3 = d3 * dInv;
 
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 w1 * triangle.Point1X + w2 * triangle.Point2X + w3 * triangle.Point3X,
                 w1 * triangle.Point1Y + w2 * triangle.Point2Y + w3 * triangle.Point3Y
             );
         }
 
-        public static Tuple2D GetInnerPointAt(this ITriangle2D triangle, ITuple3D dTuple)
+        public static Float64Tuple2D GetInnerPointAt(this ITriangle2D triangle, IFloat64Tuple3D dTuple)
         {
             var dInv = 1 / (dTuple.X + dTuple.Y + dTuple.Z);
             var w1 = dTuple.X * dInv;
             var w2 = dTuple.Y * dInv;
             var w3 = dTuple.Z * dInv;
 
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 w1 * triangle.Point1X + w2 * triangle.Point2X + w3 * triangle.Point3X,
                 w1 * triangle.Point1Y + w2 * triangle.Point2Y + w3 * triangle.Point3Y
             );
         }
 
-        public static IEnumerable<Tuple2D> GetInnerPointsAt(this ITriangle2D triangle, IEnumerable<ITuple3D> parametersList)
+        public static IEnumerable<Float64Tuple2D> GetInnerPointsAt(this ITriangle2D triangle, IEnumerable<IFloat64Tuple3D> parametersList)
         {
             return parametersList.Select(
                 p => triangle.GetInnerPointAt(p.X, p.Y, p.Z)
             );
         }
 
-        public static Tuple2D GetPointAt(this ITriangle2D triangle, double w1, double w2)
+        public static Float64Tuple2D GetPointAt(this ITriangle2D triangle, double w1, double w2)
         {
             var w3 = 1.0d - (w1 + w2);
 
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 w1 * triangle.Point1X + w2 * triangle.Point2X + w3 * triangle.Point3X,
                 w1 * triangle.Point1Y + w2 * triangle.Point2Y + w3 * triangle.Point3Y
             );
         }
 
-        public static IEnumerable<Tuple2D> GetPointsAt(this ITriangle2D triangle, IEnumerable<Tuple2D> parametersList)
+        public static IEnumerable<Float64Tuple2D> GetPointsAt(this ITriangle2D triangle, IEnumerable<Float64Tuple2D> parametersList)
         {
             return parametersList.Select(
                 p => triangle.GetPointAt(p.X, p.Y)
             );
         }
 
-        public static Triangle2D GetTriangleAt(this ITriangle2D triangle, Tuple2D w1, Tuple2D w2, Tuple2D w3)
+        public static Triangle2D GetTriangleAt(this ITriangle2D triangle, Float64Tuple2D w1, Float64Tuple2D w2, Float64Tuple2D w3)
         {
             var point1 = triangle.GetPointAt(w1.X, w1.Y);
             var point2 = triangle.GetPointAt(w2.X, w2.Y);
@@ -356,36 +356,36 @@ namespace NumericalGeometryLib.BasicShapes.Triangles
         #endregion
 
         #region Triangles in 3D
-        public static Tuple3D GetPoint1(this ITriangle3D triangle)
+        public static Float64Tuple3D GetPoint1(this ITriangle3D triangle)
         {
-            return new Tuple3D(triangle.Point1X, triangle.Point1Y, triangle.Point1Z);
+            return new Float64Tuple3D(triangle.Point1X, triangle.Point1Y, triangle.Point1Z);
         }
 
-        public static Tuple3D GetPoint2(this ITriangle3D triangle)
+        public static Float64Tuple3D GetPoint2(this ITriangle3D triangle)
         {
-            return new Tuple3D(triangle.Point2X, triangle.Point2Y, triangle.Point2Z);
+            return new Float64Tuple3D(triangle.Point2X, triangle.Point2Y, triangle.Point2Z);
         }
 
-        public static Tuple3D GetPoint3(this ITriangle3D triangle)
+        public static Float64Tuple3D GetPoint3(this ITriangle3D triangle)
         {
-            return new Tuple3D(triangle.Point3X, triangle.Point3Y, triangle.Point3Z);
+            return new Float64Tuple3D(triangle.Point3X, triangle.Point3Y, triangle.Point3Z);
         }
 
-        public static Tuple3D[] GetEndPoints(this ITriangle3D lineSegment)
+        public static Float64Tuple3D[] GetEndPoints(this ITriangle3D lineSegment)
         {
             return new[]
             {
-                new Tuple3D(
+                new Float64Tuple3D(
                     lineSegment.Point1X,
                     lineSegment.Point1Y,
                     lineSegment.Point1Z
                 ),
-                new Tuple3D(
+                new Float64Tuple3D(
                     lineSegment.Point2X,
                     lineSegment.Point2Y,
                     lineSegment.Point2Z
                 ),
-                new Tuple3D(
+                new Float64Tuple3D(
                     lineSegment.Point3X,
                     lineSegment.Point3Y,
                     lineSegment.Point3Z
@@ -393,59 +393,59 @@ namespace NumericalGeometryLib.BasicShapes.Triangles
             };
         }
 
-        public static IEnumerable<Tuple3D> GetEndPoints(this IEnumerable<ITriangle3D> trianglesList)
+        public static IEnumerable<Float64Tuple3D> GetEndPoints(this IEnumerable<ITriangle3D> trianglesList)
         {
             return trianglesList.SelectMany(t => t.GetEndPoints());
         }
 
-        public static Tuple3D GetDirection12(this ITriangle3D triangle)
+        public static Float64Tuple3D GetDirection12(this ITriangle3D triangle)
         {
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 triangle.Point2X - triangle.Point1X,
                 triangle.Point2Y - triangle.Point1Y,
                 triangle.Point2Z - triangle.Point1Z
             );
         }
 
-        public static Tuple3D GetDirection21(this ITriangle3D triangle)
+        public static Float64Tuple3D GetDirection21(this ITriangle3D triangle)
         {
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 triangle.Point1X - triangle.Point2X,
                 triangle.Point1Y - triangle.Point2Y,
                 triangle.Point1Z - triangle.Point2Z
             );
         }
 
-        public static Tuple3D GetDirection23(this ITriangle3D triangle)
+        public static Float64Tuple3D GetDirection23(this ITriangle3D triangle)
         {
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 triangle.Point3X - triangle.Point2X,
                 triangle.Point3Y - triangle.Point2Y,
                 triangle.Point3Z - triangle.Point2Z
             );
         }
 
-        public static Tuple3D GetDirection32(this ITriangle3D triangle)
+        public static Float64Tuple3D GetDirection32(this ITriangle3D triangle)
         {
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 triangle.Point2X - triangle.Point3X,
                 triangle.Point2Y - triangle.Point3Y,
                 triangle.Point2Z - triangle.Point3Z
             );
         }
 
-        public static Tuple3D GetDirection31(this ITriangle3D triangle)
+        public static Float64Tuple3D GetDirection31(this ITriangle3D triangle)
         {
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 triangle.Point1X - triangle.Point3X,
                 triangle.Point1Y - triangle.Point3Y,
                 triangle.Point1Z - triangle.Point3Z
             );
         }
 
-        public static Tuple3D GetDirection13(this ITriangle3D triangle)
+        public static Float64Tuple3D GetDirection13(this ITriangle3D triangle)
         {
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 triangle.Point3X - triangle.Point1X,
                 triangle.Point3Y - triangle.Point1Y,
                 triangle.Point3Z - triangle.Point1Z
@@ -719,7 +719,7 @@ namespace NumericalGeometryLib.BasicShapes.Triangles
             return trianglesList.SelectMany(t => t.GetLimitedLines());
         }
 
-        public static Tuple3D GetNormal(this ITriangle3D triangle)
+        public static Float64Tuple3D GetNormal(this ITriangle3D triangle)
         {
             return triangle
                 .GetDirection12()
@@ -728,7 +728,7 @@ namespace NumericalGeometryLib.BasicShapes.Triangles
                 );
         }
 
-        public static Tuple3D GetUnitNormal(this ITriangle3D triangle)
+        public static Float64Tuple3D GetUnitNormal(this ITriangle3D triangle)
         {
             return triangle
                 .GetDirection12()
@@ -737,37 +737,37 @@ namespace NumericalGeometryLib.BasicShapes.Triangles
                 );
         }
 
-        public static Tuple3D GetPointAt(this ITriangle3D triangle, double d1, double d2, double d3)
+        public static Float64Tuple3D GetPointAt(this ITriangle3D triangle, double d1, double d2, double d3)
         {
             var d = 1 / (d1 + d2 + d3);
             var w1 = d1 * d;
             var w2 = d2 * d;
             var w3 = d3 * d;
 
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 w1 * triangle.Point1X + w2 * triangle.Point2X + w3 * triangle.Point3X,
                 w1 * triangle.Point1Y + w2 * triangle.Point2Y + w3 * triangle.Point3Y,
                 w1 * triangle.Point1Z + w2 * triangle.Point2Z + w3 * triangle.Point3Z
             );
         }
 
-        public static Tuple3D GetPointAt(this ITriangle3D triangle, double w1, double w2)
+        public static Float64Tuple3D GetPointAt(this ITriangle3D triangle, double w1, double w2)
         {
             var w3 = 1.0d - (w1 + w2);
 
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 w1 * triangle.Point1X + w2 * triangle.Point2X + w3 * triangle.Point3X,
                 w1 * triangle.Point1Y + w2 * triangle.Point2Y + w3 * triangle.Point3Y,
                 w1 * triangle.Point1Z + w2 * triangle.Point2Z + w3 * triangle.Point3Z
             );
         }
 
-        public static IEnumerable<Tuple3D> GetPointsAt(this ITriangle3D triangle, IEnumerable<Tuple3D> parametersList)
+        public static IEnumerable<Float64Tuple3D> GetPointsAt(this ITriangle3D triangle, IEnumerable<Float64Tuple3D> parametersList)
         {
             return parametersList.Select(p => triangle.GetPointAt(p.X, p.Y));
         }
 
-        public static Triangle3D GetTriangleAt(this ITriangle3D triangle, Tuple3D w1, Tuple3D w2, Tuple3D w3)
+        public static Triangle3D GetTriangleAt(this ITriangle3D triangle, Float64Tuple3D w1, Float64Tuple3D w2, Float64Tuple3D w3)
         {
             var point1 = triangle.GetPointAt(w1.X, w1.Y);
             var point2 = triangle.GetPointAt(w2.X, w2.Y);

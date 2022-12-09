@@ -32,7 +32,7 @@ namespace GraphicsComposerLib.Geometry.LatticeShapes.Surfaces
         public IEnumerable<IGraphicsVertex3D> GeometryVertices 
             => LatticeSurfaceList.VertexList;
 
-        public IEnumerable<ITuple3D> GeometryPoints 
+        public IEnumerable<IFloat64Tuple3D> GeometryPoints 
             => LatticeSurfaceList.VertexList;
 
         public int Count 
@@ -49,18 +49,18 @@ namespace GraphicsComposerLib.Geometry.LatticeShapes.Surfaces
             }
         }
 
-        public IEnumerable<Triplet<ITuple3D>> TriangleVertexPoints
+        public IEnumerable<Triplet<IFloat64Tuple3D>> TriangleVertexPoints
             => LatticeSurfaceList.TriangleVerticesList.Select(t => 
-                new Triplet<ITuple3D>(t.Item1, t.Item2, t.Item3)
+                new Triplet<IFloat64Tuple3D>(t.Item1, t.Item2, t.Item3)
             );
 
         public IEnumerable<Triplet<int>> TriangleVertexIndices 
             => LatticeSurfaceList.TriangleVertexIndices;
 
-        public IEnumerable<ITuple3D> VertexNormals
+        public IEnumerable<IFloat64Tuple3D> VertexNormals
             => LatticeSurfaceList.VertexList.Select(v => v.Normal);
         
-        public IEnumerable<ITuple2D> VertexTextureUVs 
+        public IEnumerable<IFloat64Tuple2D> VertexTextureUVs 
             => LatticeSurfaceList.VertexList.Select(v => v.ParameterValue.ToTuple2D());
         
         public IEnumerable<Color> VertexColors 
@@ -85,7 +85,7 @@ namespace GraphicsComposerLib.Geometry.LatticeShapes.Surfaces
         }
 
 
-        public ITuple3D GetGeometryPoint(int index)
+        public IFloat64Tuple3D GetGeometryPoint(int index)
         {
             return LatticeSurfaceList[index];
         }

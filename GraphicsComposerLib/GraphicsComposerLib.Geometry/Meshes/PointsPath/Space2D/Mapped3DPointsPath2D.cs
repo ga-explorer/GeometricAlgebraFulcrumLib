@@ -5,19 +5,19 @@ using NumericalGeometryLib.BasicMath.Tuples;
 namespace GraphicsComposerLib.Geometry.Meshes.PointsPath.Space2D
 {
     public sealed class Mapped3DPointsPath2D
-        : PSeqMapped1D<ITuple3D, ITuple2D>, IPointsPath2D
+        : PSeqMapped1D<IFloat64Tuple3D, IFloat64Tuple2D>, IPointsPath2D
     {
-        public Func<ITuple3D, ITuple2D> Mapping { get; set; }
+        public Func<IFloat64Tuple3D, IFloat64Tuple2D> Mapping { get; set; }
 
 
-        public Mapped3DPointsPath2D(IPointsPath3D basePath, Func<ITuple3D, ITuple2D> mapping)
+        public Mapped3DPointsPath2D(IPointsPath3D basePath, Func<IFloat64Tuple3D, IFloat64Tuple2D> mapping)
             : base(basePath)
         {
             Mapping = mapping;
         }
 
 
-        protected override ITuple2D MappingFunction(ITuple3D input)
+        protected override IFloat64Tuple2D MappingFunction(IFloat64Tuple3D input)
         {
             return Mapping(input);
         }

@@ -67,7 +67,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Harmonic
         {
             var term = new GrHarmonicCurveTerm3D(
                 harmonicFactor,
-                new Tuple3D(magnitudeX, magnitudeY, magnitudeZ)
+                new Float64Tuple3D(magnitudeX, magnitudeY, magnitudeZ)
             );
 
             _sampledCurve = null;
@@ -89,18 +89,18 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Harmonic
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple3D GetPoint(double parameterValue)
+        public Float64Tuple3D GetPoint(double parameterValue)
         {
             parameterValue = parameterValue.ClampPeriodic(1d);
 
             return _harmonicTerms
                 .Values
                 .Select(t => t.GetPoint(parameterValue))
-                .Aggregate(Tuple3D.Zero, (a, b) => a + b);
+                .Aggregate(Float64Tuple3D.Zero, (a, b) => a + b);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple3D GetTangent(double parameterValue)
+        public Float64Tuple3D GetTangent(double parameterValue)
         {
             parameterValue = parameterValue.ClampPeriodic(1d);
 
@@ -113,11 +113,11 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Harmonic
             return _harmonicTerms
                 .Values
                 .Select(t => t.GetTangent(parameterValue))
-                .Aggregate(Tuple3D.Zero, (a, b) => a + b);
+                .Aggregate(Float64Tuple3D.Zero, (a, b) => a + b);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple3D GetUnitTangent(double parameterValue)
+        public Float64Tuple3D GetUnitTangent(double parameterValue)
         {
             return GetTangent(parameterValue).ToUnitVector();
         }
@@ -129,7 +129,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Harmonic
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple3D GetSecondDerivative(double parameterValue)
+        public Float64Tuple3D GetSecondDerivative(double parameterValue)
         {
             parameterValue = parameterValue.ClampPeriodic(1d);
 
@@ -142,7 +142,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Harmonic
             return _harmonicTerms
                 .Values
                 .Select(t => t.GetSecondDerivative(parameterValue))
-                .Aggregate(Tuple3D.Zero, (a, b) => a + b);
+                .Aggregate(Float64Tuple3D.Zero, (a, b) => a + b);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -70,9 +70,17 @@ public abstract class GrBabylonJsSnapshotComposer3D
 
     public int GridUnitCount { get; set; } = 24;
 
-    public double CameraDistance { get; set; } = 16;
+    public double CameraDistance { get; set; } = 15;
 
     public int CameraRotationCount { get; set; } = 1;
+
+    public Float64Tuple3D AxesOrigin { get; set; } = Float64Tuple3D.Zero;
+
+    public bool ShowGrid { get; set; } = true;
+
+    public bool ShowAxes { get; set; } = true;
+
+    public bool ShowGuiLayer { get; set; } = true;
 
     public bool ShowCopyright { get; set; } = true;
 
@@ -144,8 +152,6 @@ public abstract class GrBabylonJsSnapshotComposer3D
 
     protected virtual void AddGrid()
     {
-        var scene = MainSceneComposer.SceneObject;
-
         // Add ground coordinates grid
         MainSceneComposer.GridMaterialKind =
             GrBabylonJsGridMaterialKind.TexturedMaterial;
@@ -156,7 +162,7 @@ public abstract class GrBabylonJsSnapshotComposer3D
                 UnitCountX = GridUnitCount,
                 UnitCountZ = GridUnitCount,
                 UnitSize = 1,
-                Origin = new Tuple3D(-0.5d * GridUnitCount, 0, -0.5d * GridUnitCount),
+                Origin = new Float64Tuple3D(-0.5d * GridUnitCount, 0, -0.5d * GridUnitCount),
                 Opacity = 0.25,
                 BaseSquareColor = Color.LightYellow,
                 BaseLineColor = Color.BurlyWood,
@@ -169,6 +175,11 @@ public abstract class GrBabylonJsSnapshotComposer3D
                 BorderLineWidth = 3
             }
         );
+    }
+
+    protected void AddAxes()
+    {
+        var scene = MainSceneComposer.SceneObject;
 
         // Add reference unit axis frame
         var axisFrameOriginMaterial = scene.AddSimpleMaterial("axisFrameOriginMaterial", Color.DarkGray);
@@ -176,15 +187,14 @@ public abstract class GrBabylonJsSnapshotComposer3D
         var axisFrameYMaterial = scene.AddSimpleMaterial("axisFrameYMaterial", Color.DarkGreen);
         var axisFrameZMaterial = scene.AddSimpleMaterial("axisFrameZMaterial", Color.DarkBlue);
 
-        var frameOrigin = Tuple3D.Zero;
         MainSceneComposer.AddElement(
             new GrVisualFrame3D("axisFrame")
             {
-                Origin = frameOrigin,
+                Origin = AxesOrigin,
 
-                Direction1 = Tuple3D.E1,
-                Direction2 = Tuple3D.E2,
-                Direction3 = Tuple3D.E3,
+                Direction1 = Float64Tuple3D.E1,
+                Direction2 = Float64Tuple3D.E2,
+                Direction3 = Float64Tuple3D.E3,
 
                 Style = new GrVisualFrameStyle3D
                 {
@@ -207,8 +217,9 @@ public abstract class GrBabylonJsSnapshotComposer3D
 
         AddCamera(index);
         AddEnvironment();
-        AddGrid();
-        AddGuiLayer(index);
+        if (ShowGrid) AddGrid();
+        if (ShowAxes) AddAxes();
+        if (ShowGuiLayer) AddGuiLayer(index);
 
         return HtmlComposer;
     }

@@ -9,13 +9,13 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Lines
     public class GrParametricLine3D :
         IGraphicsC2ParametricCurve3D
     {
-        public Tuple3D Point { get; }
+        public Float64Tuple3D Point { get; }
 
-        public Tuple3D Vector { get; }
+        public Float64Tuple3D Vector { get; }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GrParametricLine3D([NotNull] ITuple3D point, [NotNull] ITuple3D vector)
+        public GrParametricLine3D([NotNull] IFloat64Tuple3D point, [NotNull] IFloat64Tuple3D vector)
         {
             Point = point.ToTuple3D();
             Vector = vector.ToTuple3D();
@@ -30,9 +30,9 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Lines
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple3D GetPoint(double parameterValue)
+        public Float64Tuple3D GetPoint(double parameterValue)
         {
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 Point.X + parameterValue * Vector.X,
                 Point.Y + parameterValue * Vector.Y,
                 Point.Z + parameterValue * Vector.Z
@@ -40,13 +40,13 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Lines
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple3D GetTangent(double parameterValue)
+        public Float64Tuple3D GetTangent(double parameterValue)
         {
             return Vector;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple3D GetUnitTangent(double parameterValue)
+        public Float64Tuple3D GetUnitTangent(double parameterValue)
         {
             return Vector.ToUnitVector();
         }
@@ -62,9 +62,9 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Lines
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple3D GetSecondDerivative(double parameterValue)
+        public Float64Tuple3D GetSecondDerivative(double parameterValue)
         {
-            return Tuple3D.Zero;
+            return Float64Tuple3D.Zero;
         }
     }
 }

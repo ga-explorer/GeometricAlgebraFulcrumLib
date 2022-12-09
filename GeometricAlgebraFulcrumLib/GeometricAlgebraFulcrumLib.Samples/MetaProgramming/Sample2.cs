@@ -1,7 +1,7 @@
 ﻿using System;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKVectorsLib;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
-using GeometricAlgebraFulcrumLib.Utilities.Factories;
+using GeometricAlgebraFulcrumLib.Processors;
 
 namespace GeometricAlgebraFulcrumLib.Samples.MetaProgramming
 {

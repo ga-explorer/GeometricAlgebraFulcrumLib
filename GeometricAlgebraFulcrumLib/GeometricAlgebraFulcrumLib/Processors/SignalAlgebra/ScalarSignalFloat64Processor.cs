@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.SignalProcessing;
+using GeometricAlgebraFulcrumLib.Algebra.SignalAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using TextComposerLib.Text;
 
@@ -208,7 +208,10 @@ namespace GeometricAlgebraFulcrumLib.Processors.SignalAlgebra
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ScalarSignalFloat64 Times(ScalarSignalFloat64 scalar1, ScalarSignalFloat64 scalar2)
         {
-            return scalar1.MapSamples(scalar2, ScalarProcessor.Times);
+            return scalar1.MapSamples(
+                scalar2, 
+                (s1, s2) => ScalarProcessor.Times(s1, s2)
+            );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -250,7 +253,9 @@ namespace GeometricAlgebraFulcrumLib.Processors.SignalAlgebra
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ScalarSignalFloat64 Sign(ScalarSignalFloat64 scalar)
         {
-            return scalar.MapSamples(ScalarProcessor.Sign);
+            return scalar.MapSamples(
+                s => ScalarProcessor.Sign(s)
+            );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

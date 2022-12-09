@@ -4,12 +4,13 @@ using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Vectors;
 using GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.LinearAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.MatrixAlgebra;
+using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices;
-using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Matrices
 {
-    public sealed record LinMatrix<T>
+    public sealed record LinMatrix<T> :
+        IMatrixStorageContainer<T>
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static LinMatrix<T> operator -(LinMatrix<T> matrix1)
@@ -805,6 +806,57 @@ namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Matrices
             LinearProcessor = linearProcessor;
             MatrixStorage = arrayStorage;
         }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public LinMatrix<T> GetTranspose()
+        {
+            return new LinMatrix<T>(
+                LinearProcessor,
+                MatrixStorage.GetTranspose()
+            );
+        }
+
+        public LinMatrix<T> GetSubMatrix(int row1, int col1, int rowCount, int colCount)
+        {
+            var row2 = (ulong) (row1 + rowCount - 1);
+            var col2 = (ulong) (col1 + colCount - 1);
+
+            var scalarArray = 
+                LinearProcessor.CreateArrayZero2D(rowCount, colCount);
+
+            foreach (var (index1, index2, value) in MatrixStorage.GetIndexScalarRecords())
+            {
+                if (index1 < (ulong) row1 || index1 > row2)
+                    continue;
+
+                if (index2 < (ulong) col1 || index2 > col2)
+                    continue;
+
+                scalarArray[index1 - (ulong) row1, index2 - (ulong) col1] = 
+                    value ?? LinearProcessor.ScalarZero;
+            }
+
+            return scalarArray.CreateLinMatrix(LinearProcessor);
+        }
+
+        public T[,] ToArray()
+        {
+            var scalarArray = 
+                LinearProcessor.CreateArrayZero2D(RowsCount, ColumnsCount);
+
+            foreach (var (index1, index2, value) in MatrixStorage.GetIndexScalarRecords())
+                scalarArray[index1, index2] = 
+                    value ?? LinearProcessor.ScalarZero;
+
+            return scalarArray;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ILinMatrixStorage<T> GetLinMatrixStorage()
+        {
+            return MatrixStorage;
+        }
     }
 
     public sealed record LinMatrix<TMatrix, TScalar>
@@ -1232,6 +1284,19 @@ namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Matrices
         {
             MatrixProcessor = matrixProcessor;
             MatrixStorage = matrixStorage;
+        }
+
+
+        public TScalar[,] ToArray()
+        {
+            var scalarArray = 
+                MatrixProcessor.CreateArrayZero2D(RowsCount, ColumnsCount);
+
+            for (var i = 0; i < RowsCount; i++)
+            for (var j = 0; j < ColumnsCount; j++)
+                scalarArray[i, j] = this[i, j];
+
+            return scalarArray;
         }
     }
 }

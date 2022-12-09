@@ -9,7 +9,7 @@ namespace GraphicsComposerLib.Geometry.SdfShapes.Operations
     /// </summary>
     public sealed class SdfBinaryAnd3D : SdfBinaryOperation
     {
-        public override double GetScalarDistance(ITuple3D point)
+        public override double GetScalarDistance(IFloat64Tuple3D point)
         {
             return Math.Max(
                 Surface1.GetScalarDistance(point),

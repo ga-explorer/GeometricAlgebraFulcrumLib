@@ -45,10 +45,10 @@ namespace GraphicsComposerLib.Geometry.LatticeShapes.Surfaces
                 ? VertexList
                 : _surfaceList.SelectMany(b => b.Vertices);
         
-        public IEnumerable<ITuple3D> VertexPoints 
+        public IEnumerable<IFloat64Tuple3D> VertexPoints 
             => Vertices.Select(v => v.Point);
 
-        public IEnumerable<ITuple3D> VertexNormals 
+        public IEnumerable<IFloat64Tuple3D> VertexNormals 
             => Vertices.Select(v => v.Normal);
 
         public IEnumerable<Pair<double>> VertexTextureUVs 
@@ -60,9 +60,9 @@ namespace GraphicsComposerLib.Geometry.LatticeShapes.Surfaces
         public IReadOnlyList<Triplet<GrLatticeSurfaceLocalFrame3D>> TriangleVerticesList { get; private set; } 
             = Array.Empty<Triplet<GrLatticeSurfaceLocalFrame3D>>();
 
-        public IEnumerable<Triplet<ITuple3D>> TriangleVertexPoints
+        public IEnumerable<Triplet<IFloat64Tuple3D>> TriangleVertexPoints
             => TriangleVerticesList.Select(t => 
-                new Triplet<ITuple3D>(
+                new Triplet<IFloat64Tuple3D>(
                     t.Item1.Point,
                     t.Item2.Point,
                     t.Item3.Point
@@ -134,7 +134,7 @@ namespace GraphicsComposerLib.Geometry.LatticeShapes.Surfaces
         
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GrLatticeSurfaceList3D MapPoints(Func<Tuple3D, Tuple3D> mappingFunc)
+        public GrLatticeSurfaceList3D MapPoints(Func<Float64Tuple3D, Float64Tuple3D> mappingFunc)
         {
             foreach (var batch in _surfaceList)
                 batch.MapPoints(mappingFunc);

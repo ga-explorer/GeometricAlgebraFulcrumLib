@@ -14,7 +14,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Roulettes
 
         public IGraphicsC1ArcLengthCurve3D MovingCurve { get; }
 
-        public Tuple3D GeneratorPoint { get; }
+        public Float64Tuple3D GeneratorPoint { get; }
 
         public double ParameterValueMin 
             => 0;
@@ -32,7 +32,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Roulettes
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GrRouletteCurve3D(IGraphicsC1ArcLengthCurve3D fixedCurve, IGraphicsC1ArcLengthCurve3D movingCurve, ITuple3D generatorPoint, double parameterValueMax)
+        public GrRouletteCurve3D(IGraphicsC1ArcLengthCurve3D fixedCurve, IGraphicsC1ArcLengthCurve3D movingCurve, IFloat64Tuple3D generatorPoint, double parameterValueMax)
         {
             FixedCurve = fixedCurve;
             MovingCurve = movingCurve;
@@ -66,7 +66,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Roulettes
             );
         }
 
-        public Tuple3D GetPoint(double parameterValue)
+        public Float64Tuple3D GetPoint(double parameterValue)
         {
             var t1 = MovingCurve.LengthToParameter(parameterValue);
             var movingFrame = MovingCurve.GetFrame(t1);
@@ -81,7 +81,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Roulettes
                    quaternion.QuaternionRotate(GeneratorPoint - movingFrame.Point);
         }
 
-        public Tuple3D GetTangent(double parameterValue)
+        public Float64Tuple3D GetTangent(double parameterValue)
         {
             //TODO: May be add a caching mechanism to speed this more
             var fX = 
@@ -93,7 +93,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Roulettes
             var fZ =
                 Differentiate.FirstDerivativeFunc(t => GetPoint(t).Z);
 
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 fX(parameterValue),
                 fY(parameterValue),
                 fZ(parameterValue)
@@ -101,7 +101,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Roulettes
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple3D GetUnitTangent(double parameterValue)
+        public Float64Tuple3D GetUnitTangent(double parameterValue)
         {
             return GetTangent(parameterValue).ToUnitVector();
         }
@@ -112,7 +112,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Roulettes
             return this.GetFrenetSerretFrame(parameterValue);
         }
 
-        public Tuple3D GetSecondDerivative(double parameterValue)
+        public Float64Tuple3D GetSecondDerivative(double parameterValue)
         {
             var fX =
                 Differentiate.SecondDerivativeFunc(t => GetPoint(t).X);
@@ -123,7 +123,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Roulettes
             var fZ =
                 Differentiate.SecondDerivativeFunc(t => GetPoint(t).Z);
 
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 fX(parameterValue),
                 fY(parameterValue),
                 fZ(parameterValue)

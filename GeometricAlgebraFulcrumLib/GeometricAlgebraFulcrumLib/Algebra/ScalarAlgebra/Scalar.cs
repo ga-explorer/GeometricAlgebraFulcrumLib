@@ -1,12 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra
 {
-    public sealed record Scalar<T>
+    public sealed class Scalar<T>
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Scalar<T> CreateZero(IScalarAlgebraProcessor<T> processor)
@@ -698,7 +698,418 @@ namespace GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra
             return new Scalar<T>(s2.ScalarProcessor, s2.ScalarProcessor.Divide(s1, s2.ScalarValue));
         }
 
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool operator ==(Scalar<T> s1, Scalar<T> s2)
+        {
+            if (s1 is null || s2 is null) return false;
+
+            var processor = s1.ScalarProcessor;
+
+            return processor.IsZero(
+                processor.Subtract(
+                    s1.ScalarValue,
+                    s2.ScalarValue
+                )
+            );
+        }
         
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool operator !=(Scalar<T> s1, Scalar<T> s2)
+        {
+            if (s1 is null || s2 is null) return false;
+
+            var processor = s1.ScalarProcessor;
+
+            return !processor.IsZero(
+                processor.Subtract(
+                    s1.ScalarValue,
+                    s2.ScalarValue
+                )
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool operator ==(Scalar<T> s1, int s2)
+        {
+            if (s1 is null) return false;
+
+            var processor = s1.ScalarProcessor;
+
+            return processor.IsZero(
+                processor.Subtract(
+                    s1.ScalarValue,
+                    s2
+                )
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool operator !=(Scalar<T> s1, int s2)
+        {
+            if (s1 is null) return false;
+
+            var processor = s1.ScalarProcessor;
+
+            return !processor.IsZero(
+                processor.Subtract(
+                    s1.ScalarValue,
+                    s2
+                )
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool operator ==(int s1, Scalar<T> s2)
+        {
+            if (s2 is null) return false;
+
+            var processor = s2.ScalarProcessor;
+
+            return processor.IsZero(
+                processor.Subtract(
+                    s1,
+                    s2.ScalarValue
+                )
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool operator !=(int s1, Scalar<T> s2)
+        {
+            if (s2 is null) return false;
+
+            var processor = s2.ScalarProcessor;
+
+            return !processor.IsZero(
+                processor.Subtract(
+                    s1,
+                    s2.ScalarValue
+                )
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool operator ==(Scalar<T> s1, double s2)
+        {
+            if (s1 is null) return false;
+
+            var processor = s1.ScalarProcessor;
+
+            return processor.IsZero(
+                processor.Subtract(
+                    s1.ScalarValue,
+                    s2
+                )
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool operator !=(Scalar<T> s1, double s2)
+        {
+            if (s1 is null) return false;
+
+            var processor = s1.ScalarProcessor;
+
+            return !processor.IsZero(
+                processor.Subtract(
+                    s1.ScalarValue,
+                    s2
+                )
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool operator ==(double s1, Scalar<T> s2)
+        {
+            if (s2 is null) return false;
+
+            var processor = s2.ScalarProcessor;
+
+            return processor.IsZero(
+                processor.Subtract(
+                    s1,
+                    s2.ScalarValue
+                )
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool operator !=(double s1, Scalar<T> s2)
+        {
+            if (s2 is null) return false;
+
+            var processor = s2.ScalarProcessor;
+
+            return !processor.IsZero(
+                processor.Subtract(
+                    s1,
+                    s2.ScalarValue
+                )
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool operator <(Scalar<T> s1, Scalar<T> s2)
+        {
+            var processor = s1.ScalarProcessor;
+
+            return processor.IsNegative(
+                processor.Subtract(
+                    s1.ScalarValue,
+                    s2.ScalarValue
+                )
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool operator >(Scalar<T> s1, Scalar<T> s2)
+        {
+            var processor = s1.ScalarProcessor;
+
+            return processor.IsPositive(
+                processor.Subtract(
+                    s1.ScalarValue,
+                    s2.ScalarValue
+                )
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool operator <(Scalar<T> s1, int s2)
+        {
+            var processor = s1.ScalarProcessor;
+
+            return processor.IsNegative(
+                processor.Subtract(
+                    s1.ScalarValue,
+                    s2
+                )
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool operator >(Scalar<T> s1, int s2)
+        {
+            var processor = s1.ScalarProcessor;
+
+            return processor.IsPositive(
+                processor.Subtract(
+                    s1.ScalarValue,
+                    s2
+                )
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool operator <(int s1, Scalar<T> s2)
+        {
+            var processor = s2.ScalarProcessor;
+
+            return processor.IsNegative(
+                processor.Subtract(
+                    s1,
+                    s2.ScalarValue
+                )
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool operator >(int s1, Scalar<T> s2)
+        {
+            var processor = s2.ScalarProcessor;
+
+            return processor.IsPositive(
+                processor.Subtract(
+                    s1,
+                    s2.ScalarValue
+                )
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool operator <(Scalar<T> s1, double s2)
+        {
+            var processor = s1.ScalarProcessor;
+
+            return processor.IsNegative(
+                processor.Subtract(
+                    s1.ScalarValue,
+                    s2
+                )
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool operator >(Scalar<T> s1, double s2)
+        {
+            var processor = s1.ScalarProcessor;
+
+            return processor.IsPositive(
+                processor.Subtract(
+                    s1.ScalarValue,
+                    s2
+                )
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool operator <(double s1, Scalar<T> s2)
+        {
+            var processor = s2.ScalarProcessor;
+
+            return processor.IsNegative(
+                processor.Subtract(
+                    s1,
+                    s2.ScalarValue
+                )
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool operator >(double s1, Scalar<T> s2)
+        {
+            var processor = s2.ScalarProcessor;
+
+            return processor.IsPositive(
+                processor.Subtract(
+                    s1,
+                    s2.ScalarValue
+                )
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool operator <=(Scalar<T> s1, Scalar<T> s2)
+        {
+            var processor = s1.ScalarProcessor;
+
+            return !processor.IsPositive(
+                processor.Subtract(
+                    s1.ScalarValue,
+                    s2.ScalarValue
+                )
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool operator >=(Scalar<T> s1, Scalar<T> s2)
+        {
+            var processor = s1.ScalarProcessor;
+
+            return !processor.IsNegative(
+                processor.Subtract(
+                    s1.ScalarValue,
+                    s2.ScalarValue
+                )
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool operator <=(Scalar<T> s1, int s2)
+        {
+            var processor = s1.ScalarProcessor;
+
+            return !processor.IsPositive(
+                processor.Subtract(
+                    s1.ScalarValue,
+                    s2
+                )
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool operator >=(Scalar<T> s1, int s2)
+        {
+            var processor = s1.ScalarProcessor;
+
+            return !processor.IsNegative(
+                processor.Subtract(
+                    s1.ScalarValue,
+                    s2
+                )
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool operator <=(int s1, Scalar<T> s2)
+        {
+            var processor = s2.ScalarProcessor;
+
+            return !processor.IsPositive(
+                processor.Subtract(
+                    s1,
+                    s2.ScalarValue
+                )
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool operator >=(int s1, Scalar<T> s2)
+        {
+            var processor = s2.ScalarProcessor;
+
+            return !processor.IsNegative(
+                processor.Subtract(
+                    s1,
+                    s2.ScalarValue
+                )
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool operator <=(Scalar<T> s1, double s2)
+        {
+            var processor = s1.ScalarProcessor;
+
+            return !processor.IsPositive(
+                processor.Subtract(
+                    s1.ScalarValue,
+                    s2
+                )
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool operator >=(Scalar<T> s1, double s2)
+        {
+            var processor = s1.ScalarProcessor;
+
+            return !processor.IsNegative(
+                processor.Subtract(
+                    s1.ScalarValue,
+                    s2
+                )
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool operator <=(double s1, Scalar<T> s2)
+        {
+            var processor = s2.ScalarProcessor;
+
+            return !processor.IsPositive(
+                processor.Subtract(
+                    s1,
+                    s2.ScalarValue
+                )
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool operator >=(double s1, Scalar<T> s2)
+        {
+            var processor = s2.ScalarProcessor;
+
+            return !processor.IsNegative(
+                processor.Subtract(
+                    s1,
+                    s2.ScalarValue
+                )
+            );
+        }
+
+
         public IScalarAlgebraProcessor<T> ScalarProcessor { get; }
 
         public T ScalarValue { get; }
@@ -792,6 +1203,26 @@ namespace GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra
                 ScalarProcessor, 
                 scalarMapping(ScalarValue)
             );
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private bool Equals(Scalar<T> other)
+        {
+            return Equals(ScalarProcessor, other.ScalarProcessor) && 
+                   EqualityComparer<T>.Default.Equals(ScalarValue, other.ScalarValue);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override bool Equals(object obj)
+        {
+            return ReferenceEquals(this, obj) || obj is Scalar<T> other && Equals(other);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(ScalarProcessor, ScalarValue);
         }
     }
 }

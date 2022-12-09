@@ -13,12 +13,12 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Surfaces
     public static class GrParametricSurfaceFactory3D
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D GetPointOnYzSphereSurface(double radius, double t1, double t2)
+        public static Float64Tuple3D GetPointOnYzSphereSurface(double radius, double t1, double t2)
         {
             var theta = t1 * 2 * Math.PI;
             var phi = (t2 - 0.5d) * Math.PI;
 
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 radius * Math.Sin(phi),
                 radius * Math.Cos(theta) * Math.Cos(phi),
                 radius * Math.Sin(theta) * Math.Cos(phi)
@@ -26,12 +26,12 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Surfaces
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D GetPointOnZySphereSurface(double radius, double t1, double t2)
+        public static Float64Tuple3D GetPointOnZySphereSurface(double radius, double t1, double t2)
         {
             var theta = t1 * -2 * Math.PI;
             var phi = (t2 - 0.5d) * Math.PI;
 
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 radius * Math.Sin(phi),
                 radius * Math.Cos(theta) * Math.Cos(phi),
                 radius * Math.Sin(theta) * Math.Cos(phi)
@@ -39,12 +39,12 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Surfaces
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D GetPointOnZxSphereSurface(double radius, double t1, double t2)
+        public static Float64Tuple3D GetPointOnZxSphereSurface(double radius, double t1, double t2)
         {
             var theta = t1 * 2 * Math.PI;
             var phi = (t2 - 0.5d) * Math.PI;
 
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 radius * Math.Sin(theta) * Math.Cos(phi),
                 radius * Math.Sin(phi),
                 radius * Math.Cos(theta) * Math.Cos(phi)
@@ -52,12 +52,12 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Surfaces
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D GetPointOnXzSphereSurface(double radius, double t1, double t2)
+        public static Float64Tuple3D GetPointOnXzSphereSurface(double radius, double t1, double t2)
         {
             var theta = t1 * -2 * Math.PI;
             var phi = (t2 - 0.5d) * Math.PI;
 
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 radius * Math.Sin(theta) * Math.Cos(phi),
                 radius * Math.Sin(phi),
                 radius * Math.Cos(theta) * Math.Cos(phi)
@@ -65,12 +65,12 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Surfaces
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D GetPointOnXySphereSurface(double radius, double t1, double t2)
+        public static Float64Tuple3D GetPointOnXySphereSurface(double radius, double t1, double t2)
         {
             var theta = t1 * 2 * Math.PI;
             var phi = (t2 - 0.5d) * Math.PI;
 
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 radius * Math.Cos(theta) * Math.Cos(phi),
                 radius * Math.Sin(theta) * Math.Cos(phi),
                 radius * Math.Sin(phi)
@@ -78,12 +78,12 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Surfaces
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D GetPointOnYxSphereSurface(double radius, double t1, double t2)
+        public static Float64Tuple3D GetPointOnYxSphereSurface(double radius, double t1, double t2)
         {
             var theta = t1 * -2 * Math.PI;
             var phi = (t2 - 0.5d) * Math.PI;
 
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 radius * Math.Cos(theta) * Math.Cos(phi),
                 radius * Math.Sin(theta) * Math.Cos(phi),
                 radius * Math.Sin(phi)
@@ -92,12 +92,12 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Surfaces
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D GetNormalOnYzSphereSurface(double t1, double t2)
+        public static Float64Tuple3D GetNormalOnYzSphereSurface(double t1, double t2)
         {
             var theta = t1 * 2 * Math.PI;
             var phi = (t2 - 0.5d) * Math.PI;
 
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 Math.Sin(phi),
                 Math.Cos(theta) * Math.Cos(phi),
                 Math.Sin(theta) * Math.Cos(phi)
@@ -105,12 +105,12 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Surfaces
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D GetNormalOnZySphereSurface(double t1, double t2)
+        public static Float64Tuple3D GetNormalOnZySphereSurface(double t1, double t2)
         {
             var theta = t1 * -2 * Math.PI;
             var phi = (t2 - 0.5d) * Math.PI;
 
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 Math.Sin(phi),
                 Math.Cos(theta) * Math.Cos(phi),
                 Math.Sin(theta) * Math.Cos(phi)
@@ -118,12 +118,12 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Surfaces
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D GetNormalOnZxSphereSurface(double t1, double t2)
+        public static Float64Tuple3D GetNormalOnZxSphereSurface(double t1, double t2)
         {
             var theta = t1 * 2 * Math.PI;
             var phi = (t2 - 0.5d) * Math.PI;
 
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 Math.Sin(theta) * Math.Cos(phi),
                 Math.Sin(phi),
                 Math.Cos(theta) * Math.Cos(phi)
@@ -131,12 +131,12 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Surfaces
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D GetNormalOnXzSphereSurface(double t1, double t2)
+        public static Float64Tuple3D GetNormalOnXzSphereSurface(double t1, double t2)
         {
             var theta = t1 * -2 * Math.PI;
             var phi = (t2 - 0.5d) * Math.PI;
 
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 Math.Sin(theta) * Math.Cos(phi),
                 Math.Sin(phi),
                 Math.Cos(theta) * Math.Cos(phi)
@@ -144,12 +144,12 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Surfaces
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D GetNormalOnXySphereSurface(double t1, double t2)
+        public static Float64Tuple3D GetNormalOnXySphereSurface(double t1, double t2)
         {
             var theta = t1 * 2 * Math.PI;
             var phi = (t2 - 0.5d) * Math.PI;
 
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 Math.Cos(theta) * Math.Cos(phi),
                 Math.Sin(theta) * Math.Cos(phi),
                 Math.Sin(phi)
@@ -157,12 +157,12 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Surfaces
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple3D GetNormalOnYxSphereSurface(double t1, double t2)
+        public static Float64Tuple3D GetNormalOnYxSphereSurface(double t1, double t2)
         {
             var theta = t1 * -2 * Math.PI;
             var phi = (t2 - 0.5d) * Math.PI;
 
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 Math.Cos(theta) * Math.Cos(phi),
                 Math.Sin(theta) * Math.Cos(phi),
                 Math.Sin(phi)
@@ -222,7 +222,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Surfaces
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GrComputedParametricSurface3D CreateSphere3D(this ITuple3D sliceAxisUnitNormal, double radius)
+        public static GrComputedParametricSurface3D CreateSphere3D(this IFloat64Tuple3D sliceAxisUnitNormal, double radius)
         {
             return sliceAxisUnitNormal
                 .SelectNearestAxis()
@@ -242,7 +242,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Surfaces
         public static GrComputedParametricSurface3D CreateMathSurface3D(Func<double, double, double> mathFunction)
         {
             return new GrComputedParametricSurface3D(
-                (x, y) => new Tuple3D(x, y, mathFunction(x, y))
+                (x, y) => new Float64Tuple3D(x, y, mathFunction(x, y))
             );
         }
         

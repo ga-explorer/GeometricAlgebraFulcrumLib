@@ -22,26 +22,26 @@ public sealed class GrCatmullRomSpline4D
 
 
     private readonly double[] _knotList;
-    private readonly List<ITuple4D> _pointList;
+    private readonly List<IFloat64Tuple4D> _pointList;
 
     public CatmullRomSplineType CurveType { get; }
 
     public bool IsClosed { get; }
 
-    public IEnumerable<ITuple4D> ControlPoints 
+    public IEnumerable<IFloat64Tuple4D> ControlPoints 
         => _pointList;
 
     public int ControlPointCount 
         => _pointList.Count;
 
 
-    internal GrCatmullRomSpline4D(IEnumerable<ITuple4D> inputPointList, CatmullRomSplineType curveType, bool isClosed)
+    internal GrCatmullRomSpline4D(IEnumerable<IFloat64Tuple4D> inputPointList, CatmullRomSplineType curveType, bool isClosed)
     {
         CurveType = curveType;
         IsClosed = isClosed;
-        _pointList = new List<ITuple4D>(inputPointList);
+        _pointList = new List<IFloat64Tuple4D>(inputPointList);
 
-        ITuple4D endPoint1, endPoint2;
+        IFloat64Tuple4D endPoint1, endPoint2;
 
         if (isClosed)
         {
@@ -72,7 +72,7 @@ public sealed class GrCatmullRomSpline4D
         for (var i = 1; i < _pointList.Count; i++)
         {
             var vector = _pointList[i].ToTuple4D() - _pointList[i - 1];
-            var ds = vector.GetLengthSquared();
+            var ds = vector.GetVectorNormSquared();
 
             var power = 
                 curveType == CatmullRomSplineType.Centripetal 
@@ -298,7 +298,7 @@ public sealed class GrCatmullRomSpline4D
         return parameterValue.GetCatmullRomValue(tQuad, wQuad);
     }
 
-    public Tuple4D GetPoint(double parameterValue)
+    public Float64Tuple4D GetPoint(double parameterValue)
     {
         // Handle edge cases
         if (parameterValue <= _knotList[0])
@@ -345,13 +345,13 @@ public sealed class GrCatmullRomSpline4D
         var z = parameterValue.GetCatmullRomValue(tQuad, zQuad);
         var w = parameterValue.GetCatmullRomValue(tQuad, wQuad);
 
-        return new Tuple4D(x, y, z, w);
+        return new Float64Tuple4D(x, y, z, w);
     }
 
-    public Tuple4D GetTangent(double parameterValue)
+    public Float64Tuple4D GetTangent(double parameterValue)
     {
         if (parameterValue is <= 0d or >= 1d) 
-            return new Tuple4D(
+            return new Float64Tuple4D(
                 Differentiate.FirstDerivative(GetPointX, parameterValue),
                 Differentiate.FirstDerivative(GetPointY, parameterValue),
                 Differentiate.FirstDerivative(GetPointZ, parameterValue),
@@ -362,7 +362,7 @@ public sealed class GrCatmullRomSpline4D
             GetKnotIndexContaining(parameterValue, 0, _knotList.Length - 1);
 
         if (index1 == index2)
-            return new Tuple4D(
+            return new Float64Tuple4D(
                 Differentiate.FirstDerivative(GetPointX, parameterValue),
                 Differentiate.FirstDerivative(GetPointY, parameterValue),
                 Differentiate.FirstDerivative(GetPointZ, parameterValue),
@@ -386,13 +386,13 @@ public sealed class GrCatmullRomSpline4D
         var z = parameterValue.GetCatmullRomDerivativeValue(tQuad, zQuad);
         var w = parameterValue.GetCatmullRomDerivativeValue(tQuad, wQuad);
 
-        return new Tuple4D(x, y, z, w);
+        return new Float64Tuple4D(x, y, z, w);
     }
     
-    public Tuple4D GetSecondDerivative(double parameterValue)
+    public Float64Tuple4D GetSecondDerivative(double parameterValue)
     {
         if (parameterValue is <= 0d or >= 1d) 
-            return new Tuple4D(
+            return new Float64Tuple4D(
                 Differentiate.SecondDerivative(GetPointX, parameterValue),
                 Differentiate.SecondDerivative(GetPointY, parameterValue),
                 Differentiate.SecondDerivative(GetPointZ, parameterValue),
@@ -403,7 +403,7 @@ public sealed class GrCatmullRomSpline4D
             GetKnotIndexContaining(parameterValue, 0, _knotList.Length - 1);
 
         if (index1 == index2)
-            return new Tuple4D(
+            return new Float64Tuple4D(
                 Differentiate.SecondDerivative(GetPointX, parameterValue),
                 Differentiate.SecondDerivative(GetPointY, parameterValue),
                 Differentiate.SecondDerivative(GetPointZ, parameterValue),
@@ -427,11 +427,11 @@ public sealed class GrCatmullRomSpline4D
         var z = parameterValue.GetCatmullRomDerivative2Value(tQuad, zQuad);
         var w = parameterValue.GetCatmullRomDerivative2Value(tQuad, wQuad);
 
-        return new Tuple4D(x, y, z, w);
+        return new Float64Tuple4D(x, y, z, w);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Tuple4D GetUnitTangent(double parameterValue)
+    public Float64Tuple4D GetUnitTangent(double parameterValue)
     {
         return GetTangent(parameterValue).ToUnitVector();
     }

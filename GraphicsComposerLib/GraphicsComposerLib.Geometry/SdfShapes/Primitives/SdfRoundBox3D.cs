@@ -10,18 +10,18 @@ namespace GraphicsComposerLib.Geometry.SdfShapes.Primitives
     /// </summary>
     public sealed class SdfRoundBox3D : ScalarDistanceFunction
     {
-        public Tuple3D SideHalfLengths { get; set; }
-            = new Tuple3D(0.5d, 0.5d, 0.5d);
+        public Float64Tuple3D SideHalfLengths { get; set; }
+            = new Float64Tuple3D(0.5d, 0.5d, 0.5d);
         
         public double Radius { get; set; }
             = 0.1d;
 
 
-        public override double GetScalarDistance(ITuple3D point)
+        public override double GetScalarDistance(IFloat64Tuple3D point)
         {
             var d = point.ComponentsAbs() - SideHalfLengths;
 
-            var v1 = d.ComponentsMax(0.0d).GetLength() - Radius;
+            var v1 = d.ComponentsMax(0.0d).GetVectorNorm() - Radius;
             
             // remove v2 for an only partially signed sdf 
             var v2 = Math.Min(Math.Max(d.X, Math.Max(d.Y, d.Z)), 0.0d);

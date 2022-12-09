@@ -10,7 +10,7 @@ using NumericalGeometryLib.BasicMath.Tuples.Immutable;
 namespace GraphicsComposerLib.Geometry.Textures
 {
     public sealed class GraphicsTextureCoordinatesGrid
-        : IPeriodicSequence2D<ITuple2D>
+        : IPeriodicSequence2D<IFloat64Tuple2D>
     {
         public IReadOnlyList<double> TextureURange { get; }
 
@@ -25,21 +25,21 @@ namespace GraphicsComposerLib.Geometry.Textures
         public int Count 
             => TextureURange.Count * TextureVRange.Count;
 
-        public ITuple2D this[int index]
+        public IFloat64Tuple2D this[int index]
         {
             get
             {
                 var (index1, index2) = this.GetItemIndexPair(index);
 
-                return new Tuple2D(
+                return new Float64Tuple2D(
                     TextureURange[index1],
                     TextureVRange[index2]
                 );
             }
         }
 
-        public ITuple2D this[int index1, int index2] 
-            => new Tuple2D(
+        public IFloat64Tuple2D this[int index1, int index2] 
+            => new Float64Tuple2D(
                 TextureURange[index1],
                 TextureVRange[index2]
             );
@@ -58,16 +58,16 @@ namespace GraphicsComposerLib.Geometry.Textures
         }
 
 
-        public PSeqSlice1D<ITuple2D> GetSliceAt(int dimension, int index)
+        public PSeqSlice1D<IFloat64Tuple2D> GetSliceAt(int dimension, int index)
         {
-            return new PSeqSlice1D<ITuple2D>(this, dimension, index);
+            return new PSeqSlice1D<IFloat64Tuple2D>(this, dimension, index);
         }
 
-        public IEnumerator<ITuple2D> GetEnumerator()
+        public IEnumerator<IFloat64Tuple2D> GetEnumerator()
         {
             foreach (var value1 in TextureURange)
             foreach (var value2 in TextureVRange)
-                yield return new Tuple2D(value1, value2);
+                yield return new Float64Tuple2D(value1, value2);
         }
 
         IEnumerator IEnumerable.GetEnumerator()

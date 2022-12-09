@@ -2,11 +2,17 @@
 using System.Linq;
 using AngouriMath;
 using DataStructuresLib.Extensions;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.LinearMaps;
+using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Matrices;
+using GeometricAlgebraFulcrumLib.Processors;
 using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra;
 using GeometricAlgebraFulcrumLib.Text;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
-using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.AngouriMath
 {
@@ -168,7 +174,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.AngouriMath
                         (int)GaSpaceDimension,
                         (int)GaSpaceDimension
                     )
-                    .GetSubArray(indicesArray1, indicesArray1);
+                    .GetShallowCopy(indicesArray1, indicesArray1);
 
             var matrix2 =
                 GeometricProcessor.CreateSparseUnilinearMap(
@@ -178,7 +184,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.AngouriMath
                         (int)GaSpaceDimension,
                         (int)GaSpaceDimension
                     )
-                    .GetSubArray(indicesArray1, indicesArray1);
+                    .GetShallowCopy(indicesArray1, indicesArray1);
 
             //var det1 = 
             //    Mfs.Det[matrix1.ToArrayExpr()].FullSimplify(unitLengthAssumptionExpr2);

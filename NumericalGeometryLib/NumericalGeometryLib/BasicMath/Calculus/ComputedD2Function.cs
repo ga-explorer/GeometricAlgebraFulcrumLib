@@ -60,7 +60,7 @@ public class ComputedD2Function :
 
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public double GetSecondDerivative(double t)
+    public double GetSecondDerivativeValue(double t)
     {
         return SecondDerivativeFunc(t);
     }

@@ -29,19 +29,19 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Mapped
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple2D GetPoint(double parameterValue)
+        public Float64Tuple2D GetPoint(double parameterValue)
         {
             return Map.MapPoint(BaseCurve.GetPoint(parameterValue));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple2D GetTangent(double parameterValue)
+        public Float64Tuple2D GetTangent(double parameterValue)
         {
             return Map.MapPoint(BaseCurve.GetTangent(parameterValue));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple2D GetUnitTangent(double parameterValue)
+        public Float64Tuple2D GetUnitTangent(double parameterValue)
         {
             return GetTangent(parameterValue).ToUnitVector();
         }

@@ -110,6 +110,8 @@ namespace GeometricAlgebraFulcrumLib.Mathematica.Mathematica.ExprFactory
         public static Mfs FunctionExpand { get; } = new Mfs("FunctionExpand");
         public static Mfs PowerExpand { get; } = new Mfs("PowerExpand");
         public static Mfs ToRadicals { get; } = new Mfs("ToRadicals");
+        public static Mfs TrigToExp { get; } = new Mfs("TrigToExp");
+        public static Mfs ExpToTrig { get; } = new Mfs("ExpToTrig");
         public static Mfs ReplaceAll { get; } = new Mfs("ReplaceAll");
 
         public static Mfs MathMlForm { get; } = new Mfs("MathMLForm");

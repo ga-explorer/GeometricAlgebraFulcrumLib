@@ -18,8 +18,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.Numeric
         /// </summary>
         public static void Example1()
         {
-            var point1 = new Tuple2D(10, -1);
-            var tangent1 = new Tuple2D(1.2, 0.9);
+            var point1 = new Float64Tuple2D(10, -1);
+            var tangent1 = new Float64Tuple2D(1.2, 0.9);
 
             Console.WriteLine(@$"c'(1) = {tangent1}");
             Console.WriteLine(@$"c(1) = {point1}");
@@ -61,8 +61,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.Numeric
         /// </summary>
         public static void Example2()
         {
-            var point1 = new Tuple3D(10, -1, 3);
-            var tangent1 = new Tuple3D(1.2, 0.9, -0.5);
+            var point1 = new Float64Tuple3D(10, -1, 3);
+            var tangent1 = new Float64Tuple3D(1.2, 0.9, -0.5);
 
             Console.WriteLine(@$"c'(1) = {tangent1}");
             Console.WriteLine(@$"c(1) = {point1}");
@@ -131,11 +131,11 @@ namespace GeometricAlgebraFulcrumLib.Samples.Numeric
         /// </summary>
         public static void Example3()
         {
-            var point0 = new Tuple2D(1, 1);
-            var tangent0 = new Tuple2D(-1.2, -0.9);
+            var point0 = new Float64Tuple2D(1, 1);
+            var tangent0 = new Float64Tuple2D(-1.2, -0.9);
 
-            var point1 = new Tuple2D(10, -1);
-            var tangent1 = new Tuple2D(1.2, 0.9);
+            var point1 = new Float64Tuple2D(10, -1);
+            var tangent1 = new Float64Tuple2D(1.2, 0.9);
 
             Console.WriteLine(@$"c'(0) = {tangent0}");
             Console.WriteLine(@$"c'(1) = {tangent1}");
@@ -212,11 +212,11 @@ namespace GeometricAlgebraFulcrumLib.Samples.Numeric
         /// </summary>
         public static void Example4()
         {
-            var point0 = new Tuple3D(1, 1, 0);
-            var tangent0 = new Tuple3D(-1.2, -0.9, 0.5);
+            var point0 = new Float64Tuple3D(1, 1, 0);
+            var tangent0 = new Float64Tuple3D(-1.2, -0.9, 0.5);
 
-            var point1 = new Tuple3D(10, -1, 3);
-            var tangent1 = new Tuple3D(1.2, 0.9, -0.5);
+            var point1 = new Float64Tuple3D(10, -1, 3);
+            var tangent1 = new Float64Tuple3D(1.2, 0.9, -0.5);
 
             Console.WriteLine(@$"c'(0) = {tangent0}");
             Console.WriteLine(@$"c'(1) = {tangent1}");

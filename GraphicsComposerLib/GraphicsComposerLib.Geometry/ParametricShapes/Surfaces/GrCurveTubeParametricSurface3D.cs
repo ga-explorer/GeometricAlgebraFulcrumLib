@@ -30,7 +30,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Surfaces
             return Curve.IsValid() && Radius.IsValid();
         }
 
-        public Tuple3D GetPoint(double parameterValue1, double parameterValue2)
+        public Float64Tuple3D GetPoint(double parameterValue1, double parameterValue2)
         {
             var curveFrame = Curve.GetFrame(parameterValue2);
 
@@ -42,7 +42,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Surfaces
                 Radius * Math.Sin(angle) * curveFrame.Normal2.ToTuple3D();
         }
 
-        public Tuple3D GetNormal(double parameterValue1, double parameterValue2)
+        public Float64Tuple3D GetNormal(double parameterValue1, double parameterValue2)
         {
             var curveFrame = Curve.GetFrame(parameterValue2);
 
@@ -53,7 +53,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Surfaces
                 Radius * Math.Sin(angle) * curveFrame.Normal2.ToTuple3D();
         }
 
-        public Tuple3D GetUnitNormal(double parameterValue1, double parameterValue2)
+        public Float64Tuple3D GetUnitNormal(double parameterValue1, double parameterValue2)
         {
             return GetNormal(parameterValue1, parameterValue2).ToUnitVector();
         }

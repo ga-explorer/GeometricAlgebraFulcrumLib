@@ -53,7 +53,7 @@ namespace GraphicsComposerLib.Rendering.Svg.Paths
             return command;
         }
 
-        public static SvgPathCommandMoveTo Create(IEnumerable<ITuple2D> points)
+        public static SvgPathCommandMoveTo Create(IEnumerable<IFloat64Tuple2D> points)
         {
             var command = new SvgPathCommandMoveTo();
 
@@ -62,7 +62,7 @@ namespace GraphicsComposerLib.Rendering.Svg.Paths
             return command;
         }
 
-        public static SvgPathCommandMoveTo Create(bool isRelative, IEnumerable<ITuple2D> points)
+        public static SvgPathCommandMoveTo Create(bool isRelative, IEnumerable<IFloat64Tuple2D> points)
         {
             var command = new SvgPathCommandMoveTo { IsRelative = isRelative };
 
@@ -71,7 +71,7 @@ namespace GraphicsComposerLib.Rendering.Svg.Paths
             return command;
         }
 
-        public static SvgPathCommandMoveTo Create(bool isRelative, SvgValueLengthUnit unit, IEnumerable<ITuple2D> points)
+        public static SvgPathCommandMoveTo Create(bool isRelative, SvgValueLengthUnit unit, IEnumerable<IFloat64Tuple2D> points)
         {
             var command = new SvgPathCommandMoveTo { IsRelative = isRelative };
 
@@ -81,7 +81,7 @@ namespace GraphicsComposerLib.Rendering.Svg.Paths
             return command;
         }
 
-        public static SvgPathCommandMoveTo Create(params ITuple2D[] points)
+        public static SvgPathCommandMoveTo Create(params IFloat64Tuple2D[] points)
         {
             var command = new SvgPathCommandMoveTo();
 
@@ -90,7 +90,7 @@ namespace GraphicsComposerLib.Rendering.Svg.Paths
             return command;
         }
 
-        public static SvgPathCommandMoveTo Create(bool isRelative, params ITuple2D[] points)
+        public static SvgPathCommandMoveTo Create(bool isRelative, params IFloat64Tuple2D[] points)
         {
             var command = new SvgPathCommandMoveTo { IsRelative = isRelative };
 
@@ -99,7 +99,7 @@ namespace GraphicsComposerLib.Rendering.Svg.Paths
             return command;
         }
 
-        public static SvgPathCommandMoveTo Create(bool isRelative, SvgValueLengthUnit unit, params ITuple2D[] points)
+        public static SvgPathCommandMoveTo Create(bool isRelative, SvgValueLengthUnit unit, params IFloat64Tuple2D[] points)
         {
             var command = new SvgPathCommandMoveTo { IsRelative = isRelative };
 

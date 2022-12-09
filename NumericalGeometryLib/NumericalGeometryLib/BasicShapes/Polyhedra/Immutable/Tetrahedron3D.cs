@@ -8,7 +8,7 @@ namespace NumericalGeometryLib.BasicShapes.Polyhedra.Immutable
 {
     public sealed class Tetrahedron3D
     {
-        public static Tetrahedron3D CreateFromPoints(Tuple3D point1, Tuple3D point2, Tuple3D point3, Tuple3D point4)
+        public static Tetrahedron3D CreateFromPoints(Float64Tuple3D point1, Float64Tuple3D point2, Float64Tuple3D point3, Float64Tuple3D point4)
         {
             return new Tetrahedron3D(
                 point1.X, point1.Y, point1.Z,
@@ -47,157 +47,157 @@ namespace NumericalGeometryLib.BasicShapes.Polyhedra.Immutable
         public double Point4Z { get; }
 
 
-        public Tuple3D Point1
+        public Float64Tuple3D Point1
         {
-            get { return new Tuple3D(Point1X, Point1Y, Point1Z); }
+            get { return new Float64Tuple3D(Point1X, Point1Y, Point1Z); }
         }
 
-        public Tuple3D Point2
+        public Float64Tuple3D Point2
         {
-            get { return new Tuple3D(Point2X, Point2Y, Point2Z); }
+            get { return new Float64Tuple3D(Point2X, Point2Y, Point2Z); }
         }
 
-        public Tuple3D Point3
+        public Float64Tuple3D Point3
         {
-            get { return new Tuple3D(Point3X, Point3Y, Point3Z); }
+            get { return new Float64Tuple3D(Point3X, Point3Y, Point3Z); }
         }
 
-        public Tuple3D Direction12
+        public Float64Tuple3D Direction12
         {
-            get { return new Tuple3D(Point2X - Point1X, Point2Y - Point1Y, Point2Z - Point1Z); }
+            get { return new Float64Tuple3D(Point2X - Point1X, Point2Y - Point1Y, Point2Z - Point1Z); }
         }
 
-        public Tuple3D Direction21
+        public Float64Tuple3D Direction21
         {
-            get { return new Tuple3D(Point1X - Point2X, Point1Y - Point2Y, Point1Z - Point2Z); }
+            get { return new Float64Tuple3D(Point1X - Point2X, Point1Y - Point2Y, Point1Z - Point2Z); }
         }
 
-        public Tuple3D Direction23
+        public Float64Tuple3D Direction23
         {
-            get { return new Tuple3D(Point3X - Point2X, Point3Y - Point2Y, Point3Z - Point2Z); }
+            get { return new Float64Tuple3D(Point3X - Point2X, Point3Y - Point2Y, Point3Z - Point2Z); }
         }
 
-        public Tuple3D Direction32
+        public Float64Tuple3D Direction32
         {
-            get { return new Tuple3D(Point2X - Point3X, Point2Y - Point3Y, Point2Z - Point3Z); }
+            get { return new Float64Tuple3D(Point2X - Point3X, Point2Y - Point3Y, Point2Z - Point3Z); }
         }
 
-        public Tuple3D Direction31
+        public Float64Tuple3D Direction31
         {
-            get { return new Tuple3D(Point1X - Point3X, Point1Y - Point3Y, Point1Z - Point3Z); }
+            get { return new Float64Tuple3D(Point1X - Point3X, Point1Y - Point3Y, Point1Z - Point3Z); }
         }
 
-        public Tuple3D Direction13
+        public Float64Tuple3D Direction13
         {
-            get { return new Tuple3D(Point3X - Point1X, Point3Y - Point1Y, Point3Z - Point1Z); }
+            get { return new Float64Tuple3D(Point3X - Point1X, Point3Y - Point1Y, Point3Z - Point1Z); }
         }
 
-        public Tuple3D Direction14
+        public Float64Tuple3D Direction14
         {
-            get { return new Tuple3D(Point4X - Point1X, Point4Y - Point1Y, Point4Z - Point1Z); }
+            get { return new Float64Tuple3D(Point4X - Point1X, Point4Y - Point1Y, Point4Z - Point1Z); }
         }
 
-        public Tuple3D Direction41
+        public Float64Tuple3D Direction41
         {
-            get { return new Tuple3D(Point1X - Point4X, Point1Y - Point4Y, Point1Z - Point4Z); }
+            get { return new Float64Tuple3D(Point1X - Point4X, Point1Y - Point4Y, Point1Z - Point4Z); }
         }
 
-        public Tuple3D Direction24
+        public Float64Tuple3D Direction24
         {
-            get { return new Tuple3D(Point4X - Point2X, Point4Y - Point2Y, Point4Z - Point2Z); }
+            get { return new Float64Tuple3D(Point4X - Point2X, Point4Y - Point2Y, Point4Z - Point2Z); }
         }
 
-        public Tuple3D Direction42
+        public Float64Tuple3D Direction42
         {
-            get { return new Tuple3D(Point2X - Point4X, Point2Y - Point4Y, Point2Z - Point4Z); }
+            get { return new Float64Tuple3D(Point2X - Point4X, Point2Y - Point4Y, Point2Z - Point4Z); }
         }
 
-        public Tuple3D Direction34
+        public Float64Tuple3D Direction34
         {
-            get { return new Tuple3D(Point4X - Point3X, Point4Y - Point3Y, Point4Z - Point3Z); }
+            get { return new Float64Tuple3D(Point4X - Point3X, Point4Y - Point3Y, Point4Z - Point3Z); }
         }
 
-        public Tuple3D Direction43
+        public Float64Tuple3D Direction43
         {
-            get { return new Tuple3D(Point3X - Point4X, Point3Y - Point4Y, Point3Z - Point4Z); }
+            get { return new Float64Tuple3D(Point3X - Point4X, Point3Y - Point4Y, Point3Z - Point4Z); }
         }
 
-        public Tuple3D Normal123
+        public Float64Tuple3D Normal123
         {
             get { return Direction12.VectorCross(Direction23); }
         }
 
-        public Tuple3D UnitNormal123
+        public Float64Tuple3D UnitNormal123
         {
             get { return Direction12.VectorUnitCross(Direction23); }
         }
 
-        public Tuple3D Normal321
+        public Float64Tuple3D Normal321
         {
             get { return Direction32.VectorCross(Direction21); }
         }
 
-        public Tuple3D UnitNormal321
+        public Float64Tuple3D UnitNormal321
         {
             get { return Direction32.VectorUnitCross(Direction21); }
         }
 
-        public Tuple3D Normal124
+        public Float64Tuple3D Normal124
         {
             get { return Direction12.VectorCross(Direction24); }
         }
 
-        public Tuple3D UnitNormal124
+        public Float64Tuple3D UnitNormal124
         {
             get { return Direction12.VectorUnitCross(Direction24); }
         }
 
-        public Tuple3D Normal421
+        public Float64Tuple3D Normal421
         {
             get { return Direction42.VectorCross(Direction21); }
         }
 
-        public Tuple3D UnitNormal421
+        public Float64Tuple3D UnitNormal421
         {
             get { return Direction42.VectorUnitCross(Direction21); }
         }
 
-        public Tuple3D Normal134
+        public Float64Tuple3D Normal134
         {
             get { return Direction13.VectorCross(Direction34); }
         }
 
-        public Tuple3D UnitNormal134
+        public Float64Tuple3D UnitNormal134
         {
             get { return Direction13.VectorUnitCross(Direction34); }
         }
 
-        public Tuple3D Normal431
+        public Float64Tuple3D Normal431
         {
             get { return Direction43.VectorCross(Direction31); }
         }
 
-        public Tuple3D UnitNormal431
+        public Float64Tuple3D UnitNormal431
         {
             get { return Direction43.VectorUnitCross(Direction31); }
         }
 
-        public Tuple3D Normal234
+        public Float64Tuple3D Normal234
         {
             get { return Direction23.VectorCross(Direction34); }
         }
 
-        public Tuple3D UnitNormal234
+        public Float64Tuple3D UnitNormal234
         {
             get { return Direction23.VectorUnitCross(Direction34); }
         }
 
-        public Tuple3D Normal432
+        public Float64Tuple3D Normal432
         {
             get { return Direction43.VectorCross(Direction32); }
         }
 
-        public Tuple3D UnitNormal432
+        public Float64Tuple3D UnitNormal432
         {
             get { return Direction43.VectorUnitCross(Direction32); }
         }
@@ -236,18 +236,18 @@ namespace NumericalGeometryLib.BasicShapes.Polyhedra.Immutable
         }
 
 
-        public Tuple3D GetPointAt(double w1, double w2, double w3)
+        public Float64Tuple3D GetPointAt(double w1, double w2, double w3)
         {
             var w4 = 1.0d - (w1 + w2 + w3);
 
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 w1 * Point1X + w2 * Point2X + w3 * Point3X + w4 * Point4X,
                 w1 * Point1Y + w2 * Point2Y + w3 * Point3Y + w4 * Point4Y,
                 w1 * Point1Z + w2 * Point2Z + w3 * Point3Z + w4 * Point4Z
             );
         }
 
-        public IEnumerable<Tuple3D> GetPointsAt(IEnumerable<Tuple3D> parametersList)
+        public IEnumerable<Float64Tuple3D> GetPointsAt(IEnumerable<Float64Tuple3D> parametersList)
         {
             return parametersList.Select(p => GetPointAt(p.X, p.Y, p.Z));
         }

@@ -46,35 +46,35 @@ namespace NumericalGeometryLib.BasicShapes.Lines.Immutable
         public double Direction3Z { get; }
 
 
-        public Tuple3D Origin1
+        public Float64Tuple3D Origin1
         {
-            get { return new Tuple3D(Origin1X, Origin1Y, Origin1Z); }
+            get { return new Float64Tuple3D(Origin1X, Origin1Y, Origin1Z); }
         }
 
-        public Tuple3D Origin2
+        public Float64Tuple3D Origin2
         {
-            get { return new Tuple3D(Origin2X, Origin2Y, Origin2Z); }
+            get { return new Float64Tuple3D(Origin2X, Origin2Y, Origin2Z); }
         }
 
-        public Tuple3D Origin3
+        public Float64Tuple3D Origin3
         {
-            get { return new Tuple3D(Origin3X, Origin3Y, Origin3Z); }
+            get { return new Float64Tuple3D(Origin3X, Origin3Y, Origin3Z); }
         }
 
 
-        public Tuple3D Direction1
+        public Float64Tuple3D Direction1
         {
-            get { return new Tuple3D(Direction1X, Direction1Y, Direction1Z); }
+            get { return new Float64Tuple3D(Direction1X, Direction1Y, Direction1Z); }
         }
 
-        public Tuple3D Direction2
+        public Float64Tuple3D Direction2
         {
-            get { return new Tuple3D(Direction2X, Direction2Y, Direction2Z); }
+            get { return new Float64Tuple3D(Direction2X, Direction2Y, Direction2Z); }
         }
 
-        public Tuple3D Direction3
+        public Float64Tuple3D Direction3
         {
-            get { return new Tuple3D(Direction3X, Direction3Y, Direction3Z); }
+            get { return new Float64Tuple3D(Direction3X, Direction3Y, Direction3Z); }
         }
 
 

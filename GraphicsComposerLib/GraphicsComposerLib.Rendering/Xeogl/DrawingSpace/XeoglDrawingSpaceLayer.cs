@@ -128,7 +128,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.DrawingSpace
 
         public XeoglDrawingSpaceLayer SetTransform(IAffineMap3D affineMap)
         {
-            DefaultTransform = affineMap.ToSquareMatrix4().ToXeoglTransform();
+            DefaultTransform = affineMap.GetSquareMatrix4().ToXeoglTransform();
 
             return this;
         }

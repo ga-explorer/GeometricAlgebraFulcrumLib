@@ -16,9 +16,9 @@ namespace NumericalGeometryLib.BasicMath.Frames.Space3D
         /// </summary>
         /// <param name="uDirection"></param>
         /// <returns></returns>
-        public static LinearFrame3D CreateRightHanded(ITuple3D uDirection)
+        public static LinearFrame3D CreateRightHanded(IFloat64Tuple3D uDirection)
         {
-            var s = uDirection.GetLength();
+            var s = uDirection.GetVectorNorm();
 
             Debug.Assert(!s.IsAlmostZero());
 
@@ -36,9 +36,9 @@ namespace NumericalGeometryLib.BasicMath.Frames.Space3D
         /// </summary>
         /// <param name="uDirection"></param>
         /// <returns></returns>
-        public static LinearFrame3D CreateLeftHanded(ITuple3D uDirection)
+        public static LinearFrame3D CreateLeftHanded(IFloat64Tuple3D uDirection)
         {
-            var s = uDirection.GetLength();
+            var s = uDirection.GetVectorNorm();
 
             Debug.Assert(!s.IsAlmostZero());
 
@@ -70,14 +70,14 @@ namespace NumericalGeometryLib.BasicMath.Frames.Space3D
 
         public double WDirectionZ { get; }
 
-        public Tuple3D UDirection 
-            => new Tuple3D(UDirectionX, UDirectionY, UDirectionZ);
+        public Float64Tuple3D UDirection 
+            => new Float64Tuple3D(UDirectionX, UDirectionY, UDirectionZ);
 
-        public Tuple3D VDirection 
-            => new Tuple3D(VDirectionX, VDirectionY, VDirectionZ);
+        public Float64Tuple3D VDirection 
+            => new Float64Tuple3D(VDirectionX, VDirectionY, VDirectionZ);
 
-        public Tuple3D WDirection 
-            => new Tuple3D(WDirectionX, WDirectionY, WDirectionZ);
+        public Float64Tuple3D WDirection 
+            => new Float64Tuple3D(WDirectionX, WDirectionY, WDirectionZ);
 
         public bool IsRightHanded 
             => VectorUtils.Determinant(UDirection, VDirection, WDirection) > 0.0d;
@@ -97,7 +97,7 @@ namespace NumericalGeometryLib.BasicMath.Frames.Space3D
             double.IsNaN(WDirectionZ);
 
 
-        public LinearFrame3D(ITuple3D uDirection, ITuple3D vDirection, ITuple3D wDirection)
+        public LinearFrame3D(IFloat64Tuple3D uDirection, IFloat64Tuple3D vDirection, IFloat64Tuple3D wDirection)
         {
             UDirectionX = uDirection.X;
             UDirectionY = uDirection.Y;

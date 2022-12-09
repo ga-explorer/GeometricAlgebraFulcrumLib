@@ -26,9 +26,9 @@ namespace NumericalGeometryLib.Borders.Space3D
 
         public bool IntersectionTestsEnabled { get; set; } = true;
 
-        public Tuple3D Center
+        public Float64Tuple3D Center
         {
-            get { return new Tuple3D(CenterX, CenterY, CenterZ); }
+            get { return new Float64Tuple3D(CenterX, CenterY, CenterZ); }
         }
 
 
@@ -43,9 +43,9 @@ namespace NumericalGeometryLib.Borders.Space3D
 
         public IBorderSurface3D MapUsing(IAffineMap3D affineMap)
         {
-            var s1 = affineMap.MapVector(Tuple3D.E1).GetLength();
-            var s2 = affineMap.MapVector(Tuple3D.E2).GetLength();
-            var s3 = affineMap.MapVector(Tuple3D.E3).GetLength();
+            var s1 = affineMap.MapVector(Float64Tuple3D.E1).GetVectorNorm();
+            var s2 = affineMap.MapVector(Float64Tuple3D.E2).GetVectorNorm();
+            var s3 = affineMap.MapVector(Float64Tuple3D.E3).GetVectorNorm();
 
             var sMax = s1 > s2 ? s1 : s2;
             if (s3 > sMax) sMax = s3;
@@ -57,21 +57,21 @@ namespace NumericalGeometryLib.Borders.Space3D
 
         public BoundingBox3D GetBoundingBox()
         {
-            var point1 = new Tuple3D(CenterX - Radius, CenterY - Radius, CenterZ - Radius);
-            var point2 = new Tuple3D(CenterX + Radius, CenterY + Radius, CenterZ + Radius);
+            var point1 = new Float64Tuple3D(CenterX - Radius, CenterY - Radius, CenterZ - Radius);
+            var point2 = new Float64Tuple3D(CenterX + Radius, CenterY + Radius, CenterZ + Radius);
 
             return BoundingBox3D.CreateFromPoints(point1, point2);
         }
 
         public MutableBoundingBox3D GetMutableBoundingBox()
         {
-            var point1 = new Tuple3D(CenterX - Radius, CenterY - Radius, CenterZ - Radius);
-            var point2 = new Tuple3D(CenterX + Radius, CenterY + Radius, CenterZ + Radius);
+            var point1 = new Float64Tuple3D(CenterX - Radius, CenterY - Radius, CenterZ - Radius);
+            var point2 = new Float64Tuple3D(CenterX + Radius, CenterY + Radius, CenterZ + Radius);
 
             return MutableBoundingBox3D.CreateFromPoints(point1, point2);
         }
 
-        public bool TestLineSegmentIntersection(ITuple3D point1, ITuple3D point2)
+        public bool TestLineSegmentIntersection(IFloat64Tuple3D point1, IFloat64Tuple3D point2)
         {
             var d1 = (point1.X - CenterX) * (point1.X - CenterX) +
                      (point1.Y - CenterY) * (point1.Y - CenterY) +

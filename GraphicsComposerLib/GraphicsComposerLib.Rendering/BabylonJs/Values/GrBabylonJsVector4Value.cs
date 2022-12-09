@@ -17,7 +17,7 @@ public sealed class GrBabylonJsVector4Value :
         return new GrBabylonJsVector4Value(valueText);
     }
 
-    public static implicit operator GrBabylonJsVector4Value(Tuple4D value)
+    public static implicit operator GrBabylonJsVector4Value(Float64Tuple4D value)
     {
         return new GrBabylonJsVector4Value(value);
     }

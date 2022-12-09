@@ -15,11 +15,11 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Circles
 
         public double Radius { get; }
         
-        public Tuple3D Center 
-            => Tuple3D.Zero;
+        public Float64Tuple3D Center 
+            => Float64Tuple3D.Zero;
 
-        public Tuple3D UnitNormal 
-            => ReverseDirection ? Tuple3D.NegativeE3 : Tuple3D.E3;
+        public Float64Tuple3D UnitNormal 
+            => ReverseDirection ? Float64Tuple3D.NegativeE3 : Float64Tuple3D.E3;
 
         public double ParameterValueMin
             => 0d;
@@ -52,11 +52,11 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Circles
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple3D GetPoint(double parameterValue)
+        public Float64Tuple3D GetPoint(double parameterValue)
         {
             var angle = parameterValue * _directionFactor;
 
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 Radius * Math.Cos(angle),
                 Radius * Math.Sin(angle),
                 0
@@ -64,12 +64,12 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Circles
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple3D GetTangent(double parameterValue)
+        public Float64Tuple3D GetTangent(double parameterValue)
         {
             var angle = parameterValue * _directionFactor;
             var magnitude = Radius * _directionFactor;
 
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 -magnitude * Math.Sin(angle),
                 magnitude * Math.Cos(angle),
                 0
@@ -77,11 +77,11 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Circles
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple3D GetUnitTangent(double parameterValue)
+        public Float64Tuple3D GetUnitTangent(double parameterValue)
         {
             var angle = parameterValue * _directionFactor;
 
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 -Math.Sin(angle),
                 Math.Cos(angle),
                 0
@@ -94,10 +94,10 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Circles
             var cosAngle = Math.Cos(angle);
             var sinAngle = Math.Sin(angle);
 
-            var point = new Tuple3D(Radius * cosAngle, Radius * sinAngle, 0d);
-            var normal1 = new Tuple3D(-cosAngle, -sinAngle, 0d);
-            var normal2 = Tuple3D.E3;
-            var tangent = new Tuple3D(-sinAngle, cosAngle, 0d);
+            var point = new Float64Tuple3D(Radius * cosAngle, Radius * sinAngle, 0d);
+            var normal1 = new Float64Tuple3D(-cosAngle, -sinAngle, 0d);
+            var normal2 = Float64Tuple3D.E3;
+            var tangent = new Float64Tuple3D(-sinAngle, cosAngle, 0d);
 
             return GrParametricCurveLocalFrame3D.Create(
                 parameterValue,
@@ -109,12 +109,12 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Circles
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple3D GetSecondDerivative(double parameterValue)
+        public Float64Tuple3D GetSecondDerivative(double parameterValue)
         {
             var angle = parameterValue * _directionFactor;
             var magnitude = Radius * _directionFactor * _directionFactor;
 
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 -magnitude * Math.Cos(angle),
                 -magnitude * Math.Sin(angle),
                 0

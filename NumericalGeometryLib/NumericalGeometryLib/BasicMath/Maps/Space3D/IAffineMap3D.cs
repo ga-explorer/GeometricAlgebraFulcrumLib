@@ -9,19 +9,19 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
         IGeometricElement
     {
         bool SwapsHandedness { get; }
+        
+        Float64Tuple3D MapPoint(IFloat64Tuple3D point);
 
-        SquareMatrix4 ToSquareMatrix4();
+        Float64Tuple3D MapVector(IFloat64Tuple3D vector);
 
-        Matrix4x4 ToMatrix4x4();
+        Float64Tuple3D MapNormal(IFloat64Tuple3D normal);
 
-        double[,] ToArray2D();
+        SquareMatrix4 GetSquareMatrix4();
 
-        Tuple3D MapPoint(ITuple3D point);
+        Matrix4x4 GetMatrix4x4();
 
-        Tuple3D MapVector(ITuple3D vector);
+        double[,] GetArray2D();
 
-        Tuple3D MapNormal(ITuple3D normal);
-
-        IAffineMap3D InverseMap();
+        IAffineMap3D GetInverseAffineMap();
     }
 }

@@ -11,18 +11,18 @@ namespace GraphicsComposerLib.Geometry.SdfShapes
 {
     public static class SdfUtils
     {
-        public static Tuple3D ToTuple3D(this Color color)
+        public static Float64Tuple3D ToTuple3D(this Color color)
         {
             var c = color.ToPixel<Rgb24>();
 
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 c.R / 255.0d,
                 c.G / 255.0d,
                 c.B / 255.0d
             );
         }
 
-        public static Color ToColor(this ITuple3D colorVector)
+        public static Color ToColor(this IFloat64Tuple3D colorVector)
         {
             return Color.FromRgb(
                 (byte) (colorVector.X.ClampToUnit() * 255),
@@ -59,34 +59,34 @@ namespace GraphicsComposerLib.Geometry.SdfShapes
             return scalar;
         }
 
-        public static Tuple3D ClampTo(this ITuple3D tuple, ITuple3D maxTuple)
+        public static Float64Tuple3D ClampTo(this IFloat64Tuple3D tuple, IFloat64Tuple3D maxTuple)
         {
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 tuple.X.ClampTo(maxTuple.X),
                 tuple.Y.ClampTo(maxTuple.Y),
                 tuple.Z.ClampTo(maxTuple.Z)
             );
         }
 
-        public static Tuple3D ClampTo(this ITuple3D tuple, ITuple3D minTuple, ITuple3D maxTuple)
+        public static Float64Tuple3D ClampTo(this IFloat64Tuple3D tuple, IFloat64Tuple3D minTuple, IFloat64Tuple3D maxTuple)
         {
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 tuple.X.ClampTo(minTuple.X, maxTuple.X),
                 tuple.Y.ClampTo(minTuple.Y, maxTuple.Y),
                 tuple.Z.ClampTo(minTuple.Z, maxTuple.Z)
             );
         }
 
-        public static Tuple3D ClampToSymmetric(this ITuple3D tuple, ITuple3D maxTuple)
+        public static Float64Tuple3D ClampToSymmetric(this IFloat64Tuple3D tuple, IFloat64Tuple3D maxTuple)
         {
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 tuple.X.ClampToSymmetric(maxTuple.X),
                 tuple.Y.ClampToSymmetric(maxTuple.Y),
                 tuple.Z.ClampToSymmetric(maxTuple.Z)
             );
         }
         
-        public static double LengthXy(this ITuple3D tuple)
+        public static double LengthXy(this IFloat64Tuple3D tuple)
         {
             return Math.Sqrt(
                 tuple.X * tuple.X + 
@@ -94,7 +94,7 @@ namespace GraphicsComposerLib.Geometry.SdfShapes
             );
         }
 
-        public static double LengthXz(this ITuple3D tuple)
+        public static double LengthXz(this IFloat64Tuple3D tuple)
         {
             return Math.Sqrt(
                 tuple.X * tuple.X + 
@@ -102,7 +102,7 @@ namespace GraphicsComposerLib.Geometry.SdfShapes
             );
         }
 
-        public static double LengthYz(this ITuple3D tuple)
+        public static double LengthYz(this IFloat64Tuple3D tuple)
         {
             return Math.Sqrt(
                 tuple.Y * tuple.Y + 

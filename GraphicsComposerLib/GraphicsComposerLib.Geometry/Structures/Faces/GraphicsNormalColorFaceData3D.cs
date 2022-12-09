@@ -42,7 +42,7 @@ namespace GraphicsComposerLib.Geometry.Structures.Faces
             Color = color;
         }
 
-        public GraphicsNormalColorFaceData3D(Color color, ITuple3D normal)
+        public GraphicsNormalColorFaceData3D(Color color, IFloat64Tuple3D normal)
         {
             Color = color;
             Normal.Set(normal);

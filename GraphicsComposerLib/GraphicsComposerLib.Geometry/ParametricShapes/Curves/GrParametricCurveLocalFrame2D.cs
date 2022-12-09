@@ -12,7 +12,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves
     public sealed record GrParametricCurveLocalFrame2D :
         IGraphicsCurveLocalFrame2D
     {
-        public static GrParametricCurveLocalFrame2D CreateFrame(double parameterValue, ITuple2D point, ITuple2D tangent)
+        public static GrParametricCurveLocalFrame2D CreateFrame(double parameterValue, IFloat64Tuple2D point, IFloat64Tuple2D tangent)
         {
             return new GrParametricCurveLocalFrame2D(
                 parameterValue,
@@ -32,7 +32,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves
         /// <summary>
         /// A point on the curve
         /// </summary>
-        public Tuple2D Point { get; }
+        public Float64Tuple2D Point { get; }
 
         public double Item1 
             => Point.X;
@@ -51,7 +51,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves
         /// <summary>
         /// The tangent unit vector to the curve at the given curve point
         /// </summary>
-        public Tuple2D Tangent { get; }
+        public Float64Tuple2D Tangent { get; }
 
         public bool IsValid()
         {
@@ -59,13 +59,13 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves
                 !double.IsNaN(ParameterValue) &&
                 Point.IsValid() &&
                 Tangent.IsValid() &&
-                Tangent.GetLengthSquared().IsNearEqual(1);
+                Tangent.GetVectorNormSquared().IsNearEqual(1);
 
             return isValid;
         }
         
 
-        private GrParametricCurveLocalFrame2D(double parameterValue, [NotNull] ITuple2D point, [NotNull] ITuple2D tangent)
+        private GrParametricCurveLocalFrame2D(double parameterValue, [NotNull] IFloat64Tuple2D point, [NotNull] IFloat64Tuple2D tangent)
         {
             ParameterValue = parameterValue;
             Point = point.ToTuple2D();
@@ -86,13 +86,13 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves
         }
 
 
-        public GrParametricCurveLocalFrame2D TranslateBy(ITuple2D translationVector)
+        public GrParametricCurveLocalFrame2D TranslateBy(IFloat64Tuple2D translationVector)
         {
             Debug.Assert(translationVector.IsValid());
 
             return new GrParametricCurveLocalFrame2D(
                 ParameterValue,
-                new Tuple2D(
+                new Float64Tuple2D(
                     Point.X + translationVector.X,
                     Point.Y + translationVector.Y
                 ),

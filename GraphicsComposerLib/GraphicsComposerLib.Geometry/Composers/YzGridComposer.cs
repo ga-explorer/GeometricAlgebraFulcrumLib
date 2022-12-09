@@ -10,8 +10,8 @@ namespace GraphicsComposerLib.Geometry.Composers
         /// <summary>
         /// The center point of the grid
         /// </summary>
-        public MutableTuple3D Center { get; } 
-            = new MutableTuple3D(0, 0, 0);
+        public MutableFloat64Tuple3D Center { get; } 
+            = new MutableFloat64Tuple3D(0, 0, 0);
 
         /// <summary>
         /// The size of each grid unit in the Y direction
@@ -76,26 +76,26 @@ namespace GraphicsComposerLib.Geometry.Composers
         /// <summary>
         /// The lower left corner point of the grid
         /// </summary>
-        public Tuple3D CornerLowerLeft 
-            => new Tuple3D(Center.X, YMin, ZMin);
+        public Float64Tuple3D CornerLowerLeft 
+            => new Float64Tuple3D(Center.X, YMin, ZMin);
 
         /// <summary>
         /// The lower right corner point of the grid
         /// </summary>
-        public Tuple3D CornerLowerRight 
-            => new Tuple3D(Center.X, YMax, ZMin);
+        public Float64Tuple3D CornerLowerRight 
+            => new Float64Tuple3D(Center.X, YMax, ZMin);
 
         /// <summary>
         /// The upper left corner point of the grid
         /// </summary>
-        public Tuple3D CornerUpperLeft 
-            => new Tuple3D(Center.X, YMin, ZMax);
+        public Float64Tuple3D CornerUpperLeft 
+            => new Float64Tuple3D(Center.X, YMin, ZMax);
 
         /// <summary>
         /// The upper right corner point of the grid
         /// </summary>
-        public Tuple3D CornerUpperRight 
-            => new Tuple3D(Center.X, YMax, ZMax);
+        public Float64Tuple3D CornerUpperRight 
+            => new Float64Tuple3D(Center.X, YMax, ZMax);
 
         /// <summary>
         /// The total length of the grid in the Y direction

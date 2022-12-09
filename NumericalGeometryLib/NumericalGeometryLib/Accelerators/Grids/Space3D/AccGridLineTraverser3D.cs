@@ -43,12 +43,12 @@ namespace NumericalGeometryLib.Accelerators.Grids.Space3D
         /// <summary>
         /// Delta value of line parameter in x and y directions
         /// </summary>
-        public Tuple3D TDelta { get; }
+        public Float64Tuple3D TDelta { get; }
 
         /// <summary>
         /// Initial values of line parameter in x and y directions 
         /// </summary>
-        public Tuple3D TFirst { get; }
+        public Float64Tuple3D TFirst { get; }
 
         public double TNext { get; private set; }
 
@@ -132,7 +132,7 @@ namespace NumericalGeometryLib.Accelerators.Grids.Space3D
             {
                 IsEmpty = true;
                 TLimits = new BoundingBox1D();
-                TDelta = Tuple3D.Zero;
+                TDelta = Float64Tuple3D.Zero;
 
                 return;
             }
@@ -155,7 +155,7 @@ namespace NumericalGeometryLib.Accelerators.Grids.Space3D
             CellIndexStart = grid.PointToCellIndex(point1X, point1Y, point1Z);
 
             //Line segment parameter increments per cell in the x and y directions
-            TDelta = new Tuple3D(
+            TDelta = new Float64Tuple3D(
                 (txMax - txMin) / grid.CellsCountX,
                 (tyMax - tyMin) / grid.CellsCountY,
                 (tzMax - tzMin) / grid.CellsCountZ
@@ -222,7 +222,7 @@ namespace NumericalGeometryLib.Accelerators.Grids.Space3D
                 izStop = -1;
             }
 
-            TFirst = new Tuple3D(txNext, tyNext, tzNext);
+            TFirst = new Float64Tuple3D(txNext, tyNext, tzNext);
             CellIndexStep = new IntTuple3D(ixStep, iyStep, izStep);
             CellIndexStop = new IntTuple3D(ixStop, iyStop, izStop);
         }

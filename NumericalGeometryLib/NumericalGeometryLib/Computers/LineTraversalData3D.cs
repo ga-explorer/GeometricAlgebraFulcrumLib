@@ -12,11 +12,11 @@ namespace NumericalGeometryLib.Computers
             = new Stack<BoundingBox1D>();
 
 
-        public Tuple3D Origin { get; }
+        public Float64Tuple3D Origin { get; }
 
-        public Tuple3D Direction { get; }
+        public Float64Tuple3D Direction { get; }
 
-        public Tuple3D DirectionInv { get; }
+        public Float64Tuple3D DirectionInv { get; }
 
         public int[] DirectionSign { get; }
 
@@ -119,18 +119,18 @@ namespace NumericalGeometryLib.Computers
             );
         }
 
-        public Tuple3D GetMinPoint()
+        public Float64Tuple3D GetMinPoint()
         {
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 Origin.X + ParameterMinValue * Direction.X,
                 Origin.Y + ParameterMinValue * Direction.Y,
                 Origin.Z + ParameterMinValue * Direction.Z
             );
         }
 
-        public Tuple3D GetMaxPoint()
+        public Float64Tuple3D GetMaxPoint()
         {
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 Origin.X + ParameterMaxValue * Direction.X,
                 Origin.Y + ParameterMaxValue * Direction.Y,
                 Origin.Z + ParameterMaxValue * Direction.Z

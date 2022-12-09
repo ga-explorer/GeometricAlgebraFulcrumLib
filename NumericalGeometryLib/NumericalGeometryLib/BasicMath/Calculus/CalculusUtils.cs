@@ -103,7 +103,7 @@ namespace NumericalGeometryLib.BasicMath.Calculus
         /// <param name="tQuad">An array of time measures of length 4, corresponding to each p value.</param>
         /// <param name="t">the actual interpolation ratio from 0 to 1 representing the position between p1 and p2 to interpolate the value.</param>
         /// <returns>The interpolated value</returns>
-        public static Tuple2D GetCatmullRomValue(this double t, Quad<double> tQuad, Quad<ITuple2D> pQuad)
+        public static Float64Tuple2D GetCatmullRomValue(this double t, Quad<double> tQuad, Quad<IFloat64Tuple2D> pQuad)
         {
             var (t0, t1, t2, t3) = tQuad;
             var (p0, p1, p2, p3) = 
@@ -146,7 +146,7 @@ namespace NumericalGeometryLib.BasicMath.Calculus
         /// <param name="tQuad">An array of time measures of length 4, corresponding to each p value.</param>
         /// <param name="t">the actual interpolation ratio from 0 to 1 representing the position between p1 and p2 to interpolate the value.</param>
         /// <returns>The interpolated value</returns>
-        public static Tuple3D GetCatmullRomValue(this double t, Quad<double> tQuad, Quad<ITuple3D> pQuad)
+        public static Float64Tuple3D GetCatmullRomValue(this double t, Quad<double> tQuad, Quad<IFloat64Tuple3D> pQuad)
         {
             var (t0, t1, t2, t3) = tQuad;
             var (p0, p1, p2, p3) = 
@@ -189,7 +189,7 @@ namespace NumericalGeometryLib.BasicMath.Calculus
         /// <param name="tQuad">An array of time measures of length 4, corresponding to each p value.</param>
         /// <param name="t">the actual interpolation ratio from 0 to 1 representing the position between p1 and p2 to interpolate the value.</param>
         /// <returns>The interpolated value</returns>
-        public static Tuple4D GetCatmullRomValue(this double t, Quad<double> tQuad, Quad<ITuple4D> pQuad)
+        public static Float64Tuple4D GetCatmullRomValue(this double t, Quad<double> tQuad, Quad<IFloat64Tuple4D> pQuad)
         {
             var (t0, t1, t2, t3) = tQuad;
             var (p0, p1, p2, p3) = 
@@ -220,7 +220,7 @@ namespace NumericalGeometryLib.BasicMath.Calculus
 
             return p3210;
         }
-
+        
         /// <summary>
         /// Unlike the other implementation here, which uses the default "uniform"
         /// treatment of t, this computation is used to calculate the same values but
@@ -232,7 +232,7 @@ namespace NumericalGeometryLib.BasicMath.Calculus
         /// <param name="tQuad">An array of time measures of length 4, corresponding to each p value.</param>
         /// <param name="t">the actual interpolation ratio from 0 to 1 representing the position between p1 and p2 to interpolate the value.</param>
         /// <returns>The interpolated value</returns>
-        public static Float64SparseTuple GetCatmullRomValue(this double t, Quad<double> tQuad, Quad<Float64SparseTuple> pQuad)
+        public static Float64Tuple GetCatmullRomValue(this double t, Quad<double> tQuad, Quad<Float64Tuple> pQuad)
         {
             var (t0, t1, t2, t3) = tQuad;
             var (p0, p1, p2, p3) = pQuad;
@@ -262,6 +262,48 @@ namespace NumericalGeometryLib.BasicMath.Calculus
 
             return p3210;
         }
+
+        ///// <summary>
+        ///// Unlike the other implementation here, which uses the default "uniform"
+        ///// treatment of t, this computation is used to calculate the same values but
+        ///// introduces the ability to "parametrize" the t values used in the
+        ///// calculation. This is based on Figure 3 from
+        ///// http://www.cemyuksel.com/research/catmullrom_param/catmullrom.pdf
+        ///// </summary>
+        ///// <param name="pQuad">An array of double values of length 4, where interpolation occurs from p1 to p2.</param>
+        ///// <param name="tQuad">An array of time measures of length 4, corresponding to each p value.</param>
+        ///// <param name="t">the actual interpolation ratio from 0 to 1 representing the position between p1 and p2 to interpolate the value.</param>
+        ///// <returns>The interpolated value</returns>
+        //public static Float64SparseTuple GetCatmullRomValue(this double t, Quad<double> tQuad, Quad<Float64SparseTuple> pQuad)
+        //{
+        //    var (t0, t1, t2, t3) = tQuad;
+        //    var (p0, p1, p2, p3) = pQuad;
+
+        //    var tt0 = t - t0;
+        //    var tt1 = t - t1;
+        //    var tt2 = t - t2;
+        //    var tt3 = t - t3;
+
+        //    var t10 = t1 - t0;
+        //    var t21 = t2 - t1;
+        //    var t32 = t3 - t2;
+
+        //    var p10 = (p1 * tt0 - p0 * tt1) / t10;
+        //    var p21 = (p2 * tt1 - p1 * tt2) / t21;
+        //    var p32 = (p3 * tt2 - p2 * tt3) / t32;
+
+        //    var t210 = t2 - t0;
+        //    var t321 = t3 - t1;
+
+        //    var p210 = (p21 * tt0 - p10 * tt2) / t210;
+        //    var p321 = (p32 * tt1 - p21 * tt3) / t321;
+
+        //    var t3210 = t2 - t1;
+
+        //    var p3210 = (p321 * tt1 - p210 * tt2) / t3210;
+
+        //    return p3210;
+        //}
 
 
         public static double GetCatmullRomDerivativeValue(this double t, Quad<double> tQuad, Quad<double> pQuad)
@@ -304,7 +346,7 @@ namespace NumericalGeometryLib.BasicMath.Calculus
             return dp3210.NaNToZero();
         }
         
-        public static Tuple2D GetCatmullRomDerivativeValue(this double t, Quad<double> tQuad, Quad<ITuple2D> pQuad)
+        public static Float64Tuple2D GetCatmullRomDerivativeValue(this double t, Quad<double> tQuad, Quad<IFloat64Tuple2D> pQuad)
         {
             var (t0, t1, t2, t3) = tQuad;
             var (p0, p1, p2, p3) = 
@@ -345,7 +387,7 @@ namespace NumericalGeometryLib.BasicMath.Calculus
             return dp3210;
         }
         
-        public static Tuple3D GetCatmullRomDerivativeValue(this double t, Quad<double> tQuad, Quad<ITuple3D> pQuad)
+        public static Float64Tuple3D GetCatmullRomDerivativeValue(this double t, Quad<double> tQuad, Quad<IFloat64Tuple3D> pQuad)
         {
             var (t0, t1, t2, t3) = tQuad;
             var (p0, p1, p2, p3) = 
@@ -386,7 +428,7 @@ namespace NumericalGeometryLib.BasicMath.Calculus
             return dp3210;
         }
         
-        public static Tuple4D GetCatmullRomDerivativeValue(this double t, Quad<double> tQuad, Quad<ITuple4D> pQuad)
+        public static Float64Tuple4D GetCatmullRomDerivativeValue(this double t, Quad<double> tQuad, Quad<IFloat64Tuple4D> pQuad)
         {
             var (t0, t1, t2, t3) = tQuad;
             var (p0, p1, p2, p3) = 
@@ -427,7 +469,7 @@ namespace NumericalGeometryLib.BasicMath.Calculus
             return dp3210;
         }
         
-        public static Float64SparseTuple GetCatmullRomDerivativeValue(this double t, Quad<double> tQuad, Quad<Float64SparseTuple> pQuad)
+        public static Float64Tuple GetCatmullRomDerivativeValue(this double t, Quad<double> tQuad, Quad<Float64Tuple> pQuad)
         {
             var (t0, t1, t2, t3) = tQuad;
             var (p0, p1, p2, p3) = pQuad;
@@ -466,6 +508,46 @@ namespace NumericalGeometryLib.BasicMath.Calculus
 
             return dp3210;
         }
+        
+        //public static Float64SparseTuple GetCatmullRomDerivativeValue(this double t, Quad<double> tQuad, Quad<Float64SparseTuple> pQuad)
+        //{
+        //    var (t0, t1, t2, t3) = tQuad;
+        //    var (p0, p1, p2, p3) = pQuad;
+
+        //    var tt0 = t - t0;
+        //    var tt1 = t - t1;
+        //    var tt2 = t - t2;
+        //    var tt3 = t - t3;
+
+        //    var t10 = t1 - t0;
+        //    var t21 = t2 - t1;
+        //    var t32 = t3 - t2;
+
+        //    var p10 = (p1 * tt0 - p0 * tt1) / t10;
+        //    var p21 = (p2 * tt1 - p1 * tt2) / t21;
+        //    var p32 = (p3 * tt2 - p2 * tt3) / t32;
+
+        //    var t210 = t2 - t0;
+        //    var t321 = t3 - t1;
+
+        //    var p210 = (p21 * tt0 - p10 * tt2) / t210;
+        //    var p321 = (p32 * tt1 - p21 * tt3) / t321;
+
+        //    var t3210 = t2 - t1;
+
+        //    //var p3210 = (p321 * tt1 - p210 * tt2) / t3210;
+
+        //    var dp10 = (p1 - p0) / t10;
+        //    var dp21 = (p2 - p1) / t21;
+        //    var dp32 = (p3 - p2) / t32;
+
+        //    var dp210 = (p21 - p10 + dp21 * tt0 - dp10 * tt2) / t210;
+        //    var dp321 = (p32 - p21 + dp32 * tt1 - dp21 * tt3) / t321;
+
+        //    var dp3210 = (p321 - p210 + dp321 * tt1 - dp210 * tt2) / t3210;
+
+        //    return dp3210;
+        //}
 
 
         public static double GetCatmullRomDerivative2Value(this double t, Quad<double> tQuad, Quad<double> pQuad)
@@ -513,7 +595,7 @@ namespace NumericalGeometryLib.BasicMath.Calculus
             return d2p3210.NaNToZero();
         }
         
-        public static Tuple2D GetCatmullRomDerivative2Value(this double t, Quad<double> tQuad, Quad<ITuple2D> pQuad)
+        public static Float64Tuple2D GetCatmullRomDerivative2Value(this double t, Quad<double> tQuad, Quad<IFloat64Tuple2D> pQuad)
         {
             var (t0, t1, t2, t3) = tQuad;
             var (p0, p1, p2, p3) = 
@@ -559,7 +641,7 @@ namespace NumericalGeometryLib.BasicMath.Calculus
             return d2p3210;
         }
         
-        public static Tuple3D GetCatmullRomDerivative2Value(this double t, Quad<double> tQuad, Quad<ITuple3D> pQuad)
+        public static Float64Tuple3D GetCatmullRomDerivative2Value(this double t, Quad<double> tQuad, Quad<IFloat64Tuple3D> pQuad)
         {
             var (t0, t1, t2, t3) = tQuad;
             var (p0, p1, p2, p3) = 
@@ -605,7 +687,7 @@ namespace NumericalGeometryLib.BasicMath.Calculus
             return d2p3210;
         }
         
-        public static Tuple4D GetCatmullRomDerivative2Value(this double t, Quad<double> tQuad, Quad<ITuple4D> pQuad)
+        public static Float64Tuple4D GetCatmullRomDerivative2Value(this double t, Quad<double> tQuad, Quad<IFloat64Tuple4D> pQuad)
         {
             var (t0, t1, t2, t3) = tQuad;
             var (p0, p1, p2, p3) = 
@@ -651,7 +733,7 @@ namespace NumericalGeometryLib.BasicMath.Calculus
             return d2p3210;
         }
         
-        public static Float64SparseTuple GetCatmullRomDerivative2Value(this double t, Quad<double> tQuad, Quad<Float64SparseTuple> pQuad)
+        public static Float64Tuple GetCatmullRomDerivative2Value(this double t, Quad<double> tQuad, Quad<Float64Tuple> pQuad)
         {
             var (t0, t1, t2, t3) = tQuad;
             var (p0, p1, p2, p3) = pQuad;
@@ -695,6 +777,51 @@ namespace NumericalGeometryLib.BasicMath.Calculus
 
             return d2p3210;
         }
+        
+        //public static Float64SparseTuple GetCatmullRomDerivative2Value(this double t, Quad<double> tQuad, Quad<Float64SparseTuple> pQuad)
+        //{
+        //    var (t0, t1, t2, t3) = tQuad;
+        //    var (p0, p1, p2, p3) = pQuad;
+
+        //    var tt0 = t - t0;
+        //    var tt1 = t - t1;
+        //    var tt2 = t - t2;
+        //    var tt3 = t - t3;
+
+        //    var t10 = t1 - t0;
+        //    var t21 = t2 - t1;
+        //    var t32 = t3 - t2;
+
+        //    var p10 = (p1 * tt0 - p0 * tt1) / t10;
+        //    var p21 = (p2 * tt1 - p1 * tt2) / t21;
+        //    var p32 = (p3 * tt2 - p2 * tt3) / t32;
+
+        //    var t210 = t2 - t0;
+        //    var t321 = t3 - t1;
+
+        //    //var p210 = (p21 * tt0 - p10 * tt2) / t210;
+        //    //var p321 = (p32 * tt1 - p21 * tt3) / t321;
+
+        //    var t3210 = t2 - t1;
+
+        //    //var p3210 = (p321 * tt1 - p210 * tt2) / t3210;
+
+        //    var dp10 = (p1 - p0) / t10;
+        //    var dp21 = (p2 - p1) / t21;
+        //    var dp32 = (p3 - p2) / t32;
+
+        //    var dp210 = (p21 - p10 + dp21 * tt0 - dp10 * tt2) / t210;
+        //    var dp321 = (p32 - p21 + dp32 * tt1 - dp21 * tt3) / t321;
+
+        //    //var dp3210 = (p321 - p210 + dp321 * tt1 - dp210 * tt2) / t3210;
+
+        //    var d2p210 = 2d * (dp21 - dp10) / t210;
+        //    var d2p321 = 2d * (dp32 - dp21) / t321;
+
+        //    var d2p3210 = (2d * (dp321 - dp210) + d2p321 * tt1 - d2p210 * tt2) / t3210;
+
+        //    return d2p3210;
+        //}
 
 
         //[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -745,7 +872,7 @@ namespace NumericalGeometryLib.BasicMath.Calculus
             return xList.ToArray();
         }
 
-        public static IEnumerable<Tuple2D> GetBezierSmoothingPoints(this IEnumerable<double> yInputList, IEnumerable<double> xInputList, int bezierDegree, bool makeUniform)
+        public static IEnumerable<Float64Tuple2D> GetBezierSmoothingPoints(this IEnumerable<double> yInputList, IEnumerable<double> xInputList, int bezierDegree, bool makeUniform)
         {
             var basisSet = BernsteinBasisSet.Create(bezierDegree);
 
@@ -757,9 +884,9 @@ namespace NumericalGeometryLib.BasicMath.Calculus
             // Modify some input points to ensure continuous first derivative
             for (var j = bezierDegree; j < valueCount - 2 * bezierDegree; j += bezierDegree)
             {
-                var p0 = new Tuple2D(xArray[j - 1], yArray[j - 1]);
-                var p1 = new Tuple2D(xArray[j], yArray[j]);
-                var p2 = new Tuple2D(xArray[j + 1], yArray[j + 1]);
+                var p0 = new Float64Tuple2D(xArray[j - 1], yArray[j - 1]);
+                var p1 = new Float64Tuple2D(xArray[j], yArray[j]);
+                var p2 = new Float64Tuple2D(xArray[j + 1], yArray[j + 1]);
 
                 var v = (p2 - p0).ToUnitVector();
                 var q0 = (p0 - p1).ProjectOnUnitVector(v) + p1;
@@ -805,7 +932,7 @@ namespace NumericalGeometryLib.BasicMath.Calculus
 
             if (!makeUniform)
                 return xOutputList.Count.GetRange().Select(idx =>
-                    new Tuple2D(xOutputList[idx], yOutputList[idx])
+                    new Float64Tuple2D(xOutputList[idx], yOutputList[idx])
                 );
 
             // Apply linear interpolation re-sampling to make x values uniform
@@ -856,7 +983,7 @@ namespace NumericalGeometryLib.BasicMath.Calculus
             }
 
             return xOutputList.Count.GetRange().Select(idx => 
-                new Tuple2D(xUniformArray[idx], yUniformArray[idx])
+                new Float64Tuple2D(xUniformArray[idx], yUniformArray[idx])
             );
         }
 
@@ -872,9 +999,9 @@ namespace NumericalGeometryLib.BasicMath.Calculus
             // Modify some input points to ensure continuous first derivative
             for (var j = bezierDegree; j < valueCount - 2 * bezierDegree; j += bezierDegree)
             {
-                var p0 = new Tuple2D(xArray[j - 1], yArray[j - 1]);
-                var p1 = new Tuple2D(xArray[j], yArray[j]);
-                var p2 = new Tuple2D(xArray[j + 1], yArray[j + 1]);
+                var p0 = new Float64Tuple2D(xArray[j - 1], yArray[j - 1]);
+                var p1 = new Float64Tuple2D(xArray[j], yArray[j]);
+                var p2 = new Float64Tuple2D(xArray[j + 1], yArray[j + 1]);
 
                 var v = (p2 - p0).ToUnitVector();
                 var q0 = (p0 - p1).ProjectOnUnitVector(v) + p1;
@@ -1146,13 +1273,13 @@ namespace NumericalGeometryLib.BasicMath.Calculus
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Image PlotFirstDerivative(this IScalarD1Function scalarFunction, double xMin, double xMax)
         {
-            return ((Func<double, double>) scalarFunction.GetFirstDerivative).Plot(xMin, xMax);
+            return ((Func<double, double>) scalarFunction.GetFirstDerivativeValue).Plot(xMin, xMax);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Image PlotSecondDerivative(this IScalarD2Function scalarFunction, double xMin, double xMax)
         {
-            return ((Func<double, double>) scalarFunction.GetSecondDerivative).Plot(xMin, xMax);
+            return ((Func<double, double>) scalarFunction.GetSecondDerivativeValue).Plot(xMin, xMax);
         }
     }
 }

@@ -66,9 +66,9 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.Basic
                     {
                         var rotationAxis = axis1 switch
                         {
-                            Axis3D.PositiveX or Axis3D.NegativeX => Tuple3D.E3,
-                            Axis3D.PositiveY or Axis3D.NegativeY => Tuple3D.E1,
-                            _ => Tuple3D.E2
+                            Axis3D.PositiveX or Axis3D.NegativeX => Float64Tuple3D.E3,
+                            Axis3D.PositiveY or Axis3D.NegativeY => Float64Tuple3D.E1,
+                            _ => Float64Tuple3D.E2
                         };
 
                         var q = rotationAxis.CreateQuaternionFromAxisAngle(Math.PI);
@@ -79,7 +79,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.Basic
                     else
                     {
                         var v3 = axisVector1.VectorCross(axisVector2);
-                        var rotationAxis = new Tuple3D(v3.X, v3.Y, v3.Z);
+                        var rotationAxis = new Float64Tuple3D(v3.X, v3.Y, v3.Z);
 
                         var q = rotationAxis.CreateQuaternionFromAxisAngle(Math.PI / 2);
 
@@ -129,7 +129,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.Basic
                         s => Math.Round(s, 3)
                     );
 
-                    if ((v2 - axis2.GetVector3D()).GetLength().IsNearZero(1e-7))
+                    if ((v2 - axis2.GetVector3D()).GetVectorNorm().IsNearZero(1e-7))
                         continue;
 
                     Console.WriteLine($"              Axis1: {axis1}");
@@ -146,7 +146,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.Basic
         /// </summary>
         public static void Example3()
         {
-            var k = new Tuple3D(1, 1, 1);
+            var k = new Float64Tuple3D(1, 1, 1);
             var vectorList = new []
             {
                 (Axis3D.PositiveX.GetVector3D() + k).ToUnitVector(),
@@ -203,7 +203,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.Basic
                 Axis3D.NegativeZ
             };
 
-            var k = new Tuple3D(1, 1, 1);
+            var k = new Float64Tuple3D(1, 1, 1);
             var vectorList = new []
             {
                 (Axis3D.PositiveX.GetVector3D() + k).ToUnitVector(),
@@ -235,10 +235,10 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.Basic
                     var v1 = quaternion.QuaternionRotate(axis);
                     var v2 = q.QuaternionRotate(axis);
 
-                    var l1 = (v1 - vector).GetLengthSquared();
-                    var l2 = (v2 - vector).GetLengthSquared();
+                    var l1 = (v1 - vector).GetVectorNormSquared();
+                    var l2 = (v2 - vector).GetVectorNormSquared();
 
-                    var qDiff = (quaternion - q).GetLengthSquared();
+                    var qDiff = (quaternion - q).GetVectorNormSquared();
 
                     if (l1.IsNearZero() && l2.IsNearZero() && qDiff.IsNearZero())
                         continue;

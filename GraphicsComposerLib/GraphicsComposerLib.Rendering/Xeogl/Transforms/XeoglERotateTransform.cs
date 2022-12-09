@@ -79,20 +79,20 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Transforms
         public SquareMatrix4 GetMatrix()
             => SquareMatrix4.CreateIdentityMatrix();
 
-        public Tuple4D GetQuaternionTuple()
-            => new Tuple4D(0, 0, 0, 1);
+        public Float64Tuple4D GetQuaternionTuple()
+            => new Float64Tuple4D(0, 0, 0, 1);
 
-        public Tuple3D GetRotateTuple()
-            => new Tuple3D(RotateX, RotateY, RotateZ);
+        public Float64Tuple3D GetRotateTuple()
+            => new Float64Tuple3D(RotateX, RotateY, RotateZ);
 
-        public Tuple3D GetScaleTuple()
-            => new Tuple3D(1, 1, 1);
+        public Float64Tuple3D GetScaleTuple()
+            => new Float64Tuple3D(1, 1, 1);
 
-        public Tuple3D GetTranslateTuple()
-            => Tuple3D.Zero;
+        public Float64Tuple3D GetTranslateTuple()
+            => Float64Tuple3D.Zero;
 
 
-        public XeoglERotateTransform SetRotate(ITuple3D rotateTuple)
+        public XeoglERotateTransform SetRotate(IFloat64Tuple3D rotateTuple)
         {
             RotateX = rotateTuple.X;
             RotateY = rotateTuple.Y;

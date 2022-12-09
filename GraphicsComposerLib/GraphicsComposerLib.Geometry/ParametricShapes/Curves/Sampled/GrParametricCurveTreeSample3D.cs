@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using NumericalGeometryLib.BasicMath;
+using NumericalGeometryLib.BasicMath.Tuples;
 using NumericalGeometryLib.BasicMath.Matrices;
 using NumericalGeometryLib.BasicMath.Tuples.Immutable;
 
@@ -35,7 +36,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Sampled
         }
 
 
-        public Tuple3D GetPoint()
+        public Float64Tuple3D GetPoint()
         {
             if (ParameterValue == LeafNode.MinParameterValue)
                 return LeafNode.Frame0.Point;
@@ -46,7 +47,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Sampled
             return InterpolationValue.Lerp(LeafNode.Frame0.Point, LeafNode.Frame1.Point);
         }
 
-        public Tuple3D GetTangent()
+        public Float64Tuple3D GetTangent()
         {
             if (ParameterValue == LeafNode.MinParameterValue)
                 return LeafNode.Frame0.Tangent;
@@ -82,7 +83,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves.Sampled
             var point = 
                 InterpolationValue.Lerp(LeafNode.Frame0.Point, LeafNode.Frame1.Point);
 
-            Tuple3D normal1, normal2, tangent;
+            Float64Tuple3D normal1, normal2, tangent;
 
             if (FrameInterpolationMethod == GrCurveFrameInterpolationMethod.TangentLinearInterpolation)
             {

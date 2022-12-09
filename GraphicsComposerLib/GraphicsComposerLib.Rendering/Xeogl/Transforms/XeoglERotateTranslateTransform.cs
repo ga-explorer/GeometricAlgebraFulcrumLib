@@ -17,7 +17,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Transforms
             };
         }
         
-        public static XeoglERotateTranslateTransform CreateTranslate(ITuple3D t)
+        public static XeoglERotateTranslateTransform CreateTranslate(IFloat64Tuple3D t)
         {
             return new XeoglERotateTranslateTransform()
             {
@@ -109,20 +109,20 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Transforms
         public SquareMatrix4 GetMatrix()
             => SquareMatrix4.CreateIdentityMatrix();
 
-        public Tuple4D GetQuaternionTuple()
-            => new Tuple4D(0, 0, 0, 1);
+        public Float64Tuple4D GetQuaternionTuple()
+            => new Float64Tuple4D(0, 0, 0, 1);
 
-        public Tuple3D GetRotateTuple()
-            => new Tuple3D(RotateX, RotateY, RotateZ);
+        public Float64Tuple3D GetRotateTuple()
+            => new Float64Tuple3D(RotateX, RotateY, RotateZ);
 
-        public Tuple3D GetScaleTuple()
-            => new Tuple3D(1, 1, 1);
+        public Float64Tuple3D GetScaleTuple()
+            => new Float64Tuple3D(1, 1, 1);
 
-        public Tuple3D GetTranslateTuple()
-            => new Tuple3D(TranslateX, TranslateY, TranslateZ);
+        public Float64Tuple3D GetTranslateTuple()
+            => new Float64Tuple3D(TranslateX, TranslateY, TranslateZ);
 
 
-        public XeoglERotateTranslateTransform SetRotate(ITuple3D rotateTuple)
+        public XeoglERotateTranslateTransform SetRotate(IFloat64Tuple3D rotateTuple)
         {
             RotateX = rotateTuple.X;
             RotateY = rotateTuple.Y;
@@ -140,7 +140,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Transforms
             return this;
         }
 
-        public XeoglERotateTranslateTransform SetTranslate(ITuple3D translateTuple)
+        public XeoglERotateTranslateTransform SetTranslate(IFloat64Tuple3D translateTuple)
         {
             TranslateX = translateTuple.X;
             TranslateY = translateTuple.Y;

@@ -23,32 +23,32 @@ namespace NumericalGeometryLib.Borders
     public static class BordersUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static BoundingBox2D GetBoundingBox(this IEnumerable<ITuple2D> pointsList)
+        public static BoundingBox2D GetBoundingBox(this IEnumerable<IFloat64Tuple2D> pointsList)
         {
             return BoundingBox2D.CreateFromPoints(pointsList);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static BoundingBox2D GetBoundingBox(this IEnumerable<ITuple2D> pointsList, double scalingFactor)
+        public static BoundingBox2D GetBoundingBox(this IEnumerable<IFloat64Tuple2D> pointsList, double scalingFactor)
         {
             return BoundingBox2D.CreateFromPoints(pointsList, scalingFactor);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static BoundingSphere2D GetBoundingSphere(this IEnumerable<ITuple2D> pointsList)
+        public static BoundingSphere2D GetBoundingSphere(this IEnumerable<IFloat64Tuple2D> pointsList)
         {
             return BoundingSphere2D.CreateFromPoints(pointsList);
         }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static BoundingBox3D GetBoundingBox(this IEnumerable<ITuple3D> pointsList)
+        public static BoundingBox3D GetBoundingBox(this IEnumerable<IFloat64Tuple3D> pointsList)
         {
             return BoundingBox3D.CreateFromPoints(pointsList);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static BoundingBox3D GetBoundingBox(this IEnumerable<ITuple3D> pointsList, double scalingFactor)
+        public static BoundingBox3D GetBoundingBox(this IEnumerable<IFloat64Tuple3D> pointsList, double scalingFactor)
         {
             return BoundingBox3D.CreateFromPoints(pointsList, scalingFactor);
         }
@@ -148,11 +148,11 @@ namespace NumericalGeometryLib.Borders
         }
 
 
-        public static Tuple2D GetCorner(this IBoundingBox2D boundingBox, bool maxCorner)
+        public static Float64Tuple2D GetCorner(this IBoundingBox2D boundingBox, bool maxCorner)
         {
             return maxCorner
-                ? new Tuple2D(boundingBox.MaxX, boundingBox.MaxY)
-                : new Tuple2D(boundingBox.MinX, boundingBox.MinY);
+                ? new Float64Tuple2D(boundingBox.MaxX, boundingBox.MaxY)
+                : new Float64Tuple2D(boundingBox.MinX, boundingBox.MinY);
         }
 
         public static double GetMidX(this IBoundingBox2D boundingBox)
@@ -264,35 +264,35 @@ namespace NumericalGeometryLib.Borders
                 : new BoundingBox1D(boundingBox.MinY, boundingBox.MaxY);
         }
 
-        public static Tuple2D GetMinCorner(this IBoundingBox2D boundingBox)
+        public static Float64Tuple2D GetMinCorner(this IBoundingBox2D boundingBox)
         {
-            return new Tuple2D(boundingBox.MinX, boundingBox.MinY);
+            return new Float64Tuple2D(boundingBox.MinX, boundingBox.MinY);
         }
 
-        public static Tuple2D GetMaxCorner(this IBoundingBox2D boundingBox)
+        public static Float64Tuple2D GetMaxCorner(this IBoundingBox2D boundingBox)
         {
-            return new Tuple2D(boundingBox.MaxX, boundingBox.MaxY);
+            return new Float64Tuple2D(boundingBox.MaxX, boundingBox.MaxY);
         }
 
-        public static Tuple2D GetMidPoint(this IBoundingBox2D boundingBox)
+        public static Float64Tuple2D GetMidPoint(this IBoundingBox2D boundingBox)
         {
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 0.5 * (boundingBox.MinX + boundingBox.MaxX),
                 0.5 * (boundingBox.MinY + boundingBox.MaxY)
             );
         }
 
-        public static Tuple2D GetSideLengths(this IBoundingBox2D boundingBox)
+        public static Float64Tuple2D GetSideLengths(this IBoundingBox2D boundingBox)
         {
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 boundingBox.MaxX - boundingBox.MinX,
                 boundingBox.MaxY - boundingBox.MinY
             );
         }
 
-        public static Tuple2D GetDiagonalVector(this IBoundingBox2D boundingBox)
+        public static Float64Tuple2D GetDiagonalVector(this IBoundingBox2D boundingBox)
         {
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 boundingBox.MaxX - boundingBox.MinX,
                 boundingBox.MaxY - boundingBox.MinY
             );
@@ -344,20 +344,20 @@ namespace NumericalGeometryLib.Borders
         /// <param name="boundingBox"></param>
         /// <param name="cornerIndex"></param>
         /// <returns></returns>
-        public static Tuple2D GetCorner(this IBoundingBox2D boundingBox, int cornerIndex)
+        public static Float64Tuple2D GetCorner(this IBoundingBox2D boundingBox, int cornerIndex)
         {
             cornerIndex = cornerIndex.Mod(4);
 
             if (cornerIndex == 0)
-                return new Tuple2D(boundingBox.MinX, boundingBox.MinY);
+                return new Float64Tuple2D(boundingBox.MinX, boundingBox.MinY);
 
             if (cornerIndex == 1)
-                return new Tuple2D(boundingBox.MaxX, boundingBox.MinY);
+                return new Float64Tuple2D(boundingBox.MaxX, boundingBox.MinY);
 
             if (cornerIndex == 2)
-                return new Tuple2D(boundingBox.MinX, boundingBox.MaxY);
+                return new Float64Tuple2D(boundingBox.MinX, boundingBox.MaxY);
 
-            return new Tuple2D(boundingBox.MaxX, boundingBox.MaxY);
+            return new Float64Tuple2D(boundingBox.MaxX, boundingBox.MaxY);
         }
 
         public static double GetSideMinValue(this IBoundingBox2D boundingBox, int axisIndex)
@@ -410,18 +410,18 @@ namespace NumericalGeometryLib.Borders
             return new BoundingBox1D(boundingBox.MinY, boundingBox.MaxY);
         }
 
-        public static Tuple2D GetSideDirection(this MutableBoundingBox2D boundingBox, int cornerIndex1, int cornerIndex2)
+        public static Float64Tuple2D GetSideDirection(this MutableBoundingBox2D boundingBox, int cornerIndex1, int cornerIndex2)
         {
             var point1 = boundingBox.GetCorner(cornerIndex1);
             var point2 = boundingBox.GetCorner(cornerIndex2);
 
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 point2.X - point1.X,
                 point2.Y - point1.Y
             );
         }
 
-        public static Tuple2D GetPointOffset(this IBoundingBox2D boundingBox, ITuple2D point)
+        public static Float64Tuple2D GetPointOffset(this IBoundingBox2D boundingBox, IFloat64Tuple2D point)
         {
             var oX = point.X - boundingBox.MinX;
             var oY = point.Y - boundingBox.MinY;
@@ -432,10 +432,10 @@ namespace NumericalGeometryLib.Borders
             if (boundingBox.MaxY > boundingBox.MinY)
                 oY = oY / (boundingBox.MaxY - boundingBox.MinY);
 
-            return new Tuple2D(oX, oY);
+            return new Float64Tuple2D(oX, oY);
         }
 
-        public static bool Contains(this IBoundingBox2D boundingBox, ITuple2D point, bool useMargins = false)
+        public static bool Contains(this IBoundingBox2D boundingBox, IFloat64Tuple2D point, bool useMargins = false)
         {
             if (useMargins)
                 return
@@ -483,7 +483,7 @@ namespace NumericalGeometryLib.Borders
                 (box.MaxY <= boundingBox.MaxY);
         }
 
-        public static bool ContainsUpperExclusive(this IBoundingBox2D boundingBox, ITuple2D point, bool useMargins = false)
+        public static bool ContainsUpperExclusive(this IBoundingBox2D boundingBox, IFloat64Tuple2D point, bool useMargins = false)
         {
             if (useMargins)
                 return
@@ -673,11 +673,11 @@ namespace NumericalGeometryLib.Borders
         }
 
 
-        public static Tuple3D GetCorner(this IBoundingBox3D boundingBox, bool maxCorner)
+        public static Float64Tuple3D GetCorner(this IBoundingBox3D boundingBox, bool maxCorner)
         {
             return maxCorner
-                ? new Tuple3D(boundingBox.MaxX, boundingBox.MaxY, boundingBox.MaxZ)
-                : new Tuple3D(boundingBox.MinX, boundingBox.MinY, boundingBox.MinZ);
+                ? new Float64Tuple3D(boundingBox.MaxX, boundingBox.MaxY, boundingBox.MaxZ)
+                : new Float64Tuple3D(boundingBox.MinX, boundingBox.MinY, boundingBox.MinZ);
         }
 
         public static double GetMidX(this IBoundingBox3D boundingBox)
@@ -799,17 +799,17 @@ namespace NumericalGeometryLib.Borders
             return result.GetBoundingBox();
         }
 
-        public static Tuple2D GetPointAt(this IBoundingBox2D boundingBox, double tx, double ty)
+        public static Float64Tuple2D GetPointAt(this IBoundingBox2D boundingBox, double tx, double ty)
         {
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 (1.0d - tx) * boundingBox.MinX + tx * boundingBox.MaxX,
                 (1.0d - ty) * boundingBox.MinY + ty * boundingBox.MaxY
             );
         }
 
-        public static Tuple2D GetPointAt(this IBoundingBox2D boundingBox, ITuple2D tVector)
+        public static Float64Tuple2D GetPointAt(this IBoundingBox2D boundingBox, IFloat64Tuple2D tVector)
         {
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 (1.0d - tVector.X) * boundingBox.MinX + tVector.X * boundingBox.MaxX,
                 (1.0d - tVector.Y) * boundingBox.MinY + tVector.Y * boundingBox.MaxY
             );
@@ -964,54 +964,54 @@ namespace NumericalGeometryLib.Borders
             return new BoundingBox1D(boundingBox.MinZ, boundingBox.MaxZ);
         }
 
-        public static Tuple3D GetMinCorner(this IBoundingBox3D boundingBox)
+        public static Float64Tuple3D GetMinCorner(this IBoundingBox3D boundingBox)
         {
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 boundingBox.MinX,
                 boundingBox.MinY,
                 boundingBox.MinZ
             );
         }
 
-        public static Tuple3D GetMaxCorner(this IBoundingBox3D boundingBox)
+        public static Float64Tuple3D GetMaxCorner(this IBoundingBox3D boundingBox)
         {
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 boundingBox.MaxX,
                 boundingBox.MaxY,
                 boundingBox.MaxZ
             );
         }
 
-        public static Tuple3D GetMidPoint(this IBoundingBox3D boundingBox)
+        public static Float64Tuple3D GetMidPoint(this IBoundingBox3D boundingBox)
         {
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 0.5 * (boundingBox.MinX + boundingBox.MaxX),
                 0.5 * (boundingBox.MinY + boundingBox.MaxY),
                 0.5 * (boundingBox.MinZ + boundingBox.MaxZ)
             );
         }
 
-        public static Tuple3D GetSideLengths(this IBoundingBox3D boundingBox)
+        public static Float64Tuple3D GetSideLengths(this IBoundingBox3D boundingBox)
         {
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 boundingBox.MaxX - boundingBox.MinX,
                 boundingBox.MaxY - boundingBox.MinY,
                 boundingBox.MaxZ - boundingBox.MinZ
             );
         }
 
-        public static Tuple3D GetSideHalfLengths(this IBoundingBox3D boundingBox)
+        public static Float64Tuple3D GetSideHalfLengths(this IBoundingBox3D boundingBox)
         {
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 0.5 * (boundingBox.MaxX - boundingBox.MinX),
                 0.5 * (boundingBox.MaxY - boundingBox.MinY),
                 0.5 * (boundingBox.MaxZ - boundingBox.MinZ)
             );
         }
 
-        public static Tuple3D GetDiagonalVector(this IBoundingBox3D boundingBox)
+        public static Float64Tuple3D GetDiagonalVector(this IBoundingBox3D boundingBox)
         {
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 boundingBox.MaxX - boundingBox.MinX,
                 boundingBox.MaxY - boundingBox.MinY,
                 boundingBox.MaxZ - boundingBox.MinZ
@@ -1070,32 +1070,32 @@ namespace NumericalGeometryLib.Borders
         /// <param name="boundingBox"></param>
         /// <param name="cornerIndex"></param>
         /// <returns></returns>
-        public static Tuple3D GetCorner(this IBoundingBox3D boundingBox, int cornerIndex)
+        public static Float64Tuple3D GetCorner(this IBoundingBox3D boundingBox, int cornerIndex)
         {
             cornerIndex = cornerIndex.Mod(8);
 
             if (cornerIndex == 0)
-                return new Tuple3D(boundingBox.MinX, boundingBox.MinY, boundingBox.MinZ);
+                return new Float64Tuple3D(boundingBox.MinX, boundingBox.MinY, boundingBox.MinZ);
 
             if (cornerIndex == 1)
-                return new Tuple3D(boundingBox.MaxX, boundingBox.MinY, boundingBox.MinZ);
+                return new Float64Tuple3D(boundingBox.MaxX, boundingBox.MinY, boundingBox.MinZ);
 
             if (cornerIndex == 2)
-                return new Tuple3D(boundingBox.MinX, boundingBox.MaxY, boundingBox.MinZ);
+                return new Float64Tuple3D(boundingBox.MinX, boundingBox.MaxY, boundingBox.MinZ);
 
             if (cornerIndex == 3)
-                return new Tuple3D(boundingBox.MaxX, boundingBox.MaxY, boundingBox.MinZ);
+                return new Float64Tuple3D(boundingBox.MaxX, boundingBox.MaxY, boundingBox.MinZ);
 
             if (cornerIndex == 4)
-                return new Tuple3D(boundingBox.MinX, boundingBox.MinY, boundingBox.MaxZ);
+                return new Float64Tuple3D(boundingBox.MinX, boundingBox.MinY, boundingBox.MaxZ);
 
             if (cornerIndex == 5)
-                return new Tuple3D(boundingBox.MaxX, boundingBox.MinY, boundingBox.MaxZ);
+                return new Float64Tuple3D(boundingBox.MaxX, boundingBox.MinY, boundingBox.MaxZ);
 
             if (cornerIndex == 6)
-                return new Tuple3D(boundingBox.MinX, boundingBox.MaxY, boundingBox.MaxZ);
+                return new Float64Tuple3D(boundingBox.MinX, boundingBox.MaxY, boundingBox.MaxZ);
 
-            return new Tuple3D(boundingBox.MaxX, boundingBox.MaxY, boundingBox.MaxZ);
+            return new Float64Tuple3D(boundingBox.MaxX, boundingBox.MaxY, boundingBox.MaxZ);
         }
 
         public static double GetSideMinValue(this IBoundingBox3D boundingBox, int axisIndex)
@@ -1163,19 +1163,19 @@ namespace NumericalGeometryLib.Borders
             return new BoundingBox1D(boundingBox.MinZ, boundingBox.MaxZ);
         }
 
-        public static Tuple3D GetSideDirection(this IBoundingBox3D boundingBox, int cornerIndex1, int cornerIndex2)
+        public static Float64Tuple3D GetSideDirection(this IBoundingBox3D boundingBox, int cornerIndex1, int cornerIndex2)
         {
             var point1 = boundingBox.GetCorner(cornerIndex1);
             var point2 = boundingBox.GetCorner(cornerIndex2);
 
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 point2.X - point1.X,
                 point2.Y - point1.Y,
                 point2.Z - point1.Z
             );
         }
 
-        public static Tuple3D GetPointOffset(this IBoundingBox3D boundingBox, ITuple3D point)
+        public static Float64Tuple3D GetPointOffset(this IBoundingBox3D boundingBox, IFloat64Tuple3D point)
         {
             var oX = point.X - boundingBox.MinX;
             var oY = point.Y - boundingBox.MinY;
@@ -1190,10 +1190,10 @@ namespace NumericalGeometryLib.Borders
             if (boundingBox.MaxZ > boundingBox.MinZ)
                 oZ = oZ / (boundingBox.MaxZ - boundingBox.MinZ);
 
-            return new Tuple3D(oX, oY, oZ);
+            return new Float64Tuple3D(oX, oY, oZ);
         }
 
-        public static bool Contains(this IBoundingBox3D boundingBox, ITuple3D point, bool useMargins = false)
+        public static bool Contains(this IBoundingBox3D boundingBox, IFloat64Tuple3D point, bool useMargins = false)
         {
             if (useMargins)
                 return
@@ -1253,7 +1253,7 @@ namespace NumericalGeometryLib.Borders
                 (box.MaxZ <= boundingBox.MaxZ);
         }
 
-        public static bool ContainsUpperExclusive(this IBoundingBox3D boundingBox, ITuple3D point, bool useMargins = false)
+        public static bool ContainsUpperExclusive(this IBoundingBox3D boundingBox, IFloat64Tuple3D point, bool useMargins = false)
         {
             if (useMargins)
                 return
@@ -1547,18 +1547,18 @@ namespace NumericalGeometryLib.Borders
             return result;
         }
 
-        public static Tuple3D GetPointAt(this IBoundingBox3D boundingBox, double tx, double ty, double tz)
+        public static Float64Tuple3D GetPointAt(this IBoundingBox3D boundingBox, double tx, double ty, double tz)
         {
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 (1.0d - tx) * boundingBox.MinX + tx * boundingBox.MaxX,
                 (1.0d - ty) * boundingBox.MinY + ty * boundingBox.MaxY,
                 (1.0d - tz) * boundingBox.MinZ + tz * boundingBox.MaxZ
             );
         }
 
-        public static Tuple3D GetPointAt(this IBoundingBox3D boundingBox, ITuple3D tVector)
+        public static Float64Tuple3D GetPointAt(this IBoundingBox3D boundingBox, IFloat64Tuple3D tVector)
         {
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 (1.0d - tVector.X) * boundingBox.MinX + tVector.X * boundingBox.MaxX,
                 (1.0d - tVector.Y) * boundingBox.MinY + tVector.Y * boundingBox.MaxY,
                 (1.0d - tVector.Z) * boundingBox.MinZ + tVector.Z * boundingBox.MaxZ

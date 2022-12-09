@@ -22,6 +22,6 @@ namespace GraphicsComposerLib.Geometry.SdfShapes
 
         double ComputeSdfRayStep(Line3D ray, double t0);
 
-        Tuple3D ComputeSdfNormal(ITuple3D point);
+        Float64Tuple3D ComputeSdfNormal(IFloat64Tuple3D point);
     }
 }

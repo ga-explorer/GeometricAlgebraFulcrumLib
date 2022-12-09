@@ -14,19 +14,19 @@ namespace NumericalGeometryLib.BasicShapes.Lines
     public static class LinesUtils
     {
         #region Lines in 2D
-        public static Tuple2D GetOrigin(this ILine2D line)
+        public static Float64Tuple2D GetOrigin(this ILine2D line)
         {
-            return new Tuple2D(line.OriginX, line.OriginY);
+            return new Float64Tuple2D(line.OriginX, line.OriginY);
         }
 
-        public static Tuple2D GetDirection(this ILine2D line)
+        public static Float64Tuple2D GetDirection(this ILine2D line)
         {
-            return new Tuple2D(line.DirectionX, line.DirectionY);
+            return new Float64Tuple2D(line.DirectionX, line.DirectionY);
         }
 
-        public static Tuple2D GetDirectionInv(this ILine2D line)
+        public static Float64Tuple2D GetDirectionInv(this ILine2D line)
         {
-            return new Tuple2D(1 / line.DirectionX, 1 / line.DirectionY);
+            return new Float64Tuple2D(1 / line.DirectionX, 1 / line.DirectionY);
         }
 
         public static int[] GetDirectionSign(this ILine2D line)
@@ -52,12 +52,12 @@ namespace NumericalGeometryLib.BasicShapes.Lines
                    line.DirectionY * line.DirectionY;
         }
 
-        public static Tuple2D GetUnitDirection(this ILine2D line)
+        public static Float64Tuple2D GetUnitDirection(this ILine2D line)
         {
             return VectorUtils.ToUnitVector(line.DirectionX, line.DirectionY);
         }
 
-        public static Tuple<double, Tuple2D> ToLengthAndUnitDirection(this ILine2D line)
+        public static Tuple<double, Float64Tuple2D> ToLengthAndUnitDirection(this ILine2D line)
         {
             var length = Math.Sqrt(
                 line.DirectionX * line.DirectionX +
@@ -68,23 +68,23 @@ namespace NumericalGeometryLib.BasicShapes.Lines
 
             return Tuple.Create(
                 length,
-                new Tuple2D(
+                new Float64Tuple2D(
                     line.DirectionX * lengthInv,
                     line.DirectionY * lengthInv
                 )
             );
         }
 
-        public static Tuple2D GetNormal(this ILine2D line)
+        public static Float64Tuple2D GetNormal(this ILine2D line)
         {
-            return new Tuple2D(-line.DirectionY, line.DirectionX);
+            return new Float64Tuple2D(-line.DirectionY, line.DirectionX);
         }
 
-        public static Tuple2D GetUnitNormal(this ILine2D line)
+        public static Float64Tuple2D GetUnitNormal(this ILine2D line)
         {
             var s = 1.0d / Math.Sqrt(line.DirectionX * line.DirectionX + line.DirectionY * line.DirectionY);
 
-            return new Tuple2D(-line.DirectionY * s, line.DirectionX * s);
+            return new Float64Tuple2D(-line.DirectionY * s, line.DirectionX * s);
         }
 
         public static double GetDistanceToLineDirectionLength(this ILine2D line, double distance)
@@ -138,15 +138,15 @@ namespace NumericalGeometryLib.BasicShapes.Lines
             );
         }
 
-        public static Tuple2D GetPointAt(this ILine2D line, double t)
+        public static Float64Tuple2D GetPointAt(this ILine2D line, double t)
         {
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 line.OriginX + t * line.DirectionX,
                 line.OriginY + t * line.DirectionY
             );
         }
 
-        public static IEnumerable<Tuple2D> GetPointsAt(this ILine2D line, IEnumerable<double> tList)
+        public static IEnumerable<Float64Tuple2D> GetPointsAt(this ILine2D line, IEnumerable<double> tList)
         {
             return tList.Select(t => GetPointAt(line, t));
         }
@@ -181,7 +181,7 @@ namespace NumericalGeometryLib.BasicShapes.Lines
             );
         }
 
-        public static Triangle2D ToTriangle(this ILine2D line, ITuple2D point3)
+        public static Triangle2D ToTriangle(this ILine2D line, IFloat64Tuple2D point3)
         {
             return new Triangle2D(
                 line.OriginX,
@@ -193,7 +193,7 @@ namespace NumericalGeometryLib.BasicShapes.Lines
             );
         }
 
-        public static Beam2D ToBeam(this ILine2D line, ITuple2D direction2)
+        public static Beam2D ToBeam(this ILine2D line, IFloat64Tuple2D direction2)
         {
             return new Beam2D(
                 line.OriginX,
@@ -228,44 +228,44 @@ namespace NumericalGeometryLib.BasicShapes.Lines
         #endregion
 
         #region Lines in 3D
-        public static Tuple3D GetOrigin(this ILine3D line)
+        public static Float64Tuple3D GetOrigin(this ILine3D line)
         {
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 line.OriginX,
                 line.OriginY,
                 line.OriginZ
             );
         }
 
-        public static Tuple3D GetDirection(this ILine3D line)
+        public static Float64Tuple3D GetDirection(this ILine3D line)
         {
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 line.DirectionX,
                 line.DirectionY,
                 line.DirectionZ
             );
         }
 
-        public static Tuple3D GetDirectionInv(this ILine3D line)
+        public static Float64Tuple3D GetDirectionInv(this ILine3D line)
         {
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 1 / line.DirectionX,
                 1 / line.DirectionY,
                 1 / line.DirectionZ
             );
         }
 
-        public static Tuple2D GetNegativeDirection(this ILine2D line)
+        public static Float64Tuple2D GetNegativeDirection(this ILine2D line)
         {
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 -line.DirectionX,
                 -line.DirectionY
             );
         }
 
-        public static Tuple3D GetNegativeDirection(this ILine3D line)
+        public static Float64Tuple3D GetNegativeDirection(this ILine3D line)
         {
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 -line.DirectionX,
                 -line.DirectionY,
                 -line.DirectionZ
@@ -298,7 +298,7 @@ namespace NumericalGeometryLib.BasicShapes.Lines
                    line.DirectionZ * line.DirectionZ;
         }
 
-        public static Tuple3D GetUnitDirection(this ILine3D line)
+        public static Float64Tuple3D GetUnitDirection(this ILine3D line)
         {
             return VectorUtils.ToUnitVector(
                 line.DirectionX,
@@ -307,7 +307,7 @@ namespace NumericalGeometryLib.BasicShapes.Lines
             );
         }
 
-        public static Tuple<double, Tuple3D> ToLengthAndUnitDirection(this ILine3D line)
+        public static Tuple<double, Float64Tuple3D> ToLengthAndUnitDirection(this ILine3D line)
         {
             var length = Math.Sqrt(
                 line.DirectionX * line.DirectionX +
@@ -319,7 +319,7 @@ namespace NumericalGeometryLib.BasicShapes.Lines
 
             return Tuple.Create(
                 length,
-                new Tuple3D(
+                new Float64Tuple3D(
                     line.DirectionX * lengthInv,
                     line.DirectionY * lengthInv,
                     line.DirectionZ * lengthInv
@@ -354,42 +354,42 @@ namespace NumericalGeometryLib.BasicShapes.Lines
             );
         }
 
-        public static Tuple3D GetPointAt(this ILine3D line, double t)
+        public static Float64Tuple3D GetPointAt(this ILine3D line, double t)
         {
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 line.OriginX + t * line.DirectionX,
                 line.OriginY + t * line.DirectionY,
                 line.OriginZ + t * line.DirectionZ
             );
         }
 
-        public static IEnumerable<Tuple3D> GetPointsAt(this ILine3D line, IEnumerable<double> tList)
+        public static IEnumerable<Float64Tuple3D> GetPointsAt(this ILine3D line, IEnumerable<double> tList)
         {
             return tList.Select(line.GetPointAt);
         }
 
-        public static Tuple2D GetPointAtDistance(this ILine2D line, double distance)
+        public static Float64Tuple2D GetPointAtDistance(this ILine2D line, double distance)
         {
             var t = distance / line.GetDirectionLength();
 
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 line.OriginX + t * line.DirectionX,
                 line.OriginY + t * line.DirectionY
             );
         }
 
-        public static Tuple3D GetPointAtDistance(this ILine3D line, double distance)
+        public static Float64Tuple3D GetPointAtDistance(this ILine3D line, double distance)
         {
             var t = distance / line.GetDirectionLength();
 
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 line.OriginX + t * line.DirectionX,
                 line.OriginY + t * line.DirectionY,
                 line.OriginZ + t * line.DirectionZ
             );
         }
 
-        public static IEnumerable<Tuple3D> GetPointsAtDistances(this ILine3D line, IEnumerable<double> distancesList)
+        public static IEnumerable<Float64Tuple3D> GetPointsAtDistances(this ILine3D line, IEnumerable<double> distancesList)
         {
             var g = 1 / line.GetDirectionLength();
 
@@ -432,7 +432,7 @@ namespace NumericalGeometryLib.BasicShapes.Lines
             );
         }
 
-        public static Triangle3D ToTriangle(this ILine3D line, ITuple3D point3)
+        public static Triangle3D ToTriangle(this ILine3D line, IFloat64Tuple3D point3)
         {
             return new Triangle3D(
                 line.OriginX,
@@ -490,17 +490,17 @@ namespace NumericalGeometryLib.BasicShapes.Lines
             return dx * dx + dy * dy;
         }
 
-        public static Tuple2D GetDirection12(this ILineSegment2D lineSegment)
+        public static Float64Tuple2D GetDirection12(this ILineSegment2D lineSegment)
         {
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 lineSegment.Point2X - lineSegment.Point1X,
                 lineSegment.Point2Y - lineSegment.Point1Y
             );
         }
 
-        public static Tuple2D GetDirection21(this ILineSegment2D lineSegment)
+        public static Float64Tuple2D GetDirection21(this ILineSegment2D lineSegment)
         {
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 lineSegment.Point1X - lineSegment.Point2X,
                 lineSegment.Point1Y - lineSegment.Point2Y
             );
@@ -548,49 +548,49 @@ namespace NumericalGeometryLib.BasicShapes.Lines
             );
         }
 
-        public static Tuple2D GetPoint1(this ILineSegment2D lineSegment)
+        public static Float64Tuple2D GetPoint1(this ILineSegment2D lineSegment)
         {
-            return new Tuple2D(lineSegment.Point1X, lineSegment.Point1Y);
+            return new Float64Tuple2D(lineSegment.Point1X, lineSegment.Point1Y);
         }
 
-        public static Tuple2D GetPoint2(this ILineSegment2D lineSegment)
+        public static Float64Tuple2D GetPoint2(this ILineSegment2D lineSegment)
         {
-            return new Tuple2D(lineSegment.Point2X, lineSegment.Point2Y);
+            return new Float64Tuple2D(lineSegment.Point2X, lineSegment.Point2Y);
         }
 
-        public static Tuple2D[] GetEndPoints(this ILineSegment2D lineSegment)
+        public static Float64Tuple2D[] GetEndPoints(this ILineSegment2D lineSegment)
         {
             return new[]
             {
-                new Tuple2D(
+                new Float64Tuple2D(
                     lineSegment.Point1X,
                     lineSegment.Point1Y
                 ),
-                new Tuple2D(
+                new Float64Tuple2D(
                     lineSegment.Point2X,
                     lineSegment.Point2Y
                 )
             };
         }
 
-        public static Tuple2D GetPointAt(this ILineSegment2D lineSegment, double t)
+        public static Float64Tuple2D GetPointAt(this ILineSegment2D lineSegment, double t)
         {
             Debug.Assert(!double.IsNaN(t));
 
             var s = 1.0d - t;
 
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 s * lineSegment.Point1X + t * lineSegment.Point2X,
                 s * lineSegment.Point1Y + t * lineSegment.Point2Y
             );
         }
 
-        public static IEnumerable<Tuple2D> GetPointsAt(this ILineSegment2D lineSegment, IEnumerable<double> tList)
+        public static IEnumerable<Float64Tuple2D> GetPointsAt(this ILineSegment2D lineSegment, IEnumerable<double> tList)
         {
             return tList.Select(lineSegment.GetPointAt);
         }
 
-        public static Triangle2D ToTriangle(this ILineSegment2D lineSegment, Tuple2D point3)
+        public static Triangle2D ToTriangle(this ILineSegment2D lineSegment, Float64Tuple2D point3)
         {
             return new Triangle2D(
                 lineSegment.Point1X,
@@ -625,7 +625,7 @@ namespace NumericalGeometryLib.BasicShapes.Lines
             );
         }
 
-        public static IEnumerable<LineSegment2D> ToLineSegments(this IEnumerable<ITuple2D> polylinePoints, bool closedShape = true)
+        public static IEnumerable<LineSegment2D> ToLineSegments(this IEnumerable<IFloat64Tuple2D> polylinePoints, bool closedShape = true)
         {
             var pointsArray = polylinePoints.ToArray();
             var point1 = pointsArray[0];
@@ -657,19 +657,19 @@ namespace NumericalGeometryLib.BasicShapes.Lines
             }
         }
 
-        public static Tuple2D GetNormal(this ILineSegment2D lineSegment)
+        public static Float64Tuple2D GetNormal(this ILineSegment2D lineSegment)
         {
-            var direction = new Tuple2D(
+            var direction = new Float64Tuple2D(
                 lineSegment.Point2X - lineSegment.Point1X,
                 lineSegment.Point2Y - lineSegment.Point1Y
             );
 
-            return new Tuple2D(-direction.Y, direction.X);
+            return new Float64Tuple2D(-direction.Y, direction.X);
         }
 
-        public static Tuple2D GetUnitNormal(this ILineSegment2D lineSegment)
+        public static Float64Tuple2D GetUnitNormal(this ILineSegment2D lineSegment)
         {
-            var direction = new Tuple2D(
+            var direction = new Float64Tuple2D(
                 lineSegment.Point2X - lineSegment.Point1X,
                 lineSegment.Point2Y - lineSegment.Point1Y
             );
@@ -679,7 +679,7 @@ namespace NumericalGeometryLib.BasicShapes.Lines
                         direction.Y * direction.Y
                     );
 
-            return new Tuple2D(-direction.Y * s, direction.X * s);
+            return new Float64Tuple2D(-direction.Y * s, direction.X * s);
         }
 
         #endregion
@@ -703,34 +703,34 @@ namespace NumericalGeometryLib.BasicShapes.Lines
             return dx * dx + dy * dy + dz * dz;
         }
 
-        public static Tuple3D GetPoint1(this ILineSegment3D lineSegment)
+        public static Float64Tuple3D GetPoint1(this ILineSegment3D lineSegment)
         {
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 lineSegment.Point1X,
                 lineSegment.Point1Y,
                 lineSegment.Point1Z
             );
         }
 
-        public static Tuple3D GetPoint2(this ILineSegment3D lineSegment)
+        public static Float64Tuple3D GetPoint2(this ILineSegment3D lineSegment)
         {
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 lineSegment.Point2X,
                 lineSegment.Point2Y,
                 lineSegment.Point2Z
             );
         }
 
-        public static Tuple3D[] GetEndPoints(this ILineSegment3D lineSegment)
+        public static Float64Tuple3D[] GetEndPoints(this ILineSegment3D lineSegment)
         {
             return new[]
             {
-                new Tuple3D(
+                new Float64Tuple3D(
                     lineSegment.Point1X,
                     lineSegment.Point1Y,
                     lineSegment.Point1Z
                 ),
-                new Tuple3D(
+                new Float64Tuple3D(
                     lineSegment.Point2X,
                     lineSegment.Point2Y,
                     lineSegment.Point2Z
@@ -738,42 +738,42 @@ namespace NumericalGeometryLib.BasicShapes.Lines
             };
         }
 
-        public static IEnumerable<Tuple3D> GetEndpoints(this IEnumerable<ILineSegment3D> lineSegmentsList)
+        public static IEnumerable<Float64Tuple3D> GetEndpoints(this IEnumerable<ILineSegment3D> lineSegmentsList)
         {
             return lineSegmentsList
                 .SelectMany(s => s.GetEndPoints());
         }
 
-        public static Tuple3D GetPointAt(this ILineSegment3D lineSegment, double t)
+        public static Float64Tuple3D GetPointAt(this ILineSegment3D lineSegment, double t)
         {
             Debug.Assert(!double.IsNaN(t));
 
             var s = 1.0d - t;
 
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 s * lineSegment.Point1X + t * lineSegment.Point2X,
                 s * lineSegment.Point1Y + t * lineSegment.Point2Y,
                 s * lineSegment.Point1Z + t * lineSegment.Point2Z
             );
         }
 
-        public static IEnumerable<Tuple3D> GetPointsAt(this ILineSegment3D lineSegment, IEnumerable<double> tList)
+        public static IEnumerable<Float64Tuple3D> GetPointsAt(this ILineSegment3D lineSegment, IEnumerable<double> tList)
         {
             return tList.Select(lineSegment.GetPointAt);
         }
 
-        public static Tuple3D GetDirection12(this ILineSegment3D lineSegment)
+        public static Float64Tuple3D GetDirection12(this ILineSegment3D lineSegment)
         {
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 lineSegment.Point2X - lineSegment.Point1X,
                 lineSegment.Point2Y - lineSegment.Point1Y,
                 lineSegment.Point2Z - lineSegment.Point1Z
             );
         }
 
-        public static Tuple3D GetDirection21(this ILineSegment3D lineSegment)
+        public static Float64Tuple3D GetDirection21(this ILineSegment3D lineSegment)
         {
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 lineSegment.Point1X - lineSegment.Point2X,
                 lineSegment.Point1Y - lineSegment.Point2Y,
                 lineSegment.Point1Z - lineSegment.Point2Z
@@ -830,7 +830,7 @@ namespace NumericalGeometryLib.BasicShapes.Lines
             );
         }
 
-        public static Triangle3D ToTriangle(this ILineSegment3D lineSegment, Tuple3D point3)
+        public static Triangle3D ToTriangle(this ILineSegment3D lineSegment, Float64Tuple3D point3)
         {
             return new Triangle3D(
                 lineSegment.Point1X,
@@ -872,7 +872,7 @@ namespace NumericalGeometryLib.BasicShapes.Lines
             );
         }
 
-        public static IEnumerable<LineSegment3D> ToLineSegments(this IEnumerable<ITuple3D> polylinePoints, bool closedShape = true)
+        public static IEnumerable<LineSegment3D> ToLineSegments(this IEnumerable<IFloat64Tuple3D> polylinePoints, bool closedShape = true)
         {
             var pointsArray = polylinePoints.ToArray();
             var point1 = pointsArray[0];
@@ -912,25 +912,25 @@ namespace NumericalGeometryLib.BasicShapes.Lines
 
         #region Operations on Beams
 
-        public static Tuple2D GetOrigin(this IBeam2D beam)
+        public static Float64Tuple2D GetOrigin(this IBeam2D beam)
         {
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 beam.OriginX,
                 beam.OriginY
             );
         }
 
-        public static Tuple2D GetDirection1(this IBeam2D beam)
+        public static Float64Tuple2D GetDirection1(this IBeam2D beam)
         {
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 beam.Direction1X,
                 beam.Direction1Y
             );
         }
 
-        public static Tuple2D GetDirection2(this IBeam2D beam)
+        public static Float64Tuple2D GetDirection2(this IBeam2D beam)
         {
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 beam.Direction2X,
                 beam.Direction2Y
             );
@@ -957,43 +957,43 @@ namespace NumericalGeometryLib.BasicShapes.Lines
         }
 
 
-        public static Tuple2D GetNormal1(this IBeam2D beam)
+        public static Float64Tuple2D GetNormal1(this IBeam2D beam)
         {
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 -beam.Direction1Y,
                 beam.Direction1X
             );
         }
 
-        public static Tuple2D GetUnitNormal1(this IBeam2D beam)
+        public static Float64Tuple2D GetUnitNormal1(this IBeam2D beam)
         {
             var s = 1.0d / Math.Sqrt(
                         beam.Direction1X * beam.Direction1X +
                         beam.Direction1Y * beam.Direction1Y
                     );
 
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 -beam.Direction1Y * s,
                 beam.Direction1X * s
             );
         }
 
-        public static Tuple2D GetNormal2(this IBeam2D beam)
+        public static Float64Tuple2D GetNormal2(this IBeam2D beam)
         {
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 -beam.Direction2Y,
                 beam.Direction2X
             );
         }
 
-        public static Tuple2D GetUnitNormal2(this IBeam2D beam)
+        public static Float64Tuple2D GetUnitNormal2(this IBeam2D beam)
         {
             var s = 1.0d / Math.Sqrt(
                         beam.Direction2X * beam.Direction2X +
                         beam.Direction2Y * beam.Direction2Y
                     );
 
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 -beam.Direction2Y * s,
                 beam.Direction2X * s
             );
@@ -1031,15 +1031,15 @@ namespace NumericalGeometryLib.BasicShapes.Lines
             );
         }
 
-        public static Tuple2D GetPoint(this IBeam2D beam, double tPointX, double tPointY)
+        public static Float64Tuple2D GetPoint(this IBeam2D beam, double tPointX, double tPointY)
         {
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 beam.OriginX + tPointX * beam.Direction1X + tPointY * beam.Direction2X,
                 beam.OriginY + tPointX * beam.Direction1Y + tPointY * beam.Direction2Y
             );
         }
 
-        public static IEnumerable<Tuple2D> GetPoints(this IBeam2D beam, IEnumerable<Tuple2D> tPointsList)
+        public static IEnumerable<Float64Tuple2D> GetPoints(this IBeam2D beam, IEnumerable<Float64Tuple2D> tPointsList)
         {
             return tPointsList.Select(
                 tPoint => beam.GetPoint(tPoint.X, tPoint.Y)
@@ -1056,7 +1056,7 @@ namespace NumericalGeometryLib.BasicShapes.Lines
             );
         }
 
-        public static LineSegment2D GetLineSegment(this IBeam2D beam, Tuple2D tPoint1, Tuple2D tPoint2)
+        public static LineSegment2D GetLineSegment(this IBeam2D beam, Float64Tuple2D tPoint1, Float64Tuple2D tPoint2)
         {
             var point1 = beam.GetPoint(tPoint1.X, tPoint1.Y);
             var point2 = beam.GetPoint(tPoint2.X, tPoint2.Y);
@@ -1081,7 +1081,7 @@ namespace NumericalGeometryLib.BasicShapes.Lines
             );
         }
 
-        public static Line2D GetRay(this IBeam2D beam, Tuple2D tPoint1, Tuple2D tPoint2)
+        public static Line2D GetRay(this IBeam2D beam, Float64Tuple2D tPoint1, Float64Tuple2D tPoint2)
         {
             var point1 = beam.GetPoint(tPoint1.X, tPoint1.Y);
             var point2 = beam.GetPoint(tPoint2.X, tPoint2.Y);
@@ -1131,7 +1131,7 @@ namespace NumericalGeometryLib.BasicShapes.Lines
             );
         }
 
-        public static Triangle2D GetTriangle(this IBeam2D beam, Tuple2D tPoint1, Tuple2D tPoint2, Tuple2D tPoint3)
+        public static Triangle2D GetTriangle(this IBeam2D beam, Float64Tuple2D tPoint1, Float64Tuple2D tPoint2, Float64Tuple2D tPoint3)
         {
             var point1 = beam.GetPoint(tPoint1.X, tPoint1.Y);
             var point2 = beam.GetPoint(tPoint2.X, tPoint2.Y);
@@ -1151,34 +1151,34 @@ namespace NumericalGeometryLib.BasicShapes.Lines
 
         #region Operaions on LinePairs
 
-        public static Tuple2D GetOrigin1(this ILinePair2D linePair)
+        public static Float64Tuple2D GetOrigin1(this ILinePair2D linePair)
         {
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 linePair.Origin1X,
                 linePair.Origin1Y
             );
         }
 
-        public static Tuple2D GetOrigin2(this ILinePair2D linePair)
+        public static Float64Tuple2D GetOrigin2(this ILinePair2D linePair)
         {
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 linePair.Origin2X,
                 linePair.Origin2Y
             );
         }
 
 
-        public static Tuple2D GetDirection1(this ILinePair2D linePair)
+        public static Float64Tuple2D GetDirection1(this ILinePair2D linePair)
         {
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 linePair.Direction1X,
                 linePair.Direction1Y
             );
         }
 
-        public static Tuple2D GetDirection2(this ILinePair2D linePair)
+        public static Float64Tuple2D GetDirection2(this ILinePair2D linePair)
         {
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 linePair.Direction2X,
                 linePair.Direction2Y
             );
@@ -1204,36 +1204,36 @@ namespace NumericalGeometryLib.BasicShapes.Lines
             );
         }
 
-        public static Tuple3D GetOrigin1(this ILinePair3D linePair)
+        public static Float64Tuple3D GetOrigin1(this ILinePair3D linePair)
         {
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 linePair.Origin1X,
                 linePair.Origin1Y,
                 linePair.Origin1Z
             );
         }
 
-        public static Tuple3D GetOrigin2(this ILinePair3D linePair)
+        public static Float64Tuple3D GetOrigin2(this ILinePair3D linePair)
         {
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 linePair.Origin2X,
                 linePair.Origin2Y,
                 linePair.Origin2Z
             );
         }
 
-        public static Tuple3D GetDirection1(this ILinePair3D linePair)
+        public static Float64Tuple3D GetDirection1(this ILinePair3D linePair)
         {
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 linePair.Direction1X,
                 linePair.Direction1Y,
                 linePair.Direction1Z
             );
         }
 
-        public static Tuple3D GetDirection2(this ILinePair3D linePair)
+        public static Float64Tuple3D GetDirection2(this ILinePair3D linePair)
         {
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 linePair.Direction2X,
                 linePair.Direction2Y,
                 linePair.Direction2Z

@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using BenchmarkDotNet.Attributes;
-using GeometricAlgebraFulcrumLib.Applications.PowerSystems;
-using GeometricAlgebraFulcrumLib.Mathematica.Applications.GaPoT;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
-using NumericalGeometryLib.BasicMath.Matrices;
+using DataStructuresLib.Basic;
+using GAPoTNumLib.GAPoT;
+using NumericalGeometryLib.BasicMath;
+using NumericalGeometryLib.BasicMath.Maps.SpaceND.Rotation;
+using NumericalGeometryLib.BasicMath.Tuples.Mutable;
 
 namespace GeometricAlgebraFulcrumLib.Benchmarks.GAPoT
 {
@@ -17,11 +18,19 @@ namespace GeometricAlgebraFulcrumLib.Benchmarks.GAPoT
         [Params(28, 29, 30, 31, 32, 33)]
         public int VSpaceDimension { get; set; }// = 24;
 
+        public IReadOnlyList<double[]> VectorArrayList { get; private set; }
+
+        //public IReadOnlyList<Float64Tuple> VectorList { get; private set; }
+        
         public double[,] ClarkeArray { get; private set; }
 
-        public IReadOnlyList<double[]> VectorList { get; private set; }
+        public IReadOnlyList<Triplet<double[]>> ClarkeSimpleRotationSequence { get; private set; }
 
-        public Func<double[], double[]> SkrRotateFunction { get; private set; }
+        //public ClarkeRotation ClarkeArrayRotation { get; private set; }
+
+        //public VectorToVectorRotationSequence ClarkeSimpleRotationSequence { get; private set; }
+
+        //public Func<double[], double[]> SkrRotateFunction { get; private set; }
 
         //public Func<double[], double[]> ClarkeRotateFunction { get; private set; }
 
@@ -29,68 +38,91 @@ namespace GeometricAlgebraFulcrumLib.Benchmarks.GAPoT
         [GlobalSetup]
         public void Setup()
         {
-            VectorList =
+            VectorArrayList =
                 Enumerable
                     .Range(0, 1000)
                     .Select(_ => GetRandomVector())
                     .ToImmutableArray();
 
-            ClarkeArray =
-                ScalarAlgebraFloat64Processor
-                    .DefaultProcessor
-                    .CreateClarkeArray(VSpaceDimension);
+            //VectorList =
+            //    VectorArrayList
+            //        .Select(Float64Tuple.Create)
+            //        .ToImmutableArray();
 
-            SkrRotateFunction = VSpaceDimension switch
-            {
-                3 => SkrMapUtils.SkrRotate3D,
-                4 => SkrMapUtils.SkrRotate4D,
-                5 => SkrMapUtils.SkrRotate5D,
-                6 => SkrMapUtils.SkrRotate6D,
-                7 => SkrMapUtils.SkrRotate7D,
-                8 => SkrMapUtils.SkrRotate8D,
-                9 => SkrMapUtils.SkrRotate9D,
-                10 => SkrMapUtils.SkrRotate10D,
-                11 => SkrMapUtils.SkrRotate11D,
-                12 => SkrMapUtils.SkrRotate12D,
-                13 => SkrMapUtils.SkrRotate13D,
-                14 => SkrMapUtils.SkrRotate14D,
-                15 => SkrMapUtils.SkrRotate15D,
-                16 => SkrMapUtils.SkrRotate16D,
-                17 => SkrMapUtils.SkrRotate17D,
-                18 => SkrMapUtils.SkrRotate18D,
-                19 => SkrMapUtils.SkrRotate19D,
-                20 => SkrMapUtils.SkrRotate20D,
-                21 => SkrMapUtils.SkrRotate21D,
-                22 => SkrMapUtils.SkrRotate22D,
-                23 => SkrMapUtils.SkrRotate23D,
-                24 => SkrMapUtils.SkrRotate24D,
-                25 => SkrMapUtils.SkrRotate25D,
-                26 => SkrMapUtils.SkrRotate26D,
-                27 => SkrMapUtils.SkrRotate27D,
-                28 => SkrMapUtils.SkrRotate28D,
-                29 => SkrMapUtils.SkrRotate29D,
-                30 => SkrMapUtils.SkrRotate30D,
-                31 => SkrMapUtils.SkrRotate31D,
-                32 => SkrMapUtils.SkrRotate32D,
-                33 => SkrMapUtils.SkrRotate33D,
-                34 => SkrMapUtils.SkrRotate34D,
-                35 => SkrMapUtils.SkrRotate35D,
-                36 => SkrMapUtils.SkrRotate36D,
-                37 => SkrMapUtils.SkrRotate37D,
-                38 => SkrMapUtils.SkrRotate38D,
-                39 => SkrMapUtils.SkrRotate39D,
-                40 => SkrMapUtils.SkrRotate40D,
-                41 => SkrMapUtils.SkrRotate41D,
-                42 => SkrMapUtils.SkrRotate42D,
-                43 => SkrMapUtils.SkrRotate43D,
-                44 => SkrMapUtils.SkrRotate44D,
-                45 => SkrMapUtils.SkrRotate45D,
-                46 => SkrMapUtils.SkrRotate46D,
-                47 => SkrMapUtils.SkrRotate47D,
-                48 => SkrMapUtils.SkrRotate48D,
-                _ => throw new InvalidOperationException()
-            };
-            
+            ClarkeArray = 
+                Float64ArrayUtils.CreateClarkeRotationArray(VSpaceDimension);
+
+            //ClarkeArrayRotation = 
+            //    ClarkeRotation.CreateForward(VSpaceDimension);
+
+            ClarkeSimpleRotationSequence =
+                MatrixRotation
+                    .CreateForwardClarkeRotation(VSpaceDimension)
+                    .ToVectorToVectorRotationSequence()
+                    .Select(t => 
+                        new Triplet<double[]>(
+                            t.SourceVector.GetScalarArrayCopy(),
+                            t.TargetOrthogonalVector.GetScalarArrayCopy(),
+                            t.TargetVector.GetScalarArrayCopy()
+                        )
+                    ).ToImmutableArray();
+
+            //ClarkeArray =
+            //    ScalarAlgebraFloat64Processor
+            //        .DefaultProcessor
+            //        .CreateClarkeArray(VSpaceDimension);
+
+            //SkrRotateFunction = VSpaceDimension switch
+            //{
+            //    3 => SkrMapUtils.SkrRotate3D,
+            //    4 => SkrMapUtils.SkrRotate4D,
+            //    5 => SkrMapUtils.SkrRotate5D,
+            //    6 => SkrMapUtils.SkrRotate6D,
+            //    7 => SkrMapUtils.SkrRotate7D,
+            //    8 => SkrMapUtils.SkrRotate8D,
+            //    9 => SkrMapUtils.SkrRotate9D,
+            //    10 => SkrMapUtils.SkrRotate10D,
+            //    11 => SkrMapUtils.SkrRotate11D,
+            //    12 => SkrMapUtils.SkrRotate12D,
+            //    13 => SkrMapUtils.SkrRotate13D,
+            //    14 => SkrMapUtils.SkrRotate14D,
+            //    15 => SkrMapUtils.SkrRotate15D,
+            //    16 => SkrMapUtils.SkrRotate16D,
+            //    17 => SkrMapUtils.SkrRotate17D,
+            //    18 => SkrMapUtils.SkrRotate18D,
+            //    19 => SkrMapUtils.SkrRotate19D,
+            //    20 => SkrMapUtils.SkrRotate20D,
+            //    21 => SkrMapUtils.SkrRotate21D,
+            //    22 => SkrMapUtils.SkrRotate22D,
+            //    23 => SkrMapUtils.SkrRotate23D,
+            //    24 => SkrMapUtils.SkrRotate24D,
+            //    25 => SkrMapUtils.SkrRotate25D,
+            //    26 => SkrMapUtils.SkrRotate26D,
+            //    27 => SkrMapUtils.SkrRotate27D,
+            //    28 => SkrMapUtils.SkrRotate28D,
+            //    29 => SkrMapUtils.SkrRotate29D,
+            //    30 => SkrMapUtils.SkrRotate30D,
+            //    31 => SkrMapUtils.SkrRotate31D,
+            //    32 => SkrMapUtils.SkrRotate32D,
+            //    33 => SkrMapUtils.SkrRotate33D,
+            //    34 => SkrMapUtils.SkrRotate34D,
+            //    35 => SkrMapUtils.SkrRotate35D,
+            //    36 => SkrMapUtils.SkrRotate36D,
+            //    37 => SkrMapUtils.SkrRotate37D,
+            //    38 => SkrMapUtils.SkrRotate38D,
+            //    39 => SkrMapUtils.SkrRotate39D,
+            //    40 => SkrMapUtils.SkrRotate40D,
+            //    41 => SkrMapUtils.SkrRotate41D,
+            //    42 => SkrMapUtils.SkrRotate42D,
+            //    43 => SkrMapUtils.SkrRotate43D,
+            //    44 => SkrMapUtils.SkrRotate44D,
+            //    45 => SkrMapUtils.SkrRotate45D,
+            //    46 => SkrMapUtils.SkrRotate46D,
+            //    47 => SkrMapUtils.SkrRotate47D,
+            //    48 => SkrMapUtils.SkrRotate48D,
+            //    _ => throw new InvalidOperationException()
+            //};
+
             //ClarkeRotateFunction = VSpaceDimension switch
             //{
             //    3 => ClarkeMapUtils.ClarkeRotate3D,
@@ -266,24 +298,95 @@ namespace GeometricAlgebraFulcrumLib.Benchmarks.GAPoT
 
         //    return vVector;
         //}
-
-        public double[] ClarkeRotate(double[] uVector)
+        
+        public double[] ClarkeRotate1(double[] uVector)
         {
             return ClarkeArray.MatrixProduct(uVector);
         }
 
+        //public Float64Tuple ClarkeRotate1(Float64Tuple uVector)
+        //{
+        //    return ClarkeArrayRotation.MapVector(uVector);
+
+        //    //return ClarkeArray.MatrixProduct(uVector);
+        //}
+
+        public double[] ClarkeRotate2(double[] uVector)
+        {
+            var vVector = new double[VSpaceDimension];
+
+            uVector.CopyTo(vVector, 0);
+
+            foreach (var (u, t, v) in ClarkeSimpleRotationSequence)
+            {
+                //var r = vector.VectorDot(TargetOrthogonalVector);
+                //var s = vector.VectorDot(SourceVector);
+
+                //return vector - (r + s) * SourceVector - (r - s) * TargetVector;
+
+                var r = vVector.VectorDot(t);
+                var s = vVector.VectorDot(u);
+                var rsPlus = r + s;
+                var rsMinus = r - s;
+
+                for (var i = 0; i < VSpaceDimension; i++)
+                    vVector[i] -= rsPlus * u[i] + rsMinus * v[i];
+            }
+
+            return vVector;
+        }
         
         [Benchmark]
-        public IReadOnlyList<double[]> Skr()
+        public IReadOnlyList<double[]> ClarkeMatrixProduct()
         {
-            return VectorList.Select(SkrMapUtils.SkrRotate).ToImmutableArray();
+            return VectorArrayList.Select(ClarkeRotate1).ToImmutableArray();
+        }
+        
+        [Benchmark]
+        public IReadOnlyList<double[]> ClarkeSimpleRotors()
+        {
+            return VectorArrayList.Select(ClarkeRotate2).ToImmutableArray();
+
+            //return VectorList.Select(SkrMapUtils.SkrRotate).ToImmutableArray();
         }
 
-        [Benchmark]
-        public IReadOnlyList<double[]> SkrGenerated()
+        public void Validate2()
         {
-            return VectorList.Select(SkrRotateFunction).ToImmutableArray();
+            var m1 = Float64ArrayUtils.CreateClarkeRotationArray(VSpaceDimension);
+            var m2 = MatrixRotation.CreateForwardClarkeRotation(VSpaceDimension).ToVectorToVectorRotationSequence();
+
+            for (var i = 0; i < VectorArrayList.Count; i++)
+            {
+                var u = VectorArrayList[i];
+                var v1 = Float64Tuple.Create(m1.MatrixProduct(u));
+                var v2 = m2.MapVector(Float64Tuple.Create(u));
+
+                var diff = (v1 - v2).GetVectorNormSquared();
+
+                if (!diff.IsNearZero())
+                    throw new InvalidOperationException();
+            }
         }
+
+        public void Validate()
+        {
+            var vList1 = ClarkeMatrixProduct().Select(Float64Tuple.Create).ToImmutableArray();
+            var vList2 = ClarkeSimpleRotors().Select(Float64Tuple.Create).ToImmutableArray();
+
+            for (var i = 0; i < vList1.Length; i++)
+            {
+                var diff = (vList1[i] - vList2[i]).GetVectorNormSquared();
+
+                if (!diff.IsNearZero())
+                    throw new InvalidOperationException();
+            }
+        }
+
+        //[Benchmark]
+        //public IReadOnlyList<double[]> SkrGenerated()
+        //{
+        //    return VectorList.Select(SkrRotateFunction).ToImmutableArray();
+        //}
         
         //[Benchmark]
         //public IReadOnlyList<double[]> ClarkeGenerated()
@@ -291,10 +394,6 @@ namespace GeometricAlgebraFulcrumLib.Benchmarks.GAPoT
         //    return VectorList.Select(ClarkeRotateFunction).ToImmutableArray();
         //}
 
-        [Benchmark]
-        public IReadOnlyList<double[]> Clarke()
-        {
-            return VectorList.Select(ClarkeRotate).ToImmutableArray();
-        }
+
     }
 }

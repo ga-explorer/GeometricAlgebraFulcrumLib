@@ -13,28 +13,28 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
     public class RotateScaleTranslateMap3D : 
         IAffineMap3D
     {
-        public static RotateScaleTranslateMap3D CreateRotate(PlanarAngle angle, ITuple3D vector)
+        public static RotateScaleTranslateMap3D CreateRotate(PlanarAngle angle, IFloat64Tuple3D vector)
         {
             var map = new RotateScaleTranslateMap3D();
 
             return map.SetRotate(angle, vector);
         }
 
-        public static RotateScaleTranslateMap3D CreateRotateScale(PlanarAngle angle, ITuple3D vector)
+        public static RotateScaleTranslateMap3D CreateRotateScale(PlanarAngle angle, IFloat64Tuple3D vector)
         {
             var map = new RotateScaleTranslateMap3D();
 
             return map.SetRotateScale(angle, vector);
         }
 
-        public static RotateScaleTranslateMap3D CreateRotate(ITuple3D vector1, ITuple3D vector2)
+        public static RotateScaleTranslateMap3D CreateRotate(IFloat64Tuple3D vector1, IFloat64Tuple3D vector2)
         {
             var map = new RotateScaleTranslateMap3D();
 
             return map.SetRotate(vector1, vector2);
         }
 
-        public static RotateScaleTranslateMap3D CreateRotateScale(ITuple3D vector1, ITuple3D vector2)
+        public static RotateScaleTranslateMap3D CreateRotateScale(IFloat64Tuple3D vector1, IFloat64Tuple3D vector2)
         {
             var map = new RotateScaleTranslateMap3D();
 
@@ -65,14 +65,14 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
         public double TranslateZ { get; private set; }
 
 
-        public ITuple4D RotateQuaternion
+        public IFloat64Tuple4D RotateQuaternion
         {
             get
             {
                 var cosAngle = RotateAngle.Cos() / 2;
                 var sinAngle = RotateAngle.Sin() / 2;
 
-                return new Tuple4D(
+                return new Float64Tuple4D(
                     RotateVectorX * sinAngle,
                     RotateVectorY * sinAngle,
                     RotateVectorZ * sinAngle,
@@ -81,22 +81,22 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
             }
         }
 
-        public ITuple3D RotateVector =>
-            new Tuple3D(
+        public IFloat64Tuple3D RotateVector =>
+            new Float64Tuple3D(
                 RotateVectorX,
                 RotateVectorY,
                 RotateVectorZ
             );
 
-        public ITuple3D ScaleVector =>
-            new Tuple3D(
+        public IFloat64Tuple3D ScaleVector =>
+            new Float64Tuple3D(
                 ScaleX,
                 ScaleY,
                 ScaleZ
             );
 
-        public ITuple3D TranslateVector =>
-            new Tuple3D(
+        public IFloat64Tuple3D TranslateVector =>
+            new Float64Tuple3D(
                 TranslateX,
                 TranslateY,
                 TranslateZ
@@ -106,11 +106,11 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
         public bool SwapsHandedness => false;
 
 
-        public RotateScaleTranslateMap3D SetRotate(PlanarAngle angle, ITuple3D vector)
+        public RotateScaleTranslateMap3D SetRotate(PlanarAngle angle, IFloat64Tuple3D vector)
         {
             RotateAngle = angle;
 
-            var d = 1 / vector.GetLength();
+            var d = 1 / vector.GetVectorNorm();
 
             RotateVectorX = vector.X * d;
             RotateVectorY = vector.Y * d;
@@ -119,11 +119,11 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
             return this;
         }
 
-        public RotateScaleTranslateMap3D SetRotate(ITuple3D vector1, ITuple3D vector2)
+        public RotateScaleTranslateMap3D SetRotate(IFloat64Tuple3D vector1, IFloat64Tuple3D vector2)
         {
             //http://lolengine.net/blog/2014/02/24/quaternion-from-two-vectors-final
             var n1 = Math.Sqrt(
-                vector1.GetLengthSquared() * vector2.GetLengthSquared()
+                vector1.GetVectorNormSquared() * vector2.GetVectorNormSquared()
             );
 
             var w = n1 + vector1.VectorDot(vector2);
@@ -133,10 +133,10 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
             if (w < 1e-12 * n1)
             {
                 var v1 = Math.Abs(vector1.X) > Math.Abs(vector1.Z) 
-                    ? new Tuple3D(-vector1.Y, vector1.X, 0)
-                    : new Tuple3D(0, -vector1.Z, vector1.Y);
+                    ? new Float64Tuple3D(-vector1.Y, vector1.X, 0)
+                    : new Float64Tuple3D(0, -vector1.Z, vector1.Y);
 
-                var d = 1 / v1.GetLength();
+                var d = 1 / v1.GetVectorNorm();
 
                 RotateVectorX = d * v1.X;
                 RotateVectorY = d * v1.Y;
@@ -146,7 +146,7 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
             {
                 var v2 = vector1.VectorCross(vector2);
 
-                var d = 1 / v2.GetLength();
+                var d = 1 / v2.GetVectorNorm();
 
                 RotateVectorX = d * v2.X;
                 RotateVectorY = d * v2.Y;
@@ -157,11 +157,11 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
         }
 
 
-        public RotateScaleTranslateMap3D SetRotateScale(PlanarAngle angle, ITuple3D vector)
+        public RotateScaleTranslateMap3D SetRotateScale(PlanarAngle angle, IFloat64Tuple3D vector)
         {
             RotateAngle = angle;
 
-            var scaleFactor = vector.GetLength();
+            var scaleFactor = vector.GetVectorNorm();
 
             ScaleX = scaleFactor;
             ScaleY = scaleFactor;
@@ -176,10 +176,10 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
             return this;
         }
 
-        public RotateScaleTranslateMap3D SetRotateScale(ITuple3D vector1, ITuple3D vector2)
+        public RotateScaleTranslateMap3D SetRotateScale(IFloat64Tuple3D vector1, IFloat64Tuple3D vector2)
         {
-            var lengthSquared1 = vector1.GetLengthSquared();
-            var lengthSquared2 = vector2.GetLengthSquared();
+            var lengthSquared1 = vector1.GetVectorNormSquared();
+            var lengthSquared2 = vector2.GetVectorNormSquared();
             var scaleFactor = Math.Sqrt(lengthSquared2 / lengthSquared1);
 
             var n1 = Math.Sqrt(lengthSquared1 * lengthSquared2);
@@ -195,10 +195,10 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
             if (w < 1e-12 * n1)
             {
                 var v1 = Math.Abs(vector1.X) > Math.Abs(vector1.Z) 
-                    ? new Tuple3D(-vector1.Y, vector1.X, 0)
-                    : new Tuple3D(0, -vector1.Z, vector1.Y);
+                    ? new Float64Tuple3D(-vector1.Y, vector1.X, 0)
+                    : new Float64Tuple3D(0, -vector1.Z, vector1.Y);
 
-                var d = 1 / v1.GetLength();
+                var d = 1 / v1.GetVectorNorm();
 
                 RotateVectorX = d * v1.X;
                 RotateVectorY = d * v1.Y;
@@ -208,7 +208,7 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
             {
                 var v2 = vector1.VectorCross(vector2);
 
-                var d = 1 / v2.GetLength();
+                var d = 1 / v2.GetVectorNorm();
 
                 RotateVectorX = d * v2.X;
                 RotateVectorY = d * v2.Y;
@@ -241,7 +241,7 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
             return this;
         }
 
-        public RotateScaleTranslateMap3D SetScale(ITuple3D scaleVector)
+        public RotateScaleTranslateMap3D SetScale(IFloat64Tuple3D scaleVector)
         {
             Debug.Assert(scaleVector.X > 0 && scaleVector.Y > 0 && scaleVector.Z > 0);
 
@@ -262,7 +262,7 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
             return this;
         }
 
-        public RotateScaleTranslateMap3D SetTranslate(ITuple3D translateVector)
+        public RotateScaleTranslateMap3D SetTranslate(IFloat64Tuple3D translateVector)
         {
             TranslateX = translateVector.X;
             TranslateY = translateVector.Y;
@@ -271,7 +271,7 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
             return this;
         }
 
-        public RotateScaleTranslateMap3D SetTranslate(ITuple3D point1, ITuple3D point2)
+        public RotateScaleTranslateMap3D SetTranslate(IFloat64Tuple3D point1, IFloat64Tuple3D point2)
         {
             TranslateX = point2.X - point1.X;
             TranslateY = point2.Y - point1.Y;
@@ -281,37 +281,37 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
         }
 
 
-        public SquareMatrix4 ToSquareMatrix4()
+        public SquareMatrix4 GetSquareMatrix4()
         {
             throw new NotImplementedException();
         }
 
-        public Matrix4x4 ToMatrix4x4()
+        public Matrix4x4 GetMatrix4x4()
         {
             throw new NotImplementedException();
         }
 
-        public double[,] ToArray2D()
+        public double[,] GetArray2D()
         {
             throw new NotImplementedException();
         }
 
-        public Tuple3D MapPoint(ITuple3D point)
+        public Float64Tuple3D MapPoint(IFloat64Tuple3D point)
         {
             throw new NotImplementedException();
         }
 
-        public Tuple3D MapVector(ITuple3D vector)
+        public Float64Tuple3D MapVector(IFloat64Tuple3D vector)
         {
             throw new NotImplementedException();
         }
 
-        public Tuple3D MapNormal(ITuple3D normal)
+        public Float64Tuple3D MapNormal(IFloat64Tuple3D normal)
         {
             throw new NotImplementedException();
         }
 
-        public IAffineMap3D InverseMap()
+        public IAffineMap3D GetInverseAffineMap()
         {
             throw new NotImplementedException();
         }

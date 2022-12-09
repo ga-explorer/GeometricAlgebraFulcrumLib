@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Numerics;
 using DataStructuresLib.Combinations;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using NUnit.Framework;
 
 namespace GeometricAlgebraFulcrumLib.UnitTests.Processing

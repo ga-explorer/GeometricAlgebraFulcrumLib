@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using System.Runtime.CompilerServices;
 using NumericalGeometryLib.BasicMath.Matrices;
 using NumericalGeometryLib.BasicMath.Tuples;
 using NumericalGeometryLib.BasicMath.Tuples.Immutable;
@@ -33,18 +34,21 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
             => _matrix.Determinant < 0;
 
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public AffineMap3D()
         {
             _matrix = SquareMatrix4.CreateIdentityMatrix();
             _invMatrix = SquareMatrix4.CreateIdentityMatrix();
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public AffineMap3D(SquareMatrix4 matrix)
         {
             _matrix = new SquareMatrix4(matrix);
             _invMatrix = matrix.Inverse();
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public AffineMap3D(SquareMatrix4 matrix, SquareMatrix4 invMatrix)
         {
             _matrix = new SquareMatrix4(matrix);
@@ -52,6 +56,7 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
         }
 
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public AffineMap3D SelfTranspose()
         {
             _matrix.SelfTranspose();
@@ -60,6 +65,7 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
             return this;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public AffineMap3D SelfInverse()
         {
             (_matrix, _invMatrix) = (_invMatrix, _matrix);
@@ -67,6 +73,7 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
             return this;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public AffineMap3D SelfInverseTranspose()
         {
             (_matrix, _invMatrix) = (_invMatrix, _matrix);
@@ -78,6 +85,7 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
         }
 
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public AffineMap3D ResetToTranslation(double dx, double dy, double dz)
         {
             _matrix = SquareMatrix4.CreateTranslationMatrix3D(dx, dy, dz);
@@ -86,6 +94,7 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
             return this;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public AffineMap3D PrependTranslation(double dx, double dy, double dz)
         {
             _matrix = SquareMatrix4.CreateTranslationMatrix3D(dx, dy, dz) * _matrix;
@@ -94,6 +103,7 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
             return this;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public AffineMap3D AppendTranslation(double dx, double dy, double dz)
         {
             _matrix = _matrix * SquareMatrix4.CreateTranslationMatrix3D(dx, dy, dz);
@@ -102,6 +112,7 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
             return this;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public AffineMap3D ResetToScaling(double sx, double sy, double sz)
         {
             _matrix = SquareMatrix4.CreateScalingMatrix3D(sx, sy, sz);
@@ -110,6 +121,7 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
             return this;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public AffineMap3D PrependScaling(double sx, double sy, double sz)
         {
             _matrix = SquareMatrix4.CreateScalingMatrix3D(sx, sy, sz) * _matrix;
@@ -118,6 +130,7 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
             return this;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public AffineMap3D AppendScaling(double sx, double sy, double sz)
         {
             _matrix = _matrix * SquareMatrix4.CreateScalingMatrix3D(sx, sy, sz);
@@ -126,6 +139,7 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
             return this;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public AffineMap3D ResetToScaling(double s)
         {
             _matrix = SquareMatrix4.CreateScalingMatrix3D(s);
@@ -134,6 +148,7 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
             return this;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public AffineMap3D PrependScaling(double s)
         {
             _matrix = SquareMatrix4.CreateScalingMatrix3D(s) * _matrix;
@@ -142,6 +157,7 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
             return this;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public AffineMap3D AppendScaling(double s)
         {
             _matrix = _matrix * SquareMatrix4.CreateScalingMatrix3D(s);
@@ -151,28 +167,31 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
         }
 
         //TODO: Complete all other maps here
-
-        public SquareMatrix4 ToSquareMatrix4()
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public SquareMatrix4 GetSquareMatrix4()
         {
             return new SquareMatrix4(_matrix);
         }
 
-        public Matrix4x4 ToMatrix4x4()
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Matrix4x4 GetMatrix4x4()
         {
-            return _matrix.ToMatrix4x4();
+            return _matrix.GetMatrix4x4();
         }
 
-        public double[,] ToArray2D()
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public double[,] GetArray2D()
         {
             throw new System.NotImplementedException();
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public SquareMatrix4 ToMatrix(bool useInvMatrix)
         {
             return new SquareMatrix4(useInvMatrix ? _invMatrix : _matrix);
         }
 
-        public Tuple3D MapPoint(ITuple3D point)
+        public Float64Tuple3D MapPoint(IFloat64Tuple3D point)
         {
             var pointX = _matrix[0] * point.X + _matrix[4] * point.Y + _matrix[8] * point.Z + _matrix[12];
             var pointY = _matrix[1] * point.X + _matrix[5] * point.Y + _matrix[9] * point.Z + _matrix[13];
@@ -180,36 +199,40 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
             var pointW = _matrix[3] * point.X + _matrix[7] * point.Y + _matrix[11] * point.Z + _matrix[15];
 
             if ((pointW - 1.0d).IsAlmostZero())
-                return new Tuple3D(pointX, pointY, pointZ);
+                return new Float64Tuple3D(pointX, pointY, pointZ);
 
             var s = 1.0d / pointW;
-            return new Tuple3D(pointX * s, pointY * s, pointZ * s);
+            return new Float64Tuple3D(pointX * s, pointY * s, pointZ * s);
         }
 
-        public Tuple3D MapVector(ITuple3D vector)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Float64Tuple3D MapVector(IFloat64Tuple3D vector)
         {
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 _matrix[0] * vector.X + _matrix[4] * vector.Y + _matrix[8] * vector.Z,
                 _matrix[1] * vector.X + _matrix[5] * vector.Y + _matrix[9] * vector.Z,
                 _matrix[2] * vector.X + _matrix[6] * vector.Y + _matrix[10] * vector.Z
             );
         }
 
-        public Tuple3D MapNormal(ITuple3D normal)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Float64Tuple3D MapNormal(IFloat64Tuple3D normal)
         {
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 _invMatrix[0] * normal.X + _invMatrix[1] * normal.Y + _invMatrix[2] * normal.Z,
                 _invMatrix[4] * normal.X + _invMatrix[5] * normal.Y + _invMatrix[6] * normal.Z,
                 _invMatrix[8] * normal.X + _invMatrix[9] * normal.Y + _invMatrix[10] * normal.Z
             );
         }
 
-        public IAffineMap3D InverseMap()
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public IAffineMap3D GetInverseAffineMap()
         {
             return new AffineMap3D(_invMatrix, _matrix);
         }
 
         //TODO: Implement equality tests and IsIdentity
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsValid()
         {
             throw new System.NotImplementedException();

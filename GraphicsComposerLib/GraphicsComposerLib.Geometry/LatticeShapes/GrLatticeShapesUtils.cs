@@ -36,7 +36,7 @@ namespace GraphicsComposerLib.Geometry.LatticeShapes
             return curve;
         }
 
-        public static GrLatticeCurve3D AddLine(this GrLatticeCurveList3D curveList, ITuple3D point1, ITuple3D point2, int samplesCount)
+        public static GrLatticeCurve3D AddLine(this GrLatticeCurveList3D curveList, IFloat64Tuple3D point1, IFloat64Tuple3D point2, int samplesCount)
         {
             var curve = curveList.AddCurve(samplesCount, false);
 
@@ -280,9 +280,9 @@ namespace GraphicsComposerLib.Geometry.LatticeShapes
         }
         
 
-        public static Tuple3D GetDisplacedPoint(this IGraphicsSurfaceLocalFrame3D vertex, double t)
+        public static Float64Tuple3D GetDisplacedPoint(this IGraphicsSurfaceLocalFrame3D vertex, double t)
         {
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 vertex.Point.X + t * vertex.Normal.X,
                 vertex.Point.Y + t * vertex.Normal.Y,
                 vertex.Point.Z + t * vertex.Normal.Z
@@ -292,12 +292,12 @@ namespace GraphicsComposerLib.Geometry.LatticeShapes
         public static LineSegment3D GetDisplacedLineSegment(this GrLatticeSurfaceLocalFrame3D vertex, double t1, double t2)
         {
             return LineSegment3D.Create(
-                new Tuple3D(
+                new Float64Tuple3D(
                     vertex.Point.X + t1 * vertex.Normal.X,
                     vertex.Point.Y + t1 * vertex.Normal.Y,
                     vertex.Point.Z + t1 * vertex.Normal.Z
                 ),
-                new Tuple3D(
+                new Float64Tuple3D(
                     vertex.Point.X + t2 * vertex.Normal.X,
                     vertex.Point.Y + t2 * vertex.Normal.Y,
                     vertex.Point.Z + t2 * vertex.Normal.Z

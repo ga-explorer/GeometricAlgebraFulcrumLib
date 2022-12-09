@@ -57,7 +57,7 @@ namespace NumericalGeometryLib.BasicShapes.Planes.Immutable
             Debug.Assert(IsValid());
         }
 
-        public Plane3D(ITuple3D origin, ITuple3D direction1, ITuple3D direction2)
+        public Plane3D(IFloat64Tuple3D origin, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2)
         {
             OriginX = origin.X;
             OriginY = origin.Y;

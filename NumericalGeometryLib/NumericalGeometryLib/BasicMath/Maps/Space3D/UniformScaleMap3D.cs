@@ -41,13 +41,13 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public SquareMatrix4 ToSquareMatrix4()
+        public SquareMatrix4 GetSquareMatrix4()
         {
             return SquareMatrix4.CreateScalingMatrix3D(_scalingFactor);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Matrix4x4 ToMatrix4x4()
+        public Matrix4x4 GetMatrix4x4()
         {
             var s = (float) _scalingFactor;
 
@@ -60,7 +60,7 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public double[,] ToArray2D()
+        public double[,] GetArray2D()
         {
             var array = new double[4, 4];
 
@@ -73,9 +73,9 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple3D MapPoint(ITuple3D point)
+        public Float64Tuple3D MapPoint(IFloat64Tuple3D point)
         {
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 _scalingFactor * point.X,
                 _scalingFactor * point.Y,
                 _scalingFactor * point.Z
@@ -83,9 +83,9 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple3D MapVector(ITuple3D vector)
+        public Float64Tuple3D MapVector(IFloat64Tuple3D vector)
         {
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 _scalingFactor * vector.X,
                 _scalingFactor * vector.Y,
                 _scalingFactor * vector.Z
@@ -93,9 +93,9 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple3D MapNormal(ITuple3D normal)
+        public Float64Tuple3D MapNormal(IFloat64Tuple3D normal)
         {
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 _scalingFactor * normal.X,
                 _scalingFactor * normal.Y,
                 _scalingFactor * normal.Z
@@ -103,7 +103,7 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IAffineMap3D InverseMap()
+        public IAffineMap3D GetInverseAffineMap()
         {
             return new UniformScaleMap3D(1d / _scalingFactor);
         }

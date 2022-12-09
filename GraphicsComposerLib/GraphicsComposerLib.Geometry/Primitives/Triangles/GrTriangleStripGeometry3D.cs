@@ -11,7 +11,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Triangles
     public sealed class GrTriangleStripGeometry3D 
         : GrTriangleGeometryBase3D
     {
-        public static GrTriangleStripGeometry3D Create(IReadOnlyList<ITuple3D> pointsList)
+        public static GrTriangleStripGeometry3D Create(IReadOnlyList<IFloat64Tuple3D> pointsList)
         {
             if (pointsList.Count < 3)
                 throw new ArgumentException();
@@ -19,7 +19,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Triangles
             return new GrTriangleStripGeometry3D(pointsList);
         }
 
-        public static GrTriangleStripGeometry3D Create(params ITuple3D[] pointsList)
+        public static GrTriangleStripGeometry3D Create(params IFloat64Tuple3D[] pointsList)
         {
             if (pointsList.Length < 3)
                 throw new ArgumentException();
@@ -27,7 +27,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Triangles
             return new GrTriangleStripGeometry3D(pointsList);
         }
 
-        public static GrTriangleStripGeometry3D Create(IEnumerable<ITuple3D> pointsList)
+        public static GrTriangleStripGeometry3D Create(IEnumerable<IFloat64Tuple3D> pointsList)
         {
             var pointsArray = pointsList.ToArray();
 
@@ -54,14 +54,14 @@ namespace GraphicsComposerLib.Geometry.Primitives.Triangles
                 GetGeometryPoint(index + 2)
             );
 
-        public override IEnumerable<Triplet<ITuple3D>> TriangleVertexPoints
+        public override IEnumerable<Triplet<IFloat64Tuple3D>> TriangleVertexPoints
         {
             get
             {
-                var pointsList = new List<Triplet<ITuple3D>>(Count);
+                var pointsList = new List<Triplet<IFloat64Tuple3D>>(Count);
 
                 for (var i = 0; i < VertexCount - 2; i++)
-                    pointsList.Add(new Triplet<ITuple3D>(
+                    pointsList.Add(new Triplet<IFloat64Tuple3D>(
                         GetGeometryPoint(i),
                         GetGeometryPoint(i + 1),
                         GetGeometryPoint(i + 2)
@@ -85,7 +85,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Triangles
         }
 
 
-        private GrTriangleStripGeometry3D(IReadOnlyList<ITuple3D> pointsList)
+        private GrTriangleStripGeometry3D(IReadOnlyList<IFloat64Tuple3D> pointsList)
             : base(pointsList)
         {
         }

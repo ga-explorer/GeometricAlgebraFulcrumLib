@@ -9,7 +9,7 @@ using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors;
 using GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Algebra.SignalProcessing;
+using GeometricAlgebraFulcrumLib.Algebra.SignalAlgebra;
 using GeometricAlgebraFulcrumLib.Mathematica.Mathematica;
 using GeometricAlgebraFulcrumLib.Mathematica.Mathematica.Expression;
 using GeometricAlgebraFulcrumLib.Mathematica.Mathematica.ExprFactory;
@@ -20,14 +20,16 @@ using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Expressions;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Expressions.Composite;
 using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
+using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded;
-using GeometricAlgebraFulcrumLib.Utilities.Extensions;
-using GeometricAlgebraFulcrumLib.Utilities.Factories;
 using Wolfram.NETLink;
+using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra;
+using GeometricAlgebraFulcrumLib.Text;
+using GeometricAlgebraFulcrumLib.Processors;
 
 namespace GeometricAlgebraFulcrumLib.Mathematica
 {
@@ -1519,7 +1521,7 @@ namespace GeometricAlgebraFulcrumLib.Mathematica
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IOutermorphism<Expr> CreateVectorsLinearMap(int basisVectorsCount, Func<VectorStorage<Expr>, VectorStorage<Expr>> basisVectorMapFunc)
+        public static IGaOutermorphism<Expr> CreateVectorsLinearMap(int basisVectorsCount, Func<VectorStorage<Expr>, VectorStorage<Expr>> basisVectorMapFunc)
         {
             return EuclideanProcessor.CreateComputedOutermorphism(
                 basisVectorsCount,
@@ -1622,7 +1624,7 @@ namespace GeometricAlgebraFulcrumLib.Mathematica
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Expr GetMatrix(this IOutermorphism<Expr> linearMap, int rowsCount, int columnsCount)
+        public static Expr GetMatrix(this IGaOutermorphism<Expr> linearMap, int rowsCount, int columnsCount)
         {
             return MatrixProcessor.CreateMatrix(
                 linearMap.GetVectorOmMappingMatrix(rowsCount, columnsCount)
@@ -1832,18 +1834,18 @@ namespace GeometricAlgebraFulcrumLib.Mathematica
         {
             var dimensionsExpr = Mfs.Dimensions[matrix].Simplify();
 
-            var rowsCount = (int) dimensionsExpr[0].AsInt64();
-            var colsCount = (int) dimensionsExpr[1].AsInt64();
+            var rowsCount = (int) dimensionsExpr.Args[0].AsInt64();
+            var colsCount = (int) dimensionsExpr.Args[1].AsInt64();
 
             var array = new Expr[rowsCount, colsCount];
 
             for (var i = 0; i < rowsCount; i++)
             {
-                var rowExpr = Mfs.Part[matrix, i.ToExpr()];
+                var rowExpr = Mfs.Part[matrix, (i + 1).ToExpr()].Evaluate();
 
                 for (var j = 0; j < colsCount; j++)
                 {
-                    array[i, j] = Mfs.Part[rowExpr, j.ToExpr()].Simplify();
+                    array[i, j] = Mfs.Part[rowExpr, (j + 1).ToExpr()].Evaluate();
                 }
             }
 
@@ -1862,7 +1864,7 @@ namespace GeometricAlgebraFulcrumLib.Mathematica
                 var rowItems = new Expr[colsCount];
 
                 for (var j = 0; j < colsCount; j++)
-                    rowItems[j] = exprArray[i, j];
+                    rowItems[j] = exprArray[i, j] ?? Expr.INT_ZERO;
 
                 rowsExprArray[i] = Mfs.ListExpr(rowItems);
             }
@@ -1870,6 +1872,16 @@ namespace GeometricAlgebraFulcrumLib.Mathematica
             return Mfs.ListExpr(rowsExprArray);
         }
         
+        public static Scalar<Expr> ArrayToMatrixExprScalar(this IScalarAlgebraProcessor<Expr> processor, Expr[,] exprArray)
+        {
+            return processor.CreateScalar(exprArray.ArrayToMatrixExpr());
+        }
+
+        public static Scalar<Expr> ArrayToMatrixExprScalar(this Expr[,] exprArray, IScalarAlgebraProcessor<Expr> processor)
+        {
+            return processor.CreateScalar(exprArray.ArrayToMatrixExpr());
+        }
+
         /// <summary>
         /// Create a list of Mathematica Expr objects from the given symbol names
         /// </summary>
@@ -2109,6 +2121,22 @@ namespace GeometricAlgebraFulcrumLib.Mathematica
         {
             return MathematicaInterface.DefaultCas[
                 Mfs.Refine[expr, assumptionsExpr]
+            ];
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Expr TrigToExp(this Expr expr)
+        {
+            return MathematicaInterface.DefaultCas[
+                Mfs.TrigToExp[expr]
+            ];
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Expr ExpToTrig(this Expr expr)
+        {
+            return MathematicaInterface.DefaultCas[
+                Mfs.ExpToTrig[expr]
             ];
         }
 

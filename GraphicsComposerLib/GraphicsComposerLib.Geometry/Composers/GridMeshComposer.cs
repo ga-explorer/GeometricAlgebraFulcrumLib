@@ -19,25 +19,25 @@ namespace GraphicsComposerLib.Geometry.Composers
         public int Count2
             => PositionsGrid.Count2;
 
-        public IEnumerable<ITuple3D> VertexPositions
+        public IEnumerable<IFloat64Tuple3D> VertexPositions
             => PositionsGrid;
 
         public IEnumerable<GrNormal3D> VertexNormals
             => NormalsGrid;
 
-        public IEnumerable<ITuple2D> VertexTextureUVs
+        public IEnumerable<IFloat64Tuple2D> VertexTextureUVs
             => TextureUVsGrid;
 
-        public IPeriodicReadOnlyList2D<ITuple3D> PositionsGrid { get; }
+        public IPeriodicReadOnlyList2D<IFloat64Tuple3D> PositionsGrid { get; }
 
         public IPeriodicReadOnlyList2D<GrNormal3D> NormalsGrid { get; }
 
-        public IPeriodicReadOnlyList2D<ITuple2D> TextureUVsGrid { get; }
+        public IPeriodicReadOnlyList2D<IFloat64Tuple2D> TextureUVsGrid { get; }
 
-        public IPeriodicReadOnlyList2D<ITuple3D> ColorsGrid { get; }
+        public IPeriodicReadOnlyList2D<IFloat64Tuple3D> ColorsGrid { get; }
 
 
-        public GridMeshComposer([NotNull] IPeriodicReadOnlyList2D<ITuple3D> positionsGrid, [NotNull] IPeriodicReadOnlyList2D<ITuple3D> colorsGrid)
+        public GridMeshComposer([NotNull] IPeriodicReadOnlyList2D<IFloat64Tuple3D> positionsGrid, [NotNull] IPeriodicReadOnlyList2D<IFloat64Tuple3D> colorsGrid)
         {
             Debug.Assert(
                 positionsGrid.Count1 == colorsGrid.Count1 &&
@@ -58,10 +58,10 @@ namespace GraphicsComposerLib.Geometry.Composers
 
             var maxU = (double) (positionsGrid.Count1 - 1);
             var maxV = (double) (positionsGrid.Count2 - 1);
-            TextureUVsGrid = new ProListComputedValues2D<ITuple2D>(
+            TextureUVsGrid = new ProListComputedValues2D<IFloat64Tuple2D>(
                 positionsGrid.Count1,
                 positionsGrid.Count2,
-                (rowIndex, colIndex) => new Tuple2D(
+                (rowIndex, colIndex) => new Float64Tuple2D(
                     rowIndex / maxU,
                     colIndex / maxV
                 )

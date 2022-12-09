@@ -7,22 +7,22 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Curves;
 public sealed class GrVisualLinePathCurve3D :
     GrVisualCurve3D
 {
-    public IReadOnlyList<ITuple3D> PointList { get; }
+    public IReadOnlyList<IFloat64Tuple3D> PointList { get; }
 
 
-    public GrVisualLinePathCurve3D(string name, IReadOnlyList<ITuple3D> pointList)
+    public GrVisualLinePathCurve3D(string name, IReadOnlyList<IFloat64Tuple3D> pointList)
         : base(name)
     {
         PointList = pointList;
     }
     
-    public GrVisualLinePathCurve3D(string name, params ITuple3D[] pointList)
+    public GrVisualLinePathCurve3D(string name, params IFloat64Tuple3D[] pointList)
         : base(name)
     {
         PointList = pointList;
     }
     
-    public GrVisualLinePathCurve3D(string name, IEnumerable<ITuple3D> pointList)
+    public GrVisualLinePathCurve3D(string name, IEnumerable<IFloat64Tuple3D> pointList)
         : base(name)
     {
         PointList = pointList.ToImmutableArray();

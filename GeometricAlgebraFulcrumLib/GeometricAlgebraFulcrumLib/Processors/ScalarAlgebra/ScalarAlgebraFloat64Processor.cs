@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 
 namespace GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra
 {
-    public sealed class ScalarAlgebraFloat64Processor 
+    public class ScalarAlgebraFloat64Processor 
         : IScalarAlgebraNumericProcessor<double>
     {
         public static ScalarAlgebraFloat64Processor DefaultProcessor { get; }
@@ -59,7 +59,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra
             => 180 / Math.PI;
 
 
-        private ScalarAlgebraFloat64Processor()
+        protected ScalarAlgebraFloat64Processor()
         {
         }
 

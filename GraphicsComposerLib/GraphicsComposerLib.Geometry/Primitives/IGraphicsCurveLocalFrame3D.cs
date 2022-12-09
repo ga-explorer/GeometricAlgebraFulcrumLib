@@ -6,7 +6,7 @@ using SixLabors.ImageSharp;
 namespace GraphicsComposerLib.Geometry.Primitives
 {
     public interface IGraphicsCurveLocalFrame3D : 
-        ITuple3D
+        IFloat64Tuple3D
     {
         int Index { get; }
         
@@ -18,14 +18,14 @@ namespace GraphicsComposerLib.Geometry.Primitives
         /// <summary>
         /// The curve point where the frame is attached
         /// </summary>
-        Tuple3D Point { get; }
+        Float64Tuple3D Point { get; }
 
         Color Color { get; set; }
 
         /// <summary>
         /// The 1st direction vector, also the curve tangent
         /// </summary>
-        Tuple3D Tangent { get; }
+        Float64Tuple3D Tangent { get; }
 
         /// <summary>
         /// The normal vector of the frame

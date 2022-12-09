@@ -29,19 +29,19 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Surfaces
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple3D GetPoint(double parameterValue1, double parameterValue2)
+        public Float64Tuple3D GetPoint(double parameterValue1, double parameterValue2)
         {
             return Map.MapPoint(BaseSurface.GetPoint(parameterValue1, parameterValue2));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple3D GetNormal(double parameterValue1, double parameterValue2)
+        public Float64Tuple3D GetNormal(double parameterValue1, double parameterValue2)
         {
             return Map.MapPoint(BaseSurface.GetNormal(parameterValue1, parameterValue2));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple3D GetUnitNormal(double parameterValue1, double parameterValue2)
+        public Float64Tuple3D GetUnitNormal(double parameterValue1, double parameterValue2)
         {
             return GetNormal(parameterValue1, parameterValue2).ToUnitVector();
         }

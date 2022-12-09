@@ -1,11 +1,13 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Runtime.CompilerServices;
+using DataStructuresLib.Basic;
+using DataStructuresLib.BitManipulation;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Frames;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Utilities.Extensions;
-using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
 namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
 {
@@ -13,9 +15,9 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
         GeometricAlgebraProcessorBase<T>, 
         IGeometricAlgebraChangeOfBasisProcessor<T>
     {
-        public IOutermorphism<T> OmTargetToOrthonormal { get; }
+        public IGaOutermorphism<T> OmTargetToOrthonormal { get; }
 
-        public IOutermorphism<T> OmOrthonormalToTarget { get; }
+        public IGaOutermorphism<T> OmOrthonormalToTarget { get; }
 
         public override uint VSpaceDimension 
             => BasisSet.VSpaceDimension;
@@ -38,7 +40,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
         public override GaKVector<T> PseudoScalarReverse { get; }
 
 
-        internal GeometricAlgebraChangeOfBasisProcessor([NotNull] BasisBladeSet basisSet, [NotNull] IOutermorphism<T> omTargetToOrthonormal, [NotNull] IOutermorphism<T> omOrthonormalToTarget) 
+        internal GeometricAlgebraChangeOfBasisProcessor([NotNull] BasisBladeSet basisSet, [NotNull] IGaOutermorphism<T> omTargetToOrthonormal, [NotNull] IGaOutermorphism<T> omOrthonormalToTarget) 
             : base(omTargetToOrthonormal.GeometricProcessor)
         {
             BasisSet = basisSet;
@@ -127,6 +129,29 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
             var s = ScalarProcessor.Cp(BasisSet, s1, s2);
 
             return OmOrthonormalToTarget.Map(s);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override Pair<BasisVectorFrame<T>> GetBasisVectorFrame()
+        {
+            var vectorArray1 = 
+                VSpaceDimension
+                    .GetRange()
+                    .Select(i => OmOrthonormalToTarget.OmMapBasisVector(i));
+
+            var vectorArray2 = 
+                VSpaceDimension
+                    .GetRange()
+                    .Select(i => 
+                        BasisSet.GetBasisVectorSignature(i) > 0 
+                            ? OmOrthonormalToTarget.OmMapBasisVector(i) 
+                            : -OmOrthonormalToTarget.OmMapBasisVector(i)
+                    );
+
+            var frame1 = BasisVectorFrame<T>.Create(this, vectorArray1);
+            var frame2 = BasisVectorFrame<T>.Create(this, vectorArray2);
+
+            return new Pair<BasisVectorFrame<T>>(frame1, frame2);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

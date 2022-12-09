@@ -11,11 +11,11 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space2D
 
         double[,] ToArray2D();
 
-        Tuple2D MapPoint(ITuple2D point);
+        Float64Tuple2D MapPoint(IFloat64Tuple2D point);
 
-        Tuple2D MapVector(ITuple2D vector);
+        Float64Tuple2D MapVector(IFloat64Tuple2D vector);
 
-        Tuple2D MapNormal(ITuple2D normal);
+        Float64Tuple2D MapNormal(IFloat64Tuple2D normal);
 
         IAffineMap2D InverseMap();
     }

@@ -13,7 +13,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Builtin
     /// </summary>
     public sealed class XeoglTorusGeometry : XeoglBuiltinSolidGeometry
     {
-        public static XeoglTorusGeometry Create(ITuple3D center, double radius, double tubeRadius)
+        public static XeoglTorusGeometry Create(IFloat64Tuple3D center, double radius, double tubeRadius)
         {
             return new XeoglTorusGeometry(center)
             {
@@ -22,7 +22,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Builtin
             };
         }
 
-        public static XeoglTorusGeometry Create(ITuple3D center, double radius, double tubeRadius, double arcAngle)
+        public static XeoglTorusGeometry Create(IFloat64Tuple3D center, double radius, double tubeRadius, double arcAngle)
         {
             return new XeoglTorusGeometry(center)
             {
@@ -32,7 +32,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Builtin
             };
         }
 
-        public static XeoglTorusGeometry Create(ITuple3D center, double radius, double tubeRadius, int radialSegments, int tubeSegments)
+        public static XeoglTorusGeometry Create(IFloat64Tuple3D center, double radius, double tubeRadius, int radialSegments, int tubeSegments)
         {
             return new XeoglTorusGeometry(center)
             {
@@ -43,7 +43,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Builtin
             };
         }
         
-        public static XeoglTorusGeometry Create(ITuple3D center, double radius, double tubeRadius, double arcAngle, int radialSegments, int tubeSegments)
+        public static XeoglTorusGeometry Create(IFloat64Tuple3D center, double radius, double tubeRadius, double arcAngle, int radialSegments, int tubeSegments)
         {
             return new XeoglTorusGeometry(center)
             {
@@ -101,8 +101,8 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Builtin
         private const double DefaultArcValue = 0.5 * Math.PI;
 
 
-        public MutableTuple3D Center { get; }
-            = new MutableTuple3D();
+        public MutableFloat64Tuple3D Center { get; }
+            = new MutableFloat64Tuple3D();
 
         public double Radius { get; set; } = 1;
 
@@ -121,7 +121,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Builtin
         {
         }
 
-        public XeoglTorusGeometry(ITuple3D center)
+        public XeoglTorusGeometry(IFloat64Tuple3D center)
         {
             Center.SetTuple(center);
         }
@@ -133,7 +133,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Builtin
 
             composer
                 .SetValue("primitive", PrimitiveType, GraphicsPrimitiveType3D.Triangles)
-                .SetNumbersArrayValue("center", Center, Tuple3D.Zero)
+                .SetNumbersArrayValue("center", Center, Float64Tuple3D.Zero)
                 .SetValue("radius", Radius, 1)
                 .SetValue("tube", TubeRadius, 0.3)
                 .SetValue("radialSegments", RadialSegments, 32)

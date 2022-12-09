@@ -24,8 +24,8 @@ namespace GraphicsComposerLib.Rendering.Xeogl
                RotateCameraRate.Y > 0 || RotateCameraRate.Y < 0 ||
                RotateCameraRate.Z > 0 || RotateCameraRate.Z < 0;
 
-        public MutableTuple3D RotateCameraRate { get; }
-            = new MutableTuple3D();
+        public MutableFloat64Tuple3D RotateCameraRate { get; }
+            = new MutableFloat64Tuple3D();
 
         public List<string> IncludesList { get; }
             = new List<string>();

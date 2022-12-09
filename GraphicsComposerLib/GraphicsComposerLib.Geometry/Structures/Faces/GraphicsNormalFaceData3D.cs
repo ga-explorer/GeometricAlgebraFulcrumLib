@@ -41,7 +41,7 @@ namespace GraphicsComposerLib.Geometry.Structures.Faces
         {
         }
 
-        public GraphicsNormalFaceData3D(ITuple3D normal)
+        public GraphicsNormalFaceData3D(IFloat64Tuple3D normal)
         {
             Normal.Set(normal);
         }

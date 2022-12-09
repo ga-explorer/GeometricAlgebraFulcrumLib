@@ -130,17 +130,17 @@ namespace NumericalGeometryLib.Computers
             );
         }
 
-        public Tuple2D GetMinPoint()
+        public Float64Tuple2D GetMinPoint()
         {
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 Origin[0] + ParameterMinValue * Direction[0],
                 Origin[1] + ParameterMinValue * Direction[1]
             );
         }
 
-        public Tuple2D GetMaxPoint()
+        public Float64Tuple2D GetMaxPoint()
         {
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 Origin[0] + ParameterMaxValue * Direction[0],
                 Origin[1] + ParameterMaxValue * Direction[1]
             );

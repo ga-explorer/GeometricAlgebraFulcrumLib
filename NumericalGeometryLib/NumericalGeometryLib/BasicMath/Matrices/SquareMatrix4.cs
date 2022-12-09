@@ -74,7 +74,7 @@ namespace NumericalGeometryLib.BasicMath.Matrices
             return m;
         }
 
-        public static SquareMatrix4 CreateTranslationMatrix3D(ITuple3D translationVector)
+        public static SquareMatrix4 CreateTranslationMatrix3D(IFloat64Tuple3D translationVector)
         {
             Debug.Assert(translationVector.IsValid());
 
@@ -318,7 +318,7 @@ namespace NumericalGeometryLib.BasicMath.Matrices
             return m;
         }
 
-        public static SquareMatrix4 CreateRotationMatrix3D(ITuple3D unitAxis, double radianAngle)
+        public static SquareMatrix4 CreateRotationMatrix3D(IFloat64Tuple3D unitAxis, double radianAngle)
         {
             if (radianAngle == 0)
                 return CreateIdentityMatrix();
@@ -376,7 +376,7 @@ namespace NumericalGeometryLib.BasicMath.Matrices
         /// <param name="srcUnitVector"></param>
         /// <param name="dstUnitVector"></param>
         /// <returns></returns>
-        public static SquareMatrix4 CreateRotationMatrix3D(ITuple3D srcUnitVector, ITuple3D dstUnitVector)
+        public static SquareMatrix4 CreateRotationMatrix3D(IFloat64Tuple3D srcUnitVector, IFloat64Tuple3D dstUnitVector)
         {
             var angle = 
                 srcUnitVector.GetVectorsAngle(dstUnitVector);
@@ -384,7 +384,7 @@ namespace NumericalGeometryLib.BasicMath.Matrices
             var axis = 
                 srcUnitVector.VectorCross(dstUnitVector);
 
-            if (!axis.IsAlmostEqual(Tuple3D.Zero)) 
+            if (!axis.IsAlmostEqual(Float64Tuple3D.Zero)) 
                 return CreateRotationMatrix3D(axis.ToUnitVector(), angle);
 
             return angle.Radians.IsAlmostZero()
@@ -814,11 +814,11 @@ namespace NumericalGeometryLib.BasicMath.Matrices
             get { return Determinant < 0.0d; }
         }
 
-        public Tuple3D UpperRightBlock3X1
+        public Float64Tuple3D UpperRightBlock3X1
         {
             get
             {
-                return new Tuple3D(_items[3], _items[7], _items[11]);
+                return new Float64Tuple3D(_items[3], _items[7], _items[11]);
             }
             set
             {
@@ -989,11 +989,11 @@ namespace NumericalGeometryLib.BasicMath.Matrices
             return this;
         }
 
-        public Tuple4D GetColumn(int columnIndex)
+        public Float64Tuple4D GetColumn(int columnIndex)
         {
             var j = columnIndex << 2;
 
-            return new Tuple4D(
+            return new Float64Tuple4D(
                 _items[j],
                 _items[1 + j],
                 _items[2 + j],
@@ -1001,7 +1001,7 @@ namespace NumericalGeometryLib.BasicMath.Matrices
             );
         }
 
-        public SquareMatrix4 SetColumn(int columnIndex, Tuple4D columnVector)
+        public SquareMatrix4 SetColumn(int columnIndex, Float64Tuple4D columnVector)
         {
             var j = columnIndex << 2;
 
@@ -1222,18 +1222,18 @@ namespace NumericalGeometryLib.BasicMath.Matrices
         }
 
 
-        public SquareMatrix4 ToSquareMatrix4()
+        public SquareMatrix4 GetSquareMatrix4()
         {
             return new SquareMatrix4(this);
         }
 
-        public Matrix4x4 ToMatrix4x4()
+        public Matrix4x4 GetMatrix4x4()
         {
             throw new NotImplementedException();
         }
 
         
-        public double[,] ToArray2D()
+        public double[,] GetArray2D()
         {
             var array = new double[4, 4];
             
@@ -1261,27 +1261,27 @@ namespace NumericalGeometryLib.BasicMath.Matrices
         }
 
 
-        public Tuple4D MapProjectivePoint(Tuple3D point)
+        public Float64Tuple4D MapProjectivePoint(Float64Tuple3D point)
         {
             var x = _items[0] * point.X + _items[4] * point.Y + _items[8] * point.Z + _items[12];
             var y = _items[1] * point.X + _items[5] * point.Y + _items[9] * point.Z + _items[13];
             var z = _items[2] * point.X + _items[6] * point.Y + _items[10] * point.Z + _items[14];
             var w = _items[3] * point.X + _items[7] * point.Y + _items[11] * point.Z + _items[15];
 
-            return new Tuple4D(x, y, z, w);
+            return new Float64Tuple4D(x, y, z, w);
         }
 
-        public Tuple4D MapProjectiveVector(Tuple3D vector)
+        public Float64Tuple4D MapProjectiveVector(Float64Tuple3D vector)
         {
             var x = _items[0] * vector.X + _items[4] * vector.Y + _items[8] * vector.Z;
             var y = _items[1] * vector.X + _items[5] * vector.Y + _items[9] * vector.Z;
             var z = _items[2] * vector.X + _items[6] * vector.Y + _items[10] * vector.Z;
             var w = _items[3] * vector.X + _items[7] * vector.Y + _items[11] * vector.Z;
 
-            return new Tuple4D(x, y, z, w);
+            return new Float64Tuple4D(x, y, z, w);
         }
 
-        public Tuple3D MapPoint(ITuple3D point)
+        public Float64Tuple3D MapPoint(IFloat64Tuple3D point)
         {
             var pointX = _items[0] * point.X + _items[4] * point.Y + _items[8] * point.Z + _items[12];
             var pointY = _items[1] * point.X + _items[5] * point.Y + _items[9] * point.Z + _items[13];
@@ -1289,33 +1289,33 @@ namespace NumericalGeometryLib.BasicMath.Matrices
             var pointW = _items[3] * point.X + _items[7] * point.Y + _items[11] * point.Z + _items[15];
 
             if ((pointW - 1.0d).IsAlmostZero())
-                return new Tuple3D(pointX, pointY, pointZ);
+                return new Float64Tuple3D(pointX, pointY, pointZ);
 
             var s = 1.0d / pointW;
-            return new Tuple3D(pointX * s, pointY * s, pointZ * s);
+            return new Float64Tuple3D(pointX * s, pointY * s, pointZ * s);
         }
 
-        public Tuple3D MapVector(ITuple3D vector)
+        public Float64Tuple3D MapVector(IFloat64Tuple3D vector)
         {
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 _items[0] * vector.X + _items[4] * vector.Y + _items[8] * vector.Z,
                 _items[1] * vector.X + _items[5] * vector.Y + _items[9] * vector.Z,
                 _items[2] * vector.X + _items[6] * vector.Y + _items[10] * vector.Z
             );
         }
 
-        public Tuple3D MapNormal(ITuple3D normal)
+        public Float64Tuple3D MapNormal(IFloat64Tuple3D normal)
         {
             var invMatrix = Inverse();
 
-            return new Tuple3D(
+            return new Float64Tuple3D(
                 invMatrix._items[0] * normal.X + invMatrix._items[1] * normal.Y + invMatrix._items[2] * normal.Z,
                 invMatrix._items[4] * normal.X + invMatrix._items[5] * normal.Y + invMatrix._items[6] * normal.Z,
                 invMatrix._items[8] * normal.X + invMatrix._items[9] * normal.Y + invMatrix._items[10] * normal.Z
             );
         }
 
-        public IAffineMap3D InverseMap()
+        public IAffineMap3D GetInverseAffineMap()
         {
             return Inverse();
         }

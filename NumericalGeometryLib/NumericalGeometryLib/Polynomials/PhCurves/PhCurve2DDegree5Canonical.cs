@@ -14,7 +14,7 @@ namespace NumericalGeometryLib.Polynomials.PhCurves
     /// </summary>
     public sealed class PhCurve2DDegree5Canonical
     {
-        public static PhCurve2DDegree5Canonical Create(ITuple2D p, ITuple2D d)
+        public static PhCurve2DDegree5Canonical Create(IFloat64Tuple2D p, IFloat64Tuple2D d)
         {
             return new PhCurve2DDegree5Canonical(p, d);
         }
@@ -22,8 +22,8 @@ namespace NumericalGeometryLib.Polynomials.PhCurves
         public static PhCurve2DDegree5Canonical Create(double p1, double p2, double d1, double d2)
         {
             return new PhCurve2DDegree5Canonical(
-                new Tuple2D(p1, p2),
-                new Tuple2D(d1, d2)
+                new Float64Tuple2D(p1, p2),
+                new Float64Tuple2D(d1, d2)
             );
         }
         
@@ -47,19 +47,19 @@ namespace NumericalGeometryLib.Polynomials.PhCurves
 
         public double Scalar22 { get; }
 
-        public Tuple2D VectorU { get; }
+        public Float64Tuple2D VectorU { get; }
 
-        public Tuple2D Vector00 { get; }
+        public Float64Tuple2D Vector00 { get; }
 
-        public Tuple2D Vector01 { get; }
+        public Float64Tuple2D Vector01 { get; }
 
-        public Tuple2D Vector02 { get; }
+        public Float64Tuple2D Vector02 { get; }
 
-        public Tuple2D Vector11 { get; }
+        public Float64Tuple2D Vector11 { get; }
 
-        public Tuple2D Vector12 { get; }
+        public Float64Tuple2D Vector12 { get; }
 
-        public Tuple2D Vector22 { get; }
+        public Float64Tuple2D Vector22 { get; }
 
         public GaScaledPureRotor ScaledRotor0 { get; }
 
@@ -70,7 +70,7 @@ namespace NumericalGeometryLib.Polynomials.PhCurves
         public GaScaledPureRotor ScaledRotorV { get; }
         
 
-        private PhCurve2DDegree5Canonical([NotNull] ITuple2D p, [NotNull] ITuple2D d)
+        private PhCurve2DDegree5Canonical([NotNull] IFloat64Tuple2D p, [NotNull] IFloat64Tuple2D d)
         {
             BasisBladeSet = BasisBladeSet.Euclidean2D;
 
@@ -78,7 +78,7 @@ namespace NumericalGeometryLib.Polynomials.PhCurves
             _basisPairProductSet = BernsteinBasisPairProductSet.Create(BasisSet);
             _basisPairProductIntegralSet = BernsteinBasisPairProductIntegralSet.Create(_basisPairProductSet);
 
-            var e1 = Tuple2D.E1;
+            var e1 = Float64Tuple2D.E1;
             var e1Multivector = BasisBladeSet.CreateBasisVector(0);
 
             ScaledRotor0 = BasisBladeSet.CreateIdentityRotor();
@@ -131,7 +131,7 @@ namespace NumericalGeometryLib.Polynomials.PhCurves
         }
 
 
-        public ITuple2D GetHodographPoint(double parameterValue)
+        public IFloat64Tuple2D GetHodographPoint(double parameterValue)
         {
             var f00 = _basisPairProductSet.GetValue(0, 0, parameterValue);
             var f01 = _basisPairProductSet.GetValue(0, 1, parameterValue);
@@ -149,7 +149,7 @@ namespace NumericalGeometryLib.Polynomials.PhCurves
                 f22 * Vector22;
         }
 
-        public ITuple2D GetCurvePoint(double parameterValue)
+        public IFloat64Tuple2D GetCurvePoint(double parameterValue)
         {
             var f00 = _basisPairProductIntegralSet.GetValue(0, 0, parameterValue);
             var f01 = _basisPairProductIntegralSet.GetValue(0, 1, parameterValue);

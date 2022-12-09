@@ -8,7 +8,9 @@ using TextComposerLib;
 
 namespace NumericalGeometryLib.BasicMath.Tuples.Mutable
 {
-    public sealed class MutableComplexTuple2D : IComplexTuple2D, IEnumerable<Complex>
+    public sealed class MutableComplexTuple2D : 
+        IComplexTuple2D, 
+        IEnumerable<Complex>
     {
         public double RealX { get; set; }
 
@@ -19,25 +21,13 @@ namespace NumericalGeometryLib.BasicMath.Tuples.Mutable
         public double ImagY { get; set; }
 
 
-        public Complex X
-        {
-            get { return new Complex(RealX, ImagX); }
-        }
+        public Complex X => new Complex(RealX, ImagX);
 
-        public Complex Y
-        {
-            get { return new Complex(RealY, ImagY); }
-        }
+        public Complex Y => new Complex(RealY, ImagY);
 
-        public Complex Item1
-        {
-            get { return X; }
-        }
+        public Complex Item1 => X;
 
-        public Complex Item2
-        {
-            get { return Y; }
-        }
+        public Complex Item2 => Y;
 
         public bool IsValid()
         {
@@ -106,7 +96,7 @@ namespace NumericalGeometryLib.BasicMath.Tuples.Mutable
             Debug.Assert(IsValid());
         }
 
-        public MutableComplexTuple2D(ITuple2D tuple)
+        public MutableComplexTuple2D(IFloat64Tuple2D tuple)
         {
             RealX = tuple.X;
             RealY = tuple.Y;
@@ -149,7 +139,7 @@ namespace NumericalGeometryLib.BasicMath.Tuples.Mutable
             return this;
         }
 
-        public MutableComplexTuple2D SetTuple(ITuple2D tuple)
+        public MutableComplexTuple2D SetTuple(IFloat64Tuple2D tuple)
         {
             RealX = tuple.X;
             RealY = tuple.Y;

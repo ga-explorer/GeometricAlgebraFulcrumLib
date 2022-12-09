@@ -5,7 +5,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space2D;
 public sealed class GrVisualCircle2D :
     GrVisualElement2D
 {
-    public ITuple2D Center { get; set; }
+    public IFloat64Tuple2D Center { get; set; }
 
     public double Radius { get; set; }
 

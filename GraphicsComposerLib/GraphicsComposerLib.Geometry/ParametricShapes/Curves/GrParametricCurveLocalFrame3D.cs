@@ -36,7 +36,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves
         /// <param name="point"></param>
         /// <param name="tangentVector"></param>
         /// <returns></returns>
-        public static GrParametricCurveLocalFrame3D Create(double parameterValue, ITuple3D point, ITuple3D tangentVector)
+        public static GrParametricCurveLocalFrame3D Create(double parameterValue, IFloat64Tuple3D point, IFloat64Tuple3D tangentVector)
         {
             var tangent = tangentVector.ToUnitVector();
             var normal1 = tangentVector.GetUnitNormal();
@@ -51,7 +51,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves
             );
         }
 
-        public static GrParametricCurveLocalFrame3D Create(double parameterValue, ITuple3D point, ITuple3D normal1, ITuple3D normal2, ITuple3D tangent)
+        public static GrParametricCurveLocalFrame3D Create(double parameterValue, IFloat64Tuple3D point, IFloat64Tuple3D normal1, IFloat64Tuple3D normal2, IFloat64Tuple3D tangent)
         {
             return new GrParametricCurveLocalFrame3D(
                 parameterValue,
@@ -73,7 +73,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves
         /// <summary>
         /// A point on the curve
         /// </summary>
-        public Tuple3D Point { get; }
+        public Float64Tuple3D Point { get; }
 
         public double Item1 
             => Point.X;
@@ -110,13 +110,13 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves
         /// <summary>
         /// The tangent unit vector to the curve at the given curve point
         /// </summary>
-        public Tuple3D Tangent { get; }
+        public Float64Tuple3D Tangent { get; }
 
         public bool IsValid()
         {
-            var length1 = Normal1.GetLengthSquared();
-            var length2 = Normal2.GetLengthSquared();
-            var length3 = Tangent.GetLengthSquared();
+            var length1 = Normal1.GetVectorNormSquared();
+            var length2 = Normal2.GetVectorNormSquared();
+            var length3 = Tangent.GetVectorNormSquared();
 
             var cosAngle1 = Normal1.VectorDot(Normal2);
             var cosAngle2 = Normal2.VectorDot(Tangent);
@@ -139,7 +139,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves
         }
         
 
-        private GrParametricCurveLocalFrame3D(double parameterValue, [NotNull] ITuple3D point, [NotNull] ITuple3D normal1, [NotNull] ITuple3D normal2, [NotNull] ITuple3D tangent)
+        private GrParametricCurveLocalFrame3D(double parameterValue, [NotNull] IFloat64Tuple3D point, [NotNull] IFloat64Tuple3D normal1, [NotNull] IFloat64Tuple3D normal2, [NotNull] IFloat64Tuple3D tangent)
         {
             ParameterValue = parameterValue;
             Point = point.ToTuple3D();
@@ -151,7 +151,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves
         }
 
 
-        internal GrParametricCurveLocalFrame3D UpdateNormals([NotNull] ITuple3D normal1, [NotNull] ITuple3D normal2)
+        internal GrParametricCurveLocalFrame3D UpdateNormals([NotNull] IFloat64Tuple3D normal1, [NotNull] IFloat64Tuple3D normal2)
         {
             Normal1.Set(normal1);
             Normal2.Set(normal2);
@@ -161,7 +161,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves
             return this;
         }
 
-        public GrParametricCurveLocalFrame3D SetFrenetNormals(ITuple3D secondDerivativeVector)
+        public GrParametricCurveLocalFrame3D SetFrenetNormals(IFloat64Tuple3D secondDerivativeVector)
         {
             var normal1 = secondDerivativeVector.VectorCross(Tangent).ToUnitVector();
             var normal2 = Tangent.VectorCross(normal1);
@@ -240,7 +240,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves
             return maxAngle;
         }
 
-        public Triplet<Tuple3D> RotateDirectionsByTangent(ITuple3D newTangent)
+        public Triplet<Float64Tuple3D> RotateDirectionsByTangent(IFloat64Tuple3D newTangent)
         {
             var matrix = 
                 SquareMatrix3.CreateVectorToVectorRotationMatrix3D(Tangent, newTangent);
@@ -248,7 +248,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves
             var newNormal1 = matrix * Normal1;
             var newNormal2 = matrix * Normal2;
 
-            return new Triplet<Tuple3D>(newNormal1, newNormal2, newTangent.ToTuple3D());
+            return new Triplet<Float64Tuple3D>(newNormal1, newNormal2, newTangent.ToTuple3D());
 
             //var x = Tangent;
             //var y = Normal1;
@@ -442,7 +442,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Pair<Tuple3D> RotateNormalsByTangent(ITuple3D newTangent)
+        public Pair<Float64Tuple3D> RotateNormalsByTangent(IFloat64Tuple3D newTangent)
         {
             var matrix = 
                 SquareMatrix3.CreateVectorToVectorRotationMatrix3D(Tangent, newTangent);
@@ -450,7 +450,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves
             var newNormal1 = matrix * Normal1;
             var newNormal2 = matrix * Normal2;
 
-            return new Pair<Tuple3D>(newNormal1, newNormal2);
+            return new Pair<Float64Tuple3D>(newNormal1, newNormal2);
         }
 
 
@@ -469,13 +469,13 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GrParametricCurveLocalFrame3D TranslateBy(ITuple3D translationVector)
+        public GrParametricCurveLocalFrame3D TranslateBy(IFloat64Tuple3D translationVector)
         {
             Debug.Assert(translationVector.IsValid());
 
             return new GrParametricCurveLocalFrame3D(
                 ParameterValue,
-                new Tuple3D(
+                new Float64Tuple3D(
                     Point.X + translationVector.X,
                     Point.Y + translationVector.Y,
                     Point.Z + translationVector.Z
@@ -487,13 +487,13 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GrParametricCurveLocalFrame3D TranslateRotateNormalsBy(ITuple3D translationVector, PlanarAngle angle)
+        public GrParametricCurveLocalFrame3D TranslateRotateNormalsBy(IFloat64Tuple3D translationVector, PlanarAngle angle)
         {
             Debug.Assert(translationVector.IsValid());
 
             return new GrParametricCurveLocalFrame3D(
                 ParameterValue,
-                new Tuple3D(
+                new Float64Tuple3D(
                     Point.X + translationVector.X,
                     Point.Y + translationVector.Y,
                     Point.Z + translationVector.Z
@@ -518,7 +518,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Curves
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GrParametricCurveLocalFrame3D GetRotatedFrameUsingQuaternion(ITuple4D quaternion)
+        public GrParametricCurveLocalFrame3D GetRotatedFrameUsingQuaternion(IFloat64Tuple4D quaternion)
         {
             return new GrParametricCurveLocalFrame3D(
                 ParameterValue,

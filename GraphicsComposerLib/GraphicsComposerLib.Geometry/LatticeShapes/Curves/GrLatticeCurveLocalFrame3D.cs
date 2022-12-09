@@ -27,8 +27,8 @@ namespace GraphicsComposerLib.Geometry.LatticeShapes.Curves
         public HashSet<int> LatticeIndexSet { get; }
             = new HashSet<int>();
 
-        private Tuple3D _point;
-        public Tuple3D Point
+        private Float64Tuple3D _point;
+        public Float64Tuple3D Point
         {
             get => _point;
             internal set
@@ -72,7 +72,7 @@ namespace GraphicsComposerLib.Geometry.LatticeShapes.Curves
         public GrNormal3D Normal2 { get; }
             = new GrNormal3D();
 
-        public Tuple3D Tangent { get; }
+        public Float64Tuple3D Tangent { get; }
 
         public double ParameterValue { get; private set; }
 
@@ -83,7 +83,7 @@ namespace GraphicsComposerLib.Geometry.LatticeShapes.Curves
         {
             ParentCurve = parentCurve;
 
-            _point = new Tuple3D(pointTriplet.Item1, pointTriplet.Item2, pointTriplet.Item3);
+            _point = new Float64Tuple3D(pointTriplet.Item1, pointTriplet.Item2, pointTriplet.Item3);
 
             LatticeIndexSet.Add(uIndex);
         }

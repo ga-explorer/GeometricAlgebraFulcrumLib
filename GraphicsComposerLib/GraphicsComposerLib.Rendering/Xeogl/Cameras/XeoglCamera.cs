@@ -35,20 +35,20 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Cameras
         public XeoglCameraProjectionType ProjectionType
             => Projection.ProjectionType;
 
-        public MutableTuple3D EyePoint { get; }
-            = new MutableTuple3D(XeoglCameraDefaults.EyePoint);
+        public MutableFloat64Tuple3D EyePoint { get; }
+            = new MutableFloat64Tuple3D(XeoglCameraDefaults.EyePoint);
 
-        public MutableTuple3D LookAtPoint { get; }
-            = new MutableTuple3D(XeoglCameraDefaults.LookAtPoint);
+        public MutableFloat64Tuple3D LookAtPoint { get; }
+            = new MutableFloat64Tuple3D(XeoglCameraDefaults.LookAtPoint);
 
-        public MutableTuple3D WorldRightDirection { get; }
-            = new MutableTuple3D(1, 0, 0);
+        public MutableFloat64Tuple3D WorldRightDirection { get; }
+            = new MutableFloat64Tuple3D(1, 0, 0);
 
-        public MutableTuple3D WorldUpDirection { get; }
-            = new MutableTuple3D(0, 1, 0);
+        public MutableFloat64Tuple3D WorldUpDirection { get; }
+            = new MutableFloat64Tuple3D(0, 1, 0);
 
-        public MutableTuple3D WorldForwardDirection { get; }
-            = new MutableTuple3D(0, 0, 1);
+        public MutableFloat64Tuple3D WorldForwardDirection { get; }
+            = new MutableFloat64Tuple3D(0, 0, 1);
 
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Cameras
             return this;
         }
 
-        public XeoglCamera SetPosition(ITuple3D eyePoint, ITuple3D lookAtPoint)
+        public XeoglCamera SetPosition(IFloat64Tuple3D eyePoint, IFloat64Tuple3D lookAtPoint)
         {
             EyePoint.SetTuple(eyePoint);
             LookAtPoint.SetTuple(lookAtPoint);
@@ -101,7 +101,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Cameras
             return this;
         }
 
-        public XeoglCamera SetOrientation(ITuple3D rightAxis, ITuple3D upAxis, ITuple3D forwardAxis)
+        public XeoglCamera SetOrientation(IFloat64Tuple3D rightAxis, IFloat64Tuple3D upAxis, IFloat64Tuple3D forwardAxis)
         {
             WorldRightDirection.SetTuple(rightAxis);
             WorldUpDirection.SetTuple(upAxis);
@@ -112,18 +112,18 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Cameras
 
         public XeoglCamera SetOrientationUpY()
         {
-            WorldRightDirection.SetTuple(new Tuple3D(1, 0, 0));
-            WorldUpDirection.SetTuple(new Tuple3D(0, 1, 0));
-            WorldForwardDirection.SetTuple(new Tuple3D(0, 0, -1));
+            WorldRightDirection.SetTuple(new Float64Tuple3D(1, 0, 0));
+            WorldUpDirection.SetTuple(new Float64Tuple3D(0, 1, 0));
+            WorldForwardDirection.SetTuple(new Float64Tuple3D(0, 0, -1));
 
             return this;
         }
 
         public XeoglCamera SetOrientationUpZ()
         {
-            WorldRightDirection.SetTuple(new Tuple3D(1, 0, 0));
-            WorldUpDirection.SetTuple(new Tuple3D(0, 0, 1));
-            WorldForwardDirection.SetTuple(new Tuple3D(0, -1, 0));
+            WorldRightDirection.SetTuple(new Float64Tuple3D(1, 0, 0));
+            WorldUpDirection.SetTuple(new Float64Tuple3D(0, 0, 1));
+            WorldForwardDirection.SetTuple(new Float64Tuple3D(0, -1, 0));
 
             return this;
         }

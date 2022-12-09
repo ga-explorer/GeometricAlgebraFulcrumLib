@@ -9,14 +9,12 @@ using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded;
-using GeometricAlgebraFulcrumLib.Utilities.Extensions;
-using GeometricAlgebraFulcrumLib.Utilities.Factories;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Projectors
 {
     public sealed class Projector<T> :
-        OutermorphismBase<T>,
+        GaOutermorphismBase<T>,
         IMultivectorStorageContainer<T>,
         IProjector<T>
     {
@@ -42,7 +40,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Projectors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override ILinMatrixStorage<T> GetMultivectorMappingMatrix()
+        public override ILinMatrixStorage<T> GetMultivectorMappingMatrixStorage()
         {
             throw new System.NotImplementedException();
         }
@@ -63,7 +61,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Projectors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override IOutermorphism<T> GetOmAdjoint()
+        public override IGaOutermorphism<T> GetOmAdjoint()
         {
             throw new System.NotImplementedException();
         }
@@ -134,25 +132,25 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Projectors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override ILinMatrixStorage<T> GetVectorOmMappingMatrix()
+        public override ILinMatrixStorage<T> GetVectorOmMappingMatrixStorage()
         {
             throw new System.NotImplementedException();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override ILinMatrixStorage<T> GetBivectorOmMappingMatrix()
+        public override ILinMatrixStorage<T> GetBivectorOmMappingMatrixStorage()
         {
             throw new System.NotImplementedException();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override ILinMatrixStorage<T> GetKVectorOmMappingMatrix(uint grade)
+        public override ILinMatrixStorage<T> GetKVectorOmMappingMatrixStorage(uint grade)
         {
             throw new System.NotImplementedException();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override ILinMatrixGradedStorage<T> GetMultivectorOmMappingMatrix()
+        public override ILinMatrixGradedStorage<T> GetMultivectorOmMappingMatrixStorage()
         {
             throw new System.NotImplementedException();
         }

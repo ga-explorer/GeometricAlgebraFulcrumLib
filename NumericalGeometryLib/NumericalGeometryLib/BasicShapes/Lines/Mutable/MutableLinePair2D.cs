@@ -13,7 +13,7 @@ namespace NumericalGeometryLib.BasicShapes.Lines.Mutable
             );
         }
 
-        public MutableLinePair2D Create(ITuple2D origin1, ITuple2D direction1, ITuple2D origin2, ITuple2D direction2)
+        public MutableLinePair2D Create(IFloat64Tuple2D origin1, IFloat64Tuple2D direction1, IFloat64Tuple2D origin2, IFloat64Tuple2D direction2)
         {
             return new MutableLinePair2D(
                 origin1.X, 
@@ -91,7 +91,7 @@ namespace NumericalGeometryLib.BasicShapes.Lines.Mutable
             return this;
         }
 
-        public MutableLinePair2D SetOrigin1(ITuple2D origin)
+        public MutableLinePair2D SetOrigin1(IFloat64Tuple2D origin)
         {
             Origin1X = origin.X;
             Origin1Y = origin.Y;
@@ -107,7 +107,7 @@ namespace NumericalGeometryLib.BasicShapes.Lines.Mutable
             return this;
         }
 
-        public MutableLinePair2D SetDirection1(ITuple2D direction)
+        public MutableLinePair2D SetDirection1(IFloat64Tuple2D direction)
         {
             Direction1X = direction.X;
             Direction1Y = direction.Y;
@@ -134,7 +134,7 @@ namespace NumericalGeometryLib.BasicShapes.Lines.Mutable
             return this;
         }
 
-        public MutableLinePair2D SetOrigin2(ITuple2D origin)
+        public MutableLinePair2D SetOrigin2(IFloat64Tuple2D origin)
         {
             Origin2X = origin.X;
             Origin2Y = origin.Y;
@@ -150,7 +150,7 @@ namespace NumericalGeometryLib.BasicShapes.Lines.Mutable
             return this;
         }
 
-        public MutableLinePair2D SetDirection2(ITuple2D direction)
+        public MutableLinePair2D SetDirection2(IFloat64Tuple2D direction)
         {
             Direction2X = direction.X;
             Direction2Y = direction.Y;

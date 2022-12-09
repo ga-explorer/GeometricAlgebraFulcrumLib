@@ -418,19 +418,19 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Surfaces.Sampled
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple3D GetPoint(double parameterValue1, double parameterValue2)
+        public Float64Tuple3D GetPoint(double parameterValue1, double parameterValue2)
         {
             return GetSample(parameterValue1, parameterValue2).GetPoint();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple3D GetNormal(double parameterValue1, double parameterValue2)
+        public Float64Tuple3D GetNormal(double parameterValue1, double parameterValue2)
         {
             return GetSample(parameterValue1, parameterValue2).GetNormal();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple3D GetUnitNormal(double parameterValue1, double parameterValue2)
+        public Float64Tuple3D GetUnitNormal(double parameterValue1, double parameterValue2)
         {
             return GetSample(parameterValue1, parameterValue2).GetNormal().GetUnitNormal();
         }

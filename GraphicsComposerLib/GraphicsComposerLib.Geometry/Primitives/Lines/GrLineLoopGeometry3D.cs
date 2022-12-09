@@ -13,17 +13,17 @@ namespace GraphicsComposerLib.Geometry.Primitives.Lines
     public sealed class GrLineLoopGeometry3D
         : IGraphicsLineGeometry3D
     {
-        public static GrLineLoopGeometry3D Create(IReadOnlyList<ITuple3D> pointsList)
+        public static GrLineLoopGeometry3D Create(IReadOnlyList<IFloat64Tuple3D> pointsList)
         {
             return new GrLineLoopGeometry3D(pointsList);
         }
         
-        public static GrLineLoopGeometry3D Create(params ITuple3D[] pointsList)
+        public static GrLineLoopGeometry3D Create(params IFloat64Tuple3D[] pointsList)
         {
             return new GrLineLoopGeometry3D(pointsList);
         }
 
-        public static GrLineLoopGeometry3D Create(IEnumerable<ITuple3D> pointsList)
+        public static GrLineLoopGeometry3D Create(IEnumerable<IFloat64Tuple3D> pointsList)
         {
             return new GrLineLoopGeometry3D(pointsList.ToArray());
         }
@@ -38,8 +38,8 @@ namespace GraphicsComposerLib.Geometry.Primitives.Lines
         public IEnumerable<IGraphicsVertex3D> GeometryVertices
             => _vertexPoints.Select((p, i) => new GrVertex3D(i, p));
 
-        private readonly IReadOnlyList<ITuple3D> _vertexPoints;
-        public IEnumerable<ITuple3D> GeometryPoints 
+        private readonly IReadOnlyList<IFloat64Tuple3D> _vertexPoints;
+        public IEnumerable<IFloat64Tuple3D> GeometryPoints 
             => _vertexPoints;
 
         public IEnumerable<int> GeometryIndices
@@ -54,14 +54,14 @@ namespace GraphicsComposerLib.Geometry.Primitives.Lines
                 _vertexPoints[(index + 1) % _vertexPoints.Count]
             );
 
-        public IEnumerable<Pair<ITuple3D>> LineVertexPoints
+        public IEnumerable<Pair<IFloat64Tuple3D>> LineVertexPoints
         {
             get
             {
                 for (var i = 0; i < _vertexPoints.Count - 1; i++)
-                    yield return new Pair<ITuple3D>(_vertexPoints[i], _vertexPoints[i + 1]);
+                    yield return new Pair<IFloat64Tuple3D>(_vertexPoints[i], _vertexPoints[i + 1]);
 
-                yield return new Pair<ITuple3D>(_vertexPoints[^1], _vertexPoints[0]);
+                yield return new Pair<IFloat64Tuple3D>(_vertexPoints[^1], _vertexPoints[0]);
             }
         }
 
@@ -77,7 +77,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Lines
         }
 
 
-        private GrLineLoopGeometry3D(IReadOnlyList<ITuple3D> pointsList)
+        private GrLineLoopGeometry3D(IReadOnlyList<IFloat64Tuple3D> pointsList)
         {
             if (pointsList.Count < 2)
                 throw new InvalidOperationException();
@@ -86,7 +86,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Lines
         }
 
         
-        public ITuple3D GetGeometryPoint(int index)
+        public IFloat64Tuple3D GetGeometryPoint(int index)
         {
             return _vertexPoints[index];
         }

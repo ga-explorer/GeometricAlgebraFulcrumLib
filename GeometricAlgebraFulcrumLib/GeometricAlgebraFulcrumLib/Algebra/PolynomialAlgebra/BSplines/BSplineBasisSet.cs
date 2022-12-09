@@ -6,8 +6,6 @@ using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Utilities.Extensions;
-using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.BSplines
 {

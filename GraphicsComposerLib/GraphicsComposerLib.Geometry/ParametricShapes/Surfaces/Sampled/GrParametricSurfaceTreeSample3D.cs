@@ -40,7 +40,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Surfaces.Sampled
         }
 
 
-        public Tuple3D GetPoint()
+        public Float64Tuple3D GetPoint()
         {
             var t10 = 1d - InterpolationValue1;
             var t11 = InterpolationValue1;
@@ -59,7 +59,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Surfaces.Sampled
                    s11 * LeafNode.Frame11.Point;
         }
 
-        public Tuple3D GetNormal()
+        public Float64Tuple3D GetNormal()
         {
             var t10 = 1d - InterpolationValue1;
             var t11 = InterpolationValue1;

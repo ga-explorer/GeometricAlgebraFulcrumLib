@@ -6,7 +6,7 @@ namespace NumericalGeometryLib.Computers.Voronoi
 {
     public class VoronoiComputer2D
     {
-        public DelaunayTriangulation2D ComputeDelaunayTriangulation(IEnumerable<ITuple2D> points)
+        public DelaunayTriangulation2D ComputeDelaunayTriangulation(IEnumerable<IFloat64Tuple2D> points)
         {
             var pointsList = new VoronoiPointsList(points);
             var trianglesList = new List<VoronoiTriangle2D>

@@ -12,7 +12,7 @@ namespace GraphicsComposerLib.Geometry.Composers
 {
     public static class MeshComposersUtils
     {
-        public static IPathsMesh3D ComposeParallelogramPathMesh(Tuple3D cornerPoint, Tuple3D baseVector, Tuple3D sideVector, int basePointsCount, int sidePointsCount)
+        public static IPathsMesh3D ComposeParallelogramPathMesh(Float64Tuple3D cornerPoint, Float64Tuple3D baseVector, Float64Tuple3D sideVector, int basePointsCount, int sidePointsCount)
         {
             var meshPathsList = new List<IPointsPath3D>(basePointsCount);
 
@@ -27,7 +27,7 @@ namespace GraphicsComposerLib.Geometry.Composers
                     basePointsCount
                         .GetRegularSamples(0.0d, 1.0d)
                         .Lerp(pathFirstPoint, pathFirstPoint + baseVector)
-                        .Cast<ITuple3D>();
+                        .Cast<IFloat64Tuple3D>();
 
                 var path = new ArrayPointsPath3D(basePoints);
 

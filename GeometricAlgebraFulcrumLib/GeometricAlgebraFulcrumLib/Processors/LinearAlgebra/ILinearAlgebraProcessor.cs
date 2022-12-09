@@ -6,5 +6,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.LinearAlgebra
         : IScalarAlgebraProcessor<T>
     {
         IScalarAlgebraProcessor<T> ScalarProcessor { get; }
+
+        //T LinDotProduct(ILinVectorStorage<T> v1, ILinVectorStorage<T> v2);
     }
 }

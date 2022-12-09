@@ -11,7 +11,7 @@ namespace GraphicsComposerLib.Geometry.SdfShapes.RayMarching
 {
     public sealed class RayMarchingScene3D
     {
-        public Tuple3D BackgroundColor { get; set; }
+        public Float64Tuple3D BackgroundColor { get; set; }
             = Color.Black.ToTuple3D();
 
         public RayMarchingCamera3D Camera { get; }
@@ -38,19 +38,19 @@ namespace GraphicsComposerLib.Geometry.SdfShapes.RayMarching
 
             var light1 = new RayMarchingPointLight3D() 
             { 
-                Position = new Tuple3D(0, 2, 4),
-                AmbientColor = new Tuple3D(0.5, 0.5, 0.5),
-                DiffuseColor = new Tuple3D(0.4, 0.4, 0.4),
-                SpecularColor = new Tuple3D(0.4, 0.4, 0.4),
+                Position = new Float64Tuple3D(0, 2, 4),
+                AmbientColor = new Float64Tuple3D(0.5, 0.5, 0.5),
+                DiffuseColor = new Float64Tuple3D(0.4, 0.4, 0.4),
+                SpecularColor = new Float64Tuple3D(0.4, 0.4, 0.4),
                 EyePoint = Camera.EyePoint 
             };
 
             var light2 = new RayMarchingPointLight3D() 
             { 
-                Position = new Tuple3D(2 * Math.Sin(0.37), 2 * Math.Cos(0.37), 2),
-                AmbientColor = new Tuple3D(0.5, 0.5, 0.5),
-                DiffuseColor = new Tuple3D(0.4, 0.4, 0.4),
-                SpecularColor = new Tuple3D(0.4, 0.4, 0.4),
+                Position = new Float64Tuple3D(2 * Math.Sin(0.37), 2 * Math.Cos(0.37), 2),
+                AmbientColor = new Float64Tuple3D(0.5, 0.5, 0.5),
+                DiffuseColor = new Float64Tuple3D(0.4, 0.4, 0.4),
+                SpecularColor = new Float64Tuple3D(0.4, 0.4, 0.4),
                 EyePoint = Camera.EyePoint 
             };
             
@@ -79,7 +79,7 @@ namespace GraphicsComposerLib.Geometry.SdfShapes.RayMarching
                         var unitNormal = 
                             Shape.Surface.ComputeSdfNormal(surfacePoint);
 
-                        colorVector = new Tuple3D(0, 0, 0);
+                        colorVector = new Float64Tuple3D(0, 0, 0);
                         foreach (var light in LightsList)
                             colorVector += light.GetColor(
                                 surfacePoint, 

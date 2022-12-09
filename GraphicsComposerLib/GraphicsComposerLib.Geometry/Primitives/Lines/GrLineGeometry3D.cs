@@ -17,7 +17,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Lines
     public sealed class GrLineGeometry3D
         : IGraphicsLineGeometry3D
     {
-        public static GrLineGeometry3D Create(IReadOnlyList<ITuple3D> pointsList)
+        public static GrLineGeometry3D Create(IReadOnlyList<IFloat64Tuple3D> pointsList)
         {
             if (pointsList.Count < 2)
                 throw new ArgumentException();
@@ -25,7 +25,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Lines
             return new GrLineGeometry3D(pointsList);
         }
 
-        public static GrLineGeometry3D Create(IReadOnlyList<ITuple3D> pointsList, List<int> indicesList)
+        public static GrLineGeometry3D Create(IReadOnlyList<IFloat64Tuple3D> pointsList, List<int> indicesList)
         {
             if (pointsList.Count < 2)
                 throw new ArgumentException();
@@ -33,7 +33,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Lines
             return new GrLineGeometry3D(pointsList, indicesList);
         }
 
-        public static GrLineGeometry3D Create(params ITuple3D[] pointsList)
+        public static GrLineGeometry3D Create(params IFloat64Tuple3D[] pointsList)
         {
             if (pointsList.Length < 2)
                 throw new ArgumentException();
@@ -41,7 +41,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Lines
             return new GrLineGeometry3D(pointsList);
         }
 
-        public static GrLineGeometry3D Create(IEnumerable<ITuple3D> pointsList)
+        public static GrLineGeometry3D Create(IEnumerable<IFloat64Tuple3D> pointsList)
         {
             var pointsArray = pointsList.ToArray();
 
@@ -51,7 +51,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Lines
             return new GrLineGeometry3D(pointsArray);
         }
 
-        public static GrLineGeometry3D Create(IEnumerable<ITuple3D> pointsList, IEnumerable<int> indicesList)
+        public static GrLineGeometry3D Create(IEnumerable<IFloat64Tuple3D> pointsList, IEnumerable<int> indicesList)
         {
             var pointsArray = pointsList.ToArray();
 
@@ -112,8 +112,8 @@ namespace GraphicsComposerLib.Geometry.Primitives.Lines
         public int VertexCount 
             => _vertexPoints.Count;
 
-        private readonly IReadOnlyList<ITuple3D> _vertexPoints;
-        public IEnumerable<ITuple3D> GeometryPoints 
+        private readonly IReadOnlyList<IFloat64Tuple3D> _vertexPoints;
+        public IEnumerable<IFloat64Tuple3D> GeometryPoints 
             => _vertexPoints;
 
         public IEnumerable<IGraphicsVertex3D> GeometryVertices
@@ -132,12 +132,12 @@ namespace GraphicsComposerLib.Geometry.Primitives.Lines
                 _vertexPoints[_vertexIndicesList[2 * index + 1]]
             );
 
-        public IEnumerable<Pair<ITuple3D>> LineVertexPoints
+        public IEnumerable<Pair<IFloat64Tuple3D>> LineVertexPoints
         {
             get
             {
                 for (var i = 0; i < _vertexPoints.Count; i += 2)
-                    yield return new Pair<ITuple3D>(
+                    yield return new Pair<IFloat64Tuple3D>(
                         _vertexPoints[_vertexIndicesList[i]],
                         _vertexPoints[_vertexIndicesList[i + 1]]
                     );
@@ -157,7 +157,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Lines
         }
 
 
-        private GrLineGeometry3D(IReadOnlyList<ITuple3D> pointsList)
+        private GrLineGeometry3D(IReadOnlyList<IFloat64Tuple3D> pointsList)
         {
             if (pointsList.Count < 2)
                 throw new InvalidOperationException();
@@ -166,7 +166,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Lines
             _vertexIndicesList = new List<int>();
         }
 
-        private GrLineGeometry3D(IReadOnlyList<ITuple3D> pointsList, List<int> vertexIndicesList)
+        private GrLineGeometry3D(IReadOnlyList<IFloat64Tuple3D> pointsList, List<int> vertexIndicesList)
         {
             if (pointsList.Count < 2 || vertexIndicesList.Count % 2 != 0)
                 throw new InvalidOperationException();
@@ -176,7 +176,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Lines
         }
 
         
-        public ITuple3D GetGeometryPoint(int index)
+        public IFloat64Tuple3D GetGeometryPoint(int index)
         {
             return _vertexPoints[index];
         }

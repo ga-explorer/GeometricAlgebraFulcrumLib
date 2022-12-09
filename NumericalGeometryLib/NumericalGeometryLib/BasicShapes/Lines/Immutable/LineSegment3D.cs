@@ -7,7 +7,7 @@ namespace NumericalGeometryLib.BasicShapes.Lines.Immutable
 {
     public sealed class LineSegment3D : ILineSegment3D
     {
-        public static LineSegment3D Create(ITuple3D point1, ITuple3D point2)
+        public static LineSegment3D Create(IFloat64Tuple3D point1, IFloat64Tuple3D point2)
         {
             return new LineSegment3D(
                 point1.X,
@@ -19,7 +19,7 @@ namespace NumericalGeometryLib.BasicShapes.Lines.Immutable
             );
         }
 
-        public static LineSegment3D CreateFromPointAndVector(ITuple3D point1, ITuple3D direction)
+        public static LineSegment3D CreateFromPointAndVector(IFloat64Tuple3D point1, IFloat64Tuple3D direction)
         {
             return new LineSegment3D(
                 point1.X,
@@ -31,7 +31,7 @@ namespace NumericalGeometryLib.BasicShapes.Lines.Immutable
             );
         }
 
-        public static LineSegment3D CreateFromPointAndScaledVector(ITuple3D point1, ITuple3D direction, double scaleFactor)
+        public static LineSegment3D CreateFromPointAndScaledVector(IFloat64Tuple3D point1, IFloat64Tuple3D direction, double scaleFactor)
         {
             return new LineSegment3D(
                 point1.X,

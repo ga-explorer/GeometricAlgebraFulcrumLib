@@ -5,7 +5,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Basic
 {
     public sealed class GrVisualPoint3D :
         GrVisualElement3D,
-        ITuple3D
+        IFloat64Tuple3D
     {
         public double Item1 => Position.X;
         
@@ -21,10 +21,10 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Basic
 
         public GrVisualSurfaceThickStyle3D Style { get; set; } 
 
-        public ITuple3D Position { get; } 
+        public IFloat64Tuple3D Position { get; } 
 
 
-        public GrVisualPoint3D(string name, ITuple3D position) 
+        public GrVisualPoint3D(string name, IFloat64Tuple3D position) 
             : base(name)
         {
             Position = position;

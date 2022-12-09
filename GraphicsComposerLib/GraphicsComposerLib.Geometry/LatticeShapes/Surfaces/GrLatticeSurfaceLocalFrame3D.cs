@@ -26,8 +26,8 @@ namespace GraphicsComposerLib.Geometry.LatticeShapes.Surfaces
         public HashSet<Pair<int>> LatticeIndexSet { get; }
             = new HashSet<Pair<int>>();
 
-        private Tuple3D _point;
-        public Tuple3D Point
+        private Float64Tuple3D _point;
+        public Float64Tuple3D Point
         {
             get => _point;
             internal set
@@ -78,7 +78,7 @@ namespace GraphicsComposerLib.Geometry.LatticeShapes.Surfaces
         {
             ParentSurface = parentSurface;
 
-            _point = new Tuple3D(pointTriplet.Item1, pointTriplet.Item2, pointTriplet.Item3);
+            _point = new Float64Tuple3D(pointTriplet.Item1, pointTriplet.Item2, pointTriplet.Item3);
 
             LatticeIndexSet.Add(uvIndex);
         }
@@ -106,9 +106,9 @@ namespace GraphicsComposerLib.Geometry.LatticeShapes.Surfaces
                    Point.Z == pointTriplet.Item3;
         }
         
-        internal Tuple2D ComputeTextureUv()
+        internal Float64Tuple2D ComputeTextureUv()
         {
-            var textureUv = Tuple2D.Zero;
+            var textureUv = Float64Tuple2D.Zero;
 
             foreach (var (indexU, indexV) in LatticeIndexSet)
             {

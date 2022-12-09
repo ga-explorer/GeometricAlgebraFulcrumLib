@@ -7,7 +7,6 @@ using CodeComposerLib.SyntaxTree.Expressions;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Expressions.HeadSpecs;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Expressions.Numbers;
-using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 
 namespace GeometricAlgebraFulcrumLib.MetaProgramming.Expressions.Variables
 {

@@ -13,7 +13,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Triangles
     public sealed class GrTriangleGeometry3D 
         : GrTriangleGeometryBase3D
     {
-        public static GrTriangleGeometry3D Create(IReadOnlyList<ITuple3D> pointsList)
+        public static GrTriangleGeometry3D Create(IReadOnlyList<IFloat64Tuple3D> pointsList)
         {
             //if ((pointsList.Count % 3) != 0)
             //    throw new ArgumentException();
@@ -21,7 +21,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Triangles
             return new GrTriangleGeometry3D(pointsList);
         }
 
-        public static GrTriangleGeometry3D Create(IReadOnlyList<ITuple3D> pointsList, List<int> indicesList)
+        public static GrTriangleGeometry3D Create(IReadOnlyList<IFloat64Tuple3D> pointsList, List<int> indicesList)
         {
             //if ((pointsList.Count % 3) != 0)
             //    throw new ArgumentException();
@@ -29,7 +29,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Triangles
             return new GrTriangleGeometry3D(pointsList, indicesList);
         }
 
-        public static GrTriangleGeometry3D Create(params ITuple3D[] pointsList)
+        public static GrTriangleGeometry3D Create(params IFloat64Tuple3D[] pointsList)
         {
             //if ((pointsList.Length % 3) != 0)
             //    throw new ArgumentException();
@@ -37,7 +37,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Triangles
             return new GrTriangleGeometry3D(pointsList);
         }
 
-        public static GrTriangleGeometry3D Create(IEnumerable<ITuple3D> pointsList)
+        public static GrTriangleGeometry3D Create(IEnumerable<IFloat64Tuple3D> pointsList)
         {
             var pointsArray = pointsList.ToArray();
 
@@ -47,7 +47,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Triangles
             return new GrTriangleGeometry3D(pointsArray);
         }
 
-        public static GrTriangleGeometry3D Create(IEnumerable<ITuple3D> pointsList, IEnumerable<int> indicesList)
+        public static GrTriangleGeometry3D Create(IEnumerable<IFloat64Tuple3D> pointsList, IEnumerable<int> indicesList)
         {
             var pointsArray = pointsList.ToArray();
 
@@ -134,7 +134,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Triangles
 
             if (vertexDataKind.HasTextureUv)
                 geometry.SetVertexUVs(
-                    verticesList.Select(v => (ITuple2D) v.ParameterValue.ToTuple2D()).ToArray()
+                    verticesList.Select(v => (IFloat64Tuple2D) v.ParameterValue.ToTuple2D()).ToArray()
                 );
 
             if (vertexDataKind.HasNormal)
@@ -163,14 +163,14 @@ namespace GraphicsComposerLib.Geometry.Primitives.Triangles
                 GetGeometryPoint(_vertexIndicesList[3 * index + 2])
             );
 
-        public override IEnumerable<Triplet<ITuple3D>> TriangleVertexPoints
+        public override IEnumerable<Triplet<IFloat64Tuple3D>> TriangleVertexPoints
         {
             get
             {
-                var pointsList = new List<Triplet<ITuple3D>>(Count);
+                var pointsList = new List<Triplet<IFloat64Tuple3D>>(Count);
 
                 for (var i = 0; i < _vertexIndicesList.Count; i += 3)
-                    pointsList.Add(new Triplet<ITuple3D>(
+                    pointsList.Add(new Triplet<IFloat64Tuple3D>(
                         GetGeometryPoint(_vertexIndicesList[i]),
                         GetGeometryPoint(_vertexIndicesList[i + 1]),
                         GetGeometryPoint(_vertexIndicesList[i + 2])
@@ -198,13 +198,13 @@ namespace GraphicsComposerLib.Geometry.Primitives.Triangles
         }
 
 
-        private GrTriangleGeometry3D(IReadOnlyList<ITuple3D> pointsList)
+        private GrTriangleGeometry3D(IReadOnlyList<IFloat64Tuple3D> pointsList)
             : base(pointsList)
         {
             _vertexIndicesList = new List<int>();
         }
         
-        private GrTriangleGeometry3D(IReadOnlyList<ITuple3D> pointsList, List<int> vertexIndicesList)
+        private GrTriangleGeometry3D(IReadOnlyList<IFloat64Tuple3D> pointsList, List<int> vertexIndicesList)
             : base(pointsList)
         {
             _vertexIndicesList = vertexIndicesList;

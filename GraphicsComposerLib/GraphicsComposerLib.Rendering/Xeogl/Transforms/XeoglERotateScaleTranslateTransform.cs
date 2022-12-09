@@ -17,7 +17,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Transforms
             };
         }
         
-        public static XeoglERotateScaleTranslateTransform CreateTranslate(ITuple3D t)
+        public static XeoglERotateScaleTranslateTransform CreateTranslate(IFloat64Tuple3D t)
         {
             return new XeoglERotateScaleTranslateTransform()
             {
@@ -69,20 +69,20 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Transforms
         public SquareMatrix4 GetMatrix()
             => SquareMatrix4.CreateIdentityMatrix();
 
-        public Tuple4D GetQuaternionTuple()
-            => new Tuple4D(0, 0, 0, 1);
+        public Float64Tuple4D GetQuaternionTuple()
+            => new Float64Tuple4D(0, 0, 0, 1);
 
-        public Tuple3D GetRotateTuple()
-            => new Tuple3D(RotateX, RotateY, RotateZ);
+        public Float64Tuple3D GetRotateTuple()
+            => new Float64Tuple3D(RotateX, RotateY, RotateZ);
 
-        public Tuple3D GetScaleTuple()
-            => new Tuple3D(ScaleX, ScaleY, ScaleZ);
+        public Float64Tuple3D GetScaleTuple()
+            => new Float64Tuple3D(ScaleX, ScaleY, ScaleZ);
 
-        public Tuple3D GetTranslateTuple()
-            => new Tuple3D(TranslateX, TranslateY, TranslateZ);
+        public Float64Tuple3D GetTranslateTuple()
+            => new Float64Tuple3D(TranslateX, TranslateY, TranslateZ);
 
 
-        public XeoglERotateScaleTranslateTransform SetRotate(ITuple3D rotateTuple)
+        public XeoglERotateScaleTranslateTransform SetRotate(IFloat64Tuple3D rotateTuple)
         {
             RotateX = rotateTuple.X;
             RotateY = rotateTuple.Y;
@@ -110,7 +110,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Transforms
             return this;
         }
 
-        public XeoglERotateScaleTranslateTransform SetScale(ITuple3D scaleTuple)
+        public XeoglERotateScaleTranslateTransform SetScale(IFloat64Tuple3D scaleTuple)
         {
             ScaleX = scaleTuple.X;
             ScaleY = scaleTuple.Y;
@@ -129,7 +129,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Transforms
         }
 
 
-        public XeoglERotateScaleTranslateTransform SetTranslate(ITuple3D translateTuple)
+        public XeoglERotateScaleTranslateTransform SetTranslate(IFloat64Tuple3D translateTuple)
         {
             TranslateX = translateTuple.X;
             TranslateY = translateTuple.Y;

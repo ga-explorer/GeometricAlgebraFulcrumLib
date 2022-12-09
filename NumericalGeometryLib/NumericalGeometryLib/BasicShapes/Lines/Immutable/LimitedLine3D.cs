@@ -19,7 +19,7 @@ namespace NumericalGeometryLib.BasicShapes.Lines.Immutable
             );
         }
 
-        public static LimitedLine3D Create(ITuple3D origin, ITuple3D direction, IBoundingBox1D parameterLimits)
+        public static LimitedLine3D Create(IFloat64Tuple3D origin, IFloat64Tuple3D direction, IBoundingBox1D parameterLimits)
         {
             return new LimitedLine3D(
                 origin.X,

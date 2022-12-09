@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.LinearAlgebra.Double;
 using NumericalGeometryLib.BasicMath;
+using NumericalGeometryLib.BasicMath.Matrices;
 using NumericalGeometryLib.Polynomials.CurveBasis;
 using OxyPlot;
 using OxyPlot.Series;

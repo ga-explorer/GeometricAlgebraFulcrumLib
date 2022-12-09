@@ -69,8 +69,8 @@ namespace GraphicsComposerLib.Geometry.Structures.Data
             }
         }
 
-        public IEnumerable<Tuple3D> Points
-            => _pointDataList.Select(p => new Tuple3D(p.X, p.Y, p.Z));
+        public IEnumerable<Float64Tuple3D> Points
+            => _pointDataList.Select(p => new Float64Tuple3D(p.X, p.Y, p.Z));
 
 
         public PointDataSet3D()
@@ -338,7 +338,7 @@ namespace GraphicsComposerLib.Geometry.Structures.Data
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple3D GetPoint(int index)
+        public Float64Tuple3D GetPoint(int index)
         {
             return _pointDataList[index].ToTuple3D();
         }

@@ -9,15 +9,15 @@ namespace GraphicsComposerLib.Geometry.SdfShapes.Primitives
     /// </summary>
     public sealed class SdfCylinderY3D : ScalarDistanceFunction
     {
-        public Tuple2D CenterXz { get; set; }
-            = new Tuple2D(0, 0);
+        public Float64Tuple2D CenterXz { get; set; }
+            = new Float64Tuple2D(0, 0);
 
         public double Radius { get; set; }
 
 
-        public override double GetScalarDistance(ITuple3D point)
+        public override double GetScalarDistance(IFloat64Tuple3D point)
         {
-            return (point.XzToTuple2D() - CenterXz).GetLength() - Radius;
+            return (point.XzToTuple2D() - CenterXz).GetVectorNorm() - Radius;
         }
     }
 }

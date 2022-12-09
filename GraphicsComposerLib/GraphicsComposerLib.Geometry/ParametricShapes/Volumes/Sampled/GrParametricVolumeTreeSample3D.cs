@@ -44,7 +44,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Volumes.Sampled
         }
 
 
-        public Tuple3D GetPoint()
+        public Float64Tuple3D GetPoint()
         {
             var t10 = 1d - InterpolationValue1;
             var t11 = InterpolationValue1;

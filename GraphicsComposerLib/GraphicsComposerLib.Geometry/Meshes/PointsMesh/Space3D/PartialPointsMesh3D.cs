@@ -7,7 +7,7 @@ using GraphicsComposerLib.Geometry.Meshes.PointsPath.Space3D;
 namespace GraphicsComposerLib.Geometry.Meshes.PointsMesh.Space3D
 {
     public sealed class PartialPointsMesh3D
-        : PSeqPartial2D<ITuple3D>, IPointsMesh3D
+        : PSeqPartial2D<IFloat64Tuple3D>, IPointsMesh3D
     {
         public IPointsMesh3D BaseMesh { get; }
 
@@ -19,7 +19,7 @@ namespace GraphicsComposerLib.Geometry.Meshes.PointsMesh.Space3D
         }
 
 
-        public override PSeqSlice1D<ITuple3D> GetSliceAt(int dimension, int index)
+        public override PSeqSlice1D<IFloat64Tuple3D> GetSliceAt(int dimension, int index)
         {
             return new PointsMeshSlicePointsPath3D(this, dimension, index);
         }

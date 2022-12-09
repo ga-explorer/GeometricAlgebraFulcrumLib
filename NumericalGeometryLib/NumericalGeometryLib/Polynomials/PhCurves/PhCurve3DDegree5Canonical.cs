@@ -14,7 +14,7 @@ namespace NumericalGeometryLib.Polynomials.PhCurves
     /// </summary>
     public sealed class PhCurve3DDegree5Canonical
     {
-        public static PhCurve3DDegree5Canonical Create(ITuple3D p, ITuple3D d, PlanarAngle theta1, PlanarAngle theta2)
+        public static PhCurve3DDegree5Canonical Create(IFloat64Tuple3D p, IFloat64Tuple3D d, PlanarAngle theta1, PlanarAngle theta2)
         {
             return new PhCurve3DDegree5Canonical(p, d, theta1, theta2);
         }
@@ -22,8 +22,8 @@ namespace NumericalGeometryLib.Polynomials.PhCurves
         public static PhCurve3DDegree5Canonical Create(double p1, double p2, double p3, double d1, double d2, double d3)
         {
             return new PhCurve3DDegree5Canonical(
-                new Tuple3D(p1, p2, p3),
-                new Tuple3D(d1, d2, d3),
+                new Float64Tuple3D(p1, p2, p3),
+                new Float64Tuple3D(d1, d2, d3),
                 0d,
                 0d
             );
@@ -50,17 +50,17 @@ namespace NumericalGeometryLib.Polynomials.PhCurves
         
         public double Scalar22 { get; }
 
-        public Tuple3D Vector00 { get; }
+        public Float64Tuple3D Vector00 { get; }
         
-        public Tuple3D Vector01 { get; }
+        public Float64Tuple3D Vector01 { get; }
         
-        public Tuple3D Vector02 { get; }
+        public Float64Tuple3D Vector02 { get; }
         
-        public Tuple3D Vector11 { get; }
+        public Float64Tuple3D Vector11 { get; }
         
-        public Tuple3D Vector12 { get; }
+        public Float64Tuple3D Vector12 { get; }
         
-        public Tuple3D Vector22 { get; }
+        public Float64Tuple3D Vector22 { get; }
 
         public GaScaledPureRotor ScaledRotor0 { get; }
 
@@ -73,7 +73,7 @@ namespace NumericalGeometryLib.Polynomials.PhCurves
         public PlanarAngle Theta2 { get; }
         
 
-        private PhCurve3DDegree5Canonical([NotNull] ITuple3D p, [NotNull] ITuple3D d, [NotNull] PlanarAngle theta1, [NotNull] PlanarAngle theta2)
+        private PhCurve3DDegree5Canonical([NotNull] IFloat64Tuple3D p, [NotNull] IFloat64Tuple3D d, [NotNull] PlanarAngle theta1, [NotNull] PlanarAngle theta2)
         {
             BasisBladeSet = BasisBladeSet.Euclidean3D;
 
@@ -84,7 +84,7 @@ namespace NumericalGeometryLib.Polynomials.PhCurves
             _basisPairProductSet = BernsteinBasisPairProductSet.Create(BasisPolynomialSet);
             _basisPairProductIntegralSet = BernsteinBasisPairProductIntegralSet.Create(_basisPairProductSet);
 
-            var e1 = Tuple3D.E1;
+            var e1 = Float64Tuple3D.E1;
             var e1Multivector = BasisBladeSet.CreateBasisVector(0);
 
             ScaledRotor0 = BasisBladeSet.CreateIdentityRotor();
@@ -146,7 +146,7 @@ namespace NumericalGeometryLib.Polynomials.PhCurves
         }
 
 
-        public Tuple3D GetHodographPoint(double parameterValue)
+        public Float64Tuple3D GetHodographPoint(double parameterValue)
         {
             var f00 = _basisPairProductSet.GetValue(0, 0, parameterValue);
             var f01 = _basisPairProductSet.GetValue(0, 1, parameterValue);
@@ -159,7 +159,7 @@ namespace NumericalGeometryLib.Polynomials.PhCurves
                    f11 * Vector11 + f12 * Vector12 + f22 * Vector22;
         }
 
-        public Tuple3D GetCurvePoint(double parameterValue)
+        public Float64Tuple3D GetCurvePoint(double parameterValue)
         {
             var f00 = _basisPairProductIntegralSet.GetValue(0, 0, parameterValue);
             var f01 = _basisPairProductIntegralSet.GetValue(0, 1, parameterValue);

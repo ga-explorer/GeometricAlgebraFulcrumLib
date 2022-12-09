@@ -59,8 +59,8 @@ namespace GraphicsComposerLib.Geometry.Primitives.Triangles
         }
             
 
-        private readonly IReadOnlyList<ITuple3D> _vertexPoints;
-        public IEnumerable<ITuple3D> GeometryPoints 
+        private readonly IReadOnlyList<IFloat64Tuple3D> _vertexPoints;
+        public IEnumerable<IFloat64Tuple3D> GeometryPoints 
             => _vertexPoints;
 
         public abstract IEnumerable<int> GeometryIndices { get; }
@@ -69,7 +69,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Triangles
 
         public abstract ITriangle3D this[int index] { get; }
 
-        public abstract IEnumerable<Triplet<ITuple3D>> TriangleVertexPoints { get; }
+        public abstract IEnumerable<Triplet<IFloat64Tuple3D>> TriangleVertexPoints { get; }
 
         public abstract IEnumerable<Triplet<int>> TriangleVertexIndices { get; }
 
@@ -82,11 +82,11 @@ namespace GraphicsComposerLib.Geometry.Primitives.Triangles
             = GrVertexNormalComputationMethod.AverageNormals;
 
         private GrNormal3D[] _vertexNormals;
-        public IEnumerable<ITuple3D> VertexNormals 
+        public IEnumerable<IFloat64Tuple3D> VertexNormals 
             => _vertexNormals;
 
-        private ITuple2D[] _vertexUVs;
-        public IEnumerable<ITuple2D> VertexTextureUVs
+        private IFloat64Tuple2D[] _vertexUVs;
+        public IEnumerable<IFloat64Tuple2D> VertexTextureUVs
             => _vertexUVs;
 
         private Color[] _vertexColors;
@@ -105,13 +105,13 @@ namespace GraphicsComposerLib.Geometry.Primitives.Triangles
         public bool AutoVertexNormals { get; set; }
 
 
-        protected GrTriangleGeometryBase3D(IReadOnlyList<ITuple3D> pointsList)
+        protected GrTriangleGeometryBase3D(IReadOnlyList<IFloat64Tuple3D> pointsList)
         {
             _vertexPoints = pointsList;
         }
 
         
-        public ITuple3D GetGeometryPoint(int index)
+        public IFloat64Tuple3D GetGeometryPoint(int index)
         {
             return _vertexPoints[index];
         }
@@ -146,7 +146,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Triangles
             _vertexNormals = vertexNormals;
         }
 
-        public void SetVertexUVs(ITuple2D[] vertexUVs)
+        public void SetVertexUVs(IFloat64Tuple2D[] vertexUVs)
         {
             if (vertexUVs.Length != _vertexPoints.Count)
                 throw new InvalidOperationException();

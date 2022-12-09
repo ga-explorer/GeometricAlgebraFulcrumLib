@@ -16,11 +16,11 @@ namespace NumericalGeometryLib.BasicMath.Frames.Space2D
         /// <param name="origin"></param>
         /// <param name="uDirection"></param>
         /// <returns></returns>
-        public static AffineFrame2D CreateRightHanded(ITuple2D origin, ITuple2D uDirection)
+        public static AffineFrame2D CreateRightHanded(IFloat64Tuple2D origin, IFloat64Tuple2D uDirection)
         {
             Debug.Assert(origin.IsValid() && uDirection.IsValid());
 
-            var s = uDirection.GetLength();
+            var s = uDirection.GetVectorNorm();
 
             Debug.Assert(!s.IsAlmostZero());
 
@@ -38,9 +38,9 @@ namespace NumericalGeometryLib.BasicMath.Frames.Space2D
         /// <param name="origin"></param>
         /// <param name="uDirection"></param>
         /// <returns></returns>
-        public static AffineFrame2D CreateLeftHanded(ITuple2D origin, ITuple2D uDirection)
+        public static AffineFrame2D CreateLeftHanded(IFloat64Tuple2D origin, IFloat64Tuple2D uDirection)
         {
-            var s = uDirection.GetLength();
+            var s = uDirection.GetVectorNorm();
 
             Debug.Assert(!s.IsAlmostZero());
 
@@ -66,14 +66,14 @@ namespace NumericalGeometryLib.BasicMath.Frames.Space2D
 
         public double VDirectionY { get; }
 
-        public Tuple2D UDirection
+        public Float64Tuple2D UDirection
         {
-            get { return new Tuple2D(UDirectionX, UDirectionY); }
+            get { return new Float64Tuple2D(UDirectionX, UDirectionY); }
         }
 
-        public Tuple2D VDirection
+        public Float64Tuple2D VDirection
         {
-            get { return new Tuple2D(VDirectionX, VDirectionY); }
+            get { return new Float64Tuple2D(VDirectionX, VDirectionY); }
         }
 
         public bool IsRightHanded

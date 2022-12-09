@@ -11,8 +11,8 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Lights
     /// </summary>
     public sealed class XeoglPointLight : XeoglLight
     {
-        private static Tuple3D DefaultLightPosition { get; }
-            = new Tuple3D(1, 1, 1);
+        private static Float64Tuple3D DefaultLightPosition { get; }
+            = new Float64Tuple3D(1, 1, 1);
 
 
         public override string JavaScriptClassName => "PointLight";
@@ -28,15 +28,15 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Lights
 
         public double QuadraticAttenuation { get; set; }
 
-        public MutableTuple3D LightPosition { get; set; }
-            = new MutableTuple3D(DefaultLightPosition);
+        public MutableFloat64Tuple3D LightPosition { get; set; }
+            = new MutableFloat64Tuple3D(DefaultLightPosition);
 
 
         public XeoglPointLight()
         {
         }
 
-        public XeoglPointLight(ITuple3D lightPosition)
+        public XeoglPointLight(IFloat64Tuple3D lightPosition)
         {
             LightPosition.SetTuple(lightPosition);
         }

@@ -56,10 +56,10 @@ namespace GraphicsComposerLib.Geometry.Primitives.Triangles
         public IEnumerable<IGraphicsVertex3D> GeometryVertices
             => _verticesList;
 
-        public IEnumerable<ITuple3D> GeometryPoints
+        public IEnumerable<IFloat64Tuple3D> GeometryPoints
             => _verticesList;
 
-        public IEnumerable<ITuple2D> VertexTextureUVs
+        public IEnumerable<IFloat64Tuple2D> VertexTextureUVs
             => _verticesList
                 .Select(p => p.ParameterValue.ToTuple2D());
 
@@ -73,7 +73,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Triangles
         
         public bool VertexColorsEnabled { get; set; }
 
-        public IEnumerable<ITuple3D> VertexNormals
+        public IEnumerable<IFloat64Tuple3D> VertexNormals
             => _verticesList
                 .Select(p => p.Normal);
 
@@ -103,12 +103,12 @@ namespace GraphicsComposerLib.Geometry.Primitives.Triangles
             }
         }
 
-        public IEnumerable<Triplet<ITuple3D>> TriangleVertexPoints
+        public IEnumerable<Triplet<IFloat64Tuple3D>> TriangleVertexPoints
         {
             get
             {
                 for (var i = 0; i < _verticesList.Count; i += 3)
-                    yield return new Triplet<ITuple3D>(
+                    yield return new Triplet<IFloat64Tuple3D>(
                         _verticesList[i].Point,
                         _verticesList[i + 1].Point,
                         _verticesList[i + 2].Point
@@ -116,12 +116,12 @@ namespace GraphicsComposerLib.Geometry.Primitives.Triangles
             }
         }
 
-        public IEnumerable<Triplet<ITuple2D>> TriangleVertexTextureUVs
+        public IEnumerable<Triplet<IFloat64Tuple2D>> TriangleVertexTextureUVs
         {
             get
             {
                 for (var i = 0; i < _verticesList.Count; i += 3)
-                    yield return new Triplet<ITuple2D>(
+                    yield return new Triplet<IFloat64Tuple2D>(
                         _verticesList[i].ParameterValue.ToTuple2D(),
                         _verticesList[i + 1].ParameterValue.ToTuple2D(),
                         _verticesList[i + 2].ParameterValue.ToTuple2D()
@@ -172,7 +172,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Triangles
         }
 
 
-        private IGraphicsVertex3D CreateVertex(ITuple3D point)
+        private IGraphicsVertex3D CreateVertex(IFloat64Tuple3D point)
         {
             var vertexIndex = _verticesList.Count;
 
@@ -228,7 +228,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Triangles
             }
         }
 
-        private IGraphicsVertex3D AddVertex(ITuple3D point)
+        private IGraphicsVertex3D AddVertex(IFloat64Tuple3D point)
         {
             var storedVertex = CreateVertex(point);
             _verticesList.Add(storedVertex);
@@ -238,7 +238,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Triangles
 
         private IGraphicsVertex3D AddVertex(double x, double y, double z)
         {
-            var storedVertex = CreateVertex(new Tuple3D(x, y, z));
+            var storedVertex = CreateVertex(new Float64Tuple3D(x, y, z));
 
             _verticesList.Add(storedVertex);
 
@@ -283,7 +283,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Triangles
         }
         
         
-        public ITuple3D GetGeometryPoint(int index)
+        public IFloat64Tuple3D GetGeometryPoint(int index)
         {
             return _verticesList[index];
         }
@@ -307,7 +307,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Triangles
             );
         }
 
-        public bool AddTriangle(ITuple3D point1, ITuple3D point2, ITuple3D point3)
+        public bool AddTriangle(IFloat64Tuple3D point1, IFloat64Tuple3D point2, IFloat64Tuple3D point3)
         {
             return StoreTriangle(
                 AddVertex(point1),
@@ -316,7 +316,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Triangles
             );
         }
 
-        public bool AddTriangle(ITriplet<ITuple3D> points)
+        public bool AddTriangle(ITriplet<IFloat64Tuple3D> points)
         {
             return StoreTriangle(
                 AddVertex(points.Item1),
@@ -358,7 +358,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Triangles
             return this;
         }
 
-        public GrTriangleSoupGeometryComposer3D AddTriangles(IEnumerable<ITriplet<ITuple3D>> trianglePointsList)
+        public GrTriangleSoupGeometryComposer3D AddTriangles(IEnumerable<ITriplet<IFloat64Tuple3D>> trianglePointsList)
         {
             foreach (var points in trianglePointsList)
             {
@@ -372,7 +372,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Triangles
             return this;
         }
 
-        public GrTriangleSoupGeometryComposer3D AddTriangles(IReadOnlyList<ITuple3D> pointsList)
+        public GrTriangleSoupGeometryComposer3D AddTriangles(IReadOnlyList<IFloat64Tuple3D> pointsList)
         {
             if (pointsList.Count % 3 != 0)
                 throw new InvalidOperationException();

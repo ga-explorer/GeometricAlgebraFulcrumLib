@@ -11,11 +11,11 @@ namespace GraphicsComposerLib.Geometry.Meshes.PointsMesh.Space2D
     public class PlanarPointsMesh2D
         : IPointsMesh2D
     {
-        public ITuple2D Origin { get; set; }
+        public IFloat64Tuple2D Origin { get; set; }
 
-        public ITuple2D Direction1 { get; set; }
+        public IFloat64Tuple2D Direction1 { get; set; }
 
-        public ITuple2D Direction2 { get; set; }
+        public IFloat64Tuple2D Direction2 { get; set; }
 
         public IPeriodicSequence1D<double> Parameters1 { get; }
 
@@ -30,7 +30,7 @@ namespace GraphicsComposerLib.Geometry.Meshes.PointsMesh.Space2D
         public int Count2
             => Parameters2.Count;
 
-        public ITuple2D this[int index]
+        public IFloat64Tuple2D this[int index]
         {
             get
             {
@@ -42,14 +42,14 @@ namespace GraphicsComposerLib.Geometry.Meshes.PointsMesh.Space2D
             }
         }
 
-        public ITuple2D this[int index1, int index2]
+        public IFloat64Tuple2D this[int index1, int index2]
         {
             get
             {
                 var t1 = Parameters1[index1];
                 var t2 = Parameters2[index2];
 
-                return new Tuple2D(
+                return new Float64Tuple2D(
                     Origin.X + t1 * Direction1.X + t2 * Direction2.X,
                     Origin.Y + t1 * Direction1.Y + t2 * Direction2.Y
                 );
@@ -68,13 +68,13 @@ namespace GraphicsComposerLib.Geometry.Meshes.PointsMesh.Space2D
             Parameters1 = parameters1;
             Parameters2 = parameters2;
 
-            Origin = new Tuple2D(0, 0);
-            Direction1 = new Tuple2D(1, 0);
-            Direction2 = new Tuple2D(0, 1);
+            Origin = new Float64Tuple2D(0, 0);
+            Direction1 = new Float64Tuple2D(1, 0);
+            Direction2 = new Float64Tuple2D(0, 1);
         }
 
 
-        public PSeqSlice1D<ITuple2D> GetSliceAt(int dimension, int index)
+        public PSeqSlice1D<IFloat64Tuple2D> GetSliceAt(int dimension, int index)
         {
             return new PointsMeshSlicePointsPath2D(this, dimension, index);
         }
@@ -84,7 +84,7 @@ namespace GraphicsComposerLib.Geometry.Meshes.PointsMesh.Space2D
             return new PointsMeshSlicePointsPath2D(this, dimension, index);
         }
 
-        public IEnumerator<ITuple2D> GetEnumerator()
+        public IEnumerator<IFloat64Tuple2D> GetEnumerator()
         {
             for (var i2 = 0; i2 < Count2; i2++)
             for (var i1 = 0; i1 < Count1; i1++)

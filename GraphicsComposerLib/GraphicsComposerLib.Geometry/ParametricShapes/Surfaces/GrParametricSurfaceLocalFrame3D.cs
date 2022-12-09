@@ -33,7 +33,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Surfaces
 
         public int Index { get; internal set; } = -1;
         
-        public Tuple3D Point { get; }
+        public Float64Tuple3D Point { get; }
         
         public Color Color { get; set; }
 
@@ -54,7 +54,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Surfaces
             => GraphicsVertexDataKind3D.NormalTextureColorData;
 
 
-        internal GrParametricSurfaceLocalFrame3D(double parameterValue1, double parameterValue2, ITuple3D point, ITuple3D normal)
+        internal GrParametricSurfaceLocalFrame3D(double parameterValue1, double parameterValue2, IFloat64Tuple3D point, IFloat64Tuple3D normal)
         {
             ParameterValue = new Pair<double>(parameterValue1, parameterValue2);
             Point = point.ToTuple3D();

@@ -8,7 +8,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Primitives
 {
     public sealed class XeoglLinesGeometry : XeoglPrimitivesGeometry
     {
-        public static XeoglLinesGeometry CreateLineSegment(ITuple3D point1, ITuple3D point2)
+        public static XeoglLinesGeometry CreateLineSegment(IFloat64Tuple3D point1, IFloat64Tuple3D point2)
         {
             var geometryData = GrLineGeometry3D.Create(point1, point2);
 

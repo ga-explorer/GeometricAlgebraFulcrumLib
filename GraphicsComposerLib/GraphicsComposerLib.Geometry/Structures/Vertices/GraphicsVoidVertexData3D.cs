@@ -14,9 +14,9 @@ namespace GraphicsComposerLib.Geometry.Structures.Vertices
             = new GraphicsVoidVertexData3D();
 
 
-        public ITuple2D TextureUv
+        public IFloat64Tuple2D TextureUv
         {
-            get => Tuple2D.Zero;
+            get => Float64Tuple2D.Zero;
             set => throw new InvalidOperationException();
         }
 

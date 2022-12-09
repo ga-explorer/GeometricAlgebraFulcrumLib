@@ -35,7 +35,7 @@ public abstract class GrVisualElementsSceneComposer3D<T>
     public abstract IGrVisualElementMaterial3D AddOrGetColorMaterial(Color color);
 
     
-    public GrVisualElementsSceneComposer3D<T> AddPoints(Func<int, string> nameFunc, IGrVisualElementMaterial3D material, double thickness, params ITuple3D[] positionList)
+    public GrVisualElementsSceneComposer3D<T> AddPoints(Func<int, string> nameFunc, IGrVisualElementMaterial3D material, double thickness, params IFloat64Tuple3D[] positionList)
     {
         for (var i = 0; i < positionList.Length; i++)
             AddPoint(
@@ -48,7 +48,7 @@ public abstract class GrVisualElementsSceneComposer3D<T>
         return this;
     }
 
-    public GrVisualElementsSceneComposer3D<T> AddPoints(Func<int, string> nameFunc, Color color, double thickness, params ITuple3D[] positionList)
+    public GrVisualElementsSceneComposer3D<T> AddPoints(Func<int, string> nameFunc, Color color, double thickness, params IFloat64Tuple3D[] positionList)
     {
         for (var i = 0; i < positionList.Length; i++)
             AddPoint(
@@ -61,7 +61,7 @@ public abstract class GrVisualElementsSceneComposer3D<T>
         return this;
     }
     
-    public GrVisualElementsSceneComposer3D<T> AddPoints(Func<int, string> nameFunc, IGrVisualElementMaterial3D material, double thickness, IEnumerable<ITuple3D> positionList)
+    public GrVisualElementsSceneComposer3D<T> AddPoints(Func<int, string> nameFunc, IGrVisualElementMaterial3D material, double thickness, IEnumerable<IFloat64Tuple3D> positionList)
     {
         var i = 0;
         foreach (var position in positionList)
@@ -79,7 +79,7 @@ public abstract class GrVisualElementsSceneComposer3D<T>
         return this;
     }
 
-    public GrVisualElementsSceneComposer3D<T> AddPoints(Func<int, string> nameFunc, Color color, double thickness, IEnumerable<ITuple3D> positionList)
+    public GrVisualElementsSceneComposer3D<T> AddPoints(Func<int, string> nameFunc, Color color, double thickness, IEnumerable<IFloat64Tuple3D> positionList)
     {
         var i = 0;
         foreach (var position in positionList)
@@ -98,7 +98,7 @@ public abstract class GrVisualElementsSceneComposer3D<T>
     }
 
 
-    public GrVisualElementsSceneComposer3D<T> AddPoint(string name, ITuple3D position, IGrVisualElementMaterial3D material, double thickness)
+    public GrVisualElementsSceneComposer3D<T> AddPoint(string name, IFloat64Tuple3D position, IGrVisualElementMaterial3D material, double thickness)
     {
         AddPoint(
             new GrVisualPoint3D(name, position)
@@ -110,7 +110,7 @@ public abstract class GrVisualElementsSceneComposer3D<T>
         return this;
     }
     
-    public GrVisualElementsSceneComposer3D<T> AddPoint(string name, ITuple3D position, Color color, double thickness)
+    public GrVisualElementsSceneComposer3D<T> AddPoint(string name, IFloat64Tuple3D position, Color color, double thickness)
     {
         AddPoint(
             new GrVisualPoint3D(name, position)
@@ -125,10 +125,10 @@ public abstract class GrVisualElementsSceneComposer3D<T>
         return this;
     }
     
-    public GrVisualElementsSceneComposer3D<T> AddVector(string name, ITuple3D direction, IGrVisualElementMaterial3D material, double thickness)
+    public GrVisualElementsSceneComposer3D<T> AddVector(string name, IFloat64Tuple3D direction, IGrVisualElementMaterial3D material, double thickness)
     {
         AddVector(
-            new GrVisualVector3D(name, Tuple3D.Zero, direction)
+            new GrVisualVector3D(name, Float64Tuple3D.Zero, direction)
             {
                 Style = new GrVisualVectorStyle3D(material, thickness)
             }
@@ -137,10 +137,10 @@ public abstract class GrVisualElementsSceneComposer3D<T>
         return this;
     }
 
-    public GrVisualElementsSceneComposer3D<T> AddVector(string name, ITuple3D direction, Color color, double thickness)
+    public GrVisualElementsSceneComposer3D<T> AddVector(string name, IFloat64Tuple3D direction, Color color, double thickness)
     {
         AddVector(
-            new GrVisualVector3D(name, Tuple3D.Zero, direction)
+            new GrVisualVector3D(name, Float64Tuple3D.Zero, direction)
             {
                 Style = new GrVisualVectorStyle3D(
                     AddOrGetColorMaterial(color),
@@ -152,7 +152,7 @@ public abstract class GrVisualElementsSceneComposer3D<T>
         return this;
     }
     
-    public GrVisualElementsSceneComposer3D<T> AddVector(string name, ITuple3D origin, ITuple3D direction, IGrVisualElementMaterial3D material, double thickness)
+    public GrVisualElementsSceneComposer3D<T> AddVector(string name, IFloat64Tuple3D origin, IFloat64Tuple3D direction, IGrVisualElementMaterial3D material, double thickness)
     {
         AddVector(
             new GrVisualVector3D(name, origin, direction)
@@ -164,7 +164,7 @@ public abstract class GrVisualElementsSceneComposer3D<T>
         return this;
     }
 
-    public GrVisualElementsSceneComposer3D<T> AddVector(string name, ITuple3D origin, ITuple3D direction, Color color, double thickness)
+    public GrVisualElementsSceneComposer3D<T> AddVector(string name, IFloat64Tuple3D origin, IFloat64Tuple3D direction, Color color, double thickness)
     {
         AddVector(
             new GrVisualVector3D(name, origin, direction)
@@ -179,7 +179,7 @@ public abstract class GrVisualElementsSceneComposer3D<T>
         return this;
     }
     
-    public GrVisualElementsSceneComposer3D<T> AddLineSegment(string name, ITuple3D point1, ITuple3D point2, IGrVisualElementMaterial3D material, double thickness)
+    public GrVisualElementsSceneComposer3D<T> AddLineSegment(string name, IFloat64Tuple3D point1, IFloat64Tuple3D point2, IGrVisualElementMaterial3D material, double thickness)
     {
         AddLineSegment(
             new GrVisualLineSegment3D(name)
@@ -193,7 +193,7 @@ public abstract class GrVisualElementsSceneComposer3D<T>
         return this;
     }
 
-    public GrVisualElementsSceneComposer3D<T> AddLineSegment(string name, ITuple3D point1, ITuple3D point2, Color color, double thickness)
+    public GrVisualElementsSceneComposer3D<T> AddLineSegment(string name, IFloat64Tuple3D point1, IFloat64Tuple3D point2, Color color, double thickness)
     {
         AddLineSegment(
             new GrVisualLineSegment3D(name)
@@ -210,7 +210,7 @@ public abstract class GrVisualElementsSceneComposer3D<T>
         return this;
     }
     
-    public GrVisualElementsSceneComposer3D<T> AddLineSegment(string name, ITuple3D point1, ITuple3D point2, Color color)
+    public GrVisualElementsSceneComposer3D<T> AddLineSegment(string name, IFloat64Tuple3D point1, IFloat64Tuple3D point2, Color color)
     {
         AddLineSegment(
             new GrVisualLineSegment3D(name)
@@ -224,7 +224,7 @@ public abstract class GrVisualElementsSceneComposer3D<T>
         return this;
     }
     
-    public GrVisualElementsSceneComposer3D<T> AddLineSegment(string name, ITuple3D point1, ITuple3D point2, Color color, GrVisualDashedLineSpecs dashSpecs)
+    public GrVisualElementsSceneComposer3D<T> AddLineSegment(string name, IFloat64Tuple3D point1, IFloat64Tuple3D point2, Color color, GrVisualDashedLineSpecs dashSpecs)
     {
         AddLineSegment(
             new GrVisualLineSegment3D(name)
@@ -238,7 +238,7 @@ public abstract class GrVisualElementsSceneComposer3D<T>
         return this;
     }
     
-    public GrVisualElementsSceneComposer3D<T> AddLinePath(string name, IReadOnlyList<ITuple3D> pointList, IGrVisualElementMaterial3D material, double thickness)
+    public GrVisualElementsSceneComposer3D<T> AddLinePath(string name, IReadOnlyList<IFloat64Tuple3D> pointList, IGrVisualElementMaterial3D material, double thickness)
     {
         AddLinePath(
             new GrVisualLinePathCurve3D(name, pointList)
@@ -250,7 +250,7 @@ public abstract class GrVisualElementsSceneComposer3D<T>
         return this;
     }
 
-    public GrVisualElementsSceneComposer3D<T> AddLinePath(string name, IReadOnlyList<ITuple3D> pointList, Color color, double thickness)
+    public GrVisualElementsSceneComposer3D<T> AddLinePath(string name, IReadOnlyList<IFloat64Tuple3D> pointList, Color color, double thickness)
     {
         AddLinePath(
             new GrVisualLinePathCurve3D(name, pointList)
@@ -265,7 +265,7 @@ public abstract class GrVisualElementsSceneComposer3D<T>
         return this;
     }
     
-    public GrVisualElementsSceneComposer3D<T> AddLinePath(string name, IReadOnlyList<ITuple3D> pointList, Color color)
+    public GrVisualElementsSceneComposer3D<T> AddLinePath(string name, IReadOnlyList<IFloat64Tuple3D> pointList, Color color)
     {
         AddLinePath(
             new GrVisualLinePathCurve3D(name, pointList)
@@ -277,7 +277,7 @@ public abstract class GrVisualElementsSceneComposer3D<T>
         return this;
     }
 
-    public GrVisualElementsSceneComposer3D<T> AddLinePath(string name, IReadOnlyList<ITuple3D> pointList, Color color, GrVisualDashedLineSpecs dashSpecs)
+    public GrVisualElementsSceneComposer3D<T> AddLinePath(string name, IReadOnlyList<IFloat64Tuple3D> pointList, Color color, GrVisualDashedLineSpecs dashSpecs)
     {
         AddLinePath(
             new GrVisualLinePathCurve3D(name, pointList)
@@ -288,8 +288,44 @@ public abstract class GrVisualElementsSceneComposer3D<T>
 
         return this;
     }
+    
+    public GrVisualElementsSceneComposer3D<T> AddCircleOriginYz(string name, double radius, IGrVisualElementMaterial3D material, double thickness)
+    {
+        return AddCircle(
+            name,
+            Float64Tuple3D.Zero,
+            Float64Tuple3D.E1,
+            radius,
+            material,
+            thickness
+        );
+    }
 
-    public GrVisualElementsSceneComposer3D<T> AddCircle(string name, ITuple3D center, ITuple3D normal, double radius, IGrVisualElementMaterial3D material, double thickness)
+    public GrVisualElementsSceneComposer3D<T> AddCircleOriginZx(string name, double radius, IGrVisualElementMaterial3D material, double thickness)
+    {
+        return AddCircle(
+            name,
+            Float64Tuple3D.Zero,
+            Float64Tuple3D.E2,
+            radius,
+            material,
+            thickness
+        );
+    }
+
+    public GrVisualElementsSceneComposer3D<T> AddCircleOriginXy(string name, double radius, IGrVisualElementMaterial3D material, double thickness)
+    {
+        return AddCircle(
+            name,
+            Float64Tuple3D.Zero,
+            Float64Tuple3D.E3,
+            radius,
+            material,
+            thickness
+        );
+    }
+
+    public GrVisualElementsSceneComposer3D<T> AddCircle(string name, IFloat64Tuple3D center, IFloat64Tuple3D normal, double radius, IGrVisualElementMaterial3D material, double thickness)
     {
         AddCircle(
             new GrVisualCircleCurve3D(name)
@@ -304,7 +340,7 @@ public abstract class GrVisualElementsSceneComposer3D<T>
         return this;
     }
     
-    public GrVisualElementsSceneComposer3D<T> AddCircle(string name, ITuple3D center, ITuple3D normal, double radius, Color color, double thickness)
+    public GrVisualElementsSceneComposer3D<T> AddCircle(string name, IFloat64Tuple3D center, IFloat64Tuple3D normal, double radius, Color color, double thickness)
     {
         AddCircle(
             new GrVisualCircleCurve3D(name)
@@ -322,7 +358,7 @@ public abstract class GrVisualElementsSceneComposer3D<T>
         return this;
     }
 
-    public GrVisualElementsSceneComposer3D<T> AddCircle(string name, ITuple3D center, ITuple3D normal, double radius, Color color)
+    public GrVisualElementsSceneComposer3D<T> AddCircle(string name, IFloat64Tuple3D center, IFloat64Tuple3D normal, double radius, Color color)
     {
         AddCircle(
             new GrVisualCircleCurve3D(name)
@@ -337,7 +373,7 @@ public abstract class GrVisualElementsSceneComposer3D<T>
         return this;
     }
     
-    public GrVisualElementsSceneComposer3D<T> AddCircle(string name, ITuple3D center, ITuple3D normal, double radius, Color color, GrVisualDashedLineSpecs dashSpecs)
+    public GrVisualElementsSceneComposer3D<T> AddCircle(string name, IFloat64Tuple3D center, IFloat64Tuple3D normal, double radius, Color color, GrVisualDashedLineSpecs dashSpecs)
     {
         AddCircle(
             new GrVisualCircleCurve3D(name)
@@ -352,7 +388,7 @@ public abstract class GrVisualElementsSceneComposer3D<T>
         return this;
     }
     
-    public GrVisualElementsSceneComposer3D<T> AddCircleArc(string name, ITuple3D center, ITuple3D direction1, ITuple3D direction2, double radius, bool innerArc, IGrVisualElementMaterial3D material, double thickness)
+    public GrVisualElementsSceneComposer3D<T> AddCircleArc(string name, IFloat64Tuple3D center, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, double radius, bool innerArc, IGrVisualElementMaterial3D material, double thickness)
     {
         AddCircleArc(
             new GrVisualCircleArcCurve3D(name)
@@ -369,7 +405,7 @@ public abstract class GrVisualElementsSceneComposer3D<T>
         return this;
     }
 
-    public GrVisualElementsSceneComposer3D<T> AddCircleArc(string name, ITuple3D center, ITuple3D direction1, ITuple3D direction2, double radius, bool innerArc, Color color, double thickness)
+    public GrVisualElementsSceneComposer3D<T> AddCircleArc(string name, IFloat64Tuple3D center, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, double radius, bool innerArc, Color color, double thickness)
     {
         AddCircleArc(
             new GrVisualCircleArcCurve3D(name)
@@ -389,7 +425,7 @@ public abstract class GrVisualElementsSceneComposer3D<T>
         return this;
     }
     
-    public GrVisualElementsSceneComposer3D<T> AddCircleArc(string name, ITuple3D center, ITuple3D direction1, ITuple3D direction2, double radius, bool innerArc, Color color)
+    public GrVisualElementsSceneComposer3D<T> AddCircleArc(string name, IFloat64Tuple3D center, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, double radius, bool innerArc, Color color)
     {
         AddCircleArc(
             new GrVisualCircleArcCurve3D(name)
@@ -406,7 +442,7 @@ public abstract class GrVisualElementsSceneComposer3D<T>
         return this;
     }
     
-    public GrVisualElementsSceneComposer3D<T> AddCircleArc(string name, ITuple3D center, ITuple3D direction1, ITuple3D direction2, double radius, bool innerArc, Color color, GrVisualDashedLineSpecs dashSpecs)
+    public GrVisualElementsSceneComposer3D<T> AddCircleArc(string name, IFloat64Tuple3D center, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, double radius, bool innerArc, Color color, GrVisualDashedLineSpecs dashSpecs)
     {
         AddCircleArc(
             new GrVisualCircleArcCurve3D(name)
@@ -474,7 +510,7 @@ public abstract class GrVisualElementsSceneComposer3D<T>
         return this;
     }
     
-    public GrVisualElementsSceneComposer3D<T> AddRightAngle(string name, ITuple3D center, ITuple3D direction1, ITuple3D direction2, double radius, IGrVisualElementMaterial3D material, double thickness)
+    public GrVisualElementsSceneComposer3D<T> AddRightAngle(string name, IFloat64Tuple3D center, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, double radius, IGrVisualElementMaterial3D material, double thickness)
     {
         AddRightAngle(
             new GrVisualRightAngle3D(name, center, direction1, direction2, radius)
@@ -486,7 +522,7 @@ public abstract class GrVisualElementsSceneComposer3D<T>
         return this;
     }
 
-    public GrVisualElementsSceneComposer3D<T> AddRightAngle(string name, ITuple3D center, ITuple3D direction1, ITuple3D direction2, double radius, Color color, double thickness)
+    public GrVisualElementsSceneComposer3D<T> AddRightAngle(string name, IFloat64Tuple3D center, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, double radius, Color color, double thickness)
     {
         AddRightAngle(
             new GrVisualRightAngle3D(name, center, direction1, direction2, radius)
@@ -501,7 +537,7 @@ public abstract class GrVisualElementsSceneComposer3D<T>
         return this;
     }
     
-    public GrVisualElementsSceneComposer3D<T> AddRightAngle(string name, ITuple3D center, ITuple3D direction1, ITuple3D direction2, double radius, Color color)
+    public GrVisualElementsSceneComposer3D<T> AddRightAngle(string name, IFloat64Tuple3D center, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, double radius, Color color)
     {
         AddRightAngle(
             new GrVisualRightAngle3D(name, center, direction1, direction2, radius)
@@ -513,7 +549,7 @@ public abstract class GrVisualElementsSceneComposer3D<T>
         return this;
     }
     
-    public GrVisualElementsSceneComposer3D<T> AddRightAngle(string name, ITuple3D center, ITuple3D direction1, ITuple3D direction2, double radius, Color color, GrVisualDashedLineSpecs dashSpecs)
+    public GrVisualElementsSceneComposer3D<T> AddRightAngle(string name, IFloat64Tuple3D center, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, double radius, Color color, GrVisualDashedLineSpecs dashSpecs)
     {
         AddRightAngle(
             new GrVisualRightAngle3D(name, center, direction1, direction2, radius)
@@ -525,7 +561,7 @@ public abstract class GrVisualElementsSceneComposer3D<T>
         return this;
     }
     
-    public GrVisualElementsSceneComposer3D<T> AddRightAngle(string name, ITuple3D center, ITuple3D direction1, ITuple3D direction2, double radius, IGrVisualElementMaterial3D material, double thickness, Color innerColor)
+    public GrVisualElementsSceneComposer3D<T> AddRightAngle(string name, IFloat64Tuple3D center, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, double radius, IGrVisualElementMaterial3D material, double thickness, Color innerColor)
     {
         AddRightAngle(
             new GrVisualRightAngle3D(name, center, direction1, direction2, radius)
@@ -541,7 +577,7 @@ public abstract class GrVisualElementsSceneComposer3D<T>
         return this;
     }
 
-    public GrVisualElementsSceneComposer3D<T> AddRightAngle(string name, ITuple3D center, ITuple3D direction1, ITuple3D direction2, double radius, Color color, double thickness, Color innerColor)
+    public GrVisualElementsSceneComposer3D<T> AddRightAngle(string name, IFloat64Tuple3D center, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, double radius, Color color, double thickness, Color innerColor)
     {
         AddRightAngle(
             new GrVisualRightAngle3D(name, center, direction1, direction2, radius)
@@ -560,7 +596,7 @@ public abstract class GrVisualElementsSceneComposer3D<T>
         return this;
     }
     
-    public GrVisualElementsSceneComposer3D<T> AddRightAngle(string name, ITuple3D center, ITuple3D direction1, ITuple3D direction2, double radius, Color color, Color innerColor)
+    public GrVisualElementsSceneComposer3D<T> AddRightAngle(string name, IFloat64Tuple3D center, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, double radius, Color color, Color innerColor)
     {
         AddRightAngle(
             new GrVisualRightAngle3D(name, center, direction1, direction2, radius)
@@ -576,7 +612,7 @@ public abstract class GrVisualElementsSceneComposer3D<T>
         return this;
     }
     
-    public GrVisualElementsSceneComposer3D<T> AddRightAngle(string name, ITuple3D center, ITuple3D direction1, ITuple3D direction2, double radius, Color color, GrVisualDashedLineSpecs dashSpecs, Color innerColor)
+    public GrVisualElementsSceneComposer3D<T> AddRightAngle(string name, IFloat64Tuple3D center, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, double radius, Color color, GrVisualDashedLineSpecs dashSpecs, Color innerColor)
     {
         AddRightAngle(
             new GrVisualRightAngle3D(name, center, direction1, direction2, radius)
@@ -592,7 +628,7 @@ public abstract class GrVisualElementsSceneComposer3D<T>
         return this;
     }
     
-    public GrVisualElementsSceneComposer3D<T> AddRightAngle(string name, ITuple3D center, ITuple3D direction1, ITuple3D direction2, double radius, IGrVisualElementMaterial3D material, double thickness, IGrVisualElementMaterial3D innerMaterial)
+    public GrVisualElementsSceneComposer3D<T> AddRightAngle(string name, IFloat64Tuple3D center, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, double radius, IGrVisualElementMaterial3D material, double thickness, IGrVisualElementMaterial3D innerMaterial)
     {
         AddRightAngle(
             new GrVisualRightAngle3D(name, center, direction1, direction2, radius)
@@ -606,7 +642,7 @@ public abstract class GrVisualElementsSceneComposer3D<T>
         return this;
     }
 
-    public GrVisualElementsSceneComposer3D<T> AddRightAngle(string name, ITuple3D center, ITuple3D direction1, ITuple3D direction2, double radius, Color color, double thickness, IGrVisualElementMaterial3D innerMaterial)
+    public GrVisualElementsSceneComposer3D<T> AddRightAngle(string name, IFloat64Tuple3D center, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, double radius, Color color, double thickness, IGrVisualElementMaterial3D innerMaterial)
     {
         AddRightAngle(
             new GrVisualRightAngle3D(name, center, direction1, direction2, radius)
@@ -623,7 +659,7 @@ public abstract class GrVisualElementsSceneComposer3D<T>
         return this;
     }
     
-    public GrVisualElementsSceneComposer3D<T> AddRightAngle(string name, ITuple3D center, ITuple3D direction1, ITuple3D direction2, double radius, Color color, IGrVisualElementMaterial3D innerMaterial)
+    public GrVisualElementsSceneComposer3D<T> AddRightAngle(string name, IFloat64Tuple3D center, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, double radius, Color color, IGrVisualElementMaterial3D innerMaterial)
     {
         AddRightAngle(
             new GrVisualRightAngle3D(name, center, direction1, direction2, radius)
@@ -637,7 +673,7 @@ public abstract class GrVisualElementsSceneComposer3D<T>
         return this;
     }
     
-    public GrVisualElementsSceneComposer3D<T> AddRightAngle(string name, ITuple3D center, ITuple3D direction1, ITuple3D direction2, double radius, Color color, GrVisualDashedLineSpecs dashSpecs, IGrVisualElementMaterial3D innerMaterial)
+    public GrVisualElementsSceneComposer3D<T> AddRightAngle(string name, IFloat64Tuple3D center, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, double radius, Color color, GrVisualDashedLineSpecs dashSpecs, IGrVisualElementMaterial3D innerMaterial)
     {
         AddRightAngle(
             new GrVisualRightAngle3D(name, center, direction1, direction2, radius)
@@ -651,7 +687,7 @@ public abstract class GrVisualElementsSceneComposer3D<T>
         return this;
     }
     
-    public GrVisualElementsSceneComposer3D<T> AddSphere(string name, ITuple3D center, double radius, IGrVisualElementMaterial3D material, double thickness)
+    public GrVisualElementsSceneComposer3D<T> AddSphere(string name, IFloat64Tuple3D center, double radius, IGrVisualElementMaterial3D material, double thickness)
     {
         AddSphere(
             new GrVisualSphere3D(name)
@@ -665,7 +701,7 @@ public abstract class GrVisualElementsSceneComposer3D<T>
         return this;
     }
     
-    public GrVisualElementsSceneComposer3D<T> AddSphere(string name, ITuple3D center, double radius, Color color, double thickness)
+    public GrVisualElementsSceneComposer3D<T> AddSphere(string name, IFloat64Tuple3D center, double radius, Color color, double thickness)
     {
         AddSphere(
             new GrVisualSphere3D(name)
@@ -682,7 +718,7 @@ public abstract class GrVisualElementsSceneComposer3D<T>
         return this;
     }
     
-    public GrVisualElementsSceneComposer3D<T> AddSphere(string name, ITuple3D center, double radius, IGrVisualElementMaterial3D material)
+    public GrVisualElementsSceneComposer3D<T> AddSphere(string name, IFloat64Tuple3D center, double radius, IGrVisualElementMaterial3D material)
     {
         AddSphere(
             new GrVisualSphere3D(name)
@@ -696,7 +732,7 @@ public abstract class GrVisualElementsSceneComposer3D<T>
         return this;
     }
 
-    public GrVisualElementsSceneComposer3D<T> AddSphere(string name, ITuple3D center, double radius, Color color)
+    public GrVisualElementsSceneComposer3D<T> AddSphere(string name, IFloat64Tuple3D center, double radius, Color color)
     {
         AddSphere(
             new GrVisualSphere3D(name)
@@ -712,7 +748,7 @@ public abstract class GrVisualElementsSceneComposer3D<T>
         return this;
     }
     
-    public GrVisualElementsSceneComposer3D<T> AddTorus(string name, ITuple3D center, ITuple3D normal, double minRadius, double maxRadius, IGrVisualElementMaterial3D material, double thickness)
+    public GrVisualElementsSceneComposer3D<T> AddTorus(string name, IFloat64Tuple3D center, IFloat64Tuple3D normal, double minRadius, double maxRadius, IGrVisualElementMaterial3D material, double thickness)
     {
         AddRingSurface(
             new GrVisualRingSurface3D(name)
@@ -729,7 +765,7 @@ public abstract class GrVisualElementsSceneComposer3D<T>
         return this;
     }
 
-    public GrVisualElementsSceneComposer3D<T> AddTorus(string name, ITuple3D center, ITuple3D normal, double minRadius, double maxRadius, Color color, double thickness)
+    public GrVisualElementsSceneComposer3D<T> AddTorus(string name, IFloat64Tuple3D center, IFloat64Tuple3D normal, double minRadius, double maxRadius, Color color, double thickness)
     {
         AddRingSurface(
             new GrVisualRingSurface3D(name)
@@ -749,7 +785,7 @@ public abstract class GrVisualElementsSceneComposer3D<T>
         return this;
     }
     
-    public GrVisualElementsSceneComposer3D<T> AddDisc(string name, ITuple3D center, ITuple3D normal, double radius, IGrVisualElementMaterial3D material, double thickness)
+    public GrVisualElementsSceneComposer3D<T> AddDisc(string name, IFloat64Tuple3D center, IFloat64Tuple3D normal, double radius, IGrVisualElementMaterial3D material, double thickness)
     {
         AddDisc(
             new GrVisualCircleSurface3D(name)
@@ -765,7 +801,7 @@ public abstract class GrVisualElementsSceneComposer3D<T>
         return this;
     }
 
-    public GrVisualElementsSceneComposer3D<T> AddDisc(string name, ITuple3D center, ITuple3D normal, double radius, Color color, double thickness)
+    public GrVisualElementsSceneComposer3D<T> AddDisc(string name, IFloat64Tuple3D center, IFloat64Tuple3D normal, double radius, Color color, double thickness)
     {
         AddDisc(
             new GrVisualCircleSurface3D(name)
@@ -784,7 +820,7 @@ public abstract class GrVisualElementsSceneComposer3D<T>
         return this;
     }
     
-    public GrVisualElementsSceneComposer3D<T> AddDisc(string name, ITuple3D center, ITuple3D normal, double radius, IGrVisualElementMaterial3D material)
+    public GrVisualElementsSceneComposer3D<T> AddDisc(string name, IFloat64Tuple3D center, IFloat64Tuple3D normal, double radius, IGrVisualElementMaterial3D material)
     {
         AddDisc(
             new GrVisualCircleSurface3D(name)
@@ -800,7 +836,7 @@ public abstract class GrVisualElementsSceneComposer3D<T>
         return this;
     }
 
-    public GrVisualElementsSceneComposer3D<T> AddDisc(string name, ITuple3D center, ITuple3D normal, double radius, Color color)
+    public GrVisualElementsSceneComposer3D<T> AddDisc(string name, IFloat64Tuple3D center, IFloat64Tuple3D normal, double radius, Color color)
     {
         AddDisc(
             new GrVisualCircleSurface3D(name)
@@ -818,7 +854,7 @@ public abstract class GrVisualElementsSceneComposer3D<T>
         return this;
     }
     
-    public GrVisualElementsSceneComposer3D<T> AddDisc(string name, ITuple3D center, ITuple3D normal, double radius, IGrVisualElementMaterial3D material, double thickness, Color edgeColor)
+    public GrVisualElementsSceneComposer3D<T> AddDisc(string name, IFloat64Tuple3D center, IFloat64Tuple3D normal, double radius, IGrVisualElementMaterial3D material, double thickness, Color edgeColor)
     {
         AddDisc(
             new GrVisualCircleSurface3D(name)
@@ -839,7 +875,7 @@ public abstract class GrVisualElementsSceneComposer3D<T>
         return this;
     }
     
-    public GrVisualElementsSceneComposer3D<T> AddDisc(string name, ITuple3D center, ITuple3D normal, double radius, Color color, double thickness, Color edgeColor)
+    public GrVisualElementsSceneComposer3D<T> AddDisc(string name, IFloat64Tuple3D center, IFloat64Tuple3D normal, double radius, Color color, double thickness, Color edgeColor)
     {
         AddDisc(
             new GrVisualCircleSurface3D(name)
@@ -860,7 +896,7 @@ public abstract class GrVisualElementsSceneComposer3D<T>
         return this;
     }
 
-    public GrVisualElementsSceneComposer3D<T> AddDiscSector(string name, ITuple3D center, ITuple3D direction1, ITuple3D direction2, double radius, bool innerArc, IGrVisualElementMaterial3D material, double thickness)
+    public GrVisualElementsSceneComposer3D<T> AddDiscSector(string name, IFloat64Tuple3D center, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, double radius, bool innerArc, IGrVisualElementMaterial3D material, double thickness)
     {
         AddDiscSector(
             new GrVisualCircleSurfaceArc3D(name)
@@ -877,7 +913,7 @@ public abstract class GrVisualElementsSceneComposer3D<T>
         return this;
     }
     
-    public GrVisualElementsSceneComposer3D<T> AddDiscSector(string name, ITuple3D center, ITuple3D direction1, ITuple3D direction2, double radius, bool innerArc, Color color, double thickness)
+    public GrVisualElementsSceneComposer3D<T> AddDiscSector(string name, IFloat64Tuple3D center, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, double radius, bool innerArc, Color color, double thickness)
     {
         AddDiscSector(
             new GrVisualCircleSurfaceArc3D(name)
@@ -897,7 +933,7 @@ public abstract class GrVisualElementsSceneComposer3D<T>
         return this;
     }
     
-    public GrVisualElementsSceneComposer3D<T> AddDiscSector(string name, ITuple3D center, ITuple3D direction1, ITuple3D direction2, double radius, bool innerArc, Color color)
+    public GrVisualElementsSceneComposer3D<T> AddDiscSector(string name, IFloat64Tuple3D center, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, double radius, bool innerArc, Color color)
     {
         AddDiscSector(
             new GrVisualCircleSurfaceArc3D(name)
@@ -914,7 +950,7 @@ public abstract class GrVisualElementsSceneComposer3D<T>
         return this;
     }
     
-    public GrVisualElementsSceneComposer3D<T> AddDiscSector(string name, ITuple3D center, ITuple3D direction1, ITuple3D direction2, double radius, bool innerArc, IGrVisualElementMaterial3D material, double thickness, IGrVisualElementMaterial3D edgeMaterial)
+    public GrVisualElementsSceneComposer3D<T> AddDiscSector(string name, IFloat64Tuple3D center, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, double radius, bool innerArc, IGrVisualElementMaterial3D material, double thickness, IGrVisualElementMaterial3D edgeMaterial)
     {
         AddDiscSector(
             new GrVisualCircleSurfaceArc3D(name)
@@ -932,7 +968,7 @@ public abstract class GrVisualElementsSceneComposer3D<T>
         return this;
     }
     
-    public GrVisualElementsSceneComposer3D<T> AddDiscSector(string name, ITuple3D center, ITuple3D direction1, ITuple3D direction2, double radius, bool innerArc, Color color, double thickness, IGrVisualElementMaterial3D edgeMaterial)
+    public GrVisualElementsSceneComposer3D<T> AddDiscSector(string name, IFloat64Tuple3D center, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, double radius, bool innerArc, Color color, double thickness, IGrVisualElementMaterial3D edgeMaterial)
     {
         AddDiscSector(
             new GrVisualCircleSurfaceArc3D(name)
@@ -954,7 +990,7 @@ public abstract class GrVisualElementsSceneComposer3D<T>
         return this;
     }
 
-    public GrVisualElementsSceneComposer3D<T> AddDiscSector(string name, ITuple3D center, ITuple3D direction1, ITuple3D direction2, double radius, bool innerArc, IGrVisualElementMaterial3D material, double thickness, Color edgeColor)
+    public GrVisualElementsSceneComposer3D<T> AddDiscSector(string name, IFloat64Tuple3D center, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, double radius, bool innerArc, IGrVisualElementMaterial3D material, double thickness, Color edgeColor)
     {
         AddDiscSector(
             new GrVisualCircleSurfaceArc3D(name)
@@ -976,7 +1012,7 @@ public abstract class GrVisualElementsSceneComposer3D<T>
         return this;
     }
     
-    public GrVisualElementsSceneComposer3D<T> AddDiscSector(string name, ITuple3D center, ITuple3D direction1, ITuple3D direction2, double radius, bool innerArc, Color color, double thickness, Color edgeColor)
+    public GrVisualElementsSceneComposer3D<T> AddDiscSector(string name, IFloat64Tuple3D center, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, double radius, bool innerArc, Color color, double thickness, Color edgeColor)
     {
         AddDiscSector(
             new GrVisualCircleSurfaceArc3D(name)
@@ -998,7 +1034,7 @@ public abstract class GrVisualElementsSceneComposer3D<T>
         return this;
     }
 
-    public GrVisualElementsSceneComposer3D<T> AddRectangle(string name, ITuple3D bottomLeftCorner, ITuple3D widthDirection, ITuple3D heightDirection, IGrVisualElementMaterial3D material, double thickness)
+    public GrVisualElementsSceneComposer3D<T> AddRectangle(string name, IFloat64Tuple3D bottomLeftCorner, IFloat64Tuple3D widthDirection, IFloat64Tuple3D heightDirection, IGrVisualElementMaterial3D material, double thickness)
     {
         AddRectangle(
             new GrVisualRectangleSurface3D(name, bottomLeftCorner, widthDirection, heightDirection)
@@ -1010,7 +1046,7 @@ public abstract class GrVisualElementsSceneComposer3D<T>
         return this;
     }
     
-    public GrVisualElementsSceneComposer3D<T> AddRectangle(string name, ITuple3D bottomLeftCorner, ITuple3D widthDirection, ITuple3D heightDirection, Color color, double thickness)
+    public GrVisualElementsSceneComposer3D<T> AddRectangle(string name, IFloat64Tuple3D bottomLeftCorner, IFloat64Tuple3D widthDirection, IFloat64Tuple3D heightDirection, Color color, double thickness)
     {
         AddRectangle(
             new GrVisualRectangleSurface3D(name, bottomLeftCorner, widthDirection, heightDirection)
@@ -1025,7 +1061,7 @@ public abstract class GrVisualElementsSceneComposer3D<T>
         return this;
     }
     
-    public GrVisualElementsSceneComposer3D<T> AddRectangle(string name, ITuple3D bottomLeftCorner, ITuple3D widthDirection, ITuple3D heightDirection, IGrVisualElementMaterial3D material)
+    public GrVisualElementsSceneComposer3D<T> AddRectangle(string name, IFloat64Tuple3D bottomLeftCorner, IFloat64Tuple3D widthDirection, IFloat64Tuple3D heightDirection, IGrVisualElementMaterial3D material)
     {
         AddRectangle(
             new GrVisualRectangleSurface3D(name, bottomLeftCorner, widthDirection, heightDirection)
@@ -1037,7 +1073,7 @@ public abstract class GrVisualElementsSceneComposer3D<T>
         return this;
     }
     
-    public GrVisualElementsSceneComposer3D<T> AddRectangle(string name, ITuple3D bottomLeftCorner, ITuple3D widthDirection, ITuple3D heightDirection, Color color)
+    public GrVisualElementsSceneComposer3D<T> AddRectangle(string name, IFloat64Tuple3D bottomLeftCorner, IFloat64Tuple3D widthDirection, IFloat64Tuple3D heightDirection, Color color)
     {
         AddRectangle(
             new GrVisualRectangleSurface3D(name, bottomLeftCorner, widthDirection, heightDirection)
@@ -1051,7 +1087,7 @@ public abstract class GrVisualElementsSceneComposer3D<T>
         return this;
     }
     
-    public GrVisualElementsSceneComposer3D<T> AddLaTeXText(string name, GrImageBase64StringCache pngCache, ITuple3D origin, double scalingFactor)
+    public GrVisualElementsSceneComposer3D<T> AddLaTeXText(string name, GrImageBase64StringCache pngCache, IFloat64Tuple3D origin, double scalingFactor)
     {
         AddLaTeXText(
             new GrVisualLaTeXText3D(name, pngCache, name, origin, scalingFactor)
@@ -1060,7 +1096,7 @@ public abstract class GrVisualElementsSceneComposer3D<T>
         return this;
     }
 
-    public GrVisualElementsSceneComposer3D<T> AddLaTeXText(string name, GrImageBase64StringCache pngCache, string key, ITuple3D origin, double scalingFactor)
+    public GrVisualElementsSceneComposer3D<T> AddLaTeXText(string name, GrImageBase64StringCache pngCache, string key, IFloat64Tuple3D origin, double scalingFactor)
     {
         AddLaTeXText(
             new GrVisualLaTeXText3D(name, pngCache, key, origin, scalingFactor)

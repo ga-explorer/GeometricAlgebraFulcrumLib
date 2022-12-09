@@ -10,17 +10,17 @@ public sealed class GrVisualFrame3D :
     GrVisualElement3D,
     IGrVisualElementList3D
 {
-    public ITuple3D Origin { get; set; } 
-        = Tuple3D.Zero;
+    public IFloat64Tuple3D Origin { get; set; } 
+        = Float64Tuple3D.Zero;
 
-    public ITuple3D Direction1 { get; set; } 
-        = Tuple3D.E1;
+    public IFloat64Tuple3D Direction1 { get; set; } 
+        = Float64Tuple3D.E1;
 
-    public ITuple3D Direction2 { get; set; } 
-        = Tuple3D.E2;
+    public IFloat64Tuple3D Direction2 { get; set; } 
+        = Float64Tuple3D.E2;
 
-    public ITuple3D Direction3 { get; set; } 
-        = Tuple3D.E3;
+    public IFloat64Tuple3D Direction3 { get; set; } 
+        = Float64Tuple3D.E3;
 
     public GrVisualFrameStyle3D Style { get; set; } 
 

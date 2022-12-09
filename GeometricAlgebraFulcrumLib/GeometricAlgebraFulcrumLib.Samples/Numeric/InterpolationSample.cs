@@ -1,12 +1,11 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using GeometricAlgebraFulcrumLib.Algebra.SignalProcessing;
+using GeometricAlgebraFulcrumLib.Algebra.SignalAlgebra;
 using GeometricAlgebraFulcrumLib.Mathematica;
 using GeometricAlgebraFulcrumLib.Mathematica.Mathematica.ExprFactory;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
-using GeometricAlgebraFulcrumLib.Utilities.Factories;
 using NumericalGeometryLib.BasicMath;
 using NumericalGeometryLib.BasicMath.Calculus;
 using OxyPlot;
@@ -822,16 +821,16 @@ namespace GeometricAlgebraFulcrumLib.Samples.Numeric
             
 
             var s1Dt1Signal = 
-                tSignal.MapSamples(s1Function.GetFirstDerivative);
+                tSignal.MapSamples(s1Function.GetFirstDerivativeValue);
 
             var s1Dt1DownSampledSignal = 
-                tDownSampledSignal.MapSamples(s1Function.GetFirstDerivative);
+                tDownSampledSignal.MapSamples(s1Function.GetFirstDerivativeValue);
 
             var s2Dt1Function =
-                ComputedD0Function.CreateD0Function(s2Function.GetFirstDerivative);
+                ComputedD0Function.CreateD0Function(s2Function.GetFirstDerivativeValue);
 
             var s2Dt1Signal = 
-                tSignal.MapSamples(s2Function.GetFirstDerivative);
+                tSignal.MapSamples(s2Function.GetFirstDerivativeValue);
             
             s2Dt1Function.PlotValue(
                 s1Dt1DownSampledSignal, 
@@ -851,13 +850,13 @@ namespace GeometricAlgebraFulcrumLib.Samples.Numeric
             
 
             var s1Dt2Signal = 
-                tSignal.MapSamples(s1Function.GetSecondDerivative);
+                tSignal.MapSamples(s1Function.GetSecondDerivativeValue);
 
             var s1Dt2DownSampledSignal = 
-                tDownSampledSignal.MapSamples(s1Function.GetSecondDerivative);
+                tDownSampledSignal.MapSamples(s1Function.GetSecondDerivativeValue);
             
             var s2Dt2Function = 
-                ComputedD0Function.CreateD0Function(s2Function.GetSecondDerivative);
+                ComputedD0Function.CreateD0Function(s2Function.GetSecondDerivativeValue);
 
             var s2Dt2Signal = 
                 tSignal.MapSamples(s2Dt2Function.GetValue);
@@ -880,13 +879,13 @@ namespace GeometricAlgebraFulcrumLib.Samples.Numeric
             
 
             var s1Dt3Signal = 
-                tSignal.MapSamples(s1Function.GetThirdDerivative);
+                tSignal.MapSamples(s1Function.GetThirdDerivativeValue);
 
             var s1Dt3DownSampledSignal = 
-                tDownSampledSignal.MapSamples(s1Function.GetThirdDerivative);
+                tDownSampledSignal.MapSamples(s1Function.GetThirdDerivativeValue);
             
             var s2Dt3Function = 
-                ComputedD0Function.CreateD0Function(s2Function.GetThirdDerivative);
+                ComputedD0Function.CreateD0Function(s2Function.GetThirdDerivativeValue);
 
             var s2Dt3Signal = 
                 tSignal.MapSamples(s2Dt3Function.GetValue);

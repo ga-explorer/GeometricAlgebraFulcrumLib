@@ -145,21 +145,21 @@ public class SumD3Function :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public double GetFirstDerivative(double t)
+    public double GetFirstDerivativeValue(double t)
     {
-        return _functionList.Select(f => f.GetFirstDerivative(t)).Sum();
+        return _functionList.Select(f => f.GetFirstDerivativeValue(t)).Sum();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public double GetSecondDerivative(double t)
+    public double GetSecondDerivativeValue(double t)
     {
-        return _functionList.Select(f => f.GetSecondDerivative(t)).Sum();
+        return _functionList.Select(f => f.GetSecondDerivativeValue(t)).Sum();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public double GetThirdDerivative(double t)
+    public double GetThirdDerivativeValue(double t)
     {
-        return _functionList.Select(f => f.GetThirdDerivative(t)).Sum();
+        return _functionList.Select(f => f.GetThirdDerivativeValue(t)).Sum();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

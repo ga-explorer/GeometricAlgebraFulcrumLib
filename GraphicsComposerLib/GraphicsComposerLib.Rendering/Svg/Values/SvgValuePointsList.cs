@@ -30,14 +30,14 @@ namespace GraphicsComposerLib.Rendering.Svg.Values
             return pointsList.AddPoint(x, y);
         }
 
-        public static SvgValuePointsList Create(IEnumerable<ITuple2D> points)
+        public static SvgValuePointsList Create(IEnumerable<IFloat64Tuple2D> points)
         {
             var pointsList = new SvgValuePointsList();
 
             return pointsList.AddPoints(points);
         }
 
-        public static SvgValuePointsList Create(SvgValueLengthUnit unit, IEnumerable<ITuple2D> points)
+        public static SvgValuePointsList Create(SvgValueLengthUnit unit, IEnumerable<IFloat64Tuple2D> points)
         {
             var pointsList = new SvgValuePointsList { Unit = unit };
 
@@ -59,11 +59,11 @@ namespace GraphicsComposerLib.Rendering.Svg.Values
         }
 
 
-        private readonly List<Tuple2D> _pointsList
-            = new List<Tuple2D>();
+        private readonly List<Float64Tuple2D> _pointsList
+            = new List<Float64Tuple2D>();
 
 
-        public IEnumerable<Tuple2D> Points
+        public IEnumerable<Float64Tuple2D> Points
             => _pointsList;
 
         private SvgValueLengthUnit _unit = SvgValueLengthUnit.None;
@@ -73,7 +73,7 @@ namespace GraphicsComposerLib.Rendering.Svg.Values
             set => _unit = value ?? SvgValueLengthUnit.None;
         }
 
-        public ITuple2D this[int index]
+        public IFloat64Tuple2D this[int index]
             => _pointsList[index];
 
         public override string ValueText
@@ -112,26 +112,26 @@ namespace GraphicsComposerLib.Rendering.Svg.Values
 
         public SvgValuePointsList AddPoint(double x, double y)
         {
-            _pointsList.Add(new Tuple2D(x, y));
+            _pointsList.Add(new Float64Tuple2D(x, y));
 
             return this;
         }
 
         public SvgValuePointsList InsertPoint(int index, double x, double y)
         {
-            _pointsList.Insert(index, new Tuple2D(x, y));
+            _pointsList.Insert(index, new Float64Tuple2D(x, y));
 
             return this;
         }
 
-        public SvgValuePointsList AddPoints(IEnumerable<ITuple2D> pointsList)
+        public SvgValuePointsList AddPoints(IEnumerable<IFloat64Tuple2D> pointsList)
         {
             _pointsList.AddRange(pointsList.Select(p => p.ToTuple2D()));
 
             return this;
         }
 
-        public SvgValuePointsList InsertPoints(int index, IEnumerable<Tuple2D> pointsList)
+        public SvgValuePointsList InsertPoints(int index, IEnumerable<Float64Tuple2D> pointsList)
         {
             _pointsList.InsertRange(index, pointsList);
 

@@ -82,13 +82,13 @@ namespace NumericalGeometryLib.GeometricAlgebra.Maps
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple2D OmMap(ITuple2D multivector)
+        public Float64Tuple2D OmMap(IFloat64Tuple2D multivector)
         {
             return Multivector.Gp(multivector).Gp(MultivectorReverse).GetVectorPartAsTuple2D();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple3D OmMap(ITuple3D multivector)
+        public Float64Tuple3D OmMap(IFloat64Tuple3D multivector)
         {
             return Multivector.Gp(multivector).Gp(MultivectorReverse).GetVectorPartAsTuple3D();
         }

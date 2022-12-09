@@ -9,13 +9,13 @@ namespace GraphicsComposerLib.Geometry.SdfShapes.Primitives
     /// </summary>
     public sealed class SdfPlane3D : ScalarDistanceFunction
     {
-        public Tuple3D Point { get; set; }
-            = new Tuple3D(0, 0, 0);
+        public Float64Tuple3D Point { get; set; }
+            = new Float64Tuple3D(0, 0, 0);
 
-        public Tuple3D UnitNormal { get; set; }
-            = new Tuple3D(0, 0, 1);
+        public Float64Tuple3D UnitNormal { get; set; }
+            = new Float64Tuple3D(0, 0, 1);
 
-        public override double GetScalarDistance(ITuple3D point)
+        public override double GetScalarDistance(IFloat64Tuple3D point)
         {
             return point.VectorDot(UnitNormal) - Point.VectorDot(UnitNormal);
         }

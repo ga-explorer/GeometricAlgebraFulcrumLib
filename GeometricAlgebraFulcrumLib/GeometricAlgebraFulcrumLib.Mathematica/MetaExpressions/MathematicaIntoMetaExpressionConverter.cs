@@ -7,7 +7,7 @@ using GeometricAlgebraFulcrumLib.MetaProgramming.Evaluators;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Expressions;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Expressions.Composite;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Expressions.Numbers;
-using GeometricAlgebraFulcrumLib.Utilities.Extensions;
+using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using Microsoft.CSharp.RuntimeBinder;
 using Wolfram.NETLink;
 

@@ -6,15 +6,15 @@ using NumericalGeometryLib.BasicMath.Tuples.Immutable;
 namespace GraphicsComposerLib.Geometry.Meshes.PointsPath.Space2D
 {
     public sealed class CircularPointsPath2D : 
-        PSeqMapped1D<double, ITuple2D>, 
+        PSeqMapped1D<double, IFloat64Tuple2D>, 
         IPointsPath2D
     {
-        public ITuple2D Center { get; }
+        public IFloat64Tuple2D Center { get; }
 
         public double Radius { get; }
 
 
-        public CircularPointsPath2D(ITuple2D center, double radius, int count)
+        public CircularPointsPath2D(IFloat64Tuple2D center, double radius, int count)
             : base(PeriodicSequenceUtils.CreateLinearDoubleSequence(count))
         {
             if (Count < 2)
@@ -24,7 +24,7 @@ namespace GraphicsComposerLib.Geometry.Meshes.PointsPath.Space2D
             Radius = radius;
         }
 
-        public CircularPointsPath2D(ITuple2D center, double radius, IPeriodicSequence1D<double> parameterSequence)
+        public CircularPointsPath2D(IFloat64Tuple2D center, double radius, IPeriodicSequence1D<double> parameterSequence)
             : base(parameterSequence)
         {
             Center = center;
@@ -32,13 +32,13 @@ namespace GraphicsComposerLib.Geometry.Meshes.PointsPath.Space2D
         }
 
 
-        protected override ITuple2D MappingFunction(double t)
+        protected override IFloat64Tuple2D MappingFunction(double t)
         {
             var angle = 2 * Math.PI * t;
             var cosAngle = Math.Cos(angle);
             var sinAngle = Math.Sin(angle);
 
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 Center.X + Radius * cosAngle,
                 Center.Y + Radius * sinAngle
             );

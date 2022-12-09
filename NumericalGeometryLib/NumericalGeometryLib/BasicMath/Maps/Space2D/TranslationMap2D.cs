@@ -10,9 +10,9 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space2D
 
         public double DirectionY { get; private set; }
 
-        public Tuple2D Direction
+        public Float64Tuple2D Direction
         {
-            get { return new Tuple2D(DirectionX, DirectionY); }
+            get { return new Float64Tuple2D(DirectionX, DirectionY); }
         }
 
 
@@ -22,7 +22,7 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space2D
             DirectionY = directionY;
         }
 
-        public TranslationMap2D(Tuple2D direction)
+        public TranslationMap2D(Float64Tuple2D direction)
         {
             DirectionX = direction.X;
             DirectionY = direction.Y;
@@ -39,20 +39,20 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space2D
             throw new System.NotImplementedException();
         }
 
-        public Tuple2D MapPoint(ITuple2D point)
+        public Float64Tuple2D MapPoint(IFloat64Tuple2D point)
         {
-            return new Tuple2D(
+            return new Float64Tuple2D(
                 point.X + DirectionX, 
                 point.Y + DirectionY
             );
         }
 
-        public Tuple2D MapVector(ITuple2D vector)
+        public Float64Tuple2D MapVector(IFloat64Tuple2D vector)
         {
             return vector.ToTuple2D();
         }
 
-        public Tuple2D MapNormal(ITuple2D normal)
+        public Float64Tuple2D MapNormal(IFloat64Tuple2D normal)
         {
             return normal.ToTuple2D();
         }

@@ -121,7 +121,7 @@ namespace NumericalGeometryLib.Computers.Intersections
             return this;
         }
 
-        public GcLineIntersector3D SetLineAsLineSegment(ITuple3D point1, ITuple3D point2)
+        public GcLineIntersector3D SetLineAsLineSegment(IFloat64Tuple3D point1, IFloat64Tuple3D point2)
         {
             Line = new Line3D(
                 point1.X,
@@ -135,7 +135,7 @@ namespace NumericalGeometryLib.Computers.Intersections
             return this;
         }
 
-        public GcLineIntersector3D SetLine(ITuple3D lineOrigin, ITuple3D lineDirection)
+        public GcLineIntersector3D SetLine(IFloat64Tuple3D lineOrigin, IFloat64Tuple3D lineDirection)
         {
             Line = new Line3D(
                 lineOrigin.X,

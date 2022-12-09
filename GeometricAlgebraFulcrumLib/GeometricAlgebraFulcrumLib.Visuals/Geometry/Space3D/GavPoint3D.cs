@@ -6,7 +6,7 @@ using NumericalGeometryLib.BasicMath.Tuples;
 namespace GeometricAlgebraFulcrumLib.Visuals.Geometry.Space3D
 {
     public sealed class GeovPoint3D : 
-        ITuple3D, IGeovGeometry3D
+        IFloat64Tuple3D, IGeovGeometry3D
     {
         public GeovGeometryContext3D GeometryContext { get; }
 

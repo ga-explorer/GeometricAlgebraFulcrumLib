@@ -11,7 +11,7 @@ namespace GraphicsComposerLib.Geometry.SdfShapes.Operations
             = 0.1d;
 
 
-        public override double GetScalarDistance(ITuple3D point)
+        public override double GetScalarDistance(IFloat64Tuple3D point)
         {
             return Surface.GetScalarDistance(point) - Radius;
         }

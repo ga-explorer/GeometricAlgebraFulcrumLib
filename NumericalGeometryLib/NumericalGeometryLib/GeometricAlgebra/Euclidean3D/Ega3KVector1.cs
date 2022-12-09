@@ -7,7 +7,7 @@ using NumericalGeometryLib.BasicMath.Tuples;
 namespace NumericalGeometryLib.GeometricAlgebra.Euclidean3D
 {
     public sealed record Ega3KVector1 :
-        ITuple3D
+        IFloat64Tuple3D
     {
         public static Ega3KVector1 Zero { get; }
             = new Ega3KVector1(0d, 0d, 0d);

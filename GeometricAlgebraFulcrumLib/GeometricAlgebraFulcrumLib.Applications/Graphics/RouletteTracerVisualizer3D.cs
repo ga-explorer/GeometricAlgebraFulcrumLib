@@ -6,6 +6,7 @@ using GraphicsComposerLib.Geometry.ParametricShapes.Curves.Sampled;
 using GraphicsComposerLib.Rendering.BabylonJs;
 using GraphicsComposerLib.Rendering.BabylonJs.Constants;
 using GraphicsComposerLib.Rendering.BabylonJs.GUI;
+using GraphicsComposerLib.Rendering.Colors;
 using GraphicsComposerLib.Rendering.Visuals.Space3D.Groups;
 using NumericalGeometryLib.BasicMath;
 using NumericalGeometryLib.BasicMath.Maps.Space3D;
@@ -18,7 +19,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.Graphics;
 public class RouletteTracerVisualizer3D :
     GrBabylonJsSnapshotComposer3D
 {
-    public sealed record GeneratorPoint(Tuple3D Point, Color PointColor);
+    public sealed record GeneratorPoint(Float64Tuple3D Point, Color PointColor);
 
     
     public IGraphicsC1ArcLengthCurve3D FixedCurve { get; }
@@ -180,7 +181,7 @@ public class RouletteTracerVisualizer3D :
             FixedCurve,
             tValues,
             tValuesFrames,
-            Color.Red.WithAlpha(0.5f),
+            Color.Red.SetAlpha(0.5f),
             0.035
         );
     }
@@ -225,7 +226,7 @@ public class RouletteTracerVisualizer3D :
             movingCurve,
             tValues,
             tValuesFrames,
-            Color.Green.WithAlpha(0.5f),
+            Color.Green.SetAlpha(0.5f),
             0.035
         );
 

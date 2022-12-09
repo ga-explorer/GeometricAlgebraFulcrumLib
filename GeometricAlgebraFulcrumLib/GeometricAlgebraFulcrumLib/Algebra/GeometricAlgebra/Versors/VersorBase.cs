@@ -10,13 +10,12 @@ using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
-using GeometricAlgebraFulcrumLib.Utilities.Factories;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Versors
 {
     public abstract class VersorBase<T> :
-        OutermorphismBase<T>,
+        GaOutermorphismBase<T>,
         IVersor<T>
     {
         public override IGeometricAlgebraProcessor<T> GeometricProcessor { get; }
@@ -44,7 +43,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Versors
         public abstract IMultivectorStorage<T> GetMultivectorStorageInverse();
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override IOutermorphism<T> GetOmAdjoint()
+        public override IGaOutermorphism<T> GetOmAdjoint()
         {
             return GetVersorInverse();
         }
@@ -97,7 +96,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Versors
 
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override ILinMatrixStorage<T> GetMultivectorMappingMatrix()
+        public override ILinMatrixStorage<T> GetMultivectorMappingMatrixStorage()
         {
             return GeometricProcessor
                 .GaSpaceDimension
@@ -107,7 +106,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Versors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override ILinMatrixStorage<T> GetVectorOmMappingMatrix()
+        public override ILinMatrixStorage<T> GetVectorOmMappingMatrixStorage()
         {
             return ((ulong) GeometricProcessor.VSpaceDimension)
                 .GetRange()
@@ -116,7 +115,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Versors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override ILinMatrixStorage<T> GetBivectorOmMappingMatrix()
+        public override ILinMatrixStorage<T> GetBivectorOmMappingMatrixStorage()
         {
             return GeometricProcessor
                 .BivectorSpaceDimension()
@@ -126,7 +125,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Versors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override ILinMatrixStorage<T> GetKVectorOmMappingMatrix(uint grade)
+        public override ILinMatrixStorage<T> GetKVectorOmMappingMatrixStorage(uint grade)
         {
             return GeometricProcessor
                 .KVectorSpaceDimension(grade)
@@ -136,12 +135,12 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Versors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override ILinMatrixGradedStorage<T> GetMultivectorOmMappingMatrix()
+        public override ILinMatrixGradedStorage<T> GetMultivectorOmMappingMatrixStorage()
         {
             var gradedMatrix = new LinMatrixListGradedStorage<T>();
 
             for (var grade = 0U; grade <= GeometricProcessor.VSpaceDimension; grade++)
-                gradedMatrix.AppendMatrixStorage(GetKVectorOmMappingMatrix(grade));
+                gradedMatrix.AppendMatrixStorage(GetKVectorOmMappingMatrixStorage(grade));
 
             return gradedMatrix;
         }

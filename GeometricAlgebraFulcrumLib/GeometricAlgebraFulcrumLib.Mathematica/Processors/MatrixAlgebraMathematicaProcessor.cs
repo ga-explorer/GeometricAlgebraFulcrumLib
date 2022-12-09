@@ -7,8 +7,6 @@ using GeometricAlgebraFulcrumLib.Processors.MatrixAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors;
-using GeometricAlgebraFulcrumLib.Utilities.Extensions;
-using GeometricAlgebraFulcrumLib.Utilities.Factories;
 using Wolfram.NETLink;
 
 namespace GeometricAlgebraFulcrumLib.Mathematica.Processors
@@ -176,9 +174,9 @@ namespace GeometricAlgebraFulcrumLib.Mathematica.Processors
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Expr GetScalar(Expr matrix, int rowIndex, int colIndex)
         {
-            var rowExpr = Mfs.Part[matrix, rowIndex.ToExpr()];
+            var rowExpr = Mfs.Part[matrix, (rowIndex + 1).ToExpr()];
 
-            return Mfs.Part[rowExpr, colIndex.ToExpr()].Simplify();
+            return Mfs.Part[rowExpr, (colIndex + 1).ToExpr()].Simplify();
         }
 
         public ILinVectorStorage<Expr> MatrixRowToVector(Expr matrix, int rowIndex)

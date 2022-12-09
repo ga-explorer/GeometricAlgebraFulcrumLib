@@ -12,13 +12,13 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
         RotateMap3D
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RotateByAxisAngleMap3D Create(ITuple3D normal, PlanarAngle angle)
+        public static RotateByAxisAngleMap3D Create(IFloat64Tuple3D normal, PlanarAngle angle)
         {
             return new RotateByAxisAngleMap3D(normal, angle);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RotateByAxisAngleMap3D CreateFromUnitVectors(ITuple3D vector1, ITuple3D vector2)
+        public static RotateByAxisAngleMap3D CreateFromUnitVectors(IFloat64Tuple3D vector1, IFloat64Tuple3D vector2)
         {
             Debug.Assert(
                 vector1.IsValid() &&
@@ -46,8 +46,8 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
         }
 
 
-        private Tuple3D _unitNormal;
-        public Tuple3D UnitNormal
+        private Float64Tuple3D _unitNormal;
+        public Float64Tuple3D UnitNormal
         {
             get => _unitNormal;
             set
@@ -76,7 +76,7 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private RotateByAxisAngleMap3D([NotNull] ITuple3D normal, [NotNull] PlanarAngle angle)
+        private RotateByAxisAngleMap3D([NotNull] IFloat64Tuple3D normal, [NotNull] PlanarAngle angle)
         {
             _unitNormal = normal.ToTuple3D();
             _angle = angle;
@@ -137,9 +137,9 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Tuple<PlanarAngle, Tuple3D> GetAngleAxis()
+        public override Tuple<PlanarAngle, Float64Tuple3D> GetAngleAxis()
         {
-            return new Tuple<PlanarAngle, Tuple3D>(Angle, _unitNormal);
+            return new Tuple<PlanarAngle, Float64Tuple3D>(Angle, _unitNormal);
         }
     }
 }

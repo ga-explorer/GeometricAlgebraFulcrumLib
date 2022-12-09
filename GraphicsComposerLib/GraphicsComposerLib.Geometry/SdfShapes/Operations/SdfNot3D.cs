@@ -7,7 +7,7 @@ namespace GraphicsComposerLib.Geometry.SdfShapes.Operations
     /// </summary>
     public sealed class SdfNot3D : SdfUnaryOperation
     {
-        public override double GetScalarDistance(ITuple3D point)
+        public override double GetScalarDistance(IFloat64Tuple3D point)
         {
             return -Surface.GetScalarDistance(point);
         }

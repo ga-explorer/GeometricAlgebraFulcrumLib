@@ -18,7 +18,7 @@ namespace NumericalGeometryLib.BasicShapes.Lines.Immutable
             );
         }
 
-        public static LineSegment2D Create(ITuple2D point1, ITuple2D point2)
+        public static LineSegment2D Create(IFloat64Tuple2D point1, IFloat64Tuple2D point2)
         {
             return new LineSegment2D(
                 point1.X,

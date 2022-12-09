@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using DataStructuresLib.Basic;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Frames;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
-using GeometricAlgebraFulcrumLib.Utilities.Factories;
 
 namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
 {
@@ -54,6 +56,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
         public override GaKVector<T> PseudoScalarReverse { get; }
 
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal GeometricAlgebraEuclideanProcessor(IScalarAlgebraProcessor<T> scalarProcessor, uint vSpaceDimension) 
             : base(scalarProcessor)
         {
@@ -67,7 +70,8 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
             PseudoScalarReverse = PseudoScalar.Reverse();
         }
 
-        
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int GetBasisVectorSignature(int index)
         {
             Debug.Assert(index >= 0 && index < VSpaceDimension);
@@ -75,6 +79,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
             return 1;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int GetBasisVectorSignature(ulong index)
         {
             Debug.Assert(index < VSpaceDimension);
@@ -82,6 +87,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
             return 1;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int GetBasisBivectorSignature(int index1, int index2)
         {
             Debug.Assert(index1 >= 0 && index1 < VSpaceDimension);
@@ -90,6 +96,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
             return index1 == index2 ? 1 : -1;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int GetBasisBivectorSignature(ulong index1, ulong index2)
         {
             Debug.Assert(index1 < VSpaceDimension);
@@ -98,6 +105,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
             return index1 == index2 ? 1 : -1;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int GetBasisBladeSignature(uint grade, ulong index)
         {
             var id = index.BasisBladeIndexToId(grade);
@@ -107,6 +115,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
             return BasisBladeProductUtils.EGpSign(id, id);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int GetBasisBladeSignature(ulong id)
         {
             Debug.Assert(id < GaSpaceDimension);
@@ -114,6 +123,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
             return BasisBladeProductUtils.EGpSign(id, id);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int GetBasisBladeSignature(BasisBlade basisBlade)
         {
             var id = basisBlade.Id;
@@ -123,6 +133,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
             return BasisBladeProductUtils.EGpSign(id, id);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int GpSignature(ulong id)
         {
             Debug.Assert(id < GaSpaceDimension);
@@ -130,6 +141,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
             return BasisBladeProductUtils.EGpSquaredSign(id);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int GpSignature(ulong id1, ulong id2)
         {
             Debug.Assert(id1 < GaSpaceDimension);
@@ -138,6 +150,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
             return BasisBladeProductUtils.EGpSign(id1, id2);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int GpReverseSignature(ulong id1, ulong id2)
         {
             Debug.Assert(id1 < GaSpaceDimension);
@@ -146,6 +159,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
             return BasisBladeProductUtils.EGpReverseSign(id1, id2);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int OpSignature(ulong id1, ulong id2)
         {
             Debug.Assert(id1 < GaSpaceDimension);
@@ -154,6 +168,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
             return BasisBladeProductUtils.OpSign(id1, id2);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int SpSignature(ulong id)
         {
             Debug.Assert(id < GaSpaceDimension);
@@ -161,6 +176,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
             return BasisBladeProductUtils.EGpSquaredSign(id);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int SpSignature(ulong id1, ulong id2)
         {
             Debug.Assert(id1 < GaSpaceDimension);
@@ -169,6 +185,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
             return BasisBladeProductUtils.ESpSign(id1, id2);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int NormSquaredSignature(ulong id)
         {
             Debug.Assert(id < GaSpaceDimension);
@@ -176,6 +193,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
             return 1;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int LcpSignature(ulong id1, ulong id2)
         {
             Debug.Assert(id1 < GaSpaceDimension);
@@ -184,6 +202,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
             return BasisBladeProductUtils.ELcpSign(id1, id2);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int RcpSignature(ulong id1, ulong id2)
         {
             Debug.Assert(id1 < GaSpaceDimension);
@@ -192,6 +211,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
             return BasisBladeProductUtils.ERcpSign(id1, id2);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int FdpSignature(ulong id1, ulong id2)
         {
             Debug.Assert(id1 < GaSpaceDimension);
@@ -200,6 +220,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
             return BasisBladeProductUtils.EFdpSign(id1, id2);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int HipSignature(ulong id1, ulong id2)
         {
             Debug.Assert(id1 < GaSpaceDimension);
@@ -208,6 +229,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
             return BasisBladeProductUtils.EHipSign(id1, id2);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int AcpSignature(ulong id1, ulong id2)
         {
             Debug.Assert(id1 < GaSpaceDimension);
@@ -217,6 +239,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
             return BasisBladeProductUtils.EAcpSign(id1, id2);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public int CpSignature(ulong id1, ulong id2)
         {
             Debug.Assert(id1 < GaSpaceDimension);
@@ -226,47 +249,64 @@ namespace GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra
             return BasisBladeProductUtils.ECpSign(id1, id2);
         }
 
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override Pair<BasisVectorFrame<T>> GetBasisVectorFrame()
+        {
+            var frame = BasisVectorFrame<T>.Create(this);
 
+            return new Pair<BasisVectorFrame<T>>(frame, frame);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override T SpSquared(IMultivectorStorage<T> mv1)
         {
             return ScalarProcessor.ESpSquared(mv1);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override T Sp(IMultivectorStorage<T> mv1, IMultivectorStorage<T> mv2)
         {
             return ScalarProcessor.ESp(mv1, mv2);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override IMultivectorStorage<T> Lcp(IMultivectorStorage<T> mv1, IMultivectorStorage<T> mv2)
         {
             return ScalarProcessor.ELcp(mv1, mv2);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override IMultivectorStorage<T> Rcp(IMultivectorStorage<T> mv1, IMultivectorStorage<T> mv2)
         {
             return ScalarProcessor.ERcp(mv1, mv2);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override IMultivectorStorage<T> Hip(IMultivectorStorage<T> mv1, IMultivectorStorage<T> mv2)
         {
             return ScalarProcessor.EHip(mv1, mv2);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override IMultivectorStorage<T> Fdp(IMultivectorStorage<T> mv1, IMultivectorStorage<T> mv2)
         {
             return ScalarProcessor.EFdp(mv1, mv2);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override IMultivectorStorage<T> Acp(IMultivectorStorage<T> mv1, IMultivectorStorage<T> mv2)
         {
             return ScalarProcessor.EAcp(mv1, mv2);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override IMultivectorStorage<T> Cp(IMultivectorStorage<T> mv1, IMultivectorStorage<T> mv2)
         {
             return ScalarProcessor.ECp(mv1, mv2);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override T NormSquared(IMultivectorStorage<T> mv1)
         {
             return ScalarProcessor.ENormSquared(mv1);

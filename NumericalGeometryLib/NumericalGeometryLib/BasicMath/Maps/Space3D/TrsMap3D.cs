@@ -20,7 +20,7 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
             var newMap = new TrsMap3D();
 
             //Extract translation part
-            newMap.TranslationVector = new Tuple3D(c[3], c[7], c[11]);
+            newMap.TranslationVector = new Float64Tuple3D(c[3], c[7], c[11]);
 
             //Separate upper left 3x3 block into rotation of stretch
             var m = c.UpperLeftBlock3X3;
@@ -35,12 +35,12 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
         /// <summary>
         /// The translation vector
         /// </summary>
-        public Tuple3D TranslationVector { get; set; }
+        public Float64Tuple3D TranslationVector { get; set; }
 
         /// <summary>
         /// The direction of the rotation axis; this must be a unit vector
         /// </summary>
-        public Tuple3D RotationVector { get; set; }
+        public Float64Tuple3D RotationVector { get; set; }
 
         /// <summary>
         /// The angle of the rotation
@@ -82,7 +82,7 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
 
         public bool SwapsHandedness { get; }
 
-        public SquareMatrix4 ToSquareMatrix4()
+        public SquareMatrix4 GetSquareMatrix4()
         {
             Debug.Assert(RotationVector.IsUnitVector());
 
@@ -94,32 +94,32 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
             };
         }
 
-        public Matrix4x4 ToMatrix4x4()
+        public Matrix4x4 GetMatrix4x4()
         {
-            return ToSquareMatrix4().ToMatrix4x4();
+            return GetSquareMatrix4().GetMatrix4x4();
         }
 
-        public double[,] ToArray2D()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Tuple3D MapPoint(ITuple3D point)
+        public double[,] GetArray2D()
         {
             throw new NotImplementedException();
         }
 
-        public Tuple3D MapVector(ITuple3D point)
+        public Float64Tuple3D MapPoint(IFloat64Tuple3D point)
         {
             throw new NotImplementedException();
         }
 
-        public Tuple3D MapNormal(ITuple3D normal)
+        public Float64Tuple3D MapVector(IFloat64Tuple3D point)
         {
             throw new NotImplementedException();
         }
 
-        public IAffineMap3D InverseMap()
+        public Float64Tuple3D MapNormal(IFloat64Tuple3D normal)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IAffineMap3D GetInverseAffineMap()
         {
             throw new NotImplementedException();
         }

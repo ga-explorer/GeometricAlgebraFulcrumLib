@@ -37,7 +37,7 @@ namespace NumericalGeometryLib.Borders.Space2D.Mutable
             return new MutableBoundingBox2D(pointX, pointY);
         }
 
-        public static MutableBoundingBox2D CreateFromPoint(ITuple2D point)
+        public static MutableBoundingBox2D CreateFromPoint(IFloat64Tuple2D point)
         {
             return new MutableBoundingBox2D(point.X, point.Y);
         }
@@ -71,7 +71,7 @@ namespace NumericalGeometryLib.Borders.Space2D.Mutable
             return new MutableBoundingBox2D(minX, minY, maxX, maxY);
         }
 
-        public static MutableBoundingBox2D CreateFromPoints(ITuple2D point1, ITuple2D point2)
+        public static MutableBoundingBox2D CreateFromPoints(IFloat64Tuple2D point1, IFloat64Tuple2D point2)
         {
             double minX, minY, maxX, maxY;
 
@@ -100,7 +100,7 @@ namespace NumericalGeometryLib.Borders.Space2D.Mutable
             return new MutableBoundingBox2D(minX, minY, maxX, maxY);
         }
 
-        public static MutableBoundingBox2D CreateFromPoints(ITuple2D point1, ITuple2D point2, ITuple2D point3)
+        public static MutableBoundingBox2D CreateFromPoints(IFloat64Tuple2D point1, IFloat64Tuple2D point2, IFloat64Tuple2D point3)
         {
             var minX = point1.X;
             var minY = point1.Y;
@@ -123,7 +123,7 @@ namespace NumericalGeometryLib.Borders.Space2D.Mutable
             return new MutableBoundingBox2D(minX, minY, maxX, maxY);
         }
 
-        public static MutableBoundingBox2D CreateFromPoints(params ITuple2D[] pointsList)
+        public static MutableBoundingBox2D CreateFromPoints(params IFloat64Tuple2D[] pointsList)
         {
             var point1 = pointsList[0];
 
@@ -144,7 +144,7 @@ namespace NumericalGeometryLib.Borders.Space2D.Mutable
             return new MutableBoundingBox2D(minX, minY, maxX, maxY);
         }
 
-        public static MutableBoundingBox2D CreateFromPoints(IEnumerable<ITuple2D> pointsList)
+        public static MutableBoundingBox2D CreateFromPoints(IEnumerable<IFloat64Tuple2D> pointsList)
         {
             double minX = 0, minY = 0, maxX = 0, maxY = 0;
 
@@ -193,7 +193,7 @@ namespace NumericalGeometryLib.Borders.Space2D.Mutable
             return new MutableBoundingBox2D(minX, minY, maxX, maxY);
         }
 
-        public static MutableBoundingBox2D CreateAround(ITuple2D center, double deltaX, double deltaY)
+        public static MutableBoundingBox2D CreateAround(IFloat64Tuple2D center, double deltaX, double deltaY)
         {
             var minX = center.X - deltaX;
             var maxX = center.X + deltaX;
@@ -418,7 +418,7 @@ namespace NumericalGeometryLib.Borders.Space2D.Mutable
             return this;
         }
 
-        public MutableBoundingBox2D SetTo(ITuple2D point)
+        public MutableBoundingBox2D SetTo(IFloat64Tuple2D point)
         {
             MinX = point.X;
             MinY = point.Y;
@@ -460,7 +460,7 @@ namespace NumericalGeometryLib.Borders.Space2D.Mutable
         }
 
 
-        public MutableBoundingBox2D MoveMidPointTo(ITuple2D newMidPoint)
+        public MutableBoundingBox2D MoveMidPointTo(IFloat64Tuple2D newMidPoint)
         {
             var deltaX = newMidPoint.X - 0.5d * (MaxX + MinX);
             var deltaY = newMidPoint.Y - 0.5d * (MaxY + MinY);
@@ -493,7 +493,7 @@ namespace NumericalGeometryLib.Borders.Space2D.Mutable
         }
 
 
-        public MutableBoundingBox2D MoveBy(ITuple2D delta)
+        public MutableBoundingBox2D MoveBy(IFloat64Tuple2D delta)
         {
             MinX += delta.X;
             MinY += delta.Y;
@@ -546,7 +546,7 @@ namespace NumericalGeometryLib.Borders.Space2D.Mutable
             return this;
         }
 
-        public MutableBoundingBox2D UpdateSizeBy(ITuple2D delta)
+        public MutableBoundingBox2D UpdateSizeBy(IFloat64Tuple2D delta)
         {
             MinX = MinX - delta.X;
             MinY = MinY - delta.Y;
@@ -584,7 +584,7 @@ namespace NumericalGeometryLib.Borders.Space2D.Mutable
             return this;
         }
 
-        public MutableBoundingBox2D UpdateSizeByFactor(ITuple2D updateFactor)
+        public MutableBoundingBox2D UpdateSizeByFactor(IFloat64Tuple2D updateFactor)
         {
             var midX = 0.5d * (MaxX + MinX);
             var midY = 0.5d * (MaxY + MinY);
@@ -642,7 +642,7 @@ namespace NumericalGeometryLib.Borders.Space2D.Mutable
             return this;
         }
 
-        public MutableBoundingBox2D ExpandToInclude(ITuple2D point)
+        public MutableBoundingBox2D ExpandToInclude(IFloat64Tuple2D point)
         {
             if (MinX > point.X) MinX = point.X;
             if (MinY > point.Y) MinY = point.Y;
@@ -655,7 +655,7 @@ namespace NumericalGeometryLib.Borders.Space2D.Mutable
             return this;
         }
 
-        public MutableBoundingBox2D ExpandToInclude(params ITuple2D[] pointsList)
+        public MutableBoundingBox2D ExpandToInclude(params IFloat64Tuple2D[] pointsList)
         {
             foreach (var point in pointsList)
             {
@@ -671,7 +671,7 @@ namespace NumericalGeometryLib.Borders.Space2D.Mutable
             return this;
         }
 
-        public MutableBoundingBox2D ExpandToInclude(IEnumerable<ITuple2D> pointsList)
+        public MutableBoundingBox2D ExpandToInclude(IEnumerable<IFloat64Tuple2D> pointsList)
         {
             foreach (var point in pointsList)
             {
@@ -788,8 +788,8 @@ namespace NumericalGeometryLib.Borders.Space2D.Mutable
 
         public IBorderCurve2D MapUsing(IAffineMap2D affineMap)
         {
-            var oldSide01 = new Tuple2D(MaxX - MinX, 0);
-            var oldSide10 = new Tuple2D(0, MaxY - MinY);
+            var oldSide01 = new Float64Tuple2D(MaxX - MinX, 0);
+            var oldSide10 = new Float64Tuple2D(0, MaxY - MinY);
 
             var newSide01 = affineMap.MapVector(oldSide01).ToTuple2D();
             var newSide10 = affineMap.MapVector(oldSide10).ToTuple2D();

@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Specialized;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis

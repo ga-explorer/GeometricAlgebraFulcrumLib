@@ -21,13 +21,13 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
         protected abstract void UpdateRotationMatrix();
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public SquareMatrix4 ToSquareMatrix4()
+        public SquareMatrix4 GetSquareMatrix4()
         {
             return SquareMatrix4.CreateAffineMatrix3D(RotationMatrix);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Matrix4x4 ToMatrix4x4()
+        public Matrix4x4 GetMatrix4x4()
         {
             return new Matrix4x4(
                 (float) RotationMatrix.Scalar00, (float) RotationMatrix.Scalar01, (float) RotationMatrix.Scalar02, 0f,
@@ -38,7 +38,7 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public double[,] ToArray2D()
+        public double[,] GetArray2D()
         {
             var array = new double[4, 4];
 
@@ -51,31 +51,31 @@ namespace NumericalGeometryLib.BasicMath.Maps.Space3D
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple3D MapPoint(ITuple3D point)
+        public Float64Tuple3D MapPoint(IFloat64Tuple3D point)
         {
             return RotationMatrix * point;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple3D MapVector(ITuple3D vector)
+        public Float64Tuple3D MapVector(IFloat64Tuple3D vector)
         {
             return RotationMatrix * vector;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple3D MapNormal(ITuple3D normal)
+        public Float64Tuple3D MapNormal(IFloat64Tuple3D normal)
         {
             return RotationMatrix * normal;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IAffineMap3D InverseMap()
+        public IAffineMap3D GetInverseAffineMap()
         {
             return InverseRotateMap();
         }
 
         public abstract IRotateMap3D InverseRotateMap();
 
-        public abstract Tuple<PlanarAngle, Tuple3D> GetAngleAxis();
+        public abstract Tuple<PlanarAngle, Float64Tuple3D> GetAngleAxis();
     }
 }

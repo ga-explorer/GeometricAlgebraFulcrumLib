@@ -14,7 +14,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Vertices
     {
         public int Index { get; }
 
-        public Tuple3D Point { get; }
+        public Float64Tuple3D Point { get; }
 
         public Color Color
         {
