@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
+﻿using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Expressions.Numbers;
 
 namespace GeometricAlgebraFulcrumLib.MetaProgramming.Expressions.HeadSpecs
@@ -63,7 +62,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Expressions.HeadSpecs
             => false;
 
 
-        private MetaExpressionHeadSpecsNumberRational([NotNull] MetaContext context, long numerator, long denominator)
+        private MetaExpressionHeadSpecsNumberRational(MetaContext context, long numerator, long denominator)
         {
             Context = context;
             Numerator = numerator;

@@ -3,22 +3,21 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using DataStructuresLib.Statistics;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.BasicShapes;
+using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Lines;
+using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Lines.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Triangles;
+using GeometricAlgebraFulcrumLib.MathBase.Borders;
+using GeometricAlgebraFulcrumLib.MathBase.Borders.Space1D;
+using GeometricAlgebraFulcrumLib.MathBase.Borders.Space1D.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Borders.Space3D;
 using NumericalGeometryLib.Accelerators.BIH;
 using NumericalGeometryLib.Accelerators.BIH.Space3D;
 using NumericalGeometryLib.Accelerators.BIH.Space3D.Traversal;
 using NumericalGeometryLib.Accelerators.Grids;
 using NumericalGeometryLib.Accelerators.Grids.Space3D;
-using NumericalGeometryLib.BasicMath;
-using NumericalGeometryLib.BasicMath.Tuples;
-using NumericalGeometryLib.BasicOperations;
-using NumericalGeometryLib.BasicShapes;
-using NumericalGeometryLib.BasicShapes.Lines;
-using NumericalGeometryLib.BasicShapes.Lines.Immutable;
-using NumericalGeometryLib.BasicShapes.Triangles;
-using NumericalGeometryLib.Borders;
-using NumericalGeometryLib.Borders.Space1D;
-using NumericalGeometryLib.Borders.Space1D.Immutable;
-using NumericalGeometryLib.Borders.Space3D;
 
 namespace NumericalGeometryLib.Computers.Intersections
 {
@@ -698,7 +697,7 @@ namespace NumericalGeometryLib.Computers.Intersections
 
             Debug.Assert(!double.IsNaN(t));
 
-            var result = (t >= 0 && t <= 1);
+            var result = t >= 0 && t <= 1;
 
             TestTriangleIntersectionCounter.End(result);
 

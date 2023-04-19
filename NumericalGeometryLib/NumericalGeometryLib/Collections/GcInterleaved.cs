@@ -43,9 +43,9 @@ namespace NumericalGeometryLib.Collections
                 var itemIndex = index / InterleavedCollections.Length;
                 var baseCol = InterleavedCollections[index % InterleavedCollections.Length];
 
-                return (baseCol != null)
+                return baseCol != null
                     ? baseCol.GetItem(itemIndex)
-                    : (DefaultBaseCollection == null ? DefaultValue : DefaultBaseCollection.GetItem(index));
+                    : DefaultBaseCollection == null ? DefaultValue : DefaultBaseCollection.GetItem(index);
             }
         }
 
@@ -62,9 +62,9 @@ namespace NumericalGeometryLib.Collections
             var itemIndex = index / InterleavedCollections.Length;
             var baseCol = InterleavedCollections[index % InterleavedCollections.Length];
 
-            return (baseCol != null)
+            return baseCol != null
                 ? baseCol.GetItem(itemIndex)
-                : (DefaultBaseCollection == null ? DefaultValue : DefaultBaseCollection.GetItem(index));
+                : DefaultBaseCollection == null ? DefaultValue : DefaultBaseCollection.GetItem(index);
         }
 
 

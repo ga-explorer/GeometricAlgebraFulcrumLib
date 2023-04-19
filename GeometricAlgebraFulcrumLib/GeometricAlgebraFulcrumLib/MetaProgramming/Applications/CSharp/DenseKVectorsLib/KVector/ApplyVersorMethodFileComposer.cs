@@ -1,6 +1,6 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
-using GeometricAlgebraFulcrumLib.Geometry.Subspaces;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Subspaces;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Expressions;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Languages;
@@ -12,15 +12,15 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
     internal sealed class ApplyVersorMethodFileComposer : 
         GaFuLLibraryMetaContextFileComposerBase
     {
-        private ISubspace<IMetaExpressionAtomic> _subspace;
-        private GaKVector<IMetaExpressionAtomic> _inputKVector;
-        private GaKVector<IMetaExpressionAtomic> _outputKVector;
+        private IXGaSubspace<IMetaExpressionAtomic> _subspace;
+        private XGaKVector<IMetaExpressionAtomic> _inputKVector;
+        private XGaKVector<IMetaExpressionAtomic> _outputKVector;
         private readonly GaFuLLanguageOperationSpecs _operationSpecs;
-        private readonly uint _inputGrade1;
-        private readonly uint _inputGrade2;
+        private readonly int _inputGrade1;
+        private readonly int _inputGrade2;
 
 
-        internal ApplyVersorMethodFileComposer(GaFuLLibraryComposer libGen, GaFuLLanguageOperationSpecs opSpecs, uint inGrade1, uint inGrade2)
+        internal ApplyVersorMethodFileComposer(GaFuLLibraryComposer libGen, GaFuLLanguageOperationSpecs opSpecs, int inGrade1, int inGrade2)
             : base(libGen)
         {
             _operationSpecs = opSpecs;
@@ -32,17 +32,15 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
         protected override void DefineContextParameters(MetaContext context)
         {
             var subspaceKVector = context.ParameterVariablesFactory.CreateDenseKVector(
-                VSpaceDimension,
+                VSpaceDimensions,
                 _inputGrade1,
                 index => $"versorScalar{index}"
             );
 
-            _subspace = _operationSpecs.IsEuclidean
-                ? GeometricProcessor.CreateSubspace(subspaceKVector.KVectorStorage)
-                : EuclideanProcessor.CreateSubspace(subspaceKVector.KVectorStorage);
+            _subspace = subspaceKVector.ToSubspace();
 
             _inputKVector = context.ParameterVariablesFactory.CreateDenseKVector(
-                VSpaceDimension,
+                VSpaceDimensions,
                 _inputGrade2,
                 index => $"kVectorScalar{index}"
             );
@@ -51,7 +49,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
         protected override void DefineContextComputations(MetaContext context)
         {
             var inputSubspace = 
-                GeometricProcessor.CreateSubspace(_inputKVector.KVectorStorage);
+                _inputKVector.ToSubspace();
 
             _outputKVector = _operationSpecs.OperationKind switch
             {
@@ -76,17 +74,17 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
         protected override void DefineContextExternalNames(MetaContext context)
         {
             context.SetExternalNamesByTermIndex(
-                _subspace.GetBlade().KVectorStorage,
+                _subspace.GetBlade(),
                 index => $"scalars1[{index}]"
             );
 
             context.SetExternalNamesByTermIndex(
-                _inputKVector.KVectorStorage,
+                _inputKVector,
                 index => $"scalars2[{index}]"
             );
 
             context.SetExternalNamesByTermIndex(
-                _outputKVector.KVectorStorage,
+                _outputKVector,
                 index => $"c[{index}]"
             );
 
@@ -104,8 +102,8 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
             var computationsText = 
                 GenerateCode();
 
-            var kvSpaceDimension = 
-                this.KVectorSpaceDimension(_inputGrade2);
+            var kvSpaceDimensions = 
+                VSpaceDimensions.KVectorSpaceDimension(_inputGrade2);
 
             var methodName =
                 _operationSpecs.GetName(_inputGrade1, _inputGrade2, _inputGrade2);
@@ -113,7 +111,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
             TextComposer.AppendAtNewLine(
                 Templates["bilinearproduct"],
                 "name", methodName,
-                "num", kvSpaceDimension,
+                "num", kvSpaceDimensions,
                 "double", GeoLanguage.ScalarTypeName,
                 "computations", computationsText
             );

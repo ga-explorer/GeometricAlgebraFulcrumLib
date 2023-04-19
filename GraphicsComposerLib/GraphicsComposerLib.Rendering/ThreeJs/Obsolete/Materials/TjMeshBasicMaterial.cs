@@ -1,6 +1,5 @@
 ﻿using GraphicsComposerLib.Rendering.ThreeJs.Obsolete.Constants;
 using GraphicsComposerLib.Rendering.ThreeJs.Obsolete.Textures;
-using SixLabors.ImageSharp;
 
 namespace GraphicsComposerLib.Rendering.ThreeJs.Obsolete.Materials
 {

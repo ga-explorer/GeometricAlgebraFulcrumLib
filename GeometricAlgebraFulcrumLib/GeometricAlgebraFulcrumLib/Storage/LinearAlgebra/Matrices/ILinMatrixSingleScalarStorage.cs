@@ -1,4 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
+﻿using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records.Restricted;
 
 namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices
 {
@@ -9,7 +9,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices
 
         public ulong Index2 { get; }
 
-        public IndexPairRecord Index { get; }
+        public RGaKvIndexPairRecord Index { get; }
 
         public T Scalar { get; set; }
     }

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.BitManipulation;
 using DataStructuresLib.Extensions;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records.Restricted;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 
 namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
@@ -25,9 +25,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<uint> GetEmptyGrades(uint vSpaceDimension)
+        public IEnumerable<uint> GetEmptyGrades(uint vSpaceDimensions)
         {
-            return (1U + vSpaceDimension).GetRange().Except(_gradeIndexScalarDictionary.Keys);
+            return (1U + vSpaceDimensions).GetRange().Except(_gradeIndexScalarDictionary.Keys);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -54,7 +54,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
             _gradeIndexScalarDictionary = new Dictionary<uint, ILinVectorStorage<T>>();
         }
 
-        internal LinVectorSparseGradedStorage([NotNull] Dictionary<uint, ILinVectorStorage<T>> gradeIndexScalarDictionary)
+        internal LinVectorSparseGradedStorage(Dictionary<uint, ILinVectorStorage<T>> gradeIndexScalarDictionary)
         {
             _gradeIndexScalarDictionary = gradeIndexScalarDictionary;
         }
@@ -77,7 +77,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinVectorSparseGradedStorage<T> SetList(uint grade, [NotNull] ILinVectorStorage<T> storage)
+        public LinVectorSparseGradedStorage<T> SetList(uint grade, ILinVectorStorage<T> storage)
         {
             if (_gradeIndexScalarDictionary.ContainsKey(grade))
                 _gradeIndexScalarDictionary[grade] = storage;
@@ -88,7 +88,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinVectorSparseGradedStorage<T> AddList(uint grade, [NotNull] ILinVectorStorage<T> storage)
+        public LinVectorSparseGradedStorage<T> AddList(uint grade, ILinVectorStorage<T> storage)
         {
             _gradeIndexScalarDictionary.Add(grade, storage);
 
@@ -137,7 +137,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public T GetScalar(GradeIndexRecord gradeIndex)
+        public T GetScalar(RGaGradeKvIndexRecord gradeIndex)
         {
             var (grade, index) = gradeIndex;
 
@@ -177,31 +177,31 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<GradeIndexRecord> GetGradeIndexRecords()
+        public IEnumerable<RGaGradeKvIndexRecord> GetGradeIndexRecords()
         {
             return _gradeIndexScalarDictionary.SelectMany(pair => 
                 pair.Value.GetIndices().Select(index => 
-                    new GradeIndexRecord(pair.Key, index)
+                    new RGaGradeKvIndexRecord(pair.Key, index)
                 )
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<GradeLinVectorStorageRecord<T>> GetGradeStorageRecords()
+        public IEnumerable<GaGradeLinVectorStorageRecord<T>> GetGradeStorageRecords()
         {
             return _gradeIndexScalarDictionary.Select(pair => 
-                new GradeLinVectorStorageRecord<T>(pair.Key, pair.Value)
+                new GaGradeLinVectorStorageRecord<T>(pair.Key, pair.Value)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<GradeIndexScalarRecord<T>> GetGradeIndexScalarRecords()
+        public IEnumerable<RGaGradeKvIndexScalarRecord<T>> GetGradeIndexScalarRecords()
         {
             return _gradeIndexScalarDictionary.SelectMany(
                 pair => pair.Value.GetIndexScalarRecords().Select(indexValuePair => 
-                    new GradeIndexScalarRecord<T>(
+                    new RGaGradeKvIndexScalarRecord<T>(
                         pair.Key,
-                        indexValuePair.Index,
+                        indexValuePair.KvIndex,
                         indexValuePair.Scalar
                     )
                 )

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Expressions.Composite;
 
@@ -138,7 +137,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Expressions.HeadSpecs
                     : MetaExpressionFunctionAssociationKind.None);
 
 
-        private MetaExpressionHeadSpecsOperator([NotNull] MetaContext context, [NotNull] string functionName, [NotNull] string opSymbol, int opPrecedence, MetaExpressionOperatorPosition opPosition, bool isLeftAssociative, bool isRightAssociative)
+        private MetaExpressionHeadSpecsOperator(MetaContext context, string functionName, string opSymbol, int opPrecedence, MetaExpressionOperatorPosition opPosition, bool isLeftAssociative, bool isRightAssociative)
         {
             if (string.IsNullOrEmpty(opSymbol))
                 throw new ArgumentNullException(nameof(opSymbol), @"Operator symbol not initialized");

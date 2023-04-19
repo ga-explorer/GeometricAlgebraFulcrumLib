@@ -1,11 +1,10 @@
 ﻿using System;
 using GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Mathematica;
+using GeometricAlgebraFulcrumLib.Mathematica.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Mathematica.Mathematica.ExprFactory;
 using GeometricAlgebraFulcrumLib.Mathematica.Processors;
-using GeometricAlgebraFulcrumLib.Mathematica.Text;
-using GeometricAlgebraFulcrumLib.Processors;
-using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
 using Wolfram.NETLink;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Symbolic
@@ -14,23 +13,23 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic
     {
         // This is a pre-defined scalar processor for symbolic
         // Wolfram Mathematica scalars using Expr objects
-        public static ScalarAlgebraMathematicaProcessor ScalarProcessor { get; }
-            = ScalarAlgebraMathematicaProcessor.DefaultProcessor;
+        public static ScalarProcessorExpr ScalarProcessor { get; }
+            = ScalarProcessorExpr.DefaultProcessor;
             
         // Create a 3-dimensional Euclidean geometric algebra processor based on the
         // selected scalar processor
-        public static GeometricAlgebraEuclideanProcessor<Expr> GeometricProcessor { get; } 
-            = ScalarProcessor.CreateGeometricAlgebraEuclideanProcessor(3);
+        public static RGaProcessor<Expr> GeometricProcessor { get; } 
+            = ScalarProcessor.CreateEuclideanRGaProcessor();
 
         // This is a pre-defined text generator for displaying multivectors
         // with symbolic Wolfram Mathematica scalars using Expr objects
-        public static TextMathematicaComposer TextComposer { get; }
-            = TextMathematicaComposer.DefaultComposer;
+        public static TextComposerExpr TextComposer { get; }
+            = TextComposerExpr.DefaultComposer;
 
         // This is a pre-defined LaTeX generator for displaying multivectors
         // with symbolic Wolfram Mathematica scalars using Expr objects
-        public static LaTeXMathematicaComposer LaTeXComposer { get; }
-            = LaTeXMathematicaComposer.DefaultComposer;
+        public static LaTeXComposerExpr LaTeXComposer { get; }
+            = LaTeXComposerExpr.DefaultComposer;
 
 
         /// <summary>
@@ -64,8 +63,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic
                         Mfs.List["Subscript[f, 0, 2]".ToExpr(), "Subscript[f, 2, 2]".ToExpr()]
                     ];
 
-                    var value0 = basis.GetValue(index, Expr.INT_ZERO).FullSimplify();
-                    var value1 = basis.GetValue(index, Expr.INT_ONE).FullSimplify();
+                    var value0 = basis.GetValue(index, Expr.INT_ZERO).FullSimplifyScalar();
+                    var value1 = basis.GetValue(index, Expr.INT_ONE).FullSimplifyScalar();
 
                     valueSum1 = ScalarProcessor.Add(valueSum1, value);
 
@@ -121,12 +120,12 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic
                 for (var index = 0; index <= degree; index++)
                 {
                     var value = Mfs.Collect[
-                        basis.GetValue(index, parameterValue).FullSimplify(assumption),
+                        basis.GetValue(index, parameterValue).FullSimplifyScalar(assumption),
                         Mfs.List["Subscript[f, 0, 2]".ToExpr(), "Subscript[f, 2, 2]".ToExpr()]
                     ];
 
-                    var value0 = basis.GetValue(index, Expr.INT_ZERO).FullSimplify();
-                    var value1 = basis.GetValue(index, Expr.INT_ONE).FullSimplify();
+                    var value0 = basis.GetValue(index, Expr.INT_ZERO).FullSimplifyScalar();
+                    var value1 = basis.GetValue(index, Expr.INT_ONE).FullSimplifyScalar();
 
                     valueSum1 = ScalarProcessor.Add(valueSum1, value);
 
@@ -187,12 +186,12 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic
                 for (var index = 0; index <= degree; index++)
                 {
                     var value = Mfs.Collect[
-                        basis.GetValue(index, parameterValue).FullSimplify(assumption),
+                        basis.GetValue(index, parameterValue).FullSimplifyScalar(assumption),
                         Mfs.List["Subscript[f, 0, 2]".ToExpr(), "Subscript[f, 2, 2]".ToExpr()]
                     ];
 
-                    var value0 = basis.GetValue(index, Expr.INT_ZERO).FullSimplify();
-                    var value1 = basis.GetValue(index, Expr.INT_ONE).FullSimplify();
+                    var value0 = basis.GetValue(index, Expr.INT_ZERO).FullSimplifyScalar();
+                    var value1 = basis.GetValue(index, Expr.INT_ONE).FullSimplifyScalar();
 
                     valueSum1 = ScalarProcessor.Add(valueSum1, value);
 

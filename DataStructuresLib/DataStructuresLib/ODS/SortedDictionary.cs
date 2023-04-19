@@ -52,13 +52,13 @@ namespace DataStructuresLib.ODS
 
             public Node(TKey key)
             {
-                this.Key = key;
+                Key = key;
             }
 
             public Node(TKey key, TValue value)
             {
-                this.Key = key;
-                this.Value = value;
+                Key = key;
+                Value = value;
             }
 
             public override void SwapValue(RbTree.Node other)
@@ -96,7 +96,7 @@ namespace DataStructuresLib.ODS
 
             private NodeHelper(IComparer<TKey> cmp)
             {
-                this.Cmp = cmp;
+                Cmp = cmp;
             }
 
             private static NodeHelper _default = new NodeHelper(Comparer<TKey>.Default);

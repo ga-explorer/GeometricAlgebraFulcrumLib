@@ -1,6 +1,6 @@
-﻿using NumericalGeometryLib.BasicMath.Matrices;
-using NumericalGeometryLib.BasicMath.Tuples;
-using NumericalGeometryLib.BasicMath.Tuples.Immutable;
+﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Matrices;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
 using TextComposerLib.Text.Linear;
 
 namespace GraphicsComposerLib.Rendering.Xeogl.Transforms

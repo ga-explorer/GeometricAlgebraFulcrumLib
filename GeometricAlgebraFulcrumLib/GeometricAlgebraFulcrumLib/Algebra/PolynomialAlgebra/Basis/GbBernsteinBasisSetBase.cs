@@ -2,23 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Diagnostics.CodeAnalysis;
 using DataStructuresLib.Basic;
-using GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.Basis
 {
     public abstract class GbBernsteinBasisSetBase<T> :
         IPolynomialBasisSet<T>
     {
-        public IScalarAlgebraProcessor<T> ScalarProcessor { get; }
+        public IScalarProcessor<T> ScalarProcessor { get; }
 
         public int Degree { get; }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GbBernsteinBasisSetBase([NotNull] IScalarAlgebraProcessor<T> scalarProcessor, int degree)
+        public GbBernsteinBasisSetBase(IScalarProcessor<T> scalarProcessor, int degree)
         {
             if (degree is < 2 or > 64)
                 throw new ArgumentOutOfRangeException(nameof(degree));

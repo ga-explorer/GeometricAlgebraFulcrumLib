@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Vectors;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
@@ -22,6 +22,6 @@ namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.LinearMaps
         ILinMatrixStorage<T> GetLinMappingMatrix();
 
 
-        IEnumerable<IndexLinVectorStorageRecord<T>> GetLinMappedBasisVectors();
+        IEnumerable<RGaKvIndexLinVectorStorageRecord<T>> GetLinMappedBasisVectors();
     }
 }

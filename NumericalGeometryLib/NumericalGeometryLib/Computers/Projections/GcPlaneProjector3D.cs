@@ -1,10 +1,9 @@
 ﻿using System;
-using NumericalGeometryLib.BasicMath;
-using NumericalGeometryLib.BasicMath.Tuples;
-using NumericalGeometryLib.BasicMath.Tuples.Immutable;
-using NumericalGeometryLib.BasicShapes.Planes;
-using NumericalGeometryLib.BasicShapes.Planes.Immutable;
-using NumericalGeometryLib.BasicShapes.Triangles;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Planes;
+using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Planes.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Triangles;
 
 namespace NumericalGeometryLib.Computers.Projections
 {

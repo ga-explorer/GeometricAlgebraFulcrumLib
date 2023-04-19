@@ -1,31 +1,32 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Processors.FunctionAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.FunctionAlgebra;
 
-namespace GeometricAlgebraFulcrumLib.Calculus;
-
-public static class ScalarFunctionFactory
+namespace GeometricAlgebraFulcrumLib.Calculus
 {
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static FnSin<T> SinFn<T>(this IScalarFunctionProcessor<T> processor, T magnitude, T frequency)
+    public static class ScalarFunctionFactory
     {
-        return FnSin<T>.Create(processor, magnitude, frequency);
-    }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static FnSin<T> SinFn<T>(this IScalarFunctionProcessor<T> processor, T magnitude, T frequency)
+        {
+            return FnSin<T>.Create(processor, magnitude, frequency);
+        }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static FnSin<T> SinFn<T>(this IScalarFunctionProcessor<T> processor, T magnitude, T frequency, T phase)
-    {
-        return FnSin<T>.Create(processor, magnitude, frequency, phase);
-    }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static FnSin<T> SinFn<T>(this IScalarFunctionProcessor<T> processor, T magnitude, T frequency, T phase)
+        {
+            return FnSin<T>.Create(processor, magnitude, frequency, phase);
+        }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static FnCos<T> CosFn<T>(this IScalarFunctionProcessor<T> processor, T magnitude, T frequency)
-    {
-        return FnCos<T>.Create(processor, magnitude, frequency);
-    }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static FnCos<T> CosFn<T>(this IScalarFunctionProcessor<T> processor, T magnitude, T frequency)
+        {
+            return FnCos<T>.Create(processor, magnitude, frequency);
+        }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static FnCos<T> CosFn<T>(this IScalarFunctionProcessor<T> processor, T magnitude, T frequency, T phase)
-    {
-        return FnCos<T>.Create(processor, magnitude, frequency, phase);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static FnCos<T> CosFn<T>(this IScalarFunctionProcessor<T> processor, T magnitude, T frequency, T phase)
+        {
+            return FnCos<T>.Create(processor, magnitude, frequency, phase);
+        }
     }
 }

@@ -1,10 +1,11 @@
-﻿namespace GraphicsComposerLib.Rendering.BabylonJs.Constants;
-
-public enum GrBabylonJsImageStretch
+﻿namespace GraphicsComposerLib.Rendering.BabylonJs.Constants
 {
-    None = 0,
-    Fill = 1,
-    Uniform = 2,
-    Extend = 3,
-    NinePatch = 4
+    public enum GrBabylonJsImageStretch
+    {
+        None = 0,
+        Fill = 1,
+        Uniform = 2,
+        Extend = 3,
+        NinePatch = 4
+    }
 }

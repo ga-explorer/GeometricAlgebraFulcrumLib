@@ -1,4 +1,4 @@
-﻿using NumericalGeometryLib.BasicMath.Tuples;
+﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
 
 namespace GraphicsComposerLib.Geometry.SdfShapes.Primitives
 {

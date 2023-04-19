@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records.Restricted;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 
 namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
 {
@@ -20,9 +19,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
         public int GradesCount
             => ComposersDictionary.Count;
 
-        public IScalarAlgebraProcessor<T> ScalarProcessor { get; }
+        public IScalarProcessor<T> ScalarProcessor { get; }
 
-        public Func<ulong, GradeIndexRecord> EvenIndexToGradedIndexMapping { get; set; }
+        public Func<ulong, RGaGradeKvIndexRecord> EvenIndexToGradedIndexMapping { get; set; }
 
         public Func<uint, LinMatrixStorageComposerBase<T>> DefaultEvenComposerConstructor { get; set; }
 
@@ -41,7 +40,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
         }
 
 
-        internal LinMatrixGradedStorageComposer([NotNull] IScalarAlgebraProcessor<T> scalarProcessor)
+        internal LinMatrixGradedStorageComposer(IScalarProcessor<T> scalarProcessor)
         {
             ScalarProcessor = scalarProcessor;
 
@@ -94,7 +93,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinMatrixGradedStorageComposer<T> RemoveTerm(uint grade, IndexPairRecord evenKey)
+        public LinMatrixGradedStorageComposer<T> RemoveTerm(uint grade, RGaKvIndexPairRecord evenKey)
         {
             if (ComposersDictionary.TryGetValue(grade, out var composer))
                 composer.RemoveTerm(evenKey);
@@ -112,7 +111,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinMatrixGradedStorageComposer<T> RemoveTerms(uint grade, params IndexPairRecord[] indexs)
+        public LinMatrixGradedStorageComposer<T> RemoveTerms(uint grade, params RGaKvIndexPairRecord[] indexs)
         {
             if (!ComposersDictionary.TryGetValue(grade, out var composer))
                 return RemoveEmptyComposers();
@@ -123,7 +122,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinMatrixGradedStorageComposer<T> RemoveTerms(uint grade, IEnumerable<IndexPairRecord> indexs)
+        public LinMatrixGradedStorageComposer<T> RemoveTerms(uint grade, IEnumerable<RGaKvIndexPairRecord> indexs)
         {
             if (!ComposersDictionary.TryGetValue(grade, out var composer))
                 return RemoveEmptyComposers();
@@ -267,7 +266,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinMatrixGradedStorageComposer<T> SetTerm(uint grade, IndexPairRecord evenKey, T value)
+        public LinMatrixGradedStorageComposer<T> SetTerm(uint grade, RGaKvIndexPairRecord evenKey, T value)
         {
             this[grade].SetTerm(evenKey, value);
 
@@ -283,7 +282,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinMatrixGradedStorageComposer<T> SetTerms(uint grade, IEnumerable<IndexPairScalarRecord<T>> indexTermRecords)
+        public LinMatrixGradedStorageComposer<T> SetTerms(uint grade, IEnumerable<RGaKvIndexPairScalarRecord<T>> indexTermRecords)
         {
             foreach (var (index1, index2, value) in indexTermRecords)
                 SetTerm(grade, index1, index2, value);
@@ -292,7 +291,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinMatrixGradedStorageComposer<T> SetTerms(IEnumerable<GradeIndexPairScalarRecord<T>> indexTermRecords)
+        public LinMatrixGradedStorageComposer<T> SetTerms(IEnumerable<RGaGradeKvIndexPairScalarRecord<T>> indexTermRecords)
         {
             foreach (var (grade, index1, index2, value) in indexTermRecords)
                 SetTerm(grade, index1, index2, value);
@@ -302,7 +301,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinMatrixGradedStorageComposer<T> AddTerm(uint grade, IndexPairRecord evenKey, T value)
+        public LinMatrixGradedStorageComposer<T> AddTerm(uint grade, RGaKvIndexPairRecord evenKey, T value)
         {
             this[grade].AddTerm(evenKey, value);
 
@@ -318,7 +317,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinMatrixGradedStorageComposer<T> AddTerms(uint grade, IEnumerable<IndexPairScalarRecord<T>> indexTermRecords)
+        public LinMatrixGradedStorageComposer<T> AddTerms(uint grade, IEnumerable<RGaKvIndexPairScalarRecord<T>> indexTermRecords)
         {
             foreach (var (index1, index2, value) in indexTermRecords)
                 AddTerm(grade, index1, index2, value);
@@ -327,7 +326,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinMatrixGradedStorageComposer<T> AddTerms(IEnumerable<GradeIndexPairScalarRecord<T>> indexTermRecords)
+        public LinMatrixGradedStorageComposer<T> AddTerms(IEnumerable<RGaGradeKvIndexPairScalarRecord<T>> indexTermRecords)
         {
             foreach (var (grade, index1, index2, value) in indexTermRecords)
                 AddTerm(grade, index1, index2, value);
@@ -337,7 +336,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinMatrixGradedStorageComposer<T> SubtractTerm(uint grade, IndexPairRecord evenKey, T value)
+        public LinMatrixGradedStorageComposer<T> SubtractTerm(uint grade, RGaKvIndexPairRecord evenKey, T value)
         {
             this[grade].SubtractTerm(evenKey, value);
 
@@ -353,7 +352,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinMatrixGradedStorageComposer<T> SubtractTerms(uint grade, IEnumerable<IndexPairScalarRecord<T>> indexTermRecords)
+        public LinMatrixGradedStorageComposer<T> SubtractTerms(uint grade, IEnumerable<RGaKvIndexPairScalarRecord<T>> indexTermRecords)
         {
             foreach (var (index1, index2, value) in indexTermRecords)
                 SubtractTerm(grade, index1, index2, value);
@@ -362,7 +361,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinMatrixGradedStorageComposer<T> SubtractTerms(IEnumerable<GradeIndexPairScalarRecord<T>> indexTermRecords)
+        public LinMatrixGradedStorageComposer<T> SubtractTerms(IEnumerable<RGaGradeKvIndexPairScalarRecord<T>> indexTermRecords)
         {
             foreach (var (grade, index1, index2, value) in indexTermRecords)
                 SubtractTerm(grade, index1, index2, value);

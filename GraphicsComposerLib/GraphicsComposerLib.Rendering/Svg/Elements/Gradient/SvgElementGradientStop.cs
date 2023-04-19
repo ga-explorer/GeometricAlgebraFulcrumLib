@@ -1,6 +1,5 @@
 ﻿using GraphicsComposerLib.Rendering.Svg.Attributes;
 using GraphicsComposerLib.Rendering.Svg.Elements.Categories;
-using SixLabors.ImageSharp;
 
 namespace GraphicsComposerLib.Rendering.Svg.Elements.Gradient
 {

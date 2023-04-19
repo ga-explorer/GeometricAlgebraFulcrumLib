@@ -1,69 +1,70 @@
 ﻿using System.Text;
 using TextComposerLib.Text;
 
-namespace GraphicsComposerLib.Rendering.BabylonJs;
-
-public abstract class GrBabylonJsObject :
-    IGrBabylonJsCodeElement
+namespace GraphicsComposerLib.Rendering.BabylonJs
 {
-    public string ConstName { get; }
-
-    protected abstract string ConstructorName { get; }
-
-    public abstract GrBabylonJsObjectOptions? ObjectOptions { get; }
-
-    public abstract GrBabylonJsObjectProperties? ObjectProperties { get; }
-
-
-    protected GrBabylonJsObject(string constName)
+    public abstract class GrBabylonJsObject :
+        IGrBabylonJsCodeElement
     {
-        ConstName = constName;
-    }
+        public string ConstName { get; }
+
+        protected abstract string ConstructorName { get; }
+
+        public abstract GrBabylonJsObjectOptions? ObjectOptions { get; }
+
+        public abstract GrBabylonJsObjectProperties? ObjectProperties { get; }
 
 
-    protected abstract IEnumerable<string> GetConstructorArguments();
+        protected GrBabylonJsObject(string constName)
+        {
+            ConstName = constName;
+        }
 
-    public string GetConstructorCode()
-    {
-        var constructorArguments = 
-            GetConstructorArguments()
-                .Where(p => !string.IsNullOrEmpty(p))
-                .Concatenate(", ");
 
-        return $"{ConstructorName}({constructorArguments});";
-    }
+        protected abstract IEnumerable<string> GetConstructorArguments();
 
-    public string GetPropertiesCode()
-    {
-        if (ObjectProperties is null)
-            return string.Empty;
+        public string GetConstructorCode()
+        {
+            var constructorArguments = 
+                GetConstructorArguments()
+                    .Where(p => !string.IsNullOrEmpty(p))
+                    .Concatenate(", ");
 
-        return string.IsNullOrEmpty(ConstName)
-            ? ObjectProperties.GetCode()
-            : ObjectProperties.GetCode(ConstName);
-    }
+            return $"{ConstructorName}({constructorArguments});";
+        }
 
-    public virtual string GetCode()
-    {
-        var composer = new StringBuilder();
+        public string GetPropertiesCode()
+        {
+            if (ObjectProperties is null)
+                return string.Empty;
 
-        var constructorCode = GetConstructorCode();
-        var propertiesCode = GetPropertiesCode();
+            return string.IsNullOrEmpty(ConstName)
+                ? ObjectProperties.GetCode()
+                : ObjectProperties.GetCode(ConstName);
+        }
+
+        public virtual string GetCode()
+        {
+            var composer = new StringBuilder();
+
+            var constructorCode = GetConstructorCode();
+            var propertiesCode = GetPropertiesCode();
         
-        if (!string.IsNullOrEmpty(ConstName))
-            composer.Append($"const {ConstName} = ");
+            if (!string.IsNullOrEmpty(ConstName))
+                composer.Append($"const {ConstName} = ");
 
-        composer
-            .AppendLine(constructorCode)
-            .AppendLine(propertiesCode);
+            composer
+                .AppendLine(constructorCode)
+                .AppendLine(propertiesCode);
 
-        return composer.ToString();
-    }
+            return composer.ToString();
+        }
 
-    public override string ToString()
-    {
-        return string.IsNullOrEmpty(ConstName)
-            ? GetCode() 
-            : ConstName;
+        public override string ToString()
+        {
+            return string.IsNullOrEmpty(ConstName)
+                ? GetCode() 
+                : ConstName;
+        }
     }
 }

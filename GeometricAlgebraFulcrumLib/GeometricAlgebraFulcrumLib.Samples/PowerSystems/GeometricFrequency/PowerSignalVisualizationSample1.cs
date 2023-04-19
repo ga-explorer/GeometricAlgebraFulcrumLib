@@ -2,12 +2,13 @@
 using System.Globalization;
 using System.Linq;
 using DataStructuresLib.BitManipulation;
-using GeometricAlgebraFulcrumLib.Algebra.SignalAlgebra;
 using GeometricAlgebraFulcrumLib.Applications.PowerSystems;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.Differential.Functions;
+using GeometricAlgebraFulcrumLib.MathBase.Differential.Functions.Phasors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Euclidean3D;
+using GeometricAlgebraFulcrumLib.MathBase.Signals;
 using GraphicsComposerLib.Rendering.LaTeX.CodeComposer;
-using NumericalGeometryLib.BasicMath;
-using NumericalGeometryLib.BasicMath.Calculus;
-using NumericalGeometryLib.GeometricAlgebra.Euclidean3D;
 
 // ReSharper disable CompareOfFloatsByEqualityOperator
 
@@ -202,23 +203,23 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
                     true
                 ).CreateSignal(samplingRate);
 
-            var phase1 = SumD3Function.Create(
-                HarmonicCount.GetRange().Select(i => SinFunction.Create(
+            var phase1 = DfPlus.Create(
+                HarmonicCount.GetRange().Select(i => DfSinPhasor.Create(
                     Magnitudes[0, i],
                     Frequency * HarmonicFactors[i]
                 ))
             );
 
-            var phase2 = SumD3Function.Create(
-                HarmonicCount.GetRange().Select(i => SinFunction.Create(
+            var phase2 = DfPlus.Create(
+                HarmonicCount.GetRange().Select(i => DfSinPhasor.Create(
                     Magnitudes[1, i],
                     Frequency * HarmonicFactors[i],
                     -2d * Math.PI / 3 * HarmonicFactors[i]
                 ))
             );
 
-            var phase3 = SumD3Function.Create(
-                HarmonicCount.GetRange().Select(i => SinFunction.Create(
+            var phase3 = DfPlus.Create(
+                HarmonicCount.GetRange().Select(i => DfSinPhasor.Create(
                     Magnitudes[2, i],
                     Frequency * HarmonicFactors[i],
                     2d * Math.PI / 3 * HarmonicFactors[i]
@@ -259,9 +260,9 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             // 2.97467 sin(0.628319 t - 0.459056)
             // -1.54809 sin(0.628319 t + 2.64468)
 
-            var phase1 = SinFunction.Create(3.12327, Frequency, 1.88399);
-            var phase2 = SinFunction.Create(2.97467, Frequency, -0.459056);
-            var phase3 = SinFunction.Create(-1.54809, Frequency, 2.64468);
+            var phase1 = DfSinPhasor.Create(3.12327, Frequency, 1.88399);
+            var phase2 = DfSinPhasor.Create(2.97467, Frequency, -0.459056);
+            var phase3 = DfSinPhasor.Create(-1.54809, Frequency, 2.64468);
 
             //var phase1 = CosFunction.Create(2, Frequency, 0.DegreesToAngle());
             //var phase2 = CosFunction.Create(4, Frequency, 230.DegreesToAngle());

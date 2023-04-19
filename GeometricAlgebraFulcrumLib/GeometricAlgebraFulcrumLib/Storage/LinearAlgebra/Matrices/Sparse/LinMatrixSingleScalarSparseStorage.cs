@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records.Restricted;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors;
@@ -17,12 +17,12 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
         ILinMatrixSparseStorage<T>
     {
         public ulong Index2 
-            => Index.Index2;
+            => Index.KvIndex2;
 
         public ulong Index1 
-            => Index.Index1;
+            => Index.KvIndex1;
 
-        public IndexPairRecord Index { get; }
+        public RGaKvIndexPairRecord Index { get; }
 
         public T Scalar { get; set; }
 
@@ -36,9 +36,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
             => 1;
 
 
-        internal LinMatrixSingleScalarSparseStorage([NotNull] IndexPairRecord indexPair, T value)
+        internal LinMatrixSingleScalarSparseStorage(RGaKvIndexPairRecord indexPair, T value)
         {
-            Debug.Assert(indexPair.Index1 > 0 || indexPair.Index2 > 0);
+            Debug.Assert(indexPair.KvIndex1 > 0 || indexPair.KvIndex2 > 0);
 
             Index = indexPair;
             Scalar = value;
@@ -46,7 +46,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
 
         internal LinMatrixSingleScalarSparseStorage(ulong index1, ulong index2, T value)
         {
-            Index = new IndexPairRecord(index1, index2);
+            Index = new RGaKvIndexPairRecord(index1, index2);
             Scalar = value;
         }
 
@@ -70,7 +70,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public T GetScalar(IndexPairRecord index)
+        public T GetScalar(RGaKvIndexPairRecord index)
         {
             return index == Index
                 ? Scalar
@@ -80,7 +80,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public T GetScalar(ulong index1, ulong index2)
         {
-            return index1 == Index.Index1 && index2 == Index.Index2
+            return index1 == Index.KvIndex1 && index2 == Index.KvIndex2
                 ? Scalar
                 : throw new KeyNotFoundException();
         }
@@ -88,17 +88,17 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IEnumerable<ulong> GetIndices1()
         {
-            yield return Index.Index1;
+            yield return Index.KvIndex1;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IEnumerable<ulong> GetIndices2()
         {
-            yield return Index.Index2;
+            yield return Index.KvIndex2;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<IndexPairRecord> GetIndices()
+        public IEnumerable<RGaKvIndexPairRecord> GetIndices()
         {
             yield return Index;
         }
@@ -118,12 +118,12 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool ContainsIndex(ulong index1, ulong index2)
         {
-            return index1 == Index.Index1 && 
-                   index2 == Index.Index2;
+            return index1 == Index.KvIndex1 && 
+                   index2 == Index.KvIndex2;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool ContainsIndex(IndexPairRecord index)
+        public bool ContainsIndex(RGaKvIndexPairRecord index)
         {
             return Index == index;
         }
@@ -131,17 +131,17 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ulong GetMinIndex1()
         {
-            return Index.Index1;
+            return Index.KvIndex1;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ulong GetMinIndex2()
         {
-            return Index.Index2;
+            return Index.KvIndex2;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IndexPairRecord GetMinIndex()
+        public RGaKvIndexPairRecord GetMinIndex()
         {
             return Index;
         }
@@ -149,23 +149,23 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ulong GetMaxIndex1()
         {
-            return Index.Index1;
+            return Index.KvIndex1;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ulong GetMaxIndex2()
         {
-            return Index.Index2;
+            return Index.KvIndex2;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IndexPairRecord GetMaxIndex()
+        public RGaKvIndexPairRecord GetMaxIndex()
         {
             return Index;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool TryGetScalar(IndexPairRecord index, out T value)
+        public bool TryGetScalar(RGaKvIndexPairRecord index, out T value)
         {
             if (index == Index)
             {
@@ -180,7 +180,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool TryGetScalar(ulong index1, ulong index2, out T value)
         {
-            if (index1 == Index.Index1 && index2 == Index.Index2)
+            if (index1 == Index.KvIndex1 && index2 == Index.KvIndex2)
             {
                 value = Scalar;
                 return true;
@@ -191,15 +191,15 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<IndexPairRecord> GetEmptyIndices(ulong maxCount1, ulong maxCount2)
+        public IEnumerable<RGaKvIndexPairRecord> GetEmptyIndices(ulong maxCount1, ulong maxCount2)
         {
-            return new IndexPairRecord(maxCount1, maxCount2)
+            return new RGaKvIndexPairRecord(maxCount1, maxCount2)
                 .GetIndexPairsInRange()
                 .Where(index => index != Index);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<IndexPairRecord> GetEmptyIndices(IndexPairRecord maxCountPair)
+        public IEnumerable<RGaKvIndexPairRecord> GetEmptyIndices(RGaKvIndexPairRecord maxCountPair)
         {
             return maxCountPair
                 .GetIndexPairsInRange()
@@ -213,13 +213,13 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ILinMatrixStorage<T> GetPermutation(Func<ulong, ulong, IndexPairRecord> indexMapping)
+        public ILinMatrixStorage<T> GetPermutation(Func<ulong, ulong, RGaKvIndexPairRecord> indexMapping)
         {
-            return new LinMatrixSingleScalarSparseStorage<T>(indexMapping(Index.Index1, Index.Index2), Scalar);
+            return new LinMatrixSingleScalarSparseStorage<T>(indexMapping(Index.KvIndex1, Index.KvIndex2), Scalar);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ILinMatrixStorage<T> GetPermutation(Func<IndexPairRecord, IndexPairRecord> indexMapping)
+        public ILinMatrixStorage<T> GetPermutation(Func<RGaKvIndexPairRecord, RGaKvIndexPairRecord> indexMapping)
         {
             return Scalar.CreateLinMatrixSingleScalarStorage(indexMapping(Index));
         }
@@ -233,13 +233,13 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ILinMatrixStorage<T2> MapScalars<T2>(Func<ulong, ulong, T, T2> indexValueMapping)
         {
-            return new LinMatrixSingleScalarSparseStorage<T2>(Index, indexValueMapping(Index.Index1, Index.Index2, Scalar));
+            return new LinMatrixSingleScalarSparseStorage<T2>(Index, indexValueMapping(Index.KvIndex1, Index.KvIndex2, Scalar));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ILinMatrixStorage<T> FilterByIndex(Func<ulong, ulong, bool> indexFilter)
         {
-            return indexFilter(Index.Index1, Index.Index2)
+            return indexFilter(Index.KvIndex1, Index.KvIndex2)
                 ? this
                 : LinMatrixEmptyStorage<T>.EmptyStorage;
         }
@@ -247,7 +247,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ILinMatrixStorage<T> FilterByIndexScalar(Func<ulong, ulong, T, bool> indexValueFilter)
         {
-            return indexValueFilter(Index.Index1, Index.Index2, Scalar)
+            return indexValueFilter(Index.KvIndex1, Index.KvIndex2, Scalar)
                 ? this
                 : LinMatrixEmptyStorage<T>.EmptyStorage;
         }
@@ -267,10 +267,10 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ILinMatrixGradedStorage<T> ToMatrixGradedStorage(Func<ulong, ulong, GradeIndexPairRecord> indexToGradeIndexMapping)
+        public ILinMatrixGradedStorage<T> ToMatrixGradedStorage(Func<ulong, ulong, RGaGradeKvIndexPairRecord> indexToGradeIndexMapping)
         {
             var (grade, index1, index2) = 
-                indexToGradeIndexMapping(Index.Index1, Index.Index2);
+                indexToGradeIndexMapping(Index.KvIndex1, Index.KvIndex2);
 
             ILinMatrixStorage<T> vectorStorage = 
                 index1 == 0 && index2 == 0
@@ -281,10 +281,10 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ILinMatrixGradedStorage<T> ToMatrixGradedStorage(Func<ulong, ulong, T, GradeIndexPairScalarRecord<T>> indexScalarToGradeIndexScalarMapping)
+        public ILinMatrixGradedStorage<T> ToMatrixGradedStorage(Func<ulong, ulong, T, RGaGradeKvIndexPairScalarRecord<T>> indexScalarToGradeIndexScalarMapping)
         {
             var (grade, index1, index2, scalar) = 
-                indexScalarToGradeIndexScalarMapping(Index.Index1, Index.Index2, Scalar);
+                indexScalarToGradeIndexScalarMapping(Index.KvIndex1, Index.KvIndex2, Scalar);
 
             ILinMatrixStorage<T> vectorStorage = 
                 index1 == 0 && index2 == 0
@@ -311,38 +311,38 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<IndexLinVectorStorageRecord<T>> GetRows()
+        public IEnumerable<RGaKvIndexLinVectorStorageRecord<T>> GetRows()
         {
-            yield return new IndexLinVectorStorageRecord<T>(
+            yield return new RGaKvIndexLinVectorStorageRecord<T>(
                 Index1,
                 new LinVectorSingleScalarSparseStorage<T>(Index1, Scalar)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<IndexLinVectorStorageRecord<T>> GetRows(Func<ulong, bool> rowIndexFilter)
+        public IEnumerable<RGaKvIndexLinVectorStorageRecord<T>> GetRows(Func<ulong, bool> rowIndexFilter)
         {
             if (rowIndexFilter(Index1))
-                yield return new IndexLinVectorStorageRecord<T>(
+                yield return new RGaKvIndexLinVectorStorageRecord<T>(
                     Index1,
                     new LinVectorSingleScalarSparseStorage<T>(Index1, Scalar)
                 );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<IndexLinVectorStorageRecord<T>> GetColumns()
+        public IEnumerable<RGaKvIndexLinVectorStorageRecord<T>> GetColumns()
         {
-            yield return new IndexLinVectorStorageRecord<T>(
+            yield return new RGaKvIndexLinVectorStorageRecord<T>(
                 Index2,
                 new LinVectorSingleScalarSparseStorage<T>(Index2, Scalar)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<IndexLinVectorStorageRecord<T>> GetColumns(Func<ulong, bool> columnIndexFilter)
+        public IEnumerable<RGaKvIndexLinVectorStorageRecord<T>> GetColumns(Func<ulong, bool> columnIndexFilter)
         {
             if (columnIndexFilter(Index2))
-                yield return new IndexLinVectorStorageRecord<T>(
+                yield return new RGaKvIndexLinVectorStorageRecord<T>(
                     Index2,
                     new LinVectorSingleScalarSparseStorage<T>(Index2, Scalar)
                 );
@@ -356,9 +356,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<IndexPairScalarRecord<T>> GetIndexScalarRecords()
+        public IEnumerable<RGaKvIndexPairScalarRecord<T>> GetIndexScalarRecords()
         {
-            yield return new IndexPairScalarRecord<T>(Index.Index1, Index.Index2, Scalar);
+            yield return new RGaKvIndexPairScalarRecord<T>(Index.KvIndex1, Index.KvIndex2, Scalar);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -369,7 +369,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
                 : LinVectorEmptyStorage<T>.EmptyStorage;
         }
 
-        public ILinVectorStorage<T> CombineRows(IEnumerable<IndexScalarRecord<T>> rowIndexScalarRecords, Func<T, ILinVectorStorage<T>, ILinVectorStorage<T>> scalingFunc, Func<ILinVectorStorage<T>, ILinVectorStorage<T>, ILinVectorStorage<T>> reducingFunc)
+        public ILinVectorStorage<T> CombineRows(IEnumerable<RGaKvIndexScalarRecord<T>> rowIndexScalarRecords,
+            Func<T, ILinVectorStorage<T>, ILinVectorStorage<T>> scalingFunc,
+            Func<ILinVectorStorage<T>, ILinVectorStorage<T>, ILinVectorStorage<T>> reducingFunc)
         {
             ILinVectorStorage<T> vector = null;
             var rowVector = Scalar.CreateLinVectorSingleScalarStorage(Index2);
@@ -396,7 +398,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
                 : LinVectorEmptyStorage<T>.EmptyStorage;
         }
 
-        public ILinVectorStorage<T> CombineColumns(IEnumerable<IndexScalarRecord<T>> columnIndexScalarRecords, Func<T, ILinVectorStorage<T>, ILinVectorStorage<T>> scalingFunc, Func<ILinVectorStorage<T>, ILinVectorStorage<T>, ILinVectorStorage<T>> reducingFunc)
+        public ILinVectorStorage<T> CombineColumns(IEnumerable<RGaKvIndexScalarRecord<T>> columnIndexScalarRecords,
+            Func<T, ILinVectorStorage<T>, ILinVectorStorage<T>> scalingFunc,
+            Func<ILinVectorStorage<T>, ILinVectorStorage<T>, ILinVectorStorage<T>> reducingFunc)
         {
             ILinVectorStorage<T> vector = null;
             var columnVector = Scalar.CreateLinVectorSingleScalarStorage(Index1);

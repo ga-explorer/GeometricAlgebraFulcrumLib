@@ -1,13 +1,14 @@
-﻿namespace GraphicsComposerLib.Rendering.Images;
-
-public enum GrImageHtmlMimeType
+﻿namespace GraphicsComposerLib.Rendering.Images
 {
-    Bmp,
-    Gif,
-    Ico,
-    Jpeg,
-    Png,
-    Svg,
-    Tiff,
-    Webp
+    public enum GrImageHtmlMimeType
+    {
+        Bmp,
+        Gif,
+        Ico,
+        Jpeg,
+        Png,
+        Svg,
+        Tiff,
+        Webp
+    }
 }

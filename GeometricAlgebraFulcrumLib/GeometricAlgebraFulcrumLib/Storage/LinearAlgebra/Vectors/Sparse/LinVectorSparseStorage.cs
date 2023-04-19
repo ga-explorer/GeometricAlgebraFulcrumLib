@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.BitManipulation;
 using DataStructuresLib.Extensions;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records.Restricted;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Dense;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
@@ -73,7 +73,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Sparse
             _indexScalarDictionary = new Dictionary<ulong, T>();
         }
 
-        internal LinVectorSparseStorage([NotNull] Dictionary<ulong, T> valueDictionary)
+        internal LinVectorSparseStorage(Dictionary<ulong, T> valueDictionary)
         {
             _indexScalarDictionary = valueDictionary;
         }
@@ -87,7 +87,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Sparse
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinVectorSparseStorage<T> SetValue(ulong index, [NotNull] T value)
+        public LinVectorSparseStorage<T> SetValue(ulong index, T value)
         {
             if (_indexScalarDictionary.ContainsKey(index))
                 _indexScalarDictionary[index] = value;
@@ -98,7 +98,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Sparse
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinVectorSparseStorage<T> AddValue(ulong index, [NotNull] T value)
+        public LinVectorSparseStorage<T> AddValue(ulong index, T value)
         {
             _indexScalarDictionary.Add(index, value);
             return this;
@@ -235,7 +235,8 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Sparse
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ILinVectorGradedStorage<T> ToVectorGradedStorage(Func<ulong, GradeIndexRecord> indexToGradeIndexMapping)
+        public ILinVectorGradedStorage<T> ToVectorGradedStorage(
+            Func<ulong, RGaGradeKvIndexRecord> indexToGradeIndexMapping)
         {
             return GetIndexScalarRecords()
                 .Select(record => record.MapRecord(indexToGradeIndexMapping))
@@ -243,7 +244,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Sparse
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ILinVectorGradedStorage<T> ToVectorGradedStorage(Func<ulong, T, GradeIndexScalarRecord<T>> indexScalarToGradeIndexScalarMapping)
+        public ILinVectorGradedStorage<T> ToVectorGradedStorage(Func<ulong, T, RGaGradeKvIndexScalarRecord<T>> indexScalarToGradeIndexScalarMapping)
         {
             return GetIndexScalarRecords()
                 .Select(record => record.MapRecord(indexScalarToGradeIndexScalarMapping))
@@ -274,10 +275,10 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Sparse
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<IndexScalarRecord<T>> GetIndexScalarRecords()
+        public IEnumerable<RGaKvIndexScalarRecord<T>> GetIndexScalarRecords()
         {
             return _indexScalarDictionary.Select(
-                pair => new IndexScalarRecord<T>(pair.Key, pair.Value)
+                pair => new RGaKvIndexScalarRecord<T>(pair.Key, pair.Value)
             );
         }
     }

@@ -1,7 +1,8 @@
-﻿namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Surfaces;
-
-public enum GrVisualSurfaceDrawingStyle3D
+﻿namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Surfaces
 {
-    Thick,
-    Thin
+    public enum GrVisualSurfaceDrawingStyle3D
+    {
+        Thick,
+        Thin
+    }
 }

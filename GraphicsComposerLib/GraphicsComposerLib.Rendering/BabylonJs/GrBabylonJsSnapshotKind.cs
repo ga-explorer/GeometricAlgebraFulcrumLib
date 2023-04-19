@@ -1,8 +1,9 @@
-﻿namespace GraphicsComposerLib.Rendering.BabylonJs;
-
-public enum GrBabylonJsSnapshotKind
+﻿namespace GraphicsComposerLib.Rendering.BabylonJs
 {
-    PngOnly,
-    HtmlOnly,
-    HtmlAndPng
+    public enum GrBabylonJsSnapshotKind
+    {
+        PngOnly,
+        HtmlOnly,
+        HtmlAndPng
+    }
 }

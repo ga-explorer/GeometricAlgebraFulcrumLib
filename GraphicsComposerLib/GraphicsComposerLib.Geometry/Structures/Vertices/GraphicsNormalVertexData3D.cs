@@ -1,8 +1,7 @@
 ﻿using System;
-
-using NumericalGeometryLib.BasicMath.Tuples;
-using NumericalGeometryLib.BasicMath.Tuples.Immutable;
-using GraphicsComposerLib.Geometry.Primitives.Vertices;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Frames.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
 using SixLabors.ImageSharp;
 
 namespace GraphicsComposerLib.Geometry.Structures.Vertices
@@ -22,8 +21,8 @@ namespace GraphicsComposerLib.Geometry.Structures.Vertices
             set => throw new InvalidOperationException();
         }
 
-        public GrNormal3D Normal { get; }
-            = new GrNormal3D();
+        public Normal3D Normal { get; }
+            = new Normal3D();
         
         public double TextureU 
             => 0;

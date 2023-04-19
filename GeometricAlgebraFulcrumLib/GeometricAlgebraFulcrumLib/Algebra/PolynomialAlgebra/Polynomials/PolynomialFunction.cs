@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.Polynomials
 {
@@ -13,7 +11,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.Polynomials
         IReadOnlyList<Scalar<T>>
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static PolynomialFunction<T> CreateZero(IScalarAlgebraProcessor<T> scalarProcessor)
+        public static PolynomialFunction<T> CreateZero(IScalarProcessor<T> scalarProcessor)
         {
             return new PolynomialFunction<T>(
                 scalarProcessor, 
@@ -22,7 +20,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.Polynomials
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static PolynomialFunction<T> Create(IScalarAlgebraProcessor<T> scalarProcessor, params T[] monomialCoefficients)
+        public static PolynomialFunction<T> Create(IScalarProcessor<T> scalarProcessor, params T[] monomialCoefficients)
         {
             return new PolynomialFunction<T>(
                 scalarProcessor, 
@@ -31,7 +29,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.Polynomials
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static PolynomialFunction<T> Create(IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<T> monomialCoefficients)
+        public static PolynomialFunction<T> Create(IScalarProcessor<T> scalarProcessor, IEnumerable<T> monomialCoefficients)
         {
             return new PolynomialFunction<T>(
                 scalarProcessor, 
@@ -42,7 +40,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.Polynomials
 
         private readonly T[] _monomialCoefficientArray;
 
-        public IScalarAlgebraProcessor<T> ScalarProcessor { get; }
+        public IScalarProcessor<T> ScalarProcessor { get; }
 
         public int Degree 
             => _monomialCoefficientArray.Length - 1;
@@ -58,7 +56,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.Polynomials
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private PolynomialFunction([NotNull] IScalarAlgebraProcessor<T> scalarProcessor, [NotNull] T[] monomialCoefficientArray)
+        private PolynomialFunction(IScalarProcessor<T> scalarProcessor, T[] monomialCoefficientArray)
         {
             ScalarProcessor = scalarProcessor;
             _monomialCoefficientArray = monomialCoefficientArray;

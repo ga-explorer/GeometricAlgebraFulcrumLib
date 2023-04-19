@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using AngouriMath;
@@ -195,12 +194,12 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Expressions.Composite
             => FunctionHeadSpecs.IsOperator;
 
 
-        internal MetaExpressionFunction([NotNull] IMetaExpressionHeadSpecsFunction headSpecs)
+        internal MetaExpressionFunction(IMetaExpressionHeadSpecsFunction headSpecs)
         {
             FunctionHeadSpecs = headSpecs;
         }
 
-        internal MetaExpressionFunction([NotNull] IMetaExpressionHeadSpecsFunction headSpecs, IEnumerable<IMetaExpression> argumentsList)
+        internal MetaExpressionFunction(IMetaExpressionHeadSpecsFunction headSpecs, IEnumerable<IMetaExpression> argumentsList)
             : base(argumentsList)
         {
             FunctionHeadSpecs = headSpecs;

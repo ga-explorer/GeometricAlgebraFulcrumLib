@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.SignalAlgebra;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+using DataStructuresLib.Basic;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.Signals;
 using TextComposerLib.Text;
 
 namespace GeometricAlgebraFulcrumLib.Processors.SignalAlgebra
 {
     public sealed class ScalarSignalFloat64Processor :
-        IScalarAlgebraNumericProcessor<ScalarSignalFloat64>
+        INumericScalarProcessor<ScalarSignalFloat64>
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static ScalarSignalFloat64Processor Create(double samplingRate, int sampleCount)
@@ -21,8 +22,8 @@ namespace GeometricAlgebraFulcrumLib.Processors.SignalAlgebra
 
         public double SamplingRate { get; }
 
-        public IScalarAlgebraProcessor<double> ScalarProcessor 
-            => ScalarAlgebraFloat64Processor.DefaultProcessor;
+        public IScalarProcessor<double> ScalarProcessor 
+            => ScalarProcessorFloat64.DefaultProcessor;
 
         public bool IsNumeric 
             => ScalarProcessor.IsNumeric;
@@ -212,6 +213,16 @@ namespace GeometricAlgebraFulcrumLib.Processors.SignalAlgebra
                 scalar2, 
                 (s1, s2) => ScalarProcessor.Times(s1, s2)
             );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ScalarSignalFloat64 Times(IntegerSign sign, ScalarSignalFloat64 scalar)
+        {
+            if (sign.IsZero) return ScalarZero;
+
+            return sign.IsPositive 
+                ? scalar 
+                : scalar.MapSamples(ScalarProcessor.Negative);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -1,34 +1,35 @@
-﻿namespace GraphicsComposerLib.Rendering.BabylonJs.Values;
-
-public sealed class GrBabylonJsSceneValue :
-    GrBabylonJsValue<GrBabylonJsScene>
+﻿namespace GraphicsComposerLib.Rendering.BabylonJs.Values
 {
-    public static implicit operator GrBabylonJsSceneValue(string valueText)
+    public sealed class GrBabylonJsSceneValue :
+        GrBabylonJsValue<GrBabylonJsScene>
     {
-        return new GrBabylonJsSceneValue(valueText);
-    }
+        public static implicit operator GrBabylonJsSceneValue(string valueText)
+        {
+            return new GrBabylonJsSceneValue(valueText);
+        }
 
-    public static implicit operator GrBabylonJsSceneValue(GrBabylonJsScene value)
-    {
-        return new GrBabylonJsSceneValue(value);
-    }
-
-
-    private GrBabylonJsSceneValue(string valueText)
-        : base(valueText)
-    {
-    }
-
-    private GrBabylonJsSceneValue(GrBabylonJsScene value)
-        : base(value)
-    {
-    }
+        public static implicit operator GrBabylonJsSceneValue(GrBabylonJsScene value)
+        {
+            return new GrBabylonJsSceneValue(value);
+        }
 
 
-    public override string GetCode()
-    {
-        return string.IsNullOrEmpty(ValueText) 
-            ? Value.ToString() 
-            : ValueText;
+        private GrBabylonJsSceneValue(string valueText)
+            : base(valueText)
+        {
+        }
+
+        private GrBabylonJsSceneValue(GrBabylonJsScene value)
+            : base(value)
+        {
+        }
+
+
+        public override string GetCode()
+        {
+            return string.IsNullOrEmpty(ValueText) 
+                ? Value.ToString() 
+                : ValueText;
+        }
     }
 }

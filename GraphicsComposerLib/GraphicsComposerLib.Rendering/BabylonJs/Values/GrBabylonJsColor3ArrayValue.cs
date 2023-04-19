@@ -1,42 +1,41 @@
-﻿using SixLabors.ImageSharp;
-
-namespace GraphicsComposerLib.Rendering.BabylonJs.Values;
-
-public sealed class GrBabylonJsColor3ArrayValue :
-    GrBabylonJsValue<IReadOnlyList<Color>>
+﻿namespace GraphicsComposerLib.Rendering.BabylonJs.Values
 {
-    internal static GrBabylonJsColor3ArrayValue Create(IReadOnlyList<Color> value)
+    public sealed class GrBabylonJsColor3ArrayValue :
+        GrBabylonJsValue<IReadOnlyList<Color>>
     {
-        return new GrBabylonJsColor3ArrayValue(value);
-    }
+        internal static GrBabylonJsColor3ArrayValue Create(IReadOnlyList<Color> value)
+        {
+            return new GrBabylonJsColor3ArrayValue(value);
+        }
 
 
-    public static implicit operator GrBabylonJsColor3ArrayValue(string valueText)
-    {
-        return new GrBabylonJsColor3ArrayValue(valueText);
-    }
+        public static implicit operator GrBabylonJsColor3ArrayValue(string valueText)
+        {
+            return new GrBabylonJsColor3ArrayValue(valueText);
+        }
 
-    public static implicit operator GrBabylonJsColor3ArrayValue(Color[] value)
-    {
-        return new GrBabylonJsColor3ArrayValue(value);
-    }
-
-
-    private GrBabylonJsColor3ArrayValue(string valueText)
-        : base(valueText)
-    {
-    }
-
-    private GrBabylonJsColor3ArrayValue(IReadOnlyList<Color> value)
-        : base(value)
-    {
-    }
+        public static implicit operator GrBabylonJsColor3ArrayValue(Color[] value)
+        {
+            return new GrBabylonJsColor3ArrayValue(value);
+        }
 
 
-    public override string GetCode()
-    {
-        return string.IsNullOrEmpty(ValueText) 
-            ? Value.GetBabylonJsCode(false)
-            : ValueText;
+        private GrBabylonJsColor3ArrayValue(string valueText)
+            : base(valueText)
+        {
+        }
+
+        private GrBabylonJsColor3ArrayValue(IReadOnlyList<Color> value)
+            : base(value)
+        {
+        }
+
+
+        public override string GetCode()
+        {
+            return string.IsNullOrEmpty(ValueText) 
+                ? Value.GetBabylonJsCode(false)
+                : ValueText;
+        }
     }
 }

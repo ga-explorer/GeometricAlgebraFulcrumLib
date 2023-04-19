@@ -1,18 +1,19 @@
-﻿namespace GraphicsComposerLib.Rendering.SvgNew;
-
-public abstract class GrSvgElement :
-    IGrSvgCodeElement
+﻿namespace GraphicsComposerLib.Rendering.SvgNew
 {
-    public string Id { get; }
-
-    public abstract string ElementName { get; }
-
-
-    protected GrSvgElement(string id)
+    public abstract class GrSvgElement :
+        IGrSvgCodeElement
     {
-        Id = id;
+        public string Id { get; }
+
+        public abstract string ElementName { get; }
+
+
+        protected GrSvgElement(string id)
+        {
+            Id = id;
+        }
+
+
+        public abstract string GetCode();
     }
-
-
-    public abstract string GetCode();
 }

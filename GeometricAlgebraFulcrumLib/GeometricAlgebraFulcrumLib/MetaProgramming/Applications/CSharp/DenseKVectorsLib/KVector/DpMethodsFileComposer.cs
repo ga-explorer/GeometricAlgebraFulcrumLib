@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Languages;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using TextComposerLib.Text.Linear;
@@ -20,11 +21,11 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
         }
 
 
-        private void GenerateMethods(uint inGrade1, uint inGrade2)
+        private void GenerateMethods(int inGrade1, int inGrade2)
         {
             var gpCaseText = new ListTextComposer(Environment.NewLine);
             var gradesList = 
-                this
+                VSpaceDimensions
                     .GradesOfEGp(inGrade1, inGrade2)
                     .OrderByDescending(grade => grade);
 
@@ -38,7 +39,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
 
                 gpCaseText.Add(Templates["dp_case"],
                     "name", funcName,
-                    "num", this.KVectorSpaceDimension(outGrade),
+                    "num", VSpaceDimensions.KVectorSpaceDimension(outGrade),
                     "signature", CurrentNamespace,
                     "grade", outGrade
                 );
@@ -57,11 +58,11 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
         {
             var casesText = new ListTextComposer(Environment.NewLine);
 
-            foreach (var inGrade1 in GeometricProcessor.Grades)
+            foreach (var inGrade1 in Grades)
             {
-                foreach (var inGrade2 in GeometricProcessor.Grades)
+                foreach (var inGrade2 in Grades)
                 {
-                    var id = inGrade1 + inGrade2 * GeometricProcessor.GradesCount;
+                    var id = inGrade1 + inGrade2 * GradesCount;
 
                     casesText.Add(Templates["dp_main_case"],
                         "name", OperationSpecs.GetName(inGrade1, inGrade2),
@@ -85,8 +86,8 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
         {
             GenerateKVectorFileStartCode();
 
-            foreach (var grade1 in GeometricProcessor.Grades)
-                foreach (var grade2 in GeometricProcessor.Grades)
+            foreach (var grade1 in Grades)
+                foreach (var grade2 in Grades)
                     GenerateMethods(grade1, grade2);
 
             GenerateMainMethod();

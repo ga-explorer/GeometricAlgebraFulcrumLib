@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using DataStructuresLib.BitManipulation;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
-using GeometricAlgebraFulcrumLib.Processors;
-using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Storage
@@ -16,29 +15,29 @@ namespace GeometricAlgebraFulcrumLib.Samples.Storage
         private static readonly Random RandomGenerator 
             = new(10);
 
-        private static readonly IGeometricAlgebraEuclideanProcessor<double> Processor
-            = ScalarAlgebraFloat64Processor.DefaultProcessor.CreateGeometricAlgebraEuclideanProcessor(5);
+        private static readonly RGaFloat64Processor Processor
+            = RGaFloat64Processor.Euclidean;
 
-        private static readonly List<GaMultivector<double>> sList1 
+        private static readonly List<RGaFloat64Multivector> sList1 
             = new();
 
-        private static readonly List<GaMultivector<double>> sList2 
+        private static readonly List<RGaFloat64Multivector> sList2 
             = new();
 
         private static double _scalar
             = RandomGenerator.NextDouble();
 
 
-        public static uint VSpaceDimension { get; }
-            = Processor.VSpaceDimension;
+        public static int VSpaceDimensions { get; }
+            = 5;
 
-        public static ulong GaSpaceDimension
-            => 1UL << (int) VSpaceDimension;
+        public static ulong GaSpaceDimensions
+            => 1UL << VSpaceDimensions;
 
 
-        private static Dictionary<ulong, double> GetRandomKVectorDictionary(uint grade)
+        private static Dictionary<ulong, double> GetRandomKVectorDictionary(int grade)
         {
-            return VSpaceDimension
+            return VSpaceDimensions
                 .KVectorSpaceDimension(grade)
                 .GetRange()
                 .ToDictionary(
@@ -51,66 +50,62 @@ namespace GeometricAlgebraFulcrumLib.Samples.Storage
         {
             //Create a scalar storage
             sList1.Add(
-                Processor.CreateKVectorScalar(
+                Processor.CreateScalar(
                     RandomGenerator.NextDouble()
-                ).AsMultivector()
+                )
             );
 
             //Create a set of term storages
-            for (var id = 0UL; id < GaSpaceDimension; id++)
+            for (var id = 0UL; id < GaSpaceDimensions; id++)
                 sList1.Add(
-                    Processor.CreateKVectorTerm(
+                    Processor.CreateKVector(
                         id,
                         RandomGenerator.NextDouble()
-                    ).AsMultivector()
+                    )
                 );
 
             //Create a vector storage
             sList1.Add(
-                Processor.CreateVector(GetRandomKVectorDictionary(1)).AsMultivector()
+                Processor.CreateVector(GetRandomKVectorDictionary(1))
             );
 
             //Create a bivector storage
             sList1.Add(
-                Processor.CreateBivector(GetRandomKVectorDictionary(2)).AsMultivector()
+                Processor.CreateBivector(GetRandomKVectorDictionary(2))
             );
 
             //Create k-vector storages
-            for (var grade = 0U; grade <= VSpaceDimension; grade++)
+            for (var grade = 0; grade <= VSpaceDimensions; grade++)
                 sList1.Add(
                     Processor.CreateKVector(
                         grade, 
                         GetRandomKVectorDictionary(grade)
-                    ).AsMultivector()
+                    )
                 );
 
             //Create graded multivector storage
             var gradeIndexScalarDictionary = 
-                new Dictionary<uint, Dictionary<ulong, double>>();
+                new Dictionary<int, RGaFloat64KVector>();
 
-            for (var grade = 0U; grade <= VSpaceDimension; grade++)
+            for (var grade = 0; grade <= VSpaceDimensions; grade++)
                 gradeIndexScalarDictionary.Add(
                     grade, 
-                    GetRandomKVectorDictionary(grade)
+                    Processor.CreateKVector(grade, GetRandomKVectorDictionary(grade))
                 );
 
             sList1.Add(
-                Processor.CreateMultivectorGraded(gradeIndexScalarDictionary)
+                Processor.CreateMultivector(gradeIndexScalarDictionary)
             );
 
             //Convert all storages into multivector terms storages
             foreach (var storage in sList1)
-                sList2.Add(
-                    Processor.CreateMultivectorSparse(
-                        storage.MultivectorStorage.GetLinVectorIdScalarStorage().GetCopy()
-                    )
-                );
+                sList2.Add(storage);
 
             Debug.Assert(sList1.Count == sList2.Count);
 
             for (var i = 0; i < sList1.Count; i++)
             {
-                Debug.Assert(sList1[i].MultivectorStorage.TermsCount == sList2[i].MultivectorStorage.TermsCount);
+                Debug.Assert(sList1[i].Count == sList2[i].Count);
 
                 var mvDiff = sList1[i] - sList2[i];
 
@@ -118,7 +113,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Storage
             }
         }
 
-        private static Func<GaMultivector<double>, GaMultivector<double>, GaMultivector<double>> GetBinaryOperationFunction(string funcName)
+        private static Func<RGaFloat64Multivector, RGaFloat64Multivector, RGaFloat64Multivector> GetBinaryOperationFunction(string funcName)
         {
             return funcName switch
             {

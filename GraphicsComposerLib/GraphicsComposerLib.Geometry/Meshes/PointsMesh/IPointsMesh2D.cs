@@ -1,5 +1,5 @@
 ﻿using DataStructuresLib.Sequences.Periodic2D;
-using NumericalGeometryLib.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
 using GraphicsComposerLib.Geometry.Meshes.PointsPath.Space2D;
 
 namespace GraphicsComposerLib.Geometry.Meshes.PointsMesh

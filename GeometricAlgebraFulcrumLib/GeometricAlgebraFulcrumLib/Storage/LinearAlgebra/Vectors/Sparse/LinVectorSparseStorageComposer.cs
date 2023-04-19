@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records.Restricted;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Dense;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 
 namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Sparse
 {
@@ -19,7 +18,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Sparse
             => IndexScalarDictionary.Count;
 
 
-        internal LinVectorSparseStorageComposer([NotNull] IScalarAlgebraProcessor<T> scalarProcessor)
+        internal LinVectorSparseStorageComposer(IScalarProcessor<T> scalarProcessor)
             : base(scalarProcessor)
         {
         }
@@ -54,7 +53,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Sparse
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override LinVectorStorageComposerBase<T> SetTerm(ulong index, [NotNull] T value)
+        public override LinVectorStorageComposerBase<T> SetTerm(ulong index, T value)
         {
             if (IndexScalarDictionary.ContainsKey(index))
                 IndexScalarDictionary[index] = value;
@@ -65,7 +64,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Sparse
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override LinVectorStorageComposerBase<T> AddTerm(ulong index, [NotNull] T value)
+        public override LinVectorStorageComposerBase<T> AddTerm(ulong index, T value)
         {
             if (IndexScalarDictionary.TryGetValue(index, out var value1))
                 IndexScalarDictionary[index] = ScalarProcessor.Add(value1, value);
@@ -76,7 +75,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Sparse
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override LinVectorStorageComposerBase<T> SubtractTerm(ulong index, [NotNull] T value)
+        public override LinVectorStorageComposerBase<T> SubtractTerm(ulong index, T value)
         {
             if (IndexScalarDictionary.TryGetValue(index, out var value1))
                 IndexScalarDictionary[index] = ScalarProcessor.Subtract(value1, value);
@@ -105,10 +104,10 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Sparse
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override IEnumerable<IndexScalarRecord<T>> GetIndexScalarRecords()
+        public override IEnumerable<RGaKvIndexScalarRecord<T>> GetIndexScalarRecords()
         {
             return IndexScalarDictionary.Select(
-                p => new IndexScalarRecord<T>(p.Key, p.Value)
+                p => new RGaKvIndexScalarRecord<T>(p.Key, p.Value)
             );
         }
 

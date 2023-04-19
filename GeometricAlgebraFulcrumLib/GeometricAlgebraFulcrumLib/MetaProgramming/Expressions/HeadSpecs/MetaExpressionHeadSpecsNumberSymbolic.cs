@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
 
 namespace GeometricAlgebraFulcrumLib.MetaProgramming.Expressions.HeadSpecs
@@ -66,7 +65,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Expressions.HeadSpecs
             => false;
 
 
-        private MetaExpressionHeadSpecsNumberSymbolic([NotNull] MetaContext context, [NotNull] string numberText, double numberValue)
+        private MetaExpressionHeadSpecsNumberSymbolic(MetaContext context, string numberText, double numberValue)
         {
             if (string.IsNullOrEmpty(numberText))
                 throw new ArgumentNullException(nameof(numberText), @"Number value not initialized");

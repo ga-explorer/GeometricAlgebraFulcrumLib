@@ -1,7 +1,7 @@
 ﻿using DataStructuresLib.Permutations;
 using DataStructuresLib.Sequences.Periodic1D;
 using DataStructuresLib.Sequences.Periodic2D;
-using NumericalGeometryLib.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
 using GraphicsComposerLib.Geometry.Meshes.PointsPath.Space3D;
 
 namespace GraphicsComposerLib.Geometry.Meshes.PointsMesh.Space3D

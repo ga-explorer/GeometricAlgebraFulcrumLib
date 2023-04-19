@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records.Restricted;
 
 namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense
 {
@@ -21,7 +20,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense
             => ValuesArray.GetLength(1);
 
 
-        internal LinMatrixDenseStorageComposer([NotNull] IScalarAlgebraProcessor<T> scalarProcessor, int count1, int count2)
+        internal LinMatrixDenseStorageComposer(IScalarProcessor<T> scalarProcessor, int count1, int count2)
             : base(scalarProcessor)
         {
             ValuesArray = scalarProcessor.CreateArrayZero2D(count1, count2);
@@ -40,9 +39,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override LinMatrixStorageComposerBase<T> RemoveTerm(IndexPairRecord key)
+        public override LinMatrixStorageComposerBase<T> RemoveTerm(RGaKvIndexPairRecord key)
         {
-            ValuesArray[key.Index1, key.Index2] = ScalarProcessor.ScalarZero;
+            ValuesArray[key.KvIndex1, key.KvIndex2] = ScalarProcessor.ScalarZero;
 
             return this;
         }
@@ -62,15 +61,15 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override LinMatrixStorageComposerBase<T> SetTerm(IndexPairRecord key, [NotNull] T value)
+        public override LinMatrixStorageComposerBase<T> SetTerm(RGaKvIndexPairRecord key, T value)
         {
-            ValuesArray[key.Index1, key.Index2] = value;
+            ValuesArray[key.KvIndex1, key.KvIndex2] = value;
 
             return this;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override LinMatrixStorageComposerBase<T> AddTerm(IndexPairRecord key, [NotNull] T value)
+        public override LinMatrixStorageComposerBase<T> AddTerm(RGaKvIndexPairRecord key, T value)
         {
             var (key1, key2) = key;
 
@@ -83,7 +82,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override LinMatrixStorageComposerBase<T> SubtractTerm(IndexPairRecord key, [NotNull] T value)
+        public override LinMatrixStorageComposerBase<T> SubtractTerm(RGaKvIndexPairRecord key, T value)
         {
             var (key1, key2) = key;
 

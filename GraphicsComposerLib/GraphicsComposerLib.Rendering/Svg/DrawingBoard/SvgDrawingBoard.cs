@@ -1,12 +1,11 @@
 ﻿using System.Collections;
 using DataStructuresLib.Basic;
 using DataStructuresLib.Extensions;
+using GeometricAlgebraFulcrumLib.MathBase.Borders;
+using GeometricAlgebraFulcrumLib.MathBase.Borders.Space2D;
+using GeometricAlgebraFulcrumLib.MathBase.Borders.Space2D.Immutable;
 using GraphicsComposerLib.Rendering.Svg.Elements.Containers;
 using GraphicsComposerLib.Rendering.Svg.Elements.Shape;
-using NumericalGeometryLib.Borders;
-using NumericalGeometryLib.Borders.Space2D;
-using NumericalGeometryLib.Borders.Space2D.Immutable;
-using SixLabors.ImageSharp;
 
 namespace GraphicsComposerLib.Rendering.Svg.DrawingBoard
 {

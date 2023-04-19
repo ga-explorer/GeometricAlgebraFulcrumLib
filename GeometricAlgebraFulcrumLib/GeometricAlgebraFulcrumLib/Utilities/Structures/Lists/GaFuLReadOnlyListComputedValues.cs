@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.BitManipulation;
@@ -36,7 +35,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.Lists
                 : throw new IndexOutOfRangeException(nameof(index));
 
 
-        private GaFuLReadOnlyListComputedValues(int count, [NotNull] Func<ulong, T> valueFunc)
+        private GaFuLReadOnlyListComputedValues(int count, Func<ulong, T> valueFunc)
         {
             if (count < 0)
                 throw new ArgumentOutOfRangeException(nameof(count));

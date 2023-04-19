@@ -1,4 +1,4 @@
-﻿using NumericalGeometryLib.BasicMath.Tuples.Immutable;
+﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
 using GraphicsComposerLib.Geometry.Meshes.PathsMesh.Space3D;
 
 namespace GraphicsComposerLib.Geometry.Composers

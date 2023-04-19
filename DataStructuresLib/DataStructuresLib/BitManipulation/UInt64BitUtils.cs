@@ -5,6 +5,7 @@ using System.Linq;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Text;
+using DataStructuresLib.Basic;
 
 namespace DataStructuresLib.BitManipulation
 {
@@ -833,6 +834,17 @@ namespace DataStructuresLib.BitManipulation
             ////return lastOneBitPos;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Pair<int> FirstLastOneBitPosition(this ulong bitPattern)
+        {
+            return bitPattern == 0
+                ? new Pair<int>(-1, -1)
+                : new Pair<int>(
+                    BitOperations.TrailingZeroCount(bitPattern),
+                    63 - BitOperations.LeadingZeroCount(bitPattern)
+                );
+        }
+
         /// <summary>
         /// Returns the largest integer that is a power of 2 (i.e. 1ul, 2, 4, 8, 16, etc.)
         /// that is smaller or equal to the given integer. If the given integer is 0
@@ -904,6 +916,24 @@ namespace DataStructuresLib.BitManipulation
             return bitsMask | (bitsMask - 1);
         }
         
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ulong ShiftOnes(this ulong bitPattern, int offset)
+        {
+            if (bitPattern == 0UL || offset == 0) 
+                return bitPattern;
+
+            if (offset > 0)
+                return BitOperations.LeadingZeroCount(bitPattern) >= offset
+                    ? (bitPattern << offset)
+                    : throw new InvalidOperationException();
+
+            offset = -offset;
+
+            return BitOperations.TrailingZeroCount(bitPattern) >= offset
+                ? (bitPattern >> offset)
+                : throw new InvalidOperationException();
+        }
+
 
         /// <summary>
         /// Sets the bit at the given position to zero
@@ -1103,9 +1133,16 @@ namespace DataStructuresLib.BitManipulation
         /// <param name="bitsCount"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ulong CreateMask(int bitsCount)
+        public static ulong CreateMaskUInt64(this int bitsCount)
         {
-            return (1ul << bitsCount) - 1ul;
+            Debug.Assert(bitsCount is >= 0 and <= 64);
+
+            return bitsCount switch
+            {
+                0 => 0UL,
+                64 => ulong.MaxValue,
+                _ => (1UL << bitsCount) - 1UL
+            };
         }
 
         /// <summary>
@@ -1199,7 +1236,7 @@ namespace DataStructuresLib.BitManipulation
         /// <returns></returns>
         public static IEnumerable<ulong> OnesPermutations(int patternSize, int onesCount)
         {
-            var startPattern = CreateMask(onesCount);
+            var startPattern = CreateMaskUInt64(onesCount);
 
             if (patternSize <= onesCount)
             {
@@ -1207,7 +1244,7 @@ namespace DataStructuresLib.BitManipulation
                 yield break;
             }
 
-            var bitMask = CreateMask(patternSize);
+            var bitMask = CreateMaskUInt64(patternSize);
 
             while (startPattern <= bitMask)
             {
@@ -1225,7 +1262,7 @@ namespace DataStructuresLib.BitManipulation
         /// <returns></returns>
         public static IEnumerable<ulong> ZerosPermutations(int patternSize, int zerosCount)
         {
-            var startPattern = CreateMask(zerosCount);
+            var startPattern = CreateMaskUInt64(zerosCount);
 
             if (patternSize <= zerosCount)
             {
@@ -1233,7 +1270,7 @@ namespace DataStructuresLib.BitManipulation
                 yield break;
             }
 
-            var bitMask = CreateMask(patternSize);
+            var bitMask = CreateMaskUInt64(patternSize);
 
             while (startPattern <= bitMask)
             {
@@ -1291,15 +1328,61 @@ namespace DataStructuresLib.BitManipulation
         /// <returns></returns>
         public static IEnumerable<int> PatternToPositions(this ulong bitPattern)
         {
-            var bitPosition = 0;
+            if (bitPattern == 0) yield break;
+            
+            var bitPosition1 = BitOperations.TrailingZeroCount(bitPattern);
+            var bitPosition2 = 63 - BitOperations.LeadingZeroCount(bitPattern);
 
-            while (bitPattern > 0ul)
+            if (bitPosition1 == bitPosition2)
             {
-                if ((bitPattern & 1ul) != 0ul)
-                    yield return bitPosition;
+                if ((bitPattern & (1UL << bitPosition1)) != 0ul)
+                    yield return bitPosition1;
+            }
+            else
+            {
+                for (var bitPosition = bitPosition1; bitPosition <= bitPosition2; bitPosition++)
+                {
+                    if ((bitPattern & (1UL << bitPosition)) != 0ul)
+                        yield return bitPosition;
+                }
+            }
 
-                bitPosition++;
-                bitPattern >>= 1;
+            //var bitPosition = bitPattern.FirstOneBitPosition();
+
+            //while (bitPattern > 0)
+            //{
+            //    if ((bitPattern & 1ul) != 0ul)
+            //        yield return bitPosition;
+
+            //    bitPosition++;
+            //    bitPattern >>= 1;
+            //}
+        }
+        
+        /// <summary>
+        /// Returns a list of bit positions where ones are present in the given bit pattern
+        /// </summary>
+        /// <param name="bitPattern"></param>
+        /// <returns></returns>
+        public static IEnumerable<int> PatternToPositionsReversed(this ulong bitPattern)
+        {
+            if (bitPattern == 0) yield break;
+            
+            var bitPosition1 = BitOperations.TrailingZeroCount(bitPattern);
+            var bitPosition2 = 63 - BitOperations.LeadingZeroCount(bitPattern);
+
+            if (bitPosition1 == bitPosition2)
+            {
+                if ((bitPattern & (1UL << bitPosition1)) != 0ul)
+                    yield return bitPosition1;
+            }
+            else
+            {
+                for (var bitPosition = bitPosition2; bitPosition >= bitPosition2; bitPosition--)
+                {
+                    if ((bitPattern & (1UL << bitPosition)) != 0ul)
+                        yield return bitPosition;
+                }
             }
         }
 
@@ -1748,7 +1831,7 @@ namespace DataStructuresLib.BitManipulation
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<ulong> GetSuperPatterns(this ulong bitPattern, int bitsCount)
         {
-            var superPattern = CreateMask(bitsCount);
+            var superPattern = CreateMaskUInt64(bitsCount);
 
             //Make sure bitPattern is a sub-pattern of superPattern
             if ((superPattern | bitPattern) != superPattern)
@@ -1766,7 +1849,7 @@ namespace DataStructuresLib.BitManipulation
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<ulong> GetProperSuperPatterns(this ulong bitPattern, int bitsCount)
         {
-            var superPattern = CreateMask(bitsCount);
+            var superPattern = CreateMaskUInt64(bitsCount);
 
             //Make sure bitPattern is a sub-pattern of superPattern
             if ((superPattern | bitPattern) != superPattern)

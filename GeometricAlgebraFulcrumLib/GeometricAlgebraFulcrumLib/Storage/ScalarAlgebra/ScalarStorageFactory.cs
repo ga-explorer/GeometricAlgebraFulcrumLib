@@ -1,21 +1,18 @@
-﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
-
-namespace GeometricAlgebraFulcrumLib.Storage.ScalarAlgebra
+﻿namespace GeometricAlgebraFulcrumLib.Storage.ScalarAlgebra
 {
     public static class ScalarStorageFactory
     {
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ScalarComposer<T> CreateScalarComposer<T>(this IScalarAlgebraProcessor<T> scalarProcessor)
-        {
-            return new ScalarComposer<T>(scalarProcessor);
-        }
+        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+        //public static ScalarComposer<T> CreateScalarComposer<T>(this IScalarProcessor<T> scalarProcessor)
+        //{
+        //    return new ScalarComposer<T>(scalarProcessor);
+        //}
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ScalarComposer<T> CreateScalarComposer<T>(this IScalarAlgebraProcessor<T> scalarProcessor, T scalar)
-        {
-            return new ScalarComposer<T>(scalarProcessor, scalar);
-        }
+        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+        //public static ScalarComposer<T> CreateScalarComposer<T>(this IScalarProcessor<T> scalarProcessor, T scalar)
+        //{
+        //    return new ScalarComposer<T>(scalarProcessor, scalar);
+        //}
 
 
         //[MethodImpl(MethodImplOptions.AggressiveInlining)]

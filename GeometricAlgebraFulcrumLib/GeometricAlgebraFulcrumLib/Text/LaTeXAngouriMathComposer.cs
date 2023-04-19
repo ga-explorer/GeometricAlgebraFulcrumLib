@@ -1,12 +1,12 @@
 ﻿using System.Runtime.CompilerServices;
 using AngouriMath;
-using NumericalGeometryLib.BasicMath;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Text
 {
     public sealed class LaTeXAngouriMathComposer
-        : LaTeXComposer<Entity>
+        : MathBase.Text.LaTeXComposer<Entity>
     {
         public static LaTeXAngouriMathComposer DefaultComposer { get; }
             = new LaTeXAngouriMathComposer();
@@ -19,7 +19,7 @@ namespace GeometricAlgebraFulcrumLib.Text
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override string GetAngleText(PlanarAngle angle)
+        public override string GetAngleText(Float64PlanarAngle angle)
         {
             return $"{angle.Degrees}^{{\\circ}}";
         }

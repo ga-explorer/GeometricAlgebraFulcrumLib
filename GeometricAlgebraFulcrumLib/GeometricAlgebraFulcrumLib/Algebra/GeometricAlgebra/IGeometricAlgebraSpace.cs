@@ -4,9 +4,9 @@ namespace GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra
 {
     public interface IGeometricAlgebraSpace
     {
-        uint VSpaceDimension { get; }
+        uint VSpaceDimensions { get; }
 
-        ulong GaSpaceDimension { get; }
+        ulong GaSpaceDimensions { get; }
 
         ulong MaxBasisBladeId { get; }
 

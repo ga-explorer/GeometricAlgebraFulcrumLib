@@ -16,7 +16,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
             TextComposer.Append(
                 Templates["frame_utils"],
                 "signature", CurrentNamespace,
-                "vspacedim", VSpaceDimension
+                "vspacedim", VSpaceDimensions
             );
 
             FileComposer.FinalizeText();

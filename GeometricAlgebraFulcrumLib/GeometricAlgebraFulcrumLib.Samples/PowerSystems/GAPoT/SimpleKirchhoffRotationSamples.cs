@@ -4,24 +4,24 @@ using System.IO;
 using System.Linq;
 using DataStructuresLib.BitManipulation;
 using GeometricAlgebraFulcrumLib.Mathematica.Processors;
-using GeometricAlgebraFulcrumLib.Mathematica.Text;
 using GeometricAlgebraFulcrumLib.Mathematica;
 using GeometricAlgebraFulcrumLib.Mathematica.Mathematica;
 using GeometricAlgebraFulcrumLib.Mathematica.Mathematica.ExprFactory;
-using NumericalGeometryLib.BasicMath;
 using TextComposerLib.Text;
 using GAPoTNumLib.Text.Linear;
-using GeometricAlgebraFulcrumLib.Mathematica.Applications.GaPoT;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Composers;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Languages;
 using TextComposerLib.Text.Parametric;
-using GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors;
-using GeometricAlgebraFulcrumLib.Text;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Expressions;
-using GeometricAlgebraFulcrumLib.Processors;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.Mathematica.Applications.GaPoT;
+using GeometricAlgebraFulcrumLib.Mathematica.GeometricAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.LinearMaps.Rotors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
 
 namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GAPoT
 {
@@ -119,7 +119,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GAPoT
 
                 // Define a Euclidean multivectors processor for the context
                 var processor =
-                    context.CreateGeometricAlgebraEuclideanProcessor((uint)n);
+                    context.CreateEuclideanXGaProcessor();
 
                 // Stage 2: Define the input parameters of the context
                 // The input parameters are named variables created as scalar parts of multivectors
@@ -128,11 +128,11 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GAPoT
                 // Define the first vector for constructing the rotor with a given
                 // set of scalar components u1, u2, ...
                 var clarkeMap =
-                    processor.CreateClarkeMap(n);
+                    processor.CreateClarkeRotationMap(n);
 
                 var x =
                     context.ParameterVariablesFactory.CreateDenseVector(
-                        (uint)n,
+                        n,
                         index => $"x{index + 1}"
                     );
 
@@ -202,23 +202,26 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
         public static void Example1()
         {
             var textComposer
-                = TextMathematicaComposer.DefaultComposer;
+                = TextComposerExpr.DefaultComposer;
 
             var laTeXComposer
-                = LaTeXMathematicaComposer.DefaultComposer;
+                = LaTeXComposerExpr.DefaultComposer;
 
             laTeXComposer.BasisName = @"\boldsymbol{\mu}";
 
             for (var n = 3; n <= 8; n++)
             {
+                var scalarProcessor =
+                    ScalarProcessorExpr.DefaultProcessor;
+
                 var geometricProcessor =
-                    ScalarAlgebraMathematicaProcessor.DefaultProcessor.CreateGeometricAlgebraEuclideanProcessor((uint)n);
+                    scalarProcessor.CreateEuclideanRGaProcessor();
 
                 var u =
-                    geometricProcessor.CreateVectorBasis(n - 1);
+                    geometricProcessor.CreateVector(n - 1);
 
                 var k =
-                    geometricProcessor.CreateVectorSymmetric(n);
+                    geometricProcessor.CreateSymmetricVector(n);
 
                 var v =
                     k.DivideByENorm();
@@ -230,10 +233,10 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
                     Mfs.Minus[dot1.ArcCos().ScalarValue].EvaluateToDouble().RadiansToAngle();
 
                 var rotor =
-                    geometricProcessor.CreatePureRotor(u, v);
+                    u.CreatePureRotor(v);
 
                 var matrix =
-                    rotor.GetVectorOmMappingMatrix().ToArray();
+                    rotor.GetVectorMapPart(n).ToArray(n);
 
                 var x = geometricProcessor.CreateVector(
                     n,
@@ -272,20 +275,23 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
         public static void Example2()
         {
             var textComposer
-                = TextMathematicaComposer.DefaultComposer;
+                = TextComposerExpr.DefaultComposer;
 
             var laTeXComposer
-                = LaTeXMathematicaComposer.DefaultComposer;
+                = LaTeXComposerExpr.DefaultComposer;
 
             laTeXComposer.BasisName = @"\boldsymbol{\mu}";
 
             for (var n = 3; n <= 8; n++)
             {
+                var scalarProcessor =
+                    ScalarProcessorExpr.DefaultProcessor;
+
                 var geometricProcessor =
-                    ScalarAlgebraMathematicaProcessor.DefaultProcessor.CreateGeometricAlgebraEuclideanProcessor((uint)n);
+                    scalarProcessor.CreateEuclideanRGaProcessor();
 
                 var u =
-                    geometricProcessor.CreateVectorBasis(n - 1);
+                    geometricProcessor.CreateVector(n - 1);
 
                 //var v = 
                 //    geometricProcessor.CreateVector(
@@ -300,10 +306,10 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
                     ).DivideByENorm();
 
                 var rotor =
-                    geometricProcessor.CreatePureRotor(u, v);
+                    u.CreatePureRotor(v);
 
                 var matrix =
-                    rotor.GetVectorOmMappingMatrix().ToArray();
+                    rotor.GetVectorMapPart(n).ToArray(n);
 
                 var x = geometricProcessor.CreateVector(
                     n,
@@ -344,15 +350,18 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
             const int n = 5;
 
             var textComposer =
-                TextMathematicaComposer.DefaultComposer;
+                TextComposerExpr.DefaultComposer;
 
             var laTeXComposer =
-                LaTeXMathematicaComposer.DefaultComposer;
+                LaTeXComposerExpr.DefaultComposer;
 
             laTeXComposer.BasisName = @"\boldsymbol{\mu}";
 
+            var scalarProcessor =
+                ScalarProcessorExpr.DefaultProcessor;
+
             var geometricProcessor =
-                ScalarAlgebraMathematicaProcessor.DefaultProcessor.CreateGeometricAlgebraEuclideanProcessor(n);
+                scalarProcessor.CreateEuclideanRGaProcessor();
 
             var assumeExpr1 =
                 n.GetRange(1)
@@ -376,11 +385,11 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
 
             for (var i = 0; i < n; i++)
             {
-                var u = geometricProcessor.CreateVectorBasis(i);
+                var u = geometricProcessor.CreateVector(i);
                 var v = k;
 
                 var rotor =
-                    geometricProcessor.CreatePureRotor(u, v);
+                    u.CreatePureRotor(v);
 
                 var x = geometricProcessor.CreateVector(
                     n,
@@ -391,9 +400,9 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
                     rotor.OmMap(x);
 
                 var psInv = x.Op(u).Op(v).Inverse();
-                var a = u.Op(v).Lcp(psInv).Sp(y1).FullSimplify();
-                var b = v.Op(x).Lcp(psInv).Sp(y1).FullSimplify();
-                var c = x.Op(u).Lcp(psInv).Sp(y1).FullSimplify();
+                var a = u.Op(v).Lcp(psInv).Sp(y1).Scalar.FullSimplifyScalar();
+                var b = v.Op(x).Lcp(psInv).Sp(y1).Scalar.FullSimplifyScalar();
+                var c = x.Op(u).Lcp(psInv).Sp(y1).Scalar.FullSimplifyScalar();
 
                 //var r = ((b - c) / 2).FullSimplify();
                 //var s = (-(b + c) / 2).FullSimplify();
@@ -404,7 +413,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
                 var yDiff =
                     (y1 - y2).FullSimplifyScalars();
 
-                Debug.Assert(yDiff.IsZero());
+                Debug.Assert(yDiff.IsZero);
 
                 laTeXComposer
                     .ConsoleWriteLine($"{n}-Dimensions:")
@@ -434,15 +443,18 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
             const int n = 3;
 
             var textComposer
-                = TextMathematicaComposer.DefaultComposer;
+                = TextComposerExpr.DefaultComposer;
 
             var laTeXComposer
-                = LaTeXMathematicaComposer.DefaultComposer;
+                = LaTeXComposerExpr.DefaultComposer;
 
             laTeXComposer.BasisName = @"\boldsymbol{\mu}";
 
+            var scalarProcessor =
+                ScalarProcessorExpr.DefaultProcessor;
+
             var geometricProcessor =
-                ScalarAlgebraMathematicaProcessor.DefaultProcessor.CreateGeometricAlgebraEuclideanProcessor(n);
+                scalarProcessor.CreateEuclideanRGaProcessor();
 
             var assumeExpr1 =
                 n.GetRange(1)
@@ -483,7 +495,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
                 );
 
             var rotor =
-                geometricProcessor.CreatePureRotor(u, v);
+                u.CreatePureRotor(v);
 
             laTeXComposer
                 .ConsoleWriteLine($"{n}-Dimensions:")
@@ -495,9 +507,9 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
                 .ConsoleWriteLine($@"$\boldsymbol{{R}} = {laTeXComposer.GetMultivectorText(rotor)}$")
                 .ConsoleWriteLine();
 
-            var a = geometricProcessor.CreateScalarZero();
-            var b = geometricProcessor.CreateScalarZero();
-            var c = geometricProcessor.CreateScalarZero();
+            var a = geometricProcessor.CreateZeroScalar();
+            var b = geometricProcessor.CreateZeroScalar();
+            var c = geometricProcessor.CreateZeroScalar();
 
             for (var i = 0; i < n; i++)
             {
@@ -505,7 +517,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
                     geometricProcessor.CreateScalar($"Subscript[x, {i + 1}]".ToExpr());
 
                 var ei =
-                    geometricProcessor.CreateVectorBasis(i);
+                    geometricProcessor.CreateVector(i);
 
                 var yi =
                     rotor.OmMap(ei);
@@ -524,9 +536,9 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
                     .ConsoleWriteLine();
             }
 
-            a = a.FullSimplify();
-            b = b.FullSimplify();
-            c = c.FullSimplify();
+            a = a.FullSimplifyScalar();
+            b = b.FullSimplifyScalar();
+            c = c.FullSimplifyScalar();
 
             laTeXComposer
                 .ConsoleWriteLine($@"$a = {laTeXComposer.GetScalarText(a)}$")

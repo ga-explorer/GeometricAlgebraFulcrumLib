@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Processors.MatrixAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors;
 
@@ -11,7 +10,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Matrices
         public TScalar ScalingFactor { get; set; }
 
 
-        internal LinMatrixColumnScaled([NotNull] IMatrixAlgebraProcessor<TMatrix, TScalar> matrixProcessor, [NotNull] TMatrix matrix, int columnIndex, [NotNull] TScalar scalingFactor)
+        internal LinMatrixColumnScaled(IMatrixAlgebraProcessor<TMatrix, TScalar> matrixProcessor, TMatrix matrix, int columnIndex, TScalar scalingFactor)
             : base(matrixProcessor, matrix, columnIndex)
         {
             ScalingFactor = scalingFactor;

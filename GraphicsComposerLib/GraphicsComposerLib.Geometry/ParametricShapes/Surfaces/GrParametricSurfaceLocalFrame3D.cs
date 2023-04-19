@@ -1,9 +1,10 @@
 ﻿using System.Diagnostics;
 
 using DataStructuresLib.Basic;
-using NumericalGeometryLib.BasicMath;
-using NumericalGeometryLib.BasicMath.Tuples;
-using NumericalGeometryLib.BasicMath.Tuples.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Frames.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
 using GraphicsComposerLib.Geometry.Primitives.Vertices;
 using GraphicsComposerLib.Geometry.Structures.Vertices;
 using SixLabors.ImageSharp;
@@ -39,7 +40,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Surfaces
 
         public Pair<double> ParameterValue { get; }
         
-        public GrNormal3D Normal { get; }
+        public Normal3D Normal { get; }
 
         public bool HasParameterValue 
             => true;
@@ -58,7 +59,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Surfaces
         {
             ParameterValue = new Pair<double>(parameterValue1, parameterValue2);
             Point = point.ToTuple3D();
-            Normal = new GrNormal3D(normal);
+            Normal = new Normal3D(normal);
 
             Debug.Assert(IsValid());
         }
@@ -67,7 +68,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Surfaces
         {
             ParameterValue = new Pair<double>(parameterValue1, parameterValue2);
             Point = surface.GetPoint(parameterValue1, parameterValue2);
-            Normal = new GrNormal3D(
+            Normal = new Normal3D(
                 surface.GetNormal(parameterValue1, parameterValue2).ToUnitVector()
             );
 

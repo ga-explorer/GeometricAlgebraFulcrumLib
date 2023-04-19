@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 
 namespace DataStructuresLib.Combinations
@@ -78,6 +79,11 @@ namespace DataStructuresLib.Combinations
 
                 prevRow = row;
             }
+        }
+
+        public IReadOnlyList<ulong> GetRow(int r)
+        {
+            return _rows[r];
         }
 
         public override string ToString()

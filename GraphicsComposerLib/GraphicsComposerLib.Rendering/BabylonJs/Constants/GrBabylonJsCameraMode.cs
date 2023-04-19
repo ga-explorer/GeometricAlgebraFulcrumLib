@@ -1,7 +1,8 @@
-﻿namespace GraphicsComposerLib.Rendering.BabylonJs.Constants;
-
-public enum GrBabylonJsCameraMode
+﻿namespace GraphicsComposerLib.Rendering.BabylonJs.Constants
 {
-    PerspectiveCamera = 0,
-    OrthographicCamera = 1
+    public enum GrBabylonJsCameraMode
+    {
+        PerspectiveCamera = 0,
+        OrthographicCamera = 1
+    }
 }

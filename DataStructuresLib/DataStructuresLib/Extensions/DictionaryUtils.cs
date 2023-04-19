@@ -24,6 +24,14 @@ namespace DataStructuresLib.Extensions
 
             return true;
         }
+        
+        public static void AddOrSet<TKey, TValue>(this Dictionary<TKey, TValue> dict, TKey key, TValue value)
+        {
+            if (dict.ContainsKey(key))
+                dict[key] = value;
+            else
+                dict.Add(key, value);
+        }
 
         public static void AddOrSet<TKey, TValue>(this IDictionary<TKey, TValue> dict, TKey key, TValue value)
         {
@@ -345,6 +353,20 @@ namespace DataStructuresLib.Extensions
         /// <returns></returns>
         public static IEnumerable<KeyValuePair<TKey, TValue3>> FullOuterJoin<TKey, TValue1, TValue2, TValue3>(this IReadOnlyDictionary<TKey, TValue1> dictionary1, IReadOnlyDictionary<TKey, TValue2> dictionary2, TValue1 defaultValue1, TValue2 defaultValue2, Func<TValue1, TValue2, TValue3> mappingFunc)
         {
+            //var queryResult = 
+            //    dictionary1
+            //        .GroupJoin(
+            //            dictionary2, 
+            //            leftElements => leftElements.Key, 
+            //            rightElements => rightElements.Key,
+            //            (leftElements, joinResult) => 
+            //                new { leftElements, joinResult }
+            //        )
+            //        .SelectMany(@t => 
+            //            @t.joinResult.DefaultIfEmpty(),
+            //            (@t, result) => new { @t.leftElements.Key, result.Value }
+            //        );
+
             foreach (var pair1 in dictionary1)
             {
                 if (dictionary2.TryGetValue(pair1.Key, out var value2))

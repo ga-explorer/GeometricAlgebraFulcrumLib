@@ -6,9 +6,8 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.Basic;
-using NumericalGeometryLib.BasicMath;
-using NumericalGeometryLib.BasicMath.Tuples;
-using NumericalGeometryLib.BasicMath.Tuples.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
 using SixLabors.ImageSharp;
 
 namespace GraphicsComposerLib.Geometry.LatticeShapes.Curves

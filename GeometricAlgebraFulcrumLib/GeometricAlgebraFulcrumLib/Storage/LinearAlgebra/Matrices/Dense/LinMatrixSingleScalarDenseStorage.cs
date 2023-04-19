@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records.Restricted;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors;
@@ -21,7 +21,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense
         public ulong Index2 
             => 0UL;
 
-        public IndexPairRecord Index 
+        public RGaKvIndexPairRecord Index 
             => GaFuLRecordsFactory.ZeroIndexPairRecord;
 
         public T Scalar { get; set; }
@@ -66,7 +66,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense
             }
         }
 
-        internal LinMatrixSingleScalarDenseStorage([NotNull] T value)
+        internal LinMatrixSingleScalarDenseStorage(T value)
         {
             Scalar = value;
         }
@@ -103,7 +103,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<IndexPairRecord> GetIndices()
+        public IEnumerable<RGaKvIndexPairRecord> GetIndices()
         {
             yield return GaFuLRecordsFactory.ZeroIndexPairRecord;
         }
@@ -115,7 +115,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public T GetScalar(IndexPairRecord index)
+        public T GetScalar(RGaKvIndexPairRecord index)
         {
             return index == GaFuLRecordsFactory.ZeroIndexPairRecord
                 ? Scalar
@@ -144,7 +144,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool ContainsIndex(IndexPairRecord index)
+        public bool ContainsIndex(RGaKvIndexPairRecord index)
         {
             return index == GaFuLRecordsFactory.ZeroIndexPairRecord;
         }
@@ -162,7 +162,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IndexPairRecord GetMinIndex()
+        public RGaKvIndexPairRecord GetMinIndex()
         {
             return GaFuLRecordsFactory.ZeroIndexPairRecord;
         }
@@ -180,13 +180,13 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IndexPairRecord GetMaxIndex()
+        public RGaKvIndexPairRecord GetMaxIndex()
         {
             return GaFuLRecordsFactory.ZeroIndexPairRecord;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool TryGetScalar(IndexPairRecord index, out T value)
+        public bool TryGetScalar(RGaKvIndexPairRecord index, out T value)
         {
             if (index == GaFuLRecordsFactory.ZeroIndexPairRecord)
             {
@@ -212,15 +212,15 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<IndexPairRecord> GetEmptyIndices(ulong maxCount1, ulong maxCount2)
+        public IEnumerable<RGaKvIndexPairRecord> GetEmptyIndices(ulong maxCount1, ulong maxCount2)
         {
-            return new IndexPairRecord(maxCount1, maxCount2)
+            return new RGaKvIndexPairRecord(maxCount1, maxCount2)
                 .GetIndexPairsInRange()
                 .Where(index => index != GaFuLRecordsFactory.ZeroIndexPairRecord);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<IndexPairRecord> GetEmptyIndices(IndexPairRecord maxCount)
+        public IEnumerable<RGaKvIndexPairRecord> GetEmptyIndices(RGaKvIndexPairRecord maxCount)
         {
             return maxCount
                 .GetIndexPairsInRange()
@@ -234,13 +234,13 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ILinMatrixStorage<T> GetPermutation(Func<ulong, ulong, IndexPairRecord> indexMapping)
+        public ILinMatrixStorage<T> GetPermutation(Func<ulong, ulong, RGaKvIndexPairRecord> indexMapping)
         {
             return Scalar.CreateLinMatrixSingleScalarStorage(indexMapping(0UL, 0UL));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ILinMatrixStorage<T> GetPermutation(Func<IndexPairRecord, IndexPairRecord> indexMapping)
+        public ILinMatrixStorage<T> GetPermutation(Func<RGaKvIndexPairRecord, RGaKvIndexPairRecord> indexMapping)
         {
             return Scalar.CreateLinMatrixSingleScalarStorage(indexMapping(GaFuLRecordsFactory.ZeroIndexPairRecord));
         }
@@ -292,7 +292,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ILinMatrixGradedStorage<T> ToMatrixGradedStorage(Func<ulong, ulong, GradeIndexPairRecord> indexToGradeIndexMapping)
+        public ILinMatrixGradedStorage<T> ToMatrixGradedStorage(Func<ulong, ulong, RGaGradeKvIndexPairRecord> indexToGradeIndexMapping)
         {
             var (grade, index1, index2) = 
                 indexToGradeIndexMapping(0UL, 0UL);
@@ -306,7 +306,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ILinMatrixGradedStorage<T> ToMatrixGradedStorage(Func<ulong, ulong, T, GradeIndexPairScalarRecord<T>> indexScalarToGradeIndexScalarMapping)
+        public ILinMatrixGradedStorage<T> ToMatrixGradedStorage(Func<ulong, ulong, T, RGaGradeKvIndexPairScalarRecord<T>> indexScalarToGradeIndexScalarMapping)
         {
             var (grade, index1, index2, scalar) = 
                 indexScalarToGradeIndexScalarMapping(0UL, 0UL, Scalar);
@@ -336,38 +336,38 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<IndexLinVectorStorageRecord<T>> GetRows()
+        public IEnumerable<RGaKvIndexLinVectorStorageRecord<T>> GetRows()
         {
-            yield return new IndexLinVectorStorageRecord<T>(
+            yield return new RGaKvIndexLinVectorStorageRecord<T>(
                 0,
                 new LinVectorSingleScalarDenseStorage<T>(Scalar)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<IndexLinVectorStorageRecord<T>> GetRows(Func<ulong, bool> rowIndexFilter)
+        public IEnumerable<RGaKvIndexLinVectorStorageRecord<T>> GetRows(Func<ulong, bool> rowIndexFilter)
         {
             if (rowIndexFilter(0))
-                yield return new IndexLinVectorStorageRecord<T>(
+                yield return new RGaKvIndexLinVectorStorageRecord<T>(
                     0,
                     new LinVectorSingleScalarDenseStorage<T>(Scalar)
                 );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<IndexLinVectorStorageRecord<T>> GetColumns()
+        public IEnumerable<RGaKvIndexLinVectorStorageRecord<T>> GetColumns()
         {
-            yield return new IndexLinVectorStorageRecord<T>(
+            yield return new RGaKvIndexLinVectorStorageRecord<T>(
                 0,
                 new LinVectorSingleScalarDenseStorage<T>(Scalar)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<IndexLinVectorStorageRecord<T>> GetColumns(Func<ulong, bool> columnIndexFilter)
+        public IEnumerable<RGaKvIndexLinVectorStorageRecord<T>> GetColumns(Func<ulong, bool> columnIndexFilter)
         {
             if (columnIndexFilter(0))
-                yield return new IndexLinVectorStorageRecord<T>(
+                yield return new RGaKvIndexLinVectorStorageRecord<T>(
                     0,
                     new LinVectorSingleScalarDenseStorage<T>(Scalar)
                 );
@@ -380,7 +380,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ILinVectorStorage<T> CombineRows(IEnumerable<IndexScalarRecord<T>> rowIndexScalarRecords, Func<T, ILinVectorStorage<T>, ILinVectorStorage<T>> scalingFunc, Func<ILinVectorStorage<T>, ILinVectorStorage<T>, ILinVectorStorage<T>> reducingFunc)
+        public ILinVectorStorage<T> CombineRows(IEnumerable<RGaKvIndexScalarRecord<T>> rowIndexScalarRecords,
+            Func<T, ILinVectorStorage<T>, ILinVectorStorage<T>> scalingFunc,
+            Func<ILinVectorStorage<T>, ILinVectorStorage<T>, ILinVectorStorage<T>> reducingFunc)
         {
             ILinVectorStorage<T> vector = null;
             var rowVector = new LinVectorSingleScalarDenseStorage<T>(Scalar);
@@ -405,7 +407,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense
             return scalingFunc(scalarList[0], new LinVectorSingleScalarDenseStorage<T>(Scalar));
         }
 
-        public ILinVectorStorage<T> CombineColumns(IEnumerable<IndexScalarRecord<T>> columnIndexScalarRecords, Func<T, ILinVectorStorage<T>, ILinVectorStorage<T>> scalingFunc, Func<ILinVectorStorage<T>, ILinVectorStorage<T>, ILinVectorStorage<T>> reducingFunc)
+        public ILinVectorStorage<T> CombineColumns(IEnumerable<RGaKvIndexScalarRecord<T>> columnIndexScalarRecords, Func<T, ILinVectorStorage<T>, ILinVectorStorage<T>> scalingFunc, Func<ILinVectorStorage<T>, ILinVectorStorage<T>, ILinVectorStorage<T>> reducingFunc)
         {
             ILinVectorStorage<T> vector = null;
             var columnVector = new LinVectorSingleScalarDenseStorage<T>(Scalar);
@@ -432,13 +434,13 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<IndexPairScalarRecord<T>> GetIndexScalarRecords()
+        public IEnumerable<RGaKvIndexPairScalarRecord<T>> GetIndexScalarRecords()
         {
-            yield return new IndexPairScalarRecord<T>(0UL, 0UL, Scalar);
+            yield return new RGaKvIndexPairScalarRecord<T>(0UL, 0UL, Scalar);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ILinMatrixDenseStorage<T> GetDensePermutation(Func<ulong, ulong, IndexPairRecord> indexMapping)
+        public ILinMatrixDenseStorage<T> GetDensePermutation(Func<ulong, ulong, RGaKvIndexPairRecord> indexMapping)
         {
             var (index1, index2) = 
                 indexMapping(0, 0);
@@ -449,7 +451,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ILinMatrixDenseStorage<T> GetDensePermutation(Func<IndexPairRecord, IndexPairRecord> indexMapping)
+        public ILinMatrixDenseStorage<T> GetDensePermutation(Func<RGaKvIndexPairRecord, RGaKvIndexPairRecord> indexMapping)
         {
             var (index1, index2) = 
                 indexMapping(GaFuLRecordsFactory.ZeroIndexPairRecord);
@@ -460,20 +462,20 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<IndexLinVectorStorageRecord<T>> GetDenseRows(IEnumerable<ulong> rowIndexList)
+        public IEnumerable<RGaKvIndexLinVectorStorageRecord<T>> GetDenseRows(IEnumerable<ulong> rowIndexList)
         {
             if (rowIndexList.Any(i => i == 0))
-                yield return new IndexLinVectorStorageRecord<T>(
+                yield return new RGaKvIndexLinVectorStorageRecord<T>(
                     0,
                     Scalar.CreateLinVectorSingleScalarStorage(0)
                 );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<IndexLinVectorStorageRecord<T>> GetDenseColumns(IEnumerable<ulong> columnIndexList)
+        public IEnumerable<RGaKvIndexLinVectorStorageRecord<T>> GetDenseColumns(IEnumerable<ulong> columnIndexList)
         {
             if (columnIndexList.Any(i => i == 0))
-                yield return new IndexLinVectorStorageRecord<T>(
+                yield return new RGaKvIndexLinVectorStorageRecord<T>(
                     0,
                     Scalar.CreateLinVectorSingleScalarStorage(0)
                 );

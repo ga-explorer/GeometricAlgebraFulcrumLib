@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context.Optimizer;
@@ -22,7 +21,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Context.Evaluation
         public MetaContext Context { get; }
 
 
-        internal MetaContextEvaluationDataHistory([NotNull] MetaContext context, double minValue, double maxValue)
+        internal MetaContextEvaluationDataHistory(MetaContext context, double minValue, double maxValue)
         {
             Context = context;
 

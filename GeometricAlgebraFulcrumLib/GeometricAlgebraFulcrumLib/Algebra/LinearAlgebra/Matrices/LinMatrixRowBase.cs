@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using GeometricAlgebraFulcrumLib.Processors.MatrixAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Dense;
 
@@ -18,7 +17,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Matrices
             => MatrixProcessor.GetDenseColumnsCount(MatrixStorage);
 
 
-        protected LinMatrixRowBase([NotNull] IMatrixAlgebraProcessor<TMatrix, TScalar> matrixProcessor, [NotNull] TMatrix matrix, int rowIndex)
+        protected LinMatrixRowBase(IMatrixAlgebraProcessor<TMatrix, TScalar> matrixProcessor, TMatrix matrix, int rowIndex)
         {
             if (rowIndex < 0 || rowIndex >= matrixProcessor.GetDenseRowsCount(matrix))
                 throw new ArgumentOutOfRangeException(nameof(rowIndex));

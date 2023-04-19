@@ -293,6 +293,17 @@ namespace DataStructuresLib.Extensions
 
             return arrayOut;
         }
+        
+        public static T[,] GetSubArray<T>(this T[,] array, int row1, int col1, int rowCount, int colCount)
+        {
+            var arrayOut = new T[rowCount, colCount];
+
+            for (var i = 0; i < rowCount; i++)
+            for (var j = 0; j < colCount; j++)
+                arrayOut[i, j] = array[i + row1, j + col1];
+
+            return arrayOut;
+        }
 
         public static double[,] Add(this double[,] array1, double[,] array2)
         {

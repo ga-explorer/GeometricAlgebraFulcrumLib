@@ -76,7 +76,7 @@
     //        => 2 * BasisSet.Degree;
 
         
-    //    private BSplineBasisPairProductSet([NotNull] BSplineBasisSet<T> bSplineBasisSet)
+    //    private BSplineBasisPairProductSet(BSplineBasisSet<T> bSplineBasisSet)
     //    {
     //        //var scalarProcessor = bSplineBasisSet.ScalarProcessor;
     //        var degree = bSplineBasisSet.Degree;

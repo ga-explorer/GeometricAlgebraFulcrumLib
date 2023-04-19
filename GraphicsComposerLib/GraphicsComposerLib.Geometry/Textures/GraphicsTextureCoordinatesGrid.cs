@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using DataStructuresLib.Collections;
 using DataStructuresLib.Sequences.Periodic1D;
 using DataStructuresLib.Sequences.Periodic2D;
-using NumericalGeometryLib.BasicMath.Tuples;
-using NumericalGeometryLib.BasicMath.Tuples.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
 
 namespace GraphicsComposerLib.Geometry.Textures
 {

@@ -6,8 +6,10 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using DataStructuresLib.Basic;
-using NumericalGeometryLib.BasicMath;
-using NumericalGeometryLib.Borders.Space2D.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.Borders.Space2D.Immutable;
 
 // ReSharper disable InconsistentNaming
 
@@ -384,7 +386,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Surfaces.Sampled
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public PlanarAngle MaxEdgeFramesAngle()
+        public Float64PlanarAngle MaxEdgeFramesAngle()
         {
             return GetEdgeFramePairs().Select(p => 
                 p.Item1.Normal.GetVectorsAngle(p.Item2.Normal).Radians

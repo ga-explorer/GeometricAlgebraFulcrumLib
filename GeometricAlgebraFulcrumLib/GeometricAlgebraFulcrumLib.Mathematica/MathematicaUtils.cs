@@ -5,50 +5,38 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Diagnostics.CodeAnalysis;
 using CodeComposerLib.SyntaxTree.Expressions;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors;
-using GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Algebra.SignalAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.Signals;
 using GeometricAlgebraFulcrumLib.Mathematica.Mathematica;
 using GeometricAlgebraFulcrumLib.Mathematica.Mathematica.Expression;
 using GeometricAlgebraFulcrumLib.Mathematica.Mathematica.ExprFactory;
 using GeometricAlgebraFulcrumLib.Mathematica.MetaExpressions;
 using GeometricAlgebraFulcrumLib.Mathematica.Processors;
-using GeometricAlgebraFulcrumLib.Mathematica.Text;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Expressions;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Expressions.Composite;
-using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices;
-using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors;
-using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded;
 using Wolfram.NETLink;
-using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra;
-using GeometricAlgebraFulcrumLib.Text;
-using GeometricAlgebraFulcrumLib.Processors;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
+using GeometricAlgebraFulcrumLib.Mathematica.GeometricAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Arrays.Generic;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
 
 namespace GeometricAlgebraFulcrumLib.Mathematica
 {
     public static class MathematicaUtils
     {
-        public static ScalarAlgebraMathematicaProcessor ScalarProcessor
-            => ScalarAlgebraMathematicaProcessor.DefaultProcessor;
+        public static ScalarProcessorExpr ScalarProcessor
+            => ScalarProcessorExpr.DefaultProcessor;
         
         public static MatrixAlgebraMathematicaProcessor MatrixProcessor
             => MatrixAlgebraMathematicaProcessor.DefaultProcessor;
-
-        public static IGeometricAlgebraEuclideanProcessor<Expr> EuclideanProcessor { get; }
-            = ScalarProcessor.CreateGeometricAlgebraEuclideanProcessor(63);
-
-        public static LaTeXMathematicaComposer LaTeXComposer
-            => LaTeXMathematicaComposer.DefaultComposer;
-
-        public static TextMathematicaComposer TextComposer
-            => TextMathematicaComposer.DefaultComposer;
+        
+        public static TextComposerExpr TextComposer
+            => TextComposerExpr.DefaultComposer;
 
 
         public static MathematicaInterface Cas 
@@ -196,13 +184,13 @@ namespace GeometricAlgebraFulcrumLib.Mathematica
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Expr[] SimplifyScalars(this Expr[] array)
+        public static IReadOnlyList<Expr> SimplifyScalars(this IReadOnlyList<Expr> array)
         {
             return array.MapScalars(s => s.Simplify());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Expr[] SimplifyScalars(this Expr[] array, Expr assumptionsExpr)
+        public static IReadOnlyList<Expr> SimplifyScalars(this IReadOnlyList<Expr> array, Expr assumptionsExpr)
         {
             return array.MapScalars(s => s.Simplify(assumptionsExpr));
         }
@@ -228,7 +216,7 @@ namespace GeometricAlgebraFulcrumLib.Mathematica
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ILinVectorStorage<Expr> SimplifyScalars(this ILinVectorStorage<Expr> storage, Expr assumptionsExpr)
         {
-            return storage.MapScalars(scalar => scalar.Simplify());
+            return storage.MapScalars(scalar => scalar.Simplify(assumptionsExpr));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -250,93 +238,15 @@ namespace GeometricAlgebraFulcrumLib.Mathematica
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<Expr> Simplify(this Scalar<Expr> storage)
+        public static Scalar<Expr> SimplifyScalar(this Scalar<Expr> storage)
         {
             return storage.ScalarValue.Simplify().CreateScalar(storage.ScalarProcessor);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<Expr> Simplify(this Scalar<Expr> storage, Expr assumeExpr)
+        public static Scalar<Expr> SimplifyScalar(this Scalar<Expr> storage, Expr assumeExpr)
         {
             return storage.ScalarValue.Simplify(assumeExpr).CreateScalar(storage.ScalarProcessor);
-        }
-        
-        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-        //public static Scalar<Expr> Collect(this Scalar<Expr> storage, Expr t)
-        //{
-        //    return Mfs.Collect[storage.ScalarValue, t].Evaluate().CreateScalar(storage.ScalarProcessor);
-        //}
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaVector<Expr> SimplifyScalars(this GaVector<Expr> storage)
-        {
-            return storage.MapScalars(scalar => scalar.Simplify());
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaVector<Expr> SimplifyScalars(this GaVector<Expr> storage, Expr assumeExpr)
-        {
-            return storage.MapScalars(scalar => scalar.Simplify(assumeExpr));
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaBivector<Expr> SimplifyScalars(this GaBivector<Expr> storage)
-        {
-            return storage.MapScalars(scalar => scalar.Simplify());
-        }
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaBivector<Expr> SimplifyScalars(this GaBivector<Expr> storage, Expr assumeExpr)
-        {
-            return storage.MapScalars(scalar => scalar.Simplify(assumeExpr));
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaKVector<Expr> SimplifyScalars(this GaKVector<Expr> storage)
-        {
-            return storage.MapScalars(scalar => scalar.Simplify());
-        }
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaKVector<Expr> SimplifyScalars(this GaKVector<Expr> storage, Expr assumeExpr)
-        {
-            return storage.MapScalars(scalar => scalar.Simplify(assumeExpr));
-        }
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaMultivector<Expr> SimplifyScalars(this GaMultivector<Expr> storage)
-        {
-            return storage.MapScalars(scalar => scalar.Simplify());
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaMultivector<Expr> SimplifyScalars(this GaMultivector<Expr> storage, Expr assumeExpr)
-        {
-            return storage.MapScalars(scalar => scalar.Simplify(assumeExpr));
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorStorage<Expr> SimplifyScalars(this IMultivectorStorage<Expr> storage, Expr assumptionsExpr)
-        {
-            return storage.MapScalars(scalar => scalar.Simplify(assumptionsExpr));
-        }
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static PureRotor<Expr> SimplifyScalars(this PureRotor<Expr> rotor)
-        {
-            return rotor
-                .Multivector
-                .MapScalars(scalar => scalar.Simplify())
-                .CreatePureRotor();
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static PureRotor<Expr> SimplifyScalars(this PureRotor<Expr> rotor, Expr assumeExpr)
-        {
-            return rotor
-                .Multivector
-                .MapScalars(scalar => scalar.Simplify(assumeExpr))
-                .CreatePureRotor();
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -344,37 +254,7 @@ namespace GeometricAlgebraFulcrumLib.Mathematica
         {
             return Mfs.TrigExpand[scalar].FullSimplify();
         }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<Expr> TrigExpand(this Scalar<Expr> scalar)
-        {
-            return scalar.MapScalar(s => s.TrigReduce());
-        }
         
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaVector<Expr> TrigExpandScalars(this GaVector<Expr> v)
-        {
-            return v.MapScalars(s => s.TrigExpand());
-        }
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaBivector<Expr> TrigExpandScalars(this GaBivector<Expr> v)
-        {
-            return v.MapScalars(s => s.TrigExpand());
-        }
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaKVector<Expr> TrigExpandScalars(this GaKVector<Expr> v)
-        {
-            return v.MapScalars(s => s.TrigExpand());
-        }
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaMultivector<Expr> TrigExpandScalars(this GaMultivector<Expr> v)
-        {
-            return v.MapScalars(s => s.TrigExpand());
-        }
-
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Expr TrigReduce(this Expr scalar)
         {
@@ -382,67 +262,11 @@ namespace GeometricAlgebraFulcrumLib.Mathematica
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<Expr> TrigReduce(this Scalar<Expr> scalar)
+        public static Scalar<Expr> TrigReduceScalar(this Scalar<Expr> scalar)
         {
             return scalar.MapScalar(s => s.TrigReduce());
         }
         
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaVector<Expr> TrigReduceScalars(this GaVector<Expr> v)
-        {
-            return v.MapScalars(s => s.TrigReduce());
-        }
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaBivector<Expr> TrigReduceScalars(this GaBivector<Expr> v)
-        {
-            return v.MapScalars(s => s.TrigReduce());
-        }
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaKVector<Expr> TrigReduceScalars(this GaKVector<Expr> v)
-        {
-            return v.MapScalars(s => s.TrigReduce());
-        }
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaMultivector<Expr> TrigReduceScalars(this GaMultivector<Expr> v)
-        {
-            return v.MapScalars(s => s.TrigReduce());
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaVector<Expr> CollectScalars(this GaVector<Expr> vector, Expr t)
-        {
-            return vector.MapScalars(scalar => 
-                Mfs.Collect[scalar, t].Evaluate()
-            );
-        }
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaBivector<Expr> CollectScalars(this GaBivector<Expr> vector, Expr t)
-        {
-            return vector.MapScalars(scalar => 
-                Mfs.Collect[scalar, t].Evaluate()
-            );
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaKVector<Expr> CollectScalars(this GaKVector<Expr> vector, Expr t)
-        {
-            return vector.MapScalars(scalar => 
-                Mfs.Collect[scalar, t].Evaluate()
-            );
-        }
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaMultivector<Expr> CollectScalars(this GaMultivector<Expr> vector, Expr t)
-        {
-            return vector.MapScalars(scalar => 
-                Mfs.Collect[scalar, t].Evaluate()
-            );
-        }
-
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Expr SimplifyCollect(this Expr scalar, Expr t)
         {
@@ -450,52 +274,20 @@ namespace GeometricAlgebraFulcrumLib.Mathematica
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<Expr> SimplifyCollect(this Scalar<Expr> scalar, Expr t)
+        public static Scalar<Expr> SimplifyCollectScalar(this Scalar<Expr> scalar, Expr t)
         {
             return Mfs.Collect[Mfs.Simplify[scalar.ScalarValue], t].Evaluate().CreateScalar(scalar.ScalarProcessor);
         }
+        
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaVector<Expr> SimplifyCollectScalars(this GaVector<Expr> vector, Expr t)
-        {
-            return vector.MapScalars(scalar => 
-                Mfs.Collect[Mfs.Simplify[scalar], t].Evaluate()
-            );
-        }
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaBivector<Expr> SimplifyCollectScalars(this GaBivector<Expr> vector, Expr t)
-        {
-            return vector.MapScalars(scalar => 
-                Mfs.Collect[Mfs.Simplify[scalar], t].Evaluate()
-            );
-        }
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaKVector<Expr> SimplifyCollectScalars(this GaKVector<Expr> vector, Expr t)
-        {
-            return vector.MapScalars(scalar => 
-                Mfs.Collect[Mfs.Simplify[scalar], t].Evaluate()
-            );
-        }
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaMultivector<Expr> SimplifyCollectScalars(this GaMultivector<Expr> vector, Expr t)
-        {
-            return vector.MapScalars(scalar => 
-                Mfs.Collect[Mfs.Simplify[scalar], t].Evaluate()
-            );
-        }
-
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Expr[] FullSimplifyScalars(this Expr[] array)
+        public static IReadOnlyList<Expr> FullSimplifyScalars(this IReadOnlyList<Expr> array)
         {
             return array.MapScalars(s => s.FullSimplify());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Expr[] FullSimplifyScalars(this Expr[] array, Expr assumptionsExpr)
+        public static IReadOnlyList<Expr> FullSimplifyScalars(this IReadOnlyList<Expr> array, Expr assumptionsExpr)
         {
             return array.MapScalars(s => s.FullSimplify(assumptionsExpr));
         }
@@ -548,66 +340,7 @@ namespace GeometricAlgebraFulcrumLib.Mathematica
             return storage.MapScalars(scalar => scalar.FullSimplify(assumptionsExpr));
         }
         
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaVector<Expr> FullSimplifyScalars(this GaVector<Expr> mv)
-        {
-            return mv.MapScalars(scalar => scalar.FullSimplify());
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaVector<Expr> FullSimplifyScalars(this GaVector<Expr> mv, Expr assumptionsExpr)
-        {
-            return mv.MapScalars(scalar => scalar.FullSimplify(assumptionsExpr));
-        }
         
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaBivector<Expr> FullSimplifyScalars(this GaBivector<Expr> storage)
-        {
-            return storage.MapScalars(scalar => scalar.FullSimplify());
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaBivector<Expr> FullSimplifyScalars(this GaBivector<Expr> mv, Expr assumptionsExpr)
-        {
-            return mv.MapScalars(scalar => scalar.FullSimplify(assumptionsExpr));
-        }
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaKVector<Expr> FullSimplifyScalars(this GaKVector<Expr> mv)
-        {
-            return mv.MapScalars(scalar => scalar.FullSimplify());
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaKVector<Expr> FullSimplifyScalars(this GaKVector<Expr> mv, Expr assumptionsExpr)
-        {
-            return mv.MapScalars(scalar => scalar.FullSimplify(assumptionsExpr));
-        }
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaMultivector<Expr> FullSimplifyScalars(this GaMultivector<Expr> mv)
-        {
-            return mv.MapScalars(scalar => scalar.FullSimplify());
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaMultivector<Expr> FullSimplifyScalars(this GaMultivector<Expr> mv, Expr assumptionsExpr)
-        {
-            return mv.MapScalars(scalar => scalar.FullSimplify(assumptionsExpr));
-        }
-
-        
-        public static Expr AsListExpr(this GaVector<Expr> vector)
-        {
-            var n = vector.GeometricProcessor.VSpaceDimension;
-            var listExprArgs = new object[n];
-
-            for (var i = 0; i < n; i++)
-                listExprArgs[i] = vector[i].ScalarValue;
-
-            return Mfs.List[listExprArgs];
-        }
-
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Expr DifferentiateScalar(this Expr scalar, string variableName, int degree = 1)
         {
@@ -641,103 +374,7 @@ namespace GeometricAlgebraFulcrumLib.Mathematica
                 Mfs.List[variableExpr, degree.ToExpr()]
             ].CreateScalar(scalar.ScalarProcessor);
         }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ILinVectorStorage<Expr> DifferentiateScalars(this ILinVectorStorage<Expr> storage, string variableName)
-        {
-            var variableExpr = variableName.ToExpr();
-
-            return storage.MapScalars(
-                scalar => Mfs.D[scalar, variableExpr].FullSimplify()
-            );
-        }
         
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ILinVectorGradedStorage<Expr> DifferentiateScalars(this ILinVectorGradedStorage<Expr> storage, string variableName)
-        {
-            var variableExpr = variableName.ToExpr();
-
-            return storage.MapScalars(
-                scalar => Mfs.D[scalar, variableExpr].FullSimplify()
-            );
-        }
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ILinMatrixStorage<Expr> DifferentiateScalars(this ILinMatrixStorage<Expr> storage, string variableName)
-        {
-            var variableExpr = variableName.ToExpr();
-
-            return storage.MapScalars(
-                scalar => Mfs.D[scalar, variableExpr].FullSimplify()
-            );
-        }
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ILinMatrixGradedStorage<Expr> DifferentiateScalars(this ILinMatrixGradedStorage<Expr> storage, string variableName)
-        {
-            var variableExpr = variableName.ToExpr();
-
-            return storage.MapScalars(
-                scalar => Mfs.D[scalar, variableExpr].FullSimplify()
-            );
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorStorage<Expr> DifferentiateScalars(this IMultivectorStorage<Expr> storage, string variableName)
-        {
-            var variableExpr = variableName.ToExpr();
-
-            return storage.MapScalars(
-                scalar => Mfs.D[scalar, variableExpr].FullSimplify()
-            );
-        }
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<Expr> Differentiate(this Scalar<Expr> scalar, Expr variableExpr, int degree = 1)
-        {
-            return scalar
-                .ScalarValue
-                .DifferentiateScalar(variableExpr, degree)
-                .CreateScalar(scalar.ScalarProcessor);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaVector<Expr> DifferentiateScalars(this GaVector<Expr> vector, string variableName, int degree = 1)
-        {
-            return vector
-                .VectorStorage
-                .DifferentiateScalars(variableName, degree)
-                .CreateVector(vector.GeometricProcessor);
-        }
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaVector<Expr> DifferentiateScalars(this GaVector<Expr> vector, Expr variableExpr, int degree = 1)
-        {
-            return vector
-                .VectorStorage
-                .DifferentiateScalars(variableExpr, degree)
-                .CreateVector(vector.GeometricProcessor);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<Expr> DifferentiateScalars(this VectorStorage<Expr> storage, string variableName, int degree = 1)
-        {
-            var variableExpr = variableName.ToExpr();
-
-            return storage.DifferentiateScalars(variableExpr, degree);
-        }
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<Expr> DifferentiateScalars(this VectorStorage<Expr> storage, Expr variableExpr, int degree = 1)
-        {
-            return storage.GetVectorPart(
-                scalar => Mfs.D[
-                    scalar, 
-                    Mfs.List[variableExpr, degree.ToExpr()]
-                ].FullSimplify()
-            );
-        }
-
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Expr IntegrateScalar([NotNull] this Expr scalar, [NotNull] string variableName)
@@ -766,78 +403,8 @@ namespace GeometricAlgebraFulcrumLib.Mathematica
                 .Integrate[scalar, Mfs.List[variableExpr, limitExpr1, limitExpr2]]
                 .FullSimplify();
         }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ILinVectorStorage<Expr> IntegrateScalars(this ILinVectorStorage<Expr> storage, string variableName)
-        {
-            var variableExpr = variableName.ToExpr();
-
-            return storage.MapScalars(
-                scalar => Mfs.Integrate[scalar, variableExpr].FullSimplify()
-            );
-        }
         
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ILinVectorGradedStorage<Expr> IntegrateScalars(this ILinVectorGradedStorage<Expr> storage, string variableName)
-        {
-            var variableExpr = variableName.ToExpr();
-
-            return storage.MapScalars(
-                scalar => Mfs.Integrate[scalar, variableExpr].FullSimplify()
-            );
-        }
         
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ILinMatrixStorage<Expr> IntegrateScalars(this ILinMatrixStorage<Expr> storage, string variableName)
-        {
-            var variableExpr = variableName.ToExpr();
-
-            return storage.MapScalars(
-                scalar => Mfs.Integrate[scalar, variableExpr].FullSimplify()
-            );
-        }
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ILinMatrixGradedStorage<Expr> IntegrateScalars(this ILinMatrixGradedStorage<Expr> storage, string variableName)
-        {
-            var variableExpr = variableName.ToExpr();
-
-            return storage.MapScalars(
-                scalar => Mfs.Integrate[scalar, variableExpr].FullSimplify()
-            );
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorStorage<Expr> IntegrateScalars(this IMultivectorStorage<Expr> storage, string variableName)
-        {
-            var variableExpr = variableName.ToExpr();
-
-            return storage.MapScalars(
-                scalar => Mfs.Integrate[scalar, variableExpr].FullSimplify()
-            );
-        }
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<Expr> IntegrateScalars(this VectorStorage<Expr> storage, string variableName)
-        {
-            var variableExpr = variableName.ToExpr();
-
-            return storage.GetVectorPart(
-                scalar => Mfs.Integrate[scalar, variableExpr].FullSimplify()
-            );
-        }
-
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<Expr> ArcLength(this GaVector<Expr> vector, string variableName, Expr tMin, Expr tMax)
-        {
-            return Mfs.ArcLength[
-                vector.AsListExpr(),
-                Mfs.List[variableName.ToExpr(), tMin, tMax]
-            ].CreateScalar(vector.GeometricProcessor);
-        }
-
-
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Expr HilbertTransformScalar(this Expr scalar, string timeVariableName, string freqVariableName)
         {
@@ -848,790 +415,8 @@ namespace GeometricAlgebraFulcrumLib.Mathematica
                 .HilbertTransform[scalar, timeVariableExpr, timeVariableExpr]
                 .FullSimplify(Mfs.Greater[freqVariableExpr, Expr.INT_ZERO]);
         }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorStorage<Expr> HilbertTransformScalars(this IMultivectorStorage<Expr> storage, string timeVariableName, string freqVariableName)
-        {
-            var timeVariableExpr = timeVariableName.ToExpr();
-            var freqVariableExpr = freqVariableName.ToExpr();
-
-            return storage.MapScalars(
-                scalar => 
-                    Mfs
-                        .HilbertTransform[scalar, timeVariableExpr, timeVariableExpr]
-                        .FullSimplify(Mfs.Greater[freqVariableExpr, Expr.INT_ZERO])
-            );
-        }
         
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<Expr> HilbertTransformScalars(this VectorStorage<Expr> storage, string timeVariableName, string freqVariableName)
-        {
-            var timeVariableExpr = timeVariableName.ToExpr();
-            var freqVariableExpr = freqVariableName.ToExpr();
-
-            return storage.GetVectorPart(
-                scalar => 
-                    Mfs
-                        .HilbertTransform[scalar, timeVariableExpr, timeVariableExpr]
-                        .FullSimplify(Mfs.Greater[freqVariableExpr, Expr.INT_ZERO])
-            );
-        }
-
-        //public static Expr GetScalarExpr(this GeoRandomGenerator randomGenerator)
-        //{
-        //    return randomGenerator.GetScalar().ToExpr();
-        //}
-
-        //public static Expr GetScalarExpr(this GeoRandomGenerator randomGenerator, double maxLimit)
-        //{
-        //    return randomGenerator.GetScalar(maxLimit).ToExpr();
-        //}
-
-        //public static Expr GetScalarExpr(this GeoRandomGenerator randomGenerator, double minLimit, double maxLimit)
-        //{
-        //    return randomGenerator.GetScalar(minLimit, maxLimit).ToExpr();
-        //}
-
-
-        //public static Expr GetIntegerExpr(this GeoRandomGenerator randomGenerator)
-        //{
-        //    return randomGenerator.GetInteger().ToExpr();
-        //}
-
-        //public static Expr GetIntegerExpr(this GeoRandomGenerator randomGenerator, int maxLimit)
-        //{
-        //    return randomGenerator.GetInteger(maxLimit).ToExpr();
-        //}
-
-        //public static Expr GetIntegerExpr(this GeoRandomGenerator randomGenerator, int minLimit, int maxLimit)
-        //{
-        //    return randomGenerator.GetInteger(minLimit, maxLimit).ToExpr();
-        //}
-
-
-        //public static MathematicaScalar GetSymbolicInteger(this GeoRandomGenerator randomGenerator)
-        //{
-        //    return MathematicaScalar.Create(Cas, randomGenerator.GetInteger());
-        //}
-
-        //public static MathematicaScalar GetSymbolicInteger(this GeoRandomGenerator randomGenerator, int maxLimit)
-        //{
-        //    return MathematicaScalar.Create(Cas, randomGenerator.GetInteger(maxLimit));
-        //}
-
-        //public static MathematicaScalar GetSymbolicInteger(this GeoRandomGenerator randomGenerator, int minLimit, int maxLimit)
-        //{
-        //    return MathematicaScalar.Create(Cas, randomGenerator.GetInteger(minLimit, maxLimit));
-        //}
-
-
-        //public static MathematicaScalar GetSymbolicScalar(this GeoRandomGenerator randomGenerator)
-        //{
-        //    return MathematicaScalar.Create(Cas, randomGenerator.GetScalar());
-        //}
-
-        //public static MathematicaScalar GetSymbolicScalar(this GeoRandomGenerator randomGenerator, double maxLimit)
-        //{
-        //    return MathematicaScalar.Create(Cas, randomGenerator.GetScalar(maxLimit));
-        //}
-
-        //public static MathematicaScalar GetSymbolicScalar(this GeoRandomGenerator randomGenerator, double minLimit, double maxLimit)
-        //{
-        //    return MathematicaScalar.Create(Cas, randomGenerator.GetScalar(minLimit, maxLimit));
-        //}
-
-
-        //public static GeoSymMultivector GetSymMultivectorFull(this GeoRandomGenerator randomGenerator, int vSpaceDim)
-        //{
-        //    var gaSpaceDim = 1UL << vSpaceDim;
-        //    var mv = GeoSymMultivector.CreateZero(vSpaceDim);
-
-        //    for (var basisBladeId = 0UL; basisBladeId < gaSpaceDim; basisBladeId++)
-        //        mv.SetTermCoef(basisBladeId, randomGenerator.GetSymbolicScalar());
-
-        //    return mv;
-        //}
-
-        //public static GeoSymMultivector GetSymMultivectorFull(this GeoRandomGenerator randomGenerator, int vSpaceDim, double maxValue)
-        //{
-        //    var gaSpaceDim = 1UL << vSpaceDim;
-        //    var mv = GeoSymMultivector.CreateZero(vSpaceDim);
-
-        //    for (var basisBladeId = 0UL; basisBladeId < gaSpaceDim; basisBladeId++)
-        //        mv.SetTermCoef(basisBladeId, randomGenerator.GetSymbolicScalar(maxValue));
-
-        //    return mv;
-        //}
-
-        //public static GeoSymMultivector GetSymMultivectorFull(this GeoRandomGenerator randomGenerator, int vSpaceDim, double minValue, double maxValue)
-        //{
-        //    var gaSpaceDim = vSpaceDim.ToGaSpaceDimension();
-
-        //    var mv = GeoSymMultivector.CreateZero(vSpaceDim);
-
-        //    for (var basisBladeId = 0UL; basisBladeId < gaSpaceDim; basisBladeId++)
-        //        mv.SetTermCoef(basisBladeId, randomGenerator.GetSymbolicScalar(minValue, maxValue));
-
-        //    return mv;
-        //}
-
-        //public static GeoSymMultivector GetSymMultivectorByTerms(this GeoRandomGenerator randomGenerator, int vSpaceDim, params ulong[] basisBladeIDs)
-        //{
-        //    var mv = GeoSymMultivector.CreateZero(vSpaceDim);
-
-        //    foreach (var basisBladeId in basisBladeIDs)
-        //        mv.SetTermCoef(basisBladeId, randomGenerator.GetSymbolicScalar());
-
-        //    return mv;
-        //}
-
-        //public static GeoSymMultivector GetSymMultivectorByTerms(this GeoRandomGenerator randomGenerator, int vSpaceDim, IEnumerable<ulong> basisBladeIDs)
-        //{
-        //    var mv = GeoSymMultivector.CreateZero(vSpaceDim);
-
-        //    foreach (var basisBladeId in basisBladeIDs)
-        //        mv.SetTermCoef(basisBladeId, randomGenerator.GetSymbolicScalar());
-
-        //    return mv;
-        //}
-
-        //public static GeoSymMultivector GetSymMultivectorByGrades(this GeoRandomGenerator randomGenerator, int vSpaceDim, params int[] grades)
-        //{
-        //    var mv = GeoSymMultivector.CreateZero(vSpaceDim);
-
-        //    var basisBladeIDs =
-        //        GeoFrameUtils.BasisBladeIDsOfGrades(
-        //            mv.VSpaceDimension,
-        //            grades
-        //        );
-
-        //    foreach (var basisBladeId in basisBladeIDs)
-        //        mv.SetTermCoef(basisBladeId, randomGenerator.GetSymbolicScalar());
-
-        //    return mv;
-        //}
-
-        //public static GeoSymMultivector GetSymMultivector(this GeoRandomGenerator randomGenerator, int vSpaceDim)
-        //{
-        //    var gaSpaceDim = vSpaceDim.ToGaSpaceDimension();
-
-        //    //Randomly select the number of terms in the multivector
-        //    var termsCount = randomGenerator.GetInteger((int)gaSpaceDim - 1);
-
-        //    //Randomly select the terms basis blades in the multivectors
-        //    var basisBladeIDs = randomGenerator
-        //        .GetRangePermutation((int)gaSpaceDim - 1)
-        //        .Take(termsCount)
-        //        .Select(id => (ulong)id);
-
-        //    //Randomly generate the multivector's coefficients
-        //    return randomGenerator.GetSymMultivectorByTerms(vSpaceDim, basisBladeIDs);
-        //}
-
-        //public static GeoSymMultivector GetSymMultivector(this GeoRandomGenerator randomGenerator, int vSpaceDim, string baseCoefName)
-        //{
-        //    var gaSpaceDim = vSpaceDim.ToGaSpaceDimension();
-
-        //    //Randomly select the number of terms in the multivector
-        //    var termsCount = randomGenerator.GetInteger((int)gaSpaceDim - 1);
-
-        //    //Randomly select the terms basis blades in the multivectors
-        //    var basisBladeIDs = randomGenerator
-        //        .GetRangePermutation((int)gaSpaceDim - 1)
-        //        .Take(termsCount)
-        //        .Select(id => (ulong)id);
-
-        //    //Generate the multivector's symbolic coefficients
-        //    return GeoSymMultivector.CreateSymbolic(vSpaceDim, baseCoefName, basisBladeIDs);
-        //}
-
-
-        //public static GeoSymMultivector GetSymTerm(this GeoRandomGenerator randomGenerator, int vSpaceDim, string baseCoefName)
-        //{
-        //    var gaSpaceDim = vSpaceDim.ToGaSpaceDimension();
-
-        //    //Randomly select the number of terms in the multivector
-        //    var basisBladeId = (ulong)randomGenerator.GetInteger((int)gaSpaceDim - 1);
-
-        //    //Generate the multivector's symbolic coefficients
-        //    return GeoSymMultivector.CreateSymbolicTerm(vSpaceDim, baseCoefName, basisBladeId);
-        //}
-
-
-        //public static GeoSymMultivector GetSymVector(this GeoRandomGenerator randomGenerator, int gaSpaceDim)
-        //{
-        //    var mv = GeoSymMultivector.CreateZero(gaSpaceDim);
-
-        //    foreach (var basisBladeId in GeoFrameUtils.BasisBladeIDsOfGrade(mv.VSpaceDimension, 1))
-        //        mv.SetTermCoef(basisBladeId, randomGenerator.GetSymbolicScalar());
-
-        //    return mv;
-        //}
-
-        //public static GeoSymMultivector GetSymVector(this GeoRandomGenerator randomGenerator, int gaSpaceDim, double maxValue)
-        //{
-        //    var mv = GeoSymMultivector.CreateZero(gaSpaceDim);
-
-        //    foreach (var basisBladeId in GeoFrameUtils.BasisBladeIDsOfGrade(mv.VSpaceDimension, 1))
-        //        mv.SetTermCoef(basisBladeId, randomGenerator.GetSymbolicScalar(maxValue));
-
-        //    return mv;
-        //}
-
-        //public static GeoSymMultivector GetSymVector(this GeoRandomGenerator randomGenerator, int gaSpaceDim, double minValue, double maxValue)
-        //{
-        //    var mv = GeoSymMultivector.CreateZero(gaSpaceDim);
-
-        //    foreach (var basisBladeId in GeoFrameUtils.BasisBladeIDsOfGrade(mv.VSpaceDimension, 1))
-        //        mv.SetTermCoef(basisBladeId, randomGenerator.GetSymbolicScalar(minValue, maxValue));
-
-        //    return mv;
-        //}
-
-
-        //public static GeoSymMultivector GetSymIntegerVector(this GeoRandomGenerator randomGenerator, int gaSpaceDim)
-        //{
-        //    var mv = GeoSymMultivector.CreateZero(gaSpaceDim);
-
-        //    foreach (var basisBladeId in GeoFrameUtils.BasisBladeIDsOfGrade(mv.VSpaceDimension, 1))
-        //        mv.SetTermCoef(basisBladeId, randomGenerator.GetIntegerExpr());
-
-        //    return mv;
-        //}
-
-        //public static GeoSymMultivector GetSymIntegerVector(this GeoRandomGenerator randomGenerator, int gaSpaceDim, int maxLimit)
-        //{
-        //    var mv = GeoSymMultivector.CreateZero(gaSpaceDim);
-
-        //    foreach (var basisBladeId in GeoFrameUtils.BasisBladeIDsOfGrade(mv.VSpaceDimension, 1))
-        //        mv.SetTermCoef(basisBladeId, randomGenerator.GetIntegerExpr(maxLimit));
-
-        //    return mv;
-        //}
-
-        //public static GeoSymMultivector GetSymIntegerVector(this GeoRandomGenerator randomGenerator, int gaSpaceDim, int minLimit, int maxLimit)
-        //{
-        //    var mv = GeoSymMultivector.CreateZero(gaSpaceDim);
-
-        //    foreach (var basisBladeId in GeoFrameUtils.BasisBladeIDsOfGrade(mv.VSpaceDimension, 1))
-        //        mv.SetTermCoef(basisBladeId, randomGenerator.GetIntegerExpr(minLimit, maxLimit));
-
-        //    return mv;
-        //}
-
-
-        //public static IEnumerable<GeoSymMultivector> GetSymIntegerLidVectors(this GeoRandomGenerator randomGenerator, int gaSpaceDim, int count)
-        //{
-        //    var vSpaceDim = gaSpaceDim.ToVSpaceDimension();
-
-        //    if (count < 1 || count > vSpaceDim)
-        //        yield break;
-
-        //    var mv = GeoSymMultivector.CreateScalar(gaSpaceDim, Expr.INT_ONE);
-        //    while (count > 0)
-        //    {
-        //        var v = randomGenerator.GetSymIntegerVector(gaSpaceDim);
-        //        var mv1 = mv.Op(v);
-
-        //        if (mv1.IsZero()) continue;
-
-        //        mv = mv1;
-        //        count--;
-
-        //        yield return v;
-        //    }
-        //}
-
-        //public static IEnumerable<GeoSymMultivector> GetSymIntegerLidVectors(this GeoRandomGenerator randomGenerator, int gaSpaceDim, int count, int maxValue)
-        //{
-        //    var vSpaceDim = gaSpaceDim.ToVSpaceDimension();
-
-        //    if (count < 1 || count > vSpaceDim)
-        //        yield break;
-
-        //    var mv = GeoSymMultivector.CreateScalar(gaSpaceDim, Expr.INT_ONE);
-        //    while (count > 0)
-        //    {
-        //        var v = randomGenerator.GetSymIntegerVector(gaSpaceDim, maxValue);
-        //        var mv1 = mv.Op(v);
-
-        //        if (mv1.IsZero()) continue;
-
-        //        mv = mv1;
-        //        count--;
-
-        //        yield return v;
-        //    }
-        //}
-
-        //public static IEnumerable<GeoSymMultivector> GetSymIntegerLidVectors(this GeoRandomGenerator randomGenerator, int gaSpaceDim, int count, int minValue, int maxValue)
-        //{
-        //    var vSpaceDim = gaSpaceDim.ToVSpaceDimension();
-
-        //    if (count < 1 || count > vSpaceDim)
-        //        yield break;
-
-        //    var mv = GeoSymMultivector.CreateScalar(gaSpaceDim, Expr.INT_ONE);
-        //    while (count > 0)
-        //    {
-        //        var v = randomGenerator.GetSymIntegerVector(gaSpaceDim, minValue, maxValue);
-        //        var mv1 = mv.Op(v);
-
-        //        if (mv1.IsZero()) continue;
-
-        //        mv = mv1;
-        //        count--;
-
-        //        yield return v;
-        //    }
-        //}
-
-
-        //public static GeoSymMultivector GetSymKVector(this GeoRandomGenerator randomGenerator, int gaSpaceDim, int grade)
-        //{
-        //    var mv = GeoSymMultivector.CreateZero(gaSpaceDim);
-
-        //    foreach (var basisBladeId in GeoFrameUtils.BasisBladeIDsOfGrade(mv.VSpaceDimension, grade))
-        //        mv.SetTermCoef(basisBladeId, randomGenerator.GetSymbolicScalar());
-
-        //    return mv;
-        //}
-
-        //public static GeoSymMultivector GetSymKVector(this GeoRandomGenerator randomGenerator, int gaSpaceDim, int grade, double maxValue)
-        //{
-        //    var mv = GeoSymMultivector.CreateZero(gaSpaceDim);
-
-        //    foreach (var basisBladeId in GeoFrameUtils.BasisBladeIDsOfGrade(mv.VSpaceDimension, grade))
-        //        mv.SetTermCoef(basisBladeId, randomGenerator.GetSymbolicScalar(maxValue));
-
-        //    return mv;
-        //}
-
-        //public static GeoSymMultivector GetSymKVector(this GeoRandomGenerator randomGenerator, int gaSpaceDim, int grade, double minValue, double maxValue)
-        //{
-        //    var mv = GeoSymMultivector.CreateZero(gaSpaceDim);
-
-        //    foreach (var basisBladeId in GeoFrameUtils.BasisBladeIDsOfGrade(mv.VSpaceDimension, grade))
-        //        mv.SetTermCoef(basisBladeId, randomGenerator.GetSymbolicScalar(minValue, maxValue));
-
-        //    return mv;
-        //}
-
-
-        //public static GeoSymMultivector GetSymIntegerKVector(this GeoRandomGenerator randomGenerator, int gaSpaceDim, int grade)
-        //{
-        //    var mv = GeoSymMultivector.CreateZero(gaSpaceDim);
-
-        //    foreach (var basisBladeId in GeoFrameUtils.BasisBladeIDsOfGrade(mv.VSpaceDimension, grade))
-        //        mv.SetTermCoef(basisBladeId, randomGenerator.GetIntegerExpr());
-
-        //    return mv;
-        //}
-
-        //public static GeoSymMultivector GetSymIntegerKVector(this GeoRandomGenerator randomGenerator, int gaSpaceDim, int grade, int maxValue)
-        //{
-        //    var mv = GeoSymMultivector.CreateZero(gaSpaceDim);
-
-        //    foreach (var basisBladeId in GeoFrameUtils.BasisBladeIDsOfGrade(mv.VSpaceDimension, grade))
-        //        mv.SetTermCoef(basisBladeId, randomGenerator.GetIntegerExpr(maxValue));
-
-        //    return mv;
-        //}
-
-        //public static GeoSymMultivector GetSymIntegerKVector(this GeoRandomGenerator randomGenerator, int gaSpaceDim, int grade, int minValue, int maxValue)
-        //{
-        //    var mv = GeoSymMultivector.CreateZero(gaSpaceDim);
-
-        //    foreach (var basisBladeId in GeoFrameUtils.BasisBladeIDsOfGrade(mv.VSpaceDimension, grade))
-        //        mv.SetTermCoef(basisBladeId, randomGenerator.GetIntegerExpr(minValue, maxValue));
-
-        //    return mv;
-        //}
-
-
-        //public static GeoSymMultivector GetSymTerm(this GeoRandomGenerator randomGenerator, int vSpaceDim, ulong basisBladeId)
-        //{
-        //    var mv = GeoSymMultivector.CreateZero(vSpaceDim);
-
-        //    mv.SetTermCoef(basisBladeId, randomGenerator.GetSymbolicScalar());
-
-        //    return mv;
-        //}
-
-        //public static GeoSymMultivector GetSymTerm(this GeoRandomGenerator randomGenerator, int vSpaceDim, ulong basisBladeId, double maxValue)
-        //{
-        //    var mv = GeoSymMultivector.CreateZero(vSpaceDim);
-
-        //    mv.SetTermCoef(basisBladeId, randomGenerator.GetSymbolicScalar(maxValue));
-
-        //    return mv;
-        //}
-
-        //public static GeoSymMultivector GetSymTerm(this GeoRandomGenerator randomGenerator, int vSpaceDim, ulong basisBladeId, double minValue, double maxValue)
-        //{
-        //    var mv = GeoSymMultivector.CreateZero(vSpaceDim);
-
-        //    mv.SetTermCoef(basisBladeId, randomGenerator.GetSymbolicScalar(minValue, maxValue));
-
-        //    return mv;
-        //}
-
-        //public static GeoSymMultivector GetSymTerm(this GeoRandomGenerator randomGenerator, int vSpaceDim, int grade, ulong index)
-        //{
-        //    var mv = GeoSymMultivector.CreateZero(vSpaceDim);
-
-        //    var basisBladeId = GeoFrameUtils.BasisBladeId(grade, index);
-
-        //    mv.SetTermCoef(basisBladeId, randomGenerator.GetSymbolicScalar());
-
-        //    return mv;
-        //}
-
-        //public static GeoSymMultivector GetSymTerm(this GeoRandomGenerator randomGenerator, int vSpaceDim, int grade, ulong index, double maxValue)
-        //{
-        //    var mv = GeoSymMultivector.CreateZero(vSpaceDim);
-
-        //    var basisBladeId = GeoFrameUtils.BasisBladeId(grade, index);
-
-        //    mv.SetTermCoef(basisBladeId, randomGenerator.GetSymbolicScalar(maxValue));
-
-        //    return mv;
-        //}
-
-        //public static GeoSymMultivector GetSymTerm(this GeoRandomGenerator randomGenerator, int gaSpaceDim, int grade, ulong index, double minValue, double maxValue)
-        //{
-        //    var mv = GeoSymMultivector.CreateZero(gaSpaceDim);
-
-        //    var basisBladeId = GeoFrameUtils.BasisBladeId(grade, index);
-
-        //    mv.SetTermCoef(basisBladeId, randomGenerator.GetSymbolicScalar(minValue, maxValue));
-
-        //    return mv;
-        //}
-
-
-        //public static GeoSymMultivector GetSymBlade(this GeoRandomGenerator randomGenerator, int gaSpaceDim, int grade)
-        //{
-        //    var vSpaceDim = gaSpaceDim.ToVSpaceDimension();
-
-        //    if (grade < 0 || grade > vSpaceDim)
-        //        return GeoSymMultivector.CreateZero(gaSpaceDim);
-
-        //    if (grade <= 1 || grade >= vSpaceDim - 1)
-        //        return randomGenerator.GetSymKVector(gaSpaceDim, grade);
-
-        //    var mv = randomGenerator.GetSymVector(gaSpaceDim);
-        //    grade--;
-
-        //    while (grade > 0)
-        //    {
-        //        var v = randomGenerator.GetSymVector(gaSpaceDim);
-        //        var mv1 = mv.Op(v);
-
-        //        if (mv1.IsZero()) continue;
-
-        //        mv = mv1;
-        //        grade--;
-        //    }
-
-        //    return mv;
-        //}
-
-        //public static GeoSymMultivector GetSymBlade(this GeoRandomGenerator randomGenerator, int gaSpaceDim, int grade, double maxValue)
-        //{
-        //    var vSpaceDim = gaSpaceDim.ToVSpaceDimension();
-
-        //    if (grade < 0 || grade > vSpaceDim)
-        //        return GeoSymMultivector.CreateZero(gaSpaceDim);
-
-        //    if (grade <= 1 || grade >= vSpaceDim - 1)
-        //        return randomGenerator.GetSymKVector(gaSpaceDim, grade, maxValue);
-
-        //    var mv = randomGenerator.GetSymVector(gaSpaceDim, maxValue);
-        //    grade--;
-
-        //    while (grade > 0)
-        //    {
-        //        var v = randomGenerator.GetSymVector(gaSpaceDim, maxValue);
-        //        var mv1 = mv.Op(v);
-
-        //        if (mv1.IsZero()) continue;
-
-        //        mv = mv1;
-        //        grade--;
-        //    }
-
-        //    return mv;
-        //}
-
-        //public static GeoSymMultivector GetSymBlade(this GeoRandomGenerator randomGenerator, int gaSpaceDim, int grade, double minValue, double maxValue)
-        //{
-        //    var vSpaceDim = gaSpaceDim.ToVSpaceDimension();
-
-        //    if (grade < 0 || grade > vSpaceDim)
-        //        return GeoSymMultivector.CreateZero(gaSpaceDim);
-
-        //    if (grade <= 1 || grade >= vSpaceDim - 1)
-        //        return randomGenerator.GetSymKVector(gaSpaceDim, grade, minValue, maxValue);
-
-        //    var mv = randomGenerator.GetSymVector(gaSpaceDim, minValue, maxValue);
-        //    grade--;
-
-        //    while (grade > 0)
-        //    {
-        //        var v = randomGenerator.GetSymVector(gaSpaceDim, minValue, maxValue);
-        //        var mv1 = mv.Op(v);
-
-        //        if (mv1.IsZero()) continue;
-
-        //        mv = mv1;
-        //        grade--;
-        //    }
-
-        //    return mv;
-        //}
-
-
-        //public static GeoSymMultivector GetSymIntegerBlade(this GeoRandomGenerator randomGenerator, int gaSpaceDim, int grade)
-        //{
-        //    var vSpaceDim = gaSpaceDim.ToVSpaceDimension();
-
-        //    if (grade < 0 || grade > vSpaceDim)
-        //        return GeoSymMultivector.CreateZero(gaSpaceDim);
-
-        //    if (grade <= 1 || grade >= vSpaceDim - 1)
-        //        return randomGenerator.GetSymIntegerKVector(gaSpaceDim, grade);
-
-        //    var mv = randomGenerator.GetSymIntegerVector(gaSpaceDim);
-        //    grade--;
-
-        //    while (grade > 0)
-        //    {
-        //        var v = randomGenerator.GetSymIntegerVector(gaSpaceDim);
-        //        var mv1 = mv.Op(v);
-
-        //        if (mv1.IsZero()) continue;
-
-        //        mv = mv1;
-        //        grade--;
-        //    }
-
-        //    return mv;
-        //}
-
-        //public static GeoSymMultivector GetSymIntegerBlade(this GeoRandomGenerator randomGenerator, int gaSpaceDim, int grade, int maxValue)
-        //{
-        //    var vSpaceDim = gaSpaceDim.ToVSpaceDimension();
-
-        //    if (grade < 0 || grade > vSpaceDim)
-        //        return GeoSymMultivector.CreateZero(gaSpaceDim);
-
-        //    if (grade <= 1 || grade >= vSpaceDim - 1)
-        //        return randomGenerator.GetSymIntegerKVector(gaSpaceDim, grade, maxValue);
-
-        //    var mv = randomGenerator.GetSymIntegerVector(gaSpaceDim, maxValue);
-        //    grade--;
-
-        //    while (grade > 0)
-        //    {
-        //        var v = randomGenerator.GetSymIntegerVector(gaSpaceDim, maxValue);
-        //        var mv1 = mv.Op(v);
-
-        //        if (mv1.IsZero()) continue;
-
-        //        mv = mv1;
-        //        grade--;
-        //    }
-
-        //    return mv;
-        //}
-
-        //public static GeoSymMultivector GetSymIntegerBlade(this GeoRandomGenerator randomGenerator, int gaSpaceDim, int grade, int minValue, int maxValue)
-        //{
-        //    var vSpaceDim = gaSpaceDim.ToVSpaceDimension();
-
-        //    if (grade < 0 || grade > vSpaceDim)
-        //        return GeoSymMultivector.CreateZero(gaSpaceDim);
-
-        //    if (grade <= 1 || grade >= vSpaceDim - 1)
-        //        return randomGenerator.GetSymIntegerKVector(gaSpaceDim, grade, minValue, maxValue);
-
-        //    var mv = randomGenerator.GetSymIntegerVector(gaSpaceDim, minValue, maxValue);
-        //    grade--;
-
-        //    while (grade > 0)
-        //    {
-        //        var v = randomGenerator.GetSymIntegerVector(gaSpaceDim, minValue, maxValue);
-        //        var mv1 = mv.Op(v);
-
-        //        if (mv1.IsZero()) continue;
-
-        //        mv = mv1;
-        //        grade--;
-        //    }
-
-        //    return mv;
-        //}
-
-
-        //public static GeoSymMultivector GetSymNonNullVector(this GeoRandomGenerator randomGenerator, GeoSymFrame frame)
-        //{
-        //    GeoSymMultivector mv;
-
-        //    do
-        //        mv = randomGenerator.GetSymVector(frame.VSpaceDimension);
-        //    while (!frame.Norm2(mv).IsZero());
-
-        //    return mv;
-        //}
-
-
-        //public static GeoSymMultivector GetSymVersor(this GeoRandomGenerator randomGenerator, GeoSymFrame frame, int vectorsCount)
-        //{
-        //    var mv = randomGenerator.GetSymNonNullVector(frame);
-        //    vectorsCount--;
-
-        //    while (vectorsCount > 0)
-        //    {
-        //        mv = frame.Gp[mv, randomGenerator.GetSymNonNullVector(frame)];
-        //        vectorsCount--;
-        //    }
-
-        //    return mv;
-        //}
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaVector<Expr> CreateVector(params Expr[] scalarArray)
-        {
-            return EuclideanProcessor.CreateVector(scalarArray);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaVector<Expr> CreateVector(params string[] scalarTextArray)
-        {
-            return EuclideanProcessor.CreateVector(
-                scalarTextArray.Select(t => t.ToExpr()).ToArray()
-            );
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaVector<Expr> CreateBasisVector(int index)
-        {
-            return EuclideanProcessor.CreateVectorBasis(index);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IGaOutermorphism<Expr> CreateVectorsLinearMap(int basisVectorsCount, Func<VectorStorage<Expr>, VectorStorage<Expr>> basisVectorMapFunc)
-        {
-            return EuclideanProcessor.CreateComputedOutermorphism(
-                basisVectorsCount,
-                basisVectorMapFunc
-            );
-        }
-
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Expr VectorToRowVectorMatrix(this VectorStorage<Expr> vectorStorage, uint vSpaceDimension)
-        {
-            return MatrixProcessor.CreateRowVectorMatrix(
-                ScalarProcessor.VectorToArrayVector(vectorStorage, vSpaceDimension)
-            );
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Expr VectorToColumnVectorMatrix(this VectorStorage<Expr> vectorStorage, uint vSpaceDimension)
-        {
-            return MatrixProcessor.CreateColumnVectorMatrix(
-                ScalarProcessor.VectorToArrayVector(vectorStorage, vSpaceDimension)
-            );
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Expr BivectorToRowVectorMatrix(this BivectorStorage<Expr> bivectorStorage, uint vSpaceDimension)
-        {
-            return MatrixProcessor.CreateRowVectorMatrix(
-                ScalarProcessor.BivectorToArrayVector(bivectorStorage, vSpaceDimension)
-            );
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Expr BivectorToColumnVectorMatrix(this BivectorStorage<Expr> bivectorStorage, uint vSpaceDimension)
-        {
-            return MatrixProcessor.CreateColumnVectorMatrix(
-                ScalarProcessor.BivectorToArrayVector(bivectorStorage, vSpaceDimension)
-            );
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Expr BivectorToMatrix(this BivectorStorage<Expr> bivectorStorage, uint vSpaceDimension)
-        {
-            return MatrixProcessor.CreateMatrix(
-                ScalarProcessor.BivectorToArray(bivectorStorage, vSpaceDimension)
-            );
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Expr ScalarPlusBivectorToMatrix(this IMultivectorStorage<Expr> multivectorStorage, uint vSpaceDimension)
-        {
-            return MatrixProcessor.CreateMatrix(
-                ScalarProcessor.ScalarPlusBivectorToArray(multivectorStorage, vSpaceDimension)
-            );
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Expr KVectorToRowVectorMatrix(this VectorStorage<Expr> kVectorStorage, uint vSpaceDimension)
-        {
-            return MatrixProcessor.CreateRowVectorMatrix(
-                ScalarProcessor.KVectorToArrayVector(kVectorStorage, vSpaceDimension)
-            );
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Expr KVectorToColumnVectorMatrix(this VectorStorage<Expr> kVectorStorage, uint vSpaceDimension)
-        {
-            return MatrixProcessor.CreateColumnVectorMatrix(
-                ScalarProcessor.KVectorToArrayVector(kVectorStorage, vSpaceDimension)
-            );
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Expr MultivectorToRowVectorMatrix(this IMultivectorStorage<Expr> multivectorStorage, uint vSpaceDimension)
-        {
-            return MatrixProcessor.CreateRowVectorMatrix(
-                ScalarProcessor.MultivectorToArrayVector(multivectorStorage, vSpaceDimension)
-            );
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Expr MultivectorToColumnVectorMatrix(this IMultivectorStorage<Expr> multivectorStorage, uint vSpaceDimension)
-        {
-            return MatrixProcessor.CreateColumnVectorMatrix(
-                ScalarProcessor.MultivectorToArrayVector(multivectorStorage, vSpaceDimension)
-            );
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Expr ArrayToMatrix(this Expr[,] array)
-        {
-            return MatrixProcessor.CreateMatrix(array.CreateLinMatrixDenseStorage());
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Expr ArrayToMatrix(this ILinMatrixStorage<Expr> array)
-        {
-            return MatrixProcessor.CreateMatrix(array);
-        }
-
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Expr GetMatrix(this IGaOutermorphism<Expr> linearMap, int rowsCount, int columnsCount)
-        {
-            return MatrixProcessor.CreateMatrix(
-                linearMap.GetVectorOmMappingMatrix(rowsCount, columnsCount)
-            );
-        }
-
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Expr MatrixProduct(this Expr matrix1, Expr matrix2)
         {
@@ -1641,7 +426,7 @@ namespace GeometricAlgebraFulcrumLib.Mathematica
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Expr MatrixDeterminant(this Expr[,] array)
         {
-            return Mfs.Det[array.ArrayToMatrixExpr()];
+            return Mfs.Det[array.ToMatrixExpr()];
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1650,66 +435,6 @@ namespace GeometricAlgebraFulcrumLib.Mathematica
             return TextComposer.GetArrayText(array);
         }
         
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string GetText(this GaVector<Expr> mv)
-        {
-            return TextComposer.GetMultivectorText(mv);
-        }
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string GetText(this GaBivector<Expr> mv)
-        {
-            return TextComposer.GetMultivectorText(mv);
-        }
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string GetText(this GaKVector<Expr> mv)
-        {
-            return TextComposer.GetMultivectorText(mv);
-        }
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string GetText(this GaMultivector<Expr> mv)
-        {
-            return TextComposer.GetMultivectorText(mv);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string GetText(this IMultivectorStorage<Expr> mv)
-        {
-            return TextComposer.GetMultivectorText(mv);
-        }
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string GetLaTeX(this GaVector<Expr> mv)
-        {
-            return LaTeXComposer.GetMultivectorText(mv);
-        }
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string GetLaTeX(this GaBivector<Expr> mv)
-        {
-            return LaTeXComposer.GetMultivectorText(mv);
-        }
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string GetLaTeX(this GaKVector<Expr> mv)
-        {
-            return LaTeXComposer.GetMultivectorText(mv);
-        }
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string GetLaTeX(this GaMultivector<Expr> mv)
-        {
-            return LaTeXComposer.GetMultivectorText(mv);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string GetLaTeX(this IMultivectorStorage<Expr> mv)
-        {
-            return LaTeXComposer.GetMultivectorText(mv);
-        }
-
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void AttachMathematicaExpressionEvaluator(this MetaContext context)
@@ -1851,8 +576,54 @@ namespace GeometricAlgebraFulcrumLib.Mathematica
 
             return array;
         }
+        
+        public static Expr ToVectorExpr(this IReadOnlyList<Expr> exprArray)
+        {
+            var colsCount = exprArray.Count;
+            
+            var rowItems = new Expr[colsCount];
 
-        public static Expr ArrayToMatrixExpr(this Expr[,] exprArray)
+            for (var j = 0; j < colsCount; j++)
+                rowItems[j] = exprArray[j] ?? Expr.INT_ZERO;
+            
+            return Mfs.ListExpr(rowItems);
+        }
+
+        public static Expr ToRowVectorMatrixExpr(this IReadOnlyList<Expr> exprArray)
+        {
+            var colsCount = exprArray.Count;
+
+            var rowsExprArray = new Expr[1];
+            
+            var rowItems = new Expr[colsCount];
+
+            for (var j = 0; j < colsCount; j++)
+                rowItems[j] = exprArray[j] ?? Expr.INT_ZERO;
+
+            rowsExprArray[0] = Mfs.ListExpr(rowItems);
+            
+            return Mfs.ListExpr(rowsExprArray);
+        }
+        
+        public static Expr ToColumnVectorMatrixExpr(this IReadOnlyList<Expr> exprArray)
+        {
+            var rowsCount = exprArray.Count;
+
+            var rowsExprArray = new Expr[rowsCount];
+            
+            for (var i = 0; i < rowsCount; i++)
+            {
+                var rowItems = new Expr[1];
+
+                rowItems[0] = exprArray[i] ?? Expr.INT_ZERO;
+
+                rowsExprArray[i] = Mfs.ListExpr(rowItems);
+            }
+            
+            return Mfs.ListExpr(rowsExprArray);
+        }
+
+        public static Expr ToMatrixExpr(this Expr[,] exprArray)
         {
             var rowsCount = exprArray.GetLength(0);
             var colsCount = exprArray.GetLength(1);
@@ -1872,14 +643,14 @@ namespace GeometricAlgebraFulcrumLib.Mathematica
             return Mfs.ListExpr(rowsExprArray);
         }
         
-        public static Scalar<Expr> ArrayToMatrixExprScalar(this IScalarAlgebraProcessor<Expr> processor, Expr[,] exprArray)
+        public static Scalar<Expr> ArrayToMatrixExprScalar(this IScalarProcessor<Expr> processor, Expr[,] exprArray)
         {
-            return processor.CreateScalar(exprArray.ArrayToMatrixExpr());
+            return processor.CreateScalar(exprArray.ToMatrixExpr());
         }
 
-        public static Scalar<Expr> ArrayToMatrixExprScalar(this Expr[,] exprArray, IScalarAlgebraProcessor<Expr> processor)
+        public static Scalar<Expr> ArrayToMatrixExprScalar(this Expr[,] exprArray, IScalarProcessor<Expr> processor)
         {
-            return processor.CreateScalar(exprArray.ArrayToMatrixExpr());
+            return processor.CreateScalar(exprArray.ToMatrixExpr());
         }
 
         /// <summary>
@@ -2199,25 +970,25 @@ namespace GeometricAlgebraFulcrumLib.Mathematica
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<Expr> FullSimplify(this Scalar<Expr> expr)
+        public static Scalar<Expr> FullSimplifyScalar(this Scalar<Expr> expr)
         {
             return expr.ScalarValue.FullSimplify().CreateScalar(expr.ScalarProcessor);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<Expr> FullSimplify(this Scalar<Expr> expr, Expr assumptionsExpr)
+        public static Scalar<Expr> FullSimplifyScalar(this Scalar<Expr> expr, Expr assumptionsExpr)
         {
             return expr.ScalarValue.FullSimplify(assumptionsExpr).CreateScalar(expr.ScalarProcessor);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<Expr> TensorReduce(this Scalar<Expr> expr)
+        public static Scalar<Expr> TensorReduceScalar(this Scalar<Expr> expr)
         {
             return expr.ScalarValue.TensorReduce().CreateScalar(expr.ScalarProcessor);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Scalar<Expr> TensorExpand(this Scalar<Expr> expr)
+        public static Scalar<Expr> TensorExpandScalar(this Scalar<Expr> expr)
         {
             return expr.ScalarValue.TensorExpand().CreateScalar(expr.ScalarProcessor);
         }
@@ -2682,34 +1453,32 @@ namespace GeometricAlgebraFulcrumLib.Mathematica
             );
         }
 
-        public static GaVector<ScalarSignalFloat64> GetSampledSignal(this IGeometricAlgebraProcessor<ScalarSignalFloat64> processor, GaVector<Expr> vector, Expr t, double samplingRate, int sampleCount)
+        public static XGaVector<ScalarSignalFloat64> GetSampledSignal(this XGaProcessor<ScalarSignalFloat64> processor, XGaVector<Expr> vector, Expr t, double samplingRate, int sampleCount)
         {
-            var indexScalarDictionary = new Dictionary<ulong, ScalarSignalFloat64>();
+            var composer = processor.CreateComposer();
 
-            foreach (var (index, exprScalar) in vector.GetIndexScalarRecords())
+            foreach (var (id, exprScalar) in vector.IdScalarPairs)
             {
-                indexScalarDictionary.Add(
-                    index,
+                composer.SetTerm(
+                    id,
                     exprScalar.GetSampledSignal(t, samplingRate, sampleCount)
                 );
             }
 
-            return processor.CreateVector(indexScalarDictionary);
+            return composer.GetVector();
         }
         
-        public static GaBivector<ScalarSignalFloat64> GetSampledSignal(this IGeometricAlgebraProcessor<ScalarSignalFloat64> processor, GaBivector<Expr> bivector, Expr t, double samplingRate, int sampleCount)
+        public static XGaBivector<ScalarSignalFloat64> GetSampledSignal(this XGaProcessor<ScalarSignalFloat64> processor, XGaBivector<Expr> bivector, Expr t, double samplingRate, int sampleCount)
         {
-            var indexScalarDictionary = new Dictionary<ulong, ScalarSignalFloat64>();
-
-            foreach (var (index, exprScalar) in bivector.GetIndexScalarRecords())
-            {
-                indexScalarDictionary.Add(
-                    index,
+            var composer = processor.CreateComposer();
+                
+            foreach (var (id, exprScalar) in bivector.IdScalarPairs)
+                composer.SetTerm(
+                    id,
                     exprScalar.GetSampledSignal(t, samplingRate, sampleCount)
                 );
-            }
 
-            return processor.CreateBivector(indexScalarDictionary);
+            return composer.GetBivector();
         }
 
     }

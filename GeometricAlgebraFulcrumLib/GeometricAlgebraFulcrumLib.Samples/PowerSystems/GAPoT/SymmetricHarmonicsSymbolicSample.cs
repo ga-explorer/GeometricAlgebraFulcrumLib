@@ -1,39 +1,37 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
-using GeometricAlgebraFulcrumLib.Geometry.Subspaces;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Arrays.Generic;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.LinearMaps.Outermorphisms;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.LinearMaps.Rotors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Subspaces;
 using GeometricAlgebraFulcrumLib.Mathematica;
 using GeometricAlgebraFulcrumLib.Mathematica.Applications.GaPoT;
+using GeometricAlgebraFulcrumLib.Mathematica.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Mathematica.Mathematica.ExprFactory;
 using GeometricAlgebraFulcrumLib.Mathematica.Processors;
-using GeometricAlgebraFulcrumLib.Mathematica.Text;
-using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
 using Wolfram.NETLink;
-using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors;
-using GeometricAlgebraFulcrumLib.Text;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms;
-using GeometricAlgebraFulcrumLib.Processors;
-using GeometricAlgebraFulcrumLib.Storage;
 
 namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GAPoT
 {
     public static class SymmetricHarmonicsSymbolicSample
     {
-        public static IGeometricAlgebraEuclideanProcessor<Expr> GeometricProcessor { get; }
-            = ScalarAlgebraMathematicaProcessor.DefaultProcessor.CreateGeometricAlgebraEuclideanProcessor(63);
+        public static XGaProcessor<Expr> GeometricProcessor { get; }
+            = XGaProcessor<Expr>.CreateEuclidean(ScalarProcessorExpr.DefaultProcessor);
 
-        public static TextMathematicaComposer TextComposer { get; }
-            = TextMathematicaComposer.DefaultComposer;
+        public static TextComposerExpr TextComposer { get; }
+            = TextComposerExpr.DefaultComposer;
 
-        public static LaTeXMathematicaComposer LaTeXComposer { get; }
-            = LaTeXMathematicaComposer.DefaultComposer;
+        public static LaTeXComposerExpr LaTeXComposer { get; }
+            = LaTeXComposerExpr.DefaultComposer;
 
 
-        public static void ValidatePhasor(int k, int n, GaVector<Expr> phasor2)
+        public static void ValidatePhasor(int k, int n, XGaVector<Expr> phasor2)
         {
-            var composer = GeometricProcessor.CreateVectorStorageComposer();
+            var composer = GeometricProcessor.CreateComposer();
 
             for (var i = 0; i < n; i++)
             {
@@ -46,17 +44,15 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GAPoT
 
             var phasor1 =
                 composer
-                    .CreateVector()
+                    .GetVector()
                     .MapScalars(
                         scalar => Mfs.FullSimplify[scalar].Evaluate()
                     );
 
             var phasorDiff =
-                GeometricProcessor.GetNotZeroTerms(
-                    (phasor1 - phasor2).MapScalars(
+                (phasor1 - phasor2).MapScalars(
                         scalar => Mfs.FullSimplify[scalar].Evaluate()
-                    ).VectorStorage
-                );
+                    );
 
             //Console.WriteLine(
             //    LaTeXComposer.GetMultivectorText(phasor1)
@@ -73,15 +69,15 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GAPoT
             Console.WriteLine();
         }
 
-        public static Tuple<GaVector<Expr>, GaVector<Expr>> GetPhasorsTuple(int i, int k, int n)
+        public static Tuple<XGaVector<Expr>, XGaVector<Expr>> GetPhasorsTuple(int i, int k, int n)
         {
             Debug.Assert(n >= 2 && i >= 0 && i < n);
 
             var mu =
-                GeometricProcessor.CreateVectorTerm(i, Expr.INT_ONE);
+                GeometricProcessor.CreateVector(i);
 
             var muSubspace =
-                Subspace<Expr>.Create(GeometricProcessor, mu.AsKVector());
+                mu.ToSubspace();
 
             //var muVector =
             //    GeoEuclideanVector<Expr>.Create(mu);
@@ -116,13 +112,13 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GAPoT
             //);
             //Console.WriteLine();
 
-            return new Tuple<GaVector<Expr>, GaVector<Expr>>(
+            return new Tuple<XGaVector<Expr>, XGaVector<Expr>>(
                 phasor1,
                 phasor2
             );
         }
 
-        public static Tuple<GaVector<Expr>, GaVector<Expr>> GetPhasorsTuple(int k, int n)
+        public static Tuple<XGaVector<Expr>, XGaVector<Expr>> GetPhasorsTuple(int k, int n)
         {
             var phasorTuples =
                 Enumerable
@@ -134,7 +130,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GAPoT
                 phasorTuples
                     .Select(t => t.Item1)
                     .Aggregate(
-                        GeometricProcessor.CreateVectorZero(),
+                        GeometricProcessor.CreateZeroVector(),
                         (current, vector) => current + vector
                     )
                     .MapScalars(scalar =>
@@ -145,7 +141,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GAPoT
                 phasorTuples
                     .Select(t => t.Item2)
                     .Aggregate(
-                        GeometricProcessor.CreateVectorZero(),
+                        GeometricProcessor.CreateZeroVector(),
                         (current, vector) => current + vector
                     )
                     .MapScalars(scalar =>
@@ -164,7 +160,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GAPoT
             );
             Console.WriteLine();
 
-            return new Tuple<GaVector<Expr>, GaVector<Expr>>(
+            return new Tuple<XGaVector<Expr>, XGaVector<Expr>>(
                 phasor1,
                 phasor2
             );
@@ -178,15 +174,15 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GAPoT
                 Console.WriteLine();
 
                 var unitKirchhoffVector =
-                    GeometricProcessor.CreateVectorSymmetricUnit(n);
+                    GeometricProcessor.CreateSymmetricUnitVector(n);
 
                 var (_, inputPhasor) = GetPhasorsTuple(1, n);
 
                 var e1 =
-                    GeometricProcessor.CreateVectorBasis(0);
+                    GeometricProcessor.CreateVector(0);
 
                 var e2 =
-                    GeometricProcessor.CreateVectorBasis(1);
+                    GeometricProcessor.CreateVector(1);
 
                 var mv1 =
                     inputPhasor.MapScalars(scalar =>
@@ -217,11 +213,11 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GAPoT
                 var clarkeMap =
                     //GeoEuclideanSimpleRotor<Expr>.Create(v1, v2, e1, e2);
                     //ScalarProcessor.CreateSimpleKirchhoffRotor(n);
-                    GeometricProcessor.CreateClarkeMap(n);
+                    GeometricProcessor.CreateClarkeRotationMap(n);
 
                 var clarkeArray =
                     clarkeMap
-                        .GetVectorOmMappingMatrix(n, n)
+                        .GetVectorMapArray(n)
                         .MapScalars(scalar =>
                             Mfs.TrigReduce[Mfs.FullSimplify[scalar]].Evaluate()
                         //Mfs.N[scalar].Simplify()

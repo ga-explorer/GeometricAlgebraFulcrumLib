@@ -1,115 +1,117 @@
 ﻿using DataStructuresLib.Basic;
-using NumericalGeometryLib.BasicMath;
-using NumericalGeometryLib.BasicMath.Tuples;
-using NumericalGeometryLib.BasicMath.Tuples.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
 
-namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Surfaces;
-
-public sealed class GrVisualCircleSurfaceArc3D :
-    GrVisualSurface3D
+namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Surfaces
 {
-    public IFloat64Tuple3D Center { get; set; } = Float64Tuple3D.Zero;
-
-    public IFloat64Tuple3D Direction1 { get; set; } = Float64Tuple3D.E1;
-
-    public IFloat64Tuple3D Direction2 { get; set; } = Float64Tuple3D.E2;
-
-    public double Radius { get; set; } = 1d;
-
-    public bool InnerArc { get; set; } = true;
-
-    public bool OuterArc
+    public sealed class GrVisualCircleSurfaceArc3D :
+        GrVisualSurface3D
     {
-        get => !InnerArc;
-        set => InnerArc = !value;
-    }
+        public IFloat64Tuple3D Center { get; set; } = Float64Tuple3D.Zero;
 
-    public bool DrawEdge { get; set; } = false;
+        public IFloat64Tuple3D Direction1 { get; set; } = Float64Tuple3D.E1;
 
+        public IFloat64Tuple3D Direction2 { get; set; } = Float64Tuple3D.E2;
 
-    public GrVisualCircleSurfaceArc3D(string name) 
-        : base(name)
-    {
-    }
+        public double Radius { get; set; } = 1d;
 
-    public Triplet<Float64Tuple3D> GetArcPointsTriplet()
-    {
-        if (InnerArc)
+        public bool InnerArc { get; set; } = true;
+
+        public bool OuterArc
         {
-            var vector1 = Direction1.ToUnitVector();
-            var vector3 = Direction2.ToUnitVector();
-            var vector2 = 0.5d * (vector1 + vector3);
-
-            vector2 = vector2.GetVectorNormSquared().IsNearZero()
-                ? vector1.GetUnitNormal()
-                : vector2.ToUnitVector();
-
-            return new Triplet<Float64Tuple3D>(
-                Center + Radius * vector1, 
-                Center + Radius * vector2, 
-                Center + Radius * vector3
-            );
+            get => !InnerArc;
+            set => InnerArc = !value;
         }
-        else
+
+        public bool DrawEdge { get; set; } = false;
+
+
+        public GrVisualCircleSurfaceArc3D(string name) 
+            : base(name)
         {
-            var vector1 = Direction2.ToUnitVector();
-            var vector3 = Direction1.ToUnitVector();
-            var vector2 = -0.5d * (vector1 + vector3);
-
-            vector2 = vector2.GetVectorNormSquared().IsNearZero()
-                ? vector1.GetUnitNormal()
-                : vector2.ToUnitVector();
-
-            return new Triplet<Float64Tuple3D>(
-                Center + Radius * vector1, 
-                Center + Radius * vector2, 
-                Center + Radius * vector3
-            );
         }
-    }
 
-    public double GetEdgeLength()
-    {
-        return 2d * Math.PI * Radius * GetArcRatio();
-    } 
+        public Triplet<Float64Tuple3D> GetArcPointsTriplet()
+        {
+            if (InnerArc)
+            {
+                var vector1 = Direction1.ToUnitVector();
+                var vector3 = Direction2.ToUnitVector();
+                var vector2 = 0.5d * (vector1 + vector3);
 
-    public Float64Tuple3D GetArcStartUnitVector()
-    {
-        return InnerArc 
-            ? Direction1.ToUnitVector() 
-            : Direction2.ToUnitVector();
-    }
+                vector2 = vector2.GetVectorNormSquared().IsNearZero()
+                    ? vector1.GetUnitNormal()
+                    : vector2.ToUnitVector();
+
+                return new Triplet<Float64Tuple3D>(
+                    Center + Radius * vector1, 
+                    Center + Radius * vector2, 
+                    Center + Radius * vector3
+                );
+            }
+            else
+            {
+                var vector1 = Direction2.ToUnitVector();
+                var vector3 = Direction1.ToUnitVector();
+                var vector2 = -0.5d * (vector1 + vector3);
+
+                vector2 = vector2.GetVectorNormSquared().IsNearZero()
+                    ? vector1.GetUnitNormal()
+                    : vector2.ToUnitVector();
+
+                return new Triplet<Float64Tuple3D>(
+                    Center + Radius * vector1, 
+                    Center + Radius * vector2, 
+                    Center + Radius * vector3
+                );
+            }
+        }
+
+        public double GetEdgeLength()
+        {
+            return 2d * Math.PI * Radius * GetArcRatio();
+        } 
+
+        public Float64Tuple3D GetArcStartUnitVector()
+        {
+            return InnerArc 
+                ? Direction1.ToUnitVector() 
+                : Direction2.ToUnitVector();
+        }
     
-    public Float64Tuple3D GetArcEndUnitVector()
-    {
-        return InnerArc 
-            ? Direction2.ToUnitVector() 
-            : Direction1.ToUnitVector();
-    }
+        public Float64Tuple3D GetArcEndUnitVector()
+        {
+            return InnerArc 
+                ? Direction2.ToUnitVector() 
+                : Direction1.ToUnitVector();
+        }
     
-    public Float64Tuple3D GetUnitNormal()
-    {
-        var normal = 
-            Direction1.VectorCross(Direction2);
+        public Float64Tuple3D GetUnitNormal()
+        {
+            var normal = 
+                Direction1.VectorCross(Direction2);
 
-        return normal.GetVectorNormSquared().IsNearZero() 
-            ? Direction1.GetUnitNormal() 
-            : normal.ToUnitVector();
-    }
+            return normal.GetVectorNormSquared().IsNearZero() 
+                ? Direction1.GetUnitNormal() 
+                : normal.ToUnitVector();
+        }
 
-    public PlanarAngle GetAngle()
-    {
-        var arcRatio = 
-            Direction1.GetVectorsAngle(Direction2);
+        public Float64PlanarAngle GetAngle()
+        {
+            var arcRatio = 
+                Direction1.GetVectorsAngle(Direction2);
 
-        return InnerArc ? arcRatio : 2d * Math.PI - arcRatio;
-    }
+            return InnerArc ? arcRatio : 2d * Math.PI - arcRatio;
+        }
 
-    public double GetArcRatio()
-    {
-        var arcRatio = 
-            Direction1.GetVectorsAngle(Direction2) / (2d * Math.PI);
+        public double GetArcRatio()
+        {
+            var arcRatio = 
+                Direction1.GetVectorsAngle(Direction2) / (2d * Math.PI);
 
-        return InnerArc ? arcRatio : 1d - arcRatio;
+            return InnerArc ? arcRatio : 1d - arcRatio;
+        }
     }
 }

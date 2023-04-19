@@ -36,7 +36,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.Electromagnetics.ImageMethod
 
             // Define a Homogeneous geometry object using the context
             var geometry = 
-                new GaHomogeneousGeometry4D<IMetaExpressionAtomic>(context);
+                new RGaHomogeneousGeometry4D<IMetaExpressionAtomic>(context);
             
             // Stage 2: Define the input parameters of the context
             // The input parameters are named variables created as scalar parts of multivectors

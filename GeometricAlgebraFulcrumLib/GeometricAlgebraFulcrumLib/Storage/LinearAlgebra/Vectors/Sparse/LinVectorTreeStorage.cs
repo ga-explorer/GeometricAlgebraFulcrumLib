@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using DataStructuresLib.Basic;
 using DataStructuresLib.BitManipulation;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records.Restricted;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Dense;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
@@ -263,7 +264,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Sparse
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IndexScalarRecord<T> GetLeafNodeByIndex(int index)
+        public RGaKvIndexScalarRecord<T> GetLeafNodeByIndex(int index)
         {
             return new(
                 _leafNodeIDsList[index],
@@ -431,10 +432,10 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Sparse
             return _leafNodeIDsList;
         }
         
-        public IEnumerable<IndexScalarRecord<T>> GetLeafNodes()
+        public IEnumerable<RGaKvIndexScalarRecord<T>> GetLeafNodes()
         {
             for (var i = 0; i < GetSparseCount(); i++)
-                yield return new IndexScalarRecord<T>(
+                yield return new RGaKvIndexScalarRecord<T>(
                     _leafNodeIDsList[i], 
                     _leafNodeScalarsArray[i]
                 );
@@ -696,7 +697,8 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Sparse
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ILinVectorGradedStorage<T> ToVectorGradedStorage(Func<ulong, GradeIndexRecord> indexToGradeIndexMapping)
+        public ILinVectorGradedStorage<T> ToVectorGradedStorage(
+            Func<ulong, RGaGradeKvIndexRecord> indexToGradeIndexMapping)
         {
             return GetIndexScalarRecords()
                 .Select(record => record.MapRecord(indexToGradeIndexMapping))
@@ -704,7 +706,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Sparse
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ILinVectorGradedStorage<T> ToVectorGradedStorage(Func<ulong, T, GradeIndexScalarRecord<T>> indexScalarToGradeIndexScalarMapping)
+        public ILinVectorGradedStorage<T> ToVectorGradedStorage(Func<ulong, T, RGaGradeKvIndexScalarRecord<T>> indexScalarToGradeIndexScalarMapping)
         {
             return GetIndexScalarRecords()
                 .Select(record => record.MapRecord(indexScalarToGradeIndexScalarMapping))
@@ -761,10 +763,10 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Sparse
         }
 
 
-        public IEnumerable<IndexScalarRecord<T>> GetIndexScalarRecords()
+        public IEnumerable<RGaKvIndexScalarRecord<T>> GetIndexScalarRecords()
         {
             for (var i = 0; i < GetSparseCount(); i++)
-                yield return new IndexScalarRecord<T>(
+                yield return new RGaKvIndexScalarRecord<T>(
                     _leafNodeIDsList[i], 
                     _leafNodeScalarsArray[i]
                 );

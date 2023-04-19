@@ -5,9 +5,10 @@ using System.Linq;
 using BenchmarkDotNet.Attributes;
 using DataStructuresLib.Basic;
 using GAPoTNumLib.GAPoT;
-using NumericalGeometryLib.BasicMath;
-using NumericalGeometryLib.BasicMath.Maps.SpaceND.Rotation;
-using NumericalGeometryLib.BasicMath.Tuples.Mutable;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Arrays.Float64;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Mutable;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.Rotation;
 
 namespace GeometricAlgebraFulcrumLib.Benchmarks.GAPoT
 {
@@ -16,7 +17,7 @@ namespace GeometricAlgebraFulcrumLib.Benchmarks.GAPoT
     {
         //[Params(3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48)]
         [Params(28, 29, 30, 31, 32, 33)]
-        public int VSpaceDimension { get; set; }// = 24;
+        public int VSpaceDimensions { get; set; }// = 24;
 
         public IReadOnlyList<double[]> VectorArrayList { get; private set; }
 
@@ -50,29 +51,29 @@ namespace GeometricAlgebraFulcrumLib.Benchmarks.GAPoT
             //        .ToImmutableArray();
 
             ClarkeArray = 
-                Float64ArrayUtils.CreateClarkeRotationArray(VSpaceDimension);
+                Float64ArrayUtils.CreateClarkeRotationArray(VSpaceDimensions);
 
             //ClarkeArrayRotation = 
-            //    ClarkeRotation.CreateForward(VSpaceDimension);
+            //    ClarkeRotation.CreateForward(VSpaceDimensions);
 
             ClarkeSimpleRotationSequence =
-                MatrixRotation
-                    .CreateForwardClarkeRotation(VSpaceDimension)
+                LinFloat64MatrixRotation
+                    .CreateForwardClarkeRotation(VSpaceDimensions)
                     .ToVectorToVectorRotationSequence()
                     .Select(t => 
                         new Triplet<double[]>(
-                            t.SourceVector.GetScalarArrayCopy(),
-                            t.TargetOrthogonalVector.GetScalarArrayCopy(),
-                            t.TargetVector.GetScalarArrayCopy()
+                            t.SourceVector.ToArray(VSpaceDimensions),
+                            t.TargetOrthogonalVector.ToArray(VSpaceDimensions),
+                            t.TargetVector.ToArray(VSpaceDimensions)
                         )
                     ).ToImmutableArray();
 
             //ClarkeArray =
             //    ScalarAlgebraFloat64Processor
             //        .DefaultProcessor
-            //        .CreateClarkeArray(VSpaceDimension);
+            //        .CreateClarkeArray(VSpaceDimensions);
 
-            //SkrRotateFunction = VSpaceDimension switch
+            //SkrRotateFunction = VSpaceDimensions switch
             //{
             //    3 => SkrMapUtils.SkrRotate3D,
             //    4 => SkrMapUtils.SkrRotate4D,
@@ -123,7 +124,7 @@ namespace GeometricAlgebraFulcrumLib.Benchmarks.GAPoT
             //    _ => throw new InvalidOperationException()
             //};
 
-            //ClarkeRotateFunction = VSpaceDimension switch
+            //ClarkeRotateFunction = VSpaceDimensions switch
             //{
             //    3 => ClarkeMapUtils.ClarkeRotate3D,
             //    4 => ClarkeMapUtils.ClarkeRotate4D,
@@ -180,7 +181,7 @@ namespace GeometricAlgebraFulcrumLib.Benchmarks.GAPoT
             var random = new Random(10);
 
             return Enumerable
-                .Range(0, VSpaceDimension)
+                .Range(0, VSpaceDimensions)
                 .Select(_ => random.NextDouble())
                 .ToArray();
         }
@@ -313,7 +314,7 @@ namespace GeometricAlgebraFulcrumLib.Benchmarks.GAPoT
 
         public double[] ClarkeRotate2(double[] uVector)
         {
-            var vVector = new double[VSpaceDimension];
+            var vVector = new double[VSpaceDimensions];
 
             uVector.CopyTo(vVector, 0);
 
@@ -329,7 +330,7 @@ namespace GeometricAlgebraFulcrumLib.Benchmarks.GAPoT
                 var rsPlus = r + s;
                 var rsMinus = r - s;
 
-                for (var i = 0; i < VSpaceDimension; i++)
+                for (var i = 0; i < VSpaceDimensions; i++)
                     vVector[i] -= rsPlus * u[i] + rsMinus * v[i];
             }
 
@@ -352,14 +353,14 @@ namespace GeometricAlgebraFulcrumLib.Benchmarks.GAPoT
 
         public void Validate2()
         {
-            var m1 = Float64ArrayUtils.CreateClarkeRotationArray(VSpaceDimension);
-            var m2 = MatrixRotation.CreateForwardClarkeRotation(VSpaceDimension).ToVectorToVectorRotationSequence();
+            var m1 = Float64ArrayUtils.CreateClarkeRotationArray(VSpaceDimensions);
+            var m2 = LinFloat64MatrixRotation.CreateForwardClarkeRotation(VSpaceDimensions).ToVectorToVectorRotationSequence();
 
             for (var i = 0; i < VectorArrayList.Count; i++)
             {
                 var u = VectorArrayList[i];
-                var v1 = Float64Tuple.Create(m1.MatrixProduct(u));
-                var v2 = m2.MapVector(Float64Tuple.Create(u));
+                var v1 = m1.MatrixProduct(u).CreateLinVector();
+                var v2 = m2.MapVector(u.CreateLinVector());
 
                 var diff = (v1 - v2).GetVectorNormSquared();
 

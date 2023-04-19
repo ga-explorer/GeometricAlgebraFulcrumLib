@@ -6,11 +6,11 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.SparseK
 {
     public static class Euclidean3DSpace
     {
-        public static uint VSpaceDimension => 3u;
+        public static uint VSpaceDimensions => 3u;
 
-        public static uint GaSpaceDimension => 8u;
+        public static uint GaSpaceDimensions => 8u;
 
-        public static IReadOnlyList<uint> KvSpaceDimension { get; }
+        public static IReadOnlyList<uint> KvSpaceDimensions { get; }
             = new[] { 1u, 3u, 3u, 1u };
     }
 
@@ -18,7 +18,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.SparseK
     //{
     //    private static void UpdateKVectorDictionary()
 
-    //    public double Sp([NotNull] KVector kv2)
+    //    public double Sp(KVector kv2)
     //    {
     //        if (Grade != kv2.Grade)
     //            return 0;
@@ -40,7 +40,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.SparseK
         public uint Grade { get; }
 
         public uint MaxIndex 
-            => Euclidean3DSpace.KvSpaceDimension[(int) Grade];
+            => Euclidean3DSpace.KvSpaceDimensions[(int) Grade];
 
         public double this[uint index]
         {

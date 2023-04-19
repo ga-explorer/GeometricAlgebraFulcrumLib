@@ -154,7 +154,7 @@ namespace DataStructuresLib.ODS
 		public RbTree (object hlp)
 		{
 			// hlp is INodeHelper<T> for some T
-			this._hlp = hlp;
+			_hlp = hlp;
 		}
 
 		public void Clear ()
@@ -207,7 +207,7 @@ namespace DataStructuresLib.ODS
 
 		public Node Lookup<T> (T key)
 		{
-			var hlp = (INodeHelper<T>) this._hlp;
+			var hlp = (INodeHelper<T>) _hlp;
 			var current = Root;
 			while (current != null) {
 				var c = hlp.Compare (key, current);
@@ -220,7 +220,7 @@ namespace DataStructuresLib.ODS
 
 		public void Bound<T> (T key, ref Node lower, ref Node upper)
 		{
-			var hlp = (INodeHelper<T>) this._hlp;
+			var hlp = (INodeHelper<T>) _hlp;
 			var current = Root;
 			while (current != null) {
 				var c = hlp.Compare (key, current);
@@ -266,7 +266,7 @@ namespace DataStructuresLib.ODS
 		public NodeEnumerator GetSuffixEnumerator<T> (T key)
 		{
 			var pennants = new Stack<Node> ();
-			var hlp = (INodeHelper<T>) this._hlp;
+			var hlp = (INodeHelper<T>) _hlp;
 			var current = Root;
 			while (current != null) {
 				var c = hlp.Compare (key, current);
@@ -303,7 +303,7 @@ namespace DataStructuresLib.ODS
 		// Pre-condition: root != null
         private int find_key<T> (T key, List<Node> path)
 		{
-			var hlp = (INodeHelper<T>) this._hlp;
+			var hlp = (INodeHelper<T>) _hlp;
 			var c = 0;
 			Node sibling = null;
 			var current = Root;
@@ -611,14 +611,14 @@ namespace DataStructuresLib.ODS
 			internal NodeEnumerator (RbTree tree)
 				: this ()
 			{
-				this._tree = tree;
+				_tree = tree;
 				_version = tree._version;
 			}
 
 			internal NodeEnumerator (RbTree tree, Stack<Node> initPennants)
 				: this (tree)
 			{
-				this._initPennants = initPennants;
+				_initPennants = initPennants;
 			}
 
 			public void Reset ()

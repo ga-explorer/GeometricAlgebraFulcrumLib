@@ -1,15 +1,14 @@
-﻿using GraphicsComposerLib.Rendering.Svg.Styles;
+﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.BasicShapes;
+using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Lines;
+using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Triangles;
+using GeometricAlgebraFulcrumLib.MathBase.Borders;
+using GeometricAlgebraFulcrumLib.MathBase.Borders.Space2D;
+using GraphicsComposerLib.Rendering.Svg.Styles;
 using NumericalGeometryLib.Accelerators.BIH.Space2D;
 using NumericalGeometryLib.Accelerators.Grids;
 using NumericalGeometryLib.Accelerators.Grids.Space2D;
-using NumericalGeometryLib.BasicMath.Tuples;
-using NumericalGeometryLib.BasicMath.Tuples.Immutable;
-using NumericalGeometryLib.BasicShapes;
-using NumericalGeometryLib.BasicShapes.Lines;
-using NumericalGeometryLib.BasicShapes.Triangles;
-using NumericalGeometryLib.Borders;
-using NumericalGeometryLib.Borders.Space2D;
-using SixLabors.ImageSharp;
 
 namespace GraphicsComposerLib.Rendering.Svg.DrawingBoard
 {

@@ -1,11 +1,11 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.BSplines;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Factories
 {
     public static class BSplineFactory
     {
-        public static BSplineBasisSet<T> CreateBSplineBasisSet<T>(this IScalarAlgebraProcessor<T> scalarProcessor, int degree, params T[] knotValues)
+        public static BSplineBasisSet<T> CreateBSplineBasisSet<T>(this IScalarProcessor<T> scalarProcessor, int degree, params T[] knotValues)
         {
             var knotVector = new BSplineKnotVector<T>(scalarProcessor);
 
@@ -15,7 +15,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
             return knotVector.CreateBSplineBasisSet(degree);
         }
 
-        public static BSplineBasisSet<T> CreateBSplineBasisSetClamped<T>(this IScalarAlgebraProcessor<T> scalarProcessor, int degree, params T[] knotValues)
+        public static BSplineBasisSet<T> CreateBSplineBasisSetClamped<T>(this IScalarProcessor<T> scalarProcessor, int degree, params T[] knotValues)
         {
             var knotVector = new BSplineKnotVector<T>(scalarProcessor);
 

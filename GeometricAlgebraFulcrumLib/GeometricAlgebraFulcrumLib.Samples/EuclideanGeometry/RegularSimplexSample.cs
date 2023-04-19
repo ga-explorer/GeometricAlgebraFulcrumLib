@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Linq;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
-using GeometricAlgebraFulcrumLib.Geometry.Subspaces;
-using GeometricAlgebraFulcrumLib.Processors;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Text;
+using DataStructuresLib.BitManipulation;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Subspaces;
+using GeometricAlgebraFulcrumLib.MathBase.Text;
 
 namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
 {
@@ -12,16 +13,13 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
     {
         public static void Execute()
         {
-            // Select suitable scalar processor for managing computations
-            var scalarProcessor = ScalarAlgebraFloat64Processor.DefaultProcessor;
-
             // Select a suitable text composer for displaying results
-            var textComposer = TextFloat64Composer.DefaultComposer;
+            var textComposer = TextComposerFloat64.DefaultComposer;
 
             // You can also use other kinds of symbolic processors and text composers
 
             //var scalarProcessor = ScalarAlgebraMathematicaProcessor.DefaultProcessor;
-            //var textComposer = LaTeXMathematicaComposer.DefaultComposer;
+            //var textComposer = LaTeXComposerExpr.DefaultComposer;
 
             //var scalarProcessor = ScalarAlgebraAngouriMathProcessor.DefaultProcessor;
             //var textComposer = TextAngouriMathComposer.DefaultComposer;
@@ -29,29 +27,29 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
             // Make the same construction for dimensions 2, 3, ..., 10
             // Note that there is no explicit use of coordinates, the abstract geometric
             // idea is directly expressed in code
-            for (var n = 2U; n < 10U; n++)
+            for (var n = 2; n < 10; n++)
             {
                 // The dimension of the larger GA space is one more than the dimension
                 // of the target space
-                var vSpaceDimension = n + 1;
+                var vSpaceDimensions = n + 1;
 
                 // Create a Euclidean geometric algebra processor based on the selected
                 // scalar processor
                 var processor = 
-                    scalarProcessor.CreateGeometricAlgebraEuclideanProcessor(vSpaceDimension);
+                    RGaFloat64Processor.Euclidean;
                 
                 // The ones vector is the core of this geometric construction
                 var onesVector = processor
-                    .CreateVectorSymmetric((int) vSpaceDimension);
+                    .CreateSymmetricVector(vSpaceDimensions);
                     //.MapScalars(expr => Mfs.N[expr].Evaluate());
 
                 // This hyperspace is the orthogonal complement of the all-ones vector
                 var hyperSpace = 
-                    onesVector.GetDualSubspace();
+                    onesVector.Dual(vSpaceDimensions).ToSubspace();
 
                 // Basis vectors of GA space
                 var basisVectors =
-                    processor.CreateVectorBasis().ToArray();
+                    vSpaceDimensions.GetRange(processor.CreateVector).ToArray();
 
                 // Simplex centroid to vertex vectors are projections of basis vectors
                 // onto hyperSpace
@@ -60,7 +58,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
 
                 // Take the average of the first n basis vectors of the larger GA space
                 var avgVector = 
-                    processor.CreateVectorAverageOnes((int) n);
+                    processor.CreateSymmetricVector(vSpaceDimensions, 1d / n);
 
                 // Projecting the average vector onto the hyperplane gives a radius of
                 // the inner sphere

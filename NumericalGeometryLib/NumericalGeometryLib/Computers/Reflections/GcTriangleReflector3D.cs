@@ -1,8 +1,7 @@
 ﻿using DataStructuresLib.Statistics;
-using NumericalGeometryLib.BasicMath;
-using NumericalGeometryLib.BasicMath.Tuples;
-using NumericalGeometryLib.BasicMath.Tuples.Immutable;
-using NumericalGeometryLib.BasicShapes.Triangles;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Triangles;
 
 namespace NumericalGeometryLib.Computers.Reflections
 {
@@ -37,7 +36,7 @@ namespace NumericalGeometryLib.Computers.Reflections
             var d = -n.VectorDot(Triangle.GetPoint1());
             var p = point.ToTuple3D();
 
-            var result = p - (2 * (n.VectorDot(p) + d) / n2) * n;
+            var result = p - 2 * (n.VectorDot(p) + d) / n2 * n;
 
             ComputePointReflectionCounter.End();
 

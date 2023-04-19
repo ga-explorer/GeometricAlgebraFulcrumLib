@@ -24,10 +24,10 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
 
             var casesText = new ListTextComposer(Environment.NewLine);
 
-            foreach (var inGrade1 in GeometricProcessor.Grades)
-                foreach (var inGrade2 in GeometricProcessor.Grades)
+            foreach (var inGrade1 in Grades)
+                foreach (var inGrade2 in Grades)
                 {
-                    var id = inGrade1 + inGrade2 * GeometricProcessor.GradesCount;
+                    var id = inGrade1 + inGrade2 * GradesCount;
 
                     var name = OperationSpecs.GetName(
                         inGrade1, inGrade2

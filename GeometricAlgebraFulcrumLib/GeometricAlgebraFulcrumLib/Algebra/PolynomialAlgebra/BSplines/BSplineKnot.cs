@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.BSplines
@@ -17,7 +16,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.BSplines
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal BSplineKnot(int index1, [NotNull] T value, int multiplicity)
+        internal BSplineKnot(int index1, T value, int multiplicity)
         {
             if (multiplicity < 1)
                 throw new ArgumentOutOfRangeException(nameof(multiplicity));

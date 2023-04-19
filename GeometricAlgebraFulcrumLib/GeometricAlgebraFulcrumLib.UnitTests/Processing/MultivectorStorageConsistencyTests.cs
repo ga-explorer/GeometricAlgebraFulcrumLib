@@ -1,41 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
-using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Utilities.Factories;
-using GeometricAlgebraFulcrumLib.Utilities.Composers;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using NUnit.Framework;
-using GeometricAlgebraFulcrumLib.Processors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
 
 namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
 {
     [TestFixture]
     public sealed class MultivectorConsistencyTests
     {
-        private readonly GeometricAlgebraRandomComposer<double> _randomGenerator;
-        private readonly List<GaMultivector<double>> _mvListTested;
-        private readonly List<GaMultivector<double>> _mvListRef;
+        private readonly RGaFloat64RandomComposer _randomGenerator;
+        private readonly List<RGaFloat64Multivector> _mvListTested;
+        private readonly List<RGaFloat64Multivector> _mvListRef;
         private readonly double _scalar;
 
 
-        public IGeometricAlgebraProcessor<double> GeometricProcessor { get; }
-            = ScalarAlgebraFloat64Processor.DefaultProcessor.CreateGeometricAlgebraEuclideanProcessor(5);
+        public RGaFloat64Processor GeometricProcessor { get; }
+            = RGaFloat64Processor.Euclidean;
 
-        public uint VSpaceDimension 
-            => GeometricProcessor.VSpaceDimension;
+        public int VSpaceDimensions 
+            => 5;
 
-        public ulong GaSpaceDimension
-            => VSpaceDimension.ToGaSpaceDimension();
+        public ulong GaSpaceDimensions
+            => 1UL << VSpaceDimensions;
 
 
         public MultivectorConsistencyTests()
         {
-            _randomGenerator = GeometricProcessor.CreateGeometricRandomComposer(10);
-            _mvListTested = new List<GaMultivector<double>>();
-            _mvListRef = new List<GaMultivector<double>>();
-            _scalar = _randomGenerator.GetScalar();
+            _randomGenerator = GeometricProcessor.CreateRGaRandomComposer(VSpaceDimensions, 10);
+            _mvListTested = new List<RGaFloat64Multivector>();
+            _mvListRef = new List<RGaFloat64Multivector>();
+            _scalar = _randomGenerator.GetScalarValue();
         }
         
 
@@ -44,61 +42,57 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
         {
             //Create a scalar storage
             _mvListTested.Add(
-                _randomGenerator.GetScalarTerm().AsMultivector()
+                _randomGenerator.GetScalar()
             );
 
             //Create a set of vector terms storages
-            for (var index = 0; index < VSpaceDimension; index++)
+            for (var index = 0; index < VSpaceDimensions; index++)
                 _mvListTested.Add(
-                    _randomGenerator.GetVectorTermByIndex((ulong) index).AsMultivector()
+                    _randomGenerator.GetVector(index)
                 );
 
             //Create a set of bivector terms storages
-            var kvSpaceDimension2 = VSpaceDimension.KVectorSpaceDimension(2);
-            for (var index = 0UL; index < kvSpaceDimension2; index++)
+            var kvSpaceDimension2 = (int) VSpaceDimensions.KVectorSpaceDimension(2);
+            for (var index = 0; index < kvSpaceDimension2; index++)
                 _mvListTested.Add(
-                    _randomGenerator.GetBivectorTermByIndex(index).AsMultivector()
+                    _randomGenerator.GetBivector(index)
                 );
 
             //Create a set of blade terms storages
-            for (var id = 0UL; id < GaSpaceDimension; id++)
+            for (var id = 0UL; id < GaSpaceDimensions; id++)
                 _mvListTested.Add(
-                    _randomGenerator.GetKVectorTermById(id).AsMultivector()
+                    _randomGenerator.GetKVector(id)
                 );
 
             //Create a vector storage
             _mvListTested.Add(
-                _randomGenerator.GetVector().AsMultivector()
+                _randomGenerator.GetVector()
             );
 
             //Create a bivector storage
             _mvListTested.Add(
-                _randomGenerator.GetBivector().AsMultivector()
+                _randomGenerator.GetBivector()
             );
 
             //Create k-vector storages
-            for (var grade = 0U; grade <= VSpaceDimension; grade++)
+            for (var grade = 0; grade <= VSpaceDimensions; grade++)
                 _mvListTested.Add(
-                    _randomGenerator.GetKVectorOfGrade(grade).AsMultivector()
+                    _randomGenerator.GetKVectorOfGrade(grade)
                 );
 
             //Create graded multivector storage
             _mvListTested.Add(
-                _randomGenerator.GetGradedMultivector()
+                _randomGenerator.GetMultivector()
             );
 
             //Create terms multivector storage
             _mvListTested.Add(
-                _randomGenerator.GetTermsMultivector()
+                _randomGenerator.GetUniformMultivector((int) GaSpaceDimensions)
             );
 
             //Convert all storages into multivector terms storages
             foreach (var storage in _mvListTested)
-                _mvListRef.Add(
-                    GeometricProcessor.CreateMultivector(
-                    storage.MultivectorStorage.GetLinVectorIdScalarStorage().GetCopy()
-                )
-            );
+                _mvListRef.Add(storage);
         }
 
         [Test]
@@ -108,16 +102,38 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
 
             for (var i = 0; i < _mvListTested.Count; i++)
             {
-                Assert.IsTrue(_mvListTested[i].MultivectorStorage.TermsCount == _mvListRef[i].MultivectorStorage.TermsCount);
+                Assert.IsTrue(_mvListTested[i].Count == _mvListRef[i].Count);
 
                 var mvDiff = 
                     _mvListTested[i] - _mvListRef[i];
 
-                Assert.IsTrue(mvDiff.IsZero());
+                Assert.IsTrue(mvDiff.IsZero);
             }
         }
 
-        private bool TestDiffIsZero(int i, Func<GaMultivector<double>, GaMultivector<double>> opFunction)
+        private bool TestDiffIsZero(int i, Func<RGaFloat64Multivector, RGaFloat64Multivector> opFunction)
+        {
+            var tstMv = 
+                opFunction(_mvListTested[i]);
+
+            var refMv =
+                opFunction(_mvListRef[i]);
+
+            return (tstMv - refMv).IsZero;
+        }
+
+        private bool TestDiffIsZero(int i, int j, Func<RGaFloat64Multivector, RGaFloat64Multivector, RGaFloat64Multivector> opFunction)
+        {
+            var tstMv = 
+                opFunction(_mvListTested[i], _mvListTested[j]);
+
+            var refMv =
+                opFunction(_mvListRef[i], _mvListRef[j]);
+
+            return (tstMv - refMv).IsZero;
+        }
+        
+        private bool TestDiffIsZero(int i, Func<RGaFloat64Multivector, double> opFunction)
         {
             var tstMv = 
                 opFunction(_mvListTested[i]);
@@ -127,8 +143,8 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
 
             return (tstMv - refMv).IsZero();
         }
-
-        private bool TestDiffIsZero(int i, int j, Func<GaMultivector<double>, GaMultivector<double>, GaMultivector<double>> opFunction)
+        
+        private bool TestDiffIsZero(int i, int j, Func<RGaFloat64Multivector, RGaFloat64Multivector, double> opFunction)
         {
             var tstMv = 
                 opFunction(_mvListTested[i], _mvListTested[j]);
@@ -137,32 +153,6 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
                 opFunction(_mvListRef[i], _mvListRef[j]);
 
             return (tstMv - refMv).IsZero();
-        }
-        
-        private bool TestDiffIsZero(int i, Func<GaMultivector<double>, double> opFunction)
-        {
-            var tstMv = 
-                opFunction(_mvListTested[i]);
-
-            var refMv =
-                opFunction(_mvListRef[i]);
-
-            return GeometricProcessor.IsZero(
-                GeometricProcessor.Subtract(tstMv, refMv)
-            );
-        }
-        
-        private bool TestDiffIsZero(int i, int j, Func<GaMultivector<double>, GaMultivector<double>, double> opFunction)
-        {
-            var tstMv = 
-                opFunction(_mvListTested[i], _mvListTested[j]);
-
-            var refMv =
-                opFunction(_mvListRef[i], _mvListRef[j]);
-
-            return GeometricProcessor.IsZero(
-                GeometricProcessor.Subtract(tstMv, refMv)
-            );
         }
 
         [Test]
@@ -174,8 +164,8 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
                 Assert.IsTrue(TestDiffIsZero(i, mv => _scalar * mv));
                 Assert.IsTrue(TestDiffIsZero(i, mv => mv * _scalar));
                 Assert.IsTrue(TestDiffIsZero(i, mv => mv / _scalar));
-                Assert.IsTrue(TestDiffIsZero(i, mv => mv.GpSquared()));
-                Assert.IsTrue(TestDiffIsZero(i, mv => mv.GpReverse()));
+                Assert.IsTrue(TestDiffIsZero(i, mv => mv.Gp(mv)));
+                Assert.IsTrue(TestDiffIsZero(i, mv => mv.Gp(mv.Reverse())));
                 Assert.IsTrue(TestDiffIsZero(i, mv => mv.SpSquared().ScalarValue));
                 Assert.IsTrue(TestDiffIsZero(i, mv => mv.Norm().ScalarValue));
                 Assert.IsTrue(TestDiffIsZero(i, mv => mv.NormSquared().ScalarValue));
@@ -187,7 +177,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
                     Assert.IsTrue(TestDiffIsZero(i, j, (mv1, mv2) => mv1 - mv2));
                     Assert.IsTrue(TestDiffIsZero(i, j, (mv1, mv2) => mv1.Op(mv2)));
                     Assert.IsTrue(TestDiffIsZero(i, j, (mv1, mv2) => mv1.Gp(mv2)));
-                    Assert.IsTrue(TestDiffIsZero(i, j, (mv1, mv2) => mv1.GpReverse(mv2)));
+                    Assert.IsTrue(TestDiffIsZero(i, j, (mv1, mv2) => mv1.Gp(mv2.Reverse())));
                     Assert.IsTrue(TestDiffIsZero(i, j, (mv1, mv2) => mv1.Sp(mv2).ScalarValue));
                     Assert.IsTrue(TestDiffIsZero(i, j, (mv1, mv2) => mv1.Lcp(mv2)));
                     Assert.IsTrue(TestDiffIsZero(i, j, (mv1, mv2) => mv1.Rcp(mv2)));

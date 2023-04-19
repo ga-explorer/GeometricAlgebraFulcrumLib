@@ -1,5 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors;
 
 namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
@@ -7,7 +7,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
     internal static class MultivectorStorageSubtractUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> Subtract<T>(this IScalarAlgebraProcessor<T> scalarProcessor, VectorStorage<T> mv1, VectorStorage<T> mv2)
+        public static VectorStorage<T> Subtract<T>(this IScalarProcessor<T> scalarProcessor, VectorStorage<T> mv1, VectorStorage<T> mv2)
         {
             return scalarProcessor.Subtract(
                 mv1.GetLinVectorIndexScalarStorage(),
@@ -16,7 +16,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static BivectorStorage<T> Subtract<T>(this IScalarAlgebraProcessor<T> scalarProcessor, BivectorStorage<T> mv1, BivectorStorage<T> mv2)
+        public static BivectorStorage<T> Subtract<T>(this IScalarProcessor<T> scalarProcessor, BivectorStorage<T> mv1, BivectorStorage<T> mv2)
         {
             return scalarProcessor.Subtract(
                 mv1.GetLinVectorIndexScalarStorage(),
@@ -25,7 +25,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorGradedStorage<T> Subtract<T>(this IScalarAlgebraProcessor<T> scalarProcessor, KVectorStorage<T> mv1, KVectorStorage<T> mv2)
+        public static IMultivectorGradedStorage<T> Subtract<T>(this IScalarProcessor<T> scalarProcessor, KVectorStorage<T> mv1, KVectorStorage<T> mv2)
         {
             if (mv1.Grade == mv2.Grade)
             {
@@ -44,7 +44,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorStorage<T> Subtract<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorStorage<T> mv1, IMultivectorStorage<T> mv2)
+        public static IMultivectorStorage<T> Subtract<T>(this IScalarProcessor<T> scalarProcessor, IMultivectorStorage<T> mv1, IMultivectorStorage<T> mv2)
         {
             return mv1 switch
             {
@@ -72,7 +72,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorStorage<T> Subtract<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorStorage<T> mv1, T scalar2)
+        public static IMultivectorStorage<T> Subtract<T>(this IScalarProcessor<T> scalarProcessor, IMultivectorStorage<T> mv1, T scalar2)
         {
             return mv1 switch
             {
@@ -94,7 +94,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorStorage<T> Subtract<T>(this IScalarAlgebraProcessor<T> scalarProcessor, T scalar2, IMultivectorStorage<T> mv1)
+        public static IMultivectorStorage<T> Subtract<T>(this IScalarProcessor<T> scalarProcessor, T scalar2, IMultivectorStorage<T> mv1)
         {
             return mv1 switch
             {

@@ -1,6 +1,5 @@
 ﻿using GraphicsComposerLib.Rendering.Colors;
 using GraphicsComposerLib.Rendering.ThreeJs.Obsolete.Objects;
-using SixLabors.ImageSharp;
 using TextComposerLib.Code.JavaScript;
 
 namespace GraphicsComposerLib.Rendering.ThreeJs.Obsolete.Math

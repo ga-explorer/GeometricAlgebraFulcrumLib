@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using DataStructuresLib.BitManipulation;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
+using DataStructuresLib.IndexSets;
 using GeometricAlgebraFulcrumLib.Geometry.Euclidean.Space3D.Objects;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Expressions.Variables;
-using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 
 namespace GeometricAlgebraFulcrumLib.MetaProgramming.Expressions
@@ -42,14 +44,14 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Expressions
             }
         }
 
-        public GaKVector<IMetaExpressionAtomic> CreateScalarTerm(string scalarName)
+        public XGaKVector<IMetaExpressionAtomic> CreateScalarTerm(string scalarName)
         {
             var namedScalar =
                 Context.GetOrDefineParameterVariable(scalarName);
 
             return Context
-                .CreateKVectorStorageTerm(0, 0, namedScalar)
-                .CreateKVector(Context.GeometricProcessor);
+                .XGaProcessor
+                .CreateScalar(namedScalar);
         }
 
         public IMetaExpressionAtomic[,] CreateDenseArray(int rowsCount, int colsCount, Func<int, int, string> namingFunction)
@@ -63,97 +65,94 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Expressions
             return array;
         }
 
-        public GaVector<IMetaExpressionAtomic> CreateVector(params string[] scalarNames)
+        public XGaVector<IMetaExpressionAtomic> CreateVector(params string[] scalarNames)
         {
-            return Context.CreateVectorStorage(scalarNames
-                    .Select(Context.GetOrDefineParameterVariable)
-                    .Cast<IMetaExpressionAtomic>()
-                    .ToArray()
-            ).CreateVector(Context.GeometricProcessor);
+            return Context
+                .XGaProcessor
+                .CreateVector(
+                    scalarNames
+                        .Select(Context.GetOrDefineParameterVariable)
+                        .Cast<IMetaExpressionAtomic>()
+                        .ToArray()
+                );
         }
 
-        public GaVector<IMetaExpressionAtomic> CreateVectorTerm(ulong index, string scalarName)
+        public XGaVector<IMetaExpressionAtomic> CreateVectorTerm(int index, string scalarName)
         {
             var namedScalar =
                 Context.GetOrDefineParameterVariable(scalarName);
 
             return Context
-                .CreateVectorStorageTerm(index, namedScalar)
-                .CreateVector(Context.GeometricProcessor);
+                .XGaProcessor
+                .CreateVector(index, namedScalar);
         }
 
-        public GaVector<IMetaExpressionAtomic> CreateDenseVector(uint vSpaceDimension, Func<ulong, string> namingFunction)
+        public XGaVector<IMetaExpressionAtomic> CreateDenseVector(int vSpaceDimensions, Func<int, string> namingFunction)
         {
             var parametersList =
-                vSpaceDimension
+                vSpaceDimensions
                     .GetRange()
                     .Select(index =>
-                        new KeyValuePair<ulong, IMetaExpressionAtomic>(
-                            index,
+                        new KeyValuePair<IIndexSet, IMetaExpressionAtomic>(
+                            index.IndexToIndexSet(),
                             Context.GetOrDefineParameterVariable(
                                 namingFunction(index)
                             )
                         )
-                    )
-                    .ToDictionary(
-                        pair => pair.Key,
-                        pair => pair.Value
                     );
 
             return Context
-                .CreateVectorStorage(parametersList)
-                .CreateVector(Context.GeometricProcessor);
+                .XGaProcessor
+                .CreateComposer()
+                .SetTerms(parametersList)
+                .GetVector();
         }
 
-        public GaKVector<IMetaExpressionAtomic> CreateDenseKVector(uint vSpaceDimensions, uint grade, Func<ulong, string> namingFunction)
+        public XGaKVector<IMetaExpressionAtomic> CreateDenseKVector(int vSpaceDimensions, int grade, Func<ulong, string> namingFunction)
         {
             Debug.Assert(grade <= vSpaceDimensions);
 
-            var kvSpaceDimension =
+            var kvSpaceDimensions =
                 vSpaceDimensions.KVectorSpaceDimension(grade);
 
             var parametersList =
                 Enumerable
-                    .Range(0, (int)kvSpaceDimension)
+                    .Range(0, (int)kvSpaceDimensions)
                     .Select(index =>
-                        new KeyValuePair<ulong, IMetaExpressionAtomic>(
-                            (ulong)index,
+                        new KeyValuePair<IIndexSet, IMetaExpressionAtomic>(
+                            BasisBladeUtils.BasisBladeGradeIndexToId(grade, (ulong)index).BitPatternToUInt64IndexSet(),
                             Context.GetOrDefineParameterVariable(
                                 namingFunction((ulong)index)
                             )
                         )
-                    )
-                    .ToDictionary(
-                        pair => pair.Key,
-                        pair => pair.Value
                     );
 
             return Context
-                .CreateKVectorStorage(grade, parametersList)
-                .CreateKVector(Context.GeometricProcessor);
+                .XGaProcessor
+                .CreateComposer()
+                .SetTerms(parametersList)
+                .GetKVector(grade);
         }
 
-        public GaMultivector<IMetaExpressionAtomic> CreateDenseMultivector(uint vSpaceDimensions, Func<ulong, string> namingFunction)
+        public XGaMultivector<IMetaExpressionAtomic> CreateDenseMultivector(int vSpaceDimensions, Func<ulong, string> namingFunction)
         {
             var parametersList =
-                (1UL << (int)vSpaceDimensions)
+                (1UL << vSpaceDimensions)
                     .GetRange()
                     .Select(id =>
-                        new KeyValuePair<ulong, IMetaExpressionAtomic>(
-                            id,
+                        new KeyValuePair<IIndexSet, IMetaExpressionAtomic>(
+                            id.BitPatternToUInt64IndexSet(),
                             Context.GetOrDefineParameterVariable(
                                 namingFunction(id)
                             )
                         )
-                    )
-                    .ToDictionary(
-                        pair => pair.Key,
-                        pair => pair.Value
                     );
 
-            return MultivectorStorage<IMetaExpressionAtomic>
-                .Create(parametersList)
-                .CreateMultivector(Context.GeometricProcessor);
+            return Context
+                .XGaProcessor
+                .CreateComposer()
+                .AddTerms(parametersList)
+                .GetMultivector();
         }
 
         //TODO: Add more functions for constructing multivectors and other GA-FuL objects

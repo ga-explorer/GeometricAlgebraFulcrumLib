@@ -1,10 +1,10 @@
-﻿using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
 
 namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices
 {
     public interface ILinMatrixStorageComposer<T>
     {
-        IScalarAlgebraProcessor<T> ScalarProcessor { get; }
+        IScalarProcessor<T> ScalarProcessor { get; }
 
         bool IsEmpty();
 

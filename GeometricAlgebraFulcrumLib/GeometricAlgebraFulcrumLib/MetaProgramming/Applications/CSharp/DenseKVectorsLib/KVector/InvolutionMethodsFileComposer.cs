@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using DataStructuresLib.BitManipulation;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Languages;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using TextComposerLib.Text.Linear;
@@ -35,19 +35,19 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
             );
         }
 
-        private void GenerateMainInvolutionFunction(GaFuLLanguageOperationSpecs opSpecs, Func<uint, bool> useNegative)
+        private void GenerateMainInvolutionFunction(GaFuLLanguageOperationSpecs opSpecs, Func<int, bool> useNegative)
         {
             var caseTemplate1 = Templates["main_negative_case"];
             var caseTemplate2 = Templates["main_negative_case2"];
 
             var casesText = new ListTextComposer(Environment.NewLine);
 
-            foreach (var grade in GeometricProcessor.Grades)
+            foreach (var grade in Grades)
                 if (useNegative(grade))
                     casesText.Add(caseTemplate1,
                         "signature", CurrentNamespace,
                         "grade", grade,
-                        "num", this.KVectorSpaceDimension(grade)
+                        "num", VSpaceDimensions.KVectorSpaceDimension(grade)
                     );
                 else
                     casesText.Add(caseTemplate2,
@@ -67,9 +67,9 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
             GenerateKVectorFileStartCode();
 
             var kvSpaceDimList =
-                VSpaceDimension
+                VSpaceDimensions
                     .GetRange()
-                    .Select(grade => GeometricProcessor.KVectorSpaceDimension(grade))
+                    .Select(grade => VSpaceDimensions.KVectorSpaceDimension(grade))
                     .Distinct();
 
             foreach (var kvSpaceDim in kvSpaceDimList)

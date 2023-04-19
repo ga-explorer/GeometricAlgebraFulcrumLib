@@ -6,9 +6,10 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using DataStructuresLib.Basic;
-using NumericalGeometryLib.BasicMath;
-using NumericalGeometryLib.Borders.Space3D;
-using NumericalGeometryLib.Borders.Space3D.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.Borders.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.Borders.Space3D.Immutable;
 
 // ReSharper disable InconsistentNaming
 

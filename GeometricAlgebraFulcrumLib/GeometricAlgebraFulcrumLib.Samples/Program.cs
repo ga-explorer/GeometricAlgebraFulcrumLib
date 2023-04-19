@@ -1,5 +1,4 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency;
 
 namespace GeometricAlgebraFulcrumLib.Samples
 {
@@ -45,40 +44,22 @@ namespace GeometricAlgebraFulcrumLib.Samples
             //Graphics.Animations.Sample1.Example2();
             //BabylonJsSnapshotsSample.TakeSnapshots();
             //Browser.Sample1.Example5();
+            
+            //AutoDiff.AutoDiffSamples.Example1();
+            //AutoDiff.AutoDiffSamples.Example2();
+            //AutoDiff.AutoDiffSamples.Example3();
+            //AutoDiff.AutoDiffSamples.Example4();
+            //AutoDiff.AutoDiffSamples.Example5();
 
-            //{
-            //    var chromeOptions = new ChromeOptions
-            //    {
-            //        PageLoadStrategy = PageLoadStrategy.Normal,
-            //        UnhandledPromptBehavior = UnhandledPromptBehavior.Accept
-            //    };
+            //Numeric.ChebyshevSamples.Example3();
+            //DifferentialGeometry.DifferentialFunctionSamples.Example3();
+            //DifferentialGeometry.DifferentialCurveSamples.Example1();
 
-            //    chromeOptions.AddUserProfilePreference("download.default_directory", @"D:\Projects\Study\Babylon.js");
-            //    chromeOptions.AddUserProfilePreference("download.prompt_for_download", false);
-            //    chromeOptions.AddUserProfilePreference("disable-popup-blocking", "true");
-
-            //    //chromeOptions.AddAdditionalChromeOption("window-size", "1920,1080");
-            //    //chromeOptions.AddArgument("headless");
-
-            //    var driver = new ChromeDriver(chromeOptions);
-
-            //    driver.Manage().Window.Position = new System.Drawing.Point(0, 0);
-            //    driver.Manage().Window.Maximize();
-            //    driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromMilliseconds(2000);
-
-            //    driver.Navigate().GoToUrl(@$"http://localhost:5200/Frame-{0:D6}.html");
-            //    Thread.Sleep(2000);
-
-            //    Console.WriteLine("Press key to close browser");
-            //    Console.ReadKey();
-
-            //    driver.Quit();
-            //}
-
+            //PowerSystems.SystemIdentification.DFIGTest1OpenLoopSample.Example2();
             //Graphics.BabylonJs.RotorFamilySamples.Example2();
             //Graphics.BabylonJs.CurveSamples.Example3();
-            //Numeric.InterpolationSample.Example6();
-            PowerSignalVisualizationSample1.Execute();
+            //Numeric.InterpolationSample.Example9();
+            //PowerSignalVisualizationSample1.Execute();
             //EuclideanGeometry.RotationSamples.Example1();
             //Symbolic.SymbolicGramSchmidtSample.Example1();
 
@@ -87,7 +68,24 @@ namespace GeometricAlgebraFulcrumLib.Samples
 
             //for (var n = 3; n <= 8; n++)
             //    EuclideanGeometry.RotationSamples.CirculantMatrixToSimpleRotationsSample(n);
-            
+
+            //Numeric.XGaMultivectorValidationSamples.Example1();
+            //Numeric.XGaMultivectorValidationSamples.Example2();
+            //Numeric.XGaMultivectorValidationSamples.Example3();
+            //Numeric.XGaMultivectorValidationSamples.Example4();
+            //Numeric.XGaMultivectorValidationSamples.Example5();
+            //Numeric.XGaMultivectorValidationSamples.Example6();
+            //Numeric.XGaMultivectorValidationSamples.Example7();
+            //Numeric.XGaMultivectorValidationSamples.Example8();
+            //Numeric.XGaMultivectorValidationSamples.Example9();
+            Numeric.XGaMultivectorValidationSamples.Example10();
+            Numeric.XGaMultivectorValidationSamples.Example11();
+            //Numeric.XGaMultivectorValidationSamples.Example12();
+
+            //EuclideanGeometry.GramSchmidtSamples.Example2();
+            //EuclideanGeometry.GramSchmidtSamples.Example3();
+            //EuclideanGeometry.GramSchmidtSamples.Example4();
+
             //EuclideanGeometry.RotationSamples.Validations();
             //EuclideanGeometry.RotationSamples.OutermorphismMatrixToRotationsSample(5);
             //EuclideanGeometry.ReflectionSamples.Example4();
@@ -98,8 +96,7 @@ namespace GeometricAlgebraFulcrumLib.Samples
             //GAPoT.SymmetricHarmonicsSymbolicSample.Execute();
             //GAPoT.SymmetricalComponentsSamples.SymbolicSymmetricalComponentsSample(3);
 
-
-            //GeometricFrequency.NumericGeometricFrequencySample.Example2();
+            //PowerSystems.GeometricFrequency.NumericGeometricFrequencySample.Example2();
             //GeometricFrequency.SymbolicAngularVelocitySample.Example1();
             //GeometricFrequency.NumericGeometricFrequencySample.SymbolicNumericValidationExample2();
             //GeometricFrequency.SymbolicGeometricFrequencySample.Example1();

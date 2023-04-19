@@ -1,7 +1,8 @@
-﻿namespace GraphicsComposerLib.Rendering.BabylonJs.Constants;
-
-public enum GrBabylonJsCameraFovMode
+﻿namespace GraphicsComposerLib.Rendering.BabylonJs.Constants
 {
-    VerticalFixed = 0,
-    HorizontalFixed = 1
+    public enum GrBabylonJsCameraFovMode
+    {
+        VerticalFixed = 0,
+        HorizontalFixed = 1
+    }
 }

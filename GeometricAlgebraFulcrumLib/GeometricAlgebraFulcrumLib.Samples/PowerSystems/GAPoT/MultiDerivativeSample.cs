@@ -1,8 +1,9 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Mathematica;
+using GeometricAlgebraFulcrumLib.Mathematica.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Mathematica.Processors;
-using GeometricAlgebraFulcrumLib.Processors;
 
 namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GAPoT
 {
@@ -10,9 +11,9 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GAPoT
     {
         public static void Execute()
         {
-            var processor = ScalarAlgebraMathematicaProcessor
+            var processor = ScalarProcessorExpr
                 .DefaultProcessor
-                .CreateGeometricAlgebraEuclideanProcessor(10);
+                .CreateEuclideanRGaProcessor();
 
             var v1 = @"V Cos[\[Omega] t]".ToExpr();
             var v2 = @"V Cos[\[Omega] t + 2 Pi / 3]".ToExpr();

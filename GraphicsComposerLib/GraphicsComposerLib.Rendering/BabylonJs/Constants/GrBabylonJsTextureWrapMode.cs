@@ -1,8 +1,9 @@
-﻿namespace GraphicsComposerLib.Rendering.BabylonJs.Constants;
-
-public enum GrBabylonJsTextureWrapMode
+﻿namespace GraphicsComposerLib.Rendering.BabylonJs.Constants
 {
-    Clamp = 0,
-    Wrap = 1,
-    Mirror = 2
+    public enum GrBabylonJsTextureWrapMode
+    {
+        Clamp = 0,
+        Wrap = 1,
+        Mirror = 2
+    }
 }

@@ -1,5 +1,7 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms;
+﻿using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.LinearMaps.Outermorphisms;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic.LinearMaps;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Expressions;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
@@ -10,13 +12,13 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
     internal class MapMethodFileComposer : 
         GaFuLLibraryMetaContextFileComposerBase
     {
-        private readonly uint _inputGrade;
+        private readonly int _inputGrade;
         private IMetaExpressionAtomic[,] _linearMapArray;
-        private GaKVector<IMetaExpressionAtomic> _inputKVector;
-        private GaKVector<IMetaExpressionAtomic> _outputKVector;
+        private XGaKVector<IMetaExpressionAtomic> _inputKVector;
+        private XGaKVector<IMetaExpressionAtomic> _outputKVector;
 
 
-        internal MapMethodFileComposer(GaFuLLibraryComposer libGen, uint inGrade)
+        internal MapMethodFileComposer(GaFuLLibraryComposer libGen, int inGrade)
             : base(libGen)
         {
             _inputGrade = inGrade;
@@ -26,13 +28,13 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
         protected override void DefineContextParameters(MetaContext context)
         {
             _linearMapArray = context.ParameterVariablesFactory.CreateDenseArray(
-                (int) VSpaceDimension,
-                (int) VSpaceDimension,
+                VSpaceDimensions,
+                VSpaceDimensions,
                 (row, col) => $"omScalarR{row}C{col}"
             );
 
             _inputKVector = context.ParameterVariablesFactory.CreateDenseKVector(
-                VSpaceDimension,
+                VSpaceDimensions,
                 _inputGrade,
                 index => $"kVectorScalar{index}"
             );
@@ -41,8 +43,11 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
         protected override void DefineContextComputations(MetaContext context)
         {
             var outermorphism =
-                GeometricProcessor.CreateLinearMapOutermorphism(_linearMapArray);
-
+                _linearMapArray
+                    .ColumnsToLinVectors(GeometricProcessor.ScalarProcessor)
+                    .CreateLinUnilinearMap(GeometricProcessor.ScalarProcessor)
+                    .ToOutermorphism(GeometricProcessor);
+                
             _outputKVector = outermorphism.OmMap(_inputKVector);
 
             _outputKVector.SetIsOutput(true);
@@ -75,7 +80,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
                 Templates["om_apply"],
                 "double", GeoLanguage.ScalarTypeName,
                 "grade", _inputGrade,
-                "num", this.KVectorSpaceDimension(_inputGrade),
+                "num", VSpaceDimensions.KVectorSpaceDimension(_inputGrade),
                 "computations", computationsText
             );
 

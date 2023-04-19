@@ -1,6 +1,5 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
-using GeometricAlgebraFulcrumLib.Mathematica;
+using GeometricAlgebraFulcrumLib.Mathematica.GeometricAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GAPoT
 {
@@ -8,11 +7,11 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GAPoT
     {
         public static void Execute()
         {
-            var v1 = MathematicaUtils.CreateVector(
+            var v1 = RGaMathematicaUtils.CreateVector(
                 "a1", "b1", "c1", "d1"
             );
 
-            var v2 = MathematicaUtils.CreateVector(
+            var v2 = RGaMathematicaUtils.CreateVector(
                 "a2", "b2", "c2", "d2"
             );
 

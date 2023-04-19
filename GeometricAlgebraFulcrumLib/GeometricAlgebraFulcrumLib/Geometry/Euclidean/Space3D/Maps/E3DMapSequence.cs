@@ -1,108 +1,108 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Geometry.Euclidean.Space3D.Objects;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
 
-namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean.Space3D.Maps;
-
-public sealed class E3DMapSequence<T> :
-    E3DMap<T>
+namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean.Space3D.Maps
 {
-    private readonly List<E3DMap<T>> _mapList
-        = new List<E3DMap<T>>();
-
-
-    public override IScalarAlgebraProcessor<T> ScalarProcessor { get; }
-
-    public int Count 
-        => _mapList.Count;
-
-    public IEnumerable<E3DMap<T>> Maps 
-        => _mapList;
-
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal E3DMapSequence([NotNull] IScalarAlgebraProcessor<T> scalarProcessor)
+    public sealed class E3DMapSequence<T> :
+        E3DMap<T>
     {
-        ScalarProcessor = scalarProcessor;
-    }
+        private readonly List<E3DMap<T>> _mapList
+            = new List<E3DMap<T>>();
 
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public E3DMapSequence<T> Clear()
-    {
-        _mapList.Clear();
+        public override IScalarProcessor<T> ScalarProcessor { get; }
 
-        return this;
-    }
+        public int Count 
+            => _mapList.Count;
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public E3DMapSequence<T> Append([NotNull] E3DMap<T> map)
-    {
-        _mapList.Add(map);
+        public IEnumerable<E3DMap<T>> Maps 
+            => _mapList;
 
-        return this;
-    }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal E3DMapSequence(IScalarProcessor<T> scalarProcessor)
+        {
+            ScalarProcessor = scalarProcessor;
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public E3DMapSequence<T> Clear()
+        {
+            _mapList.Clear();
+
+            return this;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public E3DMapSequence<T> Append(E3DMap<T> map)
+        {
+            _mapList.Add(map);
+
+            return this;
+        }
     
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public E3DMapSequence<T> Prepend([NotNull] E3DMap<T> map)
-    {
-        _mapList.Insert(0, map);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public E3DMapSequence<T> Prepend(E3DMap<T> map)
+        {
+            _mapList.Insert(0, map);
 
-        return this;
-    }
+            return this;
+        }
     
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public E3DMapSequence<T> Insert(int index, [NotNull] E3DMap<T> map)
-    {
-        _mapList.Insert(index, map);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public E3DMapSequence<T> Insert(int index, E3DMap<T> map)
+        {
+            _mapList.Insert(index, map);
 
-        return this;
-    }
+            return this;
+        }
 
     
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public E3DMapSequence<T> Remove(int index)
-    {
-        _mapList.RemoveAt(index);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public E3DMapSequence<T> Remove(int index)
+        {
+            _mapList.RemoveAt(index);
 
-        return this;
-    }
+            return this;
+        }
 
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override E3DVector<T> Map(E3DVector<T> vector)
-    {
-        if (_mapList.Count == 0)
-            return vector;
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override E3DVector<T> Map(E3DVector<T> vector)
+        {
+            if (_mapList.Count == 0)
+                return vector;
 
-        return _mapList.Aggregate(
-            vector, 
-            (current, map) => map.Map(current)
-        );
-    }
+            return _mapList.Aggregate(
+                vector, 
+                (current, map) => map.Map(current)
+            );
+        }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override E3DPoint<T> Map(E3DPoint<T> point)
-    {
-        if (_mapList.Count == 0)
-            return point;
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override E3DPoint<T> Map(E3DPoint<T> point)
+        {
+            if (_mapList.Count == 0)
+                return point;
 
-        return _mapList.Aggregate(
-            point, 
-            (current, map) => map.Map(current)
-        );
-    }
+            return _mapList.Aggregate(
+                point, 
+                (current, map) => map.Map(current)
+            );
+        }
 
-    public override E3DMap<T> GetInverse()
-    {
-        var map = new E3DMapSequence<T>(ScalarProcessor);
+        public override E3DMap<T> GetInverse()
+        {
+            var map = new E3DMapSequence<T>(ScalarProcessor);
 
-        foreach (var subMap in Maps.Reverse())
-            map.Append(subMap.GetInverse());
+            foreach (var subMap in Maps.Reverse())
+                map.Append(subMap.GetInverse());
 
-        return map;
+            return map;
+        }
     }
 }

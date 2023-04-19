@@ -88,7 +88,7 @@ namespace NumericalGeometryLib.Benchmarks.Benchmarks.Accelerators
                     10,
                     bb.GetMidPoint(),
                     RandomGenerator.GetNumbers(10, minR, maxR).ToArray()
-                ).Cast<ITuple2D>();
+                ).Cast<IFloat64Tuple2D>();
 
                 //var lineSegment = RandomGenerator.GetLineSegment2D(
                 //    boundingBoxes[index.ItemX, index.ItemY]

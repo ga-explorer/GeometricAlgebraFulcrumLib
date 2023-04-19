@@ -1,5 +1,5 @@
 ﻿using System.Text;
-using NumericalGeometryLib.BasicMath;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath;
 using GeometricAlgebraFulcrumLib.Mathematica.Processors;
 using GeometricAlgebraFulcrumLib.Text;
 using Wolfram.NETLink;
@@ -14,12 +14,12 @@ namespace GeometricAlgebraFulcrumLib.Mathematica.Text
 
 
         private TextMathematicaComposer() 
-            : base(ScalarAlgebraMathematicaProcessor.DefaultProcessor)
+            : base(ScalarProcessorExpr.DefaultProcessor)
         {
         }
 
 
-        public override string GetAngleText(PlanarAngle angle)
+        public override string GetAngleText(Float64PlanarAngle angle)
         {
             return $"{angle.Degrees} Degree";
         }

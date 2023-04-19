@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
+﻿using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
 
 namespace GeometricAlgebraFulcrumLib.MetaProgramming.Expressions.HeadSpecs
 {
@@ -59,7 +58,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Expressions.HeadSpecs
             => false;
 
 
-        private MetaExpressionHeadSpecsNumberInt64([NotNull] MetaContext context, long numberValue)
+        private MetaExpressionHeadSpecsNumberInt64(MetaContext context, long numberValue)
         {
             Context = context;
             NumberInt64Value = numberValue;

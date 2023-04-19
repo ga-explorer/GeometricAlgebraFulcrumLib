@@ -4,10 +4,12 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.Basic;
-using NumericalGeometryLib.BasicMath;
-using NumericalGeometryLib.BasicMath.Tuples.Immutable;
-using NumericalGeometryLib.Borders.Space2D;
-using NumericalGeometryLib.Borders.Space2D.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Borders.Space2D;
+using GeometricAlgebraFulcrumLib.MathBase.Borders.Space2D.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Parametric.Curves.Sampled;
 using GraphicsComposerLib.Geometry.Primitives.Triangles;
 
 namespace GraphicsComposerLib.Geometry.ParametricShapes.Surfaces.Sampled
@@ -15,11 +17,11 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Surfaces.Sampled
     public sealed class GrParametricSurfaceTree3D :
         IGraphicsParametricSurface3D
     {
-        private readonly HashSet<GrParametricTreeCornerPosition3D> _cornerPositionSet
-            = new HashSet<GrParametricTreeCornerPosition3D>();
+        private readonly HashSet<ParametricTreeCornerPosition3D> _cornerPositionSet
+            = new HashSet<ParametricTreeCornerPosition3D>();
 
-        private readonly Dictionary<Pair<GrParametricTreeCornerPosition3D>, int> _cornerDictionary
-            = new Dictionary<Pair<GrParametricTreeCornerPosition3D>, int>();
+        private readonly Dictionary<Pair<ParametricTreeCornerPosition3D>, int> _cornerDictionary
+            = new Dictionary<Pair<ParametricTreeCornerPosition3D>, int>();
 
         private readonly List<GrParametricSurfaceTreeCorner3D> _cornerList
             = new List<GrParametricSurfaceTreeCorner3D>();
@@ -180,7 +182,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Surfaces.Sampled
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Pair<double> GetParameterValue(Pair<GrParametricTreeCornerPosition3D> cornerPosition)
+        public Pair<double> GetParameterValue(Pair<ParametricTreeCornerPosition3D> cornerPosition)
         {
             var t1 = cornerPosition.Item1.GetInterpolationValue();
             var t2 = cornerPosition.Item2.GetInterpolationValue();
@@ -259,7 +261,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Surfaces.Sampled
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool ContainsCorner(Pair<GrParametricTreeCornerPosition3D> cornerPosition)
+        public bool ContainsCorner(Pair<ParametricTreeCornerPosition3D> cornerPosition)
         {
             return _cornerDictionary.ContainsKey(cornerPosition);
         }
@@ -277,7 +279,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Surfaces.Sampled
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GrParametricSurfaceTreeCorner3D GetCorner(Pair<GrParametricTreeCornerPosition3D> cornerPosition)
+        public GrParametricSurfaceTreeCorner3D GetCorner(Pair<ParametricTreeCornerPosition3D> cornerPosition)
         {
             var cornerIndex = _cornerDictionary[cornerPosition];
 
@@ -285,13 +287,13 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Surfaces.Sampled
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public int GetCornerIndex(Pair<GrParametricTreeCornerPosition3D> cornerPosition)
+        public int GetCornerIndex(Pair<ParametricTreeCornerPosition3D> cornerPosition)
         {
             return _cornerDictionary[cornerPosition];
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool TryGetCorner(Pair<GrParametricTreeCornerPosition3D> cornerPosition, out GrParametricSurfaceTreeCorner3D corner)
+        public bool TryGetCorner(Pair<ParametricTreeCornerPosition3D> cornerPosition, out GrParametricSurfaceTreeCorner3D corner)
         {
             if (_cornerDictionary.TryGetValue(cornerPosition, out var cornerIndex))
             {
@@ -304,15 +306,15 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Surfaces.Sampled
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool TryGetCornerIndex(Pair<GrParametricTreeCornerPosition3D> cornerPosition, out int cornerIndex)
+        public bool TryGetCornerIndex(Pair<ParametricTreeCornerPosition3D> cornerPosition, out int cornerIndex)
         {
             return _cornerDictionary.TryGetValue(cornerPosition, out cornerIndex);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal GrParametricTreeCornerPosition3D GetOrAddCornerPosition(int level, int segmentCount)
+        internal ParametricTreeCornerPosition3D GetOrAddCornerPosition(int level, int segmentCount)
         {
-            var newPosition = new GrParametricTreeCornerPosition3D(level, segmentCount);
+            var newPosition = new ParametricTreeCornerPosition3D(level, segmentCount);
 
             if (_cornerPositionSet.TryGetValue(newPosition, out var position))
                 return position;
@@ -322,10 +324,10 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Surfaces.Sampled
             return newPosition;
         }
 
-        internal GrParametricSurfaceTreeCorner3D GetOrAddCorner(GrParametricTreeCornerPosition3D position1, GrParametricTreeCornerPosition3D position2)
+        internal GrParametricSurfaceTreeCorner3D GetOrAddCorner(ParametricTreeCornerPosition3D position1, ParametricTreeCornerPosition3D position2)
         {
             var cornerPosition = 
-                new Pair<GrParametricTreeCornerPosition3D>(position1, position2);
+                new Pair<ParametricTreeCornerPosition3D>(position1, position2);
 
             if (_cornerDictionary.TryGetValue(cornerPosition, out var index))
                 return _cornerList[index];

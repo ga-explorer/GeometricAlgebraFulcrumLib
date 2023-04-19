@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
 namespace GraphicsComposerLib.Geometry.ParametricShapes.Volumes.Sampled
@@ -49,7 +48,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Volumes.Sampled
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GrParametricVolumeTreeOptions3D([NotNull] double maxDistanceError, int minLevelCount, int maxLevelCount)
+        public GrParametricVolumeTreeOptions3D(double maxDistanceError, int minLevelCount, int maxLevelCount)
         {
             MaxEdgeFrameDistance = maxDistanceError;
             MinLevelCount = minLevelCount;

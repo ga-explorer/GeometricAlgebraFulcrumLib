@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
-using NumericalGeometryLib.BasicMath.Constants;
-using NumericalGeometryLib.BasicMath.Maps.Space3D;
-using NumericalGeometryLib.BasicMath.Tuples;
-using NumericalGeometryLib.BasicMath.Tuples.Immutable;
-using NumericalGeometryLib.Borders.Space2D.Immutable;
-using GraphicsComposerLib.Geometry.ParametricShapes.Curves;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Constants;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Borders.Space2D.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Parametric.Curves;
 using GraphicsComposerLib.Geometry.ParametricShapes.Surfaces.Sampled;
 
 namespace GraphicsComposerLib.Geometry.ParametricShapes.Surfaces
@@ -232,7 +232,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Surfaces
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GrCurveTubeParametricSurface3D CreateTube3D(this IGraphicsC1ParametricCurve3D curve, double radius)
+        public static GrCurveTubeParametricSurface3D CreateTube3D(this IParametricCurve3D curve, double radius)
         {
             return new GrCurveTubeParametricSurface3D(curve, radius);
         }

@@ -7,28 +7,27 @@ using DataStructuresLib.BitManipulation;
 using DataStructuresLib.Extensions;
 using GAPoTNumLib.GAPoT;
 using GAPoTNumLib.Text;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms;
-using GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Mathematica;
 using GeometricAlgebraFulcrumLib.Mathematica.Applications.GaPoT;
 using GeometricAlgebraFulcrumLib.Mathematica.Mathematica.ExprFactory;
 using GeometricAlgebraFulcrumLib.Mathematica.Processors;
-using GeometricAlgebraFulcrumLib.Mathematica.Text;
 using MathNet.Numerics.LinearAlgebra;
-using NumericalGeometryLib.BasicMath;
-using NumericalGeometryLib.BasicMath.Matrices;
-using NumericalGeometryLib.GeometricAlgebra.EuclideanND;
 using GeometricAlgebraFulcrumLib.Mathematica.Mathematica;
-using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors;
-using GeometricAlgebraFulcrumLib.Text;
-using GeometricAlgebraFulcrumLib.Processors;
-using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Matrices;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Matrices;
 using Wolfram.NETLink;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.LinearMaps.Outermorphisms;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic.LinearMaps;
+using GeometricAlgebraFulcrumLib.Mathematica.GeometricAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.LinearMaps.Rotors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Processors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Arrays.Generic;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Basis;
 
 namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GAPoT
 {
@@ -36,39 +35,50 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GAPoT
     {
         public static void ClarkeSkrRelationSample()
         {
-            var n = 4U;
+            var n = 4;
+
+            var scalarProcessor = 
+                ScalarProcessorExpr.DefaultProcessor;
+
             var processor =
-                ScalarAlgebraMathematicaProcessor.DefaultProcessor.CreateGeometricAlgebraEuclideanProcessor(n);
+                XGaProcessor<Expr>.CreateEuclidean(
+                    scalarProcessor
+                );
 
             var latexComposer =
-                LaTeXMathematicaComposer.DefaultComposer;
+                LaTeXComposerExpr.DefaultComposer;
 
             latexComposer.BasisName = @"\boldsymbol{\mu}";
 
             var clarkeMatrix =
-                processor.CreateClarkeMatrix((int)n);
+                scalarProcessor.CreateClarkeRotationMap(n).ToArray(n);
 
             Console.WriteLine("Clarke Matrix:");
             Console.WriteLine(latexComposer.GetArrayText(clarkeMatrix));
             Console.WriteLine();
 
             var skrMatrix =
-                processor.CreateSimpleKirchhoffRotor(n).GetVectorOmMappingMatrix();
+                processor.CreateSimpleKirchhoffRotor(n).GetVectorMapArray(n);
 
             Console.WriteLine("SKR Matrix:");
             Console.WriteLine(latexComposer.GetArrayText(skrMatrix));
             Console.WriteLine();
 
             var m1 =
-                (clarkeMatrix * skrMatrix).GetSubMatrix(0, 0, 3, 3);
+                scalarProcessor.Times(
+                    clarkeMatrix, 
+                    skrMatrix
+                ).GetSubArray(0, 0, 3, 3);
 
             var clarkeMatrix3 =
-                processor.CreateClarkeMatrix(3);
+                scalarProcessor.CreateClarkeRotationArray(3);
 
             var skrMatrix3 =
-                processor.CreateSimpleKirchhoffRotor(3).GetVectorOmMappingMatrix();
+                processor
+                    .CreateSimpleKirchhoffRotor(3)
+                    .GetVectorMapArray(3);
 
-            var m2 = skrMatrix3 * m1;
+            var m2 = scalarProcessor.Times(skrMatrix3, m1);
 
             Console.WriteLine("SKR * Clarke:");
             Console.WriteLine(latexComposer.GetArrayText(m2));
@@ -79,12 +89,15 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GAPoT
 
         public static void SymbolicSymmetricalComponentsSample1()
         {
-            var n = 3U;
+            var n = 3;
+
+            var scalarProcessor = ScalarProcessorExpr.DefaultProcessor;
+
             var processor =
-                ScalarAlgebraMathematicaProcessor.DefaultProcessor.CreateGeometricAlgebraEuclideanProcessor(n);
+                XGaProcessor<Expr>.CreateEuclidean(scalarProcessor);
 
             var latexComposer =
-                LaTeXMathematicaComposer.DefaultComposer;
+                LaTeXComposerExpr.DefaultComposer;
 
             latexComposer.BasisName = @"\boldsymbol{\mu}";
 
@@ -93,17 +106,17 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GAPoT
             var t = @"t".ToExpr();
             var wt = Mfs.Times[omega, t];
 
-            var aMagnitude = @$"Subscript[U,a]".CreateScalar(processor);
-            var bMagnitude = @$"Subscript[U,b]".CreateScalar(processor);
-            var cMagnitude = @$"Subscript[U,c]".CreateScalar(processor);
+            var aMagnitude = @$"Subscript[U,a]".CreateScalar(scalarProcessor);
+            var bMagnitude = @$"Subscript[U,b]".CreateScalar(scalarProcessor);
+            var cMagnitude = @$"Subscript[U,c]".CreateScalar(scalarProcessor);
 
-            //var aAngle = @$"{wt} + 2 * Pi * 0 / 3".CreateScalar(processor);
-            //var bAngle = @$"{wt} + 2 * Pi * 1 / 3".CreateScalar(processor);
-            //var cAngle = @$"{wt} + 2 * Pi * 2 / 3".CreateScalar(processor);
+            //var aAngle = @$"{wt} + 2 * Pi * 0 / 3".CreateScalar(scalarProcessor);
+            //var bAngle = @$"{wt} + 2 * Pi * 1 / 3".CreateScalar(scalarProcessor);
+            //var cAngle = @$"{wt} + 2 * Pi * 2 / 3".CreateScalar(scalarProcessor);
 
-            var aAngle = @$"{wt} + Subscript[\[Theta],a]".CreateScalar(processor);
-            var bAngle = @$"{wt} + Subscript[\[Theta],b]".CreateScalar(processor);
-            var cAngle = @$"{wt} + Subscript[\[Theta],c]".CreateScalar(processor);
+            var aAngle = @$"{wt} + Subscript[\[Theta],a]".CreateScalar(scalarProcessor);
+            var bAngle = @$"{wt} + Subscript[\[Theta],b]".CreateScalar(scalarProcessor);
+            var cAngle = @$"{wt} + Subscript[\[Theta],c]".CreateScalar(scalarProcessor);
 
             var assumeExpr1 =
                 @$"Element[{omega} | {t} | {aMagnitude} | {bMagnitude} | {cMagnitude} | {aAngle} | {bAngle} | {cAngle}, Reals]";
@@ -113,9 +126,9 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GAPoT
 
             MathematicaInterface.DefaultCas.SetGlobalAssumptions(assumeExpr);
 
-            var e1 = processor.CreateVectorBasis(0);
-            var e2 = processor.CreateVectorBasis(1);
-            var e3 = processor.CreateVectorBasis(2);
+            var e1 = processor.CreateVector(0);
+            var e2 = processor.CreateVector(1);
+            var e3 = processor.CreateVector(2);
 
             var u = processor.CreateVector(
                 aMagnitude * aAngle.Cos(),
@@ -148,14 +161,13 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GAPoT
             Console.WriteLine();
 
             var k =
-                processor.CreateVector(1, 1, 1).DivideByENorm();
+                processor.CreateSymmetricVector(3).DivideByENorm();
 
             var skr =
-                k.CreatePureRotorToAxis(new Axis(2), true);
+                k.CreatePureRotorToAxis(LinSignedBasisVector.PositiveZ, true);
 
-            var r2 = processor.CreatePureRotor(
-                @$"2 * Pi / 24".ToExpr(),
-                e2.Op(e1)
+            var r2 = e2.Op(e1).CreatePureRotor(
+                @$"2 * Pi / 24".ToExpr()
             );
 
             var rv1 = r2.OmMap(skr.OmMap(v1)).FullSimplifyScalars();
@@ -176,9 +188,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GAPoT
             Console.WriteLine($@"\left\Vert \boldsymbol{{R}}_{{3}}\boldsymbol{{v}}_{{1}}\left(t\right)\boldsymbol{{R}}_{{3}}^{{\dagger}} \right\Vert & = & {latexComposer.GetScalarText(rv3Norm)}");
             Console.WriteLine();
 
-            var m2 = processor.CreatePureRotor(
-                u, rv2, false
-            ).Multivector;//.GetVectorOmMappingMatrix().ToArray();
+            var m2 = u.CreatePureRotor(rv2, false).Multivector;//.GetVectorOmMappingMatrix().ToArray();
 
             Console.WriteLine(@$"\\boldsymbol{{M}}_{{2}} = {latexComposer.GetMultivectorText(m2)}");
             Console.WriteLine();
@@ -188,19 +198,19 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GAPoT
             //var w2 = "2 * Pi * 2 / 3".ToExpr();
 
             //var v1 = 
-            //    processor.CreatePhasor(aNorm, aAngle + w0, 0) +
-            //    processor.CreatePhasor(bNorm, bAngle + w0, 1) +
-            //    processor.CreatePhasor(cNorm, cAngle + w0, 2);
+            //    processor.CreateXGaPhasor(aNorm, aAngle + w0, 0) +
+            //    processor.CreateXGaPhasor(bNorm, bAngle + w0, 1) +
+            //    processor.CreateXGaPhasor(cNorm, cAngle + w0, 2);
 
             //var v2 = 
-            //    processor.CreatePhasor(aNorm, aAngle + w0, 0) +
-            //    processor.CreatePhasor(bNorm, bAngle + w1, 1) +
-            //    processor.CreatePhasor(cNorm, cAngle + w2, 2);
+            //    processor.CreateXGaPhasor(aNorm, aAngle + w0, 0) +
+            //    processor.CreateXGaPhasor(bNorm, bAngle + w1, 1) +
+            //    processor.CreateXGaPhasor(cNorm, cAngle + w2, 2);
 
             //var v3 = 
-            //    processor.CreatePhasor(aNorm, aAngle + w0, 0) +
-            //    processor.CreatePhasor(bNorm, bAngle + w2, 1) +
-            //    processor.CreatePhasor(cNorm, cAngle + w1, 2);
+            //    processor.CreateXGaPhasor(aNorm, aAngle + w0, 0) +
+            //    processor.CreateXGaPhasor(bNorm, bAngle + w2, 1) +
+            //    processor.CreateXGaPhasor(cNorm, cAngle + w1, 2);
 
             //Console.WriteLine($@"\boldsymbol{{v}}_{{1}}\left(t\right) & = & {latexComposer.GetMultivectorText(v1)} \\");
             //Console.WriteLine($@"\boldsymbol{{v}}_{{2}}\left(t\right) & = & {latexComposer.GetMultivectorText(v2)} \\");
@@ -209,70 +219,111 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GAPoT
         }
 
 
-        public static IGaOutermorphism<T> CreateClarkePhasorMap<T>(this IGeometricAlgebraEuclideanProcessor<T> processor)
+        //public static IGaOutermorphism<T> CreateClarkePhasorMap<T>(this IGeometricAlgebraEuclideanProcessor<T> processor)
+        //{
+        //    Debug.Assert(
+        //        processor.VSpaceDimensions.IsEven()
+        //    );
+
+        //    var phasorCount = (int)processor.VSpaceDimensions / 2;
+
+        //    var clarkeArray =
+        //        processor.CreateClarkeArray(phasorCount);
+
+        //    var clarkePhasorMapArray =
+        //        processor.CreateArrayZero2D(phasorCount * 2);
+
+        //    for (var i = 0; i < phasorCount; i++)
+        //        for (var j = 0; j < phasorCount; j++)
+        //        {
+        //            clarkePhasorMapArray[i, j] = clarkeArray[i, j];
+        //            clarkePhasorMapArray[i + phasorCount, j + phasorCount] = clarkeArray[i, j];
+        //        }
+
+        //    var basisVectorImagesDictionary =
+        //        new Dictionary<ulong, VectorStorage<T>>();
+
+        //    for (var i = 0; i < phasorCount * 2; i++)
+        //        basisVectorImagesDictionary.Add(
+        //            (ulong)i,
+        //            clarkePhasorMapArray.ColumnToVectorStorage(i, processor)
+        //        );
+
+        //    return processor.CreateLinearMapOutermorphism(
+        //        //(uint) vectorsCount,
+        //        basisVectorImagesDictionary
+        //    );
+        //}
+        
+        public static IXGaOutermorphism<T> CreateClarkePhasorMap<T>(this XGaProcessor<T> processor, int vSpaceDimensions)
         {
             Debug.Assert(
-                processor.VSpaceDimension.IsEven()
+                vSpaceDimensions.IsEven()
             );
 
-            var phasorCount = (int)processor.VSpaceDimension / 2;
+            var scalarProcessor = processor.ScalarProcessor;
+
+            var phasorCount = vSpaceDimensions / 2;
 
             var clarkeArray =
-                processor.CreateClarkeArray(phasorCount);
+                scalarProcessor.CreateClarkeRotationArray(phasorCount);
 
             var clarkePhasorMapArray =
-                processor.CreateArrayZero2D(phasorCount * 2);
+                scalarProcessor.CreateArrayZero2D(phasorCount * 2);
 
             for (var i = 0; i < phasorCount; i++)
-                for (var j = 0; j < phasorCount; j++)
-                {
-                    clarkePhasorMapArray[i, j] = clarkeArray[i, j];
-                    clarkePhasorMapArray[i + phasorCount, j + phasorCount] = clarkeArray[i, j];
-                }
+            for (var j = 0; j < phasorCount; j++)
+            {
+                clarkePhasorMapArray[i, j] = clarkeArray[i, j];
+                clarkePhasorMapArray[i + phasorCount, j + phasorCount] = clarkeArray[i, j];
+            }
 
             var basisVectorImagesDictionary =
-                new Dictionary<ulong, VectorStorage<T>>();
+                new Dictionary<int, LinVector<T>>();
 
             for (var i = 0; i < phasorCount * 2; i++)
                 basisVectorImagesDictionary.Add(
-                    (ulong)i,
-                    clarkePhasorMapArray.ColumnToVectorStorage(i, processor)
+                    i,
+                    clarkePhasorMapArray.ColumnToLinVector(scalarProcessor, i)
                 );
 
-            return processor.CreateLinearMapOutermorphism(
-                //(uint) vectorsCount,
+            return scalarProcessor.CreateLinUnilinearMap(
                 basisVectorImagesDictionary
-            );
+            ).ToOutermorphism(processor);
         }
 
 
         public static void SymbolicSymmetricalComponentsSample2()
         {
-            var n = 8U;
+            var n = 8;
+
+            var scalarProcessor =
+                ScalarProcessorExpr.DefaultProcessor;
+
             var processor =
-                ScalarAlgebraMathematicaProcessor.DefaultProcessor.CreateGeometricAlgebraEuclideanProcessor(n);
+                scalarProcessor.CreateEuclideanXGaProcessor();
 
             var latexComposer =
-                LaTeXMathematicaComposer.DefaultComposer;
+                LaTeXComposerExpr.DefaultComposer;
 
             latexComposer.BasisName = @"\boldsymbol{\mu}";
 
-            var nSqrt = $"Sqrt[{n}]".CreateScalar(processor);
-            var nHalfSqrt = $"Sqrt[{n / 2}]".CreateScalar(processor);
-            var sAngle = @$"2 * Pi / {n / 2}".CreateScalar(processor);
-            var omega = @"\[Omega]".CreateScalar(processor);
-            var t = @"t".CreateScalar(processor);
+            var nSqrt = $"Sqrt[{n}]".CreateScalar(scalarProcessor);
+            var nHalfSqrt = $"Sqrt[{n / 2}]".CreateScalar(scalarProcessor);
+            var sAngle = @$"2 * Pi / {n / 2}".CreateScalar(scalarProcessor);
+            var omega = @"\[Omega]".CreateScalar(scalarProcessor);
+            var t = @"t".CreateScalar(scalarProcessor);
             var wt = omega * t;
 
-            var u1Magnitude = @$"Subscript[U,1]".CreateScalar(processor);
-            var u2Magnitude = @$"Subscript[U,2]".CreateScalar(processor);
-            var u3Magnitude = @$"Subscript[U,3]".CreateScalar(processor);
-            var u4Magnitude = @$"Subscript[U,4]".CreateScalar(processor);
+            var u1Magnitude = @$"Subscript[U,1]".CreateScalar(scalarProcessor);
+            var u2Magnitude = @$"Subscript[U,2]".CreateScalar(scalarProcessor);
+            var u3Magnitude = @$"Subscript[U,3]".CreateScalar(scalarProcessor);
+            var u4Magnitude = @$"Subscript[U,4]".CreateScalar(scalarProcessor);
 
-            var u1Angle = @$"{wt} + Subscript[\[Theta],1]".CreateScalar(processor);
-            var u2Angle = @$"{wt} + Subscript[\[Theta],2]".CreateScalar(processor);
-            var u3Angle = @$"{wt} + Subscript[\[Theta],3]".CreateScalar(processor);
-            var u4Angle = @$"{wt} + Subscript[\[Theta],4]".CreateScalar(processor);
+            var u1Angle = @$"{wt} + Subscript[\[Theta],1]".CreateScalar(scalarProcessor);
+            var u2Angle = @$"{wt} + Subscript[\[Theta],2]".CreateScalar(scalarProcessor);
+            var u3Angle = @$"{wt} + Subscript[\[Theta],3]".CreateScalar(scalarProcessor);
+            var u4Angle = @$"{wt} + Subscript[\[Theta],4]".CreateScalar(scalarProcessor);
 
             var assumeExpr1 =
                 @$"Element[{omega} | {t} | {u1Magnitude} | {u2Magnitude} | {u3Magnitude} | {u4Magnitude} | {u1Angle} | {u2Angle} | {u3Angle} | {u4Angle}, Reals]";
@@ -282,19 +333,19 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GAPoT
 
             MathematicaInterface.DefaultCas.SetGlobalAssumptions(assumeExpr);
 
-            //var e1 = processor.CreateVectorBasis(0);
-            //var e2 = processor.CreateVectorBasis(1);
-            //var e3 = processor.CreateVectorBasis(2);
-            //var e4 = processor.CreateVectorBasis(3);
-            //var e5 = processor.CreateVectorBasis(4);
-            //var e6 = processor.CreateVectorBasis(5);
-            //var e7 = processor.CreateVectorBasis(6);
-            //var e8 = processor.CreateVectorBasis(7);
+            //var e1 = processor.CreateVector(0);
+            //var e2 = processor.CreateVector(1);
+            //var e3 = processor.CreateVector(2);
+            //var e4 = processor.CreateVector(3);
+            //var e5 = processor.CreateVector(4);
+            //var e6 = processor.CreateVector(5);
+            //var e7 = processor.CreateVector(6);
+            //var e8 = processor.CreateVector(7);
 
-            var u1 = processor.CreatePhasor(0, u1Magnitude, u1Angle);
-            var u2 = processor.CreatePhasor(1, u2Magnitude, u2Angle);
-            var u3 = processor.CreatePhasor(2, u3Magnitude, u3Angle);
-            var u4 = processor.CreatePhasor(3, u4Magnitude, u4Angle);
+            var u1 = processor.CreateXGaPhasor(u1Magnitude, u1Angle, 0, 4);
+            var u2 = processor.CreateXGaPhasor(u2Magnitude, u2Angle, 1, 5);
+            var u3 = processor.CreateXGaPhasor(u3Magnitude, u3Angle, 2, 6);
+            var u4 = processor.CreateXGaPhasor(u4Magnitude, u4Angle, 3, 7);
 
             Console.WriteLine($@"\boldsymbol{{u}}_{{1}}\left(t\right) & = & {latexComposer.GetMultivectorText(u1)} \\");
             Console.WriteLine($@"\boldsymbol{{u}}_{{2}}\left(t\right) & = & {latexComposer.GetMultivectorText(u2)} \\");
@@ -310,28 +361,28 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GAPoT
             Console.WriteLine();
 
             var v1 =
-                processor.CreatePhasor(0, u1Magnitude / nHalfSqrt, u1Angle + 0 * sAngle) +
-                processor.CreatePhasor(1, u1Magnitude / nHalfSqrt, u1Angle + 0 * sAngle) +
-                processor.CreatePhasor(2, u1Magnitude / nHalfSqrt, u1Angle + 0 * sAngle) +
-                processor.CreatePhasor(3, u1Magnitude / nHalfSqrt, u1Angle + 0 * sAngle);
+                processor.CreateXGaPhasor(u1Magnitude / nHalfSqrt, u1Angle + 0 * sAngle, 0, 4) +
+                processor.CreateXGaPhasor(u1Magnitude / nHalfSqrt, u1Angle + 0 * sAngle, 1, 5) +
+                processor.CreateXGaPhasor(u1Magnitude / nHalfSqrt, u1Angle + 0 * sAngle, 2, 6) +
+                processor.CreateXGaPhasor(u1Magnitude / nHalfSqrt, u1Angle + 0 * sAngle, 3, 7);
 
             var v2 =
-                processor.CreatePhasor(0, u2Magnitude / nHalfSqrt, u2Angle + 0 * sAngle) +
-                processor.CreatePhasor(1, u2Magnitude / nHalfSqrt, u2Angle + 1 * sAngle) +
-                processor.CreatePhasor(2, u2Magnitude / nHalfSqrt, u2Angle + 2 * sAngle) +
-                processor.CreatePhasor(3, u2Magnitude / nHalfSqrt, u2Angle + 3 * sAngle);
+                processor.CreateXGaPhasor(u2Magnitude / nHalfSqrt, u2Angle + 0 * sAngle, 0, 4) +
+                processor.CreateXGaPhasor(u2Magnitude / nHalfSqrt, u2Angle + 1 * sAngle, 1, 5) +
+                processor.CreateXGaPhasor(u2Magnitude / nHalfSqrt, u2Angle + 2 * sAngle, 2, 6) +
+                processor.CreateXGaPhasor(u2Magnitude / nHalfSqrt, u2Angle + 3 * sAngle, 3, 7);
 
             var v3 =
-                processor.CreatePhasor(0, u3Magnitude / nHalfSqrt, u3Angle + 0 * sAngle) +
-                processor.CreatePhasor(1, u3Magnitude / nHalfSqrt, u3Angle + 2 * sAngle) +
-                processor.CreatePhasor(2, u3Magnitude / nHalfSqrt, u3Angle + 4 * sAngle) +
-                processor.CreatePhasor(3, u3Magnitude / nHalfSqrt, u3Angle + 6 * sAngle);
+                processor.CreateXGaPhasor(u3Magnitude / nHalfSqrt, u3Angle + 0 * sAngle, 0, 4) +
+                processor.CreateXGaPhasor(u3Magnitude / nHalfSqrt, u3Angle + 2 * sAngle, 1, 5) +
+                processor.CreateXGaPhasor(u3Magnitude / nHalfSqrt, u3Angle + 4 * sAngle, 2, 6) +
+                processor.CreateXGaPhasor(u3Magnitude / nHalfSqrt, u3Angle + 6 * sAngle, 3, 7);
 
             var v4 =
-                processor.CreatePhasor(0, u4Magnitude / nHalfSqrt, u4Angle + 0 * sAngle) +
-                processor.CreatePhasor(1, u4Magnitude / nHalfSqrt, u4Angle + 3 * sAngle) +
-                processor.CreatePhasor(2, u4Magnitude / nHalfSqrt, u4Angle + 6 * sAngle) +
-                processor.CreatePhasor(3, u4Magnitude / nHalfSqrt, u4Angle + 9 * sAngle);
+                processor.CreateXGaPhasor(u4Magnitude / nHalfSqrt, u4Angle + 0 * sAngle, 0, 4) +
+                processor.CreateXGaPhasor(u4Magnitude / nHalfSqrt, u4Angle + 3 * sAngle, 1, 5) +
+                processor.CreateXGaPhasor(u4Magnitude / nHalfSqrt, u4Angle + 6 * sAngle, 2, 6) +
+                processor.CreateXGaPhasor(u4Magnitude / nHalfSqrt, u4Angle + 9 * sAngle, 3, 7);
 
             var v1Norm = v1.Norm().FullSimplify();
             var v2Norm = v2.Norm().FullSimplify();
@@ -379,10 +430,10 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GAPoT
             //var rv3 = sr2.OmMap(skr2.OmMap(sr1.OmMap(skr1.OmMap(v3)))).FullSimplifyScalars();
 
             var clarkeMap =
-                processor.CreateClarkePhasorMap();
+                processor.CreateClarkePhasorMap(n);
 
             var clarkeMatrix =
-                clarkeMap.GetVectorOmMappingMatrix();
+                clarkeMap.GetVectorMapArray(n);
 
             Console.WriteLine(@$"$\boldsymbol{{C}} = {latexComposer.GetArrayText(clarkeMatrix)}$");
             Console.WriteLine();
@@ -449,18 +500,21 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GAPoT
             //Console.WriteLine();
         }
 
-        public static LinMatrix<T> GetPMatrix<T>(this IGeometricAlgebraEuclideanProcessor<T> processor, int a, int b, int c, int d)
+        public static T[,] GetPMatrix<T>(this XGaProcessor<T> processor, int vSpaceDimensions, int a, int b, int c, int d)
         {
-            var ea = processor.CreateVectorBasis(a);
-            var eb = processor.CreateVectorBasis(b);
-            var ec = processor.CreateVectorBasis(c);
-            var ed = processor.CreateVectorBasis(d);
+            var scalarProcessor = processor.ScalarProcessor;
 
-            var pArray = processor.CreatePureRotorSequence(
-                ea, eb,
-                ec, ed,
+            var ea = processor.CreateVector(a);
+            var eb = processor.CreateVector(b);
+            var ec = processor.CreateVector(c);
+            var ed = processor.CreateVector(d);
+
+            var pArray = ea.CreatePureRotorSequence(
+                eb,
+                ec, 
+                ed,
                 true
-            ).GetVectorOmMappingMatrix().ToArray();
+            ).GetVectorMapArray(vSpaceDimensions, vSpaceDimensions);
 
             for (var j = 0; j < pArray.GetLength(1); j++)
             {
@@ -468,24 +522,27 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GAPoT
                     continue;
 
                 for (var i = 0; i < pArray.GetLength(0); i++)
-                    pArray[i, j] = processor.ScalarZero;
+                    pArray[i, j] = scalarProcessor.ScalarZero;
             }
 
-            return pArray.CreateLinMatrix(processor);
+            return pArray;
         }
 
-        public static LinMatrix<T> GetNMatrix<T>(this IGeometricAlgebraEuclideanProcessor<T> processor, int a, int b, int c, int d)
+        public static T[,] GetNMatrix<T>(this XGaProcessor<T> processor, int vSpaceDimensions, int a, int b, int c, int d)
         {
-            var ea = processor.CreateVectorBasis(a);
-            var eb = processor.CreateVectorBasis(b);
-            var ec = processor.CreateVectorBasis(c);
-            var ed = processor.CreateVectorBasis(d);
+            var scalarProcessor = processor.ScalarProcessor;
 
-            var nArray = processor.CreatePureRotorSequence(
-                ea, eb,
-                ec, -ed,
+            var ea = processor.CreateVector(a);
+            var eb = processor.CreateVector(b);
+            var ec = processor.CreateVector(c);
+            var ed = processor.CreateVector(d);
+
+            var nArray = ea.CreatePureRotorSequence(
+                eb,
+                ec, 
+                -ed,
                 true
-            ).GetVectorOmMappingMatrix().ToArray();
+            ).GetVectorMapArray(vSpaceDimensions, vSpaceDimensions);
 
             for (var j = 0; j < nArray.GetLength(1); j++)
             {
@@ -493,21 +550,21 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GAPoT
                     continue;
 
                 for (var i = 0; i < nArray.GetLength(0); i++)
-                    nArray[i, j] = processor.ScalarZero;
+                    nArray[i, j] = scalarProcessor.ScalarZero;
             }
 
-            return nArray.CreateLinMatrix(processor);
+            return nArray;
         }
 
-        public static LinMatrix<T> GetTMatrix<T>(this IGeometricAlgebraEuclideanProcessor<T> processor, int k)
+        public static T[,] GetTMatrix<T>(this XGaProcessor<T> processor, int vSpaceDimensions, int k)
         {
-            var n = (int)processor.VSpaceDimension / 2;
+            var n = vSpaceDimensions / 2;
 
             if (k == 0)
-                return processor.GetPMatrix(0, n, n - 1, 2 * n - 1);
+                return processor.GetPMatrix(vSpaceDimensions, 0, n, n - 1, 2 * n - 1);
 
             if (n.IsEven() && k == n / 2)
-                return processor.GetPMatrix(n / 2, n / 2 + n, n - 2, 2 * n - 2);
+                return processor.GetPMatrix(vSpaceDimensions, n / 2, n / 2 + n, n - 2, 2 * n - 2);
 
             var a = k;
             var b = k + n;
@@ -566,44 +623,51 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GAPoT
                 }
             }
 
-            var pMatrix = processor.GetPMatrix(a, b, cp, dp);
-            var nMatrix = processor.GetNMatrix(a, b, cn, dn);
+            var pMatrix = processor.GetPMatrix(vSpaceDimensions, a, b, cp, dp);
+            var nMatrix = processor.GetNMatrix(vSpaceDimensions, a, b, cn, dn);
 
-            return nNegative
-                ? (pMatrix - nMatrix) / processor.Sqrt(processor.ScalarTwo)
-                : (pMatrix + nMatrix) / processor.Sqrt(processor.ScalarTwo);
+            var scalarProcessor = processor.ScalarProcessor;
+
+            var sqrt2 = scalarProcessor.Sqrt(scalarProcessor.ScalarTwo);
+
+            var tMatrix = nNegative
+                ? scalarProcessor.Subtract(pMatrix, nMatrix)
+                : scalarProcessor.Add(pMatrix, nMatrix);
+
+            return scalarProcessor.Divide(tMatrix, sqrt2);
         }
 
         public static void SymbolicSymmetricalComponentsSample(int phaseCount)
         {
+            var n = 2 * phaseCount;
+
+            var scalarProcessor = 
+                ScalarProcessorExpr.DefaultProcessor;
+
             var processor =
-                ScalarAlgebraMathematicaProcessor
-                    .DefaultProcessor
-                    .CreateGeometricAlgebraEuclideanProcessor(
-                        (uint)(2 * phaseCount)
-                    );
+                scalarProcessor.CreateEuclideanXGaProcessor();
 
             var latexComposer =
-                LaTeXMathematicaComposer.DefaultComposer;
+                LaTeXComposerExpr.DefaultComposer;
 
             latexComposer.BasisName = @"\boldsymbol{\mu}";
 
-            var phaseCountSqrt = $"Sqrt[{phaseCount}]".CreateScalar(processor);
-            var sAngle = @$"2 * Pi / {phaseCount}".CreateScalar(processor);
-            var omega = @"\[Omega]".CreateScalar(processor);
-            var t = @"t".CreateScalar(processor);
+            var phaseCountSqrt = $"Sqrt[{phaseCount}]".CreateScalar(scalarProcessor);
+            var sAngle = @$"2 * Pi / {phaseCount}".CreateScalar(scalarProcessor);
+            var omega = @"\[Omega]".CreateScalar(scalarProcessor);
+            var t = @"t".CreateScalar(scalarProcessor);
             var wt = omega * t;
 
             var ukMagnitudes =
                 phaseCount
                     .GetRange()
-                    .Select(i => @$"Subscript[U,{i + 1}]".CreateScalar(processor))
+                    .Select(i => @$"Subscript[U,{i + 1}]".CreateScalar(scalarProcessor))
                     .ToImmutableArray();
 
             var ukAngles =
                 phaseCount
                     .GetRange()
-                    .Select(i => @$"{wt} + Subscript[\[Theta],{i + 1}]".CreateScalar(processor))
+                    .Select(i => @$"{wt} + Subscript[\[Theta],{i + 1}]".CreateScalar(scalarProcessor))
                     .ToImmutableArray();
 
             var assumeExpr1 =
@@ -627,14 +691,15 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GAPoT
                 phaseCount
                     .GetRange()
                     .Select(k =>
-                        processor.CreatePhasor(
-                            k,
+                        processor.CreateXGaPhasor(
                             ukMagnitudes[k],
-                            ukAngles[k]
+                            ukAngles[k],
+                            k,
+                            k + phaseCount
                         )
                     ).ToImmutableArray();
 
-            var u = processor.CreateVectorZero();
+            var u = processor.CreateZeroVector();
 
             for (var k = 0; k < phaseCount; k++)
             {
@@ -652,11 +717,11 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GAPoT
             Console.WriteLine($@"\left\Vert \boldsymbol{{u}}\left(t\right)\right\Vert  & = & {latexComposer.GetScalarText(uNorm)}");
             Console.WriteLine();
 
-            var vkPhasors = new GaVector<Expr>[phaseCount];
+            var vkPhasors = new XGaVector<Expr>[phaseCount];
 
             for (var k = 0; k < phaseCount; k++)
             {
-                var vk = processor.CreateVectorZero();
+                var vk = processor.CreateZeroVector();
 
                 var magnitude = ukMagnitudes[k] / phaseCountSqrt;
 
@@ -664,7 +729,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GAPoT
                 {
                     var angle = ukAngles[k] + j * k * sAngle;
 
-                    vk += processor.CreatePhasor(j, magnitude, angle);
+                    vk += processor.CreateXGaPhasor(magnitude, angle, j, j + phaseCount);
                 }
 
                 vkPhasors[k] = vk.FullSimplifyScalars();
@@ -689,10 +754,10 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GAPoT
             Console.WriteLine();
 
             var clarkeMap =
-                processor.CreateClarkePhasorMap();
+                processor.CreateClarkePhasorMap(n);
 
             var clarkeMatrix =
-                clarkeMap.GetVectorOmMappingMatrix();
+                clarkeMap.GetVectorMapArray(n);
 
             Console.WriteLine(@$"$\boldsymbol{{C}} = {latexComposer.GetArrayText(clarkeMatrix)}$");
             Console.WriteLine();
@@ -726,7 +791,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GAPoT
             var tMatrices =
                 phaseCount
                     .GetRange()
-                    .Select(k => processor.GetTMatrix(k))
+                    .Select(k => processor.GetTMatrix(n, k))
                     .ToImmutableArray();
 
             for (var k = 0; k < phaseCount; k++)
@@ -779,6 +844,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GAPoT
         {
             const int n = 9;
 
+            var metric = XGaFloat64Processor.Euclidean;
             var matrix = n.CreateUnitaryDftMatrix();
             var matrixInv = n.CreateUnitaryDftMatrix(true);
 
@@ -795,11 +861,11 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GAPoT
             foreach (var (value, vector) in eigenPairList)
             {
                 var angle = GeoPoTNumUtils.RadiansToDegrees(Math.Atan2(value.Imaginary, value.Real)).Round(6);
-                var blade = EgaKVector.CreateVector(vector.Imaginary().ToArray().MapItems(d => d.Round(6))).Op(
-                    EgaKVector.CreateVector(vector.Real().ToArray().MapItems(d => d.Round(6)))
+                var blade = metric.CreateVector(vector.Imaginary().ToArray().MapItems(d => d.Round(6))).Op(
+                    metric.CreateVector(vector.Real().ToArray().MapItems(d => d.Round(6)))
                 );
 
-                blade /= blade.Norm();
+                blade = blade.Divide(blade.ENorm().ScalarValue);
 
                 //Console.WriteLine($" Eigen Value {i}: {value}");
                 //Console.WriteLine($"Eigen Vector {i}: {vector}");

@@ -1,40 +1,41 @@
-﻿namespace GraphicsComposerLib.Rendering.BabylonJs.Values;
-
-public sealed class GrBabylonJsTextureArrayValue :
-    GrBabylonJsValue<IReadOnlyList<GrBabylonJsTextureValue>>
+﻿namespace GraphicsComposerLib.Rendering.BabylonJs.Values
 {
-    internal static GrBabylonJsTextureArrayValue Create(IReadOnlyList<GrBabylonJsTextureValue> value)
+    public sealed class GrBabylonJsTextureArrayValue :
+        GrBabylonJsValue<IReadOnlyList<GrBabylonJsTextureValue>>
     {
-        return new GrBabylonJsTextureArrayValue(value);
-    }
+        internal static GrBabylonJsTextureArrayValue Create(IReadOnlyList<GrBabylonJsTextureValue> value)
+        {
+            return new GrBabylonJsTextureArrayValue(value);
+        }
 
 
-    public static implicit operator GrBabylonJsTextureArrayValue(string valueText)
-    {
-        return new GrBabylonJsTextureArrayValue(valueText);
-    }
+        public static implicit operator GrBabylonJsTextureArrayValue(string valueText)
+        {
+            return new GrBabylonJsTextureArrayValue(valueText);
+        }
 
-    public static implicit operator GrBabylonJsTextureArrayValue(GrBabylonJsTextureValue[] value)
-    {
-        return new GrBabylonJsTextureArrayValue(value);
-    }
-
-
-    private GrBabylonJsTextureArrayValue(string valueText)
-        : base(valueText)
-    {
-    }
-
-    private GrBabylonJsTextureArrayValue(IReadOnlyList<GrBabylonJsTextureValue> value)
-        : base(value)
-    {
-    }
+        public static implicit operator GrBabylonJsTextureArrayValue(GrBabylonJsTextureValue[] value)
+        {
+            return new GrBabylonJsTextureArrayValue(value);
+        }
 
 
-    public override string GetCode()
-    {
-        return string.IsNullOrEmpty(ValueText) 
-            ? Value.GetBabylonJsCode()
-            : ValueText;
+        private GrBabylonJsTextureArrayValue(string valueText)
+            : base(valueText)
+        {
+        }
+
+        private GrBabylonJsTextureArrayValue(IReadOnlyList<GrBabylonJsTextureValue> value)
+            : base(value)
+        {
+        }
+
+
+        public override string GetCode()
+        {
+            return string.IsNullOrEmpty(ValueText) 
+                ? Value.GetBabylonJsCode()
+                : ValueText;
+        }
     }
 }

@@ -60,7 +60,7 @@ namespace NumericalGeometryLib.Collections.Finite.Natural
                 if (index < 0 || index > MaxIndex || BaseCollection == null)
                     return DefaultValue;
 
-                index = IsReversed ? (FirstBaseIndex - index) : (FirstBaseIndex + index);
+                index = IsReversed ? FirstBaseIndex - index : FirstBaseIndex + index;
 
                 return BaseCollection.GetItem(index);
             }
@@ -76,9 +76,9 @@ namespace NumericalGeometryLib.Collections.Finite.Natural
             FirstBaseIndex = firstIndex;
             LastBaseIndex = lastIndex;
 
-            _valuesCount = (firstIndex <= lastIndex) 
-                ? (lastIndex - firstIndex + 1) 
-                : (firstIndex - lastIndex + 1);
+            _valuesCount = firstIndex <= lastIndex 
+                ? lastIndex - firstIndex + 1 
+                : firstIndex - lastIndex + 1;
         }
 
 
@@ -91,9 +91,9 @@ namespace NumericalGeometryLib.Collections.Finite.Natural
             FirstBaseIndex = firstIndex;
             LastBaseIndex = lastIndex;
 
-            _valuesCount = (firstIndex <= lastIndex)
-                ? (lastIndex - firstIndex + 1)
-                : (firstIndex - lastIndex + 1);
+            _valuesCount = firstIndex <= lastIndex
+                ? lastIndex - firstIndex + 1
+                : firstIndex - lastIndex + 1;
 
             return this;
         }
@@ -103,7 +103,7 @@ namespace NumericalGeometryLib.Collections.Finite.Natural
             if (index < 0 || index > MaxIndex || BaseCollection == null)
                 return DefaultValue;
 
-            index = IsReversed ? (FirstBaseIndex - index) : (FirstBaseIndex + index);
+            index = IsReversed ? FirstBaseIndex - index : FirstBaseIndex + index;
 
             return BaseCollection.GetItem(index);
         }

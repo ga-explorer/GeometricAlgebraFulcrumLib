@@ -1,12 +1,10 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.PhCurves;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Mathematica;
+using GeometricAlgebraFulcrumLib.Mathematica.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Mathematica.Processors;
-using GeometricAlgebraFulcrumLib.Mathematica.Text;
-using GeometricAlgebraFulcrumLib.Processors;
-using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Text;
 using Wolfram.NETLink;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Symbolic
@@ -15,23 +13,23 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic
     {
         // This is a pre-defined scalar processor for symbolic
         // Wolfram Mathematica scalars using Expr objects
-        public static ScalarAlgebraMathematicaProcessor ScalarProcessor { get; }
-            = ScalarAlgebraMathematicaProcessor.DefaultProcessor;
+        public static ScalarProcessorExpr ScalarProcessor { get; }
+            = ScalarProcessorExpr.DefaultProcessor;
             
         // Create a 3-dimensional Euclidean geometric algebra processor based on the
         // selected scalar processor
-        public static GeometricAlgebraEuclideanProcessor<Expr> GeometricProcessor { get; } 
-            = ScalarProcessor.CreateGeometricAlgebraEuclideanProcessor(3);
+        public static RGaProcessor<Expr> GeometricProcessor { get; } 
+            = ScalarProcessor.CreateEuclideanRGaProcessor();
 
         // This is a pre-defined text generator for displaying multivectors
         // with symbolic Wolfram Mathematica scalars using Expr objects
-        public static TextMathematicaComposer TextComposer { get; }
-            = TextMathematicaComposer.DefaultComposer;
+        public static TextComposerExpr TextComposer { get; }
+            = TextComposerExpr.DefaultComposer;
 
         // This is a pre-defined LaTeX generator for displaying multivectors
         // with symbolic Wolfram Mathematica scalars using Expr objects
-        public static LaTeXMathematicaComposer LaTeXComposer { get; }
-            = LaTeXMathematicaComposer.DefaultComposer;
+        public static LaTeXComposerExpr LaTeXComposer { get; }
+            = LaTeXComposerExpr.DefaultComposer;
 
 
         ///// <summary>
@@ -48,7 +46,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic
         //    var basisSet2Integral = basisSet2.CreateIntegralSet();
 
         //    var e1 = 
-        //        GeometricProcessor.CreateVectorBasis(0);
+        //        GeometricProcessor.CreateVector(0);
 
         //    var p1 =
         //        //GeometricProcessor.CreateVector(1, 1, 1);
@@ -244,7 +242,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic
         public static void Example2()
         {
             var t = "t".ToSymbolExpr();
-            //var e1 = GeometricProcessor.CreateVectorBasis(0);
+            //var e1 = GeometricProcessor.CreateVector(0);
 
             var p = GeometricProcessor.CreateVector(10d, -2d, 1d);
             var d = GeometricProcessor.CreateVector(0.9d, -0.5d, 1.2d);

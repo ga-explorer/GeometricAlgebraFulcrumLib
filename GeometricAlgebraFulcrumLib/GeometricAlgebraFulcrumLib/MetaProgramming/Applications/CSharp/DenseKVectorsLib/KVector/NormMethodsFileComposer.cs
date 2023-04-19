@@ -1,5 +1,5 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Expressions;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Expressions.Variables;
@@ -17,8 +17,8 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
     internal sealed class NormMethodsFileComposer 
         : GaFuLLibraryMetaContextFileComposerBase
     {
-        private uint _inGrade;
-        private GaKVector<IMetaExpressionAtomic> _inputKVector;
+        private int _inGrade;
+        private XGaKVector<IMetaExpressionAtomic> _inputKVector;
         private MetaExpressionVariableComputed _outputScalar;
         private GaFuLLanguageOperationSpecs _operationSpecs;
 
@@ -47,7 +47,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
         protected override void DefineContextParameters(MetaContext context)
         {
             _inputKVector = context.ParameterVariablesFactory.CreateDenseKVector(
-                VSpaceDimension,
+                VSpaceDimensions,
                 _inGrade,
                 index => $"kVectorScalar{index}"
             );
@@ -100,7 +100,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
             );
         }
 
-        private void GenerateNormFunction(GaFuLLanguageOperationSpecs opSpecs, uint inGrade)
+        private void GenerateNormFunction(GaFuLLanguageOperationSpecs opSpecs, int inGrade)
         {
             _inGrade = inGrade;
             _operationSpecs = opSpecs;
@@ -122,7 +122,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
 
             var casesText = new ListTextComposer(Environment.NewLine);
 
-            foreach (var grade in GeometricProcessor.Grades)
+            foreach (var grade in Grades)
                 casesText.Add(
                     caseTemplate,
                     "name", opSpecs,
@@ -145,7 +145,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
             {
                 GenerateBeginRegion(opSpecs.GetName());
 
-                foreach (var inGrade in GeometricProcessor.Grades)
+                foreach (var inGrade in Grades)
                     GenerateNormFunction(opSpecs, inGrade);
 
                 GenerateMainNormFunction(opSpecs.GetName());

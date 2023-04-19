@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records.Restricted;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 
@@ -10,6 +12,28 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors
 {
     public static class LinVectorStorageUtils
     {
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ILinVectorStorage<T> RemoveZeroValues<T>(this IScalarProcessor<T> scalarProcessor, ILinVectorStorage<T> evenDictionary)
+        {
+            return evenDictionary.FilterByScalar(scalarProcessor.IsNotZero);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ILinVectorStorage<T> RemoveZeroValues<T>(this IScalarProcessor<T> scalarProcessor, ILinVectorStorage<T> evenDictionary, bool nearZeroFlag)
+        {
+            return nearZeroFlag
+                ? evenDictionary.FilterByScalar(scalarProcessor.IsNotNearZero)
+                : evenDictionary.FilterByScalar(scalarProcessor.IsNotZero);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ILinVectorStorage<T> RemoveNearZeroValues<T>(this IScalarProcessor<T> scalarProcessor, ILinVectorStorage<T> evenDictionary)
+        {
+            return evenDictionary.FilterByScalar(scalarProcessor.IsNotNearZero);
+        }
+
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T ReduceScalars<T>(this ILinVectorStorage<T> vectorStorage, Func<T, T, T> itemMapping)
         {
@@ -17,7 +41,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IndexScalarRecord<T> ReduceIndexScalarRecords<T>(this ILinVectorStorage<T> vectorStorage, Func<IndexScalarRecord<T>, IndexScalarRecord<T>, IndexScalarRecord<T>> itemMapping)
+        public static RGaKvIndexScalarRecord<T> ReduceIndexScalarRecords<T>(this ILinVectorStorage<T> vectorStorage, Func<RGaKvIndexScalarRecord<T>, RGaKvIndexScalarRecord<T>, RGaKvIndexScalarRecord<T>> itemMapping)
         {
             return vectorStorage.GetIndexScalarRecords().Aggregate(itemMapping);
         }
@@ -34,12 +58,12 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors
         {
             return vectorStorage.GetIndexScalarRecords().Aggregate(
                 initialScalar,
-                (accScalar, indexScalar) => itemMapping(accScalar, indexScalar.Index, indexScalar.Scalar)
+                (accScalar, indexScalar) => itemMapping(accScalar, indexScalar.KvIndex, indexScalar.Scalar)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T2 FoldIndexScalars<T, T2>(this ILinVectorStorage<T> vectorStorage, T2 initialScalar, Func<T2, IndexScalarRecord<T>, T2> itemMapping)
+        public static T2 FoldIndexScalars<T, T2>(this ILinVectorStorage<T> vectorStorage, T2 initialScalar, Func<T2, RGaKvIndexScalarRecord<T>, T2> itemMapping)
         {
             return vectorStorage.GetIndexScalarRecords().Aggregate(
                 initialScalar,
@@ -72,7 +96,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors
             }
         }
 
-        public static IEnumerable<T2> ScanIndexScalars<T, T2>(this ILinVectorStorage<T> vectorStorage, T2 initialScalar, Func<T2, IndexScalarRecord<T>, T2> itemMapping)
+        public static IEnumerable<T2> ScanIndexScalars<T, T2>(this ILinVectorStorage<T> vectorStorage, T2 initialScalar, Func<T2, RGaKvIndexScalarRecord<T>, T2> itemMapping)
         {
             var oldItem = initialScalar;
             yield return oldItem;
@@ -128,7 +152,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors
             return vectorStorage
                 .GetIndexScalarRecords()
                 .Select(indexScalar =>
-                    mappingFunc(indexScalar.Index, indexScalar.Scalar)
+                    mappingFunc(indexScalar.KvIndex, indexScalar.Scalar)
                 );
         }
 
@@ -138,7 +162,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors
             return vectorStorage
                 .GetIndexScalarRecords()
                 .Select(indexScalar =>
-                    mappingFunc(grade, indexScalar.Index, indexScalar.Scalar)
+                    mappingFunc(grade, indexScalar.KvIndex, indexScalar.Scalar)
                 );
         }
 
@@ -260,11 +284,11 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors
         /// </summary>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IndexScalarRecord<T> GetMinIndexScalarRecord<T>(this ILinVectorStorage<T> vectorStorage)
+        public static RGaKvIndexScalarRecord<T> GetMinIndexScalarRecord<T>(this ILinVectorStorage<T> vectorStorage)
         {
             var index = vectorStorage.GetMinIndex();
 
-            return new IndexScalarRecord<T>(index, vectorStorage.GetScalar(index));
+            return new RGaKvIndexScalarRecord<T>(index, vectorStorage.GetScalar(index));
         }
 
         /// <summary>
@@ -272,11 +296,11 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors
         /// </summary>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IndexScalarRecord<T> GetMaxIndexScalarRecord<T>(this ILinVectorStorage<T> vectorStorage)
+        public static RGaKvIndexScalarRecord<T> GetMaxIndexScalarRecord<T>(this ILinVectorStorage<T> vectorStorage)
         {
             var index = vectorStorage.GetMaxIndex();
 
-            return new IndexScalarRecord<T>(index, vectorStorage.GetScalar(index));
+            return new RGaKvIndexScalarRecord<T>(index, vectorStorage.GetScalar(index));
         }
 
 
@@ -440,7 +464,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<GradeIndexScalarRecord<T>> GetGradeIndexScalarRecords<T>(this ILinVectorStorage<T> vectorStorage)
+        public static IEnumerable<RGaGradeKvIndexScalarRecord<T>> GetGradeIndexScalarRecords<T>(this ILinVectorStorage<T> vectorStorage)
         {
             return vectorStorage.GetIndexScalarRecords().Select(
                 indexScalarRecord =>
@@ -449,7 +473,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<GradeIndexScalarRecord<T>> GetGradeIndexScalarRecords<T>(this ILinVectorStorage<T> vectorStorage, Func<ulong, GradeIndexRecord> indexToGradeIndexMapping)
+        public static IEnumerable<RGaGradeKvIndexScalarRecord<T>> GetGradeIndexScalarRecords<T>(this ILinVectorStorage<T> vectorStorage, Func<ulong, RGaGradeKvIndexRecord> indexToGradeIndexMapping)
         {
             return vectorStorage.GetIndexScalarRecords().Select(
                 indexScalarRecord =>

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
@@ -154,7 +153,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Expressions.Variables
         public int SubExpressionUseCount { get; set; }
 
 
-        private MetaExpressionVariableComputed(MetaExpressionHeadSpecsVariable headSpecs, [NotNull] IMetaExpression rhsExpression)
+        private MetaExpressionVariableComputed(MetaExpressionHeadSpecsVariable headSpecs, IMetaExpression rhsExpression)
             : base(headSpecs)
         {
             _rhsExpression = rhsExpression;
@@ -280,7 +279,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Expressions.Variables
         /// </summary>
         /// <param name="newRhsExpression"></param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void ResetRhsExpression([NotNull] IMetaExpression newRhsExpression)
+        public void ResetRhsExpression(IMetaExpression newRhsExpression)
         {
             _rhsExpression = newRhsExpression;
         }

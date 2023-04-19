@@ -1,18 +1,15 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Text;
-using NumericalGeometryLib.BasicMath.Tuples;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Processors.LinearAlgebra;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Geometry.Euclidean.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Processors;
 
 namespace GeometricAlgebraFulcrumLib.Geometry.Graphics.Space3D
 {
     public sealed record EuclideanPoint3D : 
-        IFloat64Tuple3D,
-        IGeometricAlgebraElement<double>
+        IFloat64Tuple3D
     {
         public static EuclideanVector3D operator -(EuclideanPoint3D p1)
         {
@@ -95,13 +92,10 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Graphics.Space3D
         //}
 
 
-        public IScalarAlgebraProcessor<double> ScalarProcessor 
-            => ScalarAlgebraFloat64Processor.DefaultProcessor;
-
-        public ILinearAlgebraProcessor<double> LinearProcessor 
-            => GeometricProcessor;
-
-        public IGeometricAlgebraProcessor<double> GeometricProcessor 
+        public IScalarProcessor<double> ScalarProcessor 
+            => ScalarProcessorFloat64.DefaultProcessor;
+        
+        public RGaFloat64Processor GeometricProcessor 
             => GaEuclideanSpace3DUtils.GeometricProcessor;
 
         public double X { get; }

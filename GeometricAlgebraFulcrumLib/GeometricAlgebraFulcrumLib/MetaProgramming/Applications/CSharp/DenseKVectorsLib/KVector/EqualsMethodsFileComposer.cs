@@ -39,10 +39,10 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
 
             var casesText = new ListTextComposer(Environment.NewLine);
 
-            foreach (var grade in GeometricProcessor.Grades)
+            foreach (var grade in Grades)
                 casesText.Add(caseTemplate,
                     "grade", grade,
-                    "num", this.KVectorSpaceDimension(grade)
+                    "num", VSpaceDimensions.KVectorSpaceDimension(grade)
                 );
 
             TextComposer.AppendAtNewLine(
@@ -57,9 +57,9 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
             GenerateKVectorFileStartCode();
 
             var kvSpaceDimList =
-                VSpaceDimension
+                VSpaceDimensions
                 .GetRange()
-                .Select(grade => GeometricProcessor.KVectorSpaceDimension(grade))
+                .Select(grade => VSpaceDimensions.KVectorSpaceDimension(grade))
                 .Distinct();
 
             foreach (var kvSpaceDim in kvSpaceDimList)

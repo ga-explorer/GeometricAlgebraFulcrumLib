@@ -5,9 +5,9 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.Basic;
-using NumericalGeometryLib.BasicMath.Tuples.Immutable;
-using GraphicsComposerLib.Geometry.Primitives;
-using GraphicsComposerLib.Geometry.Primitives.Vertices;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Frames.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Parametric.Frames;
 using SixLabors.ImageSharp;
 
 // ReSharper disable CompareOfFloatsByEqualityOperator
@@ -15,7 +15,7 @@ using SixLabors.ImageSharp;
 namespace GraphicsComposerLib.Geometry.LatticeShapes.Curves
 {
     public sealed class GrLatticeCurveLocalFrame3D : 
-        IGraphicsCurveLocalFrame3D
+        IParametricCurveLocalFrame3D
     {
         public GrLatticeCurve3D ParentCurve { get; }
 
@@ -66,11 +66,11 @@ namespace GraphicsComposerLib.Geometry.LatticeShapes.Curves
         public Triplet<double> PointTriplet 
             => new Triplet<double>(Point.X, Point.Y, Point.Z);
 
-        public GrNormal3D Normal1 { get; }
-            = new GrNormal3D();
+        public Normal3D Normal1 { get; }
+            = new Normal3D();
         
-        public GrNormal3D Normal2 { get; }
-            = new GrNormal3D();
+        public Normal3D Normal2 { get; }
+            = new Normal3D();
 
         public Float64Tuple3D Tangent { get; }
 

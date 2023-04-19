@@ -1,23 +1,22 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
+﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.FourierAlgebra
 {
     public class MultivectorFourierCurveTerm<T>
     {
-        public IGeometricAlgebraProcessor<T> GeometricProcessor 
-            => CosMultivector.GeometricProcessor;
+        public RGaProcessor<T> Processor 
+            => CosMultivector.Processor;
 
-        public GaMultivector<T> CosMultivector { get; private set; }
+        public RGaMultivector<T> CosMultivector { get; private set; }
 
-        public GaMultivector<T> SinMultivector { get; private set; }
+        public RGaMultivector<T> SinMultivector { get; private set; }
 
         public Scalar<T> Frequency { get; }
 
 
-        internal MultivectorFourierCurveTerm([NotNull] GaMultivector<T> cosMultivector, [NotNull] GaMultivector<T> sinMultivector, [NotNull] Scalar<T> frequency)
+        internal MultivectorFourierCurveTerm(RGaMultivector<T> cosMultivector, RGaMultivector<T> sinMultivector, Scalar<T> frequency)
         {
             CosMultivector = cosMultivector;
             SinMultivector = sinMultivector;
@@ -25,7 +24,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.FourierAlgebra
         }
 
 
-        public MultivectorFourierCurveTerm<T> AddMultivectors([NotNull] GaMultivector<T> cosMultivector, [NotNull] GaMultivector<T> sinMultivector)
+        public MultivectorFourierCurveTerm<T> AddMultivectors(RGaMultivector<T> cosMultivector, RGaMultivector<T> sinMultivector)
         {
             CosMultivector += cosMultivector;
             SinMultivector += sinMultivector;
@@ -33,14 +32,14 @@ namespace GeometricAlgebraFulcrumLib.Algebra.FourierAlgebra
             return this;
         }
 
-        public GaMultivector<T> GetValue(Scalar<T> parameterValue)
+        public RGaMultivector<T> GetValue(Scalar<T> parameterValue)
         {
             var angle = Frequency * parameterValue;
 
             return CosMultivector * angle.Cos() + SinMultivector * angle.Sin();
         }
         
-        public GaMultivector<T> GetValue(T parameterValue)
+        public RGaMultivector<T> GetValue(T parameterValue)
         {
             var angle = Frequency * parameterValue;
 

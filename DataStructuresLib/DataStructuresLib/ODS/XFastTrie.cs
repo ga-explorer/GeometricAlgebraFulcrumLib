@@ -20,7 +20,7 @@ namespace DataStructuresLib.ODS
 
         private XFastTrie(Func<IDictionary<uint, XFastNode>> factory, int bitWidth)
         {
-            this.Width = bitWidth;
+            Width = bitWidth;
             _table = new IDictionary<uint, XFastNode>[bitWidth];
             for (var i = 0; i < bitWidth; i++)
                 _table[i] = factory();

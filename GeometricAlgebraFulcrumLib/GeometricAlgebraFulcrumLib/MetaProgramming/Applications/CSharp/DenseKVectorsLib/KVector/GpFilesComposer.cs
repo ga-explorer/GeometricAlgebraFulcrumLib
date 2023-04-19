@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Languages;
-using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using TextComposerLib.Text.Structured;
 
 namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKVectorsLib.KVector
@@ -22,16 +22,17 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
         }
 
 
-        private void GenerateMethods(uint inGrade1, uint inGrade2)
+        private void GenerateMethods(int inGrade1, int inGrade2)
         {
             var gpCaseText = new ListTextComposer("," + Environment.NewLine);
 
             var gradesList = 
                 _dualFlag
-                    ? this
+                    ? VSpaceDimensions
                         .GradesOfEGp(inGrade1, inGrade2)
-                        .Select(grade => VSpaceDimension - grade)
-                    : this.GradesOfEGp(inGrade1, inGrade2);
+                        .Select(grade => VSpaceDimensions - grade)
+                    : VSpaceDimensions
+                        .GradesOfEGp(inGrade1, inGrade2);
 
             foreach (var outGrade in gradesList)
             {
@@ -75,8 +76,8 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
 
             DenseKVectorsLibraryComposer.CodeFilesComposer.UnselectActiveFile();
 
-            foreach (var grade1 in GeometricProcessor.Grades)
-                foreach (var grade2 in GeometricProcessor.Grades)
+            foreach (var grade1 in Grades)
+                foreach (var grade2 in Grades)
                     GenerateMethods(grade1, grade2);
 
             _mainFileComposer.GenerateMainMethod();

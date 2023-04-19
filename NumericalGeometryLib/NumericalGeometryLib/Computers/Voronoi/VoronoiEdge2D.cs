@@ -1,6 +1,6 @@
-using NumericalGeometryLib.BasicShapes.Lines;
-using NumericalGeometryLib.Borders.Space2D.Immutable;
-using NumericalGeometryLib.Borders.Space2D.Mutable;
+using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Lines;
+using GeometricAlgebraFulcrumLib.MathBase.Borders.Space2D.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Borders.Space2D.Mutable;
 
 namespace NumericalGeometryLib.Computers.Voronoi
 {

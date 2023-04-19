@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Platforms>AnyCPU;x64</Platforms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CSharpMath" Version="0.5.1" />
+    <PackageReference Include="CSharpMath.SkiaSharp" Version="0.5.1" />
+    <PackageReference Include="DotNetSeleniumExtras.PageObjects" Version="3.11.0" />
+    <PackageReference Include="DotNetSeleniumExtras.WaitHelpers" Version="3.11.0" />
+    <PackageReference Include="Magick.NET-Q16-x64" Version="12.2.2" />
+    <PackageReference Include="Selenium.Support" Version="4.7.0" />
+    <PackageReference Include="Selenium.WebDriver" Version="4.7.0" />
+    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="108.0.5359.7100" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="2.1.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\NumericalGeometryLib\NumericalGeometryLib\NumericalGeometryLib.csproj" />
+    <ProjectReference Include="..\..\TextComposerLib\TextComposerLib\TextComposerLib.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ParametricShapes\Functions\NewFolder\" />
+  </ItemGroup>
+
+</Project>

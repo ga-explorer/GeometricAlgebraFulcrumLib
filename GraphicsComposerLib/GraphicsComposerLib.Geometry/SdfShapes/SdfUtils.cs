@@ -1,6 +1,6 @@
 ﻿using System;
-using NumericalGeometryLib.BasicMath.Tuples;
-using NumericalGeometryLib.BasicMath.Tuples.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
 using GraphicsComposerLib.Geometry.SdfShapes.Operations;
 using GraphicsComposerLib.Geometry.SdfShapes.Primitives;
 using GraphicsComposerLib.Geometry.SdfShapes.Transforms;

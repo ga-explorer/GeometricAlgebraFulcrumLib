@@ -2,9 +2,9 @@
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using DataStructuresLib.Collections.PeriodicLists2D;
-using NumericalGeometryLib.BasicMath.Tuples;
-using NumericalGeometryLib.BasicMath.Tuples.Immutable;
-using GraphicsComposerLib.Geometry.Primitives.Vertices;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Frames.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
 
 namespace GraphicsComposerLib.Geometry.Composers
 {
@@ -22,7 +22,7 @@ namespace GraphicsComposerLib.Geometry.Composers
         public IEnumerable<IFloat64Tuple3D> VertexPositions
             => PositionsGrid;
 
-        public IEnumerable<GrNormal3D> VertexNormals
+        public IEnumerable<Normal3D> VertexNormals
             => NormalsGrid;
 
         public IEnumerable<IFloat64Tuple2D> VertexTextureUVs
@@ -30,7 +30,7 @@ namespace GraphicsComposerLib.Geometry.Composers
 
         public IPeriodicReadOnlyList2D<IFloat64Tuple3D> PositionsGrid { get; }
 
-        public IPeriodicReadOnlyList2D<GrNormal3D> NormalsGrid { get; }
+        public IPeriodicReadOnlyList2D<Normal3D> NormalsGrid { get; }
 
         public IPeriodicReadOnlyList2D<IFloat64Tuple2D> TextureUVsGrid { get; }
 
@@ -50,10 +50,10 @@ namespace GraphicsComposerLib.Geometry.Composers
             
             ColorsGrid = colorsGrid;
 
-            NormalsGrid = new ProListConstantValues2D<GrNormal3D>(
+            NormalsGrid = new ProListConstantValues2D<Normal3D>(
                 positionsGrid.Count1,
                 positionsGrid.Count2,
-                new GrNormal3D(1, 0, 0)
+                new Normal3D(1, 0, 0)
             );
 
             var maxU = (double) (positionsGrid.Count1 - 1);

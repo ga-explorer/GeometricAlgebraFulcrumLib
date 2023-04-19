@@ -1,26 +1,25 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Storage.ScalarAlgebra
 {
     public sealed class ScalarComposer<T>
     {
-        public IScalarAlgebraProcessor<T> ScalarProcessor { get; }
+        public IScalarProcessor<T> ScalarProcessor { get; }
 
         public T Scalar { get; private set; }
 
 
-        internal ScalarComposer([NotNull] IScalarAlgebraProcessor<T> scalarProcessor)
+        internal ScalarComposer(IScalarProcessor<T> scalarProcessor)
         {
             ScalarProcessor = scalarProcessor;
 
             Scalar = scalarProcessor.ScalarZero;
         }
 
-        internal ScalarComposer([NotNull] IScalarAlgebraProcessor<T> scalarProcessor, [NotNull] T scalar)
+        internal ScalarComposer(IScalarProcessor<T> scalarProcessor, T scalar)
         {
             ScalarProcessor = scalarProcessor;
 
@@ -37,7 +36,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.ScalarAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ScalarComposer<T> SetScalar([NotNull] T scalar)
+        public ScalarComposer<T> SetScalar(T scalar)
         {
             Scalar = scalar;
 
@@ -53,7 +52,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.ScalarAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ScalarComposer<T> AddScalar([NotNull] T scalar)
+        public ScalarComposer<T> AddScalar(T scalar)
         {
             Scalar = ScalarProcessor.Add(Scalar, scalar);
 
@@ -61,7 +60,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.ScalarAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ScalarComposer<T> SubtractScalar([NotNull] T scalar)
+        public ScalarComposer<T> SubtractScalar(T scalar)
         {
             Scalar = ScalarProcessor.Subtract(Scalar, scalar);
 

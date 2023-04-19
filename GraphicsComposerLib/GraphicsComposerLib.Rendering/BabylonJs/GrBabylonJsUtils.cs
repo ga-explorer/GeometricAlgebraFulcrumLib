@@ -1,13 +1,11 @@
 ﻿using System.Numerics;
 using DataStructuresLib.Basic;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Constants;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
 using GraphicsComposerLib.Rendering.BabylonJs.Constants;
 using GraphicsComposerLib.Rendering.BabylonJs.Materials;
 using GraphicsComposerLib.Rendering.BabylonJs.Values;
 using GraphicsComposerLib.Rendering.Colors;
-using NumericalGeometryLib.BasicMath.Constants;
-using NumericalGeometryLib.BasicMath.Tuples;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.PixelFormats;
 using TextComposerLib.Text;
 using TextComposerLib.Text.Linear;
 

@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records.Restricted;
 
 namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
 {
@@ -19,7 +18,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
             VectorStorage = LinVectorEmptyStorage<T>.EmptyStorage;
         }
 
-        internal LinVectorSingleGradeStorage(uint grade, [NotNull] ILinVectorStorage<T> vectorStorage)
+        internal LinVectorSingleGradeStorage(uint grade, ILinVectorStorage<T> vectorStorage)
             : base(grade)
         {
             VectorStorage = vectorStorage.IsNullOrEmpty() 
@@ -43,10 +42,10 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override T GetScalar(GradeIndexRecord gradeKey)
+        public override T GetScalar(RGaGradeKvIndexRecord gradeKey)
         {
             return gradeKey.Grade == Grade
-                ? VectorStorage.GetScalar(gradeKey.Index)
+                ? VectorStorage.GetScalar(gradeKey.KvIndex)
                 : throw new KeyNotFoundException();
         }
         
@@ -69,22 +68,22 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override IEnumerable<GradeIndexRecord> GetGradeIndexRecords()
+        public override IEnumerable<RGaGradeKvIndexRecord> GetGradeIndexRecords()
         {
             return VectorStorage.GetIndices().Select(
-                index => new GradeIndexRecord(Grade, index)
+                index => new RGaGradeKvIndexRecord(Grade, index)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override IEnumerable<GradeIndexScalarRecord<T>> GetGradeIndexScalarRecords()
+        public override IEnumerable<RGaGradeKvIndexScalarRecord<T>> GetGradeIndexScalarRecords()
         {
             return VectorStorage.GetIndexScalarRecords().Select(
                 indexValueRecord =>
                 {
                     var (index, value) = indexValueRecord;
 
-                    return new GradeIndexScalarRecord<T>(Grade, index, value);
+                    return new RGaGradeKvIndexScalarRecord<T>(Grade, index, value);
                 }
             );
         }

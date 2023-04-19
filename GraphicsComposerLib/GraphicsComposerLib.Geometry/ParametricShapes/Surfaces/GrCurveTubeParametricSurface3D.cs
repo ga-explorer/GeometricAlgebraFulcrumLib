@@ -1,21 +1,21 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using NumericalGeometryLib.BasicMath;
-using NumericalGeometryLib.BasicMath.Tuples;
-using NumericalGeometryLib.BasicMath.Tuples.Immutable;
-using GraphicsComposerLib.Geometry.ParametricShapes.Curves;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Parametric.Curves;
 
 namespace GraphicsComposerLib.Geometry.ParametricShapes.Surfaces
 {
     public class GrCurveTubeParametricSurface3D :
         IGraphicsParametricSurface3D
     {
-        public IGraphicsC1ParametricCurve3D Curve { get; }
+        public IParametricCurve3D Curve { get; }
 
         public double Radius { get; }
 
 
-        public GrCurveTubeParametricSurface3D([NotNull] IGraphicsC1ParametricCurve3D curve, double radius)
+        public GrCurveTubeParametricSurface3D([NotNull] IParametricCurve3D curve, double radius)
         {
             if (radius < 0)
                 throw new ArgumentException(nameof(radius));

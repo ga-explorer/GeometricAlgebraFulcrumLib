@@ -1,36 +1,37 @@
 ﻿using GraphicsComposerLib.Rendering.BabylonJs.Constants;
 
-namespace GraphicsComposerLib.Rendering.BabylonJs.Values;
-
-public sealed class GrBabylonJsTextureCoordinatesModeValue :
-    GrBabylonJsValue<GrBabylonJsTextureCoordinatesMode>
+namespace GraphicsComposerLib.Rendering.BabylonJs.Values
 {
-    public static implicit operator GrBabylonJsTextureCoordinatesModeValue(string valueText)
+    public sealed class GrBabylonJsTextureCoordinatesModeValue :
+        GrBabylonJsValue<GrBabylonJsTextureCoordinatesMode>
     {
-        return new GrBabylonJsTextureCoordinatesModeValue(valueText);
-    }
+        public static implicit operator GrBabylonJsTextureCoordinatesModeValue(string valueText)
+        {
+            return new GrBabylonJsTextureCoordinatesModeValue(valueText);
+        }
 
-    public static implicit operator GrBabylonJsTextureCoordinatesModeValue(GrBabylonJsTextureCoordinatesMode value)
-    {
-        return new GrBabylonJsTextureCoordinatesModeValue(value);
-    }
-
-
-    private GrBabylonJsTextureCoordinatesModeValue(string valueText)
-        : base(valueText)
-    {
-    }
-
-    private GrBabylonJsTextureCoordinatesModeValue(GrBabylonJsTextureCoordinatesMode value)
-        : base(value)
-    {
-    }
+        public static implicit operator GrBabylonJsTextureCoordinatesModeValue(GrBabylonJsTextureCoordinatesMode value)
+        {
+            return new GrBabylonJsTextureCoordinatesModeValue(value);
+        }
 
 
-    public override string GetCode()
-    {
-        return string.IsNullOrEmpty(ValueText) 
-            ? Value.GetBabylonJsCode() 
-            : ValueText;
+        private GrBabylonJsTextureCoordinatesModeValue(string valueText)
+            : base(valueText)
+        {
+        }
+
+        private GrBabylonJsTextureCoordinatesModeValue(GrBabylonJsTextureCoordinatesMode value)
+            : base(value)
+        {
+        }
+
+
+        public override string GetCode()
+        {
+            return string.IsNullOrEmpty(ValueText) 
+                ? Value.GetBabylonJsCode() 
+                : ValueText;
+        }
     }
 }

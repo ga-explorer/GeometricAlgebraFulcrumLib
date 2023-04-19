@@ -1,6 +1,7 @@
-﻿namespace GraphicsComposerLib.Rendering.BabylonJs;
-
-public interface IGrBabylonJsCodeElement
+﻿namespace GraphicsComposerLib.Rendering.BabylonJs
 {
-    string GetCode();
+    public interface IGrBabylonJsCodeElement
+    {
+        string GetCode();
+    }
 }

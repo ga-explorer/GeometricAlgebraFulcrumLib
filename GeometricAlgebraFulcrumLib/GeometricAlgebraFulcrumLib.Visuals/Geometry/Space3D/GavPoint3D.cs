@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
-using NumericalGeometryLib.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
 
 namespace GeometricAlgebraFulcrumLib.Visuals.Geometry.Space3D
 {

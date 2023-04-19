@@ -32,12 +32,69 @@ namespace DataStructuresLib.Basic
             return (k < 0) ? (k + n) : k;
         }
 
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<Tuple<T2, T1>> SwapItem12<T1, T2>(this IEnumerable<Tuple<T1, T2>> tupleList)
+        {
+            return tupleList.Select(t => new Tuple<T2, T1>(
+                t.Item2,
+                t.Item1
+            ));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<Tuple<T3, T2>> MapItem1<T1, T2, T3>(this IEnumerable<Tuple<T1, T2>> tupleList, Func<T1, T3> itemMapping)
+        {
+            return tupleList.Select(t => new Tuple<T3, T2>(
+                itemMapping(t.Item1),
+                t.Item2
+            ));
+        }
         
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<Tuple<T3, T2>> MapItem1<T1, T2, T3>(this IEnumerable<Tuple<T1, T2>> tupleList, Func<T1, T2, T3> itemMapping)
+        {
+            return tupleList.Select(t => new Tuple<T3, T2>(
+                itemMapping(t.Item1, t.Item2),
+                t.Item2
+            ));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<Tuple<T1, T3>> MapItem2<T1, T2, T3>(this IEnumerable<Tuple<T1, T2>> tupleList, Func<T2, T3> itemMapping)
+        {
+            return tupleList.Select(t => new Tuple<T1, T3>(
+                t.Item1,
+                itemMapping(t.Item2)
+            ));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<Tuple<T1, T3>> MapItem2<T1, T2, T3>(this IEnumerable<Tuple<T1, T2>> tupleList, Func<T1, T2, T3> itemMapping)
+        {
+            return tupleList.Select(t => new Tuple<T1, T3>(
+                t.Item1,
+                itemMapping(t.Item1, t.Item2)
+            ));
+        }
+
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<T> GetItems<T>(this IPair<T> pair)
         {
             yield return pair.Item1;
             yield return pair.Item2;
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T GetItem<T>(this IPair<T> pair, int index)
+        {
+            return index switch
+            {
+                0 => pair.Item1,
+                1 => pair.Item2,
+                _ => throw new IndexOutOfRangeException()
+            };
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -160,6 +217,18 @@ namespace DataStructuresLib.Basic
             return new Pair<T>(pair.Item2, pair.Item1);
         }
 
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T GetItem<T>(this ITriplet<T> triplet, int index)
+        {
+            return index switch
+            {
+                0 => triplet.Item1,
+                1 => triplet.Item2,
+                2 => triplet.Item3,
+                _ => throw new IndexOutOfRangeException()
+            };
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<T> GetItems<T>(this ITriplet<T> triplet)
@@ -318,6 +387,19 @@ namespace DataStructuresLib.Basic
             return new Triplet<T>(triplet.Item2, triplet.Item3, triplet.Item1);
         }
 
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T GetItem<T>(this IQuad<T> quad, int index)
+        {
+            return index switch
+            {
+                0 => quad.Item1,
+                1 => quad.Item2,
+                2 => quad.Item3,
+                3 => quad.Item4,
+                _ => throw new IndexOutOfRangeException()
+            };
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<T> GetItems<T>(this IQuad<T> quad)
@@ -494,6 +576,20 @@ namespace DataStructuresLib.Basic
 
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T GetItem<T>(this IQuint<T> quint, int index)
+        {
+            return index switch
+            {
+                0 => quint.Item1,
+                1 => quint.Item2,
+                2 => quint.Item3,
+                3 => quint.Item4,
+                4 => quint.Item5,
+                _ => throw new IndexOutOfRangeException()
+            };
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<T> GetItems<T>(this IQuint<T> quint)
         {
             yield return quint.Item1;
@@ -517,6 +613,21 @@ namespace DataStructuresLib.Basic
         }
 
         
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T GetItem<T>(this IHexad<T> hexad, int index)
+        {
+            return index switch
+            {
+                0 => hexad.Item1,
+                1 => hexad.Item2,
+                2 => hexad.Item3,
+                3 => hexad.Item4,
+                4 => hexad.Item5,
+                5 => hexad.Item6,
+                _ => throw new IndexOutOfRangeException()
+            };
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<T> GetItems<T>(this IHexad<T> hexad)
         {

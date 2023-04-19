@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using DataStructuresLib.Basic;
-using NumericalGeometryLib.BasicMath.Tuples;
-using NumericalGeometryLib.BasicShapes.Lines;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Lines;
 
 namespace GraphicsComposerLib.Geometry.Primitives.Lines
 {

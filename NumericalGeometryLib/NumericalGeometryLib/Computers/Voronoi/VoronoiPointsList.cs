@@ -3,10 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DataStructuresLib.Basic;
-using NumericalGeometryLib.BasicMath;
-using NumericalGeometryLib.BasicMath.Tuples;
-using NumericalGeometryLib.BasicMath.Tuples.Immutable;
-using NumericalGeometryLib.Borders.Space2D.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Borders.Space2D.Immutable;
 
 namespace NumericalGeometryLib.Computers.Voronoi
 {

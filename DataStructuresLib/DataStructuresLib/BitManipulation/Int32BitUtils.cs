@@ -108,6 +108,45 @@ namespace DataStructuresLib.BitManipulation
                 }
             }
         }
+        
+        /// <summary>
+        /// Convert an arbitrary integer into a sign value in {-1, 0, 1}
+        /// </summary>
+        /// <param name="sign"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int NormalizeSign(this int sign)
+        {
+            return sign switch
+            {
+                < 0 => -1,
+                > 0 => 1,
+                _ => sign
+            };
+        }
+
+        /// <summary>
+        /// If value is -1, 0, or 1
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool IsValidSign(this int value)
+        {
+            return value is 0 or 1 or -1;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int ToBinaryInteger(this bool value)
+        {
+            return value ? 1 : 0;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int ToBipolarInteger(this bool value)
+        {
+            return value ? 1 : -1;
+        }
 
         /// <summary>
         /// Tests if bitPattern is an odd integer
@@ -119,6 +158,41 @@ namespace DataStructuresLib.BitManipulation
         {
             return (bitPattern & 1) != 0;
         }
+        
+        /// <summary>
+        /// Tests if bitPattern is an odd integer
+        /// </summary>
+        /// <param name="bitPattern"></param>
+        /// <param name="maxValue"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool IsOdd(this int bitPattern, int maxValue)
+        {
+            return (bitPattern & 1) != 0 && bitPattern <= maxValue;
+        }
+
+        /// <summary>
+        /// If bitPattern is an odd integer returns 1, else 0
+        /// </summary>
+        /// <param name="bitPattern"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int IsOddToBinaryInteger(this int bitPattern)
+        {
+            return bitPattern & 1;
+        }
+
+        /// <summary>
+        /// If bitPattern is an odd integer returns 1, else -1
+        /// </summary>
+        /// <param name="bitPattern"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int IsOddToBipolarInteger(this int bitPattern)
+        {
+            return (bitPattern & 1) != 0
+                ? 1 : -1;
+        }
 
         /// <summary>
         /// Tests if bitPattern is an even integer
@@ -129,6 +203,41 @@ namespace DataStructuresLib.BitManipulation
         public static bool IsEven(this int bitPattern)
         {
             return (bitPattern & 1) == 0;
+        }
+
+        /// <summary>
+        /// Tests if bitPattern is an even integer
+        /// </summary>
+        /// <param name="bitPattern"></param>
+        /// <param name="maxValue"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool IsEven(this int bitPattern, int maxValue)
+        {
+            return (bitPattern & 1) == 0 && bitPattern <= maxValue;
+        }
+
+        /// <summary>
+        /// If bitPattern is an even integer returns 1, else 0
+        /// </summary>
+        /// <param name="bitPattern"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int IsEvenToBinaryInteger(this int bitPattern)
+        {
+            return bitPattern ^ 1;
+        }
+
+        /// <summary>
+        /// If bitPattern is an even integer returns 1, else -1
+        /// </summary>
+        /// <param name="bitPattern"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int IsEvenToBipolarInteger(this int bitPattern)
+        {
+            return (bitPattern & 1) == 0
+                ? 1 : -1;
         }
 
         /// <summary>
@@ -1607,6 +1716,12 @@ namespace DataStructuresLib.BitManipulation
         }
   
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<T> GetRange<T>(this int count, Func<int, T> indexMapping)
+        {
+            return Enumerable.Range(0, count).Select(indexMapping);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<int> GetRange(this int count, int offset)
         {
             return Enumerable
@@ -1683,6 +1798,18 @@ namespace DataStructuresLib.BitManipulation
             return a >= b 
                 ? (a >= c ? a : c)
                 : (b >= c ? b : c);
+        }
+
+        /// <summary>
+        /// Get the inclusive number of integers between minValue and maxValue
+        /// </summary>
+        /// <param name="minValue"></param>
+        /// <param name="maxValue"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int IntegerCount(this int minValue, int maxValue)
+        {
+            return maxValue - minValue + 1;
         }
     }
 }

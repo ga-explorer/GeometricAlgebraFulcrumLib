@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using NumericalGeometryLib.Borders.Space1D;
-using NumericalGeometryLib.Borders.Space1D.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Borders.Space1D;
+using GeometricAlgebraFulcrumLib.MathBase.Borders.Space1D.Immutable;
 using NumericalGeometryLib.Computers;
 
 namespace NumericalGeometryLib.Accelerators.BIH.Space2D.Traversal

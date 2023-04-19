@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using DataStructuresLib.Basic;
-using NumericalGeometryLib.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
 using GraphicsComposerLib.Geometry.Meshes.PathsMesh.Space3D;
 
 namespace GraphicsComposerLib.Geometry.Meshes.PointsPath.Space3D

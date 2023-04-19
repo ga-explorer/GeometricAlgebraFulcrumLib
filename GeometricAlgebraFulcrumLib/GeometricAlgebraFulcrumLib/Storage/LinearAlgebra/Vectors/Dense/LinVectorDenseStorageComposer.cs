@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records.Restricted;
 
 namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Dense
 {
@@ -16,7 +15,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Dense
             => TermsArray.Length;
 
 
-        internal LinVectorDenseStorageComposer(IScalarAlgebraProcessor<T> scalarProcessor, int count)
+        internal LinVectorDenseStorageComposer(IScalarProcessor<T> scalarProcessor, int count)
             : base(scalarProcessor)
         {
             TermsArray = scalarProcessor.CreateArrayZero1D(count);
@@ -54,7 +53,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Dense
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override LinVectorStorageComposerBase<T> SetTerm(ulong index, [NotNull] T value)
+        public override LinVectorStorageComposerBase<T> SetTerm(ulong index, T value)
         {
             TermsArray[index] = value;
 
@@ -62,7 +61,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Dense
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override LinVectorStorageComposerBase<T> AddTerm(ulong index, [NotNull] T value)
+        public override LinVectorStorageComposerBase<T> AddTerm(ulong index, T value)
         {
             TermsArray[index] = ScalarProcessor.Add(TermsArray[index], value);
 
@@ -70,7 +69,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Dense
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override LinVectorStorageComposerBase<T> SubtractTerm(ulong index, [NotNull] T value)
+        public override LinVectorStorageComposerBase<T> SubtractTerm(ulong index, T value)
         {
             TermsArray[index] = ScalarProcessor.Subtract(TermsArray[index], value);
 
@@ -96,10 +95,10 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Dense
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override IEnumerable<IndexScalarRecord<T>> GetIndexScalarRecords()
+        public override IEnumerable<RGaKvIndexScalarRecord<T>> GetIndexScalarRecords()
         {
             for (var index = 0; index < Count; index++)
-                yield return new IndexScalarRecord<T>((ulong)index, TermsArray[index]);
+                yield return new RGaKvIndexScalarRecord<T>((ulong)index, TermsArray[index]);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

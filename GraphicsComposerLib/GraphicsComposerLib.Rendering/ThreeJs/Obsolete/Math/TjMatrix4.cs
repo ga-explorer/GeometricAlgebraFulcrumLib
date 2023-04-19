@@ -1,7 +1,7 @@
 ﻿using System.Numerics;
 using System.Text;
-using NumericalGeometryLib.BasicMath.Maps.Space2D;
-using NumericalGeometryLib.BasicMath.Maps.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space2D;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D;
 
 namespace GraphicsComposerLib.Rendering.ThreeJs.Obsolete.Math
 {

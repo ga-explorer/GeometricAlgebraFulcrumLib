@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
-using NumericalGeometryLib.BasicMath;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
 
 namespace GeometricAlgebraFulcrumLib.Text
 {
@@ -20,13 +20,13 @@ namespace GeometricAlgebraFulcrumLib.Text
 
 
         private LaTeXFloat64Composer()
-            : base(ScalarAlgebraFloat64Processor.DefaultProcessor)
+            : base(ScalarProcessorFloat64.DefaultProcessor)
         {
         }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override string GetAngleText(PlanarAngle angle)
+        public override string GetAngleText(Float64PlanarAngle angle)
         {
             var angleText = GetScalarText(angle.Degrees);
 

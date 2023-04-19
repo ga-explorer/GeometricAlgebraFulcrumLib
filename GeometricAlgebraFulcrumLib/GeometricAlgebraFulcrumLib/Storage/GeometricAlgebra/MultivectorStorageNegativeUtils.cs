@@ -1,56 +1,56 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
 
 namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
 {
     internal static class MultivectorStorageNegativeUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> Negative<T>(this IScalarAlgebraProcessor<T> scalarProcessor, VectorStorage<T> mv)
+        public static VectorStorage<T> Negative<T>(this IScalarProcessor<T> scalarProcessor, VectorStorage<T> mv)
         {
             return mv.MapVectorScalars(scalarProcessor.Negative);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static BivectorStorage<T> Negative<T>(this IScalarAlgebraProcessor<T> scalarProcessor, BivectorStorage<T> mv)
+        public static BivectorStorage<T> Negative<T>(this IScalarProcessor<T> scalarProcessor, BivectorStorage<T> mv)
         {
             return mv.MapBivectorScalars(scalarProcessor.Negative);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorGradedStorage<T> Negative<T>(this IScalarAlgebraProcessor<T> scalarProcessor, MultivectorGradedStorage<T> mv)
+        public static IMultivectorGradedStorage<T> Negative<T>(this IScalarProcessor<T> scalarProcessor, MultivectorGradedStorage<T> mv)
         {
             return mv.MapGradedMultivectorScalars(scalarProcessor.Negative);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVectorStorage<T> Negative<T>(this IScalarAlgebraProcessor<T> scalarProcessor, KVectorStorage<T> mv)
+        public static KVectorStorage<T> Negative<T>(this IScalarProcessor<T> scalarProcessor, KVectorStorage<T> mv)
         {
             return mv.MapKVectorScalars(scalarProcessor.Negative);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorGradedStorage<T> Negative<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorGradedStorage<T> mv)
+        public static IMultivectorGradedStorage<T> Negative<T>(this IScalarProcessor<T> scalarProcessor, IMultivectorGradedStorage<T> mv)
         {
             return mv.MapScalars(scalarProcessor.Negative);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static MultivectorStorage<T> Negative<T>(this IScalarAlgebraProcessor<T> scalarProcessor, MultivectorStorage<T> mv)
+        public static MultivectorStorage<T> Negative<T>(this IScalarProcessor<T> scalarProcessor, MultivectorStorage<T> mv)
         {
             return mv.MapMultivectorScalars(scalarProcessor.Negative);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorStorage<T> Negative<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorStorage<T> mv)
+        public static IMultivectorStorage<T> Negative<T>(this IScalarProcessor<T> scalarProcessor, IMultivectorStorage<T> mv)
         {
             return mv.MapScalars(scalarProcessor.Negative);
         }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> NegativeByGrade<T>(this IScalarAlgebraProcessor<T> scalarProcessor, VectorStorage<T> mv, Predicate<uint> gradeToNegativePredicate)
+        public static VectorStorage<T> NegativeByGrade<T>(this IScalarProcessor<T> scalarProcessor, VectorStorage<T> mv, Predicate<uint> gradeToNegativePredicate)
         {
             return gradeToNegativePredicate(1)
                 ? mv.MapVectorScalars(scalarProcessor.Negative)
@@ -58,7 +58,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> NegativeByGradeIndex<T>(this IScalarAlgebraProcessor<T> scalarProcessor, VectorStorage<T> mv, Func<uint, ulong, bool> gradeIndexToNegativePredicate)
+        public static VectorStorage<T> NegativeByGradeIndex<T>(this IScalarProcessor<T> scalarProcessor, VectorStorage<T> mv, Func<uint, ulong, bool> gradeIndexToNegativePredicate)
         {
             return mv.MapVectorScalarsByIndex(
                 (index, scalar) =>
@@ -69,7 +69,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> NegativeById<T>(this IScalarAlgebraProcessor<T> scalarProcessor, VectorStorage<T> mv, Predicate<ulong> idToNegativePredicate)
+        public static VectorStorage<T> NegativeById<T>(this IScalarProcessor<T> scalarProcessor, VectorStorage<T> mv, Predicate<ulong> idToNegativePredicate)
         {
             return mv.MapVectorScalarsById(
                 (id, scalar) =>
@@ -80,7 +80,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static BivectorStorage<T> NegativeByGrade<T>(this IScalarAlgebraProcessor<T> scalarProcessor, BivectorStorage<T> mv, Predicate<uint> gradeToNegativePredicate)
+        public static BivectorStorage<T> NegativeByGrade<T>(this IScalarProcessor<T> scalarProcessor, BivectorStorage<T> mv, Predicate<uint> gradeToNegativePredicate)
         {
             return gradeToNegativePredicate(2)
                 ? mv.MapBivectorScalars(scalarProcessor.Negative)
@@ -88,7 +88,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static BivectorStorage<T> NegativeByGradeIndex<T>(this IScalarAlgebraProcessor<T> scalarProcessor, BivectorStorage<T> mv, Func<uint, ulong, bool> gradeIndexToNegativePredicate)
+        public static BivectorStorage<T> NegativeByGradeIndex<T>(this IScalarProcessor<T> scalarProcessor, BivectorStorage<T> mv, Func<uint, ulong, bool> gradeIndexToNegativePredicate)
         {
             return mv.MapBivectorScalarsByIndex(
                 (index, scalar) =>
@@ -99,7 +99,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static BivectorStorage<T> NegativeById<T>(this IScalarAlgebraProcessor<T> scalarProcessor, BivectorStorage<T> mv, Predicate<ulong> idToNegativePredicate)
+        public static BivectorStorage<T> NegativeById<T>(this IScalarProcessor<T> scalarProcessor, BivectorStorage<T> mv, Predicate<ulong> idToNegativePredicate)
         {
             return mv.MapBivectorScalarsById(
                 (id, scalar) =>
@@ -110,7 +110,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVectorStorage<T> NegativeByGrade<T>(this IScalarAlgebraProcessor<T> scalarProcessor, KVectorStorage<T> mv, Predicate<uint> gradeToNegativePredicate)
+        public static KVectorStorage<T> NegativeByGrade<T>(this IScalarProcessor<T> scalarProcessor, KVectorStorage<T> mv, Predicate<uint> gradeToNegativePredicate)
         {
             return gradeToNegativePredicate(mv.Grade)
                 ? mv.MapKVectorScalars(scalarProcessor.Negative)
@@ -118,7 +118,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVectorStorage<T> NegativeByGradeIndex<T>(this IScalarAlgebraProcessor<T> scalarProcessor, KVectorStorage<T> mv, Func<uint, ulong, bool> gradeIndexToNegativePredicate)
+        public static KVectorStorage<T> NegativeByGradeIndex<T>(this IScalarProcessor<T> scalarProcessor, KVectorStorage<T> mv, Func<uint, ulong, bool> gradeIndexToNegativePredicate)
         {
             var grade = mv.Grade;
 
@@ -131,7 +131,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVectorStorage<T> NegativeById<T>(this IScalarAlgebraProcessor<T> scalarProcessor, KVectorStorage<T> mv, Predicate<ulong> idToNegativePredicate)
+        public static KVectorStorage<T> NegativeById<T>(this IScalarProcessor<T> scalarProcessor, KVectorStorage<T> mv, Predicate<ulong> idToNegativePredicate)
         {
             return mv.MapKVectorScalarsById(
                 (id, scalar) =>
@@ -142,7 +142,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static MultivectorGradedStorage<T> NegativeByGrade<T>(this IScalarAlgebraProcessor<T> scalarProcessor, MultivectorGradedStorage<T> mv, Predicate<uint> gradeToNegativePredicate)
+        public static MultivectorGradedStorage<T> NegativeByGrade<T>(this IScalarProcessor<T> scalarProcessor, MultivectorGradedStorage<T> mv, Predicate<uint> gradeToNegativePredicate)
         {
             return (MultivectorGradedStorage<T>)mv.MapGradedMultivectorScalarsByGradeIndex(
                 (grade, _, scalar) =>
@@ -153,7 +153,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static MultivectorGradedStorage<T> NegativeByGradeIndex<T>(this IScalarAlgebraProcessor<T> scalarProcessor, MultivectorGradedStorage<T> mv, Func<uint, ulong, bool> gradeIndexToNegativePredicate)
+        public static MultivectorGradedStorage<T> NegativeByGradeIndex<T>(this IScalarProcessor<T> scalarProcessor, MultivectorGradedStorage<T> mv, Func<uint, ulong, bool> gradeIndexToNegativePredicate)
         {
             return (MultivectorGradedStorage<T>)mv.MapGradedMultivectorScalarsByGradeIndex(
                 (grade, index, scalar) =>
@@ -164,7 +164,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static MultivectorGradedStorage<T> NegativeById<T>(this IScalarAlgebraProcessor<T> scalarProcessor, MultivectorGradedStorage<T> mv, Predicate<ulong> idToNegativePredicate)
+        public static MultivectorGradedStorage<T> NegativeById<T>(this IScalarProcessor<T> scalarProcessor, MultivectorGradedStorage<T> mv, Predicate<ulong> idToNegativePredicate)
         {
             return (MultivectorGradedStorage<T>)mv.MapGradedMultivectorScalarsById(
                 (id, scalar) =>
@@ -175,7 +175,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorGradedStorage<T> NegativeByGrade<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorGradedStorage<T> mv, Predicate<uint> gradeToNegativePredicate)
+        public static IMultivectorGradedStorage<T> NegativeByGrade<T>(this IScalarProcessor<T> scalarProcessor, IMultivectorGradedStorage<T> mv, Predicate<uint> gradeToNegativePredicate)
         {
             return mv.MapScalarsByGradeIndex(
                 (grade, _, scalar) =>
@@ -186,7 +186,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorGradedStorage<T> NegativeByGradeIndex<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorGradedStorage<T> mv, Func<uint, ulong, bool> gradeIndexToNegativePredicate)
+        public static IMultivectorGradedStorage<T> NegativeByGradeIndex<T>(this IScalarProcessor<T> scalarProcessor, IMultivectorGradedStorage<T> mv, Func<uint, ulong, bool> gradeIndexToNegativePredicate)
         {
             return mv.MapScalarsByGradeIndex(
                 (grade, index, scalar) =>
@@ -197,7 +197,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorGradedStorage<T> NegativeById<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorGradedStorage<T> mv, Predicate<ulong> idToNegativePredicate)
+        public static IMultivectorGradedStorage<T> NegativeById<T>(this IScalarProcessor<T> scalarProcessor, IMultivectorGradedStorage<T> mv, Predicate<ulong> idToNegativePredicate)
         {
             return mv.MapScalarsById(
                 (id, scalar) =>
@@ -208,7 +208,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static MultivectorStorage<T> NegativeByGrade<T>(this IScalarAlgebraProcessor<T> scalarProcessor, MultivectorStorage<T> mv, Predicate<uint> gradeToNegativePredicate)
+        public static MultivectorStorage<T> NegativeByGrade<T>(this IScalarProcessor<T> scalarProcessor, MultivectorStorage<T> mv, Predicate<uint> gradeToNegativePredicate)
         {
             return mv.MapMultivectorScalarsByGradeIndex(
                 (grade, _, scalar) =>
@@ -219,7 +219,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static MultivectorStorage<T> NegativeByGradeIndex<T>(this IScalarAlgebraProcessor<T> scalarProcessor, MultivectorStorage<T> mv, Func<uint, ulong, bool> gradeIndexToNegativePredicate)
+        public static MultivectorStorage<T> NegativeByGradeIndex<T>(this IScalarProcessor<T> scalarProcessor, MultivectorStorage<T> mv, Func<uint, ulong, bool> gradeIndexToNegativePredicate)
         {
             return mv.MapMultivectorScalarsByGradeIndex(
                 (grade, index, scalar) =>
@@ -230,7 +230,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static MultivectorStorage<T> NegativeById<T>(this IScalarAlgebraProcessor<T> scalarProcessor, MultivectorStorage<T> mv, Predicate<ulong> idToNegativePredicate)
+        public static MultivectorStorage<T> NegativeById<T>(this IScalarProcessor<T> scalarProcessor, MultivectorStorage<T> mv, Predicate<ulong> idToNegativePredicate)
         {
             return mv.MapMultivectorScalarsById(
                 (id, scalar) =>
@@ -241,7 +241,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorStorage<T> NegativeByGrade<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorStorage<T> mv, Predicate<uint> gradeToNegativePredicate)
+        public static IMultivectorStorage<T> NegativeByGrade<T>(this IScalarProcessor<T> scalarProcessor, IMultivectorStorage<T> mv, Predicate<uint> gradeToNegativePredicate)
         {
             return mv.MapScalarsByGradeIndex(
                 (grade, _, scalar) =>
@@ -252,7 +252,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorStorage<T> NegativeByGradeIndex<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorStorage<T> mv, Func<uint, ulong, bool> gradeIndexToNegativePredicate)
+        public static IMultivectorStorage<T> NegativeByGradeIndex<T>(this IScalarProcessor<T> scalarProcessor, IMultivectorStorage<T> mv, Func<uint, ulong, bool> gradeIndexToNegativePredicate)
         {
             return mv.MapScalarsByGradeIndex(
                 (grade, index, scalar) =>
@@ -263,7 +263,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorStorage<T> NegativeById<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorStorage<T> mv, Predicate<ulong> idToNegativePredicate)
+        public static IMultivectorStorage<T> NegativeById<T>(this IScalarProcessor<T> scalarProcessor, IMultivectorStorage<T> mv, Predicate<ulong> idToNegativePredicate)
         {
             return mv.MapScalarsById(
                 (id, scalar) =>

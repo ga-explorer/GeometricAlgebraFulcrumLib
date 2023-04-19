@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-
-using NumericalGeometryLib.BasicMath.Tuples.Immutable;
-using NumericalGeometryLib.BasicShapes.Lines.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Lines.Immutable;
 using GraphicsComposerLib.Geometry.SdfShapes.Primitives;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;

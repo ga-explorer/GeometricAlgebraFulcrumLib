@@ -1,7 +1,5 @@
 ﻿
 
-using SixLabors.ImageSharp;
-
 namespace GraphicsComposerLib.Rendering.Xeogl.Materials
 {
     public static class XeoglMaterialsUtils

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 
@@ -17,7 +16,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense
             => MatrixStorage.Count2;
 
 
-        internal LinMatrixTransposedDenseStorage([NotNull] ILinMatrixDenseStorage<T> source)
+        internal LinMatrixTransposedDenseStorage(ILinMatrixDenseStorage<T> source)
         {
             MatrixStorage = source;
         }
@@ -42,13 +41,13 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override IEnumerable<IndexLinVectorStorageRecord<T>> GetDenseRows(IEnumerable<ulong> rowIndexList)
+        public override IEnumerable<RGaKvIndexLinVectorStorageRecord<T>> GetDenseRows(IEnumerable<ulong> rowIndexList)
         {
             return MatrixStorage.GetDenseColumns(rowIndexList);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override IEnumerable<IndexLinVectorStorageRecord<T>> GetDenseColumns(IEnumerable<ulong> columnIndexList)
+        public override IEnumerable<RGaKvIndexLinVectorStorageRecord<T>> GetDenseColumns(IEnumerable<ulong> columnIndexList)
         {
             return MatrixStorage.GetDenseRows(columnIndexList);
         }

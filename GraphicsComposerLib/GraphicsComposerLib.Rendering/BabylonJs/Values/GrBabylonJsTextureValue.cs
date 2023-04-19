@@ -1,36 +1,37 @@
 ﻿using GraphicsComposerLib.Rendering.BabylonJs.Textures;
 
-namespace GraphicsComposerLib.Rendering.BabylonJs.Values;
-
-public sealed class GrBabylonJsTextureValue :
-    GrBabylonJsValue<GrBabylonJsBaseTexture>
+namespace GraphicsComposerLib.Rendering.BabylonJs.Values
 {
-    public static implicit operator GrBabylonJsTextureValue(string valueText)
+    public sealed class GrBabylonJsTextureValue :
+        GrBabylonJsValue<GrBabylonJsBaseTexture>
     {
-        return new GrBabylonJsTextureValue(valueText);
-    }
+        public static implicit operator GrBabylonJsTextureValue(string valueText)
+        {
+            return new GrBabylonJsTextureValue(valueText);
+        }
 
-    public static implicit operator GrBabylonJsTextureValue(GrBabylonJsBaseTexture value)
-    {
-        return new GrBabylonJsTextureValue(value);
-    }
-
-
-    private GrBabylonJsTextureValue(string valueText)
-        : base(valueText)
-    {
-    }
-
-    private GrBabylonJsTextureValue(GrBabylonJsBaseTexture value)
-        : base(value)
-    {
-    }
+        public static implicit operator GrBabylonJsTextureValue(GrBabylonJsBaseTexture value)
+        {
+            return new GrBabylonJsTextureValue(value);
+        }
 
 
-    public override string GetCode()
-    {
-        return string.IsNullOrEmpty(ValueText) 
-            ? Value.ToString() 
-            : ValueText;
+        private GrBabylonJsTextureValue(string valueText)
+            : base(valueText)
+        {
+        }
+
+        private GrBabylonJsTextureValue(GrBabylonJsBaseTexture value)
+            : base(value)
+        {
+        }
+
+
+        public override string GetCode()
+        {
+            return string.IsNullOrEmpty(ValueText) 
+                ? Value.ToString() 
+                : ValueText;
+        }
     }
 }

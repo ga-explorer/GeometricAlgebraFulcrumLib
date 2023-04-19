@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records.Restricted;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 
 namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
@@ -10,17 +11,17 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
     {
         IEnumerable<ILinVectorStorage<T>> GetVectorStorages();
 
-        IEnumerable<GradeLinVectorStorageRecord<T>> GetGradeStorageRecords();
+        IEnumerable<GaGradeLinVectorStorageRecord<T>> GetGradeStorageRecords();
 
-        IEnumerable<GradeIndexRecord> GetGradeIndexRecords();
+        IEnumerable<RGaGradeKvIndexRecord> GetGradeIndexRecords();
 
-        IEnumerable<GradeIndexScalarRecord<T>> GetGradeIndexScalarRecords();
+        IEnumerable<RGaGradeKvIndexScalarRecord<T>> GetGradeIndexScalarRecords();
 
         ILinVectorStorage<T> GetVectorStorage(uint grade);
 
         T GetScalar(uint grade, ulong index);
 
-        T GetScalar(GradeIndexRecord gradeIndex);
+        T GetScalar(RGaGradeKvIndexRecord gradeIndex);
         
         bool ContainsIndex(uint grade, ulong index);
 

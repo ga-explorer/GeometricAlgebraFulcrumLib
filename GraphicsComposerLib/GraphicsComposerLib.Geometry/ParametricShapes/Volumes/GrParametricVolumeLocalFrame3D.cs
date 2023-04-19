@@ -2,9 +2,9 @@
 using System.Diagnostics.CodeAnalysis;
 
 using System.Runtime.CompilerServices;
-using NumericalGeometryLib.BasicMath;
-using NumericalGeometryLib.BasicMath.Tuples;
-using NumericalGeometryLib.BasicMath.Tuples.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
 using SixLabors.ImageSharp;
 
 namespace GraphicsComposerLib.Geometry.ParametricShapes.Volumes

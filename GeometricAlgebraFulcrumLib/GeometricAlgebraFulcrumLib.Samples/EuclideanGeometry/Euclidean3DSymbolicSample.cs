@@ -1,10 +1,16 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Arrays.Generic;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.LinearMaps;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.LinearMaps.Rotors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic.LinearMaps;
 using GeometricAlgebraFulcrumLib.Mathematica;
+using GeometricAlgebraFulcrumLib.Mathematica.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Mathematica.Mathematica.ExprFactory;
 using GeometricAlgebraFulcrumLib.Mathematica.Processors;
-using GeometricAlgebraFulcrumLib.Processors;
 using Wolfram.NETLink;
 
 namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
@@ -13,21 +19,25 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
     {
         public static void Execute()
         {
-            var n = 3U;
-            var processor = 
-                ScalarAlgebraMathematicaProcessor.DefaultProcessor.CreateGeometricAlgebraEuclideanProcessor(n);
+            var n = 3;
 
-            var v = MathematicaUtils.CreateVector(
+            var scalarProcessor = 
+                ScalarProcessorExpr.DefaultProcessor;
+
+            var processor = 
+                XGaProcessor<Expr>.CreateEuclidean(scalarProcessor);
+
+            var v = processor.CreateVector(
                 "Subscript[v,1]", "Subscript[v,2]", "Subscript[v,3]"
             );
 
-            var u = MathematicaUtils.CreateVector(
+            var u = processor.CreateVector(
                 "Subscript[u,1]", "Subscript[u,2]", "Subscript[u,3]"
             );
 
 
             var rotor = 
-                processor.CreatePureRotor(v, u);
+                v.CreatePureRotor(u);
 
             var rotorMv = rotor.Multivector;
             var rotorMvReverse = rotor.Multivector.Reverse();
@@ -40,38 +50,39 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
 
             var rotorMatrix =
                 rotor
-                    .GetMatrix((int) n, (int) n)
-                    .Simplify(unitLengthAssumptionExpr);
+                    .GetMultivectorMapArray(n, n)
+                    .SimplifyScalars(unitLengthAssumptionExpr);
 
             var rotorMatrix1 =
-                MathematicaUtils.CreateVectorsLinearMap(
-                        (int) n,
-                        basisVector =>
-                            rotorMv.EGp(basisVector.CreateVector(processor)).GetVectorPart().VectorStorage
+                scalarProcessor.CreateLinUnilinearMap(
+                        n,
+                        (int index) =>
+                            rotorMv.EGp(processor.CreateVector(index)).GetVectorPart().ToLinVector()
                     )
-                    .GetMatrix((int) n, (int) n)
-                    .Simplify(unitLengthAssumptionExpr);
+                    .ToArray(n, n)
+                    .SimplifyScalars(unitLengthAssumptionExpr);
 
             var rotorMatrix2 =
-                MathematicaUtils.CreateVectorsLinearMap(
-                        (int) n,
-                        basisVector =>
-                            basisVector.CreateVector(processor).EGp(rotorMvReverse).GetVectorPart().VectorStorage
+                scalarProcessor.CreateLinUnilinearMap(
+                        n,
+                        (int index) =>
+                            processor.CreateVector(index).EGp(rotorMvReverse).GetVectorPart().ToLinVector()
                     )
-                    .GetMatrix((int) n, (int) n)
-                    .Simplify(unitLengthAssumptionExpr);
+                    .ToArray(n, n)
+                    .SimplifyScalars(unitLengthAssumptionExpr);
 
             var rotorMatrix21 = 
-                rotorMatrix2
-                    .MatrixProduct(rotorMatrix1)
-                    .Simplify(unitLengthAssumptionExpr);
+                scalarProcessor.Times(
+                    rotorMatrix2, 
+                    rotorMatrix1
+                ).SimplifyScalars(unitLengthAssumptionExpr);
 
-            var vMatrix = v.VectorStorage.VectorToColumnVectorMatrix(n);
-            var uMatrix = u.VectorStorage.VectorToColumnVectorMatrix(n);
-            var u1 = Mfs.Expand[rotor.OmMap(v).VectorStorage.VectorToColumnVectorMatrix(n)].Evaluate();
-            var u2 = Mfs.Expand[rotorMatrix.MatrixProduct(vMatrix)].Evaluate();
-            var u3 = Mfs.Expand[rotorMatrix21.MatrixProduct(vMatrix)].Evaluate();
-            var u4 = Mfs.Expand[rotorMatrix2.MatrixProduct(rotorMatrix1.MatrixProduct(vMatrix))].Evaluate();
+            var vMatrix = v.VectorToColumnArray2D(n);
+            var uMatrix = u.VectorToColumnArray2D(n);
+            var u1 = Mfs.Expand[rotor.OmMap(v).ToColumnVectorMatrixExpr(n)].Evaluate();
+            var u2 = Mfs.Expand[scalarProcessor.Times(rotorMatrix, vMatrix)].Evaluate();
+            var u3 = Mfs.Expand[scalarProcessor.Times(rotorMatrix21, vMatrix)].Evaluate();
+            var u4 = Mfs.Expand[scalarProcessor.Times(rotorMatrix2, rotorMatrix1, vMatrix)].Evaluate();
 
             Console.WriteLine("Rotor Matrix:");
             Console.WriteLine(rotorMatrix.ToString());

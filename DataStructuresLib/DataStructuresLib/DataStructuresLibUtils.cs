@@ -88,11 +88,11 @@ namespace DataStructuresLib
                     var casted = (IEnumerable)obj;
                     foreach (var item in casted)
                     {
-                        size += this.GetSizeInBytes(item);
+                        size += GetSizeInBytes(item);
                     }
                     return size;
                 }
-                else if (obj is System.Reflection.Pointer)
+                else if (obj is Pointer)
                 {
                     return PointerSize;
                 }
@@ -111,7 +111,7 @@ namespace DataStructuresLib
                             if (!_references.Contains(tempVal))
                             {
                                 _references.Add(tempVal);
-                                size += this.GetSizeInBytes(tempVal);
+                                size += GetSizeInBytes(tempVal);
                             }
                         }
                         t = t.BaseType;

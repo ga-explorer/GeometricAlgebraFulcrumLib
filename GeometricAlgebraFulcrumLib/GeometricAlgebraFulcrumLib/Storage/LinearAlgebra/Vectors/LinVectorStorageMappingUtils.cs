@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Dense;
 
@@ -9,7 +9,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors
 {
     public static class LinVectorStorageMappingUtils
     {
-        public static ILinVectorDenseStorage<T> MapScalarsIndicesUnion<T>(this IScalarAlgebraProcessor<T> scalarProcessor, ILinVectorDenseStorage<T> v1, ILinVectorDenseStorage<T> v2, Func<T, T, T> valueMapping)
+        public static ILinVectorDenseStorage<T> MapScalarsIndicesUnion<T>(this IScalarProcessor<T> scalarProcessor, ILinVectorDenseStorage<T> v1, ILinVectorDenseStorage<T> v2, Func<T, T, T> valueMapping)
         {
             if (v1.IsEmpty() && v2.IsEmpty())
                 return LinVectorEmptyStorage<T>.EmptyStorage;
@@ -45,7 +45,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors
             return composer.RemoveZeroTerms().CreateLinVectorDenseStorage();
         }
 
-        public static ILinVectorStorage<T> MapScalarsIndicesUnion<T>(this IScalarAlgebraProcessor<T> scalarProcessor, ILinVectorStorage<T> v1, ILinVectorStorage<T> v2, Func<T, T, T> valueMapping)
+        public static ILinVectorStorage<T> MapScalarsIndicesUnion<T>(this IScalarProcessor<T> scalarProcessor, ILinVectorStorage<T> v1, ILinVectorStorage<T> v2, Func<T, T, T> valueMapping)
         {
             if (v1.IsEmpty() && v2.IsEmpty())
                 return LinVectorEmptyStorage<T>.EmptyStorage;
@@ -71,7 +71,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors
                 .CreateLinVectorStorage();
         }
 
-        public static ILinVectorDenseStorage<T> MapScalars<T>(this IScalarAlgebraProcessor<T> scalarProcessor, ILinVectorDenseStorage<T> v1, Func<T, T, T> valueMapping)
+        public static ILinVectorDenseStorage<T> MapScalars<T>(this IScalarProcessor<T> scalarProcessor, ILinVectorDenseStorage<T> v1, Func<T, T, T> valueMapping)
         {
             if (v1.IsEmpty())
                 return LinVectorEmptyStorage<T>.EmptyStorage;
@@ -87,7 +87,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors
             return composer.RemoveZeroTerms().CreateLinVectorDenseStorage();
         }
 
-        public static ILinVectorDenseStorage<T> MapScalarsIndicesIntersection<T>(this IScalarAlgebraProcessor<T> scalarProcessor, ILinVectorDenseStorage<T> v1, ILinVectorDenseStorage<T> v2, Func<T, T, T> valueMapping)
+        public static ILinVectorDenseStorage<T> MapScalarsIndicesIntersection<T>(this IScalarProcessor<T> scalarProcessor, ILinVectorDenseStorage<T> v1, ILinVectorDenseStorage<T> v2, Func<T, T, T> valueMapping)
         {
             if (v1.IsEmpty() || v2.IsEmpty())
                 return LinVectorEmptyStorage<T>.EmptyStorage;
@@ -105,7 +105,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors
             return composer.RemoveZeroTerms().CreateLinVectorDenseStorage();
         }
 
-        public static ILinVectorStorage<T> MapScalars<T>(this IScalarAlgebraProcessor<T> scalarProcessor, ILinVectorStorage<T> v1, Func<T, T, T> valueMapping)
+        public static ILinVectorStorage<T> MapScalars<T>(this IScalarProcessor<T> scalarProcessor, ILinVectorStorage<T> v1, Func<T, T, T> valueMapping)
         {
             if (v1.IsEmpty())
                 return LinVectorEmptyStorage<T>.EmptyStorage;
@@ -126,7 +126,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors
                 .CreateLinVectorStorage();
         }
 
-        public static ILinVectorStorage<T> MapScalarsIndicesIntersection<T>(this IScalarAlgebraProcessor<T> scalarProcessor, ILinVectorStorage<T> v1, ILinVectorStorage<T> v2, Func<T, T, T> valueMapping)
+        public static ILinVectorStorage<T> MapScalarsIndicesIntersection<T>(this IScalarProcessor<T> scalarProcessor, ILinVectorStorage<T> v1, ILinVectorStorage<T> v2, Func<T, T, T> valueMapping)
         {
             if (v1.IsEmpty() || v2.IsEmpty())
                 return LinVectorEmptyStorage<T>.EmptyStorage;
@@ -150,7 +150,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T AddMapped<T>(this IScalarAlgebraProcessor<T> scalarProcessor, ILinVectorStorage<T> vectorStorage, Func<T, T> mappingFunc)
+        public static T AddMapped<T>(this IScalarProcessor<T> scalarProcessor, ILinVectorStorage<T> vectorStorage, Func<T, T> mappingFunc)
         {
             return scalarProcessor.Add(
                 vectorStorage
@@ -160,13 +160,13 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T AddMapped<T>(this IScalarAlgebraProcessor<T> scalarProcessor, ILinVectorStorage<T> vectorStorage, Func<ulong, T, T> mappingFunc)
+        public static T AddMapped<T>(this IScalarProcessor<T> scalarProcessor, ILinVectorStorage<T> vectorStorage, Func<ulong, T, T> mappingFunc)
         {
             return scalarProcessor.Add(
                 vectorStorage
                     .GetIndexScalarRecords()
                     .Select(keyValue =>
-                        mappingFunc(keyValue.Index, keyValue.Scalar)
+                        mappingFunc(keyValue.KvIndex, keyValue.Scalar)
                     )
             );
         }

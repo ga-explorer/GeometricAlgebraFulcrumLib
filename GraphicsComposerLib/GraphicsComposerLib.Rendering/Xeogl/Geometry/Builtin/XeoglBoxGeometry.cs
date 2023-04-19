@@ -1,9 +1,9 @@
-﻿using GraphicsComposerLib.Geometry.Primitives;
-using NumericalGeometryLib.BasicMath.Tuples;
-using NumericalGeometryLib.BasicMath.Tuples.Immutable;
-using NumericalGeometryLib.BasicMath.Tuples.Mutable;
-using NumericalGeometryLib.Borders;
-using NumericalGeometryLib.Borders.Space3D;
+﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Mutable;
+using GeometricAlgebraFulcrumLib.MathBase.Borders;
+using GeometricAlgebraFulcrumLib.MathBase.Borders.Space3D;
+using GraphicsComposerLib.Geometry.Primitives;
 using TextComposerLib.Code.JavaScript;
 
 namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Builtin

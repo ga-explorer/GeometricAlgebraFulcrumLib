@@ -1,16 +1,15 @@
-﻿using SixLabors.ImageSharp;
-
-namespace GraphicsComposerLib.Rendering.Images;
-
-public sealed class GrImageBase64StringFromLaTeX :
-    GrImageBase64String
+﻿namespace GraphicsComposerLib.Rendering.Images
 {
-    public string? LaTeXCode { get; }
-
-
-    internal GrImageBase64StringFromLaTeX(string key, string? latexCode, int marginSize, Color backgroundColor)
-        : base(key, marginSize, backgroundColor)
+    public sealed class GrImageBase64StringFromLaTeX :
+        GrImageBase64String
     {
-        LaTeXCode = latexCode;
+        public string? LaTeXCode { get; }
+
+
+        internal GrImageBase64StringFromLaTeX(string key, string? latexCode, int marginSize, Color backgroundColor)
+            : base(key, marginSize, backgroundColor)
+        {
+            LaTeXCode = latexCode;
+        }
     }
 }

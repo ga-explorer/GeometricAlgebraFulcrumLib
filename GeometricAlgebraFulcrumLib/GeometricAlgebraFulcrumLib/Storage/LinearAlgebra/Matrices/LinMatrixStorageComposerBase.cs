@@ -1,23 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records.Restricted;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 
 namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices
 {
     public abstract class LinMatrixStorageComposerBase<T> :
         ILinMatrixStorageComposer<T>
     {
-        public IScalarAlgebraProcessor<T> ScalarProcessor { get; }
+        public IScalarProcessor<T> ScalarProcessor { get; }
 
         public abstract int Count { get; }
 
 
-        protected LinMatrixStorageComposerBase([NotNull] IScalarAlgebraProcessor<T> scalarProcessor)
+        protected LinMatrixStorageComposerBase(IScalarProcessor<T> scalarProcessor)
         {
             ScalarProcessor = scalarProcessor;
         }
@@ -31,13 +30,13 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices
 
         public abstract LinMatrixStorageComposerBase<T> Clear();
 
-        public abstract LinMatrixStorageComposerBase<T> RemoveTerm(IndexPairRecord index);
+        public abstract LinMatrixStorageComposerBase<T> RemoveTerm(RGaKvIndexPairRecord index);
 
-        public abstract LinMatrixStorageComposerBase<T> SetTerm(IndexPairRecord index, [NotNull] T value);
+        public abstract LinMatrixStorageComposerBase<T> SetTerm(RGaKvIndexPairRecord index, T value);
 
-        public abstract LinMatrixStorageComposerBase<T> AddTerm(IndexPairRecord index, [NotNull] T value);
+        public abstract LinMatrixStorageComposerBase<T> AddTerm(RGaKvIndexPairRecord index, T value);
 
-        public abstract LinMatrixStorageComposerBase<T> SubtractTerm(IndexPairRecord index, [NotNull] T value);
+        public abstract LinMatrixStorageComposerBase<T> SubtractTerm(RGaKvIndexPairRecord index, T value);
 
         public abstract LinMatrixStorageComposerBase<T> MapValues(Func<T, T> valueMapping);
 
@@ -47,11 +46,11 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public LinMatrixStorageComposerBase<T> RemoveTerm(ulong index1, ulong index2)
         {
-            return RemoveTerm(new IndexPairRecord(index1, index2));
+            return RemoveTerm(new RGaKvIndexPairRecord(index1, index2));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinMatrixStorageComposerBase<T> RemoveTerms(params IndexPairRecord[] indexsList)
+        public LinMatrixStorageComposerBase<T> RemoveTerms(params RGaKvIndexPairRecord[] indexsList)
         {
             foreach (var index in indexsList)
                 RemoveTerm(index);
@@ -60,7 +59,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinMatrixStorageComposerBase<T> RemoveTerms(IEnumerable<IndexPairRecord> indexsList)
+        public LinMatrixStorageComposerBase<T> RemoveTerms(IEnumerable<RGaKvIndexPairRecord> indexsList)
         {
             foreach (var index in indexsList.ToArray())
                 RemoveTerm(index);
@@ -73,9 +72,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinMatrixStorageComposerBase<T> SetTerm(ulong index1, ulong index2, [NotNull] T value)
+        public LinMatrixStorageComposerBase<T> SetTerm(ulong index1, ulong index2, T value)
         {
-            return SetTerm(new IndexPairRecord(index1, index2), value);
+            return SetTerm(new RGaKvIndexPairRecord(index1, index2), value);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -101,19 +100,19 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinMatrixStorageComposerBase<T> SetTerms(IEnumerable<IndexPairScalarRecord<T>> indexTermRecords)
+        public LinMatrixStorageComposerBase<T> SetTerms(IEnumerable<RGaKvIndexPairScalarRecord<T>> indexTermRecords)
         {
             foreach (var (index1, index2, value) in indexTermRecords)
-                SetTerm(new IndexPairRecord(index1, index2), value);
+                SetTerm(new RGaKvIndexPairRecord(index1, index2), value);
 
             return this;
         }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinMatrixStorageComposerBase<T> AddTerm(ulong index1, ulong index2, [NotNull] T value)
+        public LinMatrixStorageComposerBase<T> AddTerm(ulong index1, ulong index2, T value)
         {
-            return AddTerm(new IndexPairRecord(index1, index2), value);
+            return AddTerm(new RGaKvIndexPairRecord(index1, index2), value);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -139,19 +138,19 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinMatrixStorageComposerBase<T> AddTerms(IEnumerable<IndexPairScalarRecord<T>> indexTermRecords)
+        public LinMatrixStorageComposerBase<T> AddTerms(IEnumerable<RGaKvIndexPairScalarRecord<T>> indexTermRecords)
         {
             foreach (var (index1, index2, value) in indexTermRecords)
-                AddTerm(new IndexPairRecord(index1, index2), value);
+                AddTerm(new RGaKvIndexPairRecord(index1, index2), value);
 
             return this;
         }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinMatrixStorageComposerBase<T> SubtractTerm(ulong index1, ulong index2, [NotNull] T value)
+        public LinMatrixStorageComposerBase<T> SubtractTerm(ulong index1, ulong index2, T value)
         {
-            return SubtractTerm(new IndexPairRecord(index1, index2), value);
+            return SubtractTerm(new RGaKvIndexPairRecord(index1, index2), value);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -177,10 +176,10 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinMatrixStorageComposerBase<T> SubtractTerms(IEnumerable<IndexPairScalarRecord<T>> indexTermRecords)
+        public LinMatrixStorageComposerBase<T> SubtractTerms(IEnumerable<RGaKvIndexPairScalarRecord<T>> indexTermRecords)
         {
             foreach (var (index1, index2, value) in indexTermRecords)
-                SubtractTerm(new IndexPairRecord(index1, index2), value);
+                SubtractTerm(new RGaKvIndexPairRecord(index1, index2), value);
 
             return this;
         }

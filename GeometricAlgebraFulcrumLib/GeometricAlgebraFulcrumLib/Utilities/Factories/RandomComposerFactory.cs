@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
 using GeometricAlgebraFulcrumLib.Processors.LinearAlgebra;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Utilities.Composers;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Factories
@@ -10,27 +9,27 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
     public static class RandomComposerFactory
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ScalarAlgebraRandomComposer<T> CreateScalarRandomComposer<T>(this IScalarAlgebraProcessor<T> scalarProcessor)
+        public static ScalarRandomComposer<T> CreateScalarRandomComposer<T>(this IScalarProcessor<T> scalarProcessor)
         {
-            return new ScalarAlgebraRandomComposer<T>(scalarProcessor);
+            return new ScalarRandomComposer<T>(scalarProcessor);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ScalarAlgebraRandomComposer<T> CreateScalarRandomComposer<T>(this IScalarAlgebraProcessor<T> scalarProcessor, int seed)
+        public static ScalarRandomComposer<T> CreateScalarRandomComposer<T>(this IScalarProcessor<T> scalarProcessor, int seed)
         {
-            return new ScalarAlgebraRandomComposer<T>(scalarProcessor, seed);
+            return new ScalarRandomComposer<T>(scalarProcessor, seed);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ScalarAlgebraRandomComposer<T> CreateScalarRandomComposer<T>(this IScalarAlgebraProcessor<T> scalarProcessor, Random randomGenerator)
+        public static ScalarRandomComposer<T> CreateScalarRandomComposer<T>(this IScalarProcessor<T> scalarProcessor, Random randomGenerator)
         {
-            return new ScalarAlgebraRandomComposer<T>(scalarProcessor, randomGenerator);
+            return new ScalarRandomComposer<T>(scalarProcessor, randomGenerator);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ScalarAlgebraRandomComposer<T> CreateScalarRandomComposer<T>(this Random randomGenerator, IScalarAlgebraProcessor<T> scalarProcessor)
+        public static ScalarRandomComposer<T> CreateScalarRandomComposer<T>(this Random randomGenerator, IScalarProcessor<T> scalarProcessor)
         {
-            return new ScalarAlgebraRandomComposer<T>(scalarProcessor, randomGenerator);
+            return new ScalarRandomComposer<T>(scalarProcessor, randomGenerator);
         }
 
 
@@ -58,29 +57,6 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
             return new LinearAlgebraRandomComposer<T>(linearProcessor, randomGenerator);
         }
 
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GeometricAlgebraRandomComposer<T> CreateGeometricRandomComposer<T>(this IGeometricAlgebraProcessor<T> geometricProcessor)
-        {
-            return new GeometricAlgebraRandomComposer<T>(geometricProcessor);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GeometricAlgebraRandomComposer<T> CreateGeometricRandomComposer<T>(this IGeometricAlgebraProcessor<T> geometricProcessor, int seed)
-        {
-            return new GeometricAlgebraRandomComposer<T>(geometricProcessor, seed);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GeometricAlgebraRandomComposer<T> CreateGeometricRandomComposer<T>(this IGeometricAlgebraProcessor<T> geometricProcessor, Random randomGenerator)
-        {
-            return new GeometricAlgebraRandomComposer<T>(geometricProcessor, randomGenerator);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GeometricAlgebraRandomComposer<T> CreateGeometricRandomComposer<T>(this Random randomGenerator, IGeometricAlgebraProcessor<T> geometricProcessor)
-        {
-            return new GeometricAlgebraRandomComposer<T>(geometricProcessor, randomGenerator);
-        }
+        
     }
 }

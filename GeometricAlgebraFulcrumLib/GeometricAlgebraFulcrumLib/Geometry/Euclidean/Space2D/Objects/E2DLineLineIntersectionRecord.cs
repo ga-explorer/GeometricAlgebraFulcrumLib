@@ -1,12 +1,11 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+﻿using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
 
 namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean.Space2D.Objects
 {
     public sealed record E2DLineLineIntersectionRecord<T>
     {
-        public IScalarAlgebraProcessor<T> ScalarProcessor { get; }
+        public IScalarProcessor<T> ScalarProcessor { get; }
 
         /// <summary>
         /// Signed distance from the 1st line's point 1 to the 2nd line
@@ -30,7 +29,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean.Space2D.Objects
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal E2DLineLineIntersectionRecord([NotNull] IScalarAlgebraProcessor<T> scalarProcessor)
+        internal E2DLineLineIntersectionRecord(IScalarProcessor<T> scalarProcessor)
         {
             ScalarProcessor = scalarProcessor;
         }

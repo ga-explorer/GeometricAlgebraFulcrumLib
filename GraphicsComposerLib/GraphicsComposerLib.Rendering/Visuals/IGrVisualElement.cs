@@ -1,6 +1,7 @@
-﻿namespace GraphicsComposerLib.Rendering.Visuals;
-
-public interface IGrVisualElement
+﻿namespace GraphicsComposerLib.Rendering.Visuals
 {
-    string Name { get; }
+    public interface IGrVisualElement
+    {
+        string Name { get; }
+    }
 }

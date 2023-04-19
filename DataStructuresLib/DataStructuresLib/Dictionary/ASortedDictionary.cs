@@ -2,7 +2,8 @@
 
 namespace DataStructuresLib.Dictionary
 {
-    public class ASortedDictionary<TKey, TValue> : SortedDictionary<TKey, TValue>, IADictionary<TKey, TValue>
+    public class ASortedDictionary<TKey, TValue> : 
+        SortedDictionary<TKey, TValue>, IADictionary<TKey, TValue>
     {
         public void AddOrSetValue(TKey key, TValue value)
         {
@@ -38,18 +39,14 @@ namespace DataStructuresLib.Dictionary
             if (ContainsKey(key1) == false || ContainsKey(key2) == false)
                 return false;
 
-            var value = this[key1];
-            this[key1] = this[key2];
-            this[key2] = value;
+            (this[key1], this[key2]) = (this[key2], this[key1]);
 
             return true;
         }
 
         public void SwapValues(TKey key1, TKey key2)
         {
-            var value = this[key1];
-            this[key1] = this[key2];
-            this[key2] = value;
+            (this[key1], this[key2]) = (this[key2], this[key1]);
         }
     }
 }

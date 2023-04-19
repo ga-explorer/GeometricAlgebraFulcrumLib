@@ -1,33 +1,36 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors;
 using GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Processors;
-using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Text;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Maps;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.LinearMaps.Rotors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.MathBase.Text;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Numeric
 {
     public static class NumericPhConstructionSample
     {
         // This is a pre-defined scalar processor for numeric scalars
-        public static ScalarAlgebraFloat64Processor ScalarProcessor { get; }
-            = ScalarAlgebraFloat64Processor.DefaultProcessor;
+        public static ScalarProcessorFloat64 ScalarProcessor { get; }
+            = ScalarProcessorFloat64.DefaultProcessor;
             
         // Create a 3-dimensional Euclidean geometric algebra processor based on the
         // selected scalar processor
-        public static GeometricAlgebraEuclideanProcessor<double> GeometricProcessor { get; } 
-            = ScalarProcessor.CreateGeometricAlgebraEuclideanProcessor(3);
+        public static RGaFloat64Processor GeometricProcessor { get; } 
+            = RGaFloat64Processor.Euclidean;
+
+        public static int VSpaceDimensions 
+            => 3;
 
         // This is a pre-defined text generator for displaying multivectors
-        public static TextFloat64Composer TextComposer { get; }
-            = TextFloat64Composer.DefaultComposer;
+        public static TextComposerFloat64 TextComposer { get; }
+            = TextComposerFloat64.DefaultComposer;
 
         // This is a pre-defined LaTeX generator for displaying multivectors
-        public static LaTeXFloat64Composer LaTeXComposer { get; }
-            = LaTeXFloat64Composer.DefaultComposer;
+        public static LaTeXComposerFloat64 LaTeXComposer { get; }
+            = LaTeXComposerFloat64.DefaultComposer;
 
 
         /// <summary>
@@ -122,7 +125,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Numeric
             var basisSet = BernsteinBasisSet<double>.Create(ScalarProcessor, degree);
 
             var e1 = 
-                GeometricProcessor.CreateVectorBasis(0);
+                GeometricProcessor.CreateVector(0);
 
             var p1 =
                 GeometricProcessor.CreateVector(1, 1, 1);
@@ -142,8 +145,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Numeric
                 scaledRotor0.Multivector;
 
             var scaledRotor1 = 
-                GeometricProcessor.CreateScaledParametricPureRotor3D(
-                    e1, 
+                e1.CreateScaledParametricPureRotor3D(
                     d1Unit,
                     0,
                     d1Norm.Sqrt().ScalarValue

@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using NumericalGeometryLib.BasicMath;
-using NumericalGeometryLib.BasicMath.Tuples.Immutable;
-using NumericalGeometryLib.BasicShapes;
-using NumericalGeometryLib.Borders;
-using NumericalGeometryLib.Borders.Space2D.Immutable;
-using NumericalGeometryLib.Borders.Space2D.Mutable;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.BasicShapes;
+using GeometricAlgebraFulcrumLib.MathBase.Borders;
+using GeometricAlgebraFulcrumLib.MathBase.Borders.Space2D.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Borders.Space2D.Mutable;
 
 namespace NumericalGeometryLib.Accelerators.Grids.Space2D
 {

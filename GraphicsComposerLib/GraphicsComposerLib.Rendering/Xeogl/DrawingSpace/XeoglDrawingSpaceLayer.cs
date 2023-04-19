@@ -1,12 +1,11 @@
 ﻿using System.Collections;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Matrices;
 using GraphicsComposerLib.Rendering.Xeogl.Geometry;
 using GraphicsComposerLib.Rendering.Xeogl.Geometry.Primitives;
 using GraphicsComposerLib.Rendering.Xeogl.Materials;
 using GraphicsComposerLib.Rendering.Xeogl.Objects;
 using GraphicsComposerLib.Rendering.Xeogl.Transforms;
-using NumericalGeometryLib.BasicMath.Maps.Space3D;
-using NumericalGeometryLib.BasicMath.Matrices;
-using SixLabors.ImageSharp;
 
 namespace GraphicsComposerLib.Rendering.Xeogl.DrawingSpace
 {

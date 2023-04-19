@@ -1,0 +1,34 @@
+﻿using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using PeterO.Numbers;
+
+namespace GeometricAlgebraFulcrumLib.MathBase.Text
+{
+    public sealed class LaTeXComposerERational
+        : LaTeXComposer<ERational>
+    {
+        public static LaTeXComposerERational DefaultComposer { get; }
+            = new LaTeXComposerERational();
+
+        
+        private LaTeXComposerERational()
+            : base(ScalarProcessorERational.DefaultProcessor)
+        {
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override string GetAngleText(Float64PlanarAngle angle)
+        {
+            var angleText = GetScalarText(angle.Degrees);
+
+            return $"{angleText}^{{\\circ}}";
+        }
+
+        public override string GetScalarText(ERational scalar)
+        {
+            return scalar.ToString();
+        }
+    }
+}

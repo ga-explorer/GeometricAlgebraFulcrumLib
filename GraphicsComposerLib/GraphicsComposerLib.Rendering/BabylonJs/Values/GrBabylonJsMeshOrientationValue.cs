@@ -1,36 +1,37 @@
 ﻿using GraphicsComposerLib.Rendering.BabylonJs.Constants;
 
-namespace GraphicsComposerLib.Rendering.BabylonJs.Values;
-
-public sealed class GrBabylonJsMeshOrientationValue :
-    GrBabylonJsValue<GrBabylonJsMeshOrientation>
+namespace GraphicsComposerLib.Rendering.BabylonJs.Values
 {
-    public static implicit operator GrBabylonJsMeshOrientationValue(string valueText)
+    public sealed class GrBabylonJsMeshOrientationValue :
+        GrBabylonJsValue<GrBabylonJsMeshOrientation>
     {
-        return new GrBabylonJsMeshOrientationValue(valueText);
-    }
+        public static implicit operator GrBabylonJsMeshOrientationValue(string valueText)
+        {
+            return new GrBabylonJsMeshOrientationValue(valueText);
+        }
 
-    public static implicit operator GrBabylonJsMeshOrientationValue(GrBabylonJsMeshOrientation value)
-    {
-        return new GrBabylonJsMeshOrientationValue(value);
-    }
-
-
-    private GrBabylonJsMeshOrientationValue(string valueText)
-        : base(valueText)
-    {
-    }
-
-    private GrBabylonJsMeshOrientationValue(GrBabylonJsMeshOrientation value)
-        : base(value)
-    {
-    }
+        public static implicit operator GrBabylonJsMeshOrientationValue(GrBabylonJsMeshOrientation value)
+        {
+            return new GrBabylonJsMeshOrientationValue(value);
+        }
 
 
-    public override string GetCode()
-    {
-        return string.IsNullOrEmpty(ValueText) 
-            ? Value.GetBabylonJsCode() 
-            : ValueText;
+        private GrBabylonJsMeshOrientationValue(string valueText)
+            : base(valueText)
+        {
+        }
+
+        private GrBabylonJsMeshOrientationValue(GrBabylonJsMeshOrientation value)
+            : base(value)
+        {
+        }
+
+
+        public override string GetCode()
+        {
+            return string.IsNullOrEmpty(ValueText) 
+                ? Value.GetBabylonJsCode() 
+                : ValueText;
+        }
     }
 }

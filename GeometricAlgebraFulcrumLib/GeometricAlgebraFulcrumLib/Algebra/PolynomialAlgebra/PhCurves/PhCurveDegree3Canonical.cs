@@ -36,7 +36,7 @@
     //    public IGeometricAlgebraProcessor<T> GeometricProcessor { get; }
 
 
-    //    private CanonicalPhCurveDegree3([NotNull] IGeometricAlgebraProcessor<T> processor, Vector<T> p1)
+    //    private CanonicalPhCurveDegree3(IGeometricAlgebraProcessor<T> processor, Vector<T> p1)
     //    {
     //        GeometricProcessor = processor;
 

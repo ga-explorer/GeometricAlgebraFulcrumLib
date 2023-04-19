@@ -17,10 +17,10 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Languages
         }
 
 
-        public Tuple<bool, uint> GetKVectorsBilinearProductGrade(uint vSpaceDimension, uint inGrade1, uint inGrade2)
+        public Tuple<bool, int> GetKVectorsBilinearProductGrade(int vSpaceDimensions, int inGrade1, int inGrade2)
         {
             return OperationKind.GetKVectorsBilinearProductGrade(
-                vSpaceDimension,
+                vSpaceDimensions,
                 inGrade1,
                 inGrade2
             );
@@ -31,17 +31,17 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Languages
             return OperationKind.GetName(IsEuclidean);
         }
 
-        public string GetName(uint grade)
+        public string GetName(int grade)
         {
             return OperationKind.GetName(IsEuclidean, grade);
         }
 
-        public string GetName(params uint[] gradesList)
+        public string GetName(params int[] gradesList)
         {
             return OperationKind.GetName(IsEuclidean, gradesList);
         }
 
-        public string GetName(IEnumerable<uint> gradesList)
+        public string GetName(IEnumerable<int> gradesList)
         {
             return OperationKind.GetName(IsEuclidean, gradesList);
         }

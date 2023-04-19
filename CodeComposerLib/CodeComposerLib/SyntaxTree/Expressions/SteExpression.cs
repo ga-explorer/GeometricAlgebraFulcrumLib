@@ -128,7 +128,7 @@ namespace CodeComposerLib.SyntaxTree.Expressions
         {
             return CreateFunction(
                 funcName,
-                SteExpression.CreateLiteralNumber(arg1)
+                CreateLiteralNumber(arg1)
             );
         }
 
@@ -136,7 +136,7 @@ namespace CodeComposerLib.SyntaxTree.Expressions
         {
             return CreateFunction(
                 funcName,
-                SteExpression.CreateLiteralNumber(arg1)
+                CreateLiteralNumber(arg1)
             );
         }
         
@@ -144,7 +144,7 @@ namespace CodeComposerLib.SyntaxTree.Expressions
         {
             return CreateFunction(
                 funcName,
-                SteExpression.CreateLiteralNumber(arg1)
+                CreateLiteralNumber(arg1)
             );
         }
 

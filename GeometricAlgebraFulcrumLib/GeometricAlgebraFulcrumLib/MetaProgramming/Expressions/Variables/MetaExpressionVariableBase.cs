@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using AngouriMath;
 using CodeComposerLib.SyntaxTree.Expressions;
@@ -157,7 +156,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Expressions.Variables
         public abstract int MaxComputationLevel { get; }
 
 
-        protected MetaExpressionVariableBase([NotNull] MetaExpressionHeadSpecsVariable headSpecs)
+        protected MetaExpressionVariableBase(MetaExpressionHeadSpecsVariable headSpecs)
         {
             AtomicExpressionId = headSpecs.Context.GetNextAtomicExpressionId();
             VariableHeadSpecs = headSpecs;
@@ -213,12 +212,12 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Expressions.Variables
         public abstract IMetaExpression GetScalarValue(bool useRhsScalarValue);
 
 
-        public void SetRhsExpressionValue([NotNull] double number)
+        public void SetRhsExpressionValue(double number)
         {
             RhsExpressionValue = number;
         }
 
-        public void AddDependingVariable([NotNull] IMetaExpressionVariableComputed computedVar)
+        public void AddDependingVariable(IMetaExpressionVariableComputed computedVar)
         {
             DependingVariablesCache.Add(computedVar);
         }

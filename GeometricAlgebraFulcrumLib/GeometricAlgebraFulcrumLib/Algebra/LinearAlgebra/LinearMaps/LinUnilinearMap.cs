@@ -1,79 +1,78 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Vectors;
-using GeometricAlgebraFulcrumLib.Processors.LinearAlgebra;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Storage;
-using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices;
-using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
+﻿//using System.Collections.Generic;
+//using System.Runtime.CompilerServices;
+//using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Vectors;
+//using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+//using GeometricAlgebraFulcrumLib.Processors.LinearAlgebra;
+//using GeometricAlgebraFulcrumLib.Storage;
+//using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
+//using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices;
+//using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors;
+//using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 
-namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.LinearMaps
-{
-    public class LinUnilinearMap<T> :
-        ILinUnilinearMap<T>
-    {
-        public IScalarAlgebraProcessor<T> ScalarProcessor 
-            => LinearProcessor;
+//namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.LinearMaps
+//{
+//    public class LinUnilinearMap<T> :
+//        ILinUnilinearMap<T>
+//    {
+//        public IScalarProcessor<T> ScalarProcessor 
+//            => LinearProcessor;
 
-        public ILinearAlgebraProcessor<T> LinearProcessor { get; }
+//        public ILinearAlgebraProcessor<T> LinearProcessor { get; }
 
-        public ILinMatrixStorage<T> MatrixStorage { get; }
-
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal LinUnilinearMap([NotNull] ILinearAlgebraProcessor<T> linearProcessor, [NotNull] ILinMatrixStorage<T> matrixStorage)
-        {
-            LinearProcessor = linearProcessor;
-            MatrixStorage = matrixStorage;
-        }
+//        public ILinMatrixStorage<T> MatrixStorage { get; }
 
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ILinUnilinearMap<T> GetLinAdjoint()
-        {
-            return new LinUnilinearMap<T>(
-                LinearProcessor, 
-                MatrixStorage.GetTranspose()
-            );
-        }
+//        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+//        internal LinUnilinearMap(ILinearAlgebraProcessor<T> linearProcessor, ILinMatrixStorage<T> matrixStorage)
+//        {
+//            LinearProcessor = linearProcessor;
+//            MatrixStorage = matrixStorage;
+//        }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ILinVectorStorage<T> LinMapBasisVector(ulong index)
-        {
-            return MatrixStorage.GetColumn(index);
-        }
 
-        public LinVector<T> LinMapVector(LinVector<T> vector)
-        {
-            var composer = LinearProcessor.CreateVectorStorageComposer();
+//        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+//        public ILinUnilinearMap<T> GetLinAdjoint()
+//        {
+//            return new LinUnilinearMap<T>(
+//                LinearProcessor, 
+//                MatrixStorage.GetTranspose()
+//            );
+//        }
 
-            foreach (var (index, scalar) in vector.VectorStorage.GetIndexScalarRecords())
-                composer.AddScaledTerms(
-                    scalar,
-                    LinMapBasisVector(index).GetIndexScalarRecords()
-                );
+//        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+//        public ILinVectorStorage<T> LinMapBasisVector(ulong index)
+//        {
+//            return MatrixStorage.GetColumn(index);
+//        }
 
-            return composer.CreateLinVector();
-        }
+//        public LinVector<T> LinMapVector(LinVector<T> vector)
+//        {
+//            var composer = LinearProcessor.CreateVectorStorageComposer();
 
-        public ILinMatrixStorage<T> LinMapMatrix(ILinMatrixStorage<T> matrixStorage)
-        {
-            throw new System.NotImplementedException();
-        }
+//            foreach (var (index, scalar) in vector.VectorStorage.GetIndexScalarRecords())
+//                composer.AddScaledTerms(
+//                    scalar,
+//                    LinMapBasisVector(index).GetIndexScalarRecords()
+//                );
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ILinMatrixStorage<T> GetLinMappingMatrix()
-        {
-            return MatrixStorage;
-        }
+//            return composer.CreateLinVector();
+//        }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<IndexLinVectorStorageRecord<T>> GetLinMappedBasisVectors()
-        {
-            return MatrixStorage.GetColumns();
-        }
-    }
-}
+//        public ILinMatrixStorage<T> LinMapMatrix(ILinMatrixStorage<T> matrixStorage)
+//        {
+//            throw new System.NotImplementedException();
+//        }
+
+//        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+//        public ILinMatrixStorage<T> GetLinMappingMatrix()
+//        {
+//            return MatrixStorage;
+//        }
+
+//        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+//        public IEnumerable<RGaKvIndexLinVectorStorageRecord<T>> GetLinMappedBasisVectors()
+//        {
+//            return MatrixStorage.GetColumns();
+//        }
+//    }
+//}

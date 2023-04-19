@@ -1,19 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.BasicShapes;
+using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Lines;
+using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Lines.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Borders;
+using GeometricAlgebraFulcrumLib.MathBase.Borders.Space2D;
 using NumericalGeometryLib.Accelerators.BIH;
 using NumericalGeometryLib.Accelerators.BIH.Space2D;
 using NumericalGeometryLib.Accelerators.BIH.Space2D.Traversal;
 using NumericalGeometryLib.Accelerators.Grids;
 using NumericalGeometryLib.Accelerators.Grids.Space2D;
-using NumericalGeometryLib.BasicMath;
-using NumericalGeometryLib.BasicMath.Tuples;
-using NumericalGeometryLib.BasicOperations;
-using NumericalGeometryLib.BasicShapes;
-using NumericalGeometryLib.BasicShapes.Lines;
-using NumericalGeometryLib.BasicShapes.Lines.Immutable;
-using NumericalGeometryLib.Borders;
-using NumericalGeometryLib.Borders.Space2D;
 
 namespace NumericalGeometryLib.Computers.Intersections
 {

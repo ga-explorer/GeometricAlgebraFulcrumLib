@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
-using GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.Basis
 {
@@ -10,7 +9,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.Basis
     /// <typeparam name="T"></typeparam>
     public interface IPolynomialBasisSet<T>
     {
-        IScalarAlgebraProcessor<T> ScalarProcessor { get; }
+        IScalarProcessor<T> ScalarProcessor { get; }
 
         /// <summary>
         /// The degree of the polynomials in this basis set

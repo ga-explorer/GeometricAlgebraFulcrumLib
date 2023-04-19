@@ -1,9 +1,10 @@
-﻿namespace GraphicsComposerLib.Rendering.BabylonJs.Constants;
-
-public enum GrBabylonJsFogMode
+﻿namespace GraphicsComposerLib.Rendering.BabylonJs.Constants
 {
-    None,
-    Exp,
-    Exp2,
-    Linear
+    public enum GrBabylonJsFogMode
+    {
+        None,
+        Exp,
+        Exp2,
+        Linear
+    }
 }

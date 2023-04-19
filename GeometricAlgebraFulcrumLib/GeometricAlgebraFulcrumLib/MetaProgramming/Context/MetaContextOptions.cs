@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using GeometricAlgebraFulcrumLib.MetaProgramming.Context.Optimizer;
+﻿using GeometricAlgebraFulcrumLib.MetaProgramming.Context.Optimizer;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Expressions.Variables;
 
 namespace GeometricAlgebraFulcrumLib.MetaProgramming.Context
@@ -89,7 +88,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Context
         }
 
 
-        public void SetOptions([NotNull] MetaContextOptions options)
+        public void SetOptions(MetaContextOptions options)
         {
             ScalarTypeName = options.ScalarTypeName;
             BindOutputToConstantBehavior = options.BindOutputToConstantBehavior;

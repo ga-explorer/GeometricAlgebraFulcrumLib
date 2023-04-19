@@ -1,5 +1,7 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.LinearMaps.Outermorphisms;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic.LinearMaps;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Composers;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Expressions;
@@ -22,8 +24,8 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
         {
             var codeText = new ListTextComposer(Environment.NewLine);
 
-            for (var i = 0; i < VSpaceDimension; i++)
-                for (var j = 0; j < VSpaceDimension; j++)
+            for (var i = 0; i < VSpaceDimensions; i++)
+                for (var j = 0; j < VSpaceDimensions; j++)
                     codeText.Add(
                         "scalars".ScalarItem(i, j) + " = " + "Scalars".ScalarItem(j, i) + ";"
                     );
@@ -36,20 +38,23 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
             var context = 
                 new MetaContext(DenseKVectorsLibraryComposer.DefaultContextOptions)
                 {
-                    GeometricProcessor = GeometricProcessor
+                    XGaProcessor = GeometricProcessor
                 };
 
             var linearMapArray = context.ParameterVariablesFactory.CreateDenseArray(
-                (int) VSpaceDimension,
-                (int) VSpaceDimension,
+                VSpaceDimensions,
+                VSpaceDimensions,
                 (row, col) => $"omScalarR{row}C{col}"
             );
             
             var outermorphism = 
-                GeometricProcessor.CreateLinearMapOutermorphism(linearMapArray);
+                linearMapArray
+                    .ColumnsToLinVectors(GeometricProcessor.ScalarProcessor)
+                    .CreateLinUnilinearMap(GeometricProcessor.ScalarProcessor)
+                    .ToOutermorphism(GeometricProcessor);
 
             var determinant = 
-                (MetaExpressionVariableComputed) GeometricProcessor.GetDeterminant(outermorphism).ScalarValue;
+                (MetaExpressionVariableComputed) outermorphism.GetDeterminant(VSpaceDimensions);
 
             determinant.IsOutputVariable = true;
 
@@ -81,8 +86,8 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
         {
             var codeText = new ListTextComposer(Environment.NewLine);
 
-            for (var i = 0; i < VSpaceDimension; i++)
-                for (var j = 0; j < VSpaceDimension; j++)
+            for (var i = 0; i < VSpaceDimensions; i++)
+                for (var j = 0; j < VSpaceDimensions; j++)
                     codeText.Add(
                         "scalars".ScalarItem(i, j) + " = " +
                         "om1.Scalars".ScalarItem(i, j) + " + " +
@@ -96,8 +101,8 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
         {
             var codeText = new ListTextComposer(Environment.NewLine);
 
-            for (var i = 0; i < VSpaceDimension; i++)
-                for (var j = 0; j < VSpaceDimension; j++)
+            for (var i = 0; i < VSpaceDimensions; i++)
+                for (var j = 0; j < VSpaceDimensions; j++)
                     codeText.Add(
                         "scalars".ScalarItem(i, j) + " = " +
                         "om1.Scalars".ScalarItem(i, j) + " - " +
@@ -113,13 +118,13 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
 
             var sumText = new ListTextComposer(" + ");
 
-            for (var i = 0; i < VSpaceDimension; i++)
+            for (var i = 0; i < VSpaceDimensions; i++)
             {
-                for (var j = 0; j < VSpaceDimension; j++)
+                for (var j = 0; j < VSpaceDimensions; j++)
                 {
                     sumText.Clear();
 
-                    for (var k = 0; k < VSpaceDimension; k++)
+                    for (var k = 0; k < VSpaceDimensions; k++)
                         sumText.Add(
                             "om1.Scalars".ScalarItem(i, k) + " * " + "om2.Scalars".ScalarItem(k, j)
                         );
@@ -137,8 +142,8 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
         {
             var codeText = new ListTextComposer(Environment.NewLine);
 
-            for (var i = 0; i < VSpaceDimension; i++)
-                for (var j = 0; j < VSpaceDimension; j++)
+            for (var i = 0; i < VSpaceDimensions; i++)
+                for (var j = 0; j < VSpaceDimensions; j++)
                     codeText.Add(
                         "scalars".ScalarItem(i, j) + " = " +
                         "om.Scalars".ScalarItem(i, j) + " * scalar;"
@@ -151,8 +156,8 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
         {
             var codeText = new ListTextComposer(Environment.NewLine);
 
-            for (var i = 0; i < VSpaceDimension; i++)
-                for (var j = 0; j < VSpaceDimension; j++)
+            for (var i = 0; i < VSpaceDimensions; i++)
+                for (var j = 0; j < VSpaceDimensions; j++)
                     codeText.Add(
                         "scalars".ScalarItem(i, j) + " = " +
                         "om.Scalars".ScalarItem(i, j) + " / scalar;"
@@ -165,8 +170,8 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
         {
             var codeText = new ListTextComposer(Environment.NewLine);
 
-            for (var i = 0; i < VSpaceDimension; i++)
-                for (var j = 0; j < VSpaceDimension; j++)
+            for (var i = 0; i < VSpaceDimensions; i++)
+                for (var j = 0; j < VSpaceDimensions; j++)
                     codeText.Add(
                         "scalars".ScalarItem(i, j) + " = " +
                         "-om.Scalars".ScalarItem(i, j) + ";"
@@ -179,7 +184,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
         {
             var codeText = new ListTextComposer(Environment.NewLine);
 
-            for (var inGrade = 1; inGrade <= VSpaceDimension; inGrade++)
+            for (var inGrade = 1; inGrade <= VSpaceDimensions; inGrade++)
                 codeText.Add(
                     Templates["om_apply_code_case"],
                     "grade", inGrade,

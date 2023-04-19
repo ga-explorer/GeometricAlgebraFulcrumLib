@@ -1,6 +1,5 @@
 ﻿using System;
-
-using GraphicsComposerLib.Geometry.Primitives.Vertices;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Frames.Space3D;
 using SixLabors.ImageSharp;
 
 namespace GraphicsComposerLib.Geometry.Structures.Faces
@@ -12,7 +11,7 @@ namespace GraphicsComposerLib.Geometry.Structures.Faces
             = new GraphicsVoidFaceData3D();
 
 
-        public GrNormal3D Normal
+        public Normal3D Normal
             => null;
 
         public Color Color

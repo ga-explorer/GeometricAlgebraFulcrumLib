@@ -1,6 +1,6 @@
 ﻿using System;
 using DataStructuresLib.Sequences.Periodic1D;
-using NumericalGeometryLib.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
 
 namespace GraphicsComposerLib.Geometry.Meshes.PointsPath.Space3D
 {

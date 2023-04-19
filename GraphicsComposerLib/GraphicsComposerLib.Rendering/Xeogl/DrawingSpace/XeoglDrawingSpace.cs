@@ -7,7 +7,6 @@ using GraphicsComposerLib.Rendering.Xeogl.Geometry;
 using GraphicsComposerLib.Rendering.Xeogl.Lights;
 using GraphicsComposerLib.Rendering.Xeogl.Materials;
 using GraphicsComposerLib.Rendering.Xeogl.Scenes;
-using SixLabors.ImageSharp;
 using TextComposerLib.Code.JavaScript;
 using TextComposerLib.Text;
 using TextComposerLib.Text.Linear;

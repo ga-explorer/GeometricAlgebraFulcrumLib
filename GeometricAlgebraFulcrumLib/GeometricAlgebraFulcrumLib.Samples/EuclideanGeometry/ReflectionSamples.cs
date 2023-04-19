@@ -1,278 +1,280 @@
 ﻿using System;
 using System.Diagnostics;
-using GeometricAlgebraFulcrumLib.Processors;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Arrays.Float64;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Matrices;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.Reflection;
+using GeometricAlgebraFulcrumLib.MathBase.Text;
 using GeometricAlgebraFulcrumLib.Processors.MatrixAlgebra;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Text;
-using GeometricAlgebraFulcrumLib.Utilities.Factories;
-using MathNet.Numerics.LinearAlgebra;
-using NumericalGeometryLib.BasicMath;
-using NumericalGeometryLib.BasicMath.Maps.SpaceND.Reflection;
-using NumericalGeometryLib.BasicMath.Matrices;
-using NumericalGeometryLib.BasicMath.Tuples;
 
-namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry;
-
-public static class ReflectionSamples
+namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
 {
-    public static void ReflectionMatrixToHyperPlaneReflectionsSample(int n, int reflectionCount)
+    public static class ReflectionSamples
     {
-        var scalarProcessor =
-            ScalarAlgebraFloat64Processor.DefaultProcessor;
+        public static void ReflectionMatrixToHyperPlaneReflectionsSample(int n, int reflectionCount)
+        {
+            var scalarProcessor =
+                ScalarProcessorFloat64.DefaultProcessor;
 
-        var matrixProcessor =
-            MatrixAlgebraFloat64Processor.DefaultProcessor;
+            var matrixProcessor =
+                MatrixAlgebraFloat64Processor.DefaultProcessor;
 
-        var geometricProcessor =
-            scalarProcessor.CreateGeometricAlgebraEuclideanProcessor((uint)n);
+            var geometricProcessor =
+                RGaFloat64Processor.Euclidean;
 
-        var textComposer =
-            TextFloat64Composer.DefaultComposer;
+            var textComposer =
+                TextComposerFloat64.DefaultComposer;
 
-        var laTeXComposer =
-            LaTeXFloat64Composer.DefaultComposer;
+            var laTeXComposer =
+                LaTeXComposerFloat64.DefaultComposer;
 
-        var randomComposer =
-            geometricProcessor.CreateGeometricRandomComposer(10);
+            var randomComposer =
+                geometricProcessor.CreateRGaRandomComposer(n, 10);
 
-        var random = randomComposer.RandomGenerator;
+            var random = randomComposer.RandomGenerator;
 
-        var reflectionSequence = 
-            HyperPlaneNormalReflectionSequence.Create(n);
+            var reflectionSequence = 
+                LinFloat64HyperPlaneNormalReflectionSequence.Create(n);
 
-        for (var i = 0; i < reflectionCount; i++)
-            reflectionSequence.AppendMap(
-                random.GetHyperPlaneReflection(n)
+            for (var i = 0; i < reflectionCount; i++)
+                reflectionSequence.AppendMap(
+                    random.GetHyperPlaneNormalReflection(n)
+                );
+
+            var matrix =
+                reflectionSequence.ToMatrix(n, n);
+
+            reflectionSequence = 
+                LinFloat64HyperPlaneNormalReflectionSequence.CreateFromReflectionMatrix(matrix);
+
+            Debug.Assert(
+                (reflectionSequence.ToMatrix(n, n) - matrix)
+                .ToArray()
+                .GetVectorNormSquared()
+                .IsNearZero()
             );
-
-        var matrix =
-            reflectionSequence.GetMatrix();
-
-        reflectionSequence = 
-            HyperPlaneNormalReflectionSequence.CreateFromReflectionMatrix(matrix);
-
-        Debug.Assert(
-            (reflectionSequence.GetMatrix() - matrix)
-            .ToArray()
-            .GetVectorNormSquared()
-            .IsNearZero()
-        );
-    }
+        }
 
     
-    public static void Example3()
-    {
-        const int n = 9;
+        public static void Example3()
+        {
+            const int n = 9;
 
-        var random = new Random(10);
+            var random = new Random(10);
 
-        //var reflectionFactorList =
-        //    random
-        //        .GetNumbers(n / 2, -5, 5)
-        //        .ToArray();
+            //var reflectionFactorList =
+            //    random
+            //        .GetNumbers(n / 2, -5, 5)
+            //        .ToArray();
 
-        //var reflectionVectorList =
-        //    random
-        //        .GetOrthonormalVectors(n, n / 2)
-        //        .Select(v => v.ToArray().CreateTuple())
-        //        .ToArray();
+            //var reflectionVectorList =
+            //    random
+            //        .GetOrthonormalVectors(n, n / 2)
+            //        .Select(v => v.ToArray().CreateTuple())
+            //        .ToArray();
 
-        //var reflectionSequence = 
-        //    VectorDirectionalScalingSequence.Create(n);
+            //var reflectionSequence = 
+            //    VectorDirectionalScalingSequence.Create(n);
 
-        var matrix =
-            random.GetOrthogonalMatrix(n);
+            var matrix =
+                random.GetOrthogonalMatrix(n);
 
-        var reflectionSequence = 
-            matrix.GetHyperPlaneNormalReflectionSequence();
+            var reflectionSequence = 
+                matrix.GetHyperPlaneNormalReflectionSequence();
 
-        var matrix1 = 
-            reflectionSequence.GetMatrix().GetHyperPlaneNormalReflectionSequence().GetMatrix();
+            var matrix1 = 
+                reflectionSequence.ToMatrix(n, n).GetHyperPlaneNormalReflectionSequence().ToMatrix(n, n);
         
-        Debug.Assert(
-            (matrix1 - reflectionSequence.GetMatrix()).L2Norm().IsNearZero()
-        );
+            Debug.Assert(
+                (matrix1 - reflectionSequence.ToMatrix(n, n)).L2Norm().IsNearZero()
+            );
 
-        Debug.Assert(
-            (matrix - reflectionSequence.GetMatrix()).L2Norm().IsNearZero()
-        );
+            Debug.Assert(
+                (matrix - reflectionSequence.ToMatrix(n, n)).L2Norm().IsNearZero()
+            );
 
-        for (var k = 0; k < reflectionSequence.Count; k++)
-        {
-            var reflection = reflectionSequence[k];
+            for (var k = 0; k < reflectionSequence.Count; k++)
+            {
+                var reflection = reflectionSequence[k];
 
-            var normalVector = 
-                reflection.ReflectionNormal;
+                var normalVector = 
+                    reflection.ReflectionNormal;
 
-            Console.WriteLine($"Reflection {k + 1}:");
-            Console.WriteLine($"Normal Vector: {normalVector}");
-            Console.WriteLine();
-        }
+                Console.WriteLine($"Reflection {k + 1}:");
+                Console.WriteLine($"Normal Vector: {normalVector}");
+                Console.WriteLine();
+            }
 
-        //var y = 
-        //    reflection.MapVector(reflectionVector);
+            //var y = 
+            //    reflection.MapVector(reflectionVector);
 
-        //Debug.Assert(
-        //    (y - reflectionFactor * reflectionVector).IsNearZero()
-        //);
+            //Debug.Assert(
+            //    (y - reflectionFactor * reflectionVector).IsNearZero()
+            //);
         
-        var reflectionMatrix =
-            reflectionSequence.GetMatrix();
+            var reflectionMatrix =
+                reflectionSequence.ToMatrix(n, n);
 
-        for (var k = 0; k < reflectionSequence.Count; k++)
-        {
-            var reflection = reflectionSequence[k];
+            for (var k = 0; k < reflectionSequence.Count; k++)
+            {
+                var reflection = reflectionSequence[k];
 
-            var x = reflection.ReflectionNormal;
-            var y = reflectionSequence.MapVector(x);
+                var x = reflection.ReflectionNormal;
+                var y = reflectionSequence.MapVector(x);
 
-            Debug.Assert(
-                (y + x).GetVectorNormSquared().IsNearZero()
-            );
+                Debug.Assert(
+                    (y + x).GetVectorNormSquared().IsNearZero()
+                );
 
-            y = (reflectionMatrix * Vector<double>.Build.DenseOfEnumerable(x)).ToArray().CreateTuple();
+                y = (reflectionMatrix * x.ToVector(n)).CreateLinVector();
 
-            Debug.Assert(
-                (y + x).GetVectorNormSquared().IsNearZero()
-            );
-        }
-
-        var subspaceList = 
-            reflectionMatrix.GetSimpleEigenSubspaces();
-        
-        var i = 1;
-        foreach (var subspace in subspaceList)
-        {
-            Console.WriteLine($"Subspace {i}:");
-            Console.WriteLine(subspace);
-
-            i++;
-        }
-    }
-
-    
-    /// <summary>
-    /// Validate the reflection properties of arbitrary reflection sequences
-    /// </summary>
-    public static void Example4()
-    {
-        const int n = 9;
-
-        var random = new Random(10);
-
-        for (var reflectionCount = 1; reflectionCount <= n; reflectionCount++)
-        {
-            // Create a reflection sequence of 1 or more orthogonal reflections
-            var reflectionSequence = HyperPlaneNormalReflectionSequence.CreateRandomOrthogonal(
-                random,
-                n,
-                reflectionCount
-            );
-
-            var reflectionMatrix = 
-                reflectionSequence.GetMatrix();
-
-            // Make sure the result is actually a reflection matrix
-            Debug.Assert(
-                reflectionMatrix.Determinant().Abs().IsNearOne(1e-7)
-            );
-
-            // Make sure the sequence contains only pair-wise orthogonal reflections
-            Debug.Assert(
-                reflectionSequence.IsNearOrthogonalReflectionsSequence()
-            );
+                Debug.Assert(
+                    (y + x).GetVectorNormSquared().IsNearZero()
+                );
+            }
 
             var subspaceList = 
                 reflectionMatrix.GetSimpleEigenSubspaces();
-
-            Console.WriteLine($"Orthogonal reflections number: {reflectionCount}");
-
-            var j = 1;
+        
+            var i = 1;
             foreach (var subspace in subspaceList)
             {
-                Console.WriteLine($"Subspace {j++}");
+                Console.WriteLine($"Subspace {i}:");
                 Console.WriteLine(subspace);
+
+                i++;
+            }
+        }
+
+    
+        /// <summary>
+        /// Validate the reflection properties of arbitrary reflection sequences
+        /// </summary>
+        public static void Example4()
+        {
+            const int n = 9;
+
+            var random = new Random(10);
+
+            for (var reflectionCount = 1; reflectionCount <= n; reflectionCount++)
+            {
+                // Create a reflection sequence of 1 or more orthogonal reflections
+                var reflectionSequence = LinFloat64HyperPlaneNormalReflectionSequence.CreateRandomOrthogonal(
+                    random,
+                    n,
+                    reflectionCount
+                );
+
+                var reflectionMatrix = 
+                    reflectionSequence.ToMatrix(n, n);
+
+                // Make sure the result is actually a reflection matrix
+                Debug.Assert(
+                    reflectionMatrix.Determinant().Abs().IsNearOne(1e-7)
+                );
+
+                // Make sure the sequence contains only pair-wise orthogonal reflections
+                Debug.Assert(
+                    reflectionSequence.IsNearOrthogonalReflectionsSequence()
+                );
+
+                var subspaceList = 
+                    reflectionMatrix.GetSimpleEigenSubspaces();
+
+                Console.WriteLine($"Orthogonal reflections number: {reflectionCount}");
+
+                var j = 1;
+                foreach (var subspace in subspaceList)
+                {
+                    Console.WriteLine($"Subspace {j++}");
+                    Console.WriteLine(subspace);
+                }
+
+                foreach (var reflection in reflectionSequence)
+                {
+                    var u = reflection.ReflectionNormal;
+                    var v = -reflection.ReflectionNormal;
+
+                    var v1 = reflectionSequence.MapVector(u);
+                    var v2 = (reflectionMatrix * u.ToVector(n)).CreateLinVector();
+
+                    // Make sure each reflection is performed independently from the others
+                    Debug.Assert(
+                        (v - v1).GetVectorNormSquared().IsNearZero()
+                    );
+
+                    Debug.Assert(
+                        (v - v2).GetVectorNormSquared().IsNearZero()
+                    );
+                
+                    Debug.Assert(
+                        (v1 - v2).GetVectorNormSquared().IsNearZero()
+                    );
+                
+                    // Make sure reflection matrix multiplication is the same as
+                    // reflection sequence computations
+                    for (var i = 0; i < 100; i++)
+                    {
+                        var x = random.GetFloat64Tuple(n).CreateLinVector();
+
+                        var y1 = reflectionSequence.MapVector(x);
+                        var y2 = (reflectionMatrix * x.ToVector(n)).CreateLinVector();
+                
+                        Debug.Assert(
+                            (y1 - y2).GetVectorNormSquared().IsNearZero()
+                        );
+                    }
+                }
             }
 
-            foreach (var reflection in reflectionSequence)
+        
+            for (var reflectionCount = 1; reflectionCount <= 2 * n; reflectionCount++)
             {
-                var u = reflection.ReflectionNormal;
-                var v = -reflection.ReflectionNormal;
-
-                var v1 = reflectionSequence.MapVector(u);
-                var v2 = (reflectionMatrix * u.ToVector()).ToTuple();
-
-                // Make sure each reflection is performed independently from the others
-                Debug.Assert(
-                    (v - v1).GetVectorNormSquared().IsNearZero()
+                // Create a reflection sequence of 1 or more general reflections
+                var reflectionSequence = LinFloat64HyperPlaneNormalReflectionSequence.CreateRandom(
+                    random,
+                    n,
+                    reflectionCount
                 );
 
+                var reflectionMatrix = 
+                    reflectionSequence.ToMatrix(n, n);
+
+                // Make sure the result is actually a reflection matrix
                 Debug.Assert(
-                    (v - v2).GetVectorNormSquared().IsNearZero()
+                    reflectionMatrix.Determinant().Abs().IsNearOne(1e-7)
                 );
-                
-                Debug.Assert(
-                    (v1 - v2).GetVectorNormSquared().IsNearZero()
-                );
-                
+            
+                var subspaceList = 
+                    reflectionMatrix.GetSimpleEigenSubspaces();
+
+                Console.WriteLine($"General reflections number: {reflectionCount}");
+
+                var j = 1;
+                foreach (var subspace in subspaceList)
+                {
+                    Console.WriteLine($"Subspace {j++}");
+                    Console.WriteLine(subspace);
+                }
+
                 // Make sure reflection matrix multiplication is the same as
                 // reflection sequence computations
                 for (var i = 0; i < 100; i++)
                 {
-                    var x = random.GetFloat64Tuple(n);
+                    var x = random.GetFloat64Tuple(n).CreateLinVector();
 
                     var y1 = reflectionSequence.MapVector(x);
-                    var y2 = (reflectionMatrix * x.ToVector()).ToTuple();
+                    var y2 = (reflectionMatrix * x.ToVector(n)).CreateLinVector();
                 
                     Debug.Assert(
                         (y1 - y2).GetVectorNormSquared().IsNearZero()
                     );
                 }
-            }
-        }
-
-        
-        for (var reflectionCount = 1; reflectionCount <= 2 * n; reflectionCount++)
-        {
-            // Create a reflection sequence of 1 or more general reflections
-            var reflectionSequence = HyperPlaneNormalReflectionSequence.CreateRandom(
-                random,
-                n,
-                reflectionCount
-            );
-
-            var reflectionMatrix = 
-                reflectionSequence.GetMatrix();
-
-            // Make sure the result is actually a reflection matrix
-            Debug.Assert(
-                reflectionMatrix.Determinant().Abs().IsNearOne(1e-7)
-            );
-            
-            var subspaceList = 
-                reflectionMatrix.GetSimpleEigenSubspaces();
-
-            Console.WriteLine($"General reflections number: {reflectionCount}");
-
-            var j = 1;
-            foreach (var subspace in subspaceList)
-            {
-                Console.WriteLine($"Subspace {j++}");
-                Console.WriteLine(subspace);
-            }
-
-            // Make sure reflection matrix multiplication is the same as
-            // reflection sequence computations
-            for (var i = 0; i < 100; i++)
-            {
-                var x = random.GetFloat64Tuple(n);
-
-                var y1 = reflectionSequence.MapVector(x);
-                var y2 = (reflectionMatrix * x.ToVector()).ToTuple();
-                
-                Debug.Assert(
-                    (y1 - y2).GetVectorNormSquared().IsNearZero()
-                );
             }
         }
     }

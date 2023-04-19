@@ -1,6 +1,4 @@
 ﻿using OxyPlot;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.PixelFormats;
 using SkiaSharp;
 
 namespace GraphicsComposerLib.Rendering.Colors

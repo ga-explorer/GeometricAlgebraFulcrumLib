@@ -1,6 +1,5 @@
 ﻿using GraphicsComposerLib.Rendering.Colors;
 using NumericalGeometryLib.Colors;
-using SixLabors.ImageSharp;
 using TextComposerLib.Code.JavaScript;
 
 namespace GraphicsComposerLib.Rendering.Xeogl.Lights

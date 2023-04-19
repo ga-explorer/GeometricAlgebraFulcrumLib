@@ -18,11 +18,11 @@ namespace DataStructuresLib.Combinations
             if (n < 0 || k < 0) // normally n >= k
                 throw new Exception("Negative parameter in constructor");
 
-            this._n = n;
-            this._k = k;
-            this._data = new long[k];
+            _n = n;
+            _k = k;
+            _data = new long[k];
             for (long i = 0; i < k; ++i)
-                this._data[i] = i;
+                _data[i] = i;
         } // Combination(n,k)
 
         public Combination(long n, long k, long[] a) // Combination from a[]
@@ -30,28 +30,28 @@ namespace DataStructuresLib.Combinations
             if (k != a.Length)
                 throw new Exception("Array length does not equal k");
 
-            this._n = n;
-            this._k = k;
-            this._data = new long[k];
+            _n = n;
+            _k = k;
+            _data = new long[k];
             for (long i = 0; i < a.Length; ++i)
-                this._data[i] = a[i];
+                _data[i] = a[i];
 
-            if (!this.IsValid())
+            if (!IsValid())
                 throw new Exception("Bad value from array");
         } // Combination(n,k,a)
 
         public bool IsValid()
         {
-            if (this._data.Length != this._k)
+            if (_data.Length != _k)
                 return false; // corrupted
 
-            for (long i = 0; i < this._k; ++i)
+            for (long i = 0; i < _k; ++i)
             {
-                if (this._data[i] < 0 || this._data[i] > this._n - 1)
+                if (_data[i] < 0 || _data[i] > _n - 1)
                     return false; // value out of range
 
-                for (var j = i + 1; j < this._k; ++j)
-                    if (this._data[i] >= this._data[j])
+                for (var j = i + 1; j < _k; ++j)
+                    if (_data[i] >= _data[j])
                         return false; // duplicate or not lexicographic
             }
 
@@ -61,29 +61,29 @@ namespace DataStructuresLib.Combinations
         public override string ToString()
         {
             var s = "{ ";
-            for (long i = 0; i < this._k; ++i)
-                s += this._data[i].ToString() + " ";
+            for (long i = 0; i < _k; ++i)
+                s += _data[i].ToString() + " ";
             s += "}";
             return s;
         } // ToString()
 
         public Combination Successor()
         {
-            if (this._data[0] == this._n - this._k)
+            if (_data[0] == _n - _k)
                 return null;
 
-            var ans = new Combination(this._n, this._k);
+            var ans = new Combination(_n, _k);
 
             long i;
-            for (i = 0; i < this._k; ++i)
-                ans._data[i] = this._data[i];
+            for (i = 0; i < _k; ++i)
+                ans._data[i] = _data[i];
 
-            for (i = this._k - 1; i > 0 && ans._data[i] == this._n - this._k + i; --i)
+            for (i = _k - 1; i > 0 && ans._data[i] == _n - _k + i; --i)
                 ;
 
             ++ans._data[i];
 
-            for (var j = i; j < this._k - 1; ++j)
+            for (var j = i; j < _k - 1; ++j)
                 ans._data[j + 1] = ans._data[j] + 1;
 
             return ans;

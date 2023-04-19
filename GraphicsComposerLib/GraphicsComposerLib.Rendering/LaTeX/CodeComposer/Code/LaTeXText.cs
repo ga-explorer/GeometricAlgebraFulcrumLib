@@ -17,7 +17,7 @@ namespace GraphicsComposerLib.Rendering.LaTeX.CodeComposer.Code
 
         public bool IsEmpty()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

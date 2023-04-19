@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.BitManipulation;
@@ -21,7 +20,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Dense
             => SourceMatrix.GetDenseCount2();
         
         
-        internal LinVectorMatrixRowDenseStorage([NotNull] ILinMatrixStorage<T> array, ulong index1, [NotNull] Func<ulong, ulong, T> defaultValueFunc)
+        internal LinVectorMatrixRowDenseStorage(ILinMatrixStorage<T> array, ulong index1, Func<ulong, ulong, T> defaultValueFunc)
         {
             SourceMatrix = array;
             RowIndex = index1;

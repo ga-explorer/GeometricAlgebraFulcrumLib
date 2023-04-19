@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.BitManipulation;
@@ -15,7 +14,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Dense
         public override int Count { get; }
 
 
-        internal LinVectorComputedDenseStorage(int count, [NotNull] Func<ulong, T> indexScalarMapping)
+        internal LinVectorComputedDenseStorage(int count, Func<ulong, T> indexScalarMapping)
         {
             if (count < 0)
                 throw new ArgumentOutOfRangeException(nameof(count));

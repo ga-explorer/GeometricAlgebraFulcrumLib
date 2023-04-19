@@ -1,6 +1,6 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Mathematica;
+using GeometricAlgebraFulcrumLib.Mathematica.GeometricAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GAPoT
 {
@@ -24,11 +24,11 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GAPoT
             var hdvb = dvb.HilbertTransformScalar("t", @"\[Omega]");
             var hdvc = dvc.HilbertTransformScalar("t", @"\[Omega]");
 
-            var v = MathematicaUtils.CreateVector(
+            var v = RGaMathematicaUtils.CreateVector(
                 va, hva, vb, hvb, vc, hvc
             );
 
-            var dv = MathematicaUtils.CreateVector(
+            var dv = RGaMathematicaUtils.CreateVector(
                 dva, hdva, dvb, hdvb, dvc, hdvc
             );
 

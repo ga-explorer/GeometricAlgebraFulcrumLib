@@ -1,7 +1,7 @@
-﻿using GraphicsComposerLib.Geometry.Primitives.Lines;
+﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Mutable;
+using GraphicsComposerLib.Geometry.Primitives.Lines;
 using GraphicsComposerLib.Geometry.Primitives.Triangles;
 using GraphicsComposerLib.Rendering.Xeogl.Generators;
-using NumericalGeometryLib.BasicMath.Tuples.Mutable;
 using TextComposerLib.Text.Linear;
 using TextComposerLib.Text.Parametric;
 using TextComposerLib.Text.Structured;

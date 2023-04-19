@@ -1,4 +1,4 @@
-﻿using NumericalGeometryLib.BasicMath.Tuples.Immutable;
+﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
 using TextComposerLib.Code.JavaScript;
 
 namespace GraphicsComposerLib.Rendering.Xeogl.Cameras

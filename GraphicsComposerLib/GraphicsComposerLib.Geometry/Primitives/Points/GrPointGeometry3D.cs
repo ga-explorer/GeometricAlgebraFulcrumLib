@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DataStructuresLib.Basic;
-using NumericalGeometryLib.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
 using GraphicsComposerLib.Geometry.Primitives.Vertices;
 
 namespace GraphicsComposerLib.Geometry.Primitives.Points

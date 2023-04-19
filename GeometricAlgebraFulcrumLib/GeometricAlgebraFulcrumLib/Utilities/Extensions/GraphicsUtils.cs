@@ -1,15 +1,13 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Processors;
-using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 {
     public static class GraphicsUtils
     {
-        public static IGeometricAlgebraEuclideanProcessor<double> GeometricProcessor { get; }
-            = ScalarAlgebraFloat64Processor.DefaultProcessor.CreateGeometricAlgebraEuclideanProcessor(3);
+        public static RGaFloat64Processor GeometricProcessor { get; }
+            = RGaFloat64Processor.Euclidean;
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

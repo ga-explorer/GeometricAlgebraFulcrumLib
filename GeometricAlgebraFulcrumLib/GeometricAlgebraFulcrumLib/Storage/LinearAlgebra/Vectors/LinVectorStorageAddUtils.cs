@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Dense;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded;
@@ -11,32 +11,32 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors
     public static class LinVectorStorageAddUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ILinVectorStorage<T> Add<T>(this IScalarAlgebraProcessor<T> scalarProcessor, ILinVectorStorage<T> vector, T scalar)
+        public static ILinVectorStorage<T> Add<T>(this IScalarProcessor<T> scalarProcessor, ILinVectorStorage<T> vector, T scalar)
         {
             return vector.MapScalars(value => scalarProcessor.Add(value, scalar));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ILinVectorStorage<T> Add<T>(this IScalarAlgebraProcessor<T> scalarProcessor, T scalar, ILinVectorStorage<T> vector)
+        public static ILinVectorStorage<T> Add<T>(this IScalarProcessor<T> scalarProcessor, T scalar, ILinVectorStorage<T> vector)
         {
             return vector.MapScalars(value => scalarProcessor.Add(scalar, value));
         }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ILinVectorDenseStorage<T> Add<T>(this IScalarAlgebraProcessor<T> scalarProcessor, ILinVectorDenseStorage<T> v1, ILinVectorDenseStorage<T> v2)
+        public static ILinVectorDenseStorage<T> Add<T>(this IScalarProcessor<T> scalarProcessor, ILinVectorDenseStorage<T> v1, ILinVectorDenseStorage<T> v2)
         {
             return scalarProcessor.MapScalarsIndicesUnion(v1, v2, scalarProcessor.Add);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ILinVectorStorage<T> Add<T>(this IScalarAlgebraProcessor<T> scalarProcessor, ILinVectorStorage<T> v1, ILinVectorStorage<T> v2)
+        public static ILinVectorStorage<T> Add<T>(this IScalarProcessor<T> scalarProcessor, ILinVectorStorage<T> v1, ILinVectorStorage<T> v2)
         {
             return scalarProcessor.MapScalarsIndicesUnion(v1, v2, scalarProcessor.Add);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ILinVectorStorage<T> Add<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params ILinVectorStorage<T>[] vectorsList)
+        public static ILinVectorStorage<T> Add<T>(this IScalarProcessor<T> scalarProcessor, params ILinVectorStorage<T>[] vectorsList)
         {
             return vectorsList.Aggregate(
                 (ILinVectorStorage<T>)LinVectorEmptyStorage<T>.EmptyStorage,
@@ -45,7 +45,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ILinVectorStorage<T> Add<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<ILinVectorStorage<T>> vectorsList)
+        public static ILinVectorStorage<T> Add<T>(this IScalarProcessor<T> scalarProcessor, IEnumerable<ILinVectorStorage<T>> vectorsList)
         {
             return vectorsList.Aggregate(
                 (ILinVectorStorage<T>)LinVectorEmptyStorage<T>.EmptyStorage,
@@ -54,7 +54,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ILinVectorGradedStorage<T> Add<T>(this IScalarAlgebraProcessor<T> scalarProcessor, uint grade1, ILinVectorStorage<T> v1, uint grade2, ILinVectorStorage<T> v2)
+        public static ILinVectorGradedStorage<T> Add<T>(this IScalarProcessor<T> scalarProcessor, uint grade1, ILinVectorStorage<T> v1, uint grade2, ILinVectorStorage<T> v2)
         {
             return grade1 == grade2
                 ? new LinVectorSingleGradeStorage<T>(
@@ -69,7 +69,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ILinVectorGradedStorage<T> Add<T>(this IScalarAlgebraProcessor<T> scalarProcessor, ILinVectorGradedStorage<T> v1, ILinVectorGradedStorage<T> v2)
+        public static ILinVectorGradedStorage<T> Add<T>(this IScalarProcessor<T> scalarProcessor, ILinVectorGradedStorage<T> v1, ILinVectorGradedStorage<T> v2)
         {
             if (v1.IsEmpty())
                 return v2.IsEmpty()

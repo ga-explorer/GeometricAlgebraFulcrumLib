@@ -1,12 +1,11 @@
-﻿using GraphicsComposerLib.Rendering.Colors;
+﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
+using GraphicsComposerLib.Rendering.Colors;
 using GraphicsComposerLib.Rendering.Svg.Content;
 using GraphicsComposerLib.Rendering.Svg.Elements.Containers;
 using GraphicsComposerLib.Rendering.Svg.Elements.Shape;
 using GraphicsComposerLib.Rendering.Svg.Elements.Text;
 using GraphicsComposerLib.Rendering.Svg.Transforms;
-using NumericalGeometryLib.BasicMath.Tuples;
-using NumericalGeometryLib.BasicMath.Tuples.Immutable;
-using SixLabors.ImageSharp;
 
 namespace GraphicsComposerLib.Rendering.Svg.DrawingBoard
 {

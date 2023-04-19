@@ -75,8 +75,8 @@ namespace NumericalGeometryLib.Benchmarks.Benchmarks.GeometricAlgebra.GeneratedC
         private double _t0, _t1, _t2;
 
 
-        private readonly List<Tuple2D> _pointsList 
-            = new List<Tuple2D>();
+        private readonly List<Float64Tuple2D> _pointsList 
+            = new List<Float64Tuple2D>();
 
         private readonly List<LineSegment2D> _shadowSurfacesList
             = new List<LineSegment2D>();
@@ -85,7 +85,7 @@ namespace NumericalGeometryLib.Benchmarks.Benchmarks.GeometricAlgebra.GeneratedC
             = new List<LineSegment2D>();
 
 
-        public ITuple2D Point { get; set; }
+        public IFloat64Tuple2D Point { get; set; }
 
         public ILineSegment2D ShadowSurface { get; set; }
 

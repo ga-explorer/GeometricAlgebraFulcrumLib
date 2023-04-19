@@ -1,44 +1,45 @@
 ﻿using GraphicsComposerLib.Rendering.BabylonJs.GUI;
 
-namespace GraphicsComposerLib.Rendering.BabylonJs.Values;
-
-public sealed class GrBabylonJsGuiFullScreenUiValue :
-    GrBabylonJsValue<GrBabylonJsGuiFullScreenUi>,
-    IGrBabylonJsGuiControlContainer
+namespace GraphicsComposerLib.Rendering.BabylonJs.Values
 {
-    public static implicit operator GrBabylonJsGuiFullScreenUiValue(string valueText)
+    public sealed class GrBabylonJsGuiFullScreenUiValue :
+        GrBabylonJsValue<GrBabylonJsGuiFullScreenUi>,
+        IGrBabylonJsGuiControlContainer
     {
-        return new GrBabylonJsGuiFullScreenUiValue(valueText);
-    }
+        public static implicit operator GrBabylonJsGuiFullScreenUiValue(string valueText)
+        {
+            return new GrBabylonJsGuiFullScreenUiValue(valueText);
+        }
 
-    public static implicit operator GrBabylonJsGuiFullScreenUiValue(GrBabylonJsGuiFullScreenUi value)
-    {
-        return new GrBabylonJsGuiFullScreenUiValue(value);
-    }
-
-
-    public GrBabylonJsGuiFullScreenUiValue ParentUi 
-        => this;
-
-    public GrBabylonJsGuiControlList ControlList 
-        => Value.ControlList;
+        public static implicit operator GrBabylonJsGuiFullScreenUiValue(GrBabylonJsGuiFullScreenUi value)
+        {
+            return new GrBabylonJsGuiFullScreenUiValue(value);
+        }
 
 
-    private GrBabylonJsGuiFullScreenUiValue(string valueText)
-        : base(valueText)
-    {
-    }
+        public GrBabylonJsGuiFullScreenUiValue ParentUi 
+            => this;
 
-    private GrBabylonJsGuiFullScreenUiValue(GrBabylonJsGuiFullScreenUi value)
-        : base(value)
-    {
-    }
+        public GrBabylonJsGuiControlList ControlList 
+            => Value.ControlList;
 
 
-    public override string GetCode()
-    {
-        return string.IsNullOrEmpty(ValueText) 
-            ? Value.ToString() 
-            : ValueText;
+        private GrBabylonJsGuiFullScreenUiValue(string valueText)
+            : base(valueText)
+        {
+        }
+
+        private GrBabylonJsGuiFullScreenUiValue(GrBabylonJsGuiFullScreenUi value)
+            : base(value)
+        {
+        }
+
+
+        public override string GetCode()
+        {
+            return string.IsNullOrEmpty(ValueText) 
+                ? Value.ToString() 
+                : ValueText;
+        }
     }
 }

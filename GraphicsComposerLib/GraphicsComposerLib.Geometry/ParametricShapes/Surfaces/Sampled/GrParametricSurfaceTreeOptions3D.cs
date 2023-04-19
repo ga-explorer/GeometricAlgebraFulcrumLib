@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using NumericalGeometryLib.BasicMath;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath;
 
 namespace GraphicsComposerLib.Geometry.ParametricShapes.Surfaces.Sampled
 {
@@ -19,8 +19,8 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Surfaces.Sampled
             }
         }
         
-        private PlanarAngle _maxEdgeFrameAngle = 45;
-        public PlanarAngle MaxEdgeFrameAngle
+        private Float64PlanarAngle _maxEdgeFrameAngle = 45;
+        public Float64PlanarAngle MaxEdgeFrameAngle
         {
             get => _maxEdgeFrameAngle;
             set
@@ -61,7 +61,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Surfaces.Sampled
         public bool ForceBalancedTree { get; set; } = true;
 
 
-        public GrParametricSurfaceTreeOptions3D([NotNull] PlanarAngle maxAngleError, int minLevelCount, int maxLevelCount)
+        public GrParametricSurfaceTreeOptions3D([NotNull] Float64PlanarAngle maxAngleError, int minLevelCount, int maxLevelCount)
         {
             MaxEdgeFrameAngle = maxAngleError;
             MinLevelCount = minLevelCount;

@@ -41,11 +41,11 @@ namespace DataStructuresLib.Combinations
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ulong CombinadicToIndex(int i1, int i2)
         {
+            Debug.Assert(i1 >= 0 && i1 < i2);
+
             var n1 = (ulong)i1;
             var n2 = (ulong)i2;
-
-            Debug.Assert(n1 < n2);
-
+            
             return n1 + ((n2 * (n2 - 1UL)) >> 1);
         }
 

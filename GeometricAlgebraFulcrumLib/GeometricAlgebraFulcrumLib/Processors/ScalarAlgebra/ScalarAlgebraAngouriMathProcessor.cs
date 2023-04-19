@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using AngouriMath;
+using DataStructuresLib.Basic;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Expressions;
 
@@ -72,13 +72,13 @@ namespace GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Entity PreProcessScalar([NotNull] Entity scalar)
+        public Entity PreProcessScalar(Entity scalar)
         {
             return scalar;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Entity PostProcessScalar([NotNull] Entity scalar)
+        public Entity PostProcessScalar(Entity scalar)
         {
             return scalar.Simplify();
             //return Mfs.Round[Mfs.N[scalar], ZeroEpsilon.ToExpr()].Simplify();
@@ -109,6 +109,16 @@ namespace GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra
                 PreProcessScalar(scalar1) * 
                 PreProcessScalar(scalar2)
             );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Entity Times(IntegerSign sign, Entity scalar)
+        {
+            if (sign.IsZero) return ScalarZero;
+
+            return sign.IsPositive
+                ? scalar 
+                : Negative(scalar);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

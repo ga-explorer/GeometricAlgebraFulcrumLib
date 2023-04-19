@@ -5,9 +5,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.Basic;
-using NumericalGeometryLib.BasicMath;
-using NumericalGeometryLib.BasicMath.Tuples;
-using NumericalGeometryLib.BasicMath.Tuples.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
 using GraphicsComposerLib.Geometry.Primitives.Triangles;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
@@ -221,8 +220,8 @@ namespace GraphicsComposerLib.Geometry.LatticeShapes.Surfaces
             {
                 //Find triangle normal, not unit but full normal vector
                 var normal = vertex1.ParentSurface.ReverseNormals
-                    ? VectorUtils.GetTriangleNormal(vertex3, vertex2, vertex1)
-                    : VectorUtils.GetTriangleNormal(vertex1, vertex2, vertex3);
+                    ? EuclideanFloat64TupleUtils.GetTriangleNormal(vertex3, vertex2, vertex1)
+                    : EuclideanFloat64TupleUtils.GetTriangleNormal(vertex1, vertex2, vertex3);
 
                 //For debugging only
                 Debug.Assert(normal.IsValid());
@@ -239,8 +238,8 @@ namespace GraphicsComposerLib.Geometry.LatticeShapes.Surfaces
             {
                 //Find triangle unit normal
                 var normal = vertex1.ParentSurface.ReverseNormals
-                    ? VectorUtils.GetTriangleUnitNormal(vertex3, vertex2, vertex1)
-                    : VectorUtils.GetTriangleUnitNormal(vertex1, vertex2, vertex3);
+                    ? EuclideanFloat64TupleUtils.GetTriangleUnitNormal(vertex3, vertex2, vertex1)
+                    : EuclideanFloat64TupleUtils.GetTriangleUnitNormal(vertex1, vertex2, vertex3);
                 
                 //For debugging only
                 Debug.Assert(normal.IsValid());
@@ -262,8 +261,8 @@ namespace GraphicsComposerLib.Geometry.LatticeShapes.Surfaces
 
                 //Find triangle normal, not unit but full normal vector
                 var normal = vertex1.ParentSurface.ReverseNormals
-                    ? VectorUtils.GetTriangleNormal(vertex3, vertex2, vertex1)
-                    : VectorUtils.GetTriangleNormal(vertex1, vertex2, vertex3);
+                    ? EuclideanFloat64TupleUtils.GetTriangleNormal(vertex3, vertex2, vertex1)
+                    : EuclideanFloat64TupleUtils.GetTriangleNormal(vertex1, vertex2, vertex3);
 
                 // For debugging only
                 Debug.Assert(

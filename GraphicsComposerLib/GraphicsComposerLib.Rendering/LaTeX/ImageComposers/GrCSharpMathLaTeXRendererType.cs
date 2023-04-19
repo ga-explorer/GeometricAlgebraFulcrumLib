@@ -1,7 +1,8 @@
-﻿namespace GraphicsComposerLib.Rendering.LaTeX.ImageComposers;
-
-public enum GrCSharpMathLaTeXRendererType
+﻿namespace GraphicsComposerLib.Rendering.LaTeX.ImageComposers
 {
-    MathPainter,
-    TextPainter
+    public enum GrCSharpMathLaTeXRendererType
+    {
+        MathPainter,
+        TextPainter
+    }
 }

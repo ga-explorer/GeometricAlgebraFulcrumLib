@@ -1,39 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.BitManipulation;
 using DataStructuresLib.Random;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records.Restricted;
 using GeometricAlgebraFulcrumLib.Processors.LinearAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Dense;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Sparse;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Composers
 {
     public class LinearAlgebraRandomComposer<T> :
-        ScalarAlgebraRandomComposer<T>
+        ScalarRandomComposer<T>
     {
         public ILinearAlgebraProcessor<T> LinearProcessor { get; }
 
 
-        internal LinearAlgebraRandomComposer([NotNull] ILinearAlgebraProcessor<T> linearProcessor)
+        internal LinearAlgebraRandomComposer(ILinearAlgebraProcessor<T> linearProcessor)
             : base(linearProcessor)
         {
             LinearProcessor = linearProcessor;
         }
 
-        internal LinearAlgebraRandomComposer([NotNull] ILinearAlgebraProcessor<T> linearProcessor, int seed)
+        internal LinearAlgebraRandomComposer(ILinearAlgebraProcessor<T> linearProcessor, int seed)
             : base(linearProcessor, seed)
         {
             LinearProcessor = linearProcessor;
         }
 
-        internal LinearAlgebraRandomComposer([NotNull] ILinearAlgebraProcessor<T> linearProcessor, Random randomGenerator)
+        internal LinearAlgebraRandomComposer(ILinearAlgebraProcessor<T> linearProcessor, Random randomGenerator)
             : base(linearProcessor, randomGenerator)
         {
             LinearProcessor = linearProcessor;
@@ -50,7 +50,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ILinVectorSingleScalarStorage<T> GetLinVectorSingleScalarStorage(ulong index)
         {
-            return GetScalar().CreateLinVectorSingleScalarStorage(index);
+            return GetScalarValue().CreateLinVectorSingleScalarStorage(index);
         }
 
         public LinVectorSparseStorage<T> GetLinVectorSparseStorage(int denseCount)
@@ -59,7 +59,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
 
             for (var index = 1UL; index < (ulong) denseCount; index++)
                 if (RandomGenerator.GetBoolean())
-                    vector.AddValue(index, GetScalar());
+                    vector.AddValue(index, GetScalarValue());
 
             return vector;
         }
@@ -70,7 +70,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
 
             for (var index = 1UL; index < (ulong) denseCount; index++)
                 if (RandomGenerator.GetBoolean())
-                    vectorData.Add(index, GetScalar());
+                    vectorData.Add(index, GetScalarValue());
 
             return vectorData.CreateLinVectorTreeStorage();
         }
@@ -80,7 +80,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
             var vector = new T[denseCount];
 
             for (var index = 1UL; index < (ulong) denseCount; index++)
-                vector[index] = GetScalar();
+                vector[index] = GetScalarValue();
 
             return vector.CreateLinVectorArrayStorage();
         }
@@ -90,7 +90,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
             var vector = new LinVectorListStorage<T>();
 
             for (var index = 1UL; index < (ulong) denseCount; index++)
-                vector.Append(GetScalar());
+                vector.Append(GetScalarValue());
 
             return vector;
         }
@@ -101,7 +101,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
 
             for (var index = 1UL; index < (ulong) denseCount; index++)
                 if (RandomGenerator.GetBoolean())
-                    vectorData.Add(index, GetScalar());
+                    vectorData.Add(index, GetScalarValue());
 
             return new LinVectorComputedDenseStorage<T>(
                 denseCount, 
@@ -115,7 +115,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public LinVectorRepeatedScalarStorage<T> GetLinVectorRepeatedScalarStorage(int denseCount)
         {
-            return new LinVectorRepeatedScalarStorage<T>(denseCount, GetScalar());
+            return new LinVectorRepeatedScalarStorage<T>(denseCount, GetScalarValue());
         }
 
         public IReadOnlyList<ILinVectorStorage<T>> GetLinVectorStorages(int denseCount)
@@ -152,7 +152,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
                     matrix, 
                     denseCount * denseCount, 
                     index => 
-                        new IndexPairRecord(
+                        new RGaKvIndexPairRecord(
                             index / (ulong) denseCount, 
                             index % (ulong) denseCount
                         )
@@ -171,7 +171,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
 
             for (var index1 = 0UL; index1 < (ulong) denseCount1; index1++)
             for (var index2 = 0UL; index2 < (ulong) denseCount2; index2++)
-                array[index1, index2] = GetScalar();
+                array[index1, index2] = GetScalarValue();
 
             return array.CreateLinMatrixDenseStorage();
         }

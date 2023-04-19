@@ -111,8 +111,8 @@ namespace NumericalGeometryLib.Benchmarks.Benchmarks.GeometricAlgebra.GeneratedC
         private double _t123, _t233, _t313;
 
 
-        private readonly List<Tuple3D> _pointsList
-            = new List<Tuple3D>();
+        private readonly List<Float64Tuple3D> _pointsList
+            = new List<Float64Tuple3D>();
 
         private readonly List<Triangle3D> _shadowSurfacesList
             = new List<Triangle3D>();
@@ -121,7 +121,7 @@ namespace NumericalGeometryLib.Benchmarks.Benchmarks.GeometricAlgebra.GeneratedC
             = new List<Triangle3D>();
 
 
-        public ITuple3D Point { get; set; }
+        public IFloat64Tuple3D Point { get; set; }
 
         public ITriangle3D ShadowSurface { get; set; }
 

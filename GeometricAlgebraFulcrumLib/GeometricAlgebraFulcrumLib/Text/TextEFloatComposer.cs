@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
-using NumericalGeometryLib.BasicMath;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
 using PeterO.Numbers;
 
 namespace GeometricAlgebraFulcrumLib.Text
@@ -13,13 +13,13 @@ namespace GeometricAlgebraFulcrumLib.Text
 
 
         private TextEFloatComposer() 
-            : base(ScalarAlgebraEFloatProcessor.DefaultProcessor)
+            : base(ScalarProcessorEFloat.DefaultProcessor)
         {
         }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override string GetAngleText(PlanarAngle angle)
+        public override string GetAngleText(Float64PlanarAngle angle)
         {
             return $"{GetScalarText(EFloat.FromDouble(angle.Degrees))} degrees";
         }

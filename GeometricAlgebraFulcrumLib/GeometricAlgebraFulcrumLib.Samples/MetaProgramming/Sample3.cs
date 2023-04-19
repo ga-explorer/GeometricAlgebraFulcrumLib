@@ -1,8 +1,8 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.LinearMaps.Rotors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Expressions;
-using GeometricAlgebraFulcrumLib.Processors;
 
 namespace GeometricAlgebraFulcrumLib.Samples.MetaProgramming
 {
@@ -17,7 +17,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.MetaProgramming
                 };
 
             var processor = 
-                context.CreateGeometricAlgebraEuclideanProcessor(63);
+                context.CreateEuclideanXGaProcessor();
 
             var u =
                 context.ParameterVariablesFactory.CreateVector(
@@ -34,11 +34,11 @@ namespace GeometricAlgebraFulcrumLib.Samples.MetaProgramming
                 );
 
             var rotor = 
-                processor.CreatePureRotor(u, v);
+                u.CreatePureRotor(v);
             
-            rotor.SetIsOutput(true);
+            rotor.Multivector.SetIsOutput(true);
 
-            rotor.GetMultivectorStorage().SetExternalNamesByTermGradeIndex(
+            rotor.Multivector.SetExternalNamesByTermGradeIndex(
                 (grade, index) => $"C[{grade}][{index}]"
             );
 
@@ -47,7 +47,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.MetaProgramming
             u.SetExternalNamesByTermIndex(index => $"u[{index}]");
             
             //Define external names for outputs
-            rotor.SetExternalNamesByTermId(id => $"rotor.Scalar{id}");
+            rotor.Multivector.SetExternalNamesByTermId(id => $"rotor.Scalar{id}");
 
             //Optimize sequence computations inside context
             context.ContextOptions.ReduceLowLevelRhsSubExpressions = true;

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
 
 namespace GeometricAlgebraFulcrumLib.MetaProgramming.Expressions.HeadSpecs
@@ -54,7 +53,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Expressions.HeadSpecs
             => false;
 
 
-        private MetaExpressionHeadSpecsVariable([NotNull] MetaContext context, [NotNull] string variableName)
+        private MetaExpressionHeadSpecsVariable(MetaContext context, string variableName)
         {
             if (string.IsNullOrEmpty(variableName))
                 throw new ArgumentNullException(nameof(variableName), @"Variable name not initialized");

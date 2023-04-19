@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.BitManipulation;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records.Restricted;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Sparse;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 
 namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Dense
 {
@@ -25,7 +24,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Dense
             => GetScalar(index);
 
 
-        internal LinVectorRepeatedScalarStorage(int count, [NotNull] T value)
+        internal LinVectorRepeatedScalarStorage(int count, T value)
         {
             if (count < 0)
                 throw new ArgumentOutOfRangeException(nameof(count));
@@ -173,7 +172,8 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Dense
                 : LinVectorEmptyStorage<T>.EmptyStorage;
         }
 
-        public ILinVectorGradedStorage<T> ToVectorGradedStorage(Func<ulong, GradeIndexRecord> indexToGradeIndexMapping)
+        public ILinVectorGradedStorage<T> ToVectorGradedStorage(
+            Func<ulong, RGaGradeKvIndexRecord> indexToGradeIndexMapping)
         {
             var gradeIndexScalarDictionary = new Dictionary<uint, Dictionary<ulong, T>>();
 
@@ -196,7 +196,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Dense
             return gradeIndexScalarDictionary.CreateLinVectorGradedStorage();
         }
 
-        public ILinVectorGradedStorage<T> ToVectorGradedStorage(Func<ulong, T, GradeIndexScalarRecord<T>> indexScalarToGradeIndexScalarMapping)
+        public ILinVectorGradedStorage<T> ToVectorGradedStorage(Func<ulong, T, RGaGradeKvIndexScalarRecord<T>> indexScalarToGradeIndexScalarMapping)
         {
             var gradeIndexScalarDictionary = new Dictionary<uint, Dictionary<ulong, T>>();
 
@@ -238,12 +238,12 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Dense
             return false;
         }
 
-        public IEnumerable<IndexScalarRecord<T>> GetIndexScalarRecords()
+        public IEnumerable<RGaKvIndexScalarRecord<T>> GetIndexScalarRecords()
         {
             var count = (ulong) GetSparseCount();
 
             for (var index = 0UL; index < count; index++)
-                yield return new IndexScalarRecord<T>(index, Scalar);
+                yield return new RGaKvIndexScalarRecord<T>(index, Scalar);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

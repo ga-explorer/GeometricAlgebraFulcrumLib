@@ -39,12 +39,12 @@ namespace GraphicsComposerLib.Rendering.Svg.Attributes
 
         public override ISvgAttributeValue CreateCopy()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public override ISvgAttributeValue UpdateFrom(ISvgAttributeValue sourceAttributeValue)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public TParentElement SetToNumber(double number)

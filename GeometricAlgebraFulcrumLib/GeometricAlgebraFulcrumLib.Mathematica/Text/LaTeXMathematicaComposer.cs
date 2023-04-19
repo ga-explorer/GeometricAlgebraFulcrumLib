@@ -1,5 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
-using NumericalGeometryLib.BasicMath;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath;
 using GeometricAlgebraFulcrumLib.Mathematica.Mathematica.ExprFactory;
 using GeometricAlgebraFulcrumLib.Mathematica.Processors;
 using GeometricAlgebraFulcrumLib.Text;
@@ -15,13 +15,13 @@ namespace GeometricAlgebraFulcrumLib.Mathematica.Text
 
 
         public LaTeXMathematicaComposer() 
-            : base(ScalarAlgebraMathematicaProcessor.DefaultProcessor)
+            : base(ScalarProcessorExpr.DefaultProcessor)
         {
         }
 
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override string GetAngleText(PlanarAngle angle)
+        public override string GetAngleText(Float64PlanarAngle angle)
         {
             return $@"{GetScalarText(angle.Degrees.ToExpr())} \degree";
         }

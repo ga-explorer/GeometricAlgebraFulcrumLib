@@ -7,12 +7,12 @@ using CodeComposerLib.MathML.Elements.Layout.Elementary;
 using CodeComposerLib.MathML.Elements.Layout.Tabular;
 using CodeComposerLib.MathML.Elements.Tokens;
 using DataStructuresLib.BitManipulation;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
-using GeometricAlgebraFulcrumLib.Processors;
-using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Spaces;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using TextComposerLib.Text.Linear;
 
@@ -42,9 +42,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.Text
         public static string ComposeHga4D()
         {
             var composer = 
-                ScalarAlgebraFloat64Processor
-                    .DefaultProcessor
-                    .CreateGeometricAlgebraEuclideanProcessor(4);
+                RGaFloat64Processor.Euclidean.CreateSpace(4);
 
             var basisBladeNames = 
                 CreateBasisBladeNames("x", "y", "z", "w");
@@ -56,37 +54,37 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.Text
         }
 
 
-        private static MathMlRow ToMathMlRow(GaMultivector<double> mv, Func<ulong, IMathMlElement> getBasisBladeNameFunc)
+        private static MathMlRow ToMathMlRow(RGaFloat64Multivector mv, Func<ulong, IMathMlElement> getBasisBladeNameFunc)
         {
-            var scalarProcessor = (IScalarAlgebraProcessor<double>) ScalarAlgebraFloat64Processor.DefaultProcessor;
+            var scalarProcessor = ScalarProcessorFloat64.DefaultProcessor;
 
             var rowElement = MathMlRow.Create();
 
             var termsList =
-                    scalarProcessor.GetNotZeroTerms(mv.MultivectorStorage)
-                    .OrderBy(t => t.BasisBlade.Id.BasisBladeIdToGrade())
-                    .ThenBy(t => t.BasisBlade.Id);
+                mv
+                    .OrderBy(t => t.Key.BasisBladeIdToGrade())
+                    .ThenBy(t => t.Key);
 
             var firstItemFlag = true;
             foreach (var term in termsList)
             {
                 var basisBladeName = 
-                    getBasisBladeNameFunc(term.BasisBlade.Id);
+                    getBasisBladeNameFunc(term.Key);
 
                 if (firstItemFlag)
                 {
-                    if (term.Scalar == 1.0d)
+                    if (term.Value == 1.0d)
                         rowElement.Append(basisBladeName);
 
-                    else if (term.Scalar == -1.0d)
+                    else if (term.Value == -1.0d)
                         rowElement.AppendElements(
                             MathMlOperator.MinusSign,
                             basisBladeName
                         );
 
-                    else if (term.Scalar > 0 || term.Scalar < 0)
+                    else if (term.Value > 0 || term.Value < 0)
                         rowElement.AppendElements(
-                            term.Scalar.ToMathMlNumber(),
+                            term.Value.ToMathMlNumber(),
                             basisBladeName
                         );
 
@@ -94,29 +92,29 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.Text
                     continue;
                 }
 
-                if (term.Scalar == 1.0d)
+                if (term.Value == 1.0d)
                     rowElement.AppendElements(
                         MathMlOperator.PlusSign,
                         basisBladeName
                     );
 
-                else if (term.Scalar == -1.0d)
+                else if (term.Value == -1.0d)
                     rowElement.AppendElements(
                         MathMlOperator.MinusSign,
                         basisBladeName
                     );
 
-                else if (term.Scalar > 0)
+                else if (term.Value > 0)
                     rowElement.AppendElements(
                         MathMlOperator.PlusSign,
-                        term.Scalar.ToMathMlNumber(),
+                        term.Value.ToMathMlNumber(),
                         basisBladeName
                     );
 
-                else if (term.Scalar < 0)
+                else if (term.Value < 0)
                     rowElement.AppendElements(
                         MathMlOperator.MinusSign,
-                        (-term.Scalar).ToMathMlNumber(),
+                        (-term.Value).ToMathMlNumber(),
                         basisBladeName
                     );
             }
@@ -124,9 +122,9 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.Text
             return rowElement;
         }
 
-        public static MathMlTable ComposeMathMlTable(IGeometricAlgebraProcessor<double> processor, Func<ulong, IMathMlElement> getBasisBladeNameFunc)
+        public static MathMlTable ComposeMathMlTable(RGaFloat64Space space, Func<ulong, IMathMlElement> getBasisBladeNameFunc)
         {
-            var idsList = processor.VSpaceDimension.BasisBladeIDsSortedByGrade().ToArray();
+            var idsList = space.VSpaceDimensions.BasisBladeIDsSortedByGrade().ToArray();
             var gaDim = idsList.Length;
 
             var table = MathMlTable.Create(
@@ -151,7 +149,9 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.Text
                     var id2 = idsList[j];
 
                     var mv = 
-                        processor.Gp(id1, id2);
+                        space.Processor.CreateKVector(id1).Gp(
+                            space.Processor.CreateKVector(id2)
+                        );
 
                     table[i + 2, j + 2].Append(
                         ToMathMlRow(mv, getBasisBladeNameFunc)
@@ -162,11 +162,11 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.Text
             return table;
         }
 
-        public static string ComposeMathMlTableColumns(IGeometricAlgebraProcessor<double> processor, Func<ulong, IMathMlElement> getBasisBladeNameFunc)
+        public static string ComposeMathMlTableColumns(RGaFloat64Space space, Func<ulong, IMathMlElement> getBasisBladeNameFunc)
         {
             var textComposer = new LinearTextComposer();
 
-            var idsList = processor.VSpaceDimension.BasisBladeIDsSortedByGrade().ToArray();
+            var idsList = space.VSpaceDimensions.BasisBladeIDsSortedByGrade().ToArray();
             var gaDim = idsList.Length;
 
             for (var i = 0; i < gaDim; i++)
@@ -191,8 +191,10 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.Text
                 {
                     var id2 = idsList[j];
 
-                    var mv = 
-                        processor.Gp(id1, id2);
+                    var mv =
+                        space.Processor.CreateKVector(id1).Gp(
+                            space.Processor.CreateKVector(id2)
+                        );
 
                     var mvName = 
                         ToMathMlRow(mv, getBasisBladeNameFunc);

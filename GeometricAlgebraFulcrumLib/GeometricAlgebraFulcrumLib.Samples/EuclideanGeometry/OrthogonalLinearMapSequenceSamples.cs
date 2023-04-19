@@ -2,89 +2,29 @@
 using System.Diagnostics;
 using System.Linq;
 using DataStructuresLib.Random;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Arrays.Float64;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Matrices;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.SubSpaces;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.Scaling;
 using MathNet.Numerics.LinearAlgebra;
-using NumericalGeometryLib.BasicMath;
-using NumericalGeometryLib.BasicMath.Maps.SpaceND;
-using NumericalGeometryLib.BasicMath.Maps.SpaceND.Scaling;
-using NumericalGeometryLib.BasicMath.Matrices;
-using NumericalGeometryLib.BasicMath.SubSpaces;
-using NumericalGeometryLib.BasicMath.Tuples;
 
-namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry;
-
-public static class OrthogonalLinearMapSequenceSamples
+namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
 {
-    public static void Example1()
+    public static class OrthogonalLinearMapSequenceSamples
     {
-        const int n = 10;
-
-        var random = new Random(10);
-
-        var scaling =
-            random.GetVectorDirectionalScaling(n, -10, 10);
-
-        var scalingFactor = 
-            scaling.ScalingFactor;
-
-        var scalingVector = 
-            scaling.ScalingVector;
-
-        var y = 
-            scaling.MapVector(scalingVector);
-
-        Debug.Assert(
-            (y - scalingFactor * scalingVector).IsNearZero()
-        );
-
-        var scalingMatrix =
-            scaling.GetMatrix();
-
-        var subspaceList = 
-            scalingMatrix.GetSimpleEigenSubspaces();
-
-        Console.WriteLine($"Scaling Factor: {scalingFactor}");
-        Console.WriteLine($"Scaling Vector: {scalingVector}");
-        Console.WriteLine();
-
-        var i = 1;
-        foreach (var subspace in subspaceList)
+        public static void Example1()
         {
-            Console.WriteLine($"Subspace {i}:");
-            Console.WriteLine(subspace);
+            const int n = 10;
 
-            i++;
-        }
-    }
+            var random = new Random(10);
 
-    public static void Example2()
-    {
-        const int n = 10;
-
-        var random = new Random(10);
-
-        var scalingFactorList =
-            random
-                .GetNumbers(n / 2, -5, 5)
-                .ToArray();
-
-        var scalingVectorList =
-            random
-                .GetOrthonormalVectors(n, n / 2)
-                .Select(v => v.ToArray().CreateTuple())
-                .ToArray();
-
-        var scalingSequence = 
-            VectorDirectionalScalingSequence.Create(n);
-
-        for (var k = 0; k < n / 2; k++)
-        {
             var scaling =
-                VectorDirectionalScaling.Create(
-                    scalingFactorList[k], 
-                    scalingVectorList[k]
-                );
-
-            scalingSequence.AppendMap(scaling);
+                random.GetVectorDirectionalScaling(n, -10, 10);
 
             var scalingFactor = 
                 scaling.ScalingFactor;
@@ -92,512 +32,576 @@ public static class OrthogonalLinearMapSequenceSamples
             var scalingVector = 
                 scaling.ScalingVector;
 
-            Console.WriteLine($"Scaling {k + 1}:");
+            var y = 
+                scaling.MapVector(scalingVector);
+
+            Debug.Assert(
+                (y - scalingFactor * scalingVector).IsNearZero()
+            );
+
+            var scalingMatrix =
+                scaling.ToMatrix(n, n);
+
+            var subspaceList = 
+                scalingMatrix.GetSimpleEigenSubspaces();
+
             Console.WriteLine($"Scaling Factor: {scalingFactor}");
             Console.WriteLine($"Scaling Vector: {scalingVector}");
             Console.WriteLine();
+
+            var i = 1;
+            foreach (var subspace in subspaceList)
+            {
+                Console.WriteLine($"Subspace {i}:");
+                Console.WriteLine(subspace);
+
+                i++;
+            }
         }
 
-        //var y = 
-        //    scaling.MapVector(scalingVector);
-
-        //Debug.Assert(
-        //    (y - scalingFactor * scalingVector).IsNearZero()
-        //);
-        
-        var scalingMatrix =
-            scalingSequence.GetMatrix();
-
-        for (var k = 0; k < n / 2; k++)
+        public static void Example2()
         {
-            var s = scalingSequence[k].ScalingFactor;
-            var x = scalingSequence[k].ScalingVector;
-            var y = scalingSequence.MapVector(x);
+            const int n = 10;
 
-            Debug.Assert(
-                (y - s * x).GetVectorNormSquared().IsNearZero()
-            );
+            var random = new Random(10);
 
-            y = (scalingMatrix * Vector<double>.Build.DenseOfEnumerable(x)).ToArray().CreateTuple();
+            var scalingFactorList =
+                random
+                    .GetNumbers(n / 2, -5, 5)
+                    .ToArray();
 
-            Debug.Assert(
-                (y - s * x).GetVectorNormSquared().IsNearZero()
-            );
-        }
+            var scalingVectorList =
+                random
+                    .GetOrthonormalVectors(n, n / 2)
+                    .Select(v => v.ToArray().CreateLinVector())
+                    .ToArray();
 
-        var subspaceList = 
-            scalingMatrix.GetSimpleEigenSubspaces();
+            var scalingSequence = 
+                LinFloat64VectorDirectionalScalingSequence.Create(n);
+
+            for (var k = 0; k < n / 2; k++)
+            {
+                var scaling =
+                    LinFloat64VectorDirectionalScaling.Create(
+                        scalingFactorList[k], 
+                        scalingVectorList[k]
+                    );
+
+                scalingSequence.AppendMap(scaling);
+
+                var scalingFactor = 
+                    scaling.ScalingFactor;
+
+                var scalingVector = 
+                    scaling.ScalingVector;
+
+                Console.WriteLine($"Scaling {k + 1}:");
+                Console.WriteLine($"Scaling Factor: {scalingFactor}");
+                Console.WriteLine($"Scaling Vector: {scalingVector}");
+                Console.WriteLine();
+            }
+
+            //var y = 
+            //    scaling.MapVector(scalingVector);
+
+            //Debug.Assert(
+            //    (y - scalingFactor * scalingVector).IsNearZero()
+            //);
         
-        var i = 1;
-        foreach (var subspace in subspaceList)
-        {
-            Console.WriteLine($"Subspace {i}:");
-            Console.WriteLine(subspace);
+            var scalingMatrix =
+                scalingSequence.ToMatrix(n, n);
 
-            i++;
+            for (var k = 0; k < n / 2; k++)
+            {
+                var s = scalingSequence[k].ScalingFactor;
+                var x = scalingSequence[k].ScalingVector;
+                var y = scalingSequence.MapVector(x);
+
+                Debug.Assert(
+                    (y - s * x).GetVectorNormSquared().IsNearZero()
+                );
+
+                y = (scalingMatrix * x.ToVector(n)).CreateLinVector();
+
+                Debug.Assert(
+                    (y - s * x).GetVectorNormSquared().IsNearZero()
+                );
+            }
+
+            var subspaceList = 
+                scalingMatrix.GetSimpleEigenSubspaces();
+        
+            var i = 1;
+            foreach (var subspace in subspaceList)
+            {
+                Console.WriteLine($"Subspace {i}:");
+                Console.WriteLine(subspace);
+
+                i++;
+            }
         }
-    }
     
-    public static void Example3()
-    {
-        const int n = 3;
+        public static void Example3()
+        {
+            const int n = 3;
 
-        var random = new Random(10);
+            var random = new Random(10);
 
-        //var scalingFactorList =
-        //    random
-        //        .GetNumbers(n / 2, -5, 5)
-        //        .ToArray();
+            //var scalingFactorList =
+            //    random
+            //        .GetNumbers(n / 2, -5, 5)
+            //        .ToArray();
 
-        //var scalingVectorList =
-        //    random
-        //        .GetOrthonormalVectors(n, n / 2)
-        //        .Select(v => v.ToArray().CreateTuple())
-        //        .ToArray();
+            //var scalingVectorList =
+            //    random
+            //        .GetOrthonormalVectors(n, n / 2)
+            //        .Select(v => v.ToArray().CreateTuple())
+            //        .ToArray();
 
-        //var scalingSequence = 
-        //    VectorDirectionalScalingSequence.Create(n);
+            //var scalingSequence = 
+            //    VectorDirectionalScalingSequence.Create(n);
 
-        var matrix =
-            Float64ArrayUtils.CreateClarkeRotationArray(n).ToMatrix();
+            var matrix =
+                Float64ArrayUtils.CreateClarkeRotationArray(n).ToMatrix();
             //random.GetOrthogonalMatrix(n);
             //random.GetFloat64Array2D(n, n).ToMatrix();
             //random.GetCirculantColumnArray(n).ToMatrix();
 
-        var sysExpr = 
-            matrix.ToComplex().Evd();
+            var sysExpr = 
+                matrix.ToComplex().Evd();
 
-        var eigenPairCount = sysExpr.EigenValues.Count;
+            var eigenPairCount = sysExpr.EigenValues.Count;
 
-        for (var j = 0; j < eigenPairCount; j++)
-        {
-            var eigenValue = sysExpr.EigenValues[j];
-            var eigenVector = sysExpr.EigenVectors.Column(j);
+            for (var j = 0; j < eigenPairCount; j++)
+            {
+                var eigenValue = sysExpr.EigenValues[j];
+                var eigenVector = sysExpr.EigenVectors.Column(j);
 
-            var subspace = new Float64SimpleEigenSubspace(
-                eigenValue, 
-                eigenVector
-            );
+                var subspace = new LinFloat64SimpleEigenSubspace(
+                    eigenValue, 
+                    eigenVector
+                );
 
-            Console.WriteLine($"Subspace {j + 1}:");
-            Console.WriteLine($"Eigen Vector Real Part: {eigenVector.Real().ToTuple()}");
-            Console.WriteLine($"Eigen Vector Imag Part: {eigenVector.Imaginary().ToTuple()}");
-            Console.WriteLine(subspace);
-        }
+                Console.WriteLine($"Subspace {j + 1}:");
+                Console.WriteLine($"Eigen Vector Real Part: {eigenVector.Real().ToTuple()}");
+                Console.WriteLine($"Eigen Vector Imag Part: {eigenVector.Imaginary().ToTuple()}");
+                Console.WriteLine(subspace);
+            }
 
-        var mapSequence = 
-            matrix.GetBasicLinearMapSequence();
+            var mapSequence = 
+                matrix.GetBasicLinearMapSequence();
 
-        Debug.Assert(
-            mapSequence.IsNearOrthogonalMapsSequence()
-        );
-
-        var mapSequenceMatrix =
-            mapSequence.GetMatrix();
-
-        //var mapSequenceMatrix1 = 
-        //    mapSequence.GetMatrix().GetBasicLinearMapSequence().GetMatrix();
-
-        Console.WriteLine("Original Matrix:");
-        Console.WriteLine(matrix.ToMatrixString());
-        Console.WriteLine();
-
-        Console.WriteLine("Mapping Matrix:");
-        Console.WriteLine(mapSequenceMatrix.ToMatrixString());
-        Console.WriteLine();
-
-        //Console.WriteLine("Mapping Matrix 1:");
-        //Console.WriteLine(mapSequenceMatrix1.ToMatrixString());
-        //Console.WriteLine();
-
-        //Debug.Assert(
-        //    (mapSequenceMatrix1 - mapSequenceMatrix).L2Norm().IsNearZero()
-        //);
-
-        Debug.Assert(
-            (matrix - mapSequenceMatrix).L2Norm().IsNearZero()
-        );
-        
-        for (var k = 0; k < mapSequence.RotationSequence.Count; k++)
-        {
-            var rotation = mapSequence.RotationSequence[k];
-
-            var sourceVector = 
-                rotation.SourceVector;
-
-            var targetVector = 
-                rotation.TargetVector;
-
-            Console.WriteLine($"Rotation {k + 1}:");
-            Console.WriteLine($"Source Vector: {sourceVector}");
-            Console.WriteLine($"Target Vector: {targetVector}");
-            Console.WriteLine();
-        }
-
-        for (var k = 0; k < mapSequence.ReflectionSequence.Count; k++)
-        {
-            var reflection = mapSequence.ReflectionSequence[k];
-            
-            var normalVector = 
-                reflection.ReflectionNormal;
-
-            Console.WriteLine($"Reflection {k + 1}:");
-            Console.WriteLine($"Normal Vector: {normalVector}");
-            Console.WriteLine();
-        }
-        
-        var subspaceList = 
-            matrix.GetSimpleEigenSubspaces();
-        
-        var i = 1;
-        foreach (var subspace in subspaceList)
-        {
-            Console.WriteLine($"Subspace {i}:");
-            Console.WriteLine(subspace);
-
-            i++;
-        }
-    }
-    
-    /// <summary>
-    /// Validate the rotation and reflection properties of arbitrary
-    /// orthogonal linear map sequences
-    /// </summary>
-    public static void Example4()
-    {
-        const int n = 8;
-
-        var random = new Random(10);
-
-        for (var mapCount = 1; mapCount <= n; mapCount++)
-        {
-            // Create a sequence of 1 or more orthogonal maps
-            var mapSequence = OrthogonalLinearMapSequence.CreateRandomOrthogonal(
-                random,
-                n,
-                mapCount
-            );
-
-            var mapMatrix = 
-                mapSequence.GetMatrix();
-
-            // Make sure the result is actually an orthogonal matrix
-            Debug.Assert(
-                mapMatrix.Determinant().Abs().IsNearOne(1e-7)
-            );
-            
-            // Make sure the sequence contains only pair-wise orthogonal rotations
             Debug.Assert(
                 mapSequence.IsNearOrthogonalMapsSequence()
             );
 
+            var mapSequenceMatrix =
+                mapSequence.ToMatrix(n, n);
+
+            //var mapSequenceMatrix1 = 
+            //    mapSequence.GetMatrix().GetBasicLinearMapSequence().GetMatrix();
+
+            Console.WriteLine("Original Matrix:");
+            Console.WriteLine(matrix.ToMatrixString());
+            Console.WriteLine();
+
+            Console.WriteLine("Mapping Matrix:");
+            Console.WriteLine(mapSequenceMatrix.ToMatrixString());
+            Console.WriteLine();
+
+            //Console.WriteLine("Mapping Matrix 1:");
+            //Console.WriteLine(mapSequenceMatrix1.ToMatrixString());
+            //Console.WriteLine();
+
+            //Debug.Assert(
+            //    (mapSequenceMatrix1 - mapSequenceMatrix).L2Norm().IsNearZero()
+            //);
+
+            Debug.Assert(
+                (matrix - mapSequenceMatrix).L2Norm().IsNearZero()
+            );
+        
+            for (var k = 0; k < mapSequence.RotationSequence.Count; k++)
+            {
+                var rotation = mapSequence.RotationSequence[k];
+
+                var sourceVector = 
+                    rotation.SourceVector;
+
+                var targetVector = 
+                    rotation.TargetVector;
+
+                Console.WriteLine($"Rotation {k + 1}:");
+                Console.WriteLine($"Source Vector: {sourceVector}");
+                Console.WriteLine($"Target Vector: {targetVector}");
+                Console.WriteLine();
+            }
+
+            for (var k = 0; k < mapSequence.ReflectionSequence.Count; k++)
+            {
+                var reflection = mapSequence.ReflectionSequence[k];
+            
+                var normalVector = 
+                    reflection.ReflectionNormal;
+
+                Console.WriteLine($"Reflection {k + 1}:");
+                Console.WriteLine($"Normal Vector: {normalVector}");
+                Console.WriteLine();
+            }
+        
             var subspaceList = 
-                mapMatrix.GetSimpleEigenSubspaces();
-
-            Console.WriteLine($"Orthogonal maps number: {mapCount}");
-
-            var j = 1;
+                matrix.GetSimpleEigenSubspaces();
+        
+            var i = 1;
             foreach (var subspace in subspaceList)
             {
-                Console.WriteLine($"Subspace {j++}");
+                Console.WriteLine($"Subspace {i}:");
                 Console.WriteLine(subspace);
-            }
 
-            foreach (var rotation in mapSequence.RotationSequence)
-            {
-                var u = rotation.SourceVector;
-                var v = rotation.TargetVector;
-
-                var v1 = mapSequence.MapVector(u);
-                var v2 = (mapMatrix * u.ToVector()).ToTuple();
-
-                // Make sure each rotation is performed independently from the other maps
-                Debug.Assert(
-                    (v - v1).GetVectorNormSquared().IsNearZero()
-                );
-
-                Debug.Assert(
-                    (v - v2).GetVectorNormSquared().IsNearZero()
-                );
-                
-                Debug.Assert(
-                    (v1 - v2).GetVectorNormSquared().IsNearZero()
-                );
-                
-                // Make sure rotation matrix multiplication is the same as
-                // map sequence computations
-                for (var i = 0; i < 100; i++)
-                {
-                    var x = random.GetFloat64Tuple(n);
-
-                    var y1 = mapSequence.MapVector(x);
-                    var y2 = (mapMatrix * x.ToVector()).ToTuple();
-                
-                    Debug.Assert(
-                        (y1 - y2).GetVectorNormSquared().IsNearZero()
-                    );
-                }
-            }
-            
-            foreach (var reflection in mapSequence.ReflectionSequence)
-            {
-                var u = reflection.ReflectionNormal;
-                var v = -reflection.ReflectionNormal;
-
-                var v1 = mapSequence.MapVector(u);
-                var v2 = (mapMatrix * u.ToVector()).ToTuple();
-
-                // Make sure each reflection is performed independently from the other maps
-                Debug.Assert(
-                    (v - v1).GetVectorNormSquared().IsNearZero()
-                );
-
-                Debug.Assert(
-                    (v - v2).GetVectorNormSquared().IsNearZero()
-                );
-                
-                Debug.Assert(
-                    (v1 - v2).GetVectorNormSquared().IsNearZero()
-                );
-                
-                // Make sure rotation matrix multiplication is the same as
-                // map sequence computations
-                for (var i = 0; i < 100; i++)
-                {
-                    var x = random.GetFloat64Tuple(n);
-
-                    var y1 = mapSequence.MapVector(x);
-                    var y2 = (mapMatrix * x.ToVector()).ToTuple();
-                
-                    Debug.Assert(
-                        (y1 - y2).GetVectorNormSquared().IsNearZero()
-                    );
-                }
+                i++;
             }
         }
+    
+        /// <summary>
+        /// Validate the rotation and reflection properties of arbitrary
+        /// orthogonal linear map sequences
+        /// </summary>
+        public static void Example4()
+        {
+            const int n = 8;
+
+            var random = new Random(10);
+
+            for (var mapCount = 1; mapCount <= n; mapCount++)
+            {
+                // Create a sequence of 1 or more orthogonal maps
+                var mapSequence = LinFloat64OrthogonalLinearMapSequence.CreateRandomOrthogonal(
+                    random,
+                    n,
+                    mapCount
+                );
+
+                var mapMatrix = 
+                    mapSequence.ToMatrix(n, n);
+
+                // Make sure the result is actually an orthogonal matrix
+                Debug.Assert(
+                    mapMatrix.Determinant().Abs().IsNearOne(1e-7)
+                );
+            
+                // Make sure the sequence contains only pair-wise orthogonal rotations
+                Debug.Assert(
+                    mapSequence.IsNearOrthogonalMapsSequence()
+                );
+
+                var subspaceList = 
+                    mapMatrix.GetSimpleEigenSubspaces();
+
+                Console.WriteLine($"Orthogonal maps number: {mapCount}");
+
+                var j = 1;
+                foreach (var subspace in subspaceList)
+                {
+                    Console.WriteLine($"Subspace {j++}");
+                    Console.WriteLine(subspace);
+                }
+
+                foreach (var rotation in mapSequence.RotationSequence)
+                {
+                    var u = rotation.SourceVector;
+                    var v = rotation.TargetVector;
+
+                    var v1 = mapSequence.MapVector(u);
+                    var v2 = (mapMatrix * u.ToVector(n)).CreateLinVector();
+
+                    // Make sure each rotation is performed independently from the other maps
+                    Debug.Assert(
+                        (v - v1).GetVectorNormSquared().IsNearZero()
+                    );
+
+                    Debug.Assert(
+                        (v - v2).GetVectorNormSquared().IsNearZero()
+                    );
+                
+                    Debug.Assert(
+                        (v1 - v2).GetVectorNormSquared().IsNearZero()
+                    );
+                
+                    // Make sure rotation matrix multiplication is the same as
+                    // map sequence computations
+                    for (var i = 0; i < 100; i++)
+                    {
+                        var x = random.GetFloat64Tuple(n).CreateLinVector();
+
+                        var y1 = mapSequence.MapVector(x);
+                        var y2 = (mapMatrix * x.ToVector(n)).CreateLinVector();
+                
+                        Debug.Assert(
+                            (y1 - y2).GetVectorNormSquared().IsNearZero()
+                        );
+                    }
+                }
+            
+                foreach (var reflection in mapSequence.ReflectionSequence)
+                {
+                    var u = reflection.ReflectionNormal;
+                    var v = -reflection.ReflectionNormal;
+
+                    var v1 = mapSequence.MapVector(u);
+                    var v2 = (mapMatrix * u.ToVector(n)).CreateLinVector();
+
+                    // Make sure each reflection is performed independently from the other maps
+                    Debug.Assert(
+                        (v - v1).GetVectorNormSquared().IsNearZero()
+                    );
+
+                    Debug.Assert(
+                        (v - v2).GetVectorNormSquared().IsNearZero()
+                    );
+                
+                    Debug.Assert(
+                        (v1 - v2).GetVectorNormSquared().IsNearZero()
+                    );
+                
+                    // Make sure rotation matrix multiplication is the same as
+                    // map sequence computations
+                    for (var i = 0; i < 100; i++)
+                    {
+                        var x = random.GetFloat64Tuple(n).CreateLinVector();
+
+                        var y1 = mapSequence.MapVector(x);
+                        var y2 = (mapMatrix * x.ToVector(n)).CreateLinVector();
+                
+                        Debug.Assert(
+                            (y1 - y2).GetVectorNormSquared().IsNearZero()
+                        );
+                    }
+                }
+            }
 
         
-        for (var mapCount = 1; mapCount <= 2 * n; mapCount++)
-        {
-            // Create a rotation sequence of 1 or more general rotations
-            var mapSequence = OrthogonalLinearMapSequence.CreateRandom(
-                random,
-                n,
-                mapCount
-            );
-
-            var mapMatrix = 
-                mapSequence.GetMatrix();
-
-            // Make sure the result is actually an orthogonal matrix
-            Debug.Assert(
-                mapMatrix.Determinant().Abs().IsNearOne(1e-7)
-            );
-            
-            var subspaceList = 
-                mapMatrix.GetSimpleEigenSubspaces();
-
-            Console.WriteLine($"General maps number: {mapCount}");
-
-            var j = 1;
-            foreach (var subspace in subspaceList)
+            for (var mapCount = 1; mapCount <= 2 * n; mapCount++)
             {
-                Console.WriteLine($"Subspace {j++}");
-                Console.WriteLine(subspace);
-            }
-
-            // Make sure matrix multiplication is the same as
-            // map sequence computations
-            for (var i = 0; i < 100; i++)
-            {
-                var x = random.GetFloat64Tuple(n);
-
-                var y1 = mapSequence.MapVector(x);
-                var y2 = (mapMatrix * x.ToVector()).ToTuple();
-                
-                Debug.Assert(
-                    (y1 - y2).GetVectorNormSquared().IsNearZero()
+                // Create a rotation sequence of 1 or more general rotations
+                var mapSequence = LinFloat64OrthogonalLinearMapSequence.CreateRandom(
+                    random,
+                    n,
+                    mapCount
                 );
+
+                var mapMatrix = 
+                    mapSequence.ToMatrix(n, n);
+
+                // Make sure the result is actually an orthogonal matrix
+                Debug.Assert(
+                    mapMatrix.Determinant().Abs().IsNearOne(1e-7)
+                );
+            
+                var subspaceList = 
+                    mapMatrix.GetSimpleEigenSubspaces();
+
+                Console.WriteLine($"General maps number: {mapCount}");
+
+                var j = 1;
+                foreach (var subspace in subspaceList)
+                {
+                    Console.WriteLine($"Subspace {j++}");
+                    Console.WriteLine(subspace);
+                }
+
+                // Make sure matrix multiplication is the same as
+                // map sequence computations
+                for (var i = 0; i < 100; i++)
+                {
+                    var x = random.GetFloat64Tuple(n).CreateLinVector();
+
+                    var y1 = mapSequence.MapVector(x);
+                    var y2 = (mapMatrix * x.ToVector(n)).CreateLinVector();
+                
+                    Debug.Assert(
+                        (y1 - y2).GetVectorNormSquared().IsNearZero()
+                    );
+                }
             }
         }
-    }
 
-    public static void Example5()
-    {
-        const int n = 3;
+        public static void Example5()
+        {
+            const int n = 3;
 
-        var random = new Random(10);
+            var random = new Random(10);
 
-        //var scalingFactorList =
-        //    random
-        //        .GetNumbers(n / 2, -5, 5)
-        //        .ToArray();
+            //var scalingFactorList =
+            //    random
+            //        .GetNumbers(n / 2, -5, 5)
+            //        .ToArray();
 
-        //var scalingVectorList =
-        //    random
-        //        .GetOrthonormalVectors(n, n / 2)
-        //        .Select(v => v.ToArray().CreateTuple())
-        //        .ToArray();
+            //var scalingVectorList =
+            //    random
+            //        .GetOrthonormalVectors(n, n / 2)
+            //        .Select(v => v.ToArray().CreateTuple())
+            //        .ToArray();
 
-        //var scalingSequence = 
-        //    VectorDirectionalScalingSequence.Create(n);
+            //var scalingSequence = 
+            //    VectorDirectionalScalingSequence.Create(n);
 
-        var matrix =
-            //Float64ArrayUtils.CreateClarkeRotationArray(n).ToMatrix();
-            //random.GetOrthogonalMatrix(n);
-            random.GetFloat64Array2D(n, n).ToMatrix();
+            var matrix =
+                //Float64ArrayUtils.CreateClarkeRotationArray(n).ToMatrix();
+                //random.GetOrthogonalMatrix(n);
+                random.GetFloat64Array2D(n, n).ToMatrix();
             //random.GetCirculantColumnArray(n).ToMatrix();
 
-        var qr = matrix.QR();
-        var matrixQ = qr.Q;
-        var matrixR = qr.R;
+            var qr = matrix.QR();
+            var matrixQ = qr.Q;
+            var matrixR = qr.R;
 
-        var sysExpr = 
-            matrix.ToComplex().Evd();
+            var sysExpr = 
+                matrix.ToComplex().Evd();
 
-        var eigenPairCount = 
-            sysExpr.EigenValues.Count;
+            var eigenPairCount = 
+                sysExpr.EigenValues.Count;
 
-        for (var j = 0; j < eigenPairCount; j++)
-        {
-            var eigenValue = sysExpr.EigenValues[j];
-            var eigenVector = sysExpr.EigenVectors.Column(j);
+            for (var j = 0; j < eigenPairCount; j++)
+            {
+                var eigenValue = sysExpr.EigenValues[j];
+                var eigenVector = sysExpr.EigenVectors.Column(j);
 
-            var subspace = new Float64SimpleEigenSubspace(
-                eigenValue, 
-                eigenVector
+                var subspace = new LinFloat64SimpleEigenSubspace(
+                    eigenValue, 
+                    eigenVector
+                );
+
+                Console.WriteLine($"Subspace {j + 1}:");
+                Console.WriteLine($"Eigen Vector Real Part: {eigenVector.Real().ToTuple()}");
+                Console.WriteLine($"Eigen Vector Imag Part: {eigenVector.Imaginary().ToTuple()}");
+                Console.WriteLine(subspace);
+            }
+
+            var mapSequenceQ = 
+                matrixQ.GetBasicLinearMapSequence();
+
+            var mapSequenceR = 
+                matrixR.GetBasicLinearMapSequence();
+
+            Debug.Assert(
+                mapSequenceQ.IsNearOrthogonalMapsSequence()
             );
 
-            Console.WriteLine($"Subspace {j + 1}:");
-            Console.WriteLine($"Eigen Vector Real Part: {eigenVector.Real().ToTuple()}");
-            Console.WriteLine($"Eigen Vector Imag Part: {eigenVector.Imaginary().ToTuple()}");
-            Console.WriteLine(subspace);
-        }
+            Debug.Assert(
+                mapSequenceR.IsNearOrthogonalMapsSequence()
+            );
 
-        var mapSequenceQ = 
-            matrixQ.GetBasicLinearMapSequence();
+            var mapSequenceMatrixQ =
+                mapSequenceQ.ToMatrix(n, n);
 
-        var mapSequenceR = 
-            matrixR.GetBasicLinearMapSequence();
+            var mapSequenceMatrixR =
+                mapSequenceR.ToMatrix(n, n);
 
-        Debug.Assert(
-            mapSequenceQ.IsNearOrthogonalMapsSequence()
-        );
-
-        Debug.Assert(
-            mapSequenceR.IsNearOrthogonalMapsSequence()
-        );
-
-        var mapSequenceMatrixQ =
-            mapSequenceQ.GetMatrix();
-
-        var mapSequenceMatrixR =
-            mapSequenceR.GetMatrix();
-
-        Console.WriteLine("Original Matrix:");
-        Console.WriteLine(matrix.ToMatrixString());
-        Console.WriteLine();
-
-        Console.WriteLine("Original Matrix Q:");
-        Console.WriteLine(matrixQ.ToMatrixString());
-        Console.WriteLine();
-
-        Console.WriteLine("Original Matrix R:");
-        Console.WriteLine(matrixR.ToMatrixString());
-        Console.WriteLine();
-
-        Console.WriteLine("Mapping Matrix Q:");
-        Console.WriteLine(mapSequenceMatrixQ.ToMatrixString());
-        Console.WriteLine();
-
-        Console.WriteLine("Mapping Matrix R:");
-        Console.WriteLine(mapSequenceMatrixR.ToMatrixString());
-        Console.WriteLine();
-
-        //Console.WriteLine("Mapping Matrix 1:");
-        //Console.WriteLine(mapSequenceMatrix1.ToMatrixString());
-        //Console.WriteLine();
-
-        //Debug.Assert(
-        //    (mapSequenceMatrix1 - mapSequenceMatrix).L2Norm().IsNearZero()
-        //);
-
-        Debug.Assert(
-            (matrixQ - mapSequenceMatrixQ).L2Norm().IsNearZero()
-        );
-
-        Debug.Assert(
-            (matrixR - mapSequenceMatrixR).L2Norm().IsNearZero()
-        );
-        
-        for (var k = 0; k < mapSequenceQ.RotationSequence.Count; k++)
-        {
-            var rotation = mapSequenceQ.RotationSequence[k];
-
-            var sourceVector = 
-                rotation.SourceVector;
-
-            var targetVector = 
-                rotation.TargetVector;
-
-            Console.WriteLine($"Rotation {k + 1}:");
-            Console.WriteLine($"Source Vector: {sourceVector}");
-            Console.WriteLine($"Target Vector: {targetVector}");
+            Console.WriteLine("Original Matrix:");
+            Console.WriteLine(matrix.ToMatrixString());
             Console.WriteLine();
-        }
 
-        for (var k = 0; k < mapSequenceQ.ReflectionSequence.Count; k++)
-        {
-            var reflection = mapSequenceQ.ReflectionSequence[k];
+            Console.WriteLine("Original Matrix Q:");
+            Console.WriteLine(matrixQ.ToMatrixString());
+            Console.WriteLine();
+
+            Console.WriteLine("Original Matrix R:");
+            Console.WriteLine(matrixR.ToMatrixString());
+            Console.WriteLine();
+
+            Console.WriteLine("Mapping Matrix Q:");
+            Console.WriteLine(mapSequenceMatrixQ.ToMatrixString());
+            Console.WriteLine();
+
+            Console.WriteLine("Mapping Matrix R:");
+            Console.WriteLine(mapSequenceMatrixR.ToMatrixString());
+            Console.WriteLine();
+
+            //Console.WriteLine("Mapping Matrix 1:");
+            //Console.WriteLine(mapSequenceMatrix1.ToMatrixString());
+            //Console.WriteLine();
+
+            //Debug.Assert(
+            //    (mapSequenceMatrix1 - mapSequenceMatrix).L2Norm().IsNearZero()
+            //);
+
+            Debug.Assert(
+                (matrixQ - mapSequenceMatrixQ).L2Norm().IsNearZero()
+            );
+
+            Debug.Assert(
+                (matrixR - mapSequenceMatrixR).L2Norm().IsNearZero()
+            );
+        
+            for (var k = 0; k < mapSequenceQ.RotationSequence.Count; k++)
+            {
+                var rotation = mapSequenceQ.RotationSequence[k];
+
+                var sourceVector = 
+                    rotation.SourceVector;
+
+                var targetVector = 
+                    rotation.TargetVector;
+
+                Console.WriteLine($"Rotation {k + 1}:");
+                Console.WriteLine($"Source Vector: {sourceVector}");
+                Console.WriteLine($"Target Vector: {targetVector}");
+                Console.WriteLine();
+            }
+
+            for (var k = 0; k < mapSequenceQ.ReflectionSequence.Count; k++)
+            {
+                var reflection = mapSequenceQ.ReflectionSequence[k];
             
-            var normalVector = 
-                reflection.ReflectionNormal;
+                var normalVector = 
+                    reflection.ReflectionNormal;
 
-            Console.WriteLine($"Reflection {k + 1}:");
-            Console.WriteLine($"Normal Vector: {normalVector}");
-            Console.WriteLine();
-        }
+                Console.WriteLine($"Reflection {k + 1}:");
+                Console.WriteLine($"Normal Vector: {normalVector}");
+                Console.WriteLine();
+            }
 
         
-        for (var k = 0; k < mapSequenceR.RotationSequence.Count; k++)
-        {
-            var rotation = mapSequenceR.RotationSequence[k];
+            for (var k = 0; k < mapSequenceR.RotationSequence.Count; k++)
+            {
+                var rotation = mapSequenceR.RotationSequence[k];
 
-            var sourceVector = 
-                rotation.SourceVector;
+                var sourceVector = 
+                    rotation.SourceVector;
 
-            var targetVector = 
-                rotation.TargetVector;
+                var targetVector = 
+                    rotation.TargetVector;
 
-            Console.WriteLine($"Rotation {k + 1}:");
-            Console.WriteLine($"Source Vector: {sourceVector}");
-            Console.WriteLine($"Target Vector: {targetVector}");
-            Console.WriteLine();
-        }
+                Console.WriteLine($"Rotation {k + 1}:");
+                Console.WriteLine($"Source Vector: {sourceVector}");
+                Console.WriteLine($"Target Vector: {targetVector}");
+                Console.WriteLine();
+            }
 
-        for (var k = 0; k < mapSequenceR.ReflectionSequence.Count; k++)
-        {
-            var reflection = mapSequenceR.ReflectionSequence[k];
+            for (var k = 0; k < mapSequenceR.ReflectionSequence.Count; k++)
+            {
+                var reflection = mapSequenceR.ReflectionSequence[k];
             
-            var normalVector = 
-                reflection.ReflectionNormal;
+                var normalVector = 
+                    reflection.ReflectionNormal;
 
-            Console.WriteLine($"Reflection {k + 1}:");
-            Console.WriteLine($"Normal Vector: {normalVector}");
-            Console.WriteLine();
+                Console.WriteLine($"Reflection {k + 1}:");
+                Console.WriteLine($"Normal Vector: {normalVector}");
+                Console.WriteLine();
+            }
+        
+            //var subspaceList = 
+            //    matrix.GetSimpleEigenSubspaces();
+        
+            //var i = 1;
+            //foreach (var subspace in subspaceList)
+            //{
+            //    Console.WriteLine($"Subspace {i}:");
+            //    Console.WriteLine(subspace);
+
+            //    i++;
+            //}
         }
-        
-        //var subspaceList = 
-        //    matrix.GetSimpleEigenSubspaces();
-        
-        //var i = 1;
-        //foreach (var subspace in subspaceList)
-        //{
-        //    Console.WriteLine($"Subspace {i}:");
-        //    Console.WriteLine(subspace);
 
-        //    i++;
-        //}
     }
-
 }

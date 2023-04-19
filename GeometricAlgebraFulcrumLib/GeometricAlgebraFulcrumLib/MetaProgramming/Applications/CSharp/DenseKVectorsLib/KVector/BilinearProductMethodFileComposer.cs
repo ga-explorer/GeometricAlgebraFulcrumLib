@@ -1,5 +1,5 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Expressions;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Languages;
@@ -11,16 +11,16 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
     internal sealed class BilinearProductMethodFileComposer : 
         GaFuLLibraryMetaContextFileComposerBase
     {
-        private GaKVector<IMetaExpressionAtomic> _inputKVector1;
-        private GaKVector<IMetaExpressionAtomic> _inputKVector2;
-        private GaKVector<IMetaExpressionAtomic> _outputKVector;
+        private XGaKVector<IMetaExpressionAtomic> _inputKVector1;
+        private XGaKVector<IMetaExpressionAtomic> _inputKVector2;
+        private XGaKVector<IMetaExpressionAtomic> _outputKVector;
         private readonly GaFuLLanguageOperationSpecs _operationSpecs;
-        private readonly uint _inputGrade1;
-        private readonly uint _inputGrade2;
-        private readonly uint _outputGrade;
+        private readonly int _inputGrade1;
+        private readonly int _inputGrade2;
+        private readonly int _outputGrade;
 
 
-        internal BilinearProductMethodFileComposer(GaFuLLibraryComposer libGen, GaFuLLanguageOperationSpecs opSpecs, uint inGrade1, uint inGrade2)
+        internal BilinearProductMethodFileComposer(GaFuLLibraryComposer libGen, GaFuLLanguageOperationSpecs opSpecs, int inGrade1, int inGrade2)
             : base(libGen)
         {
             _operationSpecs = opSpecs;
@@ -29,7 +29,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
             _inputGrade2 = inGrade2;
 
             var (isValid, outputGrade) = opSpecs.GetKVectorsBilinearProductGrade(
-                VSpaceDimension,
+                VSpaceDimensions,
                 inGrade1, 
                 inGrade2
             );
@@ -40,7 +40,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
             _outputGrade = outputGrade;
         }
         
-        internal BilinearProductMethodFileComposer(GaFuLLibraryComposer libGen, GaFuLLanguageOperationSpecs opSpecs, uint inGrade1, uint inGrade2, uint outGrade)
+        internal BilinearProductMethodFileComposer(GaFuLLibraryComposer libGen, GaFuLLanguageOperationSpecs opSpecs, int inGrade1, int inGrade2, int outGrade)
             : base(libGen)
         {
             _operationSpecs = opSpecs;
@@ -55,13 +55,13 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
         protected override void DefineContextParameters(MetaContext context)
         {
             _inputKVector1 = context.ParameterVariablesFactory.CreateDenseKVector(
-                VSpaceDimension,
+                VSpaceDimensions,
                 _inputGrade1,
                 index => $"mv1Scalar{index}"
             );
 
             _inputKVector2 = context.ParameterVariablesFactory.CreateDenseKVector(
-                VSpaceDimension,
+                VSpaceDimensions,
                 _inputGrade2,
                 index => $"mv2Scalar{index}"
             );
@@ -72,7 +72,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
             var mv = _operationSpecs.OperationKind switch
             {
                 GaFuLLanguageOperationKind.BinaryOuterProduct =>
-                    _inputKVector1.Op(_inputKVector2).AsMultivector(),
+                    _inputKVector1.Op(_inputKVector2),
 
                 GaFuLLanguageOperationKind.BinaryGeometricProduct =>
                     _operationSpecs.IsEuclidean 
@@ -81,28 +81,28 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
 
                 GaFuLLanguageOperationKind.BinaryGeometricProductDual =>
                     _operationSpecs.IsEuclidean 
-                        ? _inputKVector1.EGp(_inputKVector2).EDual()
-                        : _inputKVector1.Gp(_inputKVector2).Dual(),
+                        ? _inputKVector1.EGp(_inputKVector2).EDual(VSpaceDimensions)
+                        : _inputKVector1.Gp(_inputKVector2).Dual(VSpaceDimensions),
 
                 GaFuLLanguageOperationKind.BinaryLeftContractionProduct =>
                     _operationSpecs.IsEuclidean 
-                        ? _inputKVector1.ELcp(_inputKVector2).AsMultivector()
-                        : _inputKVector1.Lcp(_inputKVector2).AsMultivector(),
+                        ? _inputKVector1.ELcp(_inputKVector2)
+                        : _inputKVector1.Lcp(_inputKVector2),
 
                 GaFuLLanguageOperationKind.BinaryRightContractionProduct =>
                     _operationSpecs.IsEuclidean 
-                        ? _inputKVector1.ERcp(_inputKVector2).AsMultivector()
-                        : _inputKVector1.Rcp(_inputKVector2).AsMultivector(),
+                        ? _inputKVector1.ERcp(_inputKVector2)
+                        : _inputKVector1.Rcp(_inputKVector2),
 
                 GaFuLLanguageOperationKind.BinaryFatDotProduct =>
                     _operationSpecs.IsEuclidean 
-                        ? _inputKVector1.EFdp(_inputKVector2).AsMultivector()
-                        : _inputKVector1.Fdp(_inputKVector2).AsMultivector(),
+                        ? _inputKVector1.EFdp(_inputKVector2)
+                        : _inputKVector1.Fdp(_inputKVector2),
 
                 GaFuLLanguageOperationKind.BinaryHestenesInnerProduct =>
                     _operationSpecs.IsEuclidean 
-                        ? _inputKVector1.EHip(_inputKVector2).AsMultivector()
-                        : _inputKVector1.Hip(_inputKVector2).AsMultivector(),
+                        ? _inputKVector1.EHip(_inputKVector2)
+                        : _inputKVector1.Hip(_inputKVector2),
 
                 _ => throw new InvalidOperationException()
             };
@@ -115,17 +115,17 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
         protected override void DefineContextExternalNames(MetaContext context)
         {
             context.SetExternalNamesByTermIndex(
-                _inputKVector1.KVectorStorage,
+                _inputKVector1,
                 index => $"mv1[{index}]"
             );
 
             context.SetExternalNamesByTermIndex(
-                _inputKVector2.KVectorStorage,
+                _inputKVector2,
                 index => $"mv2[{index}]"
             );
 
             context.SetExternalNamesByTermIndex(
-                _outputKVector.KVectorStorage,
+                _outputKVector,
                 index => $"c[{index}]"
             );
 
@@ -143,8 +143,8 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
             var computationsText = 
                 GenerateCode();
 
-            var kvSpaceDimension = 
-                this.KVectorSpaceDimension(_outputGrade);
+            var kvSpaceDimensions = 
+                VSpaceDimensions.KVectorSpaceDimension(_outputGrade);
 
             var methodName = _operationSpecs.GetName(
                 _inputGrade1, _inputGrade2, _outputGrade
@@ -153,7 +153,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
             TextComposer.AppendAtNewLine(
                 Templates["bilinearproduct"],
                 "name", methodName,
-                "num", kvSpaceDimension,
+                "num", kvSpaceDimensions,
                 "double", GeoLanguage.ScalarTypeName,
                 "computations", computationsText
             );

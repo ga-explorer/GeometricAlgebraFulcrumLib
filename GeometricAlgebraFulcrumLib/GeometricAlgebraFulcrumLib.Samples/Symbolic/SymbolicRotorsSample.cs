@@ -1,18 +1,18 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors;
-using GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.LinearMaps.Outermorphisms;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.LinearMaps.Rotors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Subspaces;
 using GeometricAlgebraFulcrumLib.Mathematica;
+using GeometricAlgebraFulcrumLib.Mathematica.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Mathematica.Mathematica;
 using GeometricAlgebraFulcrumLib.Mathematica.Mathematica.ExprFactory;
 using GeometricAlgebraFulcrumLib.Mathematica.Processors;
-using GeometricAlgebraFulcrumLib.Mathematica.Text;
-using GeometricAlgebraFulcrumLib.Processors;
-using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Text;
 using Wolfram.NETLink;
+using RGaKVectorUtils = GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.RGaKVectorUtils;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Basis;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Symbolic
 {
@@ -20,53 +20,53 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic
     {
         // This is a pre-defined scalar processor for symbolic
         // Wolfram Mathematica scalars using Expr objects
-        public static ScalarAlgebraMathematicaProcessor ScalarProcessor { get; }
-            = ScalarAlgebraMathematicaProcessor.DefaultProcessor;
+        public static ScalarProcessorExpr ScalarProcessor { get; }
+            = ScalarProcessorExpr.DefaultProcessor;
             
         // Create a 6-dimensional Euclidean geometric algebra processor based on the
         // selected scalar processor
-        public static GeometricAlgebraEuclideanProcessor<Expr> GeometricProcessor { get; } 
-            = ScalarProcessor.CreateGeometricAlgebraEuclideanProcessor(3);
+        public static RGaProcessor<Expr> GeometricProcessor { get; } 
+            = ScalarProcessor.CreateEuclideanRGaProcessor();
 
         // This is a pre-defined text generator for displaying multivectors
         // with symbolic Wolfram Mathematica scalars using Expr objects
-        public static TextMathematicaComposer TextComposer { get; }
-            = TextMathematicaComposer.DefaultComposer;
+        public static TextComposerExpr TextComposer { get; }
+            = TextComposerExpr.DefaultComposer;
 
         // This is a pre-defined LaTeX generator for displaying multivectors
         // with symbolic Wolfram Mathematica scalars using Expr objects
-        public static LaTeXMathematicaComposer LaTeXComposer { get; }
-            = LaTeXMathematicaComposer.DefaultComposer;
+        public static LaTeXComposerExpr LaTeXComposer { get; }
+            = LaTeXComposerExpr.DefaultComposer;
 
 
-        private static GaVector<Expr> CreateVector3D(string name, string subscript)
+        private static RGaVector<Expr> CreateVector3D(string name, string subscript)
         {
             return CreateVector(name, subscript, 3);
         }
 
-        private static GaVector<Expr> CreateVector3D(string name)
+        private static RGaVector<Expr> CreateVector3D(string name)
         {
             return CreateVector(name, 3);
         }
 
-        private static GaVector<Expr> CreateVector(string name, string subscript, int termsCount)
+        private static RGaVector<Expr> CreateVector(string name, string subscript, int termsCount)
         {
             var vector =
-                $"Subscript[{name},{subscript}1]".ToExpr() * GeometricProcessor.CreateVectorBasis(0);
+                $"Subscript[{name},{subscript}1]".ToExpr() * GeometricProcessor.CreateVector(0);
 
             for (var i = 2; i <= termsCount; i++)
-                vector += $"Subscript[{name},{subscript}{i}]".ToExpr() * GeometricProcessor.CreateVectorBasis(i - 1);
+                vector += $"Subscript[{name},{subscript}{i}]".ToExpr() * GeometricProcessor.CreateVector(i - 1);
 
             return vector;
         }
 
-        private static GaVector<Expr> CreateVector(string name, int termsCount)
+        private static RGaVector<Expr> CreateVector(string name, int termsCount)
         {
             var vector =
-                $"Subscript[{name},1]".ToExpr() * GeometricProcessor.CreateVectorBasis(0);
+                $"Subscript[{name},1]".ToExpr() * GeometricProcessor.CreateVector(0);
 
             for (var i = 2; i <= termsCount; i++)
-                vector += $"Subscript[{name},{i}]".ToExpr() * GeometricProcessor.CreateVectorBasis(i - 1);
+                vector += $"Subscript[{name},{i}]".ToExpr() * GeometricProcessor.CreateVector(i - 1);
 
             return vector;
         }
@@ -78,9 +78,9 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic
         /// </summary>
         public static void Example1()
         {
-            var e1 = GeometricProcessor.CreateVectorBasis(0);
-            var e2 = GeometricProcessor.CreateVectorBasis(1);
-            var e3 = GeometricProcessor.CreateVectorBasis(2);
+            var e1 = GeometricProcessor.CreateVector(0);
+            var e2 = GeometricProcessor.CreateVector(1);
+            var e3 = GeometricProcessor.CreateVector(2);
             var pseudoScalar = e1.Gp(e2).Gp(e3).GetKVectorPart(3);
             var pseudoScalarInverse = pseudoScalar.Inverse();
 
@@ -97,7 +97,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic
             var rotationAxis = rotationBlade.Gp(pseudoScalarInverse).GetVectorPart();
 
             // Compute the rotor from the angle and 2-blade of rotation
-            var rotor = GeometricProcessor.CreatePureRotor(angle, rotationBlade);
+            var rotor = rotationBlade.CreatePureRotor(angle);
 
             // Make sure the eigen vector and eigen 2-blade of rotation are correct
             
@@ -110,8 +110,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic
             var b = rotor.OmMap(a);
 
             // Compute the projection of a and b on rotation 2-blade
-            var pa = a.ProjectOn(rotationBlade.GetSubspace());
-            var pb = b.ProjectOn(rotationBlade.GetSubspace());
+            var pa = a.ProjectOn(rotationBlade.ToSubspace());
+            var pb = b.ProjectOn(rotationBlade.ToSubspace());
 
             // Compute angle between projected vectors, the result must equal
             // the original angle of rotation of the rotor
@@ -141,11 +141,11 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic
         /// </summary>
         public static void Example2()
         {
-            var e1 = GeometricProcessor.CreateVectorBasis(0);
-            var e2 = GeometricProcessor.CreateVectorBasis(1);
-            var e3 = GeometricProcessor.CreateVectorBasis(2);
+            var e1 = GeometricProcessor.CreateVector(0);
+            var e2 = GeometricProcessor.CreateVector(1);
+            var e3 = GeometricProcessor.CreateVector(2);
             var pseudoScalar = e1.Gp(e2).Gp(e3).GetKVectorPart(3);
-            var pseudoScalarInverse = pseudoScalar.Inverse();
+            var pseudoScalarInverse = RGaKVectorUtils.Inverse(pseudoScalar);
 
             var angle = @"\[Theta]".ToExpr();
 
@@ -155,7 +155,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic
                 rotationAxis.Gp(pseudoScalarInverse).GetBivectorPart();
             
             // Compute the rotor from the angle and 2-blade of rotation
-            var rotor = GeometricProcessor.CreatePureRotor(angle, rotationBlade);
+            var rotor = rotationBlade.CreatePureRotor(angle);
 
             // Make sure the eigen vector and eigen 2-blade of rotation are correct
             var diff1 = rotor.OmMap(rotationAxis) - rotationAxis;
@@ -167,8 +167,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic
             var b = rotor.OmMap(a);
 
             // Compute the projection of a and b on rotation 2-blade
-            var pa = a.ProjectOn(rotationBlade.GetSubspace());
-            var pb = b.ProjectOn(rotationBlade.GetSubspace());
+            var pa = a.ProjectOn(rotationBlade.ToSubspace());
+            var pb = b.ProjectOn(rotationBlade.ToSubspace());
 
             // Compute angle between projected vectors, the result must equal
             // the original angle of rotation of the rotor
@@ -198,11 +198,11 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic
         /// </summary>
         public static void Example3()
         {
-            var e1 = GeometricProcessor.CreateVectorBasis(0);
-            var e2 = GeometricProcessor.CreateVectorBasis(1);
-            var e3 = GeometricProcessor.CreateVectorBasis(2);
+            var e1 = GeometricProcessor.CreateVector(0);
+            var e2 = GeometricProcessor.CreateVector(1);
+            var e3 = GeometricProcessor.CreateVector(2);
             var pseudoScalar = e1.Gp(e2).Gp(e3).GetKVectorPart(3);
-            var pseudoScalarInverse = pseudoScalar.Inverse();
+            var pseudoScalarInverse = RGaKVectorUtils.Inverse(pseudoScalar);
 
             var u = 
                 "Subscript[u,1]".ToExpr() * e1 +
@@ -219,14 +219,10 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic
                 u.ESp(v).ArcCos();
 
             // Compute the rotor from the angle and 2-blade of rotation
-            var rotor = GeometricProcessor.CreatePureRotor(
-                u, 
-                v, 
-                true
-            );
+            var rotor = u.CreatePureRotor(v, true);
 
             var rotationBlade = 
-                GeometricProcessor.CreateBivector(rotor.Multivector.GetBivectorPart());
+                rotor.Multivector.GetBivectorPart();
 
             var rotationAxis = 
                 rotationBlade.Gp(pseudoScalarInverse).GetVectorPart();
@@ -249,8 +245,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic
             var b = rotor.OmMap(a);
 
             // Compute the projection of a and b on rotation 2-blade
-            var pa = a.ProjectOn(rotationBlade.GetSubspace());
-            var pb = b.ProjectOn(rotationBlade.GetSubspace());
+            var pa = a.ProjectOn(rotationBlade.ToSubspace());
+            var pb = b.ProjectOn(rotationBlade.ToSubspace());
 
             // Compute angle between projected vectors, the result must equal
             // the original angle of rotation of the rotor
@@ -284,9 +280,9 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic
         /// </summary>
         public static void Example4()
         {
-            var e1 = GeometricProcessor.CreateVectorBasis(0);
-            var e2 = GeometricProcessor.CreateVectorBasis(1);
-            var e3 = GeometricProcessor.CreateVectorBasis(2);
+            var e1 = GeometricProcessor.CreateVector(0);
+            var e2 = GeometricProcessor.CreateVector(1);
+            var e3 = GeometricProcessor.CreateVector(2);
             var pseudoScalar = e1.Gp(e2).Gp(e3).GetKVectorPart(3);
             var pseudoScalarInverse = pseudoScalar.Inverse();
 
@@ -302,27 +298,21 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic
 
             // Define a rotor with angle theta in the plane orthogonal to v2 - v1
             var rotorSBlade = (v2 - v1).Gp(pseudoScalarInverse).GetBivectorPart();
-            var rotorS = GeometricProcessor.CreatePureRotor(angleTheta, rotorSBlade);
+            var rotorS = rotorSBlade.CreatePureRotor(angleTheta);
 
             // Create pure rotor that rotates v1 to v2 at theta = 0
-            var rotor0 = GeometricProcessor.CreatePureRotor(
-                v1, 
-                v2,
-                true
-            );
+            var rotor0 = v1.CreatePureRotor(v2, true);
 
             // The actual plane of rotation is made by rotating the plane of v1,v2
             // by angle theta in the plane orthogonal to v2 - v1
             var rotationBlade = 
-                GeometricProcessor.CreateBivector(
-                    rotorS
-                        .OmMap(v2.Op(v1))
-                        .FullSimplifyScalars(assumption)
-                );
+                rotorS
+                    .OmMap(v2.Op(v1))
+                    .FullSimplifyScalars(assumption);
             
             // Project v1, v2 into the actual plane of rotation
             var rotationBladeSubspace = 
-                rotationBlade.GetSubspace();
+                rotationBlade.ToSubspace();
 
             var u1 = v1.ProjectOn(rotationBladeSubspace);
             var u2 = v2.ProjectOn(rotationBladeSubspace);
@@ -331,25 +321,22 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic
             var rotationAngle = 
                 u1.GetEuclideanAngle(u2).ScalarValue.Simplify(assumption);
 
-            var rotor = GeometricProcessor.CreatePureRotor(
-                rotationAngle,
-                rotationBlade
-            );
+            var rotor = rotationBlade.CreatePureRotor(rotationAngle);
 
             var rotationAxis =
                 rotationBlade.Gp(pseudoScalarInverse).GetVectorPart().FullSimplifyScalars(assumption);
 
             // Make sure v1 rotates into v2 using the pure rotor at theta = 0
             var diff1 =
-                (rotor0.OmMap(v1) - v2).VectorStorage.FullSimplifyScalars();
+                (rotor0.OmMap(v1) - v2).FullSimplifyScalars();
 
             // Make sure u1 rotates into u2 using the actual rotor
             var diff2 =
-                (rotor.OmMap(u1) - u2).VectorStorage.FullSimplifyScalars();
+                (rotor.OmMap(u1) - u2).FullSimplifyScalars();
 
             // Make sure v1 rotates into v2 using the actual rotor
             var diff3 =
-                (rotor.OmMap(v1) - v2).VectorStorage.FullSimplifyScalars();
+                (rotor.OmMap(v1) - v2).FullSimplifyScalars();
 
             Console.WriteLine($@"$v_1 = {LaTeXComposer.GetMultivectorText(v1)}$");
             Console.WriteLine($@"$v_2 = {LaTeXComposer.GetMultivectorText(v2)}$");
@@ -371,9 +358,9 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic
         /// </summary>
         public static void Example5()
         {
-            var e1 = GeometricProcessor.CreateVectorBasis(0);
-            var e2 = GeometricProcessor.CreateVectorBasis(1);
-            var e3 = GeometricProcessor.CreateVectorBasis(2);
+            var e1 = GeometricProcessor.CreateVector(0);
+            var e2 = GeometricProcessor.CreateVector(1);
+            var e3 = GeometricProcessor.CreateVector(2);
             var pseudoScalar = e1.Op(e2).Op(e3);
             var pseudoScalarInverse = pseudoScalar.Inverse();
 
@@ -392,14 +379,10 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic
             var rotorSBlade = (v2 - v1).Gp(pseudoScalarInverse).GetBivectorPart();
 
             // Define parametric rotor S
-            var rotorS = GeometricProcessor.CreatePureRotor(angleTheta, rotorSBlade);
+            var rotorS = rotorSBlade.CreatePureRotor(angleTheta);
 
             // Create pure rotor that rotates v1 to v2 at theta = 0
-            var rotor0 = GeometricProcessor.CreatePureRotor(
-                v1, 
-                v2,
-                true
-            );
+            var rotor0 = v1.CreatePureRotor(v2, true);
 
             
             // Define parametric angle of rotation
@@ -413,43 +396,32 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic
                     .OmMap(v2.Op(v1))
                     .FullSimplifyScalars(assumption);
             
-            var rotor = GeometricProcessor.CreatePureRotor(
-                rotorAngle,
-                rotorBlade
-            );
+            var rotor = rotorBlade.CreatePureRotor(rotorAngle);
 
             var rotorAxis =
                 rotorBlade.Gp(pseudoScalarInverse).GetVectorPart().FullSimplifyScalars(assumption);
 
             // Make sure v1 rotates into v2 using the pure rotor at theta = 0
             var diff1 =
-                (rotor0.OmMap(v1) - v2).VectorStorage.FullSimplifyScalars();
+                (rotor0.OmMap(v1) - v2).FullSimplifyScalars();
             
             // Make sure v1 rotates into v2 using the actual rotor
             var diff2 =
-                (rotor.OmMap(v1) - v2).VectorStorage.FullSimplifyScalars();
+                (rotor.OmMap(v1) - v2).FullSimplifyScalars();
 
             var rotor0A = 
-                GeometricProcessor.CreateParametricPureRotor3D(
-                    v1, 
-                    v2, 
-                    Expr.INT_ZERO
-                ).Multivector;
+                v1.CreateParametricPureRotor3D(v2, Expr.INT_ZERO).Multivector;
 
             var rotorA = 
-                GeometricProcessor.CreateParametricPureRotor3D(
-                    v1, 
-                    v2, 
-                    angleTheta
-                ).Multivector;
+                v1.CreateParametricPureRotor3D(v2, angleTheta).Multivector;
 
             // This should be 0
             var diff3 =
-                (rotor.Multivector - rotorA).MultivectorStorage.FullSimplifyScalars(assumption);
+                (rotor.Multivector - rotorA).FullSimplifyScalars(assumption);
 
             // This should be 0
             var diff4 =
-                (rotor0.Multivector - rotor0A).MultivectorStorage.FullSimplifyScalars(assumption);
+                (rotor0.Multivector - rotor0A).FullSimplifyScalars(assumption);
             
             Console.WriteLine($@"$v_1 = {LaTeXComposer.GetMultivectorText(v1)}$");
             Console.WriteLine($@"$v_2 = {LaTeXComposer.GetMultivectorText(v2)}$");
@@ -471,9 +443,9 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic
         /// </summary>
         public static void Example6()
         {
-            var e1 = GeometricProcessor.CreateVectorBasis(0);
-            var e2 = GeometricProcessor.CreateVectorBasis(1);
-            var e3 = GeometricProcessor.CreateVectorBasis(2);
+            var e1 = GeometricProcessor.CreateVector(0);
+            var e2 = GeometricProcessor.CreateVector(1);
+            var e3 = GeometricProcessor.CreateVector(2);
 
             var a = CreateVector3D("a");
             var b = CreateVector3D("b");
@@ -486,10 +458,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic
 
             var rotationAngle = @"\[Theta]".ToExpr();
 
-            var rotor = GeometricProcessor.CreatePureRotor(
-                rotationAngle, 
-                rotationBlade
-            );
+            var rotor = rotationBlade.CreatePureRotor(rotationAngle);
 
             var ra = rotor.OmMap(a);
             var rb = rotor.OmMap(b);
@@ -513,7 +482,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic
         {
             var rotorA =
                 "Subscript[a,0]".ToExpr() +
-                GeometricProcessor.CreateBivector(
+                GeometricProcessor.CreateBivector3D(
                     "Subscript[a,12]".ToExpr(),
                     "Subscript[a,13]".ToExpr(),
                     "Subscript[a,23]".ToExpr()
@@ -521,7 +490,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic
 
             var rotorB =
                 "Subscript[b,0]".ToExpr() +
-                GeometricProcessor.CreateBivector(
+                GeometricProcessor.CreateBivector3D(
                     "Subscript[b,12]".ToExpr(),
                     "Subscript[b,13]".ToExpr(),
                     "Subscript[b,23]".ToExpr()
@@ -562,10 +531,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic
                 GeometricProcessor.CreateVector("Subscript[v,1]", "Subscript[v,2]", "Subscript[v,3]");
             //GeometricProcessor.CreateVector(2, 1, -1);
 
-            var scaledRotor = GeometricProcessor.CreateScaledPureRotor(
-                u, 
-                v
-            );
+            var scaledRotor = u.CreateScaledPureRotor(v);
 
             var scaledRotorInv = 
                 scaledRotor.GetPureScaledRotorInverse();
@@ -589,7 +555,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic
         /// </summary>
         public static void Example9()
         {
-            var axis = Axis.NegativeZ;
+            var axis = LinSignedBasisVector.NegativeZ;
             var u = 
                 GeometricProcessor.CreateVector(
                     "Subscript[u,1]", 
@@ -613,7 +579,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic
 
         public static void Example10()
         {
-            var e3 = GeometricProcessor.CreateVectorBasis(2);
+            var e3 = GeometricProcessor.CreateVector(2);
 
             var v = 
                 GeometricProcessor.CreateVector(
@@ -650,9 +616,11 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic
             ScalarProcessor.SimplificationFunc =
                 expr => expr.FullSimplify();
 
-            var e1 = GeometricProcessor.CreateVectorBasis(0);
-            var e2 = GeometricProcessor.CreateVectorBasis(1);
-            var e3 = GeometricProcessor.CreateVectorBasis(2);
+            var vSpaceDimensions = 3;
+
+            var e1 = GeometricProcessor.CreateVector(0);
+            var e2 = GeometricProcessor.CreateVector(1);
+            var e3 = GeometricProcessor.CreateVector(2);
             var pseudoScalar = e1.Gp(e2).Gp(e3).GetKVectorPart(3);
             var pseudoScalarInverse = pseudoScalar.Inverse();
 
@@ -669,13 +637,10 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic
             foreach (var u in uVectors)
             {
                 // Compute the rotor from the angle and 2-blade of rotation
-                var rotor = GeometricProcessor.CreatePureRotor(
-                    u, 
-                    v, 
-                    true
-                );
+                var rotor = u.CreatePureRotor(v, true);
 
-                var matrix = rotor.GetVectorOmMappingMatrix();
+                var matrix = 
+                    rotor.GetVectorMapPart(vSpaceDimensions).ToArray(vSpaceDimensions);
 
                 // Create a general vector a and find its rotation b using rotor
                 var a = 

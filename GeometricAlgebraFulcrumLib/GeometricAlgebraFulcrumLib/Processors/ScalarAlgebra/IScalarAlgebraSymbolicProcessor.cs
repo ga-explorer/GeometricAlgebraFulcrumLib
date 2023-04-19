@@ -1,10 +1,11 @@
-﻿using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
+﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Expressions;
 
 namespace GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra
 {
     public interface IScalarAlgebraSymbolicProcessor<T> :
-        IScalarAlgebraProcessor<T>
+        IScalarProcessor<T>
     {
         T Simplify(T scalar);
 

@@ -1,15 +1,16 @@
-﻿namespace GraphicsComposerLib.Rendering.BabylonJs.Constants;
-
-public enum GrBabylonJsNamedColor3
+﻿namespace GraphicsComposerLib.Rendering.BabylonJs.Constants
 {
-    Black,
-    White,
-    Blue,
-    Gray,
-    Green,
-    Red,
-    Yellow,
-    Magenta,
-    Purple,
-    Teal
+    public enum GrBabylonJsNamedColor3
+    {
+        Black,
+        White,
+        Blue,
+        Gray,
+        Green,
+        Red,
+        Yellow,
+        Magenta,
+        Purple,
+        Teal
+    }
 }

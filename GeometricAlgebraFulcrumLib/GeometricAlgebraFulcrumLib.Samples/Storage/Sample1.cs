@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
-using GeometricAlgebraFulcrumLib.Processors;
-using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTraversal.Products;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Text;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.GuidedBinaryTraversal.Products;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
+using GeometricAlgebraFulcrumLib.MathBase.Text;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Storage
 {
@@ -13,12 +13,13 @@ namespace GeometricAlgebraFulcrumLib.Samples.Storage
         public static void Execute()
         {
             var vSpaceDimensions = 5;
-            var scalarProcessor = ScalarAlgebraFloat64Processor.DefaultProcessor.CreateGeometricAlgebraEuclideanProcessor(10);
-            var textComposer = TextFloat64Composer.DefaultComposer;
+            var scalarProcessor = ScalarProcessorFloat64.DefaultProcessor;
+            var processor = scalarProcessor.CreateEuclideanRGaProcessor();
+            var textComposer = TextComposerFloat64.DefaultComposer;
 
             var randomGenerator = new Random(10);
 
-            var vectorStorage1 = scalarProcessor.CreateVector(
+            var vectorStorage1 = processor.CreateVector(
                 Enumerable
                     .Range(0, vSpaceDimensions)
                     .ToDictionary(
@@ -27,7 +28,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Storage
                     )
             );
 
-            var vectorStorage2 = scalarProcessor.CreateVector(
+            var vectorStorage2 = processor.CreateVector(
                 Enumerable
                     .Range(0, vSpaceDimensions - 2)
                     .ToDictionary(
@@ -36,24 +37,21 @@ namespace GeometricAlgebraFulcrumLib.Samples.Storage
                     )
             );
 
-            Console.WriteLine($"vSpaceDimension1: {vectorStorage1.VectorStorage.MinVSpaceDimension}");
-            Console.WriteLine($"vSpaceDimension2: {vectorStorage2.VectorStorage.MinVSpaceDimension}");
+            Console.WriteLine($"vSpaceDimension1: {vectorStorage1.VSpaceDimensions}");
+            Console.WriteLine($"vSpaceDimension2: {vectorStorage2.VSpaceDimensions}");
 
             var gbtStack =
-                GeoGbtProductsStack2<double>.Create(
-                    scalarProcessor,
-                    vectorStorage1.VectorStorage,
-                    vectorStorage2.VectorStorage
+                RGaGbtProductsStack2<double>.Create(
+                    vectorStorage1,
+                    vectorStorage2
                 );
 
-            var idScalarDictionary =
-                gbtStack
-                    .GetEGpIdScalarRecords()
-                    .CreateMultivectorSparse(scalarProcessor, true)
-                    .MultivectorStorage
-                    .GetLinVectorIdScalarStorage();
+            var multivector =
+                processor.CreateMultivector(
+                    gbtStack.GetEGpIdScalarRecords()
+                );
 
-            Console.WriteLine(textComposer.GetTermsText(idScalarDictionary.GetIndexScalarRecords()));
+            Console.WriteLine(textComposer.GetTermsText(multivector));
         }
     }
 }

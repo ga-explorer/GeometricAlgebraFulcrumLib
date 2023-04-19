@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTraversal.Multivectors;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records.Restricted;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Sparse;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 
 namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
 {
@@ -74,9 +71,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
 
         ulong GetStoredBasisVectorsBitPattern();
 
-        IEnumerable<GradeIndexRecord> GetGradeIndexRecords();
-
-        IEnumerable<BasisBlade> GetBasisBlades();
+        IEnumerable<RGaGradeKvIndexRecord> GetGradeIndexRecords();
     }
 
     public interface IMultivectorStorage<T> 
@@ -88,9 +83,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
 
         bool TryGetTermScalar(uint grade, ulong index, out T value);
         
-        bool TryGetTerm(ulong id, out BasisTerm<T> term);
+        bool TryGetTerm(ulong id, out KeyValuePair<ulong, T> term);
 
-        bool TryGetTerm(uint grade, ulong index, out BasisTerm<T> term);
+        bool TryGetTerm(uint grade, ulong index, out KeyValuePair<ulong, T> term);
 
 
         ILinVectorStorage<T> GetScalarPartList();
@@ -127,29 +122,27 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
 
         IEnumerable<T> GetScalars();
 
-        IEnumerable<IndexScalarRecord<T>> GetIdScalarRecords();
+        IEnumerable<RGaKvIndexScalarRecord<T>> GetIdScalarRecords();
 
-        IEnumerable<IndexScalarRecord<T>> GetIndexScalarRecords(uint grade);
+        IEnumerable<RGaKvIndexScalarRecord<T>> GetIndexScalarRecords(uint grade);
 
-        IEnumerable<GradeIndexScalarRecord<T>> GetGradeIndexScalarRecords();
+        IEnumerable<RGaGradeKvIndexScalarRecord<T>> GetGradeIndexScalarRecords();
 
 
-        IEnumerable<BasisTerm<T>> GetTerms();
+        IEnumerable<KeyValuePair<ulong, T>> GetTerms();
 
-        IEnumerable<BasisTerm<T>> GetTerms(Func<ulong, bool> idSelection);
+        IEnumerable<KeyValuePair<ulong, T>> GetTerms(Func<ulong, bool> idSelection);
 
-        IEnumerable<BasisTerm<T>> GetTerms(Func<uint, ulong, bool> gradeIndexSelection);
+        IEnumerable<KeyValuePair<ulong, T>> GetTerms(Func<uint, ulong, bool> gradeIndexSelection);
 
-        IEnumerable<BasisTerm<T>> GetTerms(Func<T, bool> scalarSelection);
+        IEnumerable<KeyValuePair<ulong, T>> GetTerms(Func<T, bool> scalarSelection);
 
-        IEnumerable<BasisTerm<T>> GetTerms(Func<ulong, T, bool> idScalarSelection);
+        IEnumerable<KeyValuePair<ulong, T>> GetTerms(Func<ulong, T, bool> idScalarSelection);
 
-        IEnumerable<BasisTerm<T>> GetTerms(Func<uint, ulong, T, bool> gradeIndexScalarSelection);
+        IEnumerable<KeyValuePair<ulong, T>> GetTerms(Func<uint, ulong, T, bool> gradeIndexScalarSelection);
         
 
         LinVectorTreeStorage<T> GetBinaryTree(int treeDepth);
-
-        IGeoGbtMultivectorStorageStack1<T> CreateGbtStack(int treeDepth, int capacity, IScalarAlgebraProcessor<T> scalarProcessor);
 
 
         MultivectorStorage<T> ToMultivectorStorage();

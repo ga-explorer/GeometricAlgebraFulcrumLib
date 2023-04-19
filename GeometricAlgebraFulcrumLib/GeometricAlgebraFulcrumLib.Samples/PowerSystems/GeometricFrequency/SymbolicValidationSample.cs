@@ -2,19 +2,18 @@
 using System.Diagnostics;
 using System.IO;
 using DataStructuresLib.Basic;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Frames;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Frames;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Mathematica;
+using GeometricAlgebraFulcrumLib.Mathematica.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Mathematica.Mathematica;
 using GeometricAlgebraFulcrumLib.Mathematica.Mathematica.ExprFactory;
 using GeometricAlgebraFulcrumLib.Mathematica.Processors;
-using GeometricAlgebraFulcrumLib.Mathematica.Text;
-using GeometricAlgebraFulcrumLib.Processors;
-using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors;
-using GeometricAlgebraFulcrumLib.Text;
 using OxyPlot;
 using OxyPlot.Series;
 using Wolfram.NETLink;
@@ -30,34 +29,35 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
 
         // This is a pre-defined scalar processor for symbolic
         // Wolfram Mathematica scalars using Expr objects
-        public static ScalarAlgebraMathematicaProcessor ScalarProcessor { get; }
-            = ScalarAlgebraMathematicaProcessor.DefaultProcessor;
+        public static ScalarProcessorExpr ScalarProcessor { get; }
+            = ScalarProcessorExpr.DefaultProcessor;
 
-        public static uint VSpaceDimension => 3;
+        public static uint VSpaceDimensions 
+            => 3;
 
         // Create a 6-dimensional Euclidean geometric algebra processor based on the
         // selected scalar processor
-        public static GeometricAlgebraEuclideanProcessor<Expr> GeometricProcessor { get; }
-            = ScalarProcessor.CreateGeometricAlgebraEuclideanProcessor(VSpaceDimension);
+        public static RGaProcessor<Expr> GeometricProcessor { get; }
+            = ScalarProcessor.CreateEuclideanRGaProcessor();
 
         // This is a pre-defined text generator for displaying multivectors
         // with symbolic Wolfram Mathematica scalars using Expr objects
-        public static TextMathematicaComposer TextComposer { get; }
-            = TextMathematicaComposer.DefaultComposer;
+        public static TextComposerExpr TextComposer { get; }
+            = TextComposerExpr.DefaultComposer;
 
         // This is a pre-defined LaTeX generator for displaying multivectors
         // with symbolic Wolfram Mathematica scalars using Expr objects
-        public static LaTeXMathematicaComposer LaTeXComposer { get; }
-            = LaTeXMathematicaComposer.DefaultComposer;
+        public static LaTeXComposerExpr LaTeXComposer { get; }
+            = LaTeXComposerExpr.DefaultComposer;
 
 
         /// <summary>
         /// Simple harmonic curve in 3D
         /// </summary>
         /// <returns></returns>
-        private static GaVector<Expr> DefineCurve1(Expr tExpr)
+        private static RGaVector<Expr> DefineCurve1(Expr tExpr)
         {
-            var t = tExpr.CreateScalar(GeometricProcessor);
+            var t = tExpr.CreateScalar(ScalarProcessor);
 
             var a1 = GeometricProcessor.CreateVector(1, 2, 3);
             var a2 = GeometricProcessor.CreateVector(-1, -1, 0);
@@ -77,9 +77,9 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
         /// Simple harmonic curve in 4D
         /// </summary>
         /// <returns></returns>
-        private static GaVector<Expr> DefineCurve2(Expr tExpr)
+        private static RGaVector<Expr> DefineCurve2(Expr tExpr)
         {
-            var t = tExpr.CreateScalar(GeometricProcessor);
+            var t = tExpr.CreateScalar(ScalarProcessor);
 
             var a1 = GeometricProcessor.CreateVector(1, 2, 3, 4);
             var a2 = GeometricProcessor.CreateVector(-1, -1, 0, 1);
@@ -100,7 +100,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
         /// </summary>
         /// <param name="tExpr"></param>
         /// <returns></returns>
-        private static GaVector<Expr> DefineCurve3(Expr tExpr)
+        private static RGaVector<Expr> DefineCurve3(Expr tExpr)
         {
             var a0 = GeometricProcessor.CreateVector(1, 2, -1);
             var a1 = GeometricProcessor.CreateVector(-1, -1, 2);
@@ -122,7 +122,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
         /// </summary>
         /// <param name="tExpr"></param>
         /// <returns></returns>
-        private static GaVector<Expr> DefineCurve4(Expr tExpr)
+        private static RGaVector<Expr> DefineCurve4(Expr tExpr)
         {
             var a0 = GeometricProcessor.CreateVector(1, 2, -1, 1);
             var a1 = GeometricProcessor.CreateVector(-1, -1, 2, 1);
@@ -143,7 +143,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
         /// Simple monomial curve in 3D
         /// </summary>
         /// <returns></returns>
-        private static GaVector<Expr> DefineCurve5(Expr tExpr)
+        private static RGaVector<Expr> DefineCurve5(Expr tExpr)
         {
             var a0 = GeometricProcessor.CreateVector(0, 0, 0);
             var a1 = GeometricProcessor.CreateVector(1, 0, 0);
@@ -162,7 +162,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
         /// Simple monomial curve in 4D
         /// </summary>
         /// <returns></returns>
-        private static GaVector<Expr> DefineCurve6(Expr tExpr)
+        private static RGaVector<Expr> DefineCurve6(Expr tExpr)
         {
             var a0 = GeometricProcessor.CreateVector(0, 0, 0, 0);
             var a1 = GeometricProcessor.CreateVector(1, 0, 0, 0);
@@ -182,7 +182,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
         /// Simple monomial curve in 6D
         /// </summary>
         /// <returns></returns>
-        private static GaVector<Expr> DefineCurve7(Expr tExpr)
+        private static RGaVector<Expr> DefineCurve7(Expr tExpr)
         {
             var aArray = new[]
             {
@@ -209,9 +209,9 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
         /// Simple elliptic curve in 3D
         /// </summary>
         /// <returns></returns>
-        private static GaVector<Expr> DefineCurve8(Expr tExpr)
+        private static RGaVector<Expr> DefineCurve8(Expr tExpr)
         {
-            var t = tExpr.CreateScalar(GeometricProcessor);
+            var t = tExpr.CreateScalar(ScalarProcessor);
 
             var a = GeometricProcessor.CreateVector(1, 2, 3);
             var b = GeometricProcessor.CreateVector(-2, 1, 1);
@@ -223,9 +223,9 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
         /// Simple elliptic curve in 4D
         /// </summary>
         /// <returns></returns>
-        private static GaVector<Expr> DefineCurve9(Expr tExpr)
+        private static RGaVector<Expr> DefineCurve9(Expr tExpr)
         {
-            var t = tExpr.CreateScalar(GeometricProcessor);
+            var t = tExpr.CreateScalar(ScalarProcessor);
 
             var a = GeometricProcessor.CreateVector(1, 2, 3, 4);
             var b = GeometricProcessor.CreateVector(-2, 1, 1, 2);
@@ -238,21 +238,21 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
         /// </summary>
         /// <param name="tExpr"></param>
         /// <returns></returns>
-        private static GaVector<Expr> DefineCurve10(Expr tExpr)
+        private static RGaVector<Expr> DefineCurve10(Expr tExpr)
         {
             var assumeExpr =
                 $@"And[{tExpr} >= 0, {tExpr} <= 1, Element[{tExpr}, Reals]]".ToExpr();
 
             MathematicaInterface.DefaultCas.SetGlobalAssumptions(assumeExpr);
 
-            var scalarArray = new Expr[VSpaceDimension];
+            var scalarArray = new Expr[VSpaceDimensions];
 
-            for (var k = 0; k < VSpaceDimension; k++)
+            for (var k = 0; k < VSpaceDimensions; k++)
             {
                 var phi = $"2 * {k} * Pi / 3";
                 var angle = @$"2 * Pi * 50 * {tExpr} - {phi}";
 
-                if (k < VSpaceDimension - 1)
+                if (k < VSpaceDimensions - 1)
                 {
                     scalarArray[k] = $"Cos[{angle}] + Cos[7 * ({angle})] / 10".ToExpr();
                 }
@@ -266,7 +266,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
         }
 
 
-        private static GaVector<Expr> DefineCurve()
+        private static RGaVector<Expr> DefineCurve()
         {
             var t = "t".ToSymbolExpr();
 
@@ -286,9 +286,9 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
         {
             var t = "t".ToSymbolExpr();
 
-            var sDt2 = sDt1.DifferentiateScalar(t).SimplifyCollect(t);
-            var sDt3 = sDt2.DifferentiateScalar(t).SimplifyCollect(t);
-            var sDt4 = sDt3.DifferentiateScalar(t).SimplifyCollect(t);
+            var sDt2 = sDt1.DifferentiateScalar(t).SimplifyCollectScalar(t);
+            var sDt3 = sDt2.DifferentiateScalar(t).SimplifyCollectScalar(t);
+            var sDt4 = sDt3.DifferentiateScalar(t).SimplifyCollectScalar(t);
 
             LaTeXComposer
                 .ConsoleWriteLine("Time derivatives of arc-length parameter:")
@@ -310,11 +310,11 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
         {
             var t = "t".ToSymbolExpr();
 
-            var sDt2 = sDt1.DifferentiateScalar(t).SimplifyCollect(t);
-            var sDt3 = sDt2.DifferentiateScalar(t).SimplifyCollect(t);
-            var sDt4 = sDt3.DifferentiateScalar(t).SimplifyCollect(t);
-            var sDt5 = sDt4.DifferentiateScalar(t).SimplifyCollect(t);
-            var sDt6 = sDt5.DifferentiateScalar(t).SimplifyCollect(t);
+            var sDt2 = sDt1.DifferentiateScalar(t).SimplifyCollectScalar(t);
+            var sDt3 = sDt2.DifferentiateScalar(t).SimplifyCollectScalar(t);
+            var sDt4 = sDt3.DifferentiateScalar(t).SimplifyCollectScalar(t);
+            var sDt5 = sDt4.DifferentiateScalar(t).SimplifyCollectScalar(t);
+            var sDt6 = sDt5.DifferentiateScalar(t).SimplifyCollectScalar(t);
 
             LaTeXComposer
                 .ConsoleWriteLine("Time derivatives of arc-length parameter:")
@@ -336,7 +336,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             return new Hexad<Scalar<Expr>>(sDt1, sDt2, sDt3, sDt4, sDt5, sDt6);
         }
 
-        private static Triplet<GaVector<Expr>> GetTimeDerivatives3D(this GaVector<Expr> v)
+        private static Triplet<RGaVector<Expr>> GetTimeDerivatives3D(this RGaVector<Expr> v)
         {
             var t = "t".ToSymbolExpr();
 
@@ -357,10 +357,10 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
 
             PlotCurveNorm(vDt1, Path.Combine(WorkingPath, "vDt1Norm"));
 
-            return new Triplet<GaVector<Expr>>(vDt1, vDt2, vDt3);
+            return new Triplet<RGaVector<Expr>>(vDt1, vDt2, vDt3);
         }
 
-        private static Quad<GaVector<Expr>> GetTimeDerivatives4D(this GaVector<Expr> v)
+        private static Quad<RGaVector<Expr>> GetTimeDerivatives4D(this RGaVector<Expr> v)
         {
             var t = "t".ToSymbolExpr();
 
@@ -384,10 +384,10 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
 
             PlotCurveNorm(vDt1, Path.Combine(WorkingPath, "vDt1Norm"));
 
-            return new Quad<GaVector<Expr>>(vDt1, vDt2, vDt3, vDt4);
+            return new Quad<RGaVector<Expr>>(vDt1, vDt2, vDt3, vDt4);
         }
 
-        private static Hexad<GaVector<Expr>> GetTimeDerivatives6D(this GaVector<Expr> v)
+        private static Hexad<RGaVector<Expr>> GetTimeDerivatives6D(this RGaVector<Expr> v)
         {
             var t = "t".ToSymbolExpr();
 
@@ -417,10 +417,10 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
 
             PlotCurveNorm(vDt1, Path.Combine(WorkingPath, "vDt1Norm"));
 
-            return new Hexad<GaVector<Expr>>(vDt1, vDt2, vDt3, vDt4, vDt5, vDt6);
+            return new Hexad<RGaVector<Expr>>(vDt1, vDt2, vDt3, vDt4, vDt5, vDt6);
         }
 
-        private static Triplet<GaVector<Expr>> GetArcLengthDerivatives3D(this GaVector<Expr> v)
+        private static Triplet<RGaVector<Expr>> GetArcLengthDerivatives3D(this RGaVector<Expr> v)
         {
             var t = "t".ToSymbolExpr();
 
@@ -446,10 +446,10 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
 
             PlotCurveNorm(vDs1, Path.Combine(WorkingPath, "vDs1Norm"));
 
-            return new Triplet<GaVector<Expr>>(vDs1, vDs2, vDs3);
+            return new Triplet<RGaVector<Expr>>(vDs1, vDs2, vDs3);
         }
 
-        private static Quad<GaVector<Expr>> GetArcLengthDerivatives4D(this GaVector<Expr> v)
+        private static Quad<RGaVector<Expr>> GetArcLengthDerivatives4D(this RGaVector<Expr> v)
         {
             var t = "t".ToSymbolExpr();
 
@@ -478,10 +478,10 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
 
             PlotCurveNorm(vDs1, Path.Combine(WorkingPath, "vDs1Norm"));
 
-            return new Quad<GaVector<Expr>>(vDs1, vDs2, vDs3, vDs4);
+            return new Quad<RGaVector<Expr>>(vDs1, vDs2, vDs3, vDs4);
         }
 
-        private static Hexad<GaVector<Expr>> GetArcLengthDerivatives6D(this GaVector<Expr> v)
+        private static Hexad<RGaVector<Expr>> GetArcLengthDerivatives6D(this RGaVector<Expr> v)
         {
             var t = "t".ToSymbolExpr();
 
@@ -516,15 +516,15 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
 
             PlotCurveNorm(vDs1, Path.Combine(WorkingPath, "vDs1Norm"));
 
-            return new Hexad<GaVector<Expr>>(vDs1, vDs2, vDs3, vDs4, vDs5, vDs6);
+            return new Hexad<RGaVector<Expr>>(vDs1, vDs2, vDs3, vDs4, vDs5, vDs6);
         }
 
-        private static Triplet<GaVector<Expr>> GetTimeGramSchmidtFrame3D(GaVector<Expr> vDt1, GaVector<Expr> vDt2, GaVector<Expr> vDt3)
+        private static Triplet<RGaVector<Expr>> GetTimeGramSchmidtFrame3D(RGaVector<Expr> vDt1, RGaVector<Expr> vDt2, RGaVector<Expr> vDt3)
         {
             var t = "t".ToSymbolExpr();
 
             var (u1t, u2t, u3t) =
-                GeometricProcessor.ApplyGramSchmidt(vDt1, vDt2, vDt3, false);
+                vDt1.ApplyGramSchmidt(vDt2, vDt3, false);
 
             u1t = u1t.SimplifyCollectScalars(t);
             u2t = u2t.SimplifyCollectScalars(t);
@@ -536,9 +536,9 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
 
             // Make sure frame is orthogonal
             Debug.Assert(
-                e1t.Sp(e2t).IsZero() &&
-                e1t.Sp(e3t).IsZero() &&
-                e2t.Sp(e3t).IsZero()
+                e1t.Sp(e2t).IsZero &&
+                e1t.Sp(e3t).IsZero &&
+                e2t.Sp(e3t).IsZero
             );
 
             //LaTeXComposer
@@ -556,15 +556,15 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
                 .ConsoleWriteLine(e3t, @"\boldsymbol{e}_{3} \left( t \right)")
                 .ConsoleWriteLine();
 
-            return new Triplet<GaVector<Expr>>(e1t, e2t, e3t);
+            return new Triplet<RGaVector<Expr>>(e1t, e2t, e3t);
         }
 
-        private static Quad<GaVector<Expr>> GetTimeGramSchmidtFrame4D(GaVector<Expr> vDt1, GaVector<Expr> vDt2, GaVector<Expr> vDt3, GaVector<Expr> vDt4)
+        private static Quad<RGaVector<Expr>> GetTimeGramSchmidtFrame4D(RGaVector<Expr> vDt1, RGaVector<Expr> vDt2, RGaVector<Expr> vDt3, RGaVector<Expr> vDt4)
         {
             var t = "t".ToSymbolExpr();
 
             var (u1t, u2t, u3t, u4t) =
-                GeometricProcessor.ApplyGramSchmidt(vDt1, vDt2, vDt3, vDt4, false);
+                vDt1.ApplyGramSchmidt(vDt2, vDt3, vDt4, false);
 
             u1t = u1t.SimplifyCollectScalars(t);
             u2t = u2t.SimplifyCollectScalars(t);
@@ -578,12 +578,12 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
 
             // Make sure frame is orthogonal
             Debug.Assert(
-                e1t.Sp(e2t).IsZero() &&
-                e1t.Sp(e3t).IsZero() &&
-                e1t.Sp(e4t).IsZero() &&
-                e2t.Sp(e3t).IsZero() &&
-                e2t.Sp(e4t).IsZero() &&
-                e3t.Sp(e4t).IsZero()
+                e1t.Sp(e2t).IsZero &&
+                e1t.Sp(e3t).IsZero &&
+                e1t.Sp(e4t).IsZero &&
+                e2t.Sp(e3t).IsZero &&
+                e2t.Sp(e4t).IsZero &&
+                e3t.Sp(e4t).IsZero
             );
 
             //LaTeXComposer
@@ -602,15 +602,15 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
                 .ConsoleWriteLine(e4t, @"\boldsymbol{e}_{4} \left( t \right)")
                 .ConsoleWriteLine();
 
-            return new Quad<GaVector<Expr>>(e1t, e2t, e3t, e4t);
+            return new Quad<RGaVector<Expr>>(e1t, e2t, e3t, e4t);
         }
 
-        private static Hexad<GaVector<Expr>> GetTimeGramSchmidtFrame6D(GaVector<Expr> vDt1, GaVector<Expr> vDt2, GaVector<Expr> vDt3, GaVector<Expr> vDt4, GaVector<Expr> vDt5, GaVector<Expr> vDt6)
+        private static Hexad<RGaVector<Expr>> GetTimeGramSchmidtFrame6D(RGaVector<Expr> vDt1, RGaVector<Expr> vDt2, RGaVector<Expr> vDt3, RGaVector<Expr> vDt4, RGaVector<Expr> vDt5, RGaVector<Expr> vDt6)
         {
             var t = "t".ToSymbolExpr();
 
             var (u1t, u2t, u3t, u4t, u5t, u6t) =
-                GeometricProcessor.ApplyGramSchmidt(vDt1, vDt2, vDt3, vDt4, vDt5, vDt6, false);
+                vDt1.ApplyGramSchmidt(vDt2, vDt3, vDt4, vDt5, vDt6, false);
 
             u1t = u1t.SimplifyCollectScalars(t);
             u2t = u2t.SimplifyCollectScalars(t);
@@ -628,21 +628,21 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
 
             // Make sure frame is orthogonal
             Debug.Assert(
-                e1t.Sp(e2t).IsZero() &&
-                e1t.Sp(e3t).IsZero() &&
-                e1t.Sp(e4t).IsZero() &&
-                e1t.Sp(e5t).IsZero() &&
-                e1t.Sp(e6t).IsZero() &&
-                e2t.Sp(e3t).IsZero() &&
-                e2t.Sp(e4t).IsZero() &&
-                e2t.Sp(e5t).IsZero() &&
-                e2t.Sp(e6t).IsZero() &&
-                e3t.Sp(e4t).IsZero() &&
-                e3t.Sp(e5t).IsZero() &&
-                e3t.Sp(e6t).IsZero() &&
-                e4t.Sp(e5t).IsZero() &&
-                e4t.Sp(e6t).IsZero() &&
-                e5t.Sp(e6t).IsZero()
+                e1t.Sp(e2t).IsZero &&
+                e1t.Sp(e3t).IsZero &&
+                e1t.Sp(e4t).IsZero &&
+                e1t.Sp(e5t).IsZero &&
+                e1t.Sp(e6t).IsZero &&
+                e2t.Sp(e3t).IsZero &&
+                e2t.Sp(e4t).IsZero &&
+                e2t.Sp(e5t).IsZero &&
+                e2t.Sp(e6t).IsZero &&
+                e3t.Sp(e4t).IsZero &&
+                e3t.Sp(e5t).IsZero &&
+                e3t.Sp(e6t).IsZero &&
+                e4t.Sp(e5t).IsZero &&
+                e4t.Sp(e6t).IsZero &&
+                e5t.Sp(e6t).IsZero
             );
 
             //LaTeXComposer
@@ -663,15 +663,15 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
                 .ConsoleWriteLine(e6t, @"\boldsymbol{e}_{6} \left( t \right)")
                 .ConsoleWriteLine();
 
-            return new Hexad<GaVector<Expr>>(e1t, e2t, e3t, e4t, e5t, e6t);
+            return new Hexad<RGaVector<Expr>>(e1t, e2t, e3t, e4t, e5t, e6t);
         }
 
-        private static Triplet<GaVector<Expr>> GetArcLengthGramSchmidtFrame3D(GaVector<Expr> vDs1, GaVector<Expr> vDs2, GaVector<Expr> vDs3)
+        private static Triplet<RGaVector<Expr>> GetArcLengthGramSchmidtFrame3D(RGaVector<Expr> vDs1, RGaVector<Expr> vDs2, RGaVector<Expr> vDs3)
         {
             var t = "t".ToSymbolExpr();
 
             var (u1s, u2s, u3s) =
-                GeometricProcessor.ApplyGramSchmidtByProjections(vDs1, vDs2, vDs3, false);
+                vDs1.ApplyGramSchmidtByProjections(vDs2, vDs3, false);
 
             u1s = u1s.SimplifyCollectScalars(t);
             u2s = u2s.SimplifyCollectScalars(t);
@@ -683,9 +683,9 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
 
             // Make sure frame is orthogonal
             Debug.Assert(
-                e1s.Sp(e2s).IsZero() &&
-                e1s.Sp(e3s).IsZero() &&
-                e2s.Sp(e3s).IsZero()
+                e1s.Sp(e2s).IsZero &&
+                e1s.Sp(e3s).IsZero &&
+                e2s.Sp(e3s).IsZero
             );
 
             //LaTeXComposer
@@ -703,15 +703,15 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
                 .ConsoleWriteLine(e3s, @"\boldsymbol{e}_{3} \left( s \right)")
                 .ConsoleWriteLine();
 
-            return new Triplet<GaVector<Expr>>(e1s, e2s, e3s);
+            return new Triplet<RGaVector<Expr>>(e1s, e2s, e3s);
         }
 
-        private static Quad<GaVector<Expr>> GetArcLengthGramSchmidtFrame4D(GaVector<Expr> vDs1, GaVector<Expr> vDs2, GaVector<Expr> vDs3, GaVector<Expr> vDs4)
+        private static Quad<RGaVector<Expr>> GetArcLengthGramSchmidtFrame4D(RGaVector<Expr> vDs1, RGaVector<Expr> vDs2, RGaVector<Expr> vDs3, RGaVector<Expr> vDs4)
         {
             var t = "t".ToSymbolExpr();
 
             var (u1s, u2s, u3s, u4s) =
-                GeometricProcessor.ApplyGramSchmidtByProjections(vDs1, vDs2, vDs3, vDs4, false);
+                vDs1.ApplyGramSchmidtByProjections(vDs2, vDs3, vDs4, false);
 
             u1s = u1s.SimplifyCollectScalars(t);
             u2s = u2s.SimplifyCollectScalars(t);
@@ -725,12 +725,12 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
 
             // Make sure frame is orthogonal
             Debug.Assert(
-                e1s.Sp(e2s).IsZero() &&
-                e1s.Sp(e3s).IsZero() &&
-                e1s.Sp(e4s).IsZero() &&
-                e2s.Sp(e3s).IsZero() &&
-                e2s.Sp(e4s).IsZero() &&
-                e3s.Sp(e4s).IsZero()
+                e1s.Sp(e2s).IsZero &&
+                e1s.Sp(e3s).IsZero &&
+                e1s.Sp(e4s).IsZero &&
+                e2s.Sp(e3s).IsZero &&
+                e2s.Sp(e4s).IsZero &&
+                e3s.Sp(e4s).IsZero
             );
 
             //LaTeXComposer
@@ -749,15 +749,15 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
                 .ConsoleWriteLine(e4s, @"\boldsymbol{e}_{4} \left( s \right)")
                 .ConsoleWriteLine();
 
-            return new Quad<GaVector<Expr>>(e1s, e2s, e3s, e4s);
+            return new Quad<RGaVector<Expr>>(e1s, e2s, e3s, e4s);
         }
 
-        private static Hexad<GaVector<Expr>> GetArcLengthGramSchmidtFrame6D(GaVector<Expr> vDs1, GaVector<Expr> vDs2, GaVector<Expr> vDs3, GaVector<Expr> vDs4, GaVector<Expr> vDs5, GaVector<Expr> vDs6)
+        private static Hexad<RGaVector<Expr>> GetArcLengthGramSchmidtFrame6D(RGaVector<Expr> vDs1, RGaVector<Expr> vDs2, RGaVector<Expr> vDs3, RGaVector<Expr> vDs4, RGaVector<Expr> vDs5, RGaVector<Expr> vDs6)
         {
             var t = "t".ToSymbolExpr();
 
             var (u1s, u2s, u3s, u4s, u5s, u6s) =
-                GeometricProcessor.ApplyGramSchmidtByProjections(vDs1, vDs2, vDs3, vDs4, vDs5, vDs6, false);
+                vDs1.ApplyGramSchmidtByProjections(vDs2, vDs3, vDs4, vDs5, vDs6, false);
 
             u1s = u1s.SimplifyCollectScalars(t);
             u2s = u2s.SimplifyCollectScalars(t);
@@ -775,21 +775,21 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
 
             // Make sure frame is orthogonal
             Debug.Assert(
-                e1s.Sp(e2s).IsZero() &&
-                e1s.Sp(e3s).IsZero() &&
-                e1s.Sp(e4s).IsZero() &&
-                e1s.Sp(e5s).IsZero() &&
-                e1s.Sp(e6s).IsZero() &&
-                e2s.Sp(e3s).IsZero() &&
-                e2s.Sp(e4s).IsZero() &&
-                e2s.Sp(e5s).IsZero() &&
-                e2s.Sp(e6s).IsZero() &&
-                e3s.Sp(e4s).IsZero() &&
-                e3s.Sp(e5s).IsZero() &&
-                e3s.Sp(e6s).IsZero() &&
-                e4s.Sp(e5s).IsZero() &&
-                e4s.Sp(e6s).IsZero() &&
-                e5s.Sp(e6s).IsZero()
+                e1s.Sp(e2s).IsZero &&
+                e1s.Sp(e3s).IsZero &&
+                e1s.Sp(e4s).IsZero &&
+                e1s.Sp(e5s).IsZero &&
+                e1s.Sp(e6s).IsZero &&
+                e2s.Sp(e3s).IsZero &&
+                e2s.Sp(e4s).IsZero &&
+                e2s.Sp(e5s).IsZero &&
+                e2s.Sp(e6s).IsZero &&
+                e3s.Sp(e4s).IsZero &&
+                e3s.Sp(e5s).IsZero &&
+                e3s.Sp(e6s).IsZero &&
+                e4s.Sp(e5s).IsZero &&
+                e4s.Sp(e6s).IsZero &&
+                e5s.Sp(e6s).IsZero
             );
 
             //LaTeXComposer
@@ -810,10 +810,10 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
                 .ConsoleWriteLine(e6s, @"\boldsymbol{e}_{6} \left( s \right)")
                 .ConsoleWriteLine();
 
-            return new Hexad<GaVector<Expr>>(e1s, e2s, e3s, e4s, e5s, e6s);
+            return new Hexad<RGaVector<Expr>>(e1s, e2s, e3s, e4s, e5s, e6s);
         }
 
-        private static Triplet<GaVector<Expr>> GetFrameTimeDerivative3D(GaVector<Expr> e1t, GaVector<Expr> e2t, GaVector<Expr> e3t)
+        private static Triplet<RGaVector<Expr>> GetFrameTimeDerivative3D(RGaVector<Expr> e1t, RGaVector<Expr> e2t, RGaVector<Expr> e3t)
         {
             var t = "t".ToSymbolExpr();
 
@@ -828,10 +828,10 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
                 .ConsoleWriteLine(e3tDt, @"\boldsymbol{e}^{\prime}_{3}\left(t\right)")
                 .ConsoleWriteLine();
 
-            return new Triplet<GaVector<Expr>>(e1tDt, e2tDt, e3tDt);
+            return new Triplet<RGaVector<Expr>>(e1tDt, e2tDt, e3tDt);
         }
 
-        private static Quad<GaVector<Expr>> GetFrameTimeDerivative4D(GaVector<Expr> e1t, GaVector<Expr> e2t, GaVector<Expr> e3t, GaVector<Expr> e4t)
+        private static Quad<RGaVector<Expr>> GetFrameTimeDerivative4D(RGaVector<Expr> e1t, RGaVector<Expr> e2t, RGaVector<Expr> e3t, RGaVector<Expr> e4t)
         {
             var t = "t".ToSymbolExpr();
 
@@ -848,10 +848,10 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
                 .ConsoleWriteLine(e4tDt, @"\boldsymbol{e}^{\prime}_{4}\left(t\right)")
                 .ConsoleWriteLine();
 
-            return new Quad<GaVector<Expr>>(e1tDt, e2tDt, e3tDt, e4tDt);
+            return new Quad<RGaVector<Expr>>(e1tDt, e2tDt, e3tDt, e4tDt);
         }
 
-        private static Hexad<GaVector<Expr>> GetFrameTimeDerivative6D(GaVector<Expr> e1t, GaVector<Expr> e2t, GaVector<Expr> e3t, GaVector<Expr> e4t, GaVector<Expr> e5t, GaVector<Expr> e6t)
+        private static Hexad<RGaVector<Expr>> GetFrameTimeDerivative6D(RGaVector<Expr> e1t, RGaVector<Expr> e2t, RGaVector<Expr> e3t, RGaVector<Expr> e4t, RGaVector<Expr> e5t, RGaVector<Expr> e6t)
         {
             var t = "t".ToSymbolExpr();
 
@@ -872,10 +872,10 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
                 .ConsoleWriteLine(e6tDt, @"\boldsymbol{e}^{\prime}_{6}\left(t\right)")
                 .ConsoleWriteLine();
 
-            return new Hexad<GaVector<Expr>>(e1tDt, e2tDt, e3tDt, e4tDt, e5tDt, e6tDt);
+            return new Hexad<RGaVector<Expr>>(e1tDt, e2tDt, e3tDt, e4tDt, e5tDt, e6tDt);
         }
 
-        private static Triplet<GaVector<Expr>> GetFrameArcLengthDerivative3D(GaVector<Expr> e1s, GaVector<Expr> e2s, GaVector<Expr> e3s, Expr sDt)
+        private static Triplet<RGaVector<Expr>> GetFrameArcLengthDerivative3D(RGaVector<Expr> e1s, RGaVector<Expr> e2s, RGaVector<Expr> e3s, Expr sDt)
         {
             var t = "t".ToSymbolExpr();
 
@@ -890,10 +890,10 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
                 .ConsoleWriteLine(e3sDs, @"\dot{\boldsymbol{e}}_{3}\left(s\right)")
                 .ConsoleWriteLine();
 
-            return new Triplet<GaVector<Expr>>(e1sDs, e2sDs, e3sDs);
+            return new Triplet<RGaVector<Expr>>(e1sDs, e2sDs, e3sDs);
         }
 
-        private static Quad<GaVector<Expr>> GetFrameArcLengthDerivative4D(GaVector<Expr> e1s, GaVector<Expr> e2s, GaVector<Expr> e3s, GaVector<Expr> e4s, Expr sDt)
+        private static Quad<RGaVector<Expr>> GetFrameArcLengthDerivative4D(RGaVector<Expr> e1s, RGaVector<Expr> e2s, RGaVector<Expr> e3s, RGaVector<Expr> e4s, Expr sDt)
         {
             var t = "t".ToSymbolExpr();
 
@@ -910,10 +910,10 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
                 .ConsoleWriteLine(e4sDs, @"\dot{\boldsymbol{e}}_{4}\left(s\right)")
                 .ConsoleWriteLine();
 
-            return new Quad<GaVector<Expr>>(e1sDs, e2sDs, e3sDs, e4sDs);
+            return new Quad<RGaVector<Expr>>(e1sDs, e2sDs, e3sDs, e4sDs);
         }
 
-        private static Hexad<GaVector<Expr>> GetFrameArcLengthDerivative6D(GaVector<Expr> e1s, GaVector<Expr> e2s, GaVector<Expr> e3s, GaVector<Expr> e4s, GaVector<Expr> e5s, GaVector<Expr> e6s, Expr sDt)
+        private static Hexad<RGaVector<Expr>> GetFrameArcLengthDerivative6D(RGaVector<Expr> e1s, RGaVector<Expr> e2s, RGaVector<Expr> e3s, RGaVector<Expr> e4s, RGaVector<Expr> e5s, RGaVector<Expr> e6s, Expr sDt)
         {
             var t = "t".ToSymbolExpr();
 
@@ -934,11 +934,11 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
                 .ConsoleWriteLine(e6sDs, @"\dot{\boldsymbol{e}}_{6}\left(s\right)")
                 .ConsoleWriteLine();
 
-            return new Hexad<GaVector<Expr>>(e1sDs, e2sDs, e3sDs, e4sDs, e5sDs, e6sDs);
+            return new Hexad<RGaVector<Expr>>(e1sDs, e2sDs, e3sDs, e4sDs, e5sDs, e6sDs);
         }
 
 
-        private static void PlotCurveArcLength(GaVector<Expr> curve, string filePath)
+        private static void PlotCurveArcLength(RGaVector<Expr> curve, string filePath)
         {
             var t = "t".ToSymbolExpr();
             var x = "x".ToSymbolExpr();
@@ -989,7 +989,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             //OxyPlot.SkiaSharp.PngExporter.Export(pm, filePath + "png", 1024, 768, 300);
         }
 
-        private static void PlotCurveNorm(GaVector<Expr> curve, string filePath)
+        private static void PlotCurveNorm(RGaVector<Expr> curve, string filePath)
         {
             var t = "t".ToSymbolExpr();
 
@@ -1014,7 +1014,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             //OxyPlot.SkiaSharp.PngExporter.Export(pm, filePath + "png", 1024, 768, 300);
         }
 
-        private static void PlotCurveComponents(GaVector<Expr> curve, string filePath)
+        private static void PlotCurveComponents(RGaVector<Expr> curve, string filePath)
         {
             var t = "t".ToSymbolExpr();
 
@@ -1024,7 +1024,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
                 Background = OxyColor.FromRgb(255, 255, 255)
             };
 
-            for (var i = 0; i < GeometricProcessor.VSpaceDimension; i++)
+            for (var i = 0; i < VSpaceDimensions; i++)
             {
                 var index = i;
 
@@ -1063,7 +1063,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             Console.WriteLine();
         }
 
-        private static void ValidateEqual(GaVector<Expr> v1, GaVector<Expr> v2, string v1Text, string v2Text)
+        private static void ValidateEqual(RGaVector<Expr> v1, RGaVector<Expr> v2, string v1Text, string v2Text)
         {
             var t = "t".ToExpr();
 
@@ -1083,7 +1083,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             Console.WriteLine();
         }
 
-        private static void ValidateEqual(GaMultivector<Expr> v1, GaMultivector<Expr> v2, string v1Text, string v2Text)
+        private static void ValidateEqual(RGaMultivector<Expr> v1, RGaMultivector<Expr> v2, string v1Text, string v2Text)
         {
             var t = "t".ToExpr();
 
@@ -1103,13 +1103,13 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             Console.WriteLine();
         }
 
-        private static void ValidateOrthogonal(GaVector<Expr> v1, GaVector<Expr> v2, string v1Text, string v2Text)
+        private static void ValidateOrthogonal(RGaVector<Expr> v1, RGaVector<Expr> v2, string v1Text, string v2Text)
         {
             var t = "t".ToExpr();
 
             var u1 = v1.MapScalars(s => s.Collect(t));
             var u2 = v2.MapScalars(s => s.Collect(t));
-            var uDot = u1.Sp(u2).FullSimplify().Collect(t);
+            var uDot = u1.Sp(u2).FullSimplifyScalar().CollectScalar(t);
 
             if (!uDot.IsNearZero())
             {
@@ -1148,15 +1148,15 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
                 v.GetArcLengthDerivatives3D();
 
             // Make sure vDs1 is a unit vector, and orthogonal to vDs2
-            Debug.Assert((vDs1.NormSquared() - 1).IsZero());
-            Debug.Assert(vDs1.Sp(vDs2).IsZero());
+            Debug.Assert((vDs1.NormSquared() - 1).IsZero);
+            Debug.Assert(vDs1.Sp(vDs2).IsZero);
 
-            var vDt1NormSquared = vDt1.NormSquared().SimplifyCollect(t);
+            var vDt1NormSquared = vDt1.NormSquared().SimplifyCollectScalar(t);
             var vDt1Norm = vDt1NormSquared.Sqrt();
 
-            var vDt2NormSquared = vDt2.NormSquared().SimplifyCollect(t);
+            var vDt2NormSquared = vDt2.NormSquared().SimplifyCollectScalar(t);
             var vDt2Norm = vDt2NormSquared.Sqrt();
-            var vDt1Dt2Dot = vDt1.Sp(vDt2).SimplifyCollect(t);
+            var vDt1Dt2Dot = vDt1.Sp(vDt2).SimplifyCollectScalar(t);
 
             LaTeXComposer
                 .ConsoleWriteLine(vDt1Norm, @"\left\Vert \boldsymbol{v}^{\prime}\right\Vert = s^{\prime}")
@@ -1167,13 +1167,13 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
                 .ConsoleWriteLine(vDt1Dt2Dot, @"\boldsymbol{v}^{\prime}\cdot\boldsymbol{v}^{\prime\prime}")
                 .ConsoleWriteLine();
 
-            var vDs1NormSquared = vDs1.NormSquared().SimplifyCollect(t);
+            var vDs1NormSquared = vDs1.NormSquared().SimplifyCollectScalar(t);
             var vDs1Norm = vDs1NormSquared.Sqrt();
 
-            var vDs2NormSquared = vDs2.NormSquared().SimplifyCollect(t);
+            var vDs2NormSquared = vDs2.NormSquared().SimplifyCollectScalar(t);
             var vDs2Norm = vDs2NormSquared.Sqrt();
 
-            var vDs3NormSquared = vDs3.NormSquared().SimplifyCollect(t);
+            var vDs3NormSquared = vDs3.NormSquared().SimplifyCollectScalar(t);
             var vDs3Norm = vDs3NormSquared.Sqrt();
 
             LaTeXComposer
@@ -1186,35 +1186,35 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
 
             // Time derivatives of arc-length parameter
             var (sDt1, sDt2, sDt3, sDt4, sDt5, sDt6) =
-                vDt1Norm.GetArcLengthParameterTimeDerivatives6D();
+                vDt1Norm.Scalar.GetArcLengthParameterTimeDerivatives6D();
 
             // Validate the general expressions for sDt1, sDt2, sDt3, sDt4
             var sDt1_1 = vDt1.Sp(vDt1).Sqrt();
             var sDt2_1 = vDt1.Sp(vDt2) / sDt1_1;
             var sDt3_1 = (vDt2.Sp(vDt2) + vDt1.Sp(vDt3) - sDt2_1.Square()) / sDt1_1;
 
-            sDt1_1 = sDt1_1.FullSimplify().Collect(t);
-            sDt2_1 = sDt2_1.FullSimplify().Collect(t);
-            sDt3_1 = sDt3_1.FullSimplify().Collect(t);
+            sDt1_1 = sDt1_1.FullSimplifyScalar().CollectScalar(t);
+            sDt2_1 = sDt2_1.FullSimplifyScalar().CollectScalar(t);
+            sDt3_1 = sDt3_1.FullSimplifyScalar().CollectScalar(t);
 
-            Debug.Assert((sDt1_1 - sDt1).FullSimplify().IsZero());
-            Debug.Assert((sDt2_1 - sDt2).FullSimplify().IsZero());
-            Debug.Assert((sDt3_1 - sDt3).FullSimplify().IsZero());
+            Debug.Assert((sDt1_1 - sDt1).FullSimplifyScalar().IsZero);
+            Debug.Assert((sDt2_1 - sDt2).FullSimplifyScalar().IsZero);
+            Debug.Assert((sDt3_1 - sDt3).FullSimplifyScalar().IsZero);
 
             // Validate the general expression for norm of vDs2
             var vDs2Norm_1 =
                 (vDt2NormSquared - 2 * (sDt2 / sDt1) * vDt1Dt2Dot + sDt2.Square()).Sqrt() / sDt1.Square();
 
-            Debug.Assert((vDs2Norm_1 - vDs2Norm).FullSimplify().IsZero());
+            Debug.Assert((vDs2Norm_1 - vDs2Norm).FullSimplifyScalar().IsZero);
 
             // Validate the general expression for vDs1, vDs2, vDs3, ...
             var vDs1_1 = vDt1 / sDt1;
             var vDs2_1 = (sDt1 * vDt2 - sDt2 * vDt1) / sDt1.Cube();
             var vDs3_1 = (sDt1.Square() * vDt3 - 3 * sDt1 * sDt2 * vDt2 + (3 * sDt2.Power(2) - sDt1 * sDt3) * vDt1) / sDt1.Power(5);
 
-            Debug.Assert((vDs1_1 - vDs1).FullSimplifyScalars().IsZero());
-            Debug.Assert((vDs2_1 - vDs2).FullSimplifyScalars().IsZero());
-            Debug.Assert((vDs3_1 - vDs3).FullSimplifyScalars().IsZero());
+            Debug.Assert((vDs1_1 - vDs1).FullSimplifyScalars().IsZero);
+            Debug.Assert((vDs2_1 - vDs2).FullSimplifyScalars().IsZero);
+            Debug.Assert((vDs3_1 - vDs3).FullSimplifyScalars().IsZero);
 
 
             // Gram-Schmidt frame and its derivative of time parametrization of curve
@@ -1226,11 +1226,11 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
 
             // Gram-Schmidt frame and its derivative of arc-length parametrization of curve
             var (u1s, u2s, u3s) =
-                GeometricProcessor.ApplyGramSchmidtByProjections(vDs1, vDs2, vDs3, false);
+                vDs1.ApplyGramSchmidtByProjections(vDs2, vDs3, false);
 
-            var u1sNorm = u1s.Norm().SimplifyCollect(t);
-            var u2sNorm = u2s.Norm().SimplifyCollect(t);
-            var u3sNorm = u3s.Norm().SimplifyCollect(t);
+            var u1sNorm = u1s.Norm().SimplifyCollectScalar(t);
+            var u2sNorm = u2s.Norm().SimplifyCollectScalar(t);
+            var u3sNorm = u3s.Norm().SimplifyCollectScalar(t);
 
             var (e1s, e2s, e3s) =
                 GetArcLengthGramSchmidtFrame3D(vDs1, vDs2, vDs3);
@@ -1254,7 +1254,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             var vDs1DotB =
                 vDs1.Lcp(bBivector).SimplifyCollectScalars(t);
 
-            Debug.Assert(vDs1DotB.IsZero());
+            Debug.Assert(vDs1DotB.IsZero);
 
             //ValidateEqual(
             //    e1sDs,
@@ -1263,10 +1263,10 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             //    @"\boldsymbol{e}_{1}\lfloor\boldsymbol{\Omega}=-\boldsymbol{e}_{1}\rfloor\boldsymbol{\Omega}"
             //);
 
-            Debug.Assert((e1sDs - -e1s.Lcp(omegaBar)).FullSimplifyScalars().CollectScalars(t).IsZero());
-            Debug.Assert((e1sDs - -e1s.Lcp(omega)).FullSimplifyScalars().CollectScalars(t).IsZero());
-            Debug.Assert((e2sDs - -e2s.Lcp(omega)).FullSimplifyScalars().CollectScalars(t).IsZero());
-            Debug.Assert((e3sDs - -e3s.Lcp(omega)).FullSimplifyScalars().CollectScalars(t).IsZero());
+            Debug.Assert((e1sDs - -e1s.Lcp(omegaBar)).FullSimplifyScalars().CollectScalars(t).IsZero);
+            Debug.Assert((e1sDs - -e1s.Lcp(omega)).FullSimplifyScalars().CollectScalars(t).IsZero);
+            Debug.Assert((e2sDs - -e2s.Lcp(omega)).FullSimplifyScalars().CollectScalars(t).IsZero);
+            Debug.Assert((e3sDs - -e3s.Lcp(omega)).FullSimplifyScalars().CollectScalars(t).IsZero);
 
             //ValidateEqual(
             //    e1sDs,
@@ -1307,10 +1307,10 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
                 .ConsoleWriteLine(kappa2, @"\kappa_{2}")
                 .ConsoleWriteLine();
 
-            var scalarZero = Expr.INT_ZERO.CreateScalar(GeometricProcessor);
+            var scalarZero = Expr.INT_ZERO.CreateScalar(ScalarProcessor);
 
-            var kappa1_1 = u2sNorm.IsZero() ? scalarZero : u2sNorm / u1sNorm;
-            var kappa2_1 = u3sNorm.IsZero() ? scalarZero : u3sNorm / u2sNorm;
+            var kappa1_1 = u2sNorm.IsZero ? scalarZero : u2sNorm / u1sNorm;
+            var kappa2_1 = u3sNorm.IsZero ? scalarZero : u3sNorm / u2sNorm;
 
             LaTeXComposer
                 .ConsoleWriteLine(kappa1_1, @"\kappa_{1}")
@@ -1319,14 +1319,14 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
 
 
             // Make sure the first curvature is equal to the norm of vDs2
-            Debug.Assert((kappa1 - kappa1_1).FullSimplify().IsZero());
-            Debug.Assert((kappa2 - kappa2_1).FullSimplify().IsZero());
+            Debug.Assert((kappa1 - kappa1_1).FullSimplifyScalar().IsZero());
+            Debug.Assert((kappa2 - kappa2_1).FullSimplifyScalar().IsZero());
 
             var omega2 =
                 kappa1 * e2s.Op(e1s) +
                 kappa2 * e3s.Op(e2s);
 
-            Debug.Assert((omega - omega2).IsZero());
+            Debug.Assert((omega - omega2).IsZero);
         }
 
         public static void Example4D()
@@ -1353,15 +1353,15 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
                 v.GetArcLengthDerivatives4D();
 
             // Make sure vDs1 is a unit vector, and orthogonal to vDs2
-            Debug.Assert((vDs1.NormSquared() - 1).IsZero());
-            Debug.Assert(vDs1.Sp(vDs2).IsZero());
+            Debug.Assert((vDs1.NormSquared() - 1).IsZero);
+            Debug.Assert(vDs1.Sp(vDs2).IsZero);
 
-            var vDt1NormSquared = vDt1.NormSquared().SimplifyCollect(t);
+            var vDt1NormSquared = vDt1.NormSquared().SimplifyCollectScalar(t);
             var vDt1Norm = vDt1NormSquared.Sqrt();
 
-            var vDt2NormSquared = vDt2.NormSquared().SimplifyCollect(t);
+            var vDt2NormSquared = vDt2.NormSquared().SimplifyCollectScalar(t);
             var vDt2Norm = vDt2NormSquared.Sqrt();
-            var vDt1Dt2Dot = vDt1.Sp(vDt2).SimplifyCollect(t);
+            var vDt1Dt2Dot = vDt1.Sp(vDt2).SimplifyCollectScalar(t);
 
             LaTeXComposer
                 .ConsoleWriteLine(vDt1Norm, @"\left\Vert \boldsymbol{v}^{\prime}\right\Vert = s^{\prime}")
@@ -1372,16 +1372,16 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
                 .ConsoleWriteLine(vDt1Dt2Dot, @"\boldsymbol{v}^{\prime}\cdot\boldsymbol{v}^{\prime\prime}")
                 .ConsoleWriteLine();
 
-            var vDs1NormSquared = vDs1.NormSquared().SimplifyCollect(t);
+            var vDs1NormSquared = vDs1.NormSquared().SimplifyCollectScalar(t);
             var vDs1Norm = vDs1NormSquared.Sqrt();
 
-            var vDs2NormSquared = vDs2.NormSquared().SimplifyCollect(t);
+            var vDs2NormSquared = vDs2.NormSquared().SimplifyCollectScalar(t);
             var vDs2Norm = vDs2NormSquared.Sqrt();
 
-            var vDs3NormSquared = vDs3.NormSquared().SimplifyCollect(t);
+            var vDs3NormSquared = vDs3.NormSquared().SimplifyCollectScalar(t);
             var vDs3Norm = vDs3NormSquared.Sqrt();
 
-            var vDs4NormSquared = vDs4.NormSquared().SimplifyCollect(t);
+            var vDs4NormSquared = vDs4.NormSquared().SimplifyCollectScalar(t);
             var vDs4Norm = vDs4NormSquared.Sqrt();
 
             LaTeXComposer
@@ -1394,7 +1394,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
 
             // Time derivatives of arc-length parameter
             var (sDt1, sDt2, sDt3, sDt4) =
-                vDt1Norm.GetArcLengthParameterTimeDerivatives4D();
+                vDt1Norm.Scalar.GetArcLengthParameterTimeDerivatives4D();
 
             // Validate the general expressions for sDt1, sDt2, sDt3, sDt4
             var sDt1_1 = vDt1.Sp(vDt1).Sqrt();
@@ -1402,24 +1402,24 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             var sDt3_1 = (vDt2.Sp(vDt2) + vDt1.Sp(vDt3) - sDt2_1.Square()) / sDt1_1;
             var sDt4_1 = (3 * vDt2.Sp(vDt3) + vDt1.Sp(vDt4) - 3 * sDt2_1 * sDt3_1) / sDt1_1;
 
-            sDt1_1 = sDt1_1.FullSimplify().Collect(t);
-            sDt2_1 = sDt2_1.FullSimplify().Collect(t);
-            sDt3_1 = sDt3_1.FullSimplify().Collect(t);
-            sDt4_1 = sDt4_1.FullSimplify().Collect(t);
+            sDt1_1 = sDt1_1.FullSimplifyScalar().CollectScalar(t);
+            sDt2_1 = sDt2_1.FullSimplifyScalar().CollectScalar(t);
+            sDt3_1 = sDt3_1.FullSimplifyScalar().CollectScalar(t);
+            sDt4_1 = sDt4_1.FullSimplifyScalar().CollectScalar(t);
 
             //LaTeXComposer.ConsoleWriteLine(sDt4, "sDt4");
             //LaTeXComposer.ConsoleWriteLine(sDt4_1, "sDt4_1");
 
-            Debug.Assert((sDt1_1 - sDt1).FullSimplify().IsZero());
-            Debug.Assert((sDt2_1 - sDt2).FullSimplify().IsZero());
-            Debug.Assert((sDt3_1 - sDt3).FullSimplify().IsZero());
-            Debug.Assert((sDt4_1 - sDt4).FullSimplify().IsZero());
+            Debug.Assert((sDt1_1 - sDt1).FullSimplifyScalar().IsZero);
+            Debug.Assert((sDt2_1 - sDt2).FullSimplifyScalar().IsZero);
+            Debug.Assert((sDt3_1 - sDt3).FullSimplifyScalar().IsZero);
+            Debug.Assert((sDt4_1 - sDt4).FullSimplifyScalar().IsZero);
 
             // Validate the general expression for norm of vDs2
             var vDs2Norm_1 =
                 (vDt2NormSquared - 2 * (sDt2 / sDt1) * vDt1Dt2Dot + sDt2.Square()).Sqrt() / sDt1.Square();
 
-            Debug.Assert((vDs2Norm_1 - vDs2Norm).FullSimplify().IsZero());
+            Debug.Assert((vDs2Norm_1 - vDs2Norm).FullSimplifyScalar().IsZero);
 
             // Validate the general expression for vDs1, vDs2, vDs3
             var vDs1_1 = vDt1 / sDt1;
@@ -1427,10 +1427,10 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             var vDs3_1 = (sDt1.Square() * vDt3 - 3 * sDt1 * sDt2 * vDt2 + (3 * sDt2.Power(2) - sDt1 * sDt3) * vDt1) / sDt1.Power(5);
             var vDs4_1 = (sDt1.Cube() * vDt4 - 6 * sDt1.Square() * sDt2 * vDt3 - (4 * sDt1.Square() * sDt3 - 15 * sDt1 * sDt2.Square()) * vDt2 + (10 * sDt1 * sDt2 * sDt3 - 15 * sDt2.Cube() - sDt1.Square() * sDt4) * vDt1) / sDt1.Power(7);
 
-            Debug.Assert((vDs1_1 - vDs1).FullSimplifyScalars().IsZero());
-            Debug.Assert((vDs2_1 - vDs2).FullSimplifyScalars().IsZero());
-            Debug.Assert((vDs3_1 - vDs3).FullSimplifyScalars().IsZero());
-            Debug.Assert((vDs4_1 - vDs4).FullSimplifyScalars().IsZero());
+            Debug.Assert((vDs1_1 - vDs1).FullSimplifyScalars().IsZero);
+            Debug.Assert((vDs2_1 - vDs2).FullSimplifyScalars().IsZero);
+            Debug.Assert((vDs3_1 - vDs3).FullSimplifyScalars().IsZero);
+            Debug.Assert((vDs4_1 - vDs4).FullSimplifyScalars().IsZero);
 
 
             // Gram-Schmidt frame and its derivative of time parametrization of curve
@@ -1442,12 +1442,12 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
 
             // Gram-Schmidt frame and its derivative of arc-length parametrization of curve
             var (u1s, u2s, u3s, u4s) =
-                GeometricProcessor.ApplyGramSchmidtByProjections(vDs1, vDs2, vDs3, vDs4, false);
+                vDs1.ApplyGramSchmidtByProjections(vDs2, vDs3, vDs4, false);
 
-            var u1sNorm = u1s.Norm().SimplifyCollect(t);
-            var u2sNorm = u2s.Norm().SimplifyCollect(t);
-            var u3sNorm = u3s.Norm().SimplifyCollect(t);
-            var u4sNorm = u4s.Norm().SimplifyCollect(t);
+            var u1sNorm = u1s.Norm().SimplifyCollectScalar(t);
+            var u2sNorm = u2s.Norm().SimplifyCollectScalar(t);
+            var u3sNorm = u3s.Norm().SimplifyCollectScalar(t);
+            var u4sNorm = u4s.Norm().SimplifyCollectScalar(t);
 
             var (e1s, e2s, e3s, e4s) =
                 GetArcLengthGramSchmidtFrame4D(vDs1, vDs2, vDs3, vDs4);
@@ -1471,7 +1471,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             var vDs1DotB =
                 vDs1.Lcp(bBivector).SimplifyCollectScalars(t);
 
-            Debug.Assert(vDs1DotB.IsZero());
+            Debug.Assert(vDs1DotB.IsZero);
 
             //ValidateEqual(
             //    e1sDs,
@@ -1480,11 +1480,11 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             //    @"\boldsymbol{e}_{1}\lfloor\boldsymbol{\Omega}=-\boldsymbol{e}_{1}\rfloor\boldsymbol{\Omega}"
             //);
 
-            Debug.Assert((e1sDs - -e1s.Lcp(omegaBar)).FullSimplifyScalars().CollectScalars(t).IsZero());
-            Debug.Assert((e1sDs - -e1s.Lcp(omega)).FullSimplifyScalars().CollectScalars(t).IsZero());
-            Debug.Assert((e2sDs - -e2s.Lcp(omega)).FullSimplifyScalars().CollectScalars(t).IsZero());
-            Debug.Assert((e3sDs - -e3s.Lcp(omega)).FullSimplifyScalars().CollectScalars(t).IsZero());
-            Debug.Assert((e4sDs - -e4s.Lcp(omega)).FullSimplifyScalars().CollectScalars(t).IsZero());
+            Debug.Assert((e1sDs - -e1s.Lcp(omegaBar)).FullSimplifyScalars().CollectScalars(t).IsZero);
+            Debug.Assert((e1sDs - -e1s.Lcp(omega)).FullSimplifyScalars().CollectScalars(t).IsZero);
+            Debug.Assert((e2sDs - -e2s.Lcp(omega)).FullSimplifyScalars().CollectScalars(t).IsZero);
+            Debug.Assert((e3sDs - -e3s.Lcp(omega)).FullSimplifyScalars().CollectScalars(t).IsZero);
+            Debug.Assert((e4sDs - -e4s.Lcp(omega)).FullSimplifyScalars().CollectScalars(t).IsZero);
 
             //ValidateEqual(
             //    e1sDs,
@@ -1527,11 +1527,11 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
                 .ConsoleWriteLine(kappa3, @"\kappa_{3}")
                 .ConsoleWriteLine();
 
-            var scalarZero = Expr.INT_ZERO.CreateScalar(GeometricProcessor);
+            var scalarZero = Expr.INT_ZERO.CreateScalar(ScalarProcessor);
 
-            var kappa1_1 = u2sNorm.IsZero() ? scalarZero : u2sNorm / u1sNorm;
-            var kappa2_1 = u3sNorm.IsZero() ? scalarZero : u3sNorm / u2sNorm;
-            var kappa3_1 = u4sNorm.IsZero() ? scalarZero : u4sNorm / u3sNorm;
+            var kappa1_1 = u2sNorm.IsZero ? scalarZero : u2sNorm / u1sNorm;
+            var kappa2_1 = u3sNorm.IsZero ? scalarZero : u3sNorm / u2sNorm;
+            var kappa3_1 = u4sNorm.IsZero ? scalarZero : u4sNorm / u3sNorm;
 
             LaTeXComposer
                 .ConsoleWriteLine(kappa1_1, @"\kappa_{1}")
@@ -1541,14 +1541,14 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
 
 
             // Make sure the first curvature is equal to the norm of vDs2
-            Debug.Assert((kappa1 - kappa1_1).FullSimplify().IsZero());
-            Debug.Assert((kappa2 - kappa2_1).FullSimplify().IsZero());
-            Debug.Assert((kappa3 - kappa3_1).FullSimplify().IsZero());
+            Debug.Assert((kappa1 - kappa1_1).FullSimplifyScalar().IsZero());
+            Debug.Assert((kappa2 - kappa2_1).FullSimplifyScalar().IsZero());
+            Debug.Assert((kappa3 - kappa3_1).FullSimplifyScalar().IsZero());
 
             var omega2 =
                 kappa1 * e2s.Op(e1s) + kappa2 * e3s.Op(e2s) + kappa3 * e4s.Op(e3s);
 
-            Debug.Assert((omega - omega2).IsZero());
+            Debug.Assert((omega - omega2).IsZero);
         }
 
         public static void Example6D()
@@ -1575,15 +1575,15 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
                 v.GetArcLengthDerivatives6D();
 
             // Make sure vDs1 is a unit vector, and orthogonal to vDs2
-            Debug.Assert((vDs1.NormSquared() - 1).IsZero());
-            Debug.Assert(vDs1.Sp(vDs2).IsZero());
+            Debug.Assert((vDs1.NormSquared() - 1).IsZero);
+            Debug.Assert(vDs1.Sp(vDs2).IsZero);
 
-            var vDt1NormSquared = vDt1.NormSquared().SimplifyCollect(t);
+            var vDt1NormSquared = vDt1.NormSquared().SimplifyCollectScalar(t);
             var vDt1Norm = vDt1NormSquared.Sqrt();
 
-            var vDt2NormSquared = vDt2.NormSquared().SimplifyCollect(t);
+            var vDt2NormSquared = vDt2.NormSquared().SimplifyCollectScalar(t);
             var vDt2Norm = vDt2NormSquared.Sqrt();
-            var vDt1Dt2Dot = vDt1.Sp(vDt2).SimplifyCollect(t);
+            var vDt1Dt2Dot = vDt1.Sp(vDt2).SimplifyCollectScalar(t);
 
             LaTeXComposer
                 .ConsoleWriteLine(vDt1Norm, @"\left\Vert \boldsymbol{v}^{\prime}\right\Vert = s^{\prime}")
@@ -1594,22 +1594,22 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
                 .ConsoleWriteLine(vDt1Dt2Dot, @"\boldsymbol{v}^{\prime}\cdot\boldsymbol{v}^{\prime\prime}")
                 .ConsoleWriteLine();
 
-            var vDs1NormSquared = vDs1.NormSquared().SimplifyCollect(t);
+            var vDs1NormSquared = vDs1.NormSquared().SimplifyCollectScalar(t);
             var vDs1Norm = vDs1NormSquared.Sqrt();
 
-            var vDs2NormSquared = vDs2.NormSquared().SimplifyCollect(t);
+            var vDs2NormSquared = vDs2.NormSquared().SimplifyCollectScalar(t);
             var vDs2Norm = vDs2NormSquared.Sqrt();
 
-            var vDs3NormSquared = vDs3.NormSquared().SimplifyCollect(t);
+            var vDs3NormSquared = vDs3.NormSquared().SimplifyCollectScalar(t);
             var vDs3Norm = vDs3NormSquared.Sqrt();
 
-            var vDs4NormSquared = vDs4.NormSquared().SimplifyCollect(t);
+            var vDs4NormSquared = vDs4.NormSquared().SimplifyCollectScalar(t);
             var vDs4Norm = vDs4NormSquared.Sqrt();
 
-            var vDs5NormSquared = vDs5.NormSquared().SimplifyCollect(t);
+            var vDs5NormSquared = vDs5.NormSquared().SimplifyCollectScalar(t);
             var vDs5Norm = vDs5NormSquared.Sqrt();
 
-            var vDs6NormSquared = vDs6.NormSquared().SimplifyCollect(t);
+            var vDs6NormSquared = vDs6.NormSquared().SimplifyCollectScalar(t);
             var vDs6Norm = vDs6NormSquared.Sqrt();
 
             LaTeXComposer
@@ -1622,7 +1622,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
 
             // Time derivatives of arc-length parameter
             var (sDt1, sDt2, sDt3, sDt4, sDt5, sDt6) =
-                vDt1Norm.GetArcLengthParameterTimeDerivatives6D();
+                vDt1Norm.Scalar.GetArcLengthParameterTimeDerivatives6D();
 
             // Validate the general expressions for sDt1, sDt2, sDt3, sDt4
             var sDt1_1 = vDt1.Sp(vDt1).Sqrt();
@@ -1632,25 +1632,25 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             var sDt5_1 = (3 * vDt3.Sp(vDt3) + 4 * vDt2.Sp(vDt4) + vDt1.Sp(vDt5) - 3 * sDt3_1.Square() - 4 * sDt2_1 * sDt4_1) / sDt1_1;
             var sDt6_1 = (10 * vDt3.Sp(vDt4) + 5 * vDt2.Sp(vDt5) + vDt1.Sp(vDt6) - 5 * sDt2_1 * sDt5_1 - 10 * sDt3_1 * sDt4_1) / sDt1_1;
 
-            sDt1_1 = sDt1_1.FullSimplify().Collect(t);
-            sDt2_1 = sDt2_1.FullSimplify().Collect(t);
-            sDt3_1 = sDt3_1.FullSimplify().Collect(t);
-            sDt4_1 = sDt4_1.FullSimplify().Collect(t);
-            sDt5_1 = sDt5_1.FullSimplify().Collect(t);
-            sDt6_1 = sDt6_1.FullSimplify().Collect(t);
+            sDt1_1 = sDt1_1.FullSimplifyScalar().CollectScalar(t);
+            sDt2_1 = sDt2_1.FullSimplifyScalar().CollectScalar(t);
+            sDt3_1 = sDt3_1.FullSimplifyScalar().CollectScalar(t);
+            sDt4_1 = sDt4_1.FullSimplifyScalar().CollectScalar(t);
+            sDt5_1 = sDt5_1.FullSimplifyScalar().CollectScalar(t);
+            sDt6_1 = sDt6_1.FullSimplifyScalar().CollectScalar(t);
 
-            Debug.Assert((sDt1_1 - sDt1).FullSimplify().IsZero());
-            Debug.Assert((sDt2_1 - sDt2).FullSimplify().IsZero());
-            Debug.Assert((sDt3_1 - sDt3).FullSimplify().IsZero());
-            Debug.Assert((sDt4_1 - sDt4).FullSimplify().IsZero());
-            Debug.Assert((sDt5_1 - sDt5).FullSimplify().IsZero());
-            Debug.Assert((sDt6_1 - sDt6).FullSimplify().IsZero());
+            Debug.Assert((sDt1_1 - sDt1).FullSimplifyScalar().IsZero);
+            Debug.Assert((sDt2_1 - sDt2).FullSimplifyScalar().IsZero);
+            Debug.Assert((sDt3_1 - sDt3).FullSimplifyScalar().IsZero);
+            Debug.Assert((sDt4_1 - sDt4).FullSimplifyScalar().IsZero);
+            Debug.Assert((sDt5_1 - sDt5).FullSimplifyScalar().IsZero);
+            Debug.Assert((sDt6_1 - sDt6).FullSimplifyScalar().IsZero);
 
             // Validate the general expression for norm of vDs2
             var vDs2Norm_1 =
                 (vDt2NormSquared - 2 * (sDt2 / sDt1) * vDt1Dt2Dot + sDt2.Square()).Sqrt() / sDt1.Square();
 
-            Debug.Assert((vDs2Norm_1 - vDs2Norm).FullSimplify().IsZero());
+            Debug.Assert((vDs2Norm_1 - vDs2Norm).FullSimplifyScalar().IsZero);
 
             // Validate the general expression for vDs1, vDs2, vDs3, ...
             var vDs1_1 = vDt1 / sDt1;
@@ -1660,12 +1660,12 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             var vDs5_1 = ((45 * sDt1.Square() * sDt2.Square() - 10 * sDt1.Cube() * sDt3) * vDt3 + vDt2 * (-105 * sDt1 * sDt2.Cube() + 60 * sDt1.Square() * sDt2 * sDt3 - 5 * sDt1.Cube() * sDt4) - 10 * sDt1.Cube() * sDt2 * vDt4 + vDt1 * (5 * (21 * sDt2.Power(4) - 21 * sDt1 * sDt2.Square() * sDt3 + 2 * sDt1.Square() * sDt3.Square() + 3 * sDt1.Square() * sDt2 * sDt4) - sDt1.Cube() * sDt5) + sDt1.Power(4) * vDt5) / sDt1.Power(9);
             var vDs6_1 = (sDt1.Power(5) * vDt6 - 15 * sDt1.Power(4) * sDt2 * vDt5 + (105 * sDt1.Cube() * sDt2.Square() - 20 * sDt1.Power(4) * sDt3) * vDt4 - (420 * sDt1.Square() * sDt2.Cube() - 210 * sDt1.Cube() * sDt2 * sDt3 + 15 * sDt1.Power(4) * sDt4) * vDt3 + (945 * sDt1 * sDt2.Power(4) + 70 * sDt1.Cube() * sDt3.Square() - 840 * sDt1.Square() * sDt2.Square() * sDt3 + 105 * sDt1.Cube() * sDt2 * sDt4 - 6 * sDt1.Power(4) * sDt5) * vDt2 + (21 * sDt1.Cube() * sDt2 * sDt5 - sDt1.Power(4) * sDt6 - 35 * (27 * sDt2.Power(5) - 36 * sDt1 * sDt2.Cube() * sDt3 + 8 * sDt1.Square() * sDt2 * sDt3.Square() + sDt1.Square() * (6 * sDt2.Square() - sDt1 * sDt3) * sDt4)) * vDt1) / sDt1.Power(11);
 
-            Debug.Assert((vDs1_1 - vDs1).FullSimplifyScalars().IsZero());
-            Debug.Assert((vDs2_1 - vDs2).FullSimplifyScalars().IsZero());
-            Debug.Assert((vDs3_1 - vDs3).FullSimplifyScalars().IsZero());
-            Debug.Assert((vDs4_1 - vDs4).FullSimplifyScalars().IsZero());
-            Debug.Assert((vDs5_1 - vDs5).FullSimplifyScalars().IsZero());
-            Debug.Assert((vDs6_1 - vDs6).FullSimplifyScalars().IsZero());
+            Debug.Assert((vDs1_1 - vDs1).FullSimplifyScalars().IsZero);
+            Debug.Assert((vDs2_1 - vDs2).FullSimplifyScalars().IsZero);
+            Debug.Assert((vDs3_1 - vDs3).FullSimplifyScalars().IsZero);
+            Debug.Assert((vDs4_1 - vDs4).FullSimplifyScalars().IsZero);
+            Debug.Assert((vDs5_1 - vDs5).FullSimplifyScalars().IsZero);
+            Debug.Assert((vDs6_1 - vDs6).FullSimplifyScalars().IsZero);
 
 
             // Gram-Schmidt frame and its derivative of time parametrization of curve
@@ -1677,14 +1677,14 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
 
             // Gram-Schmidt frame and its derivative of arc-length parametrization of curve
             var (u1s, u2s, u3s, u4s, u5s, u6s) =
-                GeometricProcessor.ApplyGramSchmidtByProjections(vDs1, vDs2, vDs3, vDs4, vDs5, vDs6, false);
+                vDs1.ApplyGramSchmidtByProjections(vDs2, vDs3, vDs4, vDs5, vDs6, false);
 
-            var u1sNorm = u1s.Norm().SimplifyCollect(t);
-            var u2sNorm = u2s.Norm().SimplifyCollect(t);
-            var u3sNorm = u3s.Norm().SimplifyCollect(t);
-            var u4sNorm = u4s.Norm().SimplifyCollect(t);
-            var u5sNorm = u5s.Norm().SimplifyCollect(t);
-            var u6sNorm = u6s.Norm().SimplifyCollect(t);
+            var u1sNorm = u1s.Norm().SimplifyCollectScalar(t);
+            var u2sNorm = u2s.Norm().SimplifyCollectScalar(t);
+            var u3sNorm = u3s.Norm().SimplifyCollectScalar(t);
+            var u4sNorm = u4s.Norm().SimplifyCollectScalar(t);
+            var u5sNorm = u5s.Norm().SimplifyCollectScalar(t);
+            var u6sNorm = u6s.Norm().SimplifyCollectScalar(t);
 
             var (e1s, e2s, e3s, e4s, e5s, e6s) =
                 GetArcLengthGramSchmidtFrame6D(vDs1, vDs2, vDs3, vDs4, vDs5, vDs6);
@@ -1708,7 +1708,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             var vDs1DotB =
                 vDs1.Lcp(bBivector).SimplifyCollectScalars(t);
 
-            Debug.Assert(vDs1DotB.IsZero());
+            Debug.Assert(vDs1DotB.IsZero);
 
             //ValidateEqual(
             //    e1sDs,
@@ -1717,13 +1717,13 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             //    @"\boldsymbol{e}_{1}\lfloor\boldsymbol{\Omega}=-\boldsymbol{e}_{1}\rfloor\boldsymbol{\Omega}"
             //);
 
-            Debug.Assert((e1sDs - -e1s.Lcp(omegaBar)).FullSimplifyScalars().CollectScalars(t).IsZero());
-            Debug.Assert((e1sDs - -e1s.Lcp(omega)).FullSimplifyScalars().CollectScalars(t).IsZero());
-            Debug.Assert((e2sDs - -e2s.Lcp(omega)).FullSimplifyScalars().CollectScalars(t).IsZero());
-            Debug.Assert((e3sDs - -e3s.Lcp(omega)).FullSimplifyScalars().CollectScalars(t).IsZero());
-            Debug.Assert((e4sDs - -e4s.Lcp(omega)).FullSimplifyScalars().CollectScalars(t).IsZero());
-            Debug.Assert((e5sDs - -e5s.Lcp(omega)).FullSimplifyScalars().CollectScalars(t).IsZero());
-            Debug.Assert((e6sDs - -e6s.Lcp(omega)).FullSimplifyScalars().CollectScalars(t).IsZero());
+            Debug.Assert((e1sDs - -e1s.Lcp(omegaBar)).FullSimplifyScalars().CollectScalars(t).IsZero);
+            Debug.Assert((e1sDs - -e1s.Lcp(omega)).FullSimplifyScalars().CollectScalars(t).IsZero);
+            Debug.Assert((e2sDs - -e2s.Lcp(omega)).FullSimplifyScalars().CollectScalars(t).IsZero);
+            Debug.Assert((e3sDs - -e3s.Lcp(omega)).FullSimplifyScalars().CollectScalars(t).IsZero);
+            Debug.Assert((e4sDs - -e4s.Lcp(omega)).FullSimplifyScalars().CollectScalars(t).IsZero);
+            Debug.Assert((e5sDs - -e5s.Lcp(omega)).FullSimplifyScalars().CollectScalars(t).IsZero);
+            Debug.Assert((e6sDs - -e6s.Lcp(omega)).FullSimplifyScalars().CollectScalars(t).IsZero);
 
             //ValidateEqual(
             //    e1sDs,
@@ -1770,13 +1770,13 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
                 .ConsoleWriteLine(kappa5, @"\kappa_{5}")
                 .ConsoleWriteLine();
 
-            var scalarZero = Expr.INT_ZERO.CreateScalar(GeometricProcessor);
+            var scalarZero = Expr.INT_ZERO.CreateScalar(ScalarProcessor);
 
-            var kappa1_1 = u2sNorm.IsZero() ? scalarZero : u2sNorm / u1sNorm;
-            var kappa2_1 = u3sNorm.IsZero() ? scalarZero : u3sNorm / u2sNorm;
-            var kappa3_1 = u4sNorm.IsZero() ? scalarZero : u4sNorm / u3sNorm;
-            var kappa4_1 = u5sNorm.IsZero() ? scalarZero : u5sNorm / u4sNorm;
-            var kappa5_1 = u6sNorm.IsZero() ? scalarZero : u6sNorm / u5sNorm;
+            var kappa1_1 = u2sNorm.IsZero ? scalarZero : u2sNorm / u1sNorm;
+            var kappa2_1 = u3sNorm.IsZero ? scalarZero : u3sNorm / u2sNorm;
+            var kappa3_1 = u4sNorm.IsZero ? scalarZero : u4sNorm / u3sNorm;
+            var kappa4_1 = u5sNorm.IsZero ? scalarZero : u5sNorm / u4sNorm;
+            var kappa5_1 = u6sNorm.IsZero ? scalarZero : u6sNorm / u5sNorm;
 
             LaTeXComposer
                 .ConsoleWriteLine(kappa1_1, @"\kappa_{1}")
@@ -1788,11 +1788,11 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
 
 
             // Make sure the first curvature is equal to the norm of vDs2
-            Debug.Assert((kappa1 - kappa1_1).FullSimplify().IsZero());
-            Debug.Assert((kappa2 - kappa2_1).FullSimplify().IsZero());
-            Debug.Assert((kappa3 - kappa3_1).FullSimplify().IsZero());
-            Debug.Assert((kappa4 - kappa4_1).FullSimplify().IsZero());
-            Debug.Assert((kappa5 - kappa5_1).FullSimplify().IsZero());
+            Debug.Assert((kappa1 - kappa1_1).FullSimplifyScalar().IsZero());
+            Debug.Assert((kappa2 - kappa2_1).FullSimplifyScalar().IsZero());
+            Debug.Assert((kappa3 - kappa3_1).FullSimplifyScalar().IsZero());
+            Debug.Assert((kappa4 - kappa4_1).FullSimplifyScalar().IsZero());
+            Debug.Assert((kappa5 - kappa5_1).FullSimplifyScalar().IsZero());
 
             var omega2 =
                 kappa1 * e2s.Op(e1s) +
@@ -1801,7 +1801,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
                 kappa4 * e5s.Op(e4s) +
                 kappa5 * e6s.Op(e5s);
 
-            Debug.Assert((omega - omega2).IsZero());
+            Debug.Assert((omega - omega2).IsZero);
         }
     }
 }

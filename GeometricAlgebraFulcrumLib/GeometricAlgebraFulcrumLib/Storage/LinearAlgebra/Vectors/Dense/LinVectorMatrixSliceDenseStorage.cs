@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.BitManipulation;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records.Restricted;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 
 namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Dense
 {
@@ -14,14 +13,14 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Dense
     {
         public ILinMatrixStorage<T> SourceMatrix { get; }
 
-        public Func<ulong, IndexPairRecord> KeyMapping { get; }
+        public Func<ulong, RGaKvIndexPairRecord> KeyMapping { get; }
 
         public Func<ulong, ulong, T> DefaultValueFunc { get; }
 
         public override int Count { get; }
         
  
-        internal LinVectorMatrixSliceDenseStorage([NotNull] ILinMatrixStorage<T> array, int count, [NotNull] Func<ulong, IndexPairRecord> indexMapping, [NotNull] Func<ulong, ulong, T> defaultValueFunc)
+        internal LinVectorMatrixSliceDenseStorage(ILinMatrixStorage<T> array, int count, Func<ulong, RGaKvIndexPairRecord> indexMapping, Func<ulong, ulong, T> defaultValueFunc)
         {
             SourceMatrix = array;
             Count = count;

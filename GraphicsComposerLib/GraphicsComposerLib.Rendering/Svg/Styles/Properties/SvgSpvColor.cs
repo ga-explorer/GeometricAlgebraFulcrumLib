@@ -1,6 +1,5 @@
 ﻿using System.Text;
 using GraphicsComposerLib.Rendering.Svg.Attributes;
-using SixLabors.ImageSharp;
 
 namespace GraphicsComposerLib.Rendering.Svg.Styles.Properties
 {

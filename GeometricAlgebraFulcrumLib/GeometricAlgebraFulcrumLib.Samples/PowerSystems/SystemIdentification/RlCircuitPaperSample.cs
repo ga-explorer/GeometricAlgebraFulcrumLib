@@ -2,19 +2,20 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using CSharpMath.Atom.Atoms;
 using DataStructuresLib.Basic;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.Polynomials;
-using GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Algebra.SignalAlgebra;
-using GeometricAlgebraFulcrumLib.Algebra.SignalAlgebra.Interpolators;
+using GeometricAlgebraFulcrumLib.MathBase;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.Differential.Functions.Interpolators;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
+using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.Signals;
+using GeometricAlgebraFulcrumLib.MathBase.Text;
 using GeometricAlgebraFulcrumLib.Processors;
-using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.SignalAlgebra;
-using GeometricAlgebraFulcrumLib.Text;
-using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using MathNet.Numerics;
 using Newtonsoft.Json.Linq;
 using OfficeOpenXml;
@@ -29,24 +30,24 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.SystemIdentification
             = @"D:\Projects\Books\The Geometric Algebra Cookbook\Geometric Frequency\Data";
 
         // This is a pre-defined scalar processor for numeric scalars
-        public static ScalarAlgebraFloat64Processor ScalarProcessor { get; }
-            = ScalarAlgebraFloat64Processor.DefaultProcessor;
+        public static ScalarProcessorFloat64 ScalarProcessor { get; }
+            = ScalarProcessorFloat64.DefaultProcessor;
 
-        public static uint VSpaceDimension
+        public static int VSpaceDimensions
             => 4;
 
         // Create a 3-dimensional Euclidean geometric algebra processor based on the
         // selected scalar processor
-        public static GeometricAlgebraEuclideanProcessor<double> GeometricProcessor { get; }
-            = ScalarProcessor.CreateGeometricAlgebraEuclideanProcessor(VSpaceDimension);
+        public static RGaFloat64Processor GeometricProcessor { get; }
+            = RGaFloat64Processor.Euclidean;
 
         // This is a pre-defined text generator for displaying multivectors
-        public static TextFloat64Composer TextComposer { get; }
-            = TextFloat64Composer.DefaultComposer;
+        public static TextComposerFloat64 TextComposer { get; }
+            = TextComposerFloat64.DefaultComposer;
 
         // This is a pre-defined LaTeX generator for displaying multivectors
-        public static LaTeXFloat64Composer LaTeXComposer { get; }
-            = LaTeXFloat64Composer.DefaultComposer;
+        public static LaTeXComposerFloat64 LaTeXComposer { get; }
+            = LaTeXComposerFloat64.DefaultComposer;
 
         public static double SamplingRate
             => 98000d; //1000d; //10000d; 
@@ -63,8 +64,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.SystemIdentification
 
         // Create a 3-dimensional Euclidean geometric algebra processor based on the
         // selected tuple scalar processor
-        public static GeometricAlgebraEuclideanProcessor<ScalarSignalFloat64> GeometricSignalProcessor { get; }
-            = ScalarSignalProcessor.CreateGeometricAlgebraEuclideanProcessor(VSpaceDimension);
+        public static RGaProcessor<ScalarSignalFloat64> GeometricSignalProcessor { get; }
+            = ScalarSignalProcessor.CreateEuclideanRGaProcessor();
 
         private static string CombineWorkingPath(this string fileName)
         {
@@ -164,11 +165,12 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.SystemIdentification
         }
 
 
-        private static Quint<Scalar<ScalarSignalFloat64>> GetCurveWithDt4(this GaVector<ScalarSignalFloat64> signalSamples, IEnumerable<double> tData, VectorNevilleInterpolator interpolator)
+        private static Quint<Scalar<ScalarSignalFloat64>> GetCurveWithDt4(this RGaVector<ScalarSignalFloat64> signalSamples, IEnumerable<double> tData, RGaVectorNevilleInterpolator interpolator)
         {
-            var u = tData.Select(t =>
-                interpolator.GetVector(signalSamples, SignalSamplesCount, t)
-            ).CreateVectorSignal(GeometricSignalProcessor, SamplingRate);
+            var u = 
+                tData.Select(t => 
+                    interpolator.GetVector(signalSamples, SignalSamplesCount, t)
+                ).CreateVectorSignal(GeometricSignalProcessor, SamplingRate);
 
             var uDt1 =
                 interpolator.GetVectorsDt1(u, SignalSamplesCount);
@@ -530,19 +532,19 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.SystemIdentification
             );
 
 
-            var interpolationOptions = new SpectrumInterpolationOptions()
+            var interpolationOptions = new DfFourierSignalInterpolatorOptions()
             {
                 EnergyAcThreshold = 10d,
                 EnergyAcPercentThreshold = 1d,
                 SignalToNoiseRatioThreshold = 600000d,
                 FrequencyThreshold = double.PositiveInfinity,//400 * 2 * Math.PI,
                 FrequencyCountThreshold = 5000,
-                PaddingPolynomialSampleCount = 50,
+                PaddingTrendSampleCount = 50,
                 PaddingPolynomialDegree = 6
             };
 
-            var vectorSignalProcessor = new GeometricFrequencyFourierProcessor(
-                GeometricProcessor,
+            var vectorSignalProcessor = new RGaGeometricFrequencyFourierProcessor(
+                VSpaceDimensions,
                 interpolationOptions
             );
 
@@ -563,7 +565,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.SystemIdentification
             var iDt2 = vectorSignalProcessor.VectorSignalTimeDerivatives[1][0];
             var iDt3 = vectorSignalProcessor.VectorSignalTimeDerivatives[2][0];
 
-            var tValues = u.ScalarValue.GetTimeValuesSignal();
+            var tValues = u.ScalarValue.GetSampledTimeSignal();
             var tMin = tValues[0];
             var tMax = tValues[^1];
 
@@ -944,8 +946,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.SystemIdentification
             //    interpolationOptions
             //);
 
-            var vectorSignalProcessor = new GeometricFrequencyPolynomialProcessor(
-                GeometricProcessor,
+            var vectorSignalProcessor = new RGaGeometricFrequencyPolynomialProcessor(
+                VSpaceDimensions,
                 7,
                 51
             );
@@ -968,8 +970,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.SystemIdentification
             //    interpolationOptions
             //);
 
-            vectorSignalProcessor = new GeometricFrequencyPolynomialProcessor(
-                GeometricProcessor,
+            vectorSignalProcessor = new RGaGeometricFrequencyPolynomialProcessor(
+                VSpaceDimensions,
                 7,
                 51
             );
@@ -992,8 +994,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.SystemIdentification
             //    interpolationOptions
             //);
 
-            vectorSignalProcessor = new GeometricFrequencyPolynomialProcessor(
-                GeometricProcessor,
+            vectorSignalProcessor = new RGaGeometricFrequencyPolynomialProcessor(
+                VSpaceDimensions,
                 7,
                 51
             );
@@ -1206,19 +1208,19 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.SystemIdentification
 
             const int firstRowIndex = 3;
 
-            var interpolationOptions = new SpectrumInterpolationOptions()
+            var interpolationOptions = new DfFourierSignalInterpolatorOptions()
             {
                 EnergyAcThreshold = 10d,
                 EnergyAcPercentThreshold = 0.99995d,
                 SignalToNoiseRatioThreshold = 100000d,
                 FrequencyThreshold = double.PositiveInfinity, //200 * 2 * Math.PI,
                 FrequencyCountThreshold = 500,
-                PaddingPolynomialSampleCount = 50,
+                PaddingTrendSampleCount = 50,
                 PaddingPolynomialDegree = 6
             };
 
-            var vectorSignalProcessor = new GeometricFrequencyFourierProcessor(
-                GeometricProcessor,
+            var vectorSignalProcessor = new RGaGeometricFrequencyFourierProcessor(
+                VSpaceDimensions,
                 interpolationOptions
             );
 
@@ -1239,7 +1241,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.SystemIdentification
             var iDt2 = vectorSignalProcessor.VectorSignalTimeDerivatives[1][0];
             var iDt3 = vectorSignalProcessor.VectorSignalTimeDerivatives[2][0];
 
-            var tValues = u.ScalarValue.GetTimeValuesSignal();
+            var tValues = u.ScalarValue.GetSampledTimeSignal();
             var tMin = tValues[0];
             var tMax = tValues[^1];
 

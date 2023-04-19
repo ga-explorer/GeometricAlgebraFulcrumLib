@@ -69,7 +69,7 @@ namespace NumericalGeometryLib.Collections.Finite.Natural
         {
             var revCol = this as NfcReversed<T>;
 
-            return (revCol == null) 
+            return revCol == null 
                 ? NfcReversed<T>.Create(this) 
                 : revCol.BaseCollection.ToNaturalCollection();
         }

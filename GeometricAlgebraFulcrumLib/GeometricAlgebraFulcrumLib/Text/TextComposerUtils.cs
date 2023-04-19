@@ -4,11 +4,12 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using DataStructuresLib;
 using DataStructuresLib.Combinations;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records.Restricted;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Basis;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 using TextComposerLib.Text;
 
 namespace GeometricAlgebraFulcrumLib.Text
@@ -41,7 +42,7 @@ namespace GeometricAlgebraFulcrumLib.Text
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string GetBasisBladeText(this BasisBlade basisBlade)
+        public static string GetBasisBladeText(this RGaBasisBlade basisBlade)
         {
             return GetBasisBladeText(basisBlade.Id);
         }
@@ -81,37 +82,28 @@ namespace GeometricAlgebraFulcrumLib.Text
                 .Append(GetBasisBladeText(grade, index))
                 .ToString();
         }
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string GetTermText<T>(this KeyValuePair<ulong, T> idScalarPair)
+        public static string GetTermText<T>(this RGaKvIndexScalarRecord<T> idScalarTuple)
         {
             return GetTermText(
-                idScalarPair.Key, 
-                idScalarPair.Value
-            );
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string GetTermText<T>(this IndexScalarRecord<T> idScalarTuple)
-        {
-            return GetTermText(
-                idScalarTuple.Index, 
+                idScalarTuple.KvIndex, 
                 idScalarTuple.Scalar
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string GetTermText<T>(this GradeIndexScalarRecord<T> gradeIndexScalarTuple)
+        public static string GetTermText<T>(this RGaGradeKvIndexScalarRecord<T> gradeIndexScalarTuple)
         {
             return GetTermText(
                 gradeIndexScalarTuple.Grade, 
-                gradeIndexScalarTuple.Index,
+                gradeIndexScalarTuple.KvIndex,
                 gradeIndexScalarTuple.Scalar
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string GetTermText<T>(BasisBlade basisBlade, T scalar)
+        public static string GetTermText<T>(RGaBasisBlade basisBlade, T scalar)
         {
             return GetTermText(
                 basisBlade.Id,
@@ -120,24 +112,16 @@ namespace GeometricAlgebraFulcrumLib.Text
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string GetTermText<T>(this BasisTerm<T> term)
+        public static string GetTermText<T>(this KeyValuePair<ulong, T> term)
         {
             return GetTermText(
-                term.BasisBlade.Id,
-                term.Scalar
+                term.Key,
+                term.Value
             );
         }
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string GetTermsText<T>(this IEnumerable<KeyValuePair<ulong, T>> idScalarPairs)
-        {
-            return idScalarPairs
-                .Select(GetTermText)
-                .ConcatenateText(", ");
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string GetTermsText<T>(this IEnumerable<IndexScalarRecord<T>> idScalarTuples)
+        public static string GetTermsText<T>(this IEnumerable<RGaKvIndexScalarRecord<T>> idScalarTuples)
         {
             return idScalarTuples
                 .Select(GetTermText)
@@ -145,7 +129,7 @@ namespace GeometricAlgebraFulcrumLib.Text
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string GetTermsText<T>(this IEnumerable<GradeIndexScalarRecord<T>> gradeIndexScalarTuples)
+        public static string GetTermsText<T>(this IEnumerable<RGaGradeKvIndexScalarRecord<T>> gradeIndexScalarTuples)
         {
             return gradeIndexScalarTuples
                 .Select(GetTermText)
@@ -161,15 +145,15 @@ namespace GeometricAlgebraFulcrumLib.Text
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string GetTermsText<T>(uint grade, IEnumerable<IndexScalarRecord<T>> indexScalarTuples)
+        public static string GetTermsText<T>(uint grade, IEnumerable<RGaKvIndexScalarRecord<T>> indexScalarTuples)
         {
             return indexScalarTuples
-                .Select(indexScalarPair => GetTermText(grade, indexScalarPair.Index, indexScalarPair.Scalar))
+                .Select(indexScalarPair => GetTermText(grade, indexScalarPair.KvIndex, indexScalarPair.Scalar))
                 .ConcatenateText(", ");
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static string GetTermsText<T>(this IEnumerable<BasisTerm<T>> terms)
+        public static string GetTermsText<T>(this IEnumerable<KeyValuePair<ulong, T>> terms)
         {
             return terms
                 .Select(GetTermText)

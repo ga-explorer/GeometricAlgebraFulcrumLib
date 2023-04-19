@@ -49,17 +49,17 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
             var iszeroCasesText = new ListTextComposer(Environment.NewLine);
             var trimcoefsCasesText = new ListTextComposer(Environment.NewLine);
 
-            foreach (var grade in this.Grades)
+            foreach (var grade in Grades)
             {
                 iszeroCasesText.Add(t2,
                     "grade", grade,
-                    "num", this.KVectorSpaceDimension(grade)
+                    "num", VSpaceDimensions.KVectorSpaceDimension(grade)
                     );
 
                 trimcoefsCasesText.Add(t3,
                     "signature", CurrentNamespace,
                     "grade", grade,
-                    "num", this.KVectorSpaceDimension(grade)
+                    "num", VSpaceDimensions.KVectorSpaceDimension(grade)
                     );
             }
 
@@ -75,9 +75,9 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
             GenerateKVectorFileStartCode();
 
             var kvSpaceDimList =
-                VSpaceDimension
+                VSpaceDimensions
                     .GetRange()
-                    .Select(grade => GeometricProcessor.KVectorSpaceDimension(grade))
+                    .Select(grade => VSpaceDimensions.KVectorSpaceDimension(grade))
                     .Distinct();
 
             foreach (var kvSpaceDim in kvSpaceDimList)

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Diagnostics.CodeAnalysis;
 using DataStructuresLib.BitManipulation;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Structures.Lists
@@ -76,7 +75,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.Lists
             _itemsList = new List<T>(itemsList);
         }
         
-        private GaFuLListDense([NotNull] List<T> itemsList)
+        private GaFuLListDense(List<T> itemsList)
         {
             _itemsList = itemsList;
         }

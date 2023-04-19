@@ -1,8 +1,8 @@
-﻿using GraphicsComposerLib.Rendering.Svg.Attributes;
+﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GraphicsComposerLib.Rendering.Svg.Attributes;
 using GraphicsComposerLib.Rendering.Svg.Elements.Categories;
 using GraphicsComposerLib.Rendering.Svg.Transforms;
 using GraphicsComposerLib.Rendering.Svg.Values;
-using NumericalGeometryLib.BasicMath.Tuples;
 
 namespace GraphicsComposerLib.Rendering.Svg.Elements.Shape
 {

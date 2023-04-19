@@ -1,23 +1,23 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+using DataStructuresLib.Basic;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors;
 
 namespace GeometricAlgebraFulcrumLib.Processors.SignalAlgebra
 {
     public sealed class ScalarTupleProcessor<T> : 
-        IScalarAlgebraProcessor<ILinVectorStorage<T>>
+        IScalarProcessor<ILinVectorStorage<T>>
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static ScalarTupleProcessor<T> Create(IScalarAlgebraProcessor<T> scalarProcessor, int tupleSize)
+        internal static ScalarTupleProcessor<T> Create(IScalarProcessor<T> scalarProcessor, int tupleSize)
         {
             return new ScalarTupleProcessor<T>(scalarProcessor, tupleSize);
         }
 
 
-        public IScalarAlgebraProcessor<T> ScalarProcessor { get; }
+        public IScalarProcessor<T> ScalarProcessor { get; }
 
         public int TupleSize { get; }
 
@@ -54,7 +54,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.SignalAlgebra
         public ILinVectorStorage<T> ScalarRadianToDegree { get; }
 
 
-        private ScalarTupleProcessor([NotNull] IScalarAlgebraProcessor<T> scalarProcessor, int tupleSize)
+        private ScalarTupleProcessor(IScalarProcessor<T> scalarProcessor, int tupleSize)
         {
             if (tupleSize < 1)
                 throw new ArgumentOutOfRangeException(nameof(tupleSize));
@@ -94,6 +94,15 @@ namespace GeometricAlgebraFulcrumLib.Processors.SignalAlgebra
         public ILinVectorStorage<T> Times(ILinVectorStorage<T> scalar1, ILinVectorStorage<T> scalar2)
         {
             return ScalarProcessor.Times(scalar1, scalar2);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public ILinVectorStorage<T> Times(IntegerSign sign, ILinVectorStorage<T> scalar)
+        {
+            if (sign.IsZero) return ScalarZero;
+
+            return sign.IsPositive
+                ? scalar : Negative(scalar);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

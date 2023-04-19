@@ -3,8 +3,6 @@ using GraphicsComposerLib.Rendering.Images;
 using GraphicsComposerLib.Rendering.Svg.Content;
 using GraphicsComposerLib.Rendering.Svg.Values;
 using ImageMagick;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.PixelFormats;
 
 namespace GraphicsComposerLib.Rendering.Svg
 {

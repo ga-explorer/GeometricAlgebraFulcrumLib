@@ -1,5 +1,5 @@
-﻿using GraphicsComposerLib.Rendering.Xeogl.Constants;
-using NumericalGeometryLib.BasicMath.Matrices;
+﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Matrices;
+using GraphicsComposerLib.Rendering.Xeogl.Constants;
 
 namespace GraphicsComposerLib.Rendering.Xeogl.Cameras
 {

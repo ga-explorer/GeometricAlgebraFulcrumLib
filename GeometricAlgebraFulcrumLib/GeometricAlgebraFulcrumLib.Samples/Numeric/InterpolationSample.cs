@@ -1,13 +1,21 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using GeometricAlgebraFulcrumLib.Algebra.SignalAlgebra;
+using DataStructuresLib.Basic;
+using DataStructuresLib.Extensions;
+using DataStructuresLib.Files;
+using GeometricAlgebraFulcrumLib.MathBase;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.Differential;
+using GeometricAlgebraFulcrumLib.MathBase.Differential.Functions;
+using GeometricAlgebraFulcrumLib.MathBase.Differential.Functions.Interpolators;
+using GeometricAlgebraFulcrumLib.MathBase.Differential.Functions.Phasors;
+using GeometricAlgebraFulcrumLib.MathBase.Parametric.Curves.CatmullRom;
+using GeometricAlgebraFulcrumLib.MathBase.Signals;
 using GeometricAlgebraFulcrumLib.Mathematica;
 using GeometricAlgebraFulcrumLib.Mathematica.Mathematica.ExprFactory;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Utilities.Extensions;
-using NumericalGeometryLib.BasicMath;
-using NumericalGeometryLib.BasicMath.Calculus;
+using OfficeOpenXml;
 using OxyPlot;
 using OxyPlot.Series;
 using SixLabors.ImageSharp;
@@ -19,8 +27,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.Numeric
         private const string WorkingPath
             = @"D:\Projects\Books\The Geometric Algebra Cookbook\Geometric Frequency\Data";
 
-        public static ScalarAlgebraFloat64Processor ScalarProcessor { get; }
-            = ScalarAlgebraFloat64Processor.DefaultProcessor;
+        public static ScalarProcessorFloat64 ScalarProcessor { get; }
+            = ScalarProcessorFloat64.DefaultProcessor;
 
         public static double SamplingRate
             => 1000;
@@ -550,15 +558,15 @@ namespace GeometricAlgebraFulcrumLib.Samples.Numeric
                     .CreateSignal(SamplingRate);
 
             var signalPadded =
-                signal.GetPolynomialPaddedSignal(10, 5);
+                signal.GetPeriodicPaddedSignal(10);
 
             signal.PlotSignal("Signal", "Signal");
             signalPadded.PlotSignal("Padded Signal", "Padded Signal");
 
             var interpolator = signalPadded.CreateFourierSeries(0.9999d);
 
-            var tValues = signal.GetTimeValuesSignal();
-            var uValues = tValues.MapSamples(interpolator.GetScalar);
+            var tValues = signal.GetSampledTimeSignal();
+            var uValues = tValues.MapSamples(interpolator.GetValue);
 
             uValues.PlotSignal("Interpolated Signal", "Interpolated Signal");
 
@@ -585,7 +593,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Numeric
 
             for (var degree = 1; degree <= 10; degree++)
             {
-                var vDt = interpolator.GetInterpolatorDerivative(degree).ToString().ToExpr();
+                var vDt = interpolator.GetFourierDerivativeN(degree).ToString().ToExpr();
                 var uDt = Mfs.D[vDt0, Mfs.List[t, degree]].Evaluate();
 
                 Console.WriteLine(vDt.ToString());
@@ -608,7 +616,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Numeric
 
             for (var degree = 0; degree <= 6; degree++)
             {
-                var vDt = interpolator.GetInterpolatorDerivative(degree).ToMathematicaExpr(t);
+                var vDt = interpolator.GetFourierDerivativeN(degree).ToMathematicaExpr(t);
                 var uDt = Mfs.D[vDt0, Mfs.List[t, degree]].Evaluate();
 
                 Console.WriteLine(degree);
@@ -636,14 +644,14 @@ namespace GeometricAlgebraFulcrumLib.Samples.Numeric
             //var signal1 = tValues.MapSamples(t => t * t);
 
             var signal1Padded =
-                signal1.GetPolynomialPaddedSignal(20, 6);
+                signal1.GetPeriodicPaddedSignal(20);
 
             var interpolator = 
                 signal1Padded.CreateFourierSeries();
                 //signal1Padded.CreateFourierSeries(0.998d);
 
             var signal2 = 
-                interpolator.GetScalars(tValues).CreateSignal(samplingRate);
+                interpolator.GetValues(tValues).CreateSignal(samplingRate);
             
             var sampleCountPadded = signal1Padded.Count;
 
@@ -651,7 +659,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Numeric
                 Enumerable.Range(0, sampleCountPadded).Select(i => i / samplingRate).CreateSignal(samplingRate);
 
             var signal2Padded = 
-                interpolator.GetScalars(tValuesPadded).CreateSignal(samplingRate);
+                interpolator.GetValues(tValuesPadded).CreateSignal(samplingRate);
             
             Path.Combine(WorkingPath, "Signal").PlotSignals(
                 signal1,
@@ -667,15 +675,15 @@ namespace GeometricAlgebraFulcrumLib.Samples.Numeric
                 tValuesPadded[^1]
             );
 
-            Console.WriteLine($"RMS 1   : {signal1.Rms()}");
-            Console.WriteLine($"RMS 2   : {signal2.Rms()}");
-            Console.WriteLine($"RMS Diff: {(signal1 - signal2).Rms()}");
+            Console.WriteLine($"RMS 1   : {signal1.RootMeanSquare()}");
+            Console.WriteLine($"RMS 2   : {signal2.RootMeanSquare()}");
+            Console.WriteLine($"RMS Diff: {(signal1 - signal2).RootMeanSquare()}");
             Console.WriteLine();
 
             Console.WriteLine($"DC Energy   : {signal1.EnergyDc()}");
             Console.WriteLine($"AC Energy   : {signal1.EnergyAc()}");
             Console.WriteLine($"Total Energy: {signal1.Energy()}");
-            Console.WriteLine($"SNR         : {signal2.SignalToNoiseRatio(signal2 - signal1)}");
+            Console.WriteLine($"PSNR        : {signal2.PeakSignalToNoiseRatioDb(signal1)}");
             Console.WriteLine();
 
             Console.WriteLine(
@@ -702,7 +710,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Numeric
 
 
             var signal1Padded =
-                signal1.GetPolynomialPaddedSignal(20, 6);
+                signal1.GetPeriodicPaddedSignal(20);
 
             var interpolator = 
                 signal1Padded.GetFourierSpectrum(0.998d, 100);
@@ -733,16 +741,16 @@ namespace GeometricAlgebraFulcrumLib.Samples.Numeric
                 tValuesPadded[^2]
             );
 
-            Console.WriteLine($"RMS 1   : {signal1.Rms()}");
-            Console.WriteLine($"RMS 2   : {signal2.Rms()}");
-            Console.WriteLine($"RMS Diff: {(signal1 - signal2).Rms() / signal1.Rms()}");
+            Console.WriteLine($"RMS 1   : {signal1.RootMeanSquare()}");
+            Console.WriteLine($"RMS 2   : {signal2.RootMeanSquare()}");
+            Console.WriteLine($"RMS Diff: {(signal1 - signal2).RootMeanSquare() / signal1.RootMeanSquare()}");
             Console.WriteLine();
 
             Console.WriteLine($"DC Energy   : {signal1.EnergyDc()}");
             Console.WriteLine($"AC Energy   : {signal1.EnergyAc()}");
             Console.WriteLine($"Total Energy: {signal1.Energy()}");
-            Console.WriteLine($"SNR         : {signal1.SignalToNoiseRatio(signal1 - signal2)}");
-            Console.WriteLine($"SNR Padded  : {signal2Padded.SignalToNoiseRatio(signal2Padded - signal1Padded)}");
+            Console.WriteLine($"PSNR        : {signal1.PeakSignalToNoiseRatioDb(signal2)}");
+            Console.WriteLine($"PSNR Padded : {signal2Padded.PeakSignalToNoiseRatioDb(signal1Padded)}");
             Console.WriteLine();
             
             Console.BufferHeight = short.MaxValue - 1;
@@ -763,6 +771,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.Numeric
             const int bezierDegree = 4;
             const CatmullRomSplineType curveType = CatmullRomSplineType.Centripetal;
 
+            var smoothingFactors = new[] { 3, 5, 7, 9 };
+
             var s1Signal =
                 Path
                     .Combine(WorkingPath, @"Aulario3_derivatives.xlsx")
@@ -770,7 +780,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Numeric
                     .CreateSignal(samplingRate);
             
             var tSignal = 
-                s1Signal.GetTimeValuesSignal();
+                s1Signal.GetSampledTimeSignal();
 
             var s1Function = 
                 s1Signal.CreateAkimaSplineFunction(tMin, tMax);
@@ -785,15 +795,18 @@ namespace GeometricAlgebraFulcrumLib.Samples.Numeric
             //    );
 
             var s2Function =
-                s1Signal.CreateSmoothedCatmullRomSplineD3Function(
-                    bezierDegree,
-                    downSamplingCount,
-                    curveType
+                s1Signal.CreateCatmullRomSplineInterpolator(
+                    new DfCatmullRomSplineSignalInterpolatorOptions
+                    {
+                        BezierDegree = bezierDegree,
+                        SmoothingFactors = smoothingFactors,
+                        SplineType = curveType
+                    }
                 );
 
 
             var s1DownSampledSignal = s1Signal.ReSample(downSamplingCount);
-            var tDownSampledSignal = s1DownSampledSignal.GetTimeValuesSignal();
+            var tDownSampledSignal = s1DownSampledSignal.GetSampledTimeSignal();
             
             var s2Signal = 
                 tSignal.MapSamples(s2Function.GetValue);
@@ -805,8 +818,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.Numeric
             ).SaveAsPng(Path.Combine(WorkingPath, @"s2.png"));
             
             var sError = s1Signal - s2Signal;
-            var sErrorRms = sError.Rms();
-            var sSnr = s1Signal.SignalToNoiseRatio(s1Signal - s2Signal);
+            var sErrorRms = sError.RootMeanSquare();
+            var sSnr = s1Signal.PeakSignalToNoiseRatioDb(s2Signal);
             
             sError.PlotSignal(
                 tMin, 
@@ -821,16 +834,16 @@ namespace GeometricAlgebraFulcrumLib.Samples.Numeric
             
 
             var s1Dt1Signal = 
-                tSignal.MapSamples(s1Function.GetFirstDerivativeValue);
+                tSignal.MapSamples(s1Function.GetDerivative1Value);
 
             var s1Dt1DownSampledSignal = 
-                tDownSampledSignal.MapSamples(s1Function.GetFirstDerivativeValue);
+                tDownSampledSignal.MapSamples(s1Function.GetDerivative1Value);
 
             var s2Dt1Function =
-                ComputedD0Function.CreateD0Function(s2Function.GetFirstDerivativeValue);
+                DfComputedFunction.Create(s2Function.GetDerivative1().GetValue);
 
             var s2Dt1Signal = 
-                tSignal.MapSamples(s2Function.GetFirstDerivativeValue);
+                tSignal.MapSamples(s2Function.GetDerivative1().GetValue);
             
             s2Dt1Function.PlotValue(
                 s1Dt1DownSampledSignal, 
@@ -841,8 +854,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.Numeric
             ).SaveAsPng(Path.Combine(WorkingPath, @"s2Dt1.png"));
 
             var sDt1Error = s1Dt1Signal - s2Dt1Signal;
-            var sDt1ErrorRms = sDt1Error.Rms();
-            var sDt1Snr = s1Dt1Signal.SignalToNoiseRatio(s1Dt1Signal - s2Dt1Signal);
+            var sDt1ErrorRms = sDt1Error.RootMeanSquare();
+            var sDt1Snr = s1Dt1Signal.PeakSignalToNoiseRatioDb(s2Dt1Signal);
             
             Console.WriteLine($"Signal Dt1 error RMS: {sDt1ErrorRms}");
             Console.WriteLine($"Signal Dt1 SNR: {sDt1Snr}");
@@ -850,13 +863,13 @@ namespace GeometricAlgebraFulcrumLib.Samples.Numeric
             
 
             var s1Dt2Signal = 
-                tSignal.MapSamples(s1Function.GetSecondDerivativeValue);
+                tSignal.MapSamples(s1Function.GetDerivative2Value);
 
             var s1Dt2DownSampledSignal = 
-                tDownSampledSignal.MapSamples(s1Function.GetSecondDerivativeValue);
+                tDownSampledSignal.MapSamples(s1Function.GetDerivative2Value);
             
             var s2Dt2Function = 
-                ComputedD0Function.CreateD0Function(s2Function.GetSecondDerivativeValue);
+                DfComputedFunction.Create(s2Function.GetDerivative2().GetValue);
 
             var s2Dt2Signal = 
                 tSignal.MapSamples(s2Dt2Function.GetValue);
@@ -870,8 +883,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.Numeric
             ).SaveAsPng(Path.Combine(WorkingPath, @"s2Dt2.png"));
 
             var sDt2Error = s1Dt2Signal - s2Dt2Signal;
-            var sDt2ErrorRms = sDt2Error.Rms();
-            var sDt2Snr = s1Dt2Signal.SignalToNoiseRatio(s1Dt2Signal - s2Dt2Signal);
+            var sDt2ErrorRms = sDt2Error.RootMeanSquare();
+            var sDt2Snr = s1Dt2Signal.PeakSignalToNoiseRatioDb(s2Dt2Signal);
             
             Console.WriteLine($"Signal Dt2 error RMS: {sDt2ErrorRms}");
             Console.WriteLine($"Signal Dt2 SNR: {sDt2Snr}");
@@ -879,13 +892,13 @@ namespace GeometricAlgebraFulcrumLib.Samples.Numeric
             
 
             var s1Dt3Signal = 
-                tSignal.MapSamples(s1Function.GetThirdDerivativeValue);
+                tSignal.MapSamples(s1Function.GetDerivative3Value);
 
             var s1Dt3DownSampledSignal = 
-                tDownSampledSignal.MapSamples(s1Function.GetThirdDerivativeValue);
+                tDownSampledSignal.MapSamples(s1Function.GetDerivative3Value);
             
             var s2Dt3Function = 
-                ComputedD0Function.CreateD0Function(s2Function.GetThirdDerivativeValue);
+                DfComputedFunction.Create(s2Function.GetDerivative3());
 
             var s2Dt3Signal = 
                 tSignal.MapSamples(s2Dt3Function.GetValue);
@@ -899,8 +912,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.Numeric
             ).SaveAsPng(Path.Combine(WorkingPath, @"s2Dt3.png"));
 
             var sDt3Error = s1Dt3Signal - s2Dt3Signal;
-            var sDt3ErrorRms = sDt3Error.Rms();
-            var sDt3Snr = s1Dt3Signal.SignalToNoiseRatio(s1Dt3Signal - s2Dt3Signal);
+            var sDt3ErrorRms = sDt3Error.RootMeanSquare();
+            var sDt3Snr = s1Dt3Signal.PeakSignalToNoiseRatioDb(s2Dt3Signal);
             
             Console.WriteLine($"Signal Dt3 error RMS: {sDt3ErrorRms}");
             Console.WriteLine($"Signal Dt3 SNR: {sDt3Snr}");
@@ -1079,5 +1092,525 @@ namespace GeometricAlgebraFulcrumLib.Samples.Numeric
         //    Console.WriteLine($"Signal Dt2 SNR: {sDt2Snr}");
         //    Console.WriteLine();
         //}
+
+        public static void Example8()
+        {
+            const string workingPath = @"D:\Projects\Study\Interpolation";
+            const double frequencyHz = 1d/5d;
+            const double frequency = 2d * Math.PI * frequencyHz;
+            const double samplesPerCycle = 2000;
+            const double cycleCount = 3;
+            const double sampleCount = cycleCount * samplesPerCycle + 1;
+            const double tMin = 0d;
+            const double tMax = cycleCount / frequencyHz;
+            const double samplingRate = (sampleCount - 1) / (tMax - tMin);
+
+            const int bezierDegree = 3;
+            const CatmullRomSplineType curveType = CatmullRomSplineType.Centripetal;
+            const double downSamplingCount = sampleCount / 1;
+
+            var smoothingFactors = new[] { 3, 5, 7, 9 };
+
+            var tSignal =
+                tMin.GetLinearRange(tMax, (int) sampleCount, false).CreateSignal(samplingRate);
+
+            var f1 = 
+                DfCosPhasor.Create(10, frequency, 0d.DegreesToAngle()) +
+                DfCosPhasor.Create(3, frequency * 2, 30.DegreesToAngle()) +
+                DfCosPhasor.Create(1, frequency * 5, 50.DegreesToAngle());
+
+            //var valueFunction = SmoothedCatmullRomSplineD0Function.CreateSmoothedCatmullRomSplineD0Function(
+            //    tSignal.MapSamples(f1.GetValue),
+            //    bezierDegree,
+            //    (int)downSamplingCount,
+            //    curveType
+            //);
+
+            //var f2 = ComputedD4Function.CreateD4Function(
+            //    valueFunction.ValueFunc,
+            //    valueFunction.GetFirstDerivativeValue,
+            //    MathNet.Numerics.Differentiate.DerivativeFunc(valueFunction.GetFirstDerivativeValue, 1),
+            //    MathNet.Numerics.Differentiate.DerivativeFunc(valueFunction.GetFirstDerivativeValue, 2),
+            //    MathNet.Numerics.Differentiate.DerivativeFunc(valueFunction.GetFirstDerivativeValue, 3)
+            //);
+
+            var f2 =
+                tSignal.MapSamples(f1.GetValue).CreateCatmullRomSplineInterpolator(
+                    new DfCatmullRomSplineSignalInterpolatorOptions
+                    {
+                        BezierDegree = bezierDegree,
+                        SmoothingFactors = smoothingFactors,
+                        SplineType = curveType
+                    }
+                );
+
+            const int trimSampleCount = 50;
+            tSignal = tSignal.GetSubSignal(trimSampleCount, tSignal.Count - 2 * trimSampleCount);
+
+            var (s1, s1Dt1, s1Dt2, s1Dt3, s1Dt4) = 
+                tSignal.SampleFunctionDerivatives4(f1);
+
+            s1.PlotScalarSignal("s1", workingPath.GetFilePath("s1"));
+            s1Dt1.PlotScalarSignal("s1Dt1", workingPath.GetFilePath("s1Dt1"));
+            s1Dt2.PlotScalarSignal("s1Dt2", workingPath.GetFilePath("s1Dt2"));
+            s1Dt3.PlotScalarSignal("s1Dt3", workingPath.GetFilePath("s1Dt3"));
+            s1Dt4.PlotScalarSignal("s1Dt4", workingPath.GetFilePath("s1Dt4"));
+
+            var (s2, s2Dt1, s2Dt2, s2Dt3, s2Dt4) = 
+                tSignal.SampleFunctionDerivatives4(f2);
+            
+            s2.PlotScalarSignal("s2", workingPath.GetFilePath("s2"));
+            s2Dt1.PlotScalarSignal("s2Dt1", workingPath.GetFilePath("s2Dt1"));
+            s2Dt2.PlotScalarSignal("s2Dt2", workingPath.GetFilePath("s2Dt2"));
+            s2Dt3.PlotScalarSignal("s2Dt3", workingPath.GetFilePath("s2Dt3"));
+            s2Dt4.PlotScalarSignal("s2Dt4", workingPath.GetFilePath("s2Dt4"));
+            
+            var sDiff = s1 - s2;
+            var sDt1Diff = s1Dt1 - s2Dt1;
+            var sDt2Diff = s1Dt2 - s2Dt2;
+            var sDt3Diff = s1Dt3 - s2Dt3;
+            var sDt4Diff = s1Dt4 - s2Dt4;
+
+            sDiff.PlotScalarSignal("sDiff", workingPath.GetFilePath("sDiff"));
+            sDt1Diff.PlotScalarSignal("sDt1Diff", workingPath.GetFilePath("sDt1Diff"));
+            sDt2Diff.PlotScalarSignal("sDt2Diff", workingPath.GetFilePath("sDt2Diff"));
+            sDt3Diff.PlotScalarSignal("sDt3Diff", workingPath.GetFilePath("sDt3Diff"));
+            sDt4Diff.PlotScalarSignal("sDt4Diff", workingPath.GetFilePath("sDt4Diff"));
+
+            Console.WriteLine($"   s PSNR: {s1.PeakSignalToNoiseRatioDb(s2)}");
+            Console.WriteLine($"sDt1 PSNR: {s1Dt1.PeakSignalToNoiseRatioDb(s2Dt1)}");
+            Console.WriteLine($"sDt2 PSNR: {s1Dt2.PeakSignalToNoiseRatioDb(s2Dt2)}");
+            Console.WriteLine($"sDt3 PSNR: {s1Dt3.PeakSignalToNoiseRatioDb(s2Dt3)}");
+            Console.WriteLine($"sDt4 PSNR: {s1Dt4.PeakSignalToNoiseRatioDb(s2Dt4)}");
+            Console.WriteLine();
+
+            var columnIndex = 1;
+        
+            var outputFilePath =
+                Path.Combine(workingPath, @"Output.xlsx");
+
+            
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+            using var package = new ExcelPackage();
+
+            var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+
+            workSheet.WriteScalarSignal(3, columnIndex++, tSignal, "t");
+            
+            workSheet.WriteScalarSignal(3, columnIndex++, s1, "s1");
+            workSheet.WriteScalarSignal(3, columnIndex++, s1Dt1, "s1Dt1");
+            workSheet.WriteScalarSignal(3, columnIndex++, s1Dt2, "s1Dt2");
+            workSheet.WriteScalarSignal(3, columnIndex++, s1Dt3, "s1Dt3");
+            workSheet.WriteScalarSignal(3, columnIndex++, s1Dt4, "s1Dt4");
+
+            workSheet.WriteScalarSignal(3, columnIndex++, s2, "s2");
+            workSheet.WriteScalarSignal(3, columnIndex++, s2Dt1, "s2Dt1");
+            workSheet.WriteScalarSignal(3, columnIndex++, s2Dt2, "s2Dt2");
+            workSheet.WriteScalarSignal(3, columnIndex++, s2Dt3, "s2Dt3");
+            workSheet.WriteScalarSignal(3, columnIndex++, s2Dt4, "s2Dt4");
+            
+            package.SaveAs(outputFilePath);
+        }
+        
+        public static void Example9()
+        {
+            const string workingPath = @"D:\Projects\Study\Interpolation";
+            const double frequencyHz = 1d/5d;
+            const double frequency = 2d * Math.PI * frequencyHz;
+            const double samplesPerCycle = 2000;
+            const double cycleCount = 3;
+            const double sampleCount = cycleCount * samplesPerCycle + 1;
+            const double tMin = 0d;
+            const double tMax = cycleCount / frequencyHz;
+            const double samplingRate = (sampleCount - 1) / (tMax - tMin);
+
+            const int polynomialDegree = 39;
+            //const CatmullRomSplineType curveType = CatmullRomSplineType.Centripetal;
+            //const double downSamplingCount = sampleCount / 1;
+
+            var smoothingFactors =
+                //Array.Empty<int>();
+                //new[] { 3 };
+                //new[] { 3, 5 };
+                new[] { 3, 5, 7 };
+                //new[] { 3, 5, 7, 9 };
+
+            var tSignal =
+                tMin.GetLinearRange(tMax, (int) sampleCount, false).CreateSignal(samplingRate);
+
+            var f1 = 
+                DfCosPhasor.Create(10, frequency, 0d.DegreesToAngle()) +
+                DfCosPhasor.Create(3, frequency * 2, 30.DegreesToAngle()) +
+                DfCosPhasor.Create(1, frequency * 5, 50.DegreesToAngle());
+
+            //var valueFunction = SmoothedCatmullRomSplineD0Function.CreateSmoothedCatmullRomSplineD0Function(
+            //    tSignal.MapSamples(f1.GetValue),
+            //    bezierDegree,
+            //    (int)downSamplingCount,
+            //    curveType
+            //);
+
+            //var f2 = ComputedD4Function.CreateD4Function(
+            //    valueFunction.ValueFunc,
+            //    valueFunction.GetFirstDerivativeValue,
+            //    MathNet.Numerics.Differentiate.DerivativeFunc(valueFunction.GetFirstDerivativeValue, 1),
+            //    MathNet.Numerics.Differentiate.DerivativeFunc(valueFunction.GetFirstDerivativeValue, 2),
+            //    MathNet.Numerics.Differentiate.DerivativeFunc(valueFunction.GetFirstDerivativeValue, 3)
+            //);
+
+            var options = new DfChebyshevSignalInterpolatorOptions()
+            {
+                PolynomialDegree = polynomialDegree,
+                SectionCount = 3,
+                SmoothingFactors = smoothingFactors
+            };
+
+            var f2 =
+                tSignal.MapSamples(f1.GetValue).CreateChebyshevInterpolator(options);
+
+            const int trimSampleCount = 50;
+            tSignal = tSignal.GetSubSignal(trimSampleCount, tSignal.Count - 2 * trimSampleCount);
+
+            var (s1, s1Dt1, s1Dt2, s1Dt3, s1Dt4) = 
+                tSignal.SampleFunctionDerivatives4(f1);
+
+            s1.PlotScalarSignal("s1", workingPath.GetFilePath("s1"));
+            s1Dt1.PlotScalarSignal("s1Dt1", workingPath.GetFilePath("s1Dt1"));
+            s1Dt2.PlotScalarSignal("s1Dt2", workingPath.GetFilePath("s1Dt2"));
+            s1Dt3.PlotScalarSignal("s1Dt3", workingPath.GetFilePath("s1Dt3"));
+            s1Dt4.PlotScalarSignal("s1Dt4", workingPath.GetFilePath("s1Dt4"));
+
+            var (s2, s2Dt1, s2Dt2, s2Dt3, s2Dt4) = 
+                tSignal.SampleFunctionDerivatives4(f2);
+            
+            s2.PlotScalarSignal("s2", workingPath.GetFilePath("s2"));
+            s2Dt1.PlotScalarSignal("s2Dt1", workingPath.GetFilePath("s2Dt1"));
+            s2Dt2.PlotScalarSignal("s2Dt2", workingPath.GetFilePath("s2Dt2"));
+            s2Dt3.PlotScalarSignal("s2Dt3", workingPath.GetFilePath("s2Dt3"));
+            s2Dt4.PlotScalarSignal("s2Dt4", workingPath.GetFilePath("s2Dt4"));
+            
+            s1.PlotSignal(
+                s2, 
+                s1.SamplingSpecs.MinTime, 
+                s1.SamplingSpecs.MaxTime, 
+                workingPath.GetFilePath("s1-s2")
+            );
+
+            var sDiff = s1 - s2;
+            var sDt1Diff = s1Dt1 - s2Dt1;
+            var sDt2Diff = s1Dt2 - s2Dt2;
+            var sDt3Diff = s1Dt3 - s2Dt3;
+            var sDt4Diff = s1Dt4 - s2Dt4;
+
+            sDiff.PlotScalarSignal("sDiff", workingPath.GetFilePath("sDiff"));
+            sDt1Diff.PlotScalarSignal("sDt1Diff", workingPath.GetFilePath("sDt1Diff"));
+            sDt2Diff.PlotScalarSignal("sDt2Diff", workingPath.GetFilePath("sDt2Diff"));
+            sDt3Diff.PlotScalarSignal("sDt3Diff", workingPath.GetFilePath("sDt3Diff"));
+            sDt4Diff.PlotScalarSignal("sDt4Diff", workingPath.GetFilePath("sDt4Diff"));
+
+            Console.WriteLine($"   s PSNR: {s1.PeakSignalToNoiseRatioDb(s2)}");
+            Console.WriteLine($"sDt1 PSNR: {s1Dt1.PeakSignalToNoiseRatioDb(s2Dt1)}");
+            Console.WriteLine($"sDt2 PSNR: {s1Dt2.PeakSignalToNoiseRatioDb(s2Dt2)}");
+            Console.WriteLine($"sDt3 PSNR: {s1Dt3.PeakSignalToNoiseRatioDb(s2Dt3)}");
+            Console.WriteLine($"sDt4 PSNR: {s1Dt4.PeakSignalToNoiseRatioDb(s2Dt4)}");
+            Console.WriteLine();
+
+            var columnIndex = 1;
+        
+            var outputFilePath =
+                Path.Combine(workingPath, @"Output.xlsx");
+
+            
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+            using var package = new ExcelPackage();
+
+            var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+
+            workSheet.WriteScalarSignal(3, columnIndex++, tSignal, "t");
+            
+            workSheet.WriteScalarSignal(3, columnIndex++, s1, "s1");
+            workSheet.WriteScalarSignal(3, columnIndex++, s1Dt1, "s1Dt1");
+            workSheet.WriteScalarSignal(3, columnIndex++, s1Dt2, "s1Dt2");
+            workSheet.WriteScalarSignal(3, columnIndex++, s1Dt3, "s1Dt3");
+            workSheet.WriteScalarSignal(3, columnIndex++, s1Dt4, "s1Dt4");
+
+            workSheet.WriteScalarSignal(3, columnIndex++, s2, "s2");
+            workSheet.WriteScalarSignal(3, columnIndex++, s2Dt1, "s2Dt1");
+            workSheet.WriteScalarSignal(3, columnIndex++, s2Dt2, "s2Dt2");
+            workSheet.WriteScalarSignal(3, columnIndex++, s2Dt3, "s2Dt3");
+            workSheet.WriteScalarSignal(3, columnIndex++, s2Dt4, "s2Dt4");
+            
+            package.SaveAs(outputFilePath);
+        }
+
+        private static IEnumerable<int> GetSmoothingWindowWidths(params int[] windowWidthFactorArray)
+        {
+            var windowWidthFactorLcm = windowWidthFactorArray.Lcm();
+
+            var smoothingWindowWidths = 
+                windowWidthFactorArray.Select(f => 
+                    (windowWidthFactorLcm / f - 1) / 2
+                ).ToArray();
+
+            return smoothingWindowWidths;
+        }
+
+        public static void Example10()
+        {
+            const string workingPath = @"D:\Projects\Study\Interpolation";
+            const double frequencyHz = 1d/5d;
+            const double frequency = 2d * Math.PI * frequencyHz;
+            const double samplesPerCycle = 2000;
+            const double cycleCount = 3;
+            const double sampleCount = cycleCount * samplesPerCycle + 1;
+            const double tMin = 0d;
+            const double tMax = cycleCount / frequencyHz;
+            const double samplingRate = (sampleCount - 1) / (tMax - tMin);
+
+            const int bezierDegree = 6;
+            const CatmullRomSplineType curveType = CatmullRomSplineType.Centripetal;
+
+            var smoothingFactors = new[] { 3, 5, 7, 9 };
+
+            var randomGenerator = new Random(10);
+
+            var tSignal =
+                tMin.GetLinearRange(tMax, (int) sampleCount, false).CreateSignal(samplingRate);
+
+            var f1 = 
+                DfCosPhasor.Create(10, frequency, 0d.DegreesToAngle()) +
+                DfCosPhasor.Create(3, frequency * 2, 30.DegreesToAngle()) +
+                DfCosPhasor.Create(1, frequency * 5, 50.DegreesToAngle());
+
+            var s1 =
+                tSignal
+                    .MapSamples(f1.GetValue)
+                    .AddRandomGaussian(randomGenerator, 0, 0.1);
+
+            var f2 = s1.CreateCatmullRomSplineInterpolator(
+                new DfCatmullRomSplineSignalInterpolatorOptions
+                {
+                    BezierDegree = bezierDegree,
+                    SmoothingFactors = smoothingFactors,
+                    SplineType = curveType
+                }
+            );
+
+            var (s1Dt1, s1Dt2, s1Dt3, s1Dt4) = 
+                tSignal.SampleDerivatives4(f1);
+            
+            var (s2, s2Dt1, s2Dt2, s2Dt3, s2Dt4) = 
+                tSignal.SampleFunctionDerivatives4(f2);
+            
+            var index = 50;
+            var count = (int) sampleCount - 2 * index;
+
+            tSignal = tSignal.GetSubSignal(index, count);
+
+            s1 = s1.GetSubSignal(index, count);
+            s1Dt1 = s1Dt1.GetSubSignal(index, count);
+            s1Dt2 = s1Dt2.GetSubSignal(index, count);
+            s1Dt3 = s1Dt3.GetSubSignal(index, count);
+            s1Dt4 = s1Dt4.GetSubSignal(index, count);
+
+            s2 = s2.GetSubSignal(index, count);
+            s2Dt1 = s2Dt1.GetSubSignal(index, count);
+            s2Dt2 = s2Dt2.GetSubSignal(index, count);
+            s2Dt3 = s2Dt3.GetSubSignal(index, count);
+            s2Dt4 = s2Dt4.GetSubSignal(index, count);
+
+            var sDiff = s1 - s2;
+            var sDt1Diff = s1Dt1 - s2Dt1;
+            var sDt2Diff = s1Dt2 - s2Dt2;
+            var sDt3Diff = s1Dt3 - s2Dt3;
+            var sDt4Diff = s1Dt4 - s2Dt4;
+
+            s1.PlotScalarSignal("s1", workingPath.GetFilePath("s1"));
+            s1Dt1.PlotScalarSignal("s1Dt1", workingPath.GetFilePath("s1Dt1"));
+            s1Dt2.PlotScalarSignal("s1Dt2", workingPath.GetFilePath("s1Dt2"));
+            s1Dt3.PlotScalarSignal("s1Dt3", workingPath.GetFilePath("s1Dt3"));
+            s1Dt4.PlotScalarSignal("s1Dt4", workingPath.GetFilePath("s1Dt4"));
+
+            s2.PlotScalarSignal("s2", workingPath.GetFilePath("s2"));
+            s2Dt1.PlotScalarSignal("s2Dt1", workingPath.GetFilePath("s2Dt1"));
+            s2Dt2.PlotScalarSignal("s2Dt2", workingPath.GetFilePath("s2Dt2"));
+            s2Dt3.PlotScalarSignal("s2Dt3", workingPath.GetFilePath("s2Dt3"));
+            s2Dt4.PlotScalarSignal("s2Dt4", workingPath.GetFilePath("s2Dt4"));
+
+            sDiff.PlotScalarSignal("sDiff", workingPath.GetFilePath("sDiff"));
+            sDt1Diff.PlotScalarSignal("sDt1Diff", workingPath.GetFilePath("sDt1Diff"));
+            sDt2Diff.PlotScalarSignal("sDt2Diff", workingPath.GetFilePath("sDt2Diff"));
+            sDt3Diff.PlotScalarSignal("sDt3Diff", workingPath.GetFilePath("sDt3Diff"));
+            sDt4Diff.PlotScalarSignal("sDt4Diff", workingPath.GetFilePath("sDt4Diff"));
+
+            Console.WriteLine($"   s PSNR: {s1.PeakSignalToNoiseRatioDb(s2)}");
+            Console.WriteLine($"sDt1 PSNR: {s1Dt1.PeakSignalToNoiseRatioDb(s2Dt1)}");
+            Console.WriteLine($"sDt2 PSNR: {s1Dt2.PeakSignalToNoiseRatioDb(s2Dt2)}");
+            Console.WriteLine($"sDt3 PSNR: {s1Dt3.PeakSignalToNoiseRatioDb(s2Dt3)}");
+            Console.WriteLine($"sDt4 PSNR: {s1Dt4.PeakSignalToNoiseRatioDb(s2Dt4)}");
+            Console.WriteLine();
+
+            var columnIndex = 1;
+        
+            var outputFilePath =
+                Path.Combine(workingPath, @"Output.xlsx");
+
+            
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+            using var package = new ExcelPackage();
+
+            var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+
+            workSheet.WriteScalarSignal(3, columnIndex++, tSignal, "t");
+            
+            workSheet.WriteScalarSignal(3, columnIndex++, s1, "s1");
+            workSheet.WriteScalarSignal(3, columnIndex++, s1Dt1, "s1Dt1");
+            workSheet.WriteScalarSignal(3, columnIndex++, s1Dt2, "s1Dt2");
+            workSheet.WriteScalarSignal(3, columnIndex++, s1Dt3, "s1Dt3");
+            workSheet.WriteScalarSignal(3, columnIndex++, s1Dt4, "s1Dt4");
+
+            workSheet.WriteScalarSignal(3, columnIndex++, s2, "s2");
+            workSheet.WriteScalarSignal(3, columnIndex++, s2Dt1, "s2Dt1");
+            workSheet.WriteScalarSignal(3, columnIndex++, s2Dt2, "s2Dt2");
+            workSheet.WriteScalarSignal(3, columnIndex++, s2Dt3, "s2Dt3");
+            workSheet.WriteScalarSignal(3, columnIndex++, s2Dt4, "s2Dt4");
+            
+            package.SaveAs(outputFilePath);
+        }
+
+        private static ScalarSignalFloat64 MakePeriodic(ScalarSignalFloat64 signal, int sampleCount)
+        {
+            var signalArray = new double[signal.Count];
+
+            for (var i = 0; i < sampleCount; i++)
+            {
+                var t = (sampleCount - i) / (2d * sampleCount);
+                var s = 1d - t;
+
+                signalArray[i] = s * signal[i] + t * signal[signal.Count - i - 1];
+                signalArray[signal.Count - i - 1] = t * signal[i] + s * signal[signal.Count - i - 1];
+            }
+
+            for (var i = sampleCount; i < signal.Count - sampleCount; i++) 
+                signalArray[i] = signal[i];
+
+            //for (var i = 0; i < sampleCount; i++)
+            //{
+            //    var t = (sampleCount - i) / (2d * sampleCount);
+            //    var s = 1d - t;
+
+            //    signalArray[i] = t * signal[i] + s * signal[signal.Count - i - 1];
+            //}
+
+            return ScalarSignalFloat64.Create(
+                signal.SamplingRate, 
+                signalArray, 
+                false
+            );
+        }
+
+        public static void Example11()
+        {
+            const string workingPath = @"D:\Projects\Study\Interpolation";
+            const double frequencyHz = 1d/5d;
+            const double frequency = 2d * Math.PI * frequencyHz;
+            const double samplesPerCycle = 2000;
+            const double cycleCount = 3;
+            const double sampleCount = cycleCount * samplesPerCycle + 1;
+            const double tMin = 0d;
+            const double tMax = cycleCount / frequencyHz;
+            const double samplingRate = (sampleCount - 1) / (tMax - tMin);
+
+            var f1 = 
+                DfCosPhasor.Create(10, frequency, 0d.DegreesToAngle()) +
+                DfCosPhasor.Create(3, frequency * 2, 30.DegreesToAngle()) +
+                DfCosPhasor.Create(1, frequency * 5, 50.DegreesToAngle());
+            
+            var tSignal =
+                //0d.GetLinearRange(3.75d, (int) (3.75d * samplingRate) + 1, false).CreateSignal(samplingRate);
+                tMin.GetLinearRange(tMax, (int) sampleCount, false).CreateSignal(samplingRate);
+            
+            var s1 = tSignal.MapSamples(f1.GetValue);
+            var s2 = s1.FlipXy();
+
+            var d12 = s1[^1] - s2[0];
+            var d21 = s1[0] - s2[^1];
+
+            var s3 = 
+                (s2 + d21).Concat(s1.Concat(s2 + d12)).CreateSignal(samplingRate);
+
+            var c12 = s3[^1] - s1[0];
+            var c21 = s3[0] - s1[^1];
+
+            for (var i = 0; i < tSignal.Count; i++)
+            {
+                var t = i / (double)(tSignal.Count - 1);
+                var s = 1d - t;
+
+                //s3.AppendSample(s1[i] + s * c12 + t * c21);
+                s3.AppendSample(s1[i] + c12);
+            }
+
+            var s4 = 
+                MakePeriodic(s3, (int) (sampleCount / 2));
+
+            var s5 = 
+                s4.MapSamples(
+                    (index, _) => s4[(index + tSignal.Count).Mod(s4.Count)]
+                );
+
+            const double energyThreshold = 0.999998d;
+            const double snrThreshold = 2000d;
+
+            var f2 =
+                s5.CreateFourierInterpolator(snrThreshold, energyThreshold);
+
+            var f2Dt1 =
+                f2.GetFourierDerivativeN(1);
+
+            var f2Dt2 =
+                f2.GetFourierDerivativeN(2);
+
+            var f2Dt3 =
+                f2.GetFourierDerivativeN(3);
+
+            var f2Dt4 =
+                f2.GetFourierDerivativeN(4);
+
+            var (sf1, sf1Dt1, sf1Dt2, sf1Dt3, sf1Dt4) = 
+                tSignal.SampleFunctionDerivatives4(f1);
+            
+            var (sf2, sf2Dt1, sf2Dt2, sf2Dt3, sf2Dt4) = 
+                tSignal.SampleFunctionDerivatives4(f2);
+            
+            s1.PlotScalarSignal("s1", workingPath.GetFilePath("s1"));
+            s2.PlotScalarSignal("s2", workingPath.GetFilePath("s2"));
+            s3.PlotScalarSignal("s3", workingPath.GetFilePath("s3"));
+            s4.PlotScalarSignal("s4", workingPath.GetFilePath("s4"));
+            s5.PlotScalarSignal("s5", workingPath.GetFilePath("s5"));
+
+            sf1.PlotScalarSignal("sf", workingPath.GetFilePath("sf1"));
+            sf1Dt1.PlotScalarSignal("sfDt1", workingPath.GetFilePath("sf1Dt1"));
+            sf1Dt2.PlotScalarSignal("sfDt2", workingPath.GetFilePath("sf1Dt2"));
+            sf1Dt3.PlotScalarSignal("sfDt3", workingPath.GetFilePath("sf1Dt3"));
+            sf1Dt4.PlotScalarSignal("sfDt4", workingPath.GetFilePath("sf1Dt4"));
+
+            sf2.PlotScalarSignal("sf", workingPath.GetFilePath("sf2"));
+            sf2Dt1.PlotScalarSignal("sfDt1", workingPath.GetFilePath("sf2Dt1"));
+            sf2Dt2.PlotScalarSignal("sfDt2", workingPath.GetFilePath("sf2Dt2"));
+            sf2Dt3.PlotScalarSignal("sfDt3", workingPath.GetFilePath("sf2Dt3"));
+            sf2Dt4.PlotScalarSignal("sfDt4", workingPath.GetFilePath("sf2Dt4"));
+            
+            (sf1 - sf2).PlotScalarSignal("sf", workingPath.GetFilePath("dsf"));
+            (sf1Dt1 - sf2Dt1).PlotScalarSignal("sfDt1", workingPath.GetFilePath("dsfDt1"));
+            (sf1Dt2 - sf2Dt2).PlotScalarSignal("sfDt2", workingPath.GetFilePath("dsfDt2"));
+            (sf1Dt3 - sf2Dt3).PlotScalarSignal("sfDt3", workingPath.GetFilePath("dsfDt3"));
+            (sf1Dt4 - sf2Dt4).PlotScalarSignal("sfDt4", workingPath.GetFilePath("dsfDt4"));
+
+
+        }
     }
 }

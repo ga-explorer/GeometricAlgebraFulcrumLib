@@ -1,10 +1,11 @@
 ﻿using GraphicsComposerLib.Rendering.BabylonJs.Values;
 
-namespace GraphicsComposerLib.Rendering.BabylonJs.GUI;
-
-public interface IGrBabylonJsGuiControlContainer
+namespace GraphicsComposerLib.Rendering.BabylonJs.GUI
 {
-    GrBabylonJsGuiFullScreenUiValue ParentUi { get; }
+    public interface IGrBabylonJsGuiControlContainer
+    {
+        GrBabylonJsGuiFullScreenUiValue ParentUi { get; }
 
-    GrBabylonJsGuiControlList ControlList { get; }
+        GrBabylonJsGuiControlList ControlList { get; }
+    }
 }

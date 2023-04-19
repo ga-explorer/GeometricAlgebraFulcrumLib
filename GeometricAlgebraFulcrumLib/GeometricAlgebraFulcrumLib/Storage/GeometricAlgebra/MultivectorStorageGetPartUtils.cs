@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
 
 namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
 {
@@ -99,7 +99,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> GetNegativeVectorPart<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorStorage<T> mv)
+        public static VectorStorage<T> GetNegativeVectorPart<T>(this IScalarProcessor<T> scalarProcessor, IMultivectorStorage<T> mv)
         {
             return mv.GetVectorPart(
                 scalarProcessor.Negative
@@ -108,7 +108,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static BivectorStorage<T> GetNegativeBivectorPart<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorStorage<T> mv)
+        public static BivectorStorage<T> GetNegativeBivectorPart<T>(this IScalarProcessor<T> scalarProcessor, IMultivectorStorage<T> mv)
         {
             return mv.GetBivectorPart(
                 scalarProcessor.Negative
@@ -117,7 +117,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static KVectorStorage<T> GetNegativeKVectorPart<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorStorage<T> mv, uint grade)
+        public static KVectorStorage<T> GetNegativeKVectorPart<T>(this IScalarProcessor<T> scalarProcessor, IMultivectorStorage<T> mv, uint grade)
         {
             return mv.GetKVectorPart(
                 grade,
@@ -127,7 +127,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tuple<T, BivectorStorage<T>> GetScalarBivectorParts<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IMultivectorStorage<T> mv)
+        public static Tuple<T, BivectorStorage<T>> GetScalarBivectorParts<T>(this IScalarProcessor<T> scalarProcessor, IMultivectorStorage<T> mv)
         {
             var scalar = mv.TryGetScalar(out var s)
                 ? s

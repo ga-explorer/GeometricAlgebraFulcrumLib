@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Drawing;
 using System.Linq;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Frames;
 using GeometricAlgebraFulcrumLib.Geometry.Graphics.Space2D;
-using GeometricAlgebraFulcrumLib.Processors;
-using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Utilities.Composers;
-using GeometricAlgebraFulcrumLib.Utilities.Factories;
+using GeometricAlgebraFulcrumLib.MathBase.Borders;
+using GeometricAlgebraFulcrumLib.MathBase.Borders.Space2D.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Frames;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Processors;
 using GraphicsComposerLib.Rendering.Svg.DrawingBoard;
-using NumericalGeometryLib.Borders;
-using NumericalGeometryLib.Borders.Space2D.Immutable;
 
 namespace GeometricAlgebraFulcrumLib.Samples.VoronoiDiagrams
 {
@@ -21,27 +19,30 @@ namespace GeometricAlgebraFulcrumLib.Samples.VoronoiDiagrams
     /// </summary>
     public static class VoronoiDiagramsSample
     {
-        private static GeometricAlgebraRandomComposer<double> _randomComposer;
+        private static RGaFloat64RandomComposer _randomComposer;
 
         public static EuclideanPoint2D[] PointsArray { get; private set; }
 
-        public static GeometricAlgebraConformalProcessor<double> ConformalProcessor { get; }
-            = ScalarAlgebraFloat64Processor.DefaultProcessor.CreateGeometricAlgebraConformalProcessor(4);
+        public static RGaFloat64Processor ConformalProcessor { get; }
+            = RGaFloat64Processor.Conformal;
+
+        public static int VSpaceDimensions 
+            => 4;
 
 
         public static void Execute()
         {
-            var n = ConformalProcessor.VSpaceDimension - 2U;
+            var n = VSpaceDimensions - 2;
 
-            _randomComposer = ConformalProcessor.CreateGeometricRandomComposer(10);
+            _randomComposer = ConformalProcessor.CreateRGaRandomComposer(VSpaceDimensions, 10);
 
             // Fill random points array
             PointsArray = new EuclideanPoint2D[8];
 
             for (var i = 0; i < PointsArray.Length; i++)
                 PointsArray[i] = new EuclideanPoint2D(
-                    _randomComposer.GetScalar(-500, 500),
-                    _randomComposer.GetScalar(-500, 500)
+                    _randomComposer.GetScalarValue(-500, 500),
+                    _randomComposer.GetScalarValue(-500, 500)
                 );
 
             // Given a set of m points, a hollow sphere Sn has the properties:
@@ -57,10 +58,9 @@ namespace GeometricAlgebraFulcrumLib.Samples.VoronoiDiagrams
 
             // Step 4: compute coordinates of regular simplex vertices
             var simplexFrame =
-                ConformalProcessor
+                boundingSphere.Center.ToRGaVector()
                     .CreateFixedFrameOfSimplex(
                         n,
-                        boundingSphere.Center.ToVector(),
                         boundingSphere.Radius * Math.Sqrt(n * (n + 1))
                     );
 
@@ -68,7 +68,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.VoronoiDiagrams
             Console.WriteLine();
 
             var simplexPoints = 
-                simplexFrame.Select(p => p.VectorStorage.ToEuclideanPoint2D()).ToArray();
+                simplexFrame.Select(p => p.GetTuple2D()).ToArray();
             
 
             var boundingBox = simplexPoints.GetBoundingBox(1.15);

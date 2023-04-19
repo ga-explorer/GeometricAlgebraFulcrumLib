@@ -1,18 +1,18 @@
 ﻿using System.Collections.Generic;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records.Restricted;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 
 namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors
 {
     public interface ILinVectorStorageComposer<T>
     {
-        IScalarAlgebraProcessor<T> ScalarProcessor { get; }
+        IScalarProcessor<T> ScalarProcessor { get; }
 
         bool IsEmpty();
 
-        IEnumerable<IndexScalarRecord<T>> GetIndexScalarRecords();
+        IEnumerable<RGaKvIndexScalarRecord<T>> GetIndexScalarRecords();
 
         ILinVectorStorage<T> CreateLinVectorStorage();
 

@@ -1,7 +1,6 @@
 ﻿using System;
-
-using NumericalGeometryLib.BasicMath.Tuples;
-using GraphicsComposerLib.Geometry.Primitives.Vertices;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Frames.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
 using SixLabors.ImageSharp;
 
 namespace GraphicsComposerLib.Geometry.Structures.Faces
@@ -15,8 +14,8 @@ namespace GraphicsComposerLib.Geometry.Structures.Faces
             set => throw new InvalidOperationException();
         }
         
-        public GrNormal3D Normal { get; }
-            = new GrNormal3D();
+        public Normal3D Normal { get; }
+            = new Normal3D();
         
         public double NormalX 
             => Normal.X;

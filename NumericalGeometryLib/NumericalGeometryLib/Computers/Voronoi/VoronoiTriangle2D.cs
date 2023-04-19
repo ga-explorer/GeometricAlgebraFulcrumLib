@@ -1,10 +1,9 @@
 using System.Collections.Generic;
-using NumericalGeometryLib.BasicMath;
-using NumericalGeometryLib.BasicMath.Tuples;
-using NumericalGeometryLib.BasicMath.Tuples.Immutable;
-using NumericalGeometryLib.BasicShapes.Triangles;
-using NumericalGeometryLib.Borders.Space2D.Immutable;
-using NumericalGeometryLib.Borders.Space2D.Mutable;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Triangles;
+using GeometricAlgebraFulcrumLib.MathBase.Borders.Space2D.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Borders.Space2D.Mutable;
 
 namespace NumericalGeometryLib.Computers.Voronoi
 {
@@ -330,7 +329,7 @@ namespace NumericalGeometryLib.Computers.Voronoi
             
             //Finish GMac Macro Code Generation, 2018-12-28T18:22:43.4043776+02:00
 
-            return (distanceSquared <= 0);
+            return distanceSquared <= 0;
         }
     }
 }

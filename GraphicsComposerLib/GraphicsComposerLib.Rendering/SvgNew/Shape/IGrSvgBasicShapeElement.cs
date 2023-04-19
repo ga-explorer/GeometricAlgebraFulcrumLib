@@ -1,7 +1,8 @@
-﻿namespace GraphicsComposerLib.Rendering.SvgNew.Shape;
-
-public interface IGrSvgBasicShapeElement : 
-    IGrSvgShapeElement
+﻿namespace GraphicsComposerLib.Rendering.SvgNew.Shape
 {
-    //<circle>, <ellipse>, <line>, <polygon>, <polyline>, <rect>
+    public interface IGrSvgBasicShapeElement : 
+        IGrSvgShapeElement
+    {
+        //<circle>, <ellipse>, <line>, <polygon>, <polyline>, <rect>
+    }
 }

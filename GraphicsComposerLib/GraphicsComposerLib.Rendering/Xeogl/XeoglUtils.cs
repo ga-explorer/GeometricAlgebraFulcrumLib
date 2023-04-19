@@ -1,10 +1,10 @@
-﻿using GraphicsComposerLib.Geometry.Primitives;
+﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Matrices;
+using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Triangles;
+using GraphicsComposerLib.Geometry.Primitives;
 using GraphicsComposerLib.Rendering.Xeogl.Constants;
 using GraphicsComposerLib.Rendering.Xeogl.Geometry.Primitives;
 using GraphicsComposerLib.Rendering.Xeogl.Transforms;
-using NumericalGeometryLib.BasicMath.Maps.Space3D;
-using NumericalGeometryLib.BasicMath.Matrices;
-using NumericalGeometryLib.BasicShapes.Triangles;
 using TextComposerLib;
 using TextComposerLib.Code.JavaScript;
 

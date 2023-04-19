@@ -8,7 +8,6 @@ using GraphicsComposerLib.Rendering.BabylonJs.Materials;
 using GraphicsComposerLib.Rendering.BabylonJs.Meshes;
 using GraphicsComposerLib.Rendering.BabylonJs.Textures;
 using GraphicsComposerLib.Rendering.BabylonJs.Values;
-using SixLabors.ImageSharp.PixelFormats;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs
 {

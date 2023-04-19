@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using NumericalGeometryLib.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
 using GraphicsComposerLib.Geometry.Primitives.Vertices;
 
 namespace GraphicsComposerLib.Geometry.Primitives

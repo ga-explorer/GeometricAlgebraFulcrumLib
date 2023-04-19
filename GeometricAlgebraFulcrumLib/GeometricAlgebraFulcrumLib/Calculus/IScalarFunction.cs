@@ -1,23 +1,24 @@
-﻿using GeometricAlgebraFulcrumLib.Processors.FunctionAlgebra;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.FunctionAlgebra;
 
-namespace GeometricAlgebraFulcrumLib.Calculus;
-
-public interface IScalarFunction<T>
+namespace GeometricAlgebraFulcrumLib.Calculus
 {
-    IScalarAlgebraProcessor<T> ScalarProcessor { get; }
+    public interface IScalarFunction<T>
+    {
+        IScalarProcessor<T> ScalarProcessor { get; }
 
-    IScalarFunctionProcessor<T> FunctionProcessor { get; }
+        IScalarFunctionProcessor<T> FunctionProcessor { get; }
 
-    T GetValue(T t);
+        T GetValue(T t);
 
-    T GetDerivativeValue(T t);
+        T GetDerivativeValue(T t);
 
-    T GetDerivativeValue(T t, int order);
+        T GetDerivativeValue(T t, int order);
 
-    IScalarFunction<T> GetDerivative();
+        IScalarFunction<T> GetDerivative();
 
-    IScalarFunction<T> GetDerivative(int order);
+        IScalarFunction<T> GetDerivative(int order);
 
-    ScalarFunction<T> ToScalarFunction();
+        ScalarFunction<T> ToScalarFunction();
+    }
 }

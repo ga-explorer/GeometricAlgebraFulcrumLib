@@ -12,12 +12,12 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
 
         internal string ZeroCondition { get; }
 
-        internal Func<uint, uint, uint> GetFinalGrade { get; }
+        internal Func<int, int, int> GetFinalGrade { get; }
 
-        internal Func<uint, uint, bool> IsLegalGrade { get; }
+        internal Func<int, int, bool> IsLegalGrade { get; }
 
 
-        internal BilinearProductMainMethodFileComposer(GaFuLLibraryComposer libGen, GaFuLLanguageOperationSpecs opSpecs, string zeroCondition, Func<uint, uint, uint> getFinalGrade, Func<uint, uint, bool> isLegalGrade)
+        internal BilinearProductMainMethodFileComposer(GaFuLLibraryComposer libGen, GaFuLLanguageOperationSpecs opSpecs, string zeroCondition, Func<int, int, int> getFinalGrade, Func<int, int, bool> isLegalGrade)
             : base(libGen)
         {
             OperationSpecs = opSpecs;
@@ -36,8 +36,8 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
 
             var casesText = new ListTextComposer(Environment.NewLine);
 
-            foreach (var grade1 in GeometricProcessor.Grades)
-                foreach (var grade2 in GeometricProcessor.Grades)
+            foreach (var grade1 in Grades)
+                foreach (var grade2 in Grades)
                 {
                     if (IsLegalGrade(grade1, grade2) == false)
                         continue;
@@ -46,7 +46,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
                         GetFinalGrade(grade1, grade2);
 
                     var id = 
-                        grade1 + grade2 * GeometricProcessor.GradesCount;
+                        grade1 + grade2 * GradesCount;
 
                     var name = OperationSpecs.GetName(
                         grade1, grade2, grade

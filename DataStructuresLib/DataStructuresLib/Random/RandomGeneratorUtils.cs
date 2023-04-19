@@ -5,6 +5,7 @@ using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Threading;
+using DataStructuresLib.Basic;
 using MathNet.Numerics;
 using MathNet.Numerics.Statistics;
 
@@ -36,6 +37,151 @@ namespace DataStructuresLib.Random
             return value;
         }
 
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IntegerSign GetSign(this System.Random randomGenerator)
+        {
+            return IntegerSign.CreateFromInt32(
+                ((randomGenerator.Next() & 1) << 1) - 1
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IntegerSign GetTriSign(this System.Random randomGenerator)
+        {
+            return IntegerSign.CreateFromInt32(
+                randomGenerator.Next(-1, 2)
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T GetItem<T>(this System.Random randomGenerator, T item1, T item2)
+        {
+            return (randomGenerator.Next() & 1) == 0 ? item1 : item2;
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T GetItem<T>(this System.Random randomGenerator, T item1, T item2, T item3)
+        {
+            return (randomGenerator.Next() % 3) switch
+            {
+                0 => item1,
+                1 => item2,
+                _ => item3
+            };
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T GetItem<T>(this System.Random randomGenerator, IPair<T> items)
+        {
+            return (randomGenerator.Next() & 1) == 0 ? items.Item1 : items.Item2;
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T GetItem<T>(this IPair<T> items, System.Random randomGenerator)
+        {
+            return (randomGenerator.Next() & 1) == 0 ? items.Item1 : items.Item2;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T GetItem<T>(this System.Random randomGenerator, ITriplet<T> items)
+        {
+            return (randomGenerator.Next() % 3) switch
+            {
+                0 => items.Item1,
+                1 => items.Item2,
+                _ => items.Item3
+            };
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T GetItem<T>(this ITriplet<T> items, System.Random randomGenerator)
+        {
+            return (randomGenerator.Next() % 3) switch
+            {
+                0 => items.Item1,
+                1 => items.Item2,
+                _ => items.Item3
+            };
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T GetItem<T>(this System.Random randomGenerator, IQuad<T> items)
+        {
+            return (randomGenerator.Next() % 4) switch
+            {
+                0 => items.Item1,
+                1 => items.Item2,
+                2 => items.Item3,
+                _ => items.Item4
+            };
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T GetItem<T>(this IQuad<T> items, System.Random randomGenerator)
+        {
+            return (randomGenerator.Next() % 4) switch
+            {
+                0 => items.Item1,
+                1 => items.Item2,
+                2 => items.Item3,
+                _ => items.Item4
+            };
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T GetItem<T>(this System.Random randomGenerator, IQuint<T> items)
+        {
+            return (randomGenerator.Next() % 5) switch
+            {
+                0 => items.Item1,
+                1 => items.Item2,
+                2 => items.Item3,
+                3 => items.Item4,
+                _ => items.Item5
+            };
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T GetItem<T>(this IQuint<T> items, System.Random randomGenerator)
+        {
+            return (randomGenerator.Next() % 5) switch
+            {
+                0 => items.Item1,
+                1 => items.Item2,
+                2 => items.Item3,
+                3 => items.Item4,
+                _ => items.Item5
+            };
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T GetItem<T>(this System.Random randomGenerator, IHexad<T> items)
+        {
+            return (randomGenerator.Next() % 5) switch
+            {
+                0 => items.Item1,
+                1 => items.Item2,
+                2 => items.Item3,
+                3 => items.Item4,
+                4 => items.Item5,
+                _ => items.Item6
+            };
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T GetItem<T>(this IHexad<T> items, System.Random randomGenerator)
+        {
+            return (randomGenerator.Next() % 5) switch
+            {
+                0 => items.Item1,
+                1 => items.Item2,
+                2 => items.Item3,
+                3 => items.Item4,
+                4 => items.Item5,
+                _ => items.Item6
+            };
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static double GetNumber(this System.Random randomGenerator)
@@ -456,8 +602,7 @@ namespace DataStructuresLib.Random
         {
             if (random == null) { throw new ArgumentNullException(nameof(random)); }
 
-            var nextBitsRandom = random as NextBitsRandom;
-            if (nextBitsRandom != null)
+            if (random is NextBitsRandom nextBitsRandom)
             {
                 return ((long)nextBitsRandom.NextBits(32) << 32) + nextBitsRandom.NextBits(32);
             }
@@ -577,7 +722,7 @@ namespace DataStructuresLib.Random
             if (probability == 1) 
                 return true;
 
-            if (probability < 0 || probability > 1)
+            if (probability is < 0 or > 1)
                 throw new ArgumentOutOfRangeException(nameof(probability),
                     $"{nameof(probability)} must be in [0, 1]. Found {probability}");
             
@@ -682,27 +827,24 @@ namespace DataStructuresLib.Random
         /// <summary>
         /// Returns a normally-distributed double value with mean 0 and standard deviation 1
         /// </summary>
-        public static double NextGeoussian(this System.Random random)
+        public static double NextGaussian(this System.Random random)
         {
-            if (random == null) { throw new ArgumentNullException(nameof(random)); }
+            if (random == null) 
+                throw new ArgumentNullException(nameof(random));
 
-            var nextGeoussianRandom = random as INextGeoussianRandom;
-            if (nextGeoussianRandom != null)
-            {
-                return nextGeoussianRandom.NextGeoussian();
-            }
+            if (random is INextGaussianRandom nextGaussianRandom)
+                return nextGaussianRandom.NextGaussian();
 
-            double result, ignored;
-            random.NextTwoGeoussians(out result, out ignored);
+            random.NextTwoGaussians(out var result, out _);
             return result;
         }
 
-        private interface INextGeoussianRandom
+        private interface INextGaussianRandom
         {
-            double NextGeoussian();
+            double NextGaussian();
         }
 
-        private static void NextTwoGeoussians(this System.Random random, out double value1, out double value2)
+        private static void NextTwoGaussians(this System.Random random, out double value1, out double value2)
         {
             double v1, v2, s;
             do
@@ -710,7 +852,7 @@ namespace DataStructuresLib.Random
                 v1 = 2 * random.NextDouble() - 1; // between -1.0 and 1.0
                 v2 = 2 * random.NextDouble() - 1; // between -1.0 and 1.0
                 s = v1 * v1 + v2 * v2;
-            } while (s >= 1 || s == 0);
+            } while (s is >= 1 or 0);
             var multiplier = Math.Sqrt(-2 * Math.Log(s) / s);
 
             value1 = v1* multiplier;
@@ -779,7 +921,7 @@ namespace DataStructuresLib.Random
         /// </summary>
         public static int Next(int minValue, int maxValue) => ThreadLocalRandom.Current.Next(minValue, maxValue);
 
-        private sealed class SingletonRandom : System.Random, INextGeoussianRandom
+        private sealed class SingletonRandom : System.Random, INextGaussianRandom
         {
             public static readonly SingletonRandom Instance = new SingletonRandom();
 
@@ -797,10 +939,10 @@ namespace DataStructuresLib.Random
 
             protected override double Sample() => ThreadLocalRandom.Current.NextDouble();
 
-            double INextGeoussianRandom.NextGeoussian() => ThreadLocalRandom.Current.NextGeoussian();
+            double INextGaussianRandom.NextGaussian() => ThreadLocalRandom.Current.NextGaussian();
         }
 
-        private sealed class ThreadLocalRandom : System.Random, INextGeoussianRandom
+        private sealed class ThreadLocalRandom : System.Random, INextGaussianRandom
         {
             private static readonly DateTime SeedTime = DateTime.UtcNow;
 
@@ -816,18 +958,18 @@ namespace DataStructuresLib.Random
             
             private double? _nextNextGeoussian;
 
-            public double NextGeoussian()
+            public double NextGaussian()
             {
-                if (this._nextNextGeoussian.HasValue)
+                if (_nextNextGeoussian.HasValue)
                 {
-                    var result = this._nextNextGeoussian.Value;
-                    this._nextNextGeoussian = null;
+                    var result = _nextNextGeoussian.Value;
+                    _nextNextGeoussian = null;
                     return result;
                 }
 
                 double next, nextNext;
-                this.NextTwoGeoussians(out next, out nextNext);
-                this._nextNextGeoussian = nextNext;
+                this.NextTwoGaussians(out next, out nextNext);
+                _nextNextGeoussian = nextNext;
                 return next;
             }
         }
@@ -847,7 +989,7 @@ namespace DataStructuresLib.Random
         #endregion
         
         #region ---- NextBits Random ----
-        private abstract class NextBitsRandom : System.Random, INextGeoussianRandom
+        private abstract class NextBitsRandom : System.Random, INextGaussianRandom
         {
             // pass through the seed just in case
             protected NextBitsRandom(int seed) : base(seed) { }
@@ -857,7 +999,7 @@ namespace DataStructuresLib.Random
             #region ---- .NET Random Methods ----
             public sealed override int Next()
             {
-                return this.Next(int.MaxValue);
+                return Next(int.MaxValue);
             }
 
             public sealed override int Next(int maxValue)
@@ -877,13 +1019,13 @@ namespace DataStructuresLib.Random
                 {
                     if ((maxValue & -maxValue) == maxValue)  // i.e., bound is a power of 2
                     {
-                        return (int)((maxValue * (long)this.NextBits(31)) >> 31);
+                        return (int)((maxValue * (long)NextBits(31)) >> 31);
                     }
 
                     int bits, val;
                     do
                     {
-                        bits = this.NextBits(31);
+                        bits = NextBits(31);
                         val = bits % maxValue;
                     } while (bits - val + (maxValue - 1) < 0);
                     return val;
@@ -906,12 +1048,12 @@ namespace DataStructuresLib.Random
                 // if the range is small, we can use Next(int)
                 if (range <= int.MaxValue)
                 {
-                    return minValue + this.Next(maxValue: (int)range);
+                    return minValue + Next(maxValue: (int)range);
                 }
 
                 // otherwise, we use java's implementation for 
                 // nextLong(long, long)
-                var r = this.NextInt64();
+                var r = NextInt64();
                 var m = range - 1;
 
                 // power of two
@@ -925,7 +1067,7 @@ namespace DataStructuresLib.Random
                     for (
                         var u = unchecked((long)((ulong)r >> 1)); // ensure non-negative
                         u + m - (r = u % range) < 0; // rejection check
-                        u = unchecked((long)((ulong)this.NextInt64() >> 1)) // retry
+                        u = unchecked((long)((ulong)NextInt64() >> 1)) // retry
                     ) ; 
                 }
 
@@ -938,7 +1080,7 @@ namespace DataStructuresLib.Random
 
                 for (var i = 0; i < buffer.Length;)
                 {
-                    for (int rand = this.NextBits(32), n = Math.Min(buffer.Length - i, 4);
+                    for (int rand = NextBits(32), n = Math.Min(buffer.Length - i, 4);
                          n-- > 0; 
                          rand >>= 8)
                     {
@@ -949,29 +1091,29 @@ namespace DataStructuresLib.Random
 
             public sealed override double NextDouble()
             {
-                return this.Sample();
+                return Sample();
             }
 
             protected sealed override double Sample()
             {
-                return (((long)this.NextBits(26) << 27) + this.NextBits(27)) / (double)(1L << 53);
+                return (((long)NextBits(26) << 27) + NextBits(27)) / (double)(1L << 53);
             }
             #endregion
 
             private double? _nextNextGeoussian;
 
-            double INextGeoussianRandom.NextGeoussian()
+            double INextGaussianRandom.NextGaussian()
             {
-                if (this._nextNextGeoussian.HasValue)
+                if (_nextNextGeoussian.HasValue)
                 {
-                    var result = this._nextNextGeoussian.Value;
-                    this._nextNextGeoussian = null;
+                    var result = _nextNextGeoussian.Value;
+                    _nextNextGeoussian = null;
                     return result;
                 }
 
                 double next, nextNext;
-                this.NextTwoGeoussians(out next, out nextNext);
-                this._nextNextGeoussian = nextNext;
+                this.NextTwoGaussians(out next, out nextNext);
+                _nextNextGeoussian = nextNext;
                 return next;
             }
         }
@@ -1002,15 +1144,15 @@ namespace DataStructuresLib.Random
                 : base(unchecked((int)seed))
             {
                 // this is based on "initialScramble()" in the Java implementation
-                this._seed = (seed ^ 0x5DEECE66DL) & ((1L << 48) - 1);
+                _seed = (seed ^ 0x5DEECE66DL) & ((1L << 48) - 1);
             }
 
             internal override int NextBits(int bits)
             {
                 unchecked
                 {
-                    this._seed = ((_seed * 0x5DEECE66DL) + 0xBL) & ((1L << 48) - 1);
-                    return (int)((ulong)this._seed >> (48 - bits));
+                    _seed = ((_seed * 0x5DEECE66DL) + 0xBL) & ((1L << 48) - 1);
+                    return (int)((ulong)_seed >> (48 - bits));
                 }
             }
         }
@@ -1039,7 +1181,7 @@ namespace DataStructuresLib.Random
             internal RandomNumberGeneratorRandom(RandomNumberGenerator randomNumberGenerator)
                 : base(seed: 0) // avoid having to generate a time-based seed 
             {
-                this._rand = randomNumberGenerator;
+                _rand = randomNumberGenerator;
             }
             
             internal override int NextBits(int bits)
@@ -1049,12 +1191,12 @@ namespace DataStructuresLib.Random
                 var i = 0;
                 while (true)
                 {
-                    if (this._nextByteIndex == BufferLength)
+                    if (_nextByteIndex == BufferLength)
                     {
-                        this._rand.GetBytes(this._buffer);
-                        this._nextByteIndex = 0;
+                        _rand.GetBytes(_buffer);
+                        _nextByteIndex = 0;
                     }
-                    checked { result += (uint)this._buffer[this._nextByteIndex++] << i; };
+                    checked { result += (uint)_buffer[_nextByteIndex++] << i; };
 
                     i += 8;
                     if (i >= bits)
@@ -1070,17 +1212,17 @@ namespace DataStructuresLib.Random
             {
                 if (buffer == null) { throw new ArgumentNullException(nameof(buffer)); }
 
-                if (buffer.Length <= (BufferLength - this._nextByteIndex))
+                if (buffer.Length <= (BufferLength - _nextByteIndex))
                 {
-                    for (var i = this._nextByteIndex; i < buffer.Length; ++i)
+                    for (var i = _nextByteIndex; i < buffer.Length; ++i)
                     {
-                        buffer[i] = this._buffer[i];
+                        buffer[i] = _buffer[i];
                     }
-                    this._nextByteIndex += buffer.Length;
+                    _nextByteIndex += buffer.Length;
                 }
                 else
                 {
-                    this._rand.GetBytes(buffer);
+                    _rand.GetBytes(buffer);
                 }
             }
         }

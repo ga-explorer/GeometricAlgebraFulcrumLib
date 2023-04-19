@@ -2,10 +2,10 @@
 using System.Linq;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.Extensions;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records.Restricted;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 
 namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
 {
@@ -17,7 +17,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             return MultivectorGradedStorage<T>.Create(termsList);
         }
 
-        public static IMultivectorGradedStorage<T> CreateMultivectorStorageGraded<T>(this IScalarAlgebraProcessor<T> scalarProcessor, Dictionary<uint, Dictionary<ulong, T>> gradeIndexScalarDictionary)
+        public static IMultivectorGradedStorage<T> CreateMultivectorStorageGraded<T>(this IScalarProcessor<T> scalarProcessor, Dictionary<uint, Dictionary<ulong, T>> gradeIndexScalarDictionary)
         {
             var gradesCount =
                 gradeIndexScalarDictionary.Count;
@@ -67,7 +67,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorGradedStorage<T> CreateMultivectorStorageGraded<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<IndexScalarRecord<T>> idScalarRecords)
+        public static IMultivectorGradedStorage<T> CreateMultivectorStorageGraded<T>(this IScalarProcessor<T> scalarProcessor, IEnumerable<RGaKvIndexScalarRecord<T>> idScalarRecords)
         {
             return scalarProcessor
                 .CreateMultivectorGradedStorageComposer()
@@ -77,7 +77,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorGradedStorage<T> CreateMultivectorStorageGraded<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<GradeIndexScalarRecord<T>> gradeIndexScalarTuples)
+        public static IMultivectorGradedStorage<T> CreateMultivectorStorageGraded<T>(this IScalarProcessor<T> scalarProcessor, IEnumerable<RGaGradeKvIndexScalarRecord<T>> gradeIndexScalarTuples)
         {
             return scalarProcessor
                 .CreateMultivectorGradedStorageComposer()
@@ -88,7 +88,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorGradedStorage<T> SumToMultivectorStorageGraded<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<IndexScalarRecord<T>> idScalarTuples)
+        public static IMultivectorGradedStorage<T> SumToMultivectorStorageGraded<T>(this IScalarProcessor<T> scalarProcessor, IEnumerable<RGaKvIndexScalarRecord<T>> idScalarTuples)
         {
             return scalarProcessor
                 .CreateMultivectorGradedStorageComposer()
@@ -98,7 +98,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IMultivectorGradedStorage<T> SumToMultivectorStorageGraded<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<GradeIndexScalarRecord<T>> gradeIndexScalarTuples)
+        public static IMultivectorGradedStorage<T> SumToMultivectorStorageGraded<T>(this IScalarProcessor<T> scalarProcessor, IEnumerable<RGaGradeKvIndexScalarRecord<T>> gradeIndexScalarTuples)
         {
             return scalarProcessor
                 .CreateMultivectorGradedStorageComposer()

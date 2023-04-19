@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using NumericalGeometryLib.BasicShapes;
-using NumericalGeometryLib.Borders.Space3D.Immutable;
-using NumericalGeometryLib.Borders.Space3D.Mutable;
+using GeometricAlgebraFulcrumLib.MathBase.BasicShapes;
+using GeometricAlgebraFulcrumLib.MathBase.Borders.Space3D.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Borders.Space3D.Mutable;
 
 namespace NumericalGeometryLib.Accelerators.BIH.Space3D
 {

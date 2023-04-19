@@ -1,7 +1,7 @@
-﻿using GraphicsComposerLib.Rendering.Xeogl.Geometry;
+﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Matrices;
+using GraphicsComposerLib.Rendering.Xeogl.Geometry;
 using GraphicsComposerLib.Rendering.Xeogl.Materials;
 using GraphicsComposerLib.Rendering.Xeogl.Transforms;
-using NumericalGeometryLib.BasicMath.Matrices;
 
 namespace GraphicsComposerLib.Rendering.Xeogl.Objects
 {

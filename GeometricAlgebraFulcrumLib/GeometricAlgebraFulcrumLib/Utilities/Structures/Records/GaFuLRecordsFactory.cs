@@ -2,135 +2,136 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records.Restricted;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Structures.Records
 {
     public static class GaFuLRecordsFactory
     {
-        public static GradeIndexRecord ZeroGradeIndexRecord { get; }
-            = new GradeIndexRecord(0, 0);
+        public static RGaGradeKvIndexRecord ZeroGradeIndexRecord { get; }
+            = new RGaGradeKvIndexRecord(0, 0);
 
-        public static GradeIndexPairRecord ZeroGradeIndexPairRecord { get; }
-            = new GradeIndexPairRecord(0, 0, 0);
+        public static RGaGradeKvIndexPairRecord ZeroGradeIndexPairRecord { get; }
+            = new RGaGradeKvIndexPairRecord(0, 0, 0);
 
-        public static IndexPairRecord ZeroIndexPairRecord { get; }
-            = new IndexPairRecord(0, 0);
+        public static RGaKvIndexPairRecord ZeroIndexPairRecord { get; }
+            = new RGaKvIndexPairRecord(0, 0);
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GradeIndexScalarRecord<T> CreateRecordGradeIndexScalar<T>(this GradeIndexRecord record, T value)
+        public static RGaGradeKvIndexScalarRecord<T> CreateRecordGradeIndexScalar<T>(this RGaGradeKvIndexRecord record, T value)
         {
-            return new GradeIndexScalarRecord<T>(record.Grade, record.Index, value);
+            return new RGaGradeKvIndexScalarRecord<T>(record.Grade, record.KvIndex, value);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GradeIndexPairScalarRecord<T> CreateRecordGradeIndexScalar<T>(this GradeIndexPairRecord record, T value)
+        public static RGaGradeKvIndexPairScalarRecord<T> CreateRecordGradeIndexScalar<T>(this RGaGradeKvIndexPairRecord record, T value)
         {
-            return new GradeIndexPairScalarRecord<T>(record.Grade, record.Index1, record.Index2, value);
+            return new RGaGradeKvIndexPairScalarRecord<T>(record.Grade, record.KvIndex1, record.KvIndex2, value);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IndexPairScalarRecord<T> CreateRecordIndexScalar<T>(this IndexPairRecord record, T value)
+        public static RGaKvIndexPairScalarRecord<T> CreateRecordIndexScalar<T>(this RGaKvIndexPairRecord record, T value)
         {
-            return new IndexPairScalarRecord<T>(record.Index1, record.Index2, value);
+            return new RGaKvIndexPairScalarRecord<T>(record.KvIndex1, record.KvIndex2, value);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IndexScalarRecord<T> ToIndexScalarRecord<T>(this KeyValuePair<ulong, T> keyScalarPair)
+        public static IRGaKvIndexScalarRecord<T> ToIndexScalarRecord<T>(this KeyValuePair<ulong, T> keyScalarPair)
         {
             var (key, value) = keyScalarPair;
 
-            return new IndexScalarRecord<T>(key, value);
+            return new RGaKvIndexScalarRecord<T>(key, value);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<IndexScalarRecord<T>> ToIndexScalarRecords<T>(this IEnumerable<KeyValuePair<ulong, T>> keyScalarPairs)
+        public static IEnumerable<IRGaKvIndexScalarRecord<T>> ToIndexScalarRecords<T>(this IEnumerable<KeyValuePair<ulong, T>> keyScalarPairs)
         {
             return keyScalarPairs.Select(ToIndexScalarRecord);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Dictionary<ulong, T> CreateDictionary<T>(this IEnumerable<IndexScalarRecord<T>> records)
+        public static Dictionary<ulong, T> CreateDictionary<T>(this IEnumerable<IRGaKvIndexScalarRecord<T>> records)
         {
             return records.ToDictionary(
-                record => record.Index,
+                record => record.KvIndex,
                 record => record.Scalar
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Dictionary<ulong, T> CreateDictionary<T>(this IEnumerable<IndexScalarRecord<T>> records, Func<ulong, ulong> keyMapping)
+        public static Dictionary<ulong, T> CreateDictionary<T>(this IEnumerable<IRGaKvIndexScalarRecord<T>> records, Func<ulong, ulong> keyMapping)
         {
             return records.ToDictionary(
-                record => keyMapping(record.Index),
+                record => keyMapping(record.KvIndex),
                 record => record.Scalar
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Dictionary<ulong, T> CreateDictionary<T>(this IEnumerable<IndexScalarRecord<T>> records, Func<ulong, ulong> keyMapping, Func<T, T> valueMapping)
+        public static Dictionary<ulong, T> CreateDictionary<T>(this IEnumerable<IRGaKvIndexScalarRecord<T>> records, Func<ulong, ulong> keyMapping, Func<T, T> valueMapping)
         {
             return records.ToDictionary(
-                record => keyMapping(record.Index),
+                record => keyMapping(record.KvIndex),
                 record => valueMapping(record.Scalar)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Dictionary<ulong, T> CreateDictionary<T>(this IEnumerable<IndexScalarRecord<T>> records, Func<ulong, ulong> keyMapping, Func<ulong, T, T> valueMapping)
+        public static Dictionary<ulong, T> CreateDictionary<T>(this IEnumerable<IRGaKvIndexScalarRecord<T>> records, Func<ulong, ulong> keyMapping, Func<ulong, T, T> valueMapping)
         {
             return records.ToDictionary(
-                record => keyMapping(record.Index),
-                record => valueMapping(record.Index, record.Scalar)
+                record => keyMapping(record.KvIndex),
+                record => valueMapping(record.KvIndex, record.Scalar)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Dictionary<ulong, T> CreateDictionary<T>(this IEnumerable<IndexScalarRecord<T>> records, Func<T, T> valueMapping)
+        public static Dictionary<ulong, T> CreateDictionary<T>(this IEnumerable<IRGaKvIndexScalarRecord<T>> records, Func<T, T> valueMapping)
         {
             return records.ToDictionary(
-                record => record.Index,
+                record => record.KvIndex,
                 record => valueMapping(record.Scalar)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Dictionary<ulong, T> CreateDictionary<T>(this IEnumerable<IndexScalarRecord<T>> records, Func<ulong, T, T> valueMapping)
+        public static Dictionary<ulong, T> CreateDictionary<T>(this IEnumerable<IRGaKvIndexScalarRecord<T>> records, Func<ulong, T, T> valueMapping)
         {
             return records.ToDictionary(
-                record => record.Index,
-                record => valueMapping(record.Index, record.Scalar)
+                record => record.KvIndex,
+                record => valueMapping(record.KvIndex, record.Scalar)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Dictionary<ulong, T> CreateDictionary<T>(this IEnumerable<GradeIndexScalarRecord<T>> records, Func<uint, ulong, ulong> gradeIndexToIndexMapping)
+        public static Dictionary<ulong, T> CreateDictionary<T>(this IEnumerable<RGaGradeKvIndexScalarRecord<T>> records, Func<uint, ulong, ulong> gradeIndexToIndexMapping)
         {
             return records.ToDictionary(
-                record => gradeIndexToIndexMapping(record.Grade, record.Index),
+                record => gradeIndexToIndexMapping(record.Grade, record.KvIndex),
                 record => record.Scalar
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Dictionary<ulong, T> CreateDictionary<T>(this IEnumerable<GradeIndexScalarRecord<T>> records, Func<uint, ulong, ulong> gradeIndexToIndexMapping, Func<T, T> valueMapping)
+        public static Dictionary<ulong, T> CreateDictionary<T>(this IEnumerable<RGaGradeKvIndexScalarRecord<T>> records, Func<uint, ulong, ulong> gradeIndexToIndexMapping, Func<T, T> valueMapping)
         {
             return records.ToDictionary(
-                record => gradeIndexToIndexMapping(record.Grade, record.Index),
+                record => gradeIndexToIndexMapping(record.Grade, record.KvIndex),
                 record => valueMapping(record.Scalar)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Dictionary<ulong, T> CreateDictionary<T>(this IEnumerable<GradeIndexScalarRecord<T>> records, Func<uint, ulong, ulong> gradeIndexToIndexMapping, Func<uint, ulong, T, T> valueMapping)
+        public static Dictionary<ulong, T> CreateDictionary<T>(this IEnumerable<RGaGradeKvIndexScalarRecord<T>> records, Func<uint, ulong, ulong> gradeIndexToIndexMapping, Func<uint, ulong, T, T> valueMapping)
         {
             return records.ToDictionary(
-                record => gradeIndexToIndexMapping(record.Grade, record.Index),
-                record => valueMapping(record.Grade, record.Index, record.Scalar)
+                record => gradeIndexToIndexMapping(record.Grade, record.KvIndex),
+                record => valueMapping(record.Grade, record.KvIndex, record.Scalar)
             );
         }
 
-        public static Dictionary<uint, Dictionary<ulong, T>> CreateDictionary<T>(this IEnumerable<GradeIndexScalarRecord<T>> records)
+        public static Dictionary<uint, Dictionary<ulong, T>> CreateDictionary<T>(this IEnumerable<RGaGradeKvIndexScalarRecord<T>> records)
         {
             var gradeIndexScalarDict = new Dictionary<uint, Dictionary<ulong, T>>();
 

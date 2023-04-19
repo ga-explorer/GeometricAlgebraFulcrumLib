@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using GAPoTNumLib.GAPoT;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors;
-using GeometricAlgebraFulcrumLib.Processors;
-using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Utilities.Composers;
-using GeometricAlgebraFulcrumLib.Utilities.Factories;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.LinearMaps.Rotors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Processors;
 using NUnit.Framework;
 
 namespace GeometricAlgebraFulcrumLib.UnitTests.Geometry
@@ -15,23 +12,23 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Geometry
     [TestFixture]
     public sealed class GeoSimpleRotorsEuclideanTests
     {
-        private readonly GeometricAlgebraRandomComposer<double> _randomGenerator;
-        private readonly List<GaVector<double>> _vectorsList;
-        private readonly List<PureRotor<double>> _rotorsList;
+        private readonly RGaFloat64RandomComposer _randomGenerator;
+        private readonly List<RGaFloat64Vector> _vectorsList;
+        private readonly List<RGaFloat64PureRotor> _rotorsList;
 
 
-        public IGeometricAlgebraEuclideanProcessor<double> GeometricProcessor { get; }
-            = ScalarAlgebraFloat64Processor.DefaultProcessor.CreateGeometricAlgebraEuclideanProcessor(8);
+        public RGaFloat64Processor GeometricProcessor { get; }
+            = RGaFloat64Processor.Euclidean;
         
-        public uint VSpaceDimension 
-            => GeometricProcessor.VSpaceDimension;
+        public int VSpaceDimensions 
+            => 8;
 
 
         public GeoSimpleRotorsEuclideanTests()
         {
-            _randomGenerator = GeometricProcessor.CreateGeometricRandomComposer(10);
-            _vectorsList = new List<GaVector<double>>();
-            _rotorsList = new List<PureRotor<double>>();
+            _randomGenerator = GeometricProcessor.CreateRGaRandomComposer(VSpaceDimensions, 10);
+            _vectorsList = new List<RGaFloat64Vector>();
+            _rotorsList = new List<RGaFloat64PureRotor>();
         }
 
         
@@ -71,7 +68,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Geometry
                 var v = _randomGenerator.GetVector().DivideByENorm();
 
                 var rotor = 
-                    GeometricProcessor.CreatePureRotor(u, v);
+                    u.CreatePureRotor(v);
 
                 var v1 = rotor.OmMap(u);
 

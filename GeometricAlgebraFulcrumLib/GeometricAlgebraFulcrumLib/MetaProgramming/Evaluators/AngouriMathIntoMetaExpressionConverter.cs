@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using AngouriMath;
 using AngouriMath.Core;
 using DataStructuresLib;
@@ -22,7 +21,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Evaluators
             => false;
 
 
-        internal AngouriMathIntoMetaExpressionConverter([NotNull] MetaContext context)
+        internal AngouriMathIntoMetaExpressionConverter(MetaContext context)
         {
             Context = context;
         }

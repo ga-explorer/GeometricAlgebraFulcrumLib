@@ -1,8 +1,9 @@
 ﻿using System;
-using NumericalGeometryLib.BasicMath;
-using NumericalGeometryLib.BasicMath.Constants;
-using NumericalGeometryLib.BasicMath.Tuples;
-using NumericalGeometryLib.BasicMath.Tuples.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Constants;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
 using TextComposerLib.Text.Linear;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Graphics.Basic

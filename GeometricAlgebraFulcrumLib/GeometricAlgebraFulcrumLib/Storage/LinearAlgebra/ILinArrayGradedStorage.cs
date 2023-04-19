@@ -9,7 +9,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra
 
         IEnumerable<uint> GetGrades();
         
-        IEnumerable<uint> GetEmptyGrades(uint vSpaceDimension);
+        IEnumerable<uint> GetEmptyGrades(uint vSpaceDimensions);
 
         uint GetMinGrade();
 

@@ -1,13 +1,12 @@
 ﻿using System;
 using DataStructuresLib.Basic;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors;
-using GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Processors;
-using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Text;
-using NumericalGeometryLib.BasicMath;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.LinearMaps.Rotors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Subspaces;
+using GeometricAlgebraFulcrumLib.MathBase.Text;
 using OxyPlot;
 using OxyPlot.Series;
 
@@ -16,21 +15,24 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
     public static class Sample2
     {
         // This is a pre-defined scalar processor for numeric scalars
-        public static ScalarAlgebraFloat64Processor ScalarProcessor { get; }
-            = ScalarAlgebraFloat64Processor.DefaultProcessor;
+        public static ScalarProcessorFloat64 ScalarProcessor { get; }
+            = ScalarProcessorFloat64.DefaultProcessor;
 
         // Create a 3-dimensional Euclidean geometric algebra processor based on the
         // selected scalar processor
-        public static GeometricAlgebraEuclideanProcessor<double> GeometricProcessor { get; }
-            = ScalarProcessor.CreateGeometricAlgebraEuclideanProcessor(3);
+        public static RGaFloat64Processor GeometricProcessor { get; }
+            = RGaFloat64Processor.Euclidean;
+
+        public static int VSpaceDimensions 
+            => 3;
 
         // This is a pre-defined text generator for displaying multivectors
-        public static TextFloat64Composer TextComposer { get; }
-            = TextFloat64Composer.DefaultComposer;
+        public static TextComposerFloat64 TextComposer { get; }
+            = TextComposerFloat64.DefaultComposer;
 
         // This is a pre-defined LaTeX generator for displaying multivectors
-        public static LaTeXFloat64Composer LaTeXComposer { get; }
-            = LaTeXFloat64Composer.DefaultComposer;
+        public static LaTeXComposerFloat64 LaTeXComposer { get; }
+            = LaTeXComposerFloat64.DefaultComposer;
 
 
         public static double Va { get; }
@@ -60,20 +62,20 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
         public static double ConstD { get; }
             = Math.Sqrt(ConstA * ConstA + ConstB * ConstB);
 
-        public static GaVector<double> K { get; }
+        public static RGaFloat64Vector K { get; }
             = GeometricProcessor.CreateVector(Vb * Vc, Va * Vc, Va * Vb);
 
-        public static Scalar<double> KNorm { get; }
+        public static double KNorm { get; }
             = K.Norm();
 
-        public static GaVector<double> KUnit { get; }
+        public static RGaFloat64Vector KUnit { get; }
             = K.DivideByNorm();
 
-        public static GaBivector<double> KDual { get; }
-            = K.Dual().AsBivector();
+        public static RGaFloat64Bivector KDual { get; }
+            = K.Dual(VSpaceDimensions).GetBivectorPart();
 
 
-        public static GaVector<double> Curve(double t)
+        public static RGaFloat64Vector Curve(double t)
         {
             const double pi = Math.PI;
             var sqrt2 = Math.Sqrt(2);
@@ -85,7 +87,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             );
         }
 
-        public static GaVector<double> CurveDt1(double t)
+        public static RGaFloat64Vector CurveDt1(double t)
         {
             var sqrt2 = Math.Sqrt(2);
             var sqrt3 = Math.Sqrt(3);
@@ -99,7 +101,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             );
         }
 
-        public static GaVector<double> CurveDt2(double t)
+        public static RGaFloat64Vector CurveDt2(double t)
         {
             var sqrt2 = Math.Sqrt(2);
             var sqrt3 = Math.Sqrt(3);
@@ -113,7 +115,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             );
         }
 
-        public static GaVector<double> CurveDt3(double t)
+        public static RGaFloat64Vector CurveDt3(double t)
         {
             var sqrt2 = Math.Sqrt(2);
             var sqrt3 = Math.Sqrt(3);
@@ -147,26 +149,26 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             return Math.Sqrt(CurveDt1NormSquared(t));
         }
 
-        public static GaBivector<double> Omega(double t)
+        public static RGaFloat64Bivector Omega(double t)
         {
             return -2 * Math.Sqrt(3) * Freq / G(t) * KDual;
         }
 
-        public static GaBivector<double> OmegaDt(double t)
+        public static RGaFloat64Bivector OmegaDt(double t)
         {
             return 2 * Math.Sqrt(3) * Freq * GDt(t) / G(t).Square() * KDual;
         }
 
-        public static Triplet<GaVector<double>> CurveFrame(double t)
+        public static Triplet<RGaFloat64Vector> CurveFrame(double t)
         {
-            return new Triplet<GaVector<double>>(
+            return new Triplet<RGaFloat64Vector>(
                 CurveDt1(t),
                 CurveDt2(t),
                 CurveDt3(t)
             );
         }
 
-        public static Triplet<GaVector<double>> CurveFrameDt(double t)
+        public static Triplet<RGaFloat64Vector> CurveFrameDt(double t)
         {
             var vDt1 = CurveDt1(t);
             var vDt2 = CurveDt2(t);
@@ -176,16 +178,16 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             var u1 = vDt1;
             var e1 = u1.DivideByNorm();
 
-            var u2 = vDt2 - vDt2.ProjectOn(u1.GetSubspace());
+            var u2 = vDt2 - vDt2.ProjectOn(u1.ToSubspace());
             var e2 = u2.DivideByNorm();
 
-            var u3 = vDt3 - vDt3.ProjectOn(u1.GetSubspace()) - vDt3.ProjectOn(u2.GetSubspace());
+            var u3 = vDt3 - vDt3.ProjectOn(u1.ToSubspace()) - vDt3.ProjectOn(u2.ToSubspace());
             var e3 = u3.DivideByNorm();
 
-            return new Triplet<GaVector<double>>(e1, e2, e3);
+            return new Triplet<RGaFloat64Vector>(e1, e2, e3);
         }
 
-        public static Triplet<GaVector<double>> CurveFrameDs(double t)
+        public static Triplet<RGaFloat64Vector> CurveFrameDs(double t)
         {
             var va2 = Va * Va;
             var vb2 = Vb * Vb;
@@ -210,12 +212,12 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
                 Vc * (sqrt3 * vb2 * wtSin - (2 * va2 + vb2) * wtCos)
             );
 
-            var e3d = GeometricProcessor.CreateVectorZero();
+            var e3d = GeometricProcessor.CreateZeroVector();
 
-            return new Triplet<GaVector<double>>(e1d, e2d, e3d);
+            return new Triplet<RGaFloat64Vector>(e1d, e2d, e3d);
         }
 
-        public static Scalar<double> CurveCurvature1(double t)
+        public static double CurveCurvature1(double t)
         {
             var (_, e2, _) = CurveFrameDt(t);
             var (e1d, _, _) = CurveFrameDs(t);
@@ -223,7 +225,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             return e1d.Sp(e2);
         }
 
-        public static Pair<Scalar<double>> CurveCurvature(double t)
+        public static Pair<double> CurveCurvature(double t)
         {
             var (_, e2, e3) = CurveFrameDt(t);
             var (e1d, e2d, _) = CurveFrameDs(t);
@@ -231,7 +233,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             var kappa1 = e1d.Sp(e2);
             var kappa2 = e2d.Sp(e3);
 
-            return new Pair<Scalar<double>>(kappa1, kappa2);
+            return new Pair<double>(kappa1, kappa2);
         }
 
         public static void PlotKappa1(string filePath)
@@ -247,7 +249,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             };
 
             pm.Series.Add(new FunctionSeries(
-                t => CurveCurvature1(t).ScalarValue,
+                CurveCurvature1,
                 tMin,
                 tMax,
                 tCount
@@ -334,26 +336,19 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
 
                 var a3 = KUnit;
 
-                var sigma1 = GeometricProcessor.CreateVectorBasis(0);
-                var sigma2 = GeometricProcessor.CreateVectorBasis(1);
-                var sigma3 = GeometricProcessor.CreateVectorBasis(2);
+                var sigma1 = GeometricProcessor.CreateVector(0);
+                var sigma2 = GeometricProcessor.CreateVector(1);
+                var sigma3 = GeometricProcessor.CreateVector(2);
 
                 var rotor1 =
-                    GeometricProcessor.CreatePureRotor(
-                        sigma3,
-                        KUnit,
-                        true
-                    );
+                    sigma3.CreatePureRotor(KUnit, true);
 
                 var r1 =
                     rotor1.OmMap(sigma1);
 
                 var angle2 = r1.Lcp(a1).ArcCos();
 
-                var rotor2 = GeometricProcessor.CreatePureRotor(
-                    r1,
-                    a1
-                );
+                var rotor2 = r1.CreatePureRotor(a1);
 
                 var rotor =
                     rotor2.Multivector.Gp(rotor1.Multivector).CreatePureRotor();

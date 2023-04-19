@@ -1,5 +1,5 @@
 ﻿using System;
-using NumericalGeometryLib.BasicMath.Tuples.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
 
 namespace GraphicsComposerLib.Geometry.GeometricAlgebra.CGA5D
 {

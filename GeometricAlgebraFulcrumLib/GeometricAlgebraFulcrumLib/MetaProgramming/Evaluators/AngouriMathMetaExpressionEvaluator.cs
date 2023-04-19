@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using AngouriMath;
 using DataStructuresLib;
@@ -18,7 +17,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Evaluators
         public ISymbolicIntoMetaExpressionConverter<Entity> IntoSymbolicExpressionConverter { get; }
 
 
-        internal AngouriMathMetaExpressionEvaluator([NotNull] MetaContext context)
+        internal AngouriMathMetaExpressionEvaluator(MetaContext context)
         {
             Context = context;
             FromSymbolicExpressionConverter = new AngouriMathFromMetaExpressionConverter(context);

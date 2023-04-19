@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records.Restricted;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Dense;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Sparse;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 
 namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
 {
@@ -23,13 +22,13 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
             => SingleKeyList;
 
 
-        internal LinVectorSingleScalarGradedStorage(uint grade, [NotNull] T value) 
+        internal LinVectorSingleScalarGradedStorage(uint grade, T value) 
             : base(grade)
         {
             SingleKeyList = new LinVectorSingleScalarDenseStorage<T>(value);
         }
         
-        internal LinVectorSingleScalarGradedStorage(uint grade, ulong index, [NotNull] T value) 
+        internal LinVectorSingleScalarGradedStorage(uint grade, ulong index, T value) 
             : base(grade)
         {
             SingleKeyList = index > 0
@@ -37,7 +36,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
                 : new LinVectorSingleScalarDenseStorage<T>(value);
         }
         
-        internal LinVectorSingleScalarGradedStorage(uint grade, [NotNull] ILinVectorSingleScalarStorage<T> singleScalarVectorStorage) 
+        internal LinVectorSingleScalarGradedStorage(uint grade, ILinVectorSingleScalarStorage<T> singleScalarVectorStorage) 
             : base(grade)
         {
             SingleKeyList = singleScalarVectorStorage;
@@ -59,7 +58,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override T GetScalar(GradeIndexRecord gradeKey)
+        public override T GetScalar(RGaGradeKvIndexRecord gradeKey)
         {
             var (grade, index) = gradeKey;
 
@@ -88,15 +87,15 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override IEnumerable<GradeIndexRecord> GetGradeIndexRecords()
+        public override IEnumerable<RGaGradeKvIndexRecord> GetGradeIndexRecords()
         {
-            yield return new GradeIndexRecord(Grade, Index);
+            yield return new RGaGradeKvIndexRecord(Grade, Index);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override IEnumerable<GradeIndexScalarRecord<T>> GetGradeIndexScalarRecords()
+        public override IEnumerable<RGaGradeKvIndexScalarRecord<T>> GetGradeIndexScalarRecords()
         {
-            yield return new GradeIndexScalarRecord<T>(Grade, Index, Scalar);
+            yield return new RGaGradeKvIndexScalarRecord<T>(Grade, Index, Scalar);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

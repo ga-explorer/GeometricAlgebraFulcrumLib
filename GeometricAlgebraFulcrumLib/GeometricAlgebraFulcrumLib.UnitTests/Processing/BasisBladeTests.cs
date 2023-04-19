@@ -1,8 +1,10 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Numerics;
+using DataStructuresLib.Basic;
 using DataStructuresLib.Combinations;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using NUnit.Framework;
 
 namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
@@ -10,41 +12,47 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
     [TestFixture]
     public sealed class BasisBladeTests
     {
-        public BasisBladeSet BasisSet { get; }
-            = BasisBladeSet.Create(2, 2, 2);
+        public int VSpaceDimensions 
+            => 6;
+
+        public ulong GaSpaceDimensions 
+            => VSpaceDimensions.ToGaSpaceDimension();
+
+        public RGaFloat64Processor BasisSet { get; }
+            = RGaFloat64Processor.Create(2, 2);
 
         
         [Test]
         public void TestIdGradeIndexConversion()
         {
-            for (var id = 0UL; id < BasisSet.GaSpaceDimension; id++)
+            for (var id = 0UL; id < GaSpaceDimensions; id++)
             {
                 var (grade, index) = id.BasisBladeIdToGradeIndex();
-                var kvSpaceDimension = BasisSet.VSpaceDimension.GetBinomialCoefficient(grade);
+                var kvSpaceDimensions = VSpaceDimensions.GetBinomialCoefficient((int) grade);
                 var id2 = BasisBladeUtils.BasisBladeGradeIndexToId(grade, index);
-                var kvSpaceDimension2 = BasisSet.KvSpaceDimension(grade);
+                var kvSpaceDimension2 = VSpaceDimensions.KVectorSpaceDimension((int) grade);
 
-                Debug.Assert(kvSpaceDimension == kvSpaceDimension2);
-                Assert.IsTrue(kvSpaceDimension == kvSpaceDimension2);
+                Debug.Assert(kvSpaceDimensions == kvSpaceDimension2);
+                Assert.IsTrue(kvSpaceDimensions == kvSpaceDimension2);
 
                 Debug.Assert(grade == BitOperations.PopCount(id));
                 Assert.IsTrue(grade == BitOperations.PopCount(id));
 
-                Debug.Assert(grade <= BasisSet.VSpaceDimension);
-                Assert.IsTrue(grade <= BasisSet.VSpaceDimension);
+                Debug.Assert(grade <= VSpaceDimensions);
+                Assert.IsTrue(grade <= VSpaceDimensions);
 
-                Debug.Assert(index < kvSpaceDimension);
-                Assert.IsTrue(index < kvSpaceDimension);
+                Debug.Assert(index < kvSpaceDimensions);
+                Assert.IsTrue(index < kvSpaceDimensions);
 
                 Debug.Assert(id == id2);
                 Assert.IsTrue(id == id2);
             }
 
-            for (var grade = 0U; grade <= BasisSet.VSpaceDimension; grade++)
+            for (var grade = 0U; grade <= VSpaceDimensions; grade++)
             {
-                var kvSpaceDimension = BasisSet.KvSpaceDimension(grade);
+                var kvSpaceDimensions = VSpaceDimensions.KVectorSpaceDimension((int) grade);
 
-                for (var index = 0UL; index < kvSpaceDimension; index++)
+                for (var index = 0UL; index < kvSpaceDimensions; index++)
                 {
                     var id = BasisBladeUtils.BasisBladeGradeIndexToId(grade, index);
                     var (grade2, index2) = id.BasisBladeIdToGradeIndex();
@@ -55,8 +63,8 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
                     Debug.Assert(index == index2);
                     Assert.IsTrue(index == index2);
                     
-                    Debug.Assert(id < BasisSet.GaSpaceDimension);
-                    Assert.IsTrue(id < BasisSet.GaSpaceDimension);
+                    Debug.Assert(id < GaSpaceDimensions);
+                    Assert.IsTrue(id < GaSpaceDimensions);
                 }
             }
         }
@@ -64,10 +72,10 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
         [Test]
         public void TestGradeInvolution()
         {
-            for (var id = 0UL; id < BasisSet.GaSpaceDimension; id++)
+            for (var id = 0UL; id < GaSpaceDimensions; id++)
             {
                 var grade = id.BasisBladeIdToGrade();
-                var sign = (int) Math.Pow(-1, grade);
+                var sign = IntegerSign.Negative.Power((int) grade);
                 
 
                 var equalFlag =
@@ -112,7 +120,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
 
                 equalFlag =
                     id.GradeInvolutionIsNegativeOfBasisBladeId() == 
-                    (id.GradeInvolutionSignOfBasisBladeId() == -1);
+                    (id.GradeInvolutionSignOfBasisBladeId().IsNegative);
 
                 Debug.Assert(equalFlag);
                 Assert.IsTrue(equalFlag);
@@ -120,7 +128,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
 
                 equalFlag =
                     id.GradeInvolutionIsPositiveOfBasisBladeId() == 
-                    (id.GradeInvolutionSignOfBasisBladeId() == 1);
+                    (id.GradeInvolutionSignOfBasisBladeId().IsPositive);
 
                 Debug.Assert(equalFlag);
                 Assert.IsTrue(equalFlag);
@@ -130,10 +138,10 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
         [Test]
         public void TestReverse()
         {
-            for (var id = 0UL; id < BasisSet.GaSpaceDimension; id++)
+            for (var id = 0UL; id < GaSpaceDimensions; id++)
             {
                 var grade = id.BasisBladeIdToGrade();
-                var sign = (int) Math.Pow(-1, grade * (grade - 1) / 2d);
+                var sign = IntegerSign.Negative.Power((int) (grade * (grade - 1) / 2));
                 
 
                 var equalFlag =
@@ -178,7 +186,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
 
                 equalFlag =
                     id.ReverseIsNegativeOfBasisBladeId() == 
-                    (id.ReverseSignOfBasisBladeId() == -1);
+                    (id.ReverseSignOfBasisBladeId().IsNegative);
 
                 Debug.Assert(equalFlag);
                 Assert.IsTrue(equalFlag);
@@ -186,7 +194,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
 
                 equalFlag =
                     id.ReverseIsPositiveOfBasisBladeId() == 
-                    (id.ReverseSignOfBasisBladeId() == 1);
+                    (id.ReverseSignOfBasisBladeId().IsPositive);
 
                 Debug.Assert(equalFlag);
                 Assert.IsTrue(equalFlag);
@@ -196,11 +204,10 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
         [Test]
         public void TestCliffordConjugate()
         {
-            for (var id = 0UL; id < BasisSet.GaSpaceDimension; id++)
+            for (var id = 0UL; id < GaSpaceDimensions; id++)
             {
                 var grade = id.BasisBladeIdToGrade();
-                var sign = (int) Math.Pow(-1, grade * (grade + 1) / 2d);
-                
+                var sign = IntegerSign.Negative.Power((int)(grade * (grade + 1) / 2));
 
                 var equalFlag =
                     sign == 
@@ -244,7 +251,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
 
                 equalFlag =
                     id.CliffordConjugateIsNegativeOfBasisBladeId() == 
-                    (id.CliffordConjugateSignOfBasisBladeId() == -1);
+                    (id.CliffordConjugateSignOfBasisBladeId().IsNegative);
 
                 Debug.Assert(equalFlag);
                 Assert.IsTrue(equalFlag);
@@ -252,7 +259,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
 
                 equalFlag =
                     id.CliffordConjugateIsPositiveOfBasisBladeId() == 
-                    (id.CliffordConjugateSignOfBasisBladeId() == 1);
+                    (id.CliffordConjugateSignOfBasisBladeId().IsPositive);
 
                 Debug.Assert(equalFlag);
                 Assert.IsTrue(equalFlag);
@@ -262,7 +269,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
         [Test]
         public void TestGpSquared()
         {
-            for (var id1 = 0UL; id1 < BasisSet.GaSpaceDimension; id1++)
+            for (var id1 = 0UL; id1 < GaSpaceDimensions; id1++)
             {
                 var gpSign1 = BasisSet.GpSign(id1, id1);
                 var gpSign2 = BasisSet.GpSquaredSign(id1);
@@ -281,7 +288,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
         [Test]
         public void TestGpReverse()
         {
-            for (var id1 = 0UL; id1 < BasisSet.GaSpaceDimension; id1++)
+            for (var id1 = 0UL; id1 < GaSpaceDimensions; id1++)
             {
                 var gpSign1 = BasisSet.GpSign(id1, id1) * id1.ReverseSignOfBasisBladeId();
                 var gpSign2 = BasisSet.GpReverseSign(id1, id1);
@@ -309,7 +316,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Processing
                 Debug.Assert(egpSign3 == egpSign1);
                 Assert.IsTrue(egpSign3 == egpSign1);
 
-                for (var id2 = 0UL; id2 < BasisSet.GaSpaceDimension; id2++)
+                for (var id2 = 0UL; id2 < GaSpaceDimensions; id2++)
                 {
                     gpSign1 = BasisSet.GpSign(id1, id2) * id2.ReverseSignOfBasisBladeId();
                     gpSign2 = BasisSet.GpReverseSign(id1, id2);

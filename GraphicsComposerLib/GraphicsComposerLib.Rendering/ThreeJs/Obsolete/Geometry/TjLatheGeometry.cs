@@ -1,5 +1,5 @@
-﻿using GraphicsComposerLib.Rendering.ThreeJs.Obsolete.Math;
-using NumericalGeometryLib.BasicMath.Tuples;
+﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GraphicsComposerLib.Rendering.ThreeJs.Obsolete.Math;
 using TextComposerLib.Code.JavaScript;
 using TextComposerLib.Text;
 

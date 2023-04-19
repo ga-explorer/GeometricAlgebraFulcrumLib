@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using AngouriMath;
@@ -308,7 +307,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Expressions.Composite
             ArgumentsList = new List<IMetaExpression>(capacity);
         }
 
-        protected MetaExpressionCompositeBase([NotNull] IEnumerable<IMetaExpression> arguments)
+        protected MetaExpressionCompositeBase(IEnumerable<IMetaExpression> arguments)
         {
             ArgumentsList = new List<IMetaExpression>(arguments);
         }

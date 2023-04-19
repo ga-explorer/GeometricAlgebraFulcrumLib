@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.Basic;
+using GeometricAlgebraFulcrumLib.MathBase.Parametric.Curves.Sampled;
 
 namespace GraphicsComposerLib.Geometry.ParametricShapes.Surfaces.Sampled
 {
@@ -8,7 +9,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Surfaces.Sampled
     {
         public GrParametricSurfaceTree3D ParentTree { get; }
 
-        public Pair<GrParametricTreeCornerPosition3D> Position { get; }
+        public Pair<ParametricTreeCornerPosition3D> Position { get; }
         
         public int Index { get; }
 
@@ -35,7 +36,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Surfaces.Sampled
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal GrParametricSurfaceTreeCorner3D([NotNull] GrParametricSurfaceTree3D parentTree, int index, [NotNull] GrParametricSurfaceLocalFrame3D frame, [NotNull] Pair<GrParametricTreeCornerPosition3D> position)
+        internal GrParametricSurfaceTreeCorner3D([NotNull] GrParametricSurfaceTree3D parentTree, int index, [NotNull] GrParametricSurfaceLocalFrame3D frame, [NotNull] Pair<ParametricTreeCornerPosition3D> position)
         {
             ParentTree = parentTree;
             Index = index;

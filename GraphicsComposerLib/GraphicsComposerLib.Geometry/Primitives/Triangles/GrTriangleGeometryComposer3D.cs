@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using DataStructuresLib.Basic;
-using NumericalGeometryLib.BasicMath;
-using NumericalGeometryLib.BasicMath.Tuples;
-using NumericalGeometryLib.BasicShapes.Triangles;
-using NumericalGeometryLib.BasicShapes.Triangles.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Frames.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Triangles;
+using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Triangles.Immutable;
 using GraphicsComposerLib.Geometry.Primitives.Vertices;
 using SixLabors.ImageSharp;
 
@@ -147,12 +147,12 @@ namespace GraphicsComposerLib.Geometry.Primitives.Triangles
             }
         }
 
-        public IEnumerable<Triplet<GrNormal3D>> TriangleVertexNormals
+        public IEnumerable<Triplet<Normal3D>> TriangleVertexNormals
         {
             get
             {
                 for (var i = 0; i < _indicesList.Count; i += 3)
-                    yield return new Triplet<GrNormal3D>(
+                    yield return new Triplet<Normal3D>(
                         _verticesList[_indicesList[i]].Normal,
                         _verticesList[_indicesList[i + 1]].Normal,
                         _verticesList[_indicesList[i + 2]].Normal
@@ -232,8 +232,8 @@ namespace GraphicsComposerLib.Geometry.Primitives.Triangles
                 //Find triangle normal, not unit but full normal vector
                 var normal = 
                     ReverseNormals
-                        ? VectorUtils.GetTriangleNormal(vertex3, vertex2, vertex1)
-                        : VectorUtils.GetTriangleNormal(vertex1, vertex2, vertex3);
+                        ? EuclideanFloat64TupleUtils.GetTriangleNormal(vertex3, vertex2, vertex1)
+                        : EuclideanFloat64TupleUtils.GetTriangleNormal(vertex1, vertex2, vertex3);
 
                 // For debugging only
                 Debug.Assert(
@@ -259,8 +259,8 @@ namespace GraphicsComposerLib.Geometry.Primitives.Triangles
                 //Find triangle unit normal
                 var normal = 
                     ReverseNormals
-                        ? VectorUtils.GetTriangleUnitNormal(vertex3, vertex2, vertex1)
-                        : VectorUtils.GetTriangleUnitNormal(vertex1, vertex2, vertex3);
+                        ? EuclideanFloat64TupleUtils.GetTriangleUnitNormal(vertex3, vertex2, vertex1)
+                        : EuclideanFloat64TupleUtils.GetTriangleUnitNormal(vertex1, vertex2, vertex3);
                 
                 //For debugging only
                 Debug.Assert(normal.IsValid());
@@ -277,8 +277,8 @@ namespace GraphicsComposerLib.Geometry.Primitives.Triangles
                 //Find triangle normal, not unit but full normal vector
                 var normal = 
                     ReverseNormals
-                        ? VectorUtils.GetTriangleNormal(vertex3, vertex2, vertex1)
-                        : VectorUtils.GetTriangleNormal(vertex1, vertex2, vertex3);
+                        ? EuclideanFloat64TupleUtils.GetTriangleNormal(vertex3, vertex2, vertex1)
+                        : EuclideanFloat64TupleUtils.GetTriangleNormal(vertex1, vertex2, vertex3);
 
                 //For debugging only
                 Debug.Assert(normal.IsValid());
@@ -319,7 +319,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Triangles
             return _verticesList[index];
         }
         
-        public GrNormal3D GetVertexNormal(int index)
+        public Normal3D GetVertexNormal(int index)
         {
             return _verticesList[index].Normal;
         }

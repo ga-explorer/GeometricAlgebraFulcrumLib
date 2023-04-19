@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using DataStructuresLib.Sequences.Periodic1D;
-using NumericalGeometryLib.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
 using GraphicsComposerLib.Geometry.Meshes.PointsPath.Space3D;
 using GraphicsComposerLib.Geometry.Textures;
 

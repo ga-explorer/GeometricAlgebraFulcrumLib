@@ -4,15 +4,16 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using DataStructuresLib.Basic;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context.Optimizer;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Evaluators;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Expressions;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Expressions.HeadSpecs;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Expressions.Numbers;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Expressions.Variables;
-using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Processors.LinearAlgebra;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using TextComposerLib.Text;
 
 // ReSharper disable MemberCanBePrivate.Global
@@ -21,7 +22,8 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Context
 {
     [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
     public sealed class MetaContext :
-        ILinearAlgebraProcessor<IMetaExpressionAtomic>
+        ILinearAlgebraProcessor<IMetaExpressionAtomic>,
+        IXGaProcessorContainer<IMetaExpressionAtomic>
     {
         private int _tempNamesIndex;
 
@@ -74,13 +76,15 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Context
         
         public IMetaExpressionAtomic ScalarRadianToDegree { get; }
 
-        public IScalarAlgebraProcessor<IMetaExpressionAtomic> ScalarProcessor 
+        public IScalarProcessor<IMetaExpressionAtomic> ScalarProcessor 
             => this;
 
-        public IGeometricAlgebraProcessor<IMetaExpressionAtomic> GeometricProcessor { get; set; }
+        public XGaProcessor<IMetaExpressionAtomic> XGaProcessor { get; set; }
+        
+        //public IGeometricAlgebraProcessor<IMetaExpressionAtomic> GeometricProcessor { get; set; }
         
         public bool ContainsGeometricProcessor 
-            => GeometricProcessor is not null;
+            => XGaProcessor is not null;
 
         public ScalarAlgebraMetaExpressionProcessor MetaExpressionProcessor { get; }
 
@@ -108,6 +112,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Context
             = "tmpVar";
 
         public bool MergeExpressions { get; set; }
+
 
         //TODO: Hide the constructors and use static Create() methods to automatically assign 
         //TODO: geometric algebra processors if needed
@@ -137,24 +142,33 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Context
             DefaultEvaluator = this.CreateAngouriMathEvaluator();
         }
 
-        public MetaContext([NotNull] IGeometricAlgebraProcessor<IMetaExpressionAtomic> geometricProcessor)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public MetaContext(XGaProcessor<IMetaExpressionAtomic> geometricProcessor)
             : this()
         {
-            GeometricProcessor = geometricProcessor;
+            AttachXGaProcessor(geometricProcessor);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public MetaContext(MetaContextOptions options)
             : this()
         {
             ContextOptions.SetOptions(options);
         }
 
-        public MetaContext([NotNull] IMetaExpressionEvaluator expressionEvaluator)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public MetaContext(IMetaExpressionEvaluator expressionEvaluator)
             : this()
         {
             SymbolicEvaluator = expressionEvaluator;
         }
 
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void AttachXGaProcessor(XGaProcessor<IMetaExpressionAtomic> processor)
+        {
+            XGaProcessor = processor;
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private string GetNewSymbolName()
@@ -896,6 +910,16 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Context
                 scalar1,
                 scalar2
             );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public IMetaExpressionAtomic Times(IntegerSign sign, IMetaExpressionAtomic scalar)
+        {
+            if (sign.IsZero) return ScalarZero;
+
+            return sign.IsPositive
+                ? scalar 
+                : Negative(scalar);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

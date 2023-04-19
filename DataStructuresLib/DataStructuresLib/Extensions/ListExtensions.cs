@@ -9,6 +9,14 @@ namespace DataStructuresLib.Extensions
     public static class ListExtensions
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IReadOnlyList<T> SubList<T>(this IReadOnlyList<T> list, int index)
+        {
+            if (index >= list.Count) return Array.Empty<T>();
+
+            return list.GetItems(index, list.Count - index).ToImmutableArray();
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IReadOnlyList<T> SubList<T>(this IReadOnlyList<T> list, int index, int count)
         {
             return list.GetItems(index, count).ToImmutableArray();

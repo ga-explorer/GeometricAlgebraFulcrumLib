@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using DataStructuresLib.Basic;
-using NumericalGeometryLib.BasicMath.Tuples;
-using NumericalGeometryLib.BasicShapes.Triangles;
-using NumericalGeometryLib.BasicShapes.Triangles.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Triangles;
+using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Triangles.Immutable;
 
 namespace GraphicsComposerLib.Geometry.Primitives.Triangles
 {

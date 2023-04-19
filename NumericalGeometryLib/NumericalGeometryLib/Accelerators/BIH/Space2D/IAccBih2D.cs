@@ -1,5 +1,5 @@
-﻿using NumericalGeometryLib.BasicShapes;
-using NumericalGeometryLib.Borders.Space2D.Immutable;
+﻿using GeometricAlgebraFulcrumLib.MathBase.BasicShapes;
+using GeometricAlgebraFulcrumLib.MathBase.Borders.Space2D.Immutable;
 
 namespace NumericalGeometryLib.Accelerators.BIH.Space2D
 {

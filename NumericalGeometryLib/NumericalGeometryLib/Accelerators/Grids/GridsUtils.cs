@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
+using GeometricAlgebraFulcrumLib.MathBase.BasicShapes;
+using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Lines;
+using GeometricAlgebraFulcrumLib.MathBase.Borders;
+using GeometricAlgebraFulcrumLib.MathBase.Borders.Space1D;
+using GeometricAlgebraFulcrumLib.MathBase.Borders.Space1D.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Borders.Space2D.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Borders.Space3D.Immutable;
 using NumericalGeometryLib.Accelerators.Grids.Space2D;
 using NumericalGeometryLib.Accelerators.Grids.Space3D;
-using NumericalGeometryLib.BasicShapes;
-using NumericalGeometryLib.BasicShapes.Lines;
-using NumericalGeometryLib.Borders;
-using NumericalGeometryLib.Borders.Space1D;
-using NumericalGeometryLib.Borders.Space1D.Immutable;
-using NumericalGeometryLib.Borders.Space2D.Immutable;
-using NumericalGeometryLib.Borders.Space3D.Immutable;
 
 namespace NumericalGeometryLib.Accelerators.Grids
 {

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
 
 namespace GeometricAlgebraFulcrumLib.MetaProgramming.Expressions.HeadSpecs
@@ -51,7 +50,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Expressions.HeadSpecs
             => true;
 
 
-        private MetaExpressionHeadSpecsArrayAccess([NotNull] MetaContext context, [NotNull] string arrayName)
+        private MetaExpressionHeadSpecsArrayAccess(MetaContext context, string arrayName)
         {
             if (string.IsNullOrEmpty(arrayName))
                 throw new ArgumentNullException(nameof(arrayName), @"Array name not initialized");

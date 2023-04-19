@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records.Restricted;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Dense;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded;
@@ -15,12 +15,12 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors
     public abstract class LinVectorStorageComposerBase<T> :
         ILinVectorStorageComposer<T>
     {
-        public IScalarAlgebraProcessor<T> ScalarProcessor { get; }
+        public IScalarProcessor<T> ScalarProcessor { get; }
 
         public abstract int Count { get; }
 
 
-        protected LinVectorStorageComposerBase([NotNull] IScalarAlgebraProcessor<T> scalarProcessor)
+        protected LinVectorStorageComposerBase(IScalarProcessor<T> scalarProcessor)
         {
             ScalarProcessor = scalarProcessor;
         }
@@ -32,11 +32,11 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors
 
         public abstract LinVectorStorageComposerBase<T> RemoveZeroTerms();
 
-        public abstract LinVectorStorageComposerBase<T> SetTerm(ulong index, [NotNull] T value);
+        public abstract LinVectorStorageComposerBase<T> SetTerm(ulong index, T value);
 
-        public abstract LinVectorStorageComposerBase<T> AddTerm(ulong index, [NotNull] T value);
+        public abstract LinVectorStorageComposerBase<T> AddTerm(ulong index, T value);
 
-        public abstract LinVectorStorageComposerBase<T> SubtractTerm(ulong index, [NotNull] T value);
+        public abstract LinVectorStorageComposerBase<T> SubtractTerm(ulong index, T value);
 
         public abstract LinVectorStorageComposerBase<T> MapScalars(Func<T, T> valueMapping);
 
@@ -50,7 +50,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors
             return Count == 0;
         }
 
-        public abstract IEnumerable<IndexScalarRecord<T>> GetIndexScalarRecords();
+        public abstract IEnumerable<RGaKvIndexScalarRecord<T>> GetIndexScalarRecords();
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -78,7 +78,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinVectorStorageComposerBase<T> RemoveBivectorTerm(IndexPairRecord basisVectorIndexPair)
+        public LinVectorStorageComposerBase<T> RemoveBivectorTerm(RGaKvIndexPairRecord basisVectorIndexPair)
         {
             var index =
                 basisVectorIndexPair.BasisVectorIndicesToBivectorIndex();
@@ -87,7 +87,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinVectorStorageComposerBase<T> RemoveBivectorTerms(IEnumerable<IndexPairRecord> indexList)
+        public LinVectorStorageComposerBase<T> RemoveBivectorTerms(IEnumerable<RGaKvIndexPairRecord> indexList)
         {
             foreach (var (basisVectorIndex1, basisVectorIndex2) in indexList)
                 RemoveBivectorTerm(basisVectorIndex1, basisVectorIndex2);
@@ -154,7 +154,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinVectorStorageComposerBase<T> SetBivectorTerm(IndexPairRecord basisVectorIndexPair, T scalar)
+        public LinVectorStorageComposerBase<T> SetBivectorTerm(RGaKvIndexPairRecord basisVectorIndexPair, T scalar)
         {
             var index =
                 basisVectorIndexPair.BasisVectorIndicesToBivectorIndex();
@@ -170,7 +170,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinVectorStorageComposerBase<T> SetBivectorTerms(IEnumerable<IndexPairScalarRecord<T>> termsList)
+        public LinVectorStorageComposerBase<T> SetBivectorTerms(IEnumerable<RGaKvIndexPairScalarRecord<T>> termsList)
         {
             foreach (var (index1, index2, scalar) in termsList)
                 SetBivectorTerm(index1, index2, scalar);
@@ -199,7 +199,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinVectorStorageComposerBase<T> SetTerms(IEnumerable<IndexScalarRecord<T>> keyTermRecords)
+        public LinVectorStorageComposerBase<T> SetTerms(IEnumerable<RGaKvIndexScalarRecord<T>> keyTermRecords)
         {
             foreach (var (key, value) in keyTermRecords)
                 SetTerm(key, value);
@@ -249,7 +249,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinVectorStorageComposerBase<T> SetScaledTerms(IEnumerable<IndexScalarRecord<T>> keyTermRecords, T scalingFactor)
+        public LinVectorStorageComposerBase<T> SetScaledTerms(IEnumerable<RGaKvIndexScalarRecord<T>> keyTermRecords, T scalingFactor)
         {
             foreach (var (key, value) in keyTermRecords)
                 SetTerm(key, ScalarProcessor.Times(value, scalingFactor));
@@ -258,7 +258,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinVectorStorageComposerBase<T> SetScaledTerms(T scalingFactor, IEnumerable<IndexScalarRecord<T>> keyTermRecords)
+        public LinVectorStorageComposerBase<T> SetScaledTerms(T scalingFactor, IEnumerable<RGaKvIndexScalarRecord<T>> keyTermRecords)
         {
             foreach (var (key, value) in keyTermRecords)
                 SetTerm(key, ScalarProcessor.Times(scalingFactor, value));
@@ -326,7 +326,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinVectorStorageComposerBase<T> AddBivectorTerm(IndexPairRecord basisVectorIndexPair, T scalar)
+        public LinVectorStorageComposerBase<T> AddBivectorTerm(RGaKvIndexPairRecord basisVectorIndexPair, T scalar)
         {
             var index =
                 basisVectorIndexPair.BasisVectorIndicesToBivectorIndex();
@@ -342,7 +342,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinVectorStorageComposerBase<T> AddBivectorTerms(IEnumerable<IndexPairScalarRecord<T>> termsList)
+        public LinVectorStorageComposerBase<T> AddBivectorTerms(IEnumerable<RGaKvIndexPairScalarRecord<T>> termsList)
         {
             foreach (var (index1, index2, scalar) in termsList)
                 AddBivectorTerm(index1, index2, scalar);
@@ -371,7 +371,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinVectorStorageComposerBase<T> AddTerms(IEnumerable<IndexScalarRecord<T>> keyTermRecords)
+        public LinVectorStorageComposerBase<T> AddTerms(IEnumerable<RGaKvIndexScalarRecord<T>> keyTermRecords)
         {
             foreach (var (key, value) in keyTermRecords)
                 AddTerm(key, value);
@@ -421,7 +421,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinVectorStorageComposerBase<T> AddScaledTerms(IEnumerable<IndexScalarRecord<T>> keyTermRecords, T scalingFactor)
+        public LinVectorStorageComposerBase<T> AddScaledTerms(IEnumerable<RGaKvIndexScalarRecord<T>> keyTermRecords, T scalingFactor)
         {
             foreach (var (key, value) in keyTermRecords)
                 AddTerm(key, ScalarProcessor.Times(value, scalingFactor));
@@ -430,7 +430,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinVectorStorageComposerBase<T> AddScaledTerms(T scalingFactor, IEnumerable<IndexScalarRecord<T>> keyTermRecords)
+        public LinVectorStorageComposerBase<T> AddScaledTerms(T scalingFactor, IEnumerable<RGaKvIndexScalarRecord<T>> keyTermRecords)
         {
             foreach (var (key, value) in keyTermRecords)
                 AddTerm(key, ScalarProcessor.Times(scalingFactor, value));
@@ -498,7 +498,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinVectorStorageComposerBase<T> SubtractBivectorTerm(IndexPairRecord basisVectorIndexPair, T scalar)
+        public LinVectorStorageComposerBase<T> SubtractBivectorTerm(RGaKvIndexPairRecord basisVectorIndexPair, T scalar)
         {
             var index =
                 basisVectorIndexPair.BasisVectorIndicesToBivectorIndex();
@@ -514,7 +514,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinVectorStorageComposerBase<T> SubtractBivectorTerms(IEnumerable<IndexPairScalarRecord<T>> termsList)
+        public LinVectorStorageComposerBase<T> SubtractBivectorTerms(IEnumerable<RGaKvIndexPairScalarRecord<T>> termsList)
         {
             foreach (var (index1, index2, scalar) in termsList)
                 SubtractBivectorTerm(index1, index2, scalar);
@@ -543,7 +543,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinVectorStorageComposerBase<T> SubtractTerms(IEnumerable<IndexScalarRecord<T>> keyTermRecords)
+        public LinVectorStorageComposerBase<T> SubtractTerms(IEnumerable<RGaKvIndexScalarRecord<T>> keyTermRecords)
         {
             foreach (var (key, value) in keyTermRecords)
                 SubtractTerm(key, value);
@@ -593,7 +593,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinVectorStorageComposerBase<T> SubtractScaledTerms(IEnumerable<IndexScalarRecord<T>> keyTermRecords, T scalingFactor)
+        public LinVectorStorageComposerBase<T> SubtractScaledTerms(IEnumerable<RGaKvIndexScalarRecord<T>> keyTermRecords, T scalingFactor)
         {
             foreach (var (key, value) in keyTermRecords)
                 SubtractTerm(key, ScalarProcessor.Times(value, scalingFactor));
@@ -602,7 +602,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinVectorStorageComposerBase<T> SubtractScaledTerms(T scalingFactor, IEnumerable<IndexScalarRecord<T>> keyTermRecords)
+        public LinVectorStorageComposerBase<T> SubtractScaledTerms(T scalingFactor, IEnumerable<RGaKvIndexScalarRecord<T>> keyTermRecords)
         {
             foreach (var (key, value) in keyTermRecords)
                 SubtractTerm(key, ScalarProcessor.Times(scalingFactor, value));

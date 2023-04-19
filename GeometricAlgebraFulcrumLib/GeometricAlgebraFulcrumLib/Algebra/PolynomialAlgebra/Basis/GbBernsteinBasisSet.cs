@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
-using System.Diagnostics.CodeAnalysis;
-using GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.Basis
 {
@@ -28,7 +26,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.Basis
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GbBernsteinBasisSet(IScalarAlgebraProcessor<T> scalarProcessor, int degree, [NotNull] Func<T, T> evaluateDegree20Func, [NotNull] Func<T, T> evaluateDegree22Func) 
+        public GbBernsteinBasisSet(IScalarProcessor<T> scalarProcessor, int degree, Func<T, T> evaluateDegree20Func, Func<T, T> evaluateDegree22Func) 
             : base(scalarProcessor, degree)
         {
             EvaluateDegree20Func = evaluateDegree20Func;

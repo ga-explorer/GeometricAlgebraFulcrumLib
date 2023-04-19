@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records.Restricted;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 
 namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense
@@ -11,7 +11,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense
     {
         public ILinMatrixDenseStorage<T> SourceStorage { get; }
         
-        public Func<ulong, ulong, IndexPairRecord> IndexMapping { get; }
+        public Func<ulong, ulong, RGaKvIndexPairRecord> IndexMapping { get; }
 
         public Func<ulong, ulong, T, T> IndexScalarMapping { get; }
 
@@ -22,21 +22,21 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense
             => SourceStorage.Count2;
 
 
-        internal LinMatrixMappedDenseStorage([NotNull] ILinMatrixDenseStorage<T> source, [NotNull] Func<ulong, ulong, IndexPairRecord> indexMapping)
+        internal LinMatrixMappedDenseStorage(ILinMatrixDenseStorage<T> source, Func<ulong, ulong, RGaKvIndexPairRecord> indexMapping)
         {
             SourceStorage = source;
             IndexMapping = indexMapping;
             IndexScalarMapping = (_, _, scalar) => scalar;
         }
         
-        internal LinMatrixMappedDenseStorage([NotNull] ILinMatrixDenseStorage<T> source, [NotNull] Func<ulong, ulong, T, T> indexScalarMapping)
+        internal LinMatrixMappedDenseStorage(ILinMatrixDenseStorage<T> source, Func<ulong, ulong, T, T> indexScalarMapping)
         {
             SourceStorage = source;
-            IndexMapping = (index1, index2) => new IndexPairRecord(index1, index2);
+            IndexMapping = (index1, index2) => new RGaKvIndexPairRecord(index1, index2);
             IndexScalarMapping = indexScalarMapping;
         }
         
-        internal LinMatrixMappedDenseStorage([NotNull] ILinMatrixDenseStorage<T> source, [NotNull] Func<ulong, ulong, IndexPairRecord> indexMapping, [NotNull] Func<ulong, ulong, T, T> indexScalarMapping)
+        internal LinMatrixMappedDenseStorage(ILinMatrixDenseStorage<T> source, Func<ulong, ulong, RGaKvIndexPairRecord> indexMapping, Func<ulong, ulong, T, T> indexScalarMapping)
         {
             SourceStorage = source;
             IndexMapping = indexMapping;
@@ -49,7 +49,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense
         {
             var index = IndexMapping(index1, index2);
 
-            return IndexScalarMapping(index.Index1, index.Index2, SourceStorage.GetScalar(index));
+            return IndexScalarMapping(index.KvIndex1, index.KvIndex2, SourceStorage.GetScalar(index));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -58,12 +58,12 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense
             return this;
         }
         
-        public override IEnumerable<IndexLinVectorStorageRecord<T>> GetDenseRows(IEnumerable<ulong> rowIndexList)
+        public override IEnumerable<RGaKvIndexLinVectorStorageRecord<T>> GetDenseRows(IEnumerable<ulong> rowIndexList)
         {
             throw new NotImplementedException();
         }
 
-        public override IEnumerable<IndexLinVectorStorageRecord<T>> GetDenseColumns(IEnumerable<ulong> columnIndexList)
+        public override IEnumerable<RGaKvIndexLinVectorStorageRecord<T>> GetDenseColumns(IEnumerable<ulong> columnIndexList)
         {
             throw new NotImplementedException();
         }

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.BitManipulation;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records.Restricted;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 
 namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
@@ -21,13 +21,13 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<uint> GetEmptyGrades(uint vSpaceDimension)
+        public IEnumerable<uint> GetEmptyGrades(uint vSpaceDimensions)
         {
             var count = (uint) _evenLists.Count;
 
-            return vSpaceDimension > count
-                ? (1U + vSpaceDimension - count).GetRange(count)
-                : (1U + vSpaceDimension).GetRange();
+            return vSpaceDimensions > count
+                ? (1U + vSpaceDimensions - count).GetRange(count)
+                : (1U + vSpaceDimensions).GetRange();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -62,7 +62,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
             _evenLists = new List<ILinVectorStorage<T>>(capacity);
         }
 
-        internal LinVectorListGradedStorage([NotNull] IEnumerable<ILinVectorStorage<T>> evenLists)
+        internal LinVectorListGradedStorage(IEnumerable<ILinVectorStorage<T>> evenLists)
         {
             _evenLists = new List<ILinVectorStorage<T>>(
                 evenLists.Select(
@@ -159,7 +159,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public T GetScalar(GradeIndexRecord gradeKey)
+        public T GetScalar(RGaGradeKvIndexRecord gradeKey)
         {
             var (grade, index) = gradeKey;
 
@@ -216,25 +216,25 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
             return (uint) (_evenLists.Count - 1);
         }
 
-        public IEnumerable<GradeIndexRecord> GetGradeIndexRecords()
+        public IEnumerable<RGaGradeKvIndexRecord> GetGradeIndexRecords()
         {
             for (var grade = 0U; grade < _evenLists.Count; grade++)
             {
                 var evenDictionary = _evenLists[(int) grade];
 
                 foreach (var index in evenDictionary.GetIndices())
-                    yield return new GradeIndexRecord(grade, index);
+                    yield return new RGaGradeKvIndexRecord(grade, index);
             }
         }
 
-        public IEnumerable<GradeIndexScalarRecord<T>> GetGradeIndexScalarRecords()
+        public IEnumerable<RGaGradeKvIndexScalarRecord<T>> GetGradeIndexScalarRecords()
         {
             for (var grade = 0U; grade < _evenLists.Count; grade++)
             {
                 var evenDictionary = _evenLists[(int) grade];
 
                 foreach (var (index, value) in evenDictionary.GetIndexScalarRecords())
-                    yield return new GradeIndexScalarRecord<T>(grade, index, value);
+                    yield return new RGaGradeKvIndexScalarRecord<T>(grade, index, value);
             }
         }
 
@@ -464,10 +464,10 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<GradeLinVectorStorageRecord<T>> GetGradeStorageRecords()
+        public IEnumerable<GaGradeLinVectorStorageRecord<T>> GetGradeStorageRecords()
         {
             return _evenLists.Select(
-                (vectorStorage, grade) => new GradeLinVectorStorageRecord<T>((uint) grade, vectorStorage)
+                (vectorStorage, grade) => new GaGradeLinVectorStorageRecord<T>((uint) grade, vectorStorage)
             );
         }
     }

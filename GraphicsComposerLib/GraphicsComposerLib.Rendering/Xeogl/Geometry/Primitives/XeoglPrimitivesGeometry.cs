@@ -1,5 +1,5 @@
-﻿using GraphicsComposerLib.Geometry.Primitives;
-using NumericalGeometryLib.BasicMath.Tuples;
+﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GraphicsComposerLib.Geometry.Primitives;
 
 namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Primitives
 {

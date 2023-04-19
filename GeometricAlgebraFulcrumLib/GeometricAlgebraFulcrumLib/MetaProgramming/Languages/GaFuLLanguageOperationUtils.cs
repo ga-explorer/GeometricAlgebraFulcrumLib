@@ -54,14 +54,14 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Languages
             };
         }
         
-        public static string GetName(this GaFuLLanguageOperationKind operationKind, bool isEuclidean, uint grade)
+        public static string GetName(this GaFuLLanguageOperationKind operationKind, bool isEuclidean, int grade)
         {
             return operationKind.GetName(isEuclidean) + 
                    "_" + 
                    grade.ToString("X1");
         }
 
-        public static string GetName(this GaFuLLanguageOperationKind operationKind, bool isEuclidean, params uint[] gradesList)
+        public static string GetName(this GaFuLLanguageOperationKind operationKind, bool isEuclidean, params int[] gradesList)
         {
             return operationKind.GetName(isEuclidean) + 
                    "_" +
@@ -70,7 +70,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Languages
                        .Concatenate("_");
         }
 
-        public static string GetName(this GaFuLLanguageOperationKind operationKind, bool isEuclidean, IEnumerable<uint> gradesList)
+        public static string GetName(this GaFuLLanguageOperationKind operationKind, bool isEuclidean, IEnumerable<int> gradesList)
         {
             return operationKind.GetName(isEuclidean) + 
                    "_" +
@@ -79,13 +79,13 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Languages
                        .Concatenate("_");
         }
 
-        public static Tuple<bool, uint> GetKVectorsBilinearProductGrade(this GaFuLLanguageOperationKind operationKind, uint vSpaceDimension, uint inGrade1, uint inGrade2)
+        public static Tuple<bool, int> GetKVectorsBilinearProductGrade(this GaFuLLanguageOperationKind operationKind, int vSpaceDimensions, int inGrade1, int inGrade2)
         {
-            if (inGrade1 > vSpaceDimension)
-                return new Tuple<bool, uint>(false, 0);
+            if (inGrade1 > vSpaceDimensions)
+                return new Tuple<bool, int>(false, 0);
 
-            if (inGrade2 > vSpaceDimension)
-                return new Tuple<bool, uint>(false, 0);
+            if (inGrade2 > vSpaceDimensions)
+                return new Tuple<bool, int>(false, 0);
 
             var outGrade = operationKind switch
             {
@@ -110,10 +110,10 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Languages
                 _ => -1
             };
 
-            if (outGrade < 0 || outGrade > vSpaceDimension)
-                return new Tuple<bool, uint>(false, 0);
+            if (outGrade < 0 || outGrade > vSpaceDimensions)
+                return new Tuple<bool, int>(false, 0);
 
-            return new Tuple<bool, uint>(true, (uint) outGrade);
+            return new Tuple<bool, int>(true, outGrade);
         }
 
         public static GaFuLLanguageOperationSpecs CreateEuclideanOperationSpecs(this GaFuLLanguageOperationKind operationKind)

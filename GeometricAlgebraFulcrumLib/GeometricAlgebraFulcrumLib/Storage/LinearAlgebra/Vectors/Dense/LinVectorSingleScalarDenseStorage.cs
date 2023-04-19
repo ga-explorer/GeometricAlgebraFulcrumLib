@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.BitManipulation;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records.Restricted;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Sparse;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 
 namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Dense
 {
@@ -52,7 +51,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Dense
         }
 
 
-        internal LinVectorSingleScalarDenseStorage([NotNull] T value)
+        internal LinVectorSingleScalarDenseStorage(T value)
         {
             Scalar = value;
         }
@@ -179,7 +178,8 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Dense
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ILinVectorGradedStorage<T> ToVectorGradedStorage(Func<ulong, GradeIndexRecord> indexToGradeIndexMapping)
+        public ILinVectorGradedStorage<T> ToVectorGradedStorage(
+            Func<ulong, RGaGradeKvIndexRecord> indexToGradeIndexMapping)
         {
             var (grade, index) = indexToGradeIndexMapping(0UL);
 
@@ -191,7 +191,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Dense
             return new LinVectorSingleGradeStorage<T>(grade, vectorStorage);
         }
 
-        public ILinVectorGradedStorage<T> ToVectorGradedStorage(Func<ulong, T, GradeIndexScalarRecord<T>> indexScalarToGradeIndexScalarMapping)
+        public ILinVectorGradedStorage<T> ToVectorGradedStorage(Func<ulong, T, RGaGradeKvIndexScalarRecord<T>> indexScalarToGradeIndexScalarMapping)
         {
             var (grade, index, scalar) = indexScalarToGradeIndexScalarMapping(0UL, Scalar);
 
@@ -211,9 +211,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Dense
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<IndexScalarRecord<T>> GetIndexScalarRecords()
+        public IEnumerable<RGaKvIndexScalarRecord<T>> GetIndexScalarRecords()
         {
-            yield return new IndexScalarRecord<T>(0UL, Scalar);
+            yield return new RGaKvIndexScalarRecord<T>(0UL, Scalar);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

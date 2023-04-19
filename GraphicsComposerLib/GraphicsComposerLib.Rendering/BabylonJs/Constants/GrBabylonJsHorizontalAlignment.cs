@@ -1,8 +1,9 @@
-﻿namespace GraphicsComposerLib.Rendering.BabylonJs.Constants;
-
-public enum GrBabylonJsHorizontalAlignment
+﻿namespace GraphicsComposerLib.Rendering.BabylonJs.Constants
 {
-    Left,
-    Center,
-    Right
+    public enum GrBabylonJsHorizontalAlignment
+    {
+        Left,
+        Center,
+        Right
+    }
 }

@@ -1,8 +1,9 @@
 ﻿using System.Runtime.CompilerServices;
-using NumericalGeometryLib.BasicMath.Tuples;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
 using GeometricAlgebraFulcrumLib.Geometry.Graphics.Space2D;
 using GeometricAlgebraFulcrumLib.Geometry.Graphics.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 
@@ -85,15 +86,21 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaVector<double> ToVector(this IFloat64Tuple2D v)
+        public static RGaFloat64Vector ToVector(this IFloat64Tuple2D v)
         {
             return GraphicsUtils.GeometricProcessor.CreateVector(v.X, v.Y);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaVector<double> ToVector(this IFloat64Tuple3D v)
+        public static RGaFloat64Vector ToVector(this IFloat64Tuple3D v)
         {
             return GraphicsUtils.GeometricProcessor.CreateVector(v.X, v.Y, v.Z);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static RGaFloat64Vector ToVector(this IFloat64Tuple4D v)
+        {
+            return GraphicsUtils.GeometricProcessor.CreateVector(v.X, v.Y, v.Z, v.W);
         }
     }
 }

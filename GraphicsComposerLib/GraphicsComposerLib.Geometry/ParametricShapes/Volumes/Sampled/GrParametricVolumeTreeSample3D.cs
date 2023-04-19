@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using NumericalGeometryLib.BasicMath.Tuples.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
 
 // ReSharper disable CompareOfFloatsByEqualityOperator
 

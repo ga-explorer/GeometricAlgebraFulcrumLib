@@ -1,5 +1,5 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Expressions;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
@@ -15,9 +15,9 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
     internal sealed class VectorsOpMethodsFileComposer : 
         GaFuLLibraryMetaContextFileComposerBase
     {
-        private uint _outGrade;
-        private GaVector<IMetaExpressionAtomic>[] _inputVectorsArray;
-        private GaKVector<IMetaExpressionAtomic> _outputKVector;
+        private int _outGrade;
+        private XGaVector<IMetaExpressionAtomic>[] _inputVectorsArray;
+        private XGaKVector<IMetaExpressionAtomic> _outputKVector;
 
 
         internal VectorsOpMethodsFileComposer(GaFuLLibraryComposer libGen)
@@ -29,7 +29,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
         protected override void DefineContextParameters(MetaContext context)
         {
             _inputVectorsArray = 
-                new GaVector<IMetaExpressionAtomic>[_outGrade];
+                new XGaVector<IMetaExpressionAtomic>[_outGrade];
 
             for (var g = 0; g < _outGrade; g++)
             {
@@ -37,7 +37,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
 
                 _inputVectorsArray[grade] =
                     context.ParameterVariablesFactory.CreateDenseVector(
-                        VSpaceDimension,
+                        VSpaceDimensions,
                     index => $"vector{grade}Scalar{index}"
                 );
             }
@@ -83,7 +83,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
                 "signature", CurrentNamespace,
                 "double", GeoLanguage.ScalarTypeName,
                 "grade", _outGrade,
-                "num", this.KVectorSpaceDimension(_outGrade),
+                "num", VSpaceDimensions.KVectorSpaceDimension(_outGrade),
                 "computations", computationsText
             );
         }
@@ -94,7 +94,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
 
             var casesText = new ListTextComposer(Environment.NewLine);
 
-            for (var grade = 2U; grade <= VSpaceDimension; grade++)
+            for (var grade = 2; grade <= VSpaceDimensions; grade++)
             {
                 _outGrade = grade;
 

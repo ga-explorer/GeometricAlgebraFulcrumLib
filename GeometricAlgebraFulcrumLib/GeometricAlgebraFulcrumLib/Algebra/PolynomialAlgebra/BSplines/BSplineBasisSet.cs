@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.BSplines
 {
@@ -19,7 +17,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.BSplines
         }
 
 
-        public IScalarAlgebraProcessor<T> ScalarProcessor 
+        public IScalarProcessor<T> ScalarProcessor 
             => KnotVector.ScalarProcessor;
 
         public int Degree { get; }
@@ -31,7 +29,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.BSplines
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal BSplineBasisSet([NotNull] BSplineKnotVector<T> knotVector, int degree)
+        internal BSplineBasisSet(BSplineKnotVector<T> knotVector, int degree)
         {
             if (degree < 1 || knotVector.Size - degree - 1 < 4)
                 throw new ArgumentOutOfRangeException(nameof(degree));

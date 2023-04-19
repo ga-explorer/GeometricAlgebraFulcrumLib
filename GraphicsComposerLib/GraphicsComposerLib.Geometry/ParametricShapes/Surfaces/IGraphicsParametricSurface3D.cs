@@ -1,5 +1,5 @@
-﻿using NumericalGeometryLib.BasicMath;
-using NumericalGeometryLib.BasicMath.Tuples.Immutable;
+﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
 
 namespace GraphicsComposerLib.Geometry.ParametricShapes.Surfaces
 {

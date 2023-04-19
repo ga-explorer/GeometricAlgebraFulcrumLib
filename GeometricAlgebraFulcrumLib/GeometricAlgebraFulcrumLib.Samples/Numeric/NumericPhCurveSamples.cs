@@ -1,18 +1,15 @@
 ﻿using System;
 using System.Linq;
-using GeometricAlgebraFulcrumLib.Text;
-using NumericalGeometryLib.BasicMath;
-using NumericalGeometryLib.BasicMath.Tuples.Immutable;
-using NumericalGeometryLib.GeometricAlgebra.Basis;
-using NumericalGeometryLib.Polynomials.PhCurves;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Polynomials.PhCurves;
+using GeometricAlgebraFulcrumLib.MathBase.Text;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Numeric
 {
     public static class NumericPhCurveSamples
     {
-        public static BasisBladeSet BasisBladeSet { get; } 
-            = BasisBladeSet.Euclidean3D;
-
         /// <summary>
         /// Canonical 2D PH curve of degree 5
         /// </summary>
@@ -50,7 +47,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Numeric
             Console.WriteLine(@$"c(0.5) = {c5}");
             Console.WriteLine();
 
-            var latexComposer = LaTeXFloat64Composer.DefaultComposer;
+            var latexComposer = LaTeXComposerFloat64.DefaultComposer;
 
             Console.WriteLine(latexComposer.GetScalarText(length));
             Console.WriteLine();
@@ -70,7 +67,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Numeric
 
             var thetaRange = 
                 (-89d).GetLinearRange(89d, 7)
-                .Select(PlanarAngle.CreateFromDegrees)
+                .Select(Float64PlanarAngle.CreateFromDegrees)
                 .ToArray();
 
             var lengthArray = new double[thetaRange.Length, thetaRange.Length];
@@ -120,7 +117,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Numeric
                 i++;
             }
 
-            var latexComposer = LaTeXFloat64Composer.DefaultComposer;
+            var latexComposer = LaTeXComposerFloat64.DefaultComposer;
 
             Console.WriteLine(latexComposer.GetArrayText(lengthArray));
             Console.WriteLine();
@@ -200,7 +197,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Numeric
                 Console.WriteLine(@$"c(0.5) = {c5}");
                 Console.WriteLine();
 
-                var latexComposer = LaTeXFloat64Composer.DefaultComposer;
+                var latexComposer = LaTeXComposerFloat64.DefaultComposer;
 
                 Console.WriteLine(latexComposer.GetScalarText(length));
                 Console.WriteLine();
@@ -259,7 +256,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Numeric
 
             var thetaRange = 
                 (-89d).GetLinearRange(89d, 7)
-                .Select(PlanarAngle.CreateFromDegrees)
+                .Select(Float64PlanarAngle.CreateFromDegrees)
                 .ToArray();
 
             var lengthArray = new double[thetaRange.Length, thetaRange.Length];
@@ -311,7 +308,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Numeric
                 i++;
             }
 
-            var latexComposer = LaTeXFloat64Composer.DefaultComposer;
+            var latexComposer = LaTeXComposerFloat64.DefaultComposer;
 
             Console.WriteLine(latexComposer.GetArrayText(lengthArray));
             Console.WriteLine();

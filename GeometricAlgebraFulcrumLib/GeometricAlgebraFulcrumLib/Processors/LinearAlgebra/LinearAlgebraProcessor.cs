@@ -1,12 +1,12 @@
-﻿using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
 
 namespace GeometricAlgebraFulcrumLib.Processors.LinearAlgebra
 {
     public class LinearAlgebraProcessor<T> : 
-        ScalarAlgebraProcessorContainer<T>,
+        ScalarProcessorContainer<T>,
         ILinearAlgebraProcessor<T>
     {
-        internal LinearAlgebraProcessor(IScalarAlgebraProcessor<T> scalarProcessor) 
+        internal LinearAlgebraProcessor(IScalarProcessor<T> scalarProcessor) 
             : base(scalarProcessor)
         {
         }

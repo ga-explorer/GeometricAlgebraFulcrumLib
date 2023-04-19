@@ -1,36 +1,37 @@
 ﻿using GraphicsComposerLib.Rendering.BabylonJs.Constants;
 
-namespace GraphicsComposerLib.Rendering.BabylonJs.Values;
-
-public sealed class GrBabylonJsMeshCapValue :
-    GrBabylonJsValue<GrBabylonJsMeshCap>
+namespace GraphicsComposerLib.Rendering.BabylonJs.Values
 {
-    public static implicit operator GrBabylonJsMeshCapValue(string valueText)
+    public sealed class GrBabylonJsMeshCapValue :
+        GrBabylonJsValue<GrBabylonJsMeshCap>
     {
-        return new GrBabylonJsMeshCapValue(valueText);
-    }
+        public static implicit operator GrBabylonJsMeshCapValue(string valueText)
+        {
+            return new GrBabylonJsMeshCapValue(valueText);
+        }
 
-    public static implicit operator GrBabylonJsMeshCapValue(GrBabylonJsMeshCap value)
-    {
-        return new GrBabylonJsMeshCapValue(value);
-    }
-
-
-    private GrBabylonJsMeshCapValue(string valueText)
-        : base(valueText)
-    {
-    }
-
-    private GrBabylonJsMeshCapValue(GrBabylonJsMeshCap value)
-        : base(value)
-    {
-    }
+        public static implicit operator GrBabylonJsMeshCapValue(GrBabylonJsMeshCap value)
+        {
+            return new GrBabylonJsMeshCapValue(value);
+        }
 
 
-    public override string GetCode()
-    {
-        return string.IsNullOrEmpty(ValueText) 
-            ? Value.GetBabylonJsCode() 
-            : ValueText;
+        private GrBabylonJsMeshCapValue(string valueText)
+            : base(valueText)
+        {
+        }
+
+        private GrBabylonJsMeshCapValue(GrBabylonJsMeshCap value)
+            : base(value)
+        {
+        }
+
+
+        public override string GetCode()
+        {
+            return string.IsNullOrEmpty(ValueText) 
+                ? Value.GetBabylonJsCode() 
+                : ValueText;
+        }
     }
 }

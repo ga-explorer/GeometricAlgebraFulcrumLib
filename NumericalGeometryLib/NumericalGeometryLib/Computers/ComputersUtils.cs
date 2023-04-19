@@ -1,6 +1,6 @@
 ﻿using DataStructuresLib.Statistics;
-using NumericalGeometryLib.BasicShapes.Lines;
-using NumericalGeometryLib.Borders.Space1D;
+using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Lines;
+using GeometricAlgebraFulcrumLib.MathBase.Borders.Space1D;
 
 namespace NumericalGeometryLib.Computers
 {

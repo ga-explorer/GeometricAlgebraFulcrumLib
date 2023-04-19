@@ -1,9 +1,10 @@
 ﻿using System;
 
 using DataStructuresLib.Basic;
-using NumericalGeometryLib.BasicMath;
-using NumericalGeometryLib.BasicMath.Tuples;
-using NumericalGeometryLib.BasicMath.Tuples.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Frames.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
 using GraphicsComposerLib.Geometry.Structures.Vertices;
 using SixLabors.ImageSharp;
 
@@ -24,8 +25,8 @@ namespace GraphicsComposerLib.Geometry.Primitives.Vertices
 
         public Pair<double> ParameterValue { get; set; }
 
-        public GrNormal3D Normal { get; }
-            = new GrNormal3D();
+        public Normal3D Normal { get; }
+            = new Normal3D();
 
         public double X 
             => Point.X;

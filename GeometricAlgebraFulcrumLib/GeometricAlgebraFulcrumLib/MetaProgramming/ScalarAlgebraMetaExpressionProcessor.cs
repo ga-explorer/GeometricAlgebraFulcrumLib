@@ -1,5 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
+using DataStructuresLib.Basic;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Expressions;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Expressions.Numbers;
@@ -63,7 +63,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming
             => Context.ScalarRadianToDegree;
 
 
-        internal ScalarAlgebraMetaExpressionProcessor([NotNull] MetaContext context)
+        internal ScalarAlgebraMetaExpressionProcessor(MetaContext context)
         {
             Context = context;
         }
@@ -94,6 +94,16 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming
                 .FunctionHeadSpecsFactory
                 .Times
                 .CreateFunction(scalar1, scalar2);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public IMetaExpression Times(IntegerSign sign, IMetaExpression scalar)
+        {
+            if (sign.IsZero) return ScalarZero;
+
+            return sign.IsPositive
+                ? scalar 
+                : Negative(scalar);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

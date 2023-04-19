@@ -1,18 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.BitManipulation;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTraversal.Multivectors;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records.Restricted;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Basis;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Sparse;
 using GeometricAlgebraFulcrumLib.Text;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 
 namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
 {
@@ -194,7 +192,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             => false;
 
 
-        private MultivectorStorage([NotNull] ILinVectorStorage<T> idScalarDictionary)
+        private MultivectorStorage(ILinVectorStorage<T> idScalarDictionary)
         {
             _idScalarVectorStorage = idScalarDictionary;
         }
@@ -367,7 +365,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         {
             return GetLinVectorIdScalarStorage()
                 .GetIndexScalarRecords()
-                .Select(idScalar => idScalar.Index)
+                .Select(idScalar => idScalar.KvIndex)
                 .Where(id => id.IsBasisBladeOfGrade(grade))
                 .Min();
         }
@@ -376,7 +374,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         {
             return GetLinVectorIdScalarStorage()
                 .GetIndexScalarRecords()
-                .Select(idScalar => idScalar.Index)
+                .Select(idScalar => idScalar.KvIndex)
                 .Where(id => id.IsBasisBladeOfGrade(grade))
                 .Max();
         }
@@ -399,7 +397,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         {
             return GetLinVectorIdScalarStorage()
                 .GetIndexScalarRecords()
-                .Select(idScalar => idScalar.Index)
+                .Select(idScalar => idScalar.KvIndex)
                 .Where(id => id.IsBasisBladeOfGrade(grade))
                 .Min()
                 .BasisBivectorIdToIndex();
@@ -409,7 +407,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         {
             return GetLinVectorIdScalarStorage()
                 .GetIndexScalarRecords()
-                .Select(idScalar => idScalar.Index)
+                .Select(idScalar => idScalar.KvIndex)
                 .Where(id => id.IsBasisBladeOfGrade(grade))
                 .Max()
                 .BasisBivectorIdToIndex();
@@ -466,10 +464,10 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             var indexScalarDictionary = GetLinVectorIdScalarStorage()
                 .GetIndexScalarRecords()
                 .Where(pair => 
-                    pair.Index.IsBasisBladeOfGrade(grade)
+                    pair.KvIndex.IsBasisBladeOfGrade(grade)
                 )
                 .ToDictionary(
-                    pair => pair.Index.BasisBladeIdToIndex(),
+                    pair => pair.KvIndex.BasisBladeIdToIndex(),
                     pair => pair.Scalar
                 );
 
@@ -501,9 +499,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             var dict =
                 GetLinVectorIdScalarStorage()
                     .GetIndexScalarRecords()
-                    .Where(pair => pair.Index.IsBasisVectorId())
+                    .Where(pair => pair.KvIndex.IsBasisVectorId())
                     .ToDictionary(
-                        pair => pair.Index.BasisBladeIdToIndex(),
+                        pair => pair.KvIndex.BasisBladeIdToIndex(),
                         pair => pair.Scalar
                     );
 
@@ -522,9 +520,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             var dict =
                 GetLinVectorIdScalarStorage()
                     .GetIndexScalarRecords()
-                    .Where(pair => pair.Index.IsBasisBivectorId())
+                    .Where(pair => pair.KvIndex.IsBasisBivectorId())
                     .ToDictionary(
-                        pair => pair.Index.BasisBladeIdToIndex(),
+                        pair => pair.KvIndex.BasisBladeIdToIndex(),
                         pair => pair.Scalar
                     );
 
@@ -555,9 +553,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             var dict =
                 GetLinVectorIdScalarStorage()
                     .GetIndexScalarRecords()
-                    .Where(pair => pair.Index.IsBasisBladeOfGrade(grade))
+                    .Where(pair => pair.KvIndex.IsBasisBladeOfGrade(grade))
                     .ToDictionary(
-                        pair => pair.Index.BasisBladeIdToIndex(),
+                        pair => pair.KvIndex.BasisBladeIdToIndex(),
                         pair => pair.Scalar
                     );
 
@@ -575,11 +573,11 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         public ILinVectorGradedStorage<T> GetLinVectorGradedStorage()
         {
             return GetLinVectorIdScalarStorage().GetIndexScalarRecords().GroupBy(
-                pair => pair.Index.BasisBladeIdToGrade()
+                pair => pair.KvIndex.BasisBladeIdToGrade()
             ).ToDictionary(
                 g => g.Key,
                 g => g.ToDictionary(
-                    pair => pair.Index.BasisBladeIdToIndex(), 
+                    pair => pair.KvIndex.BasisBladeIdToIndex(), 
                     pair => pair.Scalar
                 )
             ).CreateLinVectorGradedStorage();
@@ -593,7 +591,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
 
-        public bool TryGetTerm(ulong id, out BasisTerm<T> term)
+        public bool TryGetTerm(ulong id, out KeyValuePair<ulong, T> term)
         {
             if (TryGetTermScalar(id, out var value))
             {
@@ -601,11 +599,11 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
                 return true;
             }
 
-            term = null;
+            term = new KeyValuePair<ulong, T>();
             return false;
         }
 
-        public bool TryGetTerm(uint grade, ulong index, out BasisTerm<T> term)
+        public bool TryGetTerm(uint grade, ulong index, out KeyValuePair<ulong, T> term)
         {
             var id = index.BasisBladeIndexToId(grade);
 
@@ -615,7 +613,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
                 return true;
             }
 
-            term = null;
+            term = new KeyValuePair<ulong, T>();
             return false;
         }
 
@@ -631,9 +629,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             var indexScalarDictionary =
                 GetLinVectorIdScalarStorage()
                     .GetIndexScalarRecords()
-                    .Where(pair => pair.Index.IsBasisVectorId())
+                    .Where(pair => pair.KvIndex.IsBasisVectorId())
                     .ToDictionary(
-                        pair => pair.Index.BasisBladeIdToIndex(), 
+                        pair => pair.KvIndex.BasisBladeIdToIndex(), 
                         pair => pair.Scalar
                     );
 
@@ -647,9 +645,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             var indexScalarDictionary =
                 GetLinVectorIdScalarStorage()
                     .GetIndexScalarRecords()
-                    .Where(pair => pair.Index.IsBasisBivectorId())
+                    .Where(pair => pair.KvIndex.IsBasisBivectorId())
                     .ToDictionary(
-                        pair => pair.Index.BasisBladeIdToIndex(), 
+                        pair => pair.KvIndex.BasisBladeIdToIndex(), 
                         pair => pair.Scalar
                     );
 
@@ -663,9 +661,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             var indexScalarDictionary =
                 GetLinVectorIdScalarStorage()
                     .GetIndexScalarRecords()
-                    .Where(pair => pair.Index.IsBasisBladeOfGrade(grade))
+                    .Where(pair => pair.KvIndex.IsBasisBladeOfGrade(grade))
                     .ToDictionary(
-                        pair => pair.Index.BasisBladeIdToIndex(), 
+                        pair => pair.KvIndex.BasisBladeIdToIndex(), 
                         pair => pair.Scalar
                     );
 
@@ -679,9 +677,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             var indexScalarDictionary =
                 GetLinVectorIdScalarStorage()
                     .GetIndexScalarRecords()
-                    .Where(pair => pair.Index.IsBasisVectorId())
+                    .Where(pair => pair.KvIndex.IsBasisVectorId())
                     .ToDictionary(
-                        pair => pair.Index.BasisVectorIdToIndex(), 
+                        pair => pair.KvIndex.BasisVectorIdToIndex(), 
                         pair => pair.Scalar
                     );
 
@@ -700,9 +698,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             var indexScalarDictionary =
                 GetLinVectorIdScalarStorage()
                     .GetIndexScalarRecords()
-                    .Where(pair => pair.Index.IsBasisBivectorId())
+                    .Where(pair => pair.KvIndex.IsBasisBivectorId())
                     .ToDictionary(
-                        pair => pair.Index.BasisBivectorIdToIndex(), 
+                        pair => pair.KvIndex.BasisBivectorIdToIndex(), 
                         pair => pair.Scalar
                     );
 
@@ -722,17 +720,10 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             return GetLinVectorIdScalarStorage().GetIndices();
         }
 
-        public IEnumerable<GradeIndexRecord> GetGradeIndexRecords()
+        public IEnumerable<RGaGradeKvIndexRecord> GetGradeIndexRecords()
         {
             return GetLinVectorIdScalarStorage().GetIndices()
                 .Select(id => id.BasisBladeIdToGradeIndex());
-        }
-
-        public IEnumerable<BasisBlade> GetBasisBlades()
-        {
-            return GetLinVectorIdScalarStorage().GetIndices().Select(
-                id => id.CreateBasisBlade()
-            );
         }
 
         public IEnumerable<T> GetScalars()
@@ -740,14 +731,14 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             return GetLinVectorIdScalarStorage().GetScalars();
         }
 
-        public IEnumerable<BasisTerm<T>> GetTerms()
+        public IEnumerable<KeyValuePair<ulong, T>> GetTerms()
         {
             return GetLinVectorIdScalarStorage().GetIndexScalarRecords().Select(pair => 
-                pair.Scalar.CreateBasisTerm(pair.Index)
+                pair.Scalar.CreateBasisTerm(pair.KvIndex)
             );
         }
 
-        public IEnumerable<BasisTerm<T>> GetTerms(Func<ulong, bool> idSelection)
+        public IEnumerable<KeyValuePair<ulong, T>> GetTerms(Func<ulong, bool> idSelection)
         {
             foreach (var (id, scalar) in GetLinVectorIdScalarStorage().GetIndexScalarRecords())
             {
@@ -756,7 +747,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             }
         }
 
-        public IEnumerable<BasisTerm<T>> GetTerms(Func<uint, ulong, bool> gradeIndexSelection)
+        public IEnumerable<KeyValuePair<ulong, T>> GetTerms(Func<uint, ulong, bool> gradeIndexSelection)
         {
             foreach (var (id, scalar) in GetLinVectorIdScalarStorage().GetIndexScalarRecords())
             {
@@ -767,7 +758,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             }
         }
 
-        public IEnumerable<BasisTerm<T>> GetTerms(Func<T, bool> scalarSelection)
+        public IEnumerable<KeyValuePair<ulong, T>> GetTerms(Func<T, bool> scalarSelection)
         {
             foreach (var (id, scalar) in GetLinVectorIdScalarStorage().GetIndexScalarRecords())
             {
@@ -776,7 +767,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             }
         }
 
-        public IEnumerable<BasisTerm<T>> GetTerms(Func<ulong, T, bool> idScalarSelection)
+        public IEnumerable<KeyValuePair<ulong, T>> GetTerms(Func<ulong, T, bool> idScalarSelection)
         {
             foreach (var (id, scalar) in GetLinVectorIdScalarStorage().GetIndexScalarRecords())
             {
@@ -785,7 +776,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             }
         }
 
-        public IEnumerable<BasisTerm<T>> GetTerms(Func<uint, ulong, T, bool> gradeIndexScalarSelection)
+        public IEnumerable<KeyValuePair<ulong, T>> GetTerms(Func<uint, ulong, T, bool> gradeIndexScalarSelection)
         {
             foreach (var (id, scalar) in GetLinVectorIdScalarStorage().GetIndexScalarRecords())
             {
@@ -796,45 +787,35 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             }
         }
 
-        public IEnumerable<IndexScalarRecord<T>> GetIdScalarRecords()
+        public IEnumerable<RGaKvIndexScalarRecord<T>> GetIdScalarRecords()
         {
             return GetLinVectorIdScalarStorage().GetIndexScalarRecords();
         }
 
-        public IEnumerable<IndexScalarRecord<T>> GetIndexScalarRecords(uint grade)
+        public IEnumerable<RGaKvIndexScalarRecord<T>> GetIndexScalarRecords(uint grade)
         {
             return GetLinVectorIdScalarStorage()
                 .GetIndexScalarRecords()
-                .Where(idScalar => idScalar.Index.IsBasisBladeOfGrade(grade))
+                .Where(idScalar => idScalar.KvIndex.IsBasisBladeOfGrade(grade))
                 .Select(idScalar => 
-                    new IndexScalarRecord<T>(
-                        idScalar.Index.BasisBladeIdToIndex(), 
+                    new RGaKvIndexScalarRecord<T>(
+                        idScalar.KvIndex.BasisBladeIdToIndex(), 
                         idScalar.Scalar
                     )
             );
         }
 
-        public IEnumerable<GradeIndexScalarRecord<T>> GetGradeIndexScalarRecords()
+        public IEnumerable<RGaGradeKvIndexScalarRecord<T>> GetGradeIndexScalarRecords()
         {
             return GetLinVectorIdScalarStorage()
                 .GetIndexScalarRecords()
                 .Select(pair =>
                 {
-                    var (grade, index) = pair.Index.BasisBladeIdToGradeIndex();
-                    return new GradeIndexScalarRecord<T>(grade, index, pair.Scalar);
+                    var (grade, index) = pair.KvIndex.BasisBladeIdToGradeIndex();
+                    return new RGaGradeKvIndexScalarRecord<T>(grade, index, pair.Scalar);
                 });
         }
 
-        
-        public IGeoGbtMultivectorStorageStack1<T> CreateGbtStack(int treeDepth, int capacity, IScalarAlgebraProcessor<T> scalarProcessor)
-        {
-            return GeoGbtMultivectorStorageUniformStack1<T>.Create(
-                capacity, 
-                treeDepth, 
-                scalarProcessor,
-                this
-            );
-        }
 
         /// <summary>
         /// Construct a binary tree representation of this storage
@@ -847,7 +828,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
 
             var dict = GetIdScalarRecords()
                 .ToDictionary(
-                    pair => pair.Index,
+                    pair => pair.KvIndex,
                     pair => pair.Scalar
                 );
 
@@ -872,9 +853,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             var indexScalarDictionary =             
                 GetLinVectorIdScalarStorage()
                     .GetIndexScalarRecords()
-                    .Where(pair => pair.Index.IsBasisVectorId())
+                    .Where(pair => pair.KvIndex.IsBasisVectorId())
                     .ToDictionary(
-                        pair => pair.Index.BasisBladeIdToIndex(),
+                        pair => pair.KvIndex.BasisBladeIdToIndex(),
                         pair => pair.Scalar
                     );
 
@@ -886,9 +867,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             var indexScalarDictionary =             
                 GetLinVectorIdScalarStorage()
                     .GetIndexScalarRecords()
-                    .Where(pair => pair.Index.IsBasisVectorId() && scalarSelection(pair.Scalar))
+                    .Where(pair => pair.KvIndex.IsBasisVectorId() && scalarSelection(pair.Scalar))
                     .ToDictionary(
-                        pair => pair.Index.BasisBladeIdToIndex(),
+                        pair => pair.KvIndex.BasisBladeIdToIndex(),
                         pair => pair.Scalar
                     );
 
@@ -900,9 +881,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             var indexScalarDictionary =             
                 GetLinVectorIdScalarStorage()
                     .GetIndexScalarRecords()
-                    .Where(pair => pair.Index.IsBasisVectorId() && indexScalarSelection(pair.Index.BasisBladeIdToIndex(), pair.Scalar))
+                    .Where(pair => pair.KvIndex.IsBasisVectorId() && indexScalarSelection(pair.KvIndex.BasisBladeIdToIndex(), pair.Scalar))
                     .ToDictionary(
-                        pair => pair.Index.BasisBladeIdToIndex(),
+                        pair => pair.KvIndex.BasisBladeIdToIndex(),
                         pair => pair.Scalar
                     );
 
@@ -914,9 +895,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             var indexScalarDictionary =             
                 GetLinVectorIdScalarStorage()
                     .GetIndexScalarRecords()
-                    .Where(pair => pair.Index.IsBasisVectorId() && indexSelection(pair.Index.BasisBladeIdToIndex()))
+                    .Where(pair => pair.KvIndex.IsBasisVectorId() && indexSelection(pair.KvIndex.BasisBladeIdToIndex()))
                     .ToDictionary(
-                        pair => pair.Index.BasisBladeIdToIndex(),
+                        pair => pair.KvIndex.BasisBladeIdToIndex(),
                         pair => pair.Scalar
                     );
 
@@ -928,9 +909,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             var indexScalarDictionary =             
                 GetLinVectorIdScalarStorage()
                     .GetIndexScalarRecords()
-                    .Where(pair => pair.Index.IsBasisBivectorId())
+                    .Where(pair => pair.KvIndex.IsBasisBivectorId())
                     .ToDictionary(
-                        pair => pair.Index.BasisBladeIdToIndex(),
+                        pair => pair.KvIndex.BasisBladeIdToIndex(),
                         pair => pair.Scalar
                     );
 
@@ -943,9 +924,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             var indexScalarDictionary =             
                 GetLinVectorIdScalarStorage()
                     .GetIndexScalarRecords()
-                    .Where(pair => pair.Index.IsBasisBivectorId() && scalarSelection(pair.Scalar))
+                    .Where(pair => pair.KvIndex.IsBasisBivectorId() && scalarSelection(pair.Scalar))
                     .ToDictionary(
-                        pair => pair.Index.BasisBladeIdToIndex(),
+                        pair => pair.KvIndex.BasisBladeIdToIndex(),
                         pair => pair.Scalar
                     );
 
@@ -957,9 +938,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             var indexScalarDictionary =             
                 GetLinVectorIdScalarStorage()
                     .GetIndexScalarRecords()
-                    .Where(pair => pair.Index.IsBasisBivectorId() && indexScalarSelection(pair.Index.BasisBladeIdToIndex(), pair.Scalar))
+                    .Where(pair => pair.KvIndex.IsBasisBivectorId() && indexScalarSelection(pair.KvIndex.BasisBladeIdToIndex(), pair.Scalar))
                     .ToDictionary(
-                        pair => pair.Index.BasisBladeIdToIndex(),
+                        pair => pair.KvIndex.BasisBladeIdToIndex(),
                         pair => pair.Scalar
                     );
 
@@ -971,9 +952,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             var indexScalarDictionary =             
                 GetLinVectorIdScalarStorage()
                     .GetIndexScalarRecords()
-                    .Where(pair => pair.Index.IsBasisBivectorId() && indexSelection(pair.Index.BasisBladeIdToIndex()))
+                    .Where(pair => pair.KvIndex.IsBasisBivectorId() && indexSelection(pair.KvIndex.BasisBladeIdToIndex()))
                     .ToDictionary(
-                        pair => pair.Index.BasisBladeIdToIndex(),
+                        pair => pair.KvIndex.BasisBladeIdToIndex(),
                         pair => pair.Scalar
                     );
 
@@ -985,10 +966,10 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             var indexScalarDictionary = GetLinVectorIdScalarStorage()
                 .GetIndexScalarRecords()
                 .Where(pair => 
-                    pair.Index.IsBasisBladeOfGrade(grade)
+                    pair.KvIndex.IsBasisBladeOfGrade(grade)
                 )
                 .ToDictionary(
-                    pair => pair.Index.BasisBladeIdToIndex(),
+                    pair => pair.KvIndex.BasisBladeIdToIndex(),
                     pair => pair.Scalar
                 );
 
@@ -1000,11 +981,11 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             var indexScalarDictionary = GetLinVectorIdScalarStorage()
                 .GetIndexScalarRecords()
                 .Where(pair => 
-                    pair.Index.IsBasisBladeOfGrade(grade) && 
+                    pair.KvIndex.IsBasisBladeOfGrade(grade) && 
                     scalarSelection(pair.Scalar)
                 )
                 .ToDictionary(
-                    pair => pair.Index.BasisBladeIdToIndex(),
+                    pair => pair.KvIndex.BasisBladeIdToIndex(),
                     pair => pair.Scalar
                 );
 
@@ -1016,11 +997,11 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             var indexScalarDictionary = GetLinVectorIdScalarStorage()
                 .GetIndexScalarRecords()
                 .Where(pair => 
-                    pair.Index.IsBasisBladeOfGrade(grade) && 
-                    indexScalarSelection(pair.Index.BasisBladeIdToIndex(), pair.Scalar)
+                    pair.KvIndex.IsBasisBladeOfGrade(grade) && 
+                    indexScalarSelection(pair.KvIndex.BasisBladeIdToIndex(), pair.Scalar)
                 )
                 .ToDictionary(
-                    pair => pair.Index.BasisBladeIdToIndex(),
+                    pair => pair.KvIndex.BasisBladeIdToIndex(),
                     pair => pair.Scalar
                 );
 
@@ -1032,11 +1013,11 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             var indexScalarDictionary = GetLinVectorIdScalarStorage()
                 .GetIndexScalarRecords()
                 .Where(pair => 
-                    pair.Index.IsBasisBladeOfGrade(grade) && 
-                    indexSelection(pair.Index.BasisBladeIdToIndex())
+                    pair.KvIndex.IsBasisBladeOfGrade(grade) && 
+                    indexSelection(pair.KvIndex.BasisBladeIdToIndex())
                 )
                 .ToDictionary(
-                    pair => pair.Index.BasisBladeIdToIndex(),
+                    pair => pair.KvIndex.BasisBladeIdToIndex(),
                     pair => pair.Scalar
                 );
 

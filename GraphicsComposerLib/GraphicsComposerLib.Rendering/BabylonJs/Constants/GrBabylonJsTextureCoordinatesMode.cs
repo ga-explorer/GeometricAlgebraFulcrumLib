@@ -1,15 +1,16 @@
-﻿namespace GraphicsComposerLib.Rendering.BabylonJs.Constants;
-
-public enum GrBabylonJsTextureCoordinatesMode
+﻿namespace GraphicsComposerLib.Rendering.BabylonJs.Constants
 {
-    Explicit = 0,
-    Spherical = 1,
-    Planar = 2,
-    Cubic = 3,
-    Projection = 4,
-    SkyBox = 5, 
-    InverseCubic = 6,
-    EquiRectangular = 7,
-    FixedEquiRectangular = 8,
-    FixedEquiRectangularMirrored = 9
+    public enum GrBabylonJsTextureCoordinatesMode
+    {
+        Explicit = 0,
+        Spherical = 1,
+        Planar = 2,
+        Cubic = 3,
+        Projection = 4,
+        SkyBox = 5, 
+        InverseCubic = 6,
+        EquiRectangular = 7,
+        FixedEquiRectangular = 8,
+        FixedEquiRectangularMirrored = 9
+    }
 }

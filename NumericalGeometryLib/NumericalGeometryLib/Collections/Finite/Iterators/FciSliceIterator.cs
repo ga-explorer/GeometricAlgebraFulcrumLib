@@ -22,8 +22,8 @@ namespace NumericalGeometryLib.Collections.Finite.Iterators
             _reverseDirection = lastIndex < firstIndex;
             _count = 
                 _reverseDirection 
-                ? (firstIndex - lastIndex + 1) 
-                : (lastIndex - firstIndex + 1);
+                ? firstIndex - lastIndex + 1 
+                : lastIndex - firstIndex + 1;
             _collection = collection;
         }
 
@@ -38,8 +38,8 @@ namespace NumericalGeometryLib.Collections.Finite.Iterators
 
             Current = _collection.GetItem(
                 _reverseDirection
-                ? (_firstIndex - _currentOffset) 
-                : (_firstIndex + _currentOffset)
+                ? _firstIndex - _currentOffset 
+                : _firstIndex + _currentOffset
             );
 
             return true;

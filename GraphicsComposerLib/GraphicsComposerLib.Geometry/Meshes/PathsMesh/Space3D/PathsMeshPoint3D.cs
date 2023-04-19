@@ -1,5 +1,5 @@
 ﻿using DataStructuresLib.Basic;
-using NumericalGeometryLib.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
 
 namespace GraphicsComposerLib.Geometry.Meshes.PathsMesh.Space3D
 {

@@ -1,7 +1,5 @@
 ﻿using GraphicsComposerLib.Rendering.Colors;
 using GraphicsComposerLib.Rendering.Xeogl.Transforms;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.PixelFormats;
 using TextComposerLib;
 using TextComposerLib.Code.JavaScript;
 

@@ -1,6 +1,6 @@
-﻿using GraphicsComposerLib.Rendering.ThreeJs.Obsolete.Scenes;
-using NumericalGeometryLib.BasicMath.Tuples;
-using NumericalGeometryLib.BasicMath.Tuples.Immutable;
+﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
+using GraphicsComposerLib.Rendering.ThreeJs.Obsolete.Scenes;
 using TextComposerLib.Code.JavaScript;
 
 namespace GraphicsComposerLib.Rendering.ThreeJs.Obsolete.Objects

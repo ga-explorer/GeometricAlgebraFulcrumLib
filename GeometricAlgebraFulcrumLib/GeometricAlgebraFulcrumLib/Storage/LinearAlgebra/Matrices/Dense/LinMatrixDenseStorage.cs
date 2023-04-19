@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.Extensions;
@@ -36,7 +35,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense
             ValuesArray = new T[count1, count2];
         }
 
-        internal LinMatrixDenseStorage([NotNull] T[,] itemsArray)
+        internal LinMatrixDenseStorage(T[,] itemsArray)
         {
             ValuesArray = itemsArray;
         }
@@ -61,11 +60,11 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override IEnumerable<IndexLinVectorStorageRecord<T>> GetDenseRows(IEnumerable<ulong> rowIndexList)
+        public override IEnumerable<RGaKvIndexLinVectorStorageRecord<T>> GetDenseRows(IEnumerable<ulong> rowIndexList)
         {
             return rowIndexList
                 .Where(index => index < (ulong) Count1)
-                .Select(index => new IndexLinVectorStorageRecord<T>(
+                .Select(index => new RGaKvIndexLinVectorStorageRecord<T>(
                     index,
                     GetRow(index)
                 )
@@ -73,11 +72,11 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override IEnumerable<IndexLinVectorStorageRecord<T>> GetDenseColumns(IEnumerable<ulong> columnIndexList)
+        public override IEnumerable<RGaKvIndexLinVectorStorageRecord<T>> GetDenseColumns(IEnumerable<ulong> columnIndexList)
         {
             return columnIndexList
                 .Where(index => index < (ulong) Count1)
-                .Select(index => new IndexLinVectorStorageRecord<T>(
+                .Select(index => new RGaKvIndexLinVectorStorageRecord<T>(
                         index,
                         GetColumn(index)
                     )

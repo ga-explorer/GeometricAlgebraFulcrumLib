@@ -1,11 +1,7 @@
 ﻿using System.Drawing.Text;
 using ImageMagick;
 using MathNet.Numerics.Statistics;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.PixelFormats;
-using SixLabors.ImageSharp.Processing;
 using IImageEncoder = SixLabors.ImageSharp.Formats.IImageEncoder;
-using PngDecoder = SixLabors.ImageSharp.Formats.Png.PngDecoder;
 using PngEncoder = SixLabors.ImageSharp.Formats.Png.PngEncoder;
 
 namespace GraphicsComposerLib.Rendering.Images
@@ -229,7 +225,7 @@ namespace GraphicsComposerLib.Rendering.Images
             image.Write(stream, MagickFormat.Png32);
             stream.Position = 0;
 
-            return Image.Load<Rgba32>(stream, new PngDecoder());
+            return Image.Load<Rgba32>(stream);
         }
         
         

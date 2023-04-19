@@ -1,5 +1,6 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Expressions;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Languages;
@@ -12,10 +13,10 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
     internal sealed class UnaryGpMethodsFileComposer 
         : GaFuLLibraryMetaContextFileComposerBase
     {
-        private uint _inGrade;
-        private uint _outGrade;
-        private GaKVector<IMetaExpressionAtomic> _inputKVector;
-        private GaKVector<IMetaExpressionAtomic> _outputKVector;
+        private int _inGrade;
+        private int _outGrade;
+        private XGaKVector<IMetaExpressionAtomic> _inputKVector;
+        private XGaKVector<IMetaExpressionAtomic> _outputKVector;
 
         internal GaFuLLanguageOperationSpecs OperationSpecs { get; }
 
@@ -30,7 +31,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
         protected override void DefineContextParameters(MetaContext context)
         {
             _inputKVector = context.ParameterVariablesFactory.CreateDenseKVector(
-                VSpaceDimension,
+                VSpaceDimensions,
                 _inGrade,
                 index => $"kVectorScalar{index}"
             );
@@ -59,12 +60,12 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
         protected override void DefineContextExternalNames(MetaContext context)
         {
             context.SetExternalNamesByTermIndex(
-                _inputKVector.KVectorStorage,
+                _inputKVector,
                 index => $"scalars[{index}]"
             );
 
             context.SetExternalNamesByTermIndex(
-                _outputKVector.KVectorStorage,
+                _outputKVector,
                 index => $"c[{index}]"
             );
             
@@ -76,7 +77,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
         }
         
 
-        private void GenerateMethod(string funcName, uint inputGrade, uint outputGrade)
+        private void GenerateMethod(string funcName, int inputGrade, int outputGrade)
         {
             _inGrade = inputGrade;
             _outGrade = outputGrade;
@@ -84,7 +85,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
             var computationsText = GenerateCode();
 
             var kvSpaceDim = 
-                this.KVectorSpaceDimension(_outGrade);
+                VSpaceDimensions.KVectorSpaceDimension(_outGrade);
 
             TextComposer.AppendAtNewLine(
                 Templates["self_bilinearproduct"],
@@ -95,12 +96,12 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
             );
         }
 
-        private void GenerateMethods(uint inputGrade)
+        private void GenerateMethods(int inputGrade)
         {
             var gpCaseText = new ListTextComposer("," + Environment.NewLine);
 
             var gradesList = 
-                GeometricProcessor.GradesOfEGp(inputGrade, inputGrade);
+                VSpaceDimensions.GradesOfEGp(inputGrade, inputGrade);
 
             foreach (var outputGrade in gradesList)
             {
@@ -136,7 +137,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
 
             var casesText = new ListTextComposer(Environment.NewLine);
 
-            foreach (var grade in GeometricProcessor.Grades)
+            foreach (var grade in Grades)
             {
                 casesText.Add(
                     casesTemplate,
@@ -158,7 +159,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
         {
             GenerateBladeFileStartCode();
 
-            foreach (var grade in GeometricProcessor.Grades)
+            foreach (var grade in Grades)
                 GenerateMethods(grade);
 
             GenerateMainMethod();

@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using NumericalGeometryLib.BasicShapes;
-using NumericalGeometryLib.BasicShapes.Lines;
-using NumericalGeometryLib.Borders.Space1D;
-using NumericalGeometryLib.Borders.Space1D.Mutable;
+using GeometricAlgebraFulcrumLib.MathBase.BasicShapes;
+using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Lines;
+using GeometricAlgebraFulcrumLib.MathBase.Borders.Space1D;
+using GeometricAlgebraFulcrumLib.MathBase.Borders.Space1D.Mutable;
 using NumericalGeometryLib.Computers;
 
 namespace NumericalGeometryLib.Accelerators.BIH.Space2D.Traversal

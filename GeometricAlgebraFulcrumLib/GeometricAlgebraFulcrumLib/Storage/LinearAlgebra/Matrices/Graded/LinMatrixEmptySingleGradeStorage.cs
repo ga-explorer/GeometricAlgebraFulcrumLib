@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records.Restricted;
 
 namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
 {
@@ -32,13 +32,13 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override T GetScalar(GradeIndexPairRecord gradeKey)
+        public override T GetScalar(RGaGradeKvIndexPairRecord gradeKey)
         {
             throw new KeyNotFoundException();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override T GetScalar(uint grade, IndexPairRecord key)
+        public override T GetScalar(uint grade, RGaKvIndexPairRecord key)
         {
             throw new KeyNotFoundException();
         }
@@ -50,13 +50,13 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override bool ContainsIndex(uint grade, IndexPairRecord key)
+        public override bool ContainsIndex(uint grade, RGaKvIndexPairRecord key)
         {
             return false;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override bool TryGetScalar(uint grade, IndexPairRecord key, out T value)
+        public override bool TryGetScalar(uint grade, RGaKvIndexPairRecord key, out T value)
         {
             value = default;
             return false;
@@ -70,15 +70,15 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override IEnumerable<GradeIndexPairRecord> GetGradeIndexRecords()
+        public override IEnumerable<RGaGradeKvIndexPairRecord> GetGradeIndexRecords()
         {
-            return Enumerable.Empty<GradeIndexPairRecord>();
+            return Enumerable.Empty<RGaGradeKvIndexPairRecord>();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override IEnumerable<GradeIndexPairScalarRecord<T>> GetGradeIndexScalarRecords()
+        public override IEnumerable<RGaGradeKvIndexPairScalarRecord<T>> GetGradeIndexScalarRecords()
         {
-            return Enumerable.Empty<GradeIndexPairScalarRecord<T>>();
+            return Enumerable.Empty<RGaGradeKvIndexPairScalarRecord<T>>();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -148,7 +148,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override ILinMatrixStorage<T> ToMatrixStorage(Func<uint, ulong, ulong, IndexPairRecord> gradeIndexToIndexMapping)
+        public override ILinMatrixStorage<T> ToMatrixStorage(Func<uint, ulong, ulong, RGaKvIndexPairRecord> gradeIndexToIndexMapping)
         {
             return LinMatrixEmptyStorage<T>.EmptyStorage;
         }

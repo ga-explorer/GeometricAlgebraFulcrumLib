@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.Basic;
+using GeometricAlgebraFulcrumLib.MathBase.Parametric.Curves.Sampled;
 
 namespace GraphicsComposerLib.Geometry.ParametricShapes.Volumes.Sampled
 {
@@ -8,7 +9,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Volumes.Sampled
     {
         public GrParametricVolumeTree3D ParentTree { get; }
 
-        public Triplet<GrParametricTreeCornerPosition3D> Position { get; }
+        public Triplet<ParametricTreeCornerPosition3D> Position { get; }
         
         public int Index { get; }
 
@@ -37,7 +38,7 @@ namespace GraphicsComposerLib.Geometry.ParametricShapes.Volumes.Sampled
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal GrParametricVolumeTreeCorner3D([NotNull] GrParametricVolumeTree3D parentTree, int index, [NotNull] GrParametricVolumeLocalFrame3D frame, [NotNull] Triplet<GrParametricTreeCornerPosition3D> position)
+        internal GrParametricVolumeTreeCorner3D([NotNull] GrParametricVolumeTree3D parentTree, int index, [NotNull] GrParametricVolumeLocalFrame3D frame, [NotNull] Triplet<ParametricTreeCornerPosition3D> position)
         {
             ParentTree = parentTree;
             Index = index;

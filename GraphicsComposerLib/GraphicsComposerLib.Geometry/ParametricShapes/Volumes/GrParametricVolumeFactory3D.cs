@@ -1,5 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
-using NumericalGeometryLib.Borders.Space3D.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Borders.Space3D.Immutable;
 using GraphicsComposerLib.Geometry.ParametricShapes.Volumes.Sampled;
 
 namespace GraphicsComposerLib.Geometry.ParametricShapes.Volumes

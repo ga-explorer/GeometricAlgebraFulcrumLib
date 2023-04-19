@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using System.Diagnostics.CodeAnalysis;
 using DataStructuresLib.Combinations;
-using GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.Basis
 {
@@ -46,7 +44,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.Basis
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static BernsteinBasisPairProductSet<T> Create(IScalarAlgebraProcessor<T> scalarProcessor, int degree)
+        public static BernsteinBasisPairProductSet<T> Create(IScalarProcessor<T> scalarProcessor, int degree)
         {
             var n2 = 2 * degree;
 
@@ -81,14 +79,14 @@ namespace GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.Basis
 
         public BernsteinBasisSet<T> BasisSet { get; }
 
-        public IScalarAlgebraProcessor<T> ScalarProcessor 
+        public IScalarProcessor<T> ScalarProcessor 
             => BasisSet.ScalarProcessor;
 
         public int Degree 
             => 2 * BasisSet.Degree;
 
         
-        private BernsteinBasisPairProductSet([NotNull] BernsteinBasisSet<T> bernsteinBasisSet)
+        private BernsteinBasisPairProductSet(BernsteinBasisSet<T> bernsteinBasisSet)
         {
             var scalarProcessor = bernsteinBasisSet.ScalarProcessor;
             var degree = bernsteinBasisSet.Degree;

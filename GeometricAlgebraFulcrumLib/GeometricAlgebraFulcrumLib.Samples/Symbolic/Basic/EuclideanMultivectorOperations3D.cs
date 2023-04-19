@@ -1,57 +1,57 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using DataStructuresLib.Basic;
 using DataStructuresLib.BitManipulation;
 using GAPoTNumLib.Text.Markdown.Tables;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Basis;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Mathematica;
+using GeometricAlgebraFulcrumLib.Mathematica.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Mathematica.Processors;
-using GeometricAlgebraFulcrumLib.Mathematica.Text;
-using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
 using TextComposerLib.Text;
 using TextComposerLib.Text.Markdown;
 using Wolfram.NETLink;
-using GeometricAlgebraFulcrumLib.Text;
-using GeometricAlgebraFulcrumLib.Processors;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.Basic
 {
     public static class EuclideanMultivectorOperations3D
     {
-        public static BasisBladeSet BasisSet { get; }
-            = BasisBladeSet.CreateEuclidean(3);
+        public static int VSpaceDimensions { get; }
+            = 3;
 
         // This is a pre-defined scalar processor for symbolic
         // Wolfram Mathematica scalars using Expr objects
-        public static ScalarAlgebraMathematicaProcessor ScalarProcessor { get; }
-            = ScalarAlgebraMathematicaProcessor.DefaultProcessor;
+        public static ScalarProcessorExpr ScalarProcessor { get; }
+            = ScalarProcessorExpr.DefaultProcessor;
             
         // Create a 3-dimensional Euclidean geometric algebra processor based on the
         // selected scalar processor
-        public static GeometricAlgebraEuclideanProcessor<Expr> GeometricProcessor { get; } 
-            = ScalarProcessor.CreateGeometricAlgebraEuclideanProcessor(3);
+        public static RGaProcessor<Expr> GeometricProcessor { get; } 
+            = ScalarProcessor.CreateEuclideanRGaProcessor();
 
         // This is a pre-defined text generator for displaying multivectors
         // with symbolic Wolfram Mathematica scalars using Expr objects
-        public static TextMathematicaComposer TextComposer { get; }
-            = TextMathematicaComposer.DefaultComposer;
+        public static TextComposerExpr TextComposer { get; }
+            = TextComposerExpr.DefaultComposer;
 
         // This is a pre-defined LaTeX generator for displaying multivectors
         // with symbolic Wolfram Mathematica scalars using Expr objects
-        public static LaTeXMathematicaComposer LaTeXComposer { get; }
-            = LaTeXMathematicaComposer.DefaultComposer;
+        public static LaTeXComposerExpr LaTeXComposer { get; }
+            = LaTeXComposerExpr.DefaultComposer;
 
         public static MarkdownComposer Composer { get; }
             = new MarkdownComposer();
 
 
-        private static GaMultivector<Expr> CreateScalar(string name)
+        private static RGaMultivector<Expr> CreateScalar(string name)
         {
-            return GeometricProcessor.CreateKVectorScalar(name).AsMultivector();
+            return GeometricProcessor.CreateScalar(name);
         }
 
-        private static GaMultivector<Expr> CreateVector(string name)
+        private static RGaMultivector<Expr> CreateVector(string name)
         {
             name = name.ToLower();
 
@@ -59,45 +59,45 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.Basic
                 $"Subscript[{name},1]".ToExpr(), 
                 $"Subscript[{name},2]".ToExpr(), 
                 $"Subscript[{name},3]".ToExpr()
-            ).AsMultivector();
+            );
         }
         
-        private static GaMultivector<Expr> CreateBivector(string name)
+        private static RGaMultivector<Expr> CreateBivector(string name)
         {
             name = name.ToLower();
 
-            return GeometricProcessor.CreateBivector(
+            return GeometricProcessor.CreateBivector3D(
                 $"Subscript[{name},12]", 
                 $"Subscript[{name},13]", 
                 $"Subscript[{name},23]"
-            ).AsMultivector();
+            );
         }
 
-        private static GaMultivector<Expr> CreateTrivector(string name)
+        private static RGaMultivector<Expr> CreateTrivector(string name)
         {
             name = name.ToLower();
 
             return GeometricProcessor.CreateKVector(
                 3, 
-                new[]{$"Subscript[{name},123]".ToExpr()}
-            ).AsMultivector();
+                $"Subscript[{name},123]".ToExpr()
+            );
         }
 
-        private static GaMultivector<Expr> CreateEvenMultivector(string name)
+        private static RGaMultivector<Expr> CreateEvenMultivector(string name)
         {
             name = name.ToLower();
 
             return CreateScalar($"Subscript[{name},0]") + CreateBivector(name);
         }
         
-        private static GaMultivector<Expr> CreateOddMultivector(string name)
+        private static RGaMultivector<Expr> CreateOddMultivector(string name)
         {
             name = name.ToLower();
 
             return CreateVector(name) + CreateTrivector(name);
         }
         
-        private static GaMultivector<Expr> CreateMultivector(string name)
+        private static RGaMultivector<Expr> CreateMultivector(string name)
         {
             name = name.ToLower();
 
@@ -107,21 +107,21 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.Basic
                    CreateTrivector(name);
         }
 
-        private static IReadOnlyList<BasisBlade> GetBasisBlades()
+        private static IReadOnlyList<RGaBasisBlade> GetBasisBlades()
         {
-            var basisBladesArray = new BasisBlade[8];
+            var basisBladesArray = new RGaBasisBlade[8];
 
-            basisBladesArray[0] = BasisBladeFactory.BasisScalar;
+            basisBladesArray[0] = GeometricProcessor.BasisScalar;
 
-            basisBladesArray[1] = 0.CreateBasisVector();
-            basisBladesArray[2] = 1.CreateBasisVector();
-            basisBladesArray[3] = 2.CreateBasisVector();
+            basisBladesArray[1] = GeometricProcessor.CreateBasisVector(0);
+            basisBladesArray[2] = GeometricProcessor.CreateBasisVector(1);
+            basisBladesArray[3] = GeometricProcessor.CreateBasisVector(2);
 
-            basisBladesArray[4] = 0.CreateBasisBivector();
-            basisBladesArray[5] = 1.CreateBasisBivector();
-            basisBladesArray[6] = 2.CreateBasisBivector();
+            basisBladesArray[4] = GeometricProcessor.CreateBasisBivector(0, 1);
+            basisBladesArray[5] = GeometricProcessor.CreateBasisBivector(0, 2);
+            basisBladesArray[6] = GeometricProcessor.CreateBasisBivector(1, 2);
 
-            basisBladesArray[7] = BasisBladeFactory.CreateBasisBlade(7);
+            basisBladesArray[7] = GeometricProcessor.CreateBasisBlade(3, 0);
 
             return basisBladesArray;
         }
@@ -159,7 +159,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.Basic
             return mdTable;
         }
 
-        private static MarkdownTable CreateProductTable(Func<ulong, ulong, int> productSignatureFunc)
+        private static MarkdownTable CreateProductTable(Func<ulong, ulong, IntegerSign> productSignatureFunc)
         {
             var basisBladesList = GetBasisBlades();
             var mdTable = CreateEmptyProductTable();
@@ -178,14 +178,14 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.Basic
 
                     if (id == 0)
                     {
-                        mdTableColumn.Add(signature == 0 ? "" : $"${signature}$");
+                        mdTableColumn.Add(signature.IsZero ? "" : $"${signature}$");
                     }
                     else if (id == 7)
                     {
-                        var text = signature switch
+                        var text = signature.Value switch
                         {
                             0 => "",
-                            1 => @"$\boldsymbol{I}$",
+                            > 0 => @"$\boldsymbol{I}$",
                             _ => @"$-\boldsymbol{I}$"
                         };
 
@@ -199,10 +199,10 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.Basic
                                 .Select(n => (n + 1).ToString())
                                 .Concatenate();
 
-                        var text = signature switch
+                        var text = signature.Value switch
                         {
                             0 => "",
-                            1 => $@"$\boldsymbol{{e}}_{{{idText}}}$",
+                            > 0 => $@"$\boldsymbol{{e}}_{{{idText}}}$",
                             _ => $@"$-\boldsymbol{{e}}_{{{idText}}}$"
                         };
 
@@ -218,10 +218,10 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.Basic
         public static void Execute()
         {
             var invI = 
-                GeometricProcessor.PseudoScalarInverse;
+                GeometricProcessor.CreatePseudoScalarInverse(VSpaceDimensions);
 
-            var mvList1 = new Dictionary<string, GaMultivector<Expr>>();
-            var mvList2 = new Dictionary<string, GaMultivector<Expr>>();
+            var mvList1 = new Dictionary<string, RGaMultivector<Expr>>();
+            var mvList2 = new Dictionary<string, RGaMultivector<Expr>>();
 
             mvList1.Add("a", CreateScalar("a"));
             mvList2.Add("b", CreateScalar("b"));
@@ -248,19 +248,19 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.Basic
             Composer.AppendHeader("Product Tables", 2);
 
             Composer.AppendHeader("Geometric Product Table:", 3);
-            Composer.AppendLineAtNewLine(CreateProductTable(BasisSet.GpSign).ToString());
+            Composer.AppendLineAtNewLine(CreateProductTable(GeometricProcessor.GpSign).ToString());
             Composer.AppendLineAtNewLine();
 
             Composer.AppendHeader("Outer Product Table:", 3);
-            Composer.AppendLineAtNewLine(CreateProductTable(BasisSet.OpSign).ToString());
+            Composer.AppendLineAtNewLine(CreateProductTable(GeometricProcessor.OpSign).ToString());
             Composer.AppendLineAtNewLine();
 
             Composer.AppendHeader("Left Contraction Product Table:", 3);
-            Composer.AppendLineAtNewLine(CreateProductTable(BasisSet.LcpSign).ToString());
+            Composer.AppendLineAtNewLine(CreateProductTable(GeometricProcessor.LcpSign).ToString());
             Composer.AppendLineAtNewLine();
 
             Composer.AppendHeader("Right Contraction Product Table:", 3);
-            Composer.AppendLineAtNewLine(CreateProductTable(BasisSet.RcpSign).ToString());
+            Composer.AppendLineAtNewLine(CreateProductTable(GeometricProcessor.RcpSign).ToString());
             Composer.AppendLineAtNewLine();
 
             Composer.AppendHeader("Multivector Definitions", 2);
@@ -286,7 +286,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.Basic
                 Composer.AppendAtNewLine($"${name}^{{-1}} = {LaTeXComposer.GetMultivectorText(mv.Inverse())}$");
                 Composer.AppendLineAtNewLine();
 
-                Composer.AppendAtNewLine($"${name}^{{2}} = {LaTeXComposer.GetMultivectorText(mv.GpSquared())}$");
+                Composer.AppendAtNewLine($"${name}^{{2}} = {LaTeXComposer.GetMultivectorText(mv.Gp(mv))}$");
                 Composer.AppendLineAtNewLine();
 
                 Composer.AppendAtNewLine($@"${name} \rfloor I^{{-1}} = {LaTeXComposer.GetMultivectorText(mv.Gp(invI))}$");
@@ -295,7 +295,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.Basic
                 //Composer.AppendAtNewLine($"${name} {name} = {LaTeXComposer.GetMultivectorText(mv.Gp(mv))}$");
                 //Composer.AppendLineAtNewLine();
                 
-                Composer.AppendAtNewLine($"${name} {name}^{{\\sim}} = {LaTeXComposer.GetMultivectorText(mv.GpReverse())}$");
+                Composer.AppendAtNewLine($"${name} {name}^{{\\sim}} = {LaTeXComposer.GetMultivectorText(mv.Gp(mv.Reverse()))}$");
                 Composer.AppendLineAtNewLine();
                 
                 //Composer.AppendAtNewLine($"${name} {name}^{{\\sim}} = {LaTeXComposer.GetMultivectorText(mv.Gp(mv.Reverse()))}$");

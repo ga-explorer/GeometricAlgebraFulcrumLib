@@ -1,5 +1,4 @@
 ﻿using DataStructuresLib.Basic;
-using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats;
 
 namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Images

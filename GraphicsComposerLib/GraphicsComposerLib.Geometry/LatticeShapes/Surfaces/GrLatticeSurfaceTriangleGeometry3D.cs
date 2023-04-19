@@ -5,9 +5,10 @@ using System.Diagnostics.CodeAnalysis;
 
 using System.Linq;
 using DataStructuresLib.Basic;
-using NumericalGeometryLib.BasicMath.Tuples;
-using NumericalGeometryLib.BasicShapes.Triangles;
-using NumericalGeometryLib.BasicShapes.Triangles.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Frames.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Triangles;
+using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Triangles.Immutable;
 using GraphicsComposerLib.Geometry.Primitives;
 using GraphicsComposerLib.Geometry.Primitives.Triangles;
 using GraphicsComposerLib.Geometry.Primitives.Vertices;
@@ -90,7 +91,7 @@ namespace GraphicsComposerLib.Geometry.LatticeShapes.Surfaces
             return LatticeSurfaceList[index];
         }
 
-        public GrNormal3D GetVertexNormal(int index)
+        public Normal3D GetVertexNormal(int index)
         {
             return LatticeSurfaceList[index].Normal;
         }

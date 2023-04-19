@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using DataStructuresLib.Basic;
-using NumericalGeometryLib.BasicMath;
-using NumericalGeometryLib.BasicMath.Tuples;
-using NumericalGeometryLib.BasicMath.Tuples.Immutable;
-using NumericalGeometryLib.BasicShapes.Lines;
-using NumericalGeometryLib.BasicShapes.Lines.Immutable;
-using NumericalGeometryLib.BasicShapes.Triangles;
-using NumericalGeometryLib.BasicShapes.Triangles.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Lines;
+using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Lines.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Triangles;
+using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Triangles.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Parametric.Curves.Sampled;
 using GraphicsComposerLib.Geometry.Primitives.Lines;
 using GraphicsComposerLib.Geometry.Primitives.Points;
 using GraphicsComposerLib.Geometry.Primitives.Triangles;
@@ -354,6 +355,12 @@ namespace GraphicsComposerLib.Geometry.Primitives
             }
         }
         
-        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static GrLineStripGeometry3D GenerateGeometry(this SampledParametricCurve3D curve)
+        {
+            return GrLineStripGeometry3D.Create(curve);
+        }
+
+
     }
 }

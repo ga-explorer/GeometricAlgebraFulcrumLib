@@ -2,12 +2,12 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using DataStructuresLib;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Evaluators;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Expressions;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Expressions.Composite;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Expressions.Numbers;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using Microsoft.CSharp.RuntimeBinder;
 using Wolfram.NETLink;
 

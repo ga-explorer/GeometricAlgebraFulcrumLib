@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using DataStructuresLib.IndexSets;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Expressions.Numbers;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
@@ -39,16 +42,18 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Expressions
         }
 
 
-        public VectorStorage<IMetaExpressionAtomic> CreateBasisVector(ulong index)
+        public XGaVector<IMetaExpressionAtomic> CreateBasisVector(int index)
         {
-            return Context.CreateVectorStorageTerm(index,
+            return Context.XGaProcessor.CreateVector(
+                index,
                 Context.GetOrDefineLiteralNumber(1)
             );
         }
 
-        public KVectorStorage<IMetaExpressionAtomic> CreateBasisBlade(ulong id)
+        public XGaKVector<IMetaExpressionAtomic> CreateBasisBlade(ulong id)
         {
-            return Context.CreateKVectorStorageTerm(id,
+            return Context.XGaProcessor.CreateKVector(
+                id.BitPatternToUInt64IndexSet(),
                 Context.GetOrDefineLiteralNumber(1)
             );
         }

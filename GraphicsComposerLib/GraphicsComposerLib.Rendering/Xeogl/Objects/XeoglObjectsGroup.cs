@@ -1,8 +1,8 @@
 ﻿using System.Collections;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Matrices;
 using GraphicsComposerLib.Rendering.Xeogl.Geometry;
 using GraphicsComposerLib.Rendering.Xeogl.Materials;
 using GraphicsComposerLib.Rendering.Xeogl.Transforms;
-using NumericalGeometryLib.BasicMath.Matrices;
 using TextComposerLib.Code.JavaScript;
 using TextComposerLib.Code.JavaScript.Obsolete;
 

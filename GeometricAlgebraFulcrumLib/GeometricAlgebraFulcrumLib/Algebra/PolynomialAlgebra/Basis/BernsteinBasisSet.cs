@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.Basis
 {
@@ -20,7 +18,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.Basis
             = new Dictionary<int, BernsteinBasisSet<T>>();
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static BernsteinBasisSet<T> Create(IScalarAlgebraProcessor<T> scalarProcessor, int degree)
+        public static BernsteinBasisSet<T> Create(IScalarProcessor<T> scalarProcessor, int degree)
         {
             if (BasisSetCache.TryGetValue(degree, out var basisSet))
             {
@@ -42,13 +40,13 @@ namespace GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.Basis
         }
 
 
-        public IScalarAlgebraProcessor<T> ScalarProcessor { get; }
+        public IScalarProcessor<T> ScalarProcessor { get; }
 
         public int Degree { get; }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private BernsteinBasisSet([NotNull] IScalarAlgebraProcessor<T> scalarProcessor, int degree)
+        private BernsteinBasisSet(IScalarProcessor<T> scalarProcessor, int degree)
         {
             if (degree is < 0 or > 64)
                 throw new ArgumentOutOfRangeException(nameof(degree));

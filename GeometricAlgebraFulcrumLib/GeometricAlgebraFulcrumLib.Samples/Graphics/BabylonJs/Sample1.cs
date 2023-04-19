@@ -1,7 +1,10 @@
 ﻿using System;
 using System.IO;
-using GraphicsComposerLib.Geometry.ParametricShapes.Curves;
-using GraphicsComposerLib.Geometry.ParametricShapes.Curves.Sampled;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Parametric.Curves;
+using GeometricAlgebraFulcrumLib.MathBase.Parametric.Curves.CatmullRom;
+using GeometricAlgebraFulcrumLib.MathBase.Parametric.Curves.Sampled;
 using GraphicsComposerLib.Rendering.BabylonJs;
 using GraphicsComposerLib.Rendering.BabylonJs.Materials;
 using GraphicsComposerLib.Rendering.BabylonJs.Textures;
@@ -9,9 +12,6 @@ using GraphicsComposerLib.Rendering.Visuals.Space3D.Basic;
 using GraphicsComposerLib.Rendering.Visuals.Space3D.Curves;
 using GraphicsComposerLib.Rendering.Visuals.Space3D.Groups;
 using GraphicsComposerLib.Rendering.Visuals.Space3D.Surfaces;
-using NumericalGeometryLib.BasicMath;
-using NumericalGeometryLib.BasicMath.Calculus;
-using NumericalGeometryLib.BasicMath.Tuples.Immutable;
 using SixLabors.ImageSharp;
 using TextComposerLib;
 
@@ -321,7 +321,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.BabylonJs
                     CatmullRomSplineType.Centripetal, 
                     true
                 ).CreateSampledCurve3D(
-                    new GrParametricCurveTreeOptions3D(
+                    new SampledParametricCurveTreeOptions3D(
                         5d.DegreesToAngle(), 
                         0, 
                         10

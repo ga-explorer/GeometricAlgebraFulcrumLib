@@ -1,5 +1,5 @@
-﻿using NumericalGeometryLib.BasicMath.Tuples.Immutable;
-using NumericalGeometryLib.BasicMath.Tuples.Mutable;
+﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Mutable;
 using GraphicsComposerLib.Geometry.Meshes.PathsMesh.Space3D;
 using GraphicsComposerLib.Geometry.Meshes.PointsPath.Space3D;
 

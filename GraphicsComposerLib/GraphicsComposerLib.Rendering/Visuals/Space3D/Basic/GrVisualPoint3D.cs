@@ -1,5 +1,5 @@
-﻿using GraphicsComposerLib.Rendering.Visuals.Space3D.Surfaces;
-using NumericalGeometryLib.BasicMath.Tuples;
+﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GraphicsComposerLib.Rendering.Visuals.Space3D.Surfaces;
 
 namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Basic
 {

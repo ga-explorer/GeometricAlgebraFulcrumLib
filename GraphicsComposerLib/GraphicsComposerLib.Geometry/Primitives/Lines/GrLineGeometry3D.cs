@@ -3,10 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DataStructuresLib.Basic;
-using NumericalGeometryLib.BasicMath.Tuples;
-using NumericalGeometryLib.BasicMath.Tuples.Collections;
-using NumericalGeometryLib.BasicShapes.Lines;
-using NumericalGeometryLib.BasicShapes.Lines.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Collections;
+using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Lines;
+using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Lines.Immutable;
 using GraphicsComposerLib.Geometry.Primitives.Vertices;
 
 namespace GraphicsComposerLib.Geometry.Primitives.Lines

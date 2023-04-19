@@ -3,7 +3,6 @@ using System.Text;
 using DataStructuresLib.Files;
 using GraphicsComposerLib.Rendering.LaTeX.CodeComposer.Templates;
 using GraphicsComposerLib.Rendering.Pdf;
-using SixLabors.ImageSharp;
 using TextComposerLib;
 using TextComposerLib.Text;
 

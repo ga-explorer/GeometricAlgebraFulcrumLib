@@ -4,11 +4,12 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using DataStructuresLib.Basic;
 using DataStructuresLib.BitManipulation;
 using DataStructuresLib.Combinations;
 using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records.Restricted;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
 {
@@ -31,166 +32,235 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
                 .Select(i => "e" + i)
                 .ToArray();
 
-
+        
         /// <summary>
-        /// The number of basis blades in a GA with dimension vSpaceDimension
+        /// The number of basis blades in a GA with dimension vSpaceDimensions
         /// </summary>
-        /// <param name="vSpaceDimension"></param>
+        /// <param name="vSpaceDimensions"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ulong ToGaSpaceDimension(this uint vSpaceDimension)
+        public static ulong ToGaSpaceDimension(this int vSpaceDimensions)
         {
-            return 1ul << (int) vSpaceDimension;
+            if (vSpaceDimensions is < 0 or > 63)
+                throw new ArgumentOutOfRangeException(nameof(vSpaceDimensions));
+
+            return 1ul << vSpaceDimensions;
         }
 
         /// <summary>
-        /// The number of basis vectors in a GA with dimension gaSpaceDimension
+        /// The number of basis blades in a GA with dimension vSpaceDimensions
         /// </summary>
-        /// <param name="gaSpaceDimension"></param>
+        /// <param name="vSpaceDimensions"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static int ToVSpaceDimension(this int gaSpaceDimension)
+        public static ulong ToGaSpaceDimension(this uint vSpaceDimensions)
         {
-            return gaSpaceDimension.LastOneBitPosition();
+            if (vSpaceDimensions > 63)
+                throw new ArgumentOutOfRangeException(nameof(vSpaceDimensions));
+
+            return 1ul << (int) vSpaceDimensions;
         }
 
         /// <summary>
-        /// The number of basis vectors in a GA with dimension gaSpaceDimension
+        /// The number of basis vectors in a GA with dimension gaSpaceDimensions
         /// </summary>
-        /// <param name="gaSpaceDimension"></param>
+        /// <param name="gaSpaceDimensions"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static int ToVSpaceDimension(this ulong gaSpaceDimension)
+        public static int ToVSpaceDimension(this int gaSpaceDimensions)
         {
-            return gaSpaceDimension.LastOneBitPosition();
+            return gaSpaceDimensions.LastOneBitPosition();
+        }
+
+        /// <summary>
+        /// The number of basis vectors in a GA with dimension gaSpaceDimensions
+        /// </summary>
+        /// <param name="gaSpaceDimensions"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int ToVSpaceDimension(this ulong gaSpaceDimensions)
+        {
+            return gaSpaceDimensions.LastOneBitPosition();
         }
 
         /// <summary>
         /// The number of grades in a GA space with a given dimension
         /// </summary>
-        /// <param name="vSpaceDimension"></param>
+        /// <param name="vSpaceDimensions"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static uint GradesCount(this uint vSpaceDimension)
+        public static uint GradesCount(this uint vSpaceDimensions)
         {
-            return vSpaceDimension + 1;
+            return vSpaceDimensions + 1;
         }
 
         /// <summary>
         /// The dimension of bivectors subspace of a GA with a given dimension
         /// </summary>
-        /// <param name="vSpaceDimension"></param>
+        /// <param name="vSpaceDimensions"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ulong BivectorSpaceDimension(this uint vSpaceDimension)
+        public static ulong BivectorSpaceDimension(this uint vSpaceDimensions)
         {
-            return (vSpaceDimension * (vSpaceDimension - 1)) >> 1;
+            return (vSpaceDimensions * (vSpaceDimensions - 1)) >> 1;
+        }
+        
+        /// <summary>
+        /// The dimension of k-vectors subspace of some grade of a GA with a given dimension
+        /// </summary>
+        /// <param name="vSpaceDimensions"></param>
+        /// <param name="grade"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ulong KVectorSpaceDimension(this int vSpaceDimensions, int grade)
+        {
+            return grade switch
+            {
+                < 0 => throw new InvalidOperationException(),
+                0 => 0UL,
+                1 => (ulong) vSpaceDimensions,
+                2 => ((ulong)vSpaceDimensions * (ulong)(vSpaceDimensions - 1)) >> 1,
+                _ => vSpaceDimensions.GetBinomialCoefficient(grade)
+            };
+        }
+        
+        /// <summary>
+        /// The dimension of k-vectors subspace of some grade of a GA with a given dimension
+        /// </summary>
+        /// <param name="vSpaceDimensions"></param>
+        /// <param name="grade"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ulong KVectorSpaceDimension(this uint vSpaceDimensions, int grade)
+        {
+            return grade switch
+            {
+                0 => 0UL,
+                1 => vSpaceDimensions,
+                2 => (vSpaceDimensions * (ulong)(vSpaceDimensions - 1)) >> 1,
+                _ => vSpaceDimensions.GetBinomialCoefficient((uint) grade)
+            };
         }
 
         /// <summary>
         /// The dimension of k-vectors subspace of some grade of a GA with a given dimension
         /// </summary>
-        /// <param name="vSpaceDimension"></param>
+        /// <param name="vSpaceDimensions"></param>
         /// <param name="grade"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ulong KVectorSpaceDimension(this uint vSpaceDimension, uint grade)
+        public static ulong KVectorSpaceDimension(this uint vSpaceDimensions, uint grade)
         {
             return grade switch
             {
                 0U => 0UL,
-                1U => vSpaceDimension,
-                2U => (vSpaceDimension * (vSpaceDimension - 1)) >> 1,
-                _ => vSpaceDimension.GetBinomialCoefficient(grade)
+                1U => vSpaceDimensions,
+                2U => (vSpaceDimensions * (vSpaceDimensions - 1)) >> 1,
+                _ => vSpaceDimensions.GetBinomialCoefficient(grade)
             };
         }
 
         /// <summary>
         /// The basis vector IDs of a GA with the given dimension
         /// </summary>
-        /// <param name="vSpaceDimension"></param>
+        /// <param name="vSpaceDimensions"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<ulong> BasisVectorIDs(this uint vSpaceDimension)
+        public static IEnumerable<ulong> BasisVectorIDs(this uint vSpaceDimensions)
         {
-            return vSpaceDimension.GetRange().Select(i => (1ul << (int) i));
+            return vSpaceDimensions.GetRange().Select(i => (1ul << (int) i));
         }
 
         /// <summary>
         /// The grades of k-vectors in a GA with the given dimension
         /// </summary>
-        /// <param name="vSpaceDimension"></param>
+        /// <param name="vSpaceDimensions"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<uint> Grades(this uint vSpaceDimension)
+        public static IEnumerable<uint> Grades(this uint vSpaceDimensions)
         {
-            return (vSpaceDimension + 1).GetRange();
+            return (vSpaceDimensions + 1).GetRange();
         }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ulong PseudoScalarId(this uint vSpaceDimension)
+        public static ulong PseudoScalarId(this uint vSpaceDimensions)
         {
-            return ((1UL << (int) vSpaceDimension) - 1);
+            return ((1UL << (int) vSpaceDimensions) - 1);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ulong PseudoScalarIndex(this uint vSpaceDimension)
+        public static ulong PseudoScalarIndex(this uint vSpaceDimensions)
         {
-            return ((1UL << (int) vSpaceDimension) - 1).BasisBladeIdToIndex();
+            return ((1UL << (int) vSpaceDimensions) - 1).BasisBladeIdToIndex();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsValidVSpaceDimension(this int vSpaceDimension)
+        public static bool IsValidVSpaceDimension(this int vSpaceDimensions)
         {
-            return vSpaceDimension >= 2 && vSpaceDimension < MaxVSpaceDimension;
+            return vSpaceDimensions >= 2 && vSpaceDimensions < MaxVSpaceDimension;
         }
 
         /// <summary>
         /// Test if the given integer is a legal GA space dimension (i.e. positive power of 2 less than or 
         /// equal to 2 ^ MaxVSpaceDim)
         /// </summary>
-        /// <param name="gaSpaceDimension"></param>
+        /// <param name="gaSpaceDimensions"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsValidGaSpaceDimension(this ulong gaSpaceDimension)
+        public static bool IsValidGaSpaceDimension(this ulong gaSpaceDimensions)
         {
             return
-                gaSpaceDimension == (MaxVSpaceBasisBladeId & gaSpaceDimension) &&
-                gaSpaceDimension.CountOnes() == 1;
+                gaSpaceDimensions == (MaxVSpaceBasisBladeId & gaSpaceDimensions) &&
+                gaSpaceDimensions.Grade() == 1;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsValidGaSpaceDimension(this int gaSpaceDimension)
+        public static bool IsValidGaSpaceDimension(this int gaSpaceDimensions)
         {
-            return IsValidGaSpaceDimension((ulong) gaSpaceDimension);
+            return IsValidGaSpaceDimension((ulong) gaSpaceDimensions);
         }
 
 
         /// <summary>
         /// The Basis blade IDs of a GA space with the given dimension
         /// </summary>
-        /// <param name="vSpaceDimension"></param>
+        /// <param name="vSpaceDimensions"></param>
         /// <returns></returns>
-        public static IEnumerable<ulong> BasisBladeIDs(this uint vSpaceDimension)
+        public static IEnumerable<ulong> BasisBladeIDs(this uint vSpaceDimensions)
         {
-            var maxBasisBladeId = vSpaceDimension.GetMaxBasisBladeId();
+            var maxBasisBladeId = vSpaceDimensions.GetMaxBasisBladeId();
 
             for (var id = 0ul; id <= maxBasisBladeId; id++)
                 yield return id;
         }
 
         /// <summary>
-        /// Find all basis blade IDs with the given grade in a GA of dimension vSpaceDimension
+        /// Find all basis blade IDs with the given grade in a GA of dimension vSpaceDimensions
         /// </summary>
-        /// <param name="vSpaceDimension"></param>
+        /// <param name="vSpaceDimensions"></param>
         /// <param name="grade"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<ulong> BasisBladeIDsOfGrade(this uint vSpaceDimension, uint grade)
+        public static IEnumerable<ulong> BasisBladeIDsOfGrade(this int vSpaceDimensions, int grade)
         {
             return UInt64BitUtils.OnesPermutations(
-                (int) vSpaceDimension, 
+                vSpaceDimensions, 
+                grade
+            );
+        }
+
+        /// <summary>
+        /// Find all basis blade IDs with the given grade in a GA of dimension vSpaceDimensions
+        /// </summary>
+        /// <param name="vSpaceDimensions"></param>
+        /// <param name="grade"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<ulong> BasisBladeIDsOfGrade(this uint vSpaceDimensions, uint grade)
+        {
+            return UInt64BitUtils.OnesPermutations(
+                (int) vSpaceDimensions, 
                 (int) grade
             );
         }
@@ -198,58 +268,71 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         /// <summary>
         /// The basis blade IDs of a GA space with the given dimension sorted by their grade and index
         /// </summary>
-        /// <param name="vSpaceDimension"></param>
+        /// <param name="vSpaceDimensions"></param>
         /// <param name="startGrade"></param>
         /// <returns></returns>
-        public static IEnumerable<ulong> BasisBladeIDsSortedByGrade(this uint vSpaceDimension, uint startGrade = 0)
+        public static IEnumerable<ulong> BasisBladeIDsSortedByGrade(this int vSpaceDimensions, int startGrade = 0)
         {
-            for (var grade = startGrade; grade <= vSpaceDimension; grade++)
-                foreach (var id in BasisBladeIDsOfGrade(vSpaceDimension, grade))
+            for (var grade = startGrade; grade <= vSpaceDimensions; grade++)
+                foreach (var id in BasisBladeIDsOfGrade(vSpaceDimensions, grade))
+                    yield return id;
+        }
+
+        /// <summary>
+        /// The basis blade IDs of a GA space with the given dimension sorted by their grade and index
+        /// </summary>
+        /// <param name="vSpaceDimensions"></param>
+        /// <param name="startGrade"></param>
+        /// <returns></returns>
+        public static IEnumerable<ulong> BasisBladeIDsSortedByGrade(this uint vSpaceDimensions, uint startGrade = 0)
+        {
+            for (var grade = startGrade; grade <= vSpaceDimensions; grade++)
+                foreach (var id in BasisBladeIDsOfGrade(vSpaceDimensions, grade))
                     yield return id;
         }
 
         /// <summary>
         /// Returns the basis blade IDs of having the given grades
         /// </summary>
-        /// <param name="vSpaceDimension"></param>
+        /// <param name="vSpaceDimensions"></param>
         /// <param name="gradesSeq"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<ulong> BasisBladeIDsOfGrades(this uint vSpaceDimension, IEnumerable<uint> gradesSeq)
+        public static IEnumerable<ulong> BasisBladeIDsOfGrades(this uint vSpaceDimensions, IEnumerable<uint> gradesSeq)
         {
             return gradesSeq
                 .OrderBy(g => g)
-                .SelectMany(grade => BasisBladeIDsOfGrade(vSpaceDimension, grade));
+                .SelectMany(grade => BasisBladeIDsOfGrade(vSpaceDimensions, grade));
         }
 
         /// <summary>
         /// Returns the basis blade IDs of having the given grades
         /// </summary>
-        /// <param name="vSpaceDimension"></param>
+        /// <param name="vSpaceDimensions"></param>
         /// <param name="gradesSeq"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<ulong> BasisBladeIDsOfGrades(this uint vSpaceDimension, params uint[] gradesSeq)
+        public static IEnumerable<ulong> BasisBladeIDsOfGrades(this uint vSpaceDimensions, params uint[] gradesSeq)
         {
             return gradesSeq
                 .OrderBy(g => g)
-                .SelectMany(grade => BasisBladeIDsOfGrade(vSpaceDimension, grade));
+                .SelectMany(grade => BasisBladeIDsOfGrade(vSpaceDimensions, grade));
         }
 
         /// <summary>
         /// Returns the basis blade IDs of having the given grades grouped by their grade
         /// </summary>
-        /// <param name="vSpaceDimension"></param>
+        /// <param name="vSpaceDimensions"></param>
         /// <param name="startGrade"></param>
         /// <returns></returns>
-        public static Dictionary<uint, IReadOnlyList<ulong>> BasisBladeIDsGroupedByGrade(this uint vSpaceDimension, uint startGrade = 0)
+        public static Dictionary<uint, IReadOnlyList<ulong>> BasisBladeIDsGroupedByGrade(this uint vSpaceDimensions, uint startGrade = 0)
         {
             var result = new Dictionary<uint, IReadOnlyList<ulong>>();
 
-            for (var grade = startGrade; grade <= vSpaceDimension; grade++)
+            for (var grade = startGrade; grade <= vSpaceDimensions; grade++)
             {
                 result.Add(
-                    grade, BasisBladeIDsOfGrade(vSpaceDimension, grade).ToArray()
+                    grade, BasisBladeIDsOfGrade(vSpaceDimensions, grade).ToArray()
                 );
             }
 
@@ -259,17 +342,17 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         /// <summary>
         /// Returns the basis blade IDs of having the given grades grouped by their grade
         /// </summary>
-        /// <param name="vSpaceDimension"></param>
+        /// <param name="vSpaceDimensions"></param>
         /// <param name="gradesSeq"></param>
         /// <returns></returns>
-        public static Dictionary<uint, IReadOnlyList<ulong>> BasisBladeIDsGroupedByGrade(this uint vSpaceDimension, IEnumerable<uint> gradesSeq)
+        public static Dictionary<uint, IReadOnlyList<ulong>> BasisBladeIDsGroupedByGrade(this uint vSpaceDimensions, IEnumerable<uint> gradesSeq)
         {
             var result = new Dictionary<uint, IReadOnlyList<ulong>>();
 
             foreach (var grade in gradesSeq)
             {
                 result.Add(
-                    grade, BasisBladeIDsOfGrade(vSpaceDimension, grade).ToArray()
+                    grade, BasisBladeIDsOfGrade(vSpaceDimensions, grade).ToArray()
                 );
             }
 
@@ -279,17 +362,17 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         /// <summary>
         /// Returns the basis blade IDs of having the given grades grouped by their grade
         /// </summary>
-        /// <param name="vSpaceDimension"></param>
+        /// <param name="vSpaceDimensions"></param>
         /// <param name="gradesSeq"></param>
         /// <returns></returns>
-        public static Dictionary<uint, IReadOnlyList<ulong>> BasisBladeIDsGroupedByGrade(this uint vSpaceDimension, params uint[] gradesSeq)
+        public static Dictionary<uint, IReadOnlyList<ulong>> BasisBladeIDsGroupedByGrade(this uint vSpaceDimensions, params uint[] gradesSeq)
         {
             var result = new Dictionary<uint, IReadOnlyList<ulong>>();
 
             foreach (var grade in gradesSeq)
             {
                 result.Add(
-                    grade, BasisBladeIDsOfGrade(vSpaceDimension, grade).ToArray()
+                    grade, BasisBladeIDsOfGrade(vSpaceDimensions, grade).ToArray()
                 );
             }
 
@@ -300,7 +383,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ulong BivectorSpaceDimension(this IGeometricAlgebraSpace space)
         {
-            var n = (ulong) space.VSpaceDimension;
+            var n = (ulong) space.VSpaceDimensions;
 
             return n * (n - 1) / 2UL;
         }
@@ -314,16 +397,16 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ulong KVectorSpaceDimension(this IGeometricAlgebraSpace space, uint grade)
         {
-            Debug.Assert(grade <= space.VSpaceDimension);
+            Debug.Assert(grade <= space.VSpaceDimensions);
 
-            var n = (ulong) space.VSpaceDimension;
+            var n = (ulong) space.VSpaceDimensions;
 
             return grade switch
             {
                 0 => 1,
                 1 => n,
                 2 => n * (n - 1) / 2UL,
-                _ => space.VSpaceDimension.GetBinomialCoefficient(grade)
+                _ => space.VSpaceDimensions.GetBinomialCoefficient(grade)
             };
         }
         
@@ -344,7 +427,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<ulong> BasisVectorIDs(this IGeometricAlgebraSpace space)
         {
-            return space.VSpaceDimension
+            return space.VSpaceDimensions
                 .GetRange()
                 .Select(i => (1ul << (int) i));
         }
@@ -372,7 +455,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         public static IEnumerable<ulong> BasisBladeIDsOfGrade(this IGeometricAlgebraSpace space, uint grade)
         {
             return UInt64BitUtils.OnesPermutations(
-                (int) space.VSpaceDimension, 
+                (int) space.VSpaceDimensions, 
                 (int) grade
             );
         }
@@ -385,9 +468,47 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         /// <returns></returns>
         public static IEnumerable<ulong> BasisBladeIDsSortedByGrade(this IGeometricAlgebraSpace space, uint startGrade = 0)
         {
-            for (var grade = startGrade; grade <= space.VSpaceDimension; grade++)
+            for (var grade = startGrade; grade <= space.VSpaceDimensions; grade++)
                 foreach (var id in space.BasisBladeIDsOfGrade(grade))
                     yield return id;
+        }
+        
+        /// <summary>
+        /// Returns the basis blade IDs of having the given grades
+        /// </summary>
+        /// <param name="vSpaceDimensions"></param>
+        /// <param name="gradesSeq"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<ulong> BasisBladeIDsOfGrades(this int vSpaceDimensions, params int[] gradesSeq)
+        {
+            return gradesSeq
+                .OrderBy(g => g)
+                .SelectMany(grade => 
+                    UInt64BitUtils.OnesPermutations(
+                        vSpaceDimensions, 
+                        grade
+                    )
+                );
+        }
+
+        /// <summary>
+        /// Returns the basis blade IDs of having the given grades
+        /// </summary>
+        /// <param name="vSpaceDimensions"></param>
+        /// <param name="gradesSeq"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IEnumerable<ulong> BasisBladeIDsOfGrades(this int vSpaceDimensions, IEnumerable<int> gradesSeq)
+        {
+            return gradesSeq
+                .OrderBy(g => g)
+                .SelectMany(grade => 
+                    UInt64BitUtils.OnesPermutations(
+                        vSpaceDimensions, 
+                        grade
+                    )
+                );
         }
 
         /// <summary>
@@ -399,13 +520,13 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<ulong> BasisBladeIDsOfGrades(this IGeometricAlgebraSpace space, IEnumerable<uint> gradesSeq)
         {
-            var vSpaceDimension = space.VSpaceDimension;
+            var vSpaceDimensions = space.VSpaceDimensions;
 
             return gradesSeq
                 .OrderBy(g => g)
                 .SelectMany(grade => 
                     UInt64BitUtils.OnesPermutations(
-                        (int) vSpaceDimension, 
+                        (int) vSpaceDimensions, 
                         (int) grade
                     )
                 );
@@ -420,13 +541,13 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<ulong> BasisBladeIDsOfGrades(this IGeometricAlgebraSpace space, params uint[] gradesSeq)
         {
-            var vSpaceDimension = space.VSpaceDimension;
+            var vSpaceDimensions = space.VSpaceDimensions;
 
             return gradesSeq
                 .OrderBy(g => g)
                 .SelectMany(grade => 
                     UInt64BitUtils.OnesPermutations(
-                        (int) vSpaceDimension, 
+                        (int) vSpaceDimensions, 
                         (int) grade
                     )
                 );
@@ -442,7 +563,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         {
             var result = new Dictionary<uint, IReadOnlyList<ulong>>();
 
-            for (var grade = startGrade; grade <= space.VSpaceDimension; grade++)
+            for (var grade = startGrade; grade <= space.VSpaceDimensions; grade++)
             {
                 result.Add(
                     grade, 
@@ -498,13 +619,13 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string BasisBladeBinaryIndexedName(this IGeometricAlgebraSpace space, ulong basisBladeId)
         {
-            return "B" + basisBladeId.PatternToString((int) space.VSpaceDimension);
+            return "B" + basisBladeId.PatternToString((int) space.VSpaceDimensions);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string BasisBladeBinaryIndexedName(this IGeometricAlgebraSpace space, uint grade, ulong index)
         {
-            return "B" + index.BasisBladeIndexToId(grade).PatternToString((int) space.VSpaceDimension);
+            return "B" + index.BasisBladeIndexToId(grade).PatternToString((int) space.VSpaceDimensions);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -522,7 +643,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<ulong> BasisBladeIDsContaining(this IGeometricAlgebraSpace space, ulong basisBladeId)
         {
-            return basisBladeId.GetSuperPatterns((int) space.VSpaceDimension);
+            return basisBladeId.GetSuperPatterns((int) space.VSpaceDimensions);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -530,7 +651,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         {
             return index
                 .BasisBladeIndexToId(grade)
-                .GetSuperPatterns((int) space.VSpaceDimension);
+                .GetSuperPatterns((int) space.VSpaceDimensions);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -543,7 +664,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsValidBasisVectorIndex(this IGeometricAlgebraSpace space, ulong index)
         {
-            return index < space.VSpaceDimension;
+            return index < space.VSpaceDimensions;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -555,9 +676,9 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsValidBasisBladeGradeIndex(this IGeometricAlgebraSpace space, uint grade, ulong index)
         {
-            if (grade > space.VSpaceDimension) return false;
+            if (grade > space.VSpaceDimensions) return false;
 
-            var kvDim = KVectorSpaceDimension(space.VSpaceDimension, grade);
+            var kvDim = KVectorSpaceDimension(space.VSpaceDimensions, grade);
 
             return index < kvDim;
         }
@@ -565,7 +686,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsValidGrade(this IGeometricAlgebraSpace space, uint grade)
         {
-            return (grade <= space.VSpaceDimension);
+            return (grade <= space.VSpaceDimensions);
         }
 
         /// <summary>
@@ -577,7 +698,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         /// <returns></returns>
         public static IEnumerable<int> GradesOfMeet(this IGeometricAlgebraSpace space, int grade1, int grade2)
         {
-            if (grade1 > space.VSpaceDimension || grade2 > space.VSpaceDimension || grade1 < 0 || grade2 < 0)
+            if (grade1 > space.VSpaceDimensions || grade2 > space.VSpaceDimensions || grade1 < 0 || grade2 < 0)
                 yield break;
 
             var maxGrade = Math.Min(grade1, grade2);
@@ -596,11 +717,11 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         /// <returns></returns>
         public static IEnumerable<int> GradesOfJoin(this IGeometricAlgebraSpace space, int grade1, int grade2)
         {
-            if (grade1 > space.VSpaceDimension || grade2 > space.VSpaceDimension || grade1 < 0 || grade2 < 0)
+            if (grade1 > space.VSpaceDimensions || grade2 > space.VSpaceDimensions || grade1 < 0 || grade2 < 0)
                 yield break;
 
             var minGrade = Math.Max(grade1, grade2);
-            var maxGrade = Math.Min(space.VSpaceDimension, grade1 + grade2);
+            var maxGrade = Math.Min(space.VSpaceDimensions, grade1 + grade2);
 
             //TODO: Should this be grade++ instead of grade += 2 ?
             for (var grade = minGrade; grade <= maxGrade; grade += 2)
@@ -617,18 +738,18 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         /// <returns></returns>
         public static IEnumerable<uint> GradesOfEGp(this IGeometricAlgebraSpace space, uint grade1, uint grade2)
         {
-            if (grade1 > space.VSpaceDimension || grade2 > space.VSpaceDimension)
+            if (grade1 > space.VSpaceDimensions || grade2 > space.VSpaceDimensions)
                 yield break;
 
-            var minGrade = (uint) Math.Abs(grade1 - grade2);
-            var maxGrade = Math.Min(space.VSpaceDimension, grade1 + grade2);
+            var minGrade = (uint) Math.Abs((int)grade1 - (int)grade2);
+            var maxGrade = Math.Min(space.VSpaceDimensions, grade1 + grade2);
 
             for (var grade = minGrade; grade <= maxGrade; grade += 2)
                 yield return grade;
         }
 
         /// <summary>
-        /// Given a bit pattern in id1 and id2 this shifts id2 by space.VSpaceDimension bits to the left and 
+        /// Given a bit pattern in id1 and id2 this shifts id2 by space.VSpaceDimensions bits to the left and 
         /// appends id1 to combine the two patterns using an OR bitwise operation
         /// </summary>
         /// <param name="space"></param>
@@ -638,7 +759,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ulong JoinIDs(this IGeometricAlgebraSpace space, ulong id1, ulong id2)
         {
-            return id1 | (id2 << (int) space.VSpaceDimension);
+            return id1 | (id2 << (int) space.VSpaceDimensions);
         }
 
         /// <summary>
@@ -717,7 +838,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GradeIndexRecord BasisBladeGradeIndex(this IGeometricAlgebraSpace space, ulong basisBladeId)
+        public static RGaGradeKvIndexRecord BasisBladeGradeIndex(this IGeometricAlgebraSpace space, ulong basisBladeId)
         {
             return BasisBladeDataLookup.BasisBladeGradeIndex(basisBladeId);
         }
@@ -823,7 +944,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         /// <param name="basisBladeId"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static int GradeInvolutionSignOfBasisBladeId(this IGeometricAlgebraSpace space, ulong basisBladeId)
+        public static IntegerSign GradeInvolutionSignOfBasisBladeId(this IGeometricAlgebraSpace space, ulong basisBladeId)
         {
             return BasisBladeDataLookup.GradeInvolutionSign(basisBladeId);
         }
@@ -859,7 +980,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         /// <param name="basisBladeId"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static int ReverseSignOfBasisBladeId(this IGeometricAlgebraSpace space, ulong basisBladeId)
+        public static IntegerSign ReverseSignOfBasisBladeId(this IGeometricAlgebraSpace space, ulong basisBladeId)
         {
             return BasisBladeDataLookup.ReverseSign(basisBladeId);
         }
@@ -895,7 +1016,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Extensions
         /// <param name="basisBladeId"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static int CliffordConjugateSignOfBasisBladeId(this IGeometricAlgebraSpace space, ulong basisBladeId)
+        public static IntegerSign CliffordConjugateSignOfBasisBladeId(this IGeometricAlgebraSpace space, ulong basisBladeId)
         {
             return BasisBladeDataLookup.CliffordConjugateSign(basisBladeId);
         }

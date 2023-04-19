@@ -1,16 +1,15 @@
 ﻿using System.Collections.Generic;
-using NumericalGeometryLib.BasicMath;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records.Restricted;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Basis;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 
 namespace GeometricAlgebraFulcrumLib.Text
 {
     public interface ITextComposer<T>
     {
-        IScalarAlgebraProcessor<T> ScalarProcessor { get; }
+        IScalarProcessor<T> ScalarProcessor { get; }
 
         string GetBasisVectorText(ulong index);
 
@@ -18,11 +17,11 @@ namespace GeometricAlgebraFulcrumLib.Text
 
         string GetBasisBladeText(uint grade, ulong index);
 
-        string GetBasisBladeText(BasisBlade basisBlade);
+        string GetBasisBladeText(RGaBasisBlade basisBlade);
 
         string GetBasisBladeText(IEnumerable<ulong> indexList);
 
-        string GetAngleText(PlanarAngle angle);
+        string GetAngleText(Float64PlanarAngle angle);
 
         string GetScalarText(Scalar<T> scalar);
 
@@ -34,21 +33,21 @@ namespace GeometricAlgebraFulcrumLib.Text
 
         string GetTermText(uint grade, ulong index, T scalar);
 
-        string GetTermText(IndexScalarRecord<T> idScalarPair);
+        string GetTermText(RGaKvIndexScalarRecord<T> idScalarPair);
 
-        string GetTermText(GradeIndexScalarRecord<T> idScalarPair);
+        string GetTermText(RGaGradeKvIndexScalarRecord<T> idScalarPair);
 
-        string GetTermText(BasisBlade basisBlade, T scalar);
+        string GetTermText(RGaBasisBlade basisBlade, T scalar);
 
-        string GetTermText(BasisTerm<T> term);
+        string GetTermText(KeyValuePair<ulong, T> term);
 
-        string GetTermsText(IEnumerable<IndexScalarRecord<T>> idScalarTuples);
+        string GetTermsText(IEnumerable<RGaKvIndexScalarRecord<T>> idScalarTuples);
 
-        string GetTermsText(IEnumerable<GradeIndexScalarRecord<T>> idScalarTuples);
+        string GetTermsText(IEnumerable<RGaGradeKvIndexScalarRecord<T>> idScalarTuples);
 
-        string GetTermsText(uint grade, IEnumerable<IndexScalarRecord<T>> indexScalarTuples);
+        string GetTermsText(uint grade, IEnumerable<RGaKvIndexScalarRecord<T>> indexScalarTuples);
 
-        string GetTermsText(IEnumerable<BasisTerm<T>> terms);
+        string GetTermsText(IEnumerable<KeyValuePair<ulong, T>> terms);
 
         string GetArrayText(IReadOnlyList<T> array);
 

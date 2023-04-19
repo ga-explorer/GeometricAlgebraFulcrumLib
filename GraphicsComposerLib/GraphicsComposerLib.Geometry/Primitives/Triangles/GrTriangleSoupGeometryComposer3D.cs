@@ -5,11 +5,11 @@ using System.Diagnostics;
 
 using System.Linq;
 using DataStructuresLib.Basic;
-using NumericalGeometryLib.BasicMath;
-using NumericalGeometryLib.BasicMath.Tuples;
-using NumericalGeometryLib.BasicMath.Tuples.Immutable;
-using NumericalGeometryLib.BasicShapes.Triangles;
-using NumericalGeometryLib.BasicShapes.Triangles.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Frames.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Triangles;
+using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Triangles.Immutable;
 using GraphicsComposerLib.Geometry.Primitives.Vertices;
 using SixLabors.ImageSharp;
 
@@ -142,12 +142,12 @@ namespace GraphicsComposerLib.Geometry.Primitives.Triangles
             }
         }
 
-        public IEnumerable<Triplet<GrNormal3D>> TriangleVertexNormals
+        public IEnumerable<Triplet<Normal3D>> TriangleVertexNormals
         {
             get
             {
                 for (var i = 0; i < _verticesList.Count; i += 3)
-                    yield return new Triplet<GrNormal3D>(
+                    yield return new Triplet<Normal3D>(
                         _verticesList[i].Normal,
                         _verticesList[i + 1].Normal,
                         _verticesList[i + 2].Normal
@@ -269,8 +269,8 @@ namespace GraphicsComposerLib.Geometry.Primitives.Triangles
             {
                 var normal = 
                     ReverseNormals
-                        ? VectorUtils.GetTriangleUnitNormal(vertex3, vertex2, vertex1)
-                        : VectorUtils.GetTriangleUnitNormal(vertex1, vertex2, vertex3);
+                        ? EuclideanFloat64TupleUtils.GetTriangleUnitNormal(vertex3, vertex2, vertex1)
+                        : EuclideanFloat64TupleUtils.GetTriangleUnitNormal(vertex1, vertex2, vertex3);
 
                 Debug.Assert(normal.IsValid());
 
@@ -288,7 +288,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Triangles
             return _verticesList[index];
         }
         
-        public GrNormal3D GetVertexNormal(int index)
+        public Normal3D GetVertexNormal(int index)
         {
             return _verticesList[index].Normal;
         }

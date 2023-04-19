@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.BitManipulation;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records.Restricted;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Dense;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Sparse;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 
 namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors
 {
@@ -111,12 +111,13 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ILinVectorGradedStorage<T> ToVectorGradedStorage(Func<ulong, GradeIndexRecord> indexToGradeIndexMapping)
+        public ILinVectorGradedStorage<T> ToVectorGradedStorage(
+            Func<ulong, RGaGradeKvIndexRecord> indexToGradeIndexMapping)
         {
             return LinVectorEmptyGradedStorage<T>.EmptyStorage;
         }
 
-        public ILinVectorGradedStorage<T> ToVectorGradedStorage(Func<ulong, T, GradeIndexScalarRecord<T>> indexScalarToGradeIndexScalarMapping)
+        public ILinVectorGradedStorage<T> ToVectorGradedStorage(Func<ulong, T, RGaGradeKvIndexScalarRecord<T>> indexScalarToGradeIndexScalarMapping)
         {
             return LinVectorEmptyGradedStorage<T>.EmptyStorage;
         }
@@ -129,9 +130,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<IndexScalarRecord<T>> GetIndexScalarRecords()
+        public IEnumerable<RGaKvIndexScalarRecord<T>> GetIndexScalarRecords()
         {
-            return Enumerable.Empty<IndexScalarRecord<T>>();
+            return Enumerable.Empty<RGaKvIndexScalarRecord<T>>();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

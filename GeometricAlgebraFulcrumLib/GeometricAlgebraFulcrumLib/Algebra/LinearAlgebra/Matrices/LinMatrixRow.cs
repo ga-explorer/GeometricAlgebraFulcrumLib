@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Processors.MatrixAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors;
 
@@ -11,7 +10,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Matrices
         public override TScalar GetScalar(ulong index) => MatrixProcessor.GetScalar(MatrixStorage, RowIndex, (int) index);
 
 
-        internal LinMatrixRow([NotNull] IMatrixAlgebraProcessor<TMatrix, TScalar> matrixProcessor, [NotNull] TMatrix matrix, int rowIndex)
+        internal LinMatrixRow(IMatrixAlgebraProcessor<TMatrix, TScalar> matrixProcessor, TMatrix matrix, int rowIndex)
             : base(matrixProcessor, matrix, rowIndex)
         {
         }

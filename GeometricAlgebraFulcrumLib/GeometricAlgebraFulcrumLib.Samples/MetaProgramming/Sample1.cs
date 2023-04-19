@@ -1,13 +1,13 @@
 ﻿using System;
 using DataStructuresLib.BitManipulation;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.LinearMaps.Rotors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Mathematica;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Composers;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Expressions;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Languages;
-using GeometricAlgebraFulcrumLib.Processors;
 
 namespace GeometricAlgebraFulcrumLib.Samples.MetaProgramming
 {
@@ -37,7 +37,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.MetaProgramming
 
             // Define a Euclidean multivectors processor for the context
             var processor = 
-                context.CreateGeometricAlgebraEuclideanProcessor(n);
+                context.CreateEuclideanXGaProcessor();
 
             // Stage 2: Define the input parameters of the context
             // The input parameters are named variables created as scalar parts of multivectors
@@ -75,7 +75,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.MetaProgramming
 
             // Stage 3: Define computations and specify which variables are required outputs
             //Define a Euclidean rotor which takes input unit vector u to input unit vector v
-            var rotor = processor.CreatePureRotor(x, xRotated, true);
+            var rotor = x.CreatePureRotor(xRotated, true);
             
             //Find the rotation of an arbitrary input vector x using this rotor
             var yRotated = rotor.OmMap(y);
@@ -139,16 +139,16 @@ namespace GeometricAlgebraFulcrumLib.Samples.MetaProgramming
 
             // Define a Euclidean multivectors processor for the context
             var processor = 
-                context.CreateGeometricAlgebraEuclideanProcessor(n);
+                context.CreateEuclideanXGaProcessor();
 
             // Stage 2: Define the input parameters of the context
             // The input parameters are named variables created as scalar parts of multivectors
             // and used for later processing to compute some outputs
             
             // Define basis vectors to compute rotation matrix
-            var e1 = processor.CreateVectorBasis(0);
-            var e2 = processor.CreateVectorBasis(1);
-            var e3 = processor.CreateVectorBasis(2);
+            var e1 = processor.CreateVector(0);
+            var e2 = processor.CreateVector(1);
+            var e3 = processor.CreateVector(2);
 
             // Define the first vector for constructing the rotor with a given
             // set of scalar components u1, u2, ...
@@ -168,7 +168,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.MetaProgramming
             
             // Stage 3: Define computations and specify which variables are required outputs
             //Define a Euclidean rotor which takes input unit vector u to input unit vector v
-            var rotor = processor.CreatePureRotor(xRotated, e3, true);
+            var rotor = xRotated.CreatePureRotor(e3, true);
 
             //Find the rotation of 3 basis vectors using this rotor
             var e1Rotated = rotor.OmMap(e1);
@@ -229,7 +229,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.MetaProgramming
 
             // Define a Euclidean multivectors processor for the context
             var processor = 
-                context.CreateGeometricAlgebraEuclideanProcessor(n);
+                context.CreateEuclideanXGaProcessor();
 
             // Stage 2: Define the input parameters of the context
             // The input parameters are named variables created as scalar parts of multivectors
@@ -258,7 +258,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.MetaProgramming
 
             // Stage 3: Define computations and specify which variables are required outputs
             //Define a Euclidean rotor which takes input unit vector u to input unit vector v
-            var rotor = processor.CreatePureRotor(u, v, true);
+            var rotor = u.CreatePureRotor(v, true);
             
             //Find the rotation of an arbitrary input vector x using this rotor
             var xRotated = rotor.OmMap(x);

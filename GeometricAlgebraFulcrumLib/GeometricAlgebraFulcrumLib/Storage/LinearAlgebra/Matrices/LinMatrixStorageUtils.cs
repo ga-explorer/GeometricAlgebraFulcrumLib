@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.Basic;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records.Restricted;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors;
@@ -76,27 +77,27 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<IndexPairRecord> GetIndicesUnion<T>(this ILinMatrixStorage<T> matrixStorage1, ILinMatrixStorage<T> matrixStorage2)
+        public static IEnumerable<RGaKvIndexPairRecord> GetIndicesUnion<T>(this ILinMatrixStorage<T> matrixStorage1, ILinMatrixStorage<T> matrixStorage2)
         {
             return matrixStorage1.GetIndices().Union(matrixStorage2.GetIndices());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<IndexPairRecord> GetIndicesIntersection<T>(this ILinMatrixStorage<T> matrixStorage1, ILinMatrixStorage<T> matrixStorage2)
+        public static IEnumerable<RGaKvIndexPairRecord> GetIndicesIntersection<T>(this ILinMatrixStorage<T> matrixStorage1, ILinMatrixStorage<T> matrixStorage2)
         {
             return matrixStorage1.GetIndices().Intersect(matrixStorage2.GetIndices());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<IndexPairRecord> GetIndicesDifference<T>(this ILinMatrixStorage<T> matrixStorage1, ILinMatrixStorage<T> matrixStorage2)
+        public static IEnumerable<RGaKvIndexPairRecord> GetIndicesDifference<T>(this ILinMatrixStorage<T> matrixStorage1, ILinMatrixStorage<T> matrixStorage2)
         {
             return matrixStorage1.GetIndices().Except(matrixStorage2.GetIndices());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static HashSet<IndexPairRecord> GetIndicesSymmetricDifference<T>(this ILinMatrixStorage<T> matrixStorage1, ILinMatrixStorage<T> matrixStorage2)
+        public static HashSet<RGaKvIndexPairRecord> GetIndicesSymmetricDifference<T>(this ILinMatrixStorage<T> matrixStorage1, ILinMatrixStorage<T> matrixStorage2)
         {
-            var indexsSet = new HashSet<IndexPairRecord>(matrixStorage1.GetIndices());
+            var indexsSet = new HashSet<RGaKvIndexPairRecord>(matrixStorage1.GetIndices());
 
             indexsSet.SymmetricExceptWith(matrixStorage2.GetIndices());
 
@@ -118,7 +119,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices
             return matrixStorage
                 .GetIndexScalarRecords()
                 .Select(indexScalar =>
-                    mappingFunc(indexScalar.Index1, indexScalar.Index2, indexScalar.Scalar)
+                    mappingFunc(indexScalar.KvIndex1, indexScalar.KvIndex2, indexScalar.Scalar)
                 );
         }
 
@@ -128,7 +129,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices
             return matrixStorage
                 .GetIndexScalarRecords()
                 .Select(indexScalar =>
-                    mappingFunc(grade, indexScalar.Index1, indexScalar.Index2, indexScalar.Scalar)
+                    mappingFunc(grade, indexScalar.KvIndex1, indexScalar.KvIndex2, indexScalar.Scalar)
                 );
         }
 
@@ -224,7 +225,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T GetScalar<T>(this ILinMatrixStorage<T> matrixStorage, IndexPairRecord index, T defaultScalar)
+        public static T GetScalar<T>(this ILinMatrixStorage<T> matrixStorage, RGaKvIndexPairRecord index, T defaultScalar)
         {
             return matrixStorage.TryGetScalar(index, out var value)
                 ? value ?? defaultScalar
@@ -264,11 +265,11 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T GetScalar<T>(this ILinMatrixStorage<T> matrixStorage, IndexPairRecord index, Func<ulong, ulong, T> defaultScalarFunc)
+        public static T GetScalar<T>(this ILinMatrixStorage<T> matrixStorage, RGaKvIndexPairRecord index, Func<ulong, ulong, T> defaultScalarFunc)
         {
             return matrixStorage.TryGetScalar(index, out var value)
-                ? value ?? defaultScalarFunc(index.Index1, index.Index2)
-                : defaultScalarFunc(index.Index1, index.Index2);
+                ? value ?? defaultScalarFunc(index.KvIndex1, index.KvIndex2)
+                : defaultScalarFunc(index.KvIndex1, index.KvIndex2);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -308,11 +309,11 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices
         /// </summary>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IndexPairScalarRecord<T> GetMinIndexScalarRecord<T>(this ILinMatrixStorage<T> matrixStorage)
+        public static RGaKvIndexPairScalarRecord<T> GetMinIndexScalarRecord<T>(this ILinMatrixStorage<T> matrixStorage)
         {
             var index = matrixStorage.GetMinIndex();
 
-            return new IndexPairScalarRecord<T>(index.Index1, index.Index2, matrixStorage.GetScalar(index));
+            return new RGaKvIndexPairScalarRecord<T>(index.KvIndex1, index.KvIndex2, matrixStorage.GetScalar(index));
         }
 
         /// <summary>
@@ -320,11 +321,11 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices
         /// </summary>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IndexPairScalarRecord<T> GetMaxIndexScalarRecord<T>(this ILinMatrixStorage<T> matrixStorage)
+        public static RGaKvIndexPairScalarRecord<T> GetMaxIndexScalarRecord<T>(this ILinMatrixStorage<T> matrixStorage)
         {
             var index = matrixStorage.GetMaxIndex();
 
-            return new IndexPairScalarRecord<T>(index.Index1, index.Index2, matrixStorage.GetScalar(index));
+            return new RGaKvIndexPairScalarRecord<T>(index.KvIndex1, index.KvIndex2, matrixStorage.GetScalar(index));
         }
 
         /// <summary>
@@ -473,19 +474,19 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T GetScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, ILinVectorStorage<T> vector, int index)
+        public static T GetScalar<T>(this IScalarProcessor<T> scalarProcessor, ILinVectorStorage<T> vector, int index)
         {
             return vector.GetScalar(index, scalarProcessor.ScalarZero);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T GetScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, ILinVectorStorage<T> vector, ulong index)
+        public static T GetScalar<T>(this IScalarProcessor<T> scalarProcessor, ILinVectorStorage<T> vector, ulong index)
         {
             return vector.GetScalar(index, scalarProcessor.ScalarZero);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static LinVectorRepeatedScalarStorage<T> CreateOnesScalarsList<T>(this IScalarAlgebraProcessor<T> scalarProcessor, int size)
+        public static LinVectorRepeatedScalarStorage<T> CreateOnesScalarsList<T>(this IScalarProcessor<T> scalarProcessor, int size)
         {
             var scalar = scalarProcessor.ScalarOne;
 
@@ -493,7 +494,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static LinVectorRepeatedScalarStorage<T> CreateUnitOnesScalarsList<T>(this IScalarAlgebraProcessor<T> scalarProcessor, int size)
+        public static LinVectorRepeatedScalarStorage<T> CreateUnitOnesScalarsList<T>(this IScalarProcessor<T> scalarProcessor, int size)
         {
             var scalar = scalarProcessor.Sqrt(
                 scalarProcessor.Divide(scalarProcessor.ScalarOne, size)
@@ -503,19 +504,19 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static LinMatrixDiagonalStorage<T> CreateOnesDiagonalMatrixStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, int size)
+        public static LinMatrixDiagonalStorage<T> CreateOnesDiagonalMatrixStorage<T>(this IScalarProcessor<T> scalarProcessor, int size)
         {
             return scalarProcessor.CreateOnesScalarsList(size).CreateLinMatrixDiagonalStorage();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static LinMatrixDiagonalStorage<T> CreateUnitOnesDiagonalMatrixStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, int size)
+        public static LinMatrixDiagonalStorage<T> CreateUnitOnesDiagonalMatrixStorage<T>(this IScalarProcessor<T> scalarProcessor, int size)
         {
             return scalarProcessor.CreateUnitOnesScalarsList(size).CreateLinMatrixDiagonalStorage();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static T GetScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, ILinMatrixStorage<T> matrixStorage, int rowIndex, int colIndex)
+        public static T GetScalar<T>(this IScalarProcessor<T> scalarProcessor, ILinMatrixStorage<T> matrixStorage, int rowIndex, int colIndex)
         {
             return matrixStorage.GetScalar(rowIndex, colIndex, scalarProcessor.ScalarZero);
         }

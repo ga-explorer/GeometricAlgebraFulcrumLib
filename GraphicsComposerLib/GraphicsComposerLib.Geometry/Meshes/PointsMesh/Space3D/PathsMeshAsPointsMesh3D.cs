@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DataStructuresLib.Basic;
 using DataStructuresLib.Sequences.Periodic1D;
-using NumericalGeometryLib.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
 using GraphicsComposerLib.Geometry.Meshes.PathsMesh;
 using GraphicsComposerLib.Geometry.Meshes.PointsPath.Space3D;
 

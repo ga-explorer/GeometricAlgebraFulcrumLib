@@ -1,53 +1,53 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Geometry.Euclidean.Space3D.Objects;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
 
-namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean.Space3D.Maps;
-
-public sealed class E3DMapScale<T> :
-    E3DMap<T>
+namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean.Space3D.Maps
 {
-    public override IScalarAlgebraProcessor<T> ScalarProcessor 
-        => Origin.ScalarProcessor;
-
-    public T Factor { get; }
-
-    public E3DPoint<T> Origin { get; }
-
-    public E3DVector<T> UnitDirection { get; }
-
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    internal E3DMapScale([NotNull] T factor, [NotNull] E3DPoint<T> point, [NotNull] E3DVector<T> direction)
+    public sealed class E3DMapScale<T> :
+        E3DMap<T>
     {
-        Factor = factor;
-        Origin = point;
-        UnitDirection = direction.GetUnitVector();
-    }
+        public override IScalarProcessor<T> ScalarProcessor 
+            => Origin.ScalarProcessor;
+
+        public T Factor { get; }
+
+        public E3DPoint<T> Origin { get; }
+
+        public E3DVector<T> UnitDirection { get; }
 
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override E3DVector<T> Map(E3DVector<T> vector)
-    {
-        var s = ScalarProcessor.Subtract(Factor, ScalarProcessor.ScalarOne);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal E3DMapScale(T factor, E3DPoint<T> point, E3DVector<T> direction)
+        {
+            Factor = factor;
+            Origin = point;
+            UnitDirection = direction.GetUnitVector();
+        }
 
-        return vector + s * vector.Dot(UnitDirection) * UnitDirection;
-    }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override E3DPoint<T> Map(E3DPoint<T> point)
-    {
-        var s = ScalarProcessor.Subtract(Factor, ScalarProcessor.ScalarOne);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override E3DVector<T> Map(E3DVector<T> vector)
+        {
+            var s = ScalarProcessor.Subtract(Factor, ScalarProcessor.ScalarOne);
 
-        return point + s * (point - Origin).Dot(UnitDirection) * UnitDirection;
-    }
+            return vector + s * vector.Dot(UnitDirection) * UnitDirection;
+        }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public override E3DMap<T> GetInverse()
-    {
-        var factor = ScalarProcessor.Inverse(Factor);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override E3DPoint<T> Map(E3DPoint<T> point)
+        {
+            var s = ScalarProcessor.Subtract(Factor, ScalarProcessor.ScalarOne);
 
-        return new E3DMapScale<T>(factor, Origin, UnitDirection);
+            return point + s * (point - Origin).Dot(UnitDirection) * UnitDirection;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public override E3DMap<T> GetInverse()
+        {
+            var factor = ScalarProcessor.Inverse(Factor);
+
+            return new E3DMapScale<T>(factor, Origin, UnitDirection);
+        }
     }
 }

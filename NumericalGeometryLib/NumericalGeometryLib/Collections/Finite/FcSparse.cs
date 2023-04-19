@@ -76,7 +76,7 @@ namespace NumericalGeometryLib.Collections.Finite
 
                 return
                     _itemsDictionary.TryGetValue(index, out value)
-                    ? value : (BaseCollection == null ? DefaultValue : BaseCollection.GetItem(index));
+                    ? value : BaseCollection == null ? DefaultValue : BaseCollection.GetItem(index);
             }
 
             set
@@ -190,7 +190,7 @@ namespace NumericalGeometryLib.Collections.Finite
 
             return
                 _itemsDictionary.TryGetValue(index, out value)
-                ? value : (BaseCollection == null ? DefaultValue : BaseCollection.GetItem(index));
+                ? value : BaseCollection == null ? DefaultValue : BaseCollection.GetItem(index);
         }
 
         IEnumerator<KeyValuePair<int, T>> IEnumerable<KeyValuePair<int, T>>.GetEnumerator()

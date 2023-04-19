@@ -1,25 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records.Restricted;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 
 namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
 {
     public sealed class LinMatrixSparseStorageComposer<T> :
         LinMatrixStorageComposerBase<T>
     {
-        public Dictionary<IndexPairRecord, T> KeyValueDictionary { get; }
-            = new Dictionary<IndexPairRecord, T>();
+        public Dictionary<RGaKvIndexPairRecord, T> KeyValueDictionary { get; }
+            = new Dictionary<RGaKvIndexPairRecord, T>();
 
         public override int Count
             => KeyValueDictionary.Count;
 
 
-        internal LinMatrixSparseStorageComposer([NotNull] IScalarAlgebraProcessor<T> scalarProcessor)
+        internal LinMatrixSparseStorageComposer(IScalarProcessor<T> scalarProcessor)
             : base(scalarProcessor)
         {
         }
@@ -34,7 +33,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override LinMatrixStorageComposerBase<T> RemoveTerm(IndexPairRecord key)
+        public override LinMatrixStorageComposerBase<T> RemoveTerm(RGaKvIndexPairRecord key)
         {
             KeyValueDictionary.Remove(key);
 
@@ -53,7 +52,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override LinMatrixStorageComposerBase<T> SetTerm(IndexPairRecord key, [NotNull] T value)
+        public override LinMatrixStorageComposerBase<T> SetTerm(RGaKvIndexPairRecord key, T value)
         {
             if (KeyValueDictionary.ContainsKey(key))
                 KeyValueDictionary[key] = value;
@@ -64,7 +63,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override LinMatrixStorageComposerBase<T> AddTerm(IndexPairRecord key, [NotNull] T value)
+        public override LinMatrixStorageComposerBase<T> AddTerm(RGaKvIndexPairRecord key, T value)
         {
             if (KeyValueDictionary.TryGetValue(key, out var value1))
                 KeyValueDictionary[key] = ScalarProcessor.Add(value1, value1);
@@ -75,7 +74,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override LinMatrixStorageComposerBase<T> SubtractTerm(IndexPairRecord key, [NotNull] T value)
+        public override LinMatrixStorageComposerBase<T> SubtractTerm(RGaKvIndexPairRecord key, T value)
         {
             if (KeyValueDictionary.TryGetValue(key, out var value1))
                 KeyValueDictionary[key] = ScalarProcessor.Subtract(value1, value1);
@@ -98,7 +97,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
         public override LinMatrixStorageComposerBase<T> MapValues(Func<ulong, ulong, T, T> valueMapping)
         {
             foreach (var (key, value) in KeyValueDictionary)
-                KeyValueDictionary[key] = valueMapping(key.Index1, key.Index2, value);
+                KeyValueDictionary[key] = valueMapping(key.KvIndex1, key.KvIndex2, value);
 
             return this;
         }
@@ -116,10 +115,10 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
             }
 
             var denseCount1 =
-                1UL + KeyValueDictionary.Keys.Select(key => key.Index1).Max();
+                1UL + KeyValueDictionary.Keys.Select(key => key.KvIndex1).Max();
 
             var denseCount2 =
-                1UL + KeyValueDictionary.Keys.Select(key => key.Index2).Max();
+                1UL + KeyValueDictionary.Keys.Select(key => key.KvIndex2).Max();
 
             var denseCount = denseCount1 * denseCount2;
 
@@ -140,10 +139,10 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
                 return LinMatrixEmptyStorage<T>.EmptyStorage;
 
             var denseCount1 =
-                1UL + KeyValueDictionary.Keys.Select(key => key.Index1).Max();
+                1UL + KeyValueDictionary.Keys.Select(key => key.KvIndex1).Max();
 
             var denseCount2 =
-                1UL + KeyValueDictionary.Keys.Select(key => key.Index2).Max();
+                1UL + KeyValueDictionary.Keys.Select(key => key.KvIndex2).Max();
 
             if (denseCount1 > int.MaxValue || denseCount2 > int.MaxValue)
                 throw new InvalidOperationException();

@@ -1,44 +1,38 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
-using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTraversal.Outermorphisms;
-using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTraversal.Products;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.GuidedBinaryTraversal.Outermorphisms;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.GuidedBinaryTraversal.Products;
 
 namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
 {
     internal static class MultivectorStorageIteratorsUtils
     {
-        public static IEnumerable<GradeLinVectorStorageScalarRecord<T>> GetGbtOutermorphismScaledKVectors<T>(this GaMultivector<T> mv, IReadOnlyList<VectorStorage<T>> basisVectorMappings)
+        public static IEnumerable<RGaScalarKVectorRecord<T>> GetGbtOutermorphismScaledKVectors<T>(this RGaMultivector<T> mv, IReadOnlyList<RGaVector<T>> basisVectorMappings)
         {
-            return GeoGbtMultivectorOutermorphismStack<T>
+            return RGaGbtMultivectorOutermorphismStack<T>
                 .Create(basisVectorMappings, mv)
                 .TraverseForScaledKVectors();
         }
 
-        public static IEnumerable<IndexScalarRecord<T>> GetGbtOutermorphismIdScalarRecords<T>(this GaMultivector<T> mv, IReadOnlyList<VectorStorage<T>> basisVectorMappings)
+        public static IEnumerable<KeyValuePair<ulong, T>> GetGbtOutermorphismIdScalarRecords<T>(this RGaMultivector<T> mv, IReadOnlyList<RGaVector<T>> basisVectorMappings)
         {
-            var scalarProcessor = mv.GeometricProcessor;
+            var scalarProcessor = mv.ScalarProcessor;
             var factorsList =
                 mv.GetGbtOutermorphismScaledKVectors(basisVectorMappings);
 
-            foreach (var (grade, indexScalarList, scalingFactor) in factorsList)
+            foreach (var (scalingFactor, kVector) in factorsList)
             {
                 if (scalarProcessor.IsZero(scalingFactor))
                     continue;
-
+                
                 var indexScalarRecords =
-                    indexScalarList
-                        .FilterByScalar(scalarProcessor.IsNotZero)
-                        .GetIndexScalarRecords()
-                        .Select(
-                            indexScalarRecord => new IndexScalarRecord<T>(
-                                indexScalarRecord.Index.BasisBladeIndexToId(grade),
-                                scalarProcessor.Times(scalingFactor, indexScalarRecord.Scalar)
-                            )
-                        );
+                    kVector.Select(
+                        p => new KeyValuePair<ulong, T>(
+                            p.Key,
+                            scalarProcessor.Times(scalingFactor, p.Value)
+                        )
+                    );
 
                 foreach (var idScalarRecord in indexScalarRecords)
                     yield return idScalarRecord;
@@ -53,9 +47,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         /// <param name="mv1"></param>
         /// <param name="mv2"></param>
         /// <returns></returns>
-        public static IEnumerable<IndexScalarRecord<T>> GetGbtOpIdScalarPairs<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2)
+        public static IEnumerable<KeyValuePair<ulong, T>> GetGbtOpIdScalarPairs<T>(this RGaMultivector<T> mv1, RGaMultivector<T> mv2)
         {
-            var stack = GeoGbtProductsStack2<T>.Create(mv1, mv2);
+            var stack = RGaGbtProductsStack2<T>.Create(mv1, mv2);
 
             return stack.GetOpIdScalarRecords();
         }
@@ -66,9 +60,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         /// <param name="mv1"></param>
         /// <param name="mv2"></param>
         /// <returns></returns>
-        public static IEnumerable<IndexScalarRecord<T>> GetGbtEGpIdScalarPairs<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2)
+        public static IEnumerable<KeyValuePair<ulong, T>> GetGbtEGpIdScalarPairs<T>(this RGaMultivector<T> mv1, RGaMultivector<T> mv2)
         {
-            var stack = GeoGbtProductsStack2<T>.Create(mv1, mv2);
+            var stack = RGaGbtProductsStack2<T>.Create(mv1, mv2);
 
             return stack.GetEGpIdScalarRecords();
         }
@@ -79,9 +73,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         /// <param name="mv1"></param>
         /// <param name="mv2"></param>
         /// <returns></returns>
-        public static IEnumerable<IndexScalarRecord<T>> GetGbtELcpIdScalarPairs<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2)
+        public static IEnumerable<KeyValuePair<ulong, T>> GetGbtELcpIdScalarPairs<T>(this RGaMultivector<T> mv1, RGaMultivector<T> mv2)
         {
-            var stack = GeoGbtProductsStack2<T>.Create(mv1, mv2);
+            var stack = RGaGbtProductsStack2<T>.Create(mv1, mv2);
 
             return stack.GetELcpIdScalarRecords();
         }
@@ -92,9 +86,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         /// <param name="mv1"></param>
         /// <param name="mv2"></param>
         /// <returns></returns>
-        public static IEnumerable<IndexScalarRecord<T>> GetGbtERcpIdScalarPairs<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2)
+        public static IEnumerable<KeyValuePair<ulong, T>> GetGbtERcpIdScalarPairs<T>(this RGaMultivector<T> mv1, RGaMultivector<T> mv2)
         {
-            var stack = GeoGbtProductsStack2<T>.Create(mv1, mv2);
+            var stack = RGaGbtProductsStack2<T>.Create(mv1, mv2);
 
             return stack.GetERcpIdScalarRecords();
         }
@@ -105,9 +99,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         /// <param name="mv1"></param>
         /// <param name="mv2"></param>
         /// <returns></returns>
-        public static IEnumerable<IndexScalarRecord<T>> GetGbtESpIdScalarPairs<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2)
+        public static IEnumerable<KeyValuePair<ulong, T>> GetGbtESpIdScalarPairs<T>(this RGaMultivector<T> mv1, RGaMultivector<T> mv2)
         {
-            var stack = GeoGbtProductsStack2<T>.Create(mv1, mv2);
+            var stack = RGaGbtProductsStack2<T>.Create(mv1, mv2);
 
             return stack.GetESpIdScalarRecords();
         }
@@ -118,9 +112,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         /// <param name="mv1"></param>
         /// <param name="mv2"></param>
         /// <returns></returns>
-        public static IEnumerable<IndexScalarRecord<T>> GetGbtEFdpIdScalarPairs<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2)
+        public static IEnumerable<KeyValuePair<ulong, T>> GetGbtEFdpIdScalarPairs<T>(this RGaMultivector<T> mv1, RGaMultivector<T> mv2)
         {
-            var stack = GeoGbtProductsStack2<T>.Create(mv1, mv2);
+            var stack = RGaGbtProductsStack2<T>.Create(mv1, mv2);
 
             return stack.GetEFdpIdScalarRecords();
         }
@@ -131,9 +125,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         /// <param name="mv1"></param>
         /// <param name="mv2"></param>
         /// <returns></returns>
-        public static IEnumerable<IndexScalarRecord<T>> GetGbtEHipIdScalarPairs<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2)
+        public static IEnumerable<KeyValuePair<ulong, T>> GetGbtEHipIdScalarPairs<T>(this RGaMultivector<T> mv1, RGaMultivector<T> mv2)
         {
-            var stack = GeoGbtProductsStack2<T>.Create(mv1, mv2);
+            var stack = RGaGbtProductsStack2<T>.Create(mv1, mv2);
 
             return stack.GetEHipIdScalarRecords();
         }
@@ -144,9 +138,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         /// <param name="mv1"></param>
         /// <param name="mv2"></param>
         /// <returns></returns>
-        public static IEnumerable<IndexScalarRecord<T>> GetGbtEAcpIdScalarPairs<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2)
+        public static IEnumerable<KeyValuePair<ulong, T>> GetGbtEAcpIdScalarPairs<T>(this RGaMultivector<T> mv1, RGaMultivector<T> mv2)
         {
-            var stack = GeoGbtProductsStack2<T>.Create(mv1, mv2);
+            var stack = RGaGbtProductsStack2<T>.Create(mv1, mv2);
 
             return stack.GetEAcpIdScalarRecords();
         }
@@ -157,54 +151,20 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         /// <param name="mv1"></param>
         /// <param name="mv2"></param>
         /// <returns></returns>
-        public static IEnumerable<IndexScalarRecord<T>> GetGbtECpIdScalarPairs<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2)
+        public static IEnumerable<KeyValuePair<ulong, T>> GetGbtECpIdScalarPairs<T>(this RGaMultivector<T> mv1, RGaMultivector<T> mv2)
         {
-            var stack = GeoGbtProductsStack2<T>.Create(mv1, mv2);
+            var stack = RGaGbtProductsStack2<T>.Create(mv1, mv2);
 
             return stack.GetECpIdScalarRecords();
         }
 
-        public static IEnumerable<IndexScalarRecord<T>> GetGbtENorm2IdScalarPairs<T>(this GaMultivector<T> mv)
+        public static IEnumerable<KeyValuePair<ulong, T>> GetGbtENorm2IdScalarPairs<T>(this RGaMultivector<T> mv)
         {
-            var stack = GeoGbtProductsStack2<T>.Create(mv, mv.Reverse());
+            var stack = RGaGbtProductsStack2<T>.Create(mv, mv.Reverse());
 
             return stack.GetESpIdScalarRecords();
         }
-
-        public static T ENorm2<T>(this GaMultivector<T> mv)
-        {
-            return mv.GeometricProcessor.Add(
-                mv.GetGbtENorm2IdScalarPairs().Select(t => t.Scalar)
-            );
-        }
-
-        public static T ENorm<T>(this GaMultivector<T> mv)
-        {
-            var scalarProcessor = mv.GeometricProcessor;
-
-            return scalarProcessor.Sqrt(
-                scalarProcessor.Add(
-                    mv.GetGbtENorm2IdScalarPairs().Select(t => t.Scalar)
-                )
-            );
-        }
-
-        public static IEnumerable<BasisTerm<T>> GetGptEInverseIdScalarPairs<T>(this GaMultivector<T> mv)
-        {
-            var mvReverse = mv.Reverse();
-
-            var stack = GeoGbtProductsStack2<T>.Create(mv, mvReverse);
-
-            var scalarProcessor = mv.GeometricProcessor;
-
-            var norm2 = scalarProcessor.Add(
-                stack
-                    .GetESpIdScalarRecords()
-                    .Select(t => t.Scalar)
-                );
-
-            return (mvReverse / norm2).MultivectorStorage.GetTerms();
-        }
+        
         #endregion
 
 
@@ -212,154 +172,114 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         /// <summary>
         /// Compute the Geometric Product terms of two multivectors on the given basisSet using Guided Binary Traversal
         /// </summary>
-        /// <param name="basisSet"></param>
         /// <param name="mv1"></param>
         /// <param name="mv2"></param>
         /// <returns></returns>
-        public static IEnumerable<IndexScalarRecord<T>> GetGbtGpIdScalarPairs<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2, BasisBladeSet basisSet)
+        public static IEnumerable<KeyValuePair<ulong, T>> GetGbtGpIdScalarPairs<T>(this RGaMultivector<T> mv1, RGaMultivector<T> mv2)
         {
-            var stack = GeoGbtProductsStack2<T>.Create(mv1, mv2);
+            var stack = RGaGbtProductsStack2<T>.Create(mv1, mv2);
 
-            return stack.GetGpIdScalarRecords(basisSet);
+            return stack.GetGpIdScalarRecords();
         }
 
         /// <summary>
         /// Compute the Left Contraction Product terms of two multivectors on the given basisSet using Guided Binary Traversal
         /// </summary>
-        /// <param name="basisSet"></param>
         /// <param name="mv1"></param>
         /// <param name="mv2"></param>
         /// <returns></returns>
-        public static IEnumerable<IndexScalarRecord<T>> GetGbtLcpIdScalarPairs<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2, BasisBladeSet basisSet)
+        public static IEnumerable<KeyValuePair<ulong, T>> GetGbtLcpIdScalarPairs<T>(this RGaMultivector<T> mv1, RGaMultivector<T> mv2)
         {
-            var stack = GeoGbtProductsStack2<T>.Create(mv1, mv2);
+            var stack = RGaGbtProductsStack2<T>.Create(mv1, mv2);
 
-            return stack.GetLcpIdScalarRecords(basisSet);
+            return stack.GetLcpIdScalarRecords();
         }
 
         /// <summary>
         /// Compute the Right Contraction Product terms of two multivectors on the given basisSet using Guided Binary Traversal
         /// </summary>
-        /// <param name="basisSet"></param>
         /// <param name="mv1"></param>
         /// <param name="mv2"></param>
         /// <returns></returns>
-        public static IEnumerable<IndexScalarRecord<T>> GetGbtRcpIdScalarPairs<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2, BasisBladeSet basisSet)
+        public static IEnumerable<KeyValuePair<ulong, T>> GetGbtRcpIdScalarPairs<T>(this RGaMultivector<T> mv1, RGaMultivector<T> mv2)
         {
-            var stack = GeoGbtProductsStack2<T>.Create(mv1, mv2);
+            var stack = RGaGbtProductsStack2<T>.Create(mv1, mv2);
 
-            return stack.GetRcpIdScalarRecords(basisSet);
+            return stack.GetRcpIdScalarRecords();
         }
 
         /// <summary>
         /// Compute the Scalar Product terms of two multivectors on the given basisSet using Guided Binary Traversal
         /// </summary>
-        /// <param name="basisSet"></param>
         /// <param name="mv1"></param>
         /// <param name="mv2"></param>
         /// <returns></returns>
-        public static IEnumerable<IndexScalarRecord<T>> GetGbtSpIdScalarPairs<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2, BasisBladeSet basisSet)
+        public static IEnumerable<KeyValuePair<ulong, T>> GetGbtSpIdScalarPairs<T>(this RGaMultivector<T> mv1, RGaMultivector<T> mv2)
         {
-            var stack = GeoGbtProductsStack2<T>.Create(mv1, mv2);
+            var stack = RGaGbtProductsStack2<T>.Create(mv1, mv2);
 
-            return stack.GetSpIdScalarRecords(basisSet);
+            return stack.GetSpIdScalarRecords();
         }
 
         /// <summary>
         /// Compute the Fat-Dot Product terms of two multivectors on the given basisSet using Guided Binary Traversal
         /// </summary>
-        /// <param name="basisSet"></param>
         /// <param name="mv1"></param>
         /// <param name="mv2"></param>
         /// <returns></returns>
-        public static IEnumerable<IndexScalarRecord<T>> GetGbtFdpIdScalarPairs<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2, BasisBladeSet basisSet)
+        public static IEnumerable<KeyValuePair<ulong, T>> GetGbtFdpIdScalarPairs<T>(this RGaMultivector<T> mv1, RGaMultivector<T> mv2)
         {
-            var stack = GeoGbtProductsStack2<T>.Create(mv1, mv2);
+            var stack = RGaGbtProductsStack2<T>.Create(mv1, mv2);
 
-            return stack.GetFdpIdScalarRecords(basisSet);
+            return stack.GetFdpIdScalarRecords();
         }
 
         /// <summary>
         /// Compute the Hestenes Inner Product terms of two multivectors on the given basisSet using Guided Binary Traversal
         /// </summary>
-        /// <param name="basisSet"></param>
         /// <param name="mv1"></param>
         /// <param name="mv2"></param>
         /// <returns></returns>
-        public static IEnumerable<IndexScalarRecord<T>> GetGbtHipIdScalarPairs<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2, BasisBladeSet basisSet)
+        public static IEnumerable<KeyValuePair<ulong, T>> GetGbtHipIdScalarPairs<T>(this RGaMultivector<T> mv1, RGaMultivector<T> mv2)
         {
-            var stack = GeoGbtProductsStack2<T>.Create(mv1, mv2);
+            var stack = RGaGbtProductsStack2<T>.Create(mv1, mv2);
 
-            return stack.GetHipIdScalarRecords(basisSet);
+            return stack.GetHipIdScalarRecords();
         }
 
         /// <summary>
         /// Compute the Anti-Commutator Product terms of two multivectors on the given basisSet using Guided Binary Traversal
         /// </summary>
-        /// <param name="basisSet"></param>
         /// <param name="mv1"></param>
         /// <param name="mv2"></param>
         /// <returns></returns>
-        public static IEnumerable<IndexScalarRecord<T>> GetGbtAcpIdScalarPairs<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2, BasisBladeSet basisSet)
+        public static IEnumerable<KeyValuePair<ulong, T>> GetGbtAcpIdScalarPairs<T>(this RGaMultivector<T> mv1, RGaMultivector<T> mv2)
         {
-            var stack = GeoGbtProductsStack2<T>.Create(mv1, mv2);
+            var stack = RGaGbtProductsStack2<T>.Create(mv1, mv2);
 
-            return stack.GetAcpIdScalarRecords(basisSet);
+            return stack.GetAcpIdScalarRecords();
         }
 
         /// <summary>
         /// Compute the Commutator Product terms of two multivectors on the given basisSet using Guided Binary Traversal
         /// </summary>
-        /// <param name="basisSet"></param>
         /// <param name="mv1"></param>
         /// <param name="mv2"></param>
         /// <returns></returns>
-        public static IEnumerable<IndexScalarRecord<T>> GetGbtCpIdScalarPairs<T>(this GaMultivector<T> mv1, GaMultivector<T> mv2, BasisBladeSet basisSet)
+        public static IEnumerable<KeyValuePair<ulong, T>> GetGbtCpIdScalarPairs<T>(this RGaMultivector<T> mv1, RGaMultivector<T> mv2)
         {
-            var stack = GeoGbtProductsStack2<T>.Create(mv1, mv2);
+            var stack = RGaGbtProductsStack2<T>.Create(mv1, mv2);
 
-            return stack.GetCpIdScalarRecords(basisSet);
+            return stack.GetCpIdScalarRecords();
         }
 
-        public static IEnumerable<IndexScalarRecord<T>> GetGbtNorm2IdScalarPairs<T>(this GaMultivector<T> mv, BasisBladeSet basisSet)
+        public static IEnumerable<KeyValuePair<ulong, T>> GetGbtNorm2IdScalarPairs<T>(this RGaMultivector<T> mv)
         {
-            var stack = GeoGbtProductsStack2<T>.Create(mv, mv.Reverse());
+            var stack = RGaGbtProductsStack2<T>.Create(mv, mv.Reverse());
 
-            return stack.GetSpIdScalarRecords(basisSet);
+            return stack.GetSpIdScalarRecords();
         }
-
-        public static T Norm2<T>(this GaMultivector<T> mv, BasisBladeSet basisSet)
-        {
-            return mv.GeometricProcessor.Add(
-                mv.GetGbtNorm2IdScalarPairs(basisSet).Select(t => t.Scalar)
-            );
-        }
-
-        public static T Norm<T>(this GaMultivector<T> mv, BasisBladeSet basisSet)
-        {
-            var scalarProcessor = mv.GeometricProcessor;
-
-            return scalarProcessor.Sqrt(scalarProcessor.Add(
-                mv.GetGbtNorm2IdScalarPairs(basisSet).Select(t => t.Scalar)
-            ));
-        }
-
-        public static IEnumerable<BasisTerm<T>> GetGptInverseIdScalarPairs<T>(this GaMultivector<T> mv, BasisBladeSet basisSet)
-        {
-            var mvReverse = mv.Reverse();
-
-            var stack = GeoGbtProductsStack2<T>.Create(mv, mvReverse);
-
-            var scalarProcessor = mv.GeometricProcessor;
-
-            var norm2 = scalarProcessor.Add(
-                stack
-                    .GetSpIdScalarRecords(basisSet)
-                    .Select(t => t.Scalar)
-                );
-
-            return (mvReverse / norm2).MultivectorStorage.GetTerms();
-        }
+        
         #endregion
 
 
@@ -542,13 +462,13 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
 
         //public static T Norm2<T>(this Multivector<T> mv, GeoOmChangeOfBasis<T> basisSet)
         //{
-        //    return mv.GetGbtNorm2Terms(basisSet).Select(t => t.Scalar).Sum();
+        //    return mv.GetGbtNorm2Terms().Select(t => t.Scalar).Sum();
         //}
 
         //public static T Norm<T>(this Multivector<T> mv, GeoOmChangeOfBasis<T> basisSet)
         //{
         //    return Math.Sqrt(
-        //        mv.GetGbtNorm2Terms(basisSet).Select(t => t.Scalar).Sum()
+        //        mv.GetGbtNorm2Terms().Select(t => t.Scalar).Sum()
         //    );
         //}
 
@@ -865,79 +785,79 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         //#region Euclidean bilinear products on Sparse Array Represntation Multivectors
         //public static GeoNumSarMultivector Op<T>(this GeoNumSarMultivector mv1, GeoNumSarMultivector mv2)
         //{
-        //    if (mv1.GaSpaceDimension != mv2.GaSpaceDimension)
+        //    if (mv1.GaSpaceDimensions != mv2.GaSpaceDimensions)
         //        throw new GeoNumericsException("Multivector size mismatch");
 
-        //    return mv1.GetGbtOpTerms(mv2).SumAsSarMultivector(mv1.VSpaceDimension);
+        //    return mv1.GetGbtOpTerms(mv2).SumAsSarMultivector(mv1.VSpaceDimensions);
         //}
 
         //public static GeoNumSarMultivector EGp<T>(this GeoNumSarMultivector mv1, GeoNumSarMultivector mv2)
         //{
-        //    if (mv1.GaSpaceDimension != mv2.GaSpaceDimension)
+        //    if (mv1.GaSpaceDimensions != mv2.GaSpaceDimensions)
         //        throw new GeoNumericsException("Multivector size mismatch");
 
-        //    return mv1.GetGbtEGpTerms(mv2).SumAsSarMultivector(mv1.VSpaceDimension);
+        //    return mv1.GetGbtEGpTerms(mv2).SumAsSarMultivector(mv1.VSpaceDimensions);
         //}
 
         //public static GeoNumSarMultivector ESp<T>(this GeoNumSarMultivector mv1, GeoNumSarMultivector mv2)
         //{
-        //    if (mv1.GaSpaceDimension != mv2.GaSpaceDimension)
+        //    if (mv1.GaSpaceDimensions != mv2.GaSpaceDimensions)
         //        throw new GeoNumericsException("Multivector size mismatch");
 
-        //    return mv1.GetGbtESpTerms(mv2).SumAsSarMultivector(mv1.VSpaceDimension);
+        //    return mv1.GetGbtESpTerms(mv2).SumAsSarMultivector(mv1.VSpaceDimensions);
         //}
 
         //public static GeoNumSarMultivector ELcp<T>(this GeoNumSarMultivector mv1, GeoNumSarMultivector mv2)
         //{
-        //    if (mv1.GaSpaceDimension != mv2.GaSpaceDimension)
+        //    if (mv1.GaSpaceDimensions != mv2.GaSpaceDimensions)
         //        throw new GeoNumericsException("Multivector size mismatch");
 
-        //    return mv1.GetGbtELcpTerms(mv2).SumAsSarMultivector(mv1.VSpaceDimension);
+        //    return mv1.GetGbtELcpTerms(mv2).SumAsSarMultivector(mv1.VSpaceDimensions);
         //}
 
         //public static GeoNumSarMultivector ERcp<T>(this GeoNumSarMultivector mv1, GeoNumSarMultivector mv2)
         //{
-        //    if (mv1.GaSpaceDimension != mv2.GaSpaceDimension)
+        //    if (mv1.GaSpaceDimensions != mv2.GaSpaceDimensions)
         //        throw new GeoNumericsException("Multivector size mismatch");
 
-        //    return mv1.GetGbtERcpTerms(mv2).SumAsSarMultivector(mv1.VSpaceDimension);
+        //    return mv1.GetGbtERcpTerms(mv2).SumAsSarMultivector(mv1.VSpaceDimensions);
         //}
 
         //public static GeoNumSarMultivector EFdp<T>(this GeoNumSarMultivector mv1, GeoNumSarMultivector mv2)
         //{
-        //    if (mv1.GaSpaceDimension != mv2.GaSpaceDimension)
+        //    if (mv1.GaSpaceDimensions != mv2.GaSpaceDimensions)
         //        throw new GeoNumericsException("Multivector size mismatch");
 
-        //    return mv1.GetGbtEFdpTerms(mv2).SumAsSarMultivector(mv1.VSpaceDimension);
+        //    return mv1.GetGbtEFdpTerms(mv2).SumAsSarMultivector(mv1.VSpaceDimensions);
         //}
 
         //public static GeoNumSarMultivector EHip<T>(this GeoNumSarMultivector mv1, GeoNumSarMultivector mv2)
         //{
-        //    if (mv1.GaSpaceDimension != mv2.GaSpaceDimension)
+        //    if (mv1.GaSpaceDimensions != mv2.GaSpaceDimensions)
         //        throw new GeoNumericsException("Multivector size mismatch");
 
-        //    return mv1.GetGbtEHipTerms(mv2).SumAsSarMultivector(mv1.VSpaceDimension);
+        //    return mv1.GetGbtEHipTerms(mv2).SumAsSarMultivector(mv1.VSpaceDimensions);
         //}
 
         //public static GeoNumSarMultivector EAcp<T>(this GeoNumSarMultivector mv1, GeoNumSarMultivector mv2)
         //{
-        //    if (mv1.GaSpaceDimension != mv2.GaSpaceDimension)
+        //    if (mv1.GaSpaceDimensions != mv2.GaSpaceDimensions)
         //        throw new GeoNumericsException("Multivector size mismatch");
 
-        //    return mv1.GetGbtEAcpTerms(mv2).SumAsSarMultivector(mv1.VSpaceDimension);
+        //    return mv1.GetGbtEAcpTerms(mv2).SumAsSarMultivector(mv1.VSpaceDimensions);
         //}
 
         //public static GeoNumSarMultivector ECp<T>(this GeoNumSarMultivector mv1, GeoNumSarMultivector mv2)
         //{
-        //    if (mv1.GaSpaceDimension != mv2.GaSpaceDimension)
+        //    if (mv1.GaSpaceDimensions != mv2.GaSpaceDimensions)
         //        throw new GeoNumericsException("Multivector size mismatch");
 
-        //    return mv1.GetGbtECpTerms(mv2).SumAsSarMultivector(mv1.VSpaceDimension);
+        //    return mv1.GetGbtECpTerms(mv2).SumAsSarMultivector(mv1.VSpaceDimensions);
         //}
 
         //public static GeoNumSarMultivector EInverse<T>(this GeoNumSarMultivector mv)
         //{
-        //    return mv.GetGptEInverseTerms().SumAsSarMultivector(mv.VSpaceDimension);
+        //    return mv.GetGptEInverseTerms().SumAsSarMultivector(mv.VSpaceDimensions);
         //}
         //#endregion
 
@@ -945,79 +865,79 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         //#region Euclidean bilinear products on Dense Graded Represntation Multivectors
         //public static GeoNumDgrMultivector Op<T>(this GeoNumDgrMultivector mv1, GeoNumDgrMultivector mv2)
         //{
-        //    if (mv1.GaSpaceDimension != mv2.GaSpaceDimension)
+        //    if (mv1.GaSpaceDimensions != mv2.GaSpaceDimensions)
         //        throw new GeoNumericsException("Multivector size mismatch");
 
-        //    return mv1.GetGbtOpTerms(mv2).SumAsDgrMultivector(mv1.VSpaceDimension);
+        //    return mv1.GetGbtOpTerms(mv2).SumAsDgrMultivector(mv1.VSpaceDimensions);
         //}
 
         //public static GeoNumDgrMultivector EGp<T>(this GeoNumDgrMultivector mv1, GeoNumDgrMultivector mv2)
         //{
-        //    if (mv1.GaSpaceDimension != mv2.GaSpaceDimension)
+        //    if (mv1.GaSpaceDimensions != mv2.GaSpaceDimensions)
         //        throw new GeoNumericsException("Multivector size mismatch");
 
-        //    return mv1.GetGbtEGpTerms(mv2).SumAsDgrMultivector(mv1.VSpaceDimension);
+        //    return mv1.GetGbtEGpTerms(mv2).SumAsDgrMultivector(mv1.VSpaceDimensions);
         //}
 
         //public static GeoNumDgrMultivector ESp<T>(this GeoNumDgrMultivector mv1, GeoNumDgrMultivector mv2)
         //{
-        //    if (mv1.GaSpaceDimension != mv2.GaSpaceDimension)
+        //    if (mv1.GaSpaceDimensions != mv2.GaSpaceDimensions)
         //        throw new GeoNumericsException("Multivector size mismatch");
 
-        //    return mv1.GetGbtESpTerms(mv2).SumAsDgrMultivector(mv1.VSpaceDimension);
+        //    return mv1.GetGbtESpTerms(mv2).SumAsDgrMultivector(mv1.VSpaceDimensions);
         //}
 
         //public static GeoNumDgrMultivector ELcp<T>(this GeoNumDgrMultivector mv1, GeoNumDgrMultivector mv2)
         //{
-        //    if (mv1.GaSpaceDimension != mv2.GaSpaceDimension)
+        //    if (mv1.GaSpaceDimensions != mv2.GaSpaceDimensions)
         //        throw new GeoNumericsException("Multivector size mismatch");
 
-        //    return mv1.GetGbtELcpTerms(mv2).SumAsDgrMultivector(mv1.VSpaceDimension);
+        //    return mv1.GetGbtELcpTerms(mv2).SumAsDgrMultivector(mv1.VSpaceDimensions);
         //}
 
         //public static GeoNumDgrMultivector ERcp<T>(this GeoNumDgrMultivector mv1, GeoNumDgrMultivector mv2)
         //{
-        //    if (mv1.GaSpaceDimension != mv2.GaSpaceDimension)
+        //    if (mv1.GaSpaceDimensions != mv2.GaSpaceDimensions)
         //        throw new GeoNumericsException("Multivector size mismatch");
 
-        //    return mv1.GetGbtERcpTerms(mv2).SumAsDgrMultivector(mv1.VSpaceDimension);
+        //    return mv1.GetGbtERcpTerms(mv2).SumAsDgrMultivector(mv1.VSpaceDimensions);
         //}
 
         //public static GeoNumDgrMultivector EFdp<T>(this GeoNumDgrMultivector mv1, GeoNumDgrMultivector mv2)
         //{
-        //    if (mv1.GaSpaceDimension != mv2.GaSpaceDimension)
+        //    if (mv1.GaSpaceDimensions != mv2.GaSpaceDimensions)
         //        throw new GeoNumericsException("Multivector size mismatch");
 
-        //    return mv1.GetGbtEFdpTerms(mv2).SumAsDgrMultivector(mv1.VSpaceDimension);
+        //    return mv1.GetGbtEFdpTerms(mv2).SumAsDgrMultivector(mv1.VSpaceDimensions);
         //}
 
         //public static GeoNumDgrMultivector EHip<T>(this GeoNumDgrMultivector mv1, GeoNumDgrMultivector mv2)
         //{
-        //    if (mv1.GaSpaceDimension != mv2.GaSpaceDimension)
+        //    if (mv1.GaSpaceDimensions != mv2.GaSpaceDimensions)
         //        throw new GeoNumericsException("Multivector size mismatch");
 
-        //    return mv1.GetGbtEHipTerms(mv2).SumAsDgrMultivector(mv1.VSpaceDimension);
+        //    return mv1.GetGbtEHipTerms(mv2).SumAsDgrMultivector(mv1.VSpaceDimensions);
         //}
 
         //public static GeoNumDgrMultivector EAcp<T>(this GeoNumDgrMultivector mv1, GeoNumDgrMultivector mv2)
         //{
-        //    if (mv1.GaSpaceDimension != mv2.GaSpaceDimension)
+        //    if (mv1.GaSpaceDimensions != mv2.GaSpaceDimensions)
         //        throw new GeoNumericsException("Multivector size mismatch");
 
-        //    return mv1.GetGbtEAcpTerms(mv2).SumAsDgrMultivector(mv1.VSpaceDimension);
+        //    return mv1.GetGbtEAcpTerms(mv2).SumAsDgrMultivector(mv1.VSpaceDimensions);
         //}
 
         //public static GeoNumDgrMultivector ECp<T>(this GeoNumDgrMultivector mv1, GeoNumDgrMultivector mv2)
         //{
-        //    if (mv1.GaSpaceDimension != mv2.GaSpaceDimension)
+        //    if (mv1.GaSpaceDimensions != mv2.GaSpaceDimensions)
         //        throw new GeoNumericsException("Multivector size mismatch");
 
-        //    return mv1.GetGbtECpTerms(mv2).SumAsDgrMultivector(mv1.VSpaceDimension);
+        //    return mv1.GetGbtECpTerms(mv2).SumAsDgrMultivector(mv1.VSpaceDimensions);
         //}
 
         //public static GeoNumDgrMultivector EInverse<T>(this GeoNumDgrMultivector mv)
         //{
-        //    return mv.GetGptEInverseTerms().SumAsDgrMultivector(mv.VSpaceDimension);
+        //    return mv.GetGptEInverseTerms().SumAsDgrMultivector(mv.VSpaceDimensions);
         //}
         //#endregion
 
@@ -1025,79 +945,79 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         //#region Euclidean bilinear products on Dense Array Represntation Multivectors
         //public static GeoNumDarMultivector Op<T>(this GeoNumDarMultivector mv1, GeoNumDarMultivector mv2)
         //{
-        //    if (mv1.GaSpaceDimension != mv2.GaSpaceDimension)
+        //    if (mv1.GaSpaceDimensions != mv2.GaSpaceDimensions)
         //        throw new GeoNumericsException("Multivector size mismatch");
 
-        //    return mv1.GetGbtOpTerms(mv2).SumAsDarMultivector(mv1.VSpaceDimension);
+        //    return mv1.GetGbtOpTerms(mv2).SumAsDarMultivector(mv1.VSpaceDimensions);
         //}
 
         //public static GeoNumDarMultivector EGp<T>(this GeoNumDarMultivector mv1, GeoNumDarMultivector mv2)
         //{
-        //    if (mv1.GaSpaceDimension != mv2.GaSpaceDimension)
+        //    if (mv1.GaSpaceDimensions != mv2.GaSpaceDimensions)
         //        throw new GeoNumericsException("Multivector size mismatch");
 
-        //    return mv1.GetGbtEGpTerms(mv2).SumAsDarMultivector(mv1.VSpaceDimension);
+        //    return mv1.GetGbtEGpTerms(mv2).SumAsDarMultivector(mv1.VSpaceDimensions);
         //}
 
         //public static GeoNumDarMultivector ESp<T>(this GeoNumDarMultivector mv1, GeoNumDarMultivector mv2)
         //{
-        //    if (mv1.GaSpaceDimension != mv2.GaSpaceDimension)
+        //    if (mv1.GaSpaceDimensions != mv2.GaSpaceDimensions)
         //        throw new GeoNumericsException("Multivector size mismatch");
 
-        //    return mv1.GetGbtESpTerms(mv2).SumAsDarMultivector(mv1.VSpaceDimension);
+        //    return mv1.GetGbtESpTerms(mv2).SumAsDarMultivector(mv1.VSpaceDimensions);
         //}
 
         //public static GeoNumDarMultivector ELcp<T>(this GeoNumDarMultivector mv1, GeoNumDarMultivector mv2)
         //{
-        //    if (mv1.GaSpaceDimension != mv2.GaSpaceDimension)
+        //    if (mv1.GaSpaceDimensions != mv2.GaSpaceDimensions)
         //        throw new GeoNumericsException("Multivector size mismatch");
 
-        //    return mv1.GetGbtELcpTerms(mv2).SumAsDarMultivector(mv1.VSpaceDimension);
+        //    return mv1.GetGbtELcpTerms(mv2).SumAsDarMultivector(mv1.VSpaceDimensions);
         //}
 
         //public static GeoNumDarMultivector ERcp<T>(this GeoNumDarMultivector mv1, GeoNumDarMultivector mv2)
         //{
-        //    if (mv1.GaSpaceDimension != mv2.GaSpaceDimension)
+        //    if (mv1.GaSpaceDimensions != mv2.GaSpaceDimensions)
         //        throw new GeoNumericsException("Multivector size mismatch");
 
-        //    return mv1.GetGbtERcpTerms(mv2).SumAsDarMultivector(mv1.VSpaceDimension);
+        //    return mv1.GetGbtERcpTerms(mv2).SumAsDarMultivector(mv1.VSpaceDimensions);
         //}
 
         //public static GeoNumDarMultivector EFdp<T>(this GeoNumDarMultivector mv1, GeoNumDarMultivector mv2)
         //{
-        //    if (mv1.GaSpaceDimension != mv2.GaSpaceDimension)
+        //    if (mv1.GaSpaceDimensions != mv2.GaSpaceDimensions)
         //        throw new GeoNumericsException("Multivector size mismatch");
 
-        //    return mv1.GetGbtEFdpTerms(mv2).SumAsDarMultivector(mv1.VSpaceDimension);
+        //    return mv1.GetGbtEFdpTerms(mv2).SumAsDarMultivector(mv1.VSpaceDimensions);
         //}
 
         //public static GeoNumDarMultivector EHip<T>(this GeoNumDarMultivector mv1, GeoNumDarMultivector mv2)
         //{
-        //    if (mv1.GaSpaceDimension != mv2.GaSpaceDimension)
+        //    if (mv1.GaSpaceDimensions != mv2.GaSpaceDimensions)
         //        throw new GeoNumericsException("Multivector size mismatch");
 
-        //    return mv1.GetGbtEHipTerms(mv2).SumAsDarMultivector(mv1.VSpaceDimension);
+        //    return mv1.GetGbtEHipTerms(mv2).SumAsDarMultivector(mv1.VSpaceDimensions);
         //}
 
         //public static GeoNumDarMultivector EAcp<T>(this GeoNumDarMultivector mv1, GeoNumDarMultivector mv2)
         //{
-        //    if (mv1.GaSpaceDimension != mv2.GaSpaceDimension)
+        //    if (mv1.GaSpaceDimensions != mv2.GaSpaceDimensions)
         //        throw new GeoNumericsException("Multivector size mismatch");
 
-        //    return mv1.GetGbtEAcpTerms(mv2).SumAsDarMultivector(mv1.VSpaceDimension);
+        //    return mv1.GetGbtEAcpTerms(mv2).SumAsDarMultivector(mv1.VSpaceDimensions);
         //}
 
         //public static GeoNumDarMultivector ECp<T>(this GeoNumDarMultivector mv1, GeoNumDarMultivector mv2)
         //{
-        //    if (mv1.GaSpaceDimension != mv2.GaSpaceDimension)
+        //    if (mv1.GaSpaceDimensions != mv2.GaSpaceDimensions)
         //        throw new GeoNumericsException("Multivector size mismatch");
 
-        //    return mv1.GetGbtECpTerms(mv2).SumAsDarMultivector(mv1.VSpaceDimension);
+        //    return mv1.GetGbtECpTerms(mv2).SumAsDarMultivector(mv1.VSpaceDimensions);
         //}
 
         //public static GeoNumDarMultivector EInverse<T>(this GeoNumDarMultivector mv)
         //{
-        //    return mv.GetGptEInverseTerms().SumAsDarMultivector(mv.VSpaceDimension);
+        //    return mv.GetGptEInverseTerms().SumAsDarMultivector(mv.VSpaceDimensions);
         //}
         //#endregion
 
@@ -1105,71 +1025,71 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         //#region Orthogonal basisSet bilinear products on Sparse Array Represntation Multivectors
         //public static GeoNumSarMultivector Gp<T>(this GeoNumSarMultivector mv1, GeoNumSarMultivector mv2, GeoBasesSignature basisSet)
         //{
-        //    if (mv1.GaSpaceDimension != mv2.GaSpaceDimension)
+        //    if (mv1.GaSpaceDimensions != mv2.GaSpaceDimensions)
         //        throw new GeoNumericsException("Multivector size mismatch");
 
-        //    return mv1.GetGbtGpTerms(mv2, basisSet).SumAsSarMultivector(mv1.VSpaceDimension);
+        //    return mv1.GetGbtGpTerms(mv2, basisSet).SumAsSarMultivector(mv1.VSpaceDimensions);
         //}
 
         //public static GeoNumSarMultivector Sp<T>(this GeoNumSarMultivector mv1, GeoNumSarMultivector mv2, GeoBasesSignature basisSet)
         //{
-        //    if (mv1.GaSpaceDimension != mv2.GaSpaceDimension)
+        //    if (mv1.GaSpaceDimensions != mv2.GaSpaceDimensions)
         //        throw new GeoNumericsException("Multivector size mismatch");
 
-        //    return mv1.GetGbtSpTerms(mv2, basisSet).SumAsSarMultivector(mv1.VSpaceDimension);
+        //    return mv1.GetGbtSpTerms(mv2, basisSet).SumAsSarMultivector(mv1.VSpaceDimensions);
         //}
 
         //public static GeoNumSarMultivector Lcp<T>(this GeoNumSarMultivector mv1, GeoNumSarMultivector mv2, GeoBasesSignature basisSet)
         //{
-        //    if (mv1.GaSpaceDimension != mv2.GaSpaceDimension)
+        //    if (mv1.GaSpaceDimensions != mv2.GaSpaceDimensions)
         //        throw new GeoNumericsException("Multivector size mismatch");
 
-        //    return mv1.GetGbtLcpTerms(mv2, basisSet).SumAsSarMultivector(mv1.VSpaceDimension);
+        //    return mv1.GetGbtLcpTerms(mv2, basisSet).SumAsSarMultivector(mv1.VSpaceDimensions);
         //}
 
         //public static GeoNumSarMultivector Rcp<T>(this GeoNumSarMultivector mv1, GeoNumSarMultivector mv2, GeoBasesSignature basisSet)
         //{
-        //    if (mv1.GaSpaceDimension != mv2.GaSpaceDimension)
+        //    if (mv1.GaSpaceDimensions != mv2.GaSpaceDimensions)
         //        throw new GeoNumericsException("Multivector size mismatch");
 
-        //    return mv1.GetGbtRcpTerms(mv2, basisSet).SumAsSarMultivector(mv1.VSpaceDimension);
+        //    return mv1.GetGbtRcpTerms(mv2, basisSet).SumAsSarMultivector(mv1.VSpaceDimensions);
         //}
 
         //public static GeoNumSarMultivector Fdp<T>(this GeoNumSarMultivector mv1, GeoNumSarMultivector mv2, GeoBasesSignature basisSet)
         //{
-        //    if (mv1.GaSpaceDimension != mv2.GaSpaceDimension)
+        //    if (mv1.GaSpaceDimensions != mv2.GaSpaceDimensions)
         //        throw new GeoNumericsException("Multivector size mismatch");
 
-        //    return mv1.GetGbtFdpTerms(mv2, basisSet).SumAsSarMultivector(mv1.VSpaceDimension);
+        //    return mv1.GetGbtFdpTerms(mv2, basisSet).SumAsSarMultivector(mv1.VSpaceDimensions);
         //}
 
         //public static GeoNumSarMultivector Hip<T>(this GeoNumSarMultivector mv1, GeoNumSarMultivector mv2, GeoBasesSignature basisSet)
         //{
-        //    if (mv1.GaSpaceDimension != mv2.GaSpaceDimension)
+        //    if (mv1.GaSpaceDimensions != mv2.GaSpaceDimensions)
         //        throw new GeoNumericsException("Multivector size mismatch");
 
-        //    return mv1.GetGbtHipTerms(mv2, basisSet).SumAsSarMultivector(mv1.VSpaceDimension);
+        //    return mv1.GetGbtHipTerms(mv2, basisSet).SumAsSarMultivector(mv1.VSpaceDimensions);
         //}
 
         //public static GeoNumSarMultivector Acp<T>(this GeoNumSarMultivector mv1, GeoNumSarMultivector mv2, GeoBasesSignature basisSet)
         //{
-        //    if (mv1.GaSpaceDimension != mv2.GaSpaceDimension)
+        //    if (mv1.GaSpaceDimensions != mv2.GaSpaceDimensions)
         //        throw new GeoNumericsException("Multivector size mismatch");
 
-        //    return mv1.GetGbtAcpTerms(mv2, basisSet).SumAsSarMultivector(mv1.VSpaceDimension);
+        //    return mv1.GetGbtAcpTerms(mv2, basisSet).SumAsSarMultivector(mv1.VSpaceDimensions);
         //}
 
         //public static GeoNumSarMultivector Cp<T>(this GeoNumSarMultivector mv1, GeoNumSarMultivector mv2, GeoBasesSignature basisSet)
         //{
-        //    if (mv1.GaSpaceDimension != mv2.GaSpaceDimension)
+        //    if (mv1.GaSpaceDimensions != mv2.GaSpaceDimensions)
         //        throw new GeoNumericsException("Multivector size mismatch");
 
-        //    return mv1.GetGbtCpTerms(mv2, basisSet).SumAsSarMultivector(mv1.VSpaceDimension);
+        //    return mv1.GetGbtCpTerms(mv2, basisSet).SumAsSarMultivector(mv1.VSpaceDimensions);
         //}
 
         //public static GeoNumSarMultivector Inverse<T>(this GeoNumSarMultivector mv, GeoBasesSignature basisSet)
         //{
-        //    return mv.GetGptInverseTerms(basisSet).SumAsSarMultivector(mv.VSpaceDimension);
+        //    return mv.GetGptInverseTerms().SumAsSarMultivector(mv.VSpaceDimensions);
         //}
         //#endregion
 
@@ -1177,10 +1097,10 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         //#region Orthogonal basisSet bilinear products on Dense Graded Represntation Multivectors
         //public static GeoNumDgrMultivector Gp<T>(this GeoNumDgrMultivector mv1, GeoNumDgrMultivector mv2, GeoBasesSignature basisSet)
         //{
-        //    if (mv1.VSpaceDimension != mv2.VSpaceDimension)
+        //    if (mv1.VSpaceDimensions != mv2.VSpaceDimensions)
         //        throw new GeoNumericsException("Multivector size mismatch");
 
-        //    var factory = new GeoNumDgrMultivectorFactory(mv1.VSpaceDimension);
+        //    var factory = new GeoNumDgrMultivectorFactory(mv1.VSpaceDimensions);
 
         //    factory.AddGbtGpTerms(mv1, mv2, basisSet);
 
@@ -1189,10 +1109,10 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
 
         //public static GeoNumDgrMultivector Sp<T>(this GeoNumDgrMultivector mv1, GeoNumDgrMultivector mv2, GeoBasesSignature basisSet)
         //{
-        //    if (mv1.VSpaceDimension != mv2.VSpaceDimension)
+        //    if (mv1.VSpaceDimensions != mv2.VSpaceDimensions)
         //        throw new GeoNumericsException("Multivector size mismatch");
 
-        //    var factory = new GeoNumDgrMultivectorFactory(mv1.VSpaceDimension);
+        //    var factory = new GeoNumDgrMultivectorFactory(mv1.VSpaceDimensions);
 
         //    factory.AddGbtSpTerms(mv1, mv2, basisSet);
 
@@ -1201,10 +1121,10 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
 
         //public static GeoNumDgrMultivector Lcp<T>(this GeoNumDgrMultivector mv1, GeoNumDgrMultivector mv2, GeoBasesSignature basisSet)
         //{
-        //    if (mv1.VSpaceDimension != mv2.VSpaceDimension)
+        //    if (mv1.VSpaceDimensions != mv2.VSpaceDimensions)
         //        throw new GeoNumericsException("Multivector size mismatch");
 
-        //    var factory = new GeoNumDgrMultivectorFactory(mv1.VSpaceDimension);
+        //    var factory = new GeoNumDgrMultivectorFactory(mv1.VSpaceDimensions);
 
         //    factory.AddGbtLcpTerms(mv1, mv2, basisSet);
 
@@ -1213,10 +1133,10 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
 
         //public static GeoNumDgrMultivector Rcp<T>(this GeoNumDgrMultivector mv1, GeoNumDgrMultivector mv2, GeoBasesSignature basisSet)
         //{
-        //    if (mv1.VSpaceDimension != mv2.VSpaceDimension)
+        //    if (mv1.VSpaceDimensions != mv2.VSpaceDimensions)
         //        throw new GeoNumericsException("Multivector size mismatch");
 
-        //    var factory = new GeoNumDgrMultivectorFactory(mv1.VSpaceDimension);
+        //    var factory = new GeoNumDgrMultivectorFactory(mv1.VSpaceDimensions);
 
         //    factory.AddGbtRcpTerms(mv1, mv2, basisSet);
 
@@ -1225,10 +1145,10 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
 
         //public static GeoNumDgrMultivector Fdp<T>(this GeoNumDgrMultivector mv1, GeoNumDgrMultivector mv2, GeoBasesSignature basisSet)
         //{
-        //    if (mv1.VSpaceDimension != mv2.VSpaceDimension)
+        //    if (mv1.VSpaceDimensions != mv2.VSpaceDimensions)
         //        throw new GeoNumericsException("Multivector size mismatch");
 
-        //    var factory = new GeoNumDgrMultivectorFactory(mv1.VSpaceDimension);
+        //    var factory = new GeoNumDgrMultivectorFactory(mv1.VSpaceDimensions);
 
         //    factory.AddGbtFdpTerms(mv1, mv2, basisSet);
 
@@ -1237,10 +1157,10 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
 
         //public static GeoNumDgrMultivector Hip<T>(this GeoNumDgrMultivector mv1, GeoNumDgrMultivector mv2, GeoBasesSignature basisSet)
         //{
-        //    if (mv1.VSpaceDimension != mv2.VSpaceDimension)
+        //    if (mv1.VSpaceDimensions != mv2.VSpaceDimensions)
         //        throw new GeoNumericsException("Multivector size mismatch");
 
-        //    var factory = new GeoNumDgrMultivectorFactory(mv1.VSpaceDimension);
+        //    var factory = new GeoNumDgrMultivectorFactory(mv1.VSpaceDimensions);
 
         //    factory.AddGbtHipTerms(mv1, mv2, basisSet);
 
@@ -1249,10 +1169,10 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
 
         //public static GeoNumDgrMultivector Acp<T>(this GeoNumDgrMultivector mv1, GeoNumDgrMultivector mv2, GeoBasesSignature basisSet)
         //{
-        //    if (mv1.VSpaceDimension != mv2.VSpaceDimension)
+        //    if (mv1.VSpaceDimensions != mv2.VSpaceDimensions)
         //        throw new GeoNumericsException("Multivector size mismatch");
 
-        //    var factory = new GeoNumDgrMultivectorFactory(mv1.VSpaceDimension);
+        //    var factory = new GeoNumDgrMultivectorFactory(mv1.VSpaceDimensions);
 
         //    factory.AddGbtAcpTerms(mv1, mv2, basisSet);
 
@@ -1261,10 +1181,10 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
 
         //public static GeoNumDgrMultivector Cp<T>(this GeoNumDgrMultivector mv1, GeoNumDgrMultivector mv2, GeoBasesSignature basisSet)
         //{
-        //    if (mv1.VSpaceDimension != mv2.VSpaceDimension)
+        //    if (mv1.VSpaceDimensions != mv2.VSpaceDimensions)
         //        throw new GeoNumericsException("Multivector size mismatch");
 
-        //    var factory = new GeoNumDgrMultivectorFactory(mv1.VSpaceDimension);
+        //    var factory = new GeoNumDgrMultivectorFactory(mv1.VSpaceDimensions);
 
         //    factory.AddGbtCpTerms(mv1, mv2, basisSet);
 
@@ -1273,7 +1193,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
 
         //public static GeoNumDgrMultivector Inverse<T>(this GeoNumDgrMultivector mv, GeoBasesSignature basisSet)
         //{
-        //    return mv.GetGptInverseTerms(basisSet).SumAsDgrMultivector(mv.VSpaceDimension);
+        //    return mv.GetGptInverseTerms().SumAsDgrMultivector(mv.VSpaceDimensions);
         //}
         //#endregion
 
@@ -1281,71 +1201,71 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         //#region Orthogonal basisSet bilinear products on Dense Array Represntation Multivectors
         //public static GeoNumDarMultivector Gp<T>(this GeoNumDarMultivector mv1, GeoNumDarMultivector mv2, GeoBasesSignature basisSet)
         //{
-        //    if (mv1.GaSpaceDimension != mv2.GaSpaceDimension)
+        //    if (mv1.GaSpaceDimensions != mv2.GaSpaceDimensions)
         //        throw new GeoNumericsException("Multivector size mismatch");
 
-        //    return mv1.GetGbtGpTerms(mv2, basisSet).SumAsDarMultivector(mv1.VSpaceDimension);
+        //    return mv1.GetGbtGpTerms(mv2, basisSet).SumAsDarMultivector(mv1.VSpaceDimensions);
         //}
 
         //public static GeoNumDarMultivector Sp<T>(this GeoNumDarMultivector mv1, GeoNumDarMultivector mv2, GeoBasesSignature basisSet)
         //{
-        //    if (mv1.GaSpaceDimension != mv2.GaSpaceDimension)
+        //    if (mv1.GaSpaceDimensions != mv2.GaSpaceDimensions)
         //        throw new GeoNumericsException("Multivector size mismatch");
 
-        //    return mv1.GetGbtSpTerms(mv2, basisSet).SumAsDarMultivector(mv1.VSpaceDimension);
+        //    return mv1.GetGbtSpTerms(mv2, basisSet).SumAsDarMultivector(mv1.VSpaceDimensions);
         //}
 
         //public static GeoNumDarMultivector Lcp<T>(this GeoNumDarMultivector mv1, GeoNumDarMultivector mv2, GeoBasesSignature basisSet)
         //{
-        //    if (mv1.GaSpaceDimension != mv2.GaSpaceDimension)
+        //    if (mv1.GaSpaceDimensions != mv2.GaSpaceDimensions)
         //        throw new GeoNumericsException("Multivector size mismatch");
 
-        //    return mv1.GetGbtLcpTerms(mv2, basisSet).SumAsDarMultivector(mv1.VSpaceDimension);
+        //    return mv1.GetGbtLcpTerms(mv2, basisSet).SumAsDarMultivector(mv1.VSpaceDimensions);
         //}
 
         //public static GeoNumDarMultivector Rcp<T>(this GeoNumDarMultivector mv1, GeoNumDarMultivector mv2, GeoBasesSignature basisSet)
         //{
-        //    if (mv1.GaSpaceDimension != mv2.GaSpaceDimension)
+        //    if (mv1.GaSpaceDimensions != mv2.GaSpaceDimensions)
         //        throw new GeoNumericsException("Multivector size mismatch");
 
-        //    return mv1.GetGbtRcpTerms(mv2, basisSet).SumAsDarMultivector(mv1.VSpaceDimension);
+        //    return mv1.GetGbtRcpTerms(mv2, basisSet).SumAsDarMultivector(mv1.VSpaceDimensions);
         //}
 
         //public static GeoNumDarMultivector Fdp<T>(this GeoNumDarMultivector mv1, GeoNumDarMultivector mv2, GeoBasesSignature basisSet)
         //{
-        //    if (mv1.GaSpaceDimension != mv2.GaSpaceDimension)
+        //    if (mv1.GaSpaceDimensions != mv2.GaSpaceDimensions)
         //        throw new GeoNumericsException("Multivector size mismatch");
 
-        //    return mv1.GetGbtFdpTerms(mv2, basisSet).SumAsDarMultivector(mv1.VSpaceDimension);
+        //    return mv1.GetGbtFdpTerms(mv2, basisSet).SumAsDarMultivector(mv1.VSpaceDimensions);
         //}
 
         //public static GeoNumDarMultivector Hip<T>(this GeoNumDarMultivector mv1, GeoNumDarMultivector mv2, GeoBasesSignature basisSet)
         //{
-        //    if (mv1.GaSpaceDimension != mv2.GaSpaceDimension)
+        //    if (mv1.GaSpaceDimensions != mv2.GaSpaceDimensions)
         //        throw new GeoNumericsException("Multivector size mismatch");
 
-        //    return mv1.GetGbtHipTerms(mv2, basisSet).SumAsDarMultivector(mv1.VSpaceDimension);
+        //    return mv1.GetGbtHipTerms(mv2, basisSet).SumAsDarMultivector(mv1.VSpaceDimensions);
         //}
 
         //public static GeoNumDarMultivector Acp<T>(this GeoNumDarMultivector mv1, GeoNumDarMultivector mv2, GeoBasesSignature basisSet)
         //{
-        //    if (mv1.GaSpaceDimension != mv2.GaSpaceDimension)
+        //    if (mv1.GaSpaceDimensions != mv2.GaSpaceDimensions)
         //        throw new GeoNumericsException("Multivector size mismatch");
 
-        //    return mv1.GetGbtAcpTerms(mv2, basisSet).SumAsDarMultivector(mv1.VSpaceDimension);
+        //    return mv1.GetGbtAcpTerms(mv2, basisSet).SumAsDarMultivector(mv1.VSpaceDimensions);
         //}
 
         //public static GeoNumDarMultivector Cp<T>(this GeoNumDarMultivector mv1, GeoNumDarMultivector mv2, GeoBasesSignature basisSet)
         //{
-        //    if (mv1.GaSpaceDimension != mv2.GaSpaceDimension)
+        //    if (mv1.GaSpaceDimensions != mv2.GaSpaceDimensions)
         //        throw new GeoNumericsException("Multivector size mismatch");
 
-        //    return mv1.GetGbtCpTerms(mv2, basisSet).SumAsDarMultivector(mv1.VSpaceDimension);
+        //    return mv1.GetGbtCpTerms(mv2, basisSet).SumAsDarMultivector(mv1.VSpaceDimensions);
         //}
 
         //public static GeoNumDarMultivector Inverse<T>(this GeoNumDarMultivector mv, GeoBasesSignature basisSet)
         //{
-        //    return mv.GetGptInverseTerms(basisSet).SumAsDarMultivector(mv.VSpaceDimension);
+        //    return mv.GetGptInverseTerms().SumAsDarMultivector(mv.VSpaceDimensions);
         //}
         //#endregion
     }

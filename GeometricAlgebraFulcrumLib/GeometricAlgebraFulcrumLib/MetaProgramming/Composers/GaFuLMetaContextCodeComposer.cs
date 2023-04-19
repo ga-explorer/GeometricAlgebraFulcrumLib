@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using CodeComposerLib.SyntaxTree;
@@ -146,14 +145,14 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Composers
             = new GaFuLMetaContextCodeComposerOptions();
 
 
-        internal GaFuLMetaContextCodeComposer([NotNull] GaFuLLanguageServerBase languageServer, [NotNull] MetaContext context)
+        internal GaFuLMetaContextCodeComposer(GaFuLLanguageServerBase languageServer, MetaContext context)
         {
             GeoLanguage = languageServer;
             SyntaxList = new SteSyntaxElementsList();
             Context = context;
         }
 
-        internal GaFuLMetaContextCodeComposer([NotNull] GaFuLLanguageServerBase languageServer, [NotNull] MetaContext context, [NotNull] GaFuLMetaContextCodeComposerOptions options)
+        internal GaFuLMetaContextCodeComposer(GaFuLLanguageServerBase languageServer, MetaContext context, GaFuLMetaContextCodeComposerOptions options)
             : this(languageServer, context)
         {
             ComposerOptions.SetOptions(options);
@@ -164,7 +163,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Composers
         /// Used to replace the context by another one. This clears the internal code composer
         /// </summary>
         /// <param name="context"></param>
-        public void SetContext([NotNull] MetaContext context)
+        public void SetContext(MetaContext context)
         {
             SyntaxList.Clear();
 

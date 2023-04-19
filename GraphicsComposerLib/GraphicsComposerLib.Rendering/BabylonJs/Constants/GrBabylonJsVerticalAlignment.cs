@@ -1,8 +1,9 @@
-﻿namespace GraphicsComposerLib.Rendering.BabylonJs.Constants;
-
-public enum GrBabylonJsVerticalAlignment
+﻿namespace GraphicsComposerLib.Rendering.BabylonJs.Constants
 {
-    Bottom,
-    Center,
-    Top
+    public enum GrBabylonJsVerticalAlignment
+    {
+        Bottom,
+        Center,
+        Top
+    }
 }

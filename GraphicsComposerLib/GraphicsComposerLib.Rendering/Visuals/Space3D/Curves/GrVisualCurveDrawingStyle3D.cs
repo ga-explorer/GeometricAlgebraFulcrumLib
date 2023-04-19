@@ -1,8 +1,9 @@
-﻿namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Curves;
-
-public enum GrVisualCurveDrawingStyle3D
+﻿namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Curves
 {
-    Tube,
-    SolidLine,
-    DashedLine
+    public enum GrVisualCurveDrawingStyle3D
+    {
+        Tube,
+        SolidLine,
+        DashedLine
+    }
 }

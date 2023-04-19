@@ -1,11 +1,10 @@
 ﻿using System.Collections.Immutable;
-using GraphicsComposerLib.Geometry.ParametricShapes.Curves;
-using GraphicsComposerLib.Geometry.ParametricShapes.Curves.Sampled;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.Parametric.Curves;
+using GeometricAlgebraFulcrumLib.MathBase.Parametric.Curves.CatmullRom;
+using GeometricAlgebraFulcrumLib.MathBase.Parametric.Curves.Sampled;
 using GraphicsComposerLib.Geometry.SdfShapes;
-using NumericalGeometryLib.BasicMath;
-using NumericalGeometryLib.BasicMath.Tuples;
-using NumericalGeometryLib.BasicMath.Calculus;
-using SixLabors.ImageSharp;
 
 namespace GraphicsComposerLib.Rendering.Colors
 {
@@ -21,7 +20,7 @@ namespace GraphicsComposerLib.Rendering.Colors
                         false
                     )
                     .CreateSampledCurve3D(
-                        new GrParametricCurveTreeOptions3D(
+                        new SampledParametricCurveTreeOptions3D(
                             5d.DegreesToRadians(), 
                             3, 
                             16
@@ -61,13 +60,13 @@ namespace GraphicsComposerLib.Rendering.Colors
 
             if (x.IsInteger()) return ColorList[(int) x];
 
-            var index1 = (int) x.Truncate();
+            var index1 = (int) x.IntegerPart();
             var index2 = index1 + 1;
 
             var c1 = ColorList[index1].ToTuple3D();
             var c2 = ColorList[index2].ToTuple3D();
 
-            return (x - x.Truncate()).Lerp(c1, c2).ToColor();
+            return (x - x.IntegerPart()).Lerp(c1, c2).ToColor();
         }
     }
 }

@@ -1,6 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MetaProgramming.Expressions
 {
@@ -8,11 +7,11 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Expressions
     {
         public MetaContext Context { get; }
 
-        public IScalarAlgebraProcessor<IMetaExpression> ScalarProcessor
+        public IScalarProcessor<IMetaExpression> ScalarProcessor
             => Context.MetaExpressionProcessor;
 
 
-        protected MetaExpressionAtomicFactoryBase([NotNull] MetaContext context)
+        protected MetaExpressionAtomicFactoryBase(MetaContext context)
         {
             Context = context;
         }

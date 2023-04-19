@@ -1,9 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Processors;
 
 namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
 {
@@ -17,10 +17,10 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         private readonly Dictionary<ulong, double> _idScalarDictionary
             = new Dictionary<ulong, double>();
 
-        public static IScalarAlgebraProcessor<double> ScalarProcessor
-            => ScalarAlgebraFloat64Processor.DefaultProcessor;
+        public static IScalarProcessor<double> ScalarProcessor
+            => ScalarProcessorFloat64.DefaultProcessor;
 
-        public BasisBladeSet BasisSet { get; }
+        public RGaFloat64Processor BasisSet { get; }
 
         public int Count
             => _idScalarDictionary.Count;
@@ -36,23 +36,8 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
                 ? value
                 : 0d;
 
-
-        public MultivectorFloat64StorageComposer(uint vSpaceDimension)
-        {
-            BasisSet = BasisBladeSet.CreateEuclidean(vSpaceDimension);
-        }
-
-        public MultivectorFloat64StorageComposer(uint positiveCount, uint negativeCount)
-        {
-            BasisSet = BasisBladeSet.Create(positiveCount, negativeCount);
-        }
-
-        public MultivectorFloat64StorageComposer(uint positiveCount, uint negativeCount, uint zeroCount)
-        {
-            BasisSet = BasisBladeSet.Create(positiveCount, negativeCount, zeroCount);
-        }
-
-        public MultivectorFloat64StorageComposer([NotNull] BasisBladeSet basisSet)
+        
+        public MultivectorFloat64StorageComposer(RGaFloat64Processor basisSet)
         {
             BasisSet = basisSet;
         }
@@ -86,13 +71,13 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             var signature =
                 BasisSet.GpSign(id1, id2);
 
-            if (signature == 0)
+            if (signature.IsZero)
                 return;
 
             var id = id1 ^ id2;
             var scalar = scalar1 * scalar2;
 
-            if (signature < 0)
+            if (signature.IsNegative)
                 scalar = -scalar;
 
             if (_idScalarDictionary.TryGetValue(id, out var oldScalar))
@@ -109,13 +94,13 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             if (id2.ReverseIsNegativeOfBasisBladeId())
                 signature = -signature;
 
-            if (signature == 0)
+            if (signature.IsZero)
                 return;
 
             var id = id1 ^ id2;
             var scalar = scalar1 * scalar2;
 
-            if (signature < 0)
+            if (signature.IsNegative)
                 scalar = -scalar;
 
             if (_idScalarDictionary.TryGetValue(id, out var oldScalar))
@@ -129,13 +114,13 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             var signature =
                 BasisSet.OpSign(id1, id2);
 
-            if (signature == 0)
+            if (signature.IsZero)
                 return;
 
             var id = id1 ^ id2;
             var scalar = scalar1 * scalar2;
 
-            if (signature < 0)
+            if (signature.IsNegative)
                 scalar = -scalar;
 
             if (_idScalarDictionary.TryGetValue(id, out var oldScalar))
@@ -149,12 +134,12 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             var signature =
                 BasisSet.SpSquaredSign(id);
 
-            if (signature == 0)
+            if (signature.IsZero)
                 return;
 
             var scalar = scalar1 * scalar2;
 
-            if (signature < 0)
+            if (signature.IsNegative)
                 scalar = -scalar;
 
             if (_idScalarDictionary.TryGetValue(0, out var oldScalar))
@@ -168,13 +153,13 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             var signature =
                 BasisSet.SpSign(id1, id2);
 
-            if (signature == 0)
+            if (signature.IsZero)
                 return;
 
             var id = id1 ^ id2;
             var scalar = scalar1 * scalar2;
 
-            if (signature < 0)
+            if (signature.IsNegative)
                 scalar = -scalar;
 
             if (_idScalarDictionary.TryGetValue(id, out var oldScalar))
@@ -188,13 +173,13 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             var signature =
                 BasisSet.LcpSign(id1, id2);
 
-            if (signature == 0)
+            if (signature.IsZero)
                 return;
 
             var id = id1 ^ id2;
             var scalar = scalar1 * scalar2;
 
-            if (signature < 0)
+            if (signature.IsNegative)
                 scalar = -scalar;
 
             if (_idScalarDictionary.TryGetValue(id, out var oldScalar))
@@ -208,13 +193,13 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             var signature =
                 BasisSet.RcpSign(id1, id2);
 
-            if (signature == 0)
+            if (signature.IsZero)
                 return;
 
             var id = id1 ^ id2;
             var scalar = scalar1 * scalar2;
 
-            if (signature < 0)
+            if (signature.IsNegative)
                 scalar = -scalar;
 
             if (_idScalarDictionary.TryGetValue(id, out var oldScalar))
@@ -228,13 +213,13 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             var signature =
                 BasisSet.FdpSign(id1, id2);
 
-            if (signature == 0)
+            if (signature.IsZero)
                 return;
 
             var id = id1 ^ id2;
             var scalar = scalar1 * scalar2;
 
-            if (signature < 0)
+            if (signature.IsNegative)
                 scalar = -scalar;
 
             if (_idScalarDictionary.TryGetValue(id, out var oldScalar))
@@ -248,13 +233,13 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             var signature =
                 BasisSet.HipSign(id1, id2);
 
-            if (signature == 0)
+            if (signature.IsZero)
                 return;
 
             var id = id1 ^ id2;
             var scalar = scalar1 * scalar2;
 
-            if (signature < 0)
+            if (signature.IsNegative)
                 scalar = -scalar;
 
             if (_idScalarDictionary.TryGetValue(id, out var oldScalar))
@@ -268,13 +253,13 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             var signature =
                 BasisSet.AcpSign(id1, id2);
 
-            if (signature == 0)
+            if (signature.IsZero)
                 return;
 
             var id = id1 ^ id2;
             var scalar = scalar1 * scalar2;
 
-            if (signature < 0)
+            if (signature.IsNegative)
                 scalar = -scalar;
 
             if (_idScalarDictionary.TryGetValue(id, out var oldScalar))
@@ -288,13 +273,13 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             var signature =
                 BasisSet.CpSign(id1, id2);
 
-            if (signature == 0)
+            if (signature.IsZero)
                 return;
 
             var id = id1 ^ id2;
             var scalar = scalar1 * scalar2;
 
-            if (signature < 0)
+            if (signature.IsNegative)
                 scalar = -scalar;
 
             if (_idScalarDictionary.TryGetValue(id, out var oldScalar))

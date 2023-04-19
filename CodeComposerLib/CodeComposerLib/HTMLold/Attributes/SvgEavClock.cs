@@ -151,12 +151,12 @@ namespace CodeComposerLib.HTMLold.Attributes
 
         public override IHtmlAttributeValue CreateCopy()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public override IHtmlAttributeValue UpdateFrom(IHtmlAttributeValue sourceAttributeValue)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public TParentElement SetToHours(double hoursValue)

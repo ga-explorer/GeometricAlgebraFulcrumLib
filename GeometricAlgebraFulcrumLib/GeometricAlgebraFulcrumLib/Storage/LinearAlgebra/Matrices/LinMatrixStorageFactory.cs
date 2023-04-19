@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.Collections;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records.Restricted;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse;
@@ -16,19 +17,19 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices
     public static class LinMatrixStorageFactory
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static LinMatrixGradedStorageComposer<T> CreateLinMatrixGradedStorageComposer<T>(this IScalarAlgebraProcessor<T> scalarProcessor)
+        public static LinMatrixGradedStorageComposer<T> CreateLinMatrixGradedStorageComposer<T>(this IScalarProcessor<T> scalarProcessor)
         {
             return new LinMatrixGradedStorageComposer<T>(scalarProcessor);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static LinMatrixSparseStorageComposer<T> CreateLinMatrixSparseStorageComposer<T>(this IScalarAlgebraProcessor<T> scalarProcessor)
+        public static LinMatrixSparseStorageComposer<T> CreateLinMatrixSparseStorageComposer<T>(this IScalarProcessor<T> scalarProcessor)
         {
             return new LinMatrixSparseStorageComposer<T>(scalarProcessor);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static LinMatrixDenseStorageComposer<T> CreateLinMatrixDenseStorageComposer<T>(this IScalarAlgebraProcessor<T> scalarProcessor, int count1, int count2)
+        public static LinMatrixDenseStorageComposer<T> CreateLinMatrixDenseStorageComposer<T>(this IScalarProcessor<T> scalarProcessor, int count1, int count2)
         {
             return new LinMatrixDenseStorageComposer<T>(scalarProcessor, count1, count2);
         }
@@ -142,9 +143,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static LinMatrixSingleScalarGradedStorage<T> CreateLinMatrixSingleScalarGradedStorage<T>(this T value, uint grade, IndexPairRecord index)
+        public static LinMatrixSingleScalarGradedStorage<T> CreateLinMatrixSingleScalarGradedStorage<T>(this T value, uint grade, RGaKvIndexPairRecord index)
         {
-            return new LinMatrixSingleScalarGradedStorage<T>(grade, index.Index1, index.Index2, value);
+            return new LinMatrixSingleScalarGradedStorage<T>(grade, index.KvIndex1, index.KvIndex2, value);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -154,9 +155,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static LinMatrixSingleScalarGradedStorage<T> CreateLinMatrixSingleScalarGradedStorage<T>(this uint grade, T value, IndexPairRecord index)
+        public static LinMatrixSingleScalarGradedStorage<T> CreateLinMatrixSingleScalarGradedStorage<T>(this uint grade, T value, RGaKvIndexPairRecord index)
         {
-            return new LinMatrixSingleScalarGradedStorage<T>(grade, index.Index1, index.Index2, value);
+            return new LinMatrixSingleScalarGradedStorage<T>(grade, index.KvIndex1, index.KvIndex2, value);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -184,7 +185,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ILinMatrixGradedStorage<T> CreateLinMatrixGradedStorage<T>(this IEnumerable<GradeIndexPairScalarRecord<T>> gradeIndexScalarRecords)
+        public static ILinMatrixGradedStorage<T> CreateLinMatrixGradedStorage<T>(this IEnumerable<RGaGradeKvIndexPairScalarRecord<T>> gradeIndexScalarRecords)
         {
             return gradeIndexScalarRecords
                 .GroupBy(r => r.Grade)
@@ -192,13 +193,13 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices
                     g => g.Key,
                     g =>
                         g.ToDictionary(
-                            s => new IndexPairRecord(s.Index1, s.Index2),
+                            s => new RGaKvIndexPairRecord(s.KvIndex1, s.KvIndex2),
                             s => s.Scalar
                         )
                 ).CreateLinMatrixGradedStorage();
         }
 
-        public static ILinMatrixGradedStorage<T> CreateLinMatrixGradedStorage<T>(this Dictionary<uint, Dictionary<IndexPairRecord, T>> gradeIndexScalarDictionary)
+        public static ILinMatrixGradedStorage<T> CreateLinMatrixGradedStorage<T>(this Dictionary<uint, Dictionary<RGaKvIndexPairRecord, T>> gradeIndexScalarDictionary)
         {
             if (gradeIndexScalarDictionary.Count == 0 || gradeIndexScalarDictionary.Values.All(d => d.IsNullOrEmpty()))
                 return LinMatrixEmptyGradedStorage<T>.EmptyStorage;
@@ -324,7 +325,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ILinMatrixSingleScalarStorage<T> CreateLinMatrixSingleScalarStorage<T>(this T value, IndexPairRecord index)
+        public static ILinMatrixSingleScalarStorage<T> CreateLinMatrixSingleScalarStorage<T>(this T value, RGaKvIndexPairRecord index)
         {
             var (index1, index2) = index;
 
@@ -334,7 +335,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ILinMatrixSingleScalarStorage<T> CreateLinMatrixSingleScalarStorage<T>(this IndexPairRecord index, T value)
+        public static ILinMatrixSingleScalarStorage<T> CreateLinMatrixSingleScalarStorage<T>(this RGaKvIndexPairRecord index, T value)
         {
             var (index1, index2) = index;
 
@@ -344,7 +345,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ILinMatrixSingleScalarStorage<T> CreateLinMatrixSingleScalarStorage<T>(this KeyValuePair<IndexPairRecord, T> indexValue)
+        public static ILinMatrixSingleScalarStorage<T> CreateLinMatrixSingleScalarStorage<T>(this KeyValuePair<RGaKvIndexPairRecord, T> indexValue)
         {
             var ((index1, index2), value) = indexValue;
 
@@ -354,7 +355,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ILinMatrixSingleScalarStorage<T> CreateLinMatrixSingleScalarStorage<T>(this IndexPairScalarRecord<T> indexValue)
+        public static ILinMatrixSingleScalarStorage<T> CreateLinMatrixSingleScalarStorage<T>(this RGaKvIndexPairScalarRecord<T> indexValue)
         {
             var (index1, index2, value) = indexValue;
 
@@ -364,7 +365,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ILinMatrixSingleScalarStorage<T> CreateLinMatrixSingleScalarStorage<T>(this IndexScalarRecord<T> indexValue)
+        public static ILinMatrixSingleScalarStorage<T> CreateLinMatrixSingleScalarStorage<T>(this RGaKvIndexScalarRecord<T> indexValue)
         {
             var (index, value) = indexValue;
 
@@ -380,7 +381,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static LinMatrixMappedDenseStorage<T> CreateLinMatrixMappedDenseStorage<T>(this ILinMatrixDenseStorage<T> evenDictionaryMatrix, Func<ulong, ulong, IndexPairRecord> indexMapping)
+        public static LinMatrixMappedDenseStorage<T> CreateLinMatrixMappedDenseStorage<T>(this ILinMatrixDenseStorage<T> evenDictionaryMatrix, Func<ulong, ulong, RGaKvIndexPairRecord> indexMapping)
         {
             return new LinMatrixMappedDenseStorage<T>(evenDictionaryMatrix, indexMapping);
         }
@@ -392,7 +393,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static LinMatrixMappedDenseStorage<T> CreateLinMatrixMappedDenseStorage<T>(this ILinMatrixDenseStorage<T> evenDictionaryMatrix, Func<ulong, ulong, IndexPairRecord> indexMapping, Func<ulong, ulong, T, T> indexValueMapping)
+        public static LinMatrixMappedDenseStorage<T> CreateLinMatrixMappedDenseStorage<T>(this ILinMatrixDenseStorage<T> evenDictionaryMatrix, Func<ulong, ulong, RGaKvIndexPairRecord> indexMapping, Func<ulong, ulong, T, T> indexValueMapping)
         {
             return new LinMatrixMappedDenseStorage<T>(evenDictionaryMatrix, indexMapping, indexValueMapping);
         }
@@ -415,13 +416,13 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static LinMatrixSparseStorage<T> CreateLinMatrixSparseStorage<T>(this Dictionary<IndexPairRecord, T> valuesDictionary)
+        public static LinMatrixSparseStorage<T> CreateLinMatrixSparseStorage<T>(this Dictionary<RGaKvIndexPairRecord, T> valuesDictionary)
         {
             return new LinMatrixSparseStorage<T>(valuesDictionary);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ILinMatrixStorage<T> CreateLinMatrixStorage<T>(this IEnumerable<IndexPairScalarRecord<T>> indexScalarRecords)
+        public static ILinMatrixStorage<T> CreateLinMatrixStorage<T>(this IEnumerable<RGaKvIndexPairScalarRecord<T>> indexScalarRecords)
         {
             return indexScalarRecords.ToDictionary(
                 record => record.GetIndexPairRecord(),
@@ -430,7 +431,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ILinMatrixStorage<T> CreateLinMatrixStorage<T>(this Dictionary<IndexPairRecord, T> valuesDictionary)
+        public static ILinMatrixStorage<T> CreateLinMatrixStorage<T>(this Dictionary<RGaKvIndexPairRecord, T> valuesDictionary)
         {
             return valuesDictionary.Count switch
             {
@@ -442,25 +443,25 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ILinMatrixStorage<T> CreateLinMatrixRowStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, ILinVectorStorage<T> array)
+        public static ILinMatrixStorage<T> CreateLinMatrixRowStorage<T>(this IScalarProcessor<T> scalarProcessor, ILinVectorStorage<T> array)
         {
             return array.CreateLinMatrixRowStorage();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ILinMatrixStorage<T> CreateLinMatrixRowStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, ILinMatrixStorage<T> array, int rowIndex)
+        public static ILinMatrixStorage<T> CreateLinMatrixRowStorage<T>(this IScalarProcessor<T> scalarProcessor, ILinMatrixStorage<T> array, int rowIndex)
         {
             return array.GetRow((ulong)rowIndex).CreateLinMatrixRowStorage((ulong)rowIndex);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ILinMatrixStorage<T> CreateLinMatrixColumnStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, ILinVectorStorage<T> array)
+        public static ILinMatrixStorage<T> CreateLinMatrixColumnStorage<T>(this IScalarProcessor<T> scalarProcessor, ILinVectorStorage<T> array)
         {
             return array.CreateLinMatrixColumnStorage();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ILinMatrixStorage<T> CreateLinMatrixColumnStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, ILinMatrixStorage<T> array, int columnIndex)
+        public static ILinMatrixStorage<T> CreateLinMatrixColumnStorage<T>(this IScalarProcessor<T> scalarProcessor, ILinMatrixStorage<T> array, int columnIndex)
         {
             return array.GetColumn((ulong)columnIndex).CreateLinMatrixColumnStorage((ulong)columnIndex);
         }

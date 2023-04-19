@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.Extensions;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records.Restricted;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors;
@@ -14,7 +14,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
     public sealed record LinMatrixSparseStorage<T> :
         ILinMatrixSparseStorage<T>
     {
-        private readonly Dictionary<IndexPairRecord, T> _indexScalarDictionary;
+        private readonly Dictionary<RGaKvIndexPairRecord, T> _indexScalarDictionary;
 
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -38,7 +38,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public T GetScalar(ulong index1, ulong index2)
         {
-            var indexPair = new IndexPairRecord(index1, index2);
+            var indexPair = new RGaKvIndexPairRecord(index1, index2);
 
             return _indexScalarDictionary.TryGetValue(indexPair, out var value)
                 ? value
@@ -46,7 +46,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public T GetScalar(IndexPairRecord index)
+        public T GetScalar(RGaKvIndexPairRecord index)
         {
             return _indexScalarDictionary.TryGetValue(index, out var value)
                 ? value
@@ -56,17 +56,17 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IEnumerable<ulong> GetIndices1()
         {
-            return _indexScalarDictionary.Keys.Select(index => index.Index1).Distinct();
+            return _indexScalarDictionary.Keys.Select(index => index.KvIndex1).Distinct();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IEnumerable<ulong> GetIndices2()
         {
-            return _indexScalarDictionary.Keys.Select(index => index.Index2).Distinct();
+            return _indexScalarDictionary.Keys.Select(index => index.KvIndex2).Distinct();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<IndexPairRecord> GetIndices()
+        public IEnumerable<RGaKvIndexPairRecord> GetIndices()
         {
             return _indexScalarDictionary.Keys;
         }
@@ -80,10 +80,10 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
 
         internal LinMatrixSparseStorage()
         {
-            _indexScalarDictionary = new Dictionary<IndexPairRecord, T>();
+            _indexScalarDictionary = new Dictionary<RGaKvIndexPairRecord, T>();
         }
 
-        internal LinMatrixSparseStorage([NotNull] Dictionary<IndexPairRecord, T> indexScalarDictionary)
+        internal LinMatrixSparseStorage(Dictionary<RGaKvIndexPairRecord, T> indexScalarDictionary)
         {
             _indexScalarDictionary = indexScalarDictionary;
         }
@@ -96,7 +96,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void SetValue(IndexPairRecord index, [NotNull] T value)
+        public void SetValue(RGaKvIndexPairRecord index, T value)
         {
             if (_indexScalarDictionary.ContainsKey(index))
                 _indexScalarDictionary[index] = value;
@@ -105,26 +105,26 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void AddValue(IndexPairRecord index, [NotNull] T value)
+        public void AddValue(RGaKvIndexPairRecord index, T value)
         {
             _indexScalarDictionary.Add(index, value);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool Remove(IndexPairRecord index)
+        public bool Remove(RGaKvIndexPairRecord index)
         {
             return _indexScalarDictionary.Remove(index);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void Remove(params IndexPairRecord[] indexsList)
+        public void Remove(params RGaKvIndexPairRecord[] indexsList)
         {
             foreach (var index in indexsList)
                 _indexScalarDictionary.Remove(index);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void Remove(IEnumerable<IndexPairRecord> indexsList)
+        public void Remove(IEnumerable<RGaKvIndexPairRecord> indexsList)
         {
             foreach (var index in indexsList.ToArray())
                 _indexScalarDictionary.Remove(index);
@@ -139,7 +139,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool ContainsIndex(ulong index1, ulong index2)
         {
-            var indexPair = new IndexPairRecord(index1, index2);
+            var indexPair = new RGaKvIndexPairRecord(index1, index2);
 
             return _indexScalarDictionary.ContainsKey(indexPair);
         }
@@ -147,16 +147,16 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ulong GetMinIndex1()
         {
-            return _indexScalarDictionary.Keys.Select(index => index.Index1).Min();
+            return _indexScalarDictionary.Keys.Select(index => index.KvIndex1).Min();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ulong GetMinIndex2()
         {
-            return _indexScalarDictionary.Keys.Select(index => index.Index2).Min();
+            return _indexScalarDictionary.Keys.Select(index => index.KvIndex2).Min();
         }
 
-        public IndexPairRecord GetMinIndex()
+        public RGaKvIndexPairRecord GetMinIndex()
         {
             if (_indexScalarDictionary.Count == 0)
                 throw new InvalidOperationException();
@@ -173,22 +173,22 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
                     minIndex2 = index2;
             }
 
-            return new IndexPairRecord(minIndex1, minIndex2);
+            return new RGaKvIndexPairRecord(minIndex1, minIndex2);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ulong GetMaxIndex1()
         {
-            return _indexScalarDictionary.Keys.Select(index => index.Index1).Max();
+            return _indexScalarDictionary.Keys.Select(index => index.KvIndex1).Max();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ulong GetMaxIndex2()
         {
-            return _indexScalarDictionary.Keys.Select(index => index.Index2).Max();
+            return _indexScalarDictionary.Keys.Select(index => index.KvIndex2).Max();
         }
 
-        public IndexPairRecord GetMaxIndex()
+        public RGaKvIndexPairRecord GetMaxIndex()
         {
             if (_indexScalarDictionary.Count == 0)
                 throw new InvalidOperationException();
@@ -205,25 +205,25 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
                     maxIndex2 = index2;
             }
 
-            return new IndexPairRecord(maxIndex1, maxIndex2);
+            return new RGaKvIndexPairRecord(maxIndex1, maxIndex2);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool ContainsIndex(IndexPairRecord index)
+        public bool ContainsIndex(RGaKvIndexPairRecord index)
         {
             return _indexScalarDictionary.ContainsKey(index);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool TryGetScalar(IndexPairRecord index, out T value)
+        public bool TryGetScalar(RGaKvIndexPairRecord index, out T value)
         {
             return _indexScalarDictionary.TryGetValue(index, out value);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<IndexPairRecord> GetEmptyIndices(ulong maxCount1, ulong maxCount2)
+        public IEnumerable<RGaKvIndexPairRecord> GetEmptyIndices(ulong maxCount1, ulong maxCount2)
         {
-            return new IndexPairRecord(maxCount1, maxCount2)
+            return new RGaKvIndexPairRecord(maxCount1, maxCount2)
                 .GetIndexPairsInRange()
                 .Except(_indexScalarDictionary.Keys);
         }
@@ -231,11 +231,11 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool TryGetScalar(ulong index1, ulong index2, out T value)
         {
-            return _indexScalarDictionary.TryGetValue(new IndexPairRecord(index1, index2), out value);
+            return _indexScalarDictionary.TryGetValue(new RGaKvIndexPairRecord(index1, index2), out value);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<IndexPairRecord> GetEmptyIndices(IndexPairRecord maxCount)
+        public IEnumerable<RGaKvIndexPairRecord> GetEmptyIndices(RGaKvIndexPairRecord maxCount)
         {
             return maxCount
                 .GetIndexPairsInRange()
@@ -248,9 +248,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
             return _indexScalarDictionary.CreateLinMatrixStorage();
         }
 
-        public ILinMatrixStorage<T> GetPermutation(Func<ulong, ulong, IndexPairRecord> indexMapping)
+        public ILinMatrixStorage<T> GetPermutation(Func<ulong, ulong, RGaKvIndexPairRecord> indexMapping)
         {
-            var indexScalarDictionary = new Dictionary<IndexPairRecord, T>();
+            var indexScalarDictionary = new Dictionary<RGaKvIndexPairRecord, T>();
 
             foreach (var ((index1, index2), scalar) in _indexScalarDictionary)
             {
@@ -262,9 +262,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
             return indexScalarDictionary.CreateLinMatrixStorage();
         }
 
-        public ILinMatrixStorage<T> GetPermutation(Func<IndexPairRecord, IndexPairRecord> indexMapping)
+        public ILinMatrixStorage<T> GetPermutation(Func<RGaKvIndexPairRecord, RGaKvIndexPairRecord> indexMapping)
         {
-            var indexScalarDictionary = new Dictionary<IndexPairRecord, T>();
+            var indexScalarDictionary = new Dictionary<RGaKvIndexPairRecord, T>();
 
             foreach (var (index, scalar) in _indexScalarDictionary)
             {
@@ -288,19 +288,19 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
         public ILinMatrixStorage<T2> MapScalars<T2>(Func<ulong, ulong, T, T2> indexScalarMapping)
         {
             return _indexScalarDictionary
-                .ToDictionary((indexPair, value) => indexScalarMapping(indexPair.Index1, indexPair.Index2, value))
+                .ToDictionary((indexPair, value) => indexScalarMapping(indexPair.KvIndex1, indexPair.KvIndex2, value))
                 .CreateLinMatrixStorage();
         }
 
         public ILinMatrixStorage<T> FilterByIndex(Func<ulong, ulong, bool> indexFilter)
         {
-            var indexScalarDictionary = new Dictionary<IndexPairRecord, T>();
+            var indexScalarDictionary = new Dictionary<RGaKvIndexPairRecord, T>();
 
             foreach (var ((index1, index2), scalar) in _indexScalarDictionary)
             {
                 if (!indexFilter(index1, index2)) continue;
 
-                var index = new IndexPairRecord(index1, index2);
+                var index = new RGaKvIndexPairRecord(index1, index2);
                 
                 indexScalarDictionary.Add(index, scalar);
             }
@@ -310,13 +310,13 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
 
         public ILinMatrixStorage<T> FilterByIndexScalar(Func<ulong, ulong, T, bool> indexScalarFilter)
         {
-            var indexScalarDictionary = new Dictionary<IndexPairRecord, T>();
+            var indexScalarDictionary = new Dictionary<RGaKvIndexPairRecord, T>();
 
             foreach (var ((index1, index2), scalar) in _indexScalarDictionary)
             {
                 if (!indexScalarFilter(index1, index2, scalar)) continue;
 
-                var index = new IndexPairRecord(index1, index2);
+                var index = new RGaKvIndexPairRecord(index1, index2);
                 
                 indexScalarDictionary.Add(index, scalar);
             }
@@ -326,13 +326,13 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
 
         public ILinMatrixStorage<T> FilterByScalar(Func<T, bool> scalarFilter)
         {
-            var indexScalarDictionary = new Dictionary<IndexPairRecord, T>();
+            var indexScalarDictionary = new Dictionary<RGaKvIndexPairRecord, T>();
 
             foreach (var ((index1, index2), scalar) in _indexScalarDictionary)
             {
                 if (!scalarFilter(scalar)) continue;
 
-                var index = new IndexPairRecord(index1, index2);
+                var index = new RGaKvIndexPairRecord(index1, index2);
                 
                 indexScalarDictionary.Add(index, scalar);
             }
@@ -342,11 +342,11 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
 
         public ILinMatrixStorage<T> GetTranspose()
         {
-            var indexScalarDictionary = new Dictionary<IndexPairRecord, T>();
+            var indexScalarDictionary = new Dictionary<RGaKvIndexPairRecord, T>();
 
             foreach (var ((index1, index2), scalar) in _indexScalarDictionary)
             {
-                var index = new IndexPairRecord(index2, index1);
+                var index = new RGaKvIndexPairRecord(index2, index1);
                 
                 indexScalarDictionary.Add(index, scalar);
             }
@@ -354,9 +354,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
             return indexScalarDictionary.CreateLinMatrixStorage();
         }
 
-        public ILinMatrixGradedStorage<T> ToMatrixGradedStorage(Func<ulong, ulong, GradeIndexPairRecord> indexToGradeIndexMapping)
+        public ILinMatrixGradedStorage<T> ToMatrixGradedStorage(Func<ulong, ulong, RGaGradeKvIndexPairRecord> indexToGradeIndexMapping)
         {
-            var gradeIndexScalarDictionary = new Dictionary<uint, Dictionary<IndexPairRecord, T>>();
+            var gradeIndexScalarDictionary = new Dictionary<uint, Dictionary<RGaKvIndexPairRecord, T>>();
 
             foreach (var ((id1, id2), scalar) in _indexScalarDictionary)
             {
@@ -364,11 +364,11 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
 
                 if (!gradeIndexScalarDictionary.TryGetValue(grade, out var indexScalarDictionary))
                 {
-                    indexScalarDictionary = new Dictionary<IndexPairRecord, T>();
+                    indexScalarDictionary = new Dictionary<RGaKvIndexPairRecord, T>();
                     gradeIndexScalarDictionary.Add(grade, indexScalarDictionary);
                 }
 
-                var index = new IndexPairRecord(index1, index2);
+                var index = new RGaKvIndexPairRecord(index1, index2);
 
                 indexScalarDictionary.Add(index, scalar);
             }
@@ -376,9 +376,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
             return gradeIndexScalarDictionary.CreateLinMatrixGradedStorage();
         }
 
-        public ILinMatrixGradedStorage<T> ToMatrixGradedStorage(Func<ulong, ulong, T, GradeIndexPairScalarRecord<T>> indexScalarToGradeIndexScalarMapping)
+        public ILinMatrixGradedStorage<T> ToMatrixGradedStorage(Func<ulong, ulong, T, RGaGradeKvIndexPairScalarRecord<T>> indexScalarToGradeIndexScalarMapping)
         {
-            var gradeIndexScalarDictionary = new Dictionary<uint, Dictionary<IndexPairRecord, T>>();
+            var gradeIndexScalarDictionary = new Dictionary<uint, Dictionary<RGaKvIndexPairRecord, T>>();
 
             foreach (var ((id1, id2), value) in _indexScalarDictionary)
             {
@@ -386,11 +386,11 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
 
                 if (!gradeIndexScalarDictionary.TryGetValue(grade, out var indexScalarDictionary))
                 {
-                    indexScalarDictionary = new Dictionary<IndexPairRecord, T>();
+                    indexScalarDictionary = new Dictionary<RGaKvIndexPairRecord, T>();
                     gradeIndexScalarDictionary.Add(grade, indexScalarDictionary);
                 }
 
-                var index = new IndexPairRecord(index1, index2);
+                var index = new RGaKvIndexPairRecord(index1, index2);
 
                 indexScalarDictionary.Add(index, scalar);
             }
@@ -402,9 +402,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
         public ILinVectorStorage<T> GetRow(ulong index1)
         {
             return _indexScalarDictionary
-                .Where(indexScalar => indexScalar.Key.Index1 == index1)
+                .Where(indexScalar => indexScalar.Key.KvIndex1 == index1)
                 .ToDictionary(
-                    indexScalar => indexScalar.Key.Index2,
+                    indexScalar => indexScalar.Key.KvIndex2,
                     indexScalar => indexScalar.Value
                 ).CreateLinVectorStorage();
         }
@@ -413,14 +413,14 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
         public ILinVectorStorage<T> GetColumn(ulong index2)
         {
             return _indexScalarDictionary
-                .Where(indexScalar => indexScalar.Key.Index1 == index2)
+                .Where(indexScalar => indexScalar.Key.KvIndex1 == index2)
                 .ToDictionary(
-                    indexScalar => indexScalar.Key.Index1,
+                    indexScalar => indexScalar.Key.KvIndex1,
                     indexScalar => indexScalar.Value
                 ).CreateLinVectorStorage();
         }
 
-        public IEnumerable<IndexLinVectorStorageRecord<T>> GetRows()
+        public IEnumerable<RGaKvIndexLinVectorStorageRecord<T>> GetRows()
         {
             var indexPairScalarDictionary = new Dictionary<ulong, Dictionary<ulong, T>>();
 
@@ -436,14 +436,14 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
             }
 
             return indexPairScalarDictionary.Select(
-                pair => new IndexLinVectorStorageRecord<T>(
+                pair => new RGaKvIndexLinVectorStorageRecord<T>(
                     pair.Key, 
                     pair.Value.CreateLinVectorStorage()
                 )
             );
         }
 
-        public IEnumerable<IndexLinVectorStorageRecord<T>> GetRows(Func<ulong, bool> rowIndexFilter)
+        public IEnumerable<RGaKvIndexLinVectorStorageRecord<T>> GetRows(Func<ulong, bool> rowIndexFilter)
         {
             var indexPairScalarDictionary = new Dictionary<ulong, Dictionary<ulong, T>>();
 
@@ -461,14 +461,14 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
             }
 
             return indexPairScalarDictionary.Select(
-                pair => new IndexLinVectorStorageRecord<T>(
+                pair => new RGaKvIndexLinVectorStorageRecord<T>(
                     pair.Key, 
                     pair.Value.CreateLinVectorStorage()
                 )
             );
         }
 
-        public IEnumerable<IndexLinVectorStorageRecord<T>> GetColumns()
+        public IEnumerable<RGaKvIndexLinVectorStorageRecord<T>> GetColumns()
         {
             var indexPairScalarDictionary = new Dictionary<ulong, Dictionary<ulong, T>>();
 
@@ -484,14 +484,14 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
             }
 
             return indexPairScalarDictionary.Select(
-                pair => new IndexLinVectorStorageRecord<T>(
+                pair => new RGaKvIndexLinVectorStorageRecord<T>(
                     pair.Key, 
                     pair.Value.CreateLinVectorStorage()
                 )
             );
         }
 
-        public IEnumerable<IndexLinVectorStorageRecord<T>> GetColumns(Func<ulong, bool> columnIndexFilter)
+        public IEnumerable<RGaKvIndexLinVectorStorageRecord<T>> GetColumns(Func<ulong, bool> columnIndexFilter)
         {
             var indexPairScalarDictionary = new Dictionary<ulong, Dictionary<ulong, T>>();
 
@@ -509,7 +509,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
             }
 
             return indexPairScalarDictionary.Select(
-                pair => new IndexLinVectorStorageRecord<T>(
+                pair => new RGaKvIndexLinVectorStorageRecord<T>(
                     pair.Key, 
                     pair.Value.CreateLinVectorStorage()
                 )
@@ -540,10 +540,10 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<IndexPairScalarRecord<T>> GetIndexScalarRecords()
+        public IEnumerable<RGaKvIndexPairScalarRecord<T>> GetIndexScalarRecords()
         {
             return _indexScalarDictionary.Select(pair => 
-                new IndexPairScalarRecord<T>(pair.Key.Index1, pair.Key.Index2, pair.Value)
+                new RGaKvIndexPairScalarRecord<T>(pair.Key.KvIndex1, pair.Key.KvIndex2, pair.Value)
             );
         }
         
@@ -568,7 +568,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
             return vector ?? LinVectorEmptyStorage<T>.EmptyStorage;
         }
 
-        public ILinVectorStorage<T> CombineRows(IEnumerable<IndexScalarRecord<T>> rowIndexScalarRecords, Func<T, ILinVectorStorage<T>, ILinVectorStorage<T>> scalingFunc, Func<ILinVectorStorage<T>, ILinVectorStorage<T>, ILinVectorStorage<T>> reducingFunc)
+        public ILinVectorStorage<T> CombineRows(IEnumerable<RGaKvIndexScalarRecord<T>> rowIndexScalarRecords,
+            Func<T, ILinVectorStorage<T>, ILinVectorStorage<T>> scalingFunc,
+            Func<ILinVectorStorage<T>, ILinVectorStorage<T>, ILinVectorStorage<T>> reducingFunc)
         {
             ILinVectorStorage<T> vector = null;
 
@@ -608,7 +610,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse
             return vector ?? LinVectorEmptyStorage<T>.EmptyStorage;
         }
 
-        public ILinVectorStorage<T> CombineColumns(IEnumerable<IndexScalarRecord<T>> columnIndexScalarRecords, Func<T, ILinVectorStorage<T>, ILinVectorStorage<T>> scalingFunc, Func<ILinVectorStorage<T>, ILinVectorStorage<T>, ILinVectorStorage<T>> reducingFunc)
+        public ILinVectorStorage<T> CombineColumns(IEnumerable<RGaKvIndexScalarRecord<T>> columnIndexScalarRecords,
+            Func<T, ILinVectorStorage<T>, ILinVectorStorage<T>> scalingFunc,
+            Func<ILinVectorStorage<T>, ILinVectorStorage<T>, ILinVectorStorage<T>> reducingFunc)
         {
             ILinVectorStorage<T> vector = null;
 

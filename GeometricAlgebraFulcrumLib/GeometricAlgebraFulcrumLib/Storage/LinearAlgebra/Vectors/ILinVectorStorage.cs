@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records.Restricted;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 
 namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors
 {
@@ -17,7 +17,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors
 
         T GetScalar(ulong index);
 
-        IEnumerable<IndexScalarRecord<T>> GetIndexScalarRecords();
+        IEnumerable<RGaKvIndexScalarRecord<T>> GetIndexScalarRecords();
 
         bool ContainsIndex(ulong index);
 
@@ -65,9 +65,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors
 
         ILinVectorStorage<T> FilterByScalar(Func<T, bool> scalarFilter);
 
-        ILinVectorGradedStorage<T> ToVectorGradedStorage(Func<ulong, GradeIndexRecord> indexToGradeIndexMapping);
+        ILinVectorGradedStorage<T> ToVectorGradedStorage(Func<ulong, RGaGradeKvIndexRecord> indexToGradeIndexMapping);
 
-        ILinVectorGradedStorage<T> ToVectorGradedStorage(Func<ulong, T, GradeIndexScalarRecord<T>> indexScalarToGradeIndexScalarMapping);
+        ILinVectorGradedStorage<T> ToVectorGradedStorage(Func<ulong, T, RGaGradeKvIndexScalarRecord<T>> indexScalarToGradeIndexScalarMapping);
 
         bool TryGetCompactStorage(out ILinVectorStorage<T> vectorStorage);
     }

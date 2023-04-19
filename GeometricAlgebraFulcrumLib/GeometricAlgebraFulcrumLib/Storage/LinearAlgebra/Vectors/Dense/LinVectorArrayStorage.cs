@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
@@ -32,12 +31,12 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Dense
             ScalarsArray = new T[count];
         }
 
-        internal LinVectorArrayStorage([NotNull] params T[] itemsArray)
+        internal LinVectorArrayStorage(params T[] itemsArray)
         {
             ScalarsArray = itemsArray;
         }
         
-        internal LinVectorArrayStorage([NotNull] IEnumerable<T> itemsList)
+        internal LinVectorArrayStorage(IEnumerable<T> itemsList)
         {
             ScalarsArray = itemsList.ToArray();
         }

@@ -2,7 +2,7 @@
 
 namespace NumericalGeometryLib.Accelerators.BIH.Space2D.Traversal
 {
-    public struct AccBihLineTraversalData2D
+    public readonly struct AccBihLineTraversalData2D
     {
         public double OriginValue { get; }
 

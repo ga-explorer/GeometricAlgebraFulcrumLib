@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using DataStructuresLib.Basic;
-using NumericalGeometryLib.BasicMath;
-using NumericalGeometryLib.BasicMath.Tuples;
-using NumericalGeometryLib.BasicMath.Tuples.Immutable;
-using NumericalGeometryLib.BasicShapes.Lines;
-using NumericalGeometryLib.BasicShapes.Lines.Immutable;
-using NumericalGeometryLib.BasicShapes.Triangles;
-using NumericalGeometryLib.BasicShapes.Triangles.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Lines;
+using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Lines.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Triangles;
+using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Triangles.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Parametric.Frames;
 using GraphicsComposerLib.Geometry.LatticeShapes.Curves;
 using GraphicsComposerLib.Geometry.LatticeShapes.Surfaces;
-using GraphicsComposerLib.Geometry.ParametricShapes.Curves;
 using GraphicsComposerLib.Geometry.Primitives;
 
 namespace GraphicsComposerLib.Geometry.LatticeShapes
@@ -241,7 +241,7 @@ namespace GraphicsComposerLib.Geometry.LatticeShapes
             return surface;
         }
 
-        public static GrLatticeSurface3D AddTubeSurface(this GrLatticeSurfaceList3D surfaceList, IReadOnlyList<GrParametricCurveLocalFrame3D> sampledCurve, double tubeRadius, int baseSamplesCount, bool closedTube)
+        public static GrLatticeSurface3D AddTubeSurface(this GrLatticeSurfaceList3D surfaceList, IReadOnlyList<ParametricCurveLocalFrame3D> sampledCurve, double tubeRadius, int baseSamplesCount, bool closedTube)
         {
             var tubeSamples = sampledCurve.Count;
 

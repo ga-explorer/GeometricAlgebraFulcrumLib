@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Diagnostics.CodeAnalysis;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Structures.Lists
 {
@@ -24,13 +23,13 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.Lists
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaFuLListSparse<T> Create(T defaultValue, [NotNull] IEnumerable<KeyValuePair<ulong, T>> indexValuePairs)
+        public static GaFuLListSparse<T> Create(T defaultValue, IEnumerable<KeyValuePair<ulong, T>> indexValuePairs)
         {
             return new GaFuLListSparse<T>(defaultValue, indexValuePairs);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaFuLListSparse<T> Create(T defaultValue, [NotNull] SortedDictionary<ulong, T> itemsDictionary)
+        public static GaFuLListSparse<T> Create(T defaultValue, SortedDictionary<ulong, T> itemsDictionary)
         {
             return new GaFuLListSparse<T>(defaultValue, itemsDictionary);
         }
@@ -89,13 +88,13 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Structures.Lists
             DefaultValue = defaultValue;
         }
         
-        private GaFuLListSparse(T defaultValue, [NotNull] SortedDictionary<ulong, T> itemsDictionary)
+        private GaFuLListSparse(T defaultValue, SortedDictionary<ulong, T> itemsDictionary)
         {
             DefaultValue = defaultValue;
             _itemsDictionary = itemsDictionary;
         }
 
-        private GaFuLListSparse(T defaultValue, [NotNull] IEnumerable<KeyValuePair<ulong, T>> indexValuePairs)
+        private GaFuLListSparse(T defaultValue, IEnumerable<KeyValuePair<ulong, T>> indexValuePairs)
         {
             DefaultValue = defaultValue;
             _itemsDictionary = new SortedDictionary<ulong, T>();

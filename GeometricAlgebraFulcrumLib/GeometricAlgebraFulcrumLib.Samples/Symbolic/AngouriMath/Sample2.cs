@@ -1,6 +1,6 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
-using GeometricAlgebraFulcrumLib.Processors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Text;
 
@@ -13,22 +13,24 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.AngouriMath
             // This is a pre-defined scalar processor for the symbolic
             // AngouriMath scalars using Entity objects
             var scalarProcessor = ScalarAlgebraAngouriMathProcessor.DefaultProcessor;
-            
+
+            var vSpaceDimensions = 3;
+
             // Create a 3-dimensional Euclidean geometric algebra processor based on the
             // selected scalar processor
-            var geometricProcessor = scalarProcessor.CreateGeometricAlgebraEuclideanProcessor(3);
+            var geometricProcessor = scalarProcessor.CreateEuclideanRGaProcessor();
 
             // This is a pre-defined text generator for displaying multivectors
             // with symbolic AngouriMath scalars using Entity objects
-            var textComposer = TextAngouriMathComposer.DefaultComposer;
+            var textComposer = TextComposerEntity.DefaultComposer;
 
             // This is a pre-defined LaTeX generator for displaying multivectors
             // with symbolic AngouriMath scalars using Entity objects
             var latexComposer = LaTeXAngouriMathComposer.DefaultComposer;
 
             // Create two vectors each having 3 components (a 3-dimensional GA)
-            var u = geometricProcessor.CreateVectorFromText(3, i => $"u_{i + 1}");
-            var v = geometricProcessor.CreateVectorFromText(3, i => $"v_{i + 1}");
+            var u = geometricProcessor.CreateVector(3, i => $"u_{i + 1}");
+            var v = geometricProcessor.CreateVector(3, i => $"v_{i + 1}");
 
             // Compute their outer product as a bivector
             var bv = u.Op(v);

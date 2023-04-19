@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
 
 namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean.Space3D.Objects
 {
@@ -390,7 +388,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean.Space3D.Objects
             );
         }
 
-        public IScalarAlgebraProcessor<T> ScalarProcessor { get; }
+        public IScalarProcessor<T> ScalarProcessor { get; }
 
         public T X { get; }
 
@@ -409,7 +407,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean.Space3D.Objects
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal E3DPoint([NotNull] IScalarAlgebraProcessor<T> scalarProcessor, [NotNull] T x, [NotNull] T y, [NotNull] T z)
+        internal E3DPoint(IScalarProcessor<T> scalarProcessor, T x, T y, T z)
         {
             ScalarProcessor = scalarProcessor;
             X = x;
@@ -499,7 +497,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean.Space3D.Objects
         }
     
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public E3DPoint<T2> MapScalars<T2>(Func<T, T2> scalarMapping, IScalarAlgebraProcessor<T2> scalarProcessor)
+        public E3DPoint<T2> MapScalars<T2>(Func<T, T2> scalarMapping, IScalarProcessor<T2> scalarProcessor)
         {
             return new E3DPoint<T2>(
                 scalarProcessor,

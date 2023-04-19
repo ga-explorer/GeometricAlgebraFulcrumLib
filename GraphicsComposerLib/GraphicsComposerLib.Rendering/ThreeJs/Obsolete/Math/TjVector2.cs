@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics;
-using NumericalGeometryLib.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
 
 namespace GraphicsComposerLib.Rendering.ThreeJs.Obsolete.Math
 {

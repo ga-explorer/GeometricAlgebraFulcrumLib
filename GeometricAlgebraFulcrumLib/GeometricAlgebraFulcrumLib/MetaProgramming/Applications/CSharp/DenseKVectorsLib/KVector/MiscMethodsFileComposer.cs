@@ -2,13 +2,12 @@
 using System.Linq;
 using CodeComposerLib.SyntaxTree;
 using DataStructuresLib.BitManipulation;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Composers;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Expressions;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Languages;
-using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using TextComposerLib.Text.Linear;
 using TextComposerLib.Text.Structured;
@@ -37,37 +36,37 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
         //    return new GeoClcInfoMetaContext(metaContext);
         //}
 
-        private void GenerateEuclideanDualFunction(uint inGrade)
+        private void GenerateEuclideanDualFunction(int inGrade)
         {
-            var outGrade = VSpaceDimension - inGrade;
+            var outGrade = VSpaceDimensions - inGrade;
 
             var context = new MetaContext(
                 DenseKVectorsLibraryComposer.DefaultContextOptions
             )
             {
-                GeometricProcessor = GeometricProcessor
+                XGaProcessor = GeometricProcessor
             };
 
             var inputKVector = 
                 context.ParameterVariablesFactory.CreateDenseKVector(
-                    VSpaceDimension,
+                    VSpaceDimensions,
                     inGrade,
                     index => $"inputKVectorScalar{index}"
                 );
 
-            var outputKVector = inputKVector.EDual();
+            var outputKVector = inputKVector.EDual(VSpaceDimensions);
 
             outputKVector.SetIsOutput(true);
 
             context.OptimizeContext();
             
             context.SetExternalNamesByTermIndex(
-                inputKVector.KVectorStorage,
+                inputKVector,
                 index => $"scalars[{index}]"
             );
             
             context.SetExternalNamesByTermIndex(
-                outputKVector.KVectorStorage,
+                outputKVector,
                 index => $"c[{index}]"
             );
 
@@ -90,7 +89,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
                 Templates["edual"],
                 "double", GeoLanguage.ScalarTypeName,
                 "grade", inGrade,
-                "num", GeometricProcessor.KVectorSpaceDimension(inGrade),
+                "num", VSpaceDimensions.KVectorSpaceDimension(inGrade),
                 "computations", computationsText
             );
         }
@@ -162,13 +161,13 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
             textBuilder.AddEmptyLines(2);
         }
 
-        private void GenerateSelfDpGradeFunction(uint inGrade)
+        private void GenerateSelfDpGradeFunction(int inGrade)
         {
             var context = new MetaContext(
                 DenseKVectorsLibraryComposer.DefaultContextOptions
             )
             {
-                GeometricProcessor = GeometricProcessor
+                XGaProcessor = GeometricProcessor
             };
 
             //var outGradesList =
@@ -182,17 +181,16 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
                 context
                     .ParameterVariablesFactory
                     .CreateDenseKVector(
-                        VSpaceDimension,
+                        VSpaceDimensions,
                         inGrade,
                         index => $"inputKVectorScalar{index}"
                     );
 
             var outputKVector = 
-                inputKVector.EGpSquared();
+                inputKVector.EGp(inputKVector);
 
-            GeometricProcessor
-                .GetNotZeroTerms(outputKVector.MultivectorStorage)
-                .Select(t => t.Scalar)
+            outputKVector
+                .Scalars
                 .SetIsOutput(true);
 
             context.ContextOptions.FixOutputComputationsOrder = true;
@@ -200,7 +198,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
             context.OptimizeContext();
             
             context.SetExternalNamesByTermIndex(
-                inputKVector.KVectorStorage,
+                inputKVector,
                 index => $"scalars[{index}]"
             );
             
@@ -241,7 +239,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
 
         private void GenerateMainSelfDpGradeFunction()
         {
-            if (VSpaceDimension <= 3)
+            if (VSpaceDimensions <= 3)
             {
                 TextComposer.Append("public int SelfDPGrade() { return 0; }");
 
@@ -250,7 +248,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
 
             var selfDpGradeCasesText = new ListTextComposer(Environment.NewLine);
 
-            for (var grade = 2; grade < VSpaceDimension - 1; grade++)
+            for (var grade = 2; grade < VSpaceDimensions - 1; grade++)
                 selfDpGradeCasesText.Add(
                     Templates["main_self_dp_grade_case"].GenerateUsing(grade)
                 );
@@ -285,14 +283,14 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
 
             miscCasesText.SetSeparator(Environment.NewLine);
 
-            foreach (var grade in GeometricProcessor.Grades)
+            foreach (var grade in Grades)
             {
                 miscCasesText.AddTextItems(miscCasesTemplates,
                     "signature", CurrentNamespace,
                     "grade", grade,
-                    "num", GeometricProcessor.KVectorSpaceDimension(grade),
+                    "num", VSpaceDimensions.KVectorSpaceDimension(grade),
                     "sign", grade.ReverseIsNegativeOfGrade() ? "-" : "",
-                    "invgrade", VSpaceDimension - grade
+                    "invgrade", VSpaceDimensions - grade
                     );
             }
 
@@ -316,18 +314,18 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
             GenerateKVectorFileStartCode();
 
             var kvSpaceDimList =
-                VSpaceDimension
+                VSpaceDimensions
                     .GetRange()
-                    .Select(grade => GeometricProcessor.KVectorSpaceDimension(grade))
+                    .Select(grade => VSpaceDimensions.KVectorSpaceDimension(grade))
                     .Distinct();
 
             foreach (var kvSpaceDim in kvSpaceDimList)
                 GenerateMiscFunctions(kvSpaceDim);
 
-            foreach (var inGrade in GeometricProcessor.Grades)
+            foreach (var inGrade in Grades)
                 GenerateEuclideanDualFunction(inGrade);
 
-            for (var inGrade = 2U; inGrade < VSpaceDimension - 1; inGrade++)
+            for (var inGrade = 2; inGrade < VSpaceDimensions - 1; inGrade++)
                 GenerateSelfDpGradeFunction(inGrade);
 
             GenerateMainMiscFunctions();

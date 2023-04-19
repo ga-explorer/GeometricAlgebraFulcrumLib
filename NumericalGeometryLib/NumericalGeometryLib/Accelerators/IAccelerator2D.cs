@@ -1,4 +1,4 @@
-﻿using NumericalGeometryLib.BasicShapes;
+﻿using GeometricAlgebraFulcrumLib.MathBase.BasicShapes;
 
 namespace NumericalGeometryLib.Accelerators
 {

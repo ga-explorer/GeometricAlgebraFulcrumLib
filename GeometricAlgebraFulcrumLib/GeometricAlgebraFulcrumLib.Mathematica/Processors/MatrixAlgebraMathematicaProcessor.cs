@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.Basic;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
 using GeometricAlgebraFulcrumLib.Mathematica.Mathematica;
 using GeometricAlgebraFulcrumLib.Mathematica.Mathematica.ExprFactory;
 using GeometricAlgebraFulcrumLib.Processors.MatrixAlgebra;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors;
 using Wolfram.NETLink;
@@ -18,8 +18,8 @@ namespace GeometricAlgebraFulcrumLib.Mathematica.Processors
             = new MatrixAlgebraMathematicaProcessor();
 
 
-        public IScalarAlgebraProcessor<Expr> ScalarProcessor { get; set; }
-            = ScalarAlgebraMathematicaProcessor.DefaultProcessor;
+        public IScalarProcessor<Expr> ScalarProcessor { get; set; }
+            = ScalarProcessorExpr.DefaultProcessor;
 
         public int RoundingPlaces { get; set; }
             = 13;
@@ -94,6 +94,16 @@ namespace GeometricAlgebraFulcrumLib.Mathematica.Processors
         public Expr Times(Expr scalar1, Expr scalar2)
         {
             return ScalarProcessor.Times(scalar1, scalar2);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Expr Times(IntegerSign sign, Expr scalar)
+        {
+            if (sign.IsZero) return ScalarZero;
+
+            return sign.IsPositive
+                ? scalar 
+                : Negative(scalar);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -230,7 +240,7 @@ namespace GeometricAlgebraFulcrumLib.Mathematica.Processors
 
         public Expr CreateMatrix(ILinMatrixStorage<Expr> array)
         {
-            return array.ToArray().ArrayToMatrixExpr().Simplify();
+            return array.ToArray().ToMatrixExpr().Simplify();
         }
 
         public Expr CreateRowVectorMatrix(ILinVectorStorage<Expr> array)

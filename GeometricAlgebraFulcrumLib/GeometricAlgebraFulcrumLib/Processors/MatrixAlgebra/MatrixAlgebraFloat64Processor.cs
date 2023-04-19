@@ -458,6 +458,16 @@ namespace GeometricAlgebraFulcrumLib.Processors.MatrixAlgebra
         {
             return scalar1 * scalar2;
         }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public double Times(IntegerSign sign, double scalar)
+        {
+            if (sign.IsZero) return ScalarZero;
+
+            return sign.IsPositive
+                ? scalar 
+                : -scalar;
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public double NegativeTimes(double scalar1, double scalar2)

@@ -1,8 +1,8 @@
 ﻿using System.Text;
-using NumericalGeometryLib.BasicMath.Matrices;
-using NumericalGeometryLib.BasicMath.Tuples;
-using NumericalGeometryLib.BasicMath.Tuples.Immutable;
-using NumericalGeometryLib.Borders.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Matrices;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Borders.Space3D;
 using TextComposerLib.Code.JavaScript;
 using TextComposerLib.Text.Columns;
 using TextComposerLib.Text.Linear;

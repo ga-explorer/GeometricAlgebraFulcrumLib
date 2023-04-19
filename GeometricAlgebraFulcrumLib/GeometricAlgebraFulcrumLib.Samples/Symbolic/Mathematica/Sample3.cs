@@ -1,9 +1,8 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
+using GeometricAlgebraFulcrumLib.Mathematica.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Mathematica.Processors;
-using GeometricAlgebraFulcrumLib.Mathematica.Text;
-using GeometricAlgebraFulcrumLib.Processors;
-using GeometricAlgebraFulcrumLib.Text;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.Mathematica
 {
@@ -13,23 +12,23 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.Mathematica
         {
             // This is a pre-defined scalar processor for symbolic
             // Wolfram Mathematica scalars using Expr objects
-            var scalarProcessor = ScalarAlgebraMathematicaProcessor.DefaultProcessor;
+            var scalarProcessor = ScalarProcessorExpr.DefaultProcessor;
             
             // Create a 3-dimensional Euclidean geometric algebra processor based on the
             // selected scalar processor
-            var geometricProcessor = scalarProcessor.CreateGeometricAlgebraEuclideanProcessor(3);
+            var geometricProcessor = scalarProcessor.CreateEuclideanRGaProcessor();
 
             // This is a pre-defined text generator for displaying multivectors
             // with symbolic Wolfram Mathematica scalars using Expr objects
-            var textComposer = TextMathematicaComposer.DefaultComposer;
+            var textComposer = TextComposerExpr.DefaultComposer;
 
             // This is a pre-defined LaTeX generator for displaying multivectors
             // with symbolic Wolfram Mathematica scalars using Expr objects
-            var latexComposer = LaTeXMathematicaComposer.DefaultComposer;
+            var latexComposer = LaTeXComposerExpr.DefaultComposer;
 
             // Create two vectors each having 3 components (a 3-dimensional GA)
-            var u = geometricProcessor.CreateVectorFromText(3, i => $"Subscript[u,{i + 1}]");
-            var v = geometricProcessor.CreateVectorFromText(3, i => $"Subscript[v,{i + 1}]");
+            var u = geometricProcessor.CreateVector(3, i => $"Subscript[u,{i + 1}]");
+            var v = geometricProcessor.CreateVector(3, i => $"Subscript[v,{i + 1}]");
 
             // Compute their outer product as a bivector
             var bv = u.Op(v);

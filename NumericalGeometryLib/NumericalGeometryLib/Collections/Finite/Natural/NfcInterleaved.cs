@@ -54,7 +54,7 @@ namespace NumericalGeometryLib.Collections.Finite.Natural
                 var itemIndex = index / InterleavedCollections.Length;
                 var baseCol = InterleavedCollections[index % InterleavedCollections.Length];
 
-                return (baseCol != null && itemIndex < baseCol.Count)
+                return baseCol != null && itemIndex < baseCol.Count
                     ? baseCol.GetItem(baseCol.MinIndex + itemIndex)
                     : DefaultBaseCollection.GetItem(DefaultBaseCollection.MinIndex + index);
             }
@@ -73,7 +73,7 @@ namespace NumericalGeometryLib.Collections.Finite.Natural
             var itemIndex = index / InterleavedCollections.Length;
             var baseCol = InterleavedCollections[index % InterleavedCollections.Length];
 
-            return (baseCol != null && itemIndex < baseCol.Count)
+            return baseCol != null && itemIndex < baseCol.Count
                 ? baseCol.GetItem(baseCol.MinIndex + itemIndex)
                 : DefaultBaseCollection.GetItem(DefaultBaseCollection.MinIndex + index);
         }

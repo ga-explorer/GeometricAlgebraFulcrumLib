@@ -8,12 +8,12 @@
 
         protected override string GetConstructorArgumentsText()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         protected override string GetSetMethodArgumentsText()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

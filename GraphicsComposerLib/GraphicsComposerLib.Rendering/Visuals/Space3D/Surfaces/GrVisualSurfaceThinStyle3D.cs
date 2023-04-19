@@ -1,22 +1,21 @@
-﻿using SixLabors.ImageSharp;
-
-namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Surfaces;
-
-public class GrVisualSurfaceThinStyle3D :
-    GrVisualSurfaceStyle3D
+﻿namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Surfaces
 {
-    public Color EdgeColor { get; }
-
-
-    public GrVisualSurfaceThinStyle3D(IGrVisualElementMaterial3D material) 
-        : base(material)
+    public class GrVisualSurfaceThinStyle3D :
+        GrVisualSurfaceStyle3D
     {
-        EdgeColor = Color.Bisque;
-    }
+        public Color EdgeColor { get; }
 
-    public GrVisualSurfaceThinStyle3D(IGrVisualElementMaterial3D material, Color edgeColor) 
-        : base(material)
-    {
-        EdgeColor = edgeColor;
+
+        public GrVisualSurfaceThinStyle3D(IGrVisualElementMaterial3D material) 
+            : base(material)
+        {
+            EdgeColor = Color.Bisque;
+        }
+
+        public GrVisualSurfaceThinStyle3D(IGrVisualElementMaterial3D material, Color edgeColor) 
+            : base(material)
+        {
+            EdgeColor = edgeColor;
+        }
     }
 }

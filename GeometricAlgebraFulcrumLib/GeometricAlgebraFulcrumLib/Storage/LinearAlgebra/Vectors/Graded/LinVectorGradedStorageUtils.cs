@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.BitManipulation;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records.Restricted;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 
@@ -94,7 +95,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
             return vectorGradedStorage
                 .GetGradeIndexScalarRecords()
                 .Select(indexValue =>
-                    mappingFunc(indexValue.Grade, indexValue.Index, indexValue.Scalar)
+                    mappingFunc(indexValue.Grade, indexValue.KvIndex, indexValue.Scalar)
                 );
         }
 
@@ -109,7 +110,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<IndexScalarRecord<T>> GetIndexScalarRecords<T>(this ILinVectorGradedStorage<T> vectorGradedStorage)
+        public static IEnumerable<RGaKvIndexScalarRecord<T>> GetIndexScalarRecords<T>(this ILinVectorGradedStorage<T> vectorGradedStorage)
         {
             return vectorGradedStorage
                 .GetGradeIndexScalarRecords()
@@ -117,7 +118,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<IndexScalarRecord<T>> GetIndexScalarRecords<T>(this ILinVectorGradedStorage<T> vectorGradedStorage, Func<uint, ulong, ulong> gradeIndexToIndexMapping)
+        public static IEnumerable<RGaKvIndexScalarRecord<T>> GetIndexScalarRecords<T>(this ILinVectorGradedStorage<T> vectorGradedStorage, Func<uint, ulong, ulong> gradeIndexToIndexMapping)
         {
             return vectorGradedStorage
                 .GetGradeIndexScalarRecords()
@@ -126,7 +127,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<GradeIndexScalarRecord<T>> GetGradeIndexScalarRecords<T>(this ILinVectorGradedStorage<T> vectorGradedStorage, Func<uint, ulong, GradeIndexRecord> gradeIndexMapping)
+        public static IEnumerable<RGaGradeKvIndexScalarRecord<T>> GetGradeIndexScalarRecords<T>(this ILinVectorGradedStorage<T> vectorGradedStorage, Func<uint, ulong, RGaGradeKvIndexRecord> gradeIndexMapping)
         {
             return vectorGradedStorage.GetGradeIndexScalarRecords().Select(
                 record =>
@@ -134,7 +135,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
                     var (grade, index, value) = record;
                     var (newGrade, newIndex) = gradeIndexMapping(grade, index);
 
-                    return new GradeIndexScalarRecord<T>(
+                    return new RGaGradeKvIndexScalarRecord<T>(
                         newGrade,
                         newIndex,
                         value
@@ -171,7 +172,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<GradeIndexRecord> GetGradeIndexRecords<T>(this ILinVectorGradedStorage<T> vectorGradedStorage, Func<uint, ulong, GradeIndexRecord> gradeIndexMapping)
+        public static IEnumerable<RGaGradeKvIndexRecord> GetGradeIndexRecords<T>(this ILinVectorGradedStorage<T> vectorGradedStorage, Func<uint, ulong, RGaGradeKvIndexRecord> gradeIndexMapping)
         {
             return vectorGradedStorage.GetGradeIndexRecords().Select(
                 record =>
@@ -179,7 +180,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
                     var (grade, index) = record;
                     var (newGrade, newIndex) = gradeIndexMapping(grade, index);
 
-                    return new GradeIndexRecord(
+                    return new RGaGradeKvIndexRecord(
                         newGrade,
                         newIndex
                     );
@@ -301,11 +302,11 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
         /// </summary>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GradeLinVectorStorageRecord<T> GetMinGradeStorageRecord<T>(this ILinVectorGradedStorage<T> vectorGradedStorage)
+        public static GaGradeLinVectorStorageRecord<T> GetMinGradeStorageRecord<T>(this ILinVectorGradedStorage<T> vectorGradedStorage)
         {
             var grade = vectorGradedStorage.GetMinGrade();
 
-            return new GradeLinVectorStorageRecord<T>(grade, vectorGradedStorage.GetVectorStorage(grade));
+            return new GaGradeLinVectorStorageRecord<T>(grade, vectorGradedStorage.GetVectorStorage(grade));
         }
 
         /// <summary>
@@ -313,11 +314,11 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
         /// </summary>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GradeLinVectorStorageRecord<T> GetMaxGradeStorageRecord<T>(this ILinVectorGradedStorage<T> vectorGradedStorage)
+        public static GaGradeLinVectorStorageRecord<T> GetMaxGradeStorageRecord<T>(this ILinVectorGradedStorage<T> vectorGradedStorage)
         {
             var grade = vectorGradedStorage.GetMaxGrade();
 
-            return new GradeLinVectorStorageRecord<T>(grade, vectorGradedStorage.GetVectorStorage(grade));
+            return new GaGradeLinVectorStorageRecord<T>(grade, vectorGradedStorage.GetVectorStorage(grade));
         }
 
 
@@ -331,15 +332,15 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<GradeIndexRecord> GetEmptyGradeIndexRecords<T>(this ILinVectorGradedStorage<T> vectorGradedStorage, uint vSpaceDimension)
+        public static IEnumerable<RGaGradeKvIndexRecord> GetEmptyGradeIndexRecords<T>(this ILinVectorGradedStorage<T> vectorGradedStorage, uint vSpaceDimensions)
         {
-            for (var grade = 0U; grade <= vSpaceDimension; grade++)
+            for (var grade = 0U; grade <= vSpaceDimensions; grade++)
             {
-                var kvSpaceDimension = vSpaceDimension.KVectorSpaceDimension(grade);
-                var emptyIndices = vectorGradedStorage.GetEmptyIndices(grade, kvSpaceDimension);
+                var kvSpaceDimensions = vSpaceDimensions.KVectorSpaceDimension(grade);
+                var emptyIndices = vectorGradedStorage.GetEmptyIndices(grade, kvSpaceDimensions);
 
                 foreach (var index in emptyIndices)
-                    yield return new GradeIndexRecord(grade, index);
+                    yield return new RGaGradeKvIndexRecord(grade, index);
             }
         }
 
@@ -390,7 +391,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
         /// The smallest index and corresponding value stored in this structure
         /// </summary>
         /// <returns></returns>
-        public static IndexScalarRecord<T> GetMinIndexScalarRecord<T>(this ILinVectorGradedStorage<T> vectorGradedStorage, uint grade)
+        public static RGaKvIndexScalarRecord<T> GetMinIndexScalarRecord<T>(this ILinVectorGradedStorage<T> vectorGradedStorage, uint grade)
         {
             return vectorGradedStorage.GetVectorStorage(grade).GetMinIndexScalarRecord();
         }
@@ -399,7 +400,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
         /// The largest index and corresponding value stored in this structure
         /// </summary>
         /// <returns></returns>
-        public static IndexScalarRecord<T> GetMaxIndexScalarRecord<T>(this ILinVectorGradedStorage<T> vectorGradedStorage, uint grade)
+        public static RGaKvIndexScalarRecord<T> GetMaxIndexScalarRecord<T>(this ILinVectorGradedStorage<T> vectorGradedStorage, uint grade)
         {
             return vectorGradedStorage.GetVectorStorage(grade).GetMaxIndexScalarRecord();
         }
@@ -435,11 +436,11 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
 
             foreach (var (grade, indexScalarList) in gradeIndexScalarList.GetGradeStorageRecords())
             {
-                var vSpaceDimension =
+                var vSpaceDimensions =
                     indexScalarList.GetMinVSpaceDimensionOfKVector(grade);
 
-                if (maxVSpaceDimension < vSpaceDimension)
-                    maxVSpaceDimension = vSpaceDimension;
+                if (maxVSpaceDimension < vSpaceDimensions)
+                    maxVSpaceDimension = vSpaceDimensions;
             }
 
             return maxVSpaceDimension;

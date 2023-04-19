@@ -40,11 +40,11 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
 
             var basisVectorsCoefsText = new ListTextComposer(", ");
 
-            for (var idx = 1U; idx <= VSpaceDimension; idx++)
+            for (var idx = 1U; idx <= VSpaceDimensions; idx++)
             {
                 basisVectorsCoefsText.Clear();
                 basisVectorsCoefsText.AddRange(
-                    (1 << (int) (idx - 1)).PatternToSequence((int) VSpaceDimension, "0.0D", "1.0D")
+                    (1 << (int) (idx - 1)).PatternToSequence(VSpaceDimensions, "0.0D", "1.0D")
                 );
 
                 textCollection["basis_vectors"].Add("new " + CurrentNamespace + "Vector(" + basisVectorsCoefsText + ")");

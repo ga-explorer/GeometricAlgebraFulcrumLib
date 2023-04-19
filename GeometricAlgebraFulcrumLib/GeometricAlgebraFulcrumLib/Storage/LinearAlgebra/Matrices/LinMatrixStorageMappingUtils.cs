@@ -1,5 +1,5 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Dense;
@@ -9,7 +9,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices
     public static class LinMatrixStorageMappingUtils
     {
 
-        public static ILinMatrixDenseStorage<T> MapScalarsIndicesUnion<T>(this IScalarAlgebraProcessor<T> scalarProcessor, ILinMatrixDenseStorage<T> v1, ILinMatrixDenseStorage<T> v2, Func<T, T, T> valueMapping)
+        public static ILinMatrixDenseStorage<T> MapScalarsIndicesUnion<T>(this IScalarProcessor<T> scalarProcessor, ILinMatrixDenseStorage<T> v1, ILinMatrixDenseStorage<T> v2, Func<T, T, T> valueMapping)
         {
             if (v1.IsEmpty() && v2.IsEmpty())
                 return LinMatrixEmptyStorage<T>.EmptyStorage;
@@ -187,7 +187,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices
             return composer.RemoveZeroTerms().CreateLinMatrixDenseStorage();
         }
 
-        public static ILinMatrixStorage<T> MapScalarsIndicesUnion<T>(this IScalarAlgebraProcessor<T> scalarProcessor, ILinMatrixStorage<T> v1, ILinMatrixStorage<T> v2, Func<T, T, T> valueMapping)
+        public static ILinMatrixStorage<T> MapScalarsIndicesUnion<T>(this IScalarProcessor<T> scalarProcessor, ILinMatrixStorage<T> v1, ILinMatrixStorage<T> v2, Func<T, T, T> valueMapping)
         {
             if (v1.IsEmpty() && v2.IsEmpty())
                 return LinMatrixEmptyStorage<T>.EmptyStorage;
@@ -214,7 +214,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices
                 .CreateLinMatrixStorage();
         }
 
-        public static ILinMatrixDenseStorage<T> MapScalarsIndicesIntersection<T>(this IScalarAlgebraProcessor<T> scalarProcessor, ILinMatrixDenseStorage<T> v1, ILinMatrixDenseStorage<T> v2, Func<T, T, T> valueMapping)
+        public static ILinMatrixDenseStorage<T> MapScalarsIndicesIntersection<T>(this IScalarProcessor<T> scalarProcessor, ILinMatrixDenseStorage<T> v1, ILinMatrixDenseStorage<T> v2, Func<T, T, T> valueMapping)
         {
             if (v1.IsEmpty() || v2.IsEmpty())
                 return LinMatrixEmptyStorage<T>.EmptyStorage;
@@ -238,7 +238,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices
             return composer.RemoveZeroTerms().CreateLinMatrixDenseStorage();
         }
 
-        public static ILinMatrixStorage<T> MapScalarsIndicesIntersection<T>(this IScalarAlgebraProcessor<T> scalarProcessor, ILinMatrixStorage<T> v1, ILinMatrixStorage<T> v2, Func<T, T, T> valueMapping)
+        public static ILinMatrixStorage<T> MapScalarsIndicesIntersection<T>(this IScalarProcessor<T> scalarProcessor, ILinMatrixStorage<T> v1, ILinMatrixStorage<T> v2, Func<T, T, T> valueMapping)
         {
             if (v1.IsEmpty() || v2.IsEmpty())
                 return LinMatrixEmptyStorage<T>.EmptyStorage;
@@ -265,7 +265,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices
                 .CreateLinMatrixStorage();
         }
 
-        public static ILinMatrixDenseStorage<T> MapScalarsOuter<T>(this IScalarAlgebraProcessor<T> scalarProcessor, ILinVectorDenseStorage<T> v1, ILinVectorDenseStorage<T> v2, Func<T, T, T> valueMapping)
+        public static ILinMatrixDenseStorage<T> MapScalarsOuter<T>(this IScalarProcessor<T> scalarProcessor, ILinVectorDenseStorage<T> v1, ILinVectorDenseStorage<T> v2, Func<T, T, T> valueMapping)
         {
             if (v1.IsEmpty() || v2.IsEmpty())
                 return LinMatrixEmptyStorage<T>.EmptyStorage;
@@ -281,7 +281,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices
             return composer.CreateLinMatrixDenseStorage();
         }
 
-        public static ILinMatrixStorage<T> MapScalarsOuter<T>(this IScalarAlgebraProcessor<T> scalarProcessor, ILinVectorStorage<T> v1, ILinVectorStorage<T> v2, Func<T, T, T> valueMapping)
+        public static ILinMatrixStorage<T> MapScalarsOuter<T>(this IScalarProcessor<T> scalarProcessor, ILinVectorStorage<T> v1, ILinVectorStorage<T> v2, Func<T, T, T> valueMapping)
         {
             if (v1.IsEmpty() || v2.IsEmpty())
                 return LinMatrixEmptyStorage<T>.EmptyStorage;

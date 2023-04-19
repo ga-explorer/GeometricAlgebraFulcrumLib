@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using NumericalGeometryLib.BasicMath.Tuples.Immutable;
-using NumericalGeometryLib.BasicShapes;
-using NumericalGeometryLib.Borders.Space2D.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.BasicShapes;
+using GeometricAlgebraFulcrumLib.MathBase.Borders.Space2D.Immutable;
 
 namespace NumericalGeometryLib.Accelerators.Grids.Space2D
 {

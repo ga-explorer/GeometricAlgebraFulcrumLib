@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records.Restricted;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 
 namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
@@ -22,12 +23,12 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<uint> GetEmptyGrades(uint vSpaceDimension)
+        public IEnumerable<uint> GetEmptyGrades(uint vSpaceDimensions)
         {
             for (var grade = 0U; grade < Grade; grade++)
                 yield return grade;
 
-            for (var grade = Grade + 1; grade <= vSpaceDimension; grade++)
+            for (var grade = Grade + 1; grade <= vSpaceDimensions; grade++)
                 yield return grade;
         }
 
@@ -80,7 +81,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
 
         public abstract T GetScalar(uint grade, ulong index);
 
-        public abstract T GetScalar(GradeIndexRecord gradeKey);
+        public abstract T GetScalar(RGaGradeKvIndexRecord gradeKey);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool ContainsGrade(uint grade)
@@ -105,9 +106,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
 
         public abstract bool TryGetScalar(uint grade, ulong index, out T value);
 
-        public abstract IEnumerable<GradeIndexRecord> GetGradeIndexRecords();
+        public abstract IEnumerable<RGaGradeKvIndexRecord> GetGradeIndexRecords();
 
-        public abstract IEnumerable<GradeIndexScalarRecord<T>> GetGradeIndexScalarRecords();
+        public abstract IEnumerable<RGaGradeKvIndexScalarRecord<T>> GetGradeIndexScalarRecords();
 
         public abstract ILinVectorGradedStorage<T> GetCopy();
 
@@ -153,9 +154,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<GradeLinVectorStorageRecord<T>> GetGradeStorageRecords()
+        public IEnumerable<GaGradeLinVectorStorageRecord<T>> GetGradeStorageRecords()
         {
-            yield return new GradeLinVectorStorageRecord<T>(Grade, VectorStorage);
+            yield return new GaGradeLinVectorStorageRecord<T>(Grade, VectorStorage);
         }
     }
 }

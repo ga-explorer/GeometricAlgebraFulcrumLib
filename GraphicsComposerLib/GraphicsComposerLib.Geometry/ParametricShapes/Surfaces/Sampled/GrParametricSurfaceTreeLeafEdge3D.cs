@@ -5,14 +5,15 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.Basic;
+using GeometricAlgebraFulcrumLib.MathBase.Parametric.Curves.Sampled;
 
 namespace GraphicsComposerLib.Geometry.ParametricShapes.Surfaces.Sampled
 {
     public sealed class GrParametricSurfaceTreeLeafEdge3D :
         IReadOnlyCollection<GrParametricSurfaceTreeCorner3D>
     {
-        private readonly Dictionary<Pair<GrParametricTreeCornerPosition3D>, GrParametricSurfaceTreeCorner3D> _cornerDictionary
-            = new Dictionary<Pair<GrParametricTreeCornerPosition3D>, GrParametricSurfaceTreeCorner3D>();
+        private readonly Dictionary<Pair<ParametricTreeCornerPosition3D>, GrParametricSurfaceTreeCorner3D> _cornerDictionary
+            = new Dictionary<Pair<ParametricTreeCornerPosition3D>, GrParametricSurfaceTreeCorner3D>();
 
 
         public int Count 

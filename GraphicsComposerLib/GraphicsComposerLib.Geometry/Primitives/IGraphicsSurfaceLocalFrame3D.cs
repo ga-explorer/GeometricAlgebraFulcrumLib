@@ -1,8 +1,8 @@
 ﻿
 using DataStructuresLib.Basic;
-using NumericalGeometryLib.BasicMath.Tuples;
-using NumericalGeometryLib.BasicMath.Tuples.Immutable;
-using GraphicsComposerLib.Geometry.Primitives.Vertices;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Frames.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
 using SixLabors.ImageSharp;
 
 namespace GraphicsComposerLib.Geometry.Primitives
@@ -18,6 +18,6 @@ namespace GraphicsComposerLib.Geometry.Primitives
 
         Pair<double> ParameterValue { get; }
 
-        GrNormal3D Normal { get; }
+        Normal3D Normal { get; }
     }
 }

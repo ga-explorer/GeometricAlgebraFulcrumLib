@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using NumericalGeometryLib.BasicMath.Tuples.Immutable;
-using NumericalGeometryLib.BasicShapes;
-using NumericalGeometryLib.BasicShapes.Lines;
-using NumericalGeometryLib.Borders.Space1D;
-using NumericalGeometryLib.Borders.Space1D.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.BasicShapes;
+using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Lines;
+using GeometricAlgebraFulcrumLib.MathBase.Borders.Space1D;
+using GeometricAlgebraFulcrumLib.MathBase.Borders.Space1D.Immutable;
 
 namespace NumericalGeometryLib.Accelerators.Grids.Space3D
 {
@@ -121,12 +121,12 @@ namespace NumericalGeometryLib.Accelerators.Grids.Space3D
             }
 
             var t0 = txMin > tyMin 
-                ? (txMin > tzMin ? txMin : tzMin) 
-                : (tyMin > tzMin ? tyMin : tzMin);
+                ? txMin > tzMin ? txMin : tzMin 
+                : tyMin > tzMin ? tyMin : tzMin;
 
             var t1 = txMax < tyMax 
-                ? (txMax < tzMax ? txMax : tzMax) 
-                : (tyMax < tzMax ? tyMax : tzMax);
+                ? txMax < tzMax ? txMax : tzMax 
+                : tyMax < tzMax ? tyMax : tzMax;
 
             if (t0 > t1)
             {

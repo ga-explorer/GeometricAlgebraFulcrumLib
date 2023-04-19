@@ -1,0 +1,53 @@
+﻿using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Matrices;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
+
+namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space2D
+{
+    public sealed class IdentityMap2D : 
+        IAffineMap2D
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public SquareMatrix3 ToSquareMatrix3()
+        {
+            return SquareMatrix3.CreateIdentityMatrix();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public double[,] ToArray2D()
+        {
+            throw new NotImplementedException();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Float64Tuple2D MapPoint(IFloat64Tuple2D point)
+        {
+            return point.ToTuple2D();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Float64Tuple2D MapVector(IFloat64Tuple2D vector)
+        {
+            return vector.ToTuple2D();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Float64Tuple2D MapNormal(IFloat64Tuple2D normal)
+        {
+            return normal.ToTuple2D();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public IAffineMap2D InverseMap()
+        {
+            return this;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsValid()
+        {
+            return true;
+        }
+    }
+}

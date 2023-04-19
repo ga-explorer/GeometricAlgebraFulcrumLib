@@ -1,6 +1,7 @@
-﻿namespace GraphicsComposerLib.Rendering.SvgNew;
-
-public interface IGrSvgCodeElement
+﻿namespace GraphicsComposerLib.Rendering.SvgNew
 {
-    string GetCode();
+    public interface IGrSvgCodeElement
+    {
+        string GetCode();
+    }
 }

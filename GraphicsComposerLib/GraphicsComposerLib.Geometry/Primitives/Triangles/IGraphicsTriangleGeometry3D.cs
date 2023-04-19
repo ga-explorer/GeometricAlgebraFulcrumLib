@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 
 using DataStructuresLib.Basic;
-using NumericalGeometryLib.BasicMath.Tuples;
-using NumericalGeometryLib.BasicShapes.Triangles;
-using GraphicsComposerLib.Geometry.Primitives.Vertices;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Frames.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Triangles;
 using SixLabors.ImageSharp;
 
 namespace GraphicsComposerLib.Geometry.Primitives.Triangles
@@ -27,7 +27,7 @@ namespace GraphicsComposerLib.Geometry.Primitives.Triangles
 
         bool VertexColorsEnabled { get; }
 
-        GrNormal3D GetVertexNormal(int index);
+        Normal3D GetVertexNormal(int index);
 
         GrVertexNormalComputationMethod NormalComputationMethod { get; }
 

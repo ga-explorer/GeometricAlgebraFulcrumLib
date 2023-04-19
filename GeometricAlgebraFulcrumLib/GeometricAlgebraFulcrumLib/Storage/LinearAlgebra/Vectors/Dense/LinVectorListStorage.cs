@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using System.Diagnostics.CodeAnalysis;
 
 namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Dense
 {
@@ -41,7 +40,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Dense
             ScalarsList = new List<T>(itemsList);
         }
 
-        internal LinVectorListStorage([NotNull] List<T> itemsList)
+        internal LinVectorListStorage(List<T> itemsList)
         {
             ScalarsList = itemsList;
         }

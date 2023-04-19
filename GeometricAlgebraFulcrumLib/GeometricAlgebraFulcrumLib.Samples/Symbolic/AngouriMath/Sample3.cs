@@ -2,15 +2,13 @@
 using System.Linq;
 using AngouriMath;
 using DataStructuresLib.Extensions;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.LinearMaps;
-using GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Matrices;
-using GeometricAlgebraFulcrumLib.Processors;
-using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.LinearMaps.Rotors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic.LinearMaps;
 using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra;
 using GeometricAlgebraFulcrumLib.Text;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 
@@ -18,17 +16,20 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.AngouriMath
 {
     public static class Sample3
     {
-        public static uint VSpaceDimension 
-            => GeometricProcessor.VSpaceDimension;
+        public static int VSpaceDimensions 
+            => 3;
 
-        public static ulong GaSpaceDimension 
-            => GeometricProcessor.GaSpaceDimension;
+        public static ulong GaSpaceDimensions 
+            => 1UL << VSpaceDimensions;
 
-        public static IGeometricAlgebraEuclideanProcessor<Entity> GeometricProcessor { get; }
-            = ScalarAlgebraAngouriMathProcessor.DefaultProcessor.CreateGeometricAlgebraEuclideanProcessor(3);
+        public static IScalarProcessor<Entity> ScalarProcessor
+            => ScalarAlgebraAngouriMathProcessor.DefaultProcessor;
 
-        public static TextAngouriMathComposer TextComposer { get; }
-            = TextAngouriMathComposer.DefaultComposer;
+        public static RGaProcessor<Entity> GeometricProcessor { get; }
+            = ScalarProcessor.CreateEuclideanRGaProcessor();
+
+        public static TextComposerEntity TextComposer { get; }
+            = TextComposerEntity.DefaultComposer;
 
         public static LaTeXAngouriMathComposer LaTeXComposer { get; }
             = LaTeXAngouriMathComposer.DefaultComposer;
@@ -37,21 +38,31 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.AngouriMath
         public static void Execute1()
         {
             //var e1 = GeometricProcessor.CreateBasisVector(0);
-            var u = GeometricProcessor.CreateVector(VSpaceDimension, i => $"u_{i + 1}");
-            var v = GeometricProcessor.CreateVector(VSpaceDimension, i => $"v_{i + 1}");
+            var u = ScalarProcessor.CreateLinVector(VSpaceDimensions, i => $"u_{i + 1}");
+            var v = ScalarProcessor.CreateLinVector(VSpaceDimensions, i => $"v_{i + 1}");
 
             //var unitLengthAssumption1 = Mfs.Equal[GeometricProcessor.ENormSquared(u), Expr.INT_ONE].Evaluate();
             //var unitLengthAssumption2 = Mfs.Equal[GeometricProcessor.ENormSquared(v), Expr.INT_ONE].Evaluate();
             //var unitLengthAssumption = Mfs.And[unitLengthAssumption1, unitLengthAssumption2];
 
+            var rotationMap1 = 
+                ScalarProcessor.CreateVectorToBasisRotationMap(u, 0, VSpaceDimensions);
+
+            var rotationMap2 = 
+                ScalarProcessor.CreateBasisToVectorRotationMap(0, v, VSpaceDimensions);
+
+            var rotationMap = 
+                rotationMap2.Map(rotationMap1);
+
+
             var rotationMatrix1 = 
-                u.CreateVectorToBasisRotationMatrix(0, (int) VSpaceDimension);
-
+                rotationMap1.ToArray(VSpaceDimensions);
+            
             var rotationMatrix2 = 
-                v.CreateBasisToVectorRotationMatrix(0, (int) VSpaceDimension);
+                rotationMap2.ToArray(VSpaceDimensions);
 
-            var rotationMatrix = 
-                GeometricProcessor.MatrixProduct(rotationMatrix2, rotationMatrix1);
+            var rotationMatrix =
+                rotationMap.ToArray(VSpaceDimensions);
 
             var rotationMatrixDet1 =
                 rotationMatrix1.MatrixDeterminant();
@@ -63,7 +74,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.AngouriMath
                 rotationMatrix.MatrixDeterminant();
 
             var v1 = 
-                rotationMatrix.Map(u);
+                rotationMap.Map(u);
 
             Console.WriteLine($@"rotor matrix 1 = {LaTeXComposer.GetArrayDisplayEquationText(rotationMatrix1)}");
             Console.WriteLine();
@@ -83,21 +94,21 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.AngouriMath
             Console.WriteLine($@"rotor matrix determinant = {LaTeXComposer.GetScalarText(rotationMatrixDet)}");
             Console.WriteLine();
 
-            Console.WriteLine($@"mapped u = {LaTeXComposer.GetMultivectorText(v1)}");
+            Console.WriteLine($@"mapped u = {LaTeXComposer.GetVectorText(v1)}");
             Console.WriteLine();
         }
 
         public static void Execute2()
         {
-            var u = GeometricProcessor.CreateVectorFromText(VSpaceDimension, i => $"u_{i + 1}");
-            var v = GeometricProcessor.CreateVectorFromText(VSpaceDimension, i => $"v_{i + 1}");
+            var u = GeometricProcessor.CreateVector(VSpaceDimensions, i => $"u_{i + 1}");
+            var v = GeometricProcessor.CreateVector(VSpaceDimensions, i => $"v_{i + 1}");
 
             //var unitLengthAssumption1 = Mfs.Equal[GeometricProcessor.ENormSquared(u), Expr.INT_ONE].Evaluate();
             //var unitLengthAssumption2 = Mfs.Equal[GeometricProcessor.ENormSquared(v), Expr.INT_ONE].Evaluate();
             //var unitLengthAssumption = Mfs.And[unitLengthAssumption1, unitLengthAssumption2];
 
             var rotor1 =
-                GeometricProcessor.CreatePureRotor(u, v);
+                u.CreatePureRotor(v);
 
             var rotor2 =
                 rotor1.GetPureRotorInverse();
@@ -107,8 +118,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.AngouriMath
             
             //var rotorMatrix =
             //    rotor.GetVectorsMappingArray(
-            //        (int) VSpaceDimension,
-            //        (int) VSpaceDimension
+            //        (int) VSpaceDimensions,
+            //        (int) VSpaceDimensions
             //    ).SimplifyScalars(unitLengthAssumption);
 
             //var rotorMatrixDet =
@@ -133,19 +144,19 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.AngouriMath
 
         public static void Execute3()
         {
-            var e1 = GeometricProcessor.CreateVectorBasis(0);
-            var u = GeometricProcessor.CreateVectorFromText(VSpaceDimension, i => $"u_{i + 1}");
-            var v = GeometricProcessor.CreateVectorFromText(VSpaceDimension, i => $"v_{i + 1}");
+            var e1 = GeometricProcessor.CreateVector(0);
+            var u = GeometricProcessor.CreateVector(VSpaceDimensions, i => $"u_{i + 1}");
+            var v = GeometricProcessor.CreateVector(VSpaceDimensions, i => $"v_{i + 1}");
 
             //var unitLengthAssumption1 = Mfs.Equal[GeometricProcessor.ENormSquared(u), Expr.INT_ONE].Evaluate();
             //var unitLengthAssumption2 = Mfs.Equal[GeometricProcessor.ENormSquared(v), Expr.INT_ONE].Evaluate();
             //var unitLengthAssumption = Mfs.And[unitLengthAssumption1, unitLengthAssumption2];
 
             var rotor1 =
-                GeometricProcessor.CreatePureRotor(u, e1);
+                u.CreatePureRotor(e1);
 
             var rotor2 =
-                GeometricProcessor.CreatePureRotor(e1, v);
+                e1.CreatePureRotor(v);
 
             var rotorMv = rotor2.Multivector;
             var rotorMvReverse = rotor2.MultivectorReverse;
@@ -154,37 +165,35 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.AngouriMath
             //    rotorMv.EGp(e1).FullSimplifyScalars(unitLengthAssumption2);
 
             var indicesArray1 =
-                GeometricProcessor
+                VSpaceDimensions
                     .BasisBladeIDsOfGrades(1, 3)
                     .Select(i => (int)i)
                     .ToArray();
 
             var indicesArray2 =
-                GeometricProcessor
+                VSpaceDimensions
                     .BasisBladeIDsOfGrade(1)
                     .Select(i => (int)i)
                     .ToArray();
 
             var matrix1 =
-                GeometricProcessor.CreateSparseUnilinearMap(
-                        i => 
-                            rotorMv.EGp(GeometricProcessor.CreateKVectorBasis(i)).MultivectorStorage
-                    )
-                    .GetMultivectorsMappingArray(
-                        (int)GaSpaceDimension,
-                        (int)GaSpaceDimension
-                    )
-                    .GetShallowCopy(indicesArray1, indicesArray1);
+                ScalarProcessor.CreateLinUnilinearMap(
+                    VSpaceDimensions,
+                    i => 
+                        rotorMv.EGp(
+                            GeometricProcessor.CreateKVector((ulong)i)
+                        ).MultivectorToLinVector()
+                )
+                .ToArray((int)GaSpaceDimensions)
+                .GetShallowCopy(indicesArray1, indicesArray1);
 
             var matrix2 =
-                GeometricProcessor.CreateSparseUnilinearMap(
-                        i => GeometricProcessor.CreateKVectorBasis(i).EGp(rotorMvReverse).MultivectorStorage
-                    )
-                    .GetMultivectorsMappingArray(
-                        (int)GaSpaceDimension,
-                        (int)GaSpaceDimension
-                    )
-                    .GetShallowCopy(indicesArray1, indicesArray1);
+                ScalarProcessor.CreateLinUnilinearMap(
+                    VSpaceDimensions,
+                    i => GeometricProcessor.CreateKVector((ulong)i).EGp(rotorMvReverse).MultivectorToLinVector()
+                )
+                .ToArray((int)GaSpaceDimensions)
+                .GetShallowCopy(indicesArray1, indicesArray1);
 
             //var det1 = 
             //    Mfs.Det[matrix1.ToArrayExpr()].FullSimplify(unitLengthAssumptionExpr2);
@@ -193,10 +202,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.AngouriMath
             //    Mfs.Det[matrix2.ToArrayExpr()].FullSimplify(unitLengthAssumptionExpr2);
 
             var rotorMatrix =
-                rotor2.GetVectorOmMappingMatrix(
-                    (int)VSpaceDimension,
-                    (int)VSpaceDimension
-                );
+                rotor2.GetVectorMapPart(VSpaceDimensions).ToArray(VSpaceDimensions);
 
             var matrixDot =
                 (Entity.Matrix) (matrix2.ArrayToMatrixExpr() * matrix1.ArrayToMatrixExpr());
@@ -204,8 +210,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.AngouriMath
             var matrixDotDet =
                 MathS.Det(matrixDot);
 
-            var v1 = rotorMatrix.Map(e1);
-            var v2 = rotorMatrix.GetTranspose().Map(v);
+            var v1 = rotorMatrix.MapVector(e1.ToLinVector());
+            var v2 = rotorMatrix.Transpose().MapVector(v.ToLinVector());
 
             // Display a LaTeX representation of the vectors and their outer product
             Console.WriteLine($@"\boldsymbol{{u}} = {LaTeXComposer.GetMultivectorText(u)}");
@@ -219,8 +225,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic.AngouriMath
             Console.WriteLine($@"det(matrix2 * matrix1) = {LaTeXComposer.GetScalarText(matrixDotDet)}");
             //Console.WriteLine($@"det(matrix1) = {LaTeXComposer.GetScalarText(det1)}");
             //Console.WriteLine($@"det(matrix2) = {LaTeXComposer.GetScalarText(det2)}");
-            Console.WriteLine($@"rotor matrix * e1 = {LaTeXComposer.GetMultivectorText(v1)}");
-            Console.WriteLine($@"rotor matrix transpose * v = {LaTeXComposer.GetMultivectorText(v2)}");
+            Console.WriteLine($@"rotor matrix * e1 = {LaTeXComposer.GetVectorText(v1)}");
+            Console.WriteLine($@"rotor matrix transpose * v = {LaTeXComposer.GetVectorText(v2)}");
             Console.WriteLine();
 
         }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Expressions.Composite;
 
@@ -120,7 +119,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Expressions.HeadSpecs
                 : MetaExpressionFunctionAssociationKind.None);
 
 
-        private MetaExpressionHeadSpecsFunction([NotNull] MetaContext context, [NotNull] string functionName, bool isLeftAssociative, bool isRightAssociative)
+        private MetaExpressionHeadSpecsFunction(MetaContext context, string functionName, bool isLeftAssociative, bool isRightAssociative)
         {
             if (string.IsNullOrEmpty(functionName))
                 throw new ArgumentNullException(nameof(functionName), @"Function name not initialized");

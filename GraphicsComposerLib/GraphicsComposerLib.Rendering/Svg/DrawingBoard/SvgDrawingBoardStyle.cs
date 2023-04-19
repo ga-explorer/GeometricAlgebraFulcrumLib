@@ -1,5 +1,4 @@
 ﻿using GraphicsComposerLib.Rendering.Colors;
-using SixLabors.ImageSharp;
 using TextComposerLib.Text;
 
 namespace GraphicsComposerLib.Rendering.Svg.DrawingBoard

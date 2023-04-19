@@ -1,49 +1,53 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
-using GeometricAlgebraFulcrumLib.Processors;
-using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Text;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.MathBase.Text;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Numeric
 {
     public static class MultivectorProductsSample
     {
         // This is a pre-defined scalar processor for numeric scalars
-        public static ScalarAlgebraFloat64Processor ScalarProcessor { get; }
-            = ScalarAlgebraFloat64Processor.DefaultProcessor;
+        public static ScalarProcessorFloat64 ScalarProcessor { get; }
+            = ScalarProcessorFloat64.DefaultProcessor;
             
         // Create a 3-dimensional Euclidean geometric algebra processor based on the
         // selected scalar processor
-        public static GeometricAlgebraEuclideanProcessor<double> GeometricProcessor { get; } 
-            = ScalarProcessor.CreateGeometricAlgebraEuclideanProcessor(3);
+        public static RGaFloat64Processor GeometricProcessor { get; } 
+            = RGaFloat64Processor.Euclidean;
+
+        public static int VSpaceDimensions 
+            => 3;
 
         // This is a pre-defined text generator for displaying multivectors
-        public static TextFloat64Composer TextComposer { get; }
-            = TextFloat64Composer.DefaultComposer;
+        public static TextComposerFloat64 TextComposer { get; }
+            = TextComposerFloat64.DefaultComposer;
 
         // This is a pre-defined LaTeX generator for displaying multivectors
-        public static LaTeXFloat64Composer LaTeXComposer { get; }
-            = LaTeXFloat64Composer.DefaultComposer;
+        public static LaTeXComposerFloat64 LaTeXComposer { get; }
+            = LaTeXComposerFloat64.DefaultComposer;
 
 
         public static void Example1()
         {
             // This is a pre-defined scalar processor for the standard
             // 64-bit floating point scalars
-            var scalarProcessor = ScalarAlgebraFloat64Processor.DefaultProcessor;
+            var scalarProcessor = ScalarProcessorFloat64.DefaultProcessor;
 
             // Create a 3-dimensional Euclidean geometric algebra processor based on the
             // selected scalar processor
-            var geometricProcessor = scalarProcessor.CreateGeometricAlgebraEuclideanProcessor(3);
+            var geometricProcessor = RGaFloat64Processor.Euclidean;
+
+            var vSpaceDimensions = 3;
 
             // This is a pre-defined text generator for displaying multivectors
             // with 64-bit floating point scalars
-            var textComposer = TextFloat64Composer.DefaultComposer;
+            var textComposer = TextComposerFloat64.DefaultComposer;
 
             // This is a pre-defined LaTeX generator for displaying multivectors
             // with 64-bit floating point scalars
-            var latexComposer = LaTeXFloat64Composer.DefaultComposer;
+            var latexComposer = LaTeXComposerFloat64.DefaultComposer;
 
             // Create two GA vectors each having 3 components
             var u = geometricProcessor.CreateVector(1.2, -1, 1.25);

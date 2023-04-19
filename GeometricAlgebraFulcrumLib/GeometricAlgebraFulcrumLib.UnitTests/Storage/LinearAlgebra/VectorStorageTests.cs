@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
 using GeometricAlgebraFulcrumLib.Processors;
 using GeometricAlgebraFulcrumLib.Processors.LinearAlgebra;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Dense;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Sparse;
@@ -22,7 +22,7 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Storage.LinearAlgebra
         private IReadOnlyList<LinVectorArrayStorage<double>> _storageList3;
 
         public ILinearAlgebraProcessor<double> LinearProcessor
-            => ScalarAlgebraFloat64Processor.DefaultProcessor.CreateLinearAlgebraProcessor();
+            => ScalarProcessorFloat64.DefaultProcessor.CreateLinearAlgebraProcessor();
 
         public VectorStorageTests()
         {

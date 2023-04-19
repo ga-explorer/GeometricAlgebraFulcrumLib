@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records.Restricted;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Dense;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Sparse;
@@ -55,7 +56,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public T GetScalar(IndexPairRecord key)
+        public T GetScalar(RGaKvIndexPairRecord key)
         {
             throw new KeyNotFoundException();
         }
@@ -79,9 +80,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<IndexPairRecord> GetIndices()
+        public IEnumerable<RGaKvIndexPairRecord> GetIndices()
         {
-            return Enumerable.Empty<IndexPairRecord>();
+            return Enumerable.Empty<RGaKvIndexPairRecord>();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -103,7 +104,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool ContainsIndex(IndexPairRecord key)
+        public bool ContainsIndex(RGaKvIndexPairRecord key)
         {
             return false;
         }
@@ -121,7 +122,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IndexPairRecord GetMinIndex()
+        public RGaKvIndexPairRecord GetMinIndex()
         {
             throw new InvalidOperationException();
         }
@@ -139,13 +140,13 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IndexPairRecord GetMaxIndex()
+        public RGaKvIndexPairRecord GetMaxIndex()
         {
             throw new InvalidOperationException();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool TryGetScalar(IndexPairRecord key, out T value)
+        public bool TryGetScalar(RGaKvIndexPairRecord key, out T value)
         {
             value = default;
             return false;
@@ -159,13 +160,13 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<IndexPairRecord> GetEmptyIndices(ulong maxCount1, ulong maxCount2)
+        public IEnumerable<RGaKvIndexPairRecord> GetEmptyIndices(ulong maxCount1, ulong maxCount2)
         {
-            return new IndexPairRecord(maxCount1, maxCount2).GetIndexPairsInRange();
+            return new RGaKvIndexPairRecord(maxCount1, maxCount2).GetIndexPairsInRange();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<IndexPairRecord> GetEmptyIndices(IndexPairRecord maxCount)
+        public IEnumerable<RGaKvIndexPairRecord> GetEmptyIndices(RGaKvIndexPairRecord maxCount)
         {
             return maxCount.GetIndexPairsInRange();
         }
@@ -177,13 +178,13 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ILinMatrixStorage<T> GetPermutation(Func<ulong, ulong, IndexPairRecord> keyMapping)
+        public ILinMatrixStorage<T> GetPermutation(Func<ulong, ulong, RGaKvIndexPairRecord> keyMapping)
         {
             return EmptyStorage;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ILinMatrixStorage<T> GetPermutation(Func<IndexPairRecord, IndexPairRecord> indexMapping)
+        public ILinMatrixStorage<T> GetPermutation(Func<RGaKvIndexPairRecord, RGaKvIndexPairRecord> indexMapping)
         {
             return this;
         }
@@ -225,13 +226,13 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ILinMatrixGradedStorage<T> ToMatrixGradedStorage(Func<ulong, ulong, GradeIndexPairRecord> indexToGradeIndexMapping)
+        public ILinMatrixGradedStorage<T> ToMatrixGradedStorage(Func<ulong, ulong, RGaGradeKvIndexPairRecord> indexToGradeIndexMapping)
         {
             return LinMatrixEmptyGradedStorage<T>.EmptyStorage;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ILinMatrixGradedStorage<T> ToMatrixGradedStorage(Func<ulong, ulong, T, GradeIndexPairScalarRecord<T>> indexScalarToGradeIndexScalarMapping)
+        public ILinMatrixGradedStorage<T> ToMatrixGradedStorage(Func<ulong, ulong, T, RGaGradeKvIndexPairScalarRecord<T>> indexScalarToGradeIndexScalarMapping)
         {
             return LinMatrixEmptyGradedStorage<T>.EmptyStorage;
         }
@@ -249,27 +250,27 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<IndexLinVectorStorageRecord<T>> GetRows()
+        public IEnumerable<RGaKvIndexLinVectorStorageRecord<T>> GetRows()
         {
-            return Enumerable.Empty<IndexLinVectorStorageRecord<T>>();
+            return Enumerable.Empty<RGaKvIndexLinVectorStorageRecord<T>>();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<IndexLinVectorStorageRecord<T>> GetRows(Func<ulong, bool> rowIndexFilter)
+        public IEnumerable<RGaKvIndexLinVectorStorageRecord<T>> GetRows(Func<ulong, bool> rowIndexFilter)
         {
-            return Enumerable.Empty<IndexLinVectorStorageRecord<T>>();
+            return Enumerable.Empty<RGaKvIndexLinVectorStorageRecord<T>>();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<IndexLinVectorStorageRecord<T>> GetColumns()
+        public IEnumerable<RGaKvIndexLinVectorStorageRecord<T>> GetColumns()
         {
-            return Enumerable.Empty<IndexLinVectorStorageRecord<T>>();
+            return Enumerable.Empty<RGaKvIndexLinVectorStorageRecord<T>>();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<IndexLinVectorStorageRecord<T>> GetColumns(Func<ulong, bool> columnIndexFilter)
+        public IEnumerable<RGaKvIndexLinVectorStorageRecord<T>> GetColumns(Func<ulong, bool> columnIndexFilter)
         {
-            return Enumerable.Empty<IndexLinVectorStorageRecord<T>>();
+            return Enumerable.Empty<RGaKvIndexLinVectorStorageRecord<T>>();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -279,7 +280,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ILinVectorStorage<T> CombineRows(IEnumerable<IndexScalarRecord<T>> rowIndexScalarRecords, Func<T, ILinVectorStorage<T>, ILinVectorStorage<T>> scalingFunc, Func<ILinVectorStorage<T>, ILinVectorStorage<T>, ILinVectorStorage<T>> reducingFunc)
+        public ILinVectorStorage<T> CombineRows(IEnumerable<RGaKvIndexScalarRecord<T>> rowIndexScalarRecords,
+            Func<T, ILinVectorStorage<T>, ILinVectorStorage<T>> scalingFunc,
+            Func<ILinVectorStorage<T>, ILinVectorStorage<T>, ILinVectorStorage<T>> reducingFunc)
         {
             return LinVectorEmptyStorage<T>.EmptyStorage;
         }
@@ -291,7 +294,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ILinVectorStorage<T> CombineColumns(IEnumerable<IndexScalarRecord<T>> columnIndexScalarRecords, Func<T, ILinVectorStorage<T>, ILinVectorStorage<T>> scalingFunc, Func<ILinVectorStorage<T>, ILinVectorStorage<T>, ILinVectorStorage<T>> reducingFunc)
+        public ILinVectorStorage<T> CombineColumns(IEnumerable<RGaKvIndexScalarRecord<T>> columnIndexScalarRecords,
+            Func<T, ILinVectorStorage<T>, ILinVectorStorage<T>> scalingFunc,
+            Func<ILinVectorStorage<T>, ILinVectorStorage<T>, ILinVectorStorage<T>> reducingFunc)
         {
             return LinVectorEmptyStorage<T>.EmptyStorage;
         }
@@ -304,33 +309,33 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<IndexPairScalarRecord<T>> GetIndexScalarRecords()
+        public IEnumerable<RGaKvIndexPairScalarRecord<T>> GetIndexScalarRecords()
         {
-            return Enumerable.Empty<IndexPairScalarRecord<T>>();
+            return Enumerable.Empty<RGaKvIndexPairScalarRecord<T>>();
         }
  
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ILinMatrixDenseStorage<T> GetDensePermutation(Func<ulong, ulong, IndexPairRecord> indexMapping)
+        public ILinMatrixDenseStorage<T> GetDensePermutation(Func<ulong, ulong, RGaKvIndexPairRecord> indexMapping)
         {
             return this;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ILinMatrixDenseStorage<T> GetDensePermutation(Func<IndexPairRecord, IndexPairRecord> indexMapping)
+        public ILinMatrixDenseStorage<T> GetDensePermutation(Func<RGaKvIndexPairRecord, RGaKvIndexPairRecord> indexMapping)
         {
             return this;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<IndexLinVectorStorageRecord<T>> GetDenseRows(IEnumerable<ulong> rowIndexList)
+        public IEnumerable<RGaKvIndexLinVectorStorageRecord<T>> GetDenseRows(IEnumerable<ulong> rowIndexList)
         {
-            return Enumerable.Empty<IndexLinVectorStorageRecord<T>>();
+            return Enumerable.Empty<RGaKvIndexLinVectorStorageRecord<T>>();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<IndexLinVectorStorageRecord<T>> GetDenseColumns(IEnumerable<ulong> columnIndexList)
+        public IEnumerable<RGaKvIndexLinVectorStorageRecord<T>> GetDenseColumns(IEnumerable<ulong> columnIndexList)
         {
-            return Enumerable.Empty<IndexLinVectorStorageRecord<T>>();
+            return Enumerable.Empty<RGaKvIndexLinVectorStorageRecord<T>>();
         }
     }
 }

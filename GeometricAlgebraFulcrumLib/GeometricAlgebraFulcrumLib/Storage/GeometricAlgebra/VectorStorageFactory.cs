@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records.Restricted;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Dense;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded;
@@ -26,7 +27,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> SumToVectorStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<IndexScalarRecord<T>> termsList)
+        public static VectorStorage<T> SumToVectorStorage<T>(this IScalarProcessor<T> scalarProcessor, IEnumerable<RGaKvIndexScalarRecord<T>> termsList)
         {
             return scalarProcessor.CreateVectorStorageComposer()
                 .AddTerms(termsList)
@@ -42,7 +43,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> CreateVectorStorageZero<T>(this IScalarAlgebraProcessor<T> scalarProcessor)
+        public static VectorStorage<T> CreateVectorStorageZero<T>(this IScalarProcessor<T> scalarProcessor)
         {
             return VectorStorage<T>.ZeroVector;
         }
@@ -60,43 +61,43 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> CreateVectorStorageTerm<T>(this IScalarAlgebraProcessor<T> scalarProcessor, int index, T scalar)
+        public static VectorStorage<T> CreateVectorStorageTerm<T>(this IScalarProcessor<T> scalarProcessor, int index, T scalar)
         {
             return VectorStorage<T>.CreateVectorStorage((ulong)index, scalar);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> CreateVectorStorageTerm<T>(this IScalarAlgebraProcessor<T> scalarProcessor, ulong index, T scalar)
+        public static VectorStorage<T> CreateVectorStorageTerm<T>(this IScalarProcessor<T> scalarProcessor, ulong index, T scalar)
         {
             return VectorStorage<T>.CreateVectorStorage(index, scalar);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> CreateVectorStorageTerm<T>(this IndexScalarRecord<T> indexScalarPair)
+        public static VectorStorage<T> CreateVectorStorageTerm<T>(this RGaKvIndexScalarRecord<T> indexScalarPair)
         {
-            return VectorStorage<T>.CreateVectorStorage(indexScalarPair.Index, indexScalarPair.Scalar);
+            return VectorStorage<T>.CreateVectorStorage(indexScalarPair.KvIndex, indexScalarPair.Scalar);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> CreateVectorStorageTerm<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IndexScalarRecord<T> indexScalarPair)
+        public static VectorStorage<T> CreateVectorStorageTerm<T>(this IScalarProcessor<T> scalarProcessor, RGaKvIndexScalarRecord<T> indexScalarPair)
         {
-            return VectorStorage<T>.CreateVectorStorage(indexScalarPair.Index, indexScalarPair.Scalar);
+            return VectorStorage<T>.CreateVectorStorage(indexScalarPair.KvIndex, indexScalarPair.Scalar);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> CreateVectorStorageBasis<T>(this IScalarAlgebraProcessor<T> scalarProcessor, int index)
+        public static VectorStorage<T> CreateVectorStorageBasis<T>(this IScalarProcessor<T> scalarProcessor, int index)
         {
             return VectorStorage<T>.CreateVectorStorage((ulong)index, scalarProcessor.ScalarOne);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> CreateVectorStorageBasis<T>(this IScalarAlgebraProcessor<T> scalarProcessor, ulong index)
+        public static VectorStorage<T> CreateVectorStorageBasis<T>(this IScalarProcessor<T> scalarProcessor, ulong index)
         {
             return VectorStorage<T>.CreateVectorStorage(index, scalarProcessor.ScalarOne);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> CreateVectorStorageSymmetric<T>(this IScalarAlgebraProcessor<T> scalarProcessor, int termsCount)
+        public static VectorStorage<T> CreateVectorStorageSymmetric<T>(this IScalarProcessor<T> scalarProcessor, int termsCount)
         {
             return VectorStorage<T>.CreateVectorStorage(
                 (ILinVectorStorage<T>)scalarProcessor.ScalarOne.CreateLinVectorRepeatedScalarStorage(termsCount)
@@ -104,7 +105,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> CreateVectorStorageSymmetricUnit<T>(this IScalarAlgebraProcessor<T> scalarProcessor, int termsCount)
+        public static VectorStorage<T> CreateVectorStorageSymmetricUnit<T>(this IScalarProcessor<T> scalarProcessor, int termsCount)
         {
             var length = scalarProcessor.Sqrt(termsCount);
 
@@ -140,7 +141,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> CreateVectorStorageBibolar<T>(this IScalarAlgebraProcessor<T> processor, IEnumerable<char> basisVectorSignatures)
+        public static VectorStorage<T> CreateVectorStorageBibolar<T>(this IScalarProcessor<T> processor, IEnumerable<char> basisVectorSignatures)
         {
             var scalarList =
                 basisVectorSignatures.Select(c =>
@@ -156,7 +157,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> CreateVectorStorageBibolar<T>(this IScalarAlgebraProcessor<T> processor, IEnumerable<int> basisVectorSignatures)
+        public static VectorStorage<T> CreateVectorStorageBibolar<T>(this IScalarProcessor<T> processor, IEnumerable<int> basisVectorSignatures)
         {
             var scalarList =
                 basisVectorSignatures.Select(c =>
@@ -172,7 +173,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> CreateVectorStorageBibolar<T>(this IScalarAlgebraProcessor<T> processor, params int[] basisVectorSignatures)
+        public static VectorStorage<T> CreateVectorStorageBibolar<T>(this IScalarProcessor<T> processor, params int[] basisVectorSignatures)
         {
             var scalarList =
                 basisVectorSignatures.Select(c =>
@@ -188,7 +189,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> CreateVectorStorage<T>(this IEnumerable<IndexScalarRecord<T>> termsList)
+        public static VectorStorage<T> CreateVectorStorage<T>(this IEnumerable<RGaKvIndexScalarRecord<T>> termsList)
         {
             return VectorStorage<T>.CreateVectorStorage(
                 termsList.CreateDictionary()
@@ -196,30 +197,30 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> CreateVectorStorage<T>(this IEnumerable<BasisTerm<T>> termsList)
+        public static VectorStorage<T> CreateVectorStorage<T>(this IEnumerable<KeyValuePair<ulong, T>> termsList)
         {
             return VectorStorage<T>.CreateVectorStorage(
                 termsList.ToDictionary(
-                    t => t.BasisBlade.Index,
-                    t => t.Scalar
+                    t => t.Key.BasisBladeIdToIndex(),
+                    t => t.Value
                 )
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> CreateVectorStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<BasisTerm<T>> termsList)
+        public static VectorStorage<T> CreateVectorStorage<T>(this IScalarProcessor<T> scalarProcessor, IEnumerable<KeyValuePair<ulong, T>> termsList)
         {
             return VectorStorage<T>.CreateVectorStorage(
                 termsList.ToDictionary(
-                    t => t.BasisBlade.Index,
-                    t => t.Scalar
+                    t => t.Key.BasisBladeIdToIndex(),
+                    t => t.Value
                 )
             );
         }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> CreateVectorStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, ILinVectorStorage<T> storage)
+        public static VectorStorage<T> CreateVectorStorage<T>(this IScalarProcessor<T> scalarProcessor, ILinVectorStorage<T> storage)
         {
             return VectorStorage<T>.CreateVectorStorage(storage);
         }
@@ -231,7 +232,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> CreateVectorStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, ILinVectorGradedStorage<T> storage)
+        public static VectorStorage<T> CreateVectorStorage<T>(this IScalarProcessor<T> scalarProcessor, ILinVectorGradedStorage<T> storage)
         {
             return VectorStorage<T>.CreateVectorStorage(
                 storage.ToVectorStorage(BasisBladeUtils.BasisBladeGradeIndexToId)
@@ -248,7 +249,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> CreateVectorStorageFromNumbers<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IReadOnlyDictionary<ulong, int> indexScalarDictionary)
+        public static VectorStorage<T> CreateVectorStorageFromNumbers<T>(this IScalarProcessor<T> scalarProcessor, IReadOnlyDictionary<ulong, int> indexScalarDictionary)
         {
             return VectorStorage<T>.CreateVectorStorage(
                 scalarProcessor.CreateLinVectorStorageFromNumbers(indexScalarDictionary)
@@ -256,7 +257,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> CreateVectorStorageFromNumbers<T>(this IScalarAlgebraProcessor<T> scalarProcessor, int termsCount, Func<ulong, int> indexToScalarFunc)
+        public static VectorStorage<T> CreateVectorStorageFromNumbers<T>(this IScalarProcessor<T> scalarProcessor, int termsCount, Func<ulong, int> indexToScalarFunc)
         {
             return VectorStorage<T>.CreateVectorStorage(
                 (ILinVectorStorage<T>)scalarProcessor.CreateLinVectorStorageFromNumbers(termsCount, indexToScalarFunc)
@@ -264,7 +265,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> CreateVectorStorageFromNumbers<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params int[] scalarArray)
+        public static VectorStorage<T> CreateVectorStorageFromNumbers<T>(this IScalarProcessor<T> scalarProcessor, params int[] scalarArray)
         {
             return VectorStorage<T>.CreateVectorStorage(
                 (ILinVectorStorage<T>)scalarProcessor.CreateLinVectorStorageFromNumbers(scalarArray)
@@ -272,7 +273,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> CreateVectorStorageFromNumbers<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<int> scalarList)
+        public static VectorStorage<T> CreateVectorStorageFromNumbers<T>(this IScalarProcessor<T> scalarProcessor, IEnumerable<int> scalarList)
         {
             return VectorStorage<T>.CreateVectorStorage(
                 (ILinVectorStorage<T>)scalarProcessor.CreateLinVectorStorageFromNumbers(scalarList.ToArray())
@@ -281,7 +282,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> CreateVectorStorageFromNumbers<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IReadOnlyDictionary<ulong, uint> indexScalarDictionary)
+        public static VectorStorage<T> CreateVectorStorageFromNumbers<T>(this IScalarProcessor<T> scalarProcessor, IReadOnlyDictionary<ulong, uint> indexScalarDictionary)
         {
             return VectorStorage<T>.CreateVectorStorage(
                 scalarProcessor.CreateLinVectorStorageFromNumbers(indexScalarDictionary)
@@ -289,7 +290,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> CreateVectorStorageFromNumbers<T>(this IScalarAlgebraProcessor<T> scalarProcessor, int termsCount, Func<ulong, uint> indexToScalarFunc)
+        public static VectorStorage<T> CreateVectorStorageFromNumbers<T>(this IScalarProcessor<T> scalarProcessor, int termsCount, Func<ulong, uint> indexToScalarFunc)
         {
             return VectorStorage<T>.CreateVectorStorage(
                 (ILinVectorStorage<T>)scalarProcessor.CreateLinVectorStorageFromNumbers(termsCount, indexToScalarFunc)
@@ -297,7 +298,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> CreateVectorStorageFromNumbers<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params uint[] scalarArray)
+        public static VectorStorage<T> CreateVectorStorageFromNumbers<T>(this IScalarProcessor<T> scalarProcessor, params uint[] scalarArray)
         {
             return VectorStorage<T>.CreateVectorStorage(
                 (ILinVectorStorage<T>)scalarProcessor.CreateLinVectorStorageFromNumbers(scalarArray)
@@ -305,7 +306,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> CreateVectorStorageFromNumbers<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<uint> scalarList)
+        public static VectorStorage<T> CreateVectorStorageFromNumbers<T>(this IScalarProcessor<T> scalarProcessor, IEnumerable<uint> scalarList)
         {
             return VectorStorage<T>.CreateVectorStorage(
                 (ILinVectorStorage<T>)scalarProcessor.CreateLinVectorStorageFromNumbers(scalarList.ToArray())
@@ -314,7 +315,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> CreateVectorStorageFromNumbers<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IReadOnlyDictionary<ulong, long> indexScalarDictionary)
+        public static VectorStorage<T> CreateVectorStorageFromNumbers<T>(this IScalarProcessor<T> scalarProcessor, IReadOnlyDictionary<ulong, long> indexScalarDictionary)
         {
             return VectorStorage<T>.CreateVectorStorage(
                 scalarProcessor.CreateLinVectorStorageFromNumbers(indexScalarDictionary)
@@ -322,7 +323,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> CreateVectorStorageFromNumbers<T>(this IScalarAlgebraProcessor<T> scalarProcessor, int termsCount, Func<ulong, long> indexToScalarFunc)
+        public static VectorStorage<T> CreateVectorStorageFromNumbers<T>(this IScalarProcessor<T> scalarProcessor, int termsCount, Func<ulong, long> indexToScalarFunc)
         {
             return VectorStorage<T>.CreateVectorStorage(
                 (ILinVectorStorage<T>)scalarProcessor.CreateLinVectorStorageFromNumbers(termsCount, indexToScalarFunc)
@@ -330,7 +331,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> CreateVectorStorageFromNumbers<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params long[] scalarArray)
+        public static VectorStorage<T> CreateVectorStorageFromNumbers<T>(this IScalarProcessor<T> scalarProcessor, params long[] scalarArray)
         {
             return VectorStorage<T>.CreateVectorStorage(
                 (ILinVectorStorage<T>)scalarProcessor.CreateLinVectorStorageFromNumbers(scalarArray)
@@ -338,7 +339,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> CreateVectorStorageFromNumbers<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<long> scalarList)
+        public static VectorStorage<T> CreateVectorStorageFromNumbers<T>(this IScalarProcessor<T> scalarProcessor, IEnumerable<long> scalarList)
         {
             return VectorStorage<T>.CreateVectorStorage(
                 (ILinVectorStorage<T>)scalarProcessor.CreateLinVectorStorageFromNumbers(scalarList.ToArray())
@@ -347,7 +348,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> CreateVectorStorageFromNumbers<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IReadOnlyDictionary<ulong, ulong> indexScalarDictionary)
+        public static VectorStorage<T> CreateVectorStorageFromNumbers<T>(this IScalarProcessor<T> scalarProcessor, IReadOnlyDictionary<ulong, ulong> indexScalarDictionary)
         {
             return VectorStorage<T>.CreateVectorStorage(
                 scalarProcessor.CreateLinVectorStorageFromNumbers(indexScalarDictionary)
@@ -355,7 +356,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> CreateVectorStorageFromNumbers<T>(this IScalarAlgebraProcessor<T> scalarProcessor, int termsCount, Func<ulong, ulong> indexToScalarFunc)
+        public static VectorStorage<T> CreateVectorStorageFromNumbers<T>(this IScalarProcessor<T> scalarProcessor, int termsCount, Func<ulong, ulong> indexToScalarFunc)
         {
             return VectorStorage<T>.CreateVectorStorage(
                 (ILinVectorStorage<T>)scalarProcessor.CreateLinVectorStorageFromNumbers(termsCount, indexToScalarFunc)
@@ -363,7 +364,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> CreateVectorStorageFromNumbers<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params ulong[] scalarArray)
+        public static VectorStorage<T> CreateVectorStorageFromNumbers<T>(this IScalarProcessor<T> scalarProcessor, params ulong[] scalarArray)
         {
             return VectorStorage<T>.CreateVectorStorage(
                 (ILinVectorStorage<T>)scalarProcessor.CreateLinVectorStorageFromNumbers(scalarArray)
@@ -371,7 +372,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> CreateVectorStorageFromNumbers<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<ulong> scalarList)
+        public static VectorStorage<T> CreateVectorStorageFromNumbers<T>(this IScalarProcessor<T> scalarProcessor, IEnumerable<ulong> scalarList)
         {
             return VectorStorage<T>.CreateVectorStorage(
                 (ILinVectorStorage<T>)scalarProcessor.CreateLinVectorStorageFromNumbers(scalarList.ToArray())
@@ -380,7 +381,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> CreateVectorStorageFromNumbers<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IReadOnlyDictionary<ulong, float> indexScalarDictionary)
+        public static VectorStorage<T> CreateVectorStorageFromNumbers<T>(this IScalarProcessor<T> scalarProcessor, IReadOnlyDictionary<ulong, float> indexScalarDictionary)
         {
             return VectorStorage<T>.CreateVectorStorage(
                 scalarProcessor.CreateLinVectorStorageFromNumbers(indexScalarDictionary)
@@ -388,7 +389,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> CreateVectorStorageFromNumbers<T>(this IScalarAlgebraProcessor<T> scalarProcessor, int termsCount, Func<ulong, float> indexToScalarFunc)
+        public static VectorStorage<T> CreateVectorStorageFromNumbers<T>(this IScalarProcessor<T> scalarProcessor, int termsCount, Func<ulong, float> indexToScalarFunc)
         {
             return VectorStorage<T>.CreateVectorStorage(
                 (ILinVectorStorage<T>)scalarProcessor.CreateLinVectorStorageFromNumbers(termsCount, indexToScalarFunc)
@@ -396,7 +397,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> CreateVectorStorageFromNumbers<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params float[] scalarArray)
+        public static VectorStorage<T> CreateVectorStorageFromNumbers<T>(this IScalarProcessor<T> scalarProcessor, params float[] scalarArray)
         {
             return VectorStorage<T>.CreateVectorStorage(
                 (ILinVectorStorage<T>)scalarProcessor.CreateLinVectorStorageFromNumbers(scalarArray)
@@ -404,7 +405,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> CreateVectorStorageFromNumbers<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<float> scalarList)
+        public static VectorStorage<T> CreateVectorStorageFromNumbers<T>(this IScalarProcessor<T> scalarProcessor, IEnumerable<float> scalarList)
         {
             return VectorStorage<T>.CreateVectorStorage(
                 (ILinVectorStorage<T>)scalarProcessor.CreateLinVectorStorageFromNumbers(scalarList.ToArray())
@@ -413,7 +414,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> CreateVectorStorageFromNumbers<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IReadOnlyDictionary<ulong, double> indexScalarDictionary)
+        public static VectorStorage<T> CreateVectorStorageFromNumbers<T>(this IScalarProcessor<T> scalarProcessor, IReadOnlyDictionary<ulong, double> indexScalarDictionary)
         {
             return VectorStorage<T>.CreateVectorStorage(
                 scalarProcessor.CreateLinVectorStorageFromNumbers(indexScalarDictionary)
@@ -421,7 +422,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> CreateVectorStorageFromNumbers<T>(this IScalarAlgebraProcessor<T> scalarProcessor, int termsCount, Func<ulong, double> indexToScalarFunc)
+        public static VectorStorage<T> CreateVectorStorageFromNumbers<T>(this IScalarProcessor<T> scalarProcessor, int termsCount, Func<ulong, double> indexToScalarFunc)
         {
             return VectorStorage<T>.CreateVectorStorage(
                 (ILinVectorStorage<T>)scalarProcessor.CreateLinVectorStorageFromNumbers(termsCount, indexToScalarFunc)
@@ -429,7 +430,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> CreateVectorStorageFromNumbers<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params double[] scalarArray)
+        public static VectorStorage<T> CreateVectorStorageFromNumbers<T>(this IScalarProcessor<T> scalarProcessor, params double[] scalarArray)
         {
             return VectorStorage<T>.CreateVectorStorage(
                 (ILinVectorStorage<T>)scalarProcessor.CreateLinVectorStorageFromNumbers(scalarArray)
@@ -437,7 +438,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> CreateVectorStorageFromNumbers<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<double> scalarList)
+        public static VectorStorage<T> CreateVectorStorageFromNumbers<T>(this IScalarProcessor<T> scalarProcessor, IEnumerable<double> scalarList)
         {
             return VectorStorage<T>.CreateVectorStorage(
                 (ILinVectorStorage<T>)scalarProcessor.CreateLinVectorStorageFromNumbers(scalarList.ToArray())
@@ -446,7 +447,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> CreateVectorStorageFromText<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IReadOnlyDictionary<ulong, string> indexScalarDictionary)
+        public static VectorStorage<T> CreateVectorStorageFromText<T>(this IScalarProcessor<T> scalarProcessor, IReadOnlyDictionary<ulong, string> indexScalarDictionary)
         {
             return VectorStorage<T>.CreateVectorStorage(
                 scalarProcessor.CreateLinVectorStorageFromText(indexScalarDictionary)
@@ -454,7 +455,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> CreateVectorStorageFromText<T>(this IScalarAlgebraProcessor<T> scalarProcessor, int termsCount, Func<ulong, string> indexToScalarFunc)
+        public static VectorStorage<T> CreateVectorStorageFromText<T>(this IScalarProcessor<T> scalarProcessor, int termsCount, Func<ulong, string> indexToScalarFunc)
         {
             return VectorStorage<T>.CreateVectorStorage(
                 (ILinVectorStorage<T>)scalarProcessor.CreateLinVectorStorageFromText(termsCount, indexToScalarFunc)
@@ -462,7 +463,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> CreateVectorStorageFromText<T>(this IScalarAlgebraProcessor<T> scalarProcessor, uint termsCount, Func<ulong, string> indexToScalarFunc)
+        public static VectorStorage<T> CreateVectorStorageFromText<T>(this IScalarProcessor<T> scalarProcessor, uint termsCount, Func<ulong, string> indexToScalarFunc)
         {
             return VectorStorage<T>.CreateVectorStorage(
                 (ILinVectorStorage<T>)scalarProcessor.CreateLinVectorStorageFromText(termsCount, indexToScalarFunc)
@@ -470,7 +471,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> CreateVectorStorageFromText<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params string[] scalarArray)
+        public static VectorStorage<T> CreateVectorStorageFromText<T>(this IScalarProcessor<T> scalarProcessor, params string[] scalarArray)
         {
             return VectorStorage<T>.CreateVectorStorage(
                 (ILinVectorStorage<T>)scalarProcessor.CreateLinVectorStorageFromText(scalarArray)
@@ -478,7 +479,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> CreateVectorStorageFromText<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<string> scalarList)
+        public static VectorStorage<T> CreateVectorStorageFromText<T>(this IScalarProcessor<T> scalarProcessor, IEnumerable<string> scalarList)
         {
             return VectorStorage<T>.CreateVectorStorage(
                 (ILinVectorStorage<T>)scalarProcessor.CreateLinVectorStorageFromText(scalarList.ToArray())
@@ -487,7 +488,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> CreateVectorStorageFromObjects<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IReadOnlyDictionary<ulong, object> indexScalarDictionary)
+        public static VectorStorage<T> CreateVectorStorageFromObjects<T>(this IScalarProcessor<T> scalarProcessor, IReadOnlyDictionary<ulong, object> indexScalarDictionary)
         {
             return VectorStorage<T>.CreateVectorStorage(
                 scalarProcessor.CreateLinVectorStorageFromObjects(indexScalarDictionary)
@@ -495,7 +496,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> CreateVectorStorageFromObjects<T>(this IScalarAlgebraProcessor<T> scalarProcessor, int termsCount, Func<ulong, object> indexToScalarFunc)
+        public static VectorStorage<T> CreateVectorStorageFromObjects<T>(this IScalarProcessor<T> scalarProcessor, int termsCount, Func<ulong, object> indexToScalarFunc)
         {
             return VectorStorage<T>.CreateVectorStorage(
                 (ILinVectorStorage<T>)scalarProcessor.CreateLinVectorStorageFromObjects(termsCount, indexToScalarFunc)
@@ -503,7 +504,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> CreateVectorStorageFromObjects<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params object[] scalarArray)
+        public static VectorStorage<T> CreateVectorStorageFromObjects<T>(this IScalarProcessor<T> scalarProcessor, params object[] scalarArray)
         {
             return VectorStorage<T>.CreateVectorStorage(
                 (ILinVectorStorage<T>)scalarProcessor.CreateLinVectorStorageFromObjects(scalarArray)
@@ -511,7 +512,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> CreateVectorStorageFromObjects<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<object> scalarList)
+        public static VectorStorage<T> CreateVectorStorageFromObjects<T>(this IScalarProcessor<T> scalarProcessor, IEnumerable<object> scalarList)
         {
             return VectorStorage<T>.CreateVectorStorage(
                 (ILinVectorStorage<T>)scalarProcessor.CreateLinVectorStorageFromObjects(scalarList.ToArray())
@@ -520,7 +521,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> CreateVectorStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, Dictionary<ulong, T> indexScalarDictionary)
+        public static VectorStorage<T> CreateVectorStorage<T>(this IScalarProcessor<T> scalarProcessor, Dictionary<ulong, T> indexScalarDictionary)
         {
             return VectorStorage<T>.CreateVectorStorage(
                 scalarProcessor.CreateLinVectorStorage(indexScalarDictionary)
@@ -528,7 +529,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> CreateVectorStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, int termsCount, Func<ulong, T> indexToScalarFunc)
+        public static VectorStorage<T> CreateVectorStorage<T>(this IScalarProcessor<T> scalarProcessor, int termsCount, Func<ulong, T> indexToScalarFunc)
         {
             return VectorStorage<T>.CreateVectorStorage(
                 (ILinVectorStorage<T>)scalarProcessor.CreateLinVectorStorage(termsCount, indexToScalarFunc)
@@ -536,7 +537,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> CreateVectorStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, uint termsCount, Func<ulong, T> indexToScalarFunc)
+        public static VectorStorage<T> CreateVectorStorage<T>(this IScalarProcessor<T> scalarProcessor, uint termsCount, Func<ulong, T> indexToScalarFunc)
         {
             return VectorStorage<T>.CreateVectorStorage(
                 (ILinVectorStorage<T>)scalarProcessor.CreateLinVectorStorage(termsCount, indexToScalarFunc)
@@ -544,7 +545,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> CreateVectorStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, params T[] scalarArray)
+        public static VectorStorage<T> CreateVectorStorage<T>(this IScalarProcessor<T> scalarProcessor, params T[] scalarArray)
         {
             return VectorStorage<T>.CreateVectorStorage(
                 (ILinVectorStorage<T>)scalarProcessor.CreateLinVectorStorage(scalarArray)
@@ -552,7 +553,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> CreateVectorStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<T> scalarList)
+        public static VectorStorage<T> CreateVectorStorage<T>(this IScalarProcessor<T> scalarProcessor, IEnumerable<T> scalarList)
         {
             return VectorStorage<T>.CreateVectorStorage(
                 (ILinVectorStorage<T>)scalarProcessor.CreateLinVectorStorage(scalarList.ToArray())
@@ -561,7 +562,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> CreateVectorStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, T scalar1)
+        public static VectorStorage<T> CreateVectorStorage<T>(this IScalarProcessor<T> scalarProcessor, T scalar1)
         {
             return scalarProcessor.CreateVectorStorage(
                 (ILinVectorStorage<T>)scalarProcessor.CreateLinVectorStorage(scalar1)
@@ -569,7 +570,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> CreateVectorStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, T scalar1, T scalar2)
+        public static VectorStorage<T> CreateVectorStorage<T>(this IScalarProcessor<T> scalarProcessor, T scalar1, T scalar2)
         {
             return scalarProcessor.CreateVectorStorage(
                 (ILinVectorStorage<T>)scalarProcessor.CreateLinVectorStorage(scalar1, scalar2)
@@ -577,7 +578,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> CreateVectorStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, T scalar1, T scalar2, T scalar3)
+        public static VectorStorage<T> CreateVectorStorage<T>(this IScalarProcessor<T> scalarProcessor, T scalar1, T scalar2, T scalar3)
         {
             return scalarProcessor.CreateVectorStorage(
                 (ILinVectorStorage<T>)scalarProcessor.CreateLinVectorStorage(scalar1, scalar2, scalar3)
@@ -586,7 +587,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> CreateVectorStorageRepeatedScalar<T>(this IScalarAlgebraProcessor<T> scalarProcessor, int count, T value)
+        public static VectorStorage<T> CreateVectorStorageRepeatedScalar<T>(this IScalarProcessor<T> scalarProcessor, int count, T value)
         {
             return VectorStorage<T>.CreateVectorStorage(
                 (ILinVectorStorage<T>)value.CreateLinVectorDenseStorage(count)
@@ -594,7 +595,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> CreateVectorStorageTerm<T>(this IScalarAlgebraProcessor<T> scalarProcessor, T value)
+        public static VectorStorage<T> CreateVectorStorageTerm<T>(this IScalarProcessor<T> scalarProcessor, T value)
         {
             return VectorStorage<T>.CreateVectorStorage(
                 (ILinVectorStorage<T>)new LinVectorSingleScalarDenseStorage<T>(value)
@@ -602,7 +603,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VectorStorage<T> CreateVectorStorage<T>(this IScalarAlgebraProcessor<T> scalarProcessor, IEnumerable<IndexScalarRecord<T>> indexScalarRecords)
+        public static VectorStorage<T> CreateVectorStorage<T>(this IScalarProcessor<T> scalarProcessor, IEnumerable<RGaKvIndexScalarRecord<T>> indexScalarRecords)
         {
             return VectorStorage<T>.CreateVectorStorage(
                 indexScalarRecords.CreateLinVectorStorage()

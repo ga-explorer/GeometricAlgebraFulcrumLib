@@ -1,16 +1,17 @@
-﻿namespace GraphicsComposerLib.Rendering.Visuals.Space2D;
-
-public abstract class GrVisualElement2D :
-    IGrVisualElement2D
+﻿namespace GraphicsComposerLib.Rendering.Visuals.Space2D
 {
-    public string Name { get; }
-    
-    public GrVisualElementStyle2D Style { get; }
-        = new GrVisualElementStyle2D();
-
-
-    protected GrVisualElement2D(string name)
+    public abstract class GrVisualElement2D :
+        IGrVisualElement2D
     {
-        Name = name;
+        public string Name { get; }
+    
+        public GrVisualElementStyle2D Style { get; }
+            = new GrVisualElementStyle2D();
+
+
+        protected GrVisualElement2D(string name)
+        {
+            Name = name;
+        }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded;
 
 namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors
@@ -8,19 +8,19 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors
     public static class LinVectorStorageIsZeroUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsZero<T>(this IScalarAlgebraProcessor<T> scalarProcessor, ILinVectorStorage<T> vectorStorage)
+        public static bool IsZero<T>(this IScalarProcessor<T> scalarProcessor, ILinVectorStorage<T> vectorStorage)
         {
             return vectorStorage.IsEmpty() || vectorStorage.GetScalars().All(scalarProcessor.IsZero);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsZero<T>(this IScalarAlgebraProcessor<T> scalarProcessor, ILinVectorGradedStorage<T> vectorGradedStorage)
+        public static bool IsZero<T>(this IScalarProcessor<T> scalarProcessor, ILinVectorGradedStorage<T> vectorGradedStorage)
         {
             return vectorGradedStorage.IsEmpty() || vectorGradedStorage.GetScalars().All(scalarProcessor.IsZero);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsZero<T>(this IScalarAlgebraProcessor<T> scalarProcessor, ILinVectorStorage<T> vectorStorage, bool nearZeroFlag)
+        public static bool IsZero<T>(this IScalarProcessor<T> scalarProcessor, ILinVectorStorage<T> vectorStorage, bool nearZeroFlag)
         {
             return nearZeroFlag
                 ? scalarProcessor.IsNearZero(vectorStorage)
@@ -28,7 +28,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsZero<T>(this IScalarAlgebraProcessor<T> scalarProcessor, ILinVectorGradedStorage<T> vectorGradedStorage, bool nearZeroFlag)
+        public static bool IsZero<T>(this IScalarProcessor<T> scalarProcessor, ILinVectorGradedStorage<T> vectorGradedStorage, bool nearZeroFlag)
         {
             return nearZeroFlag
                 ? scalarProcessor.IsNearZero(vectorGradedStorage)
@@ -36,13 +36,13 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsNearZero<T>(this IScalarAlgebraProcessor<T> scalarProcessor, ILinVectorStorage<T> vectorStorage)
+        public static bool IsNearZero<T>(this IScalarProcessor<T> scalarProcessor, ILinVectorStorage<T> vectorStorage)
         {
             return vectorStorage.IsEmpty() || vectorStorage.GetScalars().All(scalarProcessor.IsNearZero);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsNearZero<T>(this IScalarAlgebraProcessor<T> scalarProcessor, ILinVectorGradedStorage<T> vectorGradedStorage)
+        public static bool IsNearZero<T>(this IScalarProcessor<T> scalarProcessor, ILinVectorGradedStorage<T> vectorGradedStorage)
         {
             return vectorGradedStorage.IsEmpty() || vectorGradedStorage.GetScalars().All(scalarProcessor.IsNearZero);
         }

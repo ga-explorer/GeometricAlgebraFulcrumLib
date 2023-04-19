@@ -1,38 +1,38 @@
 ﻿using GraphicsComposerLib.Rendering.BabylonJs.Values;
 using TextComposerLib.Text.Linear;
 
-namespace GraphicsComposerLib.Rendering.BabylonJs;
-
-public sealed class GrBabylonJsSnapshotSpecs
+namespace GraphicsComposerLib.Rendering.BabylonJs
 {
-	public bool Enabled { get; set; } = false;
+    public sealed class GrBabylonJsSnapshotSpecs
+    {
+        public bool Enabled { get; set; } = false;
 
-    public GrBabylonJsInt32Value Delay { get; set; } = 750;
+        public GrBabylonJsInt32Value Delay { get; set; } = 750;
 
-    public GrBabylonJsInt32Value Width { get; set; } = 1280;
+        public GrBabylonJsInt32Value Width { get; set; } = 1280;
 
-    public GrBabylonJsInt32Value Height { get; set; } = 720;
+        public GrBabylonJsInt32Value Height { get; set; } = 720;
 
-    public GrBabylonJsFloat32Value Precision { get; set; } = 1;
+        public GrBabylonJsFloat32Value Precision { get; set; } = 1;
 
-    public bool UsePrecision { get; set; } = true;
+        public bool UsePrecision { get; set; } = true;
 
-    public string FileName { get; set; } = "Snapshot.png";
+        public string FileName { get; set; } = "Snapshot.png";
 
 	
-    public string GetSnapshotCode(string sceneName)
-    {
-        if (!Enabled)
-            return string.Empty;
+        public string GetSnapshotCode(string sceneName)
+        {
+            if (!Enabled)
+                return string.Empty;
 
-		var sizeCode = UsePrecision
-            ? $"{{ precision: {Precision.GetCode()} }}"
-            : $"{{ width: {Width.GetCode()}, height: {Height.GetCode()} }}";
+            var sizeCode = UsePrecision
+                ? $"{{ precision: {Precision.GetCode()} }}"
+                : $"{{ width: {Width.GetCode()}, height: {Height.GetCode()} }}";
 
-        var composer = new LinearTextComposer();
+            var composer = new LinearTextComposer();
 
-        composer
-            .AppendLine(@"
+            composer
+                .AppendLine(@"
 function base64toBlob(base64Data, contentType) {
 	contentType = contentType || '';
 	var sliceSize = 1024;
@@ -76,12 +76,13 @@ function saveScreenShot(scene, delay, fileName, size) {
 		);
 	});
 }".Trim())
-            .AppendLine()
-            .AppendLine(@$"{sceneName}.onAfterRenderCameraObservable.add(() => {{")
-            .AppendLine(@$"    saveScreenShot({sceneName}, {Delay.GetCode()}, '{FileName}', {sizeCode});")
-            .AppendLine(@"});")
-            .AppendLine();
+                .AppendLine()
+                .AppendLine(@$"{sceneName}.onAfterRenderCameraObservable.add(() => {{")
+                .AppendLine(@$"    saveScreenShot({sceneName}, {Delay.GetCode()}, '{FileName}', {sizeCode});")
+                .AppendLine(@"});")
+                .AppendLine();
 		
-		return composer.ToString();
+            return composer.ToString();
+        }
     }
 }

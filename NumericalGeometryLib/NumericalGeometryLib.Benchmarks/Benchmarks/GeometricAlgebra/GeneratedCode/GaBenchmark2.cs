@@ -14,15 +14,15 @@ namespace NumericalGeometryLib.Benchmarks.Benchmarks.GeometricAlgebra.GeneratedC
         private readonly List<Triangle3D> _trianglesList
             = new List<Triangle3D>();
 
-        private readonly List<Tuple3D> _pointsList
-            = new List<Tuple3D>();
+        private readonly List<Float64Tuple3D> _pointsList
+            = new List<Float64Tuple3D>();
 
         private readonly GcTriangleReflector3D _computer
             = new GcTriangleReflector3D();
 
-        public Tuple3D[] ResultsGa { get; private set; }
+        public Float64Tuple3D[] ResultsGa { get; private set; }
 
-        public Tuple3D[] ResultsVa { get; private set; }
+        public Float64Tuple3D[] ResultsVa { get; private set; }
 
 
         [Params(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)]
@@ -51,12 +51,12 @@ namespace NumericalGeometryLib.Benchmarks.Benchmarks.GeometricAlgebra.GeneratedC
                 _pointsList.Add(p);
             }
 
-            ResultsGa = new Tuple3D[OperationsCount];
-            ResultsVa = new Tuple3D[OperationsCount];
+            ResultsGa = new Float64Tuple3D[OperationsCount];
+            ResultsVa = new Float64Tuple3D[OperationsCount];
         }
 
         [Benchmark(Baseline = true)]
-        public Tuple3D[] ComputeUsingGa()
+        public Float64Tuple3D[] ComputeUsingGa()
         {
             for (var i = 0; i < OperationsCount; i++)
             {
@@ -68,7 +68,7 @@ namespace NumericalGeometryLib.Benchmarks.Benchmarks.GeometricAlgebra.GeneratedC
         }
 
         [Benchmark]
-        public Tuple3D[] ComputeUsingVa()
+        public Float64Tuple3D[] ComputeUsingVa()
         {
             for (var i = 0; i < OperationsCount; i++)
             {

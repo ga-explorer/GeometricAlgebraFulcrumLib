@@ -18,7 +18,7 @@ namespace NumericalGeometryLib.Collections.Finite.Natural
 
         public static NfcLinearIntDoubleMap Create(int itemsCount, double firstValue, double lastValue, bool excludeFirstValue, bool excludeLastValue)
         {
-            var step = (lastValue - firstValue);
+            var step = lastValue - firstValue;
 
             if (excludeFirstValue && excludeLastValue)
             {

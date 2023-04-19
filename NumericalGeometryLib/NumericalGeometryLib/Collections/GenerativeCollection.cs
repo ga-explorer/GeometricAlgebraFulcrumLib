@@ -121,9 +121,9 @@ namespace NumericalGeometryLib.Collections
         public FciMappedOffsetIterator<T> GetRandomPermutationIterator(int firstIndex, int lastIndex)
         {
             var reverseDirection = lastIndex < firstIndex;
-            var count = (reverseDirection 
+            var count = reverseDirection 
                 ? firstIndex - lastIndex + 1 
-                : lastIndex - firstIndex + 1);
+                : lastIndex - firstIndex + 1;
             var offsetSequence = count.GetRandomPermutation();
 
             return new FciMappedOffsetIterator<T>(this, offsetSequence, firstIndex, reverseDirection);
@@ -132,9 +132,9 @@ namespace NumericalGeometryLib.Collections
         public FciMappedOffsetIterator<T> GetRandomPermutationIterator(int firstIndex, int lastIndex, int seed)
         {
             var reverseDirection = lastIndex < firstIndex;
-            var count = (reverseDirection
+            var count = reverseDirection
                 ? firstIndex - lastIndex + 1
-                : lastIndex - firstIndex + 1);
+                : lastIndex - firstIndex + 1;
             var offsetSequence = count.GetRandomPermutation(seed);
 
             return new FciMappedOffsetIterator<T>(this, offsetSequence, firstIndex, reverseDirection);

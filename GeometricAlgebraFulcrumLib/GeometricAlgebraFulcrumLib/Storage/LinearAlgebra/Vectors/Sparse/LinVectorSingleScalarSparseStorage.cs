@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records.Restricted;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Dense;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 
 namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Sparse
 {
@@ -52,7 +51,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Sparse
         }
 
 
-        internal LinVectorSingleScalarSparseStorage(ulong index, [NotNull] T value)
+        internal LinVectorSingleScalarSparseStorage(ulong index, T value)
         {
             Debug.Assert(index > 0);
 
@@ -161,7 +160,8 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Sparse
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ILinVectorGradedStorage<T> ToVectorGradedStorage(Func<ulong, GradeIndexRecord> indexToGradeIndexMapping)
+        public ILinVectorGradedStorage<T> ToVectorGradedStorage(
+            Func<ulong, RGaGradeKvIndexRecord> indexToGradeIndexMapping)
         {
             var (grade, index) = indexToGradeIndexMapping(Index);
 
@@ -174,7 +174,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Sparse
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ILinVectorGradedStorage<T> ToVectorGradedStorage(Func<ulong, T, GradeIndexScalarRecord<T>> indexScalarToGradeIndexScalarMapping)
+        public ILinVectorGradedStorage<T> ToVectorGradedStorage(Func<ulong, T, RGaGradeKvIndexScalarRecord<T>> indexScalarToGradeIndexScalarMapping)
         {
             var (grade, index, scalar) = indexScalarToGradeIndexScalarMapping(Index, Scalar);
 
@@ -200,9 +200,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Sparse
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<IndexScalarRecord<T>> GetIndexScalarRecords()
+        public IEnumerable<RGaKvIndexScalarRecord<T>> GetIndexScalarRecords()
         {
-            yield return new IndexScalarRecord<T>(Index, Scalar);
+            yield return new RGaKvIndexScalarRecord<T>(Index, Scalar);
         }
     }
 }

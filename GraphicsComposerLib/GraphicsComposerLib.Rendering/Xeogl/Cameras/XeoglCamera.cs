@@ -1,8 +1,8 @@
-﻿using GraphicsComposerLib.Rendering.Xeogl.Constants;
-using NumericalGeometryLib.BasicMath.Constants;
-using NumericalGeometryLib.BasicMath.Tuples;
-using NumericalGeometryLib.BasicMath.Tuples.Immutable;
-using NumericalGeometryLib.BasicMath.Tuples.Mutable;
+﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Constants;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Mutable;
+using GraphicsComposerLib.Rendering.Xeogl.Constants;
 using TextComposerLib.Code.JavaScript;
 using TextComposerLib.Text.Linear;
 

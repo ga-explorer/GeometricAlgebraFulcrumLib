@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.BitManipulation;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra.GuidedBinaryTraversal.Multivectors;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records.Restricted;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Basis;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Sparse;
 using GeometricAlgebraFulcrumLib.Text;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 
 namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
 {
@@ -56,7 +54,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private MultivectorGradedStorage([NotNull] ILinVectorGradedStorage<T> gradeIndexScalarList)
+        private MultivectorGradedStorage(ILinVectorGradedStorage<T> gradeIndexScalarList)
         {
             _gradeIndexScalarVectorStorage = gradeIndexScalarList;
         }
@@ -398,7 +396,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
                 .SelectMany(storage => 
                     storage.Storage.GetIndexScalarRecords().Select(pair => 
                         new KeyValuePair<ulong, T>(
-                            pair.Index.BasisBladeIndexToId(storage.Grade), 
+                            pair.KvIndex.BasisBladeIndexToId(storage.Grade), 
                             pair.Scalar
                         )
                     )
@@ -419,7 +417,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
 
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool TryGetTerm(ulong id, out BasisTerm<T> term)
+        public bool TryGetTerm(ulong id, out KeyValuePair<ulong, T> term)
         {
             id.BasisBladeIdToGradeIndex(out var grade, out var index);
 
@@ -429,12 +427,12 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
                 return true;
             }
 
-            term = null;
+            term = new KeyValuePair<ulong, T>();
             return false;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool TryGetTerm(uint grade, ulong index, out BasisTerm<T> term)
+        public bool TryGetTerm(uint grade, ulong index, out KeyValuePair<ulong, T> term)
         {
             if (TryGetTermScalar(grade, index, out var value))
             {
@@ -442,7 +440,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
                 return true;
             }
 
-            term = null;
+            term = new KeyValuePair<ulong, T>();
             return false;
         }
 
@@ -525,38 +523,26 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
                 );
         }
 
-        public IEnumerable<GradeIndexRecord> GetGradeIndexRecords()
+        public IEnumerable<RGaGradeKvIndexRecord> GetGradeIndexRecords()
         {
             foreach (var (grade, indexScalarDictionary) in GetLinVectorGradedStorage().GetGradeStorageRecords())
             foreach (var index in indexScalarDictionary.GetIndices())
-                yield return new GradeIndexRecord(grade, index);
+                yield return new RGaGradeKvIndexRecord(grade, index);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<BasisBlade> GetBasisBlades()
+        public IEnumerable<KeyValuePair<ulong, T>> GetTerms()
         {
             return GetLinVectorGradedStorage()
                 .GetGradeStorageRecords()
                 .SelectMany(storage => 
                     storage.Storage.GetIndexScalarRecords().Select(pair => 
-                        storage.Grade.CreateBasisBlade(pair.Index)
+                        pair.Scalar.CreateBasisTerm(storage.Grade, pair.KvIndex)
                     )
                 );
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<BasisTerm<T>> GetTerms()
-        {
-            return GetLinVectorGradedStorage()
-                .GetGradeStorageRecords()
-                .SelectMany(storage => 
-                    storage.Storage.GetIndexScalarRecords().Select(pair => 
-                        pair.Scalar.CreateBasisTerm(storage.Grade, pair.Index)
-                    )
-                );
-        }
-
-        public IEnumerable<BasisTerm<T>> GetTerms(Func<ulong, bool> idSelection)
+        public IEnumerable<KeyValuePair<ulong, T>> GetTerms(Func<ulong, bool> idSelection)
         {
             foreach (var (grade, indexScalarDictionary) in GetLinVectorGradedStorage().GetGradeStorageRecords())
             {
@@ -570,7 +556,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             }
         }
 
-        public IEnumerable<BasisTerm<T>> GetTerms(Func<uint, ulong, bool> gradeIndexSelection)
+        public IEnumerable<KeyValuePair<ulong, T>> GetTerms(Func<uint, ulong, bool> gradeIndexSelection)
         {
             foreach (var (grade, indexScalarDictionary) in GetLinVectorGradedStorage().GetGradeStorageRecords())
             {
@@ -582,7 +568,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             }
         }
 
-        public IEnumerable<BasisTerm<T>> GetTerms(Func<T, bool> scalarSelection)
+        public IEnumerable<KeyValuePair<ulong, T>> GetTerms(Func<T, bool> scalarSelection)
         {
             foreach (var (grade, indexScalarDictionary) in GetLinVectorGradedStorage().GetGradeStorageRecords())
             {
@@ -594,7 +580,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             }
         }
 
-        public IEnumerable<BasisTerm<T>> GetTerms(Func<ulong, T, bool> idScalarSelection)
+        public IEnumerable<KeyValuePair<ulong, T>> GetTerms(Func<ulong, T, bool> idScalarSelection)
         {
             foreach (var (grade, indexScalarDictionary) in GetLinVectorGradedStorage().GetGradeStorageRecords())
             {
@@ -608,7 +594,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             }
         }
 
-        public IEnumerable<BasisTerm<T>> GetTerms(Func<uint, ulong, T, bool> gradeIndexScalarSelection)
+        public IEnumerable<KeyValuePair<ulong, T>> GetTerms(Func<uint, ulong, T, bool> gradeIndexScalarSelection)
         {
             foreach (var (grade, indexScalarDictionary) in GetLinVectorGradedStorage().GetGradeStorageRecords())
             {
@@ -621,14 +607,14 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<IndexScalarRecord<T>> GetIdScalarRecords()
+        public IEnumerable<RGaKvIndexScalarRecord<T>> GetIdScalarRecords()
         {
             return GetLinVectorGradedStorage()
                 .GetGradeStorageRecords()
                 .SelectMany(storage => 
                     storage.Storage.GetIndexScalarRecords().Select(pair => 
-                        new IndexScalarRecord<T>(
-                            pair.Index.BasisBladeIndexToId(storage.Grade), 
+                        new RGaKvIndexScalarRecord<T>(
+                            pair.KvIndex.BasisBladeIndexToId(storage.Grade), 
                             pair.Scalar
                         )
                     )
@@ -636,19 +622,19 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<IndexScalarRecord<T>> GetIndexScalarRecords(uint grade)
+        public IEnumerable<RGaKvIndexScalarRecord<T>> GetIndexScalarRecords(uint grade)
         {
             return GetLinVectorGradedStorage().GetVectorStorage(grade).GetIndexScalarRecords();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<GradeIndexScalarRecord<T>> GetGradeIndexScalarRecords()
+        public IEnumerable<RGaGradeKvIndexScalarRecord<T>> GetGradeIndexScalarRecords()
         {
             return GetLinVectorGradedStorage()
                 .GetGradeStorageRecords()
                 .SelectMany(storage => 
                     storage.Storage.GetIndexScalarRecords().Select(pair => 
-                        new GradeIndexScalarRecord<T>(storage.Grade, pair.Index, pair.Scalar)
+                        new RGaGradeKvIndexScalarRecord<T>(storage.Grade, pair.KvIndex, pair.Scalar)
                     )
                 );
         }
@@ -661,22 +647,6 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IGeoGbtMultivectorStorageStack1<T> CreateGbtStack(int treeDepth, int capacity, IScalarAlgebraProcessor<T> scalarProcessor)
-        {
-            //return GeoGbtMultivectorStorageGradedStack1<T>.Create(
-            //    capacity, 
-            //    treeDepth,
-            //    this
-            //);
-            return GeoGbtMultivectorStorageUniformStack1<T>.Create(
-                capacity, 
-                treeDepth,
-                scalarProcessor,
-                this
-            );
-        }
-        
         /// <summary>
         /// Construct a binary tree representation of this storage
         /// </summary>
@@ -689,7 +659,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
 
             var dict = GetIdScalarRecords()
                 .ToDictionary(
-                    pair => pair.Index,
+                    pair => pair.KvIndex,
                     pair => pair.Scalar
                 );
 

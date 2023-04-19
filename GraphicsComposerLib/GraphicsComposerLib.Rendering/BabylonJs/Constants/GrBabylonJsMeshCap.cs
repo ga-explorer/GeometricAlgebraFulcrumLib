@@ -1,9 +1,10 @@
-﻿namespace GraphicsComposerLib.Rendering.BabylonJs.Constants;
-
-public enum GrBabylonJsMeshCap
+﻿namespace GraphicsComposerLib.Rendering.BabylonJs.Constants
 {
-    None,
-    Start,
-    End,
-    StartAndEnd
+    public enum GrBabylonJsMeshCap
+    {
+        None,
+        Start,
+        End,
+        StartAndEnd
+    }
 }

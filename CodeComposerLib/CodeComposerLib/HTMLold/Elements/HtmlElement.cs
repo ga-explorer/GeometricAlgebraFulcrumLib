@@ -34,14 +34,14 @@ namespace CodeComposerLib.HTMLold.Elements
 
                 if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
                 {
-                    var idAttrValue = attrValue as Attributes.HtmlEavString<HtmlElement>;
+                    var idAttrValue = attrValue as HtmlEavString<HtmlElement>;
 
                     idAttrValue?.SetToText(value);
 
                     return;
                 }
 
-                var idAttrValue1 = new Attributes.HtmlEavString<HtmlElement>(this, attrInfo);
+                var idAttrValue1 = new HtmlEavString<HtmlElement>(this, attrInfo);
                 AttributesTable.Add(attrInfo.Id, idAttrValue1);
 
                 idAttrValue1.SetToText(value);

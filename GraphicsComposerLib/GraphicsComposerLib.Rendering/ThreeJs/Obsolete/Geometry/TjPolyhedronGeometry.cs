@@ -1,4 +1,4 @@
-﻿using NumericalGeometryLib.BasicMath.Tuples;
+﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
 using TextComposerLib.Code.JavaScript;
 
 namespace GraphicsComposerLib.Rendering.ThreeJs.Obsolete.Geometry

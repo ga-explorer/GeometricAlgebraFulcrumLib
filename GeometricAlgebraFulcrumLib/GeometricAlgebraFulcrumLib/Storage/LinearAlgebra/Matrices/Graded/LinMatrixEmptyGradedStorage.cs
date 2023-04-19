@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.BitManipulation;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records.Restricted;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 
 namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
@@ -47,9 +48,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
             return Enumerable.Empty<uint>();
         }
 
-        public IEnumerable<uint> GetEmptyGrades(uint vSpaceDimension)
+        public IEnumerable<uint> GetEmptyGrades(uint vSpaceDimensions)
         {
-            return (1U + vSpaceDimension).GetRange();
+            return (1U + vSpaceDimensions).GetRange();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -83,13 +84,13 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public T GetScalar(GradeIndexPairRecord gradeKey)
+        public T GetScalar(RGaGradeKvIndexPairRecord gradeKey)
         {
             throw new KeyNotFoundException();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public T GetScalar(uint grade, IndexPairRecord key)
+        public T GetScalar(uint grade, RGaKvIndexPairRecord key)
         {
             throw new KeyNotFoundException();
         }
@@ -107,7 +108,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool ContainsIndex(uint grade, IndexPairRecord key)
+        public bool ContainsIndex(uint grade, RGaKvIndexPairRecord key)
         {
             return false;
         }
@@ -120,7 +121,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool TryGetScalar(uint grade, IndexPairRecord key, out T value)
+        public bool TryGetScalar(uint grade, RGaKvIndexPairRecord key, out T value)
         {
             value = default;
             return false;
@@ -153,21 +154,21 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<GradeLinMatrixStorageRecord<T>> GetGradeStorageRecords()
+        public IEnumerable<GaGradeLinMatrixStorageRecord<T>> GetGradeStorageRecords()
         {
-            return Enumerable.Empty<GradeLinMatrixStorageRecord<T>>();
+            return Enumerable.Empty<GaGradeLinMatrixStorageRecord<T>>();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<GradeIndexPairRecord> GetGradeIndexRecords()
+        public IEnumerable<RGaGradeKvIndexPairRecord> GetGradeIndexRecords()
         {
-            return Enumerable.Empty<GradeIndexPairRecord>();
+            return Enumerable.Empty<RGaGradeKvIndexPairRecord>();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<GradeIndexPairScalarRecord<T>> GetGradeIndexScalarRecords()
+        public IEnumerable<RGaGradeKvIndexPairScalarRecord<T>> GetGradeIndexScalarRecords()
         {
-            return Enumerable.Empty<GradeIndexPairScalarRecord<T>>();
+            return Enumerable.Empty<RGaGradeKvIndexPairScalarRecord<T>>();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -243,33 +244,33 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ILinMatrixStorage<T> ToMatrixStorage(Func<uint, ulong, ulong, IndexPairRecord> gradeIndexToIndexMapping)
+        public ILinMatrixStorage<T> ToMatrixStorage(Func<uint, ulong, ulong, RGaKvIndexPairRecord> gradeIndexToIndexMapping)
         {
             return LinMatrixEmptyStorage<T>.EmptyStorage;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<IndexLinVectorStorageRecord<T>> GetRows(uint grade)
+        public IEnumerable<RGaKvIndexLinVectorStorageRecord<T>> GetRows(uint grade)
         {
-            return Enumerable.Empty<IndexLinVectorStorageRecord<T>>();
+            return Enumerable.Empty<RGaKvIndexLinVectorStorageRecord<T>>();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<GradeIndexLinVectorStorageRecord<T>> GetRows()
+        public IEnumerable<RGaGradeKvIndexLinVectorStorageRecord<T>> GetRows()
         {
-            return Enumerable.Empty<GradeIndexLinVectorStorageRecord<T>>();
+            return Enumerable.Empty<RGaGradeKvIndexLinVectorStorageRecord<T>>();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<IndexLinVectorStorageRecord<T>> GetColumns(uint grade)
+        public IEnumerable<RGaKvIndexLinVectorStorageRecord<T>> GetColumns(uint grade)
         {
-            return Enumerable.Empty<IndexLinVectorStorageRecord<T>>();
+            return Enumerable.Empty<RGaKvIndexLinVectorStorageRecord<T>>();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<GradeIndexLinVectorStorageRecord<T>> GetColumns()
+        public IEnumerable<RGaGradeKvIndexLinVectorStorageRecord<T>> GetColumns()
         {
-            return Enumerable.Empty<GradeIndexLinVectorStorageRecord<T>>();
+            return Enumerable.Empty<RGaGradeKvIndexLinVectorStorageRecord<T>>();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

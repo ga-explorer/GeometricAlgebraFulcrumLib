@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
+using DataStructuresLib.BitManipulation;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Expressions;
 using TextComposerLib.Text.Linear;
@@ -12,14 +12,14 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
     internal sealed class FactorMethodFileComposer : 
         GaFuLLibraryMetaContextFileComposerBase
     {
-        private readonly uint _inputGrade;
+        private readonly int _inputGrade;
         private readonly ulong _inputId;
-        private GaKVector<IMetaExpressionAtomic> _inputBlade;
-        private GaVector<IMetaExpressionAtomic>[] _inputBasisVectorsArray;
-        private GaVector<IMetaExpressionAtomic>[] _outputVectorsArray;
+        private XGaKVector<IMetaExpressionAtomic> _inputBlade;
+        private XGaVector<IMetaExpressionAtomic>[] _inputBasisVectorsArray;
+        private XGaVector<IMetaExpressionAtomic>[] _outputVectorsArray;
 
 
-        internal FactorMethodFileComposer(GaFuLLibraryComposer libGen, uint inGrade, ulong inId)
+        internal FactorMethodFileComposer(GaFuLLibraryComposer libGen, int inGrade, ulong inId)
             : base(libGen)
         {
             _inputGrade = inGrade;
@@ -33,18 +33,18 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
                 context
                     .ParameterVariablesFactory
                     .CreateDenseKVector(
-                        VSpaceDimension,
+                        VSpaceDimensions,
                         _inputGrade,
                         index => $"bladeScalar{index}"
                     );
 
             _inputBasisVectorsArray = 
                 _inputId
-                    .BasisBladeIdToBasisVectorIndices()
+                    .PatternToPositions()
                     .Select(index => 
                         context
                             .NumbersFactory
-                            .CreateBasisVector(index).CreateVector(GeometricProcessor)
+                            .CreateBasisVector(index)
                     ).ToArray();
         }
 
@@ -54,7 +54,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
                 _inputBasisVectorsArray.Length;
 
             _outputVectorsArray = 
-                new GaVector<IMetaExpressionAtomic>[vectorsCount];
+                new XGaVector<IMetaExpressionAtomic>[vectorsCount];
 
             var inputBlade = _inputBlade;
             for (var index = 0; index < vectorsCount - 1; index++)
@@ -73,7 +73,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
         protected override void DefineContextExternalNames(MetaContext context)
         {
             context.SetExternalNamesByTermIndex(
-                _inputBlade.KVectorStorage,
+                _inputBlade,
                 index => $"scalars[{index}]"
             );
 
@@ -83,7 +83,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseKV
                 var j = i;
 
                 context.SetExternalNamesByTermIndex(
-                    _outputVectorsArray[i].VectorStorage,
+                    _outputVectorsArray[i],
                     index => $"vectors[{j}].C{index}"
                 );
             }

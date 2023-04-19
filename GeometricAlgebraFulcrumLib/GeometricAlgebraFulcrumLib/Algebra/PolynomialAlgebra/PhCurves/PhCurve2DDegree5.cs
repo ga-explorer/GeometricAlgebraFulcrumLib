@@ -1,22 +1,22 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors;
-using GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
+﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.LinearMaps.Rotors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.PhCurves
 {
     public sealed class PhCurve2DDegree5<T>
     {
-        public static PhCurve2DDegree5<T> Create(IGeometricAlgebraEuclideanProcessor<T> processor, GaVector<T> point0, GaVector<T> tangent0, GaVector<T> point1, GaVector<T> tangent1)
+        public static PhCurve2DDegree5<T> Create(RGaProcessor<T> processor, RGaVector<T> point0, RGaVector<T> tangent0, RGaVector<T> point1, RGaVector<T> tangent1)
         {
             return new PhCurve2DDegree5<T>(
                 processor,
-                point0, tangent0, point1, tangent1, processor.ScalarZero, processor.ScalarZero
+                point0, tangent0, point1, tangent1, processor.ScalarProcessor.ScalarZero, processor.ScalarProcessor.ScalarZero
             );
         }
 
-        public static PhCurve2DDegree5<T> Create(IGeometricAlgebraEuclideanProcessor<T> processor, GaVector<T> point0, GaVector<T> tangent0, GaVector<T> point1, GaVector<T> tangent1, T theta1, T theta2)
+        public static PhCurve2DDegree5<T> Create(RGaProcessor<T> processor, RGaVector<T> point0, RGaVector<T> tangent0, RGaVector<T> point1, RGaVector<T> tangent1, T theta1, T theta2)
         {
             return new PhCurve2DDegree5<T>(
                 processor,
@@ -25,33 +25,30 @@ namespace GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.PhCurves
         }
 
 
-        public GaVector<T> Point0 { get; }
+        public RGaVector<T> Point0 { get; }
 
-        public GaVector<T> Point1 { get; }
+        public RGaVector<T> Point1 { get; }
 
-        public GaVector<T> Tangent0 { get; }
+        public RGaVector<T> Tangent0 { get; }
 
-        public GaVector<T> Tangent1 { get; }
+        public RGaVector<T> Tangent1 { get; }
 
         public Scalar<T> TangentLength0 { get; }
 
-        public ScaledPureRotor<T> ScaledRotor { get; }
+        public RGaScaledPureRotor<T> ScaledRotor { get; }
 
         public PhCurve2DDegree5Canonical<T> CanonicalCurve { get; }
 
 
-        private PhCurve2DDegree5([NotNull] IGeometricAlgebraEuclideanProcessor<T> processor, [NotNull] GaVector<T> point0, [NotNull] GaVector<T> tangent0, [NotNull] GaVector<T> point1, [NotNull] GaVector<T> tangent1, [NotNull] T theta1, [NotNull] T theta2)
+        private PhCurve2DDegree5(RGaProcessor<T> processor, RGaVector<T> point0, RGaVector<T> tangent0, RGaVector<T> point1, RGaVector<T> tangent1, T theta1, T theta2)
         {
             Point0 = point0;
             Point1 = point1;
             Tangent0 = tangent0;
             Tangent1 = tangent1;
-            TangentLength0 = Tangent0.ENorm();
+            TangentLength0 = Tangent0.ENorm().Scalar;
 
-            ScaledRotor = processor.CreateScaledPureRotor(
-                processor.CreateVectorBasis(0),
-                tangent0
-            );
+            ScaledRotor = processor.CreateVector(0).CreateScaledPureRotor(tangent0);
 
             var scaledRotorInv = ScaledRotor.GetPureScaledRotorInverse();
 
@@ -63,14 +60,14 @@ namespace GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.PhCurves
         }
 
 
-        public GaVector<T> GetHodographPoint(T parameterValue)
+        public RGaVector<T> GetHodographPoint(T parameterValue)
         {
             return ScaledRotor.OmMap(
                 CanonicalCurve.GetHodographPoint(parameterValue)
             );
         }
 
-        public GaVector<T> GetCurvePoint(T parameterValue)
+        public RGaVector<T> GetCurvePoint(T parameterValue)
         {
             return Point0 + ScaledRotor.OmMap(
                 CanonicalCurve.GetCurvePoint(parameterValue)

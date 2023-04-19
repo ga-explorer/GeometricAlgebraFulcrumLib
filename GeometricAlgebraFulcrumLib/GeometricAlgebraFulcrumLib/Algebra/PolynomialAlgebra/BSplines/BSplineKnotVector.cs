@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.BSplines
 {
@@ -15,7 +14,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.BSplines
             = new List<BSplineKnot<T>>();
 
 
-        public IScalarAlgebraProcessor<T> ScalarProcessor { get; }
+        public IScalarProcessor<T> ScalarProcessor { get; }
 
         public int Size 
             => _knotList.Count == 0 
@@ -47,7 +46,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.BSplines
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public BSplineKnotVector([NotNull] IScalarAlgebraProcessor<T> scalarProcessor)
+        public BSplineKnotVector(IScalarProcessor<T> scalarProcessor)
         {
             ScalarProcessor = scalarProcessor;
         }

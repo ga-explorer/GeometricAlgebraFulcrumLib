@@ -1,4 +1,9 @@
-﻿using GraphicsComposerLib.Geometry.Primitives;
+﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Lines;
+using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Lines.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Borders.Space3D;
+using GraphicsComposerLib.Geometry.Primitives;
 using GraphicsComposerLib.Geometry.Primitives.Lines;
 using GraphicsComposerLib.Rendering.Xeogl.Constants;
 using GraphicsComposerLib.Rendering.Xeogl.Geometry;
@@ -7,14 +12,7 @@ using GraphicsComposerLib.Rendering.Xeogl.Geometry.Primitives;
 using GraphicsComposerLib.Rendering.Xeogl.Lights;
 using GraphicsComposerLib.Rendering.Xeogl.Materials;
 using GraphicsComposerLib.Rendering.Xeogl.Transforms;
-using NumericalGeometryLib.BasicMath;
-using NumericalGeometryLib.BasicMath.Tuples;
-using NumericalGeometryLib.BasicMath.Tuples.Immutable;
-using NumericalGeometryLib.BasicShapes.Lines;
-using NumericalGeometryLib.BasicShapes.Lines.Immutable;
-using NumericalGeometryLib.Borders.Space3D;
 using NumericalGeometryLib.Colors;
-using SixLabors.ImageSharp;
 
 namespace GraphicsComposerLib.Rendering.Xeogl.DrawingSpace
 {
@@ -863,7 +861,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.DrawingSpace
 
         public static XeoglDrawingSpaceLayer DrawWireArrow(this XeoglDrawingSpaceLayer layer, IFloat64Tuple3D origin, IFloat64Tuple3D direction, int thickness, Color color)
         {
-            var endPoint = origin.GetPointInDirection(direction);
+            var endPoint = EuclideanFloat64TupleUtils.GetPointInDirection(origin, direction);
 
             layer.DrawGeometry(
                 XeoglLinesGeometry.CreateLineSegment(
@@ -885,7 +883,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.DrawingSpace
             var arrowsArray = arrowsList.ToArray();
 
             var scaleFactor = 
-                maxLength / arrowsArray.Select(t => t.Item2.GetVectorNorm()).Max();
+                maxLength / arrowsArray.Select(t => EuclideanFloat64TupleUtils.GetVectorNorm(t.Item2)).Max();
 
             var lineSegmentsGeometry =
                 arrowsArray.Select(t =>

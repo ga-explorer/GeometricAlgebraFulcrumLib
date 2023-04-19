@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Text;
+﻿using System.Text;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Languages;
 
@@ -24,7 +23,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Composers
 
         public bool AllowGenerateMetaContextCode { get; set; } = true;
 
-        protected GaFuLSingleMetaContextCodeComposerBase([NotNull] MetaContext context, GaFuLLanguageServerBase languageServer)
+        protected GaFuLSingleMetaContextCodeComposerBase(MetaContext context, GaFuLLanguageServerBase languageServer)
             : base(languageServer)
         {
             Context = context;

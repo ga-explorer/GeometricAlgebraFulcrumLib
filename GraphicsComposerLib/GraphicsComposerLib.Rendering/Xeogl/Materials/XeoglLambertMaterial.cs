@@ -1,6 +1,5 @@
 ﻿using GraphicsComposerLib.Rendering.Colors;
 using GraphicsComposerLib.Rendering.Xeogl.Constants;
-using SixLabors.ImageSharp;
 using TextComposerLib.Code.JavaScript;
 
 namespace GraphicsComposerLib.Rendering.Xeogl.Materials

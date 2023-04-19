@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using DataStructuresLib.Basic;
 using DataStructuresLib.Collections;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
 
 namespace GeometricAlgebraFulcrumLib.Processors.SignalAlgebra
 {
     public sealed class ScalarSignalProcessor<T> :
-        IScalarAlgebraProcessor<IReadOnlyList<T>>
+        IScalarProcessor<IReadOnlyList<T>>
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static ScalarSignalProcessor<T> Create(IScalarAlgebraProcessor<T> scalarProcessor, int signalSamplesCount)
+        internal static ScalarSignalProcessor<T> Create(IScalarProcessor<T> scalarProcessor, int signalSamplesCount)
         {
             return new ScalarSignalProcessor<T>(scalarProcessor, signalSamplesCount);
         }
@@ -20,7 +20,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.SignalAlgebra
 
         public int SignalSamplesCount { get; }
 
-        public IScalarAlgebraProcessor<T> ScalarProcessor { get; }
+        public IScalarProcessor<T> ScalarProcessor { get; }
 
         public bool IsNumeric 
             => ScalarProcessor.IsNumeric;
@@ -55,7 +55,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.SignalAlgebra
         public IReadOnlyList<T> ScalarRadianToDegree { get; }
 
 
-        public ScalarSignalProcessor([NotNull] IScalarAlgebraProcessor<T> scalarProcessor, int signalSamplesCount)
+        public ScalarSignalProcessor(IScalarProcessor<T> scalarProcessor, int signalSamplesCount)
         {
             if (signalSamplesCount < 1)
                 throw new ArgumentOutOfRangeException(nameof(signalSamplesCount));
@@ -217,6 +217,16 @@ namespace GeometricAlgebraFulcrumLib.Processors.SignalAlgebra
         public IReadOnlyList<T> Times(IReadOnlyList<T> scalar1, IReadOnlyList<T> scalar2)
         {
             return BinaryOperation(scalar1, scalar2, ScalarProcessor.Times);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public IReadOnlyList<T> Times(IntegerSign sign, IReadOnlyList<T> scalar)
+        {
+            if (sign.IsZero) return ScalarZero;
+
+            return sign.IsPositive
+                ? scalar 
+                : Negative(scalar);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

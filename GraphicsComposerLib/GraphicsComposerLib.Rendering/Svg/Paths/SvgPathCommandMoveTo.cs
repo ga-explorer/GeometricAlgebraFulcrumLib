@@ -1,6 +1,6 @@
 ﻿using System.Text;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
 using GraphicsComposerLib.Rendering.Svg.Values;
-using NumericalGeometryLib.BasicMath.Tuples;
 
 namespace GraphicsComposerLib.Rendering.Svg.Paths
 {

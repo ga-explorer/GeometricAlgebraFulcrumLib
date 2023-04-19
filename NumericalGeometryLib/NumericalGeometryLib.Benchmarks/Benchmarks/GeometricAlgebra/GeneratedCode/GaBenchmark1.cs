@@ -14,15 +14,15 @@ namespace NumericalGeometryLib.Benchmarks.Benchmarks.GeometricAlgebra.GeneratedC
         private readonly List<LineSegment2D> _lineSegmentsList
             = new List<LineSegment2D>();
 
-        private readonly List<Tuple2D> _pointsList
-            = new List<Tuple2D>();
+        private readonly List<Float64Tuple2D> _pointsList
+            = new List<Float64Tuple2D>();
 
         private readonly GcLineSegmentReflector2D _computer
             = new GcLineSegmentReflector2D();
 
-        public Tuple2D[] ResultsGa { get; private set; }
+        public Float64Tuple2D[] ResultsGa { get; private set; }
 
-        public Tuple2D[] ResultsVa { get; private set; }
+        public Float64Tuple2D[] ResultsVa { get; private set; }
 
 
         [Params(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)]
@@ -50,12 +50,12 @@ namespace NumericalGeometryLib.Benchmarks.Benchmarks.GeometricAlgebra.GeneratedC
                 _pointsList.Add(p);
             }
 
-            ResultsGa = new Tuple2D[OperationsCount];
-            ResultsVa = new Tuple2D[OperationsCount];
+            ResultsGa = new Float64Tuple2D[OperationsCount];
+            ResultsVa = new Float64Tuple2D[OperationsCount];
         }
 
         [Benchmark(Baseline = true)]
-        public Tuple2D[] ComputeUsingGa()
+        public Float64Tuple2D[] ComputeUsingGa()
         {
             for (var i = 0; i < OperationsCount; i++)
             {
@@ -67,7 +67,7 @@ namespace NumericalGeometryLib.Benchmarks.Benchmarks.GeometricAlgebra.GeneratedC
         }
 
         [Benchmark]
-        public Tuple2D[] ComputeUsingVa()
+        public Float64Tuple2D[] ComputeUsingVa()
         {
             for (var i = 0; i < OperationsCount; i++)
             {

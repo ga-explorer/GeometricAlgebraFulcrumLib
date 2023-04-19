@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.BitManipulation;
 
@@ -7,19 +9,19 @@ namespace DataStructuresLib.Combinations
 {
     public static class CombinationsUtilsUInt64
     {
-        private static PascalTriangleUInt64 PascalTriangleArray { get; }
+        private static PascalTriangleUInt64 PascalTriangle { get; }
             = new PascalTriangleUInt64(64);
 
 
         public static int MaxSetSize 
-            => PascalTriangleArray.RowsCount - 1;
+            => PascalTriangle.RowsCount - 1;
 
 
         public static int GetMaximalRowIndex(ulong value, int columnIndex)
         {
             for (var rowIndex = columnIndex; rowIndex <= MaxSetSize; rowIndex++)
             {
-                if (PascalTriangleArray[rowIndex, columnIndex] > value)
+                if (PascalTriangle[rowIndex, columnIndex] > value)
                     return rowIndex - 1;
             }
 
@@ -208,7 +210,7 @@ namespace DataStructuresLib.Combinations
 
             return setSize > MaxSetSize 
                 ? ComputeBinomialCoefficient((int) setSize, (int) subsetSize) 
-                : PascalTriangleArray[(int) setSize, (int) subsetSize];
+                : PascalTriangle[(int) setSize, (int) subsetSize];
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -221,9 +223,9 @@ namespace DataStructuresLib.Combinations
 
             return setSize > MaxSetSize 
                 ? ComputeBinomialCoefficient(setSize, subsetSize) 
-                : PascalTriangleArray[setSize, subsetSize];
+                : PascalTriangle[setSize, subsetSize];
         }
-        
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ulong GetMaxBinomialCoefficient(this int setSize)
         {
@@ -236,7 +238,31 @@ namespace DataStructuresLib.Combinations
 
             return setSize > MaxSetSize 
                 ? ComputeBinomialCoefficient(setSize, subsetSize) 
-                : PascalTriangleArray[setSize, subsetSize];
+                : PascalTriangle[setSize, subsetSize];
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static IReadOnlyList<ulong> GetBinomialCoefficients(this int setSize)
+        {
+            if (setSize < 0)
+                throw new ArgumentOutOfRangeException();
+
+            var halfRow = 
+                setSize <= MaxSetSize
+                    ? PascalTriangle.GetRow(setSize)
+                    : (setSize / 2 + 1).GetRange().Select(subsetSize => ComputeBinomialCoefficient(setSize, subsetSize)).ToImmutableArray();
+            
+            var fullRow = new ulong[setSize + 1];
+
+            for (var k = 0; k < halfRow.Count; k++)
+            {
+                var c = halfRow[k];
+
+                fullRow[k] = c;
+                fullRow[setSize - k] = c;
+            }
+
+            return fullRow;
         }
     }
 }

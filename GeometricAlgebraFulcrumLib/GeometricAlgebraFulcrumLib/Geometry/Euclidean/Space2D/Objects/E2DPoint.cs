@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
 
 namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean.Space2D.Objects
 {
@@ -362,7 +360,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean.Space2D.Objects
             );
         }
 
-        public IScalarAlgebraProcessor<T> ScalarProcessor { get; }
+        public IScalarProcessor<T> ScalarProcessor { get; }
 
         public T X { get; }
 
@@ -376,7 +374,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean.Space2D.Objects
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal E2DPoint([NotNull] IScalarAlgebraProcessor<T> scalarProcessor, [NotNull] T x, [NotNull] T y)
+        internal E2DPoint(IScalarProcessor<T> scalarProcessor, T x, T y)
         {
             ScalarProcessor = scalarProcessor;
             X = x;
@@ -460,7 +458,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean.Space2D.Objects
         }
     
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public E2DPoint<T2> MapScalars<T2>(Func<T, T2> scalarMapping, IScalarAlgebraProcessor<T2> scalarProcessor)
+        public E2DPoint<T2> MapScalars<T2>(Func<T, T2> scalarMapping, IScalarProcessor<T2> scalarProcessor)
         {
             return new E2DPoint<T2>(
                 scalarProcessor,

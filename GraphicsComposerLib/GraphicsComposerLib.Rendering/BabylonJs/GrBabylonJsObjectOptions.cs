@@ -1,35 +1,36 @@
 ﻿using System.Text;
 using DataStructuresLib.Basic;
 
-namespace GraphicsComposerLib.Rendering.BabylonJs;
-
-public abstract class GrBabylonJsObjectOptions :
-    IGrBabylonJsCodeElement
+namespace GraphicsComposerLib.Rendering.BabylonJs
 {
-    protected abstract IEnumerable<Pair<string>?> GetNameValuePairs();
-
-    public string GetCode()
+    public abstract class GrBabylonJsObjectOptions :
+        IGrBabylonJsCodeElement
     {
-        var composer = new StringBuilder();
+        protected abstract IEnumerable<Pair<string>?> GetNameValuePairs();
 
-        composer.Append("{");
+        public string GetCode()
+        {
+            var composer = new StringBuilder();
 
-        var valuePairs = 
-            GetNameValuePairs().Where(p => p is not null);
+            composer.Append("{");
 
-        foreach (var (name, value) in valuePairs)
-            composer.Append($"{name}: {value}, ");
+            var valuePairs = 
+                GetNameValuePairs().Where(p => p is not null);
 
-        if (composer.Length > 2)
-            composer.Length -= 2;
+            foreach (var (name, value) in valuePairs)
+                composer.Append($"{name}: {value}, ");
 
-        composer.Append("}");
+            if (composer.Length > 2)
+                composer.Length -= 2;
 
-        return composer.ToString();
-    }
+            composer.Append("}");
+
+            return composer.ToString();
+        }
     
-    public override string ToString()
-    {
-        return GetCode();
+        public override string ToString()
+        {
+            return GetCode();
+        }
     }
 }

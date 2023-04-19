@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records.Restricted;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Dense;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Sparse;
@@ -22,9 +22,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
         public int GradesCount
             => ComposersDictionary.Count;
 
-        public IScalarAlgebraProcessor<T> ScalarProcessor { get; }
+        public IScalarProcessor<T> ScalarProcessor { get; }
 
-        public Func<ulong, GradeIndexRecord> EvenIndexToGradedIndexMapping { get; set; }
+        public Func<ulong, RGaGradeKvIndexRecord> EvenIndexToGradedIndexMapping { get; set; }
 
         public Func<uint, LinVectorStorageComposerBase<T>> DefaultEvenComposerConstructor { get; set; }
 
@@ -43,7 +43,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
         }
 
 
-        internal LinVectorGradedStorageComposer([NotNull] IScalarAlgebraProcessor<T> scalarProcessor)
+        internal LinVectorGradedStorageComposer(IScalarProcessor<T> scalarProcessor)
         {
             ScalarProcessor = scalarProcessor;
 
@@ -61,11 +61,11 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
             return ComposersDictionary.Count == 0;
         }
 
-        public IEnumerable<IndexScalarRecord<T>> GetIndexScalarRecords()
+        public IEnumerable<RGaKvIndexScalarRecord<T>> GetIndexScalarRecords()
         {
             foreach (var (grade, composer) in ComposersDictionary)
                 foreach (var (index, scalar) in composer.GetIndexScalarRecords())
-                    yield return new IndexScalarRecord<T>(
+                    yield return new RGaKvIndexScalarRecord<T>(
                         BasisBladeUtils.BasisBladeGradeIndexToId(grade, index),
                         scalar
                     );
@@ -257,7 +257,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinVectorGradedStorageComposer<T> SetTerms(IEnumerable<IndexScalarRecord<T>> idTermRecords)
+        public LinVectorGradedStorageComposer<T> SetTerms(IEnumerable<RGaKvIndexScalarRecord<T>> idTermRecords)
         {
             foreach (var (id, value) in idTermRecords)
                 SetTerm(id, value);
@@ -294,7 +294,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinVectorGradedStorageComposer<T> SetTerms(uint grade, IEnumerable<IndexScalarRecord<T>> indexTermRecords)
+        public LinVectorGradedStorageComposer<T> SetTerms(uint grade, IEnumerable<RGaKvIndexScalarRecord<T>> indexTermRecords)
         {
             foreach (var (index, value) in indexTermRecords)
                 SetTerm(grade, index, value);
@@ -303,7 +303,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinVectorGradedStorageComposer<T> SetTerms(IEnumerable<GradeIndexScalarRecord<T>> indexTermRecords)
+        public LinVectorGradedStorageComposer<T> SetTerms(IEnumerable<RGaGradeKvIndexScalarRecord<T>> indexTermRecords)
         {
             foreach (var (grade, index, value) in indexTermRecords)
                 SetTerm(grade, index, value);
@@ -322,7 +322,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinVectorGradedStorageComposer<T> SetScaledTerms(IEnumerable<GradeLinVectorStorageScalarRecord<T>> scaledTermsList)
+        public LinVectorGradedStorageComposer<T> SetScaledTerms(IEnumerable<GaGradeLinVectorStorageScalarRecord<T>> scaledTermsList)
         {
             foreach (var (grade, indexValueList, scalingFactor) in scaledTermsList)
             {
@@ -344,7 +344,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinVectorGradedStorageComposer<T> SetScaledTerms(IEnumerable<LinVectorStorageScalarRecord<T>> scaledTermsList)
+        public LinVectorGradedStorageComposer<T> SetScaledTerms(IEnumerable<GaLinVectorStorageScalarRecord<T>> scaledTermsList)
         {
             foreach (var (indexValueList, scalingFactor) in scaledTermsList)
                 SetScaledTerms(scalingFactor, indexValueList);
@@ -365,7 +365,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinVectorGradedStorageComposer<T> AddTerms(IEnumerable<IndexScalarRecord<T>> indexTermRecords)
+        public LinVectorGradedStorageComposer<T> AddTerms(IEnumerable<RGaKvIndexScalarRecord<T>> indexTermRecords)
         {
             foreach (var (index, value) in indexTermRecords)
                 AddTerm(index, value);
@@ -402,7 +402,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinVectorGradedStorageComposer<T> AddTerms(uint grade, IEnumerable<IndexScalarRecord<T>> indexTermRecords)
+        public LinVectorGradedStorageComposer<T> AddTerms(uint grade, IEnumerable<RGaKvIndexScalarRecord<T>> indexTermRecords)
         {
             foreach (var (index, value) in indexTermRecords)
                 AddTerm(grade, index, value);
@@ -411,7 +411,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinVectorGradedStorageComposer<T> AddTerms(IEnumerable<GradeIndexScalarRecord<T>> indexTermRecords)
+        public LinVectorGradedStorageComposer<T> AddTerms(IEnumerable<RGaGradeKvIndexScalarRecord<T>> indexTermRecords)
         {
             foreach (var (grade, index, value) in indexTermRecords)
                 AddTerm(grade, index, value);
@@ -430,7 +430,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinVectorGradedStorageComposer<T> AddScaledTerms(IEnumerable<GradeLinVectorStorageScalarRecord<T>> scaledTermsList)
+        public LinVectorGradedStorageComposer<T> AddScaledTerms(IEnumerable<GaGradeLinVectorStorageScalarRecord<T>> scaledTermsList)
         {
             foreach (var (grade, indexValueList, scalingFactor) in scaledTermsList)
             {
@@ -443,7 +443,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinVectorGradedStorageComposer<T> AddScaledTerms(T scalingFactor, IEnumerable<IndexScalarRecord<T>> indexScalarRecords)
+        public LinVectorGradedStorageComposer<T> AddScaledTerms(T scalingFactor, IEnumerable<RGaKvIndexScalarRecord<T>> indexScalarRecords)
         {
             foreach (var (index, scalar) in indexScalarRecords)
                 AddTerm(index, ScalarProcessor.Times(scalingFactor, scalar));
@@ -461,7 +461,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinVectorGradedStorageComposer<T> AddScaledTerms(IEnumerable<LinVectorStorageScalarRecord<T>> scaledTermsList)
+        public LinVectorGradedStorageComposer<T> AddScaledTerms(IEnumerable<GaLinVectorStorageScalarRecord<T>> scaledTermsList)
         {
             foreach (var (indexValueList, scalingFactor) in scaledTermsList)
                 AddScaledTerms(scalingFactor, indexValueList);
@@ -482,7 +482,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinVectorGradedStorageComposer<T> SubtractTerms(IEnumerable<IndexScalarRecord<T>> indexTermRecords)
+        public LinVectorGradedStorageComposer<T> SubtractTerms(IEnumerable<RGaKvIndexScalarRecord<T>> indexTermRecords)
         {
             foreach (var (index, value) in indexTermRecords)
                 SubtractTerm(index, value);
@@ -519,7 +519,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinVectorGradedStorageComposer<T> SubtractTerms(uint grade, IEnumerable<IndexScalarRecord<T>> indexTermRecords)
+        public LinVectorGradedStorageComposer<T> SubtractTerms(uint grade, IEnumerable<RGaKvIndexScalarRecord<T>> indexTermRecords)
         {
             foreach (var (index, value) in indexTermRecords)
                 SubtractTerm(grade, index, value);
@@ -528,7 +528,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinVectorGradedStorageComposer<T> SubtractTerms(IEnumerable<GradeIndexScalarRecord<T>> indexTermRecords)
+        public LinVectorGradedStorageComposer<T> SubtractTerms(IEnumerable<RGaGradeKvIndexScalarRecord<T>> indexTermRecords)
         {
             foreach (var (grade, index, value) in indexTermRecords)
                 SubtractTerm(grade, index, value);
@@ -547,7 +547,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinVectorGradedStorageComposer<T> SubtractScaledTerms(IEnumerable<GradeLinVectorStorageScalarRecord<T>> scaledTermsList)
+        public LinVectorGradedStorageComposer<T> SubtractScaledTerms(IEnumerable<GaGradeLinVectorStorageScalarRecord<T>> scaledTermsList)
         {
             foreach (var (grade, indexValueList, scalingFactor) in scaledTermsList)
             {
@@ -569,7 +569,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinVectorGradedStorageComposer<T> SubtractScaledTerms(IEnumerable<LinVectorStorageScalarRecord<T>> scaledTermsList)
+        public LinVectorGradedStorageComposer<T> SubtractScaledTerms(IEnumerable<GaLinVectorStorageScalarRecord<T>> scaledTermsList)
         {
             foreach (var (indexValueList, scalingFactor) in scaledTermsList)
                 SubtractScaledTerms(scalingFactor, indexValueList);

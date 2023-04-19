@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.Basis
 {
@@ -12,19 +10,19 @@ namespace GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.Basis
         IPolynomialBasisSet<T>
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static MonomialBasisSet<T> Create(IScalarAlgebraProcessor<T> scalarProcessor, int degree)
+        public static MonomialBasisSet<T> Create(IScalarProcessor<T> scalarProcessor, int degree)
         {
             return new MonomialBasisSet<T>(scalarProcessor, degree);
         }
 
 
-        public IScalarAlgebraProcessor<T> ScalarProcessor { get; }
+        public IScalarProcessor<T> ScalarProcessor { get; }
 
         public int Degree { get; }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private MonomialBasisSet([NotNull] IScalarAlgebraProcessor<T> scalarProcessor, int degree)
+        private MonomialBasisSet(IScalarProcessor<T> scalarProcessor, int degree)
         {
             if (degree < 0)
                 throw new ArgumentOutOfRangeException(nameof(degree));

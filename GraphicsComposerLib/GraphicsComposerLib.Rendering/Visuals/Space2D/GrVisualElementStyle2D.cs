@@ -1,12 +1,11 @@
 ﻿
 
-using SixLabors.ImageSharp;
-
-namespace GraphicsComposerLib.Rendering.Visuals.Space2D;
-
-public class GrVisualElementStyle2D
+namespace GraphicsComposerLib.Rendering.Visuals.Space2D
 {
-    public Color Color { get; set; } = Color.Bisque;
+    public class GrVisualElementStyle2D
+    {
+        public Color Color { get; set; } = Color.Bisque;
 
-    public double Thickness { get; set; } = 0.25;
+        public double Thickness { get; set; } = 0.25;
+    }
 }

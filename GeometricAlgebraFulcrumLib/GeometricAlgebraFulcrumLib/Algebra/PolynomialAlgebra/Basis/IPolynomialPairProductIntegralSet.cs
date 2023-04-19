@@ -1,4 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra;
+﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.Basis
 {

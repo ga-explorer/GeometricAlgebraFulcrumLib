@@ -1,34 +1,35 @@
 ﻿using TextComposerLib;
 
-namespace GraphicsComposerLib.Rendering.BabylonJs.Values;
-
-public sealed class GrBabylonJsStringValue :
-    GrBabylonJsValue<string>
+namespace GraphicsComposerLib.Rendering.BabylonJs.Values
 {
-    public static implicit operator GrBabylonJsStringValue(string valueText)
+    public sealed class GrBabylonJsStringValue :
+        GrBabylonJsValue<string>
     {
-        return new GrBabylonJsStringValue(valueText);
-    }
+        public static implicit operator GrBabylonJsStringValue(string valueText)
+        {
+            return new GrBabylonJsStringValue(valueText);
+        }
 
-    public static GrBabylonJsStringValue CreateLiteralFromValue(string value)
-    {
-        return new GrBabylonJsStringValue(value.ValueToQuotedLiteral());
-    }
+        public static GrBabylonJsStringValue CreateLiteralFromValue(string value)
+        {
+            return new GrBabylonJsStringValue(value.ValueToQuotedLiteral());
+        }
     
-    public static GrBabylonJsStringValue CreateLiteralFromLiteral(string value)
-    {
-        return new GrBabylonJsStringValue(value);
-    }
+        public static GrBabylonJsStringValue CreateLiteralFromLiteral(string value)
+        {
+            return new GrBabylonJsStringValue(value);
+        }
 
 
-    private GrBabylonJsStringValue(string valueText)
-        : base(valueText)
-    {
-    }
+        private GrBabylonJsStringValue(string valueText)
+            : base(valueText)
+        {
+        }
     
 
-    public override string GetCode()
-    {
-        return ValueText;
+        public override string GetCode()
+        {
+            return ValueText;
+        }
     }
 }

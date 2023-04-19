@@ -1,5 +1,4 @@
-﻿
-using GraphicsComposerLib.Geometry.Primitives.Vertices;
+﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Frames.Space3D;
 using SixLabors.ImageSharp;
 
 namespace GraphicsComposerLib.Geometry.Structures.Faces
@@ -10,7 +9,7 @@ namespace GraphicsComposerLib.Geometry.Structures.Faces
         public Color Color { get; set; }
             = Color.Black;
         
-        public GrNormal3D Normal
+        public Normal3D Normal
             => null;
 
         public bool HasColor 

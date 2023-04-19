@@ -114,7 +114,7 @@ namespace CodeComposerLib.Languages.Excel
 
         static CclExcelUtils()
         {
-            CclExcelUtils.Excel2007Info = new CclLanguageInfo("Excel 2007 Formulas", "2007", "Excel 2007");
+            Excel2007Info = new CclLanguageInfo("Excel 2007 Formulas", "2007", "Excel 2007");
         }
 
 

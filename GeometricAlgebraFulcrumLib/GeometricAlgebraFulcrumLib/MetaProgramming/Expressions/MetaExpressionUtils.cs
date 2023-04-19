@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using DataStructuresLib;
+using DataStructuresLib.IndexSets;
 using GeometricAlgebraFulcrumLib.Geometry.Euclidean.Space3D.Objects;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Evaluators;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Expressions.Composite;
@@ -48,11 +51,11 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Expressions
                     computedVariable.IsOutputVariable = isOutput;
         }
 
-        public static void SetIsOutput(this IMultivectorStorage<IMetaExpressionAtomic> multivector, bool isOutput)
+        public static void SetIsOutput(this XGaMultivector<IMetaExpressionAtomic> multivector, bool isOutput)
         {
             var namedScalarsList =
                 multivector
-                    .GetScalars()
+                    .Scalars
                     .Where(s => s.IsComputedVariable)
                     .Select(s => (MetaExpressionVariableComputed)s);
 
@@ -73,7 +76,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Expressions
                 namedScalar.IsOutputVariable = isOutput;
         }
 
-        public static void SetIsOutput(this IEnumerable<IMultivectorStorage<IMetaExpressionAtomic>> multivectorsList, bool isOutput)
+        public static void SetIsOutput(this IEnumerable<XGaMultivector<IMetaExpressionAtomic>> multivectorsList, bool isOutput)
         {
             foreach (var mv in multivectorsList)
                 mv.SetIsOutput(isOutput);
@@ -86,15 +89,15 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Expressions
         }
 
 
-        public static void SetExternalNamesByTermId(this IMultivectorStorage<IMetaExpressionAtomic> multivector, Func<ulong, string> namingFunc)
+        public static void SetExternalNamesByTermId(this XGaMultivector<IMetaExpressionAtomic> multivector, Func<ulong, string> namingFunc)
         {
             var idScalarPairs =
                 multivector
-                    .GetIdScalarRecords()
-                    .Where(s => !s.Scalar.IsNumber);
+                    .IdScalarPairs
+                    .Where(s => !s.Value.IsNumber);
 
             foreach (var (id, scalar) in idScalarPairs)
-                scalar.ExternalName = namingFunc(id);
+                scalar.ExternalName = namingFunc(id.ToUInt64());
         }
 
         public static void SetExternalNamesByTermId(this IMultivectorStorageContainer<IMetaExpressionAtomic> multivector, Func<ulong, string> namingFunc)
@@ -109,26 +112,34 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Expressions
                 scalar.ExternalName = namingFunc(id);
         }
 
-        public static void SetExternalNamesByTermGradeIndex(this IMultivectorStorage<IMetaExpressionAtomic> multivector, Func<uint, ulong, string> namingFunc)
+        public static void SetExternalNamesByTermGradeIndex(this XGaMultivector<IMetaExpressionAtomic> multivector, Func<int, ulong, string> namingFunc)
         {
             var indexScalarTuples =
                 multivector
-                    .GetGradeIndexScalarRecords()
-                    .Where(s => !s.Scalar.IsNumber);
+                    .IdScalarPairs
+                    .Where(s => !s.Value.IsNumber);
 
-            foreach (var (grade, index, scalar) in indexScalarTuples)
-                scalar.ExternalName = namingFunc(grade, index);
+            foreach (var (id, scalar) in indexScalarTuples)
+            {
+                var (grade, index) = id.ToUInt64().BasisBladeIdToGradeIndex();
+
+                scalar.ExternalName = namingFunc((int) grade, index);
+            }
         }
 
-        public static void SetExternalNamesByTermIndex(this KVectorStorage<IMetaExpressionAtomic> kVector, Func<ulong, string> namingFunc)
+        public static void SetExternalNamesByTermIndex(this XGaKVector<IMetaExpressionAtomic> kVector, Func<ulong, string> namingFunc)
         {
-            var indexScalarPairs =
-                kVector.GetLinVectorIndexScalarStorage()
-                    .GetIndexScalarRecords()
-                    .Where(s => !s.Scalar.IsNumber);
+            var idScalarPairs =
+                kVector
+                    .IdScalarPairs
+                    .Where(s => !s.Value.IsNumber);
+            
+            foreach (var (id, scalar) in idScalarPairs)
+            {
+                var index = id.ToUInt64().BasisBladeIdToIndex();
 
-            foreach (var (index, scalar) in indexScalarPairs)
                 scalar.ExternalName = namingFunc(index);
+            }
         }
 
         public static void SetExternalNamesByTermIndex(this IKVectorStorageContainer<IMetaExpressionAtomic> kVector, Func<ulong, string> namingFunc)
@@ -157,15 +168,15 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Expressions
         }
 
 
-        public static void SetExternalNamesByTermId(this MetaContext context, IMultivectorStorage<IMetaExpressionAtomic> multivector, Func<ulong, string> namingFunc)
+        public static void SetExternalNamesByTermId(this MetaContext context, XGaMultivector<IMetaExpressionAtomic> multivector, Func<ulong, string> namingFunc)
         {
             var idScalarPairs =
                 multivector
-                    .GetIdScalarRecords()
-                    .Where(s => !s.Scalar.IsNumber);
+                    .IdScalarPairs
+                    .Where(s => !s.Value.IsNumber);
 
             foreach (var (id, scalar) in idScalarPairs)
-                scalar.ExternalName = namingFunc(id);
+                scalar.ExternalName = namingFunc(id.ToUInt64());
         }
 
         public static void SetExternalNamesByTermId(this MetaContext context, IMultivectorStorageContainer<IMetaExpressionAtomic> multivector, Func<ulong, string> namingFunc)
@@ -179,26 +190,34 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Expressions
                 scalar.ExternalName = namingFunc(id);
         }
 
-        public static void SetExternalNamesByTermGradeIndex(this MetaContext context, IMultivectorStorage<IMetaExpressionAtomic> multivector, Func<uint, ulong, string> namingFunc)
+        public static void SetExternalNamesByTermGradeIndex(this MetaContext context, XGaMultivector<IMetaExpressionAtomic> multivector, Func<uint, ulong, string> namingFunc)
         {
             var indexScalarTuples =
                 multivector
-                    .GetGradeIndexScalarRecords()
-                    .Where(s => !s.Scalar.IsNumber);
+                    .IdScalarPairs
+                    .Where(s => !s.Value.IsNumber);
 
-            foreach (var (grade, index, scalar) in indexScalarTuples)
+            foreach (var (id, scalar) in indexScalarTuples)
+            {
+                var (grade, index) = id.ToUInt64().BasisBladeIdToGradeIndex();
+
                 scalar.ExternalName = namingFunc(grade, index);
+            }
         }
 
-        public static void SetExternalNamesByTermIndex(this MetaContext context, KVectorStorage<IMetaExpressionAtomic> kVector, Func<ulong, string> namingFunc)
+        public static void SetExternalNamesByTermIndex(this MetaContext context, XGaKVector<IMetaExpressionAtomic> kVector, Func<ulong, string> namingFunc)
         {
-            var indexScalarPairs =
-                kVector.GetLinVectorIndexScalarStorage()
-                    .GetIndexScalarRecords()
-                    .Where(s => !s.Scalar.IsNumber);
+            var idScalarPairs =
+                kVector
+                    .IdScalarPairs
+                    .Where(s => !s.Value.IsNumber);
 
-            foreach (var (index, scalar) in indexScalarPairs)
+            foreach (var (id, scalar) in idScalarPairs)
+            {
+                var index = id.ToUInt64().BasisVectorIndexToId();
+
                 scalar.ExternalName = namingFunc(index);
+            }
         }
 
         //public static void SetExternalNamesByTermIndex(this MetaContext context, IKVectorStorageContainer<ISymbolicExpressionAtomic> kVector, Func<ulong, string> namingFunc)

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records.Restricted;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
@@ -21,7 +21,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         public ILinMatrixGradedStorage<T> GradeIndexToKVectorMatrix { get; }
 
 
-        private OutermorphismStorage([NotNull] ILinMatrixGradedStorage<T> gradeIndexToKVectorMatrix)
+        private OutermorphismStorage(ILinMatrixGradedStorage<T> gradeIndexToKVectorMatrix)
         {
             GradeIndexToKVectorMatrix = gradeIndexToKVectorMatrix;
         }
@@ -115,7 +115,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             return GradeIndexToKVectorMatrix
                 .GetGradeIndexRecords()
                 .Select(r => 
-                    BasisBladeUtils.BasisBladeGradeIndexToId(r.Grade, r.Index2)
+                    BasisBladeUtils.BasisBladeGradeIndexToId(r.Grade, r.KvIndex2)
                 ).Distinct();
         }
 
@@ -139,46 +139,46 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<GradeIndexRecord> GetMappedGradeIndexRecords()
+        public IEnumerable<RGaGradeKvIndexRecord> GetMappedGradeIndexRecords()
         {
             return GradeIndexToKVectorMatrix
                 .GetGradeIndexRecords()
                 .Select(r => 
-                    new GradeIndexRecord(r.Grade, r.Index2)
+                    new RGaGradeKvIndexRecord(r.Grade, r.KvIndex2)
                 ).Distinct();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<GradeIndexRecord> GetMappedGradeIndexRecords(uint grade)
+        public IEnumerable<RGaGradeKvIndexRecord> GetMappedGradeIndexRecords(uint grade)
         {
             return GradeIndexToKVectorMatrix
                 .GetMatrixStorage(grade)
                 .GetIndices2()
-                .Select(index => new GradeIndexRecord(grade, index));
+                .Select(index => new RGaGradeKvIndexRecord(grade, index));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<IdKVectorStorageRecord<T>> GetMappedBasisBladesById()
+        public IEnumerable<RGaIdKVectorStorageRecord<T>> GetMappedBasisBladesById()
         {
             return GradeIndexToKVectorMatrix
                 .GetColumns()
                 .Select(r => 
-                    new IdKVectorStorageRecord<T>(
-                        r.Index.BasisBladeIndexToId(r.Grade),
+                    new RGaIdKVectorStorageRecord<T>(
+                        r.KvIndex.BasisBladeIndexToId(r.Grade),
                         r.Storage.CreateKVectorStorage(r.Grade)
                     )
                 );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<IdKVectorStorageRecord<T>> GetMappedBasisBladesById(uint grade)
+        public IEnumerable<RGaIdKVectorStorageRecord<T>> GetMappedBasisBladesById(uint grade)
         {
             return GradeIndexToKVectorMatrix
                 .GetMatrixStorage(grade)
                 .GetColumns()
                 .Select(r => 
-                    new IdKVectorStorageRecord<T>(
-                        r.Index.BasisBladeIndexToId(grade),
+                    new RGaIdKVectorStorageRecord<T>(
+                        r.KvIndex.BasisBladeIndexToId(grade),
                         r.Storage.CreateKVectorStorage(grade)
                     )
                 );
@@ -192,7 +192,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
                 .Select(r => 
                     new GradeIndexKVectorStorageRecord<T>(
                         r.Grade,
-                        r.Index,
+                        r.KvIndex,
                         r.Storage.CreateKVectorStorage(r.Grade)
                     )
                 );
@@ -215,7 +215,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
                 .GetColumns()
                 .Select(r => 
                     new IndexVectorStorageRecord<T>(
-                        r.Index, 
+                        r.KvIndex, 
                         r.Storage.CreateVectorStorage()
                     )
                 );
@@ -229,7 +229,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
                 .GetColumns()
                 .Select(r => 
                     new IndexBivectorStorageRecord<T>(
-                        r.Index, 
+                        r.KvIndex, 
                         r.Storage.CreateBivectorStorage()
                     )
                 );
@@ -243,7 +243,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
                 .GetColumns()
                 .Select(r => 
                     new IndexKVectorStorageRecord<T>(
-                        r.Index, 
+                        r.KvIndex, 
                         r.Storage.CreateKVectorStorage(grade)
                     )
                 );

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using NumericalGeometryLib.BasicShapes;
+using GeometricAlgebraFulcrumLib.MathBase.BasicShapes;
 
 namespace NumericalGeometryLib.Accelerators.BIH.Space2D
 {

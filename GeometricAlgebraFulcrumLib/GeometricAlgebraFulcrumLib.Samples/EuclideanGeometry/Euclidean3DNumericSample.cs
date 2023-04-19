@@ -1,9 +1,12 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors;
-using GeometricAlgebraFulcrumLib.Processors;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Arrays.Float64;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.LinearMaps;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.LinearMaps.Rotors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Multivectors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Processors;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps;
 
 namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
 {
@@ -11,13 +14,14 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
     {
         public static void Execute()
         {
-            var n = 3U;
+            var n = 3;
             var randGen = new Random();
-            
-            var processor = 
-                ScalarAlgebraFloat64Processor.DefaultProcessor.CreateGeometricAlgebraEuclideanProcessor(n);
 
-            var v = ScalarAlgebraFloat64ProcessorUtils.CreateVector(
+            var processor =
+                XGaFloat64Processor.Euclidean;
+                //ScalarProcessorFloat64.DefaultProcessor.CreateXGafGeometricAlgebraEuclideanProcessor(n);
+
+            var v = processor.CreateVector(
                 randGen.NextDouble(), 
                 randGen.NextDouble(),
                 randGen.NextDouble()
@@ -25,7 +29,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
 
             v = v.DivideByENorm();
 
-            var u = ScalarAlgebraFloat64ProcessorUtils.CreateVector(
+            var u = processor.CreateVector(
                 randGen.NextDouble(), 
                 randGen.NextDouble(),
                 randGen.NextDouble()
@@ -35,39 +39,37 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
 
 
             var rotor = 
-                processor.CreatePureRotor(v, u);
+                v.CreatePureRotor(u);
 
             var rotorMv = rotor.Multivector;
             var rotorMvReverse = rotor.Multivector.Reverse();
 
             var rotorMatrix =
-                rotor.GetMatrix(3, 3);
+                rotor.GetMultivectorMapArray(3, 3);
 
             
             var rotorMatrix1 =
-                processor.CreateComputedOutermorphism((int) n,
-                        basisVector =>
-                            rotorMv.EGp(basisVector).GetVectorPart().VectorStorage
-                    )
-                    .GetMatrix((int) n, (int) n);
+                n.CreateLinUnilinearMap(
+                    (int index) =>
+                        rotorMv.EGp(processor.CreateVector(index)).GetVectorPart().VectorToLinVector()
+                    ).ToArray(n, n);
 
             var rotorMatrix2 =
-                processor.CreateComputedOutermorphism((int) n,
-                        basisVector =>
-                            basisVector.EGp(rotorMvReverse).GetVectorPart().VectorStorage
-                    )
-                    .GetMatrix((int) n, (int) n);
+                n.CreateLinUnilinearMap(
+                        (int index) =>
+                            processor.CreateVector(index).EGp(rotorMvReverse).GetVectorPart().VectorToLinVector()
+                    ).ToArray(n, n);
 
             var rotorMatrix21 = 
-                rotorMatrix2 * rotorMatrix1;
+                rotorMatrix2.Times(rotorMatrix1);
 
-            var vMatrix = v.VectorStorage.VectorToColumnVectorMatrix(n);
-            var uMatrix = u.VectorStorage.VectorToColumnVectorMatrix(n);
+            var vMatrix = v.VectorToColumnArray2D(n);
+            var uMatrix = u.VectorToColumnArray2D(n);
 
             var u1 = rotor.OmMap(v);
-            var u2 = rotorMatrix * vMatrix;
-            var u3 = rotorMatrix21 * vMatrix;
-            var u4 = rotorMatrix2 * (rotorMatrix1 * vMatrix);
+            var u2 = rotorMatrix.Times(vMatrix);
+            var u3 = rotorMatrix21.Times(vMatrix);
+            var u4 = rotorMatrix2.Times(rotorMatrix1, vMatrix);
 
             Console.WriteLine("Rotor Matrix:");
             Console.WriteLine(rotorMatrix.ToString());
@@ -94,7 +96,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
             Console.WriteLine();
 
             Console.WriteLine("Rotated Vector 1:");
-            Console.WriteLine(u1.GetText());
+            Console.WriteLine(u1.ToString());
             Console.WriteLine();
 
             Console.WriteLine("Rotated Vector 2:");

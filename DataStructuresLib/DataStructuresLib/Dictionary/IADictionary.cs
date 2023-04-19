@@ -2,7 +2,8 @@
 
 namespace DataStructuresLib.Dictionary
 {
-    public interface IADictionary<TKey, TValue> : IDictionary<TKey, TValue>
+    public interface IADictionary<TKey, TValue> : 
+        IDictionary<TKey, TValue>
     {
         void AddOrSetValue(TKey key, TValue value);
 

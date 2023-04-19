@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Geometry.Euclidean.Space3D.Objects;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
 
 namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean.Space3D.Maps
 {
     public abstract class E3DMap<T>
     {
-        public abstract IScalarAlgebraProcessor<T> ScalarProcessor { get; }
+        public abstract IScalarProcessor<T> ScalarProcessor { get; }
 
 
         public abstract E3DVector<T> Map(E3DVector<T> vector);

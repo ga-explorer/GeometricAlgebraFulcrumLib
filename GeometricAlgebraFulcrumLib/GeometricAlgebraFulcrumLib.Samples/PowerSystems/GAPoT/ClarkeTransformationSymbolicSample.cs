@@ -1,31 +1,30 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Outermorphisms;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Versors;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Arrays.Generic;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.LinearMaps.Outermorphisms;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.LinearMaps.Versors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Mathematica;
 using GeometricAlgebraFulcrumLib.Mathematica.Applications.GaPoT;
+using GeometricAlgebraFulcrumLib.Mathematica.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Mathematica.Mathematica.ExprFactory;
 using GeometricAlgebraFulcrumLib.Mathematica.Processors;
-using GeometricAlgebraFulcrumLib.Mathematica.Text;
-using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices;
-using GeometricAlgebraFulcrumLib.Text;
 using Wolfram.NETLink;
 
 namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GAPoT
 {
     public static class ClarkeTransformationSymbolicSample
     {
-        public static IGeometricAlgebraEuclideanProcessor<Expr> GeometricProcessor { get; }
-            = MathematicaUtils.EuclideanProcessor;
+        public static XGaProcessor<Expr> GeometricProcessor { get; }
+            = XGaMathematicaUtils.EuclideanProcessor;
 
-        public static ScalarAlgebraMathematicaProcessor ScalarProcessor { get; }
-            = ScalarAlgebraMathematicaProcessor.DefaultProcessor;
+        public static ScalarProcessorExpr ScalarProcessor { get; }
+            = ScalarProcessorExpr.DefaultProcessor;
 
-        public static TextMathematicaComposer TextComposer { get; }
-            = TextMathematicaComposer.DefaultComposer;
+        public static TextComposerExpr TextComposer { get; }
+            = TextComposerExpr.DefaultComposer;
 
-        public static LaTeXMathematicaComposer LaTeXComposer { get; }
-            = LaTeXMathematicaComposer.DefaultComposer;
+        public static LaTeXComposerExpr LaTeXComposer { get; }
+            = LaTeXComposerExpr.DefaultComposer;
 
 
         public static void Execute()
@@ -37,23 +36,23 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GAPoT
 
                 var clarkeMap =
                     //ScalarProcessor.CreateSimpleKirchhoffRotor(n);
-                    GeometricProcessor.CreateClarkeMap(n);
+                    GeometricProcessor.CreateClarkeRotationMap(n);
 
                 var clarkeArray =
                     clarkeMap
-                        .GetVectorOmMappingMatrix(n, n)
+                        .GetVectorMapArray(n, n)
                         .MapScalars(scalar =>
                             Mfs.TrigReduce[Mfs.FullSimplify[scalar]].Evaluate()
                         );
 
                 Console.WriteLine("Generated Clarke Matrix:");
                 Console.WriteLine(
-                    TextComposer.GetArrayText(clarkeArray.ToArray())
+                    TextComposer.GetArrayText(clarkeArray)
                 );
                 Console.WriteLine();
 
                 var (linearMapQ, linearMapR) =
-                    GeometricProcessor.GetHouseholderQRDecomposition(clarkeMap, n);
+                    clarkeMap.GetHouseholderQRDecomposition(n);
 
                 Console.WriteLine("Q Map Vectors:");
                 foreach (var versor in linearMapQ)
@@ -68,7 +67,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GAPoT
 
                 var linearMapQArray =
                     linearMapQ
-                        .GetVectorOmMappingMatrix(n, n)
+                        .GetVectorMapArray(n, n)
                         .MapScalars(scalar =>
                             Mfs.TrigReduce[Mfs.FullSimplify[scalar]].Evaluate()
                         );
@@ -81,7 +80,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GAPoT
 
                 var linearMapRArray =
                     linearMapR
-                        .GetVectorOmMappingMatrix(n, n)
+                        .GetVectorMapArray(n, n)
                         .MapScalars(scalar =>
                             Mfs.TrigReduce[Mfs.FullSimplify[scalar]].Evaluate()
                         );

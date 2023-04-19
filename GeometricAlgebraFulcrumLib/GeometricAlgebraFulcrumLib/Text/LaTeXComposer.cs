@@ -1,20 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using DataStructuresLib;
 using DataStructuresLib.BitManipulation;
 using DataStructuresLib.Combinations;
-using NumericalGeometryLib.BasicMath;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records.Restricted;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Basis;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 using TextComposerLib.Text;
 
 namespace GeometricAlgebraFulcrumLib.Text
@@ -25,25 +23,25 @@ namespace GeometricAlgebraFulcrumLib.Text
         public string BasisName { get; set; }
             = @"\boldsymbol{e}";
 
-        public IScalarAlgebraProcessor<T> ScalarProcessor { get; }
+        public IScalarProcessor<T> ScalarProcessor { get; }
 
         public LaTeXComposerBasisFormat BasisFormat { get; set; }
             = LaTeXComposerBasisFormat.CommaSeparated;
 
 
-        public LaTeXComposer([NotNull] IScalarAlgebraProcessor<T> scalarProcessor)
+        public LaTeXComposer(IScalarProcessor<T> scalarProcessor)
         {
             ScalarProcessor = scalarProcessor;
         }
 
 
-        public string GetBasisBladeText(BasisBlade basisBlade)
+        public string GetBasisBladeText(RGaBasisBlade basisBlade)
         {
             return GetBasisBladeText(basisBlade.Id);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public virtual string GetAngleText(PlanarAngle angle)
+        public virtual string GetAngleText(Float64PlanarAngle angle)
         {
             var angleText = GetScalarText(ScalarProcessor.GetScalarFromNumber(angle.Degrees));
 
@@ -78,24 +76,24 @@ namespace GeometricAlgebraFulcrumLib.Text
             );
         }
 
-        public string GetTermText(IndexScalarRecord<T> idScalarTuple)
+        public string GetTermText(RGaKvIndexScalarRecord<T> idScalarTuple)
         {
             return GetTermText(
-                idScalarTuple.Index,
+                idScalarTuple.KvIndex,
                 idScalarTuple.Scalar
             );
         }
 
-        public string GetTermText(GradeIndexScalarRecord<T> gradeIndexScalarTuple)
+        public string GetTermText(RGaGradeKvIndexScalarRecord<T> gradeIndexScalarTuple)
         {
             return GetTermText(
                 gradeIndexScalarTuple.Grade,
-                gradeIndexScalarTuple.Index,
+                gradeIndexScalarTuple.KvIndex,
                 gradeIndexScalarTuple.Scalar
             );
         }
 
-        public string GetTermText(BasisBlade basisBlade, T scalar)
+        public string GetTermText(RGaBasisBlade basisBlade, T scalar)
         {
             return GetTermText(
                 basisBlade.Id,
@@ -103,32 +101,32 @@ namespace GeometricAlgebraFulcrumLib.Text
             );
         }
 
-        public string GetTermText(BasisTerm<T> term)
+        public string GetTermText(KeyValuePair<ulong, T> term)
         {
             return GetTermText(
-                term.BasisBlade.Id,
-                term.Scalar
+                term.Key,
+                term.Value
             );
         }
 
-        public string GetTermsText(IEnumerable<IndexScalarRecord<T>> idScalarTuples)
+        public string GetTermsText(IEnumerable<RGaKvIndexScalarRecord<T>> idScalarTuples)
         {
             return idScalarTuples
                 .Select(GetTermText)
                 .ConcatenateText(" + ");
         }
 
-        public string GetTermsText(IEnumerable<GradeIndexScalarRecord<T>> idScalarTuples)
+        public string GetTermsText(IEnumerable<RGaGradeKvIndexScalarRecord<T>> idScalarTuples)
         {
             return idScalarTuples
                 .Select(GetTermText)
                 .ConcatenateText(" + ");
         }
 
-        public string GetTermsText(uint grade, IEnumerable<IndexScalarRecord<T>> indexScalarTuples)
+        public string GetTermsText(uint grade, IEnumerable<RGaKvIndexScalarRecord<T>> indexScalarTuples)
         {
             return indexScalarTuples
-                .Select(indexScalarPair => GetTermText(grade, indexScalarPair.Index, indexScalarPair.Scalar))
+                .Select(indexScalarPair => GetTermText(grade, indexScalarPair.KvIndex, indexScalarPair.Scalar))
                 .ConcatenateText(" + ");
         }
         
@@ -265,7 +263,7 @@ namespace GeometricAlgebraFulcrumLib.Text
             return $@"\left( {valueText} \right) {basisText}";
         }
 
-        public string GetTermsText(IEnumerable<BasisTerm<T>> termsList)
+        public string GetTermsText(IEnumerable<KeyValuePair<ulong, T>> termsList)
         {
             var termsArray = 
                 termsList.OrderByGradeIndex().ToArray();
@@ -273,7 +271,7 @@ namespace GeometricAlgebraFulcrumLib.Text
             return termsArray.Length == 0
                 ? "0"
                 : termsArray
-                    .Select(t => GetTermText(t.BasisBlade.Id, t.Scalar))
+                    .Select(t => GetTermText(t.Key, t.Value))
                     .Concatenate(" + ");
         }
 
@@ -305,7 +303,7 @@ namespace GeometricAlgebraFulcrumLib.Text
                 .ToString();
         }
         
-        public string GetTermsEquationsArrayText(string rightHandSide, IEnumerable<BasisTerm<T>> termsList)
+        public string GetTermsEquationsArrayText(string rightHandSide, IEnumerable<KeyValuePair<ulong, T>> termsList)
         {
             var textComposer = new StringBuilder();
 
@@ -361,36 +359,36 @@ namespace GeometricAlgebraFulcrumLib.Text
             return this;
         }
         
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LaTeXComposer<T> ConsoleWriteLine(GaVector<T> v, string vText)
-        {
-            Console.WriteLine(@$"${vText} = {GetMultivectorText(v.VectorStorage)}$");
+        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+        //public LaTeXComposer<T> ConsoleWriteLine(GaVector<T> v, string vText)
+        //{
+        //    Console.WriteLine(@$"${vText} = {GetMultivectorText(v.VectorStorage)}$");
 
-            return this;
-        }
+        //    return this;
+        //}
         
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LaTeXComposer<T> ConsoleWriteLine(GaBivector<T> v, string vText)
-        {
-            Console.WriteLine(@$"${vText} = {GetMultivectorText(v.BivectorStorage)}$");
+        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+        //public LaTeXComposer<T> ConsoleWriteLine(GaBivector<T> v, string vText)
+        //{
+        //    Console.WriteLine(@$"${vText} = {GetMultivectorText(v.BivectorStorage)}$");
 
-            return this;
-        }
+        //    return this;
+        //}
         
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LaTeXComposer<T> ConsoleWriteLine(GaKVector<T> v, string vText)
-        {
-            Console.WriteLine(@$"${vText} = {GetMultivectorText(v.KVectorStorage)}$");
+        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+        //public LaTeXComposer<T> ConsoleWriteLine(GaKVector<T> v, string vText)
+        //{
+        //    Console.WriteLine(@$"${vText} = {GetMultivectorText(v.KVectorStorage)}$");
 
-            return this;
-        }
+        //    return this;
+        //}
         
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LaTeXComposer<T> ConsoleWriteLine(GaMultivector<T> v, string vText)
-        {
-            Console.WriteLine(@$"${vText} = {GetMultivectorText(v.MultivectorStorage)}$");
+        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+        //public LaTeXComposer<T> ConsoleWriteLine(GaMultivector<T> v, string vText)
+        //{
+        //    Console.WriteLine(@$"${vText} = {GetMultivectorText(v.MultivectorStorage)}$");
 
-            return this;
-        }
+        //    return this;
+        //}
     }
 }

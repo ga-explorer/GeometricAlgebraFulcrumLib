@@ -1,7 +1,8 @@
-﻿namespace GraphicsComposerLib.Rendering.BabylonJs;
-
-public enum GrBabylonJsGridMaterialKind
+﻿namespace GraphicsComposerLib.Rendering.BabylonJs
 {
-    GridMaterial,
-    TexturedMaterial
+    public enum GrBabylonJsGridMaterialKind
+    {
+        GridMaterial,
+        TexturedMaterial
+    }
 }

@@ -1,18 +1,15 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Text;
-using NumericalGeometryLib.BasicMath.Tuples;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Processors.LinearAlgebra;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Processors;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 
 namespace GeometricAlgebraFulcrumLib.Geometry.Graphics.Space2D
 {
     public sealed record EuclideanVector2D : 
-        IFloat64Tuple2D,
-        IGeometricAlgebraElement<double>
+        IFloat64Tuple2D
     {
         public static EuclideanVector2D operator -(EuclideanVector2D v1)
         {
@@ -72,13 +69,10 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Graphics.Space2D
         //}
 
 
-        public IScalarAlgebraProcessor<double> ScalarProcessor 
-            => ScalarAlgebraFloat64Processor.DefaultProcessor;
-
-        public ILinearAlgebraProcessor<double> LinearProcessor 
-            => GeometricProcessor;
-
-        public IGeometricAlgebraProcessor<double> GeometricProcessor 
+        public IScalarProcessor<double> ScalarProcessor 
+            => ScalarProcessorFloat64.DefaultProcessor;
+        
+        public RGaFloat64Processor GeometricProcessor 
             => GraphicsUtils.GeometricProcessor;
 
         public double X { get; }

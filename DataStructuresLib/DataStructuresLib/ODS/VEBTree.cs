@@ -25,7 +25,7 @@ namespace DataStructuresLib.ODS
             if (width > 32 || width < 1)
                 throw new ArgumentOutOfRangeException();
 
-            this._width = width;
+            _width = width;
             if (width > 1)
             {
                 var highHalf = width / 2 + (width & 1);

@@ -1,8 +1,9 @@
-﻿namespace GraphicsComposerLib.Rendering.BabylonJs.Constants;
-
-public enum GrBabylonJsMeshOrientation
+﻿namespace GraphicsComposerLib.Rendering.BabylonJs.Constants
 {
-    Front,
-    Back,
-    FrontAndBack
+    public enum GrBabylonJsMeshOrientation
+    {
+        Front,
+        Back,
+        FrontAndBack
+    }
 }

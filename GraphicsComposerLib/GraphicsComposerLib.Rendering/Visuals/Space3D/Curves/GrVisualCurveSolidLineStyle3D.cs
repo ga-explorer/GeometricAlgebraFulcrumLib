@@ -1,15 +1,14 @@
-﻿using SixLabors.ImageSharp;
-
-namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Curves;
-
-public class GrVisualCurveSolidLineStyle3D :
-    GrVisualCurveStyle3D
+﻿namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Curves
 {
-    public Color Color { get; }
-
-
-    public GrVisualCurveSolidLineStyle3D(Color color)
+    public class GrVisualCurveSolidLineStyle3D :
+        GrVisualCurveStyle3D
     {
-        Color = color;
+        public Color Color { get; }
+
+
+        public GrVisualCurveSolidLineStyle3D(Color color)
+        {
+            Color = color;
+        }
     }
 }

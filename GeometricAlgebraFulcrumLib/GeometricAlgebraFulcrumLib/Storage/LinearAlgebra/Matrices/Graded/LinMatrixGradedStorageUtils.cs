@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.Basic;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records.Restricted;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 
 namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
@@ -11,9 +13,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
     public static class LinMatrixGradedStorageUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IReadOnlyDictionary<uint, IEnumerable<IndexPairRecord>> GetIndicesSetsUnion<T>(this ILinMatrixGradedStorage<T> matrixGradedStorage1, ILinMatrixGradedStorage<T> matrixGradedStorage2)
+        public static IReadOnlyDictionary<uint, IEnumerable<RGaKvIndexPairRecord>> GetIndicesSetsUnion<T>(this ILinMatrixGradedStorage<T> matrixGradedStorage1, ILinMatrixGradedStorage<T> matrixGradedStorage2)
         {
-            var dictionary = new Dictionary<uint, IEnumerable<IndexPairRecord>>();
+            var dictionary = new Dictionary<uint, IEnumerable<RGaKvIndexPairRecord>>();
             var gradesSet = matrixGradedStorage1.GetGradesSetUnion(matrixGradedStorage2);
 
             foreach (var grade in gradesSet)
@@ -28,9 +30,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IReadOnlyDictionary<uint, IEnumerable<IndexPairRecord>> GetIndicesSetsIntersection<T>(this ILinMatrixGradedStorage<T> matrixGradedStorage1, ILinMatrixGradedStorage<T> matrixGradedStorage2)
+        public static IReadOnlyDictionary<uint, IEnumerable<RGaKvIndexPairRecord>> GetIndicesSetsIntersection<T>(this ILinMatrixGradedStorage<T> matrixGradedStorage1, ILinMatrixGradedStorage<T> matrixGradedStorage2)
         {
-            var dictionary = new Dictionary<uint, IEnumerable<IndexPairRecord>>();
+            var dictionary = new Dictionary<uint, IEnumerable<RGaKvIndexPairRecord>>();
             var gradesSet = matrixGradedStorage1.GetGradesSetUnion(matrixGradedStorage2);
 
             foreach (var grade in gradesSet)
@@ -45,9 +47,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IReadOnlyDictionary<uint, IEnumerable<IndexPairRecord>> GetIndicesSetsDifference<T>(this ILinMatrixGradedStorage<T> matrixGradedStorage1, ILinMatrixGradedStorage<T> matrixGradedStorage2)
+        public static IReadOnlyDictionary<uint, IEnumerable<RGaKvIndexPairRecord>> GetIndicesSetsDifference<T>(this ILinMatrixGradedStorage<T> matrixGradedStorage1, ILinMatrixGradedStorage<T> matrixGradedStorage2)
         {
-            var dictionary = new Dictionary<uint, IEnumerable<IndexPairRecord>>();
+            var dictionary = new Dictionary<uint, IEnumerable<RGaKvIndexPairRecord>>();
             var gradesSet = matrixGradedStorage1.GetGradesSetUnion(matrixGradedStorage2);
 
             foreach (var grade in gradesSet)
@@ -62,9 +64,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IReadOnlyDictionary<uint, HashSet<IndexPairRecord>> GetIndicesSetsSymmetricDifference<T>(this ILinMatrixGradedStorage<T> matrixGradedStorage1, ILinMatrixGradedStorage<T> matrixGradedStorage2)
+        public static IReadOnlyDictionary<uint, HashSet<RGaKvIndexPairRecord>> GetIndicesSetsSymmetricDifference<T>(this ILinMatrixGradedStorage<T> matrixGradedStorage1, ILinMatrixGradedStorage<T> matrixGradedStorage2)
         {
-            var dictionary = new Dictionary<uint, HashSet<IndexPairRecord>>();
+            var dictionary = new Dictionary<uint, HashSet<RGaKvIndexPairRecord>>();
             var gradesSet = matrixGradedStorage1.GetGradesSetUnion(matrixGradedStorage2);
 
             foreach (var grade in gradesSet)
@@ -93,7 +95,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
             return matrixGradedStorage
                 .GetGradeIndexScalarRecords()
                 .Select(indexScalar =>
-                    mappingFunc(indexScalar.Grade, indexScalar.Index1, indexScalar.Index2, indexScalar.Scalar)
+                    mappingFunc(indexScalar.Grade, indexScalar.KvIndex1, indexScalar.KvIndex2, indexScalar.Scalar)
                 );
         }
 
@@ -108,14 +110,14 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<IndexPairScalarRecord<T>> GetEvenIndexScalarRecords<T>(this ILinMatrixGradedStorage<T> matrixGradedStorage)
+        public static IEnumerable<RGaKvIndexPairScalarRecord<T>> GetEvenIndexScalarRecords<T>(this ILinMatrixGradedStorage<T> matrixGradedStorage)
         {
             return matrixGradedStorage.GetGradeIndexScalarRecords().Select(
                 record =>
                 {
                     var (grade, index1, index2, value) = record;
 
-                    return new IndexPairScalarRecord<T>(
+                    return new RGaKvIndexPairScalarRecord<T>(
                         index1.BasisBladeIndexToId(grade),
                         index2.BasisBladeIndexToId(grade),
                         value
@@ -125,14 +127,14 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<IndexPairScalarRecord<T>> GetEvenIndexScalarRecords<T>(this ILinMatrixGradedStorage<T> matrixGradedStorage, Func<uint, ulong, ulong> gradeIndexToIndexMapping)
+        public static IEnumerable<RGaKvIndexPairScalarRecord<T>> GetEvenIndexScalarRecords<T>(this ILinMatrixGradedStorage<T> matrixGradedStorage, Func<uint, ulong, ulong> gradeIndexToIndexMapping)
         {
             return matrixGradedStorage.GetGradeIndexScalarRecords().Select(
                 record =>
                 {
                     var (grade, index1, index2, value) = record;
 
-                    return new IndexPairScalarRecord<T>(
+                    return new RGaKvIndexPairScalarRecord<T>(
                         gradeIndexToIndexMapping(grade, index1),
                         gradeIndexToIndexMapping(grade, index2),
                         value
@@ -142,7 +144,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<IndexPairScalarRecord<T>> GetEvenIndexScalarRecords<T>(this ILinMatrixGradedStorage<T> matrixGradedStorage, Func<uint, ulong, ulong, IndexPairRecord> gradeIndexToIndexMapping)
+        public static IEnumerable<RGaKvIndexPairScalarRecord<T>> GetEvenIndexScalarRecords<T>(this ILinMatrixGradedStorage<T> matrixGradedStorage, Func<uint, ulong, ulong, RGaKvIndexPairRecord> gradeIndexToIndexMapping)
         {
             return matrixGradedStorage.GetGradeIndexScalarRecords().Select(
                 record =>
@@ -150,7 +152,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
                     var (grade, index1, index2, value) = record;
                     var (evenIndex1, evenIndex2) = gradeIndexToIndexMapping(grade, index1, index2);
 
-                    return new IndexPairScalarRecord<T>(
+                    return new RGaKvIndexPairScalarRecord<T>(
                         evenIndex1,
                         evenIndex2,
                         value
@@ -160,7 +162,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<GradeIndexPairScalarRecord<T>> GetGradeIndexScalarRecords<T>(this ILinMatrixGradedStorage<T> matrixGradedStorage, Func<uint, ulong, ulong, GradeIndexPairRecord> gradeIndexMapping)
+        public static IEnumerable<RGaGradeKvIndexPairScalarRecord<T>> GetGradeIndexScalarRecords<T>(this ILinMatrixGradedStorage<T> matrixGradedStorage, Func<uint, ulong, ulong, RGaGradeKvIndexPairRecord> gradeIndexMapping)
         {
             return matrixGradedStorage.GetGradeIndexScalarRecords().Select(
                 record =>
@@ -168,7 +170,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
                     var (grade, index1, index2, value) = record;
                     var (newGrade, newIndex1, newIndex2) = gradeIndexMapping(grade, index1, index2);
 
-                    return new GradeIndexPairScalarRecord<T>(
+                    return new RGaGradeKvIndexPairScalarRecord<T>(
                         newGrade,
                         newIndex1,
                         newIndex2,
@@ -179,14 +181,14 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<IndexPairRecord> GetEvenIndexRecords<T>(this ILinMatrixGradedStorage<T> matrixGradedStorage)
+        public static IEnumerable<RGaKvIndexPairRecord> GetEvenIndexRecords<T>(this ILinMatrixGradedStorage<T> matrixGradedStorage)
         {
             return matrixGradedStorage.GetGradeIndexRecords().Select(
                 record =>
                 {
                     var (grade, index1, index2) = record;
 
-                    return new IndexPairRecord(
+                    return new RGaKvIndexPairRecord(
                         index1.BasisBladeIndexToId(grade),
                         index2.BasisBladeIndexToId(grade)
                     );
@@ -195,14 +197,14 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<IndexPairRecord> GetEvenIndexRecords<T>(this ILinMatrixGradedStorage<T> matrixGradedStorage, Func<uint, ulong, ulong> gradeIndexToIndexMapping)
+        public static IEnumerable<RGaKvIndexPairRecord> GetEvenIndexRecords<T>(this ILinMatrixGradedStorage<T> matrixGradedStorage, Func<uint, ulong, ulong> gradeIndexToIndexMapping)
         {
             return matrixGradedStorage.GetGradeIndexRecords().Select(
                 record =>
                 {
                     var (grade, index1, index2) = record;
 
-                    return new IndexPairRecord(
+                    return new RGaKvIndexPairRecord(
                         gradeIndexToIndexMapping(grade, index1),
                         gradeIndexToIndexMapping(grade, index2)
                     );
@@ -211,7 +213,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<IndexPairRecord> GetEvenIndexRecords<T>(this ILinMatrixGradedStorage<T> matrixGradedStorage, Func<uint, ulong, ulong, IndexPairRecord> gradeIndexToIndexMapping)
+        public static IEnumerable<RGaKvIndexPairRecord> GetEvenIndexRecords<T>(this ILinMatrixGradedStorage<T> matrixGradedStorage, Func<uint, ulong, ulong, RGaKvIndexPairRecord> gradeIndexToIndexMapping)
         {
             return matrixGradedStorage.GetGradeIndexRecords().Select(
                 record =>
@@ -219,7 +221,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
                     var (grade, index1, index2) = record;
                     var (evenIndex1, evenIndex2) = gradeIndexToIndexMapping(grade, index1, index2);
 
-                    return new IndexPairRecord(
+                    return new RGaKvIndexPairRecord(
                         evenIndex1,
                         evenIndex2
                     );
@@ -228,7 +230,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<GradeIndexPairRecord> GetGradeIndexRecords<T>(this ILinMatrixGradedStorage<T> matrixGradedStorage, Func<uint, ulong, ulong, GradeIndexPairRecord> gradeIndexMapping)
+        public static IEnumerable<RGaGradeKvIndexPairRecord> GetGradeIndexRecords<T>(this ILinMatrixGradedStorage<T> matrixGradedStorage, Func<uint, ulong, ulong, RGaGradeKvIndexPairRecord> gradeIndexMapping)
         {
             return matrixGradedStorage.GetGradeIndexRecords().Select(
                 record =>
@@ -236,7 +238,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
                     var (grade, index1, index2) = record;
                     var (newGrade, newIndex1, newIndex2) = gradeIndexMapping(grade, index1, index2);
 
-                    return new GradeIndexPairRecord(
+                    return new RGaGradeKvIndexPairRecord(
                         newGrade,
                         newIndex1,
                         newIndex2
@@ -359,11 +361,11 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
         /// </summary>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GradeScalarRecord<ILinMatrixStorage<T>> GetMinGradeMatrixRecord<T>(this ILinMatrixGradedStorage<T> matrixGradedStorage)
+        public static GaGradeScalarRecord<ILinMatrixStorage<T>> GetMinGradeMatrixRecord<T>(this ILinMatrixGradedStorage<T> matrixGradedStorage)
         {
             var grade = matrixGradedStorage.GetMinGrade();
 
-            return new GradeScalarRecord<ILinMatrixStorage<T>>(grade, matrixGradedStorage.GetMatrixStorage(grade));
+            return new GaGradeScalarRecord<ILinMatrixStorage<T>>(grade, matrixGradedStorage.GetMatrixStorage(grade));
         }
 
         /// <summary>
@@ -371,15 +373,15 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
         /// </summary>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GradeScalarRecord<ILinMatrixStorage<T>> GetMaxGradeMatrixRecord<T>(this ILinMatrixGradedStorage<T> matrixGradedStorage)
+        public static GaGradeScalarRecord<ILinMatrixStorage<T>> GetMaxGradeMatrixRecord<T>(this ILinMatrixGradedStorage<T> matrixGradedStorage)
         {
             var grade = matrixGradedStorage.GetMaxGrade();
 
-            return new GradeScalarRecord<ILinMatrixStorage<T>>(grade, matrixGradedStorage.GetMatrixStorage(grade));
+            return new GaGradeScalarRecord<ILinMatrixStorage<T>>(grade, matrixGradedStorage.GetMatrixStorage(grade));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<IndexPairScalarRecord<T>> GetIndexScalarRecords<T>(this ILinMatrixGradedStorage<T> matrixGradedStorage)
+        public static IEnumerable<RGaKvIndexPairScalarRecord<T>> GetIndexScalarRecords<T>(this ILinMatrixGradedStorage<T> matrixGradedStorage)
         {
             return matrixGradedStorage
                 .GetGradeIndexScalarRecords()
@@ -387,7 +389,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<IndexPairScalarRecord<T>> GetIndexScalarRecords<T>(this ILinMatrixGradedStorage<T> matrixGradedStorage, Func<uint, ulong, ulong> gradeIndexToIndexMapping)
+        public static IEnumerable<RGaKvIndexPairScalarRecord<T>> GetIndexScalarRecords<T>(this ILinMatrixGradedStorage<T> matrixGradedStorage, Func<uint, ulong, ulong> gradeIndexToIndexMapping)
         {
             return matrixGradedStorage
                 .GetGradeIndexScalarRecords()
@@ -396,7 +398,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<IndexPairRecord> GetEmptyIndices<T>(this ILinMatrixGradedStorage<T> matrixGradedStorage, uint grade, IndexPairRecord maxCountPair)
+        public static IEnumerable<RGaKvIndexPairRecord> GetEmptyIndices<T>(this ILinMatrixGradedStorage<T> matrixGradedStorage, uint grade, RGaKvIndexPairRecord maxCountPair)
         {
             return matrixGradedStorage.TryGetMatrixStorage(grade, out var matrixStorage)
                 ? matrixStorage.GetEmptyIndices(maxCountPair)
@@ -430,7 +432,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
         /// </summary>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IndexPairScalarRecord<T> GetMinIndexScalarRecord<T>(this ILinMatrixGradedStorage<T> matrixGradedStorage, uint grade)
+        public static RGaKvIndexPairScalarRecord<T> GetMinIndexScalarRecord<T>(this ILinMatrixGradedStorage<T> matrixGradedStorage, uint grade)
         {
             return matrixGradedStorage.GetMatrixStorage(grade).GetMinIndexScalarRecord();
         }
@@ -440,7 +442,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
         /// </summary>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IndexPairScalarRecord<T> GetMaxIndexScalarRecord<T>(this ILinMatrixGradedStorage<T> matrixGradedStorage, uint grade)
+        public static RGaKvIndexPairScalarRecord<T> GetMaxIndexScalarRecord<T>(this ILinMatrixGradedStorage<T> matrixGradedStorage, uint grade)
         {
             return matrixGradedStorage.GetMatrixStorage(grade).GetMaxIndexScalarRecord();
         }

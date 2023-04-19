@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.BitManipulation;
 using DataStructuresLib.Extensions;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records.Restricted;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 
 namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
@@ -25,9 +25,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<uint> GetEmptyGrades(uint vSpaceDimension)
+        public IEnumerable<uint> GetEmptyGrades(uint vSpaceDimensions)
         {
-            return (1 + vSpaceDimension).GetRange().Except(_gradeIndexScalarDictionary.Keys);
+            return (1 + vSpaceDimensions).GetRange().Except(_gradeIndexScalarDictionary.Keys);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -66,7 +66,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
             _gradeIndexScalarDictionary = new Dictionary<uint, ILinMatrixStorage<T>>();
         }
 
-        internal LinMatrixSparseGradedStorage([NotNull] Dictionary<uint, ILinMatrixStorage<T>> gradeIndexScalarDictionary)
+        internal LinMatrixSparseGradedStorage(Dictionary<uint, ILinMatrixStorage<T>> gradeIndexScalarDictionary)
         {
             _gradeIndexScalarDictionary = gradeIndexScalarDictionary;
         }
@@ -87,7 +87,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinMatrixSparseGradedStorage<T> SetMatrixStorage(uint grade, [NotNull] ILinMatrixStorage<T> matrixStorage)
+        public LinMatrixSparseGradedStorage<T> SetMatrixStorage(uint grade, ILinMatrixStorage<T> matrixStorage)
         {
             if (_gradeIndexScalarDictionary.ContainsKey(grade))
                 _gradeIndexScalarDictionary[grade] = matrixStorage;
@@ -98,7 +98,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinMatrixSparseGradedStorage<T> AddMatrixStorage(uint grade, [NotNull] ILinMatrixStorage<T> matrixStorage)
+        public LinMatrixSparseGradedStorage<T> AddMatrixStorage(uint grade, ILinMatrixStorage<T> matrixStorage)
         {
             _gradeIndexScalarDictionary.Add(grade, matrixStorage);
 
@@ -131,7 +131,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public T GetScalar(GradeIndexPairRecord gradeKey)
+        public T GetScalar(RGaGradeKvIndexPairRecord gradeKey)
         {
             var (grade, index1, index2) = gradeKey;
 
@@ -142,7 +142,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public T GetScalar(uint grade, IndexPairRecord index)
+        public T GetScalar(uint grade, RGaKvIndexPairRecord index)
         {
             var (index1, index2) = index;
 
@@ -166,7 +166,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool ContainsIndex(uint grade, IndexPairRecord index)
+        public bool ContainsIndex(uint grade, RGaKvIndexPairRecord index)
         {
             return _gradeIndexScalarDictionary.TryGetValue(grade, out var matrixStorage) &&
                    matrixStorage.ContainsIndex(index);
@@ -179,7 +179,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool TryGetScalar(uint grade, IndexPairRecord index, out T value)
+        public bool TryGetScalar(uint grade, RGaKvIndexPairRecord index, out T value)
         {
             if (_gradeIndexScalarDictionary.TryGetValue(grade, out var matrixStorage))
                 return matrixStorage.TryGetScalar(index, out value);
@@ -215,24 +215,24 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<GradeIndexPairRecord> GetGradeIndexRecords()
+        public IEnumerable<RGaGradeKvIndexPairRecord> GetGradeIndexRecords()
         {
             return _gradeIndexScalarDictionary.SelectMany(pair => 
                 pair.Value.GetIndices().Select(index => 
-                    new GradeIndexPairRecord(pair.Key, index.Index1, index.Index2)
+                    new RGaGradeKvIndexPairRecord(pair.Key, index.KvIndex1, index.KvIndex2)
                 )
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<GradeIndexPairScalarRecord<T>> GetGradeIndexScalarRecords()
+        public IEnumerable<RGaGradeKvIndexPairScalarRecord<T>> GetGradeIndexScalarRecords()
         {
             return _gradeIndexScalarDictionary.SelectMany(pair => 
                 pair.Value.GetIndexScalarRecords().Select(indexValuePair => 
-                    new GradeIndexPairScalarRecord<T>(
+                    new RGaGradeKvIndexPairScalarRecord<T>(
                         pair.Key,
-                        indexValuePair.Index1,
-                        indexValuePair.Index2,
+                        indexValuePair.KvIndex1,
+                        indexValuePair.KvIndex2,
                         indexValuePair.Scalar
                     )
                 )
@@ -402,13 +402,13 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
 
         public ILinMatrixStorage<T> ToMatrixStorage(Func<uint, ulong, ulong> gradeIndexToIndexMapping)
         {
-            var indexValueDictionary = new Dictionary<IndexPairRecord, T>();
+            var indexValueDictionary = new Dictionary<RGaKvIndexPairRecord, T>();
 
             foreach (var (grade, matrixStorage) in _gradeIndexScalarDictionary)
             {
                 foreach (var (index1, index2, value) in matrixStorage.GetIndexScalarRecords())
                     indexValueDictionary.Add(
-                        new IndexPairRecord(
+                        new RGaKvIndexPairRecord(
                             gradeIndexToIndexMapping(grade, index1), 
                             gradeIndexToIndexMapping(grade, index2)
                         ), 
@@ -419,9 +419,9 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
             return indexValueDictionary.CreateLinMatrixStorage();
         }
 
-        public ILinMatrixStorage<T> ToMatrixStorage(Func<uint, ulong, ulong, IndexPairRecord> gradeIndexToIndexMapping)
+        public ILinMatrixStorage<T> ToMatrixStorage(Func<uint, ulong, ulong, RGaKvIndexPairRecord> gradeIndexToIndexMapping)
         {
-            var indexValueDictionary = new Dictionary<IndexPairRecord, T>();
+            var indexValueDictionary = new Dictionary<RGaKvIndexPairRecord, T>();
 
             foreach (var (grade, matrixStorage) in _gradeIndexScalarDictionary)
             foreach (var (index1, index2, scalar) in matrixStorage.GetIndexScalarRecords())
@@ -434,35 +434,35 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<IndexLinVectorStorageRecord<T>> GetRows(uint grade)
+        public IEnumerable<RGaKvIndexLinVectorStorageRecord<T>> GetRows(uint grade)
         {
             return TryGetMatrixStorage(grade, out var matrixStorage) 
                 ? matrixStorage.GetRows() 
-                : Enumerable.Empty<IndexLinVectorStorageRecord<T>>();
+                : Enumerable.Empty<RGaKvIndexLinVectorStorageRecord<T>>();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<GradeIndexLinVectorStorageRecord<T>> GetRows()
+        public IEnumerable<RGaGradeKvIndexLinVectorStorageRecord<T>> GetRows()
         {
             foreach (var (grade, matrixStorage) in _gradeIndexScalarDictionary)
             foreach (var (index, vectorStorage) in matrixStorage.GetRows())
-                yield return new GradeIndexLinVectorStorageRecord<T>(grade, index, vectorStorage);
+                yield return new RGaGradeKvIndexLinVectorStorageRecord<T>(grade, index, vectorStorage);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<IndexLinVectorStorageRecord<T>> GetColumns(uint grade)
+        public IEnumerable<RGaKvIndexLinVectorStorageRecord<T>> GetColumns(uint grade)
         {
             return TryGetMatrixStorage(grade, out var matrixStorage) 
                 ? matrixStorage.GetColumns() 
-                : Enumerable.Empty<IndexLinVectorStorageRecord<T>>();
+                : Enumerable.Empty<RGaKvIndexLinVectorStorageRecord<T>>();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<GradeIndexLinVectorStorageRecord<T>> GetColumns()
+        public IEnumerable<RGaGradeKvIndexLinVectorStorageRecord<T>> GetColumns()
         {
             foreach (var (grade, matrixStorage) in _gradeIndexScalarDictionary)
             foreach (var (index, vectorStorage) in matrixStorage.GetColumns())
-                yield return new GradeIndexLinVectorStorageRecord<T>(grade, index, vectorStorage);
+                yield return new RGaGradeKvIndexLinVectorStorageRecord<T>(grade, index, vectorStorage);
         }
 
         public ILinMatrixGradedStorage<T> GetTranspose()
@@ -504,10 +504,10 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<GradeLinMatrixStorageRecord<T>> GetGradeStorageRecords()
+        public IEnumerable<GaGradeLinMatrixStorageRecord<T>> GetGradeStorageRecords()
         {
             return _gradeIndexScalarDictionary.Select(pair => 
-                new GradeLinMatrixStorageRecord<T>(pair.Key, pair.Value)
+                new GaGradeLinMatrixStorageRecord<T>(pair.Key, pair.Value)
             );
         }
     }

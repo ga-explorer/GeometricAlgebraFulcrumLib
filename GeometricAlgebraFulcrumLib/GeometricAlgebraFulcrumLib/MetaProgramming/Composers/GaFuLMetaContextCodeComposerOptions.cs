@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using CodeComposerLib.SyntaxTree;
 
 namespace GeometricAlgebraFulcrumLib.MetaProgramming.Composers
@@ -46,7 +45,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Composers
         }
 
 
-        public void SetOptions([NotNull] GaFuLMetaContextCodeComposerOptions options)
+        public void SetOptions(GaFuLMetaContextCodeComposerOptions options)
         {
             AllowGenerateComputationComments = options.AllowGenerateComputationComments;
             ActionBeforeGenerateComputations = options.ActionBeforeGenerateComputations;

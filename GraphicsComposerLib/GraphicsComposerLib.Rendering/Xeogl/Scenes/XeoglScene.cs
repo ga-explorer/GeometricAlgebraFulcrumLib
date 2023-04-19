@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using GraphicsComposerLib.Rendering.Colors;
 using GraphicsComposerLib.Rendering.Xeogl.Objects;
-using SixLabors.ImageSharp;
 using TextComposerLib;
 using TextComposerLib.Code.JavaScript;
 

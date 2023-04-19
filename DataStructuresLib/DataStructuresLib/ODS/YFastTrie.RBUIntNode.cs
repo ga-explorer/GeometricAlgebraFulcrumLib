@@ -15,30 +15,30 @@ namespace DataStructuresLib.ODS
 
             internal RbuIntNode(uint key)
             {
-                this.Key = key;
+                Key = key;
             }
 
             internal RbuIntNode(uint key, T value)
             {
-                this.Key = key;
-                this.Value = value;
+                Key = key;
+                Value = value;
             }
 
             public override void SwapValue(RbTree.Node other)
             {
                 var node = (RbuIntNode)other;
                 var tempKey = Key;
-                this.Key = node.Key;
+                Key = node.Key;
                 node.Key = tempKey;
-                var tempValue = this.Value;
-                this.Value = node.Value;
+                var tempValue = Value;
+                Value = node.Value;
                 node.Value = tempValue;
             }
 
             public override bool Equals(object obj)
             {
                 var node = obj as RbuIntNode;
-                return (node != null) && (node.Key == Key) && (object.Equals(node.Value, Value));
+                return (node != null) && (node.Key == Key) && (Equals(node.Value, Value));
             }
 
             public override int GetHashCode()

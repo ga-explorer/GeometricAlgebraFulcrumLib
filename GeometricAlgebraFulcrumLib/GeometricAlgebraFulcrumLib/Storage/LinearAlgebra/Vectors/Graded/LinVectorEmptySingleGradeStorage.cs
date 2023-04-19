@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records.Restricted;
 
 namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
 {
@@ -32,7 +32,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override T GetScalar(GradeIndexRecord gradeKey)
+        public override T GetScalar(RGaGradeKvIndexRecord gradeKey)
         {
             throw new KeyNotFoundException();
         }
@@ -51,15 +51,15 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors.Graded
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override IEnumerable<GradeIndexRecord> GetGradeIndexRecords()
+        public override IEnumerable<RGaGradeKvIndexRecord> GetGradeIndexRecords()
         {
-            return Enumerable.Empty<GradeIndexRecord>();
+            return Enumerable.Empty<RGaGradeKvIndexRecord>();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override IEnumerable<GradeIndexScalarRecord<T>> GetGradeIndexScalarRecords()
+        public override IEnumerable<RGaGradeKvIndexScalarRecord<T>> GetGradeIndexScalarRecords()
         {
-            return Enumerable.Empty<GradeIndexScalarRecord<T>>();
+            return Enumerable.Empty<RGaGradeKvIndexScalarRecord<T>>();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

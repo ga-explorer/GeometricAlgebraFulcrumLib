@@ -1,11 +1,10 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Composers;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Context;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Expressions;
 using GeometricAlgebraFulcrumLib.MetaProgramming.Languages;
-using GeometricAlgebraFulcrumLib.Processors;
-using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
 using TextComposerLib.Text.Parametric;
 
 namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseMultivectorsLib
@@ -13,7 +12,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseMu
     public sealed class GaFuLLibraryComposer :
         GaFuLCodeLibraryComposerBase
     {
-        public static string GenerateCode(uint vSpaceDimensions)
+        public static string GenerateCode(int vSpaceDimensions)
         {
             var codeLibraryComposer = new GaFuLLibraryComposer(vSpaceDimensions);
 
@@ -38,12 +37,12 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseMu
         public override string Description 
             => "C# Dense Multivector code library composer";
 
-        public IGeometricAlgebraProcessor<IMetaExpressionAtomic> GeometricProcessor { get; }
+        public XGaProcessor<IMetaExpressionAtomic> GeometricProcessor { get; }
 
-        public uint VSpaceDimensions { get; }
+        public int VSpaceDimensions { get; }
 
         public ulong GaSpaceDimensions 
-            => 1UL << (int) VSpaceDimensions;
+            => 1UL << VSpaceDimensions;
 
         public string RootNamespace 
             => $"EGA{VSpaceDimensions}D";
@@ -52,14 +51,14 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.CSharp.DenseMu
             => Templates["multivectorClass"];
 
 
-        public GaFuLLibraryComposer(uint vSpaceDimensions) : 
+        public GaFuLLibraryComposer(int vSpaceDimensions) : 
             base(GaFuLLanguageServerBase.CSharpFloat64())
         {
             if (vSpaceDimensions < 2)
                 throw new ArgumentOutOfRangeException(nameof(vSpaceDimensions));
 
             VSpaceDimensions = vSpaceDimensions;
-            GeometricProcessor = new MetaContext().CreateGeometricAlgebraEuclideanProcessor(vSpaceDimensions);
+            GeometricProcessor = new MetaContext().CreateEuclideanXGaProcessor();
         }
 
 
@@ -218,7 +217,7 @@ namespace EGA#vSpaceDimensions#D
         }
 
 
-        private string GetMultivectorBinaryOperationCode(Func<GaMultivector<IMetaExpressionAtomic>, GaMultivector<IMetaExpressionAtomic>, GaMultivector<IMetaExpressionAtomic>> binaryOperationFunc, Func<ulong, string> namingFunc1, Func<ulong, string> namingFunc2, Func<ulong, string> namingFunc3)
+        private string GetMultivectorBinaryOperationCode(Func<XGaMultivector<IMetaExpressionAtomic>, XGaMultivector<IMetaExpressionAtomic>, XGaMultivector<IMetaExpressionAtomic>> binaryOperationFunc, Func<ulong, string> namingFunc1, Func<ulong, string> namingFunc2, Func<ulong, string> namingFunc3)
         {
             var context = new MetaContext(GeometricProcessor);
 

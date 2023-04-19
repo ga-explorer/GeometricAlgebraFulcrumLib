@@ -1,23 +1,22 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
+﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
 
 namespace GeometricAlgebraFulcrumLib.Algebra.FourierAlgebra
 {
     public sealed class VectorFourierCurveTerm<T>
     {
-        public IGeometricAlgebraProcessor<T> GeometricProcessor 
-            => CosVector.GeometricProcessor;
+        public RGaProcessor<T> Processor 
+            => CosVector.Processor;
 
-        public GaVector<T> CosVector { get; private set; }
+        public RGaVector<T> CosVector { get; private set; }
 
-        public GaVector<T> SinVector { get; private set; }
+        public RGaVector<T> SinVector { get; private set; }
 
         public Scalar<T> Frequency { get; }
 
 
-        internal VectorFourierCurveTerm([NotNull] GaVector<T> cosVector, [NotNull] GaVector<T> sinVector, [NotNull] Scalar<T> frequency)
+        internal VectorFourierCurveTerm(RGaVector<T> cosVector, RGaVector<T> sinVector, Scalar<T> frequency)
         {
             CosVector = cosVector;
             SinVector = sinVector;
@@ -25,7 +24,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.FourierAlgebra
         }
 
 
-        public VectorFourierCurveTerm<T> AddVectors([NotNull] GaVector<T> cosVector, [NotNull] GaVector<T> sinVector)
+        public VectorFourierCurveTerm<T> AddVectors(RGaVector<T> cosVector, RGaVector<T> sinVector)
         {
             CosVector += cosVector;
             SinVector += sinVector;
@@ -33,14 +32,14 @@ namespace GeometricAlgebraFulcrumLib.Algebra.FourierAlgebra
             return this;
         }
 
-        public GaVector<T> GetValue(Scalar<T> parameterValue)
+        public RGaVector<T> GetValue(Scalar<T> parameterValue)
         {
             var angle = Frequency * parameterValue;
 
             return CosVector * angle.Cos() + SinVector * angle.Sin();
         }
         
-        public GaVector<T> GetValue(T parameterValue)
+        public RGaVector<T> GetValue(T parameterValue)
         {
             var angle = Frequency * parameterValue;
 

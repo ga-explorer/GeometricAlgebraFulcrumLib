@@ -1,16 +1,13 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Multivectors;
-using GeometricAlgebraFulcrumLib.Algebra.GeometricAlgebra.Rotors;
 using GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.PhCurves;
-using GeometricAlgebraFulcrumLib.Algebra.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.LinearMaps.Rotors;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
 using GeometricAlgebraFulcrumLib.Mathematica;
+using GeometricAlgebraFulcrumLib.Mathematica.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Mathematica.Processors;
-using GeometricAlgebraFulcrumLib.Mathematica.Text;
-using GeometricAlgebraFulcrumLib.Processors;
-using GeometricAlgebraFulcrumLib.Processors.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra;
-using GeometricAlgebraFulcrumLib.Text;
 using Wolfram.NETLink;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Symbolic
@@ -19,23 +16,23 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic
     {
         // This is a pre-defined scalar processor for symbolic
         // Wolfram Mathematica scalars using Expr objects
-        public static ScalarAlgebraMathematicaProcessor ScalarProcessor { get; }
-            = ScalarAlgebraMathematicaProcessor.DefaultProcessor;
+        public static ScalarProcessorExpr ScalarProcessor { get; }
+            = ScalarProcessorExpr.DefaultProcessor;
             
         // Create a 3-dimensional Euclidean geometric algebra processor based on the
         // selected scalar processor
-        public static GeometricAlgebraEuclideanProcessor<Expr> GeometricProcessor { get; } 
-            = ScalarProcessor.CreateGeometricAlgebraEuclideanProcessor(3);
+        public static RGaProcessor<Expr> GeometricProcessor { get; } 
+            = ScalarProcessor.CreateEuclideanRGaProcessor();
 
         // This is a pre-defined text generator for displaying multivectors
         // with symbolic Wolfram Mathematica scalars using Expr objects
-        public static TextMathematicaComposer TextComposer { get; }
-            = TextMathematicaComposer.DefaultComposer;
+        public static TextComposerExpr TextComposer { get; }
+            = TextComposerExpr.DefaultComposer;
 
         // This is a pre-defined LaTeX generator for displaying multivectors
         // with symbolic Wolfram Mathematica scalars using Expr objects
-        public static LaTeXMathematicaComposer LaTeXComposer { get; }
-            = LaTeXMathematicaComposer.DefaultComposer;
+        public static LaTeXComposerExpr LaTeXComposer { get; }
+            = LaTeXComposerExpr.DefaultComposer;
 
 
         public static void Example1()
@@ -44,11 +41,11 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic
             var parameterValue = "t".ToSymbolExpr();
             var processor = GeometricProcessor;
             
-            var sqrt2 = "Sqrt[2]".ToExpr().CreateScalar(GeometricProcessor);
+            var sqrt2 = "Sqrt[2]".ToExpr().CreateScalar(ScalarProcessor);
 
-            //var e1 = GeometricProcessor.CreateVectorBasis(0);
-            var e2 = GeometricProcessor.CreateVectorBasis(1);
-            var e12 = GeometricProcessor.CreateBivectorBasis(0);
+            //var e1 = GeometricProcessor.CreateVector(0);
+            var e2 = GeometricProcessor.CreateVector(1);
+            var e12 = GeometricProcessor.CreateBivector(0);
 
             var p =
                 GeometricProcessor.CreateVector(1, 1);
@@ -58,11 +55,11 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic
                 GeometricProcessor.CreateVector(1, 1).DivideByENorm();
             //GeometricProcessor.CreateVector("Subscript[d, 1]", "Subscript[d, 2]");
 
-            var BasisSet = BernsteinBasisSet<Expr>.Create(processor, 2);
+            var BasisSet = BernsteinBasisSet<Expr>.Create(ScalarProcessor, 2);
             var _basisPairProductSet = BernsteinBasisPairProductSet<Expr>.Create(BasisSet);
             var _basisPairProductIntegralSet = BernsteinBasisPairProductIntegralSet<Expr>.Create(_basisPairProductSet);
 
-            var e1 = processor.CreateVectorBasis(0);
+            var e1 = processor.CreateVector(0);
 
             var ScaledRotor0 = processor.CreateScaledIdentityRotor();
 
@@ -73,10 +70,9 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic
             var dNorm = d.ENorm();
             var dUnit = d / dNorm;
             
-            var ScaledRotor2 = GeometricProcessor.CreateScaledParametricPureRotor3D(
-                e1,
+            var ScaledRotor2 = e1.CreateScaledParametricPureRotor3D(
                 dUnit,
-                processor.ScalarZero,
+                ScalarProcessor.ScalarZero,
                 dNorm
             );
 
@@ -92,10 +88,9 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic
             var v0 = f01_1 / v1;
             var v2 = f12_1 / v1;
             
-            var v = GeometricProcessor.CreateScaledParametricPureRotor3D(
-                e1,
+            var v = e1.CreateScaledParametricPureRotor3D(
                 uUnit,
-                processor.ScalarZero,
+                ScalarProcessor.ScalarZero,
                 uNorm
             ).Multivector;
 
@@ -112,18 +107,18 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic
             var Vector12 = (ScaledRotor1.Multivector.Gp(e1).Gp(ScaledRotor2.MultivectorReverse) + ScaledRotor2.Multivector.Gp(e1).Gp(ScaledRotor1.MultivectorReverse)).GetVectorPart().FullSimplifyScalars();
             var Vector11 = ScaledRotor1.Multivector.Gp(e1).Gp(ScaledRotor1.MultivectorReverse).GetVectorPart().FullSimplifyScalars();
 
-            var Scalar00 = ScaledRotor0.Multivector.ESp(ScaledRotor0.MultivectorReverse).FullSimplify();
-            var Scalar11 = ScaledRotor1.Multivector.ESp(ScaledRotor1.MultivectorReverse).FullSimplify();
-            var Scalar22 = ScaledRotor2.Multivector.ESp(ScaledRotor2.MultivectorReverse).FullSimplify();
+            var Scalar00 = ScaledRotor0.Multivector.ESp(ScaledRotor0.MultivectorReverse).FullSimplifyScalar();
+            var Scalar11 = ScaledRotor1.Multivector.ESp(ScaledRotor1.MultivectorReverse).FullSimplifyScalar();
+            var Scalar22 = ScaledRotor2.Multivector.ESp(ScaledRotor2.MultivectorReverse).FullSimplifyScalar();
 
             var Scalar01 = (ScaledRotor0.Multivector.ESp(ScaledRotor1.MultivectorReverse) +
-                           ScaledRotor1.Multivector.ESp(ScaledRotor0.MultivectorReverse)).FullSimplify();
+                           ScaledRotor1.Multivector.ESp(ScaledRotor0.MultivectorReverse)).FullSimplifyScalar();
 
             var Scalar02 = (ScaledRotor0.Multivector.ESp(ScaledRotor2.MultivectorReverse) +
-                           ScaledRotor2.Multivector.ESp(ScaledRotor0.MultivectorReverse)).FullSimplify();
+                           ScaledRotor2.Multivector.ESp(ScaledRotor0.MultivectorReverse)).FullSimplifyScalar();
 
             var Scalar12 = (ScaledRotor1.Multivector.ESp(ScaledRotor2.MultivectorReverse) +
-                           ScaledRotor2.Multivector.ESp(ScaledRotor1.MultivectorReverse)).FullSimplify();
+                           ScaledRotor2.Multivector.ESp(ScaledRotor1.MultivectorReverse)).FullSimplifyScalar();
 
             Console.WriteLine($@"Vector00 = ${LaTeXComposer.GetMultivectorText(Vector00)}$");
             Console.WriteLine($@"Vector01 = ${LaTeXComposer.GetMultivectorText(Vector01)}$");
@@ -139,7 +134,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic
             Console.WriteLine($@"Scalar12 = ${LaTeXComposer.GetScalarText(Scalar12)}$");
             Console.WriteLine($@"Scalar22 = ${LaTeXComposer.GetScalarText(Scalar22)}$");
 
-            parameterValue = 0.CreateScalar(processor);
+            parameterValue = 0.CreateScalar(ScalarProcessor);
             var f00 = _basisPairProductSet.GetValue(0, 0, parameterValue);
             var f01 = _basisPairProductSet.GetValue(0, 1, parameterValue);
             var f02 = _basisPairProductSet.GetValue(0, 2, parameterValue);
@@ -172,11 +167,11 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic
             var parameterValue = "t".ToSymbolExpr();
             var processor = GeometricProcessor;
             
-            var sqrt2 = "Sqrt[2]".ToExpr().CreateScalar(GeometricProcessor);
+            var sqrt2 = "Sqrt[2]".ToExpr().CreateScalar(ScalarProcessor);
 
-            //var e1 = GeometricProcessor.CreateVectorBasis(0);
-            var e2 = processor.CreateVectorBasis(1);
-            var e12 = processor.CreateBivectorBasis(0);
+            //var e1 = GeometricProcessor.CreateVector(0);
+            var e2 = processor.CreateVector(1);
+            var e12 = processor.CreateBivector(0);
 
             var p =
                 GeometricProcessor.CreateVector(1d, 1d);
@@ -188,11 +183,11 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic
 
             var phCurve = PhCurve2DDegree5Canonical<Expr>.Create(processor, p, d);
 
-            var c0 = phCurve.GetCurvePoint(processor.ScalarZero);
-            var c1 = phCurve.GetCurvePoint(processor.ScalarOne);
+            var c0 = phCurve.GetCurvePoint(ScalarProcessor.ScalarZero);
+            var c1 = phCurve.GetCurvePoint(ScalarProcessor.ScalarOne);
 
-            var cd0 = phCurve.GetHodographPoint(processor.ScalarZero);
-            var cd1 = phCurve.GetHodographPoint(processor.ScalarOne);
+            var cd0 = phCurve.GetHodographPoint(ScalarProcessor.ScalarZero);
+            var cd1 = phCurve.GetHodographPoint(ScalarProcessor.ScalarOne);
 
             Console.WriteLine($@"c0 = ${LaTeXComposer.GetMultivectorText(c0)}$");
             Console.WriteLine($@"c1 = ${LaTeXComposer.GetMultivectorText(c1)}$");
@@ -233,11 +228,11 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic
             var basisPairProductSet = basisSet.CreatePairProductSet();
             var basisPairProductIntegralSet = basisPairProductSet.CreateIntegralSet();
 
-            var sqrt2 = "Sqrt[2]".ToExpr().CreateScalar(GeometricProcessor);
+            var sqrt2 = "Sqrt[2]".ToExpr().CreateScalar(ScalarProcessor);
 
-            var e1 = GeometricProcessor.CreateVectorBasis(0);
-            var e2 = GeometricProcessor.CreateVectorBasis(1);
-            var e12 = GeometricProcessor.CreateBivectorBasis(0);
+            var e1 = GeometricProcessor.CreateVector(0);
+            var e2 = GeometricProcessor.CreateVector(1);
+            var e12 = GeometricProcessor.CreateBivector(0);
 
             var p =
                 GeometricProcessor.CreateVector(1, 1);
@@ -249,7 +244,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic
 
             var d1 = d[0];
             var d2 = d[1];
-            var dNorm1 = d.Norm() + d1;
+            var dNorm1 = (d.Norm() + d1).Scalar;
             var dNorm1Sqrt = dNorm1.Sqrt();
 
             var u = 
@@ -257,23 +252,23 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic
 
             var u1 = u[0];
             var u2 = u[1];
-            var uNorm1 = u.Norm() + u1;
+            var uNorm1 = (u.Norm() + u1).Scalar;
             var uNorm1Sqrt = uNorm1.Sqrt();
 
             var v = (uNorm1Sqrt - u2 / uNorm1Sqrt * e12) / sqrt2;
             //var v0 = GeometricProcessor.SqrtRational(3, 40);
-            var v1 = GeometricProcessor.SqrtRational(2, 10);
+            var v1 = ScalarProcessor.SqrtRational(2, 10);
             //var v2 = GeometricProcessor.SqrtRational(3, 40);
 
-            var value3by4 = GeometricProcessor.Rational(3, 4);
+            var value3by4 = ScalarProcessor.Rational(3, 4);
             var a2 = (dNorm1Sqrt - d2 / dNorm1Sqrt * e12) / sqrt2;
             var a1 = v / v1 - value3by4 - value3by4 * a2;
 
             var vector00 = e1;
-            var vector01 = 2 * a1 * e1;
+            var vector01 = 2 * a1.Gp(e1);
             var vector02 = sqrt2 * (dNorm1Sqrt * e1 + d2 / dNorm1Sqrt * e2);
-            var vector11 = a1 * a2 * e1;
-            var vector12 = 2 * a1 * a2 * e1;
+            var vector11 = a1.Gp(a2).Gp(e1);
+            var vector12 = 2 * a1.Gp(a2).Gp(e1);
             var vector22 = d;
             
             var fd00 = basisPairProductSet.GetValue(0, 0, t);

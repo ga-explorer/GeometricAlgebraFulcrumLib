@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records.Restricted;
 using GeometricAlgebraFulcrumLib.Utilities.Structures.Records;
 
 namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
@@ -10,27 +11,27 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
     {
         IEnumerable<ILinMatrixStorage<T>> GetMatrixStorages();
 
-        IEnumerable<GradeLinMatrixStorageRecord<T>> GetGradeStorageRecords();
+        IEnumerable<GaGradeLinMatrixStorageRecord<T>> GetGradeStorageRecords();
 
-        IEnumerable<GradeIndexPairRecord> GetGradeIndexRecords();
+        IEnumerable<RGaGradeKvIndexPairRecord> GetGradeIndexRecords();
 
-        IEnumerable<GradeIndexPairScalarRecord<T>> GetGradeIndexScalarRecords();
+        IEnumerable<RGaGradeKvIndexPairScalarRecord<T>> GetGradeIndexScalarRecords();
 
         ILinMatrixStorage<T> GetMatrixStorage(uint grade);
 
         T GetScalar(uint grade, ulong index1, ulong index2);
 
-        T GetScalar(GradeIndexPairRecord gradeIndex);
+        T GetScalar(RGaGradeKvIndexPairRecord gradeIndex);
 
-        T GetScalar(uint grade, IndexPairRecord index);
+        T GetScalar(uint grade, RGaKvIndexPairRecord index);
         
         bool ContainsIndex(uint grade, ulong index1, ulong index2);
         
-        bool ContainsIndex(uint grade, IndexPairRecord index);
+        bool ContainsIndex(uint grade, RGaKvIndexPairRecord index);
 
         bool TryGetMatrixStorage(uint grade, out ILinMatrixStorage<T> matrixStorage);
 
-        bool TryGetScalar(uint grade, IndexPairRecord index, out T scalar);
+        bool TryGetScalar(uint grade, RGaKvIndexPairRecord index, out T scalar);
 
         bool TryGetScalar(uint grade, ulong index1, ulong index2, out T scalar);
 
@@ -60,15 +61,15 @@ namespace GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices.Graded
 
         ILinMatrixStorage<T> ToMatrixStorage(Func<uint, ulong, ulong> gradeIndexToIndexMapping);
 
-        ILinMatrixStorage<T> ToMatrixStorage(Func<uint, ulong, ulong, IndexPairRecord> gradeIndexToIndexMapping);
+        ILinMatrixStorage<T> ToMatrixStorage(Func<uint, ulong, ulong, RGaKvIndexPairRecord> gradeIndexToIndexMapping);
 
-        IEnumerable<IndexLinVectorStorageRecord<T>> GetRows(uint grade);
+        IEnumerable<RGaKvIndexLinVectorStorageRecord<T>> GetRows(uint grade);
 
-        IEnumerable<GradeIndexLinVectorStorageRecord<T>> GetRows();
+        IEnumerable<RGaGradeKvIndexLinVectorStorageRecord<T>> GetRows();
 
-        IEnumerable<IndexLinVectorStorageRecord<T>> GetColumns(uint grade);
+        IEnumerable<RGaKvIndexLinVectorStorageRecord<T>> GetColumns(uint grade);
 
-        IEnumerable<GradeIndexLinVectorStorageRecord<T>> GetColumns();
+        IEnumerable<RGaGradeKvIndexLinVectorStorageRecord<T>> GetColumns();
 
         ILinMatrixGradedStorage<T> GetTranspose();
     }
