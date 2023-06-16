@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
-using GeometricAlgebraFulcrumLib.MathBase.BasicShapes;
-using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Lines;
-using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Lines.Immutable;
-using GeometricAlgebraFulcrumLib.MathBase.Borders;
-using GeometricAlgebraFulcrumLib.MathBase.Borders.Space2D;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 using NumericalGeometryLib.Accelerators.BIH;
 using NumericalGeometryLib.Accelerators.BIH.Space2D;
 using NumericalGeometryLib.Accelerators.BIH.Space2D.Traversal;
@@ -76,7 +76,7 @@ namespace NumericalGeometryLib.Computers.Intersections
             if (tyMin > txMin) txMin = tyMin;
             if (tyMax < txMax) txMax = tyMax;
 
-            return Tuple.Create(true, txMin, txMax);
+            return new Tuple<bool, double, double>(true, txMin, txMax);
         }
 
 
@@ -993,13 +993,11 @@ namespace NumericalGeometryLib.Computers.Intersections
 
                     hasIntersection = true;
 
-                    if (lineTraverser.LineParameterLimits.MaxValue > result.Item2)
+                    if (lineTraverser.LineParameterRange.MaxValue > result.Item2)
                     {
                         hitLineSegment = lineSegment;
 
-                        lineTraverser
-                            .LineParameterLimits
-                            .RestrictMaxValue(result.Item2);
+                        lineTraverser.ResetMaxParameterValue(result.Item2);
                     }
                 }
             }
@@ -1010,7 +1008,7 @@ namespace NumericalGeometryLib.Computers.Intersections
 
             return new Tuple<bool, double, ILineSegment2D>(
                 hasIntersection,
-                lineTraverser.LineParameterLimits.MaxValue,
+                lineTraverser.LineParameterRange.MaxValue,
                 hitLineSegment
             );
         }
@@ -1054,13 +1052,11 @@ namespace NumericalGeometryLib.Computers.Intersections
 
                     hasIntersection = true;
 
-                    if (lineTraverser.LineParameterLimits.MinValue < result.Item2)
+                    if (lineTraverser.LineParameterRange.MinValue < result.Item2)
                     {
                         hitLineSegment = lineSegment;
 
-                        lineTraverser
-                            .LineParameterLimits
-                            .RestrictMinValue(result.Item2);
+                        lineTraverser.ResetMinParameterValue(result.Item2);
                     }
                 }
             }
@@ -1071,7 +1067,7 @@ namespace NumericalGeometryLib.Computers.Intersections
 
             return new Tuple<bool, double, ILineSegment2D>(
                 hasIntersection,
-                lineTraverser.LineParameterLimits.MinValue,
+                lineTraverser.LineParameterRange.MinValue,
                 hitLineSegment
             );
         }

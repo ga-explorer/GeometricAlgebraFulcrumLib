@@ -4,16 +4,16 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using DataStructuresLib.Random;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Lines;
+using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Lines.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Borders;
+using GeometricAlgebraFulcrumLib.MathBase.Borders.Space2D.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Random;
 using GraphicsComposerLib.Rendering.Svg.DrawingBoard;
 using NumericalGeometryLib.Accelerators.Grids;
 using NumericalGeometryLib.Accelerators.Grids.Space2D;
-using NumericalGeometryLib.BasicMath.Tuples;
-using NumericalGeometryLib.BasicShapes.Lines;
-using NumericalGeometryLib.BasicShapes.Lines.Immutable;
-using NumericalGeometryLib.Borders;
-using NumericalGeometryLib.Borders.Space2D.Immutable;
 using NumericalGeometryLib.Computers.Intersections;
-using NumericalGeometryLib.Random;
 using SixLabors.ImageSharp;
 
 namespace GraphicsComposerLib.Samples.Accelerators
@@ -125,7 +125,7 @@ namespace GraphicsComposerLib.Samples.Accelerators
             {
                 var line = lineData.Item1;
                 var pointsList = 
-                    line.GetPointsAt(lineData.Item2).Cast<ITuple2D>();
+                    line.GetPointsAt(lineData.Item2).Cast<IFloat64Tuple2D>();
 
                 db1
                     .ActiveLayer

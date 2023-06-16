@@ -24,15 +24,9 @@ namespace NumericalGeometryLib.Collections.Finite.Natural
             new SortedDictionary<int, T>();
 
 
-        public bool IsReadOnly
-        {
-            get { return false; }
-        }
+        public bool IsReadOnly => false;
 
-        public override int Count
-        {
-            get { return BaseCollection.Count; }
-        }
+        public override int Count => BaseCollection.Count;
 
         public FiniteCollection<T> BaseCollection { get; private set; }
 
@@ -56,15 +50,9 @@ namespace NumericalGeometryLib.Collections.Finite.Natural
             }
         }
 
-        public ICollection<int> Keys
-        {
-            get { return _itemsDictionary.Keys; }
-        }
+        public ICollection<int> Keys => _itemsDictionary.Keys;
 
-        public ICollection<T> Values
-        {
-            get { return _itemsDictionary.Values; }
-        }
+        public ICollection<T> Values => _itemsDictionary.Values;
 
 
         private NfcSparse(FiniteCollection<T> baseCollection)

@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <Platforms>AnyCPU;x64</Platforms>
@@ -11,7 +11,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\CodeComposerLib\CodeComposerLib\CodeComposerLib.csproj" />
     <ProjectReference Include="..\..\DataStructuresLib\DataStructuresLib\DataStructuresLib.csproj" />
-    <ProjectReference Include="..\..\GraphicsComposerLib\GraphicsComposerLib.Geometry\GraphicsComposerLib.Geometry.csproj" />
     <ProjectReference Include="..\..\GraphicsComposerLib\GraphicsComposerLib.Rendering\GraphicsComposerLib.Rendering.csproj" />
     <ProjectReference Include="..\..\NumericalGeometryLib\NumericalGeometryLib\NumericalGeometryLib.csproj" />
     <ProjectReference Include="..\..\TextComposerLib\TextComposerLib\TextComposerLib.csproj" />
@@ -27,9 +26,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Selenium.Support" Version="4.8.2" />
-    <PackageReference Include="Selenium.WebDriver" Version="4.8.2" />
-    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="111.0.5563.6400" />
+    <PackageReference Include="CSharpMath" Version="0.5.1" />
+    <PackageReference Include="CSharpMath.Rendering" Version="0.5.1" />
+    <PackageReference Include="CSharpMath.SkiaSharp" Version="0.5.1" />
+    <PackageReference Include="NGraphics" Version="0.5.0" />
+    <PackageReference Include="Selenium.Support" Version="4.10.0" />
+    <PackageReference Include="Selenium.WebDriver" Version="4.10.0" />
+    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="114.0.5735.9000" />
+    <PackageReference Include="Svg.Model" Version="0.5.18" />
+    <PackageReference Include="Svg.Skia" Version="0.5.18" />
   </ItemGroup>
 
 </Project>

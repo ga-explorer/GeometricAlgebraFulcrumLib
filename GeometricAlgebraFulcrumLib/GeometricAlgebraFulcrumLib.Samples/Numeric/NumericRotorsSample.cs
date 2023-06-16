@@ -1,5 +1,4 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.LinearMaps.Outermorphisms;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.LinearMaps.Rotors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Multivectors;
@@ -9,6 +8,7 @@ using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Fram
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Processors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Numeric
 {

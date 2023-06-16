@@ -3,16 +3,16 @@
 using System.IO;
 using System.Linq;
 using DataStructuresLib;
-using NumericalGeometryLib.BasicMath;
-using NumericalGeometryLib.BasicMath.Tuples;
-using NumericalGeometryLib.BasicMath.Tuples.Immutable;
-using NumericalGeometryLib.BasicShapes.Triangles.Immutable;
-using NumericalGeometryLib.Borders.Space2D.Immutable;
-using GraphicsComposerLib.Geometry.ParametricShapes.Surfaces;
-using GraphicsComposerLib.Geometry.ParametricShapes.Surfaces.Sampled;
-using GraphicsComposerLib.Geometry.Primitives;
-using GraphicsComposerLib.Geometry.Primitives.Lines;
-using GraphicsComposerLib.Geometry.Primitives.Triangles;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Triangles.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Borders.Space2D.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives;
+using GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Lines;
+using GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Triangles;
+using GeometricAlgebraFulcrumLib.MathBase.Parametric.Space3D.Surfaces;
+using GeometricAlgebraFulcrumLib.MathBase.Parametric.Space3D.Surfaces.Sampled;
 using GraphicsComposerLib.Rendering.Svg.DrawingBoard;
 using GraphicsComposerLib.Rendering.Xeogl;
 using SixLabors.ImageSharp;
@@ -69,7 +69,7 @@ namespace GraphicsComposerLib.Samples.Geometry.ParametricShapes
             {
                 var edgePoints = 
                     leafNode.Edge1X.Select(f => 
-                        (ITuple2D) new Tuple2D(
+                        (IFloat64Tuple2D) new Float64Tuple2D(
                             f.GridIndex.Item1 * gridSegmentLength,
                             f.GridIndex.Item2 * gridSegmentLength
                         )
@@ -103,17 +103,17 @@ namespace GraphicsComposerLib.Samples.Geometry.ParametricShapes
                 var gridIndex2 = surfaceTree.GetCorner(i2).GridIndex;
                 var gridIndex3 = surfaceTree.GetCorner(i3).GridIndex;
 
-                var p1 = new Tuple2D(
+                var p1 = new Float64Tuple2D(
                     gridIndex1.Item1 * gridSegmentLength,
                     gridIndex1.Item2 * gridSegmentLength
                 );
 
-                var p2 = new Tuple2D(
+                var p2 = new Float64Tuple2D(
                     gridIndex2.Item1 * gridSegmentLength,
                     gridIndex2.Item2 * gridSegmentLength
                 );
 
-                var p3 = new Tuple2D(
+                var p3 = new Float64Tuple2D(
                     gridIndex3.Item1 * gridSegmentLength,
                     gridIndex3.Item2 * gridSegmentLength
                 );
@@ -204,7 +204,7 @@ namespace GraphicsComposerLib.Samples.Geometry.ParametricShapes
                     .CreateSampledSurface3D(parameterValueRange, options);
 
             //var sampledSurface =
-            //    new Tuple3D(1, 1, 1)
+            //    new Float64Tuple3D(1, 1, 1)
             //        .ToUnitVector()
             //        .CreateCircle3D(10d)
             //        .CreateTube3D(2d)

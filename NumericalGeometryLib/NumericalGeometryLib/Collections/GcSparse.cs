@@ -33,20 +33,14 @@ namespace NumericalGeometryLib.Collections
             new SortedDictionary<int, T>();
 
 
-        public bool IsReadOnly
-        {
-            get { return false; }
-        }
+        public bool IsReadOnly => false;
 
         /// <summary>
         /// The base collection holding default values for this sparse collection
         /// </summary>
         public GenerativeCollection<T> BaseCollection { get; set; }
 
-        public int Count
-        {
-            get { return _itemsDictionary.Count; }
-        }
+        public int Count => _itemsDictionary.Count;
 
         /// <summary>
         /// Get or set an element in this sparse collection
@@ -73,15 +67,9 @@ namespace NumericalGeometryLib.Collections
             }
         }
 
-        public ICollection<int> Keys
-        {
-            get { return _itemsDictionary.Keys; }
-        }
+        public ICollection<int> Keys => _itemsDictionary.Keys;
 
-        public ICollection<T> Values
-        {
-            get { return _itemsDictionary.Values; }
-        }
+        public ICollection<T> Values => _itemsDictionary.Values;
 
 
         private GcSparse(GenerativeCollection<T> baseCollection)

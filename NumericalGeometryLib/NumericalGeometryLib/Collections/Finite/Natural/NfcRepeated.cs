@@ -16,15 +16,9 @@
 
         public int RepeatCount { get; private set; }
 
-        public override int Count
-        {
-            get { return RepeatCount * BaseCollection.Count; }
-        }
+        public override int Count => RepeatCount * BaseCollection.Count;
 
-        public T this[int index]
-        {
-            get { return BaseCollection.GetItem(BaseCollection.MinIndex + index % BaseCollection.Count); }
-        }
+        public T this[int index] => BaseCollection.GetItem(BaseCollection.MinIndex + index % BaseCollection.Count);
 
 
         private NfcRepeated(int repeatCount, FiniteCollection<T> baseCollection)

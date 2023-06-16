@@ -1,5 +1,4 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Arrays.Generic;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.LinearMaps;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.LinearMaps.Rotors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
@@ -7,6 +6,7 @@ using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Mult
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic.LinearMaps;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic.Matrices;
 using GeometricAlgebraFulcrumLib.Mathematica;
 using GeometricAlgebraFulcrumLib.Mathematica.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Mathematica.Mathematica.ExprFactory;

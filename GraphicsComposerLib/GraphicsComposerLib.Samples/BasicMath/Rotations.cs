@@ -1,8 +1,8 @@
 ﻿using System;
-using NumericalGeometryLib.BasicMath;
-using NumericalGeometryLib.BasicMath.Constants;
-using NumericalGeometryLib.BasicMath.Matrices;
-using NumericalGeometryLib.BasicMath.Tuples.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Constants;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Matrices;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
 
 namespace GraphicsComposerLib.Samples.BasicMath
 {
@@ -22,7 +22,7 @@ namespace GraphicsComposerLib.Samples.BasicMath
 
             var vectorsArray = new []
             {
-                new Tuple3D(1, 2, 3).ToUnitVector()
+                new Float64Tuple3D(1, 2, 3).ToUnitVector()
             };
 
             foreach (var vector in vectorsArray)

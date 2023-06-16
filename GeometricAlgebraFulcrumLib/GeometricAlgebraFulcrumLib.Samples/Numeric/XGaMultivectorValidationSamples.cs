@@ -6,7 +6,6 @@ using System.Linq;
 using DataStructuresLib.BitManipulation;
 using DataStructuresLib.Combinations;
 using DataStructuresLib.IndexSets;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Converters.Float64;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Basis;
@@ -18,6 +17,7 @@ using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Basis;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Numeric
 {

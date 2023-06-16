@@ -1,30 +1,32 @@
 ﻿using System.Collections.Immutable;
 using DataStructuresLib.Files;
 using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
-using GeometricAlgebraFulcrumLib.MathBase.Borders.Space1D.Immutable;
-using GeometricAlgebraFulcrumLib.MathBase.Parametric.Curves;
-using GeometricAlgebraFulcrumLib.MathBase.Parametric.Curves.Roulettes;
-using GeometricAlgebraFulcrumLib.MathBase.Parametric.Curves.Sampled;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Curves;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Curves.Adaptive;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Curves.Roulettes;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 using GraphicsComposerLib.Rendering.BabylonJs;
 using GraphicsComposerLib.Rendering.BabylonJs.Constants;
 using GraphicsComposerLib.Rendering.BabylonJs.GUI;
-using GraphicsComposerLib.Rendering.Colors;
-using GraphicsComposerLib.Rendering.Visuals.Space3D.Groups;
+using GraphicsComposerLib.Rendering.Visuals.Space3D.Animations;
+using GraphicsComposerLib.Rendering.Visuals.Space3D.Basic;
+using GraphicsComposerLib.Rendering.Visuals.Space3D.Styles;
 using SixLabors.ImageSharp;
+using WebComposerLib.Colors;
 
 namespace GeometricAlgebraFulcrumLib.Applications.Graphics
 {
     public class RouletteTracerVisualizer3D :
         GrBabylonJsSnapshotComposer3D
     {
-        public sealed record GeneratorPoint(Float64Tuple3D Point, Color PointColor);
+        public sealed record GeneratorPoint(Float64Vector3D Point, Color PointColor);
 
     
-        public IArcLengthC1Curve3D FixedCurve { get; }
+        public IArcLengthCurve3D FixedCurve { get; }
 
-        public IArcLengthC1Curve3D MovingCurve { get; }
+        public IArcLengthCurve3D MovingCurve { get; }
     
         public IReadOnlyList<GeneratorPoint> GeneratorPointList { get; }
     
@@ -38,13 +40,13 @@ namespace GeometricAlgebraFulcrumLib.Applications.Graphics
         public IReadOnlyList<RouletteCurve3D> RouletteCurveList 
             => _rouletteCurveList;
 
-        private readonly List<SampledParametricCurve3D> _sampledCurveList = new List<SampledParametricCurve3D>();
-        public IReadOnlyList<SampledParametricCurve3D> SampledCurveList 
+        private readonly List<AdaptiveCurve3D> _sampledCurveList = new List<AdaptiveCurve3D>();
+        public IReadOnlyList<AdaptiveCurve3D> SampledCurveList 
             => _sampledCurveList;
 
 
 
-        public RouletteTracerVisualizer3D(IReadOnlyList<double> cameraAlphaValues, IReadOnlyList<double> cameraBetaValues, IArcLengthC1Curve3D fixedCurve, IArcLengthC1Curve3D movingCurve, IReadOnlyList<GeneratorPoint> generatorPointList, double rouletteDistance, int fixedCurveFrameCount, int movingCurveFrameCount)
+        public RouletteTracerVisualizer3D(IReadOnlyList<double> cameraAlphaValues, IReadOnlyList<double> cameraBetaValues, IArcLengthCurve3D fixedCurve, IArcLengthCurve3D movingCurve, IReadOnlyList<GeneratorPoint> generatorPointList, double rouletteDistance, int fixedCurveFrameCount, int movingCurveFrameCount)
             : base(cameraAlphaValues, cameraBetaValues)
         {
             FixedCurve = fixedCurve;
@@ -62,9 +64,9 @@ namespace GeometricAlgebraFulcrumLib.Applications.Graphics
 
             _sampledCurveList.AddRange(
                 _rouletteCurveList.Select(curve =>
-                    curve.CreateSampledCurve3D(
-                        BoundingBox1D.Create(0, rouletteDistance),
-                        new SampledParametricCurveTreeOptions3D(3.DegreesToAngle(), 3, 16)
+                    curve.CreateAdaptiveCurve3D(
+                        Float64Range1D.Create(0, rouletteDistance),
+                        new AdaptiveCurveSamplingOptions3D(3.DegreesToAngle(), 3, 16)
                     )
                 )
             );
@@ -149,7 +151,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.Graphics
 
                 uiTexture.AddGuiImage(
                     "copyrightImage",
-                    copyrightImage.GetBase64HtmlString(),
+                    copyrightImage.GetUrl(),
                     new GrBabylonJsGuiImage.GuiImageProperties
                     {
                         Stretch = GrBabylonJsImageStretch.Uniform,
@@ -167,8 +169,8 @@ namespace GeometricAlgebraFulcrumLib.Applications.Graphics
 
         private void AddFixedCurve()
         {
-            var tMin = FixedCurve.ParameterValueMin;
-            var tMax = FixedCurve.ParameterValueMax;
+            var (tMin, tMax) = 
+                FixedCurve.ParameterRange;
 
             var tValues =
                 tMin.GetLinearRange(tMax, 501, false).ToImmutableArray();
@@ -206,8 +208,8 @@ namespace GeometricAlgebraFulcrumLib.Applications.Graphics
 
         private void AddMovingCurve(int index)
         {
-            var tMin = MovingCurve.ParameterValueMin;
-            var tMax = MovingCurve.ParameterValueMax;
+            var (tMin, tMax) = 
+                MovingCurve.ParameterRange;
 
             var tValues =
                 tMin.GetLinearRange(tMax, 501, false).ToImmutableArray();
@@ -232,24 +234,36 @@ namespace GeometricAlgebraFulcrumLib.Applications.Graphics
 
             var frame = FixedCurve.GetFrame(FixedCurve.LengthToParameter(t));
             MainSceneComposer.AddElement(
-                new GrVisualFrame3D("frame")
-                {
-                    Origin = frame.Point,
-
-                    Direction1 = frame.Tangent,
-                    Direction2 = frame.Normal1,
-                    Direction3 = frame.Normal2,
-
-                    Style = new GrVisualFrameStyle3D
+                GrVisualFrame3D.Create(
+                    "frame",
+                    new GrVisualFrameStyle3D
                     {
-                        OriginThickness = 0.075,
-                        DirectionThickness = 0.035,
-                        OriginMaterial = scene.AddSimpleMaterial("frameOrigin", Color.Gray),
-                        DirectionMaterial1 = scene.AddSimpleMaterial("frameTangent", Color.DarkRed),
-                        DirectionMaterial2 = scene.AddSimpleMaterial("frameNormal1", Color.DarkGreen),
-                        DirectionMaterial3 = scene.AddSimpleMaterial("frameNormal2", Color.DarkBlue)
-                    }
-                }
+                        OriginStyle = 
+                            scene
+                                .AddSimpleMaterial("frameOrigin", Color.Gray)
+                                .CreateThickSurfaceStyle(0.075),
+
+                        Direction1Style = 
+                            scene
+                                .AddSimpleMaterial("frameTangent", Color.DarkRed)
+                                .CreateTubeCurveStyle(0.035),
+
+                        Direction2Style = 
+                            scene
+                                .AddSimpleMaterial("frameNormal1", Color.DarkGreen)
+                                .CreateTubeCurveStyle(0.035),
+
+                        Direction3Style = 
+                            scene
+                                .AddSimpleMaterial("frameNormal2", Color.DarkBlue)
+                                .CreateTubeCurveStyle(0.035)
+                    },
+                    frame.Point,
+                    frame.Tangent,
+                    frame.Normal1,
+                    frame.Normal2,
+                    GrVisualAnimationSpecs.Static
+                )
             );
         }
 

@@ -13,8 +13,6 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
         public sealed class DashedLinesOptions :
             GrBabylonJsObjectOptions
         {
-            //instance?: Nullable<LinesMesh>;
-    
             public GrBabylonJsVector3ArrayValue? Points { get; set; }
     
             public GrBabylonJsMaterialValue? Material { get; set; }
@@ -26,6 +24,8 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
             public GrBabylonJsInt32Value? DashNumber { get; set; }
 
             public GrBabylonJsBooleanValue? UseVertexAlpha { get; set; }
+            
+            public GrBabylonJsLinesMeshValue? Instance { get; set; }
 
             public GrBabylonJsBooleanValue? Updateable { get; set; }
 
@@ -33,12 +33,13 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
             protected override IEnumerable<Pair<string>?> GetNameValuePairs()
             {
                 yield return Points.GetNameValueCodePair("points");
+                yield return Instance.GetNameValueCodePair("instance");
                 yield return Material.GetNameValueCodePair("material");
                 yield return DashSize.GetNameValueCodePair("dashSize");
                 yield return GapSize.GetNameValueCodePair("gapSize");
                 yield return DashNumber.GetNameValueCodePair("dashNb");
                 yield return UseVertexAlpha.GetNameValueCodePair("useVertexAlpha");
-                yield return Updateable.GetNameValueCodePair("updateable");
+                yield return Updateable.GetNameValueCodePair("updatable");
             }
         }
 

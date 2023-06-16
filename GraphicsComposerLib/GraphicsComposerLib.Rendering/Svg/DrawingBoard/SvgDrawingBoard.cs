@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using DataStructuresLib.Basic;
 using DataStructuresLib.Extensions;
-using GeometricAlgebraFulcrumLib.MathBase.Borders;
-using GeometricAlgebraFulcrumLib.MathBase.Borders.Space2D;
-using GeometricAlgebraFulcrumLib.MathBase.Borders.Space2D.Immutable;
-using GraphicsComposerLib.Rendering.Svg.Elements.Containers;
-using GraphicsComposerLib.Rendering.Svg.Elements.Shape;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D.Immutable;
+using WebComposerLib.Html.Media;
+using WebComposerLib.Svg;
+using WebComposerLib.Svg.Elements.Containers;
+using WebComposerLib.Svg.Elements.Shape;
 
 namespace GraphicsComposerLib.Rendering.Svg.DrawingBoard
 {
@@ -20,8 +22,8 @@ namespace GraphicsComposerLib.Rendering.Svg.DrawingBoard
         {
             return new SvgDrawingBoard(pixelsWidth, pixelsHeight)
                 .SetViewBox(
-                    0, 
-                    0, 
+                    0,
+                    0,
                     viewBoxWidth
                 );
         }
@@ -30,8 +32,8 @@ namespace GraphicsComposerLib.Rendering.Svg.DrawingBoard
         {
             return new SvgDrawingBoard(pixelsWidth, pixelsHeight)
                 .SetViewBox(
-                    viewBoxMidX, 
-                    viewBoxMidY, 
+                    viewBoxMidX,
+                    viewBoxMidY,
                     viewBoxWidth
                 );
         }
@@ -44,8 +46,8 @@ namespace GraphicsComposerLib.Rendering.Svg.DrawingBoard
 
             return new SvgDrawingBoard(pixelsWidth, pixelsHeight)
                 .SetViewBox(
-                    midPoint.X, 
-                    midPoint.Y, 
+                    midPoint.X,
+                    midPoint.Y,
                     viewBox.GetLengthX()
                 );
         }
@@ -66,7 +68,7 @@ namespace GraphicsComposerLib.Rendering.Svg.DrawingBoard
         public IEnumerable<SvgDrawingBoardLayer> Layers
             => _layersList;
 
-        public int Count 
+        public int Count
             => _layersList.Count;
 
         public SvgDrawingBoardLayer this[int layerIndex]
@@ -90,10 +92,10 @@ namespace GraphicsComposerLib.Rendering.Svg.DrawingBoard
 
         public bool DrawBackgroundRect { get; set; } = true;
 
-        public Color BackgroundRectColor { get; set; } 
+        public Color BackgroundRectColor { get; set; }
             = Color.BlanchedAlmond;
 
-        public int BackgroundRectBorderWidth { get; set; } 
+        public int BackgroundRectBorderWidth { get; set; }
             = 2;
 
 
@@ -254,19 +256,19 @@ namespace GraphicsComposerLib.Rendering.Svg.DrawingBoard
         {
             var svgElement = GetSvgElement();
 
-            var composer = new SvgComposer();
+            var composer = new WclSvgComposer();
 
             composer.AppendSvgFileHeader();
             composer.AppendTag(svgElement);
 
             return composer.ToString();
         }
-        
+
         /// <summary>
-                 /// Clear all contents of white board without changing its current
-                 /// properties
-                 /// </summary>
-                 /// <returns></returns>
+        /// Clear all contents of white board without changing its current
+        /// properties
+        /// </summary>
+        /// <returns></returns>
         public SvgDrawingBoard Clear()
         {
             return ClearLayers();
@@ -329,7 +331,7 @@ namespace GraphicsComposerLib.Rendering.Svg.DrawingBoard
 
             return this;
         }
-        
+
         public bool IsPointVisible(double x, double y)
         {
             return ViewBoxMinX <= x && x <= ViewBoxMaxX &&
@@ -339,9 +341,9 @@ namespace GraphicsComposerLib.Rendering.Svg.DrawingBoard
         public BoundingBox2D GetViewBox()
         {
             return BoundingBox2D.Create(
-                ViewBoxMinX, 
-                ViewBoxMinY, 
-                ViewBoxMaxX, 
+                ViewBoxMinX,
+                ViewBoxMinY,
+                ViewBoxMaxX,
                 ViewBoxMaxY
             );
         }
@@ -580,7 +582,7 @@ namespace GraphicsComposerLib.Rendering.Svg.DrawingBoard
         public SvgDrawingBoard SwapLayers(int layerIndex1, int layerIndex2)
         {
             _layersList.SwapItems(
-                layerIndex1.Mod(_layersList.Count), 
+                layerIndex1.Mod(_layersList.Count),
                 layerIndex2.Mod(_layersList.Count)
             );
 

@@ -1,7 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Matrices;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space2D
 {
@@ -9,37 +8,40 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space2D
         IAffineMap2D
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public SquareMatrix3 ToSquareMatrix3()
+        public SquareMatrix3 GetSquareMatrix3()
         {
             return SquareMatrix3.CreateIdentityMatrix();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public double[,] ToArray2D()
+        public double[,] GetArray2D()
         {
             throw new NotImplementedException();
         }
 
+        public bool SwapsHandedness 
+            => false;
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Float64Tuple2D MapPoint(IFloat64Tuple2D point)
+        public Float64Vector2D MapPoint(IFloat64Tuple2D point)
         {
-            return point.ToTuple2D();
+            return point.ToLinVector2D();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Float64Tuple2D MapVector(IFloat64Tuple2D vector)
+        public Float64Vector2D MapVector(IFloat64Tuple2D vector)
         {
-            return vector.ToTuple2D();
+            return vector.ToLinVector2D();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Float64Tuple2D MapNormal(IFloat64Tuple2D normal)
+        public Float64Vector2D MapNormal(IFloat64Tuple2D normal)
         {
-            return normal.ToTuple2D();
+            return normal.ToLinVector2D();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IAffineMap2D InverseMap()
+        public IAffineMap2D GetInverseAffineMap()
         {
             return this;
         }

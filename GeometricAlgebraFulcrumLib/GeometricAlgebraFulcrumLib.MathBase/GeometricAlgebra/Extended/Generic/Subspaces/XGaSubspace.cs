@@ -1,9 +1,9 @@
 ﻿using System.Runtime.CompilerServices;
 using DataStructuresLib.BitManipulation;
 using GeometricAlgebraFulcrumLib.MathBase.BasicMath;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Subspaces
 {

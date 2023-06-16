@@ -1,17 +1,16 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Frames.Space3D;
 using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Matrices;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Frames.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps
 {
     public static class AffineMapUtils
     {
-        private static Tuple<Float64Tuple3D, Float64Tuple3D> MapPoint(this SquareMatrix4 mapMatrix, Float64Tuple3D point, Float64Tuple3D ptError)
+        private static Tuple<Float64Vector3D, Float64Vector3D> MapPoint(this SquareMatrix4 mapMatrix, Float64Vector3D point, Float64Vector3D ptError)
         {
             //TODO: Study techniques in book "Computer-Aided Geometric Design - A Totally Four-Dimensional Approach 2002"
             //and section Section 3.9 on managing rounding errors in PBRT book
@@ -49,28 +48,28 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps
 
             if (wp == 1.0d)
                 return Tuple.Create(
-                    new Float64Tuple3D(xp, yp, zp),
-                    new Float64Tuple3D(absErrorX, absErrorY, absErrorZ)
+                    Float64Vector3D.Create(xp, yp, zp),
+                    Float64Vector3D.Create(absErrorX, absErrorY, absErrorZ)
                 );
             else
             {
                 var s = 1.0d / wp;
 
                 return Tuple.Create(
-                    new Float64Tuple3D(xp * s, yp * s, zp * s),
-                    new Float64Tuple3D(absErrorX, absErrorY, absErrorZ)
+                    Float64Vector3D.Create(xp * s, yp * s, zp * s),
+                    Float64Vector3D.Create(absErrorX, absErrorY, absErrorZ)
                 );
             }
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Float64Tuple3D MapUnitVector(this IAffineMap3D linearMap, IFloat64Tuple3D vector)
+        public static Float64Vector3D MapUnitVector(this IAffineMap3D linearMap, IFloat64Tuple3D vector)
         {
             return linearMap.MapVector(vector).ToUnitVector();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Float64Tuple3D MapUnitNormal(this IAffineMap3D linearMap, IFloat64Tuple3D normal)
+        public static Float64Vector3D MapUnitNormal(this IAffineMap3D linearMap, IFloat64Tuple3D normal)
         {
             return linearMap.MapNormal(normal).ToUnitVector();
         }
@@ -83,12 +82,12 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps
             var uDirection = linearMap.MapVector(frame.UDirection).ToUnitVector();
 
             var vDirection = linearMap.MapVector(frame.VDirection);
-            vDirection = vDirection.ToTuple3D() -
+            vDirection = vDirection -
                          vDirection.ProjectOnUnitVector(uDirection);
             vDirection = vDirection.ToUnitVector();
 
             var wDirection = linearMap.MapVector(frame.WDirection);
-            wDirection = wDirection.ToTuple3D() -
+            wDirection = wDirection -
                          wDirection.ProjectOnUnitVector(uDirection) -
                          wDirection.ProjectOnUnitVector(vDirection);
             wDirection = wDirection.ToUnitVector();
@@ -103,16 +102,12 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps
             var newValue = new TrsMap3D
             {
                 RotationAngle = s * v1.RotationAngle + t * v2.RotationAngle,
-                RotationVector = new Float64Tuple3D(
-                    s * v1.RotationVector.X + t * v2.RotationVector.X,
+                RotationVector = Float64Vector3D.Create(s * v1.RotationVector.X + t * v2.RotationVector.X,
                     s * v1.RotationVector.Y + t * v2.RotationVector.Y,
-                    s * v1.RotationVector.Z + t * v2.RotationVector.Z
-                ),
-                TranslationVector = new Float64Tuple3D(
-                    s * v1.TranslationVector.X + t * v2.TranslationVector.X,
+                    s * v1.RotationVector.Z + t * v2.RotationVector.Z),
+                TranslationVector = Float64Vector3D.Create(s * v1.TranslationVector.X + t * v2.TranslationVector.X,
                     s * v1.TranslationVector.Y + t * v2.TranslationVector.Y,
-                    s * v1.TranslationVector.Z + t * v2.TranslationVector.Z
-                ),
+                    s * v1.TranslationVector.Z + t * v2.TranslationVector.Z),
                 StretchMatrix =
                 {
                     Scalar00 = s * v1.StretchMatrix.Scalar00 + t * v2.StretchMatrix.Scalar00,

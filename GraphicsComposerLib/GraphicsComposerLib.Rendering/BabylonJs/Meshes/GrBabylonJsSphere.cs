@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using DataStructuresLib.Basic;
+﻿using DataStructuresLib.Basic;
 using GraphicsComposerLib.Rendering.BabylonJs.Values;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
@@ -48,7 +47,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
                 yield return SideOrientation.GetNameValueCodePair("sideOrientation");
                 yield return FrontUVs.GetNameValueCodePair("frontUVs");
                 yield return BackUVs.GetNameValueCodePair("backUVs");
-                yield return Updateable.GetNameValueCodePair("updateable");
+                yield return Updateable.GetNameValueCodePair("updatable");
             }
         }
     
@@ -74,14 +73,14 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
         }
 
 
-        public GrBabylonJsSphere SetOptions([NotNull] SphereOptions? options)
+        public GrBabylonJsSphere SetOptions(SphereOptions options)
         {
             Options = options;
 
             return this;
         }
 
-        public GrBabylonJsSphere SetProperties([NotNull] MeshProperties? properties)
+        public GrBabylonJsSphere SetProperties(MeshProperties properties)
         {
             Properties = properties;
 

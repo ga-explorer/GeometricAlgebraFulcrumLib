@@ -1,7 +1,5 @@
-﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Mutable;
-using GraphicsComposerLib.Geometry.Primitives;
+﻿using GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 using TextComposerLib.Code.JavaScript;
 
 namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Builtin
@@ -42,8 +40,8 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Builtin
             };
 
 
-        public MutableFloat64Tuple3D Center { get; }
-            = new MutableFloat64Tuple3D();
+        public Float64Vector3DComposer Center { get; }
+            = Float64Vector3DComposer.Create();
 
         public double Radius { get; set; } = 1;
 
@@ -62,7 +60,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Builtin
 
         public XeoglSphereGeometry(IFloat64Tuple3D center)
         {
-            Center.SetTuple(center);
+            Center.SetVector(center);
         }
 
 
@@ -72,7 +70,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Builtin
 
             composer
                 .SetValue("primitive", PrimitiveType, GraphicsPrimitiveType3D.Triangles)
-                .SetNumbersArrayValue("center", Center, Float64Tuple3D.Zero);
+                .SetNumbersArrayValue("center", Center, Float64Vector3D.Zero);
 
             composer
                 .SetValue("radius", Radius, 1);

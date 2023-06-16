@@ -1,11 +1,11 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using DataStructuresLib.Basic;
+﻿using DataStructuresLib.Basic;
 using GraphicsComposerLib.Rendering.BabylonJs.Values;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
 {
     /// <summary>
     /// https://doc.babylonjs.com/typedoc/modules/BABYLON#CreateTorus-2
+    /// https://doc.babylonjs.com/features/featuresDeepDive/mesh/creation/set/torus
     /// </summary>
     public sealed class GrBabylonJsTorus :
         GrBabylonJsMesh
@@ -36,7 +36,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
                 yield return SideOrientation.GetNameValueCodePair("sideOrientation");
                 yield return FrontUVs.GetNameValueCodePair("frontUVs");
                 yield return BackUVs.GetNameValueCodePair("backUVs");
-                yield return Updateable.GetNameValueCodePair("updateable");
+                yield return Updateable.GetNameValueCodePair("updatable");
             }
         }
     
@@ -61,14 +61,14 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
         }
 
 
-        public GrBabylonJsTorus SetOptions([NotNull] TorusOptions? options)
+        public GrBabylonJsTorus SetOptions(TorusOptions options)
         {
             Options = options;
 
             return this;
         }
 
-        public GrBabylonJsTorus SetProperties([NotNull] MeshProperties? properties)
+        public GrBabylonJsTorus SetProperties(MeshProperties properties)
         {
             Properties = properties;
 

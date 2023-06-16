@@ -1,7 +1,7 @@
 ﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Matrices;
-using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Triangles;
-using GraphicsComposerLib.Geometry.Primitives;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Triangles;
+using GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices;
 using GraphicsComposerLib.Rendering.Xeogl.Constants;
 using GraphicsComposerLib.Rendering.Xeogl.Geometry.Primitives;
 using GraphicsComposerLib.Rendering.Xeogl.Transforms;
@@ -140,10 +140,10 @@ namespace GraphicsComposerLib.Rendering.Xeogl
                 ScaleX = affineMap.ScaleX,
                 ScaleY = affineMap.ScaleY,
                 ScaleZ = affineMap.ScaleZ,
-                QuaternionX = quaternion.X,
-                QuaternionY = quaternion.Y,
-                QuaternionZ = quaternion.Z,
-                QuaternionW = quaternion.W
+                QuaternionX = quaternion.ScalarI,
+                QuaternionY = quaternion.ScalarJ,
+                QuaternionZ = quaternion.ScalarK,
+                QuaternionW = quaternion.Scalar
             };
         }
         

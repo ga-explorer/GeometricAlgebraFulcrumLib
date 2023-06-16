@@ -1,12 +1,12 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.Basic;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Frames;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Processors;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.LinearMaps.Rotors
 {
@@ -170,17 +170,17 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.
             if (cosAngle.IsOne)
                 return metric.CreateIdentityRotor();
 
-            //TODO: Handle the case for cosAngle == -1
-            if (cosAngle.IsMinusOne)
-                throw new InvalidOperationException();
-
-            var cosHalfAngle = ((1 + cosAngle) / 2).Sqrt();
-            var sinHalfAngle = ((1 - cosAngle) / 2).Sqrt();
-
-            var rotationBlade = targetVector.Op(sourceVector);
+            var rotationBlade = 
+                cosAngle.IsMinusOne
+                    ? sourceVector.GetNormalVector().Op(sourceVector)
+                    : targetVector.Op(sourceVector);
+                
             var unitRotationBlade =
                 rotationBlade / (-rotationBlade.ESpSquared()).Sqrt();
 
+            var cosHalfAngle = ((1 + cosAngle) / 2).Sqrt();
+            var sinHalfAngle = ((1 - cosAngle) / 2).Sqrt();
+            
             var scalarPart = cosHalfAngle.ScalarValue;
             var bivectorPart = sinHalfAngle * unitRotationBlade;
 
@@ -209,16 +209,16 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.
             if (cosAngle.IsOne)
                 return XGaFloat64ScaledPureRotor.Create(metric, scalingFactor);
 
-            //TODO: Handle the case for cosAngle == -1
-            if (cosAngle.IsMinusOne)
-                throw new InvalidOperationException();
+            var rotationBlade = 
+                cosAngle.IsMinusOne
+                    ? sourceVector.GetNormalVector().Op(sourceVector)
+                    : targetVector.Op(sourceVector);
 
-            var cosHalfAngle = ((1 + cosAngle) / 2).Sqrt();
-            var sinHalfAngle = ((1 - cosAngle) / 2).Sqrt();
-
-            var rotationBlade = targetVector.Op(sourceVector);
             var unitRotationBlade =
                 rotationBlade / (-rotationBlade.ESpSquared()).Sqrt();
+            
+            var cosHalfAngle = ((1 + cosAngle) / 2).Sqrt();
+            var sinHalfAngle = ((1 - cosAngle) / 2).Sqrt();
 
             var scalarPart =
                 scalingFactor * cosHalfAngle;

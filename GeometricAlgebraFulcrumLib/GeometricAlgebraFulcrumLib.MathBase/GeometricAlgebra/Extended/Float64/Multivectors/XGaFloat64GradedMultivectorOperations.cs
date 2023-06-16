@@ -1,8 +1,8 @@
-﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 using DataStructuresLib.IndexSets;
 using System.Diagnostics;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Multivectors
 {

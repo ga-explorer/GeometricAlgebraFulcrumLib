@@ -1,7 +1,7 @@
-﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
-using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Lines;
-using GraphicsComposerLib.Geometry.Primitives;
-using GraphicsComposerLib.Geometry.Primitives.Lines;
+﻿using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines;
+using GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives;
+using GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Lines;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 using TextComposerLib.Code.JavaScript;
 
 namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Primitives

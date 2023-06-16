@@ -1,10 +1,10 @@
 ﻿using System.Collections;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.IndexSets;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Basis;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors
 {
@@ -98,6 +98,11 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
             => GetTermScalar(
                 IndexSetUtils.IndexPairToIndexSet(index1, index2)
             );
+        
+        public Scalar<T> this[ulong basisBladeId]
+            => GetTermScalar(
+                basisBladeId.BitPatternToUInt64IndexSet()
+            );
 
         public T this[IIndexSet basisBladeId]
             => GetTermScalar(basisBladeId).ScalarValue;
@@ -119,7 +124,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
             Processor = processor;
         }
 
-    
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsNearZero()
         {

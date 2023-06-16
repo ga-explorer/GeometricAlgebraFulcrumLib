@@ -4,8 +4,8 @@ using System.Runtime.CompilerServices;
 using DataStructuresLib.Basic;
 using DataStructuresLib.Dictionary;
 using DataStructuresLib.Extensions;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 using TextComposerLib.Text;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic

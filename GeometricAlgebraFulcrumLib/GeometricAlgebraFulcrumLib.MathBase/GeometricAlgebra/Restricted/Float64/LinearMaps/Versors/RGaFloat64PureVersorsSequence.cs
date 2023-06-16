@@ -5,7 +5,7 @@ using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Li
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.LinearMaps.Rotors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.SpaceND;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.LinearMaps.Versors
 {

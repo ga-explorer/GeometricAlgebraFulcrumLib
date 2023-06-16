@@ -41,12 +41,14 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
         protected GrBabylonJsLinesMesh(string constName) 
             : base(constName)
         {
+            UseLetDeclaration = true;
         }
     
         protected GrBabylonJsLinesMesh(string constName, GrBabylonJsSceneValue scene) 
             : base(constName)
         {
             ParentScene = scene;
+            UseLetDeclaration = true;
         }
 
 

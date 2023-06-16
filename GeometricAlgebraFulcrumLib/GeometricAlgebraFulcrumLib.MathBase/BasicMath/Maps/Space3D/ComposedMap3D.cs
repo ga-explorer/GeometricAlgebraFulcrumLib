@@ -1,9 +1,8 @@
 ﻿using System.Collections;
 using System.Numerics;
 using DataStructuresLib.BitManipulation;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Matrices;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D
 {
@@ -82,26 +81,26 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D
         public SquareMatrix4 GetSquareMatrix4()
         {
             //Construct matrix columns
-            var c0 = MapVector(new Float64Tuple3D(1, 0, 0));
-            var c1 = MapVector(new Float64Tuple3D(0, 1, 0));
-            var c2 = MapVector(new Float64Tuple3D(0, 0, 1));
-            var c3 = MapPoint(new Float64Tuple3D(0, 0, 0));
+            var c0 = MapVector(Float64Vector3D.Create(1, 0, 0));
+            var c1 = MapVector(Float64Vector3D.Create(0, 1, 0));
+            var c2 = MapVector(Float64Vector3D.Create(0, 0, 1));
+            var c3 = MapPoint(Float64Vector3D.Create(0, 0, 0));
 
             return new SquareMatrix4()
             {
-                [0] = c0.X, [4] = c1.X, [8]  = c2.X, [12] = c3.X,
-                [1] = c0.Y, [5] = c1.Y, [9] = c2.Y, [13] = c3.Y,
-                [2] = c0.Z, [6] = c1.Z, [10] = c2.Z, [14] = c3.Z, [15] = 1d
+                Scalar00 = c0.X, Scalar01 = c1.X, Scalar02 = c2.X, Scalar03 = c3.X,
+                Scalar10 = c0.Y, Scalar11 = c1.Y, Scalar12 = c2.Y, Scalar13 = c3.Y,
+                Scalar20 = c0.Z, Scalar21 = c1.Z, Scalar22 = c2.Z, Scalar23 = c3.Z, Scalar33 = 1d
             };
         }
 
         public Matrix4x4 GetMatrix4x4()
         {
             //Construct matrix columns
-            var c0 = MapVector(Float64Tuple3D.E1);
-            var c1 = MapVector(Float64Tuple3D.E2);
-            var c2 = MapVector(Float64Tuple3D.E3);
-            var c3 = MapPoint(Float64Tuple3D.Zero);
+            var c0 = MapVector(Float64Vector3D.E1);
+            var c1 = MapVector(Float64Vector3D.E2);
+            var c2 = MapVector(Float64Vector3D.E3);
+            var c3 = MapPoint(Float64Vector3D.Zero);
 
             return new Matrix4x4(
                 (float) c0.X, (float) c1.X, (float) c2.X, (float) c3.X,
@@ -113,10 +112,10 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D
 
         public double[,] GetArray2D()
         {
-            var c0 = MapVector(Float64Tuple3D.E1);
-            var c1 = MapVector(Float64Tuple3D.E2);
-            var c2 = MapVector(Float64Tuple3D.E3);
-            var c3 = MapPoint(Float64Tuple3D.Zero);
+            var c0 = MapVector(Float64Vector3D.E1);
+            var c1 = MapVector(Float64Vector3D.E2);
+            var c2 = MapVector(Float64Vector3D.E3);
+            var c3 = MapPoint(Float64Vector3D.Zero);
 
             var array = new double[4, 4];
 
@@ -128,26 +127,26 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D
             return array;
         }
 
-        public Float64Tuple3D MapPoint(IFloat64Tuple3D point)
+        public Float64Vector3D MapPoint(IFloat64Tuple3D point)
         {
             return _affineMapsList.Aggregate(
-                point.ToTuple3D(), 
+                point.ToVector3D(), 
                 (current, linearMap) => linearMap.MapPoint(current)
             );
         }
 
-        public Float64Tuple3D MapVector(IFloat64Tuple3D vector)
+        public Float64Vector3D MapVector(IFloat64Tuple3D vector)
         {
             return _affineMapsList.Aggregate(
-                vector.ToTuple3D(), 
+                vector.ToVector3D(), 
                 (current, linearMap) => linearMap.MapVector(current)
             );
         }
 
-        public Float64Tuple3D MapNormal(IFloat64Tuple3D normal)
+        public Float64Vector3D MapNormal(IFloat64Tuple3D normal)
         {
             return _affineMapsList.Aggregate(
-                normal.ToTuple3D(), 
+                normal.ToVector3D(), 
                 (current, linearMap) => linearMap.MapNormal(current)
             );
         }

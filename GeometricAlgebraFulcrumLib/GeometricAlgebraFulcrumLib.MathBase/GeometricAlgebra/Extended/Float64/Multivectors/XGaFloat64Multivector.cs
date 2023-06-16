@@ -1,10 +1,10 @@
 ﻿using System.Collections;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.IndexSets;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Basis;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Processors;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Multivectors
 {
@@ -94,6 +94,11 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.
         public double this[int index1, int index2]
             => GetTermScalar(
                 IndexSetUtils.IndexPairToIndexSet(index1, index2)
+            );
+        
+        public double this[ulong basisBladeId]
+            => GetTermScalar(
+                basisBladeId.BitPatternToUInt64IndexSet()
             );
 
         public double this[IIndexSet basisBladeId]

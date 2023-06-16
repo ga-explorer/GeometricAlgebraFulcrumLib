@@ -1,5 +1,5 @@
 ﻿using DataStructuresLib.Basic;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Processors;
@@ -10,7 +10,10 @@ using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Mu
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.Signals;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Differential.Functions.Interpolators;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra.Composers;
 using OfficeOpenXml;
 
 namespace GeometricAlgebraFulcrumLib.MathBase
@@ -270,9 +273,9 @@ namespace GeometricAlgebraFulcrumLib.MathBase
         }
 
         
-        public static RGaVector<ScalarSignalFloat64> ReadVectorSignal(this RGaProcessor<ScalarSignalFloat64> geometricProcessor, double samplingRate, ExcelWorksheet workSheet, int firstRowIndex, int rowCount, int firstColIndex, int colCount)
+        public static RGaVector<Float64Signal> ReadVectorSignal(this RGaProcessor<Float64Signal> geometricProcessor, double samplingRate, ExcelWorksheet workSheet, int firstRowIndex, int rowCount, int firstColIndex, int colCount)
         {
-            var vectorArray = new ScalarSignalFloat64[colCount];
+            var vectorArray = new Float64Signal[colCount];
 
             for (var j = 0; j < colCount; j++)
             {
@@ -323,9 +326,9 @@ namespace GeometricAlgebraFulcrumLib.MathBase
         }
         
         
-        public static XGaVector<ScalarSignalFloat64> ReadVectorSignal(this XGaProcessor<ScalarSignalFloat64> geometricProcessor, double samplingRate, ExcelWorksheet workSheet, int firstRowIndex, int rowCount, int firstColIndex, int colCount)
+        public static XGaVector<Float64Signal> ReadVectorSignal(this XGaProcessor<Float64Signal> geometricProcessor, double samplingRate, ExcelWorksheet workSheet, int firstRowIndex, int rowCount, int firstColIndex, int colCount)
         {
-            var vectorArray = new ScalarSignalFloat64[colCount];
+            var vectorArray = new Float64Signal[colCount];
 
             for (var j = 0; j < colCount; j++)
             {
@@ -468,17 +471,17 @@ namespace GeometricAlgebraFulcrumLib.MathBase
             return worksheet;
         }
 
-        public static ExcelWorksheet WriteScalarSignal(this ExcelWorksheet worksheet, int rowIndex, int columnIndex, ScalarSignalFloat64 scalarSignal, string columnName)
+        public static ExcelWorksheet WriteScalarSignal(this ExcelWorksheet worksheet, int rowIndex, int columnIndex, Float64Signal scalarSignal, string columnName)
         {
             return worksheet.WriteScalars(rowIndex, columnIndex, scalarSignal, columnName);
         }
 
-        public static ExcelWorksheet WriteScalarSignal(this ExcelWorksheet worksheet, int rowIndex, int columnIndex, Scalar<ScalarSignalFloat64> scalarSignal, string columnName)
+        public static ExcelWorksheet WriteScalarSignal(this ExcelWorksheet worksheet, int rowIndex, int columnIndex, Scalar<Float64Signal> scalarSignal, string columnName)
         {
             return worksheet.WriteScalars(rowIndex, columnIndex, scalarSignal.ScalarValue, columnName);
         }
 
-        public static ExcelWorksheet WriteVectorSignal(this ExcelWorksheet worksheet, int rowIndex, int columnIndex, RGaVector<ScalarSignalFloat64> vectorSignal, string vectorName, params string[] columnNames)
+        public static ExcelWorksheet WriteVectorSignal(this ExcelWorksheet worksheet, int rowIndex, int columnIndex, RGaVector<Float64Signal> vectorSignal, string vectorName, params string[] columnNames)
         {
             var columnCount = columnNames.Length;
             
@@ -500,7 +503,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase
             return worksheet;
         }
         
-        public static ExcelWorksheet WriteVectorSignal(this ExcelWorksheet worksheet, int rowIndex, int columnIndex, XGaVector<ScalarSignalFloat64> vectorSignal, string vectorName, params string[] columnNames)
+        public static ExcelWorksheet WriteVectorSignal(this ExcelWorksheet worksheet, int rowIndex, int columnIndex, XGaVector<Float64Signal> vectorSignal, string vectorName, params string[] columnNames)
         {
             var columnCount = columnNames.Length;
             
@@ -522,7 +525,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase
             return worksheet;
         }
 
-        public static ExcelWorksheet WriteBivectorSignal(this ExcelWorksheet worksheet, int rowIndex, int columnIndex, RGaBivector<ScalarSignalFloat64> bivectorSignal, string bivectorName, params string[] columnNames)
+        public static ExcelWorksheet WriteBivectorSignal(this ExcelWorksheet worksheet, int rowIndex, int columnIndex, RGaBivector<Float64Signal> bivectorSignal, string bivectorName, params string[] columnNames)
         {
             var columnCount = columnNames.Length;
             
@@ -544,7 +547,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase
             return worksheet;
         }
         
-        public static ExcelWorksheet WriteBivectorSignal(this ExcelWorksheet worksheet, int rowIndex, int columnIndex, XGaBivector<ScalarSignalFloat64> bivectorSignal, string bivectorName, params string[] columnNames)
+        public static ExcelWorksheet WriteBivectorSignal(this ExcelWorksheet worksheet, int rowIndex, int columnIndex, XGaBivector<Float64Signal> bivectorSignal, string bivectorName, params string[] columnNames)
         {
             var columnCount = columnNames.Length;
             
@@ -557,7 +560,9 @@ namespace GeometricAlgebraFulcrumLib.MathBase
             
             for (var i = 0; i < columnNames.Length; i++)
             {
-                var v = bivectorSignal[i].ScalarValue;
+                var id = i.BasisBivectorIndexToId();
+
+                var v = bivectorSignal[id].ScalarValue;
 
                 for (var r = 0; r < v.Count; r++) 
                     worksheet.Cells[rowIndex + r, columnIndex + i].Value = v[r];
@@ -566,6 +571,15 @@ namespace GeometricAlgebraFulcrumLib.MathBase
             return worksheet;
         }
 
+        
+
+        public static DifferentialSignalInterpolatorFunction GetDifferentialInterpolatorOfColumn(this ExcelWorksheet workSheet, int firstRow, int columnIndex, Float64SignalSamplingSpecs samplingSpecs, int sampleStep, DfSignalInterpolatorOptions interpolatorOptions)
+        {
+            return workSheet
+                .ReadScalarColumn(firstRow, samplingSpecs.SampleCount, sampleStep, columnIndex)
+                .CreateSignal(samplingSpecs.SamplingRate)
+                .GetDifferentialInterpolator(interpolatorOptions);
+        }
 
     }
 }

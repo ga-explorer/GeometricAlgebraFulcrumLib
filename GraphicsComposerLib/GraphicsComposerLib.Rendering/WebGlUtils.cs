@@ -1,8 +1,9 @@
 ﻿using System.Text;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Matrices;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
-using GeometricAlgebraFulcrumLib.MathBase.Borders.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space4D;
 using TextComposerLib.Code.JavaScript;
 using TextComposerLib.Text.Columns;
 using TextComposerLib.Text.Linear;
@@ -78,11 +79,11 @@ namespace GraphicsComposerLib.Rendering
             return composer;
         }
 
-        public static JavaScriptAttributesDictionary SetNumbersArrayValue(this JavaScriptAttributesDictionary composer, string key, IEnumerable<Float64Tuple3D> value, string commentPrefix, string valueDefault)
+        public static JavaScriptAttributesDictionary SetNumbersArrayValue(this JavaScriptAttributesDictionary composer, string key, IEnumerable<Float64Vector3D> value, string commentPrefix, string valueDefault)
         {
             composer.SetTextValue(
                 key,
-                value.Cast<IFloat64Tuple3D>().ToJavaScriptNumbersArrayText(commentPrefix),
+                value.ToJavaScriptNumbersArrayText(commentPrefix),
                 valueDefault
             );
 
@@ -100,11 +101,11 @@ namespace GraphicsComposerLib.Rendering
             return composer;
         }
 
-        public static JavaScriptAttributesDictionary SetNumbersArrayValue(this JavaScriptAttributesDictionary composer, string key, IEnumerable<Float64Tuple2D> value, string commentPrefix, string valueDefault)
+        public static JavaScriptAttributesDictionary SetNumbersArrayValue(this JavaScriptAttributesDictionary composer, string key, IEnumerable<Float64Vector2D> value, string commentPrefix, string valueDefault)
         {
             composer.SetTextValue(
                 key,
-                value.Cast<IFloat64Tuple2D>().ToJavaScriptNumbersArrayText(commentPrefix),
+                value.ToJavaScriptNumbersArrayText(commentPrefix),
                 valueDefault
             );
 
@@ -268,8 +269,24 @@ namespace GraphicsComposerLib.Rendering
         #endregion
 
         #region 4D Tuple Values Conversion
+        public static string ToJavaScriptNumbersArrayText(this Float64Quaternion tuple)
+        {
+            return new StringBuilder()
+                .Append('[')
+                .Append(tuple.ScalarI.ToString("G"))
+                .Append(',')
+                .Append(tuple.ScalarJ.ToString("G"))
+                .Append(',')
+                .Append(tuple.ScalarK.ToString("G"))
+                .Append(',')
+                .Append(tuple.Scalar.ToString("G"))
+                .Append(']')
+                .ToString();
+        }
+        
         public static string ToJavaScriptNumbersArrayText(this IFloat64Tuple4D tuple)
-            => new StringBuilder()
+        {
+            return new StringBuilder()
                 .Append('[')
                 .Append(tuple.X.ToString("G"))
                 .Append(',')
@@ -280,6 +297,7 @@ namespace GraphicsComposerLib.Rendering
                 .Append(tuple.W.ToString("G"))
                 .Append(']')
                 .ToString();
+        }
 
         public static string ToJavaScriptNumbersArrayText(this IEnumerable<IFloat64Tuple4D> tuplesList)
         {

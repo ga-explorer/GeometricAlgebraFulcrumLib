@@ -1,12 +1,12 @@
 ﻿using System.Runtime.CompilerServices;
 using DataStructuresLib.BitManipulation;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Mutable;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.LinearMaps.Outermorphisms;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.LinearMaps.Rotors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Subspaces;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.SpaceND;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors
 {
@@ -42,19 +42,17 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Float64Tuple3D GetTuple3D(this RGaVector<double> vector)
+        public static Float64Vector3D GetTuple3D(this RGaVector<double> vector)
         {
-            return new Float64Tuple3D(
-                vector[0],
-                vector[1],
-                vector[2]
-            );
+            return Float64Vector3D.Create(vector[0].ScalarValue,
+                vector[1].ScalarValue,
+                vector[2].ScalarValue);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Float64Tuple GetTuple(this RGaVector<double> vector)
+        public static Float64Vector GetTuple(this RGaVector<double> vector)
         {
-            return Float64Tuple.Create(
+            return Float64Vector.Create(
                 vector.VectorToArray1D()
             );
         }

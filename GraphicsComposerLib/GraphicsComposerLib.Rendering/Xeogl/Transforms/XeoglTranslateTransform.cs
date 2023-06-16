@@ -1,6 +1,5 @@
-﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Matrices;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
+﻿using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 using TextComposerLib.Text.Linear;
 
 namespace GraphicsComposerLib.Rendering.Xeogl.Transforms
@@ -70,17 +69,17 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Transforms
         public SquareMatrix4 GetMatrix()
             => SquareMatrix4.CreateIdentityMatrix();
 
-        public Float64Tuple4D GetQuaternionTuple()
-            => new Float64Tuple4D(0, 0, 0, 1);
+        public Float64Quaternion GetQuaternionTuple()
+            => Float64Quaternion.Create(0, 0, 0, 1);
 
-        public Float64Tuple3D GetRotateTuple()
-            => Float64Tuple3D.Zero;
+        public Float64Vector3D GetRotateTuple()
+            => Float64Vector3D.Zero;
 
-        public Float64Tuple3D GetScaleTuple()
-            => new Float64Tuple3D(1, 1, 1);
+        public Float64Vector3D GetScaleTuple()
+            => Float64Vector3D.Create(1, 1, 1);
 
-        public Float64Tuple3D GetTranslateTuple()
-            => new Float64Tuple3D(TranslateX, TranslateY, TranslateZ);
+        public Float64Vector3D GetTranslateTuple()
+            => Float64Vector3D.Create(TranslateX, TranslateY, TranslateZ);
 
 
         public string GetMatrixText()

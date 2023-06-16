@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using GeometricAlgebraFulcrumLib.MathBase.BasicShapes;
-using GeometricAlgebraFulcrumLib.MathBase.Borders.Space3D.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space3D.Immutable;
 
 namespace NumericalGeometryLib.Accelerators.Grids.Space3D
 {
@@ -14,25 +14,13 @@ namespace NumericalGeometryLib.Accelerators.Grids.Space3D
 
         public IAccGrid3D<IFiniteGeometricShape3D> Grid { get; }
 
-        public int CellsCountX
-        {
-            get { return Grid.CellsCountX; }
-        }
+        public int CellsCountX => Grid.CellsCountX;
 
-        public int CellsCountY
-        {
-            get { return Grid.CellsCountY; }
-        }
+        public int CellsCountY => Grid.CellsCountY;
 
-        public int CellsCountZ
-        {
-            get { return Grid.CellsCountZ; }
-        }
+        public int CellsCountZ => Grid.CellsCountZ;
 
-        public int CellsCount
-        {
-            get { return CellsCountX * CellsCountY * CellsCountZ; }
-        }
+        public int CellsCount => CellsCountX * CellsCountY * CellsCountZ;
 
         public BoundingBox3D BoundingBox { get; }
 

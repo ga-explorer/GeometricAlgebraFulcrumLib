@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers
 {
@@ -27,6 +27,42 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static RGaScalar<T> CreateScalar<T>(this RGaProcessor<T> processor, int mv)
+        {
+            return new RGaScalar<T>(
+                processor,
+                processor.ScalarProcessor.GetScalarFromNumber(mv)
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static RGaScalar<T> CreateScalar<T>(this RGaProcessor<T> processor, uint mv)
+        {
+            return new RGaScalar<T>(
+                processor,
+                processor.ScalarProcessor.GetScalarFromNumber(mv)
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static RGaScalar<T> CreateScalar<T>(this RGaProcessor<T> processor, long mv)
+        {
+            return new RGaScalar<T>(
+                processor,
+                processor.ScalarProcessor.GetScalarFromNumber(mv)
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static RGaScalar<T> CreateScalar<T>(this RGaProcessor<T> processor, ulong mv)
+        {
+            return new RGaScalar<T>(
+                processor,
+                processor.ScalarProcessor.GetScalarFromNumber(mv)
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static RGaScalar<T> CreateScalar<T>(this RGaProcessor<T> processor, float mv)
         {
             return new RGaScalar<T>(
                 processor,

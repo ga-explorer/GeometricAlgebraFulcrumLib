@@ -1,10 +1,10 @@
-﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended;
+﻿using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Processors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Processors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Converters;
 

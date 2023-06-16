@@ -1,5 +1,5 @@
 ﻿using GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.BSplines;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Utilities.Factories
 {

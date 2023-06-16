@@ -1,22 +1,23 @@
-﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Matrices;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
+﻿using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space2D
 {
     public interface IAffineMap2D :
         IGeometricElement
     {
-        SquareMatrix3 ToSquareMatrix3();
+        bool SwapsHandedness { get; }
+        
+        Float64Vector2D MapPoint(IFloat64Tuple2D point);
 
-        double[,] ToArray2D();
+        Float64Vector2D MapVector(IFloat64Tuple2D vector);
 
-        Float64Tuple2D MapPoint(IFloat64Tuple2D point);
+        Float64Vector2D MapNormal(IFloat64Tuple2D normal);
 
-        Float64Tuple2D MapVector(IFloat64Tuple2D vector);
+        SquareMatrix3 GetSquareMatrix3();
 
-        Float64Tuple2D MapNormal(IFloat64Tuple2D normal);
+        double[,] GetArray2D();
 
-        IAffineMap2D InverseMap();
+        IAffineMap2D GetInverseAffineMap();
     }
 }

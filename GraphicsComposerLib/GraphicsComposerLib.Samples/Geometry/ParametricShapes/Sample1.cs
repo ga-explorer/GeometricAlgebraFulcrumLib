@@ -3,22 +3,24 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using DataStructuresLib;
-using NumericalGeometryLib.BasicMath;
-using NumericalGeometryLib.BasicMath.Tuples;
-using NumericalGeometryLib.BasicMath.Tuples.Immutable;
-using GraphicsComposerLib.Geometry.LatticeShapes;
-using GraphicsComposerLib.Geometry.LatticeShapes.Surfaces;
-using GraphicsComposerLib.Geometry.ParametricShapes.Curves;
-using GraphicsComposerLib.Geometry.ParametricShapes.Curves.Sampled;
-using GraphicsComposerLib.Geometry.Primitives;
-using GraphicsComposerLib.Geometry.Primitives.Lines;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Graphics.LatticeShapes;
+using GeometricAlgebraFulcrumLib.MathBase.Graphics.LatticeShapes.Surfaces;
+using GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives;
+using GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Lines;
+using GeometricAlgebraFulcrumLib.MathBase.Parametric;
+using GeometricAlgebraFulcrumLib.MathBase.Parametric.Space3D.Curves;
+using GeometricAlgebraFulcrumLib.MathBase.Parametric.Space3D.Curves.Adaptive;
+using GeometricAlgebraFulcrumLib.MathBase.Parametric.Space3D.Frames;
 using GraphicsComposerLib.Rendering.Xeogl;
 
 namespace GraphicsComposerLib.Samples.Geometry.ParametricShapes
 {
     public static class Sample1
     {
-        private static string Generate(IReadOnlyList<GrParametricCurveLocalFrame3D> sampledCurve, string htmlFilePath = "")
+        private static string Generate(IReadOnlyList<ParametricCurveLocalFrame3D> sampledCurve, string htmlFilePath = "")
         {
             var composer1 = new GrLineGeometryComposer3D();
             var composer2 = new GrLineGeometryComposer3D();
@@ -84,25 +86,25 @@ namespace GraphicsComposerLib.Samples.Geometry.ParametricShapes
 
         public static void Execute()
         {
-            var options = new GrParametricCurveTreeOptions3D(
+            var options = new AdaptiveCurveSamplingOptions3D(
                 3.DegreesToAngle(),
                 0,
                 30
             );
 
-            var curve = new GrComputedParametricCurve3D(
+            var curve = new ComputedParametricCurve3D(
                 t => 
-                    new Tuple3D(
+                    new Float64Tuple3D(
                         Math.Exp(-0.1 * t) * Math.Cos(t),
                         Math.Exp(-0.1 * t) * Math.Sin(t),
                         0.5 * t
                     )
             );
             
-            var composer = new GrParametricCurveTree3D(curve, 0, 8 * Math.PI)
+            var composer = new AdaptiveCurve3D(curve, 0, 8 * Math.PI)
             {
-                FrameSamplingMethod = GrCurveFrameSamplingMethod.SimpleRotation,
-                FrameInterpolationMethod = GrCurveFrameInterpolationMethod.SphericalLinearInterpolation
+                FrameSamplingMethod = ParametricCurveLocalFrameSamplingMethod.SimpleRotation,
+                FrameInterpolationMethod = ParametricCurveLocalFrameInterpolationMethod.SphericalLinearInterpolation
             };
 
 

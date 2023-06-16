@@ -1,5 +1,8 @@
-﻿using TextComposerLib.Text;
+﻿using TextComposerLib;
+using TextComposerLib.Files;
+using TextComposerLib.Text;
 using TextComposerLib.Text.Parametric;
+using WebComposerLib.Html.Media;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs
 {
@@ -10,6 +13,33 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
 var canvas = document.getElementById(""renderCanvas"");
 
 !#js-canvas-size#!
+
+function renderHtmlToCanvas( canvas, html ) {
+	const ctx = canvas.getContext( '2d' );
+
+	const svg = `
+		<svg xmlns=""http://www.w3.org/2000/svg"" width=""${canvas.width}"" height=""${canvas.height}"">
+		<foreignObject width=""100%"" height=""100%"">
+			<div xmlns=""http://www.w3.org/1999/xhtml"">${html}</div>
+		</foreignObject>
+		</svg>`;
+	
+	const svgBlob = new Blob( [svg], { type: 'image/svg+xml;charset=utf-8' } );
+	const svgObjectUrl = URL.createObjectURL( svgBlob );
+	
+	//await new Promise(res => setTimeout(res, 100));
+
+	const tempImg = new Image();
+	tempImg.addEventListener( 
+		'load', 
+		function() {
+			ctx.drawImage( tempImg, 0, 0 );
+			URL.revokeObjectURL( svgObjectUrl );
+		} 
+	);
+
+	tempImg.src = svgObjectUrl;
+}
 
 function startRenderLoop(engine, canvas) {
     engine.runRenderLoop(function () {
@@ -60,6 +90,126 @@ window.addEventListener(""resize"", function () {
 ".Trim()
             );
 
+        private static readonly string JsLibCodeOffline = @"
+<!--  -->
+<script src=""https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.6.2/dat.gui.min.js""></script>
+
+<!--  -->
+<script src=""https://assets.babylonjs.com/generated/Assets.js""></script>
+
+<!--  -->
+<script src=""https://preview.babylonjs.com/ammo.js""></script>
+
+<!--  -->
+<script src=""https://preview.babylonjs.com/cannon.js""></script>
+
+<!--  -->
+<script src=""https://preview.babylonjs.com/Oimo.js""></script>
+
+<!--  -->
+<script src=""https://preview.babylonjs.com/earcut.min.js""></script>
+
+<!-- Babylon.js Core -->
+<script src=""babylonjs/babylon.js""></script>
+
+<!-- Babylon.js Supported Advanced Materials -->
+<script src=""babylonjs/babylonjs.materials.min.js""></script>
+
+<!-- Babylon.js Procedural Textures -->
+<script src=""babylonjs/babylonjs.proceduralTextures.min.js""></script>
+
+<!-- Babylon.js Post Processes -->
+<script src=""babylonjs/babylonjs.postProcess.min.js""></script>
+
+<!-- Babylon.js All Official Loaders (OBJ, STL, glTF) -->
+<script src=""babylonjs/babylonjs.loaders.min.js""></script>
+
+<!-- Babylon.js Scene/Mesh Serializers -->
+<script src=""babylonjs/babylonjs.serializers.min.js""></script>
+
+<!-- Babylon.js GUI -->
+<script src=""babylonjs/babylon.gui.min.js""></script>
+
+<!-- Babylon.js Inspector -->
+<script src=""babylonjs/babylon.inspector.bundle.js""></script>
+
+<!-- Babylon.js Viewer -->
+<!-- script src=""babylonjs/babylon.viewer.js""></script -->
+
+<!-- KaTeX Core -->
+<!-- link rel=""stylesheet"" href=""https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css"" integrity=""sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC"" crossorigin=""anonymous"" -->
+<!-- script src=""https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js"" integrity=""sha384-X/XCfMm41VSsqRNQgDerQczD69XqmjOOOwYQvr/uuC+j4OPoNhVgjdGFwhvN02Ja"" crossorigin=""anonymous""></script -->
+<link rel=""stylesheet"" href=""katex/katex.min.css"" integrity=""sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC"" crossorigin=""anonymous"">
+<script src=""katex/katex.min.js""></script>
+
+<!-- KaTeX Auto-render extension -->
+<!-- To automatically render math in text elements, include the auto-render extension: -->
+<!-- script src=""https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js"" integrity=""sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR"" crossorigin=""anonymous"" ></script -->
+<script src=""katex/contrib/auto-render.min.js""></script>
+
+<!-- html2canvas.js -->
+<script src=""html2canvas/html2canvas.min.js""></script>
+".Trim();
+        
+        private static readonly string JsLibCodeOnline = @"
+<!--  -->
+<script src=""https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.6.2/dat.gui.min.js""></script>
+
+<!--  -->
+<script src=""https://assets.babylonjs.com/generated/Assets.js""></script>
+
+<!--  -->
+<script src=""https://preview.babylonjs.com/ammo.js""></script>
+
+<!--  -->
+<script src=""https://preview.babylonjs.com/cannon.js""></script>
+
+<!--  -->
+<script src=""https://preview.babylonjs.com/Oimo.js""></script>
+
+<!--  -->
+<script src=""https://preview.babylonjs.com/earcut.min.js""></script>
+
+<!-- Babylon.js Core -->
+<script src=""https://cdn.babylonjs.com/babylon.js""></script>
+
+<!-- Babylon.js Supported Advanced Materials -->
+<script src=""https://cdn.babylonjs.com/materialsLibrary/babylonjs.materials.min.js""></script>
+
+<!-- Babylon.js Procedural Textures -->
+<script src=""https://cdn.babylonjs.com/proceduralTexturesLibrary/babylonjs.proceduralTextures.min.js""></script>
+
+<!-- Babylon.js Post Processes -->
+<script src=""https://cdn.babylonjs.com/postProcessesLibrary/babylonjs.postProcess.min.js""></script>
+
+<!-- Babylon.js All Official Loaders (OBJ, STL, glTF) -->
+<script src=""https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js""></script>
+
+<!-- Babylon.js Scene/Mesh Serializers -->
+<script src=""https://cdn.babylonjs.com/serializers/babylonjs.serializers.min.js""></script>
+
+<!-- Babylon.js GUI -->
+<script src=""https://cdn.babylonjs.com/gui/babylon.gui.min.js""></script>
+
+<!-- Babylon.js Inspector -->
+<script src=""https://cdn.babylonjs.com/inspector/babylon.inspector.bundle.js""></script>
+
+<!-- Babylon.js Viewer -->
+<script src=""https://cdn.babylonjs.com/viewer/babylon.viewer.js""></script>
+
+<!-- KaTeX Core -->
+<link rel=""stylesheet"" href=""https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css"" integrity=""sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC"" crossorigin=""anonymous"">
+<script src=""https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js"" integrity=""sha384-X/XCfMm41VSsqRNQgDerQczD69XqmjOOOwYQvr/uuC+j4OPoNhVgjdGFwhvN02Ja"" crossorigin=""anonymous""></script>
+
+<!-- KaTeX Auto-render extension -->
+<!-- To automatically render math in text elements, include the auto-render extension: -->
+<script src=""https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js"" integrity=""sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR"" crossorigin=""anonymous"" ></script>
+
+<!-- html2canvas.js -->
+<script src=""https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"" integrity=""sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA=="" crossorigin=""anonymous"" referrerpolicy=""no-referrer""></script>
+".Trim();
+
+        
         private static readonly ParametricTextComposer HtmlCodeComposer 
             = new ParametricTextComposer("!#", "#!", @"
 <!DOCTYPE html>
@@ -68,65 +218,8 @@ window.addEventListener(""resize"", function () {
         <meta http-equiv=""Content-Type"" content=""text/html; charset=utf-8"" />
 
         <title>Babylon.js sample code</title>
-
-        <!--  -->
-        <script src=""https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.6.2/dat.gui.min.js""></script>
         
-        <!--  -->
-        <script src=""https://assets.babylonjs.com/generated/Assets.js""></script>
-        
-        <!--  -->
-        <script src=""https://preview.babylonjs.com/ammo.js""></script>
-        
-        <!--  -->
-        <script src=""https://preview.babylonjs.com/cannon.js""></script>
-        
-        <!--  -->
-        <script src=""https://preview.babylonjs.com/Oimo.js""></script>
-        
-        <!--  -->
-        <script src=""https://preview.babylonjs.com/earcut.min.js""></script>
-        
-        <!-- Babylon.js Core -->
-        <script src=""babylonjs/babylon.js""></script>
-        
-        <!-- Babylon.js Supported Advanced Materials -->
-        <script src=""babylonjs/babylonjs.materials.min.js""></script>
-        
-        <!-- Babylon.js Procedural Textures -->
-        <script src=""babylonjs/babylonjs.proceduralTextures.min.js""></script>
-        
-        <!-- Babylon.js Post Processes -->
-        <script src=""babylonjs/babylonjs.postProcess.min.js""></script>
-        
-        <!-- Babylon.js All Official Loaders (OBJ, STL, glTF) -->
-        <script src=""babylonjs/babylonjs.loaders.min.js""></script>
-        
-        <!-- Babylon.js Scene/Mesh Serializers -->
-        <script src=""babylonjs/babylonjs.serializers.min.js""></script>
-        
-        <!-- Babylon.js GUI -->
-        <script src=""babylonjs/babylon.gui.min.js""></script>
-        
-        <!-- Babylon.js Inspector -->
-        <script src=""babylonjs/babylon.inspector.bundle.js""></script>
-        
-        <!-- Babylon.js Viewer -->
-        <!-- script src=""babylonjs/babylon.viewer.js""></script -->
-
-        <!-- KaTeX Core -->
-        <!-- link rel=""stylesheet"" href=""https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css"" integrity=""sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC"" crossorigin=""anonymous"" -->
-        <!-- script src=""https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js"" integrity=""sha384-X/XCfMm41VSsqRNQgDerQczD69XqmjOOOwYQvr/uuC+j4OPoNhVgjdGFwhvN02Ja"" crossorigin=""anonymous""></script -->
-        <link rel=""stylesheet"" href=""katex/katex.min.css"" integrity=""sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC"" crossorigin=""anonymous"">
-	    <script src=""katex/katex.min.js""></script>
-
-        <!-- KaTeX Auto-render extension -->
-        <!-- To automatically render math in text elements, include the auto-render extension: -->
-        <!-- script src=""https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js"" integrity=""sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR"" crossorigin=""anonymous"" ></script -->
-	    <script src=""katex/contrib/auto-render.min.js""></script>
-        
-        <!-- html2canvas.js -->
-        <script src=""html2canvas/html2canvas.min.js""></script>
+        !#js-lib-code#!
 	    
         <script>
           document.addEventListener(""DOMContentLoaded"", function() {
@@ -178,12 +271,20 @@ window.addEventListener(""resize"", function () {
             = new Dictionary<string, GrBabylonJsSceneComposer3D>();
 
 
+        public bool OfflineJavaScriptLibraries { get; set; } = false;
+
         public bool CanvasFullScreen { get; set; } = true;
 
         public int CanvasWidth { get; set; } = 1280;
 
         public int CanvasHeight { get; set; } = 720;
         
+        public double LaTeXScalingFactor { get; set; }
+            = 1 / 75d;
+
+        public WclHtmlImageDataUrlCache ImageCache { get; }
+            = new WclHtmlImageDataUrlCache();
+
         public GrBabylonJsSceneComposer3D this[string sceneName]
         {
             get => _sceneComposerList[sceneName];
@@ -408,16 +509,12 @@ canvas.height = {CanvasHeight};
             );
         }
 
-        public string GetHtmlCode()
-        {
-            return GetHtmlCode(
-                GetCreateScenesCode(),
-                GetAddScenesCode()
-            );
-        }
-
         public string GetHtmlCode(string createScenesCode, string addScenesCode)
         {
+            var jsLibCode = OfflineJavaScriptLibraries
+                ? JsLibCodeOffline
+                : JsLibCodeOnline;
+
             var renderCanvasCode = 
                 GetCssRenderCanvasCode();
 
@@ -430,13 +527,41 @@ canvas.height = {CanvasHeight};
             return HtmlCodeComposer.GenerateText(
                 new Dictionary<string, string>
                 {
+                    {"js-lib-code", jsLibCode},
                     {"css-renderCanvas-code", renderCanvasCode},
                     {"css-textDiv-code", textDivCode},
                     {"babylonjs-code", babylonJsCode}
                 }
             );
         }
-        
+
+        public string GetHtmlCode()
+        {
+            return GetHtmlCode(
+                GetCreateScenesCode(),
+                GetAddScenesCode()
+            ).RemoveRepeatedEmptyLines();
+        }
+
+        public TextFilesComposer GetCodeFiles()
+        {
+            var filesComposer = new TextFilesComposer();
+            
+            var fileComposer = 
+                filesComposer.InitalizeFile("index.html").ActiveFileComposer;
+
+            fileComposer.TextComposer.Append(
+                GetHtmlCode(
+                    GetCreateScenesCode(),
+                    GetAddScenesCode()
+                )
+            );
+
+            filesComposer.FinalizeAllFiles();
+
+            return filesComposer;
+        }
+
 
     }
 }

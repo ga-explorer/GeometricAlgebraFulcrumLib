@@ -1,22 +1,27 @@
 ﻿using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Visuals.Geometry.Space3D
 {
     public sealed class GeovPoint3D : 
-        IFloat64Tuple3D, IGeovGeometry3D
+        IFloat64Tuple3D, 
+        IGeovGeometry3D
     {
+        public int VSpaceDimensions 
+            => 3;
+
         public GeovGeometryContext3D GeometryContext { get; }
 
         public string Name { get; private set; }
 
-        public double X { get; set; }
+        public Float64Scalar X { get; set; }
         
-        public double Y { get; set; }
+        public Float64Scalar Y { get; set; }
         
-        public double Z { get; set; }
+        public Float64Scalar Z { get; set; }
 
         public double Item1 => X;
         
@@ -51,5 +56,7 @@ namespace GeometricAlgebraFulcrumLib.Visuals.Geometry.Space3D
                 .Append($"Point({X:G}, {Y:G}, {Z:G})")
                 .ToString();
         }
+
+        
     }
 }

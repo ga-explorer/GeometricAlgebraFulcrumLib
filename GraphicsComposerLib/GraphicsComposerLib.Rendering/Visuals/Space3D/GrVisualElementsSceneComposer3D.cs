@@ -1,13 +1,13 @@
-﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
-using GeometricAlgebraFulcrumLib.MathBase.Parametric.Curves;
+﻿using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Curves;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 using GraphicsComposerLib.Rendering.Visuals.Space3D.Basic;
 using GraphicsComposerLib.Rendering.Visuals.Space3D.Curves;
 using GraphicsComposerLib.Rendering.Visuals.Space3D.Grids;
-using GraphicsComposerLib.Rendering.Visuals.Space3D.Groups;
 using GraphicsComposerLib.Rendering.Visuals.Space3D.Images;
 using GraphicsComposerLib.Rendering.Visuals.Space3D.Surfaces;
-using GraphicsComposerLib.Rendering.Images;
+using GraphicsComposerLib.Rendering.Visuals.Space3D.Animations;
+using GraphicsComposerLib.Rendering.Visuals.Space3D.Styles;
+using WebComposerLib.Html.Media;
 
 namespace GraphicsComposerLib.Rendering.Visuals.Space3D
 {
@@ -99,10 +99,11 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D
         public GrVisualElementsSceneComposer3D<T> AddPoint(string name, IFloat64Tuple3D position, IGrVisualElementMaterial3D material, double thickness)
         {
             AddPoint(
-                new GrVisualPoint3D(name, position)
-                {
-                    Style = new GrVisualSurfaceThickStyle3D(material, thickness)
-                }
+                GrVisualPoint3D.CreateStatic(
+                    name, 
+                    material.CreateThickSurfaceStyle(thickness),
+                    position
+                )
             );
 
             return this;
@@ -111,13 +112,11 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D
         public GrVisualElementsSceneComposer3D<T> AddPoint(string name, IFloat64Tuple3D position, Color color, double thickness)
         {
             AddPoint(
-                new GrVisualPoint3D(name, position)
-                {
-                    Style = new GrVisualSurfaceThickStyle3D(
-                        AddOrGetColorMaterial(color),
-                        thickness
-                    )
-                }
+                GrVisualPoint3D.CreateStatic(
+                    name, 
+                    AddOrGetColorMaterial(color).CreateThickSurfaceStyle(thickness),
+                    position
+                )
             );
 
             return this;
@@ -126,10 +125,12 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D
         public GrVisualElementsSceneComposer3D<T> AddVector(string name, IFloat64Tuple3D direction, IGrVisualElementMaterial3D material, double thickness)
         {
             AddVector(
-                new GrVisualVector3D(name, Float64Tuple3D.Zero, direction)
-                {
-                    Style = new GrVisualVectorStyle3D(material, thickness)
-                }
+                GrVisualVector3D.CreateStatic(
+                    name, 
+                    material.CreateTubeCurveStyle(thickness),
+                    Float64Vector3D.Zero,
+                    direction
+                )
             );
 
             return this;
@@ -138,13 +139,12 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D
         public GrVisualElementsSceneComposer3D<T> AddVector(string name, IFloat64Tuple3D direction, Color color, double thickness)
         {
             AddVector(
-                new GrVisualVector3D(name, Float64Tuple3D.Zero, direction)
-                {
-                    Style = new GrVisualVectorStyle3D(
-                        AddOrGetColorMaterial(color),
-                        thickness
-                    )
-                }
+                GrVisualVector3D.CreateStatic(
+                    name, 
+                    AddOrGetColorMaterial(color).CreateTubeCurveStyle(thickness),
+                    Float64Vector3D.Zero, 
+                    direction
+                )
             );
 
             return this;
@@ -153,10 +153,12 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D
         public GrVisualElementsSceneComposer3D<T> AddVector(string name, IFloat64Tuple3D origin, IFloat64Tuple3D direction, IGrVisualElementMaterial3D material, double thickness)
         {
             AddVector(
-                new GrVisualVector3D(name, origin, direction)
-                {
-                    Style = new GrVisualVectorStyle3D(material, thickness)
-                }
+                GrVisualVector3D.CreateStatic(
+                    name, 
+                    material.CreateTubeCurveStyle(thickness),
+                    origin, 
+                    direction
+                )
             );
 
             return this;
@@ -165,72 +167,72 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D
         public GrVisualElementsSceneComposer3D<T> AddVector(string name, IFloat64Tuple3D origin, IFloat64Tuple3D direction, Color color, double thickness)
         {
             AddVector(
-                new GrVisualVector3D(name, origin, direction)
-                {
-                    Style = new GrVisualVectorStyle3D(
-                        AddOrGetColorMaterial(color),
-                        thickness
-                    )
-                }
+                GrVisualVector3D.CreateStatic(
+                    name, 
+                    AddOrGetColorMaterial(color).CreateTubeCurveStyle(thickness),
+                    origin, 
+                    direction
+                )
+            );
+
+            return this;
+        }
+        
+        public GrVisualElementsSceneComposer3D<T> AddLineSegment(string name, IFloat64Tuple3D point1, IFloat64Tuple3D point2, IGrVisualElementMaterial3D material, double thickness, GrVisualAnimationSpecs animationSpecs)
+        {
+            AddLineSegment(
+                GrVisualLineSegment3D.Create(
+                    name,
+                    material.CreateTubeCurveStyle(thickness), 
+                    point1, 
+                    point2,
+                    animationSpecs
+                )
+            );
+
+            return this;
+        }
+
+        public GrVisualElementsSceneComposer3D<T> AddLineSegment(string name, IFloat64Tuple3D point1, IFloat64Tuple3D point2, Color color, double thickness, GrVisualAnimationSpecs animationSpecs)
+        {
+            AddLineSegment(
+                GrVisualLineSegment3D.Create(
+                    name, 
+                    AddOrGetColorMaterial(color).CreateTubeCurveStyle(thickness),
+                    point1, 
+                    point2,
+                    animationSpecs
+                )
             );
 
             return this;
         }
     
-        public GrVisualElementsSceneComposer3D<T> AddLineSegment(string name, IFloat64Tuple3D point1, IFloat64Tuple3D point2, IGrVisualElementMaterial3D material, double thickness)
+        public GrVisualElementsSceneComposer3D<T> AddLineSegment(string name, IFloat64Tuple3D point1, IFloat64Tuple3D point2, Color color, GrVisualAnimationSpecs animationSpecs)
         {
             AddLineSegment(
-                new GrVisualLineSegment3D(name)
-                {
-                    Position1 = point1,
-                    Position2 = point2,
-                    Style = new GrVisualCurveTubeStyle3D(material, thickness)
-                }
+                GrVisualLineSegment3D.Create(
+                    name, 
+                    color.CreateSolidLineCurveStyle(),
+                    point1, 
+                    point2,
+                    animationSpecs
+                )
             );
 
             return this;
         }
-
-        public GrVisualElementsSceneComposer3D<T> AddLineSegment(string name, IFloat64Tuple3D point1, IFloat64Tuple3D point2, Color color, double thickness)
+        
+        public GrVisualElementsSceneComposer3D<T> AddLineSegment(string name, IFloat64Tuple3D point1, IFloat64Tuple3D point2, Color color, GrVisualDashedLineSpecs dashSpecs, GrVisualAnimationSpecs animationSpecs)
         {
             AddLineSegment(
-                new GrVisualLineSegment3D(name)
-                {
-                    Position1 = point1,
-                    Position2 = point2,
-                    Style = new GrVisualCurveTubeStyle3D(
-                        AddOrGetColorMaterial(color),
-                        thickness
-                    )
-                }
-            );
-
-            return this;
-        }
-    
-        public GrVisualElementsSceneComposer3D<T> AddLineSegment(string name, IFloat64Tuple3D point1, IFloat64Tuple3D point2, Color color)
-        {
-            AddLineSegment(
-                new GrVisualLineSegment3D(name)
-                {
-                    Position1 = point1,
-                    Position2 = point2,
-                    Style = new GrVisualCurveSolidLineStyle3D(color)
-                }
-            );
-
-            return this;
-        }
-    
-        public GrVisualElementsSceneComposer3D<T> AddLineSegment(string name, IFloat64Tuple3D point1, IFloat64Tuple3D point2, Color color, GrVisualDashedLineSpecs dashSpecs)
-        {
-            AddLineSegment(
-                new GrVisualLineSegment3D(name)
-                {
-                    Position1 = point1,
-                    Position2 = point2,
-                    Style = new GrVisualCurveDashedLineStyle3D(color, dashSpecs)
-                }
+                GrVisualLineSegment3D.Create(
+                    name, 
+                    new GrVisualCurveDashedLineStyle3D(color, dashSpecs), 
+                    point1, 
+                    point2,
+                    animationSpecs
+                )
             );
 
             return this;
@@ -239,10 +241,11 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D
         public GrVisualElementsSceneComposer3D<T> AddLinePath(string name, IReadOnlyList<IFloat64Tuple3D> pointList, IGrVisualElementMaterial3D material, double thickness)
         {
             AddLinePath(
-                new GrVisualLinePathCurve3D(name, pointList)
-                {
-                    Style = new GrVisualCurveTubeStyle3D(material, thickness)
-                }
+                GrVisualPointPathCurve3D.CreateStatic(
+                    name, 
+                    material.CreateTubeCurveStyle(thickness), 
+                    pointList
+                )
             );
 
             return this;
@@ -251,13 +254,11 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D
         public GrVisualElementsSceneComposer3D<T> AddLinePath(string name, IReadOnlyList<IFloat64Tuple3D> pointList, Color color, double thickness)
         {
             AddLinePath(
-                new GrVisualLinePathCurve3D(name, pointList)
-                {
-                    Style = new GrVisualCurveTubeStyle3D(
-                        AddOrGetColorMaterial(color),
-                        thickness
-                    )
-                }
+                GrVisualPointPathCurve3D.CreateStatic(
+                    name, 
+                    AddOrGetColorMaterial(color).CreateTubeCurveStyle(thickness), 
+                    pointList
+                )
             );
 
             return this;
@@ -266,10 +267,11 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D
         public GrVisualElementsSceneComposer3D<T> AddLinePath(string name, IReadOnlyList<IFloat64Tuple3D> pointList, Color color)
         {
             AddLinePath(
-                new GrVisualLinePathCurve3D(name, pointList)
-                {
-                    Style = new GrVisualCurveSolidLineStyle3D(color)
-                }
+                GrVisualPointPathCurve3D.CreateStatic(
+                    name, 
+                    color.CreateSolidLineCurveStyle(), 
+                    pointList
+                )
             );
 
             return this;
@@ -278,10 +280,11 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D
         public GrVisualElementsSceneComposer3D<T> AddLinePath(string name, IReadOnlyList<IFloat64Tuple3D> pointList, Color color, GrVisualDashedLineSpecs dashSpecs)
         {
             AddLinePath(
-                new GrVisualLinePathCurve3D(name, pointList)
-                {
-                    Style = new GrVisualCurveDashedLineStyle3D(color, dashSpecs)
-                }
+                GrVisualPointPathCurve3D.CreateStatic(
+                    name, 
+                    new GrVisualCurveDashedLineStyle3D(color, dashSpecs), 
+                    pointList
+                )
             );
 
             return this;
@@ -291,8 +294,8 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D
         {
             return AddCircle(
                 name,
-                Float64Tuple3D.Zero,
-                Float64Tuple3D.E1,
+                Float64Vector3D.Zero,
+                Float64Vector3D.E1,
                 radius,
                 material,
                 thickness
@@ -303,8 +306,8 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D
         {
             return AddCircle(
                 name,
-                Float64Tuple3D.Zero,
-                Float64Tuple3D.E2,
+                Float64Vector3D.Zero,
+                Float64Vector3D.E2,
                 radius,
                 material,
                 thickness
@@ -315,8 +318,8 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D
         {
             return AddCircle(
                 name,
-                Float64Tuple3D.Zero,
-                Float64Tuple3D.E3,
+                Float64Vector3D.Zero,
+                Float64Vector3D.E3,
                 radius,
                 material,
                 thickness
@@ -326,13 +329,13 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D
         public GrVisualElementsSceneComposer3D<T> AddCircle(string name, IFloat64Tuple3D center, IFloat64Tuple3D normal, double radius, IGrVisualElementMaterial3D material, double thickness)
         {
             AddCircle(
-                new GrVisualCircleCurve3D(name)
-                {
-                    Center = center,
-                    Normal = normal.ToUnitVector(),
-                    Radius = radius,
-                    Style = new GrVisualCurveTubeStyle3D(material, thickness)
-                }
+                GrVisualCircleCurve3D.CreateStatic(
+                    name,
+                    material.CreateTubeCurveStyle(thickness),
+                    center,
+                    normal.ToUnitVector(),
+                    radius
+                )
             );
 
             return this;
@@ -341,16 +344,13 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D
         public GrVisualElementsSceneComposer3D<T> AddCircle(string name, IFloat64Tuple3D center, IFloat64Tuple3D normal, double radius, Color color, double thickness)
         {
             AddCircle(
-                new GrVisualCircleCurve3D(name)
-                {
-                    Center = center,
-                    Normal = normal.ToUnitVector(),
-                    Radius = radius,
-                    Style = new GrVisualCurveTubeStyle3D(
-                        AddOrGetColorMaterial(color),
-                        thickness
-                    )
-                }
+                GrVisualCircleCurve3D.CreateStatic(
+                    name,
+                    AddOrGetColorMaterial(color).CreateTubeCurveStyle(thickness),
+                    center,
+                    normal.ToUnitVector(),
+                    radius
+                )
             );
 
             return this;
@@ -359,13 +359,13 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D
         public GrVisualElementsSceneComposer3D<T> AddCircle(string name, IFloat64Tuple3D center, IFloat64Tuple3D normal, double radius, Color color)
         {
             AddCircle(
-                new GrVisualCircleCurve3D(name)
-                {
-                    Center = center,
-                    Normal = normal.ToUnitVector(),
-                    Radius = radius,
-                    Style = new GrVisualCurveSolidLineStyle3D(color)
-                }
+                GrVisualCircleCurve3D.CreateStatic(
+                    name,
+                    color.CreateSolidLineCurveStyle(),
+                    center,
+                    normal.ToUnitVector(),
+                    radius
+                )
             );
 
             return this;
@@ -374,30 +374,30 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D
         public GrVisualElementsSceneComposer3D<T> AddCircle(string name, IFloat64Tuple3D center, IFloat64Tuple3D normal, double radius, Color color, GrVisualDashedLineSpecs dashSpecs)
         {
             AddCircle(
-                new GrVisualCircleCurve3D(name)
-                {
-                    Center = center,
-                    Normal = normal.ToUnitVector(),
-                    Radius = radius,
-                    Style = new GrVisualCurveDashedLineStyle3D(color, dashSpecs)
-                }
+                GrVisualCircleCurve3D.CreateStatic(
+                    name,
+                    new GrVisualCurveDashedLineStyle3D(color, dashSpecs),
+                    center,
+                    normal.ToUnitVector(),
+                    radius
+                )
             );
 
             return this;
         }
-    
+        
         public GrVisualElementsSceneComposer3D<T> AddCircleArc(string name, IFloat64Tuple3D center, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, double radius, bool innerArc, IGrVisualElementMaterial3D material, double thickness)
         {
             AddCircleArc(
-                new GrVisualCircleArcCurve3D(name)
-                {
-                    Center = center,
-                    Direction1 = direction1.ToUnitVector(),
-                    Direction2 = direction2.ToUnitVector(),
-                    Radius = radius,
-                    InnerArc = innerArc,
-                    Style = new GrVisualCurveTubeStyle3D(material, thickness)
-                }
+                GrVisualCircleArcCurve3D.CreateStatic(
+                    name,
+                    material.CreateTubeCurveStyle(thickness),
+                    center,
+                    direction1.ToUnitVector(),
+                    direction2.ToUnitVector(),
+                    radius,
+                    innerArc
+                )
             );
 
             return this;
@@ -406,18 +406,15 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D
         public GrVisualElementsSceneComposer3D<T> AddCircleArc(string name, IFloat64Tuple3D center, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, double radius, bool innerArc, Color color, double thickness)
         {
             AddCircleArc(
-                new GrVisualCircleArcCurve3D(name)
-                {
-                    Center = center,
-                    Direction1 = direction1.ToUnitVector(),
-                    Direction2 = direction2.ToUnitVector(),
-                    Radius = radius,
-                    InnerArc = innerArc,
-                    Style = new GrVisualCurveTubeStyle3D(
-                        AddOrGetColorMaterial(color),
-                        thickness
-                    )
-                }
+                GrVisualCircleArcCurve3D.CreateStatic(
+                    name,
+                    AddOrGetColorMaterial(color).CreateTubeCurveStyle(thickness),
+                    center,
+                    direction1.ToUnitVector(),
+                    direction2.ToUnitVector(),
+                    radius,
+                    innerArc
+                )
             );
 
             return this;
@@ -426,15 +423,15 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D
         public GrVisualElementsSceneComposer3D<T> AddCircleArc(string name, IFloat64Tuple3D center, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, double radius, bool innerArc, Color color)
         {
             AddCircleArc(
-                new GrVisualCircleArcCurve3D(name)
-                {
-                    Center = center,
-                    Direction1 = direction1.ToUnitVector(),
-                    Direction2 = direction2.ToUnitVector(),
-                    Radius = radius,
-                    InnerArc = innerArc,
-                    Style = new GrVisualCurveSolidLineStyle3D(color)
-                }
+                GrVisualCircleArcCurve3D.CreateStatic(
+                    name,
+                    color.CreateSolidLineCurveStyle(),
+                    center,
+                    direction1.ToUnitVector(),
+                    direction2.ToUnitVector(),
+                    radius,
+                    innerArc
+                )
             );
 
             return this;
@@ -443,15 +440,15 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D
         public GrVisualElementsSceneComposer3D<T> AddCircleArc(string name, IFloat64Tuple3D center, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, double radius, bool innerArc, Color color, GrVisualDashedLineSpecs dashSpecs)
         {
             AddCircleArc(
-                new GrVisualCircleArcCurve3D(name)
-                {
-                    Center = center,
-                    Direction1 = direction1.ToUnitVector(),
-                    Direction2 = direction2.ToUnitVector(),
-                    Radius = radius,
-                    InnerArc = innerArc,
-                    Style = new GrVisualCurveDashedLineStyle3D(color, dashSpecs)
-                }
+                GrVisualCircleArcCurve3D.CreateStatic(
+                    name,
+                    new GrVisualCurveDashedLineStyle3D(color, dashSpecs),
+                    center,
+                    direction1.ToUnitVector(),
+                    direction2.ToUnitVector(),
+                    radius,
+                    innerArc
+                )
             );
 
             return this;
@@ -460,10 +457,13 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D
         public GrVisualElementsSceneComposer3D<T> AddParametricCurve(string name, IParametricCurve3D curve, IReadOnlyList<double> parameterValues, IReadOnlyList<double> frameParameterValues, IGrVisualElementMaterial3D material, double thickness)
         {
             AddParametricCurve(
-                new GrVisualParametricCurve3D(name, curve, parameterValues, frameParameterValues)
-                {
-                    Style = new GrVisualCurveTubeStyle3D(material, thickness)
-                }
+                GrVisualParametricCurve3D.Create(
+                    name, 
+                    material.CreateTubeCurveStyle(thickness), 
+                    curve, 
+                    parameterValues, 
+                    frameParameterValues
+                )
             );
 
             return this;
@@ -472,13 +472,13 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D
         public GrVisualElementsSceneComposer3D<T> AddParametricCurve(string name, IParametricCurve3D curve, IReadOnlyList<double> parameterValues, IReadOnlyList<double> frameParameterValues, Color color, double thickness)
         {
             AddParametricCurve(
-                new GrVisualParametricCurve3D(name, curve, parameterValues, frameParameterValues)
-                {
-                    Style = new GrVisualCurveTubeStyle3D(
-                        AddOrGetColorMaterial(color),
-                        thickness
-                    )
-                }
+                GrVisualParametricCurve3D.Create(
+                    name, 
+                    AddOrGetColorMaterial(color).CreateTubeCurveStyle(thickness),
+                    curve, 
+                    parameterValues, 
+                    frameParameterValues
+                )
             );
 
             return this;
@@ -487,10 +487,13 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D
         public GrVisualElementsSceneComposer3D<T> AddParametricCurve(string name, IParametricCurve3D curve, IReadOnlyList<double> parameterValues, IReadOnlyList<double> frameParameterValues, Color color)
         {
             AddParametricCurve(
-                new GrVisualParametricCurve3D(name, curve, parameterValues, frameParameterValues)
-                {
-                    Style = new GrVisualCurveSolidLineStyle3D(color)
-                }
+                GrVisualParametricCurve3D.Create(
+                    name, 
+                    color.CreateSolidLineCurveStyle(),
+                    curve, 
+                    parameterValues, 
+                    frameParameterValues
+                )
             );
 
             return this;
@@ -499,10 +502,13 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D
         public GrVisualElementsSceneComposer3D<T> AddParametricCurve(string name, IParametricCurve3D curve, IReadOnlyList<double> parameterValues, IReadOnlyList<double> frameParameterValues, Color color, GrVisualDashedLineSpecs dashSpecs)
         {
             AddParametricCurve(
-                new GrVisualParametricCurve3D(name, curve, parameterValues, frameParameterValues)
-                {
-                    Style = new GrVisualCurveDashedLineStyle3D(color, dashSpecs)
-                }
+                GrVisualParametricCurve3D.Create(
+                    name,
+                    new GrVisualCurveDashedLineStyle3D(color, dashSpecs),
+                    curve, 
+                    parameterValues, 
+                    frameParameterValues
+                )
             );
 
             return this;
@@ -511,10 +517,14 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D
         public GrVisualElementsSceneComposer3D<T> AddRightAngle(string name, IFloat64Tuple3D center, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, double radius, IGrVisualElementMaterial3D material, double thickness)
         {
             AddRightAngle(
-                new GrVisualRightAngle3D(name, center, direction1, direction2, radius)
-                {
-                    Style = new GrVisualCurveTubeStyle3D(material, thickness)
-                }
+                GrVisualRightAngle3D.CreateStatic(
+                    name, 
+                    material.CreateTubeCurveStyle(thickness),
+                    center, 
+                    direction1, 
+                    direction2, 
+                    radius
+                )
             );
 
             return this;
@@ -523,13 +533,14 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D
         public GrVisualElementsSceneComposer3D<T> AddRightAngle(string name, IFloat64Tuple3D center, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, double radius, Color color, double thickness)
         {
             AddRightAngle(
-                new GrVisualRightAngle3D(name, center, direction1, direction2, radius)
-                {
-                    Style = new GrVisualCurveTubeStyle3D(
-                        AddOrGetColorMaterial(color),
-                        thickness
-                    )
-                }
+                GrVisualRightAngle3D.CreateStatic(
+                    name, 
+                    AddOrGetColorMaterial(color).CreateTubeCurveStyle(thickness),
+                    center, 
+                    direction1, 
+                    direction2, 
+                    radius
+                )
             );
 
             return this;
@@ -538,10 +549,14 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D
         public GrVisualElementsSceneComposer3D<T> AddRightAngle(string name, IFloat64Tuple3D center, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, double radius, Color color)
         {
             AddRightAngle(
-                new GrVisualRightAngle3D(name, center, direction1, direction2, radius)
-                {
-                    Style = new GrVisualCurveSolidLineStyle3D(color)
-                }
+                GrVisualRightAngle3D.CreateStatic(
+                    name, 
+                    color.CreateSolidLineCurveStyle(),
+                    center, 
+                    direction1, 
+                    direction2, 
+                    radius
+                )
             );
 
             return this;
@@ -550,10 +565,14 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D
         public GrVisualElementsSceneComposer3D<T> AddRightAngle(string name, IFloat64Tuple3D center, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, double radius, Color color, GrVisualDashedLineSpecs dashSpecs)
         {
             AddRightAngle(
-                new GrVisualRightAngle3D(name, center, direction1, direction2, radius)
-                {
-                    Style = new GrVisualCurveDashedLineStyle3D(color, dashSpecs)
-                }
+                GrVisualRightAngle3D.CreateStatic(
+                    name, 
+                    new GrVisualCurveDashedLineStyle3D(color, dashSpecs),
+                    center, 
+                    direction1, 
+                    direction2, 
+                    radius
+                )
             );
 
             return this;
@@ -562,14 +581,15 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D
         public GrVisualElementsSceneComposer3D<T> AddRightAngle(string name, IFloat64Tuple3D center, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, double radius, IGrVisualElementMaterial3D material, double thickness, Color innerColor)
         {
             AddRightAngle(
-                new GrVisualRightAngle3D(name, center, direction1, direction2, radius)
-                {
-                    Style = new GrVisualCurveTubeStyle3D(material, thickness),
-
-                    InnerStyle = new GrVisualSurfaceThinStyle3D(
-                        AddOrGetColorMaterial(innerColor)
-                    )
-                }
+                GrVisualRightAngle3D.CreateStatic(
+                    name, 
+                    material.CreateTubeCurveStyle(thickness),
+                    AddOrGetColorMaterial(innerColor).CreateThinSurfaceStyle(),
+                    center, 
+                    direction1, 
+                    direction2, 
+                    radius
+                )
             );
 
             return this;
@@ -578,17 +598,15 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D
         public GrVisualElementsSceneComposer3D<T> AddRightAngle(string name, IFloat64Tuple3D center, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, double radius, Color color, double thickness, Color innerColor)
         {
             AddRightAngle(
-                new GrVisualRightAngle3D(name, center, direction1, direction2, radius)
-                {
-                    Style = new GrVisualCurveTubeStyle3D(
-                        AddOrGetColorMaterial(color),
-                        thickness
-                    ),
-
-                    InnerStyle = new GrVisualSurfaceThinStyle3D(
-                        AddOrGetColorMaterial(innerColor)
-                    )
-                }
+                GrVisualRightAngle3D.CreateStatic(
+                    name,
+                    AddOrGetColorMaterial(color).CreateTubeCurveStyle(thickness),
+                    AddOrGetColorMaterial(innerColor).CreateThinSurfaceStyle(),
+                    center, 
+                    direction1, 
+                    direction2, 
+                    radius
+                )
             );
 
             return this;
@@ -597,14 +615,15 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D
         public GrVisualElementsSceneComposer3D<T> AddRightAngle(string name, IFloat64Tuple3D center, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, double radius, Color color, Color innerColor)
         {
             AddRightAngle(
-                new GrVisualRightAngle3D(name, center, direction1, direction2, radius)
-                {
-                    Style = new GrVisualCurveSolidLineStyle3D(color),
-
-                    InnerStyle = new GrVisualSurfaceThinStyle3D(
-                        AddOrGetColorMaterial(innerColor)
-                    )
-                }
+                GrVisualRightAngle3D.CreateStatic(
+                    name, 
+                    color.CreateSolidLineCurveStyle(),
+                    AddOrGetColorMaterial(innerColor).CreateThinSurfaceStyle(),
+                    center, 
+                    direction1, 
+                    direction2, 
+                    radius
+                )
             );
 
             return this;
@@ -613,28 +632,32 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D
         public GrVisualElementsSceneComposer3D<T> AddRightAngle(string name, IFloat64Tuple3D center, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, double radius, Color color, GrVisualDashedLineSpecs dashSpecs, Color innerColor)
         {
             AddRightAngle(
-                new GrVisualRightAngle3D(name, center, direction1, direction2, radius)
-                {
-                    Style = new GrVisualCurveDashedLineStyle3D(color, dashSpecs),
-
-                    InnerStyle = new GrVisualSurfaceThinStyle3D(
-                        AddOrGetColorMaterial(innerColor)
-                    )
-                }
+                GrVisualRightAngle3D.CreateStatic(
+                    name, 
+                    new GrVisualCurveDashedLineStyle3D(color, dashSpecs),
+                    AddOrGetColorMaterial(innerColor).CreateThinSurfaceStyle(),
+                    center, 
+                    direction1, 
+                    direction2, 
+                    radius
+                )
             );
 
             return this;
         }
-    
+        
         public GrVisualElementsSceneComposer3D<T> AddRightAngle(string name, IFloat64Tuple3D center, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, double radius, IGrVisualElementMaterial3D material, double thickness, IGrVisualElementMaterial3D innerMaterial)
         {
             AddRightAngle(
-                new GrVisualRightAngle3D(name, center, direction1, direction2, radius)
-                {
-                    Style = new GrVisualCurveTubeStyle3D(material, thickness),
-
-                    InnerStyle = new GrVisualSurfaceThinStyle3D(innerMaterial)
-                }
+                GrVisualRightAngle3D.CreateStatic(
+                    name, 
+                    material.CreateTubeCurveStyle(thickness),
+                    innerMaterial.CreateThinSurfaceStyle(),
+                    center, 
+                    direction1, 
+                    direction2, 
+                    radius
+                )
             );
 
             return this;
@@ -643,15 +666,15 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D
         public GrVisualElementsSceneComposer3D<T> AddRightAngle(string name, IFloat64Tuple3D center, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, double radius, Color color, double thickness, IGrVisualElementMaterial3D innerMaterial)
         {
             AddRightAngle(
-                new GrVisualRightAngle3D(name, center, direction1, direction2, radius)
-                {
-                    Style = new GrVisualCurveTubeStyle3D(
-                        AddOrGetColorMaterial(color),
-                        thickness
-                    ),
-
-                    InnerStyle = new GrVisualSurfaceThinStyle3D(innerMaterial)
-                }
+                GrVisualRightAngle3D.CreateStatic(
+                    name, 
+                    AddOrGetColorMaterial(color).CreateTubeCurveStyle(thickness),
+                    innerMaterial.CreateThinSurfaceStyle(),
+                    center, 
+                    direction1, 
+                    direction2, 
+                    radius
+                )
             );
 
             return this;
@@ -660,12 +683,15 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D
         public GrVisualElementsSceneComposer3D<T> AddRightAngle(string name, IFloat64Tuple3D center, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, double radius, Color color, IGrVisualElementMaterial3D innerMaterial)
         {
             AddRightAngle(
-                new GrVisualRightAngle3D(name, center, direction1, direction2, radius)
-                {
-                    Style = new GrVisualCurveSolidLineStyle3D(color),
-
-                    InnerStyle = new GrVisualSurfaceThinStyle3D(innerMaterial)
-                }
+                GrVisualRightAngle3D.CreateStatic(
+                    name, 
+                    color.CreateSolidLineCurveStyle(),
+                    innerMaterial.CreateThinSurfaceStyle(),
+                    center, 
+                    direction1, 
+                    direction2, 
+                    radius
+                )
             );
 
             return this;
@@ -674,110 +700,109 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D
         public GrVisualElementsSceneComposer3D<T> AddRightAngle(string name, IFloat64Tuple3D center, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, double radius, Color color, GrVisualDashedLineSpecs dashSpecs, IGrVisualElementMaterial3D innerMaterial)
         {
             AddRightAngle(
-                new GrVisualRightAngle3D(name, center, direction1, direction2, radius)
-                {
-                    Style = new GrVisualCurveDashedLineStyle3D(color, dashSpecs),
-
-                    InnerStyle = new GrVisualSurfaceThinStyle3D(innerMaterial)
-                }
+                GrVisualRightAngle3D.CreateStatic(
+                    name, 
+                    new GrVisualCurveDashedLineStyle3D(color, dashSpecs),
+                    innerMaterial.CreateThinSurfaceStyle(),
+                    center, 
+                    direction1, 
+                    direction2, 
+                    radius
+                )
             );
 
             return this;
         }
     
-        public GrVisualElementsSceneComposer3D<T> AddSphere(string name, IFloat64Tuple3D center, double radius, IGrVisualElementMaterial3D material, double thickness)
+        public GrVisualElementsSceneComposer3D<T> AddSphereSurface(string name, IFloat64Tuple3D center, double radius, IGrVisualElementMaterial3D material, double thickness, GrVisualAnimationSpecs animationSpecs)
         {
-            AddSphere(
-                new GrVisualSphere3D(name)
-                {
-                    Center = center,
-                    Radius = radius,
-                    Style = new GrVisualSurfaceThickStyle3D(material, thickness)
-                }
+            AddSphereSurface(
+                GrVisualSphereSurface3D.Create(
+                    name,
+                    material.CreateThickSurfaceStyle(thickness),
+                    center,
+                    radius,
+                    animationSpecs
+                )
             );
 
             return this;
         }
     
-        public GrVisualElementsSceneComposer3D<T> AddSphere(string name, IFloat64Tuple3D center, double radius, Color color, double thickness)
+        public GrVisualElementsSceneComposer3D<T> AddSphereSurface(string name, IFloat64Tuple3D center, double radius, Color color, double thickness, GrVisualAnimationSpecs animationSpecs)
         {
-            AddSphere(
-                new GrVisualSphere3D(name)
-                {
-                    Center = center,
-                    Radius = radius,
-                    Style = new GrVisualSurfaceThickStyle3D(
-                        AddOrGetColorMaterial(color),
-                        thickness
-                    )
-                }
+            AddSphereSurface(
+                GrVisualSphereSurface3D.Create(
+                    name,
+                    AddOrGetColorMaterial(color).CreateThickSurfaceStyle(thickness),
+                    center,
+                    radius,
+                    animationSpecs
+                )
             );
 
             return this;
         }
     
-        public GrVisualElementsSceneComposer3D<T> AddSphere(string name, IFloat64Tuple3D center, double radius, IGrVisualElementMaterial3D material)
+        public GrVisualElementsSceneComposer3D<T> AddSphereSurface(string name, IFloat64Tuple3D center, double radius, IGrVisualElementMaterial3D material, GrVisualAnimationSpecs animationSpecs)
         {
-            AddSphere(
-                new GrVisualSphere3D(name)
-                {
-                    Center = center,
-                    Radius = radius,
-                    Style = new GrVisualSurfaceThinStyle3D(material)
-                }
+            AddSphereSurface(
+                GrVisualSphereSurface3D.Create(
+                    name,
+                    material.CreateThinSurfaceStyle(),
+                    center,
+                    radius,
+                    animationSpecs
+                )
             );
 
             return this;
         }
 
-        public GrVisualElementsSceneComposer3D<T> AddSphere(string name, IFloat64Tuple3D center, double radius, Color color)
+        public GrVisualElementsSceneComposer3D<T> AddSphereSurface(string name, IFloat64Tuple3D center, double radius, Color color, GrVisualAnimationSpecs animationSpecs)
         {
-            AddSphere(
-                new GrVisualSphere3D(name)
-                {
-                    Center = center,
-                    Radius = radius,
-                    Style = new GrVisualSurfaceThinStyle3D(
-                        AddOrGetColorMaterial(color)
-                    )
-                }
+            AddSphereSurface(
+                GrVisualSphereSurface3D.Create(
+                    name,
+                    AddOrGetColorMaterial(color).CreateThinSurfaceStyle(),
+                    center,
+                    radius,
+                    animationSpecs
+                )
             );
 
             return this;
         }
     
-        public GrVisualElementsSceneComposer3D<T> AddTorus(string name, IFloat64Tuple3D center, IFloat64Tuple3D normal, double minRadius, double maxRadius, IGrVisualElementMaterial3D material, double thickness)
+        public GrVisualElementsSceneComposer3D<T> AddTorus(string name, IFloat64Tuple3D center, IFloat64Tuple3D normal, double minRadius, double maxRadius, IGrVisualElementMaterial3D material, double thickness, GrVisualAnimationSpecs animationSpecs)
         {
-            AddRingSurface(
-                new GrVisualRingSurface3D(name)
-                {
-                    Center = center,
-                    Normal = normal.ToUnitVector(),
-                    MinRadius = minRadius,
-                    MaxRadius = maxRadius,
-
-                    Style = new GrVisualSurfaceThickStyle3D(material, thickness)
-                }
+            AddCircleRingSurface(
+                GrVisualCircleRingSurface3D.Create(
+                    name,
+                    material.CreateThickSurfaceStyle(thickness),
+                    center,
+                    normal,
+                    minRadius,
+                    maxRadius,
+                    animationSpecs
+                )
             );
 
             return this;
         }
 
-        public GrVisualElementsSceneComposer3D<T> AddTorus(string name, IFloat64Tuple3D center, IFloat64Tuple3D normal, double minRadius, double maxRadius, Color color, double thickness)
+        public GrVisualElementsSceneComposer3D<T> AddTorus(string name, IFloat64Tuple3D center, IFloat64Tuple3D normal, double minRadius, double maxRadius, Color color, double thickness, GrVisualAnimationSpecs animationSpecs)
         {
-            AddRingSurface(
-                new GrVisualRingSurface3D(name)
-                {
-                    Center = center,
-                    Normal = normal.ToUnitVector(),
-                    MinRadius = minRadius,
-                    MaxRadius = maxRadius,
-
-                    Style = new GrVisualSurfaceThickStyle3D(
-                        AddOrGetColorMaterial(color),
-                        thickness
-                    )
-                }
+            AddCircleRingSurface(
+                GrVisualCircleRingSurface3D.Create(
+                    name,
+                    AddOrGetColorMaterial(color).CreateThickSurfaceStyle(thickness),
+                    center,
+                    normal,
+                    minRadius,
+                    maxRadius,
+                    animationSpecs
+                )
             );
 
             return this;
@@ -785,15 +810,15 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D
     
         public GrVisualElementsSceneComposer3D<T> AddDisc(string name, IFloat64Tuple3D center, IFloat64Tuple3D normal, double radius, IGrVisualElementMaterial3D material, double thickness)
         {
-            AddDisc(
-                new GrVisualCircleSurface3D(name)
-                {
-                    Center = center,
-                    Normal = normal.ToUnitVector(),
-                    Radius = radius,
-
-                    Style = new GrVisualSurfaceThickStyle3D(material, thickness)
-                }
+            AddCircleSurface(
+                GrVisualCircleSurface3D.CreateStatic(
+                    name,
+                    material.CreateThickSurfaceStyle(thickness),
+                    center,
+                    normal,
+                    radius,
+                    false
+                )
             );
 
             return this;
@@ -801,18 +826,15 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D
 
         public GrVisualElementsSceneComposer3D<T> AddDisc(string name, IFloat64Tuple3D center, IFloat64Tuple3D normal, double radius, Color color, double thickness)
         {
-            AddDisc(
-                new GrVisualCircleSurface3D(name)
-                {
-                    Center = center,
-                    Normal = normal.ToUnitVector(),
-                    Radius = radius,
-
-                    Style = new GrVisualSurfaceThickStyle3D(
-                        AddOrGetColorMaterial(color),
-                        thickness
-                    )
-                }
+            AddCircleSurface(
+                GrVisualCircleSurface3D.CreateStatic(
+                    name,
+                    AddOrGetColorMaterial(color).CreateThickSurfaceStyle(thickness),
+                    center,
+                    normal,
+                    radius,
+                    false
+                )
             );
 
             return this;
@@ -820,15 +842,15 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D
     
         public GrVisualElementsSceneComposer3D<T> AddDisc(string name, IFloat64Tuple3D center, IFloat64Tuple3D normal, double radius, IGrVisualElementMaterial3D material)
         {
-            AddDisc(
-                new GrVisualCircleSurface3D(name)
-                {
-                    Center = center,
-                    Normal = normal.ToUnitVector(),
-                    Radius = radius,
-
-                    Style = new GrVisualSurfaceThinStyle3D(material)
-                }
+            AddCircleSurface(
+                GrVisualCircleSurface3D.CreateStatic(
+                    name,
+                    material.CreateThinSurfaceStyle(),
+                    center,
+                    normal,
+                    radius,
+                    false
+                )
             );
 
             return this;
@@ -836,17 +858,15 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D
 
         public GrVisualElementsSceneComposer3D<T> AddDisc(string name, IFloat64Tuple3D center, IFloat64Tuple3D normal, double radius, Color color)
         {
-            AddDisc(
-                new GrVisualCircleSurface3D(name)
-                {
-                    Center = center,
-                    Normal = normal.ToUnitVector(),
-                    Radius = radius,
-
-                    Style = new GrVisualSurfaceThinStyle3D(
-                        AddOrGetColorMaterial(color)
-                    )
-                }
+            AddCircleSurface(
+                GrVisualCircleSurface3D.CreateStatic(
+                    name,
+                    AddOrGetColorMaterial(color).CreateThinSurfaceStyle(),
+                    center,
+                    normal,
+                    radius,
+                    false
+                )
             );
 
             return this;
@@ -854,20 +874,15 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D
     
         public GrVisualElementsSceneComposer3D<T> AddDisc(string name, IFloat64Tuple3D center, IFloat64Tuple3D normal, double radius, IGrVisualElementMaterial3D material, double thickness, Color edgeColor)
         {
-            AddDisc(
-                new GrVisualCircleSurface3D(name)
-                {
-                    Center = center,
-                    Normal = normal.ToUnitVector(),
-                    Radius = radius,
-                    DrawEdge = true,
-
-                    Style = new GrVisualSurfaceThickStyle3D(
-                        material, 
-                        AddOrGetColorMaterial(edgeColor), 
-                        thickness
-                    )
-                }
+            AddCircleSurface(
+                GrVisualCircleSurface3D.CreateStatic(
+                    name,
+                    material.CreateThickSurfaceStyle(AddOrGetColorMaterial(edgeColor), thickness),
+                    center,
+                    normal,
+                    radius,
+                    true
+                )
             );
 
             return this;
@@ -875,20 +890,15 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D
     
         public GrVisualElementsSceneComposer3D<T> AddDisc(string name, IFloat64Tuple3D center, IFloat64Tuple3D normal, double radius, Color color, double thickness, Color edgeColor)
         {
-            AddDisc(
-                new GrVisualCircleSurface3D(name)
-                {
-                    Center = center,
-                    Normal = normal.ToUnitVector(),
-                    Radius = radius,
-                    DrawEdge = true,
-
-                    Style = new GrVisualSurfaceThickStyle3D(
-                        AddOrGetColorMaterial(color), 
-                        AddOrGetColorMaterial(edgeColor), 
-                        thickness
-                    )
-                }
+            AddCircleSurface(
+                GrVisualCircleSurface3D.CreateStatic(
+                    name,
+                    AddOrGetColorMaterial(color).CreateThickSurfaceStyle(AddOrGetColorMaterial(edgeColor), thickness),
+                    center,
+                    normal,
+                    radius,
+                    true
+                )
             );
 
             return this;
@@ -896,16 +906,17 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D
 
         public GrVisualElementsSceneComposer3D<T> AddDiscSector(string name, IFloat64Tuple3D center, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, double radius, bool innerArc, IGrVisualElementMaterial3D material, double thickness)
         {
-            AddDiscSector(
-                new GrVisualCircleSurfaceArc3D(name)
-                {
-                    Center = center,
-                    Direction1 = direction1.ToUnitVector(),
-                    Direction2 = direction2.ToUnitVector(),
-                    Radius = radius,
-                    InnerArc = innerArc,
-                    Style = new GrVisualSurfaceThickStyle3D(material, thickness)
-                }
+            AddCircleArcSurface(
+                GrVisualCircleArcSurface3D.CreateStatic(
+                    name,
+                    material.CreateThickSurfaceStyle(thickness),
+                    center,
+                    direction1,
+                    direction2,
+                    radius,
+                    innerArc,
+                    false
+                )
             );
 
             return this;
@@ -913,19 +924,17 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D
     
         public GrVisualElementsSceneComposer3D<T> AddDiscSector(string name, IFloat64Tuple3D center, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, double radius, bool innerArc, Color color, double thickness)
         {
-            AddDiscSector(
-                new GrVisualCircleSurfaceArc3D(name)
-                {
-                    Center = center,
-                    Direction1 = direction1.ToUnitVector(),
-                    Direction2 = direction2.ToUnitVector(),
-                    Radius = radius,
-                    InnerArc = innerArc,
-                    Style = new GrVisualSurfaceThickStyle3D(
-                        AddOrGetColorMaterial(color),
-                        thickness
-                    )
-                }
+            AddCircleArcSurface(
+                GrVisualCircleArcSurface3D.CreateStatic(
+                    name,
+                    AddOrGetColorMaterial(color).CreateThickSurfaceStyle(thickness),
+                    center,
+                    direction1,
+                    direction2,
+                    radius,
+                    innerArc,
+                    false
+                )
             );
 
             return this;
@@ -933,16 +942,17 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D
     
         public GrVisualElementsSceneComposer3D<T> AddDiscSector(string name, IFloat64Tuple3D center, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, double radius, bool innerArc, Color color)
         {
-            AddDiscSector(
-                new GrVisualCircleSurfaceArc3D(name)
-                {
-                    Center = center,
-                    Direction1 = direction1.ToUnitVector(),
-                    Direction2 = direction2.ToUnitVector(),
-                    Radius = radius,
-                    InnerArc = innerArc,
-                    Style = new GrVisualSurfaceThinStyle3D(AddOrGetColorMaterial(color))
-                }
+            AddCircleArcSurface(
+                GrVisualCircleArcSurface3D.CreateStatic(
+                    name,
+                    AddOrGetColorMaterial(color).CreateThinSurfaceStyle(),
+                    center,
+                    direction1,
+                    direction2,
+                    radius,
+                    innerArc,
+                    false
+                )
             );
 
             return this;
@@ -950,17 +960,17 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D
     
         public GrVisualElementsSceneComposer3D<T> AddDiscSector(string name, IFloat64Tuple3D center, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, double radius, bool innerArc, IGrVisualElementMaterial3D material, double thickness, IGrVisualElementMaterial3D edgeMaterial)
         {
-            AddDiscSector(
-                new GrVisualCircleSurfaceArc3D(name)
-                {
-                    Center = center,
-                    Direction1 = direction1.ToUnitVector(),
-                    Direction2 = direction2.ToUnitVector(),
-                    Radius = radius,
-                    InnerArc = innerArc,
-                    DrawEdge = true,
-                    Style = new GrVisualSurfaceThickStyle3D(material, edgeMaterial, thickness)
-                }
+            AddCircleArcSurface(
+                GrVisualCircleArcSurface3D.CreateStatic(
+                    name,
+                    material.CreateThickSurfaceStyle(edgeMaterial, thickness),
+                    center,
+                    direction1,
+                    direction2,
+                    radius,
+                    innerArc,
+                    true
+                )
             );
 
             return this;
@@ -968,21 +978,17 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D
     
         public GrVisualElementsSceneComposer3D<T> AddDiscSector(string name, IFloat64Tuple3D center, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, double radius, bool innerArc, Color color, double thickness, IGrVisualElementMaterial3D edgeMaterial)
         {
-            AddDiscSector(
-                new GrVisualCircleSurfaceArc3D(name)
-                {
-                    Center = center,
-                    Direction1 = direction1.ToUnitVector(),
-                    Direction2 = direction2.ToUnitVector(),
-                    Radius = radius,
-                    InnerArc = innerArc,
-                    DrawEdge = true,
-                    Style = new GrVisualSurfaceThickStyle3D(
-                        AddOrGetColorMaterial(color), 
-                        edgeMaterial, 
-                        thickness
-                    )
-                }
+            AddCircleArcSurface(
+                GrVisualCircleArcSurface3D.CreateStatic(
+                    name,
+                    AddOrGetColorMaterial(color).CreateThickSurfaceStyle(edgeMaterial, thickness),
+                    center,
+                    direction1,
+                    direction2,
+                    radius,
+                    innerArc,
+                    true
+                )
             );
 
             return this;
@@ -990,21 +996,17 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D
 
         public GrVisualElementsSceneComposer3D<T> AddDiscSector(string name, IFloat64Tuple3D center, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, double radius, bool innerArc, IGrVisualElementMaterial3D material, double thickness, Color edgeColor)
         {
-            AddDiscSector(
-                new GrVisualCircleSurfaceArc3D(name)
-                {
-                    Center = center,
-                    Direction1 = direction1.ToUnitVector(),
-                    Direction2 = direction2.ToUnitVector(),
-                    Radius = radius,
-                    InnerArc = innerArc,
-                    DrawEdge = true,
-                    Style = new GrVisualSurfaceThickStyle3D(
-                        material, 
-                        AddOrGetColorMaterial(edgeColor), 
-                        thickness
-                    )
-                }
+            AddCircleArcSurface(
+                GrVisualCircleArcSurface3D.CreateStatic(
+                    name,
+                    material.CreateThickSurfaceStyle(AddOrGetColorMaterial(edgeColor), thickness),
+                    center,
+                    direction1,
+                    direction2,
+                    radius,
+                    innerArc,
+                    true
+                )
             );
 
             return this;
@@ -1012,92 +1014,326 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D
     
         public GrVisualElementsSceneComposer3D<T> AddDiscSector(string name, IFloat64Tuple3D center, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, double radius, bool innerArc, Color color, double thickness, Color edgeColor)
         {
-            AddDiscSector(
-                new GrVisualCircleSurfaceArc3D(name)
-                {
-                    Center = center,
-                    Direction1 = direction1.ToUnitVector(),
-                    Direction2 = direction2.ToUnitVector(),
-                    Radius = radius,
-                    InnerArc = innerArc,
-                    DrawEdge = true,
-                    Style = new GrVisualSurfaceThickStyle3D(
-                        AddOrGetColorMaterial(color), 
-                        AddOrGetColorMaterial(edgeColor), 
-                        thickness
-                    )
-                }
+            AddCircleArcSurface(
+                GrVisualCircleArcSurface3D.CreateStatic(
+                    name,
+                    AddOrGetColorMaterial(color).CreateThickSurfaceStyle(AddOrGetColorMaterial(edgeColor), thickness),
+                    center,
+                    direction1,
+                    direction2,
+                    radius,
+                    innerArc,
+                    true
+                )
             );
 
             return this;
         }
-
-        public GrVisualElementsSceneComposer3D<T> AddRectangle(string name, IFloat64Tuple3D bottomLeftCorner, IFloat64Tuple3D widthDirection, IFloat64Tuple3D heightDirection, IGrVisualElementMaterial3D material, double thickness)
+        
+        public GrVisualElementsSceneComposer3D<T> AddTriangle(string name, IFloat64Tuple3D position1, IFloat64Tuple3D position2, IFloat64Tuple3D position3, IGrVisualElementMaterial3D material, double thickness)
         {
-            AddRectangle(
-                new GrVisualRectangleSurface3D(name, bottomLeftCorner, widthDirection, heightDirection)
-                {
-                    Style = new GrVisualSurfaceThickStyle3D(material, thickness)
-                }
+            AddTriangleSurface(
+                GrVisualTriangleSurface3D.CreateStatic(
+                    name, 
+                    material.CreateThickSurfaceStyle(thickness),
+                    position1, 
+                    position2, 
+                    position3
+                )
             );
 
             return this;
         }
     
-        public GrVisualElementsSceneComposer3D<T> AddRectangle(string name, IFloat64Tuple3D bottomLeftCorner, IFloat64Tuple3D widthDirection, IFloat64Tuple3D heightDirection, Color color, double thickness)
+        public GrVisualElementsSceneComposer3D<T> AddTriangle(string name, IFloat64Tuple3D position1, IFloat64Tuple3D position2, IFloat64Tuple3D position3, Color color, double thickness)
         {
-            AddRectangle(
-                new GrVisualRectangleSurface3D(name, bottomLeftCorner, widthDirection, heightDirection)
-                {
-                    Style = new GrVisualSurfaceThickStyle3D(
-                        AddOrGetColorMaterial(color),
-                        thickness
-                    )
-                }
+            AddTriangleSurface(
+                GrVisualTriangleSurface3D.CreateStatic(
+                    name, 
+                    AddOrGetColorMaterial(color).CreateThickSurfaceStyle(thickness),
+                    position1, 
+                    position2, 
+                    position3
+                )
             );
 
             return this;
         }
     
-        public GrVisualElementsSceneComposer3D<T> AddRectangle(string name, IFloat64Tuple3D bottomLeftCorner, IFloat64Tuple3D widthDirection, IFloat64Tuple3D heightDirection, IGrVisualElementMaterial3D material)
+        public GrVisualElementsSceneComposer3D<T> AddTriangle(string name, IFloat64Tuple3D position1, IFloat64Tuple3D position2, IFloat64Tuple3D position3, IGrVisualElementMaterial3D material)
         {
-            AddRectangle(
-                new GrVisualRectangleSurface3D(name, bottomLeftCorner, widthDirection, heightDirection)
-                {
-                    Style = new GrVisualSurfaceThinStyle3D(material)
-                }
+            AddTriangleSurface(
+                GrVisualTriangleSurface3D.CreateStatic(
+                    name, 
+                    material.CreateThinSurfaceStyle(),
+                    position1, 
+                    position2, 
+                    position3
+                )
             );
 
             return this;
         }
     
-        public GrVisualElementsSceneComposer3D<T> AddRectangle(string name, IFloat64Tuple3D bottomLeftCorner, IFloat64Tuple3D widthDirection, IFloat64Tuple3D heightDirection, Color color)
+        public GrVisualElementsSceneComposer3D<T> AddTriangle(string name, IFloat64Tuple3D position1, IFloat64Tuple3D position2, IFloat64Tuple3D position3, Color color)
         {
-            AddRectangle(
-                new GrVisualRectangleSurface3D(name, bottomLeftCorner, widthDirection, heightDirection)
-                {
-                    Style = new GrVisualSurfaceThinStyle3D(
-                        AddOrGetColorMaterial(color)
-                    )
-                }
+            AddTriangleSurface(
+                GrVisualTriangleSurface3D.CreateStatic(
+                    name, 
+                    AddOrGetColorMaterial(color).CreateThinSurfaceStyle(),
+                    position1, 
+                    position2, 
+                    position3
+                )
+            );
+
+            return this;
+        }
+        
+        public GrVisualElementsSceneComposer3D<T> AddParallelogram(string name, IFloat64Tuple3D position, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, IGrVisualElementMaterial3D material, double thickness)
+        {
+            AddParallelogramSurface(
+                GrVisualParallelogramSurface3D.CreateStatic(
+                    name, 
+                    material.CreateThickSurfaceStyle(thickness),
+                    position, 
+                    direction1, 
+                    direction2
+                )
             );
 
             return this;
         }
     
-        public GrVisualElementsSceneComposer3D<T> AddLaTeXText(string name, GrImageBase64StringCache pngCache, IFloat64Tuple3D origin, double scalingFactor)
+        public GrVisualElementsSceneComposer3D<T> AddParallelogram(string name, IFloat64Tuple3D position, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, Color color, double thickness)
+        {
+            AddParallelogramSurface(
+                GrVisualParallelogramSurface3D.CreateStatic(
+                    name, 
+                    AddOrGetColorMaterial(color).CreateThickSurfaceStyle(thickness),
+                    position, 
+                    direction1, 
+                    direction2
+                )
+            );
+
+            return this;
+        }
+    
+        public GrVisualElementsSceneComposer3D<T> AddParallelogram(string name, IFloat64Tuple3D position, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, IGrVisualElementMaterial3D material)
+        {
+            AddParallelogramSurface(
+                GrVisualParallelogramSurface3D.CreateStatic(
+                    name, 
+                    material.CreateThinSurfaceStyle(),
+                    position, 
+                    direction1, 
+                    direction2
+                )
+            );
+
+            return this;
+        }
+    
+        public GrVisualElementsSceneComposer3D<T> AddParallelogram(string name, IFloat64Tuple3D position, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, Color color)
+        {
+            AddParallelogramSurface(
+                GrVisualParallelogramSurface3D.CreateStatic(
+                    name, 
+                    AddOrGetColorMaterial(color).CreateThinSurfaceStyle(),
+                    position, 
+                    direction1, 
+                    direction2
+                )
+            );
+
+            return this;
+        }
+        
+        public GrVisualElementsSceneComposer3D<T> AddParallelogram(string name, IFloat64Tuple3D position, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, GrVisualSurfaceThinStyle3D style)
+        {
+            AddParallelogramSurface(
+                GrVisualParallelogramSurface3D.CreateStatic(
+                    name, 
+                    style,
+                    position, 
+                    direction1, 
+                    direction2
+                )
+            );
+
+            return this;
+        }
+
+        public GrVisualElementsSceneComposer3D<T> AddParallelogramSystem(string name, IFloat64Tuple3D position, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, IFloat64Tuple3D direction3, GrVisualSurfaceThinStyle3D faceStyle)
+        {
+            AddParallelogram(
+                name, 
+                position, 
+                direction1, 
+                direction2, 
+                faceStyle
+            );
+
+            AddParallelogram(
+                name, 
+                position, 
+                direction2, 
+                direction3, 
+                faceStyle
+            );
+
+            AddParallelogram(
+                name, 
+                position, 
+                direction3, 
+                direction1, 
+                faceStyle
+            );
+
+            var position123 = 
+                position.Add(direction1).Add(direction2).Add(direction3);
+
+            AddParallelogram(
+                name, 
+                position123, 
+                direction1.Negative(), 
+                direction2.Negative(), 
+                faceStyle
+            );
+            
+            AddParallelogram(
+                name, 
+                position123, 
+                direction2.Negative(), 
+                direction3.Negative(), 
+                faceStyle
+            );
+
+            AddParallelogram(
+                name, 
+                position123, 
+                direction3.Negative(), 
+                direction1.Negative(), 
+                faceStyle
+            );
+
+            return this;
+        }
+        
+        public GrVisualElementsSceneComposer3D<T> AddParallelogramSystem(string name, IFloat64Tuple3D position, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, IFloat64Tuple3D direction3, GrVisualSurfaceThinStyle3D faceStyle12, GrVisualSurfaceThinStyle3D faceStyle23, GrVisualSurfaceThinStyle3D faceStyle31)
+        {
+            AddParallelogram(
+                name, 
+                position, 
+                direction1, 
+                direction2, 
+                faceStyle12
+            );
+
+            AddParallelogram(
+                name, 
+                position, 
+                direction2, 
+                direction3, 
+                faceStyle23
+            );
+
+            AddParallelogram(
+                name, 
+                position, 
+                direction3, 
+                direction1, 
+                faceStyle31
+            );
+
+            var position123 = 
+                position.Add(direction1).Add(direction2).Add(direction3);
+
+            AddParallelogram(
+                name, 
+                position123, 
+                direction1.Negative(), 
+                direction2.Negative(), 
+                faceStyle12
+            );
+            
+            AddParallelogram(
+                name, 
+                position123, 
+                direction2.Negative(), 
+                direction3.Negative(), 
+                faceStyle23
+            );
+
+            AddParallelogram(
+                name, 
+                position123, 
+                direction3.Negative(), 
+                direction1.Negative(), 
+                faceStyle31
+            );
+
+            return this;
+        }
+
+        public GrVisualElementsSceneComposer3D<T> AddLaTeXText(string name, WclHtmlImageDataUrlCache pngCache, IFloat64Tuple3D origin, double scalingFactor)
         {
             AddLaTeXText(
-                new GrVisualLaTeXText3D(name, pngCache, name, origin, scalingFactor)
+                GrVisualLaTeXText3D.CreateStatic(
+                    name, 
+                    pngCache, 
+                    name, 
+                    origin, 
+                    scalingFactor
+                )
+            );
+
+            return this;
+        }
+        
+        public GrVisualElementsSceneComposer3D<T> AddLaTeXText(string name, WclHtmlImageDataUrlCache pngCache, GrVisualAnimatedVector3D origin, double scalingFactor, GrVisualAnimationSpecs animationSpecs)
+        {
+            AddLaTeXText(
+                GrVisualLaTeXText3D.CreateAnimated(
+                    name, 
+                    pngCache, 
+                    name, 
+                    origin, 
+                    scalingFactor,
+                    animationSpecs
+                )
             );
 
             return this;
         }
 
-        public GrVisualElementsSceneComposer3D<T> AddLaTeXText(string name, GrImageBase64StringCache pngCache, string key, IFloat64Tuple3D origin, double scalingFactor)
+        public GrVisualElementsSceneComposer3D<T> AddLaTeXText(string name, WclHtmlImageDataUrlCache pngCache, string key, IFloat64Tuple3D origin, double scalingFactor)
         {
             AddLaTeXText(
-                new GrVisualLaTeXText3D(name, pngCache, key, origin, scalingFactor)
+                GrVisualLaTeXText3D.CreateStatic(
+                    name, 
+                    pngCache, 
+                    key, 
+                    origin, 
+                    scalingFactor
+                )
+            );
+
+            return this;
+        }
+        
+        public GrVisualElementsSceneComposer3D<T> AddLaTeXText(string name, WclHtmlImageDataUrlCache pngCache, string key, GrVisualAnimatedVector3D origin, double scalingFactor, GrVisualAnimationSpecs animationSpecs)
+        {
+            AddLaTeXText(
+                GrVisualLaTeXText3D.CreateAnimated(
+                    name, 
+                    pngCache, 
+                    key, 
+                    origin, 
+                    scalingFactor,
+                    animationSpecs
+                )
             );
 
             return this;
@@ -1120,20 +1356,24 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D
                     AddPoint(point);
                     break;
 
-                case GrVisualVector3D vector:
-                    AddVector(vector);
+                case GrVisualArrowHead3D arrowHead:
+                    AddArrowHead(arrowHead);
                     break;
 
                 case GrVisualLineSegment3D lineSegment:
                     AddLineSegment(lineSegment);
                     break;
                 
-                case GrVisualLinePathCurve3D lineCurve:
+                case GrVisualPointPathCurve3D lineCurve:
                     AddLinePath(lineCurve);
                     break;
+                    
+                case GrVisualTriangleSurface3D triangleSurface:
+                    AddTriangleSurface(triangleSurface);
+                    break;
 
-                case GrVisualRectangleSurface3D rectangleSurface:
-                    AddRectangle(rectangleSurface);
+                case GrVisualParallelogramSurface3D parallelogramSurface:
+                    AddParallelogramSurface(parallelogramSurface);
                     break;
 
                 case GrVisualCircleCurve3D circleCurve:
@@ -1149,15 +1389,15 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D
                     break;
 
                 case GrVisualCircleSurface3D circleSurface:
-                    AddDisc(circleSurface);
+                    AddCircleSurface(circleSurface);
                     break;
 
-                case GrVisualCircleSurfaceArc3D circleSurfaceArc:
-                    AddDiscSector(circleSurfaceArc);
+                case GrVisualCircleArcSurface3D circleSurfaceArc:
+                    AddCircleArcSurface(circleSurfaceArc);
                     break;
                 
-                case GrVisualRingSurface3D ringSurface:
-                    AddRingSurface(ringSurface);
+                case GrVisualCircleRingSurface3D ringSurface:
+                    AddCircleRingSurface(ringSurface);
                     break;
 
                 case GrVisualRightAngle3D rightAngle:
@@ -1184,38 +1424,94 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D
             foreach (var childElement in visualElement)
                 AddElement(childElement);
         }
+        
+        public void AddVectors(params GrVisualVector3D[] visualElement)
+        {
+            foreach (var childElement in visualElement)
+                AddElement(childElement);
+        }
+
+        public GrVisualVector3D AddVector(GrVisualVector3D visualElement)
+        {
+            foreach (var childElement in visualElement)
+                AddElement(childElement);
+
+            return visualElement;
+        }
+
+        public GrVisualFrame3D AddFrame(GrVisualFrame3D visualElement)
+        {
+            foreach (var childElement in visualElement)
+                AddElement(childElement);
+
+            return visualElement;
+        }
+
+
+        public abstract GrVisualLaTeXText3D AddLaTeXText(GrVisualLaTeXText3D visualElement);
+
+        public abstract GrVisualXzSquareGrid3D AddXzSquareGrid(GrVisualXzSquareGrid3D visualElement);
+
+        public abstract IGrVisualImage3D AddImage(IGrVisualImage3D visualElement);
+
+        public abstract GrVisualPoint3D AddPoint(GrVisualPoint3D visualElement);
+
+        public abstract GrVisualArrowHead3D AddArrowHead(GrVisualArrowHead3D visualElement);
+
+
+        public abstract GrVisualParametricCurve3D AddParametricCurve(GrVisualParametricCurve3D visualElement);
+
+        #region Animated Curves
+
+        public abstract GrVisualCurveWithAnimation3D AddCurve(GrVisualCurveWithAnimation3D visualElement);
+
+        public GrVisualLineSegment3D AddLineSegment(GrVisualLineSegment3D visualElement)
+        {
+            AddCurve(visualElement);
+
+            return visualElement;
+        }
     
+        public GrVisualPointPathCurve3D AddLinePath(GrVisualPointPathCurve3D visualElement)
+        {
+            AddCurve(visualElement);
 
-        public abstract void AddLaTeXText(GrVisualLaTeXText3D visualElement);
+            return visualElement;
+        }
 
-        public abstract void AddXzSquareGrid(GrVisualXzSquareGrid3D visualElement);
+        public GrVisualCircleCurve3D AddCircle(GrVisualCircleCurve3D visualElement)
+        {
+            AddCurve(visualElement);
 
-        public abstract void AddImage(GrVisualImage3D visualElement);
+            return visualElement;
+        }
 
-        public abstract void AddPoint(GrVisualPoint3D visualElement);
+        public GrVisualCircleArcCurve3D AddCircleArc(GrVisualCircleArcCurve3D visualElement)
+        {
+            AddCurve(visualElement);
 
-        public abstract void AddVector(GrVisualVector3D visualElement);
+            return visualElement;
+        }
+        
+        public abstract GrVisualRightAngle3D AddRightAngle(GrVisualRightAngle3D visualElement);
 
-        public abstract void AddLineSegment(GrVisualLineSegment3D visualElement);
+        #endregion
+        
+
+        public abstract GrVisualTriangleSurface3D AddTriangleSurface(GrVisualTriangleSurface3D visualElement);
+
+        public abstract GrVisualParallelogramSurface3D AddParallelogramSurface(GrVisualParallelogramSurface3D visualElement);
+
+        public abstract GrVisualParallelepipedSurface3D AddParallelepipedSurface(GrVisualParallelepipedSurface3D visualElement);
+
+        public abstract GrVisualSphereSurface3D AddSphereSurface(GrVisualSphereSurface3D visualElement);
+
+        public abstract GrVisualCircleSurface3D AddCircleSurface(GrVisualCircleSurface3D visualElement);
+
+        public abstract GrVisualCircleArcSurface3D AddCircleArcSurface(GrVisualCircleArcSurface3D visualElement);
     
-        public abstract void AddLinePath(GrVisualLinePathCurve3D visualElement);
-
-        public abstract void AddCircle(GrVisualCircleCurve3D visualElement);
-
-        public abstract void AddCircleArc(GrVisualCircleArcCurve3D visualElement);
-
-        public abstract void AddParametricCurve(GrVisualParametricCurve3D visualElement);
-
-        public abstract void AddRectangle(GrVisualRectangleSurface3D visualElement);
-
-        public abstract void AddSphere(GrVisualSphere3D visualElement);
-
-        public abstract void AddDisc(GrVisualCircleSurface3D visualElement);
-
-        public abstract void AddDiscSector(GrVisualCircleSurfaceArc3D visualElement);
+        public abstract GrVisualCircleRingSurface3D AddCircleRingSurface(GrVisualCircleRingSurface3D visualElement);
     
-        public abstract void AddRingSurface(GrVisualRingSurface3D visualElement);
-    
-        public abstract void AddRightAngle(GrVisualRightAngle3D visualElement);
+        
     }
 }

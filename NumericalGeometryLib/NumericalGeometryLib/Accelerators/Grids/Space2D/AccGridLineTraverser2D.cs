@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
-using GeometricAlgebraFulcrumLib.MathBase.BasicShapes;
-using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Lines;
-using GeometricAlgebraFulcrumLib.MathBase.Borders.Space1D;
-using GeometricAlgebraFulcrumLib.MathBase.Borders.Space1D.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
 
 namespace NumericalGeometryLib.Accelerators.Grids.Space2D
 {
@@ -14,11 +14,11 @@ namespace NumericalGeometryLib.Accelerators.Grids.Space2D
             return new AccGridLineTraverser2D(
                 grid, 
                 line, 
-                BoundingBox1D.Infinite
+                Float64Range1D.Infinite
             );
         }
 
-        public static AccGridLineTraverser2D Create(IAccGrid2D<IFiniteGeometricShape2D> grid, ILine2D line, IBoundingBox1D lineParamLimits)
+        public static AccGridLineTraverser2D Create(IAccGrid2D<IFiniteGeometricShape2D> grid, ILine2D line, Float64Range1D lineParamLimits)
         {
             return new AccGridLineTraverser2D(grid, line, lineParamLimits);
         }
@@ -28,7 +28,7 @@ namespace NumericalGeometryLib.Accelerators.Grids.Space2D
 
         public ILine2D Line { get; }
 
-        public IBoundingBox1D LineParameterLimits { get; }
+        public Float64Range1D LineParameterLimits { get; }
 
         /// <summary>
         /// Indicates if there are no cells to traverse in the grid
@@ -38,17 +38,17 @@ namespace NumericalGeometryLib.Accelerators.Grids.Space2D
         /// <summary>
         /// The limits of the line parameter intersecting the grid boundary
         /// </summary>
-        public BoundingBox1D TLimits { get; }
+        public Float64Range1D TLimits { get; }
 
         /// <summary>
         /// Delta value of line parameter in x and y directions
         /// </summary>
-        public Float64Tuple2D TDelta { get; }
+        public Float64Vector2D TDelta { get; }
 
         /// <summary>
         /// Initial values of line parameter in x and y directions 
         /// </summary>
-        public Float64Tuple2D TFirst { get; }
+        public Float64Vector2D TFirst { get; }
 
         public double TNext { get; private set; }
 
@@ -66,7 +66,7 @@ namespace NumericalGeometryLib.Accelerators.Grids.Space2D
         public IntTuple2D CellIndexStop { get; }
 
 
-        private AccGridLineTraverser2D(IAccGrid2D<IFiniteGeometricShape2D> grid, ILine2D line, IBoundingBox1D lineParamLimits)
+        private AccGridLineTraverser2D(IAccGrid2D<IFiniteGeometricShape2D> grid, ILine2D line, Float64Range1D lineParamLimits)
         {
             Grid = grid;
             Line = line;
@@ -112,8 +112,8 @@ namespace NumericalGeometryLib.Accelerators.Grids.Space2D
             if (t0 > t1)
             {
                 IsEmpty = true;
-                TLimits = new BoundingBox1D();
-                TDelta = Float64Tuple2D.Zero;
+                TLimits = new Float64Range1D();
+                TDelta = Float64Vector2D.Zero;
 
                 return;
             }
@@ -159,13 +159,13 @@ namespace NumericalGeometryLib.Accelerators.Grids.Space2D
             //}
 
             IsEmpty = false;
-            TLimits = new BoundingBox1D(t0, t1);
+            TLimits = Float64Range1D.Create(t0, t1);
 
             //Compute indices of cell containing line segment first point
             CellIndexStart = grid.PointToCellIndex(point1X, point1Y);
 
             //Line segment parameter increments per cell in the x and y directions
-            TDelta = new Float64Tuple2D(
+            TDelta = new Float64Vector2D(
                 (txMax - txMin) / grid.CellsCountX,
                 (tyMax - tyMin) / grid.CellsCountY
             );
@@ -212,7 +212,7 @@ namespace NumericalGeometryLib.Accelerators.Grids.Space2D
                 iyStop = -1;
             }
 
-            TFirst = new Float64Tuple2D(txNext, tyNext);
+            TFirst = new Float64Vector2D(txNext, tyNext);
             CellIndexStep = new IntTuple2D(ixStep, iyStep);
             CellIndexStop = new IntTuple2D(ixStop, iyStop);
         }

@@ -1126,7 +1126,7 @@ public static {className} As{className}(this JsType value)
         //        ErrorHandler = new CollectingErrorHandler()
         //    };
 
-        //    const string filesPath = @"D:\Projects\Study\Three.js\three.js-dev\build";
+        //    const string filesPath = @"D:\Projects\Study\Web\Three.js\three.js-dev\build";
         //    var sourceFile = Path.Combine(filesPath, "three.js");
         //    var jsonFile = sourceFile + ".json";
 

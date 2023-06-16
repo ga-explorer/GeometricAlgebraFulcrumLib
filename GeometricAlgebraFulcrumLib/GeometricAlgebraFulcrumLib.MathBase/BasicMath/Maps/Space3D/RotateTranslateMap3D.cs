@@ -1,7 +1,7 @@
 ﻿using System.Numerics;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Matrices;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D
 {
@@ -42,35 +42,29 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D
         public double TranslateZ { get; private set; }
 
 
-        public IFloat64Tuple4D RotateQuaternion
+        public Float64Quaternion RotateQuaternion
         {
             get
             {
                 var cosAngle = RotateAngle.Cos() / 2;
                 var sinAngle = RotateAngle.Sin() / 2;
 
-                return new Float64Tuple4D(
-                    RotateVectorX * sinAngle,
+                return Float64Quaternion.Create(RotateVectorX * sinAngle,
                     RotateVectorY * sinAngle,
                     RotateVectorZ * sinAngle,
-                    cosAngle
-                );
+                    cosAngle);
             }
         }
 
         public IFloat64Tuple3D RotateVector 
-            => new Float64Tuple3D(
-                RotateVectorX,
+            => Float64Vector3D.Create(RotateVectorX,
                 RotateVectorY,
-                RotateVectorZ
-            );
+                RotateVectorZ);
     
         public IFloat64Tuple3D TranslateVector 
-            => new Float64Tuple3D(
-                TranslateX,
+            => Float64Vector3D.Create(TranslateX,
                 TranslateY,
-                TranslateZ
-            );
+                TranslateZ);
 
 
         public bool SwapsHandedness 
@@ -81,7 +75,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D
         {
             RotateAngle = angle;
 
-            var d = 1 / vector.GetVectorNorm();
+            var d = 1 / vector.ENorm();
 
             RotateVectorX = vector.X * d;
             RotateVectorY = vector.Y * d;
@@ -94,20 +88,20 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D
         {
             //http://lolengine.net/blog/2014/02/24/quaternion-from-two-vectors-final
             var n1 = Math.Sqrt(
-                vector1.GetVectorNormSquared() * vector2.GetVectorNormSquared()
+                vector1.ENormSquared() * vector2.ENormSquared()
             );
 
-            var w = n1 + vector1.VectorDot(vector2);
+            var w = n1 + vector1.ESp(vector2);
 
             RotateAngle = Float64PlanarAngle.CreateFromRadians(2 * Math.Acos(w)).ClampPositive();
 
             if (w < 1e-12 * n1)
             {
                 var v1 = Math.Abs(vector1.X) > Math.Abs(vector1.Z)
-                    ? new Float64Tuple3D(-vector1.Y, vector1.X, 0)
-                    : new Float64Tuple3D(0, -vector1.Z, vector1.Y);
+                    ? Float64Vector3D.Create(-vector1.Y, vector1.X, 0)
+                    : Float64Vector3D.Create(0, -vector1.Z, vector1.Y);
 
-                var d = 1 / v1.GetVectorNorm();
+                var d = 1 / v1.ENorm();
 
                 RotateVectorX = d * v1.X;
                 RotateVectorY = d * v1.Y;
@@ -117,7 +111,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D
             {
                 var v2 = vector1.VectorCross(vector2);
 
-                var d = 1 / v2.GetVectorNorm();
+                var d = 1 / v2.ENorm();
 
                 RotateVectorX = d * v2.X;
                 RotateVectorY = d * v2.Y;
@@ -171,17 +165,17 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D
             throw new NotImplementedException();
         }
 
-        public Float64Tuple3D MapPoint(IFloat64Tuple3D point)
+        public Float64Vector3D MapPoint(IFloat64Tuple3D point)
         {
             throw new NotImplementedException();
         }
 
-        public Float64Tuple3D MapVector(IFloat64Tuple3D vector)
+        public Float64Vector3D MapVector(IFloat64Tuple3D vector)
         {
             throw new NotImplementedException();
         }
 
-        public Float64Tuple3D MapNormal(IFloat64Tuple3D normal)
+        public Float64Vector3D MapNormal(IFloat64Tuple3D normal)
         {
             throw new NotImplementedException();
         }

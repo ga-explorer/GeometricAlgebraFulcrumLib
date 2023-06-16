@@ -1,13 +1,13 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.IndexSets;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic
 {
     public sealed record LinVectorTerm<T> :
-        ILinElement<T>
+        ILinearElement<T>
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static LinVectorTerm<T> operator +(LinVectorTerm<T> b1)
@@ -29,7 +29,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic
 
             return new LinVectorTerm<T>(b1.BasisVector, b1.Scalar + b2.Scalar);
         }
-    
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static LinVectorTerm<T> operator -(LinVectorTerm<T> b1, LinVectorTerm<T> b2)
         {

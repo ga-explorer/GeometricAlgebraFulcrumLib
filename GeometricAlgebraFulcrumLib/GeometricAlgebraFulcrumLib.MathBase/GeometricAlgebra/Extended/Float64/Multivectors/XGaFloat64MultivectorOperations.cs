@@ -127,9 +127,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static XGaFloat64Multivector operator -(int mv1, XGaFloat64Multivector mv2)
         {
-            return mv2.Subtract(
-                mv2.Processor.CreateScalar(mv1)
-            );
+            return mv2.Processor.CreateScalar(mv1).Subtract(mv2);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -143,9 +141,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static XGaFloat64Multivector operator -(uint mv1, XGaFloat64Multivector mv2)
         {
-            return mv2.Subtract(
-                mv2.Processor.CreateScalar(mv1)
-            );
+            return mv2.Processor.CreateScalar(mv1).Subtract(mv2);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -159,9 +155,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static XGaFloat64Multivector operator -(long mv1, XGaFloat64Multivector mv2)
         {
-            return mv2.Subtract(
-                mv2.Processor.CreateScalar(mv1)
-            );
+            return mv2.Processor.CreateScalar(mv1).Subtract(mv2);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -175,9 +169,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static XGaFloat64Multivector operator -(ulong mv1, XGaFloat64Multivector mv2)
         {
-            return mv2.Subtract(
-                mv2.Processor.CreateScalar(mv1)
-            );
+            return mv2.Processor.CreateScalar(mv1).Subtract(mv2);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -191,9 +183,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static XGaFloat64Multivector operator -(float mv1, XGaFloat64Multivector mv2)
         {
-            return mv2.Subtract(
-                mv2.Processor.CreateScalar(mv1)
-            );
+            return mv2.Processor.CreateScalar(mv1).Subtract(mv2);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -207,9 +197,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static XGaFloat64Multivector operator -(double mv1, XGaFloat64Multivector mv2)
         {
-            return mv2.Subtract(
-                mv2.Processor.CreateScalar(mv1)
-            );
+            return mv2.Processor.CreateScalar(mv1).Subtract(mv2);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -1,7 +1,4 @@
 ﻿using System.Collections.Generic;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Arrays.Float64;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Arrays.Generic;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.LinearMaps.Outermorphisms;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Processors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Frames;
@@ -9,10 +6,13 @@ using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Line
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.LinearMaps.Rotors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.SpaceND;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic.LinearMaps;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic.Matrices;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Mathematica.Applications.GaPoT
 {
@@ -52,7 +52,7 @@ namespace GeometricAlgebraFulcrumLib.Mathematica.Applications.GaPoT
                 Float64ArrayUtils.CreateClarkeRotationArray(vectorsCount);
 
             var basisVectorImagesDictionary = 
-                new Dictionary<int, LinFloat64Vector>();
+                new Dictionary<int, Float64Vector>();
 
             for (var i = 0; i < vectorsCount; i++)
                 basisVectorImagesDictionary.Add(

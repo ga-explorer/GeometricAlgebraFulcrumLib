@@ -31,7 +31,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
             return _objectDictionary.TryGetValue(babylonObject.ConstName, out var babylonObject1) && 
                    ReferenceEquals(babylonObject, babylonObject1);
         }
-
+        
         public bool TryGetObject(string name, out GrBabylonJsObject? babylonObject)
         {
             return _objectDictionary.TryGetValue(name, out babylonObject);

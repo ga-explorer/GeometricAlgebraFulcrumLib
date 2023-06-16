@@ -1,0 +1,104 @@
+﻿using System.Diagnostics;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
+
+namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space2D.Frames
+{
+    public sealed record ParametricCurveLocalFrame2D :
+        IParametricCurveLocalFrame2D
+    {
+        public static ParametricCurveLocalFrame2D Create(double parameterValue, IFloat64Tuple2D point, IFloat64Tuple2D tangent)
+        {
+            return new ParametricCurveLocalFrame2D(
+                parameterValue,
+                point.ToLinVector2D(),
+                tangent.ToLinVector2D()
+            );
+        }
+
+
+        /// <summary>
+        /// The curve parameter value at the given curve point
+        /// </summary>
+        public double ParameterValue { get; }
+
+        public int Index { get; internal set; } = -1;
+
+        /// <summary>
+        /// A point on the curve
+        /// </summary>
+        public Float64Vector2D Point { get; }
+        
+        public int VSpaceDimensions 
+            => 2;
+
+        public double Item1
+            => Point.X.Value;
+
+        public double Item2
+            => Point.Y.Value;
+
+        public Float64Scalar X
+            => Point.X;
+
+        public Float64Scalar Y
+            => Point.Y;
+
+        public Color Color { get; set; }
+
+        /// <summary>
+        /// The tangent unit vector to the curve at the given curve point
+        /// </summary>
+        public Float64Vector2D Tangent { get; }
+        
+        public Float64Vector2D Normal { get; }
+
+
+        private ParametricCurveLocalFrame2D(double parameterValue, IFloat64Tuple2D point, IFloat64Tuple2D tangent)
+        {
+            ParameterValue = parameterValue;
+            Point = point.ToLinVector2D();
+            Tangent = tangent.ToLinVector2D();
+            Normal = Tangent.GetNormal();
+
+            Debug.Assert(IsValid());
+        }
+
+        
+        public bool IsValid()
+        {
+            var isValid =
+                !double.IsNaN(ParameterValue) &&
+                Point.IsValid() &&
+                Tangent.IsValid() &&
+                Tangent.ENormSquared().IsNearEqual(1);
+
+            return isValid;
+        }
+
+        public double GetMaxDirectionAngleWithFrame(ParametricCurveLocalFrame2D frame2)
+        {
+            var maxAngle = 0d;
+
+            var angle = Tangent.GetVectorsAngle(frame2.Tangent);
+            if (maxAngle < angle) maxAngle = angle;
+
+            return maxAngle;
+        }
+
+
+        public ParametricCurveLocalFrame2D TranslateBy(IFloat64Tuple2D translationVector)
+        {
+            Debug.Assert(translationVector.IsValid());
+
+            return new ParametricCurveLocalFrame2D(
+                ParameterValue,
+                new Float64Vector2D(
+                    Point.X + translationVector.X,
+                    Point.Y + translationVector.Y
+                ),
+                Tangent
+            );
+        }
+    }
+}

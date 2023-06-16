@@ -1,5 +1,5 @@
-﻿using GraphicsComposerLib.Rendering.LaTeX.ImageComposers;
-using GraphicsComposerLib.Rendering.Visuals.Space3D.Images;
+﻿using GraphicsComposerLib.Rendering.Visuals.Space3D.Images;
+using WebComposerLib.LaTeX.ImageComposers;
 
 namespace GraphicsComposerLib.Rendering.Visuals.Space3D
 {
@@ -10,11 +10,11 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D
             return new GrVisualLaTeXImage3D(
                 name,
                 latexCode,
-                GrCSharpMathLaTeXImageComposer.DefaultMathComposer
+                WclCSharpMathLaTeXImageComposer.DefaultMathComposer
             );
         }
 
-        public static GrVisualLaTeXImage3D CreateVisualLaTeXImage3D(this string latexCode, string name, IGrLaTeXImageComposer imageComposer)
+        public static GrVisualLaTeXImage3D CreateVisualLaTeXImage3D(this string latexCode, string name, IWclLaTeXImageComposer imageComposer)
         {
             return new GrVisualLaTeXImage3D(
                 name, 
@@ -23,7 +23,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D
             );
         }
 
-        public static GrVisualLaTeXImage3D CreateVisualLaTeXImage3D(this IGrLaTeXImageComposer imageComposer, string latexCode, string name)
+        public static GrVisualLaTeXImage3D CreateVisualLaTeXImage3D(this IWclLaTeXImageComposer imageComposer, string latexCode, string name)
         {
             return new GrVisualLaTeXImage3D(
                 name, 

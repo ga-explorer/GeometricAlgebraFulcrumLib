@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using DataStructuresLib.Basic;
+﻿using DataStructuresLib.Basic;
 using GraphicsComposerLib.Rendering.BabylonJs.Values;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Textures
@@ -53,7 +52,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Textures
         }
 
     
-        public GrBabylonJsBrickTexture SetProperties([NotNull] BrickTextureProperties? properties)
+        public GrBabylonJsBrickTexture SetProperties(BrickTextureProperties properties)
         {
             Properties = properties;
 

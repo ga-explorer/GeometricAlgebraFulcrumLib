@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.Geometry.Euclidean.Space3D.Objects;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Geometry.Euclidean.Space3D.Maps
 {

@@ -1,5 +1,5 @@
-﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic.LinearMaps;
 

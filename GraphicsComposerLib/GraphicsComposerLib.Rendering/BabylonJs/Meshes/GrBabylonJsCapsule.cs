@@ -48,7 +48,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
                 yield return RadiusBottom.GetNameValueCodePair("radiusBottom");
                 yield return RadiusTop.GetNameValueCodePair("radiusTop");
                 yield return Orientation.GetNameValueCodePair("orientation");
-                yield return Updateable.GetNameValueCodePair("updateable");
+                yield return Updateable.GetNameValueCodePair("updatable");
             }
         }
 

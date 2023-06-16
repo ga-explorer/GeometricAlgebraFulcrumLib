@@ -1,6 +1,6 @@
-using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Lines;
-using GeometricAlgebraFulcrumLib.MathBase.Borders.Space2D.Immutable;
-using GeometricAlgebraFulcrumLib.MathBase.Borders.Space2D.Mutable;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D.Mutable;
 
 namespace NumericalGeometryLib.Computers.Voronoi
 {
@@ -12,25 +12,13 @@ namespace NumericalGeometryLib.Computers.Voronoi
 
         public VoronoiPointsList PointsList { get; }
 
-        public double Point1X
-        {
-            get { return PointsList[PointIndex1].X; }
-        }
+        public double Point1X => PointsList[PointIndex1].X;
 
-        public double Point1Y
-        {
-            get { return PointsList[PointIndex1].Y; }
-        }
+        public double Point1Y => PointsList[PointIndex1].Y;
 
-        public double Point2X
-        {
-            get { return PointsList[PointIndex2].X; }
-        }
+        public double Point2X => PointsList[PointIndex2].X;
 
-        public double Point2Y
-        {
-            get { return PointsList[PointIndex2].Y; }
-        }
+        public double Point2Y => PointsList[PointIndex2].Y;
 
         public bool IsValid()
         {

@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics;
 using System.Text;
 using DataStructuresLib.Files;
-using GraphicsComposerLib.Rendering.Images;
 using TextComposerLib;
+using WebComposerLib.Html.Media;
 using Image = SixLabors.ImageSharp.Image;
 
 namespace GraphicsComposerLib.Rendering.GraphViz

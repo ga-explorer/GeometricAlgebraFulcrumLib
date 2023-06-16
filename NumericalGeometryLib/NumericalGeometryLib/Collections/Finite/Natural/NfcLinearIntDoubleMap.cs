@@ -55,10 +55,7 @@ namespace NumericalGeometryLib.Collections.Finite.Natural
 
         public int ValuesCount { get; private set; }
 
-        public override int Count
-        {
-            get { return ValuesCount; }
-        }
+        public override int Count => ValuesCount;
 
         public double this[int index]
         {

@@ -29,10 +29,7 @@ namespace NumericalGeometryLib.Collections.Finite
         /// <summary>
         /// The reflection factor, a +1 for no-reflection or -1 for a reflection
         /// </summary>
-        public int ReflectFactor
-        {
-            get { return IsReflected ? -1 : 1; }
-        }
+        public int ReflectFactor => IsReflected ? -1 : 1;
 
         /// <summary>
         /// True if this collection applies a reflection of the base collection
@@ -42,40 +39,24 @@ namespace NumericalGeometryLib.Collections.Finite
         /// <summary>
         /// True if this collection applies a shift of the base collection
         /// </summary>
-        public bool IsShifted
-        {
-            get { return ShiftFactor != 0; }
-        }
+        public bool IsShifted => ShiftFactor != 0;
 
         /// <summary>
         /// The base collection
         /// </summary>
         public FiniteCollection<T> BaseCollection { get; private set; }
 
-        public override int Count
-        {
-            get { return BaseCollection.Count; }
-        }
+        public override int Count => BaseCollection.Count;
 
-        public override int MinIndex
-        {
-            get
-            {
-                return IsReflected
-                    ? ShiftFactor - BaseCollection.MaxIndex
-                    : ShiftFactor + BaseCollection.MinIndex;
-            }
-        }
+        public override int MinIndex =>
+            IsReflected
+                ? ShiftFactor - BaseCollection.MaxIndex
+                : ShiftFactor + BaseCollection.MinIndex;
 
-        public override int MaxIndex
-        {
-            get
-            {
-                return IsReflected
-                    ? ShiftFactor - BaseCollection.MinIndex
-                    : ShiftFactor + BaseCollection.MaxIndex;
-            }
-        }
+        public override int MaxIndex =>
+            IsReflected
+                ? ShiftFactor - BaseCollection.MinIndex
+                : ShiftFactor + BaseCollection.MaxIndex;
 
 
         private FcShiftReflect(FiniteCollection<T> baseCollection)

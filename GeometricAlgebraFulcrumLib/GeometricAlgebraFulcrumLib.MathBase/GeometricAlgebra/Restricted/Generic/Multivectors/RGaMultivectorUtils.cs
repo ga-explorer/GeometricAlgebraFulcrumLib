@@ -1,13 +1,15 @@
 ﻿using System.Runtime.CompilerServices;
 using DataStructuresLib.Combinations;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Basis;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Processors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space4D;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors
 {
@@ -678,32 +680,30 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Float64Tuple2D GetVectorPartAsTuple2D(this RGaMultivector<double> mv)
+        public static Float64Vector2D GetVectorPartAsTuple2D(this RGaMultivector<double> mv)
         {
-            return new Float64Tuple2D(
-                mv.GetTermScalar(1),
-                mv.GetTermScalar(2)
+            return new Float64Vector2D(
+                mv.GetTermScalar(1).ScalarValue,
+                mv.GetTermScalar(2).ScalarValue
             );
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Float64Tuple3D GetVectorPartAsTuple3D(this RGaMultivector<double> mv)
+        public static Float64Vector3D GetVectorPartAsTuple3D(this RGaMultivector<double> mv)
         {
-            return new Float64Tuple3D(
-                mv.GetTermScalar(1),
-                mv.GetTermScalar(2),
-                mv.GetTermScalar(4)
-            );
+            return Float64Vector3D.Create(mv.GetTermScalar(1).ScalarValue,
+                mv.GetTermScalar(2).ScalarValue,
+                mv.GetTermScalar(4).ScalarValue);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Float64Tuple4D GetVectorPartAsTuple4D(this RGaMultivector<double> mv)
+        public static Float64Vector4D GetVectorPartAsTuple4D(this RGaMultivector<double> mv)
         {
-            return new Float64Tuple4D(
-                mv.GetTermScalar(1),
-                mv.GetTermScalar(2),
-                mv.GetTermScalar(4),
-                mv.GetTermScalar(8)
+            return new Float64Vector4D(
+                mv.GetTermScalar(1).ScalarValue,
+                mv.GetTermScalar(2).ScalarValue,
+                mv.GetTermScalar(4).ScalarValue,
+                mv.GetTermScalar(8).ScalarValue
             );
         }
 

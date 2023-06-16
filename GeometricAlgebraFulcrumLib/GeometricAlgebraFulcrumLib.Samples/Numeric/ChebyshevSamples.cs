@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Immutable;
 using System.Linq;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Mutable;
-using GeometricAlgebraFulcrumLib.MathBase.Differential.Functions;
-using GeometricAlgebraFulcrumLib.MathBase.Differential.Functions.Polynomials;
-using GeometricAlgebraFulcrumLib.MathBase.Signals;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Differential.Functions;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Differential.Functions.Polynomials;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.SpaceND;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra.Composers;
 using SixLabors.ImageSharp;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Numeric
@@ -58,7 +59,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Numeric
 
             yDiff.Plot(yDiff.SamplingSpecs.MinTime, yDiff.SamplingSpecs.MaxTime).SaveAsPng(@"D:\yDiff.png");
 
-            foreach (var (i, c) in polynomial.ScalarCoefficients.IndexItemPairs)
+            foreach (var (i, c) in polynomial.ScalarCoefficients.IndexScalarPairs)
             {
                 Console.WriteLine($"c{i} = {polynomial.ScalarCoefficients[i]}");
             }
@@ -82,10 +83,13 @@ namespace GeometricAlgebraFulcrumLib.Samples.Numeric
                     10001
                 );
 
-            polynomial
-                .ScalarCoefficients
-                .ClearByValue(c => c.IsNearZero(1e-15));
-
+            polynomial =
+                DfChebyshevPolynomial.Create(
+                    polynomial
+                        .ScalarCoefficients
+                        .GetCopyByScalar(c => !c.IsNearZero(1e-15))
+                );
+            
             var fDt = polynomial.GetPolynomialDerivative1();
 
             var tValues =
@@ -143,7 +147,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Numeric
 
             var p1 = 
                 DfChebyshevPolynomial.Create(
-                    new Float64SparseTuple(
+                    new Float64Vector(
                         new []{1, -0.7, 0.3, -0.1}
                     ),
                     -1, 1
@@ -151,7 +155,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Numeric
 
             var p2 = 
                 DfChebyshevPolynomial.Create(
-                    new Float64SparseTuple(
+                    new Float64Vector(
                         new []{-1.5, -0.75, -0.2, 1.1}
                     ),
                     -1, 1

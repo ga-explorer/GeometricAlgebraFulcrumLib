@@ -1,7 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 using DataStructuresLib.IndexSets;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 // ReSharper disable CompareOfFloatsByEqualityOperator
 

@@ -3,12 +3,11 @@ using System.Globalization;
 using System.Linq;
 using DataStructuresLib.BitManipulation;
 using GeometricAlgebraFulcrumLib.Applications.PowerSystems;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
-using GeometricAlgebraFulcrumLib.MathBase.Differential.Functions;
-using GeometricAlgebraFulcrumLib.MathBase.Differential.Functions.Phasors;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Euclidean3D;
-using GeometricAlgebraFulcrumLib.MathBase.Signals;
-using GraphicsComposerLib.Rendering.LaTeX.CodeComposer;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Differential.Functions;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Differential.Functions.Phasors;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra.Composers;
+using WebComposerLib.LaTeX.CodeComposer;
 
 // ReSharper disable CompareOfFloatsByEqualityOperator
 
@@ -313,7 +312,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             var visualizer = new PowerSignalVisualizer3D(cameraAlphaValues, cameraBetaValues, powerSignal)
             {
                 Title = "Unbalanced 3-phase sinusoidal signal",
-                WorkingPath = @"D:\Projects\Study\Babylon.js\",
+                WorkingPath = @"D:\Projects\Study\Web\Babylon.js\",
                 HostUrl = "http://localhost:5200/",
                 //LiveReloadWebServer "D:/Projects/Study/Babylon.js/" --port 5200 --UseSsl False --LiveReloadEnabled False --OpenBrowser True
 

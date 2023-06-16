@@ -1,9 +1,7 @@
 ﻿using System.Numerics;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Arrays.Float64;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Matrices;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D
 {
@@ -39,8 +37,8 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D
             }
         }
 
-        private Float64Tuple3D _translationVector = Float64Tuple3D.Zero;
-        public Float64Tuple3D TranslationVector
+        private Float64Vector3D _translationVector = Float64Vector3D.Zero;
+        public Float64Vector3D TranslationVector
         {
             get => _translationVector;
             set
@@ -79,10 +77,10 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D
         {
             var array = _rotateMap.GetArray2D();
 
-            var c0 = MapVector(Float64Tuple3D.E1);
-            var c1 = MapVector(Float64Tuple3D.E2);
-            var c2 = MapVector(Float64Tuple3D.E3);
-            var c3 = MapPoint(Float64Tuple3D.Zero);
+            var c0 = MapVector(Float64Vector3D.E1);
+            var c1 = MapVector(Float64Vector3D.E2);
+            var c2 = MapVector(Float64Vector3D.E3);
+            var c3 = MapPoint(Float64Vector3D.Zero);
 
             array[0, 0] = c0.X;
             array[1, 0] = c0.Y;
@@ -106,38 +104,32 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Float64Tuple3D MapPoint(IFloat64Tuple3D point)
+        public Float64Vector3D MapPoint(IFloat64Tuple3D point)
         {
             return _rotateMap.MapPoint(
-                new Float64Tuple3D(
-                    _scalingFactor * (point.X + _translationVector.X),
+                Float64Vector3D.Create(_scalingFactor * (point.X + _translationVector.X),
                     _scalingFactor * (point.Y + _translationVector.Y),
-                    _scalingFactor * (point.Z + _translationVector.Z)
-                )
+                    _scalingFactor * (point.Z + _translationVector.Z))
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Float64Tuple3D MapVector(IFloat64Tuple3D vector)
+        public Float64Vector3D MapVector(IFloat64Tuple3D vector)
         {
             return _rotateMap.MapPoint(
-                new Float64Tuple3D(
-                    _scalingFactor * vector.X,
+                Float64Vector3D.Create(_scalingFactor * vector.X,
                     _scalingFactor * vector.Y,
-                    _scalingFactor * vector.Z
-                )
+                    _scalingFactor * vector.Z)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Float64Tuple3D MapNormal(IFloat64Tuple3D normal)
+        public Float64Vector3D MapNormal(IFloat64Tuple3D normal)
         {
             return _rotateMap.MapPoint(
-                new Float64Tuple3D(
-                    _scalingFactor * normal.X,
+                Float64Vector3D.Create(_scalingFactor * normal.X,
                     _scalingFactor * normal.Y,
-                    _scalingFactor * normal.Z
-                )
+                    _scalingFactor * normal.Z)
             );
         }
 

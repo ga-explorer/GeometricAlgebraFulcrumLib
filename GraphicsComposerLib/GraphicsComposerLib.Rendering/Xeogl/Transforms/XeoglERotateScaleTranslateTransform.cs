@@ -1,6 +1,5 @@
-﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Matrices;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
+﻿using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 using TextComposerLib.Text.Linear;
 
 namespace GraphicsComposerLib.Rendering.Xeogl.Transforms
@@ -69,17 +68,17 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Transforms
         public SquareMatrix4 GetMatrix()
             => SquareMatrix4.CreateIdentityMatrix();
 
-        public Float64Tuple4D GetQuaternionTuple()
-            => new Float64Tuple4D(0, 0, 0, 1);
+        public Float64Quaternion GetQuaternionTuple()
+            => Float64Quaternion.Create(0, 0, 0, 1);
 
-        public Float64Tuple3D GetRotateTuple()
-            => new Float64Tuple3D(RotateX, RotateY, RotateZ);
+        public Float64Vector3D GetRotateTuple()
+            => Float64Vector3D.Create(RotateX, RotateY, RotateZ);
 
-        public Float64Tuple3D GetScaleTuple()
-            => new Float64Tuple3D(ScaleX, ScaleY, ScaleZ);
+        public Float64Vector3D GetScaleTuple()
+            => Float64Vector3D.Create(ScaleX, ScaleY, ScaleZ);
 
-        public Float64Tuple3D GetTranslateTuple()
-            => new Float64Tuple3D(TranslateX, TranslateY, TranslateZ);
+        public Float64Vector3D GetTranslateTuple()
+            => Float64Vector3D.Create(TranslateX, TranslateY, TranslateZ);
 
 
         public XeoglERotateScaleTranslateTransform SetRotate(IFloat64Tuple3D rotateTuple)

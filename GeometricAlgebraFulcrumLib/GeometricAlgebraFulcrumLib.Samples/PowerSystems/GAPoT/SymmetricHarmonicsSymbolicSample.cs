@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Arrays.Generic;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.LinearMaps.Outermorphisms;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.LinearMaps.Rotors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Subspaces;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic.Matrices;
 using GeometricAlgebraFulcrumLib.Mathematica;
 using GeometricAlgebraFulcrumLib.Mathematica.Applications.GaPoT;
 using GeometricAlgebraFulcrumLib.Mathematica.GeometricAlgebra;

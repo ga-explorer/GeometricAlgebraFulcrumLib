@@ -1,8 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Numerics;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Matrices;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D
 {
@@ -19,7 +18,9 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D
             var newMap = new TrsMap3D();
 
             //Extract translation part
-            newMap.TranslationVector = new Float64Tuple3D(c[3], c[7], c[11]);
+            newMap.TranslationVector = Float64Vector3D.Create(c.Scalar03, 
+                c.Scalar13, 
+                c.Scalar23);
 
             //Separate upper left 3x3 block into rotation of stretch
             var m = c.UpperLeftBlock3X3;
@@ -34,12 +35,12 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D
         /// <summary>
         /// The translation vector
         /// </summary>
-        public Float64Tuple3D TranslationVector { get; set; }
+        public Float64Vector3D TranslationVector { get; set; }
 
         /// <summary>
         /// The direction of the rotation axis; this must be a unit vector
         /// </summary>
-        public Float64Tuple3D RotationVector { get; set; }
+        public Float64Vector3D RotationVector { get; set; }
 
         /// <summary>
         /// The angle of the rotation
@@ -89,7 +90,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D
             {
                 UpperLeftBlock3X3 = RotationMatrix * StretchMatrix,
                 UpperRightBlock3X1 = TranslationVector,
-                [15] = 1.0d
+                Scalar33 = 1.0d
             };
         }
 
@@ -103,17 +104,17 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D
             throw new NotImplementedException();
         }
 
-        public Float64Tuple3D MapPoint(IFloat64Tuple3D point)
+        public Float64Vector3D MapPoint(IFloat64Tuple3D point)
         {
             throw new NotImplementedException();
         }
 
-        public Float64Tuple3D MapVector(IFloat64Tuple3D point)
+        public Float64Vector3D MapVector(IFloat64Tuple3D point)
         {
             throw new NotImplementedException();
         }
 
-        public Float64Tuple3D MapNormal(IFloat64Tuple3D normal)
+        public Float64Vector3D MapNormal(IFloat64Tuple3D normal)
         {
             throw new NotImplementedException();
         }

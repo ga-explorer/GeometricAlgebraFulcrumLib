@@ -1,5 +1,5 @@
 ﻿using GraphicsComposerLib.Rendering.BabylonJs.Constants;
-using GraphicsComposerLib.Rendering.Colors;
+using WebComposerLib.Colors;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Values
 {

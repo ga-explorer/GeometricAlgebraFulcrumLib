@@ -1,9 +1,8 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.MathBase.BasicMath;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Euclidean2D
 {
@@ -88,7 +87,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Euclidean2D
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static implicit operator Ega2Multivector(Float64Tuple2D vector)
+        public static implicit operator Ega2Multivector(Float64Vector2D vector)
         {
             return new Ega2Multivector(0, vector.X, vector.Y, 0);
         }
@@ -349,9 +348,9 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Euclidean2D
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Float64Tuple2D GetVectorPartAsTuple2D()
+        public Float64Vector2D GetVectorPartAsTuple2D()
         {
-            return new Float64Tuple2D(Scalar1, Scalar2);
+            return new Float64Vector2D(Scalar1, Scalar2);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

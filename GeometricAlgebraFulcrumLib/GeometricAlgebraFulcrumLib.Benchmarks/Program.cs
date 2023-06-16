@@ -1,5 +1,5 @@
 ﻿using BenchmarkDotNet.Running;
-using GeometricAlgebraFulcrumLib.Benchmarks.GAPoT;
+using GeometricAlgebraFulcrumLib.Benchmarks.Structures;
 
 namespace GeometricAlgebraFulcrumLib.Benchmarks
 {
@@ -16,7 +16,8 @@ namespace GeometricAlgebraFulcrumLib.Benchmarks
             //benckmark.Validate();
 
 
-            BenchmarkRunner.Run<ClarkeBenchmark>();
+            //BenchmarkRunner.Run<ClarkeBenchmark>();
+            BenchmarkRunner.Run<DictionaryJoinBenchmarks>();
         }
     }
 }

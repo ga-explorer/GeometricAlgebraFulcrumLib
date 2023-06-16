@@ -3,22 +3,23 @@ using System.Runtime.CompilerServices;
 using DataStructuresLib.Basic;
 using DataStructuresLib.Collections;
 using DataStructuresLib.Extensions;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Frames.Space3D;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
-using GeometricAlgebraFulcrumLib.MathBase.Borders.Space1D.Immutable;
-using GeometricAlgebraFulcrumLib.MathBase.Borders.Space3D.Immutable;
-using GeometricAlgebraFulcrumLib.MathBase.Differential.Curves;
-using GeometricAlgebraFulcrumLib.MathBase.Differential.Functions;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Euclidean3D;
-using GeometricAlgebraFulcrumLib.MathBase.Parametric.Curves;
-using GeometricAlgebraFulcrumLib.MathBase.Parametric.Curves.Sampled;
-using GeometricAlgebraFulcrumLib.MathBase.Parametric.Frames;
-using GeometricAlgebraFulcrumLib.MathBase.Signals;
-using GraphicsComposerLib.Rendering.Colors;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space3D.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Differential.Curves;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Differential.Functions;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Curves;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Curves.Adaptive;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Frames.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra.Composers;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
 using SixLabors.ImageSharp;
+using WebComposerLib.Colors;
 using PngExporter = OxyPlot.SkiaSharp.PngExporter;
 
 namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
@@ -27,7 +28,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
         DifferentialCurve3D
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static PowerSignal3D Create(ScalarSignalFloat64 timeValues, DifferentialFunction scalarFuncX, DifferentialFunction scalarFuncY, DifferentialFunction scalarFuncZ)
+        public static PowerSignal3D Create(Float64Signal timeValues, DifferentialFunction scalarFuncX, DifferentialFunction scalarFuncY, DifferentialFunction scalarFuncZ)
         {
             var scalarNormFunc = 
                 (scalarFuncX.Square() + scalarFuncY.Square() + scalarFuncZ.Square()).SquareRoot().Simplify();
@@ -42,9 +43,9 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
         }
 
     
-        public ScalarSignalFloat64 TimeValues { get; }
+        public Float64Signal TimeValues { get; }
 
-        public SignalSamplingSpecs SamplingSpecs 
+        public Float64SignalSamplingSpecs SamplingSpecs 
             => TimeValues.SamplingSpecs;
 
         public int SampleCount 
@@ -66,23 +67,23 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
 
         public BoundingBox3D? VectorBounds { get; private set; }
 
-        public BoundingBox1D ScalarBounds { get; private set; }
+        public Float64Range1D ScalarBounds { get; private set; }
 
-        public BoundingBox1D CurvatureBounds { get; private set; }
+        public Float64Range1D CurvatureBounds { get; private set; }
 
-        public SampledParametricCurve3D? SampledCurve { get; private set; }
+        public AdaptiveCurve3D? SampledCurve { get; private set; }
 
         public IReadOnlyList<AffineFrame3D>? FrameList { get; private set; }
 
         public IReadOnlyList<Pair<double>>? CurvatureList { get; private set; }
 
-        public IReadOnlyList<EGa3Bivector>? DarbouxBivectorList { get; private set; }
+        public IReadOnlyList<Float64Bivector3D>? DarbouxBivectorList { get; private set; }
 
         public IReadOnlyList<double>? FrequencyHzList { get; private set; }
 
     
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        protected PowerSignal3D(ScalarSignalFloat64 timeValues, DifferentialFunction scalarFuncX, DifferentialFunction scalarFuncY, DifferentialFunction scalarFuncZ, DifferentialFunction tangentNorm)
+        protected PowerSignal3D(Float64Signal timeValues, DifferentialFunction scalarFuncX, DifferentialFunction scalarFuncY, DifferentialFunction scalarFuncZ, DifferentialFunction tangentNorm)
             : base(new Triplet<DifferentialFunction>(scalarFuncX, scalarFuncY, scalarFuncZ), tangentNorm)
         {
             TimeValues = timeValues;
@@ -102,12 +103,12 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
 
     
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Pair<ScalarSignalFloat64> GetCurvatureSignals()
+        public Pair<Float64Signal> GetCurvatureSignals()
         {
             var curvaturePairs = 
                 TimeValues.Select(GetCurvatures).ToImmutableArray();
 
-            return new Pair<ScalarSignalFloat64>(
+            return new Pair<Float64Signal>(
                 curvaturePairs.Select(p => p.Item1).CreateSignal(SamplingRate),
                 curvaturePairs.Select(p => p.Item2).CreateSignal(SamplingRate)
             );
@@ -119,9 +120,9 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
             return GetCurvatureSignals().MapItems(p => p.Mean());
         }
 
-        public SampledParametricCurve3D? GetSampledCurve()
+        public AdaptiveCurve3D? GetSampledCurve()
         {
-            var parameterValueRange = BoundingBox1D.Create(0, TimeMaxValue);
+            var parameterValueRange = Float64Range1D.Create(0, TimeMaxValue);
 
             var curve = ComputedParametricCurve3D.Create(
                 XFunction,
@@ -130,13 +131,13 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
             );
 
             var sampledCurve =
-                new SampledParametricCurve3D(curve, parameterValueRange)
+                new AdaptiveCurve3D(curve, parameterValueRange)
                 {
                     FrameSamplingMethod = ParametricCurveLocalFrameSamplingMethod.SimpleRotation,
                     FrameInterpolationMethod = ParametricCurveLocalFrameInterpolationMethod.SphericalLinearInterpolation
                 };
 
-            var options = new SampledParametricCurveTreeOptions3D(
+            var options = new AdaptiveCurveSamplingOptions3D(
                 18.DegreesToAngle(),
                 9,
                 20
@@ -153,7 +154,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
                 );
 
             ScalarBounds =
-                BoundingBox1D.Create(
+                Float64Range1D.Create(
                     Math.Min(
                         Math.Min(
                             VectorBounds.MinX, 
@@ -181,10 +182,10 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
             );
 
             CurvatureBounds =
-                BoundingBox1D.Create(kappaMin, kappaMax);
+                Float64Range1D.Create(kappaMin, kappaMax);
         }
     
-        public BoundingBox1D GetCurvatureBounds(int index1, int index2)
+        public Float64Range1D GetCurvatureBounds(int index1, int index2)
         {
             if (CurvatureList is null)
                 throw new InvalidOperationException();
@@ -201,10 +202,10 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
                 (accumulator, item) => Math.Max(accumulator, item.Max())
             );
 
-            return BoundingBox1D.Create(kappaMin, kappaMax);
+            return Float64Range1D.Create(kappaMin, kappaMax);
         }
 
-        public BoundingBox1D GetFrequencyHzBounds(int index1, int index2)
+        public Float64Range1D GetFrequencyHzBounds(int index1, int index2)
         {
             if (FrequencyHzList is null)
                 throw new InvalidOperationException();
@@ -221,7 +222,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
                 Math.Max
             );
 
-            return BoundingBox1D.Create(freqMin, freqMax);
+            return Float64Range1D.Create(freqMin, freqMax);
         }
     
         public Image GetSignalPlotImage(int index, int plotSampleCount)
@@ -592,19 +593,19 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
 
         }
 
-        public EGa3Bivector GetDarbouxBivectorMean()
+        public Float64Bivector3D GetDarbouxBivectorMean()
         {
             return GetDarbouxBivectorMean(0, SampleCount - 1);
         }
 
-        public EGa3Bivector GetDarbouxBivectorMean(int index)
+        public Float64Bivector3D GetDarbouxBivectorMean(int index)
         {
             return GetDarbouxBivectorMean(0, index);
         }
 
-        public EGa3Bivector GetDarbouxBivectorMean(int index1, int index2)
+        public Float64Bivector3D GetDarbouxBivectorMean(int index1, int index2)
         {
-            var dbMean = EGa3Bivector.Zero;
+            var dbMean = Float64Bivector3D.Zero;
 
             if (DarbouxBivectorList is null)
                 return dbMean;
@@ -632,7 +633,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
 
             FrequencyHzList =
                 DarbouxBivectorList.CreateMappedList(db => 
-                    db.Norm() / (2d * Math.PI)
+                    (db.Norm() / (2d * Math.PI)).Value
                 );
 
             ComputeBounds();

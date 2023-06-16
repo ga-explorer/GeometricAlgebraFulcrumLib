@@ -1,37 +1,40 @@
-﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Matrices;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
+﻿using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space2D
 {
-    public sealed class ReflectionYMap2D : IAffineMap2D
+    public sealed class ReflectionYMap2D : 
+        IAffineMap2D
     {
-        public SquareMatrix3 ToSquareMatrix3()
+        public SquareMatrix3 GetSquareMatrix3()
         {
             throw new NotImplementedException();
         }
 
-        public double[,] ToArray2D()
+        public double[,] GetArray2D()
         {
             throw new NotImplementedException();
         }
 
-        public Float64Tuple2D MapPoint(IFloat64Tuple2D point)
+        public bool SwapsHandedness 
+            => true;
+
+        public Float64Vector2D MapPoint(IFloat64Tuple2D point)
         {
             throw new NotImplementedException();
         }
 
-        public Float64Tuple2D MapVector(IFloat64Tuple2D vector)
+        public Float64Vector2D MapVector(IFloat64Tuple2D vector)
         {
             throw new NotImplementedException();
         }
 
-        public Float64Tuple2D MapNormal(IFloat64Tuple2D normal)
+        public Float64Vector2D MapNormal(IFloat64Tuple2D normal)
         {
             throw new NotImplementedException();
         }
 
-        public IAffineMap2D InverseMap()
+        public IAffineMap2D GetInverseAffineMap()
         {
             throw new NotImplementedException();
         }

@@ -28,6 +28,16 @@ namespace DataStructuresLib.Files
         {
             return $"{Path.Combine(folderPath, fileName)}.{fileExtension}";
         }
+        
+        public static string GetPngFilePath(this string folderPath, string fileName)
+        {
+            return $"{Path.Combine(folderPath, fileName)}.png";
+        }
+        
+        public static string GetSvgFilePath(this string folderPath, string fileName)
+        {
+            return $"{Path.Combine(folderPath, fileName)}.svg";
+        }
 
         public static string GetTempFilePath(this string folderPath, string fileExtension)
         {

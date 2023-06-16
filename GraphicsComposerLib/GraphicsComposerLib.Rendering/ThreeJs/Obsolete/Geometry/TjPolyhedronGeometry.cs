@@ -1,4 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+﻿using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 using TextComposerLib.Code.JavaScript;
 
 namespace GraphicsComposerLib.Rendering.ThreeJs.Obsolete.Geometry

@@ -1,18 +1,18 @@
-﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Matrices;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
+﻿using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space2D
 {
-    public sealed class TranslationMap2D : IAffineMap2D
+    public sealed class TranslationMap2D : 
+        IAffineMap2D
     {
         public double DirectionX { get; private set; }
 
         public double DirectionY { get; private set; }
 
-        public Float64Tuple2D Direction
+        public Float64Vector2D Direction
         {
-            get { return new Float64Tuple2D(DirectionX, DirectionY); }
+            get { return new Float64Vector2D(DirectionX, DirectionY); }
         }
 
 
@@ -22,42 +22,45 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space2D
             DirectionY = directionY;
         }
 
-        public TranslationMap2D(Float64Tuple2D direction)
+        public TranslationMap2D(Float64Vector2D direction)
         {
             DirectionX = direction.X;
             DirectionY = direction.Y;
         }
 
 
-        public SquareMatrix3 ToSquareMatrix3()
+        public SquareMatrix3 GetSquareMatrix3()
         {
             return SquareMatrix3.CreateTranslationMatrix2D(DirectionX, DirectionY);
         }
 
-        public double[,] ToArray2D()
+        public double[,] GetArray2D()
         {
             throw new NotImplementedException();
         }
 
-        public Float64Tuple2D MapPoint(IFloat64Tuple2D point)
+        public bool SwapsHandedness 
+            => false;
+
+        public Float64Vector2D MapPoint(IFloat64Tuple2D point)
         {
-            return new Float64Tuple2D(
+            return new Float64Vector2D(
                 point.X + DirectionX, 
                 point.Y + DirectionY
             );
         }
 
-        public Float64Tuple2D MapVector(IFloat64Tuple2D vector)
+        public Float64Vector2D MapVector(IFloat64Tuple2D vector)
         {
-            return vector.ToTuple2D();
+            return vector.ToLinVector2D();
         }
 
-        public Float64Tuple2D MapNormal(IFloat64Tuple2D normal)
+        public Float64Vector2D MapNormal(IFloat64Tuple2D normal)
         {
-            return normal.ToTuple2D();
+            return normal.ToLinVector2D();
         }
 
-        public IAffineMap2D InverseMap()
+        public IAffineMap2D GetInverseAffineMap()
         {
             return new TranslationMap2D(-DirectionX, -DirectionY);
         }

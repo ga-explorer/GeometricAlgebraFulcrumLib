@@ -54,5 +54,9 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Images
             return bitmap;
         }
 
+        public override bool IsValid()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -7,6 +7,8 @@ using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Basis;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.SpaceND;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 using TextComposerLib.Text;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Multivectors
@@ -227,6 +229,37 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float6
             }
         }
 
+        
+        public IRGaSignedBasisBlade GetDominantBasisBlade()
+        {
+            if (_idScalarDictionary.Count == 0)
+                return new RGaBasisBlade(Metric, 0);
+
+            ulong dominantId = 0;
+            var dominantScalar = 0d;
+
+            foreach (var (id, scalar) in _idScalarDictionary)
+            {
+                var absScalar = scalar.Abs();
+
+                if (absScalar <= dominantScalar) 
+                    continue;
+
+                //if (absScalar == dominantScalar && id.Grade() <= dominantId.Grade()) 
+                //    continue;
+
+                dominantId = id;
+                dominantScalar = absScalar;
+            }
+
+            return new RGaBasisBlade(Metric, dominantId);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public RGaFloat64Vector GetNormalVector()
+        {
+            return this.VectorToLinVector().GetUnitNormal().ToRGaFloat64Vector(Processor);
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override RGaFloat64Multivector Simplify()

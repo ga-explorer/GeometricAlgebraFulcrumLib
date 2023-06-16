@@ -14,29 +14,20 @@ namespace NumericalGeometryLib.Accelerators.BIH.Space3D.Traversal
 
         public double LineClipParameterValue1 { get; }
 
-        public bool IsDirectionPositive
-        {
-            get { return DirectionValue > 0; }
-        }
+        public bool IsDirectionPositive => DirectionValue > 0;
 
-        public bool IsDirectionNegative
-        {
-            get { return DirectionValue < 0; }
-        }
+        public bool IsDirectionNegative => DirectionValue < 0;
 
-        public bool IsDirectionZero
-        {
-            get { return DirectionValue == 0; }
-        }
+        public bool IsDirectionZero => DirectionValue == 0;
 
 
         internal AccBihLineTraversalData3D(IAccBihNode3D bihNode, LineTraversalData3D lineData)
         {
             var splitAxisIndex = bihNode.SplitAxisIndex;
 
-            OriginValue = lineData.Origin[splitAxisIndex];
-            DirectionValue = lineData.Direction[splitAxisIndex];
-            DirectionInvValue = lineData.DirectionInv[splitAxisIndex];
+            OriginValue = lineData.Origin[1 << splitAxisIndex];
+            DirectionValue = lineData.Direction[1 << splitAxisIndex];
+            DirectionInvValue = lineData.DirectionInv[1 << splitAxisIndex];
             LineClipParameterValue0 = (bihNode.ClipValue0 - OriginValue) * DirectionInvValue;
             LineClipParameterValue1 = (bihNode.ClipValue1 - OriginValue) * DirectionInvValue;
         }

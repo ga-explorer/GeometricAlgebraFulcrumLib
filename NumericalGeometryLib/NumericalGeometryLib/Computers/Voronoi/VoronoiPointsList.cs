@@ -3,57 +3,38 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DataStructuresLib.Basic;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
-using GeometricAlgebraFulcrumLib.MathBase.Borders.Space2D.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
 
 namespace NumericalGeometryLib.Computers.Voronoi
 {
-    public sealed class VoronoiPointsList : IReadOnlyList<Float64Tuple2D>
+    public sealed class VoronoiPointsList : IReadOnlyList<Float64Vector2D>
     {
-        private readonly List<Float64Tuple2D> _pointsList
-            = new List<Float64Tuple2D>();
+        private readonly List<Float64Vector2D> _pointsList
+            = new List<Float64Vector2D>();
 
 
-        public int Count
-        {
-            get { return _pointsList.Count; }
-        }
+        public int Count => _pointsList.Count;
 
-        public Float64Tuple2D this[int index]
-        {
-            get { return _pointsList[index.Mod(_pointsList.Count)]; }
-        }
+        public Float64Vector2D this[int index] => _pointsList[index.Mod(_pointsList.Count)];
 
-        public int DataPointsCount
-        {
-            get { return _pointsList.Count - 3; }
-        }
+        public int DataPointsCount => _pointsList.Count - 3;
 
-        public IEnumerable<Float64Tuple2D> DataPoints
-        {
-            get { return _pointsList.Take(_pointsList.Count - 3); }
-        }
+        public IEnumerable<Float64Vector2D> DataPoints => _pointsList.Take(_pointsList.Count - 3);
 
-        public IEnumerable<Float64Tuple2D> BoundingTrianglePoints
-        {
-            get { return _pointsList.Skip(_pointsList.Count - 3); }
-        }
+        public IEnumerable<Float64Vector2D> BoundingTrianglePoints => _pointsList.Skip(_pointsList.Count - 3);
 
         public VoronoiTriangle2D BoundingTriangle { get; }
 
         public BoundingSphere2D BoundingSphere { get; }
 
-        public IEnumerable<VoronoiEdge2D> BoundingTriangleEdges
-        {
-            get { return BoundingTriangle.Edges; }
-        }
+        public IEnumerable<VoronoiEdge2D> BoundingTriangleEdges => BoundingTriangle.Edges;
 
 
         public VoronoiPointsList(IEnumerable<IFloat64Tuple2D> pointsList)
         {
             _pointsList.AddRange(
-                pointsList.Select(p => p.ToTuple2D())
+                pointsList.Select(p => p.ToLinVector2D())
             );
 
             BoundingSphere = BoundingSphere2D.CreateFromPoints(
@@ -74,19 +55,19 @@ namespace NumericalGeometryLib.Computers.Voronoi
             var halfSideLength = 
                 radius / Math.Tan(Math.PI / 6);
 
-            var point1 = new Float64Tuple2D(
+            var point1 = new Float64Vector2D(
                 centerX - halfSideLength,
                 centerY - radius
             );
 
-            var point2 = new Float64Tuple2D(
+            var point2 = new Float64Vector2D(
                 centerX + halfSideLength,
                 centerY - radius
             );
 
             var d = point1.GetDistanceToPoint(centerX, centerY);
 
-            var point3 = new Float64Tuple2D(
+            var point3 = new Float64Vector2D(
                 centerX, 
                 centerY + d
             );
@@ -108,7 +89,7 @@ namespace NumericalGeometryLib.Computers.Voronoi
         }
 
 
-        public IEnumerator<Float64Tuple2D> GetEnumerator()
+        public IEnumerator<Float64Vector2D> GetEnumerator()
         {
             return _pointsList.GetEnumerator();
         }

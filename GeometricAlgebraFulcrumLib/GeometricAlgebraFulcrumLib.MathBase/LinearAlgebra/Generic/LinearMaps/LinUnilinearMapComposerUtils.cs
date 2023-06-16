@@ -2,7 +2,7 @@
 using DataStructuresLib.BitManipulation;
 using DataStructuresLib.Dictionary;
 using DataStructuresLib.IndexSets;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic.LinearMaps;
 

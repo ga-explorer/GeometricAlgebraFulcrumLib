@@ -1,5 +1,5 @@
-﻿using GraphicsComposerLib.Geometry.Primitives;
-using GraphicsComposerLib.Geometry.Primitives.Points;
+﻿using GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives;
+using GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Points;
 using TextComposerLib.Code.JavaScript;
 
 namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Primitives

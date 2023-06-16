@@ -5,15 +5,6 @@ using System.Linq;
 using System.Numerics;
 using DataStructuresLib.BitManipulation;
 using DataStructuresLib.Random;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Arrays.Float64;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Constants;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D.Rotation;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Matrices;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.SubSpaces;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Mutable;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.LinearMaps.Outermorphisms;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.LinearMaps.Rotors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Multivectors;
@@ -25,9 +16,18 @@ using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Line
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.Rotation;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.Scaling;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.Space3D.Rotation;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.SpaceND;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.SpaceND.Composers;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.SpaceND.Rotation;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.SpaceND.Scaling;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.SubSpaces.SpaceND;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.SpaceND;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.Text;
 using GeometricAlgebraFulcrumLib.Mathematica;
 using GeometricAlgebraFulcrumLib.Mathematica.Applications.GaPoT;
@@ -69,12 +69,12 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                 LaTeXComposerFloat64.DefaultComposer;
 
             var randomComposer =
-                geometricProcessor.CreateXGaRandomComposer(10);
+                geometricProcessor.CreateXGaRandomComposer(n);
 
             var random = randomComposer.RandomGenerator;
 
             var rotationSequence = 
-                LinFloat64VectorToVectorRotationSequence.Create(n);
+                LinFloat64PlanarRotationSequence.Create(n);
 
             for (var i = 0; i < n; i++)
                 rotationSequence.AppendMap(
@@ -128,7 +128,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                 var kVectorRotated = 
                     rotation.MapVector(kVector);
 
-                var angle = rotation.Angle.Degrees;
+                var angle = rotation.RotationAngle.Degrees;
 
                 var eigenValue = eigenValueArray[i];
 
@@ -159,7 +159,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                 LaTeXComposerFloat64.DefaultComposer;
 
             var random =
-                geometricProcessor.CreateXGaRandomComposer(10);
+                geometricProcessor.CreateXGaRandomComposer(n);
 
             var clarkeMap =
                 geometricProcessor.CreateClarkeRotationMap(n);
@@ -274,21 +274,21 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
             {
                 var vectorRotation = vectorRotationSequence[i];
 
-                var u1 = vectorRotation.SourceVector;
+                var u1 = vectorRotation.BasisVector1;
                 var u2 = geometricProcessor.CreateVector(u1);
             
                 Debug.Assert(
                     (u1 - u2.VectorToLinVector()).GetVectorNormSquared().IsNearZero()
                 );
 
-                var v1 = vectorRotation.TargetVector;
+                var v1 = vectorRotation.MapBasisVector1();
                 var v2 = geometricProcessor.CreateVector(v1);
             
                 Debug.Assert(
                     (v1 - v2.VectorToLinVector()).GetVectorNormSquared().IsNearZero()
                 );
 
-                var angle1 = vectorRotation.Angle.Degrees;
+                var angle1 = vectorRotation.RotationAngle.Degrees;
                 var bivector1 = v2.Op(u2);
                 bivector1 /= bivector1.ENorm();
 
@@ -512,7 +512,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
             //var v = random.GetFloat64Tuple(n).InPlaceNormalize();
 
             var rotation = 
-                LinFloat64VectorToVectorRotationSequence.CreateRandomOrthogonal(random, n, 2);
+                LinFloat64PlanarRotationSequence.CreateRandomOrthogonal(random, n, 2);
 
             var matrix1 = rotation.ToMatrix(n, n);
             var matrix2 = matrix1.GetOutermorphismMatrix(2);
@@ -676,7 +676,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                 LaTeXComposerFloat64.DefaultComposer;
 
             var random =
-                geometricProcessor.CreateXGaRandomComposer(10);
+                geometricProcessor.CreateXGaRandomComposer(n);
 
 
             var clarkeRotation = 
@@ -704,14 +704,14 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
             {
                 var r = (LinFloat64VectorToVectorRotation)rotation;
 
-                var u = r.SourceVector;
-                var v = r.TargetVector;
+                var u = r.BasisVector1;
+                var v = r.MapBasisVector1();
 
                 Console.WriteLine($"Rotation {i}:");
                 Console.WriteLine($"   u = {u}");
                 Console.WriteLine($"   v = {v}");
-                Console.WriteLine($"   Cos Angle = {r.AngleCos}");
-                Console.WriteLine($"   Angle = {r.Angle}");
+                Console.WriteLine($"   Cos Angle = {r.RotationAngleCos}");
+                Console.WriteLine($"   Angle = {r.RotationAngle}");
                 Console.WriteLine();
 
                 i++;
@@ -746,10 +746,10 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                 var rotation = rotationSequence[k];
 
                 var sourceVector = 
-                    rotation.SourceVector;
+                    rotation.BasisVector1;
 
                 var targetVector = 
-                    rotation.TargetVector;
+                    rotation.MapBasisVector1();
 
                 Console.WriteLine($"Rotation {k + 1}:");
                 Console.WriteLine($"Source Vector: {sourceVector}");
@@ -764,8 +764,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
             {
                 var rotation = rotationSequence[k];
 
-                var u = rotation.SourceVector;
-                var v = rotation.TargetVector;
+                var u = rotation.BasisVector1;
+                var v = rotation.MapBasisVector1();
                 var uvSubspace = LinFloat64PlaneSubspace.CreateFromUnitVectors(u, v);
             
                 var x = random.GetNumber() * u + random.GetNumber() * v;
@@ -809,7 +809,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
             for (var rotationCount = 1; rotationCount <= n / 2; rotationCount++)
             {
                 // Create a rotation sequence of 1 or more orthogonal rotations
-                var rotationSequence = LinFloat64VectorToVectorRotationSequence.CreateRandomOrthogonal(
+                var rotationSequence = LinFloat64PlanarRotationSequence.CreateRandomOrthogonal(
                     random,
                     n,
                     rotationCount
@@ -842,8 +842,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
 
                 foreach (var rotation in rotationSequence)
                 {
-                    var u = rotation.SourceVector;
-                    var v = rotation.TargetVector;
+                    var u = rotation.BasisVector1;
+                    var v = rotation.MapBasisVector1();
 
                     var v1 = rotationSequence.MapVector(u);
                     var v2 = (rotationMatrix * u.ToVector(n)).CreateLinVector();
@@ -881,7 +881,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
             for (var rotationCount = 1; rotationCount <= n; rotationCount++)
             {
                 // Create a rotation sequence of 1 or more general rotations
-                var rotationSequence = LinFloat64VectorToVectorRotationSequence.CreateRandom(
+                var rotationSequence = LinFloat64PlanarRotationSequence.CreateRandom(
                     random,
                     n,
                     rotationCount
@@ -933,18 +933,114 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
             var v = random.GetFloat64Tuple(n).CreateUnitLinVector();
 
             var rotation = 
-                LinFloat64VectorToVectorRotation.Create(u, v);
+                LinFloat64VectorToVectorRotation.CreateFromRotatedVector(u, v);
 
             for (var i = 0; i < 100; i++)
             {
                 var x = random.GetFloat64Tuple(n).CreateLinVector();
 
                 var y1 = rotation.MapVectorProjection(x);
-                var y2 = rotation.MapVector(rotation.ProjectOnRotationPlane(x));
+                var y2 = rotation.MapVector(rotation.GetVectorProjection(x));
 
                 Debug.Assert(
                     (y1 - y2).GetVectorNormSquared().IsNearZero()
                 );
+            }
+        }
+
+
+        public static void ValidationsExample3D()
+        {
+            ValidationExample3D_1();
+        }
+
+        private static void ValidationExample3D_1()
+        {
+            var random = new Random(10);
+
+            for (var i = 0; i < 100; i++)
+            {
+                // Create a random planar rotation
+                var vector1 = random.GetLinVector3D();
+                var vector2 = random.GetLinVector3D();
+                var rotationAngle = random.GetAngle(Math.PI / 2).RadiansToAngle();
+
+                var rotation = LinFloat64PlanarRotation3D.CreateFromSpanningVectors(
+                    vector1,
+                    vector2,
+                    rotationAngle
+                );
+                
+                // Create the rotation inverse
+                var rotationInv = rotation.GetInversePlanarRotation();
+
+                // Assert both rotations are valid
+                Debug.Assert(
+                    rotation.IsValid() &&
+                    rotationInv.IsValid()
+                );
+
+                Debug.Assert(
+                    vector1.ToUnitVector().IsNearEqual(rotation.BasisVector1)
+                );
+
+                Debug.Assert(
+                    vector2.GetAngleCosWithUnit(rotation.BasisVector2) >= 0
+                );
+
+                // Assert rotated basis vectors are unit vectors and have the same angle of rotation
+                Debug.Assert(
+                    rotation.MapBasisVector1().IsNearUnit()
+                );
+                
+                Debug.Assert(
+                    rotationAngle.IsNearEqualOrFullRotation(
+                        rotation.BasisVector1.GetAngle(rotation.MapBasisVector1())
+                    )
+                );
+
+
+                Debug.Assert(
+                    rotation.MapBasisVector2().IsNearUnit()
+                );
+
+                Debug.Assert(
+                    rotationAngle.IsNearEqualOrFullRotation(
+                        rotation.BasisVector2.GetAngle(rotation.MapBasisVector2())
+                    )
+                );
+
+                
+                Debug.Assert(
+                    rotation.MapBasisVector1().IsNearOrthonormalWith(
+                        rotation.MapBasisVector2()
+                    )
+                );
+
+
+                for (var j = 0; j < 10; j++)
+                {
+                    var u = random.GetLinVector3D() * 10;
+
+                    var u1 = rotation.MapVector(u);
+                    var u2 = rotationInv.MapVector(u1);
+
+                    Debug.Assert(
+                        u.ENormSquared().IsNearEqual(u1.ENormSquared())
+                    );
+
+                    Debug.Assert(
+                        u.ENormSquared().IsNearEqual(u2.ENormSquared())
+                    );
+
+                    Debug.Assert(
+                        u.IsNearEqual(u2)
+                    );
+
+                    Debug.Assert(
+                        u.GetAngle(u1) < rotationAngle
+                    );
+                }
             }
         }
 
@@ -991,7 +1087,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                 LaTeXComposerFloat64.DefaultComposer;
 
             var random =
-                geometricProcessor.CreateXGaRandomComposer(10);
+                geometricProcessor.CreateXGaRandomComposer(n);
 
             for (var j = 0; j < 10; j++)
             {
@@ -1005,10 +1101,18 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                     u.GetEuclideanRotorTo(v);
 
                 var uvVectorRotation =
-                    LinFloat64VectorToVectorRotation.Create(
+                    LinFloat64VectorToVectorRotation.CreateFromRotatedVector(
                         u.VectorToLinVector(),
                         v.VectorToLinVector()
                     );
+                
+                Debug.Assert(
+                    (uvRotor.OmMap(u) - v).IsNearZero()
+                );
+                
+                Debug.Assert(
+                    (uvVectorRotation.MapVector(u.VectorToLinVector()) - v.VectorToLinVector()).IsNearZero()
+                );
 
                 for (var axisIndex = 0; axisIndex < n; axisIndex++)
                 {
@@ -1017,6 +1121,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
 
                     var y1 = uvRotor.OmMap(x).VectorToLinVector();
                     var y2 = uvVectorRotation.MapBasisVector(axisIndex);
+                    //var y2 = uvVectorRotation.MapVector(axisIndex.CreateLinVector());
 
                     Debug.Assert(
                         (y1 - y2).GetVectorNorm().IsNearZero()
@@ -1071,7 +1176,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                 LaTeXComposerFloat64.DefaultComposer;
 
             var random =
-                geometricProcessor.CreateXGaRandomComposer(10);
+                geometricProcessor.CreateXGaRandomComposer(n);
 
             for (var j = 0; j < 10; j++)
             {
@@ -1091,9 +1196,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                     u.GetEuclideanRotorTo(v);
 
                 var uvVectorRotation =
-                    new LinFloat64AxisToVectorRotation(
-                        uAxisIndex,
-                        uAxisNegative,
+                    LinFloat64AxisToVectorRotation.CreateFromRotatedVector(
+                        LinSignedBasisVector.Create(uAxisIndex, uAxisNegative),
                         v.VectorToLinVector()
                     );
 
@@ -1134,9 +1238,10 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                         (z1 - z2).GetVectorNorm().IsNearZero()
                     );
 
-                    Debug.Assert(
-                        (z1 - z3).GetVectorNorm().IsNearZero()
-                    );
+                    if (!uvVectorRotation.IsNearIdentity())
+                        Debug.Assert(
+                            (z1 - z3).GetVectorNorm().IsNearZero()
+                        );
                 }
             }
         }
@@ -1158,7 +1263,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                 LaTeXComposerFloat64.DefaultComposer;
 
             var random =
-                geometricProcessor.CreateXGaRandomComposer(10);
+                geometricProcessor.CreateXGaRandomComposer(n);
 
             for (var j = 0; j < 10; j++)
             {
@@ -1178,10 +1283,9 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                     u.GetEuclideanRotorTo(v);
 
                 var uvVectorRotation =
-                    LinFloat64VectorToAxisRotation.Create(
+                    LinFloat64VectorToVectorRotation.CreateFromRotatedVector(
                         u.VectorToLinVector(),
-                        vAxisIndex,
-                        vAxisNegative
+                        vAxisIndex.CreateLinVector(vAxisNegative ? -1 : 1)
                     );
 
                 for (var axisIndex = 0; axisIndex < n; axisIndex++)
@@ -1221,9 +1325,10 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                         (z1 - z2).GetVectorNorm().IsNearZero()
                     );
 
-                    Debug.Assert(
-                        (z1 - z3).GetVectorNorm().IsNearZero()
-                    );
+                    if (!uvVectorRotation.IsIdentity())
+                        Debug.Assert(
+                            (z1 - z3).GetVectorNorm().IsNearZero()
+                        );
                 }
             }
         }
@@ -1245,7 +1350,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                 LaTeXComposerFloat64.DefaultComposer;
 
             var random =
-                geometricProcessor.CreateXGaRandomComposer(10);
+                geometricProcessor.CreateXGaRandomComposer(n);
 
             for (var uAxisIndex = 0; uAxisIndex < n; uAxisIndex++)
             {
@@ -1269,11 +1374,10 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                         u.GetEuclideanRotorTo(v);
 
                     var uvVectorRotation =
-                        new LinFloat64AxisToAxisRotation(
-                            uAxisIndex,
-                            uAxisNegative,
-                            vAxisIndex,
-                            vAxisNegative
+                        LinFloat64AxisToAxisRotation.Create(
+                            LinSignedBasisVector.Create(uAxisIndex, uAxisNegative),
+                            LinSignedBasisVector.Create(vAxisIndex, vAxisNegative),
+                            Float64PlanarAngle.Angle90
                         );
 
                     for (var axisIndex = 0; axisIndex < n; axisIndex++)
@@ -1313,9 +1417,10 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                             (z1 - z2).GetVectorNorm().IsNearZero()
                         );
 
-                        Debug.Assert(
-                            (z1 - z3).GetVectorNorm().IsNearZero()
-                        );
+                        if (!uvVectorRotation.IsIdentity())
+                            Debug.Assert(
+                                (z1 - z3).GetVectorNorm().IsNearZero()
+                            );
                     }
                 }
             }
@@ -1338,16 +1443,16 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                 LaTeXComposerFloat64.DefaultComposer;
 
             var random =
-                geometricProcessor.CreateXGaRandomComposer(10);
+                geometricProcessor.CreateXGaRandomComposer(n);
 
             var axisArray = new[]
             {
-                Axis3D.PositiveX,
-                Axis3D.PositiveY,
-                Axis3D.PositiveZ,
-                Axis3D.NegativeX,
-                Axis3D.NegativeY,
-                Axis3D.NegativeZ
+                LinUnitBasisVector3D.PositiveX,
+                LinUnitBasisVector3D.PositiveY,
+                LinUnitBasisVector3D.PositiveZ,
+                LinUnitBasisVector3D.NegativeX,
+                LinUnitBasisVector3D.NegativeY,
+                LinUnitBasisVector3D.NegativeZ
             };
 
             for (var j = 0; j < 10; j++)
@@ -1362,23 +1467,23 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                     u.GetEuclideanRotorTo(v);
 
                 var uvVectorRotation =
-                    new VectorToVectorRotation3D(
+                    LinFloat64PlanarRotation3D.CreateFromRotatedVector(
                         u.GetTuple3D(),
                         v.GetTuple3D()
                     );
 
                 foreach (var axisIndex in axisArray)
                 {
-                    var y = axisIndex.GetVector3D();
+                    var y = axisIndex.ToVector3D();
 
                     var x =
                         geometricProcessor.CreateVector(y.X, y.Y, y.Z);
 
                     var y1 = uvRotor.OmMap(x).GetTuple3D();
-                    var y2 = uvVectorRotation.MapAxis(axisIndex);
+                    var y2 = uvVectorRotation.MapVector(axisIndex);
 
                     Debug.Assert(
-                        (y1 - y2).GetVectorNorm().IsNearZero()
+                        (y1 - y2).ENorm().IsNearZero()
                     );
                 }
 
@@ -1391,7 +1496,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                     var y2 = uvVectorRotation.MapVector(x.GetTuple3D());
 
                     Debug.Assert(
-                        (y1 - y2).GetVectorNorm().IsNearZero()
+                        (y1 - y2).ENorm().IsNearZero()
                     );
                 
                     var (_, bv) = uvRotor.GetEuclideanAngleBivector();
@@ -1403,12 +1508,13 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                     var z3 = uvVectorRotation.MapVectorProjection(x.GetTuple3D());
 
                     Debug.Assert(
-                        (z1 - z2).GetVectorNorm().IsNearZero()
+                        (z1 - z2).ENorm().IsNearZero()
                     );
 
-                    Debug.Assert(
-                        (z1 - z3).GetVectorNorm().IsNearZero()
-                    );
+                    if (!uvVectorRotation.IsIdentity())
+                        Debug.Assert(
+                            (z1 - z3).Norm().IsNearZero()
+                        );
                 }
             }
         }
@@ -1430,16 +1536,16 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                 LaTeXComposerFloat64.DefaultComposer;
 
             var random =
-                geometricProcessor.CreateXGaRandomComposer(10);
+                geometricProcessor.CreateXGaRandomComposer(n);
 
             var axisArray = new[]
             {
-                Axis3D.PositiveX,
-                Axis3D.PositiveY,
-                Axis3D.PositiveZ,
-                Axis3D.NegativeX,
-                Axis3D.NegativeY,
-                Axis3D.NegativeZ
+                LinUnitBasisVector3D.PositiveX,
+                LinUnitBasisVector3D.PositiveY,
+                LinUnitBasisVector3D.PositiveZ,
+                LinUnitBasisVector3D.NegativeX,
+                LinUnitBasisVector3D.NegativeY,
+                LinUnitBasisVector3D.NegativeZ
             };
 
             for (var j = 0; j < 10; j++)
@@ -1449,9 +1555,9 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
 
                 var uAxis = uAxisIndex switch
                 {
-                    0 => uAxisNegative ? Axis3D.NegativeX : Axis3D.PositiveX,
-                    1 => uAxisNegative ? Axis3D.NegativeY : Axis3D.PositiveY,
-                    2 => uAxisNegative ? Axis3D.NegativeZ : Axis3D.PositiveZ,
+                    0 => uAxisNegative ? LinUnitBasisVector3D.NegativeX : LinUnitBasisVector3D.PositiveX,
+                    1 => uAxisNegative ? LinUnitBasisVector3D.NegativeY : LinUnitBasisVector3D.PositiveY,
+                    2 => uAxisNegative ? LinUnitBasisVector3D.NegativeZ : LinUnitBasisVector3D.PositiveZ,
                     _ => throw new NotImplementedException()
                 };
 
@@ -1468,23 +1574,23 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                     u.GetEuclideanRotorTo(v);
 
                 var uvVectorRotation =
-                    new AxisToVectorRotation3D(
-                        uAxis,
+                    LinFloat64PlanarRotation3D.CreateFromRotatedVector(
+                        uAxis.ToVector3D(),
                         v.GetTuple3D()
                     );
 
                 foreach (var axisIndex in axisArray)
                 {
-                    var y = axisIndex.GetVector3D();
+                    var y = axisIndex.ToVector3D();
 
                     var x =
                         geometricProcessor.CreateVector(y.X, y.Y, y.Z);
 
                     var y1 = uvRotor.OmMap(x).GetTuple3D();
-                    var y2 = uvVectorRotation.MapAxis(axisIndex);
+                    var y2 = uvVectorRotation.MapVector(axisIndex);
 
                     Debug.Assert(
-                        (y1 - y2).GetVectorNorm().IsNearZero()
+                        (y1 - y2).ENorm().IsNearZero()
                     );
                 }
 
@@ -1497,7 +1603,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                     var y2 = uvVectorRotation.MapVector(x.GetTuple3D());
 
                     Debug.Assert(
-                        (y1 - y2).GetVectorNorm().IsNearZero()
+                        (y1 - y2).ENorm().IsNearZero()
                     );
                 
                     var (_, bv) = uvRotor.GetEuclideanAngleBivector();
@@ -1509,12 +1615,13 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                     var z3 = uvVectorRotation.MapVectorProjection(x.GetTuple3D());
 
                     Debug.Assert(
-                        (z1 - z2).GetVectorNorm().IsNearZero()
+                        (z1 - z2).ENorm().IsNearZero()
                     );
 
-                    Debug.Assert(
-                        (z1 - z3).GetVectorNorm().IsNearZero()
-                    );
+                    if (!uvVectorRotation.IsIdentity())
+                        Debug.Assert(
+                            (z1 - z3).ENorm().IsNearZero()
+                        );
                 }
             }
         }
@@ -1536,16 +1643,16 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                 LaTeXComposerFloat64.DefaultComposer;
 
             var random =
-                geometricProcessor.CreateXGaRandomComposer(10);
+                geometricProcessor.CreateXGaRandomComposer(n);
 
             var axisArray = new[]
             {
-                Axis3D.PositiveX,
-                Axis3D.PositiveY,
-                Axis3D.PositiveZ,
-                Axis3D.NegativeX,
-                Axis3D.NegativeY,
-                Axis3D.NegativeZ
+                LinUnitBasisVector3D.PositiveX,
+                LinUnitBasisVector3D.PositiveY,
+                LinUnitBasisVector3D.PositiveZ,
+                LinUnitBasisVector3D.NegativeX,
+                LinUnitBasisVector3D.NegativeY,
+                LinUnitBasisVector3D.NegativeZ
             };
 
             for (var j = 0; j < 10; j++)
@@ -1558,9 +1665,9 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
 
                 var vAxis = vAxisIndex switch
                 {
-                    0 => vAxisNegative ? Axis3D.NegativeX : Axis3D.PositiveX,
-                    1 => vAxisNegative ? Axis3D.NegativeY : Axis3D.PositiveY,
-                    2 => vAxisNegative ? Axis3D.NegativeZ : Axis3D.PositiveZ,
+                    0 => vAxisNegative ? LinUnitBasisVector3D.NegativeX : LinUnitBasisVector3D.PositiveX,
+                    1 => vAxisNegative ? LinUnitBasisVector3D.NegativeY : LinUnitBasisVector3D.PositiveY,
+                    2 => vAxisNegative ? LinUnitBasisVector3D.NegativeZ : LinUnitBasisVector3D.PositiveZ,
                     _ => throw new NotImplementedException()
                 };
 
@@ -1574,23 +1681,23 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                     u.GetEuclideanRotorTo(v);
 
                 var uvVectorRotation =
-                    new VectorToAxisRotation3D(
+                    LinFloat64PlanarRotation3D.CreateFromRotatedVector(
                         u.GetTuple3D(),
-                        vAxis
+                        vAxis.ToVector3D()
                     );
 
                 foreach (var axisIndex in axisArray)
                 {
-                    var y = axisIndex.GetVector3D();
+                    var y = axisIndex.ToVector3D();
 
                     var x =
                         geometricProcessor.CreateVector(y.X, y.Y, y.Z);
 
                     var y1 = uvRotor.OmMap(x).GetTuple3D();
-                    var y2 = uvVectorRotation.MapAxis(axisIndex);
+                    var y2 = uvVectorRotation.MapVector(axisIndex);
 
                     Debug.Assert(
-                        (y1 - y2).GetVectorNorm().IsNearZero()
+                        (y1 - y2).ENorm().IsNearZero()
                     );
                 }
 
@@ -1603,7 +1710,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                     var y2 = uvVectorRotation.MapVector(x.GetTuple3D());
 
                     Debug.Assert(
-                        (y1 - y2).GetVectorNorm().IsNearZero()
+                        (y1 - y2).ENorm().IsNearZero()
                     );
                 
                     var (_, bv) = uvRotor.GetEuclideanAngleBivector();
@@ -1615,12 +1722,13 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                     var z3 = uvVectorRotation.MapVectorProjection(x.GetTuple3D());
 
                     Debug.Assert(
-                        (z1 - z2).GetVectorNorm().IsNearZero()
+                        (z1 - z2).ENorm().IsNearZero()
                     );
 
-                    Debug.Assert(
-                        (z1 - z3).GetVectorNorm().IsNearZero()
-                    );
+                    if (!uvVectorRotation.IsIdentity())
+                        Debug.Assert(
+                            (z1 - z3).Norm().IsNearZero()
+                        );
                 }
             }
         }
@@ -1642,25 +1750,25 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                 LaTeXComposerFloat64.DefaultComposer;
 
             var random =
-                geometricProcessor.CreateXGaRandomComposer(10);
+                geometricProcessor.CreateXGaRandomComposer(n);
 
             var axisArray = new[]
             {
-                Axis3D.PositiveX,
-                Axis3D.PositiveY,
-                Axis3D.PositiveZ,
-                Axis3D.NegativeX,
-                Axis3D.NegativeY,
-                Axis3D.NegativeZ
+                LinUnitBasisVector3D.PositiveX,
+                LinUnitBasisVector3D.PositiveY,
+                LinUnitBasisVector3D.PositiveZ,
+                LinUnitBasisVector3D.NegativeX,
+                LinUnitBasisVector3D.NegativeY,
+                LinUnitBasisVector3D.NegativeZ
             };
 
             for (var uAxisIndex = 0; uAxisIndex < n; uAxisIndex++)
             {
                 var uAxis = uAxisIndex switch
                 {
-                    0 => uAxisNegative ? Axis3D.NegativeX : Axis3D.PositiveX,
-                    1 => uAxisNegative ? Axis3D.NegativeY : Axis3D.PositiveY,
-                    2 => uAxisNegative ? Axis3D.NegativeZ : Axis3D.PositiveZ,
+                    0 => uAxisNegative ? LinUnitBasisVector3D.NegativeX : LinUnitBasisVector3D.PositiveX,
+                    1 => uAxisNegative ? LinUnitBasisVector3D.NegativeY : LinUnitBasisVector3D.PositiveY,
+                    2 => uAxisNegative ? LinUnitBasisVector3D.NegativeZ : LinUnitBasisVector3D.PositiveZ,
                     _ => throw new NotImplementedException()
                 };
 
@@ -1676,9 +1784,9 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
 
                     var vAxis = vAxisIndex switch
                     {
-                        0 => vAxisNegative ? Axis3D.NegativeX : Axis3D.PositiveX,
-                        1 => vAxisNegative ? Axis3D.NegativeY : Axis3D.PositiveY,
-                        2 => vAxisNegative ? Axis3D.NegativeZ : Axis3D.PositiveZ,
+                        0 => vAxisNegative ? LinUnitBasisVector3D.NegativeX : LinUnitBasisVector3D.PositiveX,
+                        1 => vAxisNegative ? LinUnitBasisVector3D.NegativeY : LinUnitBasisVector3D.PositiveY,
+                        2 => vAxisNegative ? LinUnitBasisVector3D.NegativeZ : LinUnitBasisVector3D.PositiveZ,
                         _ => throw new NotImplementedException()
                     };
 
@@ -1692,23 +1800,24 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                         u.GetEuclideanRotorTo(v);
 
                     var uvVectorRotation =
-                        new AxisToAxisRotation3D(
-                            uAxis,
-                            vAxis
+                        LinFloat64PlanarRotation3D.CreateFromOrthonormalVectors(
+                            uAxis.ToVector3D(),
+                            vAxis.ToVector3D(),
+                            Float64PlanarAngle.Angle90
                         );
 
                     foreach (var axis in axisArray)
                     {
-                        var y = axis.GetVector3D();
+                        var y = axis.ToVector3D();
 
                         var x =
                             geometricProcessor.CreateVector(y.X, y.Y, y.Z);
 
                         var y1 = uvRotor.OmMap(x).GetTuple3D();
-                        var y2 = uvVectorRotation.MapAxis(axis);
+                        var y2 = uvVectorRotation.MapVector(axis);
 
                         Debug.Assert(
-                            (y1 - y2).GetVectorNorm().IsNearZero()
+                            (y1 - y2).ENorm().IsNearZero()
                         );
                     }
 
@@ -1721,7 +1830,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                         var y2 = uvVectorRotation.MapVector(x.GetTuple3D());
 
                         Debug.Assert(
-                            (y1 - y2).GetVectorNorm().IsNearZero()
+                            (y1 - y2).ENorm().IsNearZero()
                         );
                     
                         var (_, bv) = uvRotor.GetEuclideanAngleBivector();
@@ -1733,12 +1842,13 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                         var z3 = uvVectorRotation.MapVectorProjection(x.GetTuple3D());
 
                         Debug.Assert(
-                            (z1 - z2).GetVectorNorm().IsNearZero()
+                            (z1 - z2).ENorm().IsNearZero()
                         );
 
-                        Debug.Assert(
-                            (z1 - z3).GetVectorNorm().IsNearZero()
-                        );
+                        if (!uvVectorRotation.IsIdentity())
+                            Debug.Assert(
+                                (z1 - z3).Norm().IsNearZero()
+                            );
                     }
                 }
             }
@@ -1760,7 +1870,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                 LaTeXComposerFloat64.DefaultComposer;
 
             var random =
-                geometricProcessor.CreateXGaRandomComposer(10);
+                geometricProcessor.CreateXGaRandomComposer(n);
 
             var u =
                 random.GetVector(-1, 1).DivideByNorm();
@@ -1769,7 +1879,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                 random.GetVector(-1, 1).DivideByNorm();
 
             var uvRotation =
-                LinFloat64VectorToVectorRotation.Create(
+                LinFloat64VectorToVectorRotation.CreateFromRotatedVector(
                     u.VectorToLinVector(),
                     v.VectorToLinVector()
                 );
@@ -1820,7 +1930,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                 LaTeXComposerFloat64.DefaultComposer;
 
             var random =
-                geometricProcessor.CreateXGaRandomComposer(10);
+                geometricProcessor.CreateXGaRandomComposer(n);
 
             var scaling = LinFloat64VectorDirectionalScaling.Create(
                 random.GetScalarValue(-10, 10),

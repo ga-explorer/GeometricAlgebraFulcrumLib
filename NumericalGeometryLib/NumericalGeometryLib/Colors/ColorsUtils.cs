@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using SixLabors.ImageSharp;
 using System.Linq;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 using SixLabors.ImageSharp.PixelFormats;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
 
 namespace NumericalGeometryLib.Colors
 {

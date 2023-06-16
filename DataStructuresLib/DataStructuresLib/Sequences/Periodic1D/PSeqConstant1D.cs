@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -23,12 +24,18 @@ namespace DataStructuresLib.Sequences.Periodic1D
 
         public PSeqConstant1D(int count)
         {
+            if (count < 2)
+                throw new ArgumentOutOfRangeException(nameof(count));
+
             Value = default;
             Count = count;
         }
 
         public PSeqConstant1D(int count, T value)
         {
+            if (count < 2)
+                throw new ArgumentOutOfRangeException(nameof(count));
+
             Value = value;
             Count = count;
         }

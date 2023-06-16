@@ -1,11 +1,12 @@
 ﻿using System.Runtime.CompilerServices;
 using DataStructuresLib.Combinations;
 using DataStructuresLib.IndexSets;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Basis;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Processors;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Multivectors
 {
@@ -637,33 +638,29 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.
         
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Float64Tuple2D GetVectorPartAsTuple2D(this XGaFloat64Multivector mv)
+        public static Float64Vector2D GetVectorPartAsTuple2D(this XGaFloat64Multivector mv)
         {
-            return new Float64Tuple2D(
+            return new Float64Vector2D(
                 mv.GetTermScalar(1),
                 mv.GetTermScalar(2)
             );
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Float64Tuple3D GetVectorPartAsTuple3D(this XGaFloat64Multivector mv)
+        public static Float64Vector3D GetVectorPartAsTuple3D(this XGaFloat64Multivector mv)
         {
-            return new Float64Tuple3D(
-                mv.GetTermScalar(1),
+            return Float64Vector3D.Create(mv.GetTermScalar(1),
                 mv.GetTermScalar(2),
-                mv.GetTermScalar(4)
-            );
+                mv.GetTermScalar(4));
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Float64Tuple4D GetVectorPartAsTuple4D(this XGaFloat64Multivector mv)
+        public static Float64Quaternion GetVectorPartAsTuple4D(this XGaFloat64Multivector mv)
         {
-            return new Float64Tuple4D(
-                mv.GetTermScalar(1),
+            return Float64Quaternion.Create(mv.GetTermScalar(1),
                 mv.GetTermScalar(2),
                 mv.GetTermScalar(4),
-                mv.GetTermScalar(8)
-            );
+                mv.GetTermScalar(8));
         }
 
         

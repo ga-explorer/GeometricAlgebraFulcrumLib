@@ -2,9 +2,9 @@
 using System.Diagnostics;
 using System.Text;
 using GeometricAlgebraFulcrumLib.Geometry.Euclidean.Space3D;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Geometry.Graphics.Space3D
 {
@@ -98,11 +98,14 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Graphics.Space3D
         public RGaFloat64Processor GeometricProcessor 
             => GaEuclideanSpace3DUtils.GeometricProcessor;
 
-        public double X { get; }
+        public int VSpaceDimensions 
+            => 3;
 
-        public double Y { get; }
+        public Float64Scalar X { get; }
 
-        public double Z { get; }
+        public Float64Scalar Y { get; }
+
+        public Float64Scalar Z { get; }
 
         public double Item1 => X;
 

@@ -1,10 +1,10 @@
-﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
-using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Lines;
-using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Lines.Immutable;
-using GeometricAlgebraFulcrumLib.MathBase.Borders.Space3D;
-using GraphicsComposerLib.Geometry.Primitives;
-using GraphicsComposerLib.Geometry.Primitives.Lines;
+﻿using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives;
+using GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Lines;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 using GraphicsComposerLib.Rendering.Xeogl.Constants;
 using GraphicsComposerLib.Rendering.Xeogl.Geometry;
 using GraphicsComposerLib.Rendering.Xeogl.Geometry.Builtin;
@@ -682,7 +682,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.DrawingSpace
         public static XeoglDrawingSpaceLayer DrawWireWorldAxes(this XeoglDrawingSpaceLayer layer, double length, int thickness)
         {
             return layer.DrawWireWorldAxes(
-                Float64Tuple3D.Zero,
+                Float64Vector3D.Zero,
                 length,
                 thickness
             );
@@ -694,7 +694,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.DrawingSpace
             layer.DrawGeometry(
                 XeoglLinesGeometry.CreateLineSegment(
                     origin,
-                    new Float64Tuple3D(origin.X + length, origin.Y, origin.Z)
+                    Float64Vector3D.Create(origin.X + length, origin.Y, origin.Z)
                 ),
                 new XeoglPhongMaterial()
                 {
@@ -707,7 +707,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.DrawingSpace
             layer.DrawGeometry(
                 XeoglLinesGeometry.CreateLineSegment(
                     origin,
-                    new Float64Tuple3D(origin.X, origin.Y + length, origin.Z)
+                    Float64Vector3D.Create(origin.X, origin.Y + length, origin.Z)
                 ),
                 new XeoglPhongMaterial()
                 {
@@ -720,7 +720,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.DrawingSpace
             layer.DrawGeometry(
                 XeoglLinesGeometry.CreateLineSegment(
                     origin,
-                    new Float64Tuple3D(origin.X, origin.Y, origin.Z + length)
+                    Float64Vector3D.Create(origin.X, origin.Y, origin.Z + length)
                 ),
                 new XeoglPhongMaterial()
                 {
@@ -735,7 +735,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.DrawingSpace
         public static XeoglDrawingSpaceLayer DrawSolidWorldAxes(this XeoglDrawingSpaceLayer layer, double length = 1, double thickness = 0.075, double arrowHeadLength = 0.3)
         {
             return layer.DrawSolidWorldAxes(
-                Float64Tuple3D.Zero,
+                Float64Vector3D.Zero,
                 length,
                 thickness,
                 arrowHeadLength
@@ -861,7 +861,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.DrawingSpace
 
         public static XeoglDrawingSpaceLayer DrawWireArrow(this XeoglDrawingSpaceLayer layer, IFloat64Tuple3D origin, IFloat64Tuple3D direction, int thickness, Color color)
         {
-            var endPoint = EuclideanFloat64TupleUtils.GetPointInDirection(origin, direction);
+            var endPoint = origin.GetPointInDirection(direction);
 
             layer.DrawGeometry(
                 XeoglLinesGeometry.CreateLineSegment(
@@ -883,7 +883,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.DrawingSpace
             var arrowsArray = arrowsList.ToArray();
 
             var scaleFactor = 
-                maxLength / arrowsArray.Select(t => EuclideanFloat64TupleUtils.GetVectorNorm(t.Item2)).Max();
+                maxLength / arrowsArray.Select(t => t.Item2.ENorm()).Max();
 
             var lineSegmentsGeometry =
                 arrowsArray.Select(t =>

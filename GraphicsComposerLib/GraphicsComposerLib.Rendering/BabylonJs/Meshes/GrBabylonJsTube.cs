@@ -1,9 +1,12 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using DataStructuresLib.Basic;
+﻿using DataStructuresLib.Basic;
 using GraphicsComposerLib.Rendering.BabylonJs.Values;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
 {
+    /// <summary>
+    /// https://doc.babylonjs.com/typedoc/modules/BABYLON#CreateTube-2
+    /// https://doc.babylonjs.com/features/featuresDeepDive/mesh/creation/param/tube
+    /// </summary>
     public sealed class GrBabylonJsTube :
         GrBabylonJsMesh
     {
@@ -12,7 +15,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
         {
             public GrBabylonJsVector3ArrayValue? Path { get; set; }
 
-            public GrBabylonJsCodeValue? Instance { get; set; }
+            public GrBabylonJsMeshValue? Instance { get; set; }
 
             public GrBabylonJsFloat32Value? Arc { get; set; }
 
@@ -47,7 +50,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
                 yield return SideOrientation.GetNameValueCodePair("sideOrientation");
                 yield return FrontUVs.GetNameValueCodePair("frontUVs");
                 yield return BackUVs.GetNameValueCodePair("backUVs");
-                yield return Updateable.GetNameValueCodePair("updateable");
+                yield return Updateable.GetNameValueCodePair("updatable");
                 yield return InvertUV.GetNameValueCodePair("invertUV");
             }
         }
@@ -65,22 +68,24 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
         public GrBabylonJsTube(string constName) 
             : base(constName)
         {
+            UseLetDeclaration = true;
         }
     
         public GrBabylonJsTube(string constName, GrBabylonJsSceneValue scene) 
             : base(constName, scene)
         {
+            UseLetDeclaration = true;
         }
 
 
-        public GrBabylonJsTube SetOptions([NotNull] TubeOptions? options)
+        public GrBabylonJsTube SetOptions(TubeOptions options)
         {
             Options = options;
 
             return this;
         }
 
-        public GrBabylonJsTube SetProperties([NotNull] MeshProperties? properties)
+        public GrBabylonJsTube SetProperties(MeshProperties properties)
         {
             Properties = properties;
 

@@ -1,10 +1,25 @@
-﻿using GeometricAlgebraFulcrumLib.MathBase.Parametric.Curves;
+﻿using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Curves;
+using GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsPath;
+using GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsPath.Space3D;
+using GraphicsComposerLib.Rendering.Visuals.Space3D.Styles;
 
 namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Curves
 {
     public sealed class GrVisualParametricCurve3D :
         GrVisualCurve3D
     {
+        public static GrVisualParametricCurve3D Create(string name, GrVisualCurveStyle3D style, IParametricCurve3D curve, IReadOnlyList<double> parameterValues, IReadOnlyList<double> frameParameterValues)
+        {
+            return new GrVisualParametricCurve3D(
+                name,
+                style, 
+                curve, 
+                parameterValues,
+                frameParameterValues
+            );
+        }
+
+
         public IParametricCurve3D Curve { get; }
 
         public IReadOnlyList<double> ParameterValues { get; }
@@ -19,10 +34,13 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Curves
 
         public double FrameSize { get; set; } 
             = 1;
-    
 
-        public GrVisualParametricCurve3D(string name, IParametricCurve3D curve, IReadOnlyList<double> parameterValues, IReadOnlyList<double> frameParameterValues)
-            : base(name)
+        public override double ArcLength 
+            => throw new NotImplementedException();
+
+
+        private GrVisualParametricCurve3D(string name, GrVisualCurveStyle3D style, IParametricCurve3D curve, IReadOnlyList<double> parameterValues, IReadOnlyList<double> frameParameterValues)
+            : base(name, style)
         {
             Curve = curve;
             ParameterValues = parameterValues;
@@ -30,21 +48,17 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Curves
         }
 
 
-        //public double GetLength()
-        //{
-        //    var length = 0d;
-        //    var point1 = PositionList[0];
+        public override IPointsPath3D GetPointsPath(int count)
+        {
+            return new ParametricPointsPath3D(
+                ParameterValues,
+                Curve.GetPoint
+            );
+        }
 
-        //    for (var i = 1; i < PositionList.Count; i++)
-        //    {
-        //        var point2 = PositionList[i];
-
-        //        length += point1.GetDistanceToPoint(point2);
-
-        //        point1 = point2;
-        //    }
-
-        //    return length;
-        //}
+        public override bool IsValid()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

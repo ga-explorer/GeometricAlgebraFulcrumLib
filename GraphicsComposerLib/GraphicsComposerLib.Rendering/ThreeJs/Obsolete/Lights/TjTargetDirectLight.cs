@@ -1,5 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
+﻿using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 using GraphicsComposerLib.Rendering.ThreeJs.Obsolete.Objects;
 using TextComposerLib.Code.JavaScript;
 using JsCodeComponentUtils = TextComposerLib.Code.JavaScript.Obsolete.JsCodeComponentUtils;
@@ -24,7 +23,7 @@ namespace GraphicsComposerLib.Rendering.ThreeJs.Obsolete.Lights
             = false;
 
         public IFloat64Tuple3D Position { get; set; }
-            = new Float64Tuple3D(0, 0, 0);
+            = Float64Vector3D.Create(0, 0, 0);
 
         public TjObject3D Target { get; set; }
 
@@ -35,7 +34,7 @@ namespace GraphicsComposerLib.Rendering.ThreeJs.Obsolete.Lights
 
             JsCodeComponentUtils.SetValue(attributesDictionary
                     .SetValue("castShadow", CastShadow, false)
-                    .SetThreeJsVector3Value("position", Position, Float64Tuple3D.Zero), "target", Target, null);
+                    .SetThreeJsVector3Value("position", Position, Float64Vector3D.Zero), "target", Target, null);
         }
     }
 }

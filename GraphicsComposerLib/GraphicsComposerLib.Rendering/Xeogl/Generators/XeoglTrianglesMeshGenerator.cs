@@ -1,9 +1,9 @@
 ﻿using System.Text;
-using GraphicsComposerLib.Geometry.Primitives;
-using GraphicsComposerLib.Geometry.Primitives.Triangles;
-using GraphicsComposerLib.Rendering.Colors;
+using GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives;
+using GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Triangles;
 using TextComposerLib.Code.JavaScript;
 using TextComposerLib.Text;
+using WebComposerLib.Colors;
 
 namespace GraphicsComposerLib.Rendering.Xeogl.Generators
 {

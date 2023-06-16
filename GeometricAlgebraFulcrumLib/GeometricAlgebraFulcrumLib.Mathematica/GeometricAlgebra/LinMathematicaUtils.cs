@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic.LinearMaps;
 using GeometricAlgebraFulcrumLib.Mathematica.Processors;
@@ -28,7 +28,7 @@ public static class LinMathematicaUtils
     
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinVector<Expr> ToSymbolic(this LinFloat64Vector mv)
+    public static LinVector<Expr> ToSymbolic(this Float64Vector mv)
     {
         var indexScalarDictionary = mv.ToDictionary(
             p => p.Key,
@@ -39,7 +39,7 @@ public static class LinMathematicaUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Vector ToNumeric(this LinVector<Expr> mv)
+    public static Float64Vector ToNumeric(this LinVector<Expr> mv)
     {
         var indexScalarDictionary = mv.ToDictionary(
             p => p.Key,

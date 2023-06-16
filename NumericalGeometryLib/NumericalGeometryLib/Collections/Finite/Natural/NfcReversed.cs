@@ -13,10 +13,7 @@
 
         public FiniteCollection<T> BaseCollection { get; private set; }
 
-        public override int Count
-        {
-            get { return BaseCollection.Count; }
-        }
+        public override int Count => BaseCollection.Count;
 
 
         private NfcReversed(FiniteCollection<T> baseCollection)

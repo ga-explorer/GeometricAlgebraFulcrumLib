@@ -6,11 +6,9 @@ using System.Linq;
 using DataStructuresLib.Basic;
 using GeometricAlgebraFulcrumLib.MathBase;
 using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.LinearMaps.Rotors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Frames;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.MathBase.Signals;
 using GeometricAlgebraFulcrumLib.Processors;
 using GeometricAlgebraFulcrumLib.Processors.SignalAlgebra;
 using OfficeOpenXml;
@@ -20,6 +18,9 @@ using GeometricAlgebraFulcrumLib.MathBase.Text;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Processors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra.Composers;
+using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra.Interpolators;
 
 // ReSharper disable InconsistentNaming
 
@@ -66,7 +67,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
 
         // Create a 3-dimensional Euclidean geometric algebra processor based on the
         // selected tuple scalar processor
-        public static XGaProcessor<ScalarSignalFloat64> GeometricSignalProcessor { get; }
+        public static XGaProcessor<Float64Signal> GeometricSignalProcessor { get; }
             = ScalarSignalProcessor.CreateEuclideanXGaProcessor();
 
         public static VectorFourierInterpolator FourierInterpolator { get; private set; }
@@ -78,7 +79,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
         /// EMTP_transient signal using Fourier interpolator
         /// </summary>
         /// <returns></returns>
-        private static Quint<XGaVector<ScalarSignalFloat64>> DefineCurve1()
+        private static Quint<XGaVector<Float64Signal>> DefineCurve1()
         {
             var inputFilePath =
                 Path.Combine(WorkingPath, @"EMTP_transient_ahmad.xlsx");
@@ -151,14 +152,14 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             var vDt4 =
                 FourierInterpolator.GetVectorsDt(t, 4).CreateVectorSignal(GeometricSignalProcessor, SamplingRate);
 
-            return new Quint<XGaVector<ScalarSignalFloat64>>(v, vDt1, vDt2, vDt3, vDt4);
+            return new Quint<XGaVector<Float64Signal>>(v, vDt1, vDt2, vDt3, vDt4);
         }
 
         /// <summary>
         /// Aulario3 signal using Fourier interpolator 
         /// </summary>
         /// <returns></returns>
-        private static Quint<XGaVector<ScalarSignalFloat64>> DefineCurve2()
+        private static Quint<XGaVector<Float64Signal>> DefineCurve2()
         {
             var inputFilePath =
                 Path.Combine(WorkingPath, @"Aulario3_derivatives.xlsx");
@@ -236,14 +237,14 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             var vDt4 =
                 FourierInterpolator.GetVectorsDt(t, 4).CreateVectorSignal(GeometricSignalProcessor, SamplingRate);
 
-            return new Quint<XGaVector<ScalarSignalFloat64>>(v, vDt1, vDt2, vDt3, vDt4);
+            return new Quint<XGaVector<Float64Signal>>(v, vDt1, vDt2, vDt3, vDt4);
         }
 
         /// <summary>
         /// EMTP_transient signal using Neville polynomial interpolator and Wiener filter
         /// </summary>
         /// <returns></returns>
-        private static Quint<XGaVector<ScalarSignalFloat64>> DefineCurve3()
+        private static Quint<XGaVector<Float64Signal>> DefineCurve3()
         {
             var inputFilePath =
                 Path.Combine(WorkingPath, @"EMTP_transient_ahmad.xlsx");
@@ -286,14 +287,14 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             var vDt3 = nevilleInterpolator.GetVectorsDt1(vDt2, SignalSamplesCount).NormWienerFilter(WienerFilterOrder);
             var vDt4 = nevilleInterpolator.GetVectorsDt1(vDt3, SignalSamplesCount).NormWienerFilter(WienerFilterOrder);
 
-            return new Quint<XGaVector<ScalarSignalFloat64>>(v, vDt1, vDt2, vDt3, vDt4);
+            return new Quint<XGaVector<Float64Signal>>(v, vDt1, vDt2, vDt3, vDt4);
         }
 
         /// <summary>
         /// Aulario3 signal using Neville polynomial interpolator and Wiener filter
         /// </summary>
         /// <returns></returns>
-        private static Quint<XGaVector<ScalarSignalFloat64>> DefineCurve4()
+        private static Quint<XGaVector<Float64Signal>> DefineCurve4()
         {
             var inputFilePath =
                 Path.Combine(WorkingPath, @"Aulario3_derivatives.xlsx");
@@ -340,11 +341,11 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             var vDt3 = nevilleInterpolator.GetVectorsDt1(vDt2, SignalSamplesCount).NormWienerFilter(WienerFilterOrder);
             var vDt4 = nevilleInterpolator.GetVectorsDt1(vDt3, SignalSamplesCount).NormWienerFilter(WienerFilterOrder);
 
-            return new Quint<XGaVector<ScalarSignalFloat64>>(v, vDt1, vDt2, vDt3, vDt4);
+            return new Quint<XGaVector<Float64Signal>>(v, vDt1, vDt2, vDt3, vDt4);
         }
 
 
-        private static Quad<XGaVector<ScalarSignalFloat64>> GetArcLengthGramSchmidtFrame(XGaVector<ScalarSignalFloat64> vDs1, XGaVector<ScalarSignalFloat64> vDs2, XGaVector<ScalarSignalFloat64> vDs3, XGaVector<ScalarSignalFloat64> vDs4)
+        private static Quad<XGaVector<Float64Signal>> GetArcLengthGramSchmidtFrame(XGaVector<Float64Signal> vDs1, XGaVector<Float64Signal> vDs2, XGaVector<Float64Signal> vDs3, XGaVector<Float64Signal> vDs4)
         {
             var (u1s, u2s, u3s, u4s) =
                 vDs1.ApplyGramSchmidt(vDs2, vDs3, vDs4, false);
@@ -364,7 +365,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             //    e3s.Sp(e4s).IsZero()
             //);
 
-            return new Quad<XGaVector<ScalarSignalFloat64>>(e1s, e2s, e3s, e4s);
+            return new Quad<XGaVector<Float64Signal>>(e1s, e2s, e3s, e4s);
         }
 
         private static double LinearInterpolation(this IReadOnlyList<double> scalarList, double t)
@@ -382,7 +383,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             return (1 - t) * v1 + t * v2;
         }
 
-        private static void PlotCurveComponents(this XGaVector<ScalarSignalFloat64> curve, string title, string filePath)
+        private static void PlotCurveComponents(this XGaVector<Float64Signal> curve, string title, string filePath)
         {
             filePath = Path.Combine(WorkingPath, filePath);
 
@@ -415,7 +416,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             OxyPlot.SkiaSharp.PngExporter.Export(pm, filePath + ".png", SignalSamplesCount * 2, 750, 200);
         }
 
-        private static void PlotCurve(this Scalar<ScalarSignalFloat64> curve, string title, string filePath)
+        private static void PlotCurve(this Scalar<Float64Signal> curve, string title, string filePath)
         {
             curve.ScalarValue.PlotCurve(title, filePath);
         }

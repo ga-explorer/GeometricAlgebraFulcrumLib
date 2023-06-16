@@ -53,9 +53,6 @@ namespace NumericalGeometryLib.Collections.Finite.Iterators
 
         public T Current { get; private set; }
 
-        object IEnumerator.Current
-        {
-            get { return Current; }
-        }
+        object IEnumerator.Current => Current;
     }
 }

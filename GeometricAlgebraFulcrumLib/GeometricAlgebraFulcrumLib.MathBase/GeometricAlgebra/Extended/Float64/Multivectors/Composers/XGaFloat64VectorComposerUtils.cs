@@ -3,10 +3,12 @@ using System.Runtime.CompilerServices;
 using DataStructuresLib.BitManipulation;
 using DataStructuresLib.Dictionary;
 using DataStructuresLib.IndexSets;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space4D;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.SpaceND;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 using MathNet.Numerics.LinearAlgebra.Double;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Multivectors.Composers
@@ -35,7 +37,8 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.
                 if (!scalar.IsValid())
                     throw new InvalidOperationException();
 
-                basisScalarDictionary.Add(index.IndexToIndexSet(), scalar);
+                if(!scalar.IsZero())
+                    basisScalarDictionary.Add(index.IndexToIndexSet(), scalar);
 
                 index++;
             }
@@ -71,9 +74,9 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static XGaFloat64Vector CreateVector(this XGaFloat64Processor processor, params double[] scalarArray)
         {
-            var scalarDictionary = CreateValidVectorDictionary(scalarArray);
-
-            return new XGaFloat64Vector(processor, scalarDictionary);
+            return processor.CreateVector(
+                CreateValidVectorDictionary(scalarArray)
+            );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -243,7 +246,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static XGaFloat64Vector CreateVector(this XGaFloat64Processor processor, LinFloat64Vector vector)
+        public static XGaFloat64Vector CreateVector(this XGaFloat64Processor processor, Float64Vector vector)
         {
             return processor.CreateVector(
                 vector.GetIndexScalarDictionary()
@@ -285,7 +288,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static XGaFloat64Vector ToXGaFloat64Vector(this LinFloat64Vector vector)
+        public static XGaFloat64Vector ToXGaFloat64Vector(this Float64Vector vector)
         {
             return XGaFloat64Processor.Euclidean.CreateVector(
                 vector.GetIndexScalarDictionary()
@@ -293,7 +296,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static XGaFloat64Vector ToXGaFloat64Vector(this LinFloat64Vector vector, XGaFloat64Processor processor)
+        public static XGaFloat64Vector ToXGaFloat64Vector(this Float64Vector vector, XGaFloat64Processor processor)
         {
             return processor.CreateVector(
                 vector.GetIndexScalarDictionary()

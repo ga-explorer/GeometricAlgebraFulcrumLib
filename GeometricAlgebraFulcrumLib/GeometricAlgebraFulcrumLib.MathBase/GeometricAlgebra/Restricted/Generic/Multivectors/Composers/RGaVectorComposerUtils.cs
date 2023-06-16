@@ -2,10 +2,12 @@
 using System.Runtime.CompilerServices;
 using DataStructuresLib.BitManipulation;
 using DataStructuresLib.Dictionary;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space4D;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 using MathNet.Numerics.LinearAlgebra.Double;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers
@@ -34,7 +36,8 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
                 if (!processor.ScalarProcessor.IsValid(scalar))
                     throw new InvalidOperationException();
 
-                basisScalarDictionary.Add(1UL << index, scalar);
+                if (!processor.ScalarProcessor.IsZero(scalar))
+                    basisScalarDictionary.Add(1UL << index, scalar);
 
                 index++;
             }
@@ -76,7 +79,9 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
                 )
             );
 
-            return new RGaVector<T>(processor, scalarDictionary);
+            return processor.CreateVector(
+                scalarDictionary
+            );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -88,7 +93,9 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
                 )
             );
 
-            return new RGaVector<T>(processor, scalarDictionary);
+            return processor.CreateVector(
+                scalarDictionary
+            );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -100,31 +107,33 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
                 )
             );
 
-            return new RGaVector<T>(processor, scalarDictionary);
+            return processor.CreateVector(
+                scalarDictionary
+            );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static RGaVector<T> CreateVector<T>(this RGaProcessor<T> processor, params T[] scalarArray)
         {
-            var scalarDictionary = processor.CreateValidVectorDictionary(scalarArray);
-
-            return new RGaVector<T>(processor, scalarDictionary);
+            return processor.CreateVector(
+                processor.CreateValidVectorDictionary(scalarArray)
+            );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static RGaVector<T> CreateVector<T>(this RGaProcessor<T> processor, IEnumerable<T> scalarList)
         {
-            var scalarDictionary = processor.CreateValidVectorDictionary(scalarList);
-
-            return new RGaVector<T>(processor, scalarDictionary);
+            return processor.CreateVector(
+                processor.CreateValidVectorDictionary(scalarList)
+            );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static RGaVector<T> CreateVector<T>(this IEnumerable<T> scalarList, RGaProcessor<T> processor)
         {
-            var scalarDictionary = processor.CreateValidVectorDictionary(scalarList);
-
-            return new RGaVector<T>(processor, scalarDictionary);
+            return processor.CreateVector(
+                processor.CreateValidVectorDictionary(scalarList)
+            );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

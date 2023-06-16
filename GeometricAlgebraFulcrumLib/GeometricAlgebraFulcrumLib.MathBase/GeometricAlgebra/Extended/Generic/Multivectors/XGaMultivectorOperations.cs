@@ -1,7 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 using DataStructuresLib.Basic;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors
 {
@@ -20,9 +20,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
             var processor = mv1.Processor;
 
             return mv1.Add(
-                processor.CreateScalar(
-                    mv1.ScalarProcessor.GetScalarFromNumber(mv2)
-                )
+                processor.CreateScalar(mv2)
             );
         }
 
@@ -30,9 +28,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         public static XGaMultivector<T> operator +(int mv1, XGaMultivector<T> mv2)
         {
             return mv2.Add(
-                mv2.Processor.CreateScalar(
-                    mv2.ScalarProcessor.GetScalarFromNumber(mv1)
-                )
+                mv2.Processor.CreateScalar(mv1)
             );
         }
 
@@ -40,9 +36,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         public static XGaMultivector<T> operator +(XGaMultivector<T> mv1, uint mv2)
         {
             return mv1.Add(
-                mv1.Processor.CreateScalar(
-                    mv1.ScalarProcessor.GetScalarFromNumber(mv2)
-                )
+                mv1.Processor.CreateScalar(mv2)
             );
         }
 
@@ -50,9 +44,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         public static XGaMultivector<T> operator +(uint mv1, XGaMultivector<T> mv2)
         {
             return mv2.Add(
-                mv2.Processor.CreateScalar(
-                    mv2.ScalarProcessor.GetScalarFromNumber(mv1)
-                )
+                mv2.Processor.CreateScalar(mv1)
             );
         }
 
@@ -60,9 +52,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         public static XGaMultivector<T> operator +(XGaMultivector<T> mv1, long mv2)
         {
             return mv1.Add(
-                mv1.Processor.CreateScalar(
-                    mv1.ScalarProcessor.GetScalarFromNumber(mv2)
-                )
+                mv1.Processor.CreateScalar(mv2)
             );
         }
 
@@ -70,9 +60,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         public static XGaMultivector<T> operator +(long mv1, XGaMultivector<T> mv2)
         {
             return mv2.Add(
-                mv2.Processor.CreateScalar(
-                    mv2.ScalarProcessor.GetScalarFromNumber(mv1)
-                )
+                mv2.Processor.CreateScalar(mv1)
             );
         }
 
@@ -80,9 +68,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         public static XGaMultivector<T> operator +(XGaMultivector<T> mv1, ulong mv2)
         {
             return mv1.Add(
-                mv1.Processor.CreateScalar(
-                    mv1.ScalarProcessor.GetScalarFromNumber(mv2)
-                )
+                mv1.Processor.CreateScalar(mv2)
             );
         }
 
@@ -90,9 +76,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         public static XGaMultivector<T> operator +(ulong mv1, XGaMultivector<T> mv2)
         {
             return mv2.Add(
-                mv2.Processor.CreateScalar(
-                    mv2.ScalarProcessor.GetScalarFromNumber(mv1)
-                )
+                mv2.Processor.CreateScalar(mv1)
             );
         }
 
@@ -100,9 +84,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         public static XGaMultivector<T> operator +(XGaMultivector<T> mv1, float mv2)
         {
             return mv1.Add(
-                mv1.Processor.CreateScalar(
-                    mv1.ScalarProcessor.GetScalarFromNumber(mv2)
-                )
+                mv1.Processor.CreateScalar(mv2)
             );
         }
 
@@ -110,9 +92,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         public static XGaMultivector<T> operator +(float mv1, XGaMultivector<T> mv2)
         {
             return mv2.Add(
-                mv2.Processor.CreateScalar(
-                    mv2.ScalarProcessor.GetScalarFromNumber(mv1)
-                )
+                mv2.Processor.CreateScalar(mv1)
             );
         }
 
@@ -120,9 +100,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         public static XGaMultivector<T> operator +(XGaMultivector<T> mv1, double mv2)
         {
             return mv1.Add(
-                mv1.Processor.CreateScalar(
-                    mv1.ScalarProcessor.GetScalarFromNumber(mv2)
-                )
+                mv1.Processor.CreateScalar(mv2)
             );
         }
 
@@ -130,9 +108,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         public static XGaMultivector<T> operator +(double mv1, XGaMultivector<T> mv2)
         {
             return mv2.Add(
-                mv2.Processor.CreateScalar(
-                    mv2.ScalarProcessor.GetScalarFromNumber(mv1)
-                )
+                mv2.Processor.CreateScalar(mv1)
             );
         }
 
@@ -179,120 +155,84 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         public static XGaMultivector<T> operator -(XGaMultivector<T> mv1, int mv2)
         {
             return mv1.Subtract(
-                mv1.Processor.CreateScalar(
-                    mv1.ScalarProcessor.GetScalarFromNumber(mv2)
-                )
+                mv1.Processor.CreateScalar(mv2)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static XGaMultivector<T> operator -(int mv1, XGaMultivector<T> mv2)
         {
-            return mv2.Subtract(
-                mv2.Processor.CreateScalar(
-                    mv2.ScalarProcessor.GetScalarFromNumber(mv1)
-                )
-            );
+            return mv2.Processor.CreateScalar(mv1).Subtract(mv2);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static XGaMultivector<T> operator -(XGaMultivector<T> mv1, uint mv2)
         {
             return mv1.Subtract(
-                mv1.Processor.CreateScalar(
-                    mv1.ScalarProcessor.GetScalarFromNumber(mv2)
-                )
+                mv1.Processor.CreateScalar(mv2)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static XGaMultivector<T> operator -(uint mv1, XGaMultivector<T> mv2)
         {
-            return mv2.Subtract(
-                mv2.Processor.CreateScalar(
-                    mv2.ScalarProcessor.GetScalarFromNumber(mv1)
-                )
-            );
+            return mv2.Processor.CreateScalar(mv1).Subtract(mv2);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static XGaMultivector<T> operator -(XGaMultivector<T> mv1, long mv2)
         {
             return mv1.Subtract(
-                mv1.Processor.CreateScalar(
-                    mv1.ScalarProcessor.GetScalarFromNumber(mv2)
-                )
+                mv1.Processor.CreateScalar(mv2)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static XGaMultivector<T> operator -(long mv1, XGaMultivector<T> mv2)
         {
-            return mv2.Subtract(
-                mv2.Processor.CreateScalar(
-                    mv2.ScalarProcessor.GetScalarFromNumber(mv1)
-                )
-            );
+            return mv2.Processor.CreateScalar(mv1).Subtract(mv2);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static XGaMultivector<T> operator -(XGaMultivector<T> mv1, ulong mv2)
         {
             return mv1.Subtract(
-                mv1.Processor.CreateScalar(
-                    mv1.ScalarProcessor.GetScalarFromNumber(mv2)
-                )
+                mv1.Processor.CreateScalar(mv2)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static XGaMultivector<T> operator -(ulong mv1, XGaMultivector<T> mv2)
         {
-            return mv2.Subtract(
-                mv2.Processor.CreateScalar(
-                    mv2.ScalarProcessor.GetScalarFromNumber(mv1)
-                )
-            );
+            return mv2.Processor.CreateScalar(mv1).Subtract(mv2);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static XGaMultivector<T> operator -(XGaMultivector<T> mv1, float mv2)
         {
             return mv1.Subtract(
-                mv1.Processor.CreateScalar(
-                    mv1.ScalarProcessor.GetScalarFromNumber(mv2)
-                )
+                mv1.Processor.CreateScalar(mv2)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static XGaMultivector<T> operator -(float mv1, XGaMultivector<T> mv2)
         {
-            return mv2.Subtract(
-                mv2.Processor.CreateScalar(
-                    mv2.ScalarProcessor.GetScalarFromNumber(mv1)
-                )
-            );
+            return mv2.Processor.CreateScalar(mv1).Subtract(mv2);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static XGaMultivector<T> operator -(XGaMultivector<T> mv1, double mv2)
         {
             return mv1.Subtract(
-                mv1.Processor.CreateScalar(
-                    mv1.ScalarProcessor.GetScalarFromNumber(mv2)
-                )
+                mv1.Processor.CreateScalar(mv2)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static XGaMultivector<T> operator -(double mv1, XGaMultivector<T> mv2)
         {
-            return mv2.Subtract(
-                mv2.Processor.CreateScalar(
-                    mv2.ScalarProcessor.GetScalarFromNumber(mv1)
-                )
-            );
+            return mv2.Processor.CreateScalar(mv1).Subtract(mv2);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -306,9 +246,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static XGaMultivector<T> operator -(T mv1, XGaMultivector<T> mv2)
         {
-            return mv2.Subtract(
-                mv2.Processor.CreateScalar(mv1)
-            );
+            return mv2.Processor.CreateScalar(mv1).Subtract(mv2);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -322,9 +260,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static XGaMultivector<T> operator -(Scalar<T> mv1, XGaMultivector<T> mv2)
         {
-            return mv2.Subtract(
-                mv2.Processor.CreateScalar(mv1.ScalarValue)
-            );
+            return mv2.Processor.CreateScalar(mv1.ScalarValue).Subtract(mv2);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

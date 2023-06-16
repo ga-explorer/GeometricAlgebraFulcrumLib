@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using GeometricAlgebraFulcrumLib.MathBase.BasicShapes;
-using GeometricAlgebraFulcrumLib.MathBase.Borders.Space3D.Immutable;
-using GeometricAlgebraFulcrumLib.MathBase.Borders.Space3D.Mutable;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space3D.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space3D.Mutable;
 
 namespace NumericalGeometryLib.Accelerators.BIH.Space3D
 {
@@ -20,77 +20,41 @@ namespace NumericalGeometryLib.Accelerators.BIH.Space3D
             return true;
         }
 
-        public int Count
-        {
-            get { return LastObjectIndex - FirstObjectIndex + 1; }
-        }
+        public int Count => LastObjectIndex - FirstObjectIndex + 1;
 
-        public T this[int index]
-        {
-            get { return _geometricObjectsArray[FirstObjectIndex + index]; }
-        }
+        public T this[int index] => _geometricObjectsArray[FirstObjectIndex + index];
 
         public string NodeId { get; set; }
 
-        public bool IsRoot
-        {
-            get { return NodeDepth == 0; }
-        }
+        public bool IsRoot => NodeDepth == 0;
 
-        public bool IsLeaf
-        {
-            get { return false; }
-        }
+        public bool IsLeaf => false;
 
-        public bool IsInternal
-        {
-            get { return true; }
-        }
+        public bool IsInternal => true;
 
-        public bool IsSingleInternal
-        {
-            get { return HasLeftChild && !HasRightChild; }
-        }
+        public bool IsSingleInternal => HasLeftChild && !HasRightChild;
 
         public int NodeDepth { get; }
 
-        public int BihDepth
-        {
-            get { return NodeId.Length; }
-        }
+        public int BihDepth => NodeId.Length;
 
         public int FirstObjectIndex { get; }
 
         public int LastObjectIndex { get; }
 
-        public IAccBihNode3D LeftChild
-        {
-            get { return LeftChildNode; }
-        }
+        public IAccBihNode3D LeftChild => LeftChildNode;
 
-        public IAccBihNode3D RightChild
-        {
-            get { return RightChildNode; }
-        }
+        public IAccBihNode3D RightChild => RightChildNode;
 
         public IAccBihNode3D<T> LeftChildNode { get; internal set; }
 
         public IAccBihNode3D<T> RightChildNode { get; internal set; }
 
-        public bool HasLeftChild
-        {
-            get { return !ReferenceEquals(LeftChildNode, null); }
-        }
+        public bool HasLeftChild => !ReferenceEquals(LeftChildNode, null);
 
-        public bool HasRightChild
-        {
-            get { return !ReferenceEquals(RightChildNode, null); }
-        }
+        public bool HasRightChild => !ReferenceEquals(RightChildNode, null);
 
-        public bool HasNoChildren
-        {
-            get { return !(HasLeftChild || HasRightChild); }
-        }
+        public bool HasNoChildren => !(HasLeftChild || HasRightChild);
 
         public int SplitAxisIndex { get; }
 
@@ -125,14 +89,14 @@ namespace NumericalGeometryLib.Accelerators.BIH.Space3D
 
         public double ClipValue0
         {
-            get { return _clipValues[0]; }
-            internal set { _clipValues[0] = value; }
+            get => _clipValues[0];
+            internal set => _clipValues[0] = value;
         }
 
         public double ClipValue1
         {
-            get { return _clipValues[1]; }
-            internal set { _clipValues[1] = value; }
+            get => _clipValues[1];
+            internal set => _clipValues[1] = value;
         }
 
 

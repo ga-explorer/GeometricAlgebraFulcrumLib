@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.LinearMaps.Outermorphisms;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.LinearMaps.Rotors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors;
@@ -9,7 +8,8 @@ using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Mu
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic.LinearMaps;
-using GeometricAlgebraFulcrumLib.MathBase.Signals;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra;
 using GeometricAlgebraFulcrumLib.Mathematica.Mathematica.ExprFactory;
 using GeometricAlgebraFulcrumLib.Mathematica.Processors;
 using Wolfram.NETLink;
@@ -612,7 +612,7 @@ public static class RGaMathematicaUtils
         return LaTeXComposer.GetMultivectorText(mv);
     }
     
-    public static RGaVector<ScalarSignalFloat64> GetSampledSignal(this RGaVector<Expr> vector, RGaProcessor<ScalarSignalFloat64> processor, Expr t, double samplingRate, int sampleCount)
+    public static RGaVector<Float64Signal> GetSampledSignal(this RGaVector<Expr> vector, RGaProcessor<Float64Signal> processor, Expr t, double samplingRate, int sampleCount)
     {
         var composer = processor.CreateComposer();
 
@@ -627,7 +627,7 @@ public static class RGaMathematicaUtils
         return composer.GetVector();
     }
     
-    public static RGaBivector<ScalarSignalFloat64> GetSampledSignal(this RGaBivector<Expr> vector, RGaProcessor<ScalarSignalFloat64> processor, Expr t, double samplingRate, int sampleCount)
+    public static RGaBivector<Float64Signal> GetSampledSignal(this RGaBivector<Expr> vector, RGaProcessor<Float64Signal> processor, Expr t, double samplingRate, int sampleCount)
     {
         var composer = processor.CreateComposer();
 

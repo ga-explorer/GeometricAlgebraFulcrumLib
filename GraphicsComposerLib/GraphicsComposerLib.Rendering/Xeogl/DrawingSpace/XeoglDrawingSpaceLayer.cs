@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Matrices;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices;
 using GraphicsComposerLib.Rendering.Xeogl.Geometry;
 using GraphicsComposerLib.Rendering.Xeogl.Geometry.Primitives;
 using GraphicsComposerLib.Rendering.Xeogl.Materials;

@@ -2,15 +2,13 @@
 using System.Diagnostics;
 using System.Linq;
 using DataStructuresLib.Random;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Arrays.Float64;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Matrices;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.SubSpaces;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.Scaling;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.SpaceND;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.SpaceND.Scaling;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.SubSpaces.SpaceND;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.SpaceND;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 using MathNet.Numerics.LinearAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
@@ -226,10 +224,10 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                 var rotation = mapSequence.RotationSequence[k];
 
                 var sourceVector = 
-                    rotation.SourceVector;
+                    rotation.BasisVector1;
 
                 var targetVector = 
-                    rotation.TargetVector;
+                    rotation.MapBasisVector1();
 
                 Console.WriteLine($"Rotation {k + 1}:");
                 Console.WriteLine($"Source Vector: {sourceVector}");
@@ -308,8 +306,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
 
                 foreach (var rotation in mapSequence.RotationSequence)
                 {
-                    var u = rotation.SourceVector;
-                    var v = rotation.TargetVector;
+                    var u = rotation.BasisVector1;
+                    var v = rotation.MapBasisVector1();
 
                     var v1 = mapSequence.MapVector(u);
                     var v2 = (mapMatrix * u.ToVector(n)).CreateLinVector();
@@ -538,10 +536,10 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                 var rotation = mapSequenceQ.RotationSequence[k];
 
                 var sourceVector = 
-                    rotation.SourceVector;
+                    rotation.BasisVector1;
 
                 var targetVector = 
-                    rotation.TargetVector;
+                    rotation.MapBasisVector1();
 
                 Console.WriteLine($"Rotation {k + 1}:");
                 Console.WriteLine($"Source Vector: {sourceVector}");
@@ -567,10 +565,10 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                 var rotation = mapSequenceR.RotationSequence[k];
 
                 var sourceVector = 
-                    rotation.SourceVector;
+                    rotation.BasisVector1;
 
                 var targetVector = 
-                    rotation.TargetVector;
+                    rotation.MapBasisVector1();
 
                 Console.WriteLine($"Rotation {k + 1}:");
                 Console.WriteLine($"Source Vector: {sourceVector}");

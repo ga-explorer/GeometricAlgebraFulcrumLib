@@ -19,6 +19,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphicsComposerLib.Renderi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FFMpegCore", "FFMpegCore\FFMpegCore.csproj", "{9F644F4E-4A3E-4E0D-850C-4ED0520CDB56}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeometricAlgebraFulcrumLib.MathBase", "..\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.MathBase\GeometricAlgebraFulcrumLib.MathBase.csproj", "{58DC178F-CA8C-48C0-AA7B-56388AA66402}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -125,6 +127,18 @@ Global
 		{9F644F4E-4A3E-4E0D-850C-4ED0520CDB56}.Release|ARM32.Build.0 = Release|Any CPU
 		{9F644F4E-4A3E-4E0D-850C-4ED0520CDB56}.Release|x64.ActiveCfg = Release|Any CPU
 		{9F644F4E-4A3E-4E0D-850C-4ED0520CDB56}.Release|x64.Build.0 = Release|Any CPU
+		{58DC178F-CA8C-48C0-AA7B-56388AA66402}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58DC178F-CA8C-48C0-AA7B-56388AA66402}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58DC178F-CA8C-48C0-AA7B-56388AA66402}.Debug|ARM32.ActiveCfg = Debug|Any CPU
+		{58DC178F-CA8C-48C0-AA7B-56388AA66402}.Debug|ARM32.Build.0 = Debug|Any CPU
+		{58DC178F-CA8C-48C0-AA7B-56388AA66402}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{58DC178F-CA8C-48C0-AA7B-56388AA66402}.Debug|x64.Build.0 = Debug|Any CPU
+		{58DC178F-CA8C-48C0-AA7B-56388AA66402}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58DC178F-CA8C-48C0-AA7B-56388AA66402}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58DC178F-CA8C-48C0-AA7B-56388AA66402}.Release|ARM32.ActiveCfg = Release|Any CPU
+		{58DC178F-CA8C-48C0-AA7B-56388AA66402}.Release|ARM32.Build.0 = Release|Any CPU
+		{58DC178F-CA8C-48C0-AA7B-56388AA66402}.Release|x64.ActiveCfg = Release|Any CPU
+		{58DC178F-CA8C-48C0-AA7B-56388AA66402}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

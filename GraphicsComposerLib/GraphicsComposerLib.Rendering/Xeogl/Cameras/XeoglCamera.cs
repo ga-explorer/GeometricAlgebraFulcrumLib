@@ -1,7 +1,5 @@
-﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Constants;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Mutable;
+﻿using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 using GraphicsComposerLib.Rendering.Xeogl.Constants;
 using TextComposerLib.Code.JavaScript;
 using TextComposerLib.Text.Linear;
@@ -35,20 +33,20 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Cameras
         public XeoglCameraProjectionType ProjectionType
             => Projection.ProjectionType;
 
-        public MutableFloat64Tuple3D EyePoint { get; }
-            = new MutableFloat64Tuple3D(XeoglCameraDefaults.EyePoint);
+        public Float64Vector3DComposer EyePoint { get; }
+            = Float64Vector3DComposer.Create(XeoglCameraDefaults.EyePoint);
 
-        public MutableFloat64Tuple3D LookAtPoint { get; }
-            = new MutableFloat64Tuple3D(XeoglCameraDefaults.LookAtPoint);
+        public Float64Vector3DComposer LookAtPoint { get; }
+            = Float64Vector3DComposer.Create(XeoglCameraDefaults.LookAtPoint);
 
-        public MutableFloat64Tuple3D WorldRightDirection { get; }
-            = new MutableFloat64Tuple3D(1, 0, 0);
+        public Float64Vector3DComposer WorldRightDirection { get; }
+            = Float64Vector3DComposer.Create(1, 0, 0);
 
-        public MutableFloat64Tuple3D WorldUpDirection { get; }
-            = new MutableFloat64Tuple3D(0, 1, 0);
+        public Float64Vector3DComposer WorldUpDirection { get; }
+            = Float64Vector3DComposer.Create(0, 1, 0);
 
-        public MutableFloat64Tuple3D WorldForwardDirection { get; }
-            = new MutableFloat64Tuple3D(0, 0, 1);
+        public Float64Vector3DComposer WorldForwardDirection { get; }
+            = Float64Vector3DComposer.Create(0, 0, 1);
 
 
         /// <summary>
@@ -72,12 +70,12 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Cameras
         {
             Projection = new XeoglPerspectiveProjection();
 
-            EyePoint.SetTuple(0, 0, 10);
-            LookAtPoint.SetTuple(0, 0, 0);
+            EyePoint.SetVector(0, 0, 10);
+            LookAtPoint.SetVector(0, 0, 0);
 
-            WorldRightDirection.SetTuple(0, 1, 0);
-            WorldUpDirection.SetTuple(0, 1, 0);
-            WorldForwardDirection.SetTuple(0, 0, 1);
+            WorldRightDirection.SetVector(0, 1, 0);
+            WorldUpDirection.SetVector(0, 1, 0);
+            WorldForwardDirection.SetVector(0, 0, 1);
 
             GimbalLock = true;
 
@@ -86,51 +84,51 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Cameras
 
         public XeoglCamera SetPosition(IFloat64Tuple3D eyePoint, IFloat64Tuple3D lookAtPoint)
         {
-            EyePoint.SetTuple(eyePoint);
-            LookAtPoint.SetTuple(lookAtPoint);
+            EyePoint.SetVector(eyePoint);
+            LookAtPoint.SetVector(lookAtPoint);
 
             return this;
         }
 
-        public XeoglCamera SetOrientation(Axis3D rightAxis, Axis3D upAxis, Axis3D forwardAxis)
+        public XeoglCamera SetOrientation(LinUnitBasisVector3D rightAxis, LinUnitBasisVector3D upAxis, LinUnitBasisVector3D forwardAxis)
         {
-            WorldRightDirection.SetTuple(rightAxis.GetVector3D());
-            WorldUpDirection.SetTuple(upAxis.GetVector3D());
-            WorldForwardDirection.SetTuple(forwardAxis.GetVector3D());
+            WorldRightDirection.SetVector(rightAxis.ToVector3D());
+            WorldUpDirection.SetVector(upAxis.ToVector3D());
+            WorldForwardDirection.SetVector(forwardAxis.ToVector3D());
 
             return this;
         }
 
         public XeoglCamera SetOrientation(IFloat64Tuple3D rightAxis, IFloat64Tuple3D upAxis, IFloat64Tuple3D forwardAxis)
         {
-            WorldRightDirection.SetTuple(rightAxis);
-            WorldUpDirection.SetTuple(upAxis);
-            WorldForwardDirection.SetTuple(forwardAxis);
+            WorldRightDirection.SetVector(rightAxis);
+            WorldUpDirection.SetVector(upAxis);
+            WorldForwardDirection.SetVector(forwardAxis);
 
             return this;
         }
 
         public XeoglCamera SetOrientationUpY()
         {
-            WorldRightDirection.SetTuple(new Float64Tuple3D(1, 0, 0));
-            WorldUpDirection.SetTuple(new Float64Tuple3D(0, 1, 0));
-            WorldForwardDirection.SetTuple(new Float64Tuple3D(0, 0, -1));
+            WorldRightDirection.SetVector(Float64Vector3D.Create(1, 0, 0));
+            WorldUpDirection.SetVector(Float64Vector3D.Create(0, 1, 0));
+            WorldForwardDirection.SetVector(Float64Vector3D.Create(0, 0, -1));
 
             return this;
         }
 
         public XeoglCamera SetOrientationUpZ()
         {
-            WorldRightDirection.SetTuple(new Float64Tuple3D(1, 0, 0));
-            WorldUpDirection.SetTuple(new Float64Tuple3D(0, 0, 1));
-            WorldForwardDirection.SetTuple(new Float64Tuple3D(0, -1, 0));
+            WorldRightDirection.SetVector(Float64Vector3D.Create(1, 0, 0));
+            WorldUpDirection.SetVector(Float64Vector3D.Create(0, 0, 1));
+            WorldForwardDirection.SetVector(Float64Vector3D.Create(0, -1, 0));
 
             return this;
         }
 
         public double[] GetWorldAxisArray()
         {
-            return new[]
+            return new double[]
             {
                 WorldRightDirection.X,
                 WorldRightDirection.Y,

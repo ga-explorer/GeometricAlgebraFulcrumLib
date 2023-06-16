@@ -8,10 +8,7 @@
         }
 
 
-        public T this[int index]
-        {
-            get { return DefaultValue; }
-        }
+        public T this[int index] => DefaultValue;
 
 
         private GcConstant(T defaultValue)

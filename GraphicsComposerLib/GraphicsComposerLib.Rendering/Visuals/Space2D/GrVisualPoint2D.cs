@@ -1,4 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+﻿using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
 
 namespace GraphicsComposerLib.Rendering.Visuals.Space2D
 {
@@ -11,6 +11,11 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space2D
         public GrVisualPoint2D(string name) 
             : base(name)
         {
+        }
+
+        public override bool IsValid()
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,7 +1,10 @@
-﻿namespace GraphicsComposerLib.Rendering.Visuals
+﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath;
+
+namespace GraphicsComposerLib.Rendering.Visuals
 {
-    public interface IGrVisualElement
+    public interface IGrVisualElement :
+        IGeometricElement
     {
-        string Name { get; }
+        public string Name { get; }
     }
 }

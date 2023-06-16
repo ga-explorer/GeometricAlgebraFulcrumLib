@@ -6,10 +6,7 @@ namespace NumericalGeometryLib.Computers
     {
         public EventSummaryCollection EventCounters { get; private set; }
 
-        public bool HasEventCountersCollection
-        {
-            get { return !ReferenceEquals(EventCounters, null); }
-        }
+        public bool HasEventCountersCollection => !ReferenceEquals(EventCounters, null);
 
 
         protected GeometryComputer()

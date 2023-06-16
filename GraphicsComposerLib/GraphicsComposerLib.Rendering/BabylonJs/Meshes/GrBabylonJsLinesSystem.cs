@@ -12,8 +12,6 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
         public sealed class LineSystemOptions :
             GrBabylonJsObjectOptions
         {
-            //instance?: Nullable<LinesMesh>;
-
             public GrBabylonJsVector3ArrayArrayValue? Lines { get; set; }
 
             public GrBabylonJsColor4ArrayArrayValue? Colors { get; set; }
@@ -21,6 +19,8 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
             public GrBabylonJsMaterialValue? Material { get; set; }
 
             public GrBabylonJsBooleanValue? UseVertexAlpha { get; set; }
+            
+            public GrBabylonJsLinesMeshValue? Instance { get; set; }
 
             public GrBabylonJsBooleanValue? Updateable { get; set; }
 
@@ -28,10 +28,11 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
             protected override IEnumerable<Pair<string>?> GetNameValuePairs()
             {
                 yield return Lines.GetNameValueCodePair("lines");
+                yield return Instance.GetNameValueCodePair("instance");
                 yield return Colors.GetNameValueCodePair("colors");
                 yield return Material.GetNameValueCodePair("material");
                 yield return UseVertexAlpha.GetNameValueCodePair("useVertexAlpha");
-                yield return Updateable.GetNameValueCodePair("updateable");
+                yield return Updateable.GetNameValueCodePair("updatable");
             }
         }
     

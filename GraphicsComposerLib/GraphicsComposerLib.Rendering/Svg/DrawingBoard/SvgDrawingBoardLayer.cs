@@ -1,17 +1,18 @@
-﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
-using GraphicsComposerLib.Rendering.Colors;
-using GraphicsComposerLib.Rendering.Svg.Content;
-using GraphicsComposerLib.Rendering.Svg.Elements.Containers;
-using GraphicsComposerLib.Rendering.Svg.Elements.Shape;
-using GraphicsComposerLib.Rendering.Svg.Elements.Text;
-using GraphicsComposerLib.Rendering.Svg.Transforms;
+﻿using DataStructuresLib.Basic;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
+using WebComposerLib.Colors;
+using WebComposerLib.Html.Media;
+using WebComposerLib.Svg.Content;
+using WebComposerLib.Svg.Elements.Containers;
+using WebComposerLib.Svg.Elements.Shape;
+using WebComposerLib.Svg.Elements.Text;
+using WebComposerLib.Svg.Transforms;
 
 namespace GraphicsComposerLib.Rendering.Svg.DrawingBoard
 {
     public class SvgDrawingBoardLayer
     {
-        private readonly SvgContentsList _contentsList 
+        private readonly SvgContentsList _contentsList
             = new SvgContentsList();
 
 
@@ -21,7 +22,7 @@ namespace GraphicsComposerLib.Rendering.Svg.DrawingBoard
 
         public SvgDrawingBoardStyle CurrentStyle { get; }
 
-        public SvgDrawingBoardLayerActiveStyle ActiveStyle { get; set; } 
+        public SvgDrawingBoardLayerActiveStyle ActiveStyle { get; set; }
             = SvgDrawingBoardLayerActiveStyle.Current;
 
         public string LayerName { get; set; }
@@ -214,7 +215,7 @@ namespace GraphicsComposerLib.Rendering.Svg.DrawingBoard
 
             return this;
         }
-        
+
         public SvgDrawingBoardLayer SetFill(System.Drawing.Color fillColor, double fillOpacity = 1)
         {
             return SetFill(fillColor.ToImageSharpColor(), fillOpacity);
@@ -257,7 +258,7 @@ namespace GraphicsComposerLib.Rendering.Svg.DrawingBoard
 
             return this;
         }
-        
+
         public SvgDrawingBoardLayer SetDefaultPen(int penPixelsWidth, System.Drawing.Color penColor, params int[] penDashPattern)
         {
             DefaultStyle.SetPen(penPixelsWidth, penColor, penDashPattern);
@@ -359,9 +360,9 @@ namespace GraphicsComposerLib.Rendering.Svg.DrawingBoard
             var lineSegment = SvgElementLine
                 .Create()
                 .SetLine(
-                    point1X, 
-                    point1Y, 
-                    point2X, 
+                    point1X,
+                    point1Y,
+                    point2X,
                     point2Y
                 );
 
@@ -450,7 +451,7 @@ namespace GraphicsComposerLib.Rendering.Svg.DrawingBoard
             var pointsList = Enumerable
                 .Range(0, sidesCount)
                 .Select(i => offsetAngle + i * angleFactor)
-                .Select(a => (IFloat64Tuple2D)new Float64Tuple2D(
+                .Select(a => (IFloat64Tuple2D)new Float64Vector2D(
                     centerX + radius * Math.Cos(a),
                     centerY + radius * Math.Sin(a)
                 ));
@@ -467,7 +468,7 @@ namespace GraphicsComposerLib.Rendering.Svg.DrawingBoard
         {
             var polygon = SvgElementPolygon
                 .Create()
-                .SetPoints(pointsList);
+                .SetPoints(pointsList.Cast<IPair<double>>());
 
             if (ActiveStyle == SvgDrawingBoardLayerActiveStyle.Current)
                 polygon.Style.UpdateFrom(CurrentStyle, true, true, false);
@@ -545,12 +546,12 @@ namespace GraphicsComposerLib.Rendering.Svg.DrawingBoard
         public SvgDrawingBoardLayer DrawCircleMarker(double centerX, double centerY, int pixelsRadius)
         {
             return DrawCircle(
-                centerX, 
-                centerY, 
+                centerX,
+                centerY,
                 pixelsRadius * ParentDrawingBoard.LengthByPixelsRatio
             );
         }
-        
+
         /// <summary>
         /// Draw a circle marker
         /// </summary>
@@ -560,8 +561,8 @@ namespace GraphicsComposerLib.Rendering.Svg.DrawingBoard
         public SvgDrawingBoardLayer DrawCircleMarker(IFloat64Tuple2D center, int pixelsRadius)
         {
             return DrawCircle(
-                center.X, 
-                center.Y, 
+                center.X,
+                center.Y,
                 pixelsRadius * ParentDrawingBoard.LengthByPixelsRatio
             );
         }
@@ -594,10 +595,10 @@ namespace GraphicsComposerLib.Rendering.Svg.DrawingBoard
         public SvgDrawingBoardLayer DrawPolygonMarker(int sidesCount, double centerX, double centerY, int pixelsRadius, double offsetAngle = 0)
         {
             return DrawPolygon(
-                sidesCount, 
-                centerX, 
+                sidesCount,
+                centerX,
                 centerY,
-                pixelsRadius * ParentDrawingBoard.LengthByPixelsRatio, 
+                pixelsRadius * ParentDrawingBoard.LengthByPixelsRatio,
                 offsetAngle
             );
         }

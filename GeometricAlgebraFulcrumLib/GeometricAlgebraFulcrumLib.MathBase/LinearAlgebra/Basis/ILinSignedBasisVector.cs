@@ -8,7 +8,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Basis
     /// </summary>
     public interface ILinSignedBasisVector :
         IEquatable<ILinSignedBasisVector>,
-        ILinElement
+        ILinearElement
     {
         /// <summary>
         /// The basis vector index

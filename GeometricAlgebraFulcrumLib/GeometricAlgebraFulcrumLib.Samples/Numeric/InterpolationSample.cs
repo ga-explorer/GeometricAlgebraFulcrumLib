@@ -6,13 +6,14 @@ using DataStructuresLib.Basic;
 using DataStructuresLib.Extensions;
 using DataStructuresLib.Files;
 using GeometricAlgebraFulcrumLib.MathBase;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
-using GeometricAlgebraFulcrumLib.MathBase.Differential;
-using GeometricAlgebraFulcrumLib.MathBase.Differential.Functions;
-using GeometricAlgebraFulcrumLib.MathBase.Differential.Functions.Interpolators;
-using GeometricAlgebraFulcrumLib.MathBase.Differential.Functions.Phasors;
-using GeometricAlgebraFulcrumLib.MathBase.Parametric.Curves.CatmullRom;
-using GeometricAlgebraFulcrumLib.MathBase.Signals;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Differential;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Differential.Functions;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Differential.Functions.Interpolators;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Differential.Functions.Phasors;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra.Composers;
 using GeometricAlgebraFulcrumLib.Mathematica;
 using GeometricAlgebraFulcrumLib.Mathematica.Mathematica.ExprFactory;
 using OfficeOpenXml;
@@ -34,7 +35,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Numeric
             => 1000;
         
 
-        private static void PlotSignals(this string plotFileName, ScalarSignalFloat64 scalarSignal1, ScalarSignalFloat64 scalarSignal2, double tMin, double tMax)
+        private static void PlotSignals(this string plotFileName, Float64Signal scalarSignal1, Float64Signal scalarSignal2, double tMin, double tMax)
         {
             var pm = new PlotModel
             {
@@ -76,7 +77,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Numeric
             OxyPlot.SkiaSharp.PngExporter.Export(pm, $"{plotFileName}.png", scalarSignal1.Count * 2, 750, 200);
         }
 
-        private static void PlotSignal(this ScalarSignalFloat64 signalSamples, string title, string filePath)
+        private static void PlotSignal(this Float64Signal signalSamples, string title, string filePath)
         {
             var tMin = 0;
             var tMax = (signalSamples.Count - 1) / signalSamples.SamplingRate;
@@ -84,7 +85,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Numeric
             signalSamples.PlotSignal(tMin, tMax, title, filePath);
         }
 
-        private static void PlotSignal(this ScalarSignalFloat64 signalSamples, double tMin, double tMax, string title, string filePath)
+        private static void PlotSignal(this Float64Signal signalSamples, double tMin, double tMax, string title, string filePath)
         {
             filePath = Path.Combine(WorkingPath, filePath);
 
@@ -795,7 +796,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Numeric
             //    );
 
             var s2Function =
-                s1Signal.CreateCatmullRomSplineInterpolator(
+                s1Signal.GetCatmullRomInterpolator(
                     new DfCatmullRomSplineSignalInterpolatorOptions
                     {
                         BezierDegree = bezierDegree,
@@ -1135,7 +1136,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Numeric
             //);
 
             var f2 =
-                tSignal.MapSamples(f1.GetValue).CreateCatmullRomSplineInterpolator(
+                tSignal.MapSamples(f1.GetValue).GetCatmullRomInterpolator(
                     new DfCatmullRomSplineSignalInterpolatorOptions
                     {
                         BezierDegree = bezierDegree,
@@ -1389,7 +1390,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Numeric
                     .MapSamples(f1.GetValue)
                     .AddRandomGaussian(randomGenerator, 0, 0.1);
 
-            var f2 = s1.CreateCatmullRomSplineInterpolator(
+            var f2 = s1.GetCatmullRomInterpolator(
                 new DfCatmullRomSplineSignalInterpolatorOptions
                 {
                     BezierDegree = bezierDegree,
@@ -1481,7 +1482,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Numeric
             package.SaveAs(outputFilePath);
         }
 
-        private static ScalarSignalFloat64 MakePeriodic(ScalarSignalFloat64 signal, int sampleCount)
+        private static Float64Signal MakePeriodic(Float64Signal signal, int sampleCount)
         {
             var signalArray = new double[signal.Count];
 
@@ -1505,7 +1506,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Numeric
             //    signalArray[i] = t * signal[i] + s * signal[signal.Count - i - 1];
             //}
 
-            return ScalarSignalFloat64.Create(
+            return Float64Signal.Create(
                 signal.SamplingRate, 
                 signalArray, 
                 false

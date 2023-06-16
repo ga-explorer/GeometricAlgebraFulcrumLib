@@ -1,0 +1,119 @@
+<!DOCTYPE html><html><head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+        <title>KaTeX HTML Template</title>
+
+        <!-- KaTeX Core -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css" integrity="sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js" integrity="sha384-X/XCfMm41VSsqRNQgDerQczD69XqmjOOOwYQvr/uuC+j4OPoNhVgjdGFwhvN02Ja" crossorigin="anonymous"></script>
+        
+        <!-- KaTeX Auto-render extension -->
+        <!-- To automatically render math in text elements, include the auto-render extension: -->
+        <script src="https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+        
+        <!-- html2canvas.js -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	    
+        <script>
+          document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body, {
+              delimiters: 
+		      [
+                {left: "$$", right: "$$", display: true},
+			    {left: '$', right: '$', display: false},
+                {left: "\\(", right: "\\)", display: false},
+                {left: "\\begin{equation}", right: "\\end{equation}", display: true},
+                {left: "\\begin{align}", right: "\\end{align}", display: true},
+                {left: "\\begin{alignat}", right: "\\end{alignat}", display: true},
+                {left: "\\begin{gather}", right: "\\end{gather}", display: true},
+                {left: "\\begin{CD}", right: "\\end{CD}", display: true},
+                {left: "\\[", right: "\\]", display: true}
+              ],
+              throwOnError : false
+            });
+          });
+        </script>
+
+        <script>
+          window.WebFontConfig = {
+            custom: {
+              families: ['KaTeX_AMS', 'KaTeX_Caligraphic:n4,n7', 'KaTeX_Fraktur:n4,n7',
+                'KaTeX_Main:n4,n7,i4,i7', 'KaTeX_Math:i4,i7', 'KaTeX_Script',
+                'KaTeX_SansSerif:n4,n7,i4', 'KaTeX_Size1', 'KaTeX_Size2', 'KaTeX_Size3',
+                'KaTeX_Size4', 'KaTeX_Typewriter'],
+            },
+          };
+        </script>
+
+        <script defer="" src="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.js" integrity="sha256-4O4pS1SH31ZqrSO2A/2QJTVjTPqVe+jnYgOWUVr7EEc=" crossorigin="anonymous"></script>
+        
+        <style>
+            html, body {
+                overflow: auto;
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+
+            .katex { font-size: 4.00em; }
+        </style>
+    </head>
+    <body>
+        <script>
+            function svgToDataURI(svg) {
+                svg = svg.trim();
+
+                // remove xml, doctype, generator...
+                svg = svg.slice(svg.indexOf('<svg'));
+
+                // soft validate
+                if (!svg.startsWith('<svg') || !svg.endsWith('svg>')) return;
+
+                // add namespace if necessary
+                if (!svg.includes('http://www.w3.org/2000/svg')) svg = svg.replace(/<svg/g, `<svg xmlns='http://www.w3.org/2000/svg'`);
+
+                // remove comments
+                svg = svg.replace(/<!--.{1,}-->/g, '');
+
+                // remove unnecessary attributes
+                svg = svg.replace(/version=[\"\'](.{0,}?)[\"\'](?=[\s>])/g, '');
+
+                // svg = svg.replace(/id=[\"\'](.{0,}?)[\"\'](?=[\s>])/g, '');
+                // svg = svg.replace(/class=[\"\'](.{0,}?)[\"\'](?=[\s>])/g, '');
+
+                // replace nested quotes
+                svg = svg.replace(/"'(.{1,})'"/g, '\'$1\'');
+
+                // replace double quotes
+                svg = svg.replace(/"/g, '\'');
+
+                // remove empty spaces between tags
+                svg = svg.replace(/>\s{1,}</g, '><');
+
+                // remove duplicate spaces
+                svg = svg.replace(/\s{2,}/g, ' ');
+
+                // trim again
+                svg = svg.trim();
+
+                // soft validate again
+                if (!(svg.startsWith('<svg')) || !(svg.endsWith('svg>'))) return;
+
+                // replace ampersand
+                svg = svg.replace(/&/g, '&amp;');
+
+                // encode only unsafe symbols
+                svg = svg.replace(/[%#<>?\[\\\]^`{|}]/g, encodeURIComponent);
+
+                // build data uri
+                svg = `data:image/svg+xml,${svg}`;
+
+                // ok, ship it!
+                return svg;
+            }
+        </script>
+    
+<div class="katexDiv" id="katex-div-0"></div><div class="katexDiv" id="katex-div-1"></div><script>katex.render('x_2-y_1', document.getElementById('katex-div-0'), {throwOnError: false, errorColor: '#8B0000'});
+katex.render('f \\left( x \\right) = e^{\\pi/2kt}', document.getElementById('katex-div-1'), {throwOnError: false, errorColor: '#8B0000'});
+</script></body></html>

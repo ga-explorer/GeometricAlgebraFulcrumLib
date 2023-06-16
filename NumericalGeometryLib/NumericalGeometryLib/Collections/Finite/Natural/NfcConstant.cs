@@ -15,15 +15,9 @@
         private int _valuesCount;
 
 
-        public override int Count
-        {
-            get { return _valuesCount; }
-        }
+        public override int Count => _valuesCount;
 
-        public T this[int index]
-        {
-            get { return DefaultValue; }
-        }
+        public T this[int index] => DefaultValue;
 
 
         private NfcConstant(int itemsCount, T defaultValue)

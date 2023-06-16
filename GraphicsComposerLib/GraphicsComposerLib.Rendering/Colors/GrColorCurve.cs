@@ -1,10 +1,10 @@
 ﻿using System.Collections.Immutable;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
-using GeometricAlgebraFulcrumLib.MathBase.Parametric.Curves;
-using GeometricAlgebraFulcrumLib.MathBase.Parametric.Curves.CatmullRom;
-using GeometricAlgebraFulcrumLib.MathBase.Parametric.Curves.Sampled;
-using GraphicsComposerLib.Geometry.SdfShapes;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Curves;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Curves.Adaptive;
+using GeometricAlgebraFulcrumLib.MathBase.Graphics.SdfShapes;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GraphicsComposerLib.Rendering.Colors
 {
@@ -19,8 +19,8 @@ namespace GraphicsComposerLib.Rendering.Colors
                         CatmullRomSplineType.Centripetal, 
                         false
                     )
-                    .CreateSampledCurve3D(
-                        new SampledParametricCurveTreeOptions3D(
+                    .CreateAdaptiveCurve3D(
+                        new AdaptiveCurveSamplingOptions3D(
                             5d.DegreesToRadians(), 
                             3, 
                             16

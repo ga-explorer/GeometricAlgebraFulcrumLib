@@ -2,8 +2,7 @@
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.Basic;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Mutable;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.SpaceND;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Basis
 {
@@ -61,7 +60,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Basis
         //}
     
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static LinFloat64VectorTerm ToTermFloat64(this LinSignedBasisVector term, double scalar)
+        public static Float64VectorTerm ToTermFloat64(this LinSignedBasisVector term, double scalar)
         {
             return term.Index.CreateLinTerm(scalar * term.Sign);
         }
@@ -432,9 +431,9 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Basis
 
     
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Float64Tuple ToTuple(this ILinSignedBasisVector basisVector, int dimensions)
+        public static Float64Vector ToTuple(this ILinSignedBasisVector basisVector, int dimensions)
         {
-            return Float64Tuple.CreateScaledBasis(
+            return Float64Vector.CreateScaledBasis(
                 dimensions,
                 basisVector.Index,
                 basisVector.IsNegative ? -1d : 1d

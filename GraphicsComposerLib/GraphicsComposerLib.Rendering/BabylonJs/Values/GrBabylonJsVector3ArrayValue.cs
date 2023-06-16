@@ -1,13 +1,19 @@
 ﻿using DataStructuresLib.Basic;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsPath;
+using GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsPath.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Values
 {
     public sealed class GrBabylonJsVector3ArrayValue :
         GrBabylonJsValue<IReadOnlyList<ITriplet<double>>>
     {
-        internal static GrBabylonJsVector3ArrayValue Create(IReadOnlyList<ITriplet<double>> value)
+        public static GrBabylonJsVector3ArrayValue Create(IReadOnlyList<ITriplet<double>> value)
+        {
+            return new GrBabylonJsVector3ArrayValue(value);
+        }
+
+        public static GrBabylonJsVector3ArrayValue Create(IPointsPath3D value)
         {
             return new GrBabylonJsVector3ArrayValue(value);
         }
@@ -18,12 +24,17 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Values
             return new GrBabylonJsVector3ArrayValue(valueText);
         }
 
-        public static implicit operator GrBabylonJsVector3ArrayValue(Float64Tuple3D[] value)
+        public static implicit operator GrBabylonJsVector3ArrayValue(Float64Vector3D[] value)
         {
             return new GrBabylonJsVector3ArrayValue(value);
         }
     
         public static implicit operator GrBabylonJsVector3ArrayValue(IFloat64Tuple3D[] value)
+        {
+            return new GrBabylonJsVector3ArrayValue(value);
+        }
+        
+        public static implicit operator GrBabylonJsVector3ArrayValue(ArrayPointsPath3D value)
         {
             return new GrBabylonJsVector3ArrayValue(value);
         }

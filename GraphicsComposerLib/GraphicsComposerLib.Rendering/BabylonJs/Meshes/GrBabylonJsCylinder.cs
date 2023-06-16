@@ -63,7 +63,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
                 yield return SideOrientation.GetNameValueCodePair("sideOrientation");
                 yield return FrontUVs.GetNameValueCodePair("frontUVs");
                 yield return BackUVs.GetNameValueCodePair("backUVs");
-                yield return Updateable.GetNameValueCodePair("updateable");
+                yield return Updateable.GetNameValueCodePair("updatable");
             }
         }
 

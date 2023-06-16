@@ -3,9 +3,9 @@ using GraphicsComposerLib.Rendering.GraphViz.Dot.Image;
 using GraphicsComposerLib.Rendering.GraphViz.Dot.Label;
 using GraphicsComposerLib.Rendering.GraphViz.Dot.Label.Text;
 using GraphicsComposerLib.Rendering.GraphViz.Dot.Value;
-using GraphicsComposerLib.Rendering.LaTeX.ImageComposers;
 using TextComposerLib;
 using TextComposerLib.Text;
+using WebComposerLib.LaTeX.ImageComposers;
 
 namespace GraphicsComposerLib.Rendering.GraphViz.Dot
 {
@@ -1202,7 +1202,7 @@ namespace GraphicsComposerLib.Rendering.GraphViz.Dot
                     i => Tuple.Create(i.ImageId, i.LaTeXCode)
                 ).ToArray();
 
-            var latexRenderer = new GrLaTeXImageComposer()
+            var latexRenderer = new WclLaTeXImageComposer()
             {
                 Resolution = 150
             };

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using GeometricAlgebraFulcrumLib.MathBase.BasicShapes;
-using GeometricAlgebraFulcrumLib.MathBase.Borders.Space2D.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D.Immutable;
 
 namespace NumericalGeometryLib.Accelerators.Grids.Space2D
 {
@@ -14,20 +14,11 @@ namespace NumericalGeometryLib.Accelerators.Grids.Space2D
 
         public IAccGrid2D<IFiniteGeometricShape2D> Grid { get; }
 
-        public int CellsCountX
-        {
-            get { return Grid.CellsCountX; }
-        }
+        public int CellsCountX => Grid.CellsCountX;
 
-        public int CellsCountY
-        {
-            get { return Grid.CellsCountY; }
-        }
+        public int CellsCountY => Grid.CellsCountY;
 
-        public int CellsCount
-        {
-            get { return CellsCountX * CellsCountY; }
-        }
+        public int CellsCount => CellsCountX * CellsCountY;
 
         public BoundingBox2D BoundingBox { get; }
 

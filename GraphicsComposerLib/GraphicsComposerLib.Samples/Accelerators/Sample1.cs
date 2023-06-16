@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using SixLabors.ImageSharp;
 using System.IO;
 using DataStructuresLib.Random;
+using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Lines;
+using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Lines.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Borders;
+using GeometricAlgebraFulcrumLib.MathBase.Borders.Space2D.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Random;
 using GraphicsComposerLib.Rendering.Svg.DrawingBoard;
 using NumericalGeometryLib.Accelerators.BIH;
-using NumericalGeometryLib.BasicShapes.Lines;
-using NumericalGeometryLib.BasicShapes.Lines.Immutable;
-using NumericalGeometryLib.Borders;
-using NumericalGeometryLib.Borders.Space2D.Immutable;
-using NumericalGeometryLib.Random;
 
 namespace GraphicsComposerLib.Samples.Accelerators
 {

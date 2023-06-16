@@ -1,23 +1,28 @@
 ﻿using DataStructuresLib.Basic;
-using GraphicsComposerLib.Rendering.LaTeX.ImageComposers;
+using WebComposerLib.LaTeX.ImageComposers;
 
 namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Images
 {
     public class GrVisualLaTeXImage3D :
         GrVisualImage3D
     {
-        public IGrLaTeXImageComposer ImageComposer { get; }
+        public IWclLaTeXImageComposer ImageComposer { get; }
 
         public string LaTeXCode { get; }
     
 
-        public GrVisualLaTeXImage3D(string name, string latexCode, IGrLaTeXImageComposer imageComposer)
+        public GrVisualLaTeXImage3D(string name, string latexCode, IWclLaTeXImageComposer imageComposer)
             : base(name)
         {
             LaTeXCode = latexCode;
             ImageComposer = imageComposer;
         }
 
+        
+        public override bool IsValid()
+        {
+            throw new NotImplementedException();
+        }
 
         public override Pair<int> GetSize()
         {
@@ -30,5 +35,6 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Images
         {
             return ImageComposer.RenderToPngImage(LaTeXCode);
         }
+
     }
 }

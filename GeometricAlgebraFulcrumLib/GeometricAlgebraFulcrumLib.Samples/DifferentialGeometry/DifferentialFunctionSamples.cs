@@ -1,5 +1,5 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.MathBase.Differential.Functions;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Differential.Functions;
 using GeometricAlgebraFulcrumLib.Mathematica;
 using GeometricAlgebraFulcrumLib.Mathematica.Mathematica.ExprFactory;
 

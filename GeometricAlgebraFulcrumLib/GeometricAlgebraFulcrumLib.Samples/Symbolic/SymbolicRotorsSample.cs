@@ -9,7 +9,6 @@ using GeometricAlgebraFulcrumLib.Mathematica.Mathematica;
 using GeometricAlgebraFulcrumLib.Mathematica.Mathematica.ExprFactory;
 using GeometricAlgebraFulcrumLib.Mathematica.Processors;
 using Wolfram.NETLink;
-using RGaKVectorUtils = GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.RGaKVectorUtils;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Basis;
@@ -145,7 +144,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic
             var e2 = GeometricProcessor.CreateVector(1);
             var e3 = GeometricProcessor.CreateVector(2);
             var pseudoScalar = e1.Gp(e2).Gp(e3).GetKVectorPart(3);
-            var pseudoScalarInverse = RGaKVectorUtils.Inverse(pseudoScalar);
+            var pseudoScalarInverse = pseudoScalar.Inverse();
 
             var angle = @"\[Theta]".ToExpr();
 
@@ -202,7 +201,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Symbolic
             var e2 = GeometricProcessor.CreateVector(1);
             var e3 = GeometricProcessor.CreateVector(2);
             var pseudoScalar = e1.Gp(e2).Gp(e3).GetKVectorPart(3);
-            var pseudoScalarInverse = RGaKVectorUtils.Inverse(pseudoScalar);
+            var pseudoScalarInverse = pseudoScalar.Inverse();
 
             var u = 
                 "Subscript[u,1]".ToExpr() * e1 +

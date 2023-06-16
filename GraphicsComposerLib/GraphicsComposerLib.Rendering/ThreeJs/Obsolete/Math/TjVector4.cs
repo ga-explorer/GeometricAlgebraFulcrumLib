@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space4D;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GraphicsComposerLib.Rendering.ThreeJs.Obsolete.Math
 {
@@ -24,25 +25,28 @@ namespace GraphicsComposerLib.Rendering.ThreeJs.Obsolete.Math
         public override string JavaScriptClassName 
             => "Vector4";
 
-        public double X { get; }
+        public Float64Scalar X { get; }
         
-        public double Y { get; }
+        public Float64Scalar Y { get; }
         
-        public double Z { get; }
+        public Float64Scalar Z { get; }
 
-        public double W { get; }
+        public Float64Scalar W { get; }
+        
+        public int VSpaceDimensions 
+            => 4;
 
         public double Item1 
-            => X;
+            => X.Value;
 
         public double Item2 
-            => Y;
+            => Y.Value;
 
         public double Item3 
-            => Z;
+            => Z.Value;
 
         public double Item4 
-            => W;
+            => W.Value;
 
         public bool IsValid() =>
             !double.IsNaN(X) &&

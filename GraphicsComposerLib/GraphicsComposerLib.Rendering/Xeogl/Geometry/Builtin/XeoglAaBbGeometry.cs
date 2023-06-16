@@ -1,4 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.MathBase.Borders.Space3D.Mutable;
+﻿using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space3D.Mutable;
 using TextComposerLib.Code.JavaScript;
 
 namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Builtin

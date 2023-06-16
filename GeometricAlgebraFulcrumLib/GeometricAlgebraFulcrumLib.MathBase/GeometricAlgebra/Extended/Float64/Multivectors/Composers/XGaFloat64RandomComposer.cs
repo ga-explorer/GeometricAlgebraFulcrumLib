@@ -5,11 +5,11 @@ using DataStructuresLib.BitManipulation;
 using DataStructuresLib.Combinations;
 using DataStructuresLib.IndexSets;
 using DataStructuresLib.Random;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Basis;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Processors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records.Restricted;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Multivectors.Composers
 {
@@ -336,7 +336,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.
         {
             if (sparseVector)
             {
-                var termsCount = RandomGenerator.Next(VSpaceDimensions);
+                var termsCount = RandomGenerator.Next(1, VSpaceDimensions);
 
                 var indexScalarDictionary =
                     VSpaceDimensions

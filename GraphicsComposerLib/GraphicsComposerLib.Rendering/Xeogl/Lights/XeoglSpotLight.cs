@@ -1,9 +1,7 @@
-﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Mutable;
-using GraphicsComposerLib.Rendering.Colors;
+﻿using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 using GraphicsComposerLib.Rendering.Xeogl.Constants;
 using TextComposerLib.Code.JavaScript;
+using WebComposerLib.Colors;
 
 namespace GraphicsComposerLib.Rendering.Xeogl.Lights
 {
@@ -12,11 +10,11 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Lights
     /// </summary>
     public sealed class XeoglSpotLight : XeoglLight
     {
-        public static Float64Tuple3D DefaultLightPosition { get; }
-            = new Float64Tuple3D(1, 1, 1);
+        public static Float64Vector3D DefaultLightPosition { get; }
+            = Float64Vector3D.Create(1, 1, 1);
 
-        public static Float64Tuple3D DefaultLightDirection { get; }
-            = new Float64Tuple3D(0, -1, 0);
+        public static Float64Vector3D DefaultLightDirection { get; }
+            = Float64Vector3D.Create(0, -1, 0);
 
 
         public override string JavaScriptClassName => "SpotLight";
@@ -32,11 +30,11 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Lights
 
         public double QuadraticAttenuation { get; set; }
 
-        public MutableFloat64Tuple3D LightPosition { get; set; }
-            = new MutableFloat64Tuple3D(DefaultLightPosition);
+        public Float64Vector3DComposer LightPosition { get; set; }
+            = Float64Vector3DComposer.Create(DefaultLightPosition);
 
-        public MutableFloat64Tuple3D LightDirection { get; set; }
-            = new MutableFloat64Tuple3D(DefaultLightDirection);
+        public Float64Vector3DComposer LightDirection { get; set; }
+            = Float64Vector3DComposer.Create(DefaultLightDirection);
 
 
         public XeoglSpotLight()
@@ -45,8 +43,8 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Lights
 
         public XeoglSpotLight(IFloat64Tuple3D lightPosition, IFloat64Tuple3D lightDirection)
         {
-            LightPosition.SetTuple(lightPosition);
-            LightDirection.SetTuple(lightDirection);
+            LightPosition.SetVector(lightPosition);
+            LightDirection.SetVector(lightDirection);
         }
 
 

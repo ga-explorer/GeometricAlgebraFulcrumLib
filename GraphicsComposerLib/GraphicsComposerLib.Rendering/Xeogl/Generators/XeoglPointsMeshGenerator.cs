@@ -1,4 +1,4 @@
-﻿using GraphicsComposerLib.Geometry.Primitives.Points;
+﻿using GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Points;
 
 namespace GraphicsComposerLib.Rendering.Xeogl.Generators
 {

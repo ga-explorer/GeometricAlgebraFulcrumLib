@@ -2,9 +2,9 @@
 using DataStructuresLib.BitManipulation;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Multivectors;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Processors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.SpaceND;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.LinearMaps.Outermorphisms
 {
@@ -42,7 +42,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float6
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override RGaFloat64Vector OmMapBasisVector(int index)
         {
-            return LinearMap.MapBasisVector(index).ToRGaVector(Processor);
+            return LinearMap.MapBasisVector(index).ToRGaFloat64Vector(Processor);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -139,7 +139,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float6
                 .Select(r => 
                     new KeyValuePair<ulong, RGaFloat64Vector>(
                         r.Key.BasisVectorIndexToId(), 
-                        r.Value.ToRGaVector(Processor)
+                        r.Value.ToRGaFloat64Vector(Processor)
                     )
                 );
         }

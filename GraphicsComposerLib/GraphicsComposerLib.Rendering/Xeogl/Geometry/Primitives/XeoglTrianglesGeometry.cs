@@ -1,7 +1,7 @@
-﻿using GraphicsComposerLib.Geometry.Primitives;
-using GraphicsComposerLib.Geometry.Primitives.Triangles;
-using GraphicsComposerLib.Rendering.Colors;
+﻿using GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives;
+using GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Triangles;
 using TextComposerLib.Code.JavaScript;
+using WebComposerLib.Colors;
 
 namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Primitives
 {

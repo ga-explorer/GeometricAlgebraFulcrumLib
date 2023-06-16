@@ -1,18 +1,23 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.Basic;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic
 {
     public sealed class LinVectorComposer<T> :
-        ILinElement<T>
+        ILinearElement<T>
     {
         private Dictionary<int, T> _indexScalarDictionary
             = new Dictionary<int, T>();
 
+
+        public int VSpaceDimensions
+            => _indexScalarDictionary.Count == 0
+                ? 0
+                : _indexScalarDictionary.Max(p => p.Key) + 1;
 
         public IScalarProcessor<T> ScalarProcessor { get; }
     
@@ -790,5 +795,6 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic
 
             return ScalarProcessor.CreateLinVector(_indexScalarDictionary);
         }
+
     }
 }

@@ -1,5 +1,5 @@
 ﻿using DataStructuresLib.Basic;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Values
 {
@@ -17,7 +17,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Values
             return new GrBabylonJsVector2Value(valueText);
         }
 
-        public static implicit operator GrBabylonJsVector2Value(Float64Tuple2D value)
+        public static implicit operator GrBabylonJsVector2Value(Float64Vector2D value)
         {
             return new GrBabylonJsVector2Value(value);
         }

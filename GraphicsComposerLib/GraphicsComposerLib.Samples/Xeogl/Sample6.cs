@@ -1,8 +1,8 @@
 ﻿using System.IO;
-using GraphicsComposerLib.Geometry.LatticeShapes;
-using GraphicsComposerLib.Geometry.LatticeShapes.Surfaces;
-using GraphicsComposerLib.Geometry.Primitives;
-using GraphicsComposerLib.Geometry.Primitives.Lines;
+using GeometricAlgebraFulcrumLib.MathBase.Graphics.LatticeShapes;
+using GeometricAlgebraFulcrumLib.MathBase.Graphics.LatticeShapes.Surfaces;
+using GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives;
+using GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Lines;
 using GraphicsComposerLib.Rendering.Xeogl;
 
 namespace GraphicsComposerLib.Samples.Xeogl

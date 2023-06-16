@@ -25,30 +25,16 @@ namespace NumericalGeometryLib.Collections.Finite
         /// </summary>
         public NaturalFiniteCollection<T> BaseCollection { get; private set; }
 
-        public override int Count
-        {
-            get { return BaseCollection.Count * 2 - 1; }
-        }
+        public override int Count => BaseCollection.Count * 2 - 1;
 
-        public override int MinIndex
-        {
-            get { return -BaseCollection.MaxIndex; }
-        }
+        public override int MinIndex => -BaseCollection.MaxIndex;
 
-        public override int MaxIndex
-        {
-            get { return BaseCollection.MaxIndex; }
-        }
+        public override int MaxIndex => BaseCollection.MaxIndex;
 
-        public T this[int index]
-        {
-            get
-            {
-                return BaseCollection == null || index > BaseCollection.MaxIndex
-                    ? DefaultValue
-                    : BaseCollection.GetItem(index >= 0 ? index : -index);
-            }
-        }
+        public T this[int index] =>
+            BaseCollection == null || index > BaseCollection.MaxIndex
+                ? DefaultValue
+                : BaseCollection.GetItem(index >= 0 ? index : -index);
 
 
         private FcEven(NaturalFiniteCollection<T> baseCollection)

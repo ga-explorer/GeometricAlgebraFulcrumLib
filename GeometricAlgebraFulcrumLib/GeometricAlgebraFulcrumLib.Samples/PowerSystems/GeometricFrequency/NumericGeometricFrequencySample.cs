@@ -8,18 +8,10 @@ using System.Linq;
 using DataStructuresLib.Basic;
 using DataStructuresLib.Extensions;
 using GeometricAlgebraFulcrumLib.MathBase;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
-using GeometricAlgebraFulcrumLib.MathBase.Borders.Space2D.Mutable;
-using GeometricAlgebraFulcrumLib.MathBase.Differential.Curves;
-using GeometricAlgebraFulcrumLib.MathBase.Differential.Functions;
-using GeometricAlgebraFulcrumLib.MathBase.Differential.Functions.Interpolators;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.LinearMaps.Rotors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Frames;
 using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra;
-using GeometricAlgebraFulcrumLib.MathBase.Signals;
 using GeometricAlgebraFulcrumLib.MathBase.Text;
 using GeometricAlgebraFulcrumLib.Mathematica;
 using GeometricAlgebraFulcrumLib.Mathematica.GeometricAlgebra;
@@ -27,14 +19,24 @@ using GeometricAlgebraFulcrumLib.Mathematica.Mathematica;
 using GeometricAlgebraFulcrumLib.Mathematica.Processors;
 using GeometricAlgebraFulcrumLib.Processors;
 using GeometricAlgebraFulcrumLib.Processors.SignalAlgebra;
-using GraphicsComposerLib.Rendering.Svg.DrawingBoard;
 using OfficeOpenXml;
 using TextComposerLib.Text;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Processors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Arrays.Float64;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D.Mutable;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Differential.Curves;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Differential.Functions;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Differential.Functions.Interpolators;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra.Composers;
+using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra.Interpolators;
+using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra.Processors;
+using GraphicsComposerLib.Rendering.Svg.DrawingBoard;
 
 namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
 {
@@ -43,7 +45,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
         private const string WorkingPath
             = @"D:\Projects\Books\The Geometric Algebra Cookbook\Geometric Frequency\Data";
 
-        public static string OutputFilePath { get; private set; }
+        //public static string OutputFilePath { get; private set; }
 
         // This is a pre-defined scalar processor for numeric scalars
         public static ScalarProcessorFloat64 ScalarProcessor { get; }
@@ -52,8 +54,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
         public static int VSpaceDimensions { get; private set; }
             = 3;
 
-        public static double GridFrequencyHz
-            => 50d;
+        public static double GridFrequencyHz { get; private set; }
+            //=> 50d; //60d;
 
         // Create a 3-dimensional Euclidean geometric algebra processor based on the
         // selected scalar processor
@@ -67,8 +69,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
         public static LaTeXComposerFloat64 LaTeXComposer { get; }
             = LaTeXComposerFloat64.DefaultComposer;
 
-        public static SignalValidator SignalValidator { get; }
-            = new SignalValidator()
+        public static Float64SignalValidator SignalValidator { get; }
+            = new Float64SignalValidator()
             {
                 ZeroEpsilon = 2e-3
             };
@@ -97,10 +99,10 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
 
         // Create a 3-dimensional Euclidean geometric algebra processor based on the
         // selected tuple scalar processor
-        public static XGaProcessor<ScalarSignalFloat64> GeometricSignalProcessor { get; private set; }
+        public static XGaProcessor<Float64Signal> GeometricSignalProcessor { get; private set; }
 
 
-        private static XGaVector<ScalarSignalFloat64> ReadExcelVectorSignal(string fileName, int firstRowIndex, int rowCount, int firstColIndex, int colCount)
+        private static XGaVector<Float64Signal> ReadExcelVectorSignal(string fileName, int firstRowIndex, int rowCount, int firstColIndex, int colCount)
         {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
@@ -161,7 +163,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             return recordList;
         }
 
-        private static void WriteData(XGaVector<ScalarSignalFloat64> vectorSignal, string fileName)
+        private static void WriteData(XGaVector<Float64Signal> vectorSignal, string fileName)
         {
             var dataArray =
                 vectorSignal.ToArray2D();
@@ -191,9 +193,9 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
         }
 
 
-        private static XGaVector<ScalarSignalFloat64> GetSignal(this IReadOnlyList<double[]> recordList, int index1, int index2)
+        private static XGaVector<Float64Signal> GetSignal(this IReadOnlyList<double[]> recordList, int index1, int index2)
         {
-            var scalarArray = new ScalarSignalFloat64[VSpaceDimensions];
+            var scalarArray = new Float64Signal[VSpaceDimensions];
 
             var sampleCount = index2 - index1 + 1;
             for (var j = 0; j < VSpaceDimensions; j++)
@@ -210,7 +212,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
         }
 
 
-        private static XGaVector<ScalarSignalFloat64>[] GetSignalDerivatives1(this IReadOnlyList<double[]> recordList, int index1, int index2)
+        private static XGaVector<Float64Signal>[] GetSignalDerivatives1(this IReadOnlyList<double[]> recordList, int index1, int index2)
         {
             var tValues = 0d.GetLinearRange(
                 (SampleCount - 1) / SamplingRate,
@@ -288,7 +290,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             };
         }
 
-        private static XGaVector<ScalarSignalFloat64>[] GetSignalDerivatives2(this IReadOnlyList<double[]> recordList, int index1, int index2)
+        private static XGaVector<Float64Signal>[] GetSignalDerivatives2(this IReadOnlyList<double[]> recordList, int index1, int index2)
         {
             const int wienerFilterOrder = 7;
 
@@ -309,7 +311,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             };
         }
 
-        private static XGaVector<ScalarSignalFloat64>[] GetSignalDerivatives3(this IReadOnlyList<double[]> recordList, int index1, int index2)
+        private static XGaVector<Float64Signal>[] GetSignalDerivatives3(this IReadOnlyList<double[]> recordList, int index1, int index2)
         {
             var vData = recordList.GetSignal(index1, index2);
             var vDataNorm1 = vData.Norm();
@@ -346,7 +348,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             };
         }
 
-        private static XGaVector<ScalarSignalFloat64>[] GetSignalDerivatives4(this XGaVector<ScalarSignalFloat64> vectorSignal, int index1, int index2)
+        private static XGaVector<Float64Signal>[] GetSignalDerivatives4(this XGaVector<Float64Signal> vectorSignal, int index1, int index2)
         {
             const double energyThreshold = 0.975d;
 
@@ -395,7 +397,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             Console.WriteLine($"Polynomial interpolation Signal-to-noise ratio: {vSnr:G}");
             Console.WriteLine();
 
-            var signalArray = new XGaVector<ScalarSignalFloat64>[7];
+            var signalArray = new XGaVector<Float64Signal>[7];
             signalArray[0] = vectorSignal2;
 
             for (var degree = 1; degree <= 6; degree++)
@@ -483,7 +485,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
                 );
 
             GeometricSignalProcessor =
-                XGaProcessor<ScalarSignalFloat64>.CreateEuclidean(ScalarSignalProcessor);
+                XGaProcessor<Float64Signal>.CreateEuclidean(ScalarSignalProcessor);
 
             var vectorSignal =
                 dataList.GetSignal(0, dataList.Count - 1);
@@ -555,7 +557,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
                 );
 
             GeometricSignalProcessor =
-                XGaProcessor<ScalarSignalFloat64>.CreateEuclidean(ScalarSignalProcessor);
+                XGaProcessor<Float64Signal>.CreateEuclidean(ScalarSignalProcessor);
 
             var vectorSignal1 = ReadExcelVectorSignal(
                 fileName1,
@@ -584,7 +586,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             return Path.Combine(WorkingPath, $"Section{SectionIndex:000}", fileName);
         }
 
-        private static XGaVector<ScalarSignalFloat64>[] GetSignalDerivatives5(this XGaVector<ScalarSignalFloat64> vectorSignal, int index1, int index2)
+        private static XGaVector<Float64Signal>[] GetSignalDerivatives5(this XGaVector<Float64Signal> vectorSignal, int index1, int index2)
         {
             const double energyThreshold = 0.9998d;
             const double snrThreshold = 200d;
@@ -645,7 +647,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
 
             //var vectorSignal2 = (normSignal2 / normSignal1) * vectorSignal1;
 
-            var scalarSignalArray = new ScalarSignalFloat64[VSpaceDimensions];
+            var scalarSignalArray = new Float64Signal[VSpaceDimensions];
             var scalarInterpolatorArray = new ScalarFourierSeries[VSpaceDimensions];
 
             for (var i = 0; i < VSpaceDimensions; i++)
@@ -737,12 +739,12 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
                 "Signal".CombineFolderPath()
             );
 
-            var signalArray = new XGaVector<ScalarSignalFloat64>[7];
+            var signalArray = new XGaVector<Float64Signal>[7];
             signalArray[0] = vectorSignal2;
 
             for (var degree = 1; degree <= 6; degree++)
             {
-                scalarSignalArray = new ScalarSignalFloat64[VSpaceDimensions];
+                scalarSignalArray = new Float64Signal[VSpaceDimensions];
 
                 for (var i = 0; i < VSpaceDimensions; i++)
                 {
@@ -766,7 +768,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             return signalArray;
         }
 
-        private static XGaVector<ScalarSignalFloat64>[] GetSignalDerivatives6(this XGaVector<ScalarSignalFloat64> vectorSignal, int index1, int index2)
+        private static XGaVector<Float64Signal>[] GetSignalDerivatives6(this XGaVector<Float64Signal> vectorSignal, int index1, int index2)
         {
             const double energyThreshold = 0.998d;
             const double snrThreshold = 100d;
@@ -832,7 +834,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
 
             //vectorSignal1 = (normSignal2 / normSignal1) * vectorSignal1;
 
-            var scalarSignalArray = new ScalarSignalFloat64[VSpaceDimensions];
+            var scalarSignalArray = new Float64Signal[VSpaceDimensions];
             var scalarInterpolatorArray = new ScalarFourierSeries[VSpaceDimensions];
 
             for (var i = 0; i < VSpaceDimensions; i++)
@@ -905,14 +907,14 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
                 "Signal".CombineFolderPath()
             );
 
-            var signalArray = new XGaVector<ScalarSignalFloat64>[7];
+            var signalArray = new XGaVector<Float64Signal>[7];
             signalArray[0] = vectorSignal2;
 
             for (var degree = 1; degree <= 6; degree++)
             {
                 Console.WriteLine($"   Computing signal derivative {degree}");
 
-                scalarSignalArray = new ScalarSignalFloat64[VSpaceDimensions];
+                scalarSignalArray = new Float64Signal[VSpaceDimensions];
 
                 for (var i = 0; i < VSpaceDimensions; i++)
                 {
@@ -931,7 +933,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
         }
 
 
-        private static XGaVector<ScalarSignalFloat64>[] GetSignalDerivatives(this XGaVector<ScalarSignalFloat64> vectorSignal, int index1, int index2)
+        private static XGaVector<Float64Signal>[] GetSignalDerivatives(this XGaVector<Float64Signal> vectorSignal, int index1, int index2)
         {
             var interpolatorOptions = new DfFourierSignalInterpolatorOptions()
             {
@@ -1013,7 +1015,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
                 "Signal".CombineFolderPath()
             );
 
-            var signalArray = new XGaVector<ScalarSignalFloat64>[7];
+            var signalArray = new XGaVector<Float64Signal>[7];
             signalArray[0] = vectorSignal2;
 
             for (var degree = 1; degree <= 6; degree++)
@@ -1029,13 +1031,13 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             return signalArray;
         }
 
-        private static XGaVector<ScalarSignalFloat64>[] GetSignalDerivatives(this XGaVector<ScalarSignalFloat64> vectorSignal)
+        private static XGaVector<Float64Signal>[] GetSignalDerivatives(this XGaVector<Float64Signal> vectorSignal)
         {
             return vectorSignal.GetSignalDerivatives(0, SampleCount - 1);
         }
 
 
-        private static XGaVector<ScalarSignalFloat64> InitializeSignal(int vSpaceDimensions, int sampleCount, double samplingRate, string filePath, int firstRow, int firstCol)
+        private static XGaVector<Float64Signal> InitializeSignal(int vSpaceDimensions, int sampleCount, double samplingRate, string filePath, int firstRow, int firstCol)
         {
             VSpaceDimensions = vSpaceDimensions;
 
@@ -1061,9 +1063,11 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             );
         }
 
-        private static XGaVector<ScalarSignalFloat64> InitializeAulario3PhaseVoltageSignal()
+        private static XGaVector<Float64Signal> InitializeAulario3PhaseVoltageSignal()
         {
-            OutputFilePath = "Aulario3_PhaseVoltage.xlsx".CombineFolderPath();
+            //OutputFilePath = "Aulario3_PhaseVoltage.xlsx".CombineFolderPath();
+
+            GridFrequencyHz = 50d;
 
             return InitializeSignal(
                 3,
@@ -1075,9 +1079,11 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             );
         }
 
-        private static XGaVector<ScalarSignalFloat64> InitializeAulario3LineVoltageSignal()
+        private static XGaVector<Float64Signal> InitializeAulario3LineVoltageSignal()
         {
-            OutputFilePath = "Aulario3_LineVoltage.xlsx".CombineFolderPath();
+            //OutputFilePath = "Aulario3_LineVoltage.xlsx".CombineFolderPath();
+            
+            GridFrequencyHz = 50d;
 
             return InitializeSignal(
                 3,
@@ -1089,9 +1095,11 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             );
         }
 
-        private static XGaVector<ScalarSignalFloat64> InitializeAulario3PhaseNeutralVoltageSignal()
+        private static XGaVector<Float64Signal> InitializeAulario3PhaseNeutralVoltageSignal()
         {
-            OutputFilePath = "Aulario3_PhaseNeutralVoltage.xlsx".CombineFolderPath();
+            //OutputFilePath = "Aulario3_PhaseNeutralVoltage.xlsx".CombineFolderPath();
+            
+            GridFrequencyHz = 50d;
 
             return InitializeSignal(
                 4,
@@ -1103,9 +1111,11 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             );
         }
 
-        private static XGaVector<ScalarSignalFloat64> InitializeAulario3LineCurrentSignal()
+        private static XGaVector<Float64Signal> InitializeAulario3LineCurrentSignal()
         {
-            OutputFilePath = "Aulario3_LineCurrent.xlsx".CombineFolderPath();
+            //OutputFilePath = "Aulario3_LineCurrent.xlsx".CombineFolderPath();
+            
+            GridFrequencyHz = 50d;
 
             return InitializeSignal(
                 4,
@@ -1117,9 +1127,11 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             );
         }
 
-        private static XGaVector<ScalarSignalFloat64> InitializeEMTPPhaseVoltageSignal()
+        private static XGaVector<Float64Signal> InitializeEMTPPhaseVoltageSignal()
         {
-            OutputFilePath = "EMTP_PhaseVoltage.xlsx".CombineFolderPath();
+            //OutputFilePath = "EMTP_PhaseVoltage.xlsx".CombineFolderPath();
+            
+            GridFrequencyHz = 60d;
 
             return InitializeSignal(
                 3,
@@ -1131,9 +1143,11 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             );
         }
 
-        private static XGaVector<ScalarSignalFloat64> InitializeEMTPLineVoltageSignal()
+        private static XGaVector<Float64Signal> InitializeEMTPLineVoltageSignal()
         {
-            OutputFilePath = "EMTP_LineVoltage.xlsx".CombineFolderPath();
+            //OutputFilePath = "EMTP_LineVoltage.xlsx".CombineFolderPath();
+            
+            GridFrequencyHz = 60d;
 
             return InitializeSignal(
                 3,
@@ -1145,9 +1159,11 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             );
         }
 
-        private static XGaVector<ScalarSignalFloat64> InitializeEMTPPhaseNeutralVoltageSignal()
+        private static XGaVector<Float64Signal> InitializeEMTPPhaseNeutralVoltageSignal()
         {
-            OutputFilePath = "EMTP_PhaseNeutralVoltage.xlsx".CombineFolderPath();
+            //OutputFilePath = "EMTP_PhaseNeutralVoltage.xlsx".CombineFolderPath();
+            
+            GridFrequencyHz = 60d;
 
             return InitializeSignal(
                 4,
@@ -1159,9 +1175,9 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             );
         }
 
-        private static XGaVector<ScalarSignalFloat64> InitializeCorrientesMalagaLineCurrentSignal(int firstIndex, int sampleCount)
+        private static XGaVector<Float64Signal> InitializeCorrientesMalagaLineCurrentSignal(int firstIndex, int sampleCount)
         {
-            OutputFilePath = "CorrientesMalaga_LineCurrent.xlsx".CombineFolderPath();
+            //OutputFilePath = "CorrientesMalaga_LineCurrent.xlsx".CombineFolderPath();
 
             return InitializeSignal(
                 6,
@@ -1173,13 +1189,13 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             );
         }
 
-        private static XGaVector<ScalarSignalFloat64> InitializeSyntheticSignal1()
+        private static XGaVector<Float64Signal> InitializeSyntheticSignal1()
         {
-            OutputFilePath = "Synthetic1.xlsx".CombineFolderPath();
+            //OutputFilePath = "Synthetic1.xlsx".CombineFolderPath();
 
             var sqrt2 = Math.Sqrt(2d);
 
-            var signalComposer = HarmonicScalarSignalComposer.Create(
+            var signalComposer = Float64HarmonicSignalComposer.Create(
                 50d,
                 1000,
                 10
@@ -1213,13 +1229,13 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             return v1 + v2 + v3;
         }
 
-        private static XGaVector<ScalarSignalFloat64> InitializeSyntheticSignal2()
+        private static XGaVector<Float64Signal> InitializeSyntheticSignal2()
         {
-            OutputFilePath = "Synthetic2.xlsx".CombineFolderPath();
+            //OutputFilePath = "Synthetic2.xlsx".CombineFolderPath();
 
             var sqrt2 = Math.Sqrt(2d);
 
-            var signalComposer = HarmonicScalarSignalComposer.Create(
+            var signalComposer = Float64HarmonicSignalComposer.Create(
                 50d,
                 1000,
                 10
@@ -1256,9 +1272,9 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             return v1 + v2;
         }
 
-        private static XGaVector<ScalarSignalFloat64> InitializeSyntheticSignal3()
+        private static XGaVector<Float64Signal> InitializeSyntheticSignal3()
         {
-            OutputFilePath = "Synthetic2.xlsx".CombineFolderPath();
+            //OutputFilePath = "Synthetic2.xlsx".CombineFolderPath();
 
             var assumeExpr =
                 $@"And[t >= 0, t <= 1, \[Omega] > 0, Element[t | \[Omega], Reals]]".ToExpr();
@@ -1314,9 +1330,9 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             return s1.GetSampledSignal(GeometricSignalProcessor, t, samplingRate, sampleCount);
         }
 
-        private static XGaVector<ScalarSignalFloat64> InitializeSyntheticSignal4()
+        private static XGaVector<Float64Signal> InitializeSyntheticSignal4()
         {
-            OutputFilePath = "Synthetic3.xlsx".CombineFolderPath();
+            //OutputFilePath = "Synthetic3.xlsx".CombineFolderPath();
 
             var freqHz = 50d;
             var freq = 2d * Math.PI * freqHz;
@@ -1328,7 +1344,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             var sqrt2 = Math.Sqrt(2d);
             var sampleCount = sampleCountPerCycle * cycleCount;
 
-            var v1 = ScalarSignalFloat64.CreatePeriodic(
+            var v1 = Float64Signal.CreatePeriodic(
                 samplingRate,
                 sampleCountPerCycle,
                 period,
@@ -1339,7 +1355,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
                 false
             ).Repeat(cycleCount);
 
-            var v2 = ScalarSignalFloat64.CreatePeriodic(
+            var v2 = Float64Signal.CreatePeriodic(
                 samplingRate,
                 sampleCountPerCycle,
                 period,
@@ -1350,7 +1366,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
                 false
             ).Repeat(cycleCount);
 
-            var v3 = ScalarSignalFloat64.CreatePeriodic(
+            var v3 = Float64Signal.CreatePeriodic(
                 samplingRate,
                 sampleCountPerCycle,
                 period,
@@ -1369,7 +1385,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             return GeometricSignalProcessor.CreateVector(v1, v2, v3);
         }
         
-        private static void ProcessSignalSection3D1(XGaVector<ScalarSignalFloat64> vectorSignal, ExcelWorksheet workSheet, int sectionFirstIndex)
+        private static void ProcessSignalSection3D1(XGaVector<Float64Signal> vectorSignal, ExcelWorksheet workSheet, int sectionFirstIndex)
         {
             var sectionLastIndex = SampleCount - 1;
 
@@ -1804,8 +1820,10 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             Console.WriteLine();
         }
 
-        private static void ProcessSignalSection3D(XGaVector<ScalarSignalFloat64> vectorSignal, ExcelWorksheet workSheet, int sectionFirstIndex)
+        private static void ProcessSignalSection3D(XGaVector<Float64Signal> vectorSignal, DfSignalInterpolatorOptions interpolatorOptions, ExcelWorksheet workSheet, int sectionFirstIndex)
         {
+            ScalarProcessor.ZeroEpsilon = 1e-7d;
+
             var sectionLastIndex = SampleCount - 1;
 
             var tMin = sectionFirstIndex / SamplingRate;
@@ -1818,18 +1836,18 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
 
             Console.WriteLine($"   Processing data");
 
-            var options = new DfFourierSignalInterpolatorOptions()
-            {
-                EnergyAcThreshold = 100000d,
-                EnergyAcPercentThreshold = 0.99999998d,
-                SignalToNoiseRatioThreshold = 300000d,
-                FrequencyThreshold = 1000 * 2 * Math.PI,
-                FrequencyCountThreshold = 750,
-                PaddingTrendSampleCount = 1000,
-                PaddingPolynomialDegree = 5,
-                PaddingSampleCount = -1,
-                AssumePeriodic = false
-            };
+            //var options = new DfFourierSignalInterpolatorOptions()
+            //{
+            //    EnergyAcThreshold = 100000d,
+            //    EnergyAcPercentThreshold = 0.99999998d,
+            //    SignalToNoiseRatioThreshold = 300000d,
+            //    FrequencyThreshold = 1000 * 2 * Math.PI,
+            //    FrequencyCountThreshold = 750,
+            //    PaddingTrendSampleCount = 1000,
+            //    PaddingPolynomialDegree = 5,
+            //    PaddingSampleCount = -1,
+            //    AssumePeriodic = false
+            //};
 
             ////var options = new SpectrumInterpolationOptions()
             ////{
@@ -1847,17 +1865,17 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             //    SmoothingFactors = new[] { 3, 5 } //Array.Empty<int>()
             //};
 
-            //var options = new DfChebyshevSignalInterpolatorOptions()
-            //{
-            //    SectionCount = 1,
-            //    PolynomialDegree = 300,
-            //    SmoothingFactors = new[] { 3, 5 } //Array.Empty<int>()
-            //};
-
             //var options = new DfCatmullRomSplineSignalInterpolatorOptions
             //{
             //    BezierDegree = 3,
             //    SplineType = CatmullRomSplineType.Centripetal,
+            //    SmoothingFactors = new[] { 3, 5 } //Array.Empty<int>()
+            //};
+
+            //var options = new DfChebyshevSignalInterpolatorOptions()
+            //{
+            //    SectionCount = 1,
+            //    PolynomialDegree = 300,
             //    SmoothingFactors = new[] { 3, 5 } //Array.Empty<int>()
             //};
 
@@ -1867,7 +1885,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
                     VectorDifferentialInterpolator.Create(
                         vSignal,
                         tValues.SamplingSpecs,
-                        options
+                        interpolatorOptions
                     )
                 )
             );
@@ -1943,7 +1961,17 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
 
             // Angular velocity blades
             var omegaList = vectorSignalProcessor.AngularVelocityBlades;
-            var omegaAverageList = vectorSignalProcessor.AngularVelocityAverageBlades;
+            var omegaMeanList = vectorSignalProcessor.AngularVelocityBladesMeans;
+            
+            var db = vectorSignalProcessor.DarbouxBivector;
+            var dbMean = vectorSignalProcessor.DarbouxBivectorMean;
+
+            var dbNorm = db.ENormSquared();
+            var kappaNorm = kappa1.Square() + kappa2.Square();
+
+            Debug.Assert(
+                (dbNorm - kappaNorm).IsNearZero()
+            );
 
             var omegaIndex = 1;
             foreach (var omega in omegaList)
@@ -1960,104 +1988,66 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
                 omegaIndex++;
             }
 
-            //var omegaBarNorm = omegaBar.Norm();
-            //var omegaBarNormScaled = sDt1 * omegaBarNorm;
+            var dbSignalsMean = db.Mean();
+            var dbSignalsMeanNorm = dbSignalsMean.Norm().ScalarValue;
+            var dbSignalsMeanNormHz = dbSignalsMeanNorm / (2 * Math.PI);
 
-            //// Darboux bivector
-            //var omega = vectorSignalProcessor.DarbouxBivectors;
-            //var omegaNorm = omega.Norm();
+            Console.WriteLine($"Darboux Bivector");
+            Console.WriteLine($"   Mean Bivector: {LaTeXComposer.GetMultivectorText(dbSignalsMean)}");
+            Console.WriteLine($"   Mean Bivector Norm: {dbSignalsMeanNorm:G} rad/sec = {dbSignalsMeanNormHz:G} Hz");
+            Console.WriteLine();
+            
+            //vectorSignal.PlotSignal(
+            //    v,
+            //    0,
+            //    (SampleCount - 1) / SamplingRate,
+            //    "Signal".CombineFolderPath()
+            //);
 
-            //// Bivector B
-            //var bBivector = omega - omegaBar;
-            //var bBivectorNorm = bBivector.Norm();
+            //v.PlotVectorSignalComponents("Signal", "v".CombineFolderPath());
 
-            //var omegaScaledMeanNorm = 
-            //    (omega * sDt1).Mean(GeometricProcessor).Norm().ScalarValue;
+            //vDt1.PlotVectorSignalComponents("1st t-derivative", "vDt1".CombineFolderPath());
+            //vDt2.PlotVectorSignalComponents("2nd t-derivative", "vDt2".CombineFolderPath());
+            //vDt3.PlotVectorSignalComponents("3rd t-derivative", "vDt3".CombineFolderPath());
 
-            //var omegaBarScaledMeanNorm = 
-            //    (omegaBar * sDt1).Mean(GeometricProcessor).Norm().ScalarValue;
+            //vDs1.PlotVectorSignalComponents("1st s-derivative", "vDs1".CombineFolderPath());
+            //vDs2.PlotVectorSignalComponents("2nd s-derivative", "vDs2".CombineFolderPath());
+            //vDs3.PlotVectorSignalComponents("3rd s-derivative", "vDs3".CombineFolderPath());
 
-            //Console.WriteLine($"   Norm of Scaled OmegaBar Signal Mean: {omegaBarScaledMeanNorm:G}");
-            //Console.WriteLine($"   Norm of Scaled Omega Signal Mean: {omegaScaledMeanNorm:G}");
-            //Console.WriteLine();
+            //sDt1.PlotScalarSignal("1st t-derivative of arc-length", "sDt1".CombineFolderPath());
+            //sDt1.Log10().PlotScalarSignal("1st t-derivative of arc-length Log10", "sDt1Log10".CombineFolderPath());
 
+            //sDt2.PlotScalarSignal("2nd t-derivative of arc-length", "sDt2".CombineFolderPath());
+            //sDt2.Log10().PlotScalarSignal("2nd t-derivative of arc-length Log10", "sDt2Log10".CombineFolderPath());
 
-            //interpolatorOptions.FrequencyCountThreshold = 10;
+            //sDt3.PlotScalarSignal("3rd t-derivative of arc-length", "sDt3".CombineFolderPath());
+            //sDt3.Log10().PlotScalarSignal("3rd t-derivative of arc-length Log10", "sDt3Log10".CombineFolderPath());
 
-            //var sig = (omega.Norm() * sDt1).ScalarValue;
-            //var sigEnergy = sig.EnergyAc();
-            //var kappa1Spectrum = 
-            //    sig
-            //    .GetPolynomialPaddedSignal(50, 6)
-            //    .GetFourierSpectrum(interpolatorOptions);
-
-            //var kappa1SpectrumSamples =
-            //    kappa1Spectrum
-            //        .SamplePairsAc
-            //        .OrderByDescending(s => s.Item1.Value.MagnitudeSquared() + s.Item2.Value.MagnitudeSquared())
-            //        .Take(5)
-            //        .ToArray();
-
-            //Console.WriteLine("Kappa 1 frequency samples:");
-            //foreach (var ((freqIndex1, value1), (freqIndex2, value2)) in kappa1SpectrumSamples)
+            //for (var i = 0; i < omegaMeanList.Count; i++)
             //{
-            //    var freqHz = kappa1Spectrum.GetFrequencyHz(freqIndex1);
-            //    var energy = (value1.MagnitudeSquared() + value2.MagnitudeSquared()) / sigEnergy;
+            //    var omegaNorm = omegaMeanList[i].Norm() / (2 * Math.PI);
 
-            //    Console.WriteLine($"Frequency: ±{freqHz:G4} Hz, Energy: {energy:P4}");
+            //    omegaNorm.Scalar.PlotScalarSignal($"Darboux Blade Average Norm {i + 1}", $"DBANorm{i + 1}".CombineFolderPath());
+            //    omegaNorm.Scalar.Log10().PlotScalarSignal($"Darboux Blade Average Norm {i + 1} Log10", $"DBANorm{i + 1}Log10".CombineFolderPath());
             //}
-            //Console.WriteLine();
 
+            //var dbNorm = dbMean.Norm() / (2 * Math.PI);
 
-            //Console.WriteLine($"   Plotting data");
+            //dbNorm.Scalar.PlotScalarSignal($"Darboux Bivector Average Norm", $"DBNorm".CombineFolderPath());
+            //dbNorm.Scalar.Log10().PlotScalarSignal($"Darboux Bivector Average Norm Log10", $"DBNormLog10".CombineFolderPath());
 
+            ////var vNorm = v.Norm();
+            ////kappa1 *= vNorm;
+            ////kappa2 *= vNorm;
+            ////kappa3 *= vNorm;
+            ////kappa4 *= vNorm;
+            ////kappa5 *= vNorm;
 
-            vectorSignal.PlotSignal(
-                v,
-                0,
-                (SampleCount - 1) / SamplingRate,
-                "Signal".CombineFolderPath()
-            );
+            //kappa1.PlotScalarSignal("1st curvature coefficient", "kappa1".CombineFolderPath());
+            //kappa1.Log10().PlotScalarSignal("1st curvature coefficient Log10", "kappa1Log10".CombineFolderPath());
 
-            v.PlotVectorSignalComponents("Signal", "v".CombineFolderPath());
-
-            vDt1.PlotVectorSignalComponents("1st t-derivative", "vDt1".CombineFolderPath());
-            vDt2.PlotVectorSignalComponents("2nd t-derivative", "vDt2".CombineFolderPath());
-            vDt3.PlotVectorSignalComponents("3rd t-derivative", "vDt3".CombineFolderPath());
-
-            vDs1.PlotVectorSignalComponents("1st s-derivative", "vDs1".CombineFolderPath());
-            vDs2.PlotVectorSignalComponents("2nd s-derivative", "vDs2".CombineFolderPath());
-            vDs3.PlotVectorSignalComponents("3rd s-derivative", "vDs3".CombineFolderPath());
-
-            sDt1.PlotScalarSignal("1st t-derivative of arc-length", "sDt1".CombineFolderPath());
-            sDt1.Log10().PlotScalarSignal("1st t-derivative of arc-length Log10", "sDt1Log10".CombineFolderPath());
-
-            sDt2.PlotScalarSignal("2nd t-derivative of arc-length", "sDt2".CombineFolderPath());
-            sDt2.Log10().PlotScalarSignal("2nd t-derivative of arc-length Log10", "sDt2Log10".CombineFolderPath());
-
-            sDt3.PlotScalarSignal("3rd t-derivative of arc-length", "sDt3".CombineFolderPath());
-            sDt3.Log10().PlotScalarSignal("3rd t-derivative of arc-length Log10", "sDt3Log10".CombineFolderPath());
-
-            for (var i = 0; i < omegaAverageList.Count; i++)
-            {
-                var omegaNorm = omegaAverageList[i].Norm() / (2 * Math.PI);
-
-                omegaNorm.Scalar.PlotScalarSignal($"Darboux Blade Average Norm {i + 1}", $"DBANorm{i + 1}".CombineFolderPath());
-                omegaNorm.Scalar.Log10().PlotScalarSignal($"Darboux Blade Average Norm {i + 1} Log10", $"DBANorm{i + 1}Log10".CombineFolderPath());
-            }
-
-            //var vNorm = v.Norm();
-            //kappa1 *= vNorm;
-            //kappa2 *= vNorm;
-            //kappa3 *= vNorm;
-            //kappa4 *= vNorm;
-            //kappa5 *= vNorm;
-
-            kappa1.PlotScalarSignal("1st curvature coefficient", "kappa1".CombineFolderPath());
-            kappa1.Log10().PlotScalarSignal("1st curvature coefficient Log10", "kappa1Log10".CombineFolderPath());
-
-            kappa2.PlotScalarSignal("2nd curvature coefficient", "kappa2".CombineFolderPath());
-            kappa2.Log10().PlotScalarSignal("2nd curvature coefficient Log10", "kappa2Log10".CombineFolderPath());
+            //kappa2.PlotScalarSignal("2nd curvature coefficient", "kappa2".CombineFolderPath());
+            //kappa2.Log10().PlotScalarSignal("2nd curvature coefficient Log10", "kappa2Log10".CombineFolderPath());
 
 
             Console.WriteLine($"   Writing data");
@@ -2130,52 +2120,45 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
                 columnIndex += VSpaceDimensions * (VSpaceDimensions - 1) / 2;
             }
 
+            workSheet.WriteBivectorSignal(rowIndex, columnIndex, db, $"Darboux Bivector", bivectorColumnNames);
+            columnIndex += VSpaceDimensions * (VSpaceDimensions - 1) / 2;
+
             workSheet.WriteScalarSignal(rowIndex, columnIndex, kappa1, "kappa1");
             columnIndex += 1;
 
             workSheet.WriteScalarSignal(rowIndex, columnIndex, kappa2, "kappa2");
             columnIndex += 1;
 
-            for (var i = 0; i < omegaAverageList.Count; i++)
+            for (var i = 0; i < omegaMeanList.Count; i++)
             {
-                var omega = omegaAverageList[i];
+                var omega = omegaMeanList[i];
 
                 workSheet.WriteBivectorSignal(rowIndex, columnIndex, omega, $"Darboux Blade {i + 1} Average", bivectorColumnNames);
                 columnIndex += VSpaceDimensions * (VSpaceDimensions - 1) / 2;
             }
 
-            for (var i = 0; i < omegaAverageList.Count; i++)
+            for (var i = 0; i < omegaMeanList.Count; i++)
             {
-                var omegaNorm = omegaAverageList[i].Norm();
+                var omegaNorm = omegaMeanList[i].Norm();
 
                 workSheet.WriteScalarSignal(rowIndex, columnIndex, omegaNorm, $"Darboux Blade {i + 1} Average Norm");
                 columnIndex += 1;
             }
 
-            //workSheet.WriteBivectorSignal(rowIndex, columnIndex, omegaBar, "Angular Velocity Blade", bivectorColumnNames);
-            //columnIndex += (int)(VSpaceDimensions * (VSpaceDimensions - 1)) / 2;
+            workSheet.WriteBivectorSignal(rowIndex, columnIndex, dbMean, $"Darboux Bivector Average", bivectorColumnNames);
+            columnIndex += VSpaceDimensions * (VSpaceDimensions - 1) / 2;
 
-            //workSheet.WriteBivectorSignal(rowIndex, columnIndex, bBivector, "B Bivector", bivectorColumnNames);
-            //columnIndex += (int)(VSpaceDimensions * (VSpaceDimensions - 1)) / 2;
-
-            //workSheet.WriteScalarSignal(rowIndex, columnIndex, omegaBarNormScaled, "Scaled Angular Velocity Blade Norm");
-            //columnIndex += 1;
-
-            //workSheet.WriteScalarSignal(rowIndex, columnIndex, omegaBarNorm, "Angular Velocity Blade Norm");
-            //columnIndex += 1;
-
-            //workSheet.WriteScalarSignal(rowIndex, columnIndex, omegaNorm, "Darboux Bivector Norm");
-            //columnIndex += 1;
-
-            //workSheet.WriteScalarSignal(rowIndex, columnIndex, bBivectorNorm, "B Bivector Norm");
-            //columnIndex += 1;
-
+            workSheet.WriteScalarSignal(rowIndex, columnIndex, dbMean.Norm(), $"Darboux Bivector Average Norm");
+            columnIndex += 1;
+            
             Console.WriteLine($"Done");
             Console.WriteLine();
         }
         
-        private static void ProcessSignalSection4D(XGaVector<ScalarSignalFloat64> vectorSignal, ExcelWorksheet workSheet, int sectionFirstIndex)
+        private static void ProcessSignalSection4D(XGaVector<Float64Signal> vectorSignal, DfSignalInterpolatorOptions interpolatorOptions, ExcelWorksheet workSheet, int sectionFirstIndex)
         {
+            ScalarProcessor.ZeroEpsilon = 1e-7d;
+
             var sectionLastIndex = SampleCount - 1;
 
             var tMin = sectionFirstIndex / SamplingRate;
@@ -2187,47 +2170,47 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
                     .CreateSignal(SamplingRate);
 
             Console.WriteLine($"   Processing data");
-            
-            var options = new DfFourierSignalInterpolatorOptions()
-            {
-                EnergyAcThreshold = 100000d,
-                EnergyAcPercentThreshold = 0.99999998d,
-                SignalToNoiseRatioThreshold = 300000d,
-                FrequencyThreshold = 1000 * 2 * Math.PI,
-                FrequencyCountThreshold = 750,
-                PaddingTrendSampleCount = 1000,
-                PaddingPolynomialDegree = 5,
-                PaddingSampleCount = -1,
-                AssumePeriodic = false
-            };
 
-            //var options = new SpectrumInterpolationOptions()
+            //var options = new DfFourierSignalInterpolatorOptions()
             //{
-            //    EnergyAcThreshold = 1000d,
-            //    EnergyAcPercentThreshold = 0.9998d,
-            //    SignalToNoiseRatioThreshold = 3000d,
-            //    FrequencyThreshold = 750 * 2 * Math.PI,
+            //    EnergyAcThreshold = 100000d,
+            //    EnergyAcPercentThreshold = 0.99999998d,
+            //    SignalToNoiseRatioThreshold = 300000d,
+            //    FrequencyThreshold = 1000 * 2 * Math.PI,
             //    FrequencyCountThreshold = 750,
-            //    PaddingPolynomialSampleCount = 50,
-            //    PaddingPolynomialDegree = 6
+            //    PaddingTrendSampleCount = 1000,
+            //    PaddingPolynomialDegree = 5,
+            //    PaddingSampleCount = -1,
+            //    AssumePeriodic = false
             //};
-            
-            //var interpolatorOptions = new DfLinearInterpolatorOptions()
+
+            ////var options = new SpectrumInterpolationOptions()
+            ////{
+            ////    EnergyAcThreshold = 1000d,
+            ////    EnergyAcPercentThreshold = 0.9998d,
+            ////    SignalToNoiseRatioThreshold = 3000d,
+            ////    FrequencyThreshold = 750 * 2 * Math.PI,
+            ////    FrequencyCountThreshold = 750,
+            ////    PaddingPolynomialSampleCount = 50,
+            ////    PaddingPolynomialDegree = 6
+            ////};
+
+            //var options = new DfLinearSplineSignalInterpolatorOptions()
             //{
             //    SmoothingFactors = new[] { 3, 5 } //Array.Empty<int>()
             //};
 
-            //var interpolatorOptions = new DfChebyshevInterpolatorOptions()
-            //{
-            //    SectionCount = 1,
-            //    PolynomialDegree = 300,
-            //    SmoothingFactors = new[] { 3, 5 } //Array.Empty<int>()
-            //};
-
-            //var interpolatorOptions = new DfCatmullRomSplineInterpolatorOptions()
+            //var options = new DfCatmullRomSplineSignalInterpolatorOptions()
             //{
             //    BezierDegree = 3,
             //    SplineType = CatmullRomSplineType.Centripetal,
+            //    SmoothingFactors = new[] { 3, 5 } //Array.Empty<int>()
+            //};
+
+            //var options = new DfChebyshevInterpolatorOptions()
+            //{
+            //    SectionCount = 1,
+            //    PolynomialDegree = 300,
             //    SmoothingFactors = new[] { 3, 5 } //Array.Empty<int>()
             //};
 
@@ -2237,7 +2220,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
                     VectorDifferentialInterpolator.Create(
                         vSignal,
                         tValues.SamplingSpecs,
-                        options
+                        interpolatorOptions
                     )
                 )
             );
@@ -2246,6 +2229,43 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
                 (int)(SamplingRate / GridFrequencyHz);
 
             vectorSignalProcessor.ProcessVectorSignal(vectorSignal);
+
+
+            //var affineFrameMatrixList1 = 
+            //    vectorSignalProcessor.VectorSignalArcLengthDerivatives.ComputeAffineFrameMatrices(SampleCount, VSpaceDimensions);
+            
+            //var affineFrameMatrixList2 = 
+            //    vectorSignalProcessor.ArcLengthFramesOrthonormal.ComputeAffineFrameMatrices(SampleCount, VSpaceDimensions);
+
+            //Console.WriteLine("Affine Frame Matrices:");
+
+            //for (var i = 0; i < 10; i++)
+            //{
+            //    var matrix1 = affineFrameMatrixList1[i + 1] * 
+            //                 affineFrameMatrixList1[i].Inverse();
+                
+            //    var matrix2 = affineFrameMatrixList2[i + 1] * 
+            //                 affineFrameMatrixList2[i].Inverse();
+                
+            //    Console.WriteLine(matrix1);
+            //    Console.WriteLine();
+
+            //    Console.WriteLine(matrix2);
+            //    Console.WriteLine();
+
+            //    var subspaceList1 = matrix1.GetSimpleEigenSubspaces();
+
+            //    foreach (var subspace in subspaceList1)
+            //        Console.WriteLine(subspace.ToString());
+
+                
+            //    var subspaceList2 = matrix2.GetSimpleEigenSubspaces();
+
+            //    foreach (var subspace in subspaceList2)
+            //        Console.WriteLine(subspace.ToString());
+            //}
+            
+            //Console.WriteLine();
 
             var v = vectorSignalProcessor.VectorSignalInterpolated;
 
@@ -2292,8 +2312,11 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             var u4sNorm = u4s.Norm();
 
             // Angular velocity blades
-            var omegaList = vectorSignalProcessor.AngularVelocityAverageBlades;
-            var omegaAverageList = vectorSignalProcessor.AngularVelocityAverageBlades;
+            var omegaList = vectorSignalProcessor.AngularVelocityBladesMeans;
+            var omegaAverageList = vectorSignalProcessor.AngularVelocityBladesMeans;
+            
+            var db = vectorSignalProcessor.DarbouxBivector;
+            var dbMean = vectorSignalProcessor.DarbouxBivectorMean;
 
             var omegaIndex = 1;
             foreach (var omega in omegaList)
@@ -2309,6 +2332,15 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
 
                 omegaIndex++;
             }
+            
+            var dbSignalsMean = db.Mean();
+            var dbSignalsMeanNorm = dbSignalsMean.Norm().ScalarValue;
+            var dbSignalsMeanNormHz = dbSignalsMeanNorm / (2 * Math.PI);
+
+            Console.WriteLine($"Darboux Bivector");
+            Console.WriteLine($"   Mean Bivector: {LaTeXComposer.GetMultivectorText(dbSignalsMean)}");
+            Console.WriteLine($"   Mean Bivector Norm: {dbSignalsMeanNorm:G} rad/sec = {dbSignalsMeanNormHz:G} Hz");
+            Console.WriteLine();
 
             // Curvatures
             var kappa1 = vectorSignalProcessor.Curvatures[0];
@@ -2332,115 +2364,76 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             Console.WriteLine($"   RMS of kappa2: {kappa2Rms:G}");
             Console.WriteLine($"   RMS of kappa3: {kappa3Rms:G}");
             Console.WriteLine();
-
-            //// Angular velocity blade
-            //var omegaBar = vectorSignalProcessor.AngularVelocityBlades;
-            //var omegaBarNorm = omegaBar.Norm();
-            //var omegaBarNormScaled = sDt1 * omegaBarNorm;
-
-            //// Darboux bivector
-            //var omega = vectorSignalProcessor.DarbouxBivectors;
-            //var omegaNorm = omega.Norm();
-
-            //// Bivector B
-            //var bBivector = omega - omegaBar;
-            //var bBivectorNorm = bBivector.Norm();
-
-            //var omegaScaledMeanNorm = 
-            //    (omega * sDt1).Mean(GeometricProcessor).Norm().ScalarValue;
-
-            //var omegaBarScaledMeanNorm = 
-            //    (omegaBar * sDt1).Mean(GeometricProcessor).Norm().ScalarValue;
-
-            //Console.WriteLine($"   Norm of Scaled OmegaBar Signal Mean: {omegaBarScaledMeanNorm:G}");
-            //Console.WriteLine($"   Norm of Scaled Omega Signal Mean: {omegaScaledMeanNorm:G}");
-            //Console.WriteLine();
-
-
-            //interpolatorOptions.FrequencyCountThreshold = 10;
-
-            //var sig = (omega.Norm() * sDt1).ScalarValue;
-            //var sigEnergy = sig.EnergyAc();
-            //var kappa1Spectrum = 
-            //    sig
-            //    .GetPolynomialPaddedSignal(50, 6)
-            //    .GetFourierSpectrum(interpolatorOptions);
-
-            //var kappa1SpectrumSamples =
-            //    kappa1Spectrum
-            //        .SamplePairsAc
-            //        .OrderByDescending(s => s.Item1.Value.MagnitudeSquared() + s.Item2.Value.MagnitudeSquared())
-            //        .Take(5)
-            //        .ToArray();
-
-            //Console.WriteLine("Kappa 1 frequency samples:");
-            //foreach (var ((freqIndex1, value1), (freqIndex2, value2)) in kappa1SpectrumSamples)
-            //{
-            //    var freqHz = kappa1Spectrum.GetFrequencyHz(freqIndex1);
-            //    var energy = (value1.MagnitudeSquared() + value2.MagnitudeSquared()) / sigEnergy;
-
-            //    Console.WriteLine($"Frequency: ±{freqHz:G4} Hz, Energy: {energy:P4}");
-            //}
-            //Console.WriteLine();
-
-
-            Console.WriteLine($"   Plotting data");
-
-
-            vectorSignal.PlotSignal(
-                v,
-                0,
-                (SampleCount - 1) / SamplingRate,
-                "Signal".CombineFolderPath()
+            
+            
+            var dbNorm = db.ENormSquared();
+            var kappaNorm = kappa1.Square() + kappa2.Square() + kappa3.Square();
+            
+            Debug.Assert(
+                (dbNorm - kappaNorm).IsNearZero()
             );
 
-            v.PlotVectorSignalComponents("Signal", "v".CombineFolderPath());
+            //Console.WriteLine($"   Plotting data");
+            
+            //vectorSignal.PlotSignal(
+            //    v,
+            //    0,
+            //    (SampleCount - 1) / SamplingRate,
+            //    "Signal".CombineFolderPath()
+            //);
 
-            vDt1.PlotVectorSignalComponents("1st t-derivative", "vDt1".CombineFolderPath());
-            vDt2.PlotVectorSignalComponents("2nd t-derivative", "vDt2".CombineFolderPath());
-            vDt3.PlotVectorSignalComponents("3rd t-derivative", "vDt3".CombineFolderPath());
-            vDt4.PlotVectorSignalComponents("4th t-derivative", "vDt4".CombineFolderPath());
+            //v.PlotVectorSignalComponents("Signal", "v".CombineFolderPath());
 
-            vDs1.PlotVectorSignalComponents("1st s-derivative", "vDs1".CombineFolderPath());
-            vDs2.PlotVectorSignalComponents("2nd s-derivative", "vDs2".CombineFolderPath());
-            vDs3.PlotVectorSignalComponents("3rd s-derivative", "vDs3".CombineFolderPath());
-            vDs4.PlotVectorSignalComponents("4th s-derivative", "vDs4".CombineFolderPath());
+            //vDt1.PlotVectorSignalComponents("1st t-derivative", "vDt1".CombineFolderPath());
+            //vDt2.PlotVectorSignalComponents("2nd t-derivative", "vDt2".CombineFolderPath());
+            //vDt3.PlotVectorSignalComponents("3rd t-derivative", "vDt3".CombineFolderPath());
+            //vDt4.PlotVectorSignalComponents("4th t-derivative", "vDt4".CombineFolderPath());
 
-            sDt1.PlotScalarSignal("1st t-derivative of arc-length", "sDt1".CombineFolderPath());
-            sDt1.Log10().PlotScalarSignal("1st t-derivative of arc-length Log10", "sDt1Log10".CombineFolderPath());
+            //vDs1.PlotVectorSignalComponents("1st s-derivative", "vDs1".CombineFolderPath());
+            //vDs2.PlotVectorSignalComponents("2nd s-derivative", "vDs2".CombineFolderPath());
+            //vDs3.PlotVectorSignalComponents("3rd s-derivative", "vDs3".CombineFolderPath());
+            //vDs4.PlotVectorSignalComponents("4th s-derivative", "vDs4".CombineFolderPath());
 
-            sDt2.PlotScalarSignal("2nd t-derivative of arc-length", "sDt2".CombineFolderPath());
-            sDt2.Log10().PlotScalarSignal("2nd t-derivative of arc-length Log10", "sDt2Log10".CombineFolderPath());
+            //sDt1.PlotScalarSignal("1st t-derivative of arc-length", "sDt1".CombineFolderPath());
+            //sDt1.Log10().PlotScalarSignal("1st t-derivative of arc-length Log10", "sDt1Log10".CombineFolderPath());
 
-            sDt3.PlotScalarSignal("3rd t-derivative of arc-length", "sDt3".CombineFolderPath());
-            sDt3.Log10().PlotScalarSignal("3rd t-derivative of arc-length Log10", "sDt3Log10".CombineFolderPath());
+            //sDt2.PlotScalarSignal("2nd t-derivative of arc-length", "sDt2".CombineFolderPath());
+            //sDt2.Log10().PlotScalarSignal("2nd t-derivative of arc-length Log10", "sDt2Log10".CombineFolderPath());
 
-            sDt4.PlotScalarSignal("4th t-derivative of arc-length", "sDt4".CombineFolderPath());
-            sDt4.Log10().PlotScalarSignal("4th t-derivative of arc-length Log10", "sDt4Log10".CombineFolderPath());
+            //sDt3.PlotScalarSignal("3rd t-derivative of arc-length", "sDt3".CombineFolderPath());
+            //sDt3.Log10().PlotScalarSignal("3rd t-derivative of arc-length Log10", "sDt3Log10".CombineFolderPath());
 
-            for (var i = 0; i < omegaAverageList.Count; i++)
-            {
-                var omegaNorm = omegaAverageList[i].Norm() / (2 * Math.PI);
+            //sDt4.PlotScalarSignal("4th t-derivative of arc-length", "sDt4".CombineFolderPath());
+            //sDt4.Log10().PlotScalarSignal("4th t-derivative of arc-length Log10", "sDt4Log10".CombineFolderPath());
 
-                omegaNorm.Scalar.PlotScalarSignal($"Darboux Blade Average Norm {i + 1}", $"DBANorm{i + 1}".CombineFolderPath());
-                omegaNorm.Scalar.Log10().PlotScalarSignal($"Darboux Blade Average Norm {i + 1} Log10", $"DBANorm{i + 1}Log10".CombineFolderPath());
-            }
+            //for (var i = 0; i < omegaAverageList.Count; i++)
+            //{
+            //    var omegaNorm = omegaAverageList[i].Norm() / (2 * Math.PI);
 
-            //var vNorm = v.Norm();
-            //kappa1 *= vNorm;
-            //kappa2 *= vNorm;
-            //kappa3 *= vNorm;
-            //kappa4 *= vNorm;
-            //kappa5 *= vNorm;
+            //    omegaNorm.Scalar.PlotScalarSignal($"Darboux Blade Average Norm {i + 1}", $"DBANorm{i + 1}".CombineFolderPath());
+            //    omegaNorm.Scalar.Log10().PlotScalarSignal($"Darboux Blade Average Norm {i + 1} Log10", $"DBANorm{i + 1}Log10".CombineFolderPath());
+            //}
+            
+            //var dbNorm = dbMean.Norm() / (2 * Math.PI);
 
-            kappa1.PlotScalarSignal("1st curvature coefficient", "kappa1".CombineFolderPath());
-            kappa1.Log10().PlotScalarSignal("1st curvature coefficient Log10", "kappa1Log10".CombineFolderPath());
+            //dbNorm.Scalar.PlotScalarSignal($"Darboux Bivector Average Norm", $"DBNorm".CombineFolderPath());
+            //dbNorm.Scalar.Log10().PlotScalarSignal($"Darboux Bivector Average Norm Log10", $"DBNormLog10".CombineFolderPath());
 
-            kappa2.PlotScalarSignal("2nd curvature coefficient", "kappa2".CombineFolderPath());
-            kappa2.Log10().PlotScalarSignal("2nd curvature coefficient Log10", "kappa2Log10".CombineFolderPath());
+            ////var vNorm = v.Norm();
+            ////kappa1 *= vNorm;
+            ////kappa2 *= vNorm;
+            ////kappa3 *= vNorm;
+            ////kappa4 *= vNorm;
+            ////kappa5 *= vNorm;
 
-            kappa3.PlotScalarSignal("3rd curvature coefficient", "kappa3".CombineFolderPath());
-            kappa3.Log10().PlotScalarSignal("3rd curvature coefficient Log10", "kappa3Log10".CombineFolderPath());
+            //kappa1.PlotScalarSignal("1st curvature coefficient", "kappa1".CombineFolderPath());
+            //kappa1.Log10().PlotScalarSignal("1st curvature coefficient Log10", "kappa1Log10".CombineFolderPath());
+
+            //kappa2.PlotScalarSignal("2nd curvature coefficient", "kappa2".CombineFolderPath());
+            //kappa2.Log10().PlotScalarSignal("2nd curvature coefficient Log10", "kappa2Log10".CombineFolderPath());
+
+            //kappa3.PlotScalarSignal("3rd curvature coefficient", "kappa3".CombineFolderPath());
+            //kappa3.Log10().PlotScalarSignal("3rd curvature coefficient Log10", "kappa3Log10".CombineFolderPath());
 
 
             Console.WriteLine($"   Writing data");
@@ -2535,6 +2528,12 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
                 workSheet.WriteBivectorSignal(rowIndex, columnIndex, omega, $"Darboux Blade {i + 1} Average", bivectorColumnNames);
                 columnIndex += VSpaceDimensions * (VSpaceDimensions - 1) / 2;
             }
+            
+            workSheet.WriteBivectorSignal(rowIndex, columnIndex, db, $"Darboux Bivector", bivectorColumnNames);
+            columnIndex += VSpaceDimensions * (VSpaceDimensions - 1) / 2;
+
+            workSheet.WriteBivectorSignal(rowIndex, columnIndex, dbMean, $"Darboux Bivector Average", bivectorColumnNames);
+            columnIndex += VSpaceDimensions * (VSpaceDimensions - 1) / 2;
 
             workSheet.WriteScalarSignal(rowIndex, columnIndex, kappa1, "kappa1");
             columnIndex += 1;
@@ -2552,34 +2551,18 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
                 workSheet.WriteScalarSignal(rowIndex, columnIndex, omegaNorm, $"Darboux Blade {i + 1} Average Norm");
                 columnIndex += 1;
             }
-
-            //workSheet.WriteBivectorSignal(rowIndex, columnIndex, omegaBar, "Angular Velocity Blade", bivectorColumnNames);
-            //columnIndex += (int)(VSpaceDimensions * (VSpaceDimensions - 1)) / 2;
-
-            //workSheet.WriteBivectorSignal(rowIndex, columnIndex, omega, "Darboux Bivector", bivectorColumnNames);
-            //columnIndex += (int)(VSpaceDimensions * (VSpaceDimensions - 1)) / 2;
-
-            //workSheet.WriteBivectorSignal(rowIndex, columnIndex, bBivector, "B Bivector", bivectorColumnNames);
-            //columnIndex += (int)(VSpaceDimensions * (VSpaceDimensions - 1)) / 2;
-
-            //workSheet.WriteScalarSignal(rowIndex, columnIndex, omegaBarNormScaled, "Scaled Angular Velocity Blade Norm");
-            //columnIndex += 1;
-
-            //workSheet.WriteScalarSignal(rowIndex, columnIndex, omegaBarNorm, "Angular Velocity Blade Norm");
-            //columnIndex += 1;
-
-            //workSheet.WriteScalarSignal(rowIndex, columnIndex, omegaNorm, "Darboux Bivector Norm");
-            //columnIndex += 1;
-
-            //workSheet.WriteScalarSignal(rowIndex, columnIndex, bBivectorNorm, "B Bivector Norm");
-            //columnIndex += 1;
-
+            
+            workSheet.WriteScalarSignal(rowIndex, columnIndex, dbMean.Norm(), $"Darboux Bivector Average Norm");
+            columnIndex += 1;
+            
             Console.WriteLine($"Done");
             Console.WriteLine();
         }
 
-        private static void ProcessSignalSection6D(XGaVector<ScalarSignalFloat64> vectorSignal, ExcelWorksheet workSheet, int sectionFirstIndex)
+        private static void ProcessSignalSection6D(XGaVector<Float64Signal> vectorSignal, DfSignalInterpolatorOptions interpolatorOptions, ExcelWorksheet workSheet, int sectionFirstIndex)
         {
+            ScalarProcessor.ZeroEpsilon = 1e-7d;
+
             var sectionLastIndex = SampleCount - 1;
 
             var tMin = sectionFirstIndex / SamplingRate;
@@ -2648,35 +2631,47 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             //    SmoothingFactors = new[] { 3, 5 } //Array.Empty<int>()
             //};
             
-            var interpolatorOptions = new DfLinearSplineSignalInterpolatorOptions()
-            {
-                SmoothingFactors = new[] { 3, 5 } //Array.Empty<int>()
-            };
+            //var interpolatorOptions = new DfLinearSplineSignalInterpolatorOptions()
+            //{
+            //    SmoothingFactors = new[] { 3, 5 } //Array.Empty<int>()
+            //};
 
-            var vectorSignalProcessor = new XGaGeometricFrequencyDifferentialProcessor(
-                6,
-                (v => 
-                    VectorDifferentialInterpolator.CreateLinearSpline(
-                        v,
-                        tValues.SamplingSpecs,
-                        interpolatorOptions
+            var vectorSignalProcessor = 
+                new XGaGeometricFrequencyDifferentialProcessor(
+                    6,
+                    (vSignal =>
+                        VectorDifferentialInterpolator.Create(
+                            vSignal,
+                            tValues.SamplingSpecs,
+                            interpolatorOptions
+                        )
                     )
+                );
 
-                    //VectorDifferentialInterpolator.CreateChebyshev(
-                    //    GeometricProcessor,
-                    //    v,
-                    //    tValues.SamplingSpecs,
-                    //    interpolatorOptions
-                    //)
+                //new XGaGeometricFrequencyDifferentialProcessor(
+                //    6,
+                //    (v => 
+                //        VectorDifferentialInterpolator.CreateLinearSpline(
+                //            v,
+                //            tValues.SamplingSpecs,
+                //            interpolatorOptions
+                //        )
 
-                    //VectorDifferentialInterpolator.CreateCatmullRomSpline(
-                    //    GeometricProcessor,
-                    //    v,
-                    //    tValues.SamplingSpecs,
-                    //    interpolatorOptions
-                    //)
-                )
-            );
+                //        //VectorDifferentialInterpolator.CreateChebyshev(
+                //        //    GeometricProcessor,
+                //        //    v,
+                //        //    tValues.SamplingSpecs,
+                //        //    interpolatorOptions
+                //        //)
+
+                //        //VectorDifferentialInterpolator.CreateCatmullRomSpline(
+                //        //    GeometricProcessor,
+                //        //    v,
+                //        //    tValues.SamplingSpecs,
+                //        //    interpolatorOptions
+                //        //)
+                //    )
+                //);
 
             //var interpolatorOptions = new FourierScalarInterpolatorOptions()
             //{
@@ -2748,8 +2743,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             var u6sNorm = u6s.Norm();
 
             // Angular velocity blades
-            var omegaList = vectorSignalProcessor.AngularVelocityAverageBlades;
-            var omegaAverageList = vectorSignalProcessor.AngularVelocityAverageBlades;
+            var omegaList = vectorSignalProcessor.AngularVelocityBladesMeans;
+            var omegaAverageList = vectorSignalProcessor.AngularVelocityBladesMeans;
 
             var omegaIndex = 1;
             foreach (var omega in omegaList)
@@ -2798,131 +2793,80 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             Console.WriteLine($"   RMS of kappa4: {kappa4Rms:G}");
             Console.WriteLine($"   RMS of kappa5: {kappa5Rms:G}");
             Console.WriteLine();
+            
 
-            //// Angular velocity blade
-            //var omegaBar = vectorSignalProcessor.AngularVelocityBlades;
-            //var omegaBarNorm = omegaBar.Norm();
-            //var omegaBarNormScaled = sDt1 * omegaBarNorm;
+            //Console.WriteLine($"   Plotting data");
+            
+            //vectorSignal.PlotSignal(
+            //    v,
+            //    0,
+            //    (SampleCount - 1) / SamplingRate,
+            //    "Signal".CombineFolderPath()
+            //);
 
-            //// Darboux bivector
-            //var omega = vectorSignalProcessor.DarbouxBivectors;
-            //var omegaNorm = omega.Norm();
+            //v.PlotVectorSignalComponents("Signal", "v".CombineFolderPath());
 
-            //// Bivector B
-            //var bBivector = omega - omegaBar;
-            //var bBivectorNorm = bBivector.Norm();
+            //vDt1.PlotVectorSignalComponents("1st t-derivative", "vDt1".CombineFolderPath());
+            //vDt2.PlotVectorSignalComponents("2nd t-derivative", "vDt2".CombineFolderPath());
+            //vDt3.PlotVectorSignalComponents("3rd t-derivative", "vDt3".CombineFolderPath());
+            //vDt4.PlotVectorSignalComponents("4th t-derivative", "vDt4".CombineFolderPath());
+            //vDt5.PlotVectorSignalComponents("5th t-derivative", "vDt5".CombineFolderPath());
+            //vDt6.PlotVectorSignalComponents("6th t-derivative", "vDt6".CombineFolderPath());
 
-            //var omegaScaledMeanNorm = 
-            //    (omega * sDt1).Mean(GeometricProcessor).Norm().ScalarValue;
+            //vDs1.PlotVectorSignalComponents("1st s-derivative", "vDs1".CombineFolderPath());
+            //vDs2.PlotVectorSignalComponents("2nd s-derivative", "vDs2".CombineFolderPath());
+            //vDs3.PlotVectorSignalComponents("3rd s-derivative", "vDs3".CombineFolderPath());
+            //vDs4.PlotVectorSignalComponents("4th s-derivative", "vDs4".CombineFolderPath());
+            //vDs5.PlotVectorSignalComponents("5th s-derivative", "vDs5".CombineFolderPath());
+            //vDs6.PlotVectorSignalComponents("6th s-derivative", "vDs6".CombineFolderPath());
 
-            //var omegaBarScaledMeanNorm = 
-            //    (omegaBar * sDt1).Mean(GeometricProcessor).Norm().ScalarValue;
+            //sDt1.PlotScalarSignal("1st t-derivative of arc-length", "sDt1".CombineFolderPath());
+            //sDt1.Log10().PlotScalarSignal("1st t-derivative of arc-length Log10", "sDt1Log10".CombineFolderPath());
 
-            //Console.WriteLine($"   Norm of Scaled OmegaBar Signal Mean: {omegaBarScaledMeanNorm:G}");
-            //Console.WriteLine($"   Norm of Scaled Omega Signal Mean: {omegaScaledMeanNorm:G}");
-            //Console.WriteLine();
+            //sDt2.PlotScalarSignal("2nd t-derivative of arc-length", "sDt2".CombineFolderPath());
+            //sDt2.Log10().PlotScalarSignal("2nd t-derivative of arc-length Log10", "sDt2Log10".CombineFolderPath());
 
+            //sDt3.PlotScalarSignal("3rd t-derivative of arc-length", "sDt3".CombineFolderPath());
+            //sDt3.Log10().PlotScalarSignal("3rd t-derivative of arc-length Log10", "sDt3Log10".CombineFolderPath());
 
-            //interpolatorOptions.FrequencyCountThreshold = 10;
+            //sDt4.PlotScalarSignal("4th t-derivative of arc-length", "sDt4".CombineFolderPath());
+            //sDt4.Log10().PlotScalarSignal("4th t-derivative of arc-length Log10", "sDt4Log10".CombineFolderPath());
 
-            //var sig = (omega.Norm() * sDt1).ScalarValue;
-            //var sigEnergy = sig.EnergyAc();
-            //var kappa1Spectrum = 
-            //    sig
-            //    .GetPolynomialPaddedSignal(50, 6)
-            //    .GetFourierSpectrum(interpolatorOptions);
+            //sDt5.PlotScalarSignal("5th t-derivative of arc-length", "sDt5".CombineFolderPath());
+            //sDt5.Log10().PlotScalarSignal("5th t-derivative of arc-length Log10", "sDt5Log10".CombineFolderPath());
 
-            //var kappa1SpectrumSamples =
-            //    kappa1Spectrum
-            //        .SamplePairsAc
-            //        .OrderByDescending(s => s.Item1.Value.MagnitudeSquared() + s.Item2.Value.MagnitudeSquared())
-            //        .Take(5)
-            //        .ToArray();
+            //sDt6.PlotScalarSignal("6th t-derivative of arc-length", "sDt6".CombineFolderPath());
+            //sDt6.Log10().PlotScalarSignal("6th t-derivative of arc-length Log10", "sDt6Log10".CombineFolderPath());
 
-            //Console.WriteLine("Kappa 1 frequency samples:");
-            //foreach (var ((freqIndex1, value1), (freqIndex2, value2)) in kappa1SpectrumSamples)
+            //for (var i = 0; i < omegaAverageList.Count; i++)
             //{
-            //    var freqHz = kappa1Spectrum.GetFrequencyHz(freqIndex1);
-            //    var energy = (value1.MagnitudeSquared() + value2.MagnitudeSquared()) / sigEnergy;
+            //    var omegaNorm = omegaAverageList[i].Norm() / (2 * Math.PI);
 
-            //    Console.WriteLine($"Frequency: ±{freqHz:G4} Hz, Energy: {energy:P4}");
+            //    omegaNorm.Scalar.PlotScalarSignal($"Darboux Blade Average Norm {i + 1}", $"DBANorm{i + 1}".CombineFolderPath());
+            //    omegaNorm.Scalar.Log10().PlotScalarSignal($"Darboux Blade Average Norm {i + 1} Log10", $"DBANorm{i + 1}Log10".CombineFolderPath());
             //}
-            //Console.WriteLine();
 
+            ////var vNorm = v.Norm();
+            ////kappa1 *= vNorm;
+            ////kappa2 *= vNorm;
+            ////kappa3 *= vNorm;
+            ////kappa4 *= vNorm;
+            ////kappa5 *= vNorm;
 
-            Console.WriteLine($"   Plotting data");
+            //kappa1.PlotScalarSignal("1st curvature coefficient", "kappa1".CombineFolderPath());
+            //kappa1.Log10().PlotScalarSignal("1st curvature coefficient Log10", "kappa1Log10".CombineFolderPath());
 
+            //kappa2.PlotScalarSignal("2nd curvature coefficient", "kappa2".CombineFolderPath());
+            //kappa2.Log10().PlotScalarSignal("2nd curvature coefficient Log10", "kappa2Log10".CombineFolderPath());
 
-            vectorSignal.PlotSignal(
-                v,
-                0,
-                (SampleCount - 1) / SamplingRate,
-                "Signal".CombineFolderPath()
-            );
+            //kappa3.PlotScalarSignal("3rd curvature coefficient", "kappa3".CombineFolderPath());
+            //kappa3.Log10().PlotScalarSignal("3rd curvature coefficient Log10", "kappa3Log10".CombineFolderPath());
 
-            v.PlotVectorSignalComponents("Signal", "v".CombineFolderPath());
+            //kappa4.PlotScalarSignal("4th curvature coefficient", "kappa4".CombineFolderPath());
+            //kappa4.Log10().PlotScalarSignal("4th curvature coefficient Log10", "kappa4Log10".CombineFolderPath());
 
-            vDt1.PlotVectorSignalComponents("1st t-derivative", "vDt1".CombineFolderPath());
-            vDt2.PlotVectorSignalComponents("2nd t-derivative", "vDt2".CombineFolderPath());
-            vDt3.PlotVectorSignalComponents("3rd t-derivative", "vDt3".CombineFolderPath());
-            vDt4.PlotVectorSignalComponents("4th t-derivative", "vDt4".CombineFolderPath());
-            vDt5.PlotVectorSignalComponents("5th t-derivative", "vDt5".CombineFolderPath());
-            vDt6.PlotVectorSignalComponents("6th t-derivative", "vDt6".CombineFolderPath());
-
-            vDs1.PlotVectorSignalComponents("1st s-derivative", "vDs1".CombineFolderPath());
-            vDs2.PlotVectorSignalComponents("2nd s-derivative", "vDs2".CombineFolderPath());
-            vDs3.PlotVectorSignalComponents("3rd s-derivative", "vDs3".CombineFolderPath());
-            vDs4.PlotVectorSignalComponents("4th s-derivative", "vDs4".CombineFolderPath());
-            vDs5.PlotVectorSignalComponents("5th s-derivative", "vDs5".CombineFolderPath());
-            vDs6.PlotVectorSignalComponents("6th s-derivative", "vDs6".CombineFolderPath());
-
-            sDt1.PlotScalarSignal("1st t-derivative of arc-length", "sDt1".CombineFolderPath());
-            sDt1.Log10().PlotScalarSignal("1st t-derivative of arc-length Log10", "sDt1Log10".CombineFolderPath());
-
-            sDt2.PlotScalarSignal("2nd t-derivative of arc-length", "sDt2".CombineFolderPath());
-            sDt2.Log10().PlotScalarSignal("2nd t-derivative of arc-length Log10", "sDt2Log10".CombineFolderPath());
-
-            sDt3.PlotScalarSignal("3rd t-derivative of arc-length", "sDt3".CombineFolderPath());
-            sDt3.Log10().PlotScalarSignal("3rd t-derivative of arc-length Log10", "sDt3Log10".CombineFolderPath());
-
-            sDt4.PlotScalarSignal("4th t-derivative of arc-length", "sDt4".CombineFolderPath());
-            sDt4.Log10().PlotScalarSignal("4th t-derivative of arc-length Log10", "sDt4Log10".CombineFolderPath());
-
-            sDt5.PlotScalarSignal("5th t-derivative of arc-length", "sDt5".CombineFolderPath());
-            sDt5.Log10().PlotScalarSignal("5th t-derivative of arc-length Log10", "sDt5Log10".CombineFolderPath());
-
-            sDt6.PlotScalarSignal("6th t-derivative of arc-length", "sDt6".CombineFolderPath());
-            sDt6.Log10().PlotScalarSignal("6th t-derivative of arc-length Log10", "sDt6Log10".CombineFolderPath());
-
-            for (var i = 0; i < omegaAverageList.Count; i++)
-            {
-                var omegaNorm = omegaAverageList[i].Norm() / (2 * Math.PI);
-
-                omegaNorm.Scalar.PlotScalarSignal($"Darboux Blade Average Norm {i + 1}", $"DBANorm{i + 1}".CombineFolderPath());
-                omegaNorm.Scalar.Log10().PlotScalarSignal($"Darboux Blade Average Norm {i + 1} Log10", $"DBANorm{i + 1}Log10".CombineFolderPath());
-            }
-
-            //var vNorm = v.Norm();
-            //kappa1 *= vNorm;
-            //kappa2 *= vNorm;
-            //kappa3 *= vNorm;
-            //kappa4 *= vNorm;
-            //kappa5 *= vNorm;
-
-            kappa1.PlotScalarSignal("1st curvature coefficient", "kappa1".CombineFolderPath());
-            kappa1.Log10().PlotScalarSignal("1st curvature coefficient Log10", "kappa1Log10".CombineFolderPath());
-
-            kappa2.PlotScalarSignal("2nd curvature coefficient", "kappa2".CombineFolderPath());
-            kappa2.Log10().PlotScalarSignal("2nd curvature coefficient Log10", "kappa2Log10".CombineFolderPath());
-
-            kappa3.PlotScalarSignal("3rd curvature coefficient", "kappa3".CombineFolderPath());
-            kappa3.Log10().PlotScalarSignal("3rd curvature coefficient Log10", "kappa3Log10".CombineFolderPath());
-
-            kappa4.PlotScalarSignal("4th curvature coefficient", "kappa4".CombineFolderPath());
-            kappa4.Log10().PlotScalarSignal("4th curvature coefficient Log10", "kappa4Log10".CombineFolderPath());
-
-            kappa5.PlotScalarSignal("5th curvature coefficient", "kappa5".CombineFolderPath());
-            kappa5.Log10().PlotScalarSignal("5th curvature coefficient Log10", "kappa5Log10".CombineFolderPath());
+            //kappa5.PlotScalarSignal("5th curvature coefficient", "kappa5".CombineFolderPath());
+            //kappa5.Log10().PlotScalarSignal("5th curvature coefficient Log10", "kappa5Log10".CombineFolderPath());
 
 
             Console.WriteLine($"   Writing data");
@@ -3070,28 +3014,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
                 workSheet.WriteScalarSignal(rowIndex, columnIndex, omegaNorm, $"Darboux Blade {i + 1} Average Norm");
                 columnIndex += 1;
             }
-
-            //workSheet.WriteBivectorSignal(rowIndex, columnIndex, omegaBar, "Angular Velocity Blade", bivectorColumnNames);
-            //columnIndex += (int)(VSpaceDimensions * (VSpaceDimensions - 1)) / 2;
-
-            //workSheet.WriteBivectorSignal(rowIndex, columnIndex, omega, "Darboux Bivector", bivectorColumnNames);
-            //columnIndex += (int)(VSpaceDimensions * (VSpaceDimensions - 1)) / 2;
-
-            //workSheet.WriteBivectorSignal(rowIndex, columnIndex, bBivector, "B Bivector", bivectorColumnNames);
-            //columnIndex += (int)(VSpaceDimensions * (VSpaceDimensions - 1)) / 2;
-
-            //workSheet.WriteScalarSignal(rowIndex, columnIndex, omegaBarNormScaled, "Scaled Angular Velocity Blade Norm");
-            //columnIndex += 1;
-
-            //workSheet.WriteScalarSignal(rowIndex, columnIndex, omegaBarNorm, "Angular Velocity Blade Norm");
-            //columnIndex += 1;
-
-            //workSheet.WriteScalarSignal(rowIndex, columnIndex, omegaNorm, "Darboux Bivector Norm");
-            //columnIndex += 1;
-
-            //workSheet.WriteScalarSignal(rowIndex, columnIndex, bBivectorNorm, "B Bivector Norm");
-            //columnIndex += 1;
-
+            
             Console.WriteLine($"Done");
             Console.WriteLine();
         }
@@ -3567,29 +3490,108 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             package.SaveAs(outputFilePath);
         }
 
+        public static void Example2()
+        {
+            var smoothingFactors = new[] { 3, 5 };  //Array.Empty<int>()
+
+            var options1 = new DfFourierSignalInterpolatorOptions()
+            {
+                SmoothingFactors = smoothingFactors,
+                EnergyAcThreshold = 100000d,
+                EnergyAcPercentThreshold = 0.99999998d,
+                SignalToNoiseRatioThreshold = 300000d,
+                FrequencyThreshold = 1000 * 2 * Math.PI,
+                FrequencyCountThreshold = 750,
+                PaddingTrendSampleCount = 1000,
+                PaddingPolynomialDegree = 5,
+                PaddingSampleCount = -1,
+                AssumePeriodic = false
+            };
+
+            ////var options = new SpectrumInterpolationOptions()
+            ////{
+            ////    EnergyAcThreshold = 1000d,
+            ////    EnergyAcPercentThreshold = 0.9998d,
+            ////    SignalToNoiseRatioThreshold = 3000d,
+            ////    FrequencyThreshold = 750 * 2 * Math.PI,
+            ////    FrequencyCountThreshold = 750,
+            ////    PaddingPolynomialSampleCount = 50,
+            ////    PaddingPolynomialDegree = 6
+            ////};
+
+            var options2 = new DfLinearSplineSignalInterpolatorOptions
+            {
+                SmoothingFactors = smoothingFactors
+            };
+
+            var options3 = new DfCatmullRomSplineSignalInterpolatorOptions
+            {
+                BezierDegree = 3,
+                SplineType = CatmullRomSplineType.Centripetal,
+                SmoothingFactors = smoothingFactors
+            };
+
+            var options4 = new DfChebyshevSignalInterpolatorOptions()
+            {
+                SectionCount = 1,
+                PolynomialDegree = 300,
+                SmoothingFactors = smoothingFactors
+            };
+
+            var signalsArray = new[]
+            {
+                new Tuple<string, string, Func<XGaVector<Float64Signal>>>("Aulario3", "LineCurrent", InitializeAulario3LineCurrentSignal),
+                new Tuple<string, string, Func<XGaVector<Float64Signal>>>("Aulario3", "PhaseNeutralVoltage", InitializeAulario3PhaseNeutralVoltageSignal),
+                new Tuple<string, string, Func<XGaVector<Float64Signal>>>("Aulario3", "LineVoltage", InitializeAulario3LineVoltageSignal),
+                new Tuple<string, string, Func<XGaVector<Float64Signal>>>("Aulario3", "PhaseVoltage", InitializeAulario3PhaseVoltageSignal),
+                new Tuple<string, string, Func<XGaVector<Float64Signal>>>("EMTP", "LineVoltage", InitializeEMTPLineVoltageSignal),
+                new Tuple<string, string, Func<XGaVector<Float64Signal>>>("EMTP", "PhaseVoltage", InitializeEMTPPhaseVoltageSignal),
+                new Tuple<string, string, Func<XGaVector<Float64Signal>>>("EMTP", "PhaseNeutralVoltage", InitializeEMTPPhaseNeutralVoltageSignal)
+            };
+
+            var optionsArray = new[]
+            {
+                new Tuple<string, DfSignalInterpolatorOptions>("Fourier", options1),
+                new Tuple<string, DfSignalInterpolatorOptions>("Linear", options2),
+                new Tuple<string, DfSignalInterpolatorOptions>("CatmullRom", options3),
+                new Tuple<string, DfSignalInterpolatorOptions>("Chebyshev", options4)
+            };
+
+            foreach (var (dataSetName, signalName, signalFunc) in signalsArray)
+            {
+                var vectorSignal = signalFunc();
+
+                foreach (var (optionsName, options) in optionsArray)
+                {
+                    //var filePath = $@"{dataSetName}_{signalName}\{optionsName} Interpolation";
+                    var outputFilePath = $"{dataSetName}_{optionsName}_{signalName}.xlsx";
+
+                    Console.WriteLine($"Processing data set {dataSetName} signal {signalName} using {optionsName} interpolation");
+                    Console.WriteLine();
+
+                    ProcessSignal(
+                        vectorSignal,
+                        options,
+                        outputFilePath
+                    );
+
+                    Console.WriteLine("Processing Done.");
+                    Console.WriteLine();
+                }
+            }
+        }
+
         /// <summary>
         /// Read the data set and split it into multiple files
         /// </summary>
-        public static void Example2()
+        public static void ProcessSignal(XGaVector<Float64Signal> vectorSignal, DfSignalInterpolatorOptions interpolatorOptions, string outputFilePath)
         {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
             using var package = new ExcelPackage();
 
             var workSheet = package.Workbook.Worksheets.Add("Sheet1");
-
-            var vectorSignal =
-                //InitializeSyntheticSignal2();
-                //InitializeCorrientesMalagaLineCurrentSignal(0, 250250);
-                //InitializeAulario3LineCurrentSignal();
-                //InitializeAulario3PhaseNeutralVoltageSignal();
-                //InitializeAulario3LineVoltageSignal();
-                InitializeAulario3PhaseVoltageSignal();
-                //InitializeEMTPLineVoltageSignal();
-                //InitializeEMTPPhaseNeutralVoltageSignal();
-                //InitializeEMTPPhaseVoltageSignal();
-
-
+            
             SectionIndex = 0;
 
             var sectionFolderPath =
@@ -3602,13 +3604,13 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
 
 
             if (VSpaceDimensions == 3)
-                ProcessSignalSection3D(vectorSignal, workSheet, 0);
+                ProcessSignalSection3D(vectorSignal, interpolatorOptions, workSheet, 0);
 
             else if (VSpaceDimensions == 4)
-                ProcessSignalSection4D(vectorSignal, workSheet, 0);
+                ProcessSignalSection4D(vectorSignal, interpolatorOptions, workSheet, 0);
 
             else
-                ProcessSignalSection6D(vectorSignal, workSheet, 0);
+                ProcessSignalSection6D(vectorSignal, interpolatorOptions, workSheet, 0);
 
             //var sectionCount = 26;
             //var sectionSampleCount = 250250 / sectionCount;
@@ -3639,7 +3641,9 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             //    ProcessSignalSection(vectorSignal, workSheet, sectionFirstIndex);
             //}
 
-            package.SaveAs(OutputFilePath);
+            package.SaveAs(
+                Path.Combine(WorkingPath, outputFilePath)
+            );
         }
 
         public static void Example3()
@@ -3655,7 +3659,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             //var magnitudeArray = new[] { 199d, 23d, 101d, -31, 41d, -13d };
 
             var signalComposer =
-                HarmonicScalarSignalComposer.Create(
+                Float64HarmonicSignalComposer.Create(
                     50,
                     1000,
                     10
@@ -3807,11 +3811,11 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
                     var pointList =
                         Enumerable
                             .Range(0, SampleCount)
-                            .Select(j => new Float64Tuple2D(xValues[j], yValues[j]))
+                            .Select(j => new Float64Vector2D(xValues[j], yValues[j]))
                             .ToArray();
 
                     var normList =
-                        pointList.Select(p => p.GetVectorNorm()).ToArray();
+                        pointList.Select(p => p.ENorm()).ToArray();
 
                     var minNorm = normList.Min();
                     var maxNorm = normList.Max();
@@ -3846,7 +3850,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             var w = 31d;
 
             var signalComposer =
-                HarmonicScalarSignalComposer.Create(
+                Float64HarmonicSignalComposer.Create(
                     w,
                     1000,
                     10
@@ -3964,7 +3968,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
                 tMaxSym
             );
 
-            var signalNum = ScalarSignalFloat64.CreateNonPeriodic(
+            var signalNum = Float64Signal.CreateNonPeriodic(
                 50001,
                 tMinNum,
                 tMaxNum,
@@ -3996,7 +4000,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
 
         public static void SymbolicNumericValidationExample2()
         {
-            OutputFilePath = "SymbolicNumericValidation.xlsx".CombineFolderPath();
+            var outputFilePath = "SymbolicNumericValidation.xlsx".CombineFolderPath();
 
             // Define signal parameters
             var sqrt2 = Math.Sqrt(2);
@@ -4006,7 +4010,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             var phi = 2d * Math.PI / 3d;
             var sampleCount = 1000;
             var samplingRate = sampleCount / cycleTime;
-            var samplingSpecs = new SignalSamplingSpecs(sampleCount, samplingRate);
+            var samplingSpecs = new Float64SignalSamplingSpecs(sampleCount, samplingRate);
 
             // Define signal processors
             VSpaceDimensions = 3;
@@ -4063,7 +4067,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
 
 
             // Define numeric signal
-            var numV1 = ScalarSignalFloat64.CreatePeriodic(
+            var numV1 = Float64Signal.CreatePeriodic(
                 samplingRate,
                 sampleCount,
                 cycleTime,
@@ -4074,7 +4078,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
                 false
             );
 
-            var numV2 = ScalarSignalFloat64.CreatePeriodic(
+            var numV2 = Float64Signal.CreatePeriodic(
                 samplingRate,
                 sampleCount,
                 cycleTime,
@@ -4085,7 +4089,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
                 false
             );
 
-            var numV3 = ScalarSignalFloat64.CreatePeriodic(
+            var numV3 = Float64Signal.CreatePeriodic(
                 samplingRate,
                 sampleCount,
                 cycleTime,
@@ -4415,7 +4419,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             columnIndex += 1;
 
 
-            package.SaveAs(OutputFilePath);
+            package.SaveAs(outputFilePath);
 
 
             //Console.WriteLine($"Validating data");

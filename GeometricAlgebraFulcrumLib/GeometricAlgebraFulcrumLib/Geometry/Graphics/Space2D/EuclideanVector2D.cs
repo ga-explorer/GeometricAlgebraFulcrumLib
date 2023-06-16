@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Text;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 
 namespace GeometricAlgebraFulcrumLib.Geometry.Graphics.Space2D
@@ -75,13 +75,18 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Graphics.Space2D
         public RGaFloat64Processor GeometricProcessor 
             => GraphicsUtils.GeometricProcessor;
 
-        public double X { get; }
+        public int VSpaceDimensions 
+            => 2;
 
-        public double Y { get; }
+        public Float64Scalar X { get; }
 
-        public double Item1 => X;
+        public Float64Scalar Y { get; }
 
-        public double Item2 => Y;
+        public double Item1 
+            => X.Value;
+
+        public double Item2 
+            => Y.Value;
 
 
         public EuclideanVector2D(double x, double y)
@@ -162,5 +167,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Graphics.Space2D
                 .Append(")")
                 .ToString();
         }
+
+        
     }
 }

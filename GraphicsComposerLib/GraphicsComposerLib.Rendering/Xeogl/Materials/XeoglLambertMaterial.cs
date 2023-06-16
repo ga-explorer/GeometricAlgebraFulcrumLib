@@ -1,6 +1,6 @@
-﻿using GraphicsComposerLib.Rendering.Colors;
-using GraphicsComposerLib.Rendering.Xeogl.Constants;
+﻿using GraphicsComposerLib.Rendering.Xeogl.Constants;
 using TextComposerLib.Code.JavaScript;
+using WebComposerLib.Colors;
 
 namespace GraphicsComposerLib.Rendering.Xeogl.Materials
 {

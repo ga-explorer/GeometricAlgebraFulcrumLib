@@ -102,6 +102,25 @@ namespace DataStructuresLib.Extensions
                     yield return array[i, j];
             }
         }
+        
+        public static IEnumerable<T1> GetItems<T, T1>(this T[,] array, Func<T, T1> mappingFunc, bool columnMajorOrder = true)
+        {
+            var rows = array.GetLength(0);
+            var cols = array.GetLength(1);
+
+            if (columnMajorOrder)
+            {
+                for (var j = 0; j < cols; j++)
+                for (var i = 0; i < rows; i++)
+                    yield return mappingFunc(array[i, j]);
+            }
+            else
+            {
+                for (var i = 0; i < rows; i++)
+                for (var j = 0; j < cols; j++)
+                    yield return mappingFunc(array[i, j]);
+            }
+        }
 
         public static IEnumerable<T> GetRowItems<T>(this T[,] array, int rowIndex)
         {
@@ -109,12 +128,26 @@ namespace DataStructuresLib.Extensions
                 .Range(0, array.GetLength(1))
                 .Select(i => array[rowIndex, i]);
         }
+        
+        public static IEnumerable<T1> GetRowItems<T, T1>(this T[,] array, Func<T, T1> mappingFunc, int rowIndex)
+        {
+            return Enumerable
+                .Range(0, array.GetLength(1))
+                .Select(i => mappingFunc(array[rowIndex, i]));
+        }
 
         public static IEnumerable<T> GetColumnItems<T>(this T[,] array, int columnIndex)
         {
             return Enumerable
                 .Range(0, array.GetLength(0))
                 .Select(i => array[i, columnIndex]);
+        }
+        
+        public static IEnumerable<T1> GetColumnItems<T, T1>(this T[,] array, Func<T, T1> mappingFunc, int columnIndex)
+        {
+            return Enumerable
+                .Range(0, array.GetLength(0))
+                .Select(i => mappingFunc(array[i, columnIndex]));
         }
 
 
@@ -124,6 +157,14 @@ namespace DataStructuresLib.Extensions
 
             for (var i = 0; i < n1; i++)
                 yield return Tuple.Create(i, array[i]);
+        }
+        
+        public static IEnumerable<Tuple<int, T1>> GetIndexItemTuples<T, T1>(this T[] array, Func<T, T1> mappingFunc)
+        {
+            var n1 = array.Length;
+
+            for (var i = 0; i < n1; i++)
+                yield return Tuple.Create(i, mappingFunc(array[i]));
         }
 
         public static IEnumerable<Tuple<int, T>> GetIndexItemTuples<T>(this T[] array, Func<T, bool> selectionFunc)
@@ -136,6 +177,19 @@ namespace DataStructuresLib.Extensions
 
                 if (selectionFunc(item))
                     yield return Tuple.Create(i, item);
+            }
+        }
+        
+        public static IEnumerable<Tuple<int, T1>> GetIndexItemTuples<T, T1>(this T[] array, Func<T, T1> mappingFunc, Func<T, bool> selectionFunc)
+        {
+            var n1 = array.Length;
+
+            for (var i = 0; i < n1; i++)
+            {
+                var item = array[i];
+
+                if (selectionFunc(item))
+                    yield return Tuple.Create(i, mappingFunc(item));
             }
         }
 
@@ -151,6 +205,19 @@ namespace DataStructuresLib.Extensions
                     yield return Tuple.Create(i, item);
             }
         }
+        
+        public static IEnumerable<Tuple<int, T1>> GetIndexItemTuples<T, T1>(this T[] array, Func<T, T1> mappingFunc, Func<int, T, bool> selectionFunc)
+        {
+            var n1 = array.Length;
+
+            for (var i = 0; i < n1; i++)
+            {
+                var item = array[i];
+
+                if (selectionFunc(i, item))
+                    yield return Tuple.Create(i, mappingFunc(item));
+            }
+        }
 
 
         public static IEnumerable<Tuple<int, int, T>> GetIndexItemTuples<T>(this T[,] array)
@@ -161,6 +228,16 @@ namespace DataStructuresLib.Extensions
             for (var i = 0; i < n1; i++)
             for (var j = 0; j < n2; j++)
                 yield return Tuple.Create(i, j, array[i, j]);
+        }
+        
+        public static IEnumerable<Tuple<int, int, T1>> GetIndexItemTuples<T, T1>(this T[,] array, Func<T, T1> mappingFunc)
+        {
+            var n1 = array.GetLength(0);
+            var n2 = array.GetLength(1);
+
+            for (var i = 0; i < n1; i++)
+            for (var j = 0; j < n2; j++)
+                yield return Tuple.Create(i, j, mappingFunc(array[i, j]));
         }
 
         public static IEnumerable<Tuple<int, int, T>> GetIndexItemTuples<T>(this T[,] array, Func<T, bool> selectionFunc)
@@ -175,6 +252,21 @@ namespace DataStructuresLib.Extensions
 
                 if (selectionFunc(item))
                     yield return Tuple.Create(i, j, item);
+            }
+        }
+        
+        public static IEnumerable<Tuple<int, int, T1>> GetIndexItemTuples<T, T1>(this T[,] array, Func<T, T1> mappingFunc, Func<T, bool> selectionFunc)
+        {
+            var n1 = array.GetLength(0);
+            var n2 = array.GetLength(1);
+
+            for (var i = 0; i < n1; i++)
+            for (var j = 0; j < n2; j++)
+            {
+                var item = array[i, j];
+
+                if (selectionFunc(item))
+                    yield return Tuple.Create(i, j, mappingFunc(item));
             }
         }
 
@@ -192,6 +284,21 @@ namespace DataStructuresLib.Extensions
                     yield return Tuple.Create(i, j, item);
             }
         }
+        
+        public static IEnumerable<Tuple<int, int, T1>> GetIndexItemTuples<T, T1>(this T[,] array, Func<T, T1> mappingFunc, Func<int, int, T, bool> selectionFunc)
+        {
+            var n1 = array.GetLength(0);
+            var n2 = array.GetLength(1);
+
+            for (var i = 0; i < n1; i++)
+            for (var j = 0; j < n2; j++)
+            {
+                var item = array[i, j];
+
+                if (selectionFunc(i, j, item))
+                    yield return Tuple.Create(i, j, mappingFunc(item));
+            }
+        }
 
 
         public static IEnumerable<Tuple<int, int, int, T>> GetIndexItemTuples<T>(this T[,,] array)
@@ -204,6 +311,18 @@ namespace DataStructuresLib.Extensions
             for (var j = 0; j < n2; j++)
             for (var k = 0; k < n3; k++)
                 yield return Tuple.Create(i, j, k, array[i, j, k]);
+        }
+        
+        public static IEnumerable<Tuple<int, int, int, T1>> GetIndexItemTuples<T, T1>(this T[,,] array, Func<T, T1> mappingFunc)
+        {
+            var n1 = array.GetLength(0);
+            var n2 = array.GetLength(1);
+            var n3 = array.GetLength(2);
+
+            for (var i = 0; i < n1; i++)
+            for (var j = 0; j < n2; j++)
+            for (var k = 0; k < n3; k++)
+                yield return Tuple.Create(i, j, k, mappingFunc(array[i, j, k]));
         }
 
         public static IEnumerable<Tuple<int, int, int, T>> GetIndexItemTuples<T>(this T[,,] array, Func<T, bool> selectionFunc)
@@ -219,7 +338,24 @@ namespace DataStructuresLib.Extensions
                 var item = array[i, j, k];
 
                 if (selectionFunc(item))
-                yield return Tuple.Create(i, j, k, item);
+                    yield return Tuple.Create(i, j, k, item);
+            }
+        }
+        
+        public static IEnumerable<Tuple<int, int, int, T1>> GetIndexItemTuples<T, T1>(this T[,,] array, Func<T, T1> mappingFunc, Func<T, bool> selectionFunc)
+        {
+            var n1 = array.GetLength(0);
+            var n2 = array.GetLength(1);
+            var n3 = array.GetLength(2);
+
+            for (var i = 0; i < n1; i++)
+            for (var j = 0; j < n2; j++)
+            for (var k = 0; k < n3; k++)
+            {
+                var item = array[i, j, k];
+
+                if (selectionFunc(item))
+                    yield return Tuple.Create(i, j, k, mappingFunc(item));
             }
         }
 
@@ -237,6 +373,23 @@ namespace DataStructuresLib.Extensions
 
                 if (selectionFunc(i, j, k, item))
                     yield return Tuple.Create(i, j, k, item);
+            }
+        }
+        
+        public static IEnumerable<Tuple<int, int, int, T1>> GetIndexItemTuples<T, T1>(this T[,,] array, Func<T, T1> mappingFunc, Func<int, int, int, T, bool> selectionFunc)
+        {
+            var n1 = array.GetLength(0);
+            var n2 = array.GetLength(1);
+            var n3 = array.GetLength(2);
+
+            for (var i = 0; i < n1; i++)
+            for (var j = 0; j < n2; j++)
+            for (var k = 0; k < n3; k++)
+            {
+                var item = array[i, j, k];
+
+                if (selectionFunc(i, j, k, item))
+                    yield return Tuple.Create(i, j, k, mappingFunc(item));
             }
         }
 

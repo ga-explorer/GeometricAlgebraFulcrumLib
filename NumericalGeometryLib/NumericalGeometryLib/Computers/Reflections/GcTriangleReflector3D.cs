@@ -1,7 +1,6 @@
 ﻿using DataStructuresLib.Statistics;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
-using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Triangles;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Triangles;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 
 namespace NumericalGeometryLib.Computers.Reflections
 {
@@ -24,7 +23,7 @@ namespace NumericalGeometryLib.Computers.Reflections
         public ITriangle3D Triangle { get; set; }
 
 
-        public Float64Tuple3D ReflectPointVa(IFloat64Tuple3D point)
+        public Float64Vector3D ReflectPointVa(IFloat64Tuple3D point)
         {
             //http://mathworld.wolfram.com/Reflection.html
             //https://en.wikipedia.org/wiki/Reflection_(mathematics)
@@ -32,18 +31,18 @@ namespace NumericalGeometryLib.Computers.Reflections
             ComputePointReflectionCounter.Begin();
 
             var n = Triangle.GetNormal();
-            var n2 = n.GetVectorNormSquared();
-            var d = -n.VectorDot(Triangle.GetPoint1());
-            var p = point.ToTuple3D();
+            var n2 = n.ENormSquared();
+            var d = -n.ESp(Triangle.GetPoint1());
+            var p = point.ToVector3D();
 
-            var result = p - 2 * (n.VectorDot(p) + d) / n2 * n;
+            var result = p - 2 * (n.ESp(p) + d) / n2 * n;
 
             ComputePointReflectionCounter.End();
 
             return result;
         }
 
-        public Float64Tuple3D ReflectPoint(IFloat64Tuple3D point)
+        public Float64Vector3D ReflectPoint(IFloat64Tuple3D point)
         {
             ComputePointReflectionCounter.Begin();
 
@@ -297,7 +296,7 @@ namespace NumericalGeometryLib.Computers.Reflections
 
             ComputePointReflectionCounter.End();
 
-            return new Float64Tuple3D(pointImageX, pointImageY, pointImageZ);
+            return Float64Vector3D.Create(pointImageX, pointImageY, pointImageZ);
         }
     }
 }

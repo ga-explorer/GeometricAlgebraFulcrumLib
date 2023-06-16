@@ -1,13 +1,20 @@
-﻿using System.Numerics;
+﻿using System.Collections.Immutable;
+using System.Numerics;
 using DataStructuresLib.Basic;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Constants;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using DataStructuresLib.Extensions;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space4D;
+using GraphicsComposerLib.Rendering.BabylonJs.Animations;
 using GraphicsComposerLib.Rendering.BabylonJs.Constants;
 using GraphicsComposerLib.Rendering.BabylonJs.Materials;
 using GraphicsComposerLib.Rendering.BabylonJs.Values;
-using GraphicsComposerLib.Rendering.Colors;
+using Newtonsoft.Json.Linq;
 using TextComposerLib.Text;
 using TextComposerLib.Text.Linear;
+using WebComposerLib.Colors;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs
 {
@@ -88,6 +95,151 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
                 );
         }
 
+        
+        public static JToken GetBabylonJsJson(this bool value)
+        {
+            return JToken.FromObject(value);
+        }
+        
+        public static JToken GetBabylonJsJson(this int value)
+        {
+            return JToken.FromObject(value);
+        }
+        
+        public static JToken GetBabylonJsJson(this float value)
+        {
+            return JToken.FromObject(value);
+        }
+        
+        public static JToken GetBabylonJsJson(this double value)
+        {
+            return JToken.FromObject((float) value);
+        }
+        
+        public static JToken GetBabylonJsJson(this SizeF value)
+        {
+            return new JArray(
+                value.Width,
+                value.Height
+            );
+        }
+
+        public static JToken GetBabylonJsJson(this IPair<double> value)
+        {
+            return new JArray(
+                (float) value.Item1,
+                (float) value.Item2
+            );
+        }
+
+        public static JToken GetBabylonJsJson(this IFloat64Tuple2D value)
+        {
+            return new JArray(
+                (float) value.X,
+                (float) value.Y
+            );
+        }
+        
+        public static JToken GetBabylonJsJson(this ITriplet<double> value)
+        {
+            return new JArray(
+                (float) value.Item1,
+                (float) value.Item2,
+                (float) value.Item3
+            );
+        }
+
+        public static JToken GetBabylonJsJson(this IFloat64Tuple3D value)
+        {
+            return new JArray(
+                (float) value.X,
+                (float) value.Y,
+                (float) value.Z
+            );
+        }
+        
+        public static JToken GetBabylonJsJson(this IQuad<double> value)
+        {
+            return new JArray(
+                (float) value.Item1,
+                (float) value.Item2,
+                (float) value.Item3,
+                (float) value.Item4
+            );
+        }
+
+        public static JToken GetBabylonJsJson(this IFloat64Tuple4D value)
+        {
+            return new JArray(
+                (float) value.X,
+                (float) value.Y,
+                (float) value.Z,
+                (float) value.W
+            );
+        }
+        
+        public static JToken GetQuaternionBabylonJsJson(this Float64Quaternion value)
+        {
+            return new JArray(
+                (float) value.ScalarI,
+                (float) value.ScalarJ,
+                (float) value.ScalarK,
+                (float) value.Scalar
+            );
+        }
+        
+        public static JToken GetBabylonJsJson(this Quaternion value)
+        {
+            return new JArray(
+                value.X,
+                value.Y,
+                value.Z,
+                value.W
+            );
+        }
+
+        public static JToken GetBabylonJsJson(this System.Drawing.Color color, bool useAlpha = false)
+        {
+            if (useAlpha)
+                return new JArray(
+                    (color.R / 255f).GetBabylonJsJson(),
+                    (color.G / 255f).GetBabylonJsJson(),
+                    (color.B / 255f).GetBabylonJsJson(),
+                    (color.A / 255f).GetBabylonJsJson()
+                );
+
+            return new JArray(
+                (color.R / 255f).GetBabylonJsJson(),
+                (color.G / 255f).GetBabylonJsJson(),
+                (color.B / 255f).GetBabylonJsJson()
+            );
+        }
+
+        public static JToken GetBabylonJsJson(this Color color, bool useAlpha = false)
+        {
+            if (useAlpha)
+            {
+                var c = color.ToPixel<Rgba32>();
+
+                return new JArray(
+                    (c.R / 255f).GetBabylonJsJson(),
+                    (c.G / 255f).GetBabylonJsJson(),
+                    (c.B / 255f).GetBabylonJsJson(),
+                    (c.A / 255f).GetBabylonJsJson()
+                );
+            }
+            else
+            {
+                var c = color.ToPixel<Rgb24>();
+
+                return new JArray(
+                    (c.R / 255f).GetBabylonJsJson(),
+                    (c.G / 255f).GetBabylonJsJson(),
+                    (c.B / 255f).GetBabylonJsJson()
+                );
+            }
+        }
+
 
         public static string GetBabylonJsCode(this bool value)
         {
@@ -108,7 +260,14 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
         {
             return ((float) value).ToString("G");
         }
-        
+
+        public static string GetBabylonJsCode(this SizeF value)
+        {
+            return value.Width == value.Height
+                ? value.Width.GetBabylonJsCode()
+                : $"{{ width: {value.Width.GetBabylonJsCode()}, height: {value.Height.GetBabylonJsCode()} }}";
+        }
+
         public static string GetBabylonJsCode(this System.Drawing.Color color, bool useAlpha = false)
         {
             return useAlpha 
@@ -132,15 +291,15 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
             }
         }
 
-        public static string GetBabylonJsCode(this Axis3D axis)
+        public static string GetBabylonJsCode(this LinUnitBasisVector3D axis)
         {
             return axis switch
             {
-                Axis3D.PositiveX => "BABYLON.Axis.X",
-                Axis3D.NegativeX => "(-BABYLON.Axis.X)",
-                Axis3D.PositiveY => "BABYLON.Axis.Y",
-                Axis3D.NegativeY => "(-BABYLON.Axis.Y)",
-                Axis3D.PositiveZ => "BABYLON.Axis.Z",
+                LinUnitBasisVector3D.PositiveX => "BABYLON.Axis.X",
+                LinUnitBasisVector3D.NegativeX => "(-BABYLON.Axis.X)",
+                LinUnitBasisVector3D.PositiveY => "BABYLON.Axis.Y",
+                LinUnitBasisVector3D.NegativeY => "(-BABYLON.Axis.Y)",
+                LinUnitBasisVector3D.PositiveZ => "BABYLON.Axis.Z",
                 _ => "(-BABYLON.Axis.Z)"
             };
         }
@@ -157,12 +316,12 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
         
         public static string GetBabylonJsCode(this IQuad<double> vector)
         {
-            return $"new BABYLON.Vector3({(float) vector.Item1:G}, {(float) vector.Item2:G}, {(float) vector.Item3:G}, {(float) vector.Item4:G})";
+            return $"new BABYLON.Vector4({(float) vector.Item1:G}, {(float) vector.Item2:G}, {(float) vector.Item3:G}, {(float) vector.Item4:G})";
         }
 
-        public static string GetQuaternionBabylonJsCode(this IFloat64Tuple4D quaternion)
+        public static string GetQuaternionBabylonJsCode(this Float64Quaternion quaternion)
         {
-            return $"new BABYLON.Quaternion({(float) quaternion.X:G}, {(float) quaternion.Y:G}, {(float) quaternion.Z:G}, {(float) quaternion.W:G})";
+            return $"new BABYLON.Quaternion({(float) quaternion.ScalarI:G}, {(float) quaternion.ScalarJ:G}, {(float) quaternion.ScalarK:G}, {(float) quaternion.Scalar:G})";
         }
 
         public static string GetBabylonJsCode(this Quaternion quaternion)
@@ -190,7 +349,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
                 .AppendAtNewLine("]")
                 .ToString();
         }
-
+        
         public static string GetBabylonJsCode(this IEnumerable<Color> colorList, bool useAlpha = false)
         {
             return colorList.Select(
@@ -233,6 +392,41 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
             ).GetBabylonJsArrayCode();
         }
         
+        public static string GetAffineMapBabylonJsArrayCode(this double[,] affineMapArray, bool isTransposed = false)
+        {
+            return affineMapArray
+                .GetItems(isTransposed)
+                .Select(
+                    s => s.GetBabylonJsCode()
+                ).Concatenate(
+                    ",", 
+                    "[", 
+                    "]"
+                );
+        }
+        
+        public static string GetAffineMapBabylonJsMatrixCode(this double[,] affineMapArray, bool isTransposed = false)
+        {
+            var affineMapArrayCode = 
+                affineMapArray.GetAffineMapBabylonJsArrayCode(isTransposed);
+
+            return $"BABYLON.Matrix.FromArray({affineMapArrayCode}, 0)";
+        }
+
+        public static string GetBabylonJsArrayCode(this IAffineMap3D affineMap, bool isTransposed = false)
+        {
+            return affineMap
+                .GetArray2D()
+                .GetAffineMapBabylonJsArrayCode(isTransposed);
+        }
+
+        public static string GetBabylonJsMatrixCode(this IAffineMap3D affineMap, bool isTransposed = false)
+        {
+            return affineMap
+                .GetArray2D()
+                .GetAffineMapBabylonJsMatrixCode(isTransposed);
+        }
+
         public static string GetBabylonJsCode(this IEnumerable<GrBabylonJsValue> valueList)
         {
             return valueList.Select(
@@ -285,6 +479,33 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
             };
         }
         
+        public static string GetBabylonJsCode(this GrBabylonJsAnimationLoopMode animationLoopMode)
+        {
+            return animationLoopMode switch
+            {
+                GrBabylonJsAnimationLoopMode.Relative => "BABYLON.Animation.ANIMATIONLOOPMODE_RELATIVE",
+                GrBabylonJsAnimationLoopMode.Cycle => "BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE",
+                GrBabylonJsAnimationLoopMode.Constant => "BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT",
+                _ => throw new ArgumentOutOfRangeException(nameof(animationLoopMode), animationLoopMode, null)
+            };
+        }
+        
+        public static string GetBabylonJsCode(this GrBabylonJsAnimationType animationType)
+        {
+            return animationType switch
+            {
+                GrBabylonJsAnimationType.Float => "BABYLON.Animation.ANIMATIONTYPE_FLOAT",
+                GrBabylonJsAnimationType.Vector2 => "BABYLON.Animation.ANIMATIONTYPE_VECTOR2",
+                GrBabylonJsAnimationType.Vector3 => "BABYLON.Animation.ANIMATIONTYPE_VECTOR3",
+                GrBabylonJsAnimationType.Quaternion => "BABYLON.Animation.ANIMATIONTYPE_QUATERNION",
+                GrBabylonJsAnimationType.Matrix => "BABYLON.Animation.ANIMATIONTYPE_MATRIX",
+                GrBabylonJsAnimationType.Size => "BABYLON.Animation.ANIMATIONTYPE_SIZE",
+                GrBabylonJsAnimationType.Color3 => "BABYLON.Animation.ANIMATIONTYPE_COLOR3",
+                GrBabylonJsAnimationType.Color4 => "BABYLON.Animation.ANIMATIONTYPE_COLOR4",
+                _ => throw new ArgumentOutOfRangeException(nameof(animationType), animationType, null)
+            };
+        }
+
         public static string GetBabylonJsCode(this GrBabylonJsCameraMode cameraMode)
         {
             return cameraMode switch
@@ -517,6 +738,119 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
                 GrBabylonJsBillboardMode.All => "BABYLON.AbstractMesh.BILLBOARDMODE_ALL",
                 _ => throw new ArgumentOutOfRangeException(nameof(billboardMode), billboardMode, null)
             };
+        }
+        
+
+        public static string GetBabylonJsCode(this GrBabylonJsKeyFrameDictionary<double> keyFrameList)
+        {
+            var keyFrameArray = keyFrameList.ToImmutableArray();
+
+            if (keyFrameArray.Length == 0)
+                return "[]";
+
+            if (keyFrameArray.Length <= 3)
+                return keyFrameArray
+                    .Select(indexValuePair =>
+                        $"{{frame: {indexValuePair.Key.GetBabylonJsCode()}, value: {indexValuePair.Value.GetBabylonJsCode()}}}"
+                    ).Concatenate($", ", "[", "]");
+
+            var itemsText =
+                keyFrameArray
+                    .Select(indexValuePair =>
+                        $"{{frame: {indexValuePair.Key.GetBabylonJsCode()}, value: {indexValuePair.Value.GetBabylonJsCode()}}}"
+                    ).Concatenate($",{Environment.NewLine}");
+
+            return new LinearTextComposer()
+                .AppendLine("[")
+                .IncreaseIndentation()
+                .Append(itemsText)
+                .DecreaseIndentation()
+                .AppendAtNewLine("]")
+                .ToString();
+        }
+        
+        public static string GetBabylonCode(this GrBabylonJsKeyFrameDictionary<Float64Vector2D> keyFrameList)
+        {
+            var keyFrameArray = keyFrameList.ToImmutableArray();
+
+            if (keyFrameArray.Length == 0)
+                return "[]";
+
+            if (keyFrameArray.Length == 1)
+                return keyFrameArray
+                    .Select(indexValuePair =>
+                        $"{{frame: {indexValuePair.Key.GetBabylonJsCode()}, value: {indexValuePair.Value.GetBabylonJsCode()}}}"
+                    ).Concatenate($", ", "[", "]");
+
+            var itemsText =
+                keyFrameArray
+                    .Select(indexValuePair =>
+                        $"{{frame: {indexValuePair.Key.GetBabylonJsCode()}, value: {indexValuePair.Value.GetBabylonJsCode()}}}"
+                    ).Concatenate($",{Environment.NewLine}");
+
+            return new LinearTextComposer()
+                .AppendLine("[")
+                .IncreaseIndentation()
+                .Append(itemsText)
+                .DecreaseIndentation()
+                .AppendAtNewLine("]")
+                .ToString();
+        }
+        
+        public static string GetBabylonCode(this GrBabylonJsKeyFrameDictionary<Float64Vector3D> keyFrameList)
+        {
+            var keyFrameArray = keyFrameList.ToImmutableArray();
+
+            if (keyFrameArray.Length == 0)
+                return "[]";
+
+            if (keyFrameArray.Length == 1)
+                return keyFrameArray
+                    .Select(indexValuePair =>
+                        $"{{frame: {indexValuePair.Key.GetBabylonJsCode()}, value: {indexValuePair.Value.GetBabylonJsCode()}}}"
+                    ).Concatenate($", ", "[", "]");
+
+            var itemsText =
+                keyFrameArray
+                    .Select(indexValuePair =>
+                        $"{{frame: {indexValuePair.Key.GetBabylonJsCode()}, value: {indexValuePair.Value.GetBabylonJsCode()}}}"
+                    ).Concatenate($",{Environment.NewLine}");
+
+            return new LinearTextComposer()
+                .AppendLine("[")
+                .IncreaseIndentation()
+                .Append(itemsText)
+                .DecreaseIndentation()
+                .AppendAtNewLine("]")
+                .ToString();
+        }
+
+        public static string GetBabylonJsCode(this GrBabylonJsKeyFrameDictionary<Float64Quaternion> keyFrameList)
+        {
+            var keyFrameArray = keyFrameList.ToImmutableArray();
+
+            if (keyFrameArray.Length == 0)
+                return "[]";
+
+            if (keyFrameArray.Length == 1)
+                return keyFrameArray
+                    .Select(indexValuePair =>
+                        $"{{frame: {indexValuePair.Key.GetBabylonJsCode()}, value: {indexValuePair.Value.GetQuaternionBabylonJsCode()}}}"
+                    ).Concatenate($", ", "[", "]");
+
+            var itemsText =
+                keyFrameArray
+                    .Select(indexValuePair =>
+                        $"{{frame: {indexValuePair.Key.GetBabylonJsCode()}, value: {indexValuePair.Value.GetQuaternionBabylonJsCode()}}}"
+                    ).Concatenate($",{Environment.NewLine}");
+
+            return new LinearTextComposer()
+                .AppendLine("[")
+                .IncreaseIndentation()
+                .Append(itemsText)
+                .DecreaseIndentation()
+                .AppendAtNewLine("]")
+                .ToString();
         }
 
 

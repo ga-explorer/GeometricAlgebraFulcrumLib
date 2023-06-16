@@ -1,27 +1,24 @@
 ﻿using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Arrays.Float64;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.Reflection;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.Rotation;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.Scaling;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.SpaceND;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.SpaceND.Reflection;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.SpaceND.Scaling;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.SpaceND;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps
 {
     public static class ScalingUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IReadOnlyList<LinFloat64Vector> MapVectors(this ILinFloat64UnilinearMap map, params LinFloat64Vector[] vectorList)
+        public static IReadOnlyList<Float64Vector> MapVectors(this ILinFloat64UnilinearMap map, params Float64Vector[] vectorList)
         {
             return vectorList.Select(map.MapVector).ToImmutableArray();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<LinFloat64Vector> MapVectors(this ILinFloat64UnilinearMap map, IEnumerable<LinFloat64Vector> vectorList)
+        public static IEnumerable<Float64Vector> MapVectors(this ILinFloat64UnilinearMap map, IEnumerable<Float64Vector> vectorList)
         {
             return vectorList.Select(map.MapVector);
         }
@@ -133,123 +130,123 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps
         }
 
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ILinFloat64SimpleVectorToVectorRotation CreateSimpleVectorToVectorRotation(this IReadOnlyDictionary<int, double> sourceVector, IReadOnlyDictionary<int, double> targetVector)
-        {
-            var dimensions = sourceVector.Count;
+        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+        //public static ILinFloat64PlanarRotation CreateSimpleVectorToVectorRotation(this IReadOnlyDictionary<int, double> sourceVector, IReadOnlyDictionary<int, double> targetVector)
+        //{
+        //    var dimensions = sourceVector.Count;
 
-            // Find if the given source vector is parallel to a basis vector
-            var (sourceVectorIsAxis, _, sourceAxis) = 
-                sourceVector.TryVectorToAxis();
+        //    // Find if the given source vector is parallel to a basis vector
+        //    var (sourceVectorIsAxis, _, sourceAxis) = 
+        //        sourceVector.TryVectorToAxis();
 
-            // Find if the given target vector is parallel to a basis vector
-            var (targetVectorIsAxis, _, targetAxis) = 
-                targetVector.TryVectorToAxis();
+        //    // Find if the given target vector is parallel to a basis vector
+        //    var (targetVectorIsAxis, _, targetAxis) = 
+        //        targetVector.TryVectorToAxis();
 
-            if (sourceVectorIsAxis)
-            {
-                if (targetVectorIsAxis)
-                {
-                    if (sourceAxis.IsSame(targetAxis))
-                        return LinFloat64IdentityLinearMap.Create(dimensions);
+        //    if (sourceVectorIsAxis)
+        //    {
+        //        if (targetVectorIsAxis)
+        //        {
+        //            if (sourceAxis.IsSame(targetAxis))
+        //                return LinFloat64IdentityLinearMap.Create(dimensions);
 
-                    return new LinFloat64AxisToAxisRotation(
-                        sourceAxis.Index,
-                        sourceAxis.IsNegative,
-                        targetAxis.Index,
-                        targetAxis.IsNegative
-                    );
-                }
+        //            return new LinFloat64AxisToAxisRotation(
+        //                sourceAxis.Index,
+        //                sourceAxis.IsNegative,
+        //                targetAxis.Index,
+        //                targetAxis.IsNegative
+        //            );
+        //        }
 
-                return new LinFloat64AxisToVectorRotation(
-                    sourceAxis.Index,
-                    sourceAxis.IsNegative,
-                    targetVector.CreateUnitLinVector()
-                );
-            }
-            else
-            {
-                if (targetVectorIsAxis)
-                {
-                    return LinFloat64VectorToAxisRotation.Create(
-                        sourceVector.CreateUnitLinVector(),
-                        targetAxis
-                    );
-                }
-            }
+        //        return new LinFloat64AxisToVectorRotation(
+        //            sourceAxis.Index,
+        //            sourceAxis.IsNegative,
+        //            targetVector.CreateUnitLinVector()
+        //        );
+        //    }
+        //    else
+        //    {
+        //        if (targetVectorIsAxis)
+        //        {
+        //            return LinFloat64VectorToAxisRotation.Create(
+        //                sourceVector.CreateUnitLinVector(),
+        //                targetAxis
+        //            );
+        //        }
+        //    }
 
-            if (sourceVector.IsVectorNearOrthogonalTo(targetVector))
-                return new LinFloat64OrthogonalVectorToVectorRotation(
-                    sourceVector.CreateUnitLinVector(),
-                    targetVector.CreateUnitLinVector()
-                );
+        //    if (sourceVector.IsVectorNearOrthogonalTo(targetVector))
+        //        return new LinFloat64OrthogonalVectorToVectorRotation(
+        //            sourceVector.CreateUnitLinVector(),
+        //            targetVector.CreateUnitLinVector()
+        //        );
 
-            if (sourceVector.IsVectorNearParallelTo(targetVector))
-                return LinFloat64IdentityLinearMap.Create(dimensions);
+        //    if (sourceVector.IsVectorNearParallelTo(targetVector))
+        //        return LinFloat64IdentityLinearMap.Create(dimensions);
 
-            return LinFloat64VectorToVectorRotation.Create(
-                sourceVector.CreateUnitLinVector(),
-                targetVector.CreateUnitLinVector()
-            );
-        }
+        //    return LinFloat64VectorToVectorRotation.CreateFromRotatedVector(
+        //        sourceVector.CreateUnitLinVector(),
+        //        targetVector.CreateUnitLinVector()
+        //    );
+        //}
 
-        public static ILinFloat64SimpleVectorToVectorRotation CreateSimpleVectorToVectorRotation(this IReadOnlyList<double> sourceVector, IReadOnlyList<double> targetVector)
-        {
-            var dimensions = sourceVector.Count;
+        //public static ILinFloat64PlanarRotation CreateSimpleVectorToVectorRotation(this IReadOnlyList<double> sourceVector, IReadOnlyList<double> targetVector)
+        //{
+        //    var dimensions = sourceVector.Count;
 
-            // Find if the given source vector is parallel to a basis vector
-            var (sourceVectorIsAxis, _, sourceAxis) = 
-                sourceVector.TryVectorToAxis();
+        //    // Find if the given source vector is parallel to a basis vector
+        //    var (sourceVectorIsAxis, _, sourceAxis) = 
+        //        sourceVector.TryVectorToAxis();
 
-            // Find if the given target vector is parallel to a basis vector
-            var (targetVectorIsAxis, _, targetAxis) = 
-                targetVector.TryVectorToAxis();
+        //    // Find if the given target vector is parallel to a basis vector
+        //    var (targetVectorIsAxis, _, targetAxis) = 
+        //        targetVector.TryVectorToAxis();
 
-            if (sourceVectorIsAxis)
-            {
-                if (targetVectorIsAxis)
-                {
-                    if (sourceAxis.IsSame(targetAxis))
-                        return LinFloat64IdentityLinearMap.Create(dimensions);
+        //    if (sourceVectorIsAxis)
+        //    {
+        //        if (targetVectorIsAxis)
+        //        {
+        //            if (sourceAxis.IsSame(targetAxis))
+        //                return LinFloat64IdentityLinearMap.Create(dimensions);
 
-                    return new LinFloat64AxisToAxisRotation(
-                        sourceAxis.Index,
-                        sourceAxis.IsNegative,
-                        targetAxis.Index,
-                        targetAxis.IsNegative
-                    );
-                }
+        //            return new LinFloat64AxisToAxisRotation(
+        //                sourceAxis.Index,
+        //                sourceAxis.IsNegative,
+        //                targetAxis.Index,
+        //                targetAxis.IsNegative
+        //            );
+        //        }
 
-                return new LinFloat64AxisToVectorRotation(
-                    sourceAxis.Index,
-                    sourceAxis.IsNegative,
-                    targetVector.CreateUnitLinVector()
-                );
-            }
-            else
-            {
-                if (targetVectorIsAxis)
-                {
-                    return LinFloat64VectorToAxisRotation.Create(
-                        sourceVector.CreateUnitLinVector(),
-                        targetAxis
-                    );
-                }
-            }
+        //        return new LinFloat64AxisToVectorRotation(
+        //            sourceAxis.Index,
+        //            sourceAxis.IsNegative,
+        //            targetVector.CreateUnitLinVector()
+        //        );
+        //    }
+        //    else
+        //    {
+        //        if (targetVectorIsAxis)
+        //        {
+        //            return LinFloat64VectorToAxisRotation.Create(
+        //                sourceVector.CreateUnitLinVector(),
+        //                targetAxis
+        //            );
+        //        }
+        //    }
 
-            if (sourceVector.IsVectorNearOrthogonalTo(targetVector))
-                return new LinFloat64OrthogonalVectorToVectorRotation(
-                    sourceVector.CreateUnitLinVector(),
-                    targetVector.CreateUnitLinVector()
-                );
+        //    if (sourceVector.IsVectorNearOrthogonalTo(targetVector))
+        //        return new LinFloat64OrthogonalVectorToVectorRotation(
+        //            sourceVector.CreateUnitLinVector(),
+        //            targetVector.CreateUnitLinVector()
+        //        );
 
-            if (sourceVector.IsVectorNearParallelTo(targetVector))
-                return LinFloat64IdentityLinearMap.Create(dimensions);
+        //    if (sourceVector.IsVectorNearParallelTo(targetVector))
+        //        return LinFloat64IdentityLinearMap.Create(dimensions);
 
-            return LinFloat64VectorToVectorRotation.Create(
-                sourceVector.CreateUnitLinVector(),
-                targetVector.CreateUnitLinVector()
-            );
-        }
+        //    return LinFloat64VectorToVectorRotation.CreateFromRotatedVector(
+        //        sourceVector.CreateUnitLinVector(),
+        //        targetVector.CreateUnitLinVector()
+        //    );
+        //}
     }
 }

@@ -1,6 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Mutable;
+﻿using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 using GraphicsComposerLib.Rendering.Xeogl.Constants;
 using TextComposerLib.Code.JavaScript;
 
@@ -11,8 +9,8 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Lights
     /// </summary>
     public sealed class XeoglPointLight : XeoglLight
     {
-        private static Float64Tuple3D DefaultLightPosition { get; }
-            = new Float64Tuple3D(1, 1, 1);
+        private static Float64Vector3D DefaultLightPosition { get; }
+            = Float64Vector3D.Create(1, 1, 1);
 
 
         public override string JavaScriptClassName => "PointLight";
@@ -28,8 +26,8 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Lights
 
         public double QuadraticAttenuation { get; set; }
 
-        public MutableFloat64Tuple3D LightPosition { get; set; }
-            = new MutableFloat64Tuple3D(DefaultLightPosition);
+        public Float64Vector3DComposer LightPosition { get; set; }
+            = Float64Vector3DComposer.Create(DefaultLightPosition);
 
 
         public XeoglPointLight()
@@ -38,7 +36,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Lights
 
         public XeoglPointLight(IFloat64Tuple3D lightPosition)
         {
-            LightPosition.SetTuple(lightPosition);
+            LightPosition.SetVector(lightPosition);
         }
 
 

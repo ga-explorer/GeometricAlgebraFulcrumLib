@@ -1,5 +1,6 @@
 ﻿using DataStructuresLib.Random;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.Random
 {
@@ -63,32 +64,32 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Random
         }
 
 
-        public Float64Tuple2D GetRandomUnitVector2Dp()
+        public Float64Vector2D GetRandomUnitVector2Dp()
         {
             var phi = PhiMin + RandomGenerator.GetNumber() * PhiRange;
             var cosPhi = Math.Cos(phi);
             var sinPhi = Math.Sin(phi);
 
-            return new Float64Tuple2D(
+            return new Float64Vector2D(
                 cosPhi,
                 sinPhi
             );
         }
 
-        public Float64Tuple2D GetRandomVector2Dp()
+        public Float64Vector2D GetRandomVector2Dp()
         {
             var r = RMin + RandomGenerator.GetNumber() * RRange;
             var phi = PhiMin + RandomGenerator.GetNumber() * PhiRange;
             var cosPhi = Math.Cos(phi);
             var sinPhi = Math.Sin(phi);
 
-            return new Float64Tuple2D(
+            return new Float64Vector2D(
                 r * cosPhi,
                 r * sinPhi
             );
         }
 
-        public Float64Tuple3D GetRandomUnitVector3Dp()
+        public Float64Vector3D GetRandomUnitVector3Dp()
         {
             var theta = ThetaMin + RandomGenerator.GetNumber() * ThetaRange;
             var phi = PhiMin + RandomGenerator.GetNumber() * PhiRange;
@@ -97,14 +98,12 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Random
             var cosPhi = Math.Cos(phi);
             var sinPhi = Math.Sin(phi);
 
-            return new Float64Tuple3D(
-                sinTheta * cosPhi,
+            return Float64Vector3D.Create(sinTheta * cosPhi,
                 sinTheta * sinPhi,
-                cosTheta
-            );
+                cosTheta);
         }
 
-        public Float64Tuple3D GetRandomVector3Dp()
+        public Float64Vector3D GetRandomVector3Dp()
         {
             var r = RMin + RandomGenerator.GetNumber() * RRange;
             var theta = ThetaMin + RandomGenerator.GetNumber() * ThetaRange;
@@ -114,11 +113,9 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Random
             var cosPhi = Math.Cos(phi);
             var sinPhi = Math.Sin(phi);
             
-            return new Float64Tuple3D(
-                r * sinTheta * cosPhi,
+            return Float64Vector3D.Create(r * sinTheta * cosPhi,
                 r * sinTheta * sinPhi,
-                r * cosTheta
-            );
+                r * cosTheta);
         }
 
 
@@ -131,9 +128,9 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Random
         //}
 
 
-        public Float64Tuple2D[] GetRandomUnitVectors2Dp(int count)
+        public Float64Vector2D[] GetRandomUnitVectors2Dp(int count)
         {
-            var vectorsList = new Float64Tuple2D[count];
+            var vectorsList = new Float64Vector2D[count];
 
             for (var i = 0; i < count; i++)
                 vectorsList[i] = GetRandomUnitVector2Dp();
@@ -141,9 +138,9 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Random
             return vectorsList;
         }
 
-        public Float64Tuple2D[] GetRandomVectors2Dp(int count)
+        public Float64Vector2D[] GetRandomVectors2Dp(int count)
         {
-            var vectorsList = new Float64Tuple2D[count];
+            var vectorsList = new Float64Vector2D[count];
 
             for (var i = 0; i < count; i++)
                 vectorsList[i] = GetRandomVector2Dp();
@@ -151,9 +148,9 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Random
             return vectorsList;
         }
 
-        public Float64Tuple3D[] GetRandomUnitVectors3Dp(int count)
+        public Float64Vector3D[] GetRandomUnitVectors3Dp(int count)
         {
-            var vectorsList = new Float64Tuple3D[count];
+            var vectorsList = new Float64Vector3D[count];
 
             for (var i = 0; i < count; i++)
                 vectorsList[i] = GetRandomUnitVector3Dp();
@@ -161,9 +158,9 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Random
             return vectorsList;
         }
 
-        public Float64Tuple3D[] GetRandomVectors3Dp(int count)
+        public Float64Vector3D[] GetRandomVectors3Dp(int count)
         {
-            var vectorsList = new Float64Tuple3D[count];
+            var vectorsList = new Float64Vector3D[count];
 
             for (var i = 0; i < count; i++)
                 vectorsList[i] = GetRandomVector3Dp();

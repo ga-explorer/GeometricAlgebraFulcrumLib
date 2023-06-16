@@ -4,9 +4,10 @@ using System.Collections.Immutable;
 using System.Linq;
 using BenchmarkDotNet.Attributes;
 using GAPoTNumLib.GAPoT;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Arrays.Float64;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.Rotation;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.SpaceND.Composers;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.SpaceND.Rotation;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.SpaceND;
 
 namespace GeometricAlgebraFulcrumLib.Benchmarks.GAPoT
 {
@@ -17,11 +18,11 @@ namespace GeometricAlgebraFulcrumLib.Benchmarks.GAPoT
         //[Params(28, 29, 30, 31, 32, 33)]
         public int VSpaceDimensions { get; set; }// = 24;
     
-        public IReadOnlyList<LinFloat64Vector> VectorList { get; private set; }
+        public IReadOnlyList<Float64Vector> VectorList { get; private set; }
     
         public LinFloat64MatrixRotation ClarkeMatrixRotation { get; private set; }
 
-        public LinFloat64VectorToVectorRotationSequence ClarkeSequenceRotation { get; private set; }
+        public LinFloat64PlanarRotationSequence ClarkeSequenceRotation { get; private set; }
     
 
         [GlobalSetup]
@@ -72,13 +73,13 @@ namespace GeometricAlgebraFulcrumLib.Benchmarks.GAPoT
 
 
         [Benchmark]
-        public IReadOnlyList<LinFloat64Vector> ClarkeMatrix()
+        public IReadOnlyList<Float64Vector> ClarkeMatrix()
         {
             return VectorList.Select(ClarkeMatrixRotation.MapVector).ToImmutableArray();
         }
         
         [Benchmark]
-        public IReadOnlyList<LinFloat64Vector> ClarkeSequence()
+        public IReadOnlyList<Float64Vector> ClarkeSequence()
         {
             return VectorList.Select(ClarkeSequenceRotation.MapVector).ToImmutableArray();
         }

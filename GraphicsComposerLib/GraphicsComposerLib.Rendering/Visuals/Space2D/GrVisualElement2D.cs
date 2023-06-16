@@ -13,5 +13,8 @@
         {
             Name = name;
         }
+
+
+        public abstract bool IsValid();
     }
 }

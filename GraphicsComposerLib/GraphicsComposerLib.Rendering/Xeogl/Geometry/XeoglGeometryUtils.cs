@@ -1,7 +1,7 @@
-﻿using GraphicsComposerLib.Geometry.Primitives;
-using GraphicsComposerLib.Geometry.Primitives.Lines;
-using GraphicsComposerLib.Geometry.Primitives.Points;
-using GraphicsComposerLib.Geometry.Primitives.Triangles;
+﻿using GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives;
+using GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Lines;
+using GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Points;
+using GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Triangles;
 using GraphicsComposerLib.Rendering.Xeogl.Geometry.Primitives;
 
 namespace GraphicsComposerLib.Rendering.Xeogl.Geometry

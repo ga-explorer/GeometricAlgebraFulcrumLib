@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Linq;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
-using GeometricAlgebraFulcrumLib.MathBase.Polynomials.PhCurves;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.PolynomialAlgebra.PhCurves;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.Text;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Numeric
@@ -15,8 +16,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.Numeric
         /// </summary>
         public static void Example1()
         {
-            var point1 = new Float64Tuple2D(10, -1);
-            var tangent1 = new Float64Tuple2D(1.2, 0.9);
+            var point1 = new Float64Vector2D(10, -1);
+            var tangent1 = new Float64Vector2D(1.2, 0.9);
 
             Console.WriteLine(@$"c'(1) = {tangent1}");
             Console.WriteLine(@$"c(1) = {point1}");
@@ -58,8 +59,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.Numeric
         /// </summary>
         public static void Example2()
         {
-            var point1 = new Float64Tuple3D(10, -1, 3);
-            var tangent1 = new Float64Tuple3D(1.2, 0.9, -0.5);
+            var point1 = Float64Vector3D.Create(10, -1, 3);
+            var tangent1 = Float64Vector3D.Create(1.2, 0.9, -0.5);
 
             Console.WriteLine(@$"c'(1) = {tangent1}");
             Console.WriteLine(@$"c(1) = {point1}");
@@ -128,11 +129,11 @@ namespace GeometricAlgebraFulcrumLib.Samples.Numeric
         /// </summary>
         public static void Example3()
         {
-            var point0 = new Float64Tuple2D(1, 1);
-            var tangent0 = new Float64Tuple2D(-1.2, -0.9);
+            var point0 = new Float64Vector2D(1, 1);
+            var tangent0 = new Float64Vector2D(-1.2, -0.9);
 
-            var point1 = new Float64Tuple2D(10, -1);
-            var tangent1 = new Float64Tuple2D(1.2, 0.9);
+            var point1 = new Float64Vector2D(10, -1);
+            var tangent1 = new Float64Vector2D(1.2, 0.9);
 
             Console.WriteLine(@$"c'(0) = {tangent0}");
             Console.WriteLine(@$"c'(1) = {tangent1}");
@@ -209,11 +210,11 @@ namespace GeometricAlgebraFulcrumLib.Samples.Numeric
         /// </summary>
         public static void Example4()
         {
-            var point0 = new Float64Tuple3D(1, 1, 0);
-            var tangent0 = new Float64Tuple3D(-1.2, -0.9, 0.5);
+            var point0 = Float64Vector3D.Create(1, 1, 0);
+            var tangent0 = Float64Vector3D.Create(-1.2, -0.9, 0.5);
 
-            var point1 = new Float64Tuple3D(10, -1, 3);
-            var tangent1 = new Float64Tuple3D(1.2, 0.9, -0.5);
+            var point1 = Float64Vector3D.Create(10, -1, 3);
+            var tangent1 = Float64Vector3D.Create(1.2, 0.9, -0.5);
 
             Console.WriteLine(@$"c'(0) = {tangent0}");
             Console.WriteLine(@$"c'(1) = {tangent1}");

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
 
 namespace NumericalGeometryLib.Computers.Voronoi
 {

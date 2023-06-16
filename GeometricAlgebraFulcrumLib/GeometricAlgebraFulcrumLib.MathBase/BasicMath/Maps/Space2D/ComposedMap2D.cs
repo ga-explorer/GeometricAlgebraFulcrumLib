@@ -1,10 +1,10 @@
-﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Matrices;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
+﻿using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space2D
 {
-    public sealed class ComposedMap2D : IAffineMap2D
+    public sealed class ComposedMap2D : 
+        IAffineMap2D
     {
         private readonly List<IAffineMap2D> _affineMapsList
             = new List<IAffineMap2D>();
@@ -73,12 +73,12 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space2D
             return this;
         }
 
-        public SquareMatrix3 ToSquareMatrix3()
+        public SquareMatrix3 GetSquareMatrix3()
         {
             //Construct matrix columns
-            var c1 = MapVector(new Float64Tuple2D(1, 0));
-            var c2 = MapVector(new Float64Tuple2D(0, 1));
-            var c3 = MapPoint(new Float64Tuple2D(0, 0));
+            var c1 = MapVector(new Float64Vector2D(1, 0));
+            var c2 = MapVector(new Float64Vector2D(0, 1));
+            var c3 = MapPoint(new Float64Vector2D(0, 0));
 
             return new SquareMatrix3()
             {
@@ -92,42 +92,44 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space2D
             };
         }
 
-        public double[,] ToArray2D()
+        public double[,] GetArray2D()
         {
             throw new NotImplementedException();
         }
 
-        public Float64Tuple2D MapPoint(IFloat64Tuple2D point)
+        public bool SwapsHandedness { get; }
+
+        public Float64Vector2D MapPoint(IFloat64Tuple2D point)
         {
             return _affineMapsList.Aggregate(
-                point.ToTuple2D(), 
+                point.ToLinVector2D(), 
                 (current, linearMap) => linearMap.MapPoint(current)
             );
         }
 
-        public Float64Tuple2D MapVector(IFloat64Tuple2D vector)
+        public Float64Vector2D MapVector(IFloat64Tuple2D vector)
         {
             return _affineMapsList.Aggregate(
-                vector.ToTuple2D(), 
+                vector.ToLinVector2D(), 
                 (current, linearMap) => linearMap.MapVector(current)
             );
         }
 
-        public Float64Tuple2D MapNormal(IFloat64Tuple2D normal)
+        public Float64Vector2D MapNormal(IFloat64Tuple2D normal)
         {
             return _affineMapsList.Aggregate(
-                normal.ToTuple2D(), 
+                normal.ToLinVector2D(), 
                 (current, linearMap) => linearMap.MapNormal(current)
             );
         }
 
-        public IAffineMap2D InverseMap()
+        public IAffineMap2D GetInverseAffineMap()
         {
             var invMap = new ComposedMap2D();
 
             invMap.AppendMaps(
                 _affineMapsList
-                .Select(m => m.InverseMap())
+                .Select(m => m.GetInverseAffineMap())
                 .Reverse()
             );
 

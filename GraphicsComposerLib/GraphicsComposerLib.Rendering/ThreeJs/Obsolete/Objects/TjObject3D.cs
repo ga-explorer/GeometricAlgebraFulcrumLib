@@ -1,5 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
+﻿using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 using GraphicsComposerLib.Rendering.ThreeJs.Obsolete.Scenes;
 using TextComposerLib.Code.JavaScript;
 
@@ -25,10 +24,10 @@ namespace GraphicsComposerLib.Rendering.ThreeJs.Obsolete.Objects
         public int RenderOrder { get; set; }
 
         public IFloat64Tuple3D Position { get; set; }
-            = Float64Tuple3D.Zero;
+            = Float64Vector3D.Zero;
 
         public IFloat64Tuple3D UpDirection { get; set; }
-            = Float64Tuple3D.E2;
+            = Float64Vector3D.E2;
 
         public int LayerMask { get; set; } 
             = 1;
@@ -57,8 +56,8 @@ namespace GraphicsComposerLib.Rendering.ThreeJs.Obsolete.Objects
                 .SetValue("frustumCulled", FrustumCulled, true)
                 .SetValue("renderOrder", RenderOrder, 0)
                 .SetValue("layers.mask", LayerMask, 1)
-                .SetThreeJsVector3Value("position", Position, Float64Tuple3D.Zero)
-                .SetThreeJsVector3Value("up", UpDirection, Float64Tuple3D.E2)
+                .SetThreeJsVector3Value("position", Position, Float64Vector3D.Zero)
+                .SetThreeJsVector3Value("up", UpDirection, Float64Vector3D.E2)
                 .SetTextValue("name", Name, string.Empty);
         }
     }

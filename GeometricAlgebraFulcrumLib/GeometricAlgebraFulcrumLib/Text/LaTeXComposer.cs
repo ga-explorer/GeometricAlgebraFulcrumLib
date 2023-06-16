@@ -6,11 +6,11 @@ using System.Text;
 using DataStructuresLib;
 using DataStructuresLib.BitManipulation;
 using DataStructuresLib.Combinations;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records.Restricted;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Basis;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices;
 using TextComposerLib.Text;
@@ -52,6 +52,22 @@ namespace GeometricAlgebraFulcrumLib.Text
         public string GetScalarText(Scalar<T> scalar)
         {
             return GetScalarText(scalar.ScalarValue);
+        }
+        
+        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+        //public virtual string GetScalarText(double scalar)
+        //{
+        //    return ScalarProcessor.ToText(
+        //        ScalarProcessor.GetScalarFromNumber(scalar)
+        //    );
+        //}
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public virtual string GetScalarText(Float64Scalar scalar)
+        {
+            return ScalarProcessor.ToText(
+                ScalarProcessor.GetScalarFromNumber(scalar.Value)
+            );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

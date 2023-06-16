@@ -1,5 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors;
 
 namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra

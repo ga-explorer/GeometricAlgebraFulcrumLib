@@ -3,16 +3,14 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using DataStructuresLib.Statistics;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
-using GeometricAlgebraFulcrumLib.MathBase.BasicShapes;
-using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Lines;
-using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Lines.Immutable;
-using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Triangles;
-using GeometricAlgebraFulcrumLib.MathBase.Borders;
-using GeometricAlgebraFulcrumLib.MathBase.Borders.Space1D;
-using GeometricAlgebraFulcrumLib.MathBase.Borders.Space1D.Immutable;
-using GeometricAlgebraFulcrumLib.MathBase.Borders.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Triangles;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 using NumericalGeometryLib.Accelerators.BIH;
 using NumericalGeometryLib.Accelerators.BIH.Space3D;
 using NumericalGeometryLib.Accelerators.BIH.Space3D.Traversal;
@@ -78,10 +76,10 @@ namespace NumericalGeometryLib.Computers.Intersections
             var isYPositive = 1 - isYNegative;
 
             // Check for ray intersection against x and y slabs
-            var txMin = (corners[isXNegative].X - lineData.Origin[0]) * lineData.DirectionInv[0];
-            var txMax = (corners[isXPositive].X - lineData.Origin[0]) * lineData.DirectionInv[0];
-            var tyMin = (corners[isYNegative].Y - lineData.Origin[1]) * lineData.DirectionInv[1];
-            var tyMax = (corners[isYPositive].Y - lineData.Origin[1]) * lineData.DirectionInv[1];
+            var txMin = (corners[isXNegative].X - lineData.Origin.X) * lineData.DirectionInv.X;
+            var txMax = (corners[isXPositive].X - lineData.Origin.X) * lineData.DirectionInv.X;
+            var tyMin = (corners[isYNegative].Y - lineData.Origin.Y) * lineData.DirectionInv.Y;
+            var tyMax = (corners[isYPositive].Y - lineData.Origin.Y) * lineData.DirectionInv.Y;
 
             // Update txMax and tyMax to ensure robust bounds intersection
             txMax *= 1 + 2 * Float64Utils.Geomma3;
@@ -110,10 +108,10 @@ namespace NumericalGeometryLib.Computers.Intersections
             var isYPositive = 1 - isYNegative;
 
             // Check for ray intersection against x and y slabs
-            var txMin = (corners[isXNegative].X - lineData.Origin[0]) * lineData.DirectionInv[0];
-            var txMax = (corners[isXPositive].X - lineData.Origin[0]) * lineData.DirectionInv[0];
-            var tyMin = (corners[isYNegative].Y - lineData.Origin[1]) * lineData.DirectionInv[1];
-            var tyMax = (corners[isYPositive].Y - lineData.Origin[1]) * lineData.DirectionInv[1];
+            var txMin = (corners[isXNegative].X - lineData.Origin.X) * lineData.DirectionInv.X;
+            var txMax = (corners[isXPositive].X - lineData.Origin.X) * lineData.DirectionInv.X;
+            var tyMin = (corners[isYNegative].Y - lineData.Origin.Y) * lineData.DirectionInv.Y;
+            var tyMax = (corners[isYPositive].Y - lineData.Origin.Y) * lineData.DirectionInv.Y;
 
             // Update txMax and tyMax to ensure robust bounds intersection
             txMax *= 1 + 2 * Float64Utils.Geomma3;
@@ -141,7 +139,7 @@ namespace NumericalGeometryLib.Computers.Intersections
 
         public Line3D Line { get; private set; }
 
-        public BoundingBox1D LineParameterLimits { get; private set; }
+        public Float64Range1D LineParameterLimits { get; private set; }
 
 
         /// <summary>
@@ -163,7 +161,7 @@ namespace NumericalGeometryLib.Computers.Intersections
                 lineSegment.Point2Z - lineSegment.Point1Z
             );
 
-            LineParameterLimits = new BoundingBox1D(0, 1);
+            LineParameterLimits = Float64Range1D.ZeroToOne;
 
             return this;
         }
@@ -179,12 +177,12 @@ namespace NumericalGeometryLib.Computers.Intersections
                 point2.Z - point1.Z
             );
 
-            LineParameterLimits = new BoundingBox1D(0, 1);
+            LineParameterLimits = Float64Range1D.ZeroToOne;
 
             return this;
         }
 
-        public GcLimitedLineIntersector3D SetLine(IFloat64Tuple3D lineOrigin, IFloat64Tuple3D lineDirection, IBoundingBox1D lineParamLimits)
+        public GcLimitedLineIntersector3D SetLine(IFloat64Tuple3D lineOrigin, IFloat64Tuple3D lineDirection, Float64Range1D lineParamLimits)
         {
             Line = new Line3D(
                 lineOrigin.X,
@@ -195,16 +193,16 @@ namespace NumericalGeometryLib.Computers.Intersections
                 lineDirection.Z
             );
 
-            LineParameterLimits = lineParamLimits.GetBoundingBox();
+            LineParameterLimits = lineParamLimits;
 
             return this;
         }
 
-        public GcLimitedLineIntersector3D SetLine(ILine3D line, IBoundingBox1D lineParamLimits)
+        public GcLimitedLineIntersector3D SetLine(ILine3D line, Float64Range1D lineParamLimits)
         {
             Line = line.ToLine();
 
-            LineParameterLimits = lineParamLimits.GetBoundingBox();
+            LineParameterLimits = lineParamLimits;
 
             return this;
         }
@@ -1959,10 +1957,7 @@ namespace NumericalGeometryLib.Computers.Intersections
                 -oldLine.DirectionZ
             );
 
-            LineParameterLimits = new BoundingBox1D(
-                1 - oldLineParameterLimits.MaxValue,
-                1 - oldLineParameterLimits.MinValue
-            );
+            LineParameterLimits = 1d - oldLineParameterLimits;
 
             var result = ComputeFirstIntersection(grid);
 
@@ -2146,13 +2141,11 @@ namespace NumericalGeometryLib.Computers.Intersections
 
                     hasIntersection = true;
 
-                    if (lineTraverser.LineParameterLimits.MaxValue > result.Item2)
+                    if (lineTraverser.LineParameterRange.MaxValue > result.Item2)
                     {
                         hitLineSegment = triangle;
 
-                        lineTraverser
-                            .LineParameterLimits
-                            .RestrictMaxValue(result.Item2);
+                        lineTraverser.ResetMaxParameterValue(result.Item2);
                     }
                 }
             }
@@ -2163,7 +2156,7 @@ namespace NumericalGeometryLib.Computers.Intersections
 
             return new Tuple<bool, double, ITriangle3D>(
                 hasIntersection,
-                lineTraverser.LineParameterLimits.MaxValue,
+                lineTraverser.LineParameterRange.MaxValue,
                 hitLineSegment
             );
         }
@@ -2207,13 +2200,11 @@ namespace NumericalGeometryLib.Computers.Intersections
 
                     hasIntersection = true;
 
-                    if (lineTraverser.LineParameterLimits.MinValue < result.Item2)
+                    if (lineTraverser.LineParameterRange.MinValue < result.Item2)
                     {
                         hitLineSegment = triangle;
 
-                        lineTraverser
-                            .LineParameterLimits
-                            .RestrictMinValue(result.Item2);
+                        lineTraverser.ResetMinParameterValue(result.Item2);
                     }
                 }
             }
@@ -2224,7 +2215,7 @@ namespace NumericalGeometryLib.Computers.Intersections
 
             return new Tuple<bool, double, ITriangle3D>(
                 hasIntersection,
-                lineTraverser.LineParameterLimits.MinValue,
+                lineTraverser.LineParameterRange.MinValue,
                 hitLineSegment
             );
         }

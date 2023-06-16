@@ -1,10 +1,10 @@
-﻿using NumericalGeometryLib.BasicMath.Tuples.Immutable;
-using GraphicsComposerLib.Geometry.Meshes.PathsMesh;
-using GraphicsComposerLib.Geometry.Meshes.PathsMesh.Space3D;
-using GraphicsComposerLib.Geometry.Meshes.PointsPath.Space3D;
-using GraphicsComposerLib.Geometry.Primitives;
-using GraphicsComposerLib.Geometry.Primitives.Lines;
-using GraphicsComposerLib.Geometry.Primitives.Triangles;
+﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PathsMesh;
+using GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PathsMesh.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsPath.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives;
+using GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Lines;
+using GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Triangles;
 using GraphicsComposerLib.Rendering.Xeogl;
 
 namespace GraphicsComposerLib.Samples.Xeogl
@@ -14,23 +14,23 @@ namespace GraphicsComposerLib.Samples.Xeogl
         public static string Generate()
         {
             var firstPath = new LinearPointsPath3D(
-                new Tuple3D(-3,0,0), 
-                new Tuple3D(3,0,0), 
+                new Float64Tuple3D(-3,0,0), 
+                new Float64Tuple3D(3,0,0), 
                 5
             );
 
             var lastPath = new LinearPointsPath3D(
-                new Tuple3D(0, -2, 0),
-                new Tuple3D(0, 2, 2),
+                new Float64Tuple3D(0, -2, 0),
+                new Float64Tuple3D(0, 2, 2),
                 5
             );
 
             var pathMesh = new LerpPathsMesh3D(firstPath, lastPath, 10);
 
             //var pathMesh = SimpleComposers.ParallelogramPathMesh(
-            //    new Tuple3D(0, 0, 0), 
-            //    new Tuple3D(2, 0, 0), 
-            //    new Tuple3D(0, 2, 0), 
+            //    new Float64Tuple3D(0, 0, 0), 
+            //    new Float64Tuple3D(2, 0, 0), 
+            //    new Float64Tuple3D(0, 2, 0), 
             //    3,
             //    3
             //    );

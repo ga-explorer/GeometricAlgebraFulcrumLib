@@ -3,10 +3,12 @@ using System.Runtime.CompilerServices;
 using DataStructuresLib.BitManipulation;
 using DataStructuresLib.Dictionary;
 using DataStructuresLib.IndexSets;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space4D;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 using MathNet.Numerics.LinearAlgebra.Double;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors.Composers
@@ -35,7 +37,8 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
                 if (!processor.ScalarProcessor.IsValid(scalar))
                     throw new InvalidOperationException();
 
-                basisScalarDictionary.Add(index.IndexToIndexSet(), scalar);
+                if (!processor.ScalarProcessor.IsZero(scalar))
+                    basisScalarDictionary.Add(index.IndexToIndexSet(), scalar);
 
                 index++;
             }
@@ -78,7 +81,9 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
                 )
             );
 
-            return new XGaVector<T>(processor, scalarDictionary);
+            return processor.CreateVector(
+                scalarDictionary
+            );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -86,7 +91,9 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         {
             var scalarDictionary = CreateValidVectorDictionary(processor, scalarArray);
 
-            return new XGaVector<T>(processor, scalarDictionary);
+            return processor.CreateVector(
+                scalarDictionary
+            );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -94,7 +101,9 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         {
             var scalarDictionary = CreateValidVectorDictionary(processor, scalarList);
 
-            return new XGaVector<T>(processor, scalarDictionary);
+            return processor.CreateVector(
+                scalarDictionary
+            );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -102,7 +111,9 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         {
             var scalarDictionary = CreateValidVectorDictionary(processor, scalarList);
 
-            return new XGaVector<T>(processor, scalarDictionary);
+            return processor.CreateVector(
+                scalarDictionary
+            );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

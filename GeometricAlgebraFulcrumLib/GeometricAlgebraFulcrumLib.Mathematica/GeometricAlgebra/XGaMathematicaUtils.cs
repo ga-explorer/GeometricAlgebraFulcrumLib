@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.LinearMaps.Outermorphisms;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.LinearMaps.Rotors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
@@ -9,7 +8,8 @@ using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Mult
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic.LinearMaps;
-using GeometricAlgebraFulcrumLib.MathBase.Signals;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra;
 using GeometricAlgebraFulcrumLib.Mathematica.Mathematica.ExprFactory;
 using GeometricAlgebraFulcrumLib.Mathematica.Processors;
 using Wolfram.NETLink;
@@ -588,7 +588,7 @@ public static class XGaMathematicaUtils
         return LaTeXComposer.GetMultivectorText(mv);
     }
     
-    public static XGaVector<ScalarSignalFloat64> GetSampledSignal(this XGaVector<Expr> vector, XGaProcessor<ScalarSignalFloat64> processor, Expr t, double samplingRate, int sampleCount)
+    public static XGaVector<Float64Signal> GetSampledSignal(this XGaVector<Expr> vector, XGaProcessor<Float64Signal> processor, Expr t, double samplingRate, int sampleCount)
     {
         var composer = processor.CreateComposer();
 
@@ -603,7 +603,7 @@ public static class XGaMathematicaUtils
         return composer.GetVector();
     }
     
-    public static XGaBivector<ScalarSignalFloat64> GetSampledSignal(this XGaBivector<Expr> vector, XGaProcessor<ScalarSignalFloat64> processor, Expr t, double samplingRate, int sampleCount)
+    public static XGaBivector<Float64Signal> GetSampledSignal(this XGaBivector<Expr> vector, XGaProcessor<Float64Signal> processor, Expr t, double samplingRate, int sampleCount)
     {
         var composer = processor.CreateComposer();
 

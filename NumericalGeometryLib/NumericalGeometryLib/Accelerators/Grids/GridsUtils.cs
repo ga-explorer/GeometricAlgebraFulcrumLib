@@ -1,11 +1,9 @@
 ﻿using System.Collections.Generic;
-using GeometricAlgebraFulcrumLib.MathBase.BasicShapes;
-using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Lines;
-using GeometricAlgebraFulcrumLib.MathBase.Borders;
-using GeometricAlgebraFulcrumLib.MathBase.Borders.Space1D;
-using GeometricAlgebraFulcrumLib.MathBase.Borders.Space1D.Immutable;
-using GeometricAlgebraFulcrumLib.MathBase.Borders.Space2D.Immutable;
-using GeometricAlgebraFulcrumLib.MathBase.Borders.Space3D.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space3D.Immutable;
 using NumericalGeometryLib.Accelerators.Grids.Space2D;
 using NumericalGeometryLib.Accelerators.Grids.Space3D;
 
@@ -60,11 +58,11 @@ namespace NumericalGeometryLib.Accelerators.Grids
             return AccGridLineTraverser2D.Create(
                 grid,
                 line,
-                BoundingBox1D.Create(lineParamValue1, lineParamValue2)
+                Float64Range1D.Create(lineParamValue1, lineParamValue2)
             );
         }
 
-        public static AccGridLineTraverser2D GetLineTraverser(this IAccGrid2D<IFiniteGeometricShape2D> grid, ILine2D line, IBoundingBox1D lineParamRange)
+        public static AccGridLineTraverser2D GetLineTraverser(this IAccGrid2D<IFiniteGeometricShape2D> grid, ILine2D line, Float64Range1D lineParamRange)
         {
             return AccGridLineTraverser2D.Create(
                 grid,
@@ -124,11 +122,11 @@ namespace NumericalGeometryLib.Accelerators.Grids
             return AccGridLineTraverser3D.Create(
                 grid,
                 line,
-                BoundingBox1D.Create(lineParamValue1, lineParamValue2)
+                Float64Range1D.Create(lineParamValue1, lineParamValue2)
             );
         }
 
-        public static AccGridLineTraverser3D GetLineTraverser(this IAccGrid3D<IFiniteGeometricShape3D> grid, ILine3D line, IBoundingBox1D lineParamRange)
+        public static AccGridLineTraverser3D GetLineTraverser(this IAccGrid3D<IFiniteGeometricShape3D> grid, ILine3D line, Float64Range1D lineParamRange)
         {
             return AccGridLineTraverser3D.Create(
                 grid,

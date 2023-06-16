@@ -1,5 +1,5 @@
 ﻿using System;
-using NumericalGeometryLib.BasicMath;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath;
 
 namespace GraphicsComposerLib.Samples.BasicMath
 {
@@ -9,7 +9,7 @@ namespace GraphicsComposerLib.Samples.BasicMath
         {
             for (var angleValue = -1000d; angleValue <= 1000d; angleValue += 10d)
             {
-                var angle = PlanarAngle.CreateFromDegrees(angleValue).ClampNegative();
+                var angle = Float64PlanarAngle.CreateFromDegrees(angleValue).ClampNegative();
 
                 Console.WriteLine($"{angleValue:G} => {angle}");
             }

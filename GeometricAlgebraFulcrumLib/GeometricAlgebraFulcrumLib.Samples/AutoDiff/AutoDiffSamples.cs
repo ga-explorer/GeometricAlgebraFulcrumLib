@@ -1,5 +1,5 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.MathBase.Differential.AutoDiff;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Differential.AutoDiff;
 
 namespace GeometricAlgebraFulcrumLib.Samples.AutoDiff
 {

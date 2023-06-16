@@ -1,9 +1,8 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
-using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Planes;
-using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Planes.Immutable;
-using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Triangles;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Planes;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Planes.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Triangles;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 
 namespace NumericalGeometryLib.Computers.Projections
 {
@@ -54,7 +53,7 @@ namespace NumericalGeometryLib.Computers.Projections
         /// </summary>
         /// <param name="vector"></param>
         /// <returns></returns>
-        public Float64Tuple3D ComputeProjection(IFloat64Tuple3D vector)
+        public Float64Vector3D ComputeProjection(IFloat64Tuple3D vector)
         {
             //Begin GMac Macro Code Generation, 2018-10-20T20:49:38.2694768+02:00
             //Macro: cemsim.hga4d.ProjectVectorOnPlaneDirections3D
@@ -210,7 +209,7 @@ namespace NumericalGeometryLib.Computers.Projections
 
             //Finish GMac Macro Code Generation, 2018-10-20T20:49:38.3300163+02:00
 
-            return new Float64Tuple3D(x, y, z);
+            return Float64Vector3D.Create(x, y, z);
         }
 
         /// <summary>
@@ -219,7 +218,7 @@ namespace NumericalGeometryLib.Computers.Projections
         /// </summary>
         /// <param name="vector"></param>
         /// <returns></returns>
-        public Tuple<Float64Tuple3D, Float64Tuple3D> ComputeComponents(IFloat64Tuple3D vector)
+        public Tuple<Float64Vector3D, Float64Vector3D> ComputeComponents(IFloat64Tuple3D vector)
         {
             //Begin GMac Macro Code Generation, 2018-10-20T20:49:38.2694768+02:00
             //Macro: cemsim.hga4d.ProjectVectorOnPlaneDirections3D
@@ -376,12 +375,10 @@ namespace NumericalGeometryLib.Computers.Projections
             //Finish GMac Macro Code Generation, 2018-10-20T20:49:38.3300163+02:00
 
             return Tuple.Create(
-                new Float64Tuple3D(x, y, z),
-                new Float64Tuple3D(
-                    vector.X - x, 
+                Float64Vector3D.Create(x, y, z),
+                Float64Vector3D.Create(vector.X - x, 
                     vector.Y - y, 
-                    vector.Z - z
-                )
+                    vector.Z - z)
             );
         }
 
@@ -391,7 +388,7 @@ namespace NumericalGeometryLib.Computers.Projections
         /// </summary>
         /// <param name="vector"></param>
         /// <returns></returns>
-        public Float64Tuple3D ComputeRejection(IFloat64Tuple3D vector)
+        public Float64Vector3D ComputeRejection(IFloat64Tuple3D vector)
         {
             //Begin GMac Macro Code Generation, 2018-10-20T20:49:38.2694768+02:00
             //Macro: cemsim.hga4d.ProjectVectorOnPlaneDirections3D
@@ -547,11 +544,9 @@ namespace NumericalGeometryLib.Computers.Projections
 
             //Finish GMac Macro Code Generation, 2018-10-20T20:49:38.3300163+02:00
 
-            return new Float64Tuple3D(
-                vector.X - x,
+            return Float64Vector3D.Create(vector.X - x,
                 vector.Y - y,
-                vector.Z - z
-            );
+                vector.Z - z);
         }
     }
 }

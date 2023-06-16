@@ -38,10 +38,10 @@ namespace DataStructuresLib.Sequences.Periodic2D
         }
 
         public T this[int index1, int index2]
-            => _dataArray[
-                index1.Mod(Count1), 
-                index2.Mod(Count2)
-            ];
+        {
+            get => _dataArray[index1.Mod(Count1), index2.Mod(Count2)];
+            set => _dataArray[index1.Mod(Count1), index2.Mod(Count2)] = value;
+        }
 
         public bool IsBasic
             => true;

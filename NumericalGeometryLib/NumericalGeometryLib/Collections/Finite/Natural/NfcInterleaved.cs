@@ -42,10 +42,7 @@ namespace NumericalGeometryLib.Collections.Finite.Natural
 
         public FiniteCollection<T> DefaultBaseCollection { get; private set; }
 
-        public override int Count
-        {
-            get { return DefaultBaseCollection.Count; }
-        }
+        public override int Count => DefaultBaseCollection.Count;
 
         public T this[int index]
         {

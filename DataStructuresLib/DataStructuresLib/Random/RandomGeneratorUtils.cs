@@ -575,15 +575,15 @@ namespace DataStructuresLib.Random
 
 
         #region ---- Java Extensions ----
-        /// <summary>
-        /// Returns a random boolean value
-        /// </summary>
-        public static bool NextBoolean(this System.Random random)
-        {
-            if (random == null) { throw new ArgumentNullException(nameof(random)); }
+        ///// <summary>
+        ///// Returns a random boolean value
+        ///// </summary>
+        //public static bool NextBoolean(this System.Random random)
+        //{
+        //    if (random == null) { throw new ArgumentNullException(nameof(random)); }
 
-            return random.NextBits(1) != 0;
-        }
+        //    return random.NextBits(1) != 0;
+        //}
 
         /// <summary>
         /// Returns a random 32-bit integer

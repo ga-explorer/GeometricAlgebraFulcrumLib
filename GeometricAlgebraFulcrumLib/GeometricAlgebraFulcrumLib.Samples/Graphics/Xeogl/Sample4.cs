@@ -1,10 +1,10 @@
 ﻿using System.IO;
+using GeometricAlgebraFulcrumLib.MathBase.Graphics.Composers;
+using GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PathsMesh;
+using GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives;
+using GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Lines;
+using GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Triangles;
 using NumericalGeometryLib.Textures;
-using GraphicsComposerLib.Geometry.Composers;
-using GraphicsComposerLib.Geometry.Meshes.PathsMesh;
-using GraphicsComposerLib.Geometry.Primitives;
-using GraphicsComposerLib.Geometry.Primitives.Lines;
-using GraphicsComposerLib.Geometry.Primitives.Triangles;
 using GraphicsComposerLib.Rendering.Xeogl;
 using SixLabors.ImageSharp.Formats.Png;
 

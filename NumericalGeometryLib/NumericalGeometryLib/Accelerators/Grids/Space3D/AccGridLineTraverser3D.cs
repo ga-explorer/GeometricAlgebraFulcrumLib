@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
-using GeometricAlgebraFulcrumLib.MathBase.BasicShapes;
-using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Lines;
-using GeometricAlgebraFulcrumLib.MathBase.Borders.Space1D;
-using GeometricAlgebraFulcrumLib.MathBase.Borders.Space1D.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 
 namespace NumericalGeometryLib.Accelerators.Grids.Space3D
 {
@@ -14,11 +14,11 @@ namespace NumericalGeometryLib.Accelerators.Grids.Space3D
             return new AccGridLineTraverser3D(
                 grid,
                 line,
-                BoundingBox1D.Infinite
+                Float64Range1D.Infinite
             );
         }
 
-        public static AccGridLineTraverser3D Create(IAccGrid3D<IFiniteGeometricShape3D> grid, ILine3D line, IBoundingBox1D lineParamLimits)
+        public static AccGridLineTraverser3D Create(IAccGrid3D<IFiniteGeometricShape3D> grid, ILine3D line, Float64Range1D lineParamLimits)
         {
             return new AccGridLineTraverser3D(grid, line, lineParamLimits);
         }
@@ -28,7 +28,7 @@ namespace NumericalGeometryLib.Accelerators.Grids.Space3D
 
         public ILine3D Line { get; }
 
-        public IBoundingBox1D LineParameterLimits { get; }
+        public Float64Range1D LineParameterLimits { get; }
 
         /// <summary>
         /// Indicates if there are no cells to traverse in the grid
@@ -38,17 +38,17 @@ namespace NumericalGeometryLib.Accelerators.Grids.Space3D
         /// <summary>
         /// The limits of the line parameter intersecting the grid boundary
         /// </summary>
-        public BoundingBox1D TLimits { get; }
+        public Float64Range1D TLimits { get; }
 
         /// <summary>
         /// Delta value of line parameter in x and y directions
         /// </summary>
-        public Float64Tuple3D TDelta { get; }
+        public Float64Vector3D TDelta { get; }
 
         /// <summary>
         /// Initial values of line parameter in x and y directions 
         /// </summary>
-        public Float64Tuple3D TFirst { get; }
+        public Float64Vector3D TFirst { get; }
 
         public double TNext { get; private set; }
 
@@ -66,7 +66,7 @@ namespace NumericalGeometryLib.Accelerators.Grids.Space3D
         public IntTuple3D CellIndexStop { get; }
 
 
-        private AccGridLineTraverser3D(IAccGrid3D<IFiniteGeometricShape3D> grid, ILine3D line, IBoundingBox1D lineParamLimits)
+        private AccGridLineTraverser3D(IAccGrid3D<IFiniteGeometricShape3D> grid, ILine3D line, Float64Range1D lineParamLimits)
         {
             Grid = grid;
             Line = line;
@@ -131,8 +131,8 @@ namespace NumericalGeometryLib.Accelerators.Grids.Space3D
             if (t0 > t1)
             {
                 IsEmpty = true;
-                TLimits = new BoundingBox1D();
-                TDelta = Float64Tuple3D.Zero;
+                TLimits = new Float64Range1D();
+                TDelta = Float64Vector3D.Zero;
 
                 return;
             }
@@ -149,17 +149,15 @@ namespace NumericalGeometryLib.Accelerators.Grids.Space3D
             var point2Z = Line.OriginZ + t1 * Line.DirectionZ;
 
             IsEmpty = false;
-            TLimits = new BoundingBox1D(t0, t1);
+            TLimits = Float64Range1D.Create(t0, t1);
 
             //Compute indices of cell containing line segment first point
             CellIndexStart = grid.PointToCellIndex(point1X, point1Y, point1Z);
 
             //Line segment parameter increments per cell in the x and y directions
-            TDelta = new Float64Tuple3D(
-                (txMax - txMin) / grid.CellsCountX,
+            TDelta = Float64Vector3D.Create((txMax - txMin) / grid.CellsCountX,
                 (tyMax - tyMin) / grid.CellsCountY,
-                (tzMax - tzMin) / grid.CellsCountZ
-            );
+                (tzMax - tzMin) / grid.CellsCountZ);
 
             double txNext, tyNext, tzNext;
             int ixStep, iyStep, izStep;
@@ -222,7 +220,7 @@ namespace NumericalGeometryLib.Accelerators.Grids.Space3D
                 izStop = -1;
             }
 
-            TFirst = new Float64Tuple3D(txNext, tyNext, tzNext);
+            TFirst = Float64Vector3D.Create(txNext, tyNext, tzNext);
             CellIndexStep = new IntTuple3D(ixStep, iyStep, izStep);
             CellIndexStop = new IntTuple3D(ixStop, iyStop, izStop);
         }

@@ -65,6 +65,25 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Basis
 
         public static LinSignedBasisVector NegativeW { get; }
             = new LinSignedBasisVector(3, true);
+        
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static LinSignedBasisVector Create(int basisVectorIndex, bool isNegative)
+        {
+            return new LinSignedBasisVector(
+                basisVectorIndex, 
+                isNegative ? IntegerSign.Negative : IntegerSign.Positive
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static LinSignedBasisVector Create(int basisVectorIndex, IntegerSign sign)
+        {
+            return new LinSignedBasisVector(
+                basisVectorIndex, 
+                sign
+            );
+        }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -136,12 +155,12 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Basis
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal LinSignedBasisVector(int basisVectorIndex, IntegerSign sign)
+        private LinSignedBasisVector(int basisVectorIndex, IntegerSign sign)
         {
             _basisVector = new LinBasisVector(basisVectorIndex);
             Sign = sign;
         }
-    
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal LinSignedBasisVector(int basisVectorIndex, bool isNegative)
         {
@@ -175,7 +194,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Basis
         {
             return offset == 0 
                 ? this 
-                : new LinSignedBasisVector(Index + offset, Sign);
+                : Create(Index + offset, Sign);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

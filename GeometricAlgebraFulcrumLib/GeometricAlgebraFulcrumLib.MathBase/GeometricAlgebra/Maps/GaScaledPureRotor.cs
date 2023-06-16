@@ -1,11 +1,11 @@
 ﻿using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.MathBase.BasicMath;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Maps
 {
@@ -85,15 +85,15 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Maps
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Float64Tuple2D OmMap(IFloat64Tuple2D multivector)
+        public Float64Vector2D OmMap(IFloat64Tuple2D multivector)
         {
-            return Multivector.Gp(multivector.ToRGaVector(Processor)).Gp(MultivectorReverse).GetVectorPartAsTuple2D();
+            return Multivector.Gp(multivector.ToRGaFloat64Vector(Processor)).Gp(MultivectorReverse).GetVectorPartAsTuple2D();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Float64Tuple3D OmMap(IFloat64Tuple3D multivector)
+        public Float64Vector3D OmMap(IFloat64Tuple3D multivector)
         {
-            return Multivector.Gp(multivector.ToRGaVector(Processor)).Gp(MultivectorReverse).GetVectorPartAsTuple3D();
+            return Multivector.Gp(multivector.ToRGaFloat64Vector(Processor)).Gp(MultivectorReverse).GetVectorPartAsTuple3D();
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

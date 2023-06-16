@@ -1,6 +1,6 @@
-﻿using GraphicsComposerLib.Rendering.Colors;
-using NumericalGeometryLib.Colors;
+﻿using NumericalGeometryLib.Colors;
 using TextComposerLib.Code.JavaScript;
+using WebComposerLib.Colors;
 
 namespace GraphicsComposerLib.Rendering.Xeogl.Lights
 {

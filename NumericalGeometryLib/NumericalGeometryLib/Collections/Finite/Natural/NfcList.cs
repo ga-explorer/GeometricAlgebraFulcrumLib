@@ -33,20 +33,14 @@ namespace NumericalGeometryLib.Collections.Finite.Natural
         private readonly List<T> _itemsList;
 
 
-        public override int Count
-        {
-            get { return _itemsList.Count; }
-        }
+        public override int Count => _itemsList.Count;
 
-        public bool IsReadOnly
-        {
-            get { return false; }
-        }
+        public bool IsReadOnly => false;
 
         public T this[int index]
         {
-            get { return _itemsList[index]; }
-            set { _itemsList[index] = value; }
+            get => _itemsList[index];
+            set => _itemsList[index] = value;
         }
 
 

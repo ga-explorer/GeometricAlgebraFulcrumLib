@@ -1,6 +1,6 @@
 ﻿using DataStructuresLib.BitManipulation;
 using DataStructuresLib.Combinations;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors;
 

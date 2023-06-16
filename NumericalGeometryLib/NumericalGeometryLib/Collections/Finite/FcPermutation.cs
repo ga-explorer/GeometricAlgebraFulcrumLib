@@ -19,20 +19,11 @@ namespace NumericalGeometryLib.Collections.Finite
 
         public int[] OffsetPermutation { get; private set; }
 
-        public override int MinIndex
-        {
-            get { return _firstBaseIndex; }
-        }
+        public override int MinIndex => _firstBaseIndex;
 
-        public override int MaxIndex
-        {
-            get { return _lastBaseIndex; }
-        }
+        public override int MaxIndex => _lastBaseIndex;
 
-        public override int Count
-        {
-            get { return _lastBaseIndex - _firstBaseIndex + 1; }
-        }
+        public override int Count => _lastBaseIndex - _firstBaseIndex + 1;
 
 
         public T this[int index]

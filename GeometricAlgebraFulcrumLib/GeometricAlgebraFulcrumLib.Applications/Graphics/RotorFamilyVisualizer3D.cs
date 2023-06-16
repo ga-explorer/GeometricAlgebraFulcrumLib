@@ -1,30 +1,29 @@
 ﻿using System.Collections.Immutable;
 using DataStructuresLib.Basic;
 using DataStructuresLib.Files;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 using GraphicsComposerLib.Rendering.BabylonJs;
 using GraphicsComposerLib.Rendering.BabylonJs.Constants;
 using GraphicsComposerLib.Rendering.BabylonJs.GUI;
-using GraphicsComposerLib.Rendering.Colors;
-using GraphicsComposerLib.Rendering.LaTeX.ImageComposers;
-using GraphicsComposerLib.Rendering.Visuals.Space3D.Curves;
+using GraphicsComposerLib.Rendering.Visuals.Space3D.Animations;
+using GraphicsComposerLib.Rendering.Visuals.Space3D.Styles;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
 using OxyPlot.SkiaSharp;
 using SixLabors.ImageSharp;
+using WebComposerLib.Colors;
 
 namespace GeometricAlgebraFulcrumLib.Applications.Graphics
 {
     public class RotorFamilyVisualizer3D :
         GrBabylonJsSnapshotComposer3D
     {
-        public Float64Tuple3D SourceVector { get; }
+        public Float64Vector3D SourceVector { get; }
 
-        public Float64Tuple3D TargetVector { get; }
+        public Float64Vector3D TargetVector { get; }
 
         public IReadOnlyList<Float64PlanarAngle> ThetaValues { get; }
     
@@ -59,7 +58,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.Graphics
             return ThetaToPhiCos(theta).ArcCos();
         }
 
-        public Float64Tuple3D ThetaToUnitNormal(Float64PlanarAngle theta)
+        public Float64Vector3D ThetaToUnitNormal(Float64PlanarAngle theta)
         {
             var n = 
                 SourceVector.VectorUnitCross(TargetVector);
@@ -80,12 +79,12 @@ namespace GeometricAlgebraFulcrumLib.Applications.Graphics
             return 1d + (2d * (1 - phiMinCos)) / (theta.Sin().Square() * (1 + phiMinCos) - 2d);
         }
 
-        public Float64Tuple4D ThetaToQuaternion(Float64PlanarAngle theta)
+        public Float64Quaternion ThetaToQuaternion(Float64PlanarAngle theta)
         {
             var phi = ThetaToPhi(theta);
             var normal = ThetaToUnitNormal(theta);
 
-            return normal.CreateQuaternionFromAxisAngle(phi);
+            return normal.AxisAngleToQuaternion(phi);
         }
 
         public Float64PlanarAngle PhiToTheta(Float64PlanarAngle phi)
@@ -105,16 +104,16 @@ namespace GeometricAlgebraFulcrumLib.Applications.Graphics
             return (2d * (phiCos - phiMinCos) / ((1 + phiMinCos) * (phiCos - 1))).Sqrt();
         }
     
-        public Float64Tuple3D PhiToUnitNormal(Float64PlanarAngle phi)
+        public Float64Vector3D PhiToUnitNormal(Float64PlanarAngle phi)
         {
             return ThetaToUnitNormal(PhiToTheta(phi));
         }
     
-        public Float64Tuple4D PhiToQuaternion(Float64PlanarAngle phi)
+        public Float64Quaternion PhiToQuaternion(Float64PlanarAngle phi)
         {
             var normal = PhiToUnitNormal(phi);
 
-            return normal.CreateQuaternionFromAxisAngle(phi);
+            return normal.AxisAngleToQuaternion(phi);
         }
 
         public Float64PlanarAngle GetTheta(int index)
@@ -328,13 +327,16 @@ namespace GeometricAlgebraFulcrumLib.Applications.Graphics
                 );
             }
 
-            var latexImageComposer = new GrLaTeXImageComposer
-            {
-                LaTeXBinFolder = @"D:\texlive\2021\bin\win32\",
-                Resolution = 150
-            };
+            //var latexImageComposer = new GrLaTeXImageComposer
+            //{
+            //    LaTeXBinFolder = @"D:\texlive\2021\bin\win32\",
+            //    Resolution = 150
+            //};
 
-            ImageCache.GeneratePngBase64Strings(latexImageComposer);
+            //ImageCache.GeneratePngBase64Strings(latexImageComposer);
+
+            ImageCache.GeneratePngDataUrlStrings();
+            
         
             var maxWidth = 0;
             var maxHeight = 0;
@@ -404,7 +406,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.Graphics
 
                 uiTexture.AddGuiImage(
                     "copyrightImage",
-                    copyrightImage.GetBase64HtmlString(),
+                    copyrightImage.GetUrl(),
                     new GrBabylonJsGuiImage.GuiImageProperties
                     {
                         Stretch = GrBabylonJsImageStretch.Uniform,
@@ -476,7 +478,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.Graphics
             var latexPngData1 = ImageCache["modelText"];
             uiPanel1.AddGuiImage(
                 "latexGuiImage1",
-                latexPngData1.GetBase64HtmlString(),
+                latexPngData1.GetUrl(),
                 new GrBabylonJsGuiImage.GuiImageProperties
                 {
                     //Alpha = 0.5d,
@@ -514,7 +516,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.Graphics
             var thetaPhiPlotData = ImageCache[$"ThetaPhiPlot-{index:D6}"];
             uiPanel2.AddGuiImage(
                 "thetaPhiPlotGuiImage",
-                thetaPhiPlotData.GetBase64HtmlString(),
+                thetaPhiPlotData.GetUrl(),
                 new GrBabylonJsGuiImage.GuiImageProperties
                 {
                     Stretch = GrBabylonJsImageStretch.Uniform,
@@ -535,7 +537,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.Graphics
 
             uiPanel2.AddGuiImage(
                 "latexGuiImage2",
-                dataTextImageData.GetBase64HtmlString(),
+                dataTextImageData.GetUrl(),
                 new GrBabylonJsGuiImage.GuiImageProperties
                 {
                     //Alpha = 0.5d,
@@ -596,18 +598,22 @@ namespace GeometricAlgebraFulcrumLib.Applications.Graphics
                 u,
                 u1,
                 Color.Red,
-                dashSpecs
+                dashSpecs,
+                GrVisualAnimationSpecs.Static
             ).AddLineSegment(
                 "originSegment",
                 u - u1,
-                Float64Tuple3D.Zero,
+                Float64Vector3D.Zero,
                 Color.DarkGreen,
-                dashSpecs
+                dashSpecs,
+                GrVisualAnimationSpecs.Static
             ).AddLineSegment(
                 "targetSegment",
                 v,
                 v1,
-                Color.Blue, dashSpecs
+                Color.Blue, 
+                dashSpecs,
+                GrVisualAnimationSpecs.Static
             );
 
             MainSceneComposer
@@ -654,10 +660,10 @@ namespace GeometricAlgebraFulcrumLib.Applications.Graphics
 
             MainSceneComposer.AddDiscSector(
                 "phiMinRotor",
-                Float64Tuple3D.Zero,
+                Float64Vector3D.Zero,
                 u,
                 v,
-                u1.GetVectorNorm(),
+                u1.ENorm(),
                 true,
                 System.Drawing.Color.IndianRed.ToImageSharpColor(128),
                 0.05,
@@ -665,7 +671,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.Graphics
             ).AddLaTeXText(
                 "phiMinRotorText",
                 ImageCache,
-                0.5d.Lerp(u, v).SetLength(u1.GetVectorNorm() + 0.35d),
+                0.5d.Lerp(u, v).SetLength(u1.ENorm() + 0.35d),
                 LaTeXScalingFactor
             );
 
@@ -673,10 +679,10 @@ namespace GeometricAlgebraFulcrumLib.Applications.Graphics
             {
                 MainSceneComposer.AddDiscSector(
                     "thetaRotor",
-                    Float64Tuple3D.Zero,
+                    Float64Vector3D.Zero,
                     vuSum,
                     vuSum1,
-                    u1.GetVectorNorm(),
+                    u1.ENorm(),
                     true,
                     System.Drawing.Color.LightGreen.ToImageSharpColor(128),
                     0.05,
@@ -684,17 +690,17 @@ namespace GeometricAlgebraFulcrumLib.Applications.Graphics
                 ).AddLaTeXText(
                     "thetaRotorText",
                     ImageCache,
-                    0.5d.Lerp(vuSum, vuSum1).SetLength(u1.GetVectorNorm() + 0.35d),
+                    0.5d.Lerp(vuSum, vuSum1).SetLength(u1.ENorm() + 0.35d),
                     LaTeXScalingFactor
                 );
             }
 
             MainSceneComposer.AddDiscSector(
                 "phiRotor",
-                Float64Tuple3D.Zero,
+                Float64Vector3D.Zero,
                 u1,
                 v1,
-                u1.GetVectorNorm(),
+                u1.ENorm(),
                 true,
                 System.Drawing.Color.DarkSlateBlue.ToImageSharpColor(128),
                 0.05,
@@ -702,7 +708,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.Graphics
             ).AddLaTeXText(
                 "phiRotorText",
                 ImageCache,
-                0.5d.Lerp(u1, v1).SetLength(u1.GetVectorNorm() + 0.35d),
+                0.5d.Lerp(u1, v1).SetLength(u1.ENorm() + 0.35d),
                 LaTeXScalingFactor
             );
 
@@ -711,7 +717,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.Graphics
                 u - u1,
                 u1,
                 v1,
-                u1.GetVectorNorm(),
+                u1.ENorm(),
                 true,
                 System.Drawing.Color.DarkSlateBlue.ToImageSharpColor(128),
                 0.05,
@@ -719,13 +725,13 @@ namespace GeometricAlgebraFulcrumLib.Applications.Graphics
             ).AddLaTeXText(
                 "phiRotorCopyText",
                 ImageCache,
-                u - u1 + 0.5d.Lerp(u1, v1).SetLength(u1.GetVectorNorm() + 0.35d),
+                u - u1 + 0.5d.Lerp(u1, v1).SetLength(u1.ENorm() + 0.35d),
                 LaTeXScalingFactor
             );
 
             MainSceneComposer.AddDisc(
                 "thetaRotorPlane",
-                Float64Tuple3D.Zero,
+                Float64Vector3D.Zero,
                 vuDiff,
                 5d,
                 System.Drawing.Color.YellowGreen.ToImageSharpColor(64),
@@ -740,7 +746,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.Graphics
 
             MainSceneComposer.AddDisc(
                 "phiRotorPlane",
-                Float64Tuple3D.Zero,
+                Float64Vector3D.Zero,
                 uvNormal1,
                 5d,
                 System.Drawing.Color.BurlyWood.ToImageSharpColor(64),
@@ -765,7 +771,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.Graphics
             var thetaMax = thetaDegrees.Max();
 
             var thetaDegreesArray = 
-                thetaMin.GetLinearRange(thetaMax, 31, false).ToImmutableArray();
+                thetaMin.Value.GetLinearRange(thetaMax, 31, false).ToImmutableArray();
 
             var u = SourceVector * 4;
             var v = TargetVector * 4;
@@ -783,7 +789,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.Graphics
                     $"phiRotorTrace{i}",
                     u - u1,
                     u1.VectorUnitCross(v1),
-                    u1.GetVectorNorm(),
+                    u1.ENorm(),
                     System.Drawing.Color.DarkSlateBlue.ToImageSharpColor(64),
                     0.025
                 );
@@ -828,7 +834,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.Graphics
                 i=> $"intersectionPoint{i + 1}", 
                 intersectionPointColor, 
                 0.08, 
-                Float64Tuple3D.Zero, 
+                Float64Vector3D.Zero, 
                 vuSum1.SetLength(5d),
                 vuSum1.SetLength(-5d),
                 u - u1,
@@ -836,10 +842,10 @@ namespace GeometricAlgebraFulcrumLib.Applications.Graphics
                 v,
                 u1,
                 v1,
-                vuSum.SetLength(u1.GetVectorNorm()),
-                vuSum1.SetLength(u1.GetVectorNorm()),
-                u.SetLength(u1.GetVectorNorm()),
-                v.SetLength(u1.GetVectorNorm())
+                vuSum.SetLength(u1.ENorm()),
+                vuSum1.SetLength(u1.ENorm()),
+                u.SetLength(u1.ENorm()),
+                v.SetLength(u1.ENorm())
             );
 
             MainSceneComposer.AddLineSegment(
@@ -847,10 +853,11 @@ namespace GeometricAlgebraFulcrumLib.Applications.Graphics
                 vuSum1.SetLength(5d), 
                 vuSum1.SetLength(-5d),
                 intersectionLineColor, 
-                0.035
+                0.035,
+                GrVisualAnimationSpecs.Static
             );
 
-            if ((u - u1).GetVectorNorm() > 1)
+            if ((u - u1).ENorm() > 1)
             {
                 MainSceneComposer.AddRightAngle(
                     "rightAngle1",

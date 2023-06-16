@@ -43,15 +43,9 @@ namespace NumericalGeometryLib.Collections.Finite.Natural
 
         public int LastBaseIndex { get; private set; }
 
-        public bool IsReversed
-        {
-            get { return LastBaseIndex < FirstBaseIndex; }
-        }
+        public bool IsReversed => LastBaseIndex < FirstBaseIndex;
 
-        public override int Count
-        {
-            get { return _valuesCount; }
-        }
+        public override int Count => _valuesCount;
 
         public T this[int index]
         {

@@ -1,5 +1,5 @@
-﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
-using GraphicsComposerLib.Geometry.Primitives;
+﻿using GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 
 namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Primitives
 {

@@ -1,12 +1,11 @@
-﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
+﻿using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Values
 {
     public sealed class GrBabylonJsQuaternionValue :
-        GrBabylonJsValue<IFloat64Tuple4D>
+        GrBabylonJsValue<Float64Quaternion>
     {
-        internal static GrBabylonJsQuaternionValue Create(IFloat64Tuple4D value)
+        internal static GrBabylonJsQuaternionValue Create(Float64Quaternion value)
         {
             return new GrBabylonJsQuaternionValue(value);
         }
@@ -17,7 +16,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Values
             return new GrBabylonJsQuaternionValue(valueText);
         }
 
-        public static implicit operator GrBabylonJsQuaternionValue(Float64Tuple4D value)
+        public static implicit operator GrBabylonJsQuaternionValue(Float64Quaternion value)
         {
             return new GrBabylonJsQuaternionValue(value);
         }
@@ -28,7 +27,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Values
         {
         }
 
-        private GrBabylonJsQuaternionValue(IFloat64Tuple4D value)
+        private GrBabylonJsQuaternionValue(Float64Quaternion value)
             : base(value)
         {
         }

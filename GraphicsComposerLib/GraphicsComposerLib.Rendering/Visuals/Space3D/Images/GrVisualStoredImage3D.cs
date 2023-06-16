@@ -15,6 +15,11 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Images
             StoredImage = storedImage;
         }
 
+        
+        public override bool IsValid()
+        {
+            throw new NotImplementedException();
+        }
 
         public override Pair<int> GetSize()
         {
@@ -25,5 +30,6 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Images
         {
             return StoredImage;
         }
+
     }
 }

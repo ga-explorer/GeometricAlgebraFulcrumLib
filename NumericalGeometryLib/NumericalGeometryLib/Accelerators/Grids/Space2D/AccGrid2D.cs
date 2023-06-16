@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
-using GeometricAlgebraFulcrumLib.MathBase.BasicShapes;
-using GeometricAlgebraFulcrumLib.MathBase.Borders;
-using GeometricAlgebraFulcrumLib.MathBase.Borders.Space2D.Immutable;
-using GeometricAlgebraFulcrumLib.MathBase.Borders.Space2D.Mutable;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D.Mutable;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace NumericalGeometryLib.Accelerators.Grids.Space2D
 {
@@ -26,20 +26,11 @@ namespace NumericalGeometryLib.Accelerators.Grids.Space2D
             return true;
         }
 
-        public int Count
-        {
-            get { return _geometricObjectsList.Count; }
-        }
+        public int Count => _geometricObjectsList.Count;
 
-        public T this[int index]
-        {
-            get { return _geometricObjectsList[index]; }
-        }
+        public T this[int index] => _geometricObjectsList[index];
 
-        public IReadOnlyList<T> this[int ix, int iy]
-        {
-            get { return _gridCells[ix, iy]; }
-        }
+        public IReadOnlyList<T> this[int ix, int iy] => _gridCells[ix, iy];
 
         public BoundingBox2D BoundingBox { get; }
 
@@ -47,15 +38,9 @@ namespace NumericalGeometryLib.Accelerators.Grids.Space2D
 
         public int CellsCountY { get; }
 
-        public double CellArea
-        {
-            get { return BoundingBox.GetArea() / CellsCount; }
-        }
+        public double CellArea => BoundingBox.GetArea() / CellsCount;
 
-        public int CellsCount
-        {
-            get { return CellsCountX * CellsCountY; }
-        }
+        public int CellsCount => CellsCountX * CellsCountY;
 
         public int NonEmptyCellsCount
         {
@@ -74,10 +59,7 @@ namespace NumericalGeometryLib.Accelerators.Grids.Space2D
             }
         }
 
-        public int EmptyCellsCount
-        {
-            get { return CellsCount - NonEmptyCellsCount; }
-        }
+        public int EmptyCellsCount => CellsCount - NonEmptyCellsCount;
 
         public double AverageSurfacesPerCell
         {

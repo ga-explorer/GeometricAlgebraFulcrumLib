@@ -1,10 +1,9 @@
 ﻿using System.Collections.Immutable;
 using DataStructuresLib.Files;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
-using GeometricAlgebraFulcrumLib.MathBase.Borders.Space1D.Immutable;
-using GeometricAlgebraFulcrumLib.MathBase.Parametric.Curves;
-using GeometricAlgebraFulcrumLib.MathBase.Parametric.Curves.Roulettes;
-using GeometricAlgebraFulcrumLib.MathBase.Parametric.Curves.Sampled;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Curves;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Curves.Adaptive;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Curves.Roulettes;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 using GraphicsComposerLib.Rendering.BabylonJs;
 using GraphicsComposerLib.Rendering.BabylonJs.Constants;
 using GraphicsComposerLib.Rendering.BabylonJs.GUI;
@@ -114,7 +113,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.Graphics
 
                 uiTexture.AddGuiImage(
                     "copyrightImage",
-                    copyrightImage.GetBase64HtmlString(),
+                    copyrightImage.GetUrl(),
                     new GrBabylonJsGuiImage.GuiImageProperties
                     {
                         Stretch = GrBabylonJsImageStretch.Uniform,
@@ -135,9 +134,9 @@ namespace GeometricAlgebraFulcrumLib.Applications.Graphics
             if (_activeCurve is null)
                 throw new NullReferenceException();
 
-            var tMin = _activeCurve.FixedCurve.ParameterValueMin;
-            var tMax = _activeCurve.FixedCurve.ParameterValueMax;
-
+            var (tMin, tMax) = 
+                _activeCurve.FixedCurve.ParameterRange;
+            
             var tValues =
                 tMin.GetLinearRange(tMax, 501, false).ToImmutableArray();
 
@@ -159,15 +158,15 @@ namespace GeometricAlgebraFulcrumLib.Applications.Graphics
             if (_activeCurve is null)
                 throw new NullReferenceException();
 
-            var tMin = _activeCurve.MovingCurve.ParameterValueMin;
-            var tMax = _activeCurve.MovingCurve.ParameterValueMax;
-
+            var (tMin, tMax) = 
+                _activeCurve.MovingCurve.ParameterRange;
+            
             var tValues =
                 tMin.GetLinearRange(tMax, 501, false).ToImmutableArray();
-        
+            
             var tValuesFrames = 
                 tMin.GetLinearRange(tMax, MovingCurveFrameCount, false).ToImmutableArray();
-        
+            
             MainSceneComposer.AddParametricCurve(
                 "movingCurve",
                 _activeCurve.MovingCurve,
@@ -225,12 +224,9 @@ namespace GeometricAlgebraFulcrumLib.Applications.Graphics
             if (_activeCurve is null)
                 throw new NullReferenceException();
         
-            var sampledCurve = _activeCurve.CreateSampledCurve3D(
-                BoundingBox1D.Create(
-                    _activeCurve.ParameterValueMin, 
-                    _activeCurve.ParameterValueMax
-                ), 
-                new SampledParametricCurveTreeOptions3D(5.DegreesToAngle(), 3, 16)
+            var sampledCurve = _activeCurve.CreateAdaptiveCurve3D(
+                _activeCurve.ParameterRange, 
+                new AdaptiveCurveSamplingOptions3D(5.DegreesToAngle(), 3, 16)
             );
 
             var pointList =

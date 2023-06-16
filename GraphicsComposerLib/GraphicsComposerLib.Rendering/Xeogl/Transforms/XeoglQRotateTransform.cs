@@ -1,7 +1,6 @@
-﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Matrices;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
+﻿using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 using TextComposerLib.Text.Linear;
 
 namespace GraphicsComposerLib.Rendering.Xeogl.Transforms
@@ -10,7 +9,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Transforms
     {
         public static XeoglQRotateTransform CreateRotate(double angle, IFloat64Tuple3D rotateVector)
         {
-            var d = 1 / rotateVector.GetVectorNorm();
+            var d = 1 / rotateVector.ENorm();
             var cosAngle = d * Math.Cos(angle / 2);
             var sinAngle = d * Math.Sin(angle / 2);
 
@@ -25,23 +24,23 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Transforms
 
         public static XeoglQRotateTransform CreateRotate(IFloat64Tuple3D vector1, IFloat64Tuple3D vector2)
         {
-            var lengthSquared1 = vector1.GetVectorNormSquared();
-            var lengthSquared2 = vector2.GetVectorNormSquared();
+            var lengthSquared1 = vector1.ENormSquared();
+            var lengthSquared2 = vector2.ENormSquared();
 
             var n1 = Math.Sqrt(lengthSquared1 * lengthSquared2);
 
-            var w = n1 + vector1.VectorDot(vector2);
+            var w = n1 + vector1.ESp(vector2);
 
-            var angle = (2 * Math.Acos(w)).ClampAngle();
+            var angle = (2 * Math.Acos(w)).ClampAngleInRadians();
 
             double vx, vy, vz; 
             if (w < 1e-12 * n1)
             {
                 var v1 = Math.Abs(vector1.X) > Math.Abs(vector1.Z) 
-                    ? new Float64Tuple3D(-vector1.Y, vector1.X, 0)
-                    : new Float64Tuple3D(0, -vector1.Z, vector1.Y);
+                    ? Float64Vector3D.Create(-vector1.Y, vector1.X, 0)
+                    : Float64Vector3D.Create(0, -vector1.Z, vector1.Y);
 
-                var d = 1 / v1.GetVectorNorm();
+                var d = 1 / v1.ENorm();
 
                 vx = d * v1.X;
                 vy = d * v1.Y;
@@ -51,7 +50,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Transforms
             {
                 var v2 = vector1.VectorCross(vector2);
 
-                var d = 1 / v2.GetVectorNorm();
+                var d = 1 / v2.ENorm();
 
                 vx = d * v2.X;
                 vy = d * v2.Y;
@@ -167,17 +166,17 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Transforms
         public SquareMatrix4 GetMatrix()
             => SquareMatrix4.CreateIdentityMatrix();
 
-        public Float64Tuple4D GetQuaternionTuple()
-            => new Float64Tuple4D(QuaternionX, QuaternionY, QuaternionZ, QuaternionW);
+        public Float64Quaternion GetQuaternionTuple()
+            => Float64Quaternion.Create(QuaternionX, QuaternionY, QuaternionZ, QuaternionW);
 
-        public Float64Tuple3D GetRotateTuple()
-            => Float64Tuple3D.Zero;
+        public Float64Vector3D GetRotateTuple()
+            => Float64Vector3D.Zero;
 
-        public Float64Tuple3D GetScaleTuple()
-            => new Float64Tuple3D(1, 1, 1);
+        public Float64Vector3D GetScaleTuple()
+            => Float64Vector3D.Create(1, 1, 1);
 
-        public Float64Tuple3D GetTranslateTuple()
-            => Float64Tuple3D.Zero;
+        public Float64Vector3D GetTranslateTuple()
+            => Float64Vector3D.Zero;
 
 
         public string GetMatrixText()

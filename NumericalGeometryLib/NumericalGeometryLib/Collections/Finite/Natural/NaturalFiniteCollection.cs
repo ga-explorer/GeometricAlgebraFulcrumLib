@@ -11,15 +11,9 @@ namespace NumericalGeometryLib.Collections.Finite.Natural
     /// <typeparam name="T"></typeparam>
     public abstract class NaturalFiniteCollection<T> : FiniteCollection<T>
     {
-        public override int MinIndex
-        {
-            get { return 0; }
-        }
+        public override int MinIndex => 0;
 
-        public override int MaxIndex
-        {
-            get { return Count - 1; }
-        }
+        public override int MaxIndex => Count - 1;
 
 
         public NfcChained<T> ToChainedCollection()

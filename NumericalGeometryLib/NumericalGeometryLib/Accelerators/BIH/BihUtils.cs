@@ -3,18 +3,17 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using DataStructuresLib;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
-using GeometricAlgebraFulcrumLib.MathBase.BasicShapes;
-using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Lines;
-using GeometricAlgebraFulcrumLib.MathBase.Borders;
-using GeometricAlgebraFulcrumLib.MathBase.Borders.Space1D;
-using GeometricAlgebraFulcrumLib.MathBase.Borders.Space1D.Immutable;
-using GeometricAlgebraFulcrumLib.MathBase.Borders.Space2D;
-using GeometricAlgebraFulcrumLib.MathBase.Borders.Space2D.Immutable;
-using GeometricAlgebraFulcrumLib.MathBase.Borders.Space2D.Mutable;
-using GeometricAlgebraFulcrumLib.MathBase.Borders.Space3D;
-using GeometricAlgebraFulcrumLib.MathBase.Borders.Space3D.Immutable;
-using GeometricAlgebraFulcrumLib.MathBase.Borders.Space3D.Mutable;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D.Mutable;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space3D.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space3D.Mutable;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 using NumericalGeometryLib.Accelerators.BIH.Space2D;
 using NumericalGeometryLib.Accelerators.BIH.Space2D.Traversal;
 using NumericalGeometryLib.Accelerators.BIH.Space3D;
@@ -981,11 +980,11 @@ namespace NumericalGeometryLib.Accelerators.BIH
             return AccBihLineTraverser2D<T>.Create(
                 bih,
                 line,
-                BoundingBox1D.Create(lineParamValue1, lineParamValue2)
+                Float64Range1D.Create(lineParamValue1, lineParamValue2)
             );
         }
 
-        public static AccBihLineTraverser2D<T> GetLineTraverser<T>(this IAccBih2D<T> bih, ILine2D line, IBoundingBox1D lineParamRange)
+        public static AccBihLineTraverser2D<T> GetLineTraverser<T>(this IAccBih2D<T> bih, ILine2D line, Float64Range1D lineParamRange)
             where T : IFiniteGeometricShape2D
         {
             return AccBihLineTraverser2D<T>.Create(
@@ -1167,11 +1166,11 @@ namespace NumericalGeometryLib.Accelerators.BIH
             return AccBihLineTraverser3D<T>.Create(
                 bih,
                 line,
-                BoundingBox1D.Create(lineParamValue1, lineParamValue2)
+                Float64Range1D.Create(lineParamValue1, lineParamValue2)
             );
         }
 
-        public static AccBihLineTraverser3D<T> GetLineTraverser<T>(this IAccBih3D<T> bih, ILine3D line, IBoundingBox1D lineParamRange)
+        public static AccBihLineTraverser3D<T> GetLineTraverser<T>(this IAccBih3D<T> bih, ILine3D line, Float64Range1D lineParamRange)
             where T : IFiniteGeometricShape3D
         {
             return AccBihLineTraverser3D<T>.Create(

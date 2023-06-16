@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using GeometricAlgebraFulcrumLib.MathBase.BasicShapes;
-using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Lines;
-using GeometricAlgebraFulcrumLib.MathBase.Borders.Space1D;
-using GeometricAlgebraFulcrumLib.MathBase.Borders.Space1D.Mutable;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders;
 using NumericalGeometryLib.Computers;
 
 namespace NumericalGeometryLib.Accelerators.BIH.Space3D.Traversal
@@ -16,16 +15,16 @@ namespace NumericalGeometryLib.Accelerators.BIH.Space3D.Traversal
             return new AccBihLineTraverser3D<T>(
                 bih,
                 line,
-                MutableBoundingBox1D.CreateInfinite()
+                Float64Range1D.Infinite
             );
         }
 
-        public static AccBihLineTraverser3D<T> Create(IAccBih3D<T> bih, ILine3D line, IBoundingBox1D lineParamLimits)
+        public static AccBihLineTraverser3D<T> Create(IAccBih3D<T> bih, ILine3D line, Float64Range1D lineParamLimits)
         {
             return new AccBihLineTraverser3D<T>(
                 bih,
                 line,
-                lineParamLimits.GetMutableBoundingBox()
+                lineParamLimits
             );
         }
 
@@ -34,7 +33,7 @@ namespace NumericalGeometryLib.Accelerators.BIH.Space3D.Traversal
             return new AccBihLineTraverser3D<T>(
                 bih,
                 line,
-                MutableBoundingBox1D.Create(lineParamLimit1, lineParamLimit2)
+                Float64Range1D.Create(lineParamLimit1, lineParamLimit2)
             );
         }
 
@@ -49,22 +48,33 @@ namespace NumericalGeometryLib.Accelerators.BIH.Space3D.Traversal
 
         public LineTraversalData3D LineData { get; }
 
-        public MutableBoundingBox1D LineParameterLimits { get; }
+        public Float64Range1D LineParameterRange { get; private set; }
 
-        public IEnumerable<AccBihLineTraversalState3D> TraversalStates
-        {
-            get { return _statesList; }
-        }
+        public IEnumerable<AccBihLineTraversalState3D> TraversalStates => _statesList;
 
 
-        private AccBihLineTraverser3D(IAccBih3D<T> bih, ILine3D line, MutableBoundingBox1D lineParamLimits)
+        private AccBihLineTraverser3D(IAccBih3D<T> bih, ILine3D line, Float64Range1D lineParamLimits)
         {
             Bih = bih;
             Line = line;
             LineData = line.GetLineTraversalData();
-            LineParameterLimits = lineParamLimits;
+            LineParameterRange = lineParamLimits;
         }
 
+        
+        internal AccBihLineTraverser3D<T> ResetMinParameterValue(double minValue)
+        {
+            LineParameterRange = LineParameterRange.ResetMinValue(minValue);
+
+            return this;
+        }
+        
+        internal AccBihLineTraverser3D<T> ResetMaxParameterValue(double maxValue)
+        {
+            LineParameterRange = LineParameterRange.ResetMaxValue(maxValue);
+
+            return this;
+        }
 
         public IEnumerable<AccBihLineTraversalState3D> GetLeafTraversalStates(bool storeStates = false)
         {
@@ -79,7 +89,7 @@ namespace NumericalGeometryLib.Accelerators.BIH.Space3D.Traversal
 
             var stack = new Stack<AccBihLineTraversalState3D>();
             stack.Push(
-                new AccBihLineTraversalState3D(Bih.RootNode, LineParameterLimits)
+                new AccBihLineTraversalState3D(Bih.RootNode, LineParameterRange)
             );
 
             while (stack.Count > 0)
@@ -89,7 +99,7 @@ namespace NumericalGeometryLib.Accelerators.BIH.Space3D.Traversal
                 //The outside caller can change LineParameterLimits used inside
                 //this loop. Make sure to use LineParameterLimits values to make
                 //correct BIH traversal decisions
-                if (!state.RestrictLineParameterRange(LineParameterLimits))
+                if (!state.RestrictLineParameterRange(LineParameterRange))
                     continue;
 
                 if (storeStates)

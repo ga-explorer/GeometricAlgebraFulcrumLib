@@ -1,6 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Mutable;
+﻿using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 using GraphicsComposerLib.Rendering.Xeogl.Constants;
 using TextComposerLib.Code.JavaScript;
 
@@ -11,8 +9,8 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Lights
     /// </summary>
     public sealed class XeoglDirectionalLight : XeoglLight
     {
-        private static Float64Tuple3D DefaultLightDirection { get; }
-            = new Float64Tuple3D(1, 1, 1);
+        private static Float64Vector3D DefaultLightDirection { get; }
+            = Float64Vector3D.Create(1, 1, 1);
 
 
         public override string JavaScriptClassName => "DirLight";
@@ -22,8 +20,8 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Lights
 
         public bool CastsShadow { get; set; }
 
-        public MutableFloat64Tuple3D LightDirection { get; set; }
-            = new MutableFloat64Tuple3D(DefaultLightDirection);
+        public Float64Vector3DComposer LightDirection { get; set; }
+            = Float64Vector3DComposer.Create(DefaultLightDirection);
 
 
         public XeoglDirectionalLight()
@@ -32,7 +30,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Lights
 
         public XeoglDirectionalLight(IFloat64Tuple3D lightDirection)
         {
-            LightDirection.SetTuple(lightDirection);
+            LightDirection.SetVector(lightDirection);
         }
 
 

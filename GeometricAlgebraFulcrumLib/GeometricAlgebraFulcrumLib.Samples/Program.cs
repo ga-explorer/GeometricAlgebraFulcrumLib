@@ -28,7 +28,7 @@ namespace GeometricAlgebraFulcrumLib.Samples
             //foreach (var functionName in functionNames)
             //    testClass.AssertCorrectUnaryOperationsWithScalarOutput(functionName);
 
-            //GeometricAlgebraFulcrumLib.Samples.CodeComposer.Sample1.Execute2();
+            //CodeComposer.Sample1.Execute2();
             //EuclideanMultivectorOperations3D.Execute();
 
             //HilbertTransform.Execute();
@@ -39,10 +39,6 @@ namespace GeometricAlgebraFulcrumLib.Samples
             //CodeComposer.Sample1.Execute();
 
             //Symbolic.SymbolicRotorsSample.Example11();
-            //Graphics.Basic.QuaternionRotationSample.Example4();
-            //Graphics.BabylonJs.Sample1.Example2();
-            //Graphics.Animations.Sample1.Example2();
-            //BabylonJsSnapshotsSample.TakeSnapshots();
             //Browser.Sample1.Example5();
             
             //AutoDiff.AutoDiffSamples.Example1();
@@ -56,13 +52,23 @@ namespace GeometricAlgebraFulcrumLib.Samples
             //DifferentialGeometry.DifferentialCurveSamples.Example1();
 
             //PowerSystems.SystemIdentification.DFIGTest1OpenLoopSample.Example2();
+            //PowerSignalVisualizationSample1.Execute();
+
+            //Graphics.BabylonJs.DifferentialCurveAnimationSample.Example1();
+            //Graphics.BabylonJs.AnimationSamples.Example1();
+            //Graphics.BabylonJs.AnimationSamples.Example2();
+            //Graphics.BabylonJs.AnimationSamples.Example3();
+            //Graphics.BabylonJs.AnimationSamples.Example4();
             //Graphics.BabylonJs.RotorFamilySamples.Example2();
             //Graphics.BabylonJs.CurveSamples.Example3();
+            //Graphics.Basic.QuaternionRotationSample.Example4();
+            //Graphics.BabylonJs.Sample1.Example2();
+            //Graphics.BabylonJsSnapshotsSample.TakeSnapshots();
+            //Graphics.Animations.Sample1.Example2();
+            
             //Numeric.InterpolationSample.Example9();
-            //PowerSignalVisualizationSample1.Execute();
             //EuclideanGeometry.RotationSamples.Example1();
             //Symbolic.SymbolicGramSchmidtSample.Example1();
-
             //EigenSubspaceSamples.Example1();
             //ReflectionSamples.ReflectionMatrixToHyperPlaneReflectionsSample(5, 3);
 
@@ -78,34 +84,37 @@ namespace GeometricAlgebraFulcrumLib.Samples
             //Numeric.XGaMultivectorValidationSamples.Example7();
             //Numeric.XGaMultivectorValidationSamples.Example8();
             //Numeric.XGaMultivectorValidationSamples.Example9();
-            Numeric.XGaMultivectorValidationSamples.Example10();
-            Numeric.XGaMultivectorValidationSamples.Example11();
+            //Numeric.XGaMultivectorValidationSamples.Example10();
+            //Numeric.XGaMultivectorValidationSamples.Example11();
             //Numeric.XGaMultivectorValidationSamples.Example12();
 
+            //EuclideanGeometry.QuaternionSamples.Example1();
             //EuclideanGeometry.GramSchmidtSamples.Example2();
             //EuclideanGeometry.GramSchmidtSamples.Example3();
             //EuclideanGeometry.GramSchmidtSamples.Example4();
-
+            //EuclideanGeometry.RotationSamples.ValidationsExample3D();
             //EuclideanGeometry.RotationSamples.Validations();
             //EuclideanGeometry.RotationSamples.OutermorphismMatrixToRotationsSample(5);
             //EuclideanGeometry.ReflectionSamples.Example4();
             //EuclideanGeometry.OrthogonalLinearMapSequenceSamples.Example4();
-
             //EuclideanGeometry.VectorRotationSamples.NumericExample1();
+
             //GAPoT.SimpleKirchhoffRotationSamples.Example3();
             //GAPoT.SymmetricHarmonicsSymbolicSample.Execute();
             //GAPoT.SymmetricalComponentsSamples.SymbolicSymmetricalComponentsSample(3);
 
             //PowerSystems.GeometricFrequency.NumericGeometricFrequencySample.Example2();
-            //GeometricFrequency.SymbolicAngularVelocitySample.Example1();
-            //GeometricFrequency.NumericGeometricFrequencySample.SymbolicNumericValidationExample2();
-            //GeometricFrequency.SymbolicGeometricFrequencySample.Example1();
-            //GeometricFrequency.SymbolicHarmonicsSample.Example2();
-            //GeometricFrequency.LargeDataSetSample.GenerateDownSampledSignal(8);
-            //GeometricFrequency.LargeDataSetSample.PlotData();
-            //GeometricFrequency.RlCircuitPaperSample.Example4();
-            //GeometricFrequency.SymbolicValidationSample.Example3D();
-            //GeometricFrequency.NumericValidationSample.Example1();
+            //PowerSystems.GeometricFrequency.SymbolicAngularVelocitySample.Example1();
+            //PowerSystems.GeometricFrequency.NumericGeometricFrequencySample.SymbolicNumericValidationExample2();
+            //PowerSystems.GeometricFrequency.SymbolicGeometricFrequencySample.Example1();
+            //PowerSystems.GeometricFrequency.SymbolicHarmonicsSample.Example2();
+            //PowerSystems.GeometricFrequency.LargeDataSetSample.GenerateDownSampledSignal(8);
+            //PowerSystems.GeometricFrequency.LargeDataSetSample.PlotData();
+            //PowerSystems.GeometricFrequency.RlCircuitPaperSample.Example4();
+            //PowerSystems.GeometricFrequency.SymbolicValidationSample.Example3D();
+            //PowerSystems.GeometricFrequency.NumericValidationSample.Example1();
+
+            PowerSystems.SystemIdentification.Model3Samples.Example1();
 
             //SymbolicBSplineSample.Example2();
             //NumericPhCurveSamples.Example3();

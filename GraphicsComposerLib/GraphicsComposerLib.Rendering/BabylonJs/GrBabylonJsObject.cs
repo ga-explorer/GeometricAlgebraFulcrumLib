@@ -8,6 +8,8 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
     {
         public string ConstName { get; }
 
+        public bool UseLetDeclaration { get; set; }
+
         protected abstract string ConstructorName { get; }
 
         public abstract GrBabylonJsObjectOptions? ObjectOptions { get; }
@@ -49,9 +51,13 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
 
             var constructorCode = GetConstructorCode();
             var propertiesCode = GetPropertiesCode();
-        
+            
             if (!string.IsNullOrEmpty(ConstName))
-                composer.Append($"const {ConstName} = ");
+            {
+                var declarationKeyword = UseLetDeclaration ? "let" : "const";
+
+                composer.Append($"{declarationKeyword} {ConstName} = ");
+            }
 
             composer
                 .AppendLine(constructorCode)

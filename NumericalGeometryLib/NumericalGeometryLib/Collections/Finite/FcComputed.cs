@@ -32,25 +32,13 @@ namespace NumericalGeometryLib.Collections.Finite
         /// </summary>
         public Func<int, T> ValueFunction { get; set; }
 
-        public override int Count
-        {
-            get { return MaxIndex - MinIndex + 1; }
-        }
+        public override int Count => MaxIndex - MinIndex + 1;
 
-        public override int MinIndex
-        {
-            get { return _minIndex; }
-        }
+        public override int MinIndex => _minIndex;
 
-        public override int MaxIndex
-        {
-            get { return _maxIndex; }
-        }
+        public override int MaxIndex => _maxIndex;
 
-        public T this[int index]
-        {
-            get { return ValueFunction == null ? DefaultValue : ValueFunction(index); }
-        }
+        public T this[int index] => ValueFunction == null ? DefaultValue : ValueFunction(index);
 
 
         private FcComputed(Func<int, T> valueFunction, int minIndex, int maxIndex)

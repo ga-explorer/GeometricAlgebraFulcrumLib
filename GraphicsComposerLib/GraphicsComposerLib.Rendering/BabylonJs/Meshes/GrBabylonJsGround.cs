@@ -33,7 +33,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
                 yield return Subdivisions.GetNameValueCodePair("subdivisions");
                 yield return SubdivisionsX.GetNameValueCodePair("subdivisionsX");
                 yield return SubdivisionsY.GetNameValueCodePair("subdivisionsY");
-                yield return Updateable.GetNameValueCodePair("updateable");
+                yield return Updateable.GetNameValueCodePair("updatable");
             }
         }
 

@@ -1,5 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
+﻿using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 using GraphicsComposerLib.Rendering.Visuals.Space3D.Images;
 
 namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Grids
@@ -8,7 +7,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Grids
         GrVisualLineGridImage3D
     {
         public IFloat64Tuple3D Origin { get; set; } 
-            = new Float64Tuple3D(-12, 0, -12);
+            = Float64Vector3D.Create(-12, 0, -12);
 
         public double UnitSize { get; set; } 
             = 1;

@@ -1,10 +1,8 @@
 ﻿using System.Collections.Immutable;
 using DataStructuresLib.Basic;
 using DataStructuresLib.Files;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Euclidean3D;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 using GraphicsComposerLib.Rendering.BabylonJs;
 using GraphicsComposerLib.Rendering.BabylonJs.Cameras;
 using GraphicsComposerLib.Rendering.BabylonJs.Constants;
@@ -12,15 +10,15 @@ using GraphicsComposerLib.Rendering.BabylonJs.GUI;
 using GraphicsComposerLib.Rendering.BabylonJs.Materials;
 using GraphicsComposerLib.Rendering.BabylonJs.Meshes;
 using GraphicsComposerLib.Rendering.BabylonJs.Textures;
-using GraphicsComposerLib.Rendering.Colors;
-using GraphicsComposerLib.Rendering.Images;
-using GraphicsComposerLib.Rendering.LaTeX.ImageComposers;
-using GraphicsComposerLib.Rendering.Visuals.Space3D.Curves;
+using GraphicsComposerLib.Rendering.Visuals.Space3D.Animations;
+using GraphicsComposerLib.Rendering.Visuals.Space3D.Basic;
 using GraphicsComposerLib.Rendering.Visuals.Space3D.Grids;
-using GraphicsComposerLib.Rendering.Visuals.Space3D.Groups;
 using GraphicsComposerLib.Rendering.Visuals.Space3D.Images;
+using GraphicsComposerLib.Rendering.Visuals.Space3D.Styles;
 using GraphicsComposerLib.Rendering.Visuals.Space3D.Surfaces;
 using SixLabors.ImageSharp;
+using WebComposerLib.Colors;
+using WebComposerLib.Html.Media;
 
 namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
 {
@@ -39,7 +37,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
 
         public bool ShowRightPanel { get; set; } = true;
     
-        public Float64Tuple3D OmegaFrameOrigin { get; set; } = new Float64Tuple3D(-6, 2, 1);
+        public Float64Vector3D OmegaFrameOrigin { get; set; } = Float64Vector3D.Create(-6, 2, 1);
     
         public int SignalTextImageMaxWidth { get; private set; }
 
@@ -55,7 +53,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
             Signal = powerSignal;
         }
 
-    
+        
         protected override void InitializeImageCache()
         {
             var workingPath = Path.Combine(WorkingPath, "images");
@@ -216,8 +214,8 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
                 var e2Ds = kappa2 * e3 - kappa1 * e1;
                 var e3Ds = -kappa2 * e2;
 
-                var kVector = omega.UnDual().ToUnitVector();
-                var kVectorMean = omegaMean.UnDual().ToUnitVector();
+                var kVector = omega.UnDual3D().ToUnitVector();
+                var kVectorMean = omegaMean.UnDual3D().ToUnitVector();
 
                 ImageCache.AddLaTeXAlignedEquations(
                     $"signalText-{i:D6}",
@@ -240,13 +238,15 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
                 );
             }
 
-            var latexImageComposer = new GrLaTeXImageComposer
-            {
-                LaTeXBinFolder = @"D:\texlive\2021\bin\win32\",
-                Resolution = 150
-            };
+            //var latexImageComposer = new GrLaTeXImageComposer
+            //{
+            //    LaTeXBinFolder = @"D:\texlive\2021\bin\win32\",
+            //    Resolution = 150
+            //};
 
-            ImageCache.GeneratePngBase64Strings(latexImageComposer);
+            //ImageCache.GeneratePngBase64Strings(latexImageComposer);
+
+            ImageCache.GeneratePngDataUrlStrings();
 
             var maxWidth = 0;
             var maxHeight = 0;
@@ -347,7 +347,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
                     UnitCountX = 4,
                     UnitCountZ = 4,
                     UnitSize = 1,
-                    Origin = OmegaFrameOrigin + new Float64Tuple3D(-0.5d * 4, 0, -0.5d * 4),
+                    Origin = OmegaFrameOrigin + Float64Vector3D.Create(-0.5d * 4, 0, -0.5d * 4),
                     Opacity = 0.2,
                     BaseSquareColor = System.Drawing.Color.LightYellow.ToImageSharpColor(),
                     BaseLineColor = System.Drawing.Color.BurlyWood.ToImageSharpColor(),
@@ -428,7 +428,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
                 var latexPngData1 = ImageCache["symbolicSignalText"];
                 uiPanel1.AddGuiImage(
                     "latexGuiImage1",
-                    latexPngData1.GetBase64HtmlString(),
+                    latexPngData1.GetUrl(),
                     new GrBabylonJsGuiImage.GuiImageProperties
                     {
                         //Alpha = 0.5d,
@@ -469,7 +469,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
                 var signalPlotData = ImageCache[$"SignalPlot-{index:D6}"];
                 uiPanel2.AddGuiImage(
                     "signalPlotGuiImage",
-                    signalPlotData.GetBase64HtmlString(),
+                    signalPlotData.GetUrl(),
                     new GrBabylonJsGuiImage.GuiImageProperties
                     {
                         Stretch = GrBabylonJsImageStretch.Uniform,
@@ -488,7 +488,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
                 var curvaturePlotData = ImageCache[$"CurvaturePlot-{index:D6}"];
                 uiPanel2.AddGuiImage(
                     "curvaturePlotGuiImage",
-                    curvaturePlotData.GetBase64HtmlString(),
+                    curvaturePlotData.GetUrl(),
                     new GrBabylonJsGuiImage.GuiImageProperties
                     {
                         Stretch = GrBabylonJsImageStretch.Uniform,
@@ -507,7 +507,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
                 var frequencyHzPlotData = ImageCache[$"FrequencyHzPlot-{index:D6}"];
                 uiPanel2.AddGuiImage(
                     "frequencyHzPlotGuiImage",
-                    frequencyHzPlotData.GetBase64HtmlString(),
+                    frequencyHzPlotData.GetUrl(),
                     new GrBabylonJsGuiImage.GuiImageProperties
                     {
                         Stretch = GrBabylonJsImageStretch.Uniform,
@@ -528,7 +528,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
 
                 uiPanel2.AddGuiImage(
                     "latexGuiImage2",
-                    signalTextImageData.GetBase64HtmlString(),
+                    signalTextImageData.GetUrl(),
                     new GrBabylonJsGuiImage.GuiImageProperties
                     {
                         //Alpha = 0.5d,
@@ -552,7 +552,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
 
                 uiTexture.AddGuiImage(
                     "copyrightImage",
-                    copyrightImage.GetBase64HtmlString(),
+                    copyrightImage.GetUrl(),
                     new GrBabylonJsGuiImage.GuiImageProperties
                     {
                         Stretch = GrBabylonJsImageStretch.Uniform,
@@ -568,77 +568,79 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
             }
         }
 
-        private void AddPhaseVector1(Float64Tuple3D x)
+        private void AddPhaseVector1(Float64Vector3D x)
         {
             MainSceneComposer.AddVector(
                 "v1Vector",
-                Float64Tuple3D.Zero,
+                Float64Vector3D.Zero,
                 x,
                 Color.Red,
                 0.05
             ).AddLaTeXText(
                 "v1VectorText",
                 ImageCache,
-                x + x.ToUnitVector() * 0.25d + (Float64Tuple3D.E2 + Float64Tuple3D.E3) * 0.25d / 2d.Sqrt(),
+                x + x.ToUnitVector() * 0.25d + (Float64Vector3D.E2 + Float64Vector3D.E3) * 0.25d / 2d.Sqrt(),
                 LaTeXScalingFactor
             );
 
             MainSceneComposer.AddLineSegment(
                 "v1Trail",
-                new Float64Tuple3D(Signal.VectorBounds.MinX, 0, 0),
-                new Float64Tuple3D(Signal.VectorBounds.MaxX, 0, 0),
+                Float64Vector3D.Create(Signal.VectorBounds.MinX, 0, 0),
+                Float64Vector3D.Create(Signal.VectorBounds.MaxX, 0, 0),
                 Color.Red.SetAlpha(0.25f),
-                0.045
+                0.045,
+                GrVisualAnimationSpecs.Static
             );
         }
 
-        private void AddPhaseVector2(Float64Tuple3D y)
+        private void AddPhaseVector2(Float64Vector3D y)
         {
             MainSceneComposer.AddVector(
                 "v2Vector", 
-                Float64Tuple3D.Zero, 
+                Float64Vector3D.Zero, 
                 y,
                 Color.Green,
                 0.05
             ).AddLaTeXText(
                 "v2VectorText",
                 ImageCache,
-                y + y.ToUnitVector() * 0.25d + (Float64Tuple3D.E1 + Float64Tuple3D.E3) * 0.25d / 2d.Sqrt(),
+                y + y.ToUnitVector() * 0.25d + (Float64Vector3D.E1 + Float64Vector3D.E3) * 0.25d / 2d.Sqrt(),
                 LaTeXScalingFactor
             );
             
             MainSceneComposer.AddLineSegment(
                 "v2TrailSegment",
-                new Float64Tuple3D(0, Signal.VectorBounds.MinY, 0),
-                new Float64Tuple3D(0, Signal.VectorBounds.MaxY, 0),
+                Float64Vector3D.Create(0, Signal.VectorBounds.MinY, 0),
+                Float64Vector3D.Create(0, Signal.VectorBounds.MaxY, 0),
                 Color.Green.SetAlpha(0.25f),
-                0.045
+                0.045,
+                GrVisualAnimationSpecs.Static
             );
         }
 
-        private void AddPhaseVector3(Float64Tuple3D z)
+        private void AddPhaseVector3(Float64Vector3D z)
         {
             MainSceneComposer.AddVector(
                 "v3Vector", 
-                Float64Tuple3D.Zero, 
+                Float64Vector3D.Zero, 
                 z,
                 Color.Blue,
                 0.05
             ).AddLaTeXText(
                 "v3VectorText",
                 ImageCache,
-                z + z.ToUnitVector() * 0.25d + (Float64Tuple3D.E1 + Float64Tuple3D.E2) * 0.25d / 2d.Sqrt(),
+                z + z.ToUnitVector() * 0.25d + (Float64Vector3D.E1 + Float64Vector3D.E2) * 0.25d / 2d.Sqrt(),
                 LaTeXScalingFactor
             );
         }
 
-        private void AddSignalVector(Float64Tuple3D x, Float64Tuple3D y, Float64Tuple3D z)
+        private void AddSignalVector(Float64Vector3D x, Float64Vector3D y, Float64Vector3D z)
         {
             var v = x + y + z;
         
             MainSceneComposer.AddVector(
                 "vVector",
-                Float64Tuple3D.Zero,
+                Float64Vector3D.Zero,
                 v,
                 Color.DarkOrange,
                 0.05
@@ -657,19 +659,22 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
                 x + y,
                 x,
                 Color.Gray,
-                dashSpecs
+                dashSpecs,
+                GrVisualAnimationSpecs.Static
             ).AddLineSegment(
                 "xySegment2",
                 x + y,
                 y,
                 Color.Gray,
-                dashSpecs
+                dashSpecs,
+                GrVisualAnimationSpecs.Static
             ).AddLineSegment(
                 "xySegment3",
                 x + y,
                 v,
                 Color.Gray,
-                dashSpecs
+                dashSpecs,
+                GrVisualAnimationSpecs.Static
             );
         
             MainSceneComposer.AddLineSegment(
@@ -677,19 +682,22 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
                 y + z,
                 y,
                 Color.Gray,
-                dashSpecs
+                dashSpecs,
+                GrVisualAnimationSpecs.Static
             ).AddLineSegment(
                 "yzSegment2",
                 y + z,
                 z,
                 Color.Gray,
-                dashSpecs
+                dashSpecs,
+                GrVisualAnimationSpecs.Static
             ).AddLineSegment(
                 "yzSegment3",
                 y + z,
                 v,
                 Color.Gray,
-                dashSpecs
+                dashSpecs,
+                GrVisualAnimationSpecs.Static
             );
 
             MainSceneComposer.AddLineSegment(
@@ -697,19 +705,22 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
                 z + x,
                 z,
                 Color.Gray,
-                dashSpecs
+                dashSpecs,
+                GrVisualAnimationSpecs.Static
             ).AddLineSegment(
                 "zxSegment2",
                 z + x,
                 x,
                 Color.Gray,
-                dashSpecs
+                dashSpecs,
+                GrVisualAnimationSpecs.Static
             ).AddLineSegment(
                 "zxSegment3",
                 z + x,
                 v,
                 Color.Gray,
-                dashSpecs
+                dashSpecs,
+                GrVisualAnimationSpecs.Static
             );
         }
 
@@ -720,7 +731,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
         //    var material = scene.AddSimpleMaterial("kVectorMaterial", Color.SaddleBrown);
 
         //    SceneComposer.AddVector(
-        //        new GrVisualVector3D("e1Vector")
+        //        GrVisualVector3D.Create("e1Vector")
         //        {
         //            Origin = Tuple3D.Zero,
         //            Direction = k,
@@ -759,30 +770,24 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
                 }
             );
 
-            var disc = new GrVisualCircleSurface3D("disc")
-            {
-                Center = Float64Tuple3D.Zero,
-                Radius = Signal.ScalarBounds.MaxValue * 1.5d, //Math.Sqrt(3d / 2d),
-                Normal = k,
+            var disc = GrVisualCircleSurface3D.CreateStatic(
+                "disc",
+                scene.GetMaterial("discMaterial").CreateThickSurfaceStyle(0.025),
+                Float64Vector3D.Zero,
+                k,
+                Signal.ScalarBounds.MaxValue * 1.5d, //Math.Sqrt(3d / 2d)
+                false
+            );
 
-                Style = new GrVisualSurfaceThickStyle3D(
-                    scene.GetMaterial("discMaterial"),
-                    0.025
-                )
-            };
-
-            var ring = new GrVisualRingSurface3D("ring")
-            {
-                Center = Float64Tuple3D.Zero,
-                MinRadius = Signal.ScalarBounds.MaxValue * Math.Sqrt(3d / 2d) - 0.5d,
-                MaxRadius = Signal.ScalarBounds.MaxValue * Math.Sqrt(3d / 2d) + 0.5d,
-                Normal = k,
-
-                Style = new GrVisualSurfaceThickStyle3D(
-                    scene.GetMaterial("discMaterial"),
-                    0.025
-                )
-            };
+            var ring = GrVisualCircleRingSurface3D.Create(
+                "ring",
+                scene.GetMaterial("discMaterial").CreateThickSurfaceStyle(0.025),
+                Float64Vector3D.Zero,
+                k,
+                Signal.ScalarBounds.MaxValue * Math.Sqrt(3d / 2d) - 0.5d,
+                Signal.ScalarBounds.MaxValue * Math.Sqrt(3d / 2d) + 0.5d,
+                GrVisualAnimationSpecs.Static
+            );
 
             MainSceneComposer.AddElement(ring);
         }
@@ -807,7 +812,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
                 Width = 1,
                 Height = 256,
                 ColorFunc = (i, j) => Color.Yellow.SetAlpha(1f - j / 255f)
-            }.GetImage().PngToBase64HtmlString();
+            }.GetImage().PngToHtmlDataUrlBase64();
 
             var texture = scene.AddTexture(
                 "curveMaterialTexture",
@@ -871,7 +876,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
 
             var scene = MainSceneComposer.SceneObject;
 
-            var lineArrayList = new List<Float64Tuple3D[]>(Signal.SampledCurve.CornerCount);
+            var lineArrayList = new List<Float64Vector3D[]>(Signal.SampledCurve.CornerCount);
             var colorArrayList = new List<Color[]>(Signal.SampledCurve.CornerCount);
 
             var xColor1 = Color.Red.SetAlpha(0.8f); //Color.Red.SetAlpha(128);
@@ -926,23 +931,36 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
 
             var curveFrame = Signal.FrameList[index];
             MainSceneComposer.AddElement(
-                new GrVisualFrame3D("curveFrame")
-                {
-                    Origin = curveFrame.Origin,
-                    Direction1 = curveFrame.Direction1,
-                    Direction2 = curveFrame.Direction2,
-                    Direction3 = curveFrame.Direction3,
-
-                    Style = new GrVisualFrameStyle3D
+                GrVisualFrame3D.Create(
+                    "curveFrame",
+                    new GrVisualFrameStyle3D
                     {
-                        OriginThickness = 0.075,
-                        DirectionThickness = 0.035,
-                        OriginMaterial = scene.AddStandardMaterial("curveFrameOriginMaterial", Color.DarkGray),
-                        DirectionMaterial1 = scene.AddStandardMaterial("curveFrameDirectionMaterial1", Color.DarkRed),
-                        DirectionMaterial2 = scene.AddStandardMaterial("curveFrameDirectionMaterial2", Color.DarkGreen),
-                        DirectionMaterial3 = scene.AddStandardMaterial("curveFrameDirectionMaterial3", Color.DarkBlue)
-                    }
-                }
+                        OriginStyle = 
+                            scene
+                                .AddStandardMaterial("curveFrameOriginMaterial", Color.DarkGray)
+                                .CreateThickSurfaceStyle(0.075),
+
+                        Direction1Style = 
+                            scene
+                                .AddStandardMaterial("curveFrameDirectionMaterial1", Color.DarkRed)
+                                .CreateTubeCurveStyle(0.035),
+
+                        Direction2Style = 
+                            scene
+                                .AddStandardMaterial("curveFrameDirectionMaterial2", Color.DarkGreen)
+                                .CreateTubeCurveStyle(0.035),
+
+                        Direction3Style = 
+                            scene
+                                .AddStandardMaterial("curveFrameDirectionMaterial3", Color.DarkBlue)
+                                .CreateTubeCurveStyle(0.035)
+                    },
+                    curveFrame.Origin,
+                    curveFrame.Direction1,
+                    curveFrame.Direction2,
+                    curveFrame.Direction3,
+                    GrVisualAnimationSpecs.Static
+                )
             );
 
             MainSceneComposer.AddLaTeXText(
@@ -984,7 +1002,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
             var omegaNorm = (kappa1.Square() + kappa2.Square()).Sqrt() / 2;
         
             var radius = sDt / (2 * omegaNorm);
-            var center = Float64Tuple3D.Zero; //curveFrame.Origin + e2 * radius; 
+            var center = Float64Vector3D.Zero; //curveFrame.Origin + e2 * radius; 
             var normal = e2.VectorUnitCross(k21Vector);
 
             MainSceneComposer.AddDisc(
@@ -1036,32 +1054,45 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
             // Display bivector omega = kappa1 e12 + kappa2 e23
             var (kappa1, kappa2) = Signal.CurvatureList[index];
 
-            var e1 = Float64Tuple3D.E1;
-            var e2 = Float64Tuple3D.E2;
-            var e3 = Float64Tuple3D.E3;
+            var e1 = Float64Vector3D.E1;
+            var e2 = Float64Vector3D.E2;
+            var e3 = Float64Vector3D.E3;
 
             var e1Ds = kappa1 * e2;
             var e2Ds = kappa2 * e3 - kappa1 * e1;
             var e3Ds = -kappa2 * e2;
         
             OmegaSceneComposer.AddElement(
-                new GrVisualFrame3D("curveFrame")
-                {
-                    Origin = OmegaFrameOrigin,
-                    Direction1 = e1,
-                    Direction2 = e2,
-                    Direction3 = e3,
-
-                    Style = new GrVisualFrameStyle3D
+                GrVisualFrame3D.Create(
+                    "curveFrame",
+                    new GrVisualFrameStyle3D
                     {
-                        OriginThickness = 0.075,
-                        DirectionThickness = 0.035,
-                        OriginMaterial = scene.AddStandardMaterial("curveFrameOriginMaterial", Color.DarkGray),
-                        DirectionMaterial1 = scene.AddStandardMaterial("curveFrameDirectionMaterial1", Color.DarkRed),
-                        DirectionMaterial2 = scene.AddStandardMaterial("curveFrameDirectionMaterial2", Color.DarkGreen),
-                        DirectionMaterial3 = scene.AddStandardMaterial("curveFrameDirectionMaterial3", Color.DarkBlue)
-                    }
-                }
+                        OriginStyle = 
+                            scene
+                                .AddStandardMaterial("curveFrameOriginMaterial", Color.DarkGray)
+                                .CreateThickSurfaceStyle(0.075),
+
+                        Direction1Style = 
+                            scene
+                                .AddStandardMaterial("curveFrameDirectionMaterial1", Color.DarkRed)
+                                .CreateTubeCurveStyle(0.035),
+
+                        Direction2Style = 
+                            scene
+                                .AddStandardMaterial("curveFrameDirectionMaterial2", Color.DarkGreen)
+                                .CreateTubeCurveStyle(0.035),
+
+                        Direction3Style = 
+                            scene
+                                .AddStandardMaterial("curveFrameDirectionMaterial3", Color.DarkBlue)
+                                .CreateTubeCurveStyle(0.035)
+                    },
+                    OmegaFrameOrigin,
+                    e1,
+                    e2,
+                    e3,
+                    GrVisualAnimationSpecs.Static
+                )
             );
 
             OmegaSceneComposer.AddLaTeXText(
@@ -1081,7 +1112,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
                 LaTeXScalingFactor
             );
 
-            if (e1Ds.GetVectorNorm() > 0.1)
+            if (e1Ds.ENorm() > 0.1)
             {
                 OmegaSceneComposer.AddVector(
                     "e1DsVector",
@@ -1109,7 +1140,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
                     }
                 );
 
-                OmegaSceneComposer.AddRectangle(
+                OmegaSceneComposer.AddParallelogram(
                     "omega1Bivector",
                     OmegaFrameOrigin,
                     e1,
@@ -1125,7 +1156,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
                 );
             }
 
-            if (e2Ds.GetVectorNorm() > 0.1)
+            if (e2Ds.ENorm() > 0.1)
             {
                 OmegaSceneComposer.AddVector(
                     "e2DsVector",
@@ -1153,7 +1184,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
                     }
                 );
 
-                OmegaSceneComposer.AddRectangle(
+                OmegaSceneComposer.AddParallelogram(
                     "omegaBivector",
                     OmegaFrameOrigin,
                     e2,
@@ -1169,7 +1200,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
                 );
             }
 
-            if (e3Ds.GetVectorNorm() > 0.1)
+            if (e3Ds.ENorm() > 0.1)
             {
                 var e3DsVectorMaterial = OmegaSceneComposer.SceneObject.AddStandardMaterial(
                     "e3DsVectorMaterial",
@@ -1205,7 +1236,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
                     }
                 );
 
-                OmegaSceneComposer.AddRectangle(
+                OmegaSceneComposer.AddParallelogram(
                     "omega3Bivector",
                     OmegaFrameOrigin,
                     e3,

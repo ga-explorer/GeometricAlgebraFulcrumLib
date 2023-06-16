@@ -1,5 +1,7 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using DataStructuresLib.Basic;
+﻿using DataStructuresLib.Basic;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
+using GraphicsComposerLib.Rendering.BabylonJs.Animations;
 using GraphicsComposerLib.Rendering.BabylonJs.Cameras;
 using GraphicsComposerLib.Rendering.BabylonJs.Constants;
 using GraphicsComposerLib.Rendering.BabylonJs.Curves;
@@ -8,6 +10,7 @@ using GraphicsComposerLib.Rendering.BabylonJs.Materials;
 using GraphicsComposerLib.Rendering.BabylonJs.Meshes;
 using GraphicsComposerLib.Rendering.BabylonJs.Textures;
 using GraphicsComposerLib.Rendering.BabylonJs.Values;
+using TextComposerLib.Text;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs
 {
@@ -168,16 +171,16 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
         protected override string ConstructorName 
             => "new BABYLON.Scene";
 
-        public SceneOptions? Options { get; private set; }
+        public SceneOptions Options { get; private set; }
             = new SceneOptions();
 
-        public SceneProperties? Properties { get; private set; }
+        public SceneProperties Properties { get; private set; }
             = new SceneProperties();
 
-        public override GrBabylonJsObjectOptions? ObjectOptions 
+        public override GrBabylonJsObjectOptions ObjectOptions 
             => Options;
 
-        public override GrBabylonJsObjectProperties? ObjectProperties 
+        public override GrBabylonJsObjectProperties ObjectProperties 
             => Properties;
 
         public GrBabylonJsCodeValue Engine { get; set; } 
@@ -201,21 +204,32 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
                 .Where(s => s is GrBabylonJsMesh)
                 .Cast<GrBabylonJsMesh>();
         
-        
+        public IEnumerable<GrBabylonJsAnimation> Animations
+            => ObjectList
+                .Where(s => s is GrBabylonJsAnimation)
+                .Cast<GrBabylonJsAnimation>();
+
+        public GrBabylonJsKeyFrameDictionaryCache KeyFramesCache { get; }
+            = new GrBabylonJsKeyFrameDictionaryCache();
+
+        public List<GrBabylonJsCodeValue> BeforeSceneRenderCode { get; }
+            = new List<GrBabylonJsCodeValue>();
+
+
         public GrBabylonJsScene(string constName) 
             : base(constName)
         {
         }
 
 
-        public GrBabylonJsScene SetOptions([NotNull] SceneOptions? options)
+        public GrBabylonJsScene SetOptions(SceneOptions options)
         {
             Options = options;
 
             return this;
         }
 
-        public GrBabylonJsScene SetProperties([NotNull] SceneProperties? properties)
+        public GrBabylonJsScene SetProperties(SceneProperties properties)
         {
             Properties = properties;
 
@@ -229,7 +243,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
                 throw new KeyNotFoundException();
 
             return sceneObject as GrBabylonJsMaterial 
-                   ?? throw new KeyNotFoundException();;
+                   ?? throw new KeyNotFoundException();
         }
         
         public GrBabylonJsGuiFullScreenUi GetGuiFullScreenUi(string name)
@@ -238,7 +252,27 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
                 throw new KeyNotFoundException();
 
             return sceneObject as GrBabylonJsGuiFullScreenUi 
-                   ?? throw new KeyNotFoundException();;
+                   ?? throw new KeyNotFoundException();
+        }
+
+        public GrBabylonJsFreeCode AddFreeCode(string code)
+        {
+            var sceneObject = 
+                new GrBabylonJsFreeCode(code);
+
+            ObjectList.Add(sceneObject);
+
+            return sceneObject;
+        }
+
+        public GrBabylonJsFreeCode AddFreeCode(params string[] codeLines)
+        {
+            return AddFreeCode(codeLines.Concatenate(Environment.NewLine));
+        }
+        
+        public GrBabylonJsFreeCode AddFreeCode(IEnumerable<string> codeLines)
+        {
+            return AddFreeCode(codeLines.Concatenate(Environment.NewLine));
         }
 
         public GrBabylonJsArcRotateCamera AddArcRotateCamera(string name, GrBabylonJsFloat32Value alpha, GrBabylonJsFloat32Value beta, GrBabylonJsFloat32Value radius, GrBabylonJsVector3Value target)
@@ -258,7 +292,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
             return sceneObject;
         }
         
-        public GrBabylonJsArcRotateCamera AddArcRotateCamera(string name, GrBabylonJsFloat32Value alpha, GrBabylonJsFloat32Value beta, GrBabylonJsFloat32Value radius, GrBabylonJsVector3Value target, GrBabylonJsArcRotateCamera.ArcRotateCameraProperties? properties)
+        public GrBabylonJsArcRotateCamera AddArcRotateCamera(string name, GrBabylonJsFloat32Value alpha, GrBabylonJsFloat32Value beta, GrBabylonJsFloat32Value radius, GrBabylonJsVector3Value target, GrBabylonJsArcRotateCamera.ArcRotateCameraProperties properties)
         {
             var sceneObject = 
                 new GrBabylonJsArcRotateCamera(name, this)
@@ -288,7 +322,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
             return sceneObject;
         }
 
-        public GrBabylonJsUniversalCamera AddUniversalCamera(string name, GrBabylonJsVector3Value position, GrBabylonJsUniversalCamera.UniversalCameraProperties? properties)
+        public GrBabylonJsUniversalCamera AddUniversalCamera(string name, GrBabylonJsVector3Value position, GrBabylonJsUniversalCamera.UniversalCameraProperties properties)
         {
             var sceneObject = 
                 new GrBabylonJsUniversalCamera(name, this)
@@ -311,7 +345,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
             return sceneObject;
         }
 
-        public GrBabylonJsEnvironmentHelper AddEnvironmentHelper(string name, GrBabylonJsEnvironmentHelper.EnvironmentHelperOptions? options)
+        public GrBabylonJsEnvironmentHelper AddEnvironmentHelper(string name, GrBabylonJsEnvironmentHelper.EnvironmentHelperOptions options)
         {
             var sceneObject = 
                 new GrBabylonJsEnvironmentHelper(name, this)
@@ -322,7 +356,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
             return sceneObject;
         }
 
-        public GrBabylonJsEnvironmentHelper AddEnvironmentHelper(string name, GrBabylonJsEnvironmentHelper.EnvironmentHelperProperties? properties)
+        public GrBabylonJsEnvironmentHelper AddEnvironmentHelper(string name, GrBabylonJsEnvironmentHelper.EnvironmentHelperProperties properties)
         {
             var sceneObject = 
                 new GrBabylonJsEnvironmentHelper(name, this)
@@ -333,7 +367,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
             return sceneObject;
         }
         
-        public GrBabylonJsEnvironmentHelper AddEnvironmentHelper(string name, GrBabylonJsEnvironmentHelper.EnvironmentHelperOptions? options, GrBabylonJsEnvironmentHelper.EnvironmentHelperProperties? properties)
+        public GrBabylonJsEnvironmentHelper AddEnvironmentHelper(string name, GrBabylonJsEnvironmentHelper.EnvironmentHelperOptions options, GrBabylonJsEnvironmentHelper.EnvironmentHelperProperties properties)
         {
             var sceneObject = 
                 new GrBabylonJsEnvironmentHelper(name, this)
@@ -344,6 +378,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
 
             return sceneObject;
         }
+
 
         public GrBabylonJsTexture AddTexture(string name, string url)
         {
@@ -358,7 +393,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
             return sceneObject;
         }
         
-        public GrBabylonJsTexture AddTexture(string name, string url, GrBabylonJsTexture.TextureOptions? options)
+        public GrBabylonJsTexture AddTexture(string name, string url, GrBabylonJsTexture.TextureOptions options)
         {
             var sceneObject = 
                 new GrBabylonJsTexture(name, this)
@@ -372,7 +407,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
             return sceneObject;
         }
 
-        public GrBabylonJsTexture AddTexture(string name, string url, GrBabylonJsTexture.TextureProperties? properties)
+        public GrBabylonJsTexture AddTexture(string name, string url, GrBabylonJsTexture.TextureProperties properties)
         {
             var sceneObject = 
                 new GrBabylonJsTexture(name, this)
@@ -386,7 +421,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
             return sceneObject;
         }
 
-        public GrBabylonJsTexture AddTexture(string name, string url, GrBabylonJsTexture.TextureOptions? options, GrBabylonJsTexture.TextureProperties? properties)
+        public GrBabylonJsTexture AddTexture(string name, string url, GrBabylonJsTexture.TextureOptions options, GrBabylonJsTexture.TextureProperties properties)
         {
             var sceneObject = 
                 new GrBabylonJsTexture(name, this)
@@ -401,7 +436,42 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
             return sceneObject;
         }
 
-        public GrBabylonJsSimpleMaterial AddSimpleMaterial(string name, GrBabylonJsSimpleMaterial.SimpleMaterialProperties? properties)
+        
+        public GrBabylonJsHtmlElementTexture AddHtmlElementTexture(string name, GrBabylonJsCodeValue element)
+        {
+            var sceneObject = 
+                new GrBabylonJsHtmlElementTexture(name, this, element);
+            
+            ObjectList.Add(sceneObject);
+
+            return sceneObject;
+        }
+
+        public GrBabylonJsHtmlElementTexture AddHtmlElementTexture(string name, GrBabylonJsCodeValue element, GrBabylonJsHtmlElementTexture.HtmlElementTextureOptions options)
+        {
+            var sceneObject = 
+                new GrBabylonJsHtmlElementTexture(name, this, element)
+                    .SetOptions(options);
+
+            ObjectList.Add(sceneObject);
+
+            return sceneObject;
+        }
+
+        public GrBabylonJsHtmlElementTexture AddHtmlElementTexture(string name, GrBabylonJsCodeValue element, GrBabylonJsHtmlElementTexture.HtmlElementTextureOptions options, GrBabylonJsHtmlElementTexture.HtmlElementTextureProperties properties)
+        {
+            var sceneObject = 
+                new GrBabylonJsHtmlElementTexture(name, this, element)
+                    .SetOptions(options)
+                    .SetProperties(properties);
+
+            ObjectList.Add(sceneObject);
+
+            return sceneObject;
+        }
+
+
+        public GrBabylonJsSimpleMaterial AddSimpleMaterial(string name, GrBabylonJsSimpleMaterial.SimpleMaterialProperties properties)
         {
             var sceneObject = 
                 new GrBabylonJsSimpleMaterial(name, this)
@@ -437,7 +507,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
             );
         }
         
-        public GrBabylonJsStandardMaterial AddStandardMaterial(string name, GrBabylonJsStandardMaterial.StandardMaterialProperties? properties)
+        public GrBabylonJsStandardMaterial AddStandardMaterial(string name, GrBabylonJsStandardMaterial.StandardMaterialProperties properties)
         {
             var sceneObject = 
                 new GrBabylonJsStandardMaterial(name, this)
@@ -473,7 +543,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
             );
         }
         
-        public GrBabylonJsShadowOnlyMaterial AddShadowOnlyMaterial(string name, GrBabylonJsShadowOnlyMaterial.ShadowOnlyMaterialProperties? properties)
+        public GrBabylonJsShadowOnlyMaterial AddShadowOnlyMaterial(string name, GrBabylonJsShadowOnlyMaterial.ShadowOnlyMaterialProperties properties)
         {
             var sceneObject = 
                 new GrBabylonJsShadowOnlyMaterial(name, this)
@@ -484,7 +554,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
             return sceneObject;
         }
         
-        public GrBabylonJsOcclusionMaterial AddOcclusionMaterial(string name, GrBabylonJsOcclusionMaterial.OcclusionMaterialProperties? properties)
+        public GrBabylonJsOcclusionMaterial AddOcclusionMaterial(string name, GrBabylonJsOcclusionMaterial.OcclusionMaterialProperties properties)
         {
             var sceneObject = 
                 new GrBabylonJsOcclusionMaterial(name, this)
@@ -495,7 +565,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
             return sceneObject;
         }
         
-        public GrBabylonJsNormalMaterial AddNormalMaterial(string name, GrBabylonJsNormalMaterial.NormalMaterialProperties? properties)
+        public GrBabylonJsNormalMaterial AddNormalMaterial(string name, GrBabylonJsNormalMaterial.NormalMaterialProperties properties)
         {
             var sceneObject = 
                 new GrBabylonJsNormalMaterial(name, this)
@@ -506,7 +576,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
             return sceneObject;
         }
         
-        public GrBabylonJsHandleMaterial AddHandleMaterial(string name, GrBabylonJsHandleMaterial.HandleMaterialProperties? properties)
+        public GrBabylonJsHandleMaterial AddHandleMaterial(string name, GrBabylonJsHandleMaterial.HandleMaterialProperties properties)
         {
             var sceneObject = 
                 new GrBabylonJsHandleMaterial(name, this)
@@ -517,7 +587,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
             return sceneObject;
         }
         
-        public GrBabylonJsGridMaterial AddGridMaterial(string name, GrBabylonJsGridMaterial.GridMaterialProperties? properties)
+        public GrBabylonJsGridMaterial AddGridMaterial(string name, GrBabylonJsGridMaterial.GridMaterialProperties properties)
         {
             var sceneObject = 
                 new GrBabylonJsGridMaterial(name, this)
@@ -528,7 +598,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
             return sceneObject;
         }
         
-        public GrBabylonJsGradientMaterial AddGradientMaterial(string name, GrBabylonJsGradientMaterial.GradientMaterialProperties? properties)
+        public GrBabylonJsGradientMaterial AddGradientMaterial(string name, GrBabylonJsGradientMaterial.GradientMaterialProperties properties)
         {
             var sceneObject = 
                 new GrBabylonJsGradientMaterial(name, this)
@@ -539,7 +609,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
             return sceneObject;
         }
         
-        public GrBabylonJsBackgroundMaterial AddBackgroundMaterial(string name, GrBabylonJsBackgroundMaterial.BackgroundMaterialProperties? properties)
+        public GrBabylonJsBackgroundMaterial AddBackgroundMaterial(string name, GrBabylonJsBackgroundMaterial.BackgroundMaterialProperties properties)
         {
             var sceneObject = 
                 new GrBabylonJsBackgroundMaterial(name, this)
@@ -646,7 +716,29 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
             return sceneObject;
         }
         
-        public GrBabylonJsCapsule AddCapsule(string name, GrBabylonJsCapsule.CapsuleOptions? options)
+        public GrBabylonJsMeshClone AddClone(string name, string parentMeshConstName, GrBabylonJsMesh.MeshProperties properties)
+        {
+            var sceneObject =
+                new GrBabylonJsMeshClone(name, parentMeshConstName)
+                    .SetProperties(properties);
+
+            ObjectList.Add(sceneObject);
+
+            return sceneObject;
+        }
+
+        public GrBabylonJsMeshClone AddClone(string name, GrBabylonJsMesh parentMesh, GrBabylonJsMesh.MeshProperties properties)
+        {
+            var sceneObject =
+                new GrBabylonJsMeshClone(name, parentMesh.ConstName)
+                    .SetProperties(properties);
+
+            ObjectList.Add(sceneObject);
+
+            return sceneObject;
+        }
+
+        public GrBabylonJsCapsule AddCapsule(string name, GrBabylonJsCapsule.CapsuleOptions options)
         {
             var sceneObject = 
                 new GrBabylonJsCapsule(name, this)
@@ -657,7 +749,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
             return sceneObject;
         }
 
-        public GrBabylonJsCapsule AddCapsule(string name, GrBabylonJsCapsule.CapsuleOptions? options, GrBabylonJsMesh.MeshProperties? properties)
+        public GrBabylonJsCapsule AddCapsule(string name, GrBabylonJsCapsule.CapsuleOptions options, GrBabylonJsMesh.MeshProperties properties)
         {
             var sceneObject = 
                 new GrBabylonJsCapsule(name, this)
@@ -669,7 +761,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
             return sceneObject;
         }
         
-        public GrBabylonJsCylinder AddCylinder(string name, GrBabylonJsCylinder.CylinderOptions? options)
+        public GrBabylonJsCylinder AddCylinder(string name, GrBabylonJsCylinder.CylinderOptions options)
         {
             var sceneObject = 
                 new GrBabylonJsCylinder(name, this)
@@ -680,7 +772,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
             return sceneObject;
         }
 
-        public GrBabylonJsCylinder AddCylinder(string name, GrBabylonJsCylinder.CylinderOptions? options, GrBabylonJsMesh.MeshProperties? properties)
+        public GrBabylonJsCylinder AddCylinder(string name, GrBabylonJsCylinder.CylinderOptions options, GrBabylonJsMesh.MeshProperties properties)
         {
             var sceneObject = 
                 new GrBabylonJsCylinder(name, this)
@@ -692,7 +784,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
             return sceneObject;
         }
         
-        public GrBabylonJsDisc AddDisc(string name, GrBabylonJsDisc.DiscOptions? options)
+        public GrBabylonJsDisc AddDisc(string name, GrBabylonJsDisc.DiscOptions options)
         {
             var sceneObject = 
                 new GrBabylonJsDisc(name, this)
@@ -703,7 +795,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
             return sceneObject;
         }
 
-        public GrBabylonJsDisc AddDisc(string name, GrBabylonJsDisc.DiscOptions? options, GrBabylonJsMesh.MeshProperties? properties)
+        public GrBabylonJsDisc AddDisc(string name, GrBabylonJsDisc.DiscOptions options, GrBabylonJsMesh.MeshProperties properties)
         {
             var sceneObject = 
                 new GrBabylonJsDisc(name, this)
@@ -715,7 +807,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
             return sceneObject;
         }
         
-        public GrBabylonJsGround AddGround(string name, GrBabylonJsGround.GroundOptions? options)
+        public GrBabylonJsGround AddGround(string name, GrBabylonJsGround.GroundOptions options)
         {
             var sceneObject = 
                 new GrBabylonJsGround(name, this)
@@ -726,7 +818,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
             return sceneObject;
         }
 
-        public GrBabylonJsGround AddGround(string name, GrBabylonJsGround.GroundOptions? options, GrBabylonJsMesh.MeshProperties? properties)
+        public GrBabylonJsGround AddGround(string name, GrBabylonJsGround.GroundOptions options, GrBabylonJsMesh.MeshProperties properties)
         {
             var sceneObject = 
                 new GrBabylonJsGround(name, this)
@@ -738,7 +830,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
             return sceneObject;
         }
         
-        public GrBabylonJsPlane AddPlane(string name, GrBabylonJsPlane.PlaneOptions? options)
+        public GrBabylonJsPlane AddPlane(string name, GrBabylonJsPlane.PlaneOptions options)
         {
             var sceneObject = 
                 new GrBabylonJsPlane(name, this)
@@ -749,7 +841,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
             return sceneObject;
         }
 
-        public GrBabylonJsPlane AddPlane(string name, GrBabylonJsPlane.PlaneOptions? options, GrBabylonJsMesh.MeshProperties? properties)
+        public GrBabylonJsPlane AddPlane(string name, GrBabylonJsPlane.PlaneOptions options, GrBabylonJsMesh.MeshProperties properties)
         {
             var sceneObject = 
                 new GrBabylonJsPlane(name, this)
@@ -761,7 +853,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
             return sceneObject;
         }
 
-        public GrBabylonJsBox AddBox(string name, GrBabylonJsBox.BoxOptions? options)
+        public GrBabylonJsBox AddBox(string name, GrBabylonJsBox.BoxOptions options)
         {
             var sceneObject =
                 new GrBabylonJsBox(name, this)
@@ -772,7 +864,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
             return sceneObject;
         }
 
-        public GrBabylonJsBox AddBox(string name, GrBabylonJsBox.BoxOptions? options, GrBabylonJsMesh.MeshProperties? properties)
+        public GrBabylonJsBox AddBox(string name, GrBabylonJsBox.BoxOptions options, GrBabylonJsMesh.MeshProperties properties)
         {
             var sceneObject =
                 new GrBabylonJsBox(name, this)
@@ -784,7 +876,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
             return sceneObject;
         }
 
-        public GrBabylonJsSphere AddSphere(string name, GrBabylonJsSphere.SphereOptions? options)
+        public GrBabylonJsSphere AddSphere(string name, GrBabylonJsSphere.SphereOptions options)
         {
             var sceneObject = 
                 new GrBabylonJsSphere(name, this)
@@ -795,7 +887,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
             return sceneObject;
         }
 
-        public GrBabylonJsSphere AddSphere(string name, GrBabylonJsSphere.SphereOptions? options, GrBabylonJsMesh.MeshProperties? properties)
+        public GrBabylonJsSphere AddSphere(string name, GrBabylonJsSphere.SphereOptions options, GrBabylonJsMesh.MeshProperties properties)
         {
             var sceneObject = 
                 new GrBabylonJsSphere(name, this)
@@ -807,7 +899,30 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
             return sceneObject;
         }
         
-        public GrBabylonJsTorus AddTorus(string name, GrBabylonJsTorus.TorusOptions? options)
+        public GrBabylonJsIcoSphere AddIcoSphere(string name, GrBabylonJsIcoSphere.IcoSphereOptions options)
+        {
+            var sceneObject = 
+                new GrBabylonJsIcoSphere(name, this)
+                    .SetOptions(options);
+
+            ObjectList.Add(sceneObject);
+
+            return sceneObject;
+        }
+
+        public GrBabylonJsIcoSphere AddIcoSphere(string name, GrBabylonJsIcoSphere.IcoSphereOptions options, GrBabylonJsMesh.MeshProperties properties)
+        {
+            var sceneObject = 
+                new GrBabylonJsIcoSphere(name, this)
+                    .SetOptions(options)
+                    .SetProperties(properties);
+
+            ObjectList.Add(sceneObject);
+
+            return sceneObject;
+        }
+
+        public GrBabylonJsTorus AddTorus(string name, GrBabylonJsTorus.TorusOptions options)
         {
             var sceneObject = 
                 new GrBabylonJsTorus(name, this)
@@ -818,7 +933,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
             return sceneObject;
         }
 
-        public GrBabylonJsTorus AddTorus(string name, GrBabylonJsTorus.TorusOptions? options, GrBabylonJsMesh.MeshProperties? properties)
+        public GrBabylonJsTorus AddTorus(string name, GrBabylonJsTorus.TorusOptions options, GrBabylonJsMesh.MeshProperties properties)
         {
             var sceneObject = 
                 new GrBabylonJsTorus(name, this)
@@ -830,7 +945,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
             return sceneObject;
         }
         
-        public GrBabylonJsTube AddTube(string name, GrBabylonJsTube.TubeOptions? options)
+        public GrBabylonJsTube AddTube(string name, GrBabylonJsTube.TubeOptions options)
         {
             var sceneObject = 
                 new GrBabylonJsTube(name, this)
@@ -841,7 +956,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
             return sceneObject;
         }
 
-        public GrBabylonJsTube AddTube(string name, GrBabylonJsTube.TubeOptions? options, GrBabylonJsMesh.MeshProperties? properties)
+        public GrBabylonJsTube AddTube(string name, GrBabylonJsTube.TubeOptions options, GrBabylonJsMesh.MeshProperties properties)
         {
             var sceneObject = 
                 new GrBabylonJsTube(name, this)
@@ -853,7 +968,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
             return sceneObject;
         }
         
-        public GrBabylonJsLines AddLines(string name, GrBabylonJsLines.LinesOptions? options)
+        public GrBabylonJsLines AddLines(string name, GrBabylonJsLines.LinesOptions options)
         {
             var sceneObject = 
                 new GrBabylonJsLines(name, this)
@@ -876,7 +991,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
             return sceneObject;
         }
         
-        public GrBabylonJsDashedLines AddDashedLines(string name, GrBabylonJsDashedLines.DashedLinesOptions? options)
+        public GrBabylonJsDashedLines AddDashedLines(string name, GrBabylonJsDashedLines.DashedLinesOptions options)
         {
             var sceneObject = 
                 new GrBabylonJsDashedLines(name, this)
@@ -887,7 +1002,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
             return sceneObject;
         }
 
-        public GrBabylonJsDashedLines AddDashedLines(string name, GrBabylonJsDashedLines.DashedLinesOptions? options, GrBabylonJsLinesMesh.LinesMeshProperties? properties)
+        public GrBabylonJsDashedLines AddDashedLines(string name, GrBabylonJsDashedLines.DashedLinesOptions options, GrBabylonJsLinesMesh.LinesMeshProperties properties)
         {
             var sceneObject = 
                 new GrBabylonJsDashedLines(name, this)
@@ -921,8 +1036,101 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
 
             return sceneObject;
         }
+        
+        public GrBabylonJsLathe AddLathe(string name, GrBabylonJsLathe.LatheOptions options)
+        {
+            var sceneObject = 
+                new GrBabylonJsLathe(name, this)
+                    .SetOptions(options);
 
-        public GrBabylonJsGuiFullScreenUi AddGuiFullScreenUi(string name, GrBabylonJsBooleanValue isForeground = null, GrBabylonJsTextureSamplingModeValue samplingMode = null, GrBabylonJsBooleanValue adaptiveScaling = null)
+            ObjectList.Add(sceneObject);
+
+            return sceneObject;
+        }
+
+        public GrBabylonJsLathe AddLathe(string name, GrBabylonJsLathe.LatheOptions options, GrBabylonJsMesh.MeshProperties properties)
+        {
+            var sceneObject = 
+                new GrBabylonJsLathe(name, this)
+                    .SetOptions(options)
+                    .SetProperties(properties);
+
+            ObjectList.Add(sceneObject);
+
+            return sceneObject;
+        }
+
+        public GrBabylonJsRibbon AddRibbon(string name, GrBabylonJsRibbon.RibbonOptions options)
+        {
+            var sceneObject = 
+                new GrBabylonJsRibbon(name, this)
+                    .SetOptions(options);
+
+            ObjectList.Add(sceneObject);
+
+            return sceneObject;
+        }
+
+        public GrBabylonJsRibbon AddRibbon(string name, GrBabylonJsRibbon.RibbonOptions options, GrBabylonJsMesh.MeshProperties properties)
+        {
+            var sceneObject = 
+                new GrBabylonJsRibbon(name, this)
+                    .SetOptions(options)
+                    .SetProperties(properties);
+
+            ObjectList.Add(sceneObject);
+
+            return sceneObject;
+        }
+        
+        public GrBabylonJsExtrudeShape AddExtrudeShape(string name, GrBabylonJsExtrudeShape.ExtrudeShapeOptions options)
+        {
+            var sceneObject = 
+                new GrBabylonJsExtrudeShape(name, this)
+                    .SetOptions(options);
+
+            ObjectList.Add(sceneObject);
+
+            return sceneObject;
+        }
+
+        public GrBabylonJsExtrudeShape AddExtrudeShape(string name, GrBabylonJsExtrudeShape.ExtrudeShapeOptions options, GrBabylonJsMesh.MeshProperties properties)
+        {
+            var sceneObject = 
+                new GrBabylonJsExtrudeShape(name, this)
+                    .SetOptions(options)
+                    .SetProperties(properties);
+
+            ObjectList.Add(sceneObject);
+
+            return sceneObject;
+        }
+        
+        public GrBabylonJsExtrudeShapeCustom AddExtrudeShapeCustom(string name, GrBabylonJsExtrudeShapeCustom.ExtrudeShapeCustomOptions options)
+        {
+            var sceneObject = 
+                new GrBabylonJsExtrudeShapeCustom(name, this)
+                    .SetOptions(options);
+
+            ObjectList.Add(sceneObject);
+
+            return sceneObject;
+        }
+
+        public GrBabylonJsExtrudeShapeCustom AddExtrudeShapeCustom(string name, GrBabylonJsExtrudeShapeCustom.ExtrudeShapeCustomOptions options, GrBabylonJsMesh.MeshProperties properties)
+        {
+            var sceneObject = 
+                new GrBabylonJsExtrudeShapeCustom(name, this)
+                    .SetOptions(options)
+                    .SetProperties(properties);
+
+            ObjectList.Add(sceneObject);
+
+            return sceneObject;
+        }
+
+        
+        public GrBabylonJsGuiFullScreenUi AddGuiFullScreenUi(string name, GrBabylonJsBooleanValue? isForeground = null, GrBabylonJsTextureSamplingModeValue? samplingMode = null, GrBabylonJsBooleanValue? adaptiveScaling = null)
         {
             var sceneObject = 
                 new GrBabylonJsGuiFullScreenUi(name, this)
@@ -937,7 +1145,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
             return sceneObject;
         }
 
-        public GrBabylonJsGuiFullScreenUi AddGuiFullScreenUi(string name, GrBabylonJsBooleanValue isForeground, GrBabylonJsTextureSamplingMode samplingMode, GrBabylonJsBooleanValue adaptiveScaling, GrBabylonJsAdvancedDynamicTexture.AdvancedDynamicTextureProperties? properties)
+        public GrBabylonJsGuiFullScreenUi AddGuiFullScreenUi(string name, GrBabylonJsBooleanValue isForeground, GrBabylonJsTextureSamplingMode samplingMode, GrBabylonJsBooleanValue adaptiveScaling, GrBabylonJsAdvancedDynamicTexture.AdvancedDynamicTextureProperties properties)
         {
             var sceneObject = 
                 new GrBabylonJsGuiFullScreenUi(name, this)
@@ -953,6 +1161,235 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
 
             return sceneObject;
         }
+        
+
+        public GrBabylonJsAnimationOfFloat AddFloat32Animation(string name, string targetPropertyName, GrBabylonJsAnimationSpecs animationSpecs, GrBabylonJsKeyFrameDictionary<double> keyFrames)
+        {
+            var (keyFramesIndex, _) = 
+                KeyFramesCache.AddOrGetFloatKeyFrames(keyFrames);
+
+            var sceneObject = 
+                new GrBabylonJsAnimationOfFloat(
+                    name, 
+                    targetPropertyName, 
+                    animationSpecs, 
+                    KeyFramesCache,
+                    keyFramesIndex
+                );
+
+            ObjectList.Add(sceneObject);
+
+            return sceneObject;
+        }
+        
+        public GrBabylonJsAnimationOfVector2 AddVector2Animation(string name, string targetPropertyName, GrBabylonJsAnimationSpecs animationSpecs, GrBabylonJsKeyFrameDictionary<Float64Vector2D> keyFrames)
+        {
+            var (keyFramesIndex, _) = 
+                KeyFramesCache.AddOrGetVector2KeyFrames(keyFrames);
+
+            var sceneObject = 
+                new GrBabylonJsAnimationOfVector2(
+                    name, 
+                    targetPropertyName, 
+                    animationSpecs, 
+                    KeyFramesCache,
+                    keyFramesIndex
+                );
+
+            ObjectList.Add(sceneObject);
+
+            return sceneObject;
+        }
+        
+        public GrBabylonJsAnimationOfVector3 AddVector3Animation(string name, string targetPropertyName, GrBabylonJsAnimationSpecs animationSpecs, GrBabylonJsKeyFrameDictionary<Float64Vector3D> keyFrames)
+        {
+            var (keyFramesIndex, _) = 
+                KeyFramesCache.AddOrGetVector3KeyFrames(keyFrames);
+
+            var sceneObject = 
+                new GrBabylonJsAnimationOfVector3(
+                    name, 
+                    targetPropertyName, 
+                    animationSpecs, 
+                    KeyFramesCache,
+                    keyFramesIndex
+                );
+
+            ObjectList.Add(sceneObject);
+
+            return sceneObject;
+        }
+
+        public GrBabylonJsAnimationOfQuaternion AddQuaternionAnimation(string name, string targetPropertyName, GrBabylonJsAnimationSpecs animationSpecs, GrBabylonJsKeyFrameDictionary<Float64Quaternion> keyFrames)
+        {
+            var (keyFramesIndex, _) = 
+                KeyFramesCache.AddOrGetQuaternionKeyFrames(keyFrames);
+
+            var sceneObject = 
+                new GrBabylonJsAnimationOfQuaternion(
+                    name, 
+                    targetPropertyName, 
+                    animationSpecs, 
+                    KeyFramesCache,
+                    keyFramesIndex
+                );
+
+            ObjectList.Add(sceneObject);
+
+            return sceneObject;
+        }
+
+        public Pair<GrBabylonJsAnimationOfFloat> AddVector2ComponentAnimations(string name, GrBabylonJsAnimationSpecs animationSpecs, GrBabylonJsKeyFrameDictionary<Float64Vector2D> keyPositions, GrBabylonJsKeyFrameOptimizationKind optimizationKind = GrBabylonJsKeyFrameOptimizationKind.Separate)
+        {
+            var (keyXValues, keyYValues) = 
+                keyPositions.SeparateComponents(optimizationKind);
+
+            var xAnimation = AddFloat32Animation(
+                name + "XAnimation",
+                "x",
+                animationSpecs,
+                keyXValues
+            );
+            
+            var yAnimation = AddFloat32Animation(
+                name + "YAnimation",
+                "y",
+                animationSpecs,
+                keyYValues
+            );
+            
+            return new Pair<GrBabylonJsAnimationOfFloat>(
+                xAnimation,
+                yAnimation
+            );
+        }
+
+        public Triplet<GrBabylonJsAnimationOfFloat> AddVector3ComponentAnimations(string name, GrBabylonJsAnimationSpecs animationSpecs, IEnumerable<KeyValuePair<int, Float64Vector3D>> frameIndexPositionPairs, GrBabylonJsKeyFrameOptimizationKind optimizationKind = GrBabylonJsKeyFrameOptimizationKind.Separate)
+        {
+            var keyPositions = new GrBabylonJsKeyFrameDictionary<Float64Vector3D>();
+
+            foreach (var (frameIndex, position) in frameIndexPositionPairs)
+                keyPositions.SetKeyFrameValue(frameIndex, position);
+
+            return AddVector3ComponentAnimations(
+                name,
+                animationSpecs,
+                keyPositions,
+                optimizationKind
+            );
+        }
+
+        public Triplet<GrBabylonJsAnimationOfFloat> AddVector3ComponentAnimations(string name, GrBabylonJsAnimationSpecs animationSpecs, GrBabylonJsKeyFrameDictionary<Float64Vector3D> keyPositions, GrBabylonJsKeyFrameOptimizationKind optimizationKind = GrBabylonJsKeyFrameOptimizationKind.Separate)
+        {
+            var (keyXValues, keyYValues, keyZValues) = 
+                keyPositions.SeparateComponents(optimizationKind);
+
+            var xAnimation = AddFloat32Animation(
+                name + "XAnimation",
+                "x",
+                animationSpecs,
+                keyXValues
+            );
+            
+            var yAnimation = AddFloat32Animation(
+                name + "YAnimation",
+                "y",
+                animationSpecs,
+                keyYValues
+            );
+            
+            var zAnimation = AddFloat32Animation(
+                name + "ZAnimation",
+                "z",
+                animationSpecs,
+                keyZValues
+            );
+
+            return new Triplet<GrBabylonJsAnimationOfFloat>(
+                xAnimation,
+                yAnimation,
+                zAnimation
+            );
+        }
+        
+        //public Quad<GrBabylonJsFloat32Animation> AddComponentAnimations(string name, GrBabylonJsAnimationSpecs animationSpecs, GrBabylonJsKeyFrameDictionary<Float64Tuple4D> keyPositions, GrBabylonJsKeyFrameOptimizationKind optimizationKind = GrBabylonJsKeyFrameOptimizationKind.Separate)
+        //{
+        //    var (keyXValues, keyYValues, keyZValues, keyWValues) = 
+        //        keyPositions.SeparateComponents(optimizationKind);
+
+        //    var xAnimation = AddFloat32Animation(
+        //        name + "XAnimation",
+        //        "x",
+        //        animationSpecs,
+        //        keyXValues
+        //    );
+            
+        //    var yAnimation = AddFloat32Animation(
+        //        name + "YAnimation",
+        //        "y",
+        //        animationSpecs,
+        //        keyYValues
+        //    );
+            
+        //    var zAnimation = AddFloat32Animation(
+        //        name + "ZAnimation",
+        //        "z",
+        //        animationSpecs,
+        //        keyZValues
+        //    );
+            
+        //    var wAnimation = AddFloat32Animation(
+        //        name + "WAnimation",
+        //        "w",
+        //        animationSpecs,
+        //        keyWValues
+        //    );
+
+        //    return new Quad<GrBabylonJsFloat32Animation>(
+        //        xAnimation,
+        //        yAnimation,
+        //        zAnimation,
+        //        wAnimation
+        //    );
+        //}
+        
+        public GrBabylonJsAnimationGroup AddAnimationGroup(string name)
+        {
+            var sceneObject = 
+                new GrBabylonJsAnimationGroup(name, this);
+
+            ObjectList.Add(sceneObject);
+
+            return sceneObject;
+        }
+
+        public GrBabylonJsAnimationGroup AddAnimationGroup(string name, GrBabylonJsAnimationGroup.AnimationGroupProperties properties)
+        {
+            var sceneObject = 
+                new GrBabylonJsAnimationGroup(name, this)
+                    .SetProperties(properties);
+
+            ObjectList.Add(sceneObject);
+
+            return sceneObject;
+        }
+
+        //public JArray GetAnimationKeyFramesJson()
+        //{
+        //    var array = new JArray();
+
+        //    foreach (var animation in Animations)
+        //    {
+        //        var name = animation.ConstName + "KeyFrames";
+        //        var value = animation.GetKeyFramesJson();
+
+        //        array.Add(
+        //            JObject.FromObject(new {animation = name}) (name, value)
+        //        );
+        //    }
+
+        //    return array;
+        //}
 
         protected override IEnumerable<string> GetConstructorArguments()
         {

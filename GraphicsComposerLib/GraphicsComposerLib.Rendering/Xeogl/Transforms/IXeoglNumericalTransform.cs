@@ -1,5 +1,5 @@
-﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Matrices;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
+﻿using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 
 namespace GraphicsComposerLib.Rendering.Xeogl.Transforms
 {
@@ -7,12 +7,12 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Transforms
     {
         SquareMatrix4 GetMatrix();
 
-        Float64Tuple4D GetQuaternionTuple();
+        Float64Quaternion GetQuaternionTuple();
 
-        Float64Tuple3D GetRotateTuple();
+        Float64Vector3D GetRotateTuple();
 
-        Float64Tuple3D GetScaleTuple();
+        Float64Vector3D GetScaleTuple();
 
-        Float64Tuple3D GetTranslateTuple();
+        Float64Vector3D GetTranslateTuple();
     }
 }

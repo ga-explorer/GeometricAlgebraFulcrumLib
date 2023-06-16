@@ -1,8 +1,9 @@
 ﻿using System.Runtime.CompilerServices;
 using DataStructuresLib.BitManipulation;
 using DataStructuresLib.Random;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.SpaceND;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64
 {
@@ -90,7 +91,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64
         }
     
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinFloat64VectorTerm GetVectorTerm()
+        public Float64VectorTerm GetVectorTerm()
         {
             var scalar = GetScalarValue();
             var basis = GetBasisVector();
@@ -99,7 +100,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinFloat64VectorTerm GetVectorTerm(int index)
+        public Float64VectorTerm GetVectorTerm(int index)
         {
             var scalar = GetScalarValue();
 
@@ -107,7 +108,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64
         }
     
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinFloat64Vector GetVector(bool sparseVector = true)
+        public Float64Vector GetVector(bool sparseVector = true)
         {
             if (sparseVector)
             {
@@ -135,7 +136,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinFloat64Vector GetSparseVector(int termsCount)
+        public Float64Vector GetSparseVector(int termsCount)
         {
             if (termsCount > VSpaceDimensions)
                 throw new ArgumentOutOfRangeException(nameof(termsCount));

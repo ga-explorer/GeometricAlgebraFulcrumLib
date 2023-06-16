@@ -1,5 +1,5 @@
 ﻿using DataStructuresLib.Basic;
-using GraphicsComposerLib.Geometry.Primitives.Lines;
+using GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Lines;
 using TextComposerLib.Text;
 
 namespace GraphicsComposerLib.Rendering.Xeogl.Generators

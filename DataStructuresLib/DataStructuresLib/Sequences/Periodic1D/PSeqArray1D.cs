@@ -8,16 +8,16 @@ namespace DataStructuresLib.Sequences.Periodic1D
     public class PSeqArray1D<T>
         : IPeriodicSequence1D<T>
     {
-        private readonly T[] _dataArray;
+        protected readonly T[] DataArray;
 
 
         public int Count 
-            => _dataArray.Length;
+            => DataArray.Length;
 
         public T this[int index]
         {
-            get => _dataArray[index.Mod(Count)];
-            set => _dataArray[index.Mod(Count)] = value;
+            get => DataArray[index.Mod(Count)];
+            set => DataArray[index.Mod(Count)] = value;
         }
 
         public bool IsBasic 
@@ -29,28 +29,28 @@ namespace DataStructuresLib.Sequences.Periodic1D
 
         public PSeqArray1D(int count)
         {
-            _dataArray = new T[count];
+            DataArray = new T[count];
         }
 
         public PSeqArray1D(params T[] dataArray)
         {
-            _dataArray = dataArray;
+            DataArray = dataArray;
         }
 
         public PSeqArray1D(IEnumerable<T> dataList)
         {
-            _dataArray = dataList.ToArray();
+            DataArray = dataList.ToArray();
         }
 
 
         public IEnumerator<T> GetEnumerator()
         {
-            return ((IEnumerable<T>)_dataArray).GetEnumerator();
+            return ((IEnumerable<T>)DataArray).GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return ((IEnumerable<T>)_dataArray).GetEnumerator();
+            return ((IEnumerable<T>)DataArray).GetEnumerator();
         }
     }
 }

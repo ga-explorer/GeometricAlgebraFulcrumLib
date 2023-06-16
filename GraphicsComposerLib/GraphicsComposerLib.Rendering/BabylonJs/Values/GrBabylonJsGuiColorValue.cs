@@ -1,4 +1,4 @@
-﻿using GraphicsComposerLib.Rendering.Colors;
+﻿using WebComposerLib.Colors;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Values
 {

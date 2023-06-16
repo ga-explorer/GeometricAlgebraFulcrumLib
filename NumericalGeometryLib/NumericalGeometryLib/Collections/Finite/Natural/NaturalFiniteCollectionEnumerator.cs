@@ -42,9 +42,6 @@ namespace NumericalGeometryLib.Collections.Finite.Natural
 
         public T Current { get; private set; }
 
-        object IEnumerator.Current
-        {
-            get { return Current; }
-        }
+        object IEnumerator.Current => Current;
     }
 }

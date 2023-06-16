@@ -43,15 +43,12 @@ namespace NumericalGeometryLib.Collections.Finite.Natural
         private T[] _items;
 
 
-        public override int Count
-        {
-            get { return _items.Length; }
-        }
+        public override int Count => _items.Length;
 
         public T this[int index]
         {
-            get { return _items[index]; }
-            set { _items[index] = value; }
+            get => _items[index];
+            set => _items[index] = value;
         }
 
 

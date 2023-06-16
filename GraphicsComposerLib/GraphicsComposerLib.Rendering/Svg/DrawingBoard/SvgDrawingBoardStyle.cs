@@ -1,5 +1,5 @@
-﻿using GraphicsComposerLib.Rendering.Colors;
-using TextComposerLib.Text;
+﻿using TextComposerLib.Text;
+using WebComposerLib.Colors;
 
 namespace GraphicsComposerLib.Rendering.Svg.DrawingBoard
 {
@@ -15,19 +15,19 @@ namespace GraphicsComposerLib.Rendering.Svg.DrawingBoard
         /// The current width in pixels of the pen used to draw the up coming
         /// shapes
         /// </summary>
-        public int PenPixelsWidth { get; set; } 
+        public int PenPixelsWidth { get; set; }
             = 1;
 
-        public double PenWidth 
+        public double PenWidth
             => PenPixelsWidth * ParentDrawingBoard.LengthByPixelsRatio;
 
         /// <summary>
         /// The current color of the pen used to draw the up coming shapes
         /// </summary>
-        public Color PenColor { get; set; } 
+        public Color PenColor { get; set; }
             = Color.Black;
 
-        public double PenOpacity { get; set; } 
+        public double PenOpacity { get; set; }
             = 1.0d;
 
         /// <summary>
@@ -41,10 +41,10 @@ namespace GraphicsComposerLib.Rendering.Svg.DrawingBoard
         /// <summary>
         /// The current fill color of the pen used to draw the up coming shapes
         /// </summary>
-        public Color FillColor { get; set; } 
+        public Color FillColor { get; set; }
             = Color.White;
 
-        public double FillOpacity { get; set; } 
+        public double FillOpacity { get; set; }
             = 1.0d;
 
 
@@ -98,7 +98,7 @@ namespace GraphicsComposerLib.Rendering.Svg.DrawingBoard
 
             return this;
         }
-        
+
         public SvgDrawingBoardStyle SetFill(Color fillColor, double fillOpacity = 1)
         {
             FillColor = fillColor;

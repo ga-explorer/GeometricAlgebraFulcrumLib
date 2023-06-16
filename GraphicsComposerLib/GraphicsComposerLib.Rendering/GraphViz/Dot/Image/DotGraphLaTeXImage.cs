@@ -1,12 +1,12 @@
-﻿using GraphicsComposerLib.Rendering.LaTeX.ImageComposers;
+﻿using WebComposerLib.LaTeX.ImageComposers;
 
 namespace GraphicsComposerLib.Rendering.GraphViz.Dot.Image
 {
     public sealed class DotGraphLaTeXImage : 
         IDotGraphImage
     {
-        public static GrLaTeXImageComposer LaTeXRenderer { get; }
-            = new GrLaTeXImageComposer()
+        public static WclLaTeXImageComposer LaTeXRenderer { get; }
+            = new WclLaTeXImageComposer()
             {
                 Resolution = 150
             };

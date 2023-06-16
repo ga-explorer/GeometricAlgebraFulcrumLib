@@ -2,14 +2,14 @@
 using System.Linq;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.Basic;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
-using GeometricAlgebraFulcrumLib.MathBase.Signals;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra;
 using TextComposerLib.Text;
 
 namespace GeometricAlgebraFulcrumLib.Processors.SignalAlgebra
 {
     public sealed class ScalarSignalFloat64Processor :
-        INumericScalarProcessor<ScalarSignalFloat64>
+        INumericScalarProcessor<Float64Signal>
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static ScalarSignalFloat64Processor Create(double samplingRate, int sampleCount)
@@ -31,31 +31,31 @@ namespace GeometricAlgebraFulcrumLib.Processors.SignalAlgebra
         public bool IsSymbolic 
             => ScalarProcessor.IsSymbolic;
 
-        public ScalarSignalFloat64 ScalarZero { get; }
+        public Float64Signal ScalarZero { get; }
         
-        public ScalarSignalFloat64 ScalarOne { get; }
+        public Float64Signal ScalarOne { get; }
         
-        public ScalarSignalFloat64 ScalarMinusOne { get; }
+        public Float64Signal ScalarMinusOne { get; }
         
-        public ScalarSignalFloat64 ScalarTwo { get; }
+        public Float64Signal ScalarTwo { get; }
         
-        public ScalarSignalFloat64 ScalarMinusTwo { get; }
+        public Float64Signal ScalarMinusTwo { get; }
         
-        public ScalarSignalFloat64 ScalarTen { get; }
+        public Float64Signal ScalarTen { get; }
         
-        public ScalarSignalFloat64 ScalarMinusTen { get; }
+        public Float64Signal ScalarMinusTen { get; }
         
-        public ScalarSignalFloat64 ScalarPi { get; }
+        public Float64Signal ScalarPi { get; }
 
-        public ScalarSignalFloat64 ScalarTwoPi { get; }
+        public Float64Signal ScalarTwoPi { get; }
 
-        public ScalarSignalFloat64 ScalarPiOver2 { get; }
+        public Float64Signal ScalarPiOver2 { get; }
         
-        public ScalarSignalFloat64 ScalarE { get; }
+        public Float64Signal ScalarE { get; }
 
-        public ScalarSignalFloat64 ScalarDegreeToRadian { get; }
+        public Float64Signal ScalarDegreeToRadian { get; }
 
-        public ScalarSignalFloat64 ScalarRadianToDegree { get; }
+        public Float64Signal ScalarRadianToDegree { get; }
 
 
         public ScalarSignalFloat64Processor(double samplingRate, int signalSamplesCount)
@@ -85,9 +85,9 @@ namespace GeometricAlgebraFulcrumLib.Processors.SignalAlgebra
         }
 
 
-        public ScalarSignalFloat64 GetReadOnlyScalarFromNumber(double value)
+        public Float64Signal GetReadOnlyScalarFromNumber(double value)
         {
-            return ScalarSignalFloat64.CreateConstant(
+            return Float64Signal.CreateConstant(
                 SamplingRate, 
                 SampleCount,
                 value,
@@ -96,9 +96,9 @@ namespace GeometricAlgebraFulcrumLib.Processors.SignalAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ScalarSignalFloat64 GetScalarFromNumber(int value)
+        public Float64Signal GetScalarFromNumber(int value)
         {
-            return ScalarSignalFloat64.CreateConstant(
+            return Float64Signal.CreateConstant(
                 SamplingRate, 
                 SampleCount,
                 value,
@@ -107,9 +107,9 @@ namespace GeometricAlgebraFulcrumLib.Processors.SignalAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ScalarSignalFloat64 GetScalarFromNumber(uint value)
+        public Float64Signal GetScalarFromNumber(uint value)
         {
-            return ScalarSignalFloat64.CreateConstant(
+            return Float64Signal.CreateConstant(
                 SamplingRate, 
                 SampleCount,
                 value,
@@ -118,9 +118,9 @@ namespace GeometricAlgebraFulcrumLib.Processors.SignalAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ScalarSignalFloat64 GetScalarFromNumber(long value)
+        public Float64Signal GetScalarFromNumber(long value)
         {
-            return ScalarSignalFloat64.CreateConstant(
+            return Float64Signal.CreateConstant(
                 SamplingRate, 
                 SampleCount,
                 value,
@@ -129,9 +129,9 @@ namespace GeometricAlgebraFulcrumLib.Processors.SignalAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ScalarSignalFloat64 GetScalarFromNumber(ulong value)
+        public Float64Signal GetScalarFromNumber(ulong value)
         {
-            return ScalarSignalFloat64.CreateConstant(
+            return Float64Signal.CreateConstant(
                 SamplingRate, 
                 SampleCount,
                 value,
@@ -140,9 +140,9 @@ namespace GeometricAlgebraFulcrumLib.Processors.SignalAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ScalarSignalFloat64 GetScalarFromNumber(float value)
+        public Float64Signal GetScalarFromNumber(float value)
         {
-            return ScalarSignalFloat64.CreateConstant(
+            return Float64Signal.CreateConstant(
                 SamplingRate, 
                 SampleCount,
                 value,
@@ -151,9 +151,9 @@ namespace GeometricAlgebraFulcrumLib.Processors.SignalAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ScalarSignalFloat64 GetScalarFromNumber(double value)
+        public Float64Signal GetScalarFromNumber(double value)
         {
-            return ScalarSignalFloat64.CreateConstant(
+            return Float64Signal.CreateConstant(
                 SamplingRate, 
                 SampleCount,
                 value,
@@ -162,9 +162,9 @@ namespace GeometricAlgebraFulcrumLib.Processors.SignalAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ScalarSignalFloat64 GetScalarFromRational(long numerator, long denominator)
+        public Float64Signal GetScalarFromRational(long numerator, long denominator)
         {
-            return ScalarSignalFloat64.CreateConstant(
+            return Float64Signal.CreateConstant(
                 SamplingRate, 
                 SampleCount,
                 numerator / (double) denominator,
@@ -172,7 +172,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.SignalAlgebra
             );
         }
 
-        public ScalarSignalFloat64 GetScalarFromRandom(Random randomGenerator, double minValue, double maxValue)
+        public Float64Signal GetScalarFromRandom(Random randomGenerator, double minValue, double maxValue)
         {
             var scalarArray = new double[SampleCount];
 
@@ -185,29 +185,29 @@ namespace GeometricAlgebraFulcrumLib.Processors.SignalAlgebra
                 );
             }
 
-            return ScalarSignalFloat64.Create(SamplingRate, scalarArray, false);
+            return Float64Signal.Create(SamplingRate, scalarArray, false);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ScalarSignalFloat64 GetScalarFromText(string text)
+        public Float64Signal GetScalarFromText(string text)
         {
             throw new NotImplementedException();
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ScalarSignalFloat64 Add(ScalarSignalFloat64 scalar1, ScalarSignalFloat64 scalar2)
+        public Float64Signal Add(Float64Signal scalar1, Float64Signal scalar2)
         {
             return scalar1.MapSamples(scalar2, ScalarProcessor.Add);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ScalarSignalFloat64 Subtract(ScalarSignalFloat64 scalar1, ScalarSignalFloat64 scalar2)
+        public Float64Signal Subtract(Float64Signal scalar1, Float64Signal scalar2)
         {
             return scalar1.MapSamples(scalar2, ScalarProcessor.Subtract);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ScalarSignalFloat64 Times(ScalarSignalFloat64 scalar1, ScalarSignalFloat64 scalar2)
+        public Float64Signal Times(Float64Signal scalar1, Float64Signal scalar2)
         {
             return scalar1.MapSamples(
                 scalar2, 
@@ -216,7 +216,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.SignalAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ScalarSignalFloat64 Times(IntegerSign sign, ScalarSignalFloat64 scalar)
+        public Float64Signal Times(IntegerSign sign, Float64Signal scalar)
         {
             if (sign.IsZero) return ScalarZero;
 
@@ -226,43 +226,43 @@ namespace GeometricAlgebraFulcrumLib.Processors.SignalAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ScalarSignalFloat64 NegativeTimes(ScalarSignalFloat64 scalar1, ScalarSignalFloat64 scalar2)
+        public Float64Signal NegativeTimes(Float64Signal scalar1, Float64Signal scalar2)
         {
             return scalar1.MapSamples(scalar2, ScalarProcessor.NegativeTimes);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ScalarSignalFloat64 Divide(ScalarSignalFloat64 scalar1, ScalarSignalFloat64 scalar2)
+        public Float64Signal Divide(Float64Signal scalar1, Float64Signal scalar2)
         {
             return scalar1.MapSamples(scalar2, ScalarProcessor.Divide);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ScalarSignalFloat64 NegativeDivide(ScalarSignalFloat64 scalar1, ScalarSignalFloat64 scalar2)
+        public Float64Signal NegativeDivide(Float64Signal scalar1, Float64Signal scalar2)
         {
             return scalar1.MapSamples(scalar2, ScalarProcessor.NegativeDivide);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ScalarSignalFloat64 Positive(ScalarSignalFloat64 scalar)
+        public Float64Signal Positive(Float64Signal scalar)
         {
             return scalar.MapSamples(ScalarProcessor.Positive);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ScalarSignalFloat64 Negative(ScalarSignalFloat64 scalar)
+        public Float64Signal Negative(Float64Signal scalar)
         {
             return scalar.MapSamples(ScalarProcessor.Negative);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ScalarSignalFloat64 Inverse(ScalarSignalFloat64 scalar)
+        public Float64Signal Inverse(Float64Signal scalar)
         {
             return scalar.MapSamples(ScalarProcessor.Inverse);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ScalarSignalFloat64 Sign(ScalarSignalFloat64 scalar)
+        public Float64Signal Sign(Float64Signal scalar)
         {
             return scalar.MapSamples(
                 s => ScalarProcessor.Sign(s)
@@ -270,151 +270,151 @@ namespace GeometricAlgebraFulcrumLib.Processors.SignalAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ScalarSignalFloat64 UnitStep(ScalarSignalFloat64 scalar)
+        public Float64Signal UnitStep(Float64Signal scalar)
         {
             return scalar.MapSamples(ScalarProcessor.UnitStep);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ScalarSignalFloat64 Abs(ScalarSignalFloat64 scalar)
+        public Float64Signal Abs(Float64Signal scalar)
         {
             return scalar.MapSamples(ScalarProcessor.Abs);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ScalarSignalFloat64 Power(ScalarSignalFloat64 baseScalar, ScalarSignalFloat64 scalar)
+        public Float64Signal Power(Float64Signal baseScalar, Float64Signal scalar)
         {
             return baseScalar.MapSamples(scalar, ScalarProcessor.Power);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ScalarSignalFloat64 Sqrt(ScalarSignalFloat64 scalar)
+        public Float64Signal Sqrt(Float64Signal scalar)
         {
             return scalar.MapSamples(ScalarProcessor.Sqrt);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ScalarSignalFloat64 SqrtOfAbs(ScalarSignalFloat64 scalar)
+        public Float64Signal SqrtOfAbs(Float64Signal scalar)
         {
             return scalar.MapSamples(ScalarProcessor.SqrtOfAbs);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ScalarSignalFloat64 Exp(ScalarSignalFloat64 scalar)
+        public Float64Signal Exp(Float64Signal scalar)
         {
             return scalar.MapSamples(ScalarProcessor.Exp);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ScalarSignalFloat64 LogE(ScalarSignalFloat64 scalar)
+        public Float64Signal LogE(Float64Signal scalar)
         {
             return scalar.MapSamples(ScalarProcessor.LogE);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ScalarSignalFloat64 Log2(ScalarSignalFloat64 scalar)
+        public Float64Signal Log2(Float64Signal scalar)
         {
             return scalar.MapSamples(ScalarProcessor.Log2);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ScalarSignalFloat64 Log10(ScalarSignalFloat64 scalar)
+        public Float64Signal Log10(Float64Signal scalar)
         {
             return scalar.MapSamples(ScalarProcessor.Log10);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ScalarSignalFloat64 Log(ScalarSignalFloat64 baseScalar, ScalarSignalFloat64 scalar)
+        public Float64Signal Log(Float64Signal baseScalar, Float64Signal scalar)
         {
             return baseScalar.MapSamples(scalar, ScalarProcessor.Log);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ScalarSignalFloat64 Cos(ScalarSignalFloat64 scalar)
+        public Float64Signal Cos(Float64Signal scalar)
         {
             return scalar.MapSamples(ScalarProcessor.Cos);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ScalarSignalFloat64 Sin(ScalarSignalFloat64 scalar)
+        public Float64Signal Sin(Float64Signal scalar)
         {
             return scalar.MapSamples(ScalarProcessor.Sin);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ScalarSignalFloat64 Tan(ScalarSignalFloat64 scalar)
+        public Float64Signal Tan(Float64Signal scalar)
         {
             return scalar.MapSamples(ScalarProcessor.Tan);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ScalarSignalFloat64 ArcCos(ScalarSignalFloat64 scalar)
+        public Float64Signal ArcCos(Float64Signal scalar)
         {
             return scalar.MapSamples(ScalarProcessor.ArcCos);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ScalarSignalFloat64 ArcSin(ScalarSignalFloat64 scalar)
+        public Float64Signal ArcSin(Float64Signal scalar)
         {
             return scalar.MapSamples(ScalarProcessor.ArcSin);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ScalarSignalFloat64 ArcTan(ScalarSignalFloat64 scalar)
+        public Float64Signal ArcTan(Float64Signal scalar)
         {
             return scalar.MapSamples(ScalarProcessor.ArcTan);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ScalarSignalFloat64 ArcTan2(ScalarSignalFloat64 scalarX, ScalarSignalFloat64 scalarY)
+        public Float64Signal ArcTan2(Float64Signal scalarX, Float64Signal scalarY)
         {
             return scalarX.MapSamples(scalarY, ScalarProcessor.ArcTan2);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ScalarSignalFloat64 Cosh(ScalarSignalFloat64 scalar)
+        public Float64Signal Cosh(Float64Signal scalar)
         {
             return scalar.MapSamples(ScalarProcessor.Cosh);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ScalarSignalFloat64 Sinh(ScalarSignalFloat64 scalar)
+        public Float64Signal Sinh(Float64Signal scalar)
         {
             return scalar.MapSamples(ScalarProcessor.Sinh);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ScalarSignalFloat64 Tanh(ScalarSignalFloat64 scalar)
+        public Float64Signal Tanh(Float64Signal scalar)
         {
             return scalar.MapSamples(ScalarProcessor.Tanh);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ScalarSignalFloat64 Sinc(ScalarSignalFloat64 scalar)
+        public Float64Signal Sinc(Float64Signal scalar)
         {
             return scalar.MapSamples(ScalarProcessor.Sinc);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IsValid(ScalarSignalFloat64 scalar)
+        public bool IsValid(Float64Signal scalar)
         {
             return scalar.All(ScalarProcessor.IsValid);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IsFiniteNumber(ScalarSignalFloat64 scalar)
+        public bool IsFiniteNumber(Float64Signal scalar)
         {
             return scalar.All(ScalarProcessor.IsFiniteNumber);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IsZero(ScalarSignalFloat64 scalar)
+        public bool IsZero(Float64Signal scalar)
         {
             return scalar.All(ScalarProcessor.IsZero);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IsZero(ScalarSignalFloat64 scalar, bool nearZeroFlag)
+        public bool IsZero(Float64Signal scalar, bool nearZeroFlag)
         {
             return nearZeroFlag
                 ? IsNearZero(scalar) 
@@ -422,19 +422,19 @@ namespace GeometricAlgebraFulcrumLib.Processors.SignalAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IsNearZero(ScalarSignalFloat64 scalar)
+        public bool IsNearZero(Float64Signal scalar)
         {
             return scalar.All(ScalarProcessor.IsNearZero);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IsNotZero(ScalarSignalFloat64 scalar)
+        public bool IsNotZero(Float64Signal scalar)
         {
             return scalar.All(ScalarProcessor.IsNotZero);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IsNotZero(ScalarSignalFloat64 scalar, bool nearZeroFlag)
+        public bool IsNotZero(Float64Signal scalar, bool nearZeroFlag)
         {
             return nearZeroFlag
                 ? IsNotNearZero(scalar) 
@@ -442,49 +442,49 @@ namespace GeometricAlgebraFulcrumLib.Processors.SignalAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IsNotNearZero(ScalarSignalFloat64 scalar)
+        public bool IsNotNearZero(Float64Signal scalar)
         {
             return scalar.All(ScalarProcessor.IsNotNearZero);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IsPositive(ScalarSignalFloat64 scalar)
+        public bool IsPositive(Float64Signal scalar)
         {
             return scalar.All(ScalarProcessor.IsPositive);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IsNegative(ScalarSignalFloat64 scalar)
+        public bool IsNegative(Float64Signal scalar)
         {
             return scalar.All(ScalarProcessor.IsNegative);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IsNotPositive(ScalarSignalFloat64 scalar)
+        public bool IsNotPositive(Float64Signal scalar)
         {
             return scalar.All(ScalarProcessor.IsNotPositive);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IsNotNegative(ScalarSignalFloat64 scalar)
+        public bool IsNotNegative(Float64Signal scalar)
         {
             return scalar.All(ScalarProcessor.IsNotNegative);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IsNotNearPositive(ScalarSignalFloat64 scalar)
+        public bool IsNotNearPositive(Float64Signal scalar)
         {
             return scalar.All(ScalarProcessor.IsNotNearPositive);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IsNotNearNegative(ScalarSignalFloat64 scalar)
+        public bool IsNotNearNegative(Float64Signal scalar)
         {
             return scalar.All(ScalarProcessor.IsNotNearNegative);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public string ToText(ScalarSignalFloat64 scalar)
+        public string ToText(Float64Signal scalar)
         {
             return scalar
                 .Select(s => s.ToString("G"))

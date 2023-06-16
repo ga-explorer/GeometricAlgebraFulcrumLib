@@ -19,15 +19,9 @@ namespace NumericalGeometryLib.Collections.Finite.Natural
 
         public Func<int, T> ValueFunction { get; set; }
 
-        public override int Count
-        {
-            get { return _valuesCount; }
-        }
+        public override int Count => _valuesCount;
 
-        public T this[int index]
-        {
-            get { return ValueFunction == null ? DefaultValue : ValueFunction(index); }
-        }
+        public T this[int index] => ValueFunction == null ? DefaultValue : ValueFunction(index);
 
 
         private NfcComputed(int itemsCount, Func<int, T> valueFunction)

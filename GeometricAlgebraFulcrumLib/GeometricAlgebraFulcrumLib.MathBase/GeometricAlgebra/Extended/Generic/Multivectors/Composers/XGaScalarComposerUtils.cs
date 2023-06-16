@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors.Composers
 {
@@ -27,6 +27,60 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
             return new XGaScalar<T>(
                 processor,
                 processor.ScalarProcessor.ScalarMinusOne
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static XGaScalar<T> CreateScalar<T>(this XGaProcessor<T> processor, int scalarValue)
+        {
+            return new XGaScalar<T>(
+                processor, 
+                processor.ScalarProcessor.GetScalarFromNumber(scalarValue)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static XGaScalar<T> CreateScalar<T>(this XGaProcessor<T> processor, uint scalarValue)
+        {
+            return new XGaScalar<T>(
+                processor, 
+                processor.ScalarProcessor.GetScalarFromNumber(scalarValue)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static XGaScalar<T> CreateScalar<T>(this XGaProcessor<T> processor, long scalarValue)
+        {
+            return new XGaScalar<T>(
+                processor, 
+                processor.ScalarProcessor.GetScalarFromNumber(scalarValue)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static XGaScalar<T> CreateScalar<T>(this XGaProcessor<T> processor, ulong scalarValue)
+        {
+            return new XGaScalar<T>(
+                processor, 
+                processor.ScalarProcessor.GetScalarFromNumber(scalarValue)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static XGaScalar<T> CreateScalar<T>(this XGaProcessor<T> processor, float scalarValue)
+        {
+            return new XGaScalar<T>(
+                processor, 
+                processor.ScalarProcessor.GetScalarFromNumber(scalarValue)
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static XGaScalar<T> CreateScalar<T>(this XGaProcessor<T> processor, double scalarValue)
+        {
+            return new XGaScalar<T>(
+                processor, 
+                processor.ScalarProcessor.GetScalarFromNumber(scalarValue)
             );
         }
 

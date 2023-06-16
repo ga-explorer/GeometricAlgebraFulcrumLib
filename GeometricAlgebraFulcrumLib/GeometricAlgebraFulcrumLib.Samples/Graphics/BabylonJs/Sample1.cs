@@ -1,16 +1,17 @@
 ﻿using System;
 using System.IO;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
-using GeometricAlgebraFulcrumLib.MathBase.Parametric.Curves;
-using GeometricAlgebraFulcrumLib.MathBase.Parametric.Curves.CatmullRom;
-using GeometricAlgebraFulcrumLib.MathBase.Parametric.Curves.Sampled;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Curves;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Curves.Adaptive;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 using GraphicsComposerLib.Rendering.BabylonJs;
 using GraphicsComposerLib.Rendering.BabylonJs.Materials;
 using GraphicsComposerLib.Rendering.BabylonJs.Textures;
+using GraphicsComposerLib.Rendering.Visuals.Space3D.Animations;
 using GraphicsComposerLib.Rendering.Visuals.Space3D.Basic;
 using GraphicsComposerLib.Rendering.Visuals.Space3D.Curves;
-using GraphicsComposerLib.Rendering.Visuals.Space3D.Groups;
+using GraphicsComposerLib.Rendering.Visuals.Space3D.Styles;
 using GraphicsComposerLib.Rendering.Visuals.Space3D.Surfaces;
 using SixLabors.ImageSharp;
 using TextComposerLib;
@@ -19,7 +20,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.BabylonJs
 {
     public static class Sample1
     {
-        private const string WorkingPath = @"D:\Projects\Study\Babylon.js";
+        private const string WorkingPath = @"D:\Projects\Study\Web\Babylon.js";
 
 
         public static void Example1()
@@ -36,7 +37,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.BabylonJs
                 30d.DegreesToRadians(), 
                 30d.DegreesToRadians(), 
                 5, 
-                Float64Tuple3D.Zero
+                Float64Vector3D.Zero
             );
 
             var grayMaterial = Color.Gray.ToBabylonJsStandardMaterial("grayMaterial");
@@ -61,137 +62,136 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.BabylonJs
                 rosyBrownMaterial
             );
 
-            var pointA = new GrVisualPoint3D("pointA", new Float64Tuple3D(5, 0, 0))
-            {
-                Style = new GrVisualSurfaceThickStyle3D(redMaterial, thickness * 2)
-            };
+            var pointA = GrVisualPoint3D.CreateStatic(
+                "pointA", 
+                redMaterial.CreateThickSurfaceStyle(thickness * 2), 
+                Float64Vector3D.Create(5, 0, 0)
+            );
 
-            var pointB = new GrVisualPoint3D("pointB", new Float64Tuple3D(0, 5, 0))
-            {
-                Style = new GrVisualSurfaceThickStyle3D(greenMaterial, thickness * 2)
-            };
+            var pointB = GrVisualPoint3D.CreateStatic(
+                "pointB", 
+                greenMaterial.CreateThickSurfaceStyle(thickness * 2),
+                Float64Vector3D.Create(0, 5, 0)
+            );
 
-            var pointC = new GrVisualPoint3D("pointC", new Float64Tuple3D(0, 0, 5))
-            {
-                Style = new GrVisualSurfaceThickStyle3D(blueMaterial, thickness * 2)
-            };
+            var pointC = GrVisualPoint3D.CreateStatic(
+                "pointC", 
+                blueMaterial.CreateThickSurfaceStyle(thickness * 2),
+                Float64Vector3D.Create(0, 0, 5)
+            );
 
-            var worldFrame = new GrVisualFrame3D("worldFrame")
-            {
-                Origin = Float64Tuple3D.Zero,
-                Direction1 = Float64Tuple3D.E1,
-                Direction2 = Float64Tuple3D.E2,
-                Direction3 = Float64Tuple3D.E3,
-
-                Style = new GrVisualFrameStyle3D
+            var worldFrame = GrVisualFrame3D.CreateStatic(
+                "worldFrame",
+                new GrVisualFrameStyle3D
                 {
-                    OriginMaterial = grayMaterial,
-                    DirectionMaterial1 = darkRedMaterial,
-                    DirectionMaterial2 = darkGreenMaterial,
-                    DirectionMaterial3 = darkBlueMaterial,
-                    OriginThickness = thickness * 1.5,
-                    DirectionThickness = thickness
-                }
-            };
+                    OriginStyle = grayMaterial.CreateThickSurfaceStyle(thickness * 1.5),
+                    Direction1Style = darkRedMaterial.CreateTubeCurveStyle(thickness),
+                    Direction2Style = darkGreenMaterial.CreateTubeCurveStyle(thickness),
+                    Direction3Style = darkBlueMaterial.CreateTubeCurveStyle(thickness)
+                },
+                Float64Vector3D.Zero
+            );
 
-            var xAxis = new GrVisualVector3D("xAxis", new Float64Tuple3D(2, 0, 0), 3 * Float64Tuple3D.E1)
-            {
-                Style = new GrVisualVectorStyle3D(darkRedMaterial, thickness)
-            };
+            var xAxis = GrVisualVector3D.CreateStatic(
+                "xAxis", 
+                darkRedMaterial.CreateTubeCurveStyle(thickness), 
+                Float64Vector3D.Create(2, 0, 0), 
+                3 * Float64Vector3D.E1
+            );
             
-            var yAxis = new GrVisualVector3D("yAxis", new Float64Tuple3D(0, 2, 0), 3 * Float64Tuple3D.E2)
-            {
-                Style = new GrVisualVectorStyle3D(darkGreenMaterial, thickness)
-            };
+            var yAxis = GrVisualVector3D.CreateStatic(
+                "yAxis", 
+                darkGreenMaterial.CreateTubeCurveStyle(thickness), 
+                Float64Vector3D.Create(0, 2, 0), 
+                3 * Float64Vector3D.E2
+            );
             
-            var zAxis = new GrVisualVector3D("zAxis", new Float64Tuple3D(0, 0, 2), 3 * Float64Tuple3D.E3)
-            {
-                Style = new GrVisualVectorStyle3D(darkBlueMaterial, thickness)
-            };
+            var zAxis = GrVisualVector3D.CreateStatic(
+                "zAxis", 
+                darkBlueMaterial.CreateTubeCurveStyle(thickness), 
+                Float64Vector3D.Create(0, 0, 2), 
+                3 * Float64Vector3D.E3
+            );
 
-            var lineSegment = new GrVisualLineSegment3D("lineSegment")
-            {
-                Position1 = new Float64Tuple3D(1, 1, 1),
-                Position2 = new Float64Tuple3D(4, 4, 4),
-
-                Style = new GrVisualCurveTubeStyle3D(yellowMaterial, thickness * 1.5d)
-            };
+            var lineSegment = GrVisualLineSegment3D.Create(
+                "lineSegment", 
+                yellowMaterial.CreateTubeCurveStyle(thickness * 1.5d),
+                Float64Vector3D.Create(1, 1, 1), 
+                Float64Vector3D.Create(4, 4, 4),
+                GrVisualAnimationSpecs.Static
+            );
             
-            var lineSegmentX = new GrVisualLineSegment3D("lineSegmentX")
-            {
-                Position1 = new Float64Tuple3D(4, 4, 4),
-                Position2 = new Float64Tuple3D(0, 4, 4),
-
-                Style = new GrVisualCurveDashedLineStyle3D(Color.Red, 3, 1, 16)
-            };
+            var lineSegmentX = GrVisualLineSegment3D.Create(
+                "lineSegmentX",
+                Color.Red.CreateDashedLineCurveStyle(3, 1, 16),
+                Float64Vector3D.Create(4, 4, 4),
+                Float64Vector3D.Create(0, 4, 4),
+                GrVisualAnimationSpecs.Static
+            );
             
-            var lineSegmentY = new GrVisualLineSegment3D("lineSegmentY")
-            {
-                Position1 = new Float64Tuple3D(4, 4, 4),
-                Position2 = new Float64Tuple3D(4, 0, 4),
-
-                Style = new GrVisualCurveDashedLineStyle3D(Color.Green, 3, 1, 16)
-            };
+            var lineSegmentY = GrVisualLineSegment3D.Create(
+                "lineSegmentY",
+                Color.Green.CreateDashedLineCurveStyle(3, 1, 16),
+                Float64Vector3D.Create(4, 4, 4),
+                Float64Vector3D.Create(4, 0, 4),
+                GrVisualAnimationSpecs.Static
+            );
             
-            var lineSegmentZ = new GrVisualLineSegment3D("lineSegmentZ")
-            {
-                Position1 = new Float64Tuple3D(4, 4, 4),
-                Position2 = new Float64Tuple3D(4, 4, 0),
+            var lineSegmentZ = GrVisualLineSegment3D.Create(
+                "lineSegmentZ",
+                Color.Blue.CreateDashedLineCurveStyle(3, 1, 16),
+                Float64Vector3D.Create(4, 4, 4),
+                Float64Vector3D.Create(4, 4, 0),
+                GrVisualAnimationSpecs.Static
+            );
 
-                Style = new GrVisualCurveDashedLineStyle3D(Color.Blue, 3, 1, 16)
-            };
-
-            var rightAngleX = new GrVisualRightAngle3D(
+            var rightAngleX = GrVisualRightAngle3D.CreateStatic(
                 "angleXy",
-                new Float64Tuple3D(4, 4, 4),
-                new Float64Tuple3D(-1, 0, 0),
-                new Float64Tuple3D(0, -1, 0),
+                Color.Red.CreateSolidLineCurveStyle(),
+                scene.AddSimpleMaterial("angleXyMaterial", Color.Red).CreateThinSurfaceStyle(),
+                Float64Vector3D.Create(4, 4, 4),
+                Float64Vector3D.Create(-1, 0, 0),
+                Float64Vector3D.Create(0, -1, 0),
                 0.25
-            )
-            {
-                Style = new GrVisualCurveSolidLineStyle3D(Color.Red),
-                InnerStyle = new GrVisualSurfaceThinStyle3D(scene.AddSimpleMaterial("angleXyMaterial", Color.Red))
-            };
+            );
 
-            var circleCurve = new GrVisualCircleCurve3D("circleCurve")
-            {
-                Center = new Float64Tuple3D(1, 1, 1),
-                Normal = new Float64Tuple3D(1, 1, 1),
-                Radius = 3,
-
-                Style = new GrVisualCurveTubeStyle3D(yellowMaterial, 2 * thickness)
-            };
+            var circleCurve = GrVisualCircleCurve3D.CreateStatic(
+                "circleCurve",
+                yellowMaterial.CreateTubeCurveStyle(2 * thickness),
+                Float64Vector3D.Create(1, 1, 1),
+                Float64Vector3D.Create(1, 1, 1),
+                3
+            );
             
-            var circleCurveArc = new GrVisualCircleArcCurve3D("circleCurveArc")
-            {
-                InnerArc = true,
-                Center = new Float64Tuple3D(0, 0, 0),
-                Direction1 = new Float64Tuple3D(1, 1, 1),
-                Direction2 = new Float64Tuple3D(0, 1, 0),
-                Radius = 4,
-
-                Style = new GrVisualCurveTubeStyle3D(yellowMaterial, 2 * thickness)
-            };
+            var circleCurveArc = GrVisualCircleArcCurve3D.CreateStatic(
+                "circleCurveArc",
+                yellowMaterial.CreateTubeCurveStyle(2 * thickness),
+                Float64Vector3D.Zero,
+                Float64Vector3D.Symmetric,
+                Float64Vector3D.E2,
+                4,
+                true
+            );
             
-            var circleDisk = new GrVisualCircleSurface3D("circleDisk")
-            {
-                Center = new Float64Tuple3D(1, 1, 1),
-                Normal = new Float64Tuple3D(1, 1, 1),
-                Radius = 4,
+            var circleDisk = GrVisualCircleSurface3D.CreateStatic(
+                "circleDisk",
+                rosyBrownMaterial.CreateThinSurfaceStyle(),
+                Float64Vector3D.Create(1, 1, 1),
+                Float64Vector3D.Create(1, 1, 1),
+                4,
+                false
+            );
 
-                Style = new GrVisualSurfaceThinStyle3D(rosyBrownMaterial)
-            };
-
-            var circleDiskArc = new GrVisualCircleSurfaceArc3D("circleDiskArc")
-            {
-                InnerArc = true,
-                Center = new Float64Tuple3D(0, 0, 0),
-                Direction1 = new Float64Tuple3D(1, 1, 1),
-                Direction2 = new Float64Tuple3D(0, 1, 0),
-                Radius = 4,
-
-                Style = new GrVisualSurfaceThinStyle3D(rosyBrownMaterial)
-            };
+            var circleDiskArc = GrVisualCircleArcSurface3D.CreateStatic(
+                "circleDiskArc",
+                rosyBrownMaterial.CreateThinSurfaceStyle(),
+                Float64Vector3D.Zero,
+                Float64Vector3D.Symmetric,
+                Float64Vector3D.E2,
+                4d,
+                true,
+                false
+            );
             
             composer.AddElements(
                 worldFrame,
@@ -240,7 +240,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.BabylonJs
                 30d.DegreesToRadians(), 
                 30d.DegreesToRadians(), 
                 5, 
-                Float64Tuple3D.Zero
+                Float64Vector3D.Zero
             );
 
             var grayMaterial = Color.Gray.ToBabylonJsSimpleMaterial("grayMaterial");
@@ -264,23 +264,18 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.BabylonJs
                 darkBlueMaterial,
                 rosyBrownMaterial
             );
-            
-            var worldFrame = new GrVisualFrame3D("worldFrame")
-            {
-                Origin = Float64Tuple3D.Zero,
-                Direction1 = Float64Tuple3D.E1,
-                Direction2 = Float64Tuple3D.E2,
-                Direction3 = Float64Tuple3D.E3,
-                Style = new GrVisualFrameStyle3D
+
+            var worldFrame = GrVisualFrame3D.CreateStatic(
+                "worldFrame",
+                new GrVisualFrameStyle3D
                 {
-                    OriginMaterial = grayMaterial,
-                    DirectionMaterial1 = darkRedMaterial,
-                    DirectionMaterial2 = darkGreenMaterial,
-                    DirectionMaterial3 = darkBlueMaterial,
-                    OriginThickness = thickness * 1.5,
-                    DirectionThickness = thickness
-                }
-            };
+                    OriginStyle = grayMaterial.CreateThickSurfaceStyle(thickness * 1.5),
+                    Direction1Style = darkRedMaterial.CreateTubeCurveStyle(thickness),
+                    Direction2Style = darkGreenMaterial.CreateTubeCurveStyle(thickness),
+                    Direction3Style = darkBlueMaterial.CreateTubeCurveStyle(thickness)
+                },
+                Float64Vector3D.Zero
+            );
 
             const string curveOpacityTextureName = "curveOpacityTexture";
             scene.AddTexture(
@@ -311,30 +306,28 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.BabylonJs
 
             var curvePointList = new[]
             {
-                new Float64Tuple3D(1.5, 0, 0),
-                new Float64Tuple3D(0, 1.5, 0),
-                new Float64Tuple3D(0, 0, 1.5)
+                Float64Vector3D.Create(1.5, 0, 0),
+                Float64Vector3D.Create(0, 1.5, 0),
+                Float64Vector3D.Create(0, 0, 1.5)
             };
 
             var sampledCurve =
                 curvePointList.CreateCatmullRomSpline3D(
                     CatmullRomSplineType.Centripetal, 
                     true
-                ).CreateSampledCurve3D(
-                    new SampledParametricCurveTreeOptions3D(
+                ).CreateAdaptiveCurve3D(
+                    new AdaptiveCurveSamplingOptions3D(
                         5d.DegreesToAngle(), 
                         0, 
                         10
                     )
                 );
 
-            var curve = new GrVisualLinePathCurve3D("curve", sampledCurve)
-            {
-                Style = new GrVisualCurveTubeStyle3D(
-                    scene.GetMaterial(curveMaterialName), 
-                    2 * thickness
-                )
-            };
+            var curve = GrVisualPointPathCurve3D.CreateStatic(
+                "curve", 
+                scene.GetMaterial(curveMaterialName).CreateTubeCurveStyle(2 * thickness),
+                sampledCurve
+            );
 
             composer.AddElements(
                 worldFrame,

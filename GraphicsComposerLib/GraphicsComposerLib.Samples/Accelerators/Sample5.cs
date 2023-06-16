@@ -1,13 +1,15 @@
 ﻿
+using System.Drawing;
 using System.IO;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Lines;
+using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Lines.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Borders;
+using GeometricAlgebraFulcrumLib.MathBase.Borders.Space2D;
+using GeometricAlgebraFulcrumLib.MathBase.Borders.Space2D.Immutable;
 using GraphicsComposerLib.Rendering.Svg.DrawingBoard;
-using NumericalGeometryLib.BasicMath.Tuples.Immutable;
-using NumericalGeometryLib.BasicShapes.Lines;
-using NumericalGeometryLib.BasicShapes.Lines.Immutable;
-using NumericalGeometryLib.Borders;
-using NumericalGeometryLib.Borders.Space2D;
-using NumericalGeometryLib.Borders.Space2D.Immutable;
 using SixLabors.ImageSharp;
+using Color = SixLabors.ImageSharp.Color;
 
 namespace GraphicsComposerLib.Samples.Accelerators
 {
@@ -124,8 +126,8 @@ namespace GraphicsComposerLib.Samples.Accelerators
 
             var line =
                 Line2D.Create(
-                    new Tuple2D(boundingBox.MinX, boundingBox.MinY),
-                    new Tuple2D(boundingBox.GetLengthX(), boundingBox.GetLengthY())
+                    new Float64Tuple2D(boundingBox.MinX, boundingBox.MinY),
+                    new Float64Tuple2D(boundingBox.GetLengthX(), boundingBox.GetLengthY())
                 );
 
             //A) Line Direction > 0, Clip0 < Clip1 => s0 < s1
@@ -181,8 +183,8 @@ namespace GraphicsComposerLib.Samples.Accelerators
 
             line =
                 Line2D.Create(
-                    new Tuple2D(boundingBox.MaxX, boundingBox.MinY),
-                    new Tuple2D(-boundingBox.GetLengthX(), boundingBox.GetLengthY())
+                    new Float64Tuple2D(boundingBox.MaxX, boundingBox.MinY),
+                    new Float64Tuple2D(-boundingBox.GetLengthX(), boundingBox.GetLengthY())
                 );
 
             //D) Line Direction < 0, Clip0 < Clip1 => s0 < s1

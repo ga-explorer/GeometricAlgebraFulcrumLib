@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -6,6 +7,7 @@ using System.Net;
 using System.Numerics;
 using System.Security.Cryptography;
 using System.Text;
+using Open.Text;
 using TextComposerLib.Text;
 using TextComposerLib.Text.Mapped;
 
@@ -616,6 +618,39 @@ namespace TextComposerLib
                 string.IsNullOrEmpty(text)
                 ? new [] { string.Empty }
                 : text.Split(LineSplitArray, StringSplitOptions.None);
+        }
+
+        public static string RemoveEmptyLines(this string text)
+        {
+            return text
+                .SplitLines()
+                .Where(line => !line.IsNullOrWhiteSpace())
+                .Concatenate(Environment.NewLine);
+        }
+        
+        public static string RemoveRepeatedEmptyLines(this string text)
+        {
+            var lineArray = text.SplitLines();
+            var lineList = new List<string>(lineArray.Length);
+            
+            var isPrevLineEmpty = false;
+            foreach (var line in lineArray)
+            {
+                if (line.IsNullOrWhiteSpace())
+                {
+                    if (isPrevLineEmpty) continue;
+
+                    lineList.Add(line);
+                    isPrevLineEmpty = true;
+                }
+                else
+                {
+                    lineList.Add(line);
+                    isPrevLineEmpty = false;
+                }
+            }
+            
+            return lineList.Concatenate(Environment.NewLine);
         }
 
         /// <summary>

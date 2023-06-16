@@ -1,8 +1,8 @@
 ﻿using System.Collections;
-using GraphicsComposerLib.Rendering.Colors;
 using GraphicsComposerLib.Rendering.Xeogl.Objects;
 using TextComposerLib;
 using TextComposerLib.Code.JavaScript;
+using WebComposerLib.Colors;
 
 namespace GraphicsComposerLib.Rendering.Xeogl.Scenes
 {

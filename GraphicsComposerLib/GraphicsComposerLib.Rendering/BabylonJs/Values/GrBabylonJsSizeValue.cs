@@ -1,69 +1,45 @@
 ﻿namespace GraphicsComposerLib.Rendering.BabylonJs.Values
 {
     public sealed class GrBabylonJsSizeValue :
-        GrBabylonJsValue
+        GrBabylonJsValue<SizeF>
     {
+        internal static GrBabylonJsSizeValue Create(SizeF value)
+        {
+            return new GrBabylonJsSizeValue(value);
+        }
+
+
         public static implicit operator GrBabylonJsSizeValue(string valueText)
         {
             return new GrBabylonJsSizeValue(valueText);
         }
 
-        public static implicit operator GrBabylonJsSizeValue(int size)
+        public static implicit operator GrBabylonJsSizeValue(SizeF value)
         {
-            return new GrBabylonJsSizeValue(size);
-        }
-    
-
-        public static GrBabylonJsSizeValue Create(int size)
-        {
-            return new GrBabylonJsSizeValue(size);
+            return new GrBabylonJsSizeValue(value);
         }
 
-        public static GrBabylonJsSizeValue Create(int width, int height)
-        {
-            return new GrBabylonJsSizeValue(width, height);
-        }
-
-    
-        public override bool IsEmpty 
-            => false;
-
+        
         public bool IsSquare 
-            => Width == Height;
-
-        public int Width { get; }
-
-        public int Height { get; }
+            => !IsEmpty && Value.Width == Value.Height;
 
 
         private GrBabylonJsSizeValue(string valueText)
             : base(valueText)
         {
         }
-    
-        private GrBabylonJsSizeValue(int size)
-            : base(string.Empty)
-        {
-            Width = size;
-            Height = size;
-        }
 
-        private GrBabylonJsSizeValue(int width, int height)
-            : base(string.Empty)
+        private GrBabylonJsSizeValue(SizeF value)
+            : base(value)
         {
-            Width = width;
-            Height = height;
         }
 
 
         public override string GetCode()
         {
-            if (string.IsNullOrEmpty(ValueText))
-                return IsSquare 
-                    ? Width.GetBabylonJsCode() 
-                    : $"{{ width: {Width.GetBabylonJsCode()}, height: {Height.GetBabylonJsCode()} }}";
-
-            return ValueText;
+            return string.IsNullOrEmpty(ValueText) 
+                ? Value.GetBabylonJsCode() 
+                : ValueText;
         }
     }
 }

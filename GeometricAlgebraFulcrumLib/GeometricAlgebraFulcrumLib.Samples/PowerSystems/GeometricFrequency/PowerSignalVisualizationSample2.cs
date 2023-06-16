@@ -4,11 +4,10 @@ using System.Linq;
 using DataStructuresLib.Basic;
 using GeometricAlgebraFulcrumLib.Applications.PowerSystems;
 using GeometricAlgebraFulcrumLib.MathBase;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
-using GeometricAlgebraFulcrumLib.MathBase.Differential.Functions;
-using GeometricAlgebraFulcrumLib.MathBase.Differential.Functions.Interpolators;
-using GeometricAlgebraFulcrumLib.MathBase.Parametric.Curves.CatmullRom;
-using GeometricAlgebraFulcrumLib.MathBase.Signals;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Differential.Functions.Interpolators;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra.Composers;
 using OfficeOpenXml;
 
 namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
@@ -137,7 +136,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
                     .MapItems(p =>
                         p.Select(d => d * magnitudeFactor)
                             .CreateSignal(samplingRate)
-                            .CreateCatmullRomSplineInterpolator(
+                            .GetCatmullRomInterpolator(
                                 new DfCatmullRomSplineSignalInterpolatorOptions
                                 {
                                     BezierDegree = bezierDegree,
@@ -199,7 +198,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
                     .MapItems(p =>
                         p.Select(d => d * magnitudeFactor)
                             .CreateSignal(samplingRate)
-                            .CreateCatmullRomSplineInterpolator(
+                            .GetCatmullRomInterpolator(
                                 new DfCatmullRomSplineSignalInterpolatorOptions
                                 {
                                     BezierDegree = bezierDegree,
@@ -245,7 +244,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             var visualizer = new PowerSignalVisualizer3D(cameraAlphaValues, cameraBetaValues, powerSignal)
             {
                 Title = "EMTP Phase Voltages",
-                WorkingPath = @"D:\Projects\Study\Babylon.js\",
+                WorkingPath = @"D:\Projects\Study\Web\Babylon.js\",
                 HostUrl = "http://localhost:5200/",
                 //LiveReloadWebServer "D:/Projects/Study/Babylon.js/" --port 5200 --UseSsl False --LiveReloadEnabled False --OpenBrowser True
 

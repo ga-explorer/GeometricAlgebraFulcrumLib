@@ -1,7 +1,6 @@
 ﻿using System.Numerics;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Matrices;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D
 {
@@ -10,11 +9,11 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D
     {
         bool SwapsHandedness { get; }
         
-        Float64Tuple3D MapPoint(IFloat64Tuple3D point);
+        Float64Vector3D MapPoint(IFloat64Tuple3D point);
 
-        Float64Tuple3D MapVector(IFloat64Tuple3D vector);
+        Float64Vector3D MapVector(IFloat64Tuple3D vector);
 
-        Float64Tuple3D MapNormal(IFloat64Tuple3D normal);
+        Float64Vector3D MapNormal(IFloat64Tuple3D normal);
 
         SquareMatrix4 GetSquareMatrix4();
 

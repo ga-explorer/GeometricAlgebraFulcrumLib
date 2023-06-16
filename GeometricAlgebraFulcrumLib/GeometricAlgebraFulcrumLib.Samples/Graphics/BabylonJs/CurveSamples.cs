@@ -5,25 +5,26 @@ using System.IO;
 using System.Linq;
 using DataStructuresLib.Extensions;
 using GeometricAlgebraFulcrumLib.Applications.Graphics;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
-using GeometricAlgebraFulcrumLib.MathBase.Parametric.Curves;
-using GeometricAlgebraFulcrumLib.MathBase.Parametric.Curves.Circles;
-using GeometricAlgebraFulcrumLib.MathBase.Parametric.Curves.Lines;
-using GeometricAlgebraFulcrumLib.MathBase.Parametric.Curves.Roulettes;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Curves;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Curves.Circles;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Curves.Lines;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Curves.Roulettes;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 using GraphicsComposerLib.Rendering.BabylonJs;
 using GraphicsComposerLib.Rendering.BabylonJs.Cameras;
 using GraphicsComposerLib.Rendering.BabylonJs.Constants;
+using GraphicsComposerLib.Rendering.Visuals.Space3D.Basic;
 using GraphicsComposerLib.Rendering.Visuals.Space3D.Grids;
-using GraphicsComposerLib.Rendering.Visuals.Space3D.Groups;
+using GraphicsComposerLib.Rendering.Visuals.Space3D.Styles;
 using Color = SixLabors.ImageSharp.Color;
 
 namespace GeometricAlgebraFulcrumLib.Samples.Graphics.BabylonJs
 {
     public static class CurveSamples
     {
-        private const string WorkingPath = @"D:\Projects\Study\Babylon.js";
+        private const string WorkingPath = @"D:\Projects\Study\Web\Babylon.js";
 
 
         public static void Example1()
@@ -75,7 +76,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.BabylonJs
                     UnitCountX = gridUnitCount,
                     UnitCountZ = gridUnitCount,
                     UnitSize = 1,
-                    Origin = new Float64Tuple3D(-0.5d * gridUnitCount, 0, -0.5d * gridUnitCount),
+                    Origin = Float64Vector3D.Create(-0.5d * gridUnitCount, 0, -0.5d * gridUnitCount),
                     Opacity = 0.25,
                     BaseSquareColor = Color.LightYellow,
                     BaseLineColor = Color.BurlyWood,
@@ -90,31 +91,33 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.BabylonJs
             );
 
             // Add reference unit axis frame
-            var axisFrameOriginMaterial = scene.AddSimpleMaterial("axisFrameOriginMaterial", Color.DarkGray);
-            var axisFrameXMaterial = scene.AddSimpleMaterial("axisFrameXMaterial", Color.Red);
-            var axisFrameYMaterial = scene.AddSimpleMaterial("axisFrameYMaterial", Color.Green);
-            var axisFrameZMaterial = scene.AddSimpleMaterial("axisFrameZMaterial", Color.Blue);
-
-            var frameOrigin = Float64Tuple3D.Zero;
             sceneComposer.AddElement(
-                new GrVisualFrame3D("axisFrame")
-                {
-                    Origin = frameOrigin,
-
-                    Direction1 = Float64Tuple3D.E1,
-                    Direction2 = Float64Tuple3D.E2,
-                    Direction3 = Float64Tuple3D.E3,
-
-                    Style = new GrVisualFrameStyle3D
+                GrVisualFrame3D.CreateStatic(
+                    "axisFrame",
+                    new GrVisualFrameStyle3D
                     {
-                        OriginThickness = 0.075,
-                        DirectionThickness = 0.035,
-                        OriginMaterial = axisFrameOriginMaterial,
-                        DirectionMaterial1 = axisFrameXMaterial,
-                        DirectionMaterial2 = axisFrameYMaterial,
-                        DirectionMaterial3 = axisFrameZMaterial
-                    }
-                }
+                        OriginStyle = 
+                            scene
+                                .AddSimpleMaterial("axisFrameOriginMaterial", Color.DarkGray)
+                                .CreateThickSurfaceStyle(0.075),
+
+                        Direction1Style = 
+                            scene
+                                .AddSimpleMaterial("axisFrameXMaterial", Color.Red)
+                                .CreateTubeCurveStyle(0.035),
+
+                        Direction2Style = 
+                            scene
+                                .AddSimpleMaterial("axisFrameYMaterial", Color.Green)
+                                .CreateTubeCurveStyle(0.035),
+
+                        Direction3Style = 
+                            scene
+                                .AddSimpleMaterial("axisFrameZMaterial", Color.Blue)
+                                .CreateTubeCurveStyle(0.035)
+                    },
+                    Float64Vector3D.Zero
+                )
             );
 
             const double tMin = 0d;
@@ -124,13 +127,13 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.BabylonJs
             const int movingCurveFactor = 3;
         
             var fixedCurve = 
-                new ParametricCircleZx3D(fixedCurveFactor, false).GetRotatedNormalsCurve(
+                new ParametricCircleZx3D(fixedCurveFactor, 1).GetRotatedNormalsCurve(
                     t => Float64PlanarAngle.Angle45
                     //t => t.CosWave(0, 1 * Math.PI, 3) //-0.25 * Math.PI //t * 2 * Math.PI
                 );
 
             var movingCurve =
-                new ParametricCircleZx3D(movingCurveFactor, false).GetRotatedNormalsCurve(
+                new ParametricCircleZx3D(movingCurveFactor, 1).GetRotatedNormalsCurve(
                     t => 0
                     //t => t.CosWave(-0.75 * Math.PI, 0.25 * Math.PI, 3) //-0.25 * Math.PI //t * 2 * Math.PI
                 );
@@ -141,7 +144,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.BabylonJs
             var curve = new RouletteCurve3D(
                 fixedCurve, 
                 movingCurve,
-                movingCurve.GetPoint(movingCurve.ParameterValueMin),
+                movingCurve.GetPoint(movingCurve.ParameterRange.MinValue),
                 maxLength
             );
 
@@ -206,7 +209,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.BabylonJs
             const int movingCurveFactor = 3;
 
             var fixedCurve =
-                new ParametricCircleZx3D(fixedCurveFactor, false).GetRotatedNormalsCurve(
+                new ParametricCircleZx3D(fixedCurveFactor, 1).GetRotatedNormalsCurve(
                     t => 45.DegreesToAngle()
                 );
 
@@ -242,7 +245,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.BabylonJs
             var movingCurve =
                 new ParametricCircleZx3D(
                     radius,
-                    false
+                    1
                 ).GetRotatedNormalsCurve(
                     t => 
                         //-PlanarAngle.Angle45
@@ -255,15 +258,15 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.BabylonJs
                 movingCurveFactor.Lcm(fixedCurveFactor) / 
                 movingCurveFactor;
 
-            var t1 = 0d.Lerp(movingCurve.ParameterValueMin, movingCurve.ParameterValueMax);
-            var t2 = (1d / 3d).Lerp(movingCurve.ParameterValueMin, movingCurve.ParameterValueMax);
-            var t3 = (2d / 3d).Lerp(movingCurve.ParameterValueMin, movingCurve.ParameterValueMax);
+            var t1 = 0d.Lerp(movingCurve.ParameterRange);
+            var t2 = (1d / 3d).Lerp(movingCurve.ParameterRange);
+            var t3 = (2d / 3d).Lerp(movingCurve.ParameterRange);
 
             var generatorPointList = new List<RouletteTracerVisualizer3D.GeneratorPoint>
             {
-                new(new Float64Tuple3D(0, -1, 0), Color.Red),
-                new(new Float64Tuple3D(radius / 2, 0, 0), Color.Green),
-                new(new Float64Tuple3D(radius, 1, 0), Color.Blue),
+                new(Float64Vector3D.Create(0, -1, 0), Color.Red),
+                new(Float64Vector3D.Create(radius / 2, 0, 0), Color.Green),
+                new(Float64Vector3D.Create(radius, 1, 0), Color.Blue),
                 //new(movingCurve.GetPoint(t1), Color.Red),
                 //new(movingCurve.GetPoint(t2), Color.Green),
                 //new(movingCurve.GetPoint(t3), Color.Blue),
@@ -294,7 +297,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.BabylonJs
             )
             {
                 Title = "Roulette Curve in 3D",
-                WorkingPath = @"D:\Projects\Study\Babylon.js\",
+                WorkingPath = @"D:\Projects\Study\Web\Babylon.js\",
                 HostUrl = "http://localhost:5200/", 
                 //LiveReloadWebServer "D:/Projects/Study/Babylon.js/" --port 5200 --UseSsl False --LiveReloadEnabled False --OpenBrowser True
             
@@ -316,7 +319,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.BabylonJs
             const int movingCurveFactor = 3;
 
             var fixedCurve =
-                new ParametricCircleZx3D(fixedCurveFactor, false).GetRotatedNormalsCurve(
+                new ParametricCircleZx3D(fixedCurveFactor, 1).GetRotatedNormalsCurve(
                     t => 0d.DegreesToAngle()
                 );
         
@@ -327,7 +330,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.BabylonJs
             var movingCurve =
                 new ParametricCircleZx3D(
                     radius,
-                    false
+                    1
                 ).GetRotatedNormalsCurve(
                     t =>
                         -45.DegreesToAngle()
@@ -340,8 +343,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.BabylonJs
                 movingCurveFactor;
 
             var generatorPointCurve = new ArcLengthLineSegment3D(
-                new Float64Tuple3D(-radius, -radius, -radius),
-                new Float64Tuple3D(radius, radius, radius)
+                Float64Vector3D.Create(-radius, -radius, -radius),
+                Float64Vector3D.Create(radius, radius, radius)
             ).GetMappedParameterCurveCosWave(2);
 
             var generatorPoint = 
@@ -383,7 +386,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.BabylonJs
             )
             {
                 Title = "Parametric Roulette Curve in 3D-3",
-                WorkingPath = @"D:\Projects\Study\Babylon.js\",
+                WorkingPath = @"D:\Projects\Study\Web\Babylon.js\",
                 HostUrl = "http://localhost:5200/", 
                 //LiveReloadWebServer "D:/Projects/Study/Babylon.js/" --port 5200 --UseSsl False --LiveReloadEnabled False --OpenBrowser True
             

@@ -24,25 +24,13 @@
         private int _maxIndex;
 
 
-        public override int Count
-        {
-            get { return MaxIndex - MinIndex + 1; }
-        }
+        public override int Count => MaxIndex - MinIndex + 1;
 
-        public override int MinIndex
-        {
-            get { return _minIndex; }
-        }
+        public override int MinIndex => _minIndex;
 
-        public override int MaxIndex
-        {
-            get { return _maxIndex; }
-        }
+        public override int MaxIndex => _maxIndex;
 
-        public T this[int index]
-        {
-            get { return DefaultValue; }
-        }
+        public T this[int index] => DefaultValue;
 
 
         private FcConstant(T defaultValue, int minIndex, int maxIndex)

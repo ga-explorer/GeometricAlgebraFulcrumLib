@@ -2,12 +2,12 @@
 using System.Drawing;
 using System.Linq;
 using GeometricAlgebraFulcrumLib.Geometry.Graphics.Space2D;
-using GeometricAlgebraFulcrumLib.MathBase.Borders;
-using GeometricAlgebraFulcrumLib.MathBase.Borders.Space2D.Immutable;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Frames;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D.Immutable;
 using GraphicsComposerLib.Rendering.Svg.DrawingBoard;
 
 namespace GeometricAlgebraFulcrumLib.Samples.VoronoiDiagrams
@@ -58,7 +58,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.VoronoiDiagrams
 
             // Step 4: compute coordinates of regular simplex vertices
             var simplexFrame =
-                boundingSphere.Center.ToRGaVector()
+                boundingSphere.Center.ToRGaFloat64Vector()
                     .CreateFixedFrameOfSimplex(
                         n,
                         boundingSphere.Radius * Math.Sqrt(n * (n + 1))

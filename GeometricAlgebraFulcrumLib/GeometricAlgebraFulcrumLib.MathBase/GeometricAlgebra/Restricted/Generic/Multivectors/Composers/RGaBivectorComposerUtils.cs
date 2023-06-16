@@ -2,9 +2,9 @@
 using DataStructuresLib.Basic;
 using DataStructuresLib.Dictionary;
 using DataStructuresLib.IndexSets;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Euclidean3D;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers
 {
@@ -270,7 +270,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaBivector<T> CreateBivector3D<T>(this RGaProcessor<T> processor, EGa3Bivector bivector)
+        public static RGaBivector<T> CreateBivector3D<T>(this RGaProcessor<T> processor, Float64Bivector3D bivector)
         {
             return processor
                 .CreateComposer()
@@ -281,7 +281,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaBivector<T> ToBivector<T>(this EGa3Bivector bivector, RGaProcessor<T> processor)
+        public static RGaBivector<T> ToBivector<T>(this Float64Bivector3D bivector, RGaProcessor<T> processor)
         {
             return processor
                 .CreateComposer()

@@ -1,13 +1,13 @@
 ﻿using System;
 
 using System.Linq;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.Borders;
+using GeometricAlgebraFulcrumLib.MathBase.Borders.Space2D.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Borders.Space2D.Mutable;
+using GeometricAlgebraFulcrumLib.MathBase.Random;
 using GraphicsComposerLib.Rendering.Svg.DrawingBoard;
-using NumericalGeometryLib.BasicMath.Tuples;
-using NumericalGeometryLib.Borders;
-using NumericalGeometryLib.Borders.Space2D.Immutable;
-using NumericalGeometryLib.Borders.Space2D.Mutable;
 using NumericalGeometryLib.Computers.Voronoi;
-using NumericalGeometryLib.Random;
 using SixLabors.ImageSharp;
 
 namespace GraphicsComposerLib.Samples.Computers.Voronoi
@@ -25,7 +25,7 @@ namespace GraphicsComposerLib.Samples.Computers.Voronoi
                     .GetSubdivisions(10, 10)
                     .Cast<BoundingBox2D>()
                     .Select(bb => randGen.GetPointInside(bb))
-                    .Cast<ITuple2D>()
+                    .Cast<IFloat64Tuple2D>()
                     .ToArray();
 
             var computer = new VoronoiComputer2D();
@@ -35,7 +35,7 @@ namespace GraphicsComposerLib.Samples.Computers.Voronoi
 
             var drawingBoard = 
                 MutableBoundingBox2D
-                    .CreateFromPoints(triangulation.Points.Cast<ITuple2D>())
+                    .CreateFromPoints(triangulation.Points.Cast<IFloat64Tuple2D>())
                     .CreateDrawingBoard(2);
 
             drawingBoard
@@ -66,7 +66,7 @@ namespace GraphicsComposerLib.Samples.Computers.Voronoi
                 .SetDefaultPen(1, Color.Black)
                 .SetFill(Color.DarkOliveGreen)
                 .DrawCircleMarkers(
-                    triangulation.Points.DataPoints.Cast<ITuple2D>(), 
+                    triangulation.Points.DataPoints.Cast<IFloat64Tuple2D>(), 
                     2
                 );
 

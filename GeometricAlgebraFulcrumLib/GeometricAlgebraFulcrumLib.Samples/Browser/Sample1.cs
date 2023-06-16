@@ -343,7 +343,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Browser
                 @"c = \\pm\\sqrt{a^2 + b^2}"
             );
 
-            const string workingPath = @"D:\Projects\Study\KaTeX\";
+            const string workingPath = @"D:\Projects\Study\Web\KaTeX\";
 
             var filePath = Path.Combine(workingPath, @"katex-example-1.html");
 

@@ -17,6 +17,11 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Values
 
 
         public abstract string GetCode();
+
+        public override string ToString()
+        {
+            return GetCode();
+        }
     }
 
     public abstract class GrBabylonJsValue<T> :

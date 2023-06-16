@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using GeometricAlgebraFulcrumLib.MathBase.BasicShapes;
-using GeometricAlgebraFulcrumLib.MathBase.Borders.Space2D.Immutable;
-using GeometricAlgebraFulcrumLib.MathBase.Borders.Space2D.Mutable;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D.Mutable;
 
 namespace NumericalGeometryLib.Accelerators.BIH.Space2D
 {
@@ -18,15 +18,9 @@ namespace NumericalGeometryLib.Accelerators.BIH.Space2D
 
         public BoundingBox2D BoundingBox { get; }
 
-        public int Count
-        {
-            get { return RootNode.Count; }
-        }
+        public int Count => RootNode.Count;
 
-        public T this[int index]
-        {
-            get { return RootNode[index]; }
-        }
+        public T this[int index] => RootNode[index];
 
         public bool IntersectionTestsEnabled { get; set; } = true;
 

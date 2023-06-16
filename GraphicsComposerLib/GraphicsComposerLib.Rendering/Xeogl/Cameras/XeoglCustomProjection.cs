@@ -1,4 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Matrices;
+﻿using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices;
 using GraphicsComposerLib.Rendering.Xeogl.Constants;
 
 namespace GraphicsComposerLib.Rendering.Xeogl.Cameras

@@ -1,5 +1,7 @@
 ﻿using DataStructuresLib.Basic;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D;
 using GraphicsComposerLib.Rendering.BabylonJs.Values;
+using System.Text;
 using TextComposerLib;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
@@ -37,6 +39,8 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
             public GrBabylonJsInt32Value? AlphaIndex { get; set; } //= 0;
 
             public GrBabylonJsBooleanValue? ShowBoundingBox { get; set; }
+            
+            public GrBabylonJsFloat32Value? Visibility { get; set; }
 
             public GrBabylonJsBooleanValue? IsVisible { get; set; }
 
@@ -65,6 +69,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
                 yield return OverlayAlpha.GetNameValueCodePair("overlayAlpha");
                 yield return AlphaIndex.GetNameValueCodePair("alphaIndex");
                 yield return ShowBoundingBox.GetNameValueCodePair("showBoundingBox");
+                yield return Visibility.GetNameValueCodePair("visibility");
                 yield return IsVisible.GetNameValueCodePair("isVisible");
                 yield return IsPickable.GetNameValueCodePair("isPickable");
                 yield return IsNearPickable.GetNameValueCodePair("isNearPickable");
@@ -83,7 +88,10 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
 
         public override GrBabylonJsObjectProperties? ObjectProperties 
             => Properties;
-    
+        
+        public IAffineMap3D PreTransformMap { get; set; }
+            = IdentityMap3D.DefaultMap;
+
 
         protected GrBabylonJsMesh(string constName) 
             : base(constName)
@@ -111,5 +119,37 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
             if (ParentScene.IsNullOrEmpty()) yield break;
             yield return ParentScene.Value.ConstName;
         }
+        
+        public override string GetCode()
+        {
+            var composer = new StringBuilder();
+
+            var constructorCode = GetConstructorCode();
+            var propertiesCode = GetPropertiesCode();
+            
+            if (!string.IsNullOrEmpty(ConstName))
+            {
+                var declarationKeyword = UseLetDeclaration ? "let" : "const";
+
+                composer.Append($"{declarationKeyword} {ConstName} = ");
+            }
+
+            composer
+                .AppendLine(constructorCode)
+                .AppendLine(propertiesCode);
+
+            if (!string.IsNullOrEmpty(ConstName) && PreTransformMap is not IdentityMap3D)
+            {
+                var matrixCode = 
+                    PreTransformMap.GetBabylonJsMatrixCode();
+
+                composer.AppendLine(
+                    $"{ConstName}.setPreTransformMatrix({matrixCode});"
+                );
+            }
+
+            return composer.ToString();
+        }
+
     }
 }

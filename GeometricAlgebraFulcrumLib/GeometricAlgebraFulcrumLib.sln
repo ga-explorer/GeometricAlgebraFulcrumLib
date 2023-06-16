@@ -25,13 +25,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NumericalGeometryLib", "..\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeometricAlgebraFulcrumLib.Mathematica", "GeometricAlgebraFulcrumLib.Mathematica\GeometricAlgebraFulcrumLib.Mathematica.csproj", "{EAB41ADF-F777-43E9-9222-1E1117B5AB54}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphicsComposerLib.Geometry", "..\GraphicsComposerLib\GraphicsComposerLib.Geometry\GraphicsComposerLib.Geometry.csproj", "{68334EC8-4473-4DBB-91C2-F45308C750A3}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeometricAlgebraFulcrumLib.Applications", "GeometricAlgebraFulcrumLib.Applications\GeometricAlgebraFulcrumLib.Applications.csproj", "{3865CF02-60BF-47EC-83C2-4867AFFF0462}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphicsComposerLib.Rendering", "..\GraphicsComposerLib\GraphicsComposerLib.Rendering\GraphicsComposerLib.Rendering.csproj", "{82F98AC2-7483-42F8-87F5-4E33BF4B06EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeometricAlgebraFulcrumLib.MathBase", "GeometricAlgebraFulcrumLib.MathBase\GeometricAlgebraFulcrumLib.MathBase.csproj", "{07642D3F-1C3E-4E57-B222-22D08C4D9F97}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeometricAlgebraFulcrumLib.MathBase", "GeometricAlgebraFulcrumLib.MathBase\GeometricAlgebraFulcrumLib.MathBase.csproj", "{07642D3F-1C3E-4E57-B222-22D08C4D9F97}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebComposerLib", "..\WebComposerLib\WebComposerLib\WebComposerLib.csproj", "{E6CC664A-9B97-46A6-AC66-4772ACC5DF9A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -175,18 +175,6 @@ Global
 		{EAB41ADF-F777-43E9-9222-1E1117B5AB54}.Release|ARM32.Build.0 = Release|Any CPU
 		{EAB41ADF-F777-43E9-9222-1E1117B5AB54}.Release|x64.ActiveCfg = Release|x64
 		{EAB41ADF-F777-43E9-9222-1E1117B5AB54}.Release|x64.Build.0 = Release|x64
-		{68334EC8-4473-4DBB-91C2-F45308C750A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{68334EC8-4473-4DBB-91C2-F45308C750A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{68334EC8-4473-4DBB-91C2-F45308C750A3}.Debug|ARM32.ActiveCfg = Debug|Any CPU
-		{68334EC8-4473-4DBB-91C2-F45308C750A3}.Debug|ARM32.Build.0 = Debug|Any CPU
-		{68334EC8-4473-4DBB-91C2-F45308C750A3}.Debug|x64.ActiveCfg = Debug|x64
-		{68334EC8-4473-4DBB-91C2-F45308C750A3}.Debug|x64.Build.0 = Debug|x64
-		{68334EC8-4473-4DBB-91C2-F45308C750A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{68334EC8-4473-4DBB-91C2-F45308C750A3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{68334EC8-4473-4DBB-91C2-F45308C750A3}.Release|ARM32.ActiveCfg = Release|Any CPU
-		{68334EC8-4473-4DBB-91C2-F45308C750A3}.Release|ARM32.Build.0 = Release|Any CPU
-		{68334EC8-4473-4DBB-91C2-F45308C750A3}.Release|x64.ActiveCfg = Release|x64
-		{68334EC8-4473-4DBB-91C2-F45308C750A3}.Release|x64.Build.0 = Release|x64
 		{3865CF02-60BF-47EC-83C2-4867AFFF0462}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3865CF02-60BF-47EC-83C2-4867AFFF0462}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3865CF02-60BF-47EC-83C2-4867AFFF0462}.Debug|ARM32.ActiveCfg = Debug|Any CPU
@@ -215,14 +203,26 @@ Global
 		{07642D3F-1C3E-4E57-B222-22D08C4D9F97}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{07642D3F-1C3E-4E57-B222-22D08C4D9F97}.Debug|ARM32.ActiveCfg = Debug|Any CPU
 		{07642D3F-1C3E-4E57-B222-22D08C4D9F97}.Debug|ARM32.Build.0 = Debug|Any CPU
-		{07642D3F-1C3E-4E57-B222-22D08C4D9F97}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{07642D3F-1C3E-4E57-B222-22D08C4D9F97}.Debug|x64.Build.0 = Debug|Any CPU
+		{07642D3F-1C3E-4E57-B222-22D08C4D9F97}.Debug|x64.ActiveCfg = Debug|x64
+		{07642D3F-1C3E-4E57-B222-22D08C4D9F97}.Debug|x64.Build.0 = Debug|x64
 		{07642D3F-1C3E-4E57-B222-22D08C4D9F97}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{07642D3F-1C3E-4E57-B222-22D08C4D9F97}.Release|Any CPU.Build.0 = Release|Any CPU
 		{07642D3F-1C3E-4E57-B222-22D08C4D9F97}.Release|ARM32.ActiveCfg = Release|Any CPU
 		{07642D3F-1C3E-4E57-B222-22D08C4D9F97}.Release|ARM32.Build.0 = Release|Any CPU
 		{07642D3F-1C3E-4E57-B222-22D08C4D9F97}.Release|x64.ActiveCfg = Release|Any CPU
 		{07642D3F-1C3E-4E57-B222-22D08C4D9F97}.Release|x64.Build.0 = Release|Any CPU
+		{E6CC664A-9B97-46A6-AC66-4772ACC5DF9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6CC664A-9B97-46A6-AC66-4772ACC5DF9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6CC664A-9B97-46A6-AC66-4772ACC5DF9A}.Debug|ARM32.ActiveCfg = Debug|Any CPU
+		{E6CC664A-9B97-46A6-AC66-4772ACC5DF9A}.Debug|ARM32.Build.0 = Debug|Any CPU
+		{E6CC664A-9B97-46A6-AC66-4772ACC5DF9A}.Debug|x64.ActiveCfg = Debug|x64
+		{E6CC664A-9B97-46A6-AC66-4772ACC5DF9A}.Debug|x64.Build.0 = Debug|x64
+		{E6CC664A-9B97-46A6-AC66-4772ACC5DF9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6CC664A-9B97-46A6-AC66-4772ACC5DF9A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6CC664A-9B97-46A6-AC66-4772ACC5DF9A}.Release|ARM32.ActiveCfg = Release|Any CPU
+		{E6CC664A-9B97-46A6-AC66-4772ACC5DF9A}.Release|ARM32.Build.0 = Release|Any CPU
+		{E6CC664A-9B97-46A6-AC66-4772ACC5DF9A}.Release|x64.ActiveCfg = Release|Any CPU
+		{E6CC664A-9B97-46A6-AC66-4772ACC5DF9A}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

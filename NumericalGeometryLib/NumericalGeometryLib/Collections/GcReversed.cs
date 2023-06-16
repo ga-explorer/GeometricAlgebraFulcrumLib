@@ -10,10 +10,7 @@
 
         public GenerativeCollection<T> BaseCollection { get; set; }
 
-        public T this[int index]
-        {
-            get { return BaseCollection == null ? DefaultValue : BaseCollection.GetItem(-index); }
-        }
+        public T this[int index] => BaseCollection == null ? DefaultValue : BaseCollection.GetItem(-index);
 
 
         private GcReversed(GenerativeCollection<T> baseCollection)

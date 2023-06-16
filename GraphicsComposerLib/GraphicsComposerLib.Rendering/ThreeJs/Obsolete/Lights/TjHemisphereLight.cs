@@ -1,5 +1,5 @@
-﻿using GraphicsComposerLib.Rendering.Colors;
-using TextComposerLib.Code.JavaScript;
+﻿using TextComposerLib.Code.JavaScript;
+using WebComposerLib.Colors;
 
 namespace GraphicsComposerLib.Rendering.ThreeJs.Obsolete.Lights
 {

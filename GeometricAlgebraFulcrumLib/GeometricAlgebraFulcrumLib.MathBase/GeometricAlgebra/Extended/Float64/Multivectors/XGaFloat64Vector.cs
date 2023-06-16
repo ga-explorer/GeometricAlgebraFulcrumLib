@@ -6,6 +6,8 @@ using DataStructuresLib.IndexSets;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Basis;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Processors;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.SpaceND;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 using TextComposerLib.Text;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Multivectors
@@ -52,6 +54,19 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.
 
         public override IEnumerable<KeyValuePair<IIndexSet, double>> IdScalarPairs
             => _idScalarDictionary;
+        
+        public override IEnumerable<KeyValuePair<XGaBasisBlade, double>> BasisScalarPairs
+        {
+            get
+            {
+                return _idScalarDictionary.Select(p =>
+                    new KeyValuePair<XGaBasisBlade, double>(
+                        Metric.CreateBasisBlade(p.Key),
+                        p.Value
+                    )
+                );
+            }
+        }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -212,20 +227,36 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.
             return false;
         }
 
-
-        public override IEnumerable<KeyValuePair<XGaBasisBlade, double>> BasisScalarPairs
+        public IXGaSignedBasisBlade GetDominantBasisBlade()
         {
-            get
+            if (_idScalarDictionary.Count == 0)
+                return new XGaBasisBlade(Metric, EmptyIndexSet.Instance);
+
+            IIndexSet dominantId = EmptyIndexSet.Instance;
+            var dominantScalar = 0d;
+
+            foreach (var (id, scalar) in _idScalarDictionary)
             {
-                return _idScalarDictionary.Select(p =>
-                    new KeyValuePair<XGaBasisBlade, double>(
-                        Metric.CreateBasisBlade(p.Key),
-                        p.Value
-                    )
-                );
+                var absScalar = scalar.Abs();
+
+                if (absScalar <= dominantScalar) 
+                    continue;
+
+                //if (absScalar == dominantScalar && id.Grade() <= dominantId.Grade()) 
+                //    continue;
+
+                dominantId = id;
+                dominantScalar = absScalar;
             }
+
+            return new XGaBasisBlade(Metric, dominantId);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public XGaFloat64Vector GetNormalVector()
+        {
+            return this.VectorToLinVector().GetUnitNormal().ToXGaFloat64Vector(Processor);
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override XGaFloat64Multivector Simplify()

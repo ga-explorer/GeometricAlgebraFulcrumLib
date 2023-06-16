@@ -1,13 +1,14 @@
 ﻿using DataStructuresLib.Files;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 using GraphicsComposerLib.Rendering.BabylonJs.Cameras;
 using GraphicsComposerLib.Rendering.BabylonJs.Constants;
-using GraphicsComposerLib.Rendering.Images;
+using GraphicsComposerLib.Rendering.Visuals.Space3D.Basic;
 using GraphicsComposerLib.Rendering.Visuals.Space3D.Grids;
-using GraphicsComposerLib.Rendering.Visuals.Space3D.Groups;
+using GraphicsComposerLib.Rendering.Visuals.Space3D.Styles;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using SixLabors.ImageSharp.Formats.Gif;
+using WebComposerLib.Html.Media;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs
 {
@@ -32,7 +33,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
             if (height % 2 != 0 || width % 2 != 0)
                 throw new ArgumentException("FFMpeg yuv420p encoding requires the width and height to be a multiple of 2!");
         }
-    
+        
 
         public string Title { get; init; }
 
@@ -56,11 +57,14 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
 
         public int FrameIndex { get; private set; } = -1;
 
-        public double LaTeXScalingFactor { get; set; }
-            = 1 / 75d;
+        public double LaTeXScalingFactor
+        {
+            get => HtmlComposer.LaTeXScalingFactor; 
+            set => HtmlComposer.LaTeXScalingFactor = value;
+        }
 
-        public static GrImageBase64StringCache ImageCache { get; }
-            = new GrImageBase64StringCache();
+        public WclHtmlImageDataUrlCache ImageCache
+            => HtmlComposer.ImageCache;
 
         public int CanvasWidth { get; set; } = 1280;
 
@@ -72,7 +76,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
 
         public int CameraRotationCount { get; set; } = 1;
 
-        public Float64Tuple3D AxesOrigin { get; set; } = Float64Tuple3D.Zero;
+        public Float64Vector3D AxesOrigin { get; set; } = Float64Vector3D.Zero;
 
         public bool ShowGrid { get; set; } = true;
 
@@ -160,7 +164,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
                     UnitCountX = GridUnitCount,
                     UnitCountZ = GridUnitCount,
                     UnitSize = 1,
-                    Origin = new Float64Tuple3D(-0.5d * GridUnitCount, 0, -0.5d * GridUnitCount),
+                    Origin = Float64Vector3D.Create(-0.5d * GridUnitCount, 0, -0.5d * GridUnitCount),
                     Opacity = 0.25,
                     BaseSquareColor = Color.LightYellow,
                     BaseLineColor = Color.BurlyWood,
@@ -180,30 +184,18 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
             var scene = MainSceneComposer.SceneObject;
 
             // Add reference unit axis frame
-            var axisFrameOriginMaterial = scene.AddSimpleMaterial("axisFrameOriginMaterial", Color.DarkGray);
-            var axisFrameXMaterial = scene.AddSimpleMaterial("axisFrameXMaterial", Color.DarkRed);
-            var axisFrameYMaterial = scene.AddSimpleMaterial("axisFrameYMaterial", Color.DarkGreen);
-            var axisFrameZMaterial = scene.AddSimpleMaterial("axisFrameZMaterial", Color.DarkBlue);
-
             MainSceneComposer.AddElement(
-                new GrVisualFrame3D("axisFrame")
-                {
-                    Origin = AxesOrigin,
-
-                    Direction1 = Float64Tuple3D.E1,
-                    Direction2 = Float64Tuple3D.E2,
-                    Direction3 = Float64Tuple3D.E3,
-
-                    Style = new GrVisualFrameStyle3D
+                GrVisualFrame3D.CreateStatic(
+                    "axisFrame",
+                    new GrVisualFrameStyle3D
                     {
-                        OriginThickness = 0.075,
-                        DirectionThickness = 0.035,
-                        OriginMaterial = axisFrameOriginMaterial,
-                        DirectionMaterial1 = axisFrameXMaterial,
-                        DirectionMaterial2 = axisFrameYMaterial,
-                        DirectionMaterial3 = axisFrameZMaterial
-                    }
-                }
+                        OriginStyle = scene.AddSimpleMaterial("axisFrameOriginMaterial", Color.DarkGray).CreateThickSurfaceStyle(0.075),
+                        Direction1Style = scene.AddSimpleMaterial("axisFrameXMaterial", Color.DarkRed).CreateTubeCurveStyle(0.035),
+                        Direction2Style = scene.AddSimpleMaterial("axisFrameYMaterial", Color.DarkGreen).CreateTubeCurveStyle(0.035),
+                        Direction3Style = scene.AddSimpleMaterial("axisFrameZMaterial", Color.DarkBlue).CreateTubeCurveStyle(0.035)
+                    },
+                    AxesOrigin
+                )
             );
         }
 

@@ -1,55 +1,43 @@
 ﻿using System.Collections.Generic;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
-using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Lines;
-using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Lines.Immutable;
-using GeometricAlgebraFulcrumLib.MathBase.Borders.Space1D.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 
 namespace NumericalGeometryLib.Computers
 {
     public sealed class LineTraversalData3D
     {
-        private readonly Stack<BoundingBox1D> _parameterRangeStack
-            = new Stack<BoundingBox1D>();
+        private readonly Stack<Float64Range1D> _parameterRangeStack
+            = new Stack<Float64Range1D>();
 
 
-        public Float64Tuple3D Origin { get; }
+        public Float64Vector3D Origin { get; }
 
-        public Float64Tuple3D Direction { get; }
+        public Float64Vector3D Direction { get; }
 
-        public Float64Tuple3D DirectionInv { get; }
+        public Float64Vector3D DirectionInv { get; }
 
         public int[] DirectionSign { get; }
 
         public double ParameterMinValue { get; private set; }
 
         public double ParameterMaxValue { get; private set; }
+        
+        public Float64Range1D ParameterRange
+            => Float64Range1D.Create(ParameterMinValue, ParameterMaxValue);
 
-        public bool IsLine
-        {
-            get
-            {
-                return double.IsNegativeInfinity(ParameterMinValue) &&
-                       double.IsPositiveInfinity(ParameterMaxValue);
-            }
-        }
+        public bool IsLine 
+            => double.IsNegativeInfinity(ParameterMinValue) &&
+               double.IsPositiveInfinity(ParameterMaxValue);
 
-        public bool IsRay
-        {
-            get
-            {
-                return !double.IsInfinity(ParameterMinValue) &&
-                       double.IsPositiveInfinity(ParameterMaxValue);
-            }
-        }
+        public bool IsRay 
+            => !double.IsInfinity(ParameterMinValue) &&
+               double.IsPositiveInfinity(ParameterMaxValue);
 
-        public bool IsLineSegment
-        {
-            get
-            {
-                return !double.IsInfinity(ParameterMinValue) &&
-                       !double.IsInfinity(ParameterMaxValue);
-            }
-        }
+        public bool IsLineSegment 
+            => !double.IsInfinity(ParameterMinValue) &&
+               !double.IsInfinity(ParameterMaxValue);
 
         internal LineTraversalData3D(ILine3D line)
         {
@@ -75,7 +63,7 @@ namespace NumericalGeometryLib.Computers
         internal LineTraversalData3D StoreParameterRange(double newMinValue, double newMaxValue)
         {
             _parameterRangeStack.Push(
-                new BoundingBox1D(ParameterMinValue, ParameterMaxValue)
+                Float64Range1D.Create(ParameterMinValue, ParameterMaxValue)
             );
 
             ParameterMinValue = newMinValue;
@@ -102,10 +90,6 @@ namespace NumericalGeometryLib.Computers
             return this;
         }
 
-        public BoundingBox1D GetParameterRange()
-        {
-            return new BoundingBox1D(ParameterMinValue, ParameterMaxValue);
-        }
 
         public LineSegment3D GetLineSegment()
         {
@@ -119,22 +103,18 @@ namespace NumericalGeometryLib.Computers
             );
         }
 
-        public Float64Tuple3D GetMinPoint()
+        public Float64Vector3D GetMinPoint()
         {
-            return new Float64Tuple3D(
-                Origin.X + ParameterMinValue * Direction.X,
+            return Float64Vector3D.Create(Origin.X + ParameterMinValue * Direction.X,
                 Origin.Y + ParameterMinValue * Direction.Y,
-                Origin.Z + ParameterMinValue * Direction.Z
-            );
+                Origin.Z + ParameterMinValue * Direction.Z);
         }
 
-        public Float64Tuple3D GetMaxPoint()
+        public Float64Vector3D GetMaxPoint()
         {
-            return new Float64Tuple3D(
-                Origin.X + ParameterMaxValue * Direction.X,
+            return Float64Vector3D.Create(Origin.X + ParameterMaxValue * Direction.X,
                 Origin.Y + ParameterMaxValue * Direction.Y,
-                Origin.Z + ParameterMaxValue * Direction.Z
-            );
+                Origin.Z + ParameterMaxValue * Direction.Z);
         }
     }
 }

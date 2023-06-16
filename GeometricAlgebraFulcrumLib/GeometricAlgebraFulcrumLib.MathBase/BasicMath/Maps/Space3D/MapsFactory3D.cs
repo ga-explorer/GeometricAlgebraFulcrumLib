@@ -1,6 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Constants;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D
 {
@@ -22,53 +21,53 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D
             return new UniformScaleMap3D(scalingFactor);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RotateByAxisAngleMap3D CreateRotateMap3D(this IFloat64Tuple3D normal, Float64PlanarAngle angle)
-        {
-            return RotateByAxisAngleMap3D.Create(normal, angle);
-        }
+        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+        //public static RotateByAxisAngleMap3D CreateRotateMap3D(this IFloat64Tuple3D normal, Float64PlanarAngle angle)
+        //{
+        //    return RotateByAxisAngleMap3D.Create(normal, angle);
+        //}
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RotateByAxisToVectorMap3D CreateRotateMap3D(this Axis3D axis, IFloat64Tuple3D unitVector)
-        {
-            return RotateByAxisToVectorMap3D.Create(axis, unitVector);
-        }
+        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+        //public static RotateByAxisToVectorMap3D CreateRotateMap3D(this Axis3D axis, IFloat64Tuple3D unitVector)
+        //{
+        //    return RotateByAxisToVectorMap3D.Create(axis, unitVector);
+        //}
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RotateByVectorToAxisMap3D CreateRotateMap3D(this IFloat64Tuple3D unitVector, Axis3D axis)
-        {
-            return RotateByVectorToAxisMap3D.Create(unitVector, axis);
-        }
+        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+        //public static RotateByVectorToAxisMap3D CreateRotateMap3D(this IFloat64Tuple3D unitVector, Axis3D axis)
+        //{
+        //    return RotateByVectorToAxisMap3D.Create(unitVector, axis);
+        //}
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RotateByVectorToVectorMap3D CreateRotateMap3D(this IFloat64Tuple3D unitVector1, IFloat64Tuple3D unitVector2)
-        {
-            return RotateByVectorToVectorMap3D.Create(unitVector1, unitVector2);
-        }
+        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+        //public static RotateByVectorToVectorMap3D CreateRotateMap3D(this IFloat64Tuple3D unitVector1, IFloat64Tuple3D unitVector2)
+        //{
+        //    return RotateByVectorToVectorMap3D.Create(unitVector1, unitVector2);
+        //}
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RotateUniformScaleMap3D CreateRotateScaleMap3D(this IFloat64Tuple3D normal, Float64PlanarAngle angle, double scalingFactor)
-        {
-            return RotateByAxisAngleMap3D.Create(normal, angle).CreateRotateScaleMap3D(scalingFactor);
-        }
+        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+        //public static RotateUniformScaleMap3D CreateRotateScaleMap3D(this IFloat64Tuple3D normal, Float64PlanarAngle angle, double scalingFactor)
+        //{
+        //    return RotateByAxisAngleMap3D.Create(normal, angle).CreateRotateScaleMap3D(scalingFactor);
+        //}
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RotateUniformScaleMap3D CreateRotateScaleMap3D(this Axis3D axis, IFloat64Tuple3D unitVector, double scalingFactor)
-        {
-            return RotateByAxisToVectorMap3D.Create(axis, unitVector).CreateRotateScaleMap3D(scalingFactor);
-        }
+        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+        //public static RotateUniformScaleMap3D CreateRotateScaleMap3D(this Axis3D axis, IFloat64Tuple3D unitVector, double scalingFactor)
+        //{
+        //    return RotateByAxisToVectorMap3D.Create(axis, unitVector).CreateRotateScaleMap3D(scalingFactor);
+        //}
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RotateUniformScaleMap3D CreateRotateScaleMap3D(this IFloat64Tuple3D unitVector, Axis3D axis, double scalingFactor)
-        {
-            return RotateByVectorToAxisMap3D.Create(unitVector, axis).CreateRotateScaleMap3D(scalingFactor);
-        }
+        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+        //public static RotateUniformScaleMap3D CreateRotateScaleMap3D(this IFloat64Tuple3D unitVector, Axis3D axis, double scalingFactor)
+        //{
+        //    return RotateByVectorToAxisMap3D.Create(unitVector, axis).CreateRotateScaleMap3D(scalingFactor);
+        //}
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RotateUniformScaleMap3D CreateRotateScaleMap3D(this IFloat64Tuple3D unitVector1, IFloat64Tuple3D unitVector2, double scalingFactor)
-        {
-            return RotateByVectorToVectorMap3D.Create(unitVector1, unitVector2).CreateRotateScaleMap3D(scalingFactor);
-        }
+        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+        //public static RotateUniformScaleMap3D CreateRotateScaleMap3D(this IFloat64Tuple3D unitVector1, IFloat64Tuple3D unitVector2, double scalingFactor)
+        //{
+        //    return RotateByVectorToVectorMap3D.Create(unitVector1, unitVector2).CreateRotateScaleMap3D(scalingFactor);
+        //}
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static RotateUniformScaleMap3D CreateRotateScaleMap3D(this IRotateMap3D rotateMap, double scalingFactor)
@@ -87,7 +86,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D
             {
                 RotateMap = rotateMap,
                 ScalingFactor = scalingFactor,
-                TranslationVector = translationVector.ToTuple3D()
+                TranslationVector = translationVector.ToVector3D()
             };
         }
 
@@ -98,7 +97,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D
             {
                 RotateMap = rotateMap,
                 ScalingFactor = scalingFactor,
-                TranslationVector = translationVector.ToTuple3D()
+                TranslationVector = translationVector.ToVector3D()
             };
         }
     }

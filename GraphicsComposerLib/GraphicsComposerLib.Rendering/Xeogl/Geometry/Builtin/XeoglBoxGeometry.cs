@@ -1,9 +1,7 @@
-﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Mutable;
-using GeometricAlgebraFulcrumLib.MathBase.Borders;
-using GeometricAlgebraFulcrumLib.MathBase.Borders.Space3D;
-using GraphicsComposerLib.Geometry.Primitives;
+﻿using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 using TextComposerLib.Code.JavaScript;
 
 namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Builtin
@@ -31,11 +29,11 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Builtin
             => new XeoglBoxGeometry(box);
 
 
-        public MutableFloat64Tuple3D Center { get; }
-            = new MutableFloat64Tuple3D();
+        public Float64Vector3DComposer Center { get; }
+            = Float64Vector3DComposer.Create();
 
-        public MutableFloat64Tuple3D HalfSize { get; }
-            = new MutableFloat64Tuple3D();
+        public Float64Vector3DComposer HalfSize { get; }
+            = Float64Vector3DComposer.Create();
 
         public override string JavaScriptClassName => "BoxGeometry";
 
@@ -46,38 +44,38 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Builtin
 
         public XeoglBoxGeometry(double halfSize)
         {
-            HalfSize.SetTuple(halfSize, halfSize, halfSize);
+            HalfSize.SetVector(halfSize, halfSize, halfSize);
         }
 
         public XeoglBoxGeometry(IFloat64Tuple3D halfSize)
         {
-            HalfSize.SetTuple(halfSize);
+            HalfSize.SetVector(halfSize);
         }
 
         public XeoglBoxGeometry(IFloat64Tuple3D center, double halfSize)
         {
-            Center.SetTuple(center);
-            HalfSize.SetTuple(halfSize, halfSize, halfSize);
+            Center.SetVector(center);
+            HalfSize.SetVector(halfSize, halfSize, halfSize);
         }
 
         public XeoglBoxGeometry(IFloat64Tuple3D center, IFloat64Tuple3D halfSize)
         {
-            Center.SetTuple(center);
-            HalfSize.SetTuple(halfSize);
+            Center.SetVector(center);
+            HalfSize.SetVector(halfSize);
         }
 
         public XeoglBoxGeometry(IBoundingBox3D box)
         {
-            Center.SetTuple(box.GetMidPoint());
-            HalfSize.SetTuple(box.GetSideHalfLengths());
+            Center.SetVector(box.GetMidPoint());
+            HalfSize.SetVector(box.GetSideHalfLengths());
         }
 
 
         public XeoglBoxGeometry SetTo(IBoundingBox3D box)
         {
-            Center.SetTuple(box.GetMidPoint());
+            Center.SetVector(box.GetMidPoint());
 
-            HalfSize.SetTuple(box.GetSideHalfLengths());
+            HalfSize.SetVector(box.GetSideHalfLengths());
 
             return this;
         }
@@ -89,7 +87,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Builtin
 
             composer
                 .SetValue("primitive", PrimitiveType, GraphicsPrimitiveType3D.Triangles)
-                .SetNumbersArrayValue("center", Center, Float64Tuple3D.Zero)
+                .SetNumbersArrayValue("center", Center, Float64Vector3D.Zero)
                 .SetValue("xSize", HalfSize.X, 1)
                 .SetValue("ySize", HalfSize.Y, 1)
                 .SetValue("zSize", HalfSize.Z, 1);

@@ -2,10 +2,12 @@
 using System.Runtime.CompilerServices;
 using DataStructuresLib.BitManipulation;
 using DataStructuresLib.Dictionary;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space4D;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.SpaceND;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 using MathNet.Numerics.LinearAlgebra.Double;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Multivectors.Composers
@@ -34,7 +36,8 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float6
                 if (!scalar.IsValid())
                     throw new InvalidOperationException();
 
-                basisScalarDictionary.Add(1UL << index, scalar);
+                if (!scalar.IsZero())
+                    basisScalarDictionary.Add(1UL << index, scalar);
 
                 index++;
             }
@@ -44,47 +47,51 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float6
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaFloat64Vector CreateZeroVector(this RGaFloat64Processor metric)
+        public static RGaFloat64Vector CreateZeroVector(this RGaFloat64Processor processor)
         {
-            return new RGaFloat64Vector(metric);
+            return new RGaFloat64Vector(processor);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaFloat64Vector CreateVector(this RGaFloat64Processor metric, IReadOnlyDictionary<ulong, double> basisScalarDictionary)
+        public static RGaFloat64Vector CreateVector(this RGaFloat64Processor processor, IReadOnlyDictionary<ulong, double> basisScalarDictionary)
         {
             if (basisScalarDictionary.Count == 0 && basisScalarDictionary is not EmptyDictionary<ulong, double>)
-                return metric.CreateZeroVector();
+                return processor.CreateZeroVector();
 
             if (basisScalarDictionary.Count == 1 && basisScalarDictionary is not SingleItemDictionary<ulong, double>)
-                return metric.CreateVector(basisScalarDictionary.First());
+                return processor.CreateVector(basisScalarDictionary.First());
 
-            return new RGaFloat64Vector(metric, basisScalarDictionary);
+            return new RGaFloat64Vector(processor, basisScalarDictionary);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaFloat64Vector CreateVector(this RGaFloat64Processor metric, IReadOnlyDictionary<int, double> basisScalarDictionary)
+        public static RGaFloat64Vector CreateVector(this RGaFloat64Processor processor, IReadOnlyDictionary<int, double> basisScalarDictionary)
         {
-            return new RGaFloat64Vector(metric, basisScalarDictionary.CreateVectorDictionary());
+            return new RGaFloat64Vector(processor, basisScalarDictionary.CreateVectorDictionary());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaFloat64Vector CreateVector(this RGaFloat64Processor metric, params double[] scalarArray)
+        public static RGaFloat64Vector CreateVector(this RGaFloat64Processor processor, params double[] scalarArray)
         {
             var scalarDictionary = CreateValidVectorDictionary(scalarArray);
 
-            return new RGaFloat64Vector(metric, scalarDictionary);
+            return processor.CreateVector(
+                scalarDictionary
+            );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaFloat64Vector CreateVector(this RGaFloat64Processor metric, IEnumerable<double> scalarList)
+        public static RGaFloat64Vector CreateVector(this RGaFloat64Processor processor, IEnumerable<double> scalarList)
         {
             var scalarDictionary = CreateValidVectorDictionary(scalarList);
 
-            return new RGaFloat64Vector(metric, scalarDictionary);
+            return processor.CreateVector(
+                scalarDictionary
+            );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaFloat64Vector CreateVector(this RGaFloat64Processor metric, int index)
+        public static RGaFloat64Vector CreateVector(this RGaFloat64Processor processor, int index)
         {
             var basisScalarDictionary =
                 new SingleItemDictionary<ulong, double>(
@@ -92,14 +99,14 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float6
                     1d
                 );
 
-            return new RGaFloat64Vector(metric, basisScalarDictionary);
+            return new RGaFloat64Vector(processor, basisScalarDictionary);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaFloat64Vector CreateVector(this RGaFloat64Processor metric, int index, double scalar)
+        public static RGaFloat64Vector CreateVector(this RGaFloat64Processor processor, int index, double scalar)
         {
             if (scalar.IsZero())
-                return new RGaFloat64Vector(metric);
+                return new RGaFloat64Vector(processor);
 
             var basisScalarDictionary =
                 new SingleItemDictionary<ulong, double>(
@@ -107,46 +114,46 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float6
                     scalar
                 );
 
-            return new RGaFloat64Vector(metric, basisScalarDictionary);
+            return new RGaFloat64Vector(processor, basisScalarDictionary);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaFloat64Vector CreateVector(this RGaFloat64Processor metric, KeyValuePair<int, double> indexScalarPair)
+        public static RGaFloat64Vector CreateVector(this RGaFloat64Processor processor, KeyValuePair<int, double> indexScalarPair)
         {
-            return metric.CreateVector(indexScalarPair.Key, indexScalarPair.Value);
+            return processor.CreateVector(indexScalarPair.Key, indexScalarPair.Value);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaFloat64Vector CreateVector(this RGaFloat64Processor metric, KeyValuePair<ulong, double> indexScalarPair)
+        public static RGaFloat64Vector CreateVector(this RGaFloat64Processor processor, KeyValuePair<ulong, double> indexScalarPair)
         {
-            return metric.CreateVector(indexScalarPair.Key, indexScalarPair.Value);
+            return processor.CreateVector(indexScalarPair.Key, indexScalarPair.Value);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaFloat64Vector CreateVector(this RGaFloat64Processor metric, ulong basisVector)
+        public static RGaFloat64Vector CreateVector(this RGaFloat64Processor processor, ulong basisVector)
         {
             var basisScalarDictionary =
                 new SingleItemDictionary<ulong, double>(basisVector, 1d);
 
-            return new RGaFloat64Vector(metric, basisScalarDictionary);
+            return new RGaFloat64Vector(processor, basisScalarDictionary);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaFloat64Vector CreateVector(this RGaFloat64Processor metric, ulong basisVector, double scalar)
+        public static RGaFloat64Vector CreateVector(this RGaFloat64Processor processor, ulong basisVector, double scalar)
         {
             if (scalar.IsZero())
-                return new RGaFloat64Vector(metric);
+                return new RGaFloat64Vector(processor);
 
             var basisScalarDictionary =
                 new SingleItemDictionary<ulong, double>(basisVector, scalar);
 
-            return new RGaFloat64Vector(metric, basisScalarDictionary);
+            return new RGaFloat64Vector(processor, basisScalarDictionary);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaFloat64Vector CreateVector(this RGaFloat64Processor metric, int termsCount, Func<int, double> indexToScalarFunc)
+        public static RGaFloat64Vector CreateVector(this RGaFloat64Processor processor, int termsCount, Func<int, double> indexToScalarFunc)
         {
-            var composer = metric.CreateComposer();
+            var composer = processor.CreateComposer();
 
             for (var index = 0; index < termsCount; index++)
             {
@@ -160,39 +167,39 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float6
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaFloat64Vector CreateSymmetricVector(this RGaFloat64Processor metric, int count)
+        public static RGaFloat64Vector CreateSymmetricVector(this RGaFloat64Processor processor, int count)
         {
-            return metric.CreateSymmetricVector(count, 1d);
+            return processor.CreateSymmetricVector(count, 1d);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaFloat64Vector CreateSymmetricVector(this RGaFloat64Processor metric, int count, double scalarValue)
+        public static RGaFloat64Vector CreateSymmetricVector(this RGaFloat64Processor processor, int count, double scalarValue)
         {
             return count switch
             {
                 < 0 => throw new InvalidOperationException(),
 
                 0 => new RGaFloat64Vector(
-                        metric,
+                        processor,
                         new EmptyDictionary<ulong, double>()
                     ),
 
                 1 => new RGaFloat64Vector(
-                        metric,
+                        processor,
                         new SingleItemDictionary<ulong, double>(1UL, scalarValue)
                     ),
 
                 _ => new RGaFloat64Vector(
-                        metric,
+                        processor,
                         new RGaFloat64RepeatedScalarVectorDictionary(count, scalarValue)
                     )
             };
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaFloat64Vector CreateSymmetricUnitVector(this RGaFloat64Processor metric, int count)
+        public static RGaFloat64Vector CreateSymmetricUnitVector(this RGaFloat64Processor processor, int count)
         {
-            return metric.CreateSymmetricVector(
+            return processor.CreateSymmetricVector(
                 count,
                 1d / Math.Sqrt(count)
             );
@@ -203,12 +210,12 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float6
         {
             Debug.Assert(index2 > index1);
 
-            var metric = RGaFloat64Processor.Euclidean;
+            var processor = RGaFloat64Processor.Euclidean;
 
             var scalar1 = Math.Cos(angle);
             var scalar2 = Math.Sin(angle);
 
-            return metric
+            return processor
                 .CreateComposer()
                 .SetVectorTerm(index1, scalar1)
                 .SetVectorTerm(index2, scalar2)
@@ -220,12 +227,12 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float6
         {
             Debug.Assert(index2 > index1);
 
-            var metric = RGaFloat64Processor.Euclidean;
+            var processor = RGaFloat64Processor.Euclidean;
 
             var scalar1 = magnitude * Math.Cos(angle);
             var scalar2 = magnitude * Math.Sin(angle);
 
-            return metric
+            return processor
                 .CreateComposer()
                 .SetVectorTerm(index1, scalar1)
                 .SetVectorTerm(index2, scalar2)
@@ -234,17 +241,17 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float6
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaFloat64Vector CreateVector(this RGaFloat64Processor metric, LinFloat64Vector vector)
+        public static RGaFloat64Vector CreateVector(this RGaFloat64Processor processor, Float64Vector vector)
         {
-            return metric.CreateVector(
+            return processor.CreateVector(
                 vector.GetIndexScalarDictionary()
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaFloat64Vector CreateVector(this RGaFloat64Processor metric, IFloat64Tuple2D vector)
+        public static RGaFloat64Vector CreateVector(this RGaFloat64Processor processor, IFloat64Tuple2D vector)
         {
-            return metric
+            return processor
                 .CreateComposer()
                 .SetTerm(1, vector.X)
                 .SetTerm(2, vector.Y)
@@ -252,9 +259,9 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float6
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaFloat64Vector CreateVector(this RGaFloat64Processor metric, IFloat64Tuple3D vector)
+        public static RGaFloat64Vector CreateVector(this RGaFloat64Processor processor, IFloat64Tuple3D vector)
         {
-            return metric
+            return processor
                 .CreateComposer()
                 .SetTerm(1, vector.X)
                 .SetTerm(2, vector.Y)
@@ -263,9 +270,9 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float6
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaFloat64Vector CreateVector(this RGaFloat64Processor metric, IFloat64Tuple4D vector)
+        public static RGaFloat64Vector CreateVector(this RGaFloat64Processor processor, IFloat64Tuple4D vector)
         {
-            return metric
+            return processor
                 .CreateComposer()
                 .SetTerm(1, vector.X)
                 .SetTerm(2, vector.Y)
@@ -276,7 +283,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float6
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaFloat64Vector ToRGaVector(this LinFloat64Vector vector)
+        public static RGaFloat64Vector ToRGaFloat64Vector(this Float64Vector vector)
         {
             return RGaFloat64Processor.Euclidean.CreateVector(
                 vector.GetIndexScalarDictionary()
@@ -284,15 +291,15 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float6
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaFloat64Vector ToRGaVector(this LinFloat64Vector vector, RGaFloat64Processor metric)
+        public static RGaFloat64Vector ToRGaFloat64Vector(this Float64Vector vector, RGaFloat64Processor processor)
         {
-            return metric.CreateVector(
+            return processor.CreateVector(
                 vector.GetIndexScalarDictionary()
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaFloat64Vector ToRGaVector(this IFloat64Tuple2D vector)
+        public static RGaFloat64Vector ToRGaFloat64Vector(this IFloat64Tuple2D vector)
         {
             return RGaFloat64Processor
                 .Euclidean
@@ -303,9 +310,9 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float6
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaFloat64Vector ToRGaVector(this IFloat64Tuple2D vector, RGaFloat64Processor metric)
+        public static RGaFloat64Vector ToRGaFloat64Vector(this IFloat64Tuple2D vector, RGaFloat64Processor processor)
         {
-            return metric
+            return processor
                 .CreateComposer()
                 .SetTerm(1, vector.X)
                 .SetTerm(2, vector.Y)
@@ -313,7 +320,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float6
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaFloat64Vector ToRGaVector(this IFloat64Tuple3D vector)
+        public static RGaFloat64Vector ToRGaFloat64Vector(this IFloat64Tuple3D vector)
         {
             return RGaFloat64Processor
                 .Euclidean
@@ -325,9 +332,9 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float6
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaFloat64Vector ToRGaVector(this IFloat64Tuple3D vector, RGaFloat64Processor metric)
+        public static RGaFloat64Vector ToRGaFloat64Vector(this IFloat64Tuple3D vector, RGaFloat64Processor processor)
         {
-            return metric
+            return processor
                 .CreateComposer()
                 .SetTerm(1, vector.X)
                 .SetTerm(2, vector.Y)
@@ -336,7 +343,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float6
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaFloat64Vector ToRGaVector(this IFloat64Tuple4D vector)
+        public static RGaFloat64Vector ToRGaFloat64Vector(this IFloat64Tuple4D vector)
         {
             return RGaFloat64Processor
                 .Euclidean
@@ -349,9 +356,9 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float6
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaFloat64Vector ToRGaVector(this IFloat64Tuple4D vector, RGaFloat64Processor metric)
+        public static RGaFloat64Vector ToRGaFloat64Vector(this IFloat64Tuple4D vector, RGaFloat64Processor processor)
         {
-            return metric
+            return processor
                 .CreateComposer()
                 .SetTerm(1, vector.X)
                 .SetTerm(2, vector.Y)
@@ -361,10 +368,10 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float6
         }
 
 
-        public static RGaFloat64Vector DiagonalToRGaVector(this double[,] matrix, RGaFloat64Processor metric)
+        public static RGaFloat64Vector DiagonalToRGaFloat64Vector(this double[,] matrix, RGaFloat64Processor processor)
         {
             var count = Math.Min(matrix.GetLength(0), matrix.GetLength(1));
-            var composer = metric.CreateComposer();
+            var composer = processor.CreateComposer();
 
             for (var i = 0; i < count; i++)
             {
@@ -376,10 +383,10 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float6
             return composer.GetVector();
         }
 
-        public static RGaFloat64Vector RowToRGaVector(this double[,] matrix, int row, RGaFloat64Processor metric)
+        public static RGaFloat64Vector RowToRGaFloat64Vector(this double[,] matrix, int row, RGaFloat64Processor processor)
         {
             var columnCount = matrix.GetLength(1);
-            var composer = metric.CreateComposer();
+            var composer = processor.CreateComposer();
 
             for (var i = 0; i < columnCount; i++)
             {
@@ -391,10 +398,10 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float6
             return composer.GetVector();
         }
 
-        public static RGaFloat64Vector ColumnToRGaVector(this double[,] matrix, int column, RGaFloat64Processor metric)
+        public static RGaFloat64Vector ColumnToRGaFloat64Vector(this double[,] matrix, int column, RGaFloat64Processor processor)
         {
             var rowCount = matrix.GetLength(0);
-            var composer = metric.CreateComposer();
+            var composer = processor.CreateComposer();
 
             for (var i = 0; i < rowCount; i++)
             {
@@ -407,26 +414,26 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float6
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<RGaFloat64Vector> RowsToRGaVectors(this double[,] matrix, RGaFloat64Processor metric)
+        public static IEnumerable<RGaFloat64Vector> RowsToRGaFloat64Vectors(this double[,] matrix, RGaFloat64Processor processor)
         {
             return matrix.GetLength(0).GetRange().Select(
-                r => matrix.RowToRGaVector(r, metric)
+                r => matrix.RowToRGaFloat64Vector(r, processor)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<RGaFloat64Vector> ColumnsToRGaVectors(this double[,] matrix, RGaFloat64Processor metric)
+        public static IEnumerable<RGaFloat64Vector> ColumnsToRGaFloat64Vectors(this double[,] matrix, RGaFloat64Processor processor)
         {
             return matrix.GetLength(1).GetRange().Select(
-                c => matrix.ColumnToRGaVector(c, metric)
+                c => matrix.ColumnToRGaFloat64Vector(c, processor)
             );
         }
 
 
-        public static RGaFloat64Vector DiagonalToRGaVector(this Matrix matrix, RGaFloat64Processor metric)
+        public static RGaFloat64Vector DiagonalToRGaFloat64Vector(this Matrix matrix, RGaFloat64Processor processor)
         {
             var count = Math.Min(matrix.RowCount, matrix.ColumnCount);
-            var composer = metric.CreateComposer();
+            var composer = processor.CreateComposer();
 
             for (var i = 0; i < count; i++)
             {
@@ -438,9 +445,9 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float6
             return composer.GetVector();
         }
 
-        public static RGaFloat64Vector RowToRGaVector(this Matrix matrix, int row, RGaFloat64Processor metric)
+        public static RGaFloat64Vector RowToRGaFloat64Vector(this Matrix matrix, int row, RGaFloat64Processor processor)
         {
-            var composer = metric.CreateComposer();
+            var composer = processor.CreateComposer();
 
             for (var i = 0; i < matrix.ColumnCount; i++)
                 composer.SetVectorTerm(i, matrix[row, i]);
@@ -448,9 +455,9 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float6
             return composer.GetVector();
         }
 
-        public static RGaFloat64Vector ColumnToRGaVector(this Matrix matrix, int column, RGaFloat64Processor metric)
+        public static RGaFloat64Vector ColumnToRGaFloat64Vector(this Matrix matrix, int column, RGaFloat64Processor processor)
         {
-            var composer = metric.CreateComposer();
+            var composer = processor.CreateComposer();
 
             for (var i = 0; i < matrix.RowCount; i++)
                 composer.SetVectorTerm(i, matrix[i, column]);
@@ -459,18 +466,18 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float6
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<RGaFloat64Vector> RowsToRGaVectors(this Matrix matrix, RGaFloat64Processor metric)
+        public static IEnumerable<RGaFloat64Vector> RowsToRGaFloat64Vectors(this Matrix matrix, RGaFloat64Processor processor)
         {
             return matrix.RowCount.GetRange().Select(
-                r => matrix.RowToRGaVector(r, metric)
+                r => matrix.RowToRGaFloat64Vector(r, processor)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IEnumerable<RGaFloat64Vector> ColumnsToRGaVectors(this Matrix matrix, RGaFloat64Processor metric)
+        public static IEnumerable<RGaFloat64Vector> ColumnsToRGaFloat64Vectors(this Matrix matrix, RGaFloat64Processor processor)
         {
             return matrix.ColumnCount.GetRange().Select(
-                c => matrix.ColumnToRGaVector(c, metric)
+                c => matrix.ColumnToRGaFloat64Vector(c, processor)
             );
         }
     }

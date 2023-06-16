@@ -1,13 +1,14 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.Basic;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Basis;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Processors;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 // ReSharper disable CompareOfFloatsByEqualityOperator
 
@@ -165,9 +166,9 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Maps
 
             var cosAngle = 
                 assumeUnitVectors
-                    ? targetVector.VectorDot(sourceVector)
-                    : targetVector.VectorDot(sourceVector) / 
-                      (targetVector.GetVectorNormSquared() * sourceVector.GetVectorNormSquared()).Sqrt();
+                    ? targetVector.ESp(sourceVector)
+                    : targetVector.ESp(sourceVector) / 
+                      (targetVector.ENormSquared() * sourceVector.ENormSquared()).Sqrt();
 
             if (cosAngle == 1d)
                 return basisSet.CreateIdentityRotor();
@@ -176,9 +177,9 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Maps
             var sinHalfAngle = ((1 - cosAngle) / 2).Sqrt();
 
             var rotationBlade = 
-                cosAngle == -1
-                    ? sourceVector.GetUnitNormal().ToRGaVector().Op(sourceVector.ToRGaVector())
-                    : targetVector.ToRGaVector().Op(sourceVector.ToRGaVector());
+                cosAngle.IsNegativeOne()
+                    ? sourceVector.GetUnitNormal().ToRGaFloat64Vector().Op(sourceVector.ToRGaFloat64Vector())
+                    : targetVector.ToRGaFloat64Vector().Op(sourceVector.ToRGaFloat64Vector());
 
             var unitRotationBlade = 
                 rotationBlade / (-rotationBlade.ESpSquared()).Sqrt();
@@ -204,9 +205,9 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Maps
 
             var cosAngle = 
                 assumeUnitVectors
-                    ? targetVector.VectorDot(sourceVector)
-                    : targetVector.VectorDot(sourceVector) / 
-                      (targetVector.GetVectorNormSquared() * sourceVector.GetVectorNormSquared()).Sqrt();
+                    ? targetVector.ESp(sourceVector)
+                    : targetVector.ESp(sourceVector) / 
+                      (targetVector.ENormSquared() * sourceVector.ENormSquared()).Sqrt();
 
             if (cosAngle == 1d)
                 return basisSet.CreateIdentityRotor();
@@ -216,8 +217,8 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Maps
 
             var rotationBlade = 
                 cosAngle == -1
-                    ? sourceVector.GetUnitNormal().ToRGaVector().Op(sourceVector.ToRGaVector())
-                    : targetVector.ToRGaVector().Op(sourceVector.ToRGaVector());
+                    ? sourceVector.GetUnitNormal().ToRGaFloat64Vector().Op(sourceVector.ToRGaFloat64Vector())
+                    : targetVector.ToRGaFloat64Vector().Op(sourceVector.ToRGaFloat64Vector());
 
             var unitRotationBlade = 
                 rotationBlade / (-rotationBlade.ESpSquared()).Sqrt();
@@ -282,10 +283,10 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Maps
         {
             var basisSet = RGaFloat64Processor.Euclidean;
 
-            var uNorm = sourceVector.GetVectorNorm();
-            var vNorm = targetVector.GetVectorNorm();
+            var uNorm = sourceVector.ENorm();
+            var vNorm = targetVector.ENorm();
             var scalingFactor = (vNorm / uNorm).Sqrt();
-            var cosAngle = targetVector.VectorDot(sourceVector) / (uNorm * vNorm);
+            var cosAngle = targetVector.ESp(sourceVector) / (uNorm * vNorm);
 
             if (cosAngle == 1d)
                 return basisSet.CreateScaledIdentityRotor(scalingFactor);
@@ -295,8 +296,8 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Maps
 
             var rotationBlade = 
                 cosAngle == -1d
-                    ? sourceVector.GetUnitNormal().ToRGaVector().Op(sourceVector.ToRGaVector())
-                    : targetVector.ToRGaVector().Op(sourceVector.ToRGaVector());
+                    ? sourceVector.GetUnitNormal().ToRGaFloat64Vector().Op(sourceVector.ToRGaFloat64Vector())
+                    : targetVector.ToRGaFloat64Vector().Op(sourceVector.ToRGaFloat64Vector());
 
             var unitRotationBlade = 
                 rotationBlade / (-rotationBlade.ESpSquared()).Sqrt();
@@ -323,10 +324,10 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Maps
         {
             var basisSet = RGaFloat64Processor.Euclidean;
 
-            var uNorm = sourceVector.GetVectorNorm();
-            var vNorm = targetVector.GetVectorNorm();
+            var uNorm = sourceVector.ENorm();
+            var vNorm = targetVector.ENorm();
             var scalingFactor = (vNorm / uNorm).Sqrt();
-            var cosAngle = targetVector.VectorDot(sourceVector) / (uNorm * vNorm);
+            var cosAngle = targetVector.ESp(sourceVector) / (uNorm * vNorm);
 
             if (cosAngle == 1d)
                 return basisSet.CreateScaledIdentityRotor(scalingFactor);
@@ -336,8 +337,8 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Maps
 
             var rotationBlade = 
                 cosAngle == -1d
-                    ? sourceVector.GetUnitNormal().ToRGaVector().Op(sourceVector.ToRGaVector())
-                    : targetVector.ToRGaVector().Op(sourceVector.ToRGaVector());
+                    ? sourceVector.GetUnitNormal().ToRGaFloat64Vector().Op(sourceVector.ToRGaFloat64Vector())
+                    : targetVector.ToRGaFloat64Vector().Op(sourceVector.ToRGaFloat64Vector());
 
             var unitRotationBlade = 
                 rotationBlade / (-rotationBlade.ESpSquared()).Sqrt();
@@ -365,11 +366,11 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Maps
                 (0.5d * rotationAngle.Radians).SinCos();
 
             var bivectorPart =
-                sinHalfAngle / (-rotationBlade.ESpSquared()).Sqrt() * rotationBlade;
+                sinHalfAngle.Value / (-rotationBlade.ESpSquared()).Sqrt() * rotationBlade;
 
             return new GaScaledPureRotor(
-                cosHalfAngle + bivectorPart,
-                cosHalfAngle - bivectorPart
+                cosHalfAngle.Value + bivectorPart,
+                cosHalfAngle.Value - bivectorPart
             );
         }
 
@@ -392,11 +393,11 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Maps
 
             // Compute the smallest angle between source and target vectors
             var cosAngle0 = 
-                sourceVector.VectorDot(targetVector);
+                sourceVector.ESp(targetVector);
 
             // Define a rotor S with angle theta in the plane orthogonal to targetVector - sourceVector
             var rotorSBlade = 
-                targetVector.Subtract(sourceVector).ToRGaVector().EGp(pseudoScalarInverse).GetBivectorPart();
+                targetVector.Subtract(sourceVector).ToRGaFloat64Vector().EGp(pseudoScalarInverse).GetBivectorPart();
 
             var rotorS = 
                 rotorSBlade.CreateEuclideanPureRotor(angleTheta);
@@ -406,7 +407,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Maps
             // sourceVector and targetVector by angle theta in the plane orthogonal to
             // targetVector - sourceVector using rotor S
             var rotorBlade =
-                rotorS.OmMap(targetVector.ToRGaVector().Op(sourceVector.ToRGaVector())).GetBivectorPart();
+                rotorS.OmMap(targetVector.ToRGaFloat64Vector().Op(sourceVector.ToRGaFloat64Vector())).GetBivectorPart();
             
             // Define parametric angle of rotation
             var rotorAngle =
@@ -425,10 +426,10 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Maps
                 basisSet.CreateEuclideanParametricPureRotor3D(sourceVector, targetVector, angleTheta);
 
             var (sourceVectorUnit, sourceVectorLength) = 
-                sourceVector.GetUnitVectorNormTuple();
+                sourceVector.GetUnitVectorENormTuple();
 
             var (targetVectorUnit, targetVectorLength) = 
-                targetVector.GetUnitVectorNormTuple();
+                targetVector.GetUnitVectorENormTuple();
 
             var scalingFactor = targetVectorLength / sourceVectorLength;
 

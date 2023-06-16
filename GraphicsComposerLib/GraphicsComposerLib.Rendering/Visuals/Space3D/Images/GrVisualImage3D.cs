@@ -4,7 +4,8 @@ using SixLabors.ImageSharp.Formats;
 namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Images
 {
     public abstract class GrVisualImage3D :
-        GrVisualElement3D
+        GrVisualElement3D, 
+        IGrVisualImage3D
     {
         protected GrVisualImage3D(string name) 
             : base(name)

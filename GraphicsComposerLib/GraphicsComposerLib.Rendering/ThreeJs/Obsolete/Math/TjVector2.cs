@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GraphicsComposerLib.Rendering.ThreeJs.Obsolete.Math
 {
@@ -22,16 +23,19 @@ namespace GraphicsComposerLib.Rendering.ThreeJs.Obsolete.Math
     {
         public override string JavaScriptClassName 
             => "Vector2";
-
-        public double X { get; }
         
-        public double Y { get; }
+        public int VSpaceDimensions 
+            => 2;
+
+        public Float64Scalar X { get; }
+        
+        public Float64Scalar Y { get; }
 
         public double Item1 
-            => X;
+            => X.Value;
 
         public double Item2 
-            => Y;
+            => Y.Value;
 
         public bool IsValid() =>
             !double.IsNaN(X) &&

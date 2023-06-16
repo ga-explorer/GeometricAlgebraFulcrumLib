@@ -1,26 +1,25 @@
 ﻿using System.Numerics;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Matrices;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D
 {
     public sealed record RouletteMap3D :
         IAffineMap3D
     {
-        public Float64Tuple3D FixedFrameOrigin { get; }
+        public Float64Vector3D FixedFrameOrigin { get; }
 
-        public Float64Tuple3D MovingFrameOrigin { get; }
+        public Float64Vector3D MovingFrameOrigin { get; }
 
-        public Float64Tuple4D RotationQuaternion { get; }
+        public Float64Quaternion RotationQuaternion { get; }
 
         public bool SwapsHandedness
             => false;
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public RouletteMap3D(Float64Tuple3D fixedFrameOrigin, Float64Tuple3D movingFrameOrigin, Float64Tuple4D rotationQuaternion)
+        public RouletteMap3D(Float64Vector3D fixedFrameOrigin, Float64Vector3D movingFrameOrigin, Float64Quaternion rotationQuaternion)
         {
             FixedFrameOrigin = fixedFrameOrigin;
             MovingFrameOrigin = movingFrameOrigin;
@@ -38,9 +37,9 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D
         public Matrix4x4 GetMatrix4x4()
         {
             var (c1, c2, c3) = 
-                RotationQuaternion.QuaternionRotateBasisFrame();
+                RotationQuaternion.RotateBasisVectors();
 
-            var c4 = MapPoint(Float64Tuple3D.Zero);
+            var c4 = MapPoint(Float64Vector3D.Zero);
 
             return new Matrix4x4(
                 (float) c1.X, (float) c2.X, (float) c3.X, (float) c4.X,
@@ -54,11 +53,11 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D
         public double[,] GetArray2D()
         {
             var (c1, c2, c3) = 
-                RotationQuaternion.QuaternionRotateBasisFrame();
+                RotationQuaternion.RotateBasisVectors();
 
-            var c4 = MapPoint(Float64Tuple3D.Zero);
+            var c4 = MapPoint(Float64Vector3D.Zero);
 
-            return new[,]
+            return new double[,]
             {
                 {c1.X, c2.X, c3.X, c4.X},
                 {c1.Y, c2.Y, c3.Y, c4.Y},
@@ -68,22 +67,22 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Float64Tuple3D MapPoint(IFloat64Tuple3D point)
+        public Float64Vector3D MapPoint(IFloat64Tuple3D point)
         {
             return FixedFrameOrigin + 
-                   RotationQuaternion.QuaternionRotate(point - MovingFrameOrigin);
+                   RotationQuaternion.RotateVector(point - MovingFrameOrigin);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Float64Tuple3D MapVector(IFloat64Tuple3D vector)
+        public Float64Vector3D MapVector(IFloat64Tuple3D vector)
         {
-            return RotationQuaternion.QuaternionRotate(vector);
+            return RotationQuaternion.RotateVector(vector);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Float64Tuple3D MapNormal(IFloat64Tuple3D normal)
+        public Float64Vector3D MapNormal(IFloat64Tuple3D normal)
         {
-            return RotationQuaternion.QuaternionRotate(normal);
+            return RotationQuaternion.RotateVector(normal);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -92,7 +91,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D
             return new RouletteMap3D(
                 MovingFrameOrigin,
                 FixedFrameOrigin,
-                RotationQuaternion.QuaternionInverse()
+                RotationQuaternion.Inverse()
             );
         }
 

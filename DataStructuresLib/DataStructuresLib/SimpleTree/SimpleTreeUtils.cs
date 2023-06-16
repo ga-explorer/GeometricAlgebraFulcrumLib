@@ -1,42 +1,40 @@
 ﻿using System;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 
 namespace DataStructuresLib.SimpleTree
 {
     public static class SimpleTreeUtils
     {
-        /// <summary>
-        /// Save a simple tree node to a file using serialization
-        /// </summary>
-        /// <typeparam name="TLeaf"></typeparam>
-        /// <param name="treeNode"></param>
-        /// <param name="filePath"></param>
-        public static void SaveToFile<TLeaf>(this SimpleTreeNode<TLeaf> treeNode, string filePath)
-        {
-            using var stream = File.Open(filePath, FileMode.Create, FileAccess.Write);
-            var formatter = new BinaryFormatter();
+        ///// <summary>
+        ///// Save a simple tree node to a file using serialization
+        ///// </summary>
+        ///// <typeparam name="TLeaf"></typeparam>
+        ///// <param name="treeNode"></param>
+        ///// <param name="filePath"></param>
+        //public static void SaveToFile<TLeaf>(this SimpleTreeNode<TLeaf> treeNode, string filePath)
+        //{
+        //    using var stream = File.Open(filePath, FileMode.Create, FileAccess.Write);
+        //    var formatter = new BinaryFormatter();
 
-            formatter.Serialize(stream, treeNode);
-        }
+        //    formatter.Serialize(stream, treeNode);
+        //}
 
-        /// <summary>
-        /// Load a simple tree node from a file using serialization
-        /// </summary>
-        /// <typeparam name="TLeaf"></typeparam>
-        /// <param name="filePath"></param>
-        /// <returns></returns>
-        public static SimpleTreeNode<TLeaf> LoadFromFile<TLeaf>(string filePath)
-        {
-            SimpleTreeNode<TLeaf> treeNode;
+        ///// <summary>
+        ///// Load a simple tree node from a file using serialization
+        ///// </summary>
+        ///// <typeparam name="TLeaf"></typeparam>
+        ///// <param name="filePath"></param>
+        ///// <returns></returns>
+        //public static SimpleTreeNode<TLeaf> LoadFromFile<TLeaf>(string filePath)
+        //{
+        //    SimpleTreeNode<TLeaf> treeNode;
 
-            using Stream stream = File.Open(filePath, FileMode.Open, FileAccess.Read);
-            var formatter = new BinaryFormatter();
+        //    using Stream stream = File.Open(filePath, FileMode.Open, FileAccess.Read);
+        //    var formatter = new BinaryFormatter();
 
-            treeNode = (SimpleTreeNode<TLeaf>)formatter.Deserialize(stream);
+        //    treeNode = (SimpleTreeNode<TLeaf>)formatter.Deserialize(stream);
 
-            return treeNode;
-        }
+        //    return treeNode;
+        //}
 
 
         /// <summary>

@@ -1,6 +1,6 @@
 ﻿using DataStructuresLib.Statistics;
-using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Lines;
-using GeometricAlgebraFulcrumLib.MathBase.Borders.Space1D;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders;
 
 namespace NumericalGeometryLib.Computers
 {
@@ -24,7 +24,7 @@ namespace NumericalGeometryLib.Computers
             );
         }
 
-        public static LineTraversalData2D GetLineTraversalData(this ILine2D line, IBoundingBox1D lineParamRange)
+        public static LineTraversalData2D GetLineTraversalData(this ILine2D line, Float64Range1D lineParamRange)
         {
             return new LineTraversalData2D(
                 line,
@@ -48,7 +48,7 @@ namespace NumericalGeometryLib.Computers
             );
         }
 
-        public static LineTraversalData3D GetLineTraversalData(this ILine3D line, IBoundingBox1D lineParamRange)
+        public static LineTraversalData3D GetLineTraversalData(this ILine3D line, Float64Range1D lineParamRange)
         {
             return new LineTraversalData3D(
                 line,

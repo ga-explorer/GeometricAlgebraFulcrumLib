@@ -14,20 +14,11 @@ namespace NumericalGeometryLib.Accelerators.BIH.Space2D.Traversal
 
         public double LineClipParameterValue1 { get; }
 
-        public bool IsDirectionPositive
-        {
-            get { return DirectionValue > 0; }
-        }
+        public bool IsDirectionPositive => DirectionValue > 0;
 
-        public bool IsDirectionNegative
-        {
-            get { return DirectionValue < 0; }
-        }
+        public bool IsDirectionNegative => DirectionValue < 0;
 
-        public bool IsDirectionZero
-        {
-            get { return DirectionValue == 0; }
-        }
+        public bool IsDirectionZero => DirectionValue == 0;
 
 
         internal AccBihLineTraversalData2D(IAccBihNode2D bihNode, LineTraversalData2D lineData)

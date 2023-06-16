@@ -3,11 +3,11 @@ using System.Diagnostics;
 using System.IO;
 using DataStructuresLib.Basic;
 using GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.Basis;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Frames;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.Mathematica;
 using GeometricAlgebraFulcrumLib.Mathematica.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Mathematica.Mathematica;
@@ -282,7 +282,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             return v;
         }
 
-        private static Quad<Scalar<Expr>> GetArcLengthParameterTimeDerivatives4D(this Scalar<Expr> sDt1)
+        private static Quad<MathBase.ScalarAlgebra.Scalar<Expr>> GetArcLengthParameterTimeDerivatives4D(this MathBase.ScalarAlgebra.Scalar<Expr> sDt1)
         {
             var t = "t".ToSymbolExpr();
 
@@ -303,10 +303,10 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             Plot(sDt3, Path.Combine(WorkingPath, "sDt3"));
             Plot(sDt4, Path.Combine(WorkingPath, "sDt4"));
 
-            return new Quad<Scalar<Expr>>(sDt1, sDt2, sDt3, sDt4);
+            return new Quad<MathBase.ScalarAlgebra.Scalar<Expr>>(sDt1, sDt2, sDt3, sDt4);
         }
 
-        private static Hexad<Scalar<Expr>> GetArcLengthParameterTimeDerivatives6D(this Scalar<Expr> sDt1)
+        private static Hexad<MathBase.ScalarAlgebra.Scalar<Expr>> GetArcLengthParameterTimeDerivatives6D(this MathBase.ScalarAlgebra.Scalar<Expr> sDt1)
         {
             var t = "t".ToSymbolExpr();
 
@@ -333,7 +333,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             Plot(sDt5, Path.Combine(WorkingPath, "sDt5"));
             Plot(sDt6, Path.Combine(WorkingPath, "sDt6"));
 
-            return new Hexad<Scalar<Expr>>(sDt1, sDt2, sDt3, sDt4, sDt5, sDt6);
+            return new Hexad<MathBase.ScalarAlgebra.Scalar<Expr>>(sDt1, sDt2, sDt3, sDt4, sDt5, sDt6);
         }
 
         private static Triplet<RGaVector<Expr>> GetTimeDerivatives3D(this RGaVector<Expr> v)

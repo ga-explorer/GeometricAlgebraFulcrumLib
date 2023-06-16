@@ -273,17 +273,17 @@ namespace DataStructuresLib.Extensions
         /// <returns></returns>
         public static IEnumerable<Tuple<TKey, TValue1, TValue2>> FullOuterJoin<TKey, TValue1, TValue2>(this IReadOnlyDictionary<TKey, TValue1> dictionary1, IReadOnlyDictionary<TKey, TValue2> dictionary2)
         {
-            foreach (var pair1 in dictionary1)
+            foreach (var (key1, value1) in dictionary1)
             {
-                if (dictionary2.TryGetValue(pair1.Key, out var value2))
-                    yield return new Tuple<TKey, TValue1, TValue2>(pair1.Key, pair1.Value, value2);
+                if (dictionary2.TryGetValue(key1, out var value2))
+                    yield return new Tuple<TKey, TValue1, TValue2>(key1, value1, value2);
                 else
-                    yield return new Tuple<TKey, TValue1, TValue2>(pair1.Key, pair1.Value, default);
+                    yield return new Tuple<TKey, TValue1, TValue2>(key1, value1, default);
             }
 
-            foreach (var pair2 in dictionary2)
-                if (!dictionary1.ContainsKey(pair2.Key))
-                    yield return new Tuple<TKey, TValue1, TValue2>(pair2.Key, default, pair2.Value);
+            foreach (var (key2, value2) in dictionary2)
+                if (!dictionary1.ContainsKey(key2))
+                    yield return new Tuple<TKey, TValue1, TValue2>(key2, default, value2);
         }
         
         /// <summary>

@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GraphicsComposerLib.Rendering.ThreeJs.Obsolete.Math
 {
@@ -19,12 +20,15 @@ namespace GraphicsComposerLib.Rendering.ThreeJs.Obsolete.Math
     {
         public override string JavaScriptClassName 
             => "Vector3";
+        
+        public int VSpaceDimensions 
+            => 3;
 
-        public double X { get; }
+        public Float64Scalar X { get; }
         
-        public double Y { get; }
+        public Float64Scalar Y { get; }
         
-        public double Z { get; }
+        public Float64Scalar Z { get; }
 
         public double Item1 
             => X;

@@ -20,29 +20,18 @@ namespace NumericalGeometryLib.Collections.Finite
         public List<T> BackwardList { get; } = new List<T>();
 
 
-        public override int Count
-        {
-            get { return BackwardList.Count + ForwardList.Count; }
-        }
+        public override int Count => BackwardList.Count + ForwardList.Count;
 
-        public override int MinIndex
-        {
-            get { return -BackwardList.Count; }
-        }
+        public override int MinIndex => -BackwardList.Count;
 
-        public override int MaxIndex
-        {
-            get { return ForwardList.Count - 1; }
-        }
+        public override int MaxIndex => ForwardList.Count - 1;
 
         public T this[int index]
         {
-            get
-            {
-                return index < 0
+            get =>
+                index < 0
                     ? BackwardList[-index - 1]
                     : ForwardList[index];
-            }
             set
             {
                 if (index >= 0)

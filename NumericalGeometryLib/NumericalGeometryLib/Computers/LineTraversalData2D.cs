@@ -1,9 +1,8 @@
 ﻿using System.Diagnostics;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
-using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Lines;
-using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Lines.Immutable;
-using GeometricAlgebraFulcrumLib.MathBase.Borders.Space1D;
-using GeometricAlgebraFulcrumLib.MathBase.Borders.Space1D.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
 
 namespace NumericalGeometryLib.Computers
 {
@@ -21,32 +20,17 @@ namespace NumericalGeometryLib.Computers
 
         public double ParameterMaxValue { get; private set; }
 
-        public bool IsLine
-        {
-            get
-            {
-                return double.IsNegativeInfinity(ParameterMinValue) &&
-                       double.IsPositiveInfinity(ParameterMaxValue);
-            }
-        }
+        public bool IsLine =>
+            double.IsNegativeInfinity(ParameterMinValue) &&
+            double.IsPositiveInfinity(ParameterMaxValue);
 
-        public bool IsRay
-        {
-            get
-            {
-                return !double.IsInfinity(ParameterMinValue) &&
-                       double.IsPositiveInfinity(ParameterMaxValue);
-            }
-        }
+        public bool IsRay =>
+            !double.IsInfinity(ParameterMinValue) &&
+            double.IsPositiveInfinity(ParameterMaxValue);
 
-        public bool IsLineSegment
-        {
-            get
-            {
-                return !double.IsInfinity(ParameterMinValue) &&
-                       !double.IsInfinity(ParameterMaxValue);
-            }
-        }
+        public bool IsLineSegment =>
+            !double.IsInfinity(ParameterMinValue) &&
+            !double.IsInfinity(ParameterMaxValue);
 
 
         internal LineTraversalData2D(ILine2D line)
@@ -67,7 +51,7 @@ namespace NumericalGeometryLib.Computers
             ParameterMaxValue = double.PositiveInfinity;
         }
 
-        internal LineTraversalData2D(ILine2D line, IBoundingBox1D paramRange)
+        internal LineTraversalData2D(ILine2D line, Float64Range1D paramRange)
         {
             Origin[0] = line.OriginX;
             Origin[1] = line.OriginY;
@@ -115,10 +99,9 @@ namespace NumericalGeometryLib.Computers
         }
 
 
-        public BoundingBox1D GetParameterRange()
-        {
-            return new BoundingBox1D(ParameterMinValue, ParameterMaxValue);
-        }
+        public Float64Range1D ParameterRange
+            => Float64Range1D.Create(ParameterMinValue, ParameterMaxValue);
+        
 
         public LineSegment2D GetLineSegment()
         {
@@ -130,17 +113,17 @@ namespace NumericalGeometryLib.Computers
             );
         }
 
-        public Float64Tuple2D GetMinPoint()
+        public Float64Vector2D GetMinPoint()
         {
-            return new Float64Tuple2D(
+            return new Float64Vector2D(
                 Origin[0] + ParameterMinValue * Direction[0],
                 Origin[1] + ParameterMinValue * Direction[1]
             );
         }
 
-        public Float64Tuple2D GetMaxPoint()
+        public Float64Vector2D GetMaxPoint()
         {
-            return new Float64Tuple2D(
+            return new Float64Vector2D(
                 Origin[0] + ParameterMaxValue * Direction[0],
                 Origin[1] + ParameterMaxValue * Direction[1]
             );

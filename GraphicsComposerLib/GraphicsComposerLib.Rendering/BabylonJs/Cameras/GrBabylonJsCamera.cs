@@ -84,7 +84,11 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Cameras
             var composer = new LinearTextComposer();
         
             if (!string.IsNullOrEmpty(ConstName))
-                composer.Append($"const {ConstName} = ");
+            {
+                var declarationKeyword = UseLetDeclaration ? "let" : "const";
+
+                composer.Append($"{declarationKeyword} {ConstName} = ");
+            }
 
             var constructorCode = GetConstructorCode();
             var propertiesCode = GetPropertiesCode();

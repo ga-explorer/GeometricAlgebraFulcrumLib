@@ -16,10 +16,7 @@
         /// <summary>
         /// The reflection factor, a +1 for no-reflection or -1 for a reflection
         /// </summary>
-        public int ReflectFactor
-        {
-            get { return IsReflected ? -1 : 1; }
-        }
+        public int ReflectFactor => IsReflected ? -1 : 1;
 
         /// <summary>
         /// True if this collection applies a reflection of the base collection
@@ -29,10 +26,7 @@
         /// <summary>
         /// True if this collection applies a shift of the base collection
         /// </summary>
-        public bool IsShifted
-        {
-            get { return ShiftFactor != 0; }
-        }
+        public bool IsShifted => ShiftFactor != 0;
 
         /// <summary>
         /// The base collection

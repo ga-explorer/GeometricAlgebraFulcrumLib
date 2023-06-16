@@ -22,15 +22,10 @@ namespace NumericalGeometryLib.Collections
 
         public int LastIndex { get; set; }
 
-        public int PeriodSize
-        {
-            get
-            {
-                return LastIndex >= FirstIndex
-                    ? LastIndex - FirstIndex + 1
-                    : FirstIndex - LastIndex + 1;
-            }
-        }
+        public int PeriodSize =>
+            LastIndex >= FirstIndex
+                ? LastIndex - FirstIndex + 1
+                : FirstIndex - LastIndex + 1;
 
         public T this[int index]
         {

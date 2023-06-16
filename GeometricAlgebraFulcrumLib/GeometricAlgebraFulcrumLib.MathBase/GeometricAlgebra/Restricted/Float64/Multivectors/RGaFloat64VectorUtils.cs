@@ -1,13 +1,13 @@
 ﻿using System.Runtime.CompilerServices;
 using DataStructuresLib.BitManipulation;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Mutable;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Records.Restricted;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.LinearMaps.Outermorphisms;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.LinearMaps.Rotors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Subspaces;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Multivectors
 {
@@ -117,32 +117,22 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float6
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Float64Tuple2D GetTuple2D(this RGaFloat64Vector vector)
+        public static Float64Vector2D GetTuple2D(this RGaFloat64Vector vector)
         {
-            return new Float64Tuple2D(
+            return new Float64Vector2D(
                 vector[0],
                 vector[1]
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Float64Tuple3D GetTuple3D(this RGaFloat64Vector vector)
+        public static Float64Vector3D GetTuple3D(this RGaFloat64Vector vector)
         {
-            return new Float64Tuple3D(
-                vector[0],
+            return Float64Vector3D.Create(vector[0],
                 vector[1],
-                vector[2]
-            );
+                vector[2]);
         }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Float64Tuple GetTuple(this RGaFloat64Vector vector)
-        {
-            return Float64Tuple.Create(
-                vector.VectorToArray1D()
-            );
-        }
-
+        
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static double GetEuclideanAngle(this RGaFloat64Vector vector1, RGaFloat64Vector vector2, bool assumeUnitVectors = false)

@@ -1,24 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using NumericalGeometryLib.BasicMath;
-using NumericalGeometryLib.BasicMath.Tuples;
-using NumericalGeometryLib.BasicMath.Tuples.Immutable;
-using NumericalGeometryLib.Borders.Space1D.Immutable;
-using GraphicsComposerLib.Geometry.LatticeShapes;
-using GraphicsComposerLib.Geometry.LatticeShapes.Surfaces;
-using GraphicsComposerLib.Geometry.ParametricShapes.Curves;
-using GraphicsComposerLib.Geometry.ParametricShapes.Curves.Bezier;
-using GraphicsComposerLib.Geometry.ParametricShapes.Curves.Sampled;
-using GraphicsComposerLib.Geometry.Primitives;
-using GraphicsComposerLib.Geometry.Primitives.Lines;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Borders;
+using GeometricAlgebraFulcrumLib.MathBase.Graphics.LatticeShapes;
+using GeometricAlgebraFulcrumLib.MathBase.Graphics.LatticeShapes.Surfaces;
+using GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives;
+using GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Lines;
+using GeometricAlgebraFulcrumLib.MathBase.Parametric;
+using GeometricAlgebraFulcrumLib.MathBase.Parametric.Space3D.Curves.Adaptive;
+using GeometricAlgebraFulcrumLib.MathBase.Parametric.Space3D.Curves.Bezier;
+using GeometricAlgebraFulcrumLib.MathBase.Parametric.Space3D.Frames;
 using GraphicsComposerLib.Rendering.Xeogl;
 
 namespace GraphicsComposerLib.Samples.Geometry.BezierShapes
 {
     public static class Sample1
     {
-        private static string Generate(IReadOnlyList<GrParametricCurveLocalFrame3D> sampledCurve, string htmlFilePath = "")
+        private static string Generate(IReadOnlyList<ParametricCurveLocalFrame3D> sampledCurve, string htmlFilePath = "")
         {
             var composer1 = new GrLineGeometryComposer3D();
             var composer2 = new GrLineGeometryComposer3D();
@@ -84,9 +85,9 @@ namespace GraphicsComposerLib.Samples.Geometry.BezierShapes
 
         public static void Execute()
         {
-            var parameterValueRange = BoundingBox1D.Create(0, 1);
+            var parameterValueRange = Float64Range1D.Create(0, 1);
 
-            var options = new GrParametricCurveTreeOptions3D(
+            var options = new AdaptiveCurveSamplingOptions3D(
                 3.DegreesToAngle(),
                 3,
                 30
@@ -94,24 +95,24 @@ namespace GraphicsComposerLib.Samples.Geometry.BezierShapes
 
             // Create a bezier curve
             //var curve = new BezierCurve3Degree3D(
-            //    new Tuple3D(10, 0, 0),
-            //    new Tuple3D(10, 30, 0),
-            //    new Tuple3D(5, 1, 1),
-            //    new Tuple3D(0, 0, 10)
+            //    new Float64Tuple3D(10, 0, 0),
+            //    new Float64Tuple3D(10, 30, 0),
+            //    new Float64Tuple3D(5, 1, 1),
+            //    new Float64Tuple3D(0, 0, 10)
             //);
 
-            var curve = new GrBezierCurve3Degree3D(
-                new Tuple3D(0, 0, 0),
-                new Tuple3D(10, 0, 0),
-                new Tuple3D(5, 20, 20),
-                new Tuple3D(0, 20, 0)
+            var curve = new BezierCurve3Degree3D(
+                new Float64Tuple3D(0, 0, 0),
+                new Float64Tuple3D(10, 0, 0),
+                new Float64Tuple3D(5, 20, 20),
+                new Float64Tuple3D(0, 20, 0)
             );
 
             var sampledCurve = 
-                new GrParametricCurveTree3D(curve, parameterValueRange)
+                new AdaptiveCurve3D(curve, parameterValueRange)
                 {
-                    FrameSamplingMethod = GrCurveFrameSamplingMethod.SimpleRotation,
-                    FrameInterpolationMethod = GrCurveFrameInterpolationMethod.SphericalLinearInterpolation
+                    FrameSamplingMethod = ParametricCurveLocalFrameSamplingMethod.SimpleRotation,
+                    FrameInterpolationMethod = ParametricCurveLocalFrameInterpolationMethod.SphericalLinearInterpolation
                 };
 
             sampledCurve.GenerateTree(options);

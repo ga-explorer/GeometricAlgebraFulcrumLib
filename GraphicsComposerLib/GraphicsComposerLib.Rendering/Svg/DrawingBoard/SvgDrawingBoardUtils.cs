@@ -1,14 +1,14 @@
 ﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
-using GeometricAlgebraFulcrumLib.MathBase.BasicShapes;
-using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Lines;
-using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Triangles;
-using GeometricAlgebraFulcrumLib.MathBase.Borders;
-using GeometricAlgebraFulcrumLib.MathBase.Borders.Space2D;
-using GraphicsComposerLib.Rendering.Svg.Styles;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Triangles;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
 using NumericalGeometryLib.Accelerators.BIH.Space2D;
 using NumericalGeometryLib.Accelerators.Grids;
 using NumericalGeometryLib.Accelerators.Grids.Space2D;
+using WebComposerLib.Svg.Styles;
 
 namespace GraphicsComposerLib.Rendering.Svg.DrawingBoard
 {
@@ -62,11 +62,11 @@ namespace GraphicsComposerLib.Rendering.Svg.DrawingBoard
         {
             var lineSegment = shape as ILineSegment2D;
             if (!ReferenceEquals(lineSegment, null))
-                return DrawLineSegment(drawingBoardLayer, lineSegment);
+                return drawingBoardLayer.DrawLineSegment(lineSegment);
 
             var triangle = shape as ITriangle2D;
             if (!ReferenceEquals(triangle, null))
-                return DrawTriangle(drawingBoardLayer, triangle);
+                return drawingBoardLayer.DrawTriangle(triangle);
 
             return drawingBoardLayer;
         }
@@ -78,14 +78,14 @@ namespace GraphicsComposerLib.Rendering.Svg.DrawingBoard
                 var lineSegment = shape as ILineSegment2D;
                 if (!ReferenceEquals(lineSegment, null))
                 {
-                    DrawLineSegment(drawingBoardLayer, lineSegment);
+                    drawingBoardLayer.DrawLineSegment(lineSegment);
                     continue;
                 }
 
                 var triangle = shape as ITriangle2D;
                 if (!ReferenceEquals(triangle, null))
                 {
-                    DrawTriangle(drawingBoardLayer, triangle);
+                    drawingBoardLayer.DrawTriangle(triangle);
                     continue;
                 }
             }
@@ -93,7 +93,7 @@ namespace GraphicsComposerLib.Rendering.Svg.DrawingBoard
             return drawingBoardLayer;
         }
 
-        
+
         /// <summary>
         /// Draw a straight line segment between two points
         /// </summary>
@@ -104,9 +104,9 @@ namespace GraphicsComposerLib.Rendering.Svg.DrawingBoard
         public static SvgDrawingBoardLayer DrawLineSegment(this SvgDrawingBoardLayer drawingLayer, IFloat64Tuple2D point1, IFloat64Tuple2D point2)
         {
             drawingLayer.DrawLineSegment(
-                point1.X, 
+                point1.X,
                 point1.Y,
-                point2.X, 
+                point2.X,
                 point2.Y
             );
 
@@ -122,9 +122,9 @@ namespace GraphicsComposerLib.Rendering.Svg.DrawingBoard
         public static SvgDrawingBoardLayer DrawLineSegment(this SvgDrawingBoardLayer drawingLayer, ILineSegment2D lineSegment)
         {
             drawingLayer.DrawLineSegment(
-                lineSegment.Point1X, 
+                lineSegment.Point1X,
                 lineSegment.Point1Y,
-                lineSegment.Point2X, 
+                lineSegment.Point2X,
                 lineSegment.Point2Y
             );
 
@@ -263,7 +263,7 @@ namespace GraphicsComposerLib.Rendering.Svg.DrawingBoard
 
             return drawingLayer;
         }
-        
+
         public static SvgDrawingBoardLayer DrawRectangle(this SvgDrawingBoardLayer drawingLayer, IBoundingBox2D boundingBox)
         {
             drawingLayer.DrawRectangle(
@@ -285,7 +285,7 @@ namespace GraphicsComposerLib.Rendering.Svg.DrawingBoard
                     .GetViewBox()
                     .ClipLine(line);
 
-            return DrawLineSegment(drawingLayer, lineSegment);
+            return drawingLayer.DrawLineSegment(lineSegment);
         }
 
         public static SvgDrawingBoardLayer DrawLine(this SvgDrawingBoardLayer drawingLayer, ILine2D line, double lineParamMinValue, double lineParamMaxValue = double.PositiveInfinity)
@@ -298,7 +298,7 @@ namespace GraphicsComposerLib.Rendering.Svg.DrawingBoard
 
             return ReferenceEquals(lineSegment, null)
                 ? drawingLayer
-                : DrawLineSegment(drawingLayer, lineSegment);
+                : drawingLayer.DrawLineSegment(lineSegment);
         }
 
 
@@ -336,7 +336,7 @@ namespace GraphicsComposerLib.Rendering.Svg.DrawingBoard
 
         public static SvgDrawingBoardLayer DrawBoundingBox(this SvgDrawingBoardLayer drawingLayer, IBoundingBox2D boundingBox)
         {
-            var boardViewBox = 
+            var boardViewBox =
                 drawingLayer.ParentDrawingBoard.GetViewBox();
 
             drawingLayer.DrawRectangle(
@@ -352,7 +352,7 @@ namespace GraphicsComposerLib.Rendering.Svg.DrawingBoard
 
         public static SvgDrawingBoard DrawGrid(this SvgDrawingBoard drawingBoard, IAccGrid2D<ILineSegment2D> grid)
         {
-            return DrawGrid(drawingBoard, grid, new AccGridDrawingSettings2D());
+            return drawingBoard.DrawGrid(grid, new AccGridDrawingSettings2D());
         }
 
         public static SvgDrawingBoard DrawGrid(this SvgDrawingBoard drawingBoard, IAccGrid2D<ILineSegment2D> grid, AccGridDrawingSettings2D drawingSettings)
@@ -398,7 +398,7 @@ namespace GraphicsComposerLib.Rendering.Svg.DrawingBoard
                 var gridInfo = AccGridInfo2D.Create(grid);
 
                 drawingBoard.AddFrontLayer("Active Cells");
-                drawingBoard.ActiveLayer.ActiveStyle = 
+                drawingBoard.ActiveLayer.ActiveStyle =
                     SvgDrawingBoardLayerActiveStyle.Default;
 
                 drawingBoard

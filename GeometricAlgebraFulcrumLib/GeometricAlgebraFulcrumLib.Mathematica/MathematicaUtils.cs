@@ -5,7 +5,6 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Diagnostics.CodeAnalysis;
 using CodeComposerLib.SyntaxTree.Expressions;
-using GeometricAlgebraFulcrumLib.MathBase.Signals;
 using GeometricAlgebraFulcrumLib.Mathematica.Mathematica;
 using GeometricAlgebraFulcrumLib.Mathematica.Mathematica.Expression;
 using GeometricAlgebraFulcrumLib.Mathematica.Mathematica.ExprFactory;
@@ -18,12 +17,13 @@ using GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Matrices;
 using GeometricAlgebraFulcrumLib.Storage.LinearAlgebra.Vectors;
 using Wolfram.NETLink;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.Mathematica.GeometricAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Arrays.Generic;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic.Matrices;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Mathematica
 {
@@ -519,6 +519,17 @@ namespace GeometricAlgebraFulcrumLib.Mathematica
         public static Expr ToExpr(this double value)
         {
             return new Expr(value);
+        }
+        
+        /// <summary>
+        /// Create a Mathematica Expr object from the given value
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Expr ToExpr(this Float64Scalar value)
+        {
+            return new Expr(value.Value);
         }
 
         /// <summary>
@@ -1440,9 +1451,9 @@ namespace GeometricAlgebraFulcrumLib.Mathematica
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ScalarSignalFloat64 GetSampledSignal(this Expr scalar1, Expr t, double samplingRate, int sampleCount)
+        public static Float64Signal GetSampledSignal(this Expr scalar1, Expr t, double samplingRate, int sampleCount)
         {
-            return ScalarSignalFloat64.CreatePeriodic(
+            return Float64Signal.CreatePeriodic(
                 sampleCount,
                 sampleCount / samplingRate,
                 d =>
@@ -1453,7 +1464,7 @@ namespace GeometricAlgebraFulcrumLib.Mathematica
             );
         }
 
-        public static XGaVector<ScalarSignalFloat64> GetSampledSignal(this XGaProcessor<ScalarSignalFloat64> processor, XGaVector<Expr> vector, Expr t, double samplingRate, int sampleCount)
+        public static XGaVector<Float64Signal> GetSampledSignal(this XGaProcessor<Float64Signal> processor, XGaVector<Expr> vector, Expr t, double samplingRate, int sampleCount)
         {
             var composer = processor.CreateComposer();
 
@@ -1468,7 +1479,7 @@ namespace GeometricAlgebraFulcrumLib.Mathematica
             return composer.GetVector();
         }
         
-        public static XGaBivector<ScalarSignalFloat64> GetSampledSignal(this XGaProcessor<ScalarSignalFloat64> processor, XGaBivector<Expr> bivector, Expr t, double samplingRate, int sampleCount)
+        public static XGaBivector<Float64Signal> GetSampledSignal(this XGaProcessor<Float64Signal> processor, XGaBivector<Expr> bivector, Expr t, double samplingRate, int sampleCount)
         {
             var composer = processor.CreateComposer();
                 

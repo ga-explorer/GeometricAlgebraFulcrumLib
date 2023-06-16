@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using GeometricAlgebraFulcrumLib.MathBase.Borders.Space1D;
-using GeometricAlgebraFulcrumLib.MathBase.Borders.Space1D.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders;
 using NumericalGeometryLib.Computers;
 
 namespace NumericalGeometryLib.Accelerators.BIH.Space3D.Traversal
@@ -15,13 +14,12 @@ namespace NumericalGeometryLib.Accelerators.BIH.Space3D.Traversal
 
         public double LineParameterMaxValue { get; private set; }
 
-        public BoundingBox1D GetLineParameterRange()
-        {
-            return new BoundingBox1D(
+        public Float64Range1D LineParameterRange
+            => Float64Range1D.Create(
                 LineParameterMinValue,
                 LineParameterMaxValue
             );
-        }
+        
 
 
         internal AccBihLineTraversalState3D(IAccBihNode3D bihNode, double lineParameterMinValue, double lineParameterMaxValue)
@@ -33,7 +31,7 @@ namespace NumericalGeometryLib.Accelerators.BIH.Space3D.Traversal
             BihNode = bihNode;
         }
 
-        internal AccBihLineTraversalState3D(IAccBihNode3D bihNode, IBoundingBox1D lineParameterRange)
+        internal AccBihLineTraversalState3D(IAccBihNode3D bihNode, Float64Range1D lineParameterRange)
         {
             Debug.Assert(!ReferenceEquals(bihNode, null));
 
@@ -43,7 +41,7 @@ namespace NumericalGeometryLib.Accelerators.BIH.Space3D.Traversal
         }
 
 
-        public bool RestrictLineParameterRange(IBoundingBox1D lineParamLimits)
+        public bool RestrictLineParameterRange(Float64Range1D lineParamLimits)
         {
             if (LineParameterMaxValue < lineParamLimits.MinValue ||
                 LineParameterMinValue > lineParamLimits.MaxValue)

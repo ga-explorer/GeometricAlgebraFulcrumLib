@@ -3,15 +3,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using DataStructuresLib.Statistics;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
-using GeometricAlgebraFulcrumLib.MathBase.BasicShapes;
-using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Lines;
-using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Lines.Immutable;
-using GeometricAlgebraFulcrumLib.MathBase.Borders;
-using GeometricAlgebraFulcrumLib.MathBase.Borders.Space1D;
-using GeometricAlgebraFulcrumLib.MathBase.Borders.Space1D.Immutable;
-using GeometricAlgebraFulcrumLib.MathBase.Borders.Space2D;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 using NumericalGeometryLib.Accelerators.BIH;
 using NumericalGeometryLib.Accelerators.BIH.Space2D;
 using NumericalGeometryLib.Accelerators.BIH.Space2D.Traversal;
@@ -113,7 +111,7 @@ namespace NumericalGeometryLib.Computers.Intersections
 
         public Line2D Line { get; private set; }
 
-        public BoundingBox1D LineParameterLimits { get; private set; }
+        public Float64Range1D LineParameterLimits { get; private set; }
 
 
         /// <summary>
@@ -133,7 +131,7 @@ namespace NumericalGeometryLib.Computers.Intersections
                 lineSegment.Point2Y - lineSegment.Point1Y
             );
 
-            LineParameterLimits = new BoundingBox1D(0, 1);
+            LineParameterLimits = Float64Range1D.ZeroToOne;
 
             return this;
         }
@@ -147,12 +145,12 @@ namespace NumericalGeometryLib.Computers.Intersections
                 point2.Y - point1.Y
             );
 
-            LineParameterLimits = new BoundingBox1D(0, 1);
+            LineParameterLimits = Float64Range1D.ZeroToOne;
 
             return this;
         }
 
-        public GcLimitedLineIntersector2D SetLine(IFloat64Tuple2D lineOrigin, IFloat64Tuple2D lineDirection, IBoundingBox1D lineParamLimits)
+        public GcLimitedLineIntersector2D SetLine(IFloat64Tuple2D lineOrigin, IFloat64Tuple2D lineDirection, Float64Range1D lineParamLimits)
         {
             Line = new Line2D(
                 lineOrigin.X,
@@ -161,16 +159,16 @@ namespace NumericalGeometryLib.Computers.Intersections
                 lineDirection.Y
             );
 
-            LineParameterLimits = lineParamLimits.GetBoundingBox();
+            LineParameterLimits = lineParamLimits;
 
             return this;
         }
 
-        public GcLimitedLineIntersector2D SetLine(ILine2D line, IBoundingBox1D lineParamLimits)
+        public GcLimitedLineIntersector2D SetLine(ILine2D line, Float64Range1D lineParamLimits)
         {
             Line = line.ToLine();
 
-            LineParameterLimits = lineParamLimits.GetBoundingBox();
+            LineParameterLimits = lineParamLimits;
 
             return this;
         }
@@ -233,7 +231,7 @@ namespace NumericalGeometryLib.Computers.Intersections
                 (p1.Y - p2.Y) * (p4.X - p3.X) -
                 (p1.X - p2.X) * (p4.Y - p3.Y);
 
-            if (t2 == 0)
+            if (t2.IsZero())
                 return false;
 
             var ta1 =
@@ -242,7 +240,7 @@ namespace NumericalGeometryLib.Computers.Intersections
 
             var ta = ta1 / t2;
 
-            if (ta is < 0 or > 1)
+            if (ta.Value is < 0 or > 1)
                 return false;
 
             var tb1 =
@@ -251,7 +249,7 @@ namespace NumericalGeometryLib.Computers.Intersections
 
             var tb = tb1 / t2;
 
-            if (tb is < 0 or > 1)
+            if (tb.Value is < 0 or > 1)
                 return false;
 
             return true;
@@ -484,7 +482,7 @@ namespace NumericalGeometryLib.Computers.Intersections
                 (p1.Y - p2.Y) * (p4.X - p3.X) -
                 (p1.X - p2.X) * (p4.Y - p3.Y);
 
-            if (t2 == 0)
+            if (t2.IsZero())
                 return IntersectionUtils.NoIntersection;
 
             var ta1 =
@@ -493,7 +491,7 @@ namespace NumericalGeometryLib.Computers.Intersections
 
             var ta = ta1 / t2;
 
-            if (ta is < 0 or > 1)
+            if (ta.Value is < 0 or > 1)
                 return IntersectionUtils.NoIntersection;
 
             var tb1 =
@@ -502,10 +500,10 @@ namespace NumericalGeometryLib.Computers.Intersections
 
             var tb = tb1 / t2;
 
-            if (tb is < 0 or > 1)
+            if (tb.Value is < 0 or > 1)
                 return IntersectionUtils.NoIntersection;
 
-            return Tuple.Create(true, ta);
+            return new Tuple<bool, double>(true, ta);
         }
 
         public Tuple<bool, double> ComputeIntersection(ILineSegment2D lineSegment)
@@ -1193,10 +1191,7 @@ namespace NumericalGeometryLib.Computers.Intersections
                 -oldLine.DirectionY
             );
 
-            LineParameterLimits = new BoundingBox1D(
-                1 - oldLineParameterLimits.MaxValue,
-                1 - oldLineParameterLimits.MinValue
-            );
+            LineParameterLimits = 1d - oldLineParameterLimits;
 
             var result = ComputeFirstIntersection(grid);
 
@@ -1380,13 +1375,11 @@ namespace NumericalGeometryLib.Computers.Intersections
 
                     hasIntersection = true;
 
-                    if (lineTraverser.LineParameterLimits.MaxValue > result.Item2)
+                    if (lineTraverser.LineParameterRange.MaxValue > result.Item2)
                     {
                         hitLineSegment = lineSegment;
 
-                        lineTraverser
-                            .LineParameterLimits
-                            .RestrictMaxValue(result.Item2);
+                        lineTraverser.ResetMaxParameterValue(result.Item2);
                     }
                 }
             }
@@ -1397,7 +1390,7 @@ namespace NumericalGeometryLib.Computers.Intersections
 
             return new Tuple<bool, double, ILineSegment2D>(
                 hasIntersection,
-                lineTraverser.LineParameterLimits.MaxValue,
+                lineTraverser.LineParameterRange.MaxValue,
                 hitLineSegment
             );
         }
@@ -1441,13 +1434,11 @@ namespace NumericalGeometryLib.Computers.Intersections
 
                     hasIntersection = true;
 
-                    if (lineTraverser.LineParameterLimits.MinValue < result.Item2)
+                    if (lineTraverser.LineParameterRange.MinValue < result.Item2)
                     {
                         hitLineSegment = lineSegment;
 
-                        lineTraverser
-                            .LineParameterLimits
-                            .RestrictMinValue(result.Item2);
+                        lineTraverser.ResetMinParameterValue(result.Item2);
                     }
                 }
             }
@@ -1458,7 +1449,7 @@ namespace NumericalGeometryLib.Computers.Intersections
 
             return new Tuple<bool, double, ILineSegment2D>(
                 hasIntersection,
-                lineTraverser.LineParameterLimits.MinValue,
+                lineTraverser.LineParameterRange.MinValue,
                 hitLineSegment
             );
         }

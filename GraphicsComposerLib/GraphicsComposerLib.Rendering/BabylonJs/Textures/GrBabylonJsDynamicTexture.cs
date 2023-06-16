@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using GraphicsComposerLib.Rendering.BabylonJs.Values;
+﻿using GraphicsComposerLib.Rendering.BabylonJs.Values;
 using TextComposerLib;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Textures
@@ -44,7 +43,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Textures
         }
 
     
-        public GrBabylonJsDynamicTexture SetProperties([NotNull] DynamicTextureProperties? properties)
+        public GrBabylonJsDynamicTexture SetProperties(DynamicTextureProperties properties)
         {
             Properties = properties;
 

@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using GeometricAlgebraFulcrumLib.MathBase.BasicShapes;
-using GeometricAlgebraFulcrumLib.MathBase.Borders.Space2D.Immutable;
-using GeometricAlgebraFulcrumLib.MathBase.Borders.Space2D.Mutable;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D.Mutable;
 
 namespace NumericalGeometryLib.Accelerators.BIH.Space2D
 {
@@ -21,67 +21,35 @@ namespace NumericalGeometryLib.Accelerators.BIH.Space2D
             return true;
         }
 
-        public int Count
-        {
-            get { return LastObjectIndex - FirstObjectIndex + 1; }
-        }
+        public int Count => LastObjectIndex - FirstObjectIndex + 1;
 
-        public T this[int index]
-        {
-            get { return _geometricObjectsArray[FirstObjectIndex + index]; }
-        }
+        public T this[int index] => _geometricObjectsArray[FirstObjectIndex + index];
 
         public string NodeId { get; set; }
 
-        public bool IsRoot
-        {
-            get { return NodeDepth == 0; }
-        }
+        public bool IsRoot => NodeDepth == 0;
 
-        public bool IsLeaf
-        {
-            get { return false; }
-        }
+        public bool IsLeaf => false;
 
-        public bool IsInternal
-        {
-            get { return true; }
-        }
+        public bool IsInternal => true;
 
-        public bool IsSingleInternal
-        {
-            get
-            {
-                return (HasLeftChild && !HasRightChild) ||
-                       (!HasLeftChild && HasRightChild);
-            }
-        }
+        public bool IsSingleInternal =>
+            (HasLeftChild && !HasRightChild) ||
+            (!HasLeftChild && HasRightChild);
 
         public int NodeDepth { get; }
 
-        public int BihDepth
-        {
-            get { return NodeId.Length; }
-        }
+        public int BihDepth => NodeId.Length;
 
         public int FirstObjectIndex { get; }
 
         public int LastObjectIndex { get; }
 
-        public bool HasLeftChild
-        {
-            get { return !ReferenceEquals(LeftChildNode, null); }
-        }
+        public bool HasLeftChild => !ReferenceEquals(LeftChildNode, null);
 
-        public bool HasRightChild
-        {
-            get { return !ReferenceEquals(RightChildNode, null); }
-        }
+        public bool HasRightChild => !ReferenceEquals(RightChildNode, null);
 
-        public bool HasNoChildren
-        {
-            get { return !(HasLeftChild || HasRightChild); }
-        }
+        public bool HasNoChildren => !(HasLeftChild || HasRightChild);
 
         public int SplitAxisIndex { get; }
 
@@ -107,25 +75,19 @@ namespace NumericalGeometryLib.Accelerators.BIH.Space2D
 
         public double ClipValue0
         {
-            get { return _clipValues[0]; }
-            internal set { _clipValues[0] = value; }
+            get => _clipValues[0];
+            internal set => _clipValues[0] = value;
         }
 
         public double ClipValue1
         {
-            get { return _clipValues[1]; }
-            internal set { _clipValues[1] = value; }
+            get => _clipValues[1];
+            internal set => _clipValues[1] = value;
         }
 
-        public IAccBihNode2D LeftChild
-        {
-            get { return LeftChildNode; }
-        }
+        public IAccBihNode2D LeftChild => LeftChildNode;
 
-        public IAccBihNode2D RightChild
-        {
-            get { return RightChildNode; }
-        }
+        public IAccBihNode2D RightChild => RightChildNode;
 
         public IAccBihNode2D<T> LeftChildNode { get; internal set; }
 

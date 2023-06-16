@@ -2,11 +2,10 @@
 using System.Linq;
 using DataStructuresLib.Basic;
 using GeometricAlgebraFulcrumLib.Applications.PowerSystems;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Coordinates;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Euclidean3D;
-using GeometricAlgebraFulcrumLib.MathBase.Signals;
-using GraphicsComposerLib.Rendering.LaTeX.CodeComposer;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra.Composers;
+using WebComposerLib.LaTeX.CodeComposer;
 
 namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
 {
@@ -18,14 +17,14 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
         public static double Frequency
             => 2d * Math.PI * FrequencyHz;
 
-        public static Triplet<PolarPosition2D> Phasors { get; }
+        public static Triplet<Float64PolarVector2D> Phasors { get; }
         //= new Triplet<PolarPosition2D>(
         //    0d.DegreesToAngle().ToPolarPosition(4),
         //    240d.DegreesToAngle().ToPolarPosition(4),
         //    120.DegreesToAngle().ToPolarPosition(4)
         //);
 
-            = new Triplet<PolarPosition2D>(
+            = new Triplet<Float64PolarVector2D>(
                 0d.DegreesToAngle().ToPolarPosition(2),
                 230d.DegreesToAngle().ToPolarPosition(4),
                 135d.DegreesToAngle().ToPolarPosition(1)
@@ -144,7 +143,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             var visualizer = new SymmetricalComponentsSignalVisualizer3D(cameraAlphaValues, cameraBetaValues, powerSignal)
             {
                 Title = "Rotated sinusoidal symmetrical components",
-                WorkingPath = @"D:\Projects\Study\Babylon.js\",
+                WorkingPath = @"D:\Projects\Study\Web\Babylon.js\",
                 HostUrl = "http://localhost:5200/",
                 //LiveReloadWebServer "D:/Projects/Study/Babylon.js/" --port 5200 --UseSsl False --LiveReloadEnabled False --OpenBrowser True
 

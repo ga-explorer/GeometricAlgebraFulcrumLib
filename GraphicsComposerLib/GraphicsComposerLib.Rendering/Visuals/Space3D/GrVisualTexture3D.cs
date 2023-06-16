@@ -12,5 +12,11 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D
             : base(name)
         {
         }
+
+
+        public override bool IsValid()
+        {
+            return true;
+        }
     }
 }

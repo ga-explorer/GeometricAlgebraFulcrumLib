@@ -1,6 +1,6 @@
-﻿using GraphicsComposerLib.Rendering.Colors;
-using GraphicsComposerLib.Rendering.ThreeJs.Obsolete.Objects;
+﻿using GraphicsComposerLib.Rendering.ThreeJs.Obsolete.Objects;
 using TextComposerLib.Code.JavaScript;
+using WebComposerLib.Colors;
 
 namespace GraphicsComposerLib.Rendering.ThreeJs.Obsolete.Math
 {

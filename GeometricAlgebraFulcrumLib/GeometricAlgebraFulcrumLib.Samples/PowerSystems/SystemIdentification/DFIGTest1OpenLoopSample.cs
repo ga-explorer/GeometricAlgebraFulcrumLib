@@ -4,14 +4,15 @@ using System.IO;
 using System.Linq;
 using DataStructuresLib.Basic;
 using GeometricAlgebraFulcrumLib.MathBase;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
-using GeometricAlgebraFulcrumLib.MathBase.Differential.Functions;
-using GeometricAlgebraFulcrumLib.MathBase.Differential.Functions.Interpolators;
-using GeometricAlgebraFulcrumLib.MathBase.Differential.Functions.Phasors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Processors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
-using GeometricAlgebraFulcrumLib.MathBase.Parametric.Curves.CatmullRom;
-using GeometricAlgebraFulcrumLib.MathBase.Signals;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Differential.Functions;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Differential.Functions.Interpolators;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Differential.Functions.Phasors;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.Text;
 using GeometricAlgebraFulcrumLib.Processors;
 using GeometricAlgebraFulcrumLib.Processors.SignalAlgebra;
@@ -73,7 +74,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.SystemIdentification
 
         // Create a 3-dimensional Euclidean geometric algebra processor based on the
         // selected tuple scalar processor
-        public static RGaEuclideanProcessor<ScalarSignalFloat64> GeometricSignalProcessor { get; }
+        public static RGaEuclideanProcessor<Float64Signal> GeometricSignalProcessor { get; }
             = ScalarSignalProcessor.CreateEuclideanRGaProcessor();
 
         private static string CombineWorkingPath(this string fileName)
@@ -96,7 +97,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.SystemIdentification
             return (1 - t) * v1 + t * v2;
         }
 
-        private static void PlotCurve(this Scalar<ScalarSignalFloat64> curve, string title, string filePath)
+        private static void PlotCurve(this Scalar<Float64Signal> curve, string title, string filePath)
         {
             curve.ScalarValue.PlotCurve(title, filePath);
         }
@@ -309,7 +310,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.SystemIdentification
         //    package.SaveAs(outputFilePath);
         //}
     
-        private static void ComputeValues(string phaseName, ScalarSignalFloat64 tData, DifferentialFunction vFunc, DifferentialFunction iFunc, DifferentialFunction wFunc)
+        private static void ComputeValues(string phaseName, Float64Signal tData, DifferentialFunction vFunc, DifferentialFunction iFunc, DifferentialFunction wFunc)
         {
             var (vDt0, vDt1, vDt2) = 
                 tData.SampleFunctionDerivatives2(vFunc);
@@ -402,7 +403,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.SystemIdentification
             package.SaveAs(outputFilePath);
         }
     
-        private static void ComputeValues1(string phaseName, ScalarSignalFloat64 tData, DifferentialFunction vFunc, DifferentialFunction iFunc, DifferentialFunction wFunc)
+        private static void ComputeValues1(string phaseName, Float64Signal tData, DifferentialFunction vFunc, DifferentialFunction iFunc, DifferentialFunction wFunc)
         {
             var (vDt0, vDt1, vDt2, vDt3) = 
                 tData.SampleFunctionDerivatives3(vFunc);
@@ -516,7 +517,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.SystemIdentification
             return new Triplet<double>(d, q, z);
         }
 
-        private static Triplet<ScalarSignalFloat64> Dqz(ScalarSignalFloat64 aSignal, ScalarSignalFloat64 bSignal, ScalarSignalFloat64 cSignal)
+        private static Triplet<Float64Signal> Dqz(Float64Signal aSignal, Float64Signal bSignal, Float64Signal cSignal)
         {
             const double f = 50d;
 
@@ -544,7 +545,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.SystemIdentification
                 zSignalArray[i] = z;
             }
 
-            return new Triplet<ScalarSignalFloat64>(
+            return new Triplet<Float64Signal>(
                 dSignalArray.CreateSignal(samplingRate),
                 qSignalArray.CreateSignal(samplingRate),
                 zSignalArray.CreateSignal(samplingRate)
@@ -590,7 +591,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.SystemIdentification
             );
         }
 
-        private static void ComputeValuesDq(string phaseName, ScalarSignalFloat64 tData, Triplet<DifferentialFunction> vsFunc, Triplet<DifferentialFunction> isFunc, Triplet<DifferentialFunction> irFunc)
+        private static void ComputeValuesDq(string phaseName, Float64Signal tData, Triplet<DifferentialFunction> vsFunc, Triplet<DifferentialFunction> isFunc, Triplet<DifferentialFunction> irFunc)
         {
             const double freq = 2d * Math.PI * 0.005d;//50;
 
@@ -739,7 +740,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.SystemIdentification
             package.SaveAs(outputFilePath);
         }
     
-        public static DifferentialFunction ReadExcelColumnD3(this ExcelWorksheet workSheet, int columnIndex)
+        private static DifferentialFunction ReadExcelColumnD3(this ExcelWorksheet workSheet, int columnIndex)
         {
             const int bezierDegree = 3;
             const CatmullRomSplineType curveType = CatmullRomSplineType.Centripetal;
@@ -750,7 +751,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.SystemIdentification
                 .ReadScalarColumn(2, SignalSamplesCount, SampleStep, columnIndex)
                 .CreateSignal(SamplingRate)
                 .ReSampleForBezierSmoothing(bezierDegree)
-                .CreateCatmullRomSplineInterpolator(
+                .GetCatmullRomInterpolator(
                     new DfCatmullRomSplineSignalInterpolatorOptions
                     {
                         BezierDegree = bezierDegree,
@@ -760,7 +761,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.SystemIdentification
                 );
         }
     
-        public static DifferentialFunction ReadExcelColumnD4(this ExcelWorksheet workSheet, int columnIndex)
+        private static DifferentialFunction ReadExcelColumnD4(this ExcelWorksheet workSheet, int columnIndex)
         {
             const int bezierDegree = 3;
             const CatmullRomSplineType curveType = CatmullRomSplineType.Centripetal;
@@ -771,7 +772,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.SystemIdentification
                 .ReadScalarColumn(2, SignalSamplesCount, SampleStep, columnIndex)
                 .CreateSignal(SamplingRate)
                 .ReSampleForBezierSmoothing(bezierDegree)
-                .CreateCatmullRomSplineInterpolator(
+                .GetCatmullRomInterpolator(
                     new DfCatmullRomSplineSignalInterpolatorOptions
                     {
                         BezierDegree = bezierDegree,
@@ -972,7 +973,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.SystemIdentification
                     .CreateSignal(SamplingRate);
 
             var dataHist =
-                ScalarLog2HistogramFloat64.Create(dataValues1).Trim(1e-2d);
+                Float64SignalLog2Histogram.Create(dataValues1).Trim(1e-2d);
 
             const double tMin = -25d;
             const double tMax = 25d;

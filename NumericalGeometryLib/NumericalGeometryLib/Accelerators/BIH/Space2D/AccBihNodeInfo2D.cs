@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using DataStructuresLib;
-using GeometricAlgebraFulcrumLib.MathBase.BasicShapes;
-using GeometricAlgebraFulcrumLib.MathBase.Borders.Space2D.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D.Immutable;
 
 namespace NumericalGeometryLib.Accelerators.BIH.Space2D
 {
@@ -80,84 +80,39 @@ namespace NumericalGeometryLib.Accelerators.BIH.Space2D
 
         public IAccBihNode2D Node { get; }
 
-        public string NodeId
-        {
-            get { return Node.NodeId; }
-        }
+        public string NodeId => Node.NodeId;
 
-        public int TreeDepth
-        {
-            get { return Node.NodeId.Length; }
-        }
+        public int TreeDepth => Node.NodeId.Length;
 
-        public int NodeDepth
-        {
-            get { return Node.NodeDepth; }
-        }
+        public int NodeDepth => Node.NodeDepth;
 
         public BoundingBox2D BoundingBox { get; }
 
-        public bool IsLeaf
-        {
-            get { return Node.IsLeaf; }
-        }
+        public bool IsLeaf => Node.IsLeaf;
 
-        public bool IsInternal
-        {
-            get { return Node.IsInternal; }
-        }
+        public bool IsInternal => Node.IsInternal;
 
-        public bool IsSingleInternal
-        {
-            get { return Node.IsSingleInternal; }
-        }
+        public bool IsSingleInternal => Node.IsSingleInternal;
 
-        public int FirstObjectIndex
-        {
-            get { return Node.FirstObjectIndex; }
-        }
+        public int FirstObjectIndex => Node.FirstObjectIndex;
 
-        public int LastObjectIndex
-        {
-            get { return Node.LastObjectIndex; }
-        }
+        public int LastObjectIndex => Node.LastObjectIndex;
 
-        public bool HasLeftChild
-        {
-            get { return Node.HasLeftChild; }
-        }
+        public bool HasLeftChild => Node.HasLeftChild;
 
-        public bool HasRightChild
-        {
-            get { return Node.HasRightChild; }
-        }
+        public bool HasRightChild => Node.HasRightChild;
 
-        public bool HasBoundingBox
-        {
-            get { return !ReferenceEquals(BoundingBox, null); }
-        }
+        public bool HasBoundingBox => !ReferenceEquals(BoundingBox, null);
 
         //public bool IntersectionTestsEnabled => Node.IntersectionTestsEnabled;
 
-        public int SplitAxisIndex
-        {
-            get { return Node.SplitAxisIndex; }
-        }
+        public int SplitAxisIndex => Node.SplitAxisIndex;
 
-        public string SplitAxisName
-        {
-            get { return Node.SplitAxisName; }
-        }
+        public string SplitAxisName => Node.SplitAxisName;
 
-        public double ClipValue0
-        {
-            get { return Node.ClipValue0; }
-        }
+        public double ClipValue0 => Node.ClipValue0;
 
-        public double ClipValue1
-        {
-            get { return Node.ClipValue1; }
-        }
+        public double ClipValue1 => Node.ClipValue1;
 
 
         internal AccBihNodeInfo2D(IAccBihNode2D node, BoundingBox2D boundingBox)

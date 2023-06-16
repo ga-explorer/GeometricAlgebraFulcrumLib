@@ -5,14 +5,16 @@ using System.Linq;
 using DataStructuresLib.Basic;
 using GeometricAlgebraFulcrumLib.Algebra.PolynomialAlgebra.Polynomials;
 using GeometricAlgebraFulcrumLib.MathBase;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
-using GeometricAlgebraFulcrumLib.MathBase.Differential.Functions.Interpolators;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float64.Processors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Processors;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Differential.Functions.Interpolators;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra;
-using GeometricAlgebraFulcrumLib.MathBase.Signals;
+using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra.Composers;
+using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra.Interpolators;
+using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra.Processors;
 using GeometricAlgebraFulcrumLib.MathBase.Text;
 using GeometricAlgebraFulcrumLib.Processors;
 using GeometricAlgebraFulcrumLib.Processors.SignalAlgebra;
@@ -64,7 +66,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.SystemIdentification
 
         // Create a 3-dimensional Euclidean geometric algebra processor based on the
         // selected tuple scalar processor
-        public static RGaProcessor<ScalarSignalFloat64> GeometricSignalProcessor { get; }
+        public static RGaProcessor<Float64Signal> GeometricSignalProcessor { get; }
             = ScalarSignalProcessor.CreateEuclideanRGaProcessor();
 
         private static string CombineWorkingPath(this string fileName)
@@ -87,7 +89,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.SystemIdentification
             return (1 - t) * v1 + t * v2;
         }
 
-        private static void PlotCurve(this Scalar<ScalarSignalFloat64> curve, string title, string filePath)
+        private static void PlotCurve(this Scalar<Float64Signal> curve, string title, string filePath)
         {
             curve.ScalarValue.PlotCurve(title, filePath);
         }
@@ -165,7 +167,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.SystemIdentification
         }
 
 
-        private static Quint<Scalar<ScalarSignalFloat64>> GetCurveWithDt4(this RGaVector<ScalarSignalFloat64> signalSamples, IEnumerable<double> tData, RGaVectorNevilleInterpolator interpolator)
+        private static Quint<Scalar<Float64Signal>> GetCurveWithDt4(this RGaVector<Float64Signal> signalSamples, IEnumerable<double> tData, RGaVectorNevilleInterpolator interpolator)
         {
             var u = 
                 tData.Select(t => 
@@ -196,10 +198,10 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.SystemIdentification
             //var sDt3 = uDt3.WienerFilter1D(SignalSamplesCount, 5)[0];
             //var sDt4 = uDt4.WienerFilter1D(SignalSamplesCount, 5)[0];
 
-            return new Quint<Scalar<ScalarSignalFloat64>>(s, sDt1, sDt2, sDt3, sDt4);
+            return new Quint<Scalar<Float64Signal>>(s, sDt1, sDt2, sDt3, sDt4);
         }
 
-        private static Triplet<Scalar<ScalarSignalFloat64>> GetCurveWithDt2(this IReadOnlyList<double> tData, PolynomialFunction<double> interpolator)
+        private static Triplet<Scalar<Float64Signal>> GetCurveWithDt2(this IReadOnlyList<double> tData, PolynomialFunction<double> interpolator)
         {
             var u =
                 interpolator.GetValues(tData).CreateSignal(SamplingRate).CreateScalar(ScalarSignalProcessor);
@@ -212,10 +214,10 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.SystemIdentification
             var uDt2 =
                 i2.GetValues(tData).CreateSignal(SamplingRate).CreateScalar(ScalarSignalProcessor);
 
-            return new Triplet<Scalar<ScalarSignalFloat64>>(u, uDt1, uDt2);
+            return new Triplet<Scalar<Float64Signal>>(u, uDt1, uDt2);
         }
 
-        private static Quad<Scalar<ScalarSignalFloat64>> GetCurveWithDt3(this IReadOnlyList<double> tData, PolynomialFunction<double> interpolator)
+        private static Quad<Scalar<Float64Signal>> GetCurveWithDt3(this IReadOnlyList<double> tData, PolynomialFunction<double> interpolator)
         {
             var u =
                 interpolator.GetValues(tData).CreateSignal(SamplingRate).CreateScalar(ScalarSignalProcessor);
@@ -232,10 +234,10 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.SystemIdentification
             var uDt3 =
                 i3.GetValues(tData).CreateSignal(SamplingRate).CreateScalar(ScalarSignalProcessor);
 
-            return new Quad<Scalar<ScalarSignalFloat64>>(u, uDt1, uDt2, uDt3);
+            return new Quad<Scalar<Float64Signal>>(u, uDt1, uDt2, uDt3);
         }
 
-        private static Quint<Scalar<ScalarSignalFloat64>> GetCurveWithDt4(this IReadOnlyList<double> tData, PolynomialFunction<double> interpolator)
+        private static Quint<Scalar<Float64Signal>> GetCurveWithDt4(this IReadOnlyList<double> tData, PolynomialFunction<double> interpolator)
         {
             var u =
                 interpolator.GetValues(tData).CreateSignal(SamplingRate).CreateScalar(ScalarSignalProcessor);
@@ -256,7 +258,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.SystemIdentification
             var uDt4 =
                 i4.GetValues(tData).CreateSignal(SamplingRate).CreateScalar(ScalarSignalProcessor);
 
-            return new Quint<Scalar<ScalarSignalFloat64>>(u, uDt1, uDt2, uDt3, uDt4);
+            return new Quint<Scalar<Float64Signal>>(u, uDt1, uDt2, uDt3, uDt4);
         }
 
         //public static void Example1()

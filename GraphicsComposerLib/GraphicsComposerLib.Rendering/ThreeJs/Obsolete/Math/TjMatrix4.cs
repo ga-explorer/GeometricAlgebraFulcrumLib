@@ -22,7 +22,7 @@ namespace GraphicsComposerLib.Rendering.ThreeJs.Obsolete.Math
 
         public TjMatrix3(IAffineMap2D affineMap)
         {
-            MatrixValue = affineMap.ToArray2D();
+            MatrixValue = affineMap.GetArray2D();
         }
 
 

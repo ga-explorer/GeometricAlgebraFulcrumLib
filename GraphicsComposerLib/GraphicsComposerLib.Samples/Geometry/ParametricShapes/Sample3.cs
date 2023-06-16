@@ -2,12 +2,12 @@
 using System.IO;
 using System.Linq;
 using DataStructuresLib;
-using NumericalGeometryLib.BasicShapes.Lines.Immutable;
-using NumericalGeometryLib.Borders.Space3D.Immutable;
-using GraphicsComposerLib.Geometry.ParametricShapes.Volumes;
-using GraphicsComposerLib.Geometry.ParametricShapes.Volumes.Sampled;
-using GraphicsComposerLib.Geometry.Primitives.Lines;
-using GraphicsComposerLib.Geometry.SdfShapes.Primitives;
+using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Lines.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Borders.Space3D.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Graphics.ParametricShapes.Volumes;
+using GeometricAlgebraFulcrumLib.MathBase.Graphics.ParametricShapes.Volumes.Sampled;
+using GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Lines;
+using GeometricAlgebraFulcrumLib.MathBase.Graphics.SdfShapes.Primitives;
 using GraphicsComposerLib.Rendering.Xeogl;
 
 namespace GraphicsComposerLib.Samples.Geometry.ParametricShapes

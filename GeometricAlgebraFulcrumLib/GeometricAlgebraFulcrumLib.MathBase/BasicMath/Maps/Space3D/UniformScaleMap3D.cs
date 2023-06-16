@@ -1,8 +1,7 @@
 ﻿using System.Numerics;
 using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Matrices;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D
 {
@@ -72,33 +71,27 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Float64Tuple3D MapPoint(IFloat64Tuple3D point)
+        public Float64Vector3D MapPoint(IFloat64Tuple3D point)
         {
-            return new Float64Tuple3D(
-                _scalingFactor * point.X,
+            return Float64Vector3D.Create(_scalingFactor * point.X,
                 _scalingFactor * point.Y,
-                _scalingFactor * point.Z
-            );
+                _scalingFactor * point.Z);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Float64Tuple3D MapVector(IFloat64Tuple3D vector)
+        public Float64Vector3D MapVector(IFloat64Tuple3D vector)
         {
-            return new Float64Tuple3D(
-                _scalingFactor * vector.X,
+            return Float64Vector3D.Create(_scalingFactor * vector.X,
                 _scalingFactor * vector.Y,
-                _scalingFactor * vector.Z
-            );
+                _scalingFactor * vector.Z);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Float64Tuple3D MapNormal(IFloat64Tuple3D normal)
+        public Float64Vector3D MapNormal(IFloat64Tuple3D normal)
         {
-            return new Float64Tuple3D(
-                _scalingFactor * normal.X,
+            return Float64Vector3D.Create(_scalingFactor * normal.X,
                 _scalingFactor * normal.Y,
-                _scalingFactor * normal.Z
-            );
+                _scalingFactor * normal.Z);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

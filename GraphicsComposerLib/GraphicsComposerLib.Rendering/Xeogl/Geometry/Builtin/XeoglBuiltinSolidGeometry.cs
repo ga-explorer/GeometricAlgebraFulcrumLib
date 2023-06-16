@@ -1,4 +1,4 @@
-﻿using GraphicsComposerLib.Geometry.Primitives;
+﻿using GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives;
 
 namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Builtin
 {

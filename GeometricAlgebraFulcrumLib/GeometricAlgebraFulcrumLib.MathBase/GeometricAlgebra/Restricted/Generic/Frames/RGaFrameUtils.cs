@@ -3,7 +3,6 @@ using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Mu
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Subspaces;
 using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra;
-using GeometricAlgebraFulcrumLib.MathBase.Signals;
 using MathNet.Numerics.LinearAlgebra.Double;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generic.Frames
@@ -142,7 +141,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
             };
         }
 
-        public static IReadOnlyList<RGaVector<ScalarSignalFloat64>> ApplyGramSchmidtByProjections(this IReadOnlyList<RGaVector<ScalarSignalFloat64>> vectorsList, bool makeUnitVectors)
+        public static IReadOnlyList<RGaVector<Float64Signal>> ApplyGramSchmidtByProjections(this IReadOnlyList<RGaVector<Float64Signal>> vectorsList, bool makeUnitVectors)
         {
             var vectorMatrixList =
                 vectorsList

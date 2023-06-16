@@ -38,25 +38,13 @@ namespace NumericalGeometryLib.Collections.Finite
             new SortedDictionary<int, T>();
 
 
-        public bool IsReadOnly
-        {
-            get { return false; }
-        }
+        public bool IsReadOnly => false;
 
-        public override int Count
-        {
-            get { return BaseCollection.Count; }
-        }
+        public override int Count => BaseCollection.Count;
 
-        public override int MinIndex
-        {
-            get { return BaseCollection.MinIndex; }
-        }
+        public override int MinIndex => BaseCollection.MinIndex;
 
-        public override int MaxIndex
-        {
-            get { return BaseCollection.MaxIndex; }
-        }
+        public override int MaxIndex => BaseCollection.MaxIndex;
 
         /// <summary>
         /// The base collection holding default values for this sparse collection
@@ -88,15 +76,9 @@ namespace NumericalGeometryLib.Collections.Finite
             }
         }
 
-        public ICollection<int> Keys
-        {
-            get { return _itemsDictionary.Keys; }
-        }
+        public ICollection<int> Keys => _itemsDictionary.Keys;
 
-        public ICollection<T> Values
-        {
-            get { return _itemsDictionary.Values; }
-        }
+        public ICollection<T> Values => _itemsDictionary.Values;
 
 
         private FcSparse(FiniteCollection<T> baseCollection)

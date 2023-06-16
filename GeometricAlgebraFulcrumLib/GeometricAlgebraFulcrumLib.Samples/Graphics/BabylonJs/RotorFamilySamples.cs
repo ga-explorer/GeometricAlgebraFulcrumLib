@@ -3,9 +3,8 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using GeometricAlgebraFulcrumLib.Applications.Graphics;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
@@ -14,14 +13,14 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.BabylonJs
 {
     public static class RotorFamilySamples
     {
-        private const string WorkingPath = @"D:\Projects\Study\Babylon.js";
+        private const string WorkingPath = @"D:\Projects\Study\Web\Babylon.js";
 
         public static void Example1()
         {
             const int frameCount = 1001;
 
-            var sourceVector = Float64Tuple3D.E3;
-            var targetVector = new Float64Tuple3D(1, 1, 1).ToUnitVector();
+            var sourceVector = Float64Vector3D.E3;
+            var targetVector = Float64Vector3D.Create(1, 1, 1).ToUnitVector();
 
 
             //var cameraAlphaValues =
@@ -62,7 +61,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.BabylonJs
                 ShowGuiLayer = true,
 
                 Title = "Rotor Family of Two Vectors",
-                WorkingPath = @"D:\Projects\Study\Babylon.js\",
+                WorkingPath = @"D:\Projects\Study\Web\Babylon.js\",
                 HostUrl = "http://localhost:5200/", 
                 //LiveReloadWebServer "D:/Projects/Study/Babylon.js/" --port 5200 --UseSsl False --LiveReloadEnabled False --OpenBrowser True
 
@@ -83,16 +82,16 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.BabylonJs
         public static void Example2()
         {
             const string imageFolderIn1 = 
-                @"D:\Projects\Study\Babylon.js\Animations\Images\Rotor Family of Two Vectors\00\";
+                @"D:\Projects\Study\Web\Babylon.js\Animations\Images\Rotor Family of Two Vectors\00\";
 
             const string imageFolderIn2 = 
-                @"D:\Projects\Study\Babylon.js\Animations\Images\Rotor Family of Two Vectors\01\";
+                @"D:\Projects\Study\Web\Babylon.js\Animations\Images\Rotor Family of Two Vectors\01\";
 
             const string imageFolderIn3 = 
-                @"D:\Projects\Study\Babylon.js\Animations\Images\Rotor Family of Two Vectors\10\";
+                @"D:\Projects\Study\Web\Babylon.js\Animations\Images\Rotor Family of Two Vectors\10\";
 
             const string imageFolderOut = 
-                @"D:\Projects\Study\Babylon.js\Animations\Images\";
+                @"D:\Projects\Study\Web\Babylon.js\Animations\Images\";
 
             const int imageCount = 1001;
 
@@ -141,16 +140,16 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.BabylonJs
         public static void Example3()
         {
             const string imageFolderIn1 = 
-                @"D:\Projects\Study\Babylon.js\Animations\Images\Rotor Family of Two Vectors\00\";
+                @"D:\Projects\Study\Web\Babylon.js\Animations\Images\Rotor Family of Two Vectors\00\";
 
             const string imageFolderIn2 = 
-                @"D:\Projects\Study\Babylon.js\Animations\Images\Rotor Family of Two Vectors\01\";
+                @"D:\Projects\Study\Web\Babylon.js\Animations\Images\Rotor Family of Two Vectors\01\";
 
             const string imageFolderIn3 = 
-                @"D:\Projects\Study\Babylon.js\Animations\Images\Rotor Family of Two Vectors\10\";
+                @"D:\Projects\Study\Web\Babylon.js\Animations\Images\Rotor Family of Two Vectors\10\";
 
             const string imageFolderOut = 
-                @"D:\Projects\Study\Babylon.js\Animations\Images\";
+                @"D:\Projects\Study\Web\Babylon.js\Animations\Images\";
 
             const int imageCount = 1001;
 

@@ -1,5 +1,5 @@
-﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
-using GeometricAlgebraFulcrumLib.MathBase.FunctionAlgebra;
+﻿using GeometricAlgebraFulcrumLib.MathBase.FunctionAlgebra;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Calculus
 {

@@ -1,11 +1,10 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Mutable;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.LinearMaps.Outermorphisms;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.LinearMaps.Rotors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Subspaces;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Multivectors
 {
@@ -68,23 +67,13 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Float64Tuple3D GetTuple3D(this XGaFloat64Vector vector)
+        public static Float64Vector3D GetTuple3D(this XGaFloat64Vector vector)
         {
-            return new Float64Tuple3D(
-                vector[0],
+            return Float64Vector3D.Create(vector[0],
                 vector[1],
-                vector[2]
-            );
+                vector[2]);
         }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Float64Tuple GetTuple(this XGaFloat64Vector vector)
-        {
-            return Float64Tuple.Create(
-                vector.VectorToArray1D()
-            );
-        }
-
+        
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static double GetEuclideanAngle(this XGaFloat64Vector vector1, XGaFloat64Vector vector2, bool assumeUnitVectors = false)

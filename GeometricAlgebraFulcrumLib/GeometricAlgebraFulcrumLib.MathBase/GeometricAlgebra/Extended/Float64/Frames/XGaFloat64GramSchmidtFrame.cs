@@ -1,19 +1,19 @@
 ﻿using System.Runtime.CompilerServices;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Mutable;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Processors;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.SpaceND;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 using MathNet.Numerics.LinearAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Frames
 {
     public class XGaFloat64GramSchmidtFrame
     {
-        public static XGaFloat64GramSchmidtFrame Create(Float64Tuple3D v1, Float64Tuple3D v2, Float64Tuple3D v3)
+        public static XGaFloat64GramSchmidtFrame Create(Float64Vector3D v1, Float64Vector3D v2, Float64Vector3D v3)
         {
-            var array = new[,]
+            var array = new double[,]
             {
                 { v1.X, v2.X, v3.X },
                 { v1.Y, v2.Y, v3.Y },
@@ -51,11 +51,62 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.
             return new XGaFloat64GramSchmidtFrame(directionNorms, unitDirections);
         }
 
-        public static XGaFloat64GramSchmidtFrame Create(params Float64Tuple[] vArray)
+        //public static XGaFloat64GramSchmidtFrame Create(params LinFloat64Vector[] vArray)
+        //{
+        //    var n = Math.Max(
+        //        vArray.Length,
+        //        vArray.Max(v => v.Count)
+        //    );
+
+        //    var array = new double[n, n];
+
+        //    for (var c = 0; c < vArray.Length; c++)
+        //    {
+        //        var v = vArray[c];
+
+        //        for (var r = 0; r < v.Count; r++)
+        //        {
+        //            array[r, c] = v[r];
+        //        }
+        //    }
+
+        //    var matrix = Matrix<double>.Build.DenseOfArray(array);
+
+        //    var qr = matrix.QR();
+
+        //    var directionNorms = new double[n];
+        //    var unitDirections = new XGaFloat64Vector[n];
+
+        //    for (var c = 0; c < n; c++)
+        //    {
+        //        var directionNorm = qr.R[c, c];
+        //        var unitDirection = new double[n];
+
+        //        if (directionNorm >= 0)
+        //        {
+        //            for (var r = 0; r < n; r++)
+        //                unitDirection[r] = qr.Q[r, c];
+        //        }
+        //        else
+        //        {
+        //            directionNorm = -directionNorm;
+
+        //            for (var r = 0; r < n; r++)
+        //                unitDirection[r] = -qr.Q[r, c];
+        //        }
+
+        //        directionNorms[c] = directionNorm;
+        //        unitDirections[c] = XGaFloat64Processor.Euclidean.CreateVector(unitDirection);
+        //    }
+
+        //    return new XGaFloat64GramSchmidtFrame(directionNorms, unitDirections);
+        //}
+
+        public static XGaFloat64GramSchmidtFrame Create(params Float64Vector[] vArray)
         {
             var n = Math.Max(
                 vArray.Length,
-                vArray.Max(v => v.Count)
+                vArray.Max(v => v.VSpaceDimensions)
             );
 
             var array = new double[n, n];
@@ -64,58 +115,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.
             {
                 var v = vArray[c];
 
-                for (var r = 0; r < v.Count; r++)
-                {
-                    array[r, c] = v[r];
-                }
-            }
-
-            var matrix = Matrix<double>.Build.DenseOfArray(array);
-
-            var qr = matrix.QR();
-
-            var directionNorms = new double[n];
-            var unitDirections = new XGaFloat64Vector[n];
-
-            for (var c = 0; c < n; c++)
-            {
-                var directionNorm = qr.R[c, c];
-                var unitDirection = new double[n];
-
-                if (directionNorm >= 0)
-                {
-                    for (var r = 0; r < n; r++)
-                        unitDirection[r] = qr.Q[r, c];
-                }
-                else
-                {
-                    directionNorm = -directionNorm;
-
-                    for (var r = 0; r < n; r++)
-                        unitDirection[r] = -qr.Q[r, c];
-                }
-
-                directionNorms[c] = directionNorm;
-                unitDirections[c] = XGaFloat64Processor.Euclidean.CreateVector(unitDirection);
-            }
-
-            return new XGaFloat64GramSchmidtFrame(directionNorms, unitDirections);
-        }
-
-        public static XGaFloat64GramSchmidtFrame Create(params Float64SparseTuple[] vArray)
-        {
-            var n = Math.Max(
-                vArray.Length,
-                vArray.Max(v => v.Count)
-            );
-
-            var array = new double[n, n];
-
-            for (var c = 0; c < vArray.Length; c++)
-            {
-                var v = vArray[c];
-
-                foreach (var (r, s) in v.IndexItemPairs)
+                foreach (var (r, s) in v.IndexScalarPairs)
                 {
                     array[r, c] = s;
                 }

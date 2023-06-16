@@ -1,9 +1,8 @@
 using System.Collections.Generic;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
-using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Triangles;
-using GeometricAlgebraFulcrumLib.MathBase.Borders.Space2D.Immutable;
-using GeometricAlgebraFulcrumLib.MathBase.Borders.Space2D.Mutable;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Triangles;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D.Mutable;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
 
 namespace NumericalGeometryLib.Computers.Voronoi
 {
@@ -17,35 +16,17 @@ namespace NumericalGeometryLib.Computers.Voronoi
 
         public VoronoiPointsList PointsList { get; }
 
-        public double Point1X
-        {
-            get { return PointsList[PointIndex1].X; }
-        }
+        public double Point1X => PointsList[PointIndex1].X;
 
-        public double Point1Y
-        {
-            get { return PointsList[PointIndex1].Y; }
-        }
+        public double Point1Y => PointsList[PointIndex1].Y;
 
-        public double Point2X
-        {
-            get { return PointsList[PointIndex2].X; }
-        }
+        public double Point2X => PointsList[PointIndex2].X;
 
-        public double Point2Y
-        {
-            get { return PointsList[PointIndex2].Y; }
-        }
+        public double Point2Y => PointsList[PointIndex2].Y;
 
-        public double Point3X
-        {
-            get { return PointsList[PointIndex3].X; }
-        }
+        public double Point3X => PointsList[PointIndex3].X;
 
-        public double Point3Y
-        {
-            get { return PointsList[PointIndex3].Y; }
-        }
+        public double Point3Y => PointsList[PointIndex3].Y;
 
         public bool IsValid()
         {
@@ -61,35 +42,17 @@ namespace NumericalGeometryLib.Computers.Voronoi
 
         public bool IsBad { get; internal set; }
 
-        public Float64Tuple2D Point1
-        {
-            get { return PointsList[PointIndex1]; }
-        }
+        public Float64Vector2D Point1 => PointsList[PointIndex1];
 
-        public Float64Tuple2D Point2
-        {
-            get { return PointsList[PointIndex2]; }
-        }
+        public Float64Vector2D Point2 => PointsList[PointIndex2];
 
-        public Float64Tuple2D Point3
-        {
-            get { return PointsList[PointIndex3]; }
-        }
+        public Float64Vector2D Point3 => PointsList[PointIndex3];
 
-        public VoronoiEdge2D Edge12
-        {
-            get { return new VoronoiEdge2D(PointsList, PointIndex1, PointIndex2); }
-        }
+        public VoronoiEdge2D Edge12 => new(PointsList, PointIndex1, PointIndex2);
 
-        public VoronoiEdge2D Edge23
-        {
-            get { return new VoronoiEdge2D(PointsList, PointIndex2, PointIndex3); }
-        }
+        public VoronoiEdge2D Edge23 => new(PointsList, PointIndex2, PointIndex3);
 
-        public VoronoiEdge2D Edge31
-        {
-            get { return new VoronoiEdge2D(PointsList, PointIndex3, PointIndex1); }
-        }
+        public VoronoiEdge2D Edge31 => new(PointsList, PointIndex3, PointIndex1);
 
         public IEnumerable<VoronoiEdge2D> Edges
         {
@@ -164,7 +127,7 @@ namespace NumericalGeometryLib.Computers.Voronoi
 
             var centerX = 0.5d * (ab * (Point3Y - Point2Y) + cd * (Point1Y - Point3Y) + ef * (Point2Y - Point1Y)) / (Point1X * (Point3Y - Point2Y) + Point2X * (Point1Y - Point3Y) + Point3X * (Point2Y - Point1Y));
             var centerY = 0.5d * (ab * (Point3X - Point2X) + cd * (Point1X - Point3X) + ef * (Point2X - Point1X)) / (Point1Y * (Point3X - Point2X) + Point2Y * (Point1X - Point3X) + Point3Y * (Point2X - Point1X));
-            var center = new Float64Tuple2D(centerX, centerY);
+            var center = new Float64Vector2D(centerX, centerY);
 
             var radiusSquared = center.GetDistanceSquaredToPoint(Point1X, Point1Y);
 

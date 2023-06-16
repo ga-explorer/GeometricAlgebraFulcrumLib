@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using DataStructuresLib.Basic;
+﻿using DataStructuresLib.Basic;
 using GraphicsComposerLib.Rendering.BabylonJs.Values;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Textures
@@ -76,14 +75,14 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Textures
         }
 
     
-        public GrBabylonJsTexture SetOptions([NotNull] TextureOptions? options)
+        public GrBabylonJsTexture SetOptions(TextureOptions options)
         {
             Options = options;
 
             return this;
         }
 
-        public GrBabylonJsTexture SetProperties([NotNull] TextureProperties? properties)
+        public GrBabylonJsTexture SetProperties(TextureProperties properties)
         {
             Properties = properties;
 
@@ -94,7 +93,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Textures
         {
             yield return Url.GetCode();
         
-            if (ParentScene.IsNullOrEmpty()) yield break;
+            if (ParentScene is null || ParentScene.IsEmpty) yield break;
             yield return ParentScene.Value.ConstName;
 
             if (Options is null) yield break;

@@ -1,6 +1,6 @@
-﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Mutable;
-using GraphicsComposerLib.Geometry.Primitives.Lines;
-using GraphicsComposerLib.Geometry.Primitives.Triangles;
+﻿using GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Lines;
+using GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Triangles;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 using GraphicsComposerLib.Rendering.Xeogl.Generators;
 using TextComposerLib.Text.Linear;
 using TextComposerLib.Text.Parametric;
@@ -20,12 +20,12 @@ namespace GraphicsComposerLib.Rendering.Xeogl
         public string PageTitle { get; set; } = "xeogl Script";
 
         public bool RotateCamera
-            => RotateCameraRate.X > 0 || RotateCameraRate.X < 0 ||
-               RotateCameraRate.Y > 0 || RotateCameraRate.Y < 0 ||
-               RotateCameraRate.Z > 0 || RotateCameraRate.Z < 0;
+            => !RotateCameraRate.X.IsZero() ||
+               !RotateCameraRate.Y.IsZero() ||
+               !RotateCameraRate.Z.IsZero();
 
-        public MutableFloat64Tuple3D RotateCameraRate { get; }
-            = new MutableFloat64Tuple3D();
+        public Float64Vector3DComposer RotateCameraRate { get; }
+            = Float64Vector3DComposer.Create();
 
         public List<string> IncludesList { get; }
             = new List<string>();
@@ -44,19 +44,19 @@ namespace GraphicsComposerLib.Rendering.Xeogl
                     .AppendAtNewLine(@"xeogl.scene.on('tick', function () {")
                     .IncreaseIndentation();
 
-                if (RotateCameraRate.X > 0 || RotateCameraRate.X < 0)
+                if (!RotateCameraRate.X.IsZero())
                     _scriptComposer
                         .AppendAtNewLine("xeogl.scene.camera.view.rotateEyeX(")
                         .Append(RotateCameraRate.X.ToString("G"))
                         .Append(")");
 
-                if (RotateCameraRate.Y > 0 || RotateCameraRate.Y < 0)
+                if (!RotateCameraRate.Y.IsZero())
                     _scriptComposer
                         .AppendAtNewLine("xeogl.scene.camera.view.rotateEyeY(")
                         .Append(RotateCameraRate.Y.ToString("G"))
                         .Append(")");
 
-                if (RotateCameraRate.Z > 0 || RotateCameraRate.Z < 0)
+                if (!RotateCameraRate.Z.IsZero())
                     _scriptComposer
                         .AppendAtNewLine("xeogl.scene.camera.view.rotateEyeZ(")
                         .Append(RotateCameraRate.Z.ToString("G"))

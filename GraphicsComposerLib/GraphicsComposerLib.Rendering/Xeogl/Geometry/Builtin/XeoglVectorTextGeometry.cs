@@ -1,4 +1,4 @@
-﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Mutable;
+﻿using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 using TextComposerLib;
 using TextComposerLib.Code.JavaScript;
 
@@ -11,8 +11,8 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Builtin
     /// </summary>
     public sealed class XeoglVectorTextGeometry : XeoglGeometry
     {
-        public MutableFloat64Tuple3D Origin { get; }
-            = new MutableFloat64Tuple3D();
+        public Float64Vector3DComposer Origin { get; }
+            = Float64Vector3DComposer.Create();
 
         public double Size { get; set; } = 1;
 

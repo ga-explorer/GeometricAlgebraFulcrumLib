@@ -1,9 +1,9 @@
 ﻿using DataStructuresLib.IndexSets;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.LinearMaps.Outermorphisms;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.SpaceND;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.SpaceND;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.LinearMaps.Versors
 {
@@ -134,9 +134,9 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.
                     .ToArray();
 
             //Vector composers to construct r vectors
-            var vectorComposersArray = new LinFloat64VectorComposer[count];
+            var vectorComposersArray = new Float64VectorComposer[count];
             for (var i = 0; i < count; i++)
-                vectorComposersArray[i] = new LinFloat64VectorComposer();
+                vectorComposersArray[i] = Float64VectorComposer.Create();
 
             //TODO: Select the order of basis vectors according to the largest
             //unit vector norm for higher numerical stability
@@ -176,7 +176,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.
                 }
             }
 
-            var linearMapRVectorsDictionary = new Dictionary<int, LinFloat64Vector>();
+            var linearMapRVectorsDictionary = new Dictionary<int, Float64Vector>();
             for (var i = 0; i < vectorComposersArray.Length; i++)
             {
                 var composer = vectorComposersArray[i];

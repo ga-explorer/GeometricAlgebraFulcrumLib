@@ -1,5 +1,5 @@
 ﻿using System.Text;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64;
 using GeometricAlgebraFulcrumLib.Mathematica.Processors;
 using GeometricAlgebraFulcrumLib.Text;
 using Wolfram.NETLink;

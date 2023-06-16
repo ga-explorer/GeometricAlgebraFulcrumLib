@@ -4,7 +4,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.Basic;
 using DataStructuresLib.Collections;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.Processors.SignalAlgebra
 {
