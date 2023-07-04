@@ -19,7 +19,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Differential.Functions
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static DfComputedFunction Create(DifferentialFunction valueFunc)
         {
-            return new DfComputedFunction(new[]
+            return new DfComputedFunction(new Func<double, double>[]
             {
                 valueFunc.GetValue
             });

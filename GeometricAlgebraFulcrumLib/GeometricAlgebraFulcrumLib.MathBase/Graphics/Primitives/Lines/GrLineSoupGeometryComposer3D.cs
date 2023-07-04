@@ -40,7 +40,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Lines
         public IEnumerable<IGraphicsVertex3D> GeometryVertices
             => _verticesList;
 
-        public IEnumerable<IFloat64Tuple3D> GeometryPoints
+        public IEnumerable<IFloat64Vector3D> GeometryPoints
             => _verticesList;
 
         public IEnumerable<Pair<int>> LineVertexIndices
@@ -64,12 +64,12 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Lines
             }
         }
 
-        public IEnumerable<Pair<IFloat64Tuple3D>> LineVertexPoints
+        public IEnumerable<Pair<IFloat64Vector3D>> LineVertexPoints
         {
             get
             {
                 for (var i = 0; i < _verticesList.Count; i += 2)
-                    yield return new Pair<IFloat64Tuple3D>(
+                    yield return new Pair<IFloat64Vector3D>(
                         _verticesList[i].Point, 
                         _verticesList[i + 1].Point
                     );
@@ -93,7 +93,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Lines
         }
 
 
-        private IGraphicsSurfaceLocalFrame3D AddVertex(IFloat64Tuple3D point)
+        private IGraphicsSurfaceLocalFrame3D AddVertex(IFloat64Vector3D point)
         {
             var storedVertex = new GrVertex3D(_verticesList.Count, point);
             _verticesList.Add(storedVertex);
@@ -129,7 +129,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Lines
         }
         
         
-        public IFloat64Tuple3D GetGeometryPoint(int index)
+        public IFloat64Vector3D GetGeometryPoint(int index)
         {
             return _verticesList[index];
         }
@@ -142,7 +142,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Lines
             );
         }
 
-        public bool AddLine(IFloat64Tuple3D point1, IFloat64Tuple3D point2)
+        public bool AddLine(IFloat64Vector3D point1, IFloat64Vector3D point2)
         {
             return StoreLine(
                 AddVertex(point1),
@@ -150,7 +150,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Lines
             );
         }
 
-        public bool AddLine(IPair<IFloat64Tuple3D> points)
+        public bool AddLine(IPair<IFloat64Vector3D> points)
         {
             return StoreLine(
                 AddVertex(points.Item1),
@@ -188,7 +188,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Lines
             return this;
         }
 
-        public GrLineSoupGeometryComposer3D AddLines(IEnumerable<IPair<IFloat64Tuple3D>> linePointsList)
+        public GrLineSoupGeometryComposer3D AddLines(IEnumerable<IPair<IFloat64Vector3D>> linePointsList)
         {
             foreach (var points in linePointsList)
             {
@@ -201,7 +201,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Lines
             return this;
         }
 
-        public GrLineSoupGeometryComposer3D AddLines(IReadOnlyList<IFloat64Tuple3D> pointsList)
+        public GrLineSoupGeometryComposer3D AddLines(IReadOnlyList<IFloat64Vector3D> pointsList)
         {
             if (pointsList.Count % 2 != 0)
                 throw new InvalidOperationException();

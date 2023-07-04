@@ -47,7 +47,7 @@ public class GrVisualAnimatedVector3D :
         );
     }
     
-    public static GrVisualAnimatedVector3D operator +(GrVisualAnimatedVector3D p1, IFloat64Tuple3D p2)
+    public static GrVisualAnimatedVector3D operator +(GrVisualAnimatedVector3D p1, IFloat64Vector3D p2)
     {
         var baseCurve = ComputedParametricCurve3D.Create(time => p1.GetPoint(time) + p2,
             p1.GetDerivative1Point);
@@ -59,7 +59,7 @@ public class GrVisualAnimatedVector3D :
         );
     }
     
-    public static GrVisualAnimatedVector3D operator +(IFloat64Tuple3D p1, GrVisualAnimatedVector3D p2)
+    public static GrVisualAnimatedVector3D operator +(IFloat64Vector3D p1, GrVisualAnimatedVector3D p2)
     {
         var baseCurve = ComputedParametricCurve3D.Create(time => p1 + p2.GetPoint(time),
             p2.GetDerivative1Point);
@@ -86,7 +86,7 @@ public class GrVisualAnimatedVector3D :
         );
     }
     
-    public static GrVisualAnimatedVector3D operator -(GrVisualAnimatedVector3D p1, IFloat64Tuple3D p2)
+    public static GrVisualAnimatedVector3D operator -(GrVisualAnimatedVector3D p1, IFloat64Vector3D p2)
     {
         var baseCurve = ComputedParametricCurve3D.Create(time => p1.GetPoint(time) - p2,
             p1.GetDerivative1Point);
@@ -98,7 +98,7 @@ public class GrVisualAnimatedVector3D :
         );
     }
     
-    public static GrVisualAnimatedVector3D operator -(IFloat64Tuple3D p1, GrVisualAnimatedVector3D p2)
+    public static GrVisualAnimatedVector3D operator -(IFloat64Vector3D p1, GrVisualAnimatedVector3D p2)
     {
         var baseCurve = ComputedParametricCurve3D.Create(time => p1 - p2.GetPoint(time),
             time => -p2.GetDerivative1Point(time));

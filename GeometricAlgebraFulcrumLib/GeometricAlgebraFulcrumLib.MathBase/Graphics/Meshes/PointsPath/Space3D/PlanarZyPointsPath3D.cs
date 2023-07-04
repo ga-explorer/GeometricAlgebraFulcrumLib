@@ -5,7 +5,7 @@ using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsPath.Space3D
 {
     public sealed class PlanarZyPointsPath3D : 
-        PSeqMapped1D<IFloat64Tuple2D, IFloat64Tuple3D>, 
+        PSeqMapped1D<IFloat64Vector2D, IFloat64Vector3D>, 
         IPointsPath3D
     {
         public double ValueX { get; set; }
@@ -24,11 +24,13 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsPath.Space3D
         }
 
 
-        protected override IFloat64Tuple3D MappingFunction(IFloat64Tuple2D zyPoint)
+        protected override IFloat64Vector3D MappingFunction(IFloat64Vector2D zyPoint)
         {
-            return Float64Vector3D.Create(ValueX,
-                zyPoint.Y,
-                zyPoint.X);
+            return Float64Vector3D.Create(
+                ValueX,
+                zyPoint.Y.Value,
+                zyPoint.X.Value
+            );
         }
 
 
@@ -37,7 +39,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsPath.Space3D
             return this.All(p => p.IsValid());
         }
 
-        public IPointsPath3D MapPoints(Func<IFloat64Tuple3D, IFloat64Tuple3D> pointMapping)
+        public IPointsPath3D MapPoints(Func<IFloat64Vector3D, IFloat64Vector3D> pointMapping)
         {
             return new ArrayPointsPath3D(
                 this.Select(pointMapping).ToArray()

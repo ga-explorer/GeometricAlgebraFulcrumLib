@@ -15,5 +15,5 @@ public interface ILinFloat64UnilinearMap4D :
  
     Float64Vector4D MapBasisVector(int index);
 
-    Float64Vector4D MapVector(IFloat64Tuple4D vector);
+    Float64Vector4D MapVector(IFloat64Vector4D vector);
 }

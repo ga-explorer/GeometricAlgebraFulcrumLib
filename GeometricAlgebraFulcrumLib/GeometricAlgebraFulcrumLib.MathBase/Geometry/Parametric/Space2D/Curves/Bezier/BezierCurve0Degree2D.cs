@@ -15,9 +15,9 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space2D.Curves
             => Float64Range1D.Infinite;
 
 
-        public BezierCurve0Degree2D(IFloat64Tuple2D point1)
+        public BezierCurve0Degree2D(IFloat64Vector2D point1)
         {
-            Point1 = point1.ToLinVector2D();
+            Point1 = point1.ToVector2D();
 
             Debug.Assert(IsValid());
         }

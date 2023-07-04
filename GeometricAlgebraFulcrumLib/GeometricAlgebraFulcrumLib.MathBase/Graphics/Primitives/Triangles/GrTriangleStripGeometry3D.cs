@@ -8,7 +8,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Triangles
     public sealed class GrTriangleStripGeometry3D 
         : GrTriangleGeometryBase3D
     {
-        public static GrTriangleStripGeometry3D Create(IReadOnlyList<IFloat64Tuple3D> pointsList)
+        public static GrTriangleStripGeometry3D Create(IReadOnlyList<IFloat64Vector3D> pointsList)
         {
             if (pointsList.Count < 3)
                 throw new ArgumentException();
@@ -16,7 +16,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Triangles
             return new GrTriangleStripGeometry3D(pointsList);
         }
 
-        public static GrTriangleStripGeometry3D Create(params IFloat64Tuple3D[] pointsList)
+        public static GrTriangleStripGeometry3D Create(params IFloat64Vector3D[] pointsList)
         {
             if (pointsList.Length < 3)
                 throw new ArgumentException();
@@ -24,7 +24,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Triangles
             return new GrTriangleStripGeometry3D(pointsList);
         }
 
-        public static GrTriangleStripGeometry3D Create(IEnumerable<IFloat64Tuple3D> pointsList)
+        public static GrTriangleStripGeometry3D Create(IEnumerable<IFloat64Vector3D> pointsList)
         {
             var pointsArray = pointsList.ToArray();
 
@@ -51,14 +51,14 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Triangles
                 GetGeometryPoint(index + 2)
             );
 
-        public override IEnumerable<Triplet<IFloat64Tuple3D>> TriangleVertexPoints
+        public override IEnumerable<Triplet<IFloat64Vector3D>> TriangleVertexPoints
         {
             get
             {
-                var pointsList = new List<Triplet<IFloat64Tuple3D>>(Count);
+                var pointsList = new List<Triplet<IFloat64Vector3D>>(Count);
 
                 for (var i = 0; i < VertexCount - 2; i++)
-                    pointsList.Add(new Triplet<IFloat64Tuple3D>(
+                    pointsList.Add(new Triplet<IFloat64Vector3D>(
                         GetGeometryPoint(i),
                         GetGeometryPoint(i + 1),
                         GetGeometryPoint(i + 2)
@@ -82,7 +82,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Triangles
         }
 
 
-        private GrTriangleStripGeometry3D(IReadOnlyList<IFloat64Tuple3D> pointsList)
+        private GrTriangleStripGeometry3D(IReadOnlyList<IFloat64Vector3D> pointsList)
             : base(pointsList)
         {
         }

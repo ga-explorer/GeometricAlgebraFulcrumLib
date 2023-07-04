@@ -81,7 +81,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
             //    VectorDirectionalScalingSequence.Create(n);
 
             var matrix =
-                random.GetOrthogonalMatrix(n);
+                random.GetMathNetOrthogonalMatrix(n);
 
             var reflectionSequence = 
                 matrix.GetHyperPlaneNormalReflectionSequence();
@@ -130,7 +130,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                     (y + x).GetVectorNormSquared().IsNearZero()
                 );
 
-                y = (reflectionMatrix * x.ToVector(n)).CreateLinVector();
+                y = (reflectionMatrix * MathNetNumericsUtils.ToMathNetVector(x, n)).CreateLinVector();
 
                 Debug.Assert(
                     (y + x).GetVectorNormSquared().IsNearZero()
@@ -200,7 +200,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                     var v = -reflection.ReflectionNormal;
 
                     var v1 = reflectionSequence.MapVector(u);
-                    var v2 = (reflectionMatrix * u.ToVector(n)).CreateLinVector();
+                    var v2 = (reflectionMatrix * MathNetNumericsUtils.ToMathNetVector(u, n)).CreateLinVector();
 
                     // Make sure each reflection is performed independently from the others
                     Debug.Assert(
@@ -222,7 +222,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                         var x = random.GetFloat64Tuple(n).CreateLinVector();
 
                         var y1 = reflectionSequence.MapVector(x);
-                        var y2 = (reflectionMatrix * x.ToVector(n)).CreateLinVector();
+                        var y2 = (reflectionMatrix * MathNetNumericsUtils.ToMathNetVector(x, n)).CreateLinVector();
                 
                         Debug.Assert(
                             (y1 - y2).GetVectorNormSquared().IsNearZero()
@@ -268,7 +268,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                     var x = random.GetFloat64Tuple(n).CreateLinVector();
 
                     var y1 = reflectionSequence.MapVector(x);
-                    var y2 = (reflectionMatrix * x.ToVector(n)).CreateLinVector();
+                    var y2 = (reflectionMatrix * MathNetNumericsUtils.ToMathNetVector(x, n)).CreateLinVector();
                 
                     Debug.Assert(
                         (y1 - y2).GetVectorNormSquared().IsNearZero()

@@ -8,7 +8,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Basic
 {
     public sealed class GrVisualArrowHead3D :
         GrVisualElementWithAnimation3D,
-        IFloat64Tuple3D
+        IFloat64Vector3D
     {
         public sealed record KeyFrameRecord(
             int FrameIndex, 
@@ -24,7 +24,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Basic
         );
 
 
-        public static GrVisualArrowHead3D CreateStatic(string name, GrVisualCurveTubeStyle3D style, IFloat64Tuple3D direction) 
+        public static GrVisualArrowHead3D CreateStatic(string name, GrVisualCurveTubeStyle3D style, IFloat64Vector3D direction) 
         {
             return new GrVisualArrowHead3D(
                 name, 
@@ -35,7 +35,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Basic
             );
         }
 
-        public static GrVisualArrowHead3D CreateStatic(string name, GrVisualCurveTubeStyle3D style, IFloat64Tuple3D position, IFloat64Tuple3D direction) 
+        public static GrVisualArrowHead3D CreateStatic(string name, GrVisualCurveTubeStyle3D style, IFloat64Vector3D position, IFloat64Vector3D direction) 
         {
             return new GrVisualArrowHead3D(
                 name, 
@@ -46,7 +46,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Basic
             );
         }
         
-        public static GrVisualArrowHead3D Create(string name, GrVisualCurveTubeStyle3D style, IFloat64Tuple3D position, IFloat64Tuple3D direction, GrVisualAnimationSpecs animationSpecs) 
+        public static GrVisualArrowHead3D Create(string name, GrVisualCurveTubeStyle3D style, IFloat64Vector3D position, IFloat64Vector3D direction, GrVisualAnimationSpecs animationSpecs) 
         {
             return new GrVisualArrowHead3D(
                 name, 
@@ -68,7 +68,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Basic
             ).SetAnimatedDirection(direction);
         }
 
-        public static GrVisualArrowHead3D CreateAnimated(string name, GrVisualCurveTubeStyle3D style, IFloat64Tuple3D position, GrVisualAnimatedVector3D direction, GrVisualAnimationSpecs animationSpecs) 
+        public static GrVisualArrowHead3D CreateAnimated(string name, GrVisualCurveTubeStyle3D style, IFloat64Vector3D position, GrVisualAnimatedVector3D direction, GrVisualAnimationSpecs animationSpecs) 
         {
             return new GrVisualArrowHead3D(
                 name, 
@@ -96,7 +96,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Basic
         public int VSpaceDimensions 
             => 3;
 
-        public IFloat64Tuple3D Position { get; } 
+        public IFloat64Vector3D Position { get; } 
 
         public Float64Vector3D Direction { get; }
         
@@ -125,7 +125,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Basic
             => Direction.Z;
     
         
-        private GrVisualArrowHead3D(string name, GrVisualCurveTubeStyle3D style, IFloat64Tuple3D position, IFloat64Tuple3D direction, GrVisualAnimationSpecs animationSpecs) 
+        private GrVisualArrowHead3D(string name, GrVisualCurveTubeStyle3D style, IFloat64Vector3D position, IFloat64Vector3D direction, GrVisualAnimationSpecs animationSpecs) 
             : base(name, animationSpecs)
         {
             Position = position;

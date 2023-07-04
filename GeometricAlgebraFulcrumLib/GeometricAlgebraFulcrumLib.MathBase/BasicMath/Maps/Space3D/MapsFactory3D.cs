@@ -10,7 +10,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TranslateMap3D CreateTranslateMap3D(this IFloat64Tuple3D translationVector)
+        public static TranslateMap3D CreateTranslateMap3D(this IFloat64Vector3D translationVector)
         {
             return new TranslateMap3D(translationVector);
         }
@@ -80,7 +80,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RotateUniformScaleTranslateMap3D CreateRotateScaleTranslateMap3D(this IRotateMap3D rotateMap, double scalingFactor, IFloat64Tuple3D translationVector)
+        public static RotateUniformScaleTranslateMap3D CreateRotateScaleTranslateMap3D(this IRotateMap3D rotateMap, double scalingFactor, IFloat64Vector3D translationVector)
         {
             return new RotateUniformScaleTranslateMap3D()
             {
@@ -91,7 +91,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TranslateUniformScaleRotateMap3D CreateTranslateScaleRotateMap3D(this IFloat64Tuple3D translationVector, double scalingFactor, IRotateMap3D rotateMap)
+        public static TranslateUniformScaleRotateMap3D CreateTranslateScaleRotateMap3D(this IFloat64Vector3D translationVector, double scalingFactor, IRotateMap3D rotateMap)
         {
             return new TranslateUniformScaleRotateMap3D()
             {

@@ -52,7 +52,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.S
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Float64Vector3D MapVector(IFloat64Tuple3D x)
+        public override Float64Vector3D MapVector(IFloat64Vector3D x)
         {
             return x.ToVector3D();
         }

@@ -48,7 +48,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
                 : new Pair<string>(name, value.GetCode());
         }
 
-        public static GrBabylonJsVector3Value ToBabylonJsVector3Value(this IFloat64Tuple3D value)
+        public static GrBabylonJsVector3Value ToBabylonJsVector3Value(this IFloat64Vector3D value)
         {
             return GrBabylonJsVector3Value.Create(value);
         }
@@ -132,7 +132,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
             );
         }
 
-        public static JToken GetBabylonJsJson(this IFloat64Tuple2D value)
+        public static JToken GetBabylonJsJson(this IFloat64Vector2D value)
         {
             return new JArray(
                 (float) value.X,
@@ -149,7 +149,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
             );
         }
 
-        public static JToken GetBabylonJsJson(this IFloat64Tuple3D value)
+        public static JToken GetBabylonJsJson(this IFloat64Vector3D value)
         {
             return new JArray(
                 (float) value.X,
@@ -168,7 +168,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
             );
         }
 
-        public static JToken GetBabylonJsJson(this IFloat64Tuple4D value)
+        public static JToken GetBabylonJsJson(this IFloat64Vector4D value)
         {
             return new JArray(
                 (float) value.X,
@@ -178,12 +178,12 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
             );
         }
         
-        public static JToken GetQuaternionBabylonJsJson(this Float64Quaternion value)
+        public static JToken GetBabylonJsJson(this Float64Quaternion value)
         {
             return new JArray(
-                (float) value.ScalarI,
-                (float) value.ScalarJ,
-                (float) value.ScalarK,
+                (float) -value.ScalarI,
+                (float) -value.ScalarJ,
+                (float) -value.ScalarK,
                 (float) value.Scalar
             );
         }
@@ -319,9 +319,14 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
             return $"new BABYLON.Vector4({(float) vector.Item1:G}, {(float) vector.Item2:G}, {(float) vector.Item3:G}, {(float) vector.Item4:G})";
         }
 
-        public static string GetQuaternionBabylonJsCode(this Float64Quaternion quaternion)
+        public static string GetBabylonJsCode(this Float64Quaternion quaternion)
         {
-            return $"new BABYLON.Quaternion({(float) quaternion.ScalarI:G}, {(float) quaternion.ScalarJ:G}, {(float) quaternion.ScalarK:G}, {(float) quaternion.Scalar:G})";
+            var q1 = (float) quaternion.Scalar;
+            var qi = (float) -quaternion.ScalarI;
+            var qj = (float) -quaternion.ScalarJ;
+            var qk = (float) -quaternion.ScalarK;
+
+            return $"new BABYLON.Quaternion({qi:G}, {qj:G}, {qk:G}, {q1:G})";
         }
 
         public static string GetBabylonJsCode(this Quaternion quaternion)
@@ -460,6 +465,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
 
             return $"[{p1}, {p2}, {p3}, {p4}]";
         }
+
 
         public static string GetBabylonJsCode(this GrBabylonJsNamedColor3 namedColor)
         {
@@ -835,13 +841,13 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
             if (keyFrameArray.Length == 1)
                 return keyFrameArray
                     .Select(indexValuePair =>
-                        $"{{frame: {indexValuePair.Key.GetBabylonJsCode()}, value: {indexValuePair.Value.GetQuaternionBabylonJsCode()}}}"
+                        $"{{frame: {indexValuePair.Key.GetBabylonJsCode()}, value: {indexValuePair.Value.GetBabylonJsCode()}}}"
                     ).Concatenate($", ", "[", "]");
 
             var itemsText =
                 keyFrameArray
                     .Select(indexValuePair =>
-                        $"{{frame: {indexValuePair.Key.GetBabylonJsCode()}, value: {indexValuePair.Value.GetQuaternionBabylonJsCode()}}}"
+                        $"{{frame: {indexValuePair.Key.GetBabylonJsCode()}, value: {indexValuePair.Value.GetBabylonJsCode()}}}"
                     ).Concatenate($",{Environment.NewLine}");
 
             return new LinearTextComposer()

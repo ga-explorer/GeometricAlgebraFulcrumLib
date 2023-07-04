@@ -34,7 +34,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Lights
         {
         }
 
-        public XeoglPointLight(IFloat64Tuple3D lightPosition)
+        public XeoglPointLight(IFloat64Vector3D lightPosition)
         {
             LightPosition.SetVector(lightPosition);
         }

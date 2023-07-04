@@ -119,10 +119,8 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float6
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Float64Vector2D GetTuple2D(this RGaFloat64Vector vector)
         {
-            return new Float64Vector2D(
-                vector[0],
-                vector[1]
-            );
+            return Float64Vector2D.Create((Float64Scalar)vector[0],
+                (Float64Scalar)vector[1]);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

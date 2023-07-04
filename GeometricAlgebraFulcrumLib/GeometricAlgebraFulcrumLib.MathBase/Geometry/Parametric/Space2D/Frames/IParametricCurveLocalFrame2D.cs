@@ -3,7 +3,7 @@
 namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space2D.Frames
 {
     public interface IParametricCurveLocalFrame2D :
-        IFloat64Tuple2D
+        IFloat64Vector2D
     {
         int Index { get; }
 

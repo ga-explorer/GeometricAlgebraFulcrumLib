@@ -8,7 +8,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PathsMesh.Space3D
     /// This class represents a 3D point inside a paths mesh. The class holds data
     /// on the point coordinates and index values inside the mesh.
     /// </summary>
-    public sealed class PathsMeshPoint3D : IFloat64Tuple3D
+    public sealed class PathsMeshPoint3D : IFloat64Vector3D
     {
         /// <summary>
         /// The base mesh of this point
@@ -40,7 +40,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PathsMesh.Space3D
         /// <summary>
         /// The point coordinates of this point
         /// </summary>
-        public IFloat64Tuple3D Point 
+        public IFloat64Vector3D Point 
             => BaseMesh[PathIndex][PathPointIndex];
         
         public int VSpaceDimensions 

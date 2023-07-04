@@ -10,7 +10,7 @@ namespace WebComposerLib.Svg.Values
             return new SvgValueLengthsList();
         }
 
-        public static SvgValueLengthsList Create(SvgValueLengthUnit unit)
+        public static SvgValueLengthsList Create(SvgLengthUnit unit)
         {
             return new SvgValueLengthsList { Unit = unit };
         }
@@ -24,7 +24,7 @@ namespace WebComposerLib.Svg.Values
             return lengthsList;
         }
 
-        public static SvgValueLengthsList Create(SvgValueLengthUnit unit, double length)
+        public static SvgValueLengthsList Create(SvgLengthUnit unit, double length)
         {
             var lengthsList = new SvgValueLengthsList { Unit = unit };
 
@@ -42,7 +42,7 @@ namespace WebComposerLib.Svg.Values
             return lengthsList;
         }
 
-        public static SvgValueLengthsList Create(SvgValueLengthUnit unit, IEnumerable<double> lengths)
+        public static SvgValueLengthsList Create(SvgLengthUnit unit, IEnumerable<double> lengths)
         {
             var lengthsList = new SvgValueLengthsList { Unit = unit };
 
@@ -60,7 +60,7 @@ namespace WebComposerLib.Svg.Values
             return lengthsList;
         }
 
-        public static SvgValueLengthsList Create(SvgValueLengthUnit unit, params double[] lengths)
+        public static SvgValueLengthsList Create(SvgLengthUnit unit, params double[] lengths)
         {
             var lengthsList = new SvgValueLengthsList { Unit = unit };
 
@@ -77,11 +77,11 @@ namespace WebComposerLib.Svg.Values
         public IEnumerable<double> LengthValues
             => _lengthsList;
 
-        private SvgValueLengthUnit _unit = SvgValueLengthUnit.None;
-        public SvgValueLengthUnit Unit
+        private SvgLengthUnit _unit = SvgLengthUnit.None;
+        public SvgLengthUnit Unit
         {
             get => _unit;
-            set => _unit = value ?? SvgValueLengthUnit.None;
+            set => _unit = value ?? SvgLengthUnit.None;
         }
 
         public double this[int index]

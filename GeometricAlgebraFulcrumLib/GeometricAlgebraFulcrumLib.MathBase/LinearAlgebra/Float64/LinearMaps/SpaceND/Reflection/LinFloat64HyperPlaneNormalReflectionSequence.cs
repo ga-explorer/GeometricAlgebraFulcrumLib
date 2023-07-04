@@ -203,7 +203,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.S
             var rotationSequence = new LinFloat64HyperPlaneNormalReflectionSequence(dimensions);
 
             var vectorList =
-                random.GetOrthonormalVectors(dimensions, count);
+                random.GetMathNetOrthonormalVectors(dimensions, count);
 
             for (var i = 0; i < count; i++)
             {

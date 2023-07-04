@@ -6,7 +6,7 @@ using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
 namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsMesh.Space2D
 {
     public sealed class PartialPointsMesh2D
-        : PSeqPartial2D<IFloat64Tuple2D>, IPointsMesh2D
+        : PSeqPartial2D<IFloat64Vector2D>, IPointsMesh2D
     {
         public IPointsMesh2D BaseMesh { get; }
 
@@ -18,7 +18,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsMesh.Space2D
         }
 
 
-        public override PSeqSlice1D<IFloat64Tuple2D> GetSliceAt(int dimension, int index)
+        public override PSeqSlice1D<IFloat64Vector2D> GetSliceAt(int dimension, int index)
         {
             return new PointsMeshSlicePointsPath2D(this, dimension, index);
         }

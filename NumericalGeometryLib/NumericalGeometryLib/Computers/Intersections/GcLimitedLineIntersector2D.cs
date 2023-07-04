@@ -136,7 +136,7 @@ namespace NumericalGeometryLib.Computers.Intersections
             return this;
         }
 
-        public GcLimitedLineIntersector2D SetLineAsLineSegment(IFloat64Tuple2D point1, IFloat64Tuple2D point2)
+        public GcLimitedLineIntersector2D SetLineAsLineSegment(IFloat64Vector2D point1, IFloat64Vector2D point2)
         {
             Line = new Line2D(
                 point1.X,
@@ -150,7 +150,7 @@ namespace NumericalGeometryLib.Computers.Intersections
             return this;
         }
 
-        public GcLimitedLineIntersector2D SetLine(IFloat64Tuple2D lineOrigin, IFloat64Tuple2D lineDirection, Float64Range1D lineParamLimits)
+        public GcLimitedLineIntersector2D SetLine(IFloat64Vector2D lineOrigin, IFloat64Vector2D lineDirection, Float64Range1D lineParamLimits)
         {
             Line = new Line2D(
                 lineOrigin.X,

@@ -17,13 +17,13 @@ namespace WebComposerLib.Svg.Styles.Properties
             }
         }
 
-        private SvgValueLengthUnit _unit = SvgValueLengthUnit.None;
-        public SvgValueLengthUnit Unit
+        private SvgLengthUnit _unit = SvgLengthUnit.None;
+        public SvgLengthUnit Unit
         {
             get => _unit;
             set
             {
-                _unit = value ?? SvgValueLengthUnit.None;
+                _unit = value ?? SvgLengthUnit.None;
                 IsValueComputed = true;
             }
         }
@@ -77,12 +77,12 @@ namespace WebComposerLib.Svg.Styles.Properties
         public SvgStyle SetTo(double length)
         {
             Length = length;
-            Unit = SvgValueLengthUnit.None;
+            Unit = SvgLengthUnit.None;
 
             return ParentStyle;
         }
 
-        public SvgStyle SetTo(double length, SvgValueLengthUnit unit)
+        public SvgStyle SetTo(double length, SvgLengthUnit unit)
         {
             Length = length;
             Unit = unit;

@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using DataStructuresLib.Random;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.SpaceND.Reflection;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.SpaceND.Rotation;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices;
@@ -131,7 +130,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.S
             var rotationSequence = new LinFloat64PlanarRotationSequence(dimensions);
 
             var vectorList =
-                random.GetOrthonormalVectors(dimensions, 2 * count);
+                random.GetMathNetOrthonormalVectors(dimensions, 2 * count);
 
             for (var i = 0; i < count; i++)
             {

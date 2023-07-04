@@ -401,7 +401,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaVector<T> CreateVector<T>(this RGaProcessor<T> processor, IFloat64Tuple2D vector)
+        public static RGaVector<T> CreateVector<T>(this RGaProcessor<T> processor, IFloat64Vector2D vector)
         {
             return processor
                 .CreateComposer()
@@ -411,7 +411,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaVector<T> CreateVector<T>(this RGaProcessor<T> processor, IFloat64Tuple3D vector)
+        public static RGaVector<T> CreateVector<T>(this RGaProcessor<T> processor, IFloat64Vector3D vector)
         {
             return processor
                 .CreateComposer()
@@ -422,7 +422,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaVector<T> CreateVector<T>(this RGaProcessor<T> processor, IFloat64Tuple4D vector)
+        public static RGaVector<T> CreateVector<T>(this RGaProcessor<T> processor, IFloat64Vector4D vector)
         {
             return processor
                 .CreateComposer()
@@ -453,7 +453,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaVector<T> ToRGaVector<T>(this IFloat64Tuple2D vector, RGaProcessor<T> processor)
+        public static RGaVector<T> ToRGaVector<T>(this IFloat64Vector2D vector, RGaProcessor<T> processor)
         {
             return processor
                 .CreateComposer()
@@ -463,7 +463,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaVector<T> ToRGaVector<T>(this IFloat64Tuple3D vector, RGaProcessor<T> processor)
+        public static RGaVector<T> ToRGaVector<T>(this IFloat64Vector3D vector, RGaProcessor<T> processor)
         {
             return processor
                 .CreateComposer()
@@ -474,7 +474,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaVector<T> ToRGaVector<T>(this IFloat64Tuple4D vector, RGaProcessor<T> processor)
+        public static RGaVector<T> ToRGaVector<T>(this IFloat64Vector4D vector, RGaProcessor<T> processor)
         {
             return processor
                 .CreateComposer()

@@ -25,7 +25,7 @@ public sealed class GrVisualVector3D :
     );
 
 
-    public static GrVisualVector3D CreateStatic(string name, GrVisualCurveTubeStyle3D style, IFloat64Tuple3D direction)
+    public static GrVisualVector3D CreateStatic(string name, GrVisualCurveTubeStyle3D style, IFloat64Vector3D direction)
     {
         return new GrVisualVector3D(
             name,
@@ -36,7 +36,7 @@ public sealed class GrVisualVector3D :
         );
     }
 
-    public static GrVisualVector3D CreateStatic(string name, GrVisualCurveTubeStyle3D style, IFloat64Tuple3D origin, IFloat64Tuple3D direction)
+    public static GrVisualVector3D CreateStatic(string name, GrVisualCurveTubeStyle3D style, IFloat64Vector3D origin, IFloat64Vector3D direction)
     {
         return new GrVisualVector3D(
             name,
@@ -47,7 +47,7 @@ public sealed class GrVisualVector3D :
         );
     }
 
-    public static GrVisualVector3D Create(string name, GrVisualCurveTubeStyle3D style, IFloat64Tuple3D origin, IFloat64Tuple3D direction, GrVisualAnimationSpecs animationSpecs)
+    public static GrVisualVector3D Create(string name, GrVisualCurveTubeStyle3D style, IFloat64Vector3D origin, IFloat64Vector3D direction, GrVisualAnimationSpecs animationSpecs)
     {
         return new GrVisualVector3D(
             name,
@@ -69,7 +69,7 @@ public sealed class GrVisualVector3D :
         ).SetAnimatedDirection(direction);
     }
 
-    public static GrVisualVector3D CreateAnimated(string name, GrVisualCurveTubeStyle3D style, IFloat64Tuple3D origin, GrVisualAnimatedVector3D direction, GrVisualAnimationSpecs animationSpecs)
+    public static GrVisualVector3D CreateAnimated(string name, GrVisualCurveTubeStyle3D style, IFloat64Vector3D origin, GrVisualAnimatedVector3D direction, GrVisualAnimationSpecs animationSpecs)
     {
         return new GrVisualVector3D(
             name,
@@ -94,11 +94,11 @@ public sealed class GrVisualVector3D :
 
     public GrVisualCurveTubeStyle3D Style { get; }
 
-    public IFloat64Tuple3D Origin { get; }
+    public IFloat64Vector3D Origin { get; }
 
-    public IFloat64Tuple3D Direction { get; }
+    public IFloat64Vector3D Direction { get; }
 
-    public IFloat64Tuple3D Position
+    public IFloat64Vector3D Position
         => Origin.Add(Direction);
 
     public GrVisualAnimatedVector3D? AnimatedOrigin { get; set; }
@@ -139,7 +139,7 @@ public sealed class GrVisualVector3D :
     }
 
 
-    private GrVisualVector3D(string name, GrVisualCurveTubeStyle3D style, IFloat64Tuple3D origin, IFloat64Tuple3D direction, GrVisualAnimationSpecs animationSpecs)
+    private GrVisualVector3D(string name, GrVisualCurveTubeStyle3D style, IFloat64Vector3D origin, IFloat64Vector3D direction, GrVisualAnimationSpecs animationSpecs)
         : base(name, animationSpecs)
     {
         Origin = origin;

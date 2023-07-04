@@ -44,7 +44,7 @@ public class ConstantCurveSampler3D :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ConstantCurveSampler3D(IFloat64Tuple3D point, Float64Range1D parameterRange)
+    public ConstantCurveSampler3D(IFloat64Vector3D point, Float64Range1D parameterRange)
     {
         ConstantCurve = ConstantParametricCurve3D.Create(point, Float64Vector3D.E1);
         ParameterRange = parameterRange;
@@ -53,7 +53,7 @@ public class ConstantCurveSampler3D :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ConstantCurveSampler3D(IFloat64Tuple3D point, IFloat64Tuple3D tangent, Float64Range1D parameterRange)
+    public ConstantCurveSampler3D(IFloat64Vector3D point, IFloat64Vector3D tangent, Float64Range1D parameterRange)
     {
         ConstantCurve = ConstantParametricCurve3D.Create(point, tangent);
         ParameterRange = parameterRange;
@@ -70,7 +70,7 @@ public class ConstantCurveSampler3D :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ConstantCurveSampler3D SetCurve(IFloat64Tuple3D point, Float64Range1D parameterRange)
+    public ConstantCurveSampler3D SetCurve(IFloat64Vector3D point, Float64Range1D parameterRange)
     {
         ConstantCurve = ConstantParametricCurve3D.Create(point, Float64Vector3D.E1);
         ParameterRange = parameterRange;
@@ -81,7 +81,7 @@ public class ConstantCurveSampler3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ConstantCurveSampler3D SetCurve(IFloat64Tuple3D point, IFloat64Tuple3D tangent, Float64Range1D parameterRange)
+    public ConstantCurveSampler3D SetCurve(IFloat64Vector3D point, IFloat64Vector3D tangent, Float64Range1D parameterRange)
     {
         ConstantCurve = ConstantParametricCurve3D.Create(point, tangent);
         ParameterRange = parameterRange;

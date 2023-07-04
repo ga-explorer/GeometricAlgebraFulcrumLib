@@ -9,7 +9,6 @@ using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Curves.Ada
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 using GraphicsComposerLib.Rendering.BabylonJs;
 using GraphicsComposerLib.Rendering.Visuals.Space3D.Animations;
 using GraphicsComposerLib.Rendering.Visuals.Space3D.Basic;
@@ -23,7 +22,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.BabylonJs;
 
 public static class DifferentialCurveAnimationSample
 {
-    private const string WorkingPath = @"D:\Projects\Study\Web\Babylon.js";
+    private const string WorkingFolder = @"D:\Projects\Study\Web\Babylon.js";
     private const int CanvasWidth = 1024;
     private const int CanvasHeight = 728;
     private const int GridUnitCount = 24;
@@ -80,7 +79,7 @@ public static class DifferentialCurveAnimationSample
 
     private static void InitializeImageCache()
     {
-        var workingPath = Path.Combine(WorkingPath, "images");
+        var workingPath = Path.Combine(WorkingFolder, "images");
 
         Console.Write("Generating images cache .. ");
 
@@ -282,7 +281,7 @@ public static class DifferentialCurveAnimationSample
 
         //ImageCache.GeneratePngBase64Strings(latexImageComposer);
 
-        ImageCache.GeneratePngDataUrlStrings();
+        ImageCache.GeneratePngDataUrlStrings(WorkingFolder);
         //ImageCache.GenerateSvgDataUrlStrings(WorkingPath);
 
         //var maxWidth = 0;
@@ -383,7 +382,7 @@ public static class DifferentialCurveAnimationSample
 
         InitializeSceneComposers(0);
         
-        //InitializeImageCache();
+        InitializeImageCache();
 
         MainSceneComposer
             .AddDefaultGrid(GridUnitCount)
@@ -721,7 +720,7 @@ public static class DifferentialCurveAnimationSample
 
         var htmlCode = HtmlComposer.GetHtmlCode();
 
-        var htmlFilePath = WorkingPath.GetFilePath(
+        var htmlFilePath = WorkingFolder.GetFilePath(
             @$"DifferentialCurveAnimation",
             "html"
         );

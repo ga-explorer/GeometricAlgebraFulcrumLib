@@ -7,7 +7,7 @@ using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space4D;
 
 public sealed class Float64Vector4DComposer :
-    IFloat64Tuple4D
+    IFloat64Vector4D
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Float64Vector4DComposer Create()
@@ -491,7 +491,7 @@ public sealed class Float64Vector4DComposer :
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public Float64Vector4D GetVector()
     {
-        return new Float64Vector4D(X, Y, Z, W);
+        return Float64Vector4D.Create(X, Y, Z, W);
     }
 
 }

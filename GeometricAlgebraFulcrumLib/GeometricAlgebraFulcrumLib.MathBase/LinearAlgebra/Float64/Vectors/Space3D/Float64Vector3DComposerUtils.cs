@@ -1,345 +1,336 @@
 ﻿using System.Runtime.CompilerServices;
+using DataStructuresLib.Basic;
+using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space4D;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D
 {
     public static class Float64Vector3DComposerUtils
     {
-        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-        //internal static Dictionary<int, double> CreateLinVectorDictionary(this IReadOnlyDictionary<int, double> inputDictionary)
-        //{
-        //    var basisScalarDictionary = new Dictionary<int, double>();
-
-        //    foreach (var (key, value) in inputDictionary)
-        //        basisScalarDictionary.Add(key, value);
-
-        //    return basisScalarDictionary;
-        //}
-    
-        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-        //internal static Dictionary<int, double> CreateValidLinVectorDictionary(this IEnumerable<double> scalarList)
-        //{
-        //    var basisScalarDictionary = new Dictionary<int, double>();
-
-        //    var index = 0;
-        //    foreach (var scalar in scalarList)
-        //    {
-        //        if (!scalar.IsValid())
-        //            throw new InvalidOperationException();
-
-        //        basisScalarDictionary.Add(index, scalar);
-
-        //        index++;
-        //    }
-
-        //    return basisScalarDictionary;
-        //}
-
-
-        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-        //public static ITriplet<double> CreateZeroLinVector()
-        //{
-        //    return ITriplet<double>.ZeroVector;
-        //}
-
-        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-        //public static ITriplet<double> CreateLinVector(this IReadOnlyDictionary<int, double> basisScalarDictionary)
-        //{
-        //    return new ITriplet<double>(
-        //        basisScalarDictionary.ToSimpleDictionary()
-        //    );
-        //}
-    
-        //public static ITriplet<double> CreateUnitLinVector(this IReadOnlyDictionary<int, double> basisScalarDictionary)
-        //{
-        //    var norm = basisScalarDictionary.Values.GetVectorNorm();
-
-        //    if (norm.IsOne())
-        //        return new ITriplet<double>(
-        //            basisScalarDictionary.ToSimpleDictionary()
-        //        );
-
-        //    var normInv = 1d / norm;
-
-        //    return new ITriplet<double>(
-        //        basisScalarDictionary.ToDictionary(
-        //            p => p.Key, 
-        //            p => p.Value * normInv
-        //        ).ToSimpleDictionary()
-        //    );
-        //}
-
-        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-        //public static ITriplet<double> CreateLinVector(params double[] scalarArray)
-        //{
-        //    var scalarDictionary = CreateValidLinVectorDictionary(scalarArray);
-
-        //    return new ITriplet<double>(scalarDictionary);
-        //}
-
-        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-        //public static ITriplet<double> CreateLinVector(this IEnumerable<double> scalarList)
-        //{
-        //    var scalarDictionary = CreateValidLinVectorDictionary(scalarList);
-
-        //    return new ITriplet<double>(scalarDictionary);
-        //}
-        
-        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-        //public static ITriplet<double> CreateUnitLinVector(this IReadOnlyList<double> scalarList)
-        //{
-        //    var normInv = 1d / scalarList.GetVectorNorm();
-
-        //    var scalarDictionary = CreateValidLinVectorDictionary(
-        //        scalarList.Select(s => s * normInv)
-        //    );
-
-        //    return new ITriplet<double>(scalarDictionary);
-        //}
-
-        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-        //public static ITriplet<double> CreateLinVector(this IEnumerable<LinFloat64VectorTerm> indexScalarList)
-        //{
-        //    return new Float64Tuple3DComposer()
-        //        .AddTerms(indexScalarList)
-        //        .GetVector();
-        //}
-        
-        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-        //public static ITriplet<double> CreateLinVector(this int index)
-        //{
-        //    var basisScalarDictionary =
-        //        new SingleItemDictionary<int, double>(index, 1d);
-
-        //    return new ITriplet<double>(basisScalarDictionary);
-        //}
-
-        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-        //public static ITriplet<double> CreateLinVector(this int index, double scalar)
-        //{
-        //    if (scalar.IsZero())
-        //        return new ITriplet<double>();
-
-        //    var basisScalarDictionary =
-        //        new SingleItemDictionary<int, double>(index, scalar);
-
-        //    return new ITriplet<double>(basisScalarDictionary);
-        //}
-
-        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-        //public static ITriplet<double> CreateLinVector(this KeyValuePair<int, double> indexScalarPair)
-        //{
-        //    return indexScalarPair.Key.CreateLinVector(indexScalarPair.Value);
-        //}
-    
-        
-        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-        //public static ITriplet<double> ToVector(this ILinSignedBasisVector term)
-        //{
-        //    if (term.IsZero)
-        //        return new ITriplet<double>();
-
-        //    var basisScalarDictionary =
-        //        new SingleItemDictionary<int, double>(term.Index, term.IsPositive ? 1d : -1d);
-
-        //    return new ITriplet<double>(basisScalarDictionary);
-        //}
-
-        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-        //public static ITriplet<double> ToVector(this LinFloat64VectorTerm term)
-        //{
-        //    if (term.IsZero)
-        //        return new ITriplet<double>();
-
-        //    var basisScalarDictionary =
-        //        new SingleItemDictionary<int, double>(term.Index, term.ScalarValue);
-
-        //    return new ITriplet<double>(basisScalarDictionary);
-        //}
-        
-        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-        //public static ITriplet<double> VectorToLinVector(this IReadOnlyDictionary<IIndexSet, double> mv)
-        //{
-        //    var indexScalarDictionary = mv.ToDictionary(
-        //        p => p.Key.FirstIndex,
-        //        p => p.Value
-        //    );
-
-        //    return indexScalarDictionary.CreateLinVector();
-        //}
-        
-        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-        //public static ITriplet<double> VectorToLinVector(this IReadOnlyDictionary<ulong, double> mv)
-        //{
-        //    var indexScalarDictionary = mv.ToDictionary(
-        //        p => p.Key.FirstOneBitPosition(),
-        //        p => p.Value
-        //    );
-
-        //    return indexScalarDictionary.CreateLinVector();
-        //}
-        
-        
-        //public static ITriplet<double> DiagonalToLinVector(this double[,] matrix)
-        //{
-        //    var count = Math.Min(matrix.GetLength(0), matrix.GetLength(1));
-        //    var composer = new Float64Tuple3DComposer();
-
-        //    for (var i = 0; i < count; i++)
-        //    {
-        //        var scalar = matrix[i, i];
-
-        //        composer.SetTerm(i, scalar);
-        //    }
-
-        //    return composer.GetVector();
-        //}
-
-        //public static ITriplet<double> RowToLinVector(this double[,] matrix, int row)
-        //{
-        //    var columnCount = matrix.GetLength(1);
-        //    var composer = new Float64Tuple3DComposer();
-
-        //    for (var i = 0; i < columnCount; i++)
-        //    {
-        //        var scalar = matrix[i, row];
-
-        //        composer.SetTerm(i, scalar);
-        //    }
-
-        //    return composer.GetVector();
-        //}
-        
-        //public static ITriplet<double> ColumnToLinVector(this double[,] matrix, int column)
-        //{
-        //    var rowCount = matrix.GetLength(0);
-        //    var composer = new Float64Tuple3DComposer();
-
-        //    for (var i = 0; i < rowCount; i++)
-        //    {
-        //        var scalar = matrix[column, i];
-
-        //        composer.SetTerm(i, scalar);
-        //    }
-
-        //    return composer.GetVector();
-        //}
-        
-        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-        //public static IEnumerable<ITriplet<double>> RowsToLinVectors(this double[,] matrix)
-        //{
-        //    return matrix.GetLength(0).GetRange().Select(
-        //        matrix.RowToLinVector
-        //    );
-        //}
-
-        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-        //public static IEnumerable<ITriplet<double>> ColumnsToLinVectors(this double[,] matrix)
-        //{
-        //    return matrix.GetLength(1).GetRange().Select(
-        //        matrix.ColumnToLinVector
-        //    );
-        //}
-
-        
-        //public static ITriplet<double> DiagonalToLinVector(this Matrix matrix)
-        //{
-        //    var count = Math.Min(matrix.RowCount, matrix.ColumnCount);
-        //    var composer = new Float64Tuple3DComposer();
-
-        //    for (var i = 0; i < count; i++)
-        //    {
-        //        var scalar = matrix[i, i];
-
-        //        composer.SetTerm(i, scalar);
-        //    }
-
-        //    return composer.GetVector();
-        //}
-
-        //public static ITriplet<double> RowToLinVector(this Matrix matrix, int row)
-        //{
-        //    var composer = new Float64Tuple3DComposer();
-
-        //    for (var i = 0; i < matrix.ColumnCount; i++)
-        //        composer.SetTerm(i, matrix[row, i]);
-
-        //    return composer.GetVector();
-        //}
-        
-        //public static ITriplet<double> ColumnToLinVector(this Matrix matrix, int column)
-        //{
-        //    var composer = new Float64Tuple3DComposer();
-
-        //    for (var i = 0; i < matrix.RowCount; i++)
-        //        composer.SetTerm(i, matrix[i, column]);
-
-        //    return composer.GetVector();
-        //}
-
-        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-        //public static IEnumerable<ITriplet<double>> RowsToLinVectors(this Matrix matrix)
-        //{
-        //    return matrix.RowCount.GetRange().Select(
-        //        matrix.RowToLinVector
-        //    );
-        //}
-
-        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-        //public static IEnumerable<ITriplet<double>> ColumnsToLinVectors(this Matrix matrix)
-        //{
-        //    return matrix.ColumnCount.GetRange().Select(
-        //        matrix.ColumnToLinVector
-        //    );
-        //}
-        
-        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Float64Vector3DComposer ToComposer(this IFloat64Tuple3D mv)
+        public static Float64Vector3DComposer ToComposer(this IFloat64Vector3D mv)
         {
             return Float64Vector3DComposer.Create().SetVector(mv);
         }
     
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Float64Vector3DComposer NegativeToComposer(this IFloat64Tuple3D mv)
+        public static Float64Vector3DComposer NegativeToComposer(this IFloat64Vector3D mv)
         {
             return Float64Vector3DComposer.Create().SetVectorNegative(mv);
         }
     
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Float64Vector3DComposer ToComposer(this IFloat64Tuple3D mv, double scalingFactor)
+        public static Float64Vector3DComposer ToComposer(this IFloat64Vector3D mv, double scalingFactor)
         {
             return Float64Vector3DComposer.Create().SetVector(mv, scalingFactor);
         }
 
-    
-        //public static Float64ScalarComposer AddESpTerms(this Float64ScalarComposer composer, IReadOnlyDictionary<int, double> mv1, IReadOnlyDictionary<int, double> mv2)
-        //{
-        //    if (mv1.Count == 0 || mv2.Count == 0)
-        //        return composer;
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Float64Vector3D ToVector3D(this LinUnitBasisVector2D axis)
+        {
+            return axis switch
+            {
+                LinUnitBasisVector2D.PositiveX => Float64Vector3D.E1,
+                LinUnitBasisVector2D.NegativeX => Float64Vector3D.NegativeE1,
+                LinUnitBasisVector2D.PositiveY => Float64Vector3D.E2,
+                _ => Float64Vector3D.NegativeE2
+            };
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Float64Vector3D ToVector3D(this LinUnitBasisVector3D axis)
+        {
+            return axis switch
+            {
+                LinUnitBasisVector3D.PositiveX => Float64Vector3D.E1,
+                LinUnitBasisVector3D.NegativeX => Float64Vector3D.NegativeE1,
+                LinUnitBasisVector3D.PositiveY => Float64Vector3D.E2,
+                LinUnitBasisVector3D.NegativeY => Float64Vector3D.NegativeE2,
+                LinUnitBasisVector3D.PositiveZ => Float64Vector3D.E3,
+                _ => Float64Vector3D.NegativeE3
+            };
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Float64Vector3D ToVector3D(this LinUnitBasisVector3D axis, Float64Scalar scalingFactor)
+        {
+            return axis switch
+            {
+                LinUnitBasisVector3D.PositiveX => Float64Vector3D.Create(scalingFactor, 0, 0),
+                LinUnitBasisVector3D.NegativeX => Float64Vector3D.Create(-scalingFactor, 0, 0),
+                LinUnitBasisVector3D.PositiveY => Float64Vector3D.Create(0, scalingFactor, 0),
+                LinUnitBasisVector3D.NegativeY => Float64Vector3D.Create(0, -scalingFactor, 0),
+                LinUnitBasisVector3D.PositiveZ => Float64Vector3D.Create(0, 0, scalingFactor),
+                _ => Float64Vector3D.Create(0, 0, -scalingFactor)
+            };
+        }
+            
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Float64Vector3D ToUnitVector(double vectorX, double vectorY, double vectorZ, bool zeroAsSymmetric = true)
+        {
+            var s = Float64Vector3DUtils.ENorm(vectorX, vectorY, vectorZ);
+
+            if (s.IsZero())
+                return zeroAsSymmetric
+                    ? Float64Vector3D.UnitSymmetric
+                    : Float64Vector3D.Zero;
+
+            s = 1.0d / s;
+            return Float64Vector3D.Create(vectorX * s, vectorY * s, vectorZ * s);
+        }
+
+        public static Float64Vector3D ToVector3D(this IEnumerable<double> scalarList, bool makeUnit = false)
+        {
+            var scalarArray = new double[3];
+
+            var i = 0;
+            foreach (var scalar in scalarList)
+                scalarArray[i++] = scalar;
+
+            var tuple = Float64Vector3D.Create(scalarArray[0],
+                scalarArray[1],
+                scalarArray[2]);
+
+            return makeUnit ? tuple.ToUnitVector() : tuple;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Float64Vector3D ToVector3D(this Float64SphericalUnitVector3D sphericalPosition)
+        {
+            var sinTheta = 
+                sphericalPosition.Theta.Sin();
+
+            var cosTheta = 
+                sphericalPosition.Theta.Cos();
+
+            return Float64Vector3D.Create(
+                sinTheta * sphericalPosition.Phi.Cos(),
+                sinTheta * sphericalPosition.Phi.Sin(),
+                cosTheta
+            );
+        }
         
-        //    if (mv1.Count <= mv2.Count)
-        //    {
-        //        foreach (var (id, scalar1) in mv1)
-        //        {
-        //            if (!mv2.TryGetValue(id, out var scalar2))
-        //                continue;
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Float64Vector3D ToVector3D(this Float64SphericalUnitVector3D sphericalPosition, double length)
+        {
+            var rSinTheta = 
+                length * sphericalPosition.Theta.Sin();
 
-        //            composer.AddScalarValue(scalar1 * scalar2);
-        //        }
-        //    }
-        //    else
-        //    {
-        //        foreach (var (id, scalar2) in mv2)
-        //        {
-        //            if (!mv1.TryGetValue(id, out var scalar1))
-        //                continue;
+            var rCosTheta = 
+                length * sphericalPosition.Theta.Cos();
 
-        //            composer.AddScalarValue(scalar1 * scalar2);
-        //        }
-        //    }
+            return Float64Vector3D.Create(
+                rSinTheta * sphericalPosition.Phi.Cos(),
+                rSinTheta * sphericalPosition.Phi.Sin(),
+                rCosTheta
+            );
+        }
 
-        //    return composer;
-        //}
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Float64Vector3D ToVector3D(this IFloat64SphericalVector3D sphericalPosition)
+        {
+            var rSinTheta = 
+                sphericalPosition.R * sphericalPosition.Theta.Sin();
+
+            var rCosTheta = 
+                sphericalPosition.R * sphericalPosition.Theta.Cos();
+
+            return Float64Vector3D.Create(
+                rSinTheta * sphericalPosition.Phi.Cos(),
+                rSinTheta * sphericalPosition.Phi.Sin(),
+                rCosTheta
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Float64SphericalVector3D ToSphericalVector(this IFloat64Vector3D position)
+        {
+            var r = Math.Sqrt(
+                position.X * position.X +
+                position.Y * position.Y +
+                position.Z * position.Z
+            );
+
+            return new Float64SphericalVector3D(
+                Math.Acos(r / position.Z),
+                Math.Atan2(position.Y, position.X),
+                r
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Float64SphericalUnitVector3D ToSphericalUnitVector(this IFloat64Vector3D position)
+        {
+            var r = Math.Sqrt(
+                position.X * position.X +
+                position.Y * position.Y +
+                position.Z * position.Z
+            );
+
+            return new Float64SphericalUnitVector3D(
+                Math.Acos(r / position.Z),
+                Math.Atan2(position.Y, position.X)
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Float64SphericalUnitVector3D ToSphericalUnitVector(this IFloat64SphericalVector3D sphericalPosition)
+        {
+            return new Float64SphericalUnitVector3D(
+                sphericalPosition.Theta,
+                sphericalPosition.Phi
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Float64SphericalVector3D ToSphericalVector(this Float64SphericalUnitVector3D sphericalPosition, double r)
+        {
+            return new Float64SphericalVector3D(
+                sphericalPosition.Theta,
+                sphericalPosition.Phi,
+                r
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Float64Vector3D GetUnitVectorR(this IFloat64SphericalVector3D sphericalPosition)
+        {
+            var sinTheta = Math.Sin(sphericalPosition.Theta);
+            var cosTheta = Math.Cos(sphericalPosition.Theta);
+
+            var sinPhi = Math.Sin(sphericalPosition.Phi);
+            var cosPhi = Math.Cos(sphericalPosition.Phi);
+
+            return Float64Vector3D.Create(sinTheta * cosPhi,
+                sinTheta * sinPhi,
+                cosTheta);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Float64Vector3D GetUnitVectorR(this IFloat64Vector3D vector)
+        {
+            var r = vector.ENorm();
+
+            var cosTheta = r / vector.Z.Value;
+            var sinTheta = Math.Sqrt(1 - cosTheta * cosTheta);
+
+            var phi = Math.Atan2(vector.Y, vector.X);
+            var cosPhi = Math.Cos(phi);
+            var sinPhi = Math.Sin(phi);
+
+            return Float64Vector3D.Create(
+                sinTheta * cosPhi,
+                sinTheta * sinPhi,
+                cosTheta
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Float64Vector3D GetUnitVectorTheta(this IFloat64SphericalVector3D sphericalPosition)
+        {
+            var sinTheta = Math.Sin(sphericalPosition.Theta);
+            var cosTheta = Math.Cos(sphericalPosition.Theta);
+
+            var sinPhi = Math.Sin(sphericalPosition.Phi);
+            var cosPhi = Math.Cos(sphericalPosition.Phi);
+
+            return Float64Vector3D.Create(cosTheta * cosPhi,
+                cosTheta * sinPhi,
+                -sinTheta);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Float64Vector3D GetUnitVectorTheta(this IFloat64Vector3D vector)
+        {
+            var r = vector.ENorm();
+
+            var cosTheta = vector.Z.Value / r;
+            var sinTheta = Math.Sqrt(1 - cosTheta * cosTheta);
+
+            var phi = Math.Atan2(vector.Y, vector.X);
+            var cosPhi = Math.Cos(phi);
+            var sinPhi = Math.Sin(phi);
+
+            return Float64Vector3D.Create(
+                cosTheta * cosPhi,
+                cosTheta * sinPhi,
+                -sinTheta
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Float64Vector3D GetUnitVectorPhi(this IFloat64SphericalVector3D sphericalPosition)
+        {
+            var sinPhi = Math.Sin(sphericalPosition.Phi);
+            var cosPhi = Math.Cos(sphericalPosition.Phi);
+
+            return Float64Vector3D.Create(-sinPhi, cosPhi, 0);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Float64Vector3D GetUnitVectorPhi(this IFloat64Vector3D vector)
+        {
+            var phi = Math.Atan2(vector.Y, vector.X);
+            var cosPhi = Math.Cos(phi);
+            var sinPhi = Math.Sin(phi);
+
+            return Float64Vector3D.Create(-sinPhi, cosPhi, 0);
+        }
+
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Float64Vector3D ToVector3D(this ITriplet<double> tuple)
+        {
+            return Float64Vector3D.Create(
+                tuple.Item1,
+                tuple.Item2,
+                tuple.Item3
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Float64Vector3D ToVector3D<T>(this ITriplet<T> tuple, Func<T, double> scalarMapping)
+        {
+            return Float64Vector3D.Create(
+                scalarMapping(tuple.Item1),
+                scalarMapping(tuple.Item2),
+                scalarMapping(tuple.Item3)
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Float64Vector3DComposer ToMutableTuple3D(this IFloat64Vector3D tuple)
+        {
+            return Float64Vector3DComposer.Create(tuple.X, tuple.Y, tuple.Z);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Float64Vector3D XyToTuple3D(this IFloat64Vector2D tuple)
+        {
+            return Float64Vector3D.Create(tuple.X, tuple.Y, Float64Scalar.Zero);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Float64Vector3D XyToTuple3D(this IntTuple2D tuple)
+        {
+            return Float64Vector3D.Create(tuple.X, tuple.Y, 0.0d);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Float64Vector3D ToTuple3D(this IntTuple3D tuple)
+        {
+            return Float64Vector3D.Create(tuple.ItemX, tuple.ItemY, tuple.ItemZ);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Float64Vector3D XyzToTuple3D(this IFloat64Vector4D tuple)
+        {
+            return Float64Vector3D.Create(tuple.X, tuple.Y, tuple.Z);
+        }
 
     }
 }

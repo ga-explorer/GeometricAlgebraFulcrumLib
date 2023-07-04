@@ -13,7 +13,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines.Immutab
             );
         }
 
-        public LinePair2D Create(IFloat64Tuple2D origin1, IFloat64Tuple2D direction1, IFloat64Tuple2D origin2, IFloat64Tuple2D direction2)
+        public LinePair2D Create(IFloat64Vector2D origin1, IFloat64Vector2D direction1, IFloat64Vector2D origin2, IFloat64Vector2D direction2)
         {
             return new LinePair2D(
                 origin1.X, 

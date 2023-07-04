@@ -4,7 +4,7 @@ using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsPath.Space3D
 {
     public class ConstantPointsPath3D
-        : PSeqConstant1D<IFloat64Tuple3D>, IPointsPath3D
+        : PSeqConstant1D<IFloat64Vector3D>, IPointsPath3D
     {
         public ConstantPointsPath3D(int count)
             : base(count, Float64Vector3D.Create(0, 0, 0))
@@ -16,7 +16,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsPath.Space3D
         {
         }
 
-        public ConstantPointsPath3D(int count, IFloat64Tuple3D value)
+        public ConstantPointsPath3D(int count, IFloat64Vector3D value)
             : base(count, value)
         {
         }
@@ -27,7 +27,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsPath.Space3D
             return Count >= 2 && Value.IsValid();
         }
 
-        public IPointsPath3D MapPoints(Func<IFloat64Tuple3D, IFloat64Tuple3D> pointMapping)
+        public IPointsPath3D MapPoints(Func<IFloat64Vector3D, IFloat64Vector3D> pointMapping)
         {
             return new ConstantPointsPath3D(Count, pointMapping(Value));
         }

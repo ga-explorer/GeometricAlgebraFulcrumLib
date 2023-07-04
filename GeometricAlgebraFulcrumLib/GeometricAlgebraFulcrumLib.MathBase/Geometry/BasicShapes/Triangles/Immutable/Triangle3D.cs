@@ -8,7 +8,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Triangles.Imm
 {
     public sealed class Triangle3D : ITriangle3D
     {
-        public static Triangle3D Create(IFloat64Tuple3D point1, IFloat64Tuple3D point2, IFloat64Tuple3D point3)
+        public static Triangle3D Create(IFloat64Vector3D point1, IFloat64Vector3D point2, IFloat64Vector3D point3)
         {
             return new Triangle3D(
                 point1.X, point1.Y, point1.Z,

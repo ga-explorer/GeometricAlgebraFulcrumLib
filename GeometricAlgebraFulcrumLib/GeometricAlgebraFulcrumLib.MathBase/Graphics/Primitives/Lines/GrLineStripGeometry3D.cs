@@ -10,17 +10,17 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Lines
     public sealed class GrLineStripGeometry3D
         : IGraphicsLineGeometry3D
     {
-        public static GrLineStripGeometry3D Create(IReadOnlyList<IFloat64Tuple3D> pointsList)
+        public static GrLineStripGeometry3D Create(IReadOnlyList<IFloat64Vector3D> pointsList)
         {
             return new GrLineStripGeometry3D(pointsList);
         }
 
-        public static GrLineStripGeometry3D Create(params IFloat64Tuple3D[] pointsList)
+        public static GrLineStripGeometry3D Create(params IFloat64Vector3D[] pointsList)
         {
             return new GrLineStripGeometry3D(pointsList);
         }
 
-        public static GrLineStripGeometry3D Create(IEnumerable<IFloat64Tuple3D> pointsList)
+        public static GrLineStripGeometry3D Create(IEnumerable<IFloat64Vector3D> pointsList)
         {
             return new GrLineStripGeometry3D(pointsList.ToArray());
         }
@@ -35,8 +35,8 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Lines
         public IEnumerable<IGraphicsVertex3D> GeometryVertices
             => GeometryPoints.Select((p, i) => new GrVertex3D(i, p));
 
-        private readonly IReadOnlyList<IFloat64Tuple3D> _vertexPoints;
-        public IEnumerable<IFloat64Tuple3D> GeometryPoints 
+        private readonly IReadOnlyList<IFloat64Vector3D> _vertexPoints;
+        public IEnumerable<IFloat64Vector3D> GeometryPoints 
             => _vertexPoints;
 
         public IEnumerable<int> GeometryIndices
@@ -51,12 +51,12 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Lines
                 _vertexPoints[index + 1]
             );
 
-        public IEnumerable<Pair<IFloat64Tuple3D>> LineVertexPoints
+        public IEnumerable<Pair<IFloat64Vector3D>> LineVertexPoints
         {
             get
             {
                 for (var i = 0; i < _vertexPoints.Count - 1; i++)
-                    yield return new Pair<IFloat64Tuple3D>(
+                    yield return new Pair<IFloat64Vector3D>(
                         _vertexPoints[i],
                         _vertexPoints[i + 1]
                     );
@@ -73,7 +73,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Lines
         }
 
 
-        private GrLineStripGeometry3D(IReadOnlyList<IFloat64Tuple3D> pointsList)
+        private GrLineStripGeometry3D(IReadOnlyList<IFloat64Vector3D> pointsList)
         {
             if (pointsList.Count < 2)
                 throw new InvalidOperationException();
@@ -82,7 +82,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Lines
         }
         
         
-        public IFloat64Tuple3D GetGeometryPoint(int index)
+        public IFloat64Vector3D GetGeometryPoint(int index)
         {
             return _vertexPoints[index];
         }

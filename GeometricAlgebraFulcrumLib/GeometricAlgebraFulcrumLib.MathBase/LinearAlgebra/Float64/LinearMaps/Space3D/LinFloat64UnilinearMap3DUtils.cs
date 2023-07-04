@@ -453,7 +453,7 @@ public static class LinFloat64UnilinearMap3DUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Rotation3D GetOrthogonalizingRotation(this IFloat64Tuple3D vector1, IFloat64Tuple3D vector2)
+    public static LinFloat64Rotation3D GetOrthogonalizingRotation(this IFloat64Vector3D vector1, IFloat64Vector3D vector2)
     {
         return LinFloat64RotationComposer3D
             .Create()
@@ -462,7 +462,7 @@ public static class LinFloat64UnilinearMap3DUtils
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Pair<Float64Vector3D> OrthogonalizeFrameUsingRotation(this IFloat64Tuple3D vector1, IFloat64Tuple3D vector2)
+    public static Pair<Float64Vector3D> OrthogonalizeFrameUsingRotation(this IFloat64Vector3D vector1, IFloat64Vector3D vector2)
     {
         var rotation = GetOrthogonalizingRotation(vector1, vector2);
 

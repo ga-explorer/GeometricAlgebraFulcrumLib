@@ -32,7 +32,7 @@ public static class WclHtmlImageUtils
         return (numberValue * 100).ToSvgNumberText(true);
     }
 
-    public static string ToSvgLengthText(this double lengthValue, SvgValueLengthUnit unit)
+    public static string ToSvgLengthText(this double lengthValue, SvgLengthUnit? unit)
     {
         return new StringBuilder(32)
             .Append(lengthValue.ToSvgNumberText())
@@ -40,7 +40,7 @@ public static class WclHtmlImageUtils
             .ToString();
     }
 
-    public static string ToSvgAngleText(this double angleValue, SvgValueAngleUnit unit)
+    public static string ToSvgAngleText(this double angleValue, SvgValueAngleUnit? unit)
     {
         return new StringBuilder(32)
             .Append(angleValue.ToSvgNumberText())

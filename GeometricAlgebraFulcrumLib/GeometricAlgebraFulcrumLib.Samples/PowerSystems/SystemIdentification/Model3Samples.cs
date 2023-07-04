@@ -8,7 +8,6 @@ using GeometricAlgebraFulcrumLib.MathBase.Geometry.Differential.Functions;
 using GeometricAlgebraFulcrumLib.MathBase.Geometry.Differential.Functions.Interpolators;
 using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra;
-using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.Text;
 using GeometricAlgebraFulcrumLib.Processors;
 using GeometricAlgebraFulcrumLib.Processors.SignalAlgebra;
@@ -39,7 +38,7 @@ public static class Model3Samples
         = LaTeXComposerFloat64.DefaultComposer;
 
     public static Float64SignalSamplingSpecs SamplingSpecs { get; }
-        = new Float64SignalSamplingSpecs(20000, 500000);
+        = new Float64SignalSamplingSpecs(100002, 1000000);
 
     public static int SampleStep
         => 1;
@@ -993,7 +992,6 @@ public static class Model3Samples
             @"values_RC_serie_5K_4_7nanos_standard_exp_3"
         };
 
-        // Read Signal
         ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
         
         var tData =
@@ -1066,14 +1064,137 @@ public static class Model3Samples
             ParallelRC0(tData, iFunc, vFunc);
             ParallelRC1(tData, iFunc, vFunc);
             
+            ParallelRLC0(tData, iFunc, vFunc, vIt1);
+            ParallelRLC1(tData, iFunc, vFunc);
+
             SeriesRL0(tData, iFunc, vFunc);
             SeriesRL1(tData, iFunc, vFunc);
             
             SeriesRC0(tData, iFunc, vFunc, iIt1);
             SeriesRC1(tData, iFunc, vFunc);
             
+            SeriesRLC0(tData, iFunc, vFunc, iIt1);
+            SeriesRLC1(tData, iFunc, vFunc);
+
+            Console.WriteLine();
+        }
+
+        
+        
+    }
+    
+    public static void Example2()
+    {
+        //var fileNames = new[]
+        //{
+        //    @"RCPar10KHz",
+        //    @"RCSerie10KHz",
+        //    @"RLCPar10KHz",
+        //    @"RLCSerie10KHz",
+        //    @"RLPar10KHz",
+        //    @"RLSerie10KHz"
+        //};
+
+        //var fileNames = new[]
+        //{
+        //    @"RCPar100KHz",
+        //    @"RCSerie100KHz",
+        //    @"RLCPar100KHz",
+        //    @"RLCSerie100KHz",
+        //    @"RLPar100KHz",
+        //    @"RLSerie100KHz"
+        //};
+
+        var fileNames = new[]
+        {
+            @"RCPar1GHz",
+            @"RCSerie1GHz",
+            @"RLCPar1GHz",
+            @"RLCSerie1GHz",
+            @"RLPar1GHz",
+            @"RLSerie1GHz"
+        };
+
+        ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+        
+        var tData =
+            SamplingSpecs.GetSampledTimeSignal();
+
+        var interpolatorOptions =
+            new DfLinearSplineSignalInterpolatorOptions
+            {
+                SmoothingFactors = new[] { 3, 5 }, //new[] { 3, 5, 7, 9 },
+            };
+
+        //var interpolatorOptions =
+        //    new DfCatmullRomSplineSignalInterpolatorOptions
+        //    {
+        //        BezierDegree = 3,
+        //        SmoothingFactors = new[] { 3, 5, 7, 9 }, //new[] { 3, 5 },
+        //        SplineType = CatmullRomSplineType.Centripetal
+        //    };
+
+        foreach (var fileName in fileNames)
+        {
+            FileName = fileName;
+
+            var inputFilePath =
+                Path.Combine(WorkingPath, $"{fileName}.xlsx");
+            
+            Console.WriteLine($"Reading File {fileName}.xlsx");
+            
+            using var package = new ExcelPackage(new FileInfo(inputFilePath));
+
+            var workSheet = package.Workbook.Worksheets[0];
+
+            var vFunc = 
+                workSheet.GetDifferentialInterpolatorOfColumn(
+                    2,
+                    2, 
+                    SamplingSpecs,
+                    1,
+                    interpolatorOptions
+                );
+            
+            var iFunc = 
+                workSheet.GetDifferentialInterpolatorOfColumn(
+                    2,
+                    3, 
+                    SamplingSpecs,
+                    1,
+                    interpolatorOptions
+                );
+
+            
+            var vIt1 = tData.MapSamples(
+                tData.MapSamples(vFunc.GetValue)
+                    .IntegrateTrapezoidal()
+                    .GetDifferentialInterpolator(interpolatorOptions)
+                    .GetValue
+            );
+            
+            var iIt1 = tData.MapSamples(
+                tData.MapSamples(iFunc.GetValue)
+                    .IntegrateTrapezoidal()
+                    .GetDifferentialInterpolator(interpolatorOptions)
+                    .GetValue
+            );
+
+
+            ParallelRL0(tData, iFunc, vFunc, vIt1);
+            ParallelRL1(tData, iFunc, vFunc);
+            
+            ParallelRC0(tData, iFunc, vFunc);
+            ParallelRC1(tData, iFunc, vFunc);
+            
             ParallelRLC0(tData, iFunc, vFunc, vIt1);
             ParallelRLC1(tData, iFunc, vFunc);
+
+            SeriesRL0(tData, iFunc, vFunc);
+            SeriesRL1(tData, iFunc, vFunc);
+            
+            SeriesRC0(tData, iFunc, vFunc, iIt1);
+            SeriesRC1(tData, iFunc, vFunc);
             
             SeriesRLC0(tData, iFunc, vFunc, iIt1);
             SeriesRLC1(tData, iFunc, vFunc);

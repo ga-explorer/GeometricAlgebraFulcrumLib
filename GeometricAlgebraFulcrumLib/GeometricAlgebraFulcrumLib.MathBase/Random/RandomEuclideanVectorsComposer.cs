@@ -1,6 +1,7 @@
 ﻿using DataStructuresLib.Random;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.Random
 {
@@ -70,10 +71,8 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Random
             var cosPhi = Math.Cos(phi);
             var sinPhi = Math.Sin(phi);
 
-            return new Float64Vector2D(
-                cosPhi,
-                sinPhi
-            );
+            return Float64Vector2D.Create((Float64Scalar)cosPhi,
+                (Float64Scalar)sinPhi);
         }
 
         public Float64Vector2D GetRandomVector2Dp()
@@ -83,10 +82,8 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Random
             var cosPhi = Math.Cos(phi);
             var sinPhi = Math.Sin(phi);
 
-            return new Float64Vector2D(
-                r * cosPhi,
-                r * sinPhi
-            );
+            return Float64Vector2D.Create((Float64Scalar)(r * cosPhi),
+                (Float64Scalar)(r * sinPhi));
         }
 
         public Float64Vector3D GetRandomUnitVector3Dp()

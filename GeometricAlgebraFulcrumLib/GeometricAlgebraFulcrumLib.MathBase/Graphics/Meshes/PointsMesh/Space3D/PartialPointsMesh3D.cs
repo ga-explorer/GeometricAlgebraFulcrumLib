@@ -7,7 +7,7 @@ using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsMesh.Space3D
 {
     public sealed class PartialPointsMesh3D
-        : PSeqPartial2D<IFloat64Tuple3D>, IPointsMesh3D
+        : PSeqPartial2D<IFloat64Vector3D>, IPointsMesh3D
     {
         public IPointsMesh3D BaseMesh { get; }
 
@@ -19,7 +19,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsMesh.Space3D
         }
 
 
-        public override PSeqSlice1D<IFloat64Tuple3D> GetSliceAt(int dimension, int index)
+        public override PSeqSlice1D<IFloat64Vector3D> GetSliceAt(int dimension, int index)
         {
             return new PointsMeshSlicePointsPath3D(this, dimension, index);
         }

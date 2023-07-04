@@ -54,6 +54,8 @@ namespace GeometricAlgebraFulcrumLib.Samples
             //PowerSystems.SystemIdentification.DFIGTest1OpenLoopSample.Example2();
             //PowerSignalVisualizationSample1.Execute();
 
+            Graphics.KonvaJs.Sample1.Example1();
+            Graphics.KonvaJs.Sample1.Example2();
             //Graphics.BabylonJs.DifferentialCurveAnimationSample.Example1();
             //Graphics.BabylonJs.AnimationSamples.Example1();
             //Graphics.BabylonJs.AnimationSamples.Example2();
@@ -88,7 +90,7 @@ namespace GeometricAlgebraFulcrumLib.Samples
             //Numeric.XGaMultivectorValidationSamples.Example11();
             //Numeric.XGaMultivectorValidationSamples.Example12();
 
-            //EuclideanGeometry.QuaternionSamples.Example1();
+            //EuclideanGeometry.QuaternionSamples.Validations();
             //EuclideanGeometry.GramSchmidtSamples.Example2();
             //EuclideanGeometry.GramSchmidtSamples.Example3();
             //EuclideanGeometry.GramSchmidtSamples.Example4();
@@ -114,7 +116,7 @@ namespace GeometricAlgebraFulcrumLib.Samples
             //PowerSystems.GeometricFrequency.SymbolicValidationSample.Example3D();
             //PowerSystems.GeometricFrequency.NumericValidationSample.Example1();
 
-            PowerSystems.SystemIdentification.Model3Samples.Example1();
+            //PowerSystems.SystemIdentification.Model3Samples.Example2();
 
             //SymbolicBSplineSample.Example2();
             //NumericPhCurveSamples.Example3();

@@ -10,7 +10,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Frames.Space
     /// </summary>
     public class AffineFrame2D
     {
-        public static AffineFrame2D Create(IFloat64Tuple2D origin, IFloat64Tuple2D uDirection, IFloat64Tuple2D vDirection)
+        public static AffineFrame2D Create(IFloat64Vector2D origin, IFloat64Vector2D uDirection, IFloat64Vector2D vDirection)
         {
             return new AffineFrame2D(
                 origin.X,
@@ -28,7 +28,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Frames.Space
         /// <param name="origin"></param>
         /// <param name="uDirection"></param>
         /// <returns></returns>
-        public static AffineFrame2D CreateRightHanded(IFloat64Tuple2D origin, IFloat64Tuple2D uDirection)
+        public static AffineFrame2D CreateRightHanded(IFloat64Vector2D origin, IFloat64Vector2D uDirection)
         {
             Debug.Assert(origin.IsValid() && uDirection.IsValid());
 
@@ -50,7 +50,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Frames.Space
         /// <param name="origin"></param>
         /// <param name="uDirection"></param>
         /// <returns></returns>
-        public static AffineFrame2D CreateLeftHanded(IFloat64Tuple2D origin, IFloat64Tuple2D uDirection)
+        public static AffineFrame2D CreateLeftHanded(IFloat64Vector2D origin, IFloat64Vector2D uDirection)
         {
             var s = uDirection.ENorm();
 
@@ -78,13 +78,13 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Frames.Space
         public double VDirectionY { get; }
 
         public Float64Vector2D Origin
-            => new Float64Vector2D(OriginX, OriginY);
+            => Float64Vector2D.Create((Float64Scalar)OriginX, (Float64Scalar)OriginY);
 
         public Float64Vector2D UDirection
-            => new Float64Vector2D(UDirectionX, UDirectionY);
+            => Float64Vector2D.Create((Float64Scalar)UDirectionX, (Float64Scalar)UDirectionY);
 
         public Float64Vector2D VDirection
-            => new Float64Vector2D(VDirectionX, VDirectionY);
+            => Float64Vector2D.Create((Float64Scalar)VDirectionX, (Float64Scalar)VDirectionY);
 
         public bool IsRightHanded
             => UDirection.Determinant(VDirection) > 0.0d;

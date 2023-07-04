@@ -254,7 +254,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static XGaFloat64Vector CreateVector(this XGaFloat64Processor processor, IFloat64Tuple2D vector)
+        public static XGaFloat64Vector CreateVector(this XGaFloat64Processor processor, IFloat64Vector2D vector)
         {
             return processor
                 .CreateComposer()
@@ -264,7 +264,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static XGaFloat64Vector CreateVector(this XGaFloat64Processor processor, IFloat64Tuple3D vector)
+        public static XGaFloat64Vector CreateVector(this XGaFloat64Processor processor, IFloat64Vector3D vector)
         {
             return processor
                 .CreateComposer()
@@ -275,7 +275,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static XGaFloat64Vector CreateVector(this XGaFloat64Processor processor, IFloat64Tuple4D vector)
+        public static XGaFloat64Vector CreateVector(this XGaFloat64Processor processor, IFloat64Vector4D vector)
         {
             return processor
                 .CreateComposer()
@@ -304,7 +304,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static XGaFloat64Vector ToXGaFloat64Vector(this IFloat64Tuple2D vector)
+        public static XGaFloat64Vector ToXGaFloat64Vector(this IFloat64Vector2D vector)
         {
             return XGaFloat64Processor
                 .Euclidean
@@ -315,7 +315,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static XGaFloat64Vector ToXGaFloat64Vector(this IFloat64Tuple2D vector, XGaFloat64Processor processor)
+        public static XGaFloat64Vector ToXGaFloat64Vector(this IFloat64Vector2D vector, XGaFloat64Processor processor)
         {
             return processor
                 .CreateComposer()
@@ -325,7 +325,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static XGaFloat64Vector ToXGaFloat64Vector(this IFloat64Tuple3D vector)
+        public static XGaFloat64Vector ToXGaFloat64Vector(this IFloat64Vector3D vector)
         {
             return XGaFloat64Processor
                 .Euclidean
@@ -337,7 +337,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static XGaFloat64Vector ToXGaFloat64Vector(this IFloat64Tuple3D vector, XGaFloat64Processor processor)
+        public static XGaFloat64Vector ToXGaFloat64Vector(this IFloat64Vector3D vector, XGaFloat64Processor processor)
         {
             return processor
                 .CreateComposer()
@@ -348,7 +348,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static XGaFloat64Vector ToXGaFloat64Vector(this IFloat64Tuple4D vector)
+        public static XGaFloat64Vector ToXGaFloat64Vector(this IFloat64Vector4D vector)
         {
             return XGaFloat64Processor
                 .Euclidean
@@ -361,7 +361,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static XGaFloat64Vector ToXGaFloat64Vector(this IFloat64Tuple4D vector, XGaFloat64Processor processor)
+        public static XGaFloat64Vector ToXGaFloat64Vector(this IFloat64Vector4D vector, XGaFloat64Processor processor)
         {
             return processor
                 .CreateComposer()

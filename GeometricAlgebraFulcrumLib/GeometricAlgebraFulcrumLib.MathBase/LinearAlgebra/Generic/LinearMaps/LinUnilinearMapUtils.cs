@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic.Matrices;
 using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic.LinearMaps;
@@ -492,5 +493,15 @@ public static class LinUnilinearMapUtils
     public static LinUnilinearMap<T> Tanh<T>(this LinUnilinearMap<T> v1)
     {
         return v1.MapScalars(v1.ScalarProcessor.Tanh);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static LinUnilinearMap<T> CreateClarkeRotationMap<T>(this IScalarProcessor<T> processor, int vectorsCount)
+    {
+        return processor.CreateLinUnilinearMap(
+            processor
+                .CreateClarkeRotationArray(vectorsCount)
+                .ColumnsToLinVectors(processor)
+        );
     }
 }

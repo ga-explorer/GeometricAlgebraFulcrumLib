@@ -11,7 +11,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Builtin
     /// </summary>
     public sealed class XeoglTorusGeometry : XeoglBuiltinSolidGeometry
     {
-        public static XeoglTorusGeometry Create(IFloat64Tuple3D center, double radius, double tubeRadius)
+        public static XeoglTorusGeometry Create(IFloat64Vector3D center, double radius, double tubeRadius)
         {
             return new XeoglTorusGeometry(center)
             {
@@ -20,7 +20,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Builtin
             };
         }
 
-        public static XeoglTorusGeometry Create(IFloat64Tuple3D center, double radius, double tubeRadius, double arcAngle)
+        public static XeoglTorusGeometry Create(IFloat64Vector3D center, double radius, double tubeRadius, double arcAngle)
         {
             return new XeoglTorusGeometry(center)
             {
@@ -30,7 +30,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Builtin
             };
         }
 
-        public static XeoglTorusGeometry Create(IFloat64Tuple3D center, double radius, double tubeRadius, int radialSegments, int tubeSegments)
+        public static XeoglTorusGeometry Create(IFloat64Vector3D center, double radius, double tubeRadius, int radialSegments, int tubeSegments)
         {
             return new XeoglTorusGeometry(center)
             {
@@ -41,7 +41,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Builtin
             };
         }
         
-        public static XeoglTorusGeometry Create(IFloat64Tuple3D center, double radius, double tubeRadius, double arcAngle, int radialSegments, int tubeSegments)
+        public static XeoglTorusGeometry Create(IFloat64Vector3D center, double radius, double tubeRadius, double arcAngle, int radialSegments, int tubeSegments)
         {
             return new XeoglTorusGeometry(center)
             {
@@ -119,7 +119,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Builtin
         {
         }
 
-        public XeoglTorusGeometry(IFloat64Tuple3D center)
+        public XeoglTorusGeometry(IFloat64Vector3D center)
         {
             Center.SetVector(center);
         }

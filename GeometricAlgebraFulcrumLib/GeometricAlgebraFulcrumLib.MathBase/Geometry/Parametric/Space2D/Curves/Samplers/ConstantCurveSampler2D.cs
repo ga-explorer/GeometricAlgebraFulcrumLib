@@ -44,7 +44,7 @@ public class ConstantCurveSampler2D :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ConstantCurveSampler2D(IFloat64Tuple2D point, Float64Range1D parameterRange)
+    public ConstantCurveSampler2D(IFloat64Vector2D point, Float64Range1D parameterRange)
     {
         ConstantCurve = ConstantParametricCurve2D.Create(point, Float64Vector2D.E1);
         ParameterRange = parameterRange;
@@ -53,7 +53,7 @@ public class ConstantCurveSampler2D :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ConstantCurveSampler2D(IFloat64Tuple2D point, IFloat64Tuple2D tangent, Float64Range1D parameterRange)
+    public ConstantCurveSampler2D(IFloat64Vector2D point, IFloat64Vector2D tangent, Float64Range1D parameterRange)
     {
         ConstantCurve = ConstantParametricCurve2D.Create(point, tangent);
         ParameterRange = parameterRange;
@@ -70,7 +70,7 @@ public class ConstantCurveSampler2D :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ConstantCurveSampler2D SetCurve(IFloat64Tuple2D point, Float64Range1D parameterRange)
+    public ConstantCurveSampler2D SetCurve(IFloat64Vector2D point, Float64Range1D parameterRange)
     {
         ConstantCurve = ConstantParametricCurve2D.Create(point, Float64Vector2D.E1);
         ParameterRange = parameterRange;
@@ -81,7 +81,7 @@ public class ConstantCurveSampler2D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ConstantCurveSampler2D SetCurve(IFloat64Tuple2D point, IFloat64Tuple2D tangent, Float64Range1D parameterRange)
+    public ConstantCurveSampler2D SetCurve(IFloat64Vector2D point, IFloat64Vector2D tangent, Float64Range1D parameterRange)
     {
         ConstantCurve = ConstantParametricCurve2D.Create(point, tangent);
         ParameterRange = parameterRange;

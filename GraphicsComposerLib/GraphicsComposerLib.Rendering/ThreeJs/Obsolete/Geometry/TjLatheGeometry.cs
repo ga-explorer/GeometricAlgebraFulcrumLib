@@ -29,7 +29,7 @@ namespace GraphicsComposerLib.Rendering.ThreeJs.Obsolete.Geometry
             XyPoints = xyPoints;
         }
 
-        public TjLatheGeometry(IEnumerable<IFloat64Tuple2D> xyPoints)
+        public TjLatheGeometry(IEnumerable<IFloat64Vector2D> xyPoints)
         {
             XyPoints = xyPoints.Select(t => new TjVector2(t)).ToArray();
         }

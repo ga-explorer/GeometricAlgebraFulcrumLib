@@ -32,7 +32,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.LatticeShapes
             return curve;
         }
 
-        public static GrLatticeCurve3D AddLine(this GrLatticeCurveList3D curveList, IFloat64Tuple3D point1, IFloat64Tuple3D point2, int samplesCount)
+        public static GrLatticeCurve3D AddLine(this GrLatticeCurveList3D curveList, IFloat64Vector3D point1, IFloat64Vector3D point2, int samplesCount)
         {
             var curve = curveList.AddCurve(samplesCount, false);
 

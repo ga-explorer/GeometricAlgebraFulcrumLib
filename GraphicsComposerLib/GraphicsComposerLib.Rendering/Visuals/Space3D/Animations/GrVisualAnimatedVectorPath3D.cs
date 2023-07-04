@@ -99,7 +99,7 @@ public class GrVisualAnimatedVectorPath3D :
     public IPointsPath3D GetPointsPath(double time)
     {
         var pointArray = _dataArray.MapItems(
-            p => (IFloat64Tuple3D) p.GetPoint(time)
+            p => (IFloat64Vector3D) p.GetPoint(time)
         );
 
         return new ArrayPointsPath3D(pointArray);

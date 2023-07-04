@@ -34,7 +34,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.Graphics
         public int DataTextImageMaxHeight { get; private set; }
 
 
-        public RotorFamilyVisualizer3D(IReadOnlyList<double> cameraAlphaValues, IReadOnlyList<double> cameraBetaValues, IFloat64Tuple3D sourceVector, IFloat64Tuple3D targetVector, IReadOnlyList<Float64PlanarAngle> thetaValues) 
+        public RotorFamilyVisualizer3D(IReadOnlyList<double> cameraAlphaValues, IReadOnlyList<double> cameraBetaValues, IFloat64Vector3D sourceVector, IFloat64Vector3D targetVector, IReadOnlyList<Float64PlanarAngle> thetaValues) 
             : base(cameraAlphaValues, cameraBetaValues)
         {
             SourceVector = sourceVector.ToUnitVector();
@@ -63,7 +63,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.Graphics
             var n = 
                 SourceVector.VectorUnitCross(TargetVector);
 
-            return n.RotateUsingAxisAngle(
+            return n.RotateUsing(
                 (TargetVector - SourceVector).ToUnitVector(),
                 theta
             );
@@ -84,7 +84,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.Graphics
             var phi = ThetaToPhi(theta);
             var normal = ThetaToUnitNormal(theta);
 
-            return normal.AxisAngleToQuaternion(phi);
+            return normal.CreateQuaternion(phi);
         }
 
         public Float64PlanarAngle PhiToTheta(Float64PlanarAngle phi)
@@ -113,7 +113,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.Graphics
         {
             var normal = PhiToUnitNormal(phi);
 
-            return normal.AxisAngleToQuaternion(phi);
+            return normal.CreateQuaternion(phi);
         }
 
         public Float64PlanarAngle GetTheta(int index)
@@ -199,7 +199,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.Graphics
     
         protected override void InitializeImageCache()
         {
-            var workingPath = Path.Combine(WorkingPath, "images");
+            var workingPath = Path.Combine(WorkingFolder, "images");
 
             Console.Write("Generating images cache .. ");
 
@@ -310,7 +310,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.Graphics
             {
                 var theta = ThetaValues[i];
                 var phi = ThetaToPhi(theta);
-                var uvNormal1 = uvNormal.RotateUsingAxisAngle(vuDiff, theta);
+                var uvNormal1 = uvNormal.RotateUsing(vuDiff, theta);
                 var u1 = SourceVector.RejectOnVector(uvNormal1);
                 var v1 = TargetVector.RejectOnVector(uvNormal1);
 
@@ -335,7 +335,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.Graphics
 
             //ImageCache.GeneratePngBase64Strings(latexImageComposer);
 
-            ImageCache.GeneratePngDataUrlStrings();
+            ImageCache.GeneratePngDataUrlStrings(WorkingFolder);
             
         
             var maxWidth = 0;
@@ -587,7 +587,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.Graphics
             var uvNormal = u.VectorUnitCross(v);
             var thetaPlaneNormal = (v - u).ToUnitVector();
             var theta = ThetaValues[index];
-            var uvNormal1 = uvNormal.RotateUsingAxisAngle(thetaPlaneNormal, theta);
+            var uvNormal1 = uvNormal.RotateUsing(thetaPlaneNormal, theta);
             var u1 = u.RejectOnVector(uvNormal1);
             var v1 = v.RejectOnVector(uvNormal1);
 
@@ -653,10 +653,10 @@ namespace GeometricAlgebraFulcrumLib.Applications.Graphics
             var vuDiff = (v - u).ToUnitVector();
             var uvNormal = u.VectorUnitCross(v);
             var theta = ThetaValues[index];
-            var uvNormal1 = uvNormal.RotateUsingAxisAngle(vuDiff, theta);
+            var uvNormal1 = uvNormal.RotateUsing(vuDiff, theta);
             var u1 = u.RejectOnVector(uvNormal1);
             var v1 = v.RejectOnVector(uvNormal1);
-            var vuSum1 = vuSum.RotateUsingAxisAngle(vuDiff, theta);
+            var vuSum1 = vuSum.RotateUsing(vuDiff, theta);
 
             MainSceneComposer.AddDiscSector(
                 "phiMinRotor",
@@ -781,7 +781,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.Graphics
             for (var i = 0; i < thetaDegreesArray.Length; i++)
             {
                 var theta = thetaDegreesArray[i].DegreesToAngle();
-                var uvNormal1 = uvNormal.RotateUsingAxisAngle(vuDiff, theta);
+                var uvNormal1 = uvNormal.RotateUsing(vuDiff, theta);
                 var u1 = u.RejectOnVector(uvNormal1);
                 var v1 = v.RejectOnVector(uvNormal1);
 
@@ -822,10 +822,10 @@ namespace GeometricAlgebraFulcrumLib.Applications.Graphics
             var vuDiff = (v - u).ToUnitVector();
             var uvNormal = u.VectorUnitCross(v);
             var theta = ThetaValues[index];
-            var uvNormal1 = uvNormal.RotateUsingAxisAngle(vuDiff, theta);
+            var uvNormal1 = uvNormal.RotateUsing(vuDiff, theta);
             var u1 = u.RejectOnVector(uvNormal1);
             var v1 = v.RejectOnVector(uvNormal1);
-            var vuSum1 = vuSum.RotateUsingAxisAngle(vuDiff, theta);
+            var vuSum1 = vuSum.RotateUsing(vuDiff, theta);
 
             var intersectionPointColor = Color.DarkSlateGray;
             var intersectionLineColor = Color.DarkSlateGray.SetAlpha(0.5f);

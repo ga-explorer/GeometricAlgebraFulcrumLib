@@ -1,5 +1,6 @@
 ﻿using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space2D
 {
@@ -12,7 +13,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space2D
 
         public Float64Vector2D Direction
         {
-            get { return new Float64Vector2D(DirectionX, DirectionY); }
+            get { return Float64Vector2D.Create((Float64Scalar)DirectionX, (Float64Scalar)DirectionY); }
         }
 
 
@@ -42,22 +43,20 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space2D
         public bool SwapsHandedness 
             => false;
 
-        public Float64Vector2D MapPoint(IFloat64Tuple2D point)
+        public Float64Vector2D MapPoint(IFloat64Vector2D point)
         {
-            return new Float64Vector2D(
-                point.X + DirectionX, 
-                point.Y + DirectionY
-            );
+            return Float64Vector2D.Create(point.X + DirectionX, 
+                point.Y + DirectionY);
         }
 
-        public Float64Vector2D MapVector(IFloat64Tuple2D vector)
+        public Float64Vector2D MapVector(IFloat64Vector2D vector)
         {
-            return vector.ToLinVector2D();
+            return vector.ToVector2D();
         }
 
-        public Float64Vector2D MapNormal(IFloat64Tuple2D normal)
+        public Float64Vector2D MapNormal(IFloat64Vector2D normal)
         {
-            return normal.ToLinVector2D();
+            return normal.ToVector2D();
         }
 
         public IAffineMap2D GetInverseAffineMap()

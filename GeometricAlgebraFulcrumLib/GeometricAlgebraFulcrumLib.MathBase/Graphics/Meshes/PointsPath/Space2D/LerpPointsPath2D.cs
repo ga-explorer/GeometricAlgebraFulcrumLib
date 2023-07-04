@@ -22,14 +22,14 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsPath.Space2D
         public int Count
             => Path1.Count;
 
-        public IFloat64Tuple2D this[int index]
+        public IFloat64Vector2D this[int index]
             => ParamValue.Lerp(
                 Path1[index],
                 Path2[index]
             );
 
-        public Pair<IFloat64Tuple2D> this[int index1, int index2]
-            => new Pair<IFloat64Tuple2D>(
+        public Pair<IFloat64Vector2D> this[int index1, int index2]
+            => new Pair<IFloat64Vector2D>(
                 this[index1],
                 this[index2]
             );
@@ -55,12 +55,12 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsPath.Space2D
                    Path2.IsValid();
         }
         
-        public IPointsPath2D MapPoints(Func<IFloat64Tuple2D, IFloat64Tuple2D> pointMapping)
+        public IPointsPath2D MapPoints(Func<IFloat64Vector2D, IFloat64Vector2D> pointMapping)
         {
             return new ArrayPointsPath2D(this.Select(pointMapping));
         }
 
-        public IEnumerator<IFloat64Tuple2D> GetEnumerator()
+        public IEnumerator<IFloat64Vector2D> GetEnumerator()
         {
             return Enumerable
                 .Range(0, Count)

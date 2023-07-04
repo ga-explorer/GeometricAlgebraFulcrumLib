@@ -10,6 +10,7 @@ using GeometricAlgebraFulcrumLib.MathBase.Geometry.Differential.Functions;
 using GeometricAlgebraFulcrumLib.MathBase.Geometry.Differential.Functions.Interpolators;
 using GeometricAlgebraFulcrumLib.MathBase.Geometry.Differential.Functions.Phasors;
 using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64;
 using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra.Composers;

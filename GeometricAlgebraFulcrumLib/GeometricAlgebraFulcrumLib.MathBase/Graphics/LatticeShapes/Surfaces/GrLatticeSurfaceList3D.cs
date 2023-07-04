@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.Basic;
 using GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Triangles;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 using TextComposerLib.Text.Linear;
 
@@ -38,10 +39,10 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.LatticeShapes.Surfaces
                 ? VertexList
                 : _surfaceList.SelectMany(b => b.Vertices);
         
-        public IEnumerable<IFloat64Tuple3D> VertexPoints 
+        public IEnumerable<IFloat64Vector3D> VertexPoints 
             => Vertices.Select(v => v.Point);
 
-        public IEnumerable<IFloat64Tuple3D> VertexNormals 
+        public IEnumerable<IFloat64Vector3D> VertexNormals 
             => Vertices.Select(v => v.Normal);
 
         public IEnumerable<Pair<double>> VertexTextureUVs 
@@ -53,9 +54,9 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.LatticeShapes.Surfaces
         public IReadOnlyList<Triplet<GrLatticeSurfaceLocalFrame3D>> TriangleVerticesList { get; private set; } 
             = Array.Empty<Triplet<GrLatticeSurfaceLocalFrame3D>>();
 
-        public IEnumerable<Triplet<IFloat64Tuple3D>> TriangleVertexPoints
+        public IEnumerable<Triplet<IFloat64Vector3D>> TriangleVertexPoints
             => TriangleVerticesList.Select(t => 
-                new Triplet<IFloat64Tuple3D>(
+                new Triplet<IFloat64Vector3D>(
                     t.Item1.Point,
                     t.Item2.Point,
                     t.Item3.Point
@@ -214,8 +215,8 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.LatticeShapes.Surfaces
             {
                 //Find triangle normal, not unit but full normal vector
                 var normal = vertex1.ParentSurface.ReverseNormals
-                    ? Float64Vector3DUtils.GetTriangleNormal(vertex3, vertex2, vertex1)
-                    : Float64Vector3DUtils.GetTriangleNormal(vertex1, vertex2, vertex3);
+                    ? Float64Vector3DAffineUtils.GetTriangleNormal(vertex3, vertex2, vertex1)
+                    : Float64Vector3DAffineUtils.GetTriangleNormal(vertex1, vertex2, vertex3);
 
                 //For debugging only
                 Debug.Assert(normal.IsValid());
@@ -232,8 +233,8 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.LatticeShapes.Surfaces
             {
                 //Find triangle unit normal
                 var normal = vertex1.ParentSurface.ReverseNormals
-                    ? Float64Vector3DUtils.GetTriangleUnitNormal(vertex3, vertex2, vertex1)
-                    : Float64Vector3DUtils.GetTriangleUnitNormal(vertex1, vertex2, vertex3);
+                    ? Float64Vector3DAffineUtils.GetTriangleUnitNormal(vertex3, vertex2, vertex1)
+                    : Float64Vector3DAffineUtils.GetTriangleUnitNormal(vertex1, vertex2, vertex3);
                 
                 //For debugging only
                 Debug.Assert(normal.IsValid());
@@ -255,8 +256,8 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.LatticeShapes.Surfaces
 
                 //Find triangle normal, not unit but full normal vector
                 var normal = vertex1.ParentSurface.ReverseNormals
-                    ? Float64Vector3DUtils.GetTriangleNormal(vertex3, vertex2, vertex1)
-                    : Float64Vector3DUtils.GetTriangleNormal(vertex1, vertex2, vertex3);
+                    ? Float64Vector3DAffineUtils.GetTriangleNormal(vertex3, vertex2, vertex1)
+                    : Float64Vector3DAffineUtils.GetTriangleNormal(vertex1, vertex2, vertex3);
 
                 // For debugging only
                 Debug.Assert(

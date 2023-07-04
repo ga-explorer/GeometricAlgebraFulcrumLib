@@ -20,7 +20,7 @@
     <PackageReference Include="Dew.Signal.Core" Version="6.0.8" />
     <PackageReference Include="Dew.Stats" Version="6.0.8" />
     <PackageReference Include="Dew.Stats.Core" Version="6.0.8" />
-    <PackageReference Include="EPPlus" Version="6.2.5" />
+    <PackageReference Include="EPPlus" Version="6.2.6" />
     <PackageReference Include="ILGPU" Version="1.4.0" />
     <PackageReference Include="ILGPU.Algorithms" Version="1.4.0" />
     <PackageReference Include="ILGPU.Lightning" Version="0.3.0" />
@@ -48,7 +48,6 @@
     <ProjectReference Include="..\..\WebComposerLib\WebComposerLib\WebComposerLib.csproj" />
     <ProjectReference Include="..\GeometricAlgebraFulcrumLib.Applications\GeometricAlgebraFulcrumLib.Applications.csproj" />
     <ProjectReference Include="..\GeometricAlgebraFulcrumLib.MathBase\GeometricAlgebraFulcrumLib.MathBase.csproj" />
-    <ProjectReference Include="..\GeometricAlgebraFulcrumLib.Mathematica\GeometricAlgebraFulcrumLib.Mathematica.csproj" />
     <ProjectReference Include="..\GeometricAlgebraFulcrumLib.UnitTests\GeometricAlgebraFulcrumLib.UnitTests.csproj" />
     <ProjectReference Include="..\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.csproj" />
   </ItemGroup>
@@ -56,6 +55,7 @@
   <ItemGroup>
     <Folder Include="Graphics\ThreeJs\" />
     <Folder Include="ImageMethod\" />
+    <Folder Include="Symbolic\" />
   </ItemGroup>
 
   <ItemGroup>

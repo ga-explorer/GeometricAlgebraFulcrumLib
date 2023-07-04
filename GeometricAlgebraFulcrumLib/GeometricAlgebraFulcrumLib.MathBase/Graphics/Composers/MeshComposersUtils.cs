@@ -24,7 +24,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Composers
                     basePointsCount
                         .GetRegularSamples(0.0d, 1.0d)
                         .Lerp(pathFirstPoint, pathFirstPoint + baseVector)
-                        .Cast<IFloat64Tuple3D>();
+                        .Cast<IFloat64Vector3D>();
 
                 var path = new ArrayPointsPath3D(basePoints);
 

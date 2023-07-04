@@ -1,7 +1,9 @@
 ﻿using System.Diagnostics;
+using DataStructuresLib.Basic;
 using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space2D;
 using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D.Immutable;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D.Mutable
 {
@@ -17,12 +19,12 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D.Mutable
             return new MutableBoundingSphere2D(centerX, centerY, radius);
         }
 
-        public static MutableBoundingSphere2D Create(IFloat64Tuple2D center, double radius)
+        public static MutableBoundingSphere2D Create(IFloat64Vector2D center, double radius)
         {
             return new MutableBoundingSphere2D(center.X, center.Y, radius);
         }
 
-        public static MutableBoundingSphere2D CreateFromPoints(IEnumerable<IFloat64Tuple2D> pointsList, bool tightBound = true)
+        public static MutableBoundingSphere2D CreateFromPoints(IEnumerable<IFloat64Vector2D> pointsList, bool tightBound = true)
         {
             var pointsArray = pointsList.ToArray();
 
@@ -63,10 +65,8 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D.Mutable
                 }
             }
 
-            var center1 = new Float64Vector2D(
-                0.5 * (maxPoint1.X + maxPoint2.X),
-                0.5 * (maxPoint1.Y + maxPoint2.Y)
-            );
+            var center1 = Float64Vector2D.Create(0.5 * (maxPoint1.X + maxPoint2.X),
+                0.5 * (maxPoint1.Y + maxPoint2.Y));
 
             var radius1 = 0.5 * maxDistance;
 
@@ -82,7 +82,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D.Mutable
 
         public Float64Vector2D Center
         {
-            get { return new Float64Vector2D(CenterX, CenterY); }
+            get { return Float64Vector2D.Create((Float64Scalar)CenterX, (Float64Scalar)CenterY); }
         }
 
         public bool IntersectionTestsEnabled { get; set; } = true;
@@ -99,7 +99,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D.Mutable
         {
         }
 
-        internal MutableBoundingSphere2D(IFloat64Tuple2D center, double radius)
+        internal MutableBoundingSphere2D(IFloat64Vector2D center, double radius)
         {
             CenterX = center.X;
             CenterY = center.Y;
@@ -135,7 +135,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D.Mutable
             return this;
         }
 
-        public MutableBoundingSphere2D SetCenter(IFloat64Tuple2D center)
+        public MutableBoundingSphere2D SetCenter(IFloat64Vector2D center)
         {
             CenterX = center.X;
             CenterY = center.Y;
@@ -155,7 +155,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D.Mutable
             return this;
         }
 
-        public MutableBoundingSphere2D SetTo(IFloat64Tuple2D center, double radius)
+        public MutableBoundingSphere2D SetTo(IFloat64Vector2D center, double radius)
         {
             CenterX = center.X;
             CenterY = center.Y;
@@ -207,7 +207,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D.Mutable
             return this;
         }
 
-        public MutableBoundingSphere2D MoveCenterBy(IFloat64Tuple2D delta)
+        public MutableBoundingSphere2D MoveCenterBy(IFloat64Vector2D delta)
         {
             CenterX += delta.X;
             CenterY += delta.Y;
@@ -220,24 +220,24 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D.Mutable
 
         public BoundingBox2D GetBoundingBox()
         {
-            var point1 = new Float64Vector2D(CenterX - Radius, CenterY - Radius);
-            var point2 = new Float64Vector2D(CenterX + Radius, CenterY + Radius);
+            var point1 = Float64Vector2D.Create((Float64Scalar)(CenterX - Radius), (Float64Scalar)(CenterY - Radius));
+            var point2 = Float64Vector2D.Create((Float64Scalar)(CenterX + Radius), (Float64Scalar)(CenterY + Radius));
 
             return BoundingBox2D.Create(point1, point2);
         }
 
         public MutableBoundingBox2D GetMutableBoundingBox()
         {
-            var point1 = new Float64Vector2D(CenterX - Radius, CenterY - Radius);
-            var point2 = new Float64Vector2D(CenterX + Radius, CenterY + Radius);
+            var point1 = Float64Vector2D.Create((Float64Scalar)(CenterX - Radius), (Float64Scalar)(CenterY - Radius));
+            var point2 = Float64Vector2D.Create((Float64Scalar)(CenterX + Radius), (Float64Scalar)(CenterY + Radius));
 
             return MutableBoundingBox2D.CreateFromPoints(point1, point2);
         }
 
         public IBorderCurve2D MapUsing(IAffineMap2D affineMap)
         {
-            var s1 = affineMap.MapVector(Float64Vector2D.E1).ToLinVector2D().ENorm();
-            var s2 = affineMap.MapVector(Float64Vector2D.E2).ToLinVector2D().ENorm();
+            var s1 = Float64Vector2DComposerUtils.ToVector2D((IPair<double>)affineMap.MapVector(Float64Vector2D.E1)).ENorm();
+            var s2 = Float64Vector2DComposerUtils.ToVector2D((IPair<double>)affineMap.MapVector(Float64Vector2D.E2)).ENorm();
 
             var sMax = s1 > s2 ? s1 : s2;
 

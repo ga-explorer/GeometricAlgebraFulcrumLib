@@ -9,7 +9,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Structures.Vertices
         public Color Color { get; set; }
             = Color.Black;
 
-        public IFloat64Tuple2D TextureUv
+        public IFloat64Vector2D TextureUv
         {
             get => Float64Vector2D.Zero;
             set => throw new InvalidOperationException();

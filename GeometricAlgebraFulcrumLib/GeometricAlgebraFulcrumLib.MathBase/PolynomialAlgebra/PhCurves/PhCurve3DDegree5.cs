@@ -7,14 +7,14 @@ namespace GeometricAlgebraFulcrumLib.MathBase.PolynomialAlgebra.PhCurves
 {
     public sealed class PhCurve3DDegree5
     {
-        public static PhCurve3DDegree5 Create(IFloat64Tuple3D point0, IFloat64Tuple3D tangent0, IFloat64Tuple3D point1, IFloat64Tuple3D tangent1)
+        public static PhCurve3DDegree5 Create(IFloat64Vector3D point0, IFloat64Vector3D tangent0, IFloat64Vector3D point1, IFloat64Vector3D tangent1)
         {
             return new PhCurve3DDegree5(
                 point0, tangent0, point1, tangent1, 0d, 0d
             );
         }
 
-        public static PhCurve3DDegree5 Create(IFloat64Tuple3D point0, IFloat64Tuple3D tangent0, IFloat64Tuple3D point1, IFloat64Tuple3D tangent1, double theta1, double theta2)
+        public static PhCurve3DDegree5 Create(IFloat64Vector3D point0, IFloat64Vector3D tangent0, IFloat64Vector3D point1, IFloat64Vector3D tangent1, double theta1, double theta2)
         {
             return new PhCurve3DDegree5(
                 point0, tangent0, point1, tangent1, theta1, theta2
@@ -45,7 +45,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.PolynomialAlgebra.PhCurves
         public PhCurve3DDegree5Canonical CanonicalCurve { get; }
 
 
-        private PhCurve3DDegree5(IFloat64Tuple3D point0, IFloat64Tuple3D tangent0, IFloat64Tuple3D point1, IFloat64Tuple3D tangent1, double theta1, double theta2)
+        private PhCurve3DDegree5(IFloat64Vector3D point0, IFloat64Vector3D tangent0, IFloat64Vector3D point1, IFloat64Vector3D tangent1, double theta1, double theta2)
         {
             BasisBladeSet = RGaFloat64Processor.Euclidean;
             Point0 = point0.ToVector3D();
@@ -73,7 +73,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.PolynomialAlgebra.PhCurves
             );
         }
 
-        public IFloat64Tuple3D GetCurvePoint(double parameterValue)
+        public IFloat64Vector3D GetCurvePoint(double parameterValue)
         {
             return Point0 + ScaledRotor.OmMap(
                 CanonicalCurve.GetCurvePoint(parameterValue)

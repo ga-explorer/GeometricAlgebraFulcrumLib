@@ -22,7 +22,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines.Mutable
             );
         }
 
-        public static MutableLinePair3D Create(IFloat64Tuple3D origin1, IFloat64Tuple3D direction1, IFloat64Tuple3D origin2, IFloat64Tuple3D direction2)
+        public static MutableLinePair3D Create(IFloat64Vector3D origin1, IFloat64Vector3D direction1, IFloat64Vector3D origin2, IFloat64Vector3D direction2)
         {
             return new MutableLinePair3D(
                 origin1.X,
@@ -115,7 +115,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines.Mutable
             return this;
         }
 
-        public MutableLinePair3D SetOrigin1(IFloat64Tuple3D origin)
+        public MutableLinePair3D SetOrigin1(IFloat64Vector3D origin)
         {
             Origin1X = origin.X;
             Origin1Y = origin.Y;
@@ -133,7 +133,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines.Mutable
             return this;
         }
 
-        public MutableLinePair3D SetDirection1(IFloat64Tuple3D direction)
+        public MutableLinePair3D SetDirection1(IFloat64Vector3D direction)
         {
             Direction1X = direction.X;
             Direction1Y = direction.Y;
@@ -164,7 +164,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines.Mutable
             return this;
         }
 
-        public MutableLinePair3D SetOrigin2(IFloat64Tuple3D origin)
+        public MutableLinePair3D SetOrigin2(IFloat64Vector3D origin)
         {
             Origin2X = origin.X;
             Origin2Y = origin.Y;
@@ -182,7 +182,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines.Mutable
             return this;
         }
 
-        public MutableLinePair3D SetDirection2(IFloat64Tuple3D direction)
+        public MutableLinePair3D SetDirection2(IFloat64Vector3D direction)
         {
             Direction2X = direction.X;
             Direction2Y = direction.Y;

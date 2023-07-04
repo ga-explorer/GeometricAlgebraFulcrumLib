@@ -21,13 +21,13 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Curves
 
 
         private readonly double[] _knotList;
-        private readonly List<IFloat64Tuple3D> _pointList;
+        private readonly List<IFloat64Vector3D> _pointList;
 
         public CatmullRomSplineType CurveType { get; }
 
         public bool IsClosed { get; }
 
-        public IEnumerable<IFloat64Tuple3D> ControlPoints
+        public IEnumerable<IFloat64Vector3D> ControlPoints
             => _pointList;
 
         public int ControlPointCount
@@ -37,13 +37,13 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Curves
             => Float64Range1D.Infinite;
 
 
-        internal CatmullRomSpline3D(IEnumerable<IFloat64Tuple3D> inputPointList, CatmullRomSplineType curveType, bool isClosed)
+        internal CatmullRomSpline3D(IEnumerable<IFloat64Vector3D> inputPointList, CatmullRomSplineType curveType, bool isClosed)
         {
             CurveType = curveType;
             IsClosed = isClosed;
-            _pointList = new List<IFloat64Tuple3D>(inputPointList);
+            _pointList = new List<IFloat64Vector3D>(inputPointList);
 
-            IFloat64Tuple3D endPoint1, endPoint2;
+            IFloat64Vector3D endPoint1, endPoint2;
 
             if (isClosed)
             {

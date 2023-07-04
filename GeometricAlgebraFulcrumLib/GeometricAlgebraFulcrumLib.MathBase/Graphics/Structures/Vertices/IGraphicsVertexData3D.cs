@@ -13,7 +13,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Structures.Vertices
 
         Color Color { get; set; }
 
-        IFloat64Tuple2D TextureUv { get; set; }
+        IFloat64Vector2D TextureUv { get; set; }
 
         Normal3D Normal { get; }
 

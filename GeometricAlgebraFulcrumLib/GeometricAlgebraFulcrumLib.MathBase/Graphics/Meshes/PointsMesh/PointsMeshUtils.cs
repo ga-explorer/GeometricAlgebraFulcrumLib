@@ -15,6 +15,7 @@ using GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Vertices;
 using GeometricAlgebraFulcrumLib.MathBase.Graphics.Textures;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsMesh
 {
@@ -38,7 +39,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsMesh
         }
 
 
-        public static IFloat64Tuple3D GetPoint(this IPointsMesh3D baseMesh, int meshPointIndex)
+        public static IFloat64Vector3D GetPoint(this IPointsMesh3D baseMesh, int meshPointIndex)
         {
             meshPointIndex = meshPointIndex.Mod(baseMesh.Count);
             var pointIndex2 = meshPointIndex % baseMesh.Count1;
@@ -47,7 +48,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsMesh
             return baseMesh[pointIndex1, pointIndex2];
         }
 
-        public static IFloat64Tuple3D GetPoint(this IPointsMesh3D baseMesh, int pointIndex1, int pointIndex2)
+        public static IFloat64Vector3D GetPoint(this IPointsMesh3D baseMesh, int pointIndex1, int pointIndex2)
         {
             return baseMesh[pointIndex1, pointIndex2];
         }
@@ -114,7 +115,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsMesh
                 );
         }
 
-        public static IEnumerable<IFloat64Tuple3D> GetPoints(this IPointsMesh3D mesh)
+        public static IEnumerable<IFloat64Vector3D> GetPoints(this IPointsMesh3D mesh)
         {
             return mesh;
         }
@@ -135,7 +136,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsMesh
             if (mesh is ArrayPointsMesh3D arrayPointsMesh)
                 return arrayPointsMesh;
 
-            var pointArray = new IFloat64Tuple3D[mesh.Count1, mesh.Count2];
+            var pointArray = new IFloat64Vector3D[mesh.Count1, mesh.Count2];
 
             for (var pointIndex1 = 0; pointIndex1 < mesh.Count1; pointIndex1++)
             for (var pointIndex2 = 0; pointIndex2 < mesh.Count2; pointIndex2++)
@@ -149,11 +150,11 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsMesh
         }
 
         
-        public static IEnumerable<IQuad<IFloat64Tuple3D>> GetPointQuads(this IPointsMesh3D baseMesh)
+        public static IEnumerable<IQuad<IFloat64Vector3D>> GetPointQuads(this IPointsMesh3D baseMesh)
         {
             for (var pointIndex1 = 1; pointIndex1 < baseMesh.Count1; pointIndex1++)
             for (var pointIndex2 = 1; pointIndex2 < baseMesh.Count2; pointIndex2++)
-                yield return new Quad<IFloat64Tuple3D>(
+                yield return new Quad<IFloat64Vector3D>(
                     baseMesh.GetPoint(pointIndex1 - 1, pointIndex2 - 1),
                     baseMesh.GetPoint(pointIndex1 - 1, pointIndex2),
                     baseMesh.GetPoint(pointIndex1, pointIndex2 - 1),
@@ -209,25 +210,25 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsMesh
                     var texturedPoint1 = new GrTextureVertex3D(
                         baseMesh.GetMeshPointIndex(i1, j1),
                         baseMesh.GetPoint(i1, j1),
-                        new Float64Vector2D(u1, v1)
+                        Float64Vector2D.Create((Float64Scalar)u1, (Float64Scalar)v1)
                     );
 
                     var texturedPoint2 = new GrTextureVertex3D(
                         baseMesh.GetMeshPointIndex(i1, j2),
                         baseMesh.GetPoint(i1, j2),
-                        new Float64Vector2D(u1, v2)
+                        Float64Vector2D.Create((Float64Scalar)u1, (Float64Scalar)v2)
                     );
 
                     var texturedPoint3 = new GrTextureVertex3D(
                         baseMesh.GetMeshPointIndex(i2, j1),
                         baseMesh.GetPoint(i2, j1),
-                        new Float64Vector2D(u2, v1)
+                        Float64Vector2D.Create((Float64Scalar)u2, (Float64Scalar)v1)
                     );
 
                     var texturedPoint4 = new GrTextureVertex3D(
                         baseMesh.GetMeshPointIndex(i2, j2),
                         baseMesh.GetPoint(i2, j2),
-                        new Float64Vector2D(u2, v2)
+                        Float64Vector2D.Create((Float64Scalar)u2, (Float64Scalar)v2)
                     );
 
                     yield return new Quad<GrTextureVertex3D>(

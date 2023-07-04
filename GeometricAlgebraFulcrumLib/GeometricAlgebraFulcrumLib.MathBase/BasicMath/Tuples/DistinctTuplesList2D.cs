@@ -1,15 +1,16 @@
 ﻿using System.Collections;
 using DataStructuresLib.Dictionary;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples
 {
-    public class DistinctTuplesList2D : IReadOnlyCollection<IFloat64Tuple2D>
+    public class DistinctTuplesList2D : IReadOnlyCollection<IFloat64Vector2D>
     {
         private readonly Dictionary2Keys<double, int> _tupleIndicesTable =
             new Dictionary2Keys<double, int>();
 
-        private readonly List<IFloat64Tuple2D> _tuplesList;
+        private readonly List<IFloat64Vector2D> _tuplesList;
 
 
         public int Count
@@ -17,7 +18,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples
             get { return _tupleIndicesTable.Count; }
         }
 
-        public IFloat64Tuple2D this[int index]
+        public IFloat64Vector2D this[int index]
         {
             get { return _tuplesList[index]; }
             set
@@ -41,31 +42,31 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples
 
         public DistinctTuplesList2D()
         {
-            _tuplesList = new List<IFloat64Tuple2D>();
+            _tuplesList = new List<IFloat64Vector2D>();
         }
 
         public DistinctTuplesList2D(int capacity)
         {
-            _tuplesList = new List<IFloat64Tuple2D>(capacity);
+            _tuplesList = new List<IFloat64Vector2D>(capacity);
         }
 
-        public DistinctTuplesList2D(IFloat64Tuple2D tuple)
+        public DistinctTuplesList2D(IFloat64Vector2D tuple)
         {
-            _tuplesList = new List<IFloat64Tuple2D>();
+            _tuplesList = new List<IFloat64Vector2D>();
 
             AddTuple(tuple);
         }
 
-        public DistinctTuplesList2D(params IFloat64Tuple2D[] tuplesList)
+        public DistinctTuplesList2D(params IFloat64Vector2D[] tuplesList)
         {
-            _tuplesList = new List<IFloat64Tuple2D>(tuplesList.Length);
+            _tuplesList = new List<IFloat64Vector2D>(tuplesList.Length);
 
             AddTuples(tuplesList);
         }
 
-        public DistinctTuplesList2D(IEnumerable<IFloat64Tuple2D> tuplesList)
+        public DistinctTuplesList2D(IEnumerable<IFloat64Vector2D> tuplesList)
         {
-            _tuplesList = new List<IFloat64Tuple2D>();
+            _tuplesList = new List<IFloat64Vector2D>();
 
             AddTuples(tuplesList);
         }
@@ -79,35 +80,35 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples
             return this;
         }
 
-        public KeyValuePair<int, IFloat64Tuple2D> AddTuple(double x, double y)
+        public KeyValuePair<int, IFloat64Vector2D> AddTuple(double x, double y)
         {
             int tupleIndex;
             if (_tupleIndicesTable.TryGetValue(x, y, out tupleIndex))
-                return new KeyValuePair<int, IFloat64Tuple2D>(
+                return new KeyValuePair<int, IFloat64Vector2D>(
                     tupleIndex,
                     _tuplesList[tupleIndex]
                 );
 
             tupleIndex = _tuplesList.Count;
-            var tuple = new Float64Vector2D(x, y);
+            var tuple = Float64Vector2D.Create((Float64Scalar)x, (Float64Scalar)y);
 
             _tuplesList.Add(tuple);
             _tupleIndicesTable.Add(x, y, tupleIndex);
 
-            return new KeyValuePair<int, IFloat64Tuple2D>(
+            return new KeyValuePair<int, IFloat64Vector2D>(
                 tupleIndex,
                 tuple
             );
         }
 
-        public KeyValuePair<int, IFloat64Tuple2D> AddTuple(IFloat64Tuple2D tuple)
+        public KeyValuePair<int, IFloat64Vector2D> AddTuple(IFloat64Vector2D tuple)
         {
             if (ReferenceEquals(tuple, null))
                 throw new ArgumentNullException(nameof(tuple));
 
             int tupleIndex;
             if (_tupleIndicesTable.TryGetValue(tuple.X, tuple.Y, out tupleIndex))
-                return new KeyValuePair<int, IFloat64Tuple2D>(
+                return new KeyValuePair<int, IFloat64Vector2D>(
                     tupleIndex,
                     _tuplesList[tupleIndex]
                 );
@@ -117,30 +118,30 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples
             _tuplesList.Add(tuple);
             _tupleIndicesTable.Add(tuple.X, tuple.Y, tupleIndex);
 
-            return new KeyValuePair<int, IFloat64Tuple2D>(
+            return new KeyValuePair<int, IFloat64Vector2D>(
                 tupleIndex,
                 tuple
             );
         }
 
-        public IEnumerable<KeyValuePair<int, IFloat64Tuple2D>> AddTuples(IEnumerable<IFloat64Tuple2D> tuplesList)
+        public IEnumerable<KeyValuePair<int, IFloat64Vector2D>> AddTuples(IEnumerable<IFloat64Vector2D> tuplesList)
         {
             return tuplesList.Select(AddTuple);
         }
 
-        public KeyValuePair<int, IFloat64Tuple2D>[] AddTuples(params IFloat64Tuple2D[] tuplesList)
+        public KeyValuePair<int, IFloat64Vector2D>[] AddTuples(params IFloat64Vector2D[] tuplesList)
         {
             return tuplesList.Select(AddTuple).ToArray();
         }
 
-        public IFloat64Tuple2D GetTuple(double x, double y)
+        public IFloat64Vector2D GetTuple(double x, double y)
         {
             var tupleIndex = _tupleIndicesTable[x, y];
 
             return _tuplesList[tupleIndex];
         }
 
-        public IFloat64Tuple2D GetTuple(IFloat64Tuple2D tuple)
+        public IFloat64Vector2D GetTuple(IFloat64Vector2D tuple)
         {
             var tupleIndex = _tupleIndicesTable[tuple.X, tuple.Y];
 
@@ -152,7 +153,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples
             return _tupleIndicesTable[x, y];
         }
 
-        public int GetTupleIndex(IFloat64Tuple2D tuple)
+        public int GetTupleIndex(IFloat64Vector2D tuple)
         {
             return _tupleIndicesTable[tuple.X, tuple.Y];
         }
@@ -164,7 +165,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples
                 return tupleIndex;
 
             tupleIndex = _tuplesList.Count;
-            var tuple = new Float64Vector2D(x, y);
+            var tuple = Float64Vector2D.Create((Float64Scalar)x, (Float64Scalar)y);
 
             _tuplesList.Add(tuple);
             _tupleIndicesTable.Add(x, y, tupleIndex);
@@ -172,7 +173,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples
             return tupleIndex;
         }
 
-        public int GetOrAddTupleIndex(IFloat64Tuple2D tuple)
+        public int GetOrAddTupleIndex(IFloat64Vector2D tuple)
         {
             int tupleIndex;
             if (_tupleIndicesTable.TryGetValue(tuple.X, tuple.Y, out tupleIndex))
@@ -186,52 +187,52 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples
             return tupleIndex;
         }
 
-        public KeyValuePair<int, IFloat64Tuple2D> GetTupleWithIndex(double x, double y)
+        public KeyValuePair<int, IFloat64Vector2D> GetTupleWithIndex(double x, double y)
         {
             var tupleIndex = _tupleIndicesTable[x, y];
 
-            return new KeyValuePair<int, IFloat64Tuple2D>(
+            return new KeyValuePair<int, IFloat64Vector2D>(
                 tupleIndex,
                 _tuplesList[tupleIndex]
             );
         }
 
-        public KeyValuePair<int, IFloat64Tuple2D> GetTupleWithIndex(IFloat64Tuple2D tuple)
+        public KeyValuePair<int, IFloat64Vector2D> GetTupleWithIndex(IFloat64Vector2D tuple)
         {
             var tupleIndex = _tupleIndicesTable[tuple.X, tuple.Y];
 
-            return new KeyValuePair<int, IFloat64Tuple2D>(
+            return new KeyValuePair<int, IFloat64Vector2D>(
                 tupleIndex,
                 _tuplesList[tupleIndex]
             );
         }
 
-        public KeyValuePair<int, IFloat64Tuple2D> GetOrAddTupleWithIndex(double x, double y)
+        public KeyValuePair<int, IFloat64Vector2D> GetOrAddTupleWithIndex(double x, double y)
         {
             int tupleIndex;
             if (_tupleIndicesTable.TryGetValue(x, y, out tupleIndex))
-                return new KeyValuePair<int, IFloat64Tuple2D>(
+                return new KeyValuePair<int, IFloat64Vector2D>(
                     tupleIndex,
                     _tuplesList[tupleIndex]
                 );
 
             tupleIndex = _tuplesList.Count;
-            var tuple = new Float64Vector2D(x, y);
+            var tuple = Float64Vector2D.Create((Float64Scalar)x, (Float64Scalar)y);
 
             _tuplesList.Add(tuple);
             _tupleIndicesTable.Add(x, y, tupleIndex);
 
-            return new KeyValuePair<int, IFloat64Tuple2D>(
+            return new KeyValuePair<int, IFloat64Vector2D>(
                 tupleIndex,
                 tuple
             );
         }
 
-        public KeyValuePair<int, IFloat64Tuple2D> GetOrAddTupleWithIndex(IFloat64Tuple2D tuple)
+        public KeyValuePair<int, IFloat64Vector2D> GetOrAddTupleWithIndex(IFloat64Vector2D tuple)
         {
             int tupleIndex;
             if (_tupleIndicesTable.TryGetValue(tuple.X, tuple.Y, out tupleIndex))
-                return new KeyValuePair<int, IFloat64Tuple2D>(
+                return new KeyValuePair<int, IFloat64Vector2D>(
                     tupleIndex,
                     _tuplesList[tupleIndex]
                 );
@@ -241,13 +242,13 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples
             _tuplesList.Add(tuple);
             _tupleIndicesTable.Add(tuple.X, tuple.Y, tupleIndex);
 
-            return new KeyValuePair<int, IFloat64Tuple2D>(
+            return new KeyValuePair<int, IFloat64Vector2D>(
                 tupleIndex,
                 tuple
             );
         }
 
-        public bool TryGetTuple(double x, double y, out IFloat64Tuple2D outputTuple)
+        public bool TryGetTuple(double x, double y, out IFloat64Vector2D outputTuple)
         {
             int tupleIndex;
             if (_tupleIndicesTable.TryGetValue(x, y, out tupleIndex))
@@ -260,7 +261,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples
             return false;
         }
 
-        public bool TryGetTuple(IFloat64Tuple2D tuple, out IFloat64Tuple2D outputTuple)
+        public bool TryGetTuple(IFloat64Vector2D tuple, out IFloat64Vector2D outputTuple)
         {
             int tupleIndex;
             if (_tupleIndicesTable.TryGetValue(tuple.X, tuple.Y, out tupleIndex))
@@ -278,17 +279,17 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples
             return _tupleIndicesTable.TryGetValue(x, y, out tupleIndex);
         }
 
-        public bool TryGetTupleIndex(IFloat64Tuple2D tuple, out int tupleIndex)
+        public bool TryGetTupleIndex(IFloat64Vector2D tuple, out int tupleIndex)
         {
             return _tupleIndicesTable.TryGetValue(tuple.X, tuple.Y, out tupleIndex);
         }
 
-        public bool TryGetTupleWithIndex(double x, double y, out KeyValuePair<int, IFloat64Tuple2D> tupleWithIndex)
+        public bool TryGetTupleWithIndex(double x, double y, out KeyValuePair<int, IFloat64Vector2D> tupleWithIndex)
         {
             int tupleIndex;
             if (_tupleIndicesTable.TryGetValue(x, y, out tupleIndex))
             {
-                tupleWithIndex = new KeyValuePair<int, IFloat64Tuple2D>(
+                tupleWithIndex = new KeyValuePair<int, IFloat64Vector2D>(
                     tupleIndex,
                     _tuplesList[tupleIndex]
                 );
@@ -296,16 +297,16 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples
                 return true;
             }
 
-            tupleWithIndex = new KeyValuePair<int, IFloat64Tuple2D>(-1, Float64Vector2D.Zero);
+            tupleWithIndex = new KeyValuePair<int, IFloat64Vector2D>(-1, Float64Vector2D.Zero);
             return false;
         }
 
-        public bool TryGetTupleWithIndex(IFloat64Tuple2D tuple, out KeyValuePair<int, IFloat64Tuple2D> tupleWithIndex)
+        public bool TryGetTupleWithIndex(IFloat64Vector2D tuple, out KeyValuePair<int, IFloat64Vector2D> tupleWithIndex)
         {
             int tupleIndex;
             if (_tupleIndicesTable.TryGetValue(tuple.X, tuple.Y, out tupleIndex))
             {
-                tupleWithIndex = new KeyValuePair<int, IFloat64Tuple2D>(
+                tupleWithIndex = new KeyValuePair<int, IFloat64Vector2D>(
                     tupleIndex,
                     _tuplesList[tupleIndex]
                 );
@@ -313,7 +314,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples
                 return true;
             }
 
-            tupleWithIndex = new KeyValuePair<int, IFloat64Tuple2D>(-1, Float64Vector2D.Zero);
+            tupleWithIndex = new KeyValuePair<int, IFloat64Vector2D>(-1, Float64Vector2D.Zero);
             return false;
         }
 
@@ -336,7 +337,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples
         }
 
 
-        public IEnumerator<IFloat64Tuple2D> GetEnumerator()
+        public IEnumerator<IFloat64Vector2D> GetEnumerator()
         {
             return _tuplesList.GetEnumerator();
         }

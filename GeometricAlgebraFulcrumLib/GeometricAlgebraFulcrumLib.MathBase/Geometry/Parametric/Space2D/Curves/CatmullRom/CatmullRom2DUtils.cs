@@ -16,11 +16,11 @@ public static class CatmullRom2DUtils
     /// <param name="tQuad">An array of time measures of length 4, corresponding to each p value.</param>
     /// <param name="t">the actual interpolation ratio from 0 to 1 representing the position between p1 and p2 to interpolate the value.</param>
     /// <returns>The interpolated value</returns>
-    public static Float64Vector2D GetCatmullRomValue(this double t, Quad<double> tQuad, Quad<IFloat64Tuple2D> pQuad)
+    public static Float64Vector2D GetCatmullRomValue(this double t, Quad<double> tQuad, Quad<IFloat64Vector2D> pQuad)
     {
         var (t0, t1, t2, t3) = tQuad;
         var (p0, p1, p2, p3) =
-            pQuad.MapItems(p => p.ToLinVector2D());
+            pQuad.MapItems(p => p.ToVector2D());
 
         var tt0 = t - t0;
         var tt1 = t - t1;
@@ -48,11 +48,11 @@ public static class CatmullRom2DUtils
         return p3210;
     }
 
-    public static Float64Vector2D GetCatmullRomDerivativeValue(this double t, Quad<double> tQuad, Quad<IFloat64Tuple2D> pQuad)
+    public static Float64Vector2D GetCatmullRomDerivativeValue(this double t, Quad<double> tQuad, Quad<IFloat64Vector2D> pQuad)
     {
         var (t0, t1, t2, t3) = tQuad;
         var (p0, p1, p2, p3) =
-            pQuad.MapItems(p => p.ToLinVector2D());
+            pQuad.MapItems(p => p.ToVector2D());
 
         var tt0 = t - t0;
         var tt1 = t - t1;
@@ -89,11 +89,11 @@ public static class CatmullRom2DUtils
         return dp3210;
     }
 
-    public static Float64Vector2D GetCatmullRomDerivative2Value(this double t, Quad<double> tQuad, Quad<IFloat64Tuple2D> pQuad)
+    public static Float64Vector2D GetCatmullRomDerivative2Value(this double t, Quad<double> tQuad, Quad<IFloat64Vector2D> pQuad)
     {
         var (t0, t1, t2, t3) = tQuad;
         var (p0, p1, p2, p3) =
-            pQuad.MapItems(p => p.ToLinVector2D());
+            pQuad.MapItems(p => p.ToVector2D());
 
         var tt0 = t - t0;
         var tt1 = t - t1;

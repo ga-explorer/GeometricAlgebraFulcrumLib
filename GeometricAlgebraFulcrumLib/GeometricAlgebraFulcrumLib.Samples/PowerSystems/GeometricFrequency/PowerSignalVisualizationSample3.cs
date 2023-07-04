@@ -2,6 +2,7 @@
 using System.Linq;
 using DataStructuresLib.Basic;
 using GeometricAlgebraFulcrumLib.Applications.PowerSystems;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra.Composers;
@@ -143,7 +144,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             var visualizer = new SymmetricalComponentsSignalVisualizer3D(cameraAlphaValues, cameraBetaValues, powerSignal)
             {
                 Title = "Rotated sinusoidal symmetrical components",
-                WorkingPath = @"D:\Projects\Study\Web\Babylon.js\",
+                WorkingFolder = @"D:\Projects\Study\Web\Babylon.js\",
                 HostUrl = "http://localhost:5200/",
                 //LiveReloadWebServer "D:/Projects/Study/Babylon.js/" --port 5200 --UseSsl False --LiveReloadEnabled False --OpenBrowser True
 

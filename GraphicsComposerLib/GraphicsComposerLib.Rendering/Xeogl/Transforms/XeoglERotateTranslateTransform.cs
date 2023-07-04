@@ -16,7 +16,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Transforms
             };
         }
         
-        public static XeoglERotateTranslateTransform CreateTranslate(IFloat64Tuple3D t)
+        public static XeoglERotateTranslateTransform CreateTranslate(IFloat64Vector3D t)
         {
             return new XeoglERotateTranslateTransform()
             {
@@ -121,7 +121,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Transforms
             => Float64Vector3D.Create(TranslateX, TranslateY, TranslateZ);
 
 
-        public XeoglERotateTranslateTransform SetRotate(IFloat64Tuple3D rotateTuple)
+        public XeoglERotateTranslateTransform SetRotate(IFloat64Vector3D rotateTuple)
         {
             RotateX = rotateTuple.X;
             RotateY = rotateTuple.Y;
@@ -139,7 +139,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Transforms
             return this;
         }
 
-        public XeoglERotateTranslateTransform SetTranslate(IFloat64Tuple3D translateTuple)
+        public XeoglERotateTranslateTransform SetTranslate(IFloat64Vector3D translateTuple)
         {
             TranslateX = translateTuple.X;
             TranslateY = translateTuple.Y;

@@ -38,16 +38,16 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Float64SphericalVector3D(Float64PlanarAngle theta, Float64PlanarAngle phi)
         {
-            Theta = theta.ClampPeriodic(Math.PI);
-            Phi = phi.ClampPositive();
+            Theta = theta.GetAngleInPeriodicRange(Math.PI);
+            Phi = phi.GetAngleInPositiveRange();
             R = Float64Scalar.One;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Float64SphericalVector3D(Float64PlanarAngle theta, Float64PlanarAngle phi, Float64Scalar r)
         {
-            Theta = theta.ClampPeriodic(Math.PI);
-            Phi = phi.ClampPositive();
+            Theta = theta.GetAngleInPeriodicRange(Math.PI);
+            Phi = phi.GetAngleInPositiveRange();
             R = r.Value > 0 ? r : Float64Scalar.Zero;
         }
 

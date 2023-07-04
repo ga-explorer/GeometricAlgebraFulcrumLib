@@ -20,7 +20,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
         IFloat64Multivector3D
     {
         public static Float64Quaternion Identity { get; } 
-            = Create(0, 0, 0, 1);
+            = new Float64Quaternion(0, 0, 0, 1);
         
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -51,15 +51,15 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
         public static Float64Quaternion Create(Quaternion v)
         {
             return new Float64Quaternion(
-                v.X, 
-                v.Y, 
-                v.Z, 
+                -v.X, 
+                -v.Y, 
+                -v.Z, 
                 v.W
             );
         }
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Float64Quaternion CreateFromAxisAngle(LinUnitBasisVector3D axis, Float64PlanarAngle angle)
+        public static Float64Quaternion CreateFromPlaneAndAngle(Float64Bivector3D bivector, Float64PlanarAngle angle)
         {
             var halfAngle = angle.GetHalfAngleInPositiveRange();
             
@@ -67,7 +67,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
                 halfAngle.Cos();
 
             var bivectorPart = 
-                axis.UnDual3D(-halfAngle.Sin());
+                bivector * (halfAngle.Sin() / bivector.Norm());
 
             return new Float64Quaternion(
                 bivectorPart,
@@ -76,18 +76,39 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Float64Quaternion CreateFromAxisAngle(Float64Vector3D axis, Float64PlanarAngle angle)
+        public static Float64Quaternion CreateFromNormalAndAngle(LinUnitBasisVector3D axis, Float64PlanarAngle angle)
         {
             var halfAngle = angle.GetHalfAngleInPositiveRange();
             
             var scalar = 
                 halfAngle.Cos();
             
-            var bivectorPart = 
-                axis.UnDual3D(-halfAngle.Sin());
+            var vector = 
+                axis.ToVector3D(-halfAngle.Sin());
+
+            return new Float64Quaternion(
+                vector.X,
+                vector.Y,
+                vector.Z,
+                scalar
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Float64Quaternion CreateFromNormalAndAngle(Float64Vector3D axis, Float64PlanarAngle angle)
+        {
+            var halfAngle = angle.GetHalfAngleInPositiveRange();
+            
+            var scalar = 
+                halfAngle.Cos();
+            
+            var vector = 
+                axis.SetLength(-halfAngle.Sin());
             
             return new Float64Quaternion(
-                bivectorPart,
+                vector.X,
+                vector.Y,
+                vector.Z,
                 scalar
             );
         }
@@ -188,31 +209,31 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Float64Quaternion operator -(Float64Quaternion v1)
         {
-            return Create(-v1.ScalarI, -v1.ScalarJ, -v1.ScalarK, -v1.Scalar);
+            return new Float64Quaternion(-v1.ScalarI, -v1.ScalarJ, -v1.ScalarK, -v1.Scalar);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Float64Quaternion operator +(Float64Quaternion v1, Float64Quaternion v2)
         {
-            return Create(v1.ScalarI + v2.ScalarI, v1.ScalarJ + v2.ScalarJ, v1.ScalarK + v2.ScalarK, v1.Scalar + v2.Scalar);
+            return new Float64Quaternion(v1.ScalarI + v2.ScalarI, v1.ScalarJ + v2.ScalarJ, v1.ScalarK + v2.ScalarK, v1.Scalar + v2.Scalar);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Float64Quaternion operator -(Float64Quaternion v1, Float64Quaternion v2)
         {
-            return Create(v1.ScalarI - v2.ScalarI, v1.ScalarJ - v2.ScalarJ, v1.ScalarK - v2.ScalarK, v1.Scalar - v2.Scalar);
+            return new Float64Quaternion(v1.ScalarI - v2.ScalarI, v1.ScalarJ - v2.ScalarJ, v1.ScalarK - v2.ScalarK, v1.Scalar - v2.Scalar);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Float64Quaternion operator *(Float64Quaternion v1, double s)
         {
-            return Create(v1.ScalarI * s, v1.ScalarJ * s, v1.ScalarK * s, v1.Scalar * s);
+            return new Float64Quaternion(v1.ScalarI * s, v1.ScalarJ * s, v1.ScalarK * s, v1.Scalar * s);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Float64Quaternion operator *(double s, Float64Quaternion v1)
         {
-            return Create(v1.ScalarI * s, v1.ScalarJ * s, v1.ScalarK * s, v1.Scalar * s);
+            return new Float64Quaternion(v1.ScalarI * s, v1.ScalarJ * s, v1.ScalarK * s, v1.Scalar * s);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -221,7 +242,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
             Debug.Assert(!s.IsAlmostZero());
 
             s = 1.0d / s;
-            return Create(v1.ScalarI * s, v1.ScalarJ * s, v1.ScalarK * s, v1.Scalar * s);
+            return new Float64Quaternion(v1.ScalarI * s, v1.ScalarJ * s, v1.ScalarK * s, v1.Scalar * s);
         }
 
         /// <summary>
@@ -249,10 +270,12 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
 
             var dot = q1X * q2X + q1Y * q2Y + q1Z * q2Z;
 
-            return Create(q1X * q2W + q2X * q1W + cx,
+            return new Float64Quaternion(
+                q1X * q2W + q2X * q1W + cx,
                 q1Y * q2W + q2Y * q1W + cy,
                 q1Z * q2W + q2Z * q1W + cz,
-                q1W * q2W - dot);
+                q1W * q2W - dot
+            );
         }
 
         /// <summary>
@@ -290,10 +313,12 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
 
             var dot = q1X * q2X + q1Y * q2Y + q1Z * q2Z;
 
-            return Create(q1X * q2W + q2X * q1W + cx,
+            return new Float64Quaternion(
+                q1X * q2W + q2X * q1W + cx,
                 q1Y * q2W + q2Y * q1W + cy,
                 q1Z * q2W + q2Z * q1W + cz,
-                q1W * q2W - dot);
+                q1W * q2W - dot
+            );
         }
 
 
@@ -497,9 +522,21 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
                    ScalarK.Square() + 
                    Scalar.Square();
         }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Float64Scalar NormSquaredInverse()
+        {
+            return NormSquared().Inverse();
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Tuple<Float64Scalar3D, Float64Bivector3D> ToScalarBivector3D()
+        public Float64Bivector3D GetBivector()
+        {
+            return Float64Bivector3D.Create(Scalar12, Scalar13, Scalar23);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Tuple<Float64Scalar3D, Float64Bivector3D> GetScalarAndBivector()
         {
             return new Tuple<Float64Scalar3D, Float64Bivector3D>(
                 Float64Scalar3D.Create(Scalar),
@@ -545,10 +582,12 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
                 ScalarJ * q2.ScalarJ + 
                 ScalarK * q2.ScalarK;
 
-            return Create(ScalarI * q2.Scalar + q2.ScalarI * Scalar + cx,
+            return new Float64Quaternion(
+                ScalarI * q2.Scalar + q2.ScalarI * Scalar + cx,
                 ScalarJ * q2.Scalar + q2.ScalarJ * Scalar + cy,
                 ScalarK * q2.Scalar + q2.ScalarK * Scalar + cz,
-                Scalar * q2.Scalar - dot);
+                Scalar * q2.Scalar - dot
+            );
         }
 
         /// <summary>
@@ -577,19 +616,35 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
 
             var dot = ScalarI * q2X + ScalarJ * q2Y + ScalarK * q2Z;
 
-            return Create(ScalarI * q2W + q2X * Scalar + cx,
+            return new Float64Quaternion(
+                ScalarI * q2W + q2X * Scalar + cx,
                 ScalarJ * q2W + q2Y * Scalar + cy,
                 ScalarK * q2W + q2Z * Scalar + cz,
-                Scalar * q2W - dot);
+                Scalar * q2W - dot
+            );
         }
 
-        
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Float64Quaternion Conjugate()
         {
-            return Create(-ScalarI,
+            return new Float64Quaternion(
+                -ScalarI,
                 -ScalarJ,
                 -ScalarK,
-                Scalar);
+                Scalar
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Float64Quaternion Reverse()
+        {
+            return new Float64Quaternion(
+                -ScalarI,
+                -ScalarJ,
+                -ScalarK,
+                Scalar
+            );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -598,12 +653,14 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
             //  -1   (       a              -v       )
             // q   = ( -------------   ------------- )
             //       (  a^2 + |v|^2  ,  a^2 + |v|^2  )
-            var invNorm = NormInverse();
+            var invNormSquared = NormSquaredInverse();
 
-            return Create(-ScalarI * invNorm,
-                -ScalarJ * invNorm,
-                -ScalarK * invNorm,
-                Scalar * invNorm);
+            return new Float64Quaternion(
+                -ScalarI * invNormSquared,
+                -ScalarJ * invNormSquared,
+                -ScalarK * invNormSquared,
+                Scalar * invNormSquared
+            );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -611,10 +668,12 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
         {
             var invNorm = NormInverse();
 
-            return Create(ScalarI * invNorm,
+            return new Float64Quaternion(
+                ScalarI * invNorm,
                 ScalarJ * invNorm,
                 ScalarK * invNorm,
-                Scalar * invNorm);
+                Scalar * invNorm
+            );
         }
 
         public Float64Quaternion Lerp(Float64Quaternion q2, double t)
@@ -629,14 +688,18 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
 
             var r =
                 dot >= 0d
-                    ? Create(t1 * ScalarI + t * q2.ScalarI,
+                    ? new Float64Quaternion(
+                        t1 * ScalarI + t * q2.ScalarI,
                         t1 * ScalarJ + t * q2.ScalarJ,
                         t1 * ScalarK + t * q2.ScalarK,
-                        t1 * Scalar + t * q2.Scalar) :
-                    Create(t1 * ScalarI - t * q2.ScalarI,
+                        t1 * Scalar + t * q2.Scalar
+                    ) :
+                    new Float64Quaternion(
+                        t1 * ScalarI - t * q2.ScalarI,
                         t1 * ScalarJ - t * q2.ScalarJ,
                         t1 * ScalarK - t * q2.ScalarK,
-                        t1 * Scalar - t * q2.Scalar);
+                        t1 * Scalar - t * q2.Scalar
+                    );
 
             // Normalize it.
             return r.Normalize();
@@ -677,10 +740,12 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
                     : Math.Sin(t * omega) * invSinOmega;
             }
 
-            return Create(s1 * ScalarI + s2 * q2.ScalarI,
+            return new Float64Quaternion(
+                s1 * ScalarI + s2 * q2.ScalarI,
                 s1 * ScalarJ + s2 * q2.ScalarJ,
                 s1 * ScalarK + s2 * q2.ScalarK,
-                s1 * Scalar + s2 * q2.Scalar);
+                s1 * Scalar + s2 * q2.Scalar
+            );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -699,10 +764,12 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
                 q2.ScalarJ * ScalarJ + 
                 q2.ScalarK * ScalarK;
 
-            return Create(q2.ScalarI * Scalar + ScalarI * q2.Scalar + cx,
+            return new Float64Quaternion(
+                q2.ScalarI * Scalar + ScalarI * q2.Scalar + cx,
                 q2.ScalarJ * Scalar + ScalarJ * q2.Scalar + cy,
                 q2.ScalarK * Scalar + ScalarK * q2.Scalar + cz,
-                q2.Scalar * Scalar - dot);
+                q2.Scalar * Scalar - dot
+            );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -720,37 +787,74 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
             );
         }
 
-        public Tuple<Float64PlanarAngle, Float64Vector3D> ToAngleAndNormal(bool assumeNormalized = false)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Pair<double> GetHalfAngleCosSin(bool assumeNormalized = false)
+        {
+            var scalar = assumeNormalized
+                ? Scalar
+                : Scalar / Norm();
+
+            var cosHalfAngle = scalar.Value;
+            var sinHalfAngle = (1d - cosHalfAngle.Square()).Sqrt();
+
+            return new Pair<double>(cosHalfAngle, sinHalfAngle);
+        }
+
+        public Tuple<Float64PlanarAngle, Float64Bivector3D> GetAngleAndBivector(bool assumeNormalized = false)
         {
             var quaternion = assumeNormalized
                 ? this
                 : Normalize();
             
             var (scalar, bivector) = 
-                quaternion.ToScalarBivector3D();
+                quaternion.GetScalarAndBivector();
 
             var cosHalfAngle = scalar.Scalar;
-            var sinHalfAngle = bivector.Norm();
+            var sinHalfAngle = (1 - cosHalfAngle.Square()).Sqrt();
 
             var halfAngle = 
-                Math.Atan2(sinHalfAngle.Value, cosHalfAngle.Value);
+                Math.Atan2(sinHalfAngle.Value, cosHalfAngle.Value)
+                    .RadiansToAngle(Float64PlanarAngleRange.Positive);
 
             var angle = 
-                (2 * halfAngle).RadiansToAngle().GetAngleInPositiveRange();
+                (2 * halfAngle).GetAngleInPositiveRange();
+            
+            return new Tuple<Float64PlanarAngle, Float64Bivector3D>(
+                angle,
+                bivector / sinHalfAngle
+            );
+        }
+
+        public Tuple<Float64PlanarAngle, Float64Vector3D> GetAngleAndNormal(bool assumeNormalized = false)
+        {
+            var quaternion = assumeNormalized
+                ? this
+                : Normalize();
+            
+            var (scalar, bivector) = 
+                quaternion.GetScalarAndBivector();
+
+            var cosHalfAngle = scalar.Scalar;
+            var sinHalfAngle = (1 - cosHalfAngle.Square()).Sqrt();
+
+            var halfAngle = 
+                Math.Atan2(sinHalfAngle.Value, cosHalfAngle.Value)
+                    .RadiansToAngle()
+                    .GetAngleInPositiveRange();
+
+            var angle = 
+                (2 * halfAngle).GetAngleInPositiveRange();
 
             var normal = 
                 bivector.Dual3D().ToUnitVector();
 
-            return new Tuple<Float64PlanarAngle, Float64Vector3D>(
-                angle,
-                normal
-            );
+            return new Tuple<Float64PlanarAngle, Float64Vector3D>(angle, normal);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Float64Vector3D ToRotationVector(bool assumeNormalized = false)
         {
-            var (angle, normal) = ToAngleAndNormal(assumeNormalized);
+            var (angle, normal) = GetAngleAndNormal(assumeNormalized);
 
             var length = 
                 angle.Radians.Value / (2d * Math.PI);
@@ -761,26 +865,26 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public SquareMatrix3 ToSquareMatrix3()
         {
-            var n = NormSquared();
+            var normSquared = NormSquared();
 
-            if (n.IsNearZero())
+            if (normSquared.IsNearZero())
                 throw new InvalidOperationException();
 
-            var s = 2d / n;
+            var s = 2d / normSquared;
         
             return new SquareMatrix3
             {
                 Scalar00 = 1d - s * (ScalarJ * ScalarJ + ScalarK * ScalarK),
-                Scalar10 = s * (ScalarI * ScalarJ + Scalar * ScalarK),
-                Scalar20 = s * (ScalarI * ScalarK - Scalar * ScalarJ),
+                Scalar10 = s * (ScalarI * ScalarJ - Scalar * ScalarK),
+                Scalar20 = s * (ScalarI * ScalarK + Scalar * ScalarJ),
 
-                Scalar01 = s * (ScalarI * ScalarJ - Scalar * ScalarK),
-                Scalar11 = 1 - s * (ScalarI * ScalarI + ScalarK * ScalarK),
-                Scalar21 = s * (ScalarJ * ScalarK + Scalar * ScalarI),
+                Scalar01 = s * (ScalarI * ScalarJ + Scalar * ScalarK),
+                Scalar11 = 1d - s * (ScalarI * ScalarI + ScalarK * ScalarK),
+                Scalar21 = s * (ScalarJ * ScalarK - Scalar * ScalarI),
 
-                Scalar02 = s * (ScalarI * ScalarK + Scalar * ScalarJ),
-                Scalar12 = s * (ScalarJ * ScalarK - Scalar * ScalarI),
-                Scalar22 = 1 - s * (ScalarI * ScalarI + ScalarJ * ScalarJ)
+                Scalar02 = s * (ScalarI * ScalarK - Scalar * ScalarJ),
+                Scalar12 = s * (ScalarJ * ScalarK + Scalar * ScalarI),
+                Scalar22 = 1d - s * (ScalarI * ScalarI + ScalarJ * ScalarJ)
             };
         }
 
@@ -788,24 +892,30 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Triplet<Float64Vector3D> RotateBasisVectors()
         {
-            var n = NormSquared();
+            var normSquared = NormSquared();
 
-            if (n.IsNearZero())
+            if (normSquared.IsNearZero())
                 throw new InvalidOperationException();
 
-            var s = 2d / n;
+            var s = 2d / normSquared;
 
-            var v1 = Float64Vector3D.Create(1d - s * (ScalarJ * ScalarJ + ScalarK * ScalarK),
+            var v1 = Float64Vector3D.Create(
+                1d - s * (ScalarJ * ScalarJ + ScalarK * ScalarK),
+                s * (ScalarI * ScalarJ - Scalar * ScalarK),
+                s * (ScalarI * ScalarK + Scalar * ScalarJ)
+            );
+
+            var v2 = Float64Vector3D.Create(
                 s * (ScalarI * ScalarJ + Scalar * ScalarK),
-                s * (ScalarI * ScalarK - Scalar * ScalarJ));
+                1d - s * (ScalarI * ScalarI + ScalarK * ScalarK),
+                s * (ScalarJ * ScalarK - Scalar * ScalarI)
+            );
 
-            var v2 = Float64Vector3D.Create(s * (ScalarI * ScalarJ - Scalar * ScalarK),
-                1 - s * (ScalarI * ScalarI + ScalarK * ScalarK),
-                s * (ScalarJ * ScalarK + Scalar * ScalarI));
-
-            var v3 = Float64Vector3D.Create(s * (ScalarI * ScalarK + Scalar * ScalarJ),
-                s * (ScalarJ * ScalarK - Scalar * ScalarI),
-                1 - s * (ScalarI * ScalarI + ScalarJ * ScalarJ));
+            var v3 = Float64Vector3D.Create(
+                s * (ScalarI * ScalarK - Scalar * ScalarJ),
+                s * (ScalarJ * ScalarK + Scalar * ScalarI),
+                1d - s * (ScalarI * ScalarI + ScalarJ * ScalarJ)
+            );
 
             return new Triplet<Float64Vector3D>(v1, v2, v3);
         }
@@ -826,13 +936,9 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Float64Vector3D RotateVector(IFloat64Tuple3D vector)
+        public Float64Vector3D RotateVector(IFloat64Vector3D vector)
         {
             return ToSquareMatrix3() * vector;
-
-            //Debug.Assert(quaternion.IsNearNormalizedQuaternion());
-
-            //return (quaternion.ToTuple4D() * vector.ToQuaternion() * quaternion.QuaternionInverse()).GetQuaternionVectorPart();
         }
         
 
@@ -849,7 +955,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Pair<Float64Vector3D> RotateVectors(IFloat64Tuple3D vector1, IFloat64Tuple3D vector2)
+        public Pair<Float64Vector3D> RotateVectors(IFloat64Vector3D vector1, IFloat64Vector3D vector2)
         {
             var rotationMatrix = 
                 ToSquareMatrix3();
@@ -858,15 +964,10 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
                 rotationMatrix * vector1,
                 rotationMatrix * vector2
             );
-
-            //return new Pair<Tuple3D>(
-            //    quaternion.QuaternionRotate(vector1),
-            //    quaternion.QuaternionRotate(vector2)
-            //);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Triplet<Float64Vector3D> RotateVectors(IFloat64Tuple3D vector1, IFloat64Tuple3D vector2, IFloat64Tuple3D vector3)
+        public Triplet<Float64Vector3D> RotateVectors(IFloat64Vector3D vector1, IFloat64Vector3D vector2, IFloat64Vector3D vector3)
         {
             var rotationMatrix = 
                 ToSquareMatrix3();
@@ -876,16 +977,10 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
                 rotationMatrix * vector2,
                 rotationMatrix * vector3
             );
-
-            //return new Triplet<Tuple3D>(
-            //    quaternion.QuaternionRotate(vector1),
-            //    quaternion.QuaternionRotate(vector2),
-            //    quaternion.QuaternionRotate(vector3)
-            //);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IReadOnlyList<Float64Vector3D> RotateVectors(params IFloat64Tuple3D[] vectorArray)
+        public IReadOnlyList<Float64Vector3D> RotateVectors(params IFloat64Vector3D[] vectorArray)
         {
             var rotationMatrix = 
                 ToSquareMatrix3();
@@ -896,7 +991,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<Float64Vector3D> RotateVectors(IEnumerable<IFloat64Tuple3D> vectorList)
+        public IEnumerable<Float64Vector3D> RotateVectors(IEnumerable<IFloat64Vector3D> vectorList)
         {
             var rotationMatrix = 
                 ToSquareMatrix3();

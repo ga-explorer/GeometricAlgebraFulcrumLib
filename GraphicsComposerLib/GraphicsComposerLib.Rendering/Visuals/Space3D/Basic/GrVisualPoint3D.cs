@@ -8,7 +8,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Basic
 {
     public sealed class GrVisualPoint3D :
         GrVisualElementWithAnimation3D,
-        IFloat64Tuple3D
+        IFloat64Vector3D
     {
         public sealed record KeyFrameRecord(
             int FrameIndex,
@@ -22,7 +22,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Basic
         );
         
 
-        public static GrVisualPoint3D CreateStatic(string name, GrVisualSurfaceThickStyle3D style, IFloat64Tuple3D position)
+        public static GrVisualPoint3D CreateStatic(string name, GrVisualSurfaceThickStyle3D style, IFloat64Vector3D position)
         {
             return new GrVisualPoint3D(
                 name, 
@@ -32,7 +32,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Basic
             );
         }
         
-        public static GrVisualPoint3D Create(string name, GrVisualSurfaceThickStyle3D style, IFloat64Tuple3D position, GrVisualAnimationSpecs animationSpecs)
+        public static GrVisualPoint3D Create(string name, GrVisualSurfaceThickStyle3D style, IFloat64Vector3D position, GrVisualAnimationSpecs animationSpecs)
         {
             return new GrVisualPoint3D(
                 name, 
@@ -55,7 +55,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Basic
 
         public GrVisualSurfaceThickStyle3D Style { get; }
 
-        public IFloat64Tuple3D Position { get; } 
+        public IFloat64Vector3D Position { get; } 
         
         public GrVisualAnimatedVector3D? AnimatedPosition { get; set; }
         
@@ -81,7 +81,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Basic
             => Position.Z;
 
 
-        private GrVisualPoint3D(string name, GrVisualSurfaceThickStyle3D style, IFloat64Tuple3D position, GrVisualAnimationSpecs animationSpecs) 
+        private GrVisualPoint3D(string name, GrVisualSurfaceThickStyle3D style, IFloat64Vector3D position, GrVisualAnimationSpecs animationSpecs) 
             : base(name, animationSpecs)
         {
             Position = position;

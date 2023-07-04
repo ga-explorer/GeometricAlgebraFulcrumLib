@@ -4,6 +4,7 @@ using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes;
 using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines;
 using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace NumericalGeometryLib.Accelerators.Grids.Space2D
 {
@@ -165,10 +166,8 @@ namespace NumericalGeometryLib.Accelerators.Grids.Space2D
             CellIndexStart = grid.PointToCellIndex(point1X, point1Y);
 
             //Line segment parameter increments per cell in the x and y directions
-            TDelta = new Float64Vector2D(
-                (txMax - txMin) / grid.CellsCountX,
-                (tyMax - tyMin) / grid.CellsCountY
-            );
+            TDelta = Float64Vector2D.Create((Float64Scalar)((txMax - txMin) / grid.CellsCountX),
+                (Float64Scalar)((tyMax - tyMin) / grid.CellsCountY));
 
             double txNext, tyNext;
             int ixStep, iyStep;
@@ -212,7 +211,7 @@ namespace NumericalGeometryLib.Accelerators.Grids.Space2D
                 iyStop = -1;
             }
 
-            TFirst = new Float64Vector2D(txNext, tyNext);
+            TFirst = Float64Vector2D.Create((Float64Scalar)txNext, (Float64Scalar)tyNext);
             CellIndexStep = new IntTuple2D(ixStep, iyStep);
             CellIndexStop = new IntTuple2D(ixStop, iyStop);
         }

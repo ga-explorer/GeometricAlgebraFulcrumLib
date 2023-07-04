@@ -28,7 +28,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Lights
         {
         }
 
-        public XeoglDirectionalLight(IFloat64Tuple3D lightDirection)
+        public XeoglDirectionalLight(IFloat64Vector3D lightDirection)
         {
             LightDirection.SetVector(lightDirection);
         }

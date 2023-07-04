@@ -16,13 +16,13 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Builtin
         public static XeoglBoxGeometry Create(double halfSize)
             => new XeoglBoxGeometry(halfSize);
 
-        public static XeoglBoxGeometry Create(IFloat64Tuple3D halfSize)
+        public static XeoglBoxGeometry Create(IFloat64Vector3D halfSize)
             => new XeoglBoxGeometry(halfSize);
 
-        public static XeoglBoxGeometry Create(IFloat64Tuple3D center, double halfSize)
+        public static XeoglBoxGeometry Create(IFloat64Vector3D center, double halfSize)
             => new XeoglBoxGeometry(center, halfSize);
 
-        public static XeoglBoxGeometry Create(IFloat64Tuple3D center, IFloat64Tuple3D halfSize)
+        public static XeoglBoxGeometry Create(IFloat64Vector3D center, IFloat64Vector3D halfSize)
             => new XeoglBoxGeometry(center, halfSize);
 
         public static XeoglBoxGeometry Create(IBoundingBox3D box)
@@ -47,18 +47,18 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Builtin
             HalfSize.SetVector(halfSize, halfSize, halfSize);
         }
 
-        public XeoglBoxGeometry(IFloat64Tuple3D halfSize)
+        public XeoglBoxGeometry(IFloat64Vector3D halfSize)
         {
             HalfSize.SetVector(halfSize);
         }
 
-        public XeoglBoxGeometry(IFloat64Tuple3D center, double halfSize)
+        public XeoglBoxGeometry(IFloat64Vector3D center, double halfSize)
         {
             Center.SetVector(center);
             HalfSize.SetVector(halfSize, halfSize, halfSize);
         }
 
-        public XeoglBoxGeometry(IFloat64Tuple3D center, IFloat64Tuple3D halfSize)
+        public XeoglBoxGeometry(IFloat64Vector3D center, IFloat64Vector3D halfSize)
         {
             Center.SetVector(center);
             HalfSize.SetVector(halfSize);

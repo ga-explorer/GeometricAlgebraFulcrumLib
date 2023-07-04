@@ -29,7 +29,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Curves
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public RouletteCurve3D(IArcLengthCurve3D fixedCurve, IArcLengthCurve3D movingCurve, IFloat64Tuple3D generatorPoint, double parameterValueMax)
+        public RouletteCurve3D(IArcLengthCurve3D fixedCurve, IArcLengthCurve3D movingCurve, IFloat64Vector3D generatorPoint, double parameterValueMax)
         {
             FixedCurve = fixedCurve;
             MovingCurve = movingCurve;

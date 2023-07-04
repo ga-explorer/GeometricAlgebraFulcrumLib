@@ -91,7 +91,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Transforms
             => Float64Vector3D.Zero;
 
 
-        public XeoglERotateTransform SetRotate(IFloat64Tuple3D rotateTuple)
+        public XeoglERotateTransform SetRotate(IFloat64Vector3D rotateTuple)
         {
             RotateX = rotateTuple.X;
             RotateY = rotateTuple.Y;

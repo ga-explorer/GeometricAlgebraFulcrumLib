@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using DataStructuresLib.Random;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.Space4D.Reflection;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space4D;
@@ -129,7 +128,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.S
             var rotationSequence = new LinFloat64VectorToVectorRotationSequence4D();
 
             var vectorList =
-                random.GetOrthonormalVectors(dimensions, 2 * count);
+                random.GetMathNetOrthonormalVectors(dimensions, 2 * count);
 
             for (var i = 0; i < count; i++)
             {
@@ -433,7 +432,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.S
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Float64Vector4D MapVector(IFloat64Tuple4D vector)
+        public override Float64Vector4D MapVector(IFloat64Vector4D vector)
         {
             if (_mapList.Count == 0)
                 return vector.ToTuple4D();

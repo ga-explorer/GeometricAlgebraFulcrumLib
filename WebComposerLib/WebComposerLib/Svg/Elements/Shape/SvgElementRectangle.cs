@@ -245,7 +245,7 @@ namespace WebComposerLib.Svg.Elements.Shape
             return this;
         }
 
-        public SvgElementRectangle SetSize(double width, double height, SvgValueLengthUnit unit)
+        public SvgElementRectangle SetSize(double width, double height, SvgLengthUnit unit)
         {
             Width.SetTo(width, unit);
             Height.SetTo(height, unit);
@@ -263,7 +263,7 @@ namespace WebComposerLib.Svg.Elements.Shape
             return this;
         }
 
-        public SvgElementRectangle SetRectangle(double x, double y, double width, double height, SvgValueLengthUnit unit)
+        public SvgElementRectangle SetRectangle(double x, double y, double width, double height, SvgLengthUnit unit)
         {
             MinX.SetTo(x, unit);
             MinY.SetTo(y, unit);
@@ -281,7 +281,7 @@ namespace WebComposerLib.Svg.Elements.Shape
             return this;
         }
 
-        public SvgElementRectangle SetRadii(double radiusX, double radiusY, SvgValueLengthUnit unit)
+        public SvgElementRectangle SetRadii(double radiusX, double radiusY, SvgLengthUnit unit)
         {
             RadiusX.SetTo(radiusX, unit);
             RadiusY.SetTo(radiusY, unit);

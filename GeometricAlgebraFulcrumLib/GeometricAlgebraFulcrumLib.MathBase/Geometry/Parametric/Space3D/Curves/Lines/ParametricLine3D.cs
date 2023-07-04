@@ -17,7 +17,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Curves
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ParametricLine3D(IFloat64Tuple3D point, IFloat64Tuple3D vector)
+        public ParametricLine3D(IFloat64Vector3D point, IFloat64Vector3D vector)
         {
             Point = point.ToVector3D();
             Vector = vector.ToVector3D();

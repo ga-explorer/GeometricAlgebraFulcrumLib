@@ -1,9 +1,20 @@
 ﻿using System.Runtime.CompilerServices;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra
 {
     public static class ScalarUtils
     {
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Float64Scalar3D GetScalar3D(this System.Random random)
+        {
+            return Float64Scalar3D.Create(
+                random.NextDouble()
+            );
+        }
+
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsEqualTo<T>(this Scalar<T> scalar1, int scalar2)
         {

@@ -570,15 +570,23 @@ namespace GeometricAlgebraFulcrumLib.MathBase
 
             return worksheet;
         }
-
         
 
         public static DifferentialSignalInterpolatorFunction GetDifferentialInterpolatorOfColumn(this ExcelWorksheet workSheet, int firstRow, int columnIndex, Float64SignalSamplingSpecs samplingSpecs, int sampleStep, DfSignalInterpolatorOptions interpolatorOptions)
         {
-            return workSheet
-                .ReadScalarColumn(firstRow, samplingSpecs.SampleCount, sampleStep, columnIndex)
-                .CreateSignal(samplingSpecs.SamplingRate)
-                .GetDifferentialInterpolator(interpolatorOptions);
+            var signal = 
+                workSheet
+                    .ReadScalarColumn(
+                        firstRow, 
+                        samplingSpecs.SampleCount, 
+                        sampleStep, 
+                        columnIndex
+                    ).CreateSignal(samplingSpecs.SamplingRate);
+
+            // Remove DC component (running average)
+            signal -= signal.GetRunningAverageSignal();
+
+            return signal.GetDifferentialInterpolator(interpolatorOptions);
         }
 
     }

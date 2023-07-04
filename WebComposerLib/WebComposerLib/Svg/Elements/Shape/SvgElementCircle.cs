@@ -197,7 +197,7 @@ namespace WebComposerLib.Svg.Elements.Shape
             return this;
         }
 
-        public SvgElementCircle SetCenter(double centerX, double centerY, SvgValueLengthUnit unit)
+        public SvgElementCircle SetCenter(double centerX, double centerY, SvgLengthUnit unit)
         {
             CenterX.SetTo(centerX, unit);
             CenterY.SetTo(centerY, unit);
@@ -214,7 +214,7 @@ namespace WebComposerLib.Svg.Elements.Shape
             return this;
         }
 
-        public SvgElementCircle SetCircle(double centerX, double centerY, double radius, SvgValueLengthUnit unit)
+        public SvgElementCircle SetCircle(double centerX, double centerY, double radius, SvgLengthUnit unit)
         {
             CenterX.SetTo(centerX, unit);
             CenterY.SetTo(centerY, unit);

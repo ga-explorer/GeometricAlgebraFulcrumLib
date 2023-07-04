@@ -203,7 +203,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.S
             var rotationSequence = new LinFloat64HyperPlaneNormalReflectionSequence4D();
 
             var vectorList =
-                random.GetOrthonormalVectors(dimensions, count);
+                random.GetMathNetOrthonormalVectors(dimensions, count);
 
             for (var i = 0; i < count; i++)
             {
@@ -449,7 +449,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.S
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Float64Vector4D MapVector(IFloat64Tuple4D vector)
+        public override Float64Vector4D MapVector(IFloat64Vector4D vector)
         {
             if (_mapList.Count == 0)
                 return vector.ToTuple4D();

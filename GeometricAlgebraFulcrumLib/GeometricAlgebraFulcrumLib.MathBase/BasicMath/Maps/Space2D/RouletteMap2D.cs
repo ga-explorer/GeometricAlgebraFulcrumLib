@@ -50,20 +50,20 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space2D
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Float64Vector2D MapPoint(IFloat64Tuple2D point)
+        public Float64Vector2D MapPoint(IFloat64Vector2D point)
         {
             return FixedFrameOrigin + 
                    RotationAngle.Rotate(point - MovingFrameOrigin);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Float64Vector2D MapVector(IFloat64Tuple2D vector)
+        public Float64Vector2D MapVector(IFloat64Vector2D vector)
         {
             return RotationAngle.Rotate(vector);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Float64Vector2D MapNormal(IFloat64Tuple2D normal)
+        public Float64Vector2D MapNormal(IFloat64Vector2D normal)
         {
             return RotationAngle.Rotate(normal);
         }

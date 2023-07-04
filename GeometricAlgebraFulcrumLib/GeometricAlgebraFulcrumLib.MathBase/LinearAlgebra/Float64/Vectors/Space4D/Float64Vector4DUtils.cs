@@ -11,6 +11,39 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
 
 public static class Float64Vector4DUtils
 {
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Float64Vector4D ClampTo(this IFloat64Vector4D tuple, IFloat64Vector4D maxTuple)
+    {
+        return Float64Vector4D.Create(
+            tuple.X.ClampTo(maxTuple.X),
+            tuple.Y.ClampTo(maxTuple.Y),
+            tuple.Z.ClampTo(maxTuple.Z),
+            tuple.W.ClampTo(maxTuple.W)
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Float64Vector4D ClampTo(this IFloat64Vector4D tuple, IFloat64Vector4D minTuple, IFloat64Vector4D maxTuple)
+    {
+        return Float64Vector4D.Create(
+            tuple.X.ClampTo(minTuple.X, maxTuple.X),
+            tuple.Y.ClampTo(minTuple.Y, maxTuple.Y),
+            tuple.Z.ClampTo(minTuple.Z, maxTuple.Z),
+            tuple.W.ClampTo(minTuple.W, maxTuple.W)
+        );
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Float64Vector4D ClampToSymmetric(this IFloat64Vector4D tuple, IFloat64Vector4D maxTuple)
+    {
+        return Float64Vector4D.Create(
+            tuple.X.ClampToSymmetric(maxTuple.X),
+            tuple.Y.ClampToSymmetric(maxTuple.Y),
+            tuple.Z.ClampToSymmetric(maxTuple.Z),
+            tuple.W.ClampToSymmetric(maxTuple.W)
+        );
+    }
+    
 
     /// <summary>
     /// Find the angle between this vector and another
@@ -19,7 +52,7 @@ public static class Float64Vector4DUtils
     /// <param name="v2"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double GetAngleCos(this IFloat64Tuple4D v1, IFloat64Tuple4D v2)
+    public static double GetAngleCos(this IFloat64Vector4D v1, IFloat64Vector4D v2)
     {
         var t1 = v1.X * v2.X + v1.Y * v2.Y + v1.Z * v2.Z + v1.W * v2.W;
         var t2 = v1.X * v1.X + v1.Y * v1.Y + v1.Z * v1.Z + v1.W * v1.W;
@@ -35,7 +68,7 @@ public static class Float64Vector4DUtils
     /// <param name="v2"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double GetAngleCosWithUnit(this IFloat64Tuple4D v1, IFloat64Tuple4D v2)
+    public static double GetAngleCosWithUnit(this IFloat64Vector4D v1, IFloat64Vector4D v2)
     {
         Debug.Assert(
             v2.IsNearUnit()
@@ -63,7 +96,7 @@ public static class Float64Vector4DUtils
     /// <param name="v2"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64PlanarAngle GetAngle(this IFloat64Tuple4D v1, IFloat64Tuple4D v2)
+    public static Float64PlanarAngle GetAngle(this IFloat64Vector4D v1, IFloat64Vector4D v2)
     {
         return v1.GetAngleCos(v2).ArcCos();
     }
@@ -75,7 +108,7 @@ public static class Float64Vector4DUtils
     /// <param name="v2"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double GetUnitVectorsAngleCos(this IFloat64Tuple4D v1, IFloat64Tuple4D v2)
+    public static double GetUnitVectorsAngleCos(this IFloat64Vector4D v1, IFloat64Vector4D v2)
     {
         Debug.Assert(
             v1.IsNearUnitVector() &&
@@ -96,7 +129,7 @@ public static class Float64Vector4DUtils
     /// <param name="v2"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64PlanarAngle GetUnitVectorsAngle(this IFloat64Tuple4D v1, IFloat64Tuple4D v2)
+    public static Float64PlanarAngle GetUnitVectorsAngle(this IFloat64Vector4D v1, IFloat64Vector4D v2)
     {
         return Math.Acos(
             v1.GetUnitVectorsAngleCos(v2)
@@ -180,7 +213,7 @@ public static class Float64Vector4DUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinUnitBasisVector4D SelectNearestAxis(this IFloat64Tuple4D unitVector)
+    public static LinUnitBasisVector4D SelectNearestAxis(this IFloat64Vector4D unitVector)
     {
         return unitVector.GetMaxAbsComponentIndex() switch
         {
@@ -283,9 +316,9 @@ public static class Float64Vector4DUtils
     /// <param name="vector"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Vector4D ToNegativeVector(this IFloat64Tuple4D vector)
+    public static Float64Vector4D ToNegativeVector(this IFloat64Vector4D vector)
     {
-        return new Float64Vector4D(-vector.X, -vector.Y, -vector.Z, -vector.W);
+        return Float64Vector4D.Create(-vector.X, -vector.Y, -vector.Z, -vector.W);
     }
 
     /// <summary>
@@ -295,14 +328,14 @@ public static class Float64Vector4DUtils
     /// <param name="vector"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Vector4D ToNegativeUnitVector(this IFloat64Tuple4D vector)
+    public static Float64Vector4D ToNegativeUnitVector(this IFloat64Vector4D vector)
     {
         var s = vector.ENorm();
         if (s.IsAlmostZero())
             return vector.ToTuple4D();
 
         s = 1.0d / s;
-        return new Float64Vector4D(vector.X * s, vector.Y * s, vector.Z * s, vector.W * s);
+        return Float64Vector4D.Create(vector.X * s, vector.Y * s, vector.Z * s, vector.W * s);
     }
 
     /// <summary>
@@ -312,7 +345,7 @@ public static class Float64Vector4DUtils
     /// <param name="v2"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double GetDistanceToPoint(this IFloat64Tuple4D v1, IFloat64Tuple4D v2)
+    public static double GetDistanceToPoint(this IFloat64Vector4D v1, IFloat64Vector4D v2)
     {
         var vX = v2.X - v1.X;
         var vY = v2.Y - v1.Y;
@@ -329,7 +362,7 @@ public static class Float64Vector4DUtils
     /// <param name="v2"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double GetDistanceSquaredToPoint(this IFloat64Tuple4D v1, IFloat64Tuple4D v2)
+    public static double GetDistanceSquaredToPoint(this IFloat64Vector4D v1, IFloat64Vector4D v2)
     {
         var vX = v2.X - v1.X;
         var vY = v2.Y - v1.Y;
@@ -347,7 +380,7 @@ public static class Float64Vector4DUtils
     /// <param name="zeroAsSymmetric"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Vector4D ToUnitVector(this IFloat64Tuple4D vector, bool zeroAsSymmetric = true)
+    public static Float64Vector4D ToUnitVector(this IFloat64Vector4D vector, bool zeroAsSymmetric = true)
     {
         var s = vector.ENorm();
 
@@ -357,7 +390,7 @@ public static class Float64Vector4DUtils
                 : Float64Vector4D.Zero;
 
         s = 1.0d / s;
-        return new Float64Vector4D(vector.X * s, vector.Y * s, vector.Z * s, vector.W * s);
+        return Float64Vector4D.Create(vector.X * s, vector.Y * s, vector.Z * s, vector.W * s);
     }
 
 
@@ -365,7 +398,7 @@ public static class Float64Vector4DUtils
     /// The Euclidean squared length of this tuple when it represents a vector
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double ENorm(this IFloat64Tuple4D vector)
+    public static double ENorm(this IFloat64Vector4D vector)
     {
         return Math.Sqrt(
             vector.X * vector.X +
@@ -379,7 +412,7 @@ public static class Float64Vector4DUtils
     /// The Euclidean squared length of this tuple when it represents a vector
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double ENormSquared(this IFloat64Tuple4D vector)
+    public static double ENormSquared(this IFloat64Vector4D vector)
     {
         return vector.X * vector.X +
                vector.Y * vector.Y +
@@ -411,7 +444,7 @@ public static class Float64Vector4DUtils
     /// True of the Euclidean squared length of this vector is near unity
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearUnitVector(this IFloat64Tuple4D vector)
+    public static bool IsNearUnitVector(this IFloat64Vector4D vector)
     {
         return vector
             .ENormSquared()
@@ -425,7 +458,7 @@ public static class Float64Vector4DUtils
     /// <param name="v2"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double ESp(this IFloat64Tuple4D v1, LinUnitBasisVector4D v2)
+    public static double ESp(this IFloat64Vector4D v1, LinUnitBasisVector4D v2)
     {
         return v2 switch
         {
@@ -444,7 +477,7 @@ public static class Float64Vector4DUtils
     /// True of the Euclidean squared length of this vector is near zero
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsAlmostZeroVector(this IFloat64Tuple4D vector)
+    public static bool IsAlmostZeroVector(this IFloat64Vector4D vector)
     {
         return vector
             .ENormSquared()
@@ -456,7 +489,7 @@ public static class Float64Vector4DUtils
     /// True of the Euclidean squared length of this vector is near unity
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsUnitVector(this IFloat64Tuple4D vector)
+    public static bool IsUnitVector(this IFloat64Vector4D vector)
     {
         return vector
             .ENormSquared()
@@ -464,71 +497,59 @@ public static class Float64Vector4DUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Vector4D Add(this IFloat64Tuple4D v1, IFloat64Tuple4D v2)
+    public static Float64Vector4D Add(this IFloat64Vector4D v1, IFloat64Vector4D v2)
     {
-        return new Float64Vector4D(
-            v1.X + v2.X,
+        return Float64Vector4D.Create(v1.X + v2.X,
             v1.Y + v2.Y,
             v1.Z + v2.Z,
-            v1.W + v2.W
-        );
+            v1.W + v2.W);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Vector4D Subtract(this IFloat64Tuple4D v1, IFloat64Tuple4D v2)
+    public static Float64Vector4D Subtract(this IFloat64Vector4D v1, IFloat64Vector4D v2)
     {
-        return new Float64Vector4D(
-            v1.X - v2.X,
+        return Float64Vector4D.Create(v1.X - v2.X,
             v1.Y - v2.Y,
             v1.Z - v2.Z,
-            v1.W - v2.W
-        );
+            v1.W - v2.W);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Vector4D Times(this IFloat64Tuple4D v1, double v2)
+    public static Float64Vector4D Times(this IFloat64Vector4D v1, double v2)
     {
-        return new Float64Vector4D(
-            v1.X * v2,
+        return Float64Vector4D.Create(v1.X * v2,
             v1.Y * v2,
             v1.Z * v2,
-            v1.W * v2
-        );
+            v1.W * v2);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Vector4D Times(this double v1, IFloat64Tuple4D v2)
+    public static Float64Vector4D Times(this double v1, IFloat64Vector4D v2)
     {
-        return new Float64Vector4D(
-            v1 * v2.X,
+        return Float64Vector4D.Create(v1 * v2.X,
             v1 * v2.Y,
             v1 * v2.Z,
-            v1 * v2.W
-        );
+            v1 * v2.W);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Vector4D Divide(this IFloat64Tuple4D v1, double v2)
+    public static Float64Vector4D Divide(this IFloat64Vector4D v1, double v2)
     {
         v2 = 1d / v2;
 
-        return new Float64Vector4D(
-            v1.X * v2,
+        return Float64Vector4D.Create(v1.X * v2,
             v1.Y * v2,
             v1.Z * v2,
-            v1.W * v2
-        );
+            v1.W * v2);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Float64Vector4D GetFloat64Tuple4D(this System.Random random)
     {
-        return new Float64Vector4D(
+        return Float64Vector4D.Create(random.NextDouble(),
             random.NextDouble(),
             random.NextDouble(),
-            random.NextDouble(),
-            random.NextDouble()
-        );
+            random.NextDouble());
     }
 
     /// <summary>
@@ -539,7 +560,7 @@ public static class Float64Vector4DUtils
     /// <param name="v3"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Pair<Float64Scalar> ESp(this IFloat64Tuple4D v1, IFloat64Tuple4D v2, IFloat64Tuple4D v3)
+    public static Pair<Float64Scalar> ESp(this IFloat64Vector4D v1, IFloat64Vector4D v2, IFloat64Vector4D v3)
     {
         return new Pair<Float64Scalar>(
             v1.X * v2.X + v1.Y * v2.Y + v1.Z * v2.Z + v1.W * v2.W,
@@ -554,7 +575,7 @@ public static class Float64Vector4DUtils
     /// <param name="v2"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Scalar ESp(this IFloat64Tuple4D v1, IFloat64Tuple4D v2)
+    public static Float64Scalar ESp(this IFloat64Vector4D v1, IFloat64Vector4D v2)
     {
         return v1.X * v2.X + v1.Y * v2.Y + v1.Z * v2.Z + v1.W * v2.W;
     }
@@ -566,50 +587,44 @@ public static class Float64Vector4DUtils
     /// <param name="v2"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Scalar ESpAbs(this IFloat64Tuple4D v1, IFloat64Tuple4D v2)
+    public static Float64Scalar ESpAbs(this IFloat64Vector4D v1, IFloat64Vector4D v2)
     {
         return Math.Abs(v1.X * v2.X + v1.Y * v2.Y + v1.Z * v2.Z + v1.W * v2.W);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Vector4D RejectOnUnitVector(this IFloat64Tuple4D v, IFloat64Tuple4D u)
+    public static Float64Vector4D RejectOnUnitVector(this IFloat64Vector4D v, IFloat64Vector4D u)
     {
         var s = v.X * u.X + v.Y * u.Y + v.Z * u.Z + v.W * u.W;
 
-        return new Float64Vector4D(
-            v.X - u.X * s,
+        return Float64Vector4D.Create(v.X - u.X * s,
             v.Y - u.Y * s,
             v.Z - u.Z * s,
-            v.W - u.W * s
-        );
+            v.W - u.W * s);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Vector4D ProjectOnVector(this IFloat64Tuple4D v, IFloat64Tuple4D u)
+    public static Float64Vector4D ProjectOnVector(this IFloat64Vector4D v, IFloat64Vector4D u)
     {
         var s1 = v.X * u.X + v.Y * u.Y + v.Z * u.Z + v.W * u.W;
         var s2 = u.X * u.X + u.Y * u.Y + u.Z * u.Z + u.W * u.W;
         var s = s1 / s2;
 
-        return new Float64Vector4D(
-            u.X * s,
+        return Float64Vector4D.Create(u.X * s,
             u.Y * s,
             u.Z * s,
-            u.W * s
-        );
+            u.W * s);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Vector4D ProjectOnUnitVector(this IFloat64Tuple4D v, IFloat64Tuple4D u)
+    public static Float64Vector4D ProjectOnUnitVector(this IFloat64Vector4D v, IFloat64Vector4D u)
     {
         var s = v.X * u.X + v.Y * u.Y + v.Z * u.Z + v.W * u.W;
 
-        return new Float64Vector4D(
-            u.X * s,
+        return Float64Vector4D.Create(u.X * s,
             u.Y * s,
             u.Z * s,
-            u.W * s
-        );
+            u.W * s);
     }
 
 
@@ -621,28 +636,26 @@ public static class Float64Vector4DUtils
         foreach (var scalar in scalarList)
             scalarArray[i++] = scalar;
 
-        return new Float64Vector4D(
-            scalarArray[0],
+        return Float64Vector4D.Create(scalarArray[0],
             scalarArray[1],
             scalarArray[2],
-            scalarArray[3]
-        );
+            scalarArray[3]);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearZero(this IFloat64Tuple4D vector, double epsilon = 1e-12)
+    public static bool IsNearZero(this IFloat64Vector4D vector, double epsilon = 1e-12)
     {
         return vector.ENorm().IsNearZero(epsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearUnit(this IFloat64Tuple4D vector, double epsilon = 1e-12)
+    public static bool IsNearUnit(this IFloat64Vector4D vector, double epsilon = 1e-12)
     {
         return vector.ENormSquared().IsNearOne(epsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearOrthonormalWith(this IFloat64Tuple4D vector1, IFloat64Tuple4D vector2, double epsilon = 1e-12)
+    public static bool IsNearOrthonormalWith(this IFloat64Vector4D vector1, IFloat64Vector4D vector2, double epsilon = 1e-12)
     {
         return vector1.IsNearUnit(epsilon) &&
                vector2.IsNearUnit(epsilon) &&
@@ -650,7 +663,7 @@ public static class Float64Vector4DUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearOrthonormalWithUnit(this IFloat64Tuple4D vector1, IFloat64Tuple4D vector2, double epsilon = 1e-12)
+    public static bool IsNearOrthonormalWithUnit(this IFloat64Vector4D vector1, IFloat64Vector4D vector2, double epsilon = 1e-12)
     {
         Debug.Assert(
             vector2.IsNearUnit(epsilon)
@@ -661,25 +674,25 @@ public static class Float64Vector4DUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearParallelTo(this IFloat64Tuple4D vector1, IFloat64Tuple4D vector2, double epsilon = 1e-12)
+    public static bool IsNearParallelTo(this IFloat64Vector4D vector1, IFloat64Vector4D vector2, double epsilon = 1e-12)
     {
         return vector1.GetAngleCos(vector2).Abs().IsNearOne(epsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearParallelToUnit(this IFloat64Tuple4D vector1, IFloat64Tuple4D vector2, double epsilon = 1e-12)
+    public static bool IsNearParallelToUnit(this IFloat64Vector4D vector1, IFloat64Vector4D vector2, double epsilon = 1e-12)
     {
         return vector1.GetAngleCosWithUnit(vector2).Abs().IsNearOne(epsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearOrthogonalTo(this IFloat64Tuple4D vector1, IFloat64Tuple4D vector2, double epsilon = 1e-12)
+    public static bool IsNearOrthogonalTo(this IFloat64Vector4D vector1, IFloat64Vector4D vector2, double epsilon = 1e-12)
     {
         return vector1.ESp(vector2).IsNearZero(epsilon);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsVectorBasis(this IFloat64Tuple4D vector, int basisIndex)
+    public static bool IsVectorBasis(this IFloat64Vector4D vector, int basisIndex)
     {
         return basisIndex switch
         {
@@ -692,7 +705,7 @@ public static class Float64Vector4DUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsNearVectorBasis(this IFloat64Tuple4D vector, int basisIndex, double epsilon = 1e-12d)
+    public static bool IsNearVectorBasis(this IFloat64Vector4D vector, int basisIndex, double epsilon = 1e-12d)
     {
         var vector2 = basisIndex switch
         {
@@ -739,7 +752,7 @@ public static class Float64Vector4DUtils
         );
     }
 
-    public static Tuple<bool, double, LinUnitBasisVector4D> TryVectorToAxis(this IFloat64Tuple4D vector)
+    public static Tuple<bool, double, LinUnitBasisVector4D> TryVectorToAxis(this IFloat64Vector4D vector)
     {
         // Find if the given scaling vector is parallel to a basis vector
         var basisIndex = -1;
@@ -773,26 +786,24 @@ public static class Float64Vector4DUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Vector4D Lerp(this double t, IFloat64Tuple4D v1, IFloat64Tuple4D v2)
+    public static Float64Vector4D Lerp(this double t, IFloat64Vector4D v1, IFloat64Vector4D v2)
     {
         var s = 1.0d - t;
 
-        return new Float64Vector4D(
-            s * v1.X + t * v2.X,
+        return Float64Vector4D.Create(s * v1.X + t * v2.X,
             s * v1.Y + t * v2.Y,
             s * v1.Z + t * v2.Z,
-            s * v1.W + t * v2.W
-        );
+            s * v1.W + t * v2.W);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IEnumerable<Float64Vector4D> Lerp(this IEnumerable<double> tList, IFloat64Tuple4D v1, IFloat64Tuple4D v2)
+    public static IEnumerable<Float64Vector4D> Lerp(this IEnumerable<double> tList, IFloat64Vector4D v1, IFloat64Vector4D v2)
     {
         return tList.Select(t => t.Lerp(v1, v2));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static bool IsFinite(this IFloat64Tuple4D tuple)
+    public static bool IsFinite(this IFloat64Vector4D tuple)
     {
         return !(
             double.IsNaN(tuple.X) || double.IsInfinity(tuple.X) ||
@@ -806,7 +817,7 @@ public static class Float64Vector4DUtils
     /// The index of the largest absolute component in this tuple
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static int GetMaxAbsComponentIndex(this IFloat64Tuple4D tuple)
+    public static int GetMaxAbsComponentIndex(this IFloat64Vector4D tuple)
     {
         var absX = Math.Abs(tuple.X);
         var absY = Math.Abs(tuple.Y);
@@ -841,7 +852,7 @@ public static class Float64Vector4DUtils
     /// The index of the largest absolute component in this tuple
     /// </summary>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static int GetMinAbsComponentIndex(this IFloat64Tuple4D tuple)
+    public static int GetMinAbsComponentIndex(this IFloat64Vector4D tuple)
     {
         var absX = Math.Abs(tuple.X);
         var absY = Math.Abs(tuple.Y);
@@ -879,14 +890,12 @@ public static class Float64Vector4DUtils
     /// <param name="v2"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Vector4D Min(this IFloat64Tuple4D v1, IFloat64Tuple4D v2)
+    public static Float64Vector4D Min(this IFloat64Vector4D v1, IFloat64Vector4D v2)
     {
-        return new Float64Vector4D(
-            v1.X < v2.X ? v1.X : v2.X,
+        return Float64Vector4D.Create(v1.X < v2.X ? v1.X : v2.X,
             v1.Y < v2.Y ? v1.Y : v2.Y,
             v1.Z < v2.Z ? v1.Z : v2.Z,
-            v1.W < v2.W ? v1.W : v2.W
-        );
+            v1.W < v2.W ? v1.W : v2.W);
     }
 
     /// <summary>
@@ -896,14 +905,12 @@ public static class Float64Vector4DUtils
     /// <param name="v2"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Vector4D Max(this IFloat64Tuple4D v1, IFloat64Tuple4D v2)
+    public static Float64Vector4D Max(this IFloat64Vector4D v1, IFloat64Vector4D v2)
     {
-        return new Float64Vector4D(
-            v1.X > v2.X ? v1.X : v2.X,
+        return Float64Vector4D.Create(v1.X > v2.X ? v1.X : v2.X,
             v1.Y > v2.Y ? v1.Y : v2.Y,
             v1.Z > v2.Z ? v1.Z : v2.Z,
-            v1.W > v2.W ? v1.W : v2.W
-        );
+            v1.W > v2.W ? v1.W : v2.W);
     }
 
     /// <summary>
@@ -912,14 +919,12 @@ public static class Float64Vector4DUtils
     /// <param name="tuple"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Vector4D Ceiling(this IFloat64Tuple4D tuple)
+    public static Float64Vector4D Ceiling(this IFloat64Vector4D tuple)
     {
-        return new Float64Vector4D(
-            Math.Ceiling(tuple.X),
+        return Float64Vector4D.Create(Math.Ceiling(tuple.X),
             Math.Ceiling(tuple.Y),
             Math.Ceiling(tuple.Z),
-            Math.Ceiling(tuple.W)
-        );
+            Math.Ceiling(tuple.W));
     }
 
     /// <summary>
@@ -928,14 +933,12 @@ public static class Float64Vector4DUtils
     /// <param name="tuple"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Vector4D Floor(this IFloat64Tuple4D tuple)
+    public static Float64Vector4D Floor(this IFloat64Vector4D tuple)
     {
-        return new Float64Vector4D(
-            Math.Floor(tuple.X),
+        return Float64Vector4D.Create(Math.Floor(tuple.X),
             Math.Floor(tuple.Y),
             Math.Floor(tuple.Z),
-            Math.Floor(tuple.W)
-        );
+            Math.Floor(tuple.W));
     }
 
     /// <summary>
@@ -944,68 +947,72 @@ public static class Float64Vector4DUtils
     /// <param name="tuple"></param>
     /// <returns></returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Vector4D Abs(this IFloat64Tuple4D tuple)
+    public static Float64Vector4D Abs(this IFloat64Vector4D tuple)
     {
-        return new Float64Vector4D(
-            Math.Abs(tuple.X),
+        return Float64Vector4D.Create(Math.Abs(tuple.X),
             Math.Abs(tuple.Y),
             Math.Abs(tuple.Z),
-            Math.Abs(tuple.W)
-        );
+            Math.Abs(tuple.W));
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Vector4D ToTuple4D(this IFloat64Tuple2D tuple)
+    public static Float64Vector4D ToTuple4D(this IFloat64Vector2D tuple)
     {
-        return new Float64Vector4D(tuple.X, tuple.Y, 0.0d, 0.0d);
+        return Float64Vector4D.Create(
+            tuple.X, 
+            tuple.Y, 
+            Float64Scalar.Zero, 
+            Float64Scalar.Zero
+        );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Float64Vector4D ToTuple4D(this IntTuple2D tuple)
     {
-        return new Float64Vector4D(tuple.X, tuple.Y, 0.0d, 0.0d);
+        return Float64Vector4D.Create(tuple.X, tuple.Y, 0.0d, 0.0d);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Vector4D ToTuple4D(this IFloat64Tuple3D tuple)
+    public static Float64Vector4D ToTuple4D(this IFloat64Vector3D tuple)
     {
-        return new Float64Vector4D(tuple.X, tuple.Y, tuple.Z, 0.0d);
+        return Float64Vector4D.Create(
+            tuple.X, 
+            tuple.Y, 
+            tuple.Z, 
+            Float64Scalar.Zero
+        );
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Vector4D ToTuple4D(this IFloat64Tuple4D tuple)
+    public static Float64Vector4D ToTuple4D(this IFloat64Vector4D tuple)
     {
         return tuple is Float64Vector4D t
             ? t
-            : new Float64Vector4D(tuple.X, tuple.Y, tuple.Z, tuple.W);
+            : Float64Vector4D.Create(tuple.X, tuple.Y, tuple.Z, tuple.W);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Float64Vector4D ToTuple4D(this IntTuple3D tuple)
     {
-        return new Float64Vector4D(tuple.ItemX, tuple.ItemY, tuple.ItemZ, 0.0d);
+        return Float64Vector4D.Create(tuple.ItemX, tuple.ItemY, tuple.ItemZ, 0.0d);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Vector4D GetRealTuple(this IComplexTuple4D tuple)
+    public static Float64Vector4D GetRealTuple(this IComplexVector4D tuple)
     {
-        return new Float64Vector4D(
-            tuple.X.Real,
+        return Float64Vector4D.Create(tuple.X.Real,
             tuple.Y.Real,
             tuple.Z.Real,
-            tuple.W.Real
-        );
+            tuple.W.Real);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Vector4D GetImaginaryTuple(this IComplexTuple4D tuple)
+    public static Float64Vector4D GetImaginaryTuple(this IComplexVector4D tuple)
     {
-        return new Float64Vector4D(
-            tuple.X.Imaginary,
+        return Float64Vector4D.Create(tuple.X.Imaginary,
             tuple.Y.Imaginary,
             tuple.Z.Imaginary,
-            tuple.W.Imaginary
-        );
+            tuple.W.Imaginary);
     }
 
     /// <summary>
@@ -1020,7 +1027,7 @@ public static class Float64Vector4DUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Float64Vector4D Permute(this Float64Vector4D tuple, int xIndex, int yIndex, int zIndex, int wIndex)
     {
-        return new Float64Vector4D(tuple[xIndex], tuple[yIndex], tuple[zIndex], tuple[wIndex]);
+        return Float64Vector4D.Create(tuple[xIndex], tuple[yIndex], tuple[zIndex], tuple[wIndex]);
     }
 
     /// <summary>
@@ -1036,11 +1043,11 @@ public static class Float64Vector4DUtils
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Float64Vector4D SafePermute(this Float64Vector4D tuple, int xIndex, int yIndex, int zIndex, int wIndex)
     {
-        return new Float64Vector4D(tuple[xIndex.Mod(4)], tuple[yIndex.Mod(4)], tuple[zIndex.Mod(4)], tuple[wIndex.Mod(4)]);
+        return Float64Vector4D.Create(tuple[xIndex.Mod(4)], tuple[yIndex.Mod(4)], tuple[zIndex.Mod(4)], tuple[wIndex.Mod(4)]);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double GetComponent(this IFloat64Tuple4D tuple, int index)
+    public static double GetComponent(this IFloat64Vector4D tuple, int index)
     {
         return index switch
         {
@@ -1053,7 +1060,7 @@ public static class Float64Vector4DUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IEnumerable<double> GetComponents(this IFloat64Tuple4D tuple)
+    public static IEnumerable<double> GetComponents(this IFloat64Vector4D tuple)
     {
         yield return tuple.X;
         yield return tuple.Y;
@@ -1062,35 +1069,31 @@ public static class Float64Vector4DUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IEnumerable<double> GetComponents(this IEnumerable<IFloat64Tuple4D> tuplesList)
+    public static IEnumerable<double> GetComponents(this IEnumerable<IFloat64Vector4D> tuplesList)
     {
         return tuplesList.SelectMany(t => t.GetComponents());
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Vector4D ComponentsProduct(this IFloat64Tuple4D tuple1, IFloat64Tuple4D tuple2)
+    public static Float64Vector4D ComponentsProduct(this IFloat64Vector4D tuple1, IFloat64Vector4D tuple2)
     {
-        return new Float64Vector4D(
-            tuple1.X * tuple2.X,
+        return Float64Vector4D.Create(tuple1.X * tuple2.X,
             tuple1.Y * tuple2.Y,
             tuple1.Z * tuple2.Z,
-            tuple1.W * tuple2.W
-        );
+            tuple1.W * tuple2.W);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Vector4D ComponentsProduct(this IFloat64Tuple4D tuple1, IFloat64Tuple4D tuple2, IFloat64Tuple4D tuple3)
+    public static Float64Vector4D ComponentsProduct(this IFloat64Vector4D tuple1, IFloat64Vector4D tuple2, IFloat64Vector4D tuple3)
     {
-        return new Float64Vector4D(
-            tuple1.X * tuple2.X * tuple3.X,
+        return Float64Vector4D.Create(tuple1.X * tuple2.X * tuple3.X,
             tuple1.Y * tuple2.Y * tuple3.Y,
             tuple1.Z * tuple2.Z * tuple3.Z,
-            tuple1.W * tuple2.W * tuple3.W
-        );
+            tuple1.W * tuple2.W * tuple3.W);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Pair<double> GetTupleXPair(this IReadOnlyList<IFloat64Tuple4D> itemArray, int index)
+    public static Pair<double> GetTupleXPair(this IReadOnlyList<IFloat64Vector4D> itemArray, int index)
     {
         return new Pair<double>(
             itemArray[index].X,
@@ -1099,7 +1102,7 @@ public static class Float64Vector4DUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Triplet<double> GetTupleXTriplet(this IReadOnlyList<IFloat64Tuple4D> itemArray, int index)
+    public static Triplet<double> GetTupleXTriplet(this IReadOnlyList<IFloat64Vector4D> itemArray, int index)
     {
         return new Triplet<double>(
             itemArray[index].X,
@@ -1109,7 +1112,7 @@ public static class Float64Vector4DUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Quad<double> GetTupleXQuad(this IReadOnlyList<IFloat64Tuple4D> itemArray, int index)
+    public static Quad<double> GetTupleXQuad(this IReadOnlyList<IFloat64Vector4D> itemArray, int index)
     {
         return new Quad<double>(
             itemArray[index].X,
@@ -1120,7 +1123,7 @@ public static class Float64Vector4DUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Quint<double> GetTupleXQuint(this IReadOnlyList<IFloat64Tuple4D> itemArray, int index)
+    public static Quint<double> GetTupleXQuint(this IReadOnlyList<IFloat64Vector4D> itemArray, int index)
     {
         return new Quint<double>(
             itemArray[index].X,
@@ -1132,7 +1135,7 @@ public static class Float64Vector4DUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Hexad<double> GetTupleXHexad(this IReadOnlyList<IFloat64Tuple4D> itemArray, int index)
+    public static Hexad<double> GetTupleXHexad(this IReadOnlyList<IFloat64Vector4D> itemArray, int index)
     {
         return new Hexad<double>(
             itemArray[index].X,
@@ -1146,7 +1149,7 @@ public static class Float64Vector4DUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Pair<double> GetTupleYPair(this IReadOnlyList<IFloat64Tuple4D> itemArray, int index)
+    public static Pair<double> GetTupleYPair(this IReadOnlyList<IFloat64Vector4D> itemArray, int index)
     {
         return new Pair<double>(
             itemArray[index].Y,
@@ -1155,7 +1158,7 @@ public static class Float64Vector4DUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Triplet<double> GetTupleYTriplet(this IReadOnlyList<IFloat64Tuple4D> itemArray, int index)
+    public static Triplet<double> GetTupleYTriplet(this IReadOnlyList<IFloat64Vector4D> itemArray, int index)
     {
         return new Triplet<double>(
             itemArray[index].Y,
@@ -1165,7 +1168,7 @@ public static class Float64Vector4DUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Quad<double> GetTupleYQuad(this IReadOnlyList<IFloat64Tuple4D> itemArray, int index)
+    public static Quad<double> GetTupleYQuad(this IReadOnlyList<IFloat64Vector4D> itemArray, int index)
     {
         return new Quad<double>(
             itemArray[index].Y,
@@ -1176,7 +1179,7 @@ public static class Float64Vector4DUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Quint<double> GetTupleYQuint(this IReadOnlyList<IFloat64Tuple4D> itemArray, int index)
+    public static Quint<double> GetTupleYQuint(this IReadOnlyList<IFloat64Vector4D> itemArray, int index)
     {
         return new Quint<double>(
             itemArray[index].Y,
@@ -1188,7 +1191,7 @@ public static class Float64Vector4DUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Hexad<double> GetTupleYHexad(this IReadOnlyList<IFloat64Tuple4D> itemArray, int index)
+    public static Hexad<double> GetTupleYHexad(this IReadOnlyList<IFloat64Vector4D> itemArray, int index)
     {
         return new Hexad<double>(
             itemArray[index].Y,
@@ -1202,7 +1205,7 @@ public static class Float64Vector4DUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Pair<double> GetTupleZPair(this IReadOnlyList<IFloat64Tuple4D> itemArray, int index)
+    public static Pair<double> GetTupleZPair(this IReadOnlyList<IFloat64Vector4D> itemArray, int index)
     {
         return new Pair<double>(
             itemArray[index].Z,
@@ -1211,7 +1214,7 @@ public static class Float64Vector4DUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Triplet<double> GetTupleZTriplet(this IReadOnlyList<IFloat64Tuple4D> itemArray, int index)
+    public static Triplet<double> GetTupleZTriplet(this IReadOnlyList<IFloat64Vector4D> itemArray, int index)
     {
         return new Triplet<double>(
             itemArray[index].Z,
@@ -1221,7 +1224,7 @@ public static class Float64Vector4DUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Quad<double> GetTupleZQuad(this IReadOnlyList<IFloat64Tuple4D> itemArray, int index)
+    public static Quad<double> GetTupleZQuad(this IReadOnlyList<IFloat64Vector4D> itemArray, int index)
     {
         return new Quad<double>(
             itemArray[index].Z,
@@ -1232,7 +1235,7 @@ public static class Float64Vector4DUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Quint<double> GetTupleZQuint(this IReadOnlyList<IFloat64Tuple4D> itemArray, int index)
+    public static Quint<double> GetTupleZQuint(this IReadOnlyList<IFloat64Vector4D> itemArray, int index)
     {
         return new Quint<double>(
             itemArray[index].Z,
@@ -1244,7 +1247,7 @@ public static class Float64Vector4DUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Hexad<double> GetTupleZHexad(this IReadOnlyList<IFloat64Tuple4D> itemArray, int index)
+    public static Hexad<double> GetTupleZHexad(this IReadOnlyList<IFloat64Vector4D> itemArray, int index)
     {
         return new Hexad<double>(
             itemArray[index].Z,
@@ -1258,7 +1261,7 @@ public static class Float64Vector4DUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Pair<double> GetTupleWPair(this IReadOnlyList<IFloat64Tuple4D> itemArray, int index)
+    public static Pair<double> GetTupleWPair(this IReadOnlyList<IFloat64Vector4D> itemArray, int index)
     {
         return new Pair<double>(
             itemArray[index].W,
@@ -1267,7 +1270,7 @@ public static class Float64Vector4DUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Triplet<double> GetTupleWTriplet(this IReadOnlyList<IFloat64Tuple4D> itemArray, int index)
+    public static Triplet<double> GetTupleWTriplet(this IReadOnlyList<IFloat64Vector4D> itemArray, int index)
     {
         return new Triplet<double>(
             itemArray[index].W,
@@ -1277,7 +1280,7 @@ public static class Float64Vector4DUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Quad<double> GetTupleWQuad(this IReadOnlyList<IFloat64Tuple4D> itemArray, int index)
+    public static Quad<double> GetTupleWQuad(this IReadOnlyList<IFloat64Vector4D> itemArray, int index)
     {
         return new Quad<double>(
             itemArray[index].W,
@@ -1288,7 +1291,7 @@ public static class Float64Vector4DUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Quint<double> GetTupleWQuint(this IReadOnlyList<IFloat64Tuple4D> itemArray, int index)
+    public static Quint<double> GetTupleWQuint(this IReadOnlyList<IFloat64Vector4D> itemArray, int index)
     {
         return new Quint<double>(
             itemArray[index].W,
@@ -1300,7 +1303,7 @@ public static class Float64Vector4DUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Hexad<double> GetTupleWHexad(this IReadOnlyList<IFloat64Tuple4D> itemArray, int index)
+    public static Hexad<double> GetTupleWHexad(this IReadOnlyList<IFloat64Vector4D> itemArray, int index)
     {
         return new Hexad<double>(
             itemArray[index].W,
@@ -1313,7 +1316,7 @@ public static class Float64Vector4DUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Vector4D RotateToUnitVector(this IFloat64Tuple4D vector1, IFloat64Tuple4D unitVector, Float64PlanarAngle angle)
+    public static Float64Vector4D RotateToUnitVector(this IFloat64Vector4D vector1, IFloat64Vector4D unitVector, Float64PlanarAngle angle)
     {
         Debug.Assert(
             vector1.IsNearUnit() &&

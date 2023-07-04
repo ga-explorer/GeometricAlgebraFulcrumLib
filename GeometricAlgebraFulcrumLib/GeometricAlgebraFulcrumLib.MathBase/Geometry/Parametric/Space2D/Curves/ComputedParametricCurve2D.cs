@@ -3,6 +3,7 @@ using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders;
 using GeometricAlgebraFulcrumLib.MathBase.Geometry.Differential.Functions;
 using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space2D.Frames;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 using MathNet.Numerics;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space2D.Curves
@@ -28,27 +29,19 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space2D.Curves
             var xDtFunc = xFunc.GetDerivative1();
             var yDtFunc = yFunc.GetDerivative1();
             
-            return Create(t => new Float64Vector2D(
-                    xFunc.GetValue(t),
-                    yFunc.GetValue(t)
-                ),
-                t => new Float64Vector2D(
-                    xDtFunc.GetValue(t),
-                    yDtFunc.GetValue(t)
-                ));
+            return Create(t => Float64Vector2D.Create((Float64Scalar)xFunc.GetValue(t),
+                    (Float64Scalar)yFunc.GetValue(t)),
+                t => Float64Vector2D.Create((Float64Scalar)xDtFunc.GetValue(t),
+                    (Float64Scalar)yDtFunc.GetValue(t)));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ComputedParametricCurve2D Create(Func<double, double> xFunc, Func<double, double> yFunc)
         {
-            return Create(t => new Float64Vector2D(
-                    xFunc(t),
-                    yFunc(t)
-                ),
-                t => new Float64Vector2D(
-                    Differentiate.FirstDerivative(xFunc, t),
-                    Differentiate.FirstDerivative(yFunc, t)
-                ));
+            return Create(t => Float64Vector2D.Create((Float64Scalar)xFunc(t),
+                    (Float64Scalar)yFunc(t)),
+                t => Float64Vector2D.Create((Float64Scalar)Differentiate.FirstDerivative(xFunc, t),
+                    (Float64Scalar)Differentiate.FirstDerivative(yFunc, t)));
         }
 
 

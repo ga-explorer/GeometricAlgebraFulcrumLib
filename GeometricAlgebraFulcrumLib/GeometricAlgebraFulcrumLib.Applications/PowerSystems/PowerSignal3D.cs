@@ -10,6 +10,7 @@ using GeometricAlgebraFulcrumLib.MathBase.Geometry.Differential.Functions;
 using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric;
 using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Curves;
 using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Curves.Adaptive;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Frames.Space3D;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;

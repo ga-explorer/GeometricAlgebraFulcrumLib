@@ -3,6 +3,7 @@ using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Planes.Immutable;
 using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Triangles.Immutable;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Triangles
 {
@@ -11,35 +12,29 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Triangles
         #region Triangles in 2D
         public static Float64Vector2D GetPoint1(this ITriangle2D triangle)
         {
-            return new Float64Vector2D(triangle.Point1X, triangle.Point1Y);
+            return Float64Vector2D.Create((Float64Scalar)triangle.Point1X, (Float64Scalar)triangle.Point1Y);
         }
 
         public static Float64Vector2D GetPoint2(this ITriangle2D triangle)
         {
-            return new Float64Vector2D(triangle.Point2X, triangle.Point2Y);
+            return Float64Vector2D.Create((Float64Scalar)triangle.Point2X, (Float64Scalar)triangle.Point2Y);
         }
 
         public static Float64Vector2D GetPoint3(this ITriangle2D triangle)
         {
-            return new Float64Vector2D(triangle.Point3X, triangle.Point3Y);
+            return Float64Vector2D.Create((Float64Scalar)triangle.Point3X, (Float64Scalar)triangle.Point3Y);
         }
 
         public static Float64Vector2D[] GetEndPoints(this ITriangle2D lineSegment)
         {
             return new[]
             {
-                new Float64Vector2D(
-                    lineSegment.Point1X,
-                    lineSegment.Point1Y
-                ),
-                new Float64Vector2D(
-                    lineSegment.Point2X,
-                    lineSegment.Point2Y
-                ),
-                new Float64Vector2D(
-                    lineSegment.Point3X,
-                    lineSegment.Point3Y
-                )
+                Float64Vector2D.Create((Float64Scalar)lineSegment.Point1X,
+                    (Float64Scalar)lineSegment.Point1Y),
+                Float64Vector2D.Create((Float64Scalar)lineSegment.Point2X,
+                    (Float64Scalar)lineSegment.Point2Y),
+                Float64Vector2D.Create((Float64Scalar)lineSegment.Point3X,
+                    (Float64Scalar)lineSegment.Point3Y)
             };
         }
 
@@ -68,50 +63,38 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Triangles
 
         public static Float64Vector2D GetDirection12(this ITriangle2D triangle)
         {
-            return new Float64Vector2D(
-                triangle.Point2X - triangle.Point1X,
-                triangle.Point2Y - triangle.Point1Y
-            );
+            return Float64Vector2D.Create((Float64Scalar)(triangle.Point2X - triangle.Point1X),
+                (Float64Scalar)(triangle.Point2Y - triangle.Point1Y));
         }
 
         public static Float64Vector2D GetDirection21(this ITriangle2D triangle)
         {
-            return new Float64Vector2D(
-                triangle.Point1X - triangle.Point2X,
-                triangle.Point1Y - triangle.Point2Y
-            );
+            return Float64Vector2D.Create((Float64Scalar)(triangle.Point1X - triangle.Point2X),
+                (Float64Scalar)(triangle.Point1Y - triangle.Point2Y));
         }
 
         public static Float64Vector2D GetDirection23(this ITriangle2D triangle)
         {
-            return new Float64Vector2D(
-                triangle.Point3X - triangle.Point2X,
-                triangle.Point3Y - triangle.Point2Y
-            );
+            return Float64Vector2D.Create((Float64Scalar)(triangle.Point3X - triangle.Point2X),
+                (Float64Scalar)(triangle.Point3Y - triangle.Point2Y));
         }
 
         public static Float64Vector2D GetDirection32(this ITriangle2D triangle)
         {
-            return new Float64Vector2D(
-                triangle.Point2X - triangle.Point3X,
-                triangle.Point2Y - triangle.Point3Y
-            );
+            return Float64Vector2D.Create((Float64Scalar)(triangle.Point2X - triangle.Point3X),
+                (Float64Scalar)(triangle.Point2Y - triangle.Point3Y));
         }
 
         public static Float64Vector2D GetDirection31(this ITriangle2D triangle)
         {
-            return new Float64Vector2D(
-                triangle.Point1X - triangle.Point3X,
-                triangle.Point1Y - triangle.Point3Y
-            );
+            return Float64Vector2D.Create((Float64Scalar)(triangle.Point1X - triangle.Point3X),
+                (Float64Scalar)(triangle.Point1Y - triangle.Point3Y));
         }
 
         public static Float64Vector2D GetDirection13(this ITriangle2D triangle)
         {
-            return new Float64Vector2D(
-                triangle.Point3X - triangle.Point1X,
-                triangle.Point3Y - triangle.Point1Y
-            );
+            return Float64Vector2D.Create((Float64Scalar)(triangle.Point3X - triangle.Point1X),
+                (Float64Scalar)(triangle.Point3Y - triangle.Point1Y));
         }
 
         public static LineSegment2D GetLineSegment12(this ITriangle2D triangle)
@@ -295,26 +278,22 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Triangles
             var w2 = d2 * dInv;
             var w3 = d3 * dInv;
 
-            return new Float64Vector2D(
-                w1 * triangle.Point1X + w2 * triangle.Point2X + w3 * triangle.Point3X,
-                w1 * triangle.Point1Y + w2 * triangle.Point2Y + w3 * triangle.Point3Y
-            );
+            return Float64Vector2D.Create((Float64Scalar)(w1 * triangle.Point1X + w2 * triangle.Point2X + w3 * triangle.Point3X),
+                (Float64Scalar)(w1 * triangle.Point1Y + w2 * triangle.Point2Y + w3 * triangle.Point3Y));
         }
 
-        public static Float64Vector2D GetInnerPointAt(this ITriangle2D triangle, IFloat64Tuple3D dTuple)
+        public static Float64Vector2D GetInnerPointAt(this ITriangle2D triangle, IFloat64Vector3D dTuple)
         {
             var dInv = 1 / (dTuple.X + dTuple.Y + dTuple.Z);
             var w1 = dTuple.X * dInv;
             var w2 = dTuple.Y * dInv;
             var w3 = dTuple.Z * dInv;
 
-            return new Float64Vector2D(
-                w1 * triangle.Point1X + w2 * triangle.Point2X + w3 * triangle.Point3X,
-                w1 * triangle.Point1Y + w2 * triangle.Point2Y + w3 * triangle.Point3Y
-            );
+            return Float64Vector2D.Create(w1 * triangle.Point1X + w2 * triangle.Point2X + w3 * triangle.Point3X,
+                w1 * triangle.Point1Y + w2 * triangle.Point2Y + w3 * triangle.Point3Y);
         }
 
-        public static IEnumerable<Float64Vector2D> GetInnerPointsAt(this ITriangle2D triangle, IEnumerable<IFloat64Tuple3D> parametersList)
+        public static IEnumerable<Float64Vector2D> GetInnerPointsAt(this ITriangle2D triangle, IEnumerable<IFloat64Vector3D> parametersList)
         {
             return parametersList.Select(
                 p => triangle.GetInnerPointAt(p.X, p.Y, p.Z)
@@ -325,10 +304,8 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Triangles
         {
             var w3 = 1.0d - (w1 + w2);
 
-            return new Float64Vector2D(
-                w1 * triangle.Point1X + w2 * triangle.Point2X + w3 * triangle.Point3X,
-                w1 * triangle.Point1Y + w2 * triangle.Point2Y + w3 * triangle.Point3Y
-            );
+            return Float64Vector2D.Create((Float64Scalar)(w1 * triangle.Point1X + w2 * triangle.Point2X + w3 * triangle.Point3X),
+                (Float64Scalar)(w1 * triangle.Point1Y + w2 * triangle.Point2Y + w3 * triangle.Point3Y));
         }
 
         public static IEnumerable<Float64Vector2D> GetPointsAt(this ITriangle2D triangle, IEnumerable<Float64Vector2D> parametersList)

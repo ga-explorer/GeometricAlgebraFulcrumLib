@@ -1,4 +1,5 @@
 ﻿using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space2D.Frames;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
 

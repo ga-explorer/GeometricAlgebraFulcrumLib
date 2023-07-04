@@ -10,7 +10,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Structures.Vertices
         public Color Color { get; set; }
             = Color.Black;
 
-        public IFloat64Tuple2D TextureUv
+        public IFloat64Vector2D TextureUv
         {
             get => Float64Vector2D.Zero;
             set => throw new InvalidOperationException();
@@ -56,7 +56,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Structures.Vertices
             Color = color;
         }
 
-        public GraphicsNormalColorVertexData3D(Color color, IFloat64Tuple3D normal)
+        public GraphicsNormalColorVertexData3D(Color color, IFloat64Vector3D normal)
         {
             Color = color;
             Normal.Set(normal);
@@ -68,7 +68,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Structures.Vertices
         }
 
 
-        public Float64Vector3D GetDisplacedPoint(IFloat64Tuple3D point, double d)
+        public Float64Vector3D GetDisplacedPoint(IFloat64Vector3D point, double d)
         {
             return Float64Vector3D.Create(point.X + d * Normal.X,
                 point.Y + d * Normal.Y,

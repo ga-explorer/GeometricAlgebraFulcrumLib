@@ -13,7 +13,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Basic
     public sealed class GrVisualRightAngle3D :
         GrVisualCurveWithAnimation3D
     {
-        public static GrVisualRightAngle3D CreateStatic(string name, GrVisualCurveStyle3D style, IFloat64Tuple3D origin, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, double radius)
+        public static GrVisualRightAngle3D CreateStatic(string name, GrVisualCurveStyle3D style, IFloat64Vector3D origin, IFloat64Vector3D direction1, IFloat64Vector3D direction2, double radius)
         {
             return new GrVisualRightAngle3D(
                 name,
@@ -26,7 +26,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Basic
             );
         }
 
-        public static GrVisualRightAngle3D CreateStatic(string name, GrVisualCurveStyle3D style, GrVisualSurfaceThinStyle3D innerStyle, IFloat64Tuple3D origin, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, double radius)
+        public static GrVisualRightAngle3D CreateStatic(string name, GrVisualCurveStyle3D style, GrVisualSurfaceThinStyle3D innerStyle, IFloat64Vector3D origin, IFloat64Vector3D direction1, IFloat64Vector3D direction2, double radius)
         {
             return new GrVisualRightAngle3D(
                 name,
@@ -42,7 +42,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Basic
             };
         }
 
-        public static GrVisualRightAngle3D Create(string name, GrVisualCurveStyle3D style, IFloat64Tuple3D origin, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, double radius, GrVisualAnimationSpecs animationSpecs)
+        public static GrVisualRightAngle3D Create(string name, GrVisualCurveStyle3D style, IFloat64Vector3D origin, IFloat64Vector3D direction1, IFloat64Vector3D direction2, double radius, GrVisualAnimationSpecs animationSpecs)
         {
             return new GrVisualRightAngle3D(
                 name,
@@ -55,7 +55,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Basic
             );
         }
 
-        public static GrVisualRightAngle3D Create(string name, GrVisualCurveStyle3D style, GrVisualSurfaceThinStyle3D innerStyle, IFloat64Tuple3D origin, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, double radius, GrVisualAnimationSpecs animationSpecs)
+        public static GrVisualRightAngle3D Create(string name, GrVisualCurveStyle3D style, GrVisualSurfaceThinStyle3D innerStyle, IFloat64Vector3D origin, IFloat64Vector3D direction1, IFloat64Vector3D direction2, double radius, GrVisualAnimationSpecs animationSpecs)
         {
             return new GrVisualRightAngle3D(
                 name,
@@ -97,7 +97,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Basic
         public GrVisualSurfaceThinStyle3D? InnerStyle { get; set; }
 
 
-        private GrVisualRightAngle3D(string name, GrVisualCurveStyle3D style, IFloat64Tuple3D origin, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, double radius, GrVisualAnimationSpecs animationSpecs)
+        private GrVisualRightAngle3D(string name, GrVisualCurveStyle3D style, IFloat64Vector3D origin, IFloat64Vector3D direction1, IFloat64Vector3D direction2, double radius, GrVisualAnimationSpecs animationSpecs)
             : base(name, style, animationSpecs)
         {
             Origin = origin.ToVector3D();
@@ -128,7 +128,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Basic
         public override IPointsPath3D GetPositionsPath()
         {
             return new ArrayPointsPath3D(
-                GetArcPointsTriplet().GetItemArray().Cast<IFloat64Tuple3D>()
+                GetArcPointsTriplet().GetItemArray().Cast<IFloat64Vector3D>()
             );
         }
 

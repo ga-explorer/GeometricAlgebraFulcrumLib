@@ -1,12 +1,10 @@
 ﻿using System.Collections;
 using System.Runtime.CompilerServices;
-using DataStructuresLib.Random;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.Space3D.Reflection;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.Space3D.Rotation;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.Space3D.Composers
 {
@@ -45,9 +43,9 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.S
         {
             var composer = new LinFloat64RotationComposer3D();
             
-            var u = random.GetLinVector3D();
-            var v = random.GetLinVector3D();
-            var angle = random.GetAngle().RadiansToAngle();
+            var u = random.GetVector3D();
+            var v = random.GetVector3D();
+            var angle = random.GetAngle();
 
             composer.AppendRotation(
                 LinFloat64PlanarRotation3D.CreateFromSpanningVectors(u, v, angle)
@@ -125,7 +123,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.S
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinFloat64RotationComposer3D AppendRotation(IFloat64Tuple3D vector, IFloat64Tuple3D rotatedVector, bool useShortArc = true)
+        public LinFloat64RotationComposer3D AppendRotation(IFloat64Vector3D vector, IFloat64Vector3D rotatedVector, bool useShortArc = true)
         {
             return AppendRotation(
                 LinFloat64PlanarRotation3D.CreateFromRotatedVector(
@@ -137,7 +135,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.S
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinFloat64RotationComposer3D AppendRotation(IFloat64Tuple3D spanningVector1, IFloat64Tuple3D spanningVector2, Float64PlanarAngle rotationAngle)
+        public LinFloat64RotationComposer3D AppendRotation(IFloat64Vector3D spanningVector1, IFloat64Vector3D spanningVector2, Float64PlanarAngle rotationAngle)
         {
             return AppendRotation(
                 LinFloat64PlanarRotation3D.CreateFromSpanningVectors(
@@ -148,7 +146,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.S
             );
         }
         
-        public LinFloat64RotationComposer3D AppendBasisAlignmentRotation(IFloat64Tuple3D vector1, IFloat64Tuple3D vector2)
+        public LinFloat64RotationComposer3D AppendBasisAlignmentRotation(IFloat64Vector3D vector1, IFloat64Vector3D vector2)
         {
             var rotation1 = LinFloat64PlanarRotation3D.CreateFromRotatedVector(
                 vector1,
@@ -228,7 +226,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.S
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Float64Vector3D MapVector(IFloat64Tuple3D vector)
+        public override Float64Vector3D MapVector(IFloat64Vector3D vector)
         {
             return _rotationList.Aggregate(
                 vector.ToVector3D(), 

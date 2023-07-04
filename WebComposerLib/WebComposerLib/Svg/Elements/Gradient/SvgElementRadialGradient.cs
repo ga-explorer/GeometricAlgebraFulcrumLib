@@ -243,7 +243,7 @@ namespace WebComposerLib.Svg.Elements.Gradient
             return this;
         }
 
-        public SvgElementRadialGradient SetFocalCenter(double centerX, double centerY, SvgValueLengthUnit unit)
+        public SvgElementRadialGradient SetFocalCenter(double centerX, double centerY, SvgLengthUnit unit)
         {
             FocalCenterX.SetTo(centerX, unit);
             FocalCenterY.SetTo(centerY, unit);
@@ -259,7 +259,7 @@ namespace WebComposerLib.Svg.Elements.Gradient
             return this;
         }
 
-        public SvgElementRadialGradient SetLargestCircleCenter(double centerX, double centerY, SvgValueLengthUnit unit)
+        public SvgElementRadialGradient SetLargestCircleCenter(double centerX, double centerY, SvgLengthUnit unit)
         {
             CenterX.SetTo(centerX, unit);
             CenterY.SetTo(centerY, unit);
@@ -276,7 +276,7 @@ namespace WebComposerLib.Svg.Elements.Gradient
             return this;
         }
 
-        public SvgElementRadialGradient SetLargestCircle(double centerX, double centerY, double radius, SvgValueLengthUnit unit)
+        public SvgElementRadialGradient SetLargestCircle(double centerX, double centerY, double radius, SvgLengthUnit unit)
         {
             CenterX.SetTo(centerX, unit);
             CenterY.SetTo(centerY, unit);

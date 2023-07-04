@@ -230,7 +230,7 @@ namespace WebComposerLib.Svg.Elements.Gradient
             return this;
         }
 
-        public SvgElementLinearGradient SetStartPoint(double x1, double y1, SvgValueLengthUnit unit)
+        public SvgElementLinearGradient SetStartPoint(double x1, double y1, SvgLengthUnit unit)
         {
             StartPointX.SetTo(x1, unit);
             StartPointY.SetTo(y1, unit);
@@ -246,7 +246,7 @@ namespace WebComposerLib.Svg.Elements.Gradient
             return this;
         }
 
-        public SvgElementLinearGradient SetEndPoint(double x2, double y2, SvgValueLengthUnit unit)
+        public SvgElementLinearGradient SetEndPoint(double x2, double y2, SvgLengthUnit unit)
         {
             EndPointX.SetTo(x2, unit);
             EndPointY.SetTo(y2, unit);
@@ -264,7 +264,7 @@ namespace WebComposerLib.Svg.Elements.Gradient
             return this;
         }
 
-        public SvgElementLinearGradient SetGradientVector(double x1, double y1, double x2, double y2, SvgValueLengthUnit unit)
+        public SvgElementLinearGradient SetGradientVector(double x1, double y1, double x2, double y2, SvgLengthUnit unit)
         {
             StartPointX.SetTo(x1, unit);
             StartPointY.SetTo(y1, unit);

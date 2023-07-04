@@ -16,7 +16,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Transforms
             };
         }
 
-        public static XeoglTranslateTransform Create(IFloat64Tuple3D t)
+        public static XeoglTranslateTransform Create(IFloat64Vector3D t)
         {
             return new XeoglTranslateTransform()
             {
@@ -58,7 +58,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Transforms
             TranslateZ = tz;
         }
 
-        public XeoglTranslateTransform(IFloat64Tuple3D t)
+        public XeoglTranslateTransform(IFloat64Vector3D t)
         {
             TranslateX = t.X;
             TranslateY = t.Y;

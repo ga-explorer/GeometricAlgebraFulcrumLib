@@ -70,7 +70,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.Basic
                             _ => Float64Vector3D.E2
                         };
 
-                        var q = rotationAxis.AxisAngleToQuaternion(Math.PI);
+                        var q = rotationAxis.CreateQuaternion(Math.PI);
                         
                         composer
                             .AppendLineAtNewLine($"{axisName2} => new Tuple4D({q.ScalarI}, {q.ScalarJ}, {q.ScalarK}, {q.Scalar}),");
@@ -80,7 +80,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.Basic
                         var v3 = axisVector1.VectorCross(axisVector2);
                         var rotationAxis = Float64Vector3D.Create(v3.X, v3.Y, v3.Z);
 
-                        var q = rotationAxis.AxisAngleToQuaternion(Math.PI / 2);
+                        var q = rotationAxis.CreateQuaternion(Math.PI / 2);
 
                         composer
                             .AppendLineAtNewLine($"{axisName2} => new Tuple4D({q.ScalarI}, {q.ScalarJ}, {q.ScalarK}, {q.Scalar}),");
@@ -169,7 +169,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.Basic
                 var (u, a) = 
                     axisVector.CreateVectorToVectorRotationAxisAngle(vector);
 
-                var q = u.AxisAngleToQuaternion(a);
+                var q = u.CreateQuaternion(a);
                 
                 if ((quaternion - q).IsNearZero()) 
                     continue;
@@ -229,7 +229,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.Basic
                     var (u, a) = 
                         axisVector.CreateVectorToVectorRotationAxisAngle(vector);
 
-                    var q = u.AxisAngleToQuaternion(a);
+                    var q = u.CreateQuaternion(a);
 
                     var v1 = quaternion.RotateVector(axis);
                     var v2 = q.RotateVector(axis);

@@ -9,11 +9,11 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D
     {
         bool SwapsHandedness { get; }
         
-        Float64Vector3D MapPoint(IFloat64Tuple3D point);
+        Float64Vector3D MapPoint(IFloat64Vector3D point);
 
-        Float64Vector3D MapVector(IFloat64Tuple3D vector);
+        Float64Vector3D MapVector(IFloat64Vector3D vector);
 
-        Float64Vector3D MapNormal(IFloat64Tuple3D normal);
+        Float64Vector3D MapNormal(IFloat64Vector3D normal);
 
         SquareMatrix4 GetSquareMatrix4();
 

@@ -38,7 +38,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Structures.Faces
         {
         }
 
-        public GraphicsNormalFaceData3D(IFloat64Tuple3D normal)
+        public GraphicsNormalFaceData3D(IFloat64Vector3D normal)
         {
             Normal.Set(normal);
         }

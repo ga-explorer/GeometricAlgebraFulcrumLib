@@ -8,7 +8,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.SubSpaces.Sp
         ILinFloat64Subspace4D
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static LinFloat64PlaneSubspace4D CreateFromVectors(IFloat64Tuple4D vector1, IFloat64Tuple4D vector2)
+        public static LinFloat64PlaneSubspace4D CreateFromVectors(IFloat64Vector4D vector1, IFloat64Vector4D vector2)
         {
             var u = vector1.ToUnitVector();
             var v = vector2.RejectOnUnitVector(u).ToUnitVector();
@@ -18,7 +18,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.SubSpaces.Sp
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static LinFloat64PlaneSubspace4D CreateFromUnitVectors(IFloat64Tuple4D vector1, IFloat64Tuple4D vector2)
+        public static LinFloat64PlaneSubspace4D CreateFromUnitVectors(IFloat64Vector4D vector1, IFloat64Vector4D vector2)
         {
             return new LinFloat64PlaneSubspace4D(
                 vector1.ToTuple4D(),
@@ -27,7 +27,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.SubSpaces.Sp
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static LinFloat64PlaneSubspace4D CreateFromOrthogonalVectors(IFloat64Tuple4D vector1, IFloat64Tuple4D vector2)
+        public static LinFloat64PlaneSubspace4D CreateFromOrthogonalVectors(IFloat64Vector4D vector1, IFloat64Vector4D vector2)
         {
             return new LinFloat64PlaneSubspace4D(
                 vector1.ToUnitVector(),
@@ -36,7 +36,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.SubSpaces.Sp
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static LinFloat64PlaneSubspace4D CreateFromOrthonormalVectors(IFloat64Tuple4D vector1, IFloat64Tuple4D vector2)
+        public static LinFloat64PlaneSubspace4D CreateFromOrthonormalVectors(IFloat64Vector4D vector1, IFloat64Vector4D vector2)
         {
             return new LinFloat64PlaneSubspace4D(
                 vector1.ToTuple4D(),
@@ -77,7 +77,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.SubSpaces.Sp
         }
 
 
-        public bool NearContains(IFloat64Tuple4D vector, double epsilon = 1E-12D)
+        public bool NearContains(IFloat64Vector4D vector, double epsilon = 1E-12D)
         {
             if (vector.IsNearZero(epsilon))
                 return true;

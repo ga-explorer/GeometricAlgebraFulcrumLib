@@ -682,10 +682,8 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Float64Vector2D GetVectorPartAsTuple2D(this RGaMultivector<double> mv)
         {
-            return new Float64Vector2D(
-                mv.GetTermScalar(1).ScalarValue,
-                mv.GetTermScalar(2).ScalarValue
-            );
+            return Float64Vector2D.Create((Float64Scalar)mv.GetTermScalar(1).ScalarValue,
+                (Float64Scalar)mv.GetTermScalar(2).ScalarValue);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -699,12 +697,10 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Generi
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Float64Vector4D GetVectorPartAsTuple4D(this RGaMultivector<double> mv)
         {
-            return new Float64Vector4D(
-                mv.GetTermScalar(1).ScalarValue,
+            return Float64Vector4D.Create(mv.GetTermScalar(1).ScalarValue,
                 mv.GetTermScalar(2).ScalarValue,
                 mv.GetTermScalar(4).ScalarValue,
-                mv.GetTermScalar(8).ScalarValue
-            );
+                mv.GetTermScalar(8).ScalarValue);
         }
 
         

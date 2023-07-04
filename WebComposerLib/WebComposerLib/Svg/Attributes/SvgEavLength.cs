@@ -18,13 +18,13 @@ namespace WebComposerLib.Svg.Attributes
             }
         }
 
-        private SvgValueLengthUnit _unit = SvgValueLengthUnit.None;
-        public SvgValueLengthUnit Unit
+        private SvgLengthUnit _unit = SvgLengthUnit.None;
+        public SvgLengthUnit Unit
         {
             get => _unit;
             set
             {
-                _unit = value ?? SvgValueLengthUnit.None;
+                _unit = value ?? SvgLengthUnit.None;
                 IsValueComputed = true;
             }
         }
@@ -52,12 +52,12 @@ namespace WebComposerLib.Svg.Attributes
         public TParentElement SetTo(double length)
         {
             Length = length;
-            Unit = SvgValueLengthUnit.None;
+            Unit = SvgLengthUnit.None;
 
             return ParentElement;
         }
 
-        public TParentElement SetTo(double length, SvgValueLengthUnit unit)
+        public TParentElement SetTo(double length, SvgLengthUnit unit)
         {
             Length = length;
             Unit = unit;

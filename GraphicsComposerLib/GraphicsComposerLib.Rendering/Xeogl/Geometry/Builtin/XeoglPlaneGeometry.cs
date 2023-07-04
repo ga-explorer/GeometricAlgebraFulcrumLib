@@ -34,7 +34,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Builtin
             };
         }
 
-        public static XeoglPlaneGeometry Create(IFloat64Tuple2D size, int segments)
+        public static XeoglPlaneGeometry Create(IFloat64Vector2D size, int segments)
         {
             return new XeoglPlaneGeometry()
             {
@@ -45,7 +45,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Builtin
             };
         }
 
-        public static XeoglPlaneGeometry Create(IFloat64Tuple2D size, int xSegments, int zSegments)
+        public static XeoglPlaneGeometry Create(IFloat64Vector2D size, int xSegments, int zSegments)
         {
             return new XeoglPlaneGeometry()
             {
@@ -56,7 +56,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Builtin
             };
         }
 
-        public static XeoglPlaneGeometry Create(IFloat64Tuple3D center, double size, int segments)
+        public static XeoglPlaneGeometry Create(IFloat64Vector3D center, double size, int segments)
         {
             return new XeoglPlaneGeometry(center)
             {
@@ -67,7 +67,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Builtin
             };
         }
 
-        public static XeoglPlaneGeometry Create(IFloat64Tuple3D center, double size, int xSegments, int zSegments)
+        public static XeoglPlaneGeometry Create(IFloat64Vector3D center, double size, int xSegments, int zSegments)
         {
             return new XeoglPlaneGeometry(center)
             {
@@ -78,7 +78,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Builtin
             };
         }
 
-        public static XeoglPlaneGeometry Create(IFloat64Tuple3D center, IFloat64Tuple2D size, int segments)
+        public static XeoglPlaneGeometry Create(IFloat64Vector3D center, IFloat64Vector2D size, int segments)
         {
             return new XeoglPlaneGeometry(center)
             {
@@ -89,7 +89,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Builtin
             };
         }
 
-        public static XeoglPlaneGeometry Create(IFloat64Tuple3D center, IFloat64Tuple2D size, int xSegments, int zSegments)
+        public static XeoglPlaneGeometry Create(IFloat64Vector3D center, IFloat64Vector2D size, int xSegments, int zSegments)
         {
             return new XeoglPlaneGeometry(center)
             {
@@ -119,7 +119,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Builtin
         {
         }
 
-        public XeoglPlaneGeometry(IFloat64Tuple3D center)
+        public XeoglPlaneGeometry(IFloat64Vector3D center)
         {
             Center.SetVector(center);
         }

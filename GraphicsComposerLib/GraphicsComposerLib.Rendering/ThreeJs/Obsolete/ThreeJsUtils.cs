@@ -6,7 +6,7 @@ namespace GraphicsComposerLib.Rendering.ThreeJs.Obsolete
 {
     public static class ThreeJsUtils
     {
-        public static JavaScriptAttributesDictionary SetThreeJsVector3Value(this JavaScriptAttributesDictionary composer, string key, IFloat64Tuple3D value)
+        public static JavaScriptAttributesDictionary SetThreeJsVector3Value(this JavaScriptAttributesDictionary composer, string key, IFloat64Vector3D value)
         {
             composer.SetTextValue(
                 key, 
@@ -16,7 +16,7 @@ namespace GraphicsComposerLib.Rendering.ThreeJs.Obsolete
             return composer;
         }
 
-        public static JavaScriptAttributesDictionary SetThreeJsVector3Value(this JavaScriptAttributesDictionary composer, string key, IFloat64Tuple3D value, IFloat64Tuple3D valueDefault)
+        public static JavaScriptAttributesDictionary SetThreeJsVector3Value(this JavaScriptAttributesDictionary composer, string key, IFloat64Vector3D value, IFloat64Vector3D valueDefault)
         {
             composer.SetTextValue(
                 key, 
@@ -28,7 +28,7 @@ namespace GraphicsComposerLib.Rendering.ThreeJs.Obsolete
         }
 
 
-        public static TjVector3 ToThreeJsVector3(this IFloat64Tuple3D value)
+        public static TjVector3 ToThreeJsVector3(this IFloat64Vector3D value)
         {
             return value is TjVector3 v ? v : new TjVector3(value);
         }

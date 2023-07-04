@@ -28,7 +28,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Curves
             Visibility
         );
 
-        public static GrVisualCircleArcCurve3D CreateStatic(string name, GrVisualCurveStyle3D style, IFloat64Tuple3D center, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, double radius, Float64PlanarAngle angle)
+        public static GrVisualCircleArcCurve3D CreateStatic(string name, GrVisualCurveStyle3D style, IFloat64Vector3D center, IFloat64Vector3D direction1, IFloat64Vector3D direction2, double radius, Float64PlanarAngle angle)
         {
             return new GrVisualCircleArcCurve3D(
                 name,
@@ -42,7 +42,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Curves
             );
         }
 
-        public static GrVisualCircleArcCurve3D CreateStatic(string name, GrVisualCurveStyle3D style, IFloat64Tuple3D center, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, double radius, bool innerArc)
+        public static GrVisualCircleArcCurve3D CreateStatic(string name, GrVisualCurveStyle3D style, IFloat64Vector3D center, IFloat64Vector3D direction1, IFloat64Vector3D direction2, double radius, bool innerArc)
         {
             var angle =
                 direction1.GetAngle(direction2).Radians.ClampAngleInRadians();
@@ -66,7 +66,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Curves
                     radius, GrVisualAnimationSpecs.Static);
         }
 
-        public static GrVisualCircleArcCurve3D Create(string name, GrVisualCurveStyle3D style, IFloat64Tuple3D center, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, double angle, double radius, GrVisualAnimationSpecs animationSpecs)
+        public static GrVisualCircleArcCurve3D Create(string name, GrVisualCurveStyle3D style, IFloat64Vector3D center, IFloat64Vector3D direction1, IFloat64Vector3D direction2, double angle, double radius, GrVisualAnimationSpecs animationSpecs)
         {
             return new GrVisualCircleArcCurve3D(
                 name,
@@ -117,7 +117,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Curves
         /// <summary>
         /// The center of the circular arc
         /// </summary>
-        public IFloat64Tuple3D Center { get; }
+        public IFloat64Vector3D Center { get; }
 
         /// <summary>
         /// The unit direction from the center where the arc starts
@@ -172,7 +172,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Curves
         public GrVisualAnimatedVector1D? AnimatedRadius { get; set; }
 
 
-        private GrVisualCircleArcCurve3D(string name, GrVisualCurveStyle3D style, IFloat64Tuple3D center, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, double angle, double radius, GrVisualAnimationSpecs animationSpecs)
+        private GrVisualCircleArcCurve3D(string name, GrVisualCurveStyle3D style, IFloat64Vector3D center, IFloat64Vector3D direction1, IFloat64Vector3D direction2, double angle, double radius, GrVisualAnimationSpecs animationSpecs)
             : base(name, style, animationSpecs)
         {
             Center = center;

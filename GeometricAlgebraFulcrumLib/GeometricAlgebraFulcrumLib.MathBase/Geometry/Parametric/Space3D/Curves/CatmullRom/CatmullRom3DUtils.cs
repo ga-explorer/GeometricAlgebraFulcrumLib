@@ -16,7 +16,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Curves
         /// <param name="tQuad">An array of time measures of length 4, corresponding to each p value.</param>
         /// <param name="t">the actual interpolation ratio from 0 to 1 representing the position between p1 and p2 to interpolate the value.</param>
         /// <returns>The interpolated value</returns>
-        public static Float64Vector3D GetCatmullRomValue(this double t, Quad<double> tQuad, Quad<IFloat64Tuple3D> pQuad)
+        public static Float64Vector3D GetCatmullRomValue(this double t, Quad<double> tQuad, Quad<IFloat64Vector3D> pQuad)
         {
             var (t0, t1, t2, t3) = tQuad;
             var (p0, p1, p2, p3) =
@@ -48,7 +48,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Curves
             return p3210;
         }
         
-        public static Float64Vector3D GetCatmullRomDerivativeValue(this double t, Quad<double> tQuad, Quad<IFloat64Tuple3D> pQuad)
+        public static Float64Vector3D GetCatmullRomDerivativeValue(this double t, Quad<double> tQuad, Quad<IFloat64Vector3D> pQuad)
         {
             var (t0, t1, t2, t3) = tQuad;
             var (p0, p1, p2, p3) =
@@ -89,7 +89,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Curves
             return dp3210;
         }
         
-        public static Float64Vector3D GetCatmullRomDerivative2Value(this double t, Quad<double> tQuad, Quad<IFloat64Tuple3D> pQuad)
+        public static Float64Vector3D GetCatmullRomDerivative2Value(this double t, Quad<double> tQuad, Quad<IFloat64Vector3D> pQuad)
         {
             var (t0, t1, t2, t3) = tQuad;
             var (p0, p1, p2, p3) =

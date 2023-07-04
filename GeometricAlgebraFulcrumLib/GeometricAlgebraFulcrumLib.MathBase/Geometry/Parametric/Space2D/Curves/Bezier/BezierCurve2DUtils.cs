@@ -1,6 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 using DataStructuresLib.Basic;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space2D.Curves.Bezier
 {
@@ -107,17 +108,15 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space2D.Curves
 
         public static Float64Vector2D DeCasteljau(this double t, Float64Vector2D p0)
         {
-            return new Float64Vector2D(p0);
+            return Float64Vector2D.Create(p0);
         }
 
         public static Float64Vector2D DeCasteljau(this double t, Float64Vector2D p0, Float64Vector2D p1)
         {
             var s = 1.0d - t;
 
-            return new Float64Vector2D(
-                s * p0.X + t * p1.X,
-                s * p0.Y + t * p1.Y
-            );
+            return Float64Vector2D.Create(s * p0.X + t * p1.X,
+                s * p0.Y + t * p1.Y);
         }
 
         public static Float64Vector2D DeCasteljau(this double t, Float64Vector2D p0, Float64Vector2D p1, Float64Vector2D p2)
@@ -131,10 +130,8 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space2D.Curves
             var x1 = s * p1.X + t * p2.X;
             var y1 = s * p1.Y + t * p2.Y;
             
-            return new Float64Vector2D(
-                s * x0 + t * x1,
-                s * y0 + t * y1
-            );
+            return Float64Vector2D.Create(s * x0 + t * x1,
+                s * y0 + t * y1);
         }
 
         public static Float64Vector2D DeCasteljau(this double t, Float64Vector2D p0, Float64Vector2D p1, Float64Vector2D p2, Float64Vector2D p3)
@@ -157,10 +154,8 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space2D.Curves
             x1 = s * x1 + t * x2;
             y1 = s * y1 + t * y2;
             
-            return new Float64Vector2D(
-                s * x0 + t * x1,
-                s * y0 + t * y1
-            );
+            return Float64Vector2D.Create(s * x0 + t * x1,
+                s * y0 + t * y1);
         }
 
         public static Float64Vector2D DeCasteljau(this double t, params Float64Vector2D[] pointsList)
@@ -168,7 +163,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space2D.Curves
             var pointsCount = pointsList.Length;
 
             if (pointsCount == 1)
-                return new Float64Vector2D(pointsList[0]);
+                return Float64Vector2D.Create(pointsList[0]);
 
             if (pointsCount == 2)
                 return t.Lerp(pointsList[0], pointsList[1]);
@@ -206,10 +201,8 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space2D.Curves
             }
 
             //Only two points remain; interpolate them at t
-            return new Float64Vector2D(
-                s * xList[0] + t * xList[1],
-                s * yList[0] + t * yList[1]
-            );
+            return Float64Vector2D.Create((Float64Scalar)(s * xList[0] + t * xList[1]),
+                (Float64Scalar)(s * yList[0] + t * yList[1]));
         }
     }
 }

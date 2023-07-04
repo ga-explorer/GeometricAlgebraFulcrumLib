@@ -28,7 +28,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.LatticeShapes.Surfaces
         public IEnumerable<IGraphicsVertex3D> GeometryVertices 
             => LatticeSurfaceList.VertexList;
 
-        public IEnumerable<IFloat64Tuple3D> GeometryPoints 
+        public IEnumerable<IFloat64Vector3D> GeometryPoints 
             => LatticeSurfaceList.VertexList;
 
         public int Count 
@@ -45,19 +45,19 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.LatticeShapes.Surfaces
             }
         }
 
-        public IEnumerable<Triplet<IFloat64Tuple3D>> TriangleVertexPoints
+        public IEnumerable<Triplet<IFloat64Vector3D>> TriangleVertexPoints
             => LatticeSurfaceList.TriangleVerticesList.Select(t => 
-                new Triplet<IFloat64Tuple3D>(t.Item1, t.Item2, t.Item3)
+                new Triplet<IFloat64Vector3D>(t.Item1, t.Item2, t.Item3)
             );
 
         public IEnumerable<Triplet<int>> TriangleVertexIndices 
             => LatticeSurfaceList.TriangleVertexIndices;
 
-        public IEnumerable<IFloat64Tuple3D> VertexNormals
+        public IEnumerable<IFloat64Vector3D> VertexNormals
             => LatticeSurfaceList.VertexList.Select(v => v.Normal);
         
-        public IEnumerable<IFloat64Tuple2D> VertexTextureUVs 
-            => LatticeSurfaceList.VertexList.Select(v => v.ParameterValue.ToLinVector2D());
+        public IEnumerable<IFloat64Vector2D> VertexTextureUVs 
+            => LatticeSurfaceList.VertexList.Select(v => v.ParameterValue.ToVector2D());
         
         public IEnumerable<Color> VertexColors 
             => LatticeSurfaceList.VertexList.Select(v => v.Color);
@@ -81,7 +81,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.LatticeShapes.Surfaces
         }
 
 
-        public IFloat64Tuple3D GetGeometryPoint(int index)
+        public IFloat64Vector3D GetGeometryPoint(int index)
         {
             return LatticeSurfaceList[index];
         }

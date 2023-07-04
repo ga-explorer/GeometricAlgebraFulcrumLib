@@ -31,14 +31,14 @@ namespace NumericalGeometryLib.Computers.Voronoi
         public IEnumerable<VoronoiEdge2D> BoundingTriangleEdges => BoundingTriangle.Edges;
 
 
-        public VoronoiPointsList(IEnumerable<IFloat64Tuple2D> pointsList)
+        public VoronoiPointsList(IEnumerable<IFloat64Vector2D> pointsList)
         {
             _pointsList.AddRange(
-                pointsList.Select(p => p.ToLinVector2D())
+                pointsList.Select(p => p.ToVector2D())
             );
 
             BoundingSphere = BoundingSphere2D.CreateFromPoints(
-                _pointsList.Cast<IFloat64Tuple2D>(), 
+                _pointsList.Cast<IFloat64Vector2D>(), 
                 1
             );
 
@@ -55,22 +55,16 @@ namespace NumericalGeometryLib.Computers.Voronoi
             var halfSideLength = 
                 radius / Math.Tan(Math.PI / 6);
 
-            var point1 = new Float64Vector2D(
-                centerX - halfSideLength,
-                centerY - radius
-            );
+            var point1 = Float64Vector2D.Create(centerX - halfSideLength,
+                centerY - radius);
 
-            var point2 = new Float64Vector2D(
-                centerX + halfSideLength,
-                centerY - radius
-            );
+            var point2 = Float64Vector2D.Create(centerX + halfSideLength,
+                centerY - radius);
 
             var d = point1.GetDistanceToPoint(centerX, centerY);
 
-            var point3 = new Float64Vector2D(
-                centerX, 
-                centerY + d
-            );
+            var point3 = Float64Vector2D.Create(centerX, 
+                centerY + d);
 
             var pointIndex1 = _pointsList.Count;
             var pointIndex2 = pointIndex1 + 1;

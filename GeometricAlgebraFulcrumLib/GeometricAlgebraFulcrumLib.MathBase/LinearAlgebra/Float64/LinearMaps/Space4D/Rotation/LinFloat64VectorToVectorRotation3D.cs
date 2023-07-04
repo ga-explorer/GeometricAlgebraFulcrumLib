@@ -21,7 +21,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.S
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static LinFloat64VectorToVectorRotation4D CreateIdentity(IFloat64Tuple4D sourceVector)
+        public static LinFloat64VectorToVectorRotation4D CreateIdentity(IFloat64Vector4D sourceVector)
         {
             return new LinFloat64VectorToVectorRotation4D(
                 sourceVector.ToTuple4D(), 
@@ -30,7 +30,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.S
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static LinFloat64VectorToVectorRotation4D Create(IFloat64Tuple4D sourceVector, IFloat64Tuple4D targetVector)
+        public static LinFloat64VectorToVectorRotation4D Create(IFloat64Vector4D sourceVector, IFloat64Vector4D targetVector)
         {
             return new LinFloat64VectorToVectorRotation4D(
                 sourceVector.ToTuple4D(), 
@@ -191,7 +191,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.S
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Float64Vector4D MapVector(IFloat64Tuple4D vector)
+        public override Float64Vector4D MapVector(IFloat64Vector4D vector)
         {
             //var r = vector.ESp(TargetOrthogonalVector);
             //var s = vector.ESp(SourceVector);

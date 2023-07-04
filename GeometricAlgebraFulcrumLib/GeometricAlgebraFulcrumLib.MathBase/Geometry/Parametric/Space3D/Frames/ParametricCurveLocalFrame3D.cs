@@ -32,7 +32,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Frames
         /// <param name="point"></param>
         /// <param name="tangentVector"></param>
         /// <returns></returns>
-        public static ParametricCurveLocalFrame3D Create(double parameterValue, IFloat64Tuple3D point, IFloat64Tuple3D tangentVector)
+        public static ParametricCurveLocalFrame3D Create(double parameterValue, IFloat64Vector3D point, IFloat64Vector3D tangentVector)
         {
             var tangent = 
                 tangentVector.ToUnitVector();
@@ -49,7 +49,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Frames
             );
         }
 
-        public static ParametricCurveLocalFrame3D Create(double parameterValue, IFloat64Tuple3D point, IFloat64Tuple3D tangent, IFloat64Tuple3D normal1, IFloat64Tuple3D normal2)
+        public static ParametricCurveLocalFrame3D Create(double parameterValue, IFloat64Vector3D point, IFloat64Vector3D tangent, IFloat64Vector3D normal1, IFloat64Vector3D normal2)
         {
             return new ParametricCurveLocalFrame3D(
                 parameterValue,
@@ -114,7 +114,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Frames
         public Float64Vector3D Tangent { get; }
 
 
-        private ParametricCurveLocalFrame3D(double parameterValue, IFloat64Tuple3D point, IFloat64Tuple3D tangent, IFloat64Tuple3D normal1, IFloat64Tuple3D normal2)
+        private ParametricCurveLocalFrame3D(double parameterValue, IFloat64Vector3D point, IFloat64Vector3D tangent, IFloat64Vector3D normal1, IFloat64Vector3D normal2)
         {
             ParameterValue = parameterValue;
             Point = point.ToVector3D();
@@ -152,7 +152,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Frames
             return isValid;
         }
 
-        internal ParametricCurveLocalFrame3D UpdateNormals(IFloat64Tuple3D normal1, IFloat64Tuple3D normal2)
+        internal ParametricCurveLocalFrame3D UpdateNormals(IFloat64Vector3D normal1, IFloat64Vector3D normal2)
         {
             Normal1.Set(normal1);
             Normal2.Set(normal2);
@@ -162,7 +162,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Frames
             return this;
         }
 
-        public ParametricCurveLocalFrame3D SetFrenetNormals(IFloat64Tuple3D secondDerivativeVector)
+        public ParametricCurveLocalFrame3D SetFrenetNormals(IFloat64Vector3D secondDerivativeVector)
         {
             var normal1 = secondDerivativeVector.VectorCross(Tangent).ToUnitVector();
             var normal2 = Tangent.VectorCross(normal1);
@@ -241,7 +241,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Frames
             return maxAngle;
         }
 
-        public Triplet<Float64Vector3D> RotateDirectionsByTangent(IFloat64Tuple3D newTangent)
+        public Triplet<Float64Vector3D> RotateDirectionsByTangent(IFloat64Vector3D newTangent)
         {
             var matrix =
                 SquareMatrix3.CreateVectorToVectorRotationMatrix3D(Tangent, newTangent);
@@ -443,7 +443,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Frames
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Pair<Float64Vector3D> RotateNormalsByTangent(IFloat64Tuple3D newTangent)
+        public Pair<Float64Vector3D> RotateNormalsByTangent(IFloat64Vector3D newTangent)
         {
             var matrix =
                 SquareMatrix3.CreateVectorToVectorRotationMatrix3D(Tangent, newTangent);
@@ -464,13 +464,13 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Frames
                 ParameterValue,
                 Point,
                 Tangent,
-                Normal1.RotateUsingAxisAngle(Tangent, angle),
-                Normal2.RotateUsingAxisAngle(Tangent, angle)
+                Normal1.RotateUsing(Tangent, angle),
+                Normal2.RotateUsing(Tangent, angle)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ParametricCurveLocalFrame3D TranslateBy(IFloat64Tuple3D translationVector)
+        public ParametricCurveLocalFrame3D TranslateBy(IFloat64Vector3D translationVector)
         {
             Debug.Assert(translationVector.IsValid());
 
@@ -486,7 +486,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Frames
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ParametricCurveLocalFrame3D TranslateRotateNormalsBy(IFloat64Tuple3D translationVector, Float64PlanarAngle angle)
+        public ParametricCurveLocalFrame3D TranslateRotateNormalsBy(IFloat64Vector3D translationVector, Float64PlanarAngle angle)
         {
             Debug.Assert(translationVector.IsValid());
 
@@ -496,8 +496,8 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Frames
                     Point.Y + translationVector.Y,
                     Point.Z + translationVector.Z),
                 Tangent,
-                Normal1.RotateUsingAxisAngle(Tangent, angle),
-                Normal2.RotateUsingAxisAngle(Tangent, angle)
+                Normal1.RotateUsing(Tangent, angle),
+                Normal2.RotateUsing(Tangent, angle)
             );
         }
 
@@ -520,9 +520,9 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Frames
             return new ParametricCurveLocalFrame3D(
                 ParameterValue,
                 Point,
-                Tangent.RotateUsingQuaternion(quaternion),
-                Normal1.RotateUsingQuaternion(quaternion),
-                Normal2.RotateUsingQuaternion(quaternion)
+                Tangent.RotateUsing(quaternion),
+                Normal1.RotateUsing(quaternion),
+                Normal2.RotateUsing(quaternion)
             );
         }
 

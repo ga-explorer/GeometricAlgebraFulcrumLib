@@ -2,7 +2,6 @@
 using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric;
 using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Curves;
 using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Curves.Adaptive;
-using GeometricAlgebraFulcrumLib.MathBase.Graphics.SdfShapes;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
@@ -14,7 +13,7 @@ namespace GraphicsComposerLib.Rendering.Colors
         {
             var curve = 
                 colorArray
-                    .Select(c => c.ToTuple3D())
+                    .Select(c => c.RgbToVector3D())
                     .CreateCatmullRomSpline3D(
                         CatmullRomSplineType.Centripetal, 
                         false
@@ -33,7 +32,7 @@ namespace GraphicsComposerLib.Rendering.Colors
                     256, 
                     false
                 ).Select(k => 
-                    curve.GetPoint(curve.LengthToParameter(k)).ToColor()
+                    curve.GetPoint(curve.LengthToParameter(k)).ToRgbColor()
                 ).ToImmutableArray();
 
             return new GrColorCurve(colorList);
@@ -63,10 +62,10 @@ namespace GraphicsComposerLib.Rendering.Colors
             var index1 = (int) x.IntegerPart();
             var index2 = index1 + 1;
 
-            var c1 = ColorList[index1].ToTuple3D();
-            var c2 = ColorList[index2].ToTuple3D();
+            var c1 = ColorList[index1].RgbToVector3D();
+            var c2 = ColorList[index2].RgbToVector3D();
 
-            return (x - x.IntegerPart()).Lerp(c1, c2).ToColor();
+            return (x - x.IntegerPart()).Lerp(c1, c2).ToRgbColor();
         }
     }
 }

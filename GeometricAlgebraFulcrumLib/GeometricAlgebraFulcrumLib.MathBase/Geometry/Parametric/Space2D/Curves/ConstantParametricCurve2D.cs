@@ -10,7 +10,7 @@ public class ConstantParametricCurve2D :
     IParametricCurve2D
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ConstantParametricCurve2D Create(IFloat64Tuple2D point)
+    public static ConstantParametricCurve2D Create(IFloat64Vector2D point)
     {
         return new ConstantParametricCurve2D(
             point,
@@ -19,7 +19,7 @@ public class ConstantParametricCurve2D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ConstantParametricCurve2D Create(IFloat64Tuple2D point, IFloat64Tuple2D tangent)
+    public static ConstantParametricCurve2D Create(IFloat64Vector2D point, IFloat64Vector2D tangent)
     {
         return new ConstantParametricCurve2D(
             point,
@@ -37,10 +37,10 @@ public class ConstantParametricCurve2D :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private ConstantParametricCurve2D(IFloat64Tuple2D point, IFloat64Tuple2D tangent)
+    private ConstantParametricCurve2D(IFloat64Vector2D point, IFloat64Vector2D tangent)
     {
-        Point = point.ToLinVector2D();
-        Tangent = tangent.ToLinVector2D();
+        Point = point.ToVector2D();
+        Tangent = tangent.ToVector2D();
 
         Debug.Assert(IsValid());
     }

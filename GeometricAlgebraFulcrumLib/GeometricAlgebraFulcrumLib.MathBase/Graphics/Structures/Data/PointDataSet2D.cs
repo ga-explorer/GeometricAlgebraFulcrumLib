@@ -67,7 +67,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Structures.Data
         }
         
         public IEnumerable<Float64Vector2D> Points
-            => _pointDataList.Select(p => new Float64Vector2D(p.X, p.Y));
+            => _pointDataList.Select(p => Float64Vector2D.Create(p.X, p.Y));
 
         public PointDataSet2D()
         {
@@ -336,7 +336,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Structures.Data
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Float64Vector2D GetPoint(int index)
         {
-            return _pointDataList[index].ToLinVector2D();
+            return _pointDataList[index].ToVector2D();
         }
 
 

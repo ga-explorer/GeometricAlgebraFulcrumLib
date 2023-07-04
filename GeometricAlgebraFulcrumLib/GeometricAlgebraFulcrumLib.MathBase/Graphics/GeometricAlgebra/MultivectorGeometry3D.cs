@@ -2,13 +2,14 @@
 using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines;
 using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines.Immutable;
 using GeometricAlgebraFulcrumLib.MathBase.Graphics.ParametricShapes.Volumes;
-using GeometricAlgebraFulcrumLib.MathBase.Graphics.SdfShapes;
+using GeometricAlgebraFulcrumLib.MathBase.Graphics.SdfGeometry;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.GeometricAlgebra
 {
-    public abstract class MultivectorGeometry3D
-        : ISdfGeometry3D, IReadOnlyList<double>
+    public abstract class MultivectorGeometry3D : 
+        ISdfGeometry3D, 
+        IReadOnlyList<double>
     {
     
         private double _distanceDeltaInv = 1 << 13;
@@ -58,9 +59,9 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.GeometricAlgebra
         }
 
 
-        protected abstract double ComputeSdfOpns(IFloat64Tuple3D point);
+        protected abstract double ComputeSdfOpns(IFloat64Vector3D point);
 
-        protected abstract double ComputeSdfIpns(IFloat64Tuple3D point);
+        protected abstract double ComputeSdfIpns(IFloat64Vector3D point);
 
 
         protected double CorrectSdf(double sdf)
@@ -75,7 +76,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.GeometricAlgebra
             throw new NotImplementedException();
         }
 
-        public Float64Vector3D GetPoint(IFloat64Tuple3D parameterValue)
+        public Float64Vector3D GetPoint(IFloat64Vector3D parameterValue)
         {
             return parameterValue.ToVector3D();
         }
@@ -90,7 +91,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.GeometricAlgebra
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
-        public virtual double GetScalarDistance(IFloat64Tuple3D point)
+        public virtual double GetScalarDistance(IFloat64Vector3D point)
         {
             var sdf = NullSpaceKind == MultivectorNullSpaceKind.OuterProductNullSpace
                 ? ComputeSdfOpns(point)
@@ -106,7 +107,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.GeometricAlgebra
                 parameterValue3));
         }
 
-        public GrParametricVolumeLocalFrame3D GetFrame(IFloat64Tuple3D parameterValue)
+        public GrParametricVolumeLocalFrame3D GetFrame(IFloat64Vector3D parameterValue)
         {
             return new GrParametricVolumeLocalFrame3D(
                 parameterValue,
@@ -141,7 +142,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.GeometricAlgebra
         /// </summary>
         /// <param name="point"></param>
         /// <returns></returns>
-        public virtual Float64Vector3D ComputeSdfNormal(IFloat64Tuple3D point)
+        public virtual Float64Vector3D ComputeSdfNormal(IFloat64Vector3D point)
         {
             var d1 = GetScalarDistance(Float64Vector3D.Create(point.X + SdfDistanceDelta,
                 point.Y - SdfDistanceDelta,

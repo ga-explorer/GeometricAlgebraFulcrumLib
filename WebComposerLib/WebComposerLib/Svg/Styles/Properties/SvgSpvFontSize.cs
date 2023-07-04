@@ -29,13 +29,13 @@ namespace WebComposerLib.Svg.Styles.Properties
             }
         }
 
-        private SvgValueLengthUnit _unit = SvgValueLengthUnit.None;
-        public SvgValueLengthUnit Unit
+        private SvgLengthUnit _unit = SvgLengthUnit.None;
+        public SvgLengthUnit Unit
         {
             get => _unit;
             set
             {
-                _unit = value ?? SvgValueLengthUnit.None;
+                _unit = value ?? SvgLengthUnit.None;
                 _fontSizeSpecs = SvgConstants.FontSize.Length;
                 IsValueComputed = true;
             }
@@ -134,7 +134,7 @@ namespace WebComposerLib.Svg.Styles.Properties
             return ParentStyle;
         }
 
-        public SvgStyle SetTo(double size, SvgValueLengthUnit unit)
+        public SvgStyle SetTo(double size, SvgLengthUnit unit)
         {
             FontSizeSpecs = SvgConstants.FontSize.Length;
             Size = size;

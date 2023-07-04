@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 using GraphicsComposerLib.Rendering.Visuals.Space3D.Animations;
 using GraphicsComposerLib.Rendering.Visuals.Space3D.Styles;
@@ -23,7 +22,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Surfaces
         );
 
         
-        public static GrVisualParallelogramSurface3D CreateStatic(string name, GrVisualSurfaceStyle3D style, IFloat64Tuple3D position)
+        public static GrVisualParallelogramSurface3D CreateStatic(string name, GrVisualSurfaceStyle3D style, IFloat64Vector3D position)
         {
             return new GrVisualParallelogramSurface3D(
                 name,
@@ -35,7 +34,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Surfaces
             );
         }
 
-        public static GrVisualParallelogramSurface3D CreateStatic(string name, GrVisualSurfaceStyle3D style, IFloat64Tuple3D position, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2)
+        public static GrVisualParallelogramSurface3D CreateStatic(string name, GrVisualSurfaceStyle3D style, IFloat64Vector3D position, IFloat64Vector3D direction1, IFloat64Vector3D direction2)
         {
             return new GrVisualParallelogramSurface3D(
                 name,
@@ -47,7 +46,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Surfaces
             );
         }
         
-        public static GrVisualParallelogramSurface3D Create(string name, GrVisualSurfaceStyle3D style, IFloat64Tuple3D position, GrVisualAnimationSpecs animationSpecs)
+        public static GrVisualParallelogramSurface3D Create(string name, GrVisualSurfaceStyle3D style, IFloat64Vector3D position, GrVisualAnimationSpecs animationSpecs)
         {
             return new GrVisualParallelogramSurface3D(
                 name,
@@ -59,7 +58,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Surfaces
             );
         }
 
-        public static GrVisualParallelogramSurface3D Create(string name, GrVisualSurfaceStyle3D style, IFloat64Tuple3D position, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, GrVisualAnimationSpecs animationSpecs)
+        public static GrVisualParallelogramSurface3D Create(string name, GrVisualSurfaceStyle3D style, IFloat64Vector3D position, IFloat64Vector3D direction1, IFloat64Vector3D direction2, GrVisualAnimationSpecs animationSpecs)
         {
             return new GrVisualParallelogramSurface3D(
                 name,
@@ -96,11 +95,11 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Surfaces
         }
 
         
-        public IFloat64Tuple3D Direction1 { get; }
+        public IFloat64Vector3D Direction1 { get; }
 
-        public IFloat64Tuple3D Direction2 { get; }
+        public IFloat64Vector3D Direction2 { get; }
         
-        public IFloat64Tuple3D Direction12 
+        public IFloat64Vector3D Direction12 
             => Direction1.Add(Direction2);
         
         public Float64Vector3D UnitDirection1 
@@ -109,15 +108,15 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Surfaces
         public Float64Vector3D UnitDirection2 
             => Direction2.ToUnitVector();
 
-        public IFloat64Tuple3D Position { get; }
+        public IFloat64Vector3D Position { get; }
         
-        public IFloat64Tuple3D Position1 
+        public IFloat64Vector3D Position1 
             => Position.Add(Direction1);
             
-        public IFloat64Tuple3D Position2 
+        public IFloat64Vector3D Position2 
             => Position.Add(Direction2);
         
-        public IFloat64Tuple3D Position12 
+        public IFloat64Vector3D Position12 
             => Position.Add(Direction1).Add(Direction2);
         
         public double Length1 
@@ -201,7 +200,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Surfaces
         }
 
 
-        private GrVisualParallelogramSurface3D(string name, GrVisualSurfaceStyle3D style, IFloat64Tuple3D position, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, GrVisualAnimationSpecs animationSpecs)
+        private GrVisualParallelogramSurface3D(string name, GrVisualSurfaceStyle3D style, IFloat64Vector3D position, IFloat64Vector3D direction1, IFloat64Vector3D direction2, GrVisualAnimationSpecs animationSpecs)
             : base(name, style, animationSpecs)
         {
             Position = position;

@@ -34,7 +34,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.S
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static LinFloat64HyperPlaneNormalReflection3D Create(IFloat64Tuple3D reflectionNormal)
+        public static LinFloat64HyperPlaneNormalReflection3D Create(IFloat64Vector3D reflectionNormal)
         {
             return new LinFloat64HyperPlaneNormalReflection3D(
                 reflectionNormal.ToVector3D()
@@ -96,7 +96,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.S
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Float64Vector3D MapVector(IFloat64Tuple3D vector)
+        public override Float64Vector3D MapVector(IFloat64Vector3D vector)
         {
             var s = -2d * vector.ESp(ReflectionNormal);
 

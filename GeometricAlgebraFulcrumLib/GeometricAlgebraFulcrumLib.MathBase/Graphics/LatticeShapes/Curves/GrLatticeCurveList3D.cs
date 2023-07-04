@@ -33,10 +33,10 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.LatticeShapes.Curves
                 ? VertexList
                 : _gridsList.SelectMany(b => b.Vertices);
         
-        public IEnumerable<IFloat64Tuple3D> VertexPoints 
+        public IEnumerable<IFloat64Vector3D> VertexPoints 
             => Vertices.Select(v => v.Point);
 
-        public IEnumerable<IFloat64Tuple3D> VertexNormals 
+        public IEnumerable<IFloat64Vector3D> VertexNormals 
             => Vertices.Select(v => v.Normal1);
 
         public IEnumerable<double> VertexTextureUs 
@@ -48,9 +48,9 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.LatticeShapes.Curves
         public IReadOnlyList<Pair<GrLatticeCurveLocalFrame3D>> LineVerticesList { get; private set; } 
             = Array.Empty<Pair<GrLatticeCurveLocalFrame3D>>();
 
-        public IEnumerable<Pair<IFloat64Tuple3D>> LineVertexPoints
+        public IEnumerable<Pair<IFloat64Vector3D>> LineVertexPoints
             => LineVerticesList.Select(t => 
-                new Pair<IFloat64Tuple3D>(
+                new Pair<IFloat64Vector3D>(
                     t.Item1.Point,
                     t.Item2.Point
                 )

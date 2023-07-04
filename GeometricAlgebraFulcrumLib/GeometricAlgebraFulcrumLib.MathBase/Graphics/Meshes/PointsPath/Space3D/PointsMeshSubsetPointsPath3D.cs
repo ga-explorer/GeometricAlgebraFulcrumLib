@@ -6,7 +6,7 @@ using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsPath.Space3D
 {
     public sealed class PointsMeshSubsetPointsPath3D : 
-        PSeq2DSubset1D<IFloat64Tuple3D>, 
+        PSeq2DSubset1D<IFloat64Vector3D>, 
         IPointsPath3D
     {
         public IPointsMesh3D BaseMesh { get; }
@@ -24,7 +24,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsPath.Space3D
             return this.All(p => p.IsValid());
         }
 
-        public IPointsPath3D MapPoints(Func<IFloat64Tuple3D, IFloat64Tuple3D> pointMapping)
+        public IPointsPath3D MapPoints(Func<IFloat64Vector3D, IFloat64Vector3D> pointMapping)
         {
             return new ArrayPointsPath3D(
                 this.Select(pointMapping).ToArray()

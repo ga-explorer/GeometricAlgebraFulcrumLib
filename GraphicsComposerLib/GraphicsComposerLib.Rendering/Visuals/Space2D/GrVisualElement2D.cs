@@ -5,9 +5,6 @@
     {
         public string Name { get; }
     
-        public GrVisualElementStyle2D Style { get; }
-            = new GrVisualElementStyle2D();
-
 
         protected GrVisualElement2D(string name)
         {

@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.SubSpaces.Space3D
 {
@@ -9,7 +8,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.SubSpaces.Sp
         ILinFloat64Subspace3D
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static LinFloat64PlaneSubspace3D CreateFromVectors(IFloat64Tuple3D vector1, IFloat64Tuple3D vector2)
+        public static LinFloat64PlaneSubspace3D CreateFromVectors(IFloat64Vector3D vector1, IFloat64Vector3D vector2)
         {
             var u = vector1.ToUnitVector();
             var v = vector2.RejectOnUnitVector(u).ToUnitVector();
@@ -19,7 +18,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.SubSpaces.Sp
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static LinFloat64PlaneSubspace3D CreateFromUnitVectors(IFloat64Tuple3D vector1, IFloat64Tuple3D vector2)
+        public static LinFloat64PlaneSubspace3D CreateFromUnitVectors(IFloat64Vector3D vector1, IFloat64Vector3D vector2)
         {
             return new LinFloat64PlaneSubspace3D(
                 vector1.ToVector3D(),
@@ -28,7 +27,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.SubSpaces.Sp
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static LinFloat64PlaneSubspace3D CreateFromOrthogonalVectors(IFloat64Tuple3D vector1, IFloat64Tuple3D vector2)
+        public static LinFloat64PlaneSubspace3D CreateFromOrthogonalVectors(IFloat64Vector3D vector1, IFloat64Vector3D vector2)
         {
             return new LinFloat64PlaneSubspace3D(
                 vector1.ToUnitVector(),
@@ -37,7 +36,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.SubSpaces.Sp
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static LinFloat64PlaneSubspace3D CreateFromOrthonormalVectors(IFloat64Tuple3D vector1, IFloat64Tuple3D vector2)
+        public static LinFloat64PlaneSubspace3D CreateFromOrthonormalVectors(IFloat64Vector3D vector1, IFloat64Vector3D vector2)
         {
             return new LinFloat64PlaneSubspace3D(
                 vector1.ToVector3D(),
@@ -78,7 +77,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.SubSpaces.Sp
         }
 
 
-        public bool NearContains(IFloat64Tuple3D vector, double epsilon = 1E-12D)
+        public bool NearContains(IFloat64Vector3D vector, double epsilon = 1E-12D)
         {
             if (vector.IsNearZero(epsilon))
                 return true;
@@ -116,13 +115,13 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.SubSpaces.Sp
             throw new NotImplementedException();
         }
         
-        public Float64Vector3D GetVectorProjection(IFloat64Tuple3D vector)
+        public Float64Vector3D GetVectorProjection(IFloat64Vector3D vector)
         {
             throw new NotImplementedException();
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Float64PlanarAngle GetVectorProjectionPolarAngle(IFloat64Tuple3D vector)
+        public Float64PlanarAngle GetVectorProjectionPolarAngle(IFloat64Vector3D vector)
         {
             var (u1Dot, u2Dot) = 
                 vector.ESp(BasisVector1, BasisVector2);
@@ -130,7 +129,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.SubSpaces.Sp
             return Math.Atan2(u2Dot, u1Dot).RadiansToAngle().GetAngleInPositiveRange();
         }
 
-        public Float64Vector3D GetVectorRejection(IFloat64Tuple3D vector)
+        public Float64Vector3D GetVectorRejection(IFloat64Vector3D vector)
         {
             throw new NotImplementedException();
         }

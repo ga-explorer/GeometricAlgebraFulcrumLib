@@ -6,7 +6,7 @@ using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.ParametricShapes.Volumes
 {
     public sealed record GrParametricVolumeLocalFrame3D :
-        IFloat64Tuple3D
+        IFloat64Vector3D
     {
         
         public int VSpaceDimensions 
@@ -43,7 +43,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.ParametricShapes.Volumes
         
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal GrParametricVolumeLocalFrame3D(double parameterValue1, double parameterValue2, double parameterValue3, IFloat64Tuple3D point, double scalarDistance)
+        public GrParametricVolumeLocalFrame3D(double parameterValue1, double parameterValue2, double parameterValue3, IFloat64Vector3D point, double scalarDistance)
         {
             ParameterValue = Float64Vector3D.Create(parameterValue1, parameterValue2, parameterValue3);
             Point = point.ToVector3D();
@@ -53,7 +53,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.ParametricShapes.Volumes
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal GrParametricVolumeLocalFrame3D(IFloat64Tuple3D parameterValue, IFloat64Tuple3D point, double scalarDistance)
+        public GrParametricVolumeLocalFrame3D(IFloat64Vector3D parameterValue, IFloat64Vector3D point, double scalarDistance)
         {
             ParameterValue = parameterValue.ToVector3D();
             Point = point.ToVector3D();
@@ -63,7 +63,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.ParametricShapes.Volumes
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal GrParametricVolumeLocalFrame3D(IGraphicsParametricVolume3D volume, double parameterValue1, double parameterValue2, double parameterValue3)
+        public GrParametricVolumeLocalFrame3D(IGraphicsParametricVolume3D volume, double parameterValue1, double parameterValue2, double parameterValue3)
         {
             ParameterValue = Float64Vector3D.Create(parameterValue1, parameterValue2, parameterValue3);
             Point = volume.GetPoint(parameterValue1, parameterValue2, parameterValue3);
@@ -73,7 +73,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.ParametricShapes.Volumes
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal GrParametricVolumeLocalFrame3D(IGraphicsParametricVolume3D volume, IFloat64Tuple3D parameterValue)
+        public GrParametricVolumeLocalFrame3D(IGraphicsParametricVolume3D volume, IFloat64Vector3D parameterValue)
         {
             ParameterValue = parameterValue.ToVector3D();
             Point = volume.GetPoint(parameterValue);

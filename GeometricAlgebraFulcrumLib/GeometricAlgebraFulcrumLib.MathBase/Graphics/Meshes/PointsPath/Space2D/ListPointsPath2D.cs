@@ -7,19 +7,19 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsPath.Space2D
     /// A path where points are directly stored in memory as a list
     /// </summary>
     public sealed class ListPointsPath2D
-        : PSeqReadOnlyList1D<IFloat64Tuple2D>, IPointsPath2D
+        : PSeqReadOnlyList1D<IFloat64Vector2D>, IPointsPath2D
     {
-        public ListPointsPath2D(params IFloat64Tuple2D[] pointsArray)
+        public ListPointsPath2D(params IFloat64Vector2D[] pointsArray)
             : base(pointsArray)
         {
         }
 
-        public ListPointsPath2D(IReadOnlyList<IFloat64Tuple2D> pointsArray)
+        public ListPointsPath2D(IReadOnlyList<IFloat64Vector2D> pointsArray)
             : base(pointsArray)
         {
         }
 
-        public ListPointsPath2D(IEnumerable<IFloat64Tuple2D> pointsList)
+        public ListPointsPath2D(IEnumerable<IFloat64Vector2D> pointsList)
             : base(pointsList)
         {
         }
@@ -31,7 +31,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsPath.Space2D
                    DataList.All(p => p.IsValid());
         }
         
-        public IPointsPath2D MapPoints(Func<IFloat64Tuple2D, IFloat64Tuple2D> pointMapping)
+        public IPointsPath2D MapPoints(Func<IFloat64Vector2D, IFloat64Vector2D> pointMapping)
         {
             return new ListPointsPath2D(this.Select(pointMapping));
         }

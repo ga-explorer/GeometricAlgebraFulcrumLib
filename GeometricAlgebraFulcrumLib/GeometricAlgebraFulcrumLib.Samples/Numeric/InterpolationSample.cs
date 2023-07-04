@@ -11,11 +11,10 @@ using GeometricAlgebraFulcrumLib.MathBase.Geometry.Differential.Functions;
 using GeometricAlgebraFulcrumLib.MathBase.Geometry.Differential.Functions.Interpolators;
 using GeometricAlgebraFulcrumLib.MathBase.Geometry.Differential.Functions.Phasors;
 using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64;
 using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra.Composers;
-using GeometricAlgebraFulcrumLib.Mathematica;
-using GeometricAlgebraFulcrumLib.Mathematica.Mathematica.ExprFactory;
 using OfficeOpenXml;
 using OxyPlot;
 using OxyPlot.Series;
@@ -575,57 +574,6 @@ namespace GeometricAlgebraFulcrumLib.Samples.Numeric
 
             Console.WriteLine($"Max Diff = {maxDiff:G}");
             Console.WriteLine();
-        }
-
-        public static void Example2()
-        {
-            var interpolator = ScalarFourierSeries.Create();
-
-            interpolator.SetTerm(1, 2, 3);
-            interpolator.SetTerm(2, 4, 5);
-            interpolator.SetTerm(3, -1.2, 2.1);
-
-            var t = "t".ToSymbolExpr();
-
-            var vDt0 = interpolator.ToString().ToExpr();
-
-            Console.WriteLine(vDt0.ToString());
-            Console.WriteLine();
-
-            for (var degree = 1; degree <= 10; degree++)
-            {
-                var vDt = interpolator.GetFourierDerivativeN(degree).ToString().ToExpr();
-                var uDt = Mfs.D[vDt0, Mfs.List[t, degree]].Evaluate();
-
-                Console.WriteLine(vDt.ToString());
-                Console.WriteLine(uDt.ToString());
-                Console.WriteLine(Mfs.Subtract[vDt, uDt].EvaluateToText());
-                Console.WriteLine();
-            }
-        }
-
-        public static void Example3()
-        {
-            var interpolator = CreateInterpolator1();
-            
-            var t = "t".ToSymbolExpr();
-
-            var vDt0 = interpolator.ToMathematicaExpr(t);
-
-            //Console.WriteLine(vDt0.ToString());
-            //Console.WriteLine();
-
-            for (var degree = 0; degree <= 6; degree++)
-            {
-                var vDt = interpolator.GetFourierDerivativeN(degree).ToMathematicaExpr(t);
-                var uDt = Mfs.D[vDt0, Mfs.List[t, degree]].Evaluate();
-
-                Console.WriteLine(degree);
-                Console.WriteLine(vDt.ToString());
-                Console.WriteLine(uDt.ToString());
-                Console.WriteLine(Mfs.Subtract[vDt, uDt].Simplify().ToString());
-                Console.WriteLine();
-            }
         }
 
         public static void Example4()

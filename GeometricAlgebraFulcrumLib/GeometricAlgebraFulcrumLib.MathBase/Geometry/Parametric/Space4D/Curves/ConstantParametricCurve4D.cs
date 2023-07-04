@@ -9,7 +9,7 @@ public class ConstantParametricCurve4D :
     IParametricCurve4D
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ConstantParametricCurve4D Create(IFloat64Tuple4D point)
+    public static ConstantParametricCurve4D Create(IFloat64Vector4D point)
     {
         return new ConstantParametricCurve4D(
             point, 
@@ -18,7 +18,7 @@ public class ConstantParametricCurve4D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ConstantParametricCurve4D Create(IFloat64Tuple4D point, IFloat64Tuple4D tangent)
+    public static ConstantParametricCurve4D Create(IFloat64Vector4D point, IFloat64Vector4D tangent)
     {
         return new ConstantParametricCurve4D(
             point, 
@@ -36,7 +36,7 @@ public class ConstantParametricCurve4D :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private ConstantParametricCurve4D(IFloat64Tuple4D point, IFloat64Tuple4D tangent)
+    private ConstantParametricCurve4D(IFloat64Vector4D point, IFloat64Vector4D tangent)
     {
         Point = point.ToTuple4D();
         Tangent = tangent.ToTuple4D();

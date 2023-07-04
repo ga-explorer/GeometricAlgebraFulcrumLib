@@ -6,6 +6,7 @@ using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Mult
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Processors;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.SpaceND;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.SpaceND;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.LinearMaps.Outermorphisms
@@ -381,5 +382,27 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.
                 .ToLinUnilinearMap()
                 .ToOutermorphism(frame.Processor);
         }
+
+
+        
+        public static XGaFloat64LinearMapOutermorphism CreateClarkeRotationMap(this XGaFloat64Processor processor, int vectorsCount)
+        {
+            var clarkeMapArray =
+                Float64ArrayUtils.CreateClarkeRotationArray(vectorsCount);
+
+            var basisVectorImagesDictionary = 
+                new Dictionary<int, Float64Vector>();
+
+            for (var i = 0; i < vectorsCount; i++)
+                basisVectorImagesDictionary.Add(
+                    i, 
+                    clarkeMapArray.ColumnToLinVector(i)
+                );
+
+            return basisVectorImagesDictionary
+                .ToLinUnilinearMap()
+                .ToOutermorphism(processor);
+        }
+
     }
 }

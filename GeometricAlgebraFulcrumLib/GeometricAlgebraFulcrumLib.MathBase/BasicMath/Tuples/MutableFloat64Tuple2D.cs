@@ -6,7 +6,7 @@ using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples
 {
     public sealed class MutableFloat64Tuple2D : 
-        IFloat64Tuple2D
+        IFloat64Vector2D
     {
         public Float64Scalar X { get; set; }
 
@@ -66,7 +66,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples
             Debug.Assert(IsValid());
         }
 
-        public MutableFloat64Tuple2D(IFloat64Tuple2D tuple)
+        public MutableFloat64Tuple2D(IFloat64Vector2D tuple)
         {
             X = tuple.X;
             Y = tuple.Y;
@@ -85,7 +85,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples
             return this;
         }
 
-        public MutableFloat64Tuple2D SetTuple(IFloat64Tuple2D tuple)
+        public MutableFloat64Tuple2D SetTuple(IFloat64Vector2D tuple)
         {
             X = tuple.X;
             Y = tuple.Y;
@@ -103,7 +103,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples
             return this;
         }
 
-        public MutableFloat64Tuple2D SetDirection(IFloat64Tuple2D direction)
+        public MutableFloat64Tuple2D SetDirection(IFloat64Vector2D direction)
         {
             var oldLength2 = 
                 direction.X * direction.X + 
@@ -153,7 +153,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples
             return this;
         }
 
-        public MutableFloat64Tuple2D SetToSameSide(IFloat64Tuple2D direction)
+        public MutableFloat64Tuple2D SetToSameSide(IFloat64Vector2D direction)
         {
             if (!(X * direction.X + Y * direction.Y).IsNegative())
                 return this;
@@ -164,7 +164,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples
             return this;
         }
 
-        public MutableFloat64Tuple2D SetToOtherSide(IFloat64Tuple2D direction)
+        public MutableFloat64Tuple2D SetToOtherSide(IFloat64Vector2D direction)
         {
             if (!(X * direction.X + Y * direction.Y).IsPositive())
                 return this;

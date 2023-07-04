@@ -12,24 +12,24 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Points
     public sealed class GrPointGeometry3D
         : IGraphicsPointGeometry3D
     {
-        public static GrPointGeometry3D Create(IReadOnlyList<IFloat64Tuple3D> pointsList)
+        public static GrPointGeometry3D Create(IReadOnlyList<IFloat64Vector3D> pointsList)
         {
             return new GrPointGeometry3D(pointsList);
         }
 
-        public static GrPointGeometry3D Create(params IFloat64Tuple3D[] pointsList)
+        public static GrPointGeometry3D Create(params IFloat64Vector3D[] pointsList)
         {
             return new GrPointGeometry3D(pointsList);
         }
 
-        public static GrPointGeometry3D Create(IEnumerable<IFloat64Tuple3D> pointsList)
+        public static GrPointGeometry3D Create(IEnumerable<IFloat64Vector3D> pointsList)
         {
             return new GrPointGeometry3D(pointsList.ToArray());
         }
 
 
-        private readonly IReadOnlyList<IFloat64Tuple3D> _vertexPoints;
-        public IEnumerable<IFloat64Tuple3D> GeometryPoints 
+        private readonly IReadOnlyList<IFloat64Vector3D> _vertexPoints;
+        public IEnumerable<IFloat64Vector3D> GeometryPoints 
             => _vertexPoints;
 
         public IEnumerable<IGraphicsVertex3D> GeometryVertices
@@ -48,17 +48,17 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Points
         public int Count
             => _vertexIndicesList.Count;
 
-        public IFloat64Tuple3D this[int index] 
+        public IFloat64Vector3D this[int index] 
             => _vertexPoints[_vertexIndicesList[index]];
 
 
-        private GrPointGeometry3D(IReadOnlyList<IFloat64Tuple3D> pointsList)
+        private GrPointGeometry3D(IReadOnlyList<IFloat64Vector3D> pointsList)
         {
             _vertexPoints = pointsList;
         }
 
         
-        public IFloat64Tuple3D GetGeometryPoint(int index)
+        public IFloat64Vector3D GetGeometryPoint(int index)
         {
             return _vertexPoints[index];
         }
@@ -177,7 +177,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Points
         }
 
         
-        public IEnumerator<IFloat64Tuple3D> GetEnumerator()
+        public IEnumerator<IFloat64Vector3D> GetEnumerator()
         {
             return _vertexIndicesList.Select(
                 i => _vertexPoints[i]

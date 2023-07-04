@@ -196,7 +196,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Surfac
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GrComputedParametricSurface3D CreateSphere3D(this IFloat64Tuple3D sliceAxisUnitNormal, double radius)
+        public static GrComputedParametricSurface3D CreateSphere3D(this IFloat64Vector3D sliceAxisUnitNormal, double radius)
         {
             return sliceAxisUnitNormal
                 .SelectNearestAxis()

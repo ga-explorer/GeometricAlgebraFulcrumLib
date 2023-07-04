@@ -7,7 +7,7 @@ using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D
 {
     public sealed class Float64Vector3DComposer :
-        IFloat64Tuple3D
+        IFloat64Vector3D
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Float64Vector3DComposer Create()

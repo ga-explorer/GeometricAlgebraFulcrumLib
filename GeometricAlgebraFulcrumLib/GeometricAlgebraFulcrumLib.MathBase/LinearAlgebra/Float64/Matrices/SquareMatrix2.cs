@@ -87,7 +87,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices
             return m;
         }
 
-        public static SquareMatrix2 CreateAxisToVectorRotationMatrix2D(LinUnitBasisVector2D axis, IFloat64Tuple2D unitVector)
+        public static SquareMatrix2 CreateAxisToVectorRotationMatrix2D(LinUnitBasisVector2D axis, IFloat64Vector2D unitVector)
         {
             //Debug.Assert(unitVector.IsNearUnitVector());
             
@@ -169,7 +169,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices
             throw new InvalidOperationException();
         }
 
-        public static SquareMatrix2 CreateVectorToAxisRotationMatrix2D(IFloat64Tuple2D unitVector, LinUnitBasisVector2D axis)
+        public static SquareMatrix2 CreateVectorToAxisRotationMatrix2D(IFloat64Vector2D unitVector, LinUnitBasisVector2D axis)
         {
             //Debug.Assert(unitVector.IsValid() && unitVector.IsNearUnitVector());
             
@@ -251,17 +251,15 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices
             throw new InvalidOperationException();
         }
 
-        public static SquareMatrix2 CreateVectorToVectorRotationMatrix2D(IFloat64Tuple2D unitVector1, IFloat64Tuple2D unitVector2)
+        public static SquareMatrix2 CreateVectorToVectorRotationMatrix2D(IFloat64Vector2D unitVector1, IFloat64Vector2D unitVector2)
         {
             //Debug.Assert(
             //    unitVector1.IsNearUnitVector() && 
             //    unitVector2.IsNearUnitVector()
             //);
 
-            var sumVector = new Float64Vector2D(
-                unitVector1.X + unitVector2.X,
-                unitVector1.Y + unitVector2.Y
-            );
+            var sumVector = Float64Vector2D.Create(unitVector1.X + unitVector2.X,
+                unitVector1.Y + unitVector2.Y);
 
             if (sumVector.ENormSquared().IsNearZero())
             {
@@ -344,27 +342,23 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Float64Vector2D operator *(SquareMatrix2 m, IFloat64Tuple2D vector)
+        public static Float64Vector2D operator *(SquareMatrix2 m, IFloat64Vector2D vector)
         {
             var x = vector.X;
             var y = vector.Y;
 
-            return new Float64Vector2D(
-                m.Scalar00 * x + m.Scalar01 * y,
-                m.Scalar10 * x + m.Scalar11 * y
-            );
+            return Float64Vector2D.Create(m.Scalar00 * x + m.Scalar01 * y,
+                m.Scalar10 * x + m.Scalar11 * y);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Float64Vector2D operator *(IFloat64Tuple2D vector, SquareMatrix2 m)
+        public static Float64Vector2D operator *(IFloat64Vector2D vector, SquareMatrix2 m)
         {
             var x = vector.X;
             var y = vector.Y;
             
-            return new Float64Vector2D(
-                m.Scalar00 * x + m.Scalar10 * y,
-                m.Scalar01 * x + m.Scalar11 * y
-            );
+            return Float64Vector2D.Create(m.Scalar00 * x + m.Scalar10 * y,
+                m.Scalar01 * x + m.Scalar11 * y);
         }
 
         public static SquareMatrix2 operator *(SquareMatrix2 m1, SquareMatrix2 m2)
@@ -725,29 +719,25 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices
             => Determinant < 0;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Float64Vector2D MapPoint(IFloat64Tuple2D point)
+        public Float64Vector2D MapPoint(IFloat64Vector2D point)
         {
             Debug.Assert(IsAffine2D());
 
-            return new Float64Vector2D(
-                Scalar00 * point.X + Scalar01 * point.Y,
-                Scalar10 * point.X + Scalar11 * point.Y
-            ); 
+            return Float64Vector2D.Create(Scalar00 * point.X + Scalar01 * point.Y,
+                Scalar10 * point.X + Scalar11 * point.Y); 
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Float64Vector2D MapVector(IFloat64Tuple2D vector)
+        public Float64Vector2D MapVector(IFloat64Vector2D vector)
         {
             Debug.Assert(IsAffine2D());
 
-            return new Float64Vector2D(
-                Scalar00 * vector.X + Scalar01 * vector.Y,
-                Scalar10 * vector.X + Scalar11 * vector.Y
-            );
+            return Float64Vector2D.Create(Scalar00 * vector.X + Scalar01 * vector.Y,
+                Scalar10 * vector.X + Scalar11 * vector.Y);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Float64Vector2D MapNormal(IFloat64Tuple2D normal)
+        public Float64Vector2D MapNormal(IFloat64Vector2D normal)
         {
             return InverseTranspose().MapVector(normal);
         }

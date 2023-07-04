@@ -29,35 +29,27 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space4D.Curves
             var zDtFunc = zFunc.GetDerivative1();
             var wDtFunc = wFunc.GetDerivative1();
 
-            return Create(t => new Float64Vector4D(
-                    xFunc.GetValue(t),
+            return Create(t => Float64Vector4D.Create(xFunc.GetValue(t),
                     yFunc.GetValue(t),
                     zFunc.GetValue(t),
-                    wFunc.GetValue(t)
-                ),
-                t => new Float64Vector4D(
-                    xDtFunc.GetValue(t),
+                    wFunc.GetValue(t)),
+                t => Float64Vector4D.Create(xDtFunc.GetValue(t),
                     yDtFunc.GetValue(t),
                     zDtFunc.GetValue(t),
-                    wDtFunc.GetValue(t)
-                ));
+                    wDtFunc.GetValue(t)));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ComputedParametricCurve4D Create(Func<double, double> xFunc, Func<double, double> yFunc, Func<double, double> zFunc, Func<double, double> wFunc)
         {
-            return Create(t => new Float64Vector4D(
-                    xFunc(t),
+            return Create(t => Float64Vector4D.Create(xFunc(t),
                     yFunc(t),
                     zFunc(t),
-                    wFunc(t)
-                ),
-                t => new Float64Vector4D(
-                    Differentiate.FirstDerivative(xFunc, t),
+                    wFunc(t)),
+                t => Float64Vector4D.Create(Differentiate.FirstDerivative(xFunc, t),
                     Differentiate.FirstDerivative(yFunc, t),
                     Differentiate.FirstDerivative(zFunc, t),
-                    Differentiate.FirstDerivative(wFunc, t)
-                ));
+                    Differentiate.FirstDerivative(wFunc, t)));
         }
 
 

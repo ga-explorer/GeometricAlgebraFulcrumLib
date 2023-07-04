@@ -23,7 +23,7 @@ namespace NumericalGeometryLib.Computers.Reflections
         public ITriangle3D Triangle { get; set; }
 
 
-        public Float64Vector3D ReflectPointVa(IFloat64Tuple3D point)
+        public Float64Vector3D ReflectPointVa(IFloat64Vector3D point)
         {
             //http://mathworld.wolfram.com/Reflection.html
             //https://en.wikipedia.org/wiki/Reflection_(mathematics)
@@ -42,7 +42,7 @@ namespace NumericalGeometryLib.Computers.Reflections
             return result;
         }
 
-        public Float64Vector3D ReflectPoint(IFloat64Tuple3D point)
+        public Float64Vector3D ReflectPoint(IFloat64Vector3D point)
         {
             ComputePointReflectionCounter.Begin();
 

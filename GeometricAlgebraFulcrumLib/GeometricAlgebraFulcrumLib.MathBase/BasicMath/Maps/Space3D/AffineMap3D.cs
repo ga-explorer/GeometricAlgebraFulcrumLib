@@ -190,7 +190,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D
             return new SquareMatrix4(useInvMatrix ? _invMatrix : _matrix);
         }
 
-        public Float64Vector3D MapPoint(IFloat64Tuple3D point)
+        public Float64Vector3D MapPoint(IFloat64Vector3D point)
         {
             var pointX = _matrix.Scalar00 * point.X + _matrix.Scalar01 * point.Y + _matrix.Scalar02 * point.Z + _matrix.Scalar03;
             var pointY = _matrix.Scalar10 * point.X + _matrix.Scalar11 * point.Y + _matrix.Scalar12 * point.Z + _matrix.Scalar13;
@@ -205,7 +205,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Float64Vector3D MapVector(IFloat64Tuple3D vector)
+        public Float64Vector3D MapVector(IFloat64Vector3D vector)
         {
             return Float64Vector3D.Create(_matrix.Scalar00 * vector.X + _matrix.Scalar01 * vector.Y + _matrix.Scalar02 * vector.Z,
                 _matrix.Scalar10 * vector.X + _matrix.Scalar11 * vector.Y + _matrix.Scalar12 * vector.Z,
@@ -213,7 +213,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Float64Vector3D MapNormal(IFloat64Tuple3D normal)
+        public Float64Vector3D MapNormal(IFloat64Vector3D normal)
         {
             return Float64Vector3D.Create(_invMatrix.Scalar00 * normal.X + _invMatrix.Scalar10 * normal.Y + _invMatrix.Scalar20 * normal.Z,
                 _invMatrix.Scalar01 * normal.X + _invMatrix.Scalar11 * normal.Y + _invMatrix.Scalar21 * normal.Z,

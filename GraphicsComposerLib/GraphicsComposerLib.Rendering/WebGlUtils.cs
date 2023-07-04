@@ -12,7 +12,7 @@ namespace GraphicsComposerLib.Rendering
 {
     public static class WebGlUtils
     {
-        public static JavaScriptAttributesDictionary SetNumbersArrayValue(this JavaScriptAttributesDictionary composer, string key, IFloat64Tuple2D value, IFloat64Tuple3D valueDefault)
+        public static JavaScriptAttributesDictionary SetNumbersArrayValue(this JavaScriptAttributesDictionary composer, string key, IFloat64Vector2D value, IFloat64Vector3D valueDefault)
         {
             composer.SetTextValue(
                 key,
@@ -23,7 +23,7 @@ namespace GraphicsComposerLib.Rendering
             return composer;
         }
 
-        public static JavaScriptAttributesDictionary SetNumbersArrayValue(this JavaScriptAttributesDictionary composer, string key, IFloat64Tuple3D value)
+        public static JavaScriptAttributesDictionary SetNumbersArrayValue(this JavaScriptAttributesDictionary composer, string key, IFloat64Vector3D value)
         {
             composer.SetTextValue(
                 key,
@@ -33,7 +33,7 @@ namespace GraphicsComposerLib.Rendering
             return composer;
         }
 
-        public static JavaScriptAttributesDictionary SetNumbersArrayValue(this JavaScriptAttributesDictionary composer, string key, IFloat64Tuple3D value, IFloat64Tuple3D valueDefault)
+        public static JavaScriptAttributesDictionary SetNumbersArrayValue(this JavaScriptAttributesDictionary composer, string key, IFloat64Vector3D value, IFloat64Vector3D valueDefault)
         {
             composer.SetTextValue(
                 key,
@@ -44,7 +44,7 @@ namespace GraphicsComposerLib.Rendering
             return composer;
         }
 
-        public static JavaScriptAttributesDictionary SetNumbersArrayValue(this JavaScriptAttributesDictionary composer, string key, SquareMatrix4 value, IFloat64Tuple3D valueDefault)
+        public static JavaScriptAttributesDictionary SetNumbersArrayValue(this JavaScriptAttributesDictionary composer, string key, SquareMatrix4 value, IFloat64Vector3D valueDefault)
         {
             composer.SetTextValue(
                 key,
@@ -55,7 +55,7 @@ namespace GraphicsComposerLib.Rendering
             return composer;
         }
 
-        public static JavaScriptAttributesDictionary SetNumbersArrayValue(this JavaScriptAttributesDictionary composer, string key, IBoundingBox3D value, IFloat64Tuple3D valueDefault)
+        public static JavaScriptAttributesDictionary SetNumbersArrayValue(this JavaScriptAttributesDictionary composer, string key, IBoundingBox3D value, IFloat64Vector3D valueDefault)
         {
             composer.SetTextValue(
                 key,
@@ -68,7 +68,7 @@ namespace GraphicsComposerLib.Rendering
 
 
         
-        public static JavaScriptAttributesDictionary SetNumbersArrayValue(this JavaScriptAttributesDictionary composer, string key, IEnumerable<IFloat64Tuple3D> value, string commentPrefix, string valueDefault)
+        public static JavaScriptAttributesDictionary SetNumbersArrayValue(this JavaScriptAttributesDictionary composer, string key, IEnumerable<IFloat64Vector3D> value, string commentPrefix, string valueDefault)
         {
             composer.SetTextValue(
                 key,
@@ -90,7 +90,7 @@ namespace GraphicsComposerLib.Rendering
             return composer;
         }
 
-        public static JavaScriptAttributesDictionary SetNumbersArrayValue(this JavaScriptAttributesDictionary composer, string key, IEnumerable<IFloat64Tuple2D> value, string commentPrefix, string valueDefault)
+        public static JavaScriptAttributesDictionary SetNumbersArrayValue(this JavaScriptAttributesDictionary composer, string key, IEnumerable<IFloat64Vector2D> value, string commentPrefix, string valueDefault)
         {
             composer.SetTextValue(
                 key,
@@ -113,7 +113,7 @@ namespace GraphicsComposerLib.Rendering
         }
 
         #region 2D Tuple Values Conversion
-        public static string ToJavaScriptNumbersArrayText(this IFloat64Tuple2D tuple)
+        public static string ToJavaScriptNumbersArrayText(this IFloat64Vector2D tuple)
             => new StringBuilder()
                 .Append('[')
                 .Append(tuple.X.ToString("G"))
@@ -122,7 +122,7 @@ namespace GraphicsComposerLib.Rendering
                 .Append(']')
                 .ToString();
 
-        public static string ToJavaScriptNumbersArrayText(this IEnumerable<IFloat64Tuple2D> tuplesList)
+        public static string ToJavaScriptNumbersArrayText(this IEnumerable<IFloat64Vector2D> tuplesList)
         {
             var tuplesArray = tuplesList.ToArray();
 
@@ -154,7 +154,7 @@ namespace GraphicsComposerLib.Rendering
                 .ToString();
         }
 
-        public static string ToJavaScriptNumbersArrayText(this IEnumerable<IFloat64Tuple2D> tuplesList, string commentPrefix)
+        public static string ToJavaScriptNumbersArrayText(this IEnumerable<IFloat64Vector2D> tuplesList, string commentPrefix)
         {
             var tuplesArray = tuplesList.ToArray();
 
@@ -189,7 +189,7 @@ namespace GraphicsComposerLib.Rendering
         #endregion
 
         #region 3D Tuple Values Conversion
-        public static string ToJavaScriptNumbersArrayText(this IFloat64Tuple3D tuple)
+        public static string ToJavaScriptNumbersArrayText(this IFloat64Vector3D tuple)
             => new StringBuilder()
                 .Append('[')
                 .Append(tuple.X.ToString("G"))
@@ -200,7 +200,7 @@ namespace GraphicsComposerLib.Rendering
                 .Append(']')
                 .ToString();
 
-        public static string ToJavaScriptNumbersArrayText(this IEnumerable<IFloat64Tuple3D> tuplesList)
+        public static string ToJavaScriptNumbersArrayText(this IEnumerable<IFloat64Vector3D> tuplesList)
         {
             var tuplesArray = tuplesList.ToArray();
 
@@ -233,7 +233,7 @@ namespace GraphicsComposerLib.Rendering
                 .ToString();
         }
 
-        public static string ToJavaScriptNumbersArrayText(this IEnumerable<IFloat64Tuple3D> tuplesList, string commentPrefix)
+        public static string ToJavaScriptNumbersArrayText(this IEnumerable<IFloat64Vector3D> tuplesList, string commentPrefix)
         {
             var tuplesArray = tuplesList.ToArray();
 
@@ -284,7 +284,7 @@ namespace GraphicsComposerLib.Rendering
                 .ToString();
         }
         
-        public static string ToJavaScriptNumbersArrayText(this IFloat64Tuple4D tuple)
+        public static string ToJavaScriptNumbersArrayText(this IFloat64Vector4D tuple)
         {
             return new StringBuilder()
                 .Append('[')
@@ -299,7 +299,7 @@ namespace GraphicsComposerLib.Rendering
                 .ToString();
         }
 
-        public static string ToJavaScriptNumbersArrayText(this IEnumerable<IFloat64Tuple4D> tuplesList)
+        public static string ToJavaScriptNumbersArrayText(this IEnumerable<IFloat64Vector4D> tuplesList)
         {
             var tuplesArray = tuplesList.ToArray();
 
@@ -333,7 +333,7 @@ namespace GraphicsComposerLib.Rendering
                 .ToString();
         }
 
-        public static string ToJavaScriptNumbersArrayText(this IEnumerable<IFloat64Tuple4D> tuplesList, string commentPrefix)
+        public static string ToJavaScriptNumbersArrayText(this IEnumerable<IFloat64Vector4D> tuplesList, string commentPrefix)
         {
             var tuplesArray = tuplesList.ToArray();
 

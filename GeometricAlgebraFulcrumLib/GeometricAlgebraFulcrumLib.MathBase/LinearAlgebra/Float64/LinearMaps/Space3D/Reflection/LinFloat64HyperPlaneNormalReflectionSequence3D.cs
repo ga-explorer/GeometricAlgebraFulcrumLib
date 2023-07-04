@@ -185,7 +185,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.S
         
             for (var i = 0; i < count; i++)
             {
-                var u = random.GetLinVector3D();
+                var u = random.GetVector3D();
 
                 rotationSequence.AppendMap(
                     LinFloat64HyperPlaneNormalReflection3D.Create(u)
@@ -203,7 +203,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.S
             var rotationSequence = new LinFloat64HyperPlaneNormalReflectionSequence3D();
 
             var vectorList =
-                random.GetOrthonormalVectors(dimensions, count);
+                random.GetMathNetOrthonormalVectors(dimensions, count);
 
             for (var i = 0; i < count; i++)
             {
@@ -449,7 +449,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.S
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Float64Vector3D MapVector(IFloat64Tuple3D vector)
+        public override Float64Vector3D MapVector(IFloat64Vector3D vector)
         {
             if (_mapList.Count == 0)
                 return vector.ToVector3D();

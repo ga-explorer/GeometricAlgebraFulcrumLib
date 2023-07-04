@@ -9,7 +9,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.S
         LinFloat64DirectionalScalingLinearMap3D
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static LinFloat64VectorDirectionalScaling3D Create(double scalingFactor, IFloat64Tuple3D scalingVector)
+        public static LinFloat64VectorDirectionalScaling3D Create(double scalingFactor, IFloat64Vector3D scalingVector)
         {
             return new LinFloat64VectorDirectionalScaling3D(scalingFactor, scalingVector.ToVector3D());
         }
@@ -56,7 +56,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.S
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Float64Vector3D MapVector(IFloat64Tuple3D vector)
+        public override Float64Vector3D MapVector(IFloat64Vector3D vector)
         {
             var s = (ScalingFactor - 1d) * vector.ESp(ScalingVector);
 

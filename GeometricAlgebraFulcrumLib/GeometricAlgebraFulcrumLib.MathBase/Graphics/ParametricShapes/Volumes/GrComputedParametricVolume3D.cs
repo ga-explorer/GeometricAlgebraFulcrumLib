@@ -33,7 +33,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.ParametricShapes.Volumes
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Float64Vector3D GetPoint(IFloat64Tuple3D parameterValue)
+        public Float64Vector3D GetPoint(IFloat64Vector3D parameterValue)
         {
             return GetPointFunc is null
                 ? parameterValue.ToVector3D()
@@ -49,7 +49,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.ParametricShapes.Volumes
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public double GetScalarDistance(IFloat64Tuple3D parameterValue)
+        public double GetScalarDistance(IFloat64Vector3D parameterValue)
         {
             return GetScalarDistanceFunc(
                 parameterValue.Item1, 
@@ -69,7 +69,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.ParametricShapes.Volumes
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GrParametricVolumeLocalFrame3D GetFrame(IFloat64Tuple3D parameterValue)
+        public GrParametricVolumeLocalFrame3D GetFrame(IFloat64Vector3D parameterValue)
         {
             return new GrParametricVolumeLocalFrame3D(
                 this, 

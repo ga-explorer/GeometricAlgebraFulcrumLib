@@ -4,7 +4,6 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using DataStructuresLib.Basic;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 using MathNet.Numerics;
 
 // ReSharper disable CompareOfFloatsByEqualityOperator
@@ -172,49 +171,6 @@ namespace GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra
         public static bool IsAlmostEqual(this Complex x1, Complex x2)
         {
             return (x1 - x2).Magnitude.IsAlmostZero();
-        }
-        
-        /// <summary>
-        /// True if the given values are equal relative to the default accuracy
-        /// </summary>
-        /// <param name="x1"></param>
-        /// <param name="x2"></param>
-        /// <returns></returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsEqual(this IFloat64Tuple3D x1, IFloat64Tuple3D x2)
-        {
-            return
-                x1.X == x2.X &&
-                x1.Y == x2.Y &&
-                x1.Z == x2.Z;
-        }
-
-        /// <summary>
-        /// True if the given values are equal relative to the default accuracy
-        /// </summary>
-        /// <param name="x1"></param>
-        /// <param name="x2"></param>
-        /// <param name="epsilon"></param>
-        /// <returns></returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsNearEqual(this IFloat64Tuple3D x1, IFloat64Tuple3D x2, double epsilon = 1e-12d)
-        {
-            return x1.GetDistanceToPoint(x2).IsNearEqual(epsilon);
-        }
-
-        /// <summary>
-        /// True if the given values are equal relative to the default accuracy
-        /// </summary>
-        /// <param name="x1"></param>
-        /// <param name="x2"></param>
-        /// <returns></returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsNegativeEqual(this IFloat64Tuple3D x1, IFloat64Tuple3D x2)
-        {
-            return
-                -x1.X == x2.X &&
-                -x1.Y == x2.Y &&
-                -x1.Z == x2.Z;
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -519,6 +475,34 @@ namespace GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra
         {
             return (long)Math.Round(number);
         }
+        public static double ClampToUnit(this double scalar)
+        {
+            if (scalar < 0.0d) return 0.0d;
+            if (scalar > 1.0d) return 1.0d;
+            return scalar;
+        }
+
+        public static double ClampTo(this double scalar, double maxValue)
+        {
+            if (scalar < 0.0d) return 0.0d;
+            if (scalar > maxValue) return maxValue;
+            return scalar;
+        }
+
+        public static double ClampTo(this double scalar, double minValue, double maxValue)
+        {
+            if (scalar < minValue) return minValue;
+            if (scalar > maxValue) return maxValue;
+            return scalar;
+        }
+
+        public static double ClampToSymmetric(this double scalar, double maxValue)
+        {
+            if (scalar < -maxValue) return -maxValue;
+            if (scalar > maxValue) return maxValue;
+            return scalar;
+        }
+
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static double Clamp(this double number, double minValue, double maxValue)
@@ -985,24 +969,6 @@ namespace GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra
         //{
         //    return !element.IsValid();
         //}
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Float64PlanarAngle DegreesToAngle(this int angleInDegrees)
-        {
-            return Float64PlanarAngle.CreateFromDegrees(angleInDegrees);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Float64PlanarAngle DegreesToAngle(this double angleInDegrees)
-        {
-            return Float64PlanarAngle.CreateFromDegrees(angleInDegrees);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Float64PlanarAngle RadiansToAngle(this double angleInRadians)
-        {
-            return Float64PlanarAngle.CreateFromRadians(angleInRadians);
-        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static double GetFractionPart(this double value)

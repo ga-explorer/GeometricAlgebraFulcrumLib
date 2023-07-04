@@ -15,7 +15,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsMesh.Space2D
         public int Count
             => BaseMesh.MeshPointsCount;
 
-        public IFloat64Tuple2D this[int index]
+        public IFloat64Vector2D this[int index]
         {
             get
             {
@@ -33,7 +33,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsMesh.Space2D
         public int Count2
             => BaseMesh.Count;
 
-        public IFloat64Tuple2D this[int index1, int index2]
+        public IFloat64Vector2D this[int index1, int index2]
             => BaseMesh[index2][index1];
 
         public bool IsBasic
@@ -49,7 +49,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsMesh.Space2D
         }
 
 
-        public PSeqSlice1D<IFloat64Tuple2D> GetSliceAt(int dimension, int index)
+        public PSeqSlice1D<IFloat64Vector2D> GetSliceAt(int dimension, int index)
         {
             return new PointsMeshSlicePointsPath2D(this, dimension, index);
         }
@@ -59,7 +59,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsMesh.Space2D
             return new PointsMeshSlicePointsPath2D(this, dimension, index);
         }
 
-        public IEnumerator<IFloat64Tuple2D> GetEnumerator()
+        public IEnumerator<IFloat64Vector2D> GetEnumerator()
         {
             return BaseMesh.SelectMany(p => p).GetEnumerator();
         }

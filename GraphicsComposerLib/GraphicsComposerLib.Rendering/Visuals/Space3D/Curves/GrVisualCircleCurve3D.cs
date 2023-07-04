@@ -27,7 +27,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Curves
         );
 
 
-        public static GrVisualCircleCurve3D CreateStatic(string name, GrVisualCurveStyle3D style, IFloat64Tuple3D normal, double radius)
+        public static GrVisualCircleCurve3D CreateStatic(string name, GrVisualCurveStyle3D style, IFloat64Vector3D normal, double radius)
         {
             return new GrVisualCircleCurve3D(
                 name,
@@ -39,7 +39,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Curves
             );
         }
 
-        public static GrVisualCircleCurve3D CreateStatic(string name, GrVisualCurveStyle3D style, IFloat64Tuple3D center, IFloat64Tuple3D normal, double radius)
+        public static GrVisualCircleCurve3D CreateStatic(string name, GrVisualCurveStyle3D style, IFloat64Vector3D center, IFloat64Vector3D normal, double radius)
         {
             return new GrVisualCircleCurve3D(
                 name,
@@ -51,7 +51,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Curves
             );
         }
         
-        public static GrVisualCircleCurve3D Create(string name, GrVisualCurveStyle3D style, IFloat64Tuple3D normal, double radius, GrVisualAnimationSpecs animationSpecs)
+        public static GrVisualCircleCurve3D Create(string name, GrVisualCurveStyle3D style, IFloat64Vector3D normal, double radius, GrVisualAnimationSpecs animationSpecs)
         {
             return new GrVisualCircleCurve3D(
                 name,
@@ -63,7 +63,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Curves
             );
         }
 
-        public static GrVisualCircleCurve3D Create(string name, GrVisualCurveStyle3D style, IFloat64Tuple3D center, IFloat64Tuple3D normal, double radius, GrVisualAnimationSpecs animationSpecs)
+        public static GrVisualCircleCurve3D Create(string name, GrVisualCurveStyle3D style, IFloat64Vector3D center, IFloat64Vector3D normal, double radius, GrVisualAnimationSpecs animationSpecs)
         {
             return new GrVisualCircleCurve3D(
                 name,
@@ -103,7 +103,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Curves
         }
 
 
-        public IFloat64Tuple3D Center { get; }
+        public IFloat64Vector3D Center { get; }
 
         public Float64Vector3D Normal { get; }
 
@@ -122,7 +122,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Curves
         public GrVisualAnimatedVector1D? AnimatedRadius { get; set; }
         
         
-        private GrVisualCircleCurve3D(string name, GrVisualCurveStyle3D style, IFloat64Tuple3D center, IFloat64Tuple3D normal, double radius, GrVisualAnimationSpecs animationSpecs) 
+        private GrVisualCircleCurve3D(string name, GrVisualCurveStyle3D style, IFloat64Vector3D center, IFloat64Vector3D normal, double radius, GrVisualAnimationSpecs animationSpecs) 
             : base(name, style, animationSpecs)
         {
             Center = center;

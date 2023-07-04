@@ -305,6 +305,16 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
                 -Scalar23
             );
         }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Float64Bivector3D Negative(double scalingFactor)
+        {
+            return new Float64Bivector3D(
+                -Scalar12 * scalingFactor,
+                -Scalar13 * scalingFactor,
+                -Scalar23 * scalingFactor
+            );
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Float64Bivector3D GradeInvolution()
@@ -323,14 +333,20 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
         {
             return Negative();
         }
-        
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Float64Bivector3D Inverse()
+        {
+            return Negative(1d / NormSquared().Value);
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Float64Vector3D Dual3D()
         {
             return Float64Vector3D.Create(
-                -Scalar23, 
-                Scalar13, 
-                -Scalar12
+                Scalar23, 
+                -Scalar13, 
+                Scalar12
             );
         }
         
@@ -338,9 +354,9 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
         public Float64Vector3D Dual3D(double scalingFactor)
         {
             return Float64Vector3D.Create(
-                -Scalar23 * scalingFactor, 
-                Scalar13 * scalingFactor, 
-                -Scalar12 * scalingFactor
+                Scalar23 * scalingFactor, 
+                -Scalar13 * scalingFactor, 
+                Scalar12 * scalingFactor
             );
         }
 
@@ -348,9 +364,9 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
         public Float64Vector3D UnDual3D()
         {
             return Float64Vector3D.Create(
-                Scalar23,
-                -Scalar13,
-                Scalar12
+                -Scalar23,
+                Scalar13,
+                -Scalar12
             );
         }
         
@@ -358,9 +374,9 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
         public Float64Vector3D UnDual3D(double scalingFactor)
         {
             return Float64Vector3D.Create(
-                Scalar23 * scalingFactor,
-                -Scalar13 * scalingFactor,
-                Scalar12 * scalingFactor
+                -Scalar23 * scalingFactor,
+                Scalar13 * scalingFactor,
+                -Scalar12 * scalingFactor
             );
         }
 

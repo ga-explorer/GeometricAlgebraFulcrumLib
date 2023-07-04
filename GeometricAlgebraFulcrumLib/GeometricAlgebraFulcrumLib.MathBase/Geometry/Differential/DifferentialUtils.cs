@@ -123,9 +123,9 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Differential
             // Modify some input points to ensure continuous first derivative
             for (var j = bezierDegree; j < valueCount - bezierDegree; j += bezierDegree)
             {
-                var p0 = new Float64Vector2D(xArray[j - 1], yArray[j - 1]);
-                var p1 = new Float64Vector2D(xArray[j], yArray[j]);
-                var p2 = new Float64Vector2D(xArray[j + 1], yArray[j + 1]);
+                var p0 = Float64Vector2D.Create((Float64Scalar)xArray[j - 1], (Float64Scalar)yArray[j - 1]);
+                var p1 = Float64Vector2D.Create((Float64Scalar)xArray[j], (Float64Scalar)yArray[j]);
+                var p2 = Float64Vector2D.Create((Float64Scalar)xArray[j + 1], (Float64Scalar)yArray[j + 1]);
 
                 var t = (p1.X - p0.X) / (p2.X - p0.X);
                 var s = 1d - t;
@@ -191,7 +191,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Differential
 
             if (assumeUniformX)
                 return xOutputList.Count.GetRange().Select(idx =>
-                    new Float64Vector2D(xOutputList[idx], yOutputList[idx])
+                    Float64Vector2D.Create((Float64Scalar)xOutputList[idx], (Float64Scalar)yOutputList[idx])
                 );
 
             // Apply linear interpolation re-sampling to make x values uniform
@@ -242,7 +242,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Differential
             }
 
             return xOutputList.Count.GetRange().Select(idx =>
-                new Float64Vector2D(xUniformArray[idx], yUniformArray[idx])
+                Float64Vector2D.Create((Float64Scalar)xUniformArray[idx], (Float64Scalar)yUniformArray[idx])
             );
         }
 
@@ -258,9 +258,9 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Differential
             // Modify some input points to ensure continuous first derivative
             for (var j = bezierDegree; j < valueCount - bezierDegree; j += bezierDegree)
             {
-                var p0 = new Float64Vector2D(xArray[j - 1], yArray[j - 1]);
-                var p1 = new Float64Vector2D(xArray[j], yArray[j]);
-                var p2 = new Float64Vector2D(xArray[j + 1], yArray[j + 1]);
+                var p0 = Float64Vector2D.Create((Float64Scalar)xArray[j - 1], (Float64Scalar)yArray[j - 1]);
+                var p1 = Float64Vector2D.Create((Float64Scalar)xArray[j], (Float64Scalar)yArray[j]);
+                var p2 = Float64Vector2D.Create((Float64Scalar)xArray[j + 1], (Float64Scalar)yArray[j + 1]);
 
                 var v = (p2 - p0).ToUnitVector();
                 var q0 = (p0 - p1).ProjectOnUnitVector(v) + p1;

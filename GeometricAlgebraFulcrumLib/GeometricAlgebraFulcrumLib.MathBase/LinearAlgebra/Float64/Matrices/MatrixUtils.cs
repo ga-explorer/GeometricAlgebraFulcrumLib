@@ -48,7 +48,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices
             var tupleList = new Float64Vector[matrix.ColumnCount];
 
             for (var i = 0; i < matrix.ColumnCount; i++)
-                tupleList[i] = matrix.Column(i).ToTuple();
+                tupleList[i] = matrix.Column(i).ToVector();
 
             return tupleList;
         }
@@ -68,7 +68,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Float64Vector MapVector(this Matrix<double> matrix, Float64Vector vector)
         {
-            return (matrix * vector.ToMathNetVector()).ToTuple();
+            return (matrix * vector.ToMathNetVector()).ToVector();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -609,16 +609,14 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Float64Vector2D MapAffineVector(this SquareMatrix3 matrix, IFloat64Tuple2D vector)
+        public static Float64Vector2D MapAffineVector(this SquareMatrix3 matrix, IFloat64Vector2D vector)
         {
-            return new Float64Vector2D(
-                matrix[0, 0] * vector.X + matrix[0, 1] * vector.Y,
-                matrix[1, 0] * vector.X + matrix[1, 1] * vector.Y
-            );
+            return Float64Vector2D.Create(matrix[0, 0] * vector.X + matrix[0, 1] * vector.Y,
+                matrix[1, 0] * vector.X + matrix[1, 1] * vector.Y);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Float64Vector3D MapAffineVector(this SquareMatrix4 matrix, IFloat64Tuple3D vector)
+        public static Float64Vector3D MapAffineVector(this SquareMatrix4 matrix, IFloat64Vector3D vector)
         {
             return Float64Vector3D.Create(matrix[0, 0] * vector.X + matrix[0, 1] * vector.Y + matrix[0, 2] * vector.Z,
                 matrix[1, 0] * vector.X + matrix[1, 1] * vector.Y + matrix[1, 2] * vector.Z,
@@ -626,7 +624,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Pair<Float64Vector2D> MapAffineVectors(this SquareMatrix3 matrix, IFloat64Tuple2D vector1, IFloat64Tuple2D vector2)
+        public static Pair<Float64Vector2D> MapAffineVectors(this SquareMatrix3 matrix, IFloat64Vector2D vector1, IFloat64Vector2D vector2)
         {
             return new Pair<Float64Vector2D>(
                 matrix.MapAffineVector(vector1),
@@ -635,7 +633,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Pair<Float64Vector3D> MapAffineVectors(this SquareMatrix4 matrix, IFloat64Tuple3D vector1, IFloat64Tuple3D vector2)
+        public static Pair<Float64Vector3D> MapAffineVectors(this SquareMatrix4 matrix, IFloat64Vector3D vector1, IFloat64Vector3D vector2)
         {
             return new Pair<Float64Vector3D>(
                 matrix.MapAffineVector(vector1),
@@ -644,7 +642,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Triplet<Float64Vector2D> MapAffineVectors(this SquareMatrix3 matrix, IFloat64Tuple2D vector1, IFloat64Tuple2D vector2, IFloat64Tuple2D vector3)
+        public static Triplet<Float64Vector2D> MapAffineVectors(this SquareMatrix3 matrix, IFloat64Vector2D vector1, IFloat64Vector2D vector2, IFloat64Vector2D vector3)
         {
             return new Triplet<Float64Vector2D>(
                 matrix.MapAffineVector(vector1),
@@ -654,7 +652,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Triplet<Float64Vector3D> MapAffineVectors(this SquareMatrix4 matrix, IFloat64Tuple3D vector1, IFloat64Tuple3D vector2, IFloat64Tuple3D vector3)
+        public static Triplet<Float64Vector3D> MapAffineVectors(this SquareMatrix4 matrix, IFloat64Vector3D vector1, IFloat64Vector3D vector2, IFloat64Vector3D vector3)
         {
             return new Triplet<Float64Vector3D>(
                 matrix.MapAffineVector(vector1),
@@ -664,7 +662,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Float64Vector2D MapAffinePoint(this SquareMatrix3 matrix, IFloat64Tuple2D point)
+        public static Float64Vector2D MapAffinePoint(this SquareMatrix3 matrix, IFloat64Vector2D point)
         {
             var x = matrix[0, 0] * point.X + matrix[0, 1] * point.Y + matrix[0, 2];
             var y = matrix[1, 0] * point.X + matrix[1, 1] * point.Y + matrix[1, 2];
@@ -672,11 +670,11 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices
 
             w = 1d / w;
 
-            return new Float64Vector2D(x * w, y * w);
+            return Float64Vector2D.Create(x * w, y * w);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Float64Vector3D MapAffinePoint(this SquareMatrix4 matrix, IFloat64Tuple3D point)
+        public static Float64Vector3D MapAffinePoint(this SquareMatrix4 matrix, IFloat64Vector3D point)
         {
             var x = matrix[0, 0] * point.X + matrix[0, 1] * point.Y + matrix[0, 2] * point.Z + matrix[0, 3];
             var y = matrix[1, 0] * point.X + matrix[1, 1] * point.Y + matrix[1, 2] * point.Z + matrix[1, 3];

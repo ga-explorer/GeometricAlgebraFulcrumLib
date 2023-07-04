@@ -3,7 +3,7 @@
 namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D
 {
     public interface IFloat64PolarVector2D : 
-        IFloat64Tuple2D
+        IFloat64Vector2D
     {
         Float64Scalar R { get; }
 

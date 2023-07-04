@@ -3,11 +3,12 @@ using DataStructuresLib.Collections;
 using DataStructuresLib.Sequences.Periodic1D;
 using DataStructuresLib.Sequences.Periodic2D;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Textures
 {
     public sealed class GraphicsTextureCoordinatesGrid
-        : IPeriodicSequence2D<IFloat64Tuple2D>
+        : IPeriodicSequence2D<IFloat64Vector2D>
     {
         public IReadOnlyList<double> TextureURange { get; }
 
@@ -22,24 +23,20 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Textures
         public int Count 
             => TextureURange.Count * TextureVRange.Count;
 
-        public IFloat64Tuple2D this[int index]
+        public IFloat64Vector2D this[int index]
         {
             get
             {
                 var (index1, index2) = this.GetItemIndexPair(index);
 
-                return new Float64Vector2D(
-                    TextureURange[index1],
-                    TextureVRange[index2]
-                );
+                return Float64Vector2D.Create((Float64Scalar)TextureURange[index1],
+                    (Float64Scalar)TextureVRange[index2]);
             }
         }
 
-        public IFloat64Tuple2D this[int index1, int index2] 
-            => new Float64Vector2D(
-                TextureURange[index1],
-                TextureVRange[index2]
-            );
+        public IFloat64Vector2D this[int index1, int index2] 
+            => Float64Vector2D.Create((Float64Scalar)TextureURange[index1],
+                (Float64Scalar)TextureVRange[index2]);
 
         public bool IsBasic 
             => true;
@@ -55,16 +52,16 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Textures
         }
 
 
-        public PSeqSlice1D<IFloat64Tuple2D> GetSliceAt(int dimension, int index)
+        public PSeqSlice1D<IFloat64Vector2D> GetSliceAt(int dimension, int index)
         {
-            return new PSeqSlice1D<IFloat64Tuple2D>(this, dimension, index);
+            return new PSeqSlice1D<IFloat64Vector2D>(this, dimension, index);
         }
 
-        public IEnumerator<IFloat64Tuple2D> GetEnumerator()
+        public IEnumerator<IFloat64Vector2D> GetEnumerator()
         {
             foreach (var value1 in TextureURange)
             foreach (var value2 in TextureVRange)
-                yield return new Float64Vector2D(value1, value2);
+                yield return Float64Vector2D.Create((Float64Scalar)value1, (Float64Scalar)value2);
         }
 
         IEnumerator IEnumerable.GetEnumerator()

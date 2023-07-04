@@ -1,6 +1,7 @@
 ﻿using DataStructuresLib.Statistics;
 using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace NumericalGeometryLib.Computers.Reflections
 {
@@ -28,7 +29,7 @@ namespace NumericalGeometryLib.Computers.Reflections
         }
 
 
-        public Float64Vector2D ReflectPointVa(IFloat64Tuple2D point)
+        public Float64Vector2D ReflectPointVa(IFloat64Vector2D point)
         {
             //https://math.stackexchange.com/questions/281503/reflecting-a-point-by-a-line-in-mathbb-r3
 
@@ -43,13 +44,11 @@ namespace NumericalGeometryLib.Computers.Reflections
 
             var s = LineSegment.GetPointAt(t0);
 
-            return new Float64Vector2D(
-                2 * s.X - point.X,
-                2 * s.Y - point.Y
-            );
+            return Float64Vector2D.Create(2 * s.X - point.X,
+                2 * s.Y - point.Y);
         }
         
-        public Float64Vector2D ReflectPoint(IFloat64Tuple2D point)
+        public Float64Vector2D ReflectPoint(IFloat64Vector2D point)
         {
             ComputePointReflectionCounter.Begin();
 
@@ -165,7 +164,7 @@ namespace NumericalGeometryLib.Computers.Reflections
 
             ComputePointReflectionCounter.End();
 
-            return new Float64Vector2D(pointImageX, pointImageY);
+            return Float64Vector2D.Create((Float64Scalar)pointImageX, (Float64Scalar)pointImageY);
         }
     }
 }

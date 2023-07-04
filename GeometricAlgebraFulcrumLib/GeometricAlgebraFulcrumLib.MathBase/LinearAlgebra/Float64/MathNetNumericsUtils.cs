@@ -10,55 +10,55 @@ public static class MathNetNumericsUtils
 {
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static MathNet.Numerics.LinearAlgebra.Vector<double> ToVector(this double[] array)
+    public static Vector<double> ToMathNetVector(this double[] array)
     {
-        return MathNet.Numerics.LinearAlgebra.Vector<double>.Build.DenseOfArray(array);
+        return Vector<double>.Build.DenseOfArray(array);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static MathNet.Numerics.LinearAlgebra.Vector<double> ToVector(this IEnumerable<double> scalarList)
+    public static Vector<double> ToMathNetVector(this IEnumerable<double> scalarList)
     {
-        return MathNet.Numerics.LinearAlgebra.Vector<double>.Build.DenseOfEnumerable(scalarList);
+        return Vector<double>.Build.DenseOfEnumerable(scalarList);
     }
         
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static MathNet.Numerics.LinearAlgebra.Vector<double> ToVector(this IReadOnlyDictionary<int, double> scalarList, int size)
+    public static Vector<double> ToMathNetVector(this IReadOnlyDictionary<int, double> scalarList, int size)
     {
         var array = new double[size];
 
         foreach (var (i, s) in scalarList)
             array[i] = s;
 
-        return MathNet.Numerics.LinearAlgebra.Vector<double>.Build.DenseOfArray(array);
+        return Vector<double>.Build.DenseOfArray(array);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Vector ToTuple(this MathNet.Numerics.LinearAlgebra.Vector<double> vector)
+    public static Float64Vector ToVector(this Vector<double> vector)
     {
-        return vector.ToArray().CreateTuple();
+        return vector.ToArray().CreateVector();
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double GetVectorNorm(this MathNet.Numerics.LinearAlgebra.Vector<double> vector)
+    public static double GetVectorNorm(this Vector<double> vector)
     {
         return vector.DotProduct(vector).Sqrt();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double GetVectorNormSquared(this MathNet.Numerics.LinearAlgebra.Vector<double> vector)
+    public static double GetVectorNormSquared(this Vector<double> vector)
     {
         return vector.DotProduct(vector);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static double VectorDot(this MathNet.Numerics.LinearAlgebra.Vector<double> vector1, MathNet.Numerics.LinearAlgebra.Vector<double> vector2)
+    public static double VectorDot(this Vector<double> vector1, Vector<double> vector2)
     {
         return vector1.DotProduct(vector2);
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Matrix<double> GetOrthogonalMatrix(this System.Random random, int size)
+    public static Matrix<double> GetMathNetOrthogonalMatrix(this System.Random random, int size)
     {
         return random
             .GetFloat64Array2D(size, size)
@@ -67,11 +67,11 @@ public static class MathNetNumericsUtils
             .Q;
     }
 
-    public static IReadOnlyList<Vector<double>> GetOrthonormalVectors(this System.Random random, int size, int count)
+    public static IReadOnlyList<Vector<double>> GetMathNetOrthonormalVectors(this System.Random random, int size, int count)
     {
         count = Math.Min(count, size);
 
-        var matrix = random.GetOrthogonalMatrix(size);
+        var matrix = random.GetMathNetOrthogonalMatrix(size);
 
         var vectorArray = new Vector<double>[count];
 

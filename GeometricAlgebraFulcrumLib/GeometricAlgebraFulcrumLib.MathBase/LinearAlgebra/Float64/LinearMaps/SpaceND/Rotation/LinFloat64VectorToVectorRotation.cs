@@ -4,7 +4,6 @@ using System.Runtime.CompilerServices;
 using DataStructuresLib.Basic;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.SpaceND;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 using MathNet.Numerics.LinearAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.SpaceND.Rotation

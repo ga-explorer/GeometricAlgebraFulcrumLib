@@ -18,7 +18,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Transforms
             };
         }
         
-        public static XeoglQRotateScaleTranslateTransform CreateTranslate(IFloat64Tuple3D t)
+        public static XeoglQRotateScaleTranslateTransform CreateTranslate(IFloat64Vector3D t)
         {
             return new XeoglQRotateScaleTranslateTransform()
             {
@@ -28,7 +28,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Transforms
             };
         }
 
-        public static XeoglQRotateScaleTranslateTransform CreateRotate(double angle, IFloat64Tuple3D rotateVector)
+        public static XeoglQRotateScaleTranslateTransform CreateRotate(double angle, IFloat64Vector3D rotateVector)
         {
             var d = 1 / rotateVector.ENorm();
             var cosAngle = d * Math.Cos(angle / 2);
@@ -43,7 +43,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Transforms
             };
         }
 
-        public static XeoglQRotateScaleTranslateTransform CreateRotate(IFloat64Tuple3D vector1, IFloat64Tuple3D vector2)
+        public static XeoglQRotateScaleTranslateTransform CreateRotate(IFloat64Vector3D vector1, IFloat64Vector3D vector2)
         {
             var lengthSquared1 = vector1.ENormSquared();
             var lengthSquared2 = vector2.ENormSquared();
@@ -161,7 +161,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Transforms
             };
         }
 
-        public static XeoglQRotateScaleTranslateTransform CreateRotateScale(double angle, IFloat64Tuple3D rotateVector)
+        public static XeoglQRotateScaleTranslateTransform CreateRotateScale(double angle, IFloat64Vector3D rotateVector)
         {
             var scaleFactor = rotateVector.ENorm();
             var d = 1 / scaleFactor;
@@ -180,7 +180,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Transforms
             };
         }
 
-        public static XeoglQRotateScaleTranslateTransform CreateRotateScale(IFloat64Tuple3D vector1, IFloat64Tuple3D vector2)
+        public static XeoglQRotateScaleTranslateTransform CreateRotateScale(IFloat64Vector3D vector1, IFloat64Vector3D vector2)
         {
             var lengthSquared1 = vector1.ENormSquared();
             var lengthSquared2 = vector2.ENormSquared();
@@ -287,7 +287,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Transforms
             => Float64Vector3D.Create(TranslateX, TranslateY, TranslateZ);
 
 
-        public XeoglQRotateScaleTranslateTransform SetQuaternion(IFloat64Tuple4D quaternionTuple)
+        public XeoglQRotateScaleTranslateTransform SetQuaternion(IFloat64Vector4D quaternionTuple)
         {
             QuaternionX = quaternionTuple.X;
             QuaternionY = quaternionTuple.Y;
@@ -317,7 +317,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Transforms
             return this;
         }
 
-        public XeoglQRotateScaleTranslateTransform SetScale(IFloat64Tuple3D scaleTuple)
+        public XeoglQRotateScaleTranslateTransform SetScale(IFloat64Vector3D scaleTuple)
         {
             ScaleX = scaleTuple.X;
             ScaleY = scaleTuple.Y;
@@ -336,7 +336,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Transforms
         }
 
 
-        public XeoglQRotateScaleTranslateTransform SetTranslate(IFloat64Tuple3D translateTuple)
+        public XeoglQRotateScaleTranslateTransform SetTranslate(IFloat64Vector3D translateTuple)
         {
             TranslateX = translateTuple.X;
             TranslateY = translateTuple.Y;

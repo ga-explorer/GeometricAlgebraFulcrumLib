@@ -1,5 +1,6 @@
 ﻿using DataStructuresLib.Basic;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 using WebComposerLib.Colors;
 using WebComposerLib.Html.Media;
 using WebComposerLib.Svg.Content;
@@ -451,10 +452,8 @@ namespace GraphicsComposerLib.Rendering.Svg.DrawingBoard
             var pointsList = Enumerable
                 .Range(0, sidesCount)
                 .Select(i => offsetAngle + i * angleFactor)
-                .Select(a => (IFloat64Tuple2D)new Float64Vector2D(
-                    centerX + radius * Math.Cos(a),
-                    centerY + radius * Math.Sin(a)
-                ));
+                .Select(a => (IFloat64Vector2D)Float64Vector2D.Create((Float64Scalar)(centerX + radius * Math.Cos(a)),
+                    (Float64Scalar)(centerY + radius * Math.Sin(a))));
 
             return DrawPolygon(pointsList);
         }
@@ -464,7 +463,7 @@ namespace GraphicsComposerLib.Rendering.Svg.DrawingBoard
         /// </summary>
         /// <param name="pointsList"></param>
         /// <returns></returns>
-        public SvgDrawingBoardLayer DrawPolygon(IEnumerable<IFloat64Tuple2D> pointsList)
+        public SvgDrawingBoardLayer DrawPolygon(IEnumerable<IFloat64Vector2D> pointsList)
         {
             var polygon = SvgElementPolygon
                 .Create()
@@ -483,7 +482,7 @@ namespace GraphicsComposerLib.Rendering.Svg.DrawingBoard
         /// </summary>
         /// <param name="pointsList"></param>
         /// <returns></returns>
-        public SvgDrawingBoardLayer DrawPolygon(params IFloat64Tuple2D[] pointsList)
+        public SvgDrawingBoardLayer DrawPolygon(params IFloat64Vector2D[] pointsList)
         {
             var polygon = SvgElementPolygon
                 .Create()
@@ -502,7 +501,7 @@ namespace GraphicsComposerLib.Rendering.Svg.DrawingBoard
         /// </summary>
         /// <param name="pointsList"></param>
         /// <returns></returns>
-        public SvgDrawingBoardLayer DrawPolyline(IEnumerable<IFloat64Tuple2D> pointsList)
+        public SvgDrawingBoardLayer DrawPolyline(IEnumerable<IFloat64Vector2D> pointsList)
         {
             var polygon = SvgElementPolyline
                 .Create()
@@ -521,7 +520,7 @@ namespace GraphicsComposerLib.Rendering.Svg.DrawingBoard
         /// </summary>
         /// <param name="pointsList"></param>
         /// <returns></returns>
-        public SvgDrawingBoardLayer DrawPolyline(params IFloat64Tuple2D[] pointsList)
+        public SvgDrawingBoardLayer DrawPolyline(params IFloat64Vector2D[] pointsList)
         {
             var polylineElement = SvgElementPolyline
                 .Create()
@@ -558,7 +557,7 @@ namespace GraphicsComposerLib.Rendering.Svg.DrawingBoard
         /// <param name="center"></param>
         /// <param name="pixelsRadius"></param>
         /// <returns></returns>
-        public SvgDrawingBoardLayer DrawCircleMarker(IFloat64Tuple2D center, int pixelsRadius)
+        public SvgDrawingBoardLayer DrawCircleMarker(IFloat64Vector2D center, int pixelsRadius)
         {
             return DrawCircle(
                 center.X,

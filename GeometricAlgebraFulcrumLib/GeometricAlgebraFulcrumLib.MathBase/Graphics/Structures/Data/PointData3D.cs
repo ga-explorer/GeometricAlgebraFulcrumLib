@@ -8,7 +8,7 @@ using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Structures.Data
 {
     public sealed record PointData3D<T> :
-        IFloat64Tuple3D
+        IFloat64Vector3D
     {
         public bool IsValid() =>
             !double.IsNaN(X) &&

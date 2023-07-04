@@ -3,6 +3,7 @@ using System.Diagnostics;
 using DataStructuresLib.Basic;
 using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Triangles;
 using GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Vertices;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Frames.Space3D;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
@@ -55,8 +56,8 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Triangles
         }
             
 
-        private readonly IReadOnlyList<IFloat64Tuple3D> _vertexPoints;
-        public IEnumerable<IFloat64Tuple3D> GeometryPoints 
+        private readonly IReadOnlyList<IFloat64Vector3D> _vertexPoints;
+        public IEnumerable<IFloat64Vector3D> GeometryPoints 
             => _vertexPoints;
 
         public abstract IEnumerable<int> GeometryIndices { get; }
@@ -65,7 +66,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Triangles
 
         public abstract ITriangle3D this[int index] { get; }
 
-        public abstract IEnumerable<Triplet<IFloat64Tuple3D>> TriangleVertexPoints { get; }
+        public abstract IEnumerable<Triplet<IFloat64Vector3D>> TriangleVertexPoints { get; }
 
         public abstract IEnumerable<Triplet<int>> TriangleVertexIndices { get; }
 
@@ -78,11 +79,11 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Triangles
             = GrVertexNormalComputationMethod.AverageNormals;
 
         private Normal3D[] _vertexNormals;
-        public IEnumerable<IFloat64Tuple3D> VertexNormals 
+        public IEnumerable<IFloat64Vector3D> VertexNormals 
             => _vertexNormals;
 
-        private IFloat64Tuple2D[] _vertexUVs;
-        public IEnumerable<IFloat64Tuple2D> VertexTextureUVs
+        private IFloat64Vector2D[] _vertexUVs;
+        public IEnumerable<IFloat64Vector2D> VertexTextureUVs
             => _vertexUVs;
 
         private Color[] _vertexColors;
@@ -101,13 +102,13 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Triangles
         public bool AutoVertexNormals { get; set; }
 
 
-        protected GrTriangleGeometryBase3D(IReadOnlyList<IFloat64Tuple3D> pointsList)
+        protected GrTriangleGeometryBase3D(IReadOnlyList<IFloat64Vector3D> pointsList)
         {
             _vertexPoints = pointsList;
         }
 
         
-        public IFloat64Tuple3D GetGeometryPoint(int index)
+        public IFloat64Vector3D GetGeometryPoint(int index)
         {
             return _vertexPoints[index];
         }
@@ -142,7 +143,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Triangles
             _vertexNormals = vertexNormals;
         }
 
-        public void SetVertexUVs(IFloat64Tuple2D[] vertexUVs)
+        public void SetVertexUVs(IFloat64Vector2D[] vertexUVs)
         {
             if (vertexUVs.Length != _vertexPoints.Count)
                 throw new InvalidOperationException();
@@ -187,7 +188,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Triangles
 
                 //Find triangle normal, not unit but full normal vector
                 var normal = 
-                    Float64Vector3DUtils.GetTriangleNormal(vertex1, vertex2, vertex3);
+                    Float64Vector3DAffineUtils.GetTriangleNormal(vertex1, vertex2, vertex3);
 
                 //For debugging only
                 Debug.Assert(
@@ -211,7 +212,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Triangles
             {
                 //Find triangle unit normal
                 var normal = 
-                    Float64Vector3DUtils.GetTriangleNormal(vertex1, vertex2, vertex3);
+                    Float64Vector3DAffineUtils.GetTriangleNormal(vertex1, vertex2, vertex3);
                 
                 //For debugging only
                 Debug.Assert(normal.IsValid());
@@ -227,7 +228,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Triangles
             {
                 //Find triangle normal, not unit but full normal vector
                 var normal = 
-                    Float64Vector3DUtils.GetTriangleNormal(vertex1, vertex2, vertex3);
+                    Float64Vector3DAffineUtils.GetTriangleNormal(vertex1, vertex2, vertex3);
 
                 //For debugging only
                 Debug.Assert(normal.IsValid());

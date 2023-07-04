@@ -115,7 +115,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices
             return m;
         }
 
-        public static SquareMatrix3 CreateAxisToVectorRotationMatrix3D(LinUnitBasisVector3D axis, IFloat64Tuple3D unitVector)
+        public static SquareMatrix3 CreateAxisToVectorRotationMatrix3D(LinUnitBasisVector3D axis, IFloat64Vector3D unitVector)
         {
             //Debug.Assert(unitVector.IsNearUnitVector());
             
@@ -276,7 +276,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices
             throw new InvalidOperationException();
         }
 
-        public static SquareMatrix3 CreateVectorToAxisRotationMatrix3D(IFloat64Tuple3D unitVector, LinUnitBasisVector3D axis)
+        public static SquareMatrix3 CreateVectorToAxisRotationMatrix3D(IFloat64Vector3D unitVector, LinUnitBasisVector3D axis)
         {
             //Debug.Assert(unitVector.IsValid() && unitVector.IsNearUnitVector());
             
@@ -437,7 +437,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices
             throw new InvalidOperationException();
         }
 
-        public static SquareMatrix3 CreateVectorToVectorRotationMatrix3D(IFloat64Tuple3D unitVector1, IFloat64Tuple3D unitVector2)
+        public static SquareMatrix3 CreateVectorToVectorRotationMatrix3D(IFloat64Vector3D unitVector1, IFloat64Vector3D unitVector2)
         {
             //Debug.Assert(
             //    unitVector1.IsNearUnitVector() && 
@@ -548,7 +548,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Float64Vector3D operator *(SquareMatrix3 m, IFloat64Tuple3D vector)
+        public static Float64Vector3D operator *(SquareMatrix3 m, IFloat64Vector3D vector)
         {
             var x = vector.X;
             var y = vector.Y;
@@ -560,7 +560,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Float64Vector3D operator *(IFloat64Tuple3D vector, SquareMatrix3 m)
+        public static Float64Vector3D operator *(IFloat64Vector3D vector, SquareMatrix3 m)
         {
             var x = vector.X;
             var y = vector.Y;
@@ -1220,29 +1220,25 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Float64Vector2D MapPoint(IFloat64Tuple2D point)
+        public Float64Vector2D MapPoint(IFloat64Vector2D point)
         {
             Debug.Assert(IsAffine2D());
 
-            return new Float64Vector2D(
-                Scalar00 * point.X + Scalar01 * point.Y + Scalar02,
-                Scalar10 * point.X + Scalar11 * point.Y + Scalar12
-            ); 
+            return Float64Vector2D.Create(Scalar00 * point.X + Scalar01 * point.Y + Scalar02,
+                Scalar10 * point.X + Scalar11 * point.Y + Scalar12); 
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Float64Vector2D MapVector(IFloat64Tuple2D vector)
+        public Float64Vector2D MapVector(IFloat64Vector2D vector)
         {
             Debug.Assert(IsAffine2D());
 
-            return new Float64Vector2D(
-                Scalar00 * vector.X + Scalar01 * vector.Y,
-                Scalar10 * vector.X + Scalar11 * vector.Y
-            );
+            return Float64Vector2D.Create(Scalar00 * vector.X + Scalar01 * vector.Y,
+                Scalar10 * vector.X + Scalar11 * vector.Y);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Float64Vector2D MapNormal(IFloat64Tuple2D normal)
+        public Float64Vector2D MapNormal(IFloat64Vector2D normal)
         {
             return InverseTranspose().MapVector(normal);
         }

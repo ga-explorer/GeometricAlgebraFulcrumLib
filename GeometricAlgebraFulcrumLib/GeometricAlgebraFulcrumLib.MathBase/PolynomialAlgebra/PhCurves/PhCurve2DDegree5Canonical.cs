@@ -13,7 +13,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.PolynomialAlgebra.PhCurves
     /// </summary>
     public sealed class PhCurve2DDegree5Canonical
     {
-        public static PhCurve2DDegree5Canonical Create(IFloat64Tuple2D p, IFloat64Tuple2D d)
+        public static PhCurve2DDegree5Canonical Create(IFloat64Vector2D p, IFloat64Vector2D d)
         {
             return new PhCurve2DDegree5Canonical(p, d);
         }
@@ -21,8 +21,8 @@ namespace GeometricAlgebraFulcrumLib.MathBase.PolynomialAlgebra.PhCurves
         public static PhCurve2DDegree5Canonical Create(double p1, double p2, double d1, double d2)
         {
             return new PhCurve2DDegree5Canonical(
-                new Float64Vector2D(p1, p2),
-                new Float64Vector2D(d1, d2)
+                Float64Vector2D.Create((Float64Scalar)p1, (Float64Scalar)p2),
+                Float64Vector2D.Create((Float64Scalar)d1, (Float64Scalar)d2)
             );
         }
         
@@ -69,7 +69,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.PolynomialAlgebra.PhCurves
         public GaScaledPureRotor ScaledRotorV { get; }
         
 
-        private PhCurve2DDegree5Canonical(IFloat64Tuple2D p, IFloat64Tuple2D d)
+        private PhCurve2DDegree5Canonical(IFloat64Vector2D p, IFloat64Vector2D d)
         {
             BasisBladeSet = RGaFloat64Processor.Euclidean;
 
@@ -92,7 +92,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.PolynomialAlgebra.PhCurves
             ScaledRotor2 = e1.CreateEuclideanScaledPureRotor(d);
 
             Vector00 = e1;
-            Vector22 = d.ToLinVector2D();
+            Vector22 = d.ToVector2D();
             Vector02 = (e1Multivector.Gp(ScaledRotor2.MultivectorReverse) + ScaledRotor2.Multivector.Gp(e1Multivector)).GetVectorPartAsTuple2D();
 
             VectorU = p - (e1 + d) / 8 + Vector02 / 24;
@@ -130,7 +130,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.PolynomialAlgebra.PhCurves
         }
 
 
-        public IFloat64Tuple2D GetHodographPoint(double parameterValue)
+        public IFloat64Vector2D GetHodographPoint(double parameterValue)
         {
             var f00 = _basisPairProductSet.GetValue(0, 0, parameterValue);
             var f01 = _basisPairProductSet.GetValue(0, 1, parameterValue);
@@ -148,7 +148,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.PolynomialAlgebra.PhCurves
                 f22 * Vector22;
         }
 
-        public IFloat64Tuple2D GetCurvePoint(double parameterValue)
+        public IFloat64Vector2D GetCurvePoint(double parameterValue)
         {
             var f00 = _basisPairProductIntegralSet.GetValue(0, 0, parameterValue);
             var f01 = _basisPairProductIntegralSet.GetValue(0, 1, parameterValue);

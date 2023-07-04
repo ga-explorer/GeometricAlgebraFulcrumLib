@@ -214,7 +214,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.S
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Float64Vector4D MapVector(IFloat64Tuple4D vector)
+        public Float64Vector4D MapVector(IFloat64Vector4D vector)
         {
             if (_mapList.Count == 0)
                 return vector.ToTuple4D();

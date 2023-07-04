@@ -5,6 +5,7 @@ using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Mult
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Subspaces;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic.Matrices;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Frames
 {
@@ -198,5 +199,27 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
                 .CreateFreeFrameOfSimplex(vSpaceDimensions, scalingFactor)
                 .CreateFixedFrame(point);
         }
+
+
+        
+        /// <summary>
+        /// See the paper "Generalized Clarke Components for Poly-phase Networks", 1969
+        /// </summary>
+        /// <param name="processor"></param>
+        /// <param name="vectorsCount"></param>
+        /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static XGaVectorFrame<T> CreateClarkeRotationFrame<T>(this XGaProcessor<T> processor, int vectorsCount)
+        {
+            return XGaVectorFrameSpecs
+                .CreateUnitBasisSpecs()
+                .CreateVectorFrame(
+                    processor
+                        .ScalarProcessor
+                        .CreateClarkeRotationArray(vectorsCount)
+                        .ColumnsToXGaVectors(processor)
+                );
+        }
+
     }
 }

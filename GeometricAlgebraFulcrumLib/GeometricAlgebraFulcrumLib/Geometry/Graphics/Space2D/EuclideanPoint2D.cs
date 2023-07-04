@@ -9,7 +9,7 @@ using GeometricAlgebraFulcrumLib.Utilities.Extensions;
 namespace GeometricAlgebraFulcrumLib.Geometry.Graphics.Space2D
 {
     public sealed record EuclideanPoint2D : 
-        IFloat64Tuple2D
+        IFloat64Vector2D
     {
         public static EuclideanVector2D operator -(EuclideanPoint2D p1)
         {

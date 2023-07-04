@@ -3,6 +3,7 @@ using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Triangles;
 using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D.Immutable;
 using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D.Mutable;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace NumericalGeometryLib.Computers.Voronoi
 {
@@ -119,7 +120,7 @@ namespace NumericalGeometryLib.Computers.Voronoi
                    PointIndex3 == pointIndex3;
         }
 
-        public bool CircumcircleContainsVa(IFloat64Tuple2D point)
+        public bool CircumcircleContainsVa(IFloat64Vector2D point)
         {
             var ab = Point1X * Point1X + Point1Y * Point1Y;
             var cd = Point2X * Point2X + Point2Y * Point2Y;
@@ -127,7 +128,7 @@ namespace NumericalGeometryLib.Computers.Voronoi
 
             var centerX = 0.5d * (ab * (Point3Y - Point2Y) + cd * (Point1Y - Point3Y) + ef * (Point2Y - Point1Y)) / (Point1X * (Point3Y - Point2Y) + Point2X * (Point1Y - Point3Y) + Point3X * (Point2Y - Point1Y));
             var centerY = 0.5d * (ab * (Point3X - Point2X) + cd * (Point1X - Point3X) + ef * (Point2X - Point1X)) / (Point1Y * (Point3X - Point2X) + Point2Y * (Point1X - Point3X) + Point3Y * (Point2X - Point1X));
-            var center = new Float64Vector2D(centerX, centerY);
+            var center = Float64Vector2D.Create((Float64Scalar)centerX, (Float64Scalar)centerY);
 
             var radiusSquared = center.GetDistanceSquaredToPoint(Point1X, Point1Y);
 

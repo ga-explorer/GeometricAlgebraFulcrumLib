@@ -21,13 +21,13 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space2D.Curves
 
 
         private readonly double[] _knotList;
-        private readonly List<IFloat64Tuple2D> _pointList;
+        private readonly List<IFloat64Vector2D> _pointList;
 
         public CatmullRomSplineType SplineType { get; }
 
         public bool IsClosed { get; }
 
-        public IEnumerable<IFloat64Tuple2D> ControlPoints
+        public IEnumerable<IFloat64Vector2D> ControlPoints
             => _pointList;
 
         public int ControlPointCount
@@ -37,13 +37,13 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space2D.Curves
             => Float64Range1D.Infinite;
 
 
-        internal CatmullRomSpline2D(IEnumerable<IFloat64Tuple2D> inputPointList, CatmullRomSplineType curveType, bool isClosed)
+        internal CatmullRomSpline2D(IEnumerable<IFloat64Vector2D> inputPointList, CatmullRomSplineType curveType, bool isClosed)
         {
             SplineType = curveType;
             IsClosed = isClosed;
-            _pointList = new List<IFloat64Tuple2D>(inputPointList);
+            _pointList = new List<IFloat64Vector2D>(inputPointList);
 
-            IFloat64Tuple2D endPoint1, endPoint2;
+            IFloat64Vector2D endPoint1, endPoint2;
 
             if (isClosed)
             {
@@ -60,8 +60,8 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space2D.Curves
             else
             {
                 // Extend the curve by two control points
-                endPoint1 = 2 * _pointList[0].ToLinVector2D() - _pointList[1];
-                endPoint2 = 2 * _pointList[^1].ToLinVector2D() - _pointList[^2];
+                endPoint1 = 2 * _pointList[0].ToVector2D() - _pointList[1];
+                endPoint2 = 2 * _pointList[^1].ToVector2D() - _pointList[^2];
             }
 
             // Insert control points at both ends.
@@ -73,7 +73,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space2D.Curves
             var total = 0d;
             for (var i = 1; i < _pointList.Count; i++)
             {
-                var vector = _pointList[i].ToLinVector2D() - _pointList[i - 1];
+                var vector = _pointList[i].ToVector2D() - _pointList[i - 1];
                 var ds = vector.ENormSquared();
 
                 var power =
@@ -300,16 +300,16 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space2D.Curves
         {
             // Handle edge cases
             if (x <= _pointList[0].X)
-                return _pointList[0].ToLinVector2D();
+                return _pointList[0].ToVector2D();
 
             if (x >= _pointList[^1].X)
-                return _pointList[^1].ToLinVector2D();
+                return _pointList[^1].ToVector2D();
 
             var (index1, index2) =
                 GetKnotIndexContainingX(x, 0, _knotList.Length - 1);
 
             if (index1 == index2)
-                return _pointList[index1].ToLinVector2D();
+                return _pointList[index1].ToVector2D();
 
             if (index1 == 0 && index2 == 1)
             {
@@ -345,7 +345,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space2D.Curves
             var xh = t.GetCatmullRomValue(tQuad, xQuad);
             var yh = t.GetCatmullRomValue(tQuad, yQuad);
 
-            return new Float64Vector2D(xh, yh);
+            return Float64Vector2D.Create((Float64Scalar)xh, (Float64Scalar)yh);
         }
 
         public double GetPointX(double parameterValue)
@@ -436,16 +436,16 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space2D.Curves
         {
             // Handle edge cases
             if (parameterValue <= _knotList[0])
-                return _pointList[0].ToLinVector2D();
+                return _pointList[0].ToVector2D();
 
             if (parameterValue >= _knotList[^1])
-                return _pointList[^1].ToLinVector2D();
+                return _pointList[^1].ToVector2D();
 
             var (index1, index2) =
                 GetKnotIndexContaining(parameterValue, 0, _knotList.Length - 1);
 
             if (index1 == index2)
-                return _pointList[index1].ToLinVector2D();
+                return _pointList[index1].ToVector2D();
 
             if (index1 == 0 && index2 == 1)
             {
@@ -475,25 +475,21 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space2D.Curves
             var x = parameterValue.GetCatmullRomValue(tQuad, xQuad);
             var y = parameterValue.GetCatmullRomValue(tQuad, yQuad);
 
-            return new Float64Vector2D(x, y);
+            return Float64Vector2D.Create((Float64Scalar)x, (Float64Scalar)y);
         }
         
         public Float64Vector2D GetDerivative1Point(double parameterValue)
         {
             if (parameterValue is <= 0d or >= 1d)
-                return new Float64Vector2D(
-                    Differentiate.FirstDerivative(GetPointX, parameterValue),
-                    Differentiate.FirstDerivative(GetPointY, parameterValue)
-                );
+                return Float64Vector2D.Create((Float64Scalar)Differentiate.FirstDerivative(GetPointX, parameterValue),
+                    (Float64Scalar)Differentiate.FirstDerivative(GetPointY, parameterValue));
 
             var (index1, index2) =
                 GetKnotIndexContaining(parameterValue, 0, _knotList.Length - 1);
 
             if (index1 == index2)
-                return new Float64Vector2D(
-                    Differentiate.FirstDerivative(GetPointX, parameterValue),
-                    Differentiate.FirstDerivative(GetPointY, parameterValue)
-                );
+                return Float64Vector2D.Create((Float64Scalar)Differentiate.FirstDerivative(GetPointX, parameterValue),
+                    (Float64Scalar)Differentiate.FirstDerivative(GetPointY, parameterValue));
 
             Debug.Assert(
                 index2 == index1 + 1 &&
@@ -508,25 +504,21 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space2D.Curves
             var x = parameterValue.GetCatmullRomDerivativeValue(tQuad, xQuad);
             var y = parameterValue.GetCatmullRomDerivativeValue(tQuad, yQuad);
 
-            return new Float64Vector2D(x, y);
+            return Float64Vector2D.Create((Float64Scalar)x, (Float64Scalar)y);
         }
 
         public Float64Vector2D GetDerivative2Point(double parameterValue)
         {
             if (parameterValue is <= 0d or >= 1d)
-                return new Float64Vector2D(
-                    Differentiate.SecondDerivative(GetPointX, parameterValue),
-                    Differentiate.SecondDerivative(GetPointY, parameterValue)
-                );
+                return Float64Vector2D.Create((Float64Scalar)Differentiate.SecondDerivative(GetPointX, parameterValue),
+                    (Float64Scalar)Differentiate.SecondDerivative(GetPointY, parameterValue));
 
             var (index1, index2) =
                 GetKnotIndexContaining(parameterValue, 0, _knotList.Length - 1);
 
             if (index1 == index2)
-                return new Float64Vector2D(
-                    Differentiate.SecondDerivative(GetPointX, parameterValue),
-                    Differentiate.SecondDerivative(GetPointY, parameterValue)
-                );
+                return Float64Vector2D.Create((Float64Scalar)Differentiate.SecondDerivative(GetPointX, parameterValue),
+                    (Float64Scalar)Differentiate.SecondDerivative(GetPointY, parameterValue));
 
             Debug.Assert(
                 index2 == index1 + 1 &&
@@ -541,7 +533,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space2D.Curves
             var x = parameterValue.GetCatmullRomDerivative2Value(tQuad, xQuad);
             var y = parameterValue.GetCatmullRomDerivative2Value(tQuad, yQuad);
 
-            return new Float64Vector2D(x, y);
+            return Float64Vector2D.Create((Float64Scalar)x, (Float64Scalar)y);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

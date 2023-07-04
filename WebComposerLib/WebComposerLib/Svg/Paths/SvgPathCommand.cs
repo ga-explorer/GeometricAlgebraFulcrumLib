@@ -2,7 +2,13 @@
 
 namespace WebComposerLib.Svg.Paths
 {
-    public abstract class SvgPathCommand : SvgComputedValue
+    /// <summary>
+    /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/d
+    /// https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths
+    /// </summary>
+    public abstract class SvgPathCommand :
+        SvgComputedValue
     {
+
     }
 }

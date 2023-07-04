@@ -22,7 +22,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Curves
         );
 
 
-        public static GrVisualPointPathCurve3D CreateStatic(string name, GrVisualCurveStyle3D style, params IFloat64Tuple3D[] positionList)
+        public static GrVisualPointPathCurve3D CreateStatic(string name, GrVisualCurveStyle3D style, params IFloat64Vector3D[] positionList)
         {
             return new GrVisualPointPathCurve3D(
                 name,
@@ -32,7 +32,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Curves
             );
         }
 
-        public static GrVisualPointPathCurve3D CreateStatic(string name, GrVisualCurveStyle3D style, IReadOnlyList<IFloat64Tuple3D> positionList)
+        public static GrVisualPointPathCurve3D CreateStatic(string name, GrVisualCurveStyle3D style, IReadOnlyList<IFloat64Vector3D> positionList)
         {
             return new GrVisualPointPathCurve3D(
                 name,
@@ -52,7 +52,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Curves
             );
         }
 
-        public static GrVisualPointPathCurve3D Create(string name, GrVisualCurveStyle3D style, IEnumerable<IFloat64Tuple3D> positionList, GrVisualAnimationSpecs animationSpecs)
+        public static GrVisualPointPathCurve3D Create(string name, GrVisualCurveStyle3D style, IEnumerable<IFloat64Vector3D> positionList, GrVisualAnimationSpecs animationSpecs)
         {
             return new GrVisualPointPathCurve3D(
                 name,

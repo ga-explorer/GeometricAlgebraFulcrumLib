@@ -69,7 +69,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space3D
             return MutableBoundingBox3D.CreateFromPoints(point1, point2);
         }
 
-        public bool TestLineSegmentIntersection(IFloat64Tuple3D point1, IFloat64Tuple3D point2)
+        public bool TestLineSegmentIntersection(IFloat64Vector3D point1, IFloat64Vector3D point2)
         {
             var d1 = (point1.X - CenterX) * (point1.X - CenterX) +
                      (point1.Y - CenterY) * (point1.Y - CenterY) +

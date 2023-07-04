@@ -25,13 +25,13 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Builtin
                 HeightSegments = heightSegments
             };
 
-        public static XeoglSphereGeometry Create(IFloat64Tuple3D center, double radius)
+        public static XeoglSphereGeometry Create(IFloat64Vector3D center, double radius)
             => new XeoglSphereGeometry(center)
             {
                 Radius = radius
             };
 
-        public static XeoglSphereGeometry Create(IFloat64Tuple3D center, double radius, int widthSegments, int heightSegments)
+        public static XeoglSphereGeometry Create(IFloat64Vector3D center, double radius, int widthSegments, int heightSegments)
             => new XeoglSphereGeometry(center)
             {
                 Radius = radius,
@@ -58,7 +58,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Geometry.Builtin
         {
         }
 
-        public XeoglSphereGeometry(IFloat64Tuple3D center)
+        public XeoglSphereGeometry(IFloat64Vector3D center)
         {
             Center.SetVector(center);
         }

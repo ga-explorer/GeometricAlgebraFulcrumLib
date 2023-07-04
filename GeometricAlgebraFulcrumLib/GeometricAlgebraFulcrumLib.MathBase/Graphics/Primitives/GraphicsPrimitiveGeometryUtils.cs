@@ -113,7 +113,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives
             return new Triplet<int>(index3, index1, index2);
         }
 
-        public static GrLineGeometryComposer3D ToLineGeometryComposer(this IEnumerable<IFloat64Tuple3D> pointsList, bool closedFlag = false)
+        public static GrLineGeometryComposer3D ToLineGeometryComposer(this IEnumerable<IFloat64Vector3D> pointsList, bool closedFlag = false)
         {
             var lineMesh = new GrLineGeometryComposer3D();
 
@@ -122,52 +122,52 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives
             return lineMesh;
         }
 
-        public static GrPointGeometry3D ToGraphicsPointsGeometry(this IReadOnlyList<IFloat64Tuple3D> pointsList)
+        public static GrPointGeometry3D ToGraphicsPointsGeometry(this IReadOnlyList<IFloat64Vector3D> pointsList)
         {
             return GrPointGeometry3D.Create(pointsList);
         }
 
-        public static GrPointGeometry3D ToGraphicsPointsGeometry(this IEnumerable<IFloat64Tuple3D> pointsList)
+        public static GrPointGeometry3D ToGraphicsPointsGeometry(this IEnumerable<IFloat64Vector3D> pointsList)
         {
             return GrPointGeometry3D.Create(pointsList);
         }
 
-        public static GrPointSoupGeometry3D ToGraphicsPointsListGeometry(this IReadOnlyList<IFloat64Tuple3D> pointsList)
+        public static GrPointSoupGeometry3D ToGraphicsPointsListGeometry(this IReadOnlyList<IFloat64Vector3D> pointsList)
         {
             return GrPointSoupGeometry3D.Create(pointsList);
         }
 
-        public static GrPointSoupGeometry3D ToGraphicsPointsListGeometry(this IEnumerable<IFloat64Tuple3D> pointsList)
+        public static GrPointSoupGeometry3D ToGraphicsPointsListGeometry(this IEnumerable<IFloat64Vector3D> pointsList)
         {
             return GrPointSoupGeometry3D.Create(pointsList);
         }
 
-        public static GrLineLoopGeometry3D ToGraphicsLineLoopGeometry(this IReadOnlyList<IFloat64Tuple3D> pointsList)
+        public static GrLineLoopGeometry3D ToGraphicsLineLoopGeometry(this IReadOnlyList<IFloat64Vector3D> pointsList)
         {
             return GrLineLoopGeometry3D.Create(pointsList);
         }
 
-        public static GrLineLoopGeometry3D ToGraphicsLineLoopGeometry(this IEnumerable<IFloat64Tuple3D> pointsList)
+        public static GrLineLoopGeometry3D ToGraphicsLineLoopGeometry(this IEnumerable<IFloat64Vector3D> pointsList)
         {
             return GrLineLoopGeometry3D.Create(pointsList);
         }
 
-        public static GrLineStripGeometry3D ToGraphicsLineStripGeometry(this IReadOnlyList<IFloat64Tuple3D> pointsList)
+        public static GrLineStripGeometry3D ToGraphicsLineStripGeometry(this IReadOnlyList<IFloat64Vector3D> pointsList)
         {
             return GrLineStripGeometry3D.Create(pointsList);
         }
 
-        public static GrLineStripGeometry3D ToGraphicsLineStripGeometry(this IEnumerable<IFloat64Tuple3D> pointsList)
+        public static GrLineStripGeometry3D ToGraphicsLineStripGeometry(this IEnumerable<IFloat64Vector3D> pointsList)
         {
             return GrLineStripGeometry3D.Create(pointsList);
         }
 
-        public static GrLineGeometry3D ToGraphicsLinesGeometry(this IReadOnlyList<IFloat64Tuple3D> pointsList)
+        public static GrLineGeometry3D ToGraphicsLinesGeometry(this IReadOnlyList<IFloat64Vector3D> pointsList)
         {
             return GrLineGeometry3D.Create(pointsList);
         }
 
-        public static GrLineGeometry3D ToGraphicsLinesGeometry(this IEnumerable<IFloat64Tuple3D> pointsList)
+        public static GrLineGeometry3D ToGraphicsLinesGeometry(this IEnumerable<IFloat64Vector3D> pointsList)
         {
             return GrLineGeometry3D.Create(pointsList);
         }
@@ -177,12 +177,12 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives
             return GrLineGeometry3D.Create(lineSegmentsList);
         }
 
-        public static GrLineSoupGeometry3D ToGraphicsLinesListGeometry(this IReadOnlyList<IFloat64Tuple3D> pointsList)
+        public static GrLineSoupGeometry3D ToGraphicsLinesListGeometry(this IReadOnlyList<IFloat64Vector3D> pointsList)
         {
             return GrLineSoupGeometry3D.Create(pointsList);
         }
 
-        public static GrLineSoupGeometry3D ToGraphicsLinesListGeometry(this IEnumerable<IFloat64Tuple3D> pointsList)
+        public static GrLineSoupGeometry3D ToGraphicsLinesListGeometry(this IEnumerable<IFloat64Vector3D> pointsList)
         {
             return GrLineSoupGeometry3D.Create(pointsList);
         }
@@ -192,32 +192,32 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives
             return GrLineSoupGeometry3D.Create(lineSegmentsList);
         }
 
-        public static GrTriangleFanGeometry3D ToGraphicsTriangleFanGeometry(this IReadOnlyList<IFloat64Tuple3D> pointsList)
+        public static GrTriangleFanGeometry3D ToGraphicsTriangleFanGeometry(this IReadOnlyList<IFloat64Vector3D> pointsList)
         {
             return GrTriangleFanGeometry3D.Create(pointsList);
         }
 
-        public static GrTriangleFanGeometry3D ToGraphicsTriangleFanGeometry(this IEnumerable<IFloat64Tuple3D> pointsList)
+        public static GrTriangleFanGeometry3D ToGraphicsTriangleFanGeometry(this IEnumerable<IFloat64Vector3D> pointsList)
         {
             return GrTriangleFanGeometry3D.Create(pointsList);
         }
 
-        public static GrTriangleStripGeometry3D ToGraphicsTriangleStripGeometry(this IReadOnlyList<IFloat64Tuple3D> pointsList)
+        public static GrTriangleStripGeometry3D ToGraphicsTriangleStripGeometry(this IReadOnlyList<IFloat64Vector3D> pointsList)
         {
             return GrTriangleStripGeometry3D.Create(pointsList);
         }
 
-        public static GrTriangleStripGeometry3D ToGraphicsTriangleStripGeometry(this IEnumerable<IFloat64Tuple3D> pointsList)
+        public static GrTriangleStripGeometry3D ToGraphicsTriangleStripGeometry(this IEnumerable<IFloat64Vector3D> pointsList)
         {
             return GrTriangleStripGeometry3D.Create(pointsList);
         }
 
-        public static GrTriangleGeometry3D ToGraphicsTrianglesGeometry(this IReadOnlyList<IFloat64Tuple3D> pointsList)
+        public static GrTriangleGeometry3D ToGraphicsTrianglesGeometry(this IReadOnlyList<IFloat64Vector3D> pointsList)
         {
             return GrTriangleGeometry3D.Create(pointsList);
         }
 
-        public static GrTriangleGeometry3D ToGraphicsTrianglesGeometry(this IEnumerable<IFloat64Tuple3D> pointsList)
+        public static GrTriangleGeometry3D ToGraphicsTrianglesGeometry(this IEnumerable<IFloat64Vector3D> pointsList)
         {
             return GrTriangleGeometry3D.Create(pointsList);
         }
@@ -227,7 +227,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives
             return GrTriangleGeometry3D.Create(trianglesList, reversePoints);
         }
 
-        public static GrTriangleSoupGeometry3D ToGraphicsTrianglesListGeometry(this IEnumerable<IFloat64Tuple3D> pointsList)
+        public static GrTriangleSoupGeometry3D ToGraphicsTrianglesListGeometry(this IEnumerable<IFloat64Vector3D> pointsList)
         {
             return GrTriangleSoupGeometry3D.Create(pointsList);
         }

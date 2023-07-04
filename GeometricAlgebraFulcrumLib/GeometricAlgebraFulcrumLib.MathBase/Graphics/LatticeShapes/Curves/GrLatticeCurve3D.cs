@@ -40,7 +40,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.LatticeShapes.Curves
         public IEnumerable<Float64Vector3D> VertexPoints 
             => Vertices.Select(v => v.Point);
 
-        public IEnumerable<IFloat64Tuple3D> VertexNormals 
+        public IEnumerable<IFloat64Vector3D> VertexNormals 
             => Vertices.Select(v => v.Normal1);
 
         public IEnumerable<double> VertexTextureUvs 

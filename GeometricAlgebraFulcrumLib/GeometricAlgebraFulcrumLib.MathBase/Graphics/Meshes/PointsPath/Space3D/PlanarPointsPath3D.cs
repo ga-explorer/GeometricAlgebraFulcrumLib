@@ -5,14 +5,14 @@ using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsPath.Space3D
 {
     public sealed class PlanarPointsPath3D : 
-        PSeqMapped1D<IFloat64Tuple2D, IFloat64Tuple3D>, 
+        PSeqMapped1D<IFloat64Vector2D, IFloat64Vector3D>, 
         IPointsPath3D
     {
-        public IFloat64Tuple3D Origin { get; set; }
+        public IFloat64Vector3D Origin { get; set; }
 
-        public IFloat64Tuple3D Direction1 { get; set; }
+        public IFloat64Vector3D Direction1 { get; set; }
 
-        public IFloat64Tuple3D Direction2 { get; set; }
+        public IFloat64Vector3D Direction2 { get; set; }
 
 
         public PlanarPointsPath3D(IPointsPath2D basePath) 
@@ -24,7 +24,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsPath.Space3D
         }
 
 
-        protected override IFloat64Tuple3D MappingFunction(IFloat64Tuple2D pointUv)
+        protected override IFloat64Vector3D MappingFunction(IFloat64Vector2D pointUv)
         {
             if (ReferenceEquals(pointUv, null))
                 throw new ArgumentNullException(nameof(pointUv));
@@ -39,7 +39,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsPath.Space3D
             return this.All(p => p.IsValid());
         }
 
-        public IPointsPath3D MapPoints(Func<IFloat64Tuple3D, IFloat64Tuple3D> pointMapping)
+        public IPointsPath3D MapPoints(Func<IFloat64Vector3D, IFloat64Vector3D> pointMapping)
         {
             return new ArrayPointsPath3D(
                 this.Select(pointMapping).ToArray()

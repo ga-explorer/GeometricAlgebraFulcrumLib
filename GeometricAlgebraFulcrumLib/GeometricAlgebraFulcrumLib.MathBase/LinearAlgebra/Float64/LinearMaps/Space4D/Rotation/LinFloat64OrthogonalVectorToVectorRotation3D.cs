@@ -22,7 +22,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.S
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinFloat64OrthogonalVectorToVectorRotation4D(IFloat64Tuple4D sourceVector, IFloat64Tuple4D targetVector)
+        public LinFloat64OrthogonalVectorToVectorRotation4D(IFloat64Vector4D sourceVector, IFloat64Vector4D targetVector)
         {
             Debug.Assert(
                 sourceVector.IsNearUnit() &&
@@ -90,7 +90,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.S
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Float64Vector4D MapVector(IFloat64Tuple4D vector)
+        public override Float64Vector4D MapVector(IFloat64Vector4D vector)
         {
             var (r, s) = vector.ESp(TargetVector, SourceVector);
             var rsPlus = r + s;

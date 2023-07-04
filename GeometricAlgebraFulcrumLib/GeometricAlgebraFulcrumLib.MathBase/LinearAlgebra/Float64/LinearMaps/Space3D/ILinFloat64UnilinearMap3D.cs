@@ -15,5 +15,5 @@ public interface ILinFloat64UnilinearMap3D :
  
     Float64Vector3D MapBasisVector(int index);
 
-    Float64Vector3D MapVector(IFloat64Tuple3D vector);
+    Float64Vector3D MapVector(IFloat64Vector3D vector);
 }

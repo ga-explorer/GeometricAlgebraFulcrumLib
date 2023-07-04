@@ -312,7 +312,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             var visualizer = new PowerSignalVisualizer3D(cameraAlphaValues, cameraBetaValues, powerSignal)
             {
                 Title = "Unbalanced 3-phase sinusoidal signal",
-                WorkingPath = @"D:\Projects\Study\Web\Babylon.js\",
+                WorkingFolder = @"D:\Projects\Study\Web\Babylon.js\",
                 HostUrl = "http://localhost:5200/",
                 //LiveReloadWebServer "D:/Projects/Study/Babylon.js/" --port 5200 --UseSsl False --LiveReloadEnabled False --OpenBrowser True
 

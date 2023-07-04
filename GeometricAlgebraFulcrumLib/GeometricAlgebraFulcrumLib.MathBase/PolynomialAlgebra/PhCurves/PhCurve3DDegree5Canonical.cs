@@ -14,7 +14,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.PolynomialAlgebra.PhCurves
     /// </summary>
     public sealed class PhCurve3DDegree5Canonical
     {
-        public static PhCurve3DDegree5Canonical Create(IFloat64Tuple3D p, IFloat64Tuple3D d, Float64PlanarAngle theta1, Float64PlanarAngle theta2)
+        public static PhCurve3DDegree5Canonical Create(IFloat64Vector3D p, IFloat64Vector3D d, Float64PlanarAngle theta1, Float64PlanarAngle theta2)
         {
             return new PhCurve3DDegree5Canonical(p, d, theta1, theta2);
         }
@@ -73,7 +73,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.PolynomialAlgebra.PhCurves
         public Float64PlanarAngle Theta2 { get; }
         
 
-        private PhCurve3DDegree5Canonical(IFloat64Tuple3D p, IFloat64Tuple3D d, Float64PlanarAngle theta1, Float64PlanarAngle theta2)
+        private PhCurve3DDegree5Canonical(IFloat64Vector3D p, IFloat64Vector3D d, Float64PlanarAngle theta1, Float64PlanarAngle theta2)
         {
             BasisBladeSet = RGaFloat64Processor.Euclidean;
 

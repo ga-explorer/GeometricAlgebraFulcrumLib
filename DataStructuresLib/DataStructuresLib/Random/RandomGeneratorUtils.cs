@@ -190,6 +190,12 @@ namespace DataStructuresLib.Random
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static double GetNumber(this System.Random randomGenerator, double maxValue)
+        {
+            return maxValue * randomGenerator.NextDouble();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static double GetNumber(this System.Random randomGenerator, double minValue, double maxValue)
         {
             return (maxValue - minValue) * randomGenerator.NextDouble() + minValue;
@@ -436,27 +442,6 @@ namespace DataStructuresLib.Random
             return new Complex(
                 randomGenerator.NextDouble(),
                 randomGenerator.NextDouble()
-            );
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double GetAngle(this System.Random randomGenerator)
-        {
-            return randomGenerator.GetScaledNumber(Constants.Pi2);
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double GetAngle(this System.Random randomGenerator, double maxAngle)
-        {
-            return randomGenerator.GetScaledNumber(ClampAngle(maxAngle));
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static double GetAngle(this System.Random randomGenerator, double minAngle, double maxAngle)
-        {
-            return randomGenerator.GetLinearMappedNumber(
-                ClampAngle(minAngle), 
-                ClampAngle(maxAngle)
             );
         }
 

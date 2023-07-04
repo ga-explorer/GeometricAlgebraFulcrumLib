@@ -23,21 +23,21 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space2D
             => false;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Float64Vector2D MapPoint(IFloat64Tuple2D point)
+        public Float64Vector2D MapPoint(IFloat64Vector2D point)
         {
-            return point.ToLinVector2D();
+            return point.ToVector2D();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Float64Vector2D MapVector(IFloat64Tuple2D vector)
+        public Float64Vector2D MapVector(IFloat64Vector2D vector)
         {
-            return vector.ToLinVector2D();
+            return vector.ToVector2D();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Float64Vector2D MapNormal(IFloat64Tuple2D normal)
+        public Float64Vector2D MapNormal(IFloat64Vector2D normal)
         {
-            return normal.ToLinVector2D();
+            return normal.ToVector2D();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

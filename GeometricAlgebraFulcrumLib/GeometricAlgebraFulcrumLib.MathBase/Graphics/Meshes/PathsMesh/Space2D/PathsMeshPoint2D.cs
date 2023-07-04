@@ -8,7 +8,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PathsMesh.Space2D
     /// This class represents a 2D point inside a paths mesh. The class holds data
     /// on the point coordinates and index values inside the mesh.
     /// </summary>
-    public sealed class PathsMeshPoint2D : IFloat64Tuple2D
+    public sealed class PathsMeshPoint2D : IFloat64Vector2D
     {
         /// <summary>
         /// The base mesh of this point
@@ -40,7 +40,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PathsMesh.Space2D
         /// <summary>
         /// The point coordinates of this point
         /// </summary>
-        public IFloat64Tuple2D Point 
+        public IFloat64Vector2D Point 
             => BaseMesh[PathIndex][PathPointIndex];
         
         public int VSpaceDimensions 

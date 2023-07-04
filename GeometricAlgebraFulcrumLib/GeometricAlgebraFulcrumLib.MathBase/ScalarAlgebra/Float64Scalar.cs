@@ -59,7 +59,7 @@ public readonly struct Float64Scalar :
     public static Float64Scalar Epsilon { get; }
         = new Float64Scalar(double.Epsilon);
 
-    static Float64Scalar IFloatingPointIeee754<Float64Scalar>.NaN 
+    static Float64Scalar IFloatingPointIeee754<Float64Scalar>.NaN
         => throw new NotImplementedException();
 
     public static Float64Scalar NegativeInfinity { get; }
@@ -1807,19 +1807,17 @@ public readonly struct Float64Scalar :
     }
     
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64Vector2D Lerp(IFloat64Tuple2D v1, IFloat64Tuple2D v2)
+    public Float64Vector2D Lerp(IFloat64Vector2D v1, IFloat64Vector2D v2)
     {
         var t = Value;
         var s = 1.0d - t;
 
-        return new Float64Vector2D(
-            s * v1.X + t * v2.X,
-            s * v1.Y + t * v2.Y
-        );
+        return Float64Vector2D.Create(s * v1.X + t * v2.X,
+            s * v1.Y + t * v2.Y);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64Vector3D Lerp(IFloat64Tuple3D v1, IFloat64Tuple3D v2)
+    public Float64Vector3D Lerp(IFloat64Vector3D v1, IFloat64Vector3D v2)
     {
         var t = Value;
         var s = 1.0d - t;
@@ -1830,7 +1828,7 @@ public readonly struct Float64Scalar :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64Quaternion Lerp(IFloat64Tuple4D v1, IFloat64Tuple4D v2)
+    public Float64Quaternion Lerp(IFloat64Vector4D v1, IFloat64Vector4D v2)
     {
         var t = Value;
         var s = 1.0d - t;
@@ -1864,7 +1862,7 @@ public readonly struct Float64Scalar :
     {
         throw new NotImplementedException();
     }
-    
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     bool IFloatingPoint<Float64Scalar>.TryWriteExponentBigEndian(Span<byte> destination, out int bytesWritten)
     {

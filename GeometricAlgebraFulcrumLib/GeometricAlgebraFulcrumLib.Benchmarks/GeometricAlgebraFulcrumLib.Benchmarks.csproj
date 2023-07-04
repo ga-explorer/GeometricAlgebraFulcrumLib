@@ -26,7 +26,6 @@
     <ProjectReference Include="..\..\GAPoTNumLib\GAPoTNumLib\GAPoTNumLib.csproj" />
     <ProjectReference Include="..\..\TextComposerLib\TextComposerLib\TextComposerLib.csproj" />
     <ProjectReference Include="..\GeometricAlgebraFulcrumLib.Applications\GeometricAlgebraFulcrumLib.Applications.csproj" />
-    <ProjectReference Include="..\GeometricAlgebraFulcrumLib.Mathematica\GeometricAlgebraFulcrumLib.Mathematica.csproj" />
     <ProjectReference Include="..\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.csproj" />
   </ItemGroup>
 

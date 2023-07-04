@@ -17,7 +17,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines.Immutab
             );
         }
 
-        public static LimitedLine2D Create(IFloat64Tuple2D origin, IFloat64Tuple2D direction, Float64Range1D parameterLimits)
+        public static LimitedLine2D Create(IFloat64Vector2D origin, IFloat64Vector2D direction, Float64Range1D parameterLimits)
         {
             return new LimitedLine2D(
                 origin.X,

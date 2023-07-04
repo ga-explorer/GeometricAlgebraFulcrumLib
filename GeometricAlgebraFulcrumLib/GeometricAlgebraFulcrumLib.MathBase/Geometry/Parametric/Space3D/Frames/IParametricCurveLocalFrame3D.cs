@@ -4,7 +4,7 @@ using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Frames
 {
     public interface IParametricCurveLocalFrame3D :
-        IFloat64Tuple3D
+        IFloat64Vector3D
     {
         int Index { get; }
 

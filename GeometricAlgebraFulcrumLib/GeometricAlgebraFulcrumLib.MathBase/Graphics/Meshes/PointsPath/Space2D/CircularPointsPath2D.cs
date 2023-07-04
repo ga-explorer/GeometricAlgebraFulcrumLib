@@ -4,15 +4,15 @@ using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
 namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsPath.Space2D
 {
     public sealed class CircularPointsPath2D : 
-        PSeqMapped1D<double, IFloat64Tuple2D>, 
+        PSeqMapped1D<double, IFloat64Vector2D>, 
         IPointsPath2D
     {
-        public IFloat64Tuple2D Center { get; }
+        public IFloat64Vector2D Center { get; }
 
         public double Radius { get; }
 
 
-        public CircularPointsPath2D(IFloat64Tuple2D center, double radius, int count)
+        public CircularPointsPath2D(IFloat64Vector2D center, double radius, int count)
             : base(PeriodicSequenceUtils.CreateLinearDoubleSequence(count))
         {
             if (Count < 2)
@@ -22,7 +22,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsPath.Space2D
             Radius = radius;
         }
 
-        public CircularPointsPath2D(IFloat64Tuple2D center, double radius, IPeriodicSequence1D<double> parameterSequence)
+        public CircularPointsPath2D(IFloat64Vector2D center, double radius, IPeriodicSequence1D<double> parameterSequence)
             : base(parameterSequence)
         {
             Center = center;
@@ -30,16 +30,14 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsPath.Space2D
         }
 
 
-        protected override IFloat64Tuple2D MappingFunction(double t)
+        protected override IFloat64Vector2D MappingFunction(double t)
         {
             var angle = 2 * Math.PI * t;
             var cosAngle = Math.Cos(angle);
             var sinAngle = Math.Sin(angle);
 
-            return new Float64Vector2D(
-                Center.X + Radius * cosAngle,
-                Center.Y + Radius * sinAngle
-            );
+            return Float64Vector2D.Create(Center.X + Radius * cosAngle,
+                Center.Y + Radius * sinAngle);
         }
 
         
@@ -48,7 +46,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsPath.Space2D
             return this.All(p => p.IsValid());
         }
         
-        public IPointsPath2D MapPoints(Func<IFloat64Tuple2D, IFloat64Tuple2D> pointMapping)
+        public IPointsPath2D MapPoints(Func<IFloat64Vector2D, IFloat64Vector2D> pointMapping)
         {
             return new ArrayPointsPath2D(
                 this.Select(pointMapping).ToArray()

@@ -67,12 +67,12 @@ namespace WebComposerLib.Samples.BabylonJs
         <script src=""https://cdn.babylonjs.com/viewer/babylon.viewer.js""></script>
         
         <!-- KaTeX Core -->
-        <link rel=""stylesheet"" href=""https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css"" integrity=""sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC"" crossorigin=""anonymous"">
-        <script src=""https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js"" integrity=""sha384-X/XCfMm41VSsqRNQgDerQczD69XqmjOOOwYQvr/uuC+j4OPoNhVgjdGFwhvN02Ja"" crossorigin=""anonymous""></script>
+        <link rel=""stylesheet"" href=""https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css"" integrity=""sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC"" crossorigin=""anonymous"">
+        <script src=""https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.js"" integrity=""sha384-X/XCfMm41VSsqRNQgDerQczD69XqmjOOOwYQvr/uuC+j4OPoNhVgjdGFwhvN02Ja"" crossorigin=""anonymous""></script>
         
         <!-- KaTeX Auto-render extension -->
         <!-- To automatically render math in text elements, include the auto-render extension: -->
-        <script src=""https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js"" integrity=""sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR"" crossorigin=""anonymous"" ></script>
+        <script src=""https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/contrib/auto-render.min.js"" integrity=""sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR"" crossorigin=""anonymous"" ></script>
         
         <!-- html2canvas.js -->
         <script src=""https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"" integrity=""sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA=="" crossorigin=""anonymous"" referrerpolicy=""no-referrer""></script>

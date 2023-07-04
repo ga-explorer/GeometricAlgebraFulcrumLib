@@ -215,7 +215,7 @@ namespace WebComposerLib.Svg.Elements.Shape
             return this;
         }
 
-        public SvgElementLine SetStartPoint(double x1, double y1, SvgValueLengthUnit unit)
+        public SvgElementLine SetStartPoint(double x1, double y1, SvgLengthUnit unit)
         {
             StartPointX.SetTo(x1, unit);
             StartPointY.SetTo(y1, unit);
@@ -231,7 +231,7 @@ namespace WebComposerLib.Svg.Elements.Shape
             return this;
         }
 
-        public SvgElementLine SetEndPoint(double x2, double y2, SvgValueLengthUnit unit)
+        public SvgElementLine SetEndPoint(double x2, double y2, SvgLengthUnit unit)
         {
             EndPointX.SetTo(x2, unit);
             EndPointY.SetTo(y2, unit);
@@ -249,7 +249,7 @@ namespace WebComposerLib.Svg.Elements.Shape
             return this;
         }
 
-        public SvgElementLine SetLine(double x1, double y1, double x2, double y2, SvgValueLengthUnit unit)
+        public SvgElementLine SetLine(double x1, double y1, double x2, double y2, SvgLengthUnit unit)
         {
             StartPointX.SetTo(x1, unit);
             StartPointY.SetTo(y1, unit);

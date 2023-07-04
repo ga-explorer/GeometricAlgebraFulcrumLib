@@ -15,7 +15,7 @@ namespace NumericalGeometryLib.Computers.Projections
         public Plane3D Plane { get; private set; }
 
 
-        public GcPlaneProjector3D SetPlaneFromPoints(IFloat64Tuple3D p1, IFloat64Tuple3D p2, IFloat64Tuple3D p3)
+        public GcPlaneProjector3D SetPlaneFromPoints(IFloat64Vector3D p1, IFloat64Vector3D p2, IFloat64Vector3D p3)
         {
             Plane = new Plane3D(
                 p1,
@@ -33,7 +33,7 @@ namespace NumericalGeometryLib.Computers.Projections
             return this;
         }
 
-        public GcPlaneProjector3D SetPlane(IFloat64Tuple3D origin, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2)
+        public GcPlaneProjector3D SetPlane(IFloat64Vector3D origin, IFloat64Vector3D direction1, IFloat64Vector3D direction2)
         {
             Plane = new Plane3D(origin, direction1, direction2);
 
@@ -53,7 +53,7 @@ namespace NumericalGeometryLib.Computers.Projections
         /// </summary>
         /// <param name="vector"></param>
         /// <returns></returns>
-        public Float64Vector3D ComputeProjection(IFloat64Tuple3D vector)
+        public Float64Vector3D ComputeProjection(IFloat64Vector3D vector)
         {
             //Begin GMac Macro Code Generation, 2018-10-20T20:49:38.2694768+02:00
             //Macro: cemsim.hga4d.ProjectVectorOnPlaneDirections3D
@@ -218,7 +218,7 @@ namespace NumericalGeometryLib.Computers.Projections
         /// </summary>
         /// <param name="vector"></param>
         /// <returns></returns>
-        public Tuple<Float64Vector3D, Float64Vector3D> ComputeComponents(IFloat64Tuple3D vector)
+        public Tuple<Float64Vector3D, Float64Vector3D> ComputeComponents(IFloat64Vector3D vector)
         {
             //Begin GMac Macro Code Generation, 2018-10-20T20:49:38.2694768+02:00
             //Macro: cemsim.hga4d.ProjectVectorOnPlaneDirections3D
@@ -388,7 +388,7 @@ namespace NumericalGeometryLib.Computers.Projections
         /// </summary>
         /// <param name="vector"></param>
         /// <returns></returns>
-        public Float64Vector3D ComputeRejection(IFloat64Tuple3D vector)
+        public Float64Vector3D ComputeRejection(IFloat64Vector3D vector)
         {
             //Begin GMac Macro Code Generation, 2018-10-20T20:49:38.2694768+02:00
             //Macro: cemsim.hga4d.ProjectVectorOnPlaneDirections3D

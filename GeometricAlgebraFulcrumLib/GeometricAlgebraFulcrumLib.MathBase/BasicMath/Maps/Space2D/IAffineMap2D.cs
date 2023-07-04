@@ -8,11 +8,11 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space2D
     {
         bool SwapsHandedness { get; }
         
-        Float64Vector2D MapPoint(IFloat64Tuple2D point);
+        Float64Vector2D MapPoint(IFloat64Vector2D point);
 
-        Float64Vector2D MapVector(IFloat64Tuple2D vector);
+        Float64Vector2D MapVector(IFloat64Vector2D vector);
 
-        Float64Vector2D MapNormal(IFloat64Tuple2D normal);
+        Float64Vector2D MapNormal(IFloat64Vector2D normal);
 
         SquareMatrix3 GetSquareMatrix3();
 

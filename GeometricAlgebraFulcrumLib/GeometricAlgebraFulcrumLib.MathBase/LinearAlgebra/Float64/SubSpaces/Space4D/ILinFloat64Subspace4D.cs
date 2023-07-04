@@ -9,7 +9,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.SubSpaces.Sp
 
         IEnumerable<Float64Vector4D> BasisVectors { get; }
 
-        bool NearContains(IFloat64Tuple4D vector, double epsilon = 1e-12);
+        bool NearContains(IFloat64Vector4D vector, double epsilon = 1e-12);
 
         bool NearContains(ILinFloat64Subspace4D subspace, double epsilon = 1e-12);
     }

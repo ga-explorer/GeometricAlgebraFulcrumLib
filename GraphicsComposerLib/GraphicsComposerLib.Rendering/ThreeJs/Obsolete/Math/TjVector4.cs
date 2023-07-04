@@ -20,7 +20,7 @@ namespace GraphicsComposerLib.Rendering.ThreeJs.Obsolete.Math
     /// </summary>
     public sealed class TjVector4 :
         TjComponentSimple,
-        IFloat64Tuple4D
+        IFloat64Vector4D
     {
         public override string JavaScriptClassName 
             => "Vector4";
@@ -73,7 +73,7 @@ namespace GraphicsComposerLib.Rendering.ThreeJs.Obsolete.Math
             Debug.Assert(IsValid());
         }
 
-        public TjVector4(IFloat64Tuple4D tuple)
+        public TjVector4(IFloat64Vector4D tuple)
         {
             X = tuple.X;
             Y = tuple.Y;

@@ -85,13 +85,13 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.SubSpaces.Sp
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Float64PlanarAngle GetVectorProjectionPolarAngle(IFloat64Tuple3D vector)
+        public Float64PlanarAngle GetVectorProjectionPolarAngle(IFloat64Vector3D vector)
         {
             return Subspace.GetVectorProjectionPolarAngle(vector);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool NearContains(IFloat64Tuple3D vector, double epsilon = 1E-12D)
+        public bool NearContains(IFloat64Vector3D vector, double epsilon = 1E-12D)
         {
             return Subspace.NearContains(vector, epsilon);
         }
@@ -228,12 +228,12 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.SubSpaces.Sp
             throw new NotImplementedException();
         }
         
-        public Float64Vector3D GetVectorProjection(IFloat64Tuple3D vector)
+        public Float64Vector3D GetVectorProjection(IFloat64Vector3D vector)
         {
             throw new NotImplementedException();
         }
 
-        public Float64Vector3D GetVectorRejection(IFloat64Tuple3D vector)
+        public Float64Vector3D GetVectorRejection(IFloat64Vector3D vector)
         {
             throw new NotImplementedException();
         }

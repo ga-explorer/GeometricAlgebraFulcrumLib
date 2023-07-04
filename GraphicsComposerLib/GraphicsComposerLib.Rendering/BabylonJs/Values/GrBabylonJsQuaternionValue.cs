@@ -36,7 +36,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Values
         public override string GetCode()
         {
             return string.IsNullOrEmpty(ValueText) 
-                ? Value.GetQuaternionBabylonJsCode() 
+                ? Value.GetBabylonJsCode() 
                 : ValueText;
         }
     }

@@ -20,7 +20,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines.Mutable
             );
         }
 
-        public static MutableLine2D Create(IFloat64Tuple2D origin, IFloat64Tuple2D direction)
+        public static MutableLine2D Create(IFloat64Vector2D origin, IFloat64Vector2D direction)
         {
             return new MutableLine2D(
                 origin.X,
@@ -48,7 +48,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines.Mutable
         }
 
 
-        public MutableLine2D SetOrigin(IFloat64Tuple2D origin)
+        public MutableLine2D SetOrigin(IFloat64Vector2D origin)
         {
             OriginX = origin.X;
             OriginY = origin.Y;
@@ -64,7 +64,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines.Mutable
             return this;
         }
 
-        public MutableLine2D SetDirection(IFloat64Tuple2D direction)
+        public MutableLine2D SetDirection(IFloat64Vector2D direction)
         {
             DirectionX = direction.X;
             DirectionY = direction.Y;
@@ -119,7 +119,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines.Mutable
             return this;
         }
 
-        public MutableLine2D SetLine(IFloat64Tuple2D origin, IFloat64Tuple2D direction)
+        public MutableLine2D SetLine(IFloat64Vector2D origin, IFloat64Vector2D direction)
         {
             OriginX = origin.X;
             OriginY = origin.Y;

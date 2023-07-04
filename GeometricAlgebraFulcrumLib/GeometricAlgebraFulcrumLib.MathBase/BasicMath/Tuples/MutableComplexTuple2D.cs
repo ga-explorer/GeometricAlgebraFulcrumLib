@@ -9,7 +9,7 @@ using TextComposerLib;
 namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples
 {
     public sealed class MutableComplexTuple2D : 
-        IComplexTuple2D, 
+        IComplexVector2D, 
         IEnumerable<Complex>
     {
         public double RealX { get; set; }
@@ -96,7 +96,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples
             Debug.Assert(IsValid());
         }
 
-        public MutableComplexTuple2D(IFloat64Tuple2D tuple)
+        public MutableComplexTuple2D(IFloat64Vector2D tuple)
         {
             RealX = tuple.X;
             RealY = tuple.Y;
@@ -104,7 +104,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples
             Debug.Assert(IsValid());
         }
 
-        public MutableComplexTuple2D(IComplexTuple2D tuple)
+        public MutableComplexTuple2D(IComplexVector2D tuple)
         {
             RealX = tuple.X.Real;
             RealY = tuple.Y.Real;
@@ -139,7 +139,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples
             return this;
         }
 
-        public MutableComplexTuple2D SetTuple(IFloat64Tuple2D tuple)
+        public MutableComplexTuple2D SetTuple(IFloat64Vector2D tuple)
         {
             RealX = tuple.X;
             RealY = tuple.Y;
@@ -149,7 +149,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples
             return this;
         }
 
-        public MutableComplexTuple2D SetTuple(IComplexTuple2D tuple)
+        public MutableComplexTuple2D SetTuple(IComplexVector2D tuple)
         {
             RealX = tuple.X.Real;
             RealY = tuple.Y.Real;

@@ -29,7 +29,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Values
             return new GrBabylonJsVector3ArrayValue(value);
         }
     
-        public static implicit operator GrBabylonJsVector3ArrayValue(IFloat64Tuple3D[] value)
+        public static implicit operator GrBabylonJsVector3ArrayValue(IFloat64Vector3D[] value)
         {
             return new GrBabylonJsVector3ArrayValue(value);
         }

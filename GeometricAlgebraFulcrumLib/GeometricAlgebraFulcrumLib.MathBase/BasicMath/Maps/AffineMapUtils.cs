@@ -63,13 +63,13 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Float64Vector3D MapUnitVector(this IAffineMap3D linearMap, IFloat64Tuple3D vector)
+        public static Float64Vector3D MapUnitVector(this IAffineMap3D linearMap, IFloat64Vector3D vector)
         {
             return linearMap.MapVector(vector).ToUnitVector();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Float64Vector3D MapUnitNormal(this IAffineMap3D linearMap, IFloat64Tuple3D normal)
+        public static Float64Vector3D MapUnitNormal(this IAffineMap3D linearMap, IFloat64Vector3D normal)
         {
             return linearMap.MapNormal(normal).ToUnitVector();
         }

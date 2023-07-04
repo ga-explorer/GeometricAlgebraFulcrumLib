@@ -33,14 +33,14 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives
         /// <summary>
         /// The list of vertex positions of this graphics geometry
         /// </summary>
-        IEnumerable<IFloat64Tuple3D> GeometryPoints { get; }
+        IEnumerable<IFloat64Vector3D> GeometryPoints { get; }
 
         /// <summary>
         /// Get a vertex point by vertex index
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        IFloat64Tuple3D GetGeometryPoint(int index);
+        IFloat64Vector3D GetGeometryPoint(int index);
     }
 
     /// <summary>

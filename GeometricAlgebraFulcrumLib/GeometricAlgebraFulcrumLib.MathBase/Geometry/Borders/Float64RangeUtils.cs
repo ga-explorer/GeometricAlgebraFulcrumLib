@@ -18,32 +18,32 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders
     public static class Float64RangeUtils
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static BoundingBox2D GetBoundingBox(this IEnumerable<IFloat64Tuple2D> pointsList)
+        public static BoundingBox2D GetBoundingBox(this IEnumerable<IFloat64Vector2D> pointsList)
         {
             return BoundingBox2D.CreateFromPoints(pointsList);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static BoundingBox2D GetBoundingBox(this IEnumerable<IFloat64Tuple2D> pointsList, double scalingFactor)
+        public static BoundingBox2D GetBoundingBox(this IEnumerable<IFloat64Vector2D> pointsList, double scalingFactor)
         {
             return BoundingBox2D.CreateFromPoints(pointsList, scalingFactor);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static BoundingSphere2D GetBoundingSphere(this IEnumerable<IFloat64Tuple2D> pointsList)
+        public static BoundingSphere2D GetBoundingSphere(this IEnumerable<IFloat64Vector2D> pointsList)
         {
             return BoundingSphere2D.CreateFromPoints(pointsList);
         }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static BoundingBox3D GetBoundingBox(this IEnumerable<IFloat64Tuple3D> pointsList)
+        public static BoundingBox3D GetBoundingBox(this IEnumerable<IFloat64Vector3D> pointsList)
         {
             return BoundingBox3D.CreateFromPoints(pointsList);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static BoundingBox3D GetBoundingBox(this IEnumerable<IFloat64Tuple3D> pointsList, double scalingFactor)
+        public static BoundingBox3D GetBoundingBox(this IEnumerable<IFloat64Vector3D> pointsList, double scalingFactor)
         {
             return BoundingBox3D.CreateFromPoints(pointsList, scalingFactor);
         }
@@ -53,8 +53,8 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders
         public static Float64Vector2D GetCorner(this IBoundingBox2D boundingBox, bool maxCorner)
         {
             return maxCorner
-                ? new Float64Vector2D(boundingBox.MaxX, boundingBox.MaxY)
-                : new Float64Vector2D(boundingBox.MinX, boundingBox.MinY);
+                ? Float64Vector2D.Create((Float64Scalar)boundingBox.MaxX, (Float64Scalar)boundingBox.MaxY)
+                : Float64Vector2D.Create((Float64Scalar)boundingBox.MinX, (Float64Scalar)boundingBox.MinY);
         }
 
         public static double GetMidX(this IBoundingBox2D boundingBox)
@@ -168,36 +168,30 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders
 
         public static Float64Vector2D GetMinCorner(this IBoundingBox2D boundingBox)
         {
-            return new Float64Vector2D(boundingBox.MinX, boundingBox.MinY);
+            return Float64Vector2D.Create((Float64Scalar)boundingBox.MinX, (Float64Scalar)boundingBox.MinY);
         }
 
         public static Float64Vector2D GetMaxCorner(this IBoundingBox2D boundingBox)
         {
-            return new Float64Vector2D(boundingBox.MaxX, boundingBox.MaxY);
+            return Float64Vector2D.Create((Float64Scalar)boundingBox.MaxX, (Float64Scalar)boundingBox.MaxY);
         }
 
         public static Float64Vector2D GetMidPoint(this IBoundingBox2D boundingBox)
         {
-            return new Float64Vector2D(
-                0.5 * (boundingBox.MinX + boundingBox.MaxX),
-                0.5 * (boundingBox.MinY + boundingBox.MaxY)
-            );
+            return Float64Vector2D.Create((Float64Scalar)(0.5 * (boundingBox.MinX + boundingBox.MaxX)),
+                (Float64Scalar)(0.5 * (boundingBox.MinY + boundingBox.MaxY)));
         }
 
         public static Float64Vector2D GetSideLengths(this IBoundingBox2D boundingBox)
         {
-            return new Float64Vector2D(
-                boundingBox.MaxX - boundingBox.MinX,
-                boundingBox.MaxY - boundingBox.MinY
-            );
+            return Float64Vector2D.Create((Float64Scalar)(boundingBox.MaxX - boundingBox.MinX),
+                (Float64Scalar)(boundingBox.MaxY - boundingBox.MinY));
         }
 
         public static Float64Vector2D GetDiagonalVector(this IBoundingBox2D boundingBox)
         {
-            return new Float64Vector2D(
-                boundingBox.MaxX - boundingBox.MinX,
-                boundingBox.MaxY - boundingBox.MinY
-            );
+            return Float64Vector2D.Create((Float64Scalar)(boundingBox.MaxX - boundingBox.MinX),
+                (Float64Scalar)(boundingBox.MaxY - boundingBox.MinY));
         }
 
         public static double GetDiagonalLength(this IBoundingBox2D boundingBox)
@@ -251,15 +245,15 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders
             cornerIndex = cornerIndex.Mod(4);
 
             if (cornerIndex == 0)
-                return new Float64Vector2D(boundingBox.MinX, boundingBox.MinY);
+                return Float64Vector2D.Create((Float64Scalar)boundingBox.MinX, (Float64Scalar)boundingBox.MinY);
 
             if (cornerIndex == 1)
-                return new Float64Vector2D(boundingBox.MaxX, boundingBox.MinY);
+                return Float64Vector2D.Create((Float64Scalar)boundingBox.MaxX, (Float64Scalar)boundingBox.MinY);
 
             if (cornerIndex == 2)
-                return new Float64Vector2D(boundingBox.MinX, boundingBox.MaxY);
+                return Float64Vector2D.Create((Float64Scalar)boundingBox.MinX, (Float64Scalar)boundingBox.MaxY);
 
-            return new Float64Vector2D(boundingBox.MaxX, boundingBox.MaxY);
+            return Float64Vector2D.Create((Float64Scalar)boundingBox.MaxX, (Float64Scalar)boundingBox.MaxY);
         }
 
         public static double GetSideMinValue(this IBoundingBox2D boundingBox, int axisIndex)
@@ -317,13 +311,11 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders
             var point1 = boundingBox.GetCorner(cornerIndex1);
             var point2 = boundingBox.GetCorner(cornerIndex2);
 
-            return new Float64Vector2D(
-                point2.X - point1.X,
-                point2.Y - point1.Y
-            );
+            return Float64Vector2D.Create(point2.X - point1.X,
+                point2.Y - point1.Y);
         }
 
-        public static Float64Vector2D GetPointOffset(this IBoundingBox2D boundingBox, IFloat64Tuple2D point)
+        public static Float64Vector2D GetPointOffset(this IBoundingBox2D boundingBox, IFloat64Vector2D point)
         {
             var oX = point.X - boundingBox.MinX;
             var oY = point.Y - boundingBox.MinY;
@@ -334,10 +326,10 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders
             if (boundingBox.MaxY > boundingBox.MinY)
                 oY = oY / (boundingBox.MaxY - boundingBox.MinY);
 
-            return new Float64Vector2D(oX, oY);
+            return Float64Vector2D.Create(oX, oY);
         }
 
-        public static bool Contains(this IBoundingBox2D boundingBox, IFloat64Tuple2D point, bool useMargins = false)
+        public static bool Contains(this IBoundingBox2D boundingBox, IFloat64Vector2D point, bool useMargins = false)
         {
             if (useMargins)
                 return
@@ -385,7 +377,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders
                 box.MaxY <= boundingBox.MaxY;
         }
 
-        public static bool ContainsUpperExclusive(this IBoundingBox2D boundingBox, IFloat64Tuple2D point, bool useMargins = false)
+        public static bool ContainsUpperExclusive(this IBoundingBox2D boundingBox, IFloat64Vector2D point, bool useMargins = false)
         {
             if (useMargins)
                 return
@@ -703,18 +695,14 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders
 
         public static Float64Vector2D GetPointAt(this IBoundingBox2D boundingBox, double tx, double ty)
         {
-            return new Float64Vector2D(
-                (1.0d - tx) * boundingBox.MinX + tx * boundingBox.MaxX,
-                (1.0d - ty) * boundingBox.MinY + ty * boundingBox.MaxY
-            );
+            return Float64Vector2D.Create((Float64Scalar)((1.0d - tx) * boundingBox.MinX + tx * boundingBox.MaxX),
+                (Float64Scalar)((1.0d - ty) * boundingBox.MinY + ty * boundingBox.MaxY));
         }
 
-        public static Float64Vector2D GetPointAt(this IBoundingBox2D boundingBox, IFloat64Tuple2D tVector)
+        public static Float64Vector2D GetPointAt(this IBoundingBox2D boundingBox, IFloat64Vector2D tVector)
         {
-            return new Float64Vector2D(
-                (1.0d - tVector.X) * boundingBox.MinX + tVector.X * boundingBox.MaxX,
-                (1.0d - tVector.Y) * boundingBox.MinY + tVector.Y * boundingBox.MaxY
-            );
+            return Float64Vector2D.Create((1.0d - tVector.X) * boundingBox.MinX + tVector.X * boundingBox.MaxX,
+                (1.0d - tVector.Y) * boundingBox.MinY + tVector.Y * boundingBox.MaxY);
         }
 
 
@@ -1063,7 +1051,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders
                 point2.Z - point1.Z);
         }
 
-        public static Float64Vector3D GetPointOffset(this IBoundingBox3D boundingBox, IFloat64Tuple3D point)
+        public static Float64Vector3D GetPointOffset(this IBoundingBox3D boundingBox, IFloat64Vector3D point)
         {
             var oX = point.X - boundingBox.MinX;
             var oY = point.Y - boundingBox.MinY;
@@ -1081,7 +1069,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders
             return Float64Vector3D.Create(oX, oY, oZ);
         }
 
-        public static bool Contains(this IBoundingBox3D boundingBox, IFloat64Tuple3D point, bool useMargins = false)
+        public static bool Contains(this IBoundingBox3D boundingBox, IFloat64Vector3D point, bool useMargins = false)
         {
             if (useMargins)
                 return
@@ -1141,7 +1129,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders
                 box.MaxZ <= boundingBox.MaxZ;
         }
 
-        public static bool ContainsUpperExclusive(this IBoundingBox3D boundingBox, IFloat64Tuple3D point, bool useMargins = false)
+        public static bool ContainsUpperExclusive(this IBoundingBox3D boundingBox, IFloat64Vector3D point, bool useMargins = false)
         {
             if (useMargins)
                 return
@@ -1442,7 +1430,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders
                 (1.0d - tz) * boundingBox.MinZ + tz * boundingBox.MaxZ);
         }
 
-        public static Float64Vector3D GetPointAt(this IBoundingBox3D boundingBox, IFloat64Tuple3D tVector)
+        public static Float64Vector3D GetPointAt(this IBoundingBox3D boundingBox, IFloat64Vector3D tVector)
         {
             return Float64Vector3D.Create((1.0d - tVector.X) * boundingBox.MinX + tVector.X * boundingBox.MaxX,
                 (1.0d - tVector.Y) * boundingBox.MinY + tVector.Y * boundingBox.MaxY,

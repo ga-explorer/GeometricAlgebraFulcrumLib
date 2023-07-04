@@ -9,19 +9,19 @@
         public static string CurrentColor { get; } = "currentColor";
 
 
-        public static bool IsNullOrNone(this SvgValueLengthUnit unit)
+        public static bool IsNullOrNone(this SvgLengthUnit unit)
         {
-            return ReferenceEquals(unit, null) || unit.UnitId == SvgValueLengthUnit.None.UnitId;
+            return ReferenceEquals(unit, null) || unit.UnitId == SvgLengthUnit.None.UnitId;
         }
 
-        public static SvgValueLength ToSvgLength(this double lengthValue)
+        public static SvgLength ToSvgLength(this double lengthValue)
         {
-            return SvgValueLength.Create(lengthValue);
+            return SvgLength.Create(lengthValue);
         }
 
-        public static SvgValueLength ToSvgLength(this double lengthValue, SvgValueLengthUnit unit)
+        public static SvgLength ToSvgLength(this double lengthValue, SvgLengthUnit unit)
         {
-            return SvgValueLength.Create(lengthValue, unit);
+            return SvgLength.Create(lengthValue, unit);
         }
 
         public static SvgValueAngle ToSvgAngle(this double angleValue)

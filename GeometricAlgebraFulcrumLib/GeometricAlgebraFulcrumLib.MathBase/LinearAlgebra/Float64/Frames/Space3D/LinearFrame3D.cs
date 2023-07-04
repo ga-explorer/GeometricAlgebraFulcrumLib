@@ -17,7 +17,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Frames.Space
         /// <param name="uDirection"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static LinearFrame3D CreateRightHanded(IFloat64Tuple3D uDirection)
+        public static LinearFrame3D CreateRightHanded(IFloat64Vector3D uDirection)
         {
             var s = uDirection.ENorm();
 
@@ -38,7 +38,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Frames.Space
         /// <param name="uDirection"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static LinearFrame3D CreateLeftHanded(IFloat64Tuple3D uDirection)
+        public static LinearFrame3D CreateLeftHanded(IFloat64Vector3D uDirection)
         {
             var s = uDirection.ENorm();
 
@@ -100,7 +100,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Frames.Space
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public LinearFrame3D(IFloat64Tuple3D uDirection, IFloat64Tuple3D vDirection, IFloat64Tuple3D wDirection)
+        public LinearFrame3D(IFloat64Vector3D uDirection, IFloat64Vector3D vDirection, IFloat64Vector3D wDirection)
         {
             UDirectionX = uDirection.X;
             UDirectionY = uDirection.Y;

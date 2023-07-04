@@ -14,7 +14,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Lines
     public sealed class GrLineGeometry3D
         : IGraphicsLineGeometry3D
     {
-        public static GrLineGeometry3D Create(IReadOnlyList<IFloat64Tuple3D> pointsList)
+        public static GrLineGeometry3D Create(IReadOnlyList<IFloat64Vector3D> pointsList)
         {
             if (pointsList.Count < 2)
                 throw new ArgumentException();
@@ -22,7 +22,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Lines
             return new GrLineGeometry3D(pointsList);
         }
 
-        public static GrLineGeometry3D Create(IReadOnlyList<IFloat64Tuple3D> pointsList, List<int> indicesList)
+        public static GrLineGeometry3D Create(IReadOnlyList<IFloat64Vector3D> pointsList, List<int> indicesList)
         {
             if (pointsList.Count < 2)
                 throw new ArgumentException();
@@ -30,7 +30,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Lines
             return new GrLineGeometry3D(pointsList, indicesList);
         }
 
-        public static GrLineGeometry3D Create(params IFloat64Tuple3D[] pointsList)
+        public static GrLineGeometry3D Create(params IFloat64Vector3D[] pointsList)
         {
             if (pointsList.Length < 2)
                 throw new ArgumentException();
@@ -38,7 +38,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Lines
             return new GrLineGeometry3D(pointsList);
         }
 
-        public static GrLineGeometry3D Create(IEnumerable<IFloat64Tuple3D> pointsList)
+        public static GrLineGeometry3D Create(IEnumerable<IFloat64Vector3D> pointsList)
         {
             var pointsArray = pointsList.ToArray();
 
@@ -48,7 +48,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Lines
             return new GrLineGeometry3D(pointsArray);
         }
 
-        public static GrLineGeometry3D Create(IEnumerable<IFloat64Tuple3D> pointsList, IEnumerable<int> indicesList)
+        public static GrLineGeometry3D Create(IEnumerable<IFloat64Vector3D> pointsList, IEnumerable<int> indicesList)
         {
             var pointsArray = pointsList.ToArray();
 
@@ -109,8 +109,8 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Lines
         public int VertexCount 
             => _vertexPoints.Count;
 
-        private readonly IReadOnlyList<IFloat64Tuple3D> _vertexPoints;
-        public IEnumerable<IFloat64Tuple3D> GeometryPoints 
+        private readonly IReadOnlyList<IFloat64Vector3D> _vertexPoints;
+        public IEnumerable<IFloat64Vector3D> GeometryPoints 
             => _vertexPoints;
 
         public IEnumerable<IGraphicsVertex3D> GeometryVertices
@@ -129,12 +129,12 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Lines
                 _vertexPoints[_vertexIndicesList[2 * index + 1]]
             );
 
-        public IEnumerable<Pair<IFloat64Tuple3D>> LineVertexPoints
+        public IEnumerable<Pair<IFloat64Vector3D>> LineVertexPoints
         {
             get
             {
                 for (var i = 0; i < _vertexPoints.Count; i += 2)
-                    yield return new Pair<IFloat64Tuple3D>(
+                    yield return new Pair<IFloat64Vector3D>(
                         _vertexPoints[_vertexIndicesList[i]],
                         _vertexPoints[_vertexIndicesList[i + 1]]
                     );
@@ -154,7 +154,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Lines
         }
 
 
-        private GrLineGeometry3D(IReadOnlyList<IFloat64Tuple3D> pointsList)
+        private GrLineGeometry3D(IReadOnlyList<IFloat64Vector3D> pointsList)
         {
             if (pointsList.Count < 2)
                 throw new InvalidOperationException();
@@ -163,7 +163,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Lines
             _vertexIndicesList = new List<int>();
         }
 
-        private GrLineGeometry3D(IReadOnlyList<IFloat64Tuple3D> pointsList, List<int> vertexIndicesList)
+        private GrLineGeometry3D(IReadOnlyList<IFloat64Vector3D> pointsList, List<int> vertexIndicesList)
         {
             if (pointsList.Count < 2 || vertexIndicesList.Count % 2 != 0)
                 throw new InvalidOperationException();
@@ -173,7 +173,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Lines
         }
 
         
-        public IFloat64Tuple3D GetGeometryPoint(int index)
+        public IFloat64Vector3D GetGeometryPoint(int index)
         {
             return _vertexPoints[index];
         }

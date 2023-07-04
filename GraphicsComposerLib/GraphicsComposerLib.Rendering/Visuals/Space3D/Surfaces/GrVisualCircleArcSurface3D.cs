@@ -4,6 +4,7 @@ using GraphicsComposerLib.Rendering.Visuals.Space3D.Animations;
 using GraphicsComposerLib.Rendering.Visuals.Space3D.Styles;
 using DataStructuresLib.Basic;
 using System.Diagnostics;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
@@ -28,7 +29,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Surfaces
         );
 
 
-        public static GrVisualCircleArcSurface3D CreateStatic(string name, GrVisualSurfaceStyle3D style, IFloat64Tuple3D center, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, double angle, double radius, bool drawEdge)
+        public static GrVisualCircleArcSurface3D CreateStatic(string name, GrVisualSurfaceStyle3D style, IFloat64Vector3D center, IFloat64Vector3D direction1, IFloat64Vector3D direction2, double angle, double radius, bool drawEdge)
         {
             return new GrVisualCircleArcSurface3D(
                 name,
@@ -41,7 +42,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Surfaces
                 drawEdge, GrVisualAnimationSpecs.Static);
         }
 
-        public static GrVisualCircleArcSurface3D CreateStatic(string name, GrVisualSurfaceStyle3D style, IFloat64Tuple3D center, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, double radius, bool innerArc, bool drawEdge)
+        public static GrVisualCircleArcSurface3D CreateStatic(string name, GrVisualSurfaceStyle3D style, IFloat64Vector3D center, IFloat64Vector3D direction1, IFloat64Vector3D direction2, double radius, bool innerArc, bool drawEdge)
         {
             var angle =
                 direction1.GetAngle(direction2).Radians.ClampAngleInRadians();
@@ -67,7 +68,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Surfaces
                     drawEdge, GrVisualAnimationSpecs.Static);
         }
 
-        public static GrVisualCircleArcSurface3D Create(string name, GrVisualSurfaceStyle3D style, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, double angle, double radius, bool drawEdge, GrVisualAnimationSpecs animationSpecs)
+        public static GrVisualCircleArcSurface3D Create(string name, GrVisualSurfaceStyle3D style, IFloat64Vector3D direction1, IFloat64Vector3D direction2, double angle, double radius, bool drawEdge, GrVisualAnimationSpecs animationSpecs)
         {
             return new GrVisualCircleArcSurface3D(
                 name,
@@ -80,7 +81,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Surfaces
                 drawEdge, animationSpecs);
         }
         
-        public static GrVisualCircleArcSurface3D Create(string name, GrVisualSurfaceStyle3D style, IFloat64Tuple3D center, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, double angle, double radius, bool drawEdge, GrVisualAnimationSpecs animationSpecs)
+        public static GrVisualCircleArcSurface3D Create(string name, GrVisualSurfaceStyle3D style, IFloat64Vector3D center, IFloat64Vector3D direction1, IFloat64Vector3D direction2, double angle, double radius, bool drawEdge, GrVisualAnimationSpecs animationSpecs)
         {
             return new GrVisualCircleArcSurface3D(
                 name,
@@ -134,7 +135,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Surfaces
         /// <summary>
         /// The center of the circular arc
         /// </summary>
-        public IFloat64Tuple3D Center { get; }
+        public IFloat64Vector3D Center { get; }
 
         /// <summary>
         /// The unit direction from the center where the arc starts
@@ -188,7 +189,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Surfaces
         public GrVisualAnimatedVector1D? AnimatedRadius { get; set; }
 
 
-        private GrVisualCircleArcSurface3D(string name, GrVisualSurfaceStyle3D style, IFloat64Tuple3D center, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, double angle, double radius, bool drawEdge, GrVisualAnimationSpecs animationSpecs)
+        private GrVisualCircleArcSurface3D(string name, GrVisualSurfaceStyle3D style, IFloat64Vector3D center, IFloat64Vector3D direction1, IFloat64Vector3D direction2, double angle, double radius, bool drawEdge, GrVisualAnimationSpecs animationSpecs)
             : base(name, style, animationSpecs)
         {
             Center = center;

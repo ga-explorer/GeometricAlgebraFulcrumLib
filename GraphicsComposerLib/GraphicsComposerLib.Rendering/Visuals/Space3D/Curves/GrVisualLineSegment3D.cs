@@ -24,7 +24,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Curves
         );
 
         
-        public static GrVisualLineSegment3D CreateStatic(string name, GrVisualCurveStyle3D style, IFloat64Tuple3D position2)
+        public static GrVisualLineSegment3D CreateStatic(string name, GrVisualCurveStyle3D style, IFloat64Vector3D position2)
         {
             return new GrVisualLineSegment3D(
                 name,
@@ -35,7 +35,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Curves
             );
         }
 
-        public static GrVisualLineSegment3D CreateStatic(string name, GrVisualCurveStyle3D style, IFloat64Tuple3D position1, IFloat64Tuple3D position2)
+        public static GrVisualLineSegment3D CreateStatic(string name, GrVisualCurveStyle3D style, IFloat64Vector3D position1, IFloat64Vector3D position2)
         {
             return new GrVisualLineSegment3D(
                 name,
@@ -46,7 +46,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Curves
             );
         }
         
-        public static GrVisualLineSegment3D Create(string name, GrVisualCurveStyle3D style, IFloat64Tuple3D position2, GrVisualAnimationSpecs animationSpecs)
+        public static GrVisualLineSegment3D Create(string name, GrVisualCurveStyle3D style, IFloat64Vector3D position2, GrVisualAnimationSpecs animationSpecs)
         {
             return new GrVisualLineSegment3D(
                 name,
@@ -57,7 +57,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Curves
             );
         }
 
-        public static GrVisualLineSegment3D Create(string name, GrVisualCurveStyle3D style, IFloat64Tuple3D position1, IFloat64Tuple3D position2, GrVisualAnimationSpecs animationSpecs)
+        public static GrVisualLineSegment3D Create(string name, GrVisualCurveStyle3D style, IFloat64Vector3D position1, IFloat64Vector3D position2, GrVisualAnimationSpecs animationSpecs)
         {
             return new GrVisualLineSegment3D(
                 name,
@@ -80,9 +80,9 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Curves
         }
 
 
-        public IFloat64Tuple3D Position1 { get; }
+        public IFloat64Vector3D Position1 { get; }
 
-        public IFloat64Tuple3D Position2 { get; }
+        public IFloat64Vector3D Position2 { get; }
         
         public Float64Vector3D Direction 
             => Position1.GetDirectionTo(Position2);
@@ -101,7 +101,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Curves
         public GrVisualAnimatedVector3D? AnimatedPosition2 { get; set; }
 
 
-        private GrVisualLineSegment3D(string name, GrVisualCurveStyle3D style, IFloat64Tuple3D position1, IFloat64Tuple3D position2, GrVisualAnimationSpecs animationSpecs) 
+        private GrVisualLineSegment3D(string name, GrVisualCurveStyle3D style, IFloat64Vector3D position1, IFloat64Vector3D position2, GrVisualAnimationSpecs animationSpecs) 
             : base(name, style, animationSpecs)
         {
             if (position1.Subtract(position2).IsZeroVector())

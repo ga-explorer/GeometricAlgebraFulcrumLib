@@ -6,7 +6,9 @@ using WebComposerLib.Svg.Values;
 
 namespace WebComposerLib.Svg.Elements.Shape
 {
-    public sealed class SvgElementPolyline : SvgElement, ISvgBasicShapeElement
+    public sealed class SvgElementPolyline : 
+        SvgElement, 
+        ISvgBasicShapeElement
     {
         public static SvgElementPolyline Create()
         {
@@ -136,16 +138,16 @@ namespace WebComposerLib.Svg.Elements.Shape
             }
         }
 
-        public SvgEav<SvgValuePointsList, SvgElementPolyline> Points
+        public SvgEav<SvgPointList, SvgElementPolyline> Points
         {
             get
             {
                 var attrInfo = SvgAttributeUtils.Points;
 
                 if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEav<SvgValuePointsList, SvgElementPolyline>;
+                    return attrValue as SvgEav<SvgPointList, SvgElementPolyline>;
 
-                var attrValue1 = new SvgEav<SvgValuePointsList, SvgElementPolyline>(this, attrInfo);
+                var attrValue1 = new SvgEav<SvgPointList, SvgElementPolyline>(this, attrInfo);
                 AttributesTable.Add(attrInfo.Id, attrValue1);
 
                 return attrValue1;
@@ -158,7 +160,7 @@ namespace WebComposerLib.Svg.Elements.Shape
         }
 
 
-        public SvgElementPolyline SetPoints(SvgValuePointsList points)
+        public SvgElementPolyline SetPoints(SvgPointList points)
         {
             Points.SetTo(points);
 
@@ -167,22 +169,22 @@ namespace WebComposerLib.Svg.Elements.Shape
 
         public SvgElementPolyline SetPoints(IEnumerable<IPair<double>> points)
         {
-            return SetPoints(SvgValuePointsList.Create(points));
+            return SetPoints(SvgPointList.Create(points));
         }
 
-        public SvgElementPolyline SetPoints(SvgValueLengthUnit unit, IEnumerable<IPair<double>> points)
+        public SvgElementPolyline SetPoints(SvgLengthUnit unit, IEnumerable<IPair<double>> points)
         {
-            return SetPoints(SvgValuePointsList.Create(unit, points));
+            return SetPoints(SvgPointList.Create(unit, points));
         }
 
         public SvgElementPolyline SetPoints(params double[] points)
         {
-            return SetPoints(SvgValuePointsList.Create(points));
+            return SetPoints(SvgPointList.Create(points));
         }
 
-        public SvgElementPolyline SetPoints(SvgValueLengthUnit unit, params double[] points)
+        public SvgElementPolyline SetPoints(SvgLengthUnit unit, params double[] points)
         {
-            return SetPoints(SvgValuePointsList.Create(unit, points));
+            return SetPoints(SvgPointList.Create(unit, points));
         }
     }
 }

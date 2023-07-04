@@ -7,7 +7,7 @@ using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Frames.Space2D
 {
     public sealed class Normal2D :
-        IFloat64Tuple2D
+        IFloat64Vector2D
     {
         public Float64Scalar X { get; private set; }
 
@@ -40,7 +40,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Frames.Space
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Normal2D(IFloat64Tuple2D normal)
+        public Normal2D(IFloat64Vector2D normal)
         {
             X = normal.X;
             Y = normal.Y;

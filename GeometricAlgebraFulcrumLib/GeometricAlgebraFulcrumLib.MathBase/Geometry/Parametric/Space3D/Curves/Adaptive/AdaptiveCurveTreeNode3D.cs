@@ -5,7 +5,6 @@ using DataStructuresLib.Basic;
 using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Frames;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
-using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Curves.Adaptive
 {

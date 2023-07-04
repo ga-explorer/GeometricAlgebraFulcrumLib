@@ -33,7 +33,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Triangles
         public IEnumerable<IGraphicsVertex3D> GeometryVertices
             => _localFrameList;
 
-        public IEnumerable<IFloat64Tuple3D> GeometryPoints 
+        public IEnumerable<IFloat64Vector3D> GeometryPoints 
             => _localFrameList;
 
         public int Count 
@@ -54,9 +54,9 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Triangles
             }
         }
 
-        public IEnumerable<Triplet<IFloat64Tuple3D>> TriangleVertexPoints
+        public IEnumerable<Triplet<IFloat64Vector3D>> TriangleVertexPoints
             => _triangleIndexTripletList.Select(t => 
-                new Triplet<IFloat64Tuple3D>(
+                new Triplet<IFloat64Vector3D>(
                     _localFrameList[t.Item1],
                     _localFrameList[t.Item2],
                     _localFrameList[t.Item3]
@@ -66,11 +66,11 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Triangles
         public IEnumerable<Triplet<int>> TriangleVertexIndices
             => _triangleIndexTripletList;
 
-        public IEnumerable<IFloat64Tuple3D> VertexNormals 
+        public IEnumerable<IFloat64Vector3D> VertexNormals 
             => _localFrameList.Select(f => f.Normal);
         
-        public IEnumerable<IFloat64Tuple2D> VertexTextureUVs
-            => _localFrameList.Select(f => f.ParameterValue.ToLinVector2D());
+        public IEnumerable<IFloat64Vector2D> VertexTextureUVs
+            => _localFrameList.Select(f => f.ParameterValue.ToVector2D());
         
         public IEnumerable<Color> VertexColors 
             => _localFrameList.Select(f => f.Color);
@@ -143,7 +143,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Triangles
             return this;
         }
 
-        public IFloat64Tuple3D GetGeometryPoint(int index)
+        public IFloat64Vector3D GetGeometryPoint(int index)
         {
             return _localFrameList[index].Point;
         }

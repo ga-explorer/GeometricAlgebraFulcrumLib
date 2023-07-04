@@ -23,7 +23,7 @@ public sealed class GrVisualTriangleSurface3D :
     );
 
     
-    public static GrVisualTriangleSurface3D CreateStatic(string name, GrVisualSurfaceStyle3D style, IFloat64Tuple3D position1, IFloat64Tuple3D position2, IFloat64Tuple3D position3)
+    public static GrVisualTriangleSurface3D CreateStatic(string name, GrVisualSurfaceStyle3D style, IFloat64Vector3D position1, IFloat64Vector3D position2, IFloat64Vector3D position3)
     {
         return new GrVisualTriangleSurface3D(
             name,
@@ -35,7 +35,7 @@ public sealed class GrVisualTriangleSurface3D :
         );
     }
     
-    public static GrVisualTriangleSurface3D Create(string name, GrVisualSurfaceStyle3D style, IFloat64Tuple3D position1, IFloat64Tuple3D position2, IFloat64Tuple3D position3, GrVisualAnimationSpecs animationSpecs)
+    public static GrVisualTriangleSurface3D Create(string name, GrVisualSurfaceStyle3D style, IFloat64Vector3D position1, IFloat64Vector3D position2, IFloat64Vector3D position3, GrVisualAnimationSpecs animationSpecs)
     {
         return new GrVisualTriangleSurface3D(
             name,
@@ -60,19 +60,19 @@ public sealed class GrVisualTriangleSurface3D :
     }
 
         
-    public IFloat64Tuple3D Position1 { get; }
+    public IFloat64Vector3D Position1 { get; }
         
-    public IFloat64Tuple3D Position2 { get; }
+    public IFloat64Vector3D Position2 { get; }
 
-    public IFloat64Tuple3D Position3 { get; }
+    public IFloat64Vector3D Position3 { get; }
         
-    public IFloat64Tuple3D Direction1 
+    public IFloat64Vector3D Direction1 
         => Position1.GetDirectionTo(Position2);
             
-    public IFloat64Tuple3D Direction2 
+    public IFloat64Vector3D Direction2 
         => Position2.GetDirectionTo(Position3);
 
-    public IFloat64Tuple3D Direction3 
+    public IFloat64Vector3D Direction3 
         => Position3.GetDirectionTo(Position1);
     
     public Float64Vector3D Normal
@@ -152,7 +152,7 @@ public sealed class GrVisualTriangleSurface3D :
     }
 
 
-    private GrVisualTriangleSurface3D(string name, GrVisualSurfaceStyle3D style, IFloat64Tuple3D position1, IFloat64Tuple3D position2, IFloat64Tuple3D position3, GrVisualAnimationSpecs animationSpecs)
+    private GrVisualTriangleSurface3D(string name, GrVisualSurfaceStyle3D style, IFloat64Vector3D position1, IFloat64Vector3D position2, IFloat64Vector3D position3, GrVisualAnimationSpecs animationSpecs)
         : base(name, style, animationSpecs)
     {
         Position1 = position1;

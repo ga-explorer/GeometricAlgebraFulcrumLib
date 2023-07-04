@@ -56,7 +56,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Surfac
             => GraphicsVertexDataKind3D.NormalTextureColorData;
 
 
-        internal GrParametricSurfaceLocalFrame3D(double parameterValue1, double parameterValue2, IFloat64Tuple3D point, IFloat64Tuple3D normal)
+        internal GrParametricSurfaceLocalFrame3D(double parameterValue1, double parameterValue2, IFloat64Vector3D point, IFloat64Vector3D normal)
         {
             ParameterValue = new Pair<double>(parameterValue1, parameterValue2);
             Point = point.ToVector3D();

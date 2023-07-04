@@ -7,6 +7,7 @@ using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Triangles;
 using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Triangles.Immutable;
 using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space3D.Mutable;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes
 {
@@ -36,7 +37,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes
                 .Where(g => !ReferenceEquals(g, null));
         }
 
-        public static IEnumerable<IFloat64Tuple2D> GetRegularPolygonPoints(int sidesCount, double centerX, double centerY, double radius, double offsetAngle = 0, bool reverseOrder = false)
+        public static IEnumerable<IFloat64Vector2D> GetRegularPolygonPoints(int sidesCount, double centerX, double centerY, double radius, double offsetAngle = 0, bool reverseOrder = false)
         {
             if (sidesCount < 3)
                 throw new InvalidOperationException();
@@ -46,15 +47,13 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes
             var result = Enumerable
                 .Range(0, sidesCount)
                 .Select(i => offsetAngle + i * angleStep)
-                .Select(a => (IFloat64Tuple2D)new Float64Vector2D(
-                    centerX + radius * Math.Cos(a),
-                    centerY + radius * Math.Sin(a)
-                ));
+                .Select(a => (IFloat64Vector2D)Float64Vector2D.Create((Float64Scalar)(centerX + radius * Math.Cos(a)),
+                    (Float64Scalar)(centerY + radius * Math.Sin(a))));
 
             return reverseOrder ? result.Reverse() : result;
         }
 
-        public static IEnumerable<IFloat64Tuple2D> GetRegularPolygonPoints(int sidesCount, IFloat64Tuple2D center, double radius, double offsetAngle = 0, bool reverseOrder = false)
+        public static IEnumerable<IFloat64Vector2D> GetRegularPolygonPoints(int sidesCount, IFloat64Vector2D center, double radius, double offsetAngle = 0, bool reverseOrder = false)
         {
             if (sidesCount < 3)
                 throw new InvalidOperationException();
@@ -64,10 +63,8 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes
             var result = Enumerable
                 .Range(0, sidesCount)
                 .Select(i => offsetAngle + i * angleStep)
-                .Select(a => (IFloat64Tuple2D)new Float64Vector2D(
-                    center.X + radius * Math.Cos(a),
-                    center.Y + radius * Math.Sin(a)
-                ));
+                .Select(a => (IFloat64Vector2D)Float64Vector2D.Create(center.X + radius * Math.Cos(a),
+                    center.Y + radius * Math.Sin(a)));
 
             return reverseOrder ? result.Reverse() : result;
         }

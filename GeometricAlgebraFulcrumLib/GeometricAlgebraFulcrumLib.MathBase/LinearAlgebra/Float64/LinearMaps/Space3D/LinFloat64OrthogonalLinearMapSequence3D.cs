@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.BitManipulation;
-using DataStructuresLib.Random;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.Space3D.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.Space3D.Reflection;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices;
@@ -97,7 +96,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.S
             var mapSequence = Create();
 
             var vectorList =
-                random.GetOrthonormalVectors(3, count);
+                random.GetMathNetOrthonormalVectors(3, count);
 
             for (var i = 0; i < count / 2; i++)
             {
@@ -281,7 +280,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.S
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Float64Vector3D MapVector(IFloat64Tuple3D vector)
+        public Float64Vector3D MapVector(IFloat64Vector3D vector)
         {
             var vector1 = 
                 vector.ToVector3D();

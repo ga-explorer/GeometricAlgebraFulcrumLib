@@ -107,7 +107,7 @@ namespace NumericalGeometryLib.Computers.Intersections
             return this;
         }
 
-        public GcLineIntersector2D SetLine(IFloat64Tuple2D lineOrigin, IFloat64Tuple2D lineDirection)
+        public GcLineIntersector2D SetLine(IFloat64Vector2D lineOrigin, IFloat64Vector2D lineDirection)
         {
             Line = new Line2D(
                 lineOrigin.X,

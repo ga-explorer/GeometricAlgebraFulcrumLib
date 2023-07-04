@@ -7,7 +7,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsMesh
 {
     public interface IPointsMesh2D : 
         IGeometricElement, 
-        IPeriodicSequence2D<IFloat64Tuple2D>
+        IPeriodicSequence2D<IFloat64Vector2D>
     {
         PointsMeshSlicePointsPath2D GetSlicePathAt(int dimension, int index);
     }

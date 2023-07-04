@@ -1,8 +1,10 @@
 ﻿using System.Diagnostics;
+using DataStructuresLib.Basic;
 using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space2D;
 using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes;
 using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D.Immutable;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D.Mutable
 {
@@ -33,7 +35,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D.Mutable
             return new MutableBoundingBox2D(pointX, pointY);
         }
 
-        public static MutableBoundingBox2D CreateFromPoint(IFloat64Tuple2D point)
+        public static MutableBoundingBox2D CreateFromPoint(IFloat64Vector2D point)
         {
             return new MutableBoundingBox2D(point.X, point.Y);
         }
@@ -67,7 +69,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D.Mutable
             return new MutableBoundingBox2D(minX, minY, maxX, maxY);
         }
 
-        public static MutableBoundingBox2D CreateFromPoints(IFloat64Tuple2D point1, IFloat64Tuple2D point2)
+        public static MutableBoundingBox2D CreateFromPoints(IFloat64Vector2D point1, IFloat64Vector2D point2)
         {
             double minX, minY, maxX, maxY;
 
@@ -96,7 +98,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D.Mutable
             return new MutableBoundingBox2D(minX, minY, maxX, maxY);
         }
 
-        public static MutableBoundingBox2D CreateFromPoints(IFloat64Tuple2D point1, IFloat64Tuple2D point2, IFloat64Tuple2D point3)
+        public static MutableBoundingBox2D CreateFromPoints(IFloat64Vector2D point1, IFloat64Vector2D point2, IFloat64Vector2D point3)
         {
             var minX = point1.X;
             var minY = point1.Y;
@@ -119,7 +121,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D.Mutable
             return new MutableBoundingBox2D(minX, minY, maxX, maxY);
         }
 
-        public static MutableBoundingBox2D CreateFromPoints(params IFloat64Tuple2D[] pointsList)
+        public static MutableBoundingBox2D CreateFromPoints(params IFloat64Vector2D[] pointsList)
         {
             var point1 = pointsList[0];
 
@@ -140,7 +142,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D.Mutable
             return new MutableBoundingBox2D(minX, minY, maxX, maxY);
         }
 
-        public static MutableBoundingBox2D CreateFromPoints(IEnumerable<IFloat64Tuple2D> pointsList)
+        public static MutableBoundingBox2D CreateFromPoints(IEnumerable<IFloat64Vector2D> pointsList)
         {
             double minX = 0, minY = 0, maxX = 0, maxY = 0;
 
@@ -189,7 +191,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D.Mutable
             return new MutableBoundingBox2D(minX, minY, maxX, maxY);
         }
 
-        public static MutableBoundingBox2D CreateAround(IFloat64Tuple2D center, double deltaX, double deltaY)
+        public static MutableBoundingBox2D CreateAround(IFloat64Vector2D center, double deltaX, double deltaY)
         {
             var minX = center.X - deltaX;
             var maxX = center.X + deltaX;
@@ -414,7 +416,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D.Mutable
             return this;
         }
 
-        public MutableBoundingBox2D SetTo(IFloat64Tuple2D point)
+        public MutableBoundingBox2D SetTo(IFloat64Vector2D point)
         {
             MinX = point.X;
             MinY = point.Y;
@@ -456,7 +458,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D.Mutable
         }
 
 
-        public MutableBoundingBox2D MoveMidPointTo(IFloat64Tuple2D newMidPoint)
+        public MutableBoundingBox2D MoveMidPointTo(IFloat64Vector2D newMidPoint)
         {
             var deltaX = newMidPoint.X - 0.5d * (MaxX + MinX);
             var deltaY = newMidPoint.Y - 0.5d * (MaxY + MinY);
@@ -489,7 +491,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D.Mutable
         }
 
 
-        public MutableBoundingBox2D MoveBy(IFloat64Tuple2D delta)
+        public MutableBoundingBox2D MoveBy(IFloat64Vector2D delta)
         {
             MinX += delta.X;
             MinY += delta.Y;
@@ -542,7 +544,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D.Mutable
             return this;
         }
 
-        public MutableBoundingBox2D UpdateSizeBy(IFloat64Tuple2D delta)
+        public MutableBoundingBox2D UpdateSizeBy(IFloat64Vector2D delta)
         {
             MinX = MinX - delta.X;
             MinY = MinY - delta.Y;
@@ -580,7 +582,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D.Mutable
             return this;
         }
 
-        public MutableBoundingBox2D UpdateSizeByFactor(IFloat64Tuple2D updateFactor)
+        public MutableBoundingBox2D UpdateSizeByFactor(IFloat64Vector2D updateFactor)
         {
             var midX = 0.5d * (MaxX + MinX);
             var midY = 0.5d * (MaxY + MinY);
@@ -638,7 +640,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D.Mutable
             return this;
         }
 
-        public MutableBoundingBox2D ExpandToInclude(IFloat64Tuple2D point)
+        public MutableBoundingBox2D ExpandToInclude(IFloat64Vector2D point)
         {
             if (MinX > point.X) MinX = point.X;
             if (MinY > point.Y) MinY = point.Y;
@@ -651,7 +653,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D.Mutable
             return this;
         }
 
-        public MutableBoundingBox2D ExpandToInclude(params IFloat64Tuple2D[] pointsList)
+        public MutableBoundingBox2D ExpandToInclude(params IFloat64Vector2D[] pointsList)
         {
             foreach (var point in pointsList)
             {
@@ -667,7 +669,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D.Mutable
             return this;
         }
 
-        public MutableBoundingBox2D ExpandToInclude(IEnumerable<IFloat64Tuple2D> pointsList)
+        public MutableBoundingBox2D ExpandToInclude(IEnumerable<IFloat64Vector2D> pointsList)
         {
             foreach (var point in pointsList)
             {
@@ -784,13 +786,13 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D.Mutable
 
         public IBorderCurve2D MapUsing(IAffineMap2D affineMap)
         {
-            var oldSide01 = new Float64Vector2D(MaxX - MinX, 0);
-            var oldSide10 = new Float64Vector2D(0, MaxY - MinY);
+            var oldSide01 = Float64Vector2D.Create((Float64Scalar)(MaxX - MinX), 0);
+            var oldSide10 = Float64Vector2D.Create(0, (Float64Scalar)(MaxY - MinY));
 
-            var newSide01 = affineMap.MapVector(oldSide01).ToLinVector2D();
-            var newSide10 = affineMap.MapVector(oldSide10).ToLinVector2D();
+            var newSide01 = Float64Vector2DComposerUtils.ToVector2D((IPair<double>)affineMap.MapVector(oldSide01));
+            var newSide10 = Float64Vector2DComposerUtils.ToVector2D((IPair<double>)affineMap.MapVector(oldSide10));
 
-            var newCorner00 = affineMap.MapPoint(this.GetMinCorner()).ToLinVector2D();
+            var newCorner00 = Float64Vector2DComposerUtils.ToVector2D((IPair<double>)affineMap.MapPoint(this.GetMinCorner()));
             var newCorner01 = newCorner00 + newSide01;
             var newCorner10 = newCorner00 + newSide10;
             var newCorner11 = newCorner01 + newSide10;

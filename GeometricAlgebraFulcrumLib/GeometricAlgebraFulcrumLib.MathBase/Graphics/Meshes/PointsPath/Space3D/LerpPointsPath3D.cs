@@ -22,14 +22,14 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsPath.Space3D
         public int Count 
             => Path1.Count;
 
-        public IFloat64Tuple3D this[int index] 
+        public IFloat64Vector3D this[int index] 
             => ParamValue.Lerp(
                 Path1[index], 
                 Path2[index]
             );
 
-        public Pair<IFloat64Tuple3D> this[int index1, int index2] 
-            => new Pair<IFloat64Tuple3D>(
+        public Pair<IFloat64Vector3D> this[int index1, int index2] 
+            => new Pair<IFloat64Vector3D>(
                 this[index1],
                 this[index2]
             );
@@ -61,12 +61,12 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsPath.Space3D
                    Path2.IsValid();
         }
         
-        public IPointsPath3D MapPoints(Func<IFloat64Tuple3D, IFloat64Tuple3D> pointMapping)
+        public IPointsPath3D MapPoints(Func<IFloat64Vector3D, IFloat64Vector3D> pointMapping)
         {
             return new ArrayPointsPath3D(this.Select(pointMapping));
         }
 
-        public IEnumerator<IFloat64Tuple3D> GetEnumerator()
+        public IEnumerator<IFloat64Vector3D> GetEnumerator()
         {
             return Enumerable
                 .Range(0, Count)

@@ -56,6 +56,6 @@ public sealed class GrBabylonJsAnimationOfQuaternion :
             .QuaternionKeyFramesCache[KeyFramesIndex]
             .Values
             .First()
-            .GetQuaternionBabylonJsCode();
+            .GetBabylonJsCode();
     }
 }

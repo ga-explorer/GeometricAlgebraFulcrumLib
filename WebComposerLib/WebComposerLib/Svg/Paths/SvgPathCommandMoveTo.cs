@@ -4,150 +4,91 @@ using WebComposerLib.Svg.Values;
 
 namespace WebComposerLib.Svg.Paths
 {
-    public sealed class SvgPathCommandMoveTo : SvgPathCommand
+    public sealed class SvgPathCommandMoveTo : 
+        SvgPathCommandCurveToEndPoint
     {
-        public static SvgPathCommandMoveTo Create()
+        public static SvgPathCommandMoveTo CreateAbsolute(double x, double y)
         {
-            return new SvgPathCommandMoveTo();
+            return new SvgPathCommandMoveTo(false, SvgLengthUnit.None, x, y);
         }
 
-        public static SvgPathCommandMoveTo Create(bool isRelative)
+        public static SvgPathCommandMoveTo CreateRelative(double x, double y)
         {
-            return new SvgPathCommandMoveTo() { IsRelative = isRelative };
-        }
-
-        public static SvgPathCommandMoveTo Create(bool isRelative, SvgValueLengthUnit unit)
-        {
-            var command = new SvgPathCommandMoveTo { IsRelative = isRelative };
-
-            command.Points.Unit = unit;
-
-            return command;
-        }
-
-        public static SvgPathCommandMoveTo Create(double x, double y)
-        {
-            var command = new SvgPathCommandMoveTo();
-
-            command.Points.AddPoint(x, y);
-
-            return command;
+            return new SvgPathCommandMoveTo(false, SvgLengthUnit.None, x, y);
         }
 
         public static SvgPathCommandMoveTo Create(bool isRelative, double x, double y)
         {
-            var command = new SvgPathCommandMoveTo { IsRelative = isRelative };
-
-            command.Points.AddPoint(x, y);
-
-            return command;
+            return new SvgPathCommandMoveTo(isRelative, SvgLengthUnit.None, x, y);
         }
 
-        public static SvgPathCommandMoveTo Create(bool isRelative, SvgValueLengthUnit unit, double x, double y)
+
+        public static SvgPathCommandMoveTo CreateAbsolute(IPair<double> point)
         {
-            var command = new SvgPathCommandMoveTo { IsRelative = isRelative };
-
-            command.Points.Unit = unit;
-            command.Points.AddPoint(x, y);
-
-            return command;
+            return new SvgPathCommandMoveTo(false, SvgLengthUnit.None, point.Item1, point.Item2);
         }
 
-        public static SvgPathCommandMoveTo Create(IEnumerable<IPair<double>> points)
+        public static SvgPathCommandMoveTo CreateRelative(IPair<double> point)
         {
-            var command = new SvgPathCommandMoveTo();
-
-            command.Points.AddPoints(points);
-
-            return command;
+            return new SvgPathCommandMoveTo(false, SvgLengthUnit.None, point.Item1, point.Item2);
         }
 
-        public static SvgPathCommandMoveTo Create(bool isRelative, IEnumerable<IPair<double>> points)
+        public static SvgPathCommandMoveTo Create(bool isRelative, IPair<double> point)
         {
-            var command = new SvgPathCommandMoveTo { IsRelative = isRelative };
-
-            command.Points.AddPoints(points);
-
-            return command;
+            return new SvgPathCommandMoveTo(isRelative, SvgLengthUnit.None, point.Item1, point.Item2);
         }
 
-        public static SvgPathCommandMoveTo Create(bool isRelative, SvgValueLengthUnit unit, IEnumerable<IPair<double>> points)
+
+        public static SvgPathCommandMoveTo CreateAbsolute(SvgLengthUnit unit, double x, double y)
         {
-            var command = new SvgPathCommandMoveTo { IsRelative = isRelative };
-
-            command.Points.Unit = unit;
-            command.Points.AddPoints(points);
-
-            return command;
+            return new SvgPathCommandMoveTo(false, unit, x, y);
         }
 
-        public static SvgPathCommandMoveTo Create(params IPair<double>[] points)
+        public static SvgPathCommandMoveTo CreateRelative(SvgLengthUnit unit, double x, double y)
         {
-            var command = new SvgPathCommandMoveTo();
-
-            command.Points.AddPoints(points);
-
-            return command;
+            return new SvgPathCommandMoveTo(false, unit, x, y);
         }
 
-        public static SvgPathCommandMoveTo Create(bool isRelative, params IPair<double>[] points)
+        public static SvgPathCommandMoveTo Create(bool isRelative, SvgLengthUnit unit, double x, double y)
         {
-            var command = new SvgPathCommandMoveTo { IsRelative = isRelative };
-
-            command.Points.AddPoints(points);
-
-            return command;
+            return new SvgPathCommandMoveTo(isRelative, unit, x, y);
         }
+        
 
-        public static SvgPathCommandMoveTo Create(bool isRelative, SvgValueLengthUnit unit, params IPair<double>[] points)
+        public static SvgPathCommandMoveTo CreateAbsolute(SvgPoint endPoint)
         {
-            var command = new SvgPathCommandMoveTo { IsRelative = isRelative };
-
-            command.Points.Unit = unit;
-            command.Points.AddPoints(points);
-
-            return command;
+            return new SvgPathCommandMoveTo(false, endPoint);
         }
 
-        public static SvgPathCommandMoveTo Create(params double[] points)
+        public static SvgPathCommandMoveTo CreateRelative(SvgPoint endPoint)
         {
-            var command = new SvgPathCommandMoveTo();
-
-            command.Points.AddPoints(points);
-
-            return command;
+            return new SvgPathCommandMoveTo(false, endPoint);
         }
 
-        public static SvgPathCommandMoveTo Create(bool isRelative, params double[] points)
+        public static SvgPathCommandMoveTo Create(bool isRelative, SvgPoint endPoint)
         {
-            var command = new SvgPathCommandMoveTo { IsRelative = isRelative };
-
-            command.Points.AddPoints(points);
-
-            return command;
+            return new SvgPathCommandMoveTo(isRelative, endPoint);
         }
 
-        public static SvgPathCommandMoveTo Create(bool isRelative, SvgValueLengthUnit unit, params double[] points)
+
+        public static SvgPathCommandMoveTo CreateAbsolute(SvgLengthUnit unit, IPair<double> point)
         {
-            var command = new SvgPathCommandMoveTo { IsRelative = isRelative };
-
-            command.Points.Unit = unit;
-            command.Points.AddPoints(points);
-
-            return command;
+            return new SvgPathCommandMoveTo(false, unit, point.Item1, point.Item2);
         }
 
-
-        public bool IsRelative { get; set; }
-
-        public bool IsAbsolute
+        public static SvgPathCommandMoveTo CreateRelative(SvgLengthUnit unit, IPair<double> point)
         {
-            get => !IsRelative;
-            set => IsRelative = !value;
+            return new SvgPathCommandMoveTo(false, unit, point.Item1, point.Item2);
         }
 
-        public SvgValuePointsList Points { get; } 
-            = SvgValuePointsList.Create();
+        public static SvgPathCommandMoveTo Create(bool isRelative, SvgLengthUnit unit, IPair<double> point)
+        {
+            return new SvgPathCommandMoveTo(isRelative, unit, point.Item1, point.Item2);
+        }
+
+        
+        public override char CommandSymbol 
+            => IsRelative ? 'm' : 'M';
 
         public override string ValueText
         {
@@ -156,16 +97,25 @@ namespace WebComposerLib.Svg.Paths
                 var composer = new StringBuilder();
 
                 composer
-                    .Append(IsRelative ? "m " : "M ")
-                    .Append(Points.ValueText);
+                    .Append(CommandSymbol)
+                    .Append(' ')
+                    .Append(EndPoint.ValueText);
 
                 return composer.ToString();
             }
         }
 
 
-        private SvgPathCommandMoveTo()
+        private SvgPathCommandMoveTo(bool isRelative, SvgLengthUnit unit, double x, double y)
+            : base(isRelative, unit, x, y)
         {
         }
+        
+        private SvgPathCommandMoveTo(bool isRelative, SvgPoint endPoint) 
+            : base(isRelative, endPoint)
+        {
+        }
+
+        
     }
 }

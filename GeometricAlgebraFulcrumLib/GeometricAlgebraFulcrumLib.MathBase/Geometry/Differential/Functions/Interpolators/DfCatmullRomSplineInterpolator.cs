@@ -4,6 +4,7 @@ using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric;
 using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space2D.Curves;
 using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space2D.Curves.CatmullRom;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Differential.Functions.Interpolators
@@ -20,7 +21,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Differential.Functions.In
             var bsSignalPointList = new Float64Vector2D[xValues.Count];
 
             for (var i = 0; i < pointCount; i++)
-                bsSignalPointList[i] = new Float64Vector2D(xValues[i], yValues[i]);
+                bsSignalPointList[i] = Float64Vector2D.Create((Float64Scalar)xValues[i], (Float64Scalar)yValues[i]);
 
             var curve =
                 bsSignalPointList.CreateCatmullRomSpline2D(

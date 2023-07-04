@@ -14,7 +14,6 @@
     <ProjectReference Include="..\..\GraphicsComposerLib\GraphicsComposerLib.Rendering\GraphicsComposerLib.Rendering.csproj" />
     <ProjectReference Include="..\..\NumericalGeometryLib\NumericalGeometryLib\NumericalGeometryLib.csproj" />
     <ProjectReference Include="..\..\TextComposerLib\TextComposerLib\TextComposerLib.csproj" />
-    <ProjectReference Include="..\GeometricAlgebraFulcrumLib.Mathematica\GeometricAlgebraFulcrumLib.Mathematica.csproj" />
     <ProjectReference Include="..\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.csproj" />
   </ItemGroup>
 

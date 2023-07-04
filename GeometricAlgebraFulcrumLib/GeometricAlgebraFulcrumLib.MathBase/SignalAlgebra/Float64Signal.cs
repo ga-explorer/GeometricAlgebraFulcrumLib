@@ -1315,6 +1315,12 @@ namespace GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra
 
             return new Float64Signal(SamplingRate, sampleList, IsReadOnly);
         }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Float64Signal GetRunningAverageSignal()
+        {
+            return GetRunningAverageSignal(Count, 0);
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Float64Signal GetRunningAverageSignal(int sampleCount)

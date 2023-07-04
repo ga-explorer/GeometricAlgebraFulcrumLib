@@ -21,12 +21,12 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space2D.Curves
             => Float64Range1D.Infinite;
 
 
-        public BezierCurve3Degree2D(IFloat64Tuple2D point1, IFloat64Tuple2D point2, IFloat64Tuple2D point3, IFloat64Tuple2D point4)
+        public BezierCurve3Degree2D(IFloat64Vector2D point1, IFloat64Vector2D point2, IFloat64Vector2D point3, IFloat64Vector2D point4)
         {
-            Point1 = point1.ToLinVector2D();
-            Point2 = point2.ToLinVector2D();
-            Point3 = point3.ToLinVector2D();
-            Point4 = point4.ToLinVector2D();
+            Point1 = point1.ToVector2D();
+            Point2 = point2.ToVector2D();
+            Point3 = point3.ToVector2D();
+            Point4 = point4.ToVector2D();
 
             Debug.Assert(IsValid());
         }
@@ -57,10 +57,8 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space2D.Curves
         {
             var (p1, p2, p3, p4) = parameterValue.BernsteinBasis_3();
 
-            return new Float64Vector2D(
-                p1 * Point1.X + p2 * Point2.X + p3 * Point3.X + p4 * Point4.X,
-                p1 * Point1.Y + p2 * Point2.Y + p3 * Point3.Y + p4 * Point4.Y
-            );
+            return Float64Vector2D.Create(p1 * Point1.X + p2 * Point2.X + p3 * Point3.X + p4 * Point4.X,
+                p1 * Point1.Y + p2 * Point2.Y + p3 * Point3.Y + p4 * Point4.Y);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -84,10 +82,8 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space2D.Curves
             var p2 = 6 * parameterValue * s;
             var p3 = 3 * parameterValue * parameterValue;
 
-            return new Float64Vector2D(
-                p1 * (Point2.X - Point1.X) + p2 * (Point3.X - Point2.X) + p3 * (Point4.X - Point3.X),
-                p1 * (Point2.Y - Point1.Y) + p2 * (Point3.Y - Point2.Y) + p3 * (Point4.Y - Point3.Y)
-            );
+            return Float64Vector2D.Create(p1 * (Point2.X - Point1.X) + p2 * (Point3.X - Point2.X) + p3 * (Point4.X - Point3.X),
+                p1 * (Point2.Y - Point1.Y) + p2 * (Point3.Y - Point2.Y) + p3 * (Point4.Y - Point3.Y));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

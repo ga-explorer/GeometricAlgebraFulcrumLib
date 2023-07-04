@@ -8,7 +8,7 @@ using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Structures.Data
 {
     public sealed record PointData2D<T> :
-        IFloat64Tuple2D
+        IFloat64Vector2D
     {
         public bool IsValid()
         {

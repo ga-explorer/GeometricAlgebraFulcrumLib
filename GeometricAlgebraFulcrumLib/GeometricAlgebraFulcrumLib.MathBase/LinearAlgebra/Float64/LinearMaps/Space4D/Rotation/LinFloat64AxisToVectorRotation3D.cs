@@ -24,7 +24,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.S
             => AngleCos.ArcCos();
 
 
-        public LinFloat64AxisToVectorRotation4D(int uAxisIndex, bool uAxisNegative, IFloat64Tuple4D v)
+        public LinFloat64AxisToVectorRotation4D(int uAxisIndex, bool uAxisNegative, IFloat64Vector4D v)
         {
             Debug.Assert(
                 v.IsNearUnit()
@@ -97,7 +97,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.S
                 .GetVector();
         }
 
-        public override Float64Vector4D MapVector(IFloat64Tuple4D vector)
+        public override Float64Vector4D MapVector(IFloat64Vector4D vector)
         {
             var r = vector.ESp(TargetOrthogonalVector);
             

@@ -17,10 +17,10 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space2D.Curves
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ParametricLine2D(IFloat64Tuple2D point, IFloat64Tuple2D vector)
+        public ParametricLine2D(IFloat64Vector2D point, IFloat64Vector2D vector)
         {
-            Point = point.ToLinVector2D();
-            Vector = vector.ToLinVector2D();
+            Point = point.ToVector2D();
+            Vector = vector.ToVector2D();
         }
 
 
@@ -34,10 +34,8 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space2D.Curves
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Float64Vector2D GetPoint(double parameterValue)
         {
-            return new Float64Vector2D(
-                Point.X + parameterValue * Vector.X,
-                Point.Y + parameterValue * Vector.Y
-            );
+            return Float64Vector2D.Create(Point.X + parameterValue * Vector.X,
+                Point.Y + parameterValue * Vector.Y);
         }
 
         public Float64Vector2D GetTangent(double parameterValue)

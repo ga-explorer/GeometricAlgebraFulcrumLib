@@ -8,7 +8,7 @@ using TextComposerLib;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples
 {
-    public sealed class MutableComplexTuple3D : IComplexTuple3D, IEnumerable<Complex>
+    public sealed class MutableComplexTuple3D : IComplexVector3D, IEnumerable<Complex>
     {
         public double RealX { get; set; }
 
@@ -115,7 +115,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples
             Debug.Assert(IsValid());
         }
 
-        public MutableComplexTuple3D(IFloat64Tuple3D tuple)
+        public MutableComplexTuple3D(IFloat64Vector3D tuple)
         {
             RealX = tuple.X;
             RealY = tuple.Y;
@@ -124,7 +124,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples
             Debug.Assert(IsValid());
         }
 
-        public MutableComplexTuple3D(IComplexTuple3D tuple)
+        public MutableComplexTuple3D(IComplexVector3D tuple)
         {
             RealX = tuple.X.Real;
             RealY = tuple.Y.Real;
@@ -186,7 +186,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples
             return this;
         }
 
-        public MutableComplexTuple3D SetTuple(IFloat64Tuple3D tuple)
+        public MutableComplexTuple3D SetTuple(IFloat64Vector3D tuple)
         {
             RealX = tuple.X;
             RealY = tuple.Y;
@@ -201,7 +201,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples
             return this;
         }
 
-        public MutableComplexTuple3D SetRealTuple(IFloat64Tuple3D tuple)
+        public MutableComplexTuple3D SetRealTuple(IFloat64Vector3D tuple)
         {
             RealX = tuple.X;
             RealY = tuple.Y;
@@ -212,7 +212,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples
             return this;
         }
 
-        public MutableComplexTuple3D SetImaginaryTuple(IFloat64Tuple3D tuple)
+        public MutableComplexTuple3D SetImaginaryTuple(IFloat64Vector3D tuple)
         {
             ImagX = tuple.X;
             ImagY = tuple.Y;
@@ -223,7 +223,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples
             return this;
         }
 
-        public MutableComplexTuple3D SetTuple(IComplexTuple3D tuple)
+        public MutableComplexTuple3D SetTuple(IComplexVector3D tuple)
         {
             RealX = tuple.X.Real;
             RealY = tuple.Y.Real;

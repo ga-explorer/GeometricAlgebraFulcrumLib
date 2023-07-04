@@ -3,17 +3,18 @@ using DataStructuresLib.Basic;
 using DataStructuresLib.Sequences.Periodic1D;
 using GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsPath.Space2D;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsMesh.Space2D
 {
     public class PlanarPointsMesh2D
         : IPointsMesh2D
     {
-        public IFloat64Tuple2D Origin { get; set; }
+        public IFloat64Vector2D Origin { get; set; }
 
-        public IFloat64Tuple2D Direction1 { get; set; }
+        public IFloat64Vector2D Direction1 { get; set; }
 
-        public IFloat64Tuple2D Direction2 { get; set; }
+        public IFloat64Vector2D Direction2 { get; set; }
 
         public IPeriodicSequence1D<double> Parameters1 { get; }
 
@@ -28,7 +29,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsMesh.Space2D
         public int Count2
             => Parameters2.Count;
 
-        public IFloat64Tuple2D this[int index]
+        public IFloat64Vector2D this[int index]
         {
             get
             {
@@ -40,17 +41,15 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsMesh.Space2D
             }
         }
 
-        public IFloat64Tuple2D this[int index1, int index2]
+        public IFloat64Vector2D this[int index1, int index2]
         {
             get
             {
                 var t1 = Parameters1[index1];
                 var t2 = Parameters2[index2];
 
-                return new Float64Vector2D(
-                    Origin.X + t1 * Direction1.X + t2 * Direction2.X,
-                    Origin.Y + t1 * Direction1.Y + t2 * Direction2.Y
-                );
+                return Float64Vector2D.Create(Origin.X + t1 * Direction1.X + t2 * Direction2.X,
+                    Origin.Y + t1 * Direction1.Y + t2 * Direction2.Y);
             }
         }
 
@@ -66,13 +65,13 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsMesh.Space2D
             Parameters1 = parameters1;
             Parameters2 = parameters2;
 
-            Origin = new Float64Vector2D(0, 0);
-            Direction1 = new Float64Vector2D(1, 0);
-            Direction2 = new Float64Vector2D(0, 1);
+            Origin = Float64Vector2D.Create((Float64Scalar)0, 0);
+            Direction1 = Float64Vector2D.Create((Float64Scalar)1, 0);
+            Direction2 = Float64Vector2D.Create((Float64Scalar)0, 1);
         }
 
 
-        public PSeqSlice1D<IFloat64Tuple2D> GetSliceAt(int dimension, int index)
+        public PSeqSlice1D<IFloat64Vector2D> GetSliceAt(int dimension, int index)
         {
             return new PointsMeshSlicePointsPath2D(this, dimension, index);
         }
@@ -82,7 +81,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsMesh.Space2D
             return new PointsMeshSlicePointsPath2D(this, dimension, index);
         }
 
-        public IEnumerator<IFloat64Tuple2D> GetEnumerator()
+        public IEnumerator<IFloat64Vector2D> GetEnumerator()
         {
             for (var i2 = 0; i2 < Count2; i2++)
             for (var i1 = 0; i1 < Count1; i1++)

@@ -28,7 +28,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.SubSpaces.Sp
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool NearContains(IFloat64Tuple4D vector, double epsilon = 1E-12D)
+        public bool NearContains(IFloat64Vector4D vector, double epsilon = 1E-12D)
         {
             return vector.ENorm().IsNearZero(epsilon);
         }

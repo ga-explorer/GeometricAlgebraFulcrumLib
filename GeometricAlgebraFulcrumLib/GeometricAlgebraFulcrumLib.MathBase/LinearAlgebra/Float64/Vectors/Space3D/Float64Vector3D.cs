@@ -7,12 +7,12 @@ using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D
 {
-    /// <inheritdoc cref="IFloat64Tuple3D" />
+    /// <inheritdoc cref="IFloat64Vector3D" />
     /// <summary>
     /// A 3-tuple of double precision coordinates
     /// </summary>
     public sealed record Float64Vector3D :
-        IFloat64Tuple3D,
+        IFloat64Vector3D,
         IFloat64Multivector3D
     {
         public static Float64Vector3D Zero { get; } 
@@ -83,16 +83,38 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
 
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Float64Vector3D Create(int x, int y, int z)
+        {
+            return new Float64Vector3D(x, y, z);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Float64Vector3D Create(float x, float y, float z)
+        {
+            return new Float64Vector3D(x, y, z);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Float64Vector3D Create(double x, double y, double z)
+        {
+            return new Float64Vector3D(x, y, z);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Float64Vector3D Create(Float64Scalar x, Float64Scalar y, Float64Scalar z)
         {
             return new Float64Vector3D(x, y, z);
         }
         
-        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-        //public static Float64Vector3D CreateInstance(double x, double y, double z)
-        //{
-        //    return new Float64Vector3D(x, y, z);
-        //}
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Float64Vector3D Create(ITriplet<double> tuple)
+        {
+            return new Float64Vector3D(
+                tuple.Item1, 
+                tuple.Item2, 
+                tuple.Item3
+            );
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Float64Vector3D CreateAffineVector(Float64Scalar x, Float64Scalar y)
@@ -114,13 +136,13 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Float64Vector3D operator +(Float64Vector3D v1, IFloat64Tuple3D v2)
+        public static Float64Vector3D operator +(Float64Vector3D v1, IFloat64Vector3D v2)
         {
             return new Float64Vector3D(v1.X + v2.X, v1.Y + v2.Y, v1.Z + v2.Z);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Float64Vector3D operator +(IFloat64Tuple3D v1, Float64Vector3D v2)
+        public static Float64Vector3D operator +(IFloat64Vector3D v1, Float64Vector3D v2)
         {
             return new Float64Vector3D(v1.X + v2.X, v1.Y + v2.Y, v1.Z + v2.Z);
         }
@@ -132,13 +154,13 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Float64Vector3D operator -(Float64Vector3D v1, IFloat64Tuple3D v2)
+        public static Float64Vector3D operator -(Float64Vector3D v1, IFloat64Vector3D v2)
         {
             return new Float64Vector3D(v1.X - v2.X, v1.Y - v2.Y, v1.Z - v2.Z);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Float64Vector3D operator -(IFloat64Tuple3D v1, Float64Vector3D v2)
+        public static Float64Vector3D operator -(IFloat64Vector3D v1, Float64Vector3D v2)
         {
             return new Float64Vector3D(v1.X - v2.X, v1.Y - v2.Y, v1.Z - v2.Z);
         }
@@ -170,15 +192,15 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ComplexTuple3D operator *(Float64Vector3D v1, Complex s)
+        public static ComplexVector3D operator *(Float64Vector3D v1, Complex s)
         {
-            return new ComplexTuple3D(v1.X * s, v1.Y * s, v1.Z * s);
+            return new ComplexVector3D(v1.X * s, v1.Y * s, v1.Z * s);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ComplexTuple3D operator *(Complex s, Float64Vector3D v1)
+        public static ComplexVector3D operator *(Complex s, Float64Vector3D v1)
         {
-            return new ComplexTuple3D(v1.X * s, v1.Y * s, v1.Z * s);
+            return new ComplexVector3D(v1.X * s, v1.Y * s, v1.Z * s);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -398,26 +420,6 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
         public Float64Bivector3D Dual3D()
         {
             return Float64Bivector3D.Create(
-                Scalar3,
-                -Scalar2,
-                Scalar1
-            );
-        }
-        
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Float64Bivector3D Dual3D(Float64Scalar scalingFactor)
-        {
-            return Float64Bivector3D.Create(
-                Scalar3 * scalingFactor,
-                -Scalar2 * scalingFactor,
-                Scalar1 * scalingFactor
-            );
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Float64Bivector3D UnDual3D()
-        {
-            return Float64Bivector3D.Create(
                 -Scalar3,
                 Scalar2,
                 -Scalar1
@@ -425,12 +427,32 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Float64Bivector3D UnDual3D(Float64Scalar scalingFactor)
+        public Float64Bivector3D Dual3D(Float64Scalar scalingFactor)
         {
             return Float64Bivector3D.Create(
                 -Scalar3 * scalingFactor,
                 Scalar2 * scalingFactor,
                 -Scalar1 * scalingFactor
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Float64Bivector3D UnDual3D()
+        {
+            return Float64Bivector3D.Create(
+                Scalar3,
+                -Scalar2,
+                Scalar1
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Float64Bivector3D UnDual3D(Float64Scalar scalingFactor)
+        {
+            return Float64Bivector3D.Create(
+                Scalar3 * scalingFactor,
+                -Scalar2 * scalingFactor,
+                Scalar1 * scalingFactor
             );
         }
 

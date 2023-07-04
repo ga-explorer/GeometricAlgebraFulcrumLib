@@ -4,6 +4,7 @@ using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines.Mutable;
 using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Triangles.Immutable;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines
 {
@@ -12,17 +13,17 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines
         #region Lines in 2D
         public static Float64Vector2D GetOrigin(this ILine2D line)
         {
-            return new Float64Vector2D(line.OriginX, line.OriginY);
+            return Float64Vector2D.Create((Float64Scalar)line.OriginX, (Float64Scalar)line.OriginY);
         }
 
         public static Float64Vector2D GetDirection(this ILine2D line)
         {
-            return new Float64Vector2D(line.DirectionX, line.DirectionY);
+            return Float64Vector2D.Create((Float64Scalar)line.DirectionX, (Float64Scalar)line.DirectionY);
         }
 
         public static Float64Vector2D GetDirectionInv(this ILine2D line)
         {
-            return new Float64Vector2D(1 / line.DirectionX, 1 / line.DirectionY);
+            return Float64Vector2D.Create((Float64Scalar)(1 / line.DirectionX), (Float64Scalar)(1 / line.DirectionY));
         }
 
         public static int[] GetDirectionSign(this ILine2D line)
@@ -50,7 +51,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines
 
         public static Float64Vector2D GetUnitDirection(this ILine2D line)
         {
-            return Float64Vector2DUtils.ToUnitVector(line.DirectionX, line.DirectionY);
+            return Float64Vector2DComposerUtils.ToUnitVector(line.DirectionX, line.DirectionY);
         }
 
         public static Tuple<double, Float64Vector2D> ToLengthAndUnitDirection(this ILine2D line)
@@ -64,23 +65,21 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines
 
             return Tuple.Create(
                 length,
-                new Float64Vector2D(
-                    line.DirectionX * lengthInv,
-                    line.DirectionY * lengthInv
-                )
+                Float64Vector2D.Create((Float64Scalar)(line.DirectionX * lengthInv),
+                    (Float64Scalar)(line.DirectionY * lengthInv))
             );
         }
 
         public static Float64Vector2D GetNormal(this ILine2D line)
         {
-            return new Float64Vector2D(-line.DirectionY, line.DirectionX);
+            return Float64Vector2D.Create((Float64Scalar)(-line.DirectionY), (Float64Scalar)line.DirectionX);
         }
 
         public static Float64Vector2D GetUnitNormal(this ILine2D line)
         {
             var s = 1.0d / Math.Sqrt(line.DirectionX * line.DirectionX + line.DirectionY * line.DirectionY);
 
-            return new Float64Vector2D(-line.DirectionY * s, line.DirectionX * s);
+            return Float64Vector2D.Create((Float64Scalar)(-line.DirectionY * s), (Float64Scalar)(line.DirectionX * s));
         }
 
         public static double GetDistanceToLineDirectionLength(this ILine2D line, double distance)
@@ -136,10 +135,8 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines
 
         public static Float64Vector2D GetPointAt(this ILine2D line, double t)
         {
-            return new Float64Vector2D(
-                line.OriginX + t * line.DirectionX,
-                line.OriginY + t * line.DirectionY
-            );
+            return Float64Vector2D.Create((Float64Scalar)(line.OriginX + t * line.DirectionX),
+                (Float64Scalar)(line.OriginY + t * line.DirectionY));
         }
 
         public static IEnumerable<Float64Vector2D> GetPointsAt(this ILine2D line, IEnumerable<double> tList)
@@ -177,7 +174,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines
             );
         }
 
-        public static Triangle2D ToTriangle(this ILine2D line, IFloat64Tuple2D point3)
+        public static Triangle2D ToTriangle(this ILine2D line, IFloat64Vector2D point3)
         {
             return new Triangle2D(
                 line.OriginX,
@@ -189,7 +186,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines
             );
         }
 
-        public static Beam2D ToBeam(this ILine2D line, IFloat64Tuple2D direction2)
+        public static Beam2D ToBeam(this ILine2D line, IFloat64Vector2D direction2)
         {
             return new Beam2D(
                 line.OriginX,
@@ -247,10 +244,8 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines
 
         public static Float64Vector2D GetNegativeDirection(this ILine2D line)
         {
-            return new Float64Vector2D(
-                -line.DirectionX,
-                -line.DirectionY
-            );
+            return Float64Vector2D.Create((Float64Scalar)(-line.DirectionX),
+                (Float64Scalar)(-line.DirectionY));
         }
 
         public static Float64Vector3D GetNegativeDirection(this ILine3D line)
@@ -288,7 +283,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines
 
         public static Float64Vector3D GetUnitDirection(this ILine3D line)
         {
-            return Float64Vector3DUtils.ToUnitVector(
+            return Float64Vector3DComposerUtils.ToUnitVector(
                 line.DirectionX,
                 line.DirectionY,
                 line.DirectionZ
@@ -356,10 +351,8 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines
         {
             var t = distance / line.GetDirectionLength();
 
-            return new Float64Vector2D(
-                line.OriginX + t * line.DirectionX,
-                line.OriginY + t * line.DirectionY
-            );
+            return Float64Vector2D.Create((Float64Scalar)(line.OriginX + t * line.DirectionX),
+                (Float64Scalar)(line.OriginY + t * line.DirectionY));
         }
 
         public static Float64Vector3D GetPointAtDistance(this ILine3D line, double distance)
@@ -414,7 +407,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines
             );
         }
 
-        public static Triangle3D ToTriangle(this ILine3D line, IFloat64Tuple3D point3)
+        public static Triangle3D ToTriangle(this ILine3D line, IFloat64Vector3D point3)
         {
             return new Triangle3D(
                 line.OriginX,
@@ -474,18 +467,14 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines
 
         public static Float64Vector2D GetDirection12(this ILineSegment2D lineSegment)
         {
-            return new Float64Vector2D(
-                lineSegment.Point2X - lineSegment.Point1X,
-                lineSegment.Point2Y - lineSegment.Point1Y
-            );
+            return Float64Vector2D.Create((Float64Scalar)(lineSegment.Point2X - lineSegment.Point1X),
+                (Float64Scalar)(lineSegment.Point2Y - lineSegment.Point1Y));
         }
 
         public static Float64Vector2D GetDirection21(this ILineSegment2D lineSegment)
         {
-            return new Float64Vector2D(
-                lineSegment.Point1X - lineSegment.Point2X,
-                lineSegment.Point1Y - lineSegment.Point2Y
-            );
+            return Float64Vector2D.Create((Float64Scalar)(lineSegment.Point1X - lineSegment.Point2X),
+                (Float64Scalar)(lineSegment.Point1Y - lineSegment.Point2Y));
         }
 
         public static Line2D ToLine(this ILineSegment2D lineSegment)
@@ -532,26 +521,22 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines
 
         public static Float64Vector2D GetPoint1(this ILineSegment2D lineSegment)
         {
-            return new Float64Vector2D(lineSegment.Point1X, lineSegment.Point1Y);
+            return Float64Vector2D.Create((Float64Scalar)lineSegment.Point1X, (Float64Scalar)lineSegment.Point1Y);
         }
 
         public static Float64Vector2D GetPoint2(this ILineSegment2D lineSegment)
         {
-            return new Float64Vector2D(lineSegment.Point2X, lineSegment.Point2Y);
+            return Float64Vector2D.Create((Float64Scalar)lineSegment.Point2X, (Float64Scalar)lineSegment.Point2Y);
         }
 
         public static Float64Vector2D[] GetEndPoints(this ILineSegment2D lineSegment)
         {
             return new[]
             {
-                new Float64Vector2D(
-                    lineSegment.Point1X,
-                    lineSegment.Point1Y
-                ),
-                new Float64Vector2D(
-                    lineSegment.Point2X,
-                    lineSegment.Point2Y
-                )
+                Float64Vector2D.Create((Float64Scalar)lineSegment.Point1X,
+                    (Float64Scalar)lineSegment.Point1Y),
+                Float64Vector2D.Create((Float64Scalar)lineSegment.Point2X,
+                    (Float64Scalar)lineSegment.Point2Y)
             };
         }
 
@@ -561,10 +546,8 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines
 
             var s = 1.0d - t;
 
-            return new Float64Vector2D(
-                s * lineSegment.Point1X + t * lineSegment.Point2X,
-                s * lineSegment.Point1Y + t * lineSegment.Point2Y
-            );
+            return Float64Vector2D.Create((Float64Scalar)(s * lineSegment.Point1X + t * lineSegment.Point2X),
+                (Float64Scalar)(s * lineSegment.Point1Y + t * lineSegment.Point2Y));
         }
 
         public static IEnumerable<Float64Vector2D> GetPointsAt(this ILineSegment2D lineSegment, IEnumerable<double> tList)
@@ -607,7 +590,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines
             );
         }
 
-        public static IEnumerable<LineSegment2D> ToLineSegments(this IEnumerable<IFloat64Tuple2D> polylinePoints, bool closedShape = true)
+        public static IEnumerable<LineSegment2D> ToLineSegments(this IEnumerable<IFloat64Vector2D> polylinePoints, bool closedShape = true)
         {
             var pointsArray = polylinePoints.ToArray();
             var point1 = pointsArray[0];
@@ -641,27 +624,23 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines
 
         public static Float64Vector2D GetNormal(this ILineSegment2D lineSegment)
         {
-            var direction = new Float64Vector2D(
-                lineSegment.Point2X - lineSegment.Point1X,
-                lineSegment.Point2Y - lineSegment.Point1Y
-            );
+            var direction = Float64Vector2D.Create((Float64Scalar)(lineSegment.Point2X - lineSegment.Point1X),
+                (Float64Scalar)(lineSegment.Point2Y - lineSegment.Point1Y));
 
-            return new Float64Vector2D(-direction.Y, direction.X);
+            return Float64Vector2D.Create(-direction.Y, direction.X);
         }
 
         public static Float64Vector2D GetUnitNormal(this ILineSegment2D lineSegment)
         {
-            var direction = new Float64Vector2D(
-                lineSegment.Point2X - lineSegment.Point1X,
-                lineSegment.Point2Y - lineSegment.Point1Y
-            );
+            var direction = Float64Vector2D.Create((Float64Scalar)(lineSegment.Point2X - lineSegment.Point1X),
+                (Float64Scalar)(lineSegment.Point2Y - lineSegment.Point1Y));
 
             var s = 1.0d / Math.Sqrt(
                         direction.X * direction.X + 
                         direction.Y * direction.Y
                     );
 
-            return new Float64Vector2D(-direction.Y * s, direction.X * s);
+            return Float64Vector2D.Create(-direction.Y * s, direction.X * s);
         }
 
         #endregion
@@ -840,7 +819,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines
             );
         }
 
-        public static IEnumerable<LineSegment3D> ToLineSegments(this IEnumerable<IFloat64Tuple3D> polylinePoints, bool closedShape = true)
+        public static IEnumerable<LineSegment3D> ToLineSegments(this IEnumerable<IFloat64Vector3D> polylinePoints, bool closedShape = true)
         {
             var pointsArray = polylinePoints.ToArray();
             var point1 = pointsArray[0];
@@ -882,26 +861,20 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines
 
         public static Float64Vector2D GetOrigin(this IBeam2D beam)
         {
-            return new Float64Vector2D(
-                beam.OriginX,
-                beam.OriginY
-            );
+            return Float64Vector2D.Create((Float64Scalar)beam.OriginX,
+                (Float64Scalar)beam.OriginY);
         }
 
         public static Float64Vector2D GetDirection1(this IBeam2D beam)
         {
-            return new Float64Vector2D(
-                beam.Direction1X,
-                beam.Direction1Y
-            );
+            return Float64Vector2D.Create((Float64Scalar)beam.Direction1X,
+                (Float64Scalar)beam.Direction1Y);
         }
 
         public static Float64Vector2D GetDirection2(this IBeam2D beam)
         {
-            return new Float64Vector2D(
-                beam.Direction2X,
-                beam.Direction2Y
-            );
+            return Float64Vector2D.Create((Float64Scalar)beam.Direction2X,
+                (Float64Scalar)beam.Direction2Y);
         }
 
         public static Line2D GetRay1(this IBeam2D beam)
@@ -927,10 +900,8 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines
 
         public static Float64Vector2D GetNormal1(this IBeam2D beam)
         {
-            return new Float64Vector2D(
-                -beam.Direction1Y,
-                beam.Direction1X
-            );
+            return Float64Vector2D.Create((Float64Scalar)(-beam.Direction1Y),
+                (Float64Scalar)beam.Direction1X);
         }
 
         public static Float64Vector2D GetUnitNormal1(this IBeam2D beam)
@@ -940,18 +911,14 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines
                         beam.Direction1Y * beam.Direction1Y
                     );
 
-            return new Float64Vector2D(
-                -beam.Direction1Y * s,
-                beam.Direction1X * s
-            );
+            return Float64Vector2D.Create((Float64Scalar)(-beam.Direction1Y * s),
+                (Float64Scalar)(beam.Direction1X * s));
         }
 
         public static Float64Vector2D GetNormal2(this IBeam2D beam)
         {
-            return new Float64Vector2D(
-                -beam.Direction2Y,
-                beam.Direction2X
-            );
+            return Float64Vector2D.Create((Float64Scalar)(-beam.Direction2Y),
+                (Float64Scalar)beam.Direction2X);
         }
 
         public static Float64Vector2D GetUnitNormal2(this IBeam2D beam)
@@ -961,10 +928,8 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines
                         beam.Direction2Y * beam.Direction2Y
                     );
 
-            return new Float64Vector2D(
-                -beam.Direction2Y * s,
-                beam.Direction2X * s
-            );
+            return Float64Vector2D.Create((Float64Scalar)(-beam.Direction2Y * s),
+                (Float64Scalar)(beam.Direction2X * s));
         }
 
         public static Line2D GetNormalRay1(this IBeam2D beam)
@@ -1001,10 +966,8 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines
 
         public static Float64Vector2D GetPoint(this IBeam2D beam, double tPointX, double tPointY)
         {
-            return new Float64Vector2D(
-                beam.OriginX + tPointX * beam.Direction1X + tPointY * beam.Direction2X,
-                beam.OriginY + tPointX * beam.Direction1Y + tPointY * beam.Direction2Y
-            );
+            return Float64Vector2D.Create((Float64Scalar)(beam.OriginX + tPointX * beam.Direction1X + tPointY * beam.Direction2X),
+                (Float64Scalar)(beam.OriginY + tPointX * beam.Direction1Y + tPointY * beam.Direction2Y));
         }
 
         public static IEnumerable<Float64Vector2D> GetPoints(this IBeam2D beam, IEnumerable<Float64Vector2D> tPointsList)
@@ -1121,35 +1084,27 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines
 
         public static Float64Vector2D GetOrigin1(this ILinePair2D linePair)
         {
-            return new Float64Vector2D(
-                linePair.Origin1X,
-                linePair.Origin1Y
-            );
+            return Float64Vector2D.Create((Float64Scalar)linePair.Origin1X,
+                (Float64Scalar)linePair.Origin1Y);
         }
 
         public static Float64Vector2D GetOrigin2(this ILinePair2D linePair)
         {
-            return new Float64Vector2D(
-                linePair.Origin2X,
-                linePair.Origin2Y
-            );
+            return Float64Vector2D.Create((Float64Scalar)linePair.Origin2X,
+                (Float64Scalar)linePair.Origin2Y);
         }
 
 
         public static Float64Vector2D GetDirection1(this ILinePair2D linePair)
         {
-            return new Float64Vector2D(
-                linePair.Direction1X,
-                linePair.Direction1Y
-            );
+            return Float64Vector2D.Create((Float64Scalar)linePair.Direction1X,
+                (Float64Scalar)linePair.Direction1Y);
         }
 
         public static Float64Vector2D GetDirection2(this ILinePair2D linePair)
         {
-            return new Float64Vector2D(
-                linePair.Direction2X,
-                linePair.Direction2Y
-            );
+            return Float64Vector2D.Create((Float64Scalar)linePair.Direction2X,
+                (Float64Scalar)linePair.Direction2Y);
         }
 
         public static Line2D GetRay1(this ILinePair2D linePair)

@@ -1,6 +1,7 @@
 ﻿using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Frames.Space3D;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Structures.Vertices
 {
@@ -13,7 +14,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Structures.Vertices
             set => throw new InvalidOperationException();
         }
 
-        public IFloat64Tuple2D TextureUv { get; set; }
+        public IFloat64Vector2D TextureUv { get; set; }
 
         public Normal3D Normal { get; }
             = new Normal3D();
@@ -48,15 +49,15 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Structures.Vertices
 
         public GraphicsNormalTextureVertexData3D()
         {
-            TextureUv = new Float64Vector2D(0, 0);
+            TextureUv = Float64Vector2D.Create((Float64Scalar)0, 0);
         }
 
-        public GraphicsNormalTextureVertexData3D(IFloat64Tuple2D textureUv)
+        public GraphicsNormalTextureVertexData3D(IFloat64Vector2D textureUv)
         {
             TextureUv = textureUv;
         }
 
-        public GraphicsNormalTextureVertexData3D(IFloat64Tuple2D textureUv, IFloat64Tuple3D normal)
+        public GraphicsNormalTextureVertexData3D(IFloat64Vector2D textureUv, IFloat64Vector3D normal)
         {
             TextureUv = textureUv;
             Normal.Set(normal);

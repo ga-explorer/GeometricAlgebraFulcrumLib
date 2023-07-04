@@ -7,7 +7,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines.Immutab
     /// </summary>
     public sealed class Beam2D : IBeam2D
     {
-        public static Beam2D Create(IFloat64Tuple2D origin, IFloat64Tuple2D direction1, IFloat64Tuple2D direction2)
+        public static Beam2D Create(IFloat64Vector2D origin, IFloat64Vector2D direction1, IFloat64Vector2D direction2)
         {
             return new Beam2D(
                 origin.X, origin.Y,

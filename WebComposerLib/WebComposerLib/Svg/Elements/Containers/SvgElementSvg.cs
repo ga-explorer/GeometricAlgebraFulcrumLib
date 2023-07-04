@@ -308,7 +308,7 @@ namespace WebComposerLib.Svg.Elements.Containers
         }
 
 
-        public SvgElementSvg SetCanvasCorner(double x, double y, SvgValueLengthUnit unit)
+        public SvgElementSvg SetCanvasCorner(double x, double y, SvgLengthUnit unit)
         {
             X.SetTo(x, unit);
             Y.SetTo(y, unit);
@@ -332,7 +332,7 @@ namespace WebComposerLib.Svg.Elements.Containers
             return this;
         }
 
-        public SvgElementSvg SetCanvasSize(double width, double height, SvgValueLengthUnit unit)
+        public SvgElementSvg SetCanvasSize(double width, double height, SvgLengthUnit unit)
         {
             Width.SetTo(width, unit);
             Height.SetTo(height, unit);
@@ -350,7 +350,7 @@ namespace WebComposerLib.Svg.Elements.Containers
             return this;
         }
 
-        public SvgElementSvg SetCanvas(double x, double y, double width, double height, SvgValueLengthUnit unit)
+        public SvgElementSvg SetCanvas(double x, double y, double width, double height, SvgLengthUnit unit)
         {
             X.SetTo(x, unit);
             Y.SetTo(y, unit);

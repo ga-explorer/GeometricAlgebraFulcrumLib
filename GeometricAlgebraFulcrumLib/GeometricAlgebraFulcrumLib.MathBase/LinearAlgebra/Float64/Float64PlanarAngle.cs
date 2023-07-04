@@ -8,7 +8,6 @@ using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space4D;
 using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
-using Float64Utils = GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra.Float64Utils;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64
 {
@@ -71,16 +70,66 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64
         public static Float64PlanarAngle Angle360 { get; }
             = new Float64PlanarAngle(360d);
 
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Float64PlanarAngle CreateFromDegrees(double angleInDegrees)
         {
-            return angleInDegrees switch
+            // A full-range angle is in the range [-360, 360] degrees
+            var fullRangeAngleValue = 
+                angleInDegrees switch
+                {
+                    < -360d => angleInDegrees % 720d + 360d,
+                    > 360 => angleInDegrees % 360d,
+                    _ => angleInDegrees
+                };
+
+            return new Float64PlanarAngle(fullRangeAngleValue);
+
+            //return angleInDegrees switch
+            //{
+            //    < -360d => new Float64PlanarAngle(angleInDegrees % 720d + 360d),
+            //    > 360 => new Float64PlanarAngle(angleInDegrees % 360d),
+            //    _ => new Float64PlanarAngle(angleInDegrees)
+            //};
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Float64PlanarAngle CreateFromDegrees(double angleInDegrees, Float64PlanarAngleRange range)
+        {
+            // A full-range angle is in the range [-360, 360] degrees
+            var fullRangeAngleValue = 
+                angleInDegrees switch
+                {
+                    < -360d => angleInDegrees % 720d + 360d,
+                    > 360 => angleInDegrees % 360d,
+                    _ => angleInDegrees
+                };
+
+            if (range == Float64PlanarAngleRange.Positive)
             {
-                < -360d => new Float64PlanarAngle(angleInDegrees % 720d + 360d),
-                > 360 => new Float64PlanarAngle(angleInDegrees % 360d),
-                _ => new Float64PlanarAngle(angleInDegrees)
-            };
+                // A positive-range angle is in the range [0, 360] degrees
+                if (fullRangeAngleValue < 0)
+                    fullRangeAngleValue += 360;
+            }
+            
+            else if (range == Float64PlanarAngleRange.Negative)
+            {
+                // A negative-range angle is in the range [-360, 0] degrees
+                if (fullRangeAngleValue > 0)
+                    fullRangeAngleValue -= 360;
+            }
+
+            else if (range == Float64PlanarAngleRange.Symmetric)
+            {
+                // A symmetric-range angle is in the range [-180, 180] degrees
+                if (fullRangeAngleValue < -180)
+                    fullRangeAngleValue += 360;
+
+                else if (fullRangeAngleValue > 180)
+                    fullRangeAngleValue -= 360;
+            }
+
+            return new Float64PlanarAngle(fullRangeAngleValue);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -90,21 +139,98 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64
                 angleInRadians * RadianToDegreeFactor
             );
         }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Float64PlanarAngle CreateFromRadians(double angleInRadians, Float64PlanarAngleRange range)
+        {
+            return CreateFromDegrees(
+                angleInRadians * RadianToDegreeFactor,
+                range
+            );
+        }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Float64PlanarAngle CreateFromUnitVectors(IFloat64Tuple2D v1, IFloat64Tuple2D v2)
+        public static Float64PlanarAngle CreateFromXy(double x, double y)
+        {
+            return CreateFromRadians(
+                Math.Atan2(y, x)
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Float64PlanarAngle CreateFromXy(double x, double y, Float64PlanarAngleRange range)
+        {
+            return CreateFromRadians(
+                Math.Atan2(y, x),
+                range
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Float64PlanarAngle CreateFromXy(IPair<double> xyPair)
+        {
+            return CreateFromRadians(
+                Math.Atan2(xyPair.Item2, xyPair.Item1)
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Float64PlanarAngle CreateFromXy(IPair<double> xyPair, Float64PlanarAngleRange range)
+        {
+            return CreateFromRadians(
+                Math.Atan2(xyPair.Item2, xyPair.Item1),
+                range
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Float64PlanarAngle CreateFromYx(double y, double x)
+        {
+            return CreateFromRadians(
+                Math.Atan2(y, x)
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Float64PlanarAngle CreateFromYx(double y, double x, Float64PlanarAngleRange range)
+        {
+            return CreateFromRadians(
+                Math.Atan2(y, x),
+                range
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Float64PlanarAngle CreateFromYx(IPair<double> yxPair)
+        {
+            return CreateFromRadians(
+                Math.Atan2(yxPair.Item1, yxPair.Item2)
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Float64PlanarAngle CreateFromYx(IPair<double> yxPair, Float64PlanarAngleRange range)
+        {
+            return CreateFromRadians(
+                Math.Atan2(yxPair.Item1, yxPair.Item2),
+                range
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Float64PlanarAngle CreateFromUnitVectors(IFloat64Vector2D v1, IFloat64Vector2D v2)
         {
             return v1.ESp(v2).Clamp(-1, 1).ArcCos();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Float64PlanarAngle CreateFromUnitVectors(IFloat64Tuple3D v1, IFloat64Tuple3D v2)
+        public static Float64PlanarAngle CreateFromUnitVectors(IFloat64Vector3D v1, IFloat64Vector3D v2)
         {
             return v1.ESp(v2).Clamp(-1, 1).ArcCos();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Float64PlanarAngle CreateFromUnitVectors(IFloat64Tuple4D v1, IFloat64Tuple4D v2)
+        public static Float64PlanarAngle CreateFromUnitVectors(IFloat64Vector4D v1, IFloat64Vector4D v2)
         {
             return v1.ESp(v2).Clamp(-1, 1).ArcCos();
         }
@@ -119,7 +245,9 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static implicit operator Float64PlanarAngle(double angleInRadians)
         {
-            return CreateFromDegrees(angleInRadians * RadianToDegreeFactor);
+            return CreateFromDegrees(
+                angleInRadians * RadianToDegreeFactor
+            );
         }
 
 
@@ -184,8 +312,8 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64
         }
 
 
-        private double? _cosAngle;
-        private double? _sinAngle;
+        private Float64Scalar? _cosAngle;
+        private Float64Scalar? _sinAngle;
 
         public Float64Scalar Degrees { get; }
 
@@ -196,7 +324,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private Float64PlanarAngle(double degrees)
         {
-            Degrees = degrees;
+            Degrees = new Float64Scalar(degrees);
 
             Debug.Assert(IsValid());
         }
@@ -205,17 +333,29 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Float64Scalar Cos()
         {
-            _cosAngle ??= Math.Cos(Radians);
+            _cosAngle ??= Radians.Cos();
 
             return _cosAngle.Value;
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Float64Scalar Sec()
+        {
+            return Cos().Inverse();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Float64Scalar Sin()
         {
-            _sinAngle ??= Math.Sin(Radians);
+            _sinAngle ??= Radians.Sin();
 
             return _sinAngle.Value;
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Float64Scalar Csc()
+        {
+            return Sin().Inverse();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -223,14 +363,20 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64
         {
             return Sin() / Cos();
         }
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Float64PlanarAngle ClampPositive()
+        public Float64Scalar Cot()
         {
-            return Degrees < 0d
-                ? new Float64PlanarAngle(Degrees + 360d)
-                : this;
+            return Cos() / Sin();
         }
+
+        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+        //public Float64PlanarAngle ClampPositive()
+        //{
+        //    return Degrees < 0d
+        //        ? new Float64PlanarAngle(Degrees.Value + 360d)
+        //        : this;
+        //}
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Float64PlanarAngle ClampNegative()
@@ -255,7 +401,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64
             };
         }
 
-        public Float64PlanarAngle ClampPeriodic(double maxAngleInDegrees)
+        public Float64PlanarAngle GetAngleInPeriodicRange(double maxAngleInDegrees)
         {
             //Make sure maxValue > 0
             Debug.Assert(maxAngleInDegrees is > 0d and <= 360d);
@@ -371,33 +517,33 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsNearEqual(Float64PlanarAngle angle, double epsilon = 1e-9)
         {
-            return Float64Utils.DegreesToAngle((Degrees - angle.Degrees)).IsNearZeroOrFullRotation(epsilon);
+            return Float64PlanarAngleUtils.DegreesToAngle((Degrees - angle.Degrees)).IsNearZeroOrFullRotation(epsilon);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsNearFullRotation(Float64PlanarAngle angle, double epsilon = 1e-9)
         {
-            return Float64Utils.DegreesToAngle((Degrees + angle.Degrees)).IsNearZeroOrFullRotation(epsilon);
+            return Float64PlanarAngleUtils.DegreesToAngle((Degrees + angle.Degrees)).IsNearZeroOrFullRotation(epsilon);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsNearEqualOrFullRotation(Float64PlanarAngle angle, double epsilon = 1e-9)
         {
-            return Float64Utils.DegreesToAngle((Degrees - angle.Degrees)).IsNearZeroOrFullRotation(epsilon) ||
-                   Float64Utils.DegreesToAngle((Degrees + angle.Degrees)).IsNearZeroOrFullRotation(epsilon);
+            return Float64PlanarAngleUtils.DegreesToAngle((Degrees - angle.Degrees)).IsNearZeroOrFullRotation(epsilon) ||
+                   Float64PlanarAngleUtils.DegreesToAngle((Degrees + angle.Degrees)).IsNearZeroOrFullRotation(epsilon);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsNearComplementary(Float64PlanarAngle angle, double epsilon = 1e-9)
         {
-            return Float64Utils.DegreesToAngle((Degrees + angle.Degrees - 90)).IsNearZeroOrFullRotation(epsilon);
+            return Float64PlanarAngleUtils.DegreesToAngle((Degrees + angle.Degrees - 90)).IsNearZeroOrFullRotation(epsilon);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsNearSupplementary(Float64PlanarAngle angle, double epsilon = 1e-9)
         {
-            return Float64Utils.DegreesToAngle((Degrees + angle.Degrees - 180)).IsNearZeroOrFullRotation(epsilon) ||
-                   Float64Utils.DegreesToAngle((Degrees + angle.Degrees + 180)).IsNearZeroOrFullRotation(epsilon);
+            return Float64PlanarAngleUtils.DegreesToAngle((Degrees + angle.Degrees - 180)).IsNearZeroOrFullRotation(epsilon) ||
+                   Float64PlanarAngleUtils.DegreesToAngle((Degrees + angle.Degrees + 180)).IsNearZeroOrFullRotation(epsilon);
         }
 
 
@@ -506,22 +652,22 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64
             var x1 = x * Cos() - y * Sin();
             var y1 = x * Sin() + y * Cos();
 
-            return new Float64Vector2D(x1, y1);
+            return Float64Vector2D.Create(x1, y1);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Float64Vector2D Rotate(LinUnitBasisVector2D axis)
         {
-            var (x, y) = axis.ToTuple2D();
+            var (x, y) = axis.ToVector2D();
 
             var x1 = x * Cos() - y * Sin();
             var y1 = x * Sin() + y * Cos();
 
-            return new Float64Vector2D(x1, y1);
+            return Float64Vector2D.Create(x1, y1);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Float64Vector2D Rotate(IFloat64Tuple2D vector)
+        public Float64Vector2D Rotate(IFloat64Vector2D vector)
         {
             var x = vector.X;
             var y = vector.Y;
@@ -529,11 +675,11 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64
             var x1 = x * Cos() - y * Sin();
             var y1 = x * Sin() + y * Cos();
 
-            return new Float64Vector2D(x1, y1);
+            return Float64Vector2D.Create(x1, y1);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Pair<Float64Vector2D> Rotate(IFloat64Tuple2D vector1, IFloat64Tuple2D vector2)
+        public Pair<Float64Vector2D> Rotate(IFloat64Vector2D vector1, IFloat64Vector2D vector2)
         {
             return new Pair<Float64Vector2D>(
                 Rotate(vector1),
@@ -542,7 +688,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Triplet<Float64Vector2D> Rotate(IFloat64Tuple2D vector1, IFloat64Tuple2D vector2, IFloat64Tuple2D vector3)
+        public Triplet<Float64Vector2D> Rotate(IFloat64Vector2D vector1, IFloat64Vector2D vector2, IFloat64Vector2D vector3)
         {
             return new Triplet<Float64Vector2D>(
                 Rotate(vector1),
@@ -552,7 +698,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IReadOnlyList<Float64Vector2D> Rotate(params IFloat64Tuple2D[] vectorArray)
+        public IReadOnlyList<Float64Vector2D> Rotate(params IFloat64Vector2D[] vectorArray)
         {
             return vectorArray
                 .Select(Rotate)
@@ -560,7 +706,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerable<Float64Vector2D> Rotate(IEnumerable<IFloat64Tuple2D> vectorList)
+        public IEnumerable<Float64Vector2D> Rotate(IEnumerable<IFloat64Vector2D> vectorList)
         {
             return vectorList.Select(Rotate);
         }

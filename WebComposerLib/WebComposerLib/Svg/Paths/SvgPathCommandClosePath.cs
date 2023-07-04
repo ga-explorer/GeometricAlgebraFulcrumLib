@@ -1,14 +1,24 @@
 ﻿namespace WebComposerLib.Svg.Paths
 {
-    public sealed class SvgPathCommandClosePath : SvgPathCommand
+    /// <summary>
+    /// https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/d#closepath
+    /// </summary>
+    public sealed class SvgPathCommandClosePath : 
+        SvgPathCommandSimple
     {
-        public static SvgPathCommandClosePath Default { get; } = new SvgPathCommandClosePath();
+        public static SvgPathCommandClosePath DefaultCommand { get; } 
+            = new SvgPathCommandClosePath();
 
+        
+        public override char CommandSymbol 
+            => IsRelative ? 'z' : 'Z';
 
-        public override string ValueText => "z";
+        public override string ValueText 
+            => "z";
 
 
         private SvgPathCommandClosePath()
+            : base(false)
         {
         }
     }

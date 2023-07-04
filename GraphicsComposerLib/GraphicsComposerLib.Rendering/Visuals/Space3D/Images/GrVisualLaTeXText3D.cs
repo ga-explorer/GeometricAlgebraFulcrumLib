@@ -21,7 +21,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Images
         );
         
 
-        public static GrVisualLaTeXText3D CreateStatic(string name, WclHtmlImageDataUrlCache pngCache, IFloat64Tuple3D position, double scalingFactor)
+        public static GrVisualLaTeXText3D CreateStatic(string name, WclHtmlImageDataUrlCache pngCache, IFloat64Vector3D position, double scalingFactor)
         {
             return new GrVisualLaTeXText3D(
                 name, 
@@ -32,7 +32,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Images
             );
         }
         
-        public static GrVisualLaTeXText3D CreateStatic(string name, WclHtmlImageDataUrlCache pngCache, string key, IFloat64Tuple3D position, double scalingFactor)
+        public static GrVisualLaTeXText3D CreateStatic(string name, WclHtmlImageDataUrlCache pngCache, string key, IFloat64Vector3D position, double scalingFactor)
         {
             return new GrVisualLaTeXText3D(
                 name, 
@@ -44,7 +44,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Images
             );
         }
 
-        public static GrVisualLaTeXText3D Create(string name, WclHtmlImageDataUrlCache pngCache, IFloat64Tuple3D position, double scalingFactor, GrVisualAnimationSpecs animationSpecs)
+        public static GrVisualLaTeXText3D Create(string name, WclHtmlImageDataUrlCache pngCache, IFloat64Vector3D position, double scalingFactor, GrVisualAnimationSpecs animationSpecs)
         {
             return new GrVisualLaTeXText3D(
                 name, 
@@ -55,7 +55,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Images
             );
         }
         
-        public static GrVisualLaTeXText3D Create(string name, WclHtmlImageDataUrlCache pngCache, string key, IFloat64Tuple3D position, double scalingFactor, GrVisualAnimationSpecs animationSpecs)
+        public static GrVisualLaTeXText3D Create(string name, WclHtmlImageDataUrlCache pngCache, string key, IFloat64Vector3D position, double scalingFactor, GrVisualAnimationSpecs animationSpecs)
         {
             return new GrVisualLaTeXText3D(
                 name, 
@@ -97,12 +97,12 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Images
 
         public double ScalingFactor { get; }
 
-        public IFloat64Tuple3D Position { get; }
+        public IFloat64Vector3D Position { get; }
 
         public GrVisualAnimatedVector3D? AnimatedPosition { get; set; }
 
 
-        private GrVisualLaTeXText3D(string name, WclHtmlImageDataUrlCache pngCache, IFloat64Tuple3D position, double scalingFactor, GrVisualAnimationSpecs animationSpecs) 
+        private GrVisualLaTeXText3D(string name, WclHtmlImageDataUrlCache pngCache, IFloat64Vector3D position, double scalingFactor, GrVisualAnimationSpecs animationSpecs) 
             : base(name, animationSpecs)
         {
             ImageCache = pngCache;
@@ -111,7 +111,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Images
             ScalingFactor = scalingFactor;
         }
 
-        private GrVisualLaTeXText3D(string name, WclHtmlImageDataUrlCache pngCache, string key, IFloat64Tuple3D position, double scalingFactor, GrVisualAnimationSpecs animationSpecs) 
+        private GrVisualLaTeXText3D(string name, WclHtmlImageDataUrlCache pngCache, string key, IFloat64Vector3D position, double scalingFactor, GrVisualAnimationSpecs animationSpecs) 
             : base(name, animationSpecs)
         {
             ImageCache = pngCache;

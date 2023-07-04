@@ -40,6 +40,7 @@
   <ItemGroup>
     <Folder Include="GLTF2\Camera\" />
     <Folder Include="GraphViz\Dot\Verify\" />
+    <Folder Include="KonvaJs\Constants\" />
     <Folder Include="PixiJs\" />
     <Folder Include="Visuals\Space3D\Groups\" />
   </ItemGroup>

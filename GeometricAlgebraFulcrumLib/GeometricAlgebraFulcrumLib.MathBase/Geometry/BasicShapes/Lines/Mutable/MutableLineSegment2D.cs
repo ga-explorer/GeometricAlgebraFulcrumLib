@@ -18,7 +18,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines.Mutable
             );
         }
 
-        public static MutableLineSegment2D Create(IFloat64Tuple2D point1, IFloat64Tuple2D point2)
+        public static MutableLineSegment2D Create(IFloat64Vector2D point1, IFloat64Vector2D point2)
         {
             return new MutableLineSegment2D(
                 point1.X,
@@ -66,7 +66,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines.Mutable
         }
 
 
-        public MutableLineSegment2D SetPoint1(IFloat64Tuple2D point)
+        public MutableLineSegment2D SetPoint1(IFloat64Vector2D point)
         {
             Point1X = point.X;
             Point1Y = point.Y;
@@ -74,7 +74,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines.Mutable
             return this;
         }
 
-        public MutableLineSegment2D SetPoint2(IFloat64Tuple2D point)
+        public MutableLineSegment2D SetPoint2(IFloat64Vector2D point)
         {
             Point2X = point.X;
             Point2Y = point.Y;
@@ -93,7 +93,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines.Mutable
             return this;
         }
 
-        public MutableLineSegment2D SetLineSegment(IFloat64Tuple2D point1, IFloat64Tuple2D point2)
+        public MutableLineSegment2D SetLineSegment(IFloat64Vector2D point1, IFloat64Vector2D point2)
         {
             Point1X = point1.X;
             Point1Y = point1.Y;

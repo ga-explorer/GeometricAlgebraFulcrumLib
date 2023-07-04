@@ -1,7 +1,9 @@
 ﻿using System.Runtime.CompilerServices;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic.LinearMaps;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Generic.Matrices;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.LinearMaps.Outermorphisms
 {
@@ -26,5 +28,26 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         }
         
         
+        public static XGaLinearMapOutermorphism<T> CreateClarkeRotationMap<T>(this XGaProcessor<T> processor, int vectorsCount)
+        {
+            var scalarProcessor = processor.ScalarProcessor;
+
+            var clarkeMapArray =
+                scalarProcessor.CreateClarkeRotationArray(vectorsCount);
+
+            var basisVectorImagesDictionary = 
+                new Dictionary<int, LinVector<T>>();
+
+            for (var i = 0; i < vectorsCount; i++)
+                basisVectorImagesDictionary.Add(
+                    i, 
+                    clarkeMapArray.ColumnToLinVector(scalarProcessor, i)
+                );
+
+            return scalarProcessor.CreateLinUnilinearMap(
+                basisVectorImagesDictionary
+            ).ToOutermorphism(processor);
+        }
+
     }
 }

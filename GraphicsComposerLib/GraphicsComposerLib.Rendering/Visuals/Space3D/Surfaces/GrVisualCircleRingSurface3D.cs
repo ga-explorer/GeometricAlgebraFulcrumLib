@@ -26,7 +26,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Surfaces
         );
 
 
-        public static GrVisualCircleRingSurface3D CreateStatic(string name, GrVisualSurfaceStyle3D style, IFloat64Tuple3D normal, double minRadius, double maxRadius)
+        public static GrVisualCircleRingSurface3D CreateStatic(string name, GrVisualSurfaceStyle3D style, IFloat64Vector3D normal, double minRadius, double maxRadius)
         {
             return new GrVisualCircleRingSurface3D(
                 name, 
@@ -39,7 +39,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Surfaces
             );
         }
         
-        public static GrVisualCircleRingSurface3D CreateStatic(string name, GrVisualSurfaceStyle3D style, IFloat64Tuple3D center, IFloat64Tuple3D normal, double minRadius, double maxRadius)
+        public static GrVisualCircleRingSurface3D CreateStatic(string name, GrVisualSurfaceStyle3D style, IFloat64Vector3D center, IFloat64Vector3D normal, double minRadius, double maxRadius)
         {
             return new GrVisualCircleRingSurface3D(
                 name, 
@@ -52,7 +52,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Surfaces
             );
         }
 
-        public static GrVisualCircleRingSurface3D Create(string name, GrVisualSurfaceStyle3D style, IFloat64Tuple3D normal, double minRadius, double maxRadius, GrVisualAnimationSpecs animationSpecs)
+        public static GrVisualCircleRingSurface3D Create(string name, GrVisualSurfaceStyle3D style, IFloat64Vector3D normal, double minRadius, double maxRadius, GrVisualAnimationSpecs animationSpecs)
         {
             return new GrVisualCircleRingSurface3D(
                 name, 
@@ -65,7 +65,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Surfaces
             );
         }
         
-        public static GrVisualCircleRingSurface3D Create(string name, GrVisualSurfaceStyle3D style, IFloat64Tuple3D center, IFloat64Tuple3D normal, double minRadius, double maxRadius, GrVisualAnimationSpecs animationSpecs)
+        public static GrVisualCircleRingSurface3D Create(string name, GrVisualSurfaceStyle3D style, IFloat64Vector3D center, IFloat64Vector3D normal, double minRadius, double maxRadius, GrVisualAnimationSpecs animationSpecs)
         {
             return new GrVisualCircleRingSurface3D(
                 name, 
@@ -110,7 +110,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Surfaces
         }
 
 
-        public IFloat64Tuple3D Center { get; }
+        public IFloat64Vector3D Center { get; }
 
         public Float64Vector3D Normal { get; }
 
@@ -127,7 +127,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Surfaces
         public GrVisualAnimatedVector1D? AnimatedMaxRadius { get; set; }
 
 
-        private GrVisualCircleRingSurface3D(string name, GrVisualSurfaceStyle3D style, IFloat64Tuple3D center, IFloat64Tuple3D normal, double minRadius, double maxRadius, GrVisualAnimationSpecs animationSpecs) 
+        private GrVisualCircleRingSurface3D(string name, GrVisualSurfaceStyle3D style, IFloat64Vector3D center, IFloat64Vector3D normal, double minRadius, double maxRadius, GrVisualAnimationSpecs animationSpecs) 
             : base(name, style, animationSpecs)
         {
             Center = center;

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
-using DataStructuresLib.BitManipulation;
 using DataStructuresLib.Random;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.LinearMaps.Outermorphisms;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.LinearMaps.Rotors;
@@ -11,11 +10,6 @@ using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Mult
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Multivectors.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Processors;
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Subspaces;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.LinearMaps;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.LinearMaps.Rotors;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Multivectors.Composers;
-using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.Processors;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Basis;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.Space3D.Rotation;
@@ -29,31 +23,12 @@ using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.SpaceND;
 using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 using GeometricAlgebraFulcrumLib.MathBase.Text;
-using GeometricAlgebraFulcrumLib.Mathematica;
-using GeometricAlgebraFulcrumLib.Mathematica.Applications.GaPoT;
-using GeometricAlgebraFulcrumLib.Mathematica.GeometricAlgebra;
-using GeometricAlgebraFulcrumLib.Mathematica.Mathematica;
-using GeometricAlgebraFulcrumLib.Mathematica.Mathematica.ExprFactory;
-using GeometricAlgebraFulcrumLib.Mathematica.Processors;
 using MathNet.Numerics.LinearAlgebra;
-using TextComposerLib.Text;
-using Wolfram.NETLink;
 
 namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
 {
     public static class RotationSamples
     {
-        private static XGaVector<Expr> CreateSymbolicVector(this XGaProcessor<Expr> geometricProcessor, string name, string subscript, int termsCount)
-        {
-            var vector =
-                $"Subscript[{name},{subscript}1]".ToExpr() * geometricProcessor.CreateVector(0);
-
-            for (var i = 2; i <= termsCount; i++)
-                vector += $"Subscript[{name},{subscript}{i}]".ToExpr() * geometricProcessor.CreateVector(i - 1);
-
-            return vector;
-        }
-
         public static void RotationMatrixToSimpleRotationsSample(int n)
         {
             var scalarProcessor =
@@ -324,185 +299,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                 );
             }
         }
-
-        public static void CirculantMatrixToSimpleRotationsSample(int n)
-        {
-            var scalarProcessor =
-                ScalarProcessorExpr.DefaultProcessor;
-
-            var geometricProcessor =
-                XGaProcessor<Expr>.CreateEuclidean(scalarProcessor);
-
-            var textComposer =
-                TextComposerExpr.DefaultComposer;
-
-            var laTeXComposer =
-                LaTeXComposerExpr.DefaultComposer;
         
-            laTeXComposer.BasisName = @"\boldsymbol{e}";
-
-            var assumeExpr1 =
-                n.GetRange()
-                    .Select(i => $"Subscript[c, {i}]")
-                    .Concatenate(" | ");
-        
-            var assumeExpr =
-                $@"Element[{assumeExpr1}, Reals]".ToExpr();
-
-            MathematicaInterface.DefaultCas.SetGlobalAssumptions(assumeExpr);
-
-            var zero = 
-                geometricProcessor.CreateZeroScalar();
-
-            var nSqrt = 
-                $"Sqrt[{n}]".CreateScalar(scalarProcessor);
-        
-            var cArray =
-                n.GetRange()
-                    .Select(i => $"Subscript[c,{i}]".CreateScalar(scalarProcessor))
-                    .ToArray();
-
-            //var wArray =
-            //    n.GetRange()
-            //        .Select(i => $"Exp[2 Pi I {i}/{n}]".CreateScalar(geometricProcessor).FullSimplify())
-            //        .ToArray();
-
-            var eigenValueRealArray = new Scalar<Expr>[n];
-            var eigenValueImagArray = new Scalar<Expr>[n];
-
-            var eigenVectorRealArray = new XGaVector<Expr>[n];
-            var eigenVectorImagArray = new XGaVector<Expr>[n];
-
-            Console.WriteLine($"{n}-Dimensions:");
-            Console.WriteLine();
-
-            var eigenValueList = new List<Scalar<Expr>>(n / 2);
-            for (var j = 0; j < n; j++)
-            {
-                //var wj = wArray[j];
-            
-                var eigenValue = 
-                    n.GetRange()
-                        .Select(k => 
-                            cArray[(n - k) % n] * $"ExpToTrig[Exp[2 Pi I {j * k}/{n}]]".ToExpr()
-                        ).Aggregate(zero, (scalar1, scalar2) => scalar1 + scalar2);
-            
-                eigenValueRealArray[j] = scalarProcessor.CreateScalar(
-                    Mfs.Re[eigenValue.ScalarValue].FullSimplify()
-                );
-
-                eigenValueImagArray[j] = scalarProcessor.CreateScalar(
-                    Mfs.Im[eigenValue.ScalarValue].FullSimplify()
-                );
-
-                var eigenVector = 
-                    geometricProcessor.CreateVector(
-                        n.GetRange().Select(k => 
-                            ($"ExpToTrig[Exp[2 Pi I {j * k}/{n}]]".ToExpr() / nSqrt).ScalarValue
-                        )
-                    );
-
-                eigenVectorRealArray[j] = 
-                    eigenVector.MapScalars(s => Mfs.ToRadicals[Mfs.Re[s]].Evaluate());
-
-                eigenVectorImagArray[j] = 
-                    eigenVector.MapScalars(s => Mfs.ToRadicals[Mfs.Im[s]].Evaluate());
-
-                Console.WriteLine($"Transformation {j + 1}:");
-                Console.WriteLine($"   Eigen value Real Part: ${laTeXComposer.GetScalarText(eigenValueRealArray[j])}$");
-                Console.WriteLine($"   Eigen value Imag Part: ${laTeXComposer.GetScalarText(eigenValueImagArray[j])}$");
-                Console.WriteLine();
-                Console.WriteLine($"   Eigen vector Real Part: ${laTeXComposer.GetMultivectorText(eigenVectorRealArray[j])}$");
-                Console.WriteLine($"   Eigen vector Imag Part: ${laTeXComposer.GetMultivectorText(eigenVectorImagArray[j])}$");
-                Console.WriteLine();
-
-                // A real eigenvalue, we have a directional scaling
-                if (eigenValueImagArray[j].IsZero())
-                {
-                    eigenValueList.Add(eigenValue.Scalar);
-
-                    var s = eigenValueRealArray[j];
-                    var w = eigenVectorRealArray[j];
-
-                    Console.WriteLine($"   Directional Scaling:");
-                    Console.WriteLine($"      Scaling Factor: ${laTeXComposer.GetScalarText(s)}$");
-                    Console.WriteLine($"      Scaling Vector: ${laTeXComposer.GetMultivectorText(w)}$");
-                    Console.WriteLine();
-
-                    continue;
-                }
-
-                // A complex eigenvalue, we have a possible new rotation
-                // Ignore second conjugate eigenvalue
-                var addValue = true;
-                foreach (var ev in eigenValueList)
-                {
-                    var sameRealPart = 
-                        (eigenValueRealArray[j] - Mfs.Re[ev.ScalarValue]).FullSimplifyScalar().IsZero();
-
-                    var negativeImagPart = 
-                        (eigenValueImagArray[j] + Mfs.Im[ev.ScalarValue]).FullSimplifyScalar().IsZero();
-
-                    if (sameRealPart && negativeImagPart)
-                    {
-                        addValue = false;
-                        break;
-                    }
-                }
-
-                if (!addValue)
-                {
-                    Console.WriteLine($"   Redundant Rotation: Ignore");
-
-                    continue;
-                }
-
-                eigenValueList.Add(eigenValue.Scalar);
-
-                var angle = scalarProcessor.ArcTan2(
-                    eigenValueRealArray[j],
-                    eigenValueImagArray[j]
-                ).FullSimplify().CreateScalar(scalarProcessor);
-
-                //TODO: Why is this the correct one, but not the reverse??!!
-                var u = 
-                    eigenVectorImagArray[j]
-                        .DivideByENorm()
-                        .FullSimplifyScalars()
-                        .MapScalars(s => Mfs.ToRadicals[s].Evaluate());
-
-                var v = 
-                    eigenVectorRealArray[j]
-                        .DivideByENorm()
-                        .FullSimplifyScalars()
-                        .MapScalars(s => Mfs.ToRadicals[s].Evaluate());
-
-                //var rotor = 
-                //    u.GetEuclideanRotorTo(v);
-
-                //var (angle, bivector) = 
-                //    rotor.GetEuclideanAngleBivector();
-
-                //angle = angle.FullSimplify();
-
-                var bivector = 
-                    v.Op(u)
-                        .FullSimplifyScalars()
-                        .MapScalars(s => Mfs.ToRadicals[s].Evaluate());
-
-                //return VectorToVectorRotation.Create(u, v, angle);
-
-                Console.WriteLine($"   Rotation:");
-                Console.WriteLine($"      Source Vector: ${laTeXComposer.GetMultivectorText(u)}$");
-                Console.WriteLine($"      Target Vector: ${laTeXComposer.GetMultivectorText(v)}$");
-                Console.WriteLine($"      Angle: ${laTeXComposer.GetScalarText(angle)}$");
-                Console.WriteLine($"      Rotation Bivector: ${laTeXComposer.GetMultivectorText(bivector)}$");
-                Console.WriteLine();
-            }
-
-            Console.WriteLine();
-        }
-
         public static void OutermorphismMatrixToRotationsSample(int n)
         {
             var metric = XGaFloat64Processor.Euclidean;
@@ -525,8 +322,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
             var x12 = metric.CreateVector(x1).Op(metric.CreateVector(x2));
             var x123 = x12.Op(metric.CreateVector(x3));
 
-            var t1 = (matrix2 * x12.MultivectorToArray(n).ToVector()).ToArray().CreateTuple();
-            var t2 = metric.CreateVector(matrix1.MapVector(x1)).Op(metric.CreateVector(matrix1.MapVector(x2))).MultivectorToArray(n).CreateTuple();
+            var t1 = (matrix2 * x12.MultivectorToArray(n).ToMathNetVector()).ToArray().CreateVector();
+            var t2 = metric.CreateVector(matrix1.MapVector(x1)).Op(metric.CreateVector(matrix1.MapVector(x2))).MultivectorToArray(n).CreateVector();
 
             Debug.Assert(
                 (t1 - t2).GetVectorNormSquared().IsNearZero()
@@ -593,72 +390,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                 Console.WriteLine(subspace);
             }
         }
-
-        public static void Example1()
-        {
-            for (var n = 3; n <= 6; n++)
-            {
-                Console.WriteLine($"{n}-dimensions");
-
-                var scalarProcessor =
-                    ScalarProcessorExpr.DefaultProcessor;
-
-                var geometricProcessor =
-                    XGaProcessor<Expr>.CreateEuclidean(scalarProcessor);
-
-                var textComposer =
-                    TextComposerExpr.DefaultComposer;
-
-                var laTeXComposer =
-                    LaTeXComposerExpr.DefaultComposer;
-
-                var u =
-                    geometricProcessor.CreateSymbolicVector("u", "", n);
-
-
-                var v =
-                    geometricProcessor.CreateSymbolicVector("u", "", n);
-
-
-                var uvRotor =
-                    u.CreatePureRotor(v);
-
-                var uvRotorMatrix =
-                    uvRotor.GetMultivectorMapArray(n, n);
-
-                Console.WriteLine($@"$R_{{u,v}} = {laTeXComposer.GetMultivectorText(uvRotor.Multivector)}$");
-                Console.WriteLine($@"$M_{{u,v}} = {laTeXComposer.GetArrayText(uvRotorMatrix)}$");
-                Console.WriteLine();
-
-                for (var k = 0; k < n; k++)
-                {
-                    var ep = geometricProcessor.CreateVector(k);
-                    var en = -ep;
-
-                    var uepRotor =
-                        u.CreatePureRotor(ep);
-
-                    var uepRotorMatrix =
-                        uepRotor.GetMultivectorMapArray(n, n);
-
-                    Console.WriteLine($@"$R_{{u,e_{{{k + 1}}}}} = {laTeXComposer.GetMultivectorText(uepRotor.Multivector)}$");
-                    Console.WriteLine($@"$M_{{u,e_{{{k + 1}}}}} = {laTeXComposer.GetArrayText(uepRotorMatrix)}$");
-                    Console.WriteLine();
-
-
-                    var uenRotor =
-                        u.CreatePureRotor(en);
-
-                    var uenRotorMatrix =
-                        uenRotor.GetMultivectorMapArray(n, n);
-
-                    Console.WriteLine($@"$R_{{u,-e_{{{k + 1}}}}} = {laTeXComposer.GetMultivectorText(uenRotor.Multivector)}$");
-                    Console.WriteLine($@"$M_{{u,-e_{{{k + 1}}}}} = {laTeXComposer.GetArrayText(uenRotorMatrix)}$");
-                    Console.WriteLine();
-                }
-            }
-        }
-
+        
         public static void Example2()
         {
             const int n = 6;
@@ -725,7 +457,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
             var random = new Random(10);
         
             var matrix =
-                random.GetOrthogonalMatrix(n);
+                random.GetMathNetOrthogonalMatrix(n);
 
             var rotationSequence = 
                 matrix.GetVectorToVectorRotationSequence();
@@ -776,7 +508,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                     (x.GetAngleCos(y) - u.GetAngleCos(v)).IsNearZero()
                 );
 
-                y = (rotationMatrix * x.ToVector(n)).CreateLinVector();
+                y = (rotationMatrix * MathNetNumericsUtils.ToMathNetVector(x, n)).CreateLinVector();
 
                 Debug.Assert(
                     uvSubspace.NearContains(y) &&
@@ -846,7 +578,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                     var v = rotation.MapBasisVector1();
 
                     var v1 = rotationSequence.MapVector(u);
-                    var v2 = (rotationMatrix * u.ToVector(n)).CreateLinVector();
+                    var v2 = (rotationMatrix * MathNetNumericsUtils.ToMathNetVector(u, n)).CreateLinVector();
 
                     // Make sure each rotation is performed independently from the others
                     Debug.Assert(
@@ -868,7 +600,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                         var x = random.GetFloat64Tuple(n).CreateLinVector();
 
                         var y1 = rotationSequence.MapVector(x);
-                        var y2 = (rotationMatrix * x.ToVector(n)).CreateLinVector();
+                        var y2 = (rotationMatrix * MathNetNumericsUtils.ToMathNetVector(x, n)).CreateLinVector();
                 
                         Debug.Assert(
                             (y1 - y2).GetVectorNormSquared().IsNearZero()
@@ -914,7 +646,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                     var x = random.GetFloat64Tuple(n).CreateLinVector();
 
                     var y1 = rotationSequence.MapVector(x);
-                    var y2 = (rotationMatrix * x.ToVector(n)).CreateLinVector();
+                    var y2 = (rotationMatrix * MathNetNumericsUtils.ToMathNetVector(x, n)).CreateLinVector();
                 
                     Debug.Assert(
                         (y1 - y2).GetVectorNormSquared().IsNearZero()
@@ -961,9 +693,9 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
             for (var i = 0; i < 100; i++)
             {
                 // Create a random planar rotation
-                var vector1 = random.GetLinVector3D();
-                var vector2 = random.GetLinVector3D();
-                var rotationAngle = random.GetAngle(Math.PI / 2).RadiansToAngle();
+                var vector1 = random.GetVector3D();
+                var vector2 = random.GetVector3D();
+                var rotationAngle = random.GetAngle(Float64PlanarAngle.Angle90);
 
                 var rotation = LinFloat64PlanarRotation3D.CreateFromSpanningVectors(
                     vector1,
@@ -1020,7 +752,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
 
                 for (var j = 0; j < 10; j++)
                 {
-                    var u = random.GetLinVector3D() * 10;
+                    var u = random.GetVector3D() * 10;
 
                     var u1 = rotation.MapVector(u);
                     var u2 = rotationInv.MapVector(u1);
@@ -1968,7 +1700,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                 var x =
                     axisIndex.CreateLinVector();
 
-                var y1 = (matrix * x.ToVector(n)).CreateLinVector();
+                var y1 = (matrix * MathNetNumericsUtils.ToMathNetVector(x, n)).CreateLinVector();
                 var y2 = mapSequence.MapBasisVector(axisIndex);
 
                 Debug.Assert(

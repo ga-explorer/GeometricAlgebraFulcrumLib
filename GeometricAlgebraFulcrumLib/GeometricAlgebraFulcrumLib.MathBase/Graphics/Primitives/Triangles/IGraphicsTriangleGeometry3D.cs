@@ -9,13 +9,13 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Triangles
     public interface IGraphicsTriangleGeometry3D 
         : IGraphicsPrimitiveGeometry3D<ITriangle3D>
     {
-        IEnumerable<Triplet<IFloat64Tuple3D>> TriangleVertexPoints { get; }
+        IEnumerable<Triplet<IFloat64Vector3D>> TriangleVertexPoints { get; }
 
         IEnumerable<Triplet<int>> TriangleVertexIndices { get; }
 
-        IEnumerable<IFloat64Tuple3D> VertexNormals { get; }
+        IEnumerable<IFloat64Vector3D> VertexNormals { get; }
 
-        IEnumerable<IFloat64Tuple2D> VertexTextureUVs { get; }
+        IEnumerable<IFloat64Vector2D> VertexTextureUVs { get; }
 
         IEnumerable<Color> VertexColors { get; }
 

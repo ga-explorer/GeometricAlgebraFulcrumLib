@@ -51,7 +51,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D.Immutable
             return new BoundingBox2D(minX, minY, maxX, maxY);
         }
 
-        public static BoundingBox2D CreateAround(IFloat64Tuple2D center, double deltaX, double deltaY)
+        public static BoundingBox2D CreateAround(IFloat64Vector2D center, double deltaX, double deltaY)
         {
             var minX = center.X - deltaX;
             var maxX = center.X + deltaX;
@@ -68,7 +68,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D.Immutable
         }
 
 
-        public static BoundingBox2D Create(IFloat64Tuple2D point)
+        public static BoundingBox2D Create(IFloat64Vector2D point)
         {
             return new BoundingBox2D(
                 point.X,
@@ -107,7 +107,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D.Immutable
             return new BoundingBox2D(minX, minY, maxX, maxY);
         }
 
-        public static BoundingBox2D Create(IFloat64Tuple2D point1, IFloat64Tuple2D point2)
+        public static BoundingBox2D Create(IFloat64Vector2D point1, IFloat64Vector2D point2)
         {
             double minX, minY, maxX, maxY;
 
@@ -136,7 +136,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D.Immutable
             return new BoundingBox2D(minX, minY, maxX, maxY);
         }
 
-        public static BoundingBox2D CreateFromPoints(IFloat64Tuple2D point1, IFloat64Tuple2D point2, IFloat64Tuple2D point3)
+        public static BoundingBox2D CreateFromPoints(IFloat64Vector2D point1, IFloat64Vector2D point2, IFloat64Vector2D point3)
         {
             var minX = point1.X;
             var minY = point1.Y;
@@ -159,7 +159,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D.Immutable
             return new BoundingBox2D(minX, minY, maxX, maxY);
         }
 
-        public static BoundingBox2D CreateFromPoints(params IFloat64Tuple2D[] pointsList)
+        public static BoundingBox2D CreateFromPoints(params IFloat64Vector2D[] pointsList)
         {
             var point1 = pointsList[0];
 
@@ -180,7 +180,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D.Immutable
             return new BoundingBox2D(minX, minY, maxX, maxY);
         }
 
-        public static BoundingBox2D CreateFromPoints(IEnumerable<IFloat64Tuple2D> pointsList)
+        public static BoundingBox2D CreateFromPoints(IEnumerable<IFloat64Vector2D> pointsList)
         {
             double minX = 0, minY = 0, maxX = 0, maxY = 0;
 
@@ -208,7 +208,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D.Immutable
             return new BoundingBox2D(minX, minY, maxX, maxY);
         }
         
-        public static BoundingBox2D CreateFromPoints(IEnumerable<IFloat64Tuple2D> pointsList, double updateFactor)
+        public static BoundingBox2D CreateFromPoints(IEnumerable<IFloat64Vector2D> pointsList, double updateFactor)
         {
             double minX = 0, minY = 0, maxX = 0, maxY = 0;
 
@@ -399,16 +399,14 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D.Immutable
         public double MidY 
             => 0.5d * (MinY + MaxY);
 
+        public double LengthX
+            => MaxX - MinX;
+
+        public double LengthY
+            => MaxY - MinY;
+
         public bool IntersectionTestsEnabled { get; set; } 
             = true;
-
-        public bool IsValid()
-        {
-            return MinX.IsValid() &&
-                   MinY.IsValid() &&
-                   MaxX.IsValid() &&
-                   MaxY.IsValid();
-        }
 
 
         public BoundingBox2D(double minX, double minY, double maxX, double maxY)
@@ -433,6 +431,16 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D.Immutable
             Debug.Assert(IsValid());
         }
 
+        
+        public bool IsValid()
+        {
+            return MinX.IsValid() &&
+                   MinY.IsValid() &&
+                   MaxX.IsValid() &&
+                   MaxY.IsValid() &&
+                   MinX <= MaxX &&
+                   MinY <= MaxY;
+        }
 
         public IBorderCurve2D MapUsing(IAffineMap2D affineMap)
         {

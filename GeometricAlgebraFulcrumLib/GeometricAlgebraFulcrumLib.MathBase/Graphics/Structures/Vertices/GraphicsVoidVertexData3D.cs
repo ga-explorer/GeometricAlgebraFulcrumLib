@@ -10,7 +10,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Structures.Vertices
             = new GraphicsVoidVertexData3D();
 
 
-        public IFloat64Tuple2D TextureUv
+        public IFloat64Vector2D TextureUv
         {
             get => Float64Vector2D.Zero;
             set => throw new InvalidOperationException();

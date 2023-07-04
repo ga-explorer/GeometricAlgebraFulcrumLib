@@ -475,10 +475,8 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Float64Vector2D ToTuple2D(this Float64Vector vector)
         {
-            return new Float64Vector2D(
-                vector.X,
-                vector.Y
-            );
+            return Float64Vector2D.Create((Float64Scalar)vector.X,
+                (Float64Scalar)vector.Y);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -604,7 +602,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Vector CreateTuple(this double[] itemArray, bool normalize = false)
+    public static Float64Vector CreateVector(this double[] itemArray, bool normalize = false)
     {
         if (normalize)
             itemArray.VectorNormalizeInPlace();

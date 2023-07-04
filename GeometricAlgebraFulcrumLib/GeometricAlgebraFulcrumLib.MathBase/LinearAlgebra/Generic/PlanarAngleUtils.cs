@@ -107,7 +107,7 @@ public static class PlanarAngleUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static PlanarAngle<T> CreatePlanarAngleFromUnitVectors<T>(this IScalarProcessor<T> scalarProcessor, IFloat64Tuple2D v1, IFloat64Tuple2D v2)
+    public static PlanarAngle<T> CreatePlanarAngleFromUnitVectors<T>(this IScalarProcessor<T> scalarProcessor, IFloat64Vector2D v1, IFloat64Vector2D v2)
     {
         var angleInRadians = v1.ESp(v2).Clamp(-1, 1).ArcCos();
 
@@ -117,7 +117,7 @@ public static class PlanarAngleUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static PlanarAngle<T> CreatePlanarAngleFromUnitVectors<T>(this IScalarProcessor<T> scalarProcessor, IFloat64Tuple3D v1, IFloat64Tuple3D v2)
+    public static PlanarAngle<T> CreatePlanarAngleFromUnitVectors<T>(this IScalarProcessor<T> scalarProcessor, IFloat64Vector3D v1, IFloat64Vector3D v2)
     {
         var angleInRadians = Math.Acos(v1.ESp(v2));
 
@@ -127,7 +127,7 @@ public static class PlanarAngleUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static PlanarAngle<T> CreatePlanarAngleFromUnitVectors<T>(this IScalarProcessor<T> scalarProcessor, IFloat64Tuple4D v1, IFloat64Tuple4D v2)
+    public static PlanarAngle<T> CreatePlanarAngleFromUnitVectors<T>(this IScalarProcessor<T> scalarProcessor, IFloat64Vector4D v1, IFloat64Vector4D v2)
     {
         var angleInRadians = v1.ESp(v2).Clamp(-1, 1).ArcCos();
 

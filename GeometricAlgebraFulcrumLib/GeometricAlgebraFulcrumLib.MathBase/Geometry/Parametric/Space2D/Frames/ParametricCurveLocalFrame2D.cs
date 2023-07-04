@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
@@ -7,12 +8,12 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space2D.Frames
     public sealed record ParametricCurveLocalFrame2D :
         IParametricCurveLocalFrame2D
     {
-        public static ParametricCurveLocalFrame2D Create(double parameterValue, IFloat64Tuple2D point, IFloat64Tuple2D tangent)
+        public static ParametricCurveLocalFrame2D Create(double parameterValue, IFloat64Vector2D point, IFloat64Vector2D tangent)
         {
             return new ParametricCurveLocalFrame2D(
                 parameterValue,
-                point.ToLinVector2D(),
-                tangent.ToLinVector2D()
+                point.ToVector2D(),
+                tangent.ToVector2D()
             );
         }
 
@@ -54,11 +55,11 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space2D.Frames
         public Float64Vector2D Normal { get; }
 
 
-        private ParametricCurveLocalFrame2D(double parameterValue, IFloat64Tuple2D point, IFloat64Tuple2D tangent)
+        private ParametricCurveLocalFrame2D(double parameterValue, IFloat64Vector2D point, IFloat64Vector2D tangent)
         {
             ParameterValue = parameterValue;
-            Point = point.ToLinVector2D();
-            Tangent = tangent.ToLinVector2D();
+            Point = point.ToVector2D();
+            Tangent = tangent.ToVector2D();
             Normal = Tangent.GetNormal();
 
             Debug.Assert(IsValid());
@@ -87,16 +88,14 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space2D.Frames
         }
 
 
-        public ParametricCurveLocalFrame2D TranslateBy(IFloat64Tuple2D translationVector)
+        public ParametricCurveLocalFrame2D TranslateBy(IFloat64Vector2D translationVector)
         {
             Debug.Assert(translationVector.IsValid());
 
             return new ParametricCurveLocalFrame2D(
                 ParameterValue,
-                new Float64Vector2D(
-                    Point.X + translationVector.X,
-                    Point.Y + translationVector.Y
-                ),
+                Float64Vector2D.Create(Point.X + translationVector.X,
+                    Point.Y + translationVector.Y),
                 Tangent
             );
         }

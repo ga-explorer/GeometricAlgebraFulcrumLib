@@ -160,7 +160,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Maps
         /// <param name="targetVector"></param>
         /// <param name="assumeUnitVectors"></param>
         /// <returns></returns>
-        public static GaScaledPureRotor CreateEuclideanPureRotor(this IFloat64Tuple2D sourceVector, IFloat64Tuple2D targetVector, bool assumeUnitVectors = false)
+        public static GaScaledPureRotor CreateEuclideanPureRotor(this IFloat64Vector2D sourceVector, IFloat64Vector2D targetVector, bool assumeUnitVectors = false)
         {
             var basisSet = RGaFloat64Processor.Euclidean;
 
@@ -199,7 +199,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Maps
         /// <param name="targetVector"></param>
         /// <param name="assumeUnitVectors"></param>
         /// <returns></returns>
-        public static GaScaledPureRotor CreateEuclideanPureRotor(this IFloat64Tuple3D sourceVector, IFloat64Tuple3D targetVector, bool assumeUnitVectors = false)
+        public static GaScaledPureRotor CreateEuclideanPureRotor(this IFloat64Vector3D sourceVector, IFloat64Vector3D targetVector, bool assumeUnitVectors = false)
         {
             var basisSet = RGaFloat64Processor.Euclidean;
 
@@ -279,7 +279,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Maps
         /// <param name="sourceVector"></param>
         /// <param name="targetVector"></param>
         /// <returns></returns>
-        public static GaScaledPureRotor CreateEuclideanScaledPureRotor(this IFloat64Tuple2D sourceVector, IFloat64Tuple2D targetVector)
+        public static GaScaledPureRotor CreateEuclideanScaledPureRotor(this IFloat64Vector2D sourceVector, IFloat64Vector2D targetVector)
         {
             var basisSet = RGaFloat64Processor.Euclidean;
 
@@ -320,7 +320,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Maps
         /// <param name="sourceVector"></param>
         /// <param name="targetVector"></param>
         /// <returns></returns>
-        public static GaScaledPureRotor CreateEuclideanScaledPureRotor(this IFloat64Tuple3D sourceVector, IFloat64Tuple3D targetVector)
+        public static GaScaledPureRotor CreateEuclideanScaledPureRotor(this IFloat64Vector3D sourceVector, IFloat64Vector3D targetVector)
         {
             var basisSet = RGaFloat64Processor.Euclidean;
 
@@ -383,7 +383,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Maps
         /// <param name="targetVector"></param>
         /// <param name="angleTheta"></param>
         /// <returns></returns>
-        public static GaScaledPureRotor CreateEuclideanParametricPureRotor3D(this RGaFloat64Processor basisSet, IFloat64Tuple3D sourceVector, IFloat64Tuple3D targetVector, Float64PlanarAngle angleTheta)
+        public static GaScaledPureRotor CreateEuclideanParametricPureRotor3D(this RGaFloat64Processor basisSet, IFloat64Vector3D sourceVector, IFloat64Vector3D targetVector, Float64PlanarAngle angleTheta)
         {
             //var basisSet = BasisBladeSet.CreateEuclidean(3);
 
@@ -420,7 +420,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Maps
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaScaledPureRotor CreateEuclideanScaledParametricPureRotor3D(this RGaFloat64Processor basisSet, IFloat64Tuple3D sourceVector, IFloat64Tuple3D targetVector, Float64PlanarAngle angleTheta, bool assumeUnitVectors = false)
+        public static GaScaledPureRotor CreateEuclideanScaledParametricPureRotor3D(this RGaFloat64Processor basisSet, IFloat64Vector3D sourceVector, IFloat64Vector3D targetVector, Float64PlanarAngle angleTheta, bool assumeUnitVectors = false)
         {
             if (assumeUnitVectors)
                 basisSet.CreateEuclideanParametricPureRotor3D(sourceVector, targetVector, angleTheta);
@@ -439,7 +439,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Maps
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static GaScaledPureRotor CreateEuclideanScaledParametricPureRotor3D(this RGaFloat64Processor basisSet, IFloat64Tuple3D sourceVector, IFloat64Tuple3D targetVector, Float64PlanarAngle angleTheta, double scalingFactor)
+        public static GaScaledPureRotor CreateEuclideanScaledParametricPureRotor3D(this RGaFloat64Processor basisSet, IFloat64Vector3D sourceVector, IFloat64Vector3D targetVector, Float64PlanarAngle angleTheta, double scalingFactor)
         {
             return basisSet
                 .CreateEuclideanParametricPureRotor3D(sourceVector, targetVector, angleTheta)

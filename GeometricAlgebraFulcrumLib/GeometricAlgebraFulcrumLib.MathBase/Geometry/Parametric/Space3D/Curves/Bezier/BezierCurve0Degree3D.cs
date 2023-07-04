@@ -15,7 +15,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Curves
             => Float64Range1D.Infinite;
 
 
-        public BezierCurve0Degree3D(IFloat64Tuple3D point1)
+        public BezierCurve0Degree3D(IFloat64Vector3D point1)
         {
             Point1 = point1.ToVector3D();
 

@@ -22,7 +22,7 @@ namespace GraphicsComposerLib.Rendering.ThreeJs.Obsolete.Lights
         public bool CastShadow { get; set; }
             = false;
 
-        public IFloat64Tuple3D Position { get; set; }
+        public IFloat64Vector3D Position { get; set; }
             = Float64Vector3D.Create(0, 0, 0);
 
         public TjObject3D Target { get; set; }

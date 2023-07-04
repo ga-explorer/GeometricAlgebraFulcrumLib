@@ -9,13 +9,13 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.SubSpaces.Sp
 
         IEnumerable<Float64Vector3D> BasisVectors { get; }
         
-        Float64Vector3D GetVectorProjection(IFloat64Tuple3D vector);
+        Float64Vector3D GetVectorProjection(IFloat64Vector3D vector);
 
-        Float64Vector3D GetVectorRejection(IFloat64Tuple3D vector);
+        Float64Vector3D GetVectorRejection(IFloat64Vector3D vector);
 
-        Float64PlanarAngle GetVectorProjectionPolarAngle(IFloat64Tuple3D vector);
+        Float64PlanarAngle GetVectorProjectionPolarAngle(IFloat64Vector3D vector);
 
-        bool NearContains(IFloat64Tuple3D vector, double epsilon = 1e-12);
+        bool NearContains(IFloat64Vector3D vector, double epsilon = 1e-12);
 
         bool NearContains(ILinFloat64Subspace3D subspace, double epsilon = 1e-12);
     }

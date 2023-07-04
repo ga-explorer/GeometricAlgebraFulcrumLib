@@ -8,7 +8,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines.Immutab
     public sealed class LineSegment3D : 
         ILineSegment3D
     {
-        public static LineSegment3D Create(IFloat64Tuple3D point1, IFloat64Tuple3D point2)
+        public static LineSegment3D Create(IFloat64Vector3D point1, IFloat64Vector3D point2)
         {
             return new LineSegment3D(
                 point1.X,
@@ -20,7 +20,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines.Immutab
             );
         }
 
-        public static LineSegment3D CreateFromPointAndVector(IFloat64Tuple3D point1, IFloat64Tuple3D direction)
+        public static LineSegment3D CreateFromPointAndVector(IFloat64Vector3D point1, IFloat64Vector3D direction)
         {
             return new LineSegment3D(
                 point1.X,
@@ -32,7 +32,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines.Immutab
             );
         }
 
-        public static LineSegment3D CreateFromPointAndScaledVector(IFloat64Tuple3D point1, IFloat64Tuple3D direction, double scaleFactor)
+        public static LineSegment3D CreateFromPointAndScaledVector(IFloat64Vector3D point1, IFloat64Vector3D direction, double scaleFactor)
         {
             return new LineSegment3D(
                 point1.X,

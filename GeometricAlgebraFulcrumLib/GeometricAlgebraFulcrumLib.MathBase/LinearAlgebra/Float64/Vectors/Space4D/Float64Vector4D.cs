@@ -7,113 +7,141 @@ using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space4D;
 
 public sealed record Float64Vector4D :
-    IFloat64Tuple4D,
+    IFloat64Vector4D,
     IReadOnlyList<double>
 {
     public static Float64Vector4D Zero { get; } 
-        = new Float64Vector4D(0, 0, 0, 0);
+        = Create(0, 0, 0, 0);
 
     public static Float64Vector4D E1 { get; } 
-        = new Float64Vector4D(1, 0, 0, 0);
+        = Create(1, 0, 0, 0);
 
     public static Float64Vector4D E2 { get; } 
-        = new Float64Vector4D(0, 1, 0, 0);
+        = Create(0, 1, 0, 0);
 
     public static Float64Vector4D E3 { get; } 
-        = new Float64Vector4D(0, 0, 1, 0);
+        = Create(0, 0, 1, 0);
 
     public static Float64Vector4D E4 { get; } 
-        = new Float64Vector4D(0, 0, 0, 1);
+        = Create(0, 0, 0, 1);
 
     public static Float64Vector4D NegativeE1 { get; } 
-        = new Float64Vector4D(-1, 0, 0, 0);
+        = Create(-1, 0, 0, 0);
 
     public static Float64Vector4D NegativeE2 { get; } 
-        = new Float64Vector4D(0, -1, 0, 0);
+        = Create(0, -1, 0, 0);
 
     public static Float64Vector4D NegativeE3 { get; } 
-        = new Float64Vector4D(0, 0, -1, 0);
+        = Create(0, 0, -1, 0);
 
     public static Float64Vector4D NegativeE4 { get; } 
-        = new Float64Vector4D(0, 0, 0, -1);
+        = Create(0, 0, 0, -1);
 
     public static Float64Vector4D Symmetric { get; } 
-        = new Float64Vector4D(1, 1, 1, 1);
+        = Create(1, 1, 1, 1);
 
     public static Float64Vector4D UnitSymmetric { get; } 
-        = new Float64Vector4D(0.5d, 0.5d, 0.5d, 0.5d);
+        = Create(0.5d, 0.5d, 0.5d, 0.5d);
         
     public static IReadOnlyList<Float64Vector4D> BasisVectors { get; }
         = new[] { E1, E2, E3, E4 };
+    
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Float64Vector4D Create(int x, int y, int z, int w)
+    {
+        return new Float64Vector4D(x, y, z, w);
+    }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Float64Vector4D Create(double x, double y, double z, double w)
+    {
+        return new Float64Vector4D(x, y, z, w);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Float64Vector4D Create(Float64Scalar x, Float64Scalar y, Float64Scalar z, Float64Scalar w)
+    {
+        return new Float64Vector4D(x, y, z, w);
+    }
 
-        
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Float64Vector4D Create(ITriplet<double> v, double s)
+    {
+        return Create(v.Item1, v.Item2, v.Item3, s);
+    }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static Float64Vector4D Create(IQuad<double> v)
+    {
+        return Create(v.Item1, v.Item2, v.Item3, v.Item4);
+    }
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Float64Vector4D CreateAffineVector(double x, double y, double z)
     {
-        return new Float64Vector4D(x, y, z, 0);
+        return Create(x, y, z, 0);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Float64Vector4D CreateAffinePoint(double x, double y, double z)
     {
-        return new Float64Vector4D(x, y, z, 1);
+        return Create(x, y, z, 1);
     }
 
-
-        
+    
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Float64Vector4D operator -(Float64Vector4D v1)
     {
-        return new Float64Vector4D(-v1.X, -v1.Y, -v1.Z, -v1.W);
+        return Create(-v1.X, -v1.Y, -v1.Z, -v1.W);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Vector4D operator +(Float64Vector4D v1, IFloat64Tuple4D v2)
+    public static Float64Vector4D operator +(Float64Vector4D v1, IFloat64Vector4D v2)
     {
-        return new Float64Vector4D(v1.X + v2.X, v1.Y + v2.Y, v1.Z + v2.Z, v1.W + v2.W);
+        return Create(v1.X + v2.X, v1.Y + v2.Y, v1.Z + v2.Z, v1.W + v2.W);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Vector4D operator +(IFloat64Tuple4D v1, Float64Vector4D v2)
+    public static Float64Vector4D operator +(IFloat64Vector4D v1, Float64Vector4D v2)
     {
-        return new Float64Vector4D(v1.X + v2.X, v1.Y + v2.Y, v1.Z + v2.Z, v1.W + v2.W);
+        return Create(v1.X + v2.X, v1.Y + v2.Y, v1.Z + v2.Z, v1.W + v2.W);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Float64Vector4D operator +(Float64Vector4D v1, Float64Vector4D v2)
     {
-        return new Float64Vector4D(v1.X + v2.X, v1.Y + v2.Y, v1.Z + v2.Z, v1.W + v2.W);
+        return Create(v1.X + v2.X, v1.Y + v2.Y, v1.Z + v2.Z, v1.W + v2.W);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Vector4D operator -(Float64Vector4D v1, IFloat64Tuple4D v2)
+    public static Float64Vector4D operator -(Float64Vector4D v1, IFloat64Vector4D v2)
     {
-        return new Float64Vector4D(v1.X - v2.X, v1.Y - v2.Y, v1.Z - v2.Z, v1.W - v2.W);
+        return Create(v1.X - v2.X, v1.Y - v2.Y, v1.Z - v2.Z, v1.W - v2.W);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static Float64Vector4D operator -(IFloat64Tuple4D v1, Float64Vector4D v2)
+    public static Float64Vector4D operator -(IFloat64Vector4D v1, Float64Vector4D v2)
     {
-        return new Float64Vector4D(v1.X - v2.X, v1.Y - v2.Y, v1.Z - v2.Z, v1.W - v2.W);
+        return Create(v1.X - v2.X, v1.Y - v2.Y, v1.Z - v2.Z, v1.W - v2.W);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Float64Vector4D operator -(Float64Vector4D v1, Float64Vector4D v2)
     {
-        return new Float64Vector4D(v1.X - v2.X, v1.Y - v2.Y, v1.Z - v2.Z, v1.W - v2.W);
+        return Create(v1.X - v2.X, v1.Y - v2.Y, v1.Z - v2.Z, v1.W - v2.W);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Float64Vector4D operator *(Float64Vector4D v1, double s)
     {
-        return new Float64Vector4D(v1.X * s, v1.Y * s, v1.Z * s, v1.W * s);
+        return Create(v1.X * s, v1.Y * s, v1.Z * s, v1.W * s);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static Float64Vector4D operator *(double s, Float64Vector4D v1)
     {
-        return new Float64Vector4D(v1.X * s, v1.Y * s, v1.Z * s, v1.W * s);
+        return Create(v1.X * s, v1.Y * s, v1.Z * s, v1.W * s);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -122,7 +150,7 @@ public sealed record Float64Vector4D :
         Debug.Assert(!s.IsAlmostZero());
 
         s = 1.0d / s;
-        return new Float64Vector4D(v1.X * s, v1.Y * s, v1.Z * s, v1.W * s);
+        return Create(v1.X * s, v1.Y * s, v1.Z * s, v1.W * s);
     }
     
         
@@ -189,7 +217,7 @@ public sealed record Float64Vector4D :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64Vector4D(double x, double y, double z, double w)
+    private Float64Vector4D(double x, double y, double z, double w)
     {
         X = x;
         Y = y;
@@ -197,39 +225,7 @@ public sealed record Float64Vector4D :
         W = w;
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64Vector4D(ITriplet<double> v, double s)
-    {
-        Debug.Assert(
-            v.Item1.IsNotNaN() &&
-            v.Item2.IsNotNaN() &&
-            v.Item3.IsNotNaN() &&
-            s.IsNotNaN()
-        );
 
-        X = v.Item1;
-        Y = v.Item2;
-        Z = v.Item3;
-        W = s;
-    }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Float64Vector4D(IQuad<double> v)
-    {
-        Debug.Assert(
-            v.Item1.IsNotNaN() &&
-            v.Item2.IsNotNaN() &&
-            v.Item3.IsNotNaN() &&
-            v.Item4.IsNotNaN()
-        );
-
-        X = v.Item1;
-        Y = v.Item2;
-        Z = v.Item3;
-        W = v.Item4;
-    }
-
-        
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool IsValid()
     {

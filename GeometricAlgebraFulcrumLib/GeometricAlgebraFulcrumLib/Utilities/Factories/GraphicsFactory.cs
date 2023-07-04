@@ -14,7 +14,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
     public static class GraphicsFactory
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static EuclideanVector2D ToEuclideanVector2D(this IFloat64Tuple2D v)
+        public static EuclideanVector2D ToEuclideanVector2D(this IFloat64Vector2D v)
         {
             return v is EuclideanVector2D ev
                 ? ev
@@ -32,7 +32,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static EuclideanVector3D ToEuclideanVector3D(this IFloat64Tuple3D v)
+        public static EuclideanVector3D ToEuclideanVector3D(this IFloat64Vector3D v)
         {
             return v is EuclideanVector3D ev
                 ? ev
@@ -51,7 +51,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
 
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static EuclideanPoint2D ToEuclideanPoint2D(this IFloat64Tuple2D v)
+        public static EuclideanPoint2D ToEuclideanPoint2D(this IFloat64Vector2D v)
         {
             return v is EuclideanPoint2D ev
                 ? ev
@@ -69,7 +69,7 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
         
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static EuclideanPoint3D ToEuclideanPoint3D(this IFloat64Tuple3D v)
+        public static EuclideanPoint3D ToEuclideanPoint3D(this IFloat64Vector3D v)
         {
             return v is EuclideanPoint3D ev
                 ? ev
@@ -88,19 +88,19 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaFloat64Vector ToVector(this IFloat64Tuple2D v)
+        public static RGaFloat64Vector ToVector(this IFloat64Vector2D v)
         {
             return GraphicsUtils.GeometricProcessor.CreateVector(v.X, v.Y);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaFloat64Vector ToVector(this IFloat64Tuple3D v)
+        public static RGaFloat64Vector ToVector(this IFloat64Vector3D v)
         {
             return GraphicsUtils.GeometricProcessor.CreateVector(v.X, v.Y, v.Z);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static RGaFloat64Vector ToVector(this IFloat64Tuple4D v)
+        public static RGaFloat64Vector ToVector(this IFloat64Vector4D v)
         {
             return GraphicsUtils.GeometricProcessor.CreateVector(v.X, v.Y, v.Z, v.W);
         }

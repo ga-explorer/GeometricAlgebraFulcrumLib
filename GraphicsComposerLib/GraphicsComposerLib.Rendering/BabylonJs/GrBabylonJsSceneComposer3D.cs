@@ -61,6 +61,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
                 .SetProperties(new GrBabylonJsScene.SceneProperties());
 
             SnapshotSpecs = new GrBabylonJsSnapshotSpecs();
+
             AddInitialObjects();
         }
 
@@ -71,6 +72,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
                 .SetProperties(new GrBabylonJsScene.SceneProperties());
 
             SnapshotSpecs = new GrBabylonJsSnapshotSpecs();
+
             AddInitialObjects();
         }
 
@@ -81,6 +83,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
                 .SetProperties(new GrBabylonJsScene.SceneProperties());
 
             SnapshotSpecs = snapshotSpecs;
+
             AddInitialObjects();
         }
 
@@ -2758,7 +2761,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
             );
 
 
-            var q2 = Float64Vector3D.E2.AxisAngleToQuaternion(visualElement.Angle);
+            var q2 = Float64Vector3D.E2.CreateQuaternion(visualElement.Angle);
 
             SceneObject.AddDisc(
                 $"{visualElement.Name}Disc2",
@@ -2911,7 +2914,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
 
 
         
-        public GrBabylonJsSceneComposer3D AddDefaultAxes(IFloat64Tuple3D axesOrigin)
+        public GrBabylonJsSceneComposer3D AddDefaultAxes(IFloat64Vector3D axesOrigin)
         {
             // Add reference unit axis frame
             AddElement(

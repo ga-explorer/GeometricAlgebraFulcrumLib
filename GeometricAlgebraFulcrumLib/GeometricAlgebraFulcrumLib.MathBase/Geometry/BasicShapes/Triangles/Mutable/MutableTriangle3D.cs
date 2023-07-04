@@ -8,7 +8,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Triangles.Mut
 {
     public sealed class MutableTriangle3D : ITriangle3D
     {
-        public static MutableTriangle3D CreateFromPoints(IFloat64Tuple3D point1, IFloat64Tuple3D point2, IFloat64Tuple3D point3)
+        public static MutableTriangle3D CreateFromPoints(IFloat64Vector3D point1, IFloat64Vector3D point2, IFloat64Vector3D point3)
         {
             return new MutableTriangle3D(
                 point1.X, point1.Y, point1.Z,

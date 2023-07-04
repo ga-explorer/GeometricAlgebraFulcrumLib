@@ -305,6 +305,25 @@ namespace TextComposerLib
                 .Append('"')
                 .ToString();
         }
+        
+        /// <summary>
+        /// Enclose the given string by single quotes. 
+        /// If the input is null or empty string an empty string is returned 
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
+        public static string SingleQuote(this string text)
+        {
+            if (string.IsNullOrEmpty(text))
+                return "''";
+
+            return 
+                new StringBuilder(text.Length + 2)
+                    .Append('\'')
+                    .Append(text)
+                    .Append('\'')
+                    .ToString();
+        }
 
         /// <summary>
         /// Enclose the given string by double quotes. 

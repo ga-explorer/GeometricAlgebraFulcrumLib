@@ -213,7 +213,7 @@ namespace WebComposerLib.Svg.Elements.Shape
             return this;
         }
 
-        public SvgElementEllipse SetCenter(double centerX, double centerY, SvgValueLengthUnit unit)
+        public SvgElementEllipse SetCenter(double centerX, double centerY, SvgLengthUnit unit)
         {
             CenterX.SetTo(centerX, unit);
             CenterY.SetTo(centerY, unit);
@@ -229,7 +229,7 @@ namespace WebComposerLib.Svg.Elements.Shape
             return this;
         }
 
-        public SvgElementEllipse SetRadii(double radiusX, double radiusY, SvgValueLengthUnit unit)
+        public SvgElementEllipse SetRadii(double radiusX, double radiusY, SvgLengthUnit unit)
         {
             RadiusX.SetTo(radiusX, unit);
             RadiusY.SetTo(radiusY, unit);
@@ -247,7 +247,7 @@ namespace WebComposerLib.Svg.Elements.Shape
             return this;
         }
 
-        public SvgElementEllipse SetEllipse(double centerX, double centerY, double radiusX, double radiusY, SvgValueLengthUnit unit)
+        public SvgElementEllipse SetEllipse(double centerX, double centerY, double radiusX, double radiusY, SvgLengthUnit unit)
         {
             CenterX.SetTo(centerX, unit);
             CenterY.SetTo(centerY, unit);

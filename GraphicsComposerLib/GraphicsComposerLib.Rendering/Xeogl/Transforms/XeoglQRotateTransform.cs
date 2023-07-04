@@ -7,7 +7,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Transforms
 {
     public sealed class XeoglQRotateTransform : IXeoglNumericalTransform
     {
-        public static XeoglQRotateTransform CreateRotate(double angle, IFloat64Tuple3D rotateVector)
+        public static XeoglQRotateTransform CreateRotate(double angle, IFloat64Vector3D rotateVector)
         {
             var d = 1 / rotateVector.ENorm();
             var cosAngle = d * Math.Cos(angle / 2);
@@ -22,7 +22,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Transforms
             };
         }
 
-        public static XeoglQRotateTransform CreateRotate(IFloat64Tuple3D vector1, IFloat64Tuple3D vector2)
+        public static XeoglQRotateTransform CreateRotate(IFloat64Vector3D vector1, IFloat64Vector3D vector2)
         {
             var lengthSquared1 = vector1.ENormSquared();
             var lengthSquared2 = vector2.ENormSquared();

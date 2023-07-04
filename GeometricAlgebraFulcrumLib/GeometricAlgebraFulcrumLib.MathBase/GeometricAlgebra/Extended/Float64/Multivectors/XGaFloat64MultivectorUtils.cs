@@ -7,6 +7,7 @@ using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Mult
 using GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Processors;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.Multivectors
 {
@@ -640,10 +641,8 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Float64Vector2D GetVectorPartAsTuple2D(this XGaFloat64Multivector mv)
         {
-            return new Float64Vector2D(
-                mv.GetTermScalar(1),
-                mv.GetTermScalar(2)
-            );
+            return Float64Vector2D.Create((Float64Scalar)mv.GetTermScalar(1),
+                (Float64Scalar)mv.GetTermScalar(2));
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -19,10 +19,10 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space2D.Curves
         
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ArcLengthLineSegment2D(IFloat64Tuple2D point1, IFloat64Tuple2D point2)
+        public ArcLengthLineSegment2D(IFloat64Vector2D point1, IFloat64Vector2D point2)
         {
-            Point1 = point1.ToLinVector2D();
-            Point2 = point2.ToLinVector2D();
+            Point1 = point1.ToVector2D();
+            Point2 = point2.ToVector2D();
         }
 
 

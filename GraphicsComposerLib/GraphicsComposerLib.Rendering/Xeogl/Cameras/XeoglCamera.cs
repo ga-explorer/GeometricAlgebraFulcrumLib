@@ -82,7 +82,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Cameras
             return this;
         }
 
-        public XeoglCamera SetPosition(IFloat64Tuple3D eyePoint, IFloat64Tuple3D lookAtPoint)
+        public XeoglCamera SetPosition(IFloat64Vector3D eyePoint, IFloat64Vector3D lookAtPoint)
         {
             EyePoint.SetVector(eyePoint);
             LookAtPoint.SetVector(lookAtPoint);
@@ -99,7 +99,7 @@ namespace GraphicsComposerLib.Rendering.Xeogl.Cameras
             return this;
         }
 
-        public XeoglCamera SetOrientation(IFloat64Tuple3D rightAxis, IFloat64Tuple3D upAxis, IFloat64Tuple3D forwardAxis)
+        public XeoglCamera SetOrientation(IFloat64Vector3D rightAxis, IFloat64Vector3D upAxis, IFloat64Vector3D forwardAxis)
         {
             WorldRightDirection.SetVector(rightAxis);
             WorldUpDirection.SetVector(upAxis);

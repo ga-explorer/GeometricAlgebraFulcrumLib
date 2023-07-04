@@ -10,7 +10,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.S
         LinFloat64VectorToVectorRotationBase4D
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static LinFloat64VectorToAxisRotation4D Create(IFloat64Tuple4D u, LinUnitBasisVector4D vAxis)
+        public static LinFloat64VectorToAxisRotation4D Create(IFloat64Vector4D u, LinUnitBasisVector4D vAxis)
         {
             return new LinFloat64VectorToAxisRotation4D(
                 u.ToTuple4D(),
@@ -20,7 +20,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.S
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static LinFloat64VectorToAxisRotation4D Create(IFloat64Tuple4D u, int vAxisIndex, bool vAxisNegative)
+        public static LinFloat64VectorToAxisRotation4D Create(IFloat64Vector4D u, int vAxisIndex, bool vAxisNegative)
         {
             return new LinFloat64VectorToAxisRotation4D(
                 u.ToTuple4D(),
@@ -30,7 +30,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.S
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static LinFloat64VectorToAxisRotation4D CreateToPositiveAxis(IFloat64Tuple4D u, int vAxisIndex)
+        public static LinFloat64VectorToAxisRotation4D CreateToPositiveAxis(IFloat64Vector4D u, int vAxisIndex)
         {
             return new LinFloat64VectorToAxisRotation4D(
                 u.ToTuple4D(),
@@ -40,7 +40,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.S
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static LinFloat64VectorToAxisRotation4D CreateToNegativeAxis(IFloat64Tuple4D u, int vAxisIndex)
+        public static LinFloat64VectorToAxisRotation4D CreateToNegativeAxis(IFloat64Vector4D u, int vAxisIndex)
         {
             return new LinFloat64VectorToAxisRotation4D(
                 u.ToTuple4D(),
@@ -137,7 +137,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.S
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Float64Vector4D MapVector(IFloat64Tuple4D vector)
+        public override Float64Vector4D MapVector(IFloat64Vector4D vector)
         {
             //var r = vector.ESp(TargetOrthogonalVector);
             //var s = vector.ESp(SourceVector);

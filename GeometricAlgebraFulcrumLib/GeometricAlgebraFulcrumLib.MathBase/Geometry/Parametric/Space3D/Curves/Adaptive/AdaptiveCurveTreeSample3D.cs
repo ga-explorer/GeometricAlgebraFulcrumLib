@@ -59,7 +59,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Curves
                 ).ToUnitVector();
 
             var (axis, angle) =
-                Float64QuaternionUtils.GetRotationAxisAngle(
+                Float64QuaternionUtils.GetRotationNormalAndAngle(
                     LeafNode.Frame0.Tangent,
                     LeafNode.Frame1.Tangent
                 );
@@ -100,7 +100,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Curves
             {
                 // Use spherical linear interpolation on the whole frame
                 var (axis, angle) =
-                    Float64QuaternionUtils.GetRotationAxisAngle(
+                    Float64QuaternionUtils.GetRotationNormalAndAngle(
                         LeafNode.Frame0.Tangent,
                         LeafNode.Frame1.Tangent
                     );

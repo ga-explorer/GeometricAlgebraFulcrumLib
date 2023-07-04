@@ -25,7 +25,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Surfaces
         );
 
 
-        public static GrVisualCircleSurface3D CreateStatic(string name, GrVisualSurfaceStyle3D style, IFloat64Tuple3D center, IFloat64Tuple3D normal, double radius, bool drawEdge)
+        public static GrVisualCircleSurface3D CreateStatic(string name, GrVisualSurfaceStyle3D style, IFloat64Vector3D center, IFloat64Vector3D normal, double radius, bool drawEdge)
         {
             return new GrVisualCircleSurface3D(
                 name,
@@ -38,7 +38,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Surfaces
             );
         }
         
-        public static GrVisualCircleSurface3D Create(string name, GrVisualSurfaceStyle3D style, IFloat64Tuple3D normal, double radius, bool drawEdge, GrVisualAnimationSpecs animationSpecs)
+        public static GrVisualCircleSurface3D Create(string name, GrVisualSurfaceStyle3D style, IFloat64Vector3D normal, double radius, bool drawEdge, GrVisualAnimationSpecs animationSpecs)
         {
             return new GrVisualCircleSurface3D(
                 name,
@@ -51,7 +51,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Surfaces
             );
         }
 
-        public static GrVisualCircleSurface3D Create(string name, GrVisualSurfaceStyle3D style, IFloat64Tuple3D center, IFloat64Tuple3D normal, double radius, bool drawEdge, GrVisualAnimationSpecs animationSpecs)
+        public static GrVisualCircleSurface3D Create(string name, GrVisualSurfaceStyle3D style, IFloat64Vector3D center, IFloat64Vector3D normal, double radius, bool drawEdge, GrVisualAnimationSpecs animationSpecs)
         {
             return new GrVisualCircleSurface3D(
                 name,
@@ -96,7 +96,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Surfaces
         }
 
 
-        public IFloat64Tuple3D Center { get; }
+        public IFloat64Vector3D Center { get; }
 
         public Float64Vector3D Normal { get; }
 
@@ -111,7 +111,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Surfaces
         public bool DrawEdge { get; } 
 
 
-        private GrVisualCircleSurface3D(string name, GrVisualSurfaceStyle3D style, IFloat64Tuple3D center, IFloat64Tuple3D normal, double radius, bool drawEdge, GrVisualAnimationSpecs animationSpecs) 
+        private GrVisualCircleSurface3D(string name, GrVisualSurfaceStyle3D style, IFloat64Vector3D center, IFloat64Vector3D normal, double radius, bool drawEdge, GrVisualAnimationSpecs animationSpecs) 
             : base(name, style, animationSpecs)
         {
             Center = center;

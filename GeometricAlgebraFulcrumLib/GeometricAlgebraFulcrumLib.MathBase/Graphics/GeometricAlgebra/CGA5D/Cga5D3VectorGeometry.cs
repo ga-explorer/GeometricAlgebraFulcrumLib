@@ -13,7 +13,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.GeometricAlgebra.CGA5D
         }
 
 
-        protected override double ComputeSdfOpns(IFloat64Tuple3D point)
+        protected override double ComputeSdfOpns(IFloat64Vector3D point)
         {
             //Begin GMac Macro Code Generation, 2019-09-12T14:55:20.7671010+02:00
             //Macro: main.cga5d.SdfOpns
@@ -218,7 +218,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.GeometricAlgebra.CGA5D
             return sdf;
         }
 
-        protected override double ComputeSdfIpns(IFloat64Tuple3D point)
+        protected override double ComputeSdfIpns(IFloat64Vector3D point)
         {
             //Begin GMac Macro Code Generation, 2019-09-12T14:56:20.5076710+02:00
             //Macro: main.cga5d.SdfIpns

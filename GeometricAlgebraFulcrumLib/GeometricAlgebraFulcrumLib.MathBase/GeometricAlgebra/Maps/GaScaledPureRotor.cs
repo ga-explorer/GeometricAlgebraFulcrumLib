@@ -85,13 +85,13 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Maps
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Float64Vector2D OmMap(IFloat64Tuple2D multivector)
+        public Float64Vector2D OmMap(IFloat64Vector2D multivector)
         {
             return Multivector.Gp(multivector.ToRGaFloat64Vector(Processor)).Gp(MultivectorReverse).GetVectorPartAsTuple2D();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Float64Vector3D OmMap(IFloat64Tuple3D multivector)
+        public Float64Vector3D OmMap(IFloat64Vector3D multivector)
         {
             return Multivector.Gp(multivector.ToRGaFloat64Vector(Processor)).Gp(MultivectorReverse).GetVectorPartAsTuple3D();
         }

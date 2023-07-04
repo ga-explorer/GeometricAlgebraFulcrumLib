@@ -142,7 +142,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space3D.Immutable
             return new BoundingBox3D(minX, minY, minZ, maxX, maxY, maxZ);
         }
 
-        public static BoundingBox3D CreateAround(IFloat64Tuple3D center, double deltaX, double deltaY, double deltaZ)
+        public static BoundingBox3D CreateAround(IFloat64Vector3D center, double deltaX, double deltaY, double deltaZ)
         {
             var minX = center.X - deltaX;
             var maxX = center.X + deltaX;
@@ -170,7 +170,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space3D.Immutable
         }
 
 
-        public static BoundingBox3D CreateFromPoint(IFloat64Tuple3D point)
+        public static BoundingBox3D CreateFromPoint(IFloat64Vector3D point)
         {
             return new BoundingBox3D(
                 point.X, 
@@ -222,7 +222,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space3D.Immutable
             return new BoundingBox3D(minX, minY, minZ, maxX, maxY, maxZ);
         }
 
-        public static BoundingBox3D CreateFromPoints(IFloat64Tuple3D point1, IFloat64Tuple3D point2)
+        public static BoundingBox3D CreateFromPoints(IFloat64Vector3D point1, IFloat64Vector3D point2)
         {
             double minX, minY, minZ, maxX, maxY, maxZ;
 
@@ -262,7 +262,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space3D.Immutable
             return new BoundingBox3D(minX, minY, minZ, maxX, maxY, maxZ);
         }
 
-        public static BoundingBox3D CreateFromPoints(IFloat64Tuple3D point1, IFloat64Tuple3D point2, IFloat64Tuple3D point3)
+        public static BoundingBox3D CreateFromPoints(IFloat64Vector3D point1, IFloat64Vector3D point2, IFloat64Vector3D point3)
         {
             var minX = point1.X;
             var minY = point1.Y;
@@ -293,7 +293,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space3D.Immutable
             return new BoundingBox3D(minX, minY, minZ, maxX, maxY, maxZ);
         }
 
-        public static BoundingBox3D CreateFromPoints(params IFloat64Tuple3D[] pointsList)
+        public static BoundingBox3D CreateFromPoints(params IFloat64Vector3D[] pointsList)
         {
             var point1 = pointsList[0];
 
@@ -319,7 +319,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space3D.Immutable
             return new BoundingBox3D(minX, minY, minZ, maxX, maxY, maxZ);
         }
 
-        public static BoundingBox3D CreateFromPoints(IEnumerable<IFloat64Tuple3D> pointsList)
+        public static BoundingBox3D CreateFromPoints(IEnumerable<IFloat64Vector3D> pointsList)
         {
             double minX = 0, minY = 0, minZ = 0;
             double maxX = 0, maxY = 0, maxZ = 0;
@@ -353,7 +353,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space3D.Immutable
             return new BoundingBox3D(minX, minY, minZ, maxX, maxY, maxZ);
         }
         
-        public static BoundingBox3D CreateFromPoints(IEnumerable<IFloat64Tuple3D> pointsList, double scalingFactor)
+        public static BoundingBox3D CreateFromPoints(IEnumerable<IFloat64Vector3D> pointsList, double scalingFactor)
         {
             double minX = 0, minY = 0, minZ = 0;
             double maxX = 0, maxY = 0, maxZ = 0;
@@ -400,7 +400,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space3D.Immutable
         }
 
 
-        public static BoundingBox3D Create(IFloat64Tuple3D point)
+        public static BoundingBox3D Create(IFloat64Vector3D point)
         {
             return new BoundingBox3D(
                 point.X,
@@ -650,7 +650,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space3D.Immutable
             return new MutableBoundingBox3D(this);
         }
 
-        public bool TestLineSegmentIntersection(IFloat64Tuple3D point1, IFloat64Tuple3D point2)
+        public bool TestLineSegmentIntersection(IFloat64Vector3D point1, IFloat64Vector3D point2)
         {
             throw new NotImplementedException();
         }

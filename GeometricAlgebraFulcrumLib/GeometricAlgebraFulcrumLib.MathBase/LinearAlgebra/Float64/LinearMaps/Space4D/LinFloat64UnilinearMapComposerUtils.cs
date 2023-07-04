@@ -210,13 +210,13 @@ public static class LinFloat64UnilinearMapComposerUtils
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IReadOnlyList<Float64Vector4D> MapVectors(this ILinFloat64UnilinearMap4D map, params IFloat64Tuple4D[] vectorList)
+    public static IReadOnlyList<Float64Vector4D> MapVectors(this ILinFloat64UnilinearMap4D map, params IFloat64Vector4D[] vectorList)
     {
         return vectorList.Select(map.MapVector).ToImmutableArray();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static IEnumerable<Float64Vector4D> MapVectors(this ILinFloat64UnilinearMap4D map, IEnumerable<IFloat64Tuple4D> vectorList)
+    public static IEnumerable<Float64Vector4D> MapVectors(this ILinFloat64UnilinearMap4D map, IEnumerable<IFloat64Vector4D> vectorList)
     {
         return vectorList.Select(map.MapVector);
     }
@@ -286,7 +286,7 @@ public static class LinFloat64UnilinearMapComposerUtils
     //        );
     //}
 
-    public static ILinFloat64DirectionalScalingLinearMap4D CreateDirectionalScaling4D(this IFloat64Tuple4D scalingVector, double scalingFactor)
+    public static ILinFloat64DirectionalScalingLinearMap4D CreateDirectionalScaling4D(this IFloat64Vector4D scalingVector, double scalingFactor)
     {
         if (scalingFactor.IsZero())
             throw new ArgumentException(nameof(scalingFactor));
@@ -380,7 +380,7 @@ public static class LinFloat64UnilinearMapComposerUtils
     //    );
     //}
 
-    public static ILinFloat64SimpleVectorToVectorRotation4D CreateSimpleVectorToVectorRotation(this IFloat64Tuple4D sourceVector, IFloat64Tuple4D targetVector)
+    public static ILinFloat64SimpleVectorToVectorRotation4D CreateSimpleVectorToVectorRotation(this IFloat64Vector4D sourceVector, IFloat64Vector4D targetVector)
     {
         //var dimensions = sourceVector.Count;
 

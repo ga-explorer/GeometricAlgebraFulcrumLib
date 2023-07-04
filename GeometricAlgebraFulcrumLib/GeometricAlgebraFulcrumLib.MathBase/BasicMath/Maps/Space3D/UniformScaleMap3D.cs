@@ -71,7 +71,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Float64Vector3D MapPoint(IFloat64Tuple3D point)
+        public Float64Vector3D MapPoint(IFloat64Vector3D point)
         {
             return Float64Vector3D.Create(_scalingFactor * point.X,
                 _scalingFactor * point.Y,
@@ -79,7 +79,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Float64Vector3D MapVector(IFloat64Tuple3D vector)
+        public Float64Vector3D MapVector(IFloat64Vector3D vector)
         {
             return Float64Vector3D.Create(_scalingFactor * vector.X,
                 _scalingFactor * vector.Y,
@@ -87,7 +87,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Float64Vector3D MapNormal(IFloat64Tuple3D normal)
+        public Float64Vector3D MapNormal(IFloat64Vector3D normal)
         {
             return Float64Vector3D.Create(_scalingFactor * normal.X,
                 _scalingFactor * normal.Y,

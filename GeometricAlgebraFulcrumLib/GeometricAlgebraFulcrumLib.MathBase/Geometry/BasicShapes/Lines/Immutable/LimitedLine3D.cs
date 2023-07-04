@@ -19,7 +19,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines.Immutab
             );
         }
 
-        public static LimitedLine3D Create(IFloat64Tuple3D origin, IFloat64Tuple3D direction, Float64Range1D parameterLimits)
+        public static LimitedLine3D Create(IFloat64Vector3D origin, IFloat64Vector3D direction, Float64Range1D parameterLimits)
         {
             return new LimitedLine3D(
                 origin.X,

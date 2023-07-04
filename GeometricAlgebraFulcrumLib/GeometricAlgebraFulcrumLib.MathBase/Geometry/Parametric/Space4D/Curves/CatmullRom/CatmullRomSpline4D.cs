@@ -18,26 +18,26 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space4D.Curves
 
 
         private readonly double[] _knotList;
-        private readonly List<IFloat64Tuple4D> _pointList;
+        private readonly List<IFloat64Vector4D> _pointList;
 
         public CatmullRomSplineType CurveType { get; }
 
         public bool IsClosed { get; }
 
-        public IEnumerable<IFloat64Tuple4D> ControlPoints
+        public IEnumerable<IFloat64Vector4D> ControlPoints
             => _pointList;
 
         public int ControlPointCount
             => _pointList.Count;
 
 
-        internal CatmullRomSpline4D(IEnumerable<IFloat64Tuple4D> inputPointList, CatmullRomSplineType curveType, bool isClosed)
+        internal CatmullRomSpline4D(IEnumerable<IFloat64Vector4D> inputPointList, CatmullRomSplineType curveType, bool isClosed)
         {
             CurveType = curveType;
             IsClosed = isClosed;
-            _pointList = new List<IFloat64Tuple4D>(inputPointList);
+            _pointList = new List<IFloat64Vector4D>(inputPointList);
 
-            IFloat64Tuple4D endPoint1, endPoint2;
+            IFloat64Vector4D endPoint1, endPoint2;
 
             if (isClosed)
             {
@@ -341,29 +341,25 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space4D.Curves
             var z = parameterValue.GetCatmullRomValue(tQuad, zQuad);
             var w = parameterValue.GetCatmullRomValue(tQuad, wQuad);
 
-            return new Float64Vector4D(x, y, z, w);
+            return Float64Vector4D.Create(x, y, z, w);
         }
 
         public Float64Vector4D GetTangent(double parameterValue)
         {
             if (parameterValue is <= 0d or >= 1d)
-                return new Float64Vector4D(
-                    Differentiate.FirstDerivative(GetPointX, parameterValue),
+                return Float64Vector4D.Create(Differentiate.FirstDerivative(GetPointX, parameterValue),
                     Differentiate.FirstDerivative(GetPointY, parameterValue),
                     Differentiate.FirstDerivative(GetPointZ, parameterValue),
-                    Differentiate.FirstDerivative(GetPointW, parameterValue)
-                );
+                    Differentiate.FirstDerivative(GetPointW, parameterValue));
 
             var (index1, index2) =
                 GetKnotIndexContaining(parameterValue, 0, _knotList.Length - 1);
 
             if (index1 == index2)
-                return new Float64Vector4D(
-                    Differentiate.FirstDerivative(GetPointX, parameterValue),
+                return Float64Vector4D.Create(Differentiate.FirstDerivative(GetPointX, parameterValue),
                     Differentiate.FirstDerivative(GetPointY, parameterValue),
                     Differentiate.FirstDerivative(GetPointZ, parameterValue),
-                    Differentiate.FirstDerivative(GetPointW, parameterValue)
-                );
+                    Differentiate.FirstDerivative(GetPointW, parameterValue));
 
             Debug.Assert(
                 index2 == index1 + 1 &&
@@ -382,29 +378,25 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space4D.Curves
             var z = parameterValue.GetCatmullRomDerivativeValue(tQuad, zQuad);
             var w = parameterValue.GetCatmullRomDerivativeValue(tQuad, wQuad);
 
-            return new Float64Vector4D(x, y, z, w);
+            return Float64Vector4D.Create(x, y, z, w);
         }
 
         public Float64Vector4D GetSecondDerivative(double parameterValue)
         {
             if (parameterValue is <= 0d or >= 1d)
-                return new Float64Vector4D(
-                    Differentiate.SecondDerivative(GetPointX, parameterValue),
+                return Float64Vector4D.Create(Differentiate.SecondDerivative(GetPointX, parameterValue),
                     Differentiate.SecondDerivative(GetPointY, parameterValue),
                     Differentiate.SecondDerivative(GetPointZ, parameterValue),
-                    Differentiate.SecondDerivative(GetPointW, parameterValue)
-                );
+                    Differentiate.SecondDerivative(GetPointW, parameterValue));
 
             var (index1, index2) =
                 GetKnotIndexContaining(parameterValue, 0, _knotList.Length - 1);
 
             if (index1 == index2)
-                return new Float64Vector4D(
-                    Differentiate.SecondDerivative(GetPointX, parameterValue),
+                return Float64Vector4D.Create(Differentiate.SecondDerivative(GetPointX, parameterValue),
                     Differentiate.SecondDerivative(GetPointY, parameterValue),
                     Differentiate.SecondDerivative(GetPointZ, parameterValue),
-                    Differentiate.SecondDerivative(GetPointW, parameterValue)
-                );
+                    Differentiate.SecondDerivative(GetPointW, parameterValue));
 
             Debug.Assert(
                 index2 == index1 + 1 &&
@@ -423,7 +415,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space4D.Curves
             var z = parameterValue.GetCatmullRomDerivative2Value(tQuad, zQuad);
             var w = parameterValue.GetCatmullRomDerivative2Value(tQuad, wQuad);
 
-            return new Float64Vector4D(x, y, z, w);
+            return Float64Vector4D.Create(x, y, z, w);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

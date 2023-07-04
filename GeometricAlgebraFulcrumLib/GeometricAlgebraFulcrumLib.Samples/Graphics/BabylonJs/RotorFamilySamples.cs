@@ -3,6 +3,7 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using GeometricAlgebraFulcrumLib.Applications.Graphics;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 using SixLabors.ImageSharp;
@@ -61,7 +62,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.BabylonJs
                 ShowGuiLayer = true,
 
                 Title = "Rotor Family of Two Vectors",
-                WorkingPath = @"D:\Projects\Study\Web\Babylon.js\",
+                WorkingFolder = @"D:\Projects\Study\Web\Babylon.js\",
                 HostUrl = "http://localhost:5200/", 
                 //LiveReloadWebServer "D:/Projects/Study/Babylon.js/" --port 5200 --UseSsl False --LiveReloadEnabled False --OpenBrowser True
 

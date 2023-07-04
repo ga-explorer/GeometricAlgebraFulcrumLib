@@ -14,38 +14,40 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Float64Quaternion ToQuaternion(this Quaternion quaternion)
         {
-            return Float64Quaternion.Create(quaternion.X,
-                quaternion.Y,
-                quaternion.Z,
-                quaternion.W);
+            return Float64Quaternion.Create(
+                -quaternion.X,
+                -quaternion.Y,
+                -quaternion.Z,
+                quaternion.W
+            );
         }
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Float64Quaternion AngleAxisToQuaternion(this Float64PlanarAngle angle, IFloat64Tuple3D axis)
+        public static Float64Quaternion CreateQuaternion(this Float64PlanarAngle angle, IFloat64Vector3D normal)
         {
-            return Float64Quaternion.CreateFromAxisAngle(
-                axis.ToUnitVector(),
+            return Float64Quaternion.CreateFromNormalAndAngle(
+                normal.ToUnitVector(),
                 angle
             );
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Float64Quaternion AxisAngleToQuaternion(this IFloat64Tuple3D axis, Float64PlanarAngle angle)
+        public static Float64Quaternion CreateQuaternion(this IFloat64Vector3D normal, Float64PlanarAngle angle)
         {
-            return Float64Quaternion.CreateFromAxisAngle(
-                axis.ToUnitVector(),
+            return Float64Quaternion.CreateFromNormalAndAngle(
+                normal.ToUnitVector(),
                 angle
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Float64Quaternion RotationVectorToQuaternion(this IFloat64Tuple3D vector)
+        public static Float64Quaternion RotationVectorToQuaternion(this IFloat64Vector3D vector)
         {
             var (length, unitVector) = 
                 vector.ToLengthAndUnitDirection();
 
-            return Float64Quaternion.CreateFromAxisAngle(
+            return Float64Quaternion.CreateFromNormalAndAngle(
                 unitVector,
                 length * 2d * Math.PI
             );
@@ -127,10 +129,12 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
             var sy = Math.Sin(halfYaw);
             var cy = Math.Cos(halfYaw);
 
-            return Float64Quaternion.Create(cy * sp * cr + sy * cp * sr,
+            return Float64Quaternion.Create(
+                cy * sp * cr + sy * cp * sr,
                 sy * cp * cr - cy * sp * sr,
                 cy * cp * sr - sy * sp * cr,
-                cy * cp * cr + sy * sp * sr);
+                cy * cp * cr + sy * sp * sr
+            );
         }
 
 
@@ -141,7 +145,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
         /// <param name="srcUnitVector"></param>
         /// <param name="dstUnitVector"></param>
         /// <returns></returns>
-        public static Tuple<Float64Vector3D, Float64PlanarAngle> GetRotationAxisAngle(IFloat64Tuple3D srcUnitVector, IFloat64Tuple3D dstUnitVector)
+        public static Tuple<Float64Vector3D, Float64PlanarAngle> GetRotationNormalAndAngle(IFloat64Vector3D srcUnitVector, IFloat64Vector3D dstUnitVector)
         {
             if (srcUnitVector.IsEqual(dstUnitVector))
                 return new Tuple<Float64Vector3D, Float64PlanarAngle>(srcUnitVector.ToVector3D(), 0);
@@ -167,21 +171,21 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Float64Vector3D RotateUsingQuaternion(this IFloat64Tuple3D vector, Float64Quaternion quaternion)
+        public static Float64Vector3D RotateUsing(this IFloat64Vector3D vector, Float64Quaternion quaternion)
         {
             return quaternion.RotateVector(vector);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Float64Vector3D RotateUsingAxisAngle(this IFloat64Tuple3D vector, IFloat64Tuple3D rotationVector, Float64PlanarAngle rotationAngle)
+        public static Float64Vector3D RotateUsing(this IFloat64Vector3D vector, IFloat64Vector3D normal, Float64PlanarAngle angle)
         {
-            return rotationVector
-                .AxisAngleToQuaternion(rotationAngle)
+            return normal
+                .CreateQuaternion(angle)
                 .RotateVector(vector);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Float64Vector3D RotateUsingVector(this IFloat64Tuple3D vector, IFloat64Tuple3D rotationVector)
+        public static Float64Vector3D RotateUsingVector(this IFloat64Vector3D vector, IFloat64Vector3D rotationVector)
         {
             return rotationVector
                 .RotationVectorToQuaternion()
@@ -257,7 +261,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
             };
         }
 
-        public static Float64Vector3D CreateAxisToVectorRotationVector(this LinUnitBasisVector3D axis, IFloat64Tuple3D unitVector)
+        public static Float64Vector3D CreateAxisToVectorRotationVector(this LinUnitBasisVector3D axis, IFloat64Vector3D unitVector)
         {
             var (u, a) = 
                 axis.CreateAxisToVectorRotationAxisAngle(unitVector);
@@ -265,7 +269,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
             return u.Times(a.Radians / (2d * Math.PI));
         }
         
-        public static Float64Vector3D CreateVectorToVectorRotationVector(this IFloat64Tuple3D unitVector1, IFloat64Tuple3D unitVector2)
+        public static Float64Vector3D CreateVectorToVectorRotationVector(this IFloat64Vector3D unitVector1, IFloat64Vector3D unitVector2)
         {
             var (u, a) = 
                 unitVector1.CreateVectorToVectorRotationAxisAngle(unitVector2);
@@ -273,7 +277,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
             return u.Times(a.Radians / (2d * Math.PI));
         }
 
-        public static Tuple<IFloat64Tuple3D, Float64PlanarAngle> CreateAxisToVectorRotationAxisAngle(this LinUnitBasisVector3D axis, IFloat64Tuple3D unitVector)
+        public static Tuple<IFloat64Vector3D, Float64PlanarAngle> CreateAxisToVectorRotationAxisAngle(this LinUnitBasisVector3D axis, IFloat64Vector3D unitVector)
         {
             //Debug.Assert(
             //    (unitVector.GetLengthSquared() - 1).IsNearZero()
@@ -283,26 +287,26 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
 
             // The case where the two vectors are almost the same
             if ((dot12 - 1d).IsNearZero())
-                return new Tuple<IFloat64Tuple3D, Float64PlanarAngle>(
+                return new Tuple<IFloat64Vector3D, Float64PlanarAngle>(
                     unitVector,
                     Float64PlanarAngle.Angle0
                 );
 
             // The case where the two vectors are almost opposite
             if ((dot12 + 1d).IsNearZero())
-                return new Tuple<IFloat64Tuple3D, Float64PlanarAngle>(
+                return new Tuple<IFloat64Vector3D, Float64PlanarAngle>(
                     axis.GetUnitNormal().ToVector3D(),
                     Float64PlanarAngle.Angle180
                 );
 
             // The general case
-            return new Tuple<IFloat64Tuple3D, Float64PlanarAngle>(
+            return new Tuple<IFloat64Vector3D, Float64PlanarAngle>(
                 axis.VectorUnitCross(unitVector),
                 Math.Acos(dot12)
             );
         }
 
-        public static Tuple<IFloat64Tuple3D, Float64PlanarAngle> CreateVectorToVectorRotationAxisAngle(this IFloat64Tuple3D unitVector1, IFloat64Tuple3D unitVector2)
+        public static Tuple<IFloat64Vector3D, Float64PlanarAngle> CreateVectorToVectorRotationAxisAngle(this IFloat64Vector3D unitVector1, IFloat64Vector3D unitVector2)
         {
             Debug.Assert(
                 (unitVector1.ENormSquared() - 1).IsNearZero() &&
@@ -313,14 +317,14 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
 
             // The case where the two vectors are almost identical
             if ((dot12 - 1d).IsNearZero())
-                return new Tuple<IFloat64Tuple3D, Float64PlanarAngle>(
+                return new Tuple<IFloat64Vector3D, Float64PlanarAngle>(
                     unitVector1,
                     Float64PlanarAngle.Angle0
                 );
 
             // The case where the two vectors are almost opposite
             if ((dot12 + 1d).IsNearZero())
-                return new Tuple<IFloat64Tuple3D, Float64PlanarAngle>(
+                return new Tuple<IFloat64Vector3D, Float64PlanarAngle>(
                     unitVector1.GetUnitNormal(),
                     Float64PlanarAngle.Angle180
                 );
@@ -328,13 +332,13 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
             Debug.Assert(dot12.Abs() < 1);
 
             // The general case
-            return new Tuple<IFloat64Tuple3D, Float64PlanarAngle>(
+            return new Tuple<IFloat64Vector3D, Float64PlanarAngle>(
                 unitVector1.VectorUnitCross(unitVector2),
                 Math.Acos(dot12)
             );
         }
     
-        public static Tuple<IFloat64Tuple3D, Float64PlanarAngle> CreateVectorToVectorRotationAxisAngle(this IFloat64Tuple3D unitVector1, IFloat64Tuple3D unitVector2, IFloat64Tuple3D unitNormal)
+        public static Tuple<IFloat64Vector3D, Float64PlanarAngle> CreateVectorToVectorRotationAxisAngle(this IFloat64Vector3D unitVector1, IFloat64Vector3D unitVector2, IFloat64Vector3D unitNormal)
         {
             Debug.Assert(
                 (unitVector1.ENormSquared() - 1).IsNearZero(1e-7) &&
@@ -348,14 +352,14 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
 
             // The case where the two vectors are almost identical
             if ((dot12 - 1d).IsNearZero())
-                return new Tuple<IFloat64Tuple3D, Float64PlanarAngle>(
+                return new Tuple<IFloat64Vector3D, Float64PlanarAngle>(
                     unitNormal,
                     Float64PlanarAngle.Angle0
                 );
 
             // The case where the two vectors are almost opposite
             if ((dot12 + 1d).IsNearZero())
-                return new Tuple<IFloat64Tuple3D, Float64PlanarAngle>(
+                return new Tuple<IFloat64Vector3D, Float64PlanarAngle>(
                     unitNormal,
                     Float64PlanarAngle.Angle180
                 );
@@ -367,31 +371,31 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
                 : -Math.Acos(dot12);
 
             // The general case
-            return new Tuple<IFloat64Tuple3D, Float64PlanarAngle>(
+            return new Tuple<IFloat64Vector3D, Float64PlanarAngle>(
                 unitNormal,
                 angle
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Float64Quaternion CreateVectorToVectorRotationQuaternion(this IFloat64Tuple3D unitVector1, IFloat64Tuple3D unitVector2)
+        public static Float64Quaternion CreateVectorToVectorRotationQuaternion(this IFloat64Vector3D unitVector1, IFloat64Vector3D unitVector2)
         {
             var (u, a) =
                 unitVector1.CreateVectorToVectorRotationAxisAngle(unitVector2);
 
-            return u.AxisAngleToQuaternion(a);
+            return u.CreateQuaternion(a);
         }
     
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Float64Quaternion CreateVectorToVectorRotationQuaternion(this IFloat64Tuple3D unitVector1, IFloat64Tuple3D unitVector2, IFloat64Tuple3D unitNormal)
+        public static Float64Quaternion CreateVectorToVectorRotationQuaternion(this IFloat64Vector3D unitVector1, IFloat64Vector3D unitVector2, IFloat64Vector3D unitNormal)
         {
             var (u, a) =
                 unitVector1.CreateVectorToVectorRotationAxisAngle(unitVector2, unitNormal);
 
-            return u.AxisAngleToQuaternion(a);
+            return u.CreateQuaternion(a);
         }
 
-        public static Tuple<LinUnitBasisVector3D, Float64Quaternion> CreateNearestAxisToVectorRotationQuaternion(this IFloat64Tuple3D unitVector)
+        public static Tuple<LinUnitBasisVector3D, Float64Quaternion> CreateNearestAxisToVectorRotationQuaternion(this IFloat64Vector3D unitVector)
         {
             Debug.Assert(
                 (unitVector.ENormSquared() - 1).IsNearZero()
@@ -470,13 +474,13 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Float64Quaternion CreateAxisToVectorRotationQuaternion(this IFloat64Tuple3D unitVector, LinUnitBasisVector3D axis)
+        public static Float64Quaternion CreateAxisToVectorRotationQuaternion(this IFloat64Vector3D unitVector, LinUnitBasisVector3D axis)
         {
             return axis.CreateAxisToVectorRotationQuaternion(unitVector);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Float64Quaternion CreateAxisPairToVectorPairRotationQuaternion(this LinUnitBasisVector3D axis1, LinUnitBasisVector3D axis2, IFloat64Tuple3D unitVector1, IFloat64Tuple3D unitVector2)
+        public static Float64Quaternion CreateAxisPairToVectorPairRotationQuaternion(this LinUnitBasisVector3D axis1, LinUnitBasisVector3D axis2, IFloat64Vector3D unitVector1, IFloat64Vector3D unitVector2)
         {
             Debug.Assert(
                 unitVector1.ENormSquared().IsNearEqual(1) &&
@@ -507,7 +511,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Pair<Float64Quaternion> CreateAxisPairToVectorPairRotationQuaternionPair(this LinUnitBasisVector3D axis1, LinUnitBasisVector3D axis2, IFloat64Tuple3D unitVector1, IFloat64Tuple3D unitVector2)
+        public static Pair<Float64Quaternion> CreateAxisPairToVectorPairRotationQuaternionPair(this LinUnitBasisVector3D axis1, LinUnitBasisVector3D axis2, IFloat64Vector3D unitVector1, IFloat64Vector3D unitVector2)
         {
             Debug.Assert(
                 unitVector1.ENormSquared().IsNearEqual(1) &&
@@ -535,12 +539,12 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Float64Quaternion CreateAxisToVectorRotationQuaternion(this LinUnitBasisVector3D axis, IFloat64Tuple3D unitVector)
+        public static Float64Quaternion CreateAxisToVectorRotationQuaternion(this LinUnitBasisVector3D axis, IFloat64Vector3D unitVector)
         {
             var (u, a) =
                 axis.CreateAxisToVectorRotationAxisAngle(unitVector);
 
-            return u.AxisAngleToQuaternion(a);
+            return u.CreateQuaternion(a);
 
             //This gives a correct quaternion but not the simplest one (the one with smallest angle)
             //var (nearestAxis, q2) =
@@ -568,7 +572,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Quaternion ToSystemNumericsQuaternion(this IFloat64Tuple3D vector)
+        public static Quaternion ToSystemNumericsQuaternion(this IFloat64Vector3D vector)
         {
             return new Quaternion(
                 (float)vector.X,
@@ -593,7 +597,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Quaternion ToSystemNumericsQuaternion(this IFloat64Tuple3D vector, double scalar)
+        public static Quaternion ToSystemNumericsQuaternion(this IFloat64Vector3D vector, double scalar)
         {
             return new Quaternion(
                 (float)vector.X,
@@ -612,7 +616,11 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Float64Vector3D GetVectorPart(this Quaternion quaternion)
         {
-            return Float64Vector3D.Create(quaternion.X, quaternion.Y, quaternion.Z);
+            return Float64Vector3D.Create(
+                quaternion.X, 
+                quaternion.Y, 
+                quaternion.Z
+            );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -711,7 +719,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Float64Vector3D RotateVector(this Quaternion quaternion, IFloat64Tuple3D vector)
+        public static Float64Vector3D RotateVector(this Quaternion quaternion, IFloat64Vector3D vector)
         {
             Debug.Assert(
                 quaternion.IsNearNormalized()
@@ -730,7 +738,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Float64Vector3D RotateVectorUsing(this IFloat64Tuple3D vector, Quaternion quaternion)
+        public static Float64Vector3D RotateVectorUsing(this IFloat64Vector3D vector, Quaternion quaternion)
         {
             Debug.Assert(
                 quaternion.IsNearNormalized()

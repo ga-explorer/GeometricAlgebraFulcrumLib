@@ -67,7 +67,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static SquareMatrix4 CreateTranslationMatrix3D(IFloat64Tuple3D translationVector)
+        public static SquareMatrix4 CreateTranslationMatrix3D(IFloat64Vector3D translationVector)
         {
             return new SquareMatrix4
             {
@@ -264,7 +264,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices
             return m;
         }
 
-        public static SquareMatrix4 CreateRotationMatrix3D(IFloat64Tuple3D unitAxis, Float64PlanarAngle radianAngle)
+        public static SquareMatrix4 CreateRotationMatrix3D(IFloat64Vector3D unitAxis, Float64PlanarAngle radianAngle)
         {
             if (radianAngle == 0)
                 return CreateIdentityMatrix();
@@ -322,7 +322,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices
         /// <param name="srcUnitVector"></param>
         /// <param name="dstUnitVector"></param>
         /// <returns></returns>
-        public static SquareMatrix4 CreateRotationMatrix3D(IFloat64Tuple3D srcUnitVector, IFloat64Tuple3D dstUnitVector)
+        public static SquareMatrix4 CreateRotationMatrix3D(IFloat64Vector3D srcUnitVector, IFloat64Vector3D dstUnitVector)
         {
             var angle = 
                 srcUnitVector.GetAngle(dstUnitVector);
@@ -496,35 +496,31 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Float64Vector4D operator *(SquareMatrix4 m, IFloat64Tuple4D vector)
+        public static Float64Vector4D operator *(SquareMatrix4 m, IFloat64Vector4D vector)
         {
             var x = vector.X;
             var y = vector.Y;
             var z = vector.Z;
             var w = vector.W;
 
-            return new Float64Vector4D(
-                m.Scalar00 * x + m.Scalar01 * y + m.Scalar02 * z + m.Scalar03 * w,
+            return Float64Vector4D.Create(m.Scalar00 * x + m.Scalar01 * y + m.Scalar02 * z + m.Scalar03 * w,
                 m.Scalar10 * x + m.Scalar11 * y + m.Scalar12 * z + m.Scalar13 * w,
                 m.Scalar20 * x + m.Scalar21 * y + m.Scalar22 * z + m.Scalar23 * w,
-                m.Scalar30 * x + m.Scalar31 * y + m.Scalar32 * z + m.Scalar33 * w
-            );
+                m.Scalar30 * x + m.Scalar31 * y + m.Scalar32 * z + m.Scalar33 * w);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Float64Vector4D operator *(IFloat64Tuple4D vector, SquareMatrix4 m)
+        public static Float64Vector4D operator *(IFloat64Vector4D vector, SquareMatrix4 m)
         {
             var x = vector.X;
             var y = vector.Y;
             var z = vector.Z;
             var w = vector.W;
 
-            return new Float64Vector4D(
-                m.Scalar00 * x + m.Scalar10 * y + m.Scalar20 * z + m.Scalar30 * w,
+            return Float64Vector4D.Create(m.Scalar00 * x + m.Scalar10 * y + m.Scalar20 * z + m.Scalar30 * w,
                 m.Scalar01 * x + m.Scalar11 * y + m.Scalar21 * z + m.Scalar31 * w,
                 m.Scalar02 * x + m.Scalar12 * y + m.Scalar22 * z + m.Scalar32 * w,
-                m.Scalar03 * x + m.Scalar13 * y + m.Scalar23 * z + m.Scalar33 * w
-            );
+                m.Scalar03 * x + m.Scalar13 * y + m.Scalar23 * z + m.Scalar33 * w);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1355,12 +1351,10 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Float64Vector4D DiagonalToTuple4D()
         {
-            return new Float64Vector4D(
-                Scalar00, 
+            return Float64Vector4D.Create(Scalar00, 
                 Scalar11, 
                 Scalar22, 
-                Scalar33
-            );
+                Scalar33);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1368,10 +1362,10 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices
         {
             return rowIndex switch
             {
-                0 => new Float64Vector4D(Scalar00, Scalar01, Scalar02, Scalar03),
-                1 => new Float64Vector4D(Scalar10, Scalar11, Scalar12, Scalar13),
-                2 => new Float64Vector4D(Scalar20, Scalar21, Scalar22, Scalar23),
-                3 => new Float64Vector4D(Scalar30, Scalar31, Scalar32, Scalar33),
+                0 => Float64Vector4D.Create(Scalar00, Scalar01, Scalar02, Scalar03),
+                1 => Float64Vector4D.Create(Scalar10, Scalar11, Scalar12, Scalar13),
+                2 => Float64Vector4D.Create(Scalar20, Scalar21, Scalar22, Scalar23),
+                3 => Float64Vector4D.Create(Scalar30, Scalar31, Scalar32, Scalar33),
                 _ => throw new IndexOutOfRangeException()
             };
         }
@@ -1381,10 +1375,10 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices
         {
             return colIndex switch
             {
-                0 => new Float64Vector4D(Scalar00, Scalar10, Scalar20, Scalar30),
-                1 => new Float64Vector4D(Scalar01, Scalar11, Scalar21, Scalar31),
-                2 => new Float64Vector4D(Scalar02, Scalar12, Scalar22, Scalar32),
-                3 => new Float64Vector4D(Scalar03, Scalar13, Scalar23, Scalar33),
+                0 => Float64Vector4D.Create(Scalar00, Scalar10, Scalar20, Scalar30),
+                1 => Float64Vector4D.Create(Scalar01, Scalar11, Scalar21, Scalar31),
+                2 => Float64Vector4D.Create(Scalar02, Scalar12, Scalar22, Scalar32),
+                3 => Float64Vector4D.Create(Scalar03, Scalar13, Scalar23, Scalar33),
                 _ => throw new IndexOutOfRangeException()
             };
         }
@@ -1500,7 +1494,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices
             var z = Scalar20 * point.X + Scalar21 * point.Y + Scalar22 * point.Z + Scalar23;
             var w = Scalar30 * point.X + Scalar31 * point.Y + Scalar32 * point.Z + Scalar33;
 
-            return new Float64Vector4D(x, y, z, w);
+            return Float64Vector4D.Create(x, y, z, w);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -1511,11 +1505,11 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices
             var z = Scalar20 * vector.X + Scalar21 * vector.Y + Scalar22 * vector.Z;
             var w = Scalar30 * vector.X + Scalar31 * vector.Y + Scalar32 * vector.Z;
 
-            return new Float64Vector4D(x, y, z, w);
+            return Float64Vector4D.Create(x, y, z, w);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Float64Vector3D MapPoint(IFloat64Tuple3D point)
+        public Float64Vector3D MapPoint(IFloat64Vector3D point)
         {
             var pointX = Scalar00 * point.X + Scalar01 * point.Y + Scalar02 * point.Z + Scalar03;
             var pointY = Scalar10 * point.X + Scalar11 * point.Y + Scalar12 * point.Z + Scalar13;
@@ -1530,7 +1524,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Float64Vector3D MapVector(IFloat64Tuple3D vector)
+        public Float64Vector3D MapVector(IFloat64Vector3D vector)
         {
             return Float64Vector3D.Create(Scalar00 * vector.X + Scalar01 * vector.Y + Scalar02 * vector.Z,
                 Scalar10 * vector.X + Scalar11 * vector.Y + Scalar12 * vector.Z,
@@ -1538,7 +1532,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Float64Vector3D MapNormal(IFloat64Tuple3D normal)
+        public Float64Vector3D MapNormal(IFloat64Vector3D normal)
         {
             var invMatrix = Inverse();
 

@@ -23,10 +23,10 @@ namespace GraphicsComposerLib.Rendering.ThreeJs.Obsolete.Objects
 
         public int RenderOrder { get; set; }
 
-        public IFloat64Tuple3D Position { get; set; }
+        public IFloat64Vector3D Position { get; set; }
             = Float64Vector3D.Zero;
 
-        public IFloat64Tuple3D UpDirection { get; set; }
+        public IFloat64Vector3D UpDirection { get; set; }
             = Float64Vector3D.E2;
 
         public int LayerMask { get; set; } 

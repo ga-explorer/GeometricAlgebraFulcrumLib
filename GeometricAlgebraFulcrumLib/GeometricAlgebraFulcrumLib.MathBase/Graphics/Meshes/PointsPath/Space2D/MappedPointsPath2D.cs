@@ -4,14 +4,14 @@ using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
 namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsPath.Space2D
 {
     public sealed class MappedPointsPath2D
-        : PSeqMapped1D<IFloat64Tuple2D>, IPointsPath2D
+        : PSeqMapped1D<IFloat64Vector2D>, IPointsPath2D
     {
         public IPointsPath2D BasePath { get; }
 
-        public Func<IFloat64Tuple2D, IFloat64Tuple2D> Mapping { get; }
+        public Func<IFloat64Vector2D, IFloat64Vector2D> Mapping { get; }
 
 
-        public MappedPointsPath2D(IPointsPath2D basePath, Func<IFloat64Tuple2D, IFloat64Tuple2D> mapping)
+        public MappedPointsPath2D(IPointsPath2D basePath, Func<IFloat64Vector2D, IFloat64Vector2D> mapping)
             : base(basePath)
         {
             BasePath = basePath;
@@ -19,7 +19,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsPath.Space2D
         }
 
 
-        protected override IFloat64Tuple2D MappingFunction(IFloat64Tuple2D input)
+        protected override IFloat64Vector2D MappingFunction(IFloat64Vector2D input)
         {
             return Mapping(input);
         }
@@ -30,7 +30,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsPath.Space2D
             return this.All(p => p.IsValid());
         }
         
-        public IPointsPath2D MapPoints(Func<IFloat64Tuple2D, IFloat64Tuple2D> pointMapping)
+        public IPointsPath2D MapPoints(Func<IFloat64Vector2D, IFloat64Vector2D> pointMapping)
         {
             return new MappedPointsPath2D(
                 BasePath,

@@ -3,7 +3,7 @@ using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space4D
 {
-    public interface IFloat64Tuple4D : 
+    public interface IFloat64Vector4D : 
         ILinearElement, 
         IQuad<double>
     {

@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using DataStructuresLib.Basic;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.LatticeShapes.Surfaces
 {
@@ -45,7 +46,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.LatticeShapes.Surfaces
         public IEnumerable<Float64Vector3D> VertexPoints 
             => Vertices.Select(v => v.Point);
 
-        public IEnumerable<IFloat64Tuple3D> VertexNormals 
+        public IEnumerable<IFloat64Vector3D> VertexNormals 
             => Vertices.Select(v => v.Normal);
 
         public IEnumerable<Pair<double>> VertexTextureUvs 
@@ -175,10 +176,8 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.LatticeShapes.Surfaces
 
         public Float64Vector2D GetLatticeTextureUv(int indexU, int indexV)
         {
-            return new Float64Vector2D(
-                indexU / (double)(LatticeSizeU - 1),
-                indexV / (double)(LatticeSizeV - 1)
-            );
+            return Float64Vector2D.Create((Float64Scalar)(indexU / (double)(LatticeSizeU - 1)),
+                (Float64Scalar)(indexV / (double)(LatticeSizeV - 1)));
         }
 
         public Float64Vector3D GetLatticeTangentU(int indexU, int indexV)
@@ -452,7 +451,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.LatticeShapes.Surfaces
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GrLatticeSurface3D TranslatePointsBy(IFloat64Tuple3D translationVector)
+        public GrLatticeSurface3D TranslatePointsBy(IFloat64Vector3D translationVector)
         {
             return MapPoints(p => 
                 p.TranslateBy(translationVector)

@@ -8,7 +8,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsPath.Space3D
     /// A path where points are directly stored in memory as an array
     /// </summary>
     public sealed class ArrayPointsPath3D : 
-        PSeqArray1D<IFloat64Tuple3D>, 
+        PSeqArray1D<IFloat64Vector3D>, 
         IPointsPath3D
     {
         public ArrayPointsPath3D(int pointsCount)
@@ -16,12 +16,12 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsPath.Space3D
         {
         }
 
-        public ArrayPointsPath3D(params IFloat64Tuple3D[] pointsArray)
+        public ArrayPointsPath3D(params IFloat64Vector3D[] pointsArray)
             : base(pointsArray)
         {
         }
 
-        public ArrayPointsPath3D(IEnumerable<IFloat64Tuple3D> pointsList)
+        public ArrayPointsPath3D(IEnumerable<IFloat64Vector3D> pointsList)
             : base(pointsList)
         {
         }
@@ -32,7 +32,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsPath.Space3D
             return this.All(p => p.IsValid());
         }
 
-        public IPointsPath3D MapPoints(Func<IFloat64Tuple3D, IFloat64Tuple3D> pointMapping)
+        public IPointsPath3D MapPoints(Func<IFloat64Vector3D, IFloat64Vector3D> pointMapping)
         {
             return new ArrayPointsPath3D(
                 DataArray.Select(pointMapping).ToArray()

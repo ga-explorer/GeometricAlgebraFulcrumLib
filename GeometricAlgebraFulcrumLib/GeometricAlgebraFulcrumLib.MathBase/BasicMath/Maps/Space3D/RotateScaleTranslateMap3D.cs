@@ -13,28 +13,28 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D
     public class RotateScaleTranslateMap3D : 
         IAffineMap3D
     {
-        public static RotateScaleTranslateMap3D CreateRotate(Float64PlanarAngle angle, IFloat64Tuple3D vector)
+        public static RotateScaleTranslateMap3D CreateRotate(Float64PlanarAngle angle, IFloat64Vector3D vector)
         {
             var map = new RotateScaleTranslateMap3D();
 
             return map.SetRotate(angle, vector);
         }
 
-        public static RotateScaleTranslateMap3D CreateRotateScale(Float64PlanarAngle angle, IFloat64Tuple3D vector)
+        public static RotateScaleTranslateMap3D CreateRotateScale(Float64PlanarAngle angle, IFloat64Vector3D vector)
         {
             var map = new RotateScaleTranslateMap3D();
 
             return map.SetRotateScale(angle, vector);
         }
 
-        public static RotateScaleTranslateMap3D CreateRotate(IFloat64Tuple3D vector1, IFloat64Tuple3D vector2)
+        public static RotateScaleTranslateMap3D CreateRotate(IFloat64Vector3D vector1, IFloat64Vector3D vector2)
         {
             var map = new RotateScaleTranslateMap3D();
 
             return map.SetRotate(vector1, vector2);
         }
 
-        public static RotateScaleTranslateMap3D CreateRotateScale(IFloat64Tuple3D vector1, IFloat64Tuple3D vector2)
+        public static RotateScaleTranslateMap3D CreateRotateScale(IFloat64Vector3D vector1, IFloat64Vector3D vector2)
         {
             var map = new RotateScaleTranslateMap3D();
 
@@ -79,17 +79,17 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D
             }
         }
 
-        public IFloat64Tuple3D RotateVector =>
+        public IFloat64Vector3D RotateVector =>
             Float64Vector3D.Create(RotateVectorX,
                 RotateVectorY,
                 RotateVectorZ);
 
-        public IFloat64Tuple3D ScaleVector =>
+        public IFloat64Vector3D ScaleVector =>
             Float64Vector3D.Create(ScaleX,
                 ScaleY,
                 ScaleZ);
 
-        public IFloat64Tuple3D TranslateVector =>
+        public IFloat64Vector3D TranslateVector =>
             Float64Vector3D.Create(TranslateX,
                 TranslateY,
                 TranslateZ);
@@ -98,7 +98,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D
         public bool SwapsHandedness => false;
 
 
-        public RotateScaleTranslateMap3D SetRotate(Float64PlanarAngle angle, IFloat64Tuple3D vector)
+        public RotateScaleTranslateMap3D SetRotate(Float64PlanarAngle angle, IFloat64Vector3D vector)
         {
             RotateAngle = angle;
 
@@ -111,7 +111,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D
             return this;
         }
 
-        public RotateScaleTranslateMap3D SetRotate(IFloat64Tuple3D vector1, IFloat64Tuple3D vector2)
+        public RotateScaleTranslateMap3D SetRotate(IFloat64Vector3D vector1, IFloat64Vector3D vector2)
         {
             //http://lolengine.net/blog/2014/02/24/quaternion-from-two-vectors-final
             var n1 = Math.Sqrt(
@@ -120,7 +120,10 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D
 
             var w = n1 + vector1.ESp(vector2);
 
-            RotateAngle = Float64PlanarAngle.CreateFromRadians(2 * Math.Acos(w)).ClampPositive();
+            RotateAngle = Float64PlanarAngle.CreateFromRadians(
+                2 * Math.Acos(w), 
+                Float64PlanarAngleRange.Positive
+            );
 
             if (w < 1e-12 * n1)
             {
@@ -149,7 +152,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D
         }
 
 
-        public RotateScaleTranslateMap3D SetRotateScale(Float64PlanarAngle angle, IFloat64Tuple3D vector)
+        public RotateScaleTranslateMap3D SetRotateScale(Float64PlanarAngle angle, IFloat64Vector3D vector)
         {
             RotateAngle = angle;
 
@@ -168,7 +171,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D
             return this;
         }
 
-        public RotateScaleTranslateMap3D SetRotateScale(IFloat64Tuple3D vector1, IFloat64Tuple3D vector2)
+        public RotateScaleTranslateMap3D SetRotateScale(IFloat64Vector3D vector1, IFloat64Vector3D vector2)
         {
             var lengthSquared1 = vector1.ENormSquared();
             var lengthSquared2 = vector2.ENormSquared();
@@ -178,7 +181,10 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D
 
             var w = n1 + vector1.ESp(vector2);
 
-            RotateAngle = Float64PlanarAngle.CreateFromRadians(2 * Math.Acos(w)).ClampPositive();
+            RotateAngle = Float64PlanarAngle.CreateFromRadians(
+                2 * Math.Acos(w), 
+                Float64PlanarAngleRange.Positive
+            );
 
             ScaleX = scaleFactor;
             ScaleY = scaleFactor;
@@ -233,7 +239,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D
             return this;
         }
 
-        public RotateScaleTranslateMap3D SetScale(IFloat64Tuple3D scaleVector)
+        public RotateScaleTranslateMap3D SetScale(IFloat64Vector3D scaleVector)
         {
             Debug.Assert(
                 scaleVector.X.IsPositive() && 
@@ -258,7 +264,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D
             return this;
         }
 
-        public RotateScaleTranslateMap3D SetTranslate(IFloat64Tuple3D translateVector)
+        public RotateScaleTranslateMap3D SetTranslate(IFloat64Vector3D translateVector)
         {
             TranslateX = translateVector.X;
             TranslateY = translateVector.Y;
@@ -267,7 +273,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D
             return this;
         }
 
-        public RotateScaleTranslateMap3D SetTranslate(IFloat64Tuple3D point1, IFloat64Tuple3D point2)
+        public RotateScaleTranslateMap3D SetTranslate(IFloat64Vector3D point1, IFloat64Vector3D point2)
         {
             TranslateX = point2.X - point1.X;
             TranslateY = point2.Y - point1.Y;
@@ -292,17 +298,17 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D
             throw new NotImplementedException();
         }
 
-        public Float64Vector3D MapPoint(IFloat64Tuple3D point)
+        public Float64Vector3D MapPoint(IFloat64Vector3D point)
         {
             throw new NotImplementedException();
         }
 
-        public Float64Vector3D MapVector(IFloat64Tuple3D vector)
+        public Float64Vector3D MapVector(IFloat64Vector3D vector)
         {
             throw new NotImplementedException();
         }
 
-        public Float64Vector3D MapNormal(IFloat64Tuple3D normal)
+        public Float64Vector3D MapNormal(IFloat64Vector3D normal)
         {
             throw new NotImplementedException();
         }

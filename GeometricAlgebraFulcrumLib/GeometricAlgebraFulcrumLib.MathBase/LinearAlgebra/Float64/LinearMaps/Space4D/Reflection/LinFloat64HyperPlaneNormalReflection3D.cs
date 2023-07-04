@@ -13,7 +13,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.S
         public static LinFloat64HyperPlaneNormalReflection4D Create(double reflectionNormalX)
         {
             return new LinFloat64HyperPlaneNormalReflection4D(
-                new Float64Vector4D(reflectionNormalX, 0, 0, 0)
+                Float64Vector4D.Create(reflectionNormalX, 0, 0, 0)
             );
         }
 
@@ -21,7 +21,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.S
         public static LinFloat64HyperPlaneNormalReflection4D Create(double reflectionNormalX, double reflectionNormalY)
         {
             return new LinFloat64HyperPlaneNormalReflection4D(
-                new Float64Vector4D(reflectionNormalX, reflectionNormalY, 0, 0)
+                Float64Vector4D.Create(reflectionNormalX, reflectionNormalY, 0, 0)
             );
         }
         
@@ -29,12 +29,12 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.S
         public static LinFloat64HyperPlaneNormalReflection4D Create(double reflectionNormalX, double reflectionNormalY, double reflectionNormalZ, double reflectionNormalW)
         {
             return new LinFloat64HyperPlaneNormalReflection4D(
-                new Float64Vector4D(reflectionNormalX, reflectionNormalY, reflectionNormalZ, reflectionNormalW)
+                Float64Vector4D.Create(reflectionNormalX, reflectionNormalY, reflectionNormalZ, reflectionNormalW)
             );
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static LinFloat64HyperPlaneNormalReflection4D Create(IFloat64Tuple4D reflectionNormal)
+        public static LinFloat64HyperPlaneNormalReflection4D Create(IFloat64Vector4D reflectionNormal)
         {
             return new LinFloat64HyperPlaneNormalReflection4D(
                 reflectionNormal.ToTuple4D()
@@ -96,7 +96,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.S
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public override Float64Vector4D MapVector(IFloat64Tuple4D vector)
+        public override Float64Vector4D MapVector(IFloat64Vector4D vector)
         {
             var s = -2d * vector.ESp(ReflectionNormal);
 

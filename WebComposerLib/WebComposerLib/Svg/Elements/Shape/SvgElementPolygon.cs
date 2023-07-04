@@ -136,16 +136,16 @@ namespace WebComposerLib.Svg.Elements.Shape
             }
         }
 
-        public SvgEav<SvgValuePointsList, SvgElementPolygon> Points
+        public SvgEav<SvgPointList, SvgElementPolygon> Points
         {
             get
             {
                 var attrInfo = SvgAttributeUtils.Points;
 
                 if (AttributesTable.TryGetValue(attrInfo.Id, out var attrValue))
-                    return attrValue as SvgEav<SvgValuePointsList, SvgElementPolygon>;
+                    return attrValue as SvgEav<SvgPointList, SvgElementPolygon>;
 
-                var attrValue1 = new SvgEav<SvgValuePointsList, SvgElementPolygon>(this, attrInfo);
+                var attrValue1 = new SvgEav<SvgPointList, SvgElementPolygon>(this, attrInfo);
                 AttributesTable.Add(attrInfo.Id, attrValue1);
 
                 return attrValue1;
@@ -158,7 +158,7 @@ namespace WebComposerLib.Svg.Elements.Shape
         }
 
 
-        public SvgElementPolygon SetPoints(SvgValuePointsList points)
+        public SvgElementPolygon SetPoints(SvgPointList points)
         {
             Points.SetTo(points);
 
@@ -167,22 +167,22 @@ namespace WebComposerLib.Svg.Elements.Shape
 
         public SvgElementPolygon SetPoints(IEnumerable<IPair<double>> points)
         {
-            return SetPoints(SvgValuePointsList.Create(points));
+            return SetPoints(SvgPointList.Create(points));
         }
 
-        public SvgElementPolygon SetPoints(SvgValueLengthUnit unit, IEnumerable<IPair<double>> points)
+        public SvgElementPolygon SetPoints(SvgLengthUnit unit, IEnumerable<IPair<double>> points)
         {
-            return SetPoints(SvgValuePointsList.Create(unit, points));
+            return SetPoints(SvgPointList.Create(unit, points));
         }
 
         public SvgElementPolygon SetPoints(params double[] points)
         {
-            return SetPoints(SvgValuePointsList.Create(points));
+            return SetPoints(SvgPointList.Create(points));
         }
 
-        public SvgElementPolygon SetPoints(SvgValueLengthUnit unit, params double[] points)
+        public SvgElementPolygon SetPoints(SvgLengthUnit unit, params double[] points)
         {
-            return SetPoints(SvgValuePointsList.Create(unit, points));
+            return SetPoints(SvgPointList.Create(unit, points));
         }
     }
 }

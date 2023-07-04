@@ -70,7 +70,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
 
             var scalingVectorList =
                 random
-                    .GetOrthonormalVectors(n, n / 2)
+                    .GetMathNetOrthonormalVectors(n, n / 2)
                     .Select(v => v.ToArray().CreateLinVector())
                     .ToArray();
 
@@ -119,7 +119,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                     (y - s * x).GetVectorNormSquared().IsNearZero()
                 );
 
-                y = (scalingMatrix * x.ToVector(n)).CreateLinVector();
+                y = (scalingMatrix * MathNetNumericsUtils.ToMathNetVector(x, n)).CreateLinVector();
 
                 Debug.Assert(
                     (y - s * x).GetVectorNormSquared().IsNearZero()
@@ -181,8 +181,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                 );
 
                 Console.WriteLine($"Subspace {j + 1}:");
-                Console.WriteLine($"Eigen Vector Real Part: {eigenVector.Real().ToTuple()}");
-                Console.WriteLine($"Eigen Vector Imag Part: {eigenVector.Imaginary().ToTuple()}");
+                Console.WriteLine($"Eigen Vector Real Part: {eigenVector.Real().ToVector()}");
+                Console.WriteLine($"Eigen Vector Imag Part: {eigenVector.Imaginary().ToVector()}");
                 Console.WriteLine(subspace);
             }
 
@@ -310,7 +310,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                     var v = rotation.MapBasisVector1();
 
                     var v1 = mapSequence.MapVector(u);
-                    var v2 = (mapMatrix * u.ToVector(n)).CreateLinVector();
+                    var v2 = (mapMatrix * MathNetNumericsUtils.ToMathNetVector(u, n)).CreateLinVector();
 
                     // Make sure each rotation is performed independently from the other maps
                     Debug.Assert(
@@ -332,7 +332,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                         var x = random.GetFloat64Tuple(n).CreateLinVector();
 
                         var y1 = mapSequence.MapVector(x);
-                        var y2 = (mapMatrix * x.ToVector(n)).CreateLinVector();
+                        var y2 = (mapMatrix * MathNetNumericsUtils.ToMathNetVector(x, n)).CreateLinVector();
                 
                         Debug.Assert(
                             (y1 - y2).GetVectorNormSquared().IsNearZero()
@@ -346,7 +346,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                     var v = -reflection.ReflectionNormal;
 
                     var v1 = mapSequence.MapVector(u);
-                    var v2 = (mapMatrix * u.ToVector(n)).CreateLinVector();
+                    var v2 = (mapMatrix * MathNetNumericsUtils.ToMathNetVector(u, n)).CreateLinVector();
 
                     // Make sure each reflection is performed independently from the other maps
                     Debug.Assert(
@@ -368,7 +368,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                         var x = random.GetFloat64Tuple(n).CreateLinVector();
 
                         var y1 = mapSequence.MapVector(x);
-                        var y2 = (mapMatrix * x.ToVector(n)).CreateLinVector();
+                        var y2 = (mapMatrix * MathNetNumericsUtils.ToMathNetVector(x, n)).CreateLinVector();
                 
                         Debug.Assert(
                             (y1 - y2).GetVectorNormSquared().IsNearZero()
@@ -414,7 +414,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                     var x = random.GetFloat64Tuple(n).CreateLinVector();
 
                     var y1 = mapSequence.MapVector(x);
-                    var y2 = (mapMatrix * x.ToVector(n)).CreateLinVector();
+                    var y2 = (mapMatrix * MathNetNumericsUtils.ToMathNetVector(x, n)).CreateLinVector();
                 
                     Debug.Assert(
                         (y1 - y2).GetVectorNormSquared().IsNearZero()
@@ -470,8 +470,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
                 );
 
                 Console.WriteLine($"Subspace {j + 1}:");
-                Console.WriteLine($"Eigen Vector Real Part: {eigenVector.Real().ToTuple()}");
-                Console.WriteLine($"Eigen Vector Imag Part: {eigenVector.Imaginary().ToTuple()}");
+                Console.WriteLine($"Eigen Vector Real Part: {eigenVector.Real().ToVector()}");
+                Console.WriteLine($"Eigen Vector Imag Part: {eigenVector.Imaginary().ToVector()}");
                 Console.WriteLine(subspace);
             }
 

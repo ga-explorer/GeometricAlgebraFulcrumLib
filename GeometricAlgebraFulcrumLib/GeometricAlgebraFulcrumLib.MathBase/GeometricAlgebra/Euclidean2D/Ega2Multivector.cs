@@ -50,7 +50,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Euclidean2D
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Ega2Multivector CreateVector(IFloat64Tuple2D vector)
+        public static Ega2Multivector CreateVector(IFloat64Vector2D vector)
         {
             return new Ega2Multivector(0d, vector.X, vector.Y, 0d);
         }
@@ -68,7 +68,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Euclidean2D
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Ega2Multivector Create(double scalar0, IFloat64Tuple2D vector, double scalar12)
+        public static Ega2Multivector Create(double scalar0, IFloat64Vector2D vector, double scalar12)
         {
             return new Ega2Multivector(scalar0, vector.X, vector.Y, scalar12);
         }
@@ -134,7 +134,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Euclidean2D
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Ega2Multivector operator +(Ega2Multivector mv1, IFloat64Tuple2D mv2)
+        public static Ega2Multivector operator +(Ega2Multivector mv1, IFloat64Vector2D mv2)
         {
             return new Ega2Multivector(
                 mv1.Scalar0,
@@ -145,7 +145,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Euclidean2D
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Ega2Multivector operator +(IFloat64Tuple2D mv1, Ega2Multivector mv2)
+        public static Ega2Multivector operator +(IFloat64Vector2D mv1, Ega2Multivector mv2)
         {
             return new Ega2Multivector(
                 mv2.Scalar0,
@@ -190,7 +190,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Euclidean2D
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Ega2Multivector operator -(Ega2Multivector mv1, IFloat64Tuple2D mv2)
+        public static Ega2Multivector operator -(Ega2Multivector mv1, IFloat64Vector2D mv2)
         {
             return new Ega2Multivector(
                 mv1.Scalar0,
@@ -201,7 +201,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Euclidean2D
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Ega2Multivector operator -(IFloat64Tuple2D mv1, Ega2Multivector mv2)
+        public static Ega2Multivector operator -(IFloat64Vector2D mv1, Ega2Multivector mv2)
         {
             return new Ega2Multivector(
                 -mv2.Scalar0,
@@ -350,7 +350,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Euclidean2D
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Float64Vector2D GetVectorPartAsTuple2D()
         {
-            return new Float64Vector2D(Scalar1, Scalar2);
+            return Float64Vector2D.Create((Float64Scalar)Scalar1, (Float64Scalar)Scalar2);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

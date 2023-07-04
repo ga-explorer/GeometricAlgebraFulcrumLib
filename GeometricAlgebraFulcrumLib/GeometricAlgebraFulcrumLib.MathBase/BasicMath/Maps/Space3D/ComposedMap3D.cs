@@ -127,7 +127,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D
             return array;
         }
 
-        public Float64Vector3D MapPoint(IFloat64Tuple3D point)
+        public Float64Vector3D MapPoint(IFloat64Vector3D point)
         {
             return _affineMapsList.Aggregate(
                 point.ToVector3D(), 
@@ -135,7 +135,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D
             );
         }
 
-        public Float64Vector3D MapVector(IFloat64Tuple3D vector)
+        public Float64Vector3D MapVector(IFloat64Vector3D vector)
         {
             return _affineMapsList.Aggregate(
                 vector.ToVector3D(), 
@@ -143,7 +143,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D
             );
         }
 
-        public Float64Vector3D MapNormal(IFloat64Tuple3D normal)
+        public Float64Vector3D MapNormal(IFloat64Vector3D normal)
         {
             return _affineMapsList.Aggregate(
                 normal.ToVector3D(), 

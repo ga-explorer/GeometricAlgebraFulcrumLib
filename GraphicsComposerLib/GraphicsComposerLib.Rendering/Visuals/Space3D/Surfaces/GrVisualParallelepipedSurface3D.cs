@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 using GraphicsComposerLib.Rendering.Visuals.Space3D.Animations;
 using GraphicsComposerLib.Rendering.Visuals.Space3D.Styles;
@@ -24,7 +23,7 @@ public sealed class GrVisualParallelepipedSurface3D :
     );
 
         
-    public static GrVisualParallelepipedSurface3D CreateStatic(string name, GrVisualSurfaceStyle3D style, IFloat64Tuple3D position)
+    public static GrVisualParallelepipedSurface3D CreateStatic(string name, GrVisualSurfaceStyle3D style, IFloat64Vector3D position)
     {
         return new GrVisualParallelepipedSurface3D(
             name,
@@ -37,7 +36,7 @@ public sealed class GrVisualParallelepipedSurface3D :
         );
     }
 
-    public static GrVisualParallelepipedSurface3D CreateStatic(string name, GrVisualSurfaceStyle3D style, IFloat64Tuple3D position, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, IFloat64Tuple3D direction3)
+    public static GrVisualParallelepipedSurface3D CreateStatic(string name, GrVisualSurfaceStyle3D style, IFloat64Vector3D position, IFloat64Vector3D direction1, IFloat64Vector3D direction2, IFloat64Vector3D direction3)
     {
         return new GrVisualParallelepipedSurface3D(
             name,
@@ -50,7 +49,7 @@ public sealed class GrVisualParallelepipedSurface3D :
         );
     }
         
-    public static GrVisualParallelepipedSurface3D Create(string name, GrVisualSurfaceStyle3D style, IFloat64Tuple3D position, GrVisualAnimationSpecs animationSpecs)
+    public static GrVisualParallelepipedSurface3D Create(string name, GrVisualSurfaceStyle3D style, IFloat64Vector3D position, GrVisualAnimationSpecs animationSpecs)
     {
         return new GrVisualParallelepipedSurface3D(
             name,
@@ -63,7 +62,7 @@ public sealed class GrVisualParallelepipedSurface3D :
         );
     }
 
-    public static GrVisualParallelepipedSurface3D Create(string name, GrVisualSurfaceStyle3D style, IFloat64Tuple3D position, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, IFloat64Tuple3D direction3, GrVisualAnimationSpecs animationSpecs)
+    public static GrVisualParallelepipedSurface3D Create(string name, GrVisualSurfaceStyle3D style, IFloat64Vector3D position, IFloat64Vector3D direction1, IFloat64Vector3D direction2, IFloat64Vector3D direction3, GrVisualAnimationSpecs animationSpecs)
     {
         return new GrVisualParallelepipedSurface3D(
             name,
@@ -89,7 +88,7 @@ public sealed class GrVisualParallelepipedSurface3D :
         ).SetAnimatedPosition(position);
     }
     
-    public static GrVisualParallelepipedSurface3D CreateAnimated(string name, GrVisualSurfaceStyle3D style, IFloat64Tuple3D position, GrVisualAnimatedVector3D direction1, GrVisualAnimatedVector3D direction2, GrVisualAnimatedVector3D direction3, GrVisualAnimationSpecs animationSpecs)
+    public static GrVisualParallelepipedSurface3D CreateAnimated(string name, GrVisualSurfaceStyle3D style, IFloat64Vector3D position, GrVisualAnimatedVector3D direction1, GrVisualAnimatedVector3D direction2, GrVisualAnimatedVector3D direction3, GrVisualAnimationSpecs animationSpecs)
     {
         return new GrVisualParallelepipedSurface3D(
             name,
@@ -121,45 +120,45 @@ public sealed class GrVisualParallelepipedSurface3D :
     public bool DrawEdge 
         => EdgeStyle != null;
 
-    public IFloat64Tuple3D Direction1 { get; }
+    public IFloat64Vector3D Direction1 { get; }
 
-    public IFloat64Tuple3D Direction2 { get; }
+    public IFloat64Vector3D Direction2 { get; }
 
-    public IFloat64Tuple3D Direction3 { get; }
+    public IFloat64Vector3D Direction3 { get; }
     
-    public IFloat64Tuple3D Direction12 
+    public IFloat64Vector3D Direction12 
         => Direction1.Add(Direction2);
     
-    public IFloat64Tuple3D Direction13 
+    public IFloat64Vector3D Direction13 
         => Direction1.Add(Direction3);
     
-    public IFloat64Tuple3D Direction23 
+    public IFloat64Vector3D Direction23 
         => Direction2.Add(Direction3);
 
-    public IFloat64Tuple3D Direction123 
+    public IFloat64Vector3D Direction123 
         => Direction1.Add(Direction2).Add(Direction3);
      
-    public IFloat64Tuple3D Position { get; }
+    public IFloat64Vector3D Position { get; }
 
-    public IFloat64Tuple3D Position1 
+    public IFloat64Vector3D Position1 
         => Position.Add(Direction1);
     
-    public IFloat64Tuple3D Position2 
+    public IFloat64Vector3D Position2 
         => Position.Add(Direction2);
     
-    public IFloat64Tuple3D Position3 
+    public IFloat64Vector3D Position3 
         => Position.Add(Direction3);
     
-    public IFloat64Tuple3D Position12 
+    public IFloat64Vector3D Position12 
         => Position.Add(Direction1).Add(Direction2);
 
-    public IFloat64Tuple3D Position13 
+    public IFloat64Vector3D Position13 
         => Position.Add(Direction1).Add(Direction3);
     
-    public IFloat64Tuple3D Position23 
+    public IFloat64Vector3D Position23 
         => Position.Add(Direction2).Add(Direction3);
     
-    public IFloat64Tuple3D Position123 
+    public IFloat64Vector3D Position123 
         => Position.Add(Direction1).Add(Direction2).Add(Direction3);
     
     public double Length1 
@@ -392,7 +391,7 @@ public sealed class GrVisualParallelepipedSurface3D :
         }
     }
     
-    private GrVisualParallelepipedSurface3D(string name, GrVisualSurfaceStyle3D style, IFloat64Tuple3D position, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, IFloat64Tuple3D direction3, GrVisualAnimationSpecs animationSpecs)
+    private GrVisualParallelepipedSurface3D(string name, GrVisualSurfaceStyle3D style, IFloat64Vector3D position, IFloat64Vector3D direction1, IFloat64Vector3D direction2, IFloat64Vector3D direction3, GrVisualAnimationSpecs animationSpecs)
         : base(name, style, animationSpecs)
     {
         Position = position;

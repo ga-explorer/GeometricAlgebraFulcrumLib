@@ -76,25 +76,25 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Composers
         /// The lower left corner point of the grid
         /// </summary>
         public Float64Vector3D CornerLowerLeft 
-            => Float64Vector3D.Create(Center.X, YMin, ZMin);
+            => Float64Vector3D.Create(Center.X.Value, YMin, ZMin);
 
         /// <summary>
         /// The lower right corner point of the grid
         /// </summary>
         public Float64Vector3D CornerLowerRight 
-            => Float64Vector3D.Create(Center.X, YMax, ZMin);
+            => Float64Vector3D.Create(Center.X.Value, YMax, ZMin);
 
         /// <summary>
         /// The upper left corner point of the grid
         /// </summary>
         public Float64Vector3D CornerUpperLeft 
-            => Float64Vector3D.Create(Center.X, YMin, ZMax);
+            => Float64Vector3D.Create(Center.X.Value, YMin, ZMax);
 
         /// <summary>
         /// The upper right corner point of the grid
         /// </summary>
         public Float64Vector3D CornerUpperRight 
-            => Float64Vector3D.Create(Center.X, YMax, ZMax);
+            => Float64Vector3D.Create(Center.X.Value, YMax, ZMax);
 
         /// <summary>
         /// The total length of the grid in the Y direction

@@ -55,7 +55,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Lines
         public IEnumerable<IGraphicsVertex3D> GeometryVertices 
             => _verticesTable.Select(p => p.Value);
 
-        public IEnumerable<IFloat64Tuple3D> GeometryPoints 
+        public IEnumerable<IFloat64Vector3D> GeometryPoints 
             => _verticesTable.Select(p => p.Value);
 
         public IEnumerable<Pair<int>> LineVertexIndices
@@ -82,12 +82,12 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Lines
             }
         }
 
-        public IEnumerable<Pair<IFloat64Tuple3D>> LineVertexPoints
+        public IEnumerable<Pair<IFloat64Vector3D>> LineVertexPoints
         {
             get
             {
                 for (var i = 0; i < _indicesList.Count; i += 2)
-                    yield return new Pair<IFloat64Tuple3D>(
+                    yield return new Pair<IFloat64Vector3D>(
                         _verticesList[_indicesList[i]].Point, 
                         _verticesList[_indicesList[i + 1]].Point
                     );
@@ -103,7 +103,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Lines
         }
 
         
-        public IFloat64Tuple3D GetGeometryPoint(int index)
+        public IFloat64Vector3D GetGeometryPoint(int index)
         {
             return _verticesList[index];
         }
@@ -229,7 +229,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Lines
         }
 
 
-        public GrLineGeometryComposer3D AddVerticesFromPoints(params IFloat64Tuple3D[] pointsList)
+        public GrLineGeometryComposer3D AddVerticesFromPoints(params IFloat64Vector3D[] pointsList)
         {
             foreach (var point in pointsList)
                 AddVertexFromPoint(point);
@@ -237,7 +237,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Lines
             return this;
         }
 
-        public GrLineGeometryComposer3D AddVerticesFromPoints(IEnumerable<IFloat64Tuple3D> pointsList)
+        public GrLineGeometryComposer3D AddVerticesFromPoints(IEnumerable<IFloat64Vector3D> pointsList)
         {
             foreach (var point in pointsList)
                 AddVertexFromPoint(point);
@@ -276,7 +276,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Lines
             );
         }
 
-        public bool AddLine(IFloat64Tuple3D point1, IFloat64Tuple3D point2)
+        public bool AddLine(IFloat64Vector3D point1, IFloat64Vector3D point2)
         {
             return StoreLine(
                 AddVertexFromPoint(point1.X, point1.Y, point1.Z), 
@@ -284,7 +284,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Lines
             );
         }
 
-        public bool AddLine(IPair<IFloat64Tuple3D> points)
+        public bool AddLine(IPair<IFloat64Vector3D> points)
         {
             return StoreLine(
                 AddVertexFromPoint(points.Item1), 
@@ -350,7 +350,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Lines
             return this;
         }
 
-        public GrLineGeometryComposer3D AddLines(IEnumerable<IPair<IFloat64Tuple3D>> linesList)
+        public GrLineGeometryComposer3D AddLines(IEnumerable<IPair<IFloat64Vector3D>> linesList)
         {
             foreach (var pair in linesList)
                 AddLine(pair.Item1, pair.Item2);
@@ -358,10 +358,10 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Lines
             return this;
         }
 
-        public GrLineGeometryComposer3D AddLines(IEnumerable<IFloat64Tuple3D> linePointsList)
+        public GrLineGeometryComposer3D AddLines(IEnumerable<IFloat64Vector3D> linePointsList)
         {
             var firstPointFlag = true;
-            IFloat64Tuple3D point1 = null;
+            IFloat64Vector3D point1 = null;
 
             foreach (var point in linePointsList)
             {
@@ -436,10 +436,10 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Lines
             return this;
         }
 
-        public GrLineGeometryComposer3D AddPolyLine(IEnumerable<IFloat64Tuple3D> pointsList, bool closed)
+        public GrLineGeometryComposer3D AddPolyLine(IEnumerable<IFloat64Vector3D> pointsList, bool closed)
         {
-            IFloat64Tuple3D firstPoint = null;
-            IFloat64Tuple3D point1 = null;
+            IFloat64Vector3D firstPoint = null;
+            IFloat64Vector3D point1 = null;
 
             foreach (var point2 in pointsList)
             {

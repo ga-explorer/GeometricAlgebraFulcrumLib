@@ -41,7 +41,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines.Immutab
             DirectionZ = directionZ;
         }
 
-        public Line3D(IFloat64Tuple3D origin, IFloat64Tuple3D direction)
+        public Line3D(IFloat64Vector3D origin, IFloat64Vector3D direction)
         {
             OriginX = origin.X;
             OriginY = origin.Y;

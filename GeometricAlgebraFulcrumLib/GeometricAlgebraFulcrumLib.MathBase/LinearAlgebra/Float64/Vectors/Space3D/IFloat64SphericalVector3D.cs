@@ -3,7 +3,7 @@
 namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D
 {
     public interface IFloat64SphericalVector3D : 
-        IFloat64Tuple3D
+        IFloat64Vector3D
     {
         Float64Scalar R { get; }
 

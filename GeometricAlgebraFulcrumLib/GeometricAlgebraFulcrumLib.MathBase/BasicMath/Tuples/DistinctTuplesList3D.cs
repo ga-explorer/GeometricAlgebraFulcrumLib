@@ -5,12 +5,12 @@ using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples
 {
     public class DistinctTuplesList3D
-        : IReadOnlyList<IFloat64Tuple3D>
+        : IReadOnlyList<IFloat64Vector3D>
     {
         private readonly Dictionary3Keys<double, int> _tupleIndicesTable =
             new Dictionary3Keys<double, int>();
 
-        private readonly List<IFloat64Tuple3D> _tuplesList;
+        private readonly List<IFloat64Vector3D> _tuplesList;
 
 
         public int Count
@@ -18,7 +18,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples
             get { return _tupleIndicesTable.Count; }
         }
 
-        public IFloat64Tuple3D this[int index]
+        public IFloat64Vector3D this[int index]
         {
             get { return _tuplesList[index]; }
             set
@@ -42,31 +42,31 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples
 
         public DistinctTuplesList3D()
         {
-            _tuplesList = new List<IFloat64Tuple3D>();
+            _tuplesList = new List<IFloat64Vector3D>();
         }
 
         public DistinctTuplesList3D(int capacity)
         {
-            _tuplesList = new List<IFloat64Tuple3D>(capacity);
+            _tuplesList = new List<IFloat64Vector3D>(capacity);
         }
 
-        public DistinctTuplesList3D(IFloat64Tuple3D tuple)
+        public DistinctTuplesList3D(IFloat64Vector3D tuple)
         {
-            _tuplesList = new List<IFloat64Tuple3D>();
+            _tuplesList = new List<IFloat64Vector3D>();
 
             AddTuple(tuple);
         }
 
-        public DistinctTuplesList3D(params IFloat64Tuple3D[] tuplesList)
+        public DistinctTuplesList3D(params IFloat64Vector3D[] tuplesList)
         {
-            _tuplesList = new List<IFloat64Tuple3D>(tuplesList.Length);
+            _tuplesList = new List<IFloat64Vector3D>(tuplesList.Length);
 
             AddTuples(tuplesList);
         }
 
-        public DistinctTuplesList3D(IEnumerable<IFloat64Tuple3D> tuplesList)
+        public DistinctTuplesList3D(IEnumerable<IFloat64Vector3D> tuplesList)
         {
-            _tuplesList = new List<IFloat64Tuple3D>();
+            _tuplesList = new List<IFloat64Vector3D>();
 
             AddTuples(tuplesList);
         }
@@ -93,11 +93,11 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples
             return this;
         }
 
-        public KeyValuePair<int, IFloat64Tuple3D> AddTuple(double x, double y, double z)
+        public KeyValuePair<int, IFloat64Vector3D> AddTuple(double x, double y, double z)
         {
             int tupleIndex;
             if (_tupleIndicesTable.TryGetValue(x, y, z, out tupleIndex))
-                return new KeyValuePair<int, IFloat64Tuple3D>(
+                return new KeyValuePair<int, IFloat64Vector3D>(
                     tupleIndex,
                     _tuplesList[tupleIndex]
                 );
@@ -108,20 +108,20 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples
             _tuplesList.Add(tuple);
             _tupleIndicesTable.Add(x, y, z, tupleIndex);
 
-            return new KeyValuePair<int, IFloat64Tuple3D>(
+            return new KeyValuePair<int, IFloat64Vector3D>(
                 tupleIndex,
                 tuple
             );
         }
 
-        public KeyValuePair<int, IFloat64Tuple3D> AddTuple(IFloat64Tuple3D tuple)
+        public KeyValuePair<int, IFloat64Vector3D> AddTuple(IFloat64Vector3D tuple)
         {
             if (ReferenceEquals(tuple, null))
                 throw new ArgumentNullException(nameof(tuple));
 
             int tupleIndex;
             if (_tupleIndicesTable.TryGetValue(tuple.X, tuple.Y, tuple.Z, out tupleIndex))
-                return new KeyValuePair<int, IFloat64Tuple3D>(
+                return new KeyValuePair<int, IFloat64Vector3D>(
                     tupleIndex,
                     _tuplesList[tupleIndex]
                 );
@@ -131,30 +131,30 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples
             _tuplesList.Add(tuple);
             _tupleIndicesTable.Add(tuple.X, tuple.Y, tuple.Z, tupleIndex);
 
-            return new KeyValuePair<int, IFloat64Tuple3D>(
+            return new KeyValuePair<int, IFloat64Vector3D>(
                 tupleIndex,
                 tuple
             );
         }
 
-        public IEnumerable<KeyValuePair<int, IFloat64Tuple3D>> AddTuples(IEnumerable<IFloat64Tuple3D> tuplesList)
+        public IEnumerable<KeyValuePair<int, IFloat64Vector3D>> AddTuples(IEnumerable<IFloat64Vector3D> tuplesList)
         {
             return tuplesList.Select(AddTuple);
         }
 
-        public KeyValuePair<int, IFloat64Tuple3D>[] AddTuples(params IFloat64Tuple3D[] tuplesList)
+        public KeyValuePair<int, IFloat64Vector3D>[] AddTuples(params IFloat64Vector3D[] tuplesList)
         {
             return tuplesList.Select(AddTuple).ToArray();
         }
 
-        public IFloat64Tuple3D GetTuple(double x, double y, double z)
+        public IFloat64Vector3D GetTuple(double x, double y, double z)
         {
             var tupleIndex = _tupleIndicesTable[x, y, z];
 
             return _tuplesList[tupleIndex];
         }
 
-        public IFloat64Tuple3D GetTuple(IFloat64Tuple3D tuple)
+        public IFloat64Vector3D GetTuple(IFloat64Vector3D tuple)
         {
             var tupleIndex = _tupleIndicesTable[tuple.X, tuple.Y, tuple.Z];
 
@@ -166,26 +166,26 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples
             return _tupleIndicesTable[x, y, z];
         }
 
-        public int GetTupleIndex(IFloat64Tuple3D tuple)
+        public int GetTupleIndex(IFloat64Vector3D tuple)
         {
             return _tupleIndicesTable[tuple.X, tuple.Y, tuple.Z];
         }
 
-        public KeyValuePair<int, IFloat64Tuple3D> GetTupleWithIndex(double x, double y, double z)
+        public KeyValuePair<int, IFloat64Vector3D> GetTupleWithIndex(double x, double y, double z)
         {
             var tupleIndex = _tupleIndicesTable[x, y, z];
 
-            return new KeyValuePair<int, IFloat64Tuple3D>(
+            return new KeyValuePair<int, IFloat64Vector3D>(
                 tupleIndex,
                 _tuplesList[tupleIndex]
             );
         }
 
-        public KeyValuePair<int, IFloat64Tuple3D> GetTupleWithIndex(IFloat64Tuple3D tuple)
+        public KeyValuePair<int, IFloat64Vector3D> GetTupleWithIndex(IFloat64Vector3D tuple)
         {
             var tupleIndex = _tupleIndicesTable[tuple.X, tuple.Y, tuple.Z];
 
-            return new KeyValuePair<int, IFloat64Tuple3D>(
+            return new KeyValuePair<int, IFloat64Vector3D>(
                 tupleIndex,
                 _tuplesList[tupleIndex]
             );
@@ -206,7 +206,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples
             return tupleIndex;
         }
 
-        public int GetOrAddTupleIndex(IFloat64Tuple3D tuple)
+        public int GetOrAddTupleIndex(IFloat64Vector3D tuple)
         {
             if (_tupleIndicesTable.TryGetValue(tuple.X, tuple.Y, tuple.Z, out var tupleIndex))
                 return tupleIndex;
@@ -219,11 +219,11 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples
             return tupleIndex;
         }
 
-        public KeyValuePair<int, IFloat64Tuple3D> GetOrAddTupleWithIndex(double x, double y, double z)
+        public KeyValuePair<int, IFloat64Vector3D> GetOrAddTupleWithIndex(double x, double y, double z)
         {
             int tupleIndex;
             if (_tupleIndicesTable.TryGetValue(x, y, z, out tupleIndex))
-                return new KeyValuePair<int, IFloat64Tuple3D>(
+                return new KeyValuePair<int, IFloat64Vector3D>(
                     tupleIndex,
                     _tuplesList[tupleIndex]
                 );
@@ -234,17 +234,17 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples
             _tuplesList.Add(tuple);
             _tupleIndicesTable.Add(x, y, z, tupleIndex);
 
-            return new KeyValuePair<int, IFloat64Tuple3D>(
+            return new KeyValuePair<int, IFloat64Vector3D>(
                 tupleIndex,
                 tuple
             );
         }
 
-        public KeyValuePair<int, IFloat64Tuple3D> GetOrAddTupleWithIndex(IFloat64Tuple3D tuple)
+        public KeyValuePair<int, IFloat64Vector3D> GetOrAddTupleWithIndex(IFloat64Vector3D tuple)
         {
             int tupleIndex;
             if (_tupleIndicesTable.TryGetValue(tuple.X, tuple.Y, tuple.Z, out tupleIndex))
-                return new KeyValuePair<int, IFloat64Tuple3D>(
+                return new KeyValuePair<int, IFloat64Vector3D>(
                     tupleIndex,
                     _tuplesList[tupleIndex]
                 );
@@ -254,13 +254,13 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples
             _tuplesList.Add(tuple);
             _tupleIndicesTable.Add(tuple.X, tuple.Y, tuple.Z, tupleIndex);
 
-            return new KeyValuePair<int, IFloat64Tuple3D>(
+            return new KeyValuePair<int, IFloat64Vector3D>(
                 tupleIndex,
                 tuple
             );
         }
 
-        public bool TryGetTuple(double x, double y, double z, out IFloat64Tuple3D outputTuple)
+        public bool TryGetTuple(double x, double y, double z, out IFloat64Vector3D outputTuple)
         {
             int tupleIndex;
             if (_tupleIndicesTable.TryGetValue(x, y, z, out tupleIndex))
@@ -273,7 +273,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples
             return false;
         }
 
-        public bool TryGetTuple(IFloat64Tuple3D tuple, out IFloat64Tuple3D outputTuple)
+        public bool TryGetTuple(IFloat64Vector3D tuple, out IFloat64Vector3D outputTuple)
         {
             int tupleIndex;
             if (_tupleIndicesTable.TryGetValue(tuple.X, tuple.Y, tuple.Z, out tupleIndex))
@@ -291,17 +291,17 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples
             return _tupleIndicesTable.TryGetValue(x, y, z, out tupleIndex);
         }
 
-        public bool TryGetTupleIndex(IFloat64Tuple3D tuple, out int tupleIndex)
+        public bool TryGetTupleIndex(IFloat64Vector3D tuple, out int tupleIndex)
         {
             return _tupleIndicesTable.TryGetValue(tuple.X, tuple.Y, tuple.Z, out tupleIndex);
         }
 
-        public bool TryGetTupleWithIndex(double x, double y, double z, out KeyValuePair<int, IFloat64Tuple3D> tupleWithIndex)
+        public bool TryGetTupleWithIndex(double x, double y, double z, out KeyValuePair<int, IFloat64Vector3D> tupleWithIndex)
         {
             int tupleIndex;
             if (_tupleIndicesTable.TryGetValue(x, y, z, out tupleIndex))
             {
-                tupleWithIndex = new KeyValuePair<int, IFloat64Tuple3D>(
+                tupleWithIndex = new KeyValuePair<int, IFloat64Vector3D>(
                     tupleIndex,
                     _tuplesList[tupleIndex]
                 );
@@ -309,16 +309,16 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples
                 return true;
             }
 
-            tupleWithIndex = new KeyValuePair<int, IFloat64Tuple3D>(-1, Float64Vector3D.Zero);
+            tupleWithIndex = new KeyValuePair<int, IFloat64Vector3D>(-1, Float64Vector3D.Zero);
             return false;
         }
 
-        public bool TryGetTupleWithIndex(IFloat64Tuple3D tuple, out KeyValuePair<int, IFloat64Tuple3D> tupleWithIndex)
+        public bool TryGetTupleWithIndex(IFloat64Vector3D tuple, out KeyValuePair<int, IFloat64Vector3D> tupleWithIndex)
         {
             int tupleIndex;
             if (_tupleIndicesTable.TryGetValue(tuple.X, tuple.Y, tuple.Z, out tupleIndex))
             {
-                tupleWithIndex = new KeyValuePair<int, IFloat64Tuple3D>(
+                tupleWithIndex = new KeyValuePair<int, IFloat64Vector3D>(
                     tupleIndex,
                     _tuplesList[tupleIndex]
                 );
@@ -326,7 +326,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples
                 return true;
             }
 
-            tupleWithIndex = new KeyValuePair<int, IFloat64Tuple3D>(-1, Float64Vector3D.Zero);
+            tupleWithIndex = new KeyValuePair<int, IFloat64Vector3D>(-1, Float64Vector3D.Zero);
             return false;
         }
 
@@ -349,7 +349,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples
         }
 
 
-        public IEnumerator<IFloat64Tuple3D> GetEnumerator()
+        public IEnumerator<IFloat64Vector3D> GetEnumerator()
         {
             return _tuplesList.GetEnumerator();
         }

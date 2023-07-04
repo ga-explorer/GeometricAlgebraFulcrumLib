@@ -26,7 +26,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Curves
             => Float64Range1D.ZeroToOne;
         
 
-        public ParametricCircle3D(IFloat64Tuple3D center, IFloat64Tuple3D unitNormal, double radius, int rotationCount = 1)
+        public ParametricCircle3D(IFloat64Vector3D center, IFloat64Vector3D unitNormal, double radius, int rotationCount = 1)
         {
             if (radius < 0)
                 throw new ArgumentException(nameof(radius));

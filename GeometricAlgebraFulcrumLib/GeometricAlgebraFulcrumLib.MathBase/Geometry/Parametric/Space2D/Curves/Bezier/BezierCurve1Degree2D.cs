@@ -17,10 +17,10 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space2D.Curves
             => Float64Range1D.Infinite;
 
 
-        public BezierCurve1Degree2D(IFloat64Tuple2D point1, IFloat64Tuple2D point2)
+        public BezierCurve1Degree2D(IFloat64Vector2D point1, IFloat64Vector2D point2)
         {
-            Point1 = point1.ToLinVector2D();
-            Point2 = point2.ToLinVector2D();
+            Point1 = point1.ToVector2D();
+            Point2 = point2.ToVector2D();
 
             Debug.Assert(IsValid());
         }
@@ -44,10 +44,8 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space2D.Curves
         {
             var (p1, p2) = parameterValue.BernsteinBasis_1();
 
-            return new Float64Vector2D(
-                p1 * Point1.X + p2 * Point2.X,
-                p1 * Point1.Y + p2 * Point2.Y
-            );
+            return Float64Vector2D.Create(p1 * Point1.X + p2 * Point2.X,
+                p1 * Point1.Y + p2 * Point2.Y);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

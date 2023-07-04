@@ -56,7 +56,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
         
         protected override void InitializeImageCache()
         {
-            var workingPath = Path.Combine(WorkingPath, "images");
+            var workingPath = Path.Combine(WorkingFolder, "images");
 
             Console.Write("Generating images cache .. ");
 
@@ -246,7 +246,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
 
             //ImageCache.GeneratePngBase64Strings(latexImageComposer);
 
-            ImageCache.GeneratePngDataUrlStrings();
+            ImageCache.GeneratePngDataUrlStrings(WorkingFolder);
 
             var maxWidth = 0;
             var maxHeight = 0;
@@ -754,7 +754,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
         //    return SceneComposer;
         //}
 
-        private void AddSignalPlane(IFloat64Tuple3D k)
+        private void AddSignalPlane(IFloat64Vector3D k)
         {
             var scene = MainSceneComposer.SceneObject;
 

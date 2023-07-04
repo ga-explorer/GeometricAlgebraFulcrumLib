@@ -843,5 +843,18 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
 
             return XGaRotor<T>.Create(rotorMultivector);
         }
+
+        
+        public static XGaPureRotor<T> CreateSimpleKirchhoffRotor<T>(this XGaProcessor<T> processor, int vSpaceDimensions)
+        {
+            var v1 = 
+                processor.CreateSymmetricUnitVector(vSpaceDimensions);
+
+            var v2 = processor.CreateVector(
+                vSpaceDimensions - 1
+            );
+
+            return v2.CreatePureRotor(v1);
+        }
     }
 }

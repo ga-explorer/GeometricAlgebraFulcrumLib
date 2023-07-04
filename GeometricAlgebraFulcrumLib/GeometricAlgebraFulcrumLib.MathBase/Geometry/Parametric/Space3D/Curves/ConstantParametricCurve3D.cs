@@ -10,7 +10,7 @@ public class ConstantParametricCurve3D :
     IParametricCurve3D
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ConstantParametricCurve3D Create(IFloat64Tuple3D point)
+    public static ConstantParametricCurve3D Create(IFloat64Vector3D point)
     {
         return new ConstantParametricCurve3D(
             point, 
@@ -19,7 +19,7 @@ public class ConstantParametricCurve3D :
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ConstantParametricCurve3D Create(IFloat64Tuple3D point, IFloat64Tuple3D tangent)
+    public static ConstantParametricCurve3D Create(IFloat64Vector3D point, IFloat64Vector3D tangent)
     {
         return new ConstantParametricCurve3D(
             point, 
@@ -37,7 +37,7 @@ public class ConstantParametricCurve3D :
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private ConstantParametricCurve3D(IFloat64Tuple3D point, IFloat64Tuple3D tangent)
+    private ConstantParametricCurve3D(IFloat64Vector3D point, IFloat64Vector3D tangent)
     {
         Point = point.ToVector3D();
         Tangent = tangent.ToVector3D();

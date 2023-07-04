@@ -9,11 +9,11 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsMesh.Space3D
     public class PlanarPointsMesh3D
         : IPointsMesh3D
     {
-        public IFloat64Tuple3D Origin { get; set; }
+        public IFloat64Vector3D Origin { get; set; }
 
-        public IFloat64Tuple3D Direction1 { get; set; }
+        public IFloat64Vector3D Direction1 { get; set; }
 
-        public IFloat64Tuple3D Direction2 { get; set; }
+        public IFloat64Vector3D Direction2 { get; set; }
 
         public IPeriodicSequence1D<double> Parameters1 { get; }
 
@@ -28,7 +28,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsMesh.Space3D
         public int Count2 
             => Parameters2.Count;
 
-        public IFloat64Tuple3D this[int index]
+        public IFloat64Vector3D this[int index]
         {
             get
             {
@@ -40,7 +40,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsMesh.Space3D
             }
         }
 
-        public IFloat64Tuple3D this[int index1, int index2]
+        public IFloat64Vector3D this[int index1, int index2]
         {
             get
             {
@@ -70,7 +70,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsMesh.Space3D
             Direction2 = Float64Vector3D.Create(0, 1, 0);
         }
         
-        public PlanarPointsMesh3D(IPeriodicSequence1D<double> parameters1, IPeriodicSequence1D<double> parameters2, IFloat64Tuple3D origin, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2)
+        public PlanarPointsMesh3D(IPeriodicSequence1D<double> parameters1, IPeriodicSequence1D<double> parameters2, IFloat64Vector3D origin, IFloat64Vector3D direction1, IFloat64Vector3D direction2)
         {
             Parameters1 = parameters1;
             Parameters2 = parameters2;
@@ -81,7 +81,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsMesh.Space3D
         }
 
 
-        public PSeqSlice1D<IFloat64Tuple3D> GetSliceAt(int dimension, int index)
+        public PSeqSlice1D<IFloat64Vector3D> GetSliceAt(int dimension, int index)
         {
             return new PointsMeshSlicePointsPath3D(this, dimension, index);
         }
@@ -91,7 +91,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsMesh.Space3D
             return new PointsMeshSlicePointsPath3D(this, dimension, index);
         }
 
-        public IEnumerator<IFloat64Tuple3D> GetEnumerator()
+        public IEnumerator<IFloat64Vector3D> GetEnumerator()
         {
             for (var i2 = 0; i2 < Count2; i2++)
             for (var i1 = 0; i1 < Count1; i1++)

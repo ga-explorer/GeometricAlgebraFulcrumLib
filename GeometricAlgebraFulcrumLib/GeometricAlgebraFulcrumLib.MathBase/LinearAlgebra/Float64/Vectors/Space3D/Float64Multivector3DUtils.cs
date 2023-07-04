@@ -502,5 +502,87 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
 
             return mv;
         }
+
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Float64Vector3D Lcp(this Float64Vector3D mv1, Float64Bivector3D mv2)
+        {
+            var s1 = 
+                -mv1.Scalar2 * mv2.Scalar12 - 
+                mv1.Scalar3 * mv2.Scalar13;
+
+            var s2 = 
+                mv1.Scalar1 * mv2.Scalar12 - 
+                mv1.Scalar3 * mv2.Scalar23;
+
+            var s3 = 
+                mv1.Scalar1 * mv2.Scalar13 + 
+                mv1.Scalar2 * mv2.Scalar23;
+
+            return Float64Vector3D.Create(s1, s2, s3);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Float64Vector3D ProjectOn(this Float64Vector3D mv1, Float64Bivector3D mv2)
+        {
+            return mv1.Lcp(mv2).Lcp(mv2.Inverse());
+        }
+
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Float64Multivector3D Gp(this Float64Vector3D mv1, Float64Bivector3D mv2)
+        {
+            var s1 = 
+                -mv1.Scalar2 * mv2.Scalar12 - 
+                mv1.Scalar3 * mv2.Scalar13;
+
+            var s2 = 
+                mv1.Scalar1 * mv2.Scalar12 - 
+                mv1.Scalar3 * mv2.Scalar23;
+
+            var s3 = 
+                mv1.Scalar1 * mv2.Scalar13 + 
+                mv1.Scalar2 * mv2.Scalar23;
+
+            var s123 =
+                mv1.Scalar1 * mv2.Scalar23 -
+                mv1.Scalar2 * mv2.Scalar13 +
+                mv1.Scalar3 * mv2.Scalar12;
+
+            return Float64Multivector3D.Create(
+                Float64Scalar3D.Zero,
+                Float64Vector3D.Create(s1, s2, s3),
+                Float64Bivector3D.Zero, 
+                Float64Trivector3D.Create(s123)
+            );
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Float64Multivector3D Gp(this Float64Bivector3D mv1, Float64Vector3D mv2)
+        {
+            var s1 = 
+                mv1.Scalar12 * mv2.Scalar2 + 
+                mv1.Scalar13 * mv2.Scalar3;
+
+            var s2 = 
+                -mv1.Scalar12 * mv2.Scalar1 + 
+                mv1.Scalar23 * mv2.Scalar3;
+
+            var s3 = 
+                -mv1.Scalar13 * mv2.Scalar1 - 
+                mv1.Scalar23 * mv2.Scalar2;
+
+            var s123 =
+                mv1.Scalar12 * mv2.Scalar3 -
+                mv1.Scalar13 * mv2.Scalar2 +
+                mv1.Scalar23 * mv2.Scalar1;
+
+            return Float64Multivector3D.Create(
+                Float64Scalar3D.Zero,
+                Float64Vector3D.Create(s1, s2, s3),
+                Float64Bivector3D.Zero, 
+                Float64Trivector3D.Create(s123)
+            );
+        }
     }
 }

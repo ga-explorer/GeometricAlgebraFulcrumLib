@@ -11,7 +11,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.GeometricAlgebra.CGA5D
         }
 
 
-        protected override double ComputeSdfOpns(IFloat64Tuple3D point)
+        protected override double ComputeSdfOpns(IFloat64Vector3D point)
         {
             //Begin GMac Macro Code Generation, 2019-09-12T13:32:56.0514935+02:00
             //Macro: main.cga5d.SdfOpns
@@ -745,7 +745,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.GeometricAlgebra.CGA5D
             return sdf;
         }
 
-        protected override double ComputeSdfIpns(IFloat64Tuple3D point)
+        protected override double ComputeSdfIpns(IFloat64Vector3D point)
         {
             //Begin GMac Macro Code Generation, 2019-09-12T13:44:16.5061972+02:00
             //Macro: main.cga5d.SdfIpns
@@ -1495,7 +1495,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.GeometricAlgebra.CGA5D
         }
 
 
-        private Float64Vector3D GetOpnsNormal(IFloat64Tuple3D point)
+        private Float64Vector3D GetOpnsNormal(IFloat64Vector3D point)
         {
             //Begin GMac Macro Code Generation, 2019-09-12T13:48:25.0433393+02:00
             //Macro: main.cga5d.GetNormalOpns
@@ -3972,7 +3972,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.GeometricAlgebra.CGA5D
                 d4 - d1 + d2 - d3).ToUnitVector();
         }
 
-        private Float64Vector3D GetIpnsNormal(IFloat64Tuple3D point)
+        private Float64Vector3D GetIpnsNormal(IFloat64Vector3D point)
         {
             //Begin GMac Macro Code Generation, 2019-09-12T13:49:30.9667858+02:00
             //Macro: main.cga5d.GetNormalIpns
@@ -6492,7 +6492,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.GeometricAlgebra.CGA5D
                 d4 - d1 + d2 - d3).ToUnitVector();
         }
 
-        public override Float64Vector3D ComputeSdfNormal(IFloat64Tuple3D point)
+        public override Float64Vector3D ComputeSdfNormal(IFloat64Vector3D point)
         {
             return NullSpaceKind == MultivectorNullSpaceKind.OuterProductNullSpace
                 ? GetOpnsNormal(point)

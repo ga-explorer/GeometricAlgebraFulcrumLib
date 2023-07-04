@@ -205,7 +205,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IntTuple2D ToTuple2DInt(this IFloat64Tuple2D tuple)
+        public static IntTuple2D ToTuple2DInt(this IFloat64Vector2D tuple)
         {
             return new IntTuple2D((int)tuple.X, (int)tuple.Y);
         }
@@ -217,7 +217,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IntTuple2D ToTuple2DInt(this IFloat64Tuple3D tuple)
+        public static IntTuple2D ToTuple2DInt(this IFloat64Vector3D tuple)
         {
             return new IntTuple2D((int)tuple.X, (int)tuple.Y);
         }
@@ -229,7 +229,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IntTuple2D ToTuple2DInt(this IFloat64Tuple4D tuple)
+        public static IntTuple2D ToTuple2DInt(this IFloat64Vector4D tuple)
         {
             return new IntTuple2D((int)tuple.X, (int)tuple.Y);
         }
@@ -244,7 +244,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IntTuple3D ToTuple3DInt(this IFloat64Tuple2D tuple)
+        public static IntTuple3D ToTuple3DInt(this IFloat64Vector2D tuple)
         {
             return new IntTuple3D((int)tuple.X, (int)tuple.Y, 0);
         }
@@ -256,7 +256,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IntTuple3D ToTuple3DInt(this IFloat64Tuple3D tuple)
+        public static IntTuple3D ToTuple3DInt(this IFloat64Vector3D tuple)
         {
             return new IntTuple3D((int)tuple.X, (int)tuple.Y, (int)tuple.Z);
         }
@@ -268,7 +268,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static IntTuple3D ToTuple3DInt(this IFloat64Tuple4D tuple)
+        public static IntTuple3D ToTuple3DInt(this IFloat64Vector4D tuple)
         {
             return new IntTuple3D((int)tuple.X, (int)tuple.Y, (int)tuple.Z);
         }

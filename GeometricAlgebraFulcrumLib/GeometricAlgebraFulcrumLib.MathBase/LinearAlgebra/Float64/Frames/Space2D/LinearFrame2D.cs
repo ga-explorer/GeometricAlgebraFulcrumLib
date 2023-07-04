@@ -14,7 +14,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Frames.Space
         /// Create a set of 2 right-handed orthonormal direction vectors from the given vector
         /// </summary>
         /// <returns></returns>
-        public static LinearFrame2D CreateRightHanded(IFloat64Tuple2D uDirection)
+        public static LinearFrame2D CreateRightHanded(IFloat64Vector2D uDirection)
         {
             var s = uDirection.ENorm();
 
@@ -29,7 +29,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Frames.Space
         /// </summary>
         /// <param name="uDirection"></param>
         /// <returns></returns>
-        public static LinearFrame2D CreateLeftHanded(IFloat64Tuple2D uDirection)
+        public static LinearFrame2D CreateLeftHanded(IFloat64Vector2D uDirection)
         {
             var s = uDirection.ENorm();
 
@@ -51,12 +51,12 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Frames.Space
 
         public Float64Vector2D UDirection
         {
-            get { return new Float64Vector2D(UDirectionX, UDirectionY); }
+            get { return Float64Vector2D.Create((Float64Scalar)UDirectionX, (Float64Scalar)UDirectionY); }
         }
 
         public Float64Vector2D VDirection
         {
-            get { return new Float64Vector2D(VDirectionX, VDirectionY); }
+            get { return Float64Vector2D.Create((Float64Scalar)VDirectionX, (Float64Scalar)VDirectionY); }
         }
 
         public bool IsRightHanded
@@ -79,7 +79,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Frames.Space
         }
 
 
-        public LinearFrame2D(IFloat64Tuple2D uDirection, IFloat64Tuple2D vDirection)
+        public LinearFrame2D(IFloat64Vector2D uDirection, IFloat64Vector2D vDirection)
         {
             UDirectionX = uDirection.X;
             UDirectionY = uDirection.Y;

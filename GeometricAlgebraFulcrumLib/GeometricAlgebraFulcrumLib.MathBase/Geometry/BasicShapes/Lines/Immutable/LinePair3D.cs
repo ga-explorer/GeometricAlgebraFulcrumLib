@@ -22,7 +22,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines.Immutab
             );
         }
 
-        public static LinePair3D Create(IFloat64Tuple3D origin1, IFloat64Tuple3D direction1, IFloat64Tuple3D origin2, IFloat64Tuple3D direction2)
+        public static LinePair3D Create(IFloat64Vector3D origin1, IFloat64Vector3D direction1, IFloat64Vector3D origin2, IFloat64Vector3D direction2)
         {
             return new LinePair3D(
                 origin1.X, 

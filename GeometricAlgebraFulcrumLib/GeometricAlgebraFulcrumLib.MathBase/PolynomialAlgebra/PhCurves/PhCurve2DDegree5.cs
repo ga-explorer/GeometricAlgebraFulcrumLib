@@ -5,7 +5,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.PolynomialAlgebra.PhCurves
 {
     public sealed class PhCurve2DDegree5
     {
-        public static PhCurve2DDegree5 Create(IFloat64Tuple2D point0, IFloat64Tuple2D tangent0, IFloat64Tuple2D point1, IFloat64Tuple2D tangent1)
+        public static PhCurve2DDegree5 Create(IFloat64Vector2D point0, IFloat64Vector2D tangent0, IFloat64Vector2D point1, IFloat64Vector2D tangent1)
         {
             return new PhCurve2DDegree5(point0, tangent0, point1, tangent1);
         }
@@ -26,12 +26,12 @@ namespace GeometricAlgebraFulcrumLib.MathBase.PolynomialAlgebra.PhCurves
         public PhCurve2DDegree5Canonical CanonicalCurve { get; }
 
 
-        private PhCurve2DDegree5(IFloat64Tuple2D point0, IFloat64Tuple2D tangent0, IFloat64Tuple2D point1, IFloat64Tuple2D tangent1)
+        private PhCurve2DDegree5(IFloat64Vector2D point0, IFloat64Vector2D tangent0, IFloat64Vector2D point1, IFloat64Vector2D tangent1)
         {
-            Point0 = point0.ToLinVector2D();
-            Point1 = point1.ToLinVector2D();
-            Tangent0 = tangent0.ToLinVector2D();
-            Tangent1 = tangent1.ToLinVector2D();
+            Point0 = point0.ToVector2D();
+            Point1 = point1.ToVector2D();
+            Tangent0 = tangent0.ToVector2D();
+            Tangent1 = tangent1.ToVector2D();
             TangentLength0 = Tangent0.ENorm();
 
             ScaledRotor = Float64Vector2D.E1.CreateEuclideanScaledPureRotor(tangent0);

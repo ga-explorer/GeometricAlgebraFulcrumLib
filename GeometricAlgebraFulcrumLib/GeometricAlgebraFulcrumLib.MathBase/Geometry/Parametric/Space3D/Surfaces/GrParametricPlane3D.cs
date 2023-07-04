@@ -16,7 +16,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Surfac
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GrParametricPlane3D(IFloat64Tuple3D point, IFloat64Tuple3D vector1, IFloat64Tuple3D vector2)
+        public GrParametricPlane3D(IFloat64Vector3D point, IFloat64Vector3D vector1, IFloat64Vector3D vector2)
         {
             Point = point.ToVector3D();
             Vector1 = vector1.ToVector3D();
@@ -25,7 +25,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Surfac
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public GrParametricPlane3D(IFloat64Tuple3D point, IFloat64Tuple3D normal)
+        public GrParametricPlane3D(IFloat64Vector3D point, IFloat64Vector3D normal)
         {
             Point = point.ToVector3D();
             Vector1 = normal.GetUnitNormal();

@@ -9,6 +9,7 @@ using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space1D.Curves;
 using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Curves;
 using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Curves.Circles;
 using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Curves.Lines;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.Space3D.Rotation;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
@@ -25,7 +26,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.BabylonJs;
 
 public static class AnimationSamples
 {
-    private const string WorkingPath = @"D:\Projects\Study\Web\Babylon.js";
+    private const string WorkingFolder = @"D:\Projects\Study\Web\Babylon.js";
     private const int CanvasWidth = 1024;
     private const int CanvasHeight = 728;
     private const int GridUnitCount = 24;
@@ -76,7 +77,7 @@ public static class AnimationSamples
 
     private static void InitializeImageCache()
     {
-        var workingPath = Path.Combine(WorkingPath, "images");
+        var workingPath = Path.Combine(WorkingFolder, "images");
 
         Console.Write("Generating images cache .. ");
 
@@ -263,7 +264,7 @@ public static class AnimationSamples
 
         //ImageCache.GeneratePngBase64Strings(latexImageComposer);
 
-        ImageCache.GeneratePngDataUrlStrings();
+        ImageCache.GeneratePngDataUrlStrings(WorkingFolder);
         //ImageCache.GenerateSvgDataUrlStrings(WorkingPath);
 
         //var maxWidth = 0;
@@ -499,7 +500,7 @@ public static class AnimationSamples
 
         var htmlCode = HtmlComposer.GetHtmlCode();
 
-        var htmlFilePath = WorkingPath.GetFilePath(
+        var htmlFilePath = WorkingFolder.GetFilePath(
             @$"AnimationExample1",
             "html"
         );
@@ -620,7 +621,7 @@ public static class AnimationSamples
 
         var htmlCode = HtmlComposer.GetHtmlCode();
 
-        var htmlFilePath = WorkingPath.GetFilePath(
+        var htmlFilePath = WorkingFolder.GetFilePath(
             @$"AnimationExample2",
             "html"
         );
@@ -965,7 +966,7 @@ public static class AnimationSamples
 
         var htmlCode = HtmlComposer.GetHtmlCode();
 
-        var htmlFilePath = WorkingPath.GetFilePath(
+        var htmlFilePath = WorkingFolder.GetFilePath(
             @$"AnimationExample3",
             "html"
         );
@@ -1243,7 +1244,7 @@ public static class AnimationSamples
 
         var htmlCode = HtmlComposer.GetHtmlCode();
 
-        var htmlFilePath = WorkingPath.GetFilePath(
+        var htmlFilePath = WorkingFolder.GetFilePath(
             @$"AnimationExample4",
             "html"
         );

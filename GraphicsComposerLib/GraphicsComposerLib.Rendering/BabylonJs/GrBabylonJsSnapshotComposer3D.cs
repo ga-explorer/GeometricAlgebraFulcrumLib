@@ -39,7 +39,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
 
         public int FrameCount { get; }
 
-        public string WorkingPath { get; init; }
+        public string WorkingFolder { get; init; }
 
         public string HostUrl { get; init; }
 
@@ -226,7 +226,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
 
                 var htmlCode = GenerateSnapshotCode(index).GetHtmlCode();
 
-                var htmlFilePath = WorkingPath.GetFilePath(
+                var htmlFilePath = WorkingFolder.GetFilePath(
                     @$"Frame-{index:D6}", 
                     "html"
                 );
@@ -255,7 +255,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
                 UnhandledPromptBehavior = UnhandledPromptBehavior.Accept
             };
         
-            chromeOptions.AddUserProfilePreference("download.default_directory", WorkingPath);
+            chromeOptions.AddUserProfilePreference("download.default_directory", WorkingFolder);
             chromeOptions.AddUserProfilePreference("download.prompt_for_download", false);
             chromeOptions.AddUserProfilePreference("disable-popup-blocking", "true");
 
@@ -325,7 +325,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
                     while (!flag)
                     {
                         flag = frameIndexList.All(i =>
-                            File.Exists(WorkingPath.GetFilePath(@$"Frame-{i:D6}", "png"))
+                            File.Exists(WorkingFolder.GetFilePath(@$"Frame-{i:D6}", "png"))
                         );
                     }
 
@@ -358,7 +358,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
 
             // Image dimensions of the gif.
             using var firstImageStream = File.OpenRead(
-                WorkingPath.GetFilePath(@$"Frame-{0:D6}", "png")
+                WorkingFolder.GetFilePath(@$"Frame-{0:D6}", "png")
             );
 
             var firstImageInfo = Image.Identify(firstImageStream);
@@ -389,7 +389,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
             for (var i = 0; i < FrameCount; i++)
             {
                 using var imageStream = File.OpenRead(
-                    WorkingPath.GetFilePath(@$"Frame-{i:D6}", "png")
+                    WorkingFolder.GetFilePath(@$"Frame-{i:D6}", "png")
                 );
 
                 // Create a color image, which will be added to the gif.
@@ -405,7 +405,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
 
             // Save the final result.
             animatedGif.SaveAsGif(
-                WorkingPath.GetFilePath(Title, "gif")
+                WorkingFolder.GetFilePath(Title, "gif")
             );
 
             Console.WriteLine("Done.");
@@ -416,7 +416,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
             // Delete any old html\png files
             Array.ForEach(
                 Directory.GetFiles(
-                    WorkingPath, 
+                    WorkingFolder, 
                     @"Frame-*.html", 
                     SearchOption.TopDirectoryOnly
                 ),
@@ -425,7 +425,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
 
             Array.ForEach(
                 Directory.GetFiles(
-                    WorkingPath, 
+                    WorkingFolder, 
                     @"Frame-*.png", 
                     SearchOption.TopDirectoryOnly
                 ),
@@ -438,14 +438,14 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
             {
                 htmlFilesExist =
                     Directory.GetFiles(
-                        WorkingPath,
+                        WorkingFolder,
                         @"Frame-*.html",
                         SearchOption.TopDirectoryOnly
                     ).Length > 0;
 
                 pngFilesExist =
                     Directory.GetFiles(
-                        WorkingPath,
+                        WorkingFolder,
                         @"Frame-*.png",
                         SearchOption.TopDirectoryOnly
                     ).Length > 0;

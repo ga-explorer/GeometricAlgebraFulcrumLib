@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.BitManipulation;
-using DataStructuresLib.Random;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.SpaceND.Composers;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.SpaceND.Reflection;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices;
@@ -103,7 +102,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.S
             var mapSequence = Create(dimensions);
 
             var vectorList =
-                random.GetOrthonormalVectors(dimensions, count);
+                random.GetMathNetOrthonormalVectors(dimensions, count);
 
             for (var i = 0; i < count / 2; i++)
             {

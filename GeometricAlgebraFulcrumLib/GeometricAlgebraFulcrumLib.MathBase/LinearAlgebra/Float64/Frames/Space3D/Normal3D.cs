@@ -7,7 +7,7 @@ using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Frames.Space3D
 {
     public sealed class Normal3D :
-        IFloat64Tuple3D
+        IFloat64Vector3D
     {
         public Float64Scalar X { get; private set; }
 
@@ -47,7 +47,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Frames.Space
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public Normal3D(IFloat64Tuple3D normal)
+        public Normal3D(IFloat64Vector3D normal)
         {
             X = normal.X;
             Y = normal.Y;

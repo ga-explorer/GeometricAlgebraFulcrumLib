@@ -9,7 +9,7 @@ using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 namespace GeometricAlgebraFulcrumLib.Geometry.Graphics.Space3D
 {
     public sealed record EuclideanPoint3D : 
-        IFloat64Tuple3D
+        IFloat64Vector3D
     {
         public static EuclideanVector3D operator -(EuclideanPoint3D p1)
         {

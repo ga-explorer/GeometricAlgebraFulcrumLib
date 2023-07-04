@@ -5,6 +5,7 @@ using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders;
 using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Curves;
 using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Curves.Adaptive;
 using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Curves.Roulettes;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 using GraphicsComposerLib.Rendering.BabylonJs;
@@ -120,7 +121,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.Graphics
 
         protected override void InitializeImageCache()
         {
-            var workingPath = Path.Combine(WorkingPath, "images");
+            var workingPath = Path.Combine(WorkingFolder, "images");
 
             Console.Write("Generating images cache .. ");
 

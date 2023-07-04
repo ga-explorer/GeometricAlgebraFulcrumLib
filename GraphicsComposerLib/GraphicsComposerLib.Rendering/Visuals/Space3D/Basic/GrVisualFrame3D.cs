@@ -27,7 +27,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Basic
         );
 
 
-        public static GrVisualFrame3D CreateStatic(string name, GrVisualFrameStyle3D style, IFloat64Tuple3D origin)
+        public static GrVisualFrame3D CreateStatic(string name, GrVisualFrameStyle3D style, IFloat64Vector3D origin)
         {
             return new GrVisualFrame3D(
                 name,
@@ -40,7 +40,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Basic
             );
         }
 
-        public static GrVisualFrame3D CreateStatic(string name, GrVisualFrameStyle3D style, IFloat64Tuple3D origin, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, IFloat64Tuple3D direction3)
+        public static GrVisualFrame3D CreateStatic(string name, GrVisualFrameStyle3D style, IFloat64Vector3D origin, IFloat64Vector3D direction1, IFloat64Vector3D direction2, IFloat64Vector3D direction3)
         {
             return new GrVisualFrame3D(
                 name,
@@ -53,7 +53,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Basic
             );
         }
 
-        public static GrVisualFrame3D Create(string name, GrVisualFrameStyle3D style, IFloat64Tuple3D origin, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, IFloat64Tuple3D direction3, GrVisualAnimationSpecs animationSpecs)
+        public static GrVisualFrame3D Create(string name, GrVisualFrameStyle3D style, IFloat64Vector3D origin, IFloat64Vector3D direction1, IFloat64Vector3D direction2, IFloat64Vector3D direction3, GrVisualAnimationSpecs animationSpecs)
         {
             return new GrVisualFrame3D(
                 name,
@@ -85,21 +85,21 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Basic
 
         public GrVisualFrameStyle3D Style { get; }
 
-        public IFloat64Tuple3D Origin { get; }
+        public IFloat64Vector3D Origin { get; }
 
-        public IFloat64Tuple3D Direction1 { get; }
+        public IFloat64Vector3D Direction1 { get; }
 
-        public IFloat64Tuple3D Direction2 { get; }
+        public IFloat64Vector3D Direction2 { get; }
 
-        public IFloat64Tuple3D Direction3 { get; }
+        public IFloat64Vector3D Direction3 { get; }
 
-        public IFloat64Tuple3D Position1
+        public IFloat64Vector3D Position1
             => Origin.Add(Direction1);
 
-        public IFloat64Tuple3D Position2
+        public IFloat64Vector3D Position2
             => Origin.Add(Direction2);
 
-        public IFloat64Tuple3D Position3
+        public IFloat64Vector3D Position3
             => Origin.Add(Direction3);
 
         public GrVisualAnimatedVector3D? AnimatedOrigin { get; set; }
@@ -183,7 +183,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Basic
         }
 
 
-        private GrVisualFrame3D(string name, GrVisualFrameStyle3D style, IFloat64Tuple3D origin, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, IFloat64Tuple3D direction3, GrVisualAnimationSpecs animationSpecs)
+        private GrVisualFrame3D(string name, GrVisualFrameStyle3D style, IFloat64Vector3D origin, IFloat64Vector3D direction1, IFloat64Vector3D direction2, IFloat64Vector3D direction3, GrVisualAnimationSpecs animationSpecs)
             : base(name, animationSpecs)
         {
             Origin = origin;

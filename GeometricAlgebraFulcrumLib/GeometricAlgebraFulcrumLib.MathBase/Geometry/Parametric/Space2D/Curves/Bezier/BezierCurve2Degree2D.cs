@@ -19,11 +19,11 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space2D.Curves
             => Float64Range1D.Infinite;
 
 
-        public BezierCurve2Degree2D(IFloat64Tuple2D point1, IFloat64Tuple2D point2, IFloat64Tuple2D point3)
+        public BezierCurve2Degree2D(IFloat64Vector2D point1, IFloat64Vector2D point2, IFloat64Vector2D point3)
         {
-            Point1 = point1.ToLinVector2D();
-            Point2 = point2.ToLinVector2D();
-            Point3 = point3.ToLinVector2D();
+            Point1 = point1.ToVector2D();
+            Point2 = point2.ToVector2D();
+            Point3 = point3.ToVector2D();
 
             Debug.Assert(IsValid());
         }
@@ -51,10 +51,8 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space2D.Curves
         {
             var (p1, p2, p3) = t.BernsteinBasis_2();
 
-            return new Float64Vector2D(
-                p1 * Point1.X + p2 * Point2.X + p3 * Point3.X,
-                p1 * Point1.Y + p2 * Point2.Y + p3 * Point3.Y
-            );
+            return Float64Vector2D.Create(p1 * Point1.X + p2 * Point2.X + p3 * Point3.X,
+                p1 * Point1.Y + p2 * Point2.Y + p3 * Point3.Y);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -65,10 +63,8 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space2D.Curves
             var p1 = 2 * s;
             var p2 = 2 * t;
 
-            return new Float64Vector2D(
-                p1 * (Point2.X - Point1.X) + p2 * (Point3.X - Point2.X),
-                p1 * (Point2.Y - Point1.Y) + p2 * (Point3.Y - Point2.Y)
-            );
+            return Float64Vector2D.Create(p1 * (Point2.X - Point1.X) + p2 * (Point3.X - Point2.X),
+                p1 * (Point2.Y - Point1.Y) + p2 * (Point3.Y - Point2.Y));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -11,7 +11,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Frames.Space
     /// the components are double precision numbers
     /// </summary>
     public class AffineFrame3D :
-        IFloat64Tuple3D
+        IFloat64Vector3D
     {
         /// <summary>
         /// Create a set of 3 right-handed orthonormal direction vectors from the given vector
@@ -21,7 +21,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Frames.Space
         /// <param name="rightHanded"></param>
         /// <returns></returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static AffineFrame3D CreateOrthonormal(IFloat64Tuple3D origin, IFloat64Tuple3D direction, bool rightHanded = true)
+        public static AffineFrame3D CreateOrthonormal(IFloat64Vector3D origin, IFloat64Vector3D direction, bool rightHanded = true)
         {
             Debug.Assert(!direction.ENormSquared().IsAlmostZero());
 
@@ -38,7 +38,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Frames.Space
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static AffineFrame3D Create(IFloat64Tuple3D origin, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2, IFloat64Tuple3D direction3)
+        public static AffineFrame3D Create(IFloat64Vector3D origin, IFloat64Vector3D direction1, IFloat64Vector3D direction2, IFloat64Vector3D direction3)
         {
             Debug.Assert(!direction1.ENormSquared().IsAlmostZero());
 

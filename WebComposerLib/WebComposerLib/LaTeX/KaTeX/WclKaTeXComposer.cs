@@ -42,16 +42,17 @@ namespace WebComposerLib.LaTeX.KaTeX
         <title>KaTeX HTML Template</title>
 
         <!-- KaTeX Core -->
-        <link rel=""stylesheet"" href=""https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css"" integrity=""sha384-Xi8rHCmBmhbuyyhbI88391ZKP2dmfnOl4rT9ZfRI7mLTdk1wblIUnrIq35nqwEvC"" crossorigin=""anonymous"">
-        <script src=""https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.js"" integrity=""sha384-X/XCfMm41VSsqRNQgDerQczD69XqmjOOOwYQvr/uuC+j4OPoNhVgjdGFwhvN02Ja"" crossorigin=""anonymous""></script>
-        
+        <link rel=""stylesheet"" href=""./katex/katex.min.css"">
+        <!-- link rel=""stylesheet"" href=""https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css"" integrity=""sha384-3UiQGuEI4TTMaFmGIZumfRPtfKQ3trwQE2JgosJxCnGmQpL/lJdjpcHkaaFwHlcI"" crossorigin=""anonymous"" -->
+
+        <script src=""./katex/katex.min.js""></script>
+        <!-- script defer src=""https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.js"" integrity=""sha384-G0zcxDFp5LWZtDuRMnBkk3EphCK1lhEf4UEyEM693ka574TZGwo4IWwS6QLzM/2t"" crossorigin=""anonymous""></script -->
+
         <!-- KaTeX Auto-render extension -->
         <!-- To automatically render math in text elements, include the auto-render extension: -->
-        <script src=""https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/contrib/auto-render.min.js"" integrity=""sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR"" crossorigin=""anonymous"" ></script>
+        <script defer src=""./katex/contrib/auto-render.min.js"" onload=""renderMathInElement(document.body);""></script>
+        <!-- script defer src=""https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/contrib/auto-render.min.js"" integrity=""sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05"" crossorigin=""anonymous"" onload=""renderMathInElement(document.body);""></script -->
         
-        <!-- html2canvas.js -->
-        <script src=""https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"" integrity=""sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA=="" crossorigin=""anonymous"" referrerpolicy=""no-referrer""></script>
-	    
         <script>
           document.addEventListener(""DOMContentLoaded"", function() {
             renderMathInElement(document.body, {
@@ -83,7 +84,7 @@ namespace WebComposerLib.LaTeX.KaTeX
           };
         </script>
 
-        <script defer src=""https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.js"" integrity=""sha256-4O4pS1SH31ZqrSO2A/2QJTVjTPqVe+jnYgOWUVr7EEc="" crossorigin=""anonymous""></script>
+        <!-- script defer src=""https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.js"" integrity=""sha256-4O4pS1SH31ZqrSO2A/2QJTVjTPqVe+jnYgOWUVr7EEc="" crossorigin=""anonymous""></script -->
         
         <style>
             html, body {
@@ -98,59 +99,7 @@ namespace WebComposerLib.LaTeX.KaTeX
         </style>
     </head>
     <body>
-        <script>
-            function svgToDataURI(svg) {
-                svg = svg.trim();
-
-                // remove xml, doctype, generator...
-                svg = svg.slice(svg.indexOf('<svg'));
-
-                // soft validate
-                if (!svg.startsWith('<svg') || !svg.endsWith('svg>')) return;
-
-                // add namespace if necessary
-                if (!svg.includes('http://www.w3.org/2000/svg')) svg = svg.replace(/<svg/g, `<svg xmlns='http://www.w3.org/2000/svg'`);
-
-                // remove comments
-                svg = svg.replace(/<!--.{1,}-->/g, '');
-
-                // remove unnecessary attributes
-                svg = svg.replace(/version=[\""\'](.{0,}?)[\""\'](?=[\s>])/g, '');
-
-                // svg = svg.replace(/id=[\""\'](.{0,}?)[\""\'](?=[\s>])/g, '');
-                // svg = svg.replace(/class=[\""\'](.{0,}?)[\""\'](?=[\s>])/g, '');
-
-                // replace nested quotes
-                svg = svg.replace(/""'(.{1,})'""/g, '\'$1\'');
-
-                // replace double quotes
-                svg = svg.replace(/""/g, '\'');
-
-                // remove empty spaces between tags
-                svg = svg.replace(/>\s{1,}</g, '><');
-
-                // remove duplicate spaces
-                svg = svg.replace(/\s{2,}/g, ' ');
-
-                // trim again
-                svg = svg.trim();
-
-                // soft validate again
-                if (!(svg.startsWith('<svg')) || !(svg.endsWith('svg>'))) return;
-
-                // replace ampersand
-                svg = svg.replace(/&/g, '&amp;');
-
-                // encode only unsafe symbols
-                svg = svg.replace(/[%#<>?\[\\\]^`{|}]/g, encodeURIComponent);
-
-                // build data uri
-                svg = `data:image/svg+xml,${svg}`;
-
-                // ok, ship it!
-                return svg;
-            }
-        </script>
+        
     </body>
 </html>
 ".Trim();
@@ -164,12 +113,6 @@ namespace WebComposerLib.LaTeX.KaTeX
         public List<Image<Rgba32>> KaTeXPngImageList { get; }
             = new List<Image<Rgba32>>();
         
-        public List<string> KaTeXSvgCodeList { get; }
-            = new List<string>();
-
-        public List<string> KaTeXSvgDataUriList { get; }
-            = new List<string>();
-
         public List<string> KaTeXImageFileName { get; }
             = new List<string>();
 
@@ -191,13 +134,7 @@ namespace WebComposerLib.LaTeX.KaTeX
         public float FontSizeEm { get; set; }
             = 1.21f;
 
-
-        public WclKaTeXComposer()
-            : this(string.Empty)
-        {
-
-        }
-
+        
         public WclKaTeXComposer(string workingFolder)
         {
             if (workingFolder.IsNullOrEmpty())
@@ -264,169 +201,7 @@ namespace WebComposerLib.LaTeX.KaTeX
                 .Where(s => !s.IsNullOrEmpty())
                 .Concatenate(", ", "{", "}");
         }
-
-
-//        private async Task<string> CreateBaseHtmlDocument()
-//        {
-//            var htmlCode =
-//                HtmlTemplateText.Replace(
-//                    "#font-size#",
-//                    FontSizeEm.ToString("N2") + "em"
-//                );
-
-//            //Create initial HTML document
-//            var config =
-//                AngleSharp.Configuration.Default
-//                    .WithCss();
-
-//            // Create empty document
-//            var document = await BrowsingContext.New(config).OpenAsync(
-//                m => m.Content(htmlCode)
-//            );
-
-//            return document.ToHtml();
-//        }
-
-//        private void RenderKaTeXSvgDataUrlStrings(string htmlCode)
-//        {
-//            KaTeXSvgDataUrlList.Clear();
-
-//            //Save html document to local file
-//            var filePath =
-//                WorkingFolder.GetFilePath(
-//                    "katex" + Path.GetFileNameWithoutExtension(Path.GetTempFileName()),
-//                    "html"
-//                );
-
-//            File.WriteAllText(
-//                filePath,
-//                htmlCode
-//            );
-
-//            // https://www.automatetheplanet.com/selenium-webdriver-csharp-cheat-sheet/
-//            // Read document and execute javascript
-//            var chromeOptions = new ChromeOptions
-//            {
-//                PageLoadStrategy = PageLoadStrategy.Normal,
-//                UnhandledPromptBehavior = UnhandledPromptBehavior.Accept
-//            };
-
-//            chromeOptions.AddUserProfilePreference("download.default_directory", WorkingFolder);
-//            chromeOptions.AddUserProfilePreference("download.prompt_for_download", false);
-//            chromeOptions.AddUserProfilePreference("disable-popup-blocking", "true");
-
-//            //chromeOptions.AddAdditionalChromeOption("window-size", "1920,1080");
-//            chromeOptions.AddArgument("headless");
-
-//            var driver = new ChromeDriver(chromeOptions);
-
-//            driver.Manage().Window.Position = new System.Drawing.Point(0, 0);
-//            driver.Manage().Window.Maximize();
-//            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromMilliseconds(2000);
-
-//            try
-//            {
-//                // Open a new tab
-//                var tabHandleCollection = driver.WindowHandles;
-
-//                if (tabHandleCollection.Count < 1)
-//                    driver.SwitchTo().NewWindow(WindowType.Tab);
-
-//                driver.SwitchTo().Window(
-//                    tabHandleCollection.First()
-//                );
-
-//                var fileUri =
-//                    new UriBuilder()
-//                    {
-//                        Scheme = Uri.UriSchemeFile,
-//                        Host = "",
-//                        Path = filePath
-//                    }.Uri.AbsoluteUri;
-
-//                driver.Navigate().GoToUrl(fileUri);
-
-//                // Wait until a page is fully loaded via JavaScript
-//                var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
-//                wait.Until((x) =>
-//                {
-//                    return ((IJavaScriptExecutor)driver).ExecuteScript("return document.readyState").Equals("complete");
-//                });
-
-//                var optionsCode = GetOptionsCode();
-
-//                var index = 0;
-//                foreach (var latexCode in KaTeXCodeList)
-//                {
-//                    var latexHtmlString =
-//                        WebUtility.HtmlEncode(
-//                            latexCode.Replace(@"\", @"\\")
-//                        );
-
-//                    var (width, height) = KaTeXPngImageList[index].Size;
-                    
-//                    var katexScript = @$"
-//const katexHtml = katex.renderToString('{latexHtmlString}', {optionsCode});
-
-//const svg = `
-//<?xml version=""1.0"" encoding=""utf-8""?>
-//<!-- generator: software -->
-//<svg version=""1.1"" id=""html5"" xmlns=""http://www.w3.org/2000/svg"" xmlns:xlink=""http://www.w3.org/1999/xlink"" x=""0px"" y=""0px"" width=""{width}"" height=""{height}"" viewBox=""0 0 50 50"" enable-background=""new 0 0 50 50"" xml:space=""preserve"">
-//<title>KaTeX Equation</title>
-//<foreignObject width=""100%"" height=""100%"">
-//	<div xmlns=""http://www.w3.org/1999/xhtml"">${{katexHtml}}</div>
-//</foreignObject>
-//</svg>
-//`;
-
-//return svgToDataURI(svg);
-
-////const svgBlob = new Blob( [svg], {{ type: 'image/svg+xml;charset=utf-8' }} );
-////const svgObjectUrl = URL.createObjectURL( svgBlob );
-
-////return svg;
-//".Trim();
-
-//                    var svgDataUrl =
-//                        ((IJavaScriptExecutor)driver)
-//                        .ExecuteScript(katexScript)
-//                        .ToString() ?? string.Empty;
-
-//                    //File.WriteAllText(
-//                    //    WorkingFolder.GetFilePath($"KaTeX-{index:D6}", "svg"),
-//                    //    svgCode
-//                    //);
-
-//                    KaTeXSvgDataUrlList.Add(svgDataUrl.DoubleQuote());
-
-//                    //index++;
-//                }
-//            }
-//            catch (Exception ex)
-//            {
-//                Console.WriteLine($"Error: {ex.Message}");
-//            }
-//            finally
-//            {
-//                Thread.Sleep(200);
-
-//                driver.Quit();
-//            }
-
-//            if (File.Exists(filePath))
-//                File.Delete(filePath);
-//        }
-
-//        public async void RenderKaTeXSvgDataUrlStrings()
-//        {
-//            RenderKaTeX();
-
-//            var htmlCode = await CreateBaseHtmlDocument();
-
-//            RenderKaTeXSvgDataUrlStrings(htmlCode);
-//        }
-
-
+        
         private async Task<string> CreateFullHtmlDocument()
         {
             var htmlCode =
@@ -486,8 +261,6 @@ namespace WebComposerLib.LaTeX.KaTeX
         private void RenderKaTeX(string htmlCode)
         {
             KaTeXPngImageList.Clear();
-            KaTeXSvgCodeList.Clear();
-            KaTeXSvgDataUriList.Clear();
             KaTeXImageFileName.Clear();
 
             //Save html document to local file
@@ -595,35 +368,7 @@ namespace WebComposerLib.LaTeX.KaTeX
                     });
                     
                     KaTeXPngImageList.Add(image);
-
-                    var (width, height) = image.Size;
-                    //var heightPercentage = 100;
-                    //var widthPercentage = (int) Math.Ceiling(100 * height / (double)width);
-
-                    var katexHtml =
-                        ((IJavaScriptExecutor)driver).ExecuteScript(
-                            @$"return document.getElementById('{divElement.GetAttribute("id")}').innerHTML;"
-                        ).ToString() ?? string.Empty;
-
-                    var svgCode = @$"
-<?xml version='1.0' encoding='utf-8'?>
-<svg version='1.1' id='html5' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' width='{width}' height='{height}' viewBox='0 0 {width} {height}' enable-background='new 0 0 {width} {height}' xml:space='preserve'>
-<title>KaTeX Equation</title>
-<foreignObject width='100%' height='100%'>
-	<div xmlns='http://www.w3.org/1999/xhtml'>{katexHtml}</div>
-</foreignObject>
-</svg>
-".Trim();
-
-                    KaTeXSvgCodeList.Add(svgCode);
-
-                    var svgDataUrl =
-                        ((IJavaScriptExecutor)driver).ExecuteScript(
-                            $"return svgToDataURI(`{svgCode}`);"
-                        ).ToString() ?? string.Empty;
-
-                    KaTeXSvgDataUriList.Add(svgDataUrl);
-
+                    
                     if (SaveImages)
                     {
                         var imageFileName = $"KaTeX-{index:D6}";
@@ -633,25 +378,10 @@ namespace WebComposerLib.LaTeX.KaTeX
                         image.SaveAsPng(
                             WorkingFolder.GetPngFilePath(imageFileName)
                         );
-
-                        File.WriteAllText(
-                            WorkingFolder.GetSvgFilePath(imageFileName),
-                            svgCode
-                        );
-                        
-                        //screenShot.SaveAsFile(
-                        //    WorkingFolder.GetFilePath($"KaTeX-{index:D6}", "png"),
-                        //    ScreenshotImageFormat.Png
-                        //);
                     }
-
-                    //Console.WriteLine(svgCode);
-                    //Console.WriteLine();
 
                     index++;
                 }
-
-                //htmlCode = driver.PageSource;
             }
             catch (Exception ex)
             {
@@ -664,8 +394,8 @@ namespace WebComposerLib.LaTeX.KaTeX
                 driver.Quit();
             }
 
-            //if (File.Exists(filePath))
-            //    File.Delete(filePath);
+            if (File.Exists(filePath))
+                File.Delete(filePath);
         }
 
         public async void RenderKaTeX()

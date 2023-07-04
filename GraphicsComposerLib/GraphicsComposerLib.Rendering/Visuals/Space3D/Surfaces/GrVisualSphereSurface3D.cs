@@ -33,7 +33,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Surfaces
             );
         }
         
-        public static GrVisualSphereSurface3D CreateStatic(string name, GrVisualSurfaceStyle3D style, IFloat64Tuple3D center, double radius) 
+        public static GrVisualSphereSurface3D CreateStatic(string name, GrVisualSurfaceStyle3D style, IFloat64Vector3D center, double radius) 
         {
             return new GrVisualSphereSurface3D(
                 name,
@@ -54,7 +54,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Surfaces
             );
         }
 
-        public static GrVisualSphereSurface3D Create(string name, GrVisualSurfaceStyle3D style, IFloat64Tuple3D center, double radius, GrVisualAnimationSpecs animationSpecs) {
+        public static GrVisualSphereSurface3D Create(string name, GrVisualSurfaceStyle3D style, IFloat64Vector3D center, double radius, GrVisualAnimationSpecs animationSpecs) {
             return new GrVisualSphereSurface3D(
                 name,
                 style,
@@ -86,7 +86,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Surfaces
         }
 
 
-        public IFloat64Tuple3D Center { get; }
+        public IFloat64Vector3D Center { get; }
         
         public double Radius { get; }
 
@@ -95,7 +95,7 @@ namespace GraphicsComposerLib.Rendering.Visuals.Space3D.Surfaces
         public GrVisualAnimatedVector1D? AnimatedRadius { get; set; }
 
 
-        private GrVisualSphereSurface3D(string name, GrVisualSurfaceStyle3D style, IFloat64Tuple3D center, double radius, GrVisualAnimationSpecs animationSpecs) 
+        private GrVisualSphereSurface3D(string name, GrVisualSurfaceStyle3D style, IFloat64Vector3D center, double radius, GrVisualAnimationSpecs animationSpecs) 
             : base(name, style, animationSpecs)
         {
             Center = center;

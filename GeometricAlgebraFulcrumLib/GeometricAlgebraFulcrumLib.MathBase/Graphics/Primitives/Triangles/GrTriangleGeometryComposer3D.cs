@@ -4,6 +4,7 @@ using DataStructuresLib.Basic;
 using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Triangles;
 using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Triangles.Immutable;
 using GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Vertices;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Frames.Space3D;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
@@ -67,16 +68,16 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Triangles
         public IEnumerable<IGraphicsVertex3D> GeometryVertices
             => _verticesList;
 
-        public IEnumerable<IFloat64Tuple3D> GeometryPoints
+        public IEnumerable<IFloat64Vector3D> GeometryPoints
             => _verticesList.Select(p => p.Point);
 
-        public IEnumerable<IFloat64Tuple2D> VertexTextureUVs
-            => _verticesList.Select(p => p.ParameterValue.ToLinVector2D());
+        public IEnumerable<IFloat64Vector2D> VertexTextureUVs
+            => _verticesList.Select(p => p.ParameterValue.ToVector2D());
 
         public IEnumerable<Color> VertexColors
             => _verticesList.Select(p => p.Color);
         
-        public IEnumerable<IFloat64Tuple3D> VertexNormals
+        public IEnumerable<IFloat64Vector3D> VertexNormals
             => _verticesList.Select(p => p.Normal);
 
         public IEnumerable<Triplet<int>> TriangleVertexIndices
@@ -105,12 +106,12 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Triangles
             }
         }
 
-        public IEnumerable<Triplet<IFloat64Tuple3D>> TriangleVertexPoints
+        public IEnumerable<Triplet<IFloat64Vector3D>> TriangleVertexPoints
         {
             get
             {
                 for (var i = 0; i < _indicesList.Count; i += 3)
-                    yield return new Triplet<IFloat64Tuple3D>(
+                    yield return new Triplet<IFloat64Vector3D>(
                         _verticesList[_indicesList[i]].Point,
                         _verticesList[_indicesList[i + 1]].Point,
                         _verticesList[_indicesList[i + 2]].Point
@@ -118,15 +119,15 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Triangles
             }
         }
 
-        public IEnumerable<Triplet<IFloat64Tuple2D>> TriangleVertexTextureUVs
+        public IEnumerable<Triplet<IFloat64Vector2D>> TriangleVertexTextureUVs
         {
             get
             {
                 for (var i = 0; i < _indicesList.Count; i += 3)
-                    yield return new Triplet<IFloat64Tuple2D>(
-                        _verticesList[_indicesList[i]].ParameterValue.ToLinVector2D(),
-                        _verticesList[_indicesList[i + 1]].ParameterValue.ToLinVector2D(),
-                        _verticesList[_indicesList[i + 2]].ParameterValue.ToLinVector2D()
+                    yield return new Triplet<IFloat64Vector2D>(
+                        _verticesList[_indicesList[i]].ParameterValue.ToVector2D(),
+                        _verticesList[_indicesList[i + 1]].ParameterValue.ToVector2D(),
+                        _verticesList[_indicesList[i + 2]].ParameterValue.ToVector2D()
                     );
             }
         }
@@ -229,8 +230,8 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Triangles
                 //Find triangle normal, not unit but full normal vector
                 var normal = 
                     ReverseNormals
-                        ? Float64Vector3DUtils.GetTriangleNormal(vertex3, vertex2, vertex1)
-                        : Float64Vector3DUtils.GetTriangleNormal(vertex1, vertex2, vertex3);
+                        ? Float64Vector3DAffineUtils.GetTriangleNormal(vertex3, vertex2, vertex1)
+                        : Float64Vector3DAffineUtils.GetTriangleNormal(vertex1, vertex2, vertex3);
 
                 // For debugging only
                 Debug.Assert(
@@ -256,8 +257,8 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Triangles
                 //Find triangle unit normal
                 var normal = 
                     ReverseNormals
-                        ? Float64Vector3DUtils.GetTriangleUnitNormal(vertex3, vertex2, vertex1)
-                        : Float64Vector3DUtils.GetTriangleUnitNormal(vertex1, vertex2, vertex3);
+                        ? Float64Vector3DAffineUtils.GetTriangleUnitNormal(vertex3, vertex2, vertex1)
+                        : Float64Vector3DAffineUtils.GetTriangleUnitNormal(vertex1, vertex2, vertex3);
                 
                 //For debugging only
                 Debug.Assert(normal.IsValid());
@@ -274,8 +275,8 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Triangles
                 //Find triangle normal, not unit but full normal vector
                 var normal = 
                     ReverseNormals
-                        ? Float64Vector3DUtils.GetTriangleNormal(vertex3, vertex2, vertex1)
-                        : Float64Vector3DUtils.GetTriangleNormal(vertex1, vertex2, vertex3);
+                        ? Float64Vector3DAffineUtils.GetTriangleNormal(vertex3, vertex2, vertex1)
+                        : Float64Vector3DAffineUtils.GetTriangleNormal(vertex1, vertex2, vertex3);
 
                 //For debugging only
                 Debug.Assert(normal.IsValid());
@@ -311,7 +312,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Triangles
         }
 
         
-        public IFloat64Tuple3D GetGeometryPoint(int index)
+        public IFloat64Vector3D GetGeometryPoint(int index)
         {
             return _verticesList[index];
         }
@@ -386,7 +387,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Triangles
             return storedVertex;
         }
 
-        public IGraphicsVertex3D AddVertex(IFloat64Tuple3D point)
+        public IGraphicsVertex3D AddVertex(IFloat64Vector3D point)
         {
             var pointTriplet = point.ToTriplet();
 
@@ -437,7 +438,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Triangles
         }
 
 
-        public GrTriangleGeometryComposer3D AddVertices(params IFloat64Tuple3D[] pointsList)
+        public GrTriangleGeometryComposer3D AddVertices(params IFloat64Vector3D[] pointsList)
         {
             foreach (var point in pointsList)
                 AddVertex(point);
@@ -445,7 +446,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Triangles
             return this;
         }
 
-        public GrTriangleGeometryComposer3D AddVertices(IEnumerable<IFloat64Tuple3D> pointsList)
+        public GrTriangleGeometryComposer3D AddVertices(IEnumerable<IFloat64Vector3D> pointsList)
         {
             foreach (var point in pointsList)
                 AddVertex(point);
@@ -486,7 +487,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Triangles
             );
         }
 
-        public bool AddTriangle(IFloat64Tuple3D point1, IFloat64Tuple3D point2, IFloat64Tuple3D point3)
+        public bool AddTriangle(IFloat64Vector3D point1, IFloat64Vector3D point2, IFloat64Vector3D point3)
         {
             return StoreTriangle(
                 AddVertex(point1.X, point1.Y, point1.Z), 
@@ -495,7 +496,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Triangles
             );
         }
 
-        public bool AddTriangle(ITriplet<IFloat64Tuple3D> points)
+        public bool AddTriangle(ITriplet<IFloat64Vector3D> points)
         {
             return StoreTriangle(
                 AddVertex(points.Item1.X, points.Item1.Y, points.Item1.Z), 
@@ -577,7 +578,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Triangles
             return this;
         }
 
-        public GrTriangleGeometryComposer3D AddTriangles(IReadOnlyList<IFloat64Tuple3D> pointsList)
+        public GrTriangleGeometryComposer3D AddTriangles(IReadOnlyList<IFloat64Vector3D> pointsList)
         {
             if (pointsList.Count % 3 != 0)
                 throw new InvalidOperationException();
@@ -594,7 +595,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Triangles
             return this;
         }
 
-        public GrTriangleGeometryComposer3D AddTriangles(IEnumerable<ITriplet<IFloat64Tuple3D>> trianglePointsList)
+        public GrTriangleGeometryComposer3D AddTriangles(IEnumerable<ITriplet<IFloat64Vector3D>> trianglePointsList)
         {
             foreach (var points in trianglePointsList)
             {

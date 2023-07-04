@@ -1,5 +1,6 @@
 ﻿using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space2D
 {
@@ -76,9 +77,9 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space2D
         public SquareMatrix3 GetSquareMatrix3()
         {
             //Construct matrix columns
-            var c1 = MapVector(new Float64Vector2D(1, 0));
-            var c2 = MapVector(new Float64Vector2D(0, 1));
-            var c3 = MapPoint(new Float64Vector2D(0, 0));
+            var c1 = MapVector(Float64Vector2D.Create((Float64Scalar)1, 0));
+            var c2 = MapVector(Float64Vector2D.Create((Float64Scalar)0, 1));
+            var c3 = MapPoint(Float64Vector2D.Create((Float64Scalar)0, 0));
 
             return new SquareMatrix3()
             {
@@ -99,26 +100,26 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space2D
 
         public bool SwapsHandedness { get; }
 
-        public Float64Vector2D MapPoint(IFloat64Tuple2D point)
+        public Float64Vector2D MapPoint(IFloat64Vector2D point)
         {
             return _affineMapsList.Aggregate(
-                point.ToLinVector2D(), 
+                point.ToVector2D(), 
                 (current, linearMap) => linearMap.MapPoint(current)
             );
         }
 
-        public Float64Vector2D MapVector(IFloat64Tuple2D vector)
+        public Float64Vector2D MapVector(IFloat64Vector2D vector)
         {
             return _affineMapsList.Aggregate(
-                vector.ToLinVector2D(), 
+                vector.ToVector2D(), 
                 (current, linearMap) => linearMap.MapVector(current)
             );
         }
 
-        public Float64Vector2D MapNormal(IFloat64Tuple2D normal)
+        public Float64Vector2D MapNormal(IFloat64Vector2D normal)
         {
             return _affineMapsList.Aggregate(
-                normal.ToLinVector2D(), 
+                normal.ToVector2D(), 
                 (current, linearMap) => linearMap.MapNormal(current)
             );
         }

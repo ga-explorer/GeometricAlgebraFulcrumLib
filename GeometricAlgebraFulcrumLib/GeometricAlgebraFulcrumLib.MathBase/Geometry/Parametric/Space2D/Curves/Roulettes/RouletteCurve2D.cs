@@ -2,7 +2,9 @@
 using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space2D;
 using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders;
 using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space2D.Frames;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 using MathNet.Numerics;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space2D.Curves.Roulettes
@@ -29,11 +31,11 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space2D.Curves
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public RouletteCurve2D(IArcLengthCurve2D fixedCurve, IArcLengthCurve2D movingCurve, IFloat64Tuple2D generatorPoint, double parameterValueMax)
+        public RouletteCurve2D(IArcLengthCurve2D fixedCurve, IArcLengthCurve2D movingCurve, IFloat64Vector2D generatorPoint, double parameterValueMax)
         {
             FixedCurve = fixedCurve;
             MovingCurve = movingCurve;
-            GeneratorPoint = generatorPoint.ToLinVector2D();
+            GeneratorPoint = generatorPoint.ToVector2D();
             ParameterRange = Float64Range1D.Create(0, parameterValueMax);
         }
 
@@ -84,10 +86,8 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space2D.Curves
             var fY =
                 Differentiate.FirstDerivativeFunc(t => GetPoint(t).Y);
             
-            return new Float64Vector2D(
-                fX(parameterValue),
-                fY(parameterValue)
-            );
+            return Float64Vector2D.Create((Float64Scalar)fX(parameterValue),
+                (Float64Scalar)fY(parameterValue));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -104,10 +104,8 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space2D.Curves
             var fY =
                 Differentiate.SecondDerivativeFunc(t => GetPoint(t).Y);
             
-            return new Float64Vector2D(
-                fX(parameterValue),
-                fY(parameterValue)
-            );
+            return Float64Vector2D.Create((Float64Scalar)fX(parameterValue),
+                (Float64Scalar)fY(parameterValue));
         }
     }
 }

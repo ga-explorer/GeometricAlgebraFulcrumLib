@@ -183,16 +183,16 @@ namespace WebComposerLib.Svg.Elements.Shape
             return this;
         }
 
-        public SvgElementPath SetPathData(IEnumerable<SvgPathCommand> commands)
+        public SvgElementPath SetPathData(IEnumerable<SvgPathCommandSimple> commands)
         {
-            PathData.SetTo(SvgPathCommandComposer.Create(commands));
+            PathData.SetTo(SvgPathCommandSequence.Create(commands));
 
             return this;
         }
 
-        public SvgElementPath SetPathData(params SvgPathCommand[] commands)
+        public SvgElementPath SetPathData(params SvgPathCommandSimple[] commands)
         {
-            PathData.SetTo(SvgPathCommandComposer.Create(commands));
+            PathData.SetTo(SvgPathCommandSequence.Create(commands));
 
             return this;
         }

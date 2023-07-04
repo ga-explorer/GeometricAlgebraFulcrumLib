@@ -297,7 +297,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.BabylonJs
             )
             {
                 Title = "Roulette Curve in 3D",
-                WorkingPath = @"D:\Projects\Study\Web\Babylon.js\",
+                WorkingFolder = @"D:\Projects\Study\Web\Babylon.js\",
                 HostUrl = "http://localhost:5200/", 
                 //LiveReloadWebServer "D:/Projects/Study/Babylon.js/" --port 5200 --UseSsl False --LiveReloadEnabled False --OpenBrowser True
             
@@ -386,7 +386,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.BabylonJs
             )
             {
                 Title = "Parametric Roulette Curve in 3D-3",
-                WorkingPath = @"D:\Projects\Study\Web\Babylon.js\",
+                WorkingFolder = @"D:\Projects\Study\Web\Babylon.js\",
                 HostUrl = "http://localhost:5200/", 
                 //LiveReloadWebServer "D:/Projects/Study/Babylon.js/" --port 5200 --UseSsl False --LiveReloadEnabled False --OpenBrowser True
             

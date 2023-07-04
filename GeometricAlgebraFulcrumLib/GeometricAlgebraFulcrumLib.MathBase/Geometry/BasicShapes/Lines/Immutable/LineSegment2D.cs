@@ -18,7 +18,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines.Immutab
             );
         }
 
-        public static LineSegment2D Create(IFloat64Tuple2D point1, IFloat64Tuple2D point2)
+        public static LineSegment2D Create(IFloat64Vector2D point1, IFloat64Vector2D point2)
         {
             return new LineSegment2D(
                 point1.X,

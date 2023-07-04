@@ -104,17 +104,17 @@ namespace GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D
             throw new NotImplementedException();
         }
 
-        public Float64Vector3D MapPoint(IFloat64Tuple3D point)
+        public Float64Vector3D MapPoint(IFloat64Vector3D point)
         {
             throw new NotImplementedException();
         }
 
-        public Float64Vector3D MapVector(IFloat64Tuple3D point)
+        public Float64Vector3D MapVector(IFloat64Vector3D point)
         {
             throw new NotImplementedException();
         }
 
-        public Float64Vector3D MapNormal(IFloat64Tuple3D normal)
+        public Float64Vector3D MapNormal(IFloat64Vector3D normal)
         {
             throw new NotImplementedException();
         }

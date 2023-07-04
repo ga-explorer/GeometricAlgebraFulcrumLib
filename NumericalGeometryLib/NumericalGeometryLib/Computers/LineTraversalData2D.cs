@@ -3,6 +3,7 @@ using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines;
 using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines.Immutable;
 using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
+using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace NumericalGeometryLib.Computers
 {
@@ -115,18 +116,14 @@ namespace NumericalGeometryLib.Computers
 
         public Float64Vector2D GetMinPoint()
         {
-            return new Float64Vector2D(
-                Origin[0] + ParameterMinValue * Direction[0],
-                Origin[1] + ParameterMinValue * Direction[1]
-            );
+            return Float64Vector2D.Create((Float64Scalar)(Origin[0] + ParameterMinValue * Direction[0]),
+                (Float64Scalar)(Origin[1] + ParameterMinValue * Direction[1]));
         }
 
         public Float64Vector2D GetMaxPoint()
         {
-            return new Float64Vector2D(
-                Origin[0] + ParameterMaxValue * Direction[0],
-                Origin[1] + ParameterMaxValue * Direction[1]
-            );
+            return Float64Vector2D.Create((Float64Scalar)(Origin[0] + ParameterMaxValue * Direction[0]),
+                (Float64Scalar)(Origin[1] + ParameterMaxValue * Direction[1]));
         }
     }
 }

@@ -306,7 +306,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static XGaVector<T> CreateVector<T>(this XGaProcessor<T> processor, IFloat64Tuple2D vector)
+        public static XGaVector<T> CreateVector<T>(this XGaProcessor<T> processor, IFloat64Vector2D vector)
         {
             return processor
                 .CreateComposer()
@@ -316,7 +316,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static XGaVector<T> CreateVector<T>(this XGaProcessor<T> processor, IFloat64Tuple3D vector)
+        public static XGaVector<T> CreateVector<T>(this XGaProcessor<T> processor, IFloat64Vector3D vector)
         {
             return processor
                 .CreateComposer()
@@ -327,7 +327,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static XGaVector<T> CreateVector<T>(this XGaProcessor<T> processor, IFloat64Tuple4D vector)
+        public static XGaVector<T> CreateVector<T>(this XGaProcessor<T> processor, IFloat64Vector4D vector)
         {
             return processor
                 .CreateComposer()
@@ -348,7 +348,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static XGaVector<T> ToXGaVector<T>(this IFloat64Tuple2D vector, XGaProcessor<T> processor)
+        public static XGaVector<T> ToXGaVector<T>(this IFloat64Vector2D vector, XGaProcessor<T> processor)
         {
             return processor
                 .CreateComposer()
@@ -358,7 +358,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static XGaVector<T> ToXGaVector<T>(this IFloat64Tuple3D vector, XGaProcessor<T> processor)
+        public static XGaVector<T> ToXGaVector<T>(this IFloat64Vector3D vector, XGaProcessor<T> processor)
         {
             return processor
                 .CreateComposer()
@@ -369,7 +369,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Generic.
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static XGaVector<T> ToXGaVector<T>(this IFloat64Tuple4D vector, XGaProcessor<T> processor)
+        public static XGaVector<T> ToXGaVector<T>(this IFloat64Vector4D vector, XGaProcessor<T> processor)
         {
             return processor
                 .CreateComposer()

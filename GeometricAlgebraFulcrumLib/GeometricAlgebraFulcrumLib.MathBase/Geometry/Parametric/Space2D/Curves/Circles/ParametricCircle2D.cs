@@ -22,7 +22,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space2D.Curves
             => Float64Range1D.ZeroToOne;
         
 
-        public ParametricCircle2D(IFloat64Tuple2D center, double radius, bool reverseDirection = false)
+        public ParametricCircle2D(IFloat64Vector2D center, double radius, bool reverseDirection = false)
         {
             if (radius < 0)
                 throw new ArgumentException(nameof(radius));
@@ -34,7 +34,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space2D.Curves
 
             ReverseDirection = reverseDirection;
             Radius = radius;
-            Center = center.ToLinVector2D();
+            Center = center.ToVector2D();
 
             Debug.Assert(IsValid());
         }
@@ -51,10 +51,8 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space2D.Curves
         {
             var angle = parameterValue * _directionFactor;
 
-            return new Float64Vector2D(
-                Radius * Math.Cos(angle),
-                Radius * Math.Sin(angle)
-            );
+            return Float64Vector2D.Create((Float64Scalar)(Radius * Math.Cos(angle)),
+                (Float64Scalar)(Radius * Math.Sin(angle)));
         }
 
         public Float64Vector2D GetTangent(double parameterValue)
@@ -73,10 +71,8 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space2D.Curves
             var angle = parameterValue * _directionFactor;
             var magnitude = Radius * _directionFactor;
 
-            return new Float64Vector2D(
-                -magnitude * Math.Sin(angle),
-                magnitude * Math.Cos(angle)
-            );
+            return Float64Vector2D.Create((Float64Scalar)(-magnitude * Math.Sin(angle)),
+                (Float64Scalar)(magnitude * Math.Cos(angle)));
         }
 
         public ParametricCurveLocalFrame2D GetFrame(double parameterValue)
@@ -85,8 +81,8 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space2D.Curves
             var cosAngle = Math.Cos(angle);
             var sinAngle = Math.Sin(angle);
 
-            var point = new Float64Vector2D(Radius * cosAngle, Radius * sinAngle);
-            var tangent = new Float64Vector2D(-sinAngle, cosAngle);
+            var point = Float64Vector2D.Create((Float64Scalar)(Radius * cosAngle), (Float64Scalar)(Radius * sinAngle));
+            var tangent = Float64Vector2D.Create((Float64Scalar)(-sinAngle), (Float64Scalar)cosAngle);
 
             return ParametricCurveLocalFrame2D.Create(
                 parameterValue,
@@ -101,10 +97,8 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space2D.Curves
             var angle = parameterValue * _directionFactor;
             var magnitude = Radius * _directionFactor * _directionFactor;
 
-            return new Float64Vector2D(
-                -magnitude * Math.Cos(angle),
-                -magnitude * Math.Sin(angle)
-            );
+            return Float64Vector2D.Create((Float64Scalar)(-magnitude * Math.Cos(angle)),
+                (Float64Scalar)(-magnitude * Math.Sin(angle)));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

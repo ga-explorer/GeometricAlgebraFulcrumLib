@@ -350,7 +350,7 @@ namespace WebComposerLib.Html.Media
         }
         
 
-        public void GeneratePngDataUrlStrings()
+        public void GeneratePngDataUrlStrings(string workingFolder)
         {
             var keyArray = 
                 _cacheDictionary
@@ -359,7 +359,7 @@ namespace WebComposerLib.Html.Media
                     .ToImmutableArray();
 
             var katexComposer = 
-                new WclKaTeXComposer()
+                new WclKaTeXComposer(workingFolder)
                 {
                     FontSizeEm = 2,
                     Output = WclKaTeXComposer.OutputKind.Html,

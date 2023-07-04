@@ -33,7 +33,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
             if (r.Value > 0)
             {
                 R = r;
-                Theta = theta.ClampPositive();
+                Theta = theta.GetAngleInPositiveRange();
             }
             else if (r.Value < 0)
             {
@@ -51,7 +51,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
         public Float64PolarVector2D(Float64PlanarAngle theta)
         {
             R = Float64Scalar.One;
-            Theta = theta.ClampPositive();
+            Theta = theta.GetAngleInPositiveRange();
         }
         
         

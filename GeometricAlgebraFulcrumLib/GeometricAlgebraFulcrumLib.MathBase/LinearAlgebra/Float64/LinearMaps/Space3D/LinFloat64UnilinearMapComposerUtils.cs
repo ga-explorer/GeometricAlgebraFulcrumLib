@@ -286,7 +286,7 @@ public static class LinFloat64UnilinearMapComposerUtils
     //        );
     //}
 
-    public static ILinFloat64DirectionalScalingLinearMap3D CreateDirectionalScaling3D(this IFloat64Tuple3D scalingVector, double scalingFactor)
+    public static ILinFloat64DirectionalScalingLinearMap3D CreateDirectionalScaling3D(this IFloat64Vector3D scalingVector, double scalingFactor)
     {
         if (scalingFactor.IsZero())
             throw new ArgumentException(nameof(scalingFactor));
@@ -320,7 +320,7 @@ public static class LinFloat64UnilinearMapComposerUtils
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static LinFloat64Rotation3D CreateRotationToVector3D(this IFloat64Tuple3D vector, IFloat64Tuple3D rotatedVector, bool useShortArc = true)
+    public static LinFloat64Rotation3D CreateRotationToVector3D(this IFloat64Vector3D vector, IFloat64Vector3D rotatedVector, bool useShortArc = true)
     {
         if (vector.Subtract(rotatedVector).IsZeroVector())
             return LinFloat64IdentityLinearMap3D.Instance;

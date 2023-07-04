@@ -19,7 +19,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.LinearMaps.S
 
         public abstract Float64Vector4D MapBasisVector(int basisIndex);
 
-        public abstract Float64Vector4D MapVector(IFloat64Tuple4D vector);
+        public abstract Float64Vector4D MapVector(IFloat64Vector4D vector);
         
         public abstract LinFloat64ReflectionBase4D GetReflectionLinearMapInverse();
 

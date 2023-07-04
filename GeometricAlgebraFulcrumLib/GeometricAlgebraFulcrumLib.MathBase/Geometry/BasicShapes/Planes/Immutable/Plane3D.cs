@@ -57,7 +57,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Planes.Immuta
             Debug.Assert(IsValid());
         }
 
-        public Plane3D(IFloat64Tuple3D origin, IFloat64Tuple3D direction1, IFloat64Tuple3D direction2)
+        public Plane3D(IFloat64Vector3D origin, IFloat64Vector3D direction1, IFloat64Vector3D direction2)
         {
             OriginX = origin.X;
             OriginY = origin.Y;
