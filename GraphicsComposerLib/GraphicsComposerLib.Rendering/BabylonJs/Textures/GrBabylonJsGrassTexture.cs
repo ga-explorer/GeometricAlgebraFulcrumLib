@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using DataStructuresLib.Basic;
-using GraphicsComposerLib.Rendering.BabylonJs.Values;
+﻿using GraphicsComposerLib.Rendering.BabylonJs.Values;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Textures
 {
@@ -10,18 +8,26 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Textures
         public sealed class GrassTextureProperties :
             BaseTextureProperties
         {
-            public GrBabylonJsColor4Value? GroundColor { get; set; }
-
-            public GrBabylonJsColor4ArrayValue? GrassColors { get; set; }
-
-        
-            protected override IEnumerable<Pair<string>?> GetNameValuePairs()
+            public GrBabylonJsColor4Value? GroundColor
             {
-                foreach (var pair in base.GetNameValuePairs())
-                    yield return pair;
+                get => GetAttributeValueOrNull<GrBabylonJsColor4Value>("groundColor");
+                set => SetAttributeValue("groundColor", value);
+            }
 
-                yield return GroundColor.GetNameValueCodePair("groundColor");
-                yield return GrassColors.GetNameValueCodePair("grassColors");
+            public GrBabylonJsColor4ArrayValue? GrassColors
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsColor4ArrayValue>("grassColors");
+                set => SetAttributeValue("grassColors", value);
+            }
+
+
+            public GrassTextureProperties()
+            {
+            }
+
+            public GrassTextureProperties(GrassTextureProperties properties)
+            {
+                SetAttributeValues(properties);
             }
         }
 
@@ -29,10 +35,10 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Textures
         protected override string ConstructorName
             => "new BABYLON.GrassProceduralTexture";
     
-        public GrassTextureProperties? Properties { get; private set; }
+        public GrassTextureProperties Properties { get; private set; }
             = new GrassTextureProperties();
 
-        public override GrBabylonJsObjectProperties? ObjectProperties 
+        public override GrBabylonJsObjectProperties ObjectProperties 
             => Properties;
 
 
@@ -47,9 +53,9 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Textures
         }
 
     
-        public GrBabylonJsGrassTexture SetProperties([NotNull] GrassTextureProperties? properties)
+        public GrBabylonJsGrassTexture SetProperties(GrassTextureProperties properties)
         {
-            Properties = properties;
+            Properties = new GrassTextureProperties(properties);
 
             return this;
         }

@@ -19,18 +19,32 @@ public sealed class GrBabylonJsAnimationGroup :
     public sealed class AnimationGroupProperties :
         GrBabylonJsObjectProperties
     {
-        public GrBabylonJsBooleanValue? IsAdditive { get; set; }
-
-        public GrBabylonJsBooleanValue? LoopAnimation { get; set; }
-        
-        public GrBabylonJsFloat32Value? SpeedRatio { get; set; }
-        
-
-        protected override IEnumerable<Pair<string>?> GetNameValuePairs()
+        public GrBabylonJsBooleanValue? IsAdditive
         {
-            yield return IsAdditive.GetNameValueCodePair("isAdditive");
-            yield return LoopAnimation.GetNameValueCodePair("loopAnimation");
-            yield return SpeedRatio.GetNameValueCodePair("speedRatio");
+            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("isAdditive");
+            set => SetAttributeValue("isAdditive", value);
+        }
+
+        public GrBabylonJsBooleanValue? LoopAnimation
+        {
+            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("loopAnimation");
+            set => SetAttributeValue("loopAnimation", value);
+        }
+        
+        public GrBabylonJsFloat32Value? SpeedRatio
+        {
+            get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("speedRatio");
+            set => SetAttributeValue("speedRatio", value);
+        }
+        
+
+        public AnimationGroupProperties()
+        {
+        }
+
+        public AnimationGroupProperties(AnimationGroupProperties properties)
+        {
+            SetAttributeValues(properties);
         }
     }
 
@@ -50,10 +64,10 @@ public sealed class GrBabylonJsAnimationGroup :
     public override GrBabylonJsObjectOptions? ObjectOptions 
         => null;
     
-    public AnimationGroupProperties? Properties { get; private set; }
+    public AnimationGroupProperties Properties { get; private set; }
         = new AnimationGroupProperties();
 
-    public override GrBabylonJsObjectProperties? ObjectProperties
+    public override GrBabylonJsObjectProperties ObjectProperties
         => Properties;
     
     public int Count 
@@ -145,7 +159,7 @@ public sealed class GrBabylonJsAnimationGroup :
     
     public GrBabylonJsAnimationGroup SetProperties(AnimationGroupProperties properties)
     {
-        Properties = properties;
+        Properties = new AnimationGroupProperties(properties);
 
         return this;
     }
@@ -252,9 +266,7 @@ public sealed class GrBabylonJsAnimationGroup :
             var toFrame = animation1.AnimationSpecs.FrameRange.MaxValue.GetBabylonJsCode();
             var loopAnimation = animation1.AnimationSpecs.Loop.GetBabylonJsCode();
             var speedRatio =
-                Properties is null
-                    ? 1d.GetBabylonJsCode()
-                    : (Properties.SpeedRatio?.GetCode() ?? 1d.GetBabylonJsCode());
+                Properties.SpeedRatio?.GetCode() ?? 1d.GetBabylonJsCode();
 
             return codeComposer
                 .AppendLine($"{SceneVariableName}.beginDirectAnimation({targetName}, {animations}, {fromFrame}, {toFrame}, {loopAnimation}, {speedRatio});")
@@ -285,9 +297,7 @@ public sealed class GrBabylonJsAnimationGroup :
 
         var (frame1, frame2) = GetFrameRange();
         var loop = 
-            Properties is null 
-                ? true.GetBabylonJsCode() 
-                : (Properties.LoopAnimation?.GetCode() ?? true.GetBabylonJsCode());
+            Properties.LoopAnimation?.GetCode() ?? true.GetBabylonJsCode();
         
         codeComposer.AppendLine(
             $"{ConstName}.normalize({frame1.GetBabylonJsCode()}, {frame2.GetBabylonJsCode()});"

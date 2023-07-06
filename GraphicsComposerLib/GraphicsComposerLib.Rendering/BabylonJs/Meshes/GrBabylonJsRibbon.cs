@@ -1,5 +1,4 @@
-﻿using DataStructuresLib.Basic;
-using GraphicsComposerLib.Rendering.BabylonJs.Values;
+﻿using GraphicsComposerLib.Rendering.BabylonJs.Values;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes;
 
@@ -13,65 +12,106 @@ public sealed class GrBabylonJsRibbon :
     public sealed class RibbonOptions :
         GrBabylonJsObjectOptions
     {
-        public GrBabylonJsVector3ArrayArrayValue? PathArray { get; set; }
-
-        public GrBabylonJsMeshValue? Instance { get; set; }
-
-        public GrBabylonJsInt32Value? Offset { get; set; }
-
-        public GrBabylonJsColor4ArrayValue? Colors { get; set; }
-        
-        public GrBabylonJsBooleanValue? CloseArray { get; set; }
-        
-        public GrBabylonJsBooleanValue? ClosePath { get; set; }
-        
-        public GrBabylonJsMeshOrientationValue? SideOrientation { get; set; }
-        
-        public GrBabylonJsVector2Value? UVs { get; set; }
-
-        public GrBabylonJsVector4Value? FrontUVs { get; set; }
-
-        public GrBabylonJsVector4Value? BackUVs { get; set; }
-    
-        public GrBabylonJsBooleanValue? InvertUv { get; set; }
-    
-        public GrBabylonJsBooleanValue? Updateable { get; set; }
-
-
-        protected override IEnumerable<Pair<string>?> GetNameValuePairs()
+        public GrBabylonJsVector3ArrayArrayValue? PathArray
         {
-            yield return PathArray.GetNameValueCodePair("pathArray");
-            yield return Colors.GetNameValueCodePair("colors");
-            yield return CloseArray.GetNameValueCodePair("closeArray");
-            yield return ClosePath.GetNameValueCodePair("closePath");
-            yield return Offset.GetNameValueCodePair("offset");
-            yield return Instance.GetNameValueCodePair("instance");
-            yield return SideOrientation.GetNameValueCodePair("sideOrientation");
-            yield return UVs.GetNameValueCodePair("uvs");
-            yield return FrontUVs.GetNameValueCodePair("frontUVs");
-            yield return BackUVs.GetNameValueCodePair("backUVs");
-            yield return Updateable.GetNameValueCodePair("updatable");
-            yield return InvertUv.GetNameValueCodePair("invertUV");
+            get => GetAttributeValueOrNull<GrBabylonJsVector3ArrayArrayValue>("pathArray");
+            set => SetAttributeValue("pathArray", value);
+        }
+
+        public GrBabylonJsMeshValue? Instance
+        {
+            get => GetAttributeValueOrNull<GrBabylonJsMeshValue>("instance");
+            set => SetAttributeValue("instance", value);
+        }
+
+        public GrBabylonJsInt32Value? Offset
+        {
+            get => GetAttributeValueOrNull<GrBabylonJsInt32Value>("offset");
+            set => SetAttributeValue("offset", value);
+        }
+
+        public GrBabylonJsColor4ArrayValue? Colors
+        {
+            get => GetAttributeValueOrNull<GrBabylonJsColor4ArrayValue>("colors");
+            set => SetAttributeValue("colors", value);
+        }
+
+        public GrBabylonJsBooleanValue? CloseArray
+        {
+            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("closeArray");
+            set => SetAttributeValue("closeArray", value);
+        }
+
+        public GrBabylonJsBooleanValue? ClosePath
+        {
+            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("closePath");
+            set => SetAttributeValue("closePath", value);
+        }
+
+        public GrBabylonJsMeshOrientationValue? SideOrientation
+        {
+            get => GetAttributeValueOrNull<GrBabylonJsMeshOrientationValue>("sideOrientation");
+            set => SetAttributeValue("sideOrientation", value);
+        }
+
+        public GrBabylonJsVector2Value? UVs
+        {
+            get => GetAttributeValueOrNull<GrBabylonJsVector2Value>("uvs");
+            set => SetAttributeValue("uvs", value);
+        }
+
+        public GrBabylonJsVector4Value? FrontUVs
+        {
+            get => GetAttributeValueOrNull<GrBabylonJsVector4Value>("frontUVs");
+            set => SetAttributeValue("frontUVs", value);
+        }
+
+        public GrBabylonJsVector4Value? BackUVs
+        {
+            get => GetAttributeValueOrNull<GrBabylonJsVector4Value>("backUVs");
+            set => SetAttributeValue("backUVs", value);
+        }
+
+        public GrBabylonJsBooleanValue? InvertUv
+        {
+            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("invertUV");
+            set => SetAttributeValue("invertUV", value);
+        }
+
+        public GrBabylonJsBooleanValue? Updatable
+        {
+            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("updatable");
+            set => SetAttributeValue("updatable", value);
+        }
+
+
+        public RibbonOptions()
+        {
+        }
+
+        public RibbonOptions(RibbonOptions options)
+        {
+            SetAttributeValues(options);
         }
     }
-    
+
     protected override string ConstructorName
         => "BABYLON.MeshBuilder.CreateRibbon";
 
-    public RibbonOptions? Options { get; private set; }
+    public RibbonOptions Options { get; private set; }
         = new RibbonOptions();
 
-    public override GrBabylonJsObjectOptions? ObjectOptions 
+    public override GrBabylonJsObjectOptions ObjectOptions
         => Options;
 
 
-    public GrBabylonJsRibbon(string constName) 
+    public GrBabylonJsRibbon(string constName)
         : base(constName)
     {
         UseLetDeclaration = true;
     }
-    
-    public GrBabylonJsRibbon(string constName, GrBabylonJsSceneValue scene) 
+
+    public GrBabylonJsRibbon(string constName, GrBabylonJsSceneValue scene)
         : base(constName, scene)
     {
         UseLetDeclaration = true;
@@ -80,14 +120,14 @@ public sealed class GrBabylonJsRibbon :
 
     public GrBabylonJsRibbon SetOptions(RibbonOptions options)
     {
-        Options = options;
+        Options = new RibbonOptions(options);
 
         return this;
     }
 
     public GrBabylonJsRibbon SetProperties(MeshProperties properties)
     {
-        Properties = properties;
+        Properties = new MeshProperties(properties);
 
         return this;
     }

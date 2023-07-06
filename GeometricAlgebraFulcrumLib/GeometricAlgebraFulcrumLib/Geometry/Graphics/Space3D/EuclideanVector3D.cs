@@ -78,7 +78,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Graphics.Space3D
             => GaEuclideanSpace3DUtils.GeometricProcessor;
 
         public IScalarProcessor<double> ScalarProcessor 
-            => ScalarProcessorFloat64.DefaultProcessor;
+            => ScalarProcessorOfFloat64.DefaultProcessor;
         
         public int VSpaceDimensions 
             => 3;

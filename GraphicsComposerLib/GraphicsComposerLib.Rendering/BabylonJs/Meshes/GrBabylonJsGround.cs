@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using DataStructuresLib.Basic;
-using GraphicsComposerLib.Rendering.BabylonJs.Values;
+﻿using GraphicsComposerLib.Rendering.BabylonJs.Values;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
 {
@@ -13,27 +11,50 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
         public sealed class GroundOptions :
             GrBabylonJsObjectOptions
         {
-            public GrBabylonJsFloat32Value? Height { get; set; }
-
-            public GrBabylonJsFloat32Value? Width { get; set; }
-    
-            public GrBabylonJsInt32Value? Subdivisions { get; set; }
-    
-            public GrBabylonJsInt32Value? SubdivisionsX { get; set; }
-
-            public GrBabylonJsInt32Value? SubdivisionsY { get; set; }
-
-            public GrBabylonJsBooleanValue? Updateable { get; set; }
-
-
-            protected override IEnumerable<Pair<string>?> GetNameValuePairs()
+            public GrBabylonJsFloat32Value? Height
             {
-                yield return Height.GetNameValueCodePair("height");
-                yield return Width.GetNameValueCodePair("width");
-                yield return Subdivisions.GetNameValueCodePair("subdivisions");
-                yield return SubdivisionsX.GetNameValueCodePair("subdivisionsX");
-                yield return SubdivisionsY.GetNameValueCodePair("subdivisionsY");
-                yield return Updateable.GetNameValueCodePair("updatable");
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("height");
+                set => SetAttributeValue("height", value);
+            }
+
+            public GrBabylonJsFloat32Value? Width
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("width");
+                set => SetAttributeValue("width", value);
+            }
+
+            public GrBabylonJsInt32Value? Subdivisions
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsInt32Value>("subdivisions");
+                set => SetAttributeValue("subdivisions", value);
+            }
+
+            public GrBabylonJsInt32Value? SubdivisionsX
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsInt32Value>("subdivisionsX");
+                set => SetAttributeValue("subdivisionsX", value);
+            }
+
+            public GrBabylonJsInt32Value? SubdivisionsY
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsInt32Value>("subdivisionsY");
+                set => SetAttributeValue("subdivisionsY", value);
+            }
+
+            public GrBabylonJsBooleanValue? Updatable
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("updatable");
+                set => SetAttributeValue("updatable", value);
+            }
+
+
+            public GroundOptions()
+            {
+            }
+
+            public GroundOptions(GroundOptions options)
+            {
+                SetAttributeValues(options);
             }
         }
 
@@ -41,10 +62,10 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
         protected override string ConstructorName
             => "BABYLON.MeshBuilder.CreateGround";
 
-        public GroundOptions? Options { get; private set; }
+        public GroundOptions Options { get; private set; }
             = new GroundOptions();
 
-        public override GrBabylonJsObjectOptions? ObjectOptions 
+        public override GrBabylonJsObjectOptions ObjectOptions 
             => Options;
 
 
@@ -59,16 +80,16 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
         }
 
 
-        public GrBabylonJsGround SetOptions([NotNull] GroundOptions? options)
+        public GrBabylonJsGround SetOptions(GroundOptions options)
         {
-            Options = options;
+            Options = new GroundOptions(options);
 
             return this;
         }
 
-        public GrBabylonJsGround SetProperties([NotNull] MeshProperties? properties)
+        public GrBabylonJsGround SetProperties(MeshProperties properties)
         {
-            Properties = properties;
+            Properties = new MeshProperties(properties);
 
             return this;
         }

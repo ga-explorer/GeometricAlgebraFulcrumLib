@@ -1,9 +1,10 @@
-﻿using GraphicsComposerLib.Rendering.BabylonJs.Constants;
+﻿using DataStructuresLib.AttributeSet;
+using GraphicsComposerLib.Rendering.BabylonJs.Constants;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Values
 {
     public sealed class GrBabylonJsTextureWrapModeValue :
-        GrBabylonJsValue<GrBabylonJsTextureWrapMode>
+        SparseCodeAttributeValue<GrBabylonJsTextureWrapMode>
     {
         public static implicit operator GrBabylonJsTextureWrapModeValue(string valueText)
         {

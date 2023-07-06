@@ -1,5 +1,4 @@
-﻿using DataStructuresLib.Basic;
-using GraphicsComposerLib.Rendering.BabylonJs.Values;
+﻿using GraphicsComposerLib.Rendering.BabylonJs.Values;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Materials
 {
@@ -12,117 +11,197 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Materials
         public sealed class BackgroundMaterialProperties :
             MaterialProperties
         {
-            public GrBabylonJsColor3Value? PrimaryColor { get; set; }
-
-            public GrBabylonJsColor3Value? PerceptualColor { get; set; }
-
-            public GrBabylonJsVector3Value? SceneCenter { get; set; }
-        
-            public GrBabylonJsTextureValue? DiffuseTexture { get; set; }
-        
-            public GrBabylonJsTextureValue? ReflectionTexture { get; set; }
-        
-            public GrBabylonJsFloat32Value? ReflectionAmount { get; set; }
-
-            public GrBabylonJsFloat32Value? ReflectionBlur { get; set; }
-
-            public GrBabylonJsFloat32Value? ReflectionFalloffDistance { get; set; }
-
-            public GrBabylonJsFloat32Value? ReflectionReflectance0 { get; set; }
-
-            public GrBabylonJsFloat32Value? ReflectionReflectance90 { get; set; }
-
-            public GrBabylonJsFloat32Value? StandardReflectance0 { get; set; }
-
-            public GrBabylonJsFloat32Value? StandardReflectance90 { get; set; }
-
-            public GrBabylonJsFloat32Value? ShadowLevel { get; set; }
-        
-            public GrBabylonJsFloat32Value? FovMultiplier { get; set; }
-
-            public GrBabylonJsFloat32Value? PrimaryColorHighlightLevel { get; set; }
-        
-            public GrBabylonJsFloat32Value? PrimaryColorShadowLevel { get; set; }
-        
-            public GrBabylonJsFloat32Value? ReflectionStandardFresnelWeight { get; set; }
-        
-            public GrBabylonJsFloat32Value? CameraContrast { get; set; }
-
-            public GrBabylonJsFloat32Value? CameraExposure { get; set; }
-
-            public GrBabylonJsInt32Value? MaxSimultaneousLights { get; set; }
-
-            public GrBabylonJsBooleanValue? EnableNoise { get; set; }
-
-            public GrBabylonJsBooleanValue? ReflectionFresnel { get; set; }
-
-            public GrBabylonJsBooleanValue? OpacityFresnel { get; set; }
-
-            public GrBabylonJsBooleanValue? ShadowOnly { get; set; }
-
-            public GrBabylonJsBooleanValue? SwitchToBgr { get; set; }
-
-            public GrBabylonJsBooleanValue? UseEquirectangularFov { get; set; }
-
-            public GrBabylonJsBooleanValue? UseRgbColor { get; set; }
-
-
-            protected override IEnumerable<Pair<string>?> GetNameValuePairs()
+            public GrBabylonJsColor3Value? PrimaryColor
             {
-                foreach (var pair in base.GetNameValuePairs())
-                    yield return pair;
-
-                yield return PrimaryColor.GetNameValueCodePair("primaryColor");
-                yield return PerceptualColor.GetNameValueCodePair("_perceptualColor");
-
-                yield return DiffuseTexture.GetNameValueCodePair("diffuseTexture");
-                yield return ReflectionTexture.GetNameValueCodePair("reflectionTexture");
-
-                yield return SceneCenter.GetNameValueCodePair("sceneCenter");
-                yield return ReflectionAmount.GetNameValueCodePair("reflectionAmount");
-                yield return ReflectionBlur.GetNameValueCodePair("reflectionBlur");
-                yield return ReflectionFalloffDistance.GetNameValueCodePair("reflectionFalloffDistance");
-                yield return ReflectionReflectance0.GetNameValueCodePair("reflectionReflectance0");
-                yield return ReflectionReflectance90.GetNameValueCodePair("reflectionReflectance90");
-                yield return StandardReflectance0.GetNameValueCodePair("StandardReflectance0");
-                yield return StandardReflectance90.GetNameValueCodePair("StandardReflectance90");
-                yield return ShadowLevel.GetNameValueCodePair("shadowLevel");
-                yield return FovMultiplier.GetNameValueCodePair("fovMultiplier");
-                yield return PrimaryColorHighlightLevel.GetNameValueCodePair("primaryColorHighlightLevel");
-                yield return PrimaryColorShadowLevel.GetNameValueCodePair("primaryColorShadowLevel");
-                yield return ReflectionStandardFresnelWeight.GetNameValueCodePair("reflectionStandardFresnelWeight");
-            
-                yield return EnableNoise.GetNameValueCodePair("enableNoise");
-                yield return ReflectionFresnel.GetNameValueCodePair("reflectionFresnel");
-                yield return OpacityFresnel.GetNameValueCodePair("opacityFresnel");
-                yield return ShadowOnly.GetNameValueCodePair("shadowOnly");
-                yield return SwitchToBgr.GetNameValueCodePair("switchToBGR");
-                yield return UseEquirectangularFov.GetNameValueCodePair("useEquirectangularFOV");
-                yield return CameraContrast.GetNameValueCodePair("cameraContrast");
-                yield return CameraExposure.GetNameValueCodePair("cameraExposure");
-
-                yield return MaxSimultaneousLights.GetNameValueCodePair("maxSimultaneousLights");
-                yield return UseRgbColor.GetNameValueCodePair("useRGBColor");
+                get => GetAttributeValueOrNull<GrBabylonJsColor3Value>("primaryColor");
+                set => SetAttributeValue("primaryColor", value);
             }
+
+            public GrBabylonJsColor3Value? PerceptualColor
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsColor3Value>("perceptualColor");
+                set => SetAttributeValue("perceptualColor", value);
+            }
+
+            public GrBabylonJsVector3Value? SceneCenter
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsVector3Value>("sceneCenter");
+                set => SetAttributeValue("sceneCenter", value);
+            }
+
+            public GrBabylonJsTextureValue? DiffuseTexture
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsTextureValue>("diffuseTexture");
+                set => SetAttributeValue("diffuseTexture", value);
+            }
+
+            public GrBabylonJsTextureValue? ReflectionTexture
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsTextureValue>("reflectionTexture");
+                set => SetAttributeValue("reflectionTexture", value);
+            }
+
+            public GrBabylonJsFloat32Value? ReflectionAmount
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("reflectionAmount");
+                set => SetAttributeValue("reflectionAmount", value);
+            }
+
+            public GrBabylonJsFloat32Value? ReflectionBlur
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("reflectionBlur");
+                set => SetAttributeValue("reflectionBlur", value);
+            }
+
+            public GrBabylonJsFloat32Value? ReflectionFalloffDistance
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("reflectionFalloffDistance");
+                set => SetAttributeValue("reflectionFalloffDistance", value);
+            }
+
+            public GrBabylonJsFloat32Value? ReflectionReflectance0
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("reflectionReflectance0");
+                set => SetAttributeValue("reflectionReflectance0", value);
+            }
+
+            public GrBabylonJsFloat32Value? ReflectionReflectance90
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("reflectionReflectance90");
+                set => SetAttributeValue("reflectionReflectance90", value);
+            }
+
+            public GrBabylonJsFloat32Value? StandardReflectance0
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("standardReflectance0");
+                set => SetAttributeValue("standardReflectance0", value);
+            }
+
+            public GrBabylonJsFloat32Value? StandardReflectance90
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("standardReflectance90");
+                set => SetAttributeValue("standardReflectance90", value);
+            }
+
+            public GrBabylonJsFloat32Value? ShadowLevel
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("shadowLevel");
+                set => SetAttributeValue("shadowLevel", value);
+            }
+
+            public GrBabylonJsFloat32Value? FovMultiplier
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("fovMultiplier");
+                set => SetAttributeValue("fovMultiplier", value);
+            }
+
+            public GrBabylonJsFloat32Value? PrimaryColorHighlightLevel
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("primaryColorHighlightLevel");
+                set => SetAttributeValue("primaryColorHighlightLevel", value);
+            }
+
+            public GrBabylonJsFloat32Value? PrimaryColorShadowLevel
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("primaryColorShadowLevel");
+                set => SetAttributeValue("primaryColorShadowLevel", value);
+            }
+
+            public GrBabylonJsFloat32Value? ReflectionStandardFresnelWeight
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("reflectionStandardFresnelWeight");
+                set => SetAttributeValue("reflectionStandardFresnelWeight", value);
+            }
+
+            public GrBabylonJsFloat32Value? CameraContrast
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("cameraContrast");
+                set => SetAttributeValue("cameraContrast", value);
+            }
+
+            public GrBabylonJsFloat32Value? CameraExposure
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("cameraExposure");
+                set => SetAttributeValue("cameraExposure", value);
+            }
+
+            public GrBabylonJsInt32Value? MaxSimultaneousLights
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsInt32Value>("maxSimultaneousLights");
+                set => SetAttributeValue("maxSimultaneousLights", value);
+            }
+
+            public GrBabylonJsBooleanValue? EnableNoise
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("enableNoise");
+                set => SetAttributeValue("enableNoise", value);
+            }
+
+            public GrBabylonJsBooleanValue? ReflectionFresnel
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("reflectionFresnel");
+                set => SetAttributeValue("reflectionFresnel", value);
+            }
+
+            public GrBabylonJsBooleanValue? OpacityFresnel
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("opacityFresnel");
+                set => SetAttributeValue("opacityFresnel", value);
+            }
+
+            public GrBabylonJsBooleanValue? ShadowOnly
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("shadowOnly");
+                set => SetAttributeValue("shadowOnly", value);
+            }
+
+            public GrBabylonJsBooleanValue? SwitchToBgr
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("switchToBgr");
+                set => SetAttributeValue("switchToBgr", value);
+            }
+
+            public GrBabylonJsBooleanValue? UseEquirectangularFov
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("useEquirectangularFov");
+                set => SetAttributeValue("useEquirectangularFov", value);
+            }
+
+            public GrBabylonJsBooleanValue? UseRgbColor
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("useRgbColor");
+                set => SetAttributeValue("useRgbColor", value);
+            }
+
+
+            public BackgroundMaterialProperties()
+            {
+            }
+
+            public BackgroundMaterialProperties(BackgroundMaterialProperties properties)
+            {
+                SetAttributeValues(properties);
+            }
+            
         }
 
 
         protected override string ConstructorName
             => "new BABYLON.BackgroundMaterial";
 
-        public BackgroundMaterialProperties? Properties { get; private set; }
+        public BackgroundMaterialProperties Properties { get; private set; }
             = new BackgroundMaterialProperties();
-    
-        public override GrBabylonJsObjectProperties? ObjectProperties 
+
+        public override GrBabylonJsObjectProperties ObjectProperties
             => Properties;
 
 
-        public GrBabylonJsBackgroundMaterial(string constName) 
+        public GrBabylonJsBackgroundMaterial(string constName)
             : base(constName)
         {
         }
-    
-        public GrBabylonJsBackgroundMaterial(string constName, GrBabylonJsSceneValue scene) 
+
+        public GrBabylonJsBackgroundMaterial(string constName, GrBabylonJsSceneValue scene)
             : base(constName, scene)
         {
         }
@@ -130,7 +209,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Materials
 
         public GrBabylonJsBackgroundMaterial SetProperties(BackgroundMaterialProperties properties)
         {
-            Properties = properties;
+            Properties = new BackgroundMaterialProperties(properties);
 
             return this;
         }

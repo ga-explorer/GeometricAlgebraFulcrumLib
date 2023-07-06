@@ -1,9 +1,10 @@
-﻿using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
+﻿using DataStructuresLib.AttributeSet;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Values
 {
     public sealed class GrBabylonJsQuaternionValue :
-        GrBabylonJsValue<Float64Quaternion>
+        SparseCodeAttributeValue<Float64Quaternion>
     {
         internal static GrBabylonJsQuaternionValue Create(Float64Quaternion value)
         {

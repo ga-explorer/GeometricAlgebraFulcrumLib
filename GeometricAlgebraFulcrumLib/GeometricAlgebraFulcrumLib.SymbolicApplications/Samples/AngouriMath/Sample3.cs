@@ -21,7 +21,7 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.AngouriMath
             => 1UL << VSpaceDimensions;
 
         public static IScalarProcessor<Entity> ScalarProcessor
-            => ScalarAlgebraAngouriMathProcessor.DefaultProcessor;
+            => ScalarProcessorOfAngouriMathEntity.DefaultProcessor;
 
         public static RGaProcessor<Entity> GeometricProcessor { get; }
             = ScalarProcessor.CreateEuclideanRGaProcessor();

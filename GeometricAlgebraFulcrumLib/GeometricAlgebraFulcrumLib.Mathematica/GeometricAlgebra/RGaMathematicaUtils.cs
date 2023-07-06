@@ -18,8 +18,8 @@ namespace GeometricAlgebraFulcrumLib.Mathematica.GeometricAlgebra;
 
 public static class RGaMathematicaUtils
 {
-    public static ScalarProcessorExpr ScalarProcessor
-        => ScalarProcessorExpr.DefaultProcessor;
+    public static ScalarProcessorOfWolframExpr ScalarProcessor
+        => ScalarProcessorOfWolframExpr.DefaultProcessor;
         
     //public static MatrixAlgebraMathematicaProcessor MatrixProcessor
     //    => MatrixAlgebraMathematicaProcessor.DefaultProcessor;

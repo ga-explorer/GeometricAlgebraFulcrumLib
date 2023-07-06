@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using DataStructuresLib.Basic;
-using GraphicsComposerLib.Rendering.BabylonJs.Values;
+﻿using GraphicsComposerLib.Rendering.BabylonJs.Values;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.GUI
 {
@@ -13,21 +11,32 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.GUI
         public class GuiStackPanelProperties :
             GuiContainerProperties
         {
-            public GrBabylonJsBooleanValue? IgnoreLayoutWarnings { get; set; }
-
-            public GrBabylonJsBooleanValue? IsVertical { get; set; }
-
-            public GrBabylonJsFloat32Value? Spacing { get; set; }
-
-
-            protected override IEnumerable<Pair<string>?> GetNameValuePairs()
+            public GrBabylonJsBooleanValue? IgnoreLayoutWarnings
             {
-                foreach (var pair in base.GetNameValuePairs())
-                    yield return pair;
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("ignoreLayoutWarnings");
+                set => SetAttributeValue("ignoreLayoutWarnings", value);
+            }
 
-                yield return IgnoreLayoutWarnings.GetNameValueCodePair("ignoreLayoutWarnings");
-                yield return IsVertical.GetNameValueCodePair("isVertical");
-                yield return Spacing.GetNameValueCodePair("spacing");
+            public GrBabylonJsBooleanValue? IsVertical
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("isVertical");
+                set => SetAttributeValue("isVertical", value);
+            }
+
+            public GrBabylonJsFloat32Value? Spacing
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("spacing");
+                set => SetAttributeValue("spacing", value);
+            }
+
+
+            public GuiStackPanelProperties()
+            {
+            }
+
+            public GuiStackPanelProperties(GuiStackPanelProperties properties)
+            {
+                SetAttributeValues(properties);
             }
         }
 
@@ -35,9 +44,9 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.GUI
         protected override string ConstructorName
             => "new BABYLON.GUI.StackPanel";
 
-        public GuiStackPanelProperties? Properties { get; private set; }
+        public GuiStackPanelProperties Properties { get; private set; }
 
-        public override GrBabylonJsObjectProperties? ObjectProperties 
+        public override GrBabylonJsObjectProperties ObjectProperties 
             => Properties;
 
 
@@ -47,9 +56,9 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.GUI
         }
 
 
-        public GrBabylonJsGuiStackPanel SetProperties([NotNull] GuiStackPanelProperties? properties)
+        public GrBabylonJsGuiStackPanel SetProperties(GuiStackPanelProperties properties)
         {
-            Properties = properties;
+            Properties = new GuiStackPanelProperties(properties);
 
             return this;
         }

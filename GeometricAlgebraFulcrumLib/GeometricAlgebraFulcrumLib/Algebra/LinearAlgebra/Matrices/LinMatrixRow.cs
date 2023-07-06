@@ -10,7 +10,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Matrices
         public override TScalar GetScalar(ulong index) => MatrixProcessor.GetScalar(MatrixStorage, RowIndex, (int) index);
 
 
-        internal LinMatrixRow(IMatrixAlgebraProcessor<TMatrix, TScalar> matrixProcessor, TMatrix matrix, int rowIndex)
+        internal LinMatrixRow(IMatrixProcessor<TMatrix, TScalar> matrixProcessor, TMatrix matrix, int rowIndex)
             : base(matrixProcessor, matrix, rowIndex)
         {
         }

@@ -3,12 +3,12 @@ using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.FunctionAlgebra
 {
-    public class ScalarFunctionFloat64Processor :
-        ScalarProcessorFloat64,
+    public class ScalarFunctionProcessorOfFloat64 :
+        ScalarProcessorOfFloat64,
         IScalarFunctionProcessor<double>
     {
-        public new static ScalarFunctionFloat64Processor DefaultProcessor { get; }
-            = new ScalarFunctionFloat64Processor();
+        public new static ScalarFunctionProcessorOfFloat64 DefaultProcessor { get; }
+            = new ScalarFunctionProcessorOfFloat64();
 
 
         public IScalarProcessor<double> ScalarProcessor
@@ -16,7 +16,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.FunctionAlgebra
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        protected ScalarFunctionFloat64Processor()
+        protected ScalarFunctionProcessorOfFloat64()
         {
         }
 

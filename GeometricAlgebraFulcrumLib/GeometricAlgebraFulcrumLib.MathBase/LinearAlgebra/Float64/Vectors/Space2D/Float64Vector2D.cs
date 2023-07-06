@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using DataStructuresLib.Basic;
 using GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra;
@@ -11,7 +10,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
     /// </summary>
     public sealed record Float64Vector2D :
         IFloat64Vector2D,
-        IReadOnlyList<double>
+        IFloat64Multivector2D
     {
         public static Float64Vector2D Zero { get; } 
             = new Float64Vector2D(
@@ -177,8 +176,20 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
         public int VSpaceDimensions 
             => 2;
         
+        public Float64Scalar Scalar
+            => Float64Scalar.Zero;
+
+        public Float64Scalar Scalar1
+            => X;
+        
+        public Float64Scalar Scalar2
+            => Y;
+        
+        public Float64Scalar Scalar12 
+            => Float64Scalar.Zero;
+
         public int Count 
-            => 2;
+            => 4;
 
         public Float64Scalar X { get; }
 
@@ -195,27 +206,21 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        public double this[int index]
+        public Float64Scalar this[int index]
         {
             get
             {
-                Debug.Assert(index is 0 or 1);
+                if (index is < 0 or > 3)
+                    throw new IndexOutOfRangeException();
 
                 return index switch
                 {
-                    0 => X,
-                    1 => Y,
-                    _ => 0.0d
+                    1 => X,
+                    2 => Y,
+                    _ => Float64Scalar.Zero
                 };
             }
 
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IsValid()
-        {
-            return X.IsValid() &&
-                   Y.IsValid();
         }
 
 
@@ -234,14 +239,124 @@ namespace GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Spac
             y = Y.Value;
         }
 
-
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public IEnumerator<double> GetEnumerator()
+        public bool IsValid()
         {
-            yield return X.Value;
-            yield return Y.Value;
+            return X.IsValid() &&
+                   Y.IsValid();
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsZero()
+        {
+            return X.IsZero() &&
+                   Y.IsZero();
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsNearZero(double epsilon = 1E-12)
+        {
+            return Norm().IsNearZero(epsilon);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Float64PlanarAngle GetPolarAngle()
+        {
+            return Math.Atan2(Y, X);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Float64Scalar Norm()
+        {
+            return (X.Square() + Y.Square()).Sqrt();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Float64Scalar NormSquared()
+        {
+            return X.Square() + Y.Square();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Float64Multivector2D ToMultivector2D()
+        {
+            return Float64Multivector2D.Create(this);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Float64Vector2D Negative()
+        {
+            return new Float64Vector2D(-Scalar1, -Scalar2);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Float64Vector2D GradeInvolution()
+        {
+            return Negative();
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Float64Vector2D Reverse()
+        {
+            return this;
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Float64Vector2D CliffordConjugate()
+        {
+            return Negative();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Float64Vector2D Inverse()
+        {
+            var normSquared = NormSquared();
+
+            return normSquared.IsZero() 
+                ? throw new InvalidOperationException() 
+                : this / normSquared.Value;
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Float64Vector2D Dual2D()
+        {
+            return Float64Vector2D.Create(-Scalar2, Scalar1);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Float64Vector2D Dual2D(Float64Scalar scalingFactor)
+        {
+            return Float64Vector2D.Create(
+                -Scalar2 * scalingFactor,
+                Scalar1 * scalingFactor
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Float64Vector2D UnDual2D()
+        {
+            return Float64Vector2D.Create(Scalar2, -Scalar1);
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public Float64Vector2D UnDual2D(Float64Scalar scalingFactor)
+        {
+            return Float64Vector2D.Create(
+                Scalar2 * scalingFactor,
+                -Scalar1 * scalingFactor
+            );
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public IEnumerator<Float64Scalar> GetEnumerator()
+        {
+            yield return Scalar;
+            yield return Scalar1;
+            yield return Scalar2;
+            yield return Scalar12;
+        }
+        
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         IEnumerator IEnumerable.GetEnumerator()
         {

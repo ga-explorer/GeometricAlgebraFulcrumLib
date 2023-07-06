@@ -1,7 +1,9 @@
-﻿namespace GraphicsComposerLib.Rendering.BabylonJs.Values
+﻿using DataStructuresLib.AttributeSet;
+
+namespace GraphicsComposerLib.Rendering.BabylonJs.Values
 {
     public sealed class GrBabylonJsSizeValue :
-        GrBabylonJsValue<SizeF>
+        SparseCodeAttributeValue<SizeF>
     {
         internal static GrBabylonJsSizeValue Create(SizeF value)
         {

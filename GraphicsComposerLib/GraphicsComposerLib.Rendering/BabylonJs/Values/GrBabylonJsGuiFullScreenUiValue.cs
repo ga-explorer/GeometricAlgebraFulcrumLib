@@ -1,9 +1,10 @@
-﻿using GraphicsComposerLib.Rendering.BabylonJs.GUI;
+﻿using DataStructuresLib.AttributeSet;
+using GraphicsComposerLib.Rendering.BabylonJs.GUI;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Values
 {
     public sealed class GrBabylonJsGuiFullScreenUiValue :
-        GrBabylonJsValue<GrBabylonJsGuiFullScreenUi>,
+        SparseCodeAttributeValue<GrBabylonJsGuiFullScreenUi>,
         IGrBabylonJsGuiControlContainer
     {
         public static implicit operator GrBabylonJsGuiFullScreenUiValue(string valueText)

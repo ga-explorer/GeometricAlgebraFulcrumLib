@@ -4,7 +4,7 @@ using NumpyDotNet;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra
 {
-    public sealed class ScalarProcessorFloat64NdArray :
+    public sealed class ScalarProcessorOfFloat64NdArray :
         INumericScalarProcessor<ndarray>
     {
         public static shape ScalarShape { get; } = new shape(1);

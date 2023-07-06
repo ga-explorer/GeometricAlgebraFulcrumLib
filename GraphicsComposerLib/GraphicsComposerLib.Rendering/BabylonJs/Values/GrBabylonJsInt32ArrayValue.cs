@@ -1,7 +1,9 @@
-﻿namespace GraphicsComposerLib.Rendering.BabylonJs.Values
+﻿using DataStructuresLib.AttributeSet;
+
+namespace GraphicsComposerLib.Rendering.BabylonJs.Values
 {
     public sealed class GrBabylonJsInt32ArrayValue :
-        GrBabylonJsValue<IReadOnlyList<int>>
+        SparseCodeAttributeValue<IReadOnlyList<int>>
     {
         internal static GrBabylonJsInt32ArrayValue Create(IReadOnlyList<int> value)
         {

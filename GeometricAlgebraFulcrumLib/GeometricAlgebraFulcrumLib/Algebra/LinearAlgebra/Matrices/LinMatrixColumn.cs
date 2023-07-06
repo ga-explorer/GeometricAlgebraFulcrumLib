@@ -7,7 +7,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Matrices
     public sealed class LinMatrixColumn<TMatrix, TScalar> :
         LinMatrixColumnBase<TMatrix, TScalar>
     {
-        internal LinMatrixColumn(IMatrixAlgebraProcessor<TMatrix, TScalar> matrixProcessor, TMatrix matrix, int columnIndex)
+        internal LinMatrixColumn(IMatrixProcessor<TMatrix, TScalar> matrixProcessor, TMatrix matrix, int columnIndex)
             : base(matrixProcessor, matrix, columnIndex)
         {
         }

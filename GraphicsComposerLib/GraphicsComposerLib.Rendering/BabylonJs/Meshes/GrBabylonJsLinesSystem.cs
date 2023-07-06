@@ -1,5 +1,4 @@
-﻿using DataStructuresLib.Basic;
-using GraphicsComposerLib.Rendering.BabylonJs.Values;
+﻿using GraphicsComposerLib.Rendering.BabylonJs.Values;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
 {
@@ -12,37 +11,60 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
         public sealed class LineSystemOptions :
             GrBabylonJsObjectOptions
         {
-            public GrBabylonJsVector3ArrayArrayValue? Lines { get; set; }
-
-            public GrBabylonJsColor4ArrayArrayValue? Colors { get; set; }
-
-            public GrBabylonJsMaterialValue? Material { get; set; }
-
-            public GrBabylonJsBooleanValue? UseVertexAlpha { get; set; }
-            
-            public GrBabylonJsLinesMeshValue? Instance { get; set; }
-
-            public GrBabylonJsBooleanValue? Updateable { get; set; }
-
-
-            protected override IEnumerable<Pair<string>?> GetNameValuePairs()
+            public GrBabylonJsVector3ArrayArrayValue? Lines
             {
-                yield return Lines.GetNameValueCodePair("lines");
-                yield return Instance.GetNameValueCodePair("instance");
-                yield return Colors.GetNameValueCodePair("colors");
-                yield return Material.GetNameValueCodePair("material");
-                yield return UseVertexAlpha.GetNameValueCodePair("useVertexAlpha");
-                yield return Updateable.GetNameValueCodePair("updatable");
+                get => GetAttributeValueOrNull<GrBabylonJsVector3ArrayArrayValue>("lines");
+                set => SetAttributeValue("lines", value);
+            }
+
+            public GrBabylonJsColor4ArrayArrayValue? Colors
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsColor4ArrayArrayValue>("colors");
+                set => SetAttributeValue("colors", value);
+            }
+
+            public GrBabylonJsMaterialValue? Material
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsMaterialValue>("material");
+                set => SetAttributeValue("material", value);
+            }
+
+            public GrBabylonJsBooleanValue? UseVertexAlpha
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("useVertexAlpha");
+                set => SetAttributeValue("useVertexAlpha", value);
+            }
+
+            public GrBabylonJsLinesMeshValue? Instance
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsLinesMeshValue>("instance");
+                set => SetAttributeValue("instance", value);
+            }
+
+            public GrBabylonJsBooleanValue? Updatable
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("updatable");
+                set => SetAttributeValue("updatable", value);
+            }
+
+
+            public LineSystemOptions()
+            {
+            }
+
+            public LineSystemOptions(LineSystemOptions options)
+            {
+                SetAttributeValues(options);
             }
         }
     
         protected override string ConstructorName
             => "BABYLON.MeshBuilder.CreateLineSystem";
 
-        public LineSystemOptions? Options { get; private set; }
+        public LineSystemOptions Options { get; private set; }
             = new LineSystemOptions();
 
-        public override GrBabylonJsObjectOptions? ObjectOptions 
+        public override GrBabylonJsObjectOptions ObjectOptions 
             => Options;
 
 
@@ -59,14 +81,14 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
 
         public GrBabylonJsLineSystem SetOptions(LineSystemOptions options)
         {
-            Options = options;
+            Options = new LineSystemOptions(options);
 
             return this;
         }
 
         public GrBabylonJsLineSystem SetProperties(LinesMeshProperties properties)
         {
-            Properties = properties;
+            Properties = new LinesMeshProperties(properties);
 
             return this;
         }

@@ -19,8 +19,8 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.PowerSystems.G
     {
         // This is a pre-defined scalar processor for symbolic
         // Wolfram Mathematica scalars using Expr objects
-        public static ScalarProcessorExpr ScalarProcessor { get; }
-            = ScalarProcessorExpr.DefaultProcessor;
+        public static ScalarProcessorOfWolframExpr ScalarProcessor { get; }
+            = ScalarProcessorOfWolframExpr.DefaultProcessor;
 
         public static int VSpaceDimensions
             => 3;

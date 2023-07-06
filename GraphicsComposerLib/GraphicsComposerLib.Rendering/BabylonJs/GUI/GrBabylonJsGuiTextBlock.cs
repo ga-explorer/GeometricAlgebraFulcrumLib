@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using DataStructuresLib.Basic;
-using GraphicsComposerLib.Rendering.BabylonJs.Values;
+﻿using GraphicsComposerLib.Rendering.BabylonJs.Values;
 using TextComposerLib;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.GUI
@@ -14,62 +12,98 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.GUI
         public sealed class GuiTextBlockProperties :
             GuiControlProperties
         {
-            public GrBabylonJsFloat32Value? LineSpacing { get; set; }
-        
-            public GrBabylonJsStringValue? Text { get; set; }
-
-            public GrBabylonJsHorizontalAlignmentValue? TextHorizontalAlignment { get; set; }
-
-            public GrBabylonJsVerticalAlignmentValue? TextVerticalAlignment { get; set; }
-
-            public GrBabylonJsBooleanValue? TextWrapping { get; set; }
-
-            public GrBabylonJsBooleanValue? LineThrough { get; set; }
-
-            public GrBabylonJsBooleanValue? ResizeToFit { get; set; }
-
-            public GrBabylonJsBooleanValue? Underline { get; set; }
-
-            public GrBabylonJsStringValue? WordDivider { get; set; }
-        
-            public GrBabylonJsFloat32Value? OutlineWidth { get; set; }
-        
-            public GrBabylonJsGuiColorValue? OutlineColor { get; set; }
-        
-
-            protected override IEnumerable<Pair<string>?> GetNameValuePairs()
+            public GrBabylonJsFloat32Value? LineSpacing
             {
-                foreach (var pair in base.GetNameValuePairs())
-                    yield return pair;
-
-                yield return LineSpacing.GetNameValueCodePair("lineSpacing");
-                yield return Text.GetNameValueCodePair("text");
-                yield return TextHorizontalAlignment.GetNameValueCodePair("textHorizontalAlignment");
-                yield return TextVerticalAlignment.GetNameValueCodePair("textVerticalAlignment");
-                yield return TextWrapping.GetNameValueCodePair("textWrapping");
-                yield return LineThrough.GetNameValueCodePair("lineThrough");
-                yield return ResizeToFit.GetNameValueCodePair("resizeToFit");
-                yield return Underline.GetNameValueCodePair("underline");
-                yield return WordDivider.GetNameValueCodePair("wordDivider");
-                yield return OutlineWidth.GetNameValueCodePair("outlineWidth");
-                yield return OutlineColor.GetNameValueCodePair("outlineColor");
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("lineSpacing");
+                set => SetAttributeValue("lineSpacing", value);
             }
+
+            public GrBabylonJsStringValue? Text
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsStringValue>("text");
+                set => SetAttributeValue("text", value);
+            }
+
+            public GrBabylonJsHorizontalAlignmentValue? TextHorizontalAlignment
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsHorizontalAlignmentValue>("textHorizontalAlignment");
+                set => SetAttributeValue("textHorizontalAlignment", value);
+            }
+
+            public GrBabylonJsVerticalAlignmentValue? TextVerticalAlignment
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsVerticalAlignmentValue>("textVerticalAlignment");
+                set => SetAttributeValue("textVerticalAlignment", value);
+            }
+
+            public GrBabylonJsBooleanValue? TextWrapping
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("textWrapping");
+                set => SetAttributeValue("textWrapping", value);
+            }
+
+            public GrBabylonJsBooleanValue? LineThrough
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("lineThrough");
+                set => SetAttributeValue("lineThrough", value);
+            }
+
+            public GrBabylonJsBooleanValue? ResizeToFit
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("resizeToFit");
+                set => SetAttributeValue("resizeToFit", value);
+            }
+
+            public GrBabylonJsBooleanValue? Underline
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("underline");
+                set => SetAttributeValue("underline", value);
+            }
+
+            public GrBabylonJsStringValue? WordDivider
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsStringValue>("wordDivider");
+                set => SetAttributeValue("wordDivider", value);
+            }
+
+            public GrBabylonJsFloat32Value? OutlineWidth
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("outlineWidth");
+                set => SetAttributeValue("outlineWidth", value);
+            }
+
+            public GrBabylonJsGuiColorValue? OutlineColor
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsGuiColorValue>("outlineColor");
+                set => SetAttributeValue("outlineColor", value);
+            }
+
+
+            public GuiTextBlockProperties()
+            {
+            }
+
+            public GuiTextBlockProperties(GuiTextBlockProperties properties)
+            {
+                SetAttributeValues(properties);
+            }
+            
         }
 
 
-        protected override string ConstructorName 
+        protected override string ConstructorName
             => "new BABYLON.GUI.TextBlock";
 
-        public GuiTextBlockProperties? Properties { get; private set; }
+        public GuiTextBlockProperties Properties { get; private set; }
             = new GuiTextBlockProperties();
 
-        public override GrBabylonJsObjectProperties? ObjectProperties 
+        public override GrBabylonJsObjectProperties ObjectProperties
             => Properties;
 
         public GrBabylonJsStringValue? Text { get; set; }
 
 
-        public GrBabylonJsGuiTextBlock(string constName, IGrBabylonJsGuiControlContainer parentContainer) 
+        public GrBabylonJsGuiTextBlock(string constName, IGrBabylonJsGuiControlContainer parentContainer)
             : base(constName, parentContainer)
         {
         }
@@ -82,10 +116,10 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.GUI
             if (Text is null || Text.IsEmpty) yield break;
             yield return Text.GetCode();
         }
-    
-        public GrBabylonJsGuiTextBlock SetProperties([NotNull] GuiTextBlockProperties? properties)
+
+        public GrBabylonJsGuiTextBlock SetProperties(GuiTextBlockProperties properties)
         {
-            Properties = properties;
+            Properties = new GuiTextBlockProperties(properties);
 
             return this;
         }

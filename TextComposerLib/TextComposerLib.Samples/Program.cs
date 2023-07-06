@@ -6,7 +6,9 @@ namespace TextComposerLib.Samples
     {
         static void Main(string[] args)
         {
-            var tasks = SamplesFactory.CreateSamples();
+            //var tasks = SamplesFactory.CreateSamples();
+
+            Samples.BabylonJsAttributeConversion.Convert();
         }
     }
 }

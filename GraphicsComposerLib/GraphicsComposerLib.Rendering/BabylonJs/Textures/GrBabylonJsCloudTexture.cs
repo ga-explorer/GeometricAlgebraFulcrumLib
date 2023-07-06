@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using DataStructuresLib.Basic;
-using GraphicsComposerLib.Rendering.BabylonJs.Values;
+﻿using GraphicsComposerLib.Rendering.BabylonJs.Values;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Textures
 {
@@ -10,18 +8,26 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Textures
         public sealed class CloudTextureProperties :
             BaseTextureProperties
         {
-            public GrBabylonJsColor4Value? SkyColor { get; set; }
-
-            public GrBabylonJsColor4Value? CloudColor { get; set; }
-
-        
-            protected override IEnumerable<Pair<string>?> GetNameValuePairs()
+            public GrBabylonJsColor4Value? SkyColor
             {
-                foreach (var pair in base.GetNameValuePairs())
-                    yield return pair;
+                get => GetAttributeValueOrNull<GrBabylonJsColor4Value>("skyColor");
+                set => SetAttributeValue("skyColor", value);
+            }
 
-                yield return SkyColor.GetNameValueCodePair("skyColor");
-                yield return CloudColor.GetNameValueCodePair("cloudColor");
+            public GrBabylonJsColor4Value? CloudColor
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsColor4Value>("cloudColor");
+                set => SetAttributeValue("cloudColor", value);
+            }
+
+
+            public CloudTextureProperties()
+            {
+            }
+
+            public CloudTextureProperties(CloudTextureProperties properties)
+            {
+                SetAttributeValues(properties);
             }
         }
 
@@ -29,10 +35,10 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Textures
         protected override string ConstructorName
             => "new BABYLON.CloudProceduralTexture";
     
-        public CloudTextureProperties? Properties { get; private set; }
+        public CloudTextureProperties Properties { get; private set; }
             = new CloudTextureProperties();
 
-        public override GrBabylonJsObjectProperties? ObjectProperties 
+        public override GrBabylonJsObjectProperties ObjectProperties 
             => Properties;
 
 
@@ -47,9 +53,9 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Textures
         }
 
     
-        public GrBabylonJsCloudTexture SetProperties([NotNull] CloudTextureProperties? properties)
+        public GrBabylonJsCloudTexture SetProperties(CloudTextureProperties properties)
         {
-            Properties = properties;
+            Properties = new CloudTextureProperties(properties);
 
             return this;
         }

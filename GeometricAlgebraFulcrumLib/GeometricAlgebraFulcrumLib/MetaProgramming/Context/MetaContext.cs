@@ -22,7 +22,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Context
 {
     [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
     public sealed class MetaContext :
-        ILinearAlgebraProcessor<IMetaExpressionAtomic>,
+        ILinearProcessor<IMetaExpressionAtomic>,
         IXGaProcessorContainer<IMetaExpressionAtomic>
     {
         private int _tempNamesIndex;
@@ -86,7 +86,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Context
         public bool ContainsGeometricProcessor 
             => XGaProcessor is not null;
 
-        public ScalarAlgebraMetaExpressionProcessor MetaExpressionProcessor { get; }
+        public ScalarProcessorOfMetaExpression MetaExpressionProcessor { get; }
 
         public AngouriMathMetaExpressionEvaluator DefaultEvaluator { get; }
 
@@ -137,7 +137,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Context
             ScalarRadianToDegree = GetOrDefineLiteralNumber(180d / Math.PI);
 
             //These must be initialized after all other members
-            MetaExpressionProcessor = new ScalarAlgebraMetaExpressionProcessor(this);
+            MetaExpressionProcessor = new ScalarProcessorOfMetaExpression(this);
             FunctionHeadSpecsFactory = new MetaExpressionFunctionHeadSpecsFactory(this);
             DefaultEvaluator = this.CreateAngouriMathEvaluator();
         }

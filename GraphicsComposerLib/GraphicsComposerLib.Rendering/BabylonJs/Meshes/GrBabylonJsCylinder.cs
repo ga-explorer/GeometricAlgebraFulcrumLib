@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using DataStructuresLib.Basic;
-using GraphicsComposerLib.Rendering.BabylonJs.Values;
+﻿using GraphicsComposerLib.Rendering.BabylonJs.Values;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
 {
@@ -13,57 +11,109 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
         public sealed class CylinderOptions :
             GrBabylonJsObjectOptions
         {
-            public GrBabylonJsFloat32Value? Arc { get; set; }
-
-            public GrBabylonJsFloat32Value? Diameter { get; set; }
-
-            public GrBabylonJsFloat32Value? DiameterBottom { get; set; }
-
-            public GrBabylonJsFloat32Value? DiameterTop { get; set; }
-        
-            public GrBabylonJsFloat32Value? Height { get; set; }
-        
-            public GrBabylonJsInt32Value? Subdivisions { get; set; }
-
-            public GrBabylonJsInt32Value? Tessellation { get; set; }
-        
-            public GrBabylonJsMeshCapValue? Cap { get; set; }
-
-            public GrBabylonJsColor4ArrayValue? FaceColors { get; set; }
-
-            public GrBabylonJsVector4ArrayValue? FaceUVs { get; set; }
-
-            public GrBabylonJsMeshOrientationValue? SideOrientation { get; set; }
-
-            public GrBabylonJsVector4Value? FrontUVs { get; set; }
-
-            public GrBabylonJsVector4Value? BackUVs { get; set; }
-
-            public GrBabylonJsBooleanValue? Enclose { get; set; }
-
-            public GrBabylonJsBooleanValue? HasRings { get; set; }
-
-            public GrBabylonJsBooleanValue? Updateable { get; set; }
-
-
-            protected override IEnumerable<Pair<string>?> GetNameValuePairs()
+            public GrBabylonJsFloat32Value? Arc
             {
-                yield return Arc.GetNameValueCodePair("arc");
-                yield return HasRings.GetNameValueCodePair("hasRings");
-                yield return Enclose.GetNameValueCodePair("enclose");
-                yield return Diameter.GetNameValueCodePair("diameter");
-                yield return DiameterBottom.GetNameValueCodePair("diameterBottom");
-                yield return DiameterTop.GetNameValueCodePair("diameterTop");
-                yield return Height.GetNameValueCodePair("height");
-                yield return Subdivisions.GetNameValueCodePair("subdivisions");
-                yield return Tessellation.GetNameValueCodePair("tessellation");
-                yield return Cap.GetNameValueCodePair("cap");
-                yield return FaceColors.GetNameValueCodePair("faceColors");
-                yield return FaceUVs.GetNameValueCodePair("faceUVs");
-                yield return SideOrientation.GetNameValueCodePair("sideOrientation");
-                yield return FrontUVs.GetNameValueCodePair("frontUVs");
-                yield return BackUVs.GetNameValueCodePair("backUVs");
-                yield return Updateable.GetNameValueCodePair("updatable");
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("arc");
+                set => SetAttributeValue("arc", value);
+            }
+
+            public GrBabylonJsFloat32Value? Diameter
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("diameter");
+                set => SetAttributeValue("diameter", value);
+            }
+
+            public GrBabylonJsFloat32Value? DiameterBottom
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("diameterBottom");
+                set => SetAttributeValue("diameterBottom", value);
+            }
+
+            public GrBabylonJsFloat32Value? DiameterTop
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("diameterTop");
+                set => SetAttributeValue("diameterTop", value);
+            }
+
+            public GrBabylonJsFloat32Value? Height
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("height");
+                set => SetAttributeValue("height", value);
+            }
+
+            public GrBabylonJsInt32Value? Subdivisions
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsInt32Value>("subdivisions");
+                set => SetAttributeValue("subdivisions", value);
+            }
+
+            public GrBabylonJsInt32Value? Tessellation
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsInt32Value>("tessellation");
+                set => SetAttributeValue("tessellation", value);
+            }
+
+            public GrBabylonJsMeshCapValue? Cap
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsMeshCapValue>("cap");
+                set => SetAttributeValue("cap", value);
+            }
+
+            public GrBabylonJsColor4ArrayValue? FaceColors
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsColor4ArrayValue>("faceColors");
+                set => SetAttributeValue("faceColors", value);
+            }
+
+            public GrBabylonJsVector4ArrayValue? FaceUVs
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsVector4ArrayValue>("faceUVs");
+                set => SetAttributeValue("faceUVs", value);
+            }
+
+            public GrBabylonJsMeshOrientationValue? SideOrientation
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsMeshOrientationValue>("sideOrientation");
+                set => SetAttributeValue("sideOrientation", value);
+            }
+
+            public GrBabylonJsVector4Value? FrontUVs
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsVector4Value>("frontUVs");
+                set => SetAttributeValue("frontUVs", value);
+            }
+
+            public GrBabylonJsVector4Value? BackUVs
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsVector4Value>("backUVs");
+                set => SetAttributeValue("backUVs", value);
+            }
+
+            public GrBabylonJsBooleanValue? Enclose
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("enclose");
+                set => SetAttributeValue("enclose", value);
+            }
+
+            public GrBabylonJsBooleanValue? HasRings
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("hasRings");
+                set => SetAttributeValue("hasRings", value);
+            }
+
+            public GrBabylonJsBooleanValue? Updatable
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("updatable");
+                set => SetAttributeValue("updatable", value);
+            }
+
+            public CylinderOptions()
+            {
+            }
+
+            public CylinderOptions(CylinderOptions options)
+            {
+                SetAttributeValues(options);
             }
         }
 
@@ -71,34 +121,34 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
         protected override string ConstructorName
             => "BABYLON.MeshBuilder.CreateCylinder";
 
-        public CylinderOptions? Options { get; private set; }
+        public CylinderOptions Options { get; private set; }
             = new CylinderOptions();
 
-        public override GrBabylonJsObjectOptions? ObjectOptions 
+        public override GrBabylonJsObjectOptions ObjectOptions
             => Options;
 
 
-        public GrBabylonJsCylinder(string constName) 
+        public GrBabylonJsCylinder(string constName)
             : base(constName)
         {
         }
-    
-        public GrBabylonJsCylinder(string constName, GrBabylonJsSceneValue scene) 
+
+        public GrBabylonJsCylinder(string constName, GrBabylonJsSceneValue scene)
             : base(constName, scene)
         {
         }
 
 
-        public GrBabylonJsCylinder SetOptions([NotNull] CylinderOptions? options)
+        public GrBabylonJsCylinder SetOptions(CylinderOptions options)
         {
-            Options = options;
+            Options = new CylinderOptions(options);
 
             return this;
         }
 
-        public GrBabylonJsCylinder SetProperties([NotNull] MeshProperties? properties)
+        public GrBabylonJsCylinder SetProperties(MeshProperties properties)
         {
-            Properties = properties;
+            Properties = new MeshProperties(properties);
 
             return this;
         }

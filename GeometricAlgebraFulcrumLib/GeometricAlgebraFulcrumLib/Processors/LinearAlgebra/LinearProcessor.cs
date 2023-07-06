@@ -2,11 +2,11 @@
 
 namespace GeometricAlgebraFulcrumLib.Processors.LinearAlgebra
 {
-    public class LinearAlgebraProcessor<T> : 
+    public class LinearProcessor<T> : 
         ScalarProcessorContainer<T>,
-        ILinearAlgebraProcessor<T>
+        ILinearProcessor<T>
     {
-        internal LinearAlgebraProcessor(IScalarProcessor<T> scalarProcessor) 
+        internal LinearProcessor(IScalarProcessor<T> scalarProcessor) 
             : base(scalarProcessor)
         {
         }

@@ -18,22 +18,22 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Composers
     public class LinearAlgebraRandomComposer<T> :
         ScalarRandomComposer<T>
     {
-        public ILinearAlgebraProcessor<T> LinearProcessor { get; }
+        public ILinearProcessor<T> LinearProcessor { get; }
 
 
-        internal LinearAlgebraRandomComposer(ILinearAlgebraProcessor<T> linearProcessor)
+        internal LinearAlgebraRandomComposer(ILinearProcessor<T> linearProcessor)
             : base(linearProcessor)
         {
             LinearProcessor = linearProcessor;
         }
 
-        internal LinearAlgebraRandomComposer(ILinearAlgebraProcessor<T> linearProcessor, int seed)
+        internal LinearAlgebraRandomComposer(ILinearProcessor<T> linearProcessor, int seed)
             : base(linearProcessor, seed)
         {
             LinearProcessor = linearProcessor;
         }
 
-        internal LinearAlgebraRandomComposer(ILinearAlgebraProcessor<T> linearProcessor, Random randomGenerator)
+        internal LinearAlgebraRandomComposer(ILinearProcessor<T> linearProcessor, Random randomGenerator)
             : base(linearProcessor, randomGenerator)
         {
             LinearProcessor = linearProcessor;

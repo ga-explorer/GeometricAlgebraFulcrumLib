@@ -143,11 +143,11 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
                 new GrBabylonJsEnvironmentHelper.EnvironmentHelperOptions
                 {
                     GroundYBias = 0.01,
-                    SkyBoxColor = Color.LightSkyBlue,
+                    SkyboxColor = Color.LightSkyBlue,
                     GroundColor = Color.White,
                     CreateGround = true,
                     GroundSize = 8,
-                    SkyBoxSize = GridUnitCount + 10
+                    SkyboxSize = GridUnitCount + 10
                 }
             );
         }

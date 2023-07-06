@@ -1,9 +1,10 @@
-﻿using GraphicsComposerLib.Rendering.BabylonJs.Constants;
+﻿using DataStructuresLib.AttributeSet;
+using GraphicsComposerLib.Rendering.BabylonJs.Constants;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Values
 {
     public sealed class GrBabylonJsTextureCoordinatesModeValue :
-        GrBabylonJsValue<GrBabylonJsTextureCoordinatesMode>
+        SparseCodeAttributeValue<GrBabylonJsTextureCoordinatesMode>
     {
         public static implicit operator GrBabylonJsTextureCoordinatesModeValue(string valueText)
         {

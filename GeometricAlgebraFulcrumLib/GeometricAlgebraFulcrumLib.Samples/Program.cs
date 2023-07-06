@@ -54,8 +54,8 @@ namespace GeometricAlgebraFulcrumLib.Samples
             //PowerSystems.SystemIdentification.DFIGTest1OpenLoopSample.Example2();
             //PowerSignalVisualizationSample1.Execute();
 
-            Graphics.KonvaJs.Sample1.Example1();
-            Graphics.KonvaJs.Sample1.Example2();
+            //Graphics.KonvaJs.Sample1.Example1();
+            //Graphics.KonvaJs.Sample1.Example2();
             //Graphics.BabylonJs.DifferentialCurveAnimationSample.Example1();
             //Graphics.BabylonJs.AnimationSamples.Example1();
             //Graphics.BabylonJs.AnimationSamples.Example2();
@@ -68,6 +68,8 @@ namespace GeometricAlgebraFulcrumLib.Samples
             //Graphics.BabylonJsSnapshotsSample.TakeSnapshots();
             //Graphics.Animations.Sample1.Example2();
             
+            Numeric.SnelliusPothenotProblem.Execute();
+
             //Numeric.InterpolationSample.Example9();
             //EuclideanGeometry.RotationSamples.Example1();
             //Symbolic.SymbolicGramSchmidtSample.Example1();

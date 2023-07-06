@@ -1,5 +1,4 @@
-﻿using DataStructuresLib.Basic;
-using GraphicsComposerLib.Rendering.BabylonJs.Values;
+﻿using GraphicsComposerLib.Rendering.BabylonJs.Values;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.GUI
 {
@@ -12,21 +11,38 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.GUI
         public sealed class GuiStyleProperties :
             GrBabylonJsObjectProperties
         {
-            public GrBabylonJsStringValue? FontFamily { get; set; }
-
-            public GrBabylonJsFloat32Value? FontSize { get; set; }
-
-            public GrBabylonJsStringValue? FontStyle { get; set; }
-
-            public GrBabylonJsStringValue? FontWeight { get; set; }
-
-
-            protected override IEnumerable<Pair<string>?> GetNameValuePairs()
+            public GrBabylonJsStringValue? FontFamily
             {
-                yield return FontFamily.GetNameValueCodePair("fontWeight");
-                yield return FontSize.GetNameValueCodePair("fontSize");
-                yield return FontStyle.GetNameValueCodePair("fontStyle");
-                yield return FontWeight.GetNameValueCodePair("fontWeight");
+                get => GetAttributeValueOrNull<GrBabylonJsStringValue>("fontWeight");
+                set => SetAttributeValue("fontWeight", value);
+            }
+
+            public GrBabylonJsFloat32Value? FontSize
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("fontSize");
+                set => SetAttributeValue("fontSize", value);
+            }
+
+            public GrBabylonJsStringValue? FontStyle
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsStringValue>("fontStyle");
+                set => SetAttributeValue("fontStyle", value);
+            }
+
+            public GrBabylonJsStringValue? FontWeight
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsStringValue>("fontWeight");
+                set => SetAttributeValue("fontWeight", value);
+            }
+
+
+            public GuiStyleProperties()
+            {
+            }
+
+            public GuiStyleProperties(GuiStyleProperties properties)
+            {
+                SetAttributeValues(properties);
             }
         }
 
@@ -41,7 +57,8 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.GUI
         public override GrBabylonJsObjectOptions? ObjectOptions 
             => null;
 
-        public override GrBabylonJsObjectProperties? ObjectProperties { get; }
+        public override GrBabylonJsObjectProperties ObjectProperties 
+            => Properties;
 
 
         public GrBabylonJsGuiStyle(string constName) 
@@ -57,7 +74,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.GUI
 
         public GrBabylonJsGuiStyle SetProperties(GuiStyleProperties properties)
         {
-            Properties = properties;
+            Properties = new GuiStyleProperties(properties);
 
             return this;
         }

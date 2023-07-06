@@ -19,7 +19,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Matrices
         }
 
 
-        internal LinMatrixRowScaled(IMatrixAlgebraProcessor<TMatrix, TScalar> matrixProcessor, TMatrix matrix, int rowIndex, TScalar scalingFactor)
+        internal LinMatrixRowScaled(IMatrixProcessor<TMatrix, TScalar> matrixProcessor, TMatrix matrix, int rowIndex, TScalar scalingFactor)
             : base(matrixProcessor, matrix, rowIndex)
         {
             ScalingFactor = scalingFactor;

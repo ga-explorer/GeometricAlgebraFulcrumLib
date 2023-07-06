@@ -1,15 +1,12 @@
-﻿using System.Text;
-using DataStructuresLib.Basic;
+﻿using TextComposerLib.Text;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs
 {
     public abstract class GrBabylonJsObjectProperties :
-        IGrBabylonJsCodeElement
+        GrBabylonJsAttributeSet
     {
         public string? ObjectName { get; set; }
 
-
-        protected abstract IEnumerable<Pair<string>?> GetNameValuePairs();
 
         public string GetCode(string objectName)
         {
@@ -18,25 +15,14 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
             return GetCode();
         }
 
-        public string GetCode()
+        public override string GetCode()
         {
             if (string.IsNullOrEmpty(ObjectName))
                 throw new InvalidOperationException();
 
-            var composer = new StringBuilder();
-
-            var valuePairs = 
-                GetNameValuePairs().Where(p => p is not null).ToArray();
-
-            if (valuePairs.Length > 0)
-            {
-                foreach (var (name, value) in valuePairs)
-                    composer.AppendLine($"{ObjectName}.{name} = {value};");
-
-                composer.Length -= Environment.NewLine.Length;
-            }
-
-            return composer.ToString();
+            return GetKeyValueCodePairs().Select(
+                p => $"{ObjectName}.{p.Key} = {p.Value};"
+            ).Concatenate(Environment.NewLine);
         }
     
         public override string ToString()

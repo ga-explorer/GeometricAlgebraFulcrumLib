@@ -1,5 +1,5 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64;
 
 namespace GraphicsComposerLib.Samples.BasicMath
 {

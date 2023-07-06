@@ -21,7 +21,7 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.EuclideanGeome
             var n = 3;
 
             var scalarProcessor = 
-                ScalarProcessorExpr.DefaultProcessor;
+                ScalarProcessorOfWolframExpr.DefaultProcessor;
 
             var processor = 
                 XGaProcessor<Expr>.CreateEuclidean(scalarProcessor);

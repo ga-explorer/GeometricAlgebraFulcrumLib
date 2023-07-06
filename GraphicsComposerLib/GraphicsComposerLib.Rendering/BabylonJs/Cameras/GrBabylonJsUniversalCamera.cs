@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using DataStructuresLib.Basic;
-using GraphicsComposerLib.Rendering.BabylonJs.Values;
+﻿using GraphicsComposerLib.Rendering.BabylonJs.Values;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Cameras
 {
@@ -10,97 +8,152 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Cameras
         public sealed class UniversalCameraProperties :
             TargetCameraProperties
         {
-            public GrBabylonJsBooleanValue? ApplyGravity { get; set; }
-
-            public GrBabylonJsBooleanValue? CheckCollisions { get; set; }
-        
-            public GrBabylonJsVector3Value? Ellipsoid { get; set; }
-
-            public GrBabylonJsVector3Value? EllipsoidOffset { get; set; }
-
-            public GrBabylonJsFloat32Value? AngularSensibility { get; set; }
-
-            public GrBabylonJsFloat32Value? TouchAngularSensibility { get; set; }
-
-            public GrBabylonJsFloat32Value? TouchMoveSensibility { get; set; }
-
-            public GrBabylonJsFloat32Value? GamePadAngularSensibility { get; set; }
-
-            public GrBabylonJsFloat32Value? GamePadMoveSensibility { get; set; }
-        
-            public GrBabylonJsFloat32Value? CollisionMask { get; set; }
-        
-            public GrBabylonJsInt32ArrayValue? KeysDown { get; set; }
-
-            public GrBabylonJsInt32ArrayValue? KeysLeft { get; set; }
-
-            public GrBabylonJsInt32ArrayValue? KeysRight { get; set; }
-
-            public GrBabylonJsInt32ArrayValue? KeysUp { get; set; }
-        
-            public GrBabylonJsInt32ArrayValue? KeysRotateLeft { get; set; }
-
-            public GrBabylonJsInt32ArrayValue? KeysRotateRight { get; set; }
-
-            public GrBabylonJsInt32ArrayValue? KeysDownward { get; set; }
-
-            public GrBabylonJsInt32ArrayValue? KeysUpward { get; set; }
-        
-
-            protected override IEnumerable<Pair<string>?> GetNameValuePairs()
+            public GrBabylonJsBooleanValue? ApplyGravity
             {
-                foreach (var pair in base.GetNameValuePairs())
-                    yield return pair;
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("applyGravity");
+                set => SetAttributeValue("applyGravity", value);
+            }
 
-                yield return ApplyGravity.GetNameValueCodePair("applyGravity");
-                yield return CheckCollisions.GetNameValueCodePair("checkCollisions");
-                yield return CameraRotation.GetNameValueCodePair("cameraRotation");
-                yield return Ellipsoid.GetNameValueCodePair("ellipsoid");
-                yield return EllipsoidOffset.GetNameValueCodePair("ellipsoidOffset");
-                yield return AngularSensibility.GetNameValueCodePair("angularSensibility");
-                yield return TouchAngularSensibility.GetNameValueCodePair("touchAngularSensibility");
-                yield return TouchMoveSensibility.GetNameValueCodePair("touchMoveSensibility");
-                yield return GamePadAngularSensibility.GetNameValueCodePair("gamepadAngularSensibility");
-                yield return GamePadMoveSensibility.GetNameValueCodePair("gamepadMoveSensibility");
-                yield return CollisionMask.GetNameValueCodePair("collisionMask");
-                yield return KeysRotateLeft.GetNameValueCodePair("keysRotateLeft");
-                yield return KeysRotateRight.GetNameValueCodePair("keysRotateRight");
-                yield return KeysDownward.GetNameValueCodePair("keysDownward");
-                yield return KeysUpward.GetNameValueCodePair("keysUpward");
-                yield return KeysDown.GetNameValueCodePair("keysDown");
-                yield return KeysLeft.GetNameValueCodePair("keysLeft");
-                yield return KeysRight.GetNameValueCodePair("keysRight");
-                yield return KeysUp.GetNameValueCodePair("keysUp");
+            public GrBabylonJsBooleanValue? CheckCollisions
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("checkCollisions");
+                set => SetAttributeValue("checkCollisions", value);
+            }
+
+            public GrBabylonJsVector3Value? Ellipsoid
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsVector3Value>("ellipsoid");
+                set => SetAttributeValue("ellipsoid", value);
+            }
+
+            public GrBabylonJsVector3Value? EllipsoidOffset
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsVector3Value>("ellipsoidOffset");
+                set => SetAttributeValue("ellipsoidOffset", value);
+            }
+
+            public GrBabylonJsFloat32Value? AngularSensibility
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("angularSensibility");
+                set => SetAttributeValue("angularSensibility", value);
+            }
+
+            public GrBabylonJsFloat32Value? TouchAngularSensibility
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("touchAngularSensibility");
+                set => SetAttributeValue("touchAngularSensibility", value);
+            }
+
+            public GrBabylonJsFloat32Value? TouchMoveSensibility
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("touchMoveSensibility");
+                set => SetAttributeValue("touchMoveSensibility", value);
+            }
+
+            public GrBabylonJsFloat32Value? GamePadAngularSensibility
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("gamePadAngularSensibility");
+                set => SetAttributeValue("gamePadAngularSensibility", value);
+            }
+
+            public GrBabylonJsFloat32Value? GamePadMoveSensibility
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("gamePadMoveSensibility");
+                set => SetAttributeValue("gamePadMoveSensibility", value);
+            }
+
+            public GrBabylonJsFloat32Value? CollisionMask
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("collisionMask");
+                set => SetAttributeValue("collisionMask", value);
+            }
+
+            public GrBabylonJsInt32ArrayValue? KeysDown
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsInt32ArrayValue>("keysDown");
+                set => SetAttributeValue("keysDown", value);
+            }
+
+            public GrBabylonJsInt32ArrayValue? KeysLeft
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsInt32ArrayValue>("keysLeft");
+                set => SetAttributeValue("keysLeft", value);
+            }
+
+            public GrBabylonJsInt32ArrayValue? KeysRight
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsInt32ArrayValue>("keysRight");
+                set => SetAttributeValue("keysRight", value);
+            }
+
+            public GrBabylonJsInt32ArrayValue? KeysUp
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsInt32ArrayValue>("keysUp");
+                set => SetAttributeValue("keysUp", value);
+            }
+
+            public GrBabylonJsInt32ArrayValue? KeysRotateLeft
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsInt32ArrayValue>("keysRotateLeft");
+                set => SetAttributeValue("keysRotateLeft", value);
+            }
+
+            public GrBabylonJsInt32ArrayValue? KeysRotateRight
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsInt32ArrayValue>("keysRotateRight");
+                set => SetAttributeValue("keysRotateRight", value);
+            }
+
+            public GrBabylonJsInt32ArrayValue? KeysDownward
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsInt32ArrayValue>("keysDownward");
+                set => SetAttributeValue("keysDownward", value);
+            }
+
+            public GrBabylonJsInt32ArrayValue? KeysUpward
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsInt32ArrayValue>("keysUpward");
+                set => SetAttributeValue("keysUpward", value);
+            }
+
+
+            public UniversalCameraProperties()
+            {
+            }
+
+            public UniversalCameraProperties(UniversalCameraProperties properties)
+            {
+                SetAttributeValues(properties);
             }
         }
 
 
-        protected override string ConstructorName 
+        protected override string ConstructorName
             => "new BABYLON.UniversalCamera";
 
-        public UniversalCameraProperties? Properties { get; private set; } 
+        public UniversalCameraProperties Properties { get; private set; }
             = new UniversalCameraProperties();
 
-        public override GrBabylonJsObjectProperties? ObjectProperties 
+        public override GrBabylonJsObjectProperties ObjectProperties
             => Properties;
 
         public GrBabylonJsVector3Value Position { get; set; }
 
-    
-        public GrBabylonJsUniversalCamera(string constName) 
+
+        public GrBabylonJsUniversalCamera(string constName)
             : base(constName)
         {
         }
-    
-        public GrBabylonJsUniversalCamera(string constName, GrBabylonJsSceneValue scene) 
+
+        public GrBabylonJsUniversalCamera(string constName, GrBabylonJsSceneValue scene)
             : base(constName, scene)
         {
         }
 
 
-        public GrBabylonJsUniversalCamera SetProperties([NotNull] UniversalCameraProperties? properties)
+        public GrBabylonJsUniversalCamera SetProperties(UniversalCameraProperties properties)
         {
-            Properties = properties;
+            Properties = new UniversalCameraProperties(properties);
 
             return this;
         }
@@ -112,7 +165,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Cameras
             if (ParentScene.IsNullOrEmpty()) yield break;
             yield return SceneVariableName;
         }
-    
+
 
     }
 }

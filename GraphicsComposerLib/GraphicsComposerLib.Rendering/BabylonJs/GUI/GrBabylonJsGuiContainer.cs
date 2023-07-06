@@ -1,5 +1,4 @@
-﻿using DataStructuresLib.Basic;
-using GraphicsComposerLib.Rendering.BabylonJs.Values;
+﻿using GraphicsComposerLib.Rendering.BabylonJs.Values;
 using TextComposerLib.Text.Linear;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.GUI
@@ -14,30 +13,51 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.GUI
         public abstract class GuiContainerProperties :
             GuiControlProperties
         {
-            public GrBabylonJsBooleanValue? LogLayoutCycleErrors { get; set; }
-
-            public GrBabylonJsInt32Value? MaxLayoutCycle { get; set; }
-
-            public GrBabylonJsBooleanValue? AdaptHeightToChildren { get; set; }
-
-            public GrBabylonJsBooleanValue? AdaptWidthToChildren { get; set; }
-
-            public GrBabylonJsBooleanValue? RenderToIntermediateTexture { get; set; }
-
-            public GrBabylonJsGuiColorValue? BackgroundColor { get; set; }
-
-
-            protected override IEnumerable<Pair<string>?> GetNameValuePairs()
+            public GrBabylonJsBooleanValue? LogLayoutCycleErrors
             {
-                foreach (var pair in base.GetNameValuePairs())
-                    yield return pair;
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("logLayoutCycleErrors");
+                set => SetAttributeValue("logLayoutCycleErrors", value);
+            }
 
-                yield return LogLayoutCycleErrors.GetNameValueCodePair("logLayoutCycleErrors");
-                yield return MaxLayoutCycle.GetNameValueCodePair("maxLayoutCycle");
-                yield return AdaptHeightToChildren.GetNameValueCodePair("adaptHeightToChildren");
-                yield return AdaptWidthToChildren.GetNameValueCodePair("adaptWidthToChildren");
-                yield return RenderToIntermediateTexture.GetNameValueCodePair("renderToIntermediateTexture");
-                yield return BackgroundColor.GetNameValueCodePair("background");
+            public GrBabylonJsInt32Value? MaxLayoutCycle
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsInt32Value>("maxLayoutCycle");
+                set => SetAttributeValue("maxLayoutCycle", value);
+            }
+
+            public GrBabylonJsBooleanValue? AdaptHeightToChildren
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("adaptHeightToChildren");
+                set => SetAttributeValue("adaptHeightToChildren", value);
+            }
+
+            public GrBabylonJsBooleanValue? AdaptWidthToChildren
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("adaptWidthToChildren");
+                set => SetAttributeValue("adaptWidthToChildren", value);
+            }
+
+            public GrBabylonJsBooleanValue? RenderToIntermediateTexture
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("renderToIntermediateTexture");
+                set => SetAttributeValue("renderToIntermediateTexture", value);
+            }
+
+            public GrBabylonJsGuiColorValue? BackgroundColor
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsGuiColorValue>("backgroundColor");
+                set => SetAttributeValue("backgroundColor", value);
+            }
+
+
+            protected GuiContainerProperties()
+            {
+
+            }
+
+            protected GuiContainerProperties(GuiContainerProperties properties)
+            {
+                SetAttributeValues(properties);
             }
         }
 

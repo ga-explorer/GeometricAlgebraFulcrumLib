@@ -86,7 +86,7 @@ public class RGaVectorPolynomialInterpolator
                 indexList.Select(i => samplesArray[i]).ToArray();
 
             yield return PolynomialFunction<double>.Create(
-                ScalarProcessorFloat64.DefaultProcessor,
+                ScalarProcessorOfFloat64.DefaultProcessor,
                 Fit.Polynomial(xValues, yValues, PolynomialOrder)
             );
         }

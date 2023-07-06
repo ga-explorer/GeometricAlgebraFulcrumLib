@@ -13,7 +13,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Text
 
         
         private LaTeXComposerEDecimal()
-            : base(ScalarProcessorEDecimal.DefaultProcessor)
+            : base(ScalarProcessorOfEDecimal.DefaultProcessor)
         {
         }
 

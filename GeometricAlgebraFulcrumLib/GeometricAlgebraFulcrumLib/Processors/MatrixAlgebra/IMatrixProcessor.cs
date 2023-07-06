@@ -13,7 +13,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.MatrixAlgebra
     /// </summary>
     /// <typeparam name="TMatrix">The type of matrix objects</typeparam>
     /// <typeparam name="TScalar">The type of matrix scalars</typeparam>
-    public interface IMatrixAlgebraProcessor<TMatrix, TScalar>
+    public interface IMatrixProcessor<TMatrix, TScalar>
         : IScalarProcessor<TScalar>
     {
         TMatrix CreateZeroMatrix(int size);

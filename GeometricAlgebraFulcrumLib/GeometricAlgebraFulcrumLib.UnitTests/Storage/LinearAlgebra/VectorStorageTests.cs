@@ -21,8 +21,8 @@ namespace GeometricAlgebraFulcrumLib.UnitTests.Storage.LinearAlgebra
         private IReadOnlyList<LinVectorSparseStorage<double>> _storageList2;
         private IReadOnlyList<LinVectorArrayStorage<double>> _storageList3;
 
-        public ILinearAlgebraProcessor<double> LinearProcessor
-            => ScalarProcessorFloat64.DefaultProcessor.CreateLinearAlgebraProcessor();
+        public ILinearProcessor<double> LinearProcessor
+            => ScalarProcessorOfFloat64.DefaultProcessor.CreateLinearAlgebraProcessor();
 
         public VectorStorageTests()
         {

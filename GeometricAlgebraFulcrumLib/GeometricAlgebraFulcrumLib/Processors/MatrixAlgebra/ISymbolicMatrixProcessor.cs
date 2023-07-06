@@ -8,8 +8,8 @@
     /// a single symbolic expression tree type.
     /// </summary>
     /// <typeparam name="T">The type of matrix scalars</typeparam>
-    public interface IMatrixAlgebraSymbolicProcessor<T> :
-        IMatrixAlgebraProcessor<T, T>
+    public interface ISymbolicMatrixProcessor<T> :
+        IMatrixProcessor<T, T>
     {
 
     }

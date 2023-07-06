@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using DataStructuresLib.Basic;
-using GraphicsComposerLib.Rendering.BabylonJs.Values;
+﻿using GraphicsComposerLib.Rendering.BabylonJs.Values;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Textures
 {
@@ -10,27 +8,44 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Textures
         public sealed class NoiseTextureProperties :
             BaseTextureProperties
         {
-            public GrBabylonJsFloat32Value? AnimationSpeedFactor { get; set; }
-
-            public GrBabylonJsFloat32Value? Brightness { get; set; }
-
-            public GrBabylonJsFloat32Value? Octaves { get; set; }
-
-            public GrBabylonJsFloat32Value? Persistence { get; set; }
-
-            public GrBabylonJsFloat32Value? Time { get; set; }
-
-        
-            protected override IEnumerable<Pair<string>?> GetNameValuePairs()
+            public GrBabylonJsFloat32Value? AnimationSpeedFactor
             {
-                foreach (var pair in base.GetNameValuePairs())
-                    yield return pair;
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("animationSpeedFactor");
+                set => SetAttributeValue("animationSpeedFactor", value);
+            }
 
-                yield return AnimationSpeedFactor.GetNameValueCodePair("animationSpeedFactor");
-                yield return Brightness.GetNameValueCodePair("brightness");
-                yield return Octaves.GetNameValueCodePair("octaves");
-                yield return Persistence.GetNameValueCodePair("persistence");
-                yield return Time.GetNameValueCodePair("time");
+            public GrBabylonJsFloat32Value? Brightness
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("brightness");
+                set => SetAttributeValue("brightness", value);
+            }
+
+            public GrBabylonJsFloat32Value? Octaves
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("octaves");
+                set => SetAttributeValue("octaves", value);
+            }
+
+            public GrBabylonJsFloat32Value? Persistence
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("persistence");
+                set => SetAttributeValue("persistence", value);
+            }
+
+            public GrBabylonJsFloat32Value? Time
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("time");
+                set => SetAttributeValue("time", value);
+            }
+
+
+            public NoiseTextureProperties()
+            {
+            }
+
+            public NoiseTextureProperties(NoiseTextureProperties properties)
+            {
+                SetAttributeValues(properties);
             }
         }
 
@@ -38,10 +53,10 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Textures
         protected override string ConstructorName
             => "new BABYLON.NoiseProceduralTexture";
     
-        public NoiseTextureProperties? Properties { get; private set; }
+        public NoiseTextureProperties Properties { get; private set; }
             = new NoiseTextureProperties();
 
-        public override GrBabylonJsObjectProperties? ObjectProperties 
+        public override GrBabylonJsObjectProperties ObjectProperties 
             => Properties;
 
 
@@ -56,9 +71,9 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Textures
         }
 
     
-        public GrBabylonJsNoiseTexture SetProperties([NotNull] NoiseTextureProperties? properties)
+        public GrBabylonJsNoiseTexture SetProperties(NoiseTextureProperties properties)
         {
-            Properties = properties;
+            Properties = new NoiseTextureProperties(properties);
 
             return this;
         }

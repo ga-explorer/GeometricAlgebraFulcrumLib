@@ -98,7 +98,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
                     Radius = 1d,
                     SideOrientation = GrBabylonJsMeshOrientation.FrontAndBack,
                     Tessellation = 512,
-                    //Updateable = true
+                    //Updatable = true
                 },
 
                 new GrBabylonJsMesh.MeshProperties
@@ -117,7 +117,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
             //        Subdivisions = 9,
             //        Flat = false,
             //        SideOrientation = GrBabylonJsMeshOrientation.Front,
-            //        //Updateable = true
+            //        //Updatable = true
             //    },
 
             //    new GrBabylonJsMesh.MeshProperties
@@ -136,7 +136,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
                     Diameter = 2d,
                     Segments = 512,
                     SideOrientation = GrBabylonJsMeshOrientation.Back,
-                    //Updateable = true
+                    //Updatable = true
                 },
 
                 new GrBabylonJsMesh.MeshProperties
@@ -154,7 +154,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
                     Diameter = 2d,
                     Segments = 512,
                     SideOrientation = GrBabylonJsMeshOrientation.Front,
-                    //Updateable = true
+                    //Updatable = true
                 },
 
                 new GrBabylonJsMesh.MeshProperties
@@ -176,7 +176,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
                     Subdivisions = 1,
                     Tessellation = 512,
                     SideOrientation = GrBabylonJsMeshOrientation.FrontAndBack,
-                    //Updateable = true
+                    //Updatable = true
                 },
 
                 new GrBabylonJsMesh.MeshProperties
@@ -883,7 +883,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
                     Path = $"{visualElement.Name}Points",
                     Tessellation = 32,
                     Cap = GrBabylonJsMeshCap.StartAndEnd,
-                    Updateable = visualElement.IsAnimated
+                    Updatable = visualElement.IsAnimated
                 },
 
                 new GrBabylonJsMesh.MeshProperties
@@ -911,7 +911,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
                 new GrBabylonJsLines.LinesOptions
                 {
                     Points = $"{visualElement.Name}Points",
-                    Updateable = visualElement.IsAnimated
+                    Updatable = visualElement.IsAnimated
                 },
 
                 new GrBabylonJsLinesMesh.LinesMeshProperties
@@ -943,7 +943,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
                     DashNumber = pointPath.Count * dashedLineStyle.DashPerLine,
                     DashSize = dashedLineStyle.DashOn,
                     GapSize = dashedLineStyle.DashOff,
-                    Updateable = visualElement.IsAnimated
+                    Updatable = visualElement.IsAnimated
                 },
 
                 new GrBabylonJsLinesMesh.LinesMeshProperties
@@ -1229,7 +1229,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
 
             //        },
             //        CloseShape = true,
-            //        Updateable = visualElement.IsAnimated
+            //        Updatable = visualElement.IsAnimated
             //    },
 
             //    new GrBabylonJsMesh.MeshProperties
@@ -1265,7 +1265,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
                     ClosePath = false,
                     PathArray = $"{visualElement.Name}RibbonPathArray",
                     SideOrientation = GrBabylonJsMeshOrientation.FrontAndBack,
-                    Updateable = visualElement.IsAnimated
+                    Updatable = visualElement.IsAnimated
                 },
 
                 new GrBabylonJsMesh.MeshProperties
@@ -1473,7 +1473,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
                     ClosePath = false,
                     PathArray = $"{visualElement.Name}RibbonPathArray",
                     SideOrientation = GrBabylonJsMeshOrientation.FrontAndBack,
-                    Updateable = visualElement.IsAnimated
+                    Updatable = visualElement.IsAnimated
                 },
 
                 new GrBabylonJsMesh.MeshProperties
@@ -1706,7 +1706,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
                     ClosePath = false,
                     PathArray = $"{visualElement.Name}Ribbon1PathArray",
                     SideOrientation = GrBabylonJsMeshOrientation.FrontAndBack,
-                    Updateable = visualElement.IsAnimated
+                    Updatable = visualElement.IsAnimated
                 },
 
                 new GrBabylonJsMesh.MeshProperties
@@ -1725,7 +1725,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
                     ClosePath = false,
                     PathArray = $"{visualElement.Name}Ribbon2PathArray",
                     SideOrientation = GrBabylonJsMeshOrientation.FrontAndBack,
-                    Updateable = visualElement.IsAnimated
+                    Updatable = visualElement.IsAnimated
                 },
 
                 new GrBabylonJsMesh.MeshProperties
@@ -1744,7 +1744,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
                     ClosePath = false,
                     PathArray = $"{visualElement.Name}Ribbon3PathArray",
                     SideOrientation = GrBabylonJsMeshOrientation.FrontAndBack,
-                    Updateable = visualElement.IsAnimated
+                    Updatable = visualElement.IsAnimated
                 },
 
                 new GrBabylonJsMesh.MeshProperties
@@ -2975,11 +2975,11 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
                 new GrBabylonJsEnvironmentHelper.EnvironmentHelperOptions
                 {
                     GroundYBias = 0.01,
-                    SkyBoxColor = Color.LightSkyBlue,
+                    SkyboxColor = Color.LightSkyBlue,
                     GroundColor = Color.White,
                     CreateGround = true,
                     GroundSize = 8,
-                    SkyBoxSize = gridUnitCount + 10
+                    SkyboxSize = gridUnitCount + 10
                 }
             );
 

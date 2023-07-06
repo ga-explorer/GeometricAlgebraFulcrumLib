@@ -9,8 +9,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.Numeric
     public static class MultivectorProductsSample
     {
         // This is a pre-defined scalar processor for numeric scalars
-        public static ScalarProcessorFloat64 ScalarProcessor { get; }
-            = ScalarProcessorFloat64.DefaultProcessor;
+        public static ScalarProcessorOfFloat64 ScalarProcessor { get; }
+            = ScalarProcessorOfFloat64.DefaultProcessor;
             
         // Create a 3-dimensional Euclidean geometric algebra processor based on the
         // selected scalar processor
@@ -33,7 +33,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Numeric
         {
             // This is a pre-defined scalar processor for the standard
             // 64-bit floating point scalars
-            var scalarProcessor = ScalarProcessorFloat64.DefaultProcessor;
+            var scalarProcessor = ScalarProcessorOfFloat64.DefaultProcessor;
 
             // Create a 3-dimensional Euclidean geometric algebra processor based on the
             // selected scalar processor

@@ -8,15 +8,15 @@ namespace GeometricAlgebraFulcrumLib.Processors
     public static class ProcessorFactory
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ScalarSignalFloat64Processor CreateFloat64ScalarSignalProcessor(double samplingRate, int sampleCount)
+        public static ScalarProcessorOfFloat64Signal CreateFloat64ScalarSignalProcessor(double samplingRate, int sampleCount)
         {
-            return ScalarSignalFloat64Processor.Create(samplingRate, sampleCount);
+            return ScalarProcessorOfFloat64Signal.Create(samplingRate, sampleCount);
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static LinearAlgebraProcessor<T> CreateLinearAlgebraProcessor<T>(this IScalarProcessor<T> scalarProcessor)
+        public static LinearProcessor<T> CreateLinearAlgebraProcessor<T>(this IScalarProcessor<T> scalarProcessor)
         {
-            return new LinearAlgebraProcessor<T>(scalarProcessor);
+            return new LinearProcessor<T>(scalarProcessor);
         }
 
         

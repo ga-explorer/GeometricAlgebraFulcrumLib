@@ -10,7 +10,7 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.PowerSystems.G
     {
         public static void Execute()
         {
-            var processor = ScalarProcessorExpr
+            var processor = ScalarProcessorOfWolframExpr
                 .DefaultProcessor
                 .CreateEuclideanRGaProcessor();
 

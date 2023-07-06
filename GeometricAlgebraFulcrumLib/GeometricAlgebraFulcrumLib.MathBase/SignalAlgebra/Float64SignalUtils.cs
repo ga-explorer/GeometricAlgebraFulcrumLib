@@ -200,7 +200,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra
         
         public static Float64Signal GetPeriodicPaddedSignal1(this Float64Signal signal, int trendSampleCount, int polynomialDegree)
         {
-            var scalarProcessor = ScalarProcessorFloat64.DefaultProcessor;
+            var scalarProcessor = ScalarProcessorOfFloat64.DefaultProcessor;
 
             var sampleCount = signal.Count;
 

@@ -87,7 +87,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Graphics.Space2D
 
         
         public IScalarProcessor<double> ScalarProcessor 
-            => ScalarProcessorFloat64.DefaultProcessor;
+            => ScalarProcessorOfFloat64.DefaultProcessor;
         
         public RGaFloat64Processor GeometricProcessor 
             => GraphicsUtils.GeometricProcessor;

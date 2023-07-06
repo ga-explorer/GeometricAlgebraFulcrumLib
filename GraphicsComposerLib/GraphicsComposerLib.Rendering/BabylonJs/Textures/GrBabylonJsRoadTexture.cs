@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using DataStructuresLib.Basic;
-using GraphicsComposerLib.Rendering.BabylonJs.Values;
+﻿using GraphicsComposerLib.Rendering.BabylonJs.Values;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Textures
 {
@@ -10,15 +8,20 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Textures
         public sealed class RoadTextureProperties :
             BaseTextureProperties
         {
-            public GrBabylonJsColor4Value? RoadColor { get; set; }
-
-        
-            protected override IEnumerable<Pair<string>?> GetNameValuePairs()
+            public GrBabylonJsColor4Value? RoadColor
             {
-                foreach (var pair in base.GetNameValuePairs())
-                    yield return pair;
+                get => GetAttributeValueOrNull<GrBabylonJsColor4Value>("roadColor");
+                set => SetAttributeValue("isEnabled", value);
+            }
 
-                yield return RoadColor.GetNameValueCodePair("cloudColor");
+
+            public RoadTextureProperties()
+            {
+            }
+
+            public RoadTextureProperties(RoadTextureProperties properties)
+            {
+                SetAttributeValues(properties);
             }
         }
 
@@ -26,10 +29,10 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Textures
         protected override string ConstructorName
             => "new BABYLON.RoadProceduralTexture";
 
-        public RoadTextureProperties? Properties { get; private set; }
+        public RoadTextureProperties Properties { get; private set; }
             = new RoadTextureProperties();
 
-        public override GrBabylonJsObjectProperties? ObjectProperties 
+        public override GrBabylonJsObjectProperties ObjectProperties 
             => Properties;
 
 
@@ -44,9 +47,9 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Textures
         }
 
     
-        public GrBabylonJsRoadTexture SetProperties([NotNull] RoadTextureProperties? properties)
+        public GrBabylonJsRoadTexture SetProperties(RoadTextureProperties properties)
         {
-            Properties = properties;
+            Properties = new RoadTextureProperties(properties);
 
             return this;
         }

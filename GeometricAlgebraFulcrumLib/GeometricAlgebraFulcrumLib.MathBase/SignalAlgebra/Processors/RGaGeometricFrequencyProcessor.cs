@@ -19,7 +19,7 @@ public abstract class RGaGeometricFrequencyProcessor
         = 100;
 
     public IScalarProcessor<double> ScalarProcessor 
-        => ScalarProcessorFloat64.DefaultProcessor;
+        => ScalarProcessorOfFloat64.DefaultProcessor;
 
     public RGaProcessor<Float64Signal> ScalarSignalProcessor 
         => VectorSignal.Processor;

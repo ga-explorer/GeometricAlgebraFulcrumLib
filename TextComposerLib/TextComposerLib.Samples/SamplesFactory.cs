@@ -210,37 +210,37 @@ namespace TextComposerLib.Samples
             return node;
         }
 
-        private static ISampleTasksTreeNode InitializeDiagramTasks()
-        {
-            var node = new SampleTasksCollection
-            {
-                NodeLabel = "Diagram Composers"
-            };
+        //private static ISampleTasksTreeNode InitializeDiagramTasks()
+        //{
+        //    var node = new SampleTasksCollection
+        //    {
+        //        NodeLabel = "Diagram Composers"
+        //    };
 
-            var childNode = node.AddCollection("GraphViz", "GraphViz Composer");
+        //    var childNode = node.AddCollection("GraphViz", "GraphViz Composer");
 
-            childNode.AddTask(
-                @"GraphViz Example",
-                @"Example for generating dot code for GraphViz and rendering the graph",
-                GraphVizSamples.Task1
-                );
+        //    childNode.AddTask(
+        //        @"GraphViz Example",
+        //        @"Example for generating dot code for GraphViz and rendering the graph",
+        //        GraphVizSamples.Task1
+        //        );
 
-            //childNode = node.AddCollection("SVG", "SVG Composer");
+        //    //childNode = node.AddCollection("SVG", "SVG Composer");
 
-            //childNode.AddTask(
-            //    @"SVG Sample 1",
-            //    @"Example for generating svg",
-            //    SvgSamples.Task1
-            //);
+        //    //childNode.AddTask(
+        //    //    @"SVG Sample 1",
+        //    //    @"Example for generating svg",
+        //    //    SvgSamples.Task1
+        //    //);
 
-            //childNode.AddTask(
-            //    @"SVG Sample 2",
-            //    @"Example for generating a rectangular grid using svg",
-            //    SvgSamples.Task2
-            //);
+        //    //childNode.AddTask(
+        //    //    @"SVG Sample 2",
+        //    //    @"Example for generating a rectangular grid using svg",
+        //    //    SvgSamples.Task2
+        //    //);
 
-            return node;
-        }
+        //    return node;
+        //}
 
 
 
@@ -254,7 +254,7 @@ namespace TextComposerLib.Samples
                 InitializeCodeTasks(),
                 InitializeFileTasks(),
                 InitializeLogTasks(),
-                InitializeDiagramTasks()
+                //InitializeDiagramTasks()
             };
 
             return samplesList;

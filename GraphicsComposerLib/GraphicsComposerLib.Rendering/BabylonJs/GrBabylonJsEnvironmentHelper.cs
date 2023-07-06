@@ -1,5 +1,4 @@
-﻿using DataStructuresLib.Basic;
-using GraphicsComposerLib.Rendering.BabylonJs.Values;
+﻿using GraphicsComposerLib.Rendering.BabylonJs.Values;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs
 {
@@ -14,87 +13,170 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
         {
             // groundMirrorTextureType
 
-            public GrBabylonJsFloat32Value? BackgroundYRotation { get; set; }
-
-            public GrBabylonJsFloat32Value? CameraContrast { get; set; }
-
-            public GrBabylonJsFloat32Value? CameraExposure { get; set; }
-
-            public GrBabylonJsBooleanValue? CreateGround { get; set; }
-
-            public GrBabylonJsBooleanValue? CreateSkyBox { get; set; }
-
-            public GrBabylonJsBooleanValue? EnableGroundMirror { get; set; }
-        
-            public GrBabylonJsBooleanValue? EnableGroundShadow { get; set; }
-
-            public GrBabylonJsBooleanValue? ToneMappingEnabled { get; set; }
-
-            public GrBabylonJsTextureValue? EnvironmentTexture { get; set; }
-
-            public GrBabylonJsColor3Value? GroundColor { get; set; }
-
-            public GrBabylonJsFloat32Value? GroundMirrorAmount { get; set; }
-
-            public GrBabylonJsFloat32Value? GroundMirrorBlurKernel { get; set; }
-
-            public GrBabylonJsFloat32Value? GroundMirrorFallOffDistance { get; set; }
-
-            public GrBabylonJsFloat32Value? GroundMirrorFresnelWeight { get; set; }
-
-            public GrBabylonJsFloat32Value? GroundMirrorSizeRatio { get; set; }
-
-            public GrBabylonJsFloat32Value? GroundOpacity { get; set; }
-
-            public GrBabylonJsFloat32Value? GroundShadowLevel { get; set; }
-
-            public GrBabylonJsFloat32Value? GroundSize { get; set; }
-
-            public GrBabylonJsTextureValue? GroundTexture { get; set; }
-
-            public GrBabylonJsFloat32Value? GroundYBias { get; set; }
-
-            public GrBabylonJsVector3Value? RootPosition { get; set; }
-
-            public GrBabylonJsBooleanValue? SizeAuto { get; set; }
-
-            public GrBabylonJsColor3Value? SkyBoxColor { get; set; }
-
-            public GrBabylonJsBooleanValue? SetupImageProcessing { get; set; }
-
-            public GrBabylonJsFloat32Value? SkyBoxSize { get; set; }
-
-            public GrBabylonJsTextureValue? SkyBoxTexture { get; set; }
-
-
-            protected override IEnumerable<Pair<string>?> GetNameValuePairs()
+            public GrBabylonJsFloat32Value? BackgroundYRotation
             {
-                yield return BackgroundYRotation.GetNameValueCodePair("backgroundYRotation");
-                yield return CameraContrast.GetNameValueCodePair("cameraContrast");
-                yield return CameraExposure.GetNameValueCodePair("cameraExposure");
-                yield return CreateGround.GetNameValueCodePair("createGround");
-                yield return CreateSkyBox.GetNameValueCodePair("createSkybox");
-                yield return EnableGroundMirror.GetNameValueCodePair("enableGroundMirror");
-                yield return EnableGroundShadow.GetNameValueCodePair("enableGroundShadow");
-                yield return ToneMappingEnabled.GetNameValueCodePair("toneMappingEnabled");
-                yield return EnvironmentTexture.GetNameValueCodePair("environmentTexture");
-                yield return GroundColor.GetNameValueCodePair("groundColor");
-                yield return GroundMirrorAmount.GetNameValueCodePair("groundMirrorAmount");
-                yield return GroundMirrorBlurKernel.GetNameValueCodePair("groundMirrorBlurKernel");
-                yield return GroundMirrorFallOffDistance.GetNameValueCodePair("groundMirrorFallOffDistance");
-                yield return GroundMirrorFresnelWeight.GetNameValueCodePair("groundMirrorFresnelWeight");
-                yield return GroundMirrorSizeRatio.GetNameValueCodePair("groundMirrorSizeRatio");
-                yield return GroundOpacity.GetNameValueCodePair("groundOpacity");
-                yield return GroundShadowLevel.GetNameValueCodePair("groundShadowLevel");
-                yield return GroundSize.GetNameValueCodePair("groundSize");
-                yield return GroundTexture.GetNameValueCodePair("groundTexture");
-                yield return GroundYBias.GetNameValueCodePair("groundYBias");
-                yield return RootPosition.GetNameValueCodePair("rootPosition");
-                yield return SizeAuto.GetNameValueCodePair("sizeAuto");
-                yield return SkyBoxColor.GetNameValueCodePair("skyboxColor");
-                yield return SetupImageProcessing.GetNameValueCodePair("setupImageProcessing");
-                yield return SkyBoxSize.GetNameValueCodePair("skyboxSize");
-                yield return SkyBoxTexture.GetNameValueCodePair("skyboxTexture");
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("backgroundYRotation");
+                set => SetAttributeValue("backgroundYRotation", value);
+            }
+
+            public GrBabylonJsFloat32Value? CameraContrast
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("cameraContrast");
+                set => SetAttributeValue("cameraContrast", value);
+            }
+
+            public GrBabylonJsFloat32Value? CameraExposure
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("cameraExposure");
+                set => SetAttributeValue("cameraExposure", value);
+            }
+
+            public GrBabylonJsBooleanValue? CreateGround
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("createGround");
+                set => SetAttributeValue("createGround", value);
+            }
+
+            public GrBabylonJsBooleanValue? CreateSkybox
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("createSkybox");
+                set => SetAttributeValue("createSkybox", value);
+            }
+
+            public GrBabylonJsBooleanValue? EnableGroundMirror
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("enableGroundMirror");
+                set => SetAttributeValue("enableGroundMirror", value);
+            }
+
+            public GrBabylonJsBooleanValue? EnableGroundShadow
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("enableGroundShadow");
+                set => SetAttributeValue("enableGroundShadow", value);
+            }
+
+            public GrBabylonJsBooleanValue? ToneMappingEnabled
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("toneMappingEnabled");
+                set => SetAttributeValue("toneMappingEnabled", value);
+            }
+
+            public GrBabylonJsTextureValue? EnvironmentTexture
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsTextureValue>("environmentTexture");
+                set => SetAttributeValue("environmentTexture", value);
+            }
+
+            public GrBabylonJsColor3Value? GroundColor
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsColor3Value>("groundColor");
+                set => SetAttributeValue("groundColor", value);
+            }
+
+            public GrBabylonJsFloat32Value? GroundMirrorAmount
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("groundMirrorAmount");
+                set => SetAttributeValue("groundMirrorAmount", value);
+            }
+
+            public GrBabylonJsFloat32Value? GroundMirrorBlurKernel
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("groundMirrorBlurKernel");
+                set => SetAttributeValue("groundMirrorBlurKernel", value);
+            }
+
+            public GrBabylonJsFloat32Value? GroundMirrorFallOffDistance
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("groundMirrorFallOffDistance");
+                set => SetAttributeValue("groundMirrorFallOffDistance", value);
+            }
+
+            public GrBabylonJsFloat32Value? GroundMirrorFresnelWeight
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("groundMirrorFresnelWeight");
+                set => SetAttributeValue("groundMirrorFresnelWeight", value);
+            }
+
+            public GrBabylonJsFloat32Value? GroundMirrorSizeRatio
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("groundMirrorSizeRatio");
+                set => SetAttributeValue("groundMirrorSizeRatio", value);
+            }
+
+            public GrBabylonJsFloat32Value? GroundOpacity
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("groundOpacity");
+                set => SetAttributeValue("groundOpacity", value);
+            }
+
+            public GrBabylonJsFloat32Value? GroundShadowLevel
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("groundShadowLevel");
+                set => SetAttributeValue("groundShadowLevel", value);
+            }
+
+            public GrBabylonJsFloat32Value? GroundSize
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("groundSize");
+                set => SetAttributeValue("groundSize", value);
+            }
+
+            public GrBabylonJsTextureValue? GroundTexture
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsTextureValue>("groundTexture");
+                set => SetAttributeValue("groundTexture", value);
+            }
+
+            public GrBabylonJsFloat32Value? GroundYBias
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("groundYBias");
+                set => SetAttributeValue("groundYBias", value);
+            }
+
+            public GrBabylonJsVector3Value? RootPosition
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsVector3Value>("rootPosition");
+                set => SetAttributeValue("rootPosition", value);
+            }
+
+            public GrBabylonJsBooleanValue? SizeAuto
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("sizeAuto");
+                set => SetAttributeValue("sizeAuto", value);
+            }
+
+            public GrBabylonJsColor3Value? SkyboxColor
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsColor3Value>("skyboxColor");
+                set => SetAttributeValue("skyboxColor", value);
+            }
+
+            public GrBabylonJsBooleanValue? SetupImageProcessing
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("setupImageProcessing");
+                set => SetAttributeValue("setupImageProcessing", value);
+            }
+
+            public GrBabylonJsFloat32Value? SkyboxSize
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("skyboxSize");
+                set => SetAttributeValue("skyboxSize", value);
+            }
+
+            public GrBabylonJsTextureValue? SkyboxTexture
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsTextureValue>("skyBoxTexture");
+                set => SetAttributeValue("skyBoxTexture", value);
+            }
+
+
+            public EnvironmentHelperOptions()
+            {
+            }
+
+            public EnvironmentHelperOptions(EnvironmentHelperOptions options)
+            {
+                SetAttributeValues(options);
             }
         }
 
@@ -103,106 +185,190 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
         {
             // groundMirrorTextureType
 
-            public GrBabylonJsFloat32Value? BackgroundYRotation { get; set; }
-
-            public GrBabylonJsFloat32Value? CameraContrast { get; set; }
-
-            public GrBabylonJsFloat32Value? CameraExposure { get; set; }
-
-            public GrBabylonJsBooleanValue? CreateGround { get; set; }
-
-            public GrBabylonJsBooleanValue? CreateSkyBox { get; set; }
-
-            public GrBabylonJsBooleanValue? EnableGroundMirror { get; set; }
-        
-            public GrBabylonJsBooleanValue? EnableGroundShadow { get; set; }
-
-            public GrBabylonJsBooleanValue? ToneMappingEnabled { get; set; }
-
-            public GrBabylonJsTextureValue? EnvironmentTexture { get; set; }
-
-            public GrBabylonJsColor3Value? GroundColor { get; set; }
-
-            public GrBabylonJsFloat32Value? GroundMirrorAmount { get; set; }
-
-            public GrBabylonJsFloat32Value? GroundMirrorBlurKernel { get; set; }
-
-            public GrBabylonJsFloat32Value? GroundMirrorFallOffDistance { get; set; }
-
-            public GrBabylonJsFloat32Value? GroundMirrorFresnelWeight { get; set; }
-
-            public GrBabylonJsFloat32Value? GroundMirrorSizeRatio { get; set; }
-
-            public GrBabylonJsFloat32Value? GroundOpacity { get; set; }
-
-            public GrBabylonJsFloat32Value? GroundShadowLevel { get; set; }
-
-            public GrBabylonJsFloat32Value? GroundSize { get; set; }
-
-            public GrBabylonJsTextureValue? GroundTexture { get; set; }
-
-            public GrBabylonJsFloat32Value? GroundYBias { get; set; }
-
-            public GrBabylonJsVector3Value? RootPosition { get; set; }
-
-            public GrBabylonJsBooleanValue? SizeAuto { get; set; }
-
-            public GrBabylonJsColor3Value? SkyBoxColor { get; set; }
-
-            public GrBabylonJsBooleanValue? SetupImageProcessing { get; set; }
-
-            public GrBabylonJsFloat32Value? SkyBoxSize { get; set; }
-
-            public GrBabylonJsTextureValue? SkyBoxTexture { get; set; }
-
-
-            protected override IEnumerable<Pair<string>?> GetNameValuePairs()
+            public GrBabylonJsFloat32Value? BackgroundYRotation
             {
-                yield return BackgroundYRotation.GetNameValueCodePair("backgroundYRotation");
-                yield return CameraContrast.GetNameValueCodePair("cameraContrast");
-                yield return CameraExposure.GetNameValueCodePair("cameraExposure");
-                yield return CreateGround.GetNameValueCodePair("createGround");
-                yield return CreateSkyBox.GetNameValueCodePair("createSkybox");
-                yield return EnableGroundMirror.GetNameValueCodePair("enableGroundMirror");
-                yield return EnableGroundShadow.GetNameValueCodePair("enableGroundShadow");
-                yield return ToneMappingEnabled.GetNameValueCodePair("toneMappingEnabled");
-                yield return EnvironmentTexture.GetNameValueCodePair("environmentTexture");
-                yield return GroundColor.GetNameValueCodePair("groundColor");
-                yield return GroundMirrorAmount.GetNameValueCodePair("groundMirrorAmount");
-                yield return GroundMirrorBlurKernel.GetNameValueCodePair("groundMirrorBlurKernel");
-                yield return GroundMirrorFallOffDistance.GetNameValueCodePair("groundMirrorFallOffDistance");
-                yield return GroundMirrorFresnelWeight.GetNameValueCodePair("groundMirrorFresnelWeight");
-                yield return GroundMirrorSizeRatio.GetNameValueCodePair("groundMirrorSizeRatio");
-                yield return GroundOpacity.GetNameValueCodePair("groundOpacity");
-                yield return GroundShadowLevel.GetNameValueCodePair("groundShadowLevel");
-                yield return GroundSize.GetNameValueCodePair("groundSize");
-                yield return GroundTexture.GetNameValueCodePair("groundTexture");
-                yield return GroundYBias.GetNameValueCodePair("groundYBias");
-                yield return RootPosition.GetNameValueCodePair("rootPosition");
-                yield return SizeAuto.GetNameValueCodePair("sizeAuto");
-                yield return SkyBoxColor.GetNameValueCodePair("skyboxColor");
-                yield return SetupImageProcessing.GetNameValueCodePair("setupImageProcessing");
-                yield return SkyBoxSize.GetNameValueCodePair("skyboxSize");
-                yield return SkyBoxTexture.GetNameValueCodePair("skyboxTexture");
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("backgroundYRotation");
+                set => SetAttributeValue("backgroundYRotation", value);
             }
+
+            public GrBabylonJsFloat32Value? CameraContrast
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("cameraContrast");
+                set => SetAttributeValue("cameraContrast", value);
+            }
+
+            public GrBabylonJsFloat32Value? CameraExposure
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("cameraExposure");
+                set => SetAttributeValue("cameraExposure", value);
+            }
+
+            public GrBabylonJsBooleanValue? CreateGround
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("createGround");
+                set => SetAttributeValue("createGround", value);
+            }
+
+            public GrBabylonJsBooleanValue? CreateSkybox
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("createSkybox");
+                set => SetAttributeValue("createSkybox", value);
+            }
+
+            public GrBabylonJsBooleanValue? EnableGroundMirror
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("enableGroundMirror");
+                set => SetAttributeValue("enableGroundMirror", value);
+            }
+
+            public GrBabylonJsBooleanValue? EnableGroundShadow
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("enableGroundShadow");
+                set => SetAttributeValue("enableGroundShadow", value);
+            }
+
+            public GrBabylonJsBooleanValue? ToneMappingEnabled
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("toneMappingEnabled");
+                set => SetAttributeValue("toneMappingEnabled", value);
+            }
+
+            public GrBabylonJsTextureValue? EnvironmentTexture
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsTextureValue>("environmentTexture");
+                set => SetAttributeValue("environmentTexture", value);
+            }
+
+            public GrBabylonJsColor3Value? GroundColor
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsColor3Value>("groundColor");
+                set => SetAttributeValue("groundColor", value);
+            }
+
+            public GrBabylonJsFloat32Value? GroundMirrorAmount
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("groundMirrorAmount");
+                set => SetAttributeValue("groundMirrorAmount", value);
+            }
+
+            public GrBabylonJsFloat32Value? GroundMirrorBlurKernel
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("groundMirrorBlurKernel");
+                set => SetAttributeValue("groundMirrorBlurKernel", value);
+            }
+
+            public GrBabylonJsFloat32Value? GroundMirrorFallOffDistance
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("groundMirrorFallOffDistance");
+                set => SetAttributeValue("groundMirrorFallOffDistance", value);
+            }
+
+            public GrBabylonJsFloat32Value? GroundMirrorFresnelWeight
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("groundMirrorFresnelWeight");
+                set => SetAttributeValue("groundMirrorFresnelWeight", value);
+            }
+
+            public GrBabylonJsFloat32Value? GroundMirrorSizeRatio
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("groundMirrorSizeRatio");
+                set => SetAttributeValue("groundMirrorSizeRatio", value);
+            }
+
+            public GrBabylonJsFloat32Value? GroundOpacity
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("groundOpacity");
+                set => SetAttributeValue("groundOpacity", value);
+            }
+
+            public GrBabylonJsFloat32Value? GroundShadowLevel
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("groundShadowLevel");
+                set => SetAttributeValue("groundShadowLevel", value);
+            }
+
+            public GrBabylonJsFloat32Value? GroundSize
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("groundSize");
+                set => SetAttributeValue("groundSize", value);
+            }
+
+            public GrBabylonJsTextureValue? GroundTexture
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsTextureValue>("groundTexture");
+                set => SetAttributeValue("groundTexture", value);
+            }
+
+            public GrBabylonJsFloat32Value? GroundYBias
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("groundYBias");
+                set => SetAttributeValue("groundYBias", value);
+            }
+
+            public GrBabylonJsVector3Value? RootPosition
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsVector3Value>("rootPosition");
+                set => SetAttributeValue("rootPosition", value);
+            }
+
+            public GrBabylonJsBooleanValue? SizeAuto
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("sizeAuto");
+                set => SetAttributeValue("sizeAuto", value);
+            }
+
+            public GrBabylonJsColor3Value? SkyboxColor
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsColor3Value>("skyboxColor");
+                set => SetAttributeValue("skyboxColor", value);
+            }
+
+            public GrBabylonJsBooleanValue? SetupImageProcessing
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("setupImageProcessing");
+                set => SetAttributeValue("setupImageProcessing", value);
+            }
+
+            public GrBabylonJsFloat32Value? SkyboxSize
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("skyboxSize");
+                set => SetAttributeValue("skyboxSize", value);
+            }
+
+            public GrBabylonJsTextureValue? SkyboxTexture
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsTextureValue>("skyBoxTexture");
+                set => SetAttributeValue("skyBoxTexture", value);
+            }
+
+
+            public EnvironmentHelperProperties()
+            {
+            }
+
+            public EnvironmentHelperProperties(EnvironmentHelperProperties properties)
+            {
+                SetAttributeValues(properties);
+            }
+            
         }
 
 
         public GrBabylonJsScene ParentScene { get; set; }
 
-        protected override string ConstructorName 
+        protected override string ConstructorName
             => $"{ParentScene.ConstName}.createDefaultEnvironment";
 
-        public EnvironmentHelperOptions? Options { get; private set; } 
+        public EnvironmentHelperOptions Options { get; private set; }
             = new EnvironmentHelperOptions();
 
-        public EnvironmentHelperProperties? Properties { get; private set; } 
+        public EnvironmentHelperProperties Properties { get; private set; }
             = new EnvironmentHelperProperties();
 
-        public override GrBabylonJsObjectOptions? ObjectOptions 
+        public override GrBabylonJsObjectOptions ObjectOptions
             => Options;
 
-        public override GrBabylonJsObjectProperties? ObjectProperties 
+        public override GrBabylonJsObjectProperties ObjectProperties
             => Properties;
 
 
@@ -215,14 +381,14 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
 
         public GrBabylonJsEnvironmentHelper SetOptions(EnvironmentHelperOptions options)
         {
-            Options = options;
+            Options = new EnvironmentHelperOptions(options);
 
             return this;
         }
 
         public GrBabylonJsEnvironmentHelper SetProperties(EnvironmentHelperProperties properties)
         {
-            Properties = properties;
+            Properties = new EnvironmentHelperProperties(properties);
 
             return this;
         }
@@ -230,7 +396,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
 
         protected override IEnumerable<string> GetConstructorArguments()
         {
-            if (Options is null) yield break;
+            if (Options.Count == 0) yield break;
             yield return Options.GetCode();
         }
     }

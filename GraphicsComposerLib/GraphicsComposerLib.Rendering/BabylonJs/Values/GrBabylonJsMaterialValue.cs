@@ -1,9 +1,10 @@
-﻿using GraphicsComposerLib.Rendering.BabylonJs.Materials;
+﻿using DataStructuresLib.AttributeSet;
+using GraphicsComposerLib.Rendering.BabylonJs.Materials;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Values
 {
     public sealed class GrBabylonJsMaterialValue :
-        GrBabylonJsValue<GrBabylonJsMaterial>
+        SparseCodeAttributeValue<GrBabylonJsMaterial>
     {
         public static implicit operator GrBabylonJsMaterialValue(string valueText)
         {

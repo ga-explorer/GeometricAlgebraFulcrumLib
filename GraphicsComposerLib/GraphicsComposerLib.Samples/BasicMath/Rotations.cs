@@ -1,8 +1,7 @@
 ﻿using System;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Constants;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Matrices;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Basis;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Matrices;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 
 namespace GraphicsComposerLib.Samples.BasicMath
 {
@@ -12,17 +11,17 @@ namespace GraphicsComposerLib.Samples.BasicMath
         {
             var axisArray = new []
             {
-                Axis3D.PositiveX,
-                Axis3D.NegativeX,
-                Axis3D.PositiveY,
-                Axis3D.NegativeY,
-                Axis3D.PositiveZ,
-                Axis3D.NegativeZ
+                LinUnitBasisVector3D.PositiveX,
+                LinUnitBasisVector3D.NegativeX,
+                LinUnitBasisVector3D.PositiveY,
+                LinUnitBasisVector3D.NegativeY,
+                LinUnitBasisVector3D.PositiveZ,
+                LinUnitBasisVector3D.NegativeZ
             };
 
             var vectorsArray = new []
             {
-                new Float64Tuple3D(1, 2, 3).ToUnitVector()
+                Float64Vector3D.Create(1, 2, 3).ToUnitVector()
             };
 
             foreach (var vector in vectorsArray)
@@ -34,7 +33,7 @@ namespace GraphicsComposerLib.Samples.BasicMath
                 {
                     var matrix = SquareMatrix3.CreateAxisToVectorRotationMatrix3D(axis, vector);
 
-                    Console.WriteLine($"Axis: {axis.GetVector3D()}");
+                    Console.WriteLine($"Axis: {axis.ToVector3D()}");
                     Console.WriteLine($"Vector: {vector}");
                     Console.WriteLine($"Matrix: {matrix}");
                     Console.WriteLine($"Matrix determinant: {matrix.Determinant}");
@@ -48,7 +47,7 @@ namespace GraphicsComposerLib.Samples.BasicMath
                 {
                     var matrix = SquareMatrix3.CreateVectorToAxisRotationMatrix3D(vector, axis);
 
-                    Console.WriteLine($"Axis: {axis.GetVector3D()}");
+                    Console.WriteLine($"Axis: {axis.ToVector3D()}");
                     Console.WriteLine($"Vector: {vector}");
                     Console.WriteLine($"Matrix: {matrix}");
                     Console.WriteLine($"Matrix determinant: {matrix.Determinant}");

@@ -1,9 +1,10 @@
-﻿using GraphicsComposerLib.Rendering.BabylonJs.Constants;
+﻿using DataStructuresLib.AttributeSet;
+using GraphicsComposerLib.Rendering.BabylonJs.Constants;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Values
 {
     public sealed class GrBabylonJsCameraFovModeValue :
-        GrBabylonJsValue<GrBabylonJsCameraFovMode>
+        SparseCodeAttributeValue<GrBabylonJsCameraFovMode>
     {
         public static implicit operator GrBabylonJsCameraFovModeValue(string valueText)
         {

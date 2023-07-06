@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using DataStructuresLib.Basic;
-using GraphicsComposerLib.Rendering.BabylonJs.Values;
+﻿using GraphicsComposerLib.Rendering.BabylonJs.Values;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
 {
@@ -13,42 +11,80 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
         public sealed class CapsuleOptions :
             GrBabylonJsObjectOptions
         {
-            public GrBabylonJsInt32Value? BottomCapSubdivisions { get; set; }
-
-            public GrBabylonJsInt32Value? TopCapSubdivisions { get; set; }
-
-            public GrBabylonJsInt32Value? CapSubdivisions { get; set; }
-
-            public GrBabylonJsInt32Value? Subdivisions { get; set; }
-
-            public GrBabylonJsInt32Value? Tessellation { get; set; }
-
-            public GrBabylonJsFloat32Value? Height { get; set; }
-
-            public GrBabylonJsFloat32Value? Radius { get; set; }
-
-            public GrBabylonJsFloat32Value? RadiusBottom { get; set; }
-
-            public GrBabylonJsFloat32Value? RadiusTop { get; set; }
-
-            public GrBabylonJsVector3Value? Orientation { get; set; }
-
-            public GrBabylonJsBooleanValue? Updateable { get; set; }
-
-
-            protected override IEnumerable<Pair<string>?> GetNameValuePairs()
+            public GrBabylonJsInt32Value? BottomCapSubdivisions
             {
-                yield return BottomCapSubdivisions.GetNameValueCodePair("bottomCapSubdivisions");
-                yield return TopCapSubdivisions.GetNameValueCodePair("topCapSubdivisions");
-                yield return CapSubdivisions.GetNameValueCodePair("capSubdivisions");
-                yield return Subdivisions.GetNameValueCodePair("subdivisions");
-                yield return Tessellation.GetNameValueCodePair("tessellation");
-                yield return Height.GetNameValueCodePair("height");
-                yield return Radius.GetNameValueCodePair("radius");
-                yield return RadiusBottom.GetNameValueCodePair("radiusBottom");
-                yield return RadiusTop.GetNameValueCodePair("radiusTop");
-                yield return Orientation.GetNameValueCodePair("orientation");
-                yield return Updateable.GetNameValueCodePair("updatable");
+                get => GetAttributeValueOrNull<GrBabylonJsInt32Value>("bottomCapSubdivisions");
+                set => SetAttributeValue("bottomCapSubdivisions", value);
+            }
+
+            public GrBabylonJsInt32Value? TopCapSubdivisions
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsInt32Value>("topCapSubdivisions");
+                set => SetAttributeValue("topCapSubdivisions", value);
+            }
+
+            public GrBabylonJsInt32Value? CapSubdivisions
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsInt32Value>("capSubdivisions");
+                set => SetAttributeValue("capSubdivisions", value);
+            }
+
+            public GrBabylonJsInt32Value? Subdivisions
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsInt32Value>("subdivisions");
+                set => SetAttributeValue("subdivisions", value);
+            }
+
+            public GrBabylonJsInt32Value? Tessellation
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsInt32Value>("tessellation");
+                set => SetAttributeValue("tessellation", value);
+            }
+
+            public GrBabylonJsFloat32Value? Height
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("height");
+                set => SetAttributeValue("height", value);
+            }
+
+            public GrBabylonJsFloat32Value? Radius
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("radius");
+                set => SetAttributeValue("radius", value);
+            }
+
+            public GrBabylonJsFloat32Value? RadiusBottom
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("radiusBottom");
+                set => SetAttributeValue("radiusBottom", value);
+            }
+
+            public GrBabylonJsFloat32Value? RadiusTop
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("radiusTop");
+                set => SetAttributeValue("radiusTop", value);
+            }
+
+            public GrBabylonJsVector3Value? Orientation
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsVector3Value>("orientation");
+                set => SetAttributeValue("orientation", value);
+            }
+
+            public GrBabylonJsBooleanValue? Updatable
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("updatable");
+                set => SetAttributeValue("updatable", value);
+            }
+
+
+            public CapsuleOptions()
+            {
+            }
+
+            public CapsuleOptions(CapsuleOptions options)
+            {
+                SetAttributeValues(options);
             }
         }
 
@@ -56,34 +92,34 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
         protected override string ConstructorName
             => "BABYLON.MeshBuilder.CreateCapsule";
 
-        public CapsuleOptions? Options { get; private set; }
+        public CapsuleOptions Options { get; private set; }
             = new CapsuleOptions();
 
-        public override GrBabylonJsObjectOptions? ObjectOptions 
+        public override GrBabylonJsObjectOptions ObjectOptions
             => Options;
 
 
-        public GrBabylonJsCapsule(string constName) 
+        public GrBabylonJsCapsule(string constName)
             : base(constName)
         {
         }
-    
-        public GrBabylonJsCapsule(string constName, GrBabylonJsSceneValue scene) 
+
+        public GrBabylonJsCapsule(string constName, GrBabylonJsSceneValue scene)
             : base(constName, scene)
         {
         }
 
 
-        public GrBabylonJsCapsule SetOptions([NotNull] CapsuleOptions? options)
+        public GrBabylonJsCapsule SetOptions(CapsuleOptions options)
         {
-            Options = options;
+            Options = new CapsuleOptions(options);
 
             return this;
         }
 
-        public GrBabylonJsCapsule SetProperties([NotNull] MeshProperties? properties)
+        public GrBabylonJsCapsule SetProperties(MeshProperties properties)
         {
-            Properties = properties;
+            Properties = new MeshProperties(properties);
 
             return this;
         }

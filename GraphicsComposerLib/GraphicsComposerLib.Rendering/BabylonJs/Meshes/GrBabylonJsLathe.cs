@@ -1,5 +1,4 @@
-﻿using DataStructuresLib.Basic;
-using GraphicsComposerLib.Rendering.BabylonJs.Values;
+﻿using GraphicsComposerLib.Rendering.BabylonJs.Values;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes;
 
@@ -13,68 +12,112 @@ public sealed class GrBabylonJsLathe :
     public sealed class LatheOptions :
         GrBabylonJsObjectOptions
     {
-        public GrBabylonJsVector3ArrayValue? Shape { get; set; }
-
-        public GrBabylonJsMeshValue? Instance { get; set; }
-
-        public GrBabylonJsInt32Value? Clip { get; set; }
-
-        public GrBabylonJsFloat32Value? Arc { get; set; }
-
-        public GrBabylonJsFloat32Value? Radius { get; set; }
-
-        public GrBabylonJsBooleanValue? Closed { get; set; }
-        
-        public GrBabylonJsInt32Value? Tessellation { get; set; }
-    
-        public GrBabylonJsMeshCapValue? Cap { get; set; }
-
-        public GrBabylonJsMeshOrientationValue? SideOrientation { get; set; }
-
-        public GrBabylonJsVector4Value? FrontUVs { get; set; }
-
-        public GrBabylonJsVector4Value? BackUVs { get; set; }
-    
-        public GrBabylonJsBooleanValue? InvertUV { get; set; }
-    
-        public GrBabylonJsBooleanValue? Updateable { get; set; }
-
-
-        protected override IEnumerable<Pair<string>?> GetNameValuePairs()
+        public GrBabylonJsVector3ArrayValue? Shape
         {
-            yield return Shape.GetNameValueCodePair("shape");
-            yield return Arc.GetNameValueCodePair("arc");
-            yield return Radius.GetNameValueCodePair("radius");
-            yield return Closed.GetNameValueCodePair("closed");
-            yield return Clip.GetNameValueCodePair("clip");
-            yield return Instance.GetNameValueCodePair("instance");
-            yield return Tessellation.GetNameValueCodePair("tessellation");
-            yield return Cap.GetNameValueCodePair("cap");
-            yield return SideOrientation.GetNameValueCodePair("sideOrientation");
-            yield return FrontUVs.GetNameValueCodePair("frontUVs");
-            yield return BackUVs.GetNameValueCodePair("backUVs");
-            yield return Updateable.GetNameValueCodePair("updatable");
-            yield return InvertUV.GetNameValueCodePair("invertUV");
+            get => GetAttributeValueOrNull<GrBabylonJsVector3ArrayValue>("shape");
+            set => SetAttributeValue("shape", value);
+        }
+
+        public GrBabylonJsMeshValue? Instance
+        {
+            get => GetAttributeValueOrNull<GrBabylonJsMeshValue>("instance");
+            set => SetAttributeValue("instance", value);
+        }
+
+        public GrBabylonJsInt32Value? Clip
+        {
+            get => GetAttributeValueOrNull<GrBabylonJsInt32Value>("clip");
+            set => SetAttributeValue("clip", value);
+        }
+
+        public GrBabylonJsFloat32Value? Arc
+        {
+            get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("arc");
+            set => SetAttributeValue("arc", value);
+        }
+
+        public GrBabylonJsFloat32Value? Radius
+        {
+            get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("radius");
+            set => SetAttributeValue("radius", value);
+        }
+
+        public GrBabylonJsBooleanValue? Closed
+        {
+            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("closed");
+            set => SetAttributeValue("closed", value);
+        }
+
+        public GrBabylonJsInt32Value? Tessellation
+        {
+            get => GetAttributeValueOrNull<GrBabylonJsInt32Value>("tessellation");
+            set => SetAttributeValue("tessellation", value);
+        }
+
+        public GrBabylonJsMeshCapValue? Cap
+        {
+            get => GetAttributeValueOrNull<GrBabylonJsMeshCapValue>("cap");
+            set => SetAttributeValue("cap", value);
+        }
+
+        public GrBabylonJsMeshOrientationValue? SideOrientation
+        {
+            get => GetAttributeValueOrNull<GrBabylonJsMeshOrientationValue>("sideOrientation");
+            set => SetAttributeValue("sideOrientation", value);
+        }
+
+        public GrBabylonJsVector4Value? FrontUVs
+        {
+            get => GetAttributeValueOrNull<GrBabylonJsVector4Value>("frontUVs");
+            set => SetAttributeValue("frontUVs", value);
+        }
+
+        public GrBabylonJsVector4Value? BackUVs
+        {
+            get => GetAttributeValueOrNull<GrBabylonJsVector4Value>("backUVs");
+            set => SetAttributeValue("backUVs", value);
+        }
+
+        public GrBabylonJsBooleanValue? InvertUV
+        {
+            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("invertUV");
+            set => SetAttributeValue("invertUV", value);
+        }
+
+        public GrBabylonJsBooleanValue? Updatable
+        {
+            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("updatable");
+            set => SetAttributeValue("updatable", value);
+        }
+
+
+        public LatheOptions()
+        {
+        }
+
+        public LatheOptions(LatheOptions options)
+        {
+            SetAttributeValues(options);
         }
     }
-    
+
     protected override string ConstructorName
         => "BABYLON.MeshBuilder.CreateLathe";
 
-    public LatheOptions? Options { get; private set; }
+    public LatheOptions Options { get; private set; }
         = new LatheOptions();
 
-    public override GrBabylonJsObjectOptions? ObjectOptions 
+    public override GrBabylonJsObjectOptions ObjectOptions
         => Options;
 
 
-    public GrBabylonJsLathe(string constName) 
+    public GrBabylonJsLathe(string constName)
         : base(constName)
     {
         UseLetDeclaration = true;
     }
-    
-    public GrBabylonJsLathe(string constName, GrBabylonJsSceneValue scene) 
+
+    public GrBabylonJsLathe(string constName, GrBabylonJsSceneValue scene)
         : base(constName, scene)
     {
         UseLetDeclaration = true;
@@ -83,14 +126,14 @@ public sealed class GrBabylonJsLathe :
 
     public GrBabylonJsLathe SetOptions(LatheOptions options)
     {
-        Options = options;
+        Options = new LatheOptions(options);
 
         return this;
     }
 
     public GrBabylonJsLathe SetProperties(MeshProperties properties)
     {
-        Properties = properties;
+        Properties = new MeshProperties(properties);
 
         return this;
     }

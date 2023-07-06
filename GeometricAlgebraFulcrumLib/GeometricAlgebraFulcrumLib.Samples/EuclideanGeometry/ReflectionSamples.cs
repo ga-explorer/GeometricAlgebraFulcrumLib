@@ -18,10 +18,10 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
         public static void ReflectionMatrixToHyperPlaneReflectionsSample(int n, int reflectionCount)
         {
             var scalarProcessor =
-                ScalarProcessorFloat64.DefaultProcessor;
+                ScalarProcessorOfFloat64.DefaultProcessor;
 
             var matrixProcessor =
-                MatrixAlgebraFloat64Processor.DefaultProcessor;
+                MatrixProcessorOfFloat64.DefaultProcessor;
 
             var geometricProcessor =
                 RGaFloat64Processor.Euclidean;

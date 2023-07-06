@@ -3,11 +3,11 @@ using DataStructuresLib.Basic;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra
 {
-    public sealed class ScalarProcessorFloat32
+    public sealed class ScalarProcessorOfFloat32
         : INumericScalarProcessor<float>
     {
-        public static ScalarProcessorFloat32 DefaultProcessor { get; }
-            = new ScalarProcessorFloat32();
+        public static ScalarProcessorOfFloat32 DefaultProcessor { get; }
+            = new ScalarProcessorOfFloat32();
 
 
         public float ZeroEpsilon { get; set; }
@@ -60,7 +60,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra
             => 180f / MathF.PI;
 
 
-        private ScalarProcessorFloat32()
+        private ScalarProcessorOfFloat32()
         {
         }
 

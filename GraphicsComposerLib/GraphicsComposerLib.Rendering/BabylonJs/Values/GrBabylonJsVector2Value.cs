@@ -1,10 +1,11 @@
-﻿using DataStructuresLib.Basic;
+﻿using DataStructuresLib.AttributeSet;
+using DataStructuresLib.Basic;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Values
 {
     public sealed class GrBabylonJsVector2Value :
-        GrBabylonJsValue<IPair<double>>
+        SparseCodeAttributeValue<IPair<double>>
     {
         internal static GrBabylonJsVector2Value Create(IPair<double> value)
         {

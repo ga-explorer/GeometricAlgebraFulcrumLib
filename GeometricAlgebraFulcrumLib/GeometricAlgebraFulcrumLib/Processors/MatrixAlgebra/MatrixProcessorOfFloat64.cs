@@ -8,11 +8,11 @@ using MathNet.Numerics.LinearAlgebra.Double;
 
 namespace GeometricAlgebraFulcrumLib.Processors.MatrixAlgebra
 {
-    public sealed class MatrixAlgebraFloat64Processor 
-        : IMatrixAlgebraProcessor<Matrix, double>
+    public sealed class MatrixProcessorOfFloat64 
+        : IMatrixProcessor<Matrix, double>
     {
-        public static MatrixAlgebraFloat64Processor DefaultProcessor { get; }
-            = new MatrixAlgebraFloat64Processor();
+        public static MatrixProcessorOfFloat64 DefaultProcessor { get; }
+            = new MatrixProcessorOfFloat64();
 
 
         public double ZeroEpsilon { get; set; }

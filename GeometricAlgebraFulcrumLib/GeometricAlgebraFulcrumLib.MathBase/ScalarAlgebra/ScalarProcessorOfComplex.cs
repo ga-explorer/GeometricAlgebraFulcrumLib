@@ -5,11 +5,11 @@ using MathNet.Numerics;
 
 namespace GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra
 {
-    public sealed class ScalarProcessorComplex
+    public sealed class ScalarProcessorOfComplex
         : INumericScalarProcessor<Complex>
     {
-        public static ScalarProcessorComplex DefaultProcessor { get; }
-            = new ScalarProcessorComplex();
+        public static ScalarProcessorOfComplex DefaultProcessor { get; }
+            = new ScalarProcessorOfComplex();
 
 
         public Complex ScalarZero { get; }
@@ -61,7 +61,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra
             = 1e-13d;
 
 
-        private ScalarProcessorComplex()
+        private ScalarProcessorOfComplex()
         {
         }
 

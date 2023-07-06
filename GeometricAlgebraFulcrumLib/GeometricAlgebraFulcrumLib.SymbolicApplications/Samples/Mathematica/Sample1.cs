@@ -13,7 +13,7 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.Mathematica
         {
             // This is a pre-defined scalar processor for symbolic
             // Wolfram Mathematica scalars using Expr objects
-            var scalarProcessor = ScalarProcessorExpr.DefaultProcessor;
+            var scalarProcessor = ScalarProcessorOfWolframExpr.DefaultProcessor;
             
             // Create a 3-dimensional Euclidean geometric algebra processor based on the
             // selected scalar processor

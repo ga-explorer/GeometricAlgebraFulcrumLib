@@ -3,17 +3,16 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using DataStructuresLib;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Curves;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Curves.Adaptive;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Frames;
 using GeometricAlgebraFulcrumLib.MathBase.Graphics.LatticeShapes;
 using GeometricAlgebraFulcrumLib.MathBase.Graphics.LatticeShapes.Surfaces;
 using GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives;
 using GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Lines;
-using GeometricAlgebraFulcrumLib.MathBase.Parametric;
-using GeometricAlgebraFulcrumLib.MathBase.Parametric.Space3D.Curves;
-using GeometricAlgebraFulcrumLib.MathBase.Parametric.Space3D.Curves.Adaptive;
-using GeometricAlgebraFulcrumLib.MathBase.Parametric.Space3D.Frames;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 using GraphicsComposerLib.Rendering.Xeogl;
 
 namespace GraphicsComposerLib.Samples.Geometry.ParametricShapes
@@ -28,8 +27,8 @@ namespace GraphicsComposerLib.Samples.Geometry.ParametricShapes
 
             foreach (var frame in sampledCurve)
             {
-                composer1.AddLine(frame.Point, frame.Point + frame.Normal1.ToTuple3D());
-                composer2.AddLine(frame.Point, frame.Point + frame.Normal2.ToTuple3D());
+                composer1.AddLine(frame.Point, frame.Point + frame.Normal1.ToVector3D());
+                composer2.AddLine(frame.Point, frame.Point + frame.Normal2.ToVector3D());
                 composer3.AddLine(frame.Point, frame.Point + frame.Tangent);
             }
 
@@ -92,9 +91,9 @@ namespace GraphicsComposerLib.Samples.Geometry.ParametricShapes
                 30
             );
 
-            var curve = new ComputedParametricCurve3D(
+            var curve = ComputedParametricCurve3D.Create(
                 t => 
-                    new Float64Tuple3D(
+                    Float64Vector3D.Create(
                         Math.Exp(-0.1 * t) * Math.Cos(t),
                         Math.Exp(-0.1 * t) * Math.Sin(t),
                         0.5 * t

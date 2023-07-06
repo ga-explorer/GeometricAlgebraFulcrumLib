@@ -4,7 +4,7 @@ using GeometricAlgebraFulcrumLib.MetaProgramming.Expressions;
 
 namespace GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra
 {
-    public interface IScalarAlgebraSymbolicProcessor<T> :
+    public interface ISymbolicScalarProcessor<T> :
         IScalarProcessor<T>
     {
         T Simplify(T scalar);

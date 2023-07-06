@@ -1,8 +1,12 @@
-﻿using System;
-using CodeComposerLib.GraphViz.Dot;
-using CodeComposerLib.GraphViz.Dot.Value;
+﻿using GraphicsComposerLib.Rendering.GraphViz.Dot.Value;
+using GraphicsComposerLib.Rendering.GraphViz.Dot;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace TextComposerLib.Samples.Samples
+namespace GraphicsComposerLib.Samples.GraphViz
 {
     internal static class GraphVizSamples
     {

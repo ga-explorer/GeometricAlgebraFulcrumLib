@@ -1,8 +1,8 @@
-﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
-using GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PathsMesh;
+﻿using GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PathsMesh;
 using GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PathsMesh.Space3D;
 using GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsPath.Space3D;
 using GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Lines;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 using GraphicsComposerLib.Rendering.Xeogl;
 
 namespace GraphicsComposerLib.Samples.Xeogl
@@ -13,28 +13,28 @@ namespace GraphicsComposerLib.Samples.Xeogl
         {
             var path1 = new ConstantPointsPath3D(
                 4, 
-                new Float64Tuple3D(0, 0, -2)
+                Float64Vector3D.Create(0, 0, -2)
             );
 
             var path2 = new ArrayPointsPath3D(
-                new Float64Tuple3D(-2, -2, -2),
-                new Float64Tuple3D(2, -2, -2),
-                new Float64Tuple3D(2, 2, -2),
-                new Float64Tuple3D(-2, 2, -2)
+                Float64Vector3D.Create(-2, -2, -2),
+                Float64Vector3D.Create(2, -2, -2),
+                Float64Vector3D.Create(2, 2, -2),
+                Float64Vector3D.Create(-2, 2, -2)
             );
 
             var path3 = new ArrayPointsPath3D(
-                new Float64Tuple3D(-2, -2, 2),
-                new Float64Tuple3D(2, -2, 2),
-                new Float64Tuple3D(2, 2, 2),
-                new Float64Tuple3D(-2, 2, 2)
+                Float64Vector3D.Create(-2, -2, 2),
+                Float64Vector3D.Create(2, -2, 2),
+                Float64Vector3D.Create(2, 2, 2),
+                Float64Vector3D.Create(-2, 2, 2)
             );
 
             var path4 = new ArrayPointsPath3D(
-                new Float64Tuple3D(-1, -1, 2),
-                new Float64Tuple3D(1, -1, 2),
-                new Float64Tuple3D(1, 1, 2),
-                new Float64Tuple3D(-1, 1, 2)
+                Float64Vector3D.Create(-1, -1, 2),
+                Float64Vector3D.Create(1, -1, 2),
+                Float64Vector3D.Create(1, 1, 2),
+                Float64Vector3D.Create(-1, 1, 2)
             );
 
             var pathMesh = new ArrayPathsMesh3D(

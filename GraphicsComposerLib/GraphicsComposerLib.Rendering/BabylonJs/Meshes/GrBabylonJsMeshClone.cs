@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using DataStructuresLib.AttributeSet;
 using GraphicsComposerLib.Rendering.BabylonJs.Values;
 using TextComposerLib;
 
@@ -15,7 +16,7 @@ public sealed class GrBabylonJsMeshClone :
 
     public string ParentMeshConstName { get; }
 
-    public GrBabylonJsValue? NewParent { get; init; }
+    public SparseCodeAttributeValue? NewParent { get; init; }
 
     public GrBabylonJsBooleanValue? DoNotCloneChildren { get; init; }
 

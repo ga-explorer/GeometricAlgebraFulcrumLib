@@ -58,11 +58,11 @@ namespace GeometricAlgebraFulcrumLib.Samples.Graphics.BabylonJs
                 new GrBabylonJsEnvironmentHelper.EnvironmentHelperOptions
                 {
                     GroundYBias = 0.01,
-                    SkyBoxColor = Color.LightSkyBlue,
+                    SkyboxColor = Color.LightSkyBlue,
                     GroundColor = Color.White,
                     CreateGround = true,
                     GroundSize = 8,
-                    SkyBoxSize = gridUnitCount + 10
+                    SkyboxSize = gridUnitCount + 10
                 }
             );
 

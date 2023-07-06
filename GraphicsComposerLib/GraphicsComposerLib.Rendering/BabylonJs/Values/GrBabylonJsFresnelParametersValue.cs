@@ -1,9 +1,10 @@
-﻿using GraphicsComposerLib.Rendering.BabylonJs.Materials;
+﻿using DataStructuresLib.AttributeSet;
+using GraphicsComposerLib.Rendering.BabylonJs.Materials;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Values
 {
     public sealed class GrBabylonJsFresnelParametersValue :
-        GrBabylonJsValue<GrBabylonJsFresnelParameters>
+        SparseCodeAttributeValue<GrBabylonJsFresnelParameters>
     {
         public static implicit operator GrBabylonJsFresnelParametersValue(string valueText)
         {

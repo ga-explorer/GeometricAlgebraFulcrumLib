@@ -10,7 +10,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Text
 
         
         private TextComposerFloat64() 
-            : base(ScalarProcessorFloat64.DefaultProcessor)
+            : base(ScalarProcessorOfFloat64.DefaultProcessor)
         {
         }
     }

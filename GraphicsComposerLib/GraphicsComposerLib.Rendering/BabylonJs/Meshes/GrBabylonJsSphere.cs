@@ -1,5 +1,4 @@
-﻿using DataStructuresLib.Basic;
-using GraphicsComposerLib.Rendering.BabylonJs.Values;
+﻿using GraphicsComposerLib.Rendering.BabylonJs.Values;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
 {
@@ -12,62 +11,100 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
         public sealed class SphereOptions :
             GrBabylonJsObjectOptions
         {
-            public GrBabylonJsFloat32Value? Arc { get; init; }
-
-            public GrBabylonJsFloat32Value? Slice { get; init; }
-
-            public GrBabylonJsFloat32Value? Diameter { get; init; }
-
-            public GrBabylonJsFloat32Value? DiameterX { get; init; }
-
-            public GrBabylonJsFloat32Value? DiameterY { get; init; }
-    
-            public GrBabylonJsFloat32Value? DiameterZ { get; init; }
-    
-            public GrBabylonJsInt32Value? Segments { get; init; }
-    
-            public GrBabylonJsMeshOrientationValue? SideOrientation { get; init; }
-
-            public GrBabylonJsVector4Value? FrontUVs { get; init; }
-
-            public GrBabylonJsVector4Value? BackUVs { get; init; }
-
-            public GrBabylonJsBooleanValue? Updateable { get; init; }
-
-
-            protected override IEnumerable<Pair<string>?> GetNameValuePairs()
+            public GrBabylonJsFloat32Value? Arc
             {
-                yield return Arc.GetNameValueCodePair("arc");
-                yield return Slice.GetNameValueCodePair("slice");
-                yield return Diameter.GetNameValueCodePair("diameter");
-                yield return DiameterX.GetNameValueCodePair("diameterX");
-                yield return DiameterY.GetNameValueCodePair("diameterY");
-                yield return DiameterZ.GetNameValueCodePair("diameterZ");
-                yield return Segments.GetNameValueCodePair("segments");
-                yield return SideOrientation.GetNameValueCodePair("sideOrientation");
-                yield return FrontUVs.GetNameValueCodePair("frontUVs");
-                yield return BackUVs.GetNameValueCodePair("backUVs");
-                yield return Updateable.GetNameValueCodePair("updatable");
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("arc");
+                set => SetAttributeValue("arc", value);
+            }
+
+            public GrBabylonJsFloat32Value? Slice
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("slice");
+                set => SetAttributeValue("slice", value);
+            }
+
+            public GrBabylonJsFloat32Value? Diameter
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("diameter");
+                set => SetAttributeValue("diameter", value);
+            }
+
+            public GrBabylonJsFloat32Value? DiameterX
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("diameterX");
+                set => SetAttributeValue("diameterX", value);
+            }
+
+            public GrBabylonJsFloat32Value? DiameterY
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("diameterY");
+                set => SetAttributeValue("diameterY", value);
+            }
+
+            public GrBabylonJsFloat32Value? DiameterZ
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("diameterZ");
+                set => SetAttributeValue("diameterZ", value);
+            }
+
+            public GrBabylonJsInt32Value? Segments
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsInt32Value>("segments");
+                set => SetAttributeValue("segments", value);
+            }
+
+            public GrBabylonJsMeshOrientationValue? SideOrientation
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsMeshOrientationValue>("sideOrientation");
+                set => SetAttributeValue("sideOrientation", value);
+            }
+
+            public GrBabylonJsVector4Value? FrontUVs
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsVector4Value>("frontUVs");
+                set => SetAttributeValue("frontUVs", value);
+            }
+
+            public GrBabylonJsVector4Value? BackUVs
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsVector4Value>("backUVs");
+                set => SetAttributeValue("backUVs", value);
+            }
+
+            public GrBabylonJsBooleanValue? Updatable
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("updatable");
+                set => SetAttributeValue("updatable", value);
+            }
+
+
+            public SphereOptions()
+            {
+            }
+
+            public SphereOptions(SphereOptions options)
+            {
+                SetAttributeValues(options);
             }
         }
-    
-    
+
+
         protected override string ConstructorName
             => "BABYLON.MeshBuilder.CreateSphere";
 
-        public SphereOptions? Options { get; private set; }
+        public SphereOptions Options { get; private set; }
             = new SphereOptions();
 
-        public override GrBabylonJsObjectOptions? ObjectOptions 
+        public override GrBabylonJsObjectOptions ObjectOptions
             => Options;
 
 
-        public GrBabylonJsSphere(string constName) 
+        public GrBabylonJsSphere(string constName)
             : base(constName)
         {
         }
-    
-        public GrBabylonJsSphere(string constName, GrBabylonJsSceneValue scene) 
+
+        public GrBabylonJsSphere(string constName, GrBabylonJsSceneValue scene)
             : base(constName, scene)
         {
         }

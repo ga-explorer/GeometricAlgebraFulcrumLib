@@ -19,10 +19,10 @@ namespace GeometricAlgebraFulcrumLib.Samples.EuclideanGeometry
             const int reflectionCount = 7;
 
             var scalarProcessor =
-                ScalarProcessorFloat64.DefaultProcessor;
+                ScalarProcessorOfFloat64.DefaultProcessor;
 
             var matrixProcessor =
-                MatrixAlgebraFloat64Processor.DefaultProcessor;
+                MatrixProcessorOfFloat64.DefaultProcessor;
 
             var geometricProcessor =
                 RGaFloat64Processor.Euclidean;

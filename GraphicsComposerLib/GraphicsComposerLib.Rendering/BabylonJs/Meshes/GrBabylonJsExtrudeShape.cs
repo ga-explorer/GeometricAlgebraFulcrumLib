@@ -1,5 +1,4 @@
-﻿using DataStructuresLib.Basic;
-using GraphicsComposerLib.Rendering.BabylonJs.Values;
+﻿using GraphicsComposerLib.Rendering.BabylonJs.Values;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes;
 
@@ -13,75 +12,125 @@ public sealed class GrBabylonJsExtrudeShape :
     public sealed class ExtrudeShapeOptions :
         GrBabylonJsObjectOptions
     {
-        public GrBabylonJsVector3ArrayValue? Path { get; set; }
-        
-        public GrBabylonJsVector3ArrayValue? Shape { get; set; }
-
-        public GrBabylonJsMeshValue? Instance { get; set; }
-        
-        public GrBabylonJsFloat32Value? Rotation { get; set; }
-
-        public GrBabylonJsFloat32Value? Scale { get; set; }
-
-        public GrBabylonJsBooleanValue? AdjustFrame { get; set; }
-
-        public GrBabylonJsVector3Value? FirstNormal { get; set; }
-        
-        public GrBabylonJsBooleanValue? CloseShape { get; set; }
-        
-        public GrBabylonJsBooleanValue? ClosePath { get; set; }
-        
-        public GrBabylonJsMeshOrientationValue? SideOrientation { get; set; }
-        
-        public GrBabylonJsMeshCapValue? Cap { get; set; }
-
-        public GrBabylonJsVector4Value? FrontUVs { get; set; }
-
-        public GrBabylonJsVector4Value? BackUVs { get; set; }
-    
-        public GrBabylonJsBooleanValue? InvertUv { get; set; }
-    
-        public GrBabylonJsBooleanValue? Updateable { get; set; }
-
-
-        protected override IEnumerable<Pair<string>?> GetNameValuePairs()
+        public GrBabylonJsVector3ArrayValue? Path
         {
-            yield return Path.GetNameValueCodePair("path");
-            yield return Shape.GetNameValueCodePair("shape");
-            yield return FirstNormal.GetNameValueCodePair("firstNormal");
-            yield return CloseShape.GetNameValueCodePair("closeShape");
-            yield return ClosePath.GetNameValueCodePair("closePath");
-            yield return Scale.GetNameValueCodePair("scale");
-            yield return Rotation.GetNameValueCodePair("rotation");
-            yield return AdjustFrame.GetNameValueCodePair("adjustFrame");
-            yield return Instance.GetNameValueCodePair("instance");
-            yield return SideOrientation.GetNameValueCodePair("sideOrientation");
-            yield return Cap.GetNameValueCodePair("cap");
-            yield return FrontUVs.GetNameValueCodePair("frontUVs");
-            yield return BackUVs.GetNameValueCodePair("backUVs");
-            yield return Updateable.GetNameValueCodePair("updatable");
-            yield return InvertUv.GetNameValueCodePair("invertUV");
+            get => GetAttributeValueOrNull<GrBabylonJsVector3ArrayValue>("path");
+            set => SetAttributeValue("path", value);
+        }
+
+        public GrBabylonJsVector3ArrayValue? Shape
+        {
+            get => GetAttributeValueOrNull<GrBabylonJsVector3ArrayValue>("shape");
+            set => SetAttributeValue("shape", value);
+        }
+
+        public GrBabylonJsMeshValue? Instance
+        {
+            get => GetAttributeValueOrNull<GrBabylonJsMeshValue>("instance");
+            set => SetAttributeValue("instance", value);
+        }
+
+        public GrBabylonJsFloat32Value? Rotation
+        {
+            get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("rotation");
+            set => SetAttributeValue("rotation", value);
+        }
+
+        public GrBabylonJsFloat32Value? Scale
+        {
+            get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("scale");
+            set => SetAttributeValue("scale", value);
+        }
+
+        public GrBabylonJsBooleanValue? AdjustFrame
+        {
+            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("adjustFrame");
+            set => SetAttributeValue("adjustFrame", value);
+        }
+
+        public GrBabylonJsVector3Value? FirstNormal
+        {
+            get => GetAttributeValueOrNull<GrBabylonJsVector3Value>("firstNormal");
+            set => SetAttributeValue("firstNormal", value);
+        }
+
+        public GrBabylonJsBooleanValue? CloseShape
+        {
+            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("closeShape");
+            set => SetAttributeValue("closeShape", value);
+        }
+
+        public GrBabylonJsBooleanValue? ClosePath
+        {
+            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("closePath");
+            set => SetAttributeValue("closePath", value);
+        }
+
+        public GrBabylonJsMeshOrientationValue? SideOrientation
+        {
+            get => GetAttributeValueOrNull<GrBabylonJsMeshOrientationValue>("sideOrientation");
+            set => SetAttributeValue("sideOrientation", value);
+        }
+
+        public GrBabylonJsMeshCapValue? Cap
+        {
+            get => GetAttributeValueOrNull<GrBabylonJsMeshCapValue>("cap");
+            set => SetAttributeValue("cap", value);
+        }
+
+        public GrBabylonJsVector4Value? FrontUVs
+        {
+            get => GetAttributeValueOrNull<GrBabylonJsVector4Value>("frontUVs");
+            set => SetAttributeValue("frontUVs", value);
+        }
+
+        public GrBabylonJsVector4Value? BackUVs
+        {
+            get => GetAttributeValueOrNull<GrBabylonJsVector4Value>("backUVs");
+            set => SetAttributeValue("backUVs", value);
+        }
+
+        public GrBabylonJsBooleanValue? InvertUv
+        {
+            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("invertUV");
+            set => SetAttributeValue("invertUv", value);
+        }
+
+        public GrBabylonJsBooleanValue? Updatable
+        {
+            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("updatable");
+            set => SetAttributeValue("updatable", value);
+        }
+
+
+        public ExtrudeShapeOptions()
+        {
+        }
+
+        public ExtrudeShapeOptions(ExtrudeShapeOptions options)
+        {
+            SetAttributeValues(options);
         }
     }
-    
+
 
     protected override string ConstructorName
         => "BABYLON.MeshBuilder.ExtrudeShape";
 
-    public ExtrudeShapeOptions? Options { get; private set; }
+    public ExtrudeShapeOptions Options { get; private set; }
         = new ExtrudeShapeOptions();
 
-    public override GrBabylonJsObjectOptions? ObjectOptions 
+    public override GrBabylonJsObjectOptions ObjectOptions
         => Options;
 
 
-    public GrBabylonJsExtrudeShape(string constName) 
+    public GrBabylonJsExtrudeShape(string constName)
         : base(constName)
     {
         UseLetDeclaration = true;
     }
-    
-    public GrBabylonJsExtrudeShape(string constName, GrBabylonJsSceneValue scene) 
+
+    public GrBabylonJsExtrudeShape(string constName, GrBabylonJsSceneValue scene)
         : base(constName, scene)
     {
         UseLetDeclaration = true;
@@ -90,14 +139,14 @@ public sealed class GrBabylonJsExtrudeShape :
 
     public GrBabylonJsExtrudeShape SetOptions(ExtrudeShapeOptions options)
     {
-        Options = options;
+        Options = new ExtrudeShapeOptions(options);
 
         return this;
     }
 
     public GrBabylonJsExtrudeShape SetProperties(MeshProperties properties)
     {
-        Properties = properties;
+        Properties = new MeshProperties(properties);
 
         return this;
     }

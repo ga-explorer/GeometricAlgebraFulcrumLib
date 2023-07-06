@@ -1,5 +1,4 @@
-﻿using DataStructuresLib.Basic;
-using GraphicsComposerLib.Rendering.BabylonJs.Values;
+﻿using GraphicsComposerLib.Rendering.BabylonJs.Values;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Textures
 {
@@ -9,124 +8,225 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Textures
         public abstract class BaseTextureProperties :
             GrBabylonJsObjectProperties
         {
-            public GrBabylonJsInt32Value? AnisotropicFilteringLevel { get; set; }
-
-            public GrBabylonJsBooleanValue? HomogeneousRotationInUvTransform { get; set; }
-
-            public GrBabylonJsBooleanValue? InvertY { get; set; }
-
-            public GrBabylonJsBooleanValue? InvertZ { get; set; }
-
-            public GrBabylonJsBooleanValue? IsRenderTarget { get; set; }
-        
-            public GrBabylonJsBooleanValue? CanRescale { get; set; }
-
-            public GrBabylonJsBooleanValue? IsBlocking { get; set; }
-
-            public GrBabylonJsBooleanValue? IsRgbd { get; set; }
-
-            public GrBabylonJsBooleanValue? LinearSpecularLod { get; set; }
-
-            public GrBabylonJsBooleanValue? HasAlpha { get; set; }
-
-            public GrBabylonJsBooleanValue? GetAlphaFromRgb { get; set; }
-        
-            public GrBabylonJsBooleanValue? Is2DArray { get; set; }
-        
-            public GrBabylonJsBooleanValue? Is3D { get; set; }
-
-            public GrBabylonJsBooleanValue? IsCube { get; set; }
-
-            public GrBabylonJsFloat32Value? Level { get; set; }
-
-            public GrBabylonJsFloat32Value? UAng { get; set; }
-        
-            public GrBabylonJsFloat32Value? VAng { get; set; }
-        
-            public GrBabylonJsFloat32Value? WAng { get; set; }
-
-            public GrBabylonJsFloat32Value? UOffset { get; set; }
-        
-            public GrBabylonJsFloat32Value? VOffset { get; set; }
-
-            public GrBabylonJsFloat32Value? URotationCenter { get; set; }
-    
-            public GrBabylonJsFloat32Value? VRotationCenter { get; set; }
-        
-            public GrBabylonJsFloat32Value? WRotationCenter { get; set; }
-
-            public GrBabylonJsFloat32Value? UScale { get; set; }
-        
-            public GrBabylonJsFloat32Value? VScale { get; set; }
-
-            public GrBabylonJsFloat32Value? LodGenerationOffset { get; set; }
-
-            public GrBabylonJsFloat32Value? LodGenerationScale { get; set; }
-        
-            public GrBabylonJsTextureWrapModeValue? WrapU { get; set; }
-
-            public GrBabylonJsTextureWrapModeValue? WrapV { get; set; }
-
-            public GrBabylonJsTextureWrapModeValue? WrapR { get; set; }
-        
-            public GrBabylonJsStringValue? Url { get; set; }
-    
-            public GrBabylonJsTextureCoordinatesModeValue? CoordinatesMode { get; set; }
-        
-
-            protected override IEnumerable<Pair<string>?> GetNameValuePairs()
+            public GrBabylonJsInt32Value? AnisotropicFilteringLevel
             {
-                yield return AnisotropicFilteringLevel.GetNameValueCodePair("anisotropicFilteringLevel");
-                yield return HomogeneousRotationInUvTransform.GetNameValueCodePair("homogeneousRotationInUVTransform");
-                yield return InvertY.GetNameValueCodePair("invertY");
-                yield return InvertZ.GetNameValueCodePair("invertZ");
-                yield return IsRenderTarget.GetNameValueCodePair("isRenderTarget");
-                yield return CanRescale.GetNameValueCodePair("canRescale");
-                yield return IsBlocking.GetNameValueCodePair("isBlocking");
-                yield return IsRgbd.GetNameValueCodePair("isRGBD");
-                yield return LinearSpecularLod.GetNameValueCodePair("linearSpecularLOD");
-                yield return HasAlpha.GetNameValueCodePair("hasAlpha");
-                yield return GetAlphaFromRgb.GetNameValueCodePair("getAlphaFromRGB");
-                yield return Is2DArray.GetNameValueCodePair("is2DArray");
-                yield return Is3D.GetNameValueCodePair("is3D");
-                yield return IsCube.GetNameValueCodePair("isCube");
-                yield return Level.GetNameValueCodePair("level");
-                yield return UAng.GetNameValueCodePair("uAng");
-                yield return VAng.GetNameValueCodePair("vAng");
-                yield return WAng.GetNameValueCodePair("wAng");
-                yield return UOffset.GetNameValueCodePair("uOffset");
-                yield return VOffset.GetNameValueCodePair("vOffset");
-                yield return URotationCenter.GetNameValueCodePair("uRotationCenter");
-                yield return VRotationCenter.GetNameValueCodePair("vRotationCenter");
-                yield return WRotationCenter.GetNameValueCodePair("wRotationCenter");
-                yield return UScale.GetNameValueCodePair("uScale");
-                yield return VScale.GetNameValueCodePair("vScale");
-                yield return LodGenerationOffset.GetNameValueCodePair("lodGenerationOffset");
-                yield return LodGenerationScale.GetNameValueCodePair("lodGenerationScale");
-                yield return WrapU.GetNameValueCodePair("wrapU");
-                yield return WrapV.GetNameValueCodePair("wrapV");
-                yield return WrapR.GetNameValueCodePair("wrapR");
-                yield return Url.GetNameValueCodePair("url");
-                yield return CoordinatesMode.GetNameValueCodePair("coordinatesMode");
+                get => GetAttributeValueOrNull<GrBabylonJsInt32Value>("anisotropicFilteringLevel");
+                set => SetAttributeValue("anisotropicFilteringLevel", value);
+            }
+
+            public GrBabylonJsBooleanValue? HomogeneousRotationInUvTransform
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("homogeneousRotationInUvTransform");
+                set => SetAttributeValue("homogeneousRotationInUvTransform", value);
+            }
+
+            public GrBabylonJsBooleanValue? InvertY
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("invertY");
+                set => SetAttributeValue("invertY", value);
+            }
+
+            public GrBabylonJsBooleanValue? InvertZ
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("invertZ");
+                set => SetAttributeValue("invertZ", value);
+            }
+
+            public GrBabylonJsBooleanValue? IsRenderTarget
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("isRenderTarget");
+                set => SetAttributeValue("isRenderTarget", value);
+            }
+
+            public GrBabylonJsBooleanValue? CanRescale
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("canRescale");
+                set => SetAttributeValue("canRescale", value);
+            }
+
+            public GrBabylonJsBooleanValue? IsBlocking
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("isBlocking");
+                set => SetAttributeValue("isBlocking", value);
+            }
+
+            public GrBabylonJsBooleanValue? IsRGBD
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("isRGBD");
+                set => SetAttributeValue("isRGBD", value);
+            }
+
+            public GrBabylonJsBooleanValue? LinearSpecularLod
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("linearSpecularLod");
+                set => SetAttributeValue("linearSpecularLod", value);
+            }
+
+            public GrBabylonJsBooleanValue? HasAlpha
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("hasAlpha");
+                set => SetAttributeValue("hasAlpha", value);
+            }
+
+            public GrBabylonJsBooleanValue? GetAlphaFromRgb
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("getAlphaFromRgb");
+                set => SetAttributeValue("getAlphaFromRgb", value);
+            }
+
+            public GrBabylonJsBooleanValue? Is2DArray
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("is2DArray");
+                set => SetAttributeValue("is2DArray", value);
+            }
+
+            public GrBabylonJsBooleanValue? Is3D
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("is3D");
+                set => SetAttributeValue("is3D", value);
+            }
+
+            public GrBabylonJsBooleanValue? IsCube
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("isCube");
+                set => SetAttributeValue("isCube", value);
+            }
+
+            public GrBabylonJsFloat32Value? Level
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("level");
+                set => SetAttributeValue("level", value);
+            }
+
+            public GrBabylonJsFloat32Value? UAng
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("uAng");
+                set => SetAttributeValue("uAng", value);
+            }
+
+            public GrBabylonJsFloat32Value? VAng
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("vAng");
+                set => SetAttributeValue("vAng", value);
+            }
+
+            public GrBabylonJsFloat32Value? WAng
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("wAng");
+                set => SetAttributeValue("wAng", value);
+            }
+
+            public GrBabylonJsFloat32Value? UOffset
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("uOffset");
+                set => SetAttributeValue("uOffset", value);
+            }
+
+            public GrBabylonJsFloat32Value? VOffset
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("vOffset");
+                set => SetAttributeValue("vOffset", value);
+            }
+
+            public GrBabylonJsFloat32Value? URotationCenter
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("uRotationCenter");
+                set => SetAttributeValue("uRotationCenter", value);
+            }
+
+            public GrBabylonJsFloat32Value? VRotationCenter
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("vRotationCenter");
+                set => SetAttributeValue("vRotationCenter", value);
+            }
+
+            public GrBabylonJsFloat32Value? WRotationCenter
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("wRotationCenter");
+                set => SetAttributeValue("wRotationCenter", value);
+            }
+
+            public GrBabylonJsFloat32Value? UScale
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("uScale");
+                set => SetAttributeValue("uScale", value);
+            }
+
+            public GrBabylonJsFloat32Value? VScale
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("vScale");
+                set => SetAttributeValue("vScale", value);
+            }
+
+            public GrBabylonJsFloat32Value? LodGenerationOffset
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("lodGenerationOffset");
+                set => SetAttributeValue("lodGenerationOffset", value);
+            }
+
+            public GrBabylonJsFloat32Value? LodGenerationScale
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("lodGenerationScale");
+                set => SetAttributeValue("lodGenerationScale", value);
+            }
+
+            public GrBabylonJsTextureWrapModeValue? WrapU
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsTextureWrapModeValue>("wrapU");
+                set => SetAttributeValue("wrapU", value);
+            }
+
+            public GrBabylonJsTextureWrapModeValue? WrapV
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsTextureWrapModeValue>("wrapV");
+                set => SetAttributeValue("wrapV", value);
+            }
+
+            public GrBabylonJsTextureWrapModeValue? WrapR
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsTextureWrapModeValue>("wrapR");
+                set => SetAttributeValue("wrapR", value);
+            }
+
+            public GrBabylonJsStringValue? Url
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsStringValue>("url");
+                set => SetAttributeValue("url", value);
+            }
+
+            public GrBabylonJsTextureCoordinatesModeValue? CoordinatesMode
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsTextureCoordinatesModeValue>("coordinatesMode");
+                set => SetAttributeValue("coordinatesMode", value);
+            }
+
+
+            protected BaseTextureProperties()
+            {
+            }
+
+            protected BaseTextureProperties(BaseTextureProperties properties)
+            {
+                SetAttributeValues(properties);
             }
         }
 
-    
+
         public GrBabylonJsSceneValue? ParentScene { get; set; }
 
-        public string SceneVariableName 
+        public string SceneVariableName
             => ParentScene?.Value.ConstName ?? string.Empty;
-    
-        public override GrBabylonJsObjectOptions? ObjectOptions 
+
+        public override GrBabylonJsObjectOptions? ObjectOptions
             => null;
 
-    
-        protected GrBabylonJsBaseTexture(string constName) 
+
+        protected GrBabylonJsBaseTexture(string constName)
             : base(constName)
         {
         }
 
-        protected GrBabylonJsBaseTexture(string constName, GrBabylonJsSceneValue scene) 
+        protected GrBabylonJsBaseTexture(string constName, GrBabylonJsSceneValue scene)
             : base(constName)
         {
             ParentScene = scene;

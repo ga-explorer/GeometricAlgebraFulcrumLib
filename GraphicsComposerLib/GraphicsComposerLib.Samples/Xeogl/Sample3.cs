@@ -1,10 +1,10 @@
-﻿using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
-using GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PathsMesh;
+﻿using GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PathsMesh;
 using GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PathsMesh.Space3D;
 using GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsPath.Space3D;
 using GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives;
 using GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Lines;
 using GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Triangles;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 using GraphicsComposerLib.Rendering.Xeogl;
 
 namespace GraphicsComposerLib.Samples.Xeogl
@@ -14,23 +14,23 @@ namespace GraphicsComposerLib.Samples.Xeogl
         public static string Generate()
         {
             var firstPath = new LinearPointsPath3D(
-                new Float64Tuple3D(-3,0,0), 
-                new Float64Tuple3D(3,0,0), 
+                Float64Vector3D.Create(-3,0,0), 
+                Float64Vector3D.Create(3,0,0), 
                 5
             );
 
             var lastPath = new LinearPointsPath3D(
-                new Float64Tuple3D(0, -2, 0),
-                new Float64Tuple3D(0, 2, 2),
+                Float64Vector3D.Create(0, -2, 0),
+                Float64Vector3D.Create(0, 2, 2),
                 5
             );
 
             var pathMesh = new LerpPathsMesh3D(firstPath, lastPath, 10);
 
             //var pathMesh = SimpleComposers.ParallelogramPathMesh(
-            //    new Float64Tuple3D(0, 0, 0), 
-            //    new Float64Tuple3D(2, 0, 0), 
-            //    new Float64Tuple3D(0, 2, 0), 
+            //    Float64Vector3D.Create(0, 0, 0), 
+            //    Float64Vector3D.Create(2, 0, 0), 
+            //    Float64Vector3D.Create(0, 2, 0), 
             //    3,
             //    3
             //    );

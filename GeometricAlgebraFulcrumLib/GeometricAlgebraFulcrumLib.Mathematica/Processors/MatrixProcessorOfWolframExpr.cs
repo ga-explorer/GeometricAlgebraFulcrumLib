@@ -11,15 +11,15 @@ using Wolfram.NETLink;
 
 namespace GeometricAlgebraFulcrumLib.Mathematica.Processors
 {
-    public sealed class MatrixAlgebraMathematicaProcessor
-        : IMatrixAlgebraSymbolicProcessor<Expr>
+    public sealed class MatrixProcessorOfWolframExpr
+        : ISymbolicMatrixProcessor<Expr>
     {
-        public static MatrixAlgebraMathematicaProcessor DefaultProcessor { get; }
-            = new MatrixAlgebraMathematicaProcessor();
+        public static MatrixProcessorOfWolframExpr DefaultProcessor { get; }
+            = new MatrixProcessorOfWolframExpr();
 
 
         public IScalarProcessor<Expr> ScalarProcessor { get; set; }
-            = ScalarProcessorExpr.DefaultProcessor;
+            = ScalarProcessorOfWolframExpr.DefaultProcessor;
 
         public int RoundingPlaces { get; set; }
             = 13;
@@ -73,7 +73,7 @@ namespace GeometricAlgebraFulcrumLib.Mathematica.Processors
             = MathematicaInterface.DefaultCas["180 / Pi"];
 
 
-        private MatrixAlgebraMathematicaProcessor()
+        private MatrixProcessorOfWolframExpr()
         {
         }
 

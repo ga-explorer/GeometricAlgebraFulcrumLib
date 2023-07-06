@@ -4,7 +4,6 @@ namespace GraphicsComposerLib.Rendering.KonvaJs.Values
 {
     public sealed class GrKonvaJsBooleanValue :
         SparseCodeAttributeValue<bool>
-        //SparseCodeAttributeValue<bool>
     {
         public static implicit operator GrKonvaJsBooleanValue(string valueText)
         {

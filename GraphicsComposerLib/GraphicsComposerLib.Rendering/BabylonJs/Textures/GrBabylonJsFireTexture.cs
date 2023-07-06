@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using DataStructuresLib.Basic;
-using GraphicsComposerLib.Rendering.BabylonJs.Values;
+﻿using GraphicsComposerLib.Rendering.BabylonJs.Values;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Textures
 {
@@ -10,24 +8,38 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Textures
         public sealed class FireTextureProperties :
             BaseTextureProperties
         {
-            public GrBabylonJsFloat32Value? Time { get; set; }
-
-            public GrBabylonJsVector2Value? Speed { get; set; }
-
-            public GrBabylonJsVector2Value? Shift { get; set; }
-
-            public GrBabylonJsColor4ArrayValue? FireColors { get; set; }
-
-        
-            protected override IEnumerable<Pair<string>?> GetNameValuePairs()
+            public GrBabylonJsFloat32Value? Time
             {
-                foreach (var pair in base.GetNameValuePairs())
-                    yield return pair;
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("time");
+                set => SetAttributeValue("time", value);
+            }
 
-                yield return Time.GetNameValueCodePair("time");
-                yield return Speed.GetNameValueCodePair("speed");
-                yield return Shift.GetNameValueCodePair("shift");
-                yield return FireColors.GetNameValueCodePair("fireColors");
+            public GrBabylonJsVector2Value? Speed
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsVector2Value>("speed");
+                set => SetAttributeValue("speed", value);
+            }
+
+            public GrBabylonJsVector2Value? Shift
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsVector2Value>("shift");
+                set => SetAttributeValue("shift", value);
+            }
+
+            public GrBabylonJsColor4ArrayValue? FireColors
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsColor4ArrayValue>("fireColors");
+                set => SetAttributeValue("fireColors", value);
+            }
+
+
+            public FireTextureProperties()
+            {
+            }
+
+            public FireTextureProperties(FireTextureProperties properties)
+            {
+                SetAttributeValues(properties);
             }
         }
 
@@ -35,10 +47,10 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Textures
         protected override string ConstructorName
             => "new BABYLON.FireProceduralTexture";
     
-        public FireTextureProperties? Properties { get; private set; }
+        public FireTextureProperties Properties { get; private set; }
             = new FireTextureProperties();
 
-        public override GrBabylonJsObjectProperties? ObjectProperties 
+        public override GrBabylonJsObjectProperties ObjectProperties 
             => Properties;
 
 
@@ -53,9 +65,9 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Textures
         }
 
     
-        public GrBabylonJsFireTexture SetProperties([NotNull] FireTextureProperties? properties)
+        public GrBabylonJsFireTexture SetProperties(FireTextureProperties properties)
         {
-            Properties = properties;
+            Properties = new FireTextureProperties(properties);
 
             return this;
         }

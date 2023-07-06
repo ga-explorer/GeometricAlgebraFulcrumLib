@@ -1,5 +1,4 @@
-﻿using DataStructuresLib.Basic;
-using GraphicsComposerLib.Rendering.BabylonJs.Values;
+﻿using GraphicsComposerLib.Rendering.BabylonJs.Values;
 using TextComposerLib;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.GUI
@@ -13,19 +12,26 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.GUI
         public sealed class GuiMultiLineProperties :
             GuiControlProperties
         {
-            public GrBabylonJsInt32ArrayValue? Dash { get; set; }
-
-            public GrBabylonJsFloat32Value? LineWidth { get; set; }
-        
-
-            protected override IEnumerable<Pair<string>?> GetNameValuePairs()
+            public GrBabylonJsInt32ArrayValue? Dash
             {
-                foreach (var pair in base.GetNameValuePairs())
-                    yield return pair;
+                get => GetAttributeValueOrNull<GrBabylonJsInt32ArrayValue>("dash");
+                set => SetAttributeValue("dash", value);
+            }
 
-                yield return Color.GetNameValueCodePair("color");
-                yield return Dash.GetNameValueCodePair("dash");
-                yield return LineWidth.GetNameValueCodePair("lineWidth");
+            public GrBabylonJsFloat32Value? LineWidth
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("lineWidth");
+                set => SetAttributeValue("lineWidth", value);
+            }
+
+
+            public GuiMultiLineProperties()
+            {
+            }
+
+            public GuiMultiLineProperties(GuiMultiLineProperties properties)
+            {
+                SetAttributeValues(properties);
             }
         }
 
@@ -33,10 +39,10 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.GUI
         protected override string ConstructorName 
             => "new BABYLON.GUI.MultiLine";
 
-        public GuiMultiLineProperties? Properties { get; private set; }
+        public GuiMultiLineProperties Properties { get; private set; }
             = new GuiMultiLineProperties();
 
-        public override GrBabylonJsObjectProperties? ObjectProperties 
+        public override GrBabylonJsObjectProperties ObjectProperties 
             => Properties;
     
 
@@ -53,7 +59,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.GUI
     
         public GrBabylonJsGuiMultiLine SetProperties(GuiMultiLineProperties properties)
         {
-            Properties = properties;
+            Properties = new GuiMultiLineProperties(properties);
 
             return this;
         }

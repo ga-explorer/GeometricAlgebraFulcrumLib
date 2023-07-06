@@ -34,7 +34,7 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.PowerSystems.G
             var n = 4;
 
             var scalarProcessor = 
-                ScalarProcessorExpr.DefaultProcessor;
+                ScalarProcessorOfWolframExpr.DefaultProcessor;
 
             var processor =
                 XGaProcessor<Expr>.CreateEuclidean(
@@ -87,7 +87,7 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.PowerSystems.G
         {
             var n = 3;
 
-            var scalarProcessor = ScalarProcessorExpr.DefaultProcessor;
+            var scalarProcessor = ScalarProcessorOfWolframExpr.DefaultProcessor;
 
             var processor =
                 XGaProcessor<Expr>.CreateEuclidean(scalarProcessor);
@@ -294,7 +294,7 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.PowerSystems.G
             var n = 8;
 
             var scalarProcessor =
-                ScalarProcessorExpr.DefaultProcessor;
+                ScalarProcessorOfWolframExpr.DefaultProcessor;
 
             var processor =
                 scalarProcessor.CreateEuclideanXGaProcessor();
@@ -638,7 +638,7 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.PowerSystems.G
             var n = 2 * phaseCount;
 
             var scalarProcessor = 
-                ScalarProcessorExpr.DefaultProcessor;
+                ScalarProcessorOfWolframExpr.DefaultProcessor;
 
             var processor =
                 scalarProcessor.CreateEuclideanXGaProcessor();

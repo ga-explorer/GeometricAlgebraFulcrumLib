@@ -1,9 +1,10 @@
-﻿using WebComposerLib.Colors;
+﻿using DataStructuresLib.AttributeSet;
+using WebComposerLib.Colors;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Values
 {
     public sealed class GrBabylonJsGuiColorValue :
-        GrBabylonJsValue<Color>
+        SparseCodeAttributeValue<Color>
     {
         public static implicit operator GrBabylonJsGuiColorValue(string valueText)
         {

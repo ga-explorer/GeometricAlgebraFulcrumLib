@@ -10,7 +10,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Matrices
         public TScalar ScalingFactor { get; set; }
 
 
-        internal LinMatrixColumnScaled(IMatrixAlgebraProcessor<TMatrix, TScalar> matrixProcessor, TMatrix matrix, int columnIndex, TScalar scalingFactor)
+        internal LinMatrixColumnScaled(IMatrixProcessor<TMatrix, TScalar> matrixProcessor, TMatrix matrix, int columnIndex, TScalar scalingFactor)
             : base(matrixProcessor, matrix, columnIndex)
         {
             ScalingFactor = scalingFactor;

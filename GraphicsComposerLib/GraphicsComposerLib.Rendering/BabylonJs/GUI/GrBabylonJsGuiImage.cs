@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using DataStructuresLib.Basic;
-using GraphicsComposerLib.Rendering.BabylonJs.Values;
+﻿using GraphicsComposerLib.Rendering.BabylonJs.Values;
 using TextComposerLib;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.GUI
@@ -14,80 +12,135 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.GUI
         public sealed class GuiImageProperties :
             GuiControlProperties
         {
-            public GrBabylonJsBooleanValue? AutoScale { get; set; }
-        
-            public GrBabylonJsFloat32Value? CellWidth { get; set; }
-
-            public GrBabylonJsFloat32Value? CellHeight { get; set; }
-
-            public GrBabylonJsInt32Value? CellId { get; set; }
-
-            public GrBabylonJsBooleanValue? DetectPointerOnOpaqueOnly { get; set; }
-
-            public GrBabylonJsBooleanValue? PopulateNinePatchSlicesFromImage { get; set; }
-
-            public GrBabylonJsCodeValue? DomImage { get; set; }
-
-            public GrBabylonJsFloat32Value? SliceBottom { get; set; }
-        
-            public GrBabylonJsFloat32Value? SliceTop { get; set; }
-
-            public GrBabylonJsFloat32Value? SliceLeft { get; set; }
-        
-            public GrBabylonJsFloat32Value? SliceRight { get; set; }
-        
-            public GrBabylonJsStringValue? Source { get; set; }
-
-            public GrBabylonJsFloat32Value? SourceTop { get; set; }
-
-            public GrBabylonJsFloat32Value? SourceLeft { get; set; }
-
-            public GrBabylonJsFloat32Value? SourceWidth { get; set; }
-
-            public GrBabylonJsFloat32Value? SourceHeight { get; set; }
-        
-            public GrBabylonJsImageStretchValue? Stretch { get; set; }
-        
-
-            protected override IEnumerable<Pair<string>?> GetNameValuePairs()
+            public GrBabylonJsBooleanValue? AutoScale
             {
-                foreach (var pair in base.GetNameValuePairs())
-                    yield return pair;
-
-                yield return AutoScale.GetNameValueCodePair("autoScale");
-                yield return CellWidth.GetNameValueCodePair("cellWidth");
-                yield return CellHeight.GetNameValueCodePair("cellHeight");
-                yield return CellId.GetNameValueCodePair("cellId");
-                yield return DetectPointerOnOpaqueOnly.GetNameValueCodePair("detectPointerOnOpaqueOnly");
-                yield return PopulateNinePatchSlicesFromImage.GetNameValueCodePair("populateNinePatchSlicesFromImage");
-                yield return DomImage.GetNameValueCodePair("domImage");
-                yield return SliceBottom.GetNameValueCodePair("sliceBottom");
-                yield return SliceTop.GetNameValueCodePair("sliceTop");
-                yield return SliceLeft.GetNameValueCodePair("sliceLeft");
-                yield return SliceRight.GetNameValueCodePair("sliceRight");
-                yield return Source.GetNameValueCodePair("source");
-                yield return SourceTop.GetNameValueCodePair("sourceTop");
-                yield return SourceLeft.GetNameValueCodePair("sourceLeft");
-                yield return SourceWidth.GetNameValueCodePair("sourceWidth");
-                yield return SourceHeight.GetNameValueCodePair("sourceHeight");
-                yield return Stretch.GetNameValueCodePair("stretch");
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("autoScale");
+                set => SetAttributeValue("autoScale", value);
             }
+
+            public GrBabylonJsFloat32Value? CellWidth
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("cellWidth");
+                set => SetAttributeValue("cellWidth", value);
+            }
+
+            public GrBabylonJsFloat32Value? CellHeight
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("cellHeight");
+                set => SetAttributeValue("cellHeight", value);
+            }
+
+            public GrBabylonJsInt32Value? CellId
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsInt32Value>("cellId");
+                set => SetAttributeValue("cellId", value);
+            }
+
+            public GrBabylonJsBooleanValue? DetectPointerOnOpaqueOnly
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("detectPointerOnOpaqueOnly");
+                set => SetAttributeValue("detectPointerOnOpaqueOnly", value);
+            }
+
+            public GrBabylonJsBooleanValue? PopulateNinePatchSlicesFromImage
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("populateNinePatchSlicesFromImage");
+                set => SetAttributeValue("populateNinePatchSlicesFromImage", value);
+            }
+
+            public GrBabylonJsCodeValue? DomImage
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsCodeValue>("domImage");
+                set => SetAttributeValue("domImage", value);
+            }
+
+            public GrBabylonJsFloat32Value? SliceBottom
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("sliceBottom");
+                set => SetAttributeValue("sliceBottom", value);
+            }
+
+            public GrBabylonJsFloat32Value? SliceTop
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("sliceTop");
+                set => SetAttributeValue("sliceTop", value);
+            }
+
+            public GrBabylonJsFloat32Value? SliceLeft
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("sliceLeft");
+                set => SetAttributeValue("sliceLeft", value);
+            }
+
+            public GrBabylonJsFloat32Value? SliceRight
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("sliceRight");
+                set => SetAttributeValue("sliceRight", value);
+            }
+
+            public GrBabylonJsStringValue? Source
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsStringValue>("source");
+                set => SetAttributeValue("source", value);
+            }
+
+            public GrBabylonJsFloat32Value? SourceTop
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("sourceTop");
+                set => SetAttributeValue("sourceTop", value);
+            }
+
+            public GrBabylonJsFloat32Value? SourceLeft
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("sourceLeft");
+                set => SetAttributeValue("sourceLeft", value);
+            }
+
+            public GrBabylonJsFloat32Value? SourceWidth
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("sourceWidth");
+                set => SetAttributeValue("sourceWidth", value);
+            }
+
+            public GrBabylonJsFloat32Value? SourceHeight
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("sourceHeight");
+                set => SetAttributeValue("sourceHeight", value);
+            }
+
+            public GrBabylonJsImageStretchValue? Stretch
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsImageStretchValue>("stretch");
+                set => SetAttributeValue("stretch", value);
+            }
+
+
+            public GuiImageProperties()
+            {
+
+            }
+
+            public GuiImageProperties(GuiImageProperties properties)
+            {
+                SetAttributeValues(properties);
+            }
+            
         }
 
 
-        protected override string ConstructorName 
+        protected override string ConstructorName
             => "new BABYLON.GUI.Image";
 
-        public GuiImageProperties? Properties { get; private set; }
+        public GuiImageProperties Properties { get; private set; }
             = new GuiImageProperties();
 
-        public override GrBabylonJsObjectProperties? ObjectProperties 
+        public override GrBabylonJsObjectProperties ObjectProperties
             => Properties;
 
         public GrBabylonJsStringValue Url { get; set; }
 
 
-        public GrBabylonJsGuiImage(string constName, IGrBabylonJsGuiControlContainer parentContainer) 
+        public GrBabylonJsGuiImage(string constName, IGrBabylonJsGuiControlContainer parentContainer)
             : base(constName, parentContainer)
         {
         }
@@ -100,10 +153,10 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.GUI
             if (Url.IsNullOrEmpty()) yield break;
             yield return Url.GetCode();
         }
-    
-        public GrBabylonJsGuiImage SetProperties([NotNull] GuiImageProperties? properties)
+
+        public GrBabylonJsGuiImage SetProperties(GuiImageProperties properties)
         {
-            Properties = properties;
+            Properties = new GuiImageProperties(properties);
 
             return this;
         }

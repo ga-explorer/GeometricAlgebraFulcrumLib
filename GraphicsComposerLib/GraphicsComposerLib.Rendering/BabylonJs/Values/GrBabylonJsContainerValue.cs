@@ -1,9 +1,10 @@
-﻿using GraphicsComposerLib.Rendering.BabylonJs.GUI;
+﻿using DataStructuresLib.AttributeSet;
+using GraphicsComposerLib.Rendering.BabylonJs.GUI;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Values
 {
     public sealed class GrBabylonJsContainerValue :
-        GrBabylonJsValue<GrBabylonJsGuiContainer>
+        SparseCodeAttributeValue<GrBabylonJsGuiContainer>
     {
         public static implicit operator GrBabylonJsContainerValue(string valueText)
         {

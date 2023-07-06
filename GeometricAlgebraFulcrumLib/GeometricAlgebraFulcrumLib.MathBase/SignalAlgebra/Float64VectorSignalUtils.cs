@@ -309,7 +309,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra
 
         public static IReadOnlyList<double> GetPaddedSignal1(IReadOnlyList<double> signalSamples, double samplingRate, int trendSampleCount)
         {
-            var scalarProcessor = ScalarProcessorFloat64.DefaultProcessor;
+            var scalarProcessor = ScalarProcessorOfFloat64.DefaultProcessor;
 
             var sampleCount = signalSamples.Count;
 

@@ -1,5 +1,4 @@
-﻿using DataStructuresLib.Basic;
-using GraphicsComposerLib.Rendering.BabylonJs.Values;
+﻿using GraphicsComposerLib.Rendering.BabylonJs.Values;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Textures
 {
@@ -9,40 +8,76 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Textures
         public sealed class TextureOptions :
             GrBabylonJsObjectOptions
         {
-            public GrBabylonJsCodeValue? Buffer { get; set; }
-
-            public GrBabylonJsBooleanValue? DeleteBuffer { get; set; }
-
-            public GrBabylonJsBooleanValue? UseSrgbBuffer { get; set; }
-
-            public GrBabylonJsTextureFormatValue? Format { get; set; }
-
-            public GrBabylonJsBooleanValue? InvertY { get; set; }
-
-            public GrBabylonJsStringValue? MimeType { get; set; }
-
-            public GrBabylonJsBooleanValue? NoMipmap { get; set; }
-
-            public GrBabylonJsTextureSamplingModeValue? SamplingMode { get; set; }
-
-
-            protected override IEnumerable<Pair<string>?> GetNameValuePairs()
+            public GrBabylonJsCodeValue? Buffer
             {
-                yield return Buffer.GetNameValueCodePair("buffer");
-                yield return DeleteBuffer.GetNameValueCodePair("deleteBuffer");
-                yield return UseSrgbBuffer.GetNameValueCodePair("useSRGBBuffer");
-                yield return Format.GetNameValueCodePair("format");
-                yield return InvertY.GetNameValueCodePair("invertY");
-                yield return MimeType.GetNameValueCodePair("mimeType");
-                yield return NoMipmap.GetNameValueCodePair("noMipmap");
-                yield return SamplingMode.GetNameValueCodePair("samplingMode");
+                get => GetAttributeValueOrNull<GrBabylonJsCodeValue>("buffer");
+                set => SetAttributeValue("buffer", value);
+            }
+
+            public GrBabylonJsBooleanValue? DeleteBuffer
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("deleteBuffer");
+                set => SetAttributeValue("deleteBuffer", value);
+            }
+
+            public GrBabylonJsBooleanValue? UseSrgbBuffer
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("useSrgbBuffer");
+                set => SetAttributeValue("useSrgbBuffer", value);
+            }
+
+            public GrBabylonJsTextureFormatValue? Format
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsTextureFormatValue>("format");
+                set => SetAttributeValue("format", value);
+            }
+
+            public GrBabylonJsBooleanValue? InvertY
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("invertY");
+                set => SetAttributeValue("invertY", value);
+            }
+
+            public GrBabylonJsStringValue? MimeType
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsStringValue>("mimeType");
+                set => SetAttributeValue("mimeType", value);
+            }
+
+            public GrBabylonJsBooleanValue? NoMipmap
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("noMipmap");
+                set => SetAttributeValue("noMipmap", value);
+            }
+
+            public GrBabylonJsTextureSamplingModeValue? SamplingMode
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsTextureSamplingModeValue>("samplingMode");
+                set => SetAttributeValue("samplingMode", value);
+            }
+
+
+            public TextureOptions()
+            {
+            }
+
+            public TextureOptions(TextureOptions options)
+            {
+                SetAttributeValues(options);
             }
         }
 
         public sealed class TextureProperties :
             BaseTextureProperties
         {
-        
+            public TextureProperties()
+            {
+            }
+
+            public TextureProperties(TextureProperties properties)
+            {
+                SetAttributeValues(properties);
+            }
         }
 
 
@@ -51,16 +86,16 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Textures
 
         public GrBabylonJsStringValue Url { get; set; }
     
-        public TextureOptions? Options { get; private set; }
+        public TextureOptions Options { get; private set; }
             = new TextureOptions();
 
-        public TextureProperties? Properties { get; private set; }
+        public TextureProperties Properties { get; private set; }
             = new TextureProperties();
     
-        public override GrBabylonJsObjectOptions? ObjectOptions
+        public override GrBabylonJsObjectOptions ObjectOptions
             => Options;
 
-        public override GrBabylonJsObjectProperties? ObjectProperties 
+        public override GrBabylonJsObjectProperties ObjectProperties 
             => Properties;
 
 
@@ -77,14 +112,14 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Textures
     
         public GrBabylonJsTexture SetOptions(TextureOptions options)
         {
-            Options = options;
+            Options = new TextureOptions(options);
 
             return this;
         }
 
         public GrBabylonJsTexture SetProperties(TextureProperties properties)
         {
-            Properties = properties;
+            Properties = new TextureProperties(properties);
 
             return this;
         }
@@ -96,7 +131,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Textures
             if (ParentScene is null || ParentScene.IsEmpty) yield break;
             yield return ParentScene.Value.ConstName;
 
-            if (Options is null) yield break;
+            if (Options.Count == 0) yield break;
             yield return Options.GetCode();
         }
     }

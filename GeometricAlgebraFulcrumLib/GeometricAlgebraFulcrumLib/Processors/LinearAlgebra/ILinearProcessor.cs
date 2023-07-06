@@ -2,7 +2,7 @@
 
 namespace GeometricAlgebraFulcrumLib.Processors.LinearAlgebra
 {
-    public interface ILinearAlgebraProcessor<T>
+    public interface ILinearProcessor<T>
         : IScalarProcessor<T>
     {
         IScalarProcessor<T> ScalarProcessor { get; }

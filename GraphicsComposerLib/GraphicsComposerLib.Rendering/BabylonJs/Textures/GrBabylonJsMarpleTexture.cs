@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using DataStructuresLib.Basic;
-using GraphicsComposerLib.Rendering.BabylonJs.Values;
+﻿using GraphicsComposerLib.Rendering.BabylonJs.Values;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Textures
 {
@@ -10,24 +8,38 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Textures
         public sealed class MarpleTextureProperties :
             BaseTextureProperties
         {
-            public GrBabylonJsColor4Value? JointColor { get; set; }
-
-            public GrBabylonJsColor4Value? MarbleColor { get; set; }
-
-            public GrBabylonJsInt32Value? NumberOfTilesWidth { get; set; }
-
-            public GrBabylonJsInt32Value? NumberOfTilesHeight { get; set; }
-
-        
-            protected override IEnumerable<Pair<string>?> GetNameValuePairs()
+            public GrBabylonJsColor4Value? JointColor
             {
-                foreach (var pair in base.GetNameValuePairs())
-                    yield return pair;
+                get => GetAttributeValueOrNull<GrBabylonJsColor4Value>("jointColor");
+                set => SetAttributeValue("jointColor", value);
+            }
 
-                yield return JointColor.GetNameValueCodePair("jointColor");
-                yield return MarbleColor.GetNameValueCodePair("marbleColor");
-                yield return NumberOfTilesWidth.GetNameValueCodePair("numberOfTilesWidth");
-                yield return NumberOfTilesHeight.GetNameValueCodePair("numberOfTilesHeight");
+            public GrBabylonJsColor4Value? MarbleColor
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsColor4Value>("marbleColor");
+                set => SetAttributeValue("marbleColor", value);
+            }
+
+            public GrBabylonJsInt32Value? NumberOfTilesWidth
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsInt32Value>("numberOfTilesWidth");
+                set => SetAttributeValue("numberOfTilesWidth", value);
+            }
+
+            public GrBabylonJsInt32Value? NumberOfTilesHeight
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsInt32Value>("numberOfTilesHeight");
+                set => SetAttributeValue("numberOfTilesHeight", value);
+            }
+
+
+            public MarpleTextureProperties()
+            {
+            }
+
+            public MarpleTextureProperties(MarpleTextureProperties properties)
+            {
+                SetAttributeValues(properties);
             }
         }
 
@@ -35,10 +47,10 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Textures
         protected override string ConstructorName
             => "new BABYLON.MarpleProceduralTexture";
     
-        public MarpleTextureProperties? Properties { get; private set; }
+        public MarpleTextureProperties Properties { get; private set; }
             = new MarpleTextureProperties();
 
-        public override GrBabylonJsObjectProperties? ObjectProperties 
+        public override GrBabylonJsObjectProperties ObjectProperties 
             => Properties;
 
 
@@ -53,9 +65,9 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Textures
         }
 
     
-        public GrBabylonJsMarpleTexture SetProperties([NotNull] MarpleTextureProperties? properties)
+        public GrBabylonJsMarpleTexture SetProperties(MarpleTextureProperties properties)
         {
-            Properties = properties;
+            Properties = new MarpleTextureProperties(properties);
 
             return this;
         }

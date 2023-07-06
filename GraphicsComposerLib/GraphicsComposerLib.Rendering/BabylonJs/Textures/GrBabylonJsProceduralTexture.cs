@@ -1,5 +1,4 @@
-﻿using DataStructuresLib.Basic;
-using GraphicsComposerLib.Rendering.BabylonJs.Values;
+﻿using GraphicsComposerLib.Rendering.BabylonJs.Values;
 using TextComposerLib;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Textures
@@ -10,24 +9,38 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Textures
         public abstract class ProceduralTextureProperties :
             BaseTextureProperties
         {
-            public GrBabylonJsBooleanValue? IsEnabled { get; set; }
-
-            public GrBabylonJsBooleanValue? Animate { get; set; }
-
-            public GrBabylonJsBooleanValue? AutoClear { get; set; }
-        
-            public GrBabylonJsFloat32Value? RefreshRate { get; set; }
-
-        
-            protected override IEnumerable<Pair<string>?> GetNameValuePairs()
+            public GrBabylonJsBooleanValue? IsEnabled
             {
-                foreach (var pair in base.GetNameValuePairs())
-                    yield return pair;
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("isEnabled");
+                set => SetAttributeValue("isEnabled", value);
+            }
 
-                yield return IsEnabled.GetNameValueCodePair("isEnabled");
-                yield return Animate.GetNameValueCodePair("animate");
-                yield return AutoClear.GetNameValueCodePair("autoClear");
-                yield return RefreshRate.GetNameValueCodePair("refreshRate");
+            public GrBabylonJsBooleanValue? Animate
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("animate");
+                set => SetAttributeValue("animate", value);
+            }
+
+            public GrBabylonJsBooleanValue? AutoClear
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("autoClear");
+                set => SetAttributeValue("autoClear", value);
+            }
+        
+            public GrBabylonJsFloat32Value? RefreshRate
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("refreshRate");
+                set => SetAttributeValue("refreshRate", value);
+            }
+
+        
+            protected ProceduralTextureProperties()
+            {
+            }
+
+            protected ProceduralTextureProperties(ProceduralTextureProperties properties)
+            {
+                SetAttributeValues(properties);
             }
         }
 
@@ -56,7 +69,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Textures
             yield return Size.GetCode();
 
             if (ParentScene.IsNullOrEmpty()) yield break;
-            yield return ParentScene.Value.ConstName;
+            yield return ParentScene!.Value.ConstName;
 
             if (FallBackTexture.IsNullOrEmpty()) yield break;
             yield return FallBackTexture.GetCode();

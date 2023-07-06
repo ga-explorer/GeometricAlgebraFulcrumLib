@@ -13,7 +13,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.ConformalGeometry
         public static void Execute()
         {
             var processor =
-                ScalarAlgebraAngouriMathProcessor
+                ScalarProcessorOfAngouriMathEntity
                     .DefaultProcessor
                     .CreateConformalXGaProcessor();
 

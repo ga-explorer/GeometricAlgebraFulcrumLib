@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using DataStructuresLib.Basic;
-using GraphicsComposerLib.Rendering.BabylonJs.Values;
+﻿using GraphicsComposerLib.Rendering.BabylonJs.Values;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Materials
 {
@@ -13,42 +11,74 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Materials
         public sealed class GridMaterialProperties :
             MaterialProperties
         {
-            public GrBabylonJsVector3Value? GridOffset { get; set; }
-
-            public GrBabylonJsFloat32Value? GridRatio { get; set; }
-
-            public GrBabylonJsColor3Value? LineColor { get; set; }
-
-            public GrBabylonJsColor3Value? MainColor { get; set; }
-
-            public GrBabylonJsFloat32Value? MajorUnitFrequency { get; set; }
-
-            public GrBabylonJsFloat32Value? MinorUnitVisibility { get; set; }
-
-            public GrBabylonJsFloat32Value? Opacity { get; set; }
-
-            public GrBabylonJsTextureValue? OpacityTexture { get; set; }
-
-            public GrBabylonJsBooleanValue? PreMultiplyAlpha { get; set; }
-
-            public GrBabylonJsBooleanValue? UseMaxLine { get; set; }
-
-
-            protected override IEnumerable<Pair<string>?> GetNameValuePairs()
+            public GrBabylonJsVector3Value? GridOffset
             {
-                foreach (var pair in base.GetNameValuePairs())
-                    yield return pair;
+                get => GetAttributeValueOrNull<GrBabylonJsVector3Value>("gridOffset");
+                set => SetAttributeValue("gridOffset", value);
+            }
 
-                yield return GridOffset.GetNameValueCodePair("gridOffset");
-                yield return GridRatio.GetNameValueCodePair("gridRatio");
-                yield return LineColor.GetNameValueCodePair("lineColor");
-                yield return MainColor.GetNameValueCodePair("mainColor");
-                yield return MajorUnitFrequency.GetNameValueCodePair("majorUnitFrequency");
-                yield return MinorUnitVisibility.GetNameValueCodePair("minorUnitVisibility");
-                yield return Opacity.GetNameValueCodePair("opacity");
-                yield return OpacityTexture.GetNameValueCodePair("opacityTexture");
-                yield return PreMultiplyAlpha.GetNameValueCodePair("preMultiplyAlpha");
-                yield return UseMaxLine.GetNameValueCodePair("useMaxLine");
+            public GrBabylonJsFloat32Value? GridRatio
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("gridRatio");
+                set => SetAttributeValue("gridRatio", value);
+            }
+
+            public GrBabylonJsColor3Value? LineColor
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsColor3Value>("lineColor");
+                set => SetAttributeValue("lineColor", value);
+            }
+
+            public GrBabylonJsColor3Value? MainColor
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsColor3Value>("mainColor");
+                set => SetAttributeValue("mainColor", value);
+            }
+
+            public GrBabylonJsFloat32Value? MajorUnitFrequency
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("majorUnitFrequency");
+                set => SetAttributeValue("majorUnitFrequency", value);
+            }
+
+            public GrBabylonJsFloat32Value? MinorUnitVisibility
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("minorUnitVisibility");
+                set => SetAttributeValue("minorUnitVisibility", value);
+            }
+
+            public GrBabylonJsFloat32Value? Opacity
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("opacity");
+                set => SetAttributeValue("opacity", value);
+            }
+
+            public GrBabylonJsTextureValue? OpacityTexture
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsTextureValue>("opacityTexture");
+                set => SetAttributeValue("opacityTexture", value);
+            }
+
+            public GrBabylonJsBooleanValue? PreMultiplyAlpha
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("preMultiplyAlpha");
+                set => SetAttributeValue("preMultiplyAlpha", value);
+            }
+
+            public GrBabylonJsBooleanValue? UseMaxLine
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("useMaxLine");
+                set => SetAttributeValue("useMaxLine", value);
+            }
+
+
+            public GridMaterialProperties()
+            {
+            }
+
+            public GridMaterialProperties(GridMaterialProperties properties)
+            {
+                SetAttributeValues(properties);
             }
         }
 
@@ -56,27 +86,27 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Materials
         protected override string ConstructorName
             => "new BABYLON.GridMaterial";
 
-        public GridMaterialProperties? Properties { get; private set; }
+        public GridMaterialProperties Properties { get; private set; }
             = new GridMaterialProperties();
-    
-        public override GrBabylonJsObjectProperties? ObjectProperties 
+
+        public override GrBabylonJsObjectProperties ObjectProperties
             => Properties;
 
 
-        public GrBabylonJsGridMaterial(string constName) 
+        public GrBabylonJsGridMaterial(string constName)
             : base(constName)
         {
         }
-    
-        public GrBabylonJsGridMaterial(string constName, GrBabylonJsSceneValue scene) 
+
+        public GrBabylonJsGridMaterial(string constName, GrBabylonJsSceneValue scene)
             : base(constName, scene)
         {
         }
 
 
-        public GrBabylonJsGridMaterial SetProperties([NotNull] GridMaterialProperties? properties)
+        public GrBabylonJsGridMaterial SetProperties(GridMaterialProperties properties)
         {
-            Properties = properties;
+            Properties = new GridMaterialProperties(properties);
 
             return this;
         }

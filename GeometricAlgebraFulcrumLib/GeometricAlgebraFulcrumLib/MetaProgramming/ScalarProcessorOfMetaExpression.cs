@@ -12,8 +12,8 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming
     /// of all kinds. This processor only constructs new expressions without
     /// adding or querying data of the associated Context object
     /// </summary>
-    public class ScalarAlgebraMetaExpressionProcessor :
-        IScalarAlgebraSymbolicProcessor<IMetaExpression>
+    public class ScalarProcessorOfMetaExpression :
+        ISymbolicScalarProcessor<IMetaExpression>
     {
         public MetaContext Context { get; }
 
@@ -63,7 +63,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming
             => Context.ScalarRadianToDegree;
 
 
-        internal ScalarAlgebraMetaExpressionProcessor(MetaContext context)
+        internal ScalarProcessorOfMetaExpression(MetaContext context)
         {
             Context = context;
         }

@@ -1,4 +1,5 @@
-﻿using DataStructuresLib.Basic;
+﻿using DataStructuresLib.AttributeSet;
+using DataStructuresLib.Basic;
 using GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsPath;
 using GeometricAlgebraFulcrumLib.MathBase.Graphics.Meshes.PointsPath.Space3D;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
@@ -6,7 +7,7 @@ using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 namespace GraphicsComposerLib.Rendering.BabylonJs.Values
 {
     public sealed class GrBabylonJsVector3ArrayValue :
-        GrBabylonJsValue<IReadOnlyList<ITriplet<double>>>
+        SparseCodeAttributeValue<IReadOnlyList<ITriplet<double>>>
     {
         public static GrBabylonJsVector3ArrayValue Create(IReadOnlyList<ITriplet<double>> value)
         {

@@ -1,18 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Scalars;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
-using GeometricAlgebraFulcrumLib.MathBase.Borders;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Curves.Adaptive;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Curves.Bezier;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Parametric.Space3D.Frames;
 using GeometricAlgebraFulcrumLib.MathBase.Graphics.LatticeShapes;
 using GeometricAlgebraFulcrumLib.MathBase.Graphics.LatticeShapes.Surfaces;
 using GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives;
 using GeometricAlgebraFulcrumLib.MathBase.Graphics.Primitives.Lines;
-using GeometricAlgebraFulcrumLib.MathBase.Parametric;
-using GeometricAlgebraFulcrumLib.MathBase.Parametric.Space3D.Curves.Adaptive;
-using GeometricAlgebraFulcrumLib.MathBase.Parametric.Space3D.Curves.Bezier;
-using GeometricAlgebraFulcrumLib.MathBase.Parametric.Space3D.Frames;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space3D;
 using GraphicsComposerLib.Rendering.Xeogl;
 
 namespace GraphicsComposerLib.Samples.Geometry.BezierShapes
@@ -27,8 +26,8 @@ namespace GraphicsComposerLib.Samples.Geometry.BezierShapes
 
             foreach (var frame in sampledCurve)
             {
-                composer1.AddLine(frame.Point, frame.Point + frame.Normal1.ToTuple3D());
-                composer2.AddLine(frame.Point, frame.Point + frame.Normal2.ToTuple3D());
+                composer1.AddLine(frame.Point, frame.Point + frame.Normal1.ToVector3D());
+                composer2.AddLine(frame.Point, frame.Point + frame.Normal2.ToVector3D());
                 composer3.AddLine(frame.Point, frame.Point + frame.Tangent);
             }
 
@@ -95,17 +94,17 @@ namespace GraphicsComposerLib.Samples.Geometry.BezierShapes
 
             // Create a bezier curve
             //var curve = new BezierCurve3Degree3D(
-            //    new Float64Tuple3D(10, 0, 0),
-            //    new Float64Tuple3D(10, 30, 0),
-            //    new Float64Tuple3D(5, 1, 1),
-            //    new Float64Tuple3D(0, 0, 10)
+            //    Float64Vector3D.Create(10, 0, 0),
+            //    Float64Vector3D.Create(10, 30, 0),
+            //    Float64Vector3D.Create(5, 1, 1),
+            //    Float64Vector3D.Create(0, 0, 10)
             //);
 
             var curve = new BezierCurve3Degree3D(
-                new Float64Tuple3D(0, 0, 0),
-                new Float64Tuple3D(10, 0, 0),
-                new Float64Tuple3D(5, 20, 20),
-                new Float64Tuple3D(0, 20, 0)
+                Float64Vector3D.Create(0, 0, 0),
+                Float64Vector3D.Create(10, 0, 0),
+                Float64Vector3D.Create(5, 20, 20),
+                Float64Vector3D.Create(0, 20, 0)
             );
 
             var sampledCurve = 

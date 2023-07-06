@@ -29,11 +29,11 @@ namespace GeometricAlgebraFulcrumLib.Mathematica
 {
     public static class MathematicaUtils
     {
-        public static ScalarProcessorExpr ScalarProcessor
-            => ScalarProcessorExpr.DefaultProcessor;
+        public static ScalarProcessorOfWolframExpr ScalarProcessor
+            => ScalarProcessorOfWolframExpr.DefaultProcessor;
         
-        public static MatrixAlgebraMathematicaProcessor MatrixProcessor
-            => MatrixAlgebraMathematicaProcessor.DefaultProcessor;
+        public static MatrixProcessorOfWolframExpr MatrixProcessor
+            => MatrixProcessorOfWolframExpr.DefaultProcessor;
         
         public static TextComposerExpr TextComposer
             => TextComposerExpr.DefaultComposer;

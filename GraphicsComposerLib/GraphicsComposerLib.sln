@@ -11,8 +11,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextComposerLib", "..\TextC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphicsComposerLib.WinForms", "GraphicsComposerLib.WinForms\GraphicsComposerLib.WinForms.csproj", "{BEDAED05-671F-462F-BBEE-412F6D8B3AFE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphicsComposerLib.Geometry", "GraphicsComposerLib.Geometry\GraphicsComposerLib.Geometry.csproj", "{19E2E472-9A9F-4146-B006-3363F9699A45}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NumericalGeometryLib", "..\NumericalGeometryLib\NumericalGeometryLib\NumericalGeometryLib.csproj", "{A0E01DB9-A366-498B-9687-6972A5768F8B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphicsComposerLib.Rendering", "GraphicsComposerLib.Rendering\GraphicsComposerLib.Rendering.csproj", "{0F8421DE-E7A4-4F8B-9658-2652DF5EFBA4}"
@@ -20,6 +18,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FFMpegCore", "FFMpegCore\FFMpegCore.csproj", "{9F644F4E-4A3E-4E0D-850C-4ED0520CDB56}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeometricAlgebraFulcrumLib.MathBase", "..\GeometricAlgebraFulcrumLib\GeometricAlgebraFulcrumLib.MathBase\GeometricAlgebraFulcrumLib.MathBase.csproj", "{58DC178F-CA8C-48C0-AA7B-56388AA66402}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebComposerLib", "..\WebComposerLib\WebComposerLib\WebComposerLib.csproj", "{24C56010-BAD9-44EA-9938-C0E79A121377}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -79,18 +79,6 @@ Global
 		{BEDAED05-671F-462F-BBEE-412F6D8B3AFE}.Release|ARM32.Build.0 = Release|Any CPU
 		{BEDAED05-671F-462F-BBEE-412F6D8B3AFE}.Release|x64.ActiveCfg = Release|x64
 		{BEDAED05-671F-462F-BBEE-412F6D8B3AFE}.Release|x64.Build.0 = Release|x64
-		{19E2E472-9A9F-4146-B006-3363F9699A45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{19E2E472-9A9F-4146-B006-3363F9699A45}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{19E2E472-9A9F-4146-B006-3363F9699A45}.Debug|ARM32.ActiveCfg = Debug|Any CPU
-		{19E2E472-9A9F-4146-B006-3363F9699A45}.Debug|ARM32.Build.0 = Debug|Any CPU
-		{19E2E472-9A9F-4146-B006-3363F9699A45}.Debug|x64.ActiveCfg = Debug|x64
-		{19E2E472-9A9F-4146-B006-3363F9699A45}.Debug|x64.Build.0 = Debug|x64
-		{19E2E472-9A9F-4146-B006-3363F9699A45}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{19E2E472-9A9F-4146-B006-3363F9699A45}.Release|Any CPU.Build.0 = Release|Any CPU
-		{19E2E472-9A9F-4146-B006-3363F9699A45}.Release|ARM32.ActiveCfg = Release|Any CPU
-		{19E2E472-9A9F-4146-B006-3363F9699A45}.Release|ARM32.Build.0 = Release|Any CPU
-		{19E2E472-9A9F-4146-B006-3363F9699A45}.Release|x64.ActiveCfg = Release|x64
-		{19E2E472-9A9F-4146-B006-3363F9699A45}.Release|x64.Build.0 = Release|x64
 		{A0E01DB9-A366-498B-9687-6972A5768F8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A0E01DB9-A366-498B-9687-6972A5768F8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A0E01DB9-A366-498B-9687-6972A5768F8B}.Debug|ARM32.ActiveCfg = Debug|Any CPU
@@ -139,6 +127,18 @@ Global
 		{58DC178F-CA8C-48C0-AA7B-56388AA66402}.Release|ARM32.Build.0 = Release|Any CPU
 		{58DC178F-CA8C-48C0-AA7B-56388AA66402}.Release|x64.ActiveCfg = Release|Any CPU
 		{58DC178F-CA8C-48C0-AA7B-56388AA66402}.Release|x64.Build.0 = Release|Any CPU
+		{24C56010-BAD9-44EA-9938-C0E79A121377}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24C56010-BAD9-44EA-9938-C0E79A121377}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24C56010-BAD9-44EA-9938-C0E79A121377}.Debug|ARM32.ActiveCfg = Debug|Any CPU
+		{24C56010-BAD9-44EA-9938-C0E79A121377}.Debug|ARM32.Build.0 = Debug|Any CPU
+		{24C56010-BAD9-44EA-9938-C0E79A121377}.Debug|x64.ActiveCfg = Debug|x64
+		{24C56010-BAD9-44EA-9938-C0E79A121377}.Debug|x64.Build.0 = Debug|x64
+		{24C56010-BAD9-44EA-9938-C0E79A121377}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24C56010-BAD9-44EA-9938-C0E79A121377}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24C56010-BAD9-44EA-9938-C0E79A121377}.Release|ARM32.ActiveCfg = Release|Any CPU
+		{24C56010-BAD9-44EA-9938-C0E79A121377}.Release|ARM32.Build.0 = Release|Any CPU
+		{24C56010-BAD9-44EA-9938-C0E79A121377}.Release|x64.ActiveCfg = Release|x64
+		{24C56010-BAD9-44EA-9938-C0E79A121377}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -15,7 +15,7 @@ namespace GeometricAlgebraFulcrumLib.Mathematica.Text
 
 
         public LaTeXMathematicaComposer() 
-            : base(ScalarProcessorExpr.DefaultProcessor)
+            : base(ScalarProcessorOfWolframExpr.DefaultProcessor)
         {
         }
 

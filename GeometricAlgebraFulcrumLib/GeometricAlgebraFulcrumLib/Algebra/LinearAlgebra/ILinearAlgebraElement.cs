@@ -6,6 +6,6 @@ namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra
     public interface ILinearAlgebraElement<T> :
         IScalarAlgebraElement<T>
     {
-        ILinearAlgebraProcessor<T> LinearProcessor { get; }
+        ILinearProcessor<T> LinearProcessor { get; }
     }
 }

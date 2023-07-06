@@ -45,7 +45,7 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.EuclideanGeome
         {
             const int n = 5;
             
-            var scalarProcessor = ScalarProcessorExpr.DefaultProcessor;
+            var scalarProcessor = ScalarProcessorOfWolframExpr.DefaultProcessor;
             var metric = XGaProcessor<Expr>.CreateEuclidean(scalarProcessor);
 
             var textComposer =
@@ -83,7 +83,7 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.EuclideanGeome
         {
             const int n = 5;
             
-            var scalarProcessor = ScalarProcessorExpr.DefaultProcessor;
+            var scalarProcessor = ScalarProcessorOfWolframExpr.DefaultProcessor;
             var metric = XGaProcessor<Expr>.CreateEuclidean(scalarProcessor);
 
             var textComposer =
@@ -203,7 +203,7 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.EuclideanGeome
         {
             const int n = 5;
             
-            var scalarProcessor = ScalarProcessorExpr.DefaultProcessor;
+            var scalarProcessor = ScalarProcessorOfWolframExpr.DefaultProcessor;
             var geometricProcessor = XGaProcessor<Expr>.CreateEuclidean(scalarProcessor);
 
             var textComposer =

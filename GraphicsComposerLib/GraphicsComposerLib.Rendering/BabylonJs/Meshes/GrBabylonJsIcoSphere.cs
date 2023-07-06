@@ -1,5 +1,4 @@
-﻿using DataStructuresLib.Basic;
-using GraphicsComposerLib.Rendering.BabylonJs.Values;
+﻿using GraphicsComposerLib.Rendering.BabylonJs.Values;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes;
 
@@ -12,59 +11,94 @@ public sealed class GrBabylonJsIcoSphere :
     public sealed class IcoSphereOptions :
         GrBabylonJsObjectOptions
     {
-        public GrBabylonJsBooleanValue? Flat { get; init; }
-        
-        public GrBabylonJsFloat32Value? Radius { get; init; }
-
-        public GrBabylonJsFloat32Value? RadiusX { get; init; }
-
-        public GrBabylonJsFloat32Value? RadiusY { get; init; }
-    
-        public GrBabylonJsFloat32Value? RadiusZ { get; init; }
-    
-        public GrBabylonJsInt32Value? Subdivisions { get; init; }
-    
-        public GrBabylonJsMeshOrientationValue? SideOrientation { get; init; }
-
-        public GrBabylonJsVector4Value? FrontUVs { get; init; }
-
-        public GrBabylonJsVector4Value? BackUVs { get; init; }
-
-        public GrBabylonJsBooleanValue? Updateable { get; init; }
-
-        
-        protected override IEnumerable<Pair<string>?> GetNameValuePairs()
+        public GrBabylonJsBooleanValue? Flat
         {
-            yield return Flat.GetNameValueCodePair("flat");
-            yield return Radius.GetNameValueCodePair("radius");
-            yield return RadiusX.GetNameValueCodePair("radiusX");
-            yield return RadiusY.GetNameValueCodePair("radiusY");
-            yield return RadiusZ.GetNameValueCodePair("radiusZ");
-            yield return Subdivisions.GetNameValueCodePair("subdivisions");
-            yield return SideOrientation.GetNameValueCodePair("sideOrientation");
-            yield return FrontUVs.GetNameValueCodePair("frontUVs");
-            yield return BackUVs.GetNameValueCodePair("backUVs");
-            yield return Updateable.GetNameValueCodePair("updatable");
+            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("flat");
+            set => SetAttributeValue("flat", value);
+        }
+
+        public GrBabylonJsFloat32Value? Radius
+        {
+            get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("radius");
+            set => SetAttributeValue("radius", value);
+        }
+
+        public GrBabylonJsFloat32Value? RadiusX
+        {
+            get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("radiusX");
+            set => SetAttributeValue("radiusX", value);
+        }
+
+        public GrBabylonJsFloat32Value? RadiusY
+        {
+            get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("radiusY");
+            set => SetAttributeValue("radiusY", value);
+        }
+
+        public GrBabylonJsFloat32Value? RadiusZ
+        {
+            get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("radiusZ");
+            set => SetAttributeValue("radiusZ", value);
+        }
+
+        public GrBabylonJsInt32Value? Subdivisions
+        {
+            get => GetAttributeValueOrNull<GrBabylonJsInt32Value>("subdivisions");
+            set => SetAttributeValue("subdivisions", value);
+        }
+
+        public GrBabylonJsMeshOrientationValue? SideOrientation
+        {
+            get => GetAttributeValueOrNull<GrBabylonJsMeshOrientationValue>("sideOrientation");
+            set => SetAttributeValue("sideOrientation", value);
+        }
+
+        public GrBabylonJsVector4Value? FrontUVs
+        {
+            get => GetAttributeValueOrNull<GrBabylonJsVector4Value>("frontUVs");
+            set => SetAttributeValue("frontUVs", value);
+        }
+
+        public GrBabylonJsVector4Value? BackUVs
+        {
+            get => GetAttributeValueOrNull<GrBabylonJsVector4Value>("backUVs");
+            set => SetAttributeValue("backUVs", value);
+        }
+
+        public GrBabylonJsBooleanValue? Updatable
+        {
+            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("updatable");
+            set => SetAttributeValue("updatable", value);
+        }
+
+
+        public IcoSphereOptions()
+        {
+        }
+
+        public IcoSphereOptions(IcoSphereOptions options)
+        {
+            SetAttributeValues(options);
         }
     }
-    
-    
+
+
     protected override string ConstructorName
         => "BABYLON.MeshBuilder.CreateIcoSphere";
 
-    public IcoSphereOptions? Options { get; private set; }
+    public IcoSphereOptions Options { get; private set; }
         = new IcoSphereOptions();
 
-    public override GrBabylonJsObjectOptions? ObjectOptions 
+    public override GrBabylonJsObjectOptions ObjectOptions
         => Options;
 
 
-    public GrBabylonJsIcoSphere(string constName) 
+    public GrBabylonJsIcoSphere(string constName)
         : base(constName)
     {
     }
-    
-    public GrBabylonJsIcoSphere(string constName, GrBabylonJsSceneValue scene) 
+
+    public GrBabylonJsIcoSphere(string constName, GrBabylonJsSceneValue scene)
         : base(constName, scene)
     {
     }
@@ -72,14 +106,14 @@ public sealed class GrBabylonJsIcoSphere :
 
     public GrBabylonJsIcoSphere SetOptions(IcoSphereOptions options)
     {
-        Options = options;
+        Options = new IcoSphereOptions(options);
 
         return this;
     }
 
     public GrBabylonJsIcoSphere SetProperties(MeshProperties properties)
     {
-        Properties = properties;
+        Properties = new MeshProperties(properties);
 
         return this;
     }

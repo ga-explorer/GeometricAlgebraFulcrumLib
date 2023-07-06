@@ -1,5 +1,4 @@
-﻿using DataStructuresLib.Basic;
-using GraphicsComposerLib.Rendering.BabylonJs.Values;
+﻿using GraphicsComposerLib.Rendering.BabylonJs.Values;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
 {
@@ -13,65 +12,106 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
         public sealed class TubeOptions :
             GrBabylonJsObjectOptions
         {
-            public GrBabylonJsVector3ArrayValue? Path { get; set; }
-
-            public GrBabylonJsMeshValue? Instance { get; set; }
-
-            public GrBabylonJsFloat32Value? Arc { get; set; }
-
-            public GrBabylonJsFloat32Value? Radius { get; set; }
-
-            public GrBabylonJsCodeValue? RadiusFunction { get; set; }
-    
-            public GrBabylonJsInt32Value? Tessellation { get; set; }
-    
-            public GrBabylonJsMeshCapValue? Cap { get; set; }
-
-            public GrBabylonJsMeshOrientationValue? SideOrientation { get; set; }
-
-            public GrBabylonJsVector4Value? FrontUVs { get; set; }
-
-            public GrBabylonJsVector4Value? BackUVs { get; set; }
-    
-            public GrBabylonJsBooleanValue? InvertUV { get; set; }
-    
-            public GrBabylonJsBooleanValue? Updateable { get; set; }
-
-
-            protected override IEnumerable<Pair<string>?> GetNameValuePairs()
+            public GrBabylonJsVector3ArrayValue? Path
             {
-                yield return Path.GetNameValueCodePair("path");
-                yield return Arc.GetNameValueCodePair("arc");
-                yield return Radius.GetNameValueCodePair("radius");
-                yield return RadiusFunction.GetNameValueCodePair("radiusFunction");
-                yield return Instance.GetNameValueCodePair("instance");
-                yield return Tessellation.GetNameValueCodePair("tessellation");
-                yield return Cap.GetNameValueCodePair("cap");
-                yield return SideOrientation.GetNameValueCodePair("sideOrientation");
-                yield return FrontUVs.GetNameValueCodePair("frontUVs");
-                yield return BackUVs.GetNameValueCodePair("backUVs");
-                yield return Updateable.GetNameValueCodePair("updatable");
-                yield return InvertUV.GetNameValueCodePair("invertUV");
+                get => GetAttributeValueOrNull<GrBabylonJsVector3ArrayValue>("path");
+                set => SetAttributeValue("path", value);
+            }
+
+            public GrBabylonJsMeshValue? Instance
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsMeshValue>("instance");
+                set => SetAttributeValue("instance", value);
+            }
+
+            public GrBabylonJsFloat32Value? Arc
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("arc");
+                set => SetAttributeValue("arc", value);
+            }
+
+            public GrBabylonJsFloat32Value? Radius
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("radius");
+                set => SetAttributeValue("radius", value);
+            }
+
+            public GrBabylonJsCodeValue? RadiusFunction
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsCodeValue>("radiusFunction");
+                set => SetAttributeValue("radiusFunction", value);
+            }
+
+            public GrBabylonJsInt32Value? Tessellation
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsInt32Value>("tessellation");
+                set => SetAttributeValue("tessellation", value);
+            }
+
+            public GrBabylonJsMeshCapValue? Cap
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsMeshCapValue>("cap");
+                set => SetAttributeValue("cap", value);
+            }
+
+            public GrBabylonJsMeshOrientationValue? SideOrientation
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsMeshOrientationValue>("sideOrientation");
+                set => SetAttributeValue("sideOrientation", value);
+            }
+
+            public GrBabylonJsVector4Value? FrontUVs
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsVector4Value>("frontUVs");
+                set => SetAttributeValue("frontUVs", value);
+            }
+
+            public GrBabylonJsVector4Value? BackUVs
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsVector4Value>("backUVs");
+                set => SetAttributeValue("backUVs", value);
+            }
+
+            public GrBabylonJsBooleanValue? InvertUv
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("invertUV");
+                set => SetAttributeValue("invertUV", value);
+            }
+
+            public GrBabylonJsBooleanValue? Updatable
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("updatable");
+                set => SetAttributeValue("updatable", value);
+            }
+
+
+            public TubeOptions()
+            {
+            }
+
+            public TubeOptions(TubeOptions options)
+            {
+                SetAttributeValues(options);
             }
         }
-    
+
         protected override string ConstructorName
             => "BABYLON.MeshBuilder.CreateTube";
 
-        public TubeOptions? Options { get; private set; }
+        public TubeOptions Options { get; private set; }
             = new TubeOptions();
 
-        public override GrBabylonJsObjectOptions? ObjectOptions 
+        public override GrBabylonJsObjectOptions ObjectOptions
             => Options;
 
 
-        public GrBabylonJsTube(string constName) 
+        public GrBabylonJsTube(string constName)
             : base(constName)
         {
             UseLetDeclaration = true;
         }
-    
-        public GrBabylonJsTube(string constName, GrBabylonJsSceneValue scene) 
+
+        public GrBabylonJsTube(string constName, GrBabylonJsSceneValue scene)
             : base(constName, scene)
         {
             UseLetDeclaration = true;
@@ -80,14 +120,14 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
 
         public GrBabylonJsTube SetOptions(TubeOptions options)
         {
-            Options = options;
+            Options = new TubeOptions(options);
 
             return this;
         }
 
         public GrBabylonJsTube SetProperties(MeshProperties properties)
         {
-            Properties = properties;
+            Properties = new MeshProperties(properties);
 
             return this;
         }

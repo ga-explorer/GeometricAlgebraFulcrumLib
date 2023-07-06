@@ -1,5 +1,4 @@
-﻿using DataStructuresLib.Basic;
-using GraphicsComposerLib.Rendering.BabylonJs.Values;
+﻿using GraphicsComposerLib.Rendering.BabylonJs.Values;
 using TextComposerLib;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
@@ -10,18 +9,26 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
         public sealed class LinesMeshProperties :
             GrBabylonJsMesh.MeshProperties
         {
-            public GrBabylonJsColor3Value? Color { get; set; }
-
-            public GrBabylonJsFloat32Value? Alpha { get; set; }
-
-
-            protected override IEnumerable<Pair<string>?> GetNameValuePairs()
+            public GrBabylonJsColor3Value? Color
             {
-                foreach (var pair in base.GetNameValuePairs())
-                    yield return pair;
+                get => GetAttributeValueOrNull<GrBabylonJsColor3Value>("color");
+                set => SetAttributeValue("color", value);
+            }
 
-                yield return Alpha.GetNameValueCodePair("alpha");
-                yield return Color.GetNameValueCodePair("color");
+            public GrBabylonJsFloat32Value? Alpha
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("alpha");
+                set => SetAttributeValue("alpha", value);
+            }
+
+
+            public LinesMeshProperties()
+            {
+            }
+
+            public LinesMeshProperties(LinesMeshProperties properties)
+            {
+                SetAttributeValues(properties);
             }
         }
 
@@ -31,10 +38,10 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
         public string SceneVariableName 
             => ParentScene.Value.ConstName;
 
-        public LinesMeshProperties? Properties { get; protected set; }
+        public LinesMeshProperties Properties { get; protected set; }
             = new LinesMeshProperties();
 
-        public override GrBabylonJsObjectProperties? ObjectProperties 
+        public override GrBabylonJsObjectProperties ObjectProperties 
             => Properties;
     
 

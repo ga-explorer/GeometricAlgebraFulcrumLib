@@ -56,7 +56,7 @@ namespace GeometricAlgebraFulcrumLib.MetaProgramming.Applications.Text
 
         private static MathMlRow ToMathMlRow(RGaFloat64Multivector mv, Func<ulong, IMathMlElement> getBasisBladeNameFunc)
         {
-            var scalarProcessor = ScalarProcessorFloat64.DefaultProcessor;
+            var scalarProcessor = ScalarProcessorOfFloat64.DefaultProcessor;
 
             var rowElement = MathMlRow.Create();
 

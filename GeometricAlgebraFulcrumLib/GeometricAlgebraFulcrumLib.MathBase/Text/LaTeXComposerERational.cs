@@ -13,7 +13,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Text
 
         
         private LaTeXComposerERational()
-            : base(ScalarProcessorERational.DefaultProcessor)
+            : base(ScalarProcessorOfERational.DefaultProcessor)
         {
         }
 

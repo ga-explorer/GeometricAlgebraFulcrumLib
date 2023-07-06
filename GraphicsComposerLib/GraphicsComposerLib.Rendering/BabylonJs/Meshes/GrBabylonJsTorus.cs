@@ -1,5 +1,4 @@
-﻿using DataStructuresLib.Basic;
-using GraphicsComposerLib.Rendering.BabylonJs.Values;
+﻿using GraphicsComposerLib.Rendering.BabylonJs.Values;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
 {
@@ -13,40 +12,66 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
         public sealed class TorusOptions :
             GrBabylonJsObjectOptions
         {
-            public GrBabylonJsFloat32Value? Diameter { get; set; }
-
-            public GrBabylonJsFloat32Value? Thickness { get; set; }
-    
-            public GrBabylonJsInt32Value? Tessellation { get; set; }
-    
-            public GrBabylonJsMeshOrientationValue? SideOrientation { get; set; }
-
-            public GrBabylonJsVector4Value? FrontUVs { get; set; }
-
-            public GrBabylonJsVector4Value? BackUVs { get; set; }
-
-            public GrBabylonJsBooleanValue? Updateable { get; set; }
-
-
-            protected override IEnumerable<Pair<string>?> GetNameValuePairs()
+            public GrBabylonJsFloat32Value? Diameter
             {
-                yield return Diameter.GetNameValueCodePair("diameter");
-                yield return Thickness.GetNameValueCodePair("thickness");
-                yield return Tessellation.GetNameValueCodePair("tessellation");
-                yield return SideOrientation.GetNameValueCodePair("sideOrientation");
-                yield return FrontUVs.GetNameValueCodePair("frontUVs");
-                yield return BackUVs.GetNameValueCodePair("backUVs");
-                yield return Updateable.GetNameValueCodePair("updatable");
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("diameter");
+                set => SetAttributeValue("diameter", value);
+            }
+
+            public GrBabylonJsFloat32Value? Thickness
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("thickness");
+                set => SetAttributeValue("thickness", value);
+            }
+
+            public GrBabylonJsInt32Value? Tessellation
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsInt32Value>("tessellation");
+                set => SetAttributeValue("tessellation", value);
+            }
+
+            public GrBabylonJsMeshOrientationValue? SideOrientation
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsMeshOrientationValue>("sideOrientation");
+                set => SetAttributeValue("sideOrientation", value);
+            }
+
+            public GrBabylonJsVector4Value? FrontUVs
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsVector4Value>("frontUVs");
+                set => SetAttributeValue("frontUVs", value);
+            }
+
+            public GrBabylonJsVector4Value? BackUVs
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsVector4Value>("backUVs");
+                set => SetAttributeValue("backUVs", value);
+            }
+
+            public GrBabylonJsBooleanValue? Updatable
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("updatable");
+                set => SetAttributeValue("updatable", value);
+            }
+
+
+            public TorusOptions()
+            {
+            }
+
+            public TorusOptions(TorusOptions options)
+            {
+                SetAttributeValues(options);
             }
         }
     
         protected override string ConstructorName
             => "BABYLON.MeshBuilder.CreateTorus";
 
-        public TorusOptions? Options { get; private set; }
+        public TorusOptions Options { get; private set; }
             = new TorusOptions();
 
-        public override GrBabylonJsObjectOptions? ObjectOptions 
+        public override GrBabylonJsObjectOptions ObjectOptions 
             => Options;
 
 
@@ -63,14 +88,14 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
 
         public GrBabylonJsTorus SetOptions(TorusOptions options)
         {
-            Options = options;
+            Options = new TorusOptions(options);
 
             return this;
         }
 
         public GrBabylonJsTorus SetProperties(MeshProperties properties)
         {
-            Properties = properties;
+            Properties = new MeshProperties(properties);
 
             return this;
         }

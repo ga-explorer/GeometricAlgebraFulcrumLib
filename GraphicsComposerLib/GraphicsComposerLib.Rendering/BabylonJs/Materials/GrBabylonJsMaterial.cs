@@ -1,5 +1,4 @@
-﻿using DataStructuresLib.Basic;
-using GraphicsComposerLib.Rendering.BabylonJs.Values;
+﻿using GraphicsComposerLib.Rendering.BabylonJs.Values;
 using GraphicsComposerLib.Rendering.Visuals.Space3D;
 using TextComposerLib;
 
@@ -12,61 +11,97 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Materials
         public abstract class MaterialProperties :
             GrBabylonJsObjectProperties
         {
-            public GrBabylonJsMaterialTransparencyModeValue? TransparencyMode { get; set; }
-
-            public GrBabylonJsFloat32Value? Alpha { get; set; }
-
-            public GrBabylonJsAlphaModeValue? AlphaMode { get; set; }
-
-            public GrBabylonJsBooleanValue? WireFrame { get; set; }
-
-            public GrBabylonJsMeshOrientationValue? SideOrientation { get; set; }
-
-            public GrBabylonJsBooleanValue? BackFaceCulling { get; set; }
-
-            public GrBabylonJsBooleanValue? CullBackFaces { get; set; }
-
-            public GrBabylonJsBooleanValue? FogEnabled { get; set; }
-    
-            public GrBabylonJsFloat32Value? PointSize { get; set; }
-
-            public GrBabylonJsBooleanValue? PointsCloud { get; set; }
-    
-        
-            protected override IEnumerable<Pair<string>?> GetNameValuePairs()
+            public GrBabylonJsMaterialTransparencyModeValue? TransparencyMode
             {
-                yield return Alpha.GetNameValueCodePair("alpha");
-                yield return AlphaMode.GetNameValueCodePair("alphaMode");
-                yield return TransparencyMode.GetNameValueCodePair("transparencyMode");
-                yield return WireFrame.GetNameValueCodePair("wireFrame");
-                yield return SideOrientation.GetNameValueCodePair("sideOrientation");
-                yield return BackFaceCulling.GetNameValueCodePair("backFaceCulling");
-                yield return CullBackFaces.GetNameValueCodePair("cullBackFaces");
-                yield return FogEnabled.GetNameValueCodePair("fogEnabled");
-                yield return PointSize.GetNameValueCodePair("pointSize");
-                yield return PointsCloud.GetNameValueCodePair("pointsCloud");
+                get => GetAttributeValueOrNull<GrBabylonJsMaterialTransparencyModeValue>("transparencyMode");
+                set => SetAttributeValue("transparencyMode", value);
+            }
+
+            public GrBabylonJsFloat32Value? Alpha
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("alpha");
+                set => SetAttributeValue("alpha", value);
+            }
+
+            public GrBabylonJsAlphaModeValue? AlphaMode
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsAlphaModeValue>("alphaMode");
+                set => SetAttributeValue("alphaMode", value);
+            }
+
+            public GrBabylonJsBooleanValue? WireFrame
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("wireFrame");
+                set => SetAttributeValue("wireFrame", value);
+            }
+
+            public GrBabylonJsMeshOrientationValue? SideOrientation
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsMeshOrientationValue>("sideOrientation");
+                set => SetAttributeValue("sideOrientation", value);
+            }
+
+            public GrBabylonJsBooleanValue? BackFaceCulling
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("backFaceCulling");
+                set => SetAttributeValue("backFaceCulling", value);
+            }
+
+            public GrBabylonJsBooleanValue? CullBackFaces
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("cullBackFaces");
+                set => SetAttributeValue("cullBackFaces", value);
+            }
+
+            public GrBabylonJsBooleanValue? FogEnabled
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("fogEnabled");
+                set => SetAttributeValue("fogEnabled", value);
+            }
+
+            public GrBabylonJsFloat32Value? PointSize
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("pointSize");
+                set => SetAttributeValue("pointSize", value);
+            }
+
+            public GrBabylonJsBooleanValue? PointsCloud
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("pointsCloud");
+                set => SetAttributeValue("pointsCloud", value);
+            }
+
+
+
+            protected MaterialProperties()
+            {
+            }
+
+            protected MaterialProperties(MaterialProperties properties)
+            {
+                SetAttributeValues(properties);
             }
         }
 
 
-        public string MaterialName 
+        public string MaterialName
             => ConstName;
-    
+
         public GrBabylonJsSceneValue ParentScene { get; set; }
 
-        public string SceneVariableName 
+        public string SceneVariableName
             => ParentScene.Value.ConstName;
-    
-        public override GrBabylonJsObjectOptions? ObjectOptions 
+
+        public override GrBabylonJsObjectOptions? ObjectOptions
             => null;
 
-    
-        protected GrBabylonJsMaterial(string constName) 
+
+        protected GrBabylonJsMaterial(string constName)
             : base(constName)
         {
         }
 
-        protected GrBabylonJsMaterial(string constName, GrBabylonJsSceneValue scene) 
+        protected GrBabylonJsMaterial(string constName, GrBabylonJsSceneValue scene)
             : base(constName)
         {
             ParentScene = scene;

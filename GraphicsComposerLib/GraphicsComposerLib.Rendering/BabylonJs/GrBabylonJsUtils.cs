@@ -1,5 +1,6 @@
 ﻿using System.Collections.Immutable;
 using System.Numerics;
+using DataStructuresLib.AttributeSet;
 using DataStructuresLib.Basic;
 using DataStructuresLib.Extensions;
 using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Maps.Space3D;
@@ -20,7 +21,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
 {
     public static class GrBabylonJsUtils
     {
-        internal static string? GetValueCode<T>(this GrBabylonJsValue<T>? value)
+        internal static string? GetValueCode<T>(this SparseCodeAttributeValue<T>? value)
         {
             return value is null || value.IsEmpty
                 ? null 
@@ -34,14 +35,14 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
                 : new Pair<string>(name, value.GetCode());
         }
 
-        internal static Pair<string>? GetNameValueCodePair<T>(this GrBabylonJsValue<T>? value, string name)
+        internal static Pair<string>? GetNameValueCodePair<T>(this SparseCodeAttributeValue<T>? value, string name)
         {
             return value is null || value.IsEmpty
                 ? null 
                 : new Pair<string>(name, value.GetCode());
         }
         
-        internal static Pair<string>? GetNameValueCodePair<T>(this GrBabylonJsValue<T>? value, string name, GrBabylonJsValue<T>? defaultValue)
+        internal static Pair<string>? GetNameValueCodePair<T>(this SparseCodeAttributeValue<T>? value, string name, SparseCodeAttributeValue<T>? defaultValue)
         {
             return value is null || value.IsEmpty
                 ? defaultValue.GetNameValueCodePair(name) 
@@ -53,12 +54,12 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
             return GrBabylonJsVector3Value.Create(value);
         }
 
-        public static bool HasValue(this GrBabylonJsValue? value)
+        public static bool HasValue(this SparseCodeAttributeValue? value)
         {
             return value is not null && !value.IsEmpty;
         }
         
-        public static bool IsNullOrEmpty(this GrBabylonJsValue? value)
+        public static bool IsNullOrEmpty(this SparseCodeAttributeValue? value)
         {
             return value is null || value.IsEmpty;
         }
@@ -88,10 +89,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
         {
             return new GrBabylonJsStandardMaterial(materialName)
                 .SetProperties(
-                    new GrBabylonJsStandardMaterial.StandardMaterialProperties
-                    {
-                        Color = color
-                    }
+                    new GrBabylonJsStandardMaterial.StandardMaterialProperties(color)
                 );
         }
 
@@ -432,7 +430,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
                 .GetAffineMapBabylonJsMatrixCode(isTransposed);
         }
 
-        public static string GetBabylonJsCode(this IEnumerable<GrBabylonJsValue> valueList)
+        public static string GetBabylonJsCode(this IEnumerable<SparseCodeAttributeValue> valueList)
         {
             return valueList.Select(
                 value => value.GetCode()

@@ -21,7 +21,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra.Processors
             = 100;
 
         public IScalarProcessor<double> ScalarProcessor 
-            => ScalarProcessorFloat64.DefaultProcessor;
+            => ScalarProcessorOfFloat64.DefaultProcessor;
 
         public XGaProcessor<Float64Signal> ScalarSignalProcessor 
             => VectorSignal.Processor;

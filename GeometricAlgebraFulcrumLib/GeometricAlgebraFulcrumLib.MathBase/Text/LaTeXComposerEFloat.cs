@@ -13,7 +13,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.Text
 
         
         private LaTeXComposerEFloat()
-            : base(ScalarProcessorEFloat.DefaultProcessor)
+            : base(ScalarProcessorOfEFloat.DefaultProcessor)
         {
         }
 

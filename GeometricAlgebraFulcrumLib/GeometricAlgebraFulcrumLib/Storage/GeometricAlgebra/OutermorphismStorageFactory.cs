@@ -13,7 +13,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static OutermorphismStorage<T> CreateOutermorphismStorage<T>(this ILinearAlgebraProcessor<T> linearProcessor, ILinMatrixGradedStorage<T> gradeIndexToKVectorMatrix)
+        public static OutermorphismStorage<T> CreateOutermorphismStorage<T>(this ILinearProcessor<T> linearProcessor, ILinMatrixGradedStorage<T> gradeIndexToKVectorMatrix)
         {
             return OutermorphismStorage<T>.Create(gradeIndexToKVectorMatrix);
         }

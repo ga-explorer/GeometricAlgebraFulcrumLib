@@ -1,5 +1,4 @@
-﻿using DataStructuresLib.Basic;
-using GraphicsComposerLib.Rendering.BabylonJs.Values;
+﻿using GraphicsComposerLib.Rendering.BabylonJs.Values;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Cameras
 {
@@ -9,58 +8,96 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Cameras
         public abstract class TargetCameraProperties :
             CameraProperties
         {
-            public GrBabylonJsVector3Value? CameraDirection { get; set; }
-        
-            public GrBabylonJsVector2Value? CameraRotation { get; set; }
-            
-            public GrBabylonJsBooleanValue? IgnoreParentScaling { get; set; }
-
-            public GrBabylonJsBooleanValue? InvertRotation { get; set; }
-
-            public GrBabylonJsBooleanValue? NoRotationConstraint { get; set; }
-
-            public GrBabylonJsBooleanValue? UpdateUpVectorFromRotation { get; set; }
-
-            public GrBabylonJsFloat32Value? InverseRotationSpeed { get; set; }
-        
-            public GrBabylonJsCodeValue? LockedTarget { get; set; }
-        
-            public GrBabylonJsVector3Value? Rotation { get; set; }
-        
-            public GrBabylonJsQuaternionValue? RotationQuaternion { get; set; }
-
-            public GrBabylonJsFloat32Value? Speed { get; set; }
-
-            public GrBabylonJsVector3Value? Target { get; set; }
-
-
-            protected override IEnumerable<Pair<string>?> GetNameValuePairs()
+            public GrBabylonJsVector3Value? CameraDirection
             {
-                foreach (var pair in base.GetNameValuePairs())
-                    yield return pair;
+                get => GetAttributeValueOrNull<GrBabylonJsVector3Value>("cameraDirection");
+                set => SetAttributeValue("cameraDirection", value);
+            }
 
-                yield return CameraDirection.GetNameValueCodePair("cameraDirection");
-                yield return CameraRotation.GetNameValueCodePair("cameraRotation");
-                yield return IgnoreParentScaling.GetNameValueCodePair("ignoreParentScaling");
-                yield return InvertRotation.GetNameValueCodePair("invertRotation");
-                yield return NoRotationConstraint.GetNameValueCodePair("noRotationConstraint");
-                yield return UpdateUpVectorFromRotation.GetNameValueCodePair("updateUpVectorFromRotation");
-                yield return InverseRotationSpeed.GetNameValueCodePair("inverseRotationSpeed");
-                yield return LockedTarget.GetNameValueCodePair("lockedTarget");
-                yield return Rotation.GetNameValueCodePair("rotation");
-                yield return RotationQuaternion.GetNameValueCodePair("rotationQuaternion");
-                yield return Speed.GetNameValueCodePair("speed");
-                yield return Target.GetNameValueCodePair("target");
+            public GrBabylonJsVector2Value? CameraRotation
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsVector2Value>("cameraRotation");
+                set => SetAttributeValue("cameraRotation", value);
+            }
+
+            public GrBabylonJsBooleanValue? IgnoreParentScaling
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("ignoreParentScaling");
+                set => SetAttributeValue("ignoreParentScaling", value);
+            }
+
+            public GrBabylonJsBooleanValue? InvertRotation
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("invertRotation");
+                set => SetAttributeValue("invertRotation", value);
+            }
+
+            public GrBabylonJsBooleanValue? NoRotationConstraint
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("noRotationConstraint");
+                set => SetAttributeValue("noRotationConstraint", value);
+            }
+
+            public GrBabylonJsBooleanValue? UpdateUpVectorFromRotation
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("updateUpVectorFromRotation");
+                set => SetAttributeValue("updateUpVectorFromRotation", value);
+            }
+
+            public GrBabylonJsFloat32Value? InverseRotationSpeed
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("inverseRotationSpeed");
+                set => SetAttributeValue("inverseRotationSpeed", value);
+            }
+
+            public GrBabylonJsCodeValue? LockedTarget
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsCodeValue>("lockedTarget");
+                set => SetAttributeValue("lockedTarget", value);
+            }
+
+            public GrBabylonJsVector3Value? Rotation
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsVector3Value>("rotation");
+                set => SetAttributeValue("rotation", value);
+            }
+
+            public GrBabylonJsQuaternionValue? RotationQuaternion
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsQuaternionValue>("rotationQuaternion");
+                set => SetAttributeValue("rotationQuaternion", value);
+            }
+
+            public GrBabylonJsFloat32Value? Speed
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("speed");
+                set => SetAttributeValue("speed", value);
+            }
+
+            public GrBabylonJsVector3Value? Target
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsVector3Value>("target");
+                set => SetAttributeValue("target", value);
+            }
+
+
+            protected TargetCameraProperties()
+            {
+            }
+
+            protected TargetCameraProperties(TargetCameraProperties properties)
+            {
+                SetAttributeValues(properties);
             }
         }
 
 
-        protected GrBabylonJsTargetCamera(string constName) 
+        protected GrBabylonJsTargetCamera(string constName)
             : base(constName)
         {
         }
 
-        protected GrBabylonJsTargetCamera(string constName, GrBabylonJsSceneValue scene) 
+        protected GrBabylonJsTargetCamera(string constName, GrBabylonJsSceneValue scene)
             : base(constName, scene)
         {
         }

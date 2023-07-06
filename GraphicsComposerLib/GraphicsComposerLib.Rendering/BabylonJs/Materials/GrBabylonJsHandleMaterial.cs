@@ -1,5 +1,4 @@
-﻿using DataStructuresLib.Basic;
-using GraphicsComposerLib.Rendering.BabylonJs.Values;
+﻿using GraphicsComposerLib.Rendering.BabylonJs.Values;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Materials
 {
@@ -12,36 +11,63 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Materials
         public sealed class HandleMaterialProperties :
             MaterialProperties
         {
-            public GrBabylonJsFloat32Value? AnimationLength { get; set; }
-
-            public GrBabylonJsColor3Value? BaseColor { get; set; }
-        
-            public GrBabylonJsFloat32Value? BaseScale { get; set; }
-        
-            public GrBabylonJsFloat32Value? DragScale { get; set; }
-
-            public GrBabylonJsColor3Value? HoverColor { get; set; }
-        
-            public GrBabylonJsFloat32Value? HoverScale { get; set; }
-
-            public GrBabylonJsFloat32Value? Hover { get; set; }
-
-            public GrBabylonJsFloat32Value? Drag { get; set; }
-        
-
-            protected override IEnumerable<Pair<string>?> GetNameValuePairs()
+            public GrBabylonJsFloat32Value? AnimationLength
             {
-                foreach (var pair in base.GetNameValuePairs())
-                    yield return pair;
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("animationLength");
+                set => SetAttributeValue("animationLength", value);
+            }
 
-                yield return AnimationLength.GetNameValueCodePair("animationLength");
-                yield return BaseColor.GetNameValueCodePair("baseColor");
-                yield return BaseScale.GetNameValueCodePair("baseScale");
-                yield return DragScale.GetNameValueCodePair("dragScale");
-                yield return HoverColor.GetNameValueCodePair("hoverColor");
-                yield return HoverScale.GetNameValueCodePair("hoverScale");
-                yield return Hover.GetNameValueCodePair("hover");
-                yield return Drag.GetNameValueCodePair("drag");
+            public GrBabylonJsColor3Value? BaseColor
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsColor3Value>("baseColor");
+                set => SetAttributeValue("baseColor", value);
+            }
+
+            public GrBabylonJsFloat32Value? BaseScale
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("baseScale");
+                set => SetAttributeValue("baseScale", value);
+            }
+
+            public GrBabylonJsFloat32Value? DragScale
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("dragScale");
+                set => SetAttributeValue("dragScale", value);
+            }
+
+            public GrBabylonJsColor3Value? HoverColor
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsColor3Value>("hoverColor");
+                set => SetAttributeValue("hoverColor", value);
+            }
+
+            public GrBabylonJsFloat32Value? HoverScale
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("hoverScale");
+                set => SetAttributeValue("hoverScale", value);
+            }
+
+            public GrBabylonJsFloat32Value? Hover
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("hover");
+                set => SetAttributeValue("hover", value);
+            }
+
+            public GrBabylonJsFloat32Value? Drag
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("drag");
+                set => SetAttributeValue("drag", value);
+            }
+
+
+            public HandleMaterialProperties()
+            {
+
+            }
+
+            public HandleMaterialProperties(HandleMaterialProperties properties)
+            {
+                SetAttributeValues(properties);
             }
         }
 
@@ -49,10 +75,10 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Materials
         protected override string ConstructorName
             => "new BABYLON.HandleMaterial";
 
-        public HandleMaterialProperties? Properties { get; private set; }
+        public HandleMaterialProperties Properties { get; private set; }
             = new HandleMaterialProperties();
     
-        public override GrBabylonJsObjectProperties? ObjectProperties 
+        public override GrBabylonJsObjectProperties ObjectProperties 
             => Properties;
 
 
@@ -69,7 +95,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Materials
 
         public GrBabylonJsHandleMaterial SetProperties(HandleMaterialProperties properties)
         {
-            Properties = properties;
+            Properties = new HandleMaterialProperties(properties);
 
             return this;
         }

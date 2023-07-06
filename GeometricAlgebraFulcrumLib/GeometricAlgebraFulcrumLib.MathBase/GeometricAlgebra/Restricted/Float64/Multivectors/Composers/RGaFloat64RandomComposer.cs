@@ -36,7 +36,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float6
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal RGaFloat64RandomComposer(RGaFloat64Processor metric, int vSpaceDimensions)
-            : base(ScalarProcessorFloat64.DefaultProcessor)
+            : base(ScalarProcessorOfFloat64.DefaultProcessor)
         {
             if (vSpaceDimensions is < 2 or > 31)
                 throw new ArgumentOutOfRangeException(nameof(vSpaceDimensions));
@@ -53,7 +53,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float6
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal RGaFloat64RandomComposer(RGaFloat64Processor metric, int vSpaceDimensions, int seed)
-            : base(ScalarProcessorFloat64.DefaultProcessor, seed)
+            : base(ScalarProcessorOfFloat64.DefaultProcessor, seed)
         {
             if (vSpaceDimensions is < 2 or > 31)
                 throw new ArgumentOutOfRangeException(nameof(vSpaceDimensions));
@@ -70,7 +70,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Restricted.Float6
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal RGaFloat64RandomComposer(RGaFloat64Processor metric, int vSpaceDimensions, System.Random randomGenerator)
-            : base(ScalarProcessorFloat64.DefaultProcessor, randomGenerator)
+            : base(ScalarProcessorOfFloat64.DefaultProcessor, randomGenerator)
         {
             if (vSpaceDimensions is < 2 or > 31)
                 throw new ArgumentOutOfRangeException(nameof(vSpaceDimensions));

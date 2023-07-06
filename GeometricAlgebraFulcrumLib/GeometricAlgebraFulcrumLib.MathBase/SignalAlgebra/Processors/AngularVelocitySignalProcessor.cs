@@ -22,7 +22,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.SignalAlgebra.Processors
             = 100;
 
         public XGaProcessor<double> Processor { get; }
-            = XGaProcessor<double>.CreateEuclidean(ScalarProcessorFloat64.DefaultProcessor);
+            = XGaProcessor<double>.CreateEuclidean(ScalarProcessorOfFloat64.DefaultProcessor);
 
         public XGaMetric Metric 
             => Processor;

@@ -7,11 +7,11 @@ using GeometricAlgebraFulcrumLib.MetaProgramming.Expressions;
 
 namespace GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra
 {
-    public sealed class ScalarAlgebraAngouriMathProcessor
-        : IScalarAlgebraSymbolicProcessor<Entity>
+    public sealed class ScalarProcessorOfAngouriMathEntity
+        : ISymbolicScalarProcessor<Entity>
     {
-        public static ScalarAlgebraAngouriMathProcessor DefaultProcessor { get; }
-            = new ScalarAlgebraAngouriMathProcessor();
+        public static ScalarProcessorOfAngouriMathEntity DefaultProcessor { get; }
+            = new ScalarProcessorOfAngouriMathEntity();
 
         
         public Entity ScalarZero 
@@ -66,7 +66,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.ScalarAlgebra
             => Math.Pow(10, -RoundingPlaces);
 
 
-        private ScalarAlgebraAngouriMathProcessor()
+        private ScalarProcessorOfAngouriMathEntity()
         {
         }
 

@@ -1,9 +1,10 @@
-﻿using GraphicsComposerLib.Rendering.BabylonJs.Meshes;
+﻿using DataStructuresLib.AttributeSet;
+using GraphicsComposerLib.Rendering.BabylonJs.Meshes;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Values;
 
 public sealed class GrBabylonJsMeshValue :
-    GrBabylonJsValue<GrBabylonJsMesh>
+    SparseCodeAttributeValue<GrBabylonJsMesh>
 {
     public static implicit operator GrBabylonJsMeshValue(string valueText)
     {

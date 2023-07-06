@@ -11,7 +11,7 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.AngouriMath
         {
             // This is a pre-defined scalar processor for the symbolic
             // AngouriMath scalars using Entity objects
-            var scalarProcessor = ScalarAlgebraAngouriMathProcessor.DefaultProcessor;
+            var scalarProcessor = ScalarProcessorOfAngouriMathEntity.DefaultProcessor;
 
             var vSpaceDimensions = 3;
 

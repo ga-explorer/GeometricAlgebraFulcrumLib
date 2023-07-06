@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using DataStructuresLib.Basic;
-using GraphicsComposerLib.Rendering.BabylonJs.Values;
+﻿using GraphicsComposerLib.Rendering.BabylonJs.Values;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Materials
 {
@@ -13,24 +11,38 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Materials
         public sealed class NormalMaterialProperties :
             MaterialProperties
         {
-            public GrBabylonJsColor3Value? DiffuseColor { get; set; }
-        
-            public GrBabylonJsTextureValue? DiffuseTexture { get; set; }
-        
-            public GrBabylonJsInt32Value? MaxSimultaneousLights { get; set; }
-
-            public GrBabylonJsBooleanValue? DisableLighting { get; set; }
-        
-
-            protected override IEnumerable<Pair<string>?> GetNameValuePairs()
+            public GrBabylonJsColor3Value? DiffuseColor
             {
-                foreach (var pair in base.GetNameValuePairs())
-                    yield return pair;
+                get => GetAttributeValueOrNull<GrBabylonJsColor3Value>("diffuseColor");
+                set => SetAttributeValue("diffuseColor", value);
+            }
+        
+            public GrBabylonJsTextureValue? DiffuseTexture
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsTextureValue>("diffuseTexture");
+                set => SetAttributeValue("diffuseTexture", value);
+            }
+        
+            public GrBabylonJsInt32Value? MaxSimultaneousLights
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsInt32Value>("disableLighting");
+                set => SetAttributeValue("disableLighting", value);
+            }
 
-                yield return DiffuseColor.GetNameValueCodePair("diffuseColor");
-                yield return DiffuseTexture.GetNameValueCodePair("diffuseTexture");
-                yield return DisableLighting.GetNameValueCodePair("disableLighting");
-                yield return MaxSimultaneousLights.GetNameValueCodePair("maxSimultaneousLights");
+            public GrBabylonJsBooleanValue? DisableLighting
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("maxSimultaneousLights");
+                set => SetAttributeValue("maxSimultaneousLights", value);
+            }
+
+
+            public NormalMaterialProperties()
+            {
+            }
+
+            public NormalMaterialProperties(NormalMaterialProperties properties)
+            {
+                SetAttributeValues(properties);
             }
         }
 
@@ -38,10 +50,10 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Materials
         protected override string ConstructorName
             => "new BABYLON.NormalMaterial";
 
-        public NormalMaterialProperties? Properties { get; private set; }
+        public NormalMaterialProperties Properties { get; private set; }
             = new NormalMaterialProperties();
     
-        public override GrBabylonJsObjectProperties? ObjectProperties 
+        public override GrBabylonJsObjectProperties ObjectProperties 
             => Properties;
     
 
@@ -56,9 +68,9 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Materials
         }
 
 
-        public GrBabylonJsNormalMaterial SetProperties([NotNull] NormalMaterialProperties? properties)
+        public GrBabylonJsNormalMaterial SetProperties(NormalMaterialProperties properties)
         {
-            Properties = properties;
+            Properties = new NormalMaterialProperties(properties);
 
             return this;
         }

@@ -25,8 +25,8 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples
         private const string WorkingPath
             = @"D:\Projects\Books\The Geometric Algebra Cookbook\Geometric Frequency\Data";
 
-        public static ScalarProcessorFloat64 ScalarProcessor { get; }
-            = ScalarProcessorFloat64.DefaultProcessor;
+        public static ScalarProcessorOfFloat64 ScalarProcessor { get; }
+            = ScalarProcessorOfFloat64.DefaultProcessor;
 
         public static double SamplingRate
             => 1000;

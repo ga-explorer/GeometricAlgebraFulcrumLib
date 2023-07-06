@@ -1,5 +1,4 @@
 ﻿using DataStructuresLib.AttributeSet;
-using Humanizer;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs;
 
@@ -9,10 +8,13 @@ public abstract class GrBabylonJsAttributeSet :
 {
     public override IEnumerable<KeyValuePair<string, string>> GetKeyValueCodePairs()
     {
-        foreach (var (key, attributeValue) in this)
+        var keyValueCodePairs = 
+            this.OrderBy(p => p.Key);
+
+        foreach (var (key, attributeValue) in keyValueCodePairs)
         {
             yield return new KeyValuePair<string, string>(
-                key.Camelize(),
+                key,
                 attributeValue.GetCode()
             );
         }

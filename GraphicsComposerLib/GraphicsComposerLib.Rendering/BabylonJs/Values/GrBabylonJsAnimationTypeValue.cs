@@ -1,9 +1,10 @@
-﻿using GraphicsComposerLib.Rendering.BabylonJs.Constants;
+﻿using DataStructuresLib.AttributeSet;
+using GraphicsComposerLib.Rendering.BabylonJs.Constants;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Values;
 
 public sealed class GrBabylonJsAnimationLoopModeValue :
-    GrBabylonJsValue<GrBabylonJsAnimationLoopMode>
+    SparseCodeAttributeValue<GrBabylonJsAnimationLoopMode>
 {
     public static implicit operator GrBabylonJsAnimationLoopModeValue(string valueText)
     {
@@ -36,7 +37,7 @@ public sealed class GrBabylonJsAnimationLoopModeValue :
 }
 
 public sealed class GrBabylonJsAnimationTypeValue :
-    GrBabylonJsValue<GrBabylonJsAnimationType>
+    SparseCodeAttributeValue<GrBabylonJsAnimationType>
 {
     public static implicit operator GrBabylonJsAnimationTypeValue(string valueText)
     {

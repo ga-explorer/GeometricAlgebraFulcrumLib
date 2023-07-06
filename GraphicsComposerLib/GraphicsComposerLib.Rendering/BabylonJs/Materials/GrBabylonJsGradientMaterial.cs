@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using DataStructuresLib.Basic;
-using GraphicsComposerLib.Rendering.BabylonJs.Values;
+﻿using GraphicsComposerLib.Rendering.BabylonJs.Values;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Materials
 {
@@ -13,39 +11,68 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Materials
         public sealed class GradientMaterialProperties :
             MaterialProperties
         {
-            public GrBabylonJsColor3Value? BottomColor { get; set; }
-
-            public GrBabylonJsColor3Value? TopColor { get; set; }
-        
-            public GrBabylonJsFloat32Value? BottomColorAlpha { get; set; }
-
-            public GrBabylonJsFloat32Value? TopColorAlpha { get; set; }
-
-            public GrBabylonJsFloat32Value? Offset { get; set; }
-
-            public GrBabylonJsFloat32Value? Scale { get; set; }
-
-            public GrBabylonJsFloat32Value? Smoothness { get; set; }
-
-            public GrBabylonJsInt32Value? MaxSimultaneousLights { get; set; }
-
-            public GrBabylonJsBooleanValue? DisableLighting { get; set; }
-
-
-            protected override IEnumerable<Pair<string>?> GetNameValuePairs()
+            public GrBabylonJsColor3Value? BottomColor
             {
-                foreach (var pair in base.GetNameValuePairs())
-                    yield return pair;
+                get => GetAttributeValueOrNull<GrBabylonJsColor3Value>("bottomColor");
+                set => SetAttributeValue("bottomColor", value);
+            }
 
-                yield return BottomColor.GetNameValueCodePair("bottomColor");
-                yield return BottomColorAlpha.GetNameValueCodePair("bottomColorAlpha");
-                yield return TopColor.GetNameValueCodePair("topColor");
-                yield return TopColorAlpha.GetNameValueCodePair("topColorAlpha");
-                yield return Offset.GetNameValueCodePair("offset");
-                yield return Scale.GetNameValueCodePair("scale");
-                yield return Smoothness.GetNameValueCodePair("smoothness");
-                yield return MaxSimultaneousLights.GetNameValueCodePair("maxSimultaneousLights");
-                yield return DisableLighting.GetNameValueCodePair("disableLighting");
+            public GrBabylonJsColor3Value? TopColor
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsColor3Value>("topColor");
+                set => SetAttributeValue("topColor", value);
+            }
+
+            public GrBabylonJsFloat32Value? BottomColorAlpha
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("bottomColorAlpha");
+                set => SetAttributeValue("bottomColorAlpha", value);
+            }
+
+            public GrBabylonJsFloat32Value? TopColorAlpha
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("topColorAlpha");
+                set => SetAttributeValue("topColorAlpha", value);
+            }
+
+            public GrBabylonJsFloat32Value? Offset
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("offset");
+                set => SetAttributeValue("offset", value);
+            }
+
+            public GrBabylonJsFloat32Value? Scale
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("scale");
+                set => SetAttributeValue("scale", value);
+            }
+
+            public GrBabylonJsFloat32Value? Smoothness
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("smoothness");
+                set => SetAttributeValue("smoothness", value);
+            }
+
+            public GrBabylonJsInt32Value? MaxSimultaneousLights
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsInt32Value>("maxSimultaneousLights");
+                set => SetAttributeValue("maxSimultaneousLights", value);
+            }
+
+            public GrBabylonJsBooleanValue? DisableLighting
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("disableLighting");
+                set => SetAttributeValue("disableLighting", value);
+            }
+
+
+            public GradientMaterialProperties()
+            {
+            }
+
+            public GradientMaterialProperties(GradientMaterialProperties properties)
+            {
+                SetAttributeValues(properties);
             }
         }
 
@@ -53,10 +80,10 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Materials
         protected override string ConstructorName
             => "new BABYLON.GradientMaterial";
 
-        public GradientMaterialProperties? Properties { get; private set; }
+        public GradientMaterialProperties Properties { get; private set; }
             = new GradientMaterialProperties();
     
-        public override GrBabylonJsObjectProperties? ObjectProperties 
+        public override GrBabylonJsObjectProperties ObjectProperties 
             => Properties;
 
 
@@ -71,9 +98,9 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Materials
         }
 
 
-        public GrBabylonJsGradientMaterial SetProperties([NotNull] GradientMaterialProperties? properties)
+        public GrBabylonJsGradientMaterial SetProperties(GradientMaterialProperties properties)
         {
-            Properties = properties;
+            Properties = new GradientMaterialProperties(properties);
 
             return this;
         }

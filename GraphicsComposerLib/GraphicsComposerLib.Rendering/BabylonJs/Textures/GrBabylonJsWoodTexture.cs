@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using DataStructuresLib.Basic;
-using GraphicsComposerLib.Rendering.BabylonJs.Values;
+﻿using GraphicsComposerLib.Rendering.BabylonJs.Values;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Textures
 {
@@ -10,18 +8,26 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Textures
         public sealed class WoodTextureProperties :
             BaseTextureProperties
         {
-            public GrBabylonJsColor4Value? WoodColor { get; set; }
-
-            public GrBabylonJsVector2Value? AmpScale { get; set; }
-
-        
-            protected override IEnumerable<Pair<string>?> GetNameValuePairs()
+            public GrBabylonJsColor4Value? WoodColor
             {
-                foreach (var pair in base.GetNameValuePairs())
-                    yield return pair;
+                get => GetAttributeValueOrNull<GrBabylonJsColor4Value>("woodColor");
+                set => SetAttributeValue("woodColor", value);
+            }
 
-                yield return WoodColor.GetNameValueCodePair("woodColor");
-                yield return AmpScale.GetNameValueCodePair("ampScale");
+            public GrBabylonJsVector2Value? AmpScale
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsVector2Value>("ampScale");
+                set => SetAttributeValue("ampScale", value);
+            }
+
+            
+            public WoodTextureProperties()
+            {
+            }
+            
+            public WoodTextureProperties(WoodTextureProperties properties)
+            {
+                SetAttributeValues(properties);
             }
         }
 
@@ -47,9 +53,9 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Textures
         }
 
     
-        public GrBabylonJsWoodTexture SetProperties([NotNull] WoodTextureProperties? properties)
+        public GrBabylonJsWoodTexture SetProperties(WoodTextureProperties properties)
         {
-            Properties = properties;
+            Properties = new WoodTextureProperties(properties);
 
             return this;
         }

@@ -22,8 +22,8 @@ public static class Model3Samples
 
     private static string FileName = "";
     
-    public static ScalarProcessorFloat64 ScalarProcessor { get; }
-        = ScalarProcessorFloat64.DefaultProcessor;
+    public static ScalarProcessorOfFloat64 ScalarProcessor { get; }
+        = ScalarProcessorOfFloat64.DefaultProcessor;
 
     public static int VSpaceDimensions
         => 5;
@@ -50,7 +50,7 @@ public static class Model3Samples
         => SamplingSpecs.SampleCount;
 
 
-    public static ScalarSignalFloat64Processor ScalarSignalProcessor { get; }
+    public static ScalarProcessorOfFloat64Signal ScalarSignalProcessor { get; }
         = ProcessorFactory.CreateFloat64ScalarSignalProcessor(
             SamplingRate,
             SignalSamplesCount

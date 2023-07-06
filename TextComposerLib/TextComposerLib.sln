@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31129.286
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33815.320
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextComposerLib", "TextComposerLib\TextComposerLib.csproj", "{FA77249E-0A41-4A49-ADC8-10323A018E1E}"
 EndProject
@@ -9,13 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataStructuresLib", "..\Dat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextComposerLib.Samples", "TextComposerLib.Samples\TextComposerLib.Samples.csproj", "{F6E1894F-BDB5-4291-BD74-35008C1EAABD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextComposerLib.WinForms", "TextComposerLib.WinForms\TextComposerLib.WinForms.csproj", "{F1AEADC4-0956-43C1-A69C-0A2014C2188C}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeComposerLib", "..\CodeComposerLib\CodeComposerLib\CodeComposerLib.csproj", "{DF0DF2C4-0A8C-469A-837F-CFF9D761DB7B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeComposerLib.Samples", "..\CodeComposerLib\CodeComposerLib.Samples\CodeComposerLib.Samples.csproj", "{EAD0F819-FE02-4986-8C6B-5F38B3248D34}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeComposerLib.WinForms", "..\CodeComposerLib\CodeComposerLib.WinForms\CodeComposerLib.WinForms.csproj", "{57A70D9A-5082-46AE-9F31-EA96DE4796F9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,14 +45,6 @@ Global
 		{F6E1894F-BDB5-4291-BD74-35008C1EAABD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F6E1894F-BDB5-4291-BD74-35008C1EAABD}.Release|x64.ActiveCfg = Release|x64
 		{F6E1894F-BDB5-4291-BD74-35008C1EAABD}.Release|x64.Build.0 = Release|x64
-		{F1AEADC4-0956-43C1-A69C-0A2014C2188C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F1AEADC4-0956-43C1-A69C-0A2014C2188C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F1AEADC4-0956-43C1-A69C-0A2014C2188C}.Debug|x64.ActiveCfg = Debug|x64
-		{F1AEADC4-0956-43C1-A69C-0A2014C2188C}.Debug|x64.Build.0 = Debug|x64
-		{F1AEADC4-0956-43C1-A69C-0A2014C2188C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F1AEADC4-0956-43C1-A69C-0A2014C2188C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F1AEADC4-0956-43C1-A69C-0A2014C2188C}.Release|x64.ActiveCfg = Release|x64
-		{F1AEADC4-0956-43C1-A69C-0A2014C2188C}.Release|x64.Build.0 = Release|x64
 		{DF0DF2C4-0A8C-469A-837F-CFF9D761DB7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DF0DF2C4-0A8C-469A-837F-CFF9D761DB7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DF0DF2C4-0A8C-469A-837F-CFF9D761DB7B}.Debug|x64.ActiveCfg = Debug|x64
@@ -73,14 +61,6 @@ Global
 		{EAD0F819-FE02-4986-8C6B-5F38B3248D34}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EAD0F819-FE02-4986-8C6B-5F38B3248D34}.Release|x64.ActiveCfg = Release|x64
 		{EAD0F819-FE02-4986-8C6B-5F38B3248D34}.Release|x64.Build.0 = Release|x64
-		{57A70D9A-5082-46AE-9F31-EA96DE4796F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{57A70D9A-5082-46AE-9F31-EA96DE4796F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{57A70D9A-5082-46AE-9F31-EA96DE4796F9}.Debug|x64.ActiveCfg = Debug|x64
-		{57A70D9A-5082-46AE-9F31-EA96DE4796F9}.Debug|x64.Build.0 = Debug|x64
-		{57A70D9A-5082-46AE-9F31-EA96DE4796F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{57A70D9A-5082-46AE-9F31-EA96DE4796F9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{57A70D9A-5082-46AE-9F31-EA96DE4796F9}.Release|x64.ActiveCfg = Release|x64
-		{57A70D9A-5082-46AE-9F31-EA96DE4796F9}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

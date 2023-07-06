@@ -17,8 +17,8 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.PowerSystems.G
         private static Random RandomGenerator { get; }
             = new Random(10);
 
-        public static MatrixAlgebraFloat64Processor MatrixProcessor { get; }
-            = MatrixAlgebraFloat64Processor.DefaultProcessor;
+        public static MatrixProcessorOfFloat64 MatrixProcessor { get; }
+            = MatrixProcessorOfFloat64.DefaultProcessor;
 
         public static XGaFloat64Processor GeometricProcessor { get; }
             = XGaFloat64Processor.Euclidean;

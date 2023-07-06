@@ -1,9 +1,10 @@
-﻿using GraphicsComposerLib.Rendering.BabylonJs.Constants;
+﻿using DataStructuresLib.AttributeSet;
+using GraphicsComposerLib.Rendering.BabylonJs.Constants;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Values
 {
     public sealed class GrBabylonJsFogModeValue :
-        GrBabylonJsValue<GrBabylonJsFogMode>
+        SparseCodeAttributeValue<GrBabylonJsFogMode>
     {
         public static implicit operator GrBabylonJsFogModeValue(string valueText)
         {

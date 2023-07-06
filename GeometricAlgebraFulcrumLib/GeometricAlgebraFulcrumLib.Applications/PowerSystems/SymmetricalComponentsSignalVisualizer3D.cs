@@ -772,10 +772,9 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
             scene.AddStandardMaterial(
                 "discMaterial",
 
-                new GrBabylonJsStandardMaterial.StandardMaterialProperties
+                new GrBabylonJsStandardMaterial.StandardMaterialProperties(Color.BurlyWood)
                 {
                     Alpha = 0.55,
-                    Color = Color.BurlyWood,
                     TransparencyMode = GrBabylonJsMaterialTransparencyMode.AlphaBlend,
                     BackFaceCulling = true
                 }
@@ -1145,11 +1144,10 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
 
                 var curveFrameOmega1BivectorMaterial = OmegaSceneComposer.SceneObject.AddStandardMaterial(
                     "curveFrameOmega1BivectorMaterial",
-                    new GrBabylonJsStandardMaterial.StandardMaterialProperties
+                    new GrBabylonJsStandardMaterial.StandardMaterialProperties(System.Drawing.Color.IndianRed)
                     {
                         Alpha = 0.15,
                         TransparencyMode = GrBabylonJsMaterialTransparencyMode.AlphaBlend,
-                        Color = System.Drawing.Color.IndianRed,
                         BackFaceCulling = false
                     }
                 );
@@ -1189,11 +1187,10 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
 
                 var curveFrameOmegaBivectorMaterial = OmegaSceneComposer.SceneObject.AddStandardMaterial(
                     "curveFrameOmegaBivectorMaterial",
-                    new GrBabylonJsStandardMaterial.StandardMaterialProperties
+                    new GrBabylonJsStandardMaterial.StandardMaterialProperties(System.Drawing.Color.LimeGreen)
                     {
                         Alpha = 0.15,
                         TransparencyMode = GrBabylonJsMaterialTransparencyMode.AlphaBlend,
-                        Color = System.Drawing.Color.LimeGreen,
                         BackFaceCulling = false
                     }
                 );
@@ -1218,10 +1215,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
             {
                 var e3DsVectorMaterial = OmegaSceneComposer.SceneObject.AddStandardMaterial(
                     "e3DsVectorMaterial",
-                    new GrBabylonJsStandardMaterial.StandardMaterialProperties
-                    {
-                        Color = System.Drawing.Color.DodgerBlue
-                    }
+                    new GrBabylonJsStandardMaterial.StandardMaterialProperties(System.Drawing.Color.DodgerBlue)
                 );
 
                 OmegaSceneComposer.AddVector(
@@ -1241,11 +1235,10 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
 
                 var curveFrameOmega3BivectorMaterial = OmegaSceneComposer.SceneObject.AddStandardMaterial(
                     "curveFrameOmega3BivectorMaterial",
-                    new GrBabylonJsStandardMaterial.StandardMaterialProperties
+                    new GrBabylonJsStandardMaterial.StandardMaterialProperties(System.Drawing.Color.DodgerBlue)
                     {
                         Alpha = 0.15,
                         TransparencyMode = GrBabylonJsMaterialTransparencyMode.AlphaBlend,
-                        Color = System.Drawing.Color.DodgerBlue,
                         BackFaceCulling = false
                     }
                 );

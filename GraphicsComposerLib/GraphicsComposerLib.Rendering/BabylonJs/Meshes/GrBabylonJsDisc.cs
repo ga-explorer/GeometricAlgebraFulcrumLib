@@ -1,5 +1,4 @@
-﻿using DataStructuresLib.Basic;
-using GraphicsComposerLib.Rendering.BabylonJs.Values;
+﻿using GraphicsComposerLib.Rendering.BabylonJs.Values;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
 {
@@ -12,30 +11,56 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
         public sealed class DiscOptions :
             GrBabylonJsObjectOptions
         {
-            public GrBabylonJsFloat32Value? Arc { get; set; }
-
-            public GrBabylonJsFloat32Value? Radius { get; set; }
-    
-            public GrBabylonJsInt32Value? Tessellation { get; set; }
-    
-            public GrBabylonJsMeshOrientationValue? SideOrientation { get; set; }
-
-            public GrBabylonJsVector4Value? FrontUVs { get; set; }
-
-            public GrBabylonJsVector4Value? BackUVs { get; set; }
-
-            public GrBabylonJsBooleanValue? Updateable { get; set; }
-
-
-            protected override IEnumerable<Pair<string>?> GetNameValuePairs()
+            public GrBabylonJsFloat32Value? Arc
             {
-                yield return Arc.GetNameValueCodePair("arc");
-                yield return Radius.GetNameValueCodePair("radius");
-                yield return Tessellation.GetNameValueCodePair("segments");
-                yield return SideOrientation.GetNameValueCodePair("sideOrientation");
-                yield return FrontUVs.GetNameValueCodePair("frontUVs");
-                yield return BackUVs.GetNameValueCodePair("backUVs");
-                yield return Updateable.GetNameValueCodePair("updatable");
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("arc");
+                set => SetAttributeValue("arc", value);
+            }
+
+            public GrBabylonJsFloat32Value? Radius
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("radius");
+                set => SetAttributeValue("radius", value);
+            }
+
+            public GrBabylonJsInt32Value? Tessellation
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsInt32Value>("tessellation");
+                set => SetAttributeValue("tessellation", value);
+            }
+
+            public GrBabylonJsMeshOrientationValue? SideOrientation
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsMeshOrientationValue>("sideOrientation");
+                set => SetAttributeValue("sideOrientation", value);
+            }
+
+            public GrBabylonJsVector4Value? FrontUVs
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsVector4Value>("frontUVs");
+                set => SetAttributeValue("frontUVs", value);
+            }
+
+            public GrBabylonJsVector4Value? BackUVs
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsVector4Value>("backUVs");
+                set => SetAttributeValue("backUVs", value);
+            }
+
+            public GrBabylonJsBooleanValue? Updatable
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("updatable");
+                set => SetAttributeValue("updatable", value);
+            }
+
+
+            public DiscOptions()
+            {
+            }
+
+            public DiscOptions(DiscOptions options)
+            {
+                SetAttributeValues(options);
             }
         }
 
@@ -43,10 +68,10 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
         protected override string ConstructorName
             => "BABYLON.MeshBuilder.CreateDisc";
 
-        public DiscOptions? Options { get; private set; }
+        public DiscOptions Options { get; private set; }
             = new DiscOptions();
 
-        public override GrBabylonJsObjectOptions? ObjectOptions 
+        public override GrBabylonJsObjectOptions ObjectOptions 
             => Options;
 
 
@@ -63,14 +88,14 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
 
         public GrBabylonJsDisc SetOptions(DiscOptions options)
         {
-            Options = options;
+            Options = new DiscOptions(options);
 
             return this;
         }
 
         public GrBabylonJsDisc SetProperties(MeshProperties properties)
         {
-            Properties = properties;
+            Properties = new MeshProperties(properties);
 
             return this;
         }

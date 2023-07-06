@@ -9,7 +9,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool Contains(this IXGaFloat64Subspace subspace, XGaFloat64Vector vector, bool nearZeroFlag = false)
         {
-            var processor = ScalarProcessorFloat64.DefaultProcessor;
+            var processor = ScalarProcessorOfFloat64.DefaultProcessor;
 
             var mv2 = vector.Op(subspace.GetBlade());
 
@@ -20,7 +20,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool Contains(this IXGaFloat64Subspace subspace, XGaFloat64Bivector mv, bool nearZeroFlag = false)
         {
-            var processor = ScalarProcessorFloat64.DefaultProcessor;
+            var processor = ScalarProcessorOfFloat64.DefaultProcessor;
 
             var mv2 = mv - subspace.Project(mv);
 
@@ -31,7 +31,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.GeometricAlgebra.Extended.Float64.
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool Contains(this IXGaFloat64Subspace subspace, XGaFloat64KVector mv, bool nearZeroFlag = false)
         {
-            var processor = ScalarProcessorFloat64.DefaultProcessor;
+            var processor = ScalarProcessorOfFloat64.DefaultProcessor;
 
             var mv2 = mv - subspace.Project(mv);
 

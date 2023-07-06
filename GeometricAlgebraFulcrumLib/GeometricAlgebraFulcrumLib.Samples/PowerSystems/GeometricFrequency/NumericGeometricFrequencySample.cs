@@ -42,8 +42,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
         //public static string OutputFilePath { get; private set; }
 
         // This is a pre-defined scalar processor for numeric scalars
-        public static ScalarProcessorFloat64 ScalarProcessor { get; }
-            = ScalarProcessorFloat64.DefaultProcessor;
+        public static ScalarProcessorOfFloat64 ScalarProcessor { get; }
+            = ScalarProcessorOfFloat64.DefaultProcessor;
 
         public static int VSpaceDimensions { get; private set; }
             = 3;
@@ -89,7 +89,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             => (SampleCount - 1) / SamplingRate;
 
         // This is a pre-defined scalar processor for tuples of numeric scalars
-        public static ScalarSignalFloat64Processor ScalarSignalProcessor { get; private set; }
+        public static ScalarProcessorOfFloat64Signal ScalarSignalProcessor { get; private set; }
 
         // Create a 3-dimensional Euclidean geometric algebra processor based on the
         // selected tuple scalar processor
@@ -1036,7 +1036,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             VSpaceDimensions = vSpaceDimensions;
 
             GeometricProcessor = XGaFloat64Processor.Euclidean;
-            ScalarSignalProcessor = new ScalarSignalFloat64Processor(samplingRate, sampleCount);
+            ScalarSignalProcessor = new ScalarProcessorOfFloat64Signal(samplingRate, sampleCount);
             GeometricSignalProcessor = ScalarSignalProcessor.CreateEuclideanXGaProcessor();
 
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
@@ -1202,7 +1202,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
 
             VSpaceDimensions = 3;
             GeometricProcessor = XGaFloat64Processor.Euclidean;
-            ScalarSignalProcessor = new ScalarSignalFloat64Processor(samplingRate, sampleCount);
+            ScalarSignalProcessor = new ScalarProcessorOfFloat64Signal(samplingRate, sampleCount);
             GeometricSignalProcessor = ScalarSignalProcessor.CreateEuclideanXGaProcessor();
 
             var v1 =
@@ -1242,7 +1242,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
 
             VSpaceDimensions = 6;
             GeometricProcessor = XGaFloat64Processor.Euclidean;
-            ScalarSignalProcessor = new ScalarSignalFloat64Processor(samplingRate, sampleCount);
+            ScalarSignalProcessor = new ScalarProcessorOfFloat64Signal(samplingRate, sampleCount);
             GeometricSignalProcessor = ScalarSignalProcessor.CreateEuclideanXGaProcessor();
 
             var vMag = 1;
@@ -1315,7 +1315,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
 
             VSpaceDimensions = 3;
             GeometricProcessor = XGaFloat64Processor.Euclidean;
-            ScalarSignalProcessor = new ScalarSignalFloat64Processor(samplingRate, sampleCount);
+            ScalarSignalProcessor = new ScalarProcessorOfFloat64Signal(samplingRate, sampleCount);
             GeometricSignalProcessor = ScalarSignalProcessor.CreateEuclideanXGaProcessor();
 
             return GeometricSignalProcessor.CreateVector(v1, v2, v3);
@@ -3607,7 +3607,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             {
                 VSpaceDimensions = n;
                 GeometricProcessor = XGaFloat64Processor.Euclidean;
-                ScalarSignalProcessor = new ScalarSignalFloat64Processor(samplingSpecs.SamplingRate, samplingSpecs.SampleCount);
+                ScalarSignalProcessor = new ScalarProcessorOfFloat64Signal(samplingSpecs.SamplingRate, samplingSpecs.SampleCount);
                 GeometricSignalProcessor = ScalarSignalProcessor.CreateEuclideanXGaProcessor();
 
                 for (var harmonicCount = harmonicArray.Length; harmonicCount <= harmonicArray.Length; harmonicCount++)
@@ -3798,7 +3798,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             {
                 VSpaceDimensions = n;
                 GeometricProcessor = XGaFloat64Processor.Euclidean;
-                ScalarSignalProcessor = new ScalarSignalFloat64Processor(samplingSpecs.SamplingRate, samplingSpecs.SampleCount);
+                ScalarSignalProcessor = new ScalarProcessorOfFloat64Signal(samplingSpecs.SamplingRate, samplingSpecs.SampleCount);
                 GeometricSignalProcessor = ScalarSignalProcessor.CreateEuclideanXGaProcessor();
 
                 for (var harmonicCount = harmonicArray.Length; harmonicCount <= harmonicArray.Length; harmonicCount++)

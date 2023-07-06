@@ -1,5 +1,4 @@
-﻿using DataStructuresLib.Basic;
-using GraphicsComposerLib.Rendering.BabylonJs.Values;
+﻿using GraphicsComposerLib.Rendering.BabylonJs.Values;
 using TextComposerLib;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Textures;
@@ -10,21 +9,38 @@ public sealed class GrBabylonJsHtmlElementTexture :
     public sealed class HtmlElementTextureOptions :
         GrBabylonJsObjectOptions
     {
-        public GrBabylonJsSceneValue? Scene { get; internal set; }
-        
-        public GrBabylonJsBooleanValue? GenerateMipMaps { get; set; }
-
-        public GrBabylonJsTextureSamplingModeValue? SamplingMode { get; set; }
-
-        public GrBabylonJsTextureFormatValue? Format { get; set; }
-
-
-        protected override IEnumerable<Pair<string>?> GetNameValuePairs()
+        public GrBabylonJsSceneValue? Scene
         {
-            yield return Scene.GetNameValueCodePair("scene");
-            yield return GenerateMipMaps.GetNameValueCodePair("generateMipMaps");
-            yield return SamplingMode.GetNameValueCodePair("samplingMode");
-            yield return Format.GetNameValueCodePair("format");
+            get => GetAttributeValueOrNull<GrBabylonJsSceneValue>("scene");
+            set => SetAttributeValue("scene", value);
+        }
+        
+        public GrBabylonJsBooleanValue? GenerateMipMaps
+        {
+            get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("generateMipMaps");
+            set => SetAttributeValue("generateMipMaps", value);
+        }
+
+        public GrBabylonJsTextureSamplingModeValue? SamplingMode
+        {
+            get => GetAttributeValueOrNull<GrBabylonJsTextureSamplingModeValue>("samplingMode");
+            set => SetAttributeValue("samplingMode", value);
+        }
+
+        public GrBabylonJsTextureFormatValue? Format
+        {
+            get => GetAttributeValueOrNull<GrBabylonJsTextureFormatValue>("format");
+            set => SetAttributeValue("format", value);
+        }
+
+
+        public HtmlElementTextureOptions()
+        {
+        }
+
+        public HtmlElementTextureOptions(HtmlElementTextureOptions options)
+        {
+            SetAttributeValues(options);
         }
     }
 
@@ -32,7 +48,14 @@ public sealed class GrBabylonJsHtmlElementTexture :
     public class HtmlElementTextureProperties :
         BaseTextureProperties
     {
-        
+        public HtmlElementTextureProperties()
+        {
+        }
+
+        public HtmlElementTextureProperties(HtmlElementTextureProperties properties)
+        {
+            SetAttributeValues(properties);
+        }
     }
 
     protected override string ConstructorName
@@ -46,10 +69,10 @@ public sealed class GrBabylonJsHtmlElementTexture :
     public override GrBabylonJsObjectOptions ObjectOptions 
         => Options;
 
-    public HtmlElementTextureProperties? Properties { get; private set; }
+    public HtmlElementTextureProperties Properties { get; private set; }
         = new HtmlElementTextureProperties();
 
-    public override GrBabylonJsObjectProperties? ObjectProperties 
+    public override GrBabylonJsObjectProperties ObjectProperties 
         => Properties;
 
     
@@ -62,14 +85,14 @@ public sealed class GrBabylonJsHtmlElementTexture :
     
     public GrBabylonJsHtmlElementTexture SetOptions(HtmlElementTextureOptions options)
     {
-        Options = options;
+        Options = new HtmlElementTextureOptions(options);
 
         return this;
     }
 
     public GrBabylonJsHtmlElementTexture SetProperties(HtmlElementTextureProperties properties)
     {
-        Properties = properties;
+        Properties = new HtmlElementTextureProperties(properties);
 
         return this;
     }

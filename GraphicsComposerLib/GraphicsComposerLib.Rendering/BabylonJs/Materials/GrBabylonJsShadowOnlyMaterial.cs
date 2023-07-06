@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using DataStructuresLib.Basic;
-using GraphicsComposerLib.Rendering.BabylonJs.Values;
+﻿using GraphicsComposerLib.Rendering.BabylonJs.Values;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Materials
 {
@@ -13,18 +11,26 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Materials
         public sealed class ShadowOnlyMaterialProperties :
             MaterialProperties
         {
-            public GrBabylonJsColor3Value? ShadowColor { get; set; }
-            
-            public GrBabylonJsCodeValue? ActiveLight { get; set; }
-
-
-            protected override IEnumerable<Pair<string>?> GetNameValuePairs()
+            public GrBabylonJsColor3Value? ShadowColor
             {
-                foreach (var pair in base.GetNameValuePairs())
-                    yield return pair;
+                get => GetAttributeValueOrNull<GrBabylonJsColor3Value>("shadowColor");
+                set => SetAttributeValue("shadowColor", value);
+            }
+            
+            public GrBabylonJsCodeValue? ActiveLight
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsCodeValue>("activeLight");
+                set => SetAttributeValue("activeLight", value);
+            }
 
-                yield return ShadowColor.GetNameValueCodePair("shadowColor");
-                yield return ActiveLight.GetNameValueCodePair("activeLight");
+
+            public ShadowOnlyMaterialProperties()
+            {
+            }
+
+            public ShadowOnlyMaterialProperties(ShadowOnlyMaterialProperties properties)
+            {
+                SetAttributeValues(properties);
             }
         }
 
@@ -32,10 +38,10 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Materials
         protected override string ConstructorName
             => "new BABYLON.ShadowOnlyMaterial";
 
-        public ShadowOnlyMaterialProperties? Properties { get; private set; }
+        public ShadowOnlyMaterialProperties Properties { get; private set; }
             = new ShadowOnlyMaterialProperties();
     
-        public override GrBabylonJsObjectProperties? ObjectProperties 
+        public override GrBabylonJsObjectProperties ObjectProperties 
             => Properties;
 
 
@@ -50,9 +56,9 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Materials
         }
 
 
-        public GrBabylonJsShadowOnlyMaterial SetProperties([NotNull] ShadowOnlyMaterialProperties? properties)
+        public GrBabylonJsShadowOnlyMaterial SetProperties(ShadowOnlyMaterialProperties properties)
         {
-            Properties = properties;
+            Properties = new ShadowOnlyMaterialProperties(properties);
 
             return this;
         }

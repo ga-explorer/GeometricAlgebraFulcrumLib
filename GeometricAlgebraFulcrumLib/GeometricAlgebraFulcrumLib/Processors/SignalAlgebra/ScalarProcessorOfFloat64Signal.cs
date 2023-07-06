@@ -8,13 +8,13 @@ using TextComposerLib.Text;
 
 namespace GeometricAlgebraFulcrumLib.Processors.SignalAlgebra
 {
-    public sealed class ScalarSignalFloat64Processor :
+    public sealed class ScalarProcessorOfFloat64Signal :
         INumericScalarProcessor<Float64Signal>
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static ScalarSignalFloat64Processor Create(double samplingRate, int sampleCount)
+        internal static ScalarProcessorOfFloat64Signal Create(double samplingRate, int sampleCount)
         {
-            return new ScalarSignalFloat64Processor(samplingRate, sampleCount);
+            return new ScalarProcessorOfFloat64Signal(samplingRate, sampleCount);
         }
 
 
@@ -23,7 +23,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.SignalAlgebra
         public double SamplingRate { get; }
 
         public IScalarProcessor<double> ScalarProcessor 
-            => ScalarProcessorFloat64.DefaultProcessor;
+            => ScalarProcessorOfFloat64.DefaultProcessor;
 
         public bool IsNumeric 
             => ScalarProcessor.IsNumeric;
@@ -58,7 +58,7 @@ namespace GeometricAlgebraFulcrumLib.Processors.SignalAlgebra
         public Float64Signal ScalarRadianToDegree { get; }
 
 
-        public ScalarSignalFloat64Processor(double samplingRate, int signalSamplesCount)
+        public ScalarProcessorOfFloat64Signal(double samplingRate, int signalSamplesCount)
         {
             if (signalSamplesCount < 1)
                 throw new ArgumentOutOfRangeException(nameof(signalSamplesCount));

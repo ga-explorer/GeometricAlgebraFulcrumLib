@@ -20,7 +20,7 @@ namespace GeometricAlgebraFulcrumLib.Text
 
 
         private LaTeXFloat64Composer()
-            : base(ScalarProcessorFloat64.DefaultProcessor)
+            : base(ScalarProcessorOfFloat64.DefaultProcessor)
         {
         }
 

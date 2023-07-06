@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using GraphicsComposerLib.Rendering.LaTeX.ImageComposers;
 using GraphicsComposerLib.Rendering.Visuals.Space3D;
 using GraphicsComposerLib.Rendering.Visuals.Space3D.Images;
 using SixLabors.ImageSharp;

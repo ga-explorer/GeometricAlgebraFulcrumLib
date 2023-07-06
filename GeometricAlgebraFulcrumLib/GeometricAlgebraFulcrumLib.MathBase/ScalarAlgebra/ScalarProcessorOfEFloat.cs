@@ -5,14 +5,14 @@ using PeterO.Numbers;
 namespace GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra
 {
     /// <summary>
-    /// A scalar processor for PeterO.Numbers.ERational numbers
+    /// A scalar processor for PeterO.Numbers.EFloat numbers
     /// https://github.com/peteroupc/Numbers
     /// </summary>
-    public sealed class ScalarProcessorERational
-        : INumericScalarProcessor<ERational>
+    public sealed class ScalarProcessorOfEFloat
+        : INumericScalarProcessor<EFloat>
     {
-        public static ScalarProcessorERational DefaultProcessor { get; }
-            = new ScalarProcessorERational();
+        public static ScalarProcessorOfEFloat DefaultProcessor { get; }
+            = new ScalarProcessorOfEFloat();
 
 
         public EContext NumericalContext { get; set; }
@@ -24,41 +24,41 @@ namespace GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra
         public bool IsSymbolic
             => false;
 
-        public ERational ScalarZero
-            => ERational.Zero;
+        public EFloat ScalarZero
+            => EFloat.Zero;
 
-        public ERational ScalarOne
-            => ERational.One;
+        public EFloat ScalarOne
+            => EFloat.One;
 
-        public ERational ScalarMinusOne
-            => -ERational.One;
+        public EFloat ScalarMinusOne
+            => -EFloat.One;
 
-        public ERational ScalarTwo
+        public EFloat ScalarTwo
             => 2;
 
-        public ERational ScalarMinusTwo
+        public EFloat ScalarMinusTwo
             => -2;
 
-        public ERational ScalarTen
+        public EFloat ScalarTen
             => 10;
 
-        public ERational ScalarMinusTen
+        public EFloat ScalarMinusTen
             => -10;
 
-        public ERational ScalarPi { get; }
+        public EFloat ScalarPi { get; }
 
-        public ERational ScalarTwoPi { get; }
+        public EFloat ScalarTwoPi { get; }
 
-        public ERational ScalarPiOver2 { get; }
+        public EFloat ScalarPiOver2 { get; }
 
-        public ERational ScalarE { get; }
+        public EFloat ScalarE { get; }
 
-        public ERational ScalarDegreeToRadian { get; }
+        public EFloat ScalarDegreeToRadian { get; }
 
-        public ERational ScalarRadianToDegree { get; }
+        public EFloat ScalarRadianToDegree { get; }
 
 
-        private ScalarProcessorERational()
+        private ScalarProcessorOfEFloat()
         {
             ScalarPi = EFloat.PI(NumericalContext);
             ScalarTwoPi = EFloat.PI(NumericalContext) * 2;
@@ -70,153 +70,146 @@ namespace GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ERational Add(ERational scalar1, ERational scalar2)
+        public EFloat Add(EFloat scalar1, EFloat scalar2)
         {
             return scalar1 + scalar2;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ERational Subtract(ERational scalar1, ERational scalar2)
+        public EFloat Subtract(EFloat scalar1, EFloat scalar2)
         {
             return scalar1 - scalar2;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ERational Times(ERational scalar1, ERational scalar2)
+        public EFloat Times(EFloat scalar1, EFloat scalar2)
         {
             return scalar1 * scalar2;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ERational Times(IntegerSign sign, ERational scalar)
+        public EFloat Times(IntegerSign sign, EFloat scalar)
         {
-            return sign.Value * scalar;
+            if (sign.IsZero) return ScalarZero;
+
+            return sign.IsPositive
+                ? scalar
+                : -scalar;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ERational NegativeTimes(ERational scalar1, ERational scalar2)
+        public EFloat NegativeTimes(EFloat scalar1, EFloat scalar2)
         {
             return -(scalar1 * scalar2);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ERational Divide(ERational scalar1, ERational scalar2)
+        public EFloat Divide(EFloat scalar1, EFloat scalar2)
         {
             return scalar1 / scalar2;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ERational NegativeDivide(ERational scalar1, ERational scalar2)
+        public EFloat NegativeDivide(EFloat scalar1, EFloat scalar2)
         {
             return -(scalar1 / scalar2);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ERational Positive(ERational scalar)
+        public EFloat Positive(EFloat scalar)
         {
             return scalar;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ERational Negative(ERational scalar)
+        public EFloat Negative(EFloat scalar)
         {
             return -scalar;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ERational Inverse(ERational scalar)
+        public EFloat Inverse(EFloat scalar)
         {
-            return ERational.One / scalar;
+            return EFloat.One / scalar;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ERational Sign(ERational scalar)
+        public EFloat Sign(EFloat scalar)
         {
             return scalar.Sign;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ERational UnitStep(ERational scalar)
+        public EFloat UnitStep(EFloat scalar)
         {
-            return scalar.IsNegative ? ERational.Zero : ERational.One;
+            return scalar.IsNegative ? EFloat.Zero : EFloat.One;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ERational Abs(ERational scalar)
+        public EFloat Abs(EFloat scalar)
         {
             return scalar.Abs();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ERational Sqrt(ERational scalar)
+        public EFloat Sqrt(EFloat scalar)
         {
             return scalar
-                .ToEFloatExactIfPossible(NumericalContext)
                 .Sqrt(NumericalContext);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ERational SqrtOfAbs(ERational scalar)
+        public EFloat SqrtOfAbs(EFloat scalar)
         {
             return scalar
                 .Abs()
-                .ToEFloatExactIfPossible(NumericalContext)
                 .Sqrt(NumericalContext);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ERational Exp(ERational scalar)
+        public EFloat Exp(EFloat scalar)
         {
             return scalar
-                .ToEFloatExactIfPossible(NumericalContext)
                 .Exp(NumericalContext);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ERational LogE(ERational scalar)
+        public EFloat LogE(EFloat scalar)
         {
             return scalar
-                .ToEFloatExactIfPossible(NumericalContext)
                 .Log(NumericalContext);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ERational Log2(ERational scalar)
+        public EFloat Log2(EFloat scalar)
         {
             return scalar
-                .ToEFloatExactIfPossible(NumericalContext)
                 .LogN(2, NumericalContext);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ERational Log10(ERational scalar)
+        public EFloat Log10(EFloat scalar)
         {
             return scalar
-                .ToEFloatExactIfPossible(NumericalContext)
                 .Log10(NumericalContext);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ERational Power(ERational baseScalar, ERational scalar)
+        public EFloat Power(EFloat baseScalar, EFloat scalar)
         {
             return baseScalar
-                .ToEFloatExactIfPossible(NumericalContext)
-                .Pow(scalar.ToEFloatExactIfPossible(NumericalContext));
+                .Pow(scalar);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ERational Log(ERational baseScalar, ERational scalar)
+        public EFloat Log(EFloat baseScalar, EFloat scalar)
         {
             return scalar
-                .ToEFloatExactIfPossible(NumericalContext)
-                .LogN(
-                    baseScalar.ToEFloatExactIfPossible(NumericalContext),
-                    NumericalContext
-                );
+                .LogN(baseScalar, NumericalContext);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ERational Cos(ERational scalar)
+        public EFloat Cos(EFloat scalar)
         {
             return scalar
                 .ToDouble()
@@ -224,7 +217,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ERational Sin(ERational scalar)
+        public EFloat Sin(EFloat scalar)
         {
             return scalar
                 .ToDouble()
@@ -232,7 +225,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ERational Tan(ERational scalar)
+        public EFloat Tan(EFloat scalar)
         {
             return scalar
                 .ToDouble()
@@ -240,7 +233,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ERational ArcCos(ERational scalar)
+        public EFloat ArcCos(EFloat scalar)
         {
             return scalar
                 .ToDouble()
@@ -250,7 +243,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ERational ArcSin(ERational scalar)
+        public EFloat ArcSin(EFloat scalar)
         {
             return scalar
                 .ToDouble()
@@ -260,7 +253,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ERational ArcTan(ERational scalar)
+        public EFloat ArcTan(EFloat scalar)
         {
             return scalar
                 .ToDouble()
@@ -270,39 +263,34 @@ namespace GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ERational ArcTan2(ERational scalarX, ERational scalarY)
+        public EFloat ArcTan2(EFloat scalarX, EFloat scalarY)
         {
             return Math.Atan2(scalarY.ToDouble(), scalarX.ToDouble());
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ERational Cosh(ERational scalar)
+        public EFloat Cosh(EFloat scalar)
         {
-            var s = scalar.ToEFloatExactIfPossible(NumericalContext);
-
-            return (s.Exp(NumericalContext) + (-s).Exp(NumericalContext)) / 2;
+            return (scalar.Exp(NumericalContext) + (-scalar).Exp(NumericalContext)) / 2;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ERational Sinh(ERational scalar)
+        public EFloat Sinh(EFloat scalar)
         {
-            var s = scalar.ToEFloatExactIfPossible(NumericalContext);
-
-            return (s.Exp(NumericalContext) - (-s).Exp(NumericalContext)) / 2;
+            return (scalar.Exp(NumericalContext) - (-scalar).Exp(NumericalContext)) / 2;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ERational Tanh(ERational scalar)
+        public EFloat Tanh(EFloat scalar)
         {
-            var s = scalar.ToEFloatExactIfPossible(NumericalContext);
-            var sp = s.Exp(NumericalContext);
-            var sn = (-s).Exp(NumericalContext);
+            var sp = scalar.Exp(NumericalContext);
+            var sn = (-scalar).Exp(NumericalContext);
 
             return (sp - sn) / (sp + sn);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ERational Sinc(ERational scalar)
+        public EFloat Sinc(EFloat scalar)
         {
             return IsZero(scalar)
                 ? ScalarOne
@@ -310,25 +298,25 @@ namespace GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IsValid(ERational scalar)
+        public bool IsValid(EFloat scalar)
         {
             return !scalar.IsNaN();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IsFiniteNumber(ERational scalar)
+        public bool IsFiniteNumber(EFloat scalar)
         {
             return scalar.IsFinite;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IsZero(ERational scalar)
+        public bool IsZero(EFloat scalar)
         {
             return scalar.IsZero;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IsZero(ERational scalar, bool nearZeroFlag)
+        public bool IsZero(EFloat scalar, bool nearZeroFlag)
         {
             return nearZeroFlag
                 ? IsNearZero(scalar)
@@ -336,20 +324,20 @@ namespace GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IsNearZero(ERational scalar)
+        public bool IsNearZero(EFloat scalar)
         {
             //TODO: Correctly handle this case
             return scalar.IsZero;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IsNotZero(ERational scalar)
+        public bool IsNotZero(EFloat scalar)
         {
             return !scalar.IsZero;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IsNotZero(ERational scalar, bool nearZeroFlag)
+        public bool IsNotZero(EFloat scalar, bool nearZeroFlag)
         {
             return nearZeroFlag
                 ? !IsNearZero(scalar)
@@ -357,103 +345,106 @@ namespace GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IsNotNearZero(ERational scalar)
+        public bool IsNotNearZero(EFloat scalar)
         {
             return !IsNearZero(scalar);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ERational GetScalarFromText(string text)
+        public EFloat GetScalarFromText(string text)
         {
-            return ERational.FromString(text);
+            return EFloat.FromString(text);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ERational GetScalarFromNumber(int value)
-        {
-            return value;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ERational GetScalarFromNumber(uint value)
+        public EFloat GetScalarFromNumber(int value)
         {
             return value;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ERational GetScalarFromNumber(long value)
+        public EFloat GetScalarFromNumber(uint value)
         {
             return value;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ERational GetScalarFromNumber(ulong value)
+        public EFloat GetScalarFromNumber(long value)
         {
             return value;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ERational GetScalarFromNumber(float value)
+        public EFloat GetScalarFromNumber(ulong value)
         {
             return value;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ERational GetScalarFromNumber(double value)
+        public EFloat GetScalarFromNumber(float value)
         {
             return value;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ERational GetScalarFromRational(long numerator, long denominator)
+        public EFloat GetScalarFromNumber(double value)
         {
-            return numerator / (ERational)denominator;
+            return value;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ERational GetScalarFromRandom(System.Random randomGenerator, double minValue, double maxValue)
+        public EFloat GetScalarFromRational(long numerator, long denominator)
+        {
+            return (
+                ERational.FromInt64(numerator) /
+                ERational.FromInt64(denominator)
+            ).ToEFloatExactIfPossible(NumericalContext);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public EFloat GetScalarFromRandom(System.Random randomGenerator, double minValue, double maxValue)
         {
             return minValue + (maxValue - minValue) * randomGenerator.NextDouble();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public string ToText(ERational scalar)
+        public string ToText(EFloat scalar)
         {
             return scalar.ToString();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IsPositive(ERational scalar)
+        public bool IsPositive(EFloat scalar)
         {
             return scalar.CompareToValue(0) > 0;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IsNegative(ERational scalar)
+        public bool IsNegative(EFloat scalar)
         {
             return scalar.CompareToValue(0) < 0;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IsNotPositive(ERational scalar)
+        public bool IsNotPositive(EFloat scalar)
         {
             return scalar.CompareToValue(0) <= 0;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IsNotNegative(ERational scalar)
+        public bool IsNotNegative(EFloat scalar)
         {
             return scalar.CompareToValue(0) >= 0;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IsNotNearPositive(ERational scalar)
+        public bool IsNotNearPositive(EFloat scalar)
         {
             return scalar.CompareToValue(0) < 0 && IsNotNearZero(scalar);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IsNotNearNegative(ERational scalar)
+        public bool IsNotNearNegative(EFloat scalar)
         {
             return scalar.CompareToValue(0) > 0 && IsNotNearZero(scalar);
         }

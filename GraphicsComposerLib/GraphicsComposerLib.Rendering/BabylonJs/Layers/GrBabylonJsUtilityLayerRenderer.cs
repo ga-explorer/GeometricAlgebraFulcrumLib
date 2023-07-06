@@ -1,5 +1,4 @@
-﻿using DataStructuresLib.Basic;
-using GraphicsComposerLib.Rendering.BabylonJs.Values;
+﻿using GraphicsComposerLib.Rendering.BabylonJs.Values;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Layers
 {
@@ -9,30 +8,56 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Layers
         public sealed class UtilityLayerRendererProperties :
             GrBabylonJsObjectProperties
         {
-            public GrBabylonJsBooleanValue? OnlyCheckPointerDownEvents { get; set; }
-
-            public GrBabylonJsSceneValue? OriginalScene { get; set; }
-
-            public GrBabylonJsSceneValue? UtilityLayerScene { get; set; }
-
-            public GrBabylonJsBooleanValue? PickUtilitySceneFirst { get; set; }
-
-            public GrBabylonJsBooleanValue? PickingEnabled { get; set; }
-
-            public GrBabylonJsBooleanValue? ProcessAllEvents { get; set; }
-
-            public GrBabylonJsBooleanValue? ShouldRender { get; set; }
-        
-
-            protected override IEnumerable<Pair<string>?> GetNameValuePairs()
+            public GrBabylonJsBooleanValue? OnlyCheckPointerDownEvents
             {
-                yield return OnlyCheckPointerDownEvents.GetNameValueCodePair("onlyCheckPointerDownEvents");
-                yield return OriginalScene.GetNameValueCodePair("originalScene");
-                yield return UtilityLayerScene.GetNameValueCodePair("utilityLayerScene");
-                yield return PickUtilitySceneFirst.GetNameValueCodePair("pickUtilitySceneFirst");
-                yield return PickingEnabled.GetNameValueCodePair("pickingEnabled");
-                yield return ProcessAllEvents.GetNameValueCodePair("processAllEvents");
-                yield return ShouldRender.GetNameValueCodePair("shouldRender");
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("onlyCheckPointerDownEvents");
+                set => SetAttributeValue("onlyCheckPointerDownEvents", value);
+            }
+
+            public GrBabylonJsSceneValue? OriginalScene
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsSceneValue>("originalScene");
+                set => SetAttributeValue("originalScene", value);
+            }
+
+            public GrBabylonJsSceneValue? UtilityLayerScene
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsSceneValue>("utilityLayerScene");
+                set => SetAttributeValue("utilityLayerScene", value);
+            }
+
+            public GrBabylonJsBooleanValue? PickUtilitySceneFirst
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("pickUtilitySceneFirst");
+                set => SetAttributeValue("pickUtilitySceneFirst", value);
+            }
+
+            public GrBabylonJsBooleanValue? PickingEnabled
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("pickingEnabled");
+                set => SetAttributeValue("pickingEnabled", value);
+            }
+
+            public GrBabylonJsBooleanValue? ProcessAllEvents
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("processAllEvents");
+                set => SetAttributeValue("processAllEvents", value);
+            }
+
+            public GrBabylonJsBooleanValue? ShouldRender
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("shouldRender");
+                set => SetAttributeValue("shouldRender", value);
+            }
+
+
+            public UtilityLayerRendererProperties()
+            {
+            }
+
+            public UtilityLayerRendererProperties(UtilityLayerRendererProperties properties)
+            {
+                SetAttributeValues(properties);
             }
         }
 
@@ -43,13 +68,13 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Layers
 
         public GrBabylonJsBooleanValue HandleEvents { get; set; }
     
-        public UtilityLayerRendererProperties? Properties { get; private set; }
+        public UtilityLayerRendererProperties Properties { get; private set; }
             = new UtilityLayerRendererProperties();
 
         public override GrBabylonJsObjectOptions? ObjectOptions 
             => null;
 
-        public override GrBabylonJsObjectProperties? ObjectProperties 
+        public override GrBabylonJsObjectProperties ObjectProperties 
             => Properties;
     
     
@@ -61,7 +86,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Layers
     
         public GrBabylonJsUtilityLayerRenderer SetProperties(UtilityLayerRendererProperties properties)
         {
-            Properties = properties;
+            Properties = new UtilityLayerRendererProperties(properties);
 
             return this;
         }

@@ -1,9 +1,10 @@
-﻿using GraphicsComposerLib.Rendering.BabylonJs.Constants;
+﻿using DataStructuresLib.AttributeSet;
+using GraphicsComposerLib.Rendering.BabylonJs.Constants;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Values
 {
     public sealed class GrBabylonJsTextureSamplingModeValue :
-        GrBabylonJsValue<GrBabylonJsTextureSamplingMode>
+        SparseCodeAttributeValue<GrBabylonJsTextureSamplingMode>
     {
         public static implicit operator GrBabylonJsTextureSamplingModeValue(string valueText)
         {

@@ -1,14 +1,11 @@
-﻿
-using System.Drawing;
-using System.IO;
-using GeometricAlgebraFulcrumLib.MathBase.BasicMath.Tuples.Immutable;
-using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Lines;
-using GeometricAlgebraFulcrumLib.MathBase.BasicShapes.Lines.Immutable;
-using GeometricAlgebraFulcrumLib.MathBase.Borders;
-using GeometricAlgebraFulcrumLib.MathBase.Borders.Space2D;
-using GeometricAlgebraFulcrumLib.MathBase.Borders.Space2D.Immutable;
+﻿using System.IO;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.BasicShapes.Lines.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D;
+using GeometricAlgebraFulcrumLib.MathBase.Geometry.Borders.Space2D.Immutable;
+using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space2D;
 using GraphicsComposerLib.Rendering.Svg.DrawingBoard;
-using SixLabors.ImageSharp;
 using Color = SixLabors.ImageSharp.Color;
 
 namespace GraphicsComposerLib.Samples.Accelerators
@@ -126,8 +123,8 @@ namespace GraphicsComposerLib.Samples.Accelerators
 
             var line =
                 Line2D.Create(
-                    new Float64Tuple2D(boundingBox.MinX, boundingBox.MinY),
-                    new Float64Tuple2D(boundingBox.GetLengthX(), boundingBox.GetLengthY())
+                    Float64Vector2D.Create(boundingBox.MinX, boundingBox.MinY),
+                    Float64Vector2D.Create(boundingBox.GetLengthX(), boundingBox.GetLengthY())
                 );
 
             //A) Line Direction > 0, Clip0 < Clip1 => s0 < s1
@@ -183,8 +180,8 @@ namespace GraphicsComposerLib.Samples.Accelerators
 
             line =
                 Line2D.Create(
-                    new Float64Tuple2D(boundingBox.MaxX, boundingBox.MinY),
-                    new Float64Tuple2D(-boundingBox.GetLengthX(), boundingBox.GetLengthY())
+                    Float64Vector2D.Create(boundingBox.MaxX, boundingBox.MinY),
+                    Float64Vector2D.Create(-boundingBox.GetLengthX(), boundingBox.GetLengthY())
                 );
 
             //D) Line Direction < 0, Clip0 < Clip1 => s0 < s1

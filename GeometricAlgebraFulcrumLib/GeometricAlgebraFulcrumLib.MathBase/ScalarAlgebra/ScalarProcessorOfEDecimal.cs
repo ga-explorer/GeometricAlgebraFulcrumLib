@@ -8,11 +8,11 @@ namespace GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra
     /// A scalar processor for PeterO.Numbers.EDecimal numbers
     /// https://github.com/peteroupc/Numbers
     /// </summary>
-    public sealed class ScalarProcessorEDecimal
+    public sealed class ScalarProcessorOfEDecimal
         : INumericScalarProcessor<EDecimal>
     {
-        public static ScalarProcessorEDecimal DefaultProcessor { get; }
-            = new ScalarProcessorEDecimal();
+        public static ScalarProcessorOfEDecimal DefaultProcessor { get; }
+            = new ScalarProcessorOfEDecimal();
 
 
         public EContext NumericalContext { get; set; }
@@ -58,7 +58,7 @@ namespace GeometricAlgebraFulcrumLib.MathBase.ScalarAlgebra
         public EDecimal ScalarRadianToDegree { get; }
 
 
-        private ScalarProcessorEDecimal()
+        private ScalarProcessorOfEDecimal()
         {
             ScalarPi = EDecimal.PI(NumericalContext);
             ScalarTwoPi = EDecimal.PI(NumericalContext) * 2;

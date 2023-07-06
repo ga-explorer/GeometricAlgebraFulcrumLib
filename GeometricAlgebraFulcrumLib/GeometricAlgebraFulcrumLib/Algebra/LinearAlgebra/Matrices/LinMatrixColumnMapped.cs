@@ -11,7 +11,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Matrices
         public Func<TScalar, TScalar> ScalarMapping { get; }
 
 
-        internal LinMatrixColumnMapped(IMatrixAlgebraProcessor<TMatrix, TScalar> matrixProcessor, TMatrix matrix, int columnIndex, Func<TScalar, TScalar> scalarMapping)
+        internal LinMatrixColumnMapped(IMatrixProcessor<TMatrix, TScalar> matrixProcessor, TMatrix matrix, int columnIndex, Func<TScalar, TScalar> scalarMapping)
             : base(matrixProcessor, matrix, columnIndex)
         {
             ScalarMapping = scalarMapping;

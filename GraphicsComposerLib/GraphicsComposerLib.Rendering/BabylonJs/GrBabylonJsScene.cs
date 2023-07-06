@@ -23,147 +23,288 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
         public sealed class SceneOptions :
             GrBabylonJsObjectOptions
         {
-            public GrBabylonJsBooleanValue? UseClonedMeshMap { get; set; }
-
-            public GrBabylonJsBooleanValue? UseGeometryUniqueIdsMap { get; set; }
-            
-            public GrBabylonJsBooleanValue? UseMaterialMeshMap { get; set; }
-
-            public GrBabylonJsBooleanValue? Virtual { get; set; }
-
-            protected override IEnumerable<Pair<string>?> GetNameValuePairs()
+            public GrBabylonJsBooleanValue? UseClonedMeshMap
             {
-                yield return UseClonedMeshMap.GetNameValueCodePair("useClonedMeshMap");
-                yield return UseGeometryUniqueIdsMap.GetNameValueCodePair("useGeometryUniqueIdsMap");
-                yield return UseMaterialMeshMap.GetNameValueCodePair("useMaterialMeshMap");
-                yield return Virtual.GetNameValueCodePair("virtual");
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("useClonedMeshMap");
+                set => SetAttributeValue("useClonedMeshMap", value);
+            }
+
+            public GrBabylonJsBooleanValue? UseGeometryUniqueIdsMap
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("useGeometryUniqueIdsMap");
+                set => SetAttributeValue("useGeometryUniqueIdsMap", value);
+            }
+            
+            public GrBabylonJsBooleanValue? UseMaterialMeshMap
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("useMaterialMeshMap");
+                set => SetAttributeValue("useMaterialMeshMap", value);
+            }
+
+            public GrBabylonJsBooleanValue? Virtual
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("virtual");
+                set => SetAttributeValue("virtual", value);
+            }
+            
+            
+            public SceneOptions()
+            {
+            }
+            
+            public SceneOptions(SceneOptions properties)
+            {
+                SetAttributeValues(properties);
             }
         }
 
         public sealed class SceneProperties :
             GrBabylonJsObjectProperties
         {
-            public GrBabylonJsMaterialValue? DefaultMaterial { get; set; }
-
-            public GrBabylonJsColor3Value? AmbientColor { get; set; }
-
-            public GrBabylonJsColor4Value? ClearColor { get; set; }
-
-            public GrBabylonJsBooleanValue? FogEnabled { get; set; }
-
-            public GrBabylonJsFogModeValue? FogMode { get; set; }
-
-            public GrBabylonJsColor3Value? FogColor { get; set; }
-
-            public GrBabylonJsFloat32Value? FogDensity { get; set; }
-
-            public GrBabylonJsFloat32Value? FogStart { get; set; }
-
-            public GrBabylonJsFloat32Value? FogEnd { get; set; }
-
-            public GrBabylonJsFloat32Value? AnimationTimeScale { get; set; }
-
-            public GrBabylonJsBooleanValue? AnimationsEnabled { get; set; }
-
-            public GrBabylonJsBooleanValue? AudioEnabled { get; set; }
-
-            public GrBabylonJsFloat32Value? AudioPositioningRefreshRate { get; set; }
-
-            public GrBabylonJsBooleanValue? Headphone { get; set; }
-
-            public GrBabylonJsFloat32Value? DeltaTime { get; set; }
-
-            public GrBabylonJsFloat32Value? MinDeltaTime { get; set; }
-
-            public GrBabylonJsFloat32Value? MaxDeltaTime { get; set; }
-
-            public GrBabylonJsBooleanValue? UseConstantAnimationDeltaTime { get; set; }
-
-            public GrBabylonJsFloat32Value? PointerX { get; set; }
-
-            public GrBabylonJsFloat32Value? PointerY { get; set; }
-
-            public GrBabylonJsBooleanValue? UseOrderIndependentTransparency { get; set; }
-
-            public GrBabylonJsBooleanValue? AutoClear { get; set; }
-
-            public GrBabylonJsBooleanValue? AutoClearDepthAndStencil { get; set; }
-
-            public GrBabylonJsBooleanValue? PhysicsEnabled { get; set; }
-
-            public GrBabylonJsBooleanValue? ParticlesEnabled { get; set; }
-
-            public GrBabylonJsBooleanValue? CollisionsEnabled { get; set; }
-
-            public GrBabylonJsVector3Value? Gravity { get; set; }
-
-            public GrBabylonJsBooleanValue? ConstantlyUpdateMeshUnderPointer { get; set; }
-
-            public GrBabylonJsBooleanValue? ForceShowBoundingBoxes { get; set; }
-
-            public GrBabylonJsBooleanValue? ForcePointsCloud { get; set; }
-
-            public GrBabylonJsBooleanValue? ForceWireFrame { get; set; }
-
-            public GrBabylonJsBooleanValue? LightsEnabled { get; set; }
-
-            public GrBabylonJsBooleanValue? ShadowsEnabled { get; set; }
-
-            public GrBabylonJsBooleanValue? SkeletonsEnabled { get; set; }
-
-            public GrBabylonJsBooleanValue? SkipFrustumClipping { get; set; }
-
-            public GrBabylonJsBooleanValue? TexturesEnabled { get; set; }
-
-            public GrBabylonJsBooleanValue? UseRightHandedSystem { get; set; } 
-                = true;
-
-            public GrBabylonJsBooleanValue? RequireLightSorting { get; set; }
-
-            public GrBabylonJsBooleanValue? SpritesEnabled { get; set; }
-
-
-            protected override IEnumerable<Pair<string>?> GetNameValuePairs()
+            public GrBabylonJsMaterialValue? DefaultMaterial
             {
-                yield return DefaultMaterial.GetNameValueCodePair("defaultMaterial");
-                yield return AmbientColor.GetNameValueCodePair("ambientColor");
-                yield return ClearColor.GetNameValueCodePair("clearColor");
-                yield return FogEnabled.GetNameValueCodePair("fogEnabled");
-                yield return FogMode.GetNameValueCodePair("fogMode");
-                yield return FogColor.GetNameValueCodePair("fogColor");
-                yield return FogDensity.GetNameValueCodePair("fogDensity");
-                yield return FogStart.GetNameValueCodePair("fogStart");
-                yield return FogEnd.GetNameValueCodePair("fogEnd");
-                yield return AnimationTimeScale.GetNameValueCodePair("animationTimeScale");
-                yield return AnimationsEnabled.GetNameValueCodePair("animationsEnabled");
-                yield return AudioEnabled.GetNameValueCodePair("audioEnabled");
-                yield return AudioPositioningRefreshRate.GetNameValueCodePair("audioPositioningRefreshRate");
-                yield return Headphone.GetNameValueCodePair("headphone");
-                yield return DeltaTime.GetNameValueCodePair("deltaTime");
-                yield return MinDeltaTime.GetNameValueCodePair("MinDeltaTime");
-                yield return MaxDeltaTime.GetNameValueCodePair("MaxDeltaTime");
-                yield return UseConstantAnimationDeltaTime.GetNameValueCodePair("useConstantAnimationDeltaTime");
-                yield return PointerX.GetNameValueCodePair("pointerX");
-                yield return PointerY.GetNameValueCodePair("pointerY");
-                yield return UseOrderIndependentTransparency.GetNameValueCodePair("useOrderIndependentTransparency");
-                yield return AutoClear.GetNameValueCodePair("autoClear");
-                yield return AutoClearDepthAndStencil.GetNameValueCodePair("autoClearDepthAndStencil");
-                yield return PhysicsEnabled.GetNameValueCodePair("physicsEnabled");
-                yield return ParticlesEnabled.GetNameValueCodePair("particlesEnabled");
-                yield return CollisionsEnabled.GetNameValueCodePair("collisionsEnabled");
-                yield return Gravity.GetNameValueCodePair("gravity");
-                yield return ConstantlyUpdateMeshUnderPointer.GetNameValueCodePair("constantlyUpdateMeshUnderPointer");
-                yield return ForceShowBoundingBoxes.GetNameValueCodePair("forceShowBoundingBoxes");
-                yield return ForcePointsCloud.GetNameValueCodePair("forcePointsCloud");
-                yield return ForceWireFrame.GetNameValueCodePair("forceWireframe");
-                yield return LightsEnabled.GetNameValueCodePair("lightsEnabled");
-                yield return ShadowsEnabled.GetNameValueCodePair("shadowsEnabled");
-                yield return SkeletonsEnabled.GetNameValueCodePair("skeletonsEnabled");
-                yield return SkipFrustumClipping.GetNameValueCodePair("skipFrustumClipping");
-                yield return TexturesEnabled.GetNameValueCodePair("texturesEnabled");
-                yield return UseRightHandedSystem.GetNameValueCodePair("useRightHandedSystem");
-                yield return RequireLightSorting.GetNameValueCodePair("requireLightSorting");
-                yield return SpritesEnabled.GetNameValueCodePair("spritesEnabled");
+                get => GetAttributeValueOrNull<GrBabylonJsMaterialValue>("defaultMaterial");
+                set => SetAttributeValue("defaultMaterial", value);
+            }
+
+            public GrBabylonJsColor3Value? AmbientColor
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsColor3Value>("ambientColor");
+                set => SetAttributeValue("ambientColor", value);
+            }
+
+            public GrBabylonJsColor4Value? ClearColor
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsColor4Value>("clearColor");
+                set => SetAttributeValue("clearColor", value);
+            }
+
+            public GrBabylonJsBooleanValue? FogEnabled
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("fogEnabled");
+                set => SetAttributeValue("fogEnabled", value);
+            }
+
+            public GrBabylonJsFogModeValue? FogMode
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFogModeValue>("fogMode");
+                set => SetAttributeValue("fogMode", value);
+            }
+
+            public GrBabylonJsColor3Value? FogColor
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsColor3Value>("fogColor");
+                set => SetAttributeValue("fogColor", value);
+            }
+
+            public GrBabylonJsFloat32Value? FogDensity
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("fogDensity");
+                set => SetAttributeValue("fogDensity", value);
+            }
+
+            public GrBabylonJsFloat32Value? FogStart
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("fogStart");
+                set => SetAttributeValue("fogStart", value);
+            }
+
+            public GrBabylonJsFloat32Value? FogEnd
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("fogEnd");
+                set => SetAttributeValue("fogEnd", value);
+            }
+
+            public GrBabylonJsFloat32Value? AnimationTimeScale
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("animationTimeScale");
+                set => SetAttributeValue("animationTimeScale", value);
+            }
+
+            public GrBabylonJsBooleanValue? AnimationsEnabled
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("animationsEnabled");
+                set => SetAttributeValue("animationsEnabled", value);
+            }
+
+            public GrBabylonJsBooleanValue? AudioEnabled
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("audioEnabled");
+                set => SetAttributeValue("audioEnabled", value);
+            }
+
+            public GrBabylonJsFloat32Value? AudioPositioningRefreshRate
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("audioPositioningRefreshRate");
+                set => SetAttributeValue("audioPositioningRefreshRate", value);
+            }
+
+            public GrBabylonJsBooleanValue? Headphone
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("headphone");
+                set => SetAttributeValue("headphone", value);
+            }
+
+            public GrBabylonJsFloat32Value? DeltaTime
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("deltaTime");
+                set => SetAttributeValue("deltaTime", value);
+            }
+
+            public GrBabylonJsFloat32Value? MinDeltaTime
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("minDeltaTime");
+                set => SetAttributeValue("minDeltaTime", value);
+            }
+
+            public GrBabylonJsFloat32Value? MaxDeltaTime
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("maxDeltaTime");
+                set => SetAttributeValue("maxDeltaTime", value);
+            }
+
+            public GrBabylonJsBooleanValue? UseConstantAnimationDeltaTime
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("useConstantAnimationDeltaTime");
+                set => SetAttributeValue("useConstantAnimationDeltaTime", value);
+            }
+
+            public GrBabylonJsFloat32Value? PointerX
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("pointerX");
+                set => SetAttributeValue("pointerX", value);
+            }
+
+            public GrBabylonJsFloat32Value? PointerY
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("pointerY");
+                set => SetAttributeValue("pointerY", value);
+            }
+
+            public GrBabylonJsBooleanValue? UseOrderIndependentTransparency
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("useOrderIndependentTransparency");
+                set => SetAttributeValue("useOrderIndependentTransparency", value);
+            }
+
+            public GrBabylonJsBooleanValue? AutoClear
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("autoClear");
+                set => SetAttributeValue("autoClear", value);
+            }
+
+            public GrBabylonJsBooleanValue? AutoClearDepthAndStencil
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("autoClearDepthAndStencil");
+                set => SetAttributeValue("autoClearDepthAndStencil", value);
+            }
+
+            public GrBabylonJsBooleanValue? PhysicsEnabled
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("physicsEnabled");
+                set => SetAttributeValue("physicsEnabled", value);
+            }
+
+            public GrBabylonJsBooleanValue? ParticlesEnabled
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("particlesEnabled");
+                set => SetAttributeValue("particlesEnabled", value);
+            }
+
+            public GrBabylonJsBooleanValue? CollisionsEnabled
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("collisionsEnabled");
+                set => SetAttributeValue("collisionsEnabled", value);
+            }
+
+            public GrBabylonJsVector3Value? Gravity
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsVector3Value>("gravity");
+                set => SetAttributeValue("gravity", value);
+            }
+
+            public GrBabylonJsBooleanValue? ConstantlyUpdateMeshUnderPointer
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("constantlyUpdateMeshUnderPointer");
+                set => SetAttributeValue("constantlyUpdateMeshUnderPointer", value);
+            }
+
+            public GrBabylonJsBooleanValue? ForceShowBoundingBoxes
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("forceShowBoundingBoxes");
+                set => SetAttributeValue("forceShowBoundingBoxes", value);
+            }
+
+            public GrBabylonJsBooleanValue? ForcePointsCloud
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("forcePointsCloud");
+                set => SetAttributeValue("forcePointsCloud", value);
+            }
+
+            public GrBabylonJsBooleanValue? ForceWireFrame
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("forceWireFrame");
+                set => SetAttributeValue("forceWireFrame", value);
+            }
+
+            public GrBabylonJsBooleanValue? LightsEnabled
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("lightsEnabled");
+                set => SetAttributeValue("lightsEnabled", value);
+            }
+
+            public GrBabylonJsBooleanValue? ShadowsEnabled
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("shadowsEnabled");
+                set => SetAttributeValue("shadowsEnabled", value);
+            }
+
+            public GrBabylonJsBooleanValue? SkeletonsEnabled
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("skeletonsEnabled");
+                set => SetAttributeValue("skeletonsEnabled", value);
+            }
+
+            public GrBabylonJsBooleanValue? SkipFrustumClipping
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("skipFrustumClipping");
+                set => SetAttributeValue("skipFrustumClipping", value);
+            }
+
+            public GrBabylonJsBooleanValue? TexturesEnabled
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("texturesEnabled");
+                set => SetAttributeValue("texturesEnabled", value);
+            }
+
+            public GrBabylonJsBooleanValue? UseRightHandedSystem
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("useRightHandedSystem");
+                set => SetAttributeValue("useRightHandedSystem", value);
+            }
+
+            public GrBabylonJsBooleanValue? RequireLightSorting
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("requireLightSorting");
+                set => SetAttributeValue("requireLightSorting", value);
+            }
+
+            public GrBabylonJsBooleanValue? SpritesEnabled
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("spritesEnabled");
+                set => SetAttributeValue("spritesEnabled", value);
+            }
+
+            
+            public SceneProperties()
+            {
+                UseRightHandedSystem = true;
+            }
+            
+            public SceneProperties(SceneProperties properties)
+            {
+                UseRightHandedSystem = true;
+                SetAttributeValues(properties);
             }
         }
 
@@ -224,14 +365,14 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
 
         public GrBabylonJsScene SetOptions(SceneOptions options)
         {
-            Options = options;
+            Options = new SceneOptions(options);
 
             return this;
         }
 
         public GrBabylonJsScene SetProperties(SceneProperties properties)
         {
-            Properties = properties;
+            Properties = new SceneProperties(properties);
 
             return this;
         }
@@ -525,17 +666,13 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
             if (alpha == 255)
                 return AddStandardMaterial(
                     name, 
-                    new GrBabylonJsStandardMaterial.StandardMaterialProperties
-                    {
-                        Color = color
-                    }
+                    new GrBabylonJsStandardMaterial.StandardMaterialProperties(color)
                 );
 
             return AddStandardMaterial(
                 name, 
-                new GrBabylonJsStandardMaterial.StandardMaterialProperties
+                new GrBabylonJsStandardMaterial.StandardMaterialProperties(color)
                 {
-                    Color = color,
                     Alpha = alpha / 255f,
                     TransparencyMode = GrBabylonJsMaterialTransparencyMode.AlphaBlend,
                     BackFaceCulling = true
@@ -1396,9 +1533,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs
             yield return Engine.GetCode();
 
             var optionsCode = 
-                ObjectOptions is null 
-                    ? "{}" 
-                    : ObjectOptions.GetCode();
+                ObjectOptions.GetCode();
 
             yield return optionsCode;
 

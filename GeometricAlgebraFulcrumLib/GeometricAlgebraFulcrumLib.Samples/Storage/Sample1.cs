@@ -13,7 +13,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.Storage
         public static void Execute()
         {
             var vSpaceDimensions = 5;
-            var scalarProcessor = ScalarProcessorFloat64.DefaultProcessor;
+            var scalarProcessor = ScalarProcessorOfFloat64.DefaultProcessor;
             var processor = scalarProcessor.CreateEuclideanRGaProcessor();
             var textComposer = TextComposerFloat64.DefaultComposer;
 

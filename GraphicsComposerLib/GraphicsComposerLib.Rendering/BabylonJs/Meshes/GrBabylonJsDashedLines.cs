@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using DataStructuresLib.Basic;
-using GraphicsComposerLib.Rendering.BabylonJs.Values;
+﻿using GraphicsComposerLib.Rendering.BabylonJs.Values;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
 {
@@ -13,33 +11,62 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
         public sealed class DashedLinesOptions :
             GrBabylonJsObjectOptions
         {
-            public GrBabylonJsVector3ArrayValue? Points { get; set; }
-    
-            public GrBabylonJsMaterialValue? Material { get; set; }
-
-            public GrBabylonJsInt32Value? DashSize { get; set; }
-
-            public GrBabylonJsInt32Value? GapSize { get; set; }
-
-            public GrBabylonJsInt32Value? DashNumber { get; set; }
-
-            public GrBabylonJsBooleanValue? UseVertexAlpha { get; set; }
-            
-            public GrBabylonJsLinesMeshValue? Instance { get; set; }
-
-            public GrBabylonJsBooleanValue? Updateable { get; set; }
-
-
-            protected override IEnumerable<Pair<string>?> GetNameValuePairs()
+            public GrBabylonJsVector3ArrayValue? Points
             {
-                yield return Points.GetNameValueCodePair("points");
-                yield return Instance.GetNameValueCodePair("instance");
-                yield return Material.GetNameValueCodePair("material");
-                yield return DashSize.GetNameValueCodePair("dashSize");
-                yield return GapSize.GetNameValueCodePair("gapSize");
-                yield return DashNumber.GetNameValueCodePair("dashNb");
-                yield return UseVertexAlpha.GetNameValueCodePair("useVertexAlpha");
-                yield return Updateable.GetNameValueCodePair("updatable");
+                get => GetAttributeValueOrNull<GrBabylonJsVector3ArrayValue>("points");
+                set => SetAttributeValue("points", value);
+            }
+
+            public GrBabylonJsMaterialValue? Material
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsMaterialValue>("material");
+                set => SetAttributeValue("material", value);
+            }
+
+            public GrBabylonJsInt32Value? DashSize
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsInt32Value>("dashSize");
+                set => SetAttributeValue("dashSize", value);
+            }
+
+            public GrBabylonJsInt32Value? GapSize
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsInt32Value>("gapSize");
+                set => SetAttributeValue("gapSize", value);
+            }
+
+            public GrBabylonJsInt32Value? DashNumber
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsInt32Value>("dashNb");
+                set => SetAttributeValue("dashNb", value);
+            }
+
+            public GrBabylonJsBooleanValue? UseVertexAlpha
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("useVertexAlpha");
+                set => SetAttributeValue("useVertexAlpha", value);
+            }
+
+            public GrBabylonJsLinesMeshValue? Instance
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsLinesMeshValue>("instance");
+                set => SetAttributeValue("instance", value);
+            }
+
+            public GrBabylonJsBooleanValue? Updatable
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("updatable");
+                set => SetAttributeValue("updatable", value);
+            }
+
+
+            public DashedLinesOptions()
+            {
+            }
+
+            public DashedLinesOptions(DashedLinesOptions options)
+            {
+                SetAttributeValues(options);
             }
         }
 
@@ -47,10 +74,10 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
         protected override string ConstructorName
             => "BABYLON.MeshBuilder.CreateDashedLines";
 
-        public DashedLinesOptions? Options { get; private set; }
+        public DashedLinesOptions Options { get; private set; }
             = new DashedLinesOptions();
 
-        public override GrBabylonJsObjectOptions? ObjectOptions 
+        public override GrBabylonJsObjectOptions ObjectOptions 
             => Options;
 
 
@@ -65,16 +92,16 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
         }
 
 
-        public GrBabylonJsDashedLines SetOptions([NotNull] DashedLinesOptions? options)
+        public GrBabylonJsDashedLines SetOptions(DashedLinesOptions options)
         {
-            Options = options;
+            Options = new DashedLinesOptions(options);
 
             return this;
         }
 
-        public GrBabylonJsDashedLines SetProperties([NotNull] LinesMeshProperties? properties)
+        public GrBabylonJsDashedLines SetProperties(LinesMeshProperties properties)
         {
-            Properties = properties;
+            Properties = new LinesMeshProperties(properties);
 
             return this;
         }

@@ -209,7 +209,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
             for (var n = 3; n <= 8; n++)
             {
                 var scalarProcessor =
-                    ScalarProcessorExpr.DefaultProcessor;
+                    ScalarProcessorOfWolframExpr.DefaultProcessor;
 
                 var geometricProcessor =
                     scalarProcessor.CreateEuclideanRGaProcessor();
@@ -282,7 +282,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
             for (var n = 3; n <= 8; n++)
             {
                 var scalarProcessor =
-                    ScalarProcessorExpr.DefaultProcessor;
+                    ScalarProcessorOfWolframExpr.DefaultProcessor;
 
                 var geometricProcessor =
                     scalarProcessor.CreateEuclideanRGaProcessor();
@@ -355,7 +355,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
             laTeXComposer.BasisName = @"\boldsymbol{\mu}";
 
             var scalarProcessor =
-                ScalarProcessorExpr.DefaultProcessor;
+                ScalarProcessorOfWolframExpr.DefaultProcessor;
 
             var geometricProcessor =
                 scalarProcessor.CreateEuclideanRGaProcessor();
@@ -448,7 +448,7 @@ namespace GeometricAlgebraFulcrumLib.Applications.PowerSystems
             laTeXComposer.BasisName = @"\boldsymbol{\mu}";
 
             var scalarProcessor =
-                ScalarProcessorExpr.DefaultProcessor;
+                ScalarProcessorOfWolframExpr.DefaultProcessor;
 
             var geometricProcessor =
                 scalarProcessor.CreateEuclideanRGaProcessor();

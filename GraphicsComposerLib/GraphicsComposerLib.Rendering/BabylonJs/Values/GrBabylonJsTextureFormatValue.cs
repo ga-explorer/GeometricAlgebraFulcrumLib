@@ -1,9 +1,10 @@
-﻿using GraphicsComposerLib.Rendering.BabylonJs.Constants;
+﻿using DataStructuresLib.AttributeSet;
+using GraphicsComposerLib.Rendering.BabylonJs.Constants;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Values
 {
     public sealed class GrBabylonJsTextureFormatValue :
-        GrBabylonJsValue<GrBabylonJsTextureFormat>
+        SparseCodeAttributeValue<GrBabylonJsTextureFormat>
     {
         public static implicit operator GrBabylonJsTextureFormatValue(string valueText)
         {

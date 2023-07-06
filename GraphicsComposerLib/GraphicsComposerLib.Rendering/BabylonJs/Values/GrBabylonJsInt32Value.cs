@@ -1,7 +1,9 @@
-﻿namespace GraphicsComposerLib.Rendering.BabylonJs.Values
+﻿using DataStructuresLib.AttributeSet;
+
+namespace GraphicsComposerLib.Rendering.BabylonJs.Values
 {
     public sealed class GrBabylonJsInt32Value :
-        GrBabylonJsValue<int>
+        SparseCodeAttributeValue<int>
     {
         public static implicit operator GrBabylonJsInt32Value(string valueText)
         {

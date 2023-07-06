@@ -25,7 +25,7 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.Mathematica
             => 1UL << VSpaceDimensions;
 
         public static IScalarProcessor<Expr> ScalarProcessor
-            => ScalarProcessorExpr.DefaultProcessor;
+            => ScalarProcessorOfWolframExpr.DefaultProcessor;
 
         public static RGaProcessor<Expr> GeometricProcessor { get; }
             = ScalarProcessor.CreateEuclideanRGaProcessor();

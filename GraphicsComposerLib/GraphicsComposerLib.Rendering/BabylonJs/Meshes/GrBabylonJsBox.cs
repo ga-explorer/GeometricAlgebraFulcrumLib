@@ -1,5 +1,4 @@
-﻿using DataStructuresLib.Basic;
-using GraphicsComposerLib.Rendering.BabylonJs.Values;
+﻿using GraphicsComposerLib.Rendering.BabylonJs.Values;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
 {
@@ -12,48 +11,92 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
         public sealed class BoxOptions :
             GrBabylonJsObjectOptions
         {
-            public GrBabylonJsFloat32Value? BottomBaseAt { get; init; }
-
-            public GrBabylonJsFloat32Value? TopBaseAt { get; init; }
-
-            public GrBabylonJsFloat32Value? Width { get; init; }
-
-            public GrBabylonJsFloat32Value? Height { get; init; }
-
-            public GrBabylonJsFloat32Value? Depth { get; init; }
-
-            public GrBabylonJsFloat32Value? Size { get; init; }
-
-            public GrBabylonJsBooleanValue? Wrap { get; init; }
-
-            public GrBabylonJsColor4ArrayValue? FaceColors { get; init; }
-
-            public GrBabylonJsVector4ArrayValue? FaceUv { get; init; }
-
-            public GrBabylonJsMeshOrientationValue? SideOrientation { get; init; }
-
-            public GrBabylonJsVector4Value? FrontUVs { get; init; }
-
-            public GrBabylonJsVector4Value? BackUVs { get; init; }
-
-            public GrBabylonJsBooleanValue? Updateable { get; init; }
-
-
-            protected override IEnumerable<Pair<string>?> GetNameValuePairs()
+            public GrBabylonJsFloat32Value? BottomBaseAt
             {
-                yield return BottomBaseAt.GetNameValueCodePair("bottomBaseAt");
-                yield return TopBaseAt.GetNameValueCodePair("topBaseAt");
-                yield return Width.GetNameValueCodePair("width");
-                yield return Height.GetNameValueCodePair("height");
-                yield return Depth.GetNameValueCodePair("depth");
-                yield return Size.GetNameValueCodePair("size");
-                yield return Wrap.GetNameValueCodePair("wrap");
-                yield return FaceColors.GetNameValueCodePair("faceColors");
-                yield return FaceUv.GetNameValueCodePair("faceUV");
-                yield return SideOrientation.GetNameValueCodePair("sideOrientation");
-                yield return FrontUVs.GetNameValueCodePair("frontUVs");
-                yield return BackUVs.GetNameValueCodePair("backUVs");
-                yield return Updateable.GetNameValueCodePair("updatable");
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("bottomBaseAt");
+                set => SetAttributeValue("bottomBaseAt", value);
+            }
+
+            public GrBabylonJsFloat32Value? TopBaseAt
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("topBaseAt");
+                set => SetAttributeValue("topBaseAt", value);
+            }
+
+            public GrBabylonJsFloat32Value? Width
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("width");
+                set => SetAttributeValue("width", value);
+            }
+
+            public GrBabylonJsFloat32Value? Height
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("height");
+                set => SetAttributeValue("height", value);
+            }
+
+            public GrBabylonJsFloat32Value? Depth
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("depth");
+                set => SetAttributeValue("depth", value);
+            }
+
+            public GrBabylonJsFloat32Value? Size
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("size");
+                set => SetAttributeValue("size", value);
+            }
+
+            public GrBabylonJsBooleanValue? Wrap
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("wrap");
+                set => SetAttributeValue("wrap", value);
+            }
+
+            public GrBabylonJsColor4ArrayValue? FaceColors
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsColor4ArrayValue>("faceColors");
+                set => SetAttributeValue("faceColors", value);
+            }
+
+            public GrBabylonJsVector4ArrayValue? FaceUv
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsVector4ArrayValue>("faceUV");
+                set => SetAttributeValue("faceUV", value);
+            }
+
+            public GrBabylonJsMeshOrientationValue? SideOrientation
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsMeshOrientationValue>("sideOrientation");
+                set => SetAttributeValue("sideOrientation", value);
+            }
+
+            public GrBabylonJsVector4Value? FrontUVs
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsVector4Value>("frontUVs");
+                set => SetAttributeValue("frontUVs", value);
+            }
+
+            public GrBabylonJsVector4Value? BackUVs
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsVector4Value>("backUVs");
+                set => SetAttributeValue("backUVs", value);
+            }
+
+            public GrBabylonJsBooleanValue? Updatable
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("updatable");
+                set => SetAttributeValue("updatable", value);
+            }
+
+
+            public BoxOptions()
+            {
+            }
+            
+            public BoxOptions(BoxOptions options)
+            {
+                SetAttributeValues(options);
             }
         }
 
@@ -61,10 +104,10 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
         protected override string ConstructorName
             => "BABYLON.MeshBuilder.CreateBox";
 
-        public BoxOptions? Options { get; private set; }
+        public BoxOptions Options { get; private set; }
             = new BoxOptions();
 
-        public override GrBabylonJsObjectOptions? ObjectOptions
+        public override GrBabylonJsObjectOptions ObjectOptions
             => Options;
 
 
@@ -81,14 +124,14 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
 
         public GrBabylonJsBox SetOptions(BoxOptions options)
         {
-            Options = options;
+            Options = new BoxOptions(options);
 
             return this;
         }
 
         public GrBabylonJsBox SetProperties(MeshProperties properties)
         {
-            Properties = properties;
+            Properties = new MeshProperties(properties);
 
             return this;
         }

@@ -1,9 +1,10 @@
-﻿using GraphicsComposerLib.Rendering.BabylonJs.Textures;
+﻿using DataStructuresLib.AttributeSet;
+using GraphicsComposerLib.Rendering.BabylonJs.Textures;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Values
 {
     public sealed class GrBabylonJsAdvancedDynamicTextureValue :
-        GrBabylonJsValue<GrBabylonJsAdvancedDynamicTexture>
+        SparseCodeAttributeValue<GrBabylonJsAdvancedDynamicTexture>
     {
         public static implicit operator GrBabylonJsAdvancedDynamicTextureValue(string valueText)
         {

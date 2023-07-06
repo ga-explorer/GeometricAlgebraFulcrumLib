@@ -1,9 +1,10 @@
-﻿using GraphicsComposerLib.Rendering.BabylonJs.Constants;
+﻿using DataStructuresLib.AttributeSet;
+using GraphicsComposerLib.Rendering.BabylonJs.Constants;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Values
 {
     public sealed class GrBabylonJsMeshOrientationValue :
-        GrBabylonJsValue<GrBabylonJsMeshOrientation>
+        SparseCodeAttributeValue<GrBabylonJsMeshOrientation>
     {
         public static implicit operator GrBabylonJsMeshOrientationValue(string valueText)
         {

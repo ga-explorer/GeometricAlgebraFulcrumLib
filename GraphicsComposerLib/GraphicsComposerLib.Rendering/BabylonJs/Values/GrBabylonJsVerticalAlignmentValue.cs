@@ -1,9 +1,10 @@
-﻿using GraphicsComposerLib.Rendering.BabylonJs.Constants;
+﻿using DataStructuresLib.AttributeSet;
+using GraphicsComposerLib.Rendering.BabylonJs.Constants;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Values
 {
     public sealed class GrBabylonJsVerticalAlignmentValue :
-        GrBabylonJsValue<GrBabylonJsVerticalAlignment>
+        SparseCodeAttributeValue<GrBabylonJsVerticalAlignment>
     {
         public static implicit operator GrBabylonJsVerticalAlignmentValue(string valueText)
         {

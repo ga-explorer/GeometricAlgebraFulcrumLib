@@ -1,10 +1,11 @@
-﻿using DataStructuresLib.Basic;
+﻿using DataStructuresLib.AttributeSet;
+using DataStructuresLib.Basic;
 using GeometricAlgebraFulcrumLib.MathBase.LinearAlgebra.Float64.Vectors.Space4D;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Values
 {
     public sealed class GrBabylonJsVector4Value :
-        GrBabylonJsValue<IQuad<double>>
+        SparseCodeAttributeValue<IQuad<double>>
     {
         internal static GrBabylonJsVector4Value Create(IQuad<double> value)
         {

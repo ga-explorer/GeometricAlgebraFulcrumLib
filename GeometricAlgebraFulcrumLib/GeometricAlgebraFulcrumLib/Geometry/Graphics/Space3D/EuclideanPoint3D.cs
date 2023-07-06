@@ -93,7 +93,7 @@ namespace GeometricAlgebraFulcrumLib.Geometry.Graphics.Space3D
 
 
         public IScalarProcessor<double> ScalarProcessor 
-            => ScalarProcessorFloat64.DefaultProcessor;
+            => ScalarProcessorOfFloat64.DefaultProcessor;
         
         public RGaFloat64Processor GeometricProcessor 
             => GaEuclideanSpace3DUtils.GeometricProcessor;

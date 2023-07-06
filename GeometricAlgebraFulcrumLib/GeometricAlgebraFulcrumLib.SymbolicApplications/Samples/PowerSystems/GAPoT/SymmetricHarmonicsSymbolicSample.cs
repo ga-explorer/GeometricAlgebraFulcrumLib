@@ -17,7 +17,7 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.PowerSystems.G
     public static class SymmetricHarmonicsSymbolicSample
     {
         public static XGaProcessor<Expr> GeometricProcessor { get; }
-            = XGaProcessor<Expr>.CreateEuclidean(ScalarProcessorExpr.DefaultProcessor);
+            = XGaProcessor<Expr>.CreateEuclidean(ScalarProcessorOfWolframExpr.DefaultProcessor);
 
         public static TextComposerExpr TextComposer { get; }
             = TextComposerExpr.DefaultComposer;

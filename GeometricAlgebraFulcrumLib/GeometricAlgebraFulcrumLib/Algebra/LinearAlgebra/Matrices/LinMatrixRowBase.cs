@@ -7,7 +7,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Matrices
     public abstract class LinMatrixRowBase<TMatrix, TScalar> :
         LinVectorDenseStorageBase<TScalar>
     {
-        public IMatrixAlgebraProcessor<TMatrix, TScalar> MatrixProcessor { get; }
+        public IMatrixProcessor<TMatrix, TScalar> MatrixProcessor { get; }
 
         public TMatrix MatrixStorage { get; }
 
@@ -17,7 +17,7 @@ namespace GeometricAlgebraFulcrumLib.Algebra.LinearAlgebra.Matrices
             => MatrixProcessor.GetDenseColumnsCount(MatrixStorage);
 
 
-        protected LinMatrixRowBase(IMatrixAlgebraProcessor<TMatrix, TScalar> matrixProcessor, TMatrix matrix, int rowIndex)
+        protected LinMatrixRowBase(IMatrixProcessor<TMatrix, TScalar> matrixProcessor, TMatrix matrix, int rowIndex)
         {
             if (rowIndex < 0 || rowIndex >= matrixProcessor.GetDenseRowsCount(matrix))
                 throw new ArgumentOutOfRangeException(nameof(rowIndex));

@@ -53,7 +53,7 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.EuclideanGeome
         public static void RotationMatrixToSimpleRotationsSample(int n)
         {
             var scalarProcessor =
-                ScalarProcessorFloat64.DefaultProcessor;
+                ScalarProcessorOfFloat64.DefaultProcessor;
             
             var geometricProcessor =
                 XGaFloat64Processor.Euclidean;
@@ -143,7 +143,7 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.EuclideanGeome
         public static void ClarkeMatrixToSimpleRotationsSample(int n)
         {
             var scalarProcessor =
-                ScalarProcessorFloat64.DefaultProcessor;
+                ScalarProcessorOfFloat64.DefaultProcessor;
             
             var geometricProcessor =
                 XGaFloat64Processor.Euclidean;
@@ -324,7 +324,7 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.EuclideanGeome
         public static void CirculantMatrixToSimpleRotationsSample(int n)
         {
             var scalarProcessor =
-                ScalarProcessorExpr.DefaultProcessor;
+                ScalarProcessorOfWolframExpr.DefaultProcessor;
 
             var geometricProcessor =
                 XGaProcessor<Expr>.CreateEuclidean(scalarProcessor);
@@ -597,7 +597,7 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.EuclideanGeome
                 Console.WriteLine($"{n}-dimensions");
 
                 var scalarProcessor =
-                    ScalarProcessorExpr.DefaultProcessor;
+                    ScalarProcessorOfWolframExpr.DefaultProcessor;
 
                 var geometricProcessor =
                     XGaProcessor<Expr>.CreateEuclidean(scalarProcessor);
@@ -660,7 +660,7 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.EuclideanGeome
             const int n = 6;
 
             var scalarProcessor =
-                ScalarProcessorFloat64.DefaultProcessor;
+                ScalarProcessorOfFloat64.DefaultProcessor;
 
             var geometricProcessor =
                 XGaFloat64Processor.Euclidean;
@@ -1071,7 +1071,7 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.EuclideanGeome
             const int n = 10;
 
             var scalarProcessor =
-                ScalarProcessorFloat64.DefaultProcessor;
+                ScalarProcessorOfFloat64.DefaultProcessor;
 
             var geometricProcessor =
                 XGaFloat64Processor.Euclidean;
@@ -1160,7 +1160,7 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.EuclideanGeome
             const int n = 10;
 
             var scalarProcessor =
-                ScalarProcessorFloat64.DefaultProcessor;
+                ScalarProcessorOfFloat64.DefaultProcessor;
 
             var geometricProcessor =
                 XGaFloat64Processor.Euclidean;
@@ -1247,7 +1247,7 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.EuclideanGeome
             const int n = 10;
 
             var scalarProcessor =
-                ScalarProcessorFloat64.DefaultProcessor;
+                ScalarProcessorOfFloat64.DefaultProcessor;
 
             var geometricProcessor =
                 XGaFloat64Processor.Euclidean;
@@ -1334,7 +1334,7 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.EuclideanGeome
             const int n = 10;
 
             var scalarProcessor =
-                ScalarProcessorFloat64.DefaultProcessor;
+                ScalarProcessorOfFloat64.DefaultProcessor;
 
             var geometricProcessor =
                 XGaFloat64Processor.Euclidean;
@@ -1427,7 +1427,7 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.EuclideanGeome
             const int n = 3;
 
             var scalarProcessor =
-                ScalarProcessorFloat64.DefaultProcessor;
+                ScalarProcessorOfFloat64.DefaultProcessor;
 
             var geometricProcessor =
                 XGaFloat64Processor.Euclidean;
@@ -1520,7 +1520,7 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.EuclideanGeome
             const int n = 3;
 
             var scalarProcessor =
-                ScalarProcessorFloat64.DefaultProcessor;
+                ScalarProcessorOfFloat64.DefaultProcessor;
 
             var geometricProcessor =
                 XGaFloat64Processor.Euclidean;
@@ -1627,7 +1627,7 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.EuclideanGeome
             const int n = 3;
 
             var scalarProcessor =
-                ScalarProcessorFloat64.DefaultProcessor;
+                ScalarProcessorOfFloat64.DefaultProcessor;
 
             var geometricProcessor =
                 XGaFloat64Processor.Euclidean;
@@ -1734,7 +1734,7 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.EuclideanGeome
             const int n = 3;
 
             var scalarProcessor =
-                ScalarProcessorFloat64.DefaultProcessor;
+                ScalarProcessorOfFloat64.DefaultProcessor;
 
             var geometricProcessor =
                 XGaFloat64Processor.Euclidean;
@@ -1854,7 +1854,7 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.EuclideanGeome
         {
             const int n = 10;
             var scalarProcessor =
-                ScalarProcessorFloat64.DefaultProcessor;
+                ScalarProcessorOfFloat64.DefaultProcessor;
 
             var geometricProcessor =
                 XGaFloat64Processor.Euclidean;
@@ -1914,7 +1914,7 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.EuclideanGeome
         {
             const int n = 10;
             var scalarProcessor =
-                ScalarProcessorFloat64.DefaultProcessor;
+                ScalarProcessorOfFloat64.DefaultProcessor;
 
             var geometricProcessor =
                 XGaFloat64Processor.Euclidean;

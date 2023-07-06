@@ -34,25 +34,25 @@ namespace GeometricAlgebraFulcrumLib.Utilities.Factories
 
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static LinearAlgebraRandomComposer<T> CreateLinearRandomComposer<T>(this ILinearAlgebraProcessor<T> linearProcessor)
+        public static LinearAlgebraRandomComposer<T> CreateLinearRandomComposer<T>(this ILinearProcessor<T> linearProcessor)
         {
             return new LinearAlgebraRandomComposer<T>(linearProcessor);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static LinearAlgebraRandomComposer<T> CreateLinearRandomComposer<T>(this ILinearAlgebraProcessor<T> linearProcessor, int seed)
+        public static LinearAlgebraRandomComposer<T> CreateLinearRandomComposer<T>(this ILinearProcessor<T> linearProcessor, int seed)
         {
             return new LinearAlgebraRandomComposer<T>(linearProcessor, seed);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static LinearAlgebraRandomComposer<T> CreateLinearRandomComposer<T>(this ILinearAlgebraProcessor<T> linearProcessor, Random randomGenerator)
+        public static LinearAlgebraRandomComposer<T> CreateLinearRandomComposer<T>(this ILinearProcessor<T> linearProcessor, Random randomGenerator)
         {
             return new LinearAlgebraRandomComposer<T>(linearProcessor, randomGenerator);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static LinearAlgebraRandomComposer<T> CreateLinearRandomComposer<T>(this Random randomGenerator, ILinearAlgebraProcessor<T> linearProcessor)
+        public static LinearAlgebraRandomComposer<T> CreateLinearRandomComposer<T>(this Random randomGenerator, ILinearProcessor<T> linearProcessor)
         {
             return new LinearAlgebraRandomComposer<T>(linearProcessor, randomGenerator);
         }

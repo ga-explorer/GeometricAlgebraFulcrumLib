@@ -1,10 +1,11 @@
-﻿using GraphicsComposerLib.Rendering.BabylonJs.Constants;
+﻿using DataStructuresLib.AttributeSet;
+using GraphicsComposerLib.Rendering.BabylonJs.Constants;
 using WebComposerLib.Colors;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Values
 {
     public sealed class GrBabylonJsColor3Value :
-        GrBabylonJsValue<Color>
+        SparseCodeAttributeValue<Color>
     {
         public static implicit operator GrBabylonJsColor3Value(string valueText)
         {

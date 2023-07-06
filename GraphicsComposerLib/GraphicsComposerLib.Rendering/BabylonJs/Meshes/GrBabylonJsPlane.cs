@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using DataStructuresLib.Basic;
-using GraphicsComposerLib.Rendering.BabylonJs.Values;
+﻿using GraphicsComposerLib.Rendering.BabylonJs.Values;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
 {
@@ -14,43 +12,72 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
             GrBabylonJsObjectOptions
         {
             //sourcePlane?: Plane; 
-            public GrBabylonJsFloat32Value? Size { get; set; }
-
-            public GrBabylonJsFloat32Value? Height { get; set; }
-
-            public GrBabylonJsFloat32Value? Width { get; set; }
-    
-            public GrBabylonJsCodeValue? SourcePlane { get; set; }
-    
-            public GrBabylonJsMeshOrientationValue? SideOrientation { get; set; }
-
-            public GrBabylonJsVector4Value? FrontUVs { get; set; }
-
-            public GrBabylonJsVector4Value? BackUVs { get; set; }
-
-            public GrBabylonJsBooleanValue? Updateable { get; set; }
-
-
-            protected override IEnumerable<Pair<string>?> GetNameValuePairs()
+            public GrBabylonJsFloat32Value? Size
             {
-                yield return Size.GetNameValueCodePair("size");
-                yield return Height.GetNameValueCodePair("height");
-                yield return Width.GetNameValueCodePair("width");
-                yield return SideOrientation.GetNameValueCodePair("sideOrientation");
-                yield return FrontUVs.GetNameValueCodePair("frontUVs");
-                yield return BackUVs.GetNameValueCodePair("backUVs");
-                yield return Updateable.GetNameValueCodePair("updatable");
-                yield return SourcePlane.GetNameValueCodePair("sourcePlane");
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("size");
+                set => SetAttributeValue("size", value);
+            }
+
+            public GrBabylonJsFloat32Value? Height
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("height");
+                set => SetAttributeValue("height", value);
+            }
+
+            public GrBabylonJsFloat32Value? Width
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("width");
+                set => SetAttributeValue("width", value);
+            }
+
+            public GrBabylonJsCodeValue? SourcePlane
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsCodeValue>("sourcePlane");
+                set => SetAttributeValue("sourcePlane", value);
+            }
+
+            public GrBabylonJsMeshOrientationValue? SideOrientation
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsMeshOrientationValue>("sideOrientation");
+                set => SetAttributeValue("sideOrientation", value);
+            }
+
+            public GrBabylonJsVector4Value? FrontUVs
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsVector4Value>("frontUVs");
+                set => SetAttributeValue("frontUVs", value);
+            }
+
+            public GrBabylonJsVector4Value? BackUVs
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsVector4Value>("backUVs");
+                set => SetAttributeValue("backUVs", value);
+            }
+
+            public GrBabylonJsBooleanValue? Updatable
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("updatable");
+                set => SetAttributeValue("updatable", value);
+            }
+
+
+            public PlaneOptions()
+            {
+            }
+
+            public PlaneOptions(PlaneOptions options)
+            {
+                SetAttributeValues(options);
             }
         }
     
         protected override string ConstructorName
             => "BABYLON.MeshBuilder.CreatePlane";
 
-        public PlaneOptions? Options { get; private set; }
+        public PlaneOptions Options { get; private set; }
             = new PlaneOptions();
 
-        public override GrBabylonJsObjectOptions? ObjectOptions 
+        public override GrBabylonJsObjectOptions ObjectOptions 
             => Options;
 
 
@@ -65,16 +92,16 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Meshes
         }
 
 
-        public GrBabylonJsPlane SetOptions([NotNull] PlaneOptions? options)
+        public GrBabylonJsPlane SetOptions(PlaneOptions options)
         {
-            Options = options;
+            Options = new PlaneOptions(options);
 
             return this;
         }
 
-        public GrBabylonJsPlane SetProperties([NotNull] MeshProperties? properties)
+        public GrBabylonJsPlane SetProperties(MeshProperties properties)
         {
-            Properties = properties;
+            Properties = new MeshProperties(properties);
 
             return this;
         }

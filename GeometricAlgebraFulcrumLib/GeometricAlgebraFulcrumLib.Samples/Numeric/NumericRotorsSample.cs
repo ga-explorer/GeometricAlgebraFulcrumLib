@@ -16,8 +16,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.Numeric
     {
         // This is a pre-defined scalar processor for float 64
         // numerical scalars
-        public static ScalarProcessorFloat64 ScalarProcessor { get; }
-            = ScalarProcessorFloat64.DefaultProcessor;
+        public static ScalarProcessorOfFloat64 ScalarProcessor { get; }
+            = ScalarProcessorOfFloat64.DefaultProcessor;
 
         public static int VSpaceDimensions 
             => 3;

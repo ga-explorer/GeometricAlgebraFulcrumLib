@@ -15,8 +15,8 @@ namespace GeometricAlgebraFulcrumLib.SymbolicApplications.Samples.PowerSystems.G
         public static XGaProcessor<Expr> GeometricProcessor { get; }
             = XGaMathematicaUtils.EuclideanProcessor;
 
-        public static ScalarProcessorExpr ScalarProcessor { get; }
-            = ScalarProcessorExpr.DefaultProcessor;
+        public static ScalarProcessorOfWolframExpr ScalarProcessor { get; }
+            = ScalarProcessorOfWolframExpr.DefaultProcessor;
 
         public static TextComposerExpr TextComposer { get; }
             = TextComposerExpr.DefaultComposer;

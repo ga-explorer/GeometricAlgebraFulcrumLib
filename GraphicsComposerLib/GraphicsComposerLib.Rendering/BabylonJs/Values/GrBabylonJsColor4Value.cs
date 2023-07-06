@@ -1,9 +1,11 @@
 ﻿
 
+using DataStructuresLib.AttributeSet;
+
 namespace GraphicsComposerLib.Rendering.BabylonJs.Values
 {
     public sealed class GrBabylonJsColor4Value :
-        GrBabylonJsValue<Color>
+        SparseCodeAttributeValue<Color>
     {
         public static implicit operator GrBabylonJsColor4Value(string valueText)
         {

@@ -1,5 +1,4 @@
-﻿using DataStructuresLib.Basic;
-using GraphicsComposerLib.Rendering.BabylonJs.Values;
+﻿using GraphicsComposerLib.Rendering.BabylonJs.Values;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Materials
 {
@@ -9,64 +8,104 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Materials
         public sealed class FresnelParametersOptions :
             GrBabylonJsObjectOptions
         {
-            public GrBabylonJsFloat32Value? Bias { get; set; }
-
-            public GrBabylonJsBooleanValue? IsEnabled { get; set; }
-
-            public GrBabylonJsColor3Value? LeftColor { get; set; }
-
-            public GrBabylonJsColor3Value? RightColor { get; set; }
-
-            public GrBabylonJsFloat32Value? Power { get; set; }
-
-
-            protected override IEnumerable<Pair<string>?> GetNameValuePairs()
+            public GrBabylonJsFloat32Value? Bias
             {
-                yield return Bias.GetNameValueCodePair("bias");
-                yield return IsEnabled.GetNameValueCodePair("isEnabled");
-                yield return LeftColor.GetNameValueCodePair("leftColor");
-                yield return RightColor.GetNameValueCodePair("rightColor");
-                yield return Power.GetNameValueCodePair("power");
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("bias");
+                set => SetAttributeValue("bias", value);
+            }
+
+            public GrBabylonJsBooleanValue? IsEnabled
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("isEnabled");
+                set => SetAttributeValue("isEnabled", value);
+            }
+
+            public GrBabylonJsColor3Value? LeftColor
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsColor3Value>("leftColor");
+                set => SetAttributeValue("leftColor", value);
+            }
+
+            public GrBabylonJsColor3Value? RightColor
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsColor3Value>("rightColor");
+                set => SetAttributeValue("rightColor", value);
+            }
+
+            public GrBabylonJsFloat32Value? Power
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("power");
+                set => SetAttributeValue("power", value);
+            }
+            
+
+            public FresnelParametersOptions()
+            {
+            }
+
+            public FresnelParametersOptions(FresnelParametersOptions options)
+            {
+                SetAttributeValues(options);
             }
         }
 
         public class FresnelParametersProperties :
             GrBabylonJsObjectProperties
         {
-            public GrBabylonJsFloat32Value? Bias { get; set; }
-
-            public GrBabylonJsBooleanValue? IsEnabled { get; set; }
-
-            public GrBabylonJsColor3Value? LeftColor { get; set; }
-
-            public GrBabylonJsColor3Value? RightColor { get; set; }
-
-            public GrBabylonJsFloat32Value? Power { get; set; }
-
-
-            protected override IEnumerable<Pair<string>?> GetNameValuePairs()
+            public GrBabylonJsFloat32Value? Bias
             {
-                yield return Bias.GetNameValueCodePair("bias");
-                yield return IsEnabled.GetNameValueCodePair("isEnabled");
-                yield return LeftColor.GetNameValueCodePair("leftColor");
-                yield return RightColor.GetNameValueCodePair("rightColor");
-                yield return Power.GetNameValueCodePair("power");
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("bias");
+                set => SetAttributeValue("bias", value);
+            }
+
+            public GrBabylonJsBooleanValue? IsEnabled
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("isEnabled");
+                set => SetAttributeValue("isEnabled", value);
+            }
+
+            public GrBabylonJsColor3Value? LeftColor
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsColor3Value>("leftColor");
+                set => SetAttributeValue("leftColor", value);
+            }
+
+            public GrBabylonJsColor3Value? RightColor
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsColor3Value>("rightColor");
+                set => SetAttributeValue("rightColor", value);
+            }
+
+            public GrBabylonJsFloat32Value? Power
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("power");
+                set => SetAttributeValue("power", value);
+            }
+            
+
+            public FresnelParametersProperties()
+            {
+            }
+
+            public FresnelParametersProperties(FresnelParametersProperties options)
+            {
+                SetAttributeValues(options);
             }
         }
 
         protected override string ConstructorName
             => "new BABYLON.FresnelParameters";
 
-        public FresnelParametersOptions? Options { get; private set; }
+        public FresnelParametersOptions Options { get; private set; }
             = new FresnelParametersOptions();
 
-        public FresnelParametersProperties? Properties { get; private set; }
+        public FresnelParametersProperties Properties { get; private set; }
             = new FresnelParametersProperties();
 
-        public override GrBabylonJsObjectOptions? ObjectOptions 
+        public override GrBabylonJsObjectOptions ObjectOptions 
             => Options;
 
-        public override GrBabylonJsObjectProperties? ObjectProperties 
+        public override GrBabylonJsObjectProperties ObjectProperties 
             => Properties;
     
     
@@ -78,14 +117,14 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Materials
 
         public GrBabylonJsFresnelParameters SetOptions(FresnelParametersOptions options)
         {
-            Options = options;
+            Options = new FresnelParametersOptions(options);
 
             return this;
         }
 
         public GrBabylonJsFresnelParameters SetProperties(FresnelParametersProperties properties)
         {
-            Properties = properties;
+            Properties = new FresnelParametersProperties(properties);
 
             return this;
         }
@@ -94,7 +133,7 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Materials
         protected override IEnumerable<string> GetConstructorArguments()
         {
             var optionsCode = 
-                ObjectOptions is null 
+                ObjectOptions.Count == 0
                     ? "{}" 
                     : ObjectOptions.GetCode();
 

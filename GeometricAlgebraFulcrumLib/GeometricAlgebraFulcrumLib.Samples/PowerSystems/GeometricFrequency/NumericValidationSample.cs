@@ -33,8 +33,8 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
 
 
         // This is a pre-defined scalar processor for numeric scalars
-        public static ScalarProcessorFloat64 ScalarProcessor { get; }
-            = ScalarProcessorFloat64.DefaultProcessor;
+        public static ScalarProcessorOfFloat64 ScalarProcessor { get; }
+            = ScalarProcessorOfFloat64.DefaultProcessor;
 
         public static int VSpaceDimensions
             => 3;
@@ -62,7 +62,7 @@ namespace GeometricAlgebraFulcrumLib.Samples.PowerSystems.GeometricFrequency
             => (SignalSamplesCount - 1) / SamplingRate;
 
         // This is a pre-defined scalar processor for tuples of numeric scalars
-        public static ScalarSignalFloat64Processor ScalarSignalProcessor { get; }
+        public static ScalarProcessorOfFloat64Signal ScalarSignalProcessor { get; }
             = ProcessorFactory.CreateFloat64ScalarSignalProcessor(SamplingRate, SignalSamplesCount);
 
         // Create a 3-dimensional Euclidean geometric algebra processor based on the

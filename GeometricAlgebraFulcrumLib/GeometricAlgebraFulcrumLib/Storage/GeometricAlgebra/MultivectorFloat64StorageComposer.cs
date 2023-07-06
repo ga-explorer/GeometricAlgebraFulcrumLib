@@ -18,7 +18,7 @@ namespace GeometricAlgebraFulcrumLib.Storage.GeometricAlgebra
             = new Dictionary<ulong, double>();
 
         public static IScalarProcessor<double> ScalarProcessor
-            => ScalarProcessorFloat64.DefaultProcessor;
+            => ScalarProcessorOfFloat64.DefaultProcessor;
 
         public RGaFloat64Processor BasisSet { get; }
 

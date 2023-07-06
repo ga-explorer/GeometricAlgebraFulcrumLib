@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using DataStructuresLib.Basic;
-using GraphicsComposerLib.Rendering.BabylonJs.Values;
+﻿using GraphicsComposerLib.Rendering.BabylonJs.Values;
 using TextComposerLib;
 
 namespace GraphicsComposerLib.Rendering.BabylonJs.Textures
@@ -11,57 +9,103 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Textures
         public sealed class AdvancedDynamicTextureProperties :
             GrBabylonJsDynamicTexture.DynamicTextureProperties
         {
-            public GrBabylonJsBooleanValue? ApplyYInversionOnUpdate { get; set; }
-
-            public GrBabylonJsBooleanValue? CheckPointerEveryFrame { get; set; }
-
-            public GrBabylonJsBooleanValue? PremulAlpha { get; set; }
-
-            public GrBabylonJsBooleanValue? AllowGpuOptimizations { get; set; }
-        
-            public GrBabylonJsBooleanValue? IsForeground { get; set; }
-
-            public GrBabylonJsBooleanValue? RenderAtIdealSize { get; set; }
-
-            public GrBabylonJsBooleanValue? UseSmallestIdeal { get; set; }
-
-            public GrBabylonJsBooleanValue? UseInvalidateRectOptimization { get; set; }
-
-            public GrBabylonJsStringValue? SnippetUrl { get; set; }
-
-            public GrBabylonJsStringValue? Background { get; set; }
-        
-            public GrBabylonJsStringValue? ClipboardData { get; set; }
-
-            public GrBabylonJsFloat32Value? IdealWidth { get; set; }
-
-            public GrBabylonJsFloat32Value? IdealHeight { get; set; }
-
-            public GrBabylonJsFloat32Value? IdealRatio { get; set; }
-        
-            public GrBabylonJsFloat32Value? RenderScale { get; set; }
-
-
-            protected override IEnumerable<Pair<string>?> GetNameValuePairs()
+            public GrBabylonJsBooleanValue? ApplyYInversionOnUpdate
             {
-                foreach (var pair in base.GetNameValuePairs())
-                    yield return pair;
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("applyYInversionOnUpdate");
+                set => SetAttributeValue("applyYInversionOnUpdate", value);
+            }
 
-                yield return ApplyYInversionOnUpdate.GetNameValueCodePair("applyYInversionOnUpdate");
-                yield return CheckPointerEveryFrame.GetNameValueCodePair("checkPointerEveryFrame");
-                yield return PremulAlpha.GetNameValueCodePair("premulAlpha");
-                yield return AllowGpuOptimizations.GetNameValueCodePair("AllowGPUOptimizations");
-                yield return IsForeground.GetNameValueCodePair("isForeground");
-                yield return RenderAtIdealSize.GetNameValueCodePair("renderAtIdealSize");
-                yield return UseSmallestIdeal.GetNameValueCodePair("useSmallestIdeal");
-                yield return UseInvalidateRectOptimization.GetNameValueCodePair("useInvalidateRectOptimization");
-                yield return SnippetUrl.GetNameValueCodePair("SnippetUrl");
-                yield return Background.GetNameValueCodePair("background");
-                yield return ClipboardData.GetNameValueCodePair("clipboardData");
-                yield return IdealWidth.GetNameValueCodePair("idealWidth");
-                yield return IdealHeight.GetNameValueCodePair("idealHeight");
-                yield return IdealRatio.GetNameValueCodePair("idealRatio");
-                yield return RenderScale.GetNameValueCodePair("renderScale");
+            public GrBabylonJsBooleanValue? CheckPointerEveryFrame
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("checkPointerEveryFrame");
+                set => SetAttributeValue("checkPointerEveryFrame", value);
+            }
+
+            public GrBabylonJsBooleanValue? PremulAlpha
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("premulAlpha");
+                set => SetAttributeValue("premulAlpha", value);
+            }
+
+            public GrBabylonJsBooleanValue? AllowGpuOptimizations
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("allowGpuOptimizations");
+                set => SetAttributeValue("allowGpuOptimizations", value);
+            }
+
+            public GrBabylonJsBooleanValue? IsForeground
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("isForeground");
+                set => SetAttributeValue("isForeground", value);
+            }
+
+            public GrBabylonJsBooleanValue? RenderAtIdealSize
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("renderAtIdealSize");
+                set => SetAttributeValue("renderAtIdealSize", value);
+            }
+
+            public GrBabylonJsBooleanValue? UseSmallestIdeal
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("useSmallestIdeal");
+                set => SetAttributeValue("useSmallestIdeal", value);
+            }
+
+            public GrBabylonJsBooleanValue? UseInvalidateRectOptimization
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsBooleanValue>("useInvalidateRectOptimization");
+                set => SetAttributeValue("useInvalidateRectOptimization", value);
+            }
+
+            public GrBabylonJsStringValue? SnippetUrl
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsStringValue>("snippetUrl");
+                set => SetAttributeValue("snippetUrl", value);
+            }
+
+            public GrBabylonJsStringValue? Background
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsStringValue>("background");
+                set => SetAttributeValue("background", value);
+            }
+
+            public GrBabylonJsStringValue? ClipboardData
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsStringValue>("clipboardData");
+                set => SetAttributeValue("clipboardData", value);
+            }
+
+            public GrBabylonJsFloat32Value? IdealWidth
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("idealWidth");
+                set => SetAttributeValue("idealWidth", value);
+            }
+
+            public GrBabylonJsFloat32Value? IdealHeight
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("idealHeight");
+                set => SetAttributeValue("idealHeight", value);
+            }
+
+            public GrBabylonJsFloat32Value? IdealRatio
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("idealRatio");
+                set => SetAttributeValue("idealRatio", value);
+            }
+
+            public GrBabylonJsFloat32Value? RenderScale
+            {
+                get => GetAttributeValueOrNull<GrBabylonJsFloat32Value>("renderScale");
+                set => SetAttributeValue("renderScale", value);
+            }
+
+            public AdvancedDynamicTextureProperties()
+            {
+            }
+
+            public AdvancedDynamicTextureProperties(AdvancedDynamicTextureProperties properties)
+            {
+                SetAttributeValues(properties);
             }
         }
 
@@ -72,34 +116,34 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Textures
         public GrBabylonJsInt32Value Width { get; set; }
 
         public GrBabylonJsInt32Value Height { get; set; }
-    
+
         public GrBabylonJsBooleanValue GenerateMipMaps { get; set; }
 
         public GrBabylonJsTextureSamplingModeValue SamplingMode { get; set; }
-    
+
         public GrBabylonJsBooleanValue InvertY { get; set; }
 
-        public AdvancedDynamicTextureProperties? Properties { get; private set; }
+        public AdvancedDynamicTextureProperties Properties { get; private set; }
             = new AdvancedDynamicTextureProperties();
 
-        public override GrBabylonJsObjectProperties? ObjectProperties 
+        public override GrBabylonJsObjectProperties ObjectProperties
             => Properties;
 
 
-        public GrBabylonJsAdvancedDynamicTexture(string constName) 
+        public GrBabylonJsAdvancedDynamicTexture(string constName)
             : base(constName)
         {
         }
 
-        public GrBabylonJsAdvancedDynamicTexture(string constName, GrBabylonJsSceneValue scene) 
+        public GrBabylonJsAdvancedDynamicTexture(string constName, GrBabylonJsSceneValue scene)
             : base(constName, scene)
         {
         }
 
-    
-        public GrBabylonJsAdvancedDynamicTexture SetProperties([NotNull] AdvancedDynamicTextureProperties? properties)
+
+        public GrBabylonJsAdvancedDynamicTexture SetProperties(AdvancedDynamicTextureProperties properties)
         {
-            Properties = properties;
+            Properties = new AdvancedDynamicTextureProperties(properties);
 
             return this;
         }
@@ -107,10 +151,10 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Textures
         protected override IEnumerable<string> GetConstructorArguments()
         {
             yield return ConstName.DoubleQuote();
-        
+
             if (Width.IsNullOrEmpty()) yield break;
             yield return Width.GetCode();
-        
+
             if (Height.IsNullOrEmpty()) yield break;
             yield return Height.GetCode();
 
@@ -119,10 +163,10 @@ namespace GraphicsComposerLib.Rendering.BabylonJs.Textures
 
             if (GenerateMipMaps.IsNullOrEmpty()) yield break;
             yield return GenerateMipMaps.GetCode();
-        
+
             if (SamplingMode.IsNullOrEmpty()) yield break;
             yield return SamplingMode.GetCode();
-        
+
             if (InvertY.IsNullOrEmpty()) yield break;
             yield return InvertY.GetCode();
         }
